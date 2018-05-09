@@ -243,8 +243,9 @@ class AdminChartsApiController extends ChartsApiController {
                 'calls' => $request->query->get('call'),
                 'matchers' => $request->query->get('matcher'),
                 'users' => $request->query->get('user'),
+                'consultants' => $request->query->get('consultant'),
+                'node' => $request->query->has('channel') ? $request->query->get('channel') : $request->query->get('node'),
                 ];
-
             if(Payment::methodExists($method)) {
                 $filter['methods'] = $method;
                 $methods = [$method => Payment::getMethod($method)];
@@ -254,8 +255,8 @@ class AdminChartsApiController extends ChartsApiController {
                 $filter['methods'] = array_keys(array_filter($methods, function($val){
                     return !$val::isInternal();
                 }));
-                // print_r($filter['methods']);die;
             }
+            // print_r($filter);die;
 
             if($target === 'raised') {
 
@@ -524,9 +525,12 @@ class AdminChartsApiController extends ChartsApiController {
         $projects= [];
 
         $ofilter = [];
-        if($consultant = $request->query->get('consultant')) {
-            $ofilter['consultant'] = $consultant;
-        }
+        $ofilter['owner'] = $request->query->get('owner');
+        $ofilter['consultant'] = $request->query->get('consultant');
+        $ofilter['called'] = $request->query->get('call');
+        $ofilter['matchers'] = $request->query->get('matcher');
+        $ofilter['node'] = $request->query->has('channel') ? $request->query->get('channel') : $request->query->get('node');
+
         foreach(['created', 'published', 'reviewing', 'rejected'] as $when) {
             if($part && $part !== $when) continue;
             $date_from = 'created_from';

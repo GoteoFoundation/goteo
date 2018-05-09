@@ -3,6 +3,7 @@
 $this->layout('admin/layout');
 
 if($this->is_pronto() && ($this->is_ajax() && $this->has_query('ajax') || ($this->debug() && $this->has_query('ajax')))) {
+
     $this->section('admin-content');
         echo $this->supply('admin-container-body');
     $this->replace();

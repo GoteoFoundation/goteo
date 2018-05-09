@@ -116,6 +116,13 @@ class User extends \Goteo\Core\Model {
         return ['name', 'about'];
     }
 
+    public function getImage() {
+        if(!$this->imageInstance instanceOf Image) {
+            $this->imageInstance = new Image($this->avatar);
+        }
+        return $this->imageInstance;
+    }
+
     /**
      * Guardar usuario.
      * Guarda los valores de la instancia del usuario en la tabla.
@@ -868,9 +875,13 @@ class User extends \Goteo\Core\Model {
             $values[':id'] = $filters['id'];
         }
         if (!empty($filters['global'])) {
-            $sqlFilter[] = "(id LIKE :global OR name LIKE :global OR email LIKE :global OR
-                             (SELECT CONCAT(GROUP_CONCAT(id), '', GROUP_CONCAT(name)) FROM project WHERE project.owner=user.id) LIKE :global)";
+            $sqlFilter[] = "(id LIKE :global OR name LIKE :global OR email LIKE :global)";
             $values[':global'] = '%' . $filters['global'] . '%';
+        }
+        if (!empty($filters['superglobal'])) {
+            $sqlFilter[] = "(id LIKE :superglobal OR name LIKE :superglobal OR email LIKE :superglobal OR
+                             (SELECT CONCAT(GROUP_CONCAT(id), '', GROUP_CONCAT(name)) FROM project WHERE project.owner=user.id) LIKE :superglobal)";
+            $values[':superglobal'] = '%' . $filters['superglobal'] . '%';
         }
         if (!empty($filters['name'])) {
             $sqlFilter[] = "(id LIKE :name OR name LIKE :name)";

@@ -26,8 +26,15 @@ Some folders may have its own README.md file with comments. However, we will try
 > 
 > ```bash
 > cp config/docker-settings.yml config/local-docker-settings.yml
-> docker-compose up -d
+> docker-compose up
 > ```
+> 
+> THen you can run commands inside the php container by using the wrapper `docker/exec`. If develping, we recommend to run this command in a separate terminal:
+> 
+> ```bash
+> docker/exec grunt watch
+> ```
+> 
 > [More info](http://goteofoundation.github.io/goteo/docs/developers/environment.html#docker)
 
 ### CONTRIBUTING

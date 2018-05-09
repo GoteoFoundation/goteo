@@ -27,12 +27,61 @@ class UsersApiController extends AbstractApiController {
 
     public function __construct() {
         parent::__construct();
-        // De-Activate cache & replica read for this controller
+        // De-Activate cache & replica read for this controller by default
         $this->dbReplica(false);
         $this->dbCache(false);
     }
 
-	protected function getSafeUser($user) {
+    /**
+     * Simple listing of users
+     * TODO: according to permissions, filter this users
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function usersAction(Request $request) {
+        if(!$this->user instanceOf User) throw new ControllerAccessDeniedException();
+        $this->dbReplica(true);
+        $this->dbCache(true);
+
+        $filters = [];
+        $node = null;
+        $page = max((int) $request->query->get('pag'), 0);
+        // General search
+        if($request->query->has('q')) {
+            $filters[$this->is_admin ? 'global' : 'name'] = $request->query->get('q');
+        }
+        if($this->is_admin && $request->query->has('role')) {
+            $role = $request->query->get('role');
+            if($role === 'consultant') $filters['type'] = 'consultants';
+        }
+
+        $limit = 25;
+        $offset = $page * $limit;
+        $total = User::getList($filters, $node, 0, 0, true);
+        $list = [];
+        foreach(User::getList($filters, $node, $offset, $limit) as $user) {
+            $ob = ['id' => $user->id,
+                   'name' => $user->name,
+                   'node' => $user->node,
+                   'avatar' => $user->avatar->name ? $user->avatar->name : 'la_gota.png',
+                   'image' => $user->avatar->name ? $user->getImage()->getLink(64,64,true) : null,
+                   'created' => $user->created];
+            if($this->is_admin) {
+                $ob['email'] = $user->email;
+                $ob['active'] = $user->active;
+            }
+            $list[] = $ob;
+        }
+
+        return $this->jsonResponse([
+            'list' => $list,
+            'total' => $total,
+            'page' => $page,
+            'limit' => $limit
+            ]);
+    }
+
+    protected function getSafeUser($user) {
         if(!$user instanceOf User) $user = User::get($user);
         if(!$user instanceOf User) throw new ModelNotFoundException();
 
@@ -64,47 +113,6 @@ class UsersApiController extends AbstractApiController {
             $ob['roles'] = $user->getRoles()->getRoleNames();
         }
         return $ob;
-    }
-
-    /**
-     * Simple listing of users
-     * TODO: according to permissions, filter this users
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function usersAction(Request $request) {
-        if(!$this->user instanceOf User) throw new ControllerAccessDeniedException();
-
-        $filters = [];
-        $node = null;
-        $page = max((int) $request->query->get('pag'), 0);
-        // General search
-        if($request->query->has('q')) {
-            $filters[$this->is_admin ? 'global' : 'name'] = $request->query->get('q');
-        }
-        $limit = 25;
-        $offset = $page * $limit;
-        $total = User::getList($filters, $node, 0, 0, true);
-        $list = [];
-        foreach(User::getList($filters, $node, $offset, $limit) as $user) {
-            $ob = ['id' => $user->id,
-                   'name' => $user->name,
-                   'node' => $user->node,
-                   'avatar' => $user->avatar->name ? $user->avatar->name : 'la_gota.png',
-                   'created' => $user->created];
-            if($this->is_admin) {
-                $ob['email'] = $user->email;
-                $ob['active'] = $user->active;
-            }
-            $list[] = $ob;
-        }
-
-        return $this->jsonResponse([
-            'list' => $list,
-            'total' => $total,
-            'page' => $page,
-            'limit' => $limit
-            ]);
     }
 
     /**

@@ -69,7 +69,7 @@ admin-project: Proyecto
 admin-main: Principal
 admin-legacy: Antiguos
 admin-projects: Proyectos
-admin-consultants: 'Asesorías'
+admin-consultants: 'Asesores'
 admin-invests: Aportes
 admin-filters: 'Filtros'
 admin-remove-filters: 'Quitar filtros'

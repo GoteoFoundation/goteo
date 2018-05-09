@@ -25,18 +25,24 @@ for the JavaScript code in this page.
 
 $(function(){
 
+    $('#main').on('click', '.admin-content .btn-group button', function() {
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+
+
     var printRaisedGraph = function(target) {
         var hash = location.hash.substr(1).split(',');
         // from hash
+        var interva_first = location.search ? '.choose-interval a:first' : '.choose-interval a:eq(1)';
         var method = hash[1] || $('#tab-' + target).find('.choose-method a:first').attr('href').substr(1);
-        var interval = hash[2] || $('#tab-' + target).find('.choose-interval a:first').attr('href').substr(1);
+        var interval = hash[2] || $('#tab-' + target).find(interva_first).attr('href').substr(1);
         if($(this).closest('.invests-filter').length) {
             var part = $(this).attr('href').substr(1);
             var is_method = $(this).closest('.invests-filter').hasClass('choose-method');
             if(is_method) method = part;
             else          interval = part;
         }
-        console.log('click', hash, 'part', part, 'target', target, method, interval);
+        // console.log('click', hash, 'part', part, 'target', target, method, interval);
         var id = target  + '-' + method  + '-' + interval;
         var $template =  $('#template-' + id + '');
         if(!$template.length) {
@@ -61,11 +67,14 @@ $(function(){
         }
     };
 
+    function escapeRegExp(str) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+    }
 
     var HASH = location.hash;
     var initBindings = function() {
         HASH = location.hash;
-        console.log('initBindings, current hash', HASH);
+        // console.log('initBindings, current hash', HASH);
 
         $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
           console.log('tab show', e);
@@ -95,12 +104,18 @@ $(function(){
             var query = [];
             parts.forEach(function(it){
                 if(it.indexOf(name) === 0) return;
+                if(it.indexOf('channel') === 0) return;
+                if(it.indexOf('call') === 0) return;
+                if(it.indexOf('user') === 0) return;
+                if(it.indexOf('project') === 0) return;
+                if(it.indexOf('matcher') === 0) return;
+                if(it.indexOf('consultant') === 0) return;
                 if(it.indexOf('text') === 0) return;
                 if(it.indexOf(datum.id) === 0) return;
                 query.push(it);
             });
             var href = location.pathname + '?' + (query ? query.join('&') + '&' : '') + name + '=' + datum.id + '&text=' + datum.name;
-            console.log('parts',parts,'new query', query, 'href', href);
+            // console.log('parts',parts,'new query', query, 'href', href);
             adminProntoLoad(href);
         });
     };
@@ -108,6 +123,20 @@ $(function(){
     initBindings();
     $(window).on("pronto.render", function(e){
         location.hash = HASH;
+        // Change source in text/template
+        $('script[type="text/template"]').each(function(){
+            var $template = $(this);
+            // console.log('template', $template);
+            var content = $template.html();
+            var source = $(content).data('source');
+
+            var query = location.search.replace(/&text=[^&]+/, '');
+            var source2 = source.replace(/\?.+/g, query);
+            console.log('modify', source, source2);
+            content = content.replace(new RegExp(escapeRegExp(source), 'g'), source2)
+            console.log(content);
+            $template.html(content);
+        });
         initBindings();
     });
 

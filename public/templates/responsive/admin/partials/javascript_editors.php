@@ -22,6 +22,7 @@
     goteo.texts['admin-matchers'] = '<?= $this->ee($this->text('admin-matchers'), 'js') ?>';
     goteo.texts['admin-users'] = '<?= $this->ee($this->text('admin-users'), 'js') ?>';
     goteo.texts['admin-channels'] = '<?= $this->ee($this->text('admin-channels'), 'js') ?>';
+    goteo.texts['admin-consultants'] = '<?= $this->ee($this->text('admin-consultants'), 'js') ?>';
 
     goteo.typeahead_engines = goteo.typeahead_engines || {};
 
@@ -57,6 +58,10 @@
 <!-- build:js assets/js/editors.js -->
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.projects.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.calls.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.users.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.consultants.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.channels.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.matchers.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/forms.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-discrete-values.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-pie.js"></script>

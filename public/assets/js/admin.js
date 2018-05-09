@@ -100,7 +100,7 @@ $(function(){
     // $.fn.editable.defaults.mode = 'inline';
     $.fn.editable.defaults.ajaxOptions = {type: "put"};
     $.fn.editable.defaults.error = function(response, newValue) {
-        console.log('editable error', response, newValue);
+        // console.log('editable error', response, newValue);
         if(response.responseJSON && response.responseJSON.error) return response.responseJSON.error;
         return response.responseText;
     };
@@ -111,11 +111,11 @@ $(function(){
         var target = $(this).data('target') || this;
         e.stopPropagation();
         e.preventDefault();
-        console.log('create editable', target);
+        // console.log('create editable', target);
         $(target).editable('show');
         // Disable autocomplete in password fields
         $(target).on('shown', function(e, editable) {
-            console.log('shown', e, editable);
+            // console.log('shown', e, editable);
             editable.input.$input.attr('autocomplete', 'off');
         });
 
@@ -124,10 +124,13 @@ $(function(){
     var initBindings = function() {
         // Manual initialization of collapse plugin to apply involved classes
         $('.collapsable').collapse();
+
         // Typeahead global search
+        $('.admin-typeahead .typeahead').typeahead('destroy');
         $('.admin-typeahead').each(function () {
             var $this = $(this);
             var sources = $this.data('sources').split(',');
+            // console.log('initialize with sources', sources);
             var engines = [{
                 minLength: 0,
                 hint: true,
@@ -155,6 +158,8 @@ $(function(){
                 .on('typeahead:asynccancel typeahead:asyncreceive', function (event) {
                     $(event.target).removeClass('loading');
                 });
+                // typeahead:select event is done when needed.
+                // For example: assets/js/admin/stats.js
                 // .on('typeahead:select', function (event, datum, name) {
                 //     console.log('selected',name, event, datum);
                 //     if(datum.url) location.href = datum.url;
@@ -164,6 +169,18 @@ $(function(){
     };
     initBindings();
     $(window).on("pronto.render", function(e){
+        initBindings();
+    });
+
+    // Manage engine sources changes in typeahead
+    $('#main').on('change', '.admin-typeahead input[type="checkbox"]', function(e){
+        var t = this.name;
+        var $type = $(this).closest('.admin-typeahead');
+        var sources = [];
+        $type.find('input[type="checkbox"]:checked').each(function(){
+            sources.push(this.name);
+        });
+        $type.data('sources', sources.join(','));
         initBindings();
     });
 

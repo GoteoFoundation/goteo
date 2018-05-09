@@ -17,9 +17,14 @@ We use the **grunt** tool in order to execute repetitive task such as:
 
 ## Setting up environment
 
-You can set-up a development environment in your local machine by installing all required tools. Or, you can use a convenient Vagrant virtual machine with all tools ready to go.
+You can set-up a development environment in your local machine by installing all required tools. Or, you can use either a Vagrant or Docker virtual machine with all tools ready to go.
 
-To install vagrant please refer to the official web site:
+To install `docker` and `docker-compose` follow the instructions:
+
+https://docs.docker.com/install/
+https://docs.docker.com/compose/install/
+
+To install vagrant refer to the official web site:
 
 http://www.vagrantup.com/downloads
 
@@ -29,6 +34,8 @@ https://www.virtualbox.org/wiki/Downloads
 
 Using Vagrant Virtual Machine
 =============================
+
+*NOTE:* We think that docker is a better way to quickly install Goteo as it uses much less resources, probably we will deprecate the Vagrant development aproach in the future.
 
 The Vagrant file provided automatically configures a virtual machine with all necessary tools.
 
@@ -236,7 +243,7 @@ Grunt commands in Goteo
 Docker
 ======
 
-We just started to work with Docker. For the moment is still experimental.
+We just started to work with Docker. For the moment is still experimental. We've only tested using Linux hosts.
 
 The first time, it is necessary to create a local docker config that you can personalize:
 
@@ -258,13 +265,15 @@ We recommend not to use the `-d` flag on `docker-compose` to be aware of the log
 The `docker-compose up` command executes `docker/php/init.sh` script, which is equivalent as running the next commands:
 
 ```bash
-docker exec goteo-php composer install
-docker exec goteo-php npm install
-docker exec goteo-php bin/console migrate install
-docker exec -it goteo-php grunt build:tmp
+docker/exec composer install
+docker/exec npm install
+docker/exec bin/console migrate install
+docker/exec grunt build:tmp
 ```
 
-You can (or must) run any of the above commands if the are changes in relevant files (database changes, css, javascript or public template files)
+You can (or must) run any of the above commands if the are changes in relevant files (database changes, css, javascript or public template files).
+
+In general, any command used in goteo should be executed in the docker virtual machine should by using the wrapper `docker/exec` as it will run the command with the proper user.
 
 If you want to test a production environment, you can pass the var `DEBUG=0` to the docker-compose command:
 
@@ -272,17 +281,23 @@ If you want to test a production environment, you can pass the var `DEBUG=0` to 
 DEBUG=false docker-compose up
 ```
 
-
-Finally -optionally-, by running the grunt watch command alone allows you to rebuild assets automatically while editing files. If this command is not executed assets are copied and compiled only once at the beginning when `docker-compose up` runs.
+You can overwrite the default `local-docker-settings.yml` file with the GOTEO_CONFIG_FILE environment variable:
 
 ```bash
-docker exec -it goteo-php grunt build:watch
+GOTEO_CONFIG_FILE=config/my-alternative-settings.yml docker-compose up
+```
+
+
+Finally -optionally-, by running the `grunt watch` command alone allows you to rebuild assets automatically while editing files. If this command is not executed, assets are copied and compiled only once at the beginning when `docker-compose up` runs.
+
+```bash
+docker/exec grunt watch
 ```
 
 Upgrades and other commands can be executed the same way:
 
 ```bash
-docker exec -it goteo-php bin/console migrate all
-docker exec -it goteo-php bin/console toolkit project
-docker exec -it goteo-php bin/console --help
+docker/exec bin/console migrate all
+docker/exec bin/console toolkit project
+docker/exec bin/console --help
 ```
