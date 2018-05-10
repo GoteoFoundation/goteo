@@ -61,7 +61,7 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
 
     // Only used if getSidebar is not defined
     public static function getGroup() {
-        return 'consultants';
+        return 'activity';
     }
 
     /**
@@ -77,6 +77,7 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
         );
     }
 
+    // Only need to return paths if we want a custom group for this module
     public static function getSidebar() {
         return [
             // '/module/list' => 'Link'

@@ -22,6 +22,10 @@
   color: #212121;
   text-rendering: optimizeLegibility;
 
+  a.editable-click:hover {
+    cursor: pointer;
+  }
+
   blockquote {
     font-size: inherit;
     font-weight: inherit;

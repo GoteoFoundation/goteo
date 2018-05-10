@@ -38,17 +38,17 @@ class AdminController extends \Goteo\Core\Controller {
     private static $subcontrollers = [];
     private static $context_vars = [];
     private static $groups = [
-        'consultants' => ['text' => 'admin-consultants', 'icon' => '<i class="fa fa-2x fa-fax"></i>', 'position' => 10],
+        'activity' => ['text' => 'admin-activity', 'icon' => '<i class="fa fa-2x fa-fax"></i>', 'position' => 10],
         'projects' => ['text' => 'admin-projects', 'icon' => '<i class="icon icon-2x icon-projects"></i>', 'position' => 20],
         'main' => ['text' => 'admin-main', 'icon' => '<i class="fa fa-2x fa-home"></i>', 'position' => 100],
         'legacy' => ['text' => 'admin-legacy', 'icon' => '<i class="fa fa-2x fa-folder"></i>', 'position' => 110]
     ];
     private static $legacy_groups = [
         'contents' => ['node', 'blog', 'texts', 'faq', 'pages', 'categories', 'social_commitment', 'licenses', 'icons', 'tags', 'criteria', 'templates', 'glossary', 'info', 'wordcount', 'milestones'],
-        'projects' => ['projects', 'accounts', 'reviews', 'translates', 'rewards', 'commons'],
-        'users' => ['users', 'worth', 'mailing', 'sent'],
+        'activity' => ['projects', 'accounts', 'reviews', 'translates', 'rewards', 'commons'],
+        'communications' => ['newsletter', 'mailing', 'sent'],
         'home' => ['home', 'promote', 'news', 'banners', 'footer', 'recent', 'open_tags', 'stories'],
-        'sponsors' => ['newsletter', 'sponsors', 'nodes', 'transnodes'],
+        'sponsors' => ['sponsors', 'nodes', 'transnodes'],
     ];
 
     public function __construct() {
@@ -115,7 +115,6 @@ class AdminController extends \Goteo\Core\Controller {
                         if(!$module::isAllowed($user, $uri)) {
                             throw new ControllerAccessDeniedException("User [{$user->id}] has no privileges on URI [$uri] in module [$module]");
                         }
-
                         // Add vars to the view
                         $this->contextVars([
                             'icon' => $module::getLabel('icon'),
@@ -134,7 +133,6 @@ class AdminController extends \Goteo\Core\Controller {
                 }
             } else {
                 // OLD admin modules
-                // Do not create sidebar here
                 list($empty,$action, $sid, $subaction) = explode('/', $uri);
 
                 return $this->optionAction($id, $action ? $action : 'list', $sid, $subaction, $request);
@@ -148,21 +146,22 @@ class AdminController extends \Goteo\Core\Controller {
      * @param  User   $user [description]
      * @param  string $zone [description]
      */
-    public static function createAdminSidebar (User $user, $module = '', $uri = '') {
+    public static function createAdminSidebar (User $user, $module_id, $uri = '') {
 
         $prefix = '/admin';
-        $modules = [];
-        $zone = preg_replace('|^/admin|', '', $uri);
+        // $modules =
+        // $zone = preg_replace('|^/admin|', '', $uri);
         // die("[$uri]");
 
         foreach (static::$subcontrollers as $id => $class) {
 
             if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($class))) {
                 if(!$class::isAllowed($user)) continue;
-                
+
                 $label = $class::getLabel('html');
                 $cls = strpos($label, '<i') === false ? 'nopadding' : '';
                 if($sidebar = $class::getSidebar()) {
+                    // echo "[$class]\n";print_r($sidebar);
                     $paths = [];
                     // Submodules returning a custom menu will have its own group
                     foreach($sidebar as $link => $route) {
@@ -171,11 +170,12 @@ class AdminController extends \Goteo\Core\Controller {
                             $route = ['text' => $route, 'link' => $link];
                         }
                         $c = $route['class'] ? $route['class'] : (strpos($route['text'], '<i') === false ? 'nopadding' : '');
-                        
+
                         if(!$route['id']) $route['id'] = $route['link'];
-                        
+
                         $paths[] = ['text' => $route['text'], 'link' => $prefix . $route['link'], 'id' => $route['id'], 'class' => $c];
                     }
+                    // echo "[$class|$id]\n";print_r($paths);
                     $modules[$id] = $paths;
                 } else {
                     $group = $class::getGroup();
@@ -199,13 +199,41 @@ class AdminController extends \Goteo\Core\Controller {
         }
         // group the modules that don't define a custom menu
         $index = 0;
+        $zone = '';
+        $pos = -1;
         foreach($modules as $key => $paths) {
             $label = self::getGroupLabel($key, $position);
+            // echo "[$key: $label $position]\n";
             $c = strpos($label, '<i') === false ? 'nopadding' : '';
-            Session::addToSidebarMenu($label, $paths, $key, $index, "sidebar $c");
-            $index += $position;
+            if(count($paths) > 1) {
+                Session::addToSidebarMenu($label, $paths, $key, $index, "sidebar $c");
+            } else {
+                // Do no make groups if only one item
+                Session::addToSidebarMenu($label, $paths[0]['link'], $paths[0]['id'], $index, "$c");
+            }
+            $index += $position ? $position : 1;
+            if($zone && $pos === -1) continue;
+
+            foreach($paths as $p) {
+                if($p['link'] === $uri) {
+                    $zone = $p['id']; // Jackpot! exact route
+                    $pos = -1;
+                    break;
+                } else {
+                    $n = strpos($uri, $p['link']);
+                    if($n === false) continue;
+                    if($n > $pos) {
+                        $zone = $p['id'];
+                        $pos = $n;
+                        // Do no break here just in case there's a more deep route
+                    }
+                }
+            }
         }
-        
+
+        // print_r($modules);
+        // echo "$module_id [zone $zone]\n";
+
         if($zone) {
             View::getEngine()->useData([
                 'zone' => $zone,
