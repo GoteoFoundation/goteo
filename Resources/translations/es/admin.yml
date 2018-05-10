@@ -48,6 +48,8 @@ admin-back-detail: 'Volver al detalle'
 admin-back-list: 'Volver al listado'
 admin-contents: 'Textos y Traducciones'
 admin-empty-list: 'No se han encontrado registros'
+admin-activity: Actividad
+admin-communications: Comunicaciones
 admin-home: Portada
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comuncaciones'
@@ -84,6 +86,7 @@ admin-text-type-md: Markdown
 admin-text-type-plain: 'Texto simple'
 admin-user: Usuario
 admin-user-no-projects: 'No ha creado ningún proyecto todavía'
+admin-user-no-invests: 'No ha hecho ninguna donación todavía'
 admin-users: Usuarios
 admin-calls: Convocatorias
 admin-matchers: Matchers

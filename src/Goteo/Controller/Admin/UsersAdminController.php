@@ -44,18 +44,14 @@ class UsersAdminController extends AbstractAdminController {
             new Route(
                 '/manage/{uid}',
                 ['_controller' => __CLASS__ . "::manageAction"]
-            ),
-            // new Route(
-            //     '/stats',
-            //     ['_controller' => __CLASS__ . "::statsAction"]
-            // )
+            )
         ];
     }
 
+    // Only need to be defined if we want a custom group for this module
     // public static function getSidebar() {
     //     return [
-    //         '/users' => self::getLabel(),
-    //         // '/users/stats' => Text::get('admin-stats')
+    //         '/users' => Text::get('admin-users'),
     //     ];
     // }
 
@@ -145,10 +141,5 @@ class UsersAdminController extends AbstractAdminController {
         if(!$referer || strpos($referer, '/admin')) $referer = '/dashboard';
         return $this->redirect($referer);
     }
-
-    public function statsAction(Request $request) {
-        return $this->viewResponse('admin/index', []);
-    }
-
 
 }
