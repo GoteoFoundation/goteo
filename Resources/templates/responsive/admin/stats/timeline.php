@@ -6,9 +6,16 @@ $query = http_build_query($this->filters);
 
 ?>
 
+<?php $this->section('admin-stats-head') ?>
+
+    <?= $this->insert('admin/partials/typeahead') ?>
+    <?= $this->supply('admin-stats-filters', $this->insert('admin/stats/partials/filters', ['hidden' => $this->filters + ['text' => $this->text]])) ?>
+
+<?php $this->replace() ?>
+
+
 <?php $this->section('admin-container-body') ?>
 
-<?= $this->supply('admin-stats-filters', $this->insert('admin/stats/partials/filters')) ?>
 
 <div class="panel">
   <div class="panel-body">
