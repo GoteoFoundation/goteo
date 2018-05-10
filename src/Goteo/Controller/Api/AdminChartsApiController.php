@@ -41,9 +41,33 @@ class AdminChartsApiController extends ChartsApiController {
     protected function getAggregatesSQLFilter($type, Request $request) {
         $values = $filter = [];
         $project_key = $type === 'invests' ? 'invest.project' : 'project.id';
+        $user_key = $type === 'invests' ? 'invest.user' : 'project.owner';
         if($request->query->has('call')) {
-            $filter[] = "$project_key IN (SELECT project FROM call_project WHERE call_project.call=:call)";
+            $filter[] = "$project_key IN (SELECT project FROM call_project a WHERE a.call=:call)";
             $values[':call'] = $request->query->get('call');
+        }
+        if($request->query->has('matcher')) {
+            $filter[] = "$project_key IN (SELECT project_id FROM matcher_project b WHERE b.matcher_id=:matcher)";
+            $values[':matcher'] = $request->query->get('matcher');
+        }
+        if($request->query->has('channel')) {
+            if($type === 'invests')
+                $filter[] = "invest.project IN (SELECT id FROM project c WHERE c.node=:channel)";
+            else
+                $filter[] = "project.node=:channel";
+            $values[':channel'] = $request->query->get('channel');
+        }
+        if($request->query->has('project')) {
+            $filter[] = "$project_key=:project";
+            $values[':project'] = $request->query->get('project');
+        }
+        if($request->query->has('user')) {
+            $filter[] = "$user_key=:user";
+            $values[':user'] = $request->query->get('user');
+        }
+        if($request->query->has('consultant')) {
+            $filter[] = "$project_key IN (SELECT project FROM user_project d WHERE d.user=:consultant)";
+            $values[':consultant'] = $request->query->get('consultant');
         }
         return [$filter, $values];
     }
