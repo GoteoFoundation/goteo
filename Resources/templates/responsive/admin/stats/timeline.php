@@ -4,6 +4,11 @@ $this->layout('admin/stats/layout');
 
 $query = http_build_query($this->filters);
 
+$defaults = [];
+foreach($this->a('engines') as $q) {
+    if($this->has_query($q)) $defaults[] = $q;
+}
+
 ?>
 
 <?php $this->section('admin-stats-head') ?>
@@ -19,7 +24,12 @@ $query = http_build_query($this->filters);
 
 <div class="panel">
   <div class="panel-body">
-    <h5><?= $this->text('admin-aggregate-timeline') ?></h5>
+
+    <h4><?= $this->text('admin-aggregate-timeline') ?></h4>
+
+    <?php foreach($defaults as $engine): ?>
+        <p><?= $this->text("admin-stats-projects-$engine-desc") ?></p>
+    <?php endforeach ?>
 
     <?= $this->insert('admin/stats/partials/timeline/invests', ['query' => $query]) ?>
 

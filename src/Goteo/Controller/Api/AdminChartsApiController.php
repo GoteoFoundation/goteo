@@ -30,8 +30,6 @@ class AdminChartsApiController extends ChartsApiController {
 
     public function __construct() {
         parent::__construct();
-        // Activate replica read for this controller (cache already activated in AbstractApiController)
-        \Goteo\Core\DB::replica(true);
         if(!$this->user || !$this->user->hasPerm('view-any-project')) {
             throw new ControllerAccessDeniedException();
         }

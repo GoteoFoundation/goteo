@@ -2,6 +2,7 @@
 
 $defaults = [];
 $engines = $this->a('engines');
+if(empty($engines)) $engines = ['channel', 'call', 'matcher', 'project', 'user', 'consultant'];
 foreach($engines as $q) {
     if($this->has_query($q)) $defaults[] = $q;
 }
