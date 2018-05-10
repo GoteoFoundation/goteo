@@ -1,6 +1,7 @@
 <?php
 
-if(!$filter = $this->a('filter')) return;
+$filter = $this->a('filter');
+
 $class = $filter['_class'];
 if(!$class) $class = 'pronto';
 $action_prefix = $filter['_action_prefix'] ? $filter['_action_prefix'] : '/admin';
@@ -15,5 +16,10 @@ $method = $filter['_method'] ? $filter['_method'] : 'get';
       </div>
     <?php endforeach ?>
 
+    <?php if($filter): ?>
     <button type="submit" class="btn btn-cyan" title="<?= $this->text('regular-search') ?>"><i class="fa fa-search"></i></button>
+    <?php endif ?>
+
+    <?= $this->supply('admin-search-box-addons') ?>
+    <div class="clearfix"></div>
 </form>

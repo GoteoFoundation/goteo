@@ -88,6 +88,7 @@ admin-user: Usuario
 admin-user-no-projects: 'No ha creado ningún proyecto todavía'
 admin-user-no-invests: 'No ha hecho ninguna donación todavía'
 admin-users: Usuarios
+admin-users-add: Crear nuevo usuario
 admin-calls: Convocatorias
 admin-matchers: Matchers
 admin-channels: Canales

@@ -21,6 +21,7 @@ use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
 use Goteo\Model\User;
+use Goteo\Library\Forms\FormModelException;
 
 class UsersAdminController extends AbstractAdminController {
     protected static $icon = '<i class="fa fa-2x fa-users"></i>';
@@ -44,6 +45,10 @@ class UsersAdminController extends AbstractAdminController {
             new Route(
                 '/manage/{uid}',
                 ['_controller' => __CLASS__ . "::manageAction"]
+            ),
+            new Route(
+                '/add',
+                ['_controller' => __CLASS__ . "::addAction"]
             )
         ];
     }
@@ -63,7 +68,7 @@ class UsersAdminController extends AbstractAdminController {
         $users = User::getList($filters, [], $page * $limit, $limit);
         $total = User::getList($filters, [], 0, 0, true);
 
-        return $this->viewResponse('admin/material_table', [
+        return $this->viewResponse('admin/users/list', [
             'list' => $users,
             'link_prefix' => '/users/manage/',
             'total' => $total,
@@ -79,6 +84,36 @@ class UsersAdminController extends AbstractAdminController {
         $user = User::get($uid);
         if( !$user instanceOf User ) throw new ModelNotFoundException("User [$uid] does not exists");
         return $this->viewResponse('admin/users/manage', [
+            'user' => $user,
+            'filter' => [
+                '_action' => '/users',
+                'q' => Text::get('admin-users-global-search')
+            ]
+
+        ]);
+    }
+
+    public function addAction(Request $request) {
+        $processor = $this->getModelForm('AdminUserCreate', new User(), [], [], $request);
+        $processor->createForm();
+        $processor->getBuilder()
+            ->add('submit', 'submit', [
+                'label' => $submit_label ? $submit_label : 'regular-submit'
+            ]);
+        $form = $processor->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $request->isMethod('post')) {
+            try {
+                $processor->save($form, true);
+                Message::info(Text::get('user-register-success'));
+                return $this->redirect('/admin/users?' . $request->getQueryString());
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+
+        return $this->viewResponse('admin/users/add', [
+            'form' => $form->createView(),
             'user' => $user
         ]);
     }
