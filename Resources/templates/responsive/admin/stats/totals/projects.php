@@ -29,7 +29,6 @@ foreach($engines as $q) {
         <p><?= $this->text("admin-stats-projects-$engine-desc") ?></p>
     <?php endforeach ?>
 
-
     <?= $this->insert('admin/stats/totals/partials/projects', ['query' => http_build_query($filters, '', '&')]) ?>
 
   </div>

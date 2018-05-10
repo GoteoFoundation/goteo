@@ -218,6 +218,26 @@ class Origin extends \Goteo\Core\Model {
             $add_sql .= ' AND origin.modified_at <= :to';
             $values[':to'] = $filters['to'];
         }
+        if($filters['call']) {
+            $add_sql .= ' AND origin.project_id IN (SELECT project FROM call_project a WHERE a.call=:call)';
+            $values[':call'] = $filters['call'];
+        }
+        if($filters['matcher']) {
+            $add_sql .= ' AND origin.project_id IN (SELECT project_id FROM matcher_project b WHERE b.matcher_id=:matcher)';
+            $values[':matcher'] = $filters['matcher'];
+        }
+        if($filters['channel']) {
+            $add_sql .= ' AND origin.project_id IN (SELECT id FROM project c WHERE c.node=:channel)';
+            $values[':channel'] = $filters['channel'];
+        }
+        if($filters['user']) {
+            $add_sql .= ' AND origin.project_id IN (SELECT id FROM project d WHERE d.owner=:user)';
+            $values[':user'] = $filters['user'];
+        }
+        if($filters['consultant']) {
+            $add_sql .= ' AND origin.project_id IN (SELECT project FROM user_project e WHERE e.user=:consultant)';
+            $values[':consultant'] = $filters['consultant'];
+        }
 
         // Project visit stats by default
         $sql = "SELECT

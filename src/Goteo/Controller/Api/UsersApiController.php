@@ -93,6 +93,7 @@ class UsersApiController extends AbstractApiController {
             if($this->is_admin) {
                 $ob['email'] = $user->email;
                 $ob['active'] = (bool)$user->active;
+                $ob['url'] = '/admin/users/manage/' . $user->id;
             }
             $list[] = $ob;
         }

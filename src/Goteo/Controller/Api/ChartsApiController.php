@@ -198,7 +198,13 @@ class ChartsApiController extends AbstractApiController {
         $group_by = $request->query->get('group_by');
         $filters = [
             'from' =>$request->query->get('from'),
-            'to' => $request->query->get('to')
+            'to' => $request->query->get('to'),
+            'call' => $request->query->get('call'),
+            'matcher' => $request->query->get('matcher'),
+            'channel' => $request->query->get('channel'),
+            'project' => $request->query->get('project'),
+            'user' => $request->query->get('user'),
+            'consultant' => $request->query->get('consultant')
         ];
 
         if($type === 'invests') $ret = Origin::getInvestsStats($model, $group, $group_by, $filters);

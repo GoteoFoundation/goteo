@@ -7,7 +7,7 @@
     <div class="inner-container">
         <h2><?= $this->text('admin-home-title') ?></h2>
 
-        <?= $this->insert('admin/partials/typeahead') ?>
+        <?= $this->insert('admin/partials/typeahead', ['engines' => ['channel', 'call', 'project', 'user', 'consultant']]) ?>
         <hr>
 
         <div class="row">
