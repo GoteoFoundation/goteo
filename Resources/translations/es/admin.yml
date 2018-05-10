@@ -75,7 +75,8 @@ admin-consultants: 'Asesores'
 admin-invests: Aportes
 admin-filters: 'Filtros'
 admin-remove-filters: 'Quitar filtros'
-admin-sponsors: Servicios
+admin-services: Servicios
+admin-sponsors: Sponsors
 admin-others: Otros
 admin-summary: Resumen
 admin-origins: Analítica de visitas

@@ -9,7 +9,7 @@ foreach($engines as $q) {
 
 if(empty($defaults)) $defaults = $this->a('defaults');
 if(empty($defaults)) $defaults = ['call', 'channel', 'matcher'];
-
+$defaults = array_intersect($defaults, $engines);
 $value = $this->text;
 
 ?>

@@ -150,4 +150,30 @@
         }
     }
   }
+
+  h1,h2,h3,h4,h5,h6 {
+    .fa,.icon {
+      margin-right: 8px;
+    }
+  }
+  .index-row {
+    div[class^="col-xs-"], div[class*=" col-xs-"] {
+      margin: 2px 0;
+      padding-right: 5px;
+      padding-left: 5px;
+    }
+    .btn {
+      display: block;
+      margin: 0;
+      height: 38px;
+      overflow: hidden;
+      line-height: 38px;
+      padding: 0;
+    }
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
 }

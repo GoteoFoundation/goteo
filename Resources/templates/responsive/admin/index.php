@@ -1,28 +1,24 @@
-<?php $this->layout('admin/layout') ?>
+<?php $this->layout('admin/layout');
 
-
-<?php $this->section('admin-content') ?>
+$sidebar = $this->raw('sidebar');
+$this->section('admin-content');
+?>
 
 <div class="admin-content">
     <div class="inner-container">
         <h2><?= $this->text('admin-home-title') ?></h2>
 
         <?= $this->insert('admin/partials/typeahead', ['engines' => ['channel', 'call', 'project', 'user', 'consultant']]) ?>
-        <hr>
 
-        <div class="row">
-            <?php foreach($this->raw('links') as $link => $text): ?>
-            <div class="col-xs-4 col-sm-3"><a href="<?= $link ?>"><?= $text ?></a></div>
+    <?php foreach($sidebar as $item): ?>
+        <hr>
+        <h4><?= $item['text'] ?></h4>
+        <div class="index-row">
+            <?php foreach($item['submenu'] as $sub): ?>
+            <div class="col-xs-6 col-sm-4"><a class="btn btn-default btn-block" href="<?= $sub['link'] ?>"><?= $sub['text'] ?></a></div>
             <?php endforeach ?>
         </div>
-
-        <hr>
-
-        <div class="row">
-            <?php foreach($this->legacy as $link => $text): ?>
-            <div class="col-xs-4 col-sm-3"><a href="<?= $link ?>"><?= $text ?></a></div>
-            <?php endforeach ?>
-        </div>
+    <?php endforeach ?>
 
     </div>
 </div>
