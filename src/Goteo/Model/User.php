@@ -1337,10 +1337,10 @@ class User extends \Goteo\Core\Model {
     }
 
     public function getMailing($limit = 10) {
-        return Mail::getSentList(['email' => $this->email], null, 0, $limit);
+        return Mail::getSentList(['email' => $this->email], 0, $limit);
     }
     public function getTotalMailing() {
-        return Mail::getSentList(['email' => $this->email], null, 0, 0, true);
+        return Mail::getSentList(['email' => $this->email], 0, 0, true);
     }
 
     /**

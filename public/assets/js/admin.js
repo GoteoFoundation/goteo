@@ -88,11 +88,15 @@ $(function(){
         var $new = $('<tr class="extra active"><td id="manage-' + id + '" colspan="' + cols +'"></td></tr>').insertAfter($tr.addClass('active'));
         // Ajax load
 
-        if(href.indexOf('?') === -1) {
-            href += '?ajax';
-        } else {
-            href += '&ajax';
+        var add = href.indexOf('?') === -1 ? '?' : '&';
+        // console.log(add, href, href.indexOf(add));
+        if(location.search.indexOf(add + 'ajax') === -1) {
+            href += add + 'ajax';
+            add = '&';
         }
+        // Add query string
+        if(location.search) href += add + location.search.substr(1);
+        // console.log(href, location);
         adminProntoLoad(href, '#manage-' + id);
     });
 

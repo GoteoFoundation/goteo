@@ -53,7 +53,7 @@ $query = http_build_query($this->filters);
 
     </div>
 
-    <p><a class="pronto" href="/admin/stats/totals/projects"><i class="fa fa-paragraph"></i> <?= $this->text('regular-see_more') ?></a></p>
+    <p><a class="pronto" href="/admin/stats/totals/projects"><i class="fa fa-search"></i> <?= $this->text('regular-see_more') ?></a></p>
 
   </div>
 </div>

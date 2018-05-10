@@ -30,11 +30,44 @@ class AdminChartsApiController extends ChartsApiController {
 
     public function __construct() {
         parent::__construct();
-        // Activate replica read for this controller (cache already activated in AbstractApiController)
-        \Goteo\Core\DB::replica(true);
         if(!$this->user || !$this->user->hasPerm('view-any-project')) {
             throw new ControllerAccessDeniedException();
         }
+    }
+
+
+    protected function getAggregatesSQLFilter($type, Request $request) {
+        $values = $filter = [];
+        $project_key = $type === 'invests' ? 'invest.project' : 'project.id';
+        $user_key = $type === 'invests' ? 'invest.user' : 'project.owner';
+        if($request->query->has('call')) {
+            $filter[] = "$project_key IN (SELECT project FROM call_project a WHERE a.call=:call)";
+            $values[':call'] = $request->query->get('call');
+        }
+        if($request->query->has('matcher')) {
+            $filter[] = "$project_key IN (SELECT project_id FROM matcher_project b WHERE b.matcher_id=:matcher)";
+            $values[':matcher'] = $request->query->get('matcher');
+        }
+        if($request->query->has('channel')) {
+            if($type === 'invests')
+                $filter[] = "invest.project IN (SELECT id FROM project c WHERE c.node=:channel)";
+            else
+                $filter[] = "project.node=:channel";
+            $values[':channel'] = $request->query->get('channel');
+        }
+        if($request->query->has('project')) {
+            $filter[] = "$project_key=:project";
+            $values[':project'] = $request->query->get('project');
+        }
+        if($request->query->has('user')) {
+            $filter[] = "$user_key=:user";
+            $values[':user'] = $request->query->get('user');
+        }
+        if($request->query->has('consultant')) {
+            $filter[] = "$project_key IN (SELECT project FROM user_project d WHERE d.user=:consultant)";
+            $values[':consultant'] = $request->query->get('consultant');
+        }
+        return [$filter, $values];
     }
 
     /**
@@ -44,37 +77,42 @@ class AdminChartsApiController extends ChartsApiController {
     public function aggregatesAction($type = 'invests', Request $request) {
         $limit = 100;
 
-        if($type === 'invests') {
-            $table = 'invest';
-            $datetime = 'datetime';
-            $amount = 'amount';
-            $where = "WHERE invest.status IN (". implode(',', Invest::$ACTIVE_STATUSES) . ")";
-        } elseif($type === 'projects') {
-            $table = 'project';
-            $datetime = 'published';
-            $amount = 'amount';
-            $where = "WHERE project.status > (" . PROJECT::STATUS_REVIEWING . ")";
-        }
-        $values = [];
-
-        $ob = Model::query("SELECT
-            COUNT(*) AS `total`,
-            MIN(`$datetime`) AS min_date,
-            MAX(`$datetime`) AS max_date
-             FROM `$table` $where", $values)->fetchObject();
+        // Get the minimum,max and total items
+        list($prefilter, $prevalues) = self::getAggregatesSQLFilter('invests', $request);
+        $sql = "SELECT COUNT(*) AS `total`,
+                MIN(`invested`) AS min_date,
+                MAX(`invested`) AS max_date
+                FROM `invest`" . ($prefilter ? ' WHERE '.implode(' AND ', $prefilter) : '');
+        // die(\sqldbg($sql, $prevalues));
+        $ob = Model::query($sql, $prevalues)->fetchObject();
         $total_items = (int) $ob->total;
         $min_date = $ob->min_date;
         $max_date = $ob->max_date;
 
+        if($type === 'invests') {
+            $table = 'invest';
+            $datetime = '`datetime`';
+            $amount = 'amount';
+            $where = "WHERE invest.status IN (". implode(',', Invest::$ACTIVE_STATUSES) . ")";
+        } elseif($type === 'projects') {
+            $table = 'project';
+            $datetime = 'COALESCE(`passed`,`success`,`published`)';
+            $amount = 'amount';
+            $where = "WHERE project.status > " . PROJECT::STATUS_REVIEWING . "";
+        }
+        list($filter, $values) = self::getAggregatesSQLFilter($type, $request);
+        if($filter) $where .= " AND " . implode(' AND ', $filter);
+
+
         if($from = $request->query->get('from')) {
             if(!\date_valid($from)) throw new ControllerException("Date 'from' [$from] is invalid");
-            $where .= " AND `$datetime` >= :from";
+            $where .= " AND $datetime >= :from";
             $values[':from'] = $from;
             $min_date = $from;
         }
         if($to = $request->query->get('to')) {
             if(!\date_valid($to)) throw new ControllerException("Date 'to' [$to] is invalid");
-            $where .= " AND `$datetime` <= :to";
+            $where .= " AND $datetime <= :to";
             $values[':to'] = $to;
             $max_date = $to;
         }
@@ -86,9 +124,9 @@ class AdminChartsApiController extends ChartsApiController {
         $diff_minutes = $diff_hours*60 + $diff->i;
         $diff_seconds = $diff_minutes*60 + $diff->s;
 
-        // print_r($diff);die;
         $granularity =  max(60, 60 * floor($diff_minutes / $limit)); // minimun granularity is 1 minute
-        $div = "UNIX_TIMESTAMP(`$datetime`) DIV $granularity";
+        // print_r($diff);die("$diff_minutes|$granularity");
+        $div = "UNIX_TIMESTAMP($datetime) DIV $granularity";
 
         $total = (int)Model::query("SELECT count(*) FROM (SELECT COUNT(*) FROM `$table` $where GROUP BY $div) AS sub", $values)->fetchColumn();
 
@@ -103,6 +141,7 @@ class AdminChartsApiController extends ChartsApiController {
         ORDER BY `date` DESC
         LIMIT $limit";
 
+        // die(\sqldbg($sql, $values));
         $items = [];
         if($query = Model::query($sql, $values)) {
             foreach($query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
@@ -528,10 +567,11 @@ class AdminChartsApiController extends ChartsApiController {
         $ofilter['owner'] = $request->query->get('owner');
         $ofilter['consultant'] = $request->query->get('consultant');
         $ofilter['called'] = $request->query->get('call');
-        $ofilter['matchers'] = $request->query->get('matcher');
+        $ofilter['matcher'] = $request->query->get('matcher');
         $ofilter['node'] = $request->query->has('channel') ? $request->query->get('channel') : $request->query->get('node');
+        $filter['status'] = -3; // all projects
 
-        foreach(['created', 'published', 'reviewing', 'rejected'] as $when) {
+        foreach(['created', 'negotiating', 'reviewing', 'published', 'rejected'] as $when) {
             if($part && $part !== $when) continue;
             $date_from = 'created_from';
             $date_until = 'created_until';
@@ -540,6 +580,11 @@ class AdminChartsApiController extends ChartsApiController {
                 $filter['status'] = [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED];
                 $date_from = 'published_from';
                 $date_until = 'published_until';
+            }
+            elseif($when === 'negotiating') {
+                $filter['status'] = -2;
+                $date_from = 'updated_from';
+                $date_until = 'updated_until';
             }
             elseif($when === 'reviewing') {
                 $filter['status'] = Project::STATUS_REVIEWING;

@@ -41,6 +41,10 @@ class FormFinder {
         if(class_exists($class)) {
             return $class;
         }
+        $class = '\Goteo\Library\Forms\Admin\\' . $form . 'Form';
+        if(class_exists($class)) {
+            return $class;
+        }
         throw new FormFinderException("$class not found");
     }
 

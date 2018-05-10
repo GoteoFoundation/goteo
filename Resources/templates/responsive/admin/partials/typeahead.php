@@ -2,11 +2,14 @@
 
 $defaults = [];
 $engines = $this->a('engines');
+if(empty($engines)) $engines = ['channel', 'call', 'matcher', 'project', 'user', 'consultant'];
 foreach($engines as $q) {
     if($this->has_query($q)) $defaults[] = $q;
 }
-if(empty($defaults)) $defaults = ['call', 'channel', 'matcher'];
 
+if(empty($defaults)) $defaults = $this->a('defaults');
+if(empty($defaults)) $defaults = ['call', 'channel', 'matcher'];
+$defaults = array_intersect($defaults, $engines);
 $value = $this->text;
 
 ?>

@@ -1,15 +1,16 @@
 <?php
 
-$this->layout('admin/container');
+$this->layout('admin/users/layout');
 
-$this->section('admin-container-head');
+$this->section('admin-search-box-addons');
 ?>
-    <h2><?= $this->text('admin-users') ?></h2>
+<a class="btn btn-cyan pull-right" href="/admin/users?<?= $this->get_querystring() ?>"><i class="fa fa-arrow-circle-left"></i> <?= $this->text('admin-back-list') ?></a>
+
+<?php $this->replace() ?>
 
 <?php
-$this->replace();
-
 $this->section('admin-container-body');
+
 $id = $this->user->id;
 $editable_impersonate = $this->get_user()->canImpersonate($this->user) ? 'editable editable-click' : '';
 $editable_rebase = $this->get_user()->canRebase($this->user) ? 'editable editable-click' : '';
@@ -18,6 +19,9 @@ $roles = $this->user->getRoles();
 $role_names = $roles->getRoleNames();
 $all_roles = $roles::getAllRoleNames();
 ?>
+
+<h5 class="title"><?= $this->user->name ?>:</h5>
+
 <div class="row">
   <div class="col-sm-6 col-xs-12">
     <h6 class="text-danger"><?= $this->text('admin-user-warning') ?>:</h6>

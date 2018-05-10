@@ -54,6 +54,14 @@
     font-weight: normal;
     text-transform: uppercase;
   }
+  h1,h2,h3,h4,h5,h6 {
+    &.title {
+      border-bottom: 1px solid;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+      background: #f0f0f0;
+      padding: 2px 4px 1px 4px;
+    }
+  }
   dl {
     dd {
         margin-bottom: 1em;

@@ -31,7 +31,7 @@ namespace Goteo\Model {
         // PROJECT STATUS IDs
         const STATUS_DRAFT       = -1; // is this really necessary?
         const STATUS_REJECTED    = 0;
-        const STATUS_EDITING     = 1; // en negociación
+        const STATUS_EDITING     = 1; // editing or negotiating (if draft)
         const STATUS_REVIEWING   = 2; //
         const STATUS_IN_CAMPAIGN = 3;
         const STATUS_FUNDED      = 4;
@@ -3706,6 +3706,35 @@ namespace Goteo\Model {
                 }
 
             }
+
+            if (!empty($filters['matcher'])) {
+
+                switch ($filters['matcher']) {
+
+                    //en cualquier convocatoria
+                    case 'all':
+                        $sqlFilter .= " AND project.id IN (
+                        SELECT project_id
+                        FROM matcher_project WHERE status='active')";
+                        break;
+                    //en ninguna convocatoria
+                    case 'none':
+                        $sqlFilter .= " AND project.id NOT IN (
+                        SELECT project_id
+                        FROM matcher_project WHERE status='active')";
+                        break;
+                    //filtro en esta convocatoria
+                    default:
+                        $sqlFilter .= " AND project.id IN (
+                        SELECT project_id
+                        FROM matcher_project
+                        WHERE matcher_id = :matcher AND  status='active')";
+                        $values[':matcher'] = $filters['matcher'];
+                        break;
+                }
+
+            }
+
             if(!empty($filters['type'])) {
                 if($filters['type'] === 'promoted') {
                     // en "promote"
@@ -4274,7 +4303,7 @@ namespace Goteo\Model {
             $filters=['status' => [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED]];
 
             if($matchfunding)
-            { 
+            {
                 $filters['called']=$matchfunding;
             }
 
