@@ -54,6 +54,13 @@
     font-weight: normal;
     text-transform: uppercase;
   }
+  h1,h2,h3,h4,h5,h6 {
+    &.title {
+      border-bottom: 1px solid;
+      background: $color-grey-cyan;
+      padding: 2px 4px 1px 4px;
+    }
+  }
   dl {
     dd {
         margin-bottom: 1em;
