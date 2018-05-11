@@ -9,7 +9,7 @@ rewards-field-individual_reward-amount: 'Importo finanziato'
 rewards-field-individual_reward-description: Descrizione
 rewards-field-individual_reward-other: 'Specificare il tipo di ricompensa'
 rewards-field-individual_reward-type: 'Tipo di ricompensa'
-rewards-field-individual_reward-units: Unità
+rewards-field-individual_reward-units: 'Unità disponibili'
 rewards-field-social_reward-description: Descrizione
 rewards-field-social_reward-license: 'Opzioni tipi di licenza'
 rewards-field-social_reward-other: 'Specificare il tipo di ritorno'
