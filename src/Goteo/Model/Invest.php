@@ -304,6 +304,10 @@ class Invest extends \Goteo\Core\Model {
             }
             $sqlFilter[] = 'invest.user IN(' . implode(',', $parts) . ')';
         }
+        if (!empty($filters['name'])) {
+            $sqlFilter[] = "invest.user IN (SELECT id FROM user WHERE (id LIKE :name OR name LIKE :name OR email LIKE :name))";
+            $values[':name'] = "%{$filters['name']}%";
+        }
         if (!empty($filters['calls'])) {
             $parts = [];
             if(!is_array($filters['calls'])) $filters['calls'] = [$filters['calls']];

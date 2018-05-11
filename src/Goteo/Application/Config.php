@@ -55,8 +55,10 @@ class Config {
 
 			// handles legacy config values
 			self::setConstants();
+
 			// Init database
 			Model::factory();
+
 			// load the language configuration
 			$locales = self::loadFromYaml(__DIR__ . '/../../../Resources/locales.yml');
 			if (is_array($locales) && $locales) {

@@ -25,39 +25,13 @@ use Goteo\Library\FeedBody;
 
 class UsersApiController extends AbstractApiController {
 
-    protected function getSafeUser($user) {
-        if(!$user instanceOf User) $user = User::get($user);
-        if(!$user instanceOf User) throw new ModelNotFoundException();
-
-        if(!$this->user instanceOf User) throw new ControllerAccessDeniedException();
-
-        $is_admin = $this->user->canImpersonate($user) || $this->user->canRebase($user);
-
-        $ob = [];
-        $fields = ['id', 'name', 'about', 'keywords', 'twitter', 'facebook', 'google', 'instagram', 'identica', 'linkedin'];
-        if($is_admin) {
-            $fields = array_merge($fields, ['email', 'gender', 'birthyear', 'entity_type', 'legal_entity', 'hide', 'active', 'confirmed']);
-        }
-        foreach($fields as $k) {
-            if(in_array($k, ['hide', 'active', 'confirmed'])) {
-                $ob[$k] = (bool) $user->{$k};
-            } else {
-                $ob[$k] = $user->{$k};
-            }
-        }
-
-        if($user->avatar instanceof Image) {
-            $ob['avatar'] = $user->avatar->id;
-        } else {
-            $ob['avatar'] = $user->avatar;
-        }
-
-        if($is_admin) {
-            $ob['password'] = '';
-            $ob['roles'] = $user->getRoles()->getRoleNames();
-        }
-        return $ob;
+    public function __construct() {
+        parent::__construct();
+        // De-Activate cache & replica read for this controller by default
+        $this->dbReplica(false);
+        $this->dbCache(false);
     }
+
     /**
      * Simple listing of users
      * TODO: according to permissions, filter this users
@@ -66,6 +40,8 @@ class UsersApiController extends AbstractApiController {
      */
     public function usersAction(Request $request) {
         if(!$this->user instanceOf User) throw new ControllerAccessDeniedException();
+        $this->dbReplica(true);
+        $this->dbCache(true);
 
         $filters = [];
         $node = null;
@@ -104,6 +80,40 @@ class UsersApiController extends AbstractApiController {
             'page' => $page,
             'limit' => $limit
             ]);
+    }
+
+    protected function getSafeUser($user) {
+        if(!$user instanceOf User) $user = User::get($user);
+        if(!$user instanceOf User) throw new ModelNotFoundException();
+
+        if(!$this->user instanceOf User) throw new ControllerAccessDeniedException();
+
+        $is_admin = $this->user->canImpersonate($user) || $this->user->canRebase($user);
+
+        $ob = [];
+        $fields = ['id', 'name', 'about', 'keywords', 'twitter', 'facebook', 'google', 'instagram', 'identica', 'linkedin'];
+        if($is_admin) {
+            $fields = array_merge($fields, ['email', 'gender', 'birthyear', 'entity_type', 'legal_entity', 'hide', 'active', 'confirmed']);
+        }
+        foreach($fields as $k) {
+            if(in_array($k, ['hide', 'active', 'confirmed'])) {
+                $ob[$k] = (bool) $user->{$k};
+            } else {
+                $ob[$k] = $user->{$k};
+            }
+        }
+
+        if($user->avatar instanceof Image) {
+            $ob['avatar'] = $user->avatar->id;
+        } else {
+            $ob['avatar'] = $user->avatar;
+        }
+
+        if($is_admin) {
+            $ob['password'] = '';
+            $ob['roles'] = $user->getRoles()->getRoleNames();
+        }
+        return $ob;
     }
 
     /**
@@ -152,7 +162,7 @@ class UsersApiController extends AbstractApiController {
         }
         $is_admin = $this->user->canImpersonate($user);
 
-        if($this->user->id !== $user->id && !$$is_admin) {
+        if($this->user->id !== $user->id && !$is_admin) {
             throw new ControllerAccessDeniedException();
         }
 

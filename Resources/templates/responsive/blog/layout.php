@@ -12,36 +12,20 @@ else
 
 
 $this->layout('layout', [
-    'bodyClass' => 'blog',
-    'navClass' => 'light-yellow',
-    'title' =>  $this->post->title,
-    'meta_description' => $this->post->subtitle ? $this->post->subtitle : $this->text_truncate($this->post->text, 100),
-    'tw_image' =>  $meta_img,
+    'tw_image' =>  $meta_img
     ]);
 
-
-
-$this->section('head'); ?>
-
-<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.css"/>
-<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick-theme.css"/>
-<link href="<?= SRC_URL ?>/assets/css/typeahead.css" rel="stylesheet">
-
-<link rel="stylesheet" href="/assets/vendor/selection-sharer/selection-sharer.css" />
-
-
-<?php 
-
-//$this->insert('blog/partials/styles');
-
-$this->append();
-
-
-
-$this->section('header-navbar-brand');
-
 ?>
-    <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('/img/icons/foundation.svg') ?>" class="logo" alt="Goteo"></a>
+
+<?php $this->section('head'); ?>
+
+    <?= $this->insert('blog/partials/styles'); ?>
+
+<?php $this->append(); ?>
+
+<?php $this->section('header-navbar-brand'); ?>
+
+    <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/icons/foundation.svg') ?>" class="logo" alt="Goteo"></a>
     <h3><?= $this->text('home-foundation-title') ?></h3>
 
 <?php
