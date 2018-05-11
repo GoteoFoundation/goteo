@@ -3850,11 +3850,15 @@ namespace Goteo\Model {
                     $innerJoin .= ' LEFT JOIN project_account ON project_account.project = project.id';
                 }
                 else {
-                    $what = 'COUNT(project.id)';
+                    $what = 'COUNT(*)';
                 }
                 if($location_parts) {
+                    $fields = 'project.id,project.amount,project.project_location,project_location.latitude,project_location.longitude';
+                    if(in_array($count, ['all', 'fee'], true)) {
+                        $fields .= ',project_account.fee';
+                    }
                     $sql .= "SELECT $what
-                    FROM (SELECT project.id,project.amount,project.fee,project.project_location,project_location.latitude,project_location.longitude $from $innerJoin WHERE $where) as FirstCut
+                    FROM (SELECT $fields $from $innerJoin WHERE $where) as FirstCut
                     WHERE
                     {$location_parts['where']}";
                     // print_r($values);die($sql);
@@ -3865,8 +3869,8 @@ namespace Goteo\Model {
                         $innerJoin
                         WHERE
                         $where";
-                        //die(\sqldbg($sql, $values));
                 }
+                // die(\sqldbg($sql, $values));
                 if($count === 'all') {
                     $ob = self::query($sql, $values)->fetchObject();
                     return ['amount' => (float) $ob->total_amount, 'projects' => (int) $ob->total_projects, 'fee' => (float) $ob->total_fee];
