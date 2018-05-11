@@ -41,7 +41,7 @@ $query = http_build_query($this->filters);
             <li class="col-xs-2 col-xxs-4" data-property="raised.global.week.amount_gain_formatted" data-title="<?= $this->text('admin-invest-diff-last_week') ?>"></li>
         </ul>
         <ul class="list-unstyled d3-chart loading discrete-values" data-source="/api/charts/totals/invests/commissions/global/month" data-interval="40" data-interval-delay="20" data-flash-time="30">
-            <li class="col-xs-2 col-xxs-4" data-property="commissions.global.month.charged_formatted" data-title="<?= $this->text('admin-invest-commissions-today') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="commissions.global.month.charged_formatted" data-title="<?= $this->text('admin-invest-commissions-month') ?>"></li>
             <li class="col-xs-2 col-xxs-4" data-property="commissions.global.month.lost_formatted" data-title="<?= $this->text('admin-invest-commissions-lost-month') ?>"></li>
         </ul>
         <ul class="list-unstyled d3-chart loading discrete-values" data-source="/api/charts/totals/invests/fees/global/month,year" data-interval="40" data-interval-delay="30" data-flash-time="30">
