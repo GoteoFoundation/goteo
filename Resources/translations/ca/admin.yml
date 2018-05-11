@@ -50,13 +50,17 @@ admin-mailing-view-in-newsletter: 'Veure en l''admin del butlletí'
 admin-mailing-view-in-sent: 'Veure en l''historial d''enviaments (estadístiques)'
 admin-mailing-view-message: 'Veure el missatge'
 admin-project: Projecte
+admin-legacy: Antics
 admin-projects: Projectes
+admin-consultants: 'Assessors'
+admin-invests: Aportacions
 admin-filters: 'Filtres'
 admin-remove-filters: 'Treure filtres'
 admin-sponsors: Serveis
 admin-status: Estat
 admin-user: Usuari
 admin-users: Usuaris
+admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
 admin-project-express-discard: 'Rebuig express'
 admin-project-express-discard-desc: 'Passa el projecte a estat Descartat i envia un email'
@@ -74,3 +78,34 @@ admin-project-to-publish-sure: 'El projecte començarà la campanya, ok?'
 admin-project-derivation-discard: 'Rebutjar i derivar'
 admin-project-derivation-discard-desc: 'Pasa el projecte a l''estat descartat i envia un mail derivant a una plataforma més idònia'
 admin-project-derivation-discard-sure: 'S''envia un mail derivant a una altra plataforma i passa a l''estat descartat"'
+admin-home-title: Administra Goteo
+admin-already-impersonating: 'Ja estàs suplantant un usuari, tanca primer la sessió!'
+admin-rebase-user: 'Canvia l''ID de l''usuari'
+admin-edit-name: 'Canvia el nom'
+admin-edit-roles: 'Canvia els rols de l''usuario'
+admin-send-email: 'Envia un correu electrònic'
+admin-show-roles-info: 'Què pot fer cada rol?'
+admin-user-roles: 'Llistat de rols d''usuari'
+admin-view-user-projects: 'Tots els projectes'
+admin-view-user-invests: 'Totes les aportacions'
+admin-user-hidden: 'Privat (amagat)'
+admin-user-active: 'Compte actiu'
+admin-user-warning: 'Atenció: Aquestes operacions s''executen sense enviar cap avís a l''usuari'
+admin-user-wallet-amount: 'Crèdit al moneder'
+admin-user-create-invest: 'Crea una aportació'
+admin-user-no-mailing: 'No se l''hi ha enviat cap email encara'
+admin-view-user-mailing: 'Tots els enviaments'
+admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aquest usuari'
+admin-users-global-search: 'Id, nom, email o projecte'
+admin-title-name: Nom
+admin-title-location: Localització
+admin-title-fullname: Nom
+admin-title-password: Contrasenya
+admin-title-roles: Rols
+admin-title-amount: Invertit
+admin-all-project-referers: 'Origen de visites als projectes'
+admin-all-invests-referers: 'Origen de visites a les aportacions a projectes'
+admin-all-call-referers: 'Origen de visites a les convocatòries'
+admin-all-project-devices: 'Dispositiu usat en les pàgines de projectes'
+admin-all-invests-devices: 'Dispositiu usat en les aportacions a projectes'
+admin-all-call-devices: 'Dispositiu usat en las pàgines de convocatòries'
