@@ -865,11 +865,14 @@ class User extends \Goteo\Core\Model {
 
         // ?? NO root
         $sqlFilter = [];
+        $sqlOrder = [];
+        $sqlCR = [];
+        $sqlCR2 = [];
+
         if (Session::getUserId() != 'root') {
             $sqlFilter[] = "id != 'root'";
         }
 
-        $sqlOrder = "";
         if (!empty($filters['id'])) {
             $sqlFilter[] = "id = :id";
             $values[':id'] = $filters['id'];
@@ -877,6 +880,10 @@ class User extends \Goteo\Core\Model {
         if (!empty($filters['global'])) {
             $sqlFilter[] = "(id LIKE :global OR name LIKE :global OR email LIKE :global)";
             $values[':global'] = '%' . $filters['global'] . '%';
+            $sqlOrder[] = " id = :oglobal DESC";
+            $sqlOrder[] = " email = :oglobal DESC";
+            $sqlOrder[] = " name = :oglobal DESC";
+            $values[':oglobal'] = $filters['global'];
         }
         if (!empty($filters['superglobal'])) {
             $sqlFilter[] = "(id LIKE :superglobal OR name LIKE :superglobal OR email LIKE :superglobal OR
@@ -979,10 +986,9 @@ class User extends \Goteo\Core\Model {
                         ) ";
                 break;
             case 'consultants': // asesores de proyectos (admins o consultants)
-                $sqlFilter[] = " id IN (
-                        SELECT DISTINCT(user)
-                        FROM user_project
-                        ) ";
+                $sqlFilter[] = " id IN (SELECT DISTINCT(user) FROM user_project) ";
+                $sqlCR[] = "(SELECT COUNT(project) FROM user_project JOIN project ON user_project.project=project.id AND project.published>DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 YEAR) WHERE user_project.user=user.id GROUP BY `user`) AS total_consultant";
+                $sqlOrder[] = 'total_consultant DESC';
                 break;
             case 'lurkers': // colaboran con el proyecto
                 $sqlFilter[] = " id NOT IN (
@@ -1007,30 +1013,35 @@ class User extends \Goteo\Core\Model {
         // si es solo los usuarios normales, añadimos HAVING
         // TODO: cambiar esto a JOINS
         if ($filters['role'] == 'user') {
-            $sqlCR = ", (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles";
-            $sqlOrder .= " HAVING roles = 0";
-        } else {
-            $sqlCR = "";
+            $sqlCR[] = "(SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles";
+            $sqlCR2[] = " HAVING roles = 0";
         }
 
         //el Order
         switch ($filters['order']) {
             case 'name':
-                $sqlOrder .= " ORDER BY name ASC";
+                $sqlOrder[] = "name ASC";
                 break;
             case 'id':
-                $sqlOrder .= " ORDER BY id ASC";
+                $sqlOrder[] = "id ASC";
                 break;
             default:
-                $sqlOrder .= " ORDER BY created DESC";
+                $sqlOrder[] = "created DESC";
         }
         if($sqlFilter) $sqlFilter = 'WHERE '. implode(' AND ', $sqlFilter);
         else  $sqlFilter = '';
+
+        $sqlCR = implode(',', $sqlCR);
+        if($sqlCR) $sqlCR = ",$sqlCR";
+        $sqlCR2 = implode(' ', $sqlCR2);
+
         if ($count) {
             // Return count
             $sql = "SELECT COUNT(id) as total FROM user $sqlFilter";
             return (int) self::query($sql, $values)->fetchColumn();
         }
+
+        if($sqlOrder) $sqlOrder = " ORDER BY " . implode(',', $sqlOrder);
 
         $offset = (int) $offset;
         $limit = (int) $limit;
@@ -1039,6 +1050,7 @@ class User extends \Goteo\Core\Model {
                     $sqlCR
                 FROM user
                 $sqlFilter
+                $sqlCR2
                 $sqlOrder
                 LIMIT $offset, $limit
                 ";
