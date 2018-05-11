@@ -11,7 +11,7 @@ rewards-field-individual_reward-description: Beschreibung
 rewards-field-individual_reward-other: 'Spezifizieren Sie die Art der Belohnung'
 rewards-field-individual_reward-reward: Belohnung
 rewards-field-individual_reward-type: 'Art der Belohnung'
-rewards-field-individual_reward-units: Einheiten
+rewards-field-individual_reward-units: 'Einheiten'
 rewards-field-social_reward-description: Beschreibung
 rewards-field-social_reward-license: 'Lizenierungsoptionen'
 rewards-field-social_reward-other: 'Spezifizieren Sie die Art des Nutzens'
