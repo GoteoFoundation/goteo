@@ -55,48 +55,6 @@ class BlogController extends \Goteo\Core\Controller {
                     'total'             => $total
                 ]
         );
-
-        /*$filters = array();
-        if ($request->query->has('tag')) {
-            $tag = Model\Blog\Post\Tag::get($request->query->get('tag'));
-            if ($tag->id) {
-                $filters['tag'] = $tag->id;
-            }
-        } else {
-            $tag = null;
-        }
-
-        if ($request->query->has('author')) {
-            $author = Model\User::getMini($request->query->get('author'));
-            if ($author->id) {
-                $filters['author'] = $author->id;
-            }
-        } else {
-            $author = null;
-        }
-
-        if ($filters) {
-            $blog->posts = Model\Blog\Post::getList($filters);
-        }
-
-        if ($post && empty($blog->posts[$post])) {
-            // para ver entradas de novedades de proyecto
-            $blog->posts[$post] = Model\Blog\Post::get($post, Lang::current());
-
-            // si preview
-            if (!$blog->posts[$post]->publish &&
-                 ( !$request->query->has('preview')
-                  ||
-                  $request->query->get('preview') != Session::getUserId()
-                 )
-                )
-                return $this->redirect('/blog');
-        }*/
-
-        // segun eso montamos la vista
-
-       
-
     }
 
     public function postAction($post, Request $request)

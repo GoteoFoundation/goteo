@@ -225,6 +225,49 @@ body.blog {
     }
   }
 
+  /* Donate */
+  .donate-header{
+    position: relative;
+    .main-info{
+      position: absolute;
+      bottom: 20%;
+      width: 100%;
+      top: 40%;
+      .btn-pink{
+        h1{
+          text-transform: uppercase;
+          font-size: $font-size*1.5;
+          padding: 0;
+          margin: 0;
+        }
+      }
+      .text-description{
+        margin: 20px 0;
+        font-size: 37.5px;
+        font-weight: 700;
+        text-shadow: .5px .5px #3a3a3a;
+        line-height: 1.1;
+        color: $color-white;
+      }
+    }
+    .img-header{
+      width: 100%;
+      filter: brightness(85%);
+      object-fit: cover;
+      height: auto;
+    }
+
+
+  }
+
+    div.donor-text-description{
+      font-size: $font-size*1.4;
+      font-weight: lighter;
+      p{
+        padding-top: 40px;
+        padding-bottom: 10px;
+      }
+    }
   // Tablets customization
 
     @media (max-width: $breakpoint-md + 1) {
