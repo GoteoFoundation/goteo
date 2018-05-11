@@ -5,6 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\TestCase;
 use Goteo\Model\Log;
+use Goteo\Application\Session;
 
 class LogTest extends TestCase {
     private static $data = ['scope' => 'test', 'target_type' => 'user', 'text' => 'Log test text'];
@@ -59,6 +60,7 @@ class LogTest extends TestCase {
      * @depends testDelete
      */
     public function testAppend($ob) {
+        Session::setUser(get_test_user());
         try {
             Log::append();
         } catch(\Exception $e) {
@@ -73,8 +75,8 @@ class LogTest extends TestCase {
      * Some cleanup
      */
     static function tearDownAfterClass() {
-        delete_test_node();
-        delete_test_project();
         delete_test_user();
+        delete_test_project();
+        delete_test_node();
     }
 }

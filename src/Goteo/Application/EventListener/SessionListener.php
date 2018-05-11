@@ -66,7 +66,9 @@ class SessionListener extends AbstractListener {
                 // reduce host: ca.goteo.org => goteo.org
                 $host = implode('.', $parts);
             }
-            ini_set('session.cookie_domain', ".$host");
+            if(!Session::getSession()->isStarted()) {
+                ini_set('session.cookie_domain', ".$host");
+            }
         }
         Session::start('goteo-' . Config::get('env'), Config::get('session.time'));
 

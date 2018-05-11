@@ -60,8 +60,8 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
      */
     public function testRoleNames($roles) {
         $this->assertInternalType('array', $roles->getRoleNames());
-        $this->assertContains('user', $roles->getRoleNames());
-        $this->assertContains('admin', $roles->getRoleNames());
+        $this->assertArrayHasKey('user', $roles->getRoleNames(), print_r($roles->getRoleNames(), 1));
+        $this->assertArrayHasKey('admin', $roles->getRoleNames());
     }
 
     /**
@@ -88,6 +88,7 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
      * @depends testRemoveRoles
      */
     public function testPersistence($roles) {
+        $errors = [];
         $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->addRole('admin'));
         $this->assertTrue($roles->save($errors), print_r($errors, true));
         return $roles;

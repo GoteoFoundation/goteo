@@ -121,7 +121,7 @@ class UserRoles extends \ArrayObject
      */
     public function save(&$errors = []) {
         $values = [':user_id' => $this->user->id];
-        $inserts = '';
+        $inserts = [];
         $i = 0;
         foreach($this as $role => $permissions) {
             if($role !== 'user') {
