@@ -43,7 +43,7 @@ goteo.typeahead_engines.user = function (settings) {
                 // console.log('user suggestion',datum);
                 var t = '<div>';
                 if(datum.image) t += '<img src="' + datum.image + '" class="img-circle"> ';
-                t += datum.name + '</div>';
+                t += datum.name + (datum.email && (' (' + datum.email + ')')) + '</div>';
                 return t;
             }
         }
