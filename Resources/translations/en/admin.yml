@@ -29,7 +29,12 @@ admin-mailing-status: 'Automatic delivery status'
 admin-mailing-subject: Subject
 admin-mailing-view-and-activate: 'See the post admin to start sending'
 admin-mailing-view-in-newsletter: 'See the post admin'
+admin-project: Project
+admin-main: Main
+admin-legacy: Legacy
 admin-projects: Projects
+admin-consultants: 'Consultants'
+admin-invests: Contributions
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
 admin-sponsors: Services
@@ -41,6 +46,7 @@ admin-text-type-plain: 'Plaintext'
 admin-user: User
 admin-users: Users
 admin-yes: "Yes"
+admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
 admin-project-express-discard: 'Express discard'
 admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
@@ -58,3 +64,34 @@ admin-project-to-publish-sure: 'Project is going to start its campaign, ok?'
 admin-project-derivation-discard: 'Discard and derivation'
 admin-project-derivation-discard-desc: 'Change the project status to Discard and sends an email derivating to others platforms'
 admin-project-derivation-discard-sure: 'The project will be discarded and the owner will receive an email derivating to other platforms, ok?'
+admin-home-title: Administrate Goteo
+admin-already-impersonating: 'You are already impersonating a user. Please close the session first!'
+admin-rebase-user: 'Change user ID'
+admin-edit-name: 'Change name'
+admin-edit-roles: 'Change user role'
+admin-send-email: 'Send Email'
+admin-show-roles-info: 'What can each role do?'
+admin-user-roles: 'User roles list'
+admin-view-user-projects: 'All user projects'
+admin-view-user-invests: 'All user contributions'
+admin-user-hidden: 'Private (hidden)'
+admin-user-active: 'Account active'
+admin-user-warning: 'Warning: These operations are executed without any notice to the user'
+admin-user-wallet-amount: 'Wallet credit'
+admin-user-create-invest: 'Create contribution'
+admin-user-no-mailing: 'No emails has been sent yet'
+admin-view-user-mailing: 'All mailing'
+admin-role-change-forbidden: 'You don''t have permissions to manage the role %ROLE% in this user'
+admin-users-global-search: 'Id, name, email or project'
+admin-title-name: Name
+admin-title-about: About
+admin-title-location: Location
+admin-title-fullname: Name
+admin-title-password: Password
+admin-title-amount: Invested
+admin-all-project-referers: 'Origin of visits to project pages'
+admin-all-invests-referers: 'Origin of visits in successful contributions to projects'
+admin-all-call-referers: 'Origin of visits to matchfunding pages'
+admin-all-project-devices: 'Device used on project pages'
+admin-all-invests-devices: 'Device used in successful contributions to projects'
+admin-all-call-devices: 'Device used on matchfunding pages'
