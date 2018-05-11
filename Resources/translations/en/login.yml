@@ -1,10 +1,10 @@
 ---
-auth-access-forbbiden: 'You don''t have permission to acces here!'
+auth-access-forbbiden: 'You don''t have permission to access here!'
 error-register-userid: 'You have to enter a user name'
 login-access-button: Enter
 login-access-header: 'Registered user'
 login-access-password-field: Password
-login-access-username-field: 'User name'
+login-access-username-field: 'Username'
 login-fail: 'Error'
 login-leave-button: 'Close the account'
 login-leave-header: 'Close the account'

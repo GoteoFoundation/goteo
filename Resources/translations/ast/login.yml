@@ -45,6 +45,10 @@ oauth-goteo-user-provider-error: 'Has usar <strong>%s</strong> p''acceder a esti
 oauth-import-name: Nome
 oauth-import-twitter: 'Enllaz a la to cuenta en Twitter'
 oauth-import-website: 'Los tos sitios web'
+oauth-openid-email-required: '¡El fornidor d''OpenID ha fornir el corréu pa siguir!'
+oauth-unknown-provider: 'Nun pue aniciase sesión con esti fornidor'
+reset-password-new-password: 'Volvi escribir la contraseña nueva'
+reset-password-old-password: 'La contraseña nueva'
 reset-password-save: Guardar
 reset-password-title: 'Afitar contraseña nueva'
 login-alternate-ids: Otres opciones

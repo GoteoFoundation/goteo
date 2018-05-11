@@ -1,5 +1,6 @@
 ---
 cost-type-lend: Loan
+cost-type-material: Material
 cost-type-structure: Infrastructure
 cost-type-task: Task
 costs-field-amount: Value

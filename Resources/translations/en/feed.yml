@@ -6,7 +6,7 @@ feed-admin-invest-modified: 'The admin %ADMIN% has modified the invest %INVEST% 
 feed-blog-comment: 'Has written a <span class="green">Comment</span> at the post "%s" from the %s blog'
 feed-invest: 'Has contributed with %AMOUNT% to %PROJECT%'
 feed-invest-by: 'Invest by %s'
-feed-invest-pool: 'Has added %AMOUNT% in his virtual purse'
+feed-invest-pool: 'Has added %AMOUNT% to their virtual wallet'
 feed-message-support-response: 'New collaboration with %TITLE% at project %PROJECT%'
 feed-messages-new_thread: 'Has opened a thread at %s of the project %s'
 feed-messages-new-thread: 'Has opened a thread at %TYPE% of the project %PROJECT%'
