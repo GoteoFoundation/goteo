@@ -10,7 +10,7 @@ rewards-field-individual_reward-description: Description
 rewards-field-individual_reward-other: 'Spécifiez le type de récompense individuelle.'
 rewards-field-individual_reward-reward: Récompense individuelle
 rewards-field-individual_reward-type: 'Type de récompense individuelle'
-rewards-field-individual_reward-units: Nombre d'unités
+rewards-field-individual_reward-units: 'Nombre d''unités'
 rewards-field-social_reward-description: Description
 rewards-field-social_reward-license: 'Choix de licences'
 rewards-field-social_reward-other: 'Spécifiez le type de récompense individuelle'
