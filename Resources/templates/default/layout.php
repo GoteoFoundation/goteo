@@ -39,16 +39,15 @@ if($sidebar) {
     <?= $this->insert('wrapper') ?>
 
     </div>
-
     <?php $this->section('footer') ?>
-
-        <?= $this->insert('partials/footer') ?>
-
-        <?= $this->insert('partials/footer/analytics') ?>
-
-        <?= $this->insert('partials/footer/javascript') ?>
-
+    
+    <?= $this->insert('partials/footer') ?>
+    
+    <?= $this->insert('partials/footer/analytics') ?>
+    
+    <?= $this->insert('partials/footer/javascript') ?>
+    
     <?php $this->stop() ?>
-
+    
     </body>
 </html>

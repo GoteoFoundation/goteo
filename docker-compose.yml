@@ -1,0 +1,47 @@
+###############################################################################
+#                          Generated on docker.io                          #
+###############################################################################
+version: "3.1"
+services:
+
+  mariadb:
+    image: mariadb:10.2
+    container_name: goteo-mariadb
+    working_dir: /application
+    volumes:
+      - .:/application
+      - goteo-mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=crowdfunding
+      - MYSQL_DATABASE=goteo
+      - MYSQL_USER=goteo
+      - MYSQL_PASSWORD=goteo
+    ports:
+      - "3307:3306"
+
+  webserver:
+    image: nginx:alpine
+    container_name: goteo-webserver
+    working_dir: /application
+    volumes:
+      - .:/application
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8081:80"
+      - "35729:35729"
+
+  php:
+    build: docker/php
+    container_name: goteo-php
+    working_dir: /application
+    volumes:
+      - .:/application
+      - ./docker/php/php-ini-overrides.ini:/etc/php/7.1/fpm/conf.d/99-overrides.ini
+    environment:
+      - GOTEO_CONFIG_FILE
+      - DEBUG
+    command: ./docker/php/init.sh
+
+
+volumes:
+  goteo-mariadb:

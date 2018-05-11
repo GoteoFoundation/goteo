@@ -62,6 +62,7 @@ invest-payment-email: 'Introduce tu cuenta de PayPal'
 invest-payment-fail: 'Algo ha fallado en el pago'
 invest-payment-success: 'El pago se ha completado correctamente'
 invest-payment_method-header: 'Elige el método de pago'
+invest-payment-method: 'Método de pago'
 invest-paypal-method: Paypal
 invest-paypal_disabled: "Este proyecto tiene desactivada la opción de pago a través de PayPal. <a href=\"/faq/investors#q2\" target=\"_blank\">Más info</a>"
 invest-pool: 'Quiero que mi donación, en el caso de que el proyecto no llegue a su objetivo, permanezca en mi monedero virtual Goteo.'

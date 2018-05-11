@@ -61,6 +61,26 @@ class Payment {
     }
 
     /**
+     * Removes method
+     */
+    static public function removeMethod($id) {
+        if(array_key_exists($id, self::$methods)) {
+            unset(self::$methods[$id]);
+            return true;
+        }
+        foreach(self::$methods as $i => $clas) {
+            $cmp = $clas;
+            if($clas instanceOf PaymentMethodInterface) {
+                $cmp = get_class($clas);
+            }
+            if($clas === $cmp) {
+                unset(self::$methods[$i]);
+                return true;
+            }
+        }
+        throw new PaymentException("Error de-registering method [$id]");
+    }
+    /**
      * Returns all available payment methods
      */
     static public function getMethods(User $user = null) {

@@ -1,6 +1,23 @@
 @import 'variables';
 @import "compass/css3";
 
+.admin-typeahead {
+  .form-group {
+    label {
+      font-weight: normal;
+      margin: 0 10px 0 0;
+      input[type="checkbox"] {
+        vertical-align: middle;
+        margin: 0 0 3px 0;
+      }
+    }
+  }
+  &::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
+}
 .twitter-typeahead .tt-query,
 .twitter-typeahead .tt-hint {
     margin-bottom: 0;

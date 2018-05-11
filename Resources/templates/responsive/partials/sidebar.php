@@ -1,5 +1,5 @@
 <?php if($this->sidebarMenu || $this->sidebarBottom): ?>
-  <nav id="sidebar-menu">
+  <nav id="sidebar-menu" class="<?= $this->sidebarClass ?>">
     <div class="sidebar-wrap">
         <button class="toggle-sidebar btn btn-link" title="Close"><i class="fa fa-close"></i></button>
 

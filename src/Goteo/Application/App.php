@@ -125,9 +125,7 @@ class App extends HttpKernel\HttpKernel {
             // Getting the request either from global or simulated
             $request = self::getRequest();
 
-            // Additional constants
-            // si estamos en entorno seguro
-            define('HTTPS_ON', $request->isSecure());
+            // Additional constants (this should be removed some day)
             // if ssl enabled
             $SITE_URL = $request->getHttpHost();
             if (Config::get('ssl')) {

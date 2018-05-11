@@ -620,6 +620,12 @@ class Mail extends \Goteo\Core\Model {
         $values = array();
         $sqlFilter = [];
 
+        if (!empty($filters['email'])) {
+            $sqlFilter[] = $and . " mail.email = :email";
+            $and = " AND";
+            $values[':email'] = $filters['email'];
+        }
+
         if (!empty($filters['user'])) {
             $sqlFilter[] = "mail.email LIKE :user";
             $values[':user'] = "%{$filters['user']}%";
@@ -697,6 +703,7 @@ class Mail extends \Goteo\Core\Model {
                     FROM mail
                     LEFT JOIN mailer_content ON mailer_content.mail = mail.id
                     $sqlFilter";
+            // die(\sqldbg($sql, $values));
             return (int) static::query($sql, $values)->fetchColumn();
         }
 

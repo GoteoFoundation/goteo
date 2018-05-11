@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 use Goteo\Application\App;
 use Goteo\Application\View;
@@ -29,8 +30,13 @@ abstract class Controller {
     /**
      * Handy method to send a response from a view
      */
-    public function viewResponse($view, $vars = [], $status = 200) {
-        return new Response(View::render($view, $vars), $status);
+    public function viewResponse($view, $vars = [], $status = 200, $contentType = 'text/html') {
+        $view = View::render($view, $vars);
+        $request = App::getRequest();
+        if($request->query->has('pronto') && (App::debug() || $request->isXmlHttpRequest())) {
+            $contentType = 'application/json';
+        }
+        return new Response($view, $status, ['Content-Type' => $contentType]);
     }
 
     /**
@@ -56,6 +62,23 @@ abstract class Controller {
         $resp =  new JsonResponse($vars);
         if(App::debug()) $resp->setEncodingOptions(JSON_PRETTY_PRINT);
         return $resp;
+    }
+
+    /**
+     * Forwards the request to another controller.
+     *
+     * @param string $controller The controller name (a string like BlogBundle:Post:index)
+     * @param array  $path       An array of path parameters
+     * @param array  $query      An array of query parameters (defaults to current request query)
+     *
+     * @return Response A Response instance
+     */
+    public function forward($controller, array $path = [], array $query = null)
+    {
+        $path['_controller'] = $controller;
+        $subRequest = App::getRequest()->duplicate($query, null, $path);
+
+        return $this->getService('app')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }
 
     /**

@@ -14,6 +14,7 @@ use Goteo\Core\Model;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Model\Project;
+use Goteo\Model\Call;
 use Goteo\Model\Invest;
 
 /**
@@ -137,42 +138,120 @@ class Origin extends \Goteo\Core\Model {
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-    static public function getProjectStats($pid, $stat = 'project', $group = 'referer', $group_by = 'tag') {
-        if($pid instanceOf Project) $pid = $pid->id;
-
-        $values = [':project' => $pid, ':type' => $group];
-        $join = '';
+    static public function getInvestsStats(Model $model = null, $group = 'referer', $group_by = 'tag', $filters = []) {
+        $values = [':type' => $group];
+        $add_sql = '';
+        if($model instanceOf Project) {
+            if($model->id) {
+                $values[':project'] = $model->id;
+                $add_sql = 'AND invest.project = :project';
+            } else {
+                // Only projects
+                $add_sql = 'AND !ISNULL(invest.project)';
+            }
+        } elseif(!is_null($model)) {
+            throw new ModelException("[$model] should be an instance of Project or null"); // TODO: add call in the future
+        }
 
         $group_by = ($group_by === 'category') ? 'category' : 'tag';
 
-        if($stat === 'invests') {
-            // Project invests stats
-            $sql = "SELECT
-                origin.tag,
-                origin.category,
-                IF (MIN(origin.created_at), MIN(origin.created_at), MIN(invest.invested)) AS created,
-                IF (MAX(origin.modified_at), MAX(origin.modified_at), MAX(invest.invested)) as updated,
-                IF (SUM(origin.counter), SUM(origin.counter), COUNT(invest.id)) AS counter
-                FROM invest
-                LEFT JOIN origin ON origin.invest_id = invest.id AND origin.type = :type
-                WHERE invest.status IN (". implode(',', Invest::$ACTIVE_STATUSES) . ") AND invest.project = :project
-                GROUP BY origin.$group_by ORDER BY counter DESC";
-
-        } else {
-            // Project visit stats by default
-            $sql = "SELECT
-            origin.tag,
-            origin.category,
-            MIN(origin.created_at) AS created,
-            MAX(origin.modified_at) AS updated,
-            SUM(origin.counter) AS counter
-            FROM origin
-            WHERE origin.project_id = :project AND origin.type = :type
-            GROUP by origin.$group_by ORDER BY counter DESC";
-
+        if($filters['from']) {
+            if(!\date_valid($filters['from'])) throw new ModelException("Invalid date 'from' [{$filters['from']}]");
+            $add_sql .= ' AND invest.datetime >= :from';
+            $values[':from'] = $filters['from'];
         }
+        if($filters['to']) {
+            if(!\date_valid($filters['to'])) throw new ModelException("Invalid date 'to' [{$filters['to']}]");
+            $add_sql .= ' AND invest.datetime <= :to';
+            $values[':to'] = $filters['to'];
+        }
+        // Project invests stats
+        $sql = "SELECT
+        origin.tag,
+        origin.category,
+        IF (MIN(origin.created_at), MIN(origin.created_at), MIN(invest.datetime)) AS created,
+        IF (MAX(origin.modified_at), MAX(origin.modified_at), MAX(invest.datetime)) as updated,
+        IF (SUM(origin.counter), SUM(origin.counter), COUNT(invest.id)) AS counter
+        FROM invest
+        LEFT JOIN origin ON origin.invest_id = invest.id AND origin.type = :type
+        WHERE invest.status IN (". implode(',', Invest::$ACTIVE_STATUSES) . ")
+        $add_sql
+        GROUP BY origin.$group_by ORDER BY counter DESC";
 
         // echo sqldbg($sql, $values);
+        $query = self::query($sql, $values);
+        return $query->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    static public function getModelStats(Model $model = null, $group = 'referer', $group_by = 'tag', $filters = []) {
+        $values = [':type' => $group];
+
+        $add_sql = '';
+        if($model instanceOf Project) {
+            if($model->id) {
+                $values[':project'] = $model->id;
+                $add_sql = 'AND origin.project_id = :project';
+            } else {
+                // Only projects
+                $add_sql = 'AND !ISNULL(origin.project_id)';
+            }
+        } elseif($model instanceOf Call) {
+            if($model->id) {
+                $values[':call'] = $model->id;
+                $add_sql = 'AND origin.call_id = :call';
+            } else {
+                // Only calls
+                $add_sql = 'AND !ISNULL(origin.call_id)';
+            }
+        } elseif(!is_null($model)) {
+            throw new ModelException("[$model] should be an instance of Project, Call or null"); // TODO: add call in the future
+        }
+
+        $group_by = ($group_by === 'category') ? 'category' : 'tag';
+        if($filters['from']) {
+            if(!\date_valid($filters['from'])) throw new ModelException("Invalid date 'from' [{$filters['from']}]");
+            $add_sql .= ' AND origin.created_at >= :from';
+            $values[':from'] = $filters['from'];
+        }
+        if($filters['to']) {
+            if(!\date_valid($filters['to'])) throw new ModelException("Invalid date 'to' [{$filters['to']}]");
+            $add_sql .= ' AND origin.modified_at <= :to';
+            $values[':to'] = $filters['to'];
+        }
+        if($filters['call']) {
+            $add_sql .= ' AND origin.project_id IN (SELECT project FROM call_project a WHERE a.call=:call)';
+            $values[':call'] = $filters['call'];
+        }
+        if($filters['matcher']) {
+            $add_sql .= ' AND origin.project_id IN (SELECT project_id FROM matcher_project b WHERE b.matcher_id=:matcher)';
+            $values[':matcher'] = $filters['matcher'];
+        }
+        if($filters['channel']) {
+            $add_sql .= ' AND origin.project_id IN (SELECT id FROM project c WHERE c.node=:channel)';
+            $values[':channel'] = $filters['channel'];
+        }
+        if($filters['user']) {
+            $add_sql .= ' AND origin.project_id IN (SELECT id FROM project d WHERE d.owner=:user)';
+            $values[':user'] = $filters['user'];
+        }
+        if($filters['consultant']) {
+            $add_sql .= ' AND origin.project_id IN (SELECT project FROM user_project e WHERE e.user=:consultant)';
+            $values[':consultant'] = $filters['consultant'];
+        }
+
+        // Project visit stats by default
+        $sql = "SELECT
+        origin.tag,
+        origin.category,
+        MIN(origin.created_at) AS created,
+        MAX(origin.modified_at) AS updated,
+        SUM(origin.counter) AS counter
+        FROM origin
+        WHERE origin.type = :type
+        $add_sql
+        GROUP by origin.$group_by ORDER BY counter DESC";
+
+        // die(sqldbg($sql, $values));
         $query = self::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_OBJ);
     }

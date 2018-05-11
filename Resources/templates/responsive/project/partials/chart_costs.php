@@ -38,7 +38,7 @@ function printCosts() {
 
     d3.select(self.frameElement).style("height", height + "px");
 
-    d3.json("/api/charts/<?= $this->project->id ?>/costs", function(error, root) {
+    d3.json("/api/projects/<?= $this->project->id ?>/charts/costs", function(error, root) {
       if (error) throw error;
 
       d3.select("g").append("svg:image")

@@ -10,6 +10,7 @@
 
 namespace Goteo\Payment\Method;
 
+use Goteo\Core\Model;
 use Goteo\Application\Config;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
@@ -281,4 +282,41 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         return $this->gateway;
     }
 
+    /**
+     * Calculates banks fee in a generic way, based on settings.yml config and following the Paypal fees rules (which suits many gateways)
+     * payments.method.comissions.charged.fixed : fixed amount per transaction on non-refunded invests
+     * payments.method.comissions.charged.percent : percent amount per transaction on non-refunded invests
+     * payments.method.comissions.refunded.fixed : fixed amount per transaction on refunded invests
+     * payments.method.comissions.refunded.percent : percent amount per transaction on refunded invests
+     */
+    static public function calculateComission($total_invests, $total_amount, $returned_invests = 0, $returned_amount = 0) {
+        $commissions = Config::get('payments.' . static::getId() . '.commissions');
+        $fee = 0;
+        if($commissions && is_array($commissions)) {
+            // Non-refunded
+            if($commissions['charged']) {
+                $fixed = $commissions['charged']['fixed'] ?: 0; 
+                $percent = $commissions['charged']['percent'] ?: 0; 
+                $fee += ($total_amount - $returned_amount) * $percent / 100;
+                $fee += ($total_invests - $returned_invests) * $fixed;
+            }
+            // Refunded
+            if($commissions['refunded']) {
+                $fixed = $commissions['refunded']['fixed'] ?: 0; 
+                $percent = $commissions['refunded']['percent'] ?: 0; 
+                $fee += $returned_amount * $percent / 100;
+                $fee += $returned_invests * $fixed;
+            }
+        }
+        return $fee;
+    }
+
+    /**
+     * Internal payments does not increased raised amounts
+     * (pool)
+     * @return boolean
+     */
+    static public function isInternal() {
+        return false;
+    }
 }

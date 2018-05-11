@@ -24,6 +24,14 @@
 
   .form-group {
     margin-bottom: 20px;
+
+    .form-control.loading {
+      background-position: right;
+      background-size: 24px;
+      min-height: auto;
+      background-image: url(../img/ring.gif);
+    }
+
     .input-wrap {
       background: $background-light-body;
       border-radius: 5px;
@@ -37,9 +45,9 @@
         @include box-shadow(none);
         // border-color: $background-white;
         border-color: darken($background-white, 5%);
-        background: $background-white;
+        background-color: $background-white;
         &[disabled],&.disabled {
-            background: darken($background-white, 3%);
+            background-color: darken($background-white, 3%);
         }
       }
       .bootstrap-tagsinput {
@@ -63,6 +71,11 @@
       .editor-toolbar:before {
         margin:0;
         content: none;
+      }
+    }
+    &.has-success {
+      .form-control, .CodeMirror {
+        border: 1px solid darken($color-green, 10%);
       }
     }
     &.has-error {

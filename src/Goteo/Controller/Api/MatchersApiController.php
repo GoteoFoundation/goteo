@@ -36,18 +36,29 @@ class MatchersApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException();
         }
 
-        $filters = ['active' => true];
+        $filters = [];
         $page = max((int) $request->query->get('pag'), 0);
+
+        if($request->query->has('q')) {
+            $filters[$this->is_admin ? 'global' : 'name'] = $request->query->get('q');
+        }
+
+        if(empty($filters) || !$this->is_admin) {
+            $filters['active'] = true;
+        }
 
         $limit = 25;
         $offset = $page * $limit;
         $total = Matcher::getList($filters, 0, 0, true);
         $list = [];
         foreach(Matcher::getList($filters, $offset, $limit) as $match) {
-            foreach(['id', 'name', 'logo', 'lang', 'created'] as $k)
+            foreach(['id', 'name', 'logo', 'matcher_location', 'lang', 'created'] as $k)
                 $ob[$k] = $match->$k;
             foreach(['amount', 'used', 'projects', 'crowd'] as $k)
                 $ob[$k] = (int)$match->$k;
+            if($this->is_admin) {
+                $ob['active'] = (bool)$user->active;
+            }
             $list[] = $ob;
         }
 
