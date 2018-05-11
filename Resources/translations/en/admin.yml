@@ -29,7 +29,12 @@ admin-mailing-status: 'Automatic delivery status'
 admin-mailing-subject: Subject
 admin-mailing-view-and-activate: 'See the post admin to start sending'
 admin-mailing-view-in-newsletter: 'See the post admin'
+admin-project: Project
+admin-main: Main
+admin-legacy: Legacy
 admin-projects: Projects
+admin-consultants: 'Consultants'
+admin-invests: Contributions
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
 admin-sponsors: Contributors
