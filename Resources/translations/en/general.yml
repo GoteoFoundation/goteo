@@ -31,6 +31,8 @@ error-user-email-token-invalid: 'The code is incorrect'
 error-user-password-confirm: 'The password confirmation is not the same as the password.'
 error-user-password-empty: 'You didn''t enter a password'
 error-user-password-invalid: 'The password is too short. It has to have at least 6 characters.'
+error-user-id-invalid: 'User id invalid. Use only characters a-z 0-9'
+error-user-id-exists: 'There is already a registered user with that id'
 error-user-wrong-password: 'The password is incorrect.'
 explain-project-progress: 'This graph explains in a visual way the level of data that you have entered together with a basic evaluation completed by the system. To be able to submit the project, you have to reach at least 80%. The criteria that make the “temperature” rise have to do with the relevant information that you provide, the media, images and links that you enter, the degree of openness of the license you choose, the coherence of your estimate with respect to the work that needs to be carried out, etc. Don''t forget to take advantage of the tooltips on the right that will guide you through the process.'
 fancybox: 'Fancybox text'
@@ -64,6 +66,7 @@ project-invest-total: 'Total contributions'
 project-messages-send_message-your_answer: 'Write your answer here'
 project-messages-send_message_support-your_answer: 'Write here your collaboration message for %s'
 regular-add: New Record
+regular-all: All
 regular-admin_board: 'Admin panel'
 regular-allsome: 'all/some of'
 regular-anonymous: Anonymous
@@ -110,6 +113,7 @@ regular-hello: Hello
 regular-here: here
 regular-help: Help
 regular-home: Start
+regular-id: Identifier (ID)
 regular-im: I am
 regular-instagram: Instagram
 regular-invest: Contribute
@@ -151,6 +155,7 @@ regular-round: 'Round'
 regular-save: Save
 regular-schedule: Schedule
 regular-search: Search
+regular-search-user: Find a user
 regular-search-desc: 'Write your search here'
 regular-search-tooltip: 'Enter your keywords and press enter'
 regular-see_all: 'See all'
