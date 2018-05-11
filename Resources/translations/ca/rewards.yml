@@ -9,7 +9,7 @@ rewards-field-individual_reward-amount: 'Import'
 rewards-field-individual_reward-description: Descripció
 rewards-field-individual_reward-other: 'Especifica el tipus de recompensa'
 rewards-field-individual_reward-type: 'Tipus de recompensa'
-rewards-field-individual_reward-units: Unitats
+rewards-field-individual_reward-units: 'Unitats disponibles'
 rewards-field-social_reward-description: Descripció
 rewards-field-social_reward-license: 'Opcions de llicència'
 rewards-field-social_reward-other: 'Especifica el tipus de retorn'
