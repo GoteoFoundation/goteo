@@ -38,7 +38,7 @@ class BlogController extends \Goteo\Core\Controller {
         $limit=12;
         $slider_posts=Post::getList(['section' => $section, 'tag' => $tag], true, 0, 3);
         $init= $request->query->get('pag') ? $request->query->get('pag')*$limit : 0;
-        
+
         $list_posts=Post::getList(['section' => $section, 'tag' => $tag], true, $init, $limit);
         $total=Post::getList(['section' => $section, 'tag' => $tag], true, 0, 0, true);
         $blog_sections=Post::getListSections();
@@ -59,17 +59,20 @@ class BlogController extends \Goteo\Core\Controller {
 
     public function postAction($post, Request $request)
     {
+        // Get related posts
         $post=Post::get($post, Lang::current());
 
-        // Get related posts
-
+        // Redirect to project's page if not the right type of post
+        if($post->owner_type === 'project') {
+            return $this->redirect("/project/{$post->owner_id}/updates/{$post->id}");
+        }
         $tags=$post->tags;
         reset($tags);
         $first_key_tags=key($tags);
 
         $related_posts=Post::getList(['tag' => $first_key_tags, 'excluded' => $post->id ], true, 0, $limit = 3, false);
 
-        return $this->viewResponse('blog/post', 
+        return $this->viewResponse('blog/post',
                 [
                     'post' => $post,
                     'related_posts' => $related_posts,
