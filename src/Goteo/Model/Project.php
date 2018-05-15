@@ -31,7 +31,7 @@ namespace Goteo\Model {
         // PROJECT STATUS IDs
         const STATUS_DRAFT       = -1; // is this really necessary?
         const STATUS_REJECTED    = 0;
-        const STATUS_EDITING     = 1; // en negociación
+        const STATUS_EDITING     = 1; // editing or negotiating (if draft)
         const STATUS_REVIEWING   = 2; //
         const STATUS_IN_CAMPAIGN = 3;
         const STATUS_FUNDED      = 4;
@@ -248,12 +248,18 @@ namespace Goteo\Model {
             if(!$user instanceOf User) return false;
             // owns the project
             if($this->owner === $user->id) return true;
+
+            if($user->hasPerm('view-any-project')) return true;
+            if($user->hasPerm('review-project', $this->id)) return true;
+            if(($call = $this->getCall()) && $user->hasPerm('view-call-project', $call->id)) return true;
+
+            // Legacy roles
             // is admin in the project node
-            if($user->hasRoleInNode($this->node, ['admin', 'superadmin', 'root'])) return true;
-            // is reviewer
-            if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
-            // is caller
-            if($user->hasRoleInNode($this->node, ['caller']) && Call\Project::is_assigned($user->id, $this->id)) return true;
+            // if($user->hasRoleInNode($this->node, ['admin', 'superadmin', 'root'])) return true;
+            // // is reviewer
+            // if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
+            // // is caller
+            // if($user->hasRoleInNode($this->node, ['caller']) && Call\Project::is_assigned($user->id, $this->id)) return true;
 
             return false;
         }
@@ -275,12 +281,18 @@ namespace Goteo\Model {
                 return true;
             }
 
+            if($user->hasPerm('edit-any-project')) return true;
+            if($user->hasPerm('edit-published-project') && $this->isApproved()) return true;
+            if($user->hasPerm('edit-projects', $this->id)) return true;
+            if($user->hasPerm('review-project', $this->id)) return true;
+
+            // Legacy roles
             // is superadmin in the project node
-            if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
+            // if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
             // is a consultant
-            if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
+            // if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
             // is reviewer
-            if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
+            // if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
             return false;
         }
 
@@ -295,8 +307,13 @@ namespace Goteo\Model {
             if(!in_array($this->status, array(self::STATUS_DRAFT, self::STATUS_REJECTED, self::STATUS_EDITING))) return false;
             // owns the project
             if($this->owner === $user->id) return true;
+
+            if($user->hasPerm('delete-any-project')) return true;
+            if($user->hasPerm('remove-projects', $this->id)) return true;
+
+            // Legacy roles
             // is superadmin in the project node
-            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+            // if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
 
             return false;
         }
@@ -310,10 +327,13 @@ namespace Goteo\Model {
             if(empty($user)) return false;
             if(!$user instanceOf User) return false;
 
+            if($user->hasPerm('publish-any-project')) return true;
+            if($user->hasPerm('publish-projects', $this->id)) return true;
+            // Legacy roles
             // is superadmin in the project node
-            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+            // if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
             // is a consultant
-            if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
+            // if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
 
             return false;
         }
@@ -327,8 +347,11 @@ namespace Goteo\Model {
             if(empty($user)) return false;
             if(!$user instanceOf User) return false;
 
+            if($user->hasPerm('edit-any-project')) return true;
+            if($user->hasPerm('edit-published-projects') && $this->isApproved()) return true;
+            // Legacy roles
             // is manager or superadmin in the project node
-            if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
+            // if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
 
             return false;
         }
@@ -343,10 +366,13 @@ namespace Goteo\Model {
             if(empty($user)) return false;
             if(!$user instanceOf User) return false;
 
-            $roles = ['superadmin', 'root'];
-            if($include_admins) $roles[] = 'admin';
-            // is superadmin in the project node
-            if($user->hasRoleInNode($this->node, $roles)) return true;
+            if($user->hasPerm('remove-any-project')) return true;
+            if($include_admins && $user->hasPerm('remove-projects', $this->id)) return true;
+            // Legacy roles
+            // $roles = ['superadmin', 'root'];
+            // if($include_admins) $roles[] = 'admin';
+            // // is superadmin in the project node
+            // if($user->hasRoleInNode($this->node, $roles)) return true;
 
             return false;
         }
@@ -3504,11 +3530,71 @@ namespace Goteo\Model {
                 $values[':query'] = "%{$filters['global']}%";
             }
 
+            if (!empty($filters['basic'])) {
+                $sqlFilter .= ' AND (project.id LIKE :basic
+                    OR project.name LIKE :basic
+                    OR project.subtitle LIKE :basic
+                    OR project.keywords LIKE :basic)';
+                // TODO: search in project_lang too with $innerJoin
+                $values[':basic'] = "%{$filters['basic']}%";
+            }
+
             if ((!empty($filters['consultant'])) && ($filters['consultant'] != -1)) {
                 $sqlFilter .= " AND user_project.user = :consultant";
                 $values[':consultant'] = $filters['consultant'];
                 $innerJoin = " INNER JOIN user_project ON user_project.project = project.id";
             }
+
+            if (!empty($filters['created_from'])) {
+                $sqlFilter .= " AND project.created >= :created_from";
+                $values[':created_from'] = $filters['created_from'];
+            }
+            if (!empty($filters['created_until'])) {
+                $sqlFilter .= " AND project.created <= :created_until";
+                $values[':created_until'] = $filters['created_until'];
+            }
+            if (!empty($filters['published_from'])) {
+                $sqlFilter .= " AND project.published >= :published_from";
+                $values[':published_from'] = $filters['published_from'];
+            }
+            if (!empty($filters['published_until'])) {
+                $sqlFilter .= " AND project.published <= :published_until";
+                $values[':published_until'] = $filters['published_until'];
+            }
+            if (!empty($filters['updated_from'])) {
+                $sqlFilter .= " AND project.updated >= :updated_from";
+                $values[':updated_from'] = $filters['updated_from'];
+            }
+            if (!empty($filters['updated_until'])) {
+                $sqlFilter .= " AND project.updated <= :updated_until";
+                $values[':updated_until'] = $filters['updated_until'];
+            }
+            if (!empty($filters['success_from'])) {
+                $sqlFilter .= " AND project.success >= :success_from";
+                $values[':success_from'] = $filters['success_from'];
+            }
+            if (!empty($filters['success_until'])) {
+                $sqlFilter .= " AND project.success <= :success_until";
+                $values[':success_until'] = $filters['success_until'];
+            }
+            if (!empty($filters['closed_from'])) {
+                $sqlFilter .= " AND project.closed >= :closed_from";
+                $values[':closed_from'] = $filters['closed_from'];
+            }
+            if (!empty($filters['closed_until'])) {
+                $sqlFilter .= " AND project.closed <= :closed_until";
+                $values[':closed_until'] = $filters['closed_until'];
+            }
+            if (!empty($filters['passed_from'])) {
+                $sqlFilter .= " AND project.passed >= :passed_from";
+                $values[':passed_from'] = $filters['passed_from'];
+            }
+            if (!empty($filters['passed_until'])) {
+                $sqlFilter .= " AND project.passed <= :passed_until";
+                $values[':passed_until'] = $filters['passed_until'];
+            }
+
+            // @deprecated, use status instead
             if (!empty($filters['multistatus'])) {
                 $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
             }
@@ -3620,6 +3706,35 @@ namespace Goteo\Model {
                 }
 
             }
+
+            if (!empty($filters['matcher'])) {
+
+                switch ($filters['matcher']) {
+
+                    //en cualquier convocatoria
+                    case 'all':
+                        $sqlFilter .= " AND project.id IN (
+                        SELECT project_id
+                        FROM matcher_project WHERE status='active')";
+                        break;
+                    //en ninguna convocatoria
+                    case 'none':
+                        $sqlFilter .= " AND project.id NOT IN (
+                        SELECT project_id
+                        FROM matcher_project WHERE status='active')";
+                        break;
+                    //filtro en esta convocatoria
+                    default:
+                        $sqlFilter .= " AND project.id IN (
+                        SELECT project_id
+                        FROM matcher_project
+                        WHERE matcher_id = :matcher AND  status='active')";
+                        $values[':matcher'] = $filters['matcher'];
+                        break;
+                }
+
+            }
+
             if(!empty($filters['type'])) {
                 if($filters['type'] === 'promoted') {
                     // en "promote"
@@ -3722,22 +3837,49 @@ namespace Goteo\Model {
                     ";
 
             if($count) {
+                if($count === 'all') {
+                    $what = 'SUM(project.amount) AS total_amount, COUNT(project.id) AS total_projects, SUM(project_account.fee * project.amount / 100) AS total_fee';
+                    $innerJoin .= ' LEFT JOIN project_account ON project_account.project = project.id';
+                }
+                elseif($count === 'money') {
+                    $what = 'SUM(project.amount)';
+                }
+                elseif($count === 'fee') {
+                    // This is incorrect, fees are not applied to all types of invests
+                    $what = 'SUM(project_account.fee * project.amount / 100)';
+                    $innerJoin .= ' LEFT JOIN project_account ON project_account.project = project.id';
+                }
+                else {
+                    $what = 'COUNT(*)';
+                }
                 if($location_parts) {
-                    $sql .= "SELECT COUNT(id)
-                    FROM (SELECT project.id,project.project_location,project_location.latitude,project_location.longitude $from $innerJoin WHERE $where) as FirstCut
+                    $fields = 'project.id,project.amount,project.project_location,project_location.latitude,project_location.longitude';
+                    if(in_array($count, ['all', 'fee'], true)) {
+                        $fields .= ',project_account.fee';
+                    }
+                    $sql .= "SELECT $what
+                    FROM (SELECT $fields $from $innerJoin WHERE $where) as FirstCut
                     WHERE
                     {$location_parts['where']}";
                     // print_r($values);die($sql);
                 } else {
                     // Return count
-                    $sql = "SELECT COUNT(project.id)
+                    $sql = "SELECT $what
                         $from
                         $innerJoin
                         WHERE
                         $where";
-                        //die(\sqldbg($sql, $values));
                 }
-                return (int) self::query($sql, $values)->fetchColumn();
+                // die(\sqldbg($sql, $values));
+                if($count === 'all') {
+                    $ob = self::query($sql, $values)->fetchObject();
+                    return ['amount' => (float) $ob->total_amount, 'projects' => (int) $ob->total_projects, 'fee' => (float) $ob->total_fee];
+                }
+                $total = self::query($sql, $values)->fetchColumn();
+                if(in_array($count, ['money', 'fee'])) {
+                    return (float) $total;
+                }
+                return (int) $total;
             }
 
             $offset = (int) $offset;
@@ -4165,7 +4307,7 @@ namespace Goteo\Model {
             $filters=['status' => [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED]];
 
             if($matchfunding)
-            { 
+            {
                 $filters['called']=$matchfunding;
             }
 

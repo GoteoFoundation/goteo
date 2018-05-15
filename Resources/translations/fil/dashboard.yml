@@ -79,7 +79,7 @@ dashboard-menu-review_board: Pagbabago
 dashboard-menu-translate_board: Pagsasalin
 dashboard-menu-translates: 'Aking Mga Pagsasalin'
 dashboard-messegers-mail-sendto: 'Ipinadala sa %s ang mga kalahok:'
-dashboard-my-wallet-available: 'Kasalukuyan kang mayroong <span class="pool-amount"%s></span>class = "pool-desc">en sa iyong drip purse </span>'
+dashboard-my-wallet-available: 'Kasalukuyan kang mayroong <span class="pool-amount">%s</span> <span class="pool-desc">en sa iyong drip purse</span>'
 dashboard-my-wallet-contribute-button: Mag-bahagi
 dashboard-my-wallet-pool-info: 'Higit pang impormasyon tungkol sa paggamit ng iyong wallet'
 dashboard-no-projects: 'Wala kang proyekto, maaari kang lumikha ng isa<a href="/project/create">dito</a>'

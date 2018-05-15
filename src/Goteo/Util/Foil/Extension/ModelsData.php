@@ -12,7 +12,9 @@ namespace Goteo\Util\Foil\Extension;
 
 use Foil\Contracts\ExtensionInterface;
 
-use Goteo\Model\Page;
+use Goteo\Core\Model as CoreModel;
+use Goteo\Model;
+use Goteo\Util\ModelNormalizer\ModelNormalizer;
 
 class ModelsData implements ExtensionInterface
 {
@@ -34,11 +36,12 @@ class ModelsData implements ExtensionInterface
         return [
           'page' => [$this, 'page'],
           'model_static' => [$this, 'model_static'],
+          'model_list_entries' => [$this, 'model_list_entries'],
         ];
     }
     public function page($var)
     {
-        return Page::get($var);
+        return Model\Page::get($var);
     }
 
     public function model_static()
@@ -55,6 +58,25 @@ class ModelsData implements ExtensionInterface
         // print_r($res);die;
         return $res;
 
+    }
+
+    /**
+     * [model_list_entries description]
+     * @param  [type] $list [description]
+     * @return [type]       [description]
+     */
+    public function model_list_entries($list) {
+        $array = [];
+        if(!is_array($list)) return $array;
+
+        foreach($list as $key => $ob) {
+            $item = [];
+            if($ob instanceOf CoreModel) {
+                $normalizer = new ModelNormalizer($ob);
+                $array[] = $normalizer->get();
+            }
+        }
+        return $array;
     }
 
 }

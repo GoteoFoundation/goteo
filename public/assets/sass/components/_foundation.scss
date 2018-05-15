@@ -1,0 +1,59 @@
+@import "compass/css3";
+
+/* foundation components styles */
+.donor-container{
+    background-color: $background-dark-yellow;
+    padding-top: 30px;
+    .title{
+    text-transform: uppercase;
+    font-size: $font-size*0.8;
+    }
+    h1.description{
+        font-weight: bold;
+        font-size: $font-size*1.5;
+        line-height: 1.1;
+        margin: 0;
+        padding: 0;
+    }
+    .row{
+    display: flex;
+    }
+    .col-button{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-bottom: 20px;
+      .btn-white{
+        color: $color-grey;
+        padding: 13px 0px;
+        font-size: $font-size*1.2;
+        }
+    }
+}
+
+ // Tablets customization
+
+@media (max-width: $breakpoint-md + 1) {
+    .donor-container .row{
+        display: block !important;
+    }
+}
+
+@media (max-width: $breakpoint-sm - 1) {
+    .donor-container{
+        .title{
+            margin-top: 30px;
+        }
+        .row{
+            display: block !important;
+        }
+        .col-button{
+
+          .btn-white{
+                margin-top: 30px;
+            }
+        }
+    }
+}
+
+

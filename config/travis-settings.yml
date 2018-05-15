@@ -84,6 +84,15 @@ payments:
         # headerImageUrl: Some URL image for the header
         # logoImageUrl: logo URL
         # borderColor: B5DADC
+        commissions: # Per-invests commissions
+            refunded:
+                fixed: 0.35 # Paypal charges 0.35€ per invest, non-returnable
+                percent: 0
+            charged:
+                fixed: 0.35 # Paypal charges 0.35€ per invest, non-returnable
+                percent: 3.4 # 3.4% of the amount per invest
+            # Other variables may be added on other methods and
+            # customize the calculateFee() in the corresponding class
 
     # This is a built-in payment method using internal credit
     #
@@ -122,6 +131,8 @@ proxies:
 
 # Default commission fee
 fee: 4
+# VAT to apply to the commission fee
+vat: 10.5 # In Spain VAT is 21% but as a foundation and other considerations only applies at 50%
 
 # Filesystem used by goteo
 filesystem:

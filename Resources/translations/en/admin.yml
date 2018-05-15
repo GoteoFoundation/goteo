@@ -5,9 +5,49 @@ admin-YES: "YES"
 admin-account-amount: 'Donated amount'
 admin-account-change-user: 'Switch user'
 admin-account-change-user-confirm: 'Are you sure you want to change the user of the contribution? The new user will be:'
+admin-account-convert-to-pool: 'Convert to Wallet'
+admin-account-convert-to-pool-confirm: 'This will eliminate the project associated with this contribution and it will be like it was a wallet purchase. ALL THE ASSOCIATED REWARDS WILL BE LOST. Continue?'
+admin-account-convert-to-pool-ko: 'Could not convert contribution to wallet: %s'
+admin-account-convert-to-pool-ok: 'Converted to money contribution correctly'
+admin-account-detail: 'Transaction Details'
+admin-account-donation: Donate
+admin-account-edit-reward: 'Manage return/address'
+admin-account-invalid-invest: 'Contribution [%s] not found!'
+admin-account-invest-date: 'Date of Contribution'
+admin-account-invest-non-pool-refundable: 'This contribution can not be reimbursed to the virtual wallet. You can only reimburse the contributions in the "Charged" status'
+admin-address: Direction
+admin-all: All
+admin-back: Back
+admin-back-detail: 'Back to Detail'
+admin-back-list: 'Back to Listed'
+admin-contents: 'Texts and Translations'
+admin-empty-list: 'No results found'
+admin-mailing-back-to-list: 'Back to Messages'
+admin-mailing-created: 'Created on'
+admin-mailing-new-massive: 'You have created a new mailing list to %TOTAL% users'
+admin-mailing-status: 'Automatic delivery status'
+admin-mailing-subject: Subject
+admin-mailing-view-and-activate: 'See the post admin to start sending'
+admin-mailing-view-in-newsletter: 'See the post admin'
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
+admin-sponsors: Services
+admin-status: Status
+admin-text-type: 'Process the text as'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Plaintext'
+admin-user: User
+admin-users: Users
+admin-yes: "Yes"
+admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
+admin-project: Project
+admin-main: Main
+admin-legacy: Legacy
+admin-projects: Projects
+admin-invests: Contributions
+admin-consultants: Consultants
 admin-project-express-discard: 'Express discard'
 admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
 admin-project-express-discard-sure: 'The project will be discarded and the owner will receive an email, ok?'
@@ -24,3 +64,43 @@ admin-project-to-publish-sure: 'Project is going to start its campaign, ok?'
 admin-project-derivation-discard: 'Discard and derivation'
 admin-project-derivation-discard-desc: 'Change the project status to Discard and sends an email derivating to others platforms'
 admin-project-derivation-discard-sure: 'The project will be discarded and the owner will receive an email derivating to other platforms, ok?'
+admin-home-title: Administrate Goteo
+
+admin-already-impersonating: 'You are already impersonating a user. Please close the session first!'
+admin-rebase-user: 'Change user ID'
+admin-edit-name: 'Change name'
+admin-edit-roles: 'Change user role'
+admin-send-email: 'Send Email'
+admin-show-roles-info: 'What can each role do?'
+admin-user-roles: 'User roles list'
+admin-view-user-projects: 'All user projects'
+admin-view-user-invests: 'All user contributions'
+admin-user-hidden: 'Private (hidden)'
+admin-user-active: 'Account active'
+admin-user-warning: 'Warning: These operations are executed without any notice to the user'
+admin-user-wallet-amount: 'Wallet credit'
+admin-user-create-invest: 'Create contribution'
+admin-mailing: 'Mailing'
+admin-user-no-mailing: 'No emails has been sent yet'
+admin-view-user-mailing: 'All mailing'
+admin-role-change-forbidden: 'You don''t have permissions to manage the role %ROLE% in this user'
+
+admin-users-global-search: 'Id, name, email or project'
+admin-title-id: Id
+admin-title-name: Name
+admin-title-fullname: Name
+admin-title-about: About
+admin-title-location: Location
+admin-title-email: Email
+admin-title-password: Password
+admin-title-avatar: Avatar
+admin-title-roles: Roles
+admin-title-amount: Invested
+admin-title-info: Info
+
+admin-all-project-referers: 'Origin of visits to project pages'
+admin-all-invests-referers: 'Origin of visits in successful contributions to projects'
+admin-all-call-referers: 'Origin of visits to matchfunding pages'
+admin-all-project-devices: 'Device used on project pages'
+admin-all-invests-devices: 'Device used in successful contributions to projects'
+admin-all-call-devices: 'Device used on matchfunding pages'

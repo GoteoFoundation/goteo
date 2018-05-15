@@ -17,8 +17,15 @@ landing-title-banner: 'At Goteo,<br>contributing pays off'
 landing-type-company: Company
 landing-type-person: 'Individual'
 pool-invest-share-discover: 'Discover projects'
+pool-invest-spread-social: 'Just loaded my virtual wallet on #Goteo You also can donate now and share later wherever you want '
+pool-invest-suggest-projects: 'Projects that may interest you'
 pool-make-sure-title: 'Confirm data for the certificate'
+pool-pay-method-title: 'Make your contribution'
+pool-recharge-amount-text: 'You decide what amount you want to charge your virtual wallet with'
+pool-recharge-title: 'Load your virtual wallet'
 pool-share-title: 'Download your certificate and share'
+pool-step-1: Load
 pool-step-2: Payment
+pool-step-3: Certificate
 pool-step-4: Share
 recharge-button: Charge

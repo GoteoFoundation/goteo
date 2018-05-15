@@ -72,8 +72,9 @@ class SocialAuth {
 	 * */
 	function __construct($provider='') {
         $URL = Config::get('url.url_lang') ? Config::get('url.url_lang') : Config::get('url.main');
-        if(substr($URL, 0, 2) === '//') $URL = HTTPS_ON ? "https:$URL" : "http:$URL";
-        if(substr(strtolower($URL), 0, 4) !== 'http') $URL = HTTPS_ON ? "https://$URL" : "http://$URL";
+        $is_ssl = Config::get('ssl');
+        if(substr($URL, 0, 2) === '//') $URL = $is_ssl ? "https:$URL" : "http:$URL";
+        if(substr(strtolower($URL), 0, 4) !== 'http') $URL = $is_ssl ? "https://$URL" : "http://$URL";
         $this->host = $URL;
 
 		$this->original_provider = $provider;

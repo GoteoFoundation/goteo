@@ -42,11 +42,14 @@ admin-account-user-changed-error: 'No se ha podido cambiar el usuario del aporte
 admin-account-user-changed-successfully: 'Se ha cambiado el usuario del aporte [%ID%] a [%NAME%]'
 admin-address: Dirección
 admin-all: Todos
+admin-global: Global
 admin-back: Volver
 admin-back-detail: 'Volver al detalle'
 admin-back-list: 'Volver al listado'
 admin-contents: 'Textos y Traducciones'
 admin-empty-list: 'No se han encontrado registros'
+admin-activity: Actividad
+admin-communications: Comunicaciones
 admin-home: Portada
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comuncaciones'
@@ -65,18 +68,33 @@ admin-newsletter-mind-activate: 'Actívalo para que se envíe'
 admin-no: 'No'
 admin-percent: Porcentaje
 admin-project: Proyecto
+admin-main: Principal
+admin-legacy: Antiguos
 admin-projects: Proyectos
+admin-consultants: 'Asesores'
+admin-invests: Aportes
 admin-filters: 'Filtros'
 admin-remove-filters: 'Quitar filtros'
-admin-sponsors: Servicios
+admin-services: Servicios
+admin-sponsors: Sponsors
+admin-others: Otros
+admin-summary: Resumen
+admin-origins: Analítica de visitas
 admin-status: Estado
 admin-text-type: 'Procesar el texto como'
 admin-text-type-html: HTML
 admin-text-type-md: Markdown
 admin-text-type-plain: 'Texto simple'
 admin-user: Usuario
+admin-user-no-projects: 'No ha creado ningún proyecto todavía'
+admin-user-no-invests: 'No ha hecho ninguna donación todavía'
 admin-users: Usuarios
+admin-users-add: Crear nuevo usuario
+admin-calls: Convocatorias
+admin-matchers: Matchers
+admin-channels: Canales
 admin-yes: Si
+admin-impersonate: Suplantar
 admin-impersonate-user: Suplantar a %s
 admin-project-express-discard: 'Rechazo express'
 admin-project-express-discard-desc: 'Pasa el proyecto a estado Descartado y manda un mail'
@@ -94,3 +112,247 @@ admin-project-to-publish-sure: 'El proyecto va a comenzar su campaña, ¿comenza
 admin-project-derivation-discard: 'Rechazo con derivación'
 admin-project-derivation-discard-desc: 'Pasa el proyecto a estado Descartado y manda un mail derivando a otra plataforma más adecuada'
 admin-project-derivation-discard-sure: 'Se va a enviar un mail automáticamente derivando a otra plataforma y pasará a estado descartado, ¿ok?'
+admin-home-title: Administrar Goteo
+admin-list: Listado
+admin-stats: Estadísticas
+admin-list-total: 'Total: <strong>%s</strong> resultados'
+admin-search-global: 'Proyecto, canal, convocatoria...'
+
+admin-already-impersonating: 'Ya estas suplantando un usuario, por favor cierra primero la sesión!'
+admin-rebase-user: 'Cambiar el ID de usuario'
+admin-edit-name: 'Cambiar el nombre'
+admin-edit-roles: 'Cambiar los roles del usuario'
+admin-send-email: 'Enviar Email'
+admin-show-roles-info: '¿Que puede hacer cada rol?'
+admin-user-roles: 'Lista de roles de usuario'
+admin-view-user-projects: 'Todos los proyectos'
+admin-view-user-invests: 'Todos los aportes'
+admin-user-hidden: 'Privado (escondido)'
+admin-user-active: 'Cuenta activa'
+admin-user-warning: 'Atención: Estas operaciones se ejecutan sin enviar ningún aviso al usuario'
+admin-user-wallet-amount: 'Crédito en el monedero'
+admin-user-create-invest: 'Crear aporte'
+admin-mailing: 'Mailing'
+admin-user-no-mailing: 'No se le ha enviado ningún email todavía'
+admin-view-user-mailing: 'Todos los envíos'
+admin-role-change-forbidden: 'No tienes permiso para gestionar el rol %ROLE% en este usuario'
+
+admin-users-global-search: 'Id, nombre, email o proyecto'
+admin-title-id: Id
+admin-title-name: Nombre
+admin-title-about: Info
+admin-title-location: Localización
+admin-title-fullname: Nombre
+admin-title-email: Email
+admin-title-password: Contraseña
+admin-title-avatar: Avatar
+admin-title-roles: Roles
+admin-title-amount: Invertido
+admin-title-info: Info
+
+admin-all-project-referers: 'Origen de visitas en los proyectos'
+admin-all-invests-referers: 'Origen de visitas en los aportes a proyectos'
+admin-all-call-referers: 'Origen de visitas a las convocatorias'
+admin-all-project-devices: 'Dispositivo usado en las páginas de proyectos'
+admin-all-invests-devices: 'Dispositivo usado en los aportes a proyectos'
+admin-all-call-devices: 'Dispositivo usado en las páginas de convocatorias'
+
+
+admin-aggregate-autoupdate: 'Auto-update'
+admin-aggregate-timeline: 'Línea de tiempo'
+admin-aggregate-invests: 'Total de aportes'
+admin-aggretate-invests-format: '%CURRENCY% %VALUE% (%TOTAL% invests)'
+admin-aggregate-invests-desc: 'Suma de aportes por unidad de tiempo'
+admin-aggregate-invests-average: 'Media de aportes'
+admin-aggregate-invests-average-desc: 'Media de aportes por unidad de tiempo'
+admin-aggregate-projects: 'Total recaudado en proyectos'
+admin-aggretate-projects-format: '%CURRENCY% %VALUE% - %TOTAL% projects'
+admin-aggregate-projects-desc: 'Suma de aportes por unidad de tiempo'
+admin-aggregate-projects-average: 'Media recaudación en proyectos'
+admin-aggregate-projects-average-desc: 'Media de recaudación por unidad de tiempo'
+
+
+admin-stats-invest-totals: 'Aportes y comisiones'
+admin-stats-project-totals: 'Estado de los proyectos'
+admin-stats-raised: 'Ingresos brutos'
+admin-stats-active: 'Ingresos netos'
+admin-stats-refunded: 'Devoluciones'
+admin-stats-fees: 'Comisión plataforma'
+admin-stats-commissions: 'Comisión banco'
+admin-stats-matchfunding: 'Matchfunding'
+
+admin-stats-raised-method: 'Ingresos brutos segun método de pago'
+admin-stats-raised-method-desc: 'Los ingresos brutos incluyen todo el dinero que se ha cobrado por la plataforma en algun momento (se incluyen los aportes a proyectos fallidos, además de los aportes directos al monedero o provenientes de proyectos fallidos con retorno al monedero).<br><em>No se incluyen los aportes provenientes del monedero</em> (a menos que se escoja ese medio de pago)</b>'
+admin-stats-active-method: 'Ingresos netos segun método de pago'
+admin-stats-active-method-desc: 'Los ingresos netos incluyen todo el dinero cobrado por la plataforma excluyendo devoluciones (se incluyen los aportes al monedero, directos y provenientes de proyectos fallidos con retorno al monedero).<br><em>No se incluyen los aportes provenientes del monedero</em> (a menos que se escoja ese medio de pago).'
+admin-stats-refunded-method: 'Devoluciones segun método de pago'
+admin-stats-refunded-method-desc: 'Las devoluciones incluyen todos los metodos de pago (incluyen los aportes desde el monedero)'
+admin-stats-commissions-method: 'Comisiones bancarias segun método de pago'
+admin-stats-fees-method: 'Comisión de la plataforma segun método de pago'
+admin-stats-from_matchfunding: 'Detalle de proyectos con Matchfunding'
+admin-stats-matchfunding-part: 'Proyectos con Matchfunding'
+admin-stats-users-part: 'Proyectos sin Matchfunding'
+admin-stats-match-part: 'Parte Multiplicadora'
+admin-stats-citizens-part: 'Parte Ciudadana'
+admin-stats-matcher-part: 'Parte Matcher'
+admin-stats-invest-destination: 'Destino de los aportes'
+admin-stats-invest-in_wallet: 'Total acumulado en el monedero'
+admin-stats-to_projects: 'A proyectos'
+admin-stats-to_wallet: 'Al monedero'
+admin-stats-to_matcher_wallet: 'Al monedero de Matchers'
+admin-stats-to_fee: 'A comisiones'
+admin-stats-to_fee-percent: 'Comisión efectiva'
+admin-stats-in_wallet: 'En el monedero'
+admin-stats-in_matcher_wallet: 'En el monedero de Matchers'
+admin-stats-in_users_wallet: 'En el monedero de usuarios'
+
+admin-stats-matchfunding-global: 'Influencia Matchfunding'
+
+admin-stats-refunded-parts: 'Desglose de devoluciones'
+admin-stats-fees-parts: 'Desglose de comisiones'
+admin-stats-invest-active-parts: 'Destino ingresos netos'
+admin-stats-invest-in_wallet-parts: 'Desglose del monedero'
+
+admin-losts: Pèrdidas
+admin-raised: Recaudado
+admin-active: Cobrado
+admin-refunded: Devuelto
+admin-refunded-to_users: Devuelto a usuarios
+admin-refunded-to_wallet: Devuelto al monedero
+admin-commissions: Comisión
+admin-fees: Comisión plataforma
+admin-user-fee: Comisión ciudadana
+admin-call-fee: Comisión Matchfunding (sin Matchers)
+admin-matcher-fee: Comisión Matchers
+admin-vat: IVA
+admin-diff: Diferencia
+admin-the_day: El día
+admin-the_week: La semana
+admin-the_month: El mes
+admin-the_year: El año
+
+admin-custom: Segun filtro
+admin-total: Total
+admin-today: Hoy
+admin-yesterday: Ayer
+admin-week: Esta semana
+admin-last_week: El mismo día de la semana pasada
+admin-last_week_complete: Toda la semana pasada
+admin-month: Este mes
+admin-last_month: El mismo día del mes pasado
+admin-last_month_complete: Todo el mes pasado
+admin-year: Este año
+admin-last_year: El mismo día del año pasado
+admin-last_year_complete: Todo el año pasado
+
+
+
+
+admin-projects-created-today: 'Creados hoy'
+admin-projects-created-yesterday: 'Creados ayer'
+admin-projects-created-week: 'Creados esta semana'
+admin-projects-created-last_week: 'Creados la semana pasada'
+admin-projects-created-month: 'Creados este mes'
+admin-projects-created-last_month: 'Creados el mes pasado'
+admin-projects-created-year: 'Creados este año'
+admin-projects-created-last_year: 'Creados el año pasado'
+
+admin-projects-negotiating-today: 'En negociación hoy'
+admin-projects-negotiating-yesterday: 'En negociación ayer'
+admin-projects-negotiating-week: 'En negociación esta semana'
+admin-projects-negotiating-last_week: 'En negociación la semana pasada'
+admin-projects-negotiating-month: 'En negociación este mes'
+admin-projects-negotiating-last_month: 'En negociación el mes pasado'
+admin-projects-negotiating-year: 'En negociación este año'
+admin-projects-negotiating-last_year: 'En negociación el año pasado'
+
+admin-projects-published-today: 'Publicados hoy'
+admin-projects-published-yesterday: 'Publicados ayer'
+admin-projects-published-week: 'Publicados esta semana'
+admin-projects-published-last_week: 'Publicados la semana pasada'
+admin-projects-published-month: 'Publicados este mes'
+admin-projects-published-last_month: 'Publicados el mes pasado'
+admin-projects-published-year: 'Publicados este año'
+admin-projects-published-last_year: 'Publicados el año pasado'
+admin-projects-rejected-today: 'Descartados hoy'
+admin-projects-rejected-yesterday: 'Descartados ayer'
+admin-projects-rejected-week: 'Descartados esta semana'
+admin-projects-rejected-last_week: 'Descartados la semana pasada'
+admin-projects-rejected-month: 'Descartados este mes'
+admin-projects-rejected-year: 'Descartados este año'
+admin-projects-rejected-last_year: 'Descartados el año pasado'
+admin-projects-review-today: 'En revisión hoy'
+admin-projects-review-yesterday: 'En revisión ayer'
+admin-projects-review-week: 'En revisión esta semana'
+admin-projects-review-last_week: 'En revisión la semana pasada'
+admin-projects-review-month: 'En revisión este mes'
+admin-projects-review-last_month: 'En revisión el mes pasado'
+admin-projects-review-year: 'En revisión este año'
+admin-projects-review-last_year: 'En revisión el año pasado'
+
+admin-invest-raised-amount-today: 'Recaudado hoy'
+admin-invest-raised-total-today: 'Donaciones hoy'
+admin-invest-raised-amount-yesterday: 'Recaudado ayer'
+admin-invest-raised-total-yesterday: 'Donaciones ayer'
+admin-invest-raised-amount-week: 'Recaudado esta semana'
+admin-invest-raised-amount-last_week: 'Recaudado la semana pasada'
+admin-invest-raised-total-week: 'Donaciones esta semana'
+admin-invest-raised-total-last_week: 'Donaciones la semana pasada'
+admin-invest-raised-amount-month: 'Recaudado este mes'
+admin-invest-raised-amount-last_month: 'Recaudado el mes pasado'
+admin-invest-raised-total-month: 'Donaciones este mes'
+admin-invest-raised-total-last_month: 'Donaciones el mes pasado'
+admin-invest-raised-amount-year: 'Recaudado este año'
+admin-invest-raised-total-year: 'Donaciones este año'
+admin-invest-raised-amount-last_year: 'Recaudado el año pasado'
+admin-invest-raised-total-last_year: 'Donaciones el año pasado'
+admin-invest-commissions-today: 'Comisión banco hoy'
+admin-invest-commissions-yesterday: 'Comisión banco ayer'
+admin-invest-commissions-week: 'Comisión banco esta semana'
+admin-invest-commissions-last_week: 'Comisión banco la semana pasada'
+admin-invest-commissions-month: 'Comisión banco este mes'
+admin-invest-commissions-last_month: 'Comisión banco el mes pasado'
+admin-invest-commissions-year: 'Comisión banco este año'
+admin-invest-commissions-last_year: 'Comisión banco el año pasado'
+admin-invest-commissions-lost-today: 'Pérdida por aportes devueltos hoy'
+admin-invest-commissions-lost-yesterday: 'Pérdida por aportes devueltos ayer'
+admin-invest-commissions-lost-week: 'Pérdida por aportes devueltos esta semana'
+admin-invest-commissions-lost-month: 'Pérdida por aportes devueltos este mes'
+admin-invest-commissions-lost-year: 'Pérdida por aportes devueltos este año'
+admin-invest-commissions-lost-last_year: 'Pérdida por aportes devueltos el año pasado'
+admin-invest-commissions-tpv-today: 'Comisión TPV hoy'
+admin-invest-commissions-tpv-yesterday: 'Comisión TPV ayer'
+admin-invest-commissions-tpv-week: 'Comisión TPV esta semana'
+admin-invest-commissions-tpv-last_week: 'Comisión TPV la semana pasada'
+admin-invest-commissions-tpv-month: 'Comisión TPV este mes'
+admin-invest-commissions-tpv-last_month: 'Comisión TPV el mes pasado'
+admin-invest-commissions-tpv-year: 'Comisión TPV este año'
+admin-invest-commissions-tpv-last_year: 'Comisión TPV el año pasado'
+admin-invest-commissions-paypal-today: 'Comisión Paypal hoy'
+admin-invest-commissions-paypal-yesterday: 'Comisión Paypal ayer'
+admin-invest-commissions-paypal-week: 'Comisión Paypal esta semana'
+admin-invest-commissions-paypal-last_week: 'Comisión Paypal la semana pasada'
+admin-invest-commissions-paypal-month: 'Comisión Paypal este mes'
+admin-invest-commissions-paypal-last_month: 'Comisión Paypal el mes pasado'
+admin-invest-commissions-paypal-year: 'Comisión Paypal este año'
+admin-invest-commissions-paypal-last_year: 'Comisión Paypal el año pasado'
+
+admin-invest-fees-today: 'Comisión Goteo hoy'
+admin-invest-fees-yesterday: 'Comisión Goteo ayer'
+admin-invest-fees-week: 'Comisión Goteo esta semana'
+admin-invest-fees-last_week: 'Comisión Goteo la semana pasada'
+admin-invest-fees-month: 'Comisión Goteo este mes'
+admin-invest-fees-last_month: 'Comisión Goteo el mes pasado'
+admin-invest-fees-year: 'Comisión Goteo este año'
+admin-invest-fees-last_year: 'Comisión Goteo el año pasado'
+
+admin-invest-diff-yesterday: 'Diferencia con el día anterior'
+admin-invest-diff-last_week: 'Diferencia con la semana anterior'
+admin-invest-diff-last_month: 'Diferencia con el mes anterior'
+admin-invest-diff-last_year: 'Diferencia con el año anterior'
+
+admin-stats-projects-channel-desc: 'Proyectos que pertenecen al canal (o nodo)'
+admin-stats-projects-call-desc: 'Proyectos que pertenecen a la convocatoria'
+admin-stats-projects-matcher-desc: 'Proyectos que están activos en el matcher'
+admin-stats-projects-consultant-desc: 'Proyectos que tienen assignados este asesor'
+admin-stats-projects-project-desc: 'Aportes al proyecto'

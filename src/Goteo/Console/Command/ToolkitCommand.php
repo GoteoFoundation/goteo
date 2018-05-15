@@ -220,35 +220,36 @@ EOT
             $paid_status = Invest::STATUS_PAID .','. Invest::STATUS_CHARGED;
 
 
-            $sql_total_to_pool = "SELECT SUM(amount) FROM invest i1 WHERE i1.user=invest.user
+            $sql_total_to_pool = "SELECT SUM(amount) FROM invest i1 WHERE i1.user=u.id
                 # AND status IN ($returned_status)
-                 AND status > 0
+                AND status > 0
                 AND pool=1
                 AND (project IN ($sql_failed_projects) OR ISNULL(project) OR status=".Invest::STATUS_TO_POOL.")
                 AND method!='pool'";
 
-            $sql_total_from_pool = "SELECT SUM(amount) FROM invest i2 WHERE i2.user=invest.user
+            $sql_total_from_pool = "SELECT SUM(amount) FROM invest i2 WHERE i2.user=u.id
                 AND status IN ($paid_status)
                 AND method='pool'";
 
-            $sql = "SELECT DISTINCT invest.user, user_pool.amount,
+            $sql = "SELECT DISTINCT u.id as user, p.amount,
                 ($sql_total_to_pool) as total_to_pool,
                 ($sql_total_from_pool) as total_from_pool
-             FROM invest
-             LEFT JOIN user_pool ON user_pool.user=invest.user
-             WHERE invest.pool=1 OR invest.method='pool'";
+             FROM user u
+             LEFT JOIN user_pool p ON p.user=u.id
+             ";
              // echo $sql;
             $query = Pool::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User\Pool') as $pool) {
+                $amount = (int)$pool->amount;
                 $total_to_pool = (int)$pool->total_to_pool;
                 $total_from_pool = (int)$pool->total_from_pool;
                 $diff = $total_to_pool - $total_from_pool;
-                if($pool->amount == 0 && $total_to_pool == 0 && $total_from_pool == 0) {
+                if($amount == 0 && $total_to_pool == 0 && $total_from_pool == 0) {
                     continue;
                 }
                 // pool inconsistences
-                if($pool->amount != $diff) {
-                    $output->write("USER <info>{$pool->user}</info> TOTAL TO POOL: <info>{$total_to_pool}</info> TOTAL FROM POOL: <info>{$total_from_pool}</info> DIFF: <error>{$diff}</error> AMOUNT: <comment>{$pool->amount}</comment> ");
+                if($amount != $diff) {
+                    $output->write("USER <info>{$pool->user}</info> TOTAL TO POOL: <info>{$total_to_pool}</info> TOTAL FROM POOL: <info>{$total_from_pool}</info> DIFF: <error>{$diff}</error> AMOUNT: <comment>{$amount}</comment> ");
                     if($update) {
                         $output->writeln("<comment>Pool amount changed to $diff</comment>");
                         $errors = [];
@@ -270,14 +271,22 @@ EOT
         }
         elseif($scope == 'poolstatus') {
             $output->writeln("Checking pool statuses related to project statuses...");
+            $output->writeln("<comment>NOTE: Not all issues found here are necessarily problems. Use with caution.</comment>");
+            if($project) {
+                $sqladd = ' AND project=:project';
+            } else {
+                $values = [];
+            }
 
-            $sql = "SELECT * FROM invest WHERE status>0 AND pool=1 AND (project IN ($sql_failed_projects) OR ISNULL(project))";
-            $subquery = Invest::query($sql);
+            $sql = "SELECT * FROM invest WHERE status>0 AND pool=1 AND (project IN ($sql_failed_projects) OR ISNULL(project))$sqladd";
+            // die(\sqldbg($sql, $values));
+            $subquery = Invest::query($sql, $values);
             foreach($subquery->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest') as $invest) {
                 $project = $invest->project;
                 if(empty($project)) $project = 'POOL-PAYMENT';
-                $output->write("User: <info>{$invest->user}</info> Failed project: <info>$project</info> Invest: {$invest->id} Amount: <comment>{$invest->amount}</comment> Method: <comment>{$invest->method}</comment> Status: <comment>{$invest->status}</comment> ");
+                $info = "User: <info>{$invest->user}</info> Failed project: <info>$project</info> Invest: {$invest->id} Amount: <comment>{$invest->amount}</comment> Method: <comment>{$invest->method}</comment> Status: <comment>{$invest->status}</comment> ";
                 if($invest->status != Invest::STATUS_TO_POOL) {
+                    $output->write($info);
                     if($update) {
                         $output->writeln("<comment>Status changed to " . Invest::STATUS_TO_POOL . "</comment>");
                         $invest->setStatus(Invest::STATUS_TO_POOL);
@@ -287,13 +296,17 @@ EOT
                     }
                     $index++;
                 } else {
-                    $output->writeln("<info>OK</info>");
+                    if($output->isVerbose()) {
+                        $output->write($info);
+                        $output->writeln("<info>OK</info>");
+                    }
                 }
             }
 
             $output->writeln("Checking pool statuses related to invests statuses...");
-            $sql = "SELECT * FROM invest WHERE status=" . Invest::STATUS_TO_POOL. " AND (project NOT IN ($sql_failed_projects) OR ISNULL(project))";
-            $subquery = Invest::query($sql);
+            $sql = "SELECT * FROM invest WHERE status=" . Invest::STATUS_TO_POOL. " AND (project NOT IN ($sql_failed_projects) OR ISNULL(project))$sqladd";
+
+            $subquery = Invest::query($sql, $values);
             foreach($subquery->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest') as $invest) {
                 if(!$invest->getProject()) {
                     continue;

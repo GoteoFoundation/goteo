@@ -48,7 +48,7 @@ class GoteoPost
      return "
             ALTER TABLE `post` DROP COLUMN `subtitle`;
             ALTER TABLE `post_lang` DROP COLUMN `subtitle`;
-            ALTER TABLE `header_image` DROP COLUMN `subtitle`;
+            ALTER TABLE `post` DROP COLUMN `header_image`;
 
       ";
   }

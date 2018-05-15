@@ -1,0 +1,54 @@
+{
+  "name": "metrics-graphics",
+  "main": [
+    "dist/metricsgraphics.js",
+    "dist/metricsgraphics.css"
+  ],
+  "dependencies": {
+    "d3": ">=4"
+  },
+  "ignore": [
+    ".DS_Store",
+    ".git",
+    ".gitignore",
+    "examples",
+    "gulp",
+    "gulpfile.js",
+    "index.js",
+    "node_modules",
+    "package.json",
+    "src",
+    "testem.json",
+    "tests"
+  ],
+  "license": "MPL-2.0",
+  "authors": [
+    "Ali Almossawi",
+    "Ali Almossawi (http://twitter.com/alialmossawi)>",
+    "Hamilton Ulmer",
+    "Hamilton Ulmer (http://twitter.com/hamiltonulmer)>"
+  ],
+  "homepage": "http://metricsgraphicsjs.org",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mozilla/metrics-graphics.git"
+  },
+  "keywords": [
+    "metrics-graphics",
+    "metricsgraphicsjs",
+    "metricsgraphics",
+    "metricsgraphics.js",
+    "d3 charts"
+  ],
+  "version": "2.13.0",
+  "_release": "2.13.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.13.0",
+    "commit": "f49de3634b5825fc03c3bbbe8aff7252acea0765"
+  },
+  "_source": "https://github.com/mozilla/metrics-graphics.git",
+  "_target": "^2.13.0",
+  "_originalSource": "metrics-graphics",
+  "_direct": true
+}

@@ -26,6 +26,16 @@ for the JavaScript code in this page.
 d3.goteo = d3.goteo || {};
 
 
-d3.goteo.ringchart = function(){
+d3.goteo.ringchart = function(settings){
+    // defaults
+    var width = settings && settings.width || 600,
+      height = settings && settings.height || 300;
 
+    function generator(selection){
+        selection.each(function(dataSet) {
+            console.log('ring graph dataset',dataSet);
+        });
+    }
+
+    return generator;
 };

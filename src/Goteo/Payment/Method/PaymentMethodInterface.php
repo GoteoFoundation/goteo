@@ -118,4 +118,17 @@ interface PaymentMethodInterface {
      * @return Ommnipay\Common\Message\ResponseInterface Omnipay Response Object
      */
     public function refund();
+
+    /**
+     * Calculates banks fee in a generic way, based on settings.yml config and following the Paypal fees rules (which suits many gateways)
+     * @return float
+     */
+    static public function calculateComission($total_invests, $total_amount, $returned_invests = 0, $returned_amount = 0);
+
+    /**
+     * Internal payments does not increased raised amounts
+     * (pool)
+     * @return boolean
+     */
+    static public function isInternal();
 }

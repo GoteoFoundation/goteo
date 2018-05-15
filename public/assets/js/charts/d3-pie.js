@@ -26,12 +26,13 @@ for the JavaScript code in this page.
 d3.goteo = d3.goteo || {};
 
 
-d3.goteo.piechart = function(){
-  // defaults
-  var width = "450",
-    height = 300,
-    outerRadius = "150",
-    innerRadius = "15";
+d3.goteo.pieChart = function(settings){
+
+// defaults
+  var width = settings && settings.width || 450,
+      height = settings && settings.height || 300,
+      outerRadius = settings && settings.outerRadius || 150,
+      innerRadius = settings && settings.innerRadius || 15;
 
   var _colors = d3.scaleOrdinal(d3.schemeCategory20c);
   var colors = function(d, i) {
@@ -40,31 +41,32 @@ d3.goteo.piechart = function(){
     // console.log(label, d, i, _colors(i));
     return _colors(i);
   };
+
   function generator(selection){
     selection.each(function(dataSet) {
-		var pie = d3.pie().value(function(d) { return d.value; });
+        var pie = d3.pie().value(function(d) { return d.value; });
         var tot = 0;
         dataSet.forEach(function(e){ tot += e.value; });
-		//Create SVG element
-		var viewBox = "0 0 " + width + " " + height;
-		var svg = d3.select(this)
-		            .append("svg")
-                .attr("viewBox", viewBox)
-		            .attr("preserveAspectRatio", "xMinYMin meet");
+        //Create SVG element
+        var viewBox = "0 0 " + width + " " + height;
+        var svg = d3.select(this)
+            .append("svg")
+            .attr("viewBox", viewBox)
+            .attr("preserveAspectRatio", "xMinYMin meet");
 
-		var arc = d3.arc()
+        var arc = d3.arc()
             .innerRadius(innerRadius)
             .outerRadius(outerRadius);
 
         var arcs = svg.selectAll("g.arc")
-	        .data(pie(dataSet))
-	        .enter()
-	        .append("g")
-	        .attr("class", "arc")
-	        .attr("transform", "translate(" + outerRadius + ", " + outerRadius + ")");
+            .data(pie(dataSet))
+            .enter()
+            .append("g")
+            .attr("class", "arc")
+            .attr("transform", "translate(" + outerRadius + ", " + outerRadius + ")");
 
-  		arcs.append("path").attr("fill", colors)
-  			    .attr("d", arc)
+        arcs.append("path").attr("fill", colors)
+                .attr("d", arc)
             .on("mouseover",function(e){
                 d3.select(this)
                 .attr("fill-opacity", ".8")

@@ -3,7 +3,7 @@
 /* Dashboard  */
 
 /* dashboard containers */
-.dashboard {
+.dashboard,.admin {
   background: $background-white;
   color: $secondary-color;
   margin-bottom: 20px;
@@ -53,6 +53,14 @@
     line-height: 1.5;
     font-weight: normal;
     text-transform: uppercase;
+  }
+  h1,h2,h3,h4,h5,h6 {
+    &.title {
+      border-bottom: 1px solid;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+      background: #f0f0f0;
+      padding: 2px 4px 1px 4px;
+    }
   }
   dl {
     dd {
@@ -109,8 +117,8 @@
 
   .nav-tabs {
     li.active > a {
-        background-color: $background-light;
-        border-bottom-color: $background-light;
+        background-color: $background-light-body;
+        border-bottom-color: $background-light-body;
         font-weight: 500;
     }
     &.nav-justified > li {
@@ -237,8 +245,8 @@
   }
   .loading {
     background:url(../img/ring.gif) no-repeat center;
-    min-height: 60px;
-    background-size: contain;
+    min-height: 48px;
+    background-size: 32px;
   }
 
   .btn {

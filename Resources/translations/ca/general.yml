@@ -31,6 +31,8 @@ error-user-email-token-invalid: 'El codi no és correcte'
 error-user-password-confirm: 'La confirmació de contrasenya no coincideix'
 error-user-password-empty: 'No has posat la contrasenya'
 error-user-password-invalid: 'La contrasenya és massa curta'
+error-user-id-invalid: 'El id d''usuari no es vàlid. Useu només caràcters a-z 0-9'
+error-user-id-exists: 'Ja hi ha un usuari registrat amb aquest id'
 error-user-wrong-password: 'La contrasenya no és correcta'
 explain-project-progress: 'Aquest gràfic explica d''una manera visual el nivell de dades que has introduït juntament amb una avaluació bàsica que fa el sistema. Per poder enviar el projecte has de superar el 80%. Els criteris que fan pujar aquest "termòmetre" tenen a veure amb la informació rellevant que facilites, els media, imatges i links que introdueixes, si tries una llicència més oberta que una altre, la coherència del teu pressupost respecte a les tasques a desenvolupar, etc. No perdis de vista els consells de la columna dreta, que guien durant tot el procés.'
 fancybox: 'Text fancybox'
@@ -63,6 +65,7 @@ project-invest-total: 'Total d''aportacions'
 project-messages-send_message-your_answer: 'Escriu aquí la teva resposta'
 project-messages-send_message_support-your_answer: 'Escriu aquí el teu missatge de col·laboració per %s'
 regular-add: Nou registre
+regular-all: Tots
 regular-admin_board: 'Panell admin'
 regular-allsome: 'tots/alguns de'
 regular-anonymous: Anònim
@@ -108,6 +111,7 @@ regular-hello: Hola
 regular-here: aquí
 regular-help: Ajuda
 regular-home: Inici
+regular-id: Identificador (ID)
 regular-identica: Identi.ca
 regular-im: Sóc
 regular-instagram: Instagram

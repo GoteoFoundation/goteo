@@ -1,0 +1,82 @@
+---
+# Default roles list
+#
+# Labels and descriptions for roles can be found in translations/{LANG}/roles.yml
+#
+# Historical roles are vip, translator, admin, caller, checker, manager, root, superadmin
+
+user: # This user is assigned automatically to all users regardless the user_role table
+    perms:
+        - create-project # create own projects, this permission is implicit
+        - edit-project   # edit own projects, this permission is implicit
+        - remove-project # remove own project, this permission is implicit
+    level: 0 # Order of the role, roles with supperior level can do some actions over this
+
+vip:
+    extends: user # inherits permissions from role "user"
+    perms:
+        - recommend-projects # personal list of recommended projects
+    level: 10
+
+translator:
+    extends: user # inherits permissions from role "user"
+    perms:
+        - translate-language # translate assigned language in user_translang table
+    level: 20
+
+caller:
+    extends: user
+    perms:
+        - view-call-project # view projects included in the user_call table
+    level: 30
+
+checker:
+    extends: user
+    perms:
+        - review-project # View/review an assigned review project before their publication
+    level: 40
+
+manager:
+    extends: user
+    perms:
+        - view-any-project # View any editing project
+        - edit-published-projects # Edit any published project
+    level: 50
+
+consultant:
+    extends: checker # inherits permissions from role "user"
+    perms:
+        - view-any-project # View any editing project
+        - publish-projects # Publish//unpublish assigned projects as a consultant
+        - edit-projects # Edit projects assigned as a consultant
+        - remove-projects # Remove projects assigned as a consultant
+        - impersonate-owners # Impersonate projects owners assigned as a consultant
+        - assign-checker # Assignate any other user for review projects
+        - admin-module-users # Can access to module UserAdminController
+    level: 60
+
+admin:
+    extends: consultant # inherits permissions from role "consultant"
+    perms:
+        - publish-any-project # Publish/unpublish any project
+        - assign-consultant # Assign consultant to a project
+        - edit-any-project # Edit any project
+        - remove-any-project # Remove any project
+        - rebase-users # Edit sensitive data in users (id, email, password) without confirmation (for users below admin unless is superadmin)
+        - impersonate-users # Impersonate any user with roles below admin if user is admin (unless user is superadmin)
+        - admin-module-users # Can access to module UserAdminController
+        - admin-module-stats # Can access to stats
+    level: 70
+
+superadmin:
+    extends: admin
+    perms:
+        # - impersonate-admins # Impersonate any user with any role (except super-admins)
+        - admin-any-module # Admin any module in Admin (instances of AdminControllerInterface)
+    level: 80
+
+root: # This user has to be assigned manually in the table user_role
+    extends: superadmin
+    perms:
+        - impersonate-everyone # Impersonate any user
+    level: 90

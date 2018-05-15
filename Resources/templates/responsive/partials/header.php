@@ -1,8 +1,12 @@
-<nav class="navbar navbar-default top-navbar">
+<nav class="navbar navbar-default top-navbar <?= $this->navClass ? $this->navClass  : '' ?>">
   <div class="container-fluid">
     <div class="navbar-header">
       <?php $this->section('header-navbar-brand') ?>
-        <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/goteo-white.svg') ?>" class="logo" alt="Goteo"></a>
+      <?php if($this->navClass): ?>
+      <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/goteo.svg') ?>" class="logo" alt="Goteo"></a>
+      <?php else: ?>
+      <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/goteo-white.svg') ?>" class="logo" alt="Goteo"></a>
+      <?php endif ?>
       <?php $this->stop(); ?>
     </div><!--/.navbar-header -->
 

@@ -38,6 +38,13 @@ $api->add('api-user-avatar-upload', new Route(
     array('POST') // methods
 ));
 
+// User property
+$api->add('api-user-property', new Route(
+    '/users/{id}/property/{prop}',
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::userPropertyAction'
+        )
+));
+
 // Projects list
 $api->add('api-projects', new Route(
     '/projects',
@@ -49,38 +56,6 @@ $api->add('api-projects', new Route(
 $api->add('api-project', new Route(
     '/projects/{id}',
     array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectAction',
-        )
-));
-
-// One Project chart preprocessed data (costs)
-$api->add('api-chart-project-costs', new Route(
-    '/charts/{id}/costs',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectCostsAction',
-        )
-));
-
-// One Project chart preprocessed data (invests)
-$api->add('api-chart-project-invests', new Route(
-    '/charts/{id}/invests',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectInvestsAction',
-        )
-));
-
-// One Project chart preprocessed data (origin)
-$api->add('api-chart-project-referer', new Route(
-    '/charts/{id}/referer/{type}',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectOriginAction',
-        'type' => 'project',
-        'group' => 'referer'
-        )
-));
-
-// One Project chart preprocessed data (origin)
-$api->add('api-chart-project-device', new Route(
-    '/charts/{id}/device/{type}',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectOriginAction',
-        'type' => 'project',
-        'group' => 'ua'
         )
 ));
 
@@ -163,6 +138,22 @@ $api->add('api-projects-invests-csv', new Route(
     array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectInvestsCSVAction'
         )
 ));
+
+
+// Calls list
+$api->add('api-calls', new Route(
+    '/calls',
+    array('_controller' => 'Goteo\Controller\Api\CallsApiController::callsAction',
+        )
+));
+
+// Channels list
+$api->add('api-channels', new Route(
+    '/channels',
+    array('_controller' => 'Goteo\Controller\Api\ChannelsApiController::channelsAction',
+        )
+));
+
 
 // Licenses list
 $api->add('api-licenses', new Route(

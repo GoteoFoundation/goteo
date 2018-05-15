@@ -15,6 +15,10 @@ body.blog {
       }
     }
 
+    .a-unstyled{
+      color: $primary-color;
+    }
+
     .top-navbar .navbar-always > a, .top-navbar .navbar-always > a i.icon, .top-navbar .navbar-always > button{
       color: $primary-color;
       background-color: transparent;
@@ -58,11 +62,35 @@ body.blog {
       text-align: center;
     }
 
+    h2.tag-title{
+      padding-top: 30px;
+      text-align: center;
+    }
+
     /* Sticky menu */
     
      div.sticky-menu{
       padding-top: 10px;
       background-color: $background-main-home;
+      &.sticky-list{
+        padding-top:0 !important;
+        ul.filters{
+          margin-bottom: 0px;
+          padding: 15px 0 15px 0;
+          div.foundation-mark{
+            display: block;
+            top: 20%;
+            img.logo{
+              width: 40px;
+              height: 40px;
+            }
+            h3{
+              font-size: 16.5px;
+              margin-left: 10px;
+            }
+          }
+        }
+      }
       .social{
         margin-left: 0px;
       }
@@ -71,7 +99,7 @@ body.blog {
     div.section.post-header{
       position: relative;
       padding-bottom: 30px;
-      //background-color: $background-light-yellow;
+      //background-color: $background-dark-yellow;
       min-height: 450px;
 
       div.info{
@@ -127,6 +155,162 @@ body.blog {
       }
     }
 
+    div.section.related-posts{
+      padding: 40px 0 50px 0;
+      h2.title{
+        text-align: center;
+        margin-top: 0;
+        padding-bottom: 30px;
+      }
+    }
+
+    div.section.list-posts{
+      padding: 30px 0;
+      .description{
+        text-align: center;
+        font-size: $font-size*1.3;
+        font-weight: lighter;
+        padding: 40px 10%;
+      }
+      .post-widget{
+        margin-top:30px;
+      }
+    }
+    
+    ul.filters {
+      padding: 40px 0 35px 0;
+      background-color: $background-yellow;
+      a > li {
+          font-weight: 700;
+          padding: 5px 15px;
+          cursor: pointer;
+          display: inline-block;
+          color: $primary-color;
+          &.active{
+            background-color: $background-white;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px -2px #4d4d4d;
+            border: 1px solid transparent;
+          }
+      }
+    }
+
+    ul.tags{
+      padding-bottom: 30px;
+      a li {
+        background-color: $background-yellow;
+        padding: 10px 15px;
+        margin-left:10px;
+        cursor: pointer;
+        display: inline-block;
+        color: $primary-color;
+        font-weight: 400;
+        margin-top: 10px;
+      }
+      a li:hover{
+        background-color: $background-light-yellow;
+      }
+    }
+
+  .pagination{ 
+    li{
+      &.active > a{
+        background-color: #555555;
+        border-color: #555555;
+        color: $color-white;
+      }
+      a{
+        color: #555555;
+      }
+    }
+  }
+
+  /* Donate */
+  .donate-header{
+    position: relative;
+    .main-info{
+      position: absolute;
+      bottom: 20%;
+      width: 100%;
+      top: 40%;
+      .btn-pink{
+        h1{
+          text-transform: uppercase;
+          font-size: $font-size*1.5;
+          padding: 0;
+          margin: 0;
+        }
+      }
+      .text-description{
+        margin: 20px 0;
+        font-size: 37.5px;
+        font-weight: 700;
+        text-shadow: .5px .5px #3a3a3a;
+        line-height: 1.1;
+        color: $color-white;
+      }
+    }
+    .img-header{
+      width: 100%;
+      filter: brightness(85%);
+      object-fit: cover;
+      height: auto;
+    }
+
+
+  }
+
+    div.donor-text-description{
+      font-size: $font-size*1.4;
+      font-weight: lighter;
+      padding-bottom: 30px;
+      p{
+        padding-top: 40px;
+        padding-bottom: 10px;
+      }
+    }
+
+    div.donate-methods{
+      font-size: $font-size*1.4;
+      font-weight: lighter;
+      padding-top: 20px;
+      padding-bottom:30px;
+
+      .bank-transfer-account{
+        font-weight: 300;
+      }
+    }
+
+    div.foundation-accounts-donate{
+      padding: 40px 0;
+      background-color: $background-yellow;
+      .impact-title{
+        font-size: 30px;
+        font-weight: 700;
+        text-align: center;
+        padding-top: 0;
+        margin-top: 0;
+      }
+      .item{
+        margin-top: 25px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: 700;
+      }
+      .description{
+        font-size: 11px;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
+
+    }
+
+    div.foundation-accounts-text{
+      font-size: $font-size*1.4;
+      font-weight: lighter;
+      padding-top: 30px;
+      padding-bottom:30px;
+    }
 
   // Tablets customization
 
@@ -136,15 +320,40 @@ body.blog {
           padding: 40px 0px 30px 0px;
         }
       }
+
+      .donate-header .main-info{
+        top: auto;
+      }
+
     }
 
     @media (max-width: $breakpoint-sm - 1) {
 
-      div.sticky-menu {
+
+      div.sticky-menu, .filters {
           bottom: 0;
           top: auto;
           z-index: 1000;
+          overflow-y: scroll;
+          white-space: nowrap;
+          -webkit-overflow-scrolling: touch;
+          background-color: $background-yellow;
+          margin-bottom: 0px;
       }
+      div.sticky-menu{
+        padding: 15px 0 0px 0 !important;
+      }
+
+      .filters{
+        padding: 20px 0 20px 5px !important;
+      }
+
+      div.foundation-accounts-donate{
+        .item{
+          margin-bottom: 20px !important;
+        }
+      }
+
       div.section.post-header{
         position:static;
 
@@ -178,6 +387,31 @@ body.blog {
               }
             }
           }
+        }
+      }
+
+      div.section.list-posts{
+        padding: 30px 15px 0 15px
+      }
+
+      div.related-post{
+        margin-top: 20px;
+      }
+
+      .donate-header{
+        .img-header{
+          height: 350px;
+        }
+        .main-info{
+          top: auto;
+          .text-description{
+            font-size: $font-size*1.5;
+          }
+          .btn-pink h1{
+            font-size: $font-size*1.4;
+          }
+
+
         }
       }
 

@@ -12,30 +12,20 @@ else
 
 
 $this->layout('layout', [
-    'bodyClass' => 'blog',
-    'title' =>  $this->post->title,
-    'meta_description' => $this->post->subtitle ? $this->post->subtitle : $this->text_truncate($this->post->text, 100),
     'tw_image' =>  $meta_img
     ]);
 
-
-
-$this->section('head');
-
 ?>
 
-<link rel="stylesheet" href="/assets/vendor/selection-sharer/selection-sharer.css" />
+<?php $this->section('head'); ?>
 
-<?php
+    <?= $this->insert('blog/partials/styles'); ?>
 
-$this->append();
+<?php $this->append(); ?>
 
+<?php $this->section('header-navbar-brand'); ?>
 
-
-$this->section('header-navbar-brand');
-
-?>
-    <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('/img/icons/foundation.svg') ?>" class="logo" alt="Goteo"></a>
+    <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/icons/foundation.svg') ?>" class="logo" alt="Goteo"></a>
     <h3><?= $this->text('home-foundation-title') ?></h3>
 
 <?php
@@ -56,10 +46,36 @@ $this->section('content');
 
 <?php $this->section('footer') ?>
 
-<script type="text/javascript" src="/assets/vendor/selection-sharer/selection-sharer.js" ></script>
+<?= $this->insert('blog/partials/javascript') ?>
 
 <script>
-	$('div').selectionSharer();
+    $(function(){
+    	$('div').selectionSharer();
+
+        $('.slider-team').slick({
+            dots: false,
+            autoplay: true,
+            infinite: true,
+            speed: 2000,
+            autoplaySpeed: 3000,
+            fade: true,
+            arrows: false,
+            cssEase: 'linear'
+        });
+
+        $('.slider-main').slick({
+            dots: true,
+            infinite: true,
+            autoplay: false,
+            autoplaySpeed: 7000,
+            speed: 1500,
+            fade: true,
+            arrows: true,
+            cssEase: 'linear',
+            prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
+            nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
+        });
+    });
 </script>
 
 <?php $this->append() ?>

@@ -10,8 +10,10 @@
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Goteo\Application\View;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Goteo\Application\View;
+use Goteo\Application\Exception\ControllerException;
+
 
 $routes = new RouteCollection();
 $routes->add('home', new Route(
@@ -111,6 +113,20 @@ $routes->add('blog', new Route(
         )
 ));
 
+$routes->add('blog-section', new Route(
+    '/blog-section/{section}',
+    array(  '_controller' => 'Goteo\Controller\BlogController::indexAction',
+            'section' => '' //optional parameter
+        )
+));
+
+$routes->add('blog-tag', new Route(
+    '/blog-tag/{tag}',
+    array(  '_controller' => 'Goteo\Controller\BlogController::indexAction',
+            'tag' => '' //optional parameter
+        )
+));
+
 $routes->add('blog-post', new Route(
     '/blog/{post}',
     array('_controller' => 'Goteo\Controller\BlogController::postAction',
@@ -196,6 +212,24 @@ $routes->addCollection($translate_routes);
 $api_routes = include __DIR__ . '/Routes/api_routes.php';
 $api_routes->addPrefix('/api');
 $routes->addCollection($api_routes);
+$api_charts_routes = include __DIR__ . '/Routes/api_charts_routes.php';
+$api_charts_routes->addPrefix('/api');
+$routes->addCollection($api_charts_routes);
+
+// Any route not handeled before in /api
+$routes->add('api-any-route', new Route(
+        '/api/{url}',
+        array(
+            '_controller' => function($url) {
+                View::setTheme('JSON');
+                throw new ControllerException("Route [$url] not found");
+            }
+        ),
+        array(
+            'url' => '.*'
+        )
+));
+
 
 ///////// REDIRECT "/" ENDING ROUTES ///////////////
 

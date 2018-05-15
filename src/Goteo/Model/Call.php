@@ -16,7 +16,7 @@ class Call extends \Goteo\Core\Model {
 
     // CALL STATUS IDs
     const STATUS_EDITING     = 1;  // edicion
-    const STATUS_REVIEWING   = 2; // en revisFión
+    const STATUS_REVIEWING   = 2; // en revisión
     const STATUS_OPEN        = 3; // en campaña de inscripción
     const STATUS_ACTIVE      = 4; // en campaña de repartir dinero
     const STATUS_COMPLETED   = 5; // se acabo el dinero
@@ -421,6 +421,24 @@ class Call extends \Goteo\Core\Model {
         return $this->banners;
     }
 
+    public function getImage() {
+        if(!$this->imageInstance instanceOf Image) {
+            $this->imageInstance = new Image($this->image);
+        }
+        return $this->imageInstance;
+    }
+    public function getLogo() {
+        if(!$this->logoInstance instanceOf Image) {
+            $this->logoInstance = new Image($this->logo);
+        }
+        return $this->logoInstance;
+    }
+    public function getBackImage() {
+        if(!$this->backImageInstance instanceOf Image) {
+            $this->backImageInstance = new Image($this->backimage);
+        }
+        return $this->backImageInstance;
+    }
     /**
      * Handy method to know if call can be edited
      */
@@ -1198,11 +1216,31 @@ class Call extends \Goteo\Core\Model {
      * @param array filters
      * @return array of call instances
      */
-    public static function getList($filters = array(), $count= false) {
-        $calls = array();
+    public static function getList($filters = array(), $offset = 0, $limit = 10, $count = false) {
+        $values = array();
 
         // los filtros
         $sqlFilter = "";
+
+        if (!empty($filters['global'])) {
+            $sqlFilter .= ' AND (`id` LIKE :query
+                OR `name` LIKE :query
+                OR `subtitle` LIKE :query
+                OR `description` LIKE :query
+                OR `description_summary` LIKE :query
+                OR `description_nav` LIKE :query
+                )';
+            // TODO: search in `lang` too with $innerJoin
+            $values[':query'] = "%{$filters['global']}%";
+        }
+
+        if (!empty($filters['basic'])) {
+            $sqlFilter .= ' AND (`id` LIKE :basic
+                OR `name` LIKE :basic
+                OR `subtitle` LIKE :basic)';
+            // TODO: search in project_lang too with $innerJoin
+            $values[':basic'] = "%{$filters['basic']}%";
+        }
 
         if (is_array($filters['status'])) {
             $parts = [];
@@ -1279,8 +1317,8 @@ class Call extends \Goteo\Core\Model {
                 if($filters['type'] === 'explore') {
                     $innerJoin = 'INNER JOIN call_conf ON call_conf.call = call.id';
 
-                    $sqlFilter .= " AND call_conf.date_stage1_out < CURDATE()"; 
-                    
+                    $sqlFilter .= " AND call_conf.date_stage1_out < CURDATE()";
+
                     if(empty($filters['order'])) {
                         $sqlOrder = " ORDER BY call_conf.date_stage2 DESC";
                     }
@@ -1288,24 +1326,20 @@ class Call extends \Goteo\Core\Model {
                 if($filters['type'] === 'open') {
                     $innerJoin = 'INNER JOIN call_conf ON call_conf.call = call.id';
 
-                    $sqlFilter .= " AND call_conf.date_stage1_out >= CURDATE()"; 
-                    
+                    $sqlFilter .= " AND call_conf.date_stage1_out >= CURDATE()";
+
                     if(empty($filters['order'])) {
                         $sqlOrder = " ORDER BY call_conf.date_stage1_out DESC";
                     }
                 }
                 if($filters['type'] === 'all') {
                     $innerJoin = 'INNER JOIN call_conf ON call_conf.call = call.id';
-                      
                     $sqlOrder = " ORDER BY call_conf.date_stage1_out DESC";
-                    
                 }
         }
 
         if($count) {
-
             $what = 'SUM(amount)';
-
             $sql = "SELECT
                         $what
                     FROM `call`
@@ -1313,35 +1347,31 @@ class Call extends \Goteo\Core\Model {
                         $sqlFilter
                         $sqlOrder
                     ";
-
-            $query = self::query($sql, $values);
-
-            $total = self::query($sql, $values)->fetchColumn();
-
-            return (int) $total;
+            return (int) self::query($sql, $values)->fetchColumn();
         }
 
-        else
-        {
+        $offset = (int) $offset;
+        $limit = (int) $limit;
 
-            // la select
-            $sql = "SELECT
-                        id
-                    FROM `call`
-                    $innerJoin
-                    WHERE status > 0
-                        $sqlFilter
-                        $sqlOrder
-                    ";
+        // la select
+        $sql = "SELECT
+                    id
+                FROM `call`
+                $innerJoin
+                WHERE `status` > 0
+                    $sqlFilter
+                    $sqlOrder
+                    LIMIT $offset, $limit
+                ";
 
-            //echo \sqldbg($sql, $values);
+        // die(\sqldbg($sql, $values));
 
-            $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $call) {
-                $calls[] = self::get($call['id']);
-            }
-            return $calls;
+        $query = self::query($sql, $values);
+        $calls = [];
+        foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $call) {
+            $calls[] = self::get($call['id']);
         }
+        return $calls;
     }
 
     /**
@@ -2109,6 +2139,11 @@ class Call extends \Goteo\Core\Model {
             6 => Text::get('form-call_status-expired'));          // la hemos cancelado
     }
 
+    public function getTextStatus() {
+        $statuses = self::status();
+        return $statuses[$this->status];
+    }
+
     public static function blankErrors() {
         // para guardar los fallos en los datos
         $errors = array(
@@ -2197,11 +2232,11 @@ class Call extends \Goteo\Core\Model {
 
                 return true;
             } else {
-                $errors[] = 'No se ha creado el registro `call_sphere`';
+                $errors[] = 'Error creating entry in `call_sphere`';
                 return false;
             }
         } catch(\PDOException $e) {
-            $errors[] = 'No se ha podido asignar el ambito {$sphere} a la convocatoria {$this->id}.' . $e->getMessage();
+            $errors[] = "Error assigning [$sphere] to the call [{$this->id}]" . $e->getMessage();
             return false;
         }
 
@@ -2224,7 +2259,7 @@ class Call extends \Goteo\Core\Model {
                 return false;
             }
         } catch(\PDOException $e) {
-            $errors[] = 'No se ha podido quitar el ambito {$sphere} a la convocatoria {$this->id}. ' . $e->getMessage();
+            $errors[] = "Error removing [$sphere] to the call {{$this->id}]" . $e->getMessage();
             return false;
         }
     }
@@ -2234,7 +2269,7 @@ class Call extends \Goteo\Core\Model {
      */
     public static function getTotalRaised(){
         $status_active=[self::STATUS_OPEN, self::STATUS_ACTIVE, self::STATUS_COMPLETED];
-        return self::getList(['status' => $status_active], true);
+        return self::getList(['status' => $status_active],0, 0, true);
     }
 
     /*
@@ -2251,7 +2286,7 @@ class Call extends \Goteo\Core\Model {
         return Project::getPublishedProjects($this->id);
     }
 
-   
+
 
 }
 

@@ -9,6 +9,7 @@
 // 'test/spec/**/*.js'
 //
 GOTEO = {
+    dir: process.cwd(),
     app: 'public',
     templates: 'Resources/templates',
     src: 'src',
@@ -21,7 +22,7 @@ GOTEO = {
     // var/php/php.ini file to config/php.ini
     // and edit it with your own data
     phpINI: 'var/php/php.ini',
-    configFile: process.env.GOTEO_CONFIG_FILE || 'config/settings.yml'
+    configFile: process.env.GOTEO_CONFIG_FILE || process.cwd() + '/config/settings.yml'
 };
 
 module.exports = function(grunt) {
@@ -61,10 +62,8 @@ module.exports = function(grunt) {
         grunt.log.ok('Using livePort from settings: ' + livePort);
     }
 
-    var dir = process.cwd();
-    grunt.log.ok('CURRENT DIR',dir);
 
-    GOTEO.dir = dir;
+    grunt.log.ok('CURRENT DIR',GOTEO.dir);
     // Project configuration.
     grunt.initConfig({
         // Metadata.
@@ -86,7 +85,13 @@ module.exports = function(grunt) {
 
     // Default task. Just linter
     grunt.registerTask('default', ['lint']);
-    grunt.registerTask('lint', ['jshint', 'phplint']);
+    grunt.registerTask('lint', ['yamllint', 'jshint', 'phplint']);
+
+
+    // Just returns the hostname extracted from settings.yml (or GOTEO_CONFIG_FILE)
+    grunt.registerTask('hostname', function() {
+        grunt.log.writeln(config.url.main);
+    });
 
     // PRE-COMMIT ready hook
     // $ cd {repo}
@@ -96,7 +101,7 @@ module.exports = function(grunt) {
     // grunt precommit
     //
     // $ chmod +x .git/hooks/pre-commit
-    grunt.registerTask('precommit', ['newer:jshint', 'newer:phplint']);
+    grunt.registerTask('precommit', ['newer:yamllint', 'newer:jshint', 'newer:phplint']);
 
 
 
@@ -106,12 +111,14 @@ module.exports = function(grunt) {
     //  any files that need to be watched for changes, and open a browser to our dev URL
     grunt.registerTask('nginx_prepare', function() {
         ['/var/php/tmp/nginx/client_temp', '/var/php/tmp/nginx/cache', '/var/php/sessions'].forEach(function(d) {
-            grunt.file.mkdir(dir + d);
-            if( !grunt.file.exists(dir + d)) {
-                grunt.fail.fatal('Not existing dir: '+ dir + d);
+            grunt.file.mkdir(GOTEO.dir + d);
+            if( !grunt.file.exists(GOTEO.dir + d)) {
+                grunt.fail.fatal('Not existing dir: '+ GOTEO.dir + d);
             }
         });
     });
+
+    // Uses php built-in server to execute a local development server
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
             return grunt.task.run([
@@ -156,6 +163,25 @@ module.exports = function(grunt) {
         grunt.task.run(['serve']);
     });
 
+    // Use .tmp directory to build & copy files, then watches changes on the files
+    grunt.registerTask('build:watch', [
+        'clean:server',
+        'copy:devel',
+        'copy:plugins:devel',
+        'sass:devel',
+        'watch'
+    ]);
+    // Same as before but without watching files (compile and copy to .tmp only)
+    // This is used by docker to compile assets on docker-compose up
+    grunt.registerTask('build:tmp', [
+        'clean:server',
+        'copy:devel',
+        'copy:plugins:devel',
+        'sass:devel'
+    ]);
+
+    // Standard build (copy & minification to dist folder). This leaves ready the dist folder to
+    // point a real server there
     grunt.registerTask('build:dist', [
         'build'
     ]);

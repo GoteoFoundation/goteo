@@ -31,7 +31,6 @@ if(empty($t_prev)) $t_prev = '&laquo;';
 $t_next =  (string) $this->text_next;
 if(empty($t_next)) $t_next = '&raquo;';
 
-
 if (strpos($baselink,'?') === false) $baselink .= '?';
 else {
     list($baselink, $query) = explode('?', $baselink);

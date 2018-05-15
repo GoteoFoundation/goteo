@@ -121,7 +121,7 @@ class MatcherTest extends TestCase {
         //Creates users first
         foreach(self::$user_data as $i => $user) {
             if(!($uob = User::get($user['userid']))) {
-                echo "\nCreating user [{$user[userid]}]";
+                echo "\nCreating user [{$user['userid']}]";
                 $uob = new User($user);
                 $this->assertTrue($uob->save($errors, ['active']), print_r($errors, 1));
             }
@@ -129,7 +129,7 @@ class MatcherTest extends TestCase {
             $this->assertInstanceOf('\Goteo\Model\User', $uob, print_r($errors, 1));
 
             self::$user_data[$i]['ob'] = $uob;
-            echo "\nSetting user's pool [{$user[userid]}]";
+            echo "\nSetting user's pool [{$user['userid']}]";
             Matcher::query("REPLACE invest (`user`, amount, status, method, invested, charged, pool) VALUES (:user, :amount, :status, 'dummy', NOW(), NOW(), 1)", [':user' => $user['userid'], ':amount' => $user['pool'], ':status' => Invest::STATUS_TO_POOL]);
             Matcher::query("REPLACE user_pool (`user`, amount) VALUES (:user, :amount)", [':user' => $user['userid'], ':amount' => $user['pool']]);
             $this->assertEquals($user['pool'], $uob->getPool()->amount);
@@ -302,11 +302,11 @@ class MatcherTest extends TestCase {
 
     public function testCleanUsers() {
         foreach(self::$user_data as $user) {
-            echo "\nDeleting user [{$user[userid]}]";
+            echo "\nDeleting user [{$user['userid']}]";
             Matcher::query("DELETE FROM user_pool WHERE `user` = ?", $user['userid']);
             Matcher::query("DELETE FROM invest WHERE `user` = ?", $user['userid']);
             $user['ob']->dbDelete();
-            $this->assertEquals(0, Matcher::query("SELECT COUNT(*) FROM `user` WHERE id = ?", $user['userid'])->fetchColumn(), "Unable to delete user [{$user[userid]}]. Please delete id manually");
+            $this->assertEquals(0, Matcher::query("SELECT COUNT(*) FROM `user` WHERE id = ?", $user['userid'])->fetchColumn(), "Unable to delete user [{$user['userid']}]. Please delete id manually");
         }
     }
 

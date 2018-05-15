@@ -1,0 +1,18 @@
+@import "compass/css3";
+
+/* slick slider customizations*/
+
+.slick-dots{
+    bottom: 10px !important;
+}
+
+.slick-dots li.slick-active button::before{
+    color: $background-light-green !important;
+}
+
+.slick-dots li button::before{
+    color: #FFF !important;
+    opacity: 1 !important;
+    font-size: 13px !important;
+}
+

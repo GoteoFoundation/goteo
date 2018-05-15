@@ -6,7 +6,7 @@
     <div class="date"><?= $this->post->fecha ?></div>
     <?php if (count($this->post->gallery) > 1) : ?>
         <!-- carousel slider -->
-            <div id="postCarousel" class="carousel slide spacer-20" data-ride="carousel">
+            <div id="postCarousel" class="carousel slide spacer-20" data-ride="carousel" data-interval="false">
 
             <!-- Indicators -->
             <ol class="carousel-indicators">

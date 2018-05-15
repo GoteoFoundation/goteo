@@ -15,6 +15,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
 use Goteo\Library\Password;
@@ -28,6 +29,7 @@ use Goteo\Model\User\Pool as UserPool;
 use Goteo\Model\User\UserLocation;
 use Goteo\Model\User\Web as UserWeb;
 use Goteo\Model\User\Interest as UserInterest;
+use Goteo\Model\User\UserRoles;
 
 class User extends \Goteo\Core\Model {
 
@@ -112,6 +114,13 @@ class User extends \Goteo\Core\Model {
 
     public static function getLangFields() {
         return ['name', 'about'];
+    }
+
+    public function getImage() {
+        if(!$this->imageInstance instanceOf Image) {
+            $this->imageInstance = new Image($this->avatar);
+        }
+        return $this->imageInstance;
     }
 
     /**
@@ -474,7 +483,66 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
+     * Changes, email (with database duplicate checks), password (Will be encoded) or Id (changing relationships between tables)
+     * Throws ModelException on errors
+     * @param  string $field [description]
+     * @return this user (fluent)
+     */
+    public function rebase($value, $field = 'id') {
+        $values = [':id' => $this->id];
+
+        if($field === 'id') {
+            if($value !== self::idealiza($value)) {
+                throw new ModelException(Text::get('error-user-id-invalid'));
+            }
+            $query = self::query('SELECT id FROM user WHERE id = ?', $value);
+            if ($found = $query->fetchColumn()) {
+                if ($this->id !== $found) {
+                    throw new ModelException(Text::get('error-user-id-exists'));
+                }
+            }
+
+            $set = "`id` = :value ";
+            $values[":value"] = $value;
+
+        } elseif($field === 'password') {
+            if (!Check::password($value)) {
+                throw new ModelException(Text::get('error-user-password-invalid'));
+            }
+
+            $set = "`password` = :value ";
+            $values[":value"] = Password::encode($value);
+
+        } elseif($field === 'email') {
+            if (!Check::mail($value)) {
+                throw new ModelException(Text::get('error-user-email-invalid'));
+            }
+
+            $query = self::query('SELECT id FROM user WHERE email = ?', $value);
+            if ($found = $query->fetchColumn()) {
+                if ($this->id !== $found) {
+                    throw new ModelException(Text::get('error-user-email-exists'));
+                }
+            }
+
+            $set = "`email` = :value ";
+            $values[":value"] = $value;
+
+        } else {
+            throw new ModelException("Field [$field] cannot be modified here, please use method ->save()");
+        }
+
+        $sql = "UPDATE user SET $set WHERE id = :id";
+        // NOTE: Database should have now all relationships with user in foreign keys with update on cascade
+        self::query($sql, $values);
+        $this->{$field} = $values[':value'];
+
+        return $this;
+    }
+
+    /**
      * Este método actualiza directamente los campos de email y contraseña de un usuario (para gestión de superadmin)
+     * @deprecated
      */
     public function update(&$errors = array()) {
         if (!empty($this->password)) {
@@ -530,7 +598,7 @@ class User extends \Goteo\Core\Model {
 
             return true;
         } catch (\PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
+            $errors[] = "User update failed: " . $e->getMessage();
             return false;
         }
 
@@ -725,7 +793,7 @@ class User extends \Goteo\Core\Model {
                 $user->lang = Lang::current();
             }
 
-            $user->roles = $user->getRoles();
+            $user->roles = $user->getLegacyRoles();
             $user->avatar = Image::get($user->user_avatar);
             $user->interests = UserInterest::get($id);
 
@@ -797,11 +865,14 @@ class User extends \Goteo\Core\Model {
 
         // ?? NO root
         $sqlFilter = [];
+        $sqlOrder = [];
+        $sqlCR = [];
+        $sqlCR2 = [];
+
         if (Session::getUserId() != 'root') {
             $sqlFilter[] = "id != 'root'";
         }
 
-        $sqlOrder = "";
         if (!empty($filters['id'])) {
             $sqlFilter[] = "id = :id";
             $values[':id'] = $filters['id'];
@@ -809,6 +880,15 @@ class User extends \Goteo\Core\Model {
         if (!empty($filters['global'])) {
             $sqlFilter[] = "(id LIKE :global OR name LIKE :global OR email LIKE :global)";
             $values[':global'] = '%' . $filters['global'] . '%';
+            $sqlOrder[] = " id = :oglobal DESC";
+            $sqlOrder[] = " email = :oglobal DESC";
+            $sqlOrder[] = " name = :oglobal DESC";
+            $values[':oglobal'] = $filters['global'];
+        }
+        if (!empty($filters['superglobal'])) {
+            $sqlFilter[] = "(id LIKE :superglobal OR name LIKE :superglobal OR email LIKE :superglobal OR
+                             (SELECT CONCAT(GROUP_CONCAT(id), '', GROUP_CONCAT(name)) FROM project WHERE project.owner=user.id) LIKE :superglobal)";
+            $values[':superglobal'] = '%' . $filters['superglobal'] . '%';
         }
         if (!empty($filters['name'])) {
             $sqlFilter[] = "(id LIKE :name OR name LIKE :name)";
@@ -906,10 +986,9 @@ class User extends \Goteo\Core\Model {
                         ) ";
                 break;
             case 'consultants': // asesores de proyectos (admins o consultants)
-                $sqlFilter[] = " id IN (
-                        SELECT DISTINCT(user)
-                        FROM user_project
-                        ) ";
+                $sqlFilter[] = " id IN (SELECT DISTINCT(user) FROM user_project) ";
+                $sqlCR[] = "(SELECT COUNT(project) FROM user_project JOIN project ON user_project.project=project.id AND project.published>DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 YEAR) WHERE user_project.user=user.id GROUP BY `user`) AS total_consultant";
+                $sqlOrder[] = 'total_consultant DESC';
                 break;
             case 'lurkers': // colaboran con el proyecto
                 $sqlFilter[] = " id NOT IN (
@@ -932,31 +1011,37 @@ class User extends \Goteo\Core\Model {
         }
 
         // si es solo los usuarios normales, añadimos HAVING
+        // TODO: cambiar esto a JOINS
         if ($filters['role'] == 'user') {
-            $sqlCR = ", (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles";
-            $sqlOrder .= " HAVING roles = 0";
-        } else {
-            $sqlCR = "";
+            $sqlCR[] = "(SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles";
+            $sqlCR2[] = " HAVING roles = 0";
         }
 
         //el Order
         switch ($filters['order']) {
             case 'name':
-                $sqlOrder .= " ORDER BY name ASC";
+                $sqlOrder[] = "name ASC";
                 break;
             case 'id':
-                $sqlOrder .= " ORDER BY id ASC";
+                $sqlOrder[] = "id ASC";
                 break;
             default:
-                $sqlOrder .= " ORDER BY created DESC";
+                $sqlOrder[] = "created DESC";
         }
         if($sqlFilter) $sqlFilter = 'WHERE '. implode(' AND ', $sqlFilter);
         else  $sqlFilter = '';
+
+        $sqlCR = implode(',', $sqlCR);
+        if($sqlCR) $sqlCR = ",$sqlCR";
+        $sqlCR2 = implode(' ', $sqlCR2);
+
         if ($count) {
             // Return count
             $sql = "SELECT COUNT(id) as total FROM user $sqlFilter";
             return (int) self::query($sql, $values)->fetchColumn();
         }
+
+        if($sqlOrder) $sqlOrder = " ORDER BY " . implode(',', $sqlOrder);
 
         $offset = (int) $offset;
         $limit = (int) $limit;
@@ -965,6 +1050,7 @@ class User extends \Goteo\Core\Model {
                     $sqlCR
                 FROM user
                 $sqlFilter
+                $sqlCR2
                 $sqlOrder
                 LIMIT $offset, $limit
                 ";
@@ -1221,9 +1307,72 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
-     * Return all the user roles
+     * Returns the object UserRoles for this user
+     * @return [type] [description]
      */
     public function getRoles() {
+        if($this->rolesInstance) return $this->rolesInstance;
+        $this->rolesInstance = UserRoles::getRolesForUser($this);
+        return $this->rolesInstance;
+    }
+
+
+    /**
+     * Returns project names owned by the user
+     * @return [type] [description]
+     */
+    public function getProjectNames($limit = 10) {
+        $limit = (int)$limit;
+        $sql = "SELECT p.id, p.name, p.image FROM project p WHERE p.owner = ? ORDER BY p.name ASC, p.updated DESC, p.created DESC LIMIT $limit";
+        $query = self::query($sql, $this->id);
+        $projects = [];
+        foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $p) {
+            $t = '';
+            if($p->image) $t = '<img src="' . Image::get($p->image)->getLink(64, 64, true). '" class="img-circle"> ';
+            $t .= $p->name;
+            $projects[$p->id] = $t;
+        }
+        return $projects;
+    }
+
+    public function getTotalProjects() {
+        $sql = "SELECT COUNT(*) as total FROM project p WHERE p.owner = ?";
+        return (int) self::query($sql, $this->id)->fetchColumn();
+    }
+
+    public function getInvests($limit = 10) {
+        return Invest::getList(['status' => Invest::$RAISED_STATUSES, 'users' => $this->id], null, 0, $limit);
+    }
+
+    public function getTotalInvests() {
+        return Invest::getList(['users' => $this->id], null, 0, 0, true);
+    }
+
+    public function getMailing($limit = 10) {
+        return Mail::getSentList(['email' => $this->email], 0, $limit);
+    }
+    public function getTotalMailing() {
+        return Mail::getSentList(['email' => $this->email], 0, 0, true);
+    }
+
+    /**
+     * shortcut for UserRoles::hasPerm
+     */
+    public function hasPerm($perm, $model_val = null) {
+        return $this->getRoles()->hasPerm($perm, $model_val);
+    }
+
+    /**
+     * shortcut for UserRoles::hasRole
+     */
+    public function hasRole($role) {
+        return $this->getRoles()->hasRole($role);
+    }
+
+    /**
+     * Return all the user roles
+     */
+    public function getLegacyRoles() {
 
         $roles = array();
         $query = self::query('
@@ -1427,6 +1576,68 @@ class User extends \Goteo\Core\Model {
         }
         // print_r($all_roles_nodes_raw);die;
         return $all_roles_nodes_raw;
+    }
+
+    /**
+     * Checks if this user can impersonate another
+     * @param  User   $user [description]
+     * @return [type]       [description]
+     */
+    public function canImpersonate(User $user) {
+        if($this->hasPerm('impersonate-everyone')) return true;
+        if(!$user->hasRole(['admin', 'superadmin', 'root']) && $this->hasPerm('impersonate-owners', $user->id)) return true;
+        // Admins cannot impersonate other admins
+        if(!$user->hasRole(['admin', 'superadmin', 'root']) && $this->hasPerm('impersonate-users', 'admin')) return true;
+        // Can superadmins impersonate other superadmins?
+        // Case Yes
+        if(!$user->hasRole('root') && $this->hasPerm('impersonate-users', 'superadmin')) return true;
+        // Case No
+        // if(!$user->hasRole(['superadmin', 'root']) && $this->hasPerm('impersonate-users', 'superadmin')) return true;
+        if(!$user->hasRole('root') && $this->hasPerm('impersonate-users', 'root')) return true;
+
+        return false;
+    }
+
+    /**
+     * Checks if this user can edit sensitive data from another user
+     * @param  User   $user [description]
+     * @return [type]       [description]
+     */
+    public function canRebase(User $user) {
+        // Admins cannot impersonate other admins
+        if(!$user->hasRole(['admin', 'superadmin', 'root']) && $this->hasPerm('rebase-users', 'admin')) return true;
+        // Can superadmins rebase other superadmins?
+        // Case Yes
+        if(!$user->hasRole('root') && $this->hasPerm('rebase-users', 'superadmin')) return true;
+        // Case No
+        // if(!$user->hasRole(['superadmin', 'root']) && $this->hasPerm('rebase-users', 'superadmin')) return true;
+        if(!$user->hasRole('root') && $this->hasPerm('rebase-users', 'root')) return true;
+
+        return false;
+    }
+
+
+    /**
+     * Checks if this user can change the role of another user
+     * @param  User   $user [description]
+     * @return [type]       [description]
+     */
+    public function canChangeRole($roles, &$failed = '') {
+        if(!is_array($roles)) $roles = [$roles];
+        $my_roles = $this->getRoles();
+        // User Role has to be at least admin
+        if(!$my_roles->atLeast('admin')) {
+            $failed = 'admin';
+            return false;
+        }
+
+        foreach($roles as $role) {
+            if(!$my_roles->greaterThan($role)) {
+                $failed = $role;
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
