@@ -13,9 +13,9 @@
 						<div class="image">
 							<?php if(!$banner->description&&!$banner->header_image): ?>
 								<img src="/assets/img/blog/header_default.png" width="1920" class="display-none-important header-default img-responsive  hidden-xs visible-up-1400">
-								<img src="/assets/img/blog/header_default.png" width="1400" class="display-none-important header-default img-responsive  hidden-xs visible-1051-1400">
-								<img src="/assets/img/blog/header_default.png" width="1051" class="display-none-important header-default img-responsive  hidden-xs visible-768-1050">
-								<img src="/assets/img/blog/header_default.png" width="750"  class="img-responsive header-default visible-xs">
+								<img src="/assets/img/blog/header_default_1400x600.png" class="display-none-important header-default img-responsive  hidden-xs visible-1051-1400">
+								<img src="/assets/img/blog/header_default_1051x600.png"  class="display-none-important header-default img-responsive  hidden-xs visible-768-1050">
+								<img src="/assets/img/blog/header_default_750x600.png"  class="img-responsive header-default visible-xs">
 
 							<?php else: ?>
 
