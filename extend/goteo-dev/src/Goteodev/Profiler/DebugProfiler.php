@@ -130,6 +130,7 @@ class DebugProfiler {
             'queries' => $queries,
             'events' => $events,
             'session' => $session,
+            'redirections' => Session::getAndDel('redirections'),
             'cookies' => $cookies,
             'headers' => $headers,
             'texts' => $texts,

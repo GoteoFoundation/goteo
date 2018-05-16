@@ -65,6 +65,14 @@ $duration = microtime(true) - $this->starttime;
         <p>Session start time: <strong><?= date("r", $this->session['start_time']) ?></strong></p>
         <p>Session expires in: <strong><?= date("r", $this->session['expires_in']) ?></strong></p>
         <p>Session expiration time: <strong><?= number_format($this->session['expire_time']/60, 2, '.', ' ') ?> minutes</strong></p>
+
+        <h2>Redirections:</h2>
+        <span class="pre">
+        <?php foreach($this->a('redirections') as $redirection): ?>
+            <?= $redirection ?>
+        <?php endforeach ?>
+        </span>
+
         <h2>Views theme "<?= $this->view_theme ?>":</h2>
         <span class="pre"><?php foreach($this->view_paths as $name => $folder) {
             echo "[$name] => $folder\n";
