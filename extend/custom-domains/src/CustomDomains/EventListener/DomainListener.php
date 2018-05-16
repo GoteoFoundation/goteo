@@ -6,6 +6,7 @@ use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\Config;
 use Goteo\Application\App;
 use Goteo\Application\Lang;
+use Goteo\Application\Session;
 use Goteo\Application\View;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,7 +21,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 //
 
 class DomainListener extends AbstractListener {
-    public static $main_domain;
+    protected $main_domain;
+    protected $lang_domain = '';
+    protected $url_lang = '';
 
     /**
      * Redirects to the proper custom domain if the path specified requires it
@@ -34,7 +37,7 @@ class DomainListener extends AbstractListener {
         }
 
         // Save a backup
-        if(!self::$main_domain) self::$main_domain = preg_replace('!^https?://|^//!i','', Config::get('url.main'));
+        if(!$this->main_domain) $this->main_domain = preg_replace('!^https?://|^//!i','', Config::get('url.main'));
         $current_host = $request->getHttpHost();
         $current_path = $request->getPathInfo();
         $scheme = $request->getScheme();
@@ -45,16 +48,24 @@ class DomainListener extends AbstractListener {
                 if(!is_array($paths)) $paths = [$paths];
                 // If is a custom domain redirect if the path is not allowed
                 if($domain === $current_host) {
+                    // Prevent SessionListener to redirect due lang
+                    $this->url_lang = Config::get('url.url_lang');
+                    Config::set('url.url_lang', '');
+                    // Change the langs menu to show the proper host
+                    $this->lang_domain = "$scheme://$domain";
+                    // Lang::setLangUrl($domain);
                     foreach($paths as $path) {
                         if(strpos($current_path, $path) !== 0 && $current_path !== '/') {
                             // Redirect to normal url
-                            // die("$scheme://" . self::$main_domain . $current_path);
-                            $event->setResponse(new RedirectResponse("$scheme://" . self::$main_domain .  $current_path));
+                            // die("$scheme://" . $this->main_domain . $current_path);
+                            $event->setResponse(new RedirectResponse("$scheme://" . $this->main_domain .  $current_path));
+                            return;
                         }
                         if($current_path === $path) {
                             // Redirect to custom domain on the index path
                             // die("$scheme://$domain");
                             $event->setResponse(new RedirectResponse("$scheme://$domain"));
+                            return;
                         }
                     }
                     // continue; // This domain is allowed, do not further redirect
@@ -84,7 +95,6 @@ class DomainListener extends AbstractListener {
             return;
         }
 
-
         $domains = Config::get('plugins.custom-domains.domains');
         if(!$domains || !is_array($domains)) return;
 
@@ -93,6 +103,23 @@ class DomainListener extends AbstractListener {
         $current_host = $request->getHttpHost();
         $current_path = $request->getPathInfo();
         $scheme = $request->getScheme();
+
+        // Rebuild lang menu here, after SessionListener processing
+        if($this->lang_domain) {
+            Session::delMainMenuPosition(10); // remove lang
+            // Langs
+            $back = Lang::getLangUrl();
+            Lang::setLangUrl($this->lang_domain);
+            $langs = [];
+            foreach (Lang::listAll('name', true) as $id => $lang) {
+                if (Lang::isActive($id)) continue;
+                $langs[Lang::getUrl($id, $request)] = $lang;
+            }
+            Session::addToMainMenu('<i class="fa fa-globe"></i> ' . Lang::getName(), $langs, 'langs', 10, 'main');
+            // restore original behaviour for links in views
+            Lang::setLangUrl($back);
+            Config::get('url.url_lang', $this->url_lang);
+        }
 
         // This only applies to the index route
         if($current_path === '/') {
@@ -139,9 +166,10 @@ class DomainListener extends AbstractListener {
 
     public static function getSubscribedEvents() {
         return array(
-            KernelEvents::REQUEST    => ['onRequest',  200], // Default priority, we want this to be executed
-                                                     // after SessionListener (for language management)
-            KernelEvents::CONTROLLER => 'onController'
+            KernelEvents::REQUEST    => ['onRequest',  100], // We want this to be executed
+                                                             // before SessionListener (that handles language
+                                                             // redirections if url.url_lang is active)
+            KernelEvents::CONTROLLER => ['onController', -100]
         );
     }
 }
