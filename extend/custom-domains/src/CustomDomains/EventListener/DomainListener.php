@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 //
 
 class DomainListener extends AbstractListener {
-    public static $main_url;
+    public static $main_domain;
 
     /**
      * Redirects to the proper custom domain if the path specified requires it
@@ -29,12 +29,12 @@ class DomainListener extends AbstractListener {
         $request = $event->getRequest();
 
         //not need to do anything on sub-requests
-        if (!$event->isMasterRequest() || $request->isXmlHttpRequest()) {
+        if (!$event->isMasterRequest()) {
             return;
         }
 
         // Save a backup
-        if(!self::$main_url) self::$main_url = Config::get('url.main');
+        if(!self::$main_domain) self::$main_domain = preg_replace('!^https?://|^//!i','', Config::get('url.main'));
         $current_host = $request->getHttpHost();
         $current_path = $request->getPathInfo();
         $scheme = $request->getScheme();
@@ -43,22 +43,30 @@ class DomainListener extends AbstractListener {
         if($domains && is_array($domains)) {
             foreach($domains as $domain => $paths) {
                 if(!is_array($paths)) $paths = [$paths];
-                // Redirect to the proper domain if has the same prefix
-                // and not the same host
-                foreach($paths as $path) {
-                    if(strpos($current_path, $path) === 0) {
-                        if($domain === $current_host) {
-                            // Force the url to this coincident
-                            // Config::set('url.main', $domain);
-                            // Disable url_lang subdomain feature if host is already a subdomain
-                            // Config::set('url.url_lang', '');
-                            break;
-                        } else {
+                // If is a custom domain redirect if the path is not allowed
+                if($domain === $current_host) {
+                    foreach($paths as $path) {
+                        if(strpos($current_path, $path) !== 0 && $current_path !== '/') {
+                            // Redirect to normal url
+                            // die("$scheme://" . self::$main_domain . $current_path);
+                            $event->setResponse(new RedirectResponse("$scheme://" . self::$main_domain .  $current_path));
+                        }
+                        if($current_path === $path) {
+                            // Redirect to custom domain on the index path
+                            // die("$scheme://$domain");
+                            $event->setResponse(new RedirectResponse("$scheme://$domain"));
+                        }
+                    }
+                    // continue; // This domain is allowed, do not further redirect
+                } else {
+                    // Redirect to the proper domain if has the same prefix
+                    // and not the same host
+                    foreach($paths as $path) {
+                        if(strpos($current_path, $path) === 0) {
                             // redirect to the alternate domain (do no add prefix if is the same)
                             $p = $current_path === $path ? '' : $current_path;
                             $event->setResponse(new RedirectResponse("$scheme://$domain$p"));
                             return;
-
                         }
                     }
                 }
@@ -94,29 +102,28 @@ class DomainListener extends AbstractListener {
                 if($domain === $current_host) {
                     if(!is_array($paths)) $paths = [$paths];
                     foreach($paths as $path) {
-                        if($path !== '/') {
-                            $redirect = "$scheme://$domain$path";
-                            try {
-                                // Find the right controller (if exists)
-                                $matcher = App::getService('matcher');
-                                $resolver = App::getService('resolver');
-                                // $matcher->setContext(new RequestContext('/'));
-                                $parameters = $matcher->match($path);
-                                // print_r($parameters);die("$path $current_path");
-                                if($parameters && $parameters['_controller']) {
-                                    // Mock the request
-                                    $subRequest = $request->duplicate(null, null, $parameters);
-                                    $subRequest->server->set('REQUEST_URI', $path);
-                                    $subRequest->initialize($subRequest->query->all(), $subRequest->request->all(), $subRequest->attributes->all(), $subRequest->cookies->all(), $subRequest->files->all(), $subRequest->server->all(), $subRequest->getContent());
+                        if($path !== '/') $redirect = "$scheme://$domain$path";
 
-                                    // get the controller parsed as symfony wants it
-                                    $controller = $resolver->getController($subRequest);
-                                    // Overwrite controller and exit
-                                    return $event->setController($controller);
-                                }
-                            } catch(ResourceNotFoundException $e) {
+                        try {
+                            // Find the right controller (if exists)
+                            $matcher = App::getService('matcher');
+                            $resolver = App::getService('resolver');
+                            // $matcher->setContext(new RequestContext('/'));
+                            $parameters = $matcher->match($path);
+                            // print_r($parameters);die("$path $current_path");
+                            if($parameters && $parameters['_controller']) {
+                                // Change the request
+                                $request->server->set('REQUEST_URI', $path);
+                                $request->initialize($request->query->all(), $request->request->all(), $parameters, $request->cookies->all(), $request->files->all(), $request->server->all(), $request->getContent());
 
+                                // get the controller parsed as symfony wants it
+                                $controller = $resolver->getController($request);
+                                // print_r($controller);
+                                // Overwrite controller and exit
+                                return $event->setController($controller);
                             }
+                        } catch(ResourceNotFoundException $e) {
+
                         }
                     }
                 }
@@ -132,7 +139,8 @@ class DomainListener extends AbstractListener {
 
     public static function getSubscribedEvents() {
         return array(
-            KernelEvents::REQUEST    => 'onRequest', // We want this to be executed after SessionListener (for language management)
+            KernelEvents::REQUEST    => ['onRequest',  200], // Default priority, we want this to be executed
+                                                     // after SessionListener (for language management)
             KernelEvents::CONTROLLER => 'onController'
         );
     }
