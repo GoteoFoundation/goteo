@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use Goteodev\Profiler\DebugProfiler;
+use Goteo\Application\Session;
 
 class ProfilerListener implements EventSubscriberInterface
 {
@@ -36,9 +37,16 @@ class ProfilerListener implements EventSubscriberInterface
         DebugProfiler::addEvent($event);
         $response = $event->getResponse();
         $request = $event->getRequest();
+
+        if($response->isRedirection()) {
+            $redirections = Session::get('redirections', []);
+            $redirections[] = "Redirection: " .$request->getUri() .' => ' . $response->getTargetUrl();
+            Session::store("redirections", $redirections);
+            return;
+        }
+
         if(!$event->isMasterRequest() ||
             false === stripos($response->headers->get('Content-Type'), 'text/html') ||
-            $response->isRedirection() ||
             $request->isXmlHttpRequest() ||
             $response instanceOf StreamedResponse ||
             $request->query->has('pronto')) {
