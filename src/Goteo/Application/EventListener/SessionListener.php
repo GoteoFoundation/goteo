@@ -171,13 +171,13 @@ class SessionListener extends AbstractListener {
         $nodes = [];
         foreach (Node::getAll(['available' => Session::getUserId()]) as $node) {
             if($node->id === Config::get('node')) continue;
-            $nodes['/channel/' . $node->id] = $node->name;
+            $nodes[Lang::getUrl() . 'channel/' . $node->id] = $node->name;
         }
         Session::addToMainMenu('<i class="icon icon-channel"></i> ' . Text::get('home-channels-header'), $nodes, 'channels', 20, 'main');
         // Default menus
-        Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover', 'discover', 30, null, 'global-search');
-        Session::addToMainMenu('<i class="icon icon-drop"></i> ' . Text::get('regular-header-about'), '/blog', 'about', 40);
-        Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 'faq', 100);
+        Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), Lang::getUrl() . 'discover', 'discover', 30, null, 'global-search');
+        Session::addToMainMenu('<i class="icon icon-drop"></i> ' . Text::get('regular-header-about'), Lang::getUrl() . 'blog', 'about', 40);
+        Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), Lang::getUrl() . 'faq', 'faq', 100);
 
 
         // Currencies
@@ -189,33 +189,33 @@ class SessionListener extends AbstractListener {
         Session::addToMainMenu('<i>' . Currency::get($currency, 'html') . '</i> ' . Currency::get($currency, 'name'), $currencies, 'currencies', 50, 'main');
 
         // Minimal User menu
-        Session::addToUserMenu('<i class="icon icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'dashboard-activity', 20);
-        Session::addToUserMenu('<i class="icon icon-projects"></i> ' . Text::get('dashboard-menu-projects'), '/dashboard/projects', 'dashboard-projects', 30);
-        Session::addToUserMenu('<i class="icon icon-wallet"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'dashboard-wallet', 40);
-        Session::addToUserMenu('<i class="icon icon-settings"></i> ' . Text::get('dashboard-menu-profile-preferences'), '/dashboard/settings', 'dashboard-setting', 50);
+        Session::addToUserMenu('<i class="icon icon-activity"></i> ' . Text::get('dashboard-menu-activity'), Lang::getUrl() . 'dashboard/activity', 'dashboard-activity', 20);
+        Session::addToUserMenu('<i class="icon icon-projects"></i> ' . Text::get('dashboard-menu-projects'), Lang::getUrl() . 'dashboard/projects', 'dashboard-projects', 30);
+        Session::addToUserMenu('<i class="icon icon-wallet"></i> ' . Text::get('dashboard-menu-pool'), Lang::getUrl() . 'dashboard/wallet', 'dashboard-wallet', 40);
+        Session::addToUserMenu('<i class="icon icon-settings"></i> ' . Text::get('dashboard-menu-profile-preferences'), Lang::getUrl() . 'dashboard/settings', 'dashboard-setting', 50);
 
         if($user = Session::getUser()) {
             if ( isset($user->roles['translator']) ||  isset($user->roles['admin']) || isset($user->roles['superadmin']) ) {
-                Session::addToUserMenu(Text::get('regular-translate_board'), '/translate', 'translate', 80);
+                Session::addToUserMenu(Text::get('regular-translate_board'), Lang::getUrl() . 'translate', 'translate', 80);
             }
 
             if ( isset($user->roles['checker']) ) {
-              Session::addToUserMenu(Text::get('regular-review_board'), '/review', 'review', 90);
+              Session::addToUserMenu(Text::get('regular-review_board'), Lang::getUrl() . 'review', 'review', 90);
             }
 
             if ( Session::isAdmin() ) {
-              Session::addToUserMenu(Text::get('regular-admin_board'), '/admin', 'admin', 90);
+              Session::addToUserMenu(Text::get('regular-admin_board'), Lang::getUrl() . 'admin', 'admin', 90);
             }
 
             // Add last 2 owned projects
             if($projects = Project::ofmine($user->id, false, 0, 2)) {
                 foreach($projects as $i => $prj) {
-                    Session::addToUserMenu('<img src="' . $prj->image->getLink(30, 30, true) . '"> '.$prj->name, '/dashboard/project/' . $prj->id , 'project-' . $prj->id, 31 + $i, 'ident');
+                    Session::addToUserMenu('<img src="' . $prj->image->getLink(30, 30, true) . '"> '.$prj->name, Lang::getUrl() . 'dashboard/project/' . $prj->id , 'project-' . $prj->id, 31 + $i, 'ident');
                 }
             }
         }
 
-        Session::addToUserMenu('<i class="fa fa-sign-out"></i> ' . Text::get('regular-logout'), '/user/logout', 'logout', 100);
+        Session::addToUserMenu('<i class="fa fa-sign-out"></i> ' . Text::get('regular-logout'), Lang::getUrl() . 'user/logout', 'logout', 100);
 
         // Controllers may use the Sidebar menu on specific activites
         // Session::addToSidebarMenu('<i class="fa fa-heart"></i> Sidebar Item 1', '#');
