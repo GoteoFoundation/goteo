@@ -59,17 +59,17 @@ class DomainListener extends AbstractListener {
                         if(strpos($current_path, $path) === 0 || $current_path === '/') {
                             $redirect = false;
                         }
-                        if($current_path === $path) {
-                            // Redirect to custom domain on the index path
-                            // die("$scheme://$domain");
-                            $event->setResponse(new RedirectResponse("$scheme://$domain"));
-                            return;
-                        }
                     }
+                    // Redirect to normal url if not in the proper domain
                     if($redirect) {
-                        // Redirect to normal url
                         // echo "$current_path|$path ";die("$scheme://" . $this->main_domain . $current_path);
                         $event->setResponse(new RedirectResponse("$scheme://" . $this->main_domain .  $current_path));
+                        return;
+                    }
+                    // Redirect to custom domain on the index page if is the first path
+                    if($current_path === $paths[0]) {
+                        // die("$scheme://$domain");
+                        $event->setResponse(new RedirectResponse("$scheme://$domain"));
                         return;
                     }
                 } else {
