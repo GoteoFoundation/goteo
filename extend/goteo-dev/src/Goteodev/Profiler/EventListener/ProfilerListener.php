@@ -36,7 +36,12 @@ class ProfilerListener implements EventSubscriberInterface
         DebugProfiler::addEvent($event);
         $response = $event->getResponse();
         $request = $event->getRequest();
-        if(!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html') || $request->isXmlHttpRequest() || $response instanceOf StreamedResponse || $request->query->has('pronto')) {
+        if(!$event->isMasterRequest() ||
+            false === stripos($response->headers->get('Content-Type'), 'text/html') ||
+            $response->isRedirection() ||
+            $request->isXmlHttpRequest() ||
+            $response instanceOf StreamedResponse ||
+            $request->query->has('pronto')) {
             return;
         }
 
