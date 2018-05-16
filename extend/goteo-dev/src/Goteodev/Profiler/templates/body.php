@@ -69,7 +69,7 @@ $duration = microtime(true) - $this->starttime;
         <h2>Redirections:</h2>
         <span class="pre">
         <?php foreach($this->a('redirections') as $redirection): ?>
-            <?= $redirection ?>
+            <?= "$redirection\n" ?>
         <?php endforeach ?>
         </span>
 

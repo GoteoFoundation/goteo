@@ -54,12 +54,10 @@ class DomainListener extends AbstractListener {
                     // Change the langs menu to show the proper host
                     $this->lang_domain = "$scheme://$domain";
                     // Lang::setLangUrl($domain);
+                    $redirect = true;
                     foreach($paths as $path) {
-                        if(strpos($current_path, $path) !== 0 && $current_path !== '/') {
-                            // Redirect to normal url
-                            // die("$scheme://" . $this->main_domain . $current_path);
-                            $event->setResponse(new RedirectResponse("$scheme://" . $this->main_domain .  $current_path));
-                            return;
+                        if(strpos($current_path, $path) === 0 || $current_path === '/') {
+                            $redirect = false;
                         }
                         if($current_path === $path) {
                             // Redirect to custom domain on the index path
@@ -68,7 +66,12 @@ class DomainListener extends AbstractListener {
                             return;
                         }
                     }
-                    // continue; // This domain is allowed, do not further redirect
+                    if($redirect) {
+                        // Redirect to normal url
+                        // echo "$current_path|$path ";die("$scheme://" . $this->main_domain . $current_path);
+                        $event->setResponse(new RedirectResponse("$scheme://" . $this->main_domain .  $current_path));
+                        return;
+                    }
                 } else {
                     // Redirect to the proper domain if has the same prefix
                     // and not the same host
