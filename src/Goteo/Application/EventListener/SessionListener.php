@@ -116,11 +116,8 @@ class SessionListener extends AbstractListener {
                     // $url = "$url";
                     $request->query->set('lang', $lang);
                 }
-                // Main platform language will be shown as www subdomain
-                elseif($lang && Config::get('lang') != $lang) {
-                    $url = "$lang.$url";
-                } else {
-                    $url = "www.$url";
+                else {
+                    $url = preg_replace('!https?://|/$!i', '', Lang::getUrl($lang));
                 }
 
             }
