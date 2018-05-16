@@ -137,7 +137,6 @@ class SessionListener extends AbstractListener {
         if ($url != $request->getScheme() . '://' . $request->getHttpHost()) {
             $query = http_build_query($request->query->all());
             // die($url . $request->getPathInfo() . ($query ? "?$query" : ''));
-            // $event->setResponse(new RedirectdirectResponse($url . $request->getRequestUri()));
             $event->setResponse(new RedirectResponse($url . $request->getPathInfo() . ($query ? "?$query" : '')));
             return;
         }
@@ -290,7 +289,7 @@ class SessionListener extends AbstractListener {
 
     public static function getSubscribedEvents() {
         return array(
-            KernelEvents::REQUEST => array('onRequest', 50),
+            KernelEvents::REQUEST => array('onRequest', 50), // High priority
             KernelEvents::RESPONSE => array('onResponse', -50), // low priority: after headers are processed by symfony
         );
     }
