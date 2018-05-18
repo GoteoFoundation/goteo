@@ -6,7 +6,7 @@
               <ul class="list-inline footer-list">
                 <li><a href="<?= $this->lang_host() ?>blog"><?= $this->text('regular-header-about')?></a></li>
                 <li><a href="http://stats.goteo.org" target="_blank"><?= $this->text('footer-resources-stats') ?></a></li>
-                <li><a href="<?= $this->lang_host() ?>user/login"><?= $this->text('regular-login')?></a></li>
+                <li><a href="<?= $this->lang_host() ?>/legal/terms"><?= $this->text('regular-footer-terms')?></a></li>
                 <li><a href="<?= $this->lang_host() ?>contact"><?= $this->text('regular-footer-contact')?></a></li>
                 <li><a data-jslicense="1" href="<?= $this->lang_host() ?>about/librejs">Licenses</a></li>
                 <li><a href="<?= $this->lang_host() ?>faq"><?= $this->text('regular-header-faq')?></a></li>
