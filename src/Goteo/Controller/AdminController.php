@@ -46,10 +46,10 @@ class AdminController extends \Goteo\Core\Controller {
         'others' => ['text' => 'admin-others', 'icon' => '<i class="fa fa-2x fa-folder"></i>', 'position' => 100]
     ];
     private static $legacy_groups = [
-        'activity' => ['recent', 'projects', 'accounts', 'rewards', 'blog'],
+        'activity' => ['recent', 'projects', 'accounts', 'rewards'],
         'main' => ['home', 'promote', 'news', 'banners', 'footer', 'open_tags', 'stories'],
         'contents' => ['node', 'texts', 'faq', 'pages', 'categories', 'social_commitment', 'licenses', 'icons', 'tags', 'criteria', 'glossary', 'info', 'wordcount', 'milestones'],
-        'communications' => ['newsletter', 'mailing', 'sent', 'templates'],
+        'communications' => ['blog', 'newsletter', 'mailing', 'sent', 'templates'],
         'services' => ['sponsors', 'nodes', 'transnodes', 'calls', 'workshop', 'donor', 'reports'],
         'others' => ['reviews', 'translates', 'commons']
     ];
