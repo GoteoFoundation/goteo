@@ -12,7 +12,7 @@ This is the source code of the [Crowdfunding platform Goteo](http://goteo.org)
 
 Current version: **3.3**
 
-Although you can try to install it in order to create your own crowdfunding platform, this won't be a *Wordpress*-like installation (probably never will). This releases are mostly for developers and for those who want to collaborate with the code.
+Although you can try to install it in order to create your own crowdfunding platform, this won't be a *Wordpress*-like installation (probably never will). These releases are mostly for developers and for those who want to collaborate with the code.
 
 Full developers documentation is still work in progress!
 Some folders may have its own README.md file with comments. However, we will try to compile all the documents here:
@@ -29,7 +29,7 @@ Some folders may have its own README.md file with comments. However, we will try
 > docker-compose up
 > ```
 > 
-> THen you can run commands inside the php container by using the wrapper `docker/exec`. If develping, we recommend to run this command in a separate terminal:
+> Then you can run commands inside the php container by using the wrapper `docker/exec`. If develping, we recommend to run this command in a separate terminal:
 > 
 > ```bash
 > docker/exec grunt watch
@@ -39,14 +39,14 @@ Some folders may have its own README.md file with comments. However, we will try
 
 ### CONTRIBUTING
 
-There's still a lot of documentation missing. We'll try to do our best completing it, however any help will be appreciated.
+There's still a lot of missing documentation. We'll try to do our best completing it, however any help will be appreciated.
 
 - [Developers](http://goteofoundation.github.io/goteo/docs/developers/environment.html)
 - [Credits](http://goteofoundation.github.io/goteo/release_notes.html)
 
 ### TRANSLATORS
 
-Since version 3.3 where are using [Crowdin](https://crowdin.com/) as a tool for collaborators translating the code. Feel free to join this awesome people who's contributed in traslating Goteo to many languages:
+Since version 3.3 where are using [Crowdin](https://crowdin.com/) as a tool for collaborators translating the code. Feel free to join these awesome people who's contributed in traslating Goteo to many languages:
 
 <translators>
 
@@ -75,7 +75,7 @@ Since version 3.3 where are using [Crowdin](https://crowdin.com/) as a tool for 
 </ul>
 </translators>
 
-You can join to the Crowdin translator team here: https://translate.goteo.org/
+You can join the Crowdin translator team here: https://translate.goteo.org/
 
 
 *This documentation is created using [Couscous](http://couscous.io).*
