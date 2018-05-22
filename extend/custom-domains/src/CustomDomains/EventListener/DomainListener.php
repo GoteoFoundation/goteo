@@ -41,6 +41,18 @@ class DomainListener extends AbstractListener {
         $current_host = $request->getHttpHost();
         $current_path = $request->getPathInfo();
         $scheme = $request->getScheme();
+
+        $redirects = Config::get('plugins.custom-domains.redirects');
+        if($redirects && is_array($redirects)) {
+            foreach($redirects as $domain => $destination) {
+                if($domain === $current_host) {
+                    // die("Redirect from $domain to $destination");
+                    $event->setResponse(new RedirectResponse($destination));
+                    return;
+                }
+            }
+        }
+
         $domains = Config::get('plugins.custom-domains.domains');
 
         if($domains && is_array($domains)) {
