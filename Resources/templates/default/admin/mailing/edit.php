@@ -14,6 +14,8 @@ $templates = $this->templates
         <li><strong>%USEREMAIL%</strong> Para el email del destinatario</li>
         <li><strong>%USERNAME%</strong> Para el nombre del destinatario</li>
         <li><strong>%SITEURL%</strong> Para la url de esta plataforma (<?= SITE_URL ?>)</li>
+        <li><strong>%SUBSCRIBEURL%</strong> Link directo de suscripción a la newsletter del usuario</li>
+        <li><strong>%UNSUBSCRIBEURL%</strong> Link directo de desuscripción a la newsletter del usuario</li>
     </ul>
 </div>
 
