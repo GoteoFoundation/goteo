@@ -22,6 +22,7 @@ class Lang {
     static protected $groups = array(); // Groups with translations
     static protected $all_groups = array(); // All desired groups (even without translations)
     static protected $translator = null;
+    static protected $main_url = null;
 
     // This is overwriten by Config using file Resources/locales.yml
     static protected  $langs_available = array(
@@ -277,9 +278,20 @@ class Lang {
         return static::current($public_only) === $lang;
     }
 
+    static public function getLangUrl() {
+        if(!self::$main_url) return Config::get('url.main');
+        return self::$main_url;
+    }
+
+    static public function setLangUrl($url) {
+        self::$main_url = $url;
+    }
+
     static public function getUrl($lang = null, Request $request = null) {
-        if(is_null($lang)) $lang = self::current();
-        $url = Config::get('url.main');
+        if(is_null($lang)) {
+            $lang = self::current();
+        }
+        $url = Lang::getLangUrl();
         $url_lang = Config::get('url.url_lang');
         $path = '/';
         if($request) {
