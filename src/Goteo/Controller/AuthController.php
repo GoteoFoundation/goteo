@@ -169,6 +169,11 @@ class AuthController extends \Goteo\Core\Controller {
 
             $user->save($errors);
 
+            // Set user newsletter notifications preferences 
+            $newsletter_no_active=isset($vars['newsletter_accept']) ? 0 : 1;
+
+            User::setPreferences($user, ['mailing' => $newsletter_no_active], $errors);
+
             if (empty($errors)) {
 
                 Message::info(Text::get('user-register-success'));
