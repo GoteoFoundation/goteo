@@ -232,7 +232,6 @@ class UserController extends \Goteo\Core\Controller {
      * Cambiar dirección de correo.
      *
      * @param type string	$token
-     * @deprecated ?
      */
     public function changeemailAction($token) {
         $token = \mybase64_decode($token);
@@ -257,59 +256,6 @@ class UserController extends \Goteo\Core\Controller {
         return $this->redirect('/dashboard/settings/access');
     }
 
-    /**
-     * Recuperacion de contraseña
-     * - Si no llega nada, mostrar formulario para que pongan su username y el email correspondiente
-     * - Si llega post es una peticion, comprobar que el username y el email que han puesto son válidos
-     *      si no lo son, dejarlos en el formulario y mensaje de error
-     *      si son válidos, enviar email con la url y mensaje de ok
-     *
-     * - Si llega un hash, verificar y darle acceso hasta su dashboard /profile/access para que la cambien
-     *
-     * @param string $token     Codigo
-     * @deprecated ?
-     */
-    public function recoverAction($token = '', Request $request) {
-
-        View::setTheme('default');
-
-        $vars = array();
-
-        // si el token mola, logueo este usuario y lo llevo a su dashboard
-        // TODO:
-        // CAMBIAR ESTE FUNCIONAMIENTO por uno mas simple basado en poner la nueva contraseña y verificar el link
-        if ($token) {
-            $token = \mybase64_decode($token);
-            $parts = explode('¬', $token);
-            if (count($parts) > 1) {
-                $query = User::query('SELECT id FROM user WHERE email = ? AND token = ?', array($parts[1], $token));
-                if ($id = $query->fetchColumn()) {
-                    // el token coincide con el email y he obtenido una id
-                    // Activamos y dejamos de esconder el usuario
-                    User::query('UPDATE user SET active = 1, hide = 0, confirmed = 1 WHERE id = ?', array($id));
-                    $user = User::get($id);
-                    Session::setUser($user, true);
-                    return $this->redirect('/dashboard/profile/access/recover#password');
-                }
-            }
-
-            $vars['error'] = Text::get('recover-token-incorrect');
-        }
-
-        if ($request->getMethod() === 'POST' && $request->request->get('recover')) {
-            $email = $request->request->get('email');
-            if ($email && User::recover($email)) {
-                $vars['message'] = Text::get('recover-email-sended');
-            } else {
-                $vars['error'] = Text::get('recover-request-fail');
-                $vars['email'] = $email;
-            }
-        }
-        if($vars['error']) {
-            Message::error($vars['error']);
-        }
-        return $this->viewResponse('user/recover', $vars);
-    }
 
     /**
      * Darse de baja

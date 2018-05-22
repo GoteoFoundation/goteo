@@ -31,15 +31,6 @@ $user->add('user-edit', new Route(
     array('_controller' => 'Goteo\Controller\UserController::editAction')
 ));
 
-// //User recover
-// $user->add('user-recover', new Route(
-//     '/recover/{token}',
-//     array(
-//         '_controller' => 'Goteo\Controller\UserController::recoverAction',
-//         'token' => ''
-//         )
-// ));
-
 //User newsletter unsubscribing
 //Mispelled
 $user->add('user-unsuscribe', new Route(
