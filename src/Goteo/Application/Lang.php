@@ -22,7 +22,7 @@ class Lang {
     static protected $groups = array(); // Groups with translations
     static protected $all_groups = array(); // All desired groups (even without translations)
     static protected $translator = null;
-    static protected $main_url;
+    static protected $main_url = null;
 
     // This is overwriten by Config using file Resources/locales.yml
     static protected  $langs_available = array(
