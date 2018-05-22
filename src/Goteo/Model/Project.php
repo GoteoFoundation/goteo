@@ -2506,9 +2506,11 @@ namespace Goteo\Model {
             } else {
                 $res->rewards = 100;
             }
-            if($total < 3) {
+            // rewards required >= 1, default 3
+            $rewards_required = abs(intval(Config::get('rewards.required'))) ?: 3;
+            if($total < $rewards_required) {
                 $errors['rewards'][] = 'rewards_required';
-                $res->rewards *= $total / 3;
+                $res->rewards *= $total / $rewards_required;
             }
 
             $campaign = [ ];

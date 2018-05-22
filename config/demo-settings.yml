@@ -55,6 +55,10 @@ url:
     #
     data:
 
+# Default required rewards
+rewards:
+    required: 3
+
 # PLUGINS
 # Extend is the directory to personalize your copy of goteo.org
 # Routes, classes and templates can be overridden by copying the main structure
