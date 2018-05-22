@@ -1,1 +1,106 @@
 ---
+bazar-spread-text: '%s - Bu Noel, @goteofunding ile ortak yarar için açık kitlesel fon verin #openbazaar'
+bazar-thanks: 'Pazarımızı ziyaret ettiğiniz için teşekkür ederiz, onu desteklememize yardım edebilirsiniz.'
+faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Goteo hangi ödeme sistemlerini sunuyor? Onlar güvende mi?</a>'
+imperative-register: Kayıt ol
+invest-address-address-field: Adres
+invest-address-birthyear-field: 'Doğum yılı'
+invest-address-country-field: Ülke
+invest-address-fail: 'Boş veya hatalı alanlar var. Lütfen formu kontrol ediniz böylece ileriye gidebilir ve ödülünüzü alabilirsiniz!'
+invest-address-friend-field: 'Eğer başka kişi için bir hediye ise bu kutuyu işaretleyin'
+invest-address-gender-field: Cinsiyet
+invest-address-header: 'Ödülünüzü nereden almak istersiniz (sadece posta servisi yoluyla gönderilirse)'
+invest-address-location-field: Şehir
+invest-address-maildest-field: 'Alıcının e-postası'
+invest-address-msgdest-field: 'Alıcı için mesaj'
+invest-address-myemail-field: 'E-posta adresiniz'
+invest-address-myname-field: 'Adınız'
+invest-address-name-field: 'Adınız & Soyadınız'
+invest-address-namedest-field: 'Alıcının adı'
+invest-address-nif-field: 'KDV numarası'
+invest-address-title: 'Ödülünüzü aldığınızdan emin olun'
+invest-address-zipcode-field: 'POSTA kodu'
+invest-alert-investing: 'Katkıda bulunmak üzeresiniz '
+invest-alert-lackamount: 'Miktar, seçilen ödülden üstün olmalıdır'
+invest-alert-lackdrop: 'Katkınızı çoğaltmak için kalan hiç Eşleştirme fonu yok. Kalan miktar ise'
+invest-alert-noreward: 'Herhangi bir ödülü seçmediniz. Bu doğru mu?'
+invest-alert-noreward_renounce: 'Herhangi ödülden gerçekten vazgeçiyor musunuz?'
+invest-alert-renounce: 'Ödül için vazgeçiyorsunuz ya da seçilen ödül bir nesne veya bir ürün değil, böylece bağışınızı koparabilirsiniz.  Bunu yapmak için, KDV numaranıza ihtiyacımız var!'
+invest-alert-rewards: 'Aşağıdaki ödülleri seçtiniz:'
+invest-amount: Miktar
+invest-amount-in-pool: 'Sanal cüzdanınızda %s var'
+invest-amount-tooltip: 'Bu projeyi desteklemek için istediğiniz miktarı giriniz'
+invest-anonymous: 'Katkımın anonim olmasını istiyorum'
+invest-button: Katkıda bulun
+invest-called-maxdrop: 'Maksimum<strong>%s &euro</strong>ya kadar;'
+invest-called-maxproj: 'Desteklediğiniz bu proje,  <span class="call">%s</span> numaralı çağrıya ait maksimum miktarı <strong> eş finansmanı </strong> önceden elde etti.'
+invest-called-nodrop: 'Şu anda, %s çağrısı için kalan <strong>eşleşmiş fonlama</strong> artık yoktur'
+invest-called-rest: '<span class="call">%s</span> çağrısı için kalan <strong>eşleşmiş fonlama</strong> sadece <strong>%s €</strong>''dur'
+invest-card-method: Kredi Kartı
+invest-donation-header: 'Bu bağış için mali bilgileri giriniz'
+invest-drop-method: Eşleşen fonlar
+invest-fiscal-fail: 'Boş alanlarda hata var.İleri gitmek ve katkınızı çıkarmak için lütfen mali formu kontrol ediniz!'
+invest-fiscal-skip: 'Bunu şu an doldurmak istemiyorum'
+invest-fiscal-title: 'Katkınız üzerinde bir vergi iadesi alabildiğinizden emin olunuz(yalnızca İspanya''daki beyan eden kişiler için)'
+invest-login-alert: 'Katkınızı yapmak için kayıt olmalısınız veya <a href="%s">giriş yapmalısınız</a>'
+invest-mail_info-address: 'Ödülü aşağıdaki adresten alacaksınız:'
+invest-mail_info-drop: 'Ayrıca, %s kampanyası tarafından %s eşleşmiş fonuna %s katkısı yapıldı'
+invest-make-sure-save: Kaydet
+invest-make-sure-title: Onayla
+invest-method: 'Ödeme şekli'
+invest-method-title: 'Katkınızı yapın'
+invest-modal-fiscal-title: 'Vergi bilgisi'
+invest-modal-pool-description: 'Sanal para cüzdanı, Goteo''nun kredi sistemidir, kredi kartınız veya PayPal verilerinize her defasında vermeye ihtiyaç kalmadan platformumuzda projelere katkıda bulunmak için kullanabilirsiniz.'
+invest-modal-pool-title: 'Goteo''nun sanal cüzdanı nedir?'
+invest-more-info: 'Daha fazla bilgi'
+invest-next_step: 'Sonraki adım'
+invest-payment-email: 'PayPal kullanıcı adınızı giriniz'
+invest-payment-fail: 'Ödemeyle ilgili bir şeyler ters gitti'
+invest-payment-success: 'Ödeme doğru yapıldı'
+invest-payment_method-header: 'Bir ödeme yöntemi seçiniz'
+invest-pool: 'Projenin başarısız olması durumunda, bağışımın sanal Goteo cüzdanım içerisine gitmesini istiyorum.'
+invest-pool-available: Mevcut
+invest-pool-error: 'Sanal cüzdanınızda yeterli para yok'
+invest-pool-method: 'Sanal cüzdan'
+invest-process-completed: 'Katkınız önceden tamamlanmış'
+invest-project: 'projeye'
+invest-resign: 'Kişisel ödüllerimden vazgeçiyorum, ben sadece projeyi desteklemek istiyorum'
+invest-reward-none: 'Bunlar artık hiç seçilmiyor'
+invest-reward-not-found: 'Ödül bulunamadı!'
+invest-reward-used-up: 'Bu ödül tükenmiş!'
+invest-select-reward: 'Ödülünüzü seçiniz'
+invest-share-title: Paylaş
+invest-social-header: 'Ortak yararlar ile hepimiz ileriye hareket ediyoruz'
+invest-status-cancelled: İptal edildi
+invest-status-charged: Yüklü
+invest-status-paid: 'Projeye ödenen'
+invest-status-pending: Bekleyen
+invest-status-processing: Tamamlanmamış
+invest-status-relocated: Taşındı
+invest-status-returned: 'İade (arşivlenmiş)'
+invest-status-to-pool: 'Sanal cüzdan'
+invest-step-1: Ödül
+invest-step-2: Ödeme
+invest-step-3: Onay
+invest-step-4: Paylaş
+invest-success-make-sure: 'Aferin! <strong>%s</strong> projesine katkınız başarıyla yönetildi.'
+investing_closed: 'Bu kampanyaya izin verilmiş daha fazla katkı yok.'
+proj-widget-my_invest: 'Benim katkım'
+project-invest-confirm: 'Bu projenin destekçisi olmaktan bir adım uzaktasınız...'
+project-invest-continue: 'Bir ödeme yöntemi seçiniz:'
+project-invest-fail: 'Bir şeyler ters gitti, lütfen tekrar deneyiniz.'
+project-invest-guest: 'Müthiş!'
+project-invest-ok: 'Bu projenin eş finansmanına yaptığınız katkı işlendi :)'
+project-invest-pool-button: 'Sanal cüzdanımı kullan'
+project-invest-start: 'Bu projenin destekçisi olmaktan bir adım uzaktasınız...'
+project-return-button: 'Projeye geri dön'
+project-see-msg: 'Mesajınızı gör'
+spread-facebook: 'Facebook''ta Paylaş'
+spread-twitter: 'Twitter''da paylaş'
+user-login-required-login: 'Eğer kayıtlı bir kullanıcıysanız<a href="%s">giriş yapınız</a>; eğer değilseniz, yeni bir kullanıcı oluşturmalısınız. (Anonim bir bağış yapmak isterseniz, o seçeneği daha sonra seçebilirsiniz)'
+warning_nojavascript: 'Ödeme işlemine devam etmek için lütfen tarayıcınızın gizlilik ayarlarından javascript''i etkinleştiriniz'
+invest-no-register: 'Bu adımı atla, ben sadece katkıda bulunmak istiyorum'
+invest-user-not-ghost: 'Bu e-posta mevcut bir kullanıcıya ait!'
+invest-user-name-or-anonymous: 'İsimsiz bir şekilde bağış yapmak istemiyorsanız, isim zorunludur '
+invest-created-manually-ok: 'El ile yatırım başarı ile oluşturuldu, şimdi ödül ve adresi seçiniz.'
+invest-created-manually-ko: 'El ile yatırım yapma hatası [%s]'

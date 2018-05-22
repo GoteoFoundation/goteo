@@ -412,8 +412,17 @@ class Mail extends \Goteo\Core\Model {
         $to = $this->to ? $this->to : $this->email;
         if($force_to) $to = $force_to;
         $tracker = $tracker ? '1' : '0';
-        $token = md5(Config::get('secret') . '-' . $to . '-' . $this->id . '-' . $tracker) . '¬' . $to . '¬' . $this->id . '¬' . $tracker;
+        return self::encodeToken([$to, $this->id, $tracker], $encode);
+        // $token = md5(Config::get('secret') . '-' . $to . '-' . $this->id . '-' . $tracker) . '¬' . $to . '¬' . $this->id . '¬' . $tracker;
 
+        // if($encode) {
+        //     return \mybase64_encode($token);
+        // }
+        // return $token;
+    }
+
+    static public function encodeToken(array $vars, $encode = true) {
+        $token = md5(Config::get('secret') . '-' . implode('-', $vars)) . '¬' . implode('¬', $vars);
         if($encode) {
             return \mybase64_encode($token);
         }

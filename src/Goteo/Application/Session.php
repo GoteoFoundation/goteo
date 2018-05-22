@@ -351,6 +351,10 @@ class Session {
         return $menu;
     }
 
+    static protected function delMenuPosition(array &$menu, $position) {
+        unset($menu[$position]);
+    }
+
     static public function addToMainMenu($item, $link = null, $id = null, $position = null, $class = null, $a_class = null) {
         self::addToMenu(self::$main_menu, $item, $link, $id, $position, $class, $a_class);
     }
@@ -373,5 +377,17 @@ class Session {
 
     static public function getSidebarMenu() {
         return self::$sidebar_menu;
+    }
+
+    static public function delMainMenuPosition($position) {
+        return self::delMenuPosition(self::$main_menu, $position);
+    }
+
+    static public function delUserMenuPosition($position) {
+        return self::delMenuPosition(self::$user_menu, $position);
+    }
+
+    static public function delSidebarMenuPosition($position) {
+        return self::delMenuPosition(self::$sidebar_menu, $position);
     }
 }

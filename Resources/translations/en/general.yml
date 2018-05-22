@@ -38,6 +38,7 @@ explain-project-progress: 'This graph explains in a visual way the level of data
 fancybox: 'Fancybox text'
 goteo-return-button: 'Back to Goteo'
 guide-dashboard-user-access: 'You can change the information with which you log in to your Goteo account.'
+guide-dashboard-user-personal: "You should only fill in this data if you have created a project and you want it to be co-financed and supported through Goteo. The information of this part is necessary to contact you in case you get the required funding, and so that income can be made."
 guide-project-contract-information: 'The information in this section is necessary so that we can contact you if you get the required financing, and be able to make the deposit. In the case of organizations, we recommend that the representative of the organization be formally accredited (for example, by way of the statutes or a certificate of the secretary with an OK from the president, in the case of associations).'
 guide-project-images: 'Pictures might be photographs, screenshots, outlines, illustrations, storyboards, etc. (their authoring license should be compatible with what you choose in section. You can upload as many as you like'
 guide-project-rewards: "<strong>In this section, you should establish what the project is offering to its co-financiers.</strong>"
@@ -57,13 +58,14 @@ mandatory-project-costs: 'These should be broken down into at least two groups.'
 mandatory-register-field-email: 'You have to enter an email address'
 mark-pending: 'Mark as pending translation'
 meta-description-index: 'Goteo is an open network for crowdfunding, collaborations and training, leader in social innovation. With 2 rounds and fiscal advantages for donors!'
+node-menu-home: Node
 overview-field-about: 'Main features and goals of the crowdfunding campaign'
 overview-field-motivation: 'Why this is important'
 profile-about-header: 'About me'
 project-invest-total: 'Total contributions'
 project-messages-send_message-your_answer: 'Write your answer here'
 project-messages-send_message_support-your_answer: 'Write here your collaboration message for %s'
-regular-add: New entry
+regular-add: New Record
 regular-all: All
 regular-admin_board: 'Admin panel'
 regular-allsome: 'all/some of'
@@ -71,28 +73,41 @@ regular-anonymous: Anonymous
 regular-ask: Ask
 regular-submit: Send
 regular-by: 'By:'
+regular-calendar: Calendar
 regular-cancel: Cancel
 regular-cancel-back: 'Cancel & Go back'
 regular-back: 'Go back'
+regular-channel: Channel
 regular-collaborate: Collaborate
+regular-content: Content
+regular-continue-question: 'Continue?'
 regular-create: 'Create a project'
+regular-date: Date
+regular-date_in: Entry Date
+regular-date_out: Release Date
 regular-days: days
 regular-delete: Erase
 regular-description: Description
 regular-discover: 'Discover projects'
 regular-discard: 'Discard'
 regular-download-pdf: 'Download PDF'
+regular-download: Download
 regular-actions: Actions
 regular-edit: Edit
 regular-email: Email address
 regular-join: 'Join'
+regular-facebook: Facebook
 regular-faq: 'Frequently asked questions'
 regular-female: Female
 regular-first: First
 regular-from: from
 regular-getit: Get it
 regular-go_up: Upload
+regular-google: Google+
+regular-header: Header
 regular-header-about: 'About Goteo'
+regular-header-blog: Blog
+regular-header-faq: FAQ
 regular-header-glossary: 'Glossary of terms used in Goteo'
 regular-hello: Hello
 regular-here: here
@@ -100,16 +115,19 @@ regular-help: Help
 regular-home: Start
 regular-id: Identifier (ID)
 regular-im: I am
+regular-instagram: Instagram
 regular-invest: Contribute
 regular-invest_it: 'Co-finance this project'
 regular-investing: Contributing
 regular-lang: Language
 regular-last: Last
 regular-license: License
+regular-linkedin: LinkedIn
 regular-loading: Loading...
 regular-login: Log in
 regular-logout: 'Log out'
 regular-looks_for: 'looking for:'
+regular-main-header: Goteo.org
 regular-male: Male
 regular-others: Others
 regular-manage_board: 'Processing Agency Panel'
@@ -123,6 +141,7 @@ regular-message_success: 'Message sent correctly'
 regular-months: months
 regular-more_info: 'Plus d''info'
 regular-news: 'News'
+regular-no: 'No'
 regular-of: of
 regular-preview: Preview
 regular-projects: projects
@@ -134,11 +153,13 @@ regular-recomended_by: 'Project recommended by:'
 regular-review_board: 'Review panel'
 regular-round: 'Round'
 regular-save: Save
+regular-schedule: Schedule
 regular-search: Search
 regular-search-user: Find a user
 regular-search-desc: 'Write your search here'
 regular-search-tooltip: 'Enter your keywords and press enter'
 regular-see_all: 'See all'
+regular-see_blog: Blog
 regular-see_details: 'See details'
 regular-see_more: 'See more'
 regular-send_message: 'Send message'
@@ -147,23 +168,31 @@ regular-share-rss: RSS/Blog
 regular-share-twitter: 'Follow us on Twitter'
 regular-share_this: 'Share on:'
 regular-sorry: 'We are sorry'
+regular-spread: Broadcasting
+regular-status: Status
+regular-template: Template
 regular-thanks: Thank you
 regular-title: Title
 regular-text: Text
 regular-media: Video (Youtube, Vimeo)
+regular-total: Total
 regular-translate: Translate
 regular-translations: 'Translations'
 regular-translate_board: 'Translation panel'
+regular-twitter: Twitter
 regular-url: URL
 regular-view: View
 regular-view_project: 'View project'
 regular-web: Site
 regular-weeks: weeks
+regular-year: Year
 regular-yes: "Yes"
 regular-name: Name
 regular-image: Image
 regular-images: Images
 regular-load-more: 'Load more'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
 regular-call: Matchfunding
 regular-num-comments: '%s comments'
 regular-manage: 'Manage'
@@ -179,6 +208,7 @@ regular-previous: Previous
 session-about-to-expire: 'Your session will expire in 10 Minutes, do you want to reload?'
 session-expired: 'Your session has expired'
 stories-user-project: '%s, from the project: %s'
+support-our-mission: 'SUPPORT OUR MISSION'
 tooltip: 'Tooltip text'
 tooltip-dashboard-user-access_data: 'This is your current log in data. The only thing you cannot change is your username.'
 tooltip-dashboard-user-change_email: 'Change the email address at which you receive messages from Goteo.'
@@ -196,4 +226,5 @@ user-changeemail-invalid-token: 'This action has expired or has already been pro
 user-changeemail-fail: 'Error while changing the email'
 user-register-success: 'The user was registered correctly. We are sending you an activation email now.'
 validate-project-social_rewards: 'You have to specify at least one collective benefit'
+validate-project-total-costs: "The maximum cost cannot exceed more that 50% of the minimum cost. Either you raise the base costs or lower the additional costs."
 user-promoter: 'The promoter'

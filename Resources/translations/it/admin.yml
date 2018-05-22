@@ -10,14 +10,60 @@ admin-account-convert-to-pool-ko: 'Il contributo non è stato convertito in port
 admin-account-convert-to-pool-ok: 'Convertito con successo a contributo di portafoglio'
 admin-account-detail: 'Dettagli della transazione'
 admin-account-donation: Donazione
+admin-account-edit-reward: 'Gestire ricompensa/indirizzo'
 admin-account-invalid-invest: 'Contributo [%s] non trovato!'
 admin-account-invest-date: 'Data del contributo'
+admin-account-invest-non-pool-refundable: 'Questo contributo non può essere rimborsato nel portafoglio virtuale. Possono solo essere rimborsati i contributi nello stato "Pagato"'
+admin-account-invest-non-user-refundable: "Questo contributo non può essere rimborsato. Si possono rimborsare i contributi nello stato: \"In sospeso\", \"Pagato\" e \"al portafoglio\" se c'è abbastanza denaro da detrarre nel portafoglio virtuale\n"
+admin-account-invest-to-pool-ko: 'Errore nella restituzione del contributo al portafoglio'
+admin-account-invest-to-pool-ok: 'Contributo rimborsato nel portafoglio. Aumentato il valore del portafoglio di (%s)'
+admin-account-invest-user-refund-fail-pool-amount: 'Questo contributo non può essere restituito perché l''utente non ha abbastanza soldi nel portafoglio (%s)'
+admin-account-invest-user-refund-ko: 'Non è stato possibile restituire il contributo: [%s]'
 admin-account-invest-user-refund-ok: 'Contributi rimborsati correttamente'
+admin-account-invest-user-refund-ok-pool: 'Contributo rimborsato correttamente. Il portafoglio è stato ridotto da %s'
+admin-account-issue-solved: 'Ci hanno fatto il trasferimento'
 admin-account-modify-status: 'Modifica lo stato'
+admin-account-modify-status-confirm: "Sei sicuro/a di voler modificare manualmente lo stato di questo contributo? E' un'azione delicata! NON si eseguirà nessuna operazione di restituzione del contributo.\n"
 admin-account-payment-method: 'Metodo di pagamento'
 admin-account-refund-to-pool: 'Rimborsare il contributo al portafoglio'
+admin-account-refund-to-pool-confirm: "Questo indicherà il contributo come: \nRestituito se il progetto è fallito \nAnnullato se il progetto è attivo o di successo \nL'importo non sarà rimborsato all'utente, si genererà un ammontare nel portafoglio virtuale dell'utente. \nVuoi continuare?\n"
+admin-account-refund-to-user: 'Rimborsare il contributo all''utente'
+admin-account-refund-to-user-confirm: "Questo indicherà il contributo come: \nRestituito se il progetto è fallito \nAnnullato se il progetto è attivo o di successo \nSi rimborserà l'importo all'utente.\nQuesto potrebbe NON funzionare se il contributo è molto vecchio o se il metodo di pagamento non è supportato.\nVuoi continuare?\n"
 admin-account-rewards: 'Ricompense scelte'
+admin-account-switch-donation: 'Cambiare la donazione'
+admin-account-switch-donation-confirm: 'Sei sicuro/a di voler modificare lo stato della donazione?'
+admin-account-switch-pool: 'Cambiare il pool'
 admin-account-switch-pool-confirm: 'Questo vale solo per quando il progetto fallisce, non genera ne toglie soldi dal portafoglio. Vuoi continuare?'
+admin-account-switch-pool-fail: 'Non è possibile modificare lo stato del pool di questo contributo'
+admin-account-transaction: 'Codici di monitoraggio'
+admin-account-user-changed-error: 'Non è stato possibile cambiare l''utente del contributo da [%ID%] a [%NAME%]!'
+admin-account-user-changed-successfully: 'E'' stato cambiato l''utente del contributo da [%ID%] a [%NAME%]'
+admin-address: Indirizzo
+admin-all: Tutti
+admin-back: Indietro
 admin-back-detail: 'Torna ai dettagli'
 admin-back-list: 'Torna alla lista'
 admin-contents: 'Testi e traduzioni'
+admin-empty-list: 'Nessun risultato trovato'
+admin-mailing-back-to-list: 'Tornare a comunicazioni'
+admin-mailing-communicating-with: 'Volevamo contattare %DESC%'
+admin-mailing-created: 'Creato il'
+admin-mailing-new-massive: 'E'' stata creata una mail di massa a %TOTAL% utenti'
+admin-mailing-status: 'Stato dell''invio automatico'
+admin-mailing-subject: Problema
+admin-mailing-view-and-activate: 'Vedere l''admin del bollettino per attivare l''invio'
+admin-mailing-view-in-newsletter: 'Vedere l''admin del bollettino'
+admin-mailing-view-in-sent: 'Vai al registro degli invii (statistiche)'
+admin-mailing-view-message: 'Visualizza messaggio'
+admin-newsletter-generated: 'E'' stato generato il bollettino [%ID%]'
+admin-newsletter-langs-to-send: 'Lingue: %LANGS%'
+admin-newsletter-mind-activate: 'Attivala affinché sia inviato'
+admin-no: 'No'
+admin-percent: Percentuale
+admin-project: Progetto
+admin-projects: Progetti
+admin-filters: 'Filtri'
+admin-remove-filters: 'Eliminare filtri'
+admin-sponsors: Servizi
+admin-status: Stato
+admin-text-type: 'Elaborare il testo come'

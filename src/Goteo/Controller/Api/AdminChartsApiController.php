@@ -80,13 +80,14 @@ class AdminChartsApiController extends ChartsApiController {
         // Get the minimum,max and total items
         list($prefilter, $prevalues) = self::getAggregatesSQLFilter('invests', $request);
         $sql = "SELECT COUNT(*) AS `total`,
-                MIN(`invested`) AS min_date,
-                MAX(`invested`) AS max_date
+                MIN(`datetime`) AS min_date,
+                MAX(`datetime`) AS max_date
                 FROM `invest`" . ($prefilter ? ' WHERE '.implode(' AND ', $prefilter) : '');
         // die(\sqldbg($sql, $prevalues));
         $ob = Model::query($sql, $prevalues)->fetchObject();
         $total_items = (int) $ob->total;
         $min_date = $ob->min_date;
+        // $max_date = null;
         $max_date = $ob->max_date;
 
         if($type === 'invests') {

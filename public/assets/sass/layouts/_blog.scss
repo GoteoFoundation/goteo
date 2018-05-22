@@ -225,6 +225,93 @@ body.blog {
     }
   }
 
+  /* Donate */
+  .donate-header{
+    position: relative;
+    .main-info{
+      position: absolute;
+      bottom: 20%;
+      width: 100%;
+      top: 40%;
+      .btn-pink{
+        h1{
+          text-transform: uppercase;
+          font-size: $font-size*1.5;
+          padding: 0;
+          margin: 0;
+        }
+      }
+      .text-description{
+        margin: 20px 0;
+        font-size: 37.5px;
+        font-weight: 700;
+        text-shadow: .5px .5px #3a3a3a;
+        line-height: 1.1;
+        color: $color-white;
+      }
+    }
+    .img-header{
+      width: 100%;
+      filter: brightness(85%);
+      object-fit: cover;
+      height: auto;
+    }
+
+
+  }
+
+    div.donor-text-description{
+      font-size: $font-size*1.4;
+      font-weight: lighter;
+      padding-bottom: 30px;
+      p{
+        padding-top: 40px;
+        padding-bottom: 10px;
+      }
+    }
+
+    div.donate-methods{
+      font-size: $font-size*1.4;
+      font-weight: lighter;
+      padding-top: 20px;
+      padding-bottom:30px;
+
+      .bank-transfer-account{
+        font-weight: 300;
+      }
+    }
+
+    div.foundation-accounts-donate{
+      padding: 40px 0;
+      background-color: $background-yellow;
+      .impact-title{
+        font-size: 30px;
+        font-weight: 700;
+        text-align: center;
+        padding-top: 0;
+        margin-top: 0;
+      }
+      .item{
+        margin-top: 25px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: 700;
+      }
+      .description{
+        font-size: 11px;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
+
+    }
+
+    div.foundation-accounts-text{
+      font-size: $font-size*1.4;
+      font-weight: lighter;
+      padding-top: 30px;
+      padding-bottom:30px;
+    }
+
   // Tablets customization
 
     @media (max-width: $breakpoint-md + 1) {
@@ -233,6 +320,11 @@ body.blog {
           padding: 40px 0px 30px 0px;
         }
       }
+
+      .donate-header .main-info{
+        top: auto;
+      }
+
     }
 
     @media (max-width: $breakpoint-sm - 1) {
@@ -255,6 +347,13 @@ body.blog {
       .filters{
         padding: 20px 0 20px 5px !important;
       }
+
+      div.foundation-accounts-donate{
+        .item{
+          margin-bottom: 20px !important;
+        }
+      }
+
       div.section.post-header{
         position:static;
 
@@ -297,6 +396,23 @@ body.blog {
 
       div.related-post{
         margin-top: 20px;
+      }
+
+      .donate-header{
+        .img-header{
+          height: 350px;
+        }
+        .main-info{
+          top: auto;
+          .text-description{
+            font-size: $font-size*1.5;
+          }
+          .btn-pink h1{
+            font-size: $font-size*1.4;
+          }
+
+
+        }
       }
 
     }

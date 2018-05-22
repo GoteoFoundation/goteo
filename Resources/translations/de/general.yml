@@ -1,4 +1,5 @@
 ---
+ID_DEL_TEXTO: 'Text ID_DEL_TEXTO'
 admin_no_permission: 'Sie haben keine Zugangsbereichtigung für <strong>%s</strong>'
 bazar-description-seo: 'Crowdfunding-Benefiz-Geschenke bei Goteo.org'
 bazar-title-seo: 'Solidaritätsgeschenke :: Goteo.org'
@@ -35,16 +36,25 @@ explain-project-progress: 'Diese Grafik visualisiert den Level Ihrer eingegebene
 fancybox: 'Fancybox text'
 goteo-return-button: 'Zurück zu Goteo'
 guide-dashboard-user-access: 'Sie können die Informationen ändern, mit denen Sie sich in Ihren Goteo-Account einloggen.'
+guide-dashboard-user-personal: "Sie müssen diese Angaben nur ausfüllen, wenn Sie ein Projekt erstellt haben und es über Goteo kofinanziert und unterstützt werden soll. Falls Sie die erforderliche Finanzierung erreichen, sind die Informationen in diesem Abschnitt notwendig, um Sie die Überweisung zu kontaktieren und damit diese vorgenommen werden kann."
+guide-project-comment: guide-project-comment
 guide-project-contract-information: 'Ihre Informationen in diesem Bereich sind erforderlich, um Sie zu kontaktieren, wenn wir Ihnen die gewünschte Unterstützung gewähren können. Im Falle von Organisationen empfehlen wir, dass der Repräsentant von seiner Organisation offiziell akkreditiert wird. (Bspw. Im Rahmen der Vereinssatzung oder durch ein entsprechendes Schreiben der Geschäftsführung bzw. des Vereinsvorstands)'
+guide-project-costs: "<strong>In diesem Abschnitt sollten Sie ein kleines Budget ausarbeiten, das auf den Kosten basiert, die das Projekt haben wird.</strong><br><br>Sie sollten nach Aufgaben, Infrastruktur oder Materialien spezifizieren. Versuchen Sie, realistisch über die Kosten zu sein und erklären Sie kurz, warum Sie jede einzelne von ihnen decken müssen. Bitte beachten Sie, dass der größte Teil des Projekts in der Regel direkt von der Person oder dem Team durchgeführt werden sollte, die das Projekt fördert, und nicht an Dritte weitergegeben werden sollten. Bei der Berechnung müssen Sie auch die Goteo- und Transaktionsprovisionen berücksichtigen, die zwischen 4,8% und ca. 6% betragen, je nachdem, ob Sie die Zahlungsoption über Paypal aktivieren oder nicht (<a href=\"/faq/sponsor#q98\" target=\"new\">+ info in unseren FAQ</a>).<br><br> <strong>Sehr wichtig</strong>: Bei Goteo unterscheiden wir zwischen notwenigen und zusätzlichen Kosten. Erstere müssen in ihrer Gesamtheit erreicht werden, um Mittel zu erhalten, während letztere direkt in einer späteren Runde, wenn das Projekt läuft, beantragt und eingeholt werden, um die Kosten für seine Optimierung (Verbreitung, Gestaltung, Umfang, weitere Einheiten usw.) zu decken. Es wird empfohlen, dass diese zusätzlichen Kosten die Hälfte der Gesamtkosten des Projekts nicht überschreiten. <br>Wenn Sie möchten, dass Ihre Kampagne kürzer wird, eine einzelne Runde \"alles oder nichts\", können Sie dies durch Ankreuzen des entsprechenden Kästchens angeben, obwohl die Kostenberechnung gleich sein muss. "
+guide-project-description: "<strong>In diesem Abschnitt können Sie die konzeptionellen Aspekte des Projekts im Detail erläutern. </strong><br><br>Dies ist das Erste, was jeder Benutzer des Netzwerkes findet, also achten Sie auf das Schreiben und vermeiden Sie Rechtschreibfehler. Sie werden sehen, dass es Pflichtfelder gibt, wie z. B. das Einbinden eines Videos oder das Hochladen von Bildern. Wir halten dies für unerlässlich für einen erfolgreichen Start einer Goteo-Kampagne.<br><br>Beachten Sie, dass wertvollste an Goteo ist: Das Allgemeininteresse am Beitrag von freier Information und freiem Wissen durch Ihr Projekt. Die Originalität, das Streben eine soziale Nachfrage zu lösen und das Potenzial eine breite Gemeinschaft von interessierten Menschen zu gewinnen, machen deutlich, dass das Unterstützer-Team Kapazitäten und Erfahrungen hat, das Projekt zu einem erfolgreichen Abschluss zu bringen. Verlieren Sie also nicht aus den Augen über diese Aspekte zu informieren."
 guide-project-images: 'Bilder können Fotos, Screenshots, Skizzen, Illustrationen, Storyboards, etc. sein. (ihre Lizenzierung sollte kompatibel mit Ihrer gewählten Projektlizensierung sein. Sie können so viele Motive hochladen, wie Sie möchten.'
 guide-project-rewards: "<strong>In diesem Bereich sollen Sie beschreiben, was das Projekt seinen Unterstützern als Dankeschön oder Belohnung anbietet und welchen allgemeinen Nutzen es für die Gesellschaft hat.</strong>"
+guide-project-support: guide-project-support
 guide-project-supports: '<strong>In diesem Bereich können Sie angeben, welche nichtmonetäre Unterstützung Sie zur Realisierung Ihres Projektes benötigen.</strong><br><br>Das kann eine Projektunterstützung durch andere sein (bspw. Übersetzungen, Organisation, Werbung, etc.) oder vielleicht spezifische Leihgaben (Material, Technik, Transport, Werkzeug, etc.)'
+guide-project-updates: "<b>Es ist sehr wichtig, dass die Projekte ihre Kofinanzierer und andere potenziell interessierte Personen über den Verlauf ihrer Kampagne auf dem Laufenden halten. In diesem Bereich können Sie Aktualisierungsnachrichten über das Projekt als eine Art öffentlicher Blog publizieren.</b>Darüber hinaus ist es für die zweite Runde der Kofinanzierung wichtig, regelmäßig zu erläutern, wie die Produktion begonnen hat, welche Fortschritte, Probleme usw. die größtmögliche Transparenz ermöglichen und wie sich der Projektstart entwickelt, um mehr Interesse und Gemeinschaft zu schaffen."
+guide-project-invests: 'In diesem Bereich können Sie Ihre Kofinanzierer und die von ihnen gewählten Prämien verwalten und sich auch an sie wenden, wenn Sie es für notwendig halten.'
 header-about-side: 'Was uns inspiriert'
 home-posts-header: Neuigkeiten
 horizontal-project-investors: 'Ko-Finanzierer'
 horizontal-project-percent: 'finanziert'
 horizontal-project-reached: 'erreicht'
 invest-individual-header: 'Sie können auf die Projektbelohnung für Ihre Zuwendung verzichten oder diejenige wählen, die dem Betrag Ihrer Zuwendung oder einem kleineren als dem von Ihnen eingetragenen Betrag entspricht.'
+login-register-conditions: 'Mit der Registrierung bestätigen Sie Ihre Zustimmung zu unseren <a href="/legal/terms">Nutzungsbedingungen</a>, <a href="/legal/privacy">Datenschutzrichtlinien</a> und <a href="/legal/cookies">Cookie Richtlinien</a>.'
+login-accept-conditions: 'Ich akzeptiere die <a href="/legal/terms">Nutzungsbedingungen</a>, <a href="/legal/privacy">Datenschutzrichtlinie</a> und <a href="/legal/cookies">Cookie-Richtlinie</a>.'
 mandatory-cost-field-type: 'Sie müssen eine Kostenart auswählen'
 mandatory-individual_reward-field-amount: 'Sie müssen den Betrag angeben, ab dem die Belohnung verfügbar ist.'
 mandatory-project-costs: 'Dies sollte untergliedert sein in mindestens zwei Gruppen.'
@@ -115,6 +125,7 @@ regular-lang: Sprache
 regular-last: Last
 regular-license: Lizenz
 regular-linkedin: LinkedIn
+regular-loading: Wird geladen...
 regular-login: Einloggen
 regular-logout: 'Ausloggen'
 regular-looks_for: 'suchen nach:'
@@ -183,6 +194,19 @@ regular-image: Bild
 regular-images: Bilder
 regular-load-more: 'Weitere laden'
 regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook-Pixel'
+regular-call: Matchfunding
+regular-num-comments: '%s Kommentar(e)'
+regular-manage: 'Verwalten'
+regular-no-edit-permissions: Sie haben keine Berechtigung, diesen Beitrag zu bearbeiten!
+regular-messages: Nachrichten
+regular-unknown: Unbekannt
+regular-input: Beitrag
+regular-amount: Betrag
+regular-copied: 'In Zwischenablage kopiert!'
+regular-remember-me: 'Meine Daten speichern'
+regular-next: Weiter
+regular-previous: Zurück
 session-about-to-expire: 'Ihre Sitzung wird in 10 Minuten ablaufen, wollen Sie erneut laden?'
 session-expired: 'Ihre Sitzung ist abgelaufen'
 spread-about: 'Text spread-about'
@@ -201,6 +225,9 @@ tooltip-project-schedule: 'Produktionskalender Ihres Projektes. Bitte tragen Sie
 translate-home-guide: 'Nachricht an die Übersetzer'
 user-account-inactive: 'Das Konto ist deaktiviert.'
 user-activate-fail: 'Fehler beim Aktivieren des User-Accounts'
+user-changeemail-invalid-token: 'Diese Aktion ist abgelaufen oder wurde bereits vorher ausgeführt'
 user-changeemail-fail: 'Fehler beim Wechseln der Email Adresse'
 user-register-success: 'Der User wurde korrekt registriert. Wir senden Ihnen jetzt eine Aktivierungsmail.'
 validate-project-social_rewards: 'Sie müssen zumindest einen kollektiven Nutzen benennen'
+validate-project-total-costs: "Die optimalen Kosten dürfen die Mindestkosten nicht um mehr als 50% übersteigen. Entweder Sie erhöhen die notwendigen Kosten oder Sie senken die Mehrkosten."
+user-promoter: 'Der veranstaltende Benutzer'

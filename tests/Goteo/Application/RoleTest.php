@@ -98,7 +98,7 @@ class RoleTest extends \PHPUnit_Framework_TestCase {
         $this->assertInternalType('array', $permissions);
         $this->assertArrayHasKey('perm-test1', $permissions);
         $this->assertArrayHasKey('perm-test2', $permissions);
-        $this->assertContains('testmodel', $permissions['perm-test2']);
+        $this->assertContains('user_testmodel', $permissions['perm-test2']['relational'], print_r($permissions['perm-test2'], 1));
 
     }
 

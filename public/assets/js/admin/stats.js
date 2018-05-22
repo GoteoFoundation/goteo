@@ -77,7 +77,7 @@ $(function(){
         // console.log('initBindings, current hash', HASH);
 
         $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-          console.log('tab show', e);
+          // console.log('tab show', e);
           // e.target // newly activated tab
           // e.relatedTarget // previous active tab
           var target = $(e.target).attr('href').substr(1);
@@ -131,8 +131,9 @@ $(function(){
             var source = $(content).data('source');
 
             var query = location.search.replace(/&text=[^&]+/, '');
-            var source2 = source.replace(/\?.+/g, query);
-            console.log('modify', source, source2);
+            var source2 = source.replace(/\?.*/g, '');
+            source2 += query;
+            // console.log('modify', source, source2, 'query', query, 'serach', location.search);
             content = content.replace(new RegExp(escapeRegExp(source), 'g'), source2)
             // console.log(content);
             $template.html(content);
