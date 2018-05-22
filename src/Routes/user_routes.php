@@ -16,26 +16,6 @@ $user = new RouteCollection();
 
 //////////// USER ROUTES ///////////////////
 
-// $user->add('user-login', new Route(
-//     '/login',
-//     array('_controller' => 'Goteo\Controller\UserController::loginAction')
-// ));
-
-// $user->add('user-register', new Route(
-//     '/register',
-//     array('_controller' => 'Goteo\Controller\UserController::registerAction')
-// ));
-
-//Oauth registering
-// $user->add('user-oauth', new Route(
-//     '/oauth',
-//     array('_controller' => 'Goteo\Controller\UserController::oauthAction')
-// // ));
-// $user->add('user-oauth-register', new Route(
-//     '/oauth_register',
-//     array('_controller' => 'Goteo\Controller\UserController::oauthRegisterAction')
-// ));
-
 $user->add('user-profile', new Route(
     '/profile/{id}/{show}/{category}',
     array(
@@ -51,14 +31,14 @@ $user->add('user-edit', new Route(
     array('_controller' => 'Goteo\Controller\UserController::editAction')
 ));
 
-//User recover
-$user->add('user-recover', new Route(
-    '/recover/{token}',
-    array(
-        '_controller' => 'Goteo\Controller\UserController::recoverAction',
-        'token' => ''
-        )
-));
+// //User recover
+// $user->add('user-recover', new Route(
+//     '/recover/{token}',
+//     array(
+//         '_controller' => 'Goteo\Controller\UserController::recoverAction',
+//         'token' => ''
+//         )
+// ));
 
 //User newsletter unsubscribing
 //Mispelled
@@ -70,6 +50,7 @@ $user->add('user-unsuscribe', new Route(
         )
 ));
 
+// Direct unsubscribing
 $user->add('user-unsubscribe', new Route(
     '/unsubscribe/{token}',
     array(
@@ -78,7 +59,16 @@ $user->add('user-unsubscribe', new Route(
         )
 ));
 
-//User unsubscribing
+// Direct subscribing
+$user->add('user-subscribe', new Route(
+    '/subscribe/{token}',
+    array(
+        '_controller' => 'Goteo\Controller\UserController::subscribeAction',
+        'token' => ''
+        )
+));
+
+//User anonimatization
 $user->add('user-leave', new Route(
     '/leave/{token}',
     array(
