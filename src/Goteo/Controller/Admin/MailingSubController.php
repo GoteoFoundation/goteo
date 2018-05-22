@@ -130,7 +130,7 @@ class MailingSubController extends AbstractSubController {
         Session::store('mailing.type', $type);
 
         $templateId = !empty($this->getPost('template')) ? $template : 11;
-        $content = \str_replace('%SITEURL%', \SITE_URL, $content);
+        // $content = \str_replace('%SITEURL%', \SITE_URL, $content);
 
         if(empty($subject) || empty($content)) {
             Message::error('El asunto o el contentido está vacio!');
