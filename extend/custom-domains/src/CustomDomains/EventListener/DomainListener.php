@@ -67,8 +67,8 @@ class DomainListener extends AbstractListener {
                         return;
                     }
                     // Redirect to custom domain on the index page if is the first path
-                    if($current_path === $paths[0]) {
-                        // die("$scheme://$domain");
+                    if($current_path === $paths[0] && !$request->getQueryString()) {
+                        // print_r($request->getQueryString());die("$scheme://$domain");
                         $event->setResponse(new RedirectResponse("$scheme://$domain"));
                         return;
                     }
