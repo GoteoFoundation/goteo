@@ -32,6 +32,15 @@ $suggest = $this->suggest ? $this->suggest : [];
 <div class="form-group<?= $err['register_accept'] ? ' has-error' : '' ?>">
     <div class="checkbox">
         <label>
+            <input type="checkbox" id="newsletter_accept" class="no-margin-checkbox big-checkbox" name="newsletter_accept"<?= $this->newsletter_accept ? ' checked="checked"' : '' ?>>
+            <p class="label-checkbox">
+            <?= $this->text('login-register-accept-newsletter') ?>
+            </p>
+        </label>
+        <?= ($err['register_accept'] ? '<span class="help-block info-block">' . $err['register_accept'] . '</span>' : '') ?>
+    </div>
+    <div class="checkbox">
+        <label>
             <input type="checkbox" id="register_accept" class="no-margin-checkbox big-checkbox" name="register_accept"<?= $this->register_accept ? ' checked="checked"' : '' ?>>
             <p class="label-checkbox">
             <?= $this->text('login-register-conditions') ?>
