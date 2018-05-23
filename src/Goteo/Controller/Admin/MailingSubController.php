@@ -72,7 +72,9 @@ class MailingSubController extends AbstractSubController {
         $this->methods = Model\Invest::methods();
         $this->types = array(
             'investor' => 'Cofinanciadores',
-            'owner' => 'Autores',
+            'investor_no_owner' => 'Cofinanciadores no impulsores',
+            'owner' => 'Impulsores',
+            'no_owner_no_investor' => 'Ni Autores ni cofinanciadores',
             'user' => 'Usuarios'
         );
         $this->roles = array(
@@ -420,6 +422,16 @@ class MailingSubController extends AbstractSubController {
         if (isset($filters['status']) && $filters['status'] > -1 && !empty($sqlInner)) {
             $sqlFilter .= "AND project.status = :status ";
             $values[':status'] = $filters['status'];
+        }
+
+        if($filters['type'] == 'no_owner_no_investor')
+        {
+            $sqlFilter .= "AND user.id NOT IN (SELECT user FROM invest WHERE invest.status IN (0, 1, 3, 4, 6)) AND user.id NOT IN (SELECT owner FROM project)";
+        }
+
+        if($filters['type'] == 'investor_no_owner')
+        {
+            $sqlFilter .= "AND user.id IN (SELECT user FROM invest WHERE invest.status IN (0, 1, 3, 4, 6)) AND user.id NOT IN (SELECT owner FROM project) ";
         }
 
         if ($filters['type'] == 'investor' && !empty($sqlInner)) {
