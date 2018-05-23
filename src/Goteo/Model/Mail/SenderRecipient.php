@@ -125,9 +125,11 @@ class SenderRecipient extends \Goteo\Core\Model
         $mail->to = \trim($this->email);
         $mail->toName = $this->name;
         $mail->subject = $sender->subject;
+        $subscribe = SITE_URL . '/user/subscribe/' . $mail->getToken();
+        $unsubscribe = SITE_URL . '/user/unsubscribe/' . $mail->getToken();
         $mail->content = str_replace(
-            array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%'),
-            array($this->user, $this->email, $this->name, SITE_URL),
+            array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%', '%SUBSCRIBEURL%', '%UNSUBSCRIBEURL%'),
+            array($this->user, $this->email, $this->name, SITE_URL, $subscribe, $unsubscribe),
             $mail->content
         );
         echo "SENT " .$mail->id."\n\n";

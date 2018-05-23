@@ -45,6 +45,7 @@ $auth->add('auth-signup-old-route', new Route(
     '/user/register',
     array('_controller' => 'Goteo\Controller\AuthController::signupAction')
 ));
+
 // Oauth registering form
 $auth->add('auth-oauth-signup', new Route(
     '/signup/oauth',
@@ -61,6 +62,7 @@ $auth->add('auth-logout', new Route(
     '/logout',
     array('_controller' => 'Goteo\Controller\AuthController::logoutAction')
 ));
+
 // old route compatibility
 $auth->add('auth-logout-old-route', new Route(
     '/user/logout',
@@ -72,6 +74,13 @@ $auth->add('auth-password-recovery', new Route(
     '/password-recovery/{token}',
     array('_controller' => 'Goteo\Controller\AuthController::passwordRecoveryAction',
           'token' => '', //optional parameter
+        )
+));
+
+// Old route compatibility
+$auth->add('auth-old-password-recovery', new Route(
+    '/user/recover',
+    array('_controller' => 'Goteo\Controller\AuthController::passwordRecoveryAction',
         )
 ));
 
