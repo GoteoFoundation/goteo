@@ -184,7 +184,7 @@ class DomainListener extends AbstractListener {
             KernelEvents::REQUEST    => ['onRequest',  100], // We want this to be executed
                                                              // before SessionListener (that handles language
                                                              // redirections if url.url_lang is active)
-            KernelEvents::CONTROLLER => ['onController', -100]
+            KernelEvents::CONTROLLER => ['onController', 50]
         );
     }
 }
