@@ -158,7 +158,7 @@ foreach ($filters as $key=>$value) {
                     if ($project->getConsultants()) {
                         $consultants = array();
                         foreach($project->getConsultants() as $id => $name) {
-                            if($this->is_module_admin('Users', $project->node)) {
+                            if($this->is_module_admin('users', $project->node)) {
                                 $consultants[] = '<a href="/admin/users/manage/'.$id.'">' . $name . '</a>';
                             }
                             else {
@@ -184,7 +184,7 @@ foreach ($filters as $key=>$value) {
                         <a href="/project/edit/<?= $project->id ?>" target="_blank">[Editar]</a>
                         <a href="/admin/projects/report/<?= $project->id ?>" target="_blank">[Informe Financiacion]</a>
                     <?php endif ?>
-                    <?php if($this->is_module_admin('Users', $project->node)): ?>
+                    <?php if($this->is_module_admin('users', $project->node)): ?>
                         <a href="/admin/users?id=<?= $project->owner ?>" target="_blank">[Impulsor]</a>
                         <a href="/admin/users?project=<?= $project->id ?>" title="Ver sus cofinanciadores">[Cofinanciadores]</a>
                     <?php endif ?>

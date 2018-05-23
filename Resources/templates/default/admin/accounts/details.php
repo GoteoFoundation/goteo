@@ -38,14 +38,14 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <tr>
         <td><strong><?= $this->text('admin-user') ?></strong></td>
         <td>
-            <?php if($this->is_module_admin('Users', $invest->node)): ?>
+            <?php if($this->is_module_admin('users', $invest->node)): ?>
                 <a href="/admin/users/manage/<?= $user->id ?>"><?= $user->id ?> [<?= $user->name ?> / <?= $user->email ?>]</a>
             <?php else: ?>
                 <?= $user->id ?> [<?= $user->name ?> / <?= $user->email ?>]
             <?php endif ?>
         </td>
         <td>
-            <?php if($this->is_module_admin('Users', $invest->node)): ?>
+            <?php if($this->is_module_admin('users', $invest->node)): ?>
                 <?= $this->insert('admin/partials/typeahead_form', [
                                                                     'id' => 'change_user_input',
                                                                     'hidden' => true
