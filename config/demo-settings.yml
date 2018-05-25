@@ -70,6 +70,25 @@ plugins:
         active: true # plugin should be active=true to be loaded
         #liveport: 35729 # Local development only livereload port (optional)
 
+    custom-domains:
+        active: false
+        # Multiple path can be specified for any domain
+        # The first path is the one treated as index (will convert the path to "/")
+        # Next paths will be appended as are in the main domain
+        #
+        # NOTE: paths are treated as prefixes, any following url starting
+        #       with the same path will use the custom domain as well
+        #       DO NOT PUT http:// or https:// in custom domain blocks
+        #
+        domains:
+            blog.example.com:
+                - /blog
+        # Any redirect must be defined here
+        # redirects works based on prefix,
+        # order is important, the first prefix found will be used
+        redirects:
+            blog.example.com/p: http://blog.example.com/
+
 # Payment methods, must be registered as classes implementing Goteo\Payment\Method\PaymentMethodInterface
 payments:
     # Paypal
