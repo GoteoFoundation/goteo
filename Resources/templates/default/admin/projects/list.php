@@ -252,10 +252,8 @@ foreach ($filters as $key=>$value) {
                         <?php else : ?><a href="<?php echo "/admin/translates/add?project={$project->id}" ?>">[Habilitar traducción]</a><?php endif ?>
                     <?php endif ?>
                     <a href="/admin/projects/images/<?= $project->id ?>">[Organizar imágenes]</a>
-                    <?php if($this->is_module_admin('Calls', $project->node)): ?>
-                        <?php if (in_array($project->status, array('1', '2', '3')) && !$project->called) : ?><a href="<?php echo "/admin/projects/assign/{$project->id}" ?>">[Asignarlo a una convocatoria]</a><?php endif ?>
-                        <?php if ($project->status == 4 || $project->status == 5) : ?><a href="/admin/commons?project=<?= $project->id ?>">[Retornos colectivos]</a><?php endif ?>
-                    <?php endif ?>
+                    <?php if (in_array($project->status, array('1', '2', '3')) && !$project->called) : ?><a href="<?php echo "/admin/projects/assign/{$project->id}" ?>">[Asignarlo a una convocatoria]</a><?php endif ?>
+                    <?php if ($project->status == 4 || $project->status == 5) : ?><a href="/admin/commons?project=<?= $project->id ?>">[Retornos colectivos]</a><?php endif ?>
                     <?php
                     if($project->userCanAdmin($this->user)): ?>
                         <?php if (isset($this->contracts[$project->id])) : ?><a href="<?php echo "/contract/{$project->id}" ?>" target="_blank">[Contrato]</a><?php endif ?>
