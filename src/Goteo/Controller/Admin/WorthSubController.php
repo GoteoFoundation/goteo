@@ -80,7 +80,7 @@ class WorthSubController extends AbstractSubController {
                 unset($log);
 
                 // tratar si han marcado pendiente de traducir
-                if ($this->getPost('pending') == 1 && !\Goteo\Core\Model::setPending($data->id, 'worth')) {
+                if ($this->getPost('pending') == 1 && !\Goteo\Core\Model::setPending($data->id, 'worthcracy')) {
                     Message::error('NO se ha marcado como pendiente de traducir!');
                 }
 
