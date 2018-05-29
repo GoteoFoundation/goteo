@@ -74,13 +74,13 @@ class WorthSubController extends AbstractSubController {
                     \vsprintf("El admin %s ha %s el nivel de meritocrácia %s", array(
                         Feed::item('user', $this->user->name, $this->user->id),
                         Feed::item('relevant', 'Modificado'),
-                        Feed::item('project', $data->name)
+                        Feed::item('project', $data['name'])
                 )));
                 $log->doAdmin('admin');
                 unset($log);
 
                 // tratar si han marcado pendiente de traducir
-                if ($this->getPost('pending') == 1 && !\Goteo\Core\Model::setPending($data->id, 'worthcracy')) {
+                if ($this->getPost('pending') == 1 && !\Goteo\Core\Model::setPending($data['id'], 'worthcracy')) {
                     Message::error('NO se ha marcado como pendiente de traducir!');
                 }
 
