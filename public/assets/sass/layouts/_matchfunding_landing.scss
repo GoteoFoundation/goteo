@@ -132,6 +132,86 @@ body.matchfunding-landing {
   			}
   		}
   	}
+
+    div.section.matchfunding-module{
+      .calls-summary{
+        padding-top: 10px;
+        padding-bottom: 25px;
+      }
+    }
+
+    div.section.stories{
+      background-color: $background-yellow;
+      padding-top: 30px;
+      margin-bottom: 0px;
+    }
+
+    div.section.map-visualization{
+      padding-bottom: 35px;
+      h2.title{
+        font-weight: bold;
+        text-align: center;
+        padding: 15px 0 25px 0;
+      }
+    }
+
+    div.stats{
+      padding: 40px 0;
+      background-color: $background-light-lilac;
+      color: $color-white;
+      .impact-title{
+        font-size: 30px;
+        font-weight: 700;
+        text-align: center;
+        padding-top: 0;
+        margin-top: 0;
+      }
+      .item{
+        margin-top: 25px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: 700;
+      }
+      .description{
+        font-size: 11px;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
+
+    }
+
+    div.section.sponsors{
+      padding-bottom: 35px;
+      h2.title{
+        font-weight: bold;
+        text-align: center;
+        padding: 15px 0 25px 0;
+      }
+    }
+
+
+    @media (max-width: $breakpoint-sm - 1) 
+    {
+
+      div.section.selector{
+        padding-top: 35px;
+      }
+
+      div.section.main-info{
+        .description{
+          margin-bottom: 20px;
+        }
+      }
+
+      div.stats{
+        .item{
+          margin-bottom: 20px !important;
+        }
+      }
+
+
+    }
+
 }
 
 
