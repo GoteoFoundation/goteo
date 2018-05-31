@@ -1,0 +1,217 @@
+@import "compass/css3";
+
+/* matchfunding landing styles */
+
+body.matchfunding-landing {
+	background-color: $background-main-home;
+
+	.top.navbar-always > a, .top-navbar .navbar-always > a i.icon, .top-navbar .navbar-always > button{
+	    color: $primary-color;
+	    background-color: transparent;
+	 }
+	.top-navbar .navbar-always > button img {
+	    border-color: lighten($primary-color, 50%);
+	 }
+
+	.top-navbar .navbar-always > a i.icon{
+	    background-color: $primary-color;
+	}
+
+  	.top-navbar{
+      	background-color: $color-white;
+  		.navbar-brand
+  		{
+  			margin-top: 5px;
+  		}
+  		
+      	h3{
+        	font-size: $font-size*1.3;
+        	margin-left:10px;
+        	float: left;
+        	margin-top: 20px;
+      	}
+
+      	div.powered{
+      		float: right;
+			color: #9d9d9d;
+			padding: 18px 10px 20px 50px;
+			border-left: 1px solid #e4e4e4;
+			img{
+				margin-left: 10px;
+				vertical-align: text-bottom;
+			}
+      	}
+  	}
+
+  	div.section.selector{
+  		padding-bottom: 30px;
+  		background-color: $color-white;
+  		div.text-up{
+  			margin-bottom: 10px;
+  			color: $color-text-green;
+  			font-size: $font-size*0.8;
+  			text-transform: uppercase;
+  		}
+  		div.text-down{
+  			color: $color-text-green;
+  			font-size: $font-size*0.8;
+  			text-transform: uppercase;
+  		}
+  		div.material-switch{
+  			height: 60px;
+  			label{
+  				width: 318px;
+  			}
+  			label::before{
+  				height: 60px;
+  				width: 318px;
+  				background-color: $color-super-light-grey;
+  				opacity: 1;
+  				border-radius: 50px;
+  			}
+  			label::after{
+  				height: 54px;
+  				width: 158px;
+  				background-color: $background-dark-lilac;
+  				border-radius: 50px;
+  			}
+  			span.pitch{
+  				color: $color-white;
+  				position: absolute;
+  				z-index: 10;
+  				font-size: $font-size*1.4;
+  				bottom: -29px;
+				left: 52px;
+				text-transform: uppercase;
+
+  			}
+  			span.match{
+  				color: $primary-color;
+  				position: absolute;
+  				left: 202px;
+  				z-index: 10;
+  				font-size: $font-size*1.4;
+  				bottom: -29px;
+  				text-transform: uppercase;
+  			}
+  			input[type="checkbox"]:checked + label span.match{
+  				color: $color-white;
+  			}
+  			input[type="checkbox"]:checked + label span.pitch{
+  				color: $primary-color;
+  			}
+  			input[type="checkbox"]:checked + label::after{
+  				left: 156px;
+  			}
+  		}
+  	}
+  	div.section.main-info{
+  		background-color: $color-white;
+  		padding-top:10px;
+  		padding-bottom: 30px;
+  		div.text{
+  			div.caption{
+  				color: $color-white;
+				background-color: $background-dark-lilac;
+				font-size: 12px;
+				padding: 8px 15px;
+				text-transform: uppercase;
+				font-weight: 700;
+				display: inline-block;
+  			}
+  			h1.title{
+  				font-size: $font-size*3;
+  				font-weight: bold;
+  				margin-top: 10px;
+  				line-height: 1;
+  			}
+  			div.description{
+  				color: $color-text-green;
+  				font-size: $font-size*0.9;
+  				padding-top:8px;
+  			}
+  		}
+  	}
+
+    div.section.matchfunding-module{
+      .calls-summary{
+        padding-top: 10px;
+        padding-bottom: 25px;
+      }
+    }
+
+    div.section.stories{
+      background-color: $background-yellow;
+      padding-top: 30px;
+      margin-bottom: 0px;
+    }
+
+    div.section.map-visualization{
+      padding-bottom: 35px;
+      h2.title{
+        font-weight: bold;
+        text-align: center;
+        padding: 15px 0 25px 0;
+      }
+    }
+
+    div.stats{
+      padding: 40px 0;
+      background-color: $background-light-lilac;
+      color: $color-white;
+      .impact-title{
+        font-size: 30px;
+        font-weight: 700;
+        text-align: center;
+        padding-top: 0;
+        margin-top: 0;
+      }
+      .item{
+        margin-top: 25px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: 700;
+      }
+      .description{
+        font-size: 11px;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
+
+    }
+
+    div.section.sponsors{
+      padding-bottom: 35px;
+      h2.title{
+        font-weight: bold;
+        text-align: center;
+        padding: 15px 0 25px 0;
+      }
+    }
+
+
+    @media (max-width: $breakpoint-sm - 1) 
+    {
+
+      div.section.selector{
+        padding-top: 35px;
+      }
+
+      div.section.main-info{
+        .description{
+          margin-bottom: 20px;
+        }
+      }
+
+      div.stats{
+        .item{
+          margin-bottom: 20px !important;
+        }
+      }
+
+
+    }
+
+}
+
+
