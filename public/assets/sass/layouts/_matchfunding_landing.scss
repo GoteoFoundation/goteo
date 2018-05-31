@@ -134,6 +134,9 @@ body.matchfunding-landing {
   	}
 
     div.section.matchfunding-module{
+      h3.subtitle{
+        color: $color-text-green;
+      }
       .calls-summary{
         padding-top: 10px;
         padding-bottom: 25px;
@@ -181,11 +184,38 @@ body.matchfunding-landing {
     }
 
     div.section.sponsors{
-      padding-bottom: 35px;
+      padding-top: 15px;
+      padding-bottom: 45px;
+
       h2.title{
         font-weight: bold;
         text-align: center;
-        padding: 15px 0 25px 0;
+      }
+
+      h3.subtitle{
+        text-align: center;
+        font-size: $font-size*1.1;
+        font-weight: normal;
+        margin-top: 10px;
+        color: $color-text-green;
+      }
+
+      ul.img-list {
+        li {
+            margin-top:50px;
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+      }
+
+      div.action{
+          margin-top: 50px;
+          text-align: center;
+          .btn{
+              text-transform: uppercase;
+              font-weight: bold;
+              font-size: $font-size*1.14;
+          }
       }
     }
 
