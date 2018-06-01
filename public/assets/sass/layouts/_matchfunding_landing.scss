@@ -134,6 +134,10 @@ body.matchfunding-landing {
   	}
 
     div.section.matchfunding-module{
+      .drop-img-container
+      {
+        padding-top: 35px;
+      }
       h3.subtitle{
         color: $color-text-green;
       }
