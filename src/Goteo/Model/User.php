@@ -1632,9 +1632,16 @@ class User extends \Goteo\Core\Model {
         }
 
         foreach($roles as $role) {
-            if(!$my_roles->greaterThan($role)) {
-                $failed = $role;
-                return false;
+            if($my_roles->atLeast('superadmin')) {
+                if(!$my_roles->atLeast($role)) {
+                    $failed = $role;
+                    return false;
+                }
+            } else {
+                if(!$my_roles->greaterThan($role)) {
+                    $failed = $role;
+                    return false;
+                }
             }
         }
         return true;
