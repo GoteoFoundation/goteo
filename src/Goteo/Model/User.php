@@ -1632,9 +1632,16 @@ class User extends \Goteo\Core\Model {
         }
 
         foreach($roles as $role) {
-            if(!$my_roles->greaterThan($role)) {
-                $failed = $role;
-                return false;
+            if($my_roles->atLeast('superadmin')) {
+                if(!$my_roles->atLeast($role)) {
+                    $failed = $role;
+                    return false;
+                }
+            } else {
+                if(!$my_roles->greaterThan($role)) {
+                    $failed = $role;
+                    return false;
+                }
             }
         }
         return true;
@@ -2101,24 +2108,24 @@ class User extends \Goteo\Core\Model {
         if($user instanceOf User) $user = $user->id;
 
         $keys = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips', 'comlang', 'currency'];
-        $values = array();
-        $set = '';
 
+        $values = $insert = $update = [];
         foreach ($data as $key => $value) {
             if(!in_array($key, $keys)) continue;
+            $insert["`$key`"] = ":$key";
+            $update[] = "`$key`=:$key";
             $values[":$key"] = $value;
-            if ($set != '') {
-                $set .= ', ';
-            }
-
-            $set .= "$key = :$key";
         }
 
-        if (!empty($values) && $set != '') {
+        if (!empty($values)) {
+            $insert['`user`'] = ':user';
             $values[':user'] = $user;
-            $sql = "REPLACE INTO user_prefer SET user = :user, " . $set;
-
+            // $sql = "REPLACE INTO user_prefer SET user = :user, " . $set;
+            $sql = "INSERT INTO user_prefer (" . implode(',', array_keys($insert)) .
+                   ") VALUES (" . implode(',', $insert) .
+                   ") ON DUPLICATE KEY UPDATE " . implode(',', $update);
             try {
+                // die(\sqldbg($sql, $values));
                 self::query($sql, $values);
                 return true;
 

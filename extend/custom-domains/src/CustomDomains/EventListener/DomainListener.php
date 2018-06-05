@@ -41,6 +41,19 @@ class DomainListener extends AbstractListener {
         $current_host = $request->getHttpHost();
         $current_path = $request->getPathInfo();
         $scheme = $request->getScheme();
+
+        $redirects = Config::get('plugins.custom-domains.redirects');
+        if($redirects && is_array($redirects)) {
+            foreach($redirects as $domain => $destination) {
+                // TODO: make it REGEXP
+                if(strpos($current_host.$current_path, $domain) === 0) {
+                    // die("Redirect from $domain to $destination");
+                    $event->setResponse(new RedirectResponse($destination));
+                    return;
+                }
+            }
+        }
+
         $domains = Config::get('plugins.custom-domains.domains');
 
         if($domains && is_array($domains)) {
@@ -172,7 +185,7 @@ class DomainListener extends AbstractListener {
             KernelEvents::REQUEST    => ['onRequest',  100], // We want this to be executed
                                                              // before SessionListener (that handles language
                                                              // redirections if url.url_lang is active)
-            KernelEvents::CONTROLLER => ['onController', -100]
+            KernelEvents::CONTROLLER => ['onController', 50]
         );
     }
 }

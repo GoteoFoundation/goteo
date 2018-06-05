@@ -232,6 +232,7 @@ class Matcher extends \Goteo\Core\Model {
             }
 
             $this->used = $this->calculateUsedAmount();
+            $this->crowd = $this->calculateCrowdAmount();
             $this->amount = $this->calculatePoolAmount() + $this->calculateUsedAmount();
             $this->projects = $this->calculateProjects();
 
