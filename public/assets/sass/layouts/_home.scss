@@ -553,49 +553,6 @@ body.home {
             }
         }
 
-        .details-container{
-            background-color: $background-dark-lilac;
-            color: $color-white;
-            font-weight: bold;
-            padding: 40px 0;
-            .row.details-title{
-                .title{
-                    text-align: center;
-                    padding-top: 0;
-                    margin-top: 0;
-                }
-            }
-            .row.details{
-                padding-top: 20px;
-                .detail-item{
-                    border-radius: 50%;
-                    width: 75px;
-                    height: 75px;
-                    background-color: $background-white;
-                    box-shadow: 1px 3px 5px -3px #4D4D4D;
-                }
-                .item-1{
-                    padding: 11px 8px;
-                }
-                .item-2{
-                    padding: 13px 9px 5px 16px;
-                }
-                .item-3{
-                    padding: 15px;
-                }
-                .item-4{
-                    padding: 15px;
-                }
-                .item-5{
-                    padding: 14px 12px 6px 11px;
-                }
-                .item-label{
-                    margin-top: 10px;
-                    text-transform: uppercase;
-                }
-            }
-        }
-
         .data-container
         {
             background-color: $background-light-lilac;
