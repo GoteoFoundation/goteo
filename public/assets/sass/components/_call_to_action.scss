@@ -1,0 +1,50 @@
+/* generic call to action */
+@import "compass/css3";
+
+.call-to-action-component{
+  background-color: $background-light-lilac;
+  .call-action{
+    background: none !important;
+    color: $color-white;
+    padding: 30px 0;
+    .row{
+        display: flex;
+    }
+    .row .col-button{
+        display: flex;
+        flex-direction: column;
+    }
+    .title{
+        text-transform: uppercase;
+    }
+    .description{
+        font-weight: bold;
+        font-size: $font-size*1.6;
+    }
+    .col-button{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      .btn-white{
+        color: $color-grey;
+        padding: 13px 0px;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm - 1) {
+  .call-to-action-component{
+
+    .call-action{
+        .row
+        {
+            display: block;
+        }
+        .col-button .btn-white{
+            margin: 15px 0;
+        }
+    }
+  }
+}
+

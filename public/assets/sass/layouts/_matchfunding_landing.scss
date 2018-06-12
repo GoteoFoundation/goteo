@@ -248,6 +248,41 @@ body.matchfunding-landing {
       }
     }
 
+    div.call-to-action-component{
+      background-color: $background-dark-lilac;
+    }
+
+    div.section.spheres{
+      padding-top: 20px;
+      padding-bottom: 30px;
+      h2.title{
+        font-weight: bold;
+        text-align: center;
+      }
+      .detail-item {
+        border-radius: 50%;
+        width: 75px;
+        height: 75px;
+        background-color: #FFFFFF;
+        box-shadow: 1px 3px 5px -3px #4D4D4D;
+        margin-top: 20px;
+        img{
+          max-width: 57%;
+          margin: 0 auto;
+          padding-top: 21%;
+          -webkit-filter: brightness(.55) saturate(3) grayscale(100%);
+          filter: brightness(.55) saturate(3) grayscale(100%);
+        }
+      }
+      .item-label{
+        margin-top: 10px;
+        text-transform: uppercase;
+        text-align: center;
+        color:$color-text-green;
+        font-size: $font-size*0.9;
+      }
+    }
+
     div.section.calls-list-match{
       padding-top: 15px;
       padding-bottom: 20px;
