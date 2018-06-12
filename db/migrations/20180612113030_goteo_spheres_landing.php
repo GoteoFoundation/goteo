@@ -32,8 +32,8 @@ class GoteoSpheresLanding
   public function getUpSQL()
   {
      return "
-      ALTER TABLE `spheres` ADD COLUMN `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1;
-      ALTER TABLE `spheres` ADD COLUMN `landing_match` TINYINT(1) NOT NULL DEFAULT 1;
+      ALTER TABLE `sphere` ADD COLUMN `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1;
+      ALTER TABLE `sphere` ADD COLUMN `landing_match` TINYINT(1) NOT NULL DEFAULT 0;
     ";
   }
 
@@ -45,8 +45,8 @@ class GoteoSpheresLanding
   public function getDownSQL()
   {
      return "
-            ALTER TABLE `spheres` DROP COLUMN `order`;
-            ALTER TABLE `spheres` DROP COLUMN `landing_match`;
+            ALTER TABLE `sphere` DROP COLUMN `order`;
+            ALTER TABLE `sphere` DROP COLUMN `landing_match`;
 
       ";
   }
