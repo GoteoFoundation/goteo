@@ -2,8 +2,24 @@
 
 /* matchfunding landing styles */
 
+@font-face {
+    font-family: Lovelo;
+    src: url(/assets/vendor/fonts/lovelo/lovelo_line_light.otf);
+}
+@font-face {
+    font-family: Lovelo;
+    src: url(/assets/vendor/fonts/lovelo/lovelo_line_bold.otf);
+    font-weight: bold;
+}
+
 body.matchfunding-landing {
 	background-color: $background-main-home;
+
+  .vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+  }
 
   .pronto-loading {
       position: relative;
@@ -179,6 +195,7 @@ body.matchfunding-landing {
 
     div.section.map-visualization{
       padding-bottom: 35px;
+      background-color: $color-white;
       h2.title{
         font-weight: bold;
         text-align: center;
@@ -283,6 +300,40 @@ body.matchfunding-landing {
       }
     }
 
+    div.section.stages{
+      background-color: $color-white;
+      padding-top: 15px;
+      padding-bottom: 20px;
+       h2.title{
+        font-weight: bold;
+        text-align: center;
+      }
+      
+    }
+
+    div.section.becas-crowd{
+      padding-top: 20px;
+      padding-bottom: 30px;
+
+      h2.title{
+        font-family: Lovelo;
+        font-size: $font-size*3.6;
+        font-weight: bold;
+        margin-top: 10px;
+        line-height: 1;
+        padding-top: 60px;
+      }
+      .description {
+        color: $color-text-green;
+      }
+      .action{
+        margin-top: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+      
+    }
+
     div.section.calls-list-match{
       padding-top: 15px;
       padding-bottom: 20px;
@@ -311,6 +362,19 @@ body.matchfunding-landing {
           margin-bottom: 20px !important;
         }
       }
+
+      div.section.becas-crowd{
+      padding-top: 20px;
+      padding-bottom: 30px;
+
+      h2.title{
+        padding-top: 0px;
+      }
+      .action{
+        margin-bottom: 20px;
+      }
+      
+    }
 
 
     }
