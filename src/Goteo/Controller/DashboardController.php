@@ -43,7 +43,7 @@ class DashboardController extends \Goteo\Core\Controller {
         $total_mails = Mail::getSentList(['user' => $user->email, 'message' => false], 0, 0, true);
         $total_invests = Invest::getList(['users' => $user, 'status' => Invest::$RAISED_STATUSES], null, 0, 0, 'total');
 
-        if($total_messages > 0 && $section === 'activity') {
+        if($section === 'activity') {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'activity');
             Session::addToSidebarMenu('<i class="fa fa-2x fa-gift"></i> ' . Text::get('dashboard-rewards-my-invests') .' <span class="badge">' . $total_invests . '</span>', '/dashboard/rewards', 'rewards');
             Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('regular-messages') .' <span class="badge">' . $total_messages . '</span>', '/dashboard/messages', 'messages');
