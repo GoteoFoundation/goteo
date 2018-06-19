@@ -87,9 +87,9 @@ $status = Model\Project::status();
         <input type="file" id="story-image" name="image" />
         <?php if ($image->name) : ?>
             <br />
-            <input type="hidden" name="prev_image" value="<?php echo $image->id ?>" />
+            <input type="hidden" name="prev_image" value="<?php echo $image->name ?>" />
             <img src="<?php echo $image->getLink(940, 385, true) ?>" title="Fondo historia" alt="falta imagen"/>
-            <input type="submit" name="image-<?php echo $image->hash; ?>-remove" value="Quitar" />
+            <input type="submit" name="image-remove" value="Quitar" />
         <?php endif; ?>
     </p>
 
@@ -98,9 +98,9 @@ $status = Model\Project::status();
         <input type="file" id="story-pool-image" name="pool_image" />
         <?php if ($pool_image->name) : ?>
             <br />
-            <input type="hidden" name="prev_pool_image" value="<?php echo $pool_image->id ?>" />
+            <input type="hidden" name="prev_pool_image" value="<?php echo $pool_image->name ?>" />
             <img src="<?php echo $pool_image->getLink(940, 385, true) ?>" title="Imagen landing monedero" alt="falta imagen"/>
-            <input type="submit" name="pool-image-<?php echo $pool_image->hash; ?>-remove" value="Quitar" />
+            <input type="submit" name="image-pool-remove" value="Quitar" />
         <?php endif; ?>
     </p>
 
