@@ -584,7 +584,7 @@ body.home {
             color:$primary-color;
             .info-container{
                 margin-left:20px;
-                max-width: 70%;
+                max-width: calc(100% - 80px);
             }
 
             .type-container{

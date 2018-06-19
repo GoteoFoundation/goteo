@@ -73,10 +73,6 @@ namespace Goteo\Model {
                     WHERE stories.id = :id
                     ", array(':id'=>$id, ':lang' => $lang));
                 if($story = $query->fetchObject(__CLASS__)) {
-                    $story->image = !empty($story->image) ? Image::get($story->image) : null;
-
-                    $story->pool_image = !empty($story->pool_image) ? Image::get($story->pool_image) : null;
-
                     $user = new User;
                     $user->id = $story->user_id;
                     $user->name = $story->user_name;
@@ -183,14 +179,6 @@ namespace Goteo\Model {
                 ", array(':node' => $node, ':lang' => Lang::current()));
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $story) {
-                $story->image = !empty($story->image) ? Image::get($story->image) : null;
-
-                if(!empty($story->pool_image))
-                    $story->pool_image = Image::get($story->pool_image);
-                else
-                    $story->pool_image = new Image();
-
-
                 $story->status = $status[$story->status];
 
                 $user = new User;
@@ -276,6 +264,20 @@ namespace Goteo\Model {
                 return true;
             else
                 return false;
+        }
+
+        public function getImage() {
+            if(!$this->imageInstance instanceOf Image) {
+                $this->imageInstance = new Image($this->image);
+            }
+            return $this->imageInstance;
+        }
+
+        public function getPoolImage() {
+            if(!$this->imageInstance instanceOf Image) {
+                $this->imageInstance = new Image($this->pool_image);
+            }
+            return $this->imageInstance;
         }
 
         public function save (&$errors = array()) {
