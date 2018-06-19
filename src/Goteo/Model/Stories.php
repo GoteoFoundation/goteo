@@ -274,10 +274,10 @@ namespace Goteo\Model {
         }
 
         public function getPoolImage() {
-            if(!$this->imageInstance instanceOf Image) {
-                $this->imageInstance = new Image($this->pool_image);
+            if(!$this->PoolImageInstance instanceOf Image) {
+                $this->PoolImageInstance = new Image($this->pool_image);
             }
-            return $this->imageInstance;
+            return $this->PoolImageInstance;
         }
 
         public function save (&$errors = array()) {
