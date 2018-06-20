@@ -2,36 +2,36 @@
 admin-action: 'Administrator action'
 admin-NO: 'NO'
 admin-YES: "YES"
-admin-account-amount: 'Donated amount'
+admin-account-amount: 'Amount contributed'
 admin-account-change-user: 'Switch user'
 admin-account-change-user-confirm: 'Are you sure you want to change the user of the contribution? The new user will be:'
 admin-account-convert-to-pool: 'Convert to Wallet'
-admin-account-convert-to-pool-confirm: 'This will eliminate the project associated with this contribution and it will be like it was a wallet purchase. ALL THE ASSOCIATED REWARDS WILL BE LOST. Continue?'
+admin-account-convert-to-pool-confirm: 'This will eliminate the project associated with this contribution and it will be as if it were a wallet purchase. ALL THE ASSOCIATED REWARDS WILL BE LOST. Continue?'
 admin-account-convert-to-pool-ko: 'Could not convert contribution to wallet: %s'
-admin-account-convert-to-pool-ok: 'Converted to money contribution correctly'
+admin-account-convert-to-pool-ok: 'Converted to wallet contribution correctly'
 admin-account-detail: 'Transaction Details'
-admin-account-donation: Donate
+admin-account-donation: Donation
 admin-account-edit-reward: 'Manage return/address'
 admin-account-invalid-invest: 'Contribution [%s] not found!'
 admin-account-invest-date: 'Date of Contribution'
-admin-account-invest-non-pool-refundable: 'This contribution can not be reimbursed to the virtual wallet. You can only reimburse the contributions in the "Charged" status'
-admin-address: Direction
+admin-account-invest-non-pool-refundable: 'This contribution can not be reimbursed to the virtual wallet. You can only reimburse contributions in the "Charged" status'
+admin-address: Address
 admin-all: All
 admin-back: Back
 admin-back-detail: 'Back to Detail'
-admin-back-list: 'Back to Listed'
+admin-back-list: 'Back to list'
 admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
-admin-mailing-back-to-list: 'Back to Messages'
+admin-mailing-back-to-list: 'Back to messages'
 admin-mailing-created: 'Created on'
-admin-mailing-new-massive: 'You have created a new mailing list to %TOTAL% users'
+admin-mailing-new-massive: 'A new mass mailing was created to %TOTAL% users'
 admin-mailing-status: 'Automatic delivery status'
 admin-mailing-subject: Subject
 admin-mailing-view-and-activate: 'See the post admin to start sending'
 admin-mailing-view-in-newsletter: 'See the post admin'
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
-admin-sponsors: Services
+admin-sponsors: Contributors
 admin-status: Status
 admin-text-type: 'Process the text as'
 admin-text-type-html: HTML
