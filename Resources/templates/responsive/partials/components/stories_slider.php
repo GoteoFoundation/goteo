@@ -3,7 +3,7 @@
 <?php foreach($this->stories as $story): ?>
     <div class="row">
         <div class="col-md-6">
-            <img class="img-responsive" src="<?= $story->image->getLink(600, 400, true) ?>" >
+            <img class="img-responsive" src="<?= $story->getImage()->getLink(600, 400, true) ?>" >
         </div>
         <div class="col-md-6">
             <div class="info-container">
