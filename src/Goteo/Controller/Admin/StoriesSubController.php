@@ -128,14 +128,26 @@ class StoriesSubController extends AbstractSubController {
             if(!empty($_FILES['image']['name'])) {
                 $story->image = $_FILES['image'];
             } else {
-                $story->image = $this->getPost('prev_image');
+                $story->image = new Model\Image($this->getPost('prev_image'));
+            }
+
+            // tratar si quitan la imagen
+            if ($this->getPost('image-remove')) {
+                if ($story->image instanceof Model\Image) $story->image->remove($errors);
+                $story->image = '';
             }
 
             // pool landing image
             if(!empty($_FILES['pool_image']['name'])) {
                 $story->pool_image = $_FILES['pool_image'];
             } else {
-                $story->pool_image = $this->getPost('prev_pool_image');
+                $story->pool_image = new Model\Image($this->getPost('prev_pool_image'));
+            }
+
+            // tratar si quitan la imagen
+            if ($this->getPost('image-pool-remove')) {
+                if ($story->pool_image instanceof Model\Image) $story->pool_image->remove($errors);
+                $story->pool_image = '';
             }
 
 			if ($story->save($errors)) {
