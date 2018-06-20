@@ -79,9 +79,9 @@ admin-user-active: 'Account active'
 admin-user-warning: 'Warning: These operations are executed without any notice to the user'
 admin-user-wallet-amount: 'Wallet credit'
 admin-user-create-invest: 'Create contribution'
-admin-user-no-mailing: 'No emails has been sent yet'
+admin-user-no-mailing: 'No emails have been sent yet'
 admin-view-user-mailing: 'All mailing'
-admin-role-change-forbidden: 'You don''t have permissions to manage the role %ROLE% in this user'
+admin-role-change-forbidden: 'You don''t have permission to manage the role %ROLE% as this user'
 admin-users-global-search: 'Id, name, email or project'
 admin-title-name: Name
 admin-title-about: About
