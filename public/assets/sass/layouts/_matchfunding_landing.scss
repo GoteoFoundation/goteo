@@ -21,6 +21,10 @@ body.matchfunding-landing {
     float: none;
   }
 
+  .a-unstyled {
+    color: #3a3a3a;
+  }
+
   .pronto-loading {
       position: relative;
       &::before {
@@ -452,6 +456,15 @@ body.matchfunding-landing {
 
     }
 
+    div.section.related-posts{
+      padding: 40px 0 50px 0;
+      h2.title{
+        text-align: center;
+        margin-top: 0;
+        padding-bottom: 30px;
+      }
+    }
+
 
     @media (max-width: $breakpoint-sm - 1) 
     {
@@ -487,6 +500,10 @@ body.matchfunding-landing {
         float: none !important;
         text-align: center;
       }
+
+      div.related-post{
+        margin-top: 20px;
+      }   
 
     }
 
