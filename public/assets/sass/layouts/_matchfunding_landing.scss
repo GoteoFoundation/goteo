@@ -45,6 +45,7 @@ body.matchfunding-landing {
 
       } */
   }
+
 	.top.navbar-always > a, .top-navbar .navbar-always > a i.icon, .top-navbar .navbar-always > button{
 	    color: $primary-color;
 	    background-color: transparent;
@@ -83,6 +84,54 @@ body.matchfunding-landing {
       	}
   	}
 
+    div.material-switch{
+        height: 60px;
+        label{
+          width: 318px;
+        }
+        label::before{
+          height: 60px;
+          width: 318px;
+          background-color: $color-super-light-grey !important;
+          opacity: 1;
+          border-radius: 50px;
+        }
+        label::after{
+          height: 54px;
+          width: 158px;
+          background-color: $background-dark-lilac;
+          border-radius: 50px;
+        }
+        span.pitch{
+          color: $color-white;
+          position: absolute;
+          z-index: 10;
+          font-size: $font-size*1.4;
+          bottom: -29px;
+          left: 52px;
+          text-transform: uppercase;
+
+        }
+        span.match{
+          color: $primary-color;
+          position: absolute;
+          left: 202px;
+          z-index: 10;
+          font-size: $font-size*1.4;
+          bottom: -29px;
+          text-transform: uppercase;
+        }
+        input[type="checkbox"]:checked + label span.match{
+          color: $color-white;
+        }
+        input[type="checkbox"]:checked + label span.pitch{
+          color: $primary-color;
+        }
+        input[type="checkbox"]:checked + label::after{
+          left: 156px;
+        }
+    }
+
   	div.section.selector{
   		padding-bottom: 30px;
   		background-color: $color-white;
@@ -96,53 +145,6 @@ body.matchfunding-landing {
   			color: $color-text-green;
   			font-size: $font-size*0.8;
   			text-transform: uppercase;
-  		}
-  		div.material-switch{
-  			height: 60px;
-  			label{
-  				width: 318px;
-  			}
-  			label::before{
-  				height: 60px;
-  				width: 318px;
-  				background-color: $color-super-light-grey;
-  				opacity: 1;
-  				border-radius: 50px;
-  			}
-  			label::after{
-  				height: 54px;
-  				width: 158px;
-  				background-color: $background-dark-lilac;
-  				border-radius: 50px;
-  			}
-  			span.pitch{
-  				color: $color-white;
-  				position: absolute;
-  				z-index: 10;
-  				font-size: $font-size*1.4;
-  				bottom: -29px;
-				left: 52px;
-				text-transform: uppercase;
-
-  			}
-  			span.match{
-  				color: $primary-color;
-  				position: absolute;
-  				left: 202px;
-  				z-index: 10;
-  				font-size: $font-size*1.4;
-  				bottom: -29px;
-  				text-transform: uppercase;
-  			}
-  			input[type="checkbox"]:checked + label span.match{
-  				color: $color-white;
-  			}
-  			input[type="checkbox"]:checked + label span.pitch{
-  				color: $primary-color;
-  			}
-  			input[type="checkbox"]:checked + label::after{
-  				left: 156px;
-  			}
   		}
   	}
   	div.section.main-info{
@@ -343,6 +345,113 @@ body.matchfunding-landing {
       }
     }
 
+    /* Sticky menu */
+    
+     div.sticky-menu{
+      background-color: $color-white;
+      height: 60px;
+      .matchfunding-title{
+        margin-left: 13px;
+        margin-top: 18px;
+        font-size: $font-size*1.73;
+        font-weight: bold;
+      }
+      .logo{
+          float: left !important;
+          border: 1px solid #e4e4e4;
+          padding: 20px 8px;
+          background-color: #fff;
+          z-index: 150;
+        img{
+            width: 43px;
+        }
+      }
+
+      .powered{
+        color: #CFCFCF;
+        margin-top: 22px;
+        margin-left: 10px;
+        .icon-goteo-logo{
+          vertical-align: sub;
+          width: 80px;
+          height: 26.13px;
+          background-color: #959394;
+        }
+      }
+
+      &.sticky-match{
+          background-color: $background-dark-lilac;
+          color: $color-white;
+          box-shadow: 1px 3px 5px -3px #4D4D4D;
+          .powered{
+            color: $color-white;
+            opacity: 0.6;
+          }
+          .icon-goteo-logo{
+            background-color: $color-white;
+            opacity: 0.6;
+          }
+          /*div.material-switch{     
+            label::before{
+              background-color: #5C1D4E !important;
+            }
+            label::after{
+              background-color: $color-white;
+            }
+          }*/
+      }
+
+      div.material-switch{
+        padding-top: 10px;
+        height: 50px;
+        label{
+          width: 234px;
+        }
+        label::before{
+          height: 49px;
+          width: 241px;
+          background-color: $color-super-light-grey;
+          opacity: 1;
+          border-radius: 50px;
+        }
+        label::after{
+          height: 43px;
+          width: 129px;
+          background-color: $background-dark-lilac;
+          border-radius: 50px;
+        }
+        span.pitch{
+          color: $color-white;
+          position: absolute;
+          z-index: 10;
+          font-size: $font-size*1.25;
+          bottom: -23px;
+          left: 37px;
+          text-transform: uppercase;
+
+        }
+        span.match{
+          color: $primary-color;
+          position: absolute;
+          left: 143px;
+          z-index: 10;
+          font-size: $font-size*1.25;
+          bottom: -24px;
+          text-transform: uppercase;
+        }
+        input[type="checkbox"]:checked + label span.match{
+          color: $color-white;
+        }
+        input[type="checkbox"]:checked + label span.pitch{
+          color: $primary-color;
+        }
+        input[type="checkbox"]:checked + label::after{
+          left: 109px;
+        }
+      }
+
+    }
+
 
     @media (max-width: $breakpoint-sm - 1) 
     {
@@ -364,18 +473,20 @@ body.matchfunding-landing {
       }
 
       div.section.becas-crowd{
-      padding-top: 20px;
-      padding-bottom: 30px;
-
-      h2.title{
-        padding-top: 0px;
+        padding-top: 20px;
+        padding-bottom: 30px;
+        h2.title{
+          padding-top: 0px;
+        }
+        .action{
+          margin-bottom: 20px;
+        }
       }
-      .action{
-        margin-bottom: 20px;
-      }
-      
-    }
 
+      div.sticky-selector{
+        float: none !important;
+        text-align: center;
+      }
 
     }
 
