@@ -1298,6 +1298,19 @@ class Call extends \Goteo\Core\Model {
             }
         }
 
+        if (!empty($filters['location']) && $filters['location'] instanceOf LocationInterface) {
+            $loc = $filters['location'];
+            $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
+            $innerJoin .= "INNER JOIN call_location ON call_location.id = project.id";
+            $location_parts = ProjectLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'call_location');
+            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
+            $values = array_merge($values, $location_parts['params']);
+            if(empty($filters['order'])) {
+                $order = 'ORDER BY Distance ASC';
+            }
+            // print_r($loc);die;
+        }
+
         //el Order
         if (!empty($filters['order'])) {
             switch ($filters['order']) {
@@ -2285,6 +2298,17 @@ class Call extends \Goteo\Core\Model {
     public function getPublished(){
         return Project::getPublishedProjects($this->id);
     }
+
+     /*
+     *   Get calls available for a project
+    */
+    public function getCallsAvailable($project){
+        $status=[self::STATUS_OPEN];
+        // TODO Filter by location
+        return self::getList(['status' => $status, 'type' => 'open']);
+    }
+
+
 
 
 
