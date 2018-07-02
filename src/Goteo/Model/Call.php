@@ -11,6 +11,8 @@ use Goteo\Model\User;
 use Goteo\Model\Image;
 use Goteo\Model\Message;
 use Goteo\Model\Project;
+use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Call\CallLocation;
 
 class Call extends \Goteo\Core\Model {
 
@@ -2302,15 +2304,26 @@ class Call extends \Goteo\Core\Model {
      /*
      *   Get calls available for a project
     */
-    public function getCallsAvailable($project){
+    public function getCallsAvailable(Project $project, $max_distance = 100, $filters = ['status' => $status, 'type' => 'open']){
         $status=[self::STATUS_OPEN];
+
+        $calls = [];
+        if($location = ProjectLocation::get($project)) {
+            foreach(self::getList($filters) as $call) {
+                if($call_loc = CallLocation::get($call)) {
+                    $distance = CallLocation::haversineDistance($location->latitude, $location->longitude, $call_loc->latitude, $call_loc->longitude);
+                    if($distance < $max_distance) {
+                        $call->distance = $distance;
+                        $calls[] = $call;
+                    }
+                }
+            }
+            usort($calls, function($a, $b) {
+                return $a->distance > $b->distance;
+            });
+        }
         // TODO Filter by location
-        return self::getList(['status' => $status, 'type' => 'open']);
+        return $calls;
     }
 
-
-
-
-
 }
-
