@@ -2304,14 +2304,15 @@ class Call extends \Goteo\Core\Model {
      /*
      *   Get calls available for a project
     */
-    public function getCallsAvailable(Project $project, $max_distance = 100, $filters = ['status' => [self::STATUS_OPEN], 'type' => 'open']){
+    public function getCallsAvailable(Project $project, $max_distance = null, $filters = ['status' => [self::STATUS_OPEN], 'type' => 'open']){
 
         $calls = [];
         if($location = ProjectLocation::get($project)) {
             foreach(self::getList($filters) as $call) {
                 if($call_loc = CallLocation::get($call)) {
+                    $max = is_null($max_distance) ? ($call_loc->radius ? $call_loc->radius :  100) : $max_distance;
                     $distance = CallLocation::haversineDistance($location->latitude, $location->longitude, $call_loc->latitude, $call_loc->longitude);
-                    if($distance < $max_distance) {
+                    if($distance < $max) {
                         $call->distance = $distance;
                         $calls[] = $call;
                     }
