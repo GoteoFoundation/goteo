@@ -2304,8 +2304,7 @@ class Call extends \Goteo\Core\Model {
      /*
      *   Get calls available for a project
     */
-    public function getCallsAvailable(Project $project, $max_distance = 100, $filters = ['status' => $status, 'type' => 'open']){
-        $status=[self::STATUS_OPEN];
+    public function getCallsAvailable(Project $project, $max_distance = 100, $filters = ['status' => [self::STATUS_OPEN], 'type' => 'open']){
 
         $calls = [];
         if($location = ProjectLocation::get($project)) {
