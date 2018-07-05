@@ -15,6 +15,7 @@ use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Library\Cacher;
+use Goteo\Core\Event\CreateModelEvent;
 
 abstract class Model {
 
@@ -154,22 +155,31 @@ abstract class Model {
 	 * @return [type] [description]
 	 */
 	public function dbInsert(array $fields) {
-		$values = $set = $keys = [];
-		foreach ($fields as $field) {
-			if (property_exists($this, $field)) {
-				$set[] = "`$field`";
-				$keys[] = ":$field";
-				$values[":$field"] = $this->transformFieldValue($this->$field);
-			}
-		}
-		if (empty($values)) {
-			throw new \PDOException("No fields specified!", 1);
-		}
 
-		$sql = 'INSERT INTO `' . $this->Table . '` (' . implode(',', $set) . ') VALUES (' . implode(',', $keys) . ')';
-		// echo \sqldbg($sql, $values);
-		$res = self::query($sql, $values);
-		return $res;
+        $fields = App::dispatch(ModelEvents::CREATE, new CreateModelEvent($this, $fields))->getFields();
+
+        $values = $set = $keys = [];
+        foreach ($fields as $field) {
+            if (property_exists($this, $field)) {
+                $set[] = "`$field`";
+                $keys[] = ":$field";
+                $values[":$field"] = $this->transformFieldValue($this->$field);
+            }
+        }
+
+
+        if (empty($values)) {
+            throw new \PDOException("No fields specified!", 1);
+        }
+
+
+        $sql = 'INSERT INTO `' . $this->Table . '` (' . implode(',', $set) . ') VALUES (' . implode(',', $keys) . ')';
+        // echo \sqldbg($sql, $values);
+        $res = self::query($sql, $values);
+
+        App::dispatch(ModelEvents::CREATED, new CreateModelEvent($this, $values));
+
+        return $res;
 	}
 
 	/**
@@ -177,6 +187,7 @@ abstract class Model {
 	 * @return [type] [description]
 	 */
 	public function dbUpdate(array $fields, array $where = ['id']) {
+
 		$values = $set = [];
 		foreach ($fields as $field) {
 			if (property_exists($this, $field)) {
