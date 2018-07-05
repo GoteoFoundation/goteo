@@ -59,6 +59,7 @@ invest-payment-fail: 'Something went wrong with the payment'
 invest-payment-success: 'The payment has been made correctly'
 invest-payment-method: 'Payment method'
 invest-payment_method-header: 'Choose a method of payment'
+invest-payment-method: 'Payment method'
 invest-pool: 'I want my donation, in the event that the project doesn''t reach its goal, to remain in my Goteo Virtual Wallet.'
 invest-pool-available: Available
 invest-pool-error: 'You do not have enough money in your virtual wallet'
