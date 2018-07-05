@@ -51,27 +51,31 @@ Since version 3.3 where are using [Crowdin](https://crowdin.com/) as a tool for 
 <translators>
 
 <ul>
-    <li>Dan Walenter (cas3v0n)</li>
-    <li>Denver Moon (9003104)</li>
-    <li>José Peralta (elpoliglota) (josedpg11)</li>
-    <li>Chris_W</li>
-    <li>helpPAM</li>
-    <li>melsmacan</li>
-    <li>kguanzon (Kimberly Guanzon) (kim0421)</li>
-    <li>joao.cruz</li>
-    <li>pep_laDeriva</li>
-    <li>CataAz</li>
-    <li>Clint Mark Cortes (cortesclintmark)</li>
-    <li>zainalkhalid</li>
-    <li>franzancot</li>
-    <li>Udo Wierlemann (Udo.Wierlemann)</li>
-    <li>Herii (HERII12)</li>
-    <li>shaunmatthew</li>
-    <li>Ceyda Mutlu (translator93)</li>
-    <li>Júlia Petúlia Sol (juliaxsol)</li>
-    <li>enolp</li>
-    <li>elena-2018</li>
-    <li>firewall (Onrkskn)</li>
+	<li>Dan Walenter (cas3v0n)</li>
+	<li>mrfinearts</li>
+	<li>Denver Moon (9003104)</li>
+	<li>José Peralta (elpoliglota) (josedpg11)</li>
+	<li>Chris_W</li>
+	<li>mikahz</li>
+	<li>enolp</li>
+	<li>Udo Wierlemann (Udo.Wierlemann)</li>
+	<li>pep_laDeriva</li>
+	<li>Vanessa.Montes</li>
+	<li>CataAz</li>
+	<li>Ferran Reyes (ferranreyesgoteo)</li>
+	<li>kguanzon (Kimberly Guanzon) (kim0421)</li>
+	<li>joao.cruz</li>
+	<li>helpPAM</li>
+	<li>Clint Mark Cortes (cortesclintmark)</li>
+	<li>Júlia Petúlia Sol (juliaxsol)</li>
+	<li>zainalkhalid</li>
+	<li>melsmacan</li>
+	<li>franzancot</li>
+	<li>elena-2018</li>
+	<li>shaunmatthew</li>
+	<li>firewall (Onrkskn)</li>
+	<li>Ceyda Mutlu (translator93)</li>
+	<li>Herii (HERII12)</li>
 </ul>
 </translators>
 
