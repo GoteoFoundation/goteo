@@ -5,6 +5,10 @@ use Goteo\Library\Text,
 
 $story = $vars['story'];
 
+$image=$story->getImage();
+
+$pool_image=$story->getPoolImage();
+
 $text_positions = $vars['text_positions'];
 
 $items = array();
@@ -81,22 +85,22 @@ $status = Model\Project::status();
     <p>
         <label for="story-image">Imagen de fondo: 600x400</label><br />
         <input type="file" id="story-image" name="image" />
-        <?php if (!empty($story->image)) : ?>
+        <?php if ($image->name) : ?>
             <br />
-            <input type="hidden" name="prev_image" value="<?php echo $story->image->id ?>" />
-            <img src="<?php echo $story->image->getLink(940, 385, true) ?>" title="Fondo historia" alt="falta imagen"/>
-            <input type="submit" name="image-<?php echo $story->image->hash; ?>-remove" value="Quitar" />
+            <input type="hidden" name="prev_image" value="<?php echo $image->name ?>" />
+            <img src="<?php echo $image->getLink(940, 385, true) ?>" title="Fondo historia" alt="falta imagen"/>
+            <input type="submit" name="image-remove" value="Quitar" />
         <?php endif; ?>
     </p>
 
      <p>
         <label for="story-pool-image">Imagen landing monedero: 360x200</label><br />
         <input type="file" id="story-pool-image" name="pool_image" />
-        <?php if (!empty($story->pool_image)) : ?>
+        <?php if ($pool_image->name) : ?>
             <br />
-            <input type="hidden" name="prev_pool_image" value="<?php echo $story->pool_image->id ?>" />
-            <img src="<?php echo $story->pool_image->getLink(940, 385, true) ?>" title="Imagen landing monedero" alt="falta imagen"/>
-            <input type="submit" name="pool-image-<?php echo $story->pool_image->hash; ?>-remove" value="Quitar" />
+            <input type="hidden" name="prev_pool_image" value="<?php echo $pool_image->name ?>" />
+            <img src="<?php echo $pool_image->getLink(940, 385, true) ?>" title="Imagen landing monedero" alt="falta imagen"/>
+            <input type="submit" name="image-pool-remove" value="Quitar" />
         <?php endif; ?>
     </p>
 

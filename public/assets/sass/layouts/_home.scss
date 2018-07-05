@@ -584,7 +584,7 @@ body.home {
             color:$primary-color;
             .info-container{
                 margin-left:20px;
-                max-width: 70%;
+                max-width: calc(100% - 80px);
             }
 
             .type-container{
@@ -612,7 +612,7 @@ body.home {
                 margin: 35px 0 10px 0;
                 font-weight: bold;
                 .quote{
-                    width: 12%;
+                    width: 8.5%;
                 }
                 .text{
                     width: 88%;
