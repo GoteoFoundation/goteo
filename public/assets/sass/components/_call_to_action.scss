@@ -28,23 +28,76 @@
       .btn-white{
         color: $color-grey;
         padding: 13px 0px;
+        white-space: normal;
       }
     }
   }
-}
 
-@media (max-width: $breakpoint-sm - 1) {
-  .call-to-action-component{
-
-    .call-action{
-        .row
-        {
-            display: block;
+  &.double{
+        .call-action{
+            padding:0;
+            display: flex;
         }
-        .col-button .btn-white{
-            margin: 15px 0;
+        .row .col{
+            padding-top:30px;
+            padding-bottom: 30px;
+            flex-flow: column;
+            &:first-child{
+                padding-left: $col-percentage;
+            }
+            &:nth-child(2){
+                padding-right: 2%;
+            }
+            &:nth-child(3){
+                padding-left: 2%;
+            }
+            &.col-left{
+                background-color: #D9B1D4;
+            }
+            .description{
+                font-size:$font-size*1.4;
+            }
         }
     }
-  }
+}
+
+
+
+@media (max-width: $breakpoint-sm - 1) {
+    .call-to-action-component{
+
+        .call-action{
+            .row
+            {
+                display: block;
+            }
+            .col-button .btn-white{
+                margin: 15px 0;
+            }
+        }
+
+        &.double{
+            .call-action{
+                padding:0 15px;
+                display: block;
+            }
+            .row .col{
+                padding-top:30px;
+                padding-bottom: 30px;
+                &:first-child{
+                    padding-left: 15px;
+                }
+                &:nth-child(2){
+                    padding-right: 15px;
+                }
+                &:nth-child(3){
+                    padding-left: 15px;
+                }
+                &.col-button{
+                    padding-top:0px;
+                }
+            }
+        }
+    }
 }
 
