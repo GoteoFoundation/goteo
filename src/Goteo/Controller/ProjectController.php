@@ -86,7 +86,8 @@ class ProjectController extends \Goteo\Core\Controller {
                 'subtitle'   => $request->request->get('subtitle'),
                 'social_commitment'   => $social_commitment,
                 'social_description' => $request->request->get('social-description'),
-                'location'			=> $request->request->get('location')
+                'location'          => $request->request->get('location'),
+                'project_location'			=> $request->request->get('project_location')
             ];
 
             $project = Project::createNewProject($data, Session::getUser(), Config::get('current_node'));
