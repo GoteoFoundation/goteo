@@ -21,6 +21,8 @@ feed-admin-newsletter-activate-subject: 'butlletí activat (admin)'
 
 feed-admin-project-new: 'Usuari crea un nou projecte'
 feed-admin-project-created: '%USER% ha creat un nou projecte, %PROJECT%'
+feed-admin-project-call: 'nou projecte assignat a convocatòria'
+feed-admin-project-call-desc: 'Nou projecte %PROJECT% aplicat a la convocatòria %CALL%'
 
 feed-admin-project-action: 'Acció sobre un projecte des de l''admin'
 feed-admin-project-published-ko: 'A l''admin %USER% l''hi ha fallat el passar el projecte %PROJECT% a l''estat de <span class="red">en Campanya</span>'

@@ -21,6 +21,8 @@ feed-admin-newsletter-activate-subject: 'newsletter activada (admin)'
 
 feed-admin-project-new: 'Usuario crea nuevo proyecto'
 feed-admin-project-created: '%USER% ha creado un nuevo proyecto, %PROJECT%'
+feed-admin-project-call: 'nuevo proyecto asignado a convocatoria'
+feed-admin-project-call-desc: 'Nuevo proyecto %PROJECT% aplicado a la convocatoria %CALL%'
 
 feed-admin-project-action: 'Acción sobre un proyecto desde el admin'
 feed-admin-project-published-ko: 'Al admin %USER% le ha fallado el pasar el proyecto %PROJECT% al estado <span class="red">en Campaña</span>'

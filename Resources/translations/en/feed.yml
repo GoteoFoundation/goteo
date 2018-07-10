@@ -6,6 +6,8 @@ feed-admin-invest-modified: 'The admin %ADMIN% has modified the invest %INVEST% 
 
 feed-admin-project-new: 'User creates a new project'
 feed-admin-project-created: '%USER% has created a new project, %PROJECT%'
+feed-admin-project-call: 'new project assigned to a call'
+feed-admin-project-call-desc: 'New project %PROJECT% applied to the call %CALL%'
 
 feed-admin-project-action: 'Project action in admin'
 feed-admin-project-published-ko: 'Admin %USER% failed to set the project %PROJECT% to the status <span class="red">in Campaign</span>'
