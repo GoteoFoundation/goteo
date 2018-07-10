@@ -10,20 +10,20 @@
 
 namespace Goteo\Core\Event;
 
+use Symfony\Component\EventDispatcher\Event;
 use Goteo\Core\Model;
 
-class CreateModelEvent extends AbstractModelEvent
+abstract class AbstractModelEvent extends Event
 {
-    protected $fields = [];
+    protected $model;
 
-    public function __construct(Model $model = null, array $fields)
+    public function __construct(Model $model = null)
     {
         $this->model = $model;
-        $this->fields = $fields;
     }
 
-    public function getFields() {
-        return $this->fields;
+    public function getModel() {
+        return $this->model;
     }
 
 }

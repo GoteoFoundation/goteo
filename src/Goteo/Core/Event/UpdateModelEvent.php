@@ -12,18 +12,24 @@ namespace Goteo\Core\Event;
 
 use Goteo\Core\Model;
 
-class CreateModelEvent extends AbstractModelEvent
+class UpdateModelEvent extends AbstractModelEvent
 {
     protected $fields = [];
+    protected $where = [];
 
-    public function __construct(Model $model = null, array $fields)
+    public function __construct(Model $model = null, array $fields, array $where)
     {
         $this->model = $model;
+        $this->where = $where;
         $this->fields = $fields;
     }
 
     public function getFields() {
         return $this->fields;
+    }
+
+    public function getWhere() {
+        return $this->where;
     }
 
 }
