@@ -81,6 +81,18 @@ class ProjectListener extends AbstractListener {
         $user = $event->getUser();
         $this->info("New project created", [$project, $user]);
 
+        // Feed event
+        $log = new Feed();
+        $log->setTarget($user->id, 'user')
+            ->populate('feed-admin-project-new',
+                'admin/projects',
+                new FeedBody(null, null, 'feed-admin-project-created', [
+                    '%USER%'    => Feed::item('user', $user->name, $user->id),
+                    '%PROJECT%' => Feed::item('project', $project->name, $project->id)
+                ]
+            ))
+            ->doAdmin('project');
+
         // This is not an unique event, sending manually
         // Send a mail to the creator
         $project->user = $user;

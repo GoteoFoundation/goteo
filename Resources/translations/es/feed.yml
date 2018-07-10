@@ -18,6 +18,10 @@ feed-admin-new_project: 'Publicación automática de un proyecto'
 feed-admin-newsletter-activate: 'El admin %USER% ha iniciado el envio de la newsletter %ID%: %SUBJECT%'
 feed-admin-newsletter-activate-failed: 'Ha fallado el envío automático de la newsletter %ID%: %SUBJECT% por parte de el admin %USER%'
 feed-admin-newsletter-activate-subject: 'newsletter activada (admin)'
+
+feed-admin-project-new: 'Usuario crea nuevo proyecto'
+feed-admin-project-created: '%USER% ha creado un nuevo proyecto, %PROJECT%'
+
 feed-admin-project-action: 'Acción sobre un proyecto desde el admin'
 feed-admin-project-published-ko: 'Al admin %USER% le ha fallado el pasar el proyecto %PROJECT% al estado <span class="red">en Campaña</span>'
 feed-admin-project-published-ok: 'El admin %USER% ha publicado el proyecto %PROJECT% al estado <span class="red">en Campaña</span>'

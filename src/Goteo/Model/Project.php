@@ -16,11 +16,9 @@ namespace Goteo\Model {
     use Goteo\Application;
     use Goteo\Model\Message;
     use Goteo\Application\Lang;
-    use Goteo\Model\Mail;
     use Goteo\Model\SocialCommitment;
     use Goteo\Library\Check;
     use Goteo\Library\Text;
-    use Goteo\Library\Feed;
     use Goteo\Application\Currency;
     use Goteo\Model\Project\Account;
     use Goteo\Model\Project\ProjectLocation;
@@ -2776,80 +2774,6 @@ namespace Goteo\Model {
 
             $errors = array();
             if ($project->create($data, $node_id, $errors)) {
-
-                //TODO: as events
-                //
-                // Evento Feed
-                $log = new Feed();
-                $log->setTarget($user->id, 'user');
-                $log->populate('usuario crea nuevo proyecto', 'admin/projects',
-                    \vsprintf('%s ha creado un nuevo proyecto, %s', array(
-                        Feed::item('user', $user->name, $user->id),
-                        Feed::item('project', $project->name, $project->id))
-                    ));
-                $log->doAdmin('project');
-                unset($log);
-
-                // Si hay que asignarlo a un proyecto
-                // TODO: remove from here, goto a plugin
-                if ($call = Session::get('oncreate_applyto')) {
-
-                    $registry = new Call\Project;
-                    $registry->id = $project->id;
-                    $registry->call = $call;
-                    if ($registry->save($errors)) {
-
-                        $callData = Call::getMini($call);
-                        // email al autor
-
-                        //  idioma de preferencia del usuario
-                        $comlang = User::getPreferences($user)->comlang;
-
-                        // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(Template::CALL_CONFIRMATION, $comlang);
-
-                        // Sustituimos los datos
-                        $subject = str_replace('%CALLNAME%', $callData->name, $template->title);
-
-                        // En el contenido:
-                        $search  = array('%USERNAME%', '%CALLNAME%', '%CALLERNAME%', '%CALLURL%');
-                        $replace = array($user->name, $callData->name, $callData->user->name, SITE_URL.'/call/'.$call);
-                        $content = \str_replace($search, $replace, $template->parseText());
-
-
-                        $mailHandler = new Mail();
-
-                        $mailHandler->lang = $comlang;
-                        $mailHandler->to = $user->email;
-                        $mailHandler->toName = $user->name;
-                        $mailHandler->subject = $subject;
-                        $mailHandler->content = $content;
-                        $mailHandler->html = true;
-                        $mailHandler->template = $template->id;
-                        if ($mailHandler->send($errors)) {
-                            Application\Message::info(Text::get('assign-call-success', $callData->name));
-                        } else {
-                            Application\Message::error(Text::get('project-review-confirm_mail-fail'));
-                            \mail(Config::getMail('fail'), 'Fallo al enviar mail al crear proyecto asignando a convocatoria', 'Teniamos que enviar email a ' . $user->email . ' con esta instancia <pre>'.print_r($mailHandler, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
-                        }
-
-                        unset($mailHandler);
-
-                        // Evento feed
-                        $log = new Feed();
-                        $log->setTarget($call, 'call');
-                        $log->populate('nuevo proyecto asignado a convocatoria ' . $call, 'admin/calls/'.$call.'/projects',
-                            \vsprintf('Nuevo proyecto %s aplicado a la convocatoria %s', array(
-                                Feed::item('project', $project->name, $project->id),
-                                Feed::item('call', $call, $call))
-                            ));
-                        $log->doAdmin('project');
-                        unset($log);
-                    } else {
-                        \mail(Config::getMail('fail'), 'Fallo al asignar a convocatoria al crear proyecto', 'Teniamos que asignar el nuevo proyecto ' . $project->id . ' a la convocatoria ' . $call . ' con esta instancia <pre>'.print_r($register, true).'</pre> y ha dado estos errores: <pre>' . print_r($errors, true) . '</pre>');
-                    }
-                }
-
                 return $project;
             }
 
