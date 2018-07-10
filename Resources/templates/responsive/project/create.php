@@ -120,6 +120,11 @@ $terms=$this->terms;
                 </div>
             </div>
         </div>
+<?php
+// Extra vars may be assigned to this form in order to perform additional actions on the controller
+foreach($this->a('project_defaults') as $k => $v): ?>
+    <input type="hidden" name="<?= $k ?>" value="<?= $v ?>">
+<?php endforeach ?>
     </form>
 
 </div>
@@ -346,9 +351,9 @@ $terms=$this->terms;
             e.preventDefault();
             $('html, body').animate({
               scrollTop: ($("#submit-alert").offset().top)
-              },500);
-            $("#submit-alert .alert").fadeIn(1000, function() {
-                form.submit();
+            },500);
+            $("#submit-alert .alert").fadeIn(500, function() {
+              form.submit();
             });
         });
 

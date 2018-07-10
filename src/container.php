@@ -130,6 +130,10 @@ $sc->register('app.listener.invest', 'Goteo\Application\EventListener\InvestList
 $sc->register('app.listener.milestone', 'Goteo\Application\EventListener\ProjectPostListener')
   ->setArguments(array(new Reference('logger')));
 
+// Project channel listener
+$sc->register('app.listener.channel', 'Goteo\Application\EventListener\ProjectChannelListener')
+  ->setArguments(array(new Reference('logger')));
+
 // Invest listener
 $sc->register('app.listener.poolinvest', 'Goteo\Application\EventListener\PoolInvestListener')
   ->setArguments(array(new Reference('paylogger')));
@@ -169,6 +173,7 @@ $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.messages')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.milestone')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.channel')))
   ->addMethodCall('addSubscriber', array(new Reference('console.listener.milestone')))
   ->addMethodCall('addSubscriber', array(new Reference('console.listener.favourite')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.acl')))

@@ -392,17 +392,6 @@ namespace Goteo\Model {
                 return false;
             }
 
-            // si aplicando a convocatoria, asignar el proyecto al nodo del convocador
-            if (isset($_SESSION['oncreate_applyto'])) {
-                $call = $_SESSION['oncreate_applyto'];
-                $callData = Call::getMini($call);
-                 if (!empty($callData->user->node)) {
-                     $node = $callData->user->node;
-                     // también movemos al impulsor a ese nodo
-                    self::query("UPDATE user SET node = :node WHERE id = :id", array(':node' => $node, ':id' => $user));
-                 }
-            }
-
             // cogemos el número de proyecto de este usuario
             $query = self::query("SELECT COUNT(id) as num FROM project WHERE owner = ?", array($user));
             if ($now = $query->fetchObject())
@@ -415,63 +404,37 @@ namespace Goteo\Model {
             // datos del userpersonal por defecto a los cammpos del paso 2
             $userPersonal = User::getPersonal($user);
 
-            $values = array(
-                ':id'   => md5($user.'-'.uniqid($num)),
-                ':name' => $data['name'],
-                ':subtitle' => $data['subtitle'],
-                ':social_commitment'  => $data['social_commitment'],
-                ':social_commitment_description'  => $data['social_description'],
-                ':lang' => !empty($_SESSION['lang']) ? $_SESSION['lang'] : 'es',
-                ':currency' => 'EUR',
-                ':currency_rate' => 1,
-                ':status'   => 1,
-                ':progress' => 0,
-                ':owner' => $user,
-                ':node' => $node,
-                ':amount' => 0,
-                ':days' => 0,
-                ':created'  => date('Y-m-d'),
-                ':contract_name' => ($userPersonal->contract_name) ?
-                                    $userPersonal->contract_name :
-                                    $userProfile->name,
-                ':contract_nif' => $userPersonal->contract_nif,
-                ':phone' => $userPersonal->phone,
-                ':address' => $userPersonal->address,
-                ':zipcode' => $userPersonal->zipcode,
-                ':location' => ($userPersonal->location) ?
-                                $userPersonal->location :
-                                $userProfile->location,
-                ':country' => ($userPersonal->country) ?
-                                $userPersonal->country :
-                                Check::country(),
-                ':project_location' => ($userPersonal->location) ?
-                                $userPersonal->location :
-                                $userProfile->location,
-                );
+            $this->id   = md5($user.'-'.uniqid($num));
+            $this->name = $data['name'];
+            $this->subtitle = $data['subtitle'];
+            $this->social_commitment  = $data['social_commitment'];
+            $this->social_commitment_description  = $data['social_description'];
+            $this->lang = !empty($_SESSION['lang']) ? $_SESSION['lang'] : 'es';
+            $this->currency = 'EUR';
+            $this->currency_rate = 1;
+            $this->status   = 1;
+            $this->progress = 0;
+            $this->owner = $user;
+            $this->node = $node;
+            $this->amount = 0;
+            $this->days = 0;
+            $this->created  = date('Y-m-d');
+            $this->contract_name = $userPersonal->contract_name ? $userPersonal->contract_name : $userProfile->name;
+            $this->contract_nif = $userPersonal->contract_nif;
+            $this->phone = $userPersonal->phone;
+            $this->address = $userPersonal->address;
+            $this->zipcode = $userPersonal->zipcode;
+            $this->location = $userPersonal->location ? $userPersonal->location : $userProfile->location;
+            $this->country = $userPersonal->country ? $userPersonal->country : Check::country();
+            $this->project_location = $userPersonal->location ? $userPersonal->location : $userProfile->location;
 
-            $campos = array();
-            foreach (\array_keys($values) as $campo) {
-                $campos[] = \str_replace(':', '', $campo);
-            }
-
-            $sql = "INSERT INTO project (" . implode(',', $campos) . ")
-                 VALUES (" . implode(',', \array_keys($values)) . ")";
-            // die (\sqldbg($sql, $values));
             try {
-                self::query($sql, $values);
-
-                foreach ($campos as $campo) {
-                    $this->$campo = $values[":$campo"];
-                }
-
-                return $this->id;
-
+                $this->dbInsert(['id','name','subtitle','social_commitment','social_commitment_description','lang','currency','currency_rate','status','progress','owner','node','amount','days','created','contract_name','contract_nif','phone','address','zipcode','location','country','project_location']);
             } catch (\PDOException $e) {
-                $errors[] = "ERROR al crear un nuevo proyecto<br />$sql<br /><pre>" . print_r($values, true) . "</pre>";
-                \trace($this);
-                // die($errors[0]);
+                $errors[] = "ERROR creating new project [{$this->id}]!\n" . $e->getMessage();
                 return false;
             }
+            return $this->id;
         }
 
         /*
@@ -1676,6 +1639,7 @@ namespace Goteo\Model {
                     'name',
                     'subtitle',
                     'lang',
+                    'node',
                     'currency',
                     'currency_rate',
                     'description',

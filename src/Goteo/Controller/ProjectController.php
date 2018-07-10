@@ -66,11 +66,6 @@ class ProjectController extends \Goteo\Core\Controller {
 	 */
 	public function createAction(Request $request) {
 
-        // Social commitments
-        $social_commitments=SocialCommitment::getAll();
-
-        $terms = Page::get('howto');
-
         if (!Session::isLogged()) {
             Message::info(Text::get('user-login-required-to_create'));
             return $this->redirect('/user/login?return='.urldecode('/project/create'));
@@ -112,10 +107,10 @@ class ProjectController extends \Goteo\Core\Controller {
             return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
         }
 
-        return $this->viewResponse( 'project/create',
-                                    ['social_commitments' => $social_commitments,
-                                     'terms'      => $terms
-                                     ]);
+        return $this->viewResponse( 'project/create', [
+           'social_commitments' => SocialCommitment::getAll(),
+           'terms'      => Page::get('howto')
+        ]);
 
 	}
 

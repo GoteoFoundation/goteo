@@ -26,4 +26,10 @@ abstract class AbstractModelEvent extends Event
         return $this->model;
     }
 
+    public function is($model) {
+        if($this->model) {
+            return $this->model->getTable() === strtolower($model);
+        }
+        return false;
+    }
 }

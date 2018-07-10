@@ -37,13 +37,16 @@ use Goteo\Application\Event\FilterProjectEvent;
 
 
 class ChannelController extends \Goteo\Core\Controller {
+    public function __construct() {
+        // changing to a responsive theme here
+        View::setTheme('responsive');
+    }
 
     // Set the global vars to all the channel views
     private function setChannelContext($id)
     {
 
         $channel = Node::get($id);
-        View::setTheme('responsive');
 
         //Check if the user can access to the channel
         $user = Session::getUser();
@@ -171,63 +174,26 @@ class ChannelController extends \Goteo\Core\Controller {
      */
     public function createAction ($id, Request $request)
     {
-        // Some context vars
+
+        // Some context vars for compatibility (to be removed)
         $this->contextVars(['url_project_create' => '/channel/' . $id . '/create']);
 
-        //Set the responsive theme
-        View::setTheme('responsive');
-
-        // Social commitments
-        $social_commitments=SocialCommitment::getAll();
-
-        $terms = Page::get('howto');
-
         if (!Session::isLogged()) {
-            Session::store('jumpto', '/channel/' . $id . '/create');
             Message::info(Text::get('user-login-required-to_create'));
-            return $this->redirect('/user/login?return='.urldecode('/project/create'));
+            return $this->redirect('/user/login?return='.urldecode("/channel/$id/create"));
         }
 
-        if ($request->getMethod() == 'POST') {
-
-            $social_commitment=$request->request->get('social');
-
-            $data=[
-                'name'         => $request->request->get('name'),
-                'subtitle'   => $request->request->get('subtitle'),
-                'social_commitment'   => $social_commitment,
-                'social_description' => $request->request->get('social-description')
-            ];
-
-            $project = Project::createNewProject($data, Session::getUser(), $id);
-
-            // categories created depending on the social commitment
-            $categories=SocialCommitment::getCategories($social_commitment);
-
-            foreach ($categories as $item) {
-                $category=new Category();
-                $category->project=$project->id;
-                $category->id=$item;
-                $category->save();
-            }
-
-            // Save publishing day and min required estimation
-            $conf = Project\Conf::get($project->id);
-            $conf->mincost_estimation = $request->request->get('minimum');
-            $conf->publishing_estimation = $request->request->get('publishing_date');
-            $conf->save();
-
-            // CREATED EVENT
-            $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();
-            if($response instanceOf Response) return $response;
-
-            return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
+        if($request->isMethod('post')) {
+            // Re-use original post action:
+            // The listener ProjectChannelListener does all the work on changing the assigned channel
+            return $this->forward('Goteo\Controller\ProjectController::createAction');
         }
 
-        return $this->viewResponse( 'project/create',
-                                    ['social_commitments' => $social_commitments,
-                                     'terms'      => $terms
-                                     ]);
+        return $this->viewResponse( 'project/create', [
+            'social_commitments' => SocialCommitment::getAll(),
+            'terms'      => Page::get('howto'),
+            'project_defaults' => ['node' => $id]
+        ]);
     }
 
      /**
@@ -242,9 +208,6 @@ class ChannelController extends \Goteo\Core\Controller {
             if(!$channel->home_img)
                 unset($channels[$chanelId]);
         }
-
-         // changing to a responsive theme here
-        View::setTheme('responsive');
 
         return $this->viewResponse('channels/list', ['channels' => $channels]);
     }
