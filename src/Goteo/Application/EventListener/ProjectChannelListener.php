@@ -22,7 +22,7 @@ class ProjectChannelListener extends AbstractListener {
     protected $request;
 
     /**
-     * Verify we are using the channel controller
+     * Verify we are in POST in project create controller
      * @param  GetResponseEvent $event [description]
      * @return [type]                  [description]
      */
@@ -41,6 +41,7 @@ class ProjectChannelListener extends AbstractListener {
      */
     public function onProjectCreated(FilterProjectEvent $event) {
         if(!$this->request) return;
+        if(!$this->request->request->has('node')) return;
 
         $project = $event->getProject();
         // Change node

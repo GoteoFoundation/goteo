@@ -11,8 +11,6 @@
 namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 use Goteo\Application\Session;
@@ -22,18 +20,10 @@ use Goteo\Model\Node;
 use Goteo\Model\Home;
 use Goteo\Model\Project;
 use Goteo\Model\Sponsor;
-// convocatorias en portada
-use Goteo\Model\Call;
-use Goteo\Model\User;
 use Goteo\Model\Category;
 use Goteo\Library\Text;
 use Goteo\Model\Page;
-use Goteo\Model\Project\Conf;
 use Goteo\Model\SocialCommitment;
-use Goteo\Console\UsersSend;
-use Goteo\Application\AppEvents;
-use Goteo\Application\Event\FilterProjectEvent;
-
 
 
 class ChannelController extends \Goteo\Core\Controller {
@@ -174,7 +164,6 @@ class ChannelController extends \Goteo\Core\Controller {
      */
     public function createAction ($id, Request $request)
     {
-
         // Some context vars for compatibility (to be removed)
         $this->contextVars(['url_project_create' => '/channel/' . $id . '/create']);
 
