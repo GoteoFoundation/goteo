@@ -78,7 +78,7 @@ class ProjectController extends \Goteo\Core\Controller {
                 'social_description' => $request->request->get('social-description')
             ];
 
-            $project = Project::createNewProject($data, Session::getUser(), Config::get('current_node'));
+            $project = Project::createNewProject($data);
 
             // categories created depending on the social commitment
         	$categories=SocialCommitment::getCategories($social_commitment);

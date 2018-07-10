@@ -15,6 +15,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
 use Goteo\Application\Message;
 use Goteo\Application\Event\FilterProjectEvent;
+use Goteo\Application\Event\ProjectValidationEvent;
 use Goteo\Console\UsersSend;
 use Goteo\Library\Feed;
 use Goteo\Library\Text;
@@ -207,11 +208,16 @@ class ProjectListener extends AbstractListener {
 
     }
 
+    public function onProjectValidation(ProjectValidationEvent $event) {
+        $project = $event->getProject();
+    }
+
 	public static function getSubscribedEvents() {
 		return array(
             AppEvents::PROJECT_CREATED => 'onProjectCreated',
             AppEvents::PROJECT_PUBLISH => ['onProjectPublish', 100], // high priority
             AppEvents::PROJECT_READY   => 'onProjectReady',
+            AppEvents::PROJECT_VALIDATION   => 'onProjectValidation',
 		);
 	}
 }
