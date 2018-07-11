@@ -11,6 +11,7 @@
 namespace Goteo\Application\Event;
 
 use Goteo\Application\Session;
+use Goteo\Application\Config;
 use Goteo\Model\Project;
 use Goteo\Model\Image;
 use Symfony\Component\HttpFoundation\Response;
@@ -225,9 +226,11 @@ class ProjectValidationEvent extends \Goteo\Console\Event\FilterProjectEvent
             $this->errors['rewards'][] = 'rewards';
             $res = round(100 * ($total - $count1)/$total);
         }
-        if($total < 3) {
+        // rewards required >= 1, default 3
+        $rewards_required = abs(intval(Config::get('rewards.required'))) ?: 3;
+        if($total < $rewards_required) {
             $this->errors['rewards'][] = 'rewards_required';
-            $res *= $total / 3;
+            $res *= $total / $rewards_required;
         }
         return $res;
     }

@@ -326,3 +326,8 @@ oauth:
 # google: UA-0000000-01
 analytics:
     google:
+
+
+# Default required rewards
+rewards:
+    required: 3
