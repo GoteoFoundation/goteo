@@ -11,6 +11,8 @@ use Goteo\Model\User;
 use Goteo\Model\Image;
 use Goteo\Model\Message;
 use Goteo\Model\Project;
+use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Call\CallLocation;
 
 class Call extends \Goteo\Core\Model {
 
@@ -1298,6 +1300,19 @@ class Call extends \Goteo\Core\Model {
             }
         }
 
+        if (!empty($filters['location']) && $filters['location'] instanceOf LocationInterface) {
+            $loc = $filters['location'];
+            $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
+            $innerJoin .= "INNER JOIN call_location ON call_location.id = project.id";
+            $location_parts = ProjectLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'call_location');
+            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
+            $values = array_merge($values, $location_parts['params']);
+            if(empty($filters['order'])) {
+                $order = 'ORDER BY Distance ASC';
+            }
+            // print_r($loc);die;
+        }
+
         //el Order
         if (!empty($filters['order'])) {
             switch ($filters['order']) {
@@ -2286,7 +2301,29 @@ class Call extends \Goteo\Core\Model {
         return Project::getPublishedProjects($this->id);
     }
 
+     /*
+     *   Get calls available for a project
+    */
+    public function getCallsAvailable(Project $project, $max_distance = null, $filters = ['status' => [self::STATUS_OPEN], 'type' => 'open']){
 
+        $calls = [];
+        if($location = ProjectLocation::get($project)) {
+            foreach(self::getList($filters) as $call) {
+                if($call_loc = CallLocation::get($call)) {
+                    $max = is_null($max_distance) ? ($call_loc->radius ? $call_loc->radius :  100) : $max_distance;
+                    $distance = CallLocation::haversineDistance($location->latitude, $location->longitude, $call_loc->latitude, $call_loc->longitude);
+                    if($distance < $max) {
+                        $call->distance = $distance;
+                        $calls[] = $call;
+                    }
+                }
+            }
+            usort($calls, function($a, $b) {
+                return $a->distance > $b->distance;
+            });
+        }
+        // TODO Filter by location
+        return $calls;
+    }
 
 }
-
