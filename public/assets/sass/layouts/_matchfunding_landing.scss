@@ -50,6 +50,13 @@ body.matchfunding-landing {
       } */
   }
 
+  .polaroid{
+    background-color: #FFF;
+    padding: 12px 10px 60px 10px;
+    border: 1px solid #e9e7e7;
+    filter: sepia(20%);
+  }
+
 	.top.navbar-always > a, .top-navbar .navbar-always > a i.icon, .top-navbar .navbar-always > button{
 	    color: $primary-color;
 	    background-color: transparent;
