@@ -31,9 +31,13 @@ class Config {
 	 */
 	static public function load($config_file) {
 		try {
+            self::$config = self::loadFromYaml(__DIR__ . '/../../../Resources/defaults.yml');
+
             if(!is_file($config_file)) $config_file = __DIR__ . '/../../../config/' . $config_file;
 			// load the main config
-			self::$config = self::loadFromYaml($config_file);
+			if($config = self::loadFromYaml($config_file)) {
+                self::$config = array_replace_recursive(self::$config , $config);
+            }
 
             // Load default permissions from yaml
             $permissions = self::loadFromYaml(__DIR__ . '/../../../Resources/permissions.yml');
