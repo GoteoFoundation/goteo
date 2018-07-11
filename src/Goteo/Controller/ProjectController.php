@@ -107,9 +107,9 @@ class ProjectController extends \Goteo\Core\Controller {
                     'method'       => 'manual'
                 ]
             );
-            
+
             $loc->save($errors);
-                                
+
             // Save publishing day and min required estimation
             $conf = Project\Conf::get($project->id);
             $conf->mincost_estimation = $request->request->get('minimum');
