@@ -193,7 +193,6 @@ class ProjectDashboardController extends DashboardController {
 
         return $this->viewResponse('dashboard/project/summary', [
             'statuses' => Project::status(),
-            'project' => $project,
             'status_text' => $status_text,
             'status_class' => $status_class,
             'desc' => $desc
