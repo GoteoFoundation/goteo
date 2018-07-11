@@ -280,6 +280,16 @@ final class AppEvents
     const PROJECT_READY = 'project.ready';
 
     /**
+     * The project.validation event is thrown when a project calls the function ->getValidation()
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterProjectEvent or Goteo\Console\Event\FilterProjectEvent  instance.
+     *
+     * @var string
+     */
+    const PROJECT_VALIDATION = 'project.validation';
+
+    /**
      * The project.post event is thrown when a project edits a post
      *
      * The event listener receives an

@@ -14,10 +14,6 @@ use Goteo\Application\Message;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Config;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Exception\ControllerException;
-use Goteo\Application\Exception\ModelException;
-use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Session;
 use Goteo\Application\View;
@@ -67,11 +63,6 @@ class ProjectController extends \Goteo\Core\Controller {
 	 */
 	public function createAction(Request $request) {
 
-        // Social commitments
-        $social_commitments=SocialCommitment::getAll();
-
-        $terms = Page::get('howto');
-
         if (!Session::isLogged()) {
             Message::info(Text::get('user-login-required-to_create'));
             return $this->redirect('/user/login?return='.urldecode('/project/create'));
@@ -90,7 +81,7 @@ class ProjectController extends \Goteo\Core\Controller {
                 'project_location'			=> $request->request->get('project_location')
             ];
 
-            $project = Project::createNewProject($data, Session::getUser(), Config::get('current_node'));
+            $project = Project::createNewProject($data);
 
             // categories created depending on the social commitment
         	$categories=SocialCommitment::getCategories($social_commitment);
@@ -132,10 +123,10 @@ class ProjectController extends \Goteo\Core\Controller {
             return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
         }
 
-        return $this->viewResponse( 'project/create',
-                                    ['social_commitments' => $social_commitments,
-                                     'terms'      => $terms
-                                     ]);
+        return $this->viewResponse( 'project/create', [
+           'social_commitments' => SocialCommitment::getAll(),
+           'terms'      => Page::get('howto')
+        ]);
 
 	}
 

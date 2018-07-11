@@ -72,6 +72,7 @@ class GoteoCore implements ExtensionInterface
           'has_post' => [$this, 'has_post'],
           'get_uri' => [$this, 'get_uri'],
           'get_url' => [$this, 'get_url'],
+          'get_main_url' => [$this, 'get_main_url'],
           'get_pathinfo' => [$this, 'get_pathinfo'],
           'get_querystring' => [$this, 'get_querystring'],
           'is_ajax' => [$this, 'is_ajax'],
@@ -172,6 +173,9 @@ class GoteoCore implements ExtensionInterface
     }
 
     //URL
+    public function get_main_url($lang = null) {
+        return Config::getMainUrl();
+    }
     public function get_url($lang = null) {
         return Config::getUrl($lang);
     }
