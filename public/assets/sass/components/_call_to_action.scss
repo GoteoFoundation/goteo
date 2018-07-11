@@ -53,10 +53,21 @@
             }
             &.col-left{
                 background-color: #D9B1D4;
+                .description{
+                    color: $background-light-lilac;
+                }
             }
             .description{
                 font-size:$font-size*1.4;
+                line-height: 1.2;
+                padding-top: 10px;
             }
+             &.col-right{
+                .title{
+                    color: #D9B1D4;
+                }
+            }
+
         }
     }
 }

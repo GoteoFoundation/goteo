@@ -11,7 +11,7 @@
             <div class="col-sm-2 col-button col col-left">
                 <a href="<?= $this->button_link ?>" class="btn btn-white"><?= $this->button_text ?></a>
             </div>
-            <div class="col-sm-3 col">
+            <div class="col-sm-3 col col-right">
                 <div class="title">
                     <?= $this->title2 ?>
                 </div>
