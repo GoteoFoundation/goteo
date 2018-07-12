@@ -31,9 +31,13 @@ class Config {
 	 */
 	static public function load($config_file) {
 		try {
+            self::$config = self::loadFromYaml(__DIR__ . '/../../../Resources/defaults.yml');
+
             if(!is_file($config_file)) $config_file = __DIR__ . '/../../../config/' . $config_file;
 			// load the main config
-			self::$config = self::loadFromYaml($config_file);
+			if($config = self::loadFromYaml($config_file)) {
+                self::$config = array_replace_recursive(self::$config , $config);
+            }
 
             // Load default permissions from yaml
             $permissions = self::loadFromYaml(__DIR__ . '/../../../Resources/permissions.yml');
@@ -142,6 +146,10 @@ class Config {
 		self::$loader = $loader;
 	}
 
+    static public function getLoader() {
+        return self::$loader;
+    }
+
 	/**
 	 * Adds a directory to the composer autoload array
 	 * @param string $dir directory where to find classes
@@ -149,6 +157,15 @@ class Config {
 	static public function addAutoloadDir($dir) {
 		self::$loader->add('', $dir);
 	}
+
+    /**
+     * Adds an external autoload.php file (ie from a compoeser vendor plugin)
+     * @param [type] $autoload [description]
+     */
+    static public function addComposerAutoload($autoload) {
+        $loader = require ( $autoload );
+        self::$loader->addClassMap($loader->getClassMap());
+    }
 
 	/**
 	 * sets directory configuration

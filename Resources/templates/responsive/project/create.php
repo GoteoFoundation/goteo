@@ -100,6 +100,21 @@ $terms=$this->terms;
                     <label><?= $this->text('project-create-social-text-field') ?></label>
                     <input autocomplete="off" tabindex="0" class="form-control" name="social-description" value="" required>
                 </div>
+                <div class="form-group col-sm-12" id="location-group">
+                    <div class="alert alert-success">
+                        <?= $this->text('project-create-location-text-alert') ?>
+                    </div>
+                    <label><?= $this->text('overview-field-project_location') ?></label>
+                    <input required type="text" id="location" class="geo-autocomplete form-control" data-geocoder-populate-city="#save-city" data-geocoder-populate-region="#save-region" data-geocoder-populate-country_code="#save-country-code" data-geocoder-populate-country="#save-country" data-geocoder-populate-latitude="#save-latitude" data-geocoder-populate-longitude="#save-longitude" name="location" value="" >
+
+                    <input type="hidden" name="latitude" id="save-latitude" value="" >
+                    <input type="hidden" name="longitude" id="save-longitude" value="" >
+                    <input type="hidden" name="city" id="save-city" value="" >
+                    <input type="hidden" name="region" id="save-region" value="" >
+                    <input type="hidden" name="country" id="save-country" value="" >
+                    <input type="hidden" name="country_code" id="save-country-code" value="" >
+
+                </div>
                 <div class="form-group col-sm-12" id="accept-group" >
                     <label class="terms">
                         <input tabindex="0" class="" type="checkbox" name="create-accept" id="create-accept" value="1">
@@ -120,6 +135,11 @@ $terms=$this->terms;
                 </div>
             </div>
         </div>
+<?php
+// Extra vars may be assigned to this form in order to perform additional actions on the controller
+foreach($this->a('project_defaults') as $k => $v): ?>
+    <input type="hidden" name="<?= $k ?>" value="<?= $v ?>">
+<?php endforeach ?>
     </form>
 
 </div>
@@ -346,9 +366,9 @@ $terms=$this->terms;
             e.preventDefault();
             $('html, body').animate({
               scrollTop: ($("#submit-alert").offset().top)
-              },500);
-            $("#submit-alert .alert").fadeIn(1000, function() {
-                form.submit();
+            },500);
+            $("#submit-alert .alert").fadeIn(500, function() {
+              form.submit();
             });
         });
 

@@ -3,16 +3,26 @@
 namespace Goteo\Core\Tests;
 
 use Goteo\Core\Model;
+use Goteo\Core\ModelEvents;
 use Goteo\Core\DB;
 use Goteo\Library\Cacher;
 use Goteo\Application\Config;
+use Goteo\Application\App;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Goteo\Core\Event\CreateModelEvent;
+use Goteo\Core\Event\UpdateModelEvent;
+use Goteo\Core\Event\DeleteModelEvent;
 
 class MockModel extends Model {
     public $id;
     public $uniq;
     public $name;
+    public $lang;
     public $description;
-    public static function get ($id) {}
+    public static function get ($id) {
+        $sql = "SELECT * FROM mockmodel WHERE id=?";
+        return static::query($sql, $id)->fetchObject(__CLASS__);
+    }
     public function save (&$errors = array()) {}
     public function validate (&$errors = array()) {}
     public static function getLangFields() {
@@ -20,10 +30,50 @@ class MockModel extends Model {
     }
 }
 
+
+class MockModelListener implements EventSubscriberInterface {
+    public function onCreate(CreateModelEvent $event) {
+        $model = $event->getModel();
+        $model->name .= ' pre-insert';
+    }
+    public function onCreated(CreateModelEvent $event) {
+        $model = $event->getModel();
+        $model->name .= ' post-insert';
+    }
+    public function onUpdate(UpdateModelEvent $event) {
+        $model = $event->getModel();
+        $model->name .= ' pre-update';
+    }
+    public function onUpdated(UpdateModelEvent $event) {
+        $model = $event->getModel();
+        $model->name .= ' post-update';
+    }
+    public function onDelete(DeleteModelEvent $event) {
+        $model = $event->getModel();
+        $model->name .= ' pre-delete';
+    }
+    public function onDeleted(DeleteModelEvent $event) {
+        $model = $event->getModel();
+        $model->name .= ' post-delete';
+    }
+    public static function getSubscribedEvents() {
+        return array(
+            ModelEvents::CREATE => 'onCreate',
+            ModelEvents::CREATED => 'onCreated',
+            ModelEvents::UPDATE => 'onUpdate',
+            ModelEvents::UPDATED => 'onUpdated',
+            ModelEvents::DELETE => 'onDelete',
+            ModelEvents::DELETED => 'onDeleted'
+        );
+    }
+}
+
 class ModelTest extends \PHPUnit_Framework_TestCase {
+    public static $listener;
 
     public static function setUpBeforeClass() {
         DB::cache(false);
+        self::$listener = new MockModelListener;
     }
 
     public function testGetTable() {
@@ -36,9 +86,10 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
      * @depends testGetTable
      */
     public function testIdealiza($mock) {
-        $text = "àẁèỳśẅçÇ h😱";
-        $this->assertEquals('aweyswcc-h', Model::idealiza($text));
-        $this->assertEquals('aweyswcc-h', $mock::idealiza($text));
+        $text = "àẁèỳśẅçÇ h😱.B";
+        $this->assertEquals('aweyswcc-h-b', Model::idealiza($text));
+        $this->assertEquals('aweyswcc-h-b', $mock::idealiza($text));
+        $this->assertEquals('aweyswcc-h.b', $mock::idealiza($text, true));
         return $mock;
     }
 
@@ -141,8 +192,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(1, $res->id);
         $mock->name = 'Name 4';
         $mock->dbUpdate(['name'], ['uniq']);
-        $query = $mock::query("SELECT * FROM $tb LIMIT 1");
-        $res = $query->fetchObject();
+        $res = $mock::get(1);
         $this->assertEquals('test2', $res->uniq);
         $this->assertEquals('Name 4', $res->name);
         $this->assertEquals(1, $res->id);
@@ -221,6 +271,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
 
         return $mock;
     }
+
     /**
      * @depends testDbDelete
      */
@@ -262,7 +313,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         $res2 = $query->fetchColumn();
 
         $this->assertNotEquals($res1, $res2);
-        //wait until cache expires
+        DB::cache(false);
         return $mock;
     }
 
@@ -292,7 +343,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         list($fields, $joins) = $mock::getLangsSQLJoins('ca');
         $this->assertContains("IF(`mockmodel`.lang='ca', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
         $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='ca' AND b.lang!=`mockmodel`.lang", $joins);
-        $this->assertContains("LEFT JOIN `mockmodel_lang` c ON `mockmodel`.id=c.id AND c.lang='en' AND c.lang!=`mockmodel`.lang", $joins);
+        $this->assertContains("LEFT JOIN `mockmodel_lang` c ON `mockmodel`.id=c.id AND c.lang='es' AND c.lang!=`mockmodel`.lang", $joins);
 
         Config::set('sql_lang', 'ca');
         list($fields, $joins) = $mock::getLangsSQLJoins('es', Config::get('sql_lang'));
@@ -307,6 +358,58 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
 
         // print_r($fields);
         // print_r($joins);
+    }
+
+
+    /**
+     */
+    public function testInsertEvents() {
+        App::getService('dispatcher')->addSubscriber(self::$listener);
+
+        $mock = new MockModel(['uniq' => 'test3', 'name' => 'INSERTED']);
+        $this->assertEquals('INSERTED', $mock->name);
+        $this->assertNotEmpty($mock->dbInsert(['uniq', 'name']));
+        $this->assertEquals('INSERTED pre-insert post-insert', $mock->name);
+        $mock->id = $mock::insertId();
+        $this->assertEquals(3, $mock->id);
+        $mock2 = MockModel::get($mock->id);
+        $this->assertEquals('INSERTED pre-insert', $mock2->name);
+
+        return $mock2;
+    }
+
+    /**
+     * @depends testInsertEvents
+     */
+    public function testUpdateEvents($mock) {
+
+        $mock->name = 'UPDATED';
+        $this->assertNotEmpty($mock->dbUpdate(['name']));
+        $this->assertEquals('UPDATED pre-update post-update', $mock->name);
+        $this->assertEquals(3, $mock->id);
+
+        $mock2 = MockModel::get($mock->id);
+        $this->assertEquals('UPDATED pre-update', $mock2->name);
+
+        return $mock2;
+    }
+
+    /**
+     * @depends testUpdateEvents
+     */
+    public function testDeleteEvents($mock) {
+        try {
+            $mock->name = 'DELETED';
+            $mock->dbDelete([]);
+
+        } catch(\PDOException $e) {
+            $this->assertEquals('DELETED pre-delete', $mock->name);
+        }
+        $mock->name = 'DELETED';
+        $mock->dbDelete(['uniq']);
+        $this->assertEquals('DELETED pre-delete post-delete', $mock->name);
+        $this->assertFalse($mock::get($mock->id));
+        App::getService('dispatcher')->removeSubscriber(self::$listener);
     }
 
     public static function tearDownAfterClass() {

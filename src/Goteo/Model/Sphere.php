@@ -53,32 +53,43 @@ class Sphere extends \Goteo\Core\Model {
         }
         return $this->image;
     }
+
     /**
      * Sphere list
      *
      * @param  array  $filters
-     * @return mixed            Array of reliefs
+     * @return mixed            Array of spheres
      */
     public static function getAll($filters = array()) {
 
-        $values = array();
+        $values = [];
+        $filter = [];
 
-        $list = array();
+        $list = [];
 
-        $sqlFilter = "";
-        $and = " WHERE";
+        if($filters['landing_match']) {
+            $filter[] = "sphere.landing_match=1";
+        }
 
-        $sql = "SELECT sphere.*
+        if($filter) {
+            $sql = " WHERE " . implode(' AND ', $filter);
+        }
+
+        $sql = "SELECT *
                 FROM sphere
-                $sqlFilter
-                ORDER BY name ASC
-                ";
+                $sql 
+                ORDER BY name ASC";
+
 
         $query = self::query($sql, $values);
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
-            $list[] = $item;
+        //print(\sqldbg($sql, $values));
+
+        if($query = self::query($sql, $values)) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
-        return $list;
+
+        return [];
+
     }
 
     /**
