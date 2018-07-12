@@ -146,6 +146,10 @@ class Config {
 		self::$loader = $loader;
 	}
 
+    static public function getLoader() {
+        return self::$loader;
+    }
+
 	/**
 	 * Adds a directory to the composer autoload array
 	 * @param string $dir directory where to find classes
@@ -153,6 +157,15 @@ class Config {
 	static public function addAutoloadDir($dir) {
 		self::$loader->add('', $dir);
 	}
+
+    /**
+     * Adds an external autoload.php file (ie from a compoeser vendor plugin)
+     * @param [type] $autoload [description]
+     */
+    static public function addComposerAutoload($autoload) {
+        $loader = require ( $autoload );
+        self::$loader->addClassMap($loader->getClassMap());
+    }
 
 	/**
 	 * sets directory configuration
