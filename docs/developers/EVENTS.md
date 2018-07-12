@@ -83,11 +83,11 @@ They are meant to allow plugins a high flexibility to perform very specific cust
 Using events in plugins
 -----------------------
 
-To use the events in plugins you can use the service container to manipulate the current events attached, or (more usually) just attach new actions for the purpose of the plugin.
+To use the events in plugins you can use the service container to  attach new actions for the purpose of the plugin.
 
 Typically, the `start.php` file must be used to add custom event listeners to any event.
 
-Let's say we want to built a plugin that performs a custom action when a Project is published (for example, publish a twit, send an email, or something similar).
+Let's say we want to built a plugin that performs a custom action when a Project is published (for example, publish a twit, send an email, or something similar). Specifically we will create a twit in this example.
 
 First, we create the new plugin structure in the folder extend:
 
@@ -106,7 +106,9 @@ name: ProjectTwitter
 version: 1.0
 ```
 
-And, in the `config/settings.yml` we add these lines in order to activate the plugin:
+Now we need to create an application in https://apps.twitter.com, grab the consumer key and the consumer secret, generate an access token and a  access token secret and copy everything in our goteo settings:
+
+In the `config/settings.yml` we add these lines in order to activate the plugin:
 
 ```yaml
 plugins:
@@ -122,7 +124,7 @@ plugins:
 
 Great, the plugin is created and already working, however it does nothing yet. 
 
-We want to keep track of projects in order to automatically create a twit every time ara published.
+We want to keep track of projects in order to automatically create a twit every time is published.
 
 To do that, we must create the event listener class:
 
@@ -135,6 +137,7 @@ namespace ProjectTwitter;
 use Goteo\Application\EventListener\AbstractListener;
 
 use Goteo\Application\AppEvents;
+use Goteo\Application\Message;
 
 use Goteo\Application\Event\FilterProjectEvent;
 
@@ -202,7 +205,7 @@ use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\AppEvents;
 use Goteo\Console\ConsoleEvents;
 
-// use Goteo\Application\Event\FilterProjectEvent;
+use Goteo\Application\Event\FilterProjectEvent;
 // we use the Console\EventFilterProjectEvent because is compatible with either the AppEvents::PROJECT_PUBLISH or the ConsoleEvents::PROJECT_PUBLISH. This way we can use the same function for both events
 use Goteo\Console\Event\FilterProjectEvent as ConsoleProjectEvent;;
 
