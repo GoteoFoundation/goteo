@@ -8,6 +8,7 @@
 // to recursively match all subfolders:
 // 'test/spec/**/*.js'
 //
+var _ = require('lodash');
 GOTEO = {
     dir: process.cwd(),
     app: 'public',
@@ -38,8 +39,9 @@ module.exports = function(grunt) {
         GOTEO.phpINI = '../config/php.ini';
     }
 
-    var config = grunt.file.readYAML(GOTEO.configFile);
-
+    var defaults = grunt.file.readYAML(process.cwd() + '/Resources/defaults.yml');
+    var config = _.merge(defaults, grunt.file.readYAML(GOTEO.configFile));
+    console.log(config);
     var localHost = config.url.main;
     var urlParts = localHost.split(':');
     var host = urlParts[urlParts.length - 2];
