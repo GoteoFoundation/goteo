@@ -29,7 +29,6 @@ admin-mailing-status: 'Automatic delivery status'
 admin-mailing-subject: Subject
 admin-mailing-view-and-activate: 'See the post admin to start sending'
 admin-mailing-view-in-newsletter: 'See the post admin'
-admin-project: Project
 admin-main: Main
 admin-legacy: Legacy
 admin-projects: Projects
@@ -51,7 +50,6 @@ admin-impersonate-user: Impersonate %s
 admin-project: Project
 admin-main: Main
 admin-legacy: Legacy
-admin-projects: Projects
 admin-invests: Contributions
 admin-consultants: Consultants
 admin-project-express-discard: 'Express discard'
