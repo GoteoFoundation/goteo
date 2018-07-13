@@ -538,6 +538,11 @@ body.home {
     div.section.matchfunding-module{
         background-color: $background-white;
 
+        .show-action .btn:focus {
+            outline: none;
+            background-color: $color-pink;
+        }
+
         .show-action{
             text-align: center;
             text-transform: uppercase;
@@ -552,7 +557,7 @@ body.home {
 
         .data-container
         {
-            background-color: $background-light-lilac;
+            background-color: $background-dark-lilac;
             color: $color-white;
             padding: 40px 0;
         }

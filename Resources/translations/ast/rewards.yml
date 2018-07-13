@@ -5,7 +5,7 @@ mandatory-individual_reward-field-name: 'Ye obligatorio poner la recompensa'
 rewards-field-individual_reward-description: Descripción
 rewards-field-individual_reward-reward: Recompensa
 rewards-field-individual_reward-type: 'Triba de recompensa'
-rewards-field-individual_reward-units: Unidaes
+rewards-field-individual_reward-units: 'Unidaes'
 rewards-field-social_reward-description: Descripción
 rewards-field-social_reward-license: 'Opciones de llicencia'
 rewards-field-social_reward-url: URL
