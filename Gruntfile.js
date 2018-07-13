@@ -41,7 +41,6 @@ module.exports = function(grunt) {
 
     var defaults = grunt.file.readYAML(process.cwd() + '/Resources/defaults.yml');
     var config = _.merge(defaults, grunt.file.readYAML(GOTEO.configFile));
-    console.log(config);
     var localHost = config.url.main;
     var urlParts = localHost.split(':');
     var host = urlParts[urlParts.length - 2];
