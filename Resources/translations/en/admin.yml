@@ -48,7 +48,6 @@ admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
 admin-project: Project
-admin-main: Main
 admin-legacy: Legacy
 admin-invests: Contributions
 admin-consultants: Consultants
