@@ -51,9 +51,10 @@ $(function(){
   }
 
   function destroySlickProjects() {
-    if ($slider.hasClass('slick-initialized')) {
-      $slider.slick('destroy');
-    }
+    // Try to destroy everything ignoring errors
+    // It may be that slick is already destroyed due the pronto load
+
+    try { $slider.slick('destroy'); } catch(e){}
   }
 
 
