@@ -11,6 +11,9 @@ $pool_image=$story->getPoolImage();
 
 $text_positions = $vars['text_positions'];
 
+$spheres = $vars['spheres'];
+
+
 $items = array();
 $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 // $iId = id del post
@@ -92,9 +95,9 @@ $status = Model\Project::status();
             <input type="submit" name="image-remove" value="Quitar" />
         <?php endif; ?>
     </p>
-
+    <h2>Para landings</h2>
      <p>
-        <label for="story-pool-image">Imagen landing monedero: 360x200</label><br />
+        <label for="story-pool-image">Imagen landing (polaroid): </label><br />
         <input type="file" id="story-pool-image" name="pool_image" />
         <?php if ($pool_image->name) : ?>
             <br />
@@ -103,16 +106,47 @@ $status = Model\Project::status();
             <input type="submit" name="image-pool-remove" value="Quitar" />
         <?php endif; ?>
     </p>
-
-     <p>
-        <label>Landing monedero:</label><br />
+    <p>
+        <label>Landing monedero (Mostrar)</label><br />
         <label><input type="radio" name="pool" id="pool-active" value="1"<?php if ($story->pool) echo ' checked="checked"'; ?>/> S&Iacute;</label>
         &nbsp;&nbsp;&nbsp;
         <label><input type="radio" name="pool" id="pool-inactive" value="0"<?php if (!$story->pool) echo ' checked="checked"'; ?>/> NO</label>
     </p>
+    <p>
+        <label>Landing pitch (Mostrar)</label><br />
+        <label><input type="radio" name="landing_pitch" id="landing-pitch-active" value="1"<?php if ($story->landing_pitch) echo ' checked="checked"'; ?>/> S&Iacute;</label>
+        &nbsp;&nbsp;&nbsp;
+        <label><input type="radio" name="landing_pitch" id="landing-pitch-inactive" value="0"<?php if (!$story->landing_pitch) echo ' checked="checked"'; ?>/> NO</label>
+    </p>
+    <p>
+        <label>Landing match (Mostrar)</label><br />
+        <label><input type="radio" name="landing_match" id="landing-match-active" value="1"<?php if ($story->landing_match) echo ' checked="checked"'; ?>/> S&Iacute;</label>
+        &nbsp;&nbsp;&nbsp;
+        <label><input type="radio" name="landing_match" id="landing-match-inactive" value="0"<?php if (!$story->landing_match) echo ' checked="checked"'; ?>/> NO</label>
+    </p>
+    <p>
+        <label for="story-type">Tipo de protagonista: (Para mostrar en landing)</label><br />
+        <select id="story-type" name="type" style="width:30%">
+                <option value="" >Seleccionar un tipo</option>
+            <?php foreach ($story::getListTypes() as $id => $type) :  ?>
+                <option value="<?= $id ?>"<?php if ($story->type == $id) echo' selected="selected"';?>><?= Text::get($type)  ?></option>
+            <?php endforeach; ?>
+        </select>
+    </p>
+    <p>
+        <label for="story-sphere">Ámbito</label><br />
+        <select required="required" id="story-sphere" name="sphere" style="width:30%">
+            <?php foreach ($spheres as $sphere) :  ?>
+                <option value="<?= $sphere->id ?>"<?php if ($story->sphere == $sphere->id) echo' selected="selected"';?>><?= Text::get($sphere->name)  ?></option>
+            <?php endforeach; ?>
+        </select>
+    </p>
 
     <p>
-        <label>Publicado:</label><br />
+
+
+    <p>
+        <label>Publicado en home:</label><br />
         <label><input type="radio" name="active" id="story-active" value="1"<?php if ($story->active) echo ' checked="checked"'; ?>/> S&Iacute;</label>
         &nbsp;&nbsp;&nbsp;
         <label><input type="radio" name="active" id="story-inactive" value="0"<?php if (!$story->active) echo ' checked="checked"'; ?>/> NO</label>

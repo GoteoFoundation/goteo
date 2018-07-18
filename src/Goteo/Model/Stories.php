@@ -8,6 +8,7 @@ namespace Goteo\Model {
         Goteo\Model\Project,
         Goteo\Model\User,
         Goteo\Model\Invest,
+        Goteo\Model\Sphere,
         Goteo\Model\Image,
         Goteo\Library\Check;
 
@@ -26,7 +27,12 @@ namespace Goteo\Model {
             $pool = false,
             $pool_image,
             $post,
-            $active = false;
+            $active = false,
+            $type,
+            $landing_match,
+            $landing_pitch,
+            $sphere
+            ;
 
         /*
          *  Devuelve datos de una historia exitosa
@@ -52,6 +58,10 @@ namespace Goteo\Model {
                         stories.order as `order`,
                         stories.post as `post`,
                         stories.active as `active`,
+                        stories.type as `type`,
+                        stories.landing_pitch as `landing_pitch`,
+                        stories.landing_match as `landing_match`,
+                        stories.sphere as `sphere`,
 
                         project.id as project_id,
                         project.name as project_name,
@@ -100,7 +110,7 @@ namespace Goteo\Model {
         /*
          * Lista de historias exitosas
          */
-        public static function getAll ($activeonly = false, $pool= false, $node = \GOTEO_NODE) {
+        public static function getAll ($activeonly = false, $pool= false, $filters = [], $node = \GOTEO_NODE) {
 
             // estados
             $status = Project::status();
@@ -110,6 +120,18 @@ namespace Goteo\Model {
             $sqlFilter = ($activeonly) ? " AND stories.active = 1" : '';
 
             $sqlFilter.= ($pool) ? " AND stories.pool = 1" : '';
+
+            if (!empty($filters['landing_match'])) {
+                 $sqlFilter.= " AND stories.landing_match = 1";
+            } 
+
+            if (!empty($filters['landing_pitch'])) {
+                 $sqlFilter.= " AND stories.landing_pitch = 1";
+            }
+
+            if (!empty($filters['type'])) {
+                 $sqlFilter.= " AND type = '".$filters['type']."'";
+            }  
 
             if(self::default_lang(Lang::current()) === Config::get('lang')) {
                 $different_select=" IFNULL(stories_lang.title, stories.title) as title,
@@ -145,6 +167,10 @@ namespace Goteo\Model {
                     stories.order as `order`,
                     stories.post as `post`,
                     stories.active as `active`,
+                    stories.type as `type`,
+                    stories.landing_pitch as `landing_pitch`,
+                    stories.landing_match as `landing_match`,
+                    stories.sphere as `sphere`,
                     open_tag.post as open_tags_post,
 
                     project.id as project_id,
@@ -317,6 +343,10 @@ namespace Goteo\Model {
                 'pool',
                 'text_position',
                 'active',
+                'type',
+                'landing_pitch',
+                'landing_match',
+                'sphere',
                 'title',
                 'description',
                 'review',
@@ -388,6 +418,25 @@ namespace Goteo\Model {
             return ++$order;
 
         }
+
+        /*
+         *  List of types
+         */
+        public static function getListTypes(){
+            $types=[ 'pitcher'      => 'stories-type-pitcher',
+                     'matcher' => 'stories-type-matcher'
+                    ];
+
+            return $types;
+        }
+
+        /**
+         * Return sphere
+        */
+        public function getSphere() {
+            return Sphere::get($this->sphere);
+        }
+
 
 
     }

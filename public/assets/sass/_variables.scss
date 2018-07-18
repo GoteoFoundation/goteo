@@ -2,8 +2,7 @@
 // <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
 // <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet" type="text/css">
 
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic|Open+Sans+Condensed:300);
-
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic|Open+Sans+Condensed:300|Kalam);
 // Bootstrap breakpoints
 $breakpoint-xxs: 385px;
 $breakpoint-xs: 480px;
@@ -13,6 +12,8 @@ $breakpoint-lg: 1200px;
 
 // Goteo main font
 $primary-font: 'Roboto', sans-serif;
+$polaroid-font: 'Kalam', cursive;
+
 $font-size: 15px;
 $col-percentage: 8.33333333%;
 
