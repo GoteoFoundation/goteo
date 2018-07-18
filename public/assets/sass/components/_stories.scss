@@ -5,30 +5,30 @@
 
 // Hide while loading
 
-.slider-stories{
+.slider-stories, .slider-polaroid, .slider-polaroid{
      visibility:hidden;
      opacity:0;
      transition: opacity 1s;
 }
 
-.slider-stories.slick-initialized{
+.slider-stories.slick-initialized, .slider-polaroid.slick-initialized{
     visibility:visible;
     opacity:1;
 }
 
-.slider-stories .item{
+.slider-stories .item, .slider-polaroid .item{
     display:none ;
 }
 
-.slider-stories .item:first-child{
+.slider-stories .item:first-child, .slider-polaroid .item:first-child{
     display:block; visibility:hidden;
 }
 
-.slider-stories.slick-initialized .item{
+.slider-stories.slick-initialized .item, .slider-polaroid.slick-initialized .item{
     display:block;visibility:visible!important;
 }
 
-.slider.slider-stories{
+.slider.slider-stories, .slider.slider-polaroid{
     opacity:1;
     .slick-slide img {
         display: block;
@@ -132,6 +132,67 @@
     .slick-next:before {
         font-size: 25px;
         color:$color-light-grey;
+    }
+}
+
+.slider-polaroid{
+    .polaroid-container{
+        .polaroid
+        {
+            background-color: #FFF;
+            padding: 12px 10px 10px 10px;
+            border: 1px solid #e9e7e7;
+            filter: sepia(20%);
+            box-shadow: 4px 3px 5px -3px #4D4D4D;
+            display: inline-block;
+            margin: 23px 30px 10px 30px;;
+            font-family: $polaroid-font;
+
+            .sphere{
+                border-radius: 50%;
+                width: 75px;
+                height: 75px;
+                background-color: #fff;
+                box-shadow: 1px 3px 10px -3px #4d4d4d;
+                margin-top: 20px;
+                position: absolute;
+                top: -40px;
+                right: -30px;
+                img{
+                    max-width: 57%;
+                    margin: 0 auto;
+                    padding-top: 21%;
+                    //-webkit-filter: brightness(.55) saturate(3) grayscale(100%);
+                    //filter: brightness(.55) saturate(3) grayscale(100%);
+                }
+            }
+            .title{
+                font-size: $font-size*1.7;
+                padding-top:25px;
+                text-align: center;
+            }
+        }
+    }
+    .subtitle{
+        font-size: $font-size*1.7;
+        font-weight: bold;
+        font-family: $polaroid-font;
+        text-align: center;
+    }
+    .slick-dots{
+        right: 0;
+        width: 100%;
+        bottom: -25px !important;
+        li.slick-active button::before{
+            color: $background-dark-lilac !important;
+        }
+
+        li button::before{
+            color: $color-light-grey !important;
+            opacity: 1;
+            font-size: 11px;
+        }
+
     }
 }
 

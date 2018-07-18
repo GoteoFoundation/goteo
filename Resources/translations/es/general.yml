@@ -238,3 +238,5 @@ user-register-success: 'El usuario se ha registrado correctamente. A continuaci�
 validate-project-social_rewards: 'Es obligatorio indicar como mínimo un retorno colectivo '
 validate-project-total-costs: "El coste óptimo no puede superar en más de un 50% al coste mínimo. O subes los costes imprescindibles o bajas los costes adicionales."
 user-promoter: 'El usuario impulsor'
+stories-type-pitcher: 'Pitcher'
+stories-type-matcher: 'Matcher'
