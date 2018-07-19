@@ -96,6 +96,8 @@ class StoriesSubController extends AbstractSubController {
           'top-right' => 'Esquina superior derecha',
         );
 
+        $spheres=Model\Sphere::getAll();
+
         if ($this->isPost()) {
 
             $el_item = $this->getPost('item');
@@ -117,6 +119,10 @@ class StoriesSubController extends AbstractSubController {
                 'pool' => (bool) $this->getPost('pool'),
                 'text_position' => $this->getPost('text_position'),
                 'active' => $this->getPost('active'),
+                'landing_pitch' => $this->getPost('landing_pitch'),
+                'landing_match' => $this->getPost('landing_match'),
+                'type' => $this->getPost('type'),
+                'sphere' => $this->getPost('sphere'),
                 'title' => $this->getPost('title'),
                 'description' => $this->getPost('description'),
                 'review' => $this->getPost('review'),
@@ -195,6 +201,7 @@ class StoriesSubController extends AbstractSubController {
                                 'status' => $status,
                                 'items' => $items,
                                 'text_positions' => $text_positions,
+                                'spheres'       => $spheres,
                                 'autocomplete' => true
                         );
                         break;
@@ -206,6 +213,7 @@ class StoriesSubController extends AbstractSubController {
                                 'story' => $story,
                                 'items' => $items,
                                 'text_positions' => $text_positions,
+                                'spheres'       => $spheres,
                                 'autocomplete' => true
                         );
                         break;
@@ -241,14 +249,20 @@ class StoriesSubController extends AbstractSubController {
                 // elementos disponibles
                 $items = Model\Post::getAutocomplete();
 
+                $story= new Model\Stories([
+                        'order' => $next
+                    ]);
+                
+
                 return array(
                         'folder' => 'stories',
                         'file' => 'edit',
                         'action' => 'add',
-                        'story' => (object) array('order' => $next),
+                        'story' => $story,
                         'status' => $status,
                         'items' => $items,
                         'text_positions' => $text_positions,
+                        'spheres'        => $spheres,
                         'autocomplete' => true
                 );
 
@@ -265,6 +279,7 @@ class StoriesSubController extends AbstractSubController {
                         'story' => $story,
                         'items' => $items,
                         'text_positions' => $text_positions,
+                        'spheres'        => $spheres,
                         'autocomplete' => true
                 );
 

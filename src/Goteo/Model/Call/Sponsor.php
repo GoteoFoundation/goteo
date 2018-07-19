@@ -79,9 +79,26 @@ namespace Goteo\Model\Call {
         /*
          * Lista de patrocinadores
          */
-        public static function getList ($call, $type=null) {
+        public static function getList ($call=null, $type=null, $filters=[]) {
 
             $list = array();
+
+            
+            if($call)
+            {
+                $where='WHERE `call` = :call';
+            }
+            else
+            {
+                // If no call list of differents sponsors with some call published
+                $where='WHERE `call` IN (SELECT `id` FROM `call` WHERE status IN (3, 4, 5))';
+                $group='GROUP BY name';
+            }
+
+            if (!empty($filters['landing_match'])&&!$call) {
+                 $where= "WHERE landing_match = 1";
+                 $order_landing='order_landing_match ASC, ';
+            }
 
             if($type=="main")
                 $type_filter=" AND `main`=1";
@@ -101,9 +118,12 @@ namespace Goteo\Model\Call {
                     main,
                     `order`
                 FROM    call_sponsor
-                WHERE `call` = :call
+                $where
                 $type_filter
-                ORDER BY `order` ASC, name ASC
+                $group
+                ORDER BY 
+                $order_landing
+                `order` ASC, name ASC
                 ", array(':call'=>$call));
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {

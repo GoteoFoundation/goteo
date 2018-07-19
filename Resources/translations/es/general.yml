@@ -87,6 +87,7 @@ regular-channel: Canal
 regular-collaborate: Colabora
 regular-content: Contenido
 regular-continue-question: '¿Continuar?'
+regular-continue: 'Continuar'
 regular-create: 'Crea un proyecto'
 regular-date: Fecha
 regular-date_in: Fecha entrada
@@ -139,7 +140,7 @@ regular-male: Hombre
 regular-others: Otros
 regular-manage_board: 'Panel Gestoría'
 regular-mandatory: 'Campo obligatorio!'
-regular-matchfunding: 'Match funding'
+regular-matchfunding: 'Matchfunding'
 regular-media_legend: Leyenda
 regular-menu: Menú
 regular-menu-personal: Menú personal
@@ -237,3 +238,5 @@ user-register-success: 'El usuario se ha registrado correctamente. A continuaci�
 validate-project-social_rewards: 'Es obligatorio indicar como mínimo un retorno colectivo '
 validate-project-total-costs: "El coste óptimo no puede superar en más de un 50% al coste mínimo. O subes los costes imprescindibles o bajas los costes adicionales."
 user-promoter: 'El usuario impulsor'
+stories-type-pitcher: 'Pitcher'
+stories-type-matcher: 'Matcher'

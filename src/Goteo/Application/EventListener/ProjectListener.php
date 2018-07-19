@@ -15,6 +15,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
 use Goteo\Application\Message;
 use Goteo\Application\Event\FilterProjectEvent;
+use Goteo\Application\Event\ProjectValidationEvent;
 use Goteo\Console\UsersSend;
 use Goteo\Library\Feed;
 use Goteo\Library\Text;
@@ -80,6 +81,18 @@ class ProjectListener extends AbstractListener {
         $project = $event->getProject();
         $user = $event->getUser();
         $this->info("New project created", [$project, $user]);
+
+        // Feed event
+        $log = new Feed();
+        $log->setTarget($user->id, 'user')
+            ->populate('feed-admin-project-new',
+                'admin/projects',
+                new FeedBody(null, null, 'feed-admin-project-created', [
+                    '%USER%'    => Feed::item('user', $user->name, $user->id),
+                    '%PROJECT%' => Feed::item('project', $project->name, $project->id)
+                ]
+            ))
+            ->doAdmin('project');
 
         // This is not an unique event, sending manually
         // Send a mail to the creator
@@ -195,11 +208,16 @@ class ProjectListener extends AbstractListener {
 
     }
 
+    public function onProjectValidation(ProjectValidationEvent $event) {
+        $project = $event->getProject();
+    }
+
 	public static function getSubscribedEvents() {
 		return array(
             AppEvents::PROJECT_CREATED => 'onProjectCreated',
             AppEvents::PROJECT_PUBLISH => ['onProjectPublish', 100], // high priority
             AppEvents::PROJECT_READY   => 'onProjectReady',
+            AppEvents::PROJECT_VALIDATION   => 'onProjectValidation',
 		);
 	}
 }

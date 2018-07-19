@@ -14,10 +14,6 @@ use Goteo\Application\Message;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Config;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Exception\ControllerException;
-use Goteo\Application\Exception\ModelException;
-use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Session;
 use Goteo\Application\View;
@@ -26,6 +22,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Worth;
 use Goteo\Model\Message as SupportMessage;
 use Goteo\Model\Project;
+use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Invest;
 use Goteo\Model\Project\Favourite;
 use Goteo\Model\Project\Conf;
@@ -66,11 +63,6 @@ class ProjectController extends \Goteo\Core\Controller {
 	 */
 	public function createAction(Request $request) {
 
-        // Social commitments
-        $social_commitments=SocialCommitment::getAll();
-
-        $terms = Page::get('howto');
-
         if (!Session::isLogged()) {
             Message::info(Text::get('user-login-required-to_create'));
             return $this->redirect('/user/login?return='.urldecode('/project/create'));
@@ -84,10 +76,12 @@ class ProjectController extends \Goteo\Core\Controller {
                 'name'         => $request->request->get('name'),
                 'subtitle'   => $request->request->get('subtitle'),
                 'social_commitment'   => $social_commitment,
-                'social_description' => $request->request->get('social-description')
+                'social_description' => $request->request->get('social-description'),
+                'location'          => $request->request->get('location'),
+                'project_location'			=> $request->request->get('project_location')
             ];
 
-            $project = Project::createNewProject($data, Session::getUser(), Config::get('current_node'));
+            $project = Project::createNewProject($data);
 
             // categories created depending on the social commitment
         	$categories=SocialCommitment::getCategories($social_commitment);
@@ -98,6 +92,23 @@ class ProjectController extends \Goteo\Core\Controller {
         		$category->id=$item;
         		$category->save();
         	}
+
+        	// Save location
+
+        	$loc = new ProjectLocation(
+        			[
+                    'id'         => $project->id,
+                    'city'         => $request->request->get('city'),
+                    'region'       => $request->request->get('region'),
+                    'country'      => $request->request->get('country'),
+                    'country_code' => $request->request->get('country_code'),
+                    'longitude'    => $request->request->get('longitude'),
+                    'latitude'     => $request->request->get('latitude'),
+                    'method'       => 'manual'
+                ]
+            );
+
+            $loc->save($errors);
 
             // Save publishing day and min required estimation
             $conf = Project\Conf::get($project->id);
@@ -112,10 +123,10 @@ class ProjectController extends \Goteo\Core\Controller {
             return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
         }
 
-        return $this->viewResponse( 'project/create',
-                                    ['social_commitments' => $social_commitments,
-                                     'terms'      => $terms
-                                     ]);
+        return $this->viewResponse( 'project/create', [
+           'social_commitments' => SocialCommitment::getAll(),
+           'terms'      => Page::get('howto')
+        ]);
 
 	}
 

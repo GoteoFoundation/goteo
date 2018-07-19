@@ -15,6 +15,9 @@ use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Library\Cacher;
+use Goteo\Core\Event\CreateModelEvent;
+use Goteo\Core\Event\UpdateModelEvent;
+use Goteo\Core\Event\DeleteModelEvent;
 
 abstract class Model {
 
@@ -154,22 +157,31 @@ abstract class Model {
 	 * @return [type] [description]
 	 */
 	public function dbInsert(array $fields) {
-		$values = $set = $keys = [];
-		foreach ($fields as $field) {
-			if (property_exists($this, $field)) {
-				$set[] = "`$field`";
-				$keys[] = ":$field";
-				$values[":$field"] = $this->transformFieldValue($this->$field);
-			}
-		}
-		if (empty($values)) {
-			throw new \PDOException("No fields specified!", 1);
-		}
 
-		$sql = 'INSERT INTO `' . $this->Table . '` (' . implode(',', $set) . ') VALUES (' . implode(',', $keys) . ')';
-		// echo \sqldbg($sql, $values);
-		$res = self::query($sql, $values);
-		return $res;
+        $fields = App::dispatch(ModelEvents::CREATE, new CreateModelEvent($this, $fields))->getFields();
+
+        $values = $set = $keys = [];
+        foreach ($fields as $field) {
+            if (property_exists($this, $field)) {
+                $set[] = "`$field`";
+                $keys[] = ":$field";
+                $values[":$field"] = $this->transformFieldValue($this->$field);
+            }
+        }
+
+
+        if (empty($values)) {
+            throw new \PDOException("No fields specified!", 1);
+        }
+
+
+        $sql = 'INSERT INTO `' . $this->Table . '` (' . implode(',', $set) . ') VALUES (' . implode(',', $keys) . ')';
+        // echo \sqldbg($sql, $values);
+        $res = self::query($sql, $values);
+
+        App::dispatch(ModelEvents::CREATED, new CreateModelEvent($this, $values));
+
+        return $res;
 	}
 
 	/**
@@ -177,6 +189,11 @@ abstract class Model {
 	 * @return [type] [description]
 	 */
 	public function dbUpdate(array $fields, array $where = ['id']) {
+
+        $event = App::dispatch(ModelEvents::UPDATE, new UpdateModelEvent($this, $fields, $where));
+        $where = $event->getWhere();
+        $fields = $event->getFields();
+
 		$values = $set = [];
 		foreach ($fields as $field) {
 			if (property_exists($this, $field)) {
@@ -200,7 +217,11 @@ abstract class Model {
 
 		$sql = 'UPDATE `' . $this->Table . '` SET ' . implode(',', $set) . ' WHERE ' . implode(' AND ', $clause);
 		// die(\sqldbg($sql, $values));
-		return self::query($sql, $values);
+		$res = self::query($sql, $values);
+
+        App::dispatch(ModelEvents::UPDATED, new UpdateModelEvent($this, $fields, $where));
+
+        return $res;
 	}
 
 	/**
@@ -223,6 +244,8 @@ abstract class Model {
 	 * @return  type bool   true|false
 	 */
 	public function dbDelete(array $where = ['id']) {
+        $where = App::dispatch(ModelEvents::DELETE, new DeleteModelEvent($this, $where))->getWhere();
+
 		$clause = [];
 		foreach ($where as $field) {
 			if (property_exists($this, $field)) {
@@ -239,6 +262,9 @@ abstract class Model {
 		$sql = 'DELETE FROM `' . $this->Table . '` WHERE ' . implode(' AND ', $clause);
         // echo \sqldbg($sql, $values);
 		self::query($sql, $values);
+
+        App::dispatch(ModelEvents::DELETED, new DeleteModelEvent($this, $where));
+
 		return true;
 	}
 
@@ -524,7 +550,7 @@ abstract class Model {
         $fallback_lang = Lang::getFallback($lang);
         $default_lang = ($lang_model && !$model_join_id) ? $lang_model : Config::get('sql_lang');
         $sql_fields = [];
-        // echo "\nSQL_LANG[" . Config::get('sql_lang') ."] LANG_MODE: [$lang_model] FALLBACK: [$fallback_lang]\n";
+        // echo "\nLANG:[$lang] SQL_LANG:[" . Config::get('sql_lang') ."] LANG_MODEL:[$lang_model] FALLBACK:[$fallback_lang]\n";
         $sql_joins = [];
         foreach($fields as $field) {
             if(!$lang_model && !$model_join_id) {

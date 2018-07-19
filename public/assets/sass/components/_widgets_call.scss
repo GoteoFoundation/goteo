@@ -518,6 +518,139 @@
   }
 }
 
+ div.section.matchfunding-module{
+        .title{
+            font-weight: bold;
+        }
+        .subtitle{
+            text-align: center;
+            font-size: $font-size*1.1;
+            font-weight: normal;
+            margin-top: 10px;
+        }
+        .drop-img-container{
+            padding-top: 25px;
+            img.drop-img{
+                width: 35px;
+            }
+        }
+        .filters{
+           margin:40px 0 35px 0;
+           li{
+            font-weight: bold;
+            padding: 5px 15px;
+            cursor: pointer;
+            }
+            .active{
+                background-color: $background-green-owner;
+                border-radius: 5px;
+            }
+        }
+
+        //Loading
+
+        .slider-calls{
+             visibility:hidden;
+             opacity:0;
+             transition: opacity 1s;
+        }
+
+        .slider-calls.slick-initialized{
+            visibility:visible;
+            opacity:1;
+        }
+
+        .slider-calls .item{
+            display:none ;
+        }
+
+        .slider-calls .item:first-child{
+            display:block; visibility:hidden;
+        }
+
+        .slider-calls.slick-initialized .item{
+            display:block;visibility:visible!important;
+        }
+
+        .slider-calls{
+            margin-bottom: 60px;
+            .widget-slide{
+                margin: 0 30px;
+            }
+            .custom-left-arrow{
+                top: 34%;
+                position: absolute;
+                font-size: $font-size*5;
+                left: -3%;
+                color: $background-light-green;
+                cursor: pointer;
+            }
+            .custom-right-arrow{
+                top: 34%;
+                position: absolute;
+                font-size: $font-size*5;
+                right: -3%;
+                color: $background-light-green;
+                cursor: pointer;
+            }
+            .slick-dots{
+                bottom: -40px !important;
+
+                li button::before{
+                    color: $color-light-grey !important;
+                    opacity: 1;
+                    font-size: 11px;
+                }
+                li.slick-active button::before{
+                    color: $background-dark-lilac !important;
+                }
+            }
+        }
+}
+
+.implementing-matchfunding-container{
+    background-color: $background-dark-lilac;
+    color: $color-white;
+    font-weight: bold;
+    padding: 40px 0;
+    .row.details-title{
+        .title{
+            text-align: center;
+            padding-top: 0;
+            margin-top: 0;
+        }
+    }
+    .row.details{
+        padding-top: 20px;
+        .detail-item{
+            border-radius: 50%;
+            width: 75px;
+            height: 75px;
+            background-color: $background-white;
+            box-shadow: 1px 3px 5px -3px #4D4D4D;
+        }
+        .item-1{
+            padding: 11px 8px;
+        }
+        .item-2{
+            padding: 13px 9px 5px 16px;
+        }
+        .item-3{
+            padding: 15px;
+        }
+        .item-4{
+            padding: 15px;
+        }
+        .item-5{
+            padding: 14px 12px 6px 11px;
+        }
+        .item-label{
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+    }
+}
+
 .project-widget-admin-panel {
   padding: 20px;
   .btn-group {
