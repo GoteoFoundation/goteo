@@ -190,7 +190,10 @@ body.matchfunding-landing {
       .calls-summary{
         padding-top: 10px;
         padding-bottom: 25px;
-        background: $color-white;      }
+        td{
+          background-color: $color-white;
+        }
+      }
     }
 
     div.section.stories{
@@ -206,6 +209,7 @@ body.matchfunding-landing {
         font-weight: bold;
         text-align: center;
         padding: 15px 0 25px 0;
+        margin-top:0;
       }
     }
 
@@ -294,8 +298,8 @@ body.matchfunding-landing {
           max-width: 57%;
           margin: 0 auto;
           padding-top: 21%;
-          -webkit-filter: brightness(.55) saturate(3) grayscale(100%);
-          filter: brightness(.55) saturate(3) grayscale(100%);
+          /*-webkit-filter: brightness(.55) saturate(3) grayscale(100%);
+          filter: brightness(.55) saturate(3) grayscale(100%);*/
         }
       }
       .item-label{
