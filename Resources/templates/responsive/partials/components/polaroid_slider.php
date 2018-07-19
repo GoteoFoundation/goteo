@@ -12,6 +12,7 @@
 				?>
 		        <div class="sphere">
 			        <?php if($sphere): ?>
+			        	<?php $sphere_name=$sphere->name; ?>
 			            <img class="center-block" src="<?= $sphere->getImage()->getLink(50, 50, false) ?>">
 			        <?php endif; ?>
 			    </div>
@@ -21,7 +22,7 @@
 		    </div>
 	    </div>
 	    <div class="subtitle">
-	    	<?= $title[1] ?>
+	    	<?= $title[1].' / '.$sphere_name ?>
 	    </div>
 	</div>
 <?php endforeach; ?>
