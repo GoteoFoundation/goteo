@@ -79,7 +79,7 @@ namespace Goteo\Model\Call {
         /*
          * Lista de patrocinadores
          */
-        public static function getList ($call=null, $type=null) {
+        public static function getList ($call=null, $type=null, $filters=[]) {
 
             $list = array();
 
@@ -95,6 +95,10 @@ namespace Goteo\Model\Call {
                 $group='GROUP BY name';
             }
 
+            if (!empty($filters['landing_match'])&&!$call) {
+                 $where= "WHERE landing_match = 1";
+                 $order_landing='order_landing_match ASC, ';
+            }
 
             if($type=="main")
                 $type_filter=" AND `main`=1";
@@ -117,7 +121,9 @@ namespace Goteo\Model\Call {
                 $where
                 $type_filter
                 $group
-                ORDER BY `order` ASC, name ASC
+                ORDER BY 
+                $order_landing
+                `order` ASC, name ASC
                 ", array(':call'=>$call));
 
             foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
