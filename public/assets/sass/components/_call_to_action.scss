@@ -37,6 +37,8 @@
         .call-action{
             padding:0;
             display: flex;
+            margin-left:0;
+            margin-right:0;
         }
         .row .col{
             padding-top:30px;
@@ -89,7 +91,7 @@
 
         &.double{
             .call-action{
-                padding:0 15px;
+                padding:0;
                 display: block;
             }
             .row .col{
