@@ -1,1 +1,6 @@
 ---
+call-tagmark-3: 'Apèl la ouvri'
+call-tagmark-4: 'Konpay aktif!'
+call-tagmark-5: 'Kanpay ki fini'
+call-tagmark-6: 'Apèl ki achive'
+regular-fail_mark: Achive...
