@@ -1,7 +1,7 @@
 <?php
 
 /*
-* Model for tax relief
+* Model for sphere
 */
 
 namespace Goteo\Model;
@@ -17,7 +17,10 @@ class Sphere extends \Goteo\Core\Model {
     public
     $id,
     $name,
-    $image;
+    $image,
+    $landing_match,
+    $order
+    ;
 
 
     public static function getLangFields() {
@@ -49,6 +52,8 @@ class Sphere extends \Goteo\Core\Model {
         $sql="SELECT
                     sphere.id as id,
                     sphere.image as image,
+                    sphere.order as `order`,
+                    sphere.landing_match as landing_match,
                     $different_select
               FROM sphere
               LEFT JOIN sphere_lang
@@ -116,6 +121,8 @@ class Sphere extends \Goteo\Core\Model {
 
         $sql = "SELECT  sphere.id as id,
                         sphere.image as image,
+                        sphere.order as `order`,
+                        sphere.landing_match as landing_match,
                         $different_select
                 FROM sphere
                 LEFT JOIN sphere_lang
@@ -123,11 +130,11 @@ class Sphere extends \Goteo\Core\Model {
                     AND sphere_lang.lang = :lang
                 $eng_join
                 $sql 
-                ORDER BY name ASC";
+                ORDER BY sphere.order ASC, sphere.name ASC";
 
 
         $query = self::query($sql, $values);
-        //print(\sqldbg($sql, $values));
+        //print(\sqldbg($sql, $values)); die();
 
         if($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
@@ -166,7 +173,9 @@ class Sphere extends \Goteo\Core\Model {
         $fields = array(
             // 'id',
             'name',
-            'image'
+            'image',
+            'landing_match',
+            'order'
         );
 
         try {
