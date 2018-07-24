@@ -1,19 +1,26 @@
 <?php
 
 /*
-* Model for tax relief
+* Model for sphere
 */
 
 namespace Goteo\Model;
 
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Lang;
+use Goteo\Application\Config;
+
+
 
 class Sphere extends \Goteo\Core\Model {
 
     public
     $id,
     $name,
-    $image;
+    $image,
+    $landing_match,
+    $order
+    ;
 
 
     public static function getLangFields() {
@@ -27,11 +34,34 @@ class Sphere extends \Goteo\Core\Model {
      * @return  Sphere object
      */
     static public function get($id) {
+
+        $lang = Lang::current();
+
+        if(self::default_lang($lang) === Config::get('lang')) {
+          $different_select=" IFNULL(sphere_lang.name, sphere.name) as name";
+        }
+        else {
+          $different_select=" IFNULL(sphere_lang.name, IFNULL(eng.name,sphere.name)) as name";
+          $eng_join=" LEFT JOIN sphere_lang as eng
+                            ON  eng.id = sphere.id
+                            AND eng.lang = 'en'";
+        }
+
+        $values=['id' => $id, 'lang' => $lang];
+
         $sql="SELECT
-                    sphere.*
+                    sphere.id as id,
+                    sphere.image as image,
+                    sphere.order as `order`,
+                    sphere.landing_match as landing_match,
+                    $different_select
               FROM sphere
-              WHERE sphere.id = ?";
-        $query = static::query($sql, array($id));
+              LEFT JOIN sphere_lang
+                    ON  sphere_lang.id = sphere.id
+                    AND sphere_lang.lang = :lang
+              $eng_join
+              WHERE sphere.id = :id";
+        $query = static::query($sql, $values);
         $item = $query->fetchObject(__CLASS__);
 
         if($item) {
@@ -62,10 +92,14 @@ class Sphere extends \Goteo\Core\Model {
      */
     public static function getAll($filters = array()) {
 
+        $lang = Lang::current();
+
         $values = [];
         $filter = [];
 
         $list = [];
+
+        $values[':lang']=$lang;
 
         if($filters['landing_match']) {
             $filter[] = "sphere.landing_match=1";
@@ -75,14 +109,32 @@ class Sphere extends \Goteo\Core\Model {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
 
-        $sql = "SELECT *
+        if(self::default_lang($lang) === Config::get('lang')) {
+          $different_select=" IFNULL(sphere_lang.name, sphere.name) as name";
+        }
+        else {
+          $different_select=" IFNULL(sphere_lang.name, IFNULL(eng.name,sphere.name)) as name";
+          $eng_join=" LEFT JOIN sphere_lang as eng
+                            ON  eng.id = sphere.id
+                            AND eng.lang = 'en'";
+        }
+
+        $sql = "SELECT  sphere.id as id,
+                        sphere.image as image,
+                        sphere.order as `order`,
+                        sphere.landing_match as landing_match,
+                        $different_select
                 FROM sphere
+                LEFT JOIN sphere_lang
+                    ON  sphere_lang.id = sphere.id
+                    AND sphere_lang.lang = :lang
+                $eng_join
                 $sql 
-                ORDER BY name ASC";
+                ORDER BY sphere.order ASC, sphere.name ASC";
 
 
         $query = self::query($sql, $values);
-        //print(\sqldbg($sql, $values));
+        //print(\sqldbg($sql, $values)); die();
 
         if($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
@@ -121,7 +173,9 @@ class Sphere extends \Goteo\Core\Model {
         $fields = array(
             // 'id',
             'name',
-            'image'
+            'image',
+            'landing_match',
+            'order'
         );
 
         try {

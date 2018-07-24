@@ -208,16 +208,16 @@ class ProjectListener extends AbstractListener {
 
     }
 
-    public function onProjectValidation(ProjectValidationEvent $event) {
-        $project = $event->getProject();
-    }
+    // public function onProjectValidation(ProjectValidationEvent $event) {
+    //     $project = $event->getProject();
+    // }
 
 	public static function getSubscribedEvents() {
 		return array(
             AppEvents::PROJECT_CREATED => 'onProjectCreated',
             AppEvents::PROJECT_PUBLISH => ['onProjectPublish', 100], // high priority
             AppEvents::PROJECT_READY   => 'onProjectReady',
-            AppEvents::PROJECT_VALIDATION   => 'onProjectValidation',
+            // AppEvents::PROJECT_VALIDATION   => 'onProjectValidation',
 		);
 	}
 }

@@ -13,7 +13,9 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
+use Goteo\Application\Message;
 use Goteo\Model\Image;
+use Goteo\Model\Category;
 use Goteo\Model\SocialCommitment;
 
 class CategoriesSubController extends AbstractSubController {
@@ -86,7 +88,6 @@ class CategoriesSubController extends AbstractSubController {
 
     public function process ($action = 'list', $id = null) {
 
-        $model = 'Goteo\Model\Category';
         $url = '/admin/categories';
 
         // Prepare shperes of call
@@ -156,7 +157,7 @@ class CategoriesSubController extends AbstractSubController {
                     $active= $this->getPost('active') ? 1 : 0;
 
                     // instancia
-                    $item = new $model(array(
+                    $item = new Category(array(
                         'id' => $this->getPost('id'),
                         'name' => $this->getPost('name'),
                         'image' => $this->getPost('image'),
@@ -184,7 +185,7 @@ class CategoriesSubController extends AbstractSubController {
                         Message::error(implode('<br />', $errors));
                     }
                 } else {
-                    $item = $model::get($id, Config::get('lang'));
+                    $item = Category::get($id, Config::get('lang'));
                 }
 
                 return array(
@@ -228,13 +229,13 @@ class CategoriesSubController extends AbstractSubController {
 
                 break;
             case 'up':
-                $model::up($id);
+                Category::up($id);
                 break;
             case 'down':
-                $model::down($id);
+                Category::down($id);
                 break;
             case 'remove':
-                if ($model::delete($id)) {
+                if (Category::delete($id)) {
                     return $this->redirect($url);
                 }
                 break;
@@ -243,8 +244,8 @@ class CategoriesSubController extends AbstractSubController {
                 return array(
                         'folder' => 'keywords',
                         'file' => 'list',
-                        'categories' => $model::getList(),
-                        'words' => $model::getKeyWords()
+                        'categories' => Category::getAll(),
+                        'words' => Category::getKeyWords()
                 );
 
                 break;
@@ -256,7 +257,7 @@ class CategoriesSubController extends AbstractSubController {
                 'model' => 'category',
                 'addbutton' => 'Nueva categoría',
                 'otherbutton' => '<a href="/admin/categories/keywords" class="button">Ver Palabras clave</a>',
-                'data' => $model::getAll(),
+                'data' => Category::getAll(),
                 'columns' => array(
                     'edit' => '',
                     'name' => 'Categoría',

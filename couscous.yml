@@ -49,6 +49,9 @@ menu:
                 extend:
                     text: Plugins & extending
                     relativeUrl: docs/developers/extend.html
+                events:
+                    text: Using events
+                    relativeUrl: docs/developers/events.html
                 consoledev:
                     text: Extending console
                     relativeUrl: docs/developers/consoledev.html
