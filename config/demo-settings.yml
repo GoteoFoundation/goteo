@@ -58,6 +58,11 @@ mail:
     fail:         dev@example.com      # dev head
     log:          sitelog@example.com  # Loggin mail
 
+    # Default users where to send project notifications by default
+    # Only used if no consultants are assigned
+    consultants:
+        root: 'Root'
+
 # This will be used for geolocating users, projects, and mail tracking
 geolocation:
     google_maps_key: # Google Maps Key

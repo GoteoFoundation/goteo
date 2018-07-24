@@ -234,7 +234,7 @@ mail:
     # Default users where to send project notifications by default
     # Only used if no consultants are assigned
     consultants:
-        root: 'Root'
+        # root: 'Root'
 
     transport:
         from:          noreply@example.com
