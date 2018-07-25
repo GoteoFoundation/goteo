@@ -59,12 +59,12 @@ class Blog extends \Goteo\Core\Model {
 
             if(!$blog) return false;
 
+            // This heavily @deprecated
+            // Direct Post::getAll on project type blog is removed
+            // because project language is needed
+            $blog->posts = array();
             if ($blog->node == \GOTEO_NODE) {
                 $blog->posts = Blog\Post::getAll();
-            } elseif (!empty($blog->id)) {
-                $blog->posts = Blog\Post::getAll($blog->id);
-            } else {
-                $blog->posts = array();
             }
             return $blog;
     }

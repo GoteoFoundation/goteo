@@ -35,14 +35,14 @@ class BlogController extends \Goteo\Core\Controller {
 
     public function indexAction ($section='', $tag='', Request $request) {
 
-        $limit=12;
-        $slider_posts=Post::getList(['section' => $section, 'tag' => $tag], true, 0, 3);
-        $init= $request->query->get('pag') ? $request->query->get('pag')*$limit : 0;
+        $limit = 12;
+        $slider_posts = Post::getList(['section' => $section, 'tag' => $tag], true, 0, 3);
+        $init = $request->query->get('pag') ? $request->query->get('pag')*$limit : 0;
 
-        $list_posts=Post::getList(['section' => $section, 'tag' => $tag], true, $init, $limit);
-        $total=Post::getList(['section' => $section, 'tag' => $tag], true, 0, 0, true);
-        $blog_sections=Post::getListSections();
-        $tag=Tag::get($tag);
+        $list_posts = Post::getList(['section' => $section, 'tag' => $tag], true, $init, $limit);
+        $total = Post::getList(['section' => $section, 'tag' => $tag], true, 0, 0, true);
+        $blog_sections = Post::getListSections();
+        $tag = Tag::get($tag);
 
 
         return $this->viewResponse('blog/list', [
