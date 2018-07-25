@@ -195,14 +195,6 @@ class TranslatesSubController extends AbstractSubController {
                     $sql = "UPDATE project SET translate = 1{$set} WHERE id = :id";
                     if (Model\Project::query($sql, $values)) {
 
-                        // si no existe ya registro project_lang para ese idioma
-                        if (!empty($new_lang)) {
-                            static::autoTranslate($id, $new_lang, $errors);
-                            if (!empty($errors)) {
-                                Message::error(implode('<br />', $errors));
-                            }
-                        }
-
                         if ($action == 'add') {
                             Message::info('El proyecto '.$project->name.' se ha habilitado para traducir');
 
@@ -321,83 +313,6 @@ class TranslatesSubController extends AbstractSubController {
                 'translators' => $translators
         );
 
-    }
-
-    /**
-     *
-     *  Este metodo graba registros de traducción con los datos actuales del proyecto para el idioma seleccionado
-     * usamos  saveLang para cada entidad
-     *
-     * @param $id  -  Id del proyecto
-     * @param $lang
-     * @param array $errors
-     */
-    public static function autoTranslate($id, $lang, &$errors = array()) {
-
-        // cogemos los datos del proyecto
-        $project = Model\Project::get($id, null);
-
-        // primero verificamos que no tenga traducido ya ese idioma
-        if (Model\Project::isTranslated($id, $lang)) return null;
-
-
-        // datos del proyecto
-        $project->lang_lang = $lang;
-        $project->description_lang = $project->description;
-        $project->motivation_lang = $project->motivation;
-        $project->video_lang = $project->video;
-        $project->about_lang = $project->about;
-        $project->goal_lang = $project->goal;
-        $project->related_lang = $project->related;
-        $project->reward_lang = $project->reward;
-        $project->keywords_lang = $project->keywords;
-        $project->media_lang = $project->media;
-        $project->subtitle_lang = $project->subtitle;
-        $project->saveLang($errors);
-
-        // costes (cost)
-        foreach ($project->costs as $key => $cost) {
-            $cost->project = $project->id;
-            $cost->lang = $lang;
-            $cost->cost_lang = $cost->cost;
-            $cost->description_lang = $cost->description;
-            $cost->saveLang($errors);
-        }
-
-        // recompensas (reward)
-        foreach ($project->social_rewards as $k => $reward) {
-            $reward->project = $project->id;
-            $reward->lang = $lang;
-            $reward->reward_lang = $reward->reward;
-            $reward->description_lang = $reward->description;
-            $reward->other_lang = $reward->other;
-            $reward->saveLang($errors);
-        }
-        foreach ($project->individual_rewards as $k => $reward) {
-            $reward->project = $project->id;
-            $reward->lang = $lang;
-            $reward->reward_lang = $reward->reward;
-            $reward->description_lang = $reward->description;
-            $reward->other_lang = $reward->other;
-            $reward->saveLang($errors);
-        }
-
-        // colaboraciones (support)
-        foreach ($project->supports as $key => $support) {
-            $support->project = $project->id;
-            $support->lang = $lang;
-            $support->support_lang = $support->support;
-            $support->description_lang = $support->description;
-            $support->saveLang($errors);
-
-            // mensajes (mesajes) asociados a las colaboraciones
-            $msg = Model\Message::get($support->thread);
-            $msg->message_lang = "{$support->support_lang}: {$support->description_lang}";
-            $msg->lang = $lang;
-            $msg->saveLang($errors);
-        }
-
-        return (empty($errors));
     }
 
 }

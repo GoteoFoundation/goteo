@@ -181,14 +181,9 @@ class SettingsDashboardController extends DashboardController {
                 }
 
                 $data = $form->getData();
-                $user->lang = $lang;
-                // print_r($data);die($form->getClickedButton()->getName());
-                $user->name_lang = $data['name'];
-                $user->about_lang = $data['about'];
-                // $user->keywords_lang = $data['keywords'];
-                $user->keywords_lang = $user->keywords; // Do not translate keywords for the moment
+                $data['keywords'] = $user->keywords; // Do not translate keywords for the moment
                 // $user->contribution_lang = $data['contribution'];
-                if($user->saveLang($errors)) {
+                if($user->setLang($lang, $data, $errors)) {
                     Message::info(Text::get('dashboard-translate-profile-ok', $languages[$lang]));
                     return $this->redirect('/dashboard/settings/profile');
                 } else {

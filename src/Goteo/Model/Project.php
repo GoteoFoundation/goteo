@@ -1849,44 +1849,6 @@ class Project extends \Goteo\Core\Model {
     }
 
     /*
-     * @return: boolean
-     */
-    public function saveLang (&$errors = array()) {
-
-        try {
-            $fields = ['id'=>'id', 'lang'=>'lang_lang'];
-            foreach(self::getLangFields() as $key) {
-                $fields[$key] = $key . '_lang';
-            }
-
-            $set = '';
-            $values = array();
-
-            foreach ($fields as $field=>$ffield) {
-                if ($set != '') $set .= ', ';
-                $set .= "$field = :$field";
-                if (empty($this->$ffield)) {
-                    $this->$ffield = null;
-                }
-                $values[":$field"] = $this->$ffield;
-            }
-
-            $sql = "REPLACE INTO project_lang SET " . $set;
-            if (self::query($sql, $values)) {
-                return true;
-            } else {
-                $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
-                return false;
-            }
-        } catch(\PDOException $e) {
-            $errors[] = 'Error sql al grabar el proyecto.' . $e->getMessage();
-            //Text::get('save-project-fail');
-            return false;
-        }
-
-    }
-
-    /*
      * comprueba errores de datos y actualiza la puntuación
      *
      * @param steps array : pasos del formulario

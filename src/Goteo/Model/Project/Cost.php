@@ -126,33 +126,6 @@ class Cost extends \Goteo\Core\Model {
         }
 	}
 
-	public function saveLang (&$errors = array()) {
-
-        $fields = ['id'=>'id', 'project' => 'project', 'lang'=>'lang'];
-        foreach(self::getLangFields() as $key) {
-            $fields[$key] = $key . '_lang';
-        }
-
-		$set = '';
-		$values = array();
-
-		foreach ($fields as $field=>$ffield) {
-			if ($set != '') $set .= ", ";
-			$set .= "`$field` = :$field ";
-			$values[":$field"] = $this->$ffield;
-		}
-
-		try {
-			$sql = "REPLACE INTO cost_lang SET " . $set;
-			self::query($sql, $values);
-
-			return true;
-		} catch(\PDOException $e) {
-            $errors[] = "El coste {$this->cost} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
-            return false;
-		}
-	}
-
 	/**
 	 * Quitar un coste de un proyecto
 	 *
