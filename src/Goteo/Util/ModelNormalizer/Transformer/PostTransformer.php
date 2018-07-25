@@ -9,11 +9,16 @@
  */
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
-interface TransformerInterface {
-    public function getKeys();
-    public function getModelName();
-    public function getLabel($key);
-    public function getValue($key);
-    public function getName();
-    public function getLink($type = 'public');
+use Goteo\Core\Model;
+
+/**
+ * Transform a Model
+ */
+class PostTransformer extends AbstractTransformer {
+
+    protected $keys = ['id', 'image', 'title', 'subtitle'];
+
+    public function getLangs() {
+        return $this->model->getLangsAvailable();
+    }
 }

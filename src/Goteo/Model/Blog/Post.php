@@ -379,7 +379,7 @@ class Post extends \Goteo\Core\Model {
 
         // solo las de la portada
         if ($filters['show'] == 'home') {
-            if ($filters['node'] == \GOTEO_NODE) {
+            if ($filters['node'] == Config::get('node')) {
                 $sqlWhere .= " AND post.home = 1
                 ";
             } else {
@@ -390,7 +390,7 @@ class Post extends \Goteo\Core\Model {
         }
 
         if ($filters['show'] == 'footer') {
-            if ($filters['node'] == \GOTEO_NODE) {
+            if ($filters['node'] == Config::get('node')) {
                 $sqlWhere .= " AND post.footer = 1
                 ";
             }
@@ -398,7 +398,6 @@ class Post extends \Goteo\Core\Model {
 
         if($count) {
             // Return count
-            unset($values[':lang']);
             $sql = "SELECT COUNT(post.id)
                 FROM post
                 INNER JOIN blog ON  blog.id = post.blog

@@ -10,15 +10,20 @@
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
 use Goteo\Core\Model;
+use Goteo\Model\Image;
 use Goteo\Library\Text;
 
 abstract class AbstractTransformer extends \ArrayObject implements TransformerInterface {
     protected $model;
+    protected $keys = ['id', 'name'];
 
-    public function __construct(Model $model) {
+    public function __construct(Model $model, array $keys = null) {
         $this->model = $model;
+        if($keys) {
+            $this->setKeys($keys);
+        }
         // Default iterable
-        foreach($this->getDefaultKeys() as $key) {
+        foreach($this->getKeys() as $key) {
             $func = 'get' . ucfirst($key);
             $this->offsetSet($key, $this->$func());
         }
@@ -29,8 +34,13 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
         return basename(str_replace('\\', '/', strtolower($class)));
     }
 
-    public function getDefaultKeys() {
-        return ['id', 'name'];
+    public function setKeys(array $keys) {
+        $this->keys = $keys;
+        return $this;
+    }
+
+    public function getKeys() {
+        return $this->keys;
     }
 
     public function getLabel($key) {
@@ -55,4 +65,19 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
     public function getLink($type = 'public') {
         return '';
     }
+
+    /** Optional methods */
+
+    public function getImage() {
+        return Image::get($this->model->image)->getLink(64, 64, true);
+    }
+
+    public function getTitle() {
+        return $this->model->title;
+    }
+
+    public function getSubTitle() {
+        return $this->model->subtitle;
+    }
+
 }

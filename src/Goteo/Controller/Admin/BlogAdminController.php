@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Application\Session;
+use Goteo\Application\Config;
 use Goteo\Application\Message;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
@@ -47,17 +48,17 @@ class BlogAdminController extends AbstractAdminController {
         $filters = ['q' => $request->query->get('q')];
         $limit = 25;
         $page = $request->query->get('pag') ?: 0;
-        $users = BlogPost::getList($filters, false, $page * $limit, $limit);
+        $users = BlogPost::getList($filters, false, $page * $limit, $limit, false, Config::get('lang'));
         $total = BlogPost::getList($filters, false, 0, 0, true);
 
-        return $this->viewResponse('admin/users/list', [
+        return $this->viewResponse('admin/blog/list', [
             'list' => $users,
-            'link_prefix' => '/users/manage/',
+            'link_prefix' => '/blog/edit/',
             'total' => $total,
             'limit' => $limit,
             'filter' => [
-                '_action' => '/users',
-                'q' => Text::get('admin-users-global-search')
+                '_action' => '/blog',
+                'q' => Text::get('admin-blog-global-search')
             ]
         ]);
     }

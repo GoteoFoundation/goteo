@@ -44,6 +44,9 @@ admin-text-type-md: Markdown
 admin-text-type-plain: 'Plaintext'
 admin-user: User
 admin-users: Users
+admin-users-add: Create new user
+admin-blog: General blog
+admin-blog-add: Create new post
 admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
@@ -86,6 +89,7 @@ admin-view-user-mailing: 'All mailing'
 admin-role-change-forbidden: 'You don''t have permissions to manage the role %ROLE% in this user'
 
 admin-users-global-search: 'Id, name, email or project'
+admin-blog-global-search: 'Id, title, subtitle or text'
 admin-title-id: Id
 admin-title-name: Name
 admin-title-fullname: Name
@@ -97,6 +101,10 @@ admin-title-avatar: Avatar
 admin-title-roles: Roles
 admin-title-amount: Invested
 admin-title-info: Info
+admin-title-image: Image
+admin-title-title: Title
+admin-title-subtitle: Subtitle
+admin-title-langs: Translations
 
 admin-all-project-referers: 'Origin of visits to project pages'
 admin-all-invests-referers: 'Origin of visits in successful contributions to projects'
