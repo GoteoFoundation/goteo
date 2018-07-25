@@ -839,48 +839,6 @@ class Call extends \Goteo\Core\Model {
         return $this->maxDrop = Call\Project::getMaxdrop($project, $amount);
     }
 
-    public function saveLang(&$errors = array()) {
-
-        try {
-            $fields = array(
-                'id' => 'id',
-                'lang' => 'lang_lang',
-                'name' => 'name_lang',
-                'subtitle' => 'subtitle_lang',
-                'description_summary' => 'description_summary_lang',
-                'description_nav' => 'description_nav_lang',
-                'description' => 'description_lang',
-                'whom' => 'whom_lang',
-                'apply' => 'apply_lang',
-                'legal' => 'legal_lang',
-                'resources' => 'resources_lang',
-                'dossier' => 'dossier_lang',
-                'tweet' => 'tweet_lang'
-            );
-
-            $set = '';
-            $values = array();
-
-            foreach ($fields as $field => $ffield) {
-                if ($set != '')
-                    $set .= ', ';
-                $set .= "$field = :$field";
-                $values[":$field"] = $this->$ffield;
-            }
-
-            $sql = "REPLACE INTO call_lang SET " . $set;
-            if (self::query($sql, $values)) {
-                return true;
-            } else {
-                $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
-                return false;
-            }
-        } catch (\PDOException $e) {
-            $errors[] = 'Error sql al grabar la traduccion de la convocatoria.' . $e->getMessage();
-            return false;
-        }
-    }
-
     /*
      * Listo para revision
      */
