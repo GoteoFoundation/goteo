@@ -174,6 +174,7 @@ class Config {
 
 		//Admin subcontrollers added manually for legacy compatibility
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersAdminController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
 
@@ -182,7 +183,7 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodesSubController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TransnodesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BannersSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogSubController');
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommonsSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CriteriaSubController');

@@ -277,10 +277,6 @@ class ProjectController extends \Goteo\Core\Controller {
 
                 // sus entradas de novedades
                 $blog = Blog::get($project->id);
-                // si está en modo preview, ponemos  todas las entradas, incluso las no publicadas
-                if (isset($_GET['preview']) && $_GET['preview'] == $user->id) {
-                    $blog->posts = BlogPost::getAll($blog->id, null, false, $project->lang);
-                }
 
                 // Get milestones, included posts
 

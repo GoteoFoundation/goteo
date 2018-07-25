@@ -583,11 +583,15 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 }
 
                 $data = $form->getData();
-                // var_dump($data);die;
-                $post->lang = $lang;
-                $post->title_lang = $data['title'];
-                $post->text_lang = $data['text'];
-                if($post->saveLang($errors)) {
+                $data['blog'] = $post->blog;
+                $errors = [];
+
+                // Remove html tags if has no permission
+                if(!Session::getUser()->hasPerm('full-html-edit')) {
+                    $data['text'] = Text::tags_filter($data['text']);
+                }
+
+                if($post->setLang($lang, $data, $errors)) {
                     Message::info(Text::get('dashboard-project-updates-translate-ok', [
                         '%TITLE%' => '<strong>#' . $post->id .'</strong>',
                         '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
