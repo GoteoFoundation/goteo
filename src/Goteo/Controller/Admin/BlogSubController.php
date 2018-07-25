@@ -17,6 +17,11 @@ use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Model;
 
+/**
+ *
+ * @deprecated admin module!!!!
+ *
+ */
 class BlogSubController extends AbstractSubController {
 
     static protected $labels = array (
