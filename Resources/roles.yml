@@ -22,6 +22,7 @@ translator:
     extends: user # inherits permissions from role "user"
     perms:
         - translate-language # translate assigned language in user_translang table
+        - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 20
 
 caller:
@@ -41,6 +42,7 @@ manager:
     perms:
         - view-any-project # View any editing project
         - edit-published-projects # Edit any published project
+        - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 50
 
 consultant:
@@ -53,6 +55,7 @@ consultant:
         - impersonate-owners # Impersonate projects owners assigned as a consultant
         - assign-checker # Assignate any other user for review projects
         - admin-module-users # Can access to module UserAdminController
+        - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 60
 
 admin:
