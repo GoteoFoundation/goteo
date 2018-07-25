@@ -45,7 +45,7 @@ class BlogAdminController extends AbstractAdminController {
 
 
     public function listAction(Request $request) {
-        $filters = ['q' => $request->query->get('q')];
+        $filters = ['superglobal' => $request->query->get('q')];
         $limit = 25;
         $page = $request->query->get('pag') ?: 0;
         $users = BlogPost::getList($filters, false, $page * $limit, $limit, false, Config::get('lang'));

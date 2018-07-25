@@ -4,7 +4,7 @@ $this->layout('admin/users/layout');
 
 $this->section('admin-search-box-addons');
 ?>
-<a class="btn btn-cyan pull-right" href="/admin/users/add"><i class="fa fa-plus"></i> <?= $this->text('admin-users-add') ?></a>
+<a class="btn btn-cyan" href="/admin/users/add"><i class="fa fa-plus"></i> <?= $this->text('admin-users-add') ?></a>
 
 <?php $this->replace() ?>
 
