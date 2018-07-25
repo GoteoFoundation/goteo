@@ -54,6 +54,19 @@ class Post extends \Goteo\Core\Model {
         return strip_tags($t, '<br><a><strong><i><b><ul><li><ol><em><blockquote><p><img><code><pre><h1><h2><h3><h4><h5><h6><small>');
     }
 
+    // fallbacks to getbyid
+    public static function getBySlug($slug, $lang = null, $model_lang = null) {
+        $post = self::get((string)$slug, $lang, $model_lang);
+        if(!$post) {
+            $post = self::get((int)$slug, $lang, $model_lang);
+        }
+        return $post;
+    }
+
+    public static function getById($id, $lang = null, $model_lang = null) {
+        return self::get((int)$id, $lang, $model_lang);
+    }
+
     /*
      *  Devuelve datos de una entrada
      */
@@ -102,17 +115,23 @@ class Post extends \Goteo\Core\Model {
             LEFT JOIN node
                     ON node.id = blog.owner
                     AND blog.type = 'node'
-            WHERE post.id = :id
             ";
 
-        $values = array(':id' => $id);
+        if(is_string($id)) {
+            $sql .= "WHERE post.slug = :slug;";
+            $values = [':slug' => $slug];
+        } else {
+            $sql .= "WHERE post.id = :id;";
+            $values = [':id' => $id];
+        }
 
         // die("[$lang]".\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
-        $post = $query->fetchObject('\Goteo\Model\Blog\Post');
+        $post = $query->fetchObject(__CLASS__);
 
-        if(!$post instanceof \Goteo\Model\Blog\Post) {
+        // Try by slug in the event that the slug is a number
+        if(!$post instanceof Post) {
             return false;
         }
 
@@ -334,7 +353,7 @@ class Post extends \Goteo\Core\Model {
         }
 
         if (!empty($filters['superglobal'])) {
-            $sqlWhere .= " AND (post.id LIKE :qid OR post.title LIKE :superglobal OR post.subtitle LIKE :superglobal OR post.text LIKE :superglobal)";
+            $sqlWhere .= " AND (post.id LIKE :qid OR post.slug LIKE OR post.title LIKE :superglobal OR post.subtitle LIKE :superglobal OR post.text LIKE :superglobal)";
             $values[':qid'] = $filters['superglobal'];
             $values[':superglobal'] = '%' . $filters['superglobal'] . '%';
         }

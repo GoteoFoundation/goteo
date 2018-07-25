@@ -383,7 +383,7 @@ abstract class Model {
 	 * @param string $value
 	 * @return string $id
 	 */
-	public static function idealiza($value, $punto = false, $enye = false) {
+	public static function idealiza($value, $punto = false, $enye = false, $max = 50) {
 		$id = trim($value);
 		// Acentos
 		$table = array(
@@ -417,9 +417,14 @@ abstract class Model {
 		if (!$enye) {
             $id = preg_replace('/[^\x20-\x7e]*/', '', $id);
         }
-		$id = substr($id, 0, 50);
+        // remove duplicates
+        if(strpos($id,'--')) {
+            $id = preg_replace('/\-+/', '-', $id);
+        }
 
-		$id = trim($id, '-');
+        $id = trim($id, '-');
+
+		$id = substr($id, 0, $max);
 
 		return $id;
 	}
