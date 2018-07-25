@@ -22,6 +22,10 @@ remove-project: # remove own project, currently not used as a real perm (implici
     model: null
     relational: null
 
+full-html-edit: # Allows if the user is allowed to add dangerous tags (iframe,...) in posts
+    model: null
+    relational: null
+
 recommend-projects: # can have a personal list of recommended projects
     model: null
     relational: null
