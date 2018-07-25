@@ -327,13 +327,17 @@ class Post extends \Goteo\Core\Model {
             $sqlWhere = " WHERE blog.type = 'node'
             ";
         }
-
         if (!empty($filters['blog'])) {
             $sqlWhere = " WHERE post.blog = :blog
             ";
             $values[':blog'] = $filters['blog'];
         }
 
+        if (!empty($filters['superglobal'])) {
+            $sqlWhere .= " AND (post.id LIKE :qid OR post.title LIKE :superglobal OR post.subtitle LIKE :superglobal OR post.text LIKE :superglobal)";
+            $values[':qid'] = $filters['superglobal'];
+            $values[':superglobal'] = '%' . $filters['superglobal'] . '%';
+        }
         if (!empty($filters['tag'])) {
             $sqlWhere .= " AND post.id IN (SELECT post FROM post_tag WHERE tag = :tag)
             ";
