@@ -2,16 +2,17 @@
 <?php $this->section('main-content') ?>
 
 <?php
-    $num=0;
-    $milestones = $this->milestones;
-    if(!is_array($milestones)) $milestones = array();
-    $total=count($milestones);
+
+$num=0;
+$milestones = $this->milestones;
+if(!is_array($milestones)) $milestones = array();
+$total=count($milestones);
+
 foreach($milestones as $update):
     $num++;
-    $identical_date=0;
+    $identical_date = 0;
 
-    if($current_date!=$update->date)
-    {
+    if($current_date != $update->date) {
         $date=new Datetime($update->date);
         $month=strtolower(strftime("%B",$date->getTimestamp()));
         $current_date=$update->date;
