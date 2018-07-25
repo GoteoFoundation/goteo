@@ -102,10 +102,17 @@ class ProjectDashboardController extends DashboardController {
             ['text' => '<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), 'link' => $prefix . '/materials', 'id' => 'materials']
         ];
 
+
         Session::addToSidebarMenu('<i class="icon icon-2x icon-settings"></i> ' . Text::get('footer-header-resources'), $submenu, 'resources', null, 'sidebar');
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get($project->isApproved() ? 'dashboard-menu-projects-preview' : 'regular-preview' ), '/project/' . $project->id, 'preview');
 
+        if($project->isFunded()) {
+
+            Session::addToSidebarMenu('<i class="fa fa-2x fa fa-id-badge"></i> ' . Text::get('dashboard-menu-projects-story'), $prefix . '/story', 'story');
+
+        }
+        
         if($project->inEdition() && $validation->global == 100) {
 
             Session::addToSidebarMenu('<i class="fa fa-2x fa-paper-plane"></i> ' . Text::get('project-send-review'), '/dashboard/project/' . $project->id . '/apply', 'apply', null, 'flat', 'btn btn-fashion apply-project');
@@ -1052,5 +1059,44 @@ class ProjectDashboardController extends DashboardController {
             ]);
 
     }
+
+    /**
+     * Project story
+     */
+    public function storyAction($pid, Request $request) {
+        $project = $this->validateProject($pid, 'story');
+        if($project instanceOf Response) return $project;
+
+        $defaults = (array)$project;
+
+        // Create the form
+        $processor = $this->getModelForm('ProjectStory', $project, $defaults, [], $request);
+        // For everyone
+        $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
+        // Just for the owner
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+
+        if(!$processor->getReadonly()) {
+            $processor->getBuilder()->add('submit', 'submit', [
+                'label' => 'regular-submit'
+            ]);
+        }
+        $form = $processor->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $request->isMethod('post')) {
+            try {
+                $processor->save($form, true);
+                Message::info(Text::get('dashboard-project-saved'));
+                return $this->redirect($this->getEditRedirect('overview', $request));
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+        return $this->viewResponse('dashboard/project/story', [
+            'form' => $form->createView()
+        ]);
+    }
+
 
 }
