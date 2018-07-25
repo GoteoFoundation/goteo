@@ -8,7 +8,7 @@ if($list):
   <div class="table-responsive-vertical shadow-z-1">
   <table class="material-table table-hover model-<?= $first->getModelName() ?>">
     <thead><tr>
-    <?php foreach($first->getDefaultKeys() as $key):?>
+    <?php foreach($first->getKeys() as $key):?>
         <th><?= $first->getLabel($key) ?></th>
     <?php endforeach ?>
     </tr></thead>

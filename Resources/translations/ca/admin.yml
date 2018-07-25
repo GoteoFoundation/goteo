@@ -61,6 +61,9 @@ admin-sponsors: Serveis
 admin-status: Estat
 admin-user: Usuari
 admin-users: Usuaris
+admin-users-add: Crea un nou usuari
+admin-blog: Blog general
+admin-blog-add: Crea un nou post
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
 admin-project-express-discard: 'Rebuig express'
@@ -101,6 +104,7 @@ admin-view-user-mailing: 'Tots els enviaments'
 admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aquest usuari'
 
 admin-users-global-search: 'Id, nom, email o projecte'
+admin-blog-global-search: 'Id, títol, subtitol o text'
 admin-title-id: Id
 admin-title-name: Nom
 admin-title-fullname: Nom
@@ -112,7 +116,10 @@ admin-title-avatar: Avatar
 admin-title-roles: Rols
 admin-title-amount: Invertit
 admin-title-info: Info
-
+admin-title-image: Imatge
+admin-title-title: Títol
+admin-title-subtitle: Subtitol
+admin-title-langs: Traduccions
 
 admin-all-project-referers: 'Origen de visites als projectes'
 admin-all-invests-referers: 'Origen de visites a les aportacions a projectes'

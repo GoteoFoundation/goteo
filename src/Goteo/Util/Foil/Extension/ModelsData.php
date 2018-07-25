@@ -65,14 +65,14 @@ class ModelsData implements ExtensionInterface
      * @param  [type] $list [description]
      * @return [type]       [description]
      */
-    public function model_list_entries($list) {
+    public function model_list_entries($list, $keys = null) {
         $array = [];
         if(!is_array($list)) return $array;
 
         foreach($list as $key => $ob) {
             $item = [];
             if($ob instanceOf CoreModel) {
-                $normalizer = new ModelNormalizer($ob);
+                $normalizer = new ModelNormalizer($ob, $keys);
                 $array[] = $normalizer->get();
             }
         }

@@ -18,9 +18,11 @@ use Goteo\Util\ModelNormalizer\Transformer;
  */
 class ModelNormalizer {
     private $model;
+    private $keys;
 
-    public function __construct(CoreModel $model) {
+    public function __construct(CoreModel $model,array $keys = null) {
         $this->model = $model;
+        $this->keys = $keys;
     }
 
     /**
@@ -29,8 +31,11 @@ class ModelNormalizer {
      */
     public function get() {
         if($this->model instanceOf Model\User) {
-            return new Transformer\UserTransformer($this->model);
+            return new Transformer\UserTransformer($this->model, $this->keys);
         }
-        else return new Transformer\GenericTransformer($this->model);
+        elseif($this->model instanceOf Model\Blog\Post) {
+            return new Transformer\PostTransformer($this->model, $this->keys);
+        }
+        else return new Transformer\GenericTransformer($this->model, $this->keys);
     }
 }

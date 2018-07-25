@@ -90,6 +90,8 @@ admin-user-no-projects: 'No ha creado ningún proyecto todavía'
 admin-user-no-invests: 'No ha hecho ninguna donación todavía'
 admin-users: Usuarios
 admin-users-add: Crear nuevo usuario
+admin-blog: Blog general
+admin-blog-add: Crear nuevo post
 admin-calls: Convocatorias
 admin-matchers: Matchers
 admin-channels: Canales
@@ -138,6 +140,7 @@ admin-view-user-mailing: 'Todos los envíos'
 admin-role-change-forbidden: 'No tienes permiso para gestionar el rol %ROLE% en este usuario'
 
 admin-users-global-search: 'Id, nombre, email o proyecto'
+admin-blog-global-search: 'Id, título, subtítulo o texto'
 admin-title-id: Id
 admin-title-name: Nombre
 admin-title-about: Info
@@ -149,6 +152,10 @@ admin-title-avatar: Avatar
 admin-title-roles: Roles
 admin-title-amount: Invertido
 admin-title-info: Info
+admin-title-image: Imagen
+admin-title-title: Título
+admin-title-subtitle: Subtítulo
+admin-title-langs: Traducciones
 
 admin-all-project-referers: 'Origen de visitas en los proyectos'
 admin-all-invests-referers: 'Origen de visitas en los aportes a proyectos'
