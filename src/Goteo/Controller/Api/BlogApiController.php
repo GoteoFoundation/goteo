@@ -48,8 +48,9 @@ class BlogApiController extends AbstractApiController {
     public function tagsAction(Request $request) {
 
         $tags = PostTag::getAll();
+        // uksort($tags, function() { return rand() > rand(); });
         $keywords = array_map(function($k, $v) {
-            return ['tag' => $v, 'key' => $k];
+            return ['tag' => $v, 'id' => $k];
         }, array_keys($tags), $tags);
 
         return $this->jsonResponse($keywords);
