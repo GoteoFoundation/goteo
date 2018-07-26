@@ -30,21 +30,20 @@ class Tag extends \Goteo\Core\Model {
      *  Devuelve datos de una comentario
      */
     public static function get ($id, $lang = null) {
+        if(!$lang) $lang = Lang::current();
+        //Obtenemos el idioma de soporte
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
 
-            //Obtenemos el idioma de soporte
-            $lang=self::default_lang_by_id($id, 'tag_lang', $lang);
-            $query = static::query("
-                SELECT
-                    tag.id as id,
-                    IFNULL(tag_lang.name, tag.name) as name
-                FROM    tag
-                LEFT JOIN tag_lang
-                    ON  tag_lang.id = tag.id
-                    AND tag_lang.lang = :lang
-                WHERE tag.id = :id
-                ", array(':id' => $id, ':lang'=>$lang));
+        $query = static::query("
+            SELECT
+                tag.id as id,
+                $fields
+            FROM    tag
+            $joins
+            WHERE tag.id = :id
+            ", array(':id' => $id));
 
-            return $query->fetchObject(__CLASS__);
+        return $query->fetchObject(__CLASS__);
     }
 
     /*
@@ -92,34 +91,22 @@ class Tag extends \Goteo\Core\Model {
         $lang = Lang::current();
         $list = array();
 
-        if(self::default_lang($lang) === Config::get('lang')) {
-            $different_select=" IFNULL(tag_lang.name, tag.name) as name";
-            }
-        else {
-            $different_select=" IFNULL(tag_lang.name, IFNULL(eng.name, tag.name)) as name";
-
-            $eng_join=" LEFT JOIN tag_lang as eng
-                            ON  eng.id = tag.id
-                            AND eng.lang = 'en'";
-            }
+        list($fields, $joins) = self::getLangsSQLJoins(Lang::current(), Config::get('lang'));
 
         $sql = "
             SELECT
                 tag.id as id,
-                $different_select,
+                $fields,
                 (   SELECT
                     COUNT(post_tag.post)
                     FROM post_tag
                     WHERE post_tag.tag = tag.id
                 ) as used
             FROM    tag
-            LEFT JOIN tag_lang
-                ON  tag_lang.id = tag.id
-                AND tag_lang.lang = :lang
-            $eng_join
+            $joins
             ORDER BY tag.name ASC";
 
-        $query = static::query($sql, array(':lang'=>$lang));
+        $query = static::query($sql);
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $tag) {
             $list[$tag->id] = $tag;
