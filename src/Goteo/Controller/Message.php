@@ -377,7 +377,7 @@ namespace Goteo\Controller {
                 ));
                 if ($comment->save($errors)) {
                     // a ver los datos del post
-                    $postData = Model\Blog\Post::get($post);
+                    $postData = Model\Blog\Post::getBySlug($post);
 
 
                     // si es entrada de proyecto

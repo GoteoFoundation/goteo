@@ -397,7 +397,7 @@ class ProjectDashboardController extends DashboardController {
             return $this->redirect($redirect);
         }
 
-        $post = BlogPost::get($uid);
+        $post = BlogPost::getBySlug($uid);
         if(!$post && is_null($uid)) {
             $blog = Blog::get($project->id);
 

@@ -16,7 +16,7 @@ foreach ($filters as $key=>$value) {
     $the_filters = "&{$key}={$value}";
 }
 if (!empty($vars['post'])) {
-    $post = Post::get($vars['post'], LANG);
+    $post = Post::getById($vars['post'], LANG);
 }
 $bodyClass = 'blog';
 

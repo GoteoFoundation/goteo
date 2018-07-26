@@ -529,7 +529,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
         $project = $this->validateProject($pid, 'updates', null, $form, $lang);
         if($project instanceOf Response) return $project;
 
-        $post = BlogPost::get($uid);
+        $post = BlogPost::getBySlug($uid);
         if(!$post instanceOf BlogPost) throw new ModelException("Post [$uid] not found for project [{$project->id}]");
 
         $langs = Lang::listAll('name', false);

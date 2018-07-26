@@ -74,7 +74,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
      * @depends testCreatePost
      */
     public function testGetPost($ob) {
-        $ob = Post::get($ob->id);
+        $ob = Post::getById($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Blog\Post', $ob);
 
         foreach(self::$data as $key => $val) {
@@ -84,6 +84,24 @@ class PostTest extends \PHPUnit_Framework_TestCase {
         return $ob;
     }
 
+    /**
+     * @depends testGetPost
+     */
+    public function testSlugPost($ob) {
+        $this->assertEquals('test-post', $ob->getSlug());
+        $this->assertEquals($ob->id, Post::getBySlug($ob->getSlug())->id);
+        $this->assertEquals($ob->id, Post::getById($ob->id)->id);
+
+        $ob2 = new Post(self::$data);
+        $errors = [];
+        $this->assertTrue($ob2->save($errors), print_r($errors, 1));
+
+        $this->assertContains('test-post-', $ob2->getSlug());
+
+        Post::delete($ob2->id);
+
+        return $ob;
+    }
     /**
      * @depends testGetPost
      */
@@ -100,7 +118,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
         $ob->image = self::$image2;
         $this->assertTrue($ob->save());
 
-        $sob = Post::get($ob->id);
+        $sob = Post::getById($ob->id);
         $this->assertEquals($sob->title, $ob->title);
         $this->assertInternalType('array', $ob->gallery);
         $this->assertInternalType('array', $sob->gallery);
@@ -127,7 +145,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
         //remove second image
         $this->assertEquals($ob->image, Image::getModelImage('', $ob->gallery));
         $this->assertTrue($ob->gallery[0]->remove($errors, 'post'), print_r($errors, 1));
-        $ob = Post::get($ob->id);
+        $ob = Post::getById($ob->id);
         $this->assertInternalType('array', $ob->gallery);
         $this->assertCount(0, $ob->gallery);
         $this->assertEmpty($ob->image);
@@ -137,7 +155,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertTrue($ob->validate($errors));
         $this->assertTrue($ob->save());
-        $ob = Post::get($ob->id);
+        $ob = Post::getById($ob->id);
         $this->assertInternalType('array', $ob->gallery);
         $this->assertCount(1, $ob->gallery);
         $this->assertEquals($ob->image, $ob->gallery[0]);
@@ -157,7 +175,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
      * @depends testDeletePost
      */
     public function testNonExisting($ob) {
-        $sob = Post::get($ob->id);
+        $sob = Post::getById($ob->id);
         $this->assertFalse($sob);
     }
 
