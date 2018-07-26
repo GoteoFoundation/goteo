@@ -70,12 +70,12 @@ class ModelsData implements ExtensionInterface
         if(!is_array($list)) return $array;
 
         foreach($list as $key => $ob) {
-            $item = [];
             if($ob instanceOf CoreModel) {
                 $normalizer = new ModelNormalizer($ob, $keys);
                 $array[] = $normalizer->get();
             }
         }
+        print_r($array);
         return $array;
     }
 

@@ -12,9 +12,11 @@ namespace Goteo\Util\ModelNormalizer\Transformer;
 use Goteo\Core\Model;
 use Goteo\Model\Image;
 use Goteo\Library\Text;
+use Goteo\Model\User;
 
 abstract class AbstractTransformer extends \ArrayObject implements TransformerInterface {
     protected $model;
+    protected $user;
     protected $keys = ['id', 'name'];
 
     public function __construct(Model $model, array $keys = null) {
@@ -22,16 +24,30 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
         if($keys) {
             $this->setKeys($keys);
         }
+    }
+
+    public function rebuild() {
         // Default iterable
         foreach($this->getKeys() as $key) {
             $func = 'get' . ucfirst($key);
             $this->offsetSet($key, $this->$func());
         }
+        return $this;
     }
+
 
     public function getModelName() {
         $class = get_class($this->model);
         return basename(str_replace('\\', '/', strtolower($class)));
+    }
+
+    public function setUser(User $user = null) {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function getUser() {
+        return $this->user;
     }
 
     public function setKeys(array $keys) {
@@ -80,4 +96,13 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
         return $this->model->subtitle;
     }
 
+    public function getDate() {
+        return \date_formater($this->model->date);
+    }
+
+    public function getActions() {
+        if(!$u = $this->getUser()) return [];
+        $ret = ['edit' => '/admin/' . $this->getModelName() . '/edit/' . $this->model->getSlug()];
+        return $ret;
+    }
 }

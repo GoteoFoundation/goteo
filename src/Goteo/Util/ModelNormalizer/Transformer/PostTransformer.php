@@ -21,4 +21,25 @@ class PostTransformer extends AbstractTransformer {
     public function getLangs() {
         return $this->model->getLangsAvailable();
     }
+
+    public function getInfo() {
+        return '<strong>'.$this->getDate().' - ' . $this->getAuthor() . '</strong><br>'.$this->getSubTitle();
+    }
+
+    public function getAuthor() {
+        return $this->model->getAuthor() ? $this->model->getAuthor()->name : 'Unknown';
+    }
+
+    public function getActions() {
+        if(!$u = $this->getUser()) return [];
+        $ret = ['edit' => '/admin/blog/edit/' . $this->model->getSlug()];
+
+        if($this->getUser()->hasPerm('translate-language')) {
+            $ret['translate'] = '/translate/' . $this->getModelName() . '/' . $this->model->id;
+        }
+
+        // if($this->user->hasPerm('translate'))
+        return $ret;
+    }
+
 }

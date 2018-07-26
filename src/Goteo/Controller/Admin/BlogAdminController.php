@@ -22,6 +22,7 @@ use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
 use Goteo\Model\Blog;
+use Goteo\Model\User;
 use Goteo\Model\Post;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Library\Forms\FormModelException;
@@ -36,10 +37,14 @@ class BlogAdminController extends AbstractAdminController {
                 ['_controller' => __CLASS__ . "::listAction"]
             ),
             new Route(
-                '/edit/{pid}', [
+                '/edit/{slug}', [
                     '_controller' => __CLASS__ . "::editAction"
                 ]
             ),
+            new Route(
+                '/add',
+                ['_controller' => __CLASS__ . "::slugAction", 'slug' => '']
+            )
         ];
     }
 
@@ -60,6 +65,39 @@ class BlogAdminController extends AbstractAdminController {
                 '_action' => '/blog',
                 'q' => Text::get('admin-blog-global-search')
             ]
+        ]);
+    }
+
+    public function editAction($slug = '', Request $request) {
+        if(!$slug) {
+            $post = new BlogPost();
+        } else {
+            $post = BlogPost::getBySlug($slug);
+        }
+        if(!$post) throw new ModelNotFoundException("Not found post [$slug]");
+
+        $defaults = (array)$post;
+        $processor = $this->getModelForm('AdminPostEdit', $post, $defaults, [], $request);
+        $processor->createForm();
+        $processor->getBuilder()
+            ->add('submit', 'submit', [
+                'label' => $submit_label ? $submit_label : 'regular-submit'
+            ]);
+        $form = $processor->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $request->isMethod('post')) {
+            try {
+                $processor->save($form, true);
+                Message::info(Text::get('user-register-success'));
+                return $this->redirect('/admin/blog?' . $request->getQueryString());
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+
+        return $this->viewResponse('admin/blog/add', [
+            'form' => $form->createView(),
+            'user' => $user
         ]);
     }
 }
