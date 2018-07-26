@@ -19,7 +19,6 @@ use Goteo\Library\Text;
 use Goteo\Application\Message;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
-use Goteo\Application\Session;
 use Goteo\Application\Exception\ModelException;
 
 class Post extends \Goteo\Core\Model {
@@ -27,6 +26,7 @@ class Post extends \Goteo\Core\Model {
     public
         $id,
         $blog,
+        $slug,
         $project,
         $title,
         $subtitle,
@@ -84,6 +84,7 @@ class Post extends \Goteo\Core\Model {
             SELECT
                 post.id as id,
                 post.blog as blog,
+                post.slug as slug,
                 $fields,
                 post.image as `image`,
                 post.header_image as `header_image`,
@@ -119,7 +120,7 @@ class Post extends \Goteo\Core\Model {
 
         if(is_string($id)) {
             $sql .= "WHERE post.slug = :slug;";
-            $values = [':slug' => $slug];
+            $values = [':slug' => $id];
         } else {
             $sql .= "WHERE post.id = :id;";
             $values = [':id' => $id];
@@ -180,6 +181,7 @@ class Post extends \Goteo\Core\Model {
             SELECT
                 post.id as id,
                 post.blog as blog,
+                post.slug as slug,
                 blog.type as type,
                 blog.owner as owner,
                 $fields,
@@ -272,6 +274,10 @@ class Post extends \Goteo\Core\Model {
         return $this->userInstance;
     }
 
+    public function getSlug() {
+        return $this->slug ? $this->slug : $this->id;
+    }
+
     /*
      * Lista de entradas filtradas
      *  por tag
@@ -294,6 +300,7 @@ class Post extends \Goteo\Core\Model {
             SELECT
                 post.id as id,
                 post.blog as blog,
+                post.slug as slug,
                 $fields,
                 post.image as `image`,
                 post.section as `section`,
@@ -479,11 +486,14 @@ class Post extends \Goteo\Core\Model {
     public function save (&$errors = array()) {
         if (empty($this->blog)) return false;
 
-        $set = '';
+        if(!$this->slug) {
+
+        }
 
         $fields = array(
             // 'id',
             'blog',
+            'slug',
             'title',
             'subtitle',
             'text',
@@ -496,10 +506,6 @@ class Post extends \Goteo\Core\Model {
             'footer',
             'author'
             );
-
-        //eliminamos etiquetas script,iframe.. si no es admin o superadmin
-        if(!(isset(Session::getUser()->roles['superadmin'])||isset(Session::getUser()->roles['admin'])))
-            $this->text = Text::tags_filter($this->text);
 
         try {
             //automatic $this->id assignation

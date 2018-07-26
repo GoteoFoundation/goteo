@@ -62,7 +62,7 @@ class RssController extends \Goteo\Core\Controller {
         $blog = Model\Blog::get(Config::get('node'), 'node');
 
         foreach ($blog->posts as $postId => $post) {
-            $link = $url . '/blog/' . $post->id;
+            $link = $url . '/blog/' . $post->getSlug();
             // print_r($post);die;
             $item = $feed->createNewItem();
             $item->addElementArray(array(
