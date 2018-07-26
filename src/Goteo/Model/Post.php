@@ -354,6 +354,12 @@ namespace Goteo\Model {
             if (!$this->validate($errors)) return false;
 
             if(!$this->date) $this->date = date('Y-m-d');
+            if(!$this->slug) {
+                $slug = self::idealiza($this->title, false, false, 150);
+                if(self::query('SELECT COUNT(*) FROM post WHERE slug=?', $slug)->fetchColumn() > 0) {
+                    $slug = "$slug-" . $this->id;
+                }
+            }
 
             $fields = array(
                 'blog',

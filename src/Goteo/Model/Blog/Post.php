@@ -487,7 +487,10 @@ class Post extends \Goteo\Core\Model {
         if (empty($this->blog)) return false;
 
         if(!$this->slug) {
-
+            $slug = self::idealiza($this->title, false, false, 150);
+            if(self::query('SELECT COUNT(*) FROM post WHERE slug=?', $slug)->fetchColumn() > 0) {
+                $slug = "$slug-" . $this->id;
+            }
         }
 
         $fields = array(
@@ -512,52 +515,49 @@ class Post extends \Goteo\Core\Model {
             $this->dbInsertUpdate($fields);
 
             // Luego la imagen
-            if ($this->id) {
-                // Will be an Upload if it's not Image
-                if($this->image) {
-                    if(is_array($this->image) && !$this->image['tmp_name']) {
-                        try {
-                            Image::replaceGallery('post', $this->id, $this->image);
-                        } catch(ModelException $e) {
-                            throw new \PDOException(Text::get('gallery-upload-fail')." (".$e->getMessage().")");
-                        }
-                        $this->gallery = $this->image;
-                        $this->image = $this->image ? $this->image[0] : null;
-                    } else {
-                        // Old behaviour, add the image to the gallery if
-                        // needed (it's an upload)
-                        $img = $this->image;
-                        if(!$img instanceOf Image) {
-                            $img = new Image($img);
-                        }
-                        if (!$img->addToModelGallery('post', $this->id)) {
-                            throw new \PDOException(Text::get('image-upload-fail'));
-                        }
-                        $this->gallery[] = $img;
-                        $this->image = $img;
+            // Will be an Upload if it's not Image
+            if($this->image) {
+                if(is_array($this->image) && !$this->image['tmp_name']) {
+                    try {
+                        Image::replaceGallery('post', $this->id, $this->image);
+                    } catch(ModelException $e) {
+                        throw new \PDOException(Text::get('gallery-upload-fail')." (".$e->getMessage().")");
                     }
-
-                    // Rebuild default image
-                    if($this->image) $this->image->setModelImage('post', $this->id);
-                    else             Image::deleteModelImage('post', $this->id);
+                    $this->gallery = $this->image;
+                    $this->image = $this->image ? $this->image[0] : null;
+                } else {
+                    // Old behaviour, add the image to the gallery if
+                    // needed (it's an upload)
+                    $img = $this->image;
+                    if(!$img instanceOf Image) {
+                        $img = new Image($img);
+                    }
+                    if (!$img->addToModelGallery('post', $this->id)) {
+                        throw new \PDOException(Text::get('image-upload-fail'));
+                    }
+                    $this->gallery[] = $img;
+                    $this->image = $img;
                 }
 
-                // y los tags, si hay
-                if (is_array($this->tags)) {
-                    static::query('DELETE FROM post_tag WHERE post= ?', $this->id);
-                    foreach ($this->tags as $tag) {
-                        $new = new Post\Tag(
-                                array(
-                                    'post' => $this->id,
-                                    'tag' => $tag
-                                )
-                            );
-                        $new->assign($errors);
-                        unset($new);
-                    }
-                }
+                // Rebuild default image
+                if($this->image) $this->image->setModelImage('post', $this->id);
+                else             Image::deleteModelImage('post', $this->id);
             }
 
+            // y los tags, si hay
+            if (is_array($this->tags)) {
+                static::query('DELETE FROM post_tag WHERE post= ?', $this->id);
+                foreach ($this->tags as $tag) {
+                    $new = new Post\Tag(
+                            array(
+                                'post' => $this->id,
+                                'tag' => $tag
+                            )
+                        );
+                    $new->assign($errors);
+                    unset($new);
+                }
+            }
 
             // actualizar campo calculado
             if ( $this->publish == 1 && $this->owner_type == 'project' ) {
