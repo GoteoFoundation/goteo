@@ -375,13 +375,25 @@ class Post extends \Goteo\Core\Model {
             return false;
     }
 
+    public function slugExists($slug) {
+        $values = [':slug' => $slug];
+        $sql = 'SELECT COUNT(*) FROM post WHERE slug=:slug';
+        if($this->id) {
+            $values[':id'] = $this->id;
+            $sql .= ' AND id!=:id';
+        }
+
+        return self::query($sql, $val)->fetchColumn() > 0;
+    }
+
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
 
         if(!$this->date) $this->date = date('Y-m-d');
+        // Attemp to create slug if not exists
         if(!$this->slug) {
             $this->slug = self::idealiza($this->title, false, false, 150);
-            if(self::query('SELECT COUNT(*) FROM post WHERE slug=?', $this->slug)->fetchColumn() > 1) {
+            if($this->slug && $this->slugExists($this->slug)) {
                 $this->slug = $this->slug .'-' . ($this->id ? $this->id : time());
             }
         }
