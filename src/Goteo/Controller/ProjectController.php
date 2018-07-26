@@ -267,11 +267,12 @@ class ProjectController extends \Goteo\Core\Controller {
             if ($show == 'updates') {
 
                 //if is an individual post page
-                if($post)
-                {
-                    $post=BlogPost::get($post, Lang::current(), $project->lang);
-                    $viewData['post']  = $post;
-
+                if($post) {
+                    $pob = BlogPost::getBySlug($post, Lang::current(), $project->lang);
+                    if($pob->slug && $post != $pob->slug) {
+                        return $this->redirect("/project/{$project->id}/updates/{$pob->slug}");
+                    }
+                    $viewData['post']  = $pob;
                     $show  = 'updates_post';
                 }
 

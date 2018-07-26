@@ -178,7 +178,7 @@ class ProjectsApiController extends AbstractApiController {
      */
     public function projectUpdatesPropertyAction($pid, $uid, $prop, Request $request) {
         $prj = Project::get($pid);
-        $post = BlogPost::get($uid);
+        $post = BlogPost::getBySlug($uid);
 
         // Security, first of all...
         if(!$prj->userCanEdit($this->user)) {

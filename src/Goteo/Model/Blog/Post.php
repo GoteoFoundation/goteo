@@ -119,10 +119,10 @@ class Post extends \Goteo\Core\Model {
             ";
 
         if(is_string($id)) {
-            $sql .= "WHERE post.slug = :slug;";
+            $sql .= "WHERE post.slug = :slug ";
             $values = [':slug' => $id];
         } else {
-            $sql .= "WHERE post.id = :id;";
+            $sql .= "WHERE post.id = :id";
             $values = [':id' => $id];
         }
 
@@ -149,14 +149,14 @@ class Post extends \Goteo\Core\Model {
             $post->media = new Media($post->media);
         }
 
-        $post->comments = Post\Comment::getAll($id);
+        $post->comments = Post\Comment::getAll($post->id);
 
         if (!isset($post->num_comments)) {
             $post->num_comments = Post\Comment::getCount($post->id);
         }
 
         //tags
-        $post->tags = Post\Tag::getAll($id);
+        $post->tags = Post\Tag::getAll($post->id);
 
         //agregamos html si es texto plano
         $post->text = self::sanitizeText($post->text);
@@ -487,10 +487,10 @@ class Post extends \Goteo\Core\Model {
         if (empty($this->blog)) return false;
 
         if(!$this->slug) {
-            $slug = self::idealiza($this->title, false, false, 150);
-            if(self::query('SELECT COUNT(*) FROM post WHERE slug=?', $slug)->fetchColumn() > 0) {
-                $slug = "$slug-" . $this->id;
-            }
+            $this->slug = self::idealiza($this->title, false, false, 150);
+        }
+        if(self::query('SELECT COUNT(*) FROM post WHERE slug=?', $this->slug)->fetchColumn() > 0) {
+            $this->slug = $this->slug .'-' . ($this->id ? $this->id : time());
         }
 
         $fields = array(
