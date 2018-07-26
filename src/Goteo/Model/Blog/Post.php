@@ -89,6 +89,7 @@ class Post extends \Goteo\Core\Model {
                 post.image as `image`,
                 post.header_image as `header_image`,
                 post.date as `date`,
+                post.type as `type`,
                 DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                 post.allow as allow,
                 post.publish as publish,
@@ -186,6 +187,7 @@ class Post extends \Goteo\Core\Model {
                 blog.owner as owner,
                 $fields,
                 post.image as `image`,
+                post.type as `type`,
                 DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                 DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                 post.publish as publish,
@@ -303,6 +305,7 @@ class Post extends \Goteo\Core\Model {
                 post.slug as slug,
                 $fields,
                 post.image as `image`,
+                post.type as `type`,
                 post.section as `section`,
                 post.glossary as `glossary`,
                 post.header_image as `header_image`,
@@ -507,7 +510,8 @@ class Post extends \Goteo\Core\Model {
             'publish',
             'home',
             'footer',
-            'author'
+            'author',
+            'type'
             );
 
         try {

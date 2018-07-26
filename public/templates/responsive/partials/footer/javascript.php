@@ -1,7 +1,7 @@
 <!-- Bootstrap core JavaScript -->
 <?php if($this->debug()): ?>
-<script src="<?= SRC_URL ?>/assets/vendor/jquery-1.12.4.min.js"></script>
-<script src="<?= SRC_URL ?>/assets/vendor/jquery.mobile.custom.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/jquery/dist/jquery.min.js"></script>
+<!-- <script src="<?= SRC_URL ?>/assets/vendor/jquery.mobile.custom.min.js"></script> -->
 <script src="<?= SRC_URL ?>/assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/pronto/jquery.fs.pronto-3.2.1.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/hammerjs/hammer.min.js"></script>
@@ -12,8 +12,8 @@
 <script src="<?= SRC_URL ?>/assets/vendor/d3/d3.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/footable/compiled/footable.min.js"></script>
 <?php else: ?>
-<script src="<?= SRC_URL ?>/assets/vendor/jquery-1.12.4.min.js"></script>
-<script src="<?= SRC_URL ?>/assets/vendor/jquery.mobile.custom.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/jquery/dist/jquery.min.js"></script>
+<!-- <script src="<?= SRC_URL ?>/assets/vendor/jquery.mobile.custom.min.js"></script> -->
 <script src="<?= SRC_URL ?>/assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/pronto/jquery.fs.pronto.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/hammerjs/hammer.min.js"></script>

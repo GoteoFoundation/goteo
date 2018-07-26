@@ -20,7 +20,7 @@ if($list):
         foreach($entry as $key => $val):
             $vars = ['value' => $val, 'ob' => $entry, 'link' => ''];
         ?>
-            <td data-title="<?= $entry->getLabel($key) ?>"><?= $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars) ?></td>
+            <td data-title="<?= $entry->getLabel($key) ?>" class="td-<?= $key ?>"><?= $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars) ?></td>
         <?php endforeach ?>
         </tr>
     <?php endforeach ?>

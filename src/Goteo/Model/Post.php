@@ -72,6 +72,7 @@ class Post extends \Goteo\Core\Model {
                 post.slug as slug,
                 post.image as image,
                 post.media as `media`,
+                post.type as `type`,
                 post.date as `date`,
                 DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                 post.author as author,
@@ -178,6 +179,7 @@ class Post extends \Goteo\Core\Model {
                 $different_select,
                 post.image as `image`,
                 post.media as `media`,
+                post.type as `type`,
                 $sqlField
                 DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                 DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
@@ -397,7 +399,8 @@ class Post extends \Goteo\Core\Model {
             'publish',
             'home',
             'footer',
-            'author'
+            'author',
+            'type'
             );
 
         try {

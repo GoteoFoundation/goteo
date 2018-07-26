@@ -119,7 +119,10 @@ admin-title-info: Info
 admin-title-image: Imatge
 admin-title-title: Títol
 admin-title-subtitle: Subtitol
+admin-title-text: Text
+admin-title-slug: Slug
 admin-title-langs: Traduccions
+admin-title-actions: Accions
 
 admin-all-project-referers: 'Origen de visites als projectes'
 admin-all-invests-referers: 'Origen de visites a les aportacions a projectes'
