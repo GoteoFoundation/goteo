@@ -360,7 +360,7 @@ class Post extends \Goteo\Core\Model {
         }
 
         if (!empty($filters['superglobal'])) {
-            $sqlWhere .= " AND (post.id LIKE :qid OR post.slug LIKE OR post.title LIKE :superglobal OR post.subtitle LIKE :superglobal OR post.text LIKE :superglobal)";
+            $sqlWhere .= " AND (post.id LIKE :qid OR post.slug LIKE :superglobal OR post.title LIKE :superglobal OR post.subtitle LIKE :superglobal OR post.text LIKE :superglobal)";
             $values[':qid'] = $filters['superglobal'];
             $values[':superglobal'] = '%' . $filters['superglobal'] . '%';
         }
