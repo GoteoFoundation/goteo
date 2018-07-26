@@ -37,11 +37,19 @@ checker:
         - review-project # View/review an assigned review project before their publication
     level: 40
 
+blogger:
+    extends: user
+    perms:
+        - admin-module-blog # create/edit/delete non-project posts
+        - full-html-edit # View/review an assigned review project before their publication
+    level: 40
+
 manager:
     extends: user
     perms:
         - view-any-project # View any editing project
         - edit-published-projects # Edit any published project
+        - admin-module-blog # create/edit/delete non-project posts
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 50
 
@@ -55,6 +63,8 @@ consultant:
         - impersonate-owners # Impersonate projects owners assigned as a consultant
         - assign-checker # Assignate any other user for review projects
         - admin-module-users # Can access to module UserAdminController
+        - admin-module-blog # create/edit/delete non-project posts
+        - admin-module-stats # Can access to stats
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 60
 
@@ -68,7 +78,6 @@ admin:
         - rebase-users # Edit sensitive data in users (id, email, password) without confirmation (for users below admin unless is superadmin)
         - impersonate-users # Impersonate any user with roles below admin if user is admin (unless user is superadmin)
         - admin-module-users # Can access to module UserAdminController
-        - admin-module-stats # Can access to stats
     level: 70
 
 superadmin:

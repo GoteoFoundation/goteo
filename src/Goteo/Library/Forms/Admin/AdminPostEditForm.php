@@ -25,24 +25,45 @@ class AdminPostEditForm extends ProjectPostForm {
     public function createForm() {
         parent::createForm();
         $builder = $this->getBuilder();
+        $options = $builder->getOptions();
         $post = $this->getModel();
+        $data = $options['data'];
+
+
+        // saving images will add that images to the gallery
+        // let's show the gallery in the field with nice options
+        // for removing and reorder it
+        $builder->add('image', 'dropfiles', array(
+            'required' => false,
+            'data' => $data['gallery'],
+            'label' => 'regular-images',
+            'markdown_link' => 'text',
+            'accepted_files' => 'image/jpeg,image/gif,image/png',
+            'url' => '/api/blog/images',
+            'constraints' => array(
+                new Constraints\Count(array('max' => 20))
+            )
+        ));
 
         // Replace markdown by html editor if type
         if($post->type === 'html') {
             $builder->add('text', 'textarea', array(
-                'label' => 'regular-text',
+                'label' => 'admin-title-text',
                 'required' => false,
                 'html_editor' => true
                 // 'constraints' => array(new Constraints\NotBlank()),
             ));
-
-            //     ->add('text', 'markdown', array(
-            //     'label' => 'regular-text',
-            //     'required' => false,
-            //     // 'constraints' => array(new Constraints\NotBlank()),
-            // ))
-
         }
+
+        // Add tags input
+        $tags = implode(', ', array_keys($data['tags']));
+        $builder->add('tags', 'tags', [
+            'label' => 'admin-title-tags',
+            'data' => $tags,
+            'attr' => ['data-display-value' => 'tag', 'data-display-key' => 'tag'],
+            'required' => false,
+            'url' => '/api/blog/tags'
+        ]);
 
 
         return $this;

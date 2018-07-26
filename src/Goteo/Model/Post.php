@@ -381,7 +381,7 @@ class Post extends \Goteo\Core\Model {
         if(!$this->date) $this->date = date('Y-m-d');
         if(!$this->slug) {
             $this->slug = self::idealiza($this->title, false, false, 150);
-            if(self::query('SELECT COUNT(*) FROM post WHERE slug=?', $this->slug)->fetchColumn() > 0) {
+            if(self::query('SELECT COUNT(*) FROM post WHERE slug=?', $this->slug)->fetchColumn() > 1) {
                 $this->slug = $this->slug .'-' . ($this->id ? $this->id : time());
             }
         }
