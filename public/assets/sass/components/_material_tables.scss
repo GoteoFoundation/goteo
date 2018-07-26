@@ -38,6 +38,16 @@ $table-border-color:            #e0e0e0;
   max-width: 100%;
   margin-bottom: 2rem;
   background-color: $table-bg;
+  strong {
+    font-weight: $table-header-font-weight;
+  }
+
+  // Some custom actions
+  td.td-actions {
+    padding-left:0;
+    padding-right:0;
+  }
+
   > thead,
   > tbody,
   > tfoot {
