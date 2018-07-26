@@ -568,12 +568,10 @@ class Post extends \Goteo\Core\Model {
             if (is_array($this->tags)) {
                 static::query('DELETE FROM post_tag WHERE post= ?', $this->id);
                 foreach ($this->tags as $tag) {
-                    $new = new Post\Tag(
-                            array(
-                                'post' => $this->id,
-                                'tag' => $tag
-                            )
-                        );
+                    $new = new Post\Tag([
+                            'post' => $this->id,
+                            'tag' => $tag
+                        ]);
                     $new->assign($errors);
                     unset($new);
                 }
