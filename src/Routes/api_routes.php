@@ -45,6 +45,48 @@ $api->add('api-user-property', new Route(
         )
 ));
 
+// Blog
+// Tags list
+$api->add('api-blog-tags', new Route(
+    '/blog/tags',
+    array('_controller' => 'Goteo\Controller\Api\BlogApiController::tagsAction',
+        )
+));
+
+// Post images upload (POST method only)
+$api->add('api-blog-images-upload', new Route(
+    '/blog/images',
+    array('_controller' => 'Goteo\Controller\Api\BlogApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+// Post images default (PUT method only)
+$api->add('api-blog-images-default', new Route(
+    '/blog/{id}/images/{image}',
+    array('_controller' => 'Goteo\Controller\Api\BlogApiController::blogDefaultImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('PUT') // methods
+));
+
+// Post images delete (DELETE method only)
+$api->add('api-blog-images-delete', new Route(
+    '/blog/{id}/images/{image}',
+    array('_controller' => 'Goteo\Controller\Api\BlogApiController::blogDeleteImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('DELETE') // methods
+));
+
+
 // Projects list
 $api->add('api-projects', new Route(
     '/projects',

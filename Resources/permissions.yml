@@ -150,6 +150,14 @@ admin-any-module-users: # Admin any module in Admin (instances of AdminControlle
     model: null
     relational: null
 
+admin-module-stats: # Can access to module StatsAdminController
+    model: null
+    relational: null
+
 admin-module-users: # Can access to module UserAdminController
+    model: null
+    relational: null
+
+admin-module-blog: # Can access to module BlogAdminController
     model: null
     relational: null

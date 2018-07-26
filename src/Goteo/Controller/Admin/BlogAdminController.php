@@ -69,8 +69,36 @@ class BlogAdminController extends AbstractAdminController {
     }
 
     public function editAction($slug = '', Request $request) {
+        $node = Config::get('node');
+        $blog = Blog::get($node, 'node');
+        if (!$blog instanceof Blog) {
+            $blog = new Blog(array('type'=>'node', 'owner' => $node, 'active'=>1));
+            $errors = [];
+            if ($blog->save($errors)) {
+                Message::info(Text::get('admin-blog-initialized'));
+            } else {
+                Message::error("Error creating node-blog space for node [$node]", implode(',',$errors));
+                return $this->redirect('/admin/blog');
+            }
+        } elseif (!$blog->active) {
+            Message::error(Text::get('admin-blog-deactivated'));
+            return $this->redirect('/admin/blog');
+        }
+
+        // primero comprobar que tenemos blog
+        if (!$blog instanceof Blog) {
+            throw new ModelNotFoundException("Not found node-blog space for node [$node]!");
+        }
+
         if(!$slug) {
-            $post = new BlogPost();
+            $post = new BlogPost([
+                'blog' => $blog->id,
+                'date' => date('Y-m-d'),
+                'publish' => false,
+                'allow' => true,
+                'owner_id' => $node,
+                'author' => $this->user->id
+            ]);
         } else {
             $post = BlogPost::getBySlug($slug);
         }
@@ -88,7 +116,7 @@ class BlogAdminController extends AbstractAdminController {
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
                 $processor->save($form, true);
-                Message::info(Text::get('user-register-success'));
+                Message::info(Text::get('admin-blog-edit-success'));
                 return $this->redirect('/admin/blog?' . $request->getQueryString());
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());

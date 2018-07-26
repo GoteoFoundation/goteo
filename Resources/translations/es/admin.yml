@@ -159,6 +159,12 @@ admin-title-text: Texto
 admin-title-slug: Slug
 admin-title-langs: Traducciones
 admin-title-actions: Acciones
+admin-title-tags: Tags
+
+admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
+admin-blog-initialized: 'Se ha inicializado el espacio de blog'
+admin-blog-deactivated: 'Lo sentimos, la gestión de blog esta desactivada'
+admin-blog-edit-success: 'La entrada de blog se ha editado correctamente'
 
 admin-all-project-referers: 'Origen de visitas en los proyectos'
 admin-all-invests-referers: 'Origen de visitas en los aportes a proyectos'
