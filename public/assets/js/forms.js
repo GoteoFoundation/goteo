@@ -180,38 +180,83 @@ $(function(){
         $('.autoform .tagsinput').each(function(){
           // Tags with autocomplete (optional)
           var $this = $(this);
+          // Typeahead remote url to fecth
           var url = $this.data('url');
-          var displayKey = $this.data('display-key') || 'tag';
-          var displayValue = $this.data('display-value') || 'tag';
+          // Id and Text fields for typeahead
+          var keyValue = $this.data('key-value') || 'tag';
+          var keyText = $this.data('key-text') || 'tag';
+          // Id and Text fields for tagsinput
+          var itemValue = $this.data('item-value') || 'tag';
+          var itemText = $this.data('item-text') || 'tag';
+          var limit = $this.data('limit') || 5;
+          var minLength = $this.data('min') || 0;
+          // Optional values via json object
+          var values = $this.data('values') || [];
+          // if present in the url, will be replace by the query in typeahead
           var wildcard = $this.data('wilcard') || '%QUERY';
-          var ops = { tagClass: 'label label-lilac' };
+          // TODO: add a template via data attributes
+
+          // Tagsinput options object
+          var ops = {
+            itemValue: itemValue,
+            itemText: itemText,
+            tagClass: 'label label-lilac'
+          };
+
           if(url) {
             var tags = new Bloodhound({
-              datumTokenizer: function(datum) {
-                return Bloodhound.tokenizers.whitespace(datum.tag);
-              },
-              // datumTokenizer: Bloodhound.tokenizers.whitespace,
+              datumTokenizer: Bloodhound.tokenizers.obj.whitespace(keyText),
+              identify: function (o) { return o[keyValue]; },
+              dupDetector: function (a, b) { return a[keyValue] === b[keyValue]; },
               queryTokenizer: Bloodhound.tokenizers.whitespace,
+              prefetch: { // TODO: make it optional
+                url: url,
+                filter: function (response) {
+                    // console.log('prefetch hit', response);
+                    return response;
+                }
+                // ,cache: false
+              },
               remote: {
                 wildcard: wildcard,
                 url: url
+                // ,cache: false
               }
             });
             tags.initialize();
-            ops.typeaheadjs = [
-              {
+            var engineWithDefaults = function (q, sync, async) {
+                if (q === '') {
+                    sync(tags.index.all());
+                    async([]);
+                }
+                else {
+                    tags.search(q, sync, async);
+                }
+            };
+
+            ops.typeaheadjs = [{
+                minLength: minLength,
+                hint: true,
                 highlight: true,
-                //other options
+                classNames: {
+                    hint: '',
+                    menu: 'tt-menu tt-menu-clip'
+                }
               },
               {
                 name: 'tags',
-                displayKey: displayKey,
-                valueKey: displayValue,
-                source: tags.ttAdapter()
+                limit: limit,
+                displayKey: keyText,
+                source: engineWithDefaults
               }];
             // console.log('tags', tags, tags.ttAdapter());
           }
+
           $this.tagsinput(ops);
+          values.forEach(function(tag) {
+            // console.log('add',tag);
+            $this.tagsinput('add', tag);
+          });
 
         });
 

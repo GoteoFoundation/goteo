@@ -93,6 +93,7 @@ class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInte
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
+        print_r($data['tags']);die;
         $post = $this->getModel();
         $post->rebuildData($data, array_keys($form->all()));
         $gallery = Image::getModelGallery('post', $post->id);

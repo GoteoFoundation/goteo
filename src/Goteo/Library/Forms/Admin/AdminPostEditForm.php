@@ -56,11 +56,25 @@ class AdminPostEditForm extends ProjectPostForm {
         }
 
         // Add tags input
-        $tags = implode(', ', array_keys($data['tags']));
+        $tags = implode(',', array_keys($data['tags']));
+        $jtags = array_map(function($k, $v) {
+                return ['id' => $k,'tag' => $v];
+            }, array_keys($data['tags']), $data['tags']);
+
         $builder->add('tags', 'tags', [
             'label' => 'admin-title-tags',
             'data' => $tags,
-            'attr' => ['data-display-value' => 'tag', 'data-display-key' => 'tag'],
+            'attr' => [
+                'data-item-value' => 'id', // id field for tagsinput
+                'data-item-text' => 'tag', // text field for tagsinput
+                'data-key-value' => 'id', // id field for bloodhound via api
+                'data-key-text' => 'tag', // text field for bloodhound via api
+                'data-limit' => 20, // total results in typeahead
+                'data-min' => 0, // Shows inmediatly on focus the list if 0
+                // TODO: pass the template to show a table instead of a list
+                'data-values' => json_encode($jtags),
+                'autocomplete' => false
+            ],
             'required' => false,
             'url' => '/api/blog/tags'
         ]);
