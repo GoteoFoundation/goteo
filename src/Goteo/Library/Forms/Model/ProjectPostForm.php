@@ -16,6 +16,7 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
+use Goteo\Application\Session;
 use Goteo\Library\Forms\FormModelException;
 use Symfony\Component\Form\FormInterface;
 
@@ -113,6 +114,11 @@ class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInte
             }
         }
         // print_r($current);die;
+
+        // Remove html tags if has no permission
+        if(!Session::getUser()->hasPerm('full-html-edit')) {
+            $post->text = Text::tags_filter($post->text);
+        }
 
         $errors = [];
         if (!$post->save($errors)) {

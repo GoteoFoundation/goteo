@@ -25,6 +25,7 @@ namespace Goteo\Model {
             $id,
             $title,
             $blog,
+            $slug,
             $date,
             $text,
             $image,
@@ -49,6 +50,7 @@ namespace Goteo\Model {
                         IFNULL(post_lang.title, post.title) as title,
                         IFNULL(post_lang.text, post.text) as `text`,
                         post.blog as blog,
+                        post.slug as slug,
                         post.image as image,
                         post.media as `media`,
                         post.date as `date`,
@@ -149,6 +151,7 @@ namespace Goteo\Model {
                 SELECT
                     post.id as id,
                     post.blog as blog,
+                    post.slug as slug,
                     $different_select,
                     post.image as `image`,
                     post.media as `media`,
@@ -271,6 +274,7 @@ namespace Goteo\Model {
             $sql = "
                 SELECT
                     post.id as id,
+                    post.slug as slug,
                     $different_select,
                     post.order as `order`
                 FROM    post
@@ -294,6 +298,10 @@ namespace Goteo\Model {
             return $list;
         }
 
+        public function getSlug() {
+            return $this->slug ? $this->slug : $this->id;
+        }
+
         /*
          * Usado en el autocompletado de
          * http://devgoteo.org/admin/stories/edit/1
@@ -314,6 +322,7 @@ namespace Goteo\Model {
             $query = static::query("
                 SELECT
                     post.id as id,
+                    post.slug as slug,
                     $different_select
                 FROM    post
                 LEFT JOIN post_lang
@@ -348,6 +357,7 @@ namespace Goteo\Model {
 
             $fields = array(
                 'blog',
+                'slug',
                 'title',
                 'text',
                 'date',

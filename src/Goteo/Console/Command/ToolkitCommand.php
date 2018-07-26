@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Goteo\Model\Project;
 use Goteo\Model\User\Pool;
 use Goteo\Model\Invest;
-use Goteo\Model\Post;
+use Goteo\Model\Blog\Post;
 
 /**
  * Userful tools for check & repair several database potential issues

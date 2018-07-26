@@ -16,6 +16,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Application\View;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Model;
 use Goteo\Model\Blog\Post;
 use Goteo\Model\Blog\Post\Tag;
@@ -57,28 +58,36 @@ class BlogController extends \Goteo\Core\Controller {
         );
     }
 
-    public function postAction($post, Request $request)
+    public function postAction($slug, Request $request)
     {
         // Get related posts
-        $post=Post::get($post, Lang::current());
+        $post = Post::getBySlug($slug, Lang::current());
+
+        if(!$post) {
+            throw new ModelNotFoundException("Post [$slug] not found!");
+        }
 
         // Redirect to project's page if not the right type of post
         if($post->owner_type === 'project') {
             return $this->redirect("/project/{$post->owner_id}/updates/{$post->id}");
         }
-        $tags=$post->tags;
+
+        // Redirect to slug if exists
+        if($post->slug && $post->slug != $slug) {
+            return $this->redirect("/blog/{$post->slug}");
+        }
+
+        $tags = $post->tags;
         reset($tags);
-        $first_key_tags=key($tags);
+        $first_key_tags = key($tags);
 
-        $related_posts=Post::getList(['tag' => $first_key_tags, 'excluded' => $post->id ], true, 0, $limit = 3, false);
+        $related_posts = Post::getList(['tag' => $first_key_tags, 'excluded' => $post->id ], true, 0, $limit = 3, false);
 
-        return $this->viewResponse('blog/post',
-                [
-                    'post' => $post,
-                    'related_posts' => $related_posts,
-                    'author' => $author
-                ]
-        );
+        return $this->viewResponse('blog/post', [
+            'post' => $post,
+            'related_posts' => $related_posts,
+            'author' => $author
+        ]);
 
     }
 

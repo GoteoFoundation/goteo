@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $image= $this->post->header_image ? $this->post->header_image : $this->post->image; ?>
 <?php $author=$this->post->getAuthor(); ?>
@@ -10,7 +10,7 @@ $image= $this->post->header_image ? $this->post->header_image : $this->post->ima
             <span class="block icon icon-2x <?= $icon ?>"></span>
         </div>
     <?php endif; ?>
-    <a class="img-link" href="<?= '/blog/'.$this->post->id ?>">
+    <a class="img-link" href="<?= '/blog/'.$this->post->getSlug() ?>">
     	<?php if($image): ?>
         	<img class="img-link" src="<?= $image->getLink(350, 200, true); ?>" alt="<?= $this->post->title ?>"/>
         <?php else: ?>
@@ -19,7 +19,7 @@ $image= $this->post->header_image ? $this->post->header_image : $this->post->ima
     </a>
     <div class="content">
         <div class="title">
-            <a class="a-unstyled" href="<?= '/blog/'.$this->post->id ?>">
+            <a class="a-unstyled" href="<?= '/blog/'.$this->post->getSlug() ?>">
             	<?= $this->text_truncate($this->post->title, 100) ?>
             </a>
         </div>
