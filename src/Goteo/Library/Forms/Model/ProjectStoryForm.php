@@ -14,28 +14,24 @@ namespace Goteo\Library\Forms\Model;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
-use Goteo\Application\Lang;
-use Goteo\Model\Project;
-use Goteo\Model\SocialCommitment;
+use Goteo\Model\Image;
 use Goteo\Library\Text;
-use Goteo\Application\Currency;
 use Goteo\Library\Forms\FormModelException;
-use Goteo\Model\Project\ProjectLocation;
+use Symfony\Component\Form\FormInterface;
+
 
 class ProjectStoryForm extends AbstractFormProcessor implements FormProcessorInterface {
 
     public function getConstraints($field) {
         $constraints = [];
-        if($field === 'name') {
+
+        if($field === 'title') {
             $constraints[] = new Constraints\NotBlank();
         }
-        if($field === 'subtitle') {
-            $constraints[] = new Constraints\Length(['max' => 140]);
-        }
         if($field === 'description') {
-            // Minimal 80 words
+            // Minimal 30 words
             $constraints[] = new Constraints\Regex([
-                'pattern' => '/^\s*\S+(?:\s+\S+){79,}\s*$/',
+                'pattern' => '/^\s*\S+(?:\s+\S+){19,}\s*$/',
                 'message' => Text::get('validate-project-field-description')
             ]);
         }
@@ -49,145 +45,41 @@ class ProjectStoryForm extends AbstractFormProcessor implements FormProcessorInt
     }
 
     public function createForm() {
-        $currencies = Currency::listAll('name', false);
-        $langs = Lang::listAll('name', false);
-        $project = $this->getModel();
         $builder = $this->getBuilder();
+
+        $story = $this->getModel();
+
         $builder
-            ->add('name', 'text', [
-                'label' => 'overview-field-name',
+            ->add('title', 'text', [
+                'label' => 'story-field-author-organization',
                 'constraints' => $this->getConstraints('name'),
                 'disabled' => $this->getReadonly(),
-                'attr' => ['help' => Text::get('tooltip-project-name')]
+                'attr' => ['help' => Text::get('story-tooltip-author-organization')]
             ])
-            ->add('subtitle', 'text', [
-                'label' => 'overview-field-subtitle',
-                'constraints' => $this->getConstraints('subtitle'),
-                'disabled' => $this->getReadonly(),
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-subtitle')]
-            ])
-            ->add('project_location', 'location', [
-                'label' => 'overview-field-project_location',
-                'constraints' => $this->getConstraints('project_location'),
-                // 'type' => 'project', // JSON geoloc
-                // 'item' => $this->getModel()->id,
-                'disabled' => $this->getReadonly(),
-                'location_object' => ProjectLocation::get($project),
-                'location_class' => 'Goteo\Model\Project\ProjectLocation',
-                // 'location_radius' => 10,
-                'required' => false,
-                'pre_addon' => '<i class="fa fa-globe"></i>',
-                'attr' => ['help' => Text::get('tooltip-project-project_location')]
-            ])
-            ->add('lang', 'choice', [
-                'label' => 'overview-field-lang',
-                'constraints' => $this->getConstraints('lang'),
-                'disabled' => $this->getReadonly(),
-                'choices' => $langs,
-                'attr' => ['help' => Text::get('tooltip-project-lang')]
-            ])
-            ->add('currency', 'choice', [
-                'label' => 'overview-field-currency',
-                'constraints' => $this->getConstraints('currency'),
-                'disabled' => $this->getReadonly(),
-                'choices' => $currencies,
-                'attr' => ['help' => Text::get('tooltip-project-currency')]
-            ])
-            ->add('media', 'media', array(
-                'label' => 'overview-field-media',
-                'constraints' => $this->getConstraints('media'),
-                'disabled' => $this->getReadonly(),
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-media')]
-            ))
-            ->add('description', 'markdown', [
-                'label' => 'overview-field-description',
+            ->add('description', 'textarea', [
+                'label' => 'story-field-description',
                 'constraints' => $this->getConstraints('description'),
                 'disabled' => $this->getReadonly(),
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-description'), 'rows' => 8]
+                'required' => true,
+                'attr' => ['help' => Text::get('story-tooltip-description'), 'rows' => 3]
             ])
-            ->add('about', 'markdown', [
-                'label' => 'overview-field-about',
-                'constraints' => $this->getConstraints('about'),
+            ->add('image', 'dropfiles', [
+                'label' => 'story-field-image',
+                'constraints' => $this->getConstraints('image'),
                 'disabled' => $this->getReadonly(),
-                'required' => false,
-                // 'row_class' => 'extra',
-                'attr' => ['help' => Text::get('tooltip-project-about'), 'rows' => 8]
+                'url' => '/api/stories/' . $story->id . '/image',
+                'required' => true
             ])
-            ->add('motivation', 'markdown', [
-                'label' => 'overview-field-motivation',
-                'constraints' => $this->getConstraints('motivation'),
+            ->add('pool_image', 'dropfiles', [
+                'label' => 'story-field-pool-image',
+                'constraints' => $this->getConstraints('pool_image'),
                 'disabled' => $this->getReadonly(),
-                'required' => false,
-                // 'row_class' => 'extra',
-                'attr' => ['help' => Text::get('tooltip-project-motivation'), 'rows' => 8]
-            ])
-            ->add('related', 'markdown', [
-                'label' => 'overview-field-related',
-                'constraints' => $this->getConstraints('related'),
-                'disabled' => $this->getReadonly(),
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-related'), 'rows' => 8]
-            ])
-            // ->add('spread', 'textarea', [
-            //     'label' => 'overview-field-spread',
-            //     'disabled' => $this->getReadonly(),
-            //     'constraints' => $this->getConstraints('spread'),
-            //     'required' => false,
-            //     'attr' => ['help' => Text::get('tooltip-project-spread'), 'info' => '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field'), 'rows' => 8]
-            // ])
-            ;
-
-            // ->add('extra-title', 'title', [
-            //     'label' => 'overview-extra-fields',
-            //     'disabled' => $this->getReadonly(),
-            //     'row_class' => 'extra'
-            // ])
-        if($project->goal) {
-            $builder
-                ->add('goal', 'markdown', [
-                    'label' => 'overview-field-goal',
-                    'disabled' => $this->getReadonly(),
-                    'constraints' => $this->getConstraints('goal'),
-                    'required' => false,
-                    // 'row_class' => 'extra',
-                    'attr' => ['help' => Text::get('tooltip-project-goal'), 'rows' => 8]
-                ]);
-        }
-        $builder
-            ->add('scope', 'choice', [
-                'label' => 'overview-field-scope',
-                'disabled' => $this->getReadonly(),
-                'constraints' => $this->getConstraints('choice'),
-                'required' => false,
-                'wrap_class' => 'col-sm-3 col-xs-4',
-                'choices' => Project::scope(),
-                'expanded' => true,
-                'attr' => ['help' => Text::get('tooltip-project-scope')]
-            ])
-            ->add('social_commitment', 'choice', [
-                'label' => 'overview-field-social-category',
-                'disabled' => $this->getReadonly(),
-                'constraints' => $this->getConstraints('social_commitment'),
-                'required' => false,
-                // 'wrap_class' => 'col-sm-3 col-xs-4',
-                'choices' => array_map(function($el){
-                        return [$el->id => $el->name];
-                    }, SocialCommitment::getAll()),
-                'expanded' => true,
-                'attr' => ['help' => Text::get('tooltip-project-social-category')]
-            ])
-            ->add('social_commitment_description', 'textarea', [
-                'disabled' => $this->getReadonly(),
-                'label' => 'overview-field-social-description',
-                'constraints' => $this->getConstraints('social_commitment_description'),
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-social-description'), 'rows' => 8]
-            ])
-            ;
+                'url' => '/api/stories/' . $story->id . '/pool-image',
+                'required' => false
+            ]);
+          
         return $this;
     }
+
 
 }

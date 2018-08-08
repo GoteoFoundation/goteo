@@ -28,6 +28,7 @@ use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Support;
 use Goteo\Model\User;
 use Goteo\Model\Blog;
+use Goteo\Model\Stories;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Message as Comment;
 use Goteo\Library\Text;
@@ -1067,10 +1068,41 @@ class ProjectDashboardController extends DashboardController {
         $project = $this->validateProject($pid, 'story');
         if($project instanceOf Response) return $project;
 
-        $defaults = (array)$project;
+        $redirect = '/dashboard/project/' . $this->project->id;
+
+        if(!$project->isFunded()) {
+            Message::error(Text::get('dashboard-project-blog-wrongstatus'));
+            return $this->redirect($redirect);
+        }
+
+        $story = reset(Stories::getall(false, false, ['project' => $this->project->id]));
+
+        if($story){
+            $story->project=$story->project->id;
+            if($story->image)
+                $story->image=$story->getImage();
+            if($story->pool_image)
+                $story->pool_image=$story->getPoolImage();
+        }
+        else {
+
+            $story = new Stories([
+                'project' => $this->project->id,
+                'node'    => 'goteo',
+                'order'   => 15,
+                'landing_pitch' => 0,
+                'landing_match' => 0,
+                'active'        => 0    
+            ]);
+        } 
+
+        $defaults = (array)$story;
+        // print_r($_FILES);die;
+
+
 
         // Create the form
-        $processor = $this->getModelForm('ProjectStory', $project, $defaults, [], $request);
+        $processor = $this->getModelForm('ProjectStory', $story, $defaults, ['project' => $project], $request);
         // For everyone
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         // Just for the owner
@@ -1078,7 +1110,7 @@ class ProjectDashboardController extends DashboardController {
 
         if(!$processor->getReadonly()) {
             $processor->getBuilder()->add('submit', 'submit', [
-                'label' => 'regular-submit'
+                'label' => 'regular-save'
             ]);
         }
         $form = $processor->getForm();
@@ -1094,7 +1126,8 @@ class ProjectDashboardController extends DashboardController {
             }
         }
         return $this->viewResponse('dashboard/project/story', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'story'=> $story
         ]);
     }
 

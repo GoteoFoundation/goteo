@@ -34,6 +34,7 @@ namespace Goteo\Model {
             $sphere
             ;
 
+
         /*
          *  Devuelve datos de una historia exitosa
          */
@@ -131,6 +132,9 @@ namespace Goteo\Model {
 
             if (!empty($filters['type'])) {
                  $sqlFilter.= " AND type = '".$filters['type']."'";
+            }  
+            if (!empty($filters['project'])) {
+                 $sqlFilter.= " AND stories.project = '".$filters['project']."'";
             }  
 
             if(self::default_lang(Lang::current()) === Config::get('lang')) {
@@ -309,9 +313,16 @@ namespace Goteo\Model {
         public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
 
+                
             // Imagen de fondo de stories
-            if (is_array($this->image) && !empty($this->image['name'])) {
+
+            if(is_array($this->image)&&empty($this->image['name'])) {
+                $this->image = reset($this->image);
+            }
+
+            if (is_array($this->image) && !empty($this->image['name'])||($this->image instanceOf Image && $this->image->tmp)) {
                 $image = new Image($this->image);
+
 
                 if ($image->save($errors)) {
                     $this->image = $image->id;
@@ -322,7 +333,12 @@ namespace Goteo\Model {
             }
 
             // Imagen de landing monedero
-            if (is_array($this->pool_image) && !empty($this->pool_image['name'])) {
+
+            if(is_array($this->pool_image)&&empty($this->pool_image['name'])) {
+                $this->pool_image = reset($this->pool_image);
+            }
+
+            if (is_array($this->pool_image) && !empty($this->pool_image['name'])||($this->pool_image instanceOf Image && $this->pool_image->tmp)) {
                 $pool_image = new Image($this->pool_image);
 
                 if ($pool_image->save($errors)) {

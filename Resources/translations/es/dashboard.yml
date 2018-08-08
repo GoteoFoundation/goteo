@@ -278,8 +278,3 @@ dashboard-origin-invests-referer: 'Origen de visitas en los aportes exitosos'
 dashboard-origin-project-device: 'Dispositivo usado en la página del proyecto'
 dashboard-origin-invests-device: 'Dispositivo usado en los aportes exitosos'
 dashboard-origin-disclaimer: '⚠ *Estos datos son orientativos y no incluyen la totalidad de las visitas debido a limitaciones técnicas.*  > Te recomendamos que configures Google Analytics o Facebook Pixel para tener datos más detallados'
-
-dashboard-story-form-title: 'Tu historia en Goteo'
-dashboard-story-guide-description: 'Cuéntanos como ha sido tu experiencia en Goteo, podrás servir de inspiración a otros impulsores <br><br>
-Tu historia aparecerá en tu perfil de usuario, y podrá ser mostrada en diversas secciones de Goteo, incluída la home, por parte de nuestro equipo.
-'
