@@ -139,6 +139,27 @@ $api->add('api-projects-invests-csv', new Route(
         )
 ));
 
+// Story image upload (POST method only)
+$api->add('api-stories-image-upload', new Route(
+    '/stories/{id}/image',
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storyUploadImageAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+// Story pool/polaroid image upload (POST method only)
+$api->add('api-stories-pool-image-upload', new Route(
+    '/stories/{id}/pool-image',
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storyUploadPoolImageAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
 
 // Calls list
 $api->add('api-calls', new Route(

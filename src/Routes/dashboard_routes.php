@@ -167,6 +167,13 @@ $dash->add('dashboard-project-delete', new Route(
         )
 ));
 
+// Project story
+$dash->add('dashboard-project-story', new Route(
+    '/project/{pid}/story',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::storyAction',
+        )
+));
+
 
 
 

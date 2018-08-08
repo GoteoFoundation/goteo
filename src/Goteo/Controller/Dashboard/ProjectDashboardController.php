@@ -28,6 +28,7 @@ use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Support;
 use Goteo\Model\User;
 use Goteo\Model\Blog;
+use Goteo\Model\Stories;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Message as Comment;
 use Goteo\Library\Text;
@@ -102,10 +103,17 @@ class ProjectDashboardController extends DashboardController {
             ['text' => '<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), 'link' => $prefix . '/materials', 'id' => 'materials']
         ];
 
+
         Session::addToSidebarMenu('<i class="icon icon-2x icon-settings"></i> ' . Text::get('footer-header-resources'), $submenu, 'resources', null, 'sidebar');
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get($project->isApproved() ? 'dashboard-menu-projects-preview' : 'regular-preview' ), '/project/' . $project->id, 'preview');
 
+        if($project->isFunded()) {
+
+            Session::addToSidebarMenu('<i class="fa fa-2x fa fa-id-badge"></i> ' . Text::get('dashboard-menu-projects-story'), $prefix . '/story', 'story');
+
+        }
+        
         if($project->inEdition() && $validation->global == 100) {
 
             Session::addToSidebarMenu('<i class="fa fa-2x fa-paper-plane"></i> ' . Text::get('project-send-review'), '/dashboard/project/' . $project->id . '/apply', 'apply', null, 'flat', 'btn btn-fashion apply-project');
@@ -1052,5 +1060,76 @@ class ProjectDashboardController extends DashboardController {
             ]);
 
     }
+
+    /**
+     * Project story
+     */
+    public function storyAction($pid, Request $request) {
+        $project = $this->validateProject($pid, 'story');
+        if($project instanceOf Response) return $project;
+
+        $redirect = '/dashboard/project/' . $this->project->id;
+
+        if(!$project->isFunded()) {
+            Message::error(Text::get('dashboard-project-blog-wrongstatus'));
+            return $this->redirect($redirect);
+        }
+
+        $story = reset(Stories::getall(false, false, ['project' => $this->project->id]));
+
+        if($story){
+            $story->project=$story->project->id;
+            if($story->image)
+                $story->image=$story->getImage();
+            if($story->pool_image)
+                $story->pool_image=$story->getPoolImage();
+        }
+        else {
+
+            $story = new Stories([
+                'project' => $this->project->id,
+                'node'    => 'goteo',
+                'order'   => 15,
+                'landing_pitch' => 0,
+                'landing_match' => 0,
+                'active'        => 0    
+            ]);
+        } 
+
+        $defaults = (array)$story;
+        // print_r($_FILES);die;
+
+
+
+        // Create the form
+        $processor = $this->getModelForm('ProjectStory', $story, $defaults, ['project' => $project], $request);
+        // For everyone
+        $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
+        // Just for the owner
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+
+        if(!$processor->getReadonly()) {
+            $processor->getBuilder()->add('submit', 'submit', [
+                'label' => 'regular-save'
+            ]);
+        }
+        $form = $processor->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $request->isMethod('post')) {
+            try {
+                $processor->save($form, true);
+                Message::info(Text::get('dashboard-project-saved'));
+                return $this->redirect($this->getEditRedirect('overview', $request));
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+        return $this->viewResponse('dashboard/project/story', [
+            'form' => $form->createView(),
+            'story'=> $story
+        ]);
+    }
+
 
 }
