@@ -1,0 +1,25 @@
+@import "compass/css3";
+
+/* User  */
+.user{
+  div.main-info{
+      background-color: $color-white;
+      padding:40px 0;
+    div.avatar{
+        text-align: right;
+      img{
+        background-color: $background-light;
+        border: 4px solid $color-white;
+        box-shadow: 1px 1px 5px 0 #8C8A8A;
+      }
+    }
+    div.info{
+      div.user-label{
+        color: $color-dark-green;
+        font-size: $font-size*1.1;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+    }
+  }
+}
