@@ -1089,11 +1089,18 @@ class ProjectDashboardController extends DashboardController {
             $story = new Stories([
                 'project' => $this->project->id,
                 'node'    => 'goteo',
-                'order'   => 15,
+                'order'   => Stories::next(),
                 'landing_pitch' => 0,
                 'landing_match' => 0,
                 'active'        => 0    
             ]);
+
+            if (!$story->save($errors)) {
+                Message::error(Text::get('story-save-fail'). "\n" .implode("\n", $errors));
+                return $this->redirect($redirect);
+            }
+
+
         } 
 
         $defaults = (array)$story;

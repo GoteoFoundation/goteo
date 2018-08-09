@@ -330,7 +330,9 @@ namespace Goteo\Model {
                     \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->image = '';
                 }
+
             }
+
 
             // Imagen de landing monedero
 
