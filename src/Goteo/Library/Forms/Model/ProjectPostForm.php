@@ -20,7 +20,7 @@ use Goteo\Application\Session;
 use Goteo\Library\Forms\FormModelException;
 use Symfony\Component\Form\FormInterface;
 
-class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInterface {
+class ProjectPostForm extends AbstractFormProcessor {
 
     public function createForm() {
 
@@ -93,7 +93,7 @@ class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInte
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
-        print_r($data['tags']);die;
+        if(array_key_exists('tags', $data)) $data['tags'] = explode(',', $data['tags']);
         $post = $this->getModel();
         $post->rebuildData($data, array_keys($form->all()));
         $gallery = Image::getModelGallery('post', $post->id);
