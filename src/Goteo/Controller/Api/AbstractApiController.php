@@ -10,8 +10,12 @@
 
 namespace Goteo\Controller\Api;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Session;
 use Goteo\Application\View;
+use Goteo\Model\Image;
+use Goteo\Library\Text;
 
 abstract class AbstractApiController extends \Goteo\Core\Controller {
     protected $is_admin = false;
@@ -25,4 +29,55 @@ abstract class AbstractApiController extends \Goteo\Core\Controller {
         // cache active only on non-logged users
         if(!$this->user) $this->dbCache(true);
     }
+
+
+    /**
+     * Generic file uploader to be used by other api controllers
+     */
+    protected function genericFileUpload(Request $request, $field_name = 'file') {
+        $files = $request->files->get($field_name);
+        if(!is_array($files)) $files = [$files];
+        $global_msg = Text::get('all-files-uploaded');
+        $result = [];
+
+        $all_success = true;
+        foreach($files as $file) {
+            if(!$file instanceOf UploadedFile) continue;
+            // Process image
+            $msg = Text::get('uploaded-ok');
+            $success = false;
+            if($err = Image::getUploadErrorText($file->getError())) {
+                $success = false;
+                $msg = $err;
+            } else {
+                $image = new Image($file);
+                $errors = [];
+                if ($image->save($errors)) {
+                    $success = true;
+                }
+                else {
+                    $msg = implode(', ',$errors['image']);
+                    // print_r($errors);
+                }
+            }
+
+            $result[] = [
+                'originalName' => $file->getClientOriginalName(),
+                'name' => $image->name,
+                'success' => $success,
+                'msg' => $msg,
+                'error' => $file->getError(),
+                'size' => $file->getSize(),
+                'maxSize' => $file->getMaxFileSize(),
+                'errorMsg' => $file->getError() ? $file->getErrorMessage() : ''
+            ];
+            if(!$success) {
+                $global_msg = Text::get('project-upload-images-some-ko');
+                $all_success = false;
+            }
+        }
+
+        return ['files' => $result, 'cover' => $cover,  'msg' => $global_msg, 'success' => $all_success];
+    }
+
 }

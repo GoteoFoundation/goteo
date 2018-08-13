@@ -11,12 +11,10 @@
 namespace Goteo\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
 
 use Goteo\Model\Post;
-use Goteo\Model\Image;
 use Goteo\Library\Text;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Blog\Post\Tag as PostTag;
@@ -58,55 +56,14 @@ class BlogApiController extends AbstractApiController {
 
 
     /**
-     * AJAX upload image (Generic image uploader for projects with optional project gallery updater)
+     * AJAX upload image for the blog
      */
     public function uploadImagesAction(Request $request) {
         if(!$this->user || $this->user->hasPerm('admim-module-blog'))
             throw new ControllerAccessDeniedException();
 
-        $files = $request->files->get('file');
-        if(!is_array($files)) $files = [$files];
-        $global_msg = Text::get('all-files-uploaded');
-        $result = [];
-
-        $all_success = true;
-        foreach($files as $file) {
-            if(!$file instanceOf UploadedFile) continue;
-            // Process image
-            $msg = Text::get('uploaded-ok');
-            $success = false;
-            if($err = Image::getUploadErrorText($file->getError())) {
-                $success = false;
-                $msg = $err;
-            } else {
-                $image = new Image($file);
-                $errors = [];
-                if ($image->save($errors)) {
-                    $success = true;
-                }
-                else {
-                    $msg = implode(', ',$errors['image']);
-                    // print_r($errors);
-                }
-            }
-
-            $result[] = [
-                'originalName' => $file->getClientOriginalName(),
-                'name' => $image->name,
-                'success' => $success,
-                'msg' => $msg,
-                'error' => $file->getError(),
-                'size' => $file->getSize(),
-                'maxSize' => $file->getMaxFileSize(),
-                'errorMsg' => $file->getError() ? $file->getErrorMessage() : ''
-            ];
-            if(!$success) {
-                $global_msg = Text::get('project-upload-images-some-ko');
-                $all_success = false;
-            }
-        }
-
-        return $this->jsonResponse(['files' => $result, 'cover' => $cover,  'msg' => $global_msg, 'success' => $all_success]);
+        $result = $this->genericFileUpload($request, 'file'); // 'file' is the expected form input name in the post object
+        return $this->jsonResponse($result);
     }
 
     public function deleteImagesAction($id, $image, Request $request) {

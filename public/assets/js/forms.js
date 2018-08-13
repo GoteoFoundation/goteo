@@ -189,6 +189,7 @@ $(function(){
           var itemValue = $this.data('item-value') || 'tag';
           var itemText = $this.data('item-text') || 'tag';
           var limit = $this.data('limit') || 5;
+          var maxTags = $this.data('max-tags') || 10;
           var minLength = $this.data('min') || 0;
           // Optional values via json object
           var values = $this.data('values') || [];
@@ -200,7 +201,8 @@ $(function(){
           var ops = {
             itemValue: itemValue,
             itemText: itemText,
-            tagClass: 'label label-lilac'
+            tagClass: 'label label-lilac',
+            maxTags: maxTags
           };
 
           if(url) {

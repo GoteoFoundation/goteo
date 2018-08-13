@@ -70,6 +70,7 @@ class AdminPostEditForm extends ProjectPostForm {
                 'data-key-value' => 'id', // id field for bloodhound via api
                 'data-key-text' => 'tag', // text field for bloodhound via api
                 'data-limit' => 20, // total results in typeahead
+                'data-max-tags' => 3, // Max number of tags allowed
                 'data-min' => 0, // Shows inmediatly on focus the list if 0
                 // TODO: pass the template to show a table instead of a list
                 'data-values' => json_encode($jtags),
