@@ -15,15 +15,19 @@ admin-account-edit-reward: 'Manage return/address'
 admin-account-invalid-invest: 'Contribution [%s] not found!'
 admin-account-invest-date: 'Date of Contribution'
 admin-account-invest-non-pool-refundable: 'This contribution can not be reimbursed to the virtual wallet. You can only reimburse contributions in the "Charged" status'
+admin-account-modify-status: 'Modify status'
 admin-account-payment-method: 'Payment method'
 admin-account-switch-donation: 'Switch donation'
 admin-address: Address
 admin-all: All
+admin-global: Global
 admin-back: Back
 admin-back-detail: 'Back to Detail'
 admin-back-list: 'Back to list'
 admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
+admin-activity: Activity
+admin-home: Dashboard
 admin-mailing-back-to-list: 'Back to messages'
 admin-mailing-created: 'Created on'
 admin-mailing-new-massive: 'A new mass mailing was created to %TOTAL% users'
@@ -31,6 +35,10 @@ admin-mailing-status: 'Automatic delivery status'
 admin-mailing-subject: Subject
 admin-mailing-view-and-activate: 'See the post admin to start sending'
 admin-mailing-view-in-newsletter: 'See the post admin'
+admin-mailing-view-message: 'View message'
+admin-newsletter-langs-to-send: 'Languages: %LANGS%'
+admin-no: 'No'
+admin-percent: Percent
 admin-project: Project
 admin-main: Main
 admin-legacy: Legacy
@@ -39,7 +47,11 @@ admin-consultants: 'Consultants'
 admin-invests: Contributions
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
+admin-services: Services
 admin-sponsors: Contributors
+admin-others: Others
+admin-summary: Sumary
+admin-origins: Visits analytics
 admin-status: Status
 admin-text-type: 'Process the text as'
 admin-text-type-html: HTML
@@ -47,6 +59,7 @@ admin-text-type-md: Markdown
 admin-text-type-plain: 'Plaintext'
 admin-user: User
 admin-users: Users
+admin-channels: Channels
 admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
@@ -67,6 +80,8 @@ admin-project-derivation-discard: 'Discard and derivation'
 admin-project-derivation-discard-desc: 'Change the project status to Discard and sends an email derivating to others platforms'
 admin-project-derivation-discard-sure: 'The project will be discarded and the owner will receive an email derivating to other platforms, ok?'
 admin-home-title: Administrate Goteo
+admin-list: List
+admin-stats: Stats
 admin-already-impersonating: 'You are already impersonating a user. Please close the session first!'
 admin-rebase-user: 'Change user ID'
 admin-edit-name: 'Change name'
@@ -97,3 +112,4 @@ admin-all-call-referers: 'Origin of visits to matchfunding pages'
 admin-all-project-devices: 'Device used on project pages'
 admin-all-invests-devices: 'Device used in successful contributions to projects'
 admin-all-call-devices: 'Device used on matchfunding pages'
+admin-stats-refunded: 'Returns'
