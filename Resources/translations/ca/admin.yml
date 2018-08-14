@@ -64,6 +64,10 @@ admin-users: Usuaris
 admin-users-add: Crea un nou usuari
 admin-blog: Blog general
 admin-blog-add: Crea un nou post
+admin-blog-edit: Editant post %s
+admin-blog-slug-exists: 'L''identificador [%s] s''està fent servir en un altre post!'
+admin-blog-slug-chars: 'L''identificador [%s] contè caràcters invàlids!'
+
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
 admin-project-express-discard: 'Rebuig express'
@@ -118,7 +122,7 @@ admin-title-amount: Invertit
 admin-title-info: Info
 admin-title-image: Imatge
 admin-title-title: Títol
-admin-title-subtitle: Subtitol
+admin-title-subtitle: Subtítol
 admin-title-text: Text
 admin-title-slug: Slug
 admin-title-langs: Traduccions

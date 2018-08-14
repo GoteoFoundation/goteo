@@ -316,21 +316,55 @@ $(function(){
 
         $('.autoform input.online-video').each(_addVideo);
 
-        // HTML editors
-        $('.autoform .summernote > textarea').summernote({
-            height: 300,
-            toolbar: [
-                ['tag', ['style']],
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                // ['font', ['strikethrough', 'superscript', 'subscript']],
-                // ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                // ['height', ['height']],
-                ['insert', ['link', 'picture', 'video', 'hr', 'table']],
-                ['misc', ['fullscreen', 'codeview', 'help']]
-              ],
-            callbacks: {
+        var _uploadImage = function(files, url, callback) {
+            callback = $.isFunction(callback) ? callback : function(){};
+            var data = new FormData();
+            if(!files.length) files = [files];
+            $.each(files, function(index, file){
+              // TODO: configurable input.file name
+              data.append('file[]', file);
+            });
+            var _progress = function(e) {
+                if(e.lengthComputable){
+                    // console.log('progress', e.loaded, e.total);
+                    callback('progress', e.loaded / e.total);
+                }
+            };
+            $.ajax({
+                url: url,
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: data,
+                type: 'POST',
+                xhr: function() {
+                  var myXhr = $.ajaxSettings.xhr();
+                  if (myXhr.upload) myXhr.upload.addEventListener('progress',_progress, false);
+                  return myXhr;
+                },
+                success: function(result) {
+                  // console.log('success', result, result.files);
+                  if(result && result.files) {
+                    var files = $.map(result.files, function(file) {
+                      return IMG_URL + '/600x600/' + file.name;
+                    });
+                    callback('success', files);
+                  } else {
+                    callback('error', 'No files uploaded!');
+                  }
+                },
+                error: function(data) {
+                  console.log('upload error', data);
+                  callback('error', data);
+                }
+            });
+        };
+
+        // HTML editors initializations
+        var summernotes = form.summernotes = {};
+        $('.autoform .summernote > textarea').each(function() {
+            var el = this;
+            var callbacks = {
                 onFocus: function() {
                   // console.log('Editable area is focused');
                   $(this).closest('.summernote').addClass('focused');
@@ -339,7 +373,49 @@ $(function(){
                   // console.log('Editable area loses focus');
                   $(this).closest('.summernote').removeClass('focused');
                 }
+            };
+            if($(el).data('image-upload')) {
+                callbacks.onImageUpload = function(files) {
+                  var $sm = $(this).closest('.summernote');
+                  var $up = $('<div class="uploading">');
+                  var self = this;
+                  $sm.prepend($up);
+                  _uploadImage(files, $(el).data('image-upload'), function(status, data) {
+                    // console.log('callback upload', status, data);
+                    if(status === 'progress') {
+                      $up.css('width',  (data * 100) + '%');
+                    } else {
+                      $up.remove();
+                    }
+                    if(status === 'success') {
+                      if(!data.length) data = [data];
+                      $.each(data, function(i,name){
+                        var image = $('<img>').attr('src', name);
+                        summernote.summernote('insertNode', image[0]);
+                      });
+                    }
+                    if(status === 'error') {
+                      alert('ERROR: ' + data);
+                    }
+                  });
+                };
             }
+            var summernote = $(el).summernote({
+                // height: 300,
+                toolbar: [
+                    ['tag', ['style']],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    // ['font', ['strikethrough', 'superscript', 'subscript']],
+                    // ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    // ['height', ['height']],
+                    ['insert', ['link', 'picture', 'video', 'hr', 'table']],
+                    ['misc', ['fullscreen', 'codeview', 'help']]
+                  ],
+                callbacks: callbacks
+            });
+            summernotes[$(this).attr('id')] = summernote;
         });
 
         // MarkdownType initialization
@@ -699,15 +775,20 @@ $(function(){
         $('.autoform').on( 'click', '.image-list-sortable .add-to-markdown', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            // console.log('add to markdown');
             var $li = $(this).closest('li');
             var name = $li.data('name');
             var $form = $(this).closest('form');
             $form.find('.dragndrop').show();
             var target = $form.attr('name') + '_' + $(this).data('target');
             var md = markdowns[target];
+            // console.log('add to markdown', target);
             if(md) {
                 md.value(md.value().replace(/\s+$/g, '') + "\n\n![](" + IMG_URL + '/600x600/' + name + ")");
+            } else {
+                sm = summernotes[target];
+                if(sm) {
+                    sm.summernote('insertImage', IMG_URL + '/600x600/' + name, name);
+                }
             }
         });
 
