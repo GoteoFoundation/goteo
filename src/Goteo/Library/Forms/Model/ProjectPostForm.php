@@ -96,9 +96,12 @@ class ProjectPostForm extends AbstractFormProcessor {
         if(array_key_exists('tags', $data)) $data['tags'] = explode(',', $data['tags']);
         $post = $this->getModel();
         $post->rebuildData($data, array_keys($form->all()));
-        $gallery = Image::getModelGallery('post', $post->id);
         $post->image = $data['image'];
-        // $current = array_column($post->image, 'id');
+        if(is_array($data['header_image'])) $post->header_image = $data['header_image'][0];
+
+
+        $gallery = Image::getModelGallery('post', $post->id);
+
         $current = array_map(function($e) {
                 return is_object($e) ? $e->id : $e['id'];
             }, $post->image);
@@ -114,7 +117,7 @@ class ProjectPostForm extends AbstractFormProcessor {
                 }
             }
         }
-        // print_r($current);die;
+        // print_r($post);die;
 
         // Remove html tags if has no permission
         if(!Session::getUser()->hasPerm('full-html-edit')) {

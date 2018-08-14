@@ -483,9 +483,9 @@
         }
       }
     }
-    .form-control {
+    .form-control:not(.note-form-control) {
       background-color: $background-white;
-      border: none;
+      border-width: 0;
       box-shadow: none;
     }
   }

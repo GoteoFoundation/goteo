@@ -24,16 +24,19 @@ class Post extends \Goteo\Core\Model {
     public
         $id,
         $title,
+        $subtitle,
         $blog,
         $slug,
         $date,
         $text,
         $image,
+        $header_image,
         $gallery = array(), // array de instancias image de post_image
         $media,
         $author,
         $order,
         $publish,
+        $section,
         $home = false,
         $node;  // las entradas en portada para nodos se guardan en la tabla post_node con unos metodos alternativos
 
@@ -71,6 +74,8 @@ class Post extends \Goteo\Core\Model {
                 post.blog as blog,
                 post.slug as slug,
                 post.image as image,
+                post.header_image as `header_image`,
+                post.section as `section`,
                 post.media as `media`,
                 post.type as `type`,
                 post.date as `date`,
@@ -178,6 +183,8 @@ class Post extends \Goteo\Core\Model {
                 post.slug as slug,
                 $different_select,
                 post.image as `image`,
+                post.header_image as `header_image`,
+                post.section as `section`,
                 post.media as `media`,
                 post.type as `type`,
                 $sqlField
@@ -406,6 +413,8 @@ class Post extends \Goteo\Core\Model {
             'text',
             'date',
             'media',
+            'image',
+            'header_image',
             'legend',
             'order',
             'publish',
@@ -599,6 +608,16 @@ class Post extends \Goteo\Core\Model {
         $order = $query->fetchColumn(0);
         return ++$order;
 
+    }
+
+    // List of blog sections
+    public static function getListSections(){
+        return Config::get('blog.sections');;
+    }
+
+    public static function getSection($section){
+        $sections = self::getListSections();
+        return $sections[$section];
     }
 
 }

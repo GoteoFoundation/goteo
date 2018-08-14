@@ -45,6 +45,7 @@ class Post extends \Goteo\Core\Model {
         $publish = false,
         $type = 'md', // html or md (markdown)
         $tags = array(),
+        $section,
         $gallery = array(), // array de instancias image de post_image
         $num_comments = 0,
         $comments = array();
@@ -87,7 +88,9 @@ class Post extends \Goteo\Core\Model {
                 post.slug as slug,
                 $fields,
                 post.image as `image`,
+                post.media as `media`,
                 post.header_image as `header_image`,
+                post.section as `section`,
                 post.date as `date`,
                 post.type as `type`,
                 DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
@@ -187,6 +190,8 @@ class Post extends \Goteo\Core\Model {
                 blog.owner as owner,
                 $fields,
                 post.image as `image`,
+                post.header_image as `header_image`,
+                post.section as `section`,
                 post.type as `type`,
                 DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                 DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
@@ -518,8 +523,10 @@ class Post extends \Goteo\Core\Model {
             'slug',
             'title',
             'subtitle',
+            'section',
             'text',
             'media',
+            'header_image',
             'legend',
             'date',
             'allow',
@@ -655,20 +662,11 @@ class Post extends \Goteo\Core\Model {
 
     // List of blog sections
     public static function getListSections(){
-        $sections=[ 'mission'      => 'blog-section-mission',
-                    'matchfunding' => 'blog-section-matchfunding',
-                    'voices'     => 'blog-section-voices',
-                    'transparency' => 'blog-section-transparency',
-                    'milestones'   => 'blog-section-milestones',
-                    'team'         => 'blog-section-team'
-                ];
-
-        return $sections;
+        return Config::get('blog.sections');;
     }
 
     public static function getSection($section){
-        $sections=self::getListSections();
-
+        $sections = self::getListSections();
         return $sections[$section];
     }
 }

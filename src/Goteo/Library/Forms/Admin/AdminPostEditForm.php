@@ -109,6 +109,15 @@ class AdminPostEditForm extends ProjectPostForm {
             }, array_keys($data['tags']), $data['tags']);
 
         $builder
+            ->add('header_image', 'dropfiles', array(
+                'required' => false,
+                'label' => 'admin-title-header-image',
+                'accepted_files' => 'image/jpeg,image/gif,image/png',
+                'url' => '/api/blog/images',
+                'constraints' => array(
+                    new Constraints\Count(array('max' => 1))
+                )
+            ))
             ->add('tags', 'tags', [
                 'label' => 'admin-title-tags',
                 'data' => $tags,
@@ -130,6 +139,13 @@ class AdminPostEditForm extends ProjectPostForm {
             ->add('media', 'media', array(
                 'label' => 'regular-media',
                 'required' => false
+            ))
+            ->add('section', 'choice', array(
+                'label' => 'admin-title-section',
+                'required' => true,
+                'expanded' => true,
+                'wrap_class' => 'col-xs-6',
+                'choices' => $post::getListSections(),
             ))
             ->add('allow', 'boolean', array(
                 'required' => false,

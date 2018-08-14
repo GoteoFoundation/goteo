@@ -115,6 +115,7 @@ admin-title-fullname: Nom
 admin-title-about: Info
 admin-title-location: Localització
 admin-title-email: Email
+admin-title-header-image: Imatge de capçalera
 admin-title-password: Contrasenya
 admin-title-avatar: Avatar
 admin-title-roles: Rols
@@ -123,8 +124,10 @@ admin-title-info: Info
 admin-title-image: Imatge
 admin-title-title: Títol
 admin-title-subtitle: Subtítol
+admin-title-section: Secció
 admin-title-text: Text
 admin-title-slug: Slug
+admin-title-publish: Publicat
 admin-title-langs: Traduccions
 admin-title-actions: Accions
 admin-title-tags: Tags

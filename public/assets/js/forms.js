@@ -130,7 +130,7 @@ $(function(){
                         url: url,
                         type: 'PUT',
                         data: {value: val}
-                    }).success(function(data) {
+                    }).done(function(data) {
                         original = _setValue.call($input[0], data.value);
                         $(document).trigger('form-boolean-changed', [$input[0]]);
                         if(data.message) alert(data.message);
@@ -297,7 +297,7 @@ $(function(){
             }
             else if (video.type === 'vimeo') {
                 $.getJSON("https://vimeo.com/api/v2/video/"+ video.id + ".json")
-                 .success(function(res) {
+                 .done(function(res) {
                     // console.log('videmo ok', res);
                     putVideo(res[0].thumbnail_large);
                  })
@@ -365,40 +365,40 @@ $(function(){
         $('.autoform .summernote > textarea').each(function() {
             var el = this;
             var callbacks = {
-                onFocus: function() {
-                  // console.log('Editable area is focused');
-                  $(this).closest('.summernote').addClass('focused');
-                },
-                onBlur: function() {
-                  // console.log('Editable area loses focus');
-                  $(this).closest('.summernote').removeClass('focused');
-                }
+              onFocus: function() {
+                // console.log('Editable area is focused');
+                $(this).closest('.summernote').addClass('focused');
+              },
+              onBlur: function() {
+                // console.log('Editable area loses focus');
+                $(this).closest('.summernote').removeClass('focused');
+              }
             };
             if($(el).data('image-upload')) {
-                callbacks.onImageUpload = function(files) {
-                  var $sm = $(this).closest('.summernote');
-                  var $up = $('<div class="uploading">');
-                  var self = this;
-                  $sm.prepend($up);
-                  _uploadImage(files, $(el).data('image-upload'), function(status, data) {
-                    // console.log('callback upload', status, data);
-                    if(status === 'progress') {
-                      $up.css('width',  (data * 100) + '%');
-                    } else {
-                      $up.remove();
-                    }
-                    if(status === 'success') {
-                      if(!data.length) data = [data];
-                      $.each(data, function(i,name){
-                        var image = $('<img>').attr('src', name);
-                        summernote.summernote('insertNode', image[0]);
-                      });
-                    }
-                    if(status === 'error') {
-                      alert('ERROR: ' + data);
-                    }
-                  });
-                };
+              callbacks.onImageUpload = function(files) {
+                var $sm = $(this).closest('.summernote');
+                var $up = $('<div class="uploading">');
+                var self = this;
+                $sm.prepend($up);
+                _uploadImage(files, $(el).data('image-upload'), function(status, data) {
+                  // console.log('callback upload', status, data);
+                  if(status === 'progress') {
+                    $up.css('width',  (data * 100) + '%');
+                  } else {
+                    $up.remove();
+                  }
+                  if(status === 'success') {
+                    if(!data.length) data = [data];
+                    $.each(data, function(i,name){
+                      var image = $('<img>').attr('src', name);
+                      summernote.summernote('insertNode', image[0]);
+                    });
+                  }
+                  if(status === 'error') {
+                    alert('ERROR: ' + data);
+                  }
+                });
+              };
             }
             var summernote = $(el).summernote({
                 // height: 300,
@@ -413,6 +413,7 @@ $(function(){
                     ['insert', ['link', 'picture', 'video', 'hr', 'table']],
                     ['misc', ['fullscreen', 'codeview', 'help']]
                   ],
+                popatmouse: false,
                 callbacks: callbacks
             });
             summernotes[$(this).attr('id')] = summernote;
