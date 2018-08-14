@@ -300,6 +300,16 @@ final class AppEvents
     const PROJECT_POST = 'project.post';
 
     /**
+     * The blog.post event is thrown when a blog entry is edited
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterBlogPostEvent instance.
+     *
+     * @var string
+     */
+    const BLOG_POST = 'blog.post';
+
+    /**
      * The message.created event is thrown when a new message/comments is created
      *
      * The event listener receives an

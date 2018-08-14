@@ -18,6 +18,8 @@ use Goteo\Application\Config;
 use Goteo\Application\Message;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Event\FilterBlogPostEvent;
+use Goteo\Application\AppEvents;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
@@ -116,7 +118,7 @@ class BlogAdminController extends AbstractAdminController {
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
                 $processor->save($form, true);
-                // print_r($defaults['slug']." [");print_R($processor->getModel()->slug."]");die;
+                $this->dispatch(AppEvents::BLOG_POST, new FilterBlogPostEvent($processor->getModel()));
                 Message::info(Text::get('admin-blog-edit-success'));
                 return $this->redirect('/admin/blog?' . $request->getQueryString());
             } catch(FormModelException $e) {
