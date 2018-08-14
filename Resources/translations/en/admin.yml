@@ -47,6 +47,10 @@ admin-users: Users
 admin-users-add: Create new user
 admin-blog: General blog
 admin-blog-add: Create new post
+admin-blog-edit: Editing post %s
+admin-blog-slug-exists: 'The slug [%s] is being used by another post!'
+admin-blog-slug-chars: 'The slug [%s] contains invalid characters!'
+
 admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s

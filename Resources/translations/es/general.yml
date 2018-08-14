@@ -78,6 +78,7 @@ regular-allsome: 'todos/algunos de'
 regular-anonymous: Anónimo
 regular-ask: Preguntar
 regular-submit: Enviar
+regular-slug: Identificador único
 regular-by: 'Por:'
 regular-calendar: Calendar
 regular-cancel: Cancelar

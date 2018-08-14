@@ -92,6 +92,10 @@ admin-users: Usuarios
 admin-users-add: Crear nuevo usuario
 admin-blog: Blog general
 admin-blog-add: Crear nuevo post
+admin-blog-edit: Editando post %s
+admin-blog-slug-exists: 'El identificador [%s] se está usando en otro post!'
+admin-blog-slug-chars: 'El identificador [%s] contiene carácteres inválidos!'
+
 admin-calls: Convocatorias
 admin-matchers: Matchers
 admin-channels: Canales

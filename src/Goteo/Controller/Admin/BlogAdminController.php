@@ -116,6 +116,7 @@ class BlogAdminController extends AbstractAdminController {
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
                 $processor->save($form, true);
+                // print_r($defaults['slug']." [");print_R($processor->getModel()->slug."]");die;
                 Message::info(Text::get('admin-blog-edit-success'));
                 return $this->redirect('/admin/blog?' . $request->getQueryString());
             } catch(FormModelException $e) {
@@ -123,8 +124,9 @@ class BlogAdminController extends AbstractAdminController {
             }
         }
 
-        return $this->viewResponse('admin/blog/add', [
+        return $this->viewResponse('admin/blog/edit', [
             'form' => $form->createView(),
+            'post' => $post,
             'user' => $user
         ]);
     }

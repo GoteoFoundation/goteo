@@ -10,7 +10,7 @@ $this->section('admin-search-box-addons');
 
 <?php $this->section('admin-container-body') ?>
 
-    <h4 class="title"><?= $this->text('admin-blog-edit') ?> #<?= $this->post->getSlug() ?></h4>
+    <h4 class="title"><?= $this->post->id ? $this->text('admin-blog-edit', "#{$this->post->id}") : $this->text('admin-blog-add') ?></h4>
 
 
     <?= $this->form_form($this->raw('form')) ?>

@@ -72,12 +72,13 @@ regular-allsome: 'tots/alguns de'
 regular-anonymous: Anònim
 regular-ask: Preguntar
 regular-submit: Envia
+regular-slug: Identificador únic
 regular-by: 'Per:'
 regular-calendar: Calendari
 regular-cancel: Cancel·lar
 regular-cancel-back: 'Cancel·lar i torna enrere'
 regular-back: 'Torna enrere'
-regular-collaborate: Col·labora 
+regular-collaborate: Col·labora
 regular-content: Contingut
 regular-continue-question: 'Continuar?'
 regular-continue: 'Continuar'
@@ -140,12 +141,12 @@ regular-menu-personal: Menú personal
 regular-message-clipboard-fail: 'Selecciona i copia aquest enllaç'
 regular-message_fail: 'Hi ha hagut algun error en enviar el missatge'
 regular-message_success: 'Missatge enviat correctament'
-regular-months: mesos 
+regular-months: mesos
 regular-more_info: '+ info'
 regular-news: 'Notícies: '
 regular-no: 'No'
 regular-of: de
-regular-preview: Previsualitzar 
+regular-preview: Previsualitzar
 regular-projects: projectes
 regular-published_no: Esborrany
 regular-published_yes: Publicat

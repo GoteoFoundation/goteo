@@ -23,34 +23,81 @@ use Goteo\Library\Forms\FormModelException;
 class AdminPostEditForm extends ProjectPostForm {
 
     public function createForm() {
-        parent::createForm();
         $builder = $this->getBuilder();
         $options = $builder->getOptions();
         $post = $this->getModel();
         $data = $options['data'];
 
+        $builder
+            ->add('title', 'text', array(
+                'label' => 'regular-title',
+                'constraints' => array(
+                    new Constraints\NotBlank(),
+                    new Constraints\Length(array('min' => 4)),
+                ),
+            ));
 
-        // saving images will add that images to the gallery
-        // let's show the gallery in the field with nice options
-        // for removing and reorder it
-        $builder->add('image', 'dropfiles', array(
-            'required' => false,
-            'data' => $data['gallery'],
-            'label' => 'regular-images',
-            'markdown_link' => 'text',
-            'accepted_files' => 'image/jpeg,image/gif,image/png',
-            'url' => '/api/blog/images',
-            'constraints' => array(
-                new Constraints\Count(array('max' => 20))
-            )
-        ));
+        if($data['slug']) {
+            $builder->add('slug', 'text',[
+                'label' => 'regular-slug',
+                'required' => true,
+                'constraints' => array(
+                    new Constraints\NotBlank(),
+                    new Constraints\Callback(function($object, $context) use ($post){
+                        if($object != $post::idealiza($object, false, false, 150)) {
+                            $context->buildViolation(Text::get('admin-blog-slug-chars', $object))
+                            ->atPath('slug')
+                            ->addViolation();
+                        }
+
+                        if($post->slugExists($object)) {
+                            $context->buildViolation(Text::get('admin-blog-slug-exists', $object))
+                            ->atPath('slug')
+                            ->addViolation();
+                        }
+                    })
+                ),
+            ]);
+        }
+
+        $builder
+            ->add('subtitle', 'text', array(
+                'label' => 'admin-title-subtitle'
+            ))
+            ->add('date', 'datepicker', array(
+                'label' => 'regular-date',
+                'constraints' => array(new Constraints\NotBlank()),
+            ))
+            // saving images will add that images to the gallery
+            // let's show the gallery in the field with nice options
+            // for removing and reorder it
+            ->add('image', 'dropfiles', array(
+                'required' => false,
+                'data' => $data['gallery'],
+                'label' => 'regular-images',
+                'markdown_link' => 'text',
+                'accepted_files' => 'image/jpeg,image/gif,image/png',
+                'url' => '/api/blog/images',
+                'constraints' => array(
+                    new Constraints\Count(array('max' => 20))
+                )
+            ));
 
         // Replace markdown by html editor if type
         if($post->type === 'html') {
             $builder->add('text', 'textarea', array(
                 'label' => 'admin-title-text',
                 'required' => false,
-                'html_editor' => true
+                'html_editor' => true,
+                // 'constraints' => array(new Constraints\NotBlank()),
+                'attr' => [
+                    'data-image-upload' => '/api/blog/images'
+                ]
+            ));
+        } else {
+            $builder->add('text', 'markdown', array(
+                'label' => 'regular-text',
+                'required' => false,
                 // 'constraints' => array(new Constraints\NotBlank()),
             ));
         }
@@ -61,24 +108,40 @@ class AdminPostEditForm extends ProjectPostForm {
                 return ['id' => $k,'tag' => $v];
             }, array_keys($data['tags']), $data['tags']);
 
-        $builder->add('tags', 'tags', [
-            'label' => 'admin-title-tags',
-            'data' => $tags,
-            'attr' => [
-                'data-item-value' => 'id', // id field for tagsinput
-                'data-item-text' => 'tag', // text field for tagsinput
-                'data-key-value' => 'id', // id field for bloodhound via api
-                'data-key-text' => 'tag', // text field for bloodhound via api
-                'data-limit' => 20, // total results in typeahead
-                'data-max-tags' => 3, // Max number of tags allowed
-                'data-min' => 0, // Shows inmediatly on focus the list if 0
-                // TODO: pass the template to show a table instead of a list
-                'data-values' => json_encode($jtags),
-                'autocomplete' => false
-            ],
-            'required' => false,
-            'url' => '/api/blog/tags'
-        ]);
+        $builder
+            ->add('tags', 'tags', [
+                'label' => 'admin-title-tags',
+                'data' => $tags,
+                'attr' => [
+                    'data-item-value' => 'id', // id field for tagsinput
+                    'data-item-text' => 'tag', // text field for tagsinput
+                    'data-key-value' => 'id', // id field for bloodhound via api
+                    'data-key-text' => 'tag', // text field for bloodhound via api
+                    'data-limit' => 20, // total results in typeahead
+                    'data-max-tags' => 3, // Max number of tags allowed
+                    'data-min' => 0, // Shows inmediatly on focus the list if 0
+                    // TODO: pass the template to show a table instead of a list
+                    'data-values' => json_encode($jtags),
+                    'autocomplete' => false
+                ],
+                'required' => false,
+                'url' => '/api/blog/tags'
+            ])
+            ->add('media', 'media', array(
+                'label' => 'regular-media',
+                'required' => false
+            ))
+            ->add('allow', 'boolean', array(
+                'required' => false,
+                'label' => 'blog-allow-comments', // Form has integrated translations
+                'color' => 'cyan', // bootstrap label-* (default, success, ...)
+            ))
+            ->add('publish', 'boolean', array(
+                'required' => false,
+                'label' => 'blog-published', // Form has integrated translations
+                'color' => 'cyan', // bootstrap label-* (default, success, ...)
+            ))
+            ;
 
 
         return $this;

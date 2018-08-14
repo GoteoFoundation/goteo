@@ -383,7 +383,7 @@ class Post extends \Goteo\Core\Model {
             $sql .= ' AND id!=:id';
         }
 
-        return self::query($sql, $val)->fetchColumn() > 0;
+        return self::query($sql, $values)->fetchColumn() > 0;
     }
 
     public function save (&$errors = array()) {
