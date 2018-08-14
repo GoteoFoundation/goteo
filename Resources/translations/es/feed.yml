@@ -80,6 +80,9 @@ feed-project-ready-ok: '%USER% ha enviado el proyecto %PROJECT% a <span class="r
 feed-project-new-post: 'Usuario publica una novedad en su proyecto (dashboard)'
 feed-project-post-published: '%USER% ha publicado un nuevo post en %BLOG% sobre el proyecto %PROJECT%, con el título "%TITLE%"'
 
+feed-blog-new-post: 'Nuevo post en el blog general (admin)'
+feed-blog-post-published: 'El admin %USER% ha %ACTION% en el blog general el post "%TITLE%"'
+
 feed-admin-has-done: 'El admin %ADMIN% ha %ACTION% al usuario %USER%'
 feed-admin-has-modified: 'El admin %ADMIN% ha %ACTION% (%PROPERTY%) al usuario %USER%'
 feed-admin-impersonated: 'Usuario suplantado'

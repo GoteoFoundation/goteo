@@ -79,6 +79,9 @@ feed-project-ready-ok: '%USER% ha enviat el projecte %PROJECT% a <span class="re
 feed-project-new-post: 'Usuari publica una novetat al seu projecte (dashboard)'
 feed-project-post-published: '%USER% ha publicat un nou post a %BLOG% sobre el projecte %PROJECT%, amb el títol "%TITLE%"'
 
+feed-blog-new-post: 'Nou post en el blog general (admin)'
+feed-blog-post-published: 'L''admin %USER% ha %ACTION% en el blog general el post "%TITLE%"'
+
 feed-admin-has-done: 'L''admin %ADMIN% ha %ACTION% l''usuari %USER%'
 feed-admin-has-modified: 'L''admin %ADMIN% ha %ACTION% (%PROPERTY%) l''usuari %USER%'
 feed-admin-impersonated: 'Usuari suplantat'

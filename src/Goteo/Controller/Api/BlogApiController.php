@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterBlogPostEvent;
 
 use Goteo\Model\Post;
 use Goteo\Library\Text;
@@ -156,7 +158,7 @@ class BlogApiController extends AbstractApiController {
             // do the SQL update
             $post->dbUpdate([$prop]);
             $result['value'] = $post->{$prop};
-            // $this->dispatch(AppEvents::PROJECT_POST, new FilterProjectPostEvent($post));
+            $this->dispatch(AppEvents::BLOG_POST, new FilterBlogPostEvent($post));
             // if($errors = Message::getErrors()) throw new ControllerException(implode("\n",$errors));
             if($errors = Message::getErrors()) {
                 $result['error'] = true;
