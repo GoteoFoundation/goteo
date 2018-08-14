@@ -3,7 +3,7 @@
 $value = $this->raw('value');
 $ob = $this->raw('ob');
 
-$link = $this->link ? $this->link : $ob->getLink('admin');
+$link = $this->link ? $this->link : $ob->getLink('admin', $this->key);
 
 if(is_array($this->value)) $value = implode(', ', $value);
 

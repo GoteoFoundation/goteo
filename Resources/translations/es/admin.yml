@@ -151,6 +151,7 @@ admin-title-about: Info
 admin-title-location: Localización
 admin-title-fullname: Nombre
 admin-title-email: Email
+admin-title-header-image: Imagen de cabecera
 admin-title-password: Contraseña
 admin-title-avatar: Avatar
 admin-title-roles: Roles
@@ -159,8 +160,10 @@ admin-title-info: Info
 admin-title-image: Imagen
 admin-title-title: Título
 admin-title-subtitle: Subtítulo
+admin-title-section: Sección
 admin-title-text: Texto
 admin-title-slug: Slug
+admin-title-publish: Publicado
 admin-title-langs: Traducciones
 admin-title-actions: Acciones
 admin-title-tags: Tags

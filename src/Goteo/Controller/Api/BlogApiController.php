@@ -13,6 +13,7 @@ namespace Goteo\Controller\Api;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Message;
 
 use Goteo\Model\Post;
 use Goteo\Library\Text;
@@ -31,9 +32,7 @@ class BlogApiController extends AbstractApiController {
         if(!$post)
             throw new ModelNotFoundException();
 
-        $this->admin = $this->user->hasPerm('admim-module-blog');
-
-        if($this->admin || $post->published) {
+        if($this->user->hasPerm('admin-module-blog') || $post->publish) {
             return $post;
         }
 
@@ -59,7 +58,7 @@ class BlogApiController extends AbstractApiController {
      * AJAX upload image for the blog
      */
     public function uploadImagesAction(Request $request) {
-        if(!$this->user || $this->user->hasPerm('admim-module-blog'))
+        if(!$this->user || !$this->user->hasPerm('admin-module-blog'))
             throw new ControllerAccessDeniedException();
 
         $result = $this->genericFileUpload($request, 'file'); // 'file' is the expected form input name in the post object
@@ -99,6 +98,76 @@ class BlogApiController extends AbstractApiController {
             }
         }
         return $this->jsonResponse(['msg' => $msg, 'default' => $image, 'result' => $success]);
+    }
+
+    /**
+     * Individual project updates property checker/updater
+     * To update a property, use the PUT method
+     */
+    public function postPropertyAction($id, $prop, Request $request) {
+        $post = $this->validatePost($id);
+
+        if(!$post) throw new ModelNotFoundException();
+
+        $read_fields = ['id', 'title', 'text', 'media', 'date', 'author', 'allow', 'publish', 'image', 'header_image', 'section', 'gallery', 'owner_type', 'owner_id', 'owner_name', 'user_name'];
+        $write_fields = ['title', 'text', 'date', 'allow', 'publish'];
+        $properties = [];
+        foreach($read_fields as $f) {
+            if(isset($post->{$f})) {
+                $val = $post->{$f};
+                if($val instanceOf Image) {
+                    $val = $val->getName();
+                }
+                if(is_array($val)) {
+                    foreach($val as $i => $ssub) {
+                        if($sub instanceOf Image) {
+                            $val[$i] = $sub->getName();
+                        }
+                    }
+                }
+                if(in_array($f, ['allow', 'publish'])) {
+                    $val = (bool) $val;
+                }
+                $properties[$f] = $val;
+            }
+        }
+        if(!array_key_exists($prop, $properties)) {
+            throw new ModelNotFoundException("Property [$prop] not found");
+        }
+        $result = ['value' => $properties[$prop], 'error' => false];
+
+
+        if($request->isMethod('put') && $request->request->has('value')) {
+
+            if(!$this->user || !$this->user->hasPerm('admin-module-blog'))
+                throw new ControllerAccessDeniedException();
+
+            if(!in_array($prop, $write_fields)) {
+                throw new ModelNotFoundException("Property [$prop] not writeable");
+            }
+            $post->{$prop} = $request->request->get('value');
+
+            if(in_array($prop, ['allow', 'publish'])) {
+                if($post->{$prop} == 'false') $post->{$prop} = false;
+                if($post->{$prop} == 'true') $post->{$prop} = true;
+                $post->{$prop} = (bool) $post->{$prop};
+            }
+
+            // do the SQL update
+            $post->dbUpdate([$prop]);
+            $result['value'] = $post->{$prop};
+            // $this->dispatch(AppEvents::PROJECT_POST, new FilterProjectPostEvent($post));
+            // if($errors = Message::getErrors()) throw new ControllerException(implode("\n",$errors));
+            if($errors = Message::getErrors()) {
+                $result['error'] = true;
+                $result['message'] = implode("\n", $errors);
+            }
+            if($messages = Message::getMessages()) {
+                $result['message'] = implode("\n", $messages);
+            }
+
+        }
+        return $this->jsonResponse($result);
     }
 
 }

@@ -85,6 +85,12 @@ $api->add('api-blog-images-delete', new Route(
     array(), // schemes
     array('DELETE') // methods
 ));
+// Post property individual updates
+$api->add('api-blog-post-property', new Route(
+    '/blog/{id}/property/{prop}',
+    array('_controller' => 'Goteo\Controller\Api\BlogApiController::postPropertyAction'
+        )
+));
 
 
 // Projects list

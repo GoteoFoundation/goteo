@@ -100,6 +100,7 @@ admin-title-fullname: Name
 admin-title-about: About
 admin-title-location: Location
 admin-title-email: Email
+admin-title-header-image: Header image
 admin-title-password: Password
 admin-title-avatar: Avatar
 admin-title-roles: Roles
@@ -108,8 +109,10 @@ admin-title-info: Info
 admin-title-image: Image
 admin-title-title: Title
 admin-title-subtitle: Subtitle
+admin-title-section: Section
 admin-title-text: Text
 admin-title-slug: Slug
+admin-title-publish: Published
 admin-title-langs: Translations
 admin-title-actions: 'Actions'
 admin-title-tags: Tags

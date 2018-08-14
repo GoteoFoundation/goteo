@@ -331,3 +331,13 @@ analytics:
 # Default required rewards
 rewards:
     required: 3
+
+# Institutional sections for the blog
+blog:
+    sections:
+        mission:       blog-section-mission
+        matchfunding:  blog-section-matchfunding
+        voices:        blog-section-voices
+        transparency:  blog-section-transparency
+        milestones:    blog-section-milestones
+        team:          blog-section-team

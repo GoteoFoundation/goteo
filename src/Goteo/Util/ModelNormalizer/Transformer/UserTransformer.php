@@ -60,7 +60,7 @@ class UserTransformer extends AbstractTransformer {
         return $names;
     }
 
-    function getLink($type = 'public') {
+    function getLink($type = 'public', $key = null) {
         if($type === 'admin') {
             return '/admin/users/manage/' . $this->getId();
         }

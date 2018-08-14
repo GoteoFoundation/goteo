@@ -18,6 +18,7 @@ use Goteo\Library\Cacher;
 use Goteo\Core\Event\CreateModelEvent;
 use Goteo\Core\Event\UpdateModelEvent;
 use Goteo\Core\Event\DeleteModelEvent;
+use Goteo\Model\Image;
 
 abstract class Model {
 
@@ -149,6 +150,9 @@ abstract class Model {
     public function transformFieldValue($value) {
         if($value instanceOf \DateTime) {
             return $value->format('Y-m-d\TH:i:s');
+        }
+        if($value instanceOf Image) {
+            return $value->getName();
         }
         return $value;
     }

@@ -22,6 +22,14 @@ class PostTransformer extends AbstractTransformer {
         return $this->model->getLangsAvailable();
     }
 
+    public function getPublish() {
+        return $this->model->publish;
+    }
+
+    public function getSlug() {
+        return $this->model->slug ? $this->model->slug : $this->model->id;
+    }
+
     public function getInfo() {
         return '<strong>'.$this->getDate().' - ' . $this->getAuthor() . '</strong><br>'.$this->getSubTitle();
     }
@@ -38,8 +46,15 @@ class PostTransformer extends AbstractTransformer {
             $ret['translate'] = '/translate/' . $this->getModelName() . '/' . $this->model->id;
         }
 
-        // if($this->user->hasPerm('translate'))
+        $ret['preview'] = '/blog/' . $this->model->getSlug() . '?preview';
         return $ret;
     }
 
+    public function getLink($type = 'public', $key = null) {
+        if($key !== 'id') return '';
+        if($type === 'public') {
+            return '/blog/' . $this->model->getSlug() .'?preview';
+        }
+        return '';
+    }
 }

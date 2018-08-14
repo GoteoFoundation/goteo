@@ -18,7 +18,7 @@ if($list):
         <?php
         $t = count($entry);
         foreach($entry as $key => $val):
-            $vars = ['value' => $val, 'ob' => $entry, 'link' => ''];
+            $vars = ['value' => $val, 'key' => $key, 'ob' => $entry, 'link' => ''];
         ?>
             <td data-title="<?= $entry->getLabel($key) ?>" class="td-<?= $key ?>"><?= $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars) ?></td>
         <?php endforeach ?>

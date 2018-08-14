@@ -78,7 +78,7 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
         return $this->model->name ? $this->model->name : $this->model->title;
     }
 
-    public function getLink($type = 'public') {
+    public function getLink($type = 'public', $key = null) {
         return '';
     }
 
@@ -102,7 +102,7 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
 
     public function getActions() {
         if(!$u = $this->getUser()) return [];
-        $ret = ['edit' => '/admin/' . $this->getModelName() . '/edit/' . $this->model->getSlug()];
+        $ret = ['edit' => '/admin/' . $this->getModelName() . '/edit/' . $this->model->getId()];
         return $ret;
     }
 }
