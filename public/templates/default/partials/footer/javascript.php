@@ -16,6 +16,8 @@
     echo 'goteo.debug = ' . (GOTEO_ENV !== 'real' ? 'true' : 'false') . ';';
     echo 'SRC_URL = "' . SRC_URL . '";';
 ?>
+SRC_URL = '<?= $this->ee(SRC_URL, 'js') ?>';
+IMG_URL = '<?= $this->ee(defined('GOTEO_DATA_URL') ? GOTEO_DATA_URL : SITE_URL . '/img', 'js') ?>'
 // @license-end
 </script>
 
