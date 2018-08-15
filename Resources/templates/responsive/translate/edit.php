@@ -246,6 +246,63 @@ $default_lang = $this->get_query('hl');
           promptURLs: true,
           forceSync: true
       });
+      // Tweak codemirror to accept drag&drop any file
+      simplemde.codemirror.setOption("allowDropFileTypes", null);
+
+      simplemde.codemirror.on('drop', function(codemirror, event) {
+          // console.log('codemirror',codemirror,'event',event);
+          if(!$(el).data('image-upload')) return;
+
+          var loading_text = $(el).data('image-loading-text') || '![](loading image...)';
+
+          if(event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length) {
+            var images = $.grep(event.dataTransfer.files, function(file,i) {
+              if(file && file.type && file.type.startsWith('image/')) {
+                return true;
+              }
+              return false;
+            });
+            // console.log('images', images);
+            if(images.length) {
+              // Do not allow predefined codemirror behaviour if are images
+              event.preventDefault();
+              event.stopPropagation();
+              var $cm = $(el).closest('.markdown').find('.CodeMirror.CodeMirror-wrap');
+              var $up = $('<div class="uploading">');
+              $cm.prepend($up);
+
+              var coords = codemirror.coordsChar({
+                left: event.pageX,
+                top: event.pageY
+              });
+
+              codemirror.replaceRange("\n" + loading_text + "\n", coords);
+              coords.line++;
+              coords.ch = 0;
+              codemirror.setCursor(coords);
+              // console.log('codemirror',codemirror,'coords',coords);
+
+              _uploadImage(images, $(el).data('image-upload'), function(status, data) {
+                // console.log('callback upload', status, data);
+                if(status === 'progress') {
+                  $up.css('width',  (data * 100) + '%');
+                } else {
+                  $up.remove();
+                }
+                if(status === 'success') {
+                  if(!data.length) data = [data];
+                  $.each(data, function(i,name){
+                    codemirror.replaceRange("![](" + name + ")", coords, {line:coords.line, ch:loading_text.length});
+                  });
+                }
+                if(status === 'error') {
+                  alert('ERROR: ' + data);
+                }
+              });
+            }
+          }
+      });
+
       simplemde.render();
     });
   <?php endif ?>
