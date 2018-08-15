@@ -240,20 +240,21 @@ $default_lang = $this->get_query('hl');
     });
   <?php elseif($translator->getType() === 'md'): ?>
     $('textarea.editor').each(function() {
+      var el = this;
       var simplemde = new SimpleMDE({
           element: this,
           spellChecker: false,
           promptURLs: true,
           forceSync: true
       });
+
       // Tweak codemirror to accept drag&drop any file
       simplemde.codemirror.setOption("allowDropFileTypes", null);
 
       simplemde.codemirror.on('drop', function(codemirror, event) {
           // console.log('codemirror',codemirror,'event',event);
-          if(!$(el).data('image-upload')) return;
 
-          var loading_text = $(el).data('image-loading-text') || '![](loading image...)';
+          var loading_text = '![](loading image...)';
 
           if(event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length) {
             var images = $.grep(event.dataTransfer.files, function(file,i) {
@@ -267,7 +268,7 @@ $default_lang = $this->get_query('hl');
               // Do not allow predefined codemirror behaviour if are images
               event.preventDefault();
               event.stopPropagation();
-              var $cm = $(el).closest('.markdown').find('.CodeMirror.CodeMirror-wrap');
+              var $cm = $(el).closest('.form-group').find('.CodeMirror.CodeMirror-wrap');
               var $up = $('<div class="uploading">');
               $cm.prepend($up);
 
@@ -282,7 +283,7 @@ $default_lang = $this->get_query('hl');
               codemirror.setCursor(coords);
               // console.log('codemirror',codemirror,'coords',coords);
 
-              _uploadImage(images, $(el).data('image-upload'), function(status, data) {
+              _uploadImage(images, '/api/blog/images', function(status, data) {
                 // console.log('callback upload', status, data);
                 if(status === 'progress') {
                   $up.css('width',  (data * 100) + '%');
@@ -297,12 +298,11 @@ $default_lang = $this->get_query('hl');
                 }
                 if(status === 'error') {
                   alert('ERROR: ' + data);
-                }
-              });
-            }
+              }
+            });
           }
+        }
       });
-
       simplemde.render();
     });
   <?php endif ?>
