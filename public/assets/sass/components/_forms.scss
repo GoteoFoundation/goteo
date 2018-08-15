@@ -358,7 +358,7 @@
     }
   }
 
-  .summernote {
+  .summernote,.CodeMirror {
     position: relative;
     .uploading {
       z-index: 1000;
@@ -373,7 +373,9 @@
       background-size: contain;
       @include transition(width 0.4s ease-in-out);
     }
-
+  }
+  .CodeMirror .uploading {
+    top: 0px;
   }
 }
 
