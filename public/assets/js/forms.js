@@ -362,8 +362,9 @@ $(function(){
 
         // HTML editors initializations
         var summernotes = form.summernotes = {};
-        $('.autoform .summernote > textarea').each(function() {
+        var createHtmlEditor = function() {
             var el = this;
+            var summernote;
             var callbacks = {
               onFocus: function() {
                 // console.log('Editable area is focused');
@@ -378,7 +379,6 @@ $(function(){
               callbacks.onImageUpload = function(files) {
                 var $sm = $(this).closest('.summernote');
                 var $up = $('<div class="uploading">');
-                var self = this;
                 $sm.prepend($up);
                 _uploadImage(files, $(el).data('image-upload'), function(status, data) {
                   // console.log('callback upload', status, data);
@@ -400,7 +400,7 @@ $(function(){
                 });
               };
             }
-            var summernote = $(el).summernote({
+            summernote = $(el).summernote({
                 // height: 300,
                 toolbar: [
                     ['tag', ['style']],
@@ -417,11 +417,12 @@ $(function(){
                 callbacks: callbacks
             });
             summernotes[$(this).attr('id')] = summernote;
-        });
+        };
+        $('.autoform .summernote > textarea').each(createHtmlEditor);
 
         // MarkdownType initialization
         var markdowns = form.markdowns = {};
-        $('.autoform .markdown > textarea').each(function() {
+        var createMarkdownEditor = function() {
             var el = this;
             // console.log('found textarea', el);
             var simplemde = new SimpleMDE({
@@ -569,13 +570,104 @@ $(function(){
                         title: goteo.texts['form-editor-redo'] ? goteo.texts['form-editor-redo'] : "Redo"
                     }]
             });
-            // simplemde.codemirror.on('change', function() {
-            //     console.log(simplemde.value());
-            //     $(el).html(simplemde.value());
-            //     console.log(document.getElementById('autoform_text').innerHTML);
-            // });
+
+            // Tweak codemirror to accept drag&drop any file
+            simplemde.codemirror.setOption("allowDropFileTypes", null);
+
+            simplemde.codemirror.on('drop', function(codemirror, event) {
+                // console.log('codemirror',codemirror,'event',event);
+                if(!$(el).data('image-upload')) return;
+
+                var loading_text = $(el).data('image-loading-text') || '![](loading image...)';
+
+                if(event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length) {
+                  var images = $.grep(event.dataTransfer.files, function(file,i) {
+                    if(file && file.type && file.type.startsWith('image/')) {
+                      return true;
+                    }
+                    return false;
+                  });
+                  // console.log('images', images);
+                  if(images.length) {
+                    // Do not allow predefined codemirror behaviour if are images
+                    event.preventDefault();
+                    event.stopPropagation();
+                    var $cm = $(el).closest('.markdown').find('.CodeMirror.CodeMirror-wrap');
+                    var $up = $('<div class="uploading">');
+                    $cm.prepend($up);
+
+                    var coords = codemirror.coordsChar({
+                      left: event.pageX,
+                      top: event.pageY
+                    });
+
+                    codemirror.replaceRange("\n" + loading_text + "\n", coords);
+                    coords.line++;
+                    coords.ch = 0;
+                    codemirror.setCursor(coords);
+                    // console.log('codemirror',codemirror,'coords',coords);
+
+                    _uploadImage(images, $(el).data('image-upload'), function(status, data) {
+                      // console.log('callback upload', status, data);
+                      if(status === 'progress') {
+                        $up.css('width',  (data * 100) + '%');
+                      } else {
+                        $up.remove();
+                      }
+                      if(status === 'success') {
+                        if(!data.length) data = [data];
+                        $.each(data, function(i,name){
+                          codemirror.replaceRange("![](" + name + ")", coords, {line:coords.line, ch:loading_text.length});
+                        });
+                      }
+                      if(status === 'error') {
+                        alert('ERROR: ' + data);
+                      }
+                    });
+                  }
+                }
+            });
 
             markdowns[$(this).attr('id')] = simplemde;
+        };
+        $('.autoform .markdown > textarea').each(createMarkdownEditor);
+
+        // Type editor chooser
+        $('.autoform').on( 'change', '.form-control[data-editor-type]', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          var el = this;
+          var parts = $(el).attr('id').split('_');
+          var target = parts[0] + '_' + $(el).data('editor-type');
+          var $target = $('#' + target);
+          var to = $(el).val();
+          var from;
+
+          if(markdowns[target]) from = 'md';
+          if(summernotes[target]) from = 'html';
+
+          // console.log('target', target, 'from', from, 'to', to);
+          if(from === to) return;
+          if(from === 'html' && to === 'md') {
+            // destroy summernote, initialize markdown
+            summernotes[target].summernote('destroy');
+            delete summernotes[target];
+            // convert to markdown if possible
+            if(TurndownService) {
+              var service = new TurndownService();
+              service.keep(['iframe', 'object']);
+              $target.val(service.turndown($target.val()));
+            }
+            createMarkdownEditor.call($target[0]);
+          }
+          if(from == 'md' && to === 'html') {
+            // destroy markdown, initialize summernote
+            markdowns[target].toTextArea();
+            $target.val(markdowns[target].markdown($target.val()));
+            delete markdowns[target];
+            createHtmlEditor.call($target[0]);
+          }
+
         });
 
         var dropzones = form.dropzones = {};

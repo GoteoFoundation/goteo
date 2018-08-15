@@ -35,32 +35,7 @@ class AdminPostEditForm extends ProjectPostForm {
                     new Constraints\NotBlank(),
                     new Constraints\Length(array('min' => 4)),
                 ),
-            ));
-
-        if($data['slug']) {
-            $builder->add('slug', 'text',[
-                'label' => 'regular-slug',
-                'required' => true,
-                'constraints' => array(
-                    new Constraints\NotBlank(),
-                    new Constraints\Callback(function($object, $context) use ($post){
-                        if($object != $post::idealiza($object, false, false, 150)) {
-                            $context->buildViolation(Text::get('admin-blog-slug-chars', $object))
-                            ->atPath('slug')
-                            ->addViolation();
-                        }
-
-                        if($post->slugExists($object)) {
-                            $context->buildViolation(Text::get('admin-blog-slug-exists', $object))
-                            ->atPath('slug')
-                            ->addViolation();
-                        }
-                    })
-                ),
-            ]);
-        }
-
-        $builder
+            ))
             ->add('subtitle', 'text', array(
                 'label' => 'admin-title-subtitle'
             ))
@@ -83,6 +58,40 @@ class AdminPostEditForm extends ProjectPostForm {
                 )
             ));
 
+        if($data['slug']) {
+            $builder->add('slug', 'text',[
+                'label' => 'regular-slug',
+                'required' => true,
+                'row_class' => 'extra',
+                'constraints' => array(
+                    new Constraints\NotBlank(),
+                    new Constraints\Callback(function($object, $context) use ($post){
+                        if($object != $post::idealiza($object, false, false, 150)) {
+                            $context->buildViolation(Text::get('admin-blog-slug-chars', $object))
+                            ->atPath('slug')
+                            ->addViolation();
+                        }
+
+                        if($post->slugExists($object)) {
+                            $context->buildViolation(Text::get('admin-blog-slug-exists', $object))
+                            ->atPath('slug')
+                            ->addViolation();
+                        }
+                    })
+                ),
+            ]);
+        }
+        $builder
+            ->add('type', 'choice', array(
+                'label' => 'admin-text-type',
+                'row_class' => 'extra',
+                'choices' => ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')],
+                'attr' => [
+                    'data-editor-type' => 'text',
+                    'help' => Text::get('tooltip-text-type-change')
+                ]
+            ));
+
         // Replace markdown by html editor if type
         if($post->type === 'html') {
             $builder->add('text', 'textarea', array(
@@ -91,7 +100,8 @@ class AdminPostEditForm extends ProjectPostForm {
                 'html_editor' => true,
                 // 'constraints' => array(new Constraints\NotBlank()),
                 'attr' => [
-                    'data-image-upload' => '/api/blog/images'
+                    'data-image-upload' => '/api/blog/images',
+                    'help' => Text::get('tooltip-drag-and-drop-images')
                 ]
             ));
         } else {
@@ -99,6 +109,10 @@ class AdminPostEditForm extends ProjectPostForm {
                 'label' => 'regular-text',
                 'required' => false,
                 // 'constraints' => array(new Constraints\NotBlank()),
+                'attr' => [
+                    'data-image-upload' => '/api/blog/images',
+                    'help' => Text::get('tooltip-drag-and-drop-images')
+                ]
             ));
         }
 
