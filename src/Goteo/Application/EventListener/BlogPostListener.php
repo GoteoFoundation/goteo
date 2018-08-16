@@ -14,6 +14,8 @@ use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
 use Goteo\Application\Message;
+use Goteo\Core\ModelEvents;
+use Goteo\Core\Event\DeleteModelEvent;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
@@ -32,7 +34,7 @@ class BlogPostListener extends AbstractListener {
             $image = $post->image ? $post->image : 'empty';
         }
 
-        // Evento Feed
+        // Feed event
         $log = new Feed();
         $log->setTarget('goteo', 'blog')
             ->setPost($post->id)
@@ -75,9 +77,31 @@ class BlogPostListener extends AbstractListener {
 
     }
 
+    public function onBlogDeleted(DeleteModelEvent $event) {
+        // Check if we deleted a post, otherwise do nothing
+        if(!$event->is('post')) return;
+
+        $user = Session::getUser();
+        $post = $event->getModel();
+
+        // Feed event
+        $log = new Feed();
+        $log->setTarget('goteo', 'blog')
+            ->populate('feed-blog-post-deleted',
+                '/admin/blog',
+                new FeedBody(null, null, 'feed-blog-post-action', [
+                    '%USER%'    => Feed::item('user', $user->name, $user->id),
+                    '%ACTION%'  => new FeedBody('relevant', null, 'admin-title-deleted'),
+                    '%TITLE%'   => Feed::item('blog', $post->title, $post->getSlug())
+                ]))
+            ->doAdmin('admin');
+
+    }
+
 	public static function getSubscribedEvents() {
 		return array(
-            AppEvents::BLOG_POST    => 'onBlogPost'
+            AppEvents::BLOG_POST    => 'onBlogPost',
+            ModelEvents::DELETED => 'onBlogDeleted'
 		);
 	}
 }

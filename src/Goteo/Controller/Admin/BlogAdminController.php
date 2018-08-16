@@ -45,7 +45,7 @@ class BlogAdminController extends AbstractAdminController {
             ),
             new Route(
                 '/add',
-                ['_controller' => __CLASS__ . "::slugAction", 'slug' => '']
+                ['_controller' => __CLASS__ . "::editAction", 'slug' => '']
             )
         ];
     }
@@ -130,13 +130,13 @@ class BlogAdminController extends AbstractAdminController {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
             // Check if we want to remove an entry
-            if($form->isValid() && $form->get('remove')->isClicked()) {
+            if($form->has('remove') && $form->get('remove')->isClicked()) {
                 if((bool)$post->publish) {
                     Message::error(Text::get('admin-remove-entry-forbidden'));
                     return $this->redirect('/admin/blog/');
                 }
 
-                $post->dbDelete(); //Throws and exception
+                $post->dbDelete(); //Throws and exception if fails
                 Message::info(Text::get('admin-remove-entry-ok'));
                 return $this->redirect('/admin/blog/');
             }

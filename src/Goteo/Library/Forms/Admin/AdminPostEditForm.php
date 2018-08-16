@@ -37,24 +37,20 @@ class AdminPostEditForm extends ProjectPostForm {
                 ),
             ))
             ->add('subtitle', 'text', array(
+                'required' => false,
                 'label' => 'admin-title-subtitle'
             ))
             ->add('date', 'datepicker', array(
                 'label' => 'regular-date',
                 'constraints' => array(new Constraints\NotBlank()),
             ))
-            // saving images will add that images to the gallery
-            // let's show the gallery in the field with nice options
-            // for removing and reorder it
-            ->add('image', 'dropfiles', array(
+            ->add('header_image', 'dropfiles', array(
                 'required' => false,
-                'data' => $data['gallery'],
-                'label' => 'regular-images',
-                'markdown_link' => 'text',
+                'label' => 'admin-title-header-image',
                 'accepted_files' => 'image/jpeg,image/gif,image/png',
                 'url' => '/api/blog/images',
                 'constraints' => array(
-                    new Constraints\Count(array('max' => 20))
+                    new Constraints\Count(array('max' => 1))
                 )
             ));
 
@@ -126,13 +122,18 @@ class AdminPostEditForm extends ProjectPostForm {
             }, array_keys($data['tags']), $data['tags']);
 
         $builder
-            ->add('header_image', 'dropfiles', array(
+            // saving images will add that images to the gallery
+            // let's show the gallery in the field with nice options
+            // for removing and reorder it
+            ->add('image', 'dropfiles', array(
                 'required' => false,
-                'label' => 'admin-title-header-image',
+                'data' => $data['gallery'],
+                'label' => 'regular-images',
+                'markdown_link' => 'text',
                 'accepted_files' => 'image/jpeg,image/gif,image/png',
                 'url' => '/api/blog/images',
                 'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
+                    new Constraints\Count(array('max' => 20))
                 )
             ))
             ->add('tags', 'tags', [
@@ -159,10 +160,13 @@ class AdminPostEditForm extends ProjectPostForm {
             ))
             ->add('section', 'choice', array(
                 'label' => 'admin-title-section',
-                'required' => true,
+                'required' => false,
                 'expanded' => true,
                 'wrap_class' => 'col-xs-6',
                 'choices' => $post::getListSections(),
+                'constraints' => [
+                    new Constraints\NotBlank()
+                ]
             ))
             ->add('allow', 'boolean', array(
                 'required' => false,

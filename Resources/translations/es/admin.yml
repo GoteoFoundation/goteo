@@ -100,6 +100,7 @@ admin-blog-add: Crear nuevo post
 admin-blog-edit: Editando post %s
 admin-blog-slug-exists: 'El identificador [%s] se está usando en otro post!'
 admin-blog-slug-chars: 'El identificador [%s] contiene carácteres inválidos!'
+admin-blog-not-public: 'Este post no es público todavía'
 
 admin-calls: Convocatorias
 admin-matchers: Matchers
@@ -172,6 +173,7 @@ admin-title-publish: Publicado
 admin-title-langs: Traducciones
 admin-title-actions: Acciones
 admin-title-tags: Tags
+admin-title-deleted: Eliminado
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'

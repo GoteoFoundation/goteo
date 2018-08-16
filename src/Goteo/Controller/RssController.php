@@ -20,8 +20,8 @@ class RssController extends \Goteo\Core\Controller {
 
     public function __construct() {
         // Cache & replica read activated in this controller
-        \Goteo\Core\DB::cache(true);
-        \Goteo\Core\DB::replica(true);
+        $this->dbReplica(true);
+        $this->dbCache(true);
     }
 
     public function indexAction ($lang = '', Request $request) {

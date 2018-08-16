@@ -28,6 +28,9 @@ use Goteo\Model\SocialCommitment;
 
 class ChannelController extends \Goteo\Core\Controller {
     public function __construct() {
+        $this->dbReplica(true);
+        $this->dbCache(true);
+
         // changing to a responsive theme here
         View::setTheme('responsive');
     }

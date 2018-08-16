@@ -28,10 +28,9 @@ class BlogController extends \Goteo\Core\Controller {
 
     public function __construct() {
         // Cache & replica read activated in this controller
-        \Goteo\Core\DB::cache(true);
-        // \Goteo\Core\DB::replica(true);
+        $this->dbReplica(true);
+        $this->dbCache(true);
         View::setTheme('responsive');
-
     }
 
     public function indexAction ($section='', $tag='', Request $request) {
@@ -65,6 +64,15 @@ class BlogController extends \Goteo\Core\Controller {
 
         if(!$post) {
             throw new ModelNotFoundException("Post [$slug] not found!");
+        }
+
+        $user = Session::getUser();
+        if(!(bool)$post->publish){
+            if($user && $user->hasPerm('admin-module-blog')) {
+                Message::error(Text::get('admin-blog-not-public'));
+            } else {
+                throw new ModelNotFoundException("Post [$slug] not public yet!");
+            }
         }
 
         // Redirect to project's page if not the right type of post
