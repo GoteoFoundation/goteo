@@ -2,9 +2,19 @@
 
 /* User  */
 .user{
+  background-color: $background-light;
+
+  div.border-bottom{
+    border-bottom: 2px solid #FFF;
+    &.spacer-30{
+      padding-top:30px;
+    }
+  }
+
   div.main-info{
       background-color: $color-white;
       padding:40px 0;
+    
     div.avatar{
         text-align: right;
       img{
@@ -13,13 +23,282 @@
         box-shadow: 1px 1px 5px 0 #8C8A8A;
       }
     }
+
     div.info{
       div.user-label{
+        color: $color-dark-green;
+        font-size: $font-size*1.2;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+      h1.name{
+        margin-top: 3px;
+        font-size: $font-size*1.6;
+        font-weight: bold;
+        margin-bottom: 0;
+      }
+      div.location{
+        color: $color-dark-green;
+        font-weight: bold;
+        margin-top: 8px;
+        .icon{
+          font-size:$font-size*1.4;
+          vertical-align: sub;
+        }
+        .content{
+          vertical-align:middle;
+          margin-left: 8px;
+          font-size: $font-size*1.1;
+        }
+      }
+      p.description{
+        margin-top: 10px;
+        margin-bottom: 5px;
+        font-size: $font-size;
+      }
+      div.worthcracy-label{
         color: $color-dark-green;
         font-size: $font-size*1.1;
         text-transform: uppercase;
         font-weight: bold;
+        margin-top: 15px;
+      }
+      ul.worthcracy-chart{
+        li{
+          padding:0;
+          div.label-amount{
+            margin: 10px 0;
+            font-weight: bold;
+            font-size: $font-size*0.8;
+          }
+          div.chart{
+            
+            margin-right: .5%;
+            height: 15px;
+            float: left;
+            width: 100%;
+            margin-bottom: 10px;
+            &.green{
+              background-color: $color-dark-green;
+            }
+            &.grey{
+              background-color: #D5D5D5;
+            }
+          }
+          div.label-name{
+            margin: 10px 0;
+            font-size: $font-size*0.8;
+            &.green{
+              color: $color-dark-green;
+              font-weight:bold;
+            }
+          }
+        }
+
+        li:first-child{
+          div.chart{
+            border-radius: 10px 0 0 10px;
+          }
+        }
+        li:last-child{
+          div.chart{
+            border-radius: 0 10px 10px 0;
+          }
+        }
+      }
+    }
+
+    div.stats{
+      background-color: $background-light;
+      border-radius: 10px;
+      padding: 0 0 15px 25px;
+      width:24%;
+      margin-left: 1%;
+
+      .title{
+        font-size: $font-size*1.2;
+        color: $color-dark-green;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding-top: 5px;
+      }
+      ul{
+        font-weight: bold;
+        li{
+          padding-top:10px;
+          .item-data{
+            font-size: $font-size*1.5;
+          }
+          &.projects{
+            color: $color-dark-green;
+            padding-top:5px;
+            .item-data{
+              font-size: $font-size*2.8;
+              line-height:1.2;
+            }
+          }
+          &.invests{
+            padding-top: 5px;
+          }
+        }
       }
     }
   }
+
+  .extra-info{
+    padding:25px 0;
+    .label-item{
+        font-size: $font-size*1.2;
+        color: $color-dark-green;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .item{
+      border-bottom: 2px solid #FFF;
+      padding-bottom: 20px;
+      padding-top: 20px;
+      .icon-item{
+        border-radius: 50%;
+        width: 65px;
+        height: 65px;
+        background-color: $color-dark-green;
+        box-shadow: 1px 3px 5px -3px #4d4d4d;
+        float: right;
+        .fa-search{
+          font-size: $font-size*2.26;
+          padding: 13px 16px;
+          color: $color-white;
+        }
+        .fa-link{
+          font-size: $font-size*2.26;
+          padding: 17px 18px;
+          color: $color-white;
+        }
+      }
+      ul{
+        margin-bottom: 0;
+        a{
+          color: $primary-color;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .social-item{
+
+      .social-icon{
+        margin-top:10px;
+        text-align: right;
+      }
+
+      .label-item{
+        padding-top:25px;
+      }
+
+      .social-content{
+        margin-top: 18px;
+      }
+
+      a{
+        color: $primary-color;
+        font-weight: bold;
+      }
+
+    }
+
+  }
+
+  .section.stories{
+    padding-top: 30px;
+    margin-bottom: 0;
+  }
+
+  .section.projects{
+    .container{
+      padding:30px 0;
+      .title{
+          font-size: $font-size*1.2;
+          color: $color-dark-green;
+          font-weight: bold;
+          text-transform: uppercase;
+          margin-bottom:20px;
+      }
+      .widget-slide{
+        margin-left: 20px;
+        .project-widget.normal {
+            box-shadow: none;
+        }
+      }
+      .slick-dots{
+        bottom: -30px !important;
+        li button::before {
+          color: #bcbcbc !important;
+        }
+        li.slick-active button::before {
+          color: #19B4B2 !important;
+        }
+      }
+      .custom-left-arrow {
+        top: 34%;
+        position: absolute;
+        font-size: 75px;
+        left: -3%;
+        color: #19b4b2;
+        cursor: pointer;
+        z-index: 1000;
+      }
+      .custom-right-arrow {
+        font-size: 75px;
+        color: #19b4b2;
+        cursor: pointer;
+        position: absolute;
+        top: 34%;
+        right: -50px;
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-sm - 1) 
+  {
+
+    .info{
+      .worthcracy-text{
+        font-weight:bold;
+        padding: 15px 0 15px 0;
+      }
+    }
+
+    .main-info{
+      .avatar{
+        text-align: center !important;
+        margin-bottom: 20px;
+      }
+      .stats{
+        width: 100% !important;
+        border-radius: 0px !important;
+        margin-left: 0px !important;
+        padding-top: 5px !important;
+      }
+    }
+
+    .extra-info{
+      .icon-item{
+        float:none !important;
+      }
+    }
+
+    .section.projects .container {
+      padding: 30px 15px !important;
+      &.no-padding-top-xs{
+        padding-top: 0px !important;
+      }
+      .widget-slide {
+          margin: 0 10px !important;
+      }
+    }
+
+
+
+  }
+
 }

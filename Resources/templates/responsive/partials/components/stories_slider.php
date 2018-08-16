@@ -11,9 +11,11 @@
                     <span class="type-label" >
                         <?= $this->text('home-foundation-story-label') ?>
                     </span>
-                    <span class="type hidden-xs">
-                        <?= $story->review ?>
-                    </span>
+                    <?php if($story->review): ?>
+                        <span class="type hidden-xs">
+                            <?= $story->review ?>
+                        </span>
+                    <?php endif; ?>
                 </div>
                 <div class="description">
                     <div class="pull-left quote">

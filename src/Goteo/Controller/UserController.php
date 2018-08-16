@@ -23,6 +23,7 @@ use Goteo\Model\User;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Mail;
+use Goteo\Model\Stories;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
@@ -131,6 +132,8 @@ class UserController extends \Goteo\Core\Controller {
 
         $investors = Invest::myInvestors($user->id, 5);
 
+        $stories = Stories::getall(false, false, ['project_owner' => $user->id]);
+
         // comparten intereses
         if ($show == 'profile'){
             $shares = User\Interest::share($user->id, null, 6);
@@ -159,16 +162,7 @@ class UserController extends \Goteo\Core\Controller {
 
         /* para sacar proyectos que cofinancio */
         // proyectos que cofinancio
-        $invested = User::invested($user->id, true);
-
-        // agrupacion de proyectos que cofinancia y proyectos suyos
-        $viewData['lists'] = array();
-        if (!empty($invested)) {
-            $invest_on = Listing::get($invested, 2);
-        }
-        if (!empty($projects)) {
-            $my_projects = Listing::get($projects, 2);
-        }
+        $invest_on = User::invested($user->id, true);
 
         //return $this->viewResponse('user/' . $show, $viewData);
 
@@ -180,7 +174,8 @@ class UserController extends \Goteo\Core\Controller {
                 'projects'      => $projects,
                 'investors'     => $investors,
                 'invest_on'     => $invest_on,
-                'my_projects'   => $my_projects
+                'my_projects'   => $projects,
+                'stories'       => $stories
             ]
         );
     }
