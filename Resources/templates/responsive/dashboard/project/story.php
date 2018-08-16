@@ -6,7 +6,10 @@
   <div class="inner-container">
 
 
-    <h1><?= $this->text('dashboard-story-form-title') ?></h1>
+    <h1>
+    	<?= $this->text('dashboard-story-form-title') ?>
+    	 <?= $this->insert('dashboard/partials/translate_menu', ['class' => 'pull-right', 'base_link' => '/dashboard/translations', 'lang' => $this->current]) ?>
+    </h1>
     <div class="auto-hide">
         <div class="inner"><?= $this->text('dashboard-story-guide-description') ?></div>
         <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div>
