@@ -68,6 +68,10 @@ class ProjectPostForm extends AbstractFormProcessor {
             ->add('text', 'markdown', array(
                 'label' => 'regular-text',
                 'required' => false,
+                'attr'=> [
+                    'data-image-upload' => '/api/projects/' . $this->getOption('project')->id . '/images',
+                    'help' => Text::get('tooltip-drag-and-drop-images')
+                ]
                 // 'constraints' => array(new Constraints\NotBlank()),
             ))
             ->add('media', 'media', array(
