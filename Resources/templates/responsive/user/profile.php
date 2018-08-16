@@ -42,12 +42,17 @@ $worthcracy=$this->worthcracy;
 					<h1 class="name">
 						<?= $user->name ?>
 					</h1>
-					<div class="location">
-						<span class="icon glyphicon glyphicon glyphicon-map-marker" aria-hidden="true"></span> 
-						<span class="content">
-							<?= $user->location ?>
-						</span>
-					</div>
+					
+					<?php if($user->location): ?>
+					
+						<div class="location">
+							<span class="icon glyphicon glyphicon glyphicon-map-marker" aria-hidden="true"></span> 
+							<span class="content">
+								<?= $user->location ?>
+							</span>
+						</div>
+					
+					<?php endif; ?>
 					<p class="description">
 						<?= $this->markdown($user->about) ?>
 					</p>
@@ -57,7 +62,7 @@ $worthcracy=$this->worthcracy;
 					<?php if($worthcracy): ?>
 						<?php 
 							$num_levels=count($worthcracy); 
-							$level_width=98/$num_levels;
+							$level_width=97/$num_levels;
 						?>
 						<ul class="list-inline worthcracy-chart hidden-xs">
 						<?php foreach($worthcracy as $level): ?>
