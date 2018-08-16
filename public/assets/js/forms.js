@@ -660,7 +660,7 @@ $(function(){
             }
             createMarkdownEditor.call($target[0]);
           }
-          if(from == 'md' && to === 'html') {
+          if(from === 'md' && to === 'html') {
             // destroy markdown, initialize summernote
             markdowns[target].toTextArea();
             $target.val(markdowns[target].markdown($target.val()));
