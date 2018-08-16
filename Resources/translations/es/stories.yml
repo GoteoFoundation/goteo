@@ -1,11 +1,11 @@
 dashboard-story-form-title: 'Tu historia en Goteo'
-dashboard-story-guide-description: 'Cuéntanos como ha sido tu experiencia en Goteo, podrás servir de inspiración a otros impulsores. <br><br>Tu historia aparecerá en tu perfil de usuario, y podrá ser mostrada en diversas secciones de Goteo, incluída la home, por parte de nuestro equipo.<br>Te recomendamos visitar algunas de las historias que hemos publicado hasta ahora en <a href="/matchfunding-match" target="_blank">formato polaroid</a> y <a href="/#foundation" target="_blank">formato ampliado</a>.'
+dashboard-story-guide-description: 'Cuéntanos como ha sido tu experiencia en Goteo, podrás servir de inspiración a otros impulsores. <br><br>Tu historia aparecerá en tu perfil de usuario, y podrá ser mostrada en diversas secciones de Goteo, incluida la home, por parte de nuestro equipo.<br>Te recomendamos visitar algunas de las historias que hemos publicado hasta ahora en <a href="/matchfunding-match" target="_blank">formato polaroid</a> y <a href="/#foundation" target="_blank">formato ampliado</a>.'
 
 story-field-author-organization: 'Autor / Organización'
-story-tooltip-author-organization: 'Escribe tu nombre y la organización o proyecto al que perteneces separados por /. Ejemplo Luis / Fundación Goteo'
+story-tooltip-author-organization: 'Escribe tu nombre y la organización o proyecto al que perteneces separados por "/". Ejemplo: Luis / Fundación Goteo'
 story-field-description: 'Tu testimonio'
-story-tooltip-description: 'Explica en una frase cómo fue tu experienca en Goteo con un mínimo de 20 palabras (con menos marcará error).'
+story-tooltip-description: 'Explica en una frase cómo fue tu experiencia en Goteo con un mínimo de 20 palabras (con menos marcará error).'
 story-field-image: 'Imagen (Dimensiones recomendadas 600x400px)'
-story-field-pool-image: 'Imagen opcional formato polaroid (Dimensiones recomendadas 360x355px)'
+story-field-pool-image: 'Imagen opcional en formato polaroid (Dimensiones recomendadas 360x355px)'
 
 story-save-fail: 'Error al guardar tu historia'

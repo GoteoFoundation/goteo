@@ -1,0 +1,11 @@
+dashboard-story-form-title: 'Your history in Goteo'
+dashboard-story-guide-description: 'Tell us about your experience in Goteo, you can inspire other campaign leaders. <br><br>Your story will appear in your user profile, and it can be shown in different sections of Goteo, including the home page, at our team discretion. <br> We recommend you to visit some of the stories we have published so far in the <a href="/matchfunding-match" target="_blank">polaroid format</a> and the <a href="/#foundation" target="_blank">expanded format </a>.'
+
+story-field-author-organization: 'Author / Organization'
+story-tooltip-author-organization: 'Write your name and your organization/project separated by "/". Example: Jimmy / Goteo Foundation'
+story-field-description: 'Tu testimony'
+story-tooltip-description: 'Explain in a sentence how was your experience in Goteo with at least 20 words (less will raise and error).'
+story-field-image: 'Image (recommended dimensions 600x400px)'
+story-field-pool-image: 'Optional polaroid format image (recommended dimensions 360x355px)'
+
+story-save-fail: 'Error while saving your history'
