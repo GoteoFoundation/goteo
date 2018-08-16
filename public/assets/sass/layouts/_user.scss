@@ -167,12 +167,12 @@
         .fa-search{
           font-size: $font-size*2.26;
           padding: 13px 16px;
-          color: $color-white;
+          color: $background-light;
         }
         .fa-link{
           font-size: $font-size*2.26;
           padding: 17px 18px;
-          color: $color-white;
+          color: $background-light;
         }
       }
       ul{
@@ -228,6 +228,9 @@
         .project-widget.normal {
             box-shadow: none;
         }
+      }
+      .slick-track{
+        float: left;
       }
       .slick-dots{
         bottom: -30px !important;
