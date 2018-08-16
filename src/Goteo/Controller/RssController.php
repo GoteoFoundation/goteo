@@ -65,15 +65,16 @@ class RssController extends \Goteo\Core\Controller {
             $link = $url . '/blog/' . $post->getSlug();
             // print_r($post);die;
             $item = $feed->createNewItem();
+            $text = $post->type === 'md' ? $this->getService('app.md.parser')->text($post->text) : $post->text;
             $item->addElementArray(array(
                 'title' => $post->title,
                 'link' => $link,
-                'description' => $post->text
+                'description' => $text
                 )
             );
 
             if($gformat === 'ATOM') {
-                $item->setContent(html_entity_decode(strip_tags($post->text)));
+                $item->setContent(html_entity_decode(strip_tags($text)));
             }
 
             $item->setDate($post->date);
