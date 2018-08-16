@@ -257,38 +257,6 @@ class Reward extends \Goteo\Core\Model {
         }
     }
 
-    public function saveLang(&$errors = array()) {
-
-        $fields = array(
-            'id' => 'id',
-            'project'=>'project',
-            'lang' => 'lang',
-            'reward' => 'reward_lang',
-            'description' => 'description_lang',
-            'other' => 'other_lang'
-        );
-
-        $set = '';
-        $values = array();
-
-        foreach ($fields as $field => $ffield) {
-            if ($set != '')
-                $set .= ", ";
-            $set .= "$field = :$field ";
-            $values[":$field"] = $this->$ffield;
-        }
-
-        try {
-            $sql = "REPLACE INTO reward_lang SET " . $set;
-            self::query($sql, $values);
-
-            return true;
-        } catch (\PDOException $e) {
-            $errors[] = "El retorno {$this->reward} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
-            return false;
-        }
-    }
-
     public function updateURL(&$errors = array()){
 
         $fields = array(

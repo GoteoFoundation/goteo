@@ -1,9 +1,9 @@
-<?php 
+<?php
 
-$author=$this->post->getAuthor();
+$author = $this->post->getAuthor();
 
 
-$share_url = $this->get_url() . '/blog/' . $this->post->id;
+$share_url = $this->get_url() . '/blog/' . $this->post->getSlug();
 
 $author_twitter = str_replace(
                         array(
@@ -55,8 +55,8 @@ $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($share_title 
 					<?= $this->text('regular-by').' '?> <strong><?= $author->name ?></strong>
 					</span>
 					<span class="date">
-						<?= date_formater($this->post->date) ?>	
-					</span>					
+						<?= date_formater($this->post->date) ?>
+					</span>
 				<li>
 				<li class="social hidden-xs">
 					<a class="fa fa-twitter" title="" target="_blank" href="<?= $twitter_url ?>"></a>

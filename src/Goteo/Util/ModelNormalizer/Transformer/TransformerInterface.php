@@ -10,10 +10,10 @@
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
 interface TransformerInterface {
-    public function getDefaultKeys();
+    public function getKeys();
     public function getModelName();
     public function getLabel($key);
     public function getValue($key);
     public function getName();
-    public function getLink($type = 'public');
+    public function getLink($type = 'public', $key = null);
 }

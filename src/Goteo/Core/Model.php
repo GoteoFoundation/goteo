@@ -18,6 +18,7 @@ use Goteo\Library\Cacher;
 use Goteo\Core\Event\CreateModelEvent;
 use Goteo\Core\Event\UpdateModelEvent;
 use Goteo\Core\Event\DeleteModelEvent;
+use Goteo\Model\Image;
 
 abstract class Model {
 
@@ -149,6 +150,9 @@ abstract class Model {
     public function transformFieldValue($value) {
         if($value instanceOf \DateTime) {
             return $value->format('Y-m-d\TH:i:s');
+        }
+        if($value instanceOf Image) {
+            return $value->getName();
         }
         return $value;
     }
@@ -383,7 +387,7 @@ abstract class Model {
 	 * @param string $value
 	 * @return string $id
 	 */
-	public static function idealiza($value, $punto = false, $enye = false) {
+	public static function idealiza($value, $punto = false, $enye = false, $max = 50) {
 		$id = trim($value);
 		// Acentos
 		$table = array(
@@ -417,9 +421,14 @@ abstract class Model {
 		if (!$enye) {
             $id = preg_replace('/[^\x20-\x7e]*/', '', $id);
         }
-		$id = substr($id, 0, 50);
+        // remove duplicates
+        if(strpos($id,'--')) {
+            $id = preg_replace('/\-+/', '-', $id);
+        }
 
-		$id = trim($id, '-');
+        $id = trim($id, '-');
+
+		$id = substr($id, 0, $max);
 
 		return $id;
 	}
@@ -693,7 +702,7 @@ abstract class Model {
         $values[':id'] = $this->id;
         $values[':lang'] = $lang;
         foreach ($data as $key => $val) {
-            if(in_array($key, $fields) || property_exists($this, $key)) {
+            if(in_array("$key", $fields) || property_exists($this, "$key")) {
                 $values[":$key"] = $val;
                 $update[] = "`$key` = :$key";
                 $insert["`$key`"] = ":$key";

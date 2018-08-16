@@ -366,7 +366,7 @@ class ProjectDashboardController extends DashboardController {
 
         $blog = Blog::get($project->id);
         if ($blog instanceOf Blog) {
-            if($blog->active) {
+            if($blog->active) { // TO REMOVE? This implies that posting can be banned to some project, but it never happens
                 $posts = BlogPost::getList((int)$blog->id, false, $offset, $limit, false, $project->lang);
                 $total = BlogPost::getList((int)$blog->id, false, 0, 0, true);
             }
@@ -397,7 +397,7 @@ class ProjectDashboardController extends DashboardController {
             return $this->redirect($redirect);
         }
 
-        $post = BlogPost::get($uid);
+        $post = is_null($uid) ? false : BlogPost::getBySlug($uid);
         if(!$post && is_null($uid)) {
             $blog = Blog::get($project->id);
 

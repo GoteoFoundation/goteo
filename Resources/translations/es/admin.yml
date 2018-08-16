@@ -75,8 +75,13 @@ admin-consultants: 'Asesores'
 admin-invests: Aportes
 admin-filters: 'Filtros'
 admin-remove-filters: 'Quitar filtros'
+admin-remove-entry: 'Borrar entrada'
+admin-remove-entry-confirm: '¿Seguro que quieres borrar esta entrada? Este acción no se puede deshacer!'
+admin-remove-entry-forbidden: 'No se pueden borrar entradas de blog publicadas. Despublica la entrada primero.'
+admin-remove-entry-ok: 'Entrada borrada correctamente'
 admin-services: Servicios
 admin-sponsors: Sponsors
+admin-slug-seo-help: 'Este campo es importante para SEO. Editar sólo por una buena razón.'
 admin-others: Otros
 admin-summary: Resumen
 admin-origins: Analítica de visitas
@@ -90,6 +95,13 @@ admin-user-no-projects: 'No ha creado ningún proyecto todavía'
 admin-user-no-invests: 'No ha hecho ninguna donación todavía'
 admin-users: Usuarios
 admin-users-add: Crear nuevo usuario
+admin-blog: Blog general
+admin-blog-add: Crear nuevo post
+admin-blog-edit: Editando post %s
+admin-blog-slug-exists: 'El identificador [%s] se está usando en otro post!'
+admin-blog-slug-chars: 'El identificador [%s] contiene carácteres inválidos!'
+admin-blog-not-public: 'Este post no es público todavía'
+
 admin-calls: Convocatorias
 admin-matchers: Matchers
 admin-channels: Canales
@@ -138,17 +150,35 @@ admin-view-user-mailing: 'Todos los envíos'
 admin-role-change-forbidden: 'No tienes permiso para gestionar el rol %ROLE% en este usuario'
 
 admin-users-global-search: 'Id, nombre, email o proyecto'
+admin-blog-global-search: 'Id, título, subtítulo o texto'
 admin-title-id: Id
 admin-title-name: Nombre
 admin-title-about: Info
 admin-title-location: Localización
 admin-title-fullname: Nombre
 admin-title-email: Email
+admin-title-header-image: Imagen de cabecera
 admin-title-password: Contraseña
 admin-title-avatar: Avatar
 admin-title-roles: Roles
 admin-title-amount: Invertido
 admin-title-info: Info
+admin-title-image: Imagen
+admin-title-title: Título
+admin-title-subtitle: Subtítulo
+admin-title-section: Sección
+admin-title-text: Texto
+admin-title-slug: Slug
+admin-title-publish: Publicado
+admin-title-langs: Traducciones
+admin-title-actions: Acciones
+admin-title-tags: Tags
+admin-title-deleted: Eliminado
+
+admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
+admin-blog-initialized: 'Se ha inicializado el espacio de blog'
+admin-blog-deactivated: 'Lo sentimos, la gestión de blog esta desactivada'
+admin-blog-edit-success: 'La entrada de blog se ha editado correctamente'
 
 admin-all-project-referers: 'Origen de visitas en los proyectos'
 admin-all-invests-referers: 'Origen de visitas en los aportes a proyectos'

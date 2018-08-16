@@ -16,6 +16,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Application\View;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Model;
 use Goteo\Model\Blog\Post;
 use Goteo\Model\Blog\Post\Tag;
@@ -27,22 +28,21 @@ class BlogController extends \Goteo\Core\Controller {
 
     public function __construct() {
         // Cache & replica read activated in this controller
-        \Goteo\Core\DB::cache(true);
-        // \Goteo\Core\DB::replica(true);
+        $this->dbReplica(true);
+        $this->dbCache(true);
         View::setTheme('responsive');
-
     }
 
     public function indexAction ($section='', $tag='', Request $request) {
 
-        $limit=12;
-        $slider_posts=Post::getList(['section' => $section, 'tag' => $tag], true, 0, 3);
-        $init= $request->query->get('pag') ? $request->query->get('pag')*$limit : 0;
+        $limit = 12;
+        $slider_posts = Post::getList(['section' => $section, 'tag' => $tag], true, 0, 3);
+        $init = $request->query->get('pag') ? $request->query->get('pag')*$limit : 0;
 
-        $list_posts=Post::getList(['section' => $section, 'tag' => $tag], true, $init, $limit);
-        $total=Post::getList(['section' => $section, 'tag' => $tag], true, 0, 0, true);
-        $blog_sections=Post::getListSections();
-        $tag=Tag::get($tag);
+        $list_posts = Post::getList(['section' => $section, 'tag' => $tag], true, $init, $limit);
+        $total = Post::getList(['section' => $section, 'tag' => $tag], true, 0, 0, true);
+        $blog_sections = Post::getListSections();
+        $tag = Tag::get($tag);
 
 
         return $this->viewResponse('blog/list', [
@@ -57,28 +57,45 @@ class BlogController extends \Goteo\Core\Controller {
         );
     }
 
-    public function postAction($post, Request $request)
+    public function postAction($slug, Request $request)
     {
         // Get related posts
-        $post=Post::get($post, Lang::current());
+        $post = Post::getBySlug($slug, Lang::current());
+
+        if(!$post) {
+            throw new ModelNotFoundException("Post [$slug] not found!");
+        }
+
+        $user = Session::getUser();
+        if(!(bool)$post->publish){
+            if($user && $user->hasPerm('admin-module-blog')) {
+                Message::error(Text::get('admin-blog-not-public'));
+            } else {
+                throw new ModelNotFoundException("Post [$slug] not public yet!");
+            }
+        }
 
         // Redirect to project's page if not the right type of post
         if($post->owner_type === 'project') {
             return $this->redirect("/project/{$post->owner_id}/updates/{$post->id}");
         }
-        $tags=$post->tags;
+
+        // Redirect to slug if exists
+        if($post->slug && $post->slug != $slug) {
+            return $this->redirect("/blog/{$post->slug}");
+        }
+
+        $tags = $post->tags;
         reset($tags);
-        $first_key_tags=key($tags);
+        $first_key_tags = key($tags);
 
-        $related_posts=Post::getList(['tag' => $first_key_tags, 'excluded' => $post->id ], true, 0, $limit = 3, false);
+        $related_posts = Post::getList(['tag' => $first_key_tags, 'excluded' => $post->id ], true, 0, $limit = 3, false);
 
-        return $this->viewResponse('blog/post',
-                [
-                    'post' => $post,
-                    'related_posts' => $related_posts,
-                    'author' => $author
-                ]
-        );
+        return $this->viewResponse('blog/post', [
+            'post' => $post,
+            'related_posts' => $related_posts,
+            'author' => $author
+        ]);
 
     }
 

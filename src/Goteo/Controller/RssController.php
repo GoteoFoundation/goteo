@@ -20,8 +20,8 @@ class RssController extends \Goteo\Core\Controller {
 
     public function __construct() {
         // Cache & replica read activated in this controller
-        \Goteo\Core\DB::cache(true);
-        \Goteo\Core\DB::replica(true);
+        $this->dbReplica(true);
+        $this->dbCache(true);
     }
 
     public function indexAction ($lang = '', Request $request) {
@@ -62,18 +62,19 @@ class RssController extends \Goteo\Core\Controller {
         $blog = Model\Blog::get(Config::get('node'), 'node');
 
         foreach ($blog->posts as $postId => $post) {
-            $link = $url . '/blog/' . $post->id;
+            $link = $url . '/blog/' . $post->getSlug();
             // print_r($post);die;
             $item = $feed->createNewItem();
+            $text = $post->type === 'md' ? $this->getService('app.md.parser')->text($post->text) : $post->text;
             $item->addElementArray(array(
                 'title' => $post->title,
                 'link' => $link,
-                'description' => $post->text
+                'description' => $text
                 )
             );
 
             if($gformat === 'ATOM') {
-                $item->setContent(html_entity_decode(strip_tags($post->text)));
+                $item->setContent(html_entity_decode(strip_tags($text)));
             }
 
             $item->setDate($post->date);

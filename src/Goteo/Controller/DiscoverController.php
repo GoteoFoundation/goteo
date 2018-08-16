@@ -22,7 +22,9 @@ class DiscoverController extends \Goteo\Core\Controller {
 
     public function __construct() {
         // Cache & replica read activated in this controller
-        \Goteo\Core\DB::cache(true);
+        $this->dbReplica(true);
+        $this->dbCache(true);
+
         // \Goteo\Core\DB::replica(true);
         View::setTheme('responsive');
     }

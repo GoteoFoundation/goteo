@@ -130,7 +130,7 @@ $(function(){
                         url: url,
                         type: 'PUT',
                         data: {value: val}
-                    }).success(function(data) {
+                    }).done(function(data) {
                         original = _setValue.call($input[0], data.value);
                         $(document).trigger('form-boolean-changed', [$input[0]]);
                         if(data.message) alert(data.message);
@@ -180,38 +180,85 @@ $(function(){
         $('.autoform .tagsinput').each(function(){
           // Tags with autocomplete (optional)
           var $this = $(this);
+          // Typeahead remote url to fecth
           var url = $this.data('url');
-          var displayKey = $this.data('display-key') || 'tag';
-          var displayValue = $this.data('display-value') || 'tag';
+          // Id and Text fields for typeahead
+          var keyValue = $this.data('key-value') || 'tag';
+          var keyText = $this.data('key-text') || 'tag';
+          // Id and Text fields for tagsinput
+          var itemValue = $this.data('item-value') || 'tag';
+          var itemText = $this.data('item-text') || 'tag';
+          var limit = $this.data('limit') || 5;
+          var maxTags = $this.data('max-tags') || 10;
+          var minLength = $this.data('min') || 0;
+          // Optional values via json object
+          var values = $this.data('values') || [];
+          // if present in the url, will be replace by the query in typeahead
           var wildcard = $this.data('wilcard') || '%QUERY';
-          var ops = { tagClass: 'label label-lilac' };
+          // TODO: add a template via data attributes
+
+          // Tagsinput options object
+          var ops = {
+            itemValue: itemValue,
+            itemText: itemText,
+            tagClass: 'label label-lilac',
+            maxTags: maxTags
+          };
+
           if(url) {
             var tags = new Bloodhound({
-              datumTokenizer: function(datum) {
-                return Bloodhound.tokenizers.whitespace(datum.tag);
-              },
-              // datumTokenizer: Bloodhound.tokenizers.whitespace,
+              datumTokenizer: Bloodhound.tokenizers.obj.whitespace(keyText),
+              identify: function (o) { return o[keyValue]; },
+              dupDetector: function (a, b) { return a[keyValue] === b[keyValue]; },
               queryTokenizer: Bloodhound.tokenizers.whitespace,
+              prefetch: { // TODO: make it optional
+                url: url,
+                filter: function (response) {
+                    // console.log('prefetch hit', response);
+                    return response;
+                }
+                // ,cache: false
+              },
               remote: {
                 wildcard: wildcard,
                 url: url
+                // ,cache: false
               }
             });
             tags.initialize();
-            ops.typeaheadjs = [
-              {
+            var engineWithDefaults = function (q, sync, async) {
+                if (q === '') {
+                    sync(tags.index.all());
+                    async([]);
+                }
+                else {
+                    tags.search(q, sync, async);
+                }
+            };
+
+            ops.typeaheadjs = [{
+                minLength: minLength,
+                hint: true,
                 highlight: true,
-                //other options
+                classNames: {
+                    hint: '',
+                    menu: 'tt-menu tt-menu-clip'
+                }
               },
               {
                 name: 'tags',
-                displayKey: displayKey,
-                valueKey: displayValue,
-                source: tags.ttAdapter()
+                limit: limit,
+                displayKey: keyText,
+                source: engineWithDefaults
               }];
             // console.log('tags', tags, tags.ttAdapter());
           }
+
           $this.tagsinput(ops);
+          values.forEach(function(tag) {
+            // console.log('add',tag);
+            $this.tagsinput('add', tag);
+          });
 
         });
 
@@ -250,7 +297,7 @@ $(function(){
             }
             else if (video.type === 'vimeo') {
                 $.getJSON("https://vimeo.com/api/v2/video/"+ video.id + ".json")
-                 .success(function(res) {
+                 .done(function(res) {
                     // console.log('videmo ok', res);
                     putVideo(res[0].thumbnail_large);
                  })
@@ -269,35 +316,113 @@ $(function(){
 
         $('.autoform input.online-video').each(_addVideo);
 
-        // HTML editors
-        $('.autoform .summernote > textarea').summernote({
-            height: 300,
-            toolbar: [
-                ['tag', ['style']],
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                // ['font', ['strikethrough', 'superscript', 'subscript']],
-                // ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                // ['height', ['height']],
-                ['insert', ['link', 'picture', 'video', 'hr', 'table']],
-                ['misc', ['fullscreen', 'codeview', 'help']]
-              ],
-            callbacks: {
-                onFocus: function() {
-                  // console.log('Editable area is focused');
-                  $(this).closest('.summernote').addClass('focused');
-                },
-                onBlur: function() {
-                  // console.log('Editable area loses focus');
-                  $(this).closest('.summernote').removeClass('focused');
+        var _uploadImage = function(files, url, callback) {
+            callback = $.isFunction(callback) ? callback : function(){};
+            var data = new FormData();
+            if(!files.length) files = [files];
+            $.each(files, function(index, file){
+              // TODO: configurable input.file name
+              data.append('file[]', file);
+            });
+            var _progress = function(e) {
+                if(e.lengthComputable){
+                    // console.log('progress', e.loaded, e.total);
+                    callback('progress', e.loaded / e.total);
                 }
+            };
+            $.ajax({
+                url: url,
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: data,
+                type: 'POST',
+                xhr: function() {
+                  var myXhr = $.ajaxSettings.xhr();
+                  if (myXhr.upload) myXhr.upload.addEventListener('progress',_progress, false);
+                  return myXhr;
+                },
+                success: function(result) {
+                  // console.log('success', result, result.files);
+                  if(result && result.files) {
+                    var files = $.map(result.files, function(file) {
+                      return IMG_URL + '/600x600/' + file.name;
+                    });
+                    callback('success', files);
+                  } else {
+                    callback('error', 'No files uploaded!');
+                  }
+                },
+                error: function(data) {
+                  console.log('upload error', data);
+                  callback('error', data);
+                }
+            });
+        };
+
+        // HTML editors initializations
+        var summernotes = form.summernotes = {};
+        var createHtmlEditor = function() {
+            var el = this;
+            var summernote;
+            var callbacks = {
+              onFocus: function() {
+                // console.log('Editable area is focused');
+                $(this).closest('.summernote').addClass('focused');
+              },
+              onBlur: function() {
+                // console.log('Editable area loses focus');
+                $(this).closest('.summernote').removeClass('focused');
+              }
+            };
+            if($(el).data('image-upload')) {
+              callbacks.onImageUpload = function(files) {
+                var $sm = $(this).closest('.summernote');
+                var $up = $('<div class="uploading">');
+                $sm.prepend($up);
+                _uploadImage(files, $(el).data('image-upload'), function(status, data) {
+                  // console.log('callback upload', status, data);
+                  if(status === 'progress') {
+                    $up.css('width',  (data * 100) + '%');
+                  } else {
+                    $up.remove();
+                  }
+                  if(status === 'success') {
+                    if(!data.length) data = [data];
+                    $.each(data, function(i,name){
+                      var image = $('<img>').attr('src', name);
+                      summernote.summernote('insertNode', image[0]);
+                    });
+                  }
+                  if(status === 'error') {
+                    alert('ERROR: ' + data);
+                  }
+                });
+              };
             }
-        });
+            summernote = $(el).summernote({
+                // height: 300,
+                toolbar: [
+                    ['tag', ['style']],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    // ['font', ['strikethrough', 'superscript', 'subscript']],
+                    // ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    // ['height', ['height']],
+                    ['insert', ['link', 'picture', 'video', 'hr', 'table']],
+                    ['misc', ['fullscreen', 'codeview', 'help']]
+                  ],
+                popatmouse: false,
+                callbacks: callbacks
+            });
+            summernotes[$(this).attr('id')] = summernote;
+        };
+        $('.autoform .summernote > textarea').each(createHtmlEditor);
 
         // MarkdownType initialization
         var markdowns = form.markdowns = {};
-        $('.autoform .markdown > textarea').each(function() {
+        var createMarkdownEditor = function() {
             var el = this;
             // console.log('found textarea', el);
             var simplemde = new SimpleMDE({
@@ -445,13 +570,104 @@ $(function(){
                         title: goteo.texts['form-editor-redo'] ? goteo.texts['form-editor-redo'] : "Redo"
                     }]
             });
-            // simplemde.codemirror.on('change', function() {
-            //     console.log(simplemde.value());
-            //     $(el).html(simplemde.value());
-            //     console.log(document.getElementById('autoform_text').innerHTML);
-            // });
+
+            // Tweak codemirror to accept drag&drop any file
+            simplemde.codemirror.setOption("allowDropFileTypes", null);
+
+            simplemde.codemirror.on('drop', function(codemirror, event) {
+                // console.log('codemirror',codemirror,'event',event);
+                if(!$(el).data('image-upload')) return;
+
+                var loading_text = $(el).data('image-loading-text') || '![](loading image...)';
+
+                if(event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length) {
+                  var images = $.grep(event.dataTransfer.files, function(file,i) {
+                    if(file && file.type && file.type.startsWith('image/')) {
+                      return true;
+                    }
+                    return false;
+                  });
+                  // console.log('images', images);
+                  if(images.length) {
+                    // Do not allow predefined codemirror behaviour if are images
+                    event.preventDefault();
+                    event.stopPropagation();
+                    var $cm = $(el).closest('.markdown').find('.CodeMirror.CodeMirror-wrap');
+                    var $up = $('<div class="uploading">');
+                    $cm.prepend($up);
+
+                    var coords = codemirror.coordsChar({
+                      left: event.pageX,
+                      top: event.pageY
+                    });
+
+                    codemirror.replaceRange("\n" + loading_text + "\n", coords);
+                    coords.line++;
+                    coords.ch = 0;
+                    codemirror.setCursor(coords);
+                    // console.log('codemirror',codemirror,'coords',coords);
+
+                    _uploadImage(images, $(el).data('image-upload'), function(status, data) {
+                      // console.log('callback upload', status, data);
+                      if(status === 'progress') {
+                        $up.css('width',  (data * 100) + '%');
+                      } else {
+                        $up.remove();
+                      }
+                      if(status === 'success') {
+                        if(!data.length) data = [data];
+                        $.each(data, function(i,name){
+                          codemirror.replaceRange("![](" + name + ")", coords, {line:coords.line, ch:loading_text.length});
+                        });
+                      }
+                      if(status === 'error') {
+                        alert('ERROR: ' + data);
+                      }
+                    });
+                  }
+                }
+            });
 
             markdowns[$(this).attr('id')] = simplemde;
+        };
+        $('.autoform .markdown > textarea').each(createMarkdownEditor);
+
+        // Type editor chooser
+        $('.autoform').on( 'change', '.form-control[data-editor-type]', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          var el = this;
+          var parts = $(el).attr('id').split('_');
+          var target = parts[0] + '_' + $(el).data('editor-type');
+          var $target = $('#' + target);
+          var to = $(el).val();
+          var from;
+
+          if(markdowns[target]) from = 'md';
+          if(summernotes[target]) from = 'html';
+
+          // console.log('target', target, 'from', from, 'to', to);
+          if(from === to) return;
+          if(from === 'html' && to === 'md') {
+            // destroy summernote, initialize markdown
+            summernotes[target].summernote('destroy');
+            delete summernotes[target];
+            // convert to markdown if possible
+            if(TurndownService) {
+              var service = new TurndownService();
+              service.keep(['iframe', 'object']);
+              $target.val(service.turndown($target.val()));
+            }
+            createMarkdownEditor.call($target[0]);
+          }
+          if(from == 'md' && to === 'html') {
+            // destroy markdown, initialize summernote
+            markdowns[target].toTextArea();
+            $target.val(markdowns[target].markdown($target.val()));
+            delete markdowns[target];
+            createHtmlEditor.call($target[0]);
+          }
+
         });
 
         var dropzones = form.dropzones = {};
@@ -652,15 +868,20 @@ $(function(){
         $('.autoform').on( 'click', '.image-list-sortable .add-to-markdown', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            // console.log('add to markdown');
             var $li = $(this).closest('li');
             var name = $li.data('name');
             var $form = $(this).closest('form');
             $form.find('.dragndrop').show();
             var target = $form.attr('name') + '_' + $(this).data('target');
             var md = markdowns[target];
+            // console.log('add to markdown', target);
             if(md) {
                 md.value(md.value().replace(/\s+$/g, '') + "\n\n![](" + IMG_URL + '/600x600/' + name + ")");
+            } else {
+                sm = summernotes[target];
+                if(sm) {
+                    sm.summernote('insertImage', IMG_URL + '/600x600/' + name, name);
+                }
             }
         });
 

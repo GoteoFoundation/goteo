@@ -2,16 +2,17 @@
 <?php $this->section('main-content') ?>
 
 <?php
-    $num=0;
-    $milestones = $this->milestones;
-    if(!is_array($milestones)) $milestones = array();
-    $total=count($milestones);
+
+$num=0;
+$milestones = $this->milestones;
+if(!is_array($milestones)) $milestones = array();
+$total=count($milestones);
+
 foreach($milestones as $update):
     $num++;
-    $identical_date=0;
+    $identical_date = 0;
 
-    if($current_date!=$update->date)
-    {
+    if($current_date != $update->date) {
         $date=new Datetime($update->date);
         $month=strtolower(strftime("%B",$date->getTimestamp()));
         $current_date=$update->date;
@@ -48,7 +49,7 @@ foreach($milestones as $update):
 
     <?php if($update->post): ?>
     <div class="col-sm-9 col-xs-8 content">
-        <a class="pronto" data-pronto-target="#project-tabs" href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->id ?>">
+        <a class="pronto" data-pronto-target="#project-tabs" href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->getSlug() ?>">
             <h2><?= $update->post->title ?></h2>
         </a>
 
@@ -63,8 +64,8 @@ foreach($milestones as $update):
 
         <?php if($update->post->text): ?>
         <div class="description spacer-20">
-            <?= $this->text_truncate($this->text_plain($update->post->text), 250) ?>
-            <a class="pronto" data-pronto-target="#project-tabs" href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->id ?>"><span class="read-more">[<?= $this->text('regular-read_more') ?>]</span></a>
+            <?= $this->markdown($this->text_truncate($this->text_plain($update->post->text), 250)) ?>
+            <a class="pronto" data-pronto-target="#project-tabs" href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->getSlug() ?>"><span class="read-more">[<?= $this->text('regular-read_more') ?>]</span></a>
         </div>
         <?php endif ?>
         <?php if($update->post->num_comments): ?>

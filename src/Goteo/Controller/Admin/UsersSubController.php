@@ -9,6 +9,10 @@
  */
 /**
  * Gestion de usuarios
+ *
+ *
+ * @deprecated admin module!!!!
+ *
  */
 namespace Goteo\Controller\Admin;
 

@@ -57,34 +57,47 @@ admin-consultants: 'Assessors'
 admin-invests: Aportacions
 admin-filters: 'Filtres'
 admin-remove-filters: 'Treure filtres'
+admin-remove-entry: 'Esborra l''entrada'
+admin-remove-entry-confirm: 'Segur que vols esborrar aquesta entrada? Aquesta acció no es pot desfer!'
+admin-remove-entry-forbidden: 'No es poden esborrar entrades de blog publicades. Despublica l''entrada primer.'
+admin-remove-entry-ok: 'Entrada esborrada correctament'
 admin-sponsors: Serveis
+admin-slug-seo-help: 'Aquest camp és important per SEO. Editeu-lo només per una bona raó.'
 admin-status: Estat
 admin-user: Usuari
 admin-users: Usuaris
+admin-users-add: Crea un nou usuari
+admin-blog: Blog general
+admin-blog-add: Crea un nou post
+admin-blog-edit: Editant post %s
+admin-blog-slug-exists: 'L''identificador [%s] s''està fent servir en un altre post!'
+admin-blog-slug-chars: 'L''identificador [%s] conté caràcters invàlids!'
+admin-blog-not-public: 'Aquest post no és públic encara'
+
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
-admin-project-express-discard: 'Rebuig express'
+admin-project-express-discard: 'Rebuig expres'
 admin-project-express-discard-desc: 'Passa el projecte a estat Descartat i envia un email'
-admin-project-express-discard-sure: 'S''enviarà un email automàtic i es passarà a estat descartat,Ook?'
+admin-project-express-discard-sure: 'S''enviarà un email automàtic i es passarà a estat descartat,Ok?'
 admin-project-to-review: 'A revisió'
 admin-project-to-review-desc: 'Passa el projecte a l''estat Pendent de valoració'
-admin-project-to-review-sure: 'El creador no podrà editar més el projecte, ok?'
+admin-project-to-review-sure: 'El creador no podrà editar més el projecte, Ok?'
 admin-project-view-in-admin: 'Veure a l''admin'
 admin-project-to-negotiation: 'A negociació'
 admin-project-to-negotiation-desc: 'Passa el projecte a l''estat Editant-se'
 admin-project-to-negotiation-sure: 'ALERTA!! El projecte està en campanya! Amb això el des-publicarem, Ok?'
 admin-project-to-publish: 'Publica'
 admin-project-to-publish-desc: 'Passa el projecte a l''estat "En campanya"'
-admin-project-to-publish-sure: 'El projecte començarà la campanya, ok?'
+admin-project-to-publish-sure: 'El projecte començarà la campanya, Ok?'
 admin-project-derivation-discard: 'Rebutjar i derivar'
-admin-project-derivation-discard-desc: 'Pasa el projecte a l''estat descartat i envia un mail derivant a una plataforma més idònia'
+admin-project-derivation-discard-desc: 'Passa el projecte a l''estat descartat i envia un mail derivant a una plataforma més idònia'
 admin-project-derivation-discard-sure: 'S''envia un mail derivant a una altra plataforma i passa a l''estat descartat"'
 admin-home-title: Administra Goteo
 
 admin-already-impersonating: 'Ja estàs suplantant un usuari, tanca primer la sessió!'
 admin-rebase-user: 'Canvia l''ID de l''usuari'
 admin-edit-name: 'Canvia el nom'
-admin-edit-roles: 'Canvia els rols de l''usuario'
+admin-edit-roles: 'Canvia els rols de l''usuari'
 admin-send-email: 'Envia un correu electrònic'
 admin-show-roles-info: 'Què pot fer cada rol?'
 admin-user-roles: 'Llistat de rols d''usuari'
@@ -101,18 +114,39 @@ admin-view-user-mailing: 'Tots els enviaments'
 admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aquest usuari'
 
 admin-users-global-search: 'Id, nom, email o projecte'
+admin-blog-global-search: 'Id, títol, subtítol o text'
+admin-text-type: 'Processa el text com a'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Text simple'
 admin-title-id: Id
 admin-title-name: Nom
 admin-title-fullname: Nom
 admin-title-about: Info
 admin-title-location: Localització
 admin-title-email: Email
+admin-title-header-image: Imatge de capçalera
 admin-title-password: Contrasenya
 admin-title-avatar: Avatar
 admin-title-roles: Rols
 admin-title-amount: Invertit
 admin-title-info: Info
+admin-title-image: Imatge
+admin-title-title: Títol
+admin-title-subtitle: Subtítol
+admin-title-section: Secció
+admin-title-text: Text
+admin-title-slug: Slug
+admin-title-publish: Publicat
+admin-title-langs: Traduccions
+admin-title-actions: Accions
+admin-title-tags: Tags
+admin-title-deleted: 'Eliminat'
 
+admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
+admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
+admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'
+admin-blog-edit-success: 'L''entrada de blog s''ha editat correctament'
 
 admin-all-project-referers: 'Origen de visites als projectes'
 admin-all-invests-referers: 'Origen de visites a les aportacions a projectes'

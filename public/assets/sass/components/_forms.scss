@@ -357,6 +357,26 @@
       }
     }
   }
+
+  .summernote,.CodeMirror {
+    position: relative;
+    .uploading {
+      z-index: 1000;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      content: '';
+      top: 42px;
+      left: 0;
+      border-top: 2px solid $color-cyan;
+      background:url(../img/ring.gif) no-repeat left;
+      background-size: contain;
+      @include transition(width 0.4s ease-in-out);
+    }
+  }
+  .CodeMirror .uploading {
+    top: 0px;
+  }
 }
 
 .material-switch {

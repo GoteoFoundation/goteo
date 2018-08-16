@@ -178,7 +178,7 @@ class ProjectsApiController extends AbstractApiController {
      */
     public function projectUpdatesPropertyAction($pid, $uid, $prop, Request $request) {
         $prj = Project::get($pid);
-        $post = BlogPost::get($uid);
+        $post = BlogPost::getBySlug($uid);
 
         // Security, first of all...
         if(!$prj->userCanEdit($this->user)) {
@@ -263,7 +263,7 @@ class ProjectsApiController extends AbstractApiController {
     }
 
     /**
-     * AJAX upload image (Generic uploader with optional project gallery updater)
+     * AJAX upload image (Generic image uploader for projects with optional project gallery updater)
      */
     public function projectUploadImagesAction($id, Request $request) {
         $prj = $this->validateProject($id);

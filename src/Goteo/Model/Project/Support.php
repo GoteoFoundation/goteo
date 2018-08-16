@@ -116,35 +116,6 @@ class Support extends \Goteo\Core\Model {
         }
 	}
 
-	public function saveLang (&$errors = array()) {
-		$fields = array(
-			'id'=>'id',
-            'project'=>'project',
-			'lang'=>'lang',
-			'support'=>'support_lang',
-			'description'=>'description_lang'
-			);
-
-		$set = '';
-		$values = array();
-
-		foreach ($fields as $field=>$ffield) {
-			if ($set != '') $set .= ", ";
-			$set .= "$field = :$field ";
-			$values[":$field"] = $this->$ffield;
-		}
-
-		try {
-			$sql = "REPLACE INTO support_lang SET " . $set;
-			self::query($sql, $values);
-
-			return true;
-		} catch(\PDOException $e) {
-			$errors[] = "La colaboración {$data['support']} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
-            return false;
-		}
-	}
-
     /** Retrieve related messages to this support entry */
     public function getThread() {
         if($this->threadInstance instanceOf Comment) return $this->threadInstance;

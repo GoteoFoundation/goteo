@@ -106,7 +106,11 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'constraints' => $this->getConstraints('description'),
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-description'), 'rows' => 8]
+                'attr' => [
+                    'help' => Text::get('tooltip-project-description'),
+                    'rows' => 8,
+                    'data-image-upload' => '/api/projects/' . $project->id . '/images'
+                ]
             ])
             ->add('about', 'markdown', [
                 'label' => 'overview-field-about',
@@ -114,7 +118,10 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 // 'row_class' => 'extra',
-                'attr' => ['help' => Text::get('tooltip-project-about'), 'rows' => 8]
+                'attr' => [
+                    'help' => Text::get('tooltip-project-about'),
+                    'rows' => 8
+                ]
             ])
             ->add('motivation', 'markdown', [
                 'label' => 'overview-field-motivation',

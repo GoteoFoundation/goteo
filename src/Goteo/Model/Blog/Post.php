@@ -19,7 +19,6 @@ use Goteo\Library\Text;
 use Goteo\Application\Message;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
-use Goteo\Application\Session;
 use Goteo\Application\Exception\ModelException;
 
 class Post extends \Goteo\Core\Model {
@@ -27,6 +26,7 @@ class Post extends \Goteo\Core\Model {
     public
         $id,
         $blog,
+        $slug,
         $project,
         $title,
         $subtitle,
@@ -43,7 +43,9 @@ class Post extends \Goteo\Core\Model {
         $owner_id,
         $allow = false,
         $publish = false,
+        $type = 'md', // html or md (markdown)
         $tags = array(),
+        $section,
         $gallery = array(), // array de instancias image de post_image
         $num_comments = 0,
         $comments = array();
@@ -51,6 +53,19 @@ class Post extends \Goteo\Core\Model {
 
     public static function sanitizeText($t) {
         return strip_tags($t, '<br><a><strong><i><b><ul><li><ol><em><blockquote><p><img><code><pre><h1><h2><h3><h4><h5><h6><small>');
+    }
+
+    // fallbacks to getbyid
+    public static function getBySlug($slug, $lang = null, $model_lang = null) {
+        $post = self::get((string)$slug, $lang, $model_lang);
+        if(!$post) {
+            $post = self::get((int)$slug, $lang, $model_lang);
+        }
+        return $post;
+    }
+
+    public static function getById($id, $lang = null, $model_lang = null) {
+        return self::get((int)$id, $lang, $model_lang);
     }
 
     /*
@@ -63,20 +78,21 @@ class Post extends \Goteo\Core\Model {
         // That's because Projects can be in any custom language and its
         // corresponding blog will match the same language as main
 
-        if($lang !== $model_lang) $lang = self::default_lang_by_id($id, 'post_lang', $lang);
+        if(!$model_lang) $model_lang = Config::get('lang');
+        list($fields, $joins) = self::getLangsSQLJoins($lang, $model_lang);
 
         $sql = "
             SELECT
                 post.id as id,
                 post.blog as blog,
-                IFNULL(post_lang.title, post.title) as title,
-                IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
-                IFNULL(post_lang.text, post.text) as text,
-                IFNULL(post_lang.legend, post.legend) as legend,
+                post.slug as slug,
+                $fields,
                 post.image as `image`,
+                post.media as `media`,
                 post.header_image as `header_image`,
-                IFNULL(post_lang.media, post.media) as `media`,
+                post.section as `section`,
                 post.date as `date`,
+                post.type as `type`,
                 DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                 post.allow as allow,
                 post.publish as publish,
@@ -92,10 +108,7 @@ class Post extends \Goteo\Core\Model {
             FROM    post
             INNER JOIN blog
                 ON  blog.id = post.blog
-            LEFT JOIN post_lang
-                ON  post_lang.id = post.id
-                AND post_lang.lang = :lang
-                AND post_lang.blog = post.blog
+            $joins
             LEFT JOIN user
                 ON user.id=post.author
             LEFT JOIN project
@@ -107,17 +120,23 @@ class Post extends \Goteo\Core\Model {
             LEFT JOIN node
                     ON node.id = blog.owner
                     AND blog.type = 'node'
-            WHERE post.id = :id
             ";
 
-        $values = array(':id' => $id, ':lang'=>$lang);
+        if(is_string($id)) {
+            $sql .= "WHERE post.slug = :slug ";
+            $values = [':slug' => $id];
+        } else {
+            $sql .= "WHERE post.id = :id";
+            $values = [':id' => $id];
+        }
 
         // die("[$lang]".\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
-        $post = $query->fetchObject('\Goteo\Model\Blog\Post');
+        $post = $query->fetchObject(__CLASS__);
 
-        if(!$post instanceof \Goteo\Model\Blog\Post) {
+        // Try by slug in the event that the slug is a number
+        if(!$post instanceof Post) {
             return false;
         }
 
@@ -134,14 +153,14 @@ class Post extends \Goteo\Core\Model {
             $post->media = new Media($post->media);
         }
 
-        $post->comments = Post\Comment::getAll($id);
+        $post->comments = Post\Comment::getAll($post->id);
 
         if (!isset($post->num_comments)) {
             $post->num_comments = Post\Comment::getCount($post->id);
         }
 
         //tags
-        $post->tags = Post\Tag::getAll($id);
+        $post->tags = Post\Tag::getAll($post->id);
 
         //agregamos html si es texto plano
         $post->text = self::sanitizeText($post->text);
@@ -149,46 +168,6 @@ class Post extends \Goteo\Core\Model {
         return $post;
     }
 
-    /*
-     *  Devuelve datos básicos de una entrada
-     */
-    public static function getMini ($id) {
-
-        $lang = Lang::current();
-
-            //Obtenemos el idioma de soporte
-            $lang=self::default_lang_by_id($id, 'post_lang', $lang);
-
-            $query = static::query("
-                SELECT
-                    post.id as id,
-                    post.blog as blog,
-                    IFNULL(post_lang.title, post.title) as title,
-                    IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
-                    IFNULL(post_lang.text, post.text) as text,
-                    post.image as `image`,
-                    post.header_image as `header_image`,
-                    post.date as `date`,
-                    DATE_FORMAT(post.date, '%d | %m | %Y') as fecha
-                    blog.type as owner_type,
-                    blog.owner as owner_id
-                FROM    post
-                INNER JOIN blog
-                    ON  blog.id = post.blog
-                LEFT JOIN post_lang
-                    ON  post_lang.id = post.id
-                    AND post_lang.lang = :lang
-                    AND post_lang.blog = post.blog
-                LEFT JOIN node
-                        ON node.id = blog.owner
-                        AND blog.type = 'node'
-                WHERE post.id = :id
-                ", array(':id' => $id, ':lang'=>$lang));
-
-            $post = $query->fetchObject(__CLASS__);
-
-            return $post;
-    }
 
     /*
      * Lista de entradas
@@ -196,37 +175,24 @@ class Post extends \Goteo\Core\Model {
      * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'
      */
     public static function getAll ($blog = null, $limit = null, $published = true, $model_lang = null) {
-        $lang = Lang::current();
         $list = array();
 
-        $values = array(':lang'=>$lang);
-
-        if(self::default_lang($lang) === $model_lang ? $model_lang : Config::get('lang')) {
-            $different_select=" IFNULL(post_lang.title, post.title) as title,
-                                IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
-                                IFNULL(post_lang.text, post.text) as `text`,
-                                IFNULL(post_lang.legend, post.legend) as `legend`,
-                                IFNULL(post_lang.media, post.media) as `media`";
-            }
-        else {
-                $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
-                                    IFNULL(post_lang.subtitle, IFNULL(eng.subtitle, post.subtitle)) as subtitle,
-                                    IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`,
-                                    IFNULL(post_lang.legend, IFNULL(eng.legend, post.legend)) as `legend`,
-                                    IFNULL(post_lang.media, IFNULL(eng.media, post.media)) as `media`";
-                $eng_join=" LEFT JOIN post_lang as eng
-                                ON  eng.id = post.id
-                                AND eng.lang = 'en'";
-            }
+        $values = [];
+        if(!$model_lang) $model_lang = Config::get('lang');
+        list($fields, $joins) = self::getLangsSQLJoins(Lang::current(), $model_lang);
 
         $sql = "
             SELECT
                 post.id as id,
                 post.blog as blog,
+                post.slug as slug,
                 blog.type as type,
                 blog.owner as owner,
-                $different_select,
+                $fields,
                 post.image as `image`,
+                post.header_image as `header_image`,
+                post.section as `section`,
+                post.type as `type`,
                 DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                 DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                 post.publish as publish,
@@ -243,11 +209,7 @@ class Post extends \Goteo\Core\Model {
                 ON  blog.id = post.blog
             LEFT JOIN user
                     ON user.id=post.author
-            LEFT JOIN post_lang
-                ON  post_lang.id = post.id
-                AND post_lang.lang = :lang
-                AND post_lang.blog = post.blog
-            $eng_join
+            $joins
             LEFT JOIN project
                     ON project.id = blog.owner
                     AND blog.type = 'project'
@@ -282,7 +244,7 @@ class Post extends \Goteo\Core\Model {
             $sql .= "LIMIT $limit";
         }
 
-           // die(\sqldbg($sql, $values));
+        // die(\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
 
@@ -319,6 +281,10 @@ class Post extends \Goteo\Core\Model {
         return $this->userInstance;
     }
 
+    public function getSlug() {
+        return $this->slug ? $this->slug : $this->id;
+    }
+
     /*
      * Lista de entradas filtradas
      *  por tag
@@ -326,27 +292,12 @@ class Post extends \Goteo\Core\Model {
      */
     public static function getList ($filters = array(), $published = true, $offset = 0, $limit = 10, $count = false, $lang = null, $model_lang = null) {
         if(!$lang) $lang = Lang::current();
-        $values = array(':lang'=>$lang);
+        if(!$model_lang) $model_lang = Config::get('lang');
+        $values = [];
 
-        $list = array();
+        $list = [];
 
-        if(self::default_lang($lang) === $model_lang ? $model_lang : Config::get('lang')) {
-            $different_select=" IFNULL(post_lang.title, post.title) as title,
-                                IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
-                                IFNULL(post_lang.text, post.text) as `text`,
-                                IFNULL(post_lang.legend, post.legend) as `legend`,
-                                IFNULL(post_lang.media, post.media) as `media`";
-            }
-        else {
-                $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
-                                    IFNULL(post_lang.subtitle, IFNULL(eng.subtitle, post.subtitle)) as subtitle,
-                                    IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`,
-                                    IFNULL(post_lang.legend, IFNULL(eng.legend, post.legend)) as `legend`,
-                                    IFNULL(post_lang.media, IFNULL(eng.media, post.media)) as `media`";
-                $eng_join=" LEFT JOIN post_lang as eng
-                                ON  eng.id = post.id
-                                AND eng.lang = 'en'";
-            }
+        list($fields, $joins) = self::getLangsSQLJoins($lang, $model_lang);
 
 
         $offset = (int) $offset;
@@ -356,8 +307,10 @@ class Post extends \Goteo\Core\Model {
             SELECT
                 post.id as id,
                 post.blog as blog,
-                $different_select,
+                post.slug as slug,
+                $fields,
                 post.image as `image`,
+                post.type as `type`,
                 post.section as `section`,
                 post.glossary as `glossary`,
                 post.header_image as `header_image`,
@@ -376,13 +329,9 @@ class Post extends \Goteo\Core\Model {
             FROM    post
             INNER JOIN blog
                 ON  blog.id = post.blog
-            LEFT JOIN post_lang
-                ON  post_lang.id = post.id
-                AND post_lang.lang = :lang
-                AND post_lang.blog = post.blog
+            $joins
             LEFT JOIN user
                     ON user.id=post.author
-            $eng_join
             LEFT JOIN project
                     ON project.id = blog.owner
                     AND blog.type = 'project'
@@ -412,13 +361,17 @@ class Post extends \Goteo\Core\Model {
             $sqlWhere = " WHERE blog.type = 'node'
             ";
         }
-
         if (!empty($filters['blog'])) {
             $sqlWhere = " WHERE post.blog = :blog
             ";
             $values[':blog'] = $filters['blog'];
         }
 
+        if (!empty($filters['superglobal'])) {
+            $sqlWhere .= " AND (post.id LIKE :qid OR post.slug LIKE :superglobal OR post.title LIKE :superglobal OR post.subtitle LIKE :superglobal OR post.text LIKE :superglobal)";
+            $values[':qid'] = $filters['superglobal'];
+            $values[':superglobal'] = '%' . $filters['superglobal'] . '%';
+        }
         if (!empty($filters['tag'])) {
             $sqlWhere .= " AND post.id IN (SELECT post FROM post_tag WHERE tag = :tag)
             ";
@@ -464,7 +417,7 @@ class Post extends \Goteo\Core\Model {
 
         // solo las de la portada
         if ($filters['show'] == 'home') {
-            if ($filters['node'] == \GOTEO_NODE) {
+            if ($filters['node'] == Config::get('node')) {
                 $sqlWhere .= " AND post.home = 1
                 ";
             } else {
@@ -475,7 +428,7 @@ class Post extends \Goteo\Core\Model {
         }
 
         if ($filters['show'] == 'footer') {
-            if ($filters['node'] == \GOTEO_NODE) {
+            if ($filters['node'] == Config::get('node')) {
                 $sqlWhere .= " AND post.footer = 1
                 ";
             }
@@ -483,7 +436,6 @@ class Post extends \Goteo\Core\Model {
 
         if($count) {
             // Return count
-            unset($values[':lang']);
             $sql = "SELECT COUNT(post.id)
                 FROM post
                 INNER JOIN blog ON  blog.id = post.blog
@@ -539,82 +491,98 @@ class Post extends \Goteo\Core\Model {
             return false;
     }
 
+
+    public function slugExists($slug) {
+        $values = [':slug' => $slug];
+        $sql = 'SELECT COUNT(*) FROM post WHERE slug=:slug';
+        if($this->id) {
+            $values[':id'] = $this->id;
+            $sql .= ' AND id!=:id';
+        }
+
+        return self::query($sql, $values)->fetchColumn() > 0;
+    }
+
     public function save (&$errors = array()) {
         if (empty($this->blog)) return false;
 
-        $set = '';
+        if(!$this->date) $this->date = date('Y-m-d');
+
+        // Attempt to create slug if not exists
+        if(!$this->slug) {
+            $this->slug = self::idealiza($this->title, false, false, 150);
+            if($this->slug && $this->slugExists($this->slug)) {
+                $this->slug = $this->slug .'-' . ($this->id ? $this->id : time());
+            }
+        }
+
 
         $fields = array(
             // 'id',
             'blog',
+            'slug',
             'title',
             'subtitle',
+            'section',
             'text',
             'media',
+            'header_image',
             'legend',
             'date',
             'allow',
             'publish',
             'home',
             'footer',
-            'author'
+            'author',
+            'type'
             );
-
-        //eliminamos etiquetas script,iframe.. si no es admin o superadmin
-        if(!(isset(Session::getUser()->roles['superadmin'])||isset(Session::getUser()->roles['admin'])))
-            $this->text = Text::tags_filter($this->text);
 
         try {
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
 
             // Luego la imagen
-            if ($this->id) {
-                // Will be an Upload if it's not Image
-                if($this->image) {
-                    if(is_array($this->image) && !$this->image['tmp_name']) {
-                        try {
-                            Image::replaceGallery('post', $this->id, $this->image);
-                        } catch(ModelException $e) {
-                            throw new \PDOException(Text::get('gallery-upload-fail')." (".$e->getMessage().")");
-                        }
-                        $this->gallery = $this->image;
-                        $this->image = $this->image ? $this->image[0] : null;
-                    } else {
-                        // Old behaviour, add the image to the gallery if
-                        // needed (it's an upload)
-                        $img = $this->image;
-                        if(!$img instanceOf Image) {
-                            $img = new Image($img);
-                        }
-                        if (!$img->addToModelGallery('post', $this->id)) {
-                            throw new \PDOException(Text::get('image-upload-fail'));
-                        }
-                        $this->gallery[] = $img;
-                        $this->image = $img;
+            // Will be an Upload if it's not Image
+            if($this->image) {
+                if(is_array($this->image) && !$this->image['tmp_name']) {
+                    try {
+                        Image::replaceGallery('post', $this->id, $this->image);
+                    } catch(ModelException $e) {
+                        throw new \PDOException(Text::get('gallery-upload-fail')." (".$e->getMessage().")");
                     }
-
-                    // Rebuild default image
-                    if($this->image) $this->image->setModelImage('post', $this->id);
-                    else             Image::deleteModelImage('post', $this->id);
+                    $this->gallery = $this->image;
+                    $this->image = $this->image ? $this->image[0] : null;
+                } else {
+                    // Old behaviour, add the image to the gallery if
+                    // needed (it's an upload)
+                    $img = $this->image;
+                    if(!$img instanceOf Image) {
+                        $img = new Image($img);
+                    }
+                    if (!$img->addToModelGallery('post', $this->id)) {
+                        throw new \PDOException(Text::get('image-upload-fail'));
+                    }
+                    $this->gallery[] = $img;
+                    $this->image = $img;
                 }
 
-                // y los tags, si hay
-                if (is_array($this->tags)) {
-                    static::query('DELETE FROM post_tag WHERE post= ?', $this->id);
-                    foreach ($this->tags as $tag) {
-                        $new = new Post\Tag(
-                                array(
-                                    'post' => $this->id,
-                                    'tag' => $tag
-                                )
-                            );
-                        $new->assign($errors);
-                        unset($new);
-                    }
-                }
+                // Rebuild default image
+                if($this->image) $this->image->setModelImage('post', $this->id);
+                else             Image::deleteModelImage('post', $this->id);
             }
 
+            // y los tags, si hay
+            if (is_array($this->tags)) {
+                static::query('DELETE FROM post_tag WHERE post= ?', $this->id);
+                foreach ($this->tags as $tag) {
+                    $new = new Post\Tag([
+                            'post' => $this->id,
+                            'tag' => $tag
+                        ]);
+                    $new->assign($errors);
+                    unset($new);
+                }
+            }
 
             // actualizar campo calculado
             if ( $this->publish == 1 && $this->owner_type == 'project' ) {
@@ -629,46 +597,7 @@ class Post extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        // return ['title', 'text', 'media', 'legend'];
-        return ['title', 'text'];
-    }
-
-    public function saveLang (&$errors = array()) {
-
-        $set = '';
-
-        $fields = array(
-            'id'=>'id',
-            'blog'=>'blog',
-            'lang'=>'lang',
-            'title'=>'title_lang',
-            'subtitle'=>'subtitle_lang',
-            'text'=>'text_lang',
-            'media'=>'media_lang',
-            'legend'=>'legend_lang'
-            );
-
-        $values = array();
-
-        foreach ($fields as $field=>$ffield) {
-            if ($set != '') $set .= ", ";
-            $set .= "`$field` = :$field ";
-            $values[":$field"] = $this->$ffield;
-        }
-
-         //eliminamos etiquetas script,iframe.. si no es admin o superadmin
-        if(!(isset(Session::getUser()->roles['superadmin'])||isset(Session::getUser()->roles['admin'])))
-            $values[':text']=Text::tags_filter($values[':text']);
-
-        try {
-            $sql = "REPLACE INTO post_lang SET " . $set;
-            self::query($sql, $values);
-
-            return true;
-        } catch(\PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
-            return false;
-        }
+        return ['title', 'subtitle', 'text', 'legend'];
     }
 
     /*
@@ -728,25 +657,16 @@ class Post extends \Goteo\Core\Model {
             }
         }
 
-        return (int) $got->posts; 
+        return (int) $got->posts;
     }
 
     // List of blog sections
     public static function getListSections(){
-        $sections=[ 'mission'      => 'blog-section-mission',
-                    'matchfunding' => 'blog-section-matchfunding',
-                    'voices'     => 'blog-section-voices',
-                    'transparency' => 'blog-section-transparency',
-                    'milestones'   => 'blog-section-milestones',
-                    'team'         => 'blog-section-team'
-                ];
-
-        return $sections;
+        return Config::get('blog.sections');;
     }
 
     public static function getSection($section){
-        $sections=self::getListSections();
-
+        $sections = self::getListSections();
         return $sections[$section];
     }
 }

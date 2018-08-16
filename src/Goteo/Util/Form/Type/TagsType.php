@@ -39,7 +39,7 @@ class TagsType extends TextType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
-        if(!is_array($options['attr']['class'])) $view->vars['attr']['class'] = [];
+        if(is_array($options['attr']['class'])) $view->vars['attr']['class'] = implode(' ', $view->vars['attr']['class']);
         $view->vars['attr']['class'] .= 'form-control tagsinput';
         $view->vars['attr']['data-url'] = $options['url'];
         $view->vars['row_class'] = $options['row_class'];

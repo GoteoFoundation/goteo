@@ -36,6 +36,8 @@ project-one-round: 'Ronda única de 40 dies'
 project-personal-field-entity_name: 'Entitat en nom de la qual actues (si procedeix)'
 project-two-rounds: 'Dues rondes de 40 dies'
 tooltip-project-personal-entity_name: 'Si representes alguna entitat, indica el seu nom en aquest camp.'
+tooltip-text-type-change: 'Això canviarà el tipus d''editor de text.<br><b>Nota:</b> Al canviar entre markdown i html es poden perdre alguns estils.'
+tooltip-drag-and-drop-images: 'Per incorporar imatges, pots arrossegar i deixar anar els arxius directament a l''editor'
 form-sent-success: 'S''han desat les dades correctament!'
 form-sent-error: 'Ha ocorregut un error al desar les dades: [%s]'
 form-confirm-exit: "Es perdran les dades que no has desat\nSegur que vols sortir de la pàgina?"

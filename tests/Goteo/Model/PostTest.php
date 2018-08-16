@@ -42,7 +42,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
         $errors = [];
         $this->assertTrue($ob->validate($errors));
         $this->assertTrue($ob->save($errors), print_r($errors, 1));
-        $ob = Post::get($ob->id);
+        $ob = Post::getById($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Post', $ob);
 
         foreach(self::$data as $key => $val) {
@@ -53,7 +53,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 
 
         $ob = new Post(self::$data);
-        $this->assertTrue($ob->save());
+        $this->assertTrue($ob->save($errors), print_r($errors, 1));
 
         return $ob;
 
@@ -71,6 +71,26 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 
         return $ob;
     }
+
+    /**
+     * @depends testGetPost
+     */
+    public function testSlugPost($ob) {
+        $this->assertEquals('test-post', $ob->getSlug());
+        $this->assertEquals($ob->id, Post::getBySlug($ob->getSlug())->id);
+        $this->assertEquals($ob->id, Post::getById($ob->id)->id);
+
+        $ob2 = new Post(self::$data);
+        $errors = [];
+        $this->assertTrue($ob2->save($errors), print_r($errors, 1));
+
+        $this->assertContains('test-post-', $ob2->getSlug());
+
+        Post::delete($ob2->id);
+
+        return $ob;
+    }
+
     /**
      * @depends testGetPost
      */
@@ -84,7 +104,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
      * @depends testDeletePost
      */
     public function testNonExisting($ob) {
-        $ob = Post::get($ob->id);
+        $ob = Post::getById($ob->id);
         $this->assertFalse($ob);
         $this->assertFalse(Post::delete($ob->id));
     }

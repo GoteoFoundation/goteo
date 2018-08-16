@@ -145,27 +145,163 @@ $default_lang = $this->get_query('hl');
 <script type="text/javascript">
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
   $(function(){
+    var _uploadImage = function(files, url, callback) {
+      callback = $.isFunction(callback) ? callback : function(){};
+      var data = new FormData();
+      if(!files.length) files = [files];
+      $.each(files, function(index, file){
+        data.append('file[]', file);
+      });
+      var _progress = function(e) {
+          if(e.lengthComputable){
+              // console.log('progress', e.loaded, e.total);
+              callback('progress', e.loaded / e.total);
+          }
+      };
+      $.ajax({
+          url: url,
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: data,
+          type: 'POST',
+          xhr: function() {
+            var myXhr = $.ajaxSettings.xhr();
+            if (myXhr.upload) myXhr.upload.addEventListener('progress',_progress, false);
+            return myXhr;
+          },
+          success: function(result) {
+            // console.log('success', result, result.files);
+            if(result && result.files) {
+              var files = $.map(result.files, function(file) {
+                return IMG_URL + '/600x600/' + file.name;
+              });
+              callback('success', files);
+            } else {
+              callback('error', 'No files uploaded!');
+            }
+          },
+          error: function(data) {
+            console.log('upload error', data);
+            callback('error', data);
+          }
+      });
+  };
+
   <?php if($translator->getType() === 'html'): ?>
-    $('textarea.editor').summernote({
+    $('textarea.editor').each(function() {
+      var summernote = $(this).summernote({
         toolbar: [
-        ['tag', ['style']],
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['strikethrough', 'superscript', 'subscript']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['height', ['height']],
-        ['insert', ['link', 'picture', 'video', 'hr', 'table']],
-        ['misc', ['fullscreen', 'codeview', 'help']]
-      ]
+          ['tag', ['style']],
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          // ['font', ['strikethrough', 'superscript', 'subscript']],
+          // ['fontsize', ['fontsize']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          // ['height', ['height']],
+          ['insert', ['link', 'picture', 'video', 'hr', 'table']],
+          ['misc', ['fullscreen', 'codeview', 'help']]
+        ],
+        popatmouse: false,
+        callbacks: {
+          onFocus: function() {
+            // console.log('Editable area is focused');
+            $(this).closest('.summernote').addClass('focused');
+          },
+          onBlur: function() {
+            // console.log('Editable area loses focus');
+            $(this).closest('.summernote').removeClass('focused');
+          },
+          onImageUpload: function(files) {
+            var $sm = $(this).closest('.summernote');
+            var $up = $('<div class="uploading">');
+            $sm.prepend($up);
+            _uploadImage(files, '/api/blog/images', function(status, data) {
+              // console.log('callback upload', status, data);
+              if(status === 'progress') {
+                $up.css('width',  (data * 100) + '%');
+              } else {
+                $up.remove();
+              }
+              if(status === 'success') {
+                if(!data.length) data = [data];
+                $.each(data, function(i,name){
+                  var image = $('<img>').attr('src', name);
+                  summernote.summernote('insertNode', image[0]);
+                });
+              }
+              if(status === 'error') {
+                alert('ERROR: ' + data);
+              }
+            });
+          }
+        }
+      });
     });
   <?php elseif($translator->getType() === 'md'): ?>
     $('textarea.editor').each(function() {
+      var el = this;
       var simplemde = new SimpleMDE({
           element: this,
           spellChecker: false,
           promptURLs: true,
           forceSync: true
+      });
+
+      // Tweak codemirror to accept drag&drop any file
+      simplemde.codemirror.setOption("allowDropFileTypes", null);
+
+      simplemde.codemirror.on('drop', function(codemirror, event) {
+          // console.log('codemirror',codemirror,'event',event);
+
+          var loading_text = '![](loading image...)';
+
+          if(event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length) {
+            var images = $.grep(event.dataTransfer.files, function(file,i) {
+              if(file && file.type && file.type.startsWith('image/')) {
+                return true;
+              }
+              return false;
+            });
+            // console.log('images', images);
+            if(images.length) {
+              // Do not allow predefined codemirror behaviour if are images
+              event.preventDefault();
+              event.stopPropagation();
+              var $cm = $(el).closest('.form-group').find('.CodeMirror.CodeMirror-wrap');
+              var $up = $('<div class="uploading">');
+              $cm.prepend($up);
+
+              var coords = codemirror.coordsChar({
+                left: event.pageX,
+                top: event.pageY
+              });
+
+              codemirror.replaceRange("\n" + loading_text + "\n", coords);
+              coords.line++;
+              coords.ch = 0;
+              codemirror.setCursor(coords);
+              // console.log('codemirror',codemirror,'coords',coords);
+
+              _uploadImage(images, '/api/blog/images', function(status, data) {
+                // console.log('callback upload', status, data);
+                if(status === 'progress') {
+                  $up.css('width',  (data * 100) + '%');
+                } else {
+                  $up.remove();
+                }
+                if(status === 'success') {
+                  if(!data.length) data = [data];
+                  $.each(data, function(i,name){
+                    codemirror.replaceRange("![](" + name + ")", coords, {line:coords.line, ch:loading_text.length});
+                  });
+                }
+                if(status === 'error') {
+                  alert('ERROR: ' + data);
+              }
+            });
+          }
+        }
       });
       simplemde.render();
     });

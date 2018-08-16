@@ -551,38 +551,6 @@ class Message extends \Goteo\Core\Model {
         }
     }
 
-    public function saveLang (&$errors = array()) {
-        $fields = array(
-            'id'=>'id',
-            'lang'=>'lang',
-            'message'=>'message_lang'
-            );
-
-        $set = '';
-        $values = array();
-
-        foreach ($fields as $field=>$ffield) {
-            if (!empty($this->$ffield)) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$ffield;
-            }
-        }
-
-        //eliminamos etiquetas script,iframe..
-        $values[':message']=Text::tags_filter($values[':message']);
-
-        try {
-            $sql = "REPLACE INTO message_lang SET " . $set;
-            self::query($sql, $values);
-
-            return true;
-        } catch(\PDOException $e) {
-            $errors[] = "El mensaje no se ha grabado correctamente. Por favor, inténtelo de nuevo." . $e->getMessage();
-            return false;
-        }
-    }
-
     /*
      * Para que el admin pueda borrar mensajes que no aporten nada
      */

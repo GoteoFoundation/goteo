@@ -303,22 +303,6 @@ class UserProfileForm extends AbstractFormProcessor {
             throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
         }
 
-        //
-        // This is commented on purpose, see: Goteo\Model\User::get()
-        //
-        // // assign translation if no in the default language
-        // if ($user->lang != Config::get('lang')) {
-        //     // if (!User::isTranslated($this->user->id, $this->user->lang)) {
-        //         $user->about_lang = $user->about;
-        //         $user->keywords_lang = $user->keywords;
-        //         $user->contribution_lang = $user->contribution;
-        //         $user->saveLang($errors);
-        //     // }
-        // }
-        // if($errors) {
-        //     throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
-        // }
-
         User::flush();
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 

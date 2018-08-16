@@ -17,6 +17,11 @@ use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Model;
 
+/**
+ *
+ * @deprecated admin module!!!!
+ *
+ */
 class BlogSubController extends AbstractSubController {
 
     static protected $labels = array (
@@ -164,7 +169,7 @@ class BlogSubController extends AbstractSubController {
                 $editing = false;
 
                 if (!empty($this->getPost('id'))) {
-                    $post = Model\Blog\Post::get($this->getPost('id'), Config::get('lang'));
+                    $post = Model\Blog\Post::getById($this->getPost('id'), Config::get('lang'));
                 } else {
                     $post = new Model\Blog\Post();
                 }
@@ -358,7 +363,7 @@ class BlogSubController extends AbstractSubController {
                     return $this->redirect('/admin/blog');
                     break;
                 } else {
-                    $post = Model\Blog\Post::get($id, Config::get('lang'));
+                    $post = Model\Blog\Post::getById($id, Config::get('lang'));
 
                     if (!$post instanceof Model\Blog\Post) {
                         Message::error('La entrada esta corrupta, contacte con nosotros.');
@@ -382,7 +387,7 @@ class BlogSubController extends AbstractSubController {
                 break;
             case 'remove':
                 // eliminar una entrada
-                $tempData = Model\Blog\Post::get($id);
+                $tempData = Model\Blog\Post::getById($id);
                 if (!$this->isMasterNode() && $tempData->owner_type == 'node' && $tempData->owner_id != $node ) {
                     Message::error('No puedes eliminar esta entrada.');
                     return $this->redirect('/admin/blog');

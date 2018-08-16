@@ -237,7 +237,7 @@ namespace Goteo\Library {
                 if (!empty($home_posts)) {
                     // $posts_content = '<div class="section-tit">'.Text::get('home-posts-header').'</div>';
                     foreach ($posts as $id=>$title) {
-                        $the_post = \Goteo\Model\Post::get($id);
+                        $the_post = \Goteo\Model\Post::getById($id);
                         $posts_content .= View::render('email/partials/newsletter_post', array('post'=>$the_post));
                         break; // solo cogemos uno
                     }

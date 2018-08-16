@@ -6,7 +6,7 @@
 		Goteo\Application\Lang,
 		Goteo\Model\Image;
 
-    $post = Post::get($vars['post'], Lang::current());
+    $post = Post::getById($vars['post'], Lang::current());
     $level = (int) $vars['level'] ?: 3;
 
 	if ($vars['show'] == 'list') {

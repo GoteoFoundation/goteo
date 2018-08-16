@@ -8,7 +8,7 @@ if($list):
   <div class="table-responsive-vertical shadow-z-1">
   <table class="material-table table-hover model-<?= $first->getModelName() ?>">
     <thead><tr>
-    <?php foreach($first->getDefaultKeys() as $key):?>
+    <?php foreach($first->getKeys() as $key):?>
         <th><?= $first->getLabel($key) ?></th>
     <?php endforeach ?>
     </tr></thead>
@@ -18,9 +18,9 @@ if($list):
         <?php
         $t = count($entry);
         foreach($entry as $key => $val):
-            $vars = ['value' => $val, 'ob' => $entry, 'link' => ''];
+            $vars = ['value' => $val, 'key' => $key, 'ob' => $entry, 'link' => ''];
         ?>
-            <td data-title="<?= $entry->getLabel($key) ?>"><?= $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars) ?></td>
+            <td data-title="<?= $entry->getLabel($key) ?>" class="td-<?= $key ?>"><?= $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars) ?></td>
         <?php endforeach ?>
         </tr>
     <?php endforeach ?>

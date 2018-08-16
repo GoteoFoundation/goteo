@@ -12,15 +12,17 @@ namespace Goteo\Util\ModelNormalizer;
 use Goteo\Core\Model as CoreModel;
 use Goteo\Model;
 use Goteo\Util\ModelNormalizer\Transformer;
-
+use Goteo\Application\Session;
 /**
  * This class allows to get an object standarized for its use in views
  */
 class ModelNormalizer {
     private $model;
+    private $keys;
 
-    public function __construct(CoreModel $model) {
+    public function __construct(CoreModel $model,array $keys = null) {
         $this->model = $model;
+        $this->keys = $keys;
     }
 
     /**
@@ -29,8 +31,15 @@ class ModelNormalizer {
      */
     public function get() {
         if($this->model instanceOf Model\User) {
-            return new Transformer\UserTransformer($this->model);
+            $ob = new Transformer\UserTransformer($this->model, $this->keys);
         }
-        else return new Transformer\GenericTransformer($this->model);
+        elseif($this->model instanceOf Model\Blog\Post) {
+            $ob = new Transformer\PostTransformer($this->model, $this->keys);
+        }
+        else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
+
+        $ob->setUser(Session::getUser())->rebuild();
+
+        return $ob;
     }
 }

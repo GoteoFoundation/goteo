@@ -16,10 +16,11 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
+use Goteo\Application\Session;
 use Goteo\Library\Forms\FormModelException;
 use Symfony\Component\Form\FormInterface;
 
-class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInterface {
+class ProjectPostForm extends AbstractFormProcessor {
 
     public function createForm() {
 
@@ -67,6 +68,10 @@ class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInte
             ->add('text', 'markdown', array(
                 'label' => 'regular-text',
                 'required' => false,
+                'attr'=> [
+                    'data-image-upload' => '/api/projects/' . $this->getOption('project')->id . '/images',
+                    'help' => Text::get('tooltip-drag-and-drop-images')
+                ]
                 // 'constraints' => array(new Constraints\NotBlank()),
             ))
             ->add('media', 'media', array(
@@ -92,11 +97,15 @@ class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInte
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
+        if(array_key_exists('tags', $data)) $data['tags'] = explode(',', $data['tags']);
         $post = $this->getModel();
         $post->rebuildData($data, array_keys($form->all()));
-        $gallery = Image::getModelGallery('post', $post->id);
         $post->image = $data['image'];
-        // $current = array_column($post->image, 'id');
+        if(is_array($data['header_image'])) $post->header_image = $data['header_image'][0];
+
+
+        $gallery = Image::getModelGallery('post', $post->id);
+
         $current = array_map(function($e) {
                 return is_object($e) ? $e->id : $e['id'];
             }, $post->image);
@@ -112,7 +121,12 @@ class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInte
                 }
             }
         }
-        // print_r($current);die;
+        // print_r($post);die;
+
+        // Remove html tags if has no permission
+        if(!Session::getUser()->hasPerm('full-html-edit')) {
+            $post->text = Text::tags_filter($post->text);
+        }
 
         $errors = [];
         if (!$post->save($errors)) {

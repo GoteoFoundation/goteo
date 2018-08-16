@@ -204,33 +204,6 @@ class Banner extends \Goteo\Core\Model {
         }
     }
 
-    public function saveLang (&$errors = array()) {
-            $fields = array(
-                    'id'=>'id',
-                    'lang'=>'lang',
-                    'name'=>'name_lang'
-                    );
-
-            $set = '';
-            $values = array();
-
-            foreach ($fields as $field=>$ffield) {
-                    if ($set != '') $set .= ", ";
-                    $set .= "$field = :$field ";
-                    $values[":$field"] = $this->$ffield;
-            }
-
-            try {
-                    $sql = "REPLACE INTO call_banner_lang SET " . $set;
-                    self::query($sql, $values);
-
-                    return true;
-            } catch(\PDOException $e) {
-                    $errors[] = "El banner no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
-    return false;
-            }
-    }
-
     /*
      * Para que salga antes  (disminuir el order)
      */

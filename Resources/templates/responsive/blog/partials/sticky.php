@@ -2,7 +2,7 @@
 
 <?php
 
-$share_url = $this->get_url() . '/blog/' . $this->post->id;
+$share_url = $this->get_url() . '/blog/' . $this->post->getSlug();
 
 $author_twitter = str_replace(
                         array(

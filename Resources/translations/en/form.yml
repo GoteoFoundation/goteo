@@ -36,6 +36,8 @@ project-one-round: 'Single 40-day round'
 project-personal-field-entity_name: 'The party on behalf of which you are acting (if applicable)'
 project-two-rounds: 'Two 40-day rounds'
 tooltip-project-personal-entity_name: 'If you represent an entity, this is the indicated place to let it be known.'
+tooltip-text-type-change: 'This will change the text editor type.<br><b>Note:</b> When changing between markdown and html some styles may be lost.'
+tooltip-drag-and-drop-images: 'To add images, drag and drop files on the editor'
 form-sent-success: 'Data saved successfully!'
 form-sent-error: 'An error has occurred while saving data: [%s]'
 form-confirm-exit: "Unsaved data will be lost.\nDo you wish to continue?"

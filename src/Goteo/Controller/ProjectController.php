@@ -41,6 +41,9 @@ use Goteo\Controller\Dashboard\ProjectDashboardController;
 class ProjectController extends \Goteo\Core\Controller {
 
     public function __construct() {
+        // Cache & replica read activated in this controller
+        $this->dbReplica(true);
+        $this->dbCache(true);
         //Set the responsive theme
         View::setTheme('responsive');
     }
@@ -267,20 +270,17 @@ class ProjectController extends \Goteo\Core\Controller {
             if ($show == 'updates') {
 
                 //if is an individual post page
-                if($post)
-                {
-                    $post=BlogPost::get($post, Lang::current(), $project->lang);
-                    $viewData['post']  = $post;
-
+                if($post) {
+                    $pob = BlogPost::getBySlug($post, Lang::current(), $project->lang);
+                    if($pob->slug && $post != $pob->slug) {
+                        return $this->redirect("/project/{$project->id}/updates/{$pob->slug}");
+                    }
+                    $viewData['post']  = $pob;
                     $show  = 'updates_post';
                 }
 
                 // sus entradas de novedades
                 $blog = Blog::get($project->id);
-                // si está en modo preview, ponemos  todas las entradas, incluso las no publicadas
-                if (isset($_GET['preview']) && $_GET['preview'] == $user->id) {
-                    $blog->posts = BlogPost::getAll($blog->id, null, false, $project->lang);
-                }
 
                 // Get milestones, included posts
 

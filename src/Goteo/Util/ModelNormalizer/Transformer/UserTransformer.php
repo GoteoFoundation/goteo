@@ -26,9 +26,7 @@ use Goteo\Model\User;
 
  */
 class UserTransformer extends AbstractTransformer {
-    public function getDefaultKeys() {
-        return ['id', 'fullname', 'amount', 'roles'];
-    }
+    protected $keys = ['id', 'fullname', 'amount', 'roles'];
 
     function getAvatar() {
         return $this->model->avatar->name ? $this->model->avatar->getLink(64, 64, true) : '';
@@ -62,7 +60,7 @@ class UserTransformer extends AbstractTransformer {
         return $names;
     }
 
-    function getLink($type = 'public') {
+    function getLink($type = 'public', $key = null) {
         if($type === 'admin') {
             return '/admin/users/manage/' . $this->getId();
         }

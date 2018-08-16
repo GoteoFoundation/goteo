@@ -31,7 +31,6 @@ class ModelTranslator implements TranslatorInterface {
         'social_commitment' => 'SocialCommitment',
     ];
     static protected $_forced_types = [
-        'post' => 'html',
         'info' => 'html',
         'glossary' => 'html'
     ];

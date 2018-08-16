@@ -329,41 +329,6 @@ class User extends \Goteo\Core\Model {
         return false;
     }
 
-    public function saveLang(&$errors = array()) {
-
-        $fields = array(
-            'id' => 'id',
-            'lang' => 'lang',
-            'name' => 'name_lang',
-            'about' => 'about_lang',
-            'keywords' => 'keywords_lang',
-            'contribution' => 'contribution_lang',
-        );
-
-        $set = '';
-        $values = array();
-
-        foreach ($fields as $field => $ffield) {
-            if ($set != '') {
-                $set .= ", ";
-            }
-
-            $set .= "`$field` = :$field ";
-            $values[":$field"] = $this->$ffield;
-        }
-
-        try {
-            $sql = "REPLACE INTO user_lang SET " . $set;
-            // die(\sqldbg($sql, $values));
-            self::query($sql, $values);
-
-            return true;
-        } catch (\PDOException $e) {
-            $errors[] = "El usuario {$this->id} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
-            return false;
-        }
-    }
-
     /**
      * Validación de datos de usuario.
      *

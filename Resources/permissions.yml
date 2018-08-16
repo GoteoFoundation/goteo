@@ -22,6 +22,10 @@ remove-project: # remove own project, currently not used as a real perm (implici
     model: null
     relational: null
 
+full-html-edit: # Allows if the user is allowed to add dangerous tags (iframe,...) in posts
+    model: null
+    relational: null
+
 recommend-projects: # can have a personal list of recommended projects
     model: null
     relational: null
@@ -146,6 +150,14 @@ admin-any-module-users: # Admin any module in Admin (instances of AdminControlle
     model: null
     relational: null
 
+admin-module-stats: # Can access to module StatsAdminController
+    model: null
+    relational: null
+
 admin-module-users: # Can access to module UserAdminController
+    model: null
+    relational: null
+
+admin-module-blog: # Can access to module BlogAdminController
     model: null
     relational: null
