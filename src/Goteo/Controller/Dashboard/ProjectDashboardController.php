@@ -1078,40 +1078,16 @@ class ProjectDashboardController extends DashboardController {
         // Get the first associated to this project
         $story = reset(Stories::getall(false, false, ['project' => $this->project->id]));
 
-        if(!$story) $story = new Stories();
-        // if($story){
-        //     $story->project=$story->project->id;
-        //     if($story->image)
-        //         $story->image=$story->getImage();
-        //     if($story->pool_image)
-        //         $story->pool_image=$story->getPoolImage();
-        // }
-        // else {
+        if(!$story) $story = new Stories(['project' => $this->project->id]);
 
-        //     // $story = new Stories([
-        //     //     'project' => $this->project->id,
-        //     //     'node'    => 'goteo',
-        //     //     'order'   => Stories::next(),
-        //     //     'landing_pitch' => 0,
-        //     //     'landing_match' => 0,
-        //     //     'active'        => 0
-        //     // ]);
-
-        //     // if (!$story->save($errors)) {
-        //     //     Message::error(Text::get('story-save-fail'). "\n" .implode("\n", $errors));
-        //     //     return $this->redirect($redirect);
-        //     // }
-
-
-        // }
         $defaults = (array)$story;
+        $defaults['image'] = $story->image ? $story->getImage() : '';
+        $defaults['pool_image'] = $story->pool_image ? $story->getPoolImage() : '';
 
         // Create the form
         $processor = $this->getModelForm('ProjectStory', $story, $defaults, ['project' => $project], $request);
-        // For everyone
-        $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
-        // Just for the owner
-        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        // Set readonly if active? this is done by and admin
+        $processor->setReadonly(!$this->admin && (bool)$story->active)->createForm();
 
         if(!$processor->getReadonly()) {
             $processor->getBuilder()->add('submit', 'submit', [

@@ -20,7 +20,7 @@ use Goteo\Library\Forms\FormModelException;
 use Symfony\Component\Form\FormInterface;
 
 
-class ProjectStoryForm extends AbstractFormProcessor implements FormProcessorInterface {
+class ProjectStoryForm extends AbstractFormProcessor {
 
     public function getConstraints($field) {
         $constraints = [];
@@ -35,10 +35,6 @@ class ProjectStoryForm extends AbstractFormProcessor implements FormProcessorInt
                 'message' => Text::get('validate-project-field-description')
             ]);
         }
-        if($field === 'image') {
-            $constraints[] = new Constraints\NotBlank();
-        }
-
         return $constraints;
     }
 
@@ -77,9 +73,9 @@ class ProjectStoryForm extends AbstractFormProcessor implements FormProcessorInt
                 'url' => '/api/projects/' . $project->id . '/images',
                 'required' => false,
                 'limit' => 1,
-                // 'constraints' => [
-                //         new Constraints\Count(['max' => 1]),
-                //     ]
+                'constraints' => [
+                        new Constraints\Count(['max' => 1]),
+                    ]
 
             ]);
 
