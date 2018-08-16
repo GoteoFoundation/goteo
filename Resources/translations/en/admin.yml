@@ -36,12 +36,17 @@ admin-consultants: 'Consultants'
 admin-invests: Contributions
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
+admin-remove-entry: 'Remove entry'
+admin-remove-entry-confirm: 'Are you sure to remove this entry? This action cannot be undone!'
+admin-remove-entry-forbidden: 'Published entries cannot be removed. Unpublish it first.'
+admin-remove-entry-ok: 'Entry removed successfully'
 admin-sponsors: Contributors
+admin-slug-seo-help: 'This field is important for SEO. Edit it only for a good reason.'
 admin-status: Status
 admin-text-type: 'Process the text as'
 admin-text-type-html: HTML
 admin-text-type-md: Markdown
-admin-text-type-plain: 'Plaintext'
+admin-text-type-plain: 'Plain text'
 admin-user: User
 admin-users: Users
 admin-users-add: Create new user

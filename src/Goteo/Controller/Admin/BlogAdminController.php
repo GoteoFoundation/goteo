@@ -113,9 +113,35 @@ class BlogAdminController extends AbstractAdminController {
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
             ]);
+        if($post->id) {
+            $processor->getBuilder()
+                ->add('remove', 'submit', [
+                    'label' => Text::get('admin-remove-entry'),
+                    'icon_class' => 'fa fa-trash',
+                    'span' => 'hidden-xs',
+                    'attr' => [
+                        'class' => 'pull-right-form btn btn-default btn-lg',
+                        'data-confirm' => Text::get('admin-remove-entry-confirm')
+                        ]
+                ]);
+        }
+
         $form = $processor->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
+            // Check if we want to remove an entry
+            if($form->isValid() && $form->get('remove')->isClicked()) {
+                if((bool)$post->publish) {
+                    Message::error(Text::get('admin-remove-entry-forbidden'));
+                    return $this->redirect('/admin/blog/');
+                }
+
+                $post->dbDelete(); //Throws and exception
+                Message::info(Text::get('admin-remove-entry-ok'));
+                return $this->redirect('/admin/blog/');
+            }
+
+
             try {
                 $processor->save($form, true);
                 $this->dispatch(AppEvents::BLOG_POST, new FilterBlogPostEvent($processor->getModel()));

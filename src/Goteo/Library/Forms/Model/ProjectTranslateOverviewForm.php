@@ -35,7 +35,11 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
                 'label' => 'overview-field-description',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'attr' => ['help' => $project->description, 'rows' => 8]
+                'attr' => [
+                    'help' => $project->description,
+                    'rows' => 8,
+                    'data-image-upload' => '/api/projects/' . $project->id . '/images'
+                ]
             ])
             ->add('media', 'media', [
                 'label' => 'overview-field-media',

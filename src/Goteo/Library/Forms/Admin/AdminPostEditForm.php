@@ -63,7 +63,7 @@ class AdminPostEditForm extends ProjectPostForm {
                 'label' => 'regular-slug',
                 'required' => true,
                 'row_class' => 'extra',
-                'constraints' => array(
+                'constraints' => [
                     new Constraints\NotBlank(),
                     new Constraints\Callback(function($object, $context) use ($post){
                         if($object != $post::idealiza($object, false, false, 150)) {
@@ -78,7 +78,10 @@ class AdminPostEditForm extends ProjectPostForm {
                             ->addViolation();
                         }
                     })
-                ),
+                ],
+                'attr' => [
+                    'help' => Text::get('admin-slug-seo-help')
+                ]
             ]);
         }
         $builder
