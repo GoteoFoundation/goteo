@@ -848,8 +848,8 @@ $(function(){
         $('.autoform').on( 'click', '.image-list-sortable .delete-image', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            // console.log('remove');
             var $li = $(this).closest('li');
+            // console.log('remove', $li);
             var $drop = $(this).closest('.dropfiles');
             var $zone = $(this).closest('.image-zone');
             var $list = $(this).closest('.image-list-sortable');
@@ -860,7 +860,7 @@ $(function(){
             var limit = parseInt($drop.data('limit'));
             var total = $list.find('li').length;
             if(total < limit) {
-                $form.find('.dragndrop').show();
+                $zone.find('.dragndrop').show();
             }
         });
 
