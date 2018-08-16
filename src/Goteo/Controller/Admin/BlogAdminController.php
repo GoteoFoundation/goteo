@@ -32,6 +32,11 @@ use Goteo\Library\Forms\FormModelException;
 class BlogAdminController extends AbstractAdminController {
     protected static $icon = '<i class="fa fa-2x fa-file-text-o"></i>';
 
+    // this modules is part of a specific group
+    public static function getGroup() {
+        return 'communications';
+    }
+
     public static function getRoutes() {
         return [
             new Route(
