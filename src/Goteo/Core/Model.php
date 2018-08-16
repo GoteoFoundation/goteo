@@ -154,6 +154,10 @@ abstract class Model {
         if($value instanceOf Image) {
             return $value->getName();
         }
+        // try to convert automatically instance of models to it's id
+        if($value instanceOf Model && isset($value->id)) {
+            return $value->id;
+        }
         return $value;
     }
 	/**
