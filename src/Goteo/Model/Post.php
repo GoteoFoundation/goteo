@@ -612,7 +612,7 @@ class Post extends \Goteo\Core\Model {
 
     // List of blog sections
     public static function getListSections(){
-        return Config::get('blog.sections');;
+        return Config::get('blog.sections');
     }
 
     public static function getSection($section){
