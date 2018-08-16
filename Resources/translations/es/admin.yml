@@ -268,9 +268,11 @@ admin-yesterday: Ayer
 admin-week: Esta semana
 admin-last_week: El mismo día de la semana pasada
 admin-last_week_complete: Toda la semana pasada
+admin-last_year_week: La misma semana hace un año
 admin-month: Este mes
 admin-last_month: El mismo día del mes pasado
 admin-last_month_complete: Todo el mes pasado
+admin-last_year_month: El mismo mes hace un año
 admin-year: Este año
 admin-last_year: El mismo día del año pasado
 admin-last_year_complete: Todo el año pasado
