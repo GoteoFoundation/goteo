@@ -41,6 +41,9 @@ use Goteo\Controller\Dashboard\ProjectDashboardController;
 class ProjectController extends \Goteo\Core\Controller {
 
     public function __construct() {
+        // Cache & replica read activated in this controller
+        $this->dbReplica(true);
+        $this->dbCache(true);
         //Set the responsive theme
         View::setTheme('responsive');
     }

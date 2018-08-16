@@ -26,8 +26,8 @@ class IndexController extends DiscoverController
     public function __construct()
     {
         // Cache & replica read activated in this controller
-        \Goteo\Core\DB::cache(true);
-        // \Goteo\Core\DB::replica(true);
+        $this->dbReplica(true);
+        $this->dbCache(true);
         View::setTheme('responsive');
     }
 

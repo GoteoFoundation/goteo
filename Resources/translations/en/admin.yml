@@ -55,6 +55,7 @@ admin-blog-add: Create new post
 admin-blog-edit: Editing post %s
 admin-blog-slug-exists: 'The slug [%s] is being used by another post!'
 admin-blog-slug-chars: 'The slug [%s] contains invalid characters!'
+admin-blog-not-public: 'This post is not public yet!'
 
 admin-yes: "Yes"
 admin-impersonate: Impersonate
@@ -99,6 +100,10 @@ admin-role-change-forbidden: 'You don''t have permissions to manage the role %RO
 
 admin-users-global-search: 'Id, name, email or project'
 admin-blog-global-search: 'Id, title, subtitle or text'
+admin-text-type: 'Process text as'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Simple text'
 admin-title-id: Id
 admin-title-name: Name
 admin-title-fullname: Name
@@ -121,6 +126,7 @@ admin-title-publish: Published
 admin-title-langs: Translations
 admin-title-actions: 'Actions'
 admin-title-tags: Tags
+admin-title-deleted: Deleted
 
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'

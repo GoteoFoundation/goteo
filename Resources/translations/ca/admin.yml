@@ -72,6 +72,7 @@ admin-blog-add: Crea un nou post
 admin-blog-edit: Editant post %s
 admin-blog-slug-exists: 'L''identificador [%s] s''està fent servir en un altre post!'
 admin-blog-slug-chars: 'L''identificador [%s] conté caràcters invàlids!'
+admin-blog-not-public: 'Aquest post no és públic encara'
 
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
@@ -114,6 +115,10 @@ admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aqu
 
 admin-users-global-search: 'Id, nom, email o projecte'
 admin-blog-global-search: 'Id, títol, subtítol o text'
+admin-text-type: 'Processa el text com a'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Text simple'
 admin-title-id: Id
 admin-title-name: Nom
 admin-title-fullname: Nom
@@ -136,6 +141,7 @@ admin-title-publish: Publicat
 admin-title-langs: Traduccions
 admin-title-actions: Accions
 admin-title-tags: Tags
+admin-title-deleted: 'Eliminat'
 
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
