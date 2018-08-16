@@ -381,9 +381,9 @@ $('.slider-projects').slick({
 		{
 		breakpoint: 500,
 			settings: {
-			slidesToShow: 1,
+			slidesToShow: 1.2,
 			arrows: false,
-			centerMode: true
+			infinite: false
 			}
 	}]
 });
