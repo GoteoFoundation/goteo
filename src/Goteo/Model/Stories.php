@@ -135,6 +135,9 @@ namespace Goteo\Model {
             }  
             if (!empty($filters['project'])) {
                  $sqlFilter.= " AND stories.project = '".$filters['project']."'";
+            } 
+            if (!empty($filters['project_owner'])) {
+                 $sqlFilter.= " AND project.owner = '".$filters['project_owner']."'";
             }  
 
             if(self::default_lang(Lang::current()) === Config::get('lang')) {
@@ -330,7 +333,9 @@ namespace Goteo\Model {
                     \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->image = '';
                 }
+
             }
+
 
             // Imagen de landing monedero
 

@@ -23,6 +23,7 @@ use Goteo\Model\User;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Mail;
+use Goteo\Model\Stories;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
@@ -61,7 +62,6 @@ class UserController extends \Goteo\Core\Controller {
     public function profileAction($id = '', $show = 'profile', $category = '') {
 
         // This should be changed to a responsive view anytime (soon!)
-        View::setTheme('default');
 
         if (!in_array($show, array('profile', 'investors', 'sharemates', 'message'))) {
             $show = 'profile';
@@ -126,26 +126,22 @@ class UserController extends \Goteo\Core\Controller {
         }
 
 
-        $viewData = array();
-        $viewData['user'] = $user;
-        $viewData['worthcracy'] = \Goteo\Library\Worth::getAll();
+        $worthcracy = \Goteo\Library\Worth::getAll();
 
-        /* para sacar cofinanciadores */
         $projects = Project::ofmine($user->id, true);
-        $viewData['projects'] = $projects;
 
-        //mis cofinanciadores
         $investors = Invest::myInvestors($user->id, 5);
-        $viewData['investors'] = $investors;
+
+        $stories = Stories::getall(false, false, ['project_owner' => $user->id]);
 
         // comparten intereses
         if ($show == 'profile'){
-            $viewData['shares'] = User\Interest::share($user->id, null, 6);
+            $shares = User\Interest::share($user->id, null, 6);
         }
 
         if ($show == 'sharemates') {
 
-            $viewData['categories'] = User\Interest::getAll($user->id);
+            $categories = User\Interest::getAll($user->id);
             $shares = array();
             $limit = $category ? 20 : 6;
             foreach ($viewData['categories'] as $catId => $catName) {
@@ -153,7 +149,6 @@ class UserController extends \Goteo\Core\Controller {
                 if (count($gente) == 0) continue;
                 $shares[$catId] = $gente;
             }
-            $viewData['shares'] = $shares;
 
             if ($show == 'sharemates' && empty($viewData['shares'])) {
                 $show = 'profile';
@@ -162,23 +157,27 @@ class UserController extends \Goteo\Core\Controller {
         }
 
         if (!empty($category)) {
-            $viewData['category'] = $category;
+            //$viewData['category'] = $category;
         }
 
         /* para sacar proyectos que cofinancio */
         // proyectos que cofinancio
-        $invested = User::invested($user->id, true);
+        $invest_on = User::invested($user->id, true);
 
-        // agrupacion de proyectos que cofinancia y proyectos suyos
-        $viewData['lists'] = array();
-        if (!empty($invested)) {
-            $viewData['lists']['invest_on'] = Listing::get($invested, 2);
-        }
-        if (!empty($projects)) {
-            $viewData['lists']['my_projects'] = Listing::get($projects, 2);
-        }
+        //return $this->viewResponse('user/' . $show, $viewData);
 
-        return $this->viewResponse('user/' . $show, $viewData);
+        return $this->viewResponse(
+            'user/profile',
+            [
+                'user'          => $user,
+                'worthcracy'    => $worthcracy,
+                'projects'      => $projects,
+                'investors'     => $investors,
+                'invest_on'     => $invest_on,
+                'my_projects'   => $projects,
+                'stories'       => $stories
+            ]
+        );
     }
 
     /**
