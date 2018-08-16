@@ -39,11 +39,19 @@ class Stories extends \Goteo\Core\Model {
         $post,
         $active = false,
         $type,
-        $landing_match,
-        $landing_pitch,
+        $landing_match = 0,
+        $landing_pitch = 0,
         $sphere
         ;
 
+
+    public function __construct() {
+        $args = func_get_args();
+        call_user_func_array(array('parent', '__construct'), $args);
+
+        if(empty($this->node)) $this->node = Config::get('node');
+        if(empty($this->order)) $this->order = self::next($this->node);
+    }
     public static function getLangFields() {
         return ['title', 'description', 'review'];
     }
@@ -97,33 +105,12 @@ class Stories extends \Goteo\Core\Model {
             WHERE stories.id = :id
             ", array(':id' => $id));
 
-        if($story = $query->fetchObject(__CLASS__)) {
-            $user = new User;
-            $user->id = $story->user_id;
-            $user->name = $story->user_name;
-
-            $project = new Project;
-            $project->id = $story->project_id;
-            $project->name = $story->project_name;
-            $project->amount = $story->project_amount;
-            $project->num_investors = $story->project_num_investors;
-            $project->user = $user;
-
-            if(empty($project->amount)) {
-                $project->amount = Invest::invested($project->id);
-            }
-            if(empty($project->num_investors)) {
-                $project->num_investors = Invest::numInvestors($project->id);
-            }
-
-
-            $story->project = $project;
-        }
-        return $story;
+        return $query->fetchObject(__CLASS__);
     }
 
     /*
      * Lista de historias exitosas
+     * TODO: reform this (or getList better with pagination when StoriesAdmin module is created)
      */
     public static function getAll ($activeonly = false, $pool= false, $filters = [], $node = \GOTEO_NODE) {
 
@@ -342,35 +329,26 @@ class Stories extends \Goteo\Core\Model {
         if (!$this->validate($errors)) return false;
 
 
+        // This is obsolete, keeping while the old stories admin module is active
         // Imagen de fondo de stories
-
         if(is_array($this->image)&&empty($this->image['name'])) {
             $this->image = reset($this->image);
         }
-
         if (is_array($this->image) && !empty($this->image['name'])||($this->image instanceOf Image && $this->image->tmp)) {
             $image = new Image($this->image);
-
-
             if ($image->save($errors)) {
                 $this->image = $image->id;
             } else {
                 \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                 $this->image = '';
             }
-
         }
-
-
         // Imagen de landing monedero
-
         if(is_array($this->pool_image)&&empty($this->pool_image['name'])) {
             $this->pool_image = reset($this->pool_image);
         }
-
         if (is_array($this->pool_image) && !empty($this->pool_image['name'])||($this->pool_image instanceOf Image && $this->pool_image->tmp)) {
             $pool_image = new Image($this->pool_image);
-
             if ($pool_image->save($errors)) {
                 $this->pool_image = $pool_image->id;
             } else {
