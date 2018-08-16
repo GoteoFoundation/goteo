@@ -36,6 +36,7 @@ class GoteoStories
         DELETE FROM sphere_lang WHERE id NOT IN (SELECT id FROM sphere);
         ALTER TABLE `stories_lang` ADD FOREIGN KEY (`id`) REFERENCES `stories`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
         ALTER TABLE `sphere_lang` ADD FOREIGN KEY (`id`) REFERENCES `sphere`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+        ALTER TABLE `stories` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
      ";
   }
 
@@ -49,6 +50,7 @@ class GoteoStories
      return "
         ALTER TABLE `stories_lang` DROP FOREIGN KEY `stories_lang_ibfk_1`;
         ALTER TABLE `sphere_lang` DROP FOREIGN KEY `sphere_lang_ibfk_1`;
+        ALTER TABLE `stories` DROP FOREIGN KEY `stories_ibfk_2`;
      ";
   }
 
