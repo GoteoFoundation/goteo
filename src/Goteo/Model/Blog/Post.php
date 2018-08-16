@@ -73,8 +73,7 @@ class Post extends \Goteo\Core\Model {
      */
     public static function get ($id, $lang = null, $model_lang = null) {
 
-        // This model does not automaticalley request translation
-        // support language only if requested
+        // This model does not automatically request translation support language, only if requested
         // That's because Projects can be in any custom language and its
         // corresponding blog will match the same language as main
 

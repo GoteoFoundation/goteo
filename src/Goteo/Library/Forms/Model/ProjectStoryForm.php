@@ -29,25 +29,23 @@ class ProjectStoryForm extends AbstractFormProcessor implements FormProcessorInt
             $constraints[] = new Constraints\NotBlank();
         }
         if($field === 'description') {
-            // Minimal 30 words
+            // Minimal 20 words
             $constraints[] = new Constraints\Regex([
                 'pattern' => '/^\s*\S+(?:\s+\S+){19,}\s*$/',
                 'message' => Text::get('validate-project-field-description')
             ]);
         }
-        if($this->getFullValidation()) {
-            if(!in_array($field, ['media', 'spread'])) {
-                // all fields
-                $constraints[] = new Constraints\NotBlank();
-            }
+        if($field === 'image') {
+            $constraints[] = new Constraints\NotBlank();
         }
+
         return $constraints;
     }
 
     public function createForm() {
         $builder = $this->getBuilder();
 
-        $story = $this->getModel();
+        $project = $this->getOption('project');
 
         $builder
             ->add('title', 'text', [
@@ -65,19 +63,26 @@ class ProjectStoryForm extends AbstractFormProcessor implements FormProcessorInt
             ])
             ->add('image', 'dropfiles', [
                 'label' => 'story-field-image',
-                'constraints' => $this->getConstraints('image'),
                 'disabled' => $this->getReadonly(),
-                'url' => '/api/stories/' . $story->id . '/image',
-                'required' => true
+                'url' => '/api/projects/' . $project->id . '/images',
+                'required' => true,
+                'limit' => 1,
+                'constraints' => [
+                        new Constraints\Count(['max' => 1, 'min' => 1]),
+                    ]
             ])
             ->add('pool_image', 'dropfiles', [
                 'label' => 'story-field-pool-image',
-                'constraints' => $this->getConstraints('pool_image'),
                 'disabled' => $this->getReadonly(),
-                'url' => '/api/stories/' . $story->id . '/pool-image',
-                'required' => false
+                'url' => '/api/projects/' . $project->id . '/images',
+                'required' => false,
+                'limit' => 1,
+                // 'constraints' => [
+                //         new Constraints\Count(['max' => 1]),
+                //     ]
+
             ]);
-          
+
         return $this;
     }
 
