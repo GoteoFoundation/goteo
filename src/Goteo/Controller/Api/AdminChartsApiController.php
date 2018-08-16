@@ -175,7 +175,8 @@ class AdminChartsApiController extends ChartsApiController {
 
     private function timeSlots($slot = '', Request $request = null) {
         $f = 'Y-m-d H:i:s';
-
+        // $week_last_year = (new \DateTime('monday this week 00:00 +1 day last year'));
+        // var_dump($week_last_year);die;
         $slots = [
             'today' => [
                 'from' => (new \DateTime('today'))->format($f),
@@ -197,6 +198,10 @@ class AdminChartsApiController extends ChartsApiController {
                 'from' => (new \DateTime('monday -2 weeks'))->format($f),
                 'to' => (new \DateTime('monday -1 weeks -1 second'))->format($f)
             ],
+            'last_year_week' => [
+                'from' => (new \DateTime('monday this week 00:00 +1 day last year'))->format($f),
+                'to' => (new \DateTime('now +1 day last year'))->format($f)
+            ],
             'month' => [
                 'from' => (new \DateTime('first day of this month 00:00'))->format($f),
                 'to' => (new \DateTime('now'))->format($f)
@@ -208,6 +213,10 @@ class AdminChartsApiController extends ChartsApiController {
             'last_month_complete' => [
                 'from' => (new \DateTime('first day of last month 00:00'))->format($f),
                 'to' => (new \DateTime('first day of this month -1 second'))->format($f)
+            ],
+            'last_year_month' => [
+                'from' => (new \DateTime('first day of last month 00:00 +1 day last year'))->format($f),
+                'to' => (new \DateTime('now -1 month +1 day last year'))->format($f)
             ],
             'year' => [
                 'from' => (new \DateTime('first day of january this year'))->format($f),
@@ -521,16 +530,22 @@ class AdminChartsApiController extends ChartsApiController {
                 throw new ControllerException("[$target] not found, try one of [raised, active, raw, refunded, commissions, fees, matchfunding]");
             }
         }
-        $increments = ['today' => 'yesterday', 'week' => 'last_week', 'month' => 'last_month', 'year' => 'last_year'];
+        $increments = [ 'today' => 'yesterday',
+                        'week'  => ['last_week', 'last_year_week'],
+                        'month' => ['last_month', 'last_year_month'],
+                        'year'  => 'last_year' ];
         foreach($totals as $slot => $parts) {
             foreach($parts as $k => $v) {
                 // increments
                 if(($inc = $increments[$slot]) && is_numeric($v)) {
-                    $totals[$slot][$k . '_diff'] = $v - $totals[$inc][$k];
-                    if($totals[$inc][$k] && $totals[$inc][$k] != '--') {
-                        $totals[$slot][$k . '_gain'] = $totals[$inc][$k] ? round(100 * (($v / $totals[$inc][$k]) - 1), 2) : '--';
-                    } else {
-                        $totals[$slot][$k . '_gain'] = '--';
+                    if(!is_array($inc)) $inc = [$inc];
+                    foreach($inc as $cmp) {
+                        $totals[$slot]["{$k}_{$cmp}_diff"] = $v - $totals[$cmp][$k];
+                        if($totals[$cmp][$k] && $totals[$cmp][$k] != '--') {
+                            $totals[$slot]["{$k}_{$cmp}_gain"] = $totals[$cmp][$k] ? round(100 * (($v / $totals[$cmp][$k]) - 1), 2) : '--';
+                        } else {
+                            $totals[$slot]["{$k}_{$cmp}_gain"] = '--';
+                        }
                     }
                 }
             }
