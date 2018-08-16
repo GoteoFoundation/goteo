@@ -1,8 +1,13 @@
 <?php
-
 /*
-* Model for sphere
-*/
+ * This file is part of the Goteo Package.
+ *
+ * (c) Platoniq y Fundación Goteo <fundacion@goteo.org>
+ *
+ * For the full copyright and license information, please view the README.md
+ * and LICENSE files that was distributed with this source code.
+ */
+
 
 namespace Goteo\Model;
 
@@ -12,16 +17,18 @@ use Goteo\Application\Config;
 
 
 
+/*
+* Model for sphere
+*/
 class Sphere extends \Goteo\Core\Model {
 
     public
-    $id,
-    $name,
-    $image,
-    $landing_match,
-    $order
-    ;
-
+        $id,
+        $name,
+        $image,
+        $landing_match,
+        $order
+        ;
 
     public static function getLangFields() {
         return ['name'];
@@ -33,38 +40,25 @@ class Sphere extends \Goteo\Core\Model {
      * @param   int    $id         sphere id.
      * @return  Sphere object
      */
-    static public function get($id) {
+    static public function get($id, $lang = null) {
 
-        $lang = Lang::current();
-
-        if(self::default_lang($lang) === Config::get('lang')) {
-          $different_select=" IFNULL(sphere_lang.name, sphere.name) as name";
-        }
-        else {
-          $different_select=" IFNULL(sphere_lang.name, IFNULL(eng.name,sphere.name)) as name";
-          $eng_join=" LEFT JOIN sphere_lang as eng
-                            ON  eng.id = sphere.id
-                            AND eng.lang = 'en'";
-        }
-
-        $values=['id' => $id, 'lang' => $lang];
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql="SELECT
                     sphere.id as id,
                     sphere.image as image,
                     sphere.order as `order`,
                     sphere.landing_match as landing_match,
-                    $different_select
+                    $fields
               FROM sphere
-              LEFT JOIN sphere_lang
-                    ON  sphere_lang.id = sphere.id
-                    AND sphere_lang.lang = :lang
-              $eng_join
+              $joins
               WHERE sphere.id = :id";
-        $query = static::query($sql, $values);
+        $query = static::query($sql, [':id' => $id]);
         $item = $query->fetchObject(__CLASS__);
 
         if($item) {
+            // TODO: to remove this? use getImage instead
             if($item->image)
                     $item->image = Image::get($item->image);
             return $item;
@@ -129,7 +123,7 @@ class Sphere extends \Goteo\Core\Model {
                     ON  sphere_lang.id = sphere.id
                     AND sphere_lang.lang = :lang
                 $eng_join
-                $sql 
+                $sql
                 ORDER BY sphere.order ASC, sphere.name ASC";
 
 
