@@ -1078,7 +1078,7 @@ class ProjectDashboardController extends DashboardController {
         // Get the first associated to this project
         $story = reset(Stories::getall(false, false, ['project' => $this->project->id]));
 
-        if(!$story) $story = new Stories(['project' => $this->project->id]);
+        if(!$story) $story = new Stories(['project' => $this->project->id, 'lang' => $this->project->lang]);
 
         $defaults = (array)$story;
         $defaults['image'] = $story->image ? $story->getImage() : '';

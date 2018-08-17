@@ -29,7 +29,7 @@ foreach ($vars['items'] as $iId=>$iObj) {
 $projects = Model\Stories::available();
 
 $status = Model\Project::status();
-
+$langs = \Goteo\Application\Lang::listAll('name', false);
 ?>
 <div class="widget board">
     <form method="post" action="/admin/stories/<?php echo $vars['action'] ?>" enctype="multipart/form-data">
@@ -45,6 +45,15 @@ $status = Model\Project::status();
                 <option value="" >Seleccionar el proyecto a mostrar en la historia exitosa</option>
             <?php foreach ($projects as $project) : ?>
                 <option value="<?php echo $project->id; ?>"<?php if ($story->project_id == $project->id) echo' selected="selected"';?>><?php echo $project->name . ' ('. $status[$project->status] . ')'; ?></option>
+            <?php endforeach; ?>
+            </select>
+        </p>
+
+        <p>
+            <label for="story-lang">Idioma:</label><br />
+            <select id="story-lang" name="lang">
+            <?php foreach ($langs as $id => $name) : ?>
+                <option value="<?php echo $id; ?>"<?php if ($story->lang == $id) echo' selected="selected"';?>><?php echo $name; ?></option>
             <?php endforeach; ?>
             </select>
         </p>
