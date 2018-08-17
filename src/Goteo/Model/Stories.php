@@ -88,8 +88,7 @@ class Stories extends \Goteo\Core\Model {
                 project.id as project_id,
                 project.name as project_name,
                 project.amount as project_amount,
-                project.num_investors as project_num_investors,
-                project.id as project_id,
+                project.num_investors as project_num_investors
 
                 user.id as user_id,
                 user.name as user_name
@@ -164,6 +163,7 @@ class Stories extends \Goteo\Core\Model {
                 stories.id as id,
                 stories.node as node,
                 stories.project as project,
+                stories.lang as lang,
                 $different_select,
                 stories.url as url,
                 stories.image as image,
@@ -177,6 +177,7 @@ class Stories extends \Goteo\Core\Model {
                 stories.landing_pitch as `landing_pitch`,
                 stories.landing_match as `landing_match`,
                 stories.sphere as `sphere`,
+                open_tag.post as open_tags_post,
 
                 project.id as project_id,
                 project.name as project_name,
@@ -194,6 +195,8 @@ class Stories extends \Goteo\Core\Model {
                 ON  stories_lang.id = stories.id
                 AND stories_lang.lang = :lang
             $eng_join
+            LEFT JOIN project_open_tag
+                ON  project_open_tag.project = stories.project
             LEFT JOIN open_tag
                 ON  open_tag.id = project_open_tag.open_tag
             LEFT JOIN open_tag_lang
@@ -249,6 +252,23 @@ class Stories extends \Goteo\Core\Model {
 
         $values = [];
         $sqlFilters = [];
+        $sql = '';
+
+        foreach(['owner', 'active', 'landing_match', 'landing_pitch', 'pool', 'node', 'type'] as $key) {
+            if (isset($filters[$key])) {
+                $filter[] = "stories.$key = :$key";
+                $values[":$key"] = $filters[$key];
+            }
+        }
+
+        if(isset($filters['project'])) {
+            $filter[] = "stories.project LIKE :project";
+            $values[":project"] = '%' . $filters['project'] . '%';
+        }
+        if(isset($filters['project_owner'])) {
+            $filter[] = "stories.project_owner = :project_owner";
+            $values[":project_owner"] = $filters['project_owner'];
+        }
 
         foreach(['id', 'title', 'description', 'review'] as $key) {
             if (isset($filters[$key])) {
@@ -283,6 +303,7 @@ class Stories extends \Goteo\Core\Model {
                 stories.id as id,
                 stories.node as node,
                 stories.project as project,
+                stories.lang as lang,
                 $fields,
                 stories.url as url,
                 stories.image as image,
@@ -311,10 +332,11 @@ class Stories extends \Goteo\Core\Model {
             LEFT JOIN user
                 ON user.id = project.owner
             $joins
+            $sql
             ORDER BY `order` ASC
             LIMIT $offset,$limit";
 
-        // die(\sqldbg($sql, $values));
+        // print_r($values);die(\sqldbg($sql, $values));
         if($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
