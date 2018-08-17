@@ -2,7 +2,7 @@ group: project
 name: 'Project story available to fill'
 purpose: 'Mail template to be sent to a project owner when the story is able to fill, seven days after the finish'
 type: 'md'
-title: '¿Tienes una historia que contar sobre tu proyecto %PROJECTNAME% ?'
+title: '¿Tienes una historia que contar sobre tu proyecto %PROJECTNAME%?'
 text: >
       Hola %USERNAME%, 
 
