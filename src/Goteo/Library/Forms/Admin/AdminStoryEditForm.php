@@ -29,11 +29,6 @@ class AdminStoryEditForm extends ProjectStoryForm {
 
         parent::createForm();
         $builder
-            ->add('review', 'text', [
-                'label' => 'admin-stories-review',
-                'constraints' => $this->getConstraints('name'),
-                'disabled' => $this->getReadonly()
-            ])
             ->add('image', 'dropfiles', [
                 'label' => 'story-field-image',
                 'disabled' => $this->getReadonly(),
@@ -55,13 +50,26 @@ class AdminStoryEditForm extends ProjectStoryForm {
                     ]
 
             ])
+            ->add('review', 'text', [
+                'label' => 'admin-stories-review',
+                'constraints' => $this->getConstraints('review'),
+                'disabled' => $this->getReadonly()
+            ])
+            ->add('project', 'typeahead', [
+                'label' => 'admin-project',
+                'constraints' => $this->getConstraints('project'),
+                'disabled' => $this->getReadonly(),
+                'sources' => 'project'
+            ])
             ->add('active', 'boolean', array(
                 'required' => false,
+                'disabled' => $this->getReadonly(),
                 'label' => 'admin-title-active', // Form has integrated translations
                 'color' => 'cyan', // bootstrap label-* (default, success, ...)
             ))
             ->add('pool', 'boolean', array(
                 'required' => false,
+                'disabled' => $this->getReadonly(),
                 'label' => 'admin-stories-pool', // Form has integrated translations
                 'color' => 'cyan', // bootstrap label-* (default, success, ...)
             ))
