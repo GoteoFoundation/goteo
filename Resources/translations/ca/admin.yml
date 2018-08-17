@@ -39,6 +39,7 @@ admin-back: Tornar
 admin-back-detail: 'Tornar al detall'
 admin-back-list: 'Tornar al llistat'
 admin-contents: 'Textos i traduccions'
+admin-empty-list: 'Sense resultats'
 admin-mailing-back-to-list: 'Tornar a comunicacions'
 admin-mailing-communicating-with: 'Cercàvem comunicar-nos amb %DESC%'
 admin-mailing-created: 'Creat el'
@@ -74,6 +75,10 @@ admin-blog-slug-exists: 'L''identificador [%s] s''està fent servir en un altre 
 admin-blog-slug-chars: 'L''identificador [%s] conté caràcters invàlids!'
 admin-blog-not-public: 'Aquest post no és públic encara'
 
+admin-stories: 'Histories d''usuaris a Goteo'
+admin-stories-add: 'Crea una nova història'
+admin-stories-edit: 'Editant l''història %s'
+
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
 admin-project-express-discard: 'Rebuig expres'
@@ -93,6 +98,11 @@ admin-project-derivation-discard: 'Rebutjar i derivar'
 admin-project-derivation-discard-desc: 'Passa el projecte a l''estat descartat i envia un mail derivant a una plataforma més idònia'
 admin-project-derivation-discard-sure: 'S''envia un mail derivant a una altra plataforma i passa a l''estat descartat"'
 admin-home-title: Administra Goteo
+
+admin-list: Llistat
+admin-stats: Estadístiques
+admin-list-total: 'Total: <strong>%s</strong> resultats'
+admin-search-global: 'Projecte, canal, convocatòria...'
 
 admin-already-impersonating: 'Ja estàs suplantant un usuari, tanca primer la sessió!'
 admin-rebase-user: 'Canvia l''ID de l''usuari'
@@ -115,6 +125,8 @@ admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aqu
 
 admin-users-global-search: 'Id, nom, email o projecte'
 admin-blog-global-search: 'Id, títol, subtítol o text'
+admin-stories-global-search: 'Id, títol, text o projecte'
+admin-no-project: 'Sense projecte'
 admin-text-type: 'Processa el text com a'
 admin-text-type-html: HTML
 admin-text-type-md: Markdown
@@ -123,6 +135,7 @@ admin-title-id: Id
 admin-title-name: Nom
 admin-title-fullname: Nom
 admin-title-about: Info
+admin-title-active: Actiu
 admin-title-location: Localització
 admin-title-email: Email
 admin-title-header-image: Imatge de capçalera
@@ -147,6 +160,9 @@ admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
 admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'
 admin-blog-edit-success: 'L''entrada de blog s''ha editat correctament'
+
+admin-stories-not-active-yet: 'Aquesta història d''usuari no està activa encara'
+admin-stories-edit-success: 'L''història d''usuari s''ha editat correctament'
 
 admin-all-project-referers: 'Origen de visites als projectes'
 admin-all-invests-referers: 'Origen de visites a les aportacions a projectes'

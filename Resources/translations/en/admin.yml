@@ -53,6 +53,10 @@ admin-blog-slug-exists: 'The slug [%s] is being used by another post!'
 admin-blog-slug-chars: 'The slug [%s] contains invalid characters!'
 admin-blog-not-public: 'This post is not public yet!'
 
+admin-stories: User histories in Goteo
+admin-stories-add: Create new user history
+admin-stories-edit: Editing user history %s
+
 admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
@@ -75,6 +79,11 @@ admin-project-derivation-discard-desc: 'Change the project status to Discard and
 admin-project-derivation-discard-sure: 'The project will be discarded and the owner will receive an email derivating to other platforms, ok?'
 admin-home-title: Administrate Goteo
 
+admin-list: List
+admin-stats: Stats
+admin-list-total: 'Total: <strong>%s</strong> results'
+admin-search-global: 'Project, channel, call...'
+
 admin-already-impersonating: 'You are already impersonating a user. Please close the session first!'
 admin-rebase-user: 'Change user ID'
 admin-edit-name: 'Change name'
@@ -96,6 +105,8 @@ admin-role-change-forbidden: 'You don''t have permissions to manage the role %RO
 
 admin-users-global-search: 'Id, name, email or project'
 admin-blog-global-search: 'Id, title, subtitle or text'
+admin-stories-global-search: 'Id, title, text or project'
+admin-no-project: 'No project'
 admin-text-type: 'Process text as'
 admin-text-type-html: HTML
 admin-text-type-md: Markdown
@@ -104,6 +115,7 @@ admin-title-id: Id
 admin-title-name: Name
 admin-title-fullname: Name
 admin-title-about: About
+admin-title-active: Active
 admin-title-location: Location
 admin-title-email: Email
 admin-title-header-image: Header image
@@ -128,6 +140,9 @@ admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'
 admin-blog-edit-success: 'Blog post edited successfully'
+
+admin-stories-not-active-yet: 'This user history is not active yet!'
+admin-stories-edit-success: 'User history edited successfully'
 
 admin-all-project-referers: 'Origin of visits to project pages'
 admin-all-invests-referers: 'Origin of visits in successful contributions to projects'

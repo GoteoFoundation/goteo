@@ -13,23 +13,22 @@ namespace Goteo\Controller\Admin;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\Message;
+use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Event\FilterBlogPostEvent;
-use Goteo\Application\AppEvents;
 use Goteo\Library\Text;
-use Goteo\Model\Blog;
-use Goteo\Model\Post;
-use Goteo\Model\Blog\Post as BlogPost;
+use Goteo\Model\User;
+use Goteo\Model\Stories;
 use Goteo\Library\Forms\FormModelException;
 
-class BlogAdminController extends AbstractAdminController {
-    protected static $icon = '<i class="fa fa-2x fa-file-text-o"></i>';
+class StoriesAdminController extends AbstractAdminController {
+    protected static $icon = '<i class="fa fa-2x fa-id-card-o"></i>';
 
     // this modules is part of a specific group
     public static function getGroup() {
-        return 'communications';
+        return 'main';
     }
 
     public static function getRoutes() {
@@ -55,46 +54,25 @@ class BlogAdminController extends AbstractAdminController {
         $filters = ['superglobal' => $request->query->get('q')];
         $limit = 25;
         $page = $request->query->get('pag') ?: 0;
-        $list = BlogPost::getList($filters, false, $page * $limit, $limit, false, Config::get('lang'));
-        $total = BlogPost::getList($filters, false, 0, 0, true);
+        $list = Stories::getList($filters, $page * $limit, $limit, false, Config::get('lang'));
+        $total = Stories::getList($filters, 0, 0, true);
 
-        return $this->viewResponse('admin/blog/list', [
+        return $this->viewResponse('admin/stories/list', [
             'list' => $list,
-            'link_prefix' => '/blog/edit/',
+            'link_prefix' => '/stories/edit/',
             'total' => $total,
             'limit' => $limit,
             'filter' => [
-                '_action' => '/blog',
-                'q' => Text::get('admin-blog-global-search')
+                '_action' => '/stories',
+                'q' => Text::get('admin-stories-global-search')
             ]
         ]);
     }
 
     public function editAction($slug = '', Request $request) {
-        $node = Config::get('node');
-        $blog = Blog::get($node, 'node');
-        if (!$blog instanceof Blog) {
-            $blog = new Blog(array('type'=>'node', 'owner' => $node, 'active'=>1));
-            $errors = [];
-            if ($blog->save($errors)) {
-                Message::info(Text::get('admin-blog-initialized'));
-            } else {
-                Message::error("Error creating node-blog space for node [$node]", implode(',',$errors));
-                return $this->redirect('/admin/blog');
-            }
-        } elseif (!$blog->active) {
-            Message::error(Text::get('admin-blog-deactivated'));
-            return $this->redirect('/admin/blog');
-        }
-
-        // primero comprobar que tenemos blog
-        if (!$blog instanceof Blog) {
-            throw new ModelNotFoundException("Not found node-blog space for node [$node]!");
-        }
-
         if(!$slug) {
-            $post = new BlogPost([
-                'blog' => $blog->id,
+            $story = new Stories([
+                'stories' => $stories->id,
                 'date' => date('Y-m-d'),
                 'publish' => false,
                 'allow' => true,
@@ -102,18 +80,18 @@ class BlogAdminController extends AbstractAdminController {
                 'author' => $this->user->id
             ]);
         } else {
-            $post = BlogPost::getBySlug($slug);
+            $story = Stories::getBySlug($slug);
         }
-        if(!$post) throw new ModelNotFoundException("Not found post [$slug]");
+        if(!$story) throw new ModelNotFoundException("Not found story [$slug]");
 
-        $defaults = (array)$post;
-        $processor = $this->getModelForm('AdminPostEdit', $post, $defaults, [], $request);
+        $defaults = (array)$story;
+        $processor = $this->getModelForm('AdminPostEdit', $story, $defaults, [], $request);
         $processor->createForm();
         $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
             ]);
-        if($post->id) {
+        if($story->id) {
             $processor->getBuilder()
                 ->add('remove', 'submit', [
                     'label' => Text::get('admin-remove-entry'),
@@ -128,33 +106,32 @@ class BlogAdminController extends AbstractAdminController {
 
         $form = $processor->getForm();
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $request->isMethod('post')) {
+        if ($form->isSubmitted() && $request->isMethod('story')) {
             // Check if we want to remove an entry
             if($form->has('remove') && $form->get('remove')->isClicked()) {
-                if((bool)$post->publish) {
+                if((bool)$story->publish) {
                     Message::error(Text::get('admin-remove-entry-forbidden'));
-                    return $this->redirect('/admin/blog/');
+                    return $this->redirect('/admin/stories/');
                 }
 
-                $post->dbDelete(); //Throws and exception if fails
+                $story->dbDelete(); //Throws and exception if fails
                 Message::info(Text::get('admin-remove-entry-ok'));
-                return $this->redirect('/admin/blog/');
+                return $this->redirect('/admin/stories/');
             }
 
 
             try {
-                $processor->save($form, true);
-                $this->dispatch(AppEvents::BLOG_POST, new FilterBlogPostEvent($processor->getModel()));
-                Message::info(Text::get('admin-blog-edit-success'));
-                return $this->redirect('/admin/blog?' . $request->getQueryString());
+                $processor->save($form, true); // Allow save event if does not validate
+                Message::info(Text::get('admin-stories-edit-success'));
+                return $this->redirect('/admin/stories?' . $request->getQueryString());
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }
         }
 
-        return $this->viewResponse('admin/blog/edit', [
+        return $this->viewResponse('admin/stories/edit', [
             'form' => $form->createView(),
-            'post' => $post,
+            'story' => $story,
             'user' => $user
         ]);
     }

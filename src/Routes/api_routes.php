@@ -92,6 +92,13 @@ $api->add('api-blog-post-property', new Route(
         )
 ));
 
+// Stories property individual updates
+$api->add('api-stories-property', new Route(
+    '/stories/{id}/property/{prop}',
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesPropertyAction'
+        )
+));
+
 
 // Projects list
 $api->add('api-projects', new Route(

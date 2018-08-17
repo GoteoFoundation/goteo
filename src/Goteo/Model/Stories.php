@@ -88,7 +88,7 @@ class Stories extends \Goteo\Core\Model {
                 project.id as project_id,
                 project.name as project_name,
                 project.amount as project_amount,
-                project.num_investors as project_num_investors
+                project.num_investors as project_num_investors,
 
                 user.id as user_id,
                 user.name as user_name
@@ -100,7 +100,7 @@ class Stories extends \Goteo\Core\Model {
                 ON user.id = project.owner
             $joins
             WHERE stories.id = :id
-            ", array(':id' => $id));
+            ", [':id' => $id]);
 
         return $query->fetchObject(__CLASS__);
     }
@@ -276,9 +276,13 @@ class Stories extends \Goteo\Core\Model {
                 $values[":$key"] = '%'.$filters[$key].'%';
             }
         }
-        if($filters['global']) {
-            $filter[] = "(stories.title LIKE :global OR stories.description LIKE :global OR stories.review LIKE :global)";
-            $values[':global'] = '%'.$filters['global'].'%';
+        if($filters['superglobal']) {
+            $filter[] = "(stories.title LIKE :superglobal OR stories.description LIKE :superglobal OR stories.review LIKE :superglobal)";
+            $values[':superglobal'] = '%'.$filters['superglobal'].'%';
+        }
+        if($filters['supersuperglobal']) {
+            $filter[] = "(stories.title LIKE :superglobal OR stories.description LIKE :superglobal OR stories.review LIKE :superglobal)";
+            $values[':superglobal'] = '%'.$filters['superglobal'].'%';
         }
         // print_r($filter);die;
         if($filter) {
@@ -384,6 +388,17 @@ class Stories extends \Goteo\Core\Model {
             $this->projectObject = false;
         }
         return $this->projectObject;
+    }
+
+    public function getUser() {
+        if(!$this->userInstance instanceOf User) {
+            $user_id = $this->user_id ? $this->user_id : null;
+            if($user_id)
+                $this->userInstance = User::get($user_id);
+            elseif($this->getProject())
+                return $this->getProject()->getOwner();
+        }
+        return $this->userInstance;
     }
 
     public function getImage() {

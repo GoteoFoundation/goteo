@@ -208,6 +208,8 @@ all-files-uploaded: "All files uploaded successfully"
 uploaded-ok: "Uploaded successfully"
 publish-confirm-yes: "Do you want to publish this entry?"
 publish-confirm-no: "Do you want to unpublish this entry?"
+active-confirm-yes: "Do you want to activate this entry?"
+active-confirm-no: "Do you want to unactivate this entry?"
 dashboard-project-support-empty: 'No collaboration petitions yet.'
 dashboard-project-support-responses: Responses
 dashboard-project-support-no-responses: 'No responses yet.'

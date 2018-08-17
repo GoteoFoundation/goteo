@@ -102,6 +102,10 @@ admin-blog-slug-exists: 'El identificador [%s] se está usando en otro post!'
 admin-blog-slug-chars: 'El identificador [%s] contiene carácteres inválidos!'
 admin-blog-not-public: 'Este post no es público todavía'
 
+admin-stories: Historias de usuarios en Goteo
+admin-stories-add: Crear una nueva historia
+admin-stories-edit: Editando la historia %s
+
 admin-calls: Convocatorias
 admin-matchers: Matchers
 admin-channels: Canales
@@ -151,9 +155,12 @@ admin-role-change-forbidden: 'No tienes permiso para gestionar el rol %ROLE% en 
 
 admin-users-global-search: 'Id, nombre, email o proyecto'
 admin-blog-global-search: 'Id, título, subtítulo o texto'
+admin-blog-stories-search: 'Id, título, texto o proyecto'
+admin-no-project: 'Sin proyecto'
 admin-title-id: Id
 admin-title-name: Nombre
 admin-title-about: Info
+admin-title-active: Activo
 admin-title-location: Localización
 admin-title-fullname: Nombre
 admin-title-email: Email
@@ -179,6 +186,9 @@ admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
 admin-blog-deactivated: 'Lo sentimos, la gestión de blog esta desactivada'
 admin-blog-edit-success: 'La entrada de blog se ha editado correctamente'
+
+admin-stories-not-active-yet: 'Esta historia de usuario no está activa todavía'
+admin-stories-edit-success: 'La historia de usuario se ha editado correctamente'
 
 admin-all-project-referers: 'Origen de visitas en los proyectos'
 admin-all-invests-referers: 'Origen de visitas en los aportes a proyectos'

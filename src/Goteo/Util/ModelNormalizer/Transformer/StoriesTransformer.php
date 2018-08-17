@@ -10,56 +10,43 @@
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
 use Goteo\Core\Model;
+use Goteo\Library\Text;
 
 /**
  * Transform a Model
  */
-class PostTransformer extends AbstractTransformer {
+class StoriesTransformer extends AbstractTransformer {
 
     protected $keys = ['id', 'image', 'title', 'subtitle'];
 
-
-    /**
-     * Return an API url to modifiy the property (or empty if doesn't exist)
-     * @param  [type] $prop [description]
-     * @return [type]       [description]
-     */
-    public function getApiProperty($prop) {
-        return '/api/blog/' . $this->getSlug() . "/property/$prop";
-    }
-
-    public function getPublish() {
-        return $this->model->publish;
-    }
-
-    public function getSlug() {
-        return $this->model->getSlug();
-    }
-
     public function getInfo() {
-        return '<strong>'.$this->getDate().' - ' . $this->getAuthor() . '</strong><br>'.$this->getSubTitle();
+        $prj = $this->model->getProject();
+        return '<strong>'.($prj ? $prj->name.' - ' : '') . $this->getAuthor() . '</strong><br>'.$this->getReview();
     }
 
+    public function getReview() {
+        return $this->model->review;
+    }
     public function getAuthor() {
-        return $this->model->getAuthor() ? $this->model->getAuthor()->name : 'Unknown';
+        return $this->model->getUser() ? $this->model->getUser()->name : '<span class="label label-info">'.Text::get('admin-no-project').'</span>';
     }
 
     public function getActions() {
         if(!$u = $this->getUser()) return [];
-        $ret = ['edit' => '/admin/blog/edit/' . $this->model->getSlug()];
+        $ret = ['edit' => '/admin/stories/edit/' . $this->model->id];
 
         if($this->getUser()->hasPerm('translate-language')) {
             $ret['translate'] = '/translate/' . $this->getModelName() . '/' . $this->model->id;
         }
 
-        $ret['preview'] = '/blog/' . $this->model->getSlug() . '?preview';
+        // $ret['preview'] = '/stories/' . $this->model->id . '?preview';
         return $ret;
     }
 
     public function getLink($type = 'public', $key = null) {
         if($key !== 'id') return '';
         if($type === 'public') {
-            return '/blog/' . $this->model->getSlug() .'?preview';
+            return '/stories/' . $this->model->id .'?preview';
         }
         return '';
     }

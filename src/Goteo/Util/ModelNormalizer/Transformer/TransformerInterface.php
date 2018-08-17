@@ -16,4 +16,5 @@ interface TransformerInterface {
     public function getValue($key);
     public function getName();
     public function getLink($type = 'public', $key = null);
+    public function getApiProperty($prop);
 }
