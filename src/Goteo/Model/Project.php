@@ -445,7 +445,6 @@ class Project extends \Goteo\Core\Model {
     public static function get($id, $lang = null) {
 
         try {
-            // metemos los datos del proyecto en la instancia
             list($fields, $joins) = self::getLangsSQLJoins($lang);
 
             $sql = "SELECT

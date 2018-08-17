@@ -108,11 +108,13 @@ class StoriesSubController extends AbstractSubController {
                 $post = null;
             }
 
+            $project = $this->getPost('project') ? Model\Project::getMini($this->getPost('project')) : null;
             // objeto
             $story = new Model\Stories(array(
                 'id' => $this->getPost('id'),
                 'node' => $node,
-                'project' => $this->getPost('project') ? $this->getPost('project') : null,
+                'project' => $project ? $project->id : null,
+                'lang' => $project ? $project->lang : null,
                 'order' => $this->getPost('order'),
                 'image' => $this->getPost('image'),
                 'pool_image' => $this->getPost('pool_image'),
@@ -161,13 +163,11 @@ class StoriesSubController extends AbstractSubController {
 
                 if ($this->getPost('action') == 'add') {
 
-                    if($this->getPost('project'))
+                    if($project)
                     {
-                        $projectData = Model\Project::getMini($this->getPost('project'));
-
                         // Evento Feed
                         $log = new Feed();
-                        $log->setTarget($projectData->id);
+                        $log->setTarget($project->id);
                         $log->populate('nueva historia exitosa en portada (admin)', '/admin/promote',
                             \vsprintf('El admin %s ha %s', array(
                             Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
@@ -252,7 +252,7 @@ class StoriesSubController extends AbstractSubController {
                 $story= new Model\Stories([
                         'order' => $next
                     ]);
-                
+
 
                 return array(
                         'folder' => 'stories',
@@ -290,12 +290,10 @@ class StoriesSubController extends AbstractSubController {
                         return $this->response('admin/stories/preview', ['story' =>$story]);
         }
 
-        $storyed = Model\Stories::getList($node);
-
         return array(
                 'folder' => 'stories',
                 'file' => 'list',
-                'storyed' => $storyed,
+                'storyed' => Model\Stories::getList([], 0, 1000, false, Config::get('lang')),
                 'node' => $node
         );
 

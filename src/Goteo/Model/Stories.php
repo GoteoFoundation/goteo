@@ -28,6 +28,7 @@ class Stories extends \Goteo\Core\Model {
         $id,
         $node,
         $project = null,
+        $lang,
         $order,
         $image,
         $title,
@@ -51,6 +52,7 @@ class Stories extends \Goteo\Core\Model {
 
         if(empty($this->node)) $this->node = Config::get('node');
         if(empty($this->order)) $this->order = self::next($this->node);
+        if(empty($this->lang)) $this->lang = Config::get('sql_lang');
     }
     public static function getLangFields() {
         return ['title', 'description', 'review'];
@@ -59,20 +61,16 @@ class Stories extends \Goteo\Core\Model {
     /*
      *  Devuelve datos de una historia exitosa
      */
-    public static function get ($id, $lang = null, $model_lang = null) {
+    public static function get ($id, $lang = null) {
 
-        // This model does not automatically request translation support language, only if requested
-        // That's because Projects can be in any custom language and its
-        // corresponding blog will match the same language as main
-
-        if(!$model_lang) $model_lang = Config::get('lang');
-        list($fields, $joins) = self::getLangsSQLJoins($lang, $model_lang);
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
 
         $query = static::query("
             SELECT
                 stories.id as id,
                 stories.node as node,
                 stories.project as project,
+                stories.lang as lang,
                 $fields,
                 stories.url as url,
                 stories.image as image,
@@ -90,8 +88,7 @@ class Stories extends \Goteo\Core\Model {
                 project.id as project_id,
                 project.name as project_name,
                 project.amount as project_amount,
-                project.num_investors as project_num_investors,
-                project.id as project_id,
+                project.num_investors as project_num_investors
 
                 user.id as user_id,
                 user.name as user_name
@@ -166,6 +163,7 @@ class Stories extends \Goteo\Core\Model {
                 stories.id as id,
                 stories.node as node,
                 stories.project as project,
+                stories.lang as lang,
                 $different_select,
                 stories.url as url,
                 stories.image as image,
@@ -185,7 +183,6 @@ class Stories extends \Goteo\Core\Model {
                 project.name as project_name,
                 project.amount as project_amount,
                 project.num_investors as project_num_investors,
-                project.id as project_id,
 
                 user.id as user_id,
                 user.name as user_name
@@ -241,31 +238,109 @@ class Stories extends \Goteo\Core\Model {
         return $stories;
     }
 
-    /*
-     * Lista de historias exitosas
+    /**
+     * Histories listing
+     *
+     * @param array filters
+     * @param string node id
+     * @param int limit items per page or 0 for unlimited
+     * @param int page
+     * @param int pages
+     * @return array of project instances
      */
-    public static function getList ($node = \GOTEO_NODE) {
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
 
-        $stories = array();
+        $values = [];
+        $sqlFilters = [];
+        $sql = '';
 
-        $query = static::query("
-            SELECT
-                stories.id as id,
-                stories.node as node,
-                stories.title as name,
-                stories.order as `order`,
-                stories.post as `post`,
-                stories.active
-            FROM stories
-            WHERE stories.node = :node
-            ORDER BY `order` ASC
-            ", array(':node' => $node));
-
-        foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $story) {
-            $stories[] = $story;
+        foreach(['owner', 'active', 'landing_match', 'landing_pitch', 'pool', 'node', 'type'] as $key) {
+            if (isset($filters[$key])) {
+                $filter[] = "stories.$key = :$key";
+                $values[":$key"] = $filters[$key];
+            }
         }
 
-        return $stories;
+        if(isset($filters['project'])) {
+            $filter[] = "stories.project LIKE :project";
+            $values[":project"] = '%' . $filters['project'] . '%';
+        }
+        if(isset($filters['project_owner'])) {
+            $filter[] = "stories.project_owner = :project_owner";
+            $values[":project_owner"] = $filters['project_owner'];
+        }
+
+        foreach(['id', 'title', 'description', 'review'] as $key) {
+            if (isset($filters[$key])) {
+                $filter[] = "stories.$key LIKE :$key";
+                $values[":$key"] = '%'.$filters[$key].'%';
+            }
+        }
+        if($filters['global']) {
+            $filter[] = "(stories.title LIKE :global OR stories.description LIKE :global OR stories.review LIKE :global)";
+            $values[':global'] = '%'.$filters['global'].'%';
+        }
+        // print_r($filter);die;
+        if($filter) {
+            $sql = " WHERE " . implode(' AND ', $filter);
+        }
+
+        if($count) {
+            // Return count
+            $sql = "SELECT COUNT(id) FROM stories$sql";
+            // echo \sqldbg($sql, $values);
+            return (int) self::query($sql, $values)->fetchColumn();
+        }
+
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+
+        if(!$lang) $lang = Lang::current();
+        $values['viewLang'] = $lang;
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        $sql ="SELECT
+                stories.id as id,
+                stories.node as node,
+                stories.project as project,
+                stories.lang as lang,
+                $fields,
+                stories.url as url,
+                stories.image as image,
+                stories.pool_image as pool_image,
+                stories.pool as pool,
+                stories.text_position as text_position,
+                stories.order as `order`,
+                stories.post as `post`,
+                stories.active as `active`,
+                stories.type as `type`,
+                stories.landing_pitch as `landing_pitch`,
+                stories.landing_match as `landing_match`,
+                stories.sphere as `sphere`,
+
+                project.id as project_id,
+                project.name as project_name,
+                project.amount as project_amount,
+                project.num_investors as project_num_investors,
+
+                user.id as user_id,
+                user.name as user_name,
+                :viewLang as viewLang
+            FROM stories
+            LEFT JOIN project
+                ON project.id = stories.project
+            LEFT JOIN user
+                ON user.id = project.owner
+            $joins
+            $sql
+            ORDER BY `order` ASC
+            LIMIT $offset,$limit";
+
+        // print_r($values);die(\sqldbg($sql, $values));
+        if($query = self::query($sql, $values)) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        }
+        return [];
     }
 
     /*
@@ -361,6 +436,7 @@ class Stories extends \Goteo\Core\Model {
             'id',
             'node',
             'project',
+            'lang',
             'order',
             'image',
             'pool_image',
@@ -437,11 +513,7 @@ class Stories extends \Goteo\Core\Model {
      *  List of types
      */
     public static function getListTypes(){
-        $types=[ 'pitcher'      => 'stories-type-pitcher',
-                 'matcher' => 'stories-type-matcher'
-                ];
-
-        return $types;
+        return Config::get('stories.types');
     }
 
     /**
