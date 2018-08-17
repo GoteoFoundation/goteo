@@ -38,7 +38,7 @@ class IndexController extends DiscoverController
         $projects = Project::getList($filters, null, 0, $limit);
         $total_projects = Project::getList($filters, null, 0, 0, true);
 
-        $stories = Stories::getAll(true);
+        $stories = Stories::getList(['active' => true]);
 
         $channels = Node::getAll(['status' => 'active', 'type' => 'channel']);
 
