@@ -46,6 +46,7 @@ class AdminPostEditForm extends ProjectPostForm {
             ))
             ->add('header_image', 'dropfiles', array(
                 'required' => false,
+                'limit' => 1,
                 'label' => 'admin-title-header-image',
                 'accepted_files' => 'image/jpeg,image/gif,image/png',
                 'url' => '/api/blog/images',

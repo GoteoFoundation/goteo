@@ -40,7 +40,7 @@ class BlogPostListener extends AbstractListener {
             ->setPost($post->id)
             ->populate('feed-blog-new-post',
                 '/admin/blog',
-                new FeedBody(null, null, 'feed-blog-post-published', [
+                new FeedBody(null, null, 'feed-blog-post-action', [
                     '%USER%'    => Feed::item('user', $user->name, $user->id),
                     '%ACTION%'  => new FeedBody('relevant', null, 'admin-title-publish'),
                     '%TITLE%'   => Feed::item('blog', $post->title, $post->getSlug())

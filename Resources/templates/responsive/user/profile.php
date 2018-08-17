@@ -167,84 +167,80 @@ $worthcracy=$this->worthcracy;
 					</div>
 				</div>
 
-				<?php if($user->twitter): 
-
-					$twitter_split=explode("/", $user->twitter);
-
-					$twitter_alias=end($twitter_split);
-
-					if(!$twitter_alias){
-						$twitter_alias=prev($twitter_split);
-					}
-
-				?>
-
-
 					<div class="row social-item">
-						<div class="col-xs-3 col-md-2 social-icon">
+
+						<?php if($user->twitter): 
+
+							$twitter_split=explode("/", $user->twitter);
+
+							$twitter_alias=end($twitter_split);
+
+							if(!$twitter_alias){
+								$twitter_alias=prev($twitter_split);
+							}
+						?>
+
+						<div class="col-xs-3 col-md-1 col-md-offset-1 social-icon">
 							<img src="<?= SRC_URL ?>/assets/img/social/twitter_circle.png" >
 						</div>
-						<div class="col-xs-9 col-md-10 social-content">
+						<div class="col-xs-9 col-md-2 social-content">
 							<a href="<?= $user->twitter ?>" target="_blank">
 								<?= '@'.$twitter_alias ?>
 							</a>
 						</div>
+
+						<?php endif; ?>
+
+						<?php if($user->facebook): 
+
+							$facebook_split=explode("/", $user->facebook);
+
+							$facebook_alias=end($facebook_split);
+
+							if(!$facebook_alias){
+								$facebook_alias=prev($facebook_split);
+							}
+
+						?>
+
+							<?php $facebook_alias=end(explode("/", $user->facebook)); ?>
+
+							<div class="col-xs-3 col-md-1 <?= !$user->twitter ? 'col-md-offset-1' : '' ?> social-icon">
+								<img src="<?= SRC_URL ?>/assets/img/social/facebook_circle.png" >
+							</div>
+							<div class=" col-xs-9 col-md-2 social-content">
+								<a href="<?= $this->user->facebook ?>" target="_blank">
+									<?= '/'.$facebook_alias ?>
+								</a>
+							</div>
+
+						<?php endif; ?>
+
+						<?php if($user->instagram): 
+
+							$instagram_split=explode("/", $user->instagram);
+
+							$instagram_alias=end($instagram_split);
+
+							if(!$instagram_alias){
+								$instagram_alias=prev($instagram_split);
+							}
+
+						?>
+
+
+							<div class="col-xs-3 col-md-1 <?= !$user->twitter&&!$user->facebook ? 'col-md-offset-1' : '' ?> social-icon">
+								<img width="40" src="<?= SRC_URL ?>/assets/img/social/instagram_circle.png" >
+							</div>
+							<div class="col-xs-9 col-md-2 social-content">
+								<a href="<?= $this->user->instagram ?>" target="_blank">
+									<?= '/'.$instagram_alias ?>	
+								</a>
+							</div>
+
+						<?php endif; ?>
+
 					</div>
-
-				<?php endif; ?>
-
-				<?php if($user->facebook): 
-
-					$facebook_split=explode("/", $user->facebook);
-
-					$facebook_alias=end($facebook_split);
-
-					if(!$facebook_alias){
-						$facebook_alias=prev($facebook_split);
-					}
-
-				?>
-
-					<?php $facebook_alias=end(explode("/", $user->facebook)); ?>
-
-					<div class="row social-item">
-						<div class="col-xs-3 col-md-2 social-icon">
-							<img src="<?= SRC_URL ?>/assets/img/social/facebook_circle.png" >
-						</div>
-						<div class=" col-xs-9 col-md-10 social-content">
-							<a href="<?= $this->user->facebook ?>" target="_blank">
-								<?= '/'.$facebook_alias ?>
-							</a>
-						</div>
-					</div>
-
-				<?php endif; ?>
-
-				<?php if($user->instagram): 
-
-					$instagram_split=explode("/", $user->instagram);
-
-					$instagram_alias=end($instagram_split);
-
-					if(!$instagram_alias){
-						$instagram_alias=prev($instagram_split);
-					}
-
-				?>
-
-
-					<div class="row social-item">
-						<div class="col-xs-3 col-md-2 social-icon">
-							<img width="40" src="<?= SRC_URL ?>/assets/img/social/instagram_circle.png" >
-						</div>
-						<div class="col-xs-9 col-md-10 social-content">
-							<a href="<?= $this->user->instagram ?>" target="_blank">
-								<?= '/'.$instagram_alias ?>	
-							</a>
-						</div>
-					</div>
-
-				<?php endif; ?>
 
 				<?php if(!$this->stories&&($this->invest_on||$this->my_projects)): ?>
 

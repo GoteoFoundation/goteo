@@ -1,0 +1,18 @@
+group: project
+name: 'Project story available to fill'
+purpose: 'Mail template to be sent to a project owner when the story is able to fill, seven days after the finish'
+type: 'md'
+title: '¿Tienes una historia que contar sobre tu proyecto %PROJECTNAME%?'
+text: >
+      Hola %USERNAME%, 
+
+      Ahora que han pasado unos días desde la finalización de tu campaña, nos gustaría que nos contases como ha sido tu experiencia en Goteo.
+      
+      Tu historia servirá para inspirar a otros, apareciendo en tu perfil de usuario, y podrá ser destacada en nuestra home.
+
+      Puedes completarla desde tu dashboard:
+
+      [%STORYURL%](%STORYURL%)
+
+      El equipo de Goteo
+

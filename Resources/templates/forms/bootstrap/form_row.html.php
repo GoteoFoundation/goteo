@@ -15,7 +15,21 @@ $label_view = $label_position === 'none' ? '' : $view['form']->label($form);
 
     <?php if(!$no_input_wrap): ?><div class="input-wrap"><?php endif ?>
 
-    <?= $view['form']->errors($form) ?>
+    <?php
+
+    // This is a hack
+    // some custom form types (ie: DropfilesType) does not seem to register the error
+    // handling properly, I don't know the cause yet so this is here to force appear the
+    // error message in the proper place
+    // NOTE: this does not remove the global error messages
+    if($form->parent && count($form->parent->vars['errors']) > 0) {
+        if($form->parent->vars['errors'][0]->getOrigin()->getName() === $form->vars['name']) {
+            echo $view['form']->errors($form->parent);
+        }
+    }
+
+    echo $view['form']->errors($form);
+    ?>
 
   <?php if(in_array($type, ['markdown', 'summernote'])): ?>
       <div class="<?= $type ?>">
