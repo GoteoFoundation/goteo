@@ -291,6 +291,9 @@
       .icon-item{
         float:none !important;
       }
+      .social-item .social-icon {
+          clear:both;
+      }
     }
 
     .section.projects .container {

@@ -130,6 +130,12 @@ class UsersSend extends AbstractCommandController {
                 $replace = array($project->user->name, $project->name);
                 break;
 
+            case '7d_after': // my story template
+                $tpl = Template::PROJECT_MY_STORY_AVAILABLE;
+                $search  = array('%USERNAME%', '%PROJECTNAME%', '%STORYURL%');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/project/'.$project->id.'/story');
+                break;
+
             case '2m_after': // template 25, dos meses despues de financiado
                 $tpl = 25;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');

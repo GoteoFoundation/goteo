@@ -397,6 +397,12 @@ class ConsoleWatcherListener extends AbstractListener {
             }
         }
 
+        if($days_succeeded == 7) {
+                $this->info("My story form available", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded]);
+
+                $this->send($project, '7d_after', ['owner']);
+        }
+
         // die("[$days_funded]\n");
         // ~ 10 month ago
         if( $days_succeeded > 10 * 30 && $days_succeeded < 10 * 31) {
