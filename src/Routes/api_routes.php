@@ -98,6 +98,16 @@ $api->add('api-stories-property', new Route(
     array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesPropertyAction'
         )
 ));
+// Stories images upload (POST method only)
+$api->add('api-stories-images-upload', new Route(
+    '/stories/images',
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
 
 
 // Projects list

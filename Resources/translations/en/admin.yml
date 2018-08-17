@@ -143,6 +143,8 @@ admin-blog-edit-success: 'Blog post edited successfully'
 
 admin-stories-not-active-yet: 'This user history is not active yet!'
 admin-stories-edit-success: 'User history edited successfully'
+admin-stories-pool: 'Show in wallet''s landing'
+admin-stories-review: 'Goteo''s review: (Subtitle)'
 
 admin-all-project-referers: 'Origin of visits to project pages'
 admin-all-invests-referers: 'Origin of visits in successful contributions to projects'

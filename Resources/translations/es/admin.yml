@@ -189,6 +189,8 @@ admin-blog-edit-success: 'La entrada de blog se ha editado correctamente'
 
 admin-stories-not-active-yet: 'Esta historia de usuario no está activa todavía'
 admin-stories-edit-success: 'La historia de usuario se ha editado correctamente'
+admin-stories-pool: 'Mostrar en landing monedero'
+admin-stories-review: 'Review de Goteo: (Subtítulo)'
 
 admin-all-project-referers: 'Origen de visitas en los proyectos'
 admin-all-invests-referers: 'Origen de visitas en los aportes a proyectos'

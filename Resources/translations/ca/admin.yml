@@ -163,6 +163,8 @@ admin-blog-edit-success: 'L''entrada de blog s''ha editat correctament'
 
 admin-stories-not-active-yet: 'Aquesta història d''usuari no està activa encara'
 admin-stories-edit-success: 'L''història d''usuari s''ha editat correctament'
+admin-stories-pool: 'Mostra a la landing moneder'
+admin-stories-review: 'Review de Goteo: (Subtítol)'
 
 admin-all-project-referers: 'Origen de visites als projectes'
 admin-all-invests-referers: 'Origen de visites a les aportacions a projectes'

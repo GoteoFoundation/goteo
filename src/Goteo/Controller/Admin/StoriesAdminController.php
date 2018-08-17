@@ -10,129 +10,116 @@
 
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-
-use Goteo\Application\Session;
 use Goteo\Application\Config;
-use Goteo\Application\Message;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Library\Text;
-use Goteo\Model\User;
-use Goteo\Model\Stories;
+use Goteo\Application\Message;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Text;
+use Goteo\Model\Stories;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 class StoriesAdminController extends AbstractAdminController {
-    protected static $icon = '<i class="fa fa-2x fa-id-card-o"></i>';
+	protected static $icon = '<i class="fa fa-2x fa-id-card-o"></i>';
 
-    // this modules is part of a specific group
-    public static function getGroup() {
-        return 'main';
-    }
+	// this modules is part of a specific group
+	public static function getGroup() {
+		return 'main';
+	}
 
-    public static function getRoutes() {
-        return [
-            new Route(
-                '/',
-                ['_controller' => __CLASS__ . "::listAction"]
-            ),
-            new Route(
-                '/edit/{slug}', [
-                    '_controller' => __CLASS__ . "::editAction"
-                ]
-            ),
-            new Route(
-                '/add',
-                ['_controller' => __CLASS__ . "::editAction", 'slug' => '']
-            )
-        ];
-    }
+	public static function getRoutes() {
+		return [
+			new Route(
+				'/',
+				['_controller' => __CLASS__ . "::listAction"]
+			),
+			new Route(
+				'/edit/{id}', [
+					'_controller' => __CLASS__ . "::editAction",
+				]
+			),
+			new Route(
+				'/add',
+				['_controller' => __CLASS__ . "::editAction", 'id' => '']
+			),
+		];
+	}
 
+	public function listAction(Request $request) {
+		$filters = ['superglobal' => $request->query->get('q')];
+		$limit = 25;
+		$page = $request->query->get('pag') ?: 0;
+		$list = Stories::getList($filters, $page * $limit, $limit, false, Config::get('lang'));
+		$total = Stories::getList($filters, 0, 0, true);
 
-    public function listAction(Request $request) {
-        $filters = ['superglobal' => $request->query->get('q')];
-        $limit = 25;
-        $page = $request->query->get('pag') ?: 0;
-        $list = Stories::getList($filters, $page * $limit, $limit, false, Config::get('lang'));
-        $total = Stories::getList($filters, 0, 0, true);
+		return $this->viewResponse('admin/stories/list', [
+			'list' => $list,
+			'link_prefix' => '/stories/edit/',
+			'total' => $total,
+			'limit' => $limit,
+			'filter' => [
+				'_action' => '/stories',
+				'q' => Text::get('admin-stories-global-search'),
+			],
+		]);
+	}
 
-        return $this->viewResponse('admin/stories/list', [
-            'list' => $list,
-            'link_prefix' => '/stories/edit/',
-            'total' => $total,
-            'limit' => $limit,
-            'filter' => [
-                '_action' => '/stories',
-                'q' => Text::get('admin-stories-global-search')
-            ]
-        ]);
-    }
+	public function editAction($id = '', Request $request) {
 
-    public function editAction($slug = '', Request $request) {
-        if(!$slug) {
-            $story = new Stories([
-                'stories' => $stories->id,
-                'date' => date('Y-m-d'),
-                'publish' => false,
-                'allow' => true,
-                'owner_id' => $node,
-                'author' => $this->user->id
-            ]);
-        } else {
-            $story = Stories::getBySlug($slug);
-        }
-        if(!$story) throw new ModelNotFoundException("Not found story [$slug]");
+		$story = $id ? Stories::get($id) : new Stories();
 
-        $defaults = (array)$story;
-        $processor = $this->getModelForm('AdminPostEdit', $story, $defaults, [], $request);
-        $processor->createForm();
-        $processor->getBuilder()
-            ->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
-            ]);
-        if($story->id) {
-            $processor->getBuilder()
-                ->add('remove', 'submit', [
-                    'label' => Text::get('admin-remove-entry'),
-                    'icon_class' => 'fa fa-trash',
-                    'span' => 'hidden-xs',
-                    'attr' => [
-                        'class' => 'pull-right-form btn btn-default btn-lg',
-                        'data-confirm' => Text::get('admin-remove-entry-confirm')
-                        ]
-                ]);
-        }
+		if (!$story) {
+			throw new ModelNotFoundException("Not found story [$id]");
+		}
 
-        $form = $processor->getForm();
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $request->isMethod('story')) {
-            // Check if we want to remove an entry
-            if($form->has('remove') && $form->get('remove')->isClicked()) {
-                if((bool)$story->publish) {
-                    Message::error(Text::get('admin-remove-entry-forbidden'));
-                    return $this->redirect('/admin/stories/');
-                }
+		$defaults = (array) $story;
+		$processor = $this->getModelForm('AdminStoryEdit', $story, $defaults, [], $request);
+		$processor->createForm();
+		$processor->getBuilder()
+			->add('submit', 'submit', [
+				'label' => $submit_label ? $submit_label : 'regular-submit',
+			]);
+		if ($story->id) {
+			$processor->getBuilder()
+				->add('remove', 'submit', [
+					'label' => Text::get('admin-remove-entry'),
+					'icon_class' => 'fa fa-trash',
+					'span' => 'hidden-xs',
+					'attr' => [
+						'class' => 'pull-right-form btn btn-default btn-lg',
+						'data-confirm' => Text::get('admin-remove-entry-confirm'),
+					],
+				]);
+		}
 
-                $story->dbDelete(); //Throws and exception if fails
-                Message::info(Text::get('admin-remove-entry-ok'));
-                return $this->redirect('/admin/stories/');
-            }
+		$form = $processor->getForm();
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $request->isMethod('post')) {
+			// Check if we want to remove an entry
+			if ($form->has('remove') && $form->get('remove')->isClicked()) {
+				if ((bool) $story->active) {
+					Message::error(Text::get('admin-remove-entry-forbidden'));
+					return $this->redirect('/admin/stories');
+				}
 
+				$story->dbDelete(); //Throws and exception if fails
+				Message::info(Text::get('admin-remove-entry-ok'));
+				return $this->redirect('/admin/stories');
+			}
 
-            try {
-                $processor->save($form, true); // Allow save event if does not validate
-                Message::info(Text::get('admin-stories-edit-success'));
-                return $this->redirect('/admin/stories?' . $request->getQueryString());
-            } catch(FormModelException $e) {
-                Message::error($e->getMessage());
-            }
-        }
+			try {
+				$processor->save($form, true); // Allow save event if does not validate
+				Message::info(Text::get('admin-stories-edit-success'));
+				return $this->redirect('/admin/stories?' . $request->getQueryString());
+			} catch (FormModelException $e) {
+				Message::error($e->getMessage());
+			}
+		}
 
-        return $this->viewResponse('admin/stories/edit', [
-            'form' => $form->createView(),
-            'story' => $story,
-            'user' => $user
-        ]);
-    }
+		return $this->viewResponse('admin/stories/edit', [
+			'form' => $form->createView(),
+			'story' => $story,
+			'user' => $user,
+		]);
+	}
 }
