@@ -341,3 +341,8 @@ blog:
         transparency:  blog-section-transparency
         milestones:    blog-section-milestones
         team:          blog-section-team
+
+stories:
+    types:
+        pitcher: stories-type-pitcher
+        matcher: stories-type-matcher
