@@ -2,7 +2,7 @@
 <?php foreach ($form as $child): ?>
     <div class="<?= $form->vars['wrap_class'] ?>">
         <label>
-        <?php echo $view['form']->widget($child) ?>
+        <?php echo $view['form']->widget($child,['required' => false]) ?>
         <span><?php echo $view->escape(false !== $choice_translation_domain ? $view['translator']->trans($child->vars['label'], array(), $choice_translation_domain) : $label) ?></span>
         </label>
     </div>

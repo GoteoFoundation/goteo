@@ -155,6 +155,7 @@ admin-title-langs: Traduccions
 admin-title-actions: Accions
 admin-title-tags: Tags
 admin-title-deleted: 'Eliminat'
+admin-title-sphere: 'Àmbit'
 
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
@@ -165,6 +166,11 @@ admin-stories-not-active-yet: 'Aquesta història d''usuari no està activa encar
 admin-stories-edit-success: 'L''història d''usuari s''ha editat correctament'
 admin-stories-pool: 'Mostra a la landing moneder'
 admin-stories-review: 'Review de Goteo: (Subtítol)'
+admin-stories-active: 'Activat a la home'
+admin-stories-landing_pitch: 'Mostra a la landing Pitch'
+admin-stories-landing_match: 'Mostra a la landing Match'
+admin-stories-type: 'Tipus de protagonista'
+
 
 admin-all-project-referers: 'Origen de visites als projectes'
 admin-all-invests-referers: 'Origen de visites a les aportacions a projectes'

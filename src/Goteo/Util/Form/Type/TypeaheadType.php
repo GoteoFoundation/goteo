@@ -33,6 +33,9 @@ class TypeaheadType extends TextType
         // $resolver->setDefault('engines', []); // Url for autocomplete
         // $resolver->setDefault('defaults', []); // Url for autocomplete
         $resolver->setDefault('row_class', '');
+        $resolver->setDefault('text', ''); // If exists, the text shown instead of the value
+        $resolver->setDefault('fake_id', ''); // Created automatically, the id of the typeahead input field (real data is placed in a hidden field)
+        $resolver->setDefault('value_field', 'id'); // Field where to extract the Value from API calls, placed in the hidden field
     }
 
     /**
@@ -42,9 +45,13 @@ class TypeaheadType extends TextType
     {
         parent::buildView($view, $form, $options);
         if(is_array($options['attr']['class'])) $view->vars['attr']['class'] = implode(' ', $view->vars['attr']['class']);
+        if(empty($view->vars['fake_id'])) $view->vars['fake_id'] = 'typeahead_' . $view->vars['id'];
         $view->vars['attr']['class'] .= 'form-control typeahead';
+        $view->vars['attr']['autocomplete'] = 'off';
         $view->vars['sources'] = $options['sources'];
+        $view->vars['text'] = $options['text'] ? $options['text'] : $view->vars['value'];
         $view->vars['row_class'] = $options['row_class'];
+        $view->vars['value_field'] = $options['value_field'];
     }
 
     public function getName()

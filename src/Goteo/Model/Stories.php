@@ -408,6 +408,16 @@ class Stories extends \Goteo\Core\Model {
         return $this->imageInstance;
     }
 
+    /**
+     * Return sphere
+    */
+    public function getSphere() {
+        if(!$this->sphereInstance instanceOf Sphere) {
+            $this->sphereInstance = Sphere::get($this->sphere);
+        }
+        return $this->sphereInstance;
+    }
+
     public function getPoolImage() {
         if(!$this->PoolImageInstance instanceOf Image) {
             $this->PoolImageInstance = new Image($this->pool_image);
@@ -529,13 +539,6 @@ class Stories extends \Goteo\Core\Model {
      */
     public static function getListTypes(){
         return Config::get('stories.types');
-    }
-
-    /**
-     * Return sphere
-    */
-    public function getSphere() {
-        return Sphere::get($this->sphere);
     }
 
 }

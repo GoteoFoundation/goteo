@@ -135,6 +135,7 @@ admin-title-langs: Translations
 admin-title-actions: 'Actions'
 admin-title-tags: Tags
 admin-title-deleted: Deleted
+admin-title-sphere: Scope
 
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
@@ -145,6 +146,11 @@ admin-stories-not-active-yet: 'This user history is not active yet!'
 admin-stories-edit-success: 'User history edited successfully'
 admin-stories-pool: 'Show in wallet''s landing'
 admin-stories-review: 'Goteo''s review: (Subtitle)'
+admin-stories-active: 'Active in the home page'
+admin-stories-landing_pitch: 'Show in the landing Pitch'
+admin-stories-landing_match: 'Show in the landing Match'
+admin-stories-type: 'Protagonist type'
+
 
 admin-all-project-referers: 'Origin of visits to project pages'
 admin-all-invests-referers: 'Origin of visits in successful contributions to projects'

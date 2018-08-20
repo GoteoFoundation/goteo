@@ -184,6 +184,7 @@ $(function(){
         $('.autoform .input-typeahead').each(function () {
             var $this = $(this);
             var sources = $this.data('sources').split(',');
+            var id_field = $this.data('value-field') ? $this.data('value-field') : 'id';
             // console.log('initialize with sources', sources);
             var engines = [{
                 minLength: 0,
@@ -210,13 +211,18 @@ $(function(){
                 })
                 .on('typeahead:asynccancel typeahead:asyncreceive', function (event) {
                     $(event.target).removeClass('loading');
-                });
+                })
                 // typeahead:select event is done when needed.
                 // For example: assets/js/admin/stats.js
-                // .on('typeahead:select', function (event, datum, name) {
-                //     console.log('selected',name, event, datum);
-                //     if(datum.url) location.href = datum.url;
-                // });
+                .on('typeahead:select', function (event, datum, name) {
+                    // console.log('selected',name, event, datum, $(this).attr('name'));
+                    $('#' + $(this).data('real-id')).val(datum[id_field]);
+
+                })
+                .on('typeahead:change', function (event) {
+                    console.log('change', event, $(this).val(), $(this).attr('name'));
+                    if($(this).val().trim() === '') $('#' + $(this).data('real-id')).val('');
+                });
         });
 
         // Tags input fields

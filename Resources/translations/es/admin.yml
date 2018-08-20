@@ -181,6 +181,7 @@ admin-title-langs: Traducciones
 admin-title-actions: Acciones
 admin-title-tags: Tags
 admin-title-deleted: Eliminado
+admin-title-sphere: Ámbito
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
@@ -191,6 +192,10 @@ admin-stories-not-active-yet: 'Esta historia de usuario no está activa todavía
 admin-stories-edit-success: 'La historia de usuario se ha editado correctamente'
 admin-stories-pool: 'Mostrar en landing monedero'
 admin-stories-review: 'Review de Goteo: (Subtítulo)'
+admin-stories-active: 'Activo en home'
+admin-stories-landing_pitch: 'Mostrar en landing Pitch'
+admin-stories-landing_match: 'Mostrar en landing Match'
+admin-stories-type: 'Tipo de protagonista'
 
 admin-all-project-referers: 'Origen de visitas en los proyectos'
 admin-all-invests-referers: 'Origen de visitas en los aportes a proyectos'
