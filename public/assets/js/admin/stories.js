@@ -26,10 +26,15 @@ for the JavaScript code in this page.
 $(function(){
 
     // Allow drag&drop reorder by the column `order`
-    adminOrderColumn('table.model-stories', {
+    var settings = {
         apiUrl: function(row) {
             return '/api/stories/' + $(row).find('[data-key="id"]').data('value') + '/sort';
         }
+    };
+    adminOrderColumn('table.model-stories', settings);
+
+    $(window).on("pronto.render", function(e){
+        adminOrderColumn('table.model-stories', settings);
     });
 
 });

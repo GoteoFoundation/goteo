@@ -24,6 +24,8 @@
     goteo.texts['admin-users'] = '<?= $this->ee($this->text('admin-users'), 'js') ?>';
     goteo.texts['admin-channels'] = '<?= $this->ee($this->text('admin-channels'), 'js') ?>';
     goteo.texts['admin-consultants'] = '<?= $this->ee($this->text('admin-consultants'), 'js') ?>';
+    goteo.texts['admin-prev-page'] = '<?= $this->ee($this->text('admin-prev-page'), 'js') ?>';
+    goteo.texts['admin-next-page'] = '<?= $this->ee($this->text('admin-next-page'), 'js') ?>';
 
     goteo.typeahead_engines = goteo.typeahead_engines || {};
 

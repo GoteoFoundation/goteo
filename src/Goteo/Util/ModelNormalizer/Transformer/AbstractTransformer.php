@@ -70,6 +70,10 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
         return '';
     }
 
+    public function getRawValue($key) {
+        return $this->model->{$key};
+    }
+
     /**
      * Return an API url to modifiy the property (or empty if doesn't exist)
      * @param  [type] $prop [description]

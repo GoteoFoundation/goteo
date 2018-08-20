@@ -50,6 +50,13 @@ admin-mailing-view-and-activate: 'Veure en el admin del butlletí per activar l'
 admin-mailing-view-in-newsletter: 'Veure en l''admin del butlletí'
 admin-mailing-view-in-sent: 'Veure en l''historial d''enviaments (estadístiques)'
 admin-mailing-view-message: 'Veure el missatge'
+
+admin-newsletter-generated: 'S''ha generat el butlletí [%ID%]'
+admin-newsletter-langs-to-send: 'Idiomes: %LANGS%'
+admin-newsletter-mind-activate: 'Activa''l per que s''envii'
+admin-prev-page: 'Pàgina anterior'
+admin-next-page: 'Pàgina següent'
+
 admin-project: Projecte
 admin-main: Principal
 admin-legacy: Antics
@@ -156,7 +163,7 @@ admin-title-actions: Accions
 admin-title-tags: Tags
 admin-title-deleted: 'Eliminat'
 admin-title-sphere: 'Àmbit'
-admin-title-order: 'Ordre'
+admin-title-order: 'Ordena'
 
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'

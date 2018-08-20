@@ -23,6 +23,12 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
+function getSearchParams(k){
+    var p={};
+    location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(s,k,v){ p[k]=v; });
+    return k?p[k]:p;
+}
+
 function adminProntoLoad (href, target) {
     target = target || '#admin-content';
     return prontoLoad(href, target);
@@ -30,6 +36,11 @@ function adminProntoLoad (href, target) {
 
 function adminOrderColumn(table, settings) {
     var $tb = $(table);
+    var page = parseInt($tb.data('page')) || 0;
+    var total = parseInt($tb.data('total')) || 0;
+    var limit = parseInt($tb.data('limit')) || 10;
+    var index = -1;
+
     // http://isocra.github.io/TableDnD/
     settings = $.extend({
         field: 'order',
@@ -39,11 +50,10 @@ function adminOrderColumn(table, settings) {
         apiUrl:  null // Must be a function (row will be sent as parameter)
     }, settings);
 
-    var index = -1;
     if(!settings.onDragStart) {
         settings.onDragStart = function(tb, row) {
             index = $(row).index();
-            console.log('Dragstarted, index', index);
+            // console.log('Dragstarted, index', index);
         };
     }
     if(!$.isFunction(settings.apiUrl)) {
@@ -58,42 +68,52 @@ function adminOrderColumn(table, settings) {
             // console.log('drop', tb, 'row', row, 'diff', diff, 'Id', settings.idValue(row), 'url', url, 'td', td);
             if(!url) {
                 alert('ERROR, url not found', url);
+                return;
             }
-            $tb.addClass('loading');
+
+            var go_page = -1;
+            if($(row).next().hasClass('tDnD-tr-prev')) {
+                // Needs to go back 1 page
+                go_page = page - 1;
+            }
+            if($(row).prev().hasClass('tDnD-tr-next')) {
+                // Needs to go forward 1 page
+                go_page = page + 1;
+            }
+
+            $tb.find('tbody').addClass('loading-container');
             $.ajax({
                 url: url,
                 type: 'PUT',
                 data: {value: diff}
             }).done(function(data) {
-                $tb.removeClass('loading');
+                $tb.find('tbody').removeClass('loading-container');
                 if(data.message) alert(data.message);
                 if(data.error) {
                     // reset table
+                    alert('An error has occurred');
+                    console.log('error', data);
+                    adminProntoLoad(location.href);
+                    return;
                 } else {
+                    // Load next page?
+                    if(go_page > -1) {
+                        // console.log('goto', go_page);
+                        var href = location.href.replace('pag=' + page, 'pag=' + go_page);
+                        adminProntoLoad(href);
+                        return;
+                    }
                     // reorder columns
                     var real_diff = parseInt($td.data('value')) -  parseInt(data.value) + 1;
-                    console.log('done', data, 'diff', diff, 'real_diff', real_diff, 'value',$td.data('value'));
-                    // Change value for this element
-                    // var $t =  $td.find('span') ? $td.find('span') : $td;
-                    // $td.data('value', data.value);
-                    // $t.text(data.value);
-                    // Change value for the rest
-                    // $tb.find('tr:lt(' + $curr.index() + ')').each(function(){
+                    // console.log('done', data, 'diff', diff, 'real_diff', real_diff, 'value',$td.data('value'));
+                    // Change value for all elements element
                     $tb.find('tr').each(function(){
-                        var $_td = $(this).find('[data-key="' + settings.field + '"]');
-                        var $_t =  $_td.find('span') ? $_td.find('span') : $_td;
+                        var $td = $(this).find('[data-key="' + settings.field + '"]');
+                        var $t =  $td.find('span') ? $td.find('span') : $td;
                         var val = parseInt(data.value) + $(this).index() - $(row).index();
-                        $_td.data('value', val);
-                        $_t.text(val);
-                        console.log($_td.data('value'));
+                        $td.data('value', val);
+                        $t.text(val);
                     });
-                    // diff = parseInt($td.data('value')) - parseInt(data.value) + diff;
-                    // $tb.find('td[data-key="' + settings.field + '"]').each(function(){
-                    //     var $t =  $(this).find('span') ? $(this).find('span') : $(this);
-                    //     var val = parseInt($(this).data('value'));
-                    //     $(this).data('value', val + diff);
-                    //     $t.text(val + diff);
-                    // });
                 }
             }).fail(function(error) {
                 $tb.removeClass('loading');
@@ -105,7 +125,7 @@ function adminOrderColumn(table, settings) {
         };
     }
 
-    console.log(settings, $tb.find('th[data-key]'));
+    // console.log(settings, $tb.find('th[data-key]'));
     var $th = $tb.find('th[data-key="' + settings.field + '"]');
     // $tb.find('th[data-key="' + settings.field + '"]').append('<i class="fa fa-arrows"></i>');
     $btn = $('<button class="btn btn-sm btn-default">' + $th.text() + ' <i class="fa fa-sort"></i></button>');
@@ -115,12 +135,22 @@ function adminOrderColumn(table, settings) {
         if($(this).hasClass('active')) {
             $(this).removeClass('active');
             $btn.removeClass('btn-danger');
-            $tb.removeClass('dnd-sorting');
+            $tb.removeClass('tDnD-sorting');
+            $tb.find('td[data-key="' + settings.field + '"] i.fa').remove();
+            $tb.find('.tDnD-tr-next,.tDnD-tr-prev').remove();
             $tb.find(settings.dragHandle ? settings.dragHandle : 'tr').unbind('touchstart mousedown').attr('style','');
         } else {
-            $tb.addClass('dnd-sorting');
+            $tb.addClass('tDnD-sorting');
             $(this).addClass('active');
             $btn.addClass('btn-danger');
+            $tb.find('td[data-key="' + settings.field + '"]').append('<i class="fa fa-arrows"></i>');
+            var colspan = $tb.find('th').length;
+            if(page > 0) {
+                $tb.find('tbody').prepend('<tr class="tDnD-tr-prev nodrag"><td colspan="' + colspan + '"><i class="fa fa-arrow-up"></i> '  + goteo.texts['admin-prev-page'] + ' <i class="fa fa-arrow-up"></i></td></tr>');
+            }
+            if(total / limit > page + 1) {
+                $tb.find('tbody').append('<tr class="tDnD-tr-next nodrag"><td colspan="' + colspan + '"><i class="fa fa-arrow-down"></i> '  + goteo.texts['admin-next-page'] + ' <i class="fa fa-arrow-down"></i></td></tr>');
+            }
             $tb.tableDnD(settings);
         }
     });

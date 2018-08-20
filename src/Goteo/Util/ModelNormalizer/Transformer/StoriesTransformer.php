@@ -28,7 +28,7 @@ class StoriesTransformer extends AbstractTransformer {
         return $this->model->review;
     }
     public function getAuthor() {
-        return $this->model->getUser() ? $this->model->getUser()->name : '<span class="label label-info">'.Text::get('admin-no-project').'</span>';
+        return $this->model->getUser() ? $this->model->getUser()->name : ('<span class="label label-info">' . Text::get('admin-no-project') . '</span>');
     }
 
     public function getActions() {

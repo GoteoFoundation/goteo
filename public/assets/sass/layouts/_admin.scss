@@ -177,13 +177,31 @@
     }
   }
 
-  table.dnd-sorting {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    tbody {
-      background: rgba(0,0,0,0.05);
+  table {
+    .loading-container::before {
+      top:0;
+    }
+    .tDnD-sorting {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      tbody {
+        background: rgba(0,0,0,0.05);
+      }
+    }
+  }
+  tr.tDnD-tr-prev,tr.tDnD-tr-next {
+    &.tDnD-tr-next {
+      border-top: 1px solid $color-cyan;
+    }
+    &.tDnD-tr-prev {
+      border-bottom: 1px solid $color-cyan;
+    }
+    background-color: $color-grey-cyan;
+    td {
+      text-align: center;
+      font-weight: bold;
     }
   }
   .tDnD_whileDrag {

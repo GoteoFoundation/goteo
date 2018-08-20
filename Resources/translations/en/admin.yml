@@ -29,6 +29,13 @@ admin-mailing-status: 'Automatic delivery status'
 admin-mailing-subject: Subject
 admin-mailing-view-and-activate: 'See the post admin to start sending'
 admin-mailing-view-in-newsletter: 'See the post admin'
+
+admin-newsletter-generated: 'Newsletter [%ID%] generated'
+admin-newsletter-langs-to-send: 'Languages: %LANGS%'
+admin-newsletter-mind-activate: 'Activate it to send it'
+admin-prev-page: 'Previous page'
+admin-next-page: 'Next page'
+
 admin-main: Main
 admin-legacy: Legacy
 admin-projects: Projects
@@ -66,7 +73,7 @@ admin-project-express-discard-desc: 'Change the project status to Discard and se
 admin-project-express-discard-sure: 'The project will be discarded and the owner will receive an email, ok?'
 admin-project-to-review: 'To review'
 admin-project-to-review-desc: 'Change the project status to Review pending'
-admin-project-to-review-sure: 'The owner won''t be able to edit the project anymore, ok?'
+admin-project-to-review-sure: 'The owner won''t be able to edit the project any more, ok?'
 admin-project-view-in-admin: 'View in admin'
 admin-project-to-negotiation: 'To negotiation'
 admin-project-to-negotiation-desc: 'Change the project status to Editing'
@@ -136,7 +143,7 @@ admin-title-actions: 'Actions'
 admin-title-tags: Tags
 admin-title-deleted: Deleted
 admin-title-sphere: Scope
-admin-title-order: Order
+admin-title-order: Sort
 
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'

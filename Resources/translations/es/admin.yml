@@ -65,6 +65,8 @@ admin-mailing-view-message: 'Ver el mensaje'
 admin-newsletter-generated: 'Se ha generado el boletín [%ID%]'
 admin-newsletter-langs-to-send: 'Idiomas: %LANGS%'
 admin-newsletter-mind-activate: 'Actívalo para que se envíe'
+admin-prev-page: 'Página anterior'
+admin-next-page: 'Página siguiente'
 admin-no: 'No'
 admin-percent: Porcentaje
 admin-project: Proyecto
@@ -182,7 +184,7 @@ admin-title-actions: Acciones
 admin-title-tags: Tags
 admin-title-deleted: Eliminado
 admin-title-sphere: Ámbito
-admin-title-order: Orden
+admin-title-order: Ordenar
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
