@@ -8,7 +8,8 @@
 
     <h1>
     	<?= $this->text('dashboard-story-form-title') ?>
-    	 <?= $this->insert('dashboard/partials/translate_menu', ['class' => 'pull-right', 'base_link' => '/dashboard/translations', 'lang' => $this->current]) ?>
+    	<?= $this->insert('dashboard/partials/translate_menu', ['class' => 'pull-right', 'base_link' => '/dashboard/project/'.$project->id.'/translate/story', 'lang' => $this->current]) ?>
+
     </h1>
     <div class="auto-hide">
         <div class="inner"><?= $this->text('dashboard-story-guide-description') ?></div>
