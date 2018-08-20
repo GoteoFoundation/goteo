@@ -21,7 +21,7 @@ class StoriesTransformer extends AbstractTransformer {
 
     public function getInfo() {
         $prj = $this->model->getProject();
-        return '<strong>'.($prj ? $prj->name.' - ' : '') . $this->getAuthor() . '</strong><br>'.$this->getReview();
+        return '<strong>'.($prj ? $prj->name.' - ' : '') . $this->getAuthor() . '</strong><br>' . Text::recorta($this->getReview(), 30);
     }
 
     public function getReview() {

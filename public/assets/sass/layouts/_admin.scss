@@ -176,4 +176,19 @@
       clear: both;
     }
   }
+
+  table.dnd-sorting {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    tbody {
+      background: rgba(0,0,0,0.05);
+    }
+  }
+  .tDnD_whileDrag {
+    // Style for reordering tr
+    opacity:0.8;
+  }
+
 }

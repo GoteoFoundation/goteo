@@ -47,7 +47,8 @@ class StoriesAdminController extends AbstractAdminController {
 
 	public function listAction(Request $request) {
 		$filters = ['superglobal' => $request->query->get('q')];
-		$limit = 25;
+        // $limit = 25;
+		$limit = 5;
 		$page = $request->query->get('pag') ?: 0;
 		$list = Stories::getList($filters, $page * $limit, $limit, false, Config::get('lang'));
 		$total = Stories::getList($filters, 0, 0, true);

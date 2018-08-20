@@ -182,6 +182,7 @@ admin-title-actions: Acciones
 admin-title-tags: Tags
 admin-title-deleted: Eliminado
 admin-title-sphere: Ámbito
+admin-title-order: Orden
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'

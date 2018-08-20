@@ -98,6 +98,12 @@ $api->add('api-stories-property', new Route(
     array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesPropertyAction'
         )
 ));
+// Stories sort up/down arbitrarily (use the PUT method to sort)
+$api->add('api-stories-sort', new Route(
+    '/stories/{id}/sort',
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesSortAction'
+        )
+));
 // Stories images upload (POST method only)
 $api->add('api-stories-images-upload', new Route(
     '/stories/images',

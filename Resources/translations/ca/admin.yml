@@ -156,6 +156,7 @@ admin-title-actions: Accions
 admin-title-tags: Tags
 admin-title-deleted: 'Eliminat'
 admin-title-sphere: 'Àmbit'
+admin-title-order: 'Ordre'
 
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'

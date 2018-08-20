@@ -28,6 +28,104 @@ function adminProntoLoad (href, target) {
     return prontoLoad(href, target);
 }
 
+function adminOrderColumn(table, settings) {
+    var $tb = $(table);
+    // http://isocra.github.io/TableDnD/
+    settings = $.extend({
+        field: 'order',
+        idValue: function(row) {  // Where to find the id value in the current row
+            return $(row).find('[data-key="id"]').data('value');
+        },
+        apiUrl:  null // Must be a function (row will be sent as parameter)
+    }, settings);
+
+    var index = -1;
+    if(!settings.onDragStart) {
+        settings.onDragStart = function(tb, row) {
+            index = $(row).index();
+            console.log('Dragstarted, index', index);
+        };
+    }
+    if(!$.isFunction(settings.apiUrl)) {
+        alert('Please define and apiUrl as a function in settings');
+        return false;
+    }
+    if(!settings.onDrop) {
+        settings.onDrop = function(tb, row) {
+            var $td = $(row).find('[data-key="' + settings.field + '"]');
+            var diff = $(row).index() - index;
+            var url = settings.apiUrl(row);
+            // console.log('drop', tb, 'row', row, 'diff', diff, 'Id', settings.idValue(row), 'url', url, 'td', td);
+            if(!url) {
+                alert('ERROR, url not found', url);
+            }
+            $tb.addClass('loading');
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: {value: diff}
+            }).done(function(data) {
+                $tb.removeClass('loading');
+                if(data.message) alert(data.message);
+                if(data.error) {
+                    // reset table
+                } else {
+                    // reorder columns
+                    var real_diff = parseInt($td.data('value')) -  parseInt(data.value) + 1;
+                    console.log('done', data, 'diff', diff, 'real_diff', real_diff, 'value',$td.data('value'));
+                    // Change value for this element
+                    // var $t =  $td.find('span') ? $td.find('span') : $td;
+                    // $td.data('value', data.value);
+                    // $t.text(data.value);
+                    // Change value for the rest
+                    // $tb.find('tr:lt(' + $curr.index() + ')').each(function(){
+                    $tb.find('tr').each(function(){
+                        var $_td = $(this).find('[data-key="' + settings.field + '"]');
+                        var $_t =  $_td.find('span') ? $_td.find('span') : $_td;
+                        var val = parseInt(data.value) + $(this).index() - $(row).index();
+                        $_td.data('value', val);
+                        $_t.text(val);
+                        console.log($_td.data('value'));
+                    });
+                    // diff = parseInt($td.data('value')) - parseInt(data.value) + diff;
+                    // $tb.find('td[data-key="' + settings.field + '"]').each(function(){
+                    //     var $t =  $(this).find('span') ? $(this).find('span') : $(this);
+                    //     var val = parseInt($(this).data('value'));
+                    //     $(this).data('value', val + diff);
+                    //     $t.text(val + diff);
+                    // });
+                }
+            }).fail(function(error) {
+                $tb.removeClass('loading');
+                var json = JSON.parse(error.responseText);
+                var txt = json && json.error;
+                console.log('fail', json, txt, error);
+                alert(txt ? txt : error.responseText ? error.responseText : error);
+            });
+        };
+    }
+
+    console.log(settings, $tb.find('th[data-key]'));
+    var $th = $tb.find('th[data-key="' + settings.field + '"]');
+    // $tb.find('th[data-key="' + settings.field + '"]').append('<i class="fa fa-arrows"></i>');
+    $btn = $('<button class="btn btn-sm btn-default">' + $th.text() + ' <i class="fa fa-sort"></i></button>');
+    $th.html($btn);
+    $btn.on('click',function(e){
+        e.preventDefault();
+        if($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            $btn.removeClass('btn-danger');
+            $tb.removeClass('dnd-sorting');
+            $tb.find(settings.dragHandle ? settings.dragHandle : 'tr').unbind('touchstart mousedown').attr('style','');
+        } else {
+            $tb.addClass('dnd-sorting');
+            $(this).addClass('active');
+            $btn.addClass('btn-danger');
+            $tb.tableDnD(settings);
+        }
+    });
+}
+
 goteo.typeahead_engines = goteo.typeahead_engines || {};
 /**
  * Document ready
@@ -60,44 +158,6 @@ $(function(){
             if(location.hash) query += location.hash;
             adminProntoLoad(action + '?' + query, '#admin-content');
         }
-    });
-
-    // User table links
-    $('#main').on('click', 'table.model-user tr:not(.extra) a', function(e) {
-
-        // Skip links with target attribute or href to hashes only
-        var href = $(this).attr('href');
-        if(href.indexOf('#') === 0) return;
-        if(href.indexOf('mailto:') === 0) return;
-        if($(this).attr('target'))  return;
-
-        e.preventDefault();
-        // e.stopPropagation();
-
-        var $tb = $(this).closest('table');
-        var $tr = $(this).closest('tr');
-        var id = $tr.attr('id');
-        var cols = $tr.contents('td').length;
-        if($('#manage-' +  id).length) {
-            $tr.removeClass('active');
-            $('#manage-' +  id).slideUp(function(){
-                $(this).remove();
-            });
-            return;
-        }
-        var $new = $('<tr class="extra active"><td id="manage-' + id + '" colspan="' + cols +'"></td></tr>').insertAfter($tr.addClass('active'));
-        // Ajax load
-
-        var add = href.indexOf('?') === -1 ? '?' : '&';
-        // console.log(add, href, href.indexOf(add));
-        if(location.search.indexOf(add + 'ajax') === -1) {
-            href += add + 'ajax';
-            add = '&';
-        }
-        // Add query string
-        if(location.search) href += add + location.search.substr(1);
-        // console.log(href, location);
-        adminProntoLoad(href, '#manage-' + id);
     });
 
     /**  jQuery x-Editable plugins tweaks */

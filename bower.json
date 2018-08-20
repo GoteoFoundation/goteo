@@ -36,6 +36,7 @@
     "metrics-graphics": "^2.13.0",
     "corejs-typeahead": "^1.2.1",
     "jquery": "^3.3.1",
-    "turndown": "^4.0.1"
+    "turndown": "^4.0.1",
+    "TableDnD": "https://github.com/isocra/TableDnD.git#^1.0.3"
   }
 }

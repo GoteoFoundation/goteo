@@ -215,11 +215,11 @@ namespace Goteo\Library {
             return 'España';
         }
 
-        /*
+        /**
          * Metodo para reordenar una tabla moviendo uno de sus registros
          * Necesita tener un campo de orden actualizable, por defecto `order`
          * Puede tener en cuenta que el registro tiene una seccion/categoria/agrupacion
-         *
+         * @param $updown can be up, down or any arbitrary number ot jump a specific number of rows up (negative) or down (positive)
          */
         public static function reorder($idReg, $updown, $table, $idField = 'id', $orderField = 'order', $extra = array()) {
 
@@ -236,19 +236,23 @@ namespace Goteo\Library {
             }
             //sacar de la tabla ordenando y poniendo en array de 10 en 10
             $sql = "SELECT `{$idField}` FROM {$table} {$sqlSec} ORDER  BY `{$orderField}` ASC";
+            if($updown === 'up') $updown = -1;
+            elseif($updown === 'down') $updown = 1;
+            $updown = (int) $updown;
+            if($updown === 0) return false;
+
+            $inc = abs($updown);
+
             if ($query = $model::query($sql)) {
-                $order = 10;
+                $order = 1;
                 while ($row = $query->fetchObject()) {
-                    $regs[$row->$idField] = $order;
-                    $order+=10;
+                    $regs[$row->{$idField}] = $order;
+                    $order += 1;
                 }
 
-                //al elemento target cambiarle segun 'up'-5  'down'+5
-                if ($updown == 'up') {
-                    $regs[$idReg] -= 15;
-                } elseif ($updown == 'down') {
-                    $regs[$idReg] += 15;
-                }
+                // move number of units
+                $regs[$idReg] += $updown + ($updown > 0 ? 0.5 : -0.5);
+
                 //reordenar array
                 \asort($regs);
 
@@ -257,12 +261,15 @@ namespace Goteo\Library {
                     $model::query("START TRANSACTION");
                     $order = 1;
                     foreach ($regs as $id=>$ordenquenoponemos) {
-                        $sql = "UPDATE {$table} SET `{$orderField}`=:order WHERE {$idField} = :id";
-                        $query = $model::query($sql, array(':order'=>$order, ':id'=>$id));
+                        $sql = "UPDATE {$table} SET `{$orderField}`=:order WHERE `{$idField}` = :id";
+                        $query = $model::query($sql, array(':order' => $order, ':id' => $id));
                         $order++;
                     }
                     $model::query("COMMIT");
 
+                    if($q = $model::query("SELECT `{$orderField}` FROM {$table} WHERE `{$idField}` = :id", [':id' => $idReg])) {
+                        return (int)$q->fetchColumn();
+                    }
                     return true;
                 } catch(\PDOException $e) {
                     return false;

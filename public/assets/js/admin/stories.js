@@ -25,5 +25,11 @@ for the JavaScript code in this page.
 
 $(function(){
 
+    // Allow drag&drop reorder by the column `order`
+    adminOrderColumn('table.model-stories', {
+        apiUrl: function(row) {
+            return '/api/stories/' + $(row).find('[data-key="id"]').data('value') + '/sort';
+        }
+    });
 
 });

@@ -123,5 +123,9 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
         return $this->model->active;
     }
 
+    public function getOrder() {
+        return $this->model->order;
+    }
+
 
 }

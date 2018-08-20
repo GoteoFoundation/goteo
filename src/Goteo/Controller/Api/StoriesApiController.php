@@ -15,9 +15,11 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
 use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
 
 use Goteo\Model\Stories;
 use Goteo\Library\Text;
+use Goteo\Library\Check;
 
 class StoriesApiController extends AbstractApiController {
 
@@ -86,7 +88,6 @@ class StoriesApiController extends AbstractApiController {
         }
         $result = ['value' => $properties[$prop], 'error' => false];
 
-
         if($request->isMethod('put') && $request->request->has('value')) {
 
             if(!$this->user || !$this->user->hasPerm('admin-module-stories'))
@@ -119,5 +120,34 @@ class StoriesApiController extends AbstractApiController {
         return $this->jsonResponse($result);
     }
 
+    /**
+     * Individual stories property checker/updater
+     * To update a property, use the PUT method
+     */
+    public function storiesSortAction($id, Request $request) {
+        $story = $this->validateStory($id);
+
+        if(!$story) throw new ModelNotFoundException();
+
+        $result = ['value' => (int)$story->order, 'error' => false];
+
+        if($request->isMethod('put') && $request->request->has('value')) {
+
+            $res = Check::reorder($id, $request->request->get('value'), 'stories', 'id', 'order', ['node' => Config::get('node')]);
+
+            if($res != $result['value']) {
+                $result['value'] = $res;
+            } else {
+                $result['error'] = true;
+                $result['message'] = 'Sorting failed';
+            }
+
+            if(!$this->user || !$this->user->hasPerm('admin-module-stories'))
+                throw new ControllerAccessDeniedException();
+        }
+
+        return $this->jsonResponse($result);
+
+    }
 }
 

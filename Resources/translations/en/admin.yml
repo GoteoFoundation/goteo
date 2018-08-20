@@ -136,6 +136,7 @@ admin-title-actions: 'Actions'
 admin-title-tags: Tags
 admin-title-deleted: Deleted
 admin-title-sphere: Scope
+admin-title-order: Order
 
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
