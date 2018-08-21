@@ -40,7 +40,6 @@ admin-back: Tornar
 admin-back-detail: 'Tornar al detall'
 admin-back-list: 'Tornar al llistat'
 admin-contents: 'Textos i traduccions'
-admin-communications: Comunicaciones
 admin-empty-list: 'Sense resultats'
 admin-mailing-back-to-list: 'Tornar a comunicacions'
 admin-mailing-communicating-with: 'Cercàvem comunicar-nos amb %DESC%'
