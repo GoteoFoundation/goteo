@@ -2,7 +2,7 @@
 
 $this->layout('layout', [
     'bodyClass' => 'user',
-    'title' =>  $this->user->name. ':: Goteo.org' ,
+    'title' =>  ucfirst($this->user->name). ':: Goteo.org' ,
     'meta_description' => $this->text($this->user->about),
     'tw_image' =>  ''
     ]);
@@ -40,7 +40,7 @@ $worthcracy=$this->worthcracy;
 						<?= $this->text('profile-name-header') ?>
 					</div>
 					<h1 class="name">
-						<?= $user->name ?>
+						<?= ucfirst($user->name) ?>
 					</h1>
 					
 					<?php if($user->location): ?>

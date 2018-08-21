@@ -31,11 +31,11 @@ class ProjectTranslateStoryForm extends AbstractFormProcessor implements FormPro
                 'required' => false,
                 'attr' => ['help' => $story->title]
             ])
-            ->add('description', 'text', [
+            ->add('description', 'textarea', [
                 'label' => 'story-field-description',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'attr' => ['help' => $story->description]
+                'attr' => ['help' => $story->description, 'rows'     => 4]
             ]);
 
         return $this;

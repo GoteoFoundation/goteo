@@ -55,7 +55,7 @@ class Stories extends \Goteo\Core\Model {
         if(empty($this->lang)) $this->lang = Config::get('sql_lang');
     }
     public static function getLangFields() {
-        return ['title', 'description', 'review'];
+        return ['title', 'description'];
     }
 
     /*

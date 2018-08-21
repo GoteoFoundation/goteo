@@ -647,7 +647,10 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
 
         $languages = Lang::listAll('name', false);
 
-        $story = reset(Stories::getall(false, false, ['project' => $this->project->id]));
+        $story = reset(Stories::getList(['project' => $project->id],0,1,false, $lang));
+
+        if(!$story)
+            return $this->redirect('/dashboard/project/' . $project->id . '/story');
 
         $defaults = (array) $story->getLang($lang);
 
