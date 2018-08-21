@@ -1,16 +1,11 @@
 ---
 profile-interests-header: 'Interésanme proxecto co obxectivo...'
-profile-invest_on-header: 'Proxectos que apoio'
-profile-keywords-header: 'As miñas palabras clave'
 profile-last_worth-title: Data
 profile-location-header: 'A miña ubicación'
 profile-my_investors-header: 'Os meus cofinanceiros'
-profile-my_projects-header: 'Os meus proxectos'
-profile-my_worth-header: 'O meu caudal en goteo'
 profile-name-header: 'Perfil de'
 profile-patron-header: 'Aconsella <span class="red">%s proxectos</span>'
 profile-sharing_interests-header: 'Compartindo intereses'
-profile-webs-header: 'As miñas webs'
 profile-worth-title: 'Achega aquí:'
 profile_patron-invest_on-header: 'Ademais cofinancio'
 user-message-restricted: 'Só pode recibir mensaxes dos seus cofinanceiros'
