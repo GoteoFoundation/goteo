@@ -87,7 +87,8 @@ class AdminController extends \Goteo\Core\Controller {
         if($module = self::getSubController($id)) {
 
             // Log this entry
-            Log::append(['scope' => 'admin', 'target_type' => 'admin_module', 'target_id' => $id]);
+            // TODO: do it at the end for performance
+            // Log::append(['scope' => 'admin', 'target_type' => 'admin_module', 'target_id' => $id]);
 
             static::createAdminSidebar($user, $id, $request->getPathInfo());
             if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($module))) {
