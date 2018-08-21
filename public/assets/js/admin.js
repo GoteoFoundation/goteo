@@ -99,7 +99,9 @@ function adminOrderColumn(table, settings) {
                     // Load next page?
                     if(go_page > -1) {
                         // console.log('goto', go_page);
-                        var href = location.href.replace('pag=' + page, 'pag=' + go_page);
+                        var href = location.href.replace('pag=' + page);
+                        if(location.href.indexOf('?') === -1) href += '?';
+                        href += '&pag=' + go_page;
                         adminProntoLoad(href);
                         return;
                     }
