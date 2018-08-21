@@ -33,12 +33,10 @@ $query = http_build_query($this->filters);
         <ul class="list-unstyled d3-chart loading discrete-values" data-source="/api/charts/totals/invests/raised/global/today,week" data-interval="40" data-interval-delay="10" data-flash-time="30">
             <li class="col-xs-2 col-xxs-4" data-property="raised.global.today.amount_formatted" data-title="<?= $this->text('admin-invest-raised-amount-today') ?>"></li>
             <li class="col-xs-2 col-xxs-4" data-property="raised.global.yesterday.amount_formatted" data-title="<?= $this->text('admin-invest-raised-amount-yesterday') ?>"></li>
-            <!-- <li class="col-xs-2 col-xxs-4" data-property="raised.global.today.amount_diff_formatted" data-title="<?= $this->text('admin-invest-diff-yesterday') ?>"></li> -->
-            <li class="col-xs-2 col-xxs-4" data-property="raised.global.today.amount_gain_formatted" data-title="<?= $this->text('admin-invest-diff-yesterday') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="raised.global.today.amount_yesterday_gain_formatted" data-title="<?= $this->text('admin-invest-diff-yesterday') ?>"></li>
             <li class="col-xs-2 col-xxs-4" data-property="raised.global.week.amount_formatted" data-title="<?= $this->text('admin-invest-raised-amount-week') ?>"></li>
             <li class="col-xs-2 col-xxs-4" data-property="raised.global.last_week.amount_formatted" data-title="<?= $this->text('admin-invest-raised-amount-last_week') ?>"></li>
-            <!-- <li class="col-xs-2 col-xxs-4" data-property="raised.global.week.amount_diff_formatted" data-title="<?= $this->text('admin-invest-diff-last_week') ?>"></li> -->
-            <li class="col-xs-2 col-xxs-4" data-property="raised.global.week.amount_gain_formatted" data-title="<?= $this->text('admin-invest-diff-last_week') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="raised.global.week.amount_last_week_gain_formatted" data-title="<?= $this->text('admin-invest-diff-last_week') ?>"></li>
         </ul>
         <ul class="list-unstyled d3-chart loading discrete-values" data-source="/api/charts/totals/invests/commissions/global/month" data-interval="40" data-interval-delay="20" data-flash-time="30">
             <li class="col-xs-2 col-xxs-4" data-property="commissions.global.month.charged_formatted" data-title="<?= $this->text('admin-invest-commissions-month') ?>"></li>
@@ -46,9 +44,9 @@ $query = http_build_query($this->filters);
         </ul>
         <ul class="list-unstyled d3-chart loading discrete-values" data-source="/api/charts/totals/invests/fees/global/month,year" data-interval="40" data-interval-delay="30" data-flash-time="30">
             <li class="col-xs-2 col-xxs-4" data-property="fees.global.month.total_formatted" data-title="<?= $this->text('admin-invest-fees-month') ?>"></li>
-            <li class="col-xs-2 col-xxs-4" data-property="fees.global.month.total_gain_formatted" data-title="<?= $this->text('admin-invest-diff-last_month') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="fees.global.month.total_last_month_gain_formatted" data-title="<?= $this->text('admin-invest-diff-last_month') ?>"></li>
             <li class="col-xs-2 col-xxs-4" data-property="fees.global.year.total_formatted" data-title="<?= $this->text('admin-invest-fees-year') ?>"></li>
-            <li class="col-xs-2 col-xxs-4" data-property="fees.global.year.total_gain_formatted" data-title="<?= $this->text('admin-invest-diff-last_year') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="fees.global.year.total_last_year_gain_formatted" data-title="<?= $this->text('admin-invest-diff-last_year') ?>"></li>
         </ul>
 
     </div>

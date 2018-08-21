@@ -3,10 +3,12 @@
 $target = $this->target ?: 'commissions';
 $slot1 = $this->interval ?: 'today';
 $slot2 = $slot1 === 'custom' ? '' : 'yesterday';
-$slot3 = '';
+$slot3 = $slot4 = '';
 if(in_array($this->interval, ['week', 'month', 'year'])) {
     $slot2 = 'last_' . $this->interval;
     $slot3 = 'last_' . $this->interval . '_complete';
+    if($this->interval !== 'year')
+        $slot4 = 'last_year_' . $this->interval;
 }
 $id = $this->id ?: 'global';
 $method = $this->method ?: $this->text('regular-all');
@@ -22,7 +24,7 @@ $query = $this->raw('query');
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.charged_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot1) ?>"></li>
         <?php if($slot2): ?>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.charged_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot2) ?>"></li>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.charged_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.charged_diff_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' .$this->text('admin-diff') ?>"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.charged_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.charged_diff_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' .$this->text('admin-diff') ?>"></li>
         <?php endif ?>
         <?php if($slot3): ?>
             <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.charged_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot3) ?>"></li>
@@ -31,7 +33,7 @@ $query = $this->raw('query');
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.lost_formatted" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-' . $slot1) ?>"></li>
         <?php if($slot2): ?>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.lost_formatted" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-' . $slot2) ?>"></li>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.lost_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.lost_diff_formatted" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-diff') ?>"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.lost_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.lost_diff_formatted" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-diff') ?>"></li>
         <?php endif ?>
         <?php if($slot3): ?>
             <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.lost" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-' . $slot3) ?>"></li>
