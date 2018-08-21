@@ -1,17 +1,12 @@
 ---
 profile-interests-header: 'I am interested in projects that are...'
-profile-invest_on-header: 'Projects that I support'
 profile-invest_on-title: Co-finances
-profile-keywords-header: 'My key words'
 profile-last_worth-title: Date
 profile-location-header: 'My location'
 profile-my_investors-header: 'My co-financiers'
-profile-my_projects-header: 'My projects'
-profile-my_worth-header: 'My flow on Goteo'
 profile-name-header: 'Profile of'
 profile-patron-header: 'Recomends <span class="red">%s projects</span>'
 profile-sharing_interests-header: 'Sharing interests'
-profile-webs-header: 'My websites'
 profile-widget-button: 'Show profile'
 profile-widget-user-header: User
 profile-worth-title: 'Contributed here:'
