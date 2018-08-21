@@ -1,5 +1,6 @@
 ---
 admin-action: 'Acció d''administrador'
+admin-activity: Activitat
 admin-NO: 'NO'
 admin-YES: SI
 admin-account-amount: 'Quantitat aportada'
@@ -39,6 +40,7 @@ admin-back: Tornar
 admin-back-detail: 'Tornar al detall'
 admin-back-list: 'Tornar al llistat'
 admin-contents: 'Textos i traduccions'
+admin-communications: Comunicaciones
 admin-empty-list: 'Sense resultats'
 admin-mailing-back-to-list: 'Tornar a comunicacions'
 admin-mailing-communicating-with: 'Cercàvem comunicar-nos amb %DESC%'
@@ -69,8 +71,11 @@ admin-remove-entry: 'Esborra l''entrada'
 admin-remove-entry-confirm: 'Segur que vols esborrar aquesta entrada? Aquesta acció no es pot desfer!'
 admin-remove-entry-forbidden: 'No es poden esborrar entrades de blog publicades. Despublica l''entrada primer.'
 admin-remove-entry-ok: 'Entrada esborrada correctament'
-admin-sponsors: Serveis
+admin-communications: Comunicacions
+admin-services: Serveis
+admin-sponsors: Sponsors
 admin-slug-seo-help: 'Aquest camp és important per SEO. Editeu-lo només per una bona raó.'
+admin-others: Altres
 admin-status: Estat
 admin-user: Usuari
 admin-users: Usuaris

@@ -47,7 +47,7 @@ class StoriesAdminController extends AbstractAdminController {
 
 	public function listAction(Request $request) {
 		$filters = ['superglobal' => $request->query->get('q')];
-        $limit = 10;
+        $limit = 20;
 		$page = $request->query->get('pag') ?: 0;
 		$list = Stories::getList($filters, $page * $limit, $limit, false, Config::get('lang'));
 		$total = Stories::getList($filters, 0, 0, true);
@@ -108,7 +108,7 @@ class StoriesAdminController extends AbstractAdminController {
 			}
 
 			try {
-				$processor->save($form, true); // Allow save event if does not validate
+				$processor->save($form); // Allow save event if does not validate
 				Message::info(Text::get('admin-stories-edit-success'));
 				return $this->redirect('/admin/stories?' . $request->getQueryString());
 			} catch (FormModelException $e) {

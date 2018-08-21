@@ -1,4 +1,6 @@
 ---
+feed-admin-action: 'L''admin %USER% ha %ACTION%'
+
 feed-admin-invest-cancelled: 'L''admin %ADMIN% ha cancel·lat l''aportació de %USER% de %AMOUNT% mitjançant %METHOD% (Id: %INVEST%) al projecte "%PROJECT%" del dia %DATE%'
 feed-admin-invest-cancelled-pool: 'L''admin %ADMIN% ha cancel·lat i retornat al moneder l''aportació de %USER% de %AMOUNT% mitjançant %METHOD% (Id: %INVEST%) al projecte "%PROJECT%" del dia %DATE%'
 feed-admin-invest-cancelled-pool-subject: 'Càrrec cancel·lat al moneder manualment (admin)'
@@ -43,6 +45,12 @@ feed-new_support: 'Ha publicat una nova <span class="green">Col·laboració</spa
 feed-new-support: 'Ha publicat una nova <span class="green">Col·laboració</span> al projecte %PROJECT%, amb el títol "%TITLE%"'
 feed-new_update: '%USER% ha publicat un nou post en %BLOG% sobre el projecte %PROJECT%'
 feed-new_user: 'Nou usuari a Goteo %s'
+
+feed-new-story: 'Nova història reeixida en portada (admin)'
+feed-story-published: 'Publicat una història reeixida'
+feed-deleted-story: 'Història reeixida esborrada'
+feed-story-deleted: 'Esborrat una història reeixida'
+
 feed-project-archived: 'projecte arxivat (auto)'
 feed-project-ending: 'projecte proper a finalitzar ronda (auto)'
 feed-project-failed: 'caducat sense èxit'

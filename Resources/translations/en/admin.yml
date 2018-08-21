@@ -1,5 +1,6 @@
 ---
 admin-action: 'Administrator action'
+admin-activity: Activity
 admin-NO: 'NO'
 admin-YES: "YES"
 admin-account-amount: 'Amount contributed'
@@ -47,8 +48,11 @@ admin-remove-entry: 'Remove entry'
 admin-remove-entry-confirm: 'Are you sure to remove this entry? This action cannot be undone!'
 admin-remove-entry-forbidden: 'Published entries cannot be removed. Unpublish it first.'
 admin-remove-entry-ok: 'Entry removed successfully'
+admin-communications: Comunications
+admin-services: Services
 admin-sponsors: Contributors
 admin-slug-seo-help: 'This field is important for SEO. Edit it only for a good reason.'
+admin-others: Others
 admin-status: Status
 admin-user: User
 admin-users: Users
