@@ -28,12 +28,10 @@ admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
 admin-activity: Activity
 admin-home: Dashboard
-admin-mailing-back-to-list: 'Back to messages'
 admin-mailing-created: 'Created on'
 admin-mailing-new-massive: 'A new mass mailing was created to %TOTAL% users'
 admin-mailing-status: 'Automatic delivery status'
 admin-mailing-subject: Subject
-admin-mailing-view-and-activate: 'See the post admin to start sending'
 admin-mailing-view-in-newsletter: 'See the post admin'
 admin-mailing-view-message: 'View message'
 admin-newsletter-langs-to-send: 'Languages: %LANGS%'
