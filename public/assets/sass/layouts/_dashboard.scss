@@ -122,6 +122,9 @@
         font-weight: 500;
     }
     &.nav-justified > li {
+      a{
+         text-align: left;
+      }
       // Adjust when to stack nav-justified
       @media(min-width: $breakpoint-xs) {
         display: table-cell;

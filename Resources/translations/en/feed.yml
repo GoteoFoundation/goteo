@@ -1,4 +1,6 @@
 ---
+feed-admin-action: 'The admin %USER% has %ACTION%'
+
 feed-admin-invest-manual-subject: 'Manual invest (admin)'
 feed-admin-invest-manual: '%ADMIN% has added %AMOUNT% to the project %PROJECT% in the name of %USER%'
 feed-admin-invest-modified-subject: 'Invest manually modified (admin)'
@@ -27,6 +29,12 @@ feed-new_support: 'Has published a new <span class="green">Collaboration</span> 
 feed-new-support: 'Has published a new <span class="green">Collaboration</span> at the %PROJECT% project, with the title "%TITLE%"'
 feed-new_update: '%USER% has published a new post in %BLOG% about %PROJECT%'
 feed-new_user: 'New Goteo user, %s'
+
+feed-new-story: 'New user story in home page (admin)'
+feed-story-published: 'Published a user story'
+feed-deleted-story: 'User story deleted'
+feed-story-deleted: 'Deleted a user story'
+
 feed-project_fail: 'The project, %s, has <span class="red">closed</span> having only received <span class="violet">%s ? (%s %%) of the minimum contribution</span>'
 feed-project_finish: 'The project, %s, has <span class="red">completed the second round</span> having received <span class="violet">%s ? (%s %) of the minimum contribution</span>'
 feed-project_finish_unique: 'Project %s has <span class="red">completed its campaign</span>, reaching <span class="violet">%s € (%s %) of contributions against its minimum budget</span>'

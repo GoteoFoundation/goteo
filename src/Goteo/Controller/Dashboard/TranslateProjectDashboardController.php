@@ -26,6 +26,7 @@ use Goteo\Model\Project\Support;
 use Goteo\Model\Project\Cost;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\Blog;
+use Goteo\Model\Stories;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Message as Comment;
 use Goteo\Library\Text;
@@ -60,11 +61,17 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 'costs' => Text::get('step-4'),
                 'rewards' => Text::get('step-5'),
                 'supports' => Text::get('step-6'),
+                
                 // 'updates' => Text::get('project-menu-updates')
             ],
             'languages' => $languages,
             'translated' => array_diff($project->getLangsAvailable(), [$project->lang])
         ];
+
+        if($project->isFunded()){
+            $data['zones']['story']=Text::get('dashboard-story-translate-title');
+        }
+
         if($lang_check) {
             $cost = reset($project->costs);
             $reward = reset($project->rewards);
@@ -75,6 +82,12 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 'rewards' => $reward ? $reward->getLangsGroupPercent($lang_check, ['project']) : 0,
                 'supports' => $support ? $support->getLangsGroupPercent($lang_check, ['project']) : 0
             ];
+
+            if($project->isFunded()){
+                $story = reset(Stories::getall(false, false, ['project' => $this->project->id]));
+                $data['percents']['story']= $story ? $story->getLangsGroupPercent($lang_check, ['id']) : 0;
+            }
+
         }
 
         View::getEngine()->useData($data);
@@ -136,6 +149,12 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 'rewards' => $reward ? $reward->getLangsGroupPercent($lang, ['project']) : 0,
                 'supports' => $support ? $support->getLangsGroupPercent($lang, ['project']) : 0
             ];
+
+            if($project->isFunded()){
+                $story = reset(Stories::getall(false, false, ['project' => $this->project->id]));
+                $percents[$lang]['story']= $story ? $story->getLangsGroupPercent($lang, ['id']) : 0;
+
+            }
         }
 
         return $this->viewResponse('dashboard/project/translate/index', [
@@ -614,6 +633,71 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             'skip' => $project->lang,
             'exit_link' => '/dashboard/project/' . $project->id . '/updates/' . $uid
             ]);
+
+    }
+
+    /**
+     * Project story translator
+    */
+    public function storyTranslateAction($pid, $lang = null, Request $request) {
+
+        $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
+        if($project instanceOf Response) return $project;
+
+
+        $languages = Lang::listAll('name', false);
+
+        $story = reset(Stories::getList(['project' => $project->id],0,1,false, $lang));
+
+        if(!$story)
+            return $this->redirect('/dashboard/project/' . $project->id . '/story');
+
+        $defaults = (array) $story->getLang($lang);
+
+        // Create the form
+        $processor = $this->getModelForm('ProjectTranslateStory', $story, $defaults, ['lang' => $lang], $request);
+        $processor->createForm();
+        $processor->getBuilder()
+            ->add('submit', 'submit')
+            ->add('remove', 'submit', [
+                'label' => Text::get('translator-delete', $languages[$lang]),
+                'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
+                'attr' => [
+                    'class' => 'pull-right-form btn btn-default btn-lg',
+                    'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
+                    ]
+            ]);
+        $form = $processor->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            // Check if we want to remove a translation
+            if($form->isValid() && $form->get('remove')->isClicked()) {
+                if($story->removeLang($lang)) {
+                    Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
+                } else {
+                    Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
+                }
+                return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+            }
+
+            try {
+                $processor->save($form);
+                Message::info(Text::get('dashboard-translate-project-ok', [
+                    '%ZONE%' => '<strong>' . Text::get('dashboard-story-translate-title') . '</strong>',
+                    '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
+                ]));
+                return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+
+        return $this->viewResponse('dashboard/project/translate/story', [
+            'form' => $form->createView(),
+            'step' => 'story',
+            'lang' => $lang,
+        ]);
 
     }
 

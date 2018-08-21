@@ -1,4 +1,6 @@
 ---
+feed-admin-action: 'El admin %USER% ha %ACTION%'
+
 feed-admin-invest-cancelled: 'El admin %ADMIN% ha cancelado el aporte de %USER% de %AMOUNT% mediante %METHOD% (Id: %INVEST%) al proyecto "%PROJECT%" del dia %DATE%'
 feed-admin-invest-cancelled-pool: 'El admin %ADMIN% ha cancelado y devuelto al monedero el aporte de %USER% de %AMOUNT% mediante %METHOD% (Id: %INVEST%) al proyecto "%PROJECT%" del día %DATE%'
 feed-admin-invest-cancelled-pool-subject: 'Cargo cancelado al monedero manualmente (admin)'
@@ -43,6 +45,12 @@ feed-new_support: 'Ha publicado una nueva <span class="green">Colaboración</spa
 feed-new-support: 'Ha publicado una nueva <span class="green">Colaboración</span> en el proyecto %PROJECT%, con el título "%TITLE%"'
 feed-new_update: '%USER% ha publicado un nuevo post en %BLOG% sobre el proyecto %PROJECT%'
 feed-new_user: 'Nuevo usuario en Goteo %s'
+
+feed-new-story: 'Nueva historia exitosa en portada (admin)'
+feed-story-published: 'Publicado una historia exitosa'
+feed-deleted-story: 'Historia exitosa borrada'
+feed-story-deleted: 'Borrado una historia exitosa'
+
 feed-project-archived: 'proyecto archivado (auto)'
 feed-project-ending: 'proyecto próximo a finalizar ronda (auto)'
 feed-project-failed: 'caducado sin éxito'

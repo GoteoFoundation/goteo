@@ -175,9 +175,11 @@ class Config {
 		//Admin subcontrollers added manually for legacy compatibility
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogAdminController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
-        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
 
+        // TODO: to be replace by the new AdminController
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodeSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodesSubController');
@@ -211,7 +213,7 @@ class Config {
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesSubController');
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SocialCommitmentSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SphereSubController');
 

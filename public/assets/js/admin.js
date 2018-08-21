@@ -23,9 +23,137 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
+function getSearchParams(k){
+    var p={};
+    location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(s,k,v){ p[k]=v; });
+    return k?p[k]:p;
+}
+
 function adminProntoLoad (href, target) {
     target = target || '#admin-content';
     return prontoLoad(href, target);
+}
+
+function adminOrderColumn(table, settings) {
+    var $tb = $(table);
+    var page = parseInt($tb.data('page')) || 0;
+    var total = parseInt($tb.data('total')) || 0;
+    var limit = parseInt($tb.data('limit')) || 10;
+    var index = -1;
+
+    // http://isocra.github.io/TableDnD/
+    settings = $.extend({
+        field: 'order',
+        idValue: function(row) {  // Where to find the id value in the current row
+            return $(row).find('[data-key="id"]').data('value');
+        },
+        apiUrl:  null // Must be a function (row will be sent as parameter)
+    }, settings);
+
+    if(!settings.onDragStart) {
+        settings.onDragStart = function(tb, row) {
+            index = $(row).index();
+            // console.log('Dragstarted, index', index);
+        };
+    }
+    if(!$.isFunction(settings.apiUrl)) {
+        alert('Please define and apiUrl as a function in settings');
+        return false;
+    }
+    if(!settings.onDrop) {
+        settings.onDrop = function(tb, row) {
+            var $td = $(row).find('[data-key="' + settings.field + '"]');
+            var diff = $(row).index() - index;
+            var url = settings.apiUrl(row);
+            // console.log('drop', tb, 'row', row, 'diff', diff, 'Id', settings.idValue(row), 'url', url, 'td', td);
+            if(!url) {
+                alert('ERROR, url not found', url);
+                return;
+            }
+
+            var go_page = -1;
+            if($(row).next().hasClass('tDnD-tr-prev')) {
+                // Needs to go back 1 page
+                go_page = page - 1;
+            }
+            if($(row).prev().hasClass('tDnD-tr-next')) {
+                // Needs to go forward 1 page
+                go_page = page + 1;
+            }
+
+            $tb.find('tbody').addClass('loading-container');
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: {value: diff}
+            }).done(function(data) {
+                $tb.find('tbody').removeClass('loading-container');
+                if(data.message) alert(data.message);
+                if(data.error) {
+                    // reset table
+                    alert('An error has occurred');
+                    console.log('error', data);
+                    adminProntoLoad(location.href);
+                    return;
+                } else {
+                    // Load next page?
+                    if(go_page > -1) {
+                        // console.log('goto', go_page);
+                        var href = location.href.replace('pag=' + page, 'pag=' + go_page);
+                        adminProntoLoad(href);
+                        return;
+                    }
+                    // reorder columns
+                    var real_diff = parseInt($td.data('value')) -  parseInt(data.value) + 1;
+                    // console.log('done', data, 'diff', diff, 'real_diff', real_diff, 'value',$td.data('value'));
+                    // Change value for all elements element
+                    $tb.find('tr').each(function(){
+                        var $td = $(this).find('[data-key="' + settings.field + '"]');
+                        var $t =  $td.find('span') ? $td.find('span') : $td;
+                        var val = parseInt(data.value) + $(this).index() - $(row).index();
+                        $td.data('value', val);
+                        $t.text(val);
+                    });
+                }
+            }).fail(function(error) {
+                $tb.removeClass('loading');
+                var json = JSON.parse(error.responseText);
+                var txt = json && json.error;
+                console.log('fail', json, txt, error);
+                alert(txt ? txt : error.responseText ? error.responseText : error);
+            });
+        };
+    }
+
+    // console.log(settings, $tb.find('th[data-key]'));
+    var $th = $tb.find('th[data-key="' + settings.field + '"]');
+    // $tb.find('th[data-key="' + settings.field + '"]').append('<i class="fa fa-arrows"></i>');
+    $btn = $('<button class="btn btn-sm btn-default">' + $th.text() + ' <i class="fa fa-sort"></i></button>');
+    $th.html($btn);
+    $btn.on('click',function(e){
+        e.preventDefault();
+        if($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            $btn.removeClass('btn-danger');
+            $tb.removeClass('tDnD-sorting');
+            $tb.find('td[data-key="' + settings.field + '"] i.fa').remove();
+            $tb.find('.tDnD-tr-next,.tDnD-tr-prev').remove();
+            $tb.find(settings.dragHandle ? settings.dragHandle : 'tr').unbind('touchstart mousedown').attr('style','');
+        } else {
+            $tb.addClass('tDnD-sorting');
+            $(this).addClass('active');
+            $btn.addClass('btn-danger');
+            $tb.find('td[data-key="' + settings.field + '"]').append('<i class="fa fa-arrows"></i>');
+            var colspan = $tb.find('th').length;
+            if(page > 0) {
+                $tb.find('tbody').prepend('<tr class="tDnD-tr-prev nodrag"><td colspan="' + colspan + '"><i class="fa fa-arrow-up"></i> '  + goteo.texts['admin-prev-page'] + ' <i class="fa fa-arrow-up"></i></td></tr>');
+            }
+            if(total / limit > page + 1) {
+                $tb.find('tbody').append('<tr class="tDnD-tr-next nodrag"><td colspan="' + colspan + '"><i class="fa fa-arrow-down"></i> '  + goteo.texts['admin-next-page'] + ' <i class="fa fa-arrow-down"></i></td></tr>');
+            }
+            $tb.tableDnD(settings);
+        }
+    });
 }
 
 goteo.typeahead_engines = goteo.typeahead_engines || {};
@@ -60,44 +188,6 @@ $(function(){
             if(location.hash) query += location.hash;
             adminProntoLoad(action + '?' + query, '#admin-content');
         }
-    });
-
-    // User table links
-    $('#main').on('click', 'table.model-user tr:not(.extra) a', function(e) {
-
-        // Skip links with target attribute or href to hashes only
-        var href = $(this).attr('href');
-        if(href.indexOf('#') === 0) return;
-        if(href.indexOf('mailto:') === 0) return;
-        if($(this).attr('target'))  return;
-
-        e.preventDefault();
-        // e.stopPropagation();
-
-        var $tb = $(this).closest('table');
-        var $tr = $(this).closest('tr');
-        var id = $tr.attr('id');
-        var cols = $tr.contents('td').length;
-        if($('#manage-' +  id).length) {
-            $tr.removeClass('active');
-            $('#manage-' +  id).slideUp(function(){
-                $(this).remove();
-            });
-            return;
-        }
-        var $new = $('<tr class="extra active"><td id="manage-' + id + '" colspan="' + cols +'"></td></tr>').insertAfter($tr.addClass('active'));
-        // Ajax load
-
-        var add = href.indexOf('?') === -1 ? '?' : '&';
-        // console.log(add, href, href.indexOf(add));
-        if(location.search.indexOf(add + 'ajax') === -1) {
-            href += add + 'ajax';
-            add = '&';
-        }
-        // Add query string
-        if(location.search) href += add + location.search.substr(1);
-        // console.log(href, location);
-        adminProntoLoad(href, '#manage-' + id);
     });
 
     /**  jQuery x-Editable plugins tweaks */

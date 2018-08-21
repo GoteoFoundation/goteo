@@ -211,6 +211,8 @@ all-files-uploaded: "Todos los archivos se han subido correctamente"
 uploaded-ok: "Subido correctamente"
 publish-confirm-yes: "Quieres publicar esta entrada?"
 publish-confirm-no: "Quieres despublicar esta entrada?"
+active-confirm-yes: "Quieres activar esta entrada?"
+active-confirm-no: "Quieres desactivar esta entrada?"
 dashboard-project-support-empty: 'No hay ninguna petición de colaboraciones todavía.'
 dashboard-project-support-responses: Respuestas
 dashboard-project-support-no-responses: 'No hay respuestas todavía.'
@@ -264,6 +266,7 @@ dashboard-translate-overview: 'Traducir los datos principales costes del proyect
 dashboard-translate-costs: 'Traducir los costes del proyecto'
 dashboard-translate-rewards: 'Traducir las recompensas del proyecto'
 dashboard-translate-supports: 'Traducir las colaboraciones del proyecto'
+dashboard-translate-story: 'Traducir mi historia en Goteo'
 dashboard-project-support-translate-ok: 'Entrada de soporte %TITLE% traducido correctamente al %LANG%'
 dashboard-project-support-translating: 'Estás traduciendo esta entrada de soporte al %LANG%. El idioma original es el %ORIGINAL%.'
 dashboard-project-saved: 'Proyecto actualizado correctamente'

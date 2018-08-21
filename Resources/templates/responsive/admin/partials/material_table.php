@@ -4,12 +4,17 @@
 $list = $this->raw('list');
 if($list):
     $first = current($list);
+
+$total = $this->total ? $this->total : 0;
+$limit = $this->limit ? $this->limit : 0;
+$pag = $this->get_query('pag') ? $this->get_query('pag') : 0;
+
 ?>
   <div class="table-responsive-vertical shadow-z-1">
-  <table class="material-table table-hover model-<?= $first->getModelName() ?>">
+  <table class="material-table table-hover model-<?= $first->getModelName() ?>" data-total="<?= $total ?>" data-limit="<?= $limit ?>" data-page=<?= $pag ?>>
     <thead><tr>
     <?php foreach($first->getKeys() as $key):?>
-        <th><?= $first->getLabel($key) ?></th>
+        <th data-key="<?= $key ?>"><?= $first->getLabel($key) ?></th>
     <?php endforeach ?>
     </tr></thead>
     <tbody>
@@ -18,9 +23,9 @@ if($list):
         <?php
         $t = count($entry);
         foreach($entry as $key => $val):
-            $vars = ['value' => $val, 'key' => $key, 'ob' => $entry, 'link' => ''];
+            $vars = ['value' => $val, 'key' => $key, 'ob' => $entry, 'link' => '', 'class' => ''];
         ?>
-            <td data-title="<?= $entry->getLabel($key) ?>" class="td-<?= $key ?>"><?= $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars) ?></td>
+            <td data-title="<?= $entry->getLabel($key) ?>" data-key="<?= $key ?>" data-value="<?= $entry->getRawValue($key) ?>" class="td-<?= $key ?>"><?= $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars) ?></td>
         <?php endforeach ?>
         </tr>
     <?php endforeach ?>
@@ -28,7 +33,7 @@ if($list):
   </table>
   </div>
 
-  <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit ? $this->limit : 10, 'a_extra' => 'class="pronto"']) ?>
+  <?= $this->insert('partials/utils/paginator', ['total' => $total, 'limit' => $limit, 'pag' => $pag, 'a_extra' => 'class="pronto"']) ?>
 
 <?php else: ?>
     <p class="alert alert-info"><?= $this->text('admin-empty-list') ?></p>

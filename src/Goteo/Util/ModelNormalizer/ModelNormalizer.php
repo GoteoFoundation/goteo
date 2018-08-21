@@ -33,6 +33,9 @@ class ModelNormalizer {
         if($this->model instanceOf Model\User) {
             $ob = new Transformer\UserTransformer($this->model, $this->keys);
         }
+        elseif($this->model instanceOf Model\Stories) {
+            $ob = new Transformer\StoriesTransformer($this->model, $this->keys);
+        }
         elseif($this->model instanceOf Model\Blog\Post) {
             $ob = new Transformer\PostTransformer($this->model, $this->keys);
         }

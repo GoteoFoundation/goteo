@@ -13,18 +13,13 @@ namespace Goteo\Controller\Admin;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\Message;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Event\FilterBlogPostEvent;
 use Goteo\Application\AppEvents;
-use Goteo\Library\Feed;
-use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
 use Goteo\Model\Blog;
-use Goteo\Model\User;
 use Goteo\Model\Post;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Library\Forms\FormModelException;
@@ -60,11 +55,11 @@ class BlogAdminController extends AbstractAdminController {
         $filters = ['superglobal' => $request->query->get('q')];
         $limit = 25;
         $page = $request->query->get('pag') ?: 0;
-        $users = BlogPost::getList($filters, false, $page * $limit, $limit, false, Config::get('lang'));
+        $list = BlogPost::getList($filters, false, $page * $limit, $limit, false, Config::get('lang'));
         $total = BlogPost::getList($filters, false, 0, 0, true);
 
         return $this->viewResponse('admin/blog/list', [
-            'list' => $users,
+            'list' => $list,
             'link_prefix' => '/blog/edit/',
             'total' => $total,
             'limit' => $limit,

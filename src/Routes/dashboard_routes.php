@@ -210,6 +210,13 @@ $dash->add('dashboard-project-translate-supports', new Route(
         'lang' => null
         )
 ));
+// Project translate story
+$dash->add('dashboard-project-translate-story', new Route(
+    '/project/{pid}/translate/story/{lang}',
+    array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::storyTranslateAction',
+        'lang' => null
+        )
+));
 
 
 

@@ -149,6 +149,7 @@ $(function(){
 
         //////////////////////////////////////////////
         /// FORM with class "autoform"
+        /// TODO: check how to works this in ajax loading
         ///////////////////////////////////////
 
         // Create datepickers on date input types
@@ -177,6 +178,54 @@ $(function(){
                 // ,debug: true
             });
 
+
+        // Typeahead fields
+        $('.autoform .input-typeahead .typeahead').typeahead('destroy');
+        $('.autoform .input-typeahead').each(function () {
+            var $this = $(this);
+            var sources = $this.data('sources').split(',');
+            var id_field = $this.data('value-field') ? $this.data('value-field') : 'id';
+            // console.log('initialize with sources', sources);
+            var engines = [{
+                minLength: 0,
+                hint: true,
+                highlight: true,
+                classNames: {
+                    hint: ''
+                }
+            }];
+            sources.forEach(function(source) {
+                if(goteo.typeahead_engines[source]) {
+                    engines.push(goteo.typeahead_engines[source]({
+                        defaults: true // Show a list of prefetch projects without typing
+                    }));
+                }
+            });
+            $.fn.typeahead.apply($this.find('.typeahead'), engines)
+                .on('typeahead:active', function (event) {
+                    $(event.target).select();
+                })
+                .on('typeahead:asyncrequest', function (event) {
+                    // console.log('async loading', event);
+                    $(event.target).addClass('loading');
+                })
+                .on('typeahead:asynccancel typeahead:asyncreceive', function (event) {
+                    $(event.target).removeClass('loading');
+                })
+                // typeahead:select event is done when needed.
+                // For example: assets/js/admin/stats.js
+                .on('typeahead:select', function (event, datum, name) {
+                    // console.log('selected',name, event, datum, $(this).attr('name'));
+                    $('#' + $(this).data('real-id')).val(datum[id_field]);
+
+                })
+                .on('typeahead:change', function (event) {
+                    console.log('change', event, $(this).val(), $(this).attr('name'));
+                    if($(this).val().trim() === '') $('#' + $(this).data('real-id')).val('');
+                });
+        });
+
+        // Tags input fields
         $('.autoform .tagsinput').each(function(){
           // Tags with autocomplete (optional)
           var $this = $(this);
@@ -362,7 +411,7 @@ $(function(){
 
         // HTML editors initializations
         var summernotes = form.summernotes = {};
-        var createHtmlEditor = function() {
+        var _createHtmlEditor = function() {
             var el = this;
             var summernote;
             var callbacks = {
@@ -418,11 +467,11 @@ $(function(){
             });
             summernotes[$(this).attr('id')] = summernote;
         };
-        $('.autoform .summernote > textarea').each(createHtmlEditor);
+        $('.autoform .summernote > textarea').each(_createHtmlEditor);
 
         // MarkdownType initialization
         var markdowns = form.markdowns = {};
-        var createMarkdownEditor = function() {
+        var _createMarkdownEditor = function() {
             var el = this;
             // console.log('found textarea', el);
             var simplemde = new SimpleMDE({
@@ -630,7 +679,7 @@ $(function(){
 
             markdowns[$(this).attr('id')] = simplemde;
         };
-        $('.autoform .markdown > textarea').each(createMarkdownEditor);
+        $('.autoform .markdown > textarea').each(_createMarkdownEditor);
 
         // Type editor chooser
         $('.autoform').on( 'change', '.form-control[data-editor-type]', function(e){
@@ -658,14 +707,14 @@ $(function(){
               service.keep(['iframe', 'object']);
               $target.val(service.turndown($target.val()));
             }
-            createMarkdownEditor.call($target[0]);
+            _createMarkdownEditor.call($target[0]);
           }
           if(from === 'md' && to === 'html') {
             // destroy markdown, initialize summernote
             markdowns[target].toTextArea();
             $target.val(markdowns[target].markdown($target.val()));
             delete markdowns[target];
-            createHtmlEditor.call($target[0]);
+            _createHtmlEditor.call($target[0]);
           }
 
         });

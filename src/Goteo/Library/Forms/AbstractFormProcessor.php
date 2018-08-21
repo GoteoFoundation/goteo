@@ -119,6 +119,7 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
+        // print_r($data);die;
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
 

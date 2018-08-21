@@ -70,6 +70,19 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
         return '';
     }
 
+    public function getRawValue($key) {
+        return $this->model->{$key};
+    }
+
+    /**
+     * Return an API url to modifiy the property (or empty if doesn't exist)
+     * @param  [type] $prop [description]
+     * @return [type]       [description]
+     */
+    public function getApiProperty($prop) {
+        return '/api/stories/' . $this->model->id . "/property/$prop";
+    }
+
     public function getId() {
         return $this->model->id;
     }
@@ -102,7 +115,21 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
 
     public function getActions() {
         if(!$u = $this->getUser()) return [];
-        $ret = ['edit' => '/admin/' . $this->getModelName() . '/edit/' . $this->model->getId()];
+        $ret = ['edit' => '/admin/' . $this->getModelName() . '/edit/' . $this->model->id];
         return $ret;
     }
+
+    public function getLangs() {
+        return $this->model->getLangsAvailable();
+    }
+
+    public function getActive() {
+        return $this->model->active;
+    }
+
+    public function getOrder() {
+        return $this->model->order;
+    }
+
+
 }

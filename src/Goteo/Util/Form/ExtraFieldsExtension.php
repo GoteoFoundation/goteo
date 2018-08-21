@@ -41,6 +41,7 @@ class ExtraFieldsExtension extends AbstractExtension
             new Type\NumberType(),
             new Type\EmailType(),
             new Type\PasswordType(),
+            new Type\TypeaheadType(),
         );
     }
 }

@@ -1068,7 +1068,7 @@ class ProjectDashboardController extends DashboardController {
         $project = $this->validateProject($pid, 'story');
         if($project instanceOf Response) return $project;
 
-        $redirect = '/dashboard/project/' . $this->project->id;
+        $redirect = '/dashboard/project/' . $project->id;
 
         if(!$project->isFunded()) {
             Message::error(Text::get('dashboard-project-blog-wrongstatus'));
@@ -1076,9 +1076,9 @@ class ProjectDashboardController extends DashboardController {
         }
 
         // Get the first associated to this project
-        $story = reset(Stories::getall(false, false, ['project' => $this->project->id]));
+        $story = reset(Stories::getList(['project' => $project->id],0,1,false, $project->lang));
 
-        if(!$story) $story = new Stories(['project' => $this->project->id, 'lang' => $this->project->lang]);
+        if(!$story) $story = new Stories(['project' => $project->id, 'lang' => $project->lang]);
 
         $defaults = (array)$story;
         $defaults['image'] = $story->image ? $story->getImage() : '';
@@ -1108,7 +1108,8 @@ class ProjectDashboardController extends DashboardController {
         }
         return $this->viewResponse('dashboard/project/story', [
             'form' => $form->createView(),
-            'story'=> $story
+            'story'=> $story,
+            'languages' => Lang::listAll('name', false)
         ]);
     }
 

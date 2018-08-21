@@ -75,6 +75,7 @@ dashboard-menu-projects-summary: Resum
 dashboard-menu-projects-supports: Col·laboracions
 dashboard-menu-projects-updates: Actualitzacions
 dashboard-menu-projects-widgets: Widget
+dashboard-menu-projects-story: 'La meva història'
 dashboard-menu-review_board: Revisió
 dashboard-menu-translate_board: Traducció
 dashboard-menu-translates: 'Traduccions'
@@ -209,6 +210,8 @@ all-files-uploaded: "Tots els arxius s'han pujat correctament"
 uploaded-ok: "Pujat correctament"
 publish-confirm-yes: "Vols publicar aquesta entrada?"
 publish-confirm-no: "Vols despublicar aquesta entrada?"
+active-confirm-yes: "Vols activar aquesta entrada?"
+active-confirm-no: "Vols desactivar aquesta entrada?"
 dashboard-project-support-empty: 'No hi ha cap petició per col·laboracions encara.'
 dashboard-project-support-responses: Respostes
 dashboard-project-support-no-responses: 'No hi ha respostes encara.'
@@ -251,6 +254,7 @@ dashboard-translate-overview: 'Traduir les dades principals del projecte'
 dashboard-translate-costs: 'Traduir els costos del projecte'
 dashboard-translate-rewards: 'Traduir les recompenses del projecte'
 dashboard-translate-supports: 'Traduir les col·laboracions del projecte'
+dashboard-translate-story: 'Traduir la meva història a Goteo'
 dashboard-project-support-translate-ok: 'Entrada de suport %TITLE% traduït correctament al %LANG%'
 dashboard-project-support-translating: 'Estàs traduint aquesta entrada de suport al %LANG%. L''idioma original és el %ORIGINAL%.'
 dashboard-project-saved: 'Projecte actualitzat correctament'

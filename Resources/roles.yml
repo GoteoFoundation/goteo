@@ -50,6 +50,7 @@ manager:
         - view-any-project # View any editing project
         - edit-published-projects # Edit any published project
         - admin-module-blog # create/edit/delete non-project posts
+        - admin-module-stories # create/edit/delete non-project posts
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 50
 
@@ -64,6 +65,7 @@ consultant:
         - assign-checker # Assignate any other user for review projects
         - admin-module-users # Can access to module UserAdminController
         - admin-module-blog # create/edit/delete non-project posts
+        - admin-module-stories # create/edit/delete non-project posts
         - admin-module-stats # Can access to stats
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 60

@@ -92,6 +92,29 @@ $api->add('api-blog-post-property', new Route(
         )
 ));
 
+// Stories property individual updates
+$api->add('api-stories-property', new Route(
+    '/stories/{id}/property/{prop}',
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesPropertyAction'
+        )
+));
+// Stories sort up/down arbitrarily (use the PUT method to sort)
+$api->add('api-stories-sort', new Route(
+    '/stories/{id}/sort',
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesSortAction'
+        )
+));
+// Stories images upload (POST method only)
+$api->add('api-stories-images-upload', new Route(
+    '/stories/images',
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 
 // Projects list
 $api->add('api-projects', new Route(

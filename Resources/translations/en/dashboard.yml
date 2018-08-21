@@ -75,6 +75,7 @@ dashboard-menu-projects-summary: Summary
 dashboard-menu-projects-supports: Collaborations
 dashboard-menu-projects-updates: News
 dashboard-menu-projects-widgets: Widget
+dashboard-menu-projects-story: 'My history'
 dashboard-menu-review_board: Review
 dashboard-menu-translate_board: Translation
 dashboard-menu-translates: 'My translations'
@@ -208,6 +209,8 @@ all-files-uploaded: "All files uploaded successfully"
 uploaded-ok: "Uploaded successfully"
 publish-confirm-yes: "Do you want to publish this entry?"
 publish-confirm-no: "Do you want to unpublish this entry?"
+active-confirm-yes: "Do you want to activate this entry?"
+active-confirm-no: "Do you want to unactivate this entry?"
 dashboard-project-support-empty: 'No collaboration petitions yet.'
 dashboard-project-support-responses: Responses
 dashboard-project-support-no-responses: 'No responses yet.'
@@ -261,6 +264,7 @@ dashboard-translate-overview: 'Translate project main data'
 dashboard-translate-costs: 'Translate project costs'
 dashboard-translate-rewards: 'Translate project rewards'
 dashboard-translate-supports: 'Translate project collaborations'
+dashboard-translate-story: 'Translate my Goteo story'
 dashboard-project-support-translate-ok: 'Support %TITLE% successfully translated to %LANG%'
 dashboard-project-support-translating: 'You are translating this support entry to %LANG%. The original language is %ORIGINAL%.'
 dashboard-project-saved: 'Project updated successfully'
