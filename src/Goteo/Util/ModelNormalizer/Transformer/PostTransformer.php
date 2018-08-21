@@ -18,8 +18,14 @@ class PostTransformer extends AbstractTransformer {
 
     protected $keys = ['id', 'image', 'title', 'subtitle'];
 
-    public function getLangs() {
-        return $this->model->getLangsAvailable();
+
+    /**
+     * Return an API url to modifiy the property (or empty if doesn't exist)
+     * @param  [type] $prop [description]
+     * @return [type]       [description]
+     */
+    public function getApiProperty($prop) {
+        return '/api/blog/' . $this->getSlug() . "/property/$prop";
     }
 
     public function getPublish() {
@@ -27,7 +33,7 @@ class PostTransformer extends AbstractTransformer {
     }
 
     public function getSlug() {
-        return $this->model->slug ? $this->model->slug : $this->model->id;
+        return $this->model->getSlug();
     }
 
     public function getInfo() {

@@ -1,5 +1,6 @@
 ---
 admin-action: 'Administrator action'
+admin-activity: Activity
 admin-NO: 'NO'
 admin-YES: "YES"
 admin-account-amount: 'Amount contributed'
@@ -29,6 +30,13 @@ admin-mailing-status: 'Automatic delivery status'
 admin-mailing-subject: Subject
 admin-mailing-view-and-activate: 'See the post admin to start sending'
 admin-mailing-view-in-newsletter: 'See the post admin'
+
+admin-newsletter-generated: 'Newsletter [%ID%] generated'
+admin-newsletter-langs-to-send: 'Languages: %LANGS%'
+admin-newsletter-mind-activate: 'Activate it to send it'
+admin-prev-page: 'Previous page'
+admin-next-page: 'Next page'
+
 admin-main: Main
 admin-legacy: Legacy
 admin-projects: Projects
@@ -40,8 +48,11 @@ admin-remove-entry: 'Remove entry'
 admin-remove-entry-confirm: 'Are you sure to remove this entry? This action cannot be undone!'
 admin-remove-entry-forbidden: 'Published entries cannot be removed. Unpublish it first.'
 admin-remove-entry-ok: 'Entry removed successfully'
+admin-communications: Comunications
+admin-services: Services
 admin-sponsors: Contributors
 admin-slug-seo-help: 'This field is important for SEO. Edit it only for a good reason.'
+admin-others: Others
 admin-status: Status
 admin-user: User
 admin-users: Users
@@ -53,6 +64,10 @@ admin-blog-slug-exists: 'The slug [%s] is being used by another post!'
 admin-blog-slug-chars: 'The slug [%s] contains invalid characters!'
 admin-blog-not-public: 'This post is not public yet!'
 
+admin-stories: User histories in Goteo
+admin-stories-add: Create new user history
+admin-stories-edit: Editing user history %s
+
 admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
@@ -62,7 +77,7 @@ admin-project-express-discard-desc: 'Change the project status to Discard and se
 admin-project-express-discard-sure: 'The project will be discarded and the owner will receive an email, ok?'
 admin-project-to-review: 'To review'
 admin-project-to-review-desc: 'Change the project status to Review pending'
-admin-project-to-review-sure: 'The owner won''t be able to edit the project anymore, ok?'
+admin-project-to-review-sure: 'The owner won''t be able to edit the project any more, ok?'
 admin-project-view-in-admin: 'View in admin'
 admin-project-to-negotiation: 'To negotiation'
 admin-project-to-negotiation-desc: 'Change the project status to Editing'
@@ -74,6 +89,11 @@ admin-project-derivation-discard: 'Discard and derivation'
 admin-project-derivation-discard-desc: 'Change the project status to Discard and sends an email derivating to others platforms'
 admin-project-derivation-discard-sure: 'The project will be discarded and the owner will receive an email derivating to other platforms, ok?'
 admin-home-title: Administrate Goteo
+
+admin-list: List
+admin-stats: Stats
+admin-list-total: 'Total: <strong>%s</strong> results'
+admin-search-global: 'Project, channel, call...'
 
 admin-already-impersonating: 'You are already impersonating a user. Please close the session first!'
 admin-rebase-user: 'Change user ID'
@@ -96,6 +116,8 @@ admin-role-change-forbidden: 'You don''t have permissions to manage the role %RO
 
 admin-users-global-search: 'Id, name, email or project'
 admin-blog-global-search: 'Id, title, subtitle or text'
+admin-stories-global-search: 'Id, title, text or project'
+admin-no-project: 'No project'
 admin-text-type: 'Process text as'
 admin-text-type-html: HTML
 admin-text-type-md: Markdown
@@ -104,6 +126,7 @@ admin-title-id: Id
 admin-title-name: Name
 admin-title-fullname: Name
 admin-title-about: About
+admin-title-active: Active
 admin-title-location: Location
 admin-title-email: Email
 admin-title-header-image: Header image
@@ -123,11 +146,23 @@ admin-title-langs: Translations
 admin-title-actions: 'Actions'
 admin-title-tags: Tags
 admin-title-deleted: Deleted
+admin-title-sphere: Scope
+admin-title-order: Sort
 
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'
 admin-blog-edit-success: 'Blog post edited successfully'
+
+admin-stories-not-active-yet: 'This user history is not active yet!'
+admin-stories-edit-success: 'User history edited successfully'
+admin-stories-pool: 'Show in wallet''s landing'
+admin-stories-review: 'Goteo''s review: (Subtitle)'
+admin-stories-active: 'Active in the home page'
+admin-stories-landing_pitch: 'Show in the landing Pitch'
+admin-stories-landing_match: 'Show in the landing Match'
+admin-stories-type: 'Protagonist type'
+
 
 admin-all-project-referers: 'Origin of visits to project pages'
 admin-all-invests-referers: 'Origin of visits in successful contributions to projects'

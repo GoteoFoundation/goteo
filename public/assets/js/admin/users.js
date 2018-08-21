@@ -88,5 +88,43 @@ $(function(){
         }
     });
 
+    // User table links
+    $('#main').on('click', 'table.model-user tr:not(.extra) a', function(e) {
+
+        // Skip links with target attribute or href to hashes only
+        var href = $(this).attr('href');
+        if(href.indexOf('#') === 0) return;
+        if(href.indexOf('mailto:') === 0) return;
+        if($(this).attr('target'))  return;
+
+        e.preventDefault();
+        // e.stopPropagation();
+
+        var $tb = $(this).closest('table');
+        var $tr = $(this).closest('tr');
+        var id = $tr.attr('id');
+        var cols = $tr.contents('td').length;
+        if($('#manage-' +  id).length) {
+            $tr.removeClass('active');
+            $('#manage-' +  id).slideUp(function(){
+                $(this).remove();
+            });
+            return;
+        }
+        var $new = $('<tr class="extra active"><td id="manage-' + id + '" colspan="' + cols +'"></td></tr>').insertAfter($tr.addClass('active'));
+        // Ajax load
+
+        var add = href.indexOf('?') === -1 ? '?' : '&';
+        // console.log(add, href, href.indexOf(add));
+        if(location.search.indexOf(add + 'ajax') === -1) {
+            href += add + 'ajax';
+            add = '&';
+        }
+        // Add query string
+        if(location.search) href += add + location.search.substr(1);
+        // console.log(href, location);
+        adminProntoLoad(href, '#manage-' + id);
+    });
+
 
 });

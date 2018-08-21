@@ -211,6 +211,8 @@ all-files-uploaded: "Todos los archivos se han subido correctamente"
 uploaded-ok: "Subido correctamente"
 publish-confirm-yes: "Quieres publicar esta entrada?"
 publish-confirm-no: "Quieres despublicar esta entrada?"
+active-confirm-yes: "Quieres activar esta entrada?"
+active-confirm-no: "Quieres desactivar esta entrada?"
 dashboard-project-support-empty: 'No hay ninguna petición de colaboraciones todavía.'
 dashboard-project-support-responses: Respuestas
 dashboard-project-support-no-responses: 'No hay respuestas todavía.'

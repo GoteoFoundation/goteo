@@ -66,15 +66,9 @@ class BlogPostListener extends AbstractListener {
         $post = $event->getPost();
         $pid = $post->owner_id;
 
-        $errors = [];
         if((bool)$post->publish) {
             $this->createFeed($post);
         }
-
-        if($errors) {
-            $this->error("Error creating milestone for publish post", [$post, $project_milestone, 'errors' => $errors]);
-        }
-
     }
 
     public function onBlogDeleted(DeleteModelEvent $event) {

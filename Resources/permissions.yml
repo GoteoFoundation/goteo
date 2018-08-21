@@ -161,3 +161,7 @@ admin-module-users: # Can access to module UserAdminController
 admin-module-blog: # Can access to module BlogAdminController
     model: null
     relational: null
+
+admin-module-stories: # Can access to module BlogAdminController
+    model: null
+    relational: null
