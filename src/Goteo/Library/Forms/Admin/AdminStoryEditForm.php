@@ -35,6 +35,7 @@ class AdminStoryEditForm extends ProjectStoryForm {
                 'disabled' => $this->getReadonly(),
                 'url' => '/api/stories/images',
                 'required' => true,
+                'data' => $story->getImage(),
                 'limit' => 1,
                 'constraints' => [
                         new Constraints\Count(['max' => 1]),
@@ -43,6 +44,7 @@ class AdminStoryEditForm extends ProjectStoryForm {
             ->add('pool_image', 'dropfiles', [
                 'label' => 'story-field-pool-image',
                 'disabled' => $this->getReadonly(),
+                'data' => $story->getPoolImage(),
                 'url' => '/api/stories/images',
                 'required' => false,
                 'limit' => 1,
