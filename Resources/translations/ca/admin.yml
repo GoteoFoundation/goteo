@@ -39,13 +39,11 @@ admin-back: Tornar
 admin-back-detail: 'Tornar al detall'
 admin-back-list: 'Tornar al llistat'
 admin-contents: 'Textos i traduccions'
-admin-mailing-back-to-list: 'Tornar a comunicacions'
 admin-mailing-communicating-with: 'Cercàvem comunicar-nos amb %DESC%'
 admin-mailing-created: 'Creat el'
 admin-mailing-new-massive: 'S''ha creat un nou mailing massiu a %TOTAL% usuaris'
 admin-mailing-status: 'Estat de l''enviament automàtic'
 admin-mailing-subject: Assumpte
-admin-mailing-view-and-activate: 'Veure en el admin del butlletí per activar l''enviament'
 admin-mailing-view-in-newsletter: 'Veure en l''admin del butlletí'
 admin-mailing-view-in-sent: 'Veure en l''historial d''enviaments (estadístiques)'
 admin-mailing-view-message: 'Veure el missatge'
