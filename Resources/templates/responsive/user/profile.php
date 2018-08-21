@@ -267,10 +267,34 @@ $worthcracy=$this->worthcracy;
 
 	<?php endif; ?>
 
+
+	<?php if($this->my_projects): ?>
+
+	<div class="section projects" >
+		<div class="container <?= $this->invest_on ? 'border-bottom' : '' ?> <?= !$this->stories ? 'no-padding-top-xs' : '' ?>">
+			<div class="title">
+				<?= $this->text('profile-my_projects-header') ?>
+			</div>
+			
+			<div class="slider slider-projects">
+			    <?php foreach ($this->my_projects as $project) : ?>
+			            <div class="item widget-slide">
+			            <?=    $this->insert('project/widgets/normal', [
+			                    'project' => $project
+			            ]) ?>
+			            </div>
+			    <?php endforeach ?>
+			</div>
+		</div>
+	</div>
+
+	<?php endif; ?>
+
+
 	<?php if($this->invest_on): ?>
 
 	<div class="section projects" >
-		<div class="container <?= $this->my_projects ? 'border-bottom' : '' ?> <?= !$this->stories ? 'no-padding-top-xs' : '' ?>">
+		<div class="container  <?= !$this->stories&&!$this->my_projects ? 'no-padding-top-xs' : '' ?>">
 			<div class="title">
 				<?= $this->text('profile-invest_on-header') ?>
 			</div>
@@ -290,29 +314,7 @@ $worthcracy=$this->worthcracy;
 
 	<?php endif; ?>
 
-	<?php if($this->my_projects): ?>
-
-	<div class="section projects" >
-		<div class="container <?= !$this->stories&&!$this->my_projects ? 'no-padding-top-xs' : '' ?>">
-			<div class="title">
-				<?= $this->text('profile-my_projects-header') ?>
-			</div>
-			
-			<div class="slider slider-projects">
-			    <?php foreach ($this->my_projects as $project) : ?>
-			            <div class="item widget-slide">
-			            <?=    $this->insert('project/widgets/normal', [
-			                    'project' => $project
-			            ]) ?>
-			            </div>
-			    <?php endforeach ?>
-			</div>
-		</div>
-	</div>
-
 	
-
-	<?php endif; ?>
 
 </div>
 
