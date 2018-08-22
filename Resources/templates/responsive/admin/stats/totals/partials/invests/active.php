@@ -25,7 +25,7 @@ $query = $this->raw('query');
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.amount_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot1) ?>"></li>
       <?php if($slot2): ?>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.amount_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot2) ?>"></li>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.amount_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.amount_diff_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' .$this->text('admin-diff') ?>"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.amount_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.amount_<?= $slot2 ?>_diff_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' .$this->text('admin-diff') ?>"></li>
       <?php endif ?>
       <?php if($slot4): ?>
             <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot4" ?>.amount_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot4) ?>"></li>
@@ -33,12 +33,13 @@ $query = $this->raw('query');
       <?php endif ?>
 
       <?php if($slot3): ?>
-            <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.amount_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot3) ?>"></li>
+            <li class="col-xs-2 col-xxs-4<?= $slot4 ? '' : ' col-xs-offset-4'?>" data-property="<?= "$target.$id.$slot3" ?>.amount_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot3) ?>"></li>
       <?php endif ?>
+
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.invests" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-' . $slot1) ?>"></li>
       <?php if($slot2): ?>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.invests" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-' . $slot2) ?>"></li>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.invests_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.invests_diff" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-diff') ?>"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.invests_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.invests_<?= $slot2 ?>_diff" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-diff') ?>"></li>
       <?php endif ?>
       <?php if($slot4): ?>
             <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot4" ?>.invests" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-' . $slot4) ?>"></li>
@@ -46,7 +47,7 @@ $query = $this->raw('query');
       <?php endif ?>
 
       <?php if($slot3): ?>
-            <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.invests" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-' . $slot3) ?>"></li>
+            <li class="col-xs-2 col-xxs-4<?= $slot4 ? '' : ' col-xs-offset-4'?>" data-property="<?= "$target.$id.$slot3" ?>.invests" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-' . $slot3) ?>"></li>
       <?php endif ?>
     </ul>
 
@@ -59,8 +60,13 @@ $query = $this->raw('query');
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.to_wallet_amount_formatted" data-title="<?= $this->text('admin-stats-to_wallet') . ': ' . $this->text('admin-' . $slot2)  ?>" data-tooltip="<?= "$target.$id.$slot2" ?>.to_wallet_percent_formatted"></li>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_wallet_amount_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.to_wallet_amount_diff_formatted" data-title="<?= $this->text('admin-diff') ?>"></li>
       <?php endif ?>
+      <?php if($slot4): ?>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot4" ?>.to_wallet_amount_formatted" data-title="<?= $this->text('admin-stats-to_wallet') . ': ' . $this->text('admin-' . $slot4)  ?>" data-tooltip="<?= "$target.$id.$slot4" ?>.to_wallet_percent_formatted"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_wallet_amount_<?= $slot4 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.to_wallet_amount_<?= $slot4 ?>_diff_formatted" data-title="<?= $this->text('admin-diff') ?>"></li>
+      <?php endif ?>
+
       <?php if($slot3): ?>
-            <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.to_wallet_amount_formatted" data-title="<?= $this->text('admin-stats-to_wallet') . ': ' . $this->text('admin-' . $slot3) ?>" data-tooltip="<?= "$target.$id.$slot3" ?>.to_wallet_percent_formatted"></li>
+            <li class="col-xs-2 col-xxs-4<?= $slot4 ? '' : ' col-xs-offset-4'?>" data-property="<?= "$target.$id.$slot3" ?>.to_wallet_amount_formatted" data-title="<?= $this->text('admin-stats-to_wallet') . ': ' . $this->text('admin-' . $slot3) ?>" data-tooltip="<?= "$target.$id.$slot3" ?>.to_wallet_percent_formatted"></li>
       <?php endif ?>
 
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_projects_amount_formatted" data-title="<?= $this->text('admin-stats-to_projects') . ': ' . $this->text('admin-' . $slot1) ?>" data-tooltip="<?= "$target.$id.$slot1" ?>.to_projects_percent_formatted"></li>
@@ -68,8 +74,13 @@ $query = $this->raw('query');
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.to_projects_amount_formatted" data-title="<?= $this->text('admin-stats-to_projects') . ': ' . $this->text('admin-' . $slot2)  ?>" data-tooltip="<?= "$target.$id.$slot2" ?>.to_projects_percent_formatted"></li>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_projects_amount_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.to_projects_amount_diff_formatted" data-title="<?= $this->text('admin-diff') ?>"></li>
       <?php endif ?>
+      <?php if($slot4): ?>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot4" ?>.to_projects_amount_formatted" data-title="<?= $this->text('admin-stats-to_projects') . ': ' . $this->text('admin-' . $slot4)  ?>" data-tooltip="<?= "$target.$id.$slot4" ?>.to_projects_percent_formatted"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_projects_amount_<?= $slot4 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.to_projects_amount_<?= $slot4 ?>_diff_formatted" data-title="<?= $this->text('admin-diff') ?>"></li>
+      <?php endif ?>
+
       <?php if($slot3): ?>
-            <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.to_projects_amount_formatted" data-title="<?= $this->text('admin-stats-to_projects') . ': ' . $this->text('admin-' . $slot3) ?>" data-tooltip="<?= "$target.$id.$slot3" ?>.to_projects_percent_formatted"></li>
+            <li class="col-xs-2 col-xxs-4<?= $slot4 ? '' : ' col-xs-offset-4'?>" data-property="<?= "$target.$id.$slot3" ?>.to_projects_amount_formatted" data-title="<?= $this->text('admin-stats-to_projects') . ': ' . $this->text('admin-' . $slot3) ?>" data-tooltip="<?= "$target.$id.$slot3" ?>.to_projects_percent_formatted"></li>
       <?php endif ?>
 
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_fee_amount_formatted" data-title="<?= $this->text('admin-stats-to_fee') . ': ' . $this->text('admin-' . $slot1) ?>" data-tooltip="<?= "$target.$id.$slot1" ?>.to_fee_percent_formatted"></li>
@@ -77,16 +88,25 @@ $query = $this->raw('query');
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.to_fee_amount_formatted" data-title="<?= $this->text('admin-stats-to_fee') . ': ' . $this->text('admin-' . $slot2)  ?>" data-tooltip="<?= "$target.$id.$slot2" ?>.to_fee_percent_formatted"></li>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_fee_amount_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.to_fee_amount_diff_formatted" data-title="<?= $this->text('admin-diff') ?>"></li>
       <?php endif ?>
+      <?php if($slot4): ?>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot4" ?>.to_fee_amount_formatted" data-title="<?= $this->text('admin-stats-to_fee') . ': ' . $this->text('admin-' . $slot4)  ?>" data-tooltip="<?= "$target.$id.$slot4" ?>.to_fee_percent_formatted"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_fee_amount_<?= $slot4 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.to_fee_amount_<?= $slot4 ?>_diff_formatted" data-title="<?= $this->text('admin-diff') ?>"></li>
+      <?php endif ?>
+
       <?php if($slot3): ?>
-            <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.to_fee_amount_formatted" data-title="<?= $this->text('admin-stats-to_fee') . ': ' . $this->text('admin-' . $slot3) ?>" data-tooltip="<?= "$target.$id.$slot3" ?>.to_fee_percent_formatted"></li>
+            <li class="col-xs-2 col-xxs-4<?= $slot4 ? '' : ' col-xs-offset-4'?>" data-property="<?= "$target.$id.$slot3" ?>.to_fee_amount_formatted" data-title="<?= $this->text('admin-stats-to_fee') . ': ' . $this->text('admin-' . $slot3) ?>" data-tooltip="<?= "$target.$id.$slot3" ?>.to_fee_percent_formatted"></li>
       <?php endif ?>
 
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.fee_percent_formatted" data-title="<?= $this->text('admin-stats-to_fee-percent') . ': ' . $this->text('admin-' . $slot1) ?>"></li>
       <?php if($slot2): ?>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.fee_percent_formatted" data-title="<?= $this->text('admin-stats-to_fee-percent') . ': ' . $this->text('admin-' . $slot2)  ?>"></li>
       <?php endif ?>
+      <?php if($slot4): ?>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot4" ?>.fee_percent_formatted" data-title="<?= $this->text('admin-stats-to_fee-percent') . ': ' . $this->text('admin-' . $slot4)  ?>"></li>
+      <?php endif ?>
+
       <?php if($slot3): ?>
-            <li class="col-xs-2 col-xs-offset-6 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.fee_percent_formatted" data-title="<?= $this->text('admin-stats-to_fee-percent') . ': ' . $this->text('admin-' . $slot3) ?>"></li>
+            <li class="col-xs-2 col-xxs-4<?= $slot4 ? '' : ' col-xs-offset-4'?>" data-property="<?= "$target.$id.$slot3" ?>.fee_percent_formatted" data-title="<?= $this->text('admin-stats-to_fee-percent') . ': ' . $this->text('admin-' . $slot3) ?>"></li>
       <?php endif ?>
 
     </ul>

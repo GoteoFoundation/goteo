@@ -22,22 +22,32 @@ $query = $this->raw('query');
 
     <ul class="row list-unstyled">
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.charged_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot1) ?>"></li>
-        <?php if($slot2): ?>
+      <?php if($slot2): ?>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.charged_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot2) ?>"></li>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.charged_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.charged_diff_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' .$this->text('admin-diff') ?>"></li>
-        <?php endif ?>
-        <?php if($slot3): ?>
-            <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.charged_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot3) ?>"></li>
-        <?php endif ?>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.charged_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.charged_<?= $slot2 ?>_diff_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' .$this->text('admin-diff') ?>"></li>
+      <?php endif ?>
+      <?php if($slot4): ?>
+            <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot4" ?>.charged_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot4) ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.charged_<?= $slot4 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.charged_<?= $slot4 ?>_diff_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' .$this->text('admin-diff') ?>"></li>
+      <?php endif ?>
+
+      <?php if($slot3): ?>
+            <li class="col-xs-2 col-xxs-4<?= $slot4 ? '' : ' col-xs-offset-4'?>" data-property="<?= "$target.$id.$slot3" ?>.charged_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot3) ?>"></li>
+      <?php endif ?>
 
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.lost_formatted" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-' . $slot1) ?>"></li>
-        <?php if($slot2): ?>
+      <?php if($slot2): ?>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.lost_formatted" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-' . $slot2) ?>"></li>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.lost_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.lost_diff_formatted" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-diff') ?>"></li>
-        <?php endif ?>
-        <?php if($slot3): ?>
-            <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.lost" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-' . $slot3) ?>"></li>
-        <?php endif ?>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.lost_<?= $slot2 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.lost_<?= $slot2 ?>_diff_formatted" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-diff') ?>"></li>
+      <?php endif ?>
+      <?php if($slot4): ?>
+            <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot4" ?>.lost_formatted" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-' . $slot4) ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.lost_<?= $slot4 ?>_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.lost_<?= $slot4 ?>_diff_formatted" data-title="<?= $this->text('admin-user-fee') . ': ' .$this->text('admin-diff') ?>"></li>
+      <?php endif ?>
+
+      <?php if($slot3): ?>
+            <li class="col-xs-2 col-xxs-4<?= $slot4 ? '' : ' col-xs-offset-4'?>" data-property="<?= "$target.$id.$slot3" ?>.lost_formatted" data-title="<?= $this->text('admin-losts') . ': ' . $this->text('admin-' . $slot3) ?>"></li>
+      <?php endif ?>
     </ul>
 
 </div>

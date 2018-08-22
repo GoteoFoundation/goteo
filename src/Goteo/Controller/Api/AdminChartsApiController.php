@@ -444,8 +444,9 @@ class AdminChartsApiController extends ChartsApiController {
                     $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$RETURNED_STATUSES] + $filter);
                     $totals[$slot]['charged'] += $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
                     $totals[$slot]['lost'] -= $m::calculateComission($returned['invests'], $returned['amount'], $returned['invests'], $returned['amount']);
-
                 }
+                $totals[$slot]['charged'] = round($totals[$slot]['charged'], 2);
+                $totals[$slot]['lost'] = round($totals[$slot]['lost'], 2);
             } elseif($target === 'fees') {
 
                 // Platform fees

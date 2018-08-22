@@ -295,15 +295,15 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         if($commissions && is_array($commissions)) {
             // Non-refunded
             if($commissions['charged']) {
-                $fixed = $commissions['charged']['fixed'] ?: 0; 
-                $percent = $commissions['charged']['percent'] ?: 0; 
+                $fixed = $commissions['charged']['fixed'] ?: 0;
+                $percent = $commissions['charged']['percent'] ?: 0;
                 $fee += ($total_amount - $returned_amount) * $percent / 100;
                 $fee += ($total_invests - $returned_invests) * $fixed;
             }
             // Refunded
             if($commissions['refunded']) {
-                $fixed = $commissions['refunded']['fixed'] ?: 0; 
-                $percent = $commissions['refunded']['percent'] ?: 0; 
+                $fixed = $commissions['refunded']['fixed'] ?: 0;
+                $percent = $commissions['refunded']['percent'] ?: 0;
                 $fee += $returned_amount * $percent / 100;
                 $fee += $returned_invests * $fixed;
             }
