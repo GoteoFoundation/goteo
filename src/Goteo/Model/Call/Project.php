@@ -640,9 +640,15 @@ namespace Goteo\Model\Call {
                 return 0;
             }
 
+            if(!empty($call->maxdrop)) {
+                $match_factor=$call->getConf('match_factor');
+
+                // Apply the match factor
+                $maxdrop_factor_applied=$call->maxdrop*($match_factor-1);
+            }
 
             // si establecido un máximo por aporte
-            $maxdrop = (!empty($call->maxdrop)) ? $call->maxdrop : 99999999;
+            $maxdrop = (!empty($call->maxdrop)) ? $maxdrop_factor_applied : 99999999;
 
             // si no tiene configuración, como máximo podrá llegar hasta el óptimo (contando con lo que ponga el usuario)
             if(!isset($call->conf)) {
