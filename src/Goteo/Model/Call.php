@@ -1989,6 +1989,7 @@ class Call extends \Goteo\Core\Model {
               'limit1', // tipo limite riego primera ronda
               'limit2', // tipo limite riego segunda ronda
               'unique_user_drop', // a user only drop once
+              'match_factor', // match factor
               'buzz_first', // Solo primer hashtag en el buzz
               'buzz_own', // Tweets  propios en el buzz
               'buzz_mention', // Menciones en el buzz
