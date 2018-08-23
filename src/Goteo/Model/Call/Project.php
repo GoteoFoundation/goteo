@@ -640,8 +640,9 @@ namespace Goteo\Model\Call {
                 return 0;
             }
 
+            $match_factor=$call->getConf('match_factor');
+            
             if(!empty($call->maxdrop)) {
-                $match_factor=$call->getConf('match_factor');
 
                 // Apply the match factor
                 $maxdrop_factor_applied=$call->maxdrop*($match_factor-1);
@@ -669,7 +670,7 @@ namespace Goteo\Model\Call {
                     $maxdrop = min($maxdrop, ($project->mincost - $project->invested - $amount));
                 } else {
                     // hasta la mitad de lo que le falta para llegar al mínimo
-                    $maxdrop = min($maxdrop, (floor(($project->mincost - $project->invested) /2)));
+                    $maxdrop = min($maxdrop, (floor(($project->mincost - $project->invested) /$match_factor)*($match_factor-1)));
                 }
 
             } elseif($call->conf == 'unlimited') {
@@ -679,7 +680,7 @@ namespace Goteo\Model\Call {
                     $maxdrop = min($maxdrop, ($project->maxcost - $project->invested - $amount));
                 } else {
                     // hasta la mitad de lo que le falta para llegar al óptimo
-                    $maxdrop = min($maxdrop, (floor(($project->maxcost - $project->invested) /2)));
+                    $maxdrop = min($maxdrop, (floor(($project->maxcost - $project->invested) /$match_factor)*($match_factor-1)));
                 }
 
             }
