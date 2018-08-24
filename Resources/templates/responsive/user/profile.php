@@ -78,10 +78,11 @@ $worthcracy=$this->worthcracy;
 							</li>
 						<?php endforeach; ?>
 						</ul>
-
+						<?php if($user->worth): ?>
 						<div class="worthcracy-text visible-xs">
-							<?= '> '.amount_format($level->amount).' / '.$level->name ?>
+							<?= '> '.amount_format($worthcracy[$user->worth]->amount).' / '.$worthcracy[$user->worth]->name ?>
 						</div>
+						<?php endif; ?>
 					<?php endif; ?>
 				</div>
 				<div class="col-md-3 stats">
