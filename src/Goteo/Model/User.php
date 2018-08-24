@@ -2105,7 +2105,7 @@ class User extends \Goteo\Core\Model {
     /*
                  * Lista de proyectos cofinanciados
     */
-    public static function invested($user, $publicOnly = true, $offset = 0, $limit = 12, $count = false) {
+    public static function invested($user, $publicOnly = true, $offset = 0, $limit = 12, $count = false, $unique_project= false) {
         $debug = false;
         $lang = Lang::current();
         $projects = array();
@@ -2116,6 +2116,10 @@ class User extends \Goteo\Core\Model {
 
         if ($publicOnly) {
             $sqlFilter = " AND project.status > 2";
+        }
+
+        if ($unique_project) {
+            $groupBy = " GROUP BY project.id";
         }
 
         if($count) {
@@ -2176,6 +2180,7 @@ class User extends \Goteo\Core\Model {
             $joins
             WHERE project.status < 7
             $sqlFilter
+            $groupBy
             ORDER BY  project.status ASC, project.created DESC
             $sql_limit
             ";

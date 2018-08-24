@@ -162,7 +162,7 @@ class UserController extends \Goteo\Core\Controller {
 
         /* para sacar proyectos que cofinancio */
         // proyectos que cofinancio
-        $invest_on = User::invested($user->id, true);
+        $invest_on = User::invested($user->id, true, 0 , 20, false, 1);
 
         //return $this->viewResponse('user/' . $show, $viewData);
 

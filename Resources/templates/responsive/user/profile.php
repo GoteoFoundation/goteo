@@ -197,14 +197,11 @@ $worthcracy=$this->worthcracy;
 
 							$facebook_alias=end($facebook_split);
 
-							if(!$facebook_alias){
+							if(!$facebook_alias||$facebook_alias=='/'){
 								$facebook_alias=prev($facebook_split);
 							}
 
 						?>
-
-							<?php $facebook_alias=end(explode("/", $user->facebook)); ?>
-
 							<div class="col-xs-3 col-md-1 <?= !$user->twitter ? 'col-md-offset-1' : '' ?> social-icon">
 								<img src="<?= SRC_URL ?>/assets/img/social/facebook_circle.png" >
 							</div>
