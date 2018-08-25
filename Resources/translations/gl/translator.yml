@@ -40,6 +40,7 @@ translator-not-translated: 'Sen entradas na táboa de traducións'
 translator-opentag: Agrupacións
 translator-original-text: 'Texto orixinal'
 translator-page: Páxinas
+translator-patron: 'Proxectos apadriñados'
 translator-pending: 'Pendente de tradución'
 translator-post: Blogue
 translator-promote: 'Proxectos populares'
@@ -54,7 +55,9 @@ translator-system: Sistema
 translator-tables: 'Táboas xerais'
 translator-tag: 'Etiquetas do blogue'
 translator-translations: Traducións
+translator-workshop: Obradoiros
 translator-worthcracy: Meritocrácia
+translator-zone-not-found: 'Esta área de tradución non é válida'
 translator-lang-not-found: 'Este idioma non está na plataforma!'
 translator-percent: '%d&#37; traducido'
 translator-add-translation: 'Engadir unha nova tradución'
