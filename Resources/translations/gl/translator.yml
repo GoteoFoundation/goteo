@@ -1,4 +1,18 @@
 ---
+translator: Tradutor/a
+translator-back-to-list: 'Volver á listaxe'
+translator-bazar: Catálogo
+translator-cannot-delete-system: 'Non é posible eliminar esta tradución xa que é de sistema!'
+translator-category: Categorías
+translator-choose: 'Escolle unha opción'
+translator-copy-from: 'Copiar contido de'
+translator-criteria: 'Criterios de avaliación'
+translator-faq: Faq
+translator-feed-translated-desc: '%LINK% traducido por %USER% a %LANGS%'
+translator-feed-translated-target: 'Tradución en %s'
+translator-field-blog: Blogue
 translator-field-description: Descrición
+translator-field-facebook_msg: 'Mensaxe de facebook'
+translator-field-facebook_msg_owner: 'Autor de facebook'
 translator-field-legend: Lenda
 translator-field-name: Nome
