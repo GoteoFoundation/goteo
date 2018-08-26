@@ -29,6 +29,9 @@ milestones-lb: Fitos
 milestones-lb-add: 'Novo fito'
 milestones-lb-list: A listar
 news-lb-list: A listar
+node-lb: 'Datos da canle'
+node-lb-list: 'Datos actuais'
+nodes-lb: Canles
 nodes-lb-list: A listar
 pages-lb: Páxinas
 pages-lb-add: 'Nova páxina'
