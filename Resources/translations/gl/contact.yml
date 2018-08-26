@@ -1,9 +1,22 @@
 ---
 contact-captcha-field: 'Proba de humanidade (sentímolo...)'
 contact-captcha-refresh: 'Actualizar imaxe'
+contact-form-dev-tag-description: 'Teño dubidas canto a cuestións técnicas'
+contact-form-dev-tag-name: Desenvolvemento
+contact-form-new-project-tag-description: 'Teño un posible proxecto'
+contact-form-new-project-tag-name: 'Posible proxecto'
+contact-form-others-tag-description: 'É outro tipo de consulta'
+contact-form-others-tag-name: Outros
+contact-form-service-tag-description: 'Quero contratar un servizo'
+contact-form-service-tag-name: Servizo
 contact-message-field: Mensaxe
 contact-name-field: Nome
+contact-send_message-button: Enviar
 contact-send_message-header: 'Envíanos unha mensaxe'
+contact-subject-field: Asunto
+contact-tag-field: 'Tipo de consulta'
 error-contact-email-empty: 'Non engadiches o teu email'
 error-contact-message-empty: 'Non escribiches ningunha mensaxe'
 error-contact-subject-empty: 'Non escribiches o asunto'
+meta-description-contact: 'Contacta co equipo de Goteo.org'
+meta-title-contact: 'Contacta con nós :: Goteo.org'
