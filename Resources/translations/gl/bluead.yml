@@ -1,6 +1,7 @@
 ---
 assign-call-success: 'O proxecto asignouse á convocatoria %s'
 image-upload-fail: 'Erro ó subir a imaxe'
+gallery-upload-fail: 'Erro ao subir a galería'
 invest-amount-error: 'Tes que indicar o importe'
 invest-create-error: 'Houbo algún problema ó comezar a transacción'
 invest-data-error: 'Non se recibiron os datos necesarios'
