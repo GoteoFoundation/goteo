@@ -14,6 +14,7 @@ contact-form-relief-tag-description: 'Desexo un comprobante da miña doazón'
 contact-form-relief-tag-name: 'Xustificante da doazón'
 contact-form-service-tag-description: 'Quero contratar un servizo'
 contact-form-service-tag-name: Servizo
+contact-form-tags: "[usuario] Teño problemas coa miña conta; [novo impulsor] Teño un posible proxecto; [novo impulsor 2] Teño dubidas canto o formulario de proxecto; [desarrollo] Teño dubidas canto a cuestións técnicas; [justificante] Preciso dun xustificante da miña doazón; [servicio] Desexo contratar un servizo; [otros] É outro tipo de consulta;"
 contact-form-user-tag-description: 'Teño problemas coa miña conta'
 contact-form-user-tag-name: 'Problemas coa conta'
 contact-message-field: Mensaxe
