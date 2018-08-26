@@ -1,1 +1,7 @@
 ---
+dashboard-user-location-change: 'Podes trocar a túa localización no teu perfil de usuario.'
+dashboard-user-location-locate: 'Compartir a miña localización'
+dashboard-user-location-located-text: "Se non desexas compartir os datos da túa localización con nós só tes que\nfacer clic no seguinte botón:"
+dashboard-user-location-located-title: 'Estás correctamente geolocalizado/a'
+dashboard-user-location-unlocate: 'Non compartir a miña localización'
+dashboard-user-location-unlocated-title: 'O sistema non puido atopar a túa localización'
