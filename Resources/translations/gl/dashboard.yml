@@ -1,5 +1,14 @@
 ---
+api-key-user: 'Usuario'
 contract-data_title: 'Datos do contrato'
+dashboard-certificates-confirmed: Confirmado
+dashboard-certificates-details: 'Ver detalles'
+dashboard-certificates-empty: 'Tes que facer algunha achega a un proxecto ou recargar o portamoedas virtual para ver os teu certificados'
+dashboard-certificates-expired: Caducado
+dashboard-chart-days: 'QUEDAN %s DÍAS'
+dashboard-chart-invested: 'FINANCIAMENTO ACADADA'
+dashboard-chart-investors: COFINANCIADORES
+dashboard-chart-no-invested: 'Sen achegas.'
 dashboard-embed_code_investor: 'CÓDIGO COA IMAXE DO COFINANCEIRO'
 dashboard-header-main: 'O meu panel'
 dashboard-investors-mail-fail: 'Erro ó enviar a mensaxe a %s'
@@ -8,8 +17,11 @@ dashboard-investors-mail-sendto: 'Enviado a %s dos teus cofinanceiros:'
 dashboard-investors-mail-sent: 'Mensaxes enviadas correctamente'
 dashboard-investors-mail-text-required: 'Escribe a mensaxe'
 dashboard-menu-activity: 'A miña actividade'
+dashboard-menu-activity-apikey: 'Clave da API'
 dashboard-menu-activity-summary: Resumo
 dashboard-menu-activity-wall: 'O meu muro'
+dashboard-menu-admin_board: Administración
+dashboard-menu-pool: 'O meu portamoedas'
 dashboard-menu-profile: 'O meu perfil'
 dashboard-menu-profile-location: Xeolocalización
 dashboard-menu-profile-personal: 'Datos persoais'
@@ -23,6 +35,8 @@ dashboard-menu-projects-updates: Novidades
 dashboard-menu-translate_board: Tradución
 dashboard-menu-translates: 'As miñas traduccións'
 dashboard-messegers-mail-sendto: 'Enviado a %s os participantes:'
+dashboard-my-wallet-available: 'Na actualidade tes <span class="pool-amount">%s</span> <span class="pool-desc">no teu portamoedas Goteo</span>'
+dashboard-my-wallet-pool-info: 'Máis información canto o uso do teu portamoedas'
 dashboard-password-recover-advice: 'Asegúrate de reestablecer o teu contrasinal'
 dashboard-project-blog-fail: 'Contacta con nós'
 dashboard-project-blog-inactive: 'Sentímolo, a publicación de novidades neste proxecto está desactivada'
@@ -90,3 +104,4 @@ user-preferences-tips: 'Bloquear consellos de difusión de campaña (para impuls
 user-preferences-updates: 'Bloquear notificacións de novidades sobre os proxectos que apoio'
 user-save-fail: 'Houbo algún problema ó gardar os datos'
 dashboard-new-material-form-description: 'Descrición'
+dashboard-rewards-invests-wallet: 'Ademais, tes no teu portamoedas virtual <strong>%AMOUNT%</strong> que podes empregar en calquera momento.'
