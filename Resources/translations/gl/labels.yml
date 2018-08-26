@@ -47,7 +47,10 @@ pages-lb-translate: 'Traducindo páxina'
 pages-lbedit: 'Editando páxina'
 projects-lb: Proxectos
 projects-lb-accounts: 'Contas do proxecto'
+projects-lb-dates: 'Datas do proxecto'
+projects-lb-images: 'Imaxes do proxecto'
 projects-lb-list: A listar
+projects-lb-rebase: 'Trocando a Id do proxecto'
 promote-lb: 'Proxectos populares'
 promote-lb-list: A listar
 recent-lb: 'Actividade recente'
@@ -56,8 +59,16 @@ reviews-lb-list: A listar
 rewards-lb-list: A listar
 sponsors-lb: 'Apoios Institucionais'
 sponsors-lb-list: A listar
+tags-lb: 'Etiquetas do blogue'
+tags-lb-add: 'Nova etiqueta'
+tags-lb-edit: 'Editando a etiqueta'
 tags-lb-list: A listar
+tags-lb-translate: 'Traducindo a etiqueta'
+templates-lb: 'Modelos de correo electrónico'
+templates-lb-edit: 'Editando o modelo'
 templates-lb-list: A listar
+texts-lb: 'Textos da interface'
+texts-lb-edit: 'Editando o orixinal'
 texts-lb-list: A listar
 translates-lb-list: A listar
 transnodes-lb-list: A listar
