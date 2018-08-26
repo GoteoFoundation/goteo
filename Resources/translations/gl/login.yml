@@ -1,5 +1,7 @@
 ---
+auth-access-forbbiden: 'Non tes permisos para acceder aquí!'
 error-register-userid: 'É obrigado escribir un nome de acceso'
+login-access-button: Iniciar sesión
 login-access-header: 'Usuario rexistrado'
 login-access-password-field: Contrasinal
 login-access-username-field: 'Nome de acceso'
@@ -7,9 +9,13 @@ login-fail: 'Erro de acceso'
 login-leave-button: 'Darse de baixa'
 login-leave-header: 'Pechar a conta'
 login-leave-message: 'Déixanos unha mensaxe'
+login-new-user-label: 'Crear un novo usuario?'
 login-oneclick-header: 'Accede cun só click'
+login-recover-button: Recuperar contrasinal
 login-recover-email-field: 'Email da conta'
+login-recover-label: 'Esqueciches o teu contrasinal?'
 login-recover-link: 'Recuperar contrasinal'
+login-recover-modal-button: Enviar
 login-recover-username-field: 'Nome de acceso'
 login-register-button: Rexistrar
 login-register-confirm_password-field: 'Confirmar contrasinal'
