@@ -1,1 +1,17 @@
 ---
+admin-NO: 'NON'
+admin-YES: SI
+admin-account-amount: 'Cantidade aportada'
+admin-account-change-user: 'Trocar de usuario'
+admin-account-detail: 'Detalles da transacción'
+admin-account-donation: Doazón
+admin-account-invest-date: 'Data da achega'
+admin-account-modify-status: 'Modificar o estado'
+admin-account-payment-method: 'Método de pagamento'
+admin-invests: Achegas
+admin-view-user-invests: 'Tódalas achegas'
+admin-user-create-invest: 'Crear achega'
+admin-aggregate-invests: 'Total de achegas'
+admin-aggregate-invests-average: 'Media de achegas'
+admin-stats-invest-totals: 'Achegas e comisións'
+admin-stats-projects-project-desc: 'Achegas ao proxecto'
