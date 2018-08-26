@@ -28,10 +28,17 @@ mailing-lb-send: 'Comunicación enviada'
 milestones-lb: Fitos
 milestones-lb-add: 'Novo fito'
 milestones-lb-list: A listar
+news-lb: Micronovas
+news-lb-add: 'Nova micronova'
+news-lb-edit: 'Editando a micronova'
 news-lb-list: A listar
+news-lb-translate: 'Traducindo a micronova'
 node-lb: 'Datos da canle'
 node-lb-list: 'Datos actuais'
 nodes-lb: Canles
+nodes-lb-add: 'Nova canle'
+nodes-lb-admins: 'Asignando administradores da canle'
+nodes-lb-edit: 'Xestionando a canle'
 nodes-lb-list: A listar
 pages-lb: Páxinas
 pages-lb-add: 'Nova páxina'
