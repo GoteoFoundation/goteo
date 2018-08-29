@@ -7,6 +7,7 @@ landing-main-slogan: 'Calcula o aforro en impostos grazas a mellora fiscal a par
 landing-more-info: 'Máis información'
 landing-real-amount: 'O teu gasto real será'
 landing-regular-invest: Achega
+landing-spread-title: 'Difunde as vantaxes fiscais de Goteo!'
 landing-stories-title: 'Grazas as túas achegas fináncianse iniciativas como:'
 landing-target-description: 'O noso obxectivo para o 2015: que <strong> máis do 50% dos usuario de Goteo exerzan o seu dereito a obter beneficios fiscais</strong> sobre as súas achegas (No 2014 só o fixeron o 12%).'
 landing-target-title: 'Obxectivo 2015'
@@ -14,4 +15,16 @@ landing-taxes-title: 'Facenda devólveche*:'
 landing-title-banner: 'En Gteo,<br>mollarse desgrava'
 landing-type-company: Compañía
 landing-type-person: 'Persoa física'
+pool-button-download-certificate: 'Descarga o teu certificado'
 pool-invest-share-discover: 'Atopa proxectos'
+pool-invest-suggest-projects: 'Proxectos que poderían interesarte'
+pool-make-sure-title: 'Confirmar datos para o certificado'
+pool-pay-method-title: 'Fai a túa achega'
+pool-recharge-amount-text: 'Decide con que cantidade queres cargar o teu portamoedas virtual'
+pool-recharge-title: 'Carga o teu portamoedas virtual'
+pool-share-title: 'Descarga o teu certificado e difunde'
+pool-step-1: Carga
+pool-step-2: Pagamento
+pool-step-3: Certificado
+pool-step-4: Compartir
+recharge-button: Cargar
