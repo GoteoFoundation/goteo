@@ -1,3 +1,17 @@
 ---
+landing-calculate-button: Calcular
+landing-donor-button: Doar
+landing-error-zero: 'A cantidade da achega ten que ser maior a 0'
+landing-less-info: 'Menos información'
+landing-main-slogan: 'Calcula o aforro en impostos grazas a mellora fiscal a partir do 2015'
+landing-more-info: 'Máis información'
+landing-real-amount: 'O teu gasto real será'
+landing-regular-invest: Achega
+landing-stories-title: 'Grazas as túas achegas fináncianse iniciativas como:'
+landing-target-description: 'O noso obxectivo para o 2015: que <strong> máis do 50% dos usuario de Goteo exerzan o seu dereito a obter beneficios fiscais</strong> sobre as súas achegas (No 2014 só o fixeron o 12%).'
+landing-target-title: 'Obxectivo 2015'
+landing-taxes-title: 'Facenda devólveche*:'
+landing-title-banner: 'En Gteo,<br>mollarse desgrava'
+landing-type-company: Compañía
 landing-type-person: 'Persoa física'
 pool-invest-share-discover: 'Atopa proxectos'
