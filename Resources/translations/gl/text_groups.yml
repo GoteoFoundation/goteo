@@ -1,9 +1,29 @@
 ---
+text-group-admin: 'Textos Admin'
+text-group-banners: 'Pancartas e cabeceiras'
+text-group-blog: Blogue/Actualizacións
+text-group-bluead: 'Avisos azuis'
+text-group-call_form: 'Convocatorias: formulario'
+text-group-call_public: 'Convocatorias: públicos'
+text-group-contact: 'Páxina de contacto'
 text-group-costs: 'Custos do proxecto'
+text-group-donor: 'Certificado doadores'
 text-group-error: 'Erros catastróficos'
 text-group-faq: 'Páxina de FAQ'
 text-group-feed: 'Eventos recentes'
+text-group-footer: Pé
+text-group-general: 'Propósito xeral'
 text-group-location: Xeolocalización
+text-group-login: 'Páxina de inicio de sesión'
+text-group-mailer: 'Correos automáticos'
 text-group-menu: 'Menú superior'
+text-group-metas: 'SEO: Metas'
+text-group-node_public: Nodos
 text-group-overview: 'Descrición do proxecto'
+text-group-personal: 'Datos persoais do usuario'
+text-group-preview: 'Vista previa do proxecto'
+text-group-public_profile: 'Páxina do perfil de usuario'
+text-group-social: 'Contas nas redes sociais'
+text-group-supports: 'Colaboracións do proxecto'
+text-group-text_groups: 'Descricións das agrupacións de textos'
 text-group-translate: 'Panel tradutor'
