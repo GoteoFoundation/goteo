@@ -1,2 +1,3 @@
 ---
 invest-template-resign: '<p>Lembra que renunciaches á recompensa que che correspondía por esta achega</p><p>Moitas grazas pola túa xenerosidade!</p>'
+invest-template-reward: '<p>Lembra que seleccionaches a seguinte recompensa, segundo se describe no punto da páxina baixo o concepto: <br> %REWARDS%</p><p>Importante: Dito retorno farase efectivo considerando o seu tempo de produción, e só ao acadar o financiamento mínimo requirido.</p>'
