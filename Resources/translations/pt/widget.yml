@@ -1,1 +1,6 @@
 ---
+call-tagmark-3: 'Chamada aberta'
+call-tagmark-4: 'Campanha ativa!'
+call-tagmark-5: 'Campanha encerrada'
+call-tagmark-6: 'Chamada arquivada'
+regular-fail_mark: Arquivado...
