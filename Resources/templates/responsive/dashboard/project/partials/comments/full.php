@@ -18,7 +18,7 @@ $default_message = 'support-' . ($this->private ? 'private_all' : 'public') . '-
         </div>
         <?php if(!$this->private): ?>
             <div class="checkbox">
-                <label><input type="checkbox" name="private"> <?= $this->text('support-set-private-message') ?></label>
+                <label><input type="checkbox" name="private" autocomplete="off"> <?= $this->text('support-set-private-message') ?></label>
             </div>
         <?php endif ?>
         <div class="form-group">

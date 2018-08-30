@@ -424,13 +424,17 @@ class Message extends \Goteo\Core\Model {
     /**
      * return all user responses
     */
-    public function getResponsesStatic($thread, $user = null, $offset = 0, $limit = 10, $count = false) {
+    public function getResponsesStatic($thread, $user = null, $with_private = false, $offset = 0, $limit = 10, $count = false) {
         $user_id = $user instanceOf User ? $user->id : null;
 
         $sql = "LEFT JOIN message_user b ON b.message_id = a.id AND b.user_id=:user
                 WHERE a.thread = :thread";
 
         $values = [':user' => $user_id, ':thread' => $thread];
+        if(!$with_private) {
+            $values[':private'] = 0;
+            $sql .= ' AND a.private = :private';
+        }
         if($count) {
             return (int) self::query("SELECT COUNT(a.id) FROM message a $sql", $values)->fetchColumn();
         }
@@ -438,7 +442,7 @@ class Message extends \Goteo\Core\Model {
         $limit = (int) $limit;
         $sql = "SELECT a.* FROM message a $sql ORDER BY date DESC, id DESC LIMIT $offset, $limit";
         $sql = "SELECT * FROM ($sql) rev ORDER BY date ASC, id ASC ";
-        // echo \sqldbg($sql, $values);
+        // die(\sqldbg($sql, $values)." [$with_private]");
         $query = self::query($sql, $values);
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
             return $resp;
@@ -446,16 +450,16 @@ class Message extends \Goteo\Core\Model {
         return [];
     }
 
-    public function getResponses($user = null, $offset = 0, $limit = 10, $count = false, $order = 'date ASC, id ASC') {
-        return static::getResponsesStatic($this->id, $user, $offset, $limit, $count, $order);
+    public function getResponses($user = null, $with_private = false, $offset = 0, $limit = 10, $count = false, $order = 'date ASC, id ASC') {
+        return static::getResponsesStatic($this->id, $user, $with_private, $offset, $limit, $count, $order);
     }
 
-    public function totalResponses(User $user = null) {
+    public function totalResponses(User $user = null, $with_private = false) {
         $user_id = '';
         if($user) $user_id = $user->id;
         if($this->total_thread_responses[$user_id]) return $this->total_thread_responses[$user_id];
         if($this->id) {
-            $this->total_thread_responses[$user_id] = $this->getResponses($user, 0, 0, true);
+            $this->total_thread_responses[$user_id] = $this->getResponses($user, $with_private, 0, 0, true);
             return $this->total_thread_responses[$user_id];
         }
         return 0;
@@ -463,8 +467,6 @@ class Message extends \Goteo\Core\Model {
 
     public function setRecipients(array $recipients = []) {
         if($recipients) {
-            $this->private = true;
-            $this->save();
             $values = [':message' => $this->id];
             $i = 0;
             foreach($recipients as $user) {

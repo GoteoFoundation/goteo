@@ -75,11 +75,17 @@ $(function(){
         var url = $parent.data('url');
         var $error = $parent.find('.error-message');
         var $textarea = $parent.find('[name="message"]');
+        var $checkbox = $parent.find('input[name="private"]');
+        // Recipients are in the global form
         var $recipients = $('.ajax-comments .recipients');
         var recipients = [];
-        $recipients.find('.label').each(function(){
-            recipients.push($(this).data('user'));
-        });
+        // Check if it's private before sending recipients
+        if($checkbox.prop('checked')) {
+            $recipients.find('.label').each(function(){
+                recipients.push($(this).data('user'));
+            });
+        }
+        // console.log('send comment, recipients:', recipients, 'checkbox', $checkbox.prop('checked'), $checkbox);
         var data = {
             message: $textarea.val(),
             recipients: recipients,
@@ -146,26 +152,27 @@ $(function(){
 
     // remove from private list
     $(".ajax-comments .recipients").on('click', ".label>i", function (e) {
-        // var $recipients = $(".ajax-comments .recipients");
         var $recipients = $(this).closest('.recipients');
         var $checkbox = $('.ajax-comments input[name="private"]');
         $(this).parent().remove();
         if(!$recipients.find('.label').length) {
-            // console.log('recipients',$recipients.find('.label'), $recipients.html());
             $recipients.find('.text').html($recipients.data('public'));
             $checkbox.prop('checked', false);
         }
     });
 
     $(".ajax-comments").on('click', 'input[name="private"]', function (e) {
-        e.preventDefault();
         var $recipients = $(this).closest('.ajax-comments').find('.recipients');
         var $list = $(this).closest(".comments").find('.comments-list');
 
-        $(this).prop('checked', true);
-        $list.find('.send-private').each(function() {
-            addRecipient($recipients, $(this).data('user'), $(this).data('name'));
-        });
+        if(!$(this).prop('checked')) {
+            $(".ajax-comments .recipients .label[data-user]").remove();
+            $recipients.find('.text').html($recipients.data('public'));
+        } else {
+            $list.find('.send-private').each(function() {
+                addRecipient($recipients, $(this).data('user'), $(this).data('name'));
+            });
+        }
     });
 
 

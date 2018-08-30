@@ -80,6 +80,7 @@ class MessagesApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException('Parent is a child!');
         }
         $id = $request->request->get('id');
+        $recipients = $request->request->get('recipients');
         // Create the Comment associated (not updated allowed for the moment)
         if($id) {
             if(!$comment = Comment::get($id)) {
@@ -92,15 +93,16 @@ class MessagesApiController extends AbstractApiController {
                 'thread' => $thread,
                 'project' => $project,
                 'blocked' => false,
-                'private' => $parent->private,
+                'private' => $recipients ? true : $parent->private, // Set private if it has recipients or parent is private
                 'message' => $message,
                 'date' => date('Y-m-d H:i:s')
             ]);
         }
+
         if(!$comment->save($errors)) {
             throw new ModelException('Update failed '. implode(", ", $errors));
         }
-        if($recipients = $request->request->get('recipients')) {
+        if($recipients) {
             $comment->setRecipients($recipients);
         } else {
             // Set the parent as recipient
