@@ -542,7 +542,7 @@ class Message extends \Goteo\Core\Model {
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
             // actualizar campo calculado
-            self::numMessengers($this->project);
+            if($this->project) self::numMessengers($this->project);
 
             return true;
         } catch(\PDOException $e) {
@@ -610,33 +610,29 @@ class Message extends \Goteo\Core\Model {
      * Numero de usuarios mensajeros de un proyecto
      */
     public static function numMessengers ($project) {
-        try {
-            if( ! $project instanceOf Project ) $project = Project::getMini($project);
-        } catch(ModelNotFoundException $e) {
-            return 0;
-        }
-        $values = array(':project' => $project->id, ':user' => $project->getOwner()->id);
+        $pid = $project instanceOf Project ? $project->id : $project;
+        $values = [':project' => $pid];
 
-        $sql = "SELECT  COUNT(*) as messengers, project.num_messengers as num, project.num_investors as pop
-            FROM    message
-            INNER JOIN project
-                ON project.id = message.project
-            WHERE   message.project = :project
-            AND message.user != :user
-            AND message.private = 0
-            ";
+        $sql = "SELECT p.id, p.num_messengers, p.popularity, p.num_investors,
+                  (SELECT COUNT(DISTINCT m.user,IFNULL(m.thread,0)) FROM message m WHERE m.project=p.id AND m.user!=p.owner
+                    AND (m.thread IN (SELECT id FROM message m2 WHERE m2.blocked=1)
+                    OR (m.thread IS NULL AND private=0))
+                  ) AS real_num
+                FROM project p
+                WHERE p.id = :project";
 
         // die(\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
         if($got = $query->fetchObject()) {
+            $real_pop = $got->num_investors + $got->real_num;
             // si ha cambiado, actualiza el numero de colaboraciones en proyecto
-            if ($got->messengers != $got->num) {
-                static::query("UPDATE project SET num_messengers = :num, popularity = :pop WHERE id = :project", array(':num' => (int) $got->messengers, 'pop' => ( $got->messengers + $got->pop), ':project' => $project->id));
+            if ($got->real_num != $got->num_messengers || $real_pop != $got->popularity) {
+                static::query("UPDATE project SET num_messengers = :num, popularity = :pop WHERE id = :project", [':num' => (int) $got->real_num, ':pop' => $real_pop, ':project' => $pid]);
             }
         }
 
-        return (int) $got->messengers;
+        return (int) $got->real_num;
     }
 
 
