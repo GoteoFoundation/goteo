@@ -414,6 +414,23 @@ class AdminChartsApiController extends ChartsApiController {
                 if($method === 'global') $filter['methods'][] = 'pool';
                 // $filter['status'] = Invest::STATUS_RETURNED;
                 $filter['status'] = Invest::$FAILED_STATUSES;
+                // Change from/until to refunded dates
+                if($filter['datetime_from']) {
+                    $filter['refunded_from'] = $filter['datetime_from'];
+                    unset($filter['datetime_from']);
+                }
+                if($filter['date_from']) {
+                    $filter['refunded_from'] = $filter['date_from'];
+                    unset($filter['date_from']);
+                }
+                if($filter['datetime_until']) {
+                    $filter['refunded_until'] = $filter['datetime_until'];
+                    unset($filter['datetime_until']);
+                }
+                if($filter['date_until']) {
+                    $filter['refunded_until'] = $filter['date_until'];
+                    unset($filter['date_until']);
+                }
                 $totals[$slot] = $stats->investTotals($filter);
                 // Add refunded to pool
                 $to_pool = $stats->investTotals(['status' => Invest::STATUS_TO_POOL] + $filter);
