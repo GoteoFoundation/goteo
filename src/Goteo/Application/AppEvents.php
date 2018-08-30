@@ -330,6 +330,16 @@ final class AppEvents
     const MESSAGE_UPDATED = 'message.updated';
 
     /**
+     * The message.deleted event is thrown when a new message/comments is deleted
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterMessageEvent instance.
+     *
+     * @var string
+     */
+    const MESSAGE_DELETED = 'message.deleted';
+
+    /**
      * The matcher.project event is thrown when a project is add to a Matcher or its status changes
      *
      * The event listener receives an

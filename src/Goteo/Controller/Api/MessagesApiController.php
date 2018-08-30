@@ -147,6 +147,10 @@ class MessagesApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException();
         }
         $message->dbDelete();
+
+        // Send and event to create the Feed and/or update number of collaborations
+        $this->dispatch(AppEvents::MESSAGE_DELETED, new FilterMessageEvent($message));
+
         return $this->jsonResponse(['id' => $message->id]);
     }
 

@@ -172,6 +172,34 @@ EOT
                 }
                 $index++;
             }
+
+            $output->writeln("Checking project collaborations...");
+            $sql = "SELECT p.id, p.name , p.num_messengers,
+                      (SELECT COUNT(DISTINCT m.user,IFNULL(m.thread,0)) FROM message m WHERE m.project=p.id AND m.user!=p.owner
+                        AND (m.thread IN (SELECT id FROM message m2 WHERE m2.blocked=1)
+                        OR (m.thread IS NULL AND private=0))
+                      ) AS real_num
+                    FROM project p
+                    HAVING real_num != p.num_messengers
+                    ORDER BY real_num ASC
+                ";
+            $query = Project::query($sql, $values);
+            foreach($query->fetchAll(\PDO::FETCH_CLASS) as $prj) {
+                $output->writeln("Found project <info>{$prj->name}</info> with ID <info>{$prj->id}</info> having collaborations mismatch:");
+                $t = "\tTotal collaborations (expected / currently): ";
+                $v = (int) $prj->real_num . ' / ' . (int)$prj->num_messengers;
+                $t .= ($prj->real_num != $prj->num_messengers) ? "<error>$v</error>" : "<comment>$v</comment>";
+
+                $output->writeln($t);
+
+                if($update) {
+                    if(Project::query("UPDATE project SET num_messengers = :num WHERE id = :id",
+                        [':id' => $prj->id, ':num' => (int)$prj->real_num])) {
+                        $fixes++;
+                    }
+                }
+
+            }
         }
         elseif($scope === 'projectid') {
             $output->writeln("Checking project ID's...");
