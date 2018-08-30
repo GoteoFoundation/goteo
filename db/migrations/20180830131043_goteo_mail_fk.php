@@ -32,8 +32,8 @@ class GoteoMailFk
   public function getUpSQL()
   {
      return "
-     ALTER TABLE `mail` DROP FOREIGN KEY `mail_ibfk_4`;
-     ALTER TABLE `mail` ADD CONSTRAINT `mail_ibfk_4` FOREIGN KEY (`message_id`) REFERENCES `message`(`id`) ON UPDATE CASCADE ON DELETE SET NULL;";
+     ALTER TABLE `mail` DROP FOREIGN KEY `mail_ibfk_3`;
+     ALTER TABLE `mail` ADD CONSTRAINT `mail_ibfk_3` FOREIGN KEY (`message_id`) REFERENCES `message`(`id`) ON UPDATE CASCADE ON DELETE SET NULL;";
   }
 
   /**
@@ -44,8 +44,8 @@ class GoteoMailFk
   public function getDownSQL()
   {
      return "
-        ALTER TABLE `mail` DROP FOREIGN KEY `mail_ibfk_4`;
-        ALTER TABLE `mail` ADD CONSTRAINT `mail_ibfk_4` FOREIGN KEY (`message_id`) REFERENCES `message`(`id`) ON UPDATE CASCADE;
+        ALTER TABLE `mail` DROP FOREIGN KEY `mail_ibfk_3`;
+        ALTER TABLE `mail` ADD CONSTRAINT `mail_ibfk_3` FOREIGN KEY (`message_id`) REFERENCES `message`(`id`) ON UPDATE CASCADE;
      ";
   }
 
