@@ -53,7 +53,16 @@ class AdminPostEditForm extends ProjectPostForm {
                 'constraints' => array(
                     new Constraints\Count(array('max' => 1))
                 )
-            ));
+            ))
+            ->add('author', 'typeahead', [
+                'label' => 'regular-author',
+                'row_class' => 'extra',
+                'required' => false,
+                'disabled' => $this->getReadonly(),
+                'sources' => 'user',
+                'text' => ($post && $post->getAuthor()) ? $post->getAuthor()->name : null
+            ])
+;
 
         if($data['slug']) {
             $builder->add('slug', 'text',[
