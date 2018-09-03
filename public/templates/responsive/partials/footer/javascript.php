@@ -8,7 +8,7 @@
 <script src="<?= SRC_URL ?>/assets/vendor/jquery-hammerjs/jquery.hammer.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/clipboard/dist/clipboard.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/moment/min/moment-with-locales.min.js"></script>
-<script src="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/d3/d3.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/footable/compiled/footable.min.js"></script>
 <?php else: ?>
