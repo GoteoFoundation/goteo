@@ -175,8 +175,6 @@ class AdminChartsApiController extends ChartsApiController {
 
     private function timeSlots($slot = '', Request $request = null) {
         $f = 'Y-m-d H:i:s';
-        // $week_last_year = (new \DateTime('monday this week 00:00 +1 day last year'));
-        // var_dump($week_last_year);die;
         $slots = [
             'today' => [
                 'from' => (new \DateTime('today'))->format($f),
@@ -212,11 +210,11 @@ class AdminChartsApiController extends ChartsApiController {
             ],
             'last_month_complete' => [
                 'from' => (new \DateTime('first day of last month 00:00'))->format($f),
-                'to' => (new \DateTime('first day of this month -1 second'))->format($f)
+                'to' => (new \DateTime('first day of this month -1 second 00:00'))->format($f)
             ],
             'last_year_month' => [
-                'from' => (new \DateTime('first day of last month 00:00 +1 day last year'))->format($f),
-                'to' => (new \DateTime('now -1 month +1 day last year'))->format($f)
+                'from' => (new \DateTime('first day of this month 00:00 +1 day last year'))->format($f),
+                'to' => (new \DateTime('now +1 day last year'))->format($f)
             ],
             'year' => [
                 'from' => (new \DateTime('first day of january this year'))->format($f),
@@ -233,6 +231,7 @@ class AdminChartsApiController extends ChartsApiController {
                 'to' => (new \DateTime('first day of january this year -1 second'))->format($f)
                 ]
             ];
+        // print_r($slots);die;
         if($slot) {
             $varis = explode(',', $slot);
             if(array_diff($varis, $slots)) {
@@ -415,6 +414,23 @@ class AdminChartsApiController extends ChartsApiController {
                 if($method === 'global') $filter['methods'][] = 'pool';
                 // $filter['status'] = Invest::STATUS_RETURNED;
                 $filter['status'] = Invest::$FAILED_STATUSES;
+                // Change from/until to refunded dates
+                if($filter['datetime_from']) {
+                    $filter['refunded_from'] = $filter['datetime_from'];
+                    unset($filter['datetime_from']);
+                }
+                if($filter['date_from']) {
+                    $filter['refunded_from'] = $filter['date_from'];
+                    unset($filter['date_from']);
+                }
+                if($filter['datetime_until']) {
+                    $filter['refunded_until'] = $filter['datetime_until'];
+                    unset($filter['datetime_until']);
+                }
+                if($filter['date_until']) {
+                    $filter['refunded_until'] = $filter['date_until'];
+                    unset($filter['date_until']);
+                }
                 $totals[$slot] = $stats->investTotals($filter);
                 // Add refunded to pool
                 $to_pool = $stats->investTotals(['status' => Invest::STATUS_TO_POOL] + $filter);
@@ -445,8 +461,9 @@ class AdminChartsApiController extends ChartsApiController {
                     $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$RETURNED_STATUSES] + $filter);
                     $totals[$slot]['charged'] += $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
                     $totals[$slot]['lost'] -= $m::calculateComission($returned['invests'], $returned['amount'], $returned['invests'], $returned['amount']);
-
                 }
+                $totals[$slot]['charged'] = round($totals[$slot]['charged'], 2);
+                $totals[$slot]['lost'] = round($totals[$slot]['lost'], 2);
             } elseif($target === 'fees') {
 
                 // Platform fees

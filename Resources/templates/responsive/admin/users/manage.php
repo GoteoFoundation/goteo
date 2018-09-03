@@ -133,7 +133,7 @@ $all_roles = $roles::getAllRoleNames();
                     $stats = $m->getStats();
                     $opened = (bool) $stats && $stats->getEmailOpenedCollector()->getPercent();
                  ?>
-                    <a href="/admin/sent/details/<?= $m->id ?>" target="_blank">
+                    <a href="/admin/sent/detail/<?= $m->id ?>" target="_blank">
                         <span class="recipient<?= $opened ? ' opened' : '' ?>"></span>
                         <?= date_formater($m->date) ?>
                         <!-- (<strong><?= $m->template ?></strong>) -->

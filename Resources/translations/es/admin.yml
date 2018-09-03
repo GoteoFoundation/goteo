@@ -268,6 +268,7 @@ admin-raised: Recaudado
 admin-active: Cobrado
 admin-refunded: Devuelto
 admin-refunded-to_users: Devuelto a usuarios
+admin-refunded-to_users-invests: Nº devoluciones a usuarios
 admin-refunded-to_wallet: Devuelto al monedero
 admin-commissions: Comisión
 admin-fees: Comisión plataforma

@@ -4,15 +4,17 @@ purpose: 'Mail template to be sent to a project owner when the story is able to 
 type: 'md'
 title: '¿Tienes una historia que contar sobre tu proyecto %PROJECTNAME%?'
 text: >
-      Hola %USERNAME%, 
+    Hola %USERNAME%,
 
-      Ahora que han pasado unos días desde la finalización de tu campaña, nos gustaría que nos contases como ha sido tu experiencia en Goteo.
-      
-      Tu historia servirá para inspirar a otros, apareciendo en tu perfil de usuario, y podrá ser destacada en nuestra home.
+    Tu campaña ha sido todo un éxito, así que ¿nos cuentas cómo ha sido tu experiencia en Goteo?
 
-      Puedes completarla desde tu dashboard:
+    Hazlo a tráves de tu dashboard:
 
-      [%STORYURL%](%STORYURL%)
+    [%STORYURL%](%STORYURL%)
 
-      El equipo de Goteo
+    Tu historia servirá para inspirar a otras personas, apareciendo en tu perfil de usuario, y podrá ser destacada en nuestra home.
+
+    ¡Un abrazo!
+
+    El equipo de Goteo
 

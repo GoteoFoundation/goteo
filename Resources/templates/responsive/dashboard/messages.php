@@ -8,7 +8,7 @@
     <h2><?= $this->text('regular-messages') ?></h2>
     <?php
     foreach($this->messages as $message):
-        $comments = $message->totalResponses($this->get_user());
+        $comments = $message->totalResponses($this->get_user(), true);
         $type = $message->getType();
         $icon = '';
         if($type == 'project-private') $icon = 'partners';
@@ -33,7 +33,7 @@
             <?php endif ?>
 
               <?= $this->insert('dashboard/project/partials/comments/full', [
-                    'comments' => $message->getResponses($this->get_user()),
+                    'comments' => $message->getResponses($this->get_user(), true),
                     'thread' => $message->id,
                     'private' => $message->private,
                     'project' => $message->project,

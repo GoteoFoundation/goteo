@@ -232,9 +232,20 @@ class MessageListener extends AbstractListener {
         }
     }
 
+    public function onMessageDeleted(FilterMessageEvent $event) {
+        $message = $event->getMessage();
+        $project = $message->getProject();
+        if($project) {
+            // Update num. messengers
+            $message::numMessengers($project);
+        }
+
+    }
+
 	public static function getSubscribedEvents() {
 		return array(
-			AppEvents::MESSAGE_CREATED => 'onMessageCreated',
+            AppEvents::MESSAGE_CREATED => 'onMessageCreated',
+			AppEvents::MESSAGE_DELETED => 'onMessageDeleted',
 		);
 	}
 }

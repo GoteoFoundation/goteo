@@ -127,17 +127,17 @@ class Support extends \Goteo\Core\Model {
     }
 
     /* returns responses to this support from the message table */
-    public function getThreadResponses(User $user = null) {
+    public function getThreadResponses(User $user = null, $with_private = true) {
         if($thread = $this->getThread()) {
-            return $thread->getResponses($user);
+            return $thread->getResponses($user, $with_private);
         }
         return [];
     }
 
     /* returns number of responses to this support from the message table */
-    public function totalThreadResponses(User $user = null) {
+    public function totalThreadResponses(User $user = null, $with_private = true) {
         if($thread = $this->getThread()) {
-            return $thread->totalResponses($user);
+            return $thread->totalResponses($user, $with_private);
         }
         return 0;
     }

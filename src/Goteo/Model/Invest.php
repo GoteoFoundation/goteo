@@ -485,6 +485,14 @@ class Invest extends \Goteo\Core\Model {
             $sqlFilter[] = "invest.datetime <= :datetime_until";
             $values[':datetime_until'] = $filters['datetime_until'];
         }
+        if (!empty($filters['refunded_from'])) {
+            $sqlFilter[] = "invest.invested >= :refunded_from";
+            $values[':refunded_from'] = $filters['refunded_from'];
+        }
+        if (!empty($filters['refunded_until'])) {
+            $sqlFilter[] = "invest.invested <= :refunded_until";
+            $values[':refunded_until'] = $filters['refunded_until'];
+        }
         if (isset($filters['fulfilled'])) {
             $sqlFilter[] = "invest_reward.fulfilled=" . ($filters['fulfilled'] ? '1' : '0');
         }
