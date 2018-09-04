@@ -16,6 +16,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 use Goteo\Application\View;
 use Goteo\Application\Message;
+use Goteo\Application\Session;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Model\User;
 use Goteo\Library\Text;
@@ -23,6 +24,7 @@ use Goteo\Core\Traits\LoggerTrait;
 
 abstract class AbstractAdminController extends \Goteo\Core\Controller implements AdminControllerInterface {
     use LoggerTrait;
+    protected $user;
 
     public function __construct() {
         // changing to a responsive theme here
@@ -31,6 +33,7 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
             'module' => static::getId(),
             'module_label' => static::getLabel()
         ]);
+        $this->user = Session::getUser();
     }
 
     /**

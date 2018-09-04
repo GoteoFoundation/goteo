@@ -149,11 +149,11 @@ $(function(){
 
         //////////////////////////////////////////////
         /// FORM with class "autoform"
-        /// TODO: check how to works this in ajax loading
+        /// TODO: check how this works in ajax loading (after pronto)
         ///////////////////////////////////////
 
         // Create datepickers on date input types
-        $('.autoform .datepicker, .autoform .datepicker > input').datetimepicker({
+        $('.autoform .datetimepicker, .autoform .datetimepicker > input').datetimepicker({
                 format: 'DD/MM/YYYY',
                 extraFormats: ['YYYY-MM-DD'],
                 locale: goteo.locale
@@ -162,16 +162,15 @@ $(function(){
                 // console.log(e);
                 // $('#publishing-date').val(e.date.format('YYYY/MM/DD'));
             });
-        // Full time datepicker
-        $('.autoform .datepicker-full, .autoform .datepicker-full > input').datetimepicker({
-                locale: goteo.locale,
-
+        // Full time datetimepicker
+        $('.autoform .datetimepicker-full, .autoform .datetimepicker-full > input').datetimepicker({
+                locale: goteo.locale
             }).on('dp.change', function(e) {
               // TODO: some kind of solution to transform locale dates:
               // https://github.com/Eonasdan/bootstrap-datetimepicker/issues/1869
             });
-        // Year only datepickers
-        $('.autoform .datepicker-year, .autoform .datepicker-year > input').datetimepicker({
+        // Year only datetimepickers
+        $('.autoform .datetimepicker-year, .autoform .datetimepicker-year > input').datetimepicker({
                 format: 'YYYY',
                 locale: goteo.locale,
                 viewMode: 'years'
