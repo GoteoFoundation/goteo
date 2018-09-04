@@ -126,6 +126,7 @@ class ProjectPostForm extends AbstractFormProcessor {
         // Remove html tags if has no permission
         if(!Session::getUser()->hasPerm('full-html-edit')) {
             $post->text = Text::tags_filter($post->text);
+            $post->text = $post::sanitizeText($post->text);
         }
 
         $errors = [];
