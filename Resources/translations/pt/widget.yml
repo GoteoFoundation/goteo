@@ -4,3 +4,6 @@ call-tagmark-4: 'Campanha ativa!'
 call-tagmark-5: 'Campanha encerrada'
 call-tagmark-6: 'Chamada arquivada'
 regular-fail_mark: Arquivado...
+regular-gotit_mark: Co-financiado!
+regular-keepiton_mark: 'Para o ideal'
+regular-oneround_mark: 'Rodada única'
