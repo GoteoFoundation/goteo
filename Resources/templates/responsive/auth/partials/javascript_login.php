@@ -12,7 +12,7 @@ $(function(){
             data: { 'email' : email, 'return' : '<?= urlencode($this->raw('return')) ?>'  },
             type: 'post'
             })
-            .success(function(result){
+            .done(function(result){
                 $("#modal-content").html(result);
             })
             .fail(function(){
