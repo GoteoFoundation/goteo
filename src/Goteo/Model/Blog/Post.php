@@ -161,8 +161,8 @@ class Post extends \Goteo\Core\Model {
         //tags
         $post->tags = Post\Tag::getAll($post->id);
 
-        //agregamos html si es texto plano
-        $post->text = self::sanitizeText($post->text);
+        // @deprecated: This should be in the controller if needed
+        // $post->text = self::sanitizeText($post->text);
 
         return $post;
     }
@@ -266,7 +266,8 @@ class Post extends \Goteo\Core\Model {
 
             $post->tags = Post\Tag::getAll($post->id);
 
-            $post->text = self::sanitizeText($post->text);
+            // @deprecated: This should be in the controller if needed
+            // $post->text = self::sanitizeText($post->text);
             $list[$post->id] = $post;
         }
 
