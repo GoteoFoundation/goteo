@@ -38,6 +38,9 @@ class GoteoWorkshopLanding
       ALTER TABLE `workshop` ADD COLUMN `schedule_file` VARCHAR(255) NULL AFTER `header_image`;
       ALTER TABLE `workshop` ADD COLUMN `how_to_get` TINYTEXT NULL AFTER `schedule_file`;
       ALTER TABLE `workshop` ADD COLUMN `map_iframe` TINYTEXT NULL AFTER `how_to_get`;
+      ALTER TABLE `workshop_lang` ADD COLUMN `subtitle` TINYTEXT NULL AFTER `title`;
+      ALTER TABLE `workshop_lang` ADD COLUMN `how_to_get` TINYTEXT NULL AFTER `subtitle`;
+
      ";
   }
 
@@ -55,6 +58,8 @@ class GoteoWorkshopLanding
       ALTER TABLE `workshop` DROP COLUMN `schedule_file`;
       ALTER TABLE `workshop` DROP COLUMN `map_iframe`;
       ALTER TABLE `workshop` DROP COLUMN `how_to_get`;
+      ALTER TABLE `workshop_lang` DROP COLUMN `subtitle`;
+      ALTER TABLE `workshop_lang` DROP COLUMN `how_to_get`;
      ";
   }
 

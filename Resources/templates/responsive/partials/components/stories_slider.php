@@ -1,5 +1,4 @@
 <div class="slider slider-stories" id="stories">
-
 <?php foreach($this->stories as $story): ?>
     <div class="row">
         <div class="col-md-6">

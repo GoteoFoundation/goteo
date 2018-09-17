@@ -1,37 +1,31 @@
-<div class="slider slider-workshops" id="workshops">
+<div class="container workshops">
+    <h2 class="title"><?= $this->title ?></h2>
+    <div class="slider slider-workshops" id="slider-workshops">
+    <?php foreach($this->workshops as $workshop): ?>
+    	<?php $date=new Datetime($workshop->date_in); ?>
+    	<?php $month=strtolower(strftime("%B",$date->getTimestamp())); ?>
 
-<?php foreach($this->workshops as $workshop): ?>
-    <div class="row">
-        <div class="col-md-6">
-            <img class="img-responsive" src="<?= $story->getImage()->getLink(600, 400, true) ?>" >
+        <div class="workshop-item col-md-3">
+        	<div class="date">
+        		<div class="day">
+        			<?= $date->format('d'); ?>
+        		</div>
+	        	<div class="month">
+	        		<?= $this->text('date-'.$month); ?>
+	        	</div>
+	        	<div class="year">
+	        		<?= $date->format('Y'); ?>
+	        	</div>
+        	</div>
+        	<div class="title">
+            	<?= $workshop->title ?>
+        	</div>
+        	<div class="subtitle">
+            	<?= $workshop->subtitle ?>
+        	</div>
         </div>
-        <div class="col-md-6">
-            <div class="info-container">
-                <div class="type-container">
-                    <span class="type-label" >
-                        <?= $this->text('home-foundation-story-label') ?>
-                    </span>
-                    <?php if($story->review): ?>
-                        <span class="type hidden-xs">
-                            <?= $story->review ?>
-                        </span>
-                    <?php endif; ?>
-                </div>
-                <div class="description">
-                    <div class="pull-left quote">
-                        <i class="fa fa-quote-left"></i>
-                    </div>
-                    <div class="pull-left text">
-                        <?= $story->description ?>
-                        <i class="fa fa-quote-right pull-right"></i>
-                    </div>
-                </div>
-                <div class="author" >
-                    <?= "- ".$story->title ?>
-                </div>
-            </div>
-        </div>
+
+    <?php endforeach; ?>
+
     </div>
-<?php endforeach; ?>
-
 </div>
