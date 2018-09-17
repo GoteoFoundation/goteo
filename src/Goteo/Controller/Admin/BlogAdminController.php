@@ -143,7 +143,7 @@ class BlogAdminController extends AbstractAdminController {
 
 
             try {
-                $processor->save($form, true);
+                $processor->save($form); // Do not save the model if it has errors
                 $this->dispatch(AppEvents::BLOG_POST, new FilterBlogPostEvent($processor->getModel()));
                 Message::info(Text::get('admin-blog-edit-success'));
                 return $this->redirect('/admin/blog?' . $request->getQueryString());
