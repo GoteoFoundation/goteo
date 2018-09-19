@@ -40,6 +40,8 @@ services:
     environment:
       - GOTEO_CONFIG_FILE
       - DEBUG
+      - UID
+      - GID
     command: ./docker/php/init.sh
 
 
