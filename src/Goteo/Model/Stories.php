@@ -23,7 +23,7 @@ use Goteo\Model\Image;
 use Goteo\Library\Check;
 
 class Stories extends \Goteo\Core\Model {
-
+    
     public
         $id,
         $node,
@@ -138,25 +138,8 @@ class Stories extends \Goteo\Core\Model {
              $sqlFilter.= " AND project.owner = '".$filters['project_owner']."'";
         }
 
-        if(self::default_lang(Lang::current()) === Config::get('lang')) {
-            $different_select=" IFNULL(stories_lang.title, stories.title) as title,
-                                IFNULL(stories_lang.description, stories.description) as description,
-                                IFNULL(stories_lang.review, stories.review) as review,
-                                IFNULL(open_tag_lang.name, open_tag.name) as open_tags_name";
-            }
-        else {
-                $different_select=" IFNULL(stories_lang.title, IFNULL(eng.title, stories.title)) as title,
-                                    IFNULL(stories_lang.description, IFNULL(eng.description, stories.description)) as description,
-                                    IFNULL(stories_lang.review, IFNULL(eng.review, stories.review)) as review,
-                                    IFNULL(open_tag_lang.name, IFNULL(eng_open_tag.name, open_tag.name)) as open_tags_name";
-                $eng_join=" LEFT JOIN stories_lang as eng
-                                ON  eng.id = stories.id
-                                AND eng.lang = 'en'";
-
-                $eng_join_open_tags=" LEFT JOIN open_tag_lang as eng_open_tag
-                                ON  eng_open_tag.id = open_tag.id
-                                AND eng_open_tag.lang = 'en'";
-            }
+        $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
 
         $query = static::query("
             SELECT
@@ -164,7 +147,7 @@ class Stories extends \Goteo\Core\Model {
                 stories.node as node,
                 stories.project as project,
                 stories.lang as lang,
-                $different_select,
+                $fields,
                 stories.url as url,
                 stories.image as image,
                 stories.pool_image as pool_image,
@@ -177,8 +160,6 @@ class Stories extends \Goteo\Core\Model {
                 stories.landing_pitch as `landing_pitch`,
                 stories.landing_match as `landing_match`,
                 stories.sphere as `sphere`,
-                open_tag.post as open_tags_post,
-
                 project.id as project_id,
                 project.name as project_name,
                 project.amount as project_amount,
@@ -191,23 +172,12 @@ class Stories extends \Goteo\Core\Model {
                 ON project.id = stories.project
             LEFT JOIN user
                 ON user.id = project.owner
-            LEFT JOIN stories_lang
-                ON  stories_lang.id = stories.id
-                AND stories_lang.lang = :lang
-            $eng_join
-            LEFT JOIN project_open_tag
-                ON  project_open_tag.project = stories.project
-            LEFT JOIN open_tag
-                ON  open_tag.id = project_open_tag.open_tag
-            LEFT JOIN open_tag_lang
-                ON  open_tag_lang.id = open_tag.id
-                AND open_tag_lang.lang = :lang
-            $eng_join_open_tags
+            $joins
             WHERE stories.node = :node
             $sqlFilter
             GROUP BY id
             ORDER BY `order` ASC
-            ", array(':node' => $node, ':lang' => Lang::current()));
+            ", array(':node' => $node));
 
         foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $story) {
             $story->status = $status[$story->status];

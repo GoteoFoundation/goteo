@@ -84,16 +84,12 @@ class Sphere extends \Goteo\Core\Model {
      * @param  array  $filters
      * @return mixed            Array of spheres
      */
-    public static function getAll($filters = array()) {
-
-        $lang = Lang::current();
+    public static function getAll($filters = array(), $lang=null) {
 
         $values = [];
         $filter = [];
 
         $list = [];
-
-        $values[':lang']=$lang;
 
         if($filters['landing_match']) {
             $filter[] = "sphere.landing_match=1";
@@ -103,26 +99,18 @@ class Sphere extends \Goteo\Core\Model {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
 
-        if(self::default_lang($lang) === Config::get('lang')) {
-          $different_select=" IFNULL(sphere_lang.name, sphere.name) as name";
-        }
-        else {
-          $different_select=" IFNULL(sphere_lang.name, IFNULL(eng.name,sphere.name)) as name";
-          $eng_join=" LEFT JOIN sphere_lang as eng
-                            ON  eng.id = sphere.id
-                            AND eng.lang = 'en'";
-        }
+
+        if(!$lang) $lang = Lang::current();
+        $values['viewLang'] = $lang;
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql = "SELECT  sphere.id as id,
                         sphere.image as image,
                         sphere.order as `order`,
                         sphere.landing_match as landing_match,
-                        $different_select
+                        $fields
                 FROM sphere
-                LEFT JOIN sphere_lang
-                    ON  sphere_lang.id = sphere.id
-                    AND sphere_lang.lang = :lang
-                $eng_join
+                $joins
                 $sql
                 ORDER BY sphere.order ASC, sphere.name ASC";
 
