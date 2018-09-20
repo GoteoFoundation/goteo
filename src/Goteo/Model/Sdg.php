@@ -12,7 +12,7 @@ namespace Goteo\Model;
 
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
-use Goteo\Core\Model;
+use Goteo\Model\Image;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 
@@ -26,6 +26,8 @@ class Sdg extends \Goteo\Core\Model {
            $description = '',
            $link = '',
            $modified;
+
+    protected $iconImage;
 
     public static function getLangFields() {
         return ['name', 'description', 'link'];
@@ -114,6 +116,20 @@ class Sdg extends \Goteo\Core\Model {
         return [];
     }
 
+    public function getIcon() {
+        if(!$this->iconImage instanceOf Image) {
+            $this->iconImage = Image::get($this->icon ?: "sdg/square/{$this->id}.png");
+            if(!$this->icon) $this->iconImage->setAsset(true);
+        }
+        return $this->iconImage;
+    }
+
+    public function setIcon($icon) {
+        $this->icon = $icon;
+        $this->iconImage = null;
+        return $this;
+    }
+
     /**
      * Save.
      * @param   type array  $errors     Error by reference
@@ -125,10 +141,12 @@ class Sdg extends \Goteo\Core\Model {
 
         $fields = ['name', 'icon', 'description', 'link'];
         try {
+            // We don't use simply $this->insertUpdate($fields);
             if(empty($this->modified)) {
                 $this->modified = date('Y-m-d H:i:s');
-                $fields[] = 'id';
+                if($this->id) $fields[] = 'id';
                 $this->dbInsert($fields);
+                $this->id = static::insertId();
             }
             else {
                 $this->dbUpdate($fields);
@@ -149,8 +167,7 @@ class Sdg extends \Goteo\Core\Model {
      * @return  type bool   true|false
      */
     public function validate(&$errors = []) {
-        if(empty($this->id)) $errors[] = 'Empty Id for sdg';
-        if(empty($this->name)) $errors[] = 'Empty name for sdg';
+        if(empty($this->name)) $errors[] = 'Empty name property';
         return empty($errors);
     }
 
