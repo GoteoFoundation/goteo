@@ -16,6 +16,8 @@ class SdgTest extends TestCase {
     private static $data = ['name' => 'test', 'description' => 'Sdg test text'];
     private static $category;
     private static $sphere;
+    private static $socialcommitment;
+    private static $footprint;
 
     public function testInstance() {
         $ob = new Sdg();
@@ -72,6 +74,7 @@ class SdgTest extends TestCase {
         $cats = $ob->getCategories();
         $this->assertCount(1, $cats);
         $this->assertInstanceOf('\Goteo\Model\Category', $cats[0]);
+        self::$category = $cats[0]->id;
         $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeCategories($cats));
         $this->assertCount(0, $ob->getCategories());
     }
@@ -87,6 +90,7 @@ class SdgTest extends TestCase {
         $spheres = $ob->getSpheres();
         $this->assertCount(1, $spheres);
         $this->assertInstanceOf('\Goteo\Model\Sphere', $spheres[0]);
+        self::$sphere = $spheres[0]->id;
         $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeSpheres($spheres));
         $this->assertCount(0, $ob->getSpheres());
     }
@@ -102,6 +106,7 @@ class SdgTest extends TestCase {
         $socials = $ob->getSocialCommitments();
         $this->assertCount(1, $socials);
         $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $socials[0]);
+        self::$socialcommitment = $socials[0]->id;
         $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeSocialCommitments($socials));
         $this->assertCount(0, $ob->getSocialCommitments());
     }
@@ -114,10 +119,11 @@ class SdgTest extends TestCase {
         $social = new Footprint(['name' => 'sdg test footrint']);
         $this->assertTrue($social->save($errors), implode("\n", $errors));
         $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->addFootprints($social));
-        $socials = $ob->getFootprints();
-        $this->assertCount(1, $socials);
-        $this->assertInstanceOf('\Goteo\Model\Footprint', $socials[0]);
-        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeFootprints($socials));
+        $footprints = $ob->getFootprints();
+        $this->assertCount(1, $footprints);
+        $this->assertInstanceOf('\Goteo\Model\Footprint', $footprints[0]);
+        self::$footprint = $footprints[0]->id;
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeFootprints($footprints));
         $this->assertCount(0, $ob->getFootprints());
     }
 
@@ -143,5 +149,7 @@ class SdgTest extends TestCase {
     static function tearDownAfterClass() {
         Category::query("DELETE FROM category WHERE `id` = ?", self::$category);
         Sphere::query("DELETE FROM sphere WHERE `id` = ?", self::$sphere);
+        SocialCommitment::query("DELETE FROM social_commitment WHERE `id` = ?", self::$socialcommitment);
+        Footprint::query("DELETE FROM footprint WHERE `id` = ?", self::$footprint);
     }
 }
