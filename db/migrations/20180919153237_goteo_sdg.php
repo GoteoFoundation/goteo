@@ -79,7 +79,7 @@ class GoteoSdg
     if(!$seed[$sql_lang]) throw new \RunException("[$sql_lang] not in the seed data!");
 
     foreach($seed[$sql_lang] as $id => $line) {
-      $sdg = new Sdg(['id' => $id, 'name' => $line[0], 'description' => $line[1], 'link' => $line[2]]);
+      $sdg = new Sdg(['id' => (int)$id, 'name' => $line[0], 'description' => $line[1], 'link' => $line[2] ? $line[2] : '']);
       $errors = [];
       if(!$sdg->save($errors)) {
         throw new \RuntimeException("Error saving main object [$id] " . implode("\n", $errors));
@@ -89,11 +89,15 @@ class GoteoSdg
         $errors = [];
         $line = $trans[$id];
         if(!$sdg->setLang($lang, ['name' => $line[0], 'description' => $line[1], 'link' => $line[2] ? $line[2] : ''], $errors)) {
-          throw new \RuntimeException("Error saving translation [$lang] for id [$id]" . implode("\n", $errors));
+          throw new \RuntimeException("Error saving translation [$lang] for id [{$sdg->id}] ({$line[0]})" . implode("\n", $errors));
         }
       }
     }
 
+    // Built sdg relationships
+    $relations = [
+
+    ];
   }
 
   public function preDown()
@@ -121,25 +125,76 @@ class GoteoSdg
         ADD FOREIGN KEY (`social_commitment`) REFERENCES `social_commitment`(`id`) ON UPDATE CASCADE ON DELETE SET NULL;
 
     CREATE TABLE `sdg` (
-        `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-        `name` varchar(255) NOT NULL,
-        `icon` varchar(255) NULL,
-        `description` text NOT NULL,
-        `link` varchar(255) NOT NULL DEFAULT '',
-        `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        PRIMARY KEY (`id`)
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `name` varchar(255) NOT NULL,
+      `icon` varchar(255) NULL,
+      `description` text NOT NULL,
+      `link` varchar(255) NOT NULL DEFAULT '',
+      `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (`id`)
     );
 
     CREATE TABLE `sdg_lang` (
-        `id` int(10) unsigned NOT NULL,
-        `lang` varchar(2) NOT NULL,
-        `name` varchar(255) NOT NULL,
-        `description` text NOT NULL,
-        `link` varchar(255) NOT NULL,
-        `pending` tinyint(1) DEFAULT 0,
-        PRIMARY KEY (`id`,`lang`),
-        CONSTRAINT `sdg_lang_ibfk_1` FOREIGN KEY (`id`) REFERENCES `sdg` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-      );
+      `id` int(10) unsigned NOT NULL,
+      `lang` varchar(2) NOT NULL,
+      `name` varchar(255) NOT NULL,
+      `description` text NOT NULL,
+      `link` varchar(255) NOT NULL,
+      `pending` tinyint(1) DEFAULT 0,
+      PRIMARY KEY (`id`,`lang`),
+      CONSTRAINT `sdg_lang_ibfk_1` FOREIGN KEY (`id`) REFERENCES `sdg` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+
+    CREATE TABLE `footprint` (
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `name` varchar(255) NOT NULL,
+      `icon` varchar(255) NULL,
+      `description` text NOT NULL,
+      `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (`id`)
+    );
+
+    CREATE TABLE `footprint_lang` (
+      `id` int(10) unsigned NOT NULL,
+      `lang` varchar(2) NOT NULL,
+      `name` varchar(255) NOT NULL,
+      `description` text NOT NULL,
+      `pending` tinyint(1) DEFAULT 0,
+      PRIMARY KEY (`id`,`lang`),
+      CONSTRAINT `footprint_lang_ibfk_1` FOREIGN KEY (`id`) REFERENCES `footprint` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+
+    CREATE TABLE `sdg_category`(
+      `sdg_id` INT(10) UNSIGNED NOT NULL,
+      `category_id` INT(10) UNSIGNED NOT NULL,
+      `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+      FOREIGN KEY (`sdg_id`) REFERENCES `sdg`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+      FOREIGN KEY (`category_id`) REFERENCES `category`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+    );
+
+    CREATE TABLE `sdg_social_commitment`(
+      `sdg_id` INT(10) UNSIGNED NOT NULL,
+      `social_commitment_id` INT(10) UNSIGNED NOT NULL,
+      `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+      FOREIGN KEY (`sdg_id`) REFERENCES `sdg`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+      FOREIGN KEY (`social_commitment_id`) REFERENCES `social_commitment`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+    );
+
+    CREATE TABLE `sdg_sphere`(
+      `sdg_id` INT(10) UNSIGNED NOT NULL,
+      `sphere_id` BIGINT(20) UNSIGNED NOT NULL,
+      `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+      FOREIGN KEY (`sdg_id`) REFERENCES `sdg`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+      FOREIGN KEY (`sphere_id`) REFERENCES `sphere`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+    );
+
+    CREATE TABLE `sdg_footprint`(
+      `sdg_id` INT(10) UNSIGNED NOT NULL,
+      `footprint_id` INT(10) UNSIGNED NOT NULL,
+      `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+      FOREIGN KEY (`sdg_id`) REFERENCES `sdg`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+      FOREIGN KEY (`footprint_id`) REFERENCES `footprint`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+    );
 
      "
      ;
@@ -157,6 +212,12 @@ class GoteoSdg
           CHANGE `social_commitment` `social_commitment` CHAR(50) NULL COMMENT 'Social commitment',
           DROP INDEX `social_commitment`, ADD UNIQUE INDEX `id` (`id`), DROP FOREIGN KEY `category_ibfk_1`;
 
+     DROP TABLE sdg_category;
+     DROP TABLE sdg_social_commitment;
+     DROP TABLE sdg_sphere;
+     DROP TABLE sdg_footprint;
+     DROP TABLE footprint_lang;
+     DROP TABLE footprint;
      DROP TABLE sdg_lang;
      DROP TABLE sdg;
      ";
