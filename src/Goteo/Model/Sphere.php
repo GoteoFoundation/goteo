@@ -26,8 +26,8 @@ class Sphere extends \Goteo\Core\Model {
         $id,
         $name,
         $image,
-        $landing_match,
-        $order
+        $landing_match = false,
+        $order = 1
         ;
 
     public static function getLangFields() {

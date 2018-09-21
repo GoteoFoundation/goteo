@@ -23,7 +23,7 @@ class SocialCommitment extends \Goteo\Core\Model {
     $image,
     $modified;
 
-    
+
     static public function getLangFields() {
         return ['name', 'description'];
     }
@@ -38,7 +38,7 @@ class SocialCommitment extends \Goteo\Core\Model {
 
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
-    
+
         $sql="SELECT
                 social_commitment.id,
                 social_commitment.image,

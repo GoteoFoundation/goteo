@@ -583,7 +583,7 @@ class Matcher extends \Goteo\Core\Model {
         $values = [':matcher' => $this->id, ':status' => $status];
         $i = 0;
         foreach($projects as $project) {
-            if($project instanceOf project) {
+            if($project instanceOf Project) {
                 $project = $project->id;
             }
             $inserts[] = "(:matcher, :project$i, :status)";

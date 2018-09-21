@@ -13,6 +13,8 @@ namespace Goteo\Model;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Model\Image;
+use Goteo\Model\Category;
+use Goteo\Model\Sphere;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 
@@ -20,6 +22,11 @@ use Goteo\Application\Exception\ModelException;
  * Sdg Model (sustainable development goals)
  */
 class Sdg extends \Goteo\Core\Model {
+    // Provides addCategories, removeCategories, getCategories reusable functions
+    use Traits\CategoryRelationsTrait;
+    use Traits\SphereRelationsTrait;
+    use Traits\SocialCommitmentRelationsTrait;
+
     public $id,
            $name,
            $icon,
@@ -142,11 +149,12 @@ class Sdg extends \Goteo\Core\Model {
         $fields = ['name', 'icon', 'description', 'link'];
         try {
             // We don't use simply $this->insertUpdate($fields);
+            // because we may specify the id field on inserts
             if(empty($this->modified)) {
                 $this->modified = date('Y-m-d H:i:s');
                 if($this->id) $fields[] = 'id';
                 $this->dbInsert($fields);
-                $this->id = static::insertId();
+                if(!$this->id) $this->id = static::insertId();
             }
             else {
                 $this->dbUpdate($fields);

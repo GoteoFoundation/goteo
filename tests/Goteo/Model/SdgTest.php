@@ -5,10 +5,16 @@ namespace Goteo\Model\Tests;
 
 use Goteo\TestCase;
 use Goteo\Model\Sdg;
+use Goteo\Model\Category;
+use Goteo\Model\Sphere;
+use Goteo\Model\SocialCommitment;
 use Goteo\Application\Session;
+
 
 class SdgTest extends TestCase {
     private static $data = ['name' => 'test', 'description' => 'Sdg test text'];
+    private static $category;
+    private static $sphere;
 
     public function testInstance() {
         $ob = new Sdg();
@@ -57,6 +63,51 @@ class SdgTest extends TestCase {
     /**
      * @depends testCreate
      */
+    public function testCategoriesRelationships($ob) {
+        $errors = [];
+        $cat = new Category(['name' => 'sdg test category']);
+        $this->assertTrue($cat->save($errors), implode("\n", $errors));
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->addCategories($cat));
+        $cats = $ob->getCategories();
+        $this->assertCount(1, $cats);
+        $this->assertInstanceOf('\Goteo\Model\Category', $cats[0]);
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeCategories($cats));
+        $this->assertCount(0, $ob->getCategories());
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testSpheresRelationships($ob) {
+        $errors = [];
+        $sphere = new Sphere(['name' => 'sdg test sphere']);
+        $this->assertTrue($sphere->save($errors), implode("\n", $errors));
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->addSpheres($sphere));
+        $spheres = $ob->getSpheres();
+        $this->assertCount(1, $spheres);
+        $this->assertInstanceOf('\Goteo\Model\Sphere', $spheres[0]);
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeSpheres($spheres));
+        $this->assertCount(0, $ob->getSpheres());
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testSocialCommitmentRelationships($ob) {
+        $errors = [];
+        $social = new SocialCommitment(['name' => 'sdg test social']);
+        $this->assertTrue($social->save($errors), implode("\n", $errors));
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->addSocialCommitments($social));
+        $socials = $ob->getSocialCommitments();
+        $this->assertCount(1, $socials);
+        $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $socials[0]);
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeSocialCommitments($socials));
+        $this->assertCount(0, $ob->getSocialCommitments());
+    }
+
+    /**
+     * @depends testCreate
+     */
     public function testDelete($ob) {
         $this->assertTrue($ob->dbDelete());
         return $ob;
@@ -70,4 +121,11 @@ class SdgTest extends TestCase {
         $this->assertNull($ob);
     }
 
+    /**
+     * Some cleanup
+     */
+    static function tearDownAfterClass() {
+        Category::query("DELETE FROM category WHERE `id` = ?", self::$category);
+        Sphere::query("DELETE FROM sphere WHERE `id` = ?", self::$sphere);
+    }
 }
