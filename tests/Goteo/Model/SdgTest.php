@@ -7,6 +7,7 @@ use Goteo\TestCase;
 use Goteo\Model\Sdg;
 use Goteo\Model\Category;
 use Goteo\Model\Sphere;
+use Goteo\Model\Footprint;
 use Goteo\Model\SocialCommitment;
 use Goteo\Application\Session;
 
@@ -103,6 +104,21 @@ class SdgTest extends TestCase {
         $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $socials[0]);
         $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeSocialCommitments($socials));
         $this->assertCount(0, $ob->getSocialCommitments());
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testFootprintRelationships($ob) {
+        $errors = [];
+        $social = new Footprint(['name' => 'sdg test footrint']);
+        $this->assertTrue($social->save($errors), implode("\n", $errors));
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->addFootprints($social));
+        $socials = $ob->getFootprints();
+        $this->assertCount(1, $socials);
+        $this->assertInstanceOf('\Goteo\Model\Footprint', $socials[0]);
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeFootprints($socials));
+        $this->assertCount(0, $ob->getFootprints());
     }
 
     /**

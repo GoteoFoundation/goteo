@@ -15,30 +15,24 @@ use Goteo\Application\Lang;
 use Goteo\Model\Image;
 
 /**
- * Sdg Model (sustainable development goals)
+ * Footprint Model (sustainable development goals)
  */
-class Sdg extends \Goteo\Core\Model {
-    // Provides addCategories, removeCategories, getCategories reusable functions
-    use Traits\CategoryRelationsTrait;
-    use Traits\SphereRelationsTrait;
-    use Traits\SocialCommitmentRelationsTrait;
-    use Traits\FootprintRelationsTrait;
+class Footprint extends \Goteo\Core\Model {
 
     public $id,
            $name,
            $icon,
            $description = '',
-           $link = '',
            $modified;
 
     protected $iconImage;
 
     public static function getLangFields() {
-        return ['name', 'description', 'link'];
+        return ['name', 'description'];
     }
 
     /**
-     * Get instance of sdg already in the table by action
+     * Get instance of footprint already in the table by action
      * @return [type] [description]
      */
     static public function get($id, $lang = null) {
@@ -47,18 +41,18 @@ class Sdg extends \Goteo\Core\Model {
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
-        $sql = "SELECT sdg.id,
+        $sql = "SELECT footprint.id,
                        $fields,
-                       sdg.icon,
-                       sdg.modified
-            FROM `sdg`
+                       footprint.icon,
+                       footprint.modified
+            FROM `footprint`
             $joins
-            WHERE sdg.id = :id";
+            WHERE footprint.id = :id";
 
         // print(\sqldbg($sql, $values));
         if ($query = static::query($sql, $values)) {
-            if( $sdg = $query->fetchObject(__CLASS__) ) {
-                return $sdg;
+            if( $footprint = $query->fetchObject(__CLASS__) ) {
+                return $footprint;
             }
         }
         return null;
@@ -66,7 +60,7 @@ class Sdg extends \Goteo\Core\Model {
 
 
     /**
-     * Lists available sdgs
+     * Lists available footprints
      * @param  array   $filters [description]
      * @param  [type]  $offset  [description]
      * @param  integer $limit   [description]
@@ -77,14 +71,14 @@ class Sdg extends \Goteo\Core\Model {
         $values = [];
         $filter = [];
 
-        foreach(['id', 'name', 'description', 'link'] as $key) {
+        foreach(['id', 'name', 'description'] as $key) {
             if (isset($filters[$key])) {
-                $filter[] = "sdg.$key LIKE :$key";
+                $filter[] = "footprint.$key LIKE :$key";
                 $values[":$key"] = '%'.$filters[$key].'%';
             }
         }
         if($filters['global']) {
-            $filter[] = "(sdg.name LIKE :global OR sdg.description OR sdg.link LIKE :global)";
+            $filter[] = "(footprint.name LIKE :global OR footprint.description LIKE :global)";
             $values[':global'] = '%'.$filters['global'].'%';
         }
         // print_r($filter);die;
@@ -94,7 +88,7 @@ class Sdg extends \Goteo\Core\Model {
 
         if($count) {
             // Return count
-            $sql = "SELECT COUNT(id) FROM sdg$sql";
+            $sql = "SELECT COUNT(id) FROM footprint$sql";
             // echo \sqldbg($sql, $values);
             return (int) self::query($sql, $values)->fetchColumn();
         }
@@ -105,11 +99,11 @@ class Sdg extends \Goteo\Core\Model {
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
-        $sql = "SELECT sdg.id,
+        $sql = "SELECT footprint.id,
                        $fields,
-                       sdg.icon,
-                       sdg.modified
-                FROM sdg
+                       footprint.icon,
+                       footprint.modified
+                FROM footprint
                 $joins
         $sql LIMIT $offset,$limit";
 
@@ -122,7 +116,7 @@ class Sdg extends \Goteo\Core\Model {
 
     public function getIcon() {
         if(!$this->iconImage instanceOf Image) {
-            $this->iconImage = Image::get($this->icon ?: "sdg/square/{$this->id}.png");
+            $this->iconImage = Image::get($this->icon ?: "footprint/square/{$this->id}.png");
             if(!$this->icon) $this->iconImage->setAsset(true);
         }
         return $this->iconImage;
@@ -143,24 +137,13 @@ class Sdg extends \Goteo\Core\Model {
 
         if(!$this->validate($errors)) return false;
 
-        $fields = ['name', 'icon', 'description', 'link'];
+        $fields = ['name', 'icon', 'description'];
         try {
-            // We don't use simply $this->dbInsertUpdate($fields);
-            // because we may specify the id field on inserts
-            if(empty($this->modified)) {
-                $this->modified = date('Y-m-d H:i:s');
-                if($this->id) $fields[] = 'id';
-                $this->dbInsert($fields);
-                if(!$this->id) $this->id = static::insertId();
-            }
-            else {
-                $this->dbUpdate($fields);
-            }
-
+            $this->dbInsertUpdate($fields);
             return true;
         }
         catch(\PDOException $e) {
-            $errors[] = 'Error saving sdg: ' . $e->getMessage();
+            $errors[] = 'Error saving footprint: ' . $e->getMessage();
         }
 
         return false;
