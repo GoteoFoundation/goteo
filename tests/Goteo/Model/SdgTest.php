@@ -116,9 +116,9 @@ class SdgTest extends TestCase {
      */
     public function testFootprintRelationships($ob) {
         $errors = [];
-        $social = new Footprint(['name' => 'sdg test footrint']);
-        $this->assertTrue($social->save($errors), implode("\n", $errors));
-        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->addFootprints($social));
+        $foot = new Footprint(['name' => 'sdg test footprint']);
+        $this->assertTrue($foot->save($errors), implode("\n", $errors));
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->addFootprints($foot));
         $footprints = $ob->getFootprints();
         $this->assertCount(1, $footprints);
         $this->assertInstanceOf('\Goteo\Model\Footprint', $footprints[0]);

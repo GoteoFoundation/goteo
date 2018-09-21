@@ -1,6 +1,10 @@
 <?php
 
 use Goteo\Model\Sdg;
+use Goteo\Model\Footprint;
+use Goteo\Model\Category;
+use Goteo\Model\SocialCommitment;
+use Goteo\Model\Sphere;
 use Goteo\Application\Config;
 
 /**
@@ -82,22 +86,150 @@ class GoteoSdg
       $sdg = new Sdg(['id' => (int)$id, 'name' => $line[0], 'description' => $line[1], 'link' => $line[2] ? $line[2] : '']);
       $errors = [];
       if(!$sdg->save($errors)) {
-        throw new \RuntimeException("Error saving main object [$id] " . implode("\n", $errors));
+        throw new \RuntimeException("Error saving main Sdg object [$id] " . implode("\n", $errors));
       }
       foreach($seed as $lang => $trans) {
         if($lang == $sql_lang) continue;
         $errors = [];
         $line = $trans[$id];
         if(!$sdg->setLang($lang, ['name' => $line[0], 'description' => $line[1], 'link' => $line[2] ? $line[2] : ''], $errors)) {
-          throw new \RuntimeException("Error saving translation [$lang] for id [{$sdg->id}] ({$line[0]})" . implode("\n", $errors));
+          throw new \RuntimeException("Error saving sdg translation [$lang] for id [{$sdg->id}] ({$line[0]})" . implode("\n", $errors));
         }
       }
     }
 
-    // Built sdg relationships
-    $relations = [
-
+    // Build footprint sdg relationships
+    $footprints = [];
+    $footprints['es'] = [
+      ['A/ Huella ecologica', [7,12, 15]],
+      ['B/ Huella social', [2, 3, 4, 8, 9, 11]],
+      ['C/ Huella democratica', [5, 16, 11]],
     ];
+    $footprints['ca'] = [
+      ['A/ Petjada ecològica'],
+      ['B/ Petjada social'],
+      ['C/ Petjada democràtica'],
+    ];
+    $footprints['en'] = [
+      ['A/ Ecological footprint'],
+      ['B/ Social footprint'],
+      ['C/ Democratic footprint'],
+    ];
+    if(!$footprints[$sql_lang]) throw new \RunException("[$sql_lang] not in the footprints data!");
+    foreach($footprints[$sql_lang] as $id => $line) {
+      $foot = new Footprint(['name' => $line[0]]);
+      $errors = [];
+      if(!$foot->save($errors)) {
+        throw new \RuntimeException("Error saving main Footprint object [$id] " . implode("\n", $errors));
+      }
+      if($line[1]) $foot->addSdgs($line[1]);
+
+      foreach($footprints as $lang => $trans) {
+        if($lang == $sql_lang) continue;
+        $errors = [];
+        $line = $trans[$id];
+        if(!$foot->setLang($lang, ['name' => $line[0]], $errors)) {
+          throw new \RuntimeException("Error saving footprint translation [$lang] for id [{$foot->id}] ({$line[0]})" . implode("\n", $errors));
+        }
+      }
+    }
+
+    // SocialCommitment (feed data if empty)
+    $socials = [];
+    $socials['es'] = [
+      '1' => ['Solidario', 'Solidario', 2, [2, 3, 4, 8, 9, 11]], // Solidarity => (B)
+      '2' => ['Software libre', 'Software libre', 7, [2, 3, 4, 5, 8, 9, 16, 11]], // free software => B/C
+      '3' => ['Generar empleo', 'Generar empleo', 9, [2, 3, 4, 8, 9, 11]], // Employment => B
+      '4' => ['Desde el diseño', 'Desde el diseño', 16, [2, 3, 4, 5, 7, 8, 9, 12, 15, 16, 11]], // From design =>  A/B/C
+      '5' => ['Periodismo independiente', 'Periodismo independiente', 6, [5, 16, 11]], // Journalism => C
+      '6' => ['Educativo', 'Educativo', 10, [2, 3, 4, 8, 9, 11]], // Educative => B
+      '7' => ['Crear culturam', 'Crear cultura', 11, [2, 3, 4, 5, 8, 9, 16, 11]], // Cultural => B/C
+      '8' => ['Ecológico', 'Ecológico', 13, [7,12, 15]], // Ecological => A
+      '9' => ['Investigación', 'Investigación', 14, [2, 3, 4, 5, 7, 8, 9, 12, 15, 16, 11]], // Investigation => A/B/C
+      '10' => ['Datos abiertos', 'Datos abiertos', null, [5, 16, 11]], // open data => C
+      '11' => ['Reforzar valores democráticos', 'Reforzar valores democráticos', null, [5, 16, 11]],  // Democratic values => C
+      '12' => ['Participación ciudadana', 'Participación ciudadana', null, [5, 16, 11]], // Citizen participation => C
+      '13' => ['Género', 'Igualdad de género', null, [5, 16, 11]] // Gender => C
+    ];
+    $socials['ca'] = [
+      '1' => ['Solidari','Solidari'],
+      '2' => ['Programari lliure','Programari lliure'],
+      '3' => ['Generar ocupació','Generar ocupació'],
+      '4' => ['Des del disseny','Des del disseny'],
+      '5' => ['Periodisme independent','Periodisme independent'],
+      '6' => ['Educatiu','Educatiu'],
+      '7' => ['Crear cultura','Crear cultura'],
+      '8' => ['Ecològic','Ecològic'],
+      '9' => ['Investigació','Investigació'],
+      '10' => ['Dades obertes','Dades obertes'],
+      '11' => ['Reforçar valors democràtics','Reforçar valors democràtics'],
+      '12' => ['Participació ciutadana','Participació ciutadana'],
+      '13' => ['Gènere','Gènere']
+    ];
+    $socials['en'] = [
+      '1' => ['Solidary','Solidary'],
+      '2' => ['Free software','Free software'],
+      '3' => ['Creating employment','Creating employment'],
+      '4' => ['From a design perspective','From a design perspective'],
+      '5' => ['Independent journalism','Independent journalism'],
+      '6' => ['Educational','Educational'],
+      '7' => ['Creating culture','Creating culture'],
+      '8' => ['Ecological','Ecological'],
+      '9' => ['Research','Research'],
+      '10' => ['Open data','Open data'],
+      '11' => ['To strengthen democratic values','To strengthen democratic values'],
+      '12' => ['Citizen participation','Citizen participation'],
+      '13' => ['Genre','Genre'],
+    ];
+    if(!$socials[$sql_lang]) throw new \RunException("[$sql_lang] not in the socials data!");
+    foreach($socials[$sql_lang] as $id => $line) {
+      if(!$sc = SocialCommitment::get($id)) {
+        $sc = new SocialCommitment(['name' => $line[0], 'description' => $line[1]]);
+        $errors = [];
+        if(!$sc->save($errors)) {
+          throw new \RuntimeException("Error saving main SocialCommitment object [{$sc->id}] " . implode("\n", $errors));
+        }
+        foreach($socials as $lang => $trans) {
+          if($lang == $sql_lang) continue;
+          $errors = [];
+          $line = $trans[$id];
+          if(!$sc->setLang($lang, ['name' => $line[0], 'description' => $line[1]], $errors)) {
+            throw new \RuntimeException("Error saving social_commitment translation [$lang] for id [{$foot->id}] ({$line[0]})" . implode("\n", $errors));
+          }
+        }
+      }
+      if($line[2]) {
+        if($cat = Category::get($line[2])) {
+          $cat->social_commitment = $sc->id;
+          $errors = [];
+          if(!$cat->save($errors)) {
+            throw new \RuntimeException("Error saving main Category object [{$cat->id}] " . implode("\n", $errors));
+          }
+        }
+      }
+      if($line[3]) $sc->addSdgs($line[3]);
+
+    }
+
+    $rel_categories = [
+      2 => [2, 3, 4, 8, 9, 11], // Social => (B)
+      6 => [5, 16, 11], // Communicative => C
+      7 => [2, 3, 4, 5, 8, 9, 16, 11], // Technology => B/C
+      9 => [2, 3, 4, 8, 9, 11], // Entrepreneur => B
+      10 => [2, 3, 4, 8, 9, 11], // Educative => B
+      11 => [2, 3, 4, 5, 8, 9, 16, 11], // Cultural => B/C
+      13 => [7,12, 15], // Ecological => A
+      14 => [2, 3, 4, 5, 7, 8, 9, 12, 15, 16, 11], // Scientific => A/B/C
+      16 => [2, 3, 4, 5, 7, 8, 9, 12, 15, 16, 11] // Design =>  A/B/C
+    ];
+
+    foreach($rel_categories as $id => $sdgs) {
+      if($cat = Category::get($id)) {
+        $cat->addSdgs($sdgs);
+      }
+    }
+
+
   }
 
   public function preDown()
@@ -119,10 +251,13 @@ class GoteoSdg
   {
     return "
     UPDATE category SET social_commitment=NULL WHERE social_commitment='';
+    UPDATE category SET social_commitment=NULL WHERE social_commitment NOT IN(SELECT id FROM social_commitment);
 
     ALTER TABLE `category` CHANGE `social_commitment` `social_commitment` INT(10) UNSIGNED NULL COMMENT 'Social commitment',
         DROP INDEX `id`,
         ADD FOREIGN KEY (`social_commitment`) REFERENCES `social_commitment`(`id`) ON UPDATE CASCADE ON DELETE SET NULL;
+
+    ALTER TABLE `social_commitment` CHANGE `image` `icon` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
 
     CREATE TABLE `sdg` (
       `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -208,9 +343,11 @@ class GoteoSdg
   public function getDownSQL()
   {
      return "
-       ALTER TABLE `category`
-          CHANGE `social_commitment` `social_commitment` CHAR(50) NULL COMMENT 'Social commitment',
-          DROP INDEX `social_commitment`, ADD UNIQUE INDEX `id` (`id`), DROP FOREIGN KEY `category_ibfk_1`;
+     ALTER TABLE `category`
+        CHANGE `social_commitment` `social_commitment` CHAR(50) NULL COMMENT 'Social commitment',
+        DROP INDEX `social_commitment`, ADD UNIQUE INDEX `id` (`id`), DROP FOREIGN KEY `category_ibfk_1`;
+
+     ALTER TABLE `social_commitment` CHANGE `icon` `image` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
 
      DROP TABLE sdg_category;
      DROP TABLE sdg_social_commitment;

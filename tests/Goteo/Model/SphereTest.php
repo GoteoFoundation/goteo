@@ -4,17 +4,17 @@
 namespace Goteo\Model\Tests;
 
 use Goteo\TestCase;
-use Goteo\Model\Footprint;
+use Goteo\Model\Sphere;
 use Goteo\Model\Sdg;
 
 
-class FootprintTest extends TestCase {
-    private static $data = ['name' => 'test', 'description' => 'Footprint test text'];
+class SphereTest extends TestCase {
+    private static $data = ['name' => 'test', 'description' => 'Sphere test text'];
     private static $sdg;
 
     public function testInstance() {
-        $ob = new Footprint();
-        $this->assertInstanceOf('\Goteo\Model\Footprint', $ob);
+        $ob = new Sphere();
+        $this->assertInstanceOf('\Goteo\Model\Sphere', $ob);
 
         return $ob;
     }
@@ -28,15 +28,15 @@ class FootprintTest extends TestCase {
     }
 
     public function testCreate() {
-        $ob = new Footprint();
+        $ob = new Sphere();
         $errors = [];
         $this->assertFalse($ob->validate($errors), implode("\n", $errors));
         $errors = [];
-        $ob = new Footprint(self::$data);
+        $ob = new Sphere(self::$data);
         $this->assertTrue($ob->validate($errors), implode("\n", $errors));
         $this->assertTrue($ob->save($errors), implode("\n", $errors));
-        $ob = Footprint::get($ob->id);
-        $this->assertInstanceOf('\Goteo\Model\Footprint', $ob);
+        $ob = Sphere::get($ob->id);
+        $this->assertInstanceOf('\Goteo\Model\Sphere', $ob);
 
         foreach(self::$data as $key => $val) {
             $this->assertEquals($ob->$key, $val);
@@ -63,12 +63,12 @@ class FootprintTest extends TestCase {
         $errors = [];
         $sdg = new Sdg(['name' => 'sdg test sdg']);
         $this->assertTrue($sdg->save($errors), implode("\n", $errors));
-        $this->assertInstanceOf('\Goteo\Model\Footprint', $ob->addSdgs($sdg));
+        $this->assertInstanceOf('\Goteo\Model\Sphere', $ob->addSdgs($sdg));
         $sdgs = $ob->getSdgs();
         $this->assertCount(1, $sdgs);
         $this->assertInstanceOf('\Goteo\Model\Sdg', $sdgs[0]);
         self::$sdg = $sdgs[0]->id;
-        $this->assertInstanceOf('\Goteo\Model\Footprint', $ob->removeSdgs($sdgs));
+        $this->assertInstanceOf('\Goteo\Model\Sphere', $ob->removeSdgs($sdgs));
         $this->assertCount(0, $ob->getSdgs());
     }
 
@@ -84,7 +84,7 @@ class FootprintTest extends TestCase {
      * @depends testDelete
      */
     public function testNonExisting($ob) {
-        $ob = Footprint::get($ob->id);
+        $ob = Sphere::get($ob->id);
         $this->assertNull($ob);
     }
 

@@ -18,6 +18,7 @@ use Goteo\Model\Image;
  * Footprint Model (sustainable development goals)
  */
 class Footprint extends \Goteo\Core\Model {
+    use Traits\SdgRelationsTrait;
 
     public $id,
            $name,

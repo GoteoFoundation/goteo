@@ -12,6 +12,7 @@ namespace Goteo\Model\Traits;
 
 use Goteo\Application\Config;
 use Goteo\Model\Footprint;
+use Goteo\Application\Exception\ModelException;
 
 /**
  * Adds function to deal with Footprint relation ships

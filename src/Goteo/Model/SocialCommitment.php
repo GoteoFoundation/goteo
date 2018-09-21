@@ -12,6 +12,7 @@ use Goteo\Application\Config;
 use Goteo\Model\Image;
 
 class SocialCommitment extends \Goteo\Core\Model {
+    use Traits\SdgRelationsTrait;
 
     protected $Table = 'social_commitment';
     static protected $Table_static = 'social_commitment';
@@ -20,7 +21,7 @@ class SocialCommitment extends \Goteo\Core\Model {
     $id,
     $name,
     $description,
-    $image,
+    $icon,
     $modified;
 
 
@@ -41,19 +42,17 @@ class SocialCommitment extends \Goteo\Core\Model {
 
         $sql="SELECT
                 social_commitment.id,
-                social_commitment.image,
+                social_commitment.icon,
                 $fields
             FROM social_commitment
             $joins
             WHERE social_commitment.id = :id";
         $query = static::query($sql, array(':id' => $id));
-        $item = $query->fetchObject(__CLASS__);
-
-        if($item) {
-            return $item;
+        if($item = $query->fetchObject(__CLASS__)) {
+            // For compatibility
+            $item->image = $item->getIcon();
         }
-
-        throw new ModelNotFoundException("Social commitment not found for ID [$id]");
+        return $item;
     }
 
     /**
@@ -82,7 +81,7 @@ class SocialCommitment extends \Goteo\Core\Model {
 
         $sql = "SELECT
                     social_commitment.id,
-                    social_commitment.image,
+                    social_commitment.icon,
                     $fields
                 FROM social_commitment
                 $joins
@@ -93,34 +92,46 @@ class SocialCommitment extends \Goteo\Core\Model {
         $query = self::query($sql, $values);
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
-            if($item->image)
-                $item->image=new Image($item->image);
-            else
-                $item->image=new Image();
+            // For compatibility
+            $item->image = $this->getIcon();
             $list[] = $item;
         }
         return $list;
     }
 
-     /**
-         * Get the categories related with a social commitment
-         * @param varcahr(50) $id  Social commitment idetifier
-         * @return array of categories identifiers
-         */
-        public static function getCategories ($id) {
-            $array = array ();
-            try {
-                $query = static::query("SELECT id FROM category WHERE social_commitment = ?", array($id));
-                $categories = $query->fetchAll();
-                foreach ($categories as $cat) {
-                    $array[$cat[0]] = $cat[0];
-                }
-
-                return $array;
-            } catch(\PDOException $e) {
-                throw new \Goteo\Core\Exception($e->getMessage());
-            }
+    public function getIcon() {
+        if(!$this->iconImage instanceOf Image) {
+            $this->iconImage = Image::get($this->icon ?: "social-commitment/square/{$this->id}.png");
+            if(!$this->icon) $this->iconImage->setAsset(true);
         }
+        return $this->iconImage;
+    }
+
+    public function setIcon($icon) {
+        $this->icon = $icon instanceOf Image ? $icon->id : $icon;
+        $this->iconImage = null;
+        return $this;
+    }
+
+     /**
+     * Get the categories related with a social commitment
+     * @param varcahr(50) $id  Social commitment idetifier
+     * @return array of categories identifiers
+     */
+    public static function getCategories ($id) {
+        $array = [];
+        try {
+            $query = static::query("SELECT id FROM category WHERE social_commitment = ?", array($id));
+            $categories = $query->fetchAll();
+            foreach ($categories as $cat) {
+                $array[$cat[0]] = $cat[0];
+            }
+
+            return $array;
+        } catch(\PDOException $e) {
+            throw new \Goteo\Core\Exception($e->getMessage());
+        }
+    }
 
     /**
      * Save.
@@ -133,24 +144,7 @@ class SocialCommitment extends \Goteo\Core\Model {
         if (!$this->validate($errors))
             return false;
 
-        if (is_array($this->image) && !empty($this->image['name'])) {
-                $image = new Image($this->image);
-                if ($image->save($errors)) {
-                    $this->image = $image->id;
-                } else {
-                    $fail = true;
-                    $this->image = '';
-                }
-        }
-
-        $fields = array(
-            'id',
-            'name',
-            'description',
-            'image'
-        );
-
-        if($this->call_id) $fields[] = 'call_id';
+        $fields = ['id', 'name', 'description', 'icon'];
 
         try {
             //automatic $this->id assignation
@@ -171,7 +165,7 @@ class SocialCommitment extends \Goteo\Core\Model {
      */
     public function validate(&$errors = array()) {
         if(empty($this->name)) {
-            $errors[] = "Emtpy title";
+            $errors[] = "Emtpy name";
         }
         return empty($errors);
     }

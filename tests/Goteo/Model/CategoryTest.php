@@ -11,6 +11,7 @@ class CategoryTest extends \PHPUnit_Framework_TestCase {
 
     private static $data = ['name' => 'Test category', 'description' => 'Test description'];
     private static $trans_data = ['name' => 'Categoria test', 'description' => 'Descripció test'];
+    private static $sdg;
 
     public static function setUpBeforeClass() {
         Config::set('lang', 'es');
@@ -77,6 +78,22 @@ class CategoryTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testCreate
      */
+    public function testSdgRelationships($ob) {
+        $errors = [];
+        $sdg = new Sdg(['name' => 'sdg test sdg']);
+        $this->assertTrue($sdg->save($errors), implode("\n", $errors));
+        $this->assertInstanceOf('\Goteo\Model\Category', $ob->addSdgs($sdg));
+        $sdgs = $ob->getSdgs();
+        $this->assertCount(1, $sdgs);
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $sdgs[0]);
+        self::$sdg = $sdgs[0]->id;
+        $this->assertInstanceOf('\Goteo\Model\Category', $ob->removeSdgs($sdgs));
+        $this->assertCount(0, $ob->getSdgs());
+    }
+
+    /**
+     * @depends testCreate
+     */
     public function testDelete($ob) {
         $this->assertTrue($ob->dbDelete());
 
@@ -95,6 +112,13 @@ class CategoryTest extends \PHPUnit_Framework_TestCase {
         $ob = Category::get($ob->id);
         $this->assertFalse($ob);
         $this->assertFalse(Category::delete($ob->id));
+    }
+
+    /**
+     * Some cleanup
+     */
+    static function tearDownAfterClass() {
+        Sdg::query("DELETE FROM sdg WHERE `id` = ?", self::$sdg);
     }
 
 }

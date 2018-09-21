@@ -16,6 +16,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelException;
 
 class Category extends \Goteo\Core\Model {
+    use Traits\SdgRelationsTrait;
 
     public
         $id,

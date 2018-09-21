@@ -12,6 +12,7 @@ namespace Goteo\Model\Traits;
 
 use Goteo\Application\Config;
 use Goteo\Model\Category;
+use Goteo\Application\Exception\ModelException;
 
 /**
  * Adds function to deal with Category relation ships
