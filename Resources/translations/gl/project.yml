@@ -43,14 +43,20 @@ project-messages-send_direct-header: 'Envía unha mensaxe ó impulsor/a do proxe
 project-messages-send_message-button: Enviar
 project-messages-send_message-header: 'Escribe a túa mensaxe'
 project-not_published: 'Este proxecto aínda non é público'
+project-regular-support: Cofinanciar
 project-related: 'Proxectos relacionados'
+project-rewards-header: Retorno
 project-rewards-individual_reward-limited: 'Recompensa limitada'
 project-rewards-individual_reward-title: 'Recompensas individuais'
 project-rewards-individual_reward-units_left: 'Restan <span class="left">%s</span> unidades'
 project-rewards-side-title: 'Recompensas'
+project-rewards-social_reward-title: 'Retorno colectivo'
 project-rewards-supertitle: 'Que ofrece en troco'
+project-rounds: 'Proxecto dunha soa rolda'
 project-share-header: 'Comparte este proxecto'
 project-share-pre_header: 'Deixa saber á túa rede de contactos que '
+project-show-donors: 'Amosar cofinanciadores'
+project-show-needs: 'Amosar listado de necesidades'
 project-side-investors-header: 'Xa aportaron'
 project-spread-header: 'Difunde este proxecto'
 project-spread-pre_widget: 'Difunde este proxecto'
@@ -67,12 +73,15 @@ project-view-metter-day_success: 'Financiado o'
 project-view-metter-day_updated: 'Recibido o'
 project-view-metter-favourite: 'Lembrarme'
 project-view-metter-got: Obtido
+project-view-metter-investment: Cofinanciamento
 project-view-metter-investors: Cofinanceiros
 project-view-metter-minimum: Mínimo
 project-view-metter-optimum: Óptimo
 project-view-preview: 'Vista previa do proxecto'
 project-willpublish: 'Este proxecto será publicado o %s'
 regular-new_project: 'Proxecto novo'
+social_reward-access: Accede
+social_reward-access_title: 'Accede a este recurso colectivo'
 tooltip-project-bank: 'Se non queres poñela agora poderás poñela máis adiante cando formalicemos o contrato'
 tooltip-project-scope: 'Indica o impacto xeográfico ó que aspira ter o proxecto (cada categoría inclúe a anterior).'
 tooltip-updates-allow_comments: ' tooltip-updates-allow_comments'
@@ -95,6 +104,7 @@ project-create-title: 'Comeza un proxecto'
 project-create-subtitle-alert: '<strong>VAITES!</strong><p>Avanzamos! Agora é momento de definir o teu proxecto en poucas palabras!</p>'
 project-create-minimum-field: 'Mínimo (€)'
 project-create-minimum-calculate-button: 'Calcular'
+project-create-publishing-date-field: 'Cando tes pensado publicar o proxecto?'
 project-create-social-select-field: 'Selecciona o teu compromiso social'
 project-create-terms-field: 'Lin, entendo e acepto as <a data-toggle="modal" data-target="#termsModal" href="">condicións</a> e requisitos para crear un proxecto no Goteo, mais a <a target="_blank" href="/legal/privacy">política de privacidade</a> da plataforma.'
 project-create-save-button: 'Gardar e continuar'
