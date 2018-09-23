@@ -7,6 +7,7 @@ profile-last_worth-title: Data
 profile-location-header: 'A miña ubicación'
 profile-my_investors-header: 'Os meus cofinanceiros'
 profile-my_projects-header: 'Proxectos impulsados'
+profile-my_worth-header: 'Caudal en Goteo'
 profile-name-header: 'Perfil de'
 profile-patron-header: 'Aconsella <span class="red">%s proxectos</span>'
 profile-sharing_interests-header: 'Compartindo intereses'
