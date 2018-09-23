@@ -1,11 +1,33 @@
 ---
 contract-paypal_account: 'Email da túa conta de PayPal:'
+currency-switch: TROCAR
+overview-field-spread: Difusión
 personal-field-accounts: 'Conta bancaria'
+project-about-title: 'Acerca deste Proxecto'
+project-call-got: 'O proxecto xa acadou <strong>%s</strong> de <strong>%s</strong>'
+project-chart-amount-end-round: 'Fin da ronda'
+project-chart-amount-ideal: Ideal
+project-chart-costs-reset: 'Volver'
+project-collaborations-available: 'colaboracións dispoñibles'
+project-collaborations-number: 'colaboradores'
 project-collaborations-supertitle: 'Necesidades non monetarias'
 project-collaborations-title: 'Búscase'
+project-comment-start-sesion: 'Iniciar sesión'
+project-comment-start-sesion-2: 'para deixar un comentario'
+project-general-information: 'Información xeral'
+project-go-up: 'volver arriba'
+project-help-cost: 'Preciso de axuda na definición dos custos'
+project-hide-donors: 'Ocultar cofinanciadores'
+project-hide-needs: 'Ocultar listado de necesidades'
+project-invest: Achega
+project-invest-msg: 'Mensaxe de ánimo:'
 project-langs-header: 'Proxecto en'
+project-media-play_video: 'Ver vídeo'
 project-menu-home: Proxecto
 project-menu-messages: Colaboracións
+project-menu-needs: Necesidades
+project-menu-news: 'Novas'
+project-menu-participate: 'Participa'
 project-menu-supporters: Cofinanceiros
 project-menu-updates: Novidades
 project-menu_title-home: 'Impacto social: este proxecto abre o seu código, comparte coñecementos, datos ou arquivos dixitais en troco do teu apoio.'
@@ -13,11 +35,17 @@ project-menu_title-messages: 'Non só cartos: tamén podes apoiar co teu talento
 project-menu_title-needs: 'Transparencia de custos: detalle explicado do mínimo e o óptimo que necesita para levalo a cabo.'
 project-menu_title-supporters: 'Rede social de apoio: os cofinanceiros e cofinanceiras son tan importantes coma quen impulsa esta iniciativa.'
 project-menu_title-updates: 'Feedback: Infórmate sobre os avances do proxecto directamente a través de quen o impulsa.'
+project-messages-answer_it: Responder
 project-messages-closed: 'Aínda non se pode enviar mensaxes ó proxecto'
 project-messages-send_direct-header: 'Envía unha mensaxe ó impulsor/a do proxecto'
+project-messages-send_message-button: Enviar
 project-messages-send_message-header: 'Escribe a túa mensaxe'
 project-not_published: 'Este proxecto aínda non é público'
+project-related: 'Proxectos relacionados'
+project-rewards-individual_reward-limited: 'Recompensa limitada'
 project-rewards-individual_reward-title: 'Recompensas individuais'
+project-rewards-individual_reward-units_left: 'Restan <span class="left">%s</span> unidades'
+project-rewards-side-title: 'Recompensas'
 project-rewards-supertitle: 'Que ofrece en troco'
 project-share-header: 'Comparte este proxecto'
 project-share-pre_header: 'Deixa saber á túa rede de contactos que '
@@ -28,13 +56,18 @@ project-spread-social: 'Cofinancio o proxecto %s #goteo #crowdfunding'
 project-spread-widget: 'Widget do proxecto'
 project-spread-widget_legend: 'Copia e pega o código na túa web ou blog e axuda a espallar este proxecto'
 project-spread-widget_title: 'Publica o widget do proxecto'
+project-support-supertitle: 'Necesidades económicas'
 project-unpublished: 'A campaña deste proxecto foi cancelada polo impulsor.'
+project-view-categories-title: Categorías
 project-view-metter-day_closed: 'Archivado o'
 project-view-metter-day_created: 'Creado o'
 project-view-metter-day_success: 'Financiado o'
 project-view-metter-day_updated: 'Recibido o'
+project-view-metter-favourite: 'Lembrarme'
 project-view-metter-got: Obtido
 project-view-metter-investors: Cofinanceiros
+project-view-metter-minimum: Mínimo
+project-view-metter-optimum: Óptimo
 regular-new_project: 'Proxecto novo'
 tooltip-project-bank: 'Se non queres poñela agora poderás poñela máis adiante cando formalicemos o contrato'
 tooltip-project-scope: 'Indica o impacto xeográfico ó que aspira ter o proxecto (cada categoría inclúe a anterior).'
