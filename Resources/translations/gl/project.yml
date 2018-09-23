@@ -7,6 +7,7 @@ project-about-title: 'Acerca deste Proxecto'
 project-call-got: 'O proxecto xa acadou <strong>%s</strong> de <strong>%s</strong>'
 project-chart-amount-end-round: 'Fin da ronda'
 project-chart-amount-ideal: Ideal
+project-chart-amount-reached: Acumulado
 project-chart-costs-reset: 'Volver'
 project-collaborations-available: 'colaboracións dispoñibles'
 project-collaborations-number: 'colaboradores'
@@ -16,7 +17,8 @@ project-comment-start-sesion: 'Iniciar sesión'
 project-comment-start-sesion-2: 'para deixar un comentario'
 project-general-information: 'Información xeral'
 project-go-up: 'volver arriba'
-project-help-cost: 'Preciso de axuda na definición dos custos'
+project-help-cost: 'Preciso axuda na definición dos custos'
+project-help-license: 'Preciso axuda para definir os retornos colectivos e as licenzas'
 project-hide-donors: 'Ocultar cofinanciadores'
 project-hide-needs: 'Ocultar listado de necesidades'
 project-invest: Achega
@@ -68,9 +70,29 @@ project-view-metter-got: Obtido
 project-view-metter-investors: Cofinanceiros
 project-view-metter-minimum: Mínimo
 project-view-metter-optimum: Óptimo
+project-view-preview: 'Vista previa do proxecto'
+project-willpublish: 'Este proxecto será publicado o %s'
 regular-new_project: 'Proxecto novo'
 tooltip-project-bank: 'Se non queres poñela agora poderás poñela máis adiante cando formalicemos o contrato'
 tooltip-project-scope: 'Indica o impacto xeográfico ó que aspira ter o proxecto (cada categoría inclúe a anterior).'
 tooltip-updates-allow_comments: ' tooltip-updates-allow_comments'
+tooltip-updates-date: tooltip-updates-date
+tooltip-updates-home: 'Texto tooltip-updates-home'
+tooltip-updates-image: tooltip-updates-image
+tooltip-updates-image_upload: tooltip-updates-image_upload
+tooltip-updates-media: tooltip-updates-media
+tooltip-updates-tags: 'Texto tooltip-updates-tags'
 tooltip-updates-text: ' tooltip-updates-allow_comments'
+tooltip-updates-title: tooltip-updates-title
 project-obtained: 'Obtido'
+project-costs-total: 'Total'
+project-remove-translation: 'Eliminar tradución'
+project-remove-translation-confirm: 'Tes a certeza de querer eliminar esta tradución? Isto non se pode desfacer!'
+project-removed-translation-ok: 'Tradución eliminada!'
+project-removed-translation-ko: 'Produciuse un erro ao eliminar a tradución!'
+project-social-commitment-title: 'Compromiso social'
+project-create-title: 'Comeza un proxecto'
+project-create-subtitle-alert: '<strong>VAITES!</strong><p>Avanzamos! Agora é momento de definir o teu proxecto en poucas palabras!</p>'
+project-create-minimum-field: 'Mínimo (€)'
+project-create-minimum-calculate-button: 'Calcular'
+project-campaign: 'Configuración'
