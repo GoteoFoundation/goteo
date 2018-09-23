@@ -6,12 +6,17 @@ mandatory-social_reward-field-description: 'É obrigado poñer algunha descrici�
 mandatory-social_reward-field-icon: 'É obrigado seleccionar o tipo de retorno'
 mandatory-social_reward-field-name: 'É obrigado especificar o retorno'
 mandatory-social_reward-field-category: 'É obrigatorio definir o compromiso social'
+rewards-field-individual_reward-amount: 'Importe'
 rewards-field-individual_reward-description: Descrición
 rewards-field-individual_reward-other: 'Indicar o tipo de recompensa'
+rewards-field-individual_reward-reward: Recompensa
+rewards-field-individual_reward-type: 'Tipo de recompensa'
 rewards-field-individual_reward-units: 'Unidades dispoñibles'
 rewards-field-social_reward-description: Descrición
 rewards-field-social_reward-license: 'Opcións de licenza'
 rewards-field-social_reward-other: 'Especificar o tipo de retorno'
+rewards-field-social_reward-reward: Retorno
+rewards-field-social_reward-type: 'Tipo de retorno'
 rewards-field-social_reward-url: Url
 rewards-fields-individual_reward-title: 'Recompensas individuais'
 rewards-fields-social_reward-title: 'Retornos colectivos'
