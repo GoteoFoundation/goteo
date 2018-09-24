@@ -193,6 +193,7 @@ class Call extends \Goteo\Core\Model {
         try {
 
             $values = array(':id' => $id);
+            if(empty($lang)) $lang = Lang::current();
             list($fields, $joins) = self::getLangsSQLJoins($lang);
 
             $sql= "SELECT

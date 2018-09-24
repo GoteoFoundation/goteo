@@ -109,14 +109,15 @@ class Sphere extends \Goteo\Core\Model {
 
 
         if(!$lang) $lang = Lang::current();
-        $values['viewLang'] = $lang;
+        $values[':viewLang'] = $lang;
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql = "SELECT  sphere.id as id,
                         sphere.icon as icon,
                         sphere.order as `order`,
                         sphere.landing_match as landing_match,
-                        $fields
+                        $fields,
+                        :viewLang as viewLang
                 FROM sphere
                 $joins
                 $sql
@@ -124,7 +125,7 @@ class Sphere extends \Goteo\Core\Model {
 
 
         $query = self::query($sql, $values);
-        //print(\sqldbg($sql, $values)); die();
+        // print(\sqldbg($sql, $values)); die();
 
         if($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
