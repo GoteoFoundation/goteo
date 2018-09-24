@@ -23,6 +23,8 @@ use Goteo\Payment\Method\PoolPaymentMethod;
  * Matcher Model
  */
 class Matcher extends \Goteo\Core\Model {
+    use Traits\SphereRelationsTrait;
+
     public $id,
            $name,
            $logo,
@@ -376,39 +378,6 @@ class Matcher extends \Goteo\Core\Model {
         if($this->userInstance) return $this->userInstance;
         $this->userInstance = User::get($this->owner);
         return $this->userInstance;
-    }
-
-
-    /**
-     *  Spheres of this matcher
-     */
-    public function getSpheres () {
-        if($this->spheresList) return $this->spheresList;
-        $values = [':matcher' => $this->id];
-
-        list($fields, $joins) = Sphere::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
-
-        $sql = "SELECT
-                sphere.id,
-                sphere.icon,
-                $fields
-            FROM matcher_sphere
-            INNER JOIN sphere ON sphere.id = matcher_sphere.sphere
-            $joins
-            WHERE matcher_sphere.matcher = :matcher
-            ORDER BY matcher_sphere.order ASC";
-        // die(\sqldbg($sql, $values));
-        $query = static::query($sql, $values);
-        $this->spheresList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Sphere');
-        return $this->spheresList;
-
-    }
-
-    /**
-     * Return main sphere
-     */
-    public function getMainSphere() {
-        return $this->getSpheres() ? current($this->getSpheres()) : null;
     }
 
     public function setVars(array $vars) {

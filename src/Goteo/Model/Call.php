@@ -15,6 +15,7 @@ use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Call\CallLocation;
 
 class Call extends \Goteo\Core\Model {
+    use Traits\SphereRelationsTrait;
 
     // CALL STATUS IDs
     const STATUS_EDITING     = 1;  // edicion
@@ -2132,88 +2133,6 @@ class Call extends \Goteo\Core\Model {
         );
 
         return $errors;
-    }
-
-    /**
-     *  Spheres of this call
-     */
-    public function getSpheres () {
-        if($this->spheresList) return $this->spheresList;
-        $values = [':call' => $this->id];
-
-        list($fields, $joins) = Sphere::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
-
-        $sql = "SELECT
-                sphere.id,
-                sphere.icon,
-                $fields
-            FROM call_sphere
-            INNER JOIN sphere ON sphere.id = call_sphere.sphere
-            $joins
-            WHERE call_sphere.call = :call
-            ORDER BY call_sphere.order ASC";
-        // die(\sqldbg($sql, $values));
-        $query = static::query($sql, $values);
-        $this->spheresList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Sphere');
-        return $this->spheresList;
-
-    }
-
-
-    /**
-     *
-     * Return main sphere
-     *
-     */
-    public function getMainSphere() {
-        return $this->getSpheres() ? current($this->getSpheres()) : null;
-    }
-
-
-    /*
-     * Assign sphere
-     * @return: boolean
-     */
-    public function assignSphere ($sphere, &$errors = array()) {
-
-        $values = array(':sphere'=>$sphere, ':call'=>$this->id);
-
-        try {
-            $sql = "REPLACE INTO call_sphere (`call`, `sphere`) VALUES(:call, :sphere)";
-            if (self::query($sql, $values)) {
-
-                return true;
-            } else {
-                $errors[] = 'Error creating entry in `call_sphere`';
-                return false;
-            }
-        } catch(\PDOException $e) {
-            $errors[] = "Error assigning [$sphere] to the call [{$this->id}]" . $e->getMessage();
-            return false;
-        }
-
-    }
-
-    /*
-     * Unassing sphere
-     * @return: boolean
-     */
-    public function unassignSphere ($sphere, &$errors = array()) {
-        $values = array (
-            ':sphere'=>$sphere,
-            ':call'=>$this->id,
-        );
-
-        try {
-            if (self::query("DELETE FROM call_sphere WHERE `call` = :call AND `sphere` = :sphere", $values)) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch(\PDOException $e) {
-            $errors[] = "Error removing [$sphere] to the call {{$this->id}]" . $e->getMessage();
-            return false;
-        }
     }
 
     /*

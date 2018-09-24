@@ -347,6 +347,8 @@ class GoteoSdg
 
     ALTER TABLE `social_commitment` CHANGE `image` `icon` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
     ALTER TABLE `sphere` CHANGE `image` `icon` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
+    ALTER TABLE `call_sphere` CHANGE `call` `call_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, CHANGE `sphere` `sphere_id` BIGINT(20) UNSIGNED NOT NULL;
+    ALTER TABLE `matcher_sphere` CHANGE `matcher` `matcher_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, CHANGE `sphere` `sphere_id` BIGINT(20) UNSIGNED NOT NULL;
 
     CREATE TABLE `sdg` (
       `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -438,6 +440,8 @@ class GoteoSdg
 
      ALTER TABLE `social_commitment` CHANGE `icon` `image` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
      ALTER TABLE `sphere` CHANGE `icon` `image` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
+     ALTER TABLE `call_sphere` CHANGE `call_id` `call` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, CHANGE `sphere_id` `sphere` BIGINT(20) UNSIGNED NOT NULL;
+     ALTER TABLE `matcher_sphere` CHANGE `matcher_id` `matcher` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, CHANGE `sphere_id` `sphere` BIGINT(20) UNSIGNED NOT NULL;
 
      DROP TABLE sdg_category;
      DROP TABLE sdg_social_commitment;
