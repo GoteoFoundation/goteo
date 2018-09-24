@@ -122,20 +122,20 @@ class NodeTest extends TestCase {
      * @depends testRenameNode
      */
     public function testListing($ob) {
-        $list = Node::getAll();
+        $list = Node::getAll(['id' => $ob->id]);
         $this->assertInternalType('array', $list);
-        $new = end($list);
-        $this->assertInstanceOf('Goteo\Model\Node', $new);
-        $this->assertEquals(self::$data['subtitle'], $new->subtitle);
-        $this->assertEquals(self::$data['description'], $new->description);
+        $this->assertCount(1, $list);
+        $this->assertInstanceOf('Goteo\Model\Node', $list[0]);
+        $this->assertEquals(self::$data['subtitle'], $list[0]->subtitle);
+        $this->assertEquals(self::$data['description'], $list[0]->description);
 
         Lang::set('ca');
-        $list = Node::getAll();
+        $list = Node::getAll(['id' => $ob->id]);
         $this->assertInternalType('array', $list);
+        $this->assertCount(1, $list);
 
-        $new2 = end($list);
-        $this->assertEquals(self::$trans_data['subtitle'], $new2->subtitle);
-        $this->assertEquals(self::$trans_data['description'], $new2->description);
+        $this->assertEquals(self::$trans_data['subtitle'], $list[0]->subtitle);
+        $this->assertEquals(self::$trans_data['description'], $list[0]->description);
         Lang::set('es');
     }
 

@@ -23,7 +23,7 @@ use Goteo\Model\Image;
 use Goteo\Library\Check;
 
 class Stories extends \Goteo\Core\Model {
-    
+
     public
         $id,
         $node,
@@ -343,10 +343,10 @@ class Stories extends \Goteo\Core\Model {
 
     public function validate (&$errors = array()) {
 
-        if (empty($errors))
-            return true;
-        else
-            return false;
+        if(empty($this->title))
+            $errors[] = "Missing title";
+
+        return empty($errors);
     }
 
     // returns the current project
