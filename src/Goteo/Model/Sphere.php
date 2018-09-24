@@ -26,7 +26,7 @@ class Sphere extends \Goteo\Core\Model {
     public
         $id,
         $name,
-        $image,
+        $icon,
         $landing_match = false,
         $order = 1
         ;
@@ -48,7 +48,7 @@ class Sphere extends \Goteo\Core\Model {
 
         $sql="SELECT
                     sphere.id as id,
-                    sphere.image as image,
+                    sphere.icon as icon,
                     sphere.order as `order`,
                     sphere.landing_match as landing_match,
                     $fields
@@ -59,24 +59,31 @@ class Sphere extends \Goteo\Core\Model {
         $item = $query->fetchObject(__CLASS__);
 
         if($item) {
-            // TODO: to remove this? use getImage instead
-            if($item->image)
-                    $item->image = Image::get($item->image);
+            // TODO: to remove this? use getIcon instead
+            $item->image = $item->getIcon();
             return $item;
         }
 
         throw new ModelNotFoundException("Sphere not found for ID [$id]");
     }
 
-
-    public function getImage() {
-        if($this->image instanceOf Image) return $this->image;
-        if($this->image) {
-            $this->image = Image::get($this->image);
-        } else {
-            $this->image = new Image();
+    public function getIcon() {
+        if(!$this->iconImage instanceOf Image) {
+            $this->iconImage = Image::get($this->icon ?: "sphere/{$this->id}.png");
+            if(!$this->icon) $this->iconImage->setAsset(true);
         }
-        return $this->image;
+        return $this->iconImage;
+    }
+
+    public function setIcon($icon) {
+        $this->icon = $icon instanceOf Image ? $icon->id : $icon;
+        $this->iconImage = null;
+        return $this;
+    }
+
+    // For compatibility
+    public function getImage() {
+        return $this->getIcon();
     }
 
     /**
@@ -106,7 +113,7 @@ class Sphere extends \Goteo\Core\Model {
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql = "SELECT  sphere.id as id,
-                        sphere.image as image,
+                        sphere.icon as icon,
                         sphere.order as `order`,
                         sphere.landing_match as landing_match,
                         $fields
@@ -138,28 +145,7 @@ class Sphere extends \Goteo\Core\Model {
         if (!$this->validate($errors))
             return false;
 
-        // Save opcional image
-        if (is_array($this->image) && !empty($this->image['name'])) {
-            $image = new Image($this->image);
-
-            if ($image->save($errors)) {
-                $this->image = $image->id;
-            } else {
-                \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
-                $this->image = '';
-            }
-        }
-        if (is_null($this->image)) {
-            $this->image = '';
-        }
-
-        $fields = array(
-            // 'id',
-            'name',
-            'image',
-            'landing_match',
-            'order'
-        );
+        $fields = ['name', 'icon', 'landing_match', 'order'];
 
         try {
             $this->dbInsertUpdate($fields);
@@ -178,7 +164,9 @@ class Sphere extends \Goteo\Core\Model {
      * @return  type bool   true|false
      */
     public function validate(&$errors = array()) {
-
+        if(empty($this->name)) {
+            $errors[] = "Emtpy name";
+        }
         return true;
     }
 

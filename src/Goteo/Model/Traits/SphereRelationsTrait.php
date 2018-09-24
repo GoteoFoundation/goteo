@@ -63,7 +63,7 @@ trait SphereRelationsTrait {
 
         $sql = "SELECT
                 sphere.id,
-                sphere.image,
+                sphere.icon,
                 sphere.order,
                 sphere.landing_match,
                 $fields

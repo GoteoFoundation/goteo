@@ -192,12 +192,60 @@ class Call extends \Goteo\Core\Model {
 
         try {
 
-            $debug = false;
-
             $values = array(':id' => $id);
+            list($fields, $joins) = self::getLangsSQLJoins($lang);
 
             $sql= "SELECT
-                        `call`.*,
+                        `call`.id,
+                        $fields,
+                        `call`.lang,
+                        `call`.status,
+                        `call`.translate,
+                        `call`.owner,
+                        `call`.amount,
+                        `call`.created,
+                        `call`.updated,
+                        `call`.opened,
+                        `call`.published,
+                        `call`.success,
+                        `call`.closed,
+                        `call`.contract_name,
+                        `call`.contract_nif,
+                        `call`.phone,
+                        `call`.contract_email,
+                        `call`.address,
+                        `call`.zipcode,
+                        `call`.location,
+                        `call`.country,
+                        `call`.logo,
+                        `call`.image,
+                        `call`.backimage,
+                        `call`.fbappid,
+                        `call`.call_location,
+                        `call`.scope,
+                        `call`.contract_entity,
+                        `call`.contract_birthdate,
+                        `call`.entity_office,
+                        `call`.entity_name,
+                        `call`.entity_cif,
+                        `call`.post_address,
+                        `call`.secondary_address,
+                        `call`.post_zipcode,
+                        `call`.post_location,
+                        `call`.post_country,
+                        `call`.days,
+                        `call`.maxdrop,
+                        `call`.modemaxp,
+                        `call`.maxproj,
+                        `call`.num_projects,
+                        `call`.rest,
+                        `call`.used,
+                        `call`.applied,
+                        `call`.running_projects,
+                        `call`.success_projects,
+                        `call`.fee_projects_drop,
+                        `call`.facebook_pixel,
+                        `call`.intro_checks,
                         user.id as user_id,
                         user.name as user_name,
                         user.avatar as user_avatar,
@@ -214,16 +262,11 @@ class Call extends \Goteo\Core\Model {
                         user.entity_type as user_entity_type,
                         user.legal_entity as user_legal_entity
                   FROM `call`
-                  LEFT JOIN user
-                  ON user.id=call.owner
+                  $joins
+                  LEFT JOIN user ON user.id=call.owner
                   WHERE call.id = :id";
 
-            if ($debug) {
-                echo \trace($values);
-                echo $sql;
-                die;
-            }
-
+            // die(\sqldbg($sql, $values));
             // metemos los datos del convocatoria en la instancia
             $query = self::query($sql, $values);
             $call = $query->fetchObject(__CLASS__);
@@ -232,46 +275,9 @@ class Call extends \Goteo\Core\Model {
                 throw new ModelNotFoundException("[$id] not found");
             }
 
-            if(!empty($lang) && $lang!=$call->lang)
-            {
-
-                //Obtenemos el idioma de soporte
-                $l=self::default_lang_by_id($id, 'call_lang', $lang);
-
-                $sql = "
-                    SELECT
-                        IFNULL(user_lang.name, user.name) as user_name,
-                        IFNULL(call_lang.name, call.name) as name,
-                        IFNULL(call_lang.subtitle, call.subtitle) as subtitle,
-                        IFNULL(call_lang.description_summary, call.description_summary) as description_summary,
-                        IFNULL(call_lang.description_nav, call.description_nav) as description_nav,
-                        IFNULL(call_lang.description, call.description) as description,
-                        IFNULL(call_lang.whom, call.whom) as whom,
-                        IFNULL(call_lang.apply, call.apply) as apply,
-                        IFNULL(call_lang.legal, call.legal) as legal,
-                        IFNULL(call_lang.dossier, call.dossier) as dossier,
-                        IFNULL(call_lang.resources, call.resources) as resources,
-                        IFNULL(call_lang.tweet, call.tweet) as tweet
-                    FROM `call`
-                    LEFT JOIN call_lang
-                        ON  call_lang.id = call.id
-                        AND call_lang.lang = :lang
-                    LEFT JOIN user
-                        ON user.id=call.owner
-                    LEFT JOIN user_lang
-                        ON user_lang.id=call.owner
-                        AND user_lang.lang = :lang
-                    WHERE call.id = :id
-                    ";
-                // echo \sqldbg($sql, [':id' => $id, ':lang' => $l]);die;
-                $query = self::query($sql, array(':id' => $id, ':lang' => $l));
-                foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field => $value) {
-                    $call->$field = $value;
-                }
-            }
+            $call->viewLang = $lang;
 
             // owner
-
             $call->user = new User;
             $call->user->id = $call->user_id;
             $call->user->name = $call->user_name;
@@ -362,9 +368,6 @@ class Call extends \Goteo\Core\Model {
             return $call;
         } catch (\PDOException $e) {
             throw new \Goteo\Core\Exception($e->getMessage());
-        } catch (\Goteo\Core\Error $e) {
-            die($e->getMessage());
-            throw new \Goteo\Core\Error('404', Text::get('fatal-error-call'));
         }
     }
 
@@ -1176,7 +1179,7 @@ class Call extends \Goteo\Core\Model {
      * @param array filters
      * @return array of call instances
      */
-    public static function getList($filters = array(), $offset = 0, $limit = 10, $count = false) {
+    public static function getList($filters = array(), $offset = 0, $limit = 10, $count = false, $lang = null) {
         $values = array();
 
         // los filtros
@@ -1342,7 +1345,7 @@ class Call extends \Goteo\Core\Model {
         $query = self::query($sql, $values);
         $calls = [];
         foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $call) {
-            $calls[] = self::get($call['id']);
+            $calls[] = self::get($call['id'], $lang);
         }
         return $calls;
     }
@@ -2130,65 +2133,39 @@ class Call extends \Goteo\Core\Model {
         return $errors;
     }
 
-    /* Spheres of a call
-    TODO: correct this, remove static use modern aproach to extract langs
-    (view this exact method in Matcher.php as an example)
+    /**
+     *  Spheres of this call
      */
+    public function getSpheres () {
+        if($this->spheresList) return $this->spheresList;
+        $values = [':call' => $this->id];
 
-    public static function getSpheres ($call = null) {
-
-        $list = array();
-        $lang = Lang::current();
-        $values = array(':lang'=>$lang);
-        $sqlFilter = "";
-        if (!empty($call)) {
-            $values[':call'] = $call;
-            $sqlFilter .= " WHERE call_sphere.call = :call";
-
-            if(self::default_lang($lang) === Config::get('lang')) {
-                $different_select=" IFNULL(sphere_lang.name, sphere.name) as name";
-            }
-            else {
-                $different_select=" IFNULL(sphere_lang.name, IFNULL(eng.name,sphere.name)) as name";
-                $eng_join=" LEFT JOIN sphere_lang as eng
-                                ON  eng.id = sphere.id
-                                AND eng.lang = 'en'";
-            }
-
-        }
+        list($fields, $joins) = Sphere::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
 
         $sql = "SELECT
-                DISTINCT(call_sphere.sphere) as sphere,
-                sphere.image as image,
-                $different_select
+                sphere.id,
+                sphere.icon,
+                $fields
             FROM call_sphere
-            INNER JOIN sphere
-                ON sphere.id = call_sphere.sphere
-            LEFT JOIN sphere_lang
-                ON  sphere_lang.id = sphere.id
-                AND sphere_lang.lang = :lang
-            $eng_join
-            $sqlFilter
+            INNER JOIN sphere ON sphere.id = call_sphere.sphere
+            $joins
+            WHERE call_sphere.call = :call
             ORDER BY call_sphere.order ASC";
         // die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
-        foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
-            $list[$item->sphere]['name'] = $item->name;
-            $list[$item->sphere]['image'] = Image::get($item->image);
-        }
+        $this->spheresList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Sphere');
+        return $this->spheresList;
 
-        return $list;
     }
+
 
     /**
      *
      * Return main sphere
      *
      */
-
-    public function getMainSphere()
-    {
-        return current(self::getSpheres($this->id));
+    public function getMainSphere() {
+        return $this->getSpheres() ? current($this->getSpheres()) : null;
     }
 
 

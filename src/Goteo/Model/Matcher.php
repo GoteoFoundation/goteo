@@ -390,7 +390,7 @@ class Matcher extends \Goteo\Core\Model {
 
         $sql = "SELECT
                 sphere.id,
-                sphere.image,
+                sphere.icon,
                 $fields
             FROM matcher_sphere
             INNER JOIN sphere ON sphere.id = matcher_sphere.sphere
