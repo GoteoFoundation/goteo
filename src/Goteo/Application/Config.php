@@ -186,7 +186,8 @@ class Config {
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TransnodesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BannersSubController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesSubController');
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommonsSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CriteriaSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');

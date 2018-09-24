@@ -101,6 +101,10 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
         return Image::get($this->model->image)->getLink(64, 64, true);
     }
 
+    public function getIcon() {
+        return $this->model->getIcon()->getLink(64, 64, true);
+    }
+
     public function getTitle() {
         return $this->model->title;
     }

@@ -101,12 +101,14 @@ admin-blog: Blog general
 admin-blog-add: Crear nuevo post
 admin-blog-edit: Editando post %s
 admin-blog-slug-exists: 'El identificador [%s] se está usando en otro post!'
-admin-blog-slug-chars: 'El identificador [%s] contiene carácteres inválidos!'
+admin-blog-slug-chars: 'El identificador [%s] contiene caracteres inválidos!'
 admin-blog-not-public: 'Este post no es público todavía'
 
 admin-stories: Historias de usuarios en Goteo
 admin-stories-add: Crear una nueva historia
 admin-stories-edit: Editando la historia %s
+
+admin-categories: 'Categorías y ámbitos'
 
 admin-calls: Convocatorias
 admin-matchers: Matchers
