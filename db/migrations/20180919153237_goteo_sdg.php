@@ -394,6 +394,7 @@ class GoteoSdg
       `sdg_id` INT(10) UNSIGNED NOT NULL,
       `category_id` INT(10) UNSIGNED NOT NULL,
       `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+      PRIMARY KEY (`sdg_id`, `category_id`),
       FOREIGN KEY (`sdg_id`) REFERENCES `sdg`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
       FOREIGN KEY (`category_id`) REFERENCES `category`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
     );
@@ -402,6 +403,7 @@ class GoteoSdg
       `sdg_id` INT(10) UNSIGNED NOT NULL,
       `social_commitment_id` INT(10) UNSIGNED NOT NULL,
       `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+      PRIMARY KEY (`sdg_id`, `social_commitment_id`),
       FOREIGN KEY (`sdg_id`) REFERENCES `sdg`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
       FOREIGN KEY (`social_commitment_id`) REFERENCES `social_commitment`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
     );
@@ -410,6 +412,7 @@ class GoteoSdg
       `sdg_id` INT(10) UNSIGNED NOT NULL,
       `sphere_id` BIGINT(20) UNSIGNED NOT NULL,
       `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+      PRIMARY KEY (`sdg_id`, `sphere_id`),
       FOREIGN KEY (`sdg_id`) REFERENCES `sdg`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
       FOREIGN KEY (`sphere_id`) REFERENCES `sphere`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
     );
@@ -418,6 +421,7 @@ class GoteoSdg
       `sdg_id` INT(10) UNSIGNED NOT NULL,
       `footprint_id` INT(10) UNSIGNED NOT NULL,
       `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+      PRIMARY KEY (`sdg_id`, `footprint_id`),
       FOREIGN KEY (`sdg_id`) REFERENCES `sdg`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
       FOREIGN KEY (`footprint_id`) REFERENCES `footprint`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
     );

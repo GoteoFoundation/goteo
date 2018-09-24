@@ -44,7 +44,7 @@ trait SocialCommitmentRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "INSERT INTO `{$tb}_social_commitment` ({$tb}_id, social_commitment_id) VALUES " . implode(', ', $inserts);
+        $sql = "INSERT IGNORE INTO `{$tb}_social_commitment` ({$tb}_id, social_commitment_id) VALUES " . implode(', ', $inserts);
         try {
             self::query($sql, $values);
         } catch (\PDOException $e) {
@@ -63,7 +63,7 @@ trait SocialCommitmentRelationsTrait {
 
         $sql = "SELECT
                 social_commitment.id,
-                social_commitment.image,
+                social_commitment.icon,
                 $fields
             FROM {$tb}_social_commitment
             INNER JOIN social_commitment ON social_commitment.id = {$tb}_social_commitment.social_commitment_id

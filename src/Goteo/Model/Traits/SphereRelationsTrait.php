@@ -44,7 +44,7 @@ trait SphereRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "INSERT INTO `{$tb}_sphere` ({$tb}_id, sphere_id) VALUES " . implode(', ', $inserts);
+        $sql = "INSERT IGNORE INTO `{$tb}_sphere` ({$tb}_id, sphere_id) VALUES " . implode(', ', $inserts);
         try {
             self::query($sql, $values);
         } catch (\PDOException $e) {

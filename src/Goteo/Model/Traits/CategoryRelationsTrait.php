@@ -44,7 +44,7 @@ trait CategoryRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "INSERT INTO `{$tb}_category` ({$tb}_id, category_id) VALUES " . implode(', ', $inserts);
+        $sql = "INSERT IGNORE INTO `{$tb}_category` ({$tb}_id, category_id) VALUES " . implode(', ', $inserts);
         try {
             self::query($sql, $values);
         } catch (\PDOException $e) {

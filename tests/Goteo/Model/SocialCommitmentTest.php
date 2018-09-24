@@ -4,17 +4,17 @@
 namespace Goteo\Model\Tests;
 
 use Goteo\TestCase;
-use Goteo\Model\Sphere;
+use Goteo\Model\SocialCommitment;
 use Goteo\Model\Sdg;
 
 
-class SphereTest extends TestCase {
-    private static $data = ['name' => 'test'];
+class SocialCommitmentTest extends TestCase {
+    private static $data = ['name' => 'test', 'description' => 'description social_commitment'];
     private static $sdg;
 
     public function testInstance() {
-        $ob = new Sphere();
-        $this->assertInstanceOf('\Goteo\Model\Sphere', $ob);
+        $ob = new SocialCommitment();
+        $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $ob);
 
         return $ob;
     }
@@ -30,11 +30,11 @@ class SphereTest extends TestCase {
 
     public function testCreate() {
         $errors = [];
-        $ob = new Sphere(self::$data);
+        $ob = new SocialCommitment(self::$data);
         $this->assertTrue($ob->validate($errors), implode("\n", $errors));
         $this->assertTrue($ob->save($errors), implode("\n", $errors));
-        $ob = Sphere::get($ob->id);
-        $this->assertInstanceOf('\Goteo\Model\Sphere', $ob);
+        $ob = SocialCommitment::get($ob->id);
+        $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $ob);
 
         foreach(self::$data as $key => $val) {
             $this->assertEquals($ob->{$key}, $val);
@@ -49,7 +49,7 @@ class SphereTest extends TestCase {
         $this->assertInstanceOf('\Goteo\Model\Image', $ob->getIcon());
         $this->assertTrue($ob->getIcon()->isAsset());
         $this->assertStringStartsWith(SRC_URL, $ob->getIcon()->getLink());
-        $this->assertStringEndsWith("/img/sphere/{$ob->id}.png", $ob->getIcon()->getLink());
+        $this->assertStringEndsWith("/img/social-commitment/square/{$ob->id}.png", $ob->getIcon()->getLink());
         $this->assertFalse($ob->setIcon('testimage.png')->getIcon()->isAsset());
         $this->assertStringEndsWith('testimage.png', $ob->getIcon()->getLink());
     }
@@ -61,13 +61,13 @@ class SphereTest extends TestCase {
         $errors = [];
         $sdg = new Sdg(['name' => 'sdg test sdg']);
         $this->assertTrue($sdg->save($errors), implode("\n", $errors));
-        $this->assertInstanceOf('\Goteo\Model\Sphere', $ob->addSdgs($sdg));
+        $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $ob->addSdgs($sdg));
         $sdgs = $ob->getSdgs();
         $this->assertCount(1, $sdgs);
         $this->assertInstanceOf('\Goteo\Model\Sdg', $sdgs[0]);
         self::$sdg = $sdgs[0]->id;
         // repeated assignment should'nt be a problem
-        $this->assertInstanceOf('\Goteo\Model\Sphere', $ob->addSdgs($sdgs));
+        $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $ob->addSdgs($sdgs));
         $this->assertCount(1, $ob->getSdgs());
         return $ob;
     }
@@ -77,10 +77,10 @@ class SphereTest extends TestCase {
      */
     public function testRemoveSdgRelationships($ob) {
         $this->assertCount(1, $ob->getSdgs());
-        $this->assertInstanceOf('\Goteo\Model\Sphere', $ob->removeSdgs(self::$sdg));
+        $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $ob->removeSdgs(self::$sdg));
         $this->assertCount(0, $ob->getSdgs());
         // repeated unassignment should'nt be a problem
-        $this->assertInstanceOf('\Goteo\Model\Sphere', $ob->removeSdgs(self::$sdg));
+        $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $ob->removeSdgs(self::$sdg));
         $this->assertCount(0, $ob->getSdgs());
 
     }
@@ -97,7 +97,7 @@ class SphereTest extends TestCase {
      * @depends testDelete
      */
     public function testNonExisting($ob) {
-        $ob = Sphere::get($ob->id);
+        $ob = SocialCommitment::get($ob->id);
         $this->assertNull($ob);
     }
 

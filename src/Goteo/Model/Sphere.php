@@ -55,16 +55,14 @@ class Sphere extends \Goteo\Core\Model {
               FROM sphere
               $joins
               WHERE sphere.id = :id";
-        $query = static::query($sql, [':id' => $id]);
-        $item = $query->fetchObject(__CLASS__);
-
-        if($item) {
-            // TODO: to remove this? use getIcon instead
-            $item->image = $item->getIcon();
-            return $item;
+        $values = [':id' => $id];
+        // print(\sqldbg($sql, $values));
+        if ($query = static::query($sql, $values)) {
+            if( $sdg = $query->fetchObject(__CLASS__) ) {
+                return $sdg;
+            }
         }
-
-        throw new ModelNotFoundException("Sphere not found for ID [$id]");
+        return null;
     }
 
     public function getIcon() {
@@ -168,7 +166,7 @@ class Sphere extends \Goteo\Core\Model {
         if(empty($this->name)) {
             $errors[] = "Emtpy name";
         }
-        return true;
+        return empty($errors);
     }
 
 

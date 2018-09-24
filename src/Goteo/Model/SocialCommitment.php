@@ -47,8 +47,17 @@ class SocialCommitment extends \Goteo\Core\Model {
             FROM social_commitment
             $joins
             WHERE social_commitment.id = :id";
-        $query = static::query($sql, array(':id' => $id));
-        return $query->fetchObject(__CLASS__);
+
+        $values = [':id' => $id];
+
+        // print(\sqldbg($sql, $values));
+        if ($query = static::query($sql, $values)) {
+            if( $sdg = $query->fetchObject(__CLASS__) ) {
+                return $sdg;
+            }
+        }
+        return null;
+
     }
 
     /**

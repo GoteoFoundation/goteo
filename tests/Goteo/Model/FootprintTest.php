@@ -67,38 +67,42 @@ class FootprintTest extends TestCase {
 		$errors = [];
 		$sdg = new Sdg(['name' => 'sdg test sdg']);
 		$this->assertTrue($sdg->save($errors), implode("\n", $errors));
-		$this->assertInstanceOf('\Goteo\Model\Footprint', $ob->addSdgs($sdg));
-		$sdgs = $ob->getSdgs();
-		$this->assertCount(1, $sdgs);
-		$this->assertInstanceOf('\Goteo\Model\Sdg', $sdgs[0]);
-		self::$sdg = $sdgs[0]->id;
+        $this->assertInstanceOf('\Goteo\Model\Footprint', $ob->addSdgs($sdg));
+        $sdgs = $ob->getSdgs();
+        $this->assertCount(1, $sdgs);
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $sdgs[0]);
+        self::$sdg = $sdgs[0]->id;
+        // repeated assignment should'nt be a problem
+        $this->assertInstanceOf('\Goteo\Model\Footprint', $ob->addSdgs($sdgs));
+        $this->assertCount(1, $ob->getSdgs());
+
 		return $ob;
 	}
 
-	/**
-	 * @depends testSdgRelationships
-	 */
-	public function testGetFootprintFromSdgs($ob) {
-		$errors = [];
-		$foot = Footprint::getFromSdgs(self::$sdg);
-		$this->assertGreaterThanOrEqual(1, $foot);
-		$this->assertInstanceOf('\Goteo\Model\Footprint', $foot[0]);
-	}
+    /**
+     * @depends testSdgRelationships
+     */
+    public function testGetFootprintFromSdgs($ob) {
+        $errors = [];
+        $foot = Footprint::getFromSdgs(self::$sdg);
+        $this->assertGreaterThanOrEqual(1, $foot);
+        $this->assertInstanceOf('\Goteo\Model\Footprint', $foot[0]);
+    }
 
-	/**
-	 * @depends testSdgRelationships
-	 */
-	public function testGetFootprintFromCategories($ob) {
-		$errors = [];
-		$cat = new Category(['name' => 'footprint category test']);
-		$this->assertTrue($cat->save($errors), implode("\n", $errors));
-		self::$cat = $cat->id;
-		$this->assertInstanceOf('\Goteo\Model\Category', $cat->addSdgs(self::$sdg));
-		$this->assertCount(1, $cat->getSdgs());
-		$foot = Footprint::getFromCategories($cat);
-		$this->assertGreaterThanOrEqual(1, count($foot));
-		$this->assertInstanceOf('\Goteo\Model\Footprint', $foot[0]);
-	}
+    /**
+     * @depends testSdgRelationships
+     */
+    public function testGetFootprintFromCategories($ob) {
+        $errors = [];
+        $cat = new Category(['name' => 'footprint category test']);
+        $this->assertTrue($cat->save($errors), implode("\n", $errors));
+        self::$cat = $cat->id;
+        $this->assertInstanceOf('\Goteo\Model\Category', $cat->addSdgs(self::$sdg));
+        $this->assertCount(1, $cat->getSdgs());
+        $foot = Footprint::getFromCategories($cat);
+        $this->assertGreaterThanOrEqual(1, count($foot));
+        $this->assertInstanceOf('\Goteo\Model\Footprint', $foot[0]);
+    }
 
     /**
      * @depends testSdgRelationships
@@ -115,34 +119,39 @@ class FootprintTest extends TestCase {
         $this->assertInstanceOf('\Goteo\Model\Footprint', $foot[0]);
     }
 
-	/**
-	 * @depends testSdgRelationships
-	 */
-	public function testGetFootprintFromSocialCommitments($ob) {
-		$errors = [];
-		$social = new SocialCommitment(['name' => 'footprint sphere test']);
-		$this->assertTrue($social->save($errors), implode("\n", $errors));
-		self::$social = $social->id;
-		$this->assertInstanceOf('\Goteo\Model\SocialCommitment', $social->addSdgs(self::$sdg));
-		$this->assertCount(1, $social->getSdgs());
-		$foot = Footprint::getFromSocialCommitments($social);
-		$this->assertGreaterThanOrEqual(1, count($foot));
-		$this->assertInstanceOf('\Goteo\Model\Footprint', $foot[0]);
-	}
+    /**
+     * @depends testSdgRelationships
+     */
+    public function testGetFootprintFromSocialCommitments($ob) {
+        $errors = [];
+        $social = new SocialCommitment(['name' => 'footprint sphere test']);
+        $this->assertTrue($social->save($errors), implode("\n", $errors));
+        self::$social = $social->id;
+        $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $social->addSdgs(self::$sdg));
+        $this->assertCount(1, $social->getSdgs());
+        $foot = Footprint::getFromSocialCommitments($social);
+        $this->assertGreaterThanOrEqual(1, count($foot));
+        $this->assertInstanceOf('\Goteo\Model\Footprint', $foot[0]);
+    }
 
-	/**
-	 * @depends testSdgRelationships
-	 */
-	public function testRemoveRelationships($ob) {
-		$this->assertInstanceOf('\Goteo\Model\Footprint', $ob->removeSdgs(self::$sdg));
-		$this->assertCount(0, $ob->getSdgs());
-	}
+    /**
+     * @depends testSdgRelationships
+     */
+    public function testRemoveSdgRelationships($ob) {
+        $this->assertCount(1, $ob->getSdgs());
+        $this->assertInstanceOf('\Goteo\Model\Footprint', $ob->removeSdgs(self::$sdg));
+        $this->assertCount(0, $ob->getSdgs());
+        // repeated unassignment should'nt be a problem
+        $this->assertInstanceOf('\Goteo\Model\Footprint', $ob->removeSdgs(self::$sdg));
+        $this->assertCount(0, $ob->getSdgs());
 
-	/**
-	 * @depends testCreate
-	 */
-	public function testDelete($ob) {
-		$this->assertTrue($ob->dbDelete());
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testDelete($ob) {
+        $this->assertTrue($ob->dbDelete());
 		return $ob;
 	}
 

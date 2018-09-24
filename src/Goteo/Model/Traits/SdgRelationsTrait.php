@@ -44,7 +44,7 @@ trait SdgRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "INSERT INTO `sdg_{$tb}` ({$tb}_id, sdg_id) VALUES " . implode(', ', $inserts);
+        $sql = "INSERT IGNORE INTO `sdg_{$tb}` ({$tb}_id, sdg_id) VALUES " . implode(', ', $inserts);
         // echo \sqldbg($sql, $values)."\n";
         try {
             self::query($sql, $values);

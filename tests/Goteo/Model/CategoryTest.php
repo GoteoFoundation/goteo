@@ -4,6 +4,7 @@
 namespace Goteo\Model\Tests;
 
 use Goteo\Model\Category;
+use Goteo\Model\Sdg;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 
@@ -87,8 +88,23 @@ class CategoryTest extends \PHPUnit_Framework_TestCase {
         $this->assertCount(1, $sdgs);
         $this->assertInstanceOf('\Goteo\Model\Sdg', $sdgs[0]);
         self::$sdg = $sdgs[0]->id;
-        $this->assertInstanceOf('\Goteo\Model\Category', $ob->removeSdgs($sdgs));
+        // repeated assignment should'nt be a problem
+        $this->assertInstanceOf('\Goteo\Model\Category', $ob->addSdgs($sdgs));
+        $this->assertCount(1, $ob->getSdgs());
+        return $ob;
+    }
+
+    /**
+     * @depends testSdgRelationships
+     */
+    public function testRemoveSdgRelationships($ob) {
+        $this->assertCount(1, $ob->getSdgs());
+        $this->assertInstanceOf('\Goteo\Model\Category', $ob->removeSdgs(self::$sdg));
         $this->assertCount(0, $ob->getSdgs());
+        // repeated unassignment should'nt be a problem
+        $this->assertInstanceOf('\Goteo\Model\Category', $ob->removeSdgs(self::$sdg));
+        $this->assertCount(0, $ob->getSdgs());
+
     }
 
     /**

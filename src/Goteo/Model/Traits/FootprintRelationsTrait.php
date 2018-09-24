@@ -44,7 +44,7 @@ trait FootprintRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "INSERT INTO `{$tb}_footprint` ({$tb}_id, footprint_id) VALUES " . implode(', ', $inserts);
+        $sql = "INSERT IGNORE INTO `{$tb}_footprint` ({$tb}_id, footprint_id) VALUES " . implode(', ', $inserts);
         try {
             self::query($sql, $values);
         } catch (\PDOException $e) {
