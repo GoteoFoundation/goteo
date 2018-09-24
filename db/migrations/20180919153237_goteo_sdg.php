@@ -91,9 +91,9 @@ class GoteoSdg
       foreach($seed as $lang => $trans) {
         if($lang == $sql_lang) continue;
         $errors = [];
-        $line = $trans[$id];
-        if(!$sdg->setLang($lang, ['name' => $line[0], 'description' => $line[1], 'link' => $line[2] ? $line[2] : ''], $errors)) {
-          throw new \RuntimeException("Error saving sdg translation [$lang] for id [{$sdg->id}] ({$line[0]})" . implode("\n", $errors));
+        $l = $trans[$id];
+        if(!$sdg->setLang($lang, ['name' => $l[0], 'description' => $l[1], 'link' => $l[2] ? $l[2] : ''], $errors)) {
+          throw new \RuntimeException("Error saving sdg translation [$lang] for id [{$sdg->id}] ({$l[0]})" . implode("\n", $errors));
         }
       }
     }
@@ -127,9 +127,9 @@ class GoteoSdg
       foreach($footprints as $lang => $trans) {
         if($lang == $sql_lang) continue;
         $errors = [];
-        $line = $trans[$id];
-        if(!$foot->setLang($lang, ['name' => $line[0]], $errors)) {
-          throw new \RuntimeException("Error saving footprint translation [$lang] for id [{$foot->id}] ({$line[0]})" . implode("\n", $errors));
+        $l = $trans[$id];
+        if(!$foot->setLang($lang, ['name' => $l[0]], $errors)) {
+          throw new \RuntimeException("Error saving footprint translation [$lang] for id [{$foot->id}] ({$l[0]})" . implode("\n", $errors));
         }
       }
     }
@@ -189,13 +189,13 @@ class GoteoSdg
         if(!$sc->save($errors)) {
           throw new \RuntimeException("Error saving main SocialCommitment object [{$sc->id}] " . implode("\n", $errors));
         }
-        foreach($socials as $lang => $trans) {
-          if($lang == $sql_lang) continue;
-          $errors = [];
-          $line = $trans[$id];
-          if(!$sc->setLang($lang, ['name' => $line[0], 'description' => $line[1]], $errors)) {
-            throw new \RuntimeException("Error saving social_commitment translation [$lang] for id [{$foot->id}] ({$line[0]})" . implode("\n", $errors));
-          }
+      }
+      foreach($socials as $lang => $trans) {
+        if($lang == $sql_lang || $sc->getLang($lang)) continue;
+        $errors = [];
+        $l = $trans[$id];
+        if(!$sc->setLang($lang, ['name' => $l[0], 'description' => $l[1]], $errors)) {
+          throw new \RuntimeException("Error saving social_commitment translation [$lang] for id [{$sc->id}] ({$l[0]})" . implode("\n", $errors));
         }
       }
       if($line[2]) {
@@ -208,9 +208,95 @@ class GoteoSdg
         }
       }
       if($line[3]) $sc->addSdgs($line[3]);
-
     }
 
+    // Spheres content
+    $spheres = [];
+    $spheres['es'] = [
+    '1' => ['Cultura', [5]],
+    '2' => ['Innovación', [15]],
+    '3' => ['Salud'],
+    '4' => ['Emprendimiento', [11]],
+    '5' => ['Tecnología'],
+    '6' => ['Ciudad', [2]],
+    '7' => ['Cooperación', [4]],
+    '8' => ['Género', [13]],
+    '9' => ['Integración Social', [16]],
+    '10' => ['Datos Abiertos', [6]],
+    '11' => ['Periodismo'],
+    '12' => ['Ecología', [8]],
+    '13' => ['Infancia', [14]],
+    '14' => ['Colaboración', [3]],
+    '15' => ['Patrimonio', [17]],
+    '16' => ['Digital', [7]],
+    '17' => ['Educación', [10]],
+    '18' => ['Emprendimiento social', [12]],
+    '19' => ['Economías colaborativas', [9]],
+    ];
+
+    $spheres['en'] = [
+    '1' => 'Culture',
+    '2' => 'Innovation',
+    '3' => 'Health',
+    '4' => 'Entrepreneurship',
+    '5' => 'Technology',
+    '6' => 'City',
+    '7' => 'Cooperation',
+    '8' => 'Genre',
+    '9' => 'Social inclusion',
+    '10' => 'Open Data',
+    '11' => 'Journalism',
+    '12' => 'Environment',
+    '13' => 'Childhood',
+    '14' => 'Collaboration',
+    '15' => 'Heritage',
+    '16' => 'Digital',
+    '17' => 'Education',
+    '18' => 'Social entrepreneurship',
+    '19' => 'Collaborative economies',
+    ];
+    $spheres['ca'] = [
+    '1' => 'Cultura',
+    '2' => 'Innovació',
+    '3' => 'Salut',
+    '4' => 'Emprenedoria',
+    '5' => 'Tecnologia',
+    '6' => 'Ciutat',
+    '7' => 'Cooperació',
+    '8' => 'Gènere',
+    '9' => 'Integració social',
+    '10' => 'Dades obertes',
+    '11' => 'Periodisme',
+    '12' => 'Ecologia',
+    '13' => 'Infància',
+    '14' => 'Col·laboració',
+    '15' => 'Patrimoni',
+    '16' => 'Digital',
+    '17' => 'Educació',
+    '18' => 'Emprenedoria social',
+    '19' => 'Economies col·laboratives',
+    ];
+
+    if(!$spheres[$sql_lang]) throw new \RunException("[$sql_lang] not in the spheres data!");
+    foreach($spheres[$sql_lang] as $id => $line) {
+      if(!$sph = Sphere::get($id)) {
+        $sph = new Sphere(['name' => $line[0]]);
+        $errors = [];
+        if(!$sph->save($errors)) {
+          throw new \RuntimeException("Error saving main Sphere object [{$sph->id}] " . implode("\n", $errors));
+        }
+      }
+      foreach($spheres as $lang => $trans) {
+        if($lang == $sql_lang || $sph->getLang($lang)) continue;
+        $errors = [];
+        $l = $trans[$id];
+        if(!$sph->setLang($lang, ['name' => $l], $errors)) {
+          throw new \RuntimeException("Error saving translation [$lang] for id [{$sph->id}] ({$l})" . implode("\n", $errors));
+        }
+      }
+      if($line[1]) $sph->addSdgs($line[1]);
+
+    }
     $rel_categories = [
       2 => [2, 3, 4, 8, 9, 11], // Social => (B)
       6 => [5, 16, 11], // Communicative => C
@@ -228,6 +314,8 @@ class GoteoSdg
         $cat->addSdgs($sdgs);
       }
     }
+
+    // TODO: create/import sphere (same as socialcommitment)
 
 
   }
@@ -258,6 +346,7 @@ class GoteoSdg
         ADD FOREIGN KEY (`social_commitment`) REFERENCES `social_commitment`(`id`) ON UPDATE CASCADE ON DELETE SET NULL;
 
     ALTER TABLE `social_commitment` CHANGE `image` `icon` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
+    ALTER TABLE `sphere` CHANGE `image` `icon` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
 
     CREATE TABLE `sdg` (
       `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -348,6 +437,7 @@ class GoteoSdg
         DROP INDEX `social_commitment`, ADD UNIQUE INDEX `id` (`id`), DROP FOREIGN KEY `category_ibfk_1`;
 
      ALTER TABLE `social_commitment` CHANGE `icon` `image` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
+     ALTER TABLE `sphere` CHANGE `icon` `image` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
 
      DROP TABLE sdg_category;
      DROP TABLE sdg_social_commitment;
