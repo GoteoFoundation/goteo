@@ -13,6 +13,10 @@ namespace Goteo\Model;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Model\Image;
+use Goteo\Model\Category;
+use Goteo\Model\Sdg;
+use Goteo\Model\Sphere;
+use Goteo\Model\SocialCommitment;
 
 /**
  * Footprint Model (sustainable development goals)
@@ -59,6 +63,63 @@ class Footprint extends \Goteo\Core\Model {
         return null;
     }
 
+    /**
+     * Returns array Footprints using relational tables from specified model
+     * @param  [type] $model [description]
+     * @param  [type] $ids   [description]
+     * @return array of Footprint
+     */
+    static protected function getFromModelIds($model, $ids, $lang = null) {
+        if(!is_array($ids)) $ids = [$ids];
+        $tb = $model::getTableStatic();
+        $values = [];
+        $i = 0;
+        foreach($ids as $id) {
+            if($id instanceOf $model) $id = $id->id;
+            if($id) {
+                $values[":id$i"] = $id;
+                $i++;
+            }
+        }
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+        // If table is not sdg, add extra relation
+        $sub = implode(',', array_keys($values));
+        if($tb !== 'sdg') {
+            $sub = "SELECT sdg_id FROM sdg_{$tb} WHERE sdg_{$tb}.{$tb}_id IN ($sub)";
+        }
+        $sql = "SELECT footprint.id,
+                       $fields,
+                       footprint.icon,
+                       footprint.modified
+            FROM `footprint`
+            $joins
+            INNER JOIN sdg_footprint ON sdg_footprint.footprint_id=footprint.id
+            WHERE sdg_footprint.sdg_id IN ($sub)";
+        // print(\sqldbg($sql, $values));
+        if($query = self::query($sql, $values)) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        }
+        return [];
+
+    }
+
+    static function getFromCategories($ids, $lang = null) {
+        return static::getFromModelIds('\Goteo\Model\Category', $ids, $lang);
+    }
+
+    static function getFromSdgs($ids, $lang = null) {
+        return static::getFromModelIds('\Goteo\Model\Sdg', $ids, $lang);
+    }
+
+    static function getFromSpheres($ids, $lang = null) {
+        return static::getFromModelIds('\Goteo\Model\Sphere', $ids, $lang);
+    }
+
+    static function getFromSocialCommitments($ids, $lang = null) {
+        return static::getFromModelIds('\Goteo\Model\SocialCommitment', $ids, $lang);
+    }
 
     /**
      * Lists available footprints
