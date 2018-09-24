@@ -48,11 +48,7 @@ class SocialCommitment extends \Goteo\Core\Model {
             $joins
             WHERE social_commitment.id = :id";
         $query = static::query($sql, array(':id' => $id));
-        if($item = $query->fetchObject(__CLASS__)) {
-            // For compatibility
-            $item->image = $item->getIcon();
-        }
-        return $item;
+        return $query->fetchObject(__CLASS__);
     }
 
     /**
@@ -93,7 +89,7 @@ class SocialCommitment extends \Goteo\Core\Model {
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
             // For compatibility
-            $item->image = $this->getIcon();
+            $item->image = $item->getIcon();
             $list[] = $item;
         }
         return $list;

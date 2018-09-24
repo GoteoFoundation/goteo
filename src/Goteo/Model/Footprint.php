@@ -105,18 +105,42 @@ class Footprint extends \Goteo\Core\Model {
 
     }
 
+    /**
+     * gets an array of footprint objects from an array, object or id of categories
+     * @param  mixed $ids  array (or not) of categories
+     * @param  string $lang desired lang
+     * @return array  of Footprints
+     */
     static function getFromCategories($ids, $lang = null) {
         return static::getFromModelIds('\Goteo\Model\Category', $ids, $lang);
     }
 
+    /**
+     * gets an array of footprint objects from an array, object or id of Sdgs
+     * @param  mixed $ids  array (or not) of Sdgs
+     * @param  string $lang desired lang
+     * @return array  of Footprints
+     */
     static function getFromSdgs($ids, $lang = null) {
         return static::getFromModelIds('\Goteo\Model\Sdg', $ids, $lang);
     }
 
+    /**
+     * gets an array of footprint objects from an array, object or id of Spheres
+     * @param  mixed $ids  array (or not) of Spheres
+     * @param  string $lang desired lang
+     * @return array  of Footprints
+     */
     static function getFromSpheres($ids, $lang = null) {
         return static::getFromModelIds('\Goteo\Model\Sphere', $ids, $lang);
     }
 
+    /**
+     * gets an array of footprint objects from an array, object or id of SocialCommitments
+     * @param  mixed $ids  array (or not) of SocialCommitments
+     * @param  string $lang desired lang
+     * @return array  of Footprints
+     */
     static function getFromSocialCommitments($ids, $lang = null) {
         return static::getFromModelIds('\Goteo\Model\SocialCommitment', $ids, $lang);
     }
