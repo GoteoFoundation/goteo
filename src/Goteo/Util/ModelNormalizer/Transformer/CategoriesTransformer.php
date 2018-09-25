@@ -31,6 +31,10 @@ class CategoriesTransformer extends AbstractTransformer {
         return $ret;
     }
 
+    public function getApiProperty($prop) {
+        return '/api/categories/' . $this->getModelName(). '/' . $this->model->id . "/property/$prop";
+    }
+
     public function getSocial_commitment() {
         return $this->model->getSocialCommitment() ? $this->model->getSocialCommitment()->name : '';
     }

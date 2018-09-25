@@ -83,7 +83,7 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
      * @return [type]       [description]
      */
     public function getApiProperty($prop) {
-        return '/api/stories/' . $this->model->id . "/property/$prop";
+        return '/api/' . $this->getModelName(). '/' . $this->model->id . "/property/$prop";
     }
 
     public function getId() {

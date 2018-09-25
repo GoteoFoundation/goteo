@@ -249,6 +249,13 @@ $api->add('api-categories-images-upload', new Route(
     array('POST') // methods
 ));
 
+// Post property individual updates
+$api->add('api-blog-post-property', new Route(
+    '/categories/{tab}/{id}/property/{prop}',
+    array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::categoriesPropertyAction'
+        )
+));
+
 // Categories list (tab may be category, sphere, social_commitment, footprint, sdg)
 $api->add('api-categories', new Route(
     '/categories/{tab}',
