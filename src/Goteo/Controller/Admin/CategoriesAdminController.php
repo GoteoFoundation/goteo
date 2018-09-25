@@ -33,7 +33,7 @@ class CategoriesAdminController extends AbstractAdminController {
 
     protected $tabs = [
         'category' => [ 'text' => 'categories', 'model' => 'Category' ],
-        'social' => [ 'text' => 'social_commitments', 'model' => 'SocialCommitment' ],
+        'socialcommitment' => [ 'text' => 'social_commitments', 'model' => 'SocialCommitment' ],
         'sphere' => [ 'text' => 'spheres', 'model' => 'Sphere' ],
         'sdg' => ['text' => 'sdgs', 'model' => 'Sdg'],
         'footprint' => [ 'text' => 'footprints', 'model' => 'Footprint' ]
@@ -65,21 +65,21 @@ class CategoriesAdminController extends AbstractAdminController {
         if(!isset($this->tabs[$tab])) throw new ModelNotFoundException("Not found type [$tab]");
 
 
-        if($tab === 'social') {
+        if($tab === 'socialcommitment') {
             $list = SocialCommitment::getAll(Config::get('lang'));
-            $fields = ['id', 'icon', 'name', 'langs', /*'order',*/ 'actions'];
+            $fields = ['id', 'icon', 'name', 'sdgs', 'langs', /*'order',*/ 'actions'];
         } elseif($tab === 'sphere') {
             $list = Sphere::getAll([], Config::get('lang'));
-            $fields = ['id', 'icon', 'name', 'landing_match', 'langs', /*'order',*/ 'actions'];
+            $fields = ['id', 'icon', 'name', 'landing_match', 'sdgs', 'langs', /*'order',*/ 'actions'];
         } elseif($tab === 'sdg') {
             $list = Sdg::getList([],0,100, false, Config::get('lang'));
-            $fields = ['id', 'icon', 'name', 'langs', 'actions'];
+            $fields = ['id', 'icon', 'name', 'footprints', 'langs', 'actions'];
         } elseif($tab === 'footprint') {
             $list = Footprint::getList([],0,100, false, Config::get('lang'));
-            $fields = ['id', /*'icon',*/ 'name', 'langs', 'actions'];
+            $fields = ['id', /*'icon',*/ 'name', 'sdgs', 'langs', 'actions'];
         } else {
             $list = Category::getAll(Config::get('lang'));
-            $fields = ['id', 'name', 'social_commitment', 'langs', /*'order',*/ 'actions'];
+            $fields = ['id', 'name', 'social_commitment', 'sdgs', 'langs', /*'order',*/ 'actions'];
         }
 
 		return $this->viewResponse('admin/categories/list', [

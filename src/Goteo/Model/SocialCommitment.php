@@ -104,9 +104,13 @@ class SocialCommitment extends \Goteo\Core\Model {
         return $list;
     }
 
-    public function getIcon() {
+    public function getIcon($force_asset = false) {
+        $asset = "social-commitment/square/{$this->id}.png";
+
+        if($force_asset) return Image::get($asset)->setAsset(true);
+
         if(!$this->iconImage instanceOf Image) {
-            $this->iconImage = Image::get($this->icon ?: "social-commitment/square/{$this->id}.png");
+            $this->iconImage = Image::get($this->icon ?: $asset);
             if(!$this->icon) $this->iconImage->setAsset(true);
         }
         return $this->iconImage;
@@ -148,6 +152,10 @@ class SocialCommitment extends \Goteo\Core\Model {
 
         if (!$this->validate($errors))
             return false;
+
+        // TODO: handle uploaded files here?
+        // If instanceOf Image, means already uploaded (via API probably), just get the name
+        if($this->icon instanceOf Image) $this->icon = $this->icon->getName();
 
         $fields = ['id', 'name', 'description', 'icon'];
 

@@ -111,10 +111,11 @@ admin-stories-add: Crear una nueva historia
 admin-stories-edit: Editando la historia %s
 
 admin-categories: 'Categorías y ámbitos'
+admin-categories-if-empty-then-asset: 'Si se deja vacío se usará el icono por defecto: %s'
 admin-category-add: Crear una nueva categoría
 admin-category-edit: Editando la categoría %s
-admin-social-add: Crear un nuevo compromiso social
-admin-social-edit: Editando el compromiso social %s
+admin-socialcommitment-add: Crear un nuevo compromiso social
+admin-socialcommitment-edit: Editando el compromiso social %s
 admin-sphere-add: Crear un nuevo ámbito
 admin-sphere-edit: Editando el ámbito %s
 admin-sdg-add: Crear un nuevo ODS
@@ -201,6 +202,8 @@ admin-title-tags: Tags
 admin-title-deleted: Eliminado
 admin-title-sphere: Ámbito
 admin-title-social_commitment: Compromiso social
+admin-title-sdgs: 'Objetivos de Desarrollo Global'
+admin-title-footprints: 'Huellas'
 admin-title-order: Ordenar
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
