@@ -54,7 +54,8 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
                 'required' => false,
                 'choices_as_values' => true,
                 'choices' => $social_commitments
-            ));
+            ))
+            ;
 
         ;
         return $this;

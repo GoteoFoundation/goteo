@@ -15,8 +15,6 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 
-
-
 /*
 * Model for sphere
 */
@@ -65,13 +63,18 @@ class Sphere extends \Goteo\Core\Model {
         return null;
     }
 
-    public function getIcon() {
+    public function getIcon($force_asset = false) {
+        $asset = "sphere/{$this->id}.png";
+
+        if($force_asset) return Image::get($asset)->setAsset(true);
+
         if(!$this->iconImage instanceOf Image) {
-            $this->iconImage = Image::get($this->icon ?: "sphere/{$this->id}.png");
+            $this->iconImage = Image::get($this->icon ?: $asset);
             if(!$this->icon) $this->iconImage->setAsset(true);
         }
         return $this->iconImage;
     }
+
 
     public function setIcon($icon) {
         $this->icon = $icon instanceOf Image ? $icon->id : $icon;
@@ -143,6 +146,10 @@ class Sphere extends \Goteo\Core\Model {
 
         if (!$this->validate($errors))
             return false;
+
+        // TODO: handle uploaded files here?
+        // If instanceOf Image, means already uploaded (via API probably), just get the name
+        if($this->icon instanceOf Image) $this->icon = $this->icon->getName();
 
         $fields = ['name', 'icon', 'landing_match', 'order'];
 

@@ -12,11 +12,6 @@ namespace Goteo\Model;
 
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
-use Goteo\Model\Image;
-use Goteo\Model\Category;
-use Goteo\Model\Sdg;
-use Goteo\Model\Sphere;
-use Goteo\Model\SocialCommitment;
 
 /**
  * Footprint Model (sustainable development goals)
@@ -205,13 +200,19 @@ class Footprint extends \Goteo\Core\Model {
         return [];
     }
 
-    public function getIcon() {
+    // TODO: add files to assets folder!
+    public function getIcon($force_asset = false) {
+        $asset = "footprint/square/{$this->id}.png";
+
+        if($force_asset) return Image::get($asset)->setAsset(true);
+
         if(!$this->iconImage instanceOf Image) {
-            $this->iconImage = Image::get($this->icon ?: "footprint/square/{$this->id}.png");
+            $this->iconImage = Image::get($this->icon ?: $asset);
             if(!$this->icon) $this->iconImage->setAsset(true);
         }
         return $this->iconImage;
     }
+
 
     public function setIcon($icon) {
         $this->icon = $icon instanceOf Image ? $icon->id : $icon;
@@ -227,6 +228,11 @@ class Footprint extends \Goteo\Core\Model {
     public function save(&$errors = []) {
 
         if(!$this->validate($errors)) return false;
+
+        // TODO: handle uploaded files here?
+        // If instanceOf Image, means already uploaded (via API probably), just get the name
+        if($this->icon instanceOf Image) $this->icon = $this->icon->getName();
+
 
         $fields = ['name', 'icon', 'description'];
         try {

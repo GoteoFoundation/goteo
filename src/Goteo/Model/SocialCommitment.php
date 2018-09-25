@@ -9,7 +9,6 @@ namespace Goteo\Model;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
-use Goteo\Model\Image;
 
 class SocialCommitment extends \Goteo\Core\Model {
     use Traits\SdgRelationsTrait;

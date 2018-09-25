@@ -120,13 +120,18 @@ class Sdg extends \Goteo\Core\Model {
         return [];
     }
 
-    public function getIcon() {
+    public function getIcon($force_asset = false) {
+        $asset = "sdg/square/{$this->id}.png";
+
+        if($force_asset) return Image::get($asset)->setAsset(true);
+
         if(!$this->iconImage instanceOf Image) {
-            $this->iconImage = Image::get($this->icon ?: "sdg/square/{$this->id}.png");
+            $this->iconImage = Image::get($this->icon ?: $asset);
             if(!$this->icon) $this->iconImage->setAsset(true);
         }
         return $this->iconImage;
     }
+
 
     public function setIcon($icon) {
         $this->icon = $icon instanceOf Image ? $icon->id : $icon;
