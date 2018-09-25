@@ -198,6 +198,7 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
     }
     public function testCleanProjectRelated() {
         foreach(self::$related_tables as $tb => $field) {
+            Glossary::query("DELETE FROM $tb WHERE $field NOT IN (SELECT id FROM glossary)");
             $this->assertEquals(0, Glossary::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM glossary)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM glossary)");
         }
     }
