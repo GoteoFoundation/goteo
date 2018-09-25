@@ -68,6 +68,18 @@ admin-stories: User histories in Goteo
 admin-stories-add: Create new user history
 admin-stories-edit: Editing user history %s
 
+admin-categories: 'Categories and scopes'
+admin-category-add: 'Create a new category'
+admin-category-edit: 'Editing category %s'
+admin-social-add: 'Create a new social compromise'
+admin-social-edit: 'Editing social compromise %s'
+admin-sphere-add: 'Create a new scope'
+admin-sphere-edit: 'Editing scope %s'
+admin-sdg-add: 'Create a new ODS'
+admin-sdg-edit: 'Editing ODS %s'
+admin-footprint-add: 'Create a new footprint'
+admin-footprint-edit: 'Editing footprint %s'
+
 admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
@@ -134,8 +146,10 @@ admin-title-password: Password
 admin-title-avatar: Avatar
 admin-title-roles: Roles
 admin-title-amount: Invested
+admin-title-icon: Icon
 admin-title-info: Info
 admin-title-image: Image
+admin-title-landing_match: Landing matchfunding
 admin-title-title: Title
 admin-title-subtitle: Subtitle
 admin-title-section: Section
@@ -147,6 +161,7 @@ admin-title-actions: 'Actions'
 admin-title-tags: Tags
 admin-title-deleted: Deleted
 admin-title-sphere: Scope
+admin-title-social_commitment: Social compromise
 admin-title-order: Sort
 
 admin-blog-not-published-yet: 'This post is not public yet!'

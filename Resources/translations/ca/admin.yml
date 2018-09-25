@@ -90,6 +90,18 @@ admin-stories: 'Histories d''usuaris a Goteo'
 admin-stories-add: 'Crea una nova història'
 admin-stories-edit: 'Editant l''història %s'
 
+admin-categories: 'Categories i àmbits'
+admin-category-add: 'Crea una nova categoria'
+admin-category-edit: 'Editant la categoria %s'
+admin-social-add: 'Crea un nou compromís social'
+admin-social-edit: 'Editant el compromís social %s'
+admin-sphere-add: 'Crea un nou àmbit'
+admin-sphere-edit: 'Editant l''àmbit %s'
+admin-sdg-add: 'Crea un nou ODS'
+admin-sdg-edit: 'Editant l''ODS %s'
+admin-footprint-add: 'Crea un nova petjada'
+admin-footprint-edit: 'Editant la petjada %s'
+
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
 admin-project-express-discard: 'Rebuig expres'
@@ -154,8 +166,10 @@ admin-title-password: Contrasenya
 admin-title-avatar: Avatar
 admin-title-roles: Rols
 admin-title-amount: Invertit
+admin-title-icon: Icona
 admin-title-info: Info
 admin-title-image: Imatge
+admin-title-landing_match: Landing matchfunding
 admin-title-title: Títol
 admin-title-subtitle: Subtítol
 admin-title-section: Secció
@@ -167,6 +181,7 @@ admin-title-actions: Accions
 admin-title-tags: Tags
 admin-title-deleted: 'Eliminat'
 admin-title-sphere: 'Àmbit'
+admin-title-social_commitment: Compromís social
 admin-title-order: 'Ordena'
 
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'

@@ -79,6 +79,13 @@ regular-by: 'By:'
 regular-calendar: Calendar
 regular-cancel: Cancel
 regular-cancel-back: 'Cancel & Go back'
+
+regular-categories: 'Categories'
+regular-social_commitments: 'Social compromises'
+regular-spheres: 'Scopes'
+regular-sdgs: 'SDG'
+regular-footprints: 'Footprints'
+
 regular-back: 'Go back'
 regular-channel: Channel
 regular-collaborate: Collaborate
