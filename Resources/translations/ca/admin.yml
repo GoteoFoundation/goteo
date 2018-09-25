@@ -93,6 +93,7 @@ admin-stories-add: 'Crea una nova història'
 admin-stories-edit: 'Editant l''història %s'
 
 admin-categories: 'Categories i àmbits'
+admin-categories-if-empty-then-asset: 'Si es deixa buit es farà servir l''icona per defecte: %s'
 admin-category-add: 'Crea una nova categoria'
 admin-category-edit: 'Editant la categoria %s'
 admin-socialcommitment-add: 'Crea un nou compromís social'

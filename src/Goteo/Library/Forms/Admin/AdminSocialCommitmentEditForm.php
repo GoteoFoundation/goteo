@@ -33,13 +33,9 @@ class AdminSocialCommitmentEditForm extends AbstractFormProcessor {
         $options = $builder->getOptions();
         $defaults = $options['data'];
 
-        $social_commitments = [];
-        foreach(SocialCommitment::getAll() as $s) {
-            $social_commitments[$s->id] = $s->name;
-        }
         $sdgs = [];
         foreach(Sdg::getList([],0,100) as $s) {
-            $sdgs[$s->id] = $s->name;
+            $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
         }
 
         // print_r($defaults);die;
@@ -74,7 +70,10 @@ class AdminSocialCommitmentEditForm extends AbstractFormProcessor {
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
-                'choices' => $sdgs
+                'choices' => $sdgs,
+                'choices_as_values' => true,
+                'choices_label_escape' => false,
+                'wrap_class' => 'col-xs-6 col-xxs-12'
             ))
             ;
 

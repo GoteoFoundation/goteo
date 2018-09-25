@@ -86,10 +86,13 @@ class Footprint extends \Goteo\Core\Model {
 
         // If table is not sdg, add extra relation
         $sub = implode(',', array_keys($values));
+
+        if(empty($sub)) return [];
+
         if($tb !== 'sdg') {
             $sub = "SELECT sdg_id FROM sdg_{$tb} WHERE sdg_{$tb}.{$tb}_id IN ($sub)";
         }
-        $sql = "SELECT footprint.id,
+        $sql = "SELECT DISTINCT footprint.id,
                        $fields,
                        footprint.icon,
                        footprint.modified
@@ -97,7 +100,9 @@ class Footprint extends \Goteo\Core\Model {
             $joins
             INNER JOIN sdg_footprint ON sdg_footprint.footprint_id=footprint.id
             WHERE sdg_footprint.sdg_id IN ($sub)";
-        // print(\sqldbg($sql, $values));
+
+        // echo \sqldbg($sql, $values);
+
         if($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }

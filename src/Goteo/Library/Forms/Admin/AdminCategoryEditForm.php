@@ -34,7 +34,7 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
 
         $social_commitments = [];
         foreach(SocialCommitment::getAll() as $s) {
-            $social_commitments[$s->id] = $s->name;
+            $social_commitments[$s->name] = $s->id;
         }
 
         // print_r($defaults);die;
@@ -52,6 +52,7 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
             ->add('social_commitment', 'choice', array(
                 'label' => 'admin-title-social_commitment',
                 'required' => false,
+                'choices_as_values' => true,
                 'choices' => $social_commitments
             ));
 

@@ -67,19 +67,19 @@ class CategoriesAdminController extends AbstractAdminController {
 
         if($tab === 'socialcommitment') {
             $list = SocialCommitment::getAll(Config::get('lang'));
-            $fields = ['id', 'icon', 'name', 'sdgs', 'langs', /*'order',*/ 'actions'];
+            $fields = ['id', 'icon', 'name', 'sdgs', 'footprints', 'langs', /*'order',*/ 'actions'];
         } elseif($tab === 'sphere') {
             $list = Sphere::getAll([], Config::get('lang'));
-            $fields = ['id', 'icon', 'name', 'landing_match', 'sdgs', 'langs', /*'order',*/ 'actions'];
+            $fields = ['id', 'icon', 'name', 'landing_match', 'sdgs', 'footprints', 'langs', /*'order',*/ 'actions'];
         } elseif($tab === 'sdg') {
             $list = Sdg::getList([],0,100, false, Config::get('lang'));
             $fields = ['id', 'icon', 'name', 'footprints', 'langs', 'actions'];
         } elseif($tab === 'footprint') {
             $list = Footprint::getList([],0,100, false, Config::get('lang'));
-            $fields = ['id', /*'icon',*/ 'name', 'sdgs', 'langs', 'actions'];
+            $fields = ['id', /*'icon',*/ 'name', 'sdgs', 'footprints', 'langs', 'actions'];
         } else {
             $list = Category::getAll(Config::get('lang'));
-            $fields = ['id', 'name', 'social_commitment', 'sdgs', 'langs', /*'order',*/ 'actions'];
+            $fields = ['id', 'name', 'social_commitment', 'sdgs', 'footprints', 'langs', /*'order',*/ 'actions'];
         }
 
 		return $this->viewResponse('admin/categories/list', [

@@ -12,6 +12,7 @@ namespace Goteo\Model\Traits;
 
 use Goteo\Application\Config;
 use Goteo\Model\Sdg;
+use Goteo\Model\Footprint;
 use Goteo\Application\Exception\ModelException;
 
 /**
@@ -80,6 +81,14 @@ trait SdgRelationsTrait {
             }
         }
         return [];
+    }
+
+    /**
+     * Returns footprints associated with
+     * @return [type] [description]
+     */
+    public function getFootprints($lang = null) {
+        return Footprint::getFromSdgs($this->getSdgs(), $lang);
     }
 
     /**

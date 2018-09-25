@@ -36,9 +36,12 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
     }
 
 
+    public function getModelClass() {
+        return get_class($this->model);
+    }
+
     public function getModelName() {
-        $class = get_class($this->model);
-        return basename(str_replace('\\', '/', strtolower($class)));
+        return basename(strtolower(str_replace('\\', '/',$this->getModelClass())));
     }
 
     public function setUser(User $user = null) {
