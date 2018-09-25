@@ -74,8 +74,8 @@ admin-categories: 'Categories and scopes'
 admin-categories-if-empty-then-asset: 'If empty the default icon will be used: %s'
 admin-category-add: 'Create a new category'
 admin-category-edit: 'Editing category %s'
-admin-socialcommitment-add: 'Create a new social compromise'
-admin-socialcommitment-edit: 'Editing social compromise %s'
+admin-socialcommitment-add: 'Create a new social commitment'
+admin-socialcommitment-edit: 'Editing social commitment %s'
 admin-sphere-add: 'Create a new scope'
 admin-sphere-edit: 'Editing scope %s'
 admin-sdg-add: 'Create a new ODS'
@@ -164,7 +164,7 @@ admin-title-actions: 'Actions'
 admin-title-tags: Tags
 admin-title-deleted: Deleted
 admin-title-sphere: Scope
-admin-title-social_commitment: Social compromise
+admin-title-social_commitment: Social commitment
 admin-title-sdgs: 'Sustainability Development Goals'
 admin-title-footprints: 'Footprints'
 admin-title-order: Sort
