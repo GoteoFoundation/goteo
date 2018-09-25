@@ -75,6 +75,9 @@ class FootprintTest extends TestCase {
         // repeated assignment should'nt be a problem
         $this->assertInstanceOf('\Goteo\Model\Footprint', $ob->addSdgs($sdgs));
         $this->assertCount(1, $ob->getSdgs());
+        //
+        $this->assertInstanceOf('\Goteo\Model\Footprint', $ob->replaceSdgs($sdgs));
+        $this->assertCount(1, $ob->getSdgs());
 
 		return $ob;
 	}

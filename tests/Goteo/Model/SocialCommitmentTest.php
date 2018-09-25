@@ -69,6 +69,10 @@ class SocialCommitmentTest extends TestCase {
         // repeated assignment should'nt be a problem
         $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $ob->addSdgs($sdgs));
         $this->assertCount(1, $ob->getSdgs());
+        //
+        $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $ob->replaceSdgs($sdgs));
+        $this->assertCount(1, $ob->getSdgs());
+
         return $ob;
     }
 

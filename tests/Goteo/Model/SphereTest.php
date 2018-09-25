@@ -69,6 +69,9 @@ class SphereTest extends TestCase {
         // repeated assignment should'nt be a problem
         $this->assertInstanceOf('\Goteo\Model\Sphere', $ob->addSdgs($sdgs));
         $this->assertCount(1, $ob->getSdgs());
+        //
+        $this->assertInstanceOf('\Goteo\Model\Sphere', $ob->replaceSdgs($sdgs));
+        $this->assertCount(1, $ob->getSdgs());
         return $ob;
     }
 

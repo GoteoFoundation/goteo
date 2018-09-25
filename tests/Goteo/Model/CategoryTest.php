@@ -91,6 +91,10 @@ class CategoryTest extends \PHPUnit_Framework_TestCase {
         // repeated assignment should'nt be a problem
         $this->assertInstanceOf('\Goteo\Model\Category', $ob->addSdgs($sdgs));
         $this->assertCount(1, $ob->getSdgs());
+        //
+        $this->assertInstanceOf('\Goteo\Model\Category', $ob->replaceSdgs($sdgs));
+        $this->assertCount(1, $ob->getSdgs());
+
         return $ob;
     }
 

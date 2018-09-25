@@ -46,7 +46,7 @@ trait SphereRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql1 = "DELETE FROM `sphere_{$tb}` WHERE {$tb}_id=:id AND sphere_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql1 = "DELETE FROM `{$tb}_sphere` WHERE {$tb}_id=:id AND sphere_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
         $sql2 = "INSERT IGNORE INTO `{$tb}_sphere` ({$tb}_id, sphere_id) VALUES " . implode(', ', $inserts);
         try {
             if($remove_others) {

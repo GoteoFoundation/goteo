@@ -40,13 +40,13 @@ trait CategoryRelationsTrait {
                 $category = $category->id;
             }
             $inserts[] = "(:id, :category$i)";
-            $deletes[] = ":sdg$i";
+            $deletes[] = ":category$i";
             $values[":category$i"] = $category;
             $i++;
         }
 
         $tb = strtolower($this->getTable());
-        $sql1 = "DELETE FROM `sdg_{$tb}` WHERE {$tb}_id=:id AND sdg_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql1 = "DELETE FROM `{$tb}_category` WHERE {$tb}_id=:id AND category_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
         $sql2 = "INSERT IGNORE INTO `{$tb}_category` ({$tb}_id, category_id) VALUES " . implode(', ', $inserts);
         try {
             if($remove_others) {

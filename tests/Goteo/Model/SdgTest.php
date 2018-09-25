@@ -75,6 +75,13 @@ class SdgTest extends TestCase {
         $this->assertCount(1, $cats);
         $this->assertInstanceOf('\Goteo\Model\Category', $cats[0]);
         self::$category = $cats[0]->id;
+        // repeated assignment should'nt be a problem
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->addCategories($cats));
+        $this->assertCount(1, $ob->getCategories());
+        //
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->replaceCategories($cats));
+        $this->assertCount(1, $ob->getCategories());
+
         $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeCategories($cats));
         $this->assertCount(0, $ob->getCategories());
     }
@@ -91,6 +98,14 @@ class SdgTest extends TestCase {
         $this->assertCount(1, $spheres);
         $this->assertInstanceOf('\Goteo\Model\Sphere', $spheres[0]);
         self::$sphere = $spheres[0]->id;
+        // repeated assignment should'nt be a problem
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->addSpheres($spheres));
+        $this->assertCount(1, $ob->getSpheres());
+        //
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->replaceSpheres($spheres));
+        $this->assertCount(1, $ob->getSpheres());
+
+
         $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeSpheres($spheres));
         $this->assertCount(0, $ob->getSpheres());
     }
@@ -107,6 +122,14 @@ class SdgTest extends TestCase {
         $this->assertCount(1, $socials);
         $this->assertInstanceOf('\Goteo\Model\SocialCommitment', $socials[0]);
         self::$socialcommitment = $socials[0]->id;
+        // repeated assignment should'nt be a problem
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->addSocialCommitments($cats));
+        $this->assertCount(1, $ob->getSocialCommitments());
+        //
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->replaceSocialCommitments($cats));
+        $this->assertCount(1, $ob->getSocialCommitments());
+
+
         $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeSocialCommitments($socials));
         $this->assertCount(0, $ob->getSocialCommitments());
     }
@@ -123,6 +146,14 @@ class SdgTest extends TestCase {
         $this->assertCount(1, $footprints);
         $this->assertInstanceOf('\Goteo\Model\Footprint', $footprints[0]);
         self::$footprint = $footprints[0]->id;
+        // repeated assignment should'nt be a problem
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->addFootprints($cats));
+        $this->assertCount(1, $ob->getFootprints());
+        //
+        $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->replaceFootprints($cats));
+        $this->assertCount(1, $ob->getFootprints());
+
+
         $this->assertInstanceOf('\Goteo\Model\Sdg', $ob->removeFootprints($footprints));
         $this->assertCount(0, $ob->getFootprints());
     }

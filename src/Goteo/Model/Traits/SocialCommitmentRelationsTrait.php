@@ -46,7 +46,7 @@ trait SocialCommitmentRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql1 = "DELETE FROM social_commitment_{$tb}` WHERE {$tb}_id=:id AND social_commitment_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql1 = "DELETE FROM `{$tb}_social_commitment` WHERE {$tb}_id=:id AND social_commitment_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
         $sql2 = "INSERT IGNORE INTO `{$tb}_social_commitment` ({$tb}_id, social_commitment_id) VALUES " . implode(', ', $inserts);
         try {
             if($remove_others) {
