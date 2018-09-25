@@ -81,6 +81,8 @@ admin-remove-entry: 'Borrar entrada'
 admin-remove-entry-confirm: '¿Seguro que quieres borrar esta entrada? Este acción no se puede deshacer!'
 admin-remove-entry-forbidden: 'No se pueden borrar entradas de blog publicadas. Despublica la entrada primero.'
 admin-remove-entry-ok: 'Entrada borrada correctamente'
+admin-add-entry-ok: 'Nueva entrada creada correctamente'
+admin-edit-entry-ok: 'Entrada editada correctamente'
 admin-services: Servicios
 admin-sponsors: Sponsors
 admin-slug-seo-help: 'Este campo es importante para SEO. Editar sólo por una buena razón.'

@@ -21,7 +21,7 @@ class CategoriesTransformer extends AbstractTransformer {
 
     public function getActions() {
         if(!$u = $this->getUser()) return [];
-        $ret = ['edit' => '/admin/categories/edit/' . $this->model->id];
+        $ret = ['edit' => '/admin/categories/' . $this->getModelName() . '/edit/' . $this->model->id];
 
         if($this->getUser()->hasPerm('translate-language')) {
             $ret['translate'] = '/translate/' . $this->getModelName() . '/' . $this->model->id;

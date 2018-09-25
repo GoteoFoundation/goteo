@@ -36,7 +36,13 @@ class ModelNormalizer {
         elseif($this->model instanceOf Model\Stories) {
             $ob = new Transformer\StoriesTransformer($this->model, $this->keys);
         }
-        elseif($this->model instanceOf Model\Category || $this->model instanceOf Model\Sphere) {
+        elseif(
+            $this->model instanceOf Model\Category
+            || $this->model instanceOf Model\Sphere
+            || $this->model instanceOf Model\SocialCommitment
+            || $this->model instanceOf Model\Footprint
+            || $this->model instanceOf Model\Sdg
+        ) {
             $ob = new Transformer\CategoriesTransformer($this->model, $this->keys);
         }
         elseif($this->model instanceOf Model\Blog\Post) {

@@ -31,6 +31,14 @@ class CategoriesAdminController extends AbstractAdminController {
 	protected static $icon = '<i class="fa fa-2x fa-object-group"></i>';
     protected static $label = 'admin-categories';
 
+    protected $tabs = [
+        'category' => [ 'text' => 'categories', 'model' => 'Category' ],
+        'social' => [ 'text' => 'social_commitments', 'model' => 'SocialCommitment' ],
+        'sphere' => [ 'text' => 'spheres', 'model' => 'Sphere' ],
+        'sdg' => ['text' => 'sdgs', 'model' => 'Sdg'],
+        'footprint' => [ 'text' => 'footprints', 'model' => 'Footprint' ]
+    ];
+
 	// this modules is part of a specific group
 	public static function getGroup() {
 		return 'contents';
@@ -43,20 +51,18 @@ class CategoriesAdminController extends AbstractAdminController {
 				['_controller' => __CLASS__ . "::listAction", 'tab' => 'category']
 			),
 			new Route(
-				'/edit/{id}', [
-					'_controller' => __CLASS__ . "::editAction",
-				]
+				'/{tab}/edit/{id}',
+                ['_controller' => __CLASS__ . "::editAction", 'tab' => 'category']
 			),
 			new Route(
-				'/add',
-				['_controller' => __CLASS__ . "::editAction", 'id' => '']
+				'/{tab}/add',
+				['_controller' => __CLASS__ . "::editAction", 'tab' => 'category', 'id' => '']
 			),
 		];
 	}
 
 	public function listAction($tab = 'category', Request $request) {
-        $tabs = ['category' => 'categories', 'social' => 'social_commitments', 'sphere' => 'spheres', 'sdg' => 'sdgs', 'footprint' => 'footprints'];
-        if(!isset($tabs[$tab])) throw new ModelNotFoundException("Not found type [$tab]");
+        if(!isset($this->tabs[$tab])) throw new ModelNotFoundException("Not found type [$tab]");
 
 
         if($tab === 'social') {
@@ -78,69 +84,69 @@ class CategoriesAdminController extends AbstractAdminController {
 
 		return $this->viewResponse('admin/categories/list', [
             'tab' => $tab,
-            'tabs' => $tabs,
+            'tabs' => $this->tabs,
             'list' => $list,
-			'fields' => $fields,
-			'link_prefix' => '/categories/edit/',
-		]);
-	}
+            'fields' => $fields,
+            'link_prefix' => '/categories/edit/',
+        ]);
+    }
 
-	public function editAction($id = '', Request $request) {
+    public function editAction($tab = 'category', $id = '', Request $request) {
 
-		$story = $id ? Category::get($id) : new Category();
+        if(!isset($this->tabs[$tab])) throw new ModelNotFoundException("Not found type [$tab]");
+        $model = $this->tabs[$tab]['model'];
+        $fullModel = "\\Goteo\\Model\\$model";
 
-		if (!$story) {
-			throw new ModelNotFoundException("Not found story [$id]");
-		}
+        $instance = $id ? $fullModel::get($id, Config::get('sql_lang')) : new $fullModel();
 
-		$defaults = (array) $story;
-		$processor = $this->getModelForm('AdminStoryEdit', $story, $defaults, [], $request);
-		$processor->createForm();
-		$processor->getBuilder()
-			->add('submit', 'submit', [
-				'label' => $submit_label ? $submit_label : 'regular-submit',
-			]);
-		if ($story->id) {
-			$processor->getBuilder()
-				->add('remove', 'submit', [
-					'label' => Text::get('admin-remove-entry'),
-					'icon_class' => 'fa fa-trash',
-					'span' => 'hidden-xs',
-					'attr' => [
-						'class' => 'pull-right-form btn btn-default btn-lg',
-						'data-confirm' => Text::get('admin-remove-entry-confirm'),
-					],
-				]);
-		}
+        if (!$instance) {
+            throw new ModelNotFoundException("Not found $model [$id]");
+        }
 
-		$form = $processor->getForm();
-		$form->handleRequest($request);
-		if ($form->isSubmitted() && $request->isMethod('post')) {
-			// Check if we want to remove an entry
-			if ($form->has('remove') && $form->get('remove')->isClicked()) {
-				if ((bool) $story->active) {
-					Message::error(Text::get('admin-remove-entry-forbidden'));
-					return $this->redirect('/admin/stories');
-				}
+        $defaults = (array) $instance;
+        $processor = $this->getModelForm("Admin{$model}Edit", $instance, $defaults, [], $request);
+        $processor->createForm();
+        $processor->getBuilder()
+            ->add('submit', 'submit', [
+                'label' => $submit_label ? $submit_label : 'regular-submit',
+            ]);
+        if ($instance->id) {
+            $processor->getBuilder()
+                ->add('remove', 'submit', [
+                    'label' => Text::get('admin-remove-entry'),
+                    'icon_class' => 'fa fa-trash',
+                    'span' => 'hidden-xs',
+                    'attr' => [
+                        'class' => 'pull-right-form btn btn-default btn-lg',
+                        'data-confirm' => Text::get('admin-remove-entry-confirm'),
+                    ],
+                ]);
+        }
 
-				$story->dbDelete(); //Throws and exception if fails
-				Message::info(Text::get('admin-remove-entry-ok'));
-				return $this->redirect('/admin/stories');
-			}
+        $form = $processor->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $request->isMethod('post')) {
+            // Check if we want to remove an entry
+            if ($form->has('remove') && $form->get('remove')->isClicked()) {
+                $instance->dbDelete(); //Throws and exception if fails
+                Message::info(Text::get('admin-remove-entry-ok'));
+                return $this->redirect("/admin/categories/{$tab}");
+            }
 
-			try {
-				$processor->save($form); // Allow save event if does not validate
-				Message::info(Text::get('admin-stories-edit-success'));
-				return $this->redirect('/admin/stories?' . $request->getQueryString());
-			} catch (FormModelException $e) {
-				Message::error($e->getMessage());
-			}
-		}
+            try {
+                $processor->save($form); // Allow save event if does not validate
+                Message::info(Text::get('admin-' . ($id ? 'edit' : 'add') . '-entry-ok'));
+                return $this->redirect("/admin/categories/{$tab}?" . $request->getQueryString());
+            } catch (FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
 
-		return $this->viewResponse('admin/stories/edit', [
-			'form' => $form->createView(),
-			'story' => $story,
-			'user' => $user,
-		]);
+        return $this->viewResponse('admin/categories/edit', [
+            'tab' => $tab,
+            'form' => $form->createView(),
+            'instance' => $instance,
+            'user' => $user,
+        ]);
 	}
 }

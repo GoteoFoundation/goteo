@@ -70,6 +70,8 @@ admin-remove-entry: 'Esborra l''entrada'
 admin-remove-entry-confirm: 'Segur que vols esborrar aquesta entrada? Aquesta acció no es pot desfer!'
 admin-remove-entry-forbidden: 'No es poden esborrar entrades de blog publicades. Despublica l''entrada primer.'
 admin-remove-entry-ok: 'Entrada esborrada correctament'
+admin-add-entry-ok: 'Nova entrada creada correctament'
+admin-edit-entry-ok: 'Entrada editada correctament'
 admin-communications: Comunicacions
 admin-services: Serveis
 admin-sponsors: Sponsors

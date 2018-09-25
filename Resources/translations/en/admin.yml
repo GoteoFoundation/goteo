@@ -48,6 +48,8 @@ admin-remove-entry: 'Remove entry'
 admin-remove-entry-confirm: 'Are you sure to remove this entry? This action cannot be undone!'
 admin-remove-entry-forbidden: 'Published entries cannot be removed. Unpublish it first.'
 admin-remove-entry-ok: 'Entry removed successfully'
+admin-add-entry-ok: 'New entry created successfully'
+admin-edit-entry-ok: 'Entry edited successfully'
 admin-communications: Comunications
 admin-services: Services
 admin-sponsors: Contributors
