@@ -16,7 +16,6 @@ use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
-use Goteo\Model\Sphere;
 use Goteo\Model\Sdg;
 use Goteo\Library\Forms\FormModelException;
 
@@ -77,7 +76,6 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
             ))
             ;
 
-        ;
         return $this;
     }
 
@@ -101,9 +99,7 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
         if (!$model->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
-        if($data['sdgs']) {
-            $model->addSdgs($data['sdgs']);
-        }
+        $model->replaceSdgs($data['sdgs']);
 
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 

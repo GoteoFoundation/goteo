@@ -28,10 +28,11 @@ trait SphereRelationsTrait {
      * Add spheres
      * @param [type]  $spheres  sphere or array of spheres
      */
-    public function addSpheres($spheres) {
+    public function addSpheres($spheres, $remove_others=false) {
         if(!is_array($spheres)) $spheres = [$spheres];
 
         $inserts = [];
+        $deletes = [];
         $values = [':id' => $this->id];
         $i = 0;
         foreach($spheres as $sphere) {
@@ -39,18 +40,33 @@ trait SphereRelationsTrait {
                 $sphere = $sphere->id;
             }
             $inserts[] = "(:id, :sphere$i)";
+            $deletes[] = ":sphere$i";
             $values[":sphere$i"] = $sphere;
             $i++;
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "INSERT IGNORE INTO `{$tb}_sphere` ({$tb}_id, sphere_id) VALUES " . implode(', ', $inserts);
+        $sql1 = "DELETE FROM `sphere_{$tb}` WHERE {$tb}_id=:id AND sphere_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql2 = "INSERT IGNORE INTO `{$tb}_sphere` ({$tb}_id, sphere_id) VALUES " . implode(', ', $inserts);
         try {
-            self::query($sql, $values);
+            if($remove_others) {
+                self::query($sql1, $values);
+            }
+            if($deletes) {
+                self::query($sql2, $values);
+            }
         } catch (\PDOException $e) {
             throw new ModelException('Failed to add spheres: ' . $e->getMessage());
         }
         return $this;
+    }
+
+    /**
+     * Like removing all spheres associated and add the specified
+     * @return [type] [description]
+     */
+    public function replaceSpheres($spheres) {
+        return $this->addSpheres($spheres, true);
     }
 
     /**

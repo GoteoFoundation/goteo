@@ -29,10 +29,11 @@ trait SdgRelationsTrait {
      * Add sdgs
      * @param [type]  $sdgs  sdg or array of sdgs
      */
-    public function addSdgs($sdgs) {
+    public function addSdgs($sdgs, $remove_others=false) {
         if(!is_array($sdgs)) $sdgs = [$sdgs];
 
         $inserts = [];
+        $deletes = [];
         $values = [':id' => $this->id];
         $i = 0;
         foreach($sdgs as $sdg) {
@@ -40,20 +41,38 @@ trait SdgRelationsTrait {
                 $sdg = $sdg->id;
             }
             $inserts[] = "(:id, :sdg$i)";
+            $deletes[] = ":sdg$i";
             $values[":sdg$i"] = $sdg;
             $i++;
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "INSERT IGNORE INTO `sdg_{$tb}` ({$tb}_id, sdg_id) VALUES " . implode(', ', $inserts);
-        // echo \sqldbg($sql, $values)."\n";
+        $sql1 = "DELETE FROM `sdg_{$tb}` WHERE {$tb}_id=:id AND sdg_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql2 = "INSERT IGNORE INTO `sdg_{$tb}` ({$tb}_id, sdg_id) VALUES " . implode(', ', $inserts);
+        // echo \sqldbg($sql1, $values)."\n";die;
+        // echo \sqldbg($sql2, $values)."\n";
         try {
-            self::query($sql, $values);
+            if($remove_others) {
+                self::query($sql1, $values);
+            }
+            if($deletes) {
+                self::query($sql2, $values);
+            }
         } catch (\PDOException $e) {
             throw new ModelException('Failed to add sdgs: ' . $e->getMessage());
         }
         return $this;
     }
+
+    /**
+     * Like removing all sdgs associated and add the specified
+     * @return [type] [description]
+     */
+    public function replaceSdgs($sdgs) {
+        return $this->addSdgs($sdgs, true);
+    }
+
+
 
     /**
      * Return sdgs

@@ -28,10 +28,11 @@ trait CategoryRelationsTrait {
      * Add categories
      * @param [type]  $categories  category or array of categories
      */
-    public function addCategories($categories) {
+    public function addCategories($categories, $remove_others=false) {
         if(!is_array($categories)) $categories = [$categories];
 
         $inserts = [];
+        $deletes = [];
         $values = [':id' => $this->id];
         $i = 0;
         foreach($categories as $category) {
@@ -39,18 +40,33 @@ trait CategoryRelationsTrait {
                 $category = $category->id;
             }
             $inserts[] = "(:id, :category$i)";
+            $deletes[] = ":sdg$i";
             $values[":category$i"] = $category;
             $i++;
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "INSERT IGNORE INTO `{$tb}_category` ({$tb}_id, category_id) VALUES " . implode(', ', $inserts);
+        $sql1 = "DELETE FROM `sdg_{$tb}` WHERE {$tb}_id=:id AND sdg_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql2 = "INSERT IGNORE INTO `{$tb}_category` ({$tb}_id, category_id) VALUES " . implode(', ', $inserts);
         try {
-            self::query($sql, $values);
+            if($remove_others) {
+                self::query($sql1, $values);
+            }
+            if($deletes) {
+                self::query($sql2, $values);
+            }
         } catch (\PDOException $e) {
             throw new ModelException('Failed to add categories: ' . $e->getMessage());
         }
         return $this;
+    }
+
+    /**
+     * Like removing all categories associated and add the specified
+     * @return [type] [description]
+     */
+    public function replaceCategories($categories) {
+        return $this->addCategories($categories, true);
     }
 
     /**

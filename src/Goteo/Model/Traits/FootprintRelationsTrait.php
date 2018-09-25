@@ -28,10 +28,11 @@ trait FootprintRelationsTrait {
      * Add footprints
      * @param [type]  $footprints  footprint or array of footprints
      */
-    public function addFootprints($footprints) {
+    public function addFootprints($footprints, $remove_others=false) {
         if(!is_array($footprints)) $footprints = [$footprints];
 
         $inserts = [];
+        $deletes = [];
         $values = [':id' => $this->id];
         $i = 0;
         foreach($footprints as $footprint) {
@@ -39,18 +40,33 @@ trait FootprintRelationsTrait {
                 $footprint = $footprint->id;
             }
             $inserts[] = "(:id, :footprint$i)";
+            $deletes[] = ":footprint$i";
             $values[":footprint$i"] = $footprint;
             $i++;
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "INSERT IGNORE INTO `{$tb}_footprint` ({$tb}_id, footprint_id) VALUES " . implode(', ', $inserts);
+        $sql1 = "DELETE FROM `{$tb}_footprint` WHERE {$tb}_id=:id AND footprint_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql2 = "INSERT IGNORE INTO `{$tb}_footprint` ({$tb}_id, footprint_id) VALUES " . implode(', ', $inserts);
         try {
-            self::query($sql, $values);
+            if($remove_others) {
+                self::query($sql1, $values);
+            }
+            if($deletes) {
+                self::query($sql2, $values);
+            }
         } catch (\PDOException $e) {
             throw new ModelException('Failed to add footprints: ' . $e->getMessage());
         }
         return $this;
+    }
+
+    /**
+     * Like removing all footprints associated and add the specified
+     * @return [type] [description]
+     */
+    public function replaceFootprints($footprints) {
+        return $this->addFootprints($footprints, true);
     }
 
     /**

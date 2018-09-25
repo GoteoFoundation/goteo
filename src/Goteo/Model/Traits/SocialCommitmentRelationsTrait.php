@@ -28,10 +28,11 @@ trait SocialCommitmentRelationsTrait {
      * Add social_commitments
      * @param [type]  $social_commitments  social_commitment or array of social_commitments
      */
-    public function addSocialCommitments($social_commitments) {
+    public function addSocialCommitments($social_commitments, $remove_others=false) {
         if(!is_array($social_commitments)) $social_commitments = [$social_commitments];
 
         $inserts = [];
+        $deletes = [];
         $values = [':id' => $this->id];
         $i = 0;
         foreach($social_commitments as $social_commitment) {
@@ -39,18 +40,33 @@ trait SocialCommitmentRelationsTrait {
                 $social_commitment = $social_commitment->id;
             }
             $inserts[] = "(:id, :social_commitment$i)";
+            $deletes[] = ":social_commitment$i";
             $values[":social_commitment$i"] = $social_commitment;
             $i++;
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "INSERT IGNORE INTO `{$tb}_social_commitment` ({$tb}_id, social_commitment_id) VALUES " . implode(', ', $inserts);
+        $sql1 = "DELETE FROM social_commitment_{$tb}` WHERE {$tb}_id=:id AND social_commitment_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql2 = "INSERT IGNORE INTO `{$tb}_social_commitment` ({$tb}_id, social_commitment_id) VALUES " . implode(', ', $inserts);
         try {
-            self::query($sql, $values);
+            if($remove_others) {
+                self::query($sql1, $values);
+            }
+            if($deletes) {
+                self::query($sql2, $values);
+            }
         } catch (\PDOException $e) {
             throw new ModelException('Failed to add social_commitments: ' . $e->getMessage());
         }
         return $this;
+    }
+
+    /**
+     * Like removing all social commitments associated and add the specified
+     * @return [type] [description]
+     */
+    public function replaceSocialCommitments($social_commitments) {
+        return $this->addSocialCommitments($social_commitments, true);
     }
 
     /**
