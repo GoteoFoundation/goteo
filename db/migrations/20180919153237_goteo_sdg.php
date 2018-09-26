@@ -342,7 +342,6 @@ class GoteoSdg
     UPDATE category SET social_commitment=NULL WHERE social_commitment NOT IN(SELECT id FROM social_commitment);
 
     ALTER TABLE `category` CHANGE `social_commitment` `social_commitment` INT(10) UNSIGNED NULL COMMENT 'Social commitment',
-        DROP INDEX `id`,
         ADD FOREIGN KEY (`social_commitment`) REFERENCES `social_commitment`(`id`) ON UPDATE CASCADE ON DELETE SET NULL;
 
     ALTER TABLE `social_commitment` CHANGE `image` `icon` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
