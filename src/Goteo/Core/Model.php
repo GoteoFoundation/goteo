@@ -718,12 +718,11 @@ abstract class Model {
                 (" . implode(', ', array_keys($insert)) . ")
                 VALUES (" . implode(', ', $insert) . ")
                 ON DUPLICATE KEY UPDATE " . implode(', ', $update);
-            // die(\sqldbg($sql, $values));
+            // print(\sqldbg($sql, $values));
             self::query($sql, $values);
 
             return true;
         } catch(\PDOException $e) {
-            // die($e->getMessage());
             $errors[] = "Error saving language data for {$this->Table}. " . $e->getMessage();
             return false;
         }

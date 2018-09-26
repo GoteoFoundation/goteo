@@ -20,14 +20,20 @@ class YamlSettingsLoader extends FileLoader
 {
     static public $cached_files = [];
 
+    static public function getCacheFilename($resource) {
+        return GOTEO_CACHE_PATH . 'config/' . md5($resource) . '.php';
+    }
+
+    static public function getConfigCache($file) {
+        // the second argument indicates whether or not you want to use debug mode
+        return new ConfigCache($file, App::debug());
+    }
+
     public function load($resource, $type = null)
     {
-        // Cached resources ?
-        $cachePath = GOTEO_CACHE_PATH . 'config/' . md5($resource) . '.php';
-        self::$cached_files[] = $cachePath;
-
-        // the second argument indicates whether or not you want to use debug mode
-        $cacheMatcher = new ConfigCache($cachePath, App::debug());
+        $cachePath = static::getCacheFilename($resource);
+        static::$cached_files[] = $cachePath;
+        $cacheMatcher = static::getConfigCache($cachePath);
 
         if (!$cacheMatcher->isFresh()) {
             // Get config from yaml

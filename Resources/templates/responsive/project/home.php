@@ -267,13 +267,13 @@
                 <div id="collapse3" class="panel-collapse collapse in">
                    <div class="panel-body">
 
-                        <?php if($project->social_commitmentData): ?>
+                        <?php if($project->getSocialCommitment()): ?>
 
                             <div class="row social-commitment">
                                 <div class="col-sm-2">
-                                    <img class="img-responsive social-img" src="<?= $project->social_commitmentData->image->getLink(60, 60, false) ?>">
+                                    <img class="img-responsive social-img" src="<?= $project->getSocialCommitment()->getIcon()->getLink(60, 60, false) ?>">
                                 <h3 class="title text-center">
-                                    <?= $project->social_commitmentData->name ?>
+                                    <?= $project->getSocialCommitment()->name ?>
                                 </h3>
                                 </div>
                                 <div class="col-sm-10 description">

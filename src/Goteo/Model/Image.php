@@ -34,7 +34,7 @@ class Image extends \Goteo\Core\Model {
         $dir_cache = 'cache/', //directorio archivos cache
         $fallback_image = 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC3ElEQVRYhb2XW1PiMBzF/f6POiMMBZO0KdBFZEBHnWGViKy7IIEtCmgvn+XsQ5tYLlIuZR8yfUib88v5X5qc+L6PLIfneQvPtHGStXgQBPr5XwA8z9tJMBMAtcvJZKKFkxDb2n+wA+2fj/j9Z7AAdXQHlND7dA7Oy7i9u4fnh3pu+d2jOSCenkEoA+dluJP3vcOwM4Ba+PLyCpyXQShDvd5YeSfDKgiX7A9wVW9ocUIsGMUS+v1XHZ6jJaHneRCiq8UpM2EYBLm8Ac7LmM0+di7HnQCGchyJEwuUchjFEnJ5A4RYsO0KHKeG6XS+E0QqgLJzOJJwnBooM0GIhYJxgVy+AEIscF6NoJiJVusGs9lH9g7c3t1H4pTFOy/oKlCOUMrBeRlXS0l5sANCdMFMC4QyFEsXMIolCNGFlGNQZibEqxqi0+lkA9DrvUTZHu98ueTUnG07X+GIE3Q6nx0O0Gxe62x3nNrCXBAEC2FQECpUj52ndIBNGeu6blTnBkEuX9AdL/mNbTsaglL+lQ/MXHFrowMq25OLu64LwyA4zxXgODXd85ONhjIzEo93rSA4r6Ja/bEdQFI0ubiUUtd5q3UDzw/jNpt8Z4zBYAApJYZyjKEcw7IqsO0KOC8flgNSyjjBosU+vSCG/dzwzRi2XdFh2Qsg+TNJtt2hHG8sV9/30ek8gTETlJloNq+3A0javpyUyQYUJVX4Laz7NlnIh9Ho7/YOfPcfV2GgzMTp2Tlu7+4xn3+uQAxHEvV6I2pMcWKmia8Nwbqy7IguTs/Oo07HTHBuo91+QLv9ACG6Cy5RykEoQ6/3sh/Ad/Fttx90bAmxdKmp9qtcIpRBCLHWzb0B1Oj1XnSMtbiCogzN5jX6g+FKYmYGEI0Q/f4rhOjiunWDer2B7vMvvL1NFwSPciZMu/XsczlJBVh33t+0u8yPZOt6RJrIUQ6lnuchDMO1c/tcyXYG2PfqlTb+AaY7ymbFQPTOAAAAAElFTkSuQmCC';
 
-
+    protected $isAsset = false; // Uses SRC_URL
     private $fp,
             $cache = null;
 
@@ -108,6 +108,14 @@ class Image extends \Goteo\Core\Model {
         return $this;
     }
 
+    public function setAsset($val) {
+        $this->isAsset = (bool)$val;
+        return $this;
+    }
+
+    public function isAsset() {
+        return $this->isAsset;
+    }
 
     /**
      * (non-PHPdoc)
@@ -352,10 +360,11 @@ class Image extends \Goteo\Core\Model {
         if($crop === true) $crop = 'c';
         //metodos: c (crop)
         $crop = in_array($crop, array('c')) ? $crop : '';
-        $path = (int)$width . 'x' . (int)$height . $crop . '/' .$this->name;
+        $path = (int)$width . 'x' . (int)$height . $crop . '/' .$this->getName();
 
         //Si existe la constante GOTEO_DATA_URL la usaremos en vez de SITE_URL
-        if(defined('GOTEO_DATA_URL')) $link = GOTEO_DATA_URL . '/' . $path;
+        if($this->isAsset()) $link = SRC_URL . '/assets/img/' . $this->getName();
+        elseif(defined('GOTEO_DATA_URL')) $link = GOTEO_DATA_URL . '/' . $path;
         else                          $link = SITE_URL . '/img/' . $path;
 
         if ($http && substr($link, 0, 2) == '//') {
@@ -387,7 +396,7 @@ class Image extends \Goteo\Core\Model {
         $width = (int) $width;
         $height = (int) $height;
 
-        $file = $this->dir_originals . $this->name;
+        $file = $this->dir_originals . $this->getName();
         // Get the url file if is S3
         // TODO: more elegant solution, not mixed with assets bucket
         if($this->fp instanceOf \Goteo\Library\FileHandler\S3File) {
@@ -399,20 +408,21 @@ class Image extends \Goteo\Core\Model {
         }
         else {
             //Get the file by filesystem
-            $file = GOTEO_DATA_PATH . $file;
+            if($this->isAsset()) $file = SRC_URL . '/assets/' . $this->getName();
+            else $file = GOTEO_DATA_PATH . $file;
         }
         // die($file);
 
         // Avoid resize on GIF images
-        if('gif' == pathinfo($this->name, PATHINFO_EXTENSION)) {
+        if($this->isAsset() || 'gif' == pathinfo($this->getName(), PATHINFO_EXTENSION)) {
             if($ret = @file_get_contents($file)) {
                 return $ret;
             }
         }
 
         // Retrieve the chachec version if exists
-        if($this->cache && $this->name) {
-            if($cache_file = $this->cache->getFile($this->name, $width . 'x' . $height . ($crop ? 'c' : ''))) {
+        if($this->cache && $this->getName()) {
+            if($cache_file = $this->cache->getFile($this->getName(), $width . 'x' . $height . ($crop ? 'c' : ''))) {
                 //correccion de extension para el cache
                 //si no la funcion save() no funciona bien
                 // die("[$cache_file");
@@ -530,7 +540,7 @@ class Image extends \Goteo\Core\Model {
             return false;
         }
         $ok = !empty($this->id);
-        if($this->tmp && $this->name) $ok = $this->save();
+        if($this->tmp && $this->getName()) $ok = $this->save();
         if($ok) {
             try {
                 self::query("INSERT INTO `{$model_table}_image` (`{$model_table}`, image) VALUES (:id, :image)", array(':id' => $model_id, ':image' => $this->id));

@@ -45,7 +45,7 @@ class SphereSubController extends AbstractSubController {
 
     public function editAction($id) {
 
-        $sphere = Model\Sphere::get($id);
+        $sphere = Model\Sphere::get($id, Config::get('sql_lang'));
 
         if ($sphere && $this->isPost()) {
 

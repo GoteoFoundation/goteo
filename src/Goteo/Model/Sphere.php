@@ -15,19 +15,18 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 
-
-
 /*
 * Model for sphere
 */
 class Sphere extends \Goteo\Core\Model {
+    use Traits\SdgRelationsTrait;
 
     public
         $id,
         $name,
-        $image,
-        $landing_match,
-        $order
+        $icon,
+        $landing_match = false,
+        $order = 1
         ;
 
     public static function getLangFields() {
@@ -47,35 +46,45 @@ class Sphere extends \Goteo\Core\Model {
 
         $sql="SELECT
                     sphere.id as id,
-                    sphere.image as image,
+                    sphere.icon as icon,
                     sphere.order as `order`,
                     sphere.landing_match as landing_match,
                     $fields
               FROM sphere
               $joins
               WHERE sphere.id = :id";
-        $query = static::query($sql, [':id' => $id]);
-        $item = $query->fetchObject(__CLASS__);
-
-        if($item) {
-            // TODO: to remove this? use getImage instead
-            if($item->image)
-                    $item->image = Image::get($item->image);
-            return $item;
+        $values = [':id' => $id];
+        // print(\sqldbg($sql, $values));
+        if ($query = static::query($sql, $values)) {
+            if( $sdg = $query->fetchObject(__CLASS__) ) {
+                return $sdg;
+            }
         }
+        return null;
+    }
 
-        throw new ModelNotFoundException("Sphere not found for ID [$id]");
+    public function getIcon($force_asset = false) {
+        $asset = "sphere/{$this->id}.png";
+
+        if($force_asset) return Image::get($asset)->setAsset(true);
+
+        if(!$this->iconImage instanceOf Image) {
+            $this->iconImage = Image::get($this->icon ?: $asset);
+            if(!$this->icon) $this->iconImage->setAsset(true);
+        }
+        return $this->iconImage;
     }
 
 
+    public function setIcon($icon) {
+        $this->icon = $icon instanceOf Image ? $icon->id : $icon;
+        $this->iconImage = null;
+        return $this;
+    }
+
+    // For compatibility
     public function getImage() {
-        if($this->image instanceOf Image) return $this->image;
-        if($this->image) {
-            $this->image = Image::get($this->image);
-        } else {
-            $this->image = new Image();
-        }
-        return $this->image;
+        return $this->getIcon();
     }
 
     /**
@@ -84,16 +93,12 @@ class Sphere extends \Goteo\Core\Model {
      * @param  array  $filters
      * @return mixed            Array of spheres
      */
-    public static function getAll($filters = array()) {
-
-        $lang = Lang::current();
+    public static function getAll($filters = array(), $lang=null) {
 
         $values = [];
         $filter = [];
 
         $list = [];
-
-        $values[':lang']=$lang;
 
         if($filters['landing_match']) {
             $filter[] = "sphere.landing_match=1";
@@ -103,32 +108,25 @@ class Sphere extends \Goteo\Core\Model {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
 
-        if(self::default_lang($lang) === Config::get('lang')) {
-          $different_select=" IFNULL(sphere_lang.name, sphere.name) as name";
-        }
-        else {
-          $different_select=" IFNULL(sphere_lang.name, IFNULL(eng.name,sphere.name)) as name";
-          $eng_join=" LEFT JOIN sphere_lang as eng
-                            ON  eng.id = sphere.id
-                            AND eng.lang = 'en'";
-        }
+
+        if(!$lang) $lang = Lang::current();
+        $values[':viewLang'] = $lang;
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql = "SELECT  sphere.id as id,
-                        sphere.image as image,
+                        sphere.icon as icon,
                         sphere.order as `order`,
                         sphere.landing_match as landing_match,
-                        $different_select
+                        $fields,
+                        :viewLang as viewLang
                 FROM sphere
-                LEFT JOIN sphere_lang
-                    ON  sphere_lang.id = sphere.id
-                    AND sphere_lang.lang = :lang
-                $eng_join
+                $joins
                 $sql
                 ORDER BY sphere.order ASC, sphere.name ASC";
 
 
         $query = self::query($sql, $values);
-        //print(\sqldbg($sql, $values)); die();
+        // print(\sqldbg($sql, $values)); die();
 
         if($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
@@ -149,28 +147,11 @@ class Sphere extends \Goteo\Core\Model {
         if (!$this->validate($errors))
             return false;
 
-        // Save opcional image
-        if (is_array($this->image) && !empty($this->image['name'])) {
-            $image = new Image($this->image);
+        // TODO: handle uploaded files here?
+        // If instanceOf Image, means already uploaded (via API probably), just get the name
+        if($this->icon instanceOf Image) $this->icon = $this->icon->getName();
 
-            if ($image->save($errors)) {
-                $this->image = $image->id;
-            } else {
-                \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
-                $this->image = '';
-            }
-        }
-        if (is_null($this->image)) {
-            $this->image = '';
-        }
-
-        $fields = array(
-            // 'id',
-            'name',
-            'image',
-            'landing_match',
-            'order'
-        );
+        $fields = ['name', 'icon', 'landing_match', 'order'];
 
         try {
             $this->dbInsertUpdate($fields);
@@ -189,8 +170,10 @@ class Sphere extends \Goteo\Core\Model {
      * @return  type bool   true|false
      */
     public function validate(&$errors = array()) {
-
-        return true;
+        if(empty($this->name)) {
+            $errors[] = "Emtpy name";
+        }
+        return empty($errors);
     }
 
 

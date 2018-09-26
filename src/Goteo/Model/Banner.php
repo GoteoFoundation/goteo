@@ -124,12 +124,6 @@ class Banner extends \Goteo\Core\Model {
                 //a partir de aqui ya deberia estar calculado para las siguientes consultas
             }
 
-            if ($banner->project_social_commitment)
-            {
-                $banner->social_commitmentData = SocialCommitment::get($banner->project_social_commitment);
-                $banner->social_commitmentData->image = Image::get($banner->social_commitmentData->image);
-            }
-
             //rewards, metodo antiguo un sql por proyecto
             // $banner->project_social_rewards = Project\Reward::getAll($banner->project, 'social', Lang::current());
             //
@@ -140,6 +134,10 @@ class Banner extends \Goteo\Core\Model {
 
 
         return $banners;
+    }
+
+    public function getSocialCommitment() {
+        return SocialCommitment::get($this->project_social_commitment);
     }
 
     /*

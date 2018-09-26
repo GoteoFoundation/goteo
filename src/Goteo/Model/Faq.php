@@ -80,21 +80,18 @@ class Faq extends \Goteo\Core\Model {
 
     public function validate (&$errors = array()) {
         if (empty($this->node))
-            $errors[] = 'Falta nodo';
+            $errors[] = 'Missing node';
             //Text::get('mandatory-faq-node');
 
         if (empty($this->section))
-            $errors[] = 'Falta seccion';
+            $errors[] = 'Missing section';
             //Text::get('mandatory-faq-section');
 
         if (empty($this->title))
-            $errors[] = 'Falta título';
+            $errors[] = 'Missing title';
             //Text::get('mandatory-faq-title');
 
-        if (empty($errors))
-            return true;
-        else
-            return false;
+        return empty($errors);
     }
 
     public function save (&$errors = array()) {

@@ -11,6 +11,7 @@
 namespace Goteo\Application;
 
 use Goteo\Application\Exception\RoleException;
+use Goteo\Core\Model;
 
 class Role {
     // This is set by Config using file Resources/roles.yml
@@ -104,5 +105,21 @@ class Role {
 
     public static function roleHasPerm($role_id, $permission) {
         return isset(static::$roles[$role_id]) && in_array($permission, static::$roles[$role_id]);
+    }
+
+    // Save roles to database for proper foreign key managment
+    public static function saveRoles() {
+        $ids = [];
+        $i=0;
+        foreach(static::$roles as $role => $perms) {
+            if($role === 'user') continue;
+            $ids[":$i"] = $role;
+            $i++;
+        }
+        if($ids) {
+            $sql = "INSERT IGNORE INTO `role` (id) values (" . implode('),(', array_keys($ids)).")";
+            // die(\sqldbg($sql, $ids));
+            Model::query($sql, $ids);
+        }
     }
 }

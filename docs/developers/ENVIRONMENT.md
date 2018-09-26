@@ -254,13 +254,17 @@ cp config/docker-settings.yml config/local-docker-settings.yml
 Then, you can set up a development server using:
 
 ```bash
-docker-compose up
+docker/up
 ```
+
+`docker/up` is a wrapper for `docker-compose`, you can use any command line modificator (ie: `docker/up -d` instead of `docker-compose -d`)
 
 At this point you should be able to point your browser to http://localhost:8081 (or whatever host name you have in your local-docker-settings.yml).
 We recommend not to use the `-d` flag on `docker-compose` to be aware of the log messages while building the container or php/server errors while browsing.
 
 ### TL;TR
+
+The `docker/up` wrapper export the variable of the current user in order to match the UID of the docker user. This way we avoid permission problems while developing. For more info check this post: https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
 
 The `docker-compose up` command executes `docker/php/init.sh` script, which is equivalent as running the next commands:
 
@@ -278,17 +282,17 @@ In general, any command used in goteo should be executed in the docker virtual m
 If you want to test a production environment, you can pass the var `DEBUG=0` to the docker-compose command:
 
 ```bash
-DEBUG=false docker-compose up
+DEBUG=false docker/up
 ```
 
 You can overwrite the default `local-docker-settings.yml` file with the GOTEO_CONFIG_FILE environment variable:
 
 ```bash
-GOTEO_CONFIG_FILE=config/my-alternative-settings.yml docker-compose up
+GOTEO_CONFIG_FILE=config/my-alternative-settings.yml docker/up
 ```
 
 
-Finally -optionally-, by running the `grunt watch` command alone allows you to rebuild assets automatically while editing files. If this command is not executed, assets are copied and compiled only once at the beginning when `docker-compose up` runs.
+Finally -optionally-, by running the `grunt watch` command alone allows you to rebuild assets automatically while editing files. If this command is not executed, assets are copied and compiled only once at the beginning when `docker/up` runs.
 
 ```bash
 docker/exec grunt watch

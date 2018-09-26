@@ -14,8 +14,10 @@ use Goteo\Library\Check;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Model\SocialCommitment;
 
 class Category extends \Goteo\Core\Model {
+    use Traits\SdgRelationsTrait;
 
     public
         $id,
@@ -123,6 +125,14 @@ class Category extends \Goteo\Core\Model {
 			throw new ModelException($e->getMessage());
         }
 	}
+
+    public function getSocialCommitment() {
+        if(!$this->socialCommitmentObject) {
+            $this->socialCommitmentObject = SocialCommitment::get($this->social_commitment);
+        }
+        return $this->socialCommitmentObject;
+    }
+
 
     public function validate (&$errors = array()) {
         if (empty($this->name))

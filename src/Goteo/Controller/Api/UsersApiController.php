@@ -254,7 +254,6 @@ class UsersApiController extends AbstractApiController {
                 }
 
                 foreach($current_roles as $role) {
-
                     if(!in_array($role, $roles)) {
                         $ob->removeRole($role);
                     }
@@ -269,7 +268,7 @@ class UsersApiController extends AbstractApiController {
                 if(count($new_roles) !== count($roles)) {
                     $errors[] = 'Role mismatch in' . implode(', ', $new_roles) .' against ' . implode(', ', $roles);
                 }
-                if($errors) throw new ModelException("Error assigning roles: " . implode(', ', $errors));
+                if($errors) throw new ModelException("Error assigning roles: " . implode(', ', $errors).print_r($roles,true).print_r($new_roles,true));
                 $result['value'] = $new_roles;
 
             } else {
