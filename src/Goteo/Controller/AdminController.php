@@ -210,12 +210,12 @@ class AdminController extends \Goteo\Core\Controller {
             $i = $position ? $position : $index;
             // echo "[$key: $label $position|$index:$i]\n";
             $c = strpos($label, '<i') === false ? 'nopadding' : '';
-            if(count($paths) > 1) {
+            // if(count($paths) > 1) {
                 Session::addToSidebarMenu($label, $paths, $key, $i, "sidebar $c");
-            } else {
-                // Do no make groups if only one item
-                Session::addToSidebarMenu($label, $paths[0]['link'], $paths[0]['id'], $i, "$c");
-            }
+            // } else {
+            //     // Do no make groups if only one item
+            //     Session::addToSidebarMenu($label, $paths[0]['link'], $paths[0]['id'], $i, "$c");
+            // }
             $index += $position ? $position : 1;
 
             if($zone && $pos === -1) continue;
