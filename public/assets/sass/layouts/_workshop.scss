@@ -125,7 +125,7 @@ body.workshop {
       }
     }
 
-    div.call-to-action-component{
+    div.main-call-to-action{
       background-color: $background-dark-lilac;
       .call-action{
         padding: 10px 0;
@@ -184,9 +184,108 @@ body.workshop {
     div.intro-text
     {
       text-align: center;
-      font-size: $font-size*1.3;
-      padding: 40px 10%;
+      font-size: $font-size*1.25;
+      p{
+        padding: 25px 10%;
+        .fa-quote-left{
+          vertical-align: super;
+        }
+        .fa-quote-right{
+          vertical-align: sub;
+        }
+      }
     }
+
+    div.main-info{
+      background-color: $background-main-home;
+      padding: 40px 0;
+      font-size: $font-size*1.05;
+      div.file-icon-label{
+        text-align: center;
+      }
+      div.file-icon{
+        text-align: center;
+        display: block;
+        padding-bottom:40px;
+        border-bottom: 6px $background-grey dotted;
+        width: 60%;
+        margin: 0 auto;
+        .fa-file{
+          color: $background-grey;
+          font-size: $font-size*3.2;
+          opacity: 0.6;
+          margin-top: 10px;
+        }
+      }
+      div.share-label{
+        padding-top:30px;
+        text-align: center;
+        font-size: $font-size*0.9;
+      }
+      ul.share-icons{
+          text-align: center;
+          margin-top: 15px;
+      }
+    }
+
+    div.how-to-get{
+      font-size: $font-size*1.06;
+      h2{
+        width: 80%;
+        padding: 13px 0 7px;
+        font-size: $font-size*1.5;
+      }
+      .venue-address{
+        width: 80%;
+        padding-bottom: 28px;
+        border-bottom: 6px $background-light-lilac dotted;
+      }
+    }
+
+    .extra-call-to-action{
+      background-color: $background-light-green;
+
+      .call-action{
+        display: flex;
+        .col-time{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-transform: uppercase;
+            font-size: $font-size*1.3;
+            font-weight: bold;
+            .fa-clock-o{
+              font-size: $font-size*2;
+              margin-right: 8px;
+            }
+        }
+        .col-button .btn-white{
+          text-transform: uppercase;
+          color: $background-light-green;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .workshops-container{
+      background-color: $background-main-home;
+      padding: 15px 0 40px 0;
+      div.action{
+          text-align: center;
+          .btn{
+              text-transform: uppercase;
+              font-weight: bold;
+              font-size: $font-size*1.14;
+          }
+      }
+    }
+
+    .section.stories{
+      padding-top: 30px;
+      margin-bottom: 0;
+    }
+
+
 
   // Tablets customization
 
