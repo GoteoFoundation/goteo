@@ -81,6 +81,8 @@ admin-remove-entry: 'Borrar entrada'
 admin-remove-entry-confirm: '¿Seguro que quieres borrar esta entrada? Este acción no se puede deshacer!'
 admin-remove-entry-forbidden: 'No se pueden borrar entradas de blog publicadas. Despublica la entrada primero.'
 admin-remove-entry-ok: 'Entrada borrada correctamente'
+admin-add-entry-ok: 'Nueva entrada creada correctamente'
+admin-edit-entry-ok: 'Entrada editada correctamente'
 admin-services: Servicios
 admin-sponsors: Sponsors
 admin-slug-seo-help: 'Este campo es importante para SEO. Editar sólo por una buena razón.'
@@ -101,12 +103,25 @@ admin-blog: Blog general
 admin-blog-add: Crear nuevo post
 admin-blog-edit: Editando post %s
 admin-blog-slug-exists: 'El identificador [%s] se está usando en otro post!'
-admin-blog-slug-chars: 'El identificador [%s] contiene carácteres inválidos!'
+admin-blog-slug-chars: 'El identificador [%s] contiene caracteres inválidos!'
 admin-blog-not-public: 'Este post no es público todavía'
 
 admin-stories: Historias de usuarios en Goteo
 admin-stories-add: Crear una nueva historia
 admin-stories-edit: Editando la historia %s
+
+admin-categories: 'Categorías y ámbitos'
+admin-categories-if-empty-then-asset: 'Si se deja vacío se usará el icono por defecto: %s'
+admin-category-add: Crear una nueva categoría
+admin-category-edit: Editando la categoría %s
+admin-socialcommitment-add: Crear un nuevo compromiso social
+admin-socialcommitment-edit: Editando el compromiso social %s
+admin-sphere-add: Crear un nuevo ámbito
+admin-sphere-edit: Editando el ámbito %s
+admin-sdg-add: Crear un nuevo ODS
+admin-sdg-edit: Editando el ODS %s
+admin-footprint-add: Crear un nueva huella
+admin-footprint-edit: Editando la huella %s
 
 admin-calls: Convocatorias
 admin-matchers: Matchers
@@ -171,8 +186,10 @@ admin-title-password: Contraseña
 admin-title-avatar: Avatar
 admin-title-roles: Roles
 admin-title-amount: Invertido
+admin-title-icon: Icono
 admin-title-info: Info
 admin-title-image: Imagen
+admin-title-landing_match: Landing matchfunding
 admin-title-title: Título
 admin-title-subtitle: Subtítulo
 admin-title-section: Sección
@@ -184,6 +201,9 @@ admin-title-actions: Acciones
 admin-title-tags: Tags
 admin-title-deleted: Eliminado
 admin-title-sphere: Ámbito
+admin-title-social_commitment: Compromiso social
+admin-title-sdgs: 'Objetivos de Desarrollo Global'
+admin-title-footprints: 'Huellas'
 admin-title-order: Ordenar
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'

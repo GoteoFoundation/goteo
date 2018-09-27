@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Route;
 
 class Config {
     // Initial translation groups (groupped in yml files into Resources/translations/)
-    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories'];
+    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop'];
 	static protected $loader;
 	static protected $config;
 
@@ -39,14 +39,6 @@ class Config {
                 self::$config = array_replace_recursive(self::$config , $config);
             }
 
-            // Load default permissions from yaml
-            $permissions = self::loadFromYaml(__DIR__ . '/../../../Resources/permissions.yml');
-            Role::addPermsFromArray($permissions);
-            // Load default roles from yaml
-            $roles = self::loadFromYaml(__DIR__ . '/../../../Resources/roles.yml');
-            Role::addRolesFromArray($roles);
-
-
 			//Timezone
 			if (self::get('timezone')) {
 				date_default_timezone_set(self::get('timezone'));
@@ -56,12 +48,24 @@ class Config {
                 self::$config['sql_lang'] = 'es';
             }
 
-
 			// handles legacy config values
 			self::setConstants();
 
 			// Init database
 			Model::factory();
+
+            // Load default permissions from yaml
+            $permissions = self::loadFromYaml(__DIR__ . '/../../../Resources/permissions.yml');
+            Role::addPermsFromArray($permissions);
+
+            // Load default roles from yaml
+            $froles = __DIR__ . '/../../../Resources/roles.yml';
+            $not_cached = !YamlSettingsLoader::getConfigCache(YamlSettingsLoader::getCacheFilename($froles))->isFresh();
+            $roles = self::loadFromYaml($froles);
+            Role::addRolesFromArray($roles);
+            if($not_cached) {
+                Role::saveRoles();
+            }
 
 			// load the language configuration
 			$locales = self::loadFromYaml(__DIR__ . '/../../../Resources/locales.yml');
@@ -186,7 +190,8 @@ class Config {
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TransnodesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BannersSubController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesSubController');
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommonsSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CriteriaSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');
@@ -214,8 +219,8 @@ class Config {
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SocialCommitmentSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SphereSubController');
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SocialCommitmentSubController');
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SphereSubController');
 
 
 		// Adding Pool (internal credit) payment method

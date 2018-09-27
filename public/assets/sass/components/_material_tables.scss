@@ -60,6 +60,10 @@ $table-border-color:            #e0e0e0;
         vertical-align: top;
         border-top: 0;
         @transition(all .3s ease);
+        > .avatar img {
+          max-width:64px;
+          max-height:64px;
+        }
       }
     }
   }

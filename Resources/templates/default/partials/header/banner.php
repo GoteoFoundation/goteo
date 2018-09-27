@@ -27,10 +27,10 @@ if (empty($banner->project)):
             <?php if($banner->project_social_commitment): ?>
                 <h3><?= $this->text('project-social-commitment-title') ?></h3>
                 <div>
-                <img class="img-social-commitment" width="35" src="<?= $banner->social_commitmentData->image->getLink(60, 60, false) ?>" alt="<?= $banner->social_commitmentData->name ?>" title="<?= $banner->social_commitmentData->name ?>" />
-                <span><?= $banner->social_commitmentData->name ?></span>
+                <img class="img-social-commitment" width="35" src="<?= $banner->getSocialCommitment()->getIcon()->getLink(60, 60, false) ?>" alt="<?= $banner->getSocialCommitment()->name ?>" title="<?= $banner->getSocialCommitment()->name ?>" />
+                <span><?= $banner->getSocialCommitment()->name ?></span>
                 </div>
-            <?php 
+            <?php
                 else:
             ?>
                 <h3><?= $this->text('project-rewards-social_reward-title') ?></h3>

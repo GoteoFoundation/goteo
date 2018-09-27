@@ -10,7 +10,9 @@ $this->section('admin-content');
 
         <?= $this->insert('admin/partials/typeahead', ['engines' => ['channel', 'call', 'project', 'user', 'consultant']]) ?>
 
-    <?php foreach($sidebar as $item): ?>
+    <?php foreach($sidebar as $item):
+        if(empty($item['submenu'])) continue;
+    ?>
         <hr>
         <h4><?= $item['text'] ?></h4>
         <div class="index-row">

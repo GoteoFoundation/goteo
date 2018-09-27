@@ -77,10 +77,13 @@ function delete_test_node() {
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
     }
+    catch(\PDOException $e) {
+        error_log('PDOException on deleting test node! ' . $e->getMessage());
+    }
 
     try {
         \Goteo\Model\Node::get('testnode');
-        error_log('unknow error deleting test project! ' . print_r($errors, 1));
+        error_log('unknow error deleting test node! ' . print_r($errors, 1));
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
         return true;
@@ -139,6 +142,10 @@ function get_test_project() {
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
         error_log('Project [' . $data['id'] . '] not found, creating...');
     }
+    catch(\PDOException $e) {
+        error_log('PDOException on deleting test project! ' . $e->getMessage());
+    }
+
     $errors = array();
     $project = new \Goteo\Model\Project($data);
     if( ! $project->create($data, get_test_node()->id, $errors)) {

@@ -188,7 +188,6 @@ class AdminPostEditForm extends ProjectPostForm {
             ))
             ;
 
-
         return $this;
     }
 

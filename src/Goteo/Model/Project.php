@@ -593,15 +593,6 @@ class Project extends \Goteo\Core\Model {
             // categorias
             $project->categories = Project\Category::get($id);
 
-
-            //Social commitment
-
-            if ($project->social_commitment)
-            {
-                $project->social_commitmentData = SocialCommitment::get($project->social_commitment);
-                $project->social_commitmentData->image = Image::get($project->social_commitmentData->image);
-            }
-
             // costes y los sumammos
             $project->costs = Project\Cost::getAll($id, $lang);
             $project->minmax();
@@ -775,10 +766,7 @@ class Project extends \Goteo\Core\Model {
 
     public function getSocialCommitment() {
         if(!$this->social_commitmentData) {
-            if ($this->social_commitment) {
-                $this->social_commitmentData = SocialCommitment::get($this->social_commitment);
-                $this->social_commitmentData->image = Image::get($this->social_commitmentData->image);
-            }
+            $this->social_commitmentData = SocialCommitment::get($this->social_commitment);
         }
         return $this->social_commitmentData;
     }

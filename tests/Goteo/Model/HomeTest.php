@@ -8,7 +8,7 @@ use Goteo\Model\Home;
 
 class HomeTest extends TestCase {
 
-    private static $data = array('item' => 'test', 'type' => 'side', 'order' => 0);
+    private static $data = array('item' => 'test', 'type' => 'side', 'order' => 1);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -37,8 +37,8 @@ class HomeTest extends TestCase {
         $this->assertInstanceOf('\Goteo\Model\Home', $ob);
 
         foreach(self::$data as $key => $val) {
-            if($key === 'order') $this->assertEquals($ob->$key, $val + 1);
-            else $this->assertEquals($ob->$key, $val);
+            // if($key === 'order') $this->assertEquals($ob->$key, $val + 1);
+            $this->assertEquals($ob->$key, $val);
         }
 
         //delete statically

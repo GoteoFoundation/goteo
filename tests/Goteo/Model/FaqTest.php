@@ -10,7 +10,7 @@ use Goteo\Application\Lang;
 
 class FaqTest extends TestCase {
 
-    private static $data = array('section' => 'test-section', 'description' => 'test description', 'title' => 'Test title', 'order' => 0);
+    private static $data = array('section' => 'test-section', 'description' => 'test description', 'title' => 'Test title', 'order' => 1);
     private static $trans_data = array('description' => 'Descripció test', 'title' => 'Test títol');
 
     public static function setUpBeforeClass() {
@@ -46,8 +46,7 @@ class FaqTest extends TestCase {
         $this->assertInstanceOf('\Goteo\Model\Faq', $ob);
 
         foreach(self::$data as $key => $val) {
-            if($key === 'order') $this->assertEquals($ob->$key, $val + 1);
-            else $this->assertEquals($ob->$key, $val);
+            $this->assertEquals($ob->{$key}, $val);
         }
         return $ob;
     }
@@ -106,7 +105,8 @@ class FaqTest extends TestCase {
 
         //save and delete statically
         $ob = new Faq(self::$data);
-        $this->assertTrue($ob->save());
+        $errors = [];
+        $this->assertTrue($ob->save($errors), implode("\n", $errors));
         $this->assertTrue(Faq::remove($ob->id, self::$data['node']));
 
         return $ob;

@@ -30,6 +30,7 @@ class ChoiceType extends SymfonyChoiceType
     {
         parent::configureOptions($resolver);
         $resolver->setDefault('row_class', '');
+        $resolver->setDefault('choices_label_escape', true);
         $resolver->setDefault('wrap_class', 'col-sm-4 col-xs-6'); // col-sm-4 col-xs-6 for radio and textbox groupping
     }
 
@@ -40,6 +41,7 @@ class ChoiceType extends SymfonyChoiceType
     {
         parent::buildView($view, $form, $options);
         $view->vars['row_class'] = $options['row_class'];
+        $view->vars['choices_label_escape'] = $options['choices_label_escape'];
         $view->vars['wrap_class'] = $options['wrap_class'];
     }
 }

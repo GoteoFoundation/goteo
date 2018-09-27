@@ -7,7 +7,7 @@ use Goteo\Model\Criteria;
 
 class CriteriaTest extends \PHPUnit_Framework_TestCase {
 
-    private static $data = array('section' => 'test', 'title' => 'Test title', 'order' => 0);
+    private static $data = array('section' => 'test', 'title' => 'Test title', 'order' => 1);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -34,8 +34,7 @@ class CriteriaTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('\Goteo\Model\Criteria', $ob);
 
         foreach(self::$data as $key => $val) {
-            if($key === 'order') $this->assertEquals($ob->$key, $val + 1);
-            else $this->assertEquals($ob->$key, $val);
+            $this->assertEquals($ob->$key, $val);
         }
 
         $this->assertTrue($ob->dbDelete());

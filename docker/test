@@ -1,0 +1,7 @@
+#!/bin/sh
+DIR=$(dirname $(dirname $(readlink -f $0)))
+
+if [ -z "$GOTEO_TEST_CONFIG_FILE" ]; then
+    GOTEO_TEST_CONFIG_FILE="./config/local-docker-settings.yml"
+fi
+$DIR/docker/exec ./run-tests.sh -t $GOTEO_TEST_CONFIG_FILE "$@"
