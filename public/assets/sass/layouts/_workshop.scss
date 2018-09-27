@@ -200,6 +200,45 @@ body.workshop {
       background-color: $background-main-home;
       padding: 40px 0;
       font-size: $font-size*1.05;
+      ul.sponsors{
+        li.sponsor-container{
+          text-align: center;
+          padding-bottom: 20px;
+          width: 60%;
+          margin: 0 auto;
+          &:last-child
+          {
+            border-bottom: 6px $background-grey dotted;
+            padding-bottom: 30px;
+          }
+        }
+      }
+
+      .spheres{
+        .detail-item {
+          border-radius: 50%;
+          width: 60px;
+          height: 60px;
+          background-color: #FFFFFF;
+          box-shadow: 1px 3px 5px -3px #4D4D4D;
+          margin-top: 20px;
+          img{
+            max-width: 55%;
+            margin: 0 auto;
+            padding-top: 21%;
+            /*-webkit-filter: brightness(.55) saturate(3) grayscale(100%);
+            filter: brightness(.55) saturate(3) grayscale(100%);*/
+          }
+        }
+        .item-label{
+          margin-top: 10px;
+          text-transform: uppercase;
+          text-align: center;
+          color:$color-text-green;
+          font-size: $font-size*0.83;
+        }
+      }
+
       div.file-icon-label{
         text-align: center;
       }
@@ -296,7 +335,54 @@ body.workshop {
 
     @media (max-width: $breakpoint-sm - 1) {
 
-      div.sticky-menu, .filters {
+    div.section.banner-header{
+      div.info{
+        .container{
+          h1{
+            font-size: $font-size*3;
+          }
+        }
+      }
+    }
+
+    div.main-call-to-action{
+      .call-action{
+          padding: 20px 0;
+          display:block;
+          .date{
+              margin-right:0;
+          }
+          .col-location{
+              margin: 25px 0 15px;
+          }
+
+      }
+    }
+
+    div.main-info{
+        .file-icon-label{
+            margin-top: 30px;
+        }
+    }
+
+    div.how-to-get{
+      .description{
+        margin-bottom:30px;
+      }
+    }
+
+    div.extra-call-to-action{
+      .call-action{
+          padding: 20px 0;
+          display:block;
+          .col-time{
+            text-align: center;
+            margin-bottom: 20px;
+          }
+      }
+    }
+
+    div.sticky-menu, .filters {
           bottom: 0;
           top: auto;
           z-index: 1000;

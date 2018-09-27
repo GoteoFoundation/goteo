@@ -45,7 +45,7 @@ class GoteoWorkshopLanding
       ALTER TABLE `workshop_lang` ADD COLUMN `how_to_get` TINYTEXT NULL AFTER `subtitle`;
 
       CREATE TABLE `workshop_sponsor` (
-          `id` BIGINT(20) UNSIGNED NOT NULL,
+          `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
           `workshop` BIGINT(20) UNSIGNED NOT NULL,
           `name` TINYTEXT NULL,
           `url` CHAR(255),
@@ -57,21 +57,21 @@ class GoteoWorkshopLanding
         );
 
       CREATE TABLE `workshop_sphere` (
-          `workshop` BIGINT(20) UNSIGNED NOT NULL,
-          `sphere` BIGINT(20) UNSIGNED NOT NULL,
+          `workshop_id` BIGINT(20) UNSIGNED NOT NULL,
+          `sphere_id` BIGINT(20) UNSIGNED NOT NULL,
           `order` INT(11),
-           UNIQUE INDEX (`workshop`, `sphere`),
-            FOREIGN KEY (`workshop`) REFERENCES `workshop`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-            FOREIGN KEY (`sphere`) REFERENCES `sphere`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+           PRIMARY KEY (`workshop_id`, `sphere_id`),
+            FOREIGN KEY (`workshop_id`) REFERENCES `workshop`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+            FOREIGN KEY (`sphere_id`) REFERENCES `sphere`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
 
        CREATE TABLE `workshop_stories` (
-          `workshop` BIGINT(20) UNSIGNED NOT NULL,
-          `stories` BIGINT(20) UNSIGNED NOT NULL,
+          `workshop_id` BIGINT(20) UNSIGNED NOT NULL,
+          `stories_id` BIGINT(20) UNSIGNED NOT NULL,
           `order` INT(11),
-           UNIQUE INDEX (`workshop`, `stories`),
-            FOREIGN KEY (`workshop`) REFERENCES `workshop`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-            FOREIGN KEY (`stories`) REFERENCES `stories`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+           PRIMARY KEY (`workshop_id`, `stories_id`),
+            FOREIGN KEY (`workshop_id`) REFERENCES `workshop`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+            FOREIGN KEY (`stories_id`) REFERENCES `stories`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
 
      ";
