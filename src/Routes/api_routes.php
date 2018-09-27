@@ -235,8 +235,33 @@ $api->add('api-licenses', new Route(
 // Keywords list
 $api->add('api-keywords', new Route(
     '/keywords',
-    array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::keywordsAction',
+    array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::keywordsAction')
+));
+
+// Categories images upload (POST method only)
+$api->add('api-categories-images-upload', new Route(
+    '/categories/images',
+    array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+// Post property individual updates
+$api->add('api-blog-post-property', new Route(
+    '/categories/{tab}/{id}/property/{prop}',
+    array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::categoriesPropertyAction'
         )
+));
+
+// Categories list (tab may be category, sphere, social_commitment, footprint, sdg)
+$api->add('api-categories', new Route(
+    '/categories/{tab}',
+    array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::categoriesAction',
+        'tab' => 'category'
+    )
 ));
 
 // Messages list

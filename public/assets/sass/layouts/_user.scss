@@ -186,15 +186,13 @@
 
     .social-item{
 
-      .social-icon{
-        margin-top:10px;
-        text-align: right;
-      }
-
-      .label-item{
-        padding-top:25px;
-      }
-
+      .icon-item{
+          .fa-users{
+            font-size: $font-size*2;
+            padding: 17px;
+            color: $background-light;
+          }
+        }
       .social-content{
         margin-top: 18px;
       }
@@ -202,6 +200,7 @@
       a{
         color: $primary-color;
         font-weight: bold;
+        margin-right:20px;
       }
 
     }
@@ -290,9 +289,6 @@
     .extra-info{
       .icon-item{
         float:none !important;
-      }
-      .social-item .social-icon {
-          clear:both;
       }
     }
 

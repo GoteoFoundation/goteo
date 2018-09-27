@@ -74,6 +74,7 @@ project-messages-send_message_support-your_answer: 'Escribe aquí tu mensaje de 
 regular-add: Nuevo registro
 regular-all: Todos
 regular-admin_board: 'Panel admin'
+regular-author: 'Autor'
 regular-allsome: 'todos/algunos de'
 regular-anonymous: Anónimo
 regular-ask: Preguntar
@@ -83,6 +84,13 @@ regular-by: 'Por:'
 regular-calendar: Calendar
 regular-cancel: Cancelar
 regular-cancel-back: 'Cancelar y volver atrás'
+
+regular-categories: 'Categorías'
+regular-social_commitments: 'Compromisos sociales'
+regular-spheres: 'Ámbitos'
+regular-sdgs: 'ODS'
+regular-footprints: 'Huellas'
+
 regular-back: 'Volver atrás'
 regular-channel: Canal
 regular-collaborate: Colabora

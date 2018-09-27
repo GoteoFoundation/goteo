@@ -1,0 +1,3 @@
+#!/bin/sh
+export UID=`id -u`
+docker-compose up $@

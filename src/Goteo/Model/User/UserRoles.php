@@ -76,7 +76,7 @@ class UserRoles extends \ArrayObject
                 }
             }
         }
-        return new UserRoles($user, $roles);
+        return new static($user, $roles);
     }
 
     /**
@@ -85,7 +85,6 @@ class UserRoles extends \ArrayObject
     public function addRole($role) {
         if(Role::roleExists($role) && !$this->offsetExists($role)) {
             if($role === 'root') throw new RoleException("Role [root] cannot be added");
-
             $this->offsetSet($role, Role::getRolePerms($role));
         }
         return $this;
@@ -138,7 +137,8 @@ class UserRoles extends \ArrayObject
             return true;
         }
         $sql = "INSERT INTO user_role (role_id, user_id) VALUES (" . implode('), (', $inserts) .")";
-        // die(\sqldbg($sql, $values));
+        // throw new \RuntimeException(\sqldbg($sql, $values));
+          // die(\sqldbg($sql, $values));
         try {
             User::query($sql, $values);
             return true;

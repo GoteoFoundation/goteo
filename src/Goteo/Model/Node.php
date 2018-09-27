@@ -165,6 +165,11 @@ class Node extends \Goteo\Core\Model {
             $values[':global'] = '%' . $filters['global'] . '%';
         }
 
+        if (!empty($filters['id'])) {
+            $sqlFilter[] = "node.id = :id";
+            $values[':id'] = $filters['id'];
+        }
+
         if (!empty($filters['name'])) {
             $sqlFilter[] = "( node.name LIKE :name OR node.id = :id )";
             $values[':name'] = '%' . $filters['name'] . '%';

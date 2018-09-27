@@ -1,3 +1,3 @@
 #!/bin/sh
-
+export UID=`id -u`
 docker-compose exec -u goteo php "$@"

@@ -7,7 +7,7 @@ use Goteo\Model\Stories;
 
 class StoriesTest extends \PHPUnit_Framework_TestCase {
 
-    private static $data = array('description' => 'Test description', 'order' => 0, 'active' => 0);
+    private static $data = array('title' => 'story title', 'description' => 'Test description', 'order' => 1, 'active' => 0);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -22,16 +22,17 @@ class StoriesTest extends \PHPUnit_Framework_TestCase {
      * @depends testInstance
      */
     public function testValidate($ob) {
-        // $this->assertFalse($ob->validate());
+        $this->assertFalse($ob->validate());
         $this->assertFalse($ob->save());
     }
 
     public function testCreate() {
+        $errors = [];
         self::$data['node'] = get_test_node()->id;
         self::$data['project'] = get_test_project()->id;
         $ob = new Stories(self::$data);
-        // $this->assertTrue($ob->validate($errors), print_r($errors, 1));
-        $this->assertTrue($ob->save($errors), print_r($errors, 1));
+        $this->assertTrue($ob->validate($errors), implode("\n", $errors));
+        $this->assertTrue($ob->save($errors), implode("\n", $errors));
         $ob = Stories::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Stories', $ob);
 

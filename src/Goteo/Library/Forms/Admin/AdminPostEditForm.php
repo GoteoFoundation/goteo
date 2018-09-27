@@ -53,12 +53,20 @@ class AdminPostEditForm extends ProjectPostForm {
                 'constraints' => array(
                     new Constraints\Count(array('max' => 1))
                 )
-            ));
+            ))
+            ->add('author', 'typeahead', [
+                'label' => 'regular-author',
+                'row_class' => 'extra',
+                'disabled' => $this->getReadonly(),
+                'sources' => 'user',
+                'text' => ($post && $post->getAuthor()) ? $post->getAuthor()->name : null,
+                'constraints' => array(new Constraints\NotBlank())
+            ])
+;
 
         if($data['slug']) {
             $builder->add('slug', 'text',[
                 'label' => 'regular-slug',
-                'required' => true,
                 'row_class' => 'extra',
                 'constraints' => [
                     new Constraints\NotBlank(),
@@ -161,7 +169,6 @@ class AdminPostEditForm extends ProjectPostForm {
             ))
             ->add('section', 'choice', array(
                 'label' => 'admin-title-section',
-                'required' => false,
                 'expanded' => true,
                 'wrap_class' => 'col-xs-6',
                 'choices' => $post::getListSections(),
@@ -180,7 +187,6 @@ class AdminPostEditForm extends ProjectPostForm {
                 'color' => 'cyan', // bootstrap label-* (default, success, ...)
             ))
             ;
-
 
         return $this;
     }

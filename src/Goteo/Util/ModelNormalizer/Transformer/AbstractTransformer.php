@@ -36,9 +36,12 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
     }
 
 
+    public function getModelClass() {
+        return get_class($this->model);
+    }
+
     public function getModelName() {
-        $class = get_class($this->model);
-        return basename(str_replace('\\', '/', strtolower($class)));
+        return basename(strtolower(str_replace('\\', '/',$this->getModelClass())));
     }
 
     public function setUser(User $user = null) {
@@ -80,7 +83,7 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
      * @return [type]       [description]
      */
     public function getApiProperty($prop) {
-        return '/api/stories/' . $this->model->id . "/property/$prop";
+        return '/api/' . $this->getModelName(). '/' . $this->model->id . "/property/$prop";
     }
 
     public function getId() {
@@ -99,6 +102,10 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
 
     public function getImage() {
         return Image::get($this->model->image)->getLink(64, 64, true);
+    }
+
+    public function getIcon() {
+        return $this->model->getIcon()->getLink(64, 64, true);
     }
 
     public function getTitle() {

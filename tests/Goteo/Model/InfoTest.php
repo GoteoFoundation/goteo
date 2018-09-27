@@ -146,6 +146,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
     }
     public function testCleanProjectRelated() {
         foreach(self::$related_tables as $tb => $field) {
+            Info::query("DELETE FROM $tb WHERE $field NOT IN (SELECT id FROM info)");
             $this->assertEquals(0, Info::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM info)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM info)");
         }
     }
