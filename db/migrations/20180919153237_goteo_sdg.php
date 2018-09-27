@@ -342,12 +342,36 @@ class GoteoSdg
     UPDATE category SET social_commitment=NULL WHERE social_commitment NOT IN(SELECT id FROM social_commitment);
 
     ALTER TABLE `category` CHANGE `social_commitment` `social_commitment` INT(10) UNSIGNED NULL COMMENT 'Social commitment',
+        DROP INDEX `id`,
         ADD FOREIGN KEY (`social_commitment`) REFERENCES `social_commitment`(`id`) ON UPDATE CASCADE ON DELETE SET NULL;
 
     ALTER TABLE `social_commitment` CHANGE `image` `icon` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
     ALTER TABLE `sphere` CHANGE `image` `icon` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
-    ALTER TABLE `call_sphere` CHANGE `call` `call_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, CHANGE `sphere` `sphere_id` BIGINT(20) UNSIGNED NOT NULL;
-    ALTER TABLE `matcher_sphere` CHANGE `matcher` `matcher_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, CHANGE `sphere` `sphere_id` BIGINT(20) UNSIGNED NOT NULL;
+
+    ALTER TABLE `call_sphere`
+        DROP INDEX `call_sphere`,
+        DROP INDEX `sphere`,
+        ADD PRIMARY KEY (`call`, `sphere`),
+        DROP FOREIGN KEY `call_sphere_ibfk_1`,
+        DROP FOREIGN KEY `call_sphere_ibfk_2`;
+    ALTER TABLE `call_sphere`
+        CHANGE `call` `call_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+        CHANGE `sphere` `sphere_id` BIGINT(20) UNSIGNED NOT NULL,
+        ADD FOREIGN KEY (`call_id`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+        ADD FOREIGN KEY (`sphere_id`) REFERENCES `sphere`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+    ALTER TABLE `matcher_sphere`
+        DROP INDEX `matcher`,
+        DROP INDEX `sphere`,
+        ADD PRIMARY KEY (`matcher`, `sphere`),
+        DROP FOREIGN KEY `matcher_sphere_ibfk_1`,
+        DROP FOREIGN KEY `matcher_sphere_ibfk_2`;
+    ALTER TABLE `matcher_sphere`
+        CHANGE `matcher` `matcher_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+        CHANGE `sphere` `sphere_id` BIGINT(20) UNSIGNED NOT NULL,
+        ADD FOREIGN KEY (`matcher_id`) REFERENCES `matcher`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+        ADD FOREIGN KEY (`sphere_id`) REFERENCES `sphere`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
 
     CREATE TABLE `sdg` (
       `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -441,10 +465,36 @@ class GoteoSdg
         CHANGE `social_commitment` `social_commitment` CHAR(50) NULL COMMENT 'Social commitment',
         DROP INDEX `social_commitment`, ADD UNIQUE INDEX `id` (`id`), DROP FOREIGN KEY `category_ibfk_1`;
 
-     ALTER TABLE `social_commitment` CHANGE `icon` `image` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
-     ALTER TABLE `sphere` CHANGE `icon` `image` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
-     ALTER TABLE `call_sphere` CHANGE `call_id` `call` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, CHANGE `sphere_id` `sphere` BIGINT(20) UNSIGNED NOT NULL;
-     ALTER TABLE `matcher_sphere` CHANGE `matcher_id` `matcher` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, CHANGE `sphere_id` `sphere` BIGINT(20) UNSIGNED NOT NULL;
+     ALTER TABLE `social_commitment`
+        CHANGE `icon` `image` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
+     ALTER TABLE `sphere`
+        CHANGE `icon` `image` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL;
+
+     ALTER TABLE `matcher_sphere`
+        CHANGE `matcher_id` `matcher` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+        CHANGE `sphere_id` `sphere` BIGINT(20) UNSIGNED NOT NULL,
+        DROP PRIMARY KEY,
+        DROP INDEX `sphere_id`,
+        ADD UNIQUE INDEX `matcher` (`matcher`, `sphere`),
+        ADD INDEX `sphere` (`sphere`),
+        DROP FOREIGN KEY `matcher_sphere_ibfk_1`,
+        DROP FOREIGN KEY `matcher_sphere_ibfk_2`;
+     ALTER TABLE `matcher_sphere`
+        ADD FOREIGN KEY (`matcher`) REFERENCES `matcher`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+        ADD FOREIGN KEY (`sphere`) REFERENCES `sphere`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+     ALTER TABLE `call_sphere`
+        CHANGE `call_id` `call` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+        CHANGE `sphere_id` `sphere` BIGINT(20) UNSIGNED NOT NULL,
+        DROP PRIMARY KEY,
+        DROP INDEX `sphere_id`,
+        ADD UNIQUE INDEX `call_sphere` (`call`, `sphere`),
+        ADD INDEX `sphere` (`sphere`),
+        DROP FOREIGN KEY `call_sphere_ibfk_1`,
+        DROP FOREIGN KEY `call_sphere_ibfk_2`;
+     ALTER TABLE `call_sphere`
+        ADD FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+        ADD FOREIGN KEY (`sphere`) REFERENCES `sphere`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
      DROP TABLE sdg_category;
      DROP TABLE sdg_social_commitment;
