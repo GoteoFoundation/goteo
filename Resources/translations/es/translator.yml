@@ -62,6 +62,9 @@ translator-saved-ko: 'Error al guardar la traducción al %LANG% (%ERROR%)'
 translator-saved-ok: 'Traducciones guardadas correctamente para los idiomas [%s]'
 translator-skipped-fields: "Algunos campos no se han copiado porque ya contenían texto.\nBorra el texto original para poder copiar desde otro idioma."
 translator-sphere: 'Ámbitos de convocatoria'
+translator-social_commitment: 'Compromisos sociales'
+translator-sdg: 'ODS'
+translator-footprint: 'Huellas'
 translator-stories: 'Historias exitosas'
 translator-system: Sistema
 translator-tables: 'Tablas generales'
