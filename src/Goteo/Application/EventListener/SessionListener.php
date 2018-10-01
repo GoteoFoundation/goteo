@@ -23,6 +23,7 @@ use Goteo\Application\Currency;
 use Goteo\Library\Text;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -39,6 +40,10 @@ class SessionListener extends AbstractListener {
 
         $request = $event->getRequest();
 
+        // Due a symfony issue, disable FORWARDED header, it may cause some problems
+        // if not exactly the same as the X_FORWARDED_FOR
+        // https://stackoverflow.com/questions/44543649/conflict-between-http-headers-in-symfony-3
+        Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
         // Add trusted proxies
         if (is_array(Config::get('proxies'))) {
             $request->setTrustedProxies(Config::get('proxies'));
