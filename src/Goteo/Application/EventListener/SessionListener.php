@@ -42,12 +42,14 @@ class SessionListener extends AbstractListener {
 
         // Due a symfony issue, disable FORWARDED header, it may cause some problems
         // if not exactly the same as the X_FORWARDED_FOR
-        // https://stackoverflow.com/questions/44543649/conflict-between-http-headers-in-symfony-3
+        // See https://stackoverflow.com/questions/44543649/conflict-between-http-headers-in-symfony-3
         Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
+
         // Add trusted proxies
         if (is_array(Config::get('proxies'))) {
             $request->setTrustedProxies(Config::get('proxies'));
         }
+
         //non cookies for notifyAction on investController
         if (strpos($request->getPathInfo(), '/invest/notify/') === 0) {
             return;
