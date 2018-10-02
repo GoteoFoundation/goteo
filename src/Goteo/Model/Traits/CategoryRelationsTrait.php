@@ -24,6 +24,13 @@ use Goteo\Application\Exception\ModelException;
  */
 trait CategoryRelationsTrait {
 
+    public function getCategoryRelationalTable() {
+        $tb = strtolower($this->getTable());
+        if($tb === 'footprint')
+            return "category_{$tb}";
+        return "{$tb}_category";
+    }
+
     /**
      * Add categories
      * @param [type]  $categories  category or array of categories
@@ -46,8 +53,9 @@ trait CategoryRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql1 = "DELETE FROM `{$tb}_category` WHERE {$tb}_id=:id AND category_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
-        $sql2 = "INSERT IGNORE INTO `{$tb}_category` ({$tb}_id, category_id) VALUES " . implode(', ', $inserts);
+        $rel = $this->getCategoryRelationalTable();
+        $sql1 = "DELETE FROM `$rel` WHERE {$tb}_id=:id AND category_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql2 = "INSERT IGNORE INTO `$rel` ({$tb}_id, category_id) VALUES " . implode(', ', $inserts);
         try {
             if($remove_others) {
                 self::query($sql1, $values);
@@ -75,6 +83,7 @@ trait CategoryRelationsTrait {
      */
     public function getCategories($lang = null) {
         $tb = strtolower($this->getTable());
+        $rel = $this->getCategoryRelationalTable();
 
         list($fields, $joins) = Category::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
@@ -82,11 +91,11 @@ trait CategoryRelationsTrait {
                 category.id,
                 $fields,
                 category.social_commitment
-            FROM {$tb}_category
-            INNER JOIN category ON category.id = {$tb}_category.category_id
+            FROM `$rel`
+            INNER JOIN category ON category.id = `$rel`.category_id
             $joins
-            WHERE {$tb}_category.{$tb}_id = :id
-            ORDER BY {$tb}_category.order ASC";
+            WHERE `$rel`.{$tb}_id = :id
+            ORDER BY `$rel`.order ASC";
         $values = [':id' => $this->id];
         if($query = self::query($sql, $values)) {
             if( $categories = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Category') ) {
@@ -115,7 +124,8 @@ trait CategoryRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "DELETE FROM `{$tb}_category` WHERE {$tb}_id = :id AND category_id IN (" . implode(', ', $deletes) . ")";
+        $rel = $this->getCategoryRelationalTable();
+        $sql = "DELETE FROM `$rel` WHERE {$tb}_id = :id AND category_id IN (" . implode(', ', $deletes) . ")";
         try {
             self::query($sql, $values);
         } catch (\PDOException $e) {

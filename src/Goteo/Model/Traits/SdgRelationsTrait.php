@@ -24,6 +24,10 @@ use Goteo\Application\Exception\ModelException;
  * - "sdg_id" as relationship field name pointing to sdg.id
  */
 trait SdgRelationsTrait {
+    public function getSdgRelationalTable() {
+        $tb = strtolower($this->getTable());
+        return "sdg_{$tb}";
+    }
 
     /**
      * Add sdgs
@@ -47,8 +51,9 @@ trait SdgRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql1 = "DELETE FROM `sdg_{$tb}` WHERE {$tb}_id=:id AND sdg_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
-        $sql2 = "INSERT IGNORE INTO `sdg_{$tb}` ({$tb}_id, sdg_id) VALUES " . implode(', ', $inserts);
+        $rel = $this->getSdgRelationalTable();
+        $sql1 = "DELETE FROM `$rel` WHERE {$tb}_id=:id AND sdg_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql2 = "INSERT IGNORE INTO `$rel` ({$tb}_id, sdg_id) VALUES " . implode(', ', $inserts);
         // echo \sqldbg($sql1, $values)."\n";die;
         // echo \sqldbg($sql2, $values)."\n";
         try {
@@ -80,6 +85,7 @@ trait SdgRelationsTrait {
      */
     public function getSdgs($lang = null) {
         $tb = strtolower($this->getTable());
+        $rel = $this->getSdgRelationalTable();
         list($fields, $joins) = Sdg::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql = "SELECT
@@ -88,11 +94,11 @@ trait SdgRelationsTrait {
                 sdg.modified,
                 $fields
 
-            FROM sdg_{$tb}
-            INNER JOIN sdg ON sdg.id = sdg_{$tb}.sdg_id
+            FROM `$rel`
+            INNER JOIN sdg ON sdg.id = `$rel`.sdg_id
             $joins
-            WHERE sdg_{$tb}.{$tb}_id = :id
-            ORDER BY sdg_{$tb}.order ASC";
+            WHERE `$rel`.{$tb}_id = :id
+            ORDER BY `$rel`.order ASC";
         $values = [':id' => $this->id];
         if($query = self::query($sql, $values)) {
             if( $sdgs = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Sdg') ) {
@@ -121,7 +127,8 @@ trait SdgRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "DELETE FROM `sdg_{$tb}` WHERE {$tb}_id = :id AND sdg_id IN (" . implode(', ', $deletes) . ")";
+        $rel = $this->getSdgRelationalTable();
+        $sql = "DELETE FROM `$rel` WHERE {$tb}_id = :id AND sdg_id IN (" . implode(', ', $deletes) . ")";
         try {
             self::query($sql, $values);
         } catch (\PDOException $e) {

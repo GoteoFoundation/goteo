@@ -23,6 +23,10 @@ use Goteo\Application\Exception\ModelException;
  * - "footprint_id" as relationship field name pointing to footprint.id
  */
 trait FootprintRelationsTrait {
+    public function getFootprintRelationalTable() {
+        $tb = strtolower($this->getTable());
+        return "{$tb}_footprint";
+    }
 
     /**
      * Add footprints
@@ -46,8 +50,9 @@ trait FootprintRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql1 = "DELETE FROM `{$tb}_footprint` WHERE {$tb}_id=:id AND footprint_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
-        $sql2 = "INSERT IGNORE INTO `{$tb}_footprint` ({$tb}_id, footprint_id) VALUES " . implode(', ', $inserts);
+        $rel = $this->getFootprintRelationalTable();
+        $sql1 = "DELETE FROM `$rel` WHERE {$tb}_id=:id AND footprint_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql2 = "INSERT IGNORE INTO `$rel` ({$tb}_id, footprint_id) VALUES " . implode(', ', $inserts);
         try {
             if($remove_others) {
                 self::query($sql1, $values);
@@ -75,17 +80,18 @@ trait FootprintRelationsTrait {
      */
     public function getFootprints($lang = null) {
         $tb = strtolower($this->getTable());
+        $rel = $this->getFootprintRelationalTable();
         list($fields, $joins) = Footprint::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql = "SELECT
                 footprint.id,
                 footprint.icon,
                 $fields
-            FROM {$tb}_footprint
-            INNER JOIN footprint ON footprint.id = {$tb}_footprint.footprint_id
+            FROM `$rel`
+            INNER JOIN footprint ON footprint.id = `$rel`.footprint_id
             $joins
-            WHERE {$tb}_footprint.{$tb}_id = :id
-            ORDER BY {$tb}_footprint.order ASC";
+            WHERE `$rel`.{$tb}_id = :id
+            ORDER BY `$rel`.order ASC";
         $values = [':id' => $this->id];
         if($query = self::query($sql, $values)) {
             if( $footprints = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Footprint') ) {
@@ -114,7 +120,8 @@ trait FootprintRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "DELETE FROM `{$tb}_footprint` WHERE {$tb}_id = :id AND footprint_id IN (" . implode(', ', $deletes) . ")";
+        $rel = $this->getFootprintRelationalTable();
+        $sql = "DELETE FROM `$rel` WHERE {$tb}_id = :id AND footprint_id IN (" . implode(', ', $deletes) . ")";
         try {
             self::query($sql, $values);
         } catch (\PDOException $e) {

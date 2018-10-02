@@ -99,7 +99,7 @@ class SocialCommitment extends \Goteo\Core\Model {
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
             // For compatibility
             $item->image = $item->getIcon();
-            $list[] = $item;
+            $list[$item->id] = $item;
         }
         return $list;
     }
