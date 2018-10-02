@@ -47,6 +47,14 @@ class CategoriesTransformer extends AbstractTransformer {
         return $this->model->getFootprints();
     }
 
+    public function getCategories() {
+        return $this->model->getCategories();
+    }
+
+    public function getSocial_commitments() {
+        return $this->model->getSocialCommitments();
+    }
+
     public function getLanding_match() {
         return $this->model->landing_match;
     }
