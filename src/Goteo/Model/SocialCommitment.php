@@ -12,6 +12,7 @@ use Goteo\Application\Config;
 
 class SocialCommitment extends \Goteo\Core\Model {
     use Traits\SdgRelationsTrait;
+    use Traits\FootprintRelationsTrait;
 
     protected $Table = 'social_commitment';
     static protected $Table_static = 'social_commitment';

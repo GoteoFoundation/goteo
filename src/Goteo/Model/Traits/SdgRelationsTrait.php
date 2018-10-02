@@ -103,14 +103,6 @@ trait SdgRelationsTrait {
     }
 
     /**
-     * Returns footprints associated with
-     * @return [type] [description]
-     */
-    public function getFootprints($lang = null) {
-        return Footprint::getFromSdgs($this->getSdgs(), $lang);
-    }
-
-    /**
      * Delete sdgs
      * @param [type]  $sdgs  sdg or array of sdgs
      */

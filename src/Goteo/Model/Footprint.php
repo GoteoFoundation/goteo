@@ -202,7 +202,7 @@ class Footprint extends \Goteo\Core\Model {
 
     // TODO: add files to assets folder!
     public function getIcon($force_asset = false) {
-        $asset = "footprint/square/{$this->id}.png";
+        $asset = "footprint/{$this->id}.svg";
 
         if($force_asset) return Image::get($asset)->setAsset(true);
 
