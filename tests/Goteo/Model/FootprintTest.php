@@ -55,7 +55,7 @@ class FootprintTest extends TestCase {
 		$this->assertInstanceOf('\Goteo\Model\Image', $ob->getIcon());
 		$this->assertTrue($ob->getIcon()->isAsset());
 		$this->assertStringStartsWith(SRC_URL, $ob->getIcon()->getLink());
-		$this->assertStringEndsWith("/img/footprint/square/{$ob->id}.png", $ob->getIcon()->getLink());
+		$this->assertStringEndsWith("/img/footprint/{$ob->id}.svg", $ob->getIcon()->getLink());
 		$this->assertFalse($ob->setIcon('testimage.png')->getIcon()->isAsset());
 		$this->assertStringEndsWith('testimage.png', $ob->getIcon()->getLink());
 	}
