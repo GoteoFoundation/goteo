@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Model\SocialCommitment;
 use Goteo\Model\Sdg;
+use Goteo\Model\Footprint;
 use Goteo\Library\Forms\FormModelException;
 
 class AdminCategoryEditForm extends AbstractFormProcessor {
@@ -41,6 +42,10 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
         foreach(Sdg::getList([],0,100) as $s) {
             $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
         }
+        $footprints = [];
+        foreach(Footprint::getList([],0,100) as $f) {
+            $footprints['<img src="'.$f->getIcon()->getLink().'" class="icon icon-3x"> '.$f->name] = $f->id;
+        }
 
         // print_r($defaults);die;
         $builder
@@ -59,6 +64,17 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
                 'required' => false,
                 'choices_as_values' => true,
                 'choices' => $social_commitments
+            ))
+            ->add('footprints', 'choice', array(
+                'label' => 'admin-title-footprints',
+                'data' => array_column($model->getFootprints(), 'id'),
+                'expanded' => true,
+                'multiple' => true,
+                'required' => false,
+                'choices' => $footprints,
+                'choices_as_values' => true,
+                'choices_label_escape' => false,
+                'wrap_class' => 'col-xs-6 col-xxs-12'
             ))
             ->add('sdgs', 'choice', array(
                 'label' => 'admin-title-sdgs',
@@ -90,6 +106,7 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
         }
 
         $model->replaceSdgs($data['sdgs']);
+        $model->replaceFootprints($data['footprints']);
 
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
