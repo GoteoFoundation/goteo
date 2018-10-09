@@ -76,7 +76,7 @@ class CategoriesAdminController extends AbstractAdminController {
             $fields = ['id', 'icon', 'name', 'footprints', 'langs', 'actions'];
         } elseif($tab === 'footprint') {
             $list = Footprint::getList([],0,100, false, Config::get('lang'));
-            $fields = ['id', /*'icon',*/ 'name', 'sdgs', 'langs', 'actions'];
+            $fields = ['id', 'icon', 'name', 'sdgs', 'categories', 'social_commitments', 'langs', 'actions'];
         } else {
             $list = Category::getAll(Config::get('lang'));
             $fields = ['id', 'name', 'social_commitment', 'sdgs', 'footprints', 'langs', /*'order',*/ 'actions'];

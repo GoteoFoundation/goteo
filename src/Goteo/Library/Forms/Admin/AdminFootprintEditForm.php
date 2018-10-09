@@ -17,6 +17,8 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Model\Sdg;
+use Goteo\Model\Category;
+use Goteo\Model\SocialCommitment;
 use Goteo\Library\Forms\FormModelException;
 
 class AdminFootprintEditForm extends AbstractFormProcessor {
@@ -74,6 +76,28 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12'
             ))
+            ->add('categories', 'choice', array(
+                'label' => 'admin-title-categories',
+                'data' => array_column($model->getCategories(), 'id'),
+                'expanded' => true,
+                'multiple' => true,
+                'required' => false,
+                'choices' => array_column(Category::getAll(), 'id', 'name'),
+                'choices_as_values' => true,
+                'choices_label_escape' => false,
+                'wrap_class' => 'col-xs-6 col-xxs-12'
+            ))
+            ->add('social_commitments', 'choice', array(
+                'label' => 'admin-title-social_commitments',
+                'data' => array_column($model->getSocialCommitments(), 'id'),
+                'expanded' => true,
+                'multiple' => true,
+                'required' => false,
+                'choices' => array_column(SocialCommitment::getAll(), 'id', 'name'),
+                'choices_as_values' => true,
+                'choices_label_escape' => false,
+                'wrap_class' => 'col-xs-6 col-xxs-12'
+            ))
             ;
 
         return $this;
@@ -100,6 +124,8 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
         $model->replaceSdgs($data['sdgs']);
+        $model->replaceCategories($data['categories']);
+        $model->replaceSocialCommitments($data['social_commitments']);
 
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 

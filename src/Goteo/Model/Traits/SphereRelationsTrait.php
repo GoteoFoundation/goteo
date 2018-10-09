@@ -23,6 +23,10 @@ use Goteo\Application\Exception\ModelException;
  * - "sphere_id" as relationship field name pointing to sphere.id
  */
 trait SphereRelationsTrait {
+    public function getSphereRelationalTable() {
+        $tb = strtolower($this->getTable());
+        return "{$tb}_sphere";
+    }
 
     /**
      * Add spheres
@@ -46,8 +50,9 @@ trait SphereRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql1 = "DELETE FROM `{$tb}_sphere` WHERE {$tb}_id=:id AND sphere_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
-        $sql2 = "INSERT IGNORE INTO `{$tb}_sphere` ({$tb}_id, sphere_id) VALUES " . implode(', ', $inserts);
+        $rel = $this->getSphereRelationalTable();
+        $sql1 = "DELETE FROM `$rel` WHERE {$tb}_id=:id AND sphere_id NOT IN (" . implode(', ', $deletes ?: ['0']) .")";
+        $sql2 = "INSERT IGNORE INTO `$rel` ({$tb}_id, sphere_id) VALUES " . implode(', ', $inserts);
         try {
             if($remove_others) {
                 self::query($sql1, $values);
@@ -75,6 +80,7 @@ trait SphereRelationsTrait {
      */
     public function getSpheres($lang = null) {
         $tb = strtolower($this->getTable());
+        $rel = $this->getSphereRelationalTable();
         list($fields, $joins) = Sphere::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql = "SELECT
@@ -83,11 +89,11 @@ trait SphereRelationsTrait {
                 sphere.order,
                 sphere.landing_match,
                 $fields
-            FROM {$tb}_sphere
-            INNER JOIN sphere ON sphere.id = {$tb}_sphere.sphere_id
+            FROM `$rel`
+            INNER JOIN sphere ON sphere.id = `$rel`.sphere_id
             $joins
-            WHERE {$tb}_sphere.{$tb}_id = :id
-            ORDER BY {$tb}_sphere.order ASC";
+            WHERE `$rel`.{$tb}_id = :id
+            ORDER BY `$rel`.order ASC";
         $values = [':id' => $this->id];
         if($query = self::query($sql, $values)) {
             if( $spheres = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Sphere') ) {
@@ -116,7 +122,8 @@ trait SphereRelationsTrait {
         }
 
         $tb = strtolower($this->getTable());
-        $sql = "DELETE FROM `{$tb}_sphere` WHERE {$tb}_id = :id AND sphere_id IN (" . implode(', ', $deletes) . ")";
+        $rel = $this->getSphereRelationalTable();
+        $sql = "DELETE FROM `$rel` WHERE {$tb}_id = :id AND sphere_id IN (" . implode(', ', $deletes) . ")";
         try {
             self::query($sql, $values);
         } catch (\PDOException $e) {
