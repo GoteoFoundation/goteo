@@ -79,19 +79,37 @@ class OriginListener extends AbstractListener {
                 'category' => $result->getMedium(),
                 'type' => 'referer'
                 ];
-        }
-        if($referer['category'] === 'internal') {
-            $referer['tag'] = $parts[1];
+
+            // Consider any subdomain as "internal"
+            $parsed = parse_url($ref);
+            $ref_host = $parsed['host'];
+            if(isset($parsed['port'])) $ref_host .= ':' . $parsed['port'];
+            if($ref_host && preg_match('/' . preg_quote(Config::getMainUrl(false), '/') . '$/', $ref_host)) {
+                $referer['category'] = 'internal';
+            }
+
+            if($referer['category'] === 'internal') {
+                $referer['tag'] = $parsed['path'];
+            }
+            // Tracked links form MailController as type "email"
+            if($parts[1] === 'mail') {
+                $referer['tag'] = 'Newsletter';
+                $referer['category'] = 'email';
+            }
+            // print_r(Config::getMainUrl(false));print_r($ref_host);print_r($referer);print_r($parts);die($ref);
         }
 
-        // Tracked links form MailController as type "email"
-        if($parts[1] === 'mail') {
-            $referer['tag'] = 'Newsletter';
-            $referer['category'] = 'email';
-        }
-        if($referer['category'] !== 'invalid' && Session::get('origin.referer') !== $referer) {
-            Session::store('origin.referer', $referer);
-        }
+        if(Session::get('origin.referer') === $referer)
+            return;
+
+        if($referer['category'] === 'invalid')
+            return;
+
+        // Internal only if none previous registered
+        if($referer['category'] === 'internal' && Session::exists('origin.referer'))
+            return;
+
+        Session::store('origin.referer', $referer);
     }
 
 
@@ -115,19 +133,23 @@ class OriginListener extends AbstractListener {
         // TODO: add channel, blog (post): requires db migration
         if(in_array($type, ['project', 'call'])) {
             // print_r($referer);print_r(Session::get("origin.{$type}_referer"));die("[$type] $id");
-            $ua_id = $ua + ["{$type}_id" => $id];
-            if(Session::get("origin.{$type}_ua") !== $ua_id) {
-                $origin = Origin::getFromArray($ua_id);
-                // echo "saving ua";
-                $origin->save();
-                Session::store("origin.{$type}_ua", $ua_id);
+            if($ua && is_array($ua)) {
+                $ua_id = $ua + ["{$type}_id" => $id];
+                if(Session::get("origin.{$type}_ua") !== $ua_id) {
+                    $origin = Origin::getFromArray($ua_id);
+                    // echo "saving ua";
+                    $origin->save();
+                    Session::store("origin.{$type}_ua", $ua_id);
+                }
             }
-            $referer_id = $referer + ["{$type}_id" => $id];
-            if(Session::get("origin.{$type}_referer") !== $referer_id) {
-                $origin = Origin::getFromArray($referer_id);
-                // echo "saving referer";
-                $origin->save();
-                Session::store("origin.{$type}_referer", $referer_id);
+            if($referer && is_array($referer)) {
+                $referer_id = $referer + ["{$type}_id" => $id];
+                if(Session::get("origin.{$type}_referer") !== $referer_id) {
+                    $origin = Origin::getFromArray($referer_id);
+                    // echo "saving referer";
+                    $origin->save();
+                    Session::store("origin.{$type}_referer", $referer_id);
+                }
             }
         }
 
