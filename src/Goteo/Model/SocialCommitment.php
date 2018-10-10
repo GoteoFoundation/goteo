@@ -12,6 +12,7 @@ use Goteo\Application\Config;
 
 class SocialCommitment extends \Goteo\Core\Model {
     use Traits\SdgRelationsTrait;
+    use Traits\FootprintRelationsTrait;
 
     protected $Table = 'social_commitment';
     static protected $Table_static = 'social_commitment';
@@ -98,7 +99,7 @@ class SocialCommitment extends \Goteo\Core\Model {
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
             // For compatibility
             $item->image = $item->getIcon();
-            $list[] = $item;
+            $list[$item->id] = $item;
         }
         return $list;
     }

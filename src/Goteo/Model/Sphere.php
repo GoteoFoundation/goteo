@@ -14,6 +14,7 @@ namespace Goteo\Model;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
+use Goteo\Model\Footprint;
 
 /*
 * Model for sphere
@@ -61,6 +62,15 @@ class Sphere extends \Goteo\Core\Model {
             }
         }
         return null;
+    }
+
+
+    /**
+     * Returns footprints associated with
+     * @return [type] [description]
+     */
+    public function getFootprints($lang = null) {
+        return Footprint::getFromSdgs($this->getSdgs(), $lang);
     }
 
     public function getIcon($force_asset = false) {

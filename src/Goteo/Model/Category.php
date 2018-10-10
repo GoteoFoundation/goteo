@@ -18,6 +18,7 @@ use Goteo\Model\SocialCommitment;
 
 class Category extends \Goteo\Core\Model {
     use Traits\SdgRelationsTrait;
+    use Traits\FootprintRelationsTrait;
 
     public
         $id,
