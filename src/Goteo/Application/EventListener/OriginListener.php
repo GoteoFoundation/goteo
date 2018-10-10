@@ -15,8 +15,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-use UAParser\Parser as UAParser;
-use Snowplow\RefererParser\Parser as RefererParser;
+use Goteo\Util\Origins\Parser as OriginParser;
 
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestInitEvent;
@@ -39,65 +38,15 @@ class OriginListener extends AbstractListener {
         if (!$event->isMasterRequest()) {
             return;
         }
-
-        $request = $event->getRequest();
+        $subdomains = Config::get('plugins.custom-domains.active') ? Config::get('plugins.custom-domains.domains') : [];
+        $parser = new OriginParser($event->getRequest(), Config::getMainUrl(false), $subdomains);
 
         if(!Session::exists('origin.ua')) {
-            // Extracting UA elements
-            // https://github.com/ua-parser/uap-php
-            $parser = UAParser::create();
-            $result = $parser->parse($request->headers->get('User-Agent'));
-            $ua = [
-                'tag' => $result->ua->family,
-                'category' => $result->os->family,
-                'type' => 'ua'
-                ];
-
             // var_dump($ua);
-            Session::store('origin.ua', $ua);
+            Session::store('origin.ua', $parser->getUA());
         }
 
-        // Manual origin tracker
-        if($ref = $request->query->get('ref')) {
-            $referer = [
-                'tag' => $ref,
-                'category' => 'campaign',
-                'type' => 'referer'
-                ];
-            // print_r($referer);die;
-        } else {
-            // Extracting Referer elements
-            // https://github.com/snowplow/referer-parser/tree/master/php
-            $parser = new RefererParser();
-            $ref = $request->headers->get('referer');
-            $result = $parser->parse($ref, $request->getUri());
-            $parts = explode("/", $request->getPathInfo());
-
-            // echo $ref .','. $request->getUri();
-            $referer = [
-                'tag' => $result->getSource(),
-                'category' => $result->getMedium(),
-                'type' => 'referer'
-                ];
-
-            // Consider any subdomain as "internal"
-            $parsed = parse_url($ref);
-            $ref_host = $parsed['host'];
-            if(isset($parsed['port'])) $ref_host .= ':' . $parsed['port'];
-            if($ref_host && preg_match('/' . preg_quote(Config::getMainUrl(false), '/') . '$/', $ref_host)) {
-                $referer['category'] = 'internal';
-            }
-
-            if($referer['category'] === 'internal') {
-                $referer['tag'] = $parsed['path'];
-            }
-            // Tracked links form MailController as type "email"
-            if($parts[1] === 'mail') {
-                $referer['tag'] = 'Newsletter';
-                $referer['category'] = 'email';
-            }
-            // print_r(Config::getMainUrl(false));print_r($ref_host);print_r($referer);print_r($parts);die($ref);
-        }
+        $referer = $parser->getReferer();
 
         if(Session::get('origin.referer') === $referer)
             return;
