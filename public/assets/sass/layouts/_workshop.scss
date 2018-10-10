@@ -306,6 +306,13 @@ body.workshop {
       }
     }
 
+    .partner{
+      padding: 20px 0;
+      .disclaimer{
+        font-size: $font-size*0.8;
+      }
+    }
+
     .workshops-container{
       background-color: $background-main-home;
       padding: 15px 0 40px 0;
