@@ -6,9 +6,14 @@ body.workshop {
 
     background-color: $background-white;
 
-   
-    .a-unstyled{
-      color: $primary-color;
+    .a-unstyled {
+        color: $color-white;
+        text-decoration: none;
+        &:link { color: $color-white; text-decoration: none;}
+        &:visited { color: $color-white; text-decoration: none;}
+        &:hover { color: $color-white; text-decoration: none;}
+        &:active { color: $color-white; text-decoration: none;}
+        &:focus { color: $color-white; text-decoration: none;}
     }
 
     img.header-default{

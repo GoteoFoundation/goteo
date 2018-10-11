@@ -6,23 +6,28 @@
     	<?php $month=strtolower(strftime("%B",$date->getTimestamp())); ?>
 
         <div class="workshop-item col-md-3">
-        	<div class="date">
-        		<div class="day">
-        			<?= $date->format('d'); ?>
-        		</div>
-	        	<div class="month">
-	        		<?= $this->text('date-'.$month); ?>
-	        	</div>
-	        	<div class="year">
-	        		<?= $date->format('Y'); ?>
-	        	</div>
-        	</div>
-        	<div class="title">
-            	<?= $workshop->title ?>
-        	</div>
-        	<div class="subtitle">
-            	<?= $workshop->subtitle ?>
-        	</div>
+            <div class="date">
+                <a class="a-unstyled" href="<?= '/workshop/'.$workshop->id ?>" >          
+            		<div class="day">
+            			<?= $date->format('d'); ?>
+            		</div>
+    	        	<div class="month">
+    	        		<?= $this->text('date-'.$month); ?>
+    	        	</div>
+    	        	<div class="year">
+    	        		<?= $date->format('Y'); ?>
+    	        	</div>
+                </a>
+            </div>
+            	<div class="title">
+                    <a class="a-unstyled" href="<?= '/workshop/'.$workshop->id ?>" >
+                	<?= $workshop->title ?>
+                    </a>
+            	</div>
+            	<div class="subtitle">
+                	<?= $workshop->subtitle ?>
+            	</div>
+            
         </div>
 
     <?php endforeach; ?>

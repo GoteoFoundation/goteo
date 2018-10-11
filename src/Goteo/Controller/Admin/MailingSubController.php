@@ -48,6 +48,7 @@ class MailingSubController extends AbstractSubController {
       'interest' => '',
       'role' => '',
       'name' => '',
+      'location' => '',
       'donant' => '',
       'comlang' => '',
       'langreverse' => '',
@@ -368,6 +369,10 @@ class MailingSubController extends AbstractSubController {
             $filters_txt .= '<strong>' . $langs[$filters['comlang']]->short . '</strong> ';
         }
 
+        if (!empty($filters['location'])) {
+            $filters_txt .= 'localizados en <strong>\'' . $filters['location'] . '\'</strong> ';
+        }
+
         return $filters_txt;
     }
 
@@ -478,6 +483,16 @@ class MailingSubController extends AbstractSubController {
             $values[':name'] = '%'.$filters['name'].'%';
         }
 
+
+        if (!empty($filters['location'])) {
+
+            $sqlInner .= "LEFT JOIN user_location
+                    ON user_location.id = user.id";
+
+            $sqlFilter .= " AND (user.location LIKE :location OR user_location.city LIKE :location OR user_location.region LIKE :location)  "; 
+            $values[':location'] = '%'.$filters['location'].'%';
+        }
+
         if (!$this->isMasterNode()) {
             $sqlFilter .= " AND user.node = :node";
             $values[':node'] = $node;
@@ -520,7 +535,7 @@ class MailingSubController extends AbstractSubController {
         // Return total count for pagination
         if($count) {
             $sql = "SELECT COUNT(DISTINCT(user.id)) FROM user $sqlInner WHERE user.active = 1 $sqlFilter";
-            // die( \sqldbg($sql, $values) );
+            //die( \sqldbg($sql, $values) );
             return (int) Model\User::query($sql, $values)->fetchColumn();
         }
 
@@ -538,7 +553,7 @@ class MailingSubController extends AbstractSubController {
                 LIMIT $offset, $limit
                 ";
 
-        // die( \sqldbg($sql, $values) );
+         //die( \sqldbg($sql, $values) );
 
         if ($query = Model\User::query($sql, $values)) {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
