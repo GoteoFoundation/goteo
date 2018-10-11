@@ -466,10 +466,13 @@ class Config {
      * Get sanitized Main URL
      * @return [type] [description]
      */
-    static public function getMainUrl() {
+    static public function getMainUrl($schema=true) {
         $url = self::get('url.main');
         if(strpos($url, '//') === 0) {
             $url = (self::get('ssl') ? 'https:' : 'http:') . $url;
+        }
+        if(!$schema) {
+            $url = preg_replace('!^[a-z]*://!', '', $url);
         }
         return $url;
     }
