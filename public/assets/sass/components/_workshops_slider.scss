@@ -30,13 +30,16 @@ div.workshops{
     .workshop-item{
         text-align: center;
         .date{
-            padding: 20px;
-            color: $color-white;
             background-color: $background-dark-lilac;
             border-radius: 10px;
             text-align: center;
             width: 130px;
             margin: 0 auto;
+            a{
+                padding: 20px;
+                color: $color-white;
+                display: block;
+            }
             .day{
                 font-weight:bold;
                 font-size: $font-size*3.2;
