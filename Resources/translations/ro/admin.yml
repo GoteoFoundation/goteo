@@ -80,6 +80,8 @@ admin-remove-filters: 'Elimină filtrele'
 admin-remove-entry: 'Ștergeți intrarea'
 admin-remove-entry-confirm: 'Sigur doriți să ștergeți această intrare? Această acțiune nu poate fi anulată!'
 admin-remove-entry-forbidden: 'Nu puteți șterge înregistrările publicate în blog. Anulează înregistrarea.'
+admin-remove-entry-ok: 'Intrarea a fost șters cu succes'
+admin-services: Servicii
 admin-sponsors: Servicii
 admin-status: Status
 admin-text-type: 'Procesare text ca'
