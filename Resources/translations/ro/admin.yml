@@ -58,12 +58,14 @@ admin-mailing-created: 'Creat la data de'
 admin-mailing-new-massive: 'Un nou newsletter a fost trimis în masă %TOTAL% utilizatorilor'
 admin-mailing-status: 'Status automatic la livrare'
 admin-mailing-subject: Subiect
+admin-mailing-view-and-activate: 'Consultați administratorul buletinului informativ pentru a activa expedierea'
 admin-mailing-view-in-newsletter: 'A se vedea newsletter-ul de la Admin'
 admin-mailing-view-in-sent: 'A se vedea evidența livrărilor (date statistice)'
 admin-mailing-view-message: 'A se vedea mesajul'
 admin-newsletter-generated: 'Newsletter-ul a fost generat [%ID%]'
 admin-newsletter-langs-to-send: 'Limbi: %LANGS%'
 admin-newsletter-mind-activate: 'Activ pentru a fi trimis'
+admin-prev-page: 'Pagina anterioară'
 admin-no: 'Nu'
 admin-percent: Procent
 admin-project: Proiect
