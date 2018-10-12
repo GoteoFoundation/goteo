@@ -42,13 +42,17 @@ admin-account-user-changed-error: 'Nu s-a putut schimba contribuţia utilizatoru
 admin-account-user-changed-successfully: 'Nu s-a putut schimba contribuţia utilizatorului [%ID%] la [%NAME%]'
 admin-address: Adresa
 admin-all: Toate
+admin-global: Global
 admin-back: Înapoi
 admin-back-detail: 'Înapoi la detalii'
 admin-back-list: 'Înapoi la listă'
 admin-contents: 'Texte și traduceri'
 admin-empty-list: 'Nu s-au găsit înregistrări'
+admin-activity: Activitate
+admin-communications: Comunicatii
 admin-home: Pagina principală
 admin-items: bilete
+admin-mailing-back-to-list: 'Reveniți la comunicații'
 admin-mailing-communicating-with: 'Doream să comunicăm cu %DESC%'
 admin-mailing-created: 'Creat la data de'
 admin-mailing-new-massive: 'Un nou newsletter a fost trimis în masă %TOTAL% utilizatorilor'
