@@ -66,12 +66,20 @@ admin-newsletter-generated: 'Newsletter-ul a fost generat [%ID%]'
 admin-newsletter-langs-to-send: 'Limbi: %LANGS%'
 admin-newsletter-mind-activate: 'Activ pentru a fi trimis'
 admin-prev-page: 'Pagina anterioară'
+admin-next-page: 'Pagina următoare'
 admin-no: 'Nu'
 admin-percent: Procent
 admin-project: Proiect
+admin-main: Principal
+admin-legacy: Vechi
 admin-projects: Proiecte
+admin-consultants: 'Consultanți'
+admin-invests: Contribuţii
 admin-filters: 'Filtre'
 admin-remove-filters: 'Elimină filtrele'
+admin-remove-entry: 'Ștergeți intrarea'
+admin-remove-entry-confirm: 'Sigur doriți să ștergeți această intrare? Această acțiune nu poate fi anulată!'
+admin-remove-entry-forbidden: 'Nu puteți șterge înregistrările publicate în blog. Anulează înregistrarea.'
 admin-sponsors: Servicii
 admin-status: Status
 admin-text-type: 'Procesare text ca'
