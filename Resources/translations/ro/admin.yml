@@ -83,13 +83,27 @@ admin-remove-entry-forbidden: 'Nu puteți șterge înregistrările publicate în
 admin-remove-entry-ok: 'Intrarea a fost șters cu succes'
 admin-services: Servicii
 admin-sponsors: Servicii
+admin-slug-seo-help: 'Acest câmp este important pentru SEO. Editați doar dacă este important.'
+admin-others: Altele
+admin-summary: Sumar
+admin-origins: Statistici vizitatori
 admin-status: Status
 admin-text-type: 'Procesare text ca'
 admin-text-type-html: HTML
 admin-text-type-md: Reducere
 admin-text-type-plain: 'Text simplu'
 admin-user: Utilizator
+admin-user-no-projects: 'Nu ați creat încă niciun proiect'
+admin-user-no-invests: 'Încă nu ați făcut nicio donație'
 admin-users: Utilizatori
+admin-users-add: Creați un utilizator nou
+admin-blog: Blog general
+admin-blog-add: Creați o postare nouă
+admin-blog-edit: Editarea postului %s
+admin-blog-slug-exists: 'Identificatorul [%s] este utilizat într-un alt post!'
+admin-blog-slug-chars: 'Identificatorul [%s] conține caractere interzise!'
+admin-blog-not-public: 'Această postare nu este încă publică'
+admin-stories: Istoricul utilizatorilor din Goteo
 admin-yes: Da
 admin-impersonate-user: În locul %s
 admin-project-express-discard: 'Exprimă respingerea'
