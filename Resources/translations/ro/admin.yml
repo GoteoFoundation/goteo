@@ -133,3 +133,12 @@ admin-list: Listare
 admin-stats: Statistici
 admin-list-total: 'Total: <strong>%s</strong> rezultate'
 admin-search-global: 'Proiect, canal, apel...'
+admin-already-impersonating: 'Încă mai impersonați un utilizator, vă rugăm să închideți mai întâi sesiunea!'
+admin-rebase-user: 'Modificați ID utilizator'
+admin-edit-name: 'Schimbați numele'
+admin-edit-roles: 'Schimbați rolurile utilizatorilor'
+admin-send-email: 'Trimiteți un e-mail'
+admin-show-roles-info: 'Ce poate face fiecare rol?'
+admin-user-roles: 'Lista roluri utilizatori'
+admin-view-user-projects: 'Toate proiectele'
+admin-view-user-invests: 'Toate contribuțiile'
