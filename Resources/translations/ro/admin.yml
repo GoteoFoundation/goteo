@@ -107,7 +107,10 @@ admin-stories: Istoricul utilizatorilor din Goteo
 admin-stories-add: Creați o istorie nouă
 admin-stories-edit: Editarea istoric %s
 admin-calls: Convocări
+admin-matchers: Matchers
+admin-channels: Canale
 admin-yes: Da
+admin-impersonate: Inlocuit
 admin-impersonate-user: În locul %s
 admin-project-express-discard: 'Exprimă respingerea'
 admin-project-express-discard-desc: 'Mutați proiectul cu status Respins și trimiteți un email'
@@ -125,3 +128,8 @@ admin-project-to-publish-sure: 'Proiectul e pe cale să înceapă campania. Porn
 admin-project-derivation-discard: 'Respingere și întoarcere la origine'
 admin-project-derivation-discard-desc: 'Alocați proiectului statusul Respingere și trimiteți un email altor platforme mai potrivite'
 admin-project-derivation-discard-sure: 'Se va trimite un email automat altor platforme și proeictul va avea statusul respins. Ok?'
+admin-home-title: Administrare Goteo
+admin-list: Listare
+admin-stats: Statistici
+admin-list-total: 'Total: <strong>%s</strong> rezultate'
+admin-search-global: 'Proiect, canal, apel...'
