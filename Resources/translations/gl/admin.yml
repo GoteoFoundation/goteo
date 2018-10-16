@@ -9,6 +9,7 @@ admin-account-detail: 'Detalles da transacción'
 admin-account-donation: Doazón
 admin-account-invalid-invest: 'Achega [%s] non atopada!'
 admin-account-invest-date: 'Data da achega'
+admin-account-issue-solved: 'Fixéronnos a transferencia'
 admin-account-modify-status: 'Modificar o estado'
 admin-account-modify-status-confirm: "Tes a certeza de trocar manualmente o estado a esta achega? É delicado!\nNON SE REALIZARÁ NINGUNHA operación de retorno da achega.\n"
 admin-account-payment-method: 'Método de pagamento'
@@ -34,9 +35,48 @@ admin-mailing-back-to-list: 'Volver a comunicacións'
 admin-mailing-created: 'Creado o'
 admin-mailing-status: 'Estado do envío automático'
 admin-mailing-subject: Asunto
+admin-mailing-view-message: 'Ver a mensaxe'
+admin-newsletter-langs-to-send: 'Idiomas: %LANGS%'
+admin-newsletter-mind-activate: 'Actívao para que se envíe'
+admin-prev-page: 'Páxina anterior'
+admin-next-page: 'Páxina seguinte'
+admin-no: 'Non'
+admin-percent: Porcentaxe
+admin-project: Proxecto
+admin-main: Principal
+admin-legacy: Antigos
+admin-projects: Proxectos
+admin-consultants: 'Asesores'
 admin-invests: Achegas
+admin-filters: 'Filtros'
+admin-remove-filters: 'Eliminar filtros'
+admin-remove-entry: 'Eliminar entrada'
+admin-remove-entry-confirm: 'Tes a certeza de querer eliminar esta entrada? Esta operación non se pode desfacer!'
+admin-remove-entry-ok: 'Entrada eliminada correctamente'
+admin-services: Servizos
+admin-slug-seo-help: 'Este campo é importante para SEO. Editar só se hai unha boa razón.'
+admin-others: Outros
+admin-channels: Canles
+admin-yes: Si
+admin-project-to-publish: 'Publicar'
+admin-stats: Estatísticas
 admin-view-user-invests: 'Tódalas achegas'
 admin-user-create-invest: 'Crear achega'
+admin-no-project: 'Sen proxecto'
+admin-title-id: Id
+admin-title-name: Nome
+admin-title-about: Info
+admin-title-info: Info
+admin-title-image: Imaxe
+admin-title-title: Título
+admin-title-subtitle: Subtí­tulo
+admin-title-section: Sección
+admin-title-text: Texto
+admin-title-publish: Publicado
+admin-title-langs: Traducións
+admin-title-actions: Accións
+admin-title-tags: Etiquetas
+admin-title-deleted: Eliminado
 admin-aggregate-invests: 'Total de achegas'
 admin-aggregate-invests-average: 'Media de achegas'
 admin-stats-invest-totals: 'Achegas e comisións'
