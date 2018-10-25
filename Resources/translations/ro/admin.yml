@@ -151,6 +151,23 @@ admin-mailing: 'Corespondenţă'
 admin-user-no-mailing: 'Nici un email nu a fost trimis pana acum'
 admin-view-user-mailing: 'Toată corespondența'
 admin-role-change-forbidden: 'Nu puteți gestiona rolul %ROLE% folosind acest cont de utilizator'
+admin-users-global-search: 'Id, nume, email sau proiect'
+admin-blog-global-search: 'Id, titlu, subtitlu sau text'
+admin-blog-stories-search: 'Id, titlu, text sau proiect'
+admin-no-project: 'Nici un proiect'
+admin-title-id: Id
+admin-title-name: Nume
+admin-title-about: Info
+admin-title-active: Activ
+admin-title-location: Localizare
+admin-title-fullname: Nume
+admin-title-email: E-mail
+admin-title-header-image: Imaginea din antet
+admin-title-password: Parolă
+admin-title-avatar: Avatar
+admin-title-roles: Roluri
+admin-title-amount: Investit
+admin-title-info: Info
 admin-stories-type: 'Tip de protagonist'
 admin-all-project-referers: 'Originea vizitelor la secțiunile proiectelor'
 admin-all-invests-referers: 'Originea vizitelor în contribuțiile la proiecte'
