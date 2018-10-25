@@ -276,6 +276,12 @@ body.blog {
       padding-top: 20px;
       padding-bottom:30px;
 
+      .btn-cyan{
+        font-size: $font-size*1.5;
+        margin-top:30px;
+        text-transform:uppercase;
+      }
+
       .bank-transfer-account{
         font-weight: 300;
       }

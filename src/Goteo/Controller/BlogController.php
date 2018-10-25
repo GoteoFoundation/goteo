@@ -37,6 +37,20 @@ class BlogController extends \Goteo\Core\Controller {
 
         $limit = 12;
         $slider_posts = Post::getList(['section' => $section, 'tag' => $tag], true, 0, 3);
+
+        //convert into banners
+        $banners= array_map(function($el) {
+                    return (object)(
+                    [
+                        'image' => $el->header_image,
+                        'title'       => Text::get($el::getSection($el->section)),
+                        'description' => $el->title,
+                        'url'         => '/blog/'.$el->id
+                    ]
+                );
+                
+                }, $slider_posts);
+
         $init = $request->query->get('pag') ? $request->query->get('pag')*$limit : 0;
 
         $list_posts = Post::getList(['section' => $section, 'tag' => $tag], true, $init, $limit);
@@ -46,7 +60,7 @@ class BlogController extends \Goteo\Core\Controller {
 
 
         return $this->viewResponse('blog/list', [
-                    'slider_posts' => $slider_posts,
+                    'banners' => $banners,
                     'list_posts'   => $list_posts,
                     'blog_sections'     => $blog_sections,
                     'section'           => $section,

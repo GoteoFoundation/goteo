@@ -13,7 +13,7 @@ $this->section('blog-content');
 ?>
 
 <?= $this->insert('partials/components/main_slider', [
-            	  'banners' => $this->slider_posts,
+            	  'banners' => $this->banners,
             	  'button_text' => $this->text('regular-read_more')
 ]) ?>
 <?= $this->insert('blog/partials/list_posts') ?>

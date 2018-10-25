@@ -120,7 +120,7 @@ class BannersSubController extends AbstractSubController {
                 if ($banner->image instanceof Model\Image) $banner->image->remove($errors);
                 $banner->image = $_FILES['image'];
             } else {
-                $banner->image = $banner->image->id;
+                // $banner->image = $banner->image->id;
             }
 
 			if ($banner->save($errors)) {
