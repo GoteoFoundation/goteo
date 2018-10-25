@@ -128,7 +128,11 @@ class CategoriesAdminController extends AbstractAdminController {
         if ($form->isSubmitted() && $request->isMethod('post')) {
             // Check if we want to remove an entry
             if ($form->has('remove') && $form->get('remove')->isClicked()) {
-                $instance->dbDelete(); //Throws and exception if fails
+                try {
+                    $instance->dbDelete(); //Throws and exception if fails
+                } catch(\PDOException $e) {
+                    Message::error($e->getMessage());
+                }
                 Message::info(Text::get('admin-remove-entry-ok'));
                 return $this->redirect("/admin/categories/{$tab}");
             }

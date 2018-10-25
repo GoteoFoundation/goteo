@@ -15,8 +15,9 @@ $(function(){
             .done(function(result){
                 $("#modal-content").html(result);
             })
-            .fail(function(){
-                $("#modal-content").append('<p class="text-tanger">ERROR!</p>');
+            .fail(function(err){
+                // console.log(err)
+                $("#modal-content").append('<p class="text-tanger">' + (err && err.statusText) + '</p>');
             })
             .always(function(){
                 $('#myModal form').removeClass('loading-container');
