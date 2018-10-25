@@ -168,6 +168,19 @@ admin-title-avatar: Avatar
 admin-title-roles: Roluri
 admin-title-amount: Investit
 admin-title-info: Info
+admin-title-image: Imagine
+admin-title-title: Titlu
+admin-title-subtitle: Subtitlu
+admin-title-section: Secţiune
+admin-title-text: Text
+admin-title-slug: Slug
+admin-title-publish: Publicat
+admin-title-langs: Traduceri
+admin-title-actions: Acţiuni
+admin-title-tags: Tag-uri
+admin-title-deleted: Eliminat
+admin-title-sphere: Domeniu
+admin-title-order: Sortează
 admin-stories-type: 'Tip de protagonist'
 admin-all-project-referers: 'Originea vizitelor la secțiunile proiectelor'
 admin-all-invests-referers: 'Originea vizitelor în contribuțiile la proiecte'
