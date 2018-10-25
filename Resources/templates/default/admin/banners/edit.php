@@ -16,7 +16,7 @@ if ($this->is_master_node($node)) {
     }
     $status = \Goteo\Model\Project::status();
 
-    $image_size_txt = '700 x 156 (estricto)';
+    $image_size_txt = '1920 x 600';
 } else {
     $image_size_txt = '940 x 270 (estricto)';
 }
@@ -60,18 +60,18 @@ if ($this->is_master_node($node)) {
     <div id="text-banner"<?php if (!empty($banner->project)) echo ' style="display: none;"' ?>>
         <p>
             <label for="banner-name">T&iacute;tulo:</label><br/>
-            <input type="text" name="title" id="banner-title" value="<?= $banner->title ?>" size="50"/>
+            <input required type="text" name="title" id="banner-title" value="<?= $banner->title ?>" size="50"/>
         </p>
 
         <p>
             <label for="banner-description">Descripci&oacute;n:</label><br/>
-            <input type="text" name="description" id="banner-description" value="<?= $banner->description ?>"
+            <input required type="text" name="description" id="banner-description" value="<?= $banner->description ?>"
                    size="85"/>
         </p>
 
         <p>
             <label for="banner-url">Enlace:</label><br/>
-            <input type="text" name="url" id="banner-url" value="<?= $banner->url ?>" size="85"/>
+            <input required type="text" name="url" id="banner-url" value="<?= $banner->url ?>" size="85"/>
         </p>
     </div>
 

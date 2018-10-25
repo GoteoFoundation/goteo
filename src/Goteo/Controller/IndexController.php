@@ -42,7 +42,6 @@ class IndexController extends DiscoverController
 
         $channels = Node::getAll(['status' => 'active', 'type' => 'channel']);
 
-        // Banners siempre
         $banners = Banner::getAll(true);
 
         $stats = Stats::create('home_stats');
