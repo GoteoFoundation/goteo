@@ -181,6 +181,10 @@ admin-title-tags: Tag-uri
 admin-title-deleted: Eliminat
 admin-title-sphere: Domeniu
 admin-title-order: Sortează
+admin-blog-not-published-yet: 'Noul articol din blog incă nu este public'
+admin-blog-initialized: 'S-a inițializat spațiul pentru blog'
+admin-blog-deactivated: 'Din păcate, administrarea blog-ului este dezactivată'
+admin-blog-edit-success: 'Postarea în blog a fost editată cu succes'
 admin-stories-type: 'Tip de protagonist'
 admin-all-project-referers: 'Originea vizitelor la secțiunile proiectelor'
 admin-all-invests-referers: 'Originea vizitelor în contribuțiile la proiecte'
