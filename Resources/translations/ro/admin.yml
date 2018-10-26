@@ -204,3 +204,6 @@ admin-active: Incasări
 admin-refunded: Returnat
 admin-refunded-to_users: Returnați la utilizatori
 admin-refunded-to_users-invests: Nº de returnări către utilizatori
+admin-refunded-to_wallet: Întors in cont portofel
+admin-commissions: Comision
+admin-fees: Comision platformă
