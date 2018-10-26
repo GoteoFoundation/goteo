@@ -202,3 +202,5 @@ admin-losts: Pierderi
 admin-raised: Venituri
 admin-active: Incasări
 admin-refunded: Returnat
+admin-refunded-to_users: Returnați la utilizatori
+admin-refunded-to_users-invests: Nº de returnări către utilizatori
