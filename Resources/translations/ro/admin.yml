@@ -190,8 +190,15 @@ admin-stories-edit-success: 'Istoricul utilizatorului a fost editat cu succes'
 admin-stories-pool: 'Afișază portofelul final'
 admin-stories-review: 'Evaluare Goteo: (Subtitrare)'
 admin-stories-active: 'Activ in home'
-admin-stories-landing_pitch: 'Afișază portofelul final'
+admin-stories-landing_pitch: 'Afișază in landing Pitch'
+admin-stories-landing_match: 'Afișază in landing Match'
 admin-stories-type: 'Tip de protagonist'
 admin-all-project-referers: 'Originea vizitelor la secțiunile proiectelor'
 admin-all-invests-referers: 'Originea vizitelor în contribuțiile la proiecte'
 admin-all-call-referers: 'Originea vizitelor pe paginile de solicitări'
+admin-stats-invest-active-parts: 'Destinația venitului net'
+admin-stats-invest-in_wallet-parts: 'Defalcare cont portofel'
+admin-losts: Pierderi
+admin-raised: Venituri
+admin-active: Incasări
+admin-refunded: Returnat
