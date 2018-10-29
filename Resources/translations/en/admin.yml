@@ -17,8 +17,19 @@ admin-account-invest-date: 'Date of Contribution'
 admin-account-invest-non-pool-refundable: 'This contribution can not be reimbursed to the virtual wallet. You can only reimburse contributions in the "Charged" status'
 admin-account-invest-non-user-refundable: "This contribution can not be reimbursed. Contributions can be reimbursed in the states: \"Pending\", \"Charged\" and \"To wallet\" if there is enough money in the wallet to deduct\n"
 admin-account-invest-to-pool-ko: 'Failure returning the contribution to the wallet'
+admin-account-invest-to-pool-ok: 'Contributions reimbursed to the wallet. Value of the wallet increased by (%s)'
+admin-account-invest-user-refund-fail-pool-amount: 'This contributions can not be returned because the user does not have enough money in the wallet (%s)'
+admin-account-invest-user-refund-ko: 'Contribution could not be returned: [%s]'
+admin-account-invest-user-refund-ok: 'Contribution reimbursed correctly'
+admin-account-invest-user-refund-ok-pool: 'Contribution reimbursed correctly. The wallet has been reduced by %s'
+admin-account-issue-solved: 'Transfer has been made'
 admin-account-modify-status: 'Modify status'
+admin-account-modify-status-confirm: "Are you sure you wish to change manually the state of this contribution? This is fragile! THERE WILL BE MADE NO refund operation of the contribution.\n"
 admin-account-payment-method: 'Payment method'
+admin-account-pool-on-fail: 'Pool (return to the wallet if it fails)'
+admin-account-refund-to-pool: 'Reimburse the contribution to the wallet'
+admin-account-refund-to-pool-confirm: "This will brand the contribution as:\nReturned if the project fails\nCanceled if the project is active or if it is succesful\nIt will not be reimbursed to the user, money will be generated in the user's wallet.\nContinue?\n"
+admin-account-refund-to-user: 'Reimburse the contribution to the user'
 admin-account-switch-donation: 'Switch donation'
 admin-address: Address
 admin-all: All
