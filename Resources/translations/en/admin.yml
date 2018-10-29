@@ -30,7 +30,14 @@ admin-account-pool-on-fail: 'Pool (return to the wallet if it fails)'
 admin-account-refund-to-pool: 'Reimburse the contribution to the wallet'
 admin-account-refund-to-pool-confirm: "This will brand the contribution as:\nReturned if the project fails\nCanceled if the project is active or if it is succesful\nIt will not be reimbursed to the user, money will be generated in the user's wallet.\nContinue?\n"
 admin-account-refund-to-user: 'Reimburse the contribution to the user'
+admin-account-refund-to-user-confirm: "This will brand the contribution as:\nReturned if the project fails\nCanceled if the project is active or if it is succesful\nMoney will be reimbursed to the user.\nThis WILL NOT function if the contribution is too old or if the payment method is not supported.\nContinue?\n"
+admin-account-rewards: 'Chosen rewards'
 admin-account-switch-donation: 'Switch donation'
+admin-account-switch-donation-confirm: 'Are you sure you want to change the status of the donation?'
+admin-account-switch-pool: 'Commute the pool'
+admin-account-switch-pool-confirm: "This only applies when the project fails, it will not generate or take away money from the wallet.\nContinue?"
+admin-account-switch-pool-fail: 'The status of this contribution pool can not be changed'
+admin-account-transaction: 'Tracking codes'
 admin-address: Address
 admin-all: All
 admin-global: Global
@@ -40,7 +47,9 @@ admin-back-list: 'Back to list'
 admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
 admin-activity: Activity
+admin-communications: Communications
 admin-home: Dashboard
+admin-items: entries
 admin-mailing-created: 'Created on'
 admin-mailing-new-massive: 'A new mass mailing was created to %TOTAL% users'
 admin-mailing-status: 'Automatic delivery status'
@@ -107,16 +116,28 @@ admin-user-active: 'Account active'
 admin-user-warning: 'Warning: These operations are executed without any notice to the user'
 admin-user-wallet-amount: 'Wallet credit'
 admin-user-create-invest: 'Create contribution'
+admin-mailing: 'Correo'
 admin-user-no-mailing: 'No emails have been sent yet'
 admin-view-user-mailing: 'All mailing'
 admin-role-change-forbidden: 'You don''t have permission to manage the role %ROLE% as this user'
 admin-users-global-search: 'Id, name, email or project'
+admin-no-project: 'No project'
+admin-title-id: Id
 admin-title-name: Name
 admin-title-about: About
+admin-title-active: Active
 admin-title-location: Location
 admin-title-fullname: Name
+admin-title-email: Correo
 admin-title-password: Password
+admin-title-avatar: Avatar
+admin-title-roles: Roles
 admin-title-amount: Invested
+admin-title-info: Info
+admin-title-image: Image
+admin-title-title: Title
+admin-title-subtitle: Subtitle
+admin-title-section: Section
 admin-all-project-referers: 'Origin of visits to project pages'
 admin-all-invests-referers: 'Origin of visits in successful contributions to projects'
 admin-all-call-referers: 'Origin of visits to matchfunding pages'
