@@ -15,6 +15,8 @@ admin-account-edit-reward: 'Manage return/address'
 admin-account-invalid-invest: 'Contribution [%s] not found!'
 admin-account-invest-date: 'Date of Contribution'
 admin-account-invest-non-pool-refundable: 'This contribution can not be reimbursed to the virtual wallet. You can only reimburse contributions in the "Charged" status'
+admin-account-invest-non-user-refundable: "This contribution can not be reimbursed. Contributions can be reimbursed in the states: \"Pending\", \"Charged\" and \"To wallet\" if there is enough money in the wallet to deduct\n"
+admin-account-invest-to-pool-ko: 'Failure returning the contribution to the wallet'
 admin-account-modify-status: 'Modify status'
 admin-account-payment-method: 'Payment method'
 admin-account-switch-donation: 'Switch donation'
