@@ -138,6 +138,7 @@ admin-title-image: Image
 admin-title-title: Title
 admin-title-subtitle: Subtitle
 admin-title-section: Section
+admin-title-text: Text
 admin-all-project-referers: 'Origin of visits to project pages'
 admin-all-invests-referers: 'Origin of visits in successful contributions to projects'
 admin-all-call-referers: 'Origin of visits to matchfunding pages'
