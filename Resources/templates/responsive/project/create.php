@@ -80,8 +80,11 @@ $terms=$this->terms;
                                 </span>
                             </label>
                         </div>
+                        <?php $count=0; ?>
                         <?php foreach($this->social_commitments as $key => $social): ?>
-                        <div class="col-xs-6 col-sm-4 social-commitment-option text-left-important<?= $key%3==0 ? ' clear-both-md clear-both-sm' : '' ?><?= $key%2==0 ? ' clear-both-xs' : '' ?>">
+                        <?php $count++; ?>
+
+                        <div class="col-xs-6 col-sm-4 social-commitment-option text-left-important<?= $count%3==0 ? ' clear-both-md clear-both-sm' : '' ?><?= $count%2==0 ? ' clear-both-xs' : '' ?>">
                             <label class="category" for="<?= $key ?>-social">
                                 <input class="social-category" name="social" id="<?= $key ?>-social" value="<?= $social->id ?>" type="radio" required>
                                 <img class="img-responsive img-method align-center-margin" alt="<?= $social->name ?>" title="<?= $social->description ?>" src="<?= $social->image->getLink(60, 60, false) ?>">
