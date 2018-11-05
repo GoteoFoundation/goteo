@@ -104,7 +104,7 @@ class SessionListener extends AbstractListener {
 
         $url = $request->getHttpHost();
         // Redirect to proper URL if url_lang is defined
-        if (Config::get('url.url_lang')) {
+        if (Config::get('url.url_lang') && $request->getPathInfo() !== '/password-recovery') {
             $parts = explode('.', $url);
             $sub_lang = $parts[0];
             if($sub_lang == 'www') $sub_lang = Config::get('lang');
@@ -119,7 +119,7 @@ class SessionListener extends AbstractListener {
                     $request->query->remove('lang');
                 }
                 // Login controller should mantaing always the same URL to help browser
-                if(in_array($request->getPathInfo(), ['/login', '/password-recovery', '/password-reset', '/signup'])) {
+                if(in_array($request->getPathInfo(), ['/login', '/password-reset', '/signup'])) {
                     // $url = "$url";
                     $request->query->set('lang', $lang);
                 }
