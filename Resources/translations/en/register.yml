@@ -1,7 +1,7 @@
 ---
 error-register-email: 'The email field is required.'
 error-register-email-confirm: 'The emails don''t match.'
-error-register-invalid-password: 'That password is not valid.'
+error-register-invalid-password: 'That password is not valid. Please make sure you use at least 6 characters.'
 error-register-password-confirm: 'The passwords don''t match.'
 error-register-pasword: 'You can''t leave the password field empty.'
 error-register-short-password: 'The password should have at least 8 characters.'
