@@ -65,3 +65,6 @@ admin-remove-filters: 'Eliminare filtri'
 admin-sponsors: Servizi
 admin-status: Stato
 admin-text-type: 'Elaborare il testo come'
+admin-category-add: Crea una nuova categoria
+admin-category-edit: 'Modifica Categoria: %s'
+admin-title-social_commitment: Impegno sociale
