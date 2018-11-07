@@ -1,6 +1,7 @@
 ---
 error-register-email: 'Posta helbidea derrigorrekoa da'
 error-register-email-confirm: 'Email egiaztapena ez dator bat'
+error-register-invalid-password: 'Pasahitza ez du balio'
 error-register-password-confirm: 'Pasahitz egiaztapena ez dator bat'
 error-register-pasword: 'Pasahitza ezin da utzik egon'
 error-register-short-password: 'Pasahitza 6 karakter gutxienez izan behar du'
