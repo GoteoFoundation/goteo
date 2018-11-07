@@ -1,6 +1,7 @@
 ---
 error-register-email: 'L''adresse mail est obligatoire'
 error-register-email-confirm: 'La confirmation de l''adresse mail ne coincide pas'
+error-register-invalid-password: 'Le mot de passe n''est pas valide'
 error-register-password-confirm: 'La confirmation du mot de passe ne coincide pas'
 error-register-pasword: 'Le champ "mot de passe" ne peut être vide'
 error-register-short-password: 'Le mot de passe doit contenir un minimum de 8 caractères'
