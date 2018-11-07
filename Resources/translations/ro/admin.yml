@@ -101,7 +101,6 @@ admin-blog: Blog general
 admin-blog-add: Creați o postare nouă
 admin-blog-edit: Editarea postului %s
 admin-blog-slug-exists: 'Identificatorul [%s] este utilizat într-un alt post!'
-admin-blog-slug-chars: 'Identificatorul [%s] conține caractere interzise!'
 admin-blog-not-public: 'Această postare nu este încă publică'
 admin-stories: Istoricul utilizatorilor din Goteo
 admin-stories-add: Creați o istorie nouă
