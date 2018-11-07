@@ -23,6 +23,7 @@ translator-field-share_facebook: 'Text compartir facebook'
 translator-field-share_twitter: 'Text compartir twitter'
 translator-field-text: Text
 translator-field-title: Títol
+translator-field-subtitle: Subtítol
 translator-field-twitter_msg: 'Missatge de twitter'
 translator-glossary: 'Glossari de termes'
 translator-icon: 'Tipus de retorn/recompensa'
@@ -40,7 +41,7 @@ translator-opentag: Agrupacions
 translator-original-text: 'Text original'
 translator-page: Pàgines
 translator-patron: 'Projectes apadrinats'
-translator-pending: 'Pendient de traducció'
+translator-pending: 'Pendent de traducció'
 translator-pending-desc: 'Aquest contingut està "pendent", cosa que significa que <strong>NO ES PÚBLIC</strong> i queda coma esborrany fins que es tregui l''opció "pendent de traducció"'
 translator-promote: 'Projectes destacats'
 translator-save: 'Desa i publica'
@@ -50,6 +51,8 @@ translator-saved-ko: 'Error al desar la traducció al %LANG% (%ERROR%)'
 translator-saved-ok: 'Traduccions desades correctament per als idiomes [%s]'
 translator-skipped-fields: "Alguns camps no s''han copiat perquè ja contenien text.\nEsborra el text original para poder copiar des de un altre idioma."
 translator-sphere: 'Àmbits de la convocatòria'
+translator-social_commitment: 'Compromisos socials'
+translator-footprint: 'Petjades'
 translator-stories: 'Histories exitoses'
 translator-tables: 'Taules generals'
 translator-template: 'Plantilles emails automàtics'
