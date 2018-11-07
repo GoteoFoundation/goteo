@@ -52,13 +52,13 @@ admin-activity: Activitate
 admin-communications: Comunicatii
 admin-home: Pagina principală
 admin-items: bilete
-admin-mailing-back-to-list: 'Reveniți la comunicații'
+admin-mailing-back-to-list: 'Înapoi la comunicare'
 admin-mailing-communicating-with: 'Doream să comunicăm cu %DESC%'
 admin-mailing-created: 'Creat la data de'
 admin-mailing-new-massive: 'Un nou newsletter a fost trimis în masă %TOTAL% utilizatorilor'
 admin-mailing-status: 'Status automatic la livrare'
 admin-mailing-subject: Subiect
-admin-mailing-view-and-activate: 'Consultați administratorul buletinului informativ pentru a activa expedierea'
+admin-mailing-view-and-activate: 'A se vedea newsletter-ul de la Admin pentru a activa livrarea'
 admin-mailing-view-in-newsletter: 'A se vedea newsletter-ul de la Admin'
 admin-mailing-view-in-sent: 'A se vedea evidența livrărilor (date statistice)'
 admin-mailing-view-message: 'A se vedea mesajul'
