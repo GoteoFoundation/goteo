@@ -1,7 +1,6 @@
 ---
 error-register-email: 'Het email veld moet ingevuld worden.'
 error-register-email-confirm: 'De emailadressen komen niet overeen.'
-error-register-invalid-password: 'Dat wachtwoord is niet geldig.'
 error-register-password-confirm: 'De wachtwoorden komen niet overeen.'
 error-register-pasword: 'Je kunt het wachtwoordveld niet leeg laten.'
 error-register-short-password: 'Het wachtwoord moet minstens 6 characters hebben.'
