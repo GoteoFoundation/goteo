@@ -47,16 +47,22 @@ admin-back-list: 'Back to list'
 admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
 admin-activity: Activity
-admin-communications: Communications
+admin-communications: Comunications
 admin-home: Dashboard
 admin-items: entries
+admin-mailing-back-to-list: 'Back to messages'
 admin-mailing-created: 'Created on'
 admin-mailing-new-massive: 'A new mass mailing was created to %TOTAL% users'
 admin-mailing-status: 'Automatic delivery status'
 admin-mailing-subject: Subject
+admin-mailing-view-and-activate: 'See the post admin to start sending'
 admin-mailing-view-in-newsletter: 'See the post admin'
 admin-mailing-view-message: 'View message'
+admin-newsletter-generated: 'Newsletter [%ID%] generated'
 admin-newsletter-langs-to-send: 'Languages: %LANGS%'
+admin-newsletter-mind-activate: 'Activate it to send it'
+admin-prev-page: 'Previous page'
+admin-next-page: 'Next page'
 admin-no: 'No'
 admin-percent: Percent
 admin-project: Project
@@ -67,18 +73,47 @@ admin-consultants: 'Consultants'
 admin-invests: Contributions
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
+admin-remove-entry: 'Remove entry'
+admin-remove-entry-confirm: 'Are you sure to remove this entry? This action cannot be undone!'
+admin-remove-entry-forbidden: 'Published entries cannot be removed. Unpublish it first.'
+admin-remove-entry-ok: 'Entry removed successfully'
+admin-add-entry-ok: 'New entry created successfully'
+admin-edit-entry-ok: 'Entry edited successfully'
 admin-services: Services
 admin-sponsors: Contributors
+admin-slug-seo-help: 'This field is important for SEO. Edit it only for a good reason.'
 admin-others: Others
 admin-summary: Sumary
 admin-origins: Visits analytics
 admin-status: Status
-admin-text-type: 'Process the text as'
+admin-text-type: 'Process text as'
 admin-text-type-html: HTML
 admin-text-type-md: Markdown
-admin-text-type-plain: 'Plaintext'
+admin-text-type-plain: 'Simple text'
 admin-user: User
 admin-users: Users
+admin-users-add: Create new user
+admin-blog: General blog
+admin-blog-add: Create new post
+admin-blog-edit: Editing post %s
+admin-blog-slug-exists: 'The slug [%s] is being used by another post!'
+admin-blog-slug-chars: 'The slug [%s] contains invalid characters!'
+admin-blog-not-public: 'This post is not public yet!'
+admin-stories: User histories in Goteo
+admin-stories-add: Create new user history
+admin-stories-edit: Editing user history %s
+admin-categories: 'Categories and scopes'
+admin-categories-if-empty-then-asset: 'If empty the default icon will be used: %s'
+admin-category-add: Create a new category
+admin-category-edit: Editing category %s
+admin-socialcommitment-add: Create a new social commitment
+admin-socialcommitment-edit: Editing social commitment %s
+admin-sphere-add: Create a new scope
+admin-sphere-edit: Editing scope %s
+admin-sdg-add: Create a new ODS
+admin-sdg-edit: Editing ODS %s
+admin-footprint-add: Create a new footprint
+admin-footprint-edit: Editing footprint %s
 admin-channels: Channels
 admin-yes: "Yes"
 admin-impersonate: Impersonate
@@ -88,7 +123,7 @@ admin-project-express-discard-desc: 'Change the project status to Discard and se
 admin-project-express-discard-sure: 'The project will be discarded and the owner will receive an email, ok?'
 admin-project-to-review: 'To review'
 admin-project-to-review-desc: 'Change the project status to Review pending'
-admin-project-to-review-sure: 'The owner won''t be able to edit the project anymore, ok?'
+admin-project-to-review-sure: 'The owner won''t be able to edit the project any more, ok?'
 admin-project-view-in-admin: 'View in admin'
 admin-project-to-negotiation: 'To negotiation'
 admin-project-to-negotiation-desc: 'Change the project status to Editing'
@@ -102,6 +137,8 @@ admin-project-derivation-discard-sure: 'The project will be discarded and the ow
 admin-home-title: Administrate Goteo
 admin-list: List
 admin-stats: Stats
+admin-list-total: 'Total: <strong>%s</strong> results'
+admin-search-global: 'Project, channel, call...'
 admin-already-impersonating: 'You are already impersonating a user. Please close the session first!'
 admin-rebase-user: 'Change user ID'
 admin-edit-name: 'Change name'
@@ -121,6 +158,7 @@ admin-user-no-mailing: 'No emails have been sent yet'
 admin-view-user-mailing: 'All mailing'
 admin-role-change-forbidden: 'You don''t have permission to manage the role %ROLE% as this user'
 admin-users-global-search: 'Id, name, email or project'
+admin-blog-global-search: 'Id, title, subtitle or text'
 admin-no-project: 'No project'
 admin-title-id: Id
 admin-title-name: Name
@@ -129,16 +167,41 @@ admin-title-active: Active
 admin-title-location: Location
 admin-title-fullname: Name
 admin-title-email: Correo
+admin-title-header-image: Header image
 admin-title-password: Password
 admin-title-avatar: Avatar
 admin-title-roles: Roles
 admin-title-amount: Invested
+admin-title-icon: Icon
 admin-title-info: Info
 admin-title-image: Image
 admin-title-title: Title
 admin-title-subtitle: Subtitle
 admin-title-section: Section
 admin-title-text: Text
+admin-title-publish: Published
+admin-title-langs: Translations
+admin-title-actions: Actions
+admin-title-deleted: Deleted
+admin-title-sphere: Scope
+admin-title-social_commitment: Social commitment
+admin-title-sdgs: 'Sustainability Development Goals'
+admin-title-footprints: 'Footprints'
+admin-title-categories: 'Categories'
+admin-title-social_commitments: 'Social commitments'
+admin-title-order: Sort
+admin-blog-not-published-yet: 'This post is not public yet!'
+admin-blog-initialized: 'The blog space has been successfully initialized'
+admin-blog-deactivated: 'Sorry, blog feature has been disabled'
+admin-blog-edit-success: 'Blog post edited successfully'
+admin-stories-not-active-yet: 'This user history is not active yet!'
+admin-stories-edit-success: 'User history edited successfully'
+admin-stories-pool: 'Show in wallet''s landing'
+admin-stories-review: 'Goteo''s review: (Subtitle)'
+admin-stories-active: 'Active in the home page'
+admin-stories-landing_pitch: 'Show in the landing Pitch'
+admin-stories-landing_match: 'Show in the landing Match'
+admin-stories-type: 'Protagonist type'
 admin-all-project-referers: 'Origin of visits to project pages'
 admin-all-invests-referers: 'Origin of visits in successful contributions to projects'
 admin-all-call-referers: 'Origin of visits to matchfunding pages'
