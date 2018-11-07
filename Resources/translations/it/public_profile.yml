@@ -1,12 +1,18 @@
 ---
 profile-interests-header: 'Mi interessano progetti con finalità'
+profile-invest_on-header: 'Progetti che sostengo'
 profile-invest_on-title: Co-finanzia
+profile-keywords-header: 'Le mie parole chiave'
 profile-last_worth-title: Data
 profile-location-header: 'La mia ubicazione'
 profile-my_investors-header: 'I miei co-finzanziatori'
+profile-my_projects-header: 'I miei progetti'
+profile-my_worth-header: 'Il mio contributo su Goteo'
 profile-name-header: 'Profilo di '
 profile-patron-header: 'Suggerisce  <span class="red">%s progetti</span>'
 profile-sharing_interests-header: 'Interessi in comune'
+profile-social-header: Sociale
+profile-webs-header: 'Le mie pagine web'
 profile-widget-button: 'Vedere profilo'
 profile-widget-user-header: Utente
 profile-worth-title: 'Dona qui:'
