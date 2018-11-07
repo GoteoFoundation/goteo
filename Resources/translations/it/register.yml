@@ -1,7 +1,6 @@
 ---
 error-register-email: 'La mail non è obbligatoria'
 error-register-email-confirm: 'La verifica della mail non coincide '
-error-register-invalid-password: 'La password non é valida. Inserisci almeno 6 caratteri'
 error-register-password-confirm: 'La verifica della password non coincide '
 error-register-pasword: 'La password non si può lasciare incompleta'
 error-register-short-password: 'La password deve contenere un minino di 6 caratteri'
