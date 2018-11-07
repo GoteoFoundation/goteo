@@ -1,16 +1,25 @@
 ---
 profile-interests-header: 'I am interested in projects that are...'
+profile-invest_on-header: 'Projects that I support'
 profile-invest_on-title: Co-finances
+profile-keywords-header: 'My key words'
 profile-last_worth-title: Date
 profile-location-header: 'My location'
 profile-my_investors-header: 'My co-financiers'
+profile-my_projects-header: 'My projects'
+profile-my_worth-header: 'My flow on Goteo'
 profile-name-header: 'Profile of'
 profile-patron-header: 'Recomends <span class="red">%s projects</span>'
 profile-sharing_interests-header: 'Sharing interests'
+profile-webs-header: 'My websites'
 profile-widget-button: 'Show profile'
 profile-widget-user-header: User
 profile-worth-title: 'Contributed here:'
 profile-worthcracy-title: Position
 profile_patron-invest_on-header: 'I also co-finance'
+profile-stats-title: 'Goteo activity'
+profile-stats-projects: 'Campaigns'
+profile-stats-invests: 'Donations'
+profile-stats-collaborations: 'Collaborations'
 user-message-restricted: 'It can only receive messages from its co-financiers'
 user-message-send_personal-header: 'Send a message to the user'
