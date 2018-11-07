@@ -72,10 +72,15 @@ regular-allsome: 'tots/alguns de'
 regular-anonymous: Anònim
 regular-ask: Preguntar
 regular-submit: Envia
+regular-slug: Identificador únic
 regular-by: 'Per:'
 regular-calendar: Calendari
 regular-cancel: Cancel·lar
 regular-cancel-back: 'Cancel·lar i torna enrere'
+regular-categories: 'Categories'
+regular-social_commitments: 'Compromisos socials'
+regular-spheres: 'Àmbits'
+regular-footprints: 'Petjades'
 regular-back: 'Torna enrere'
 regular-collaborate: Col·labora 
 regular-content: Contingut
