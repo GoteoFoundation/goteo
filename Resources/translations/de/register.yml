@@ -1,6 +1,7 @@
 ---
 error-register-email: 'Es wird eine Email-Adresse benötigt.'
 error-register-email-confirm: 'Die Email-Adressen stimmen nicht überein.'
+error-register-invalid-password: 'Dieses Passwort ist ungültig.'
 error-register-password-confirm: 'Die Passwörter stimmen nicht überein.'
 error-register-pasword: 'Sie müssen ein Passwort eingeben.'
 error-register-short-password: 'Dass Passwort sollte mindestens 8 Zeichen haben.'
