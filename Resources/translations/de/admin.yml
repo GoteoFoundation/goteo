@@ -50,11 +50,13 @@ admin-empty-list: 'Es wurden keine registrierten Einträge gefunden'
 admin-activity: Aktivität
 admin-home: Startseite
 admin-items: Eingänge
+admin-mailing-back-to-list: 'Zurück zu Kommunikation'
 admin-mailing-communicating-with: 'Wir versuchten mit %DESC% zu kommunizieren'
 admin-mailing-created: 'Erstellt am'
 admin-mailing-new-massive: 'Es wurde ein Email-Massenversand an %TOTAL% Benutzer erstellt.'
 admin-mailing-status: 'Lieferstatus des automatischen Versand'
 admin-mailing-subject: Betreff
+admin-mailing-view-and-activate: 'Schauen Sie für die Aktivierung des Versandes in den Admin-Bericht/Bulletin!'
 admin-mailing-view-in-newsletter: 'Schauen Sie in den Admin-Bericht/Bulletin!'
 admin-mailing-view-in-sent: 'Schauen Sie in die email Versandhistorie (Statistiken)!'
 admin-mailing-view-message: 'Schauen sie in diese Nachricht!'
