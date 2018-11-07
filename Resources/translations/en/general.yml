@@ -69,19 +69,27 @@ project-messages-send_message_support-your_answer: 'Write here your collaboratio
 regular-add: New Record
 regular-all: All
 regular-admin_board: 'Admin panel'
+regular-author: 'Author'
 regular-allsome: 'all/some of'
 regular-anonymous: Anonymous
 regular-ask: Ask
 regular-submit: Send
+regular-slug: Slug
 regular-by: 'By:'
 regular-calendar: Calendar
 regular-cancel: Cancel
 regular-cancel-back: 'Cancel & Go back'
+regular-categories: 'Categories'
+regular-social_commitments: 'Social commitment'
+regular-spheres: 'Scopes'
+regular-sdgs: 'SDG'
+regular-footprints: 'Footprints'
 regular-back: 'Go back'
 regular-channel: Channel
 regular-collaborate: Collaborate
 regular-content: Content
 regular-continue-question: 'Continue?'
+regular-continue: 'Continue'
 regular-create: 'Create a project'
 regular-date: Date
 regular-date_in: Entry Date
