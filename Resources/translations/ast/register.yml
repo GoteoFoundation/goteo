@@ -1,6 +1,7 @@
 ---
 error-register-email: 'La direición de corréu ye obligatoria'
 error-register-email-confirm: 'La comprobación del corréu nun concasa'
+error-register-invalid-password: 'La contraseña nun ye válida'
 error-register-password-confirm: 'La comprobación de la contraseña nun coincida'
 error-register-pasword: 'La contraseña nun pue tar balera'
 error-register-short-password: 'La contraseña ha contener un mínimu de 8 caráuteres'
