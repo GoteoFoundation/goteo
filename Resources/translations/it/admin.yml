@@ -62,9 +62,16 @@ admin-project: Progetto
 admin-projects: Progetti
 admin-filters: 'Filtri'
 admin-remove-filters: 'Eliminare filtri'
+admin-add-entry-ok: 'Nuova voce creata correttamente'
+admin-edit-entry-ok: 'Voce modificata correttamente'
 admin-sponsors: Servizi
 admin-status: Stato
 admin-text-type: 'Elaborare il testo come'
+admin-blog-slug-chars: 'Il campo [%s] contiene caratteri non validi!'
+admin-categories: 'Categorie e aree'
 admin-category-add: Crea una nuova categoria
 admin-category-edit: 'Modifica Categoria: %s'
+admin-socialcommitment-edit: Modificando l'impegno sociale %s
+admin-title-icon: Icona
 admin-title-social_commitment: Impegno sociale
+admin-title-categories: 'Categorie'
