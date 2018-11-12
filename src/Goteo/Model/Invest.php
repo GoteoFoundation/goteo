@@ -82,7 +82,8 @@ class Invest extends \Goteo\Core\Model {
         $campaign = false, // si es un aporte de capital riego
         $call = null, // aportes que tienen capital riego asociado
         $matcher = null, // invests with matcher funding associated
-        $pool = false; // aportes a reservar si el proyecto falla
+        $pool = false, // aportes a reservar si el proyecto falla
+        $donate_amount; // Donated to the platform
 
     // añadir los datos del cargo
 
@@ -891,7 +892,8 @@ class Invest extends \Goteo\Core\Model {
             'call',
             'matcher',
             'drops',
-            'pool'
+            'pool',
+            'donate_amount'
             );
 
         try {

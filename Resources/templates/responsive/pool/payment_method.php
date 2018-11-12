@@ -17,7 +17,7 @@ $this->section('dashboard-content-pool');
 
     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-    <form class="form-horizontal" role="form" method="GET" action="/pool/form">
+    <form class="form-horizontal" role="form" method="GET" action="<?= '/'.$this->type.'/form'?>">
     <input type="hidden" name="amount" value="<?= $this->amount_original . $this->currency ?>">
 
 	<div class="row no-padding">

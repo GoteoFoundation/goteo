@@ -11,7 +11,11 @@ $this->section('dashboard-content-pool');
     	<p><?= $this->text('dashboard-my-wallet-pool-info') ?> <a data-toggle="modal" data-target="#poolModal" href=""><?= $this->text('regular-here') ?></a></p>
     </div>
 
-    <?= $this->insert('pool/partials/amount_box') ?>
+    <?= $this->insert('pool/partials/amount_box', [
+      'description' => $this->text('pool-recharge-amount-text'),
+      'button_text'  => $this->type=='pool' ? $this->text('recharge-button') : $this->text('landing-donor-button'),
+      'form_action' => '/pool/payment'
+    ]) ?>
 
 </div>
 

@@ -40,6 +40,7 @@ class DonateController extends PoolController {
 
     private $page = '/donate';
     private $query = '';
+    private $type='donate';
 
     public function __construct() {
         // changing to a responsive theme here
@@ -50,9 +51,29 @@ class DonateController extends PoolController {
         DashboardController::createSidebar('donate', 'recharge');
     }
 
+    public function donateLandingAction(Request $request)
+    {
+
+        return $this->viewResponse('donate/donate', 
+                [
+                    'no_donor_button' => 1
+                ]
+        );
+
+    }
+
     public function selectAmountDonateAction($landing='yes', Request $request)
     {
-        $this->selectAmountAction($landing, $request);
+        return $this->selectAmountAction($landing, $this->type, $request);
+
+    }
+
+    public function selectPaymentMethodDonateAction(Request $request){
+        return $this->selectPaymentMethodAction($this->type, $request);
+    }
+
+    public function paymentFormDonateAction(Request $request){
+        return $this->paymentFormAction($this->type, $request);
     }
 
    
