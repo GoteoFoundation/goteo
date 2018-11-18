@@ -93,6 +93,27 @@ admin-stats: Statistiche
 admin-list-total: 'Totale: <strong>%s</strong> risultati'
 admin-search-global: 'Progetto, canale, convocazione...'
 admin-rebase-user: 'Cambiare ID utente'
+admin-edit-name: 'Cambiare il nome'
+admin-edit-roles: 'Modifica ruoli utente'
+admin-send-email: 'Inviare Email'
+admin-view-user-projects: 'Tutti i progetti'
+admin-user-hidden: 'Privato (nascosto)'
+admin-user-active: 'Account attivo'
+admin-user-wallet-amount: 'Credito nel portafogli'
+admin-mailing: 'Newsletter'
+admin-no-project: 'Nessun progetto'
+admin-title-name: Nome
+admin-title-about: Informazioni
+admin-title-active: Attivo
+admin-title-location: Localizzazione
+admin-title-fullname: Nome
+admin-title-email: Email
+admin-title-password: Password
+admin-title-avatar: Avatar
+admin-title-roles: Ruoli
 admin-title-icon: Icona
+admin-title-title: Titolo
+admin-title-subtitle: Sottotitolo
+admin-title-section: Sezione
 admin-title-social_commitment: Impegno sociale
 admin-title-categories: 'Categorie'
