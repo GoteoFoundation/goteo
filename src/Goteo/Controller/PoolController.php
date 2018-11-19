@@ -68,7 +68,7 @@ class PoolController extends \Goteo\Core\Controller {
 
         $custom_amount = Currency::amountInverse($amount_original, $currency);
 
-        $this->page = '/pool';
+        $this->page = '/'.$type;
         $this->query = http_build_query(['amount' => "$amount_original$currency"]);
 
         // Available pay methods
@@ -92,7 +92,7 @@ class PoolController extends \Goteo\Core\Controller {
             // A reward is required here
             if($amount_original == 0 && !is_null($amount)) {
                 Message::error(Text::get('pool-amount-first'));
-                return $this->redirect('/pool');
+                return $this->redirect('/'.$type);
             }
             // A login is required here
             if(!Session::isLogged()) {
@@ -225,7 +225,7 @@ class PoolController extends \Goteo\Core\Controller {
         } catch(\Exception $e) {
             Message::error($e->getMessage());
             $this->error('Init Payment Exception', ['class' => get_class($e), $invest, 'code' => $e->getCode(), 'message' => $e->getMessage()]);
-            return $this->redirect('/pool/payment?' . $this->query);
+            return $this->redirect('/'.$type.'/payment?' . $this->query);
         }
 
 
@@ -254,7 +254,7 @@ class PoolController extends \Goteo\Core\Controller {
 
         if($invest->status != Invest::STATUS_PROCESSING) {
             Message::info(Text::get('invest-process-completed'));
-            return $this->redirect('/pool/' . $invest->id);
+            return $this->redirect('/'.$type.'/' . $invest->id);
         }
         try {
             $method = $invest->getMethod();
@@ -306,7 +306,7 @@ class PoolController extends \Goteo\Core\Controller {
         // print_r($invest);
         if(!in_array($invest->status, [Invest::STATUS_TO_POOL, Invest::STATUS_DONATED])) {
             Message::error(Text::get('project-invest-fail'));
-            return $this->redirect('/pool/payment?' . $this->query);
+            return $this->redirect('/'.$type.'/payment?' . $this->query);
         }
 
         // if resign to reward, redirect to shareAction
@@ -339,7 +339,7 @@ class PoolController extends \Goteo\Core\Controller {
 
         if(!in_array($invest->status, [Invest::STATUS_TO_POOL, Invest::STATUS_DONATED, Invest::STATUS_PAID])) {
             Message::error(Text::get('project-invest-fail'));
-            return $this->redirect('/pool/payment?' . $this->query);
+            return $this->redirect('/'.$type.'/payment?' . $this->query);
         }
 
         $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
