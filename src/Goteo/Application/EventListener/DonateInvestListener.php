@@ -38,7 +38,7 @@ class DonateInvestListener extends AbstractListener {
         $method = $event->getMethod();
         $response = $event->getResponse();
         $invest = $method->getInvest();
-        // Only for pool payments
+        // Only for donate oganization payments
         if($invest->getProject()||!$invest->donate_amount) {
             return;
         }
@@ -109,10 +109,9 @@ class DonateInvestListener extends AbstractListener {
 
         // Send mail with amount rechargued
 
-        if( Mail::createFromTemplate($user->email, $user->name, Template::POOL_RECHARGUE_THANKS, [
+        if( Mail::createFromTemplate($user->email, $user->name, Template::DONATE_ORGANIZATION_THANKS, [
               '%USERNAME%'   => $user->name,
-              '%AMOUNT_RECHARGUED%'   => Currency::amountFormat($invest->amount),
-              '%AMOUNT_POOL%'     => Currency::amountFormat($amount_pool),
+              '%DONATE_AMOUNT%'   => Currency::amountFormat($invest->donate_amount),
               '%CERTIFICATE_URL%'     => Config::getUrl($lang) . '/dashboard/wallet/certificate'
                ], $user->lang)
         ->send($errors)) {
@@ -132,16 +131,16 @@ class DonateInvestListener extends AbstractListener {
                 '/admin/invests',
                 new FeedBody(null, null, 'feed-user-invest', [
                         '%USER%' => Feed::item('user', $user->name, $user->id),
-                        '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin),
-                        '%PROJECT%' => Feed::item('project', 'POOL'),
+                        '%AMOUNT%' => Feed::item('money', $invest->donate_amount . ' ' . $coin),
+                        '%PROJECT%' => Feed::item('project', 'DONATE FOUNDATION'),
                         '%METHOD%' => strtoupper($method::getId())
                     ])
             )
             ->doAdmin('money');
 
         // Public Feed
-        $log_html = new FeedBody(null, null, 'feed-invest-pool', [
-                '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin)
+        $log_html = new FeedBody(null, null, 'feed-invest-donate', [
+                '%AMOUNT%' => Feed::item('money', $invest->donate_amount . ' ' . $coin)
                 ]);
         if ($invest->anonymous) {
             $log->populate(Text::get('regular-anonymous'), '/user/profile/anonymous', $log_html, 1);

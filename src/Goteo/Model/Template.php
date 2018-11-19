@@ -100,6 +100,8 @@ class Template extends \Goteo\Core\Model {
     const MATCHER_PROJECT_ADDED_ADMIN = 'matcher_project_added_admin';    // inform to admin that a new project is added to a matcher
     const PROJECT_DERIVATION_DISCARD = 'project_derivation_discard';    // Discard derivating to others platforms.
     const PROJECT_MY_STORY_AVAILABLE = 'project_my_story_available';    // My story form open
+    const DONATE_ORGANIZATION_THANKS = 'donate_thanks';    // Thanks by donation to the organization
+
 
     public
         $id,
