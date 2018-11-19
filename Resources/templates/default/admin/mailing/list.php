@@ -109,6 +109,10 @@ $filters = $this->filters;
                     <?php endforeach ?>
                     </select>
                 </td>
+                 <td>
+                    <label for="name-filter">Localizados en</label><br />
+                    <input id="location-filter" name="location" value="<?= $filters['location']?>" style="width:200px;" />
+                </td>
             </tr>
         </table>
 

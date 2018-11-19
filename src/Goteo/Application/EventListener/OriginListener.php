@@ -15,8 +15,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-use UAParser\Parser as UAParser;
-use Snowplow\RefererParser\Parser as RefererParser;
+use Goteo\Util\Origins\Parser as OriginParser;
 
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestInitEvent;
@@ -39,52 +38,27 @@ class OriginListener extends AbstractListener {
         if (!$event->isMasterRequest()) {
             return;
         }
+        $subdomains = Config::get('plugins.custom-domains.active') ? Config::get('plugins.custom-domains.domains') : [];
+        $parser = new OriginParser($event->getRequest(), Config::getMainUrl(false), $subdomains);
 
-        $request = $event->getRequest();
-
-        // Extracting UA elements
-        // https://github.com/ua-parser/uap-php
-        $parser = UAParser::create();
-        $result = $parser->parse($request->headers->get('User-Agent'));
-        $ua = array(
-            'tag' => $result->ua->family,
-            'category' => $result->os->family,
-            'type' => 'ua'
-            );
-
-        // var_dump($ua);
         if(!Session::exists('origin.ua')) {
-            Session::store('origin.ua', $ua);
+            // var_dump($ua);
+            Session::store('origin.ua', $parser->getUA());
         }
 
-        // Extracting Referer elements
-        // https://github.com/snowplow/referer-parser/tree/master/php
-        $parser = new RefererParser();
-        $ref = $request->headers->get('referer');
-        $result = $parser->parse($ref, $request->getUri());
-        $parts = explode("/", $request->getPathInfo());
+        $referer = $parser->getReferer();
 
-        // echo $ref .','. $request->getUri();
-        $referer = array(
-            'tag' => $result->getSource(),
-            'category' => $result->getMedium(),
-            'type' => 'referer'
-            );
-        if($referer['category'] === 'internal') {
-            $referer['tag'] = $parts[1];
-        }
+        if(Session::get('origin.referer') === $referer)
+            return;
 
-        // Tracked links form MailController as type "email"
-        if($parts[1] === 'mail') {
-            $referer['tag'] = 'Newsletter';
-            $referer['category'] = 'email';
-        }
+        if($referer['category'] === 'invalid')
+            return;
 
-        if($referer['category'] !== 'invalid' && Session::get('origin.referer') !== $referer) {
-            if(!Session::exists('origin.referer')) {
-                Session::store('origin.referer', $referer);
-            }
-        }
+        // Internal only if none previous registered
+        if($referer['category'] === 'internal' && Session::exists('origin.referer'))
+            return;
+
+        Session::store('origin.referer', $referer);
     }
 
 
@@ -101,40 +75,33 @@ class OriginListener extends AbstractListener {
         }
 
         $request = $event->getRequest();
-        $parts = explode("/", $request->getPathInfo());
+        list($_, $type, $id) = explode("/", $request->getPathInfo());
 
         $ua = Session::get('origin.ua');
         $referer = Session::get('origin.referer');
-
-        if($parts[1] === 'project') {
-            if(Session::get('origin.project_ua') !== $ua) {
-                $origin = Origin::getFromArray($ua + ['project_id' => $parts[2]]);
-                // echo "saving ua";
-                $origin->save();
-                Session::store('origin.project_ua', $ua);
+        // TODO: add channel, blog (post): requires db migration
+        if(in_array($type, ['project', 'call'])) {
+            // print_r($referer);print_r(Session::get("origin.{$type}_referer"));die("[$type] $id");
+            if($ua && is_array($ua)) {
+                $ua_id = $ua + ["{$type}_id" => $id];
+                if(Session::get("origin.{$type}_ua") !== $ua_id) {
+                    $origin = Origin::getFromArray($ua_id);
+                    // echo "saving ua";
+                    $origin->save();
+                    Session::store("origin.{$type}_ua", $ua_id);
+                }
             }
-            if(Session::get('origin.project_referer') !== $referer) {
-                $origin = Origin::getFromArray($referer + ['project_id' => $parts[2]]);
-                // echo "saving referer";
-                $origin->save();
-                Session::store('origin.project_referer', $referer);
-            }
-        }
-
-        if($parts[1] === 'call') {
-            if(Session::get('origin.call_ua') !== $ua) {
-                $origin = Origin::getFromArray($ua + ['call_id' => $parts[2]]);
-                // echo "saving ua";
-                $origin->save();
-                Session::store('origin.call_ua', $ua);
-            }
-            if(Session::get('origin.call_referer') !== $referer) {
-                $origin = Origin::getFromArray($referer + ['call_id' => $parts[2]]);
-                // echo "saving referer";
-                $origin->save();
-                Session::store('origin.call_referer', $referer);
+            if($referer && is_array($referer)) {
+                $referer_id = $referer + ["{$type}_id" => $id];
+                if(Session::get("origin.{$type}_referer") !== $referer_id) {
+                    $origin = Origin::getFromArray($referer_id);
+                    // echo "saving referer";
+                    $origin->save();
+                    Session::store("origin.{$type}_referer", $referer_id);
+                }
             }
         }
+
     }
 
     /**
@@ -163,11 +130,11 @@ class OriginListener extends AbstractListener {
     }
 
     public static function getSubscribedEvents() {
-        return array(
+        return [
             KernelEvents::REQUEST => 'onRequest',
             KernelEvents::RESPONSE => 'onResponse',
             AppEvents::INVEST_INIT => 'onInvestInit'
-        );
+        ];
     }
 
 }

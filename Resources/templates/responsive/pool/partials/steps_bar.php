@@ -11,9 +11,8 @@
           else
             $class = 'disabled';
         ?>
-
          <div class="bs-wizard-step <?= $class ?>">
-           <div class="text-center bs-wizard-stepnum"><?= $this->text('pool-step-' . $i) ?></div>
+           <div class="text-center bs-wizard-stepnum"><?= $this->type!='pool'&&$i==1 ? $this->text('donate-foundation-step-1') : $this->text('pool-step-' . $i) ?></div>
            <div class="progress"><div class="progress-bar"></div></div>
            <a href="#" class="bs-wizard-dot"></a>
         </div>

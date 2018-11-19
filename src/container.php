@@ -142,9 +142,15 @@ $sc->register('app.listener.project_post', 'Goteo\Application\EventListener\Proj
 $sc->register('app.listener.channel', 'Goteo\Application\EventListener\ProjectChannelListener')
   ->setArguments(array(new Reference('logger')));
 
-// Invest listener
+// Pool listener
 $sc->register('app.listener.poolinvest', 'Goteo\Application\EventListener\PoolInvestListener')
   ->setArguments(array(new Reference('paylogger')));
+
+// Donate listener
+$sc->register('app.listener.donateinvest', 'Goteo\Application\EventListener\DonateInvestListener')
+  ->setArguments(array(new Reference('paylogger')));
+
+
 // Legacy Security ACL
 $sc->register('app.listener.acl', 'Goteo\Application\EventListener\AclListener')
    ->setArguments(array(new Reference('logger')));
@@ -179,6 +185,7 @@ $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.project')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.donateinvest')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.messages')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.project_post')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.blog_post')))

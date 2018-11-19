@@ -45,6 +45,7 @@ class Invest extends \Goteo\Core\Model {
     const STATUS_RETURNED   = 4;  // automatically refunded to the user due a failed project
     const STATUS_RELOCATED  = 5;  // deprecated status
     const STATUS_TO_POOL    = 6;  // refunded to user's pool
+    const STATUS_DONATED    = 7;  // donated to the platform organization
 
     static $ACTIVE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
     static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
@@ -81,7 +82,8 @@ class Invest extends \Goteo\Core\Model {
         $campaign = false, // si es un aporte de capital riego
         $call = null, // aportes que tienen capital riego asociado
         $matcher = null, // invests with matcher funding associated
-        $pool = false; // aportes a reservar si el proyecto falla
+        $pool = false, // aportes a reservar si el proyecto falla
+        $donate_amount; // Donated to the platform
 
     // añadir los datos del cargo
 
@@ -890,7 +892,8 @@ class Invest extends \Goteo\Core\Model {
             'call',
             'matcher',
             'drops',
-            'pool'
+            'pool',
+            'donate_amount'
             );
 
         try {

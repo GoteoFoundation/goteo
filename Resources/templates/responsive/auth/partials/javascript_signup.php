@@ -63,7 +63,7 @@ $(function() {
     $userid.change();
   });
 
-  $('input[name="password"],input[name="rpassword"]').on('change', function(e) {
+  /*$('input[name="rpassword"]').on('blur', function(e) {
     $p1 = $('input[name="password"]');
     $p2 = $('input[name="rpassword"]');
     var $group1 = $p1.closest('.form-group');
@@ -78,7 +78,7 @@ $(function() {
       $group2.removeClass('has-success').addClass('has-error');
       $('<span class="help-block info-block"><?= $this->ee($this->text('error-register-password-confirm'), 'js') ?></span>').insertAfter($p2);
     }
-  });
+  });*/
 })
 
 </script>
