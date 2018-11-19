@@ -76,5 +76,13 @@ class DonateController extends PoolController {
         return $this->paymentFormAction($this->type, $request);
     }
 
+    public function userDataDonateAction($invest_id, Request $request){
+        return $this->userDataAction($invest_id, $this->type, $request);
+    }
+
+    public function shareDonateAction($invest_id, Request $request){
+        return $this->shareAction($invest_id, $this->type, $request);
+    }
+
    
 }

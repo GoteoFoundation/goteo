@@ -297,7 +297,7 @@ class PoolController extends \Goteo\Core\Controller {
      * step4: reward/user data
      * Shown when comming back from the payment gateway
      */
-    public function userDataAction($invest_id, Request $request)
+    public function userDataAction($invest_id, $type='pool', Request $request)
     {
         $invest = Invest::get($invest_id);
         $amount = $this->validate();
@@ -317,20 +317,21 @@ class PoolController extends \Goteo\Core\Controller {
 
         // check post data
         $invest_address = (array)$invest->getAddress();
+
         $errors = [];
         if($request->isMethod('post')) {
             // Event invest failed
             return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
         }
         // show form
-        return $this->viewResponse('pool/user_data', ['invest' => $invest, 'invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3]);
+        return $this->viewResponse('pool/user_data', ['type' => $type, 'invest' => $invest, 'invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3]);
 
     }
 
     /**
      * step5: Thanks! and social share
      */
-    public function shareAction($invest_id, Request $request) {
+    public function shareAction($invest_id, $type='pool', Request $request) {
 
         $invest = Invest::get($invest_id);
         $amount = $this->validate();
@@ -359,9 +360,9 @@ class PoolController extends \Goteo\Core\Controller {
                                 ), '', $project->user->twitter);
         $author = !empty($author_twitter) ? ' '.Text::get('regular-by').' @'.$author_twitter : '';
 
-        $share_title = Text::get('pool-invest-spread-social');
+        $share_title = Text::get($type.'-invest-spread-social');
 
-        $share_url = $URL . '/pool';
+        $share_url = $URL .'/'.$type;
         $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
         $twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': ' . $share_url);
 
@@ -375,7 +376,8 @@ class PoolController extends \Goteo\Core\Controller {
         $vars=[ 'facebook_url' => $facebook_url,
                 'twitter_url' => $twitter_url,
                 'projects_suggested' => $projects_suggested,
-                'step' => 4
+                'step' => 4,
+                'type' => $type
                 ];
         return $this->viewResponse('pool/share',$vars);
 

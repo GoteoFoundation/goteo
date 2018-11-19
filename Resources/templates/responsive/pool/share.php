@@ -10,7 +10,7 @@ $this->section('dashboard-content-pool');
 
 	<h2 class="padding-bottom-2"><?= $this->text('pool-share-title') ?></h2>
 	<div class="reminder">
-        <?= $this->text('pool-invest-ok') ?>
+        <?= $this->text($this->type.'-invest-ok') ?>
         <div class="row spacer">
 
     		<div class="col-sm-6 margin-2">
@@ -19,11 +19,15 @@ $this->section('dashboard-content-pool');
     	  			</a>
     	  	</div>
 
+          <?php if($this->type=='pool'): ?>
+
     	  	<div class="col-sm-6 margin-2">
     				<a href="/dashboard/wallet" class="text-decoration-none" >
     					<button type="button" class="btn btn-block btn-success" value=""><i class="icon icon-wallet"></i> <?= $this->text('dashboard-menu-pool') ?></button>
     	  			</a>
     	  	</div>
+
+          <?php endif; ?>
 
       	</div>
 	</div>
@@ -31,7 +35,7 @@ $this->section('dashboard-content-pool');
     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
 
-	<h3 class="clearfix padding-bottom-6"><?= $this->text('pool-invest-spread-header') ?></h3>
+	<h3 class="clearfix padding-bottom-6"><?= $this->text($this->type.'-invest-spread-header') ?></h3>
 
 	<div class="row">
 		<div class="col-sm-6 margin-2">

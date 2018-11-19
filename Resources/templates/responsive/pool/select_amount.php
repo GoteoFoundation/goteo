@@ -3,18 +3,25 @@ $this->layout('pool/layout');
 
 $this->section('dashboard-content-pool');
 
+$type=$this->type;
+
 ?>
 
 <div class="pool-container">
-    <h2><?= $this->text('pool-recharge-title') ?></h2>
-    <div class="pool-conditions clear-both">
-    	<p><?= $this->text('dashboard-my-wallet-pool-info') ?> <a data-toggle="modal" data-target="#poolModal" href=""><?= $this->text('regular-here') ?></a></p>
-    </div>
+    <h2><?= $type=='pool' ? $this->text('pool-recharge-title') : $this->text($type.'-select-amount-title') ?></h2>
+
+    <?php if($type=='pool'): ?>
+
+      <div class="pool-conditions clear-both">
+      	<p><?= $this->text('dashboard-my-wallet-pool-info') ?> <a data-toggle="modal" data-target="#poolModal" href=""><?= $this->text('regular-here') ?></a></p>
+      </div>
+
+    <?php endif; ?>
 
     <?= $this->insert('pool/partials/amount_box', [
-      'description' => $this->text('pool-recharge-amount-text'),
-      'button_text'  => $this->type=='pool' ? $this->text('recharge-button') : $this->text('landing-donor-button'),
-      'form_action' => '/pool/payment'
+      'description' => $type=='pool' ? $this->text('pool-recharge-amount-text') : $this->text($type.'-select-amount-description'),
+      'button_text'  => $type=='pool' ? $this->text('recharge-button') : $this->text('landing-donor-button'),
+      'form_action' => $type=='pool' ? '/pool/payment' : '/donate/payment'
     ]) ?>
 
 </div>
