@@ -1,7 +1,7 @@
 ---
 error-register-email: 'L''adreça de correu és obligatòria'
 error-register-email-confirm: 'La comprovació de correu electrònic no coincideix'
-error-register-invalid-password: 'La contrasenya no és vàlida. Introdueix al menys 6 caràcters'
+error-register-invalid-password: 'La contrasenya no és vàlida. Introdueix almenys 6 caràcters'
 error-register-password-confirm: 'La comprovació de contrasenya no coincideix'
 error-register-pasword: 'La contrasenya no pot estar buida'
 error-register-short-password: 'La contrasenya ha de contenir un mínim de 8 caràcters'
