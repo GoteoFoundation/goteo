@@ -52,6 +52,8 @@ class DashboardController extends \Goteo\Core\Controller {
         if($section === 'wallet') {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-wallet-sidebar"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'wallet');
             Session::addToSidebarMenu('<i class="fa fa-2x fa-fw fa-download"></i> ' . Text::get('recharge-button'), '/pool', 'recharge');
+
+            Session::addToSidebarMenu('<i class="icon icon-2x fa-fw icon-save-the-world"></i> ' . Text::get('donate-button'), '/donate-select', 'donate');
         }
         View::getEngine()->useData([
             'zone' => $zone,
@@ -98,7 +100,7 @@ class DashboardController extends \Goteo\Core\Controller {
 
         $limit = 10;
         $offset = $request->query->get('pag') * $limit;
-        $filter = ['users' => $this->user, 'status' => Invest::$RAISED_STATUSES];
+        $filter = ['users' => $this->user, 'status' => Invest::$RAISED_STATUSES_AND_DONATED];
         $invests = Invest::getList($filter, null, $offset, $limit);
         $raised = Invest::getList($filter, null, 0, 0, 'all');
         $returned = Invest::getList(['status' => Invest::$FAILED_STATUSES] + $filter, null, 0, 0, 'money');

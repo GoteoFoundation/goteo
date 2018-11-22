@@ -87,6 +87,7 @@ invest-status-processing: Incompleto
 invest-status-relocated: Reubicado
 invest-status-returned: 'Devuelto (archivado)'
 invest-status-to-pool: 'Al monedero'
+invest-status-donated: 'Donado a Fundación'
 invest-step-1: Recompensa
 invest-step-2: Pago
 invest-step-3: Confirmar
