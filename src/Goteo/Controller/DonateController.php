@@ -48,7 +48,6 @@ class DonateController extends PoolController {
         if(!Config::get('payments.pool.active')) {
             throw new PaymentException("Pool payment is not active!");
         }
-        DashboardController::createSidebar('wallet', 'donate');
     }
 
     public function donateLandingAction(Request $request)
@@ -64,23 +63,32 @@ class DonateController extends PoolController {
 
     public function selectAmountDonateAction($landing='yes', Request $request)
     {
+
+        DashboardController::createSidebar('wallet', 'donate');
+
         return $this->selectAmountAction($landing, $this->type, $request);
 
     }
 
     public function selectPaymentMethodDonateAction(Request $request){
+
+        DashboardController::createSidebar('wallet', 'donate');
+
         return $this->selectPaymentMethodAction($this->type, $request);
     }
 
     public function paymentFormDonateAction(Request $request){
+        DashboardController::createSidebar('wallet', 'donate');
         return $this->paymentFormAction($this->type, $request);
     }
 
     public function userDataDonateAction($invest_id, Request $request){
+        DashboardController::createSidebar('wallet', 'donate');
         return $this->userDataAction($invest_id, $this->type, $request);
     }
 
     public function shareDonateAction($invest_id, Request $request){
+        DashboardController::createSidebar('wallet', 'donate');
         return $this->shareAction($invest_id, $this->type, $request);
     }
 
