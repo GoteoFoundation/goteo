@@ -48,7 +48,7 @@ class DonateController extends PoolController {
         if(!Config::get('payments.pool.active')) {
             throw new PaymentException("Pool payment is not active!");
         }
-        DashboardController::createSidebar('donate', 'recharge');
+        DashboardController::createSidebar('wallet', 'donate');
     }
 
     public function donateLandingAction(Request $request)

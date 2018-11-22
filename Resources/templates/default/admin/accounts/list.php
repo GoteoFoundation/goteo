@@ -103,13 +103,14 @@ $coord = [];
 
 <div class="widget board">
 <?php if ($this->list) : ?>
-    <p><strong><?= $this->text('regular-total') ?>:</strong>  <?= \amount_format($this->total_money) ?> (<em><?= number_format($this->total, 0, '', '.') ?> aportes</em>)</p>
+    <p><strong><?= $this->text('regular-total') ?>:</strong>  <?= \amount_format($this->total_money) ?> (<em><?= number_format($this->total, 0, '', '.') ?> aportes</em>)</p>  <strong><?= $this->text('regular-donations') ?>: </strong> <?= \amount_format($this->total_donate_money) ?>
 
     <table width="100%">
         <thead>
             <tr>
                 <th></th>
                 <th>Importe</th>
+                <th>Donación (extra)</th>
                 <th>Fecha</th>
                 <th>Cofinanciador</th>
                 <th>Proyecto</th>
@@ -145,12 +146,15 @@ $coord = [];
                     if (!empty($invest->droped)) echo 'Regado ('.$invest->droped.')';
                     ?>" <?php if ($invest->issue) echo ' style="color:red !important;"' ?>>[Detalles]</a></td>
                 <td><?= $invest->amount ?></td>
+                <td><?= $invest->donate_amount ?></td>
                 <td><?= $invest->invested ?></td>
                 <td><a href="mailto:<?= $invest->getUser()->email ?>" title="<?= $invest->getUser()->id .' / ' . $invest->getUser()->email .' / ' . $invest->getUser()->node ?>"><?= $invest->getUser()->name ?></a><a href="/admin/users/manage/<?= $invest->user ?>" target="_blank" title="<?= $invest->getUser()->name ?>">[<?= $invest->user ?>]</a></td>
                 <td><?php if($invest->project): ?>
                     <a href="/admin/projects?proj_id=<?= $invest->project ?>" target="_blank"><?= $this->text_truncate($this->projects[$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$invest->campaign.')' ?></a>
-                    <?php else: ?>
+                    <?php elseif(!$invest->donate_amount): ?>
                         <span class="label label-info"><?= $this->text('invest-pool-method') ?></span>
+                    <?php else: ?>
+                        <span class="label label-info"><?= $this->text('donate-foundation-step-1') ?></span>
                     <?php endif ?>
                 </td>
                 <td><?= $this->methods[$invest->method] ?></td>

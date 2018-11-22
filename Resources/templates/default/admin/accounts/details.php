@@ -23,6 +23,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <table class="table">
     <tr>
         <td><strong><?= $this->text('admin-project') ?></strong></td>
+        <?php $no_project=$no_project= $invest->isDonated() ? $this->text('donate-foundation-step-1') : $this->text('invest-status-to-pool'); ?>
         <?php if($project): ?>
             <td>
                 <?php echo $project->name ?> (<?php echo $this->projectStatus[$project->status] ?>)
@@ -30,7 +31,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
             <td>[<a href="/admin/accounts/converttopool/<?= $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-convert-to-pool-confirm'), 'js') ?>')"><?= $this->text('admin-account-convert-to-pool') ?></a>]</td>
         <?php else: ?>
             <td>
-                <span class="label label-info"><?= $this->text('invest-pool-method') ?></span>
+                <span class="label label-info"><?= $no_project ?></span>
             </td>
             <td>&nbsp;</td>
         <?php endif ?>
@@ -58,7 +59,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     </tr>
     <tr>
         <td><?= $this->text('admin-account-amount') ?>:</td>
-        <td><?php echo $invest->amount ?> &euro;
+        <td><?php echo $invest->amount+$invest->donate_amount ?> &euro;
             <?php
                 if (!empty($invest->campaign))
                     echo 'Campaña: ' . $campaign->name;
