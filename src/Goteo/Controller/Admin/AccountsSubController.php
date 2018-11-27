@@ -151,11 +151,18 @@ class AccountsSubController extends AbstractSubController {
 
         try {
             // Omnipay refund()
+
+            // Add the direct donation to the organization
+            $invest->amount=$invest->amount+$invest->donate_amount;
+
             $method = $invest->getMethod();
             // print_r($method);die;
             // process gateway refund
             // go to the gateway, gets the response
             $response = $method->refund();
+
+            // Remove the direct donation to the organization
+            $invest->amount=$invest->amount-$invest->donate_amount;
 
             // Checks and redirects
             if (!$response instanceof ResponseInterface) {
@@ -181,7 +188,7 @@ class AccountsSubController extends AbstractSubController {
                             new FeedBody(null,null, 'feed-admin-invest-' . ($returned ? 'returned' : 'cancelled'), [
                                 '%ADMIN%' => Feed::item('user', $this->user->name, $this->user->id),
                                 '%USER%' => Feed::item('user', $invest->getUser()->name, $invest->getUser()->id),
-                                '%AMOUNT%' => Feed::item('money', $invest->amount.' '.$coin, $invest->id),
+                                '%AMOUNT%' => Feed::item('money', ($invest->amount+$invest->donate_amount).' '.$coin, $invest->id),
                                 '%METHOD%' => strtoupper($invest->method),
                                 '%INVEST%' => Feed::item('system', $invest->id),
                                 '%PROJECT%' => Feed::item('project', $invest->getProject()->name, $invest->getProject()->id),
@@ -222,7 +229,7 @@ class AccountsSubController extends AbstractSubController {
         $status = $invest->status;
 
         $coin = Currency::getDefault('html');
-        if (!in_array($status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_TO_POOL])) {
+        if (!in_array($status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_TO_POOL, Invest::STATUS_DONATED])) {
             Message::error(Text::get('admin-account-invest-non-user-refundable'));
         } else {
             // check the pool for this statuses

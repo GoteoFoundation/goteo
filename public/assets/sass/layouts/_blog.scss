@@ -289,6 +289,14 @@ body.blog {
         }
       }
 
+      .prologue{
+        text-align:center;
+        font-size: $font-size;
+        color: #537880;
+        font-weight: normal !important;
+        padding-bottom: 15px;
+      }
+
       .btn-cyan{
         font-size: $font-size*1.5;
         text-transform:uppercase;
