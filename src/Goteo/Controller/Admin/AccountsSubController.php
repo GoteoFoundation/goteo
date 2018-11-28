@@ -606,7 +606,7 @@ class AccountsSubController extends AbstractSubController {
         $userData = User::get($invest->user);
         $methods = Invest::methods();
         $poolable = $invest->getMethod()->isPublic() && $invest->status == Invest::STATUS_CHARGED;
-        $refundable = $invest->getMethod()->refundable() && in_array($invest->status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_TO_POOL]);
+        $refundable = $invest->getMethod()->refundable() && in_array($invest->status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_TO_POOL, Invest::STATUS_DONATED]);
         $location = InvestLocation::get($invest);
 
         return array(
