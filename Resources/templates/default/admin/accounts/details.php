@@ -23,7 +23,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <table class="table">
     <tr>
         <td><strong><?= $this->text('admin-project') ?></strong></td>
-        <?php $no_project=$no_project= $invest->isDonated() ? $this->text('donate-foundation-step-1') : $this->text('invest-status-to-pool'); ?>
+        <?php $no_project=$no_project= ($invest->isDonated()||$invest->donate_amount) ? $this->text('donate-foundation-step-1') : $this->text('invest-status-to-pool'); ?>
         <?php if($project): ?>
             <td>
                 <?php echo $project->name ?> (<?php echo $this->projectStatus[$project->status] ?>)
