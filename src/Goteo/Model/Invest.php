@@ -1582,6 +1582,28 @@ class Invest extends \Goteo\Core\Model {
 
     }
 
+    /*
+     * Update amount in a donation
+     */
+    public function setDonateAmount () {
+
+        $amount=$this->amount-$this->donate_amount;
+
+        $values = array(
+            ':id' => $this->id,
+            ':amount' => $amount
+        );
+
+        $sql = "UPDATE invest SET transaction = :transaction WHERE id = :id";
+        if (self::query($sql, $values)) {
+            $this->transaction = $code;
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     public function switchResign() {
        return $this->setResign(!$this->resign);
     }
