@@ -43,6 +43,10 @@ class DonateInvestListener extends AbstractListener {
             return;
         }
 
+        // Set amount and donate_amount right
+
+        $invest->setDonateAmount();
+
         $this->warning('DonateInvest finish failed', [$invest, 'project' => '', 'reward' => '', $invest->getUser(), 'message' => $response->getMessage()]);
 
         // not making changes on invest status...
