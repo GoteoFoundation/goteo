@@ -89,6 +89,7 @@ class PoolController extends \Goteo\Core\Controller {
 
         if($login_required) {
 
+
             // A reward is required here
             if($amount_original == 0 && !is_null($amount)) {
                 Message::error(Text::get('pool-amount-first'));
@@ -135,7 +136,11 @@ class PoolController extends \Goteo\Core\Controller {
         // TODO: add events
         $amount = $request->query->get('amount');
 
-        return $this->viewResponse('pool/select_amount', ['step' => 1, 'type' => $type ]);
+        $user = Session::getUser();
+
+        $pool = $user->getPool();
+
+        return $this->viewResponse('pool/select_amount', ['step' => 1, 'type' => $type, 'pool' => $pool, 'amount' => $amount ]);
 
     }
 
@@ -244,11 +249,12 @@ class PoolController extends \Goteo\Core\Controller {
      * Returning point
      * When payment is successful, then redirects to step4
      */
-    public function completePaymentAction($invest_id, Request $request) {
+    public function completePaymentAction($invest_id, $type='pool', Request $request) {
 
         $invest = Invest::get($invest_id);
 
-        $amount = $this->validate();
+        $amount = $this->validate(null, true, $type);
+        
         if($amount instanceOf Response) return $amount;
 
 
@@ -290,7 +296,7 @@ class PoolController extends \Goteo\Core\Controller {
             $this->error('Ending Payment Exception', ['class' => get_class($e),  $invest, 'code' => $e->getCode(), 'message' => $e->getMessage()]);
         }
 
-        return $this->redirect('/pool/payment?' . $this->query);
+        return $this->redirect('/'.$type.'/payment?' . $this->query);
     }
 
     /**

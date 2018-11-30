@@ -82,6 +82,11 @@ class DonateController extends PoolController {
         return $this->paymentFormAction($this->type, $request);
     }
 
+    public function completePaymentDonateAction($invest_id, Request $request){
+        DashboardController::createSidebar('wallet', 'donate');
+        return $this->completePaymentAction($invest_id, $this->type, $request);
+    }
+
     public function userDataDonateAction($invest_id, Request $request){
         DashboardController::createSidebar('wallet', 'donate');
         return $this->userDataAction($invest_id, $this->type, $request);

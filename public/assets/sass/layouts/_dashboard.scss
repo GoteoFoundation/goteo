@@ -543,10 +543,29 @@
   .pool-container {
     padding-left:5%;
     padding-right:5%;
+
+    .wallet-available{
+      color: #58595b;
+      font-size: 18px;
+      .pool-amount{
+        color: #96238f;
+        font-size: 20px;
+        font-weight: 700;
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+      .pool-desc{
+        text-transform: lowercase;
+        font-size: 18px;
+        color: #58595b;
+      }
+    }
+
     .pool-box {
         input[type="number"] {
             margin-right: 10px;
             max-width: 190px;
+            border: 1px #bfbdbd solid;
         }
     }
   }
