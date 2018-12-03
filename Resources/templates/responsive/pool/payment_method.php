@@ -7,17 +7,17 @@ $this->section('dashboard-content-pool');
 ?>
 <div class="pool-container">
 
-	<h2><?= $this->text('pool-pay-method-title') ?></h2>
+	<h2><?= $this->text($this->type.'-pay-method-title') ?></h2>
 
 	<div class="reminder">
         <div class="level-1">
-	       <?= $this->text('pool-alert-recharging') ?><span class="amount-reminder"><?= $this->raw('amount_formated') ?></span>
+	       <?= $this->text($this->type.'-alert-recharging') ?><span class="amount-reminder"><?= $this->raw('amount_formated') ?></span>
 		</div>
 	</div>
 
     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-    <form class="form-horizontal" role="form" method="GET" action="/pool/form">
+    <form class="form-horizontal" role="form" method="GET" action="<?= '/'.$this->type.'/form'?>">
     <input type="hidden" name="amount" value="<?= $this->amount_original . $this->currency ?>">
 
 	<div class="row no-padding">
@@ -37,7 +37,9 @@ $this->section('dashboard-content-pool');
 
         <div class="form-group">
             <div class="col-md-4 invest-button">
-                <button type="submit" class="btn btn-lg btn-cyan"><i class="fa fa-download"></i> <?= $this->text('recharge-button') ?></button>
+                <button type="submit" class="btn btn-lg btn-cyan"><i class="fa fa-download"></i> 
+                    <?= $this->type=='pool' ? $this->text('recharge-button') : $this->text('landing-donor-button') ?>
+                </button>
             </div>
         </div>
     </form>

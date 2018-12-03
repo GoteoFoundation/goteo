@@ -276,9 +276,29 @@ body.blog {
       padding-top: 20px;
       padding-bottom:30px;
 
+      .pool-box{
+        h4{
+          font-weight: normal;
+          font-size: $font-size*1.05;
+          text-align: center;
+        }
+        form{
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+      }
+
+      .prologue{
+        text-align:center;
+        font-size: $font-size;
+        color: #537880;
+        font-weight: normal !important;
+        padding-bottom: 15px;
+      }
+
       .btn-cyan{
         font-size: $font-size*1.5;
-        margin-top:30px;
         text-transform:uppercase;
       }
 

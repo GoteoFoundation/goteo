@@ -33,6 +33,7 @@ feed-blog-comment: 'Ha escrito un <span class="green">Comentario</span> en la en
 feed-invest: 'Ha aportado %AMOUNT% al proyecto %PROJECT%'
 feed-invest-by: 'Aporte %s'
 feed-invest-pool: 'Ha recargado %AMOUNT% en su monedero virtual'
+feed-invest-donate: 'Has donado a la Fundación %AMOUNT%'
 feed-mailing-massive: 'Envio masivo (cron)'
 feed-mailing-massive-completed: 'Se ha completado el envio masivo [%ID%] [%SUBJECT%]'
 feed-message-support-response: 'Nueva colaboración con %TITLE% en el proyecto %PROJECT%'

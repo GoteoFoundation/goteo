@@ -45,12 +45,14 @@ class Invest extends \Goteo\Core\Model {
     const STATUS_RETURNED   = 4;  // automatically refunded to the user due a failed project
     const STATUS_RELOCATED  = 5;  // deprecated status
     const STATUS_TO_POOL    = 6;  // refunded to user's pool
+    const STATUS_DONATED    = 7;  // donated to the platform organization
 
     static $ACTIVE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
     static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
     static $RETURNED_STATUSES = [self::STATUS_RETURNED, self::STATUS_CANCELLED];
     // STATUS_CANCELLED may rise the achieved amount in projects but it is not included in fee/comissions calculations
     static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL];
+    static $RAISED_STATUSES_AND_DONATED = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_DONATED];
     static $RAW_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_TO_POOL];
 
     public
@@ -81,7 +83,8 @@ class Invest extends \Goteo\Core\Model {
         $campaign = false, // si es un aporte de capital riego
         $call = null, // aportes que tienen capital riego asociado
         $matcher = null, // invests with matcher funding associated
-        $pool = false; // aportes a reservar si el proyecto falla
+        $pool = false, // aportes a reservar si el proyecto falla
+        $donate_amount = 0; // Donated to the platform
 
     // añadir los datos del cargo
 
@@ -97,7 +100,8 @@ class Invest extends \Goteo\Core\Model {
             self::STATUS_PAID       => Text::get('invest-status-paid'),
             self::STATUS_RETURNED   => Text::get('invest-status-returned'),
             self::STATUS_RELOCATED  => Text::get('invest-status-relocated'),
-            self::STATUS_TO_POOL    => Text::get('invest-status-to-pool')
+            self::STATUS_TO_POOL    => Text::get('invest-status-to-pool'),
+            self::STATUS_DONATED    => Text::get('invest-status-donated')
         );
 
         if (isset($id)) {
@@ -123,6 +127,10 @@ class Invest extends \Goteo\Core\Model {
     public function isCancelled() {
         return $this->status == self::STATUS_CANCELLED;
     }
+
+    public function isDonated() {
+        return $this->status == self::STATUS_DONATED;
+    }   
 
     public function getStatusText($simple = false) {
         $status = $this->status;
@@ -540,6 +548,9 @@ class Invest extends \Goteo\Core\Model {
             elseif($count === 'money') {
                 $what = 'SUM(invest.amount)';
             }
+             elseif($count === 'donate_money') {
+                $what = 'SUM(invest.donate_amount)';
+            }
             elseif($count === 'user') {
                 $what = 'COUNT(DISTINCT invest.user)';
             }
@@ -564,7 +575,7 @@ class Invest extends \Goteo\Core\Model {
                 return ['amount' => (float) $ob->total_amount, 'invests' => (int) $ob->total_invests, 'users' => (int) $ob->total_users];
             }
             $total = self::query($sql, $values)->fetchColumn();
-            if($count === 'money') {
+            if($count === 'money'||$count='donate_money') {
                 return (float) $total;
             }
             return (int) $total;
@@ -890,7 +901,8 @@ class Invest extends \Goteo\Core\Model {
             'call',
             'matcher',
             'drops',
-            'pool'
+            'pool',
+            'donate_amount'
             );
 
         try {
@@ -1558,6 +1570,28 @@ class Invest extends \Goteo\Core\Model {
         $values = array(
             ':id' => $this->id,
             ':transaction' => $code
+        );
+
+        $sql = "UPDATE invest SET transaction = :transaction WHERE id = :id";
+        if (self::query($sql, $values)) {
+            $this->transaction = $code;
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /*
+     * Update amount in a donation
+     */
+    public function setDonateAmount () {
+
+        $amount=$this->amount-$this->donate_amount;
+
+        $values = array(
+            ':id' => $this->id,
+            ':amount' => $amount
         );
 
         $sql = "UPDATE invest SET transaction = :transaction WHERE id = :id";

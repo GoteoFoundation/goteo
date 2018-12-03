@@ -229,8 +229,12 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         if($invest->getProject())
             return $request->getSchemeAndHttpHost() . '/invest/' . $invest->project . '/' . $invest->id . '/complete';
         //Buy credit
-        else
+        elseif(!$invest->donate_amount)
             return $request->getSchemeAndHttpHost() . '/pool/' . $invest->id . '/complete';
+        // Donate to the organization
+        else
+            return $request->getSchemeAndHttpHost() . '/donate/' . $invest->id . '/complete';
+
     }
 
     /**

@@ -51,8 +51,11 @@ class FilterInvestFinishEvent extends Event
         if($this->invest->project) {
             return new RedirectResponse('/invest/' . $this->invest->project . '/' . $this->invest->id . '/share');
         }
-        else {
+        elseif(!$this->invest->donate_amount) {
             return new RedirectResponse('/pool/'  . $this->invest->id . '/share');
+        }
+        else {
+            return new RedirectResponse('/donate/'  . $this->invest->id . '/share');
         }
 
     }

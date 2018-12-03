@@ -193,7 +193,8 @@ regular-thanks: Gracias
 regular-title: Título
 regular-text: Texto
 regular-media: Vídeo (Youtube, Vimeo)
-regular-total: Total
+regular-total: Total aportes
+regular-donations: Donaciones (No incluído en aportes)
 regular-translate: Traducir
 regular-translations: 'Traducciones'
 regular-translate_board: 'Panel traductor'

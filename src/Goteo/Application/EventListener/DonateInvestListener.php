@@ -32,18 +32,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class PoolInvestListener extends AbstractListener {
+class DonateInvestListener extends AbstractListener {
 
     public function onInvestFailed(FilterInvestRequestEvent $event) {
         $method = $event->getMethod();
         $response = $event->getResponse();
         $invest = $method->getInvest();
-        // Only for pool payments
-        if($invest->getProject()||$invest->donate_amount) {
+        // Only for donate oganization payments
+        if($invest->getProject()||!$invest->donate_amount) {
             return;
         }
 
-        $this->warning('PoolInvest finish failed', [$invest, 'project' => '', 'reward' => '', $invest->getUser(), 'message' => $response->getMessage()]);
+        // Set amount and donate_amount right
+
+        //$invest->setDonateAmount();
+
+        $this->warning('DonateInvest finish failed', [$invest, 'project' => '', 'reward' => '', $invest->getUser(), 'message' => $response->getMessage()]);
 
         // not making changes on invest status...
 
@@ -60,19 +64,19 @@ class PoolInvestListener extends AbstractListener {
                        '%MESSAGE%' => $response->getMessage(),
                        '%USER%' => Feed::item('user', $user->name, $user->id),
                        '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin),
-                       '%PROJECT%' => Feed::item('project', 'POOL'),
+                       '%PROJECT%' => Feed::item('project', 'DONATE'),
                        '%METHOD%' => strtoupper($method::getId())
                     ])
             )
             ->doAdmin('money');
 
-        Invest::setDetail($invest->id, 'confirm-fail', 'PoolInvest process failed. Gateway error: ' . $response->getMessage());
+        Invest::setDetail($invest->id, 'confirm-fail', 'DonateInvest process failed. Gateway error: ' . $response->getMessage());
 
         // Assign response if not previously assigned
         // Goto user start
         if (!$event->getHttpResponse()) {
             //Credit rechargue
-            $event->setHttpResponse(new RedirectResponse('/pool/payment?' . http_build_query(['amount' => $invest->amount_original . $invest->currency])));
+            $event->setHttpResponse(new RedirectResponse('/donate/payment?' . http_build_query(['amount' => $invest->amount_original . $invest->currency])));
         }
 
     }
@@ -84,18 +88,19 @@ class PoolInvestListener extends AbstractListener {
         $invest = $method->getInvest();
 
         //If is a invest project change listener
-        if($invest->getProject()||$invest->donate_amount) {
+        if($invest->getProject()||!$invest->donate_amount) {
             return ;
         }
 
         $user = $invest->getUser();
-        $pool = $user->getPool();
 
-        $this->notice('PoolInvest finish succeeded', [$invest, 'project' => '', 'reward' => '', $invest->getUser()]);
+        $this->notice('DonateInvest finish succeeded', [$invest, 'project' => '', 'reward' => '', $invest->getUser()]);
 
         // Invest status to charged
-        $invest->status = Invest::STATUS_TO_POOL;
-        $invest->pool = true;
+        $invest->status = Invest::STATUS_DONATED;
+
+        $invest->amount = $invest->amount-$invest->donate_amount;
+
         // Set charged date if empty
         if (empty($invest->charged)) {
             $invest->charged = date('Y-m-d');
@@ -103,22 +108,14 @@ class PoolInvestListener extends AbstractListener {
         $errors = [];
         $invest->save($errors);
         if ($errors) {
-            throw new \RuntimeException('Error saving PoolInvest details! ' . implode("\n", $errors));
+            throw new \RuntimeException('Error saving DonateInvest details! ' . implode("\n", $errors));
         }
-
-        //recalulate the pool
-        $pool->calculate(true);
-
-        // Amount in virtual wallet
-        $amount_pool = $pool->getAmount();
 
         // Send mail with amount rechargued
 
-        if( Mail::createFromTemplate($user->email, $user->name, Template::POOL_RECHARGUE_THANKS, [
+        if( Mail::createFromTemplate($user->email, $user->name, Template::DONATE_ORGANIZATION_THANKS, [
               '%USERNAME%'   => $user->name,
-              '%AMOUNT_RECHARGUED%'   => Currency::amountFormat($invest->amount),
-              '%AMOUNT_POOL%'     => Currency::amountFormat($amount_pool),
-              '%WALLET_URL%'     => Config::getUrl($lang) . '/dashboard/wallet',
+              '%DONATE_AMOUNT%'   => Currency::amountFormat($invest->donate_amount),
               '%CERTIFICATE_URL%'     => Config::getUrl($lang) . '/dashboard/wallet/certificate'
                ], $user->lang)
         ->send($errors)) {
@@ -138,16 +135,16 @@ class PoolInvestListener extends AbstractListener {
                 '/admin/invests',
                 new FeedBody(null, null, 'feed-user-invest', [
                         '%USER%' => Feed::item('user', $user->name, $user->id),
-                        '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin),
-                        '%PROJECT%' => Feed::item('project', 'POOL'),
+                        '%AMOUNT%' => Feed::item('money', $invest->donate_amount . ' ' . $coin),
+                        '%PROJECT%' => Feed::item('project', 'DONATE FOUNDATION'),
                         '%METHOD%' => strtoupper($method::getId())
                     ])
             )
             ->doAdmin('money');
 
         // Public Feed
-        $log_html = new FeedBody(null, null, 'feed-invest-pool', [
-                '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin)
+        $log_html = new FeedBody(null, null, 'feed-invest-donate', [
+                '%AMOUNT%' => Feed::item('money', $invest->donate_amount . ' ' . $coin)
                 ]);
         if ($invest->anonymous) {
             $log->populate(Text::get('regular-anonymous'), '/user/profile/anonymous', $log_html, 1);
@@ -156,12 +153,12 @@ class PoolInvestListener extends AbstractListener {
         }
         $log->doPublic('community');
 
-        Invest::setDetail($invest->id, 'confirmed', 'PoolInvest process completed successfully');
+        Invest::setDetail($invest->id, 'confirmed', 'DoanteInvest process completed successfully');
 
         // Assign response if not previously assigned
 
         if (!$event->getHttpResponse()) {
-            $event->setHttpResponse(new RedirectResponse('/pool/' . $invest->id));
+            $event->setHttpResponse(new RedirectResponse('/donate/' . $invest->id));
         }
     }
 
