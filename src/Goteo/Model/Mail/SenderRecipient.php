@@ -14,6 +14,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Model\Mail;
+use Goteo\Model\User;
 
 /*
  * SenderRecipient for Sender class
@@ -127,9 +128,13 @@ class SenderRecipient extends \Goteo\Core\Model
         $mail->subject = $sender->subject;
         $subscribe = SITE_URL . '/user/subscribe/' . $mail->getToken();
         $unsubscribe = SITE_URL . '/user/unsubscribe/' . $mail->getToken();
+
+        //
+        $user= new User();
+        $user->id=$this->user;
         $mail->content = str_replace(
-            array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%', '%SUBSCRIBEURL%', '%UNSUBSCRIBEURL%'),
-            array($this->user, $this->email, $this->name, SITE_URL, $subscribe, $unsubscribe),
+            array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%', '%SUBSCRIBEURL%', '%UNSUBSCRIBEURL%', '%POOLAMOUNT%'),
+            array($this->user, $this->email, $this->name, SITE_URL, $subscribe, $unsubscribe, $user->getpool()->amount),
             $mail->content
         );
         echo "SENT " .$mail->id."\n\n";
