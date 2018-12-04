@@ -16,6 +16,7 @@ $templates = $this->templates
         <li><strong>%SITEURL%</strong> Para la url de esta plataforma (<?= SITE_URL ?>)</li>
         <li><strong>%SUBSCRIBEURL%</strong> Link directo de suscripción a la newsletter del usuario</li>
         <li><strong>%UNSUBSCRIBEURL%</strong> Link directo de desuscripción a la newsletter del usuario</li>
+        <li><strong>%POOLAMOUNT%</strong> Cantidad de dinero disponible en el mondero del usuario</li>
     </ul>
 </div>
 
