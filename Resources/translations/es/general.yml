@@ -229,7 +229,7 @@ session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar
 session-expired: 'Tu sesión en goteo ha expirado!'
 spread-about: 'Texto spread-about'
 stories-user-project: '%s, del proyecto: %s'
-support-our-mission: 'SUPPORT OUR MISSION'
+support-our-mission: 'DONA A FUNDACIÓN GOTEO'
 tooltip: 'Texto tooltip'
 tooltip-dashboard-user-access_data: 'Estos son tus datos actuales de acceso. Lo único que no se puede cambiar es el login de usuario.'
 tooltip-dashboard-user-change_email: 'Desde aquí puedes cambiar la dirección de correo electrónico en que recibes los mensajes de Goteo.'
