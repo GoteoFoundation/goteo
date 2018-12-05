@@ -84,7 +84,7 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
      */
     public function getUserAmounts($total) {
         $users = $this->getMatcher()->getUsers();
-        $total_amount = $this->getMatcher()->getTotalAmount();
+        $total_amount = $this->getMatcher()->getAvailableAmount();
         $list = [];
         $calculated = 0;
         $pools = [];
@@ -92,6 +92,7 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
             $pool = $user->getPool()->amount;
             $share = $pool / $total_amount;
             $amount = floor($share * $total);
+            // echo "pool[$pool] share[$share] total[$total] amount[$amount]";
             if($amount > $pool) $amount = $pool;
             $pools[$user->id] = $pool - $amount;
 
@@ -149,6 +150,7 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
                     'matcher'   => $matcher->id
                 ]);
             }
+
             return $list;
 
         }

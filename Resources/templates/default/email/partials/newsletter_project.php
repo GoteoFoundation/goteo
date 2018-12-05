@@ -8,6 +8,18 @@ $url = SITE_URL . '/project/' . $project->id;
 
 ?>
 
+<div style="width: 600px; background-color: #ffffff;padding: 20px 10px 40px 20px;margin-top: 20px;">
+
+<h4 style="margin-top:0 !important;">
+    <?= $this->text('newsletter-donate-description') ?>
+</h4>
+
+<a class="btn-support" style="background: #16A5A3; background-image: -webkit-linear-gradient(top, #16A5A3, #24837F); background-image: -moz-linear-gradient(top, #16A5A3, #24837F); background-image: -ms-linear-gradient(top, #16A5A3, #24837F); background-image: -o-linear-gradient(top, #16A5A3, #24837F); background-image: linear-gradient(to bottom, #16A5A3, #24837F); -webkit-border-radius: 11; -moz-border-radius: 11; border-radius: 6px; font-family: Arial; color: #ffffff; font-size: 15px; padding: 10px 20px 10px 20px; text-decoration: none; float: none !important; margin-top: 48px;" href="https://goteo.org/donate">
+  <?= $this->text('support-our-mission') ?>
+</a>
+
+</div>
+
 <div style="width: 600px; background-color: #ffffff;padding: 20px 10px 20px 20px;margin-top: 20px;">
 
     <div>

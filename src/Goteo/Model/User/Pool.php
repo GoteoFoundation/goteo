@@ -71,8 +71,8 @@ class Pool extends \Goteo\Core\Model {
         $query = static::query($sql, [':user' => $this->user, ':status' => Invest::STATUS_TO_POOL]);
         $total_to_pool = (int) $query->fetchColumn();
 
-        $sql = "SELECT SUM(amount) AS total FROM invest WHERE user=:user AND method='pool' AND status IN (:status1, :status2)";
-        $query = static::query($sql, [':user' => $this->user, ':status1' => Invest::STATUS_PAID, ':status2' => Invest::STATUS_CHARGED]);
+        $sql = "SELECT SUM(amount+donate_amount) AS total FROM invest WHERE user=:user AND method='pool' AND status IN (:status1, :status2, :status3)";
+        $query = static::query($sql, [':user' => $this->user, ':status1' => Invest::STATUS_PAID, ':status2' => Invest::STATUS_CHARGED, ':status3' => Invest::STATUS_DONATED]);
         $total_from_pool = (int) $query->fetchColumn();
 
         $diff = max(0, $total_to_pool - $total_from_pool);

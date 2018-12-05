@@ -30,7 +30,7 @@ class AdminChartsApiController extends ChartsApiController {
 
     public function __construct() {
         parent::__construct();
-        if(!$this->user || !$this->user->hasPerm('view-any-project')) {
+        if(!$this->user || !$this->user->hasPerm('admin-module-stats')) {
             throw new ControllerAccessDeniedException();
         }
     }

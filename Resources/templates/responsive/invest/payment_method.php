@@ -8,7 +8,7 @@ $this->section('main-content');
 
 <div class="container">
 
-    <div class="-row -row-form">
+    <div class="row row-form">
         <div class="panel panel-default invest-container">
             <div class="panel-body">
                 <h2 class="padding-bottom-2"><?= $this->text('invest-method-title') ?></h2>
