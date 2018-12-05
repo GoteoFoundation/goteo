@@ -18,6 +18,7 @@ vip:
         - recommend-projects # personal list of recommended projects
     level: 10
 
+
 translator:
     extends: user # inherits permissions from role "user"
     perms:
@@ -44,6 +45,12 @@ blogger:
         - full-html-edit # View/review an assigned review project before their publication
     level: 40
 
+stats:
+    extends: user
+    perms:
+        - admin-module-stats # Can access to stats
+    level: 40
+
 manager:
     extends: user
     perms:
@@ -52,6 +59,7 @@ manager:
         - admin-module-blog # create/edit/delete non-project posts
         - admin-module-stories # create/edit/delete non-project posts
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
+        - admin-module-stats # Can access to stats
     level: 50
 
 consultant:

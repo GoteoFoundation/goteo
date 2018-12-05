@@ -431,7 +431,7 @@ class Mail extends \Goteo\Core\Model {
 
     static public function decodeToken($token, $validate = true, $decode = true) {
         if($decode) {
-            $token = \mybase64_decode($token);
+            $token = htmlspecialchars(\mybase64_decode($token));
         }
         if(strpos($token, '¬') !== false) {
             $decoded = explode('¬', $token);
