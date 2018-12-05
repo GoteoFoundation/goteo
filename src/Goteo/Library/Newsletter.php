@@ -255,7 +255,7 @@ namespace Goteo\Library {
                    // $promotes_content = '<div class="section-tit">'.Text::get('home-promotes-header').'</div>';
                     foreach ($home_promotes as $key => $promote) {
                         try {
-                            $promotes_content .= View::render('email/partials/newsletter_project', array('promote'=>$promote, 'project'=>$promote->projectData));
+                            $promotes_content .= View::render('email/partials/newsletter_project', array('promote'=>$promote, 'project'=>$promote->projectData, 'key' => $key));
                         } catch (\Goteo\Core\Error $e) {
                             continue;
                         }
