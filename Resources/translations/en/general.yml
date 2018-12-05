@@ -239,3 +239,4 @@ user-register-success: 'The user was registered correctly. We are sending you an
 validate-project-social_rewards: 'You have to specify at least one collective benefit'
 validate-project-total-costs: "The maximum cost cannot exceed more that 50% of the minimum cost. Either you raise the base costs or lower the additional costs."
 user-promoter: 'The promoter'
+newsletter-donate-description: 'In order for us to continue our work so that more civic initiatives take place'
