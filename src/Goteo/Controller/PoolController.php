@@ -138,7 +138,7 @@ class PoolController extends \Goteo\Core\Controller {
 
         $user = Session::getUser();
 
-        $pool = $user->getPool();
+        $pool = $user ? $user->getPool() : null;
 
         return $this->viewResponse('pool/select_amount', ['step' => 1, 'type' => $type, 'pool' => $pool, 'amount' => $amount ]);
 

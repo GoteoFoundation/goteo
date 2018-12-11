@@ -7,13 +7,13 @@ text: >
     Hola %USERNAME%,
 
 
-    Tu donación a la Fundación Goteo de **%DONATE_AMOUNT%** se ha completado con éxito, muchísimas gracias por ayudarnos a continuar con nuestra labor ayudando a proyectos con impacto social.
+    Gracias por tu donación de **%DONATE_AMOUNT%** a la Fundación Goteo, la hemos recibido al grito de *¡gota a gota, juntos somos un océano!* :) Nos ayuda y motiva a continuar con nuestra labor de impulsar iniciativas con una gran capacidad de transformación social. Muchísimas gracias. 
 
 
-    Te recordamos que la donación a la Fundación Goteo otorga la posibilidad de [descargar tu certificado de desgravación fiscal](%CERTIFICATE_URL%).
+    Recuerda que, por tu donación y tu apoyo a la Fundación Goteo, tienes a disposición tu [certificado de desgravación fiscal](%CERTIFICATE_URL%).
 
 
-    ¡Un abrazo!
+    ¡Un cálido abrazo!
 
 
     El equipo de Goteo
