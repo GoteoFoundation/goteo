@@ -113,11 +113,13 @@ class DonateInvestListener extends AbstractListener {
 
         // Send mail with amount rechargued
 
+        $original_lang = $lang = User::getPreferences($user)->comlang;
+
         if( Mail::createFromTemplate($user->email, $user->name, Template::DONATE_ORGANIZATION_THANKS, [
               '%USERNAME%'   => $user->name,
               '%DONATE_AMOUNT%'   => Currency::amountFormat($invest->donate_amount),
-              '%CERTIFICATE_URL%'     => Config::getUrl($lang) . '/dashboard/wallet/certificate'
-               ], $user->lang)
+              '%CERTIFICATE_URL%'     => Config::getMainUrl() . '/dashboard/wallet/certificate'
+               ], $lang)
         ->send($errors)) {
             // Sent succesfully
          }

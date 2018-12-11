@@ -240,7 +240,7 @@ class Mail extends \Goteo\Core\Model {
 
         // Obtenemos la plantilla para asunto y contenido
         if(empty($lang)) $mail->lang = Lang::current();
-        $tpl = Template::get($template, $mail->lang);
+        $tpl = Template::get($template, $lang);
         // Sustituimos los datos
         $mail->subject = $tpl->title;
         $mail->template = $tpl->id;
@@ -252,6 +252,8 @@ class Mail extends \Goteo\Core\Model {
             $mail->subject = str_replace(array_keys($vars), array_values($vars), $mail->subject);
 
         }
+
+        $mail->lang = $lang;
 
         return $mail;
     }

@@ -120,7 +120,7 @@ class Template extends \Goteo\Core\Model {
     static public function get ($id, &$lang = null, $avoid_pending = true) {
 
         //Obtenemos el idioma de soporte
-        $lang=static::default_lang_by_id($id, 'template_lang', $lang);
+        $default_lang=static::default_lang_by_id($id, 'template_lang', $lang);
 
         // buscamos la plantilla en ese idioma
 		$sql = "SELECT  template.id as id,
@@ -138,7 +138,7 @@ class Template extends \Goteo\Core\Model {
                     " . ($avoid_pending ? ' AND template_lang.pending=0' : '') . "
                  WHERE template.id = :id
                 ";
-        $values = array( ':id' => $id, ':lang' => $lang );
+        $values = array( ':id' => $id, ':lang' => $default_lang );
         // die(\sqldbg($sql, $values));
 		if($query = static::query($sql, $values)) {
 		  if($template = $query->fetchObject(__CLASS__)) {
