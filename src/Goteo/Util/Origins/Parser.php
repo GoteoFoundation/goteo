@@ -19,6 +19,25 @@ class Parser {
         $this->subdomains = $subdomains;
     }
 
+    public static function sanitize($text) {
+        $table = array(
+            'Š' => 'S', 'š' => 's', 'Đ' => 'Dj', 'đ' => 'dj', 'Ž' => 'Z', 'ž' => 'z', 'Č' => 'C', 'č' => 'c', 'Ć' => 'C', 'ć' => 'c',
+            'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A', 'Æ' => 'A', 'Ç' => 'C', 'È' => 'E', 'É' => 'E',
+            'Ê' => 'E', 'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I', 'Ï' => 'I', 'Ñ' => 'N', 'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O',
+            'Õ' => 'O', 'Ö' => 'O', 'Ø' => 'O', 'Ù' => 'U', 'Ú' => 'U', 'Û' => 'U', 'Ü' => 'U', 'Ý' => 'Y', 'Þ' => 'B', 'ß' => 'Ss',
+            'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'å' => 'a', 'æ' => 'a', 'ç' => 'c', 'è' => 'e', 'é' => 'e',
+            'ê' => 'e', 'ë' => 'e', 'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i', 'ð' => 'o', 'ñ' => 'n', 'ò' => 'o', 'ó' => 'o',
+            'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ø' => 'o', 'ù' => 'u', 'ú' => 'u', 'û' => 'u', 'ü' => 'u', 'ý' => 'y', 'ý' => 'y',
+            'þ' => 'b', 'ÿ' => 'y', 'Ŕ' => 'R', 'ŕ' => 'r', 'ª' => 'a', 'º' => 'o', 'ẃ' => 'w', 'Ẃ' => 'Ẃ', 'ẁ' => 'w', 'Ẁ' => 'Ẃ', '€' => 'eur',
+            'ý' => 'y', 'Ý' => 'Y', 'ỳ' => 'y', 'Ỳ' => 'Y', 'ś' => 's', 'Ś' => 'S', 'ẅ' => 'w', 'Ẅ' => 'W',
+            '!' => '', '¡' => '', '?' => '', '¿' => '', '@' => '', '^' => '', '|' => '', '#' => '', '~' => '',
+            '%' => '', '$' => '', '*' => '', '+' => '', '.' => '-', '`' => '', '´' => '', '’' => '', '”' => '-', '“' => '-',
+        );
+        // Clean modern un-supported UTF8 chars
+        $text = utf8_encode(utf8_decode($text));
+        return preg_replace('/[^\x20-\x7e]*/', '', $text);
+    }
+
     function getUA() {
         // Extracting UA elements
         // https://github.com/ua-parser/uap-php
@@ -33,7 +52,7 @@ class Parser {
 
     function getReferer() {
         // Manual origin tracker
-        if($ref = $this->request->query->get('ref')) {
+        if($ref = static::sanitize($this->request->query->get('ref'))) {
             return [
                 'tag' => $ref,
                 'category' => 'campaign',
@@ -45,7 +64,7 @@ class Parser {
         // https://github.com/snowplow/referer-parser/tree/master/php
 
         $parser = new RefererParser();
-        $ref = $this->request->headers->get('referer');
+        $ref = static::sanitize($this->request->headers->get('referer'));
         $result = $parser->parse($ref, $this->request->getUri());
         $parts = explode("/", $this->request->getPathInfo());
 
