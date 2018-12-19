@@ -126,7 +126,7 @@
           <td>
               <?php if(!$invest->isCharged()): ?>
                 <span class="label label-danger"><?= $invest->getStatusText(true) ?></span>
-              <?php elseif($invest->resign): ?>
+              <?php elseif($invest->resign || $invest->campaign): ?>
                 &nbsp;
               <?php elseif($invest->fulfilled): ?>
                 <span class="label label-cyan"><?= $this->text('regular-yes') ?></span>
