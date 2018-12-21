@@ -17,7 +17,8 @@
         </div>
 
         <input type="hidden" name="reward" value="<?= $this->reward ?>">
-        <input type="hidden" name="filter" value="<?= $this->filter ?>">
+        <input type="hidden" name="others" value="<?= $this->others ?>">
+        <input type="hidden" name="query" value="<?= $this->query ?>">
         <input type="hidden" name="users" value="<?= implode(',', $this->a('users')) ?>">
 
     </div>

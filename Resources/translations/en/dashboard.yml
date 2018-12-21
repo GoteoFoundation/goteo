@@ -236,6 +236,7 @@ dashboard-message-donors-pending: 'are pending'
 dashboard-message-donors-fulfilled: 'are completed'
 dashboard-message-donors-error: 'No valid recipients, message cannot be sent'
 dashboard-message-donors-total: '%s donors'
+dashboard-message-donors-filtered-by: 'matches: %s'
 dashboard-message-no-message: 'No messages for you yet.'
 dashboard-message-threads: 'You have %s message threads'
 

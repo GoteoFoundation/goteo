@@ -186,15 +186,19 @@ $(function(){
         var $subject = $parent.find('[name="subject"]');
         var $body = $parent.find('[name="body"]');
         var $reward = $parent.find('[name="reward"]');
-        var $filter = $parent.find('[name="filter"]');
+        var $others = $parent.find('[name="others"]');
+        var $query = $parent.find('[name="query"]');
         var $users = $parent.find('[name="users"]');
 
         var data = {
             subject: $subject.val(),
             body: $body.val(),
             thread: $parent.data('thread'),
-            reward: $reward.val(),
-            filter: $filter.val(),
+            filter: {
+                others: $others.val(),
+                reward: $reward.val(),
+                query: $query.val()
+            },
             users: $users.val().split(','),
             project: $parent.data('project'),
             // view: 'dashboard'

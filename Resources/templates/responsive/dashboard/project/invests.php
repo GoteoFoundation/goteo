@@ -1,7 +1,9 @@
 <?php $this->layout('dashboard/project/layout') ?>
 
 <?php $this->section('dashboard-content') ?>
-
+<?php
+$filter = $this->a('filter');
+?>
 <div class="dashboard-content">
   <div class="inner-container">
     <h2><?= $this->text('dashboard-menu-projects-rewards') ?></h2>
@@ -17,13 +19,12 @@
             <p><?= $this->html('input',
                         ['type' => 'text',
                         'name' => 'filter[query]',
-                        'value' => $this->filter['query'],
+                        'value' => $filter['query'],
                         'attribs' => [
                             'id' => 'filter-query',
                             'class' => 'form-control',
                             'placeholder' => $this->text('regular-search-user')
-                        ],
-                        'options' => $this->filters['query']
+                        ]
                     ]) ?></p>
 
         </div>
@@ -37,7 +38,7 @@
             <?= $this->html('input',
                         ['type' => 'select',
                         'name' => 'filter[reward]',
-                        'value' => $this->filter['reward'],
+                        'value' => $filter['reward'],
                         'attribs' => [
                             'id' => 'filter-reward',
                             'class' => 'form-control'
@@ -50,7 +51,7 @@
             <?= $this->html('input',
                         ['type' => 'select',
                         'name' => 'filter[others]',
-                        'value' => $this->filter['others'],
+                        'value' => $filter['others'],
                         'attribs' => [
                             'id' => 'filter-others',
                             'class' => 'form-control'
@@ -164,8 +165,9 @@
       <div class="modal-body">
         <div class="messages-list"></div>
         <?= $this->insert('dashboard/project/partials/message', [
-            'reward' => $this->filter['reward'],
-            'filter' => $this->filter['others'],
+            'reward' => $filter['reward'],
+            'others' => $filter['others'],
+            'query' => $filter['query'],
             'project' => $this->project->id
             ]) ?>
       </div>
@@ -226,7 +228,8 @@ $(function(){
         pending: '<?= $this->ee($this->text('dashboard-message-donors-pending'), 'js') ?>',
         fulfilled: '<?= $this->ee($this->text('dashboard-message-donors-fulfilled'), 'js') ?>',
         error: '<?= $this->ee($this->text('dashboard-message-donors-error'), 'js') ?>',
-        total: '<?= $this->ee($this->text('dashboard-message-donors-total'), 'js') ?>'
+        total: '<?= $this->ee($this->text('dashboard-message-donors-total'), 'js') ?>',
+        filtered: '<?= $this->ee($this->text('dashboard-message-donors-filtered-by'), 'js') ?>'
     };
     var total_users = <?= (int)$this->total_users ?>;
 
@@ -242,10 +245,12 @@ $(function(){
         var $list = $('#messageModal .messages-list');
         var $recipients = $('#messageModal .ajax-message .recipients');
         var prefix = $recipients.data('private');
+        var query = $('#filter-query').val();
         var reward_id = $('#filter-reward').val();
         var reward_txt = $('#filter-reward option:selected').text();
         var others_id = $('#filter-others').val();
         var others_txt = $('#filter-others option:selected').text();
+        $('#messageModal input[name="subject"]').select();
 
         // Create form fields
         $('#messageModal .ajax-message .error-message').addClass('hidden');
@@ -282,9 +287,10 @@ $(function(){
           });
 
           txt = '<span class="label label-lilac">' + user_txt + '</span>';
+          query = '';
           reward_id = '';
           others_id = '';
-        } else if(!reward_id && !others_id) {
+        } else if(!reward_id && !others_id && !query) {
             txt = '<span class="label label-lilac">' + texts.all + '</span>';
         } else {
             user_id = '';
@@ -299,7 +305,11 @@ $(function(){
                 txt = texts.donors + ' ';
                 txt += '<span class="label label-lilac">' + texts[others_id] + '</span>';
             }
-            else {
+            if(query) {
+                if(txt) txt += ' ' + texts.and + ' ';
+                txt += '<span class="label label-orange">' + texts.filtered.replace('%s', '<em>'+query+'</em>') + '</span>';
+            }
+            if(!txt) {
                 txt += '<span class="label label-danger">' + texts.error + '</span>';
             }
         }
@@ -308,7 +318,8 @@ $(function(){
         }
 
         $('.ajax-message input[name="reward"]').val(reward_id || '');
-        $('.ajax-message input[name="filter"]').val(others_id || '');
+        $('.ajax-message input[name="others"]').val(others_id || '');
+        $('.ajax-message input[name="query"]').val(query || '');
         $('.ajax-message input[name="users"]').val(user_id || '');
         $('.ajax-message .recipients').html(prefix + ' <strong>'+ txt + '</strong>');
     });
@@ -316,7 +327,8 @@ $(function(){
     $(document).on('message-sent', function(evt, request, response){
         // console.log('message sent', request, response);
         $('.ajax-message input[name="reward"]').val('');
-        $('.ajax-message input[name="filter"]').val('');
+        $('.ajax-message input[name="others"]').val('');
+        $('.ajax-message input[name="query"]').val('');
         $('.ajax-message input[name="users"]').val('');
         // Clear subject and body?
         $('.ajax-message input[name="subject"]').val('');

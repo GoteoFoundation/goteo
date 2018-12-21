@@ -23,6 +23,7 @@ use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Library\Text;
 use Goteo\Model\Message as Comment;
+use Goteo\Controller\Dashboard\ProjectDashboardController;
 
 class MessagesApiController extends AbstractApiController {
 
@@ -263,22 +264,17 @@ class MessagesApiController extends AbstractApiController {
             throw new ModelException('Update failed '. implode(", ", $errors));
         }
         $users = $request->request->get('users');
-        if(is_array($users)) $users = array_filter($users);
+        if(is_array($users)) $users = array_filter($users); // Remove empty entries
 
         $event = new FilterMessageEvent($message);
+        if(!$users) {
+            // Try to extract recipients from filters if available
+            list($filters, $filter_by) = ProjectDashboardController::getInvestFilters($prj, $request->request->get('filter'));
+            $users = array_column(Invest::getUsersList($filter_by), 'id');
+        }
         if($users) {
             $message->setRecipients($users);
-        } else {
-            // TODO: find recipients from filters
-            $filters = [
-                'projects' => $project,
-                // 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID],
-                'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL],
-                'reward' => $request->request->get('reward'),
-                'types' => $request->request->get('filter')
-            ];
-            $message->setRecipients(Invest::getUsersList($filters));
-            $event->setDelayed(true);
+            if(is_array($users)) $event->setDelayed(true); // Send in background as a newsletter
         }
 
         if($recipients = $message->getRecipients()) {
@@ -298,9 +294,10 @@ class MessagesApiController extends AbstractApiController {
 
         return $this->jsonResponse([
             'id' => $message->id,
-            'user' => $comment->user,
-            'project' => $comment->project,
-            'message' => $comment->message
+            'user' => $message->user instanceOf User ? $message->user->id : $message->user,
+            'project' => $message->project,
+            'users' => $users,
+            'message' => $message->message
         ]);
     }
 }

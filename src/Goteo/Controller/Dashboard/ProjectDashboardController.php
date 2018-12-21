@@ -917,6 +917,50 @@ class ProjectDashboardController extends DashboardController {
     }
 
     /**
+     * Reusable function to filter invests in the dashboard
+     * TODO: move this to a custom class (maybe the dependency container) for wider reusing
+     * @param  filter
+     * @return array                [filters, filter_by]
+     */
+    public static function getInvestFilters(Project $project, $filter = []) {
+        $filters =  [
+            'reward' => ['' => Text::get('regular-see_all')],
+            'others' => ['' => Text::get('regular-see_all'),
+                         'pending' => Text::get('dashboard-project-filter-by-pending'),
+                         'fulfilled' => Text::get('dashboard-project-filter-by-fulfilled'),
+                         'donative' => Text::get('dashboard-project-filter-by-donative'),
+                         'nondonative' => Text::get('dashboard-project-filter-by-nondonative')
+                        ]
+        ];
+        foreach($project->getIndividualRewards() as $reward) {
+            $filters['reward'][$reward->id] = $reward->getTitle();
+        }
+        if($project->getCall()) {
+            $filters['others']['drop'] = Text::Get('dashboard-project-filter-by-drop');
+            $filters['others']['nondrop'] = Text::Get('dashboard-project-filter-by-nondrop');
+        }
+        // $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID];
+        // if($project->isDead()) {
+        //     $status = [Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
+        // }
+        $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
+        $filter_by = ['projects' => $project->id, 'status' => $status];
+        if(!is_array($filter)) $filter = [];
+
+        if((int)$filter['reward']) {
+            $filter_by['reward'] = $filter['reward'];
+        }
+        if(array_key_exists($filter['others'], $filters['others'])) {
+            $filter_by['types'] = $filter['others'];
+        }
+        if($filter['query']) {
+            $filter_by['name'] = $filter['query'];
+        }
+
+        return [$filters, $filter_by];
+    }
+
+    /**
      * Rewards/invest section
      */
     public function investsAction($pid = null, Request $request) {
@@ -936,46 +980,13 @@ class ProjectDashboardController extends DashboardController {
             $order = "$key $dir";
         }
 
-        $filters =  [
-            'reward' => ['' => Text::get('regular-see_all')],
-            'others' => ['' => Text::get('regular-see_all'),
-                         'pending' => Text::get('dashboard-project-filter-by-pending'),
-                         'fulfilled' => Text::get('dashboard-project-filter-by-fulfilled'),
-                         'donative' => Text::get('dashboard-project-filter-by-donative'),
-                         'nondonative' => Text::get('dashboard-project-filter-by-nondonative')
-                        ]
-        ];
-        foreach($project->getIndividualRewards() as $reward) {
-            $filters['reward'][$reward->id] = $reward->getTitle();
-        }
-        if($project->getCall()) {
-            $filters['others']['drop'] = Text::Get('dashboard-project-filter-by-drop');
-            $filters['others']['nondrop'] = Text::Get('dashboard-project-filter-by-nondrop');
-        }
-
-        // $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID];
-        // if($project->isDead()) {
-        //     $status = [Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
-        // }
-        $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
-        $filter_by = ['projects' => $project->id, 'status' => $status];
+        // TODO: save to session with current filter values?
         $filter = $request->query->get('filter');
-        if(!is_array($filter)) $filter = [];
-
-        if((int)$filter['reward']) {
-            $filter_by['reward'] = $filter['reward'];
-        }
-        if(array_key_exists($filter['others'], $filters['others'])) {
-            $filter_by['types'] = $filter['others'];
-        }
-        if($filter['query']) {
-            $filter_by['name'] = $filter['query'];
-        }
+        list($filters, $filter_by) = static::getInvestFilters($project, $filter);
 
         $invests = Invest::getList($filter_by, null, $offset, $limit, false, $order);
         $totals = Invest::getList($filter_by, null, 0, 0, 'all');
 
-        // TODO: save to session with current filter values?
 
         $messages = [];
         foreach($invests as $invest) {
