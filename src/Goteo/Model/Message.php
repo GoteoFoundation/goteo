@@ -123,7 +123,7 @@ class Message extends \Goteo\Core\Model {
     /*
      * Lista de hilos de un proyecto
      */
-    public static function getAll ($project, $lang = null, $with_private = false) {
+    public static function getAll ($project, $lang = null, $with_private = false, $with_mailing = false, $order = 'data ASC, id ASC') {
         if($project instanceOf Project) $project = $project->id;
 
         $messages = array();
@@ -152,9 +152,12 @@ class Message extends \Goteo\Core\Model {
             WHERE   message.project = :project
             AND     message.thread IS NULL
             " . ($with_private ? '' : ' AND private=0 ') . "
-            ORDER BY date ASC, id ASC
+            " . ($with_mailing ? ' AND message.id IN (SELECT message_id FROM mail) ' : '' ) . "
+            ORDER BY $order
             ";
-        $query = static::query($sql, array(':project' => $project));
+        $values = [':project' => $project];
+        // die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $message) {
 
             // datos del usuario. Eliminación User::getMini
@@ -367,6 +370,16 @@ class Message extends \Goteo\Core\Model {
         return null;
     }
 
+    public function getStatus() {
+        if($mail = $this->getMail()) return $mail->getStatus();
+        return null;
+    }
+
+    public function getStatusObject() {
+        if($mail = $this->getMail()) return $mail->getStatusObject();
+        return null;
+    }
+
     // Description title from project
     public function getTitle() {
         if($this->project) return $this->getProject()->name;
@@ -379,7 +392,7 @@ class Message extends \Goteo\Core\Model {
 
     public function getSubject() {
         if($this->subject) return $this->subject;
-        return trim(str_replace('### ', '', strtok($this->message, "\n")));
+        return trim(str_replace('### ', '', strtok(strip_tags($this->message), "\n")));
     }
 
     /**

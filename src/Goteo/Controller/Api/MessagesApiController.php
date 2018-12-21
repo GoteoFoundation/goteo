@@ -300,4 +300,38 @@ class MessagesApiController extends AbstractApiController {
             'message' => $message->message
         ]);
     }
+
+
+    /**
+     * Project Mailing (generated from Messages to more than 2 users)
+     */
+    public function projectMailingAction($pid, Request $request) {
+        $prj = Project::get($pid);
+
+        // Security, first of all...
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $list = [];
+        foreach(Comment::getAll($prj, null, true, true, 'date DESC') as $msg) {
+            $list[] = [
+                'id' => $msg->id,
+                'date' => $msg->date,
+                'timeago' => $msg->timeago,
+                'private' => $msg->private,
+                'subject' => $msg->getSubject(),
+                'html' => $msg->getHtml(),
+                'stats' => $msg->getStats(),
+                // 'status' => $msg->getStatus(),
+                'status' => $msg->getStatusObject(),
+                'user_id' => $msg->user_id,
+                'user_name' => $msg->user_name,
+                'user_email' => $msg->user_email,
+                'user_avatar' => $msg->user_avatar
+            ];
+        }
+
+        return $this->jsonResponse($list);
+    }
 }

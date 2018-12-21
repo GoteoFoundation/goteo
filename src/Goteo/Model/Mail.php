@@ -622,6 +622,13 @@ class Mail extends \Goteo\Core\Model {
 
         return $this->status;
     }
+    public function getStatusObject() {
+        if($this->getSender()) {
+            return $this->getSender()->getStatusObject();
+        }
+
+        return $this->status;
+    }
     /**
      *
      * @param array $filters    user (nombre o email),  template
