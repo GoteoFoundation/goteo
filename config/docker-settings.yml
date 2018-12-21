@@ -5,7 +5,13 @@
 secret: --a-very-secret-string---
 
 # local environment: local, beta, real
-env: local # set to real to send emails
+env: real # set to real to send emails
+# CAUTION
+# set to real for Docker install only
+# Do no use real for development if not using Docker
+# VIEW SENT EMAILS IN DOCKER
+# Go with your browser to localhost:8025
+# Any email sent by Goteo will be cached
 debug: true # whether to show trace for errors or not
             # This is always true for local or beta env
 
@@ -15,7 +21,16 @@ lang: es
 # url
 url:
     main: //0.0.0.0:8081
-
+# RECOMMENDED:
+# Add a this line to your /etc/hosts file:
+#
+# 127.0.0.0 goteo.test
+#
+# and use
+#
+# url:
+#    main: //goteo.test:8081
+#
 plugins:
     goteo-dev:
         active: true # plugin should be active=true to be loaded
@@ -54,14 +69,26 @@ meta:
     title:       "Development Goteo"       # Html default <title>
 
 # Mail transport
+# Mail transport
 mail:
     # receiving emails
-    mail:         info@localhost     # Main
-    contact:      info@localhost     # consulting head
-    manager:      manager@localhost  # accounts manager
-    fail:         dev@localhost      # dev head
-    log:          sitelog@localhost  # Loggin mail
+    mail:         info@goteo.test     # Main
+    contact:      info@goteo.test     # consulting head
+    manager:      manager@goteo.test  # accounts manager
+    fail:         dev@goteo.test      # dev head
+    log:          sitelog@goteo.test  # Loggin mail
 
+    transport:
+        from:          noreply@goteo.test
+        name:          Goteo Test
+        type:          smtp
+
+        # if type is smtp
+        smtp:
+            auth:     false
+            secure:   false
+            host:     mailhog
+            port:     1025
 
 # This will be used for geolocating users, projects, and mail tracking
 geolocation:
