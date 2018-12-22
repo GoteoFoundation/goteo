@@ -9,16 +9,16 @@
   margin-bottom: 20px;
 
   .inner-container {
-      max-width: $breakpoint-md - 30;
-      padding-right: 15px;
-      padding-left: 15px;
-      margin-right: auto;
-      margin-left: auto;
-      @media(max-width: $breakpoint-sm - 1) {
-          padding-right: 5px;
-          padding-left: 5px;
-      }
+    max-width: $breakpoint-md - 30;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    @media(max-width: $breakpoint-sm - 1) {
+        padding-right: 5px;
+        padding-left: 5px;
     }
+  }
 
 
   p {
@@ -216,6 +216,17 @@
         &::after {
           content: "\f0d8";
         }
+      }
+    }
+  }
+
+  .invests-extra-options {
+    @media(min-width: $breakpoint-xs) {
+      .exportcsv {
+        float: left;
+      }
+      .mailing {
+        float: right;
       }
     }
   }
@@ -610,7 +621,7 @@
       cursor: pointer;
     }
   }
-  .messages-list {
+  .messages-list, .mailing-list {
     .media {
         h4 {
             font-weight: normal;
