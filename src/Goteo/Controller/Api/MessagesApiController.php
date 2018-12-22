@@ -205,7 +205,7 @@ class MessagesApiController extends AbstractApiController {
         foreach(Comment::getUserMessages($user, $prj) as $msg) {
             $mail = $msg->getMail();
             $stats = $msg->getStats();
-            $opened = (bool) $stats && $stats->getEmailOpenedCollector()->getPercent();
+            $opened = (bool) $stats ? $stats->getEmailOpenedCollector()->getPercent() : false;
             $ob = ['id' => $msg->id,
                    'message' => $msg->getHtml(),
                    'sent' => $mail ? true : false,
@@ -314,7 +314,17 @@ class MessagesApiController extends AbstractApiController {
         }
 
         $list = [];
-        foreach(Comment::getAll($prj, null, true, true, 'date DESC') as $msg) {
+        $filters = [
+            'with_private' => true,
+            'with_mailing' => true
+        ];
+        if($request->query->has('active')) $filters['active'] = (bool) $request->query->get('active');
+        foreach(Comment::getAll($prj, null, $filters, 'date DESC') as $msg) {
+            $stats = $msg->getStats();
+            $percent = $stats ? $stats->getEmailOpenedCollector()->getPercent() : 0;
+            $total = intval($stats ? $stats->getEmailOpenedCollector()->non_zero : 0);
+            $sender = $msg->getMail() ? $msg->getMail()->getSender() : null;
+
             $list[] = [
                 'id' => $msg->id,
                 'date' => $msg->date,
@@ -322,9 +332,9 @@ class MessagesApiController extends AbstractApiController {
                 'private' => $msg->private,
                 'subject' => $msg->getSubject(),
                 'html' => $msg->getHtml(),
-                'stats' => $msg->getStats(),
-                // 'status' => $msg->getStatus(),
+                'active' => $sender ? (bool)$sender->active : false,
                 'status' => $msg->getStatusObject(),
+                'opened' => ['percent' => $percent, 'total' => $total],
                 'user_id' => $msg->user_id,
                 'user_name' => $msg->user_name,
                 'user_email' => $msg->user_email,
@@ -332,6 +342,8 @@ class MessagesApiController extends AbstractApiController {
             ];
         }
 
-        return $this->jsonResponse($list);
+        return $this->jsonResponse([
+            'list' => $list
+        ]);
     }
 }

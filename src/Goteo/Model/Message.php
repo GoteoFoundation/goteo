@@ -123,7 +123,7 @@ class Message extends \Goteo\Core\Model {
     /*
      * Lista de hilos de un proyecto
      */
-    public static function getAll ($project, $lang = null, $with_private = false, $with_mailing = false, $order = 'data ASC, id ASC') {
+    public static function getAll ($project, $lang = null, $filters = [], $order = 'data ASC, id ASC') {
         if($project instanceOf Project) $project = $project->id;
 
         $messages = array();
@@ -131,6 +131,14 @@ class Message extends \Goteo\Core\Model {
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
+        $values = [':project' => $project];
+        $sqlFilter = [];
+        if(empty($filters['with_private'])) $sqlFilter[] = 'private=0';
+        if(!empty($filters['with_mailing'])) $sqlFilter[] = 'message.id IN (SELECT message_id FROM mail)';
+        if(isset($filters['active'])) {
+            $sqlFilter[] = 'message.id IN (SELECT m.message_id FROM mail m,mailer_content s WHERE m.id=s.mail AND s.active=:active)';
+            $values[':active'] = (bool) $filters['active'];
+        }
         $sql="
               SELECT
                 message.id as id,
@@ -151,11 +159,9 @@ class Message extends \Goteo\Core\Model {
             $joins
             WHERE   message.project = :project
             AND     message.thread IS NULL
-            " . ($with_private ? '' : ' AND private=0 ') . "
-            " . ($with_mailing ? ' AND message.id IN (SELECT message_id FROM mail) ' : '' ) . "
+            " . ($sqlFilter ? ' AND ' .implode(' AND ', $sqlFilter) : '') . "
             ORDER BY $order
             ";
-        $values = [':project' => $project];
         // die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $message) {

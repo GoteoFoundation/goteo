@@ -221,6 +221,10 @@ class Sender extends \Goteo\Core\Model
             WHERE mailer_send.mailing = ?', $this->id
             );
             $sending = $query->fetchObject();
+            $sending->receivers = (int) $sending->receivers;
+            $sending->sent = (int) $sending->sent;
+            $sending->failed = (int) $sending->failed;
+            $sending->pending = (int) $sending->pending;
             if($sending->receivers) {
                 $sending->percent = 100 * (1 - $sending->pending / $sending->receivers);
                 $sending->percent_failed = 100 * ($sending->failed / $sending->receivers);
