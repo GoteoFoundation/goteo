@@ -90,10 +90,12 @@ $(function(){
             message: $textarea.val(),
             recipients: recipients,
             thread: $parent.data('thread'),
+            shared: $parent.data('shared'),
             project: $parent.data('project'),
             admin: $parent.data('admin'),
             view: 'dashboard'
         }
+        // console.log('sending comment', data);
         $error.addClass('hidden').html('');
         $.post(url, data, function(data) {
             // console.log('ok!', data);

@@ -231,7 +231,12 @@ $filter = $this->a('filter');
         <?= $this->insert('project/widgets/percent_status', ['percent' => 0, 'style' => 'pink mini center']) ?>
     </div>
     <div class="media-body">
-        <h4><strong>#{id}</strong> - <em title="{date}">{timeago}</em> <span class="recipient">{recipients} recipients</recipient></h4>
+        <h4>
+            <strong>#{id}</strong> -
+            <em title="{date}">{timeago}</em>
+            <a href="{respond_url}" class="btn btn-sm btn-pink"><i class="fa fa-paper-plane-o"></i> <?= $this->text('dashboard-project-mailing-write_again') ?></a>
+            <span class="recipient">{recipients} <?= $this->text('dashboard-menu-projects-recipients') ?></recipient>
+        </h4>
         <p>{subject}</p>
         <p class="text-danger hidden error-message"></p>
     </div>
@@ -275,6 +280,10 @@ $(function(){
     };
     var total_users = <?= (int)$this->total_users ?>;
 
+    if(location.hash && location.hash.indexOf('#msg-') === 0) {
+        var $openModal = $('a[href="#messageModal"][data-user="' + location.hash.substr(5) + '"]');
+        if($openModal.length) $openModal.click();
+    }
     // Message management
     $('#messageModal').on('shown.bs.modal', function (evt) {
         // console.log('modal evt', $(evt.relatedTarget).attr('class'), evt);
@@ -292,7 +301,6 @@ $(function(){
         var reward_txt = $('#filter-reward option:selected').text();
         var others_id = $('#filter-others').val();
         var others_txt = $('#filter-others option:selected').text();
-        $('#messageModal input[name="subject"]').select();
 
         // Create form fields
         $('#messageModal .ajax-message .error-message').addClass('hidden');
@@ -364,6 +372,11 @@ $(function(){
         $('.ajax-message input[name="query"]').val(query || '');
         $('.ajax-message input[name="users"]').val(user_id || '');
         $('.ajax-message .recipients').html(prefix + ' <strong>'+ txt + '</strong>');
+        if($subject.is(':visible'))
+            $('#messageModal input[name="subject"]').select();
+        else
+            $('#messageModal textarea').select();
+
     });
 
     $(document).on('message-sent', function(evt, request, response){
@@ -377,6 +390,7 @@ $(function(){
         $('.ajax-message textarea[name="body"]').val('');
 
         $('#messageModal').modal('hide');
+        loadLastMailingPercent();
         if(request.users) {
             for(var i in request.users) {
                 // console.log(request.users[i]);
@@ -410,21 +424,23 @@ $(function(){
     loadLastMailingPercent();
 
     var T_MAILING = null;
-    function loadMailing() {
+    function loadMailing(with_loading) {
         // Load mailing if existing
         var $template = $('script.item_mailing_template');
         var $list = $('#mailingModal .mailing-list');
-        // $list.addClass('loading');
+        if(with_loading) $list.addClass('loading');
         $.getJSON('/api/projects/<?= $this->project->id ?>/mailing', function(msgs) {
             if(msgs && msgs.list) {
-                // $list.removeClass('loading');
+                $list.removeClass('loading');
                 $.each(msgs.list, function(i, item){
+                var url = '/dashboard/messages#comments-' + item.id;
                 var msg = $template.html()
                     .replace(/\{id\}/g, item.id)
                     .replace(/\{subject\}/g, item.subject)
                     .replace(/\{date\}/g, item.date)
                     .replace(/\{timeago\}/g, texts.ago.replace('%s', item.timeago))
                     .replace(/\{message\}/g, item.html)
+                    .replace(/\{respond_url\}/g, url)
                     .replace(/\{recipients\}/g, item.status && item.status.receivers)
                     .replace(/\{percent_success\}/g, item.status && item.status.percent_success || 0)
                     .replace(/\{percent_read\}/g, item.opened && item.opened.percent || 0)
@@ -452,7 +468,7 @@ $(function(){
     }
 
     $('#mailingModal').on('shown.bs.modal', function (evt) {
-        loadMailing();
+        loadMailing(true);
     });
     $('#mailingModal').on('hide.bs.modal', function (evt) {
         clearTimeout(T_MAILING);

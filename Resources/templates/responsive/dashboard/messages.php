@@ -13,13 +13,18 @@
         $icon = '';
         if($type == 'project-private') $icon = 'partners';
         if($type == 'project-support') $icon = 'supports';
-
+        $project = $message->getProject() ? $message->getProject() : null ;
+        // Allow respond to all users if is the author of the thread
+        $shared = $project ? $message->getUser()->id === $this->get_user()->id : false;
     ?>
     <div class="panel section-content">
       <div class="panel-body">
         <h4 class="data-support">
             <a href="/project/<?= $message->project ?>"><img class="img-circle" src="<?= $message->getProject()->image->getLink(64,64,true)?>" style="height: 32px"> <?= $message->getTitle() ?></a>
             <small><em><?= date_formater($message->date, true) ?></em></small>
+            <?php if($shared): ?>
+            <small><strong><?= count($message->getParticipants(false)).' ' . $this->text('dashboard-menu-projects-recipients') ?></strong></small>
+            <?php endif ?>
             <small class="pull-right"><?= $this->text('message-'. $type ) ?></small>
         </h4>
           <p class="data-description"><?= $message->getHtml() ?></p>
@@ -33,10 +38,11 @@
             <?php endif ?>
 
               <?= $this->insert('dashboard/project/partials/comments/full', [
-                    'comments' => $message->getResponses($this->get_user(), true),
+                    'comments' => $message->getResponses($this->get_user(), true, 0 , 100),
                     'thread' => $message->id,
                     'private' => $message->private,
-                    'project' => $message->project,
+                    'shared' => $shared,
+                    'project' => $project->id,
                     'type' => $type
                     ]) ?>
           </div>
@@ -65,6 +71,7 @@ $(function(){
     if($thread.length) {
       // console.log('hash',location.hash);
       $thread.collapse('show');
+      $thread.find('textarea').select();
     }
 });
 
