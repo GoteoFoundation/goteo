@@ -315,7 +315,7 @@ $api->add('api-messages-add', new Route(
 ));
 
 // Project Mailing (generated from Messages to more than 2 users)
-$api->add('api-messages-project-user', new Route(
+$api->add('api-messages-project-mailing', new Route(
     '/projects/{pid}/mailing',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::projectMailingAction',
         )
