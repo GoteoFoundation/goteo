@@ -69,6 +69,7 @@ dashboard-menu-projects-commons: Retornos
 dashboard-menu-projects-contract: Contrato
 dashboard-menu-projects-social-commitment: 'Compromiso social'
 dashboard-menu-projects-messegers: Participantes
+dashboard-menu-projects-recipients: destinatarios
 dashboard-menu-projects-preview: 'Página pública'
 dashboard-menu-projects-rewards: Cofinanciadores
 dashboard-menu-projects-summary: Resumen
@@ -277,6 +278,7 @@ dashboard-project-mailing-ago: 'Enviado hace %s'
 dashboard-project-mailing-sending: 'Enviando mensaje %s'
 dashboard-project-mailing-percent_success: 'Porcentaje de mensajes ya enviados'
 dashboard-project-mailing-percent_opened: 'Porcentaje de usuarios que han confirmado recepción'
+dashboard-project-mailing-write_again: 'Escribir a todos'
 dashboard-project-not-alive-yet: 'Este apartado estará disponible cuando tu proyecto entre en campaña'
 dashboard-project-not-funded-yet: 'Este apartado estará disponible cuando tu proyecto acabe la  campaña exitosamente'
 dashboard-project-reward-cannot: 'Ahora no se pueden introducir nuevas recompensas. Durante la campaña es posible introducir nuevas recompensas (pero no borrar las que ya existen)'
