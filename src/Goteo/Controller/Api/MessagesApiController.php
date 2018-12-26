@@ -72,6 +72,8 @@ class MessagesApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException();
         }
         $thread = $request->request->get('thread');
+        // Share with other user of the thread if required
+        $shared = (bool) $request->request->get('shared');
         // allowing only responses to other messages
         // (for the moment)
         if(! $parent = Comment::get($thread)) {
@@ -95,6 +97,7 @@ class MessagesApiController extends AbstractApiController {
                 'project' => $project,
                 'blocked' => false,
                 'private' => $recipients ? true : $parent->private, // Set private if it has recipients or parent is private
+                'shared' => $shared,
                 'message' => $message,
                 'date' => date('Y-m-d H:i:s')
             ]);
@@ -103,18 +106,30 @@ class MessagesApiController extends AbstractApiController {
         if(!$comment->save($errors)) {
             throw new ModelException('Update failed '. implode(", ", $errors));
         }
+
+        $event = new FilterMessageEvent($comment);
+
         if($recipients) {
             $comment->setRecipients($recipients);
         } else {
-            // Set the parent as recipient
-            $comment->setRecipients([$parent->getUser()]);
+            if($shared) {
+                // Send to everyone in the thread except creator
+                $recipients = array_filter($parent->getParticipants(), function($u) {
+                    return $u->id !== $this->user->id;
+                });
+                $comment->setRecipients($recipients);
+                $event->setDelayed($shared); // Send in background as a newsletter
+            } else {
+                // Set the parent as recipient
+                $comment->setRecipients([$parent->getUser()]);
+            }
         }
         if(!$comment->getRecipients()) {
             throw new ModelException(Text::get('dashboard-message-donors-error'));
         }
 
         // Send and event to create the Feed and send emails
-        $this->dispatch(AppEvents::MESSAGE_CREATED, new FilterMessageEvent($comment));
+        $this->dispatch(AppEvents::MESSAGE_CREATED, $event);
 
         if($request->request->get('view') === 'dashboard') {
             $view = 'dashboard/project/partials/comments/item';
@@ -127,7 +142,9 @@ class MessagesApiController extends AbstractApiController {
             'id' => $comment->id,
             'user' => $comment->user,
             'project' => $comment->project,
+            'shared' => $comment->shared,
             'message' => $comment->message,
+            'delayed' => $event->getDelayed(),
             'html' => View::render($view, [ 'comment' => $comment, 'project' => $prj, 'admin' => $request->request->get('admin') ])
         ]);
     }

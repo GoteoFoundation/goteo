@@ -125,7 +125,7 @@ class Message extends \Goteo\Core\Model {
     /*
      * Lista de hilos de un proyecto
      */
-    public static function getAll ($project, $lang = null, $filters = [], $order = 'data ASC, id ASC') {
+    public static function getAll ($project, $lang = null, $filters = [], $order = 'date ASC, id ASC') {
         if($project instanceOf Project) $project = $project->id;
 
         $messages = array();
@@ -394,6 +394,17 @@ class Message extends \Goteo\Core\Model {
         if($this->project) return $this->getProject()->name;
     }
 
+    /**
+     * Return parent message if available
+     */
+    public function getParent() {
+        if(!$this->thread) return null;
+
+        if($this->parentInstance instanceOf Message) return $this->parentInstance;
+        $this->parentInstance = static::get($this->thread);
+        return $this->parentInstance;
+    }
+
     // Get the message content parsed as html
     public function getHtml() {
         return App::getService('app.md.parser')->text($this->message);
@@ -451,7 +462,7 @@ class Message extends \Goteo\Core\Model {
 
         $sql = "LEFT JOIN message_user b ON b.message_id = a.id AND b.user_id=:user
                 WHERE a.thread = :thread
-                AND (a.shared=1 OR a.user=:user)";
+                AND (a.shared=1 OR a.user=:user OR :user IN (SELECT `user` FROM message WHERE id=:thread))";
 
         $values = [':user' => $user_id, ':thread' => $thread];
         if(!$with_private) {
@@ -526,7 +537,7 @@ class Message extends \Goteo\Core\Model {
     }
 
     // Users on the same thread
-    public function getParticipants() {
+    public function getParticipants($with_author = true) {
         if(!$this->participants) {
             $sql = "SELECT DISTINCT user.* FROM `user`
                 RIGHT JOIN message a ON a.user = user.id
@@ -539,6 +550,11 @@ class Message extends \Goteo\Core\Model {
                     $this->participants[$user->id] = $user;
                 }
             }
+        }
+        if(!$with_author) {
+            return array_filter($this->participants, function($u) {
+                return $u->id !== $this->getUser()->id;
+            });
         }
         return $this->participants;
     }
