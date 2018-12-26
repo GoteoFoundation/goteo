@@ -22,7 +22,7 @@ use Symfony\Component\Yaml\Yaml;
 class Template extends \Goteo\Core\Model {
 
     const MESSAGE_CONTACT = 1;     // Mensaje de contacto
-    const MESSAGE_DONORS = 2;     // Mensaje a los cofinanciadores
+    const MESSAGE_DONORS = 2;     // Mensaje a los cofinanciadores DEPRECATED for MESSAGE_PROJECT_THREAD
     const MESSAGE_OWNER = 3;     // Mensaje al autor
     const MESSAGE_USERS = 4;     // Mensaje entre usuarios
     const CONFIRM_REGISTER = 5;     // Confirmación de registro
@@ -101,6 +101,8 @@ class Template extends \Goteo\Core\Model {
     const PROJECT_DERIVATION_DISCARD = 'project_derivation_discard';    // Discard derivating to others platforms.
     const PROJECT_MY_STORY_AVAILABLE = 'project_my_story_available';    // My story form open
     const DONATE_ORGANIZATION_THANKS = 'donate_thanks';    // Thanks by donation to the organization
+    const MESSAGE_PROJECT_THREAD = 'project_thread';    // Project owner creates a thread
+    const MESSAGE_THREAD_RESPONSE = 'thread_response';    // Response from user in a thread
 
 
     public
