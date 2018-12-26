@@ -37,6 +37,7 @@ class Message extends \Goteo\Core\Model {
         $blocked = 0, //no se puede editar ni borrar (es un mensaje thread de colaboracion)
         $closed = 0, // no se puede responder
         $private = 0, // private messages uses table 'message_users' for searching recipients
+        $shared = 0, // when in thread, shared messages allow other users of the thread view the message
         $recipients = [], // Recipients if is a private message
         $participants = [], // All participants from a message (includes private recipients)
         $timeago;
@@ -70,6 +71,7 @@ class Message extends \Goteo\Core\Model {
                     message.blocked,
                     message.closed,
                     message.private,
+                    message.shared,
                     user.id as user_id,
                     user.name as user_name,
                     user.email as user_email,
@@ -150,6 +152,7 @@ class Message extends \Goteo\Core\Model {
                 message.blocked as blocked,
                 message.closed as closed,
                 message.private as private,
+                message.shared as shared,
                 user.id as user_id,
                 user.name as user_name,
                 user.email as user_email,
@@ -261,7 +264,7 @@ class Message extends \Goteo\Core\Model {
         $sql .=  $order ? " ORDER BY $order" : '';
         $sql .= " LIMIT $offset, $limit";
 
-        // if($sqlFilter) die(\sqldbg($sql, $values));
+        if($sqlFilter) die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
             return $resp;
@@ -447,7 +450,8 @@ class Message extends \Goteo\Core\Model {
         $user_id = $user instanceOf User ? $user->id : null;
 
         $sql = "LEFT JOIN message_user b ON b.message_id = a.id AND b.user_id=:user
-                WHERE a.thread = :thread";
+                WHERE a.thread = :thread
+                AND (a.shared=1 OR a.user=:user)";
 
         $values = [':user' => $user_id, ':thread' => $thread];
         if(!$with_private) {
@@ -556,6 +560,7 @@ class Message extends \Goteo\Core\Model {
             'message',
             'blocked',
             'closed',
+            'shared',
             'private'
             );
 
