@@ -32,7 +32,7 @@ class Template extends \Goteo\Core\Model {
     const UNSUBSCRIBE = 9;     // Darse de baja
     const INVEST_THANKS = 10;    // OBSOLETA Agradecimiento aporte
     const ADMIN_MESSAGE = 11;    // Comunicación desde admin
-    const THREAD_OWNER = 12;    // Mensaje al autor de un thread
+    const THREAD_OWNER = 12;    // Mensaje al autor de un thread DEPRECATED for SUPPORT_THREAD_RESPONSE
     const ADVISE_8_DAYS_TO_FAIL = 13;    // Aviso de 8 días para fallar
     const ADVISE_2_DAYS_TO_FAIL = 14;    // Aviso de 2 días para fallar
     const DONORS_PROJECT_1_ROUND = 15;    // Agradecimiento cofinanciadores si supera primera
@@ -103,6 +103,7 @@ class Template extends \Goteo\Core\Model {
     const DONATE_ORGANIZATION_THANKS = 'donate_thanks';    // Thanks by donation to the organization
     const MESSAGE_PROJECT_THREAD = 'project_thread';    // Project owner creates a thread
     const MESSAGE_THREAD_RESPONSE = 'thread_response';    // Response from user in a thread
+    const SUPPORT_THREAD_RESPONSE = 'support_response';    // Response from user in a support thread
 
 
     public

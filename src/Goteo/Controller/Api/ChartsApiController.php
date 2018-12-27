@@ -43,7 +43,7 @@ class ChartsApiController extends AbstractApiController {
 
         $is_visible = in_array($prj->status, [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED]) && !$private;
 
-        $is_mine = $prj->owner === $this->user->id;
+        $is_mine = $prj->userIsOwner($this->user);
         if(!$this->is_admin && !$is_mine && !$is_visible) {
             throw new ControllerAccessDeniedException();
         }

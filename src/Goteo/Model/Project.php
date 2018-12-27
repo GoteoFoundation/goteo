@@ -236,6 +236,24 @@ class Project extends \Goteo\Core\Model {
     }
 
     /**
+     * Check if the project is owned (or co-owned) by the user id
+     * @param  Goteo\Model\User $user  the user to check
+     * @return boolean          true if success, false otherwise
+     */
+    public function userIsOwner($user = null, $check_status = false) {
+        if(empty($user)) return false;
+        if(!$user instanceOf User) return false;
+        // owns the project
+        if($this->owner === $user->id) {
+            if($check_status) {
+                return $this->inEdition();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Check if the project is can be seen by the user id
      * @param  Goteo\Model\User $user  the user to check (if empty checks )
      * @return boolean          true if success, false otherwise
@@ -247,7 +265,7 @@ class Project extends \Goteo\Core\Model {
         if(empty($user)) return false;
         if(!$user instanceOf User) return false;
         // owns the project
-        if($this->owner === $user->id) return true;
+        if($this->userIsOwner($user->id)) return true;
 
         if($user->hasPerm('view-any-project')) return true;
         if($user->hasPerm('review-project', $this->id)) return true;
@@ -274,7 +292,7 @@ class Project extends \Goteo\Core\Model {
         if(empty($user)) return false;
         if(!$user instanceOf User) return false;
         // owns the project
-        if($this->owner === $user->id) {
+        if($this->userIsOwner($user)) {
             if($check_status) {
                 return $this->inEdition();
             }
@@ -306,7 +324,7 @@ class Project extends \Goteo\Core\Model {
         if(!$user instanceOf User) return false;
         if(!in_array($this->status, array(self::STATUS_DRAFT, self::STATUS_REJECTED, self::STATUS_EDITING))) return false;
         // owns the project
-        if($this->owner === $user->id) return true;
+        if($this->userIsOwner($user->id)) return true;
 
         if($user->hasPerm('delete-any-project')) return true;
         if($user->hasPerm('remove-projects', $this->id)) return true;

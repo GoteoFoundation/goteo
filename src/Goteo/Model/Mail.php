@@ -468,7 +468,7 @@ class Mail extends \Goteo\Core\Model {
             },
             $this->content);
 
-        return preg_replace("/[\n]{2,}/", "\n\n" ,strip_tags(str_ireplace(['<br', '<p'], ["\n<br", "\n<p"], $content)));
+        return html_entity_decode(preg_replace("/[\n]{2,}/", "\n\n" ,strip_tags(str_ireplace(['<br', '<p'], ["\n<br", "\n<p"], $content))), ENT_QUOTES|ENT_HTML5);
     }
 
     /**

@@ -37,7 +37,7 @@ class Message extends \Goteo\Core\Model {
         $blocked = 0, //no se puede editar ni borrar (es un mensaje thread de colaboracion)
         $closed = 0, // no se puede responder
         $private = 0, // private messages uses table 'message_users' for searching recipients
-        $shared = 0, // when in thread, shared messages allow other users of the thread view the message
+        $shared = 0, // when in thread and private, shared messages allow other users of the thread view the message
         $recipients = [], // Recipients if is a private message
         $participants = [], // All participants from a message (includes private recipients)
         $timeago;
@@ -205,21 +205,10 @@ class Message extends \Goteo\Core\Model {
     /**
      * Returns user messages
      */
-    public static function getUserThreads($user, $filters = [], $offset = 0, $limit = 10, $count = false, $order = 'date_max DESC, date DESC, id DESC') {
+    public static function getUserThreads($user, $filters = [], $offset = 0, $limit = 10, $count = false, $order = 'date_max DESC, `date` DESC, id DESC') {
 
         $id = $user instanceOf User ? $user->id : $user;
         $values = [':user' => $id];
-        // $sql = 'FROM message a
-        //           LEFT JOIN message_user d ON d.message_id=a.id
-        //           WHERE (
-        //             a.id IN (
-        //                 SELECT thread FROM message b
-        //                 WHERE (b.user = :user OR
-        //                     :user IN (SELECT user_id FROM message_user c WHERE c.message_id=b.id)
-        //                     ) AND b.blocked=0)
-        //             OR d.user_id = :user)
-        //             AND ISNULL(a.thread)
-        //             ';
         $sqlFilter = [];
         if($filters['project']) {
             $parts = [];
@@ -245,20 +234,27 @@ class Message extends \Goteo\Core\Model {
         } else {
             $sqlFilter = '';
         }
+        // $sql = "SELECT a.*, MAX(a.date) AS date_max FROM message a
+        //         LEFT JOIN message_user b ON b.message_id=a.id
+        //         WHERE (a.user = :user OR b.user_id=:user) $sqlFilter
+        //         GROUP BY IF(ISNULL(a.thread),a.id,a.thread)
+        //         HAVING ISNULL(a.thread) AND a.blocked=0
+        //     ";
         $sql = "FROM message a
-                LEFT JOIN message_user b ON b.message_id=a.id
-                WHERE (a.user = :user OR b.user_id=:user) $sqlFilter
-                GROUP BY IF(ISNULL(a.thread),a.id,a.thread)
-                HAVING ISNULL(a.thread) AND a.blocked=0
-            ";
-
+        INNER JOIN (
+            SELECT IFNULL(c.thread,c.id) AS thread, c.date AS date_max, d.user_id
+            FROM message c
+            LEFT JOIN message_user d ON c.id=d.message_id
+            WHERE d.user_id=:user OR c.user=:user
+            ) b
+        ON b.thread=a.id
+        GROUP BY a.id";
         if($count) {
             // return (int) self::query("SELECT COUNT(DISTINCT a.id) $sql", $values)->fetchColumn();
-            return (int) self::query("SELECT COUNT(*) FROM (SELECT a.thread,a.blocked $sql) s", $values)->fetchColumn();
+            return (int) self::query("SELECT COUNT(*) FROM (SELECT a.id $sql) s", $values)->fetchColumn();
         }
 
-        // $sql = "SELECT DISTINCT a.* $sql";
-        $sql = "SELECT a.*, MAX(a.date) AS date_max $sql";
+        $sql = "SELECT a.*,b.date_max $sql";
         $offset = (int) $offset;
         $limit = (int) $limit;
         $sql .=  $order ? " ORDER BY $order" : '';
@@ -462,7 +458,7 @@ class Message extends \Goteo\Core\Model {
 
         $sql = "LEFT JOIN message_user b ON b.message_id = a.id AND b.user_id=:user
                 WHERE a.thread = :thread
-                AND (a.shared=1 OR a.user=:user OR :user IN (SELECT `user` FROM message WHERE id=:thread))";
+                AND (a.private=0 OR a.shared=1 OR a.user=:user OR :user IN (SELECT `user` FROM message WHERE id=:thread))";
 
         $values = [':user' => $user_id, ':thread' => $thread];
         if(!$with_private) {

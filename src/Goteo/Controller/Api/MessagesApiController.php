@@ -116,7 +116,7 @@ class MessagesApiController extends AbstractApiController {
         if($recipients) {
             $comment->setRecipients($recipients);
         } else {
-            if($shared) {
+            if($shared || !$comment->private) {
                 // Send to everyone in the thread except creator
                 $recipients = array_filter($parent->getParticipants(), function($u) {
                     return $u->id !== $this->user->id;
@@ -148,6 +148,7 @@ class MessagesApiController extends AbstractApiController {
             'project' => $comment->project,
             'shared' => $comment->shared,
             'message' => $comment->message,
+            'recipients' => $comment->getRecipients(),
             'delayed' => $event->getDelayed(),
             'html' => View::render($view, [ 'comment' => $comment, 'project' => $prj, 'admin' => $request->request->get('admin') ])
         ]);

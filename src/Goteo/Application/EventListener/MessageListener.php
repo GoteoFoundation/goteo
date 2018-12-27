@@ -32,6 +32,8 @@ class MessageListener extends AbstractListener {
         $owner = $project->getOwner();
 
         $response_url = SITE_URL . '/dashboard/messages#comments-' . ($message->thread ? $message->thread : $message->id);
+        if($template === Template::SUPPORT_THREAD_RESPONSE)
+            $response_url = SITE_URL . '/project/' . $project->id .'/participate#comments-list-' . ($message->thread ? $message->thread : $message->id);
 
         if($delayed) {
             // Send as a newsletter
@@ -74,8 +76,13 @@ class MessageListener extends AbstractListener {
         $errors = [];
         foreach($recipients as $user) {
             $lang = User::getPreferences($user)->comlang;
-            if($project->userCanEdit($user))
-                $response_url = SITE_URL . '/dashboard/project/' . $project->id . '/invests?filter%5Bquery%5D=' . urlencode($message->getUser()->email) . '#msg-' . $message->getUser()->id;
+            $r_url = $response_url;
+            if($project->userIsOwner($user)) {
+                if($template === Template::MESSAGE_THREAD_RESPONSE)
+                    $r_url = SITE_URL . '/dashboard/project/' . $project->id . '/invests?filter%5Bquery%5D=' . urlencode($message->getUser()->email) . '#msg-' . $message->getUser()->id;
+                if($template === Template::SUPPORT_THREAD_RESPONSE)
+                    $r_url = SITE_URL . '/dashboard/project/' . $project->id . '/supports#comments-' . ($message->thread ? $message->thread : $message->id);
+            }
 
             $mail = Mail::createFromTemplate($user->email, $user->name, $template, [
                 '%MESSAGE%' => $message->getHtml(),
@@ -85,7 +92,7 @@ class MessageListener extends AbstractListener {
                 '%USERNAME%' => $user->name,
                 '%PROJECTNAME%' => $project->name,
                 '%PROJECTURL%' => SITE_URL . '/project/' . $project->id,
-                '%RESPONSEURL%' => $response_url
+                '%RESPONSEURL%' => $r_url
                ], $lang)
             ->setSubject($message->getSubject())
             ->setMessage($message)
@@ -161,10 +168,7 @@ class MessageListener extends AbstractListener {
                 $user->avatar->id)
                 ->doPublic('community');
 
-            // sent mail to project owner and recipients
-            $recipients = $message->getParticipants();
-            $recipients[$project->getOwner()->id] = $project->getOwner();
-            $this->sendMail($message, Template::THREAD_OWNER, $recipients);
+            $this->sendMail($message, Template::SUPPORT_THREAD_RESPONSE, $message->getRecipients());
         }
         elseif($type === 'project-comment') {
             $log = new Feed();
@@ -218,9 +222,7 @@ class MessageListener extends AbstractListener {
                 ->doPublic('community');
 
             // sent mail to project owner and recipients
-            $recipients = $message->getParticipants();
-            $recipients[$project->getOwner()->id] = $project->getOwner();
-            $this->sendMail($message, Template::THREAD_OWNER, $recipients);
+            $this->sendMail($message, Template::SUPPORT_THREAD_RESPONSE, $message->getRecipients());
 
         }
         elseif($type === 'project-private') {

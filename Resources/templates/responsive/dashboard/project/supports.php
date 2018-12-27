@@ -175,6 +175,7 @@ $(function(){
   if($thread.length) {
     // console.log('hash',location.hash);
     $thread.collapse('show');
+    $thread.find('textarea').select();
   }
 });
 

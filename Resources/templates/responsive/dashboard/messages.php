@@ -15,7 +15,7 @@
         if($type == 'project-support') $icon = 'supports';
         $project = $message->getProject() ?: null ;
         // Allow respond to all users if can edit the project
-        $shared = $project ? $project->userCanEdit($this->get_user()) : false;
+        $shared = $project ? $project->userIsOwner($this->get_user()) : false;
     ?>
     <div class="panel section-content">
       <div class="panel-body">
@@ -40,7 +40,7 @@
               <?= $this->insert('dashboard/project/partials/comments/full', [
                     'comments' => $message->getResponses($this->get_user(), true, 0 , 100),
                     'thread' => $message->id,
-                    'private' => $message->private,
+                    'private' => true,
                     'shared' => $shared,
                     'project' => $project->id,
                     'type' => $type
