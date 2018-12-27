@@ -35,7 +35,7 @@ $(function(){
 
         $self.addClass('loading');
         $.getJSON('/api/login/check', vars, function(result) {
-            console.log(result);
+            // console.log(result);
             $self.removeClass('loading');
             if(result) {
                 if(result.available) {
@@ -102,7 +102,8 @@ $(function(){
 
         var $tb = $(this).closest('table');
         var $tr = $(this).closest('tr');
-        var id = $tr.attr('id');
+        // dots do not play well with jQuery IDs
+        var id = $tr.attr('id').replace('.', '-');
         var cols = $tr.contents('td').length;
         if($('#manage-' +  id).length) {
             $tr.removeClass('active');
@@ -122,7 +123,7 @@ $(function(){
         }
         // Add query string
         if(location.search) href += add + location.search.substr(1);
-        // console.log(href, location);
+        // console.log('href',href, 'location',location,'user id', id);
         adminProntoLoad(href, '#manage-' + id);
     });
 
