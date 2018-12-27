@@ -264,7 +264,7 @@ class Message extends \Goteo\Core\Model {
         $sql .=  $order ? " ORDER BY $order" : '';
         $sql .= " LIMIT $offset, $limit";
 
-        if($sqlFilter) die(\sqldbg($sql, $values));
+        // die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
             return $resp;

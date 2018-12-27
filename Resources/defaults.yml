@@ -283,7 +283,7 @@ log:
     # Debug level in Console commands
     console: debug
     # mail specifies at what log level the error will be sent to mail.fail email
-    mail: error # goes to mail.fail address
+    mail: critical # goes to mail.fail address
 
 
 

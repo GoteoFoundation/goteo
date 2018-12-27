@@ -74,6 +74,10 @@ class MessagesApiController extends AbstractApiController {
         $thread = $request->request->get('thread');
         // Share with other user of the thread if required
         $shared = (bool) $request->request->get('shared');
+        // Only project editors (currently) can create shared messages
+        if($shared && !$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException('Only project editors can create shared messages');
+        }
         // allowing only responses to other messages
         // (for the moment)
         if(! $parent = Comment::get($thread)) {
@@ -118,7 +122,7 @@ class MessagesApiController extends AbstractApiController {
                     return $u->id !== $this->user->id;
                 });
                 $comment->setRecipients($recipients);
-                $event->setDelayed($shared); // Send in background as a newsletter
+                if(count($recipients) > 1) $event->setDelayed($shared); // Send in background as a newsletter
             } else {
                 // Set the parent as recipient
                 $comment->setRecipients([$parent->getUser()]);
@@ -291,7 +295,7 @@ class MessagesApiController extends AbstractApiController {
         }
         if($users) {
             $message->setRecipients($users);
-            if(is_array($users)) $event->setDelayed(true); // Send in background as a newsletter
+            if(is_array($users) && count($users) > 1) $event->setDelayed(true); // Send in background as a newsletter
         }
 
         if($recipients = $message->getRecipients()) {

@@ -13,14 +13,14 @@
         $icon = '';
         if($type == 'project-private') $icon = 'partners';
         if($type == 'project-support') $icon = 'supports';
-        $project = $message->getProject() ? $message->getProject() : null ;
-        // Allow respond to all users if is the author of the thread
-        $shared = $project ? $message->getUser()->id === $this->get_user()->id : false;
+        $project = $message->getProject() ?: null ;
+        // Allow respond to all users if can edit the project
+        $shared = $project ? $project->userCanEdit($this->get_user()) : false;
     ?>
     <div class="panel section-content">
       <div class="panel-body">
         <h4 class="data-support">
-            <a href="/project/<?= $message->project ?>"><img class="img-circle" src="<?= $message->getProject()->image->getLink(64,64,true)?>" style="height: 32px"> <?= $message->getTitle() ?></a>
+            <a href="/project/<?= $message->project ?>"><img class="img-circle" src="<?= $project ? $project->image->getLink(64,64,true) : null ?>" style="height: 32px"> <?= $message->getTitle() ?></a>
             <small><em><?= date_formater($message->date, true) ?></em></small>
             <?php if($shared): ?>
             <small><strong><?= count($message->getParticipants(false)).' ' . $this->text('dashboard-menu-projects-recipients') ?></strong></small>
