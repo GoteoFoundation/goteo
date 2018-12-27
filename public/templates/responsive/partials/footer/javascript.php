@@ -52,6 +52,17 @@ goteo.urlParams;
     while (match = search.exec(query))
        goteo.urlParams[decode(match[1])] = decode(match[2]);
 })();
+// Image with background loading removal when loaded
+$(function(){
+    $('.img-link>img').one('load', function() {
+        $(this).css('background-image', 'none');
+    }).each(function() {
+      if(this.complete) {
+          // $(this).load(); // For jQuery < 3.0
+          $(this).trigger('load'); // For jQuery >= 3.0
+      }
+    });
+});
 // @license-end
 </script>
 
