@@ -72,29 +72,6 @@
 
                         </table>
                     <?php endforeach ?>
-                    <!--
-                    <table class="footable table needs">
-                         <thead>
-                            <tr>
-                              <th data-type="html">
-                                <span class="type"><?= $this->text('project-costs-total') ?></span>
-                              </th>
-                              <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-minimum') ?></th>
-                              <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-optimum') ?></th>
-                            </tr>
-                         </thead>
-                          <tbody>
-                            <tr>
-                              <td>
-                                  <strong></strong>
-                                  <div></div>
-                              </td>
-                              <td class="text-center"><span class="required"><?= amount_format($project->mincost) ?></span></td>
-                              <td class="text-center"><?= amount_format($project->maxcost) ?></td>
-                            </tr>
-                          </tbody>
-                    </table>
-                    -->
 
                     <div class="row no-margin legend no-margin">
                             <div class="circle required pull-left">
