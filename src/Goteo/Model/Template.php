@@ -22,7 +22,7 @@ use Symfony\Component\Yaml\Yaml;
 class Template extends \Goteo\Core\Model {
 
     const MESSAGE_CONTACT = 1;     // Mensaje de contacto
-    const MESSAGE_DONORS = 2;     // Mensaje a los cofinanciadores DEPRECATED for MESSAGE_PROJECT_THREAD
+    const MESSAGE_DONORS = 2;     // DEPRECATED Mensaje a los cofinanciadores DEPRECATED for MESSAGE_PROJECT_THREAD
     const MESSAGE_OWNER = 3;     // Mensaje al autor
     const MESSAGE_USERS = 4;     // Mensaje entre usuarios
     const CONFIRM_REGISTER = 5;     // Confirmación de registro
@@ -30,9 +30,9 @@ class Template extends \Goteo\Core\Model {
     const EMAIL_CHANGE = 7;     // Cambio de email
     const PROJECT_SENT_CONFIRM = 8;     // Confirmacion de proyecto enviado
     const UNSUBSCRIBE = 9;     // Darse de baja
-    const INVEST_THANKS = 10;    // OBSOLETA Agradecimiento aporte
+    const INVEST_THANKS = 10;    // DEPRECATED Agradecimiento aporte
     const ADMIN_MESSAGE = 11;    // Comunicación desde admin
-    const THREAD_OWNER = 12;    // Mensaje al autor de un thread DEPRECATED for SUPPORT_THREAD_RESPONSE
+    const THREAD_OWNER = 12;    // DEPRECATED Mensaje al autor de un thread DEPRECATED for SUPPORT_THREAD_RESPONSE
     const ADVISE_8_DAYS_TO_FAIL = 13;    // Aviso de 8 días para fallar
     const ADVISE_2_DAYS_TO_FAIL = 14;    // Aviso de 2 días para fallar
     const DONORS_PROJECT_1_ROUND = 15;    // Agradecimiento cofinanciadores si supera primera
@@ -48,15 +48,15 @@ class Template extends \Goteo\Core\Model {
     const ADVISE_2_MONTHS = 25;    // Recuerdo 2 meses después
     const READY_FOR_TRANSLATING = 26;    // Informa al autor de proyecto listo para traducción
     const DONORS_WARNING = 27;    // Aviso a los donantes
-    const DONORS_THANKS = 28;    // OBSOLETA Agradecimiento donativo
+    const DONORS_THANKS = 28;    // DEPRECATED Agradecimiento donativo
     const OWNER_NEW_INVEST = 29;    // Notificación de nuevo aporte al autor
     const OWNER_NEW_THREAD = 30;    // Notificacion nuevo thread
     const OWNER_NEW_COMMENT = 31;    // Notificación comentario en novedades
     const OWNER_CALL_READY_FOR_TRANSLATING = 32;    // Informa al autor de convocatoria lista para traducción
     const NEWSLETTER = 33;    // Boletin
-    const INVEST_THANKS_2_ROUND = 34;    // OBSOLETA Agradecimiento aporte segunda ronda
+    const INVEST_THANKS_2_ROUND = 34;    // DEPRECATED Agradecimiento aporte segunda ronda
     const TEST = 35;    // Para testeo
-    const DONORS_THANKS_2_ROUND = 36;    // OBSOLETA Agradecimiento donativo segunda ronda
+    const DONORS_THANKS_2_ROUND = 36;    // DEPRECATED Agradecimiento donativo segunda ronda
     const PAYPAL_ISSUE = 37;    // Aviso incidencia PayPal
     const DONORS_REMINDER = 38;    // Recordatorio donantes
     const CALL_CONFIRMATION = 39;    // Confirmación de aplicación a convocatoria
