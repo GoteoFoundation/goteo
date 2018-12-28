@@ -45,6 +45,13 @@ $api->add('api-user-property', new Route(
         )
 ));
 
+// GeoIP location service
+$api->add('api-geoip', new Route(
+    '/geoip',
+    array('_controller' => 'Goteo\Controller\Api\GeoipApiController::geolocationAction'
+        )
+));
+
 // Blog
 // Tags list
 $api->add('api-blog-tags', new Route(
