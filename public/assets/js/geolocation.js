@@ -42,7 +42,7 @@ locator.getUserLocation = function (callback) {
         // get from ip
         // TODO: Geoip is closing, change to internal maxmind databases
         locator.setLocationFromGeoip('user', null, function(data, error) {
-            locator.trace('Location from /api/geoip', data);
+            locator.trace('Location from /api/geoloc/ip', data);
             if(data) {
                 goteo.user_location = data;
                 callback(data);
@@ -99,8 +99,8 @@ locator.saveGeolocationData = function (type, item, data) {
 // };
 
 locator.setLocationFromGeoip = function (type, item, callback) {
-    locator.trace('contact /api/geoip');
-    $.getJSON('/api/geoip', function(data){
+    locator.trace('contact /api/geoloc/ip');
+    $.getJSON('/api/geoloc/ip', function(data){
         console.log(data);
         if(data.latitude && data.longitude) {
             locator.trace('Geoip geolocated type:', type, ' item:', item, ' data:', data);

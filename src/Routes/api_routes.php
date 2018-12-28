@@ -53,16 +53,16 @@ $api->add('api-user-property', new Route(
 ));
 
 // GeoIP location service
-$api->add('api-geoip', new Route(
-    '/geoip',
-    array('_controller' => 'Goteo\Controller\Api\GeoipApiController::geolocationAction'
+$api->add('api-geoloc-ip', new Route(
+    '/geoloc/ip',
+    array('_controller' => 'Goteo\Controller\Api\GeolocApiController::geolocationAction'
         )
 ));
 
 // Geolocate service for models
-$api->add('api-geolocate', new Route(
-    '/geoip',
-    array('_controller' => 'Goteo\Controller\Api\GeoipApiController::geolocateAction'
+$api->add('api-geoloc-locate', new Route(
+    '/geoloc/locate',
+    array('_controller' => 'Goteo\Controller\Api\GeolocApiController::geolocateAction'
         ),
     array(), // requirements
     array(), // options

@@ -20,7 +20,7 @@ use Goteo\Application\Exception\InvalidDataException;
 use GeoIp2\Database\Reader;
 use GeoIp2\Exception\AddressNotFoundException;
 
-class GeoipApiController extends AbstractApiController {
+class GeolocApiController extends AbstractApiController {
     public function __construct() {
         parent::__construct();
         // Activate cache & replica read for this controller
