@@ -39,7 +39,7 @@ class GeoipApiController extends AbstractApiController {
         // Allow only requests from the same host
         $referer = parse_url($request->headers->get('referer'));
         if(strpos($request->headers->get('referer'), $request->getSchemeAndHttpHost()) !== 0) {
-            // throw new ControllerAccessDeniedException('This API endpoint can only be accessed from the same host');
+            throw new ControllerAccessDeniedException('This API endpoint can only be accessed from the same host');
         }
 
         $cities = Config::get('geolocation.maxmind.cities');
@@ -69,5 +69,9 @@ class GeoipApiController extends AbstractApiController {
 
     }
 
-
+    /**
+     * returns geolocation data from an IP request
+     */
+    public function geolocateAction(Request $request) {
+    }
 }

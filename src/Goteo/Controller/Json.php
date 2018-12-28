@@ -71,26 +71,6 @@ class Json extends \Goteo\Core\Controller {
 	}
 
     /**
-     * Solo retorna si la sesion esta activa o no
-     * */
-    public function keepAlive() {
-
-        $this->result = array(
-            'logged'  => false,
-            'expires' => 0,
-            'info' => ''
-        );
-
-        if(Session::isLogged()) {
-            $this->result['logged'] = true;
-            $this->result['userid'] = Session::getUserId();
-            $this->result['expires'] = Session::expiresIn();
-        }
-
-        return $this->output();
-    }
-
-    /**
      * JSON endpoint to retrieve/establish the user's location
      *
      * @param type 'user' or ...

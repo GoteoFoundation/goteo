@@ -45,12 +45,33 @@ $api->add('api-user-property', new Route(
         )
 ));
 
+// User keepalive compatibility service
+$api->add('api-user-property', new Route(
+    '/users/keepalive',
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::keepAliveAction'
+        )
+));
+
 // GeoIP location service
 $api->add('api-geoip', new Route(
     '/geoip',
     array('_controller' => 'Goteo\Controller\Api\GeoipApiController::geolocationAction'
         )
 ));
+
+// Geolocate service for models
+$api->add('api-geolocate', new Route(
+    '/geoip',
+    array('_controller' => 'Goteo\Controller\Api\GeoipApiController::geolocateAction'
+        ),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+
 
 // Blog
 // Tags list

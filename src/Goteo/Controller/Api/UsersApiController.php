@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Session;
 
 use Goteo\Model\User;
 use Goteo\Model\Category;
@@ -312,4 +313,25 @@ class UsersApiController extends AbstractApiController {
 
     }
 
+    /**
+     * Old views (non-responsive) compatibility service for keeping alive session
+     * @return [type] [description]
+     */
+    public function keepAliveAction(Request $request) {
+
+        $result = array(
+            'logged'  => false,
+            'expires' => 0,
+            'info' => ''
+        );
+
+        if(Session::isLogged()) {
+            $result['logged'] = true;
+            $result['userid'] = Session::getUserId();
+            $result['expires'] = Session::expiresIn();
+        }
+
+        return $this->jsonResponse($result);
+
+    }
 }

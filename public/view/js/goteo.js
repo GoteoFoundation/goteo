@@ -43,7 +43,7 @@ goteo.trace = function () {
  */
 goteo.keepAlive = function () {
     //llamar al identificador de sesion
-    $.getJSON('/json/keepAlive',function(data){
+    $.getJSON('/api/users/keepalive',function(data){
         if(data.logged) {
             //do nothing...
             // goteo.trace(data.userid);
