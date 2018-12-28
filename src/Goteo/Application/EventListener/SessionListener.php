@@ -31,6 +31,25 @@ use Symfony\Component\HttpKernel\KernelEvents;
 //
 
 class SessionListener extends AbstractListener {
+
+    /**
+     * Chechsk if any of the elements in array $prefixes starts with the same chars as $full_str
+     * @param  [type] $full_str  full string
+     * @param  [type] $prefixes array of prexixes
+     * @return boolean          found or not
+     */
+    protected function matchPrefix($full_str, $prefixes) {
+        if(!is_array($prefixes)) {
+            $prefixes = [$prefixes];
+        }
+        foreach($prefixes as $str) {
+            if(strpos($full_str, $str) === 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function onRequest(GetResponseEvent $event) {
 
         //not need to do anything on sub-requests
@@ -39,6 +58,7 @@ class SessionListener extends AbstractListener {
         }
 
         $request = $event->getRequest();
+        $path = $request->getPathInfo();
 
         // Due a symfony issue, disable FORWARDED header, it may cause some problems
         // if not exactly the same as the X_FORWARDED_FOR
@@ -51,7 +71,8 @@ class SessionListener extends AbstractListener {
         }
 
         //non cookies for notifyAction on investController
-        if (strpos($request->getPathInfo(), '/invest/notify/') === 0) {
+        $skip = Config::get('session.skip');
+        if ($this->matchPrefix($path, $skip)) {
             return;
         }
 
@@ -103,8 +124,12 @@ class SessionListener extends AbstractListener {
 
 
         $url = $request->getHttpHost();
+        // Routes to leave as they are
+        $skip = Config::get('url.redirect.skip');
+        // Routes to alway reditect to the main url
+        $fixed = Config::get('url.redirect.fixed');
         // Redirect to proper URL if url_lang is defined
-        if (Config::get('url.url_lang') && $request->getPathInfo() !== '/password-recovery') {
+        if (Config::get('url.url_lang') && !$this->matchPrefix($path, $skip)) {
             $parts = explode('.', $url);
             $sub_lang = $parts[0];
             if($sub_lang == 'www') $sub_lang = Config::get('lang');
@@ -119,7 +144,7 @@ class SessionListener extends AbstractListener {
                     $request->query->remove('lang');
                 }
                 // Login controller should mantaing always the same URL to help browser
-                if(in_array($request->getPathInfo(), ['/login', '/password-reset', '/signup'])) {
+                if($this->matchPrefix($path, $fixed)) {
                     // $url = "$url";
                     $request->query->set('lang', $lang);
                 }

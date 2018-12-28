@@ -8,6 +8,10 @@ maintenance: false
 # Max session time
 session:
     time: 3600
+    # Routes prefixes to skip sessions handling (like setting cookies) or redirects
+    skip:
+        - /invest/notify/ # bank return point prefix
+        - /img/ # Image resize controller
 
 env: real
 debug: false
@@ -59,6 +63,19 @@ url:
     #optional, configure this as hostname only (ex: example.com) if you want languages to be selected as subdomains (es.example.com, en.example.com)
     #url_lang: localhost:8081
 
+    # If url_lang is defined redirect applies for subdomains
+    redirect:
+        # Routes starting with prefix this won't be redirected by SessionListener
+        # But they can still be accessed from the lang prefix if requested
+        skip:
+            - /password-recovery
+            - /api
+        # Routes starting with this prefix will ensure to use the main URL without the lang prefix
+        fixed:
+            - /login
+            - /password-reset
+            - /signup
+
     # If you want to use a CDN or another web server to serve the cached images
     # You can define this constants. All cached images links will point to this
     # Url, event if don't exists yet.
@@ -74,7 +91,7 @@ url:
     #
     # data: //cdn-example.com/data
     # data: //data.goteo.org
-
+    #
 
 # PLUGINS
 # Extend is the directory to personalize your copy of goteo.org
