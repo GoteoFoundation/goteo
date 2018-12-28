@@ -92,6 +92,9 @@ mail:
 
 # This will be used for geolocating users, projects, and mail tracking
 geolocation:
+    # Maxmind is available thanks to the docker container ant it's shared volume
+    maxmind:
+       cities: /usr/share/GeoIP/GeoLite2-City.mmdb
     google_maps_key: # Google Maps Key
                      # Ge one here: https://developers.google.com/maps/documentation/javascript/get-api-key
 

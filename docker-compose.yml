@@ -37,6 +37,12 @@ services:
       - "8443:443"
       - "35729:35729"
 
+  geoip:
+    image: igortimoshenko/docker-maxmind-geoip
+    container_name: goteo-geoip
+    volumes:
+      - goteo-geoip:/usr/share/GeoIP
+
   php:
     build: docker/php
     container_name: goteo-php
@@ -44,6 +50,7 @@ services:
     volumes:
       - .:/application
       - ./docker/php/php-ini-overrides.ini:/etc/php/7.1/fpm/conf.d/99-overrides.ini
+      - goteo-geoip:/usr/share/GeoIP
     environment:
       - GOTEO_CONFIG_FILE
       - DEBUG
@@ -51,6 +58,6 @@ services:
       - GID
     command: ./docker/php/init.sh
 
-
 volumes:
   goteo-mariadb:
+  goteo-geoip:
