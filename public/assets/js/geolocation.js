@@ -38,9 +38,11 @@ locator.getUserLocation = function (callback) {
         locator.trace('Location already defined', goteo.user_location);
         callback(goteo.user_location);
     } else {
+        locator.trace('getting location from ip');
         // get from ip
-        locator.setLocationFromFreegeoip('user', null, function(data, error) {
-            locator.trace('Location from freegeoip', data);
+        // TODO: Geoip is closing, change to internal maxmind databases
+        locator.setLocationFromGeoip('user', null, function(data, error) {
+            locator.trace('Location from /api/geoip', data);
             if(data) {
                 goteo.user_location = data;
                 callback(data);
@@ -96,15 +98,17 @@ locator.saveGeolocationData = function (type, item, data) {
 //     }
 // };
 
-locator.setLocationFromFreegeoip = function (type, item, callback) {
-    $.getJSON('//freegeoip.net/json/?callback=?', function(data){
+locator.setLocationFromGeoip = function (type, item, callback) {
+    locator.trace('contact /api/geoip');
+    $.getJSON('/api/geoip', function(data){
+        console.log(data);
         if(data.latitude && data.longitude) {
-            locator.trace('Freegeoip geolocated type:', type, ' item:', item, ' data:', data);
+            locator.trace('Geoip geolocated type:', type, ' item:', item, ' data:', data);
            //save data
             locator.saveGeolocationData(type, item, {
                 longitude: data.longitude,
                 latitude: data.latitude,
-                city: data.city,
+                city: data.city_name,
                 region: data.region_name,
                 country: data.country_name,
                 country_code: data.country_code,
@@ -114,9 +118,9 @@ locator.setLocationFromFreegeoip = function (type, item, callback) {
                 callback(data);
             }
         } else {
-            locator.trace('Freegeoip error');
+            locator.trace('Geoip error');
             if(typeof callback === 'function') {
-                callback(null, 'Freegeoip error');
+                callback(null, 'Geoip error');
             }
         }
     });
