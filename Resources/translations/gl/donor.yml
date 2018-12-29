@@ -5,9 +5,18 @@ dashboard-donor-confirm_data: 'Os datos fiscais desta doazón xa non se poderan 
 dashboard-donor-confirm_succes: 'Confirmaches a validez dos teus datos. Grazas!'
 dashboard-donor-confirmed: 'O certificado %s desta doazón creouse correctamente. Para consultas relacionadas co certificado podes porte en contacto con nós empregando o email donate@goteo.org.'
 dashboard-donor-download_certificate: 'Descargar o certificado'
+dashboard-donor-edit_data: 'Modificar datos'
 dashboard-donor-edit_guide: 'Enche os datos que queiras que aparezan no certificado. Unha vez que descargues o arquivo estes datos non se poderán modificar.'
+dashboard-donor-mandatory: 'É OBRIGATORIO ENCHER OS DATOS FISCAIS'
 dashboard-donor-no_donor: 'Non costa que fixeras ningunha doazón a %s. Se fixeches algunha, por favor, ponte en contacto con nós.'
 dashboard-donor-saved: 'Grazas por modificar os teus datos. Para descargar o certificado asegúrate de que sexan correctos. Despois verifícaos co botón de pechar datos.'
 dashboard-menu-activity-donor: 'Certificado de doazón'
+donor-address-country-field: País
 donor-address-location-field: 'Provincia:'
 donor-field-amount: 'Importe doazón'
+donor-field-lot-relief: Tramo
+donor-field-numproj: 'Achegas realizadas o %s'
+personal-field-donor_name: 'Nome '
+personal-field-donor_surname: 'Primeiro apelido'
+personal-field-donor_surname2: 'Segundo apelido'
+validate-donor-mandatory: 'Tódolos campos son obrigatorios'

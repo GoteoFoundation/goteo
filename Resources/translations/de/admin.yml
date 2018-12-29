@@ -47,6 +47,7 @@ admin-back-detail: 'Zurück zu den Details'
 admin-back-list: 'Zurück zur Liste'
 admin-contents: 'Texte und Übersetzungen'
 admin-empty-list: 'Es wurden keine registrierten Einträge gefunden'
+admin-activity: Aktivität
 admin-home: Startseite
 admin-items: Eingänge
 admin-mailing-back-to-list: 'Zurück zu Kommunikation'
@@ -62,6 +63,8 @@ admin-mailing-view-message: 'Schauen sie in diese Nachricht!'
 admin-newsletter-generated: 'Das Rundscheiben  [%ID%] wurde erstellt'
 admin-newsletter-langs-to-send: 'Sprachen: %LANGS%'
 admin-newsletter-mind-activate: 'Aktivieren Sie den Versand!'
+admin-prev-page: 'Vorherige Seite'
+admin-next-page: 'Nächste Seite'
 admin-no: 'Nein'
 admin-percent: Prozentsatz
 admin-project: Projekt
@@ -76,6 +79,7 @@ admin-text-type-md: Markieren Sie
 admin-text-type-plain: 'einfacher Text'
 admin-user: Benutzer
 admin-users: Benutzer
+admin-users-add: Neuen Benutzer anlegen
 admin-yes: Ja
 admin-impersonate-user: Sich als %s ausgeben
 admin-project-express-discard: 'Express verwerfen'

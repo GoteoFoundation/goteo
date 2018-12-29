@@ -1,0 +1,16 @@
+---
+admin-action: 'Aksyon administratè'
+admin-NO: 'Non'
+admin-YES: Wi
+admin-account-amount: 'Kantite kob ou bay'
+admin-account-change-user: 'Chanje itilizatè'
+admin-account-change-user-confirm: 'eske ou si ke ou vle chanje itilizatè pou kontribisyon sa? Nouko itilizatè a ap:'
+admin-account-convert-to-pool: 'Konvèti an bous'
+admin-account-convert-to-pool-confirm: 'Sa ap elimine pwojè ki mache ak kontribisyon sa a epi se ap kòmsi se te yon bous ki achte. Tout rekonpans yo ap pèdi. Wap kontinye?'
+admin-account-convert-to-pool-ko: 'Nou paka chanje kontribisyon sa an bous:%s'
+admin-account-convert-to-pool-ok: 'Byen konvèti kontribisyon ki nan bous'
+admin-account-detail: 'Detay afè a'
+admin-account-donation: Don
+admin-account-edit-reward: 'Gere retounen/adrès'
+admin-account-invalid-invest: 'Nou pa jwenn kontribisyon sa [%s]!'
+admin-account-invest-date: 'Date kontribisyon an'

@@ -1,5 +1,19 @@
 ---
+api-key-user: 'Usuario'
 contract-data_title: 'Datos do contrato'
+dashboard-certificates-confirmed: Confirmado
+dashboard-certificates-details: 'Ver detalles'
+dashboard-certificates-download: 'Confirmar e descargar'
+dashboard-certificates-empty: 'Tes que facer algunha achega a un proxecto ou recargar o portamoedas virtual para ver os teu certificados'
+dashboard-certificates-expired: Caducado
+dashboard-certificates-no-pending: 'Sen achega pendente'
+dashboard-certificates-pending: Pendente
+dashboard-certificates-pending-desc: 'Estas son as achegas a incluír en certificados futuros.'
+dashboard-certificates-summary: 'Certificado %ID%, Ano %YEAR%'
+dashboard-chart-days: 'QUEDAN %s DÍAS'
+dashboard-chart-invested: 'FINANCIAMENTO ACADADA'
+dashboard-chart-investors: COFINANCIADORES
+dashboard-chart-no-invested: 'Sen achegas.'
 dashboard-embed_code_investor: 'CÓDIGO COA IMAXE DO COFINANCEIRO'
 dashboard-header-main: 'O meu panel'
 dashboard-investors-mail-fail: 'Erro ó enviar a mensaxe a %s'
@@ -8,21 +22,38 @@ dashboard-investors-mail-sendto: 'Enviado a %s dos teus cofinanceiros:'
 dashboard-investors-mail-sent: 'Mensaxes enviadas correctamente'
 dashboard-investors-mail-text-required: 'Escribe a mensaxe'
 dashboard-menu-activity: 'A miña actividade'
+dashboard-menu-activity-apikey: 'Clave da API'
+dashboard-menu-activity-spread: Difusión
 dashboard-menu-activity-summary: Resumo
 dashboard-menu-activity-wall: 'O meu muro'
+dashboard-menu-admin_board: Administración
+dashboard-menu-pool: 'O meu portamoedas'
+dashboard-menu-pool-conditions: Condicións
 dashboard-menu-profile: 'O meu perfil'
 dashboard-menu-profile-location: Xeolocalización
 dashboard-menu-profile-personal: 'Datos persoais'
 dashboard-menu-profile-preferences: 'Preferencias'
+dashboard-menu-profile-profile: 'Editar perfil'
+dashboard-menu-profile-public: 'Perfil público'
 dashboard-menu-projects: 'Os meus proxectos'
+dashboard-menu-projects-commons: Retornos
+dashboard-menu-projects-contract: Contrato
+dashboard-menu-projects-social-commitment: 'Compromiso social'
+dashboard-menu-projects-messegers: Participates
 dashboard-menu-projects-preview: 'Páxina pública'
 dashboard-menu-projects-rewards: Cofinanceiros
 dashboard-menu-projects-summary: Resumo
 dashboard-menu-projects-supports: Colaboracións
 dashboard-menu-projects-updates: Novidades
+dashboard-menu-projects-widgets: Widget
+dashboard-menu-projects-story: 'A miña historia'
+dashboard-menu-review_board: Revisión
 dashboard-menu-translate_board: Tradución
 dashboard-menu-translates: 'As miñas traduccións'
 dashboard-messegers-mail-sendto: 'Enviado a %s os participantes:'
+dashboard-my-wallet-available: 'Na actualidade tes <span class="pool-amount">%s</span> <span class="pool-desc">no teu portamoedas Goteo</span>'
+dashboard-my-wallet-contribute-button: Doar
+dashboard-my-wallet-pool-info: 'Máis información canto o uso do teu portamoedas'
 dashboard-password-recover-advice: 'Asegúrate de reestablecer o teu contrasinal'
 dashboard-project-blog-fail: 'Contacta con nós'
 dashboard-project-blog-inactive: 'Sentímolo, a publicación de novidades neste proxecto está desactivada'
@@ -56,6 +87,7 @@ dashboard-rewards-resign_filter: Doazóns
 dashboard-rewards-resigns: 'Renuncia á recompensa'
 dashboard-rewards-thanks: 'Agradecemento/Doazón'
 dashboard-rewards-user_msg: 'Individual a'
+dashboard-rewards-user_order: 'Por usuario'
 dashboard-translate-doing_call: 'Estás traducindo a convocatoria <strong>%s</strong>. O idioma orixinal é <strong>%s</strong>'
 dashboard-translate-doing_node: 'Estás traducindo o nodo <strong>%s</strong>. O idioma orixinal é <strong>Castelán</strong>'
 dashboard-translate-doing_profile: 'Estás traducindo o teu perfil persoal.'
@@ -89,4 +121,14 @@ user-preferences-threads: 'Bloquear notificacións de respostas nas mensaxes que
 user-preferences-tips: 'Bloquear consellos de difusión de campaña (para impulsores)'
 user-preferences-updates: 'Bloquear notificacións de novidades sobre os proxectos que apoio'
 user-save-fail: 'Houbo algún problema ó gardar os datos'
+dashboard-add-new-share-material: 'Novo material'
+dashboard-edit-share-material-url: 'Editar URL'
+dashboard-new-material-form-material: 'Material'
 dashboard-new-material-form-description: 'Descrición'
+dashboard-new-material-form-url: 'URL'
+dashboard-menu-projects-shared-materials: 'Materiais'
+project-no-share-material: 'Sen materiais compartidos polo proxecto'
+dashboard-project-default-image: 'Imaxe predefinida'
+dashboard-project-delete-image: 'Eliminar ficheiro'
+dashboard-project-support-responses: Respostas
+dashboard-rewards-invests-wallet: 'Ademais, tes no teu portamoedas virtual <strong>%AMOUNT%</strong> que podes empregar en calquera momento.'

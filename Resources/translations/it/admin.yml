@@ -45,6 +45,7 @@ admin-back-detail: 'Torna ai dettagli'
 admin-back-list: 'Torna alla lista'
 admin-contents: 'Testi e traduzioni'
 admin-empty-list: 'Nessun risultato trovato'
+admin-communications: Comunicazioni
 admin-mailing-back-to-list: 'Tornare a comunicazioni'
 admin-mailing-communicating-with: 'Volevamo contattare %DESC%'
 admin-mailing-created: 'Creato il'
@@ -58,12 +59,61 @@ admin-mailing-view-message: 'Visualizza messaggio'
 admin-newsletter-generated: 'E'' stato generato il bollettino [%ID%]'
 admin-newsletter-langs-to-send: 'Lingue: %LANGS%'
 admin-newsletter-mind-activate: 'Attivala affinché sia inviato'
+admin-prev-page: 'Pagina precedente'
+admin-next-page: 'Pagina successiva'
 admin-no: 'No'
 admin-percent: Percentuale
 admin-project: Progetto
 admin-projects: Progetti
 admin-filters: 'Filtri'
 admin-remove-filters: 'Eliminare filtri'
+admin-add-entry-ok: 'Nuova voce creata correttamente'
+admin-edit-entry-ok: 'Voce modificata correttamente'
+admin-services: Servizi
 admin-sponsors: Servizi
+admin-others: Altri
 admin-status: Stato
 admin-text-type: 'Elaborare il testo come'
+admin-user-no-projects: 'Non ha ancora creato nessun progetto'
+admin-user-no-invests: 'Non ha ancora fatto alcuna donazione'
+admin-users: Utenti
+admin-users-add: Creare nuovo utente
+admin-blog-add: Crea nuovo post
+admin-blog-edit: Modificando il post %s
+admin-blog-slug-chars: 'Il campo [%s] contiene caratteri non validi!'
+admin-categories: 'Categorie e aree'
+admin-category-add: Crea una nuova categoria
+admin-category-edit: 'Modifica Categoria: %s'
+admin-socialcommitment-edit: Modificando l'impegno sociale %s
+admin-channels: Canali
+admin-yes: Sì
+admin-home-title: Gestire Goteo
+admin-list: Elenco
+admin-stats: Statistiche
+admin-list-total: 'Totale: <strong>%s</strong> risultati'
+admin-search-global: 'Progetto, canale, convocazione...'
+admin-rebase-user: 'Cambiare ID utente'
+admin-edit-name: 'Cambiare il nome'
+admin-edit-roles: 'Modifica ruoli utente'
+admin-send-email: 'Inviare Email'
+admin-view-user-projects: 'Tutti i progetti'
+admin-user-hidden: 'Privato (nascosto)'
+admin-user-active: 'Account attivo'
+admin-user-wallet-amount: 'Credito nel portafogli'
+admin-mailing: 'Newsletter'
+admin-no-project: 'Nessun progetto'
+admin-title-name: Nome
+admin-title-about: Informazioni
+admin-title-active: Attivo
+admin-title-location: Localizzazione
+admin-title-fullname: Nome
+admin-title-email: Email
+admin-title-password: Password
+admin-title-avatar: Avatar
+admin-title-roles: Ruoli
+admin-title-icon: Icona
+admin-title-title: Titolo
+admin-title-subtitle: Sottotitolo
+admin-title-section: Sezione
+admin-title-social_commitment: Impegno sociale
+admin-title-categories: 'Categorie'
