@@ -392,8 +392,7 @@ abstract class Model {
 	 * @return string $id
 	 */
 	public static function idealiza($value, $punto = false, $enye = false, $max = 50) {
-        // Clean modern un-supported UTF8 chars
-		$id = trim(utf8_encode(utf8_decode($value)));
+		$id = trim($value);
 
         // Acentos
         $table = array(
@@ -420,12 +419,13 @@ abstract class Model {
         }
 
         $id = strtr($id, $table);
+
         $id = strtolower($id);
 
         // Separadores
         $id = preg_replace("/[\s\,\(\)\[\]\:\;\_\/\"\'\{\}]+/", "-", $id);
 
-		if (!$enye) {
+        if (!$enye) {
             $id = preg_replace('/[^\x20-\x7e]*/', '', $id);
         }
         // remove duplicates
@@ -435,7 +435,8 @@ abstract class Model {
 
         $id = trim($id, '-');
 
-		$id = substr($id, 0, $max);
+        $id = substr($id, 0, $max);
+
 
 		return $id;
 	}

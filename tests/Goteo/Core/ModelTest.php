@@ -86,10 +86,10 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
      * @depends testGetTable
      */
     public function testIdealiza($mock) {
-        $text = "àẁèỳśẅçÇ h😱.B";
-        $this->assertEquals('aweyswcc-h-b', Model::idealiza($text));
-        $this->assertEquals('aweyswcc-h-b', $mock::idealiza($text));
-        $this->assertEquals('aweyswcc-h.b', $mock::idealiza($text, true));
+        $text = "àẁèỳśẅçÇ h😱.Bṓ";
+        $this->assertEquals('aweyswcc-h-bo', Model::idealiza($text));
+        $this->assertEquals('aweyswcc-h-bo', $mock::idealiza($text));
+        $this->assertEquals('aweyswcc-h.bo', $mock::idealiza($text, true));
         return $mock;
     }
 
@@ -321,6 +321,8 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
      * @depends testInvalidateCache
      */
     public function testLangsSQLJoins($mock) {
+        $old_sql_lang = Config::get('sql_lang');
+        $old_lang = Config::get('lang');
         Config::set('sql_lang', 'es');
         Config::set('lang', 'es');
         list($fields, $joins) = $mock::getLangsSQLJoins('es');
@@ -358,6 +360,9 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
 
         // print_r($fields);
         // print_r($joins);
+        Config::set('sql_lang', $old_sql_lang);
+        Config::set('lang', $old_lang);
+
     }
 
 
