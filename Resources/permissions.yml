@@ -41,6 +41,18 @@ translate-language: # translate assigned language in user_translang table
         user_id: user # relational user.id in user_translang table
         table_id: lang
 
+view-any-call: # View any editing call
+    model: null
+    relational: null
+
+edit-any-call: # View any editing call
+    model: null
+    relational: null
+
+edit-published-calls: # Edit published calls
+    model: null
+    relational: null
+
 review-project: # View/review an assigned review project before their publication
     model:
         table: review

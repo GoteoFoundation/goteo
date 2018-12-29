@@ -56,6 +56,8 @@ manager:
     perms:
         - view-any-project # View any editing project
         - edit-published-projects # Edit any published project
+        - view-any-call # Edit any published call
+        - edit-published-calls # Edit any published call
         - admin-module-blog # create/edit/delete non-project posts
         - admin-module-stories # create/edit/delete non-project posts
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
@@ -81,6 +83,8 @@ consultant:
 admin:
     extends: consultant # inherits permissions from role "consultant"
     perms:
+        - view-any-call # View any editing call
+        - edit-any-call # View any editing call
         - publish-any-project # Publish/unpublish any project
         - assign-consultant # Assign consultant to a project
         - edit-any-project # Edit any project

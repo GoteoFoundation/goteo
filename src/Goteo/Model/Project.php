@@ -261,7 +261,7 @@ class Project extends \Goteo\Core\Model {
     public function userCanView($user = null) {
 
         // already published:
-        if($this->status >= self::STATUS_IN_CAMPAIGN) return true;
+        if($this->isApproved()) return true;
         if(empty($user)) return false;
         if(!$user instanceOf User) return false;
         // owns the project
