@@ -6,6 +6,8 @@ services:
   mailhog:
     image: mailhog/mailhog:latest
     container_name: goteo-mailhog
+    logging:
+      driver: none
     ports:
       - "8082:8025"
       - "1025:1025"
@@ -55,7 +57,6 @@ services:
       - GOTEO_CONFIG_FILE
       - DEBUG
       - UID
-      - GID
     command: ./docker/php/init.sh
 
 volumes:

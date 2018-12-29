@@ -35,6 +35,11 @@ plugins:
     goteo-dev:
         active: true # plugin should be active=true to be loaded
         #liveport: 35729 # Local development only livereload port (optional)
+        mocks:
+            # ip: 128.101.101.101 (Minnesota)
+            # ip: 147.83.0.1 (Barcelona)
+            # ip: 139.230.131.30 (Perth)
+            # ip: 202.21.127.145 (Ulaanbaatar)
 
 # Payment methods, must be registered as classes implementing Goteo\Payment\Method\PaymentMethodInterface
 payments:
