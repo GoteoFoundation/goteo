@@ -8,10 +8,14 @@ This guide shows you how to install a standard copy of the Goteo code. To person
 
 Please referer to the "[extend section](http://goteofoundation.github.io/goteo/docs/developers/extend.html)" to learn how to do that. 
 
+> This guide is intended for production settings, for development [using Docker](http://goteofoundation.github.io/goteo/docs/developers/docker.html) is recommended. 
+>
+> Note that you can use docker to build all the scripts and then copy those files to the server. Just add `docker/exec` in front of any command with `grunt`, `composer` or `npm`
+
 Server requirements
 -------------------
 
-- PHP v5.6 (PHP 7 recommended) or later with extensions `gd`, `mcrypt`, `curl`, `mbstring`, `json`, `mysql` activated
+- PHP v7 (PHP 7.1 recommended) or later with extensions `gd`, `mcrypt`, `curl`, `mbstring`, `json`, `mysql` activated
 - Access to the terminal in the webserver and cron.
 - Apache, Nginx or any other server with ModRewrite activated
 - MySQL 5.7 (or MariaDB 10.2) or later

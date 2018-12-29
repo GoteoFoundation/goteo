@@ -10,7 +10,7 @@ This is the source code of the [Crowdfunding platform Goteo](http://goteo.org)
 
 > This is a web app that allows the receipt, review and publishing of collective campaigns for their collective funding and the receiving of collaborations as well as the dynamic visualization of the support received, classification of initiatives and campaign tracking. The system also permits secure and distributed communication with users and between users, administration of highlighted projects on the home page and the creation of periodical publications such as blogs, a FAQ section and static pages.
 
-Current version: **3.3**
+Current version: **3.5**
 
 Although you can try to install it in order to create your own crowdfunding platform, this won't be a *Wordpress*-like installation (probably never will). These releases are mostly for developers and for those who want to collaborate with the code.
 
@@ -23,20 +23,21 @@ Some folders may have its own README.md file with comments. However, we will try
 - [Upgrade](http://goteofoundation.github.io/goteo/docs/upgrade.html)
 
 > ### Docker quickstart:
+>
 >  First ensure you have `docker-compose` properly installed, then create a config file and use the wrapper `docker/up`:
 >
 > ```bash
 > cp config/docker-settings.yml config/local-docker-settings.yml
 > docker/up
 > ```
-> 
+>
 > Then you can run commands inside the php container by using the wrapper `docker/exec`. If develping, we recommend to run this command in a separate terminal:
-> 
+>
 > ```bash
 > docker/exec grunt watch
 > ```
-> 
-> [More info](http://goteofoundation.github.io/goteo/docs/developers/environment.html#docker)
+>
+> [More info](http://goteofoundation.github.io/goteo/docs/developers/docker.html)
 
 ### CONTRIBUTING
 

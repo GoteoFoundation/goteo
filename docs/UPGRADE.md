@@ -21,6 +21,11 @@ php bin/console migrate
 php bin/console migrate all
 ```
 
+**If using Docker, just do:**
+
+```
+docker/exec bin/console migrate all
+```
 
 Older versions
 ==============
