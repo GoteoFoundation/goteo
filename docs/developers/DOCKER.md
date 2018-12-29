@@ -43,6 +43,7 @@ We recommend not to use the `-d` flag on `docker-compose` to be aware of the log
 # TL;TR
 
 1. [How to use Docker](#how-to-use-docker)
+1. [Upgrade Goteo](#upgrade-goteo)
 2. [SSL configuration for development](#ssl-configuration)
 3. [Mailhog: Development mail debugging](#mailhog-development-mail-debugging)
 4. [Cron: background processes](#cron-background-processes)
@@ -97,6 +98,17 @@ docker/exec bin/console migrate all
 docker/exec bin/console toolkit project
 docker/exec bin/console --help
 ```
+
+### Upgrade Goteo
+
+If using Git, you can upgrade to any new version of Goteo pulling the new code:
+
+```
+git clone git@github.com:GoteoFoundation/goteo.git
+git pull origin devel
+docker/up --rebuild
+```
+
 
 ### SSL configuration
 
