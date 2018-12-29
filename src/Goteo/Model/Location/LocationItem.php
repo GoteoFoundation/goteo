@@ -114,12 +114,12 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
     }
 
     /**
-     * Open by default, must be overwritten by extends
+     * False by default, must be overwritten by extends
      * @param  User   $user [description]
      * @return [type]       [description]
      */
     public function userCanView(User $user) {
-        return true;
+        return false;
     }
 
     /**

@@ -219,7 +219,7 @@ $(function(){
 
                 })
                 .on('typeahead:change', function (event) {
-                    console.log('change', event, $(this).val(), $(this).attr('name'));
+                    // console.log('change', event, $(this).val(), $(this).attr('name'));
                     if($(this).val().trim() === '') $('#' + $(this).data('real-id')).val('');
                 });
         });
@@ -961,7 +961,7 @@ $(function(){
                     $radius.data('geocoder-populate-' +  el, el_dest);
                 } else {
                     $search.data('geocoder-populate-' +  el, el_dest);
-                    console.log('populate el:',el, 'value:', el_dest, 'current', $search.data('geocoder-populate-' +  el),'$search:', $search);
+                    // console.log('populate el:',el, 'value:', el_dest, 'current', $search.data('geocoder-populate-' +  el),'$search:', $search);
                 }
                 if(el === 'latitude') {
                     lat = parseFloat(val) || 0;
