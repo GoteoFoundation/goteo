@@ -20,7 +20,7 @@ donor-field-amount: 'Import donatiu'
 donor-field-amount-relief: Desgravació
 donor-field-lot-relief: Tram
 donor-field-numproj: 'Aportacions realitzades el %s'
-personal-field-donor_name: 'Nom'
-personal-field-donor_surname: 'Primer cognom'
-personal-field-donor_surname2: 'Segon cognom'
+personal-field-donor_name: 'Nom de la persona física o denominació fiscal de l''entitat jurídica'
+personal-field-donor_surname: 'Primer cognom (no omplir en cas d''entitats jurídiques)'
+personal-field-donor_surname2: 'Segon cognom (no omplir en cas d''entitats jurídiques)'
 validate-donor-mandatory: 'Tots els camps són obligatoris'
