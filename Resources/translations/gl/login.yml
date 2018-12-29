@@ -1,5 +1,7 @@
 ---
+auth-access-forbbiden: 'Non tes permisos para acceder aquí!'
 error-register-userid: 'É obrigado escribir un nome de acceso'
+login-access-button: Iniciar sesión
 login-access-header: 'Usuario rexistrado'
 login-access-password-field: Contrasinal
 login-access-username-field: 'Nome de acceso'
@@ -7,26 +9,44 @@ login-fail: 'Erro de acceso'
 login-leave-button: 'Darse de baixa'
 login-leave-header: 'Pechar a conta'
 login-leave-message: 'Déixanos unha mensaxe'
+login-new-user-label: 'Crear un novo usuario?'
 login-oneclick-header: 'Accede cun só click'
+login-recover-button: Recuperar contrasinal
 login-recover-email-field: 'Email da conta'
+login-recover-label: 'Esqueciches o teu contrasinal?'
 login-recover-link: 'Recuperar contrasinal'
+login-recover-modal-button: Enviar
+login-recover-modal-sucess: 'Feito! - enviamosche un correo electrónico a %s cunha ligazón para restaurar o contrasinal.'
+login-recover-modal-text: 'Insire o enderezo de correo electrónico que empregaches para rexistrarte e enviarémoste unha ligazón para restaurar o teu contrasinal.'
 login-recover-username-field: 'Nome de acceso'
 login-register-button: Rexistrar
+login-register-confirm-field: 'Confirmar correo'
 login-register-confirm_password-field: 'Confirmar contrasinal'
+login-register-email-field: Correo electrónico
 login-register-header: 'Novo usuario'
 login-register-password-field: Contrasinal
+login-register-password-minlength: 'Mínimo 6 caracteres'
 login-register-userid-field: 'Nome de acceso'
 login-register-username-field: 'Nome público'
 login-signin-facebook: 'Accede con Facebook'
+login-signin-google: 'Accede con Google'
+login-signin-linkedin: 'Accede con LinkedIn'
+login-signin-myopenid: 'Accede con myOpenID'
 login-signin-openid: 'Outro servidor Open ID'
+login-signin-openid-go: Ir
+login-signin-twitter: 'Accede con Twitter'
 login-signin-ubuntu: 'Accede co usuario de Ubuntu One'
 login-signin-view-more: 'Ensinar máis opcións de aceso'
+login-signin-yahoo: 'Accede con Yahoo'
+login-title: 'Iniciar sesión'
 oauth-confirm-user: 'Ligar usuario existente'
 oauth-facebook-access-denied: 'Acceso dende Facebook denegado'
 oauth-goteo-openid-sync-password: 'Estás tentando ligar unha conta xa existente en Goteo cun provedor externo. Isto permitirache entrar en Goteo cun so clic no futuro.<br>Esta primeira vez deberás proporcionar o contrasinal da túa conta en Goteo para confirmar a túa identidade.'
 oauth-goteo-user-not-exists: 'Ese usuario non existe en Goteo'
 oauth-goteo-user-password-exists: 'Ese usuario xa existe en Goteo'
+oauth-import-about: 'Canto a ti'
 oauth-import-facebook: 'Ligazón á túa conta de Facebook'
+oauth-import-location: 'Lugar de residencia'
 oauth-import-name: Nome
 oauth-import-twitter: 'Ligazón á túa conta de Twitter'
 oauth-import-website: 'Os teus sitios webs'
@@ -39,4 +59,8 @@ oauth-openid-not-logged: 'Usuario desconectado dende Open ID'
 oauth-token-request-error: 'Ocurriu un erro ó obter as credenciais co provedor'
 oauth-twitter-access-denied: 'Acceso dende Twitter denegado'
 oauth-unknown-provider: 'Non se pode comezar sesión con este provedor'
+reset-password-new-password: 'Volve escribir o teu contrasinal novo'
+reset-password-old-password: 'O teu contrasinal novo'
 reset-password-save: Gardar
+reset-password-title: 'Definir contrasinal novo'
+login-alternate-ids: Outras opcións

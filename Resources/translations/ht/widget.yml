@@ -1,0 +1,19 @@
+---
+call-tagmark-3: 'Apèl la ouvri'
+call-tagmark-4: 'Konpay aktif!'
+call-tagmark-5: 'Kanpay ki fini'
+call-tagmark-6: 'Apèl ki achive'
+regular-fail_mark: Achive...
+regular-gotit_mark: Koparenaj!
+regular-keepiton_mark: 'Minimòm jwenn deja'
+regular-oneround_mark: 'Yon sèl kout kle'
+regular-onrun_mark: 'Ap fèt!'
+regular-success_mark: 'Mission akonpli!'
+call-tagmark-open: 'Apèl louvri'
+call-tagmark-active: 'Kanpay aktif!'
+call-tagmark-completed: 'Kanpay fini'
+call-tagmark-archived: 'Apèl achive'
+call-short-tagmark-open: 'Ouvè'
+call-short-tagmark-active: 'Actif!'
+call-short-tagmark-completed: 'Fini'
+call-short-tagmark-archived: 'Archive'

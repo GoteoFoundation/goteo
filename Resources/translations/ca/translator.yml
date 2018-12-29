@@ -52,7 +52,6 @@ translator-saved-ok: 'Traduccions desades correctament per als idiomes [%s]'
 translator-skipped-fields: "Alguns camps no s''han copiat perquè ja contenien text.\nEsborra el text original para poder copiar des de un altre idioma."
 translator-sphere: 'Àmbits de la convocatòria'
 translator-social_commitment: 'Compromisos socials'
-translator-sdg: 'ODS'
 translator-footprint: 'Petjades'
 translator-stories: 'Histories exitoses'
 translator-tables: 'Taules generals'

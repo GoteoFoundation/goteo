@@ -1,1 +1,19 @@
 ---
+call-tagmark-3: 'Chamada aberta'
+call-tagmark-4: 'Campanha ativa!'
+call-tagmark-5: 'Campanha encerrada'
+call-tagmark-6: 'Chamada arquivada'
+regular-fail_mark: Arquivado...
+regular-gotit_mark: Co-financiado!
+regular-keepiton_mark: 'Para o ideal'
+regular-oneround_mark: 'Rodada única'
+regular-onrun_mark: 'Executando!'
+regular-success_mark: 'Missão cumprida!'
+call-tagmark-open: 'Chamada aberta'
+call-tagmark-active: 'Campanha ativa!'
+call-tagmark-completed: 'Campanha encerrada'
+call-tagmark-archived: 'Chamada arquivada'
+call-short-tagmark-open: 'Aberta'
+call-short-tagmark-active: 'Ativa!'
+call-short-tagmark-completed: 'Terminada'
+call-short-tagmark-archived: 'Arquivada'

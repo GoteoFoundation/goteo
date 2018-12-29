@@ -42,11 +42,14 @@ admin-account-user-changed-error: 'Nu s-a putut schimba contribuţia utilizatoru
 admin-account-user-changed-successfully: 'Nu s-a putut schimba contribuţia utilizatorului [%ID%] la [%NAME%]'
 admin-address: Adresa
 admin-all: Toate
+admin-global: Global
 admin-back: Înapoi
 admin-back-detail: 'Înapoi la detalii'
 admin-back-list: 'Înapoi la listă'
 admin-contents: 'Texte și traduceri'
 admin-empty-list: 'Nu s-au găsit înregistrări'
+admin-activity: Activitate
+admin-communications: Comunicatii
 admin-home: Pagina principală
 admin-items: bilete
 admin-mailing-back-to-list: 'Înapoi la comunicare'
@@ -62,21 +65,51 @@ admin-mailing-view-message: 'A se vedea mesajul'
 admin-newsletter-generated: 'Newsletter-ul a fost generat [%ID%]'
 admin-newsletter-langs-to-send: 'Limbi: %LANGS%'
 admin-newsletter-mind-activate: 'Activ pentru a fi trimis'
+admin-prev-page: 'Pagina anterioară'
+admin-next-page: 'Pagina următoare'
 admin-no: 'Nu'
 admin-percent: Procent
 admin-project: Proiect
+admin-main: Principal
+admin-legacy: Vechi
 admin-projects: Proiecte
+admin-consultants: 'Consultanți'
+admin-invests: Contribuţii
 admin-filters: 'Filtre'
 admin-remove-filters: 'Elimină filtrele'
+admin-remove-entry: 'Ștergeți intrarea'
+admin-remove-entry-confirm: 'Sigur doriți să ștergeți această intrare? Această acțiune nu poate fi anulată!'
+admin-remove-entry-forbidden: 'Nu puteți șterge înregistrările publicate în blog. Anulează înregistrarea.'
+admin-remove-entry-ok: 'Intrarea a fost șters cu succes'
+admin-services: Servicii
 admin-sponsors: Servicii
+admin-slug-seo-help: 'Acest câmp este important pentru SEO. Editați doar dacă este important.'
+admin-others: Altele
+admin-summary: Sumar
+admin-origins: Statistici vizitatori
 admin-status: Status
 admin-text-type: 'Procesare text ca'
 admin-text-type-html: HTML
 admin-text-type-md: Reducere
 admin-text-type-plain: 'Text simplu'
 admin-user: Utilizator
+admin-user-no-projects: 'Nu ați creat încă niciun proiect'
+admin-user-no-invests: 'Încă nu ați făcut nicio donație'
 admin-users: Utilizatori
+admin-users-add: Creați un utilizator nou
+admin-blog: Blog general
+admin-blog-add: Creați o postare nouă
+admin-blog-edit: Editarea postului %s
+admin-blog-slug-exists: 'Identificatorul [%s] este utilizat într-un alt post!'
+admin-blog-not-public: 'Această postare nu este încă publică'
+admin-stories: Istoricul utilizatorilor din Goteo
+admin-stories-add: Creați o istorie nouă
+admin-stories-edit: Editarea istoric %s
+admin-calls: Convocări
+admin-matchers: Matchers
+admin-channels: Canale
 admin-yes: Da
+admin-impersonate: Inlocuit
 admin-impersonate-user: În locul %s
 admin-project-express-discard: 'Exprimă respingerea'
 admin-project-express-discard-desc: 'Mutați proiectul cu status Respins și trimiteți un email'
@@ -94,3 +127,82 @@ admin-project-to-publish-sure: 'Proiectul e pe cale să înceapă campania. Porn
 admin-project-derivation-discard: 'Respingere și întoarcere la origine'
 admin-project-derivation-discard-desc: 'Alocați proiectului statusul Respingere și trimiteți un email altor platforme mai potrivite'
 admin-project-derivation-discard-sure: 'Se va trimite un email automat altor platforme și proeictul va avea statusul respins. Ok?'
+admin-home-title: Administrare Goteo
+admin-list: Listare
+admin-stats: Statistici
+admin-list-total: 'Total: <strong>%s</strong> rezultate'
+admin-search-global: 'Proiect, canal, apel...'
+admin-already-impersonating: 'Încă mai impersonați un utilizator, vă rugăm să închideți mai întâi sesiunea!'
+admin-rebase-user: 'Modificați ID utilizator'
+admin-edit-name: 'Schimbați numele'
+admin-edit-roles: 'Schimbați rolurile utilizatorilor'
+admin-send-email: 'Trimiteți un e-mail'
+admin-show-roles-info: 'Ce poate face fiecare rol?'
+admin-user-roles: 'Lista roluri utilizatori'
+admin-view-user-projects: 'Toate proiectele'
+admin-view-user-invests: 'Toate contribuțiile'
+admin-user-hidden: 'Privat (ascuns)'
+admin-user-active: 'Cont activ'
+admin-user-warning: 'Atenţie: Aceste operațiuni sunt executate fără a trimite orice notificare pentru utilizator'
+admin-user-wallet-amount: 'Credit în portofel'
+admin-user-create-invest: 'Creaza contributie'
+admin-mailing: 'Corespondenţă'
+admin-user-no-mailing: 'Nici un email nu a fost trimis pana acum'
+admin-view-user-mailing: 'Toată corespondența'
+admin-role-change-forbidden: 'Nu puteți gestiona rolul %ROLE% folosind acest cont de utilizator'
+admin-users-global-search: 'Id, nume, email sau proiect'
+admin-blog-global-search: 'Id, titlu, subtitlu sau text'
+admin-blog-stories-search: 'Id, titlu, text sau proiect'
+admin-no-project: 'Nici un proiect'
+admin-title-id: Id
+admin-title-name: Nume
+admin-title-about: Info
+admin-title-active: Activ
+admin-title-location: Localizare
+admin-title-fullname: Nume
+admin-title-email: E-mail
+admin-title-header-image: Imaginea din antet
+admin-title-password: Parolă
+admin-title-avatar: Avatar
+admin-title-roles: Roluri
+admin-title-amount: Investit
+admin-title-info: Info
+admin-title-image: Imagine
+admin-title-title: Titlu
+admin-title-subtitle: Subtitlu
+admin-title-section: Secţiune
+admin-title-text: Text
+admin-title-slug: Slug
+admin-title-publish: Publicat
+admin-title-langs: Traduceri
+admin-title-actions: Acţiuni
+admin-title-tags: Tag-uri
+admin-title-deleted: Eliminat
+admin-title-sphere: Domeniu
+admin-title-order: Sortează
+admin-blog-not-published-yet: 'Noul articol din blog incă nu este public'
+admin-blog-initialized: 'S-a inițializat spațiul pentru blog'
+admin-blog-deactivated: 'Din păcate, administrarea blog-ului este dezactivată'
+admin-blog-edit-success: 'Postarea în blog a fost editată cu succes'
+admin-stories-not-active-yet: 'Acest istoric de utilizator nu este încă activ'
+admin-stories-edit-success: 'Istoricul utilizatorului a fost editat cu succes'
+admin-stories-pool: 'Afișază portofelul final'
+admin-stories-review: 'Evaluare Goteo: (Subtitrare)'
+admin-stories-active: 'Activ in home'
+admin-stories-landing_pitch: 'Afișază in landing Pitch'
+admin-stories-landing_match: 'Afișază in landing Match'
+admin-stories-type: 'Tip de protagonist'
+admin-all-project-referers: 'Originea vizitelor la secțiunile proiectelor'
+admin-all-invests-referers: 'Originea vizitelor în contribuțiile la proiecte'
+admin-all-call-referers: 'Originea vizitelor pe paginile de solicitări'
+admin-stats-invest-active-parts: 'Destinația venitului net'
+admin-stats-invest-in_wallet-parts: 'Defalcare cont portofel'
+admin-losts: Pierderi
+admin-raised: Venituri
+admin-active: Incasări
+admin-refunded: Returnat
+admin-refunded-to_users: Returnați la utilizatori
+admin-refunded-to_users-invests: Nº de returnări către utilizatori
+admin-refunded-to_wallet: Întors in cont portofel
+admin-commissions: Comision
+admin-fees: Comision platformă

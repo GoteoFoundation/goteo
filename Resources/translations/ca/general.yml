@@ -68,7 +68,6 @@ project-messages-send_message_support-your_answer: 'Escriu aquí el teu missatge
 regular-add: Nou registre
 regular-all: Tots
 regular-admin_board: 'Panell admin'
-regular-author: 'Autor'
 regular-allsome: 'tots/alguns de'
 regular-anonymous: Anònim
 regular-ask: Preguntar
@@ -78,18 +77,14 @@ regular-by: 'Per:'
 regular-calendar: Calendari
 regular-cancel: Cancel·lar
 regular-cancel-back: 'Cancel·lar i torna enrere'
-
 regular-categories: 'Categories'
 regular-social_commitments: 'Compromisos socials'
 regular-spheres: 'Àmbits'
-regular-sdgs: 'ODS'
 regular-footprints: 'Petjades'
-
 regular-back: 'Torna enrere'
-regular-collaborate: Col·labora
+regular-collaborate: Col·labora 
 regular-content: Contingut
 regular-continue-question: 'Continuar?'
-regular-continue: 'Continuar'
 regular-create: 'Crea un projecte'
 regular-date: Data
 regular-date_in: Data d'entrada
@@ -122,7 +117,6 @@ regular-hello: Hola
 regular-here: aquí
 regular-help: Ajuda
 regular-home: Inici
-regular-id: Identificador (ID)
 regular-identica: Identi.ca
 regular-im: Sóc
 regular-instagram: Instagram
@@ -142,19 +136,18 @@ regular-male: Home
 regular-others: Altres
 regular-manage_board: 'Panell gestoria'
 regular-mandatory: 'Camp obligatori!'
-regular-matchfunding: 'Matchfunding'
 regular-media_legend: Llegenda
 regular-menu: Menú
 regular-menu-personal: Menú personal
 regular-message-clipboard-fail: 'Selecciona i copia aquest enllaç'
 regular-message_fail: 'Hi ha hagut algun error en enviar el missatge'
 regular-message_success: 'Missatge enviat correctament'
-regular-months: mesos
+regular-months: mesos 
 regular-more_info: '+ info'
 regular-news: 'Notícies: '
 regular-no: 'No'
 regular-of: de
-regular-preview: Previsualitzar
+regular-preview: Previsualitzar 
 regular-projects: projectes
 regular-published_no: Esborrany
 regular-published_yes: Publicat

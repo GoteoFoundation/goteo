@@ -1,11 +1,36 @@
 ---
 contract-paypal_account: 'Email da túa conta de PayPal:'
+currency-switch: TROCAR
+overview-field-spread: Difusión
 personal-field-accounts: 'Conta bancaria'
+project-about-title: 'Acerca deste Proxecto'
+project-call-got: 'O proxecto xa acadou <strong>%s</strong> de <strong>%s</strong>'
+project-chart-amount-end-round: 'Fin da ronda'
+project-chart-amount-ideal: Ideal
+project-chart-amount-reached: Acumulado
+project-chart-costs-reset: 'Volver'
+project-collaborations-available: 'colaboracións dispoñibles'
+project-collaborations-number: 'colaboradores'
 project-collaborations-supertitle: 'Necesidades non monetarias'
 project-collaborations-title: 'Búscase'
+project-comment-start-sesion: 'Iniciar sesión'
+project-comment-start-sesion-2: 'para deixar un comentario'
+project-error-main-lang: 'Non é posible definir este idioma [%s] como principal porque xa está asignado a unha tradución. Elimina a tradución existente en [%s], dende o panel de tradución, para poder introducir unha nova.'
+project-general-information: 'Información xeral'
+project-go-up: 'volver arriba'
+project-help-cost: 'Preciso axuda na definición dos custos'
+project-help-license: 'Preciso axuda para definir os retornos colectivos e as licenzas'
+project-hide-donors: 'Ocultar cofinanciadores'
+project-hide-needs: 'Ocultar listado de necesidades'
+project-invest: Achega
+project-invest-msg: 'Mensaxe de ánimo:'
 project-langs-header: 'Proxecto en'
+project-media-play_video: 'Ver vídeo'
 project-menu-home: Proxecto
 project-menu-messages: Colaboracións
+project-menu-needs: Necesidades
+project-menu-news: 'Novas'
+project-menu-participate: 'Participa'
 project-menu-supporters: Cofinanceiros
 project-menu-updates: Novidades
 project-menu_title-home: 'Impacto social: este proxecto abre o seu código, comparte coñecementos, datos ou arquivos dixitais en troco do teu apoio.'
@@ -13,14 +38,26 @@ project-menu_title-messages: 'Non só cartos: tamén podes apoiar co teu talento
 project-menu_title-needs: 'Transparencia de custos: detalle explicado do mínimo e o óptimo que necesita para levalo a cabo.'
 project-menu_title-supporters: 'Rede social de apoio: os cofinanceiros e cofinanceiras son tan importantes coma quen impulsa esta iniciativa.'
 project-menu_title-updates: 'Feedback: Infórmate sobre os avances do proxecto directamente a través de quen o impulsa.'
+project-messages-answer_it: Responder
 project-messages-closed: 'Aínda non se pode enviar mensaxes ó proxecto'
 project-messages-send_direct-header: 'Envía unha mensaxe ó impulsor/a do proxecto'
+project-messages-send_message-button: Enviar
 project-messages-send_message-header: 'Escribe a túa mensaxe'
 project-not_published: 'Este proxecto aínda non é público'
+project-regular-support: Cofinanciar
+project-related: 'Proxectos relacionados'
+project-rewards-header: Retorno
+project-rewards-individual_reward-limited: 'Recompensa limitada'
 project-rewards-individual_reward-title: 'Recompensas individuais'
+project-rewards-individual_reward-units_left: 'Restan <span class="left">%s</span> unidades'
+project-rewards-side-title: 'Recompensas'
+project-rewards-social_reward-title: 'Retorno colectivo'
 project-rewards-supertitle: 'Que ofrece en troco'
+project-rounds: 'Proxecto dunha soa rolda'
 project-share-header: 'Comparte este proxecto'
 project-share-pre_header: 'Deixa saber á túa rede de contactos que '
+project-show-donors: 'Amosar cofinanciadores'
+project-show-needs: 'Amosar listado de necesidades'
 project-side-investors-header: 'Xa aportaron'
 project-spread-header: 'Difunde este proxecto'
 project-spread-pre_widget: 'Difunde este proxecto'
@@ -28,16 +65,68 @@ project-spread-social: 'Cofinancio o proxecto %s #goteo #crowdfunding'
 project-spread-widget: 'Widget do proxecto'
 project-spread-widget_legend: 'Copia e pega o código na túa web ou blog e axuda a espallar este proxecto'
 project-spread-widget_title: 'Publica o widget do proxecto'
+project-support-supertitle: 'Necesidades económicas'
 project-unpublished: 'A campaña deste proxecto foi cancelada polo impulsor.'
+project-view-categories-title: Categorías
 project-view-metter-day_closed: 'Archivado o'
 project-view-metter-day_created: 'Creado o'
 project-view-metter-day_success: 'Financiado o'
 project-view-metter-day_updated: 'Recibido o'
+project-view-metter-favourite: 'Lembrarme'
 project-view-metter-got: Obtido
+project-view-metter-investment: Cofinanciamento
 project-view-metter-investors: Cofinanceiros
+project-view-metter-minimum: Mínimo
+project-view-metter-optimum: Óptimo
+project-view-preview: 'Vista previa do proxecto'
+project-willpublish: 'Este proxecto será publicado o %s'
 regular-new_project: 'Proxecto novo'
+social_reward-access: Accede
+social_reward-access_title: 'Accede a este recurso colectivo'
 tooltip-project-bank: 'Se non queres poñela agora poderás poñela máis adiante cando formalicemos o contrato'
 tooltip-project-scope: 'Indica o impacto xeográfico ó que aspira ter o proxecto (cada categoría inclúe a anterior).'
 tooltip-updates-allow_comments: ' tooltip-updates-allow_comments'
+tooltip-updates-date: tooltip-updates-date
+tooltip-updates-home: 'Texto tooltip-updates-home'
+tooltip-updates-image: tooltip-updates-image
+tooltip-updates-image_upload: tooltip-updates-image_upload
+tooltip-updates-media: tooltip-updates-media
+tooltip-updates-tags: 'Texto tooltip-updates-tags'
 tooltip-updates-text: ' tooltip-updates-allow_comments'
+tooltip-updates-title: tooltip-updates-title
 project-obtained: 'Obtido'
+project-costs-total: 'Total'
+project-remove-translation: 'Eliminar tradución'
+project-remove-translation-confirm: 'Tes a certeza de querer eliminar esta tradución? Isto non se pode desfacer!'
+project-removed-translation-ok: 'Tradución eliminada!'
+project-removed-translation-ko: 'Produciuse un erro ao eliminar a tradución!'
+project-social-commitment-title: 'Compromiso social'
+project-create-title: 'Comeza un proxecto'
+project-create-subtitle-alert: '<strong>VAITES!</strong><p>Avanzamos! Agora é momento de definir o teu proxecto en poucas palabras!</p>'
+project-create-minimum-field: 'Mínimo (€)'
+project-create-minimum-calculate-button: 'Calcular'
+project-create-publishing-date-field: 'Cando tes pensado publicar o proxecto?'
+project-create-social-select-field: 'Selecciona o teu compromiso social'
+project-create-terms-field: 'Lin, entendo e acepto as <a data-toggle="modal" data-target="#termsModal" href="">condicións</a> e requisitos para crear un proxecto no Goteo, mais a <a target="_blank" href="/legal/privacy">política de privacidade</a> da plataforma.'
+project-create-save-button: 'Gardar e continuar'
+project-create-modal-no-social-title: 'Compromiso Social'
+project-create-modal-no-social-description: 'É obrigatorio ter un compromiso social para que o teu proxecto sexa aceptado no Goteo. Se non te comprometes escollendo un, non se activará o botón que permite continuar :-('
+project-share-materials: 'Materiais compartidos'
+project-create-no-social-commitment: 'Non teño'
+project-progress-title: Como vai o proxecto
+project-edit: Editar proxecto
+project-remove-cost-confirm: 'Estás certo de querer eliminar este custo?'
+project-add-cost: 'Engadir custo'
+project-add-reward: 'Engadir recompensa'
+project-remove-reward-confirm: 'Estás certo de querer eliminar esta recompensa?'
+project-validation-error-costs: 'Falta engadir ou completar os custos'
+project-validation-error-costs_required: 'Tes que ter polo menos un custo de cada tipo, imprescindible e opcional'
+project-validation-error-rewards: 'Falta engadir ou completar as recompensas'
+project-validation-error-rewards_required: 'Tes que ter polo menos 3 recompensas'
+project-validation-error-rewards_units: 'A recompensa ten que ter polo menos %s unidades'
+project-validation-error-rewards_empty_amount: 'Non se poden definir recompensas a valor 0'
+project-non-public-field: 'Este campo non é público'
+project-campaign: 'Configuración'
+project-manage: 'Xestionar'
+project-manage-campaign: 'Xestionar campaña'
+project-widget-not-visible: 'Este widget non será visible até que o proxecto non sexa público'
