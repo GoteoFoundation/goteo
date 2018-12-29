@@ -13,7 +13,6 @@ call-tagmark-open: 'Open call'
 call-tagmark-active: 'Campaign is active!'
 call-tagmark-completed: 'Completed campaign.'
 call-tagmark-archived: 'Archived call'
-
 call-short-tagmark-open: 'Open'
 call-short-tagmark-active: 'Active!'
 call-short-tagmark-completed: 'Completed'
