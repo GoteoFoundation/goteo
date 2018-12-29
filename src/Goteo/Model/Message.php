@@ -217,7 +217,7 @@ class Message extends \Goteo\Core\Model {
                 $parts[] = ':prj' . $i;
                 $values[':prj' . $i] = is_object($prj) ? $prj->id : $prj;
             }
-            $sqlFilter[] = "a.project IN (" . implode(',', $parts) . ")";
+            $sqlFilter[] = "c.project IN (" . implode(',', $parts) . ")";
         }
         if($filters['recipient']) {
             $parts = [];
@@ -226,7 +226,7 @@ class Message extends \Goteo\Core\Model {
                 $parts[] = ':rcp' . $i;
                 $values[':rcp' . $i] = is_object($rcp) ? $rcp->id : $rcp;
             }
-            $sqlFilter[] = "b.user_id IN (" . implode(',', $parts) . ")";
+            $sqlFilter[] = "d.user_id IN (" . implode(',', $parts) . ")";
         }
 
         if($sqlFilter) {
@@ -234,23 +234,17 @@ class Message extends \Goteo\Core\Model {
         } else {
             $sqlFilter = '';
         }
-        // $sql = "SELECT a.*, MAX(a.date) AS date_max FROM message a
-        //         LEFT JOIN message_user b ON b.message_id=a.id
-        //         WHERE (a.user = :user OR b.user_id=:user) $sqlFilter
-        //         GROUP BY IF(ISNULL(a.thread),a.id,a.thread)
-        //         HAVING ISNULL(a.thread) AND a.blocked=0
-        //     ";
         $sql = "FROM message a
         INNER JOIN (
             SELECT IFNULL(c.thread,c.id) AS thread, c.date AS date_max, d.user_id
             FROM message c
             LEFT JOIN message_user d ON c.id=d.message_id
-            WHERE d.user_id=:user OR c.user=:user
+            WHERE (d.user_id=:user OR c.user=:user)
+            $sqlFilter
             ) b
         ON b.thread=a.id
         GROUP BY a.id";
         if($count) {
-            // return (int) self::query("SELECT COUNT(DISTINCT a.id) $sql", $values)->fetchColumn();
             return (int) self::query("SELECT COUNT(*) FROM (SELECT a.id $sql) s", $values)->fetchColumn();
         }
 
@@ -260,7 +254,7 @@ class Message extends \Goteo\Core\Model {
         $sql .=  $order ? " ORDER BY $order" : '';
         $sql .= " LIMIT $offset, $limit";
 
-        // die(\sqldbg($sql, $values));
+        // print_r($sql);print_r($values);die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
             return $resp;

@@ -183,17 +183,6 @@ class MessageListener extends AbstractListener {
                 ]))
                 ->doAdmin('user');
 
-            // evento público, si el proyecto es público
-            $log->populate($user->name,
-                '/user/profile/' . $user->id,
-                new FeedBody(null, null, 'feed-messages-new-thread', [
-                    '%PROJECT%' => Feed::item('project', $project->name, $project->id),
-                    '%TYPE%'    => new FeedBody('message', $project->id . '/participate#message' . $message->id, 'project-menu-messages'),
-
-                ]),
-                $user->avatar->id)
-                ->doPublic('community');
-
             // sent mail to project owner
             $this->sendMail($message, Template::OWNER_NEW_THREAD, [$project->getOwner()]);
         }
