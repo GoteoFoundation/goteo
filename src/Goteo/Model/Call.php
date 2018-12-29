@@ -529,7 +529,7 @@ class Call extends \Goteo\Core\Model {
         }
 
         if($user->hasPerm('edit-any-call')) return true;
-        if($user->hasPerm('edit-published-call') && $this->isApproved()) return true;
+        if($user->hasPerm('edit-published-calls') && $this->isApproved()) return true;
 
         // Legacy: is superadmin in the project node
         // if($user->hasRoleInNode(Config::get('current_node'), ['manager', 'superadmin', 'root'])) return true;

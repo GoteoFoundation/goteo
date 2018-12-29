@@ -269,7 +269,7 @@ class Project extends \Goteo\Core\Model {
 
         if($user->hasPerm('view-any-project')) return true;
         if($user->hasPerm('review-project', $this->id)) return true;
-        if(($call = $this->getCall()) && $user->hasPerm('view-call-project', $call->id)) return true;
+        if(($call = $this->getCall()) && $user->hasPerm('edit-calls', $call->id)) return true;
 
         // Legacy roles
         // is admin in the project node
@@ -300,7 +300,7 @@ class Project extends \Goteo\Core\Model {
         }
 
         if($user->hasPerm('edit-any-project')) return true;
-        if($user->hasPerm('edit-published-project') && $this->isApproved()) return true;
+        if($user->hasPerm('edit-published-projects') && $this->isApproved()) return true;
         if($user->hasPerm('edit-projects', $this->id)) return true;
         if($user->hasPerm('review-project', $this->id)) return true;
 

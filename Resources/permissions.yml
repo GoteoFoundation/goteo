@@ -41,6 +41,18 @@ translate-language: # translate assigned language in user_translang table
         user_id: user # relational user.id in user_translang table
         table_id: lang
 
+create-call: # create own calls, currently not used as a real perm (implicit for all users)
+    model: null
+    relational: null
+
+edit-call:   # edit own calls, currently not used as a real perm (implicit for all users)
+    model: null
+    relational: null
+
+remove-call: # remove own call, currently not used as a real perm (implicit for all users)
+    model: null
+    relational: null
+
 view-any-call: # View any editing call
     model: null
     relational: null
@@ -49,7 +61,46 @@ edit-any-call: # View any editing call
     model: null
     relational: null
 
+remove-any-call: # Remove any call
+    model: null
+    relational: null
+
 edit-published-calls: # Edit published calls
+    model: null
+    relational: null
+
+publish-any-call: # Publish/unpublish any call
+    model: null
+    relational: null
+
+publish-calls: # Publish//unpublish assigned calls as a consultant
+    model:
+        table: call
+        table_id: id # field in table call to join to table user_call
+    relational:
+        table: user_call
+        user_id: user
+        table_id: call # relational call.id in user_call table
+
+edit-calls: # Edit calls assigned as a consultant
+    model:
+        table: call
+        table_id: id
+    relational:
+        table: user_call
+        user_id: user
+        table_id: call # relational call.id in user_call table
+
+remove-calls: # Remove calls assigned as a consultant
+    model:
+        table: call
+        table_id: id
+    relational:
+        table: user_call
+        user_id: user
+        table_id: call # relational project.id in user_project table
+
+assign-consultant: # Assign consultant to a project or call
     model: null
     relational: null
 
@@ -63,15 +114,6 @@ review-project: # View/review an assigned review project before their publicatio
         table: user_review
         user_id: user
         table_id: review # relational review.id in user_review table
-
-view-call-project: # view projects included in the user_call table
-    model:
-        table: call
-        table_id: id # field where to search perm value in table call
-    relational:
-        table: user_call
-        user_id: user
-        table_id: call # relational call.id in user_call table
 
 view-any-project: # View any editing project
     model: null
@@ -108,20 +150,15 @@ remove-projects: # Remove projects assigned as a consultant
         user_id: user
         table_id: project # relational project.id in user_project table
 
-
-publish-any-project: # Publish/unpublish any project
-    model: null
-    relational: null
-
-assign-consultant: # Assign consultant to a project
-    model: null
-    relational: null
-
 edit-any-project: # Edit any project
     model: null
     relational: null
 
 remove-any-project: # Remove any project
+    model: null
+    relational: null
+
+publish-any-project: # Publish/unpublish any project
     model: null
     relational: null
 
