@@ -49,8 +49,6 @@ if(!is_file($config)) $config = __DIR__ . '/../config/dev-settings.yml';
 if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
 Config::load($config);
 
-// Mock IP for geolocation tests:
-// $request->server->set('REMOTE_ADDR', '128.101.101.101');
 //Get from globals defaults
 App::setRequest($request);
 

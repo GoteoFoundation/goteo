@@ -274,8 +274,8 @@ $api->add('api-categories-images-upload', new Route(
     array('POST') // methods
 ));
 
-// Post property individual updates
-$api->add('api-blog-post-property', new Route(
+// Categories property individual updates
+$api->add('api-categories-property', new Route(
     '/categories/{tab}/{id}/property/{prop}',
     array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::categoriesPropertyAction'
         )
