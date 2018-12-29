@@ -70,11 +70,12 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
             ->add('project_location', 'location', [
                 'label' => 'overview-field-project_location',
                 'constraints' => $this->getConstraints('project_location'),
-                // 'type' => 'project', // JSON geoloc
-                // 'item' => $this->getModel()->id,
+                'type' => 'project', // API geoloc
+                'item' => $this->getModel()->id,
                 'disabled' => $this->getReadonly(),
                 'location_object' => ProjectLocation::get($project),
                 'location_class' => 'Goteo\Model\Project\ProjectLocation',
+                // 'always_populate' => true,
                 // 'location_radius' => 10,
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>',

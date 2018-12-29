@@ -948,6 +948,8 @@ $(function(){
             var title = $input.closest('.form-group').find('label:first').text();
             $modal.find('.modal-title').text(title);
 
+            $search.data('geocoder-type', $input.data('geocoder-type'));
+            $search.data('geocoder-item', $input.data('geocoder-item'));
             $(['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude', 'formatted_address', 'radius']).each(function(i, el){
                 var el_dest = $input.data('geocoder-populate-' +  el);
                 var $val = $(el_dest);
@@ -959,6 +961,7 @@ $(function(){
                     $radius.data('geocoder-populate-' +  el, el_dest);
                 } else {
                     $search.data('geocoder-populate-' +  el, el_dest);
+                    console.log('populate el:',el, 'value:', el_dest, 'current', $search.data('geocoder-populate-' +  el),'$search:', $search);
                 }
                 if(el === 'latitude') {
                     lat = parseFloat(val) || 0;

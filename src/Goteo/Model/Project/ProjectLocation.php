@@ -11,6 +11,7 @@
 namespace Goteo\Model\Project;
 
 use Goteo\Model\Project;
+use Goteo\Model\User;
 
 class ProjectLocation extends \Goteo\Model\Location\LocationItem {
     protected $Table = 'project_location';
@@ -30,5 +31,23 @@ class ProjectLocation extends \Goteo\Model\Location\LocationItem {
         }
         return parent::get($id);
     }
+
+    /**
+     * Same permissions as view project
+     * Onwer can view location
+     * admins too
+     * if project is pubic too
+     */
+    public function userCanView(User $user) {
+        return $this->getModel()->userCanView($user);
+    }
+
+    /**
+     * same permissions as edit project
+     */
+    public function userCanEdit(User $user) {
+        return $this->getModel()->userCanEdit($user);
+    }
+
 }
 

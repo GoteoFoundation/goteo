@@ -78,13 +78,13 @@ class UserProfileForm extends AbstractFormProcessor {
                 'constraints' => $this->getConstraints('name'),
                 'label' => 'regular-name'
             ])
-// ;return $this;$builder
             ->add('location', 'location', [
                 'label' => 'profile-field-location',
                 'constraints' => $this->getConstraints('location'),
                 'disabled' => $this->getReadonly(),
                 'attr' =>['info' => $non_public],
                 'type' => 'user',
+                'item' => $user->id,
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>'
             ])

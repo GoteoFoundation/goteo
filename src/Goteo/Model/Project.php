@@ -265,7 +265,7 @@ class Project extends \Goteo\Core\Model {
         if(empty($user)) return false;
         if(!$user instanceOf User) return false;
         // owns the project
-        if($this->userIsOwner($user->id)) return true;
+        if($this->userIsOwner($user)) return true;
 
         if($user->hasPerm('view-any-project')) return true;
         if($user->hasPerm('review-project', $this->id)) return true;
@@ -324,7 +324,7 @@ class Project extends \Goteo\Core\Model {
         if(!$user instanceOf User) return false;
         if(!in_array($this->status, array(self::STATUS_DRAFT, self::STATUS_REJECTED, self::STATUS_EDITING))) return false;
         // owns the project
-        if($this->userIsOwner($user->id)) return true;
+        if($this->userIsOwner($user)) return true;
 
         if($user->hasPerm('delete-any-project')) return true;
         if($user->hasPerm('remove-projects', $this->id)) return true;

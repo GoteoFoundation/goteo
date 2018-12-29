@@ -58,7 +58,7 @@ locator.getUserLocation = function (callback) {
  */
 locator.saveGeolocationData = function (type, item, data) {
     this.trace('Saving geolocation data, type:', type, ' item:', item, ' data:', data);
-    $.post('/json/geolocate/' + type + (item ? '/' + item : ''), data, function(result){
+    $.post('/api/geoloc/locate/' + type + (item ? '/' + item : ''), data, function(result){
         locator.trace('Saved gelocation data result:', result);
     });
 };
@@ -304,7 +304,7 @@ locator.setGoogleMapPoint = function (obj, iteration) {
     google.maps.event.addListener(this.marker, 'dragend', function() {
         locator.trace('dragged marker', locator.marker.getPosition());
         locator.geoCode({latLng: locator.marker.getPosition()}, function(place) {
-            locator.trace('triggering changePlace', autocomplete);
+            locator.trace('triggering changePlace after dragend', autocomplete);
             if(autocomplete) {
                 $(autocomplete).val(place.formatted_address);
                 locator.changePlace(autocomplete, place);
@@ -316,7 +316,7 @@ locator.setGoogleMapPoint = function (obj, iteration) {
     });
     // array of points
     this.markers = [];
-    if($(obj).is('[data-map-coords]')) {
+    if($(obj).data('map-coords')) {
         var coords = $(obj).data('map-coords');
         if($.isArray(coords)) {
             //  Create a new viewpoint bound
@@ -355,7 +355,7 @@ locator.setGoogleMapPoint = function (obj, iteration) {
     }
 
     //draw info window
-    if($(obj).is('[data-map-content]')) {
+    if($(obj).data('map-content')) {
         var desc = $(obj).data('map-content');
         this.marker = new google.maps.InfoWindow();
         this.marker.setContent(desc);
@@ -401,8 +401,9 @@ locator.setGoogleMapPoint = function (obj, iteration) {
             lng = place.geometry.location.lng();
             var data = locator.getGoogleAddressFromAutocomplete(place);
             // Save address field via ajax if required.
-            if($(obj).is('[data-geocoder-type]')) {
-                locator.saveGeolocationData($(obj).data('geocoder-type'), $(obj).is('[data-geocoder-item]') ? $(obj).data('geocoder-item') : '', data);
+            locator.trace('changePlace',$(obj));
+            if($(obj).data('geocoder-type')) {
+                locator.saveGeolocationData($(obj).data('geocoder-type'), $(obj).data('geocoder-item') ? $(obj).data('geocoder-item') : '', data);
             }
             locator.trace('triggering changePlace', autocomplete);
             if(autocomplete) {
@@ -438,7 +439,6 @@ locator.getGoogleAddressFromAutocomplete = function (place) {
 
     //handle auto geolocator if needed
     this.trace('Geocoder by place, place object:', place);
-    this.trace('place:', place);
     if(place && place.geometry && place.address_components) {
         var data = {
             latitude : place.geometry.location.lat(),
@@ -492,10 +492,10 @@ locator.changePlace = function(id, place) {
         locator.trace('No data to populate for place', place);
         return;
     }
-    locator.trace('Populating new place', place, data);
+    locator.trace('Populating new place:', place, 'data:', data, 'id:', id, 'save:', $(id).data('geocoder-type'));
     // Save address field via ajax if required.
-    if($(id).is('[data-geocoder-type]')) {
-        locator.saveGeolocationData($(id).data('geocoder-type'), $(id).is('[data-geocoder-item]') ? $(id).data('geocoder-item') : '', data);
+    if($(id).data('geocoder-type')) {
+        locator.saveGeolocationData($(id).data('geocoder-type'), $(id).data('geocoder-item') ? $(id).data('geocoder-item') : '', data);
     }
     // populate the address fields in the form if available.
     var fields = ['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude', 'formatted_address', 'radius'];
@@ -568,7 +568,7 @@ locator.setGoogleAutocomplete = function(id, iteration) {
     };
 
     //https://developers.google.com/places/documentation/autocomplete?hl=es#place_types
-    if($(id).is('[data-geocoder-filter]')) {
+    if($(id).data('geocoder-filter')) {
         options.types = [$(id).data('geocoder-filter')];
     }
 

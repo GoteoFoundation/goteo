@@ -12,10 +12,12 @@ namespace Goteo\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
-use Goteo\Application\Session;
 
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ControllerException;
 use Goteo\Application\Exception\InvalidDataException;
+
+use Goteo\Model\Location\LocationItem;
 
 use GeoIp2\Database\Reader;
 use GeoIp2\Exception\AddressNotFoundException;
@@ -72,6 +74,76 @@ class GeolocApiController extends AbstractApiController {
     /**
      * returns geolocation data from an IP request
      */
-    public function geolocateAction(Request $request) {
+    public function geolocateAction($type, $id='', Request $request) {
+        if(!$this->user) {
+            throw new ControllerAccessDeniedException();
+        }
+        if(!$type) {
+            throw new ControllerException('Type required');
+        }
+        $result = [];
+        $values = [
+            'city' => $request->request->get('city'),
+            'region' => $request->request->get('region'),
+            'country' => $request->request->get('country'),
+            'country_code' => $request->request->get('country_code'),
+            'longitude' => $request->request->get('longitude'),
+            'latitude' => $request->request->get('latitude'),
+            'method' => $request->request->get('method')
+        ];
+        foreach(['radius', 'locable', 'info'] as $key) {
+            if($request->request->has($key))
+                $values[$key] = $request->request->get($key);
+        }
+
+        if($type === 'user' && empty($id)) $id = $this->user->id;
+        if(!$id) throw new ControllerException('Id required');
+        $values['id'] = $id;
+
+        $instance = LocationItem::create($type, $values);
+
+        if(!$instance->userCanView($this->user)) {
+            throw new ControllerAccessDeniedException("User [{$this->user->id}] cannot view location for type [$type:$id]");
+        }
+
+        if($request->isMethod('post')) {
+            if(!$instance->userCanEdit($this->user)) {
+                throw new ControllerAccessDeniedException("User [{$this->user->id}] cannot edit location for type [$type:$id]");
+            }
+
+            $errors = [];
+            // save the whole instance if latitude & longitude present
+            if($request->request->has('latitude') && $request->request->has('longitude')) {
+                if ($instance->save($errors)) {
+                    $result['msg'] = "Location successfully added for [$type]";
+                    $result['location'] = $instance;
+                } else {
+                    throw new InvalidDataException('Localization saving errors: '. implode(',', $errors));
+                }
+            }
+            else {
+                //Just changes some properties (locable, info)
+                foreach($request->request->all() as $key => $value) {
+                    if($key === 'locable' || $key === 'info') {
+                        if($instance::setProperty($id, $key, $value, $errors)) {
+                            $result['msg'] = "Property succesfully changed for [$type]";
+                        }
+                        else {
+                            throw new InvalidDataException('Localization update errors: '. implode(',', $errors));
+                        }
+                    }
+                }
+            }
+        } else {
+            $instance = $instance::get($instance->id);
+        }
+
+
+        $result['type'] = $type;
+        $result['location'] = $instance;
+        $result['item'] = LocationItem::getType($type);
+        $result['class'] = LocationItem::getModelClass($type);
+
+        return $this->jsonResponse($result);
     }
 }

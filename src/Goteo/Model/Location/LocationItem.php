@@ -10,7 +10,9 @@
 
 namespace Goteo\Model\Location;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Config;
+use Goteo\Model\User;
 
 /**
  * This class can be used to easily create a location item model just as:
@@ -24,6 +26,15 @@ use Goteo\Application\Config;
 abstract class LocationItem extends \Goteo\Core\Model implements LocationInterface  {
     protected $Table; // this needs to be overwritten (MySQL Table) by the implementation
     protected static $Table_static; // this needs to be overwritten (MySQL Table) by the implementation
+    protected static $types = [
+        'user' => '\Goteo\Model\User\UserLocation',
+        'project' => '\Goteo\Model\Project\ProjectLocation',
+        'invest' => '\Goteo\Model\Invest\InvestLocation',
+        'call' => '\Goteo\Model\Call\CallLocation',
+        'matcher' => '\Goteo\Model\Matcher\MatcherLocation',
+        'mailstats' => '\Goteo\Model\Mail\MailstatsLocation'
+    ];
+
     public
         $method, // latitude,longitude obtaining method
                  // ip      = auto detection from ip,
@@ -50,6 +61,74 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         if(empty($this->city) && $this->location) $this->city = $this->location;
         $this->name = $this->getFormatted();
         $this->radius = (int) $this->radius;
+    }
+
+    static public function getTypes() {
+        return static::$types;
+    }
+    static public function getType($type) {
+        return static::$types[$type];
+    }
+    static public function addType($type, $class) {
+        static::$types[$type] = $class;
+    }
+    static public function delType($type) {
+        unset(static::$types[$type]);
+    }
+    /**
+     * Creates a childre ItemLocation instance according to type
+     * (user, project, call, matcher, etc)
+     * @param  [type] $type [description]
+     * @return [type]       [description]
+     */
+    static public function create($type, array $args = []) {
+        $class = static::getType($type);
+
+        // Ensure is instance of LocationInterface
+        if(!$class) throw new ModelNotFoundException("Undeclared location type [$type]");
+        if(!is_subclass_of($class,'Goteo\Model\Location\LocationInterface'))
+            throw new ModelException("Location type [$type] must implement LocationInterface");
+
+        if(is_subclass_of($class, '\Goteo\Model\Location\LocationItem')) {
+            $loc = new $class($args);
+        } else {
+            $loc = new $class();
+            $loc->id = $args['id'];
+        }
+        return $loc;
+    }
+
+    /**
+     * Returns the class of the model associated with this LocationItem (the extended class)
+     * @return string full route class
+     */
+    static public function getModelClass($type = '') {
+        if($type) $class = static::getType($type);
+        else $class = get_called_class();
+        return '\\Goteo\\Model\\' . preg_replace('/.*\\\\|Location$/','',$class);
+    }
+
+    public function getModel() {
+        $class = static::getModelClass();
+        return $class::get($this->id);
+    }
+
+    /**
+     * Open by default, must be overwritten by extends
+     * @param  User   $user [description]
+     * @return [type]       [description]
+     */
+    public function userCanView(User $user) {
+        return true;
+    }
+
+    /**
+     * False by default, must be overwritten
+     * @param  User   $user [description]
+     * @return [type]       [description]
+     */
+    public function userCanEdit(User $user) {
+        return false;
     }
 
     /**
@@ -141,7 +220,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
 
         $values = array(':id'         => $this->id,
                         ':method'       => (string)$this->method,
-                        ':locable'      => (string)$this->locable,
+                        ':locable'      => (bool)$this->locable,
                         ':info'         => (string)$this->info,
                         ':city'         => (string)$this->city,
                         ':region'       => (string)$this->region,

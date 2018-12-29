@@ -61,14 +61,11 @@ $api->add('api-geoloc-ip', new Route(
 
 // Geolocate service for models
 $api->add('api-geoloc-locate', new Route(
-    '/geoloc/locate',
-    array('_controller' => 'Goteo\Controller\Api\GeolocApiController::geolocateAction'
-        ),
-    array(), // requirements
-    array(), // options
-    '', // host
-    array(), // schemes
-    array('POST') // methods
+    '/geoloc/locate/{type}/{id}',
+    array('_controller' => 'Goteo\Controller\Api\GeolocApiController::geolocateAction',
+        'type' => '',
+        'id' => ''
+    )
 ));
 
 
