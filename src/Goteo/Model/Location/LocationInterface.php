@@ -9,9 +9,14 @@
  */
 
 namespace Goteo\Model\Location;
+use Goteo\Model\User;
 
 interface LocationInterface {
     public static function get($id);
+    public static function getModelClass();
+    public function getModel();
+    public function userCanView(User $user);
+    public function userCanEdit(User $user);
     public function validate(&$errors = array());
     public function save(&$errors = array());
     public static function setProperty($user, $prop, $value, &$errors = array());

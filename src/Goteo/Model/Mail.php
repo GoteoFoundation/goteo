@@ -17,6 +17,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Application\View;
 use Goteo\Application\Message;
+use Goteo\Model\User;
 use Goteo\Model\Template;
 use Goteo\Model\Mail\MailStats;
 use Goteo\Model\Mail\StatsCollector;
@@ -132,6 +133,10 @@ class Mail extends \Goteo\Core\Model {
     }
 
     public function setReply($email, $name = '') {
+        if($email instanceOf User) {
+            $name = $email->name;
+            $email = $email->email;
+        }
         $this->reply = $email;
         $this->replyName = $name;
         return $this;
@@ -240,7 +245,7 @@ class Mail extends \Goteo\Core\Model {
 
         // Obtenemos la plantilla para asunto y contenido
         if(empty($lang)) $mail->lang = Lang::current();
-        $tpl = Template::get($template, $mail->lang);
+        $tpl = Template::get($template, $lang);
         // Sustituimos los datos
         $mail->subject = $tpl->title;
         $mail->template = $tpl->id;
@@ -252,6 +257,8 @@ class Mail extends \Goteo\Core\Model {
             $mail->subject = str_replace(array_keys($vars), array_values($vars), $mail->subject);
 
         }
+
+        $mail->lang = $lang;
 
         return $mail;
     }
@@ -450,7 +457,18 @@ class Mail extends \Goteo\Core\Model {
      * Cuerpo del mensaje en texto plano para los clientes de correo sin formato.
      */
     private function bodyText() {
-        return preg_replace("/[\n]{2,}/", "\n\n" ,strip_tags(str_ireplace(['<br', '<p'], ["\n<br", "\n<p"], $this->content)));
+        // add links
+        $content = preg_replace_callback([
+            '/(<a.*)href=(")([^"]*)"([^>]*)>([^<]*)</U',
+            "/(<a.*)href=(')([^']*)'([^>]*)>([^<]*)</U"
+            ],
+            function ($matches){
+                $url = $matches[3];
+                return $matches[1] . 'href="' . $url . '"'. $matches[4] . '>' . $matches[5] . "\n$url\n<";
+            },
+            $this->content);
+
+        return html_entity_decode(preg_replace("/[\n]{2,}/", "\n\n" ,strip_tags(str_ireplace(['<br', '<p'], ["\n<br", "\n<p"], $content))), ENT_QUOTES|ENT_HTML5);
     }
 
     /**
@@ -616,6 +634,13 @@ class Mail extends \Goteo\Core\Model {
     public function getStatus() {
         if($this->getSender()) {
             return $this->getSender()->getStatus();
+        }
+
+        return $this->status;
+    }
+    public function getStatusObject() {
+        if($this->getSender()) {
+            return $this->getSender()->getStatusObject();
         }
 
         return $this->status;

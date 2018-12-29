@@ -45,6 +45,31 @@ $api->add('api-user-property', new Route(
         )
 ));
 
+// User keepalive compatibility service
+$api->add('api-user-property', new Route(
+    '/users/keepalive',
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::keepAliveAction'
+        )
+));
+
+// GeoIP location service
+$api->add('api-geoloc-ip', new Route(
+    '/geoloc/ip',
+    array('_controller' => 'Goteo\Controller\Api\GeolocApiController::geolocationAction'
+        )
+));
+
+// Geolocate service for models
+$api->add('api-geoloc-locate', new Route(
+    '/geoloc/locate/{type}/{id}',
+    array('_controller' => 'Goteo\Controller\Api\GeolocApiController::geolocateAction',
+        'type' => '',
+        'id' => ''
+    )
+));
+
+
+
 // Blog
 // Tags list
 $api->add('api-blog-tags', new Route(
@@ -249,8 +274,8 @@ $api->add('api-categories-images-upload', new Route(
     array('POST') // methods
 ));
 
-// Post property individual updates
-$api->add('api-blog-post-property', new Route(
+// Categories property individual updates
+$api->add('api-categories-property', new Route(
     '/categories/{tab}/{id}/property/{prop}',
     array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::categoriesPropertyAction'
         )
@@ -312,6 +337,13 @@ $api->add('api-messages-add', new Route(
     '', // host
     array(), // schemes
     array('POST') // methods
+));
+
+// Project Mailing (generated from Messages to more than 2 users)
+$api->add('api-messages-project-mailing', new Route(
+    '/projects/{pid}/mailing',
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::projectMailingAction',
+        )
 ));
 
 $api->add('api-stats-investors-required', new Route(

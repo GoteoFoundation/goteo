@@ -11,6 +11,7 @@
 namespace Goteo\Model\Call;
 
 use Goteo\Model\Call;
+use Goteo\Model\User;
 
 class CallLocation extends \Goteo\Model\Location\LocationItem {
     protected $Table = 'call_location';
@@ -31,5 +32,23 @@ class CallLocation extends \Goteo\Model\Location\LocationItem {
 
         return parent::get($id);
     }
+
+    /**
+     * Same permissions as view call
+     * Onwer can view location
+     * admins too
+     * if call is pubic too
+     */
+    public function userCanView(User $user) {
+        return $this->getModel()->userCanView($user);
+    }
+
+    /**
+     * same permissions as edit call
+     */
+    public function userCanEdit(User $user) {
+        return $this->getModel()->userCanEdit($user);
+    }
+
 }
 

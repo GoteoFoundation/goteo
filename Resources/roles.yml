@@ -29,7 +29,9 @@ translator:
 caller:
     extends: user
     perms:
-        - view-call-project # view projects included in the user_call table
+        - create-call # can create calls
+        - edit-call # can edit his own calls
+        - remove-call # can remove his own calls
     level: 30
 
 checker:
@@ -56,6 +58,8 @@ manager:
     perms:
         - view-any-project # View any editing project
         - edit-published-projects # Edit any published project
+        - view-any-call # Edit any published call
+        - edit-published-calls # Edit any published call
         - admin-module-blog # create/edit/delete non-project posts
         - admin-module-stories # create/edit/delete non-project posts
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
@@ -69,6 +73,10 @@ consultant:
         - publish-projects # Publish//unpublish assigned projects as a consultant
         - edit-projects # Edit projects assigned as a consultant
         - remove-projects # Remove projects assigned as a consultant
+        - view-any-call # View any editing project
+        - publish-calls # Publish//unpublish assigned calls as a consultant
+        - edit-calls # Edit calls assigned as a consultant
+        - remove-calls # Remove calls assigned as a consultant
         - impersonate-owners # Impersonate projects owners assigned as a consultant
         - assign-checker # Assignate any other user for review projects
         - admin-module-users # Can access to module UserAdminController
@@ -81,10 +89,13 @@ consultant:
 admin:
     extends: consultant # inherits permissions from role "consultant"
     perms:
+        - assign-consultant # Assign consultant to a project or call
         - publish-any-project # Publish/unpublish any project
-        - assign-consultant # Assign consultant to a project
         - edit-any-project # Edit any project
         - remove-any-project # Remove any project
+        - publish-any-call # Publish/unpublish any call
+        - edit-any-call # View any editing call
+        - remove-any-call # Remove any call
         - rebase-users # Edit sensitive data in users (id, email, password) without confirmation (for users below admin unless is superadmin)
         - impersonate-users # Impersonate any user with roles below admin if user is admin (unless user is superadmin)
         - admin-module-categories # Can access to module CategoriesAdminController

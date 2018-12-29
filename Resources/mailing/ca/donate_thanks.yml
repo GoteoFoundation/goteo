@@ -1,0 +1,20 @@
+group: donate
+name: 'Thanks by donate to the organization'
+purpose: 'Mail template to be sent to a user bya a donation to the organization founder'
+type: 'md'
+title: 'Gràcies per a la teva donació a la Fundació Goteo!'
+text: >
+    Hola %USERNAME%,
+
+
+    Gràcies per a la teva donació de **%DONATE_AMOUNT%** a la Fundació Goteo, l'hem rebut tot cridant *gota a gota, junts formem un oceà!* :) Ens ajuda i ens motiva a continuar amb la nostra labor de seguir impulsant a iniciatives amb una gran capacitat de transformació social. Moltes gràcies.
+
+
+    Recorda que, per la teva donació i el teu suport a la Fundació Goteo, tens a disposició el teu [certificat de desgravació fiscal](%CERTIFICATE_URL%).
+
+
+    Una abraçada ben forta!
+
+
+    L’equip de Goteo
+

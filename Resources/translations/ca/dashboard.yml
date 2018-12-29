@@ -69,6 +69,7 @@ dashboard-menu-projects-commons: Retorns
 dashboard-menu-projects-contract: Contracte
 dashboard-menu-projects-social-commitment: 'Compromís social'
 dashboard-menu-projects-messegers: Participants
+dashboard-menu-projects-recipients: destinataris
 dashboard-menu-projects-preview: 'Pàgina pública'
 dashboard-menu-projects-rewards: Gestió cofinançadors
 dashboard-menu-projects-summary: Resum
@@ -237,6 +238,7 @@ dashboard-message-donors-pending: 'estan pendents'
 dashboard-message-donors-fulfilled: 'estan completats'
 dashboard-message-donors-error: 'No hi ha destinataris vàlids, no es pot enviar el missatge'
 dashboard-message-donors-total: '%s cofinançadors'
+dashboard-message-donors-filtered-by: 'contenen: %s'
 dashboard-message-no-message: 'No tens cap missatge encara.'
 dashboard-message-threads: 'Tens %s fils de missatges'
 dashboard-translate-profile: 'Traduir perfil'
@@ -259,6 +261,12 @@ dashboard-project-support-translate-ok: 'Entrada de suport %TITLE% traduït corr
 dashboard-project-support-translating: 'Estàs traduint aquesta entrada de suport al %LANG%. L''idioma original és el %ORIGINAL%.'
 dashboard-project-saved: 'Projecte actualitzat correctament'
 dashboard-project-is-dead: 'El projecte està arxivat i no es pot editar'
+dashboard-project-mailing-view: 'Missatges enviats'
+dashboard-project-mailing-ago: 'Enviat fa %s'
+dashboard-project-mailing-sending: 'Enviant missatge %s'
+dashboard-project-mailing-percent_success: 'Percentatge de missatges que s''han enviat'
+dashboard-project-mailing-percent_opened: 'Percentatge d''usuaris que han confirmat recepció'
+dashboard-project-mailing-write_again: 'Escriu a tots'
 dashboard-project-not-alive-yet: 'Aquest apartat estarà disponible quan el teu projecte entri en campanya'
 dashboard-project-not-funded-yet: 'Aquest apartat estarà disponible quan el tu projecte acabi la campanya amb èxit'
 dashboard-project-reward-cannot: 'Ara no es poden introduir noves recompenses. Durant la campanya es possible introduir noves recompenses (però no esborrar les que ja existeixen)'

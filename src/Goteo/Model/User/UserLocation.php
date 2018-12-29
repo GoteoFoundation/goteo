@@ -32,4 +32,19 @@ class UserLocation extends \Goteo\Model\Location\LocationItem {
         return parent::get($id);
     }
 
+    /** Same user can view his location
+     * admins too
+     */
+    public function userCanView(User $user) {
+        if($user->id === $this->id) return true;
+        return $user->canImpersonate($this->getModel());
+    }
+
+    /**
+     * same privacy as view
+     */
+    public function userCanEdit(User $user) {
+        return $this->userCanView($user);
+    }
+
 }

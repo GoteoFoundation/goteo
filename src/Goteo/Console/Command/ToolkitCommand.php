@@ -174,6 +174,8 @@ EOT
             }
 
             $output->writeln("Checking project collaborations...");
+            $filter = $project ? ' WHERE id = :project' : '';
+
             $sql = "SELECT id, name, real_num, num_messengers, (real_num + real_investors) AS real_pop, popularity, real_investors, num_investors FROM
                         (SELECT p.id, p.name , p.num_messengers, p.popularity, p.num_investors,
                           (SELECT COUNT(DISTINCT m.user,IFNULL(m.thread,0)) FROM message m WHERE m.project=p.id AND m.user!=p.owner
@@ -182,6 +184,7 @@ EOT
                           ) AS real_num,
                         (SELECT COUNT(DISTINCT i.user) FROM invest i WHERE i.project=p.id AND i.status IN (:s0,:s1,:s3,:s4,:s5)) AS real_investors
                         FROM project p
+                        $filter
                         ORDER BY real_num ASC) project_calcs
                 HAVING real_num != num_messengers OR real_pop != popularity OR real_investors != num_investors
                 ";

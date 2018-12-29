@@ -23,6 +23,7 @@ use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Library\Text;
 use Goteo\Model\Message as Comment;
+use Goteo\Controller\Dashboard\ProjectDashboardController;
 
 class MessagesApiController extends AbstractApiController {
 
@@ -71,6 +72,12 @@ class MessagesApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException();
         }
         $thread = $request->request->get('thread');
+        // Share with other user of the thread if required
+        $shared = (bool) $request->request->get('shared');
+        // Only project editors (currently) can create shared messages
+        if($shared && !$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException('Only project editors can create shared messages');
+        }
         // allowing only responses to other messages
         // (for the moment)
         if(! $parent = Comment::get($thread)) {
@@ -94,6 +101,7 @@ class MessagesApiController extends AbstractApiController {
                 'project' => $project,
                 'blocked' => false,
                 'private' => $recipients ? true : $parent->private, // Set private if it has recipients or parent is private
+                'shared' => $shared,
                 'message' => $message,
                 'date' => date('Y-m-d H:i:s')
             ]);
@@ -102,18 +110,30 @@ class MessagesApiController extends AbstractApiController {
         if(!$comment->save($errors)) {
             throw new ModelException('Update failed '. implode(", ", $errors));
         }
+
+        $event = new FilterMessageEvent($comment);
+
         if($recipients) {
             $comment->setRecipients($recipients);
         } else {
-            // Set the parent as recipient
-            $comment->setRecipients([$parent->getUser()]);
+            if($shared || !$comment->private) {
+                // Send to everyone in the thread except creator
+                $recipients = array_filter($parent->getParticipants(), function($u) {
+                    return $u->id !== $this->user->id;
+                });
+                $comment->setRecipients($recipients);
+                if(count($recipients) > 1) $event->setDelayed($shared); // Send in background as a newsletter
+            } else {
+                // Set the parent as recipient
+                $comment->setRecipients([$parent->getUser()]);
+            }
         }
         if(!$comment->getRecipients()) {
             throw new ModelException(Text::get('dashboard-message-donors-error'));
         }
 
         // Send and event to create the Feed and send emails
-        $this->dispatch(AppEvents::MESSAGE_CREATED, new FilterMessageEvent($comment));
+        $this->dispatch(AppEvents::MESSAGE_CREATED, $event);
 
         if($request->request->get('view') === 'dashboard') {
             $view = 'dashboard/project/partials/comments/item';
@@ -126,7 +146,10 @@ class MessagesApiController extends AbstractApiController {
             'id' => $comment->id,
             'user' => $comment->user,
             'project' => $comment->project,
+            'shared' => $comment->shared,
             'message' => $comment->message,
+            'recipients' => $comment->getRecipients(),
+            'delayed' => $event->getDelayed(),
             'html' => View::render($view, [ 'comment' => $comment, 'project' => $prj, 'admin' => $request->request->get('admin') ])
         ]);
     }
@@ -204,7 +227,7 @@ class MessagesApiController extends AbstractApiController {
         foreach(Comment::getUserMessages($user, $prj) as $msg) {
             $mail = $msg->getMail();
             $stats = $msg->getStats();
-            $opened = (bool) $stats && $stats->getEmailOpenedCollector()->getPercent();
+            $opened = (bool) $stats ? $stats->getEmailOpenedCollector()->getPercent() : false;
             $ob = ['id' => $msg->id,
                    'message' => $msg->getHtml(),
                    'sent' => $mail ? true : false,
@@ -263,22 +286,17 @@ class MessagesApiController extends AbstractApiController {
             throw new ModelException('Update failed '. implode(", ", $errors));
         }
         $users = $request->request->get('users');
-        if(is_array($users)) $users = array_filter($users);
+        if(is_array($users)) $users = array_filter($users); // Remove empty entries
 
         $event = new FilterMessageEvent($message);
+        if(!$users) {
+            // Try to extract recipients from filters if available
+            list($filters, $filter_by) = ProjectDashboardController::getInvestFilters($prj, $request->request->get('filter'));
+            $users = array_column(Invest::getUsersList($filter_by), 'id');
+        }
         if($users) {
             $message->setRecipients($users);
-        } else {
-            // TODO: find recipients from filters
-            $filters = [
-                'projects' => $project,
-                // 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID],
-                'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL],
-                'reward' => $request->request->get('reward'),
-                'types' => $request->request->get('filter')
-            ];
-            $message->setRecipients(Invest::getUsersList($filters));
-            $event->setDelayed(true);
+            if(is_array($users) && count($users) > 1) $event->setDelayed(true); // Send in background as a newsletter
         }
 
         if($recipients = $message->getRecipients()) {
@@ -298,9 +316,56 @@ class MessagesApiController extends AbstractApiController {
 
         return $this->jsonResponse([
             'id' => $message->id,
-            'user' => $comment->user,
-            'project' => $comment->project,
-            'message' => $comment->message
+            'user' => $message->user instanceOf User ? $message->user->id : $message->user,
+            'project' => $message->project,
+            'users' => $users,
+            'message' => $message->message
+        ]);
+    }
+
+
+    /**
+     * Project Mailing (generated from Messages to more than 2 users)
+     */
+    public function projectMailingAction($pid, Request $request) {
+        $prj = Project::get($pid);
+
+        // Security, first of all...
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $list = [];
+        $filters = [
+            'with_private' => true,
+            'with_mailing' => true
+        ];
+        if($request->query->has('active')) $filters['active'] = (bool) $request->query->get('active');
+        foreach(Comment::getAll($prj, null, $filters, 'date DESC') as $msg) {
+            $stats = $msg->getStats();
+            $percent = $stats ? $stats->getEmailOpenedCollector()->getPercent() : 0;
+            $total = intval($stats ? $stats->getEmailOpenedCollector()->non_zero : 0);
+            $sender = $msg->getMail() ? $msg->getMail()->getSender() : null;
+
+            $list[] = [
+                'id' => $msg->id,
+                'date' => $msg->date,
+                'timeago' => $msg->timeago,
+                'private' => $msg->private,
+                'subject' => $msg->getSubject(),
+                'html' => $msg->getHtml(),
+                'active' => $sender ? (bool)$sender->active : false,
+                'status' => $msg->getStatusObject(),
+                'opened' => ['percent' => $percent, 'total' => $total],
+                'user_id' => $msg->user_id,
+                'user_name' => $msg->user_name,
+                'user_email' => $msg->user_email,
+                'user_avatar' => $msg->user_avatar
+            ];
+        }
+
+        return $this->jsonResponse([
+            'list' => $list
         ]);
     }
 }

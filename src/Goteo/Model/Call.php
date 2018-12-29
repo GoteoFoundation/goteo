@@ -446,6 +446,14 @@ class Call extends \Goteo\Core\Model {
         }
         return $this->backImageInstance;
     }
+
+    /**
+     * Handy method to know if project is in approved for campaing
+     */
+    public function isApproved() {
+        return $this->status > self::STATUS_REVIEWING;
+    }
+
     /**
      * Handy method to know if call can be edited
      */
@@ -475,7 +483,36 @@ class Call extends \Goteo\Core\Model {
     }
 
     /**
-     * Check if the project is editable by the user id
+     * Check if the call is owned (or co-owned) by the user id
+     * @param  Goteo\Model\User $user  the user to check
+     * @return boolean          true if success, false otherwise
+     */
+    public function userIsOwner($user = null, $check_status = false) {
+        if(empty($user)) return false;
+        if(!$user instanceOf User) return false;
+        // owns the call
+        if($this->owner === $user->id) {
+            if($check_status) {
+                return $this->inEdition();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public function userCanView($user) {
+        // already published:
+        if($this->isApproved()) return true;
+        if(empty($user)) return false;
+        if(!$user instanceOf User) return false;
+        // owns the call
+        if($this->userIsOwner($user)) return true;
+        if($user->hasPerm('view-any-call')) return true;
+
+        return false;
+    }
+    /**
+     * Check if the call is editable by the user id
      * @param  Goteo\Model\User $user  the user to check
      * @return boolean          true if success, false otherwise
      */
@@ -484,14 +521,18 @@ class Call extends \Goteo\Core\Model {
         if(empty($user)) return false;
         if(!$user instanceOf User) return false;
         // owns the project
-        if($this->owner === $user->id) {
+        if($this->userIsOwner($user)) {
             if($check_status) {
                 return $this->inEdition();
             }
             return true;
         }
-        // is superadmin in the project node
-        if($user->hasRoleInNode(Config::get('current_node'), ['manager', 'superadmin', 'root'])) return true;
+
+        if($user->hasPerm('edit-any-call')) return true;
+        if($user->hasPerm('edit-published-calls') && $this->isApproved()) return true;
+
+        // Legacy: is superadmin in the project node
+        // if($user->hasRoleInNode(Config::get('current_node'), ['manager', 'superadmin', 'root'])) return true;
         return false;
     }
 

@@ -100,7 +100,6 @@ class Config {
 			if (PHP_SAPI === 'cli') {
 				throw $e;
 			}
-			$code = \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN;
 			\Goteo\Application\View::addFolder(__DIR__ . '/../../../Resources/templates/responsive');
 			// TODO: custom template
 			$info = '';
@@ -110,7 +109,7 @@ class Config {
 			}
 
             \Goteo\Application\View::setTheme('responsive');
-			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => $code], false));
+			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
 			return;
 		}
 	}
@@ -389,7 +388,7 @@ class Config {
 	 */
 	static public function get($name, $strict = false) {
 		$part = strtok($name, '.');
-		if (array_key_exists($part, self::$config)) {
+		if (self::$config && array_key_exists($part, self::$config)) {
 			$ret = self::$config[$part];
 			while ($part = strtok('.')) {
 				if (is_array($ret) && array_key_exists($part, $ret)) {

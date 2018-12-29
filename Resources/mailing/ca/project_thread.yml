@@ -1,0 +1,16 @@
+group: project
+name: 'New thread in a project message'
+purpose: 'Message created by a project''s owner that originates a thread'
+type: 'md'
+title: 'Missatge del projecte %PROJECTNAME%'
+text: >
+    Hola <span class="message-highlight-red">%USERNAME%</span>,
+
+
+    Aquest és un missatge enviat des de la plataforma Goteo per part de qui impulsa el projecte [%PROJECTNAME%](%PROJECTURL%):
+
+
+    %MESSAGE%
+
+
+    [Pots contestar aquest missatge aquí](%RESPONSEURL%)

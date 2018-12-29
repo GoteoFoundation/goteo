@@ -31,16 +31,23 @@ class MessageListener extends AbstractListener {
         $project = $message->getProject();
         $owner = $project->getOwner();
 
+        $response_url = SITE_URL . '/dashboard/messages#comments-' . ($message->thread ? $message->thread : $message->id);
+        if($template === Template::SUPPORT_THREAD_RESPONSE)
+            $response_url = SITE_URL . '/project/' . $project->id .'/participate#comments-list-' . ($message->thread ? $message->thread : $message->id);
+
         if($delayed) {
             // Send as a newsletter
             $mail = Mail::createFromTemplate('any', '', $template, [
                 '%MESSAGE%' => $message->getHtml(),
                 '%OWNERNAME%' => $owner->name,
+                '%SENDERNAME%' => $message->getUser()->name,
+                '%THREADSUBJECT%' => $message->getParent() ? $message->getParent()->getSubject() : '---',
                 '%PROJECTNAME%' => $project->name,
-                '%PROJECTURL%' => SITE_URL . '/project/' . $project->id . '/participate#message'.$message->id,
-                '%RESPONSEURL%' => SITE_URL . '/dashboard/activity#comments-' . $message->thread
+                '%PROJECTURL%' => SITE_URL . '/project/' . $project->id,
+                '%RESPONSEURL%' => $response_url
                ])
                 ->setSubject($message->getSubject())
+                ->setReply($message->getUser())
                 ->setMessage($message);
 
             if ( ! $mail->save($errors) ) { //persists in database
@@ -69,18 +76,27 @@ class MessageListener extends AbstractListener {
         $errors = [];
         foreach($recipients as $user) {
             $lang = User::getPreferences($user)->comlang;
+            $r_url = $response_url;
+            if($project->userIsOwner($user)) {
+                if($template === Template::MESSAGE_THREAD_RESPONSE)
+                    $r_url = SITE_URL . '/dashboard/project/' . $project->id . '/invests?filter%5Bquery%5D=' . urlencode($message->getUser()->email) . '#msg-' . $message->getUser()->id;
+                if($template === Template::SUPPORT_THREAD_RESPONSE)
+                    $r_url = SITE_URL . '/dashboard/project/' . $project->id . '/supports#comments-' . ($message->thread ? $message->thread : $message->id);
+            }
+
             $mail = Mail::createFromTemplate($user->email, $user->name, $template, [
                 '%MESSAGE%' => $message->getHtml(),
                 '%OWNERNAME%' => $owner->name,
+                '%SENDERNAME%' => $message->getUser()->name,
+                '%THREADSUBJECT%' => $message->getParent() ? $message->getParent()->getSubject() : '---',
                 '%USERNAME%' => $user->name,
                 '%PROJECTNAME%' => $project->name,
-                '%PROJECTURL%' => SITE_URL . '/project/' . $project->id . '/participate#message'.$message->id,
-                '%RESPONSEURL%' => SITE_URL . '/dashboard/activity#comments-' . $message->thread
+                '%PROJECTURL%' => SITE_URL . '/project/' . $project->id,
+                '%RESPONSEURL%' => $r_url
                ], $lang)
-            // Either add a reply-to or put a link to respond in the platform
-            // ->setReply($owner->email, $owner->name)
             ->setSubject($message->getSubject())
             ->setMessage($message)
+            ->setReply($message->getUser())
             ->send($errors);
 
             if($errors) {
@@ -96,7 +112,7 @@ class MessageListener extends AbstractListener {
         $project = $message->getProject();
         $user = $message->getUser();
         $type = $message->getType();
-        $this->notice("Message created", ['project' => $message->project, 'message_id' => $message->id, 'type' => $type, 'message' => $message->message]);
+        $this->notice("Message created", ['project' => $message->project, 'message_id' => $message->id, 'type' => $type, 'delayed' => $event->getDelayed(), 'message' => $message->message]);
 
         $title = $message->getSubject();
         // Message created from support type
@@ -152,10 +168,7 @@ class MessageListener extends AbstractListener {
                 $user->avatar->id)
                 ->doPublic('community');
 
-            // sent mail to project owner and recipients
-            $recipients = $message->getParticipants();
-            $recipients[$project->getOwner()->id] = $project->getOwner();
-            $this->sendMail($message, Template::THREAD_OWNER, $recipients);
+            $this->sendMail($message, Template::SUPPORT_THREAD_RESPONSE, $message->getRecipients());
         }
         elseif($type === 'project-comment') {
             $log = new Feed();
@@ -169,17 +182,6 @@ class MessageListener extends AbstractListener {
                     '%TYPE%'    => new FeedBody('message', $project->id . '/participate#message' . $message->id, 'project-menu-messages')
                 ]))
                 ->doAdmin('user');
-
-            // evento público, si el proyecto es público
-            $log->populate($user->name,
-                '/user/profile/' . $user->id,
-                new FeedBody(null, null, 'feed-messages-new-thread', [
-                    '%PROJECT%' => Feed::item('project', $project->name, $project->id),
-                    '%TYPE%'    => new FeedBody('message', $project->id . '/participate#message' . $message->id, 'project-menu-messages'),
-
-                ]),
-                $user->avatar->id)
-                ->doPublic('community');
 
             // sent mail to project owner
             $this->sendMail($message, Template::OWNER_NEW_THREAD, [$project->getOwner()]);
@@ -209,12 +211,10 @@ class MessageListener extends AbstractListener {
                 ->doPublic('community');
 
             // sent mail to project owner and recipients
-            $recipients = $message->getParticipants();
-            $recipients[$project->getOwner()->id] = $project->getOwner();
-            $this->sendMail($message, Template::THREAD_OWNER, $recipients);
+            $this->sendMail($message, Template::SUPPORT_THREAD_RESPONSE, $message->getRecipients());
 
         }
-        elseif($type === 'project-private' || $type === 'project-private-response') {
+        elseif($type === 'project-private') {
             $log = new Feed();
             $log->setTarget($project->id)
                 ->populate('feed-message-new-project-response',
@@ -228,7 +228,26 @@ class MessageListener extends AbstractListener {
                 ->doAdmin('user');
 
             // sent mail to recipients
-            $this->sendMail($message, Template::MESSAGE_DONORS, $message->getRecipients(), $event->getDelayed());
+            $this->sendMail($message, Template::MESSAGE_PROJECT_THREAD, $message->getRecipients(), $event->getDelayed());
+        }
+        elseif($type === 'project-private-response') {
+            $log = new Feed();
+            $log->setTarget($project->id)
+                ->populate('feed-message-new-project-response',
+                '/admin/projects',
+
+               new FeedBody(null, null, 'feed-message-response-published', [
+                    '%USER%'    => Feed::item('user', $user->name, $user->id),
+                    '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                    '%TYPE%'    => new FeedBody('message', '/dashboard/' . $project->id . '/invests#message' . $message->id, 'project-menu-messages')
+                ]))
+                ->doAdmin('user');
+
+            // sent mail to recipients
+            $recipients = $message->getRecipients();
+            // To everyone on the same thread if shared
+            if($message->shared) $recipients = $message->getParticipants();
+            $this->sendMail($message, Template::MESSAGE_THREAD_RESPONSE, $recipients, $event->getDelayed());
         }
     }
 

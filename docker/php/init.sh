@@ -64,29 +64,42 @@ if [ ! -f $GOTEO_CONFIG_FILE ]; then
     exit 1
 fi
 
+USER_ID=${UID:-9999}
+useradd --shell /bin/bash -u $USER_ID -o -c "" -m goteo
+usermod -u $USER_ID goteo
+export HOME=/application
+# ensure php can write in this directories
+chown goteo.goteo /application
+chown goteo.goteo /application/var/log
+chown goteo.goteo /application/var/cache
+chown goteo.goteo /application/var/data
+
 # read yaml file
 create_variables $GOTEO_CONFIG_FILE
 
-composer install
-npm install
-./bin/console migrate install
+gosu goteo composer install
+gosu goteo npm install
+gosu goteo bin/console migrate install
 
 if [ "$DEBUG" = false ] || [ "$DEBUG" = 0 ]; then
-    grunt build:dist
+    gosu goteo grunt build:dist
+    if [ $? -ne 0 ]; then
+        echo -e "\e[31mgrunt build:dist failed!"
+        echo -e "\e[31mAborting"
+        exit 1
+    fi
     # Mock .tmp as dist minimized folder
-    rsync -a --delete ./dist/ ./.tmp/
-    cp -af ./dist/index.php ./.tmp/index_dev.php
+    gosu goteo rsync -a --delete ./dist/ ./.tmp/
+    gosu goteo cp -af ./dist/index.php ./.tmp/index_dev.php
     echo -e "\e[33m Pointing nginx server as PRODUCTION (index.php)"
 else
-    grunt build:tmp
+    gosu goteo grunt build:tmp
+    if [ $? -ne 0 ]; then
+        echo -e "\e[31mgrunt build:tmp failed!"
+        echo -e "\e[31mAborting"
+        exit 1
+    fi
     echo -e "\e[33m Pointing nginx server as DEVELOPMENT (index_dev.php)"
-fi
-
-
-if [ $? -ne 0 ]; then
-    echo -e "\e[31mgrunt build:tmp failed!"
-    echo -e "\e[31mAborting"
-    exit 1
 fi
 
 echo -e "\e[32m*************************************"
@@ -95,6 +108,10 @@ echo
 echo -e "\e[32m You can point your browser now to:"
 echo -e
 echo -e "\e[32m $url__main"
+echo -e
+echo -e "\e[32m Check all mailing activity in:"
+echo -e
+echo -e "\e[32m localhost:8082"
 echo -e
 echo -e "\e[32m*************************************"
 

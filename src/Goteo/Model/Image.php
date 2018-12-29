@@ -285,7 +285,7 @@ class Image extends \Goteo\Core\Model {
         }
 
         $is_fallback = false;
-        
+
         if (empty($id)) {
             $id = $default;
             $is_fallback = true;

@@ -68,10 +68,23 @@ $circle-bg-color: #f5f5f5;
 		font-size: 240px;
 	}
 
-	// smaller size
-	&.small{
-		font-size: 80px;
+  // smaller size
+  &.small{
+    font-size: 80px;
+  }
+
+  // much smaller size
+  &.mini{
+    font-size: 70px;
+  }
+
+	// tiny size
+	&.tiny{
+		font-size: 40px;
 	}
+  &.nomargin {
+    margin:0;
+  }
 
 	// centered value inside circle
 	> span {
@@ -173,41 +186,61 @@ $circle-bg-color: #f5f5f5;
 	}
 
     // override colors for the cyan skin
-    &.cyan {
-        background-color: lighten($color-cyan, 25%);
-        .bar,
-        .fill{
-            border-color: $color-cyan !important;
-        }
-        > span {
-            color: lighten($color-cyan, 0%);
-        }
-        &:after{
-            background-color: lighten($color-cyan, 50%);
-        }
-        &:hover{
-            > span {
-                color: $color-cyan;
-            }
-        }
-    }
+  &.cyan {
+      background-color: lighten($color-cyan, 25%);
+      .bar,
+      .fill{
+          border-color: $color-cyan !important;
+      }
+      > span {
+          color: lighten($color-cyan, 0%);
+      }
+      &:after{
+          background-color: lighten($color-cyan, 50%);
+      }
+      &:hover{
+          > span {
+              color: $color-cyan;
+          }
+      }
+  }
 
 	// override colors for the lilac skin
-    &.lilac {
-		background-color: lighten($color-lilac, 25%);
+  &.lilac {
+    background-color: lighten($color-lilac, 25%);
+    .bar,
+    .fill{
+      border-color: $color-lilac !important;
+    }
+    > span {
+      color: lighten($color-lilac, 0%);
+    }
+    &:after{
+      background-color: $background-lighter-lilac;
+    }
+    &:hover{
+      > span {
+        color: $color-lilac;
+      }
+    }
+  }
+
+  // override colors for the pink skin
+  &.pink {
+		background-color: lighten($color-pink, 25%);
 		.bar,
 		.fill{
-			border-color: $color-lilac !important;
+			border-color: $color-pink !important;
 		}
 		> span {
-			color: lighten($color-lilac, 0%);
+			color: lighten($color-pink, 0%);
 		}
 		&:after{
-			background-color: $background-lighter-lilac;
+			background-color: lighten($color-pink, 50%);
 		}
 		&:hover{
 			> span {
-				color: $color-lilac;
+				color: $color-pink;
 			}
 		}
 	}

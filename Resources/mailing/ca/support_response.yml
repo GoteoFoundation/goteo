@@ -1,0 +1,19 @@
+group: project
+name: 'Thread response in a project support message'
+purpose: 'Message answered in a thread originated by the project''s participate section'
+type: 'md'
+title: 'Nova resposta a missatge de suport'
+text: >
+    Hola <span class="message-highlight-red">%USERNAME%</span>,
+
+
+    **%SENDERNAME%** ha respos al missatge de la secció "participa" *%THREADSUBJECT%*:
+
+
+    %MESSAGE%
+
+
+    [Pots contestar aquest missatge aquí](%RESPONSEURL%)
+
+
+    Aquest missatge forma part del projecte [%PROJECTNAME%](%PROJECTURL%).

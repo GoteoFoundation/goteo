@@ -525,7 +525,6 @@ class ProjectsApiController extends AbstractApiController {
     // CSV Extraction
     public function projectInvestsCSVAction($pid, Request $request) {
         $prj = Project::get($pid);
-
         // Security, first of all...
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
@@ -603,7 +602,7 @@ class ProjectsApiController extends AbstractApiController {
 
         $d = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $prj->id . '_rewards_' . date('Y-m-d') . '.csv'
+            Project::idealiza($prj->id) . '_rewards_' . date('Y-m-d') . '.csv'
         );
 
         $response->headers->set('Content-Disposition', $d);

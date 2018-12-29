@@ -34,6 +34,9 @@ menu:
         developers:
             name: Developers
             items:
+                docker:
+                    text: Docker
+                    relativeUrl: docs/developers/docker.html
                 environment:
                     text: Environment
                     relativeUrl: docs/developers/environment.html

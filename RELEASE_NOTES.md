@@ -25,6 +25,27 @@ This is a list of (still most work-in-progress) of the new features:
 - Using grunt for developing
 - Better translations
 
+#### Version 3.5
+
+- User stories
+- Improvements in Html/markdown editors (images can be dropped in)
+- New responsive user profile
+- Added SDGs tables
+- Docker improvements (added mailhog and maxmind)
+- Internal messages improvements
+- Some new responsive admin modules (blog, categories)
+- Bug fixes and several refactorizations
+
+#### Version 3.4
+
+- Added translations (thanks to the community)
+- New documentation theme
+- New responsive blog module
+- Added Sass for css development
+- New stats module for the new admin
+- New admin framework (responsive) for admin
+- Bug fixes and several refactorizations
+
 #### Version 3.3
 
 - New responsive Home
@@ -46,7 +67,7 @@ This is a list of (still most work-in-progress) of the new features:
 
 **On version 3**
 
-[Ivan Vergés](http://github.com/microstudi), [Javier Carrillo](https://github.com/javicarrillo). 
+[Ivan Vergés](http://github.com/microstudi), [Javier Carrillo](https://github.com/javicarrillo).
 
 **On version 2:**
 

@@ -69,6 +69,7 @@ dashboard-menu-projects-commons: Retornos
 dashboard-menu-projects-contract: Contrato
 dashboard-menu-projects-social-commitment: 'Compromiso social'
 dashboard-menu-projects-messegers: Participantes
+dashboard-menu-projects-recipients: destinatarios
 dashboard-menu-projects-preview: 'Página pública'
 dashboard-menu-projects-rewards: Cofinanciadores
 dashboard-menu-projects-summary: Resumen
@@ -238,6 +239,7 @@ dashboard-message-donors-pending: 'están pendientes'
 dashboard-message-donors-fulfilled: 'están completados'
 dashboard-message-donors-error: 'No hay destinatarios válidos, no se puede enviar el mensaje'
 dashboard-message-donors-total: '%s cofinanciadores'
+dashboard-message-donors-filtered-by: 'contienen: %s'
 dashboard-message-no-message: 'No tienes ningún mensaje todavía.'
 dashboard-message-threads: 'Tienes %s hilos de mensajes'
 
@@ -271,6 +273,12 @@ dashboard-project-support-translate-ok: 'Entrada de soporte %TITLE% traducido co
 dashboard-project-support-translating: 'Estás traduciendo esta entrada de soporte al %LANG%. El idioma original es el %ORIGINAL%.'
 dashboard-project-saved: 'Proyecto actualizado correctamente'
 dashboard-project-is-dead: 'El proyecto está archivado y no se puede editar'
+dashboard-project-mailing-view: 'Mensajes enviados'
+dashboard-project-mailing-ago: 'Enviado hace %s'
+dashboard-project-mailing-sending: 'Enviando mensaje %s'
+dashboard-project-mailing-percent_success: 'Porcentaje de mensajes ya enviados'
+dashboard-project-mailing-percent_opened: 'Porcentaje de usuarios que han confirmado recepción'
+dashboard-project-mailing-write_again: 'Escribir a todos'
 dashboard-project-not-alive-yet: 'Este apartado estará disponible cuando tu proyecto entre en campaña'
 dashboard-project-not-funded-yet: 'Este apartado estará disponible cuando tu proyecto acabe la  campaña exitosamente'
 dashboard-project-reward-cannot: 'Ahora no se pueden introducir nuevas recompensas. Durante la campaña es posible introducir nuevas recompensas (pero no borrar las que ya existen)'

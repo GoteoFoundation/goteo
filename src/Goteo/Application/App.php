@@ -131,7 +131,7 @@ class App extends HttpKernel\HttpKernel {
             if (Config::get('ssl')) {
                 define('SEC_URL', 'https://'.$SITE_URL);
                 if ($request->isSecure() || Session::isLogged()) {
-                    define('SITE_URL', 'http://'.$SITE_URL);
+                    define('SITE_URL', 'https://'.$SITE_URL);
                 } else {
                     define('SITE_URL', 'http://'.$SITE_URL);
                 }

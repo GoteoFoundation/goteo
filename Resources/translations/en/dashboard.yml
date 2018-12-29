@@ -69,6 +69,7 @@ dashboard-menu-projects-commons: Rewards
 dashboard-menu-projects-contract: Contract
 dashboard-menu-projects-social-commitment: 'Social Compromise'
 dashboard-menu-projects-messegers: Participants
+dashboard-menu-projects-recipients: recipients
 dashboard-menu-projects-preview: 'Public page'
 dashboard-menu-projects-rewards: Backers
 dashboard-menu-projects-summary: Summary
@@ -236,6 +237,7 @@ dashboard-message-donors-pending: 'are pending'
 dashboard-message-donors-fulfilled: 'are completed'
 dashboard-message-donors-error: 'No valid recipients, message cannot be sent'
 dashboard-message-donors-total: '%s donors'
+dashboard-message-donors-filtered-by: 'matches: %s'
 dashboard-message-no-message: 'No messages for you yet.'
 dashboard-message-threads: 'You have %s message threads'
 
@@ -269,6 +271,12 @@ dashboard-project-support-translate-ok: 'Support %TITLE% successfully translated
 dashboard-project-support-translating: 'You are translating this support entry to %LANG%. The original language is %ORIGINAL%.'
 dashboard-project-saved: 'Project updated successfully'
 dashboard-project-is-dead: 'The project is archived and cannot be edited'
+dashboard-project-mailing-view: 'Sent messages'
+dashboard-project-mailing-ago: 'Sent %s ago'
+dashboard-project-mailing-sending: 'Sending message %s'
+dashboard-project-mailing-percent_success: 'Percent of messages already sent'
+dashboard-project-mailing-percent_opened: 'Percent of users that have confirm reception'
+dashboard-project-mailing-write_again: 'Write again'
 dashboard-project-not-alive-yet: 'This section will be available when your project successfully completes the campaign'
 dashboard-project-reward-cannot: 'New rewards can not be added now. During the campaign, adding new rewards is possible (but not to delete those that already exist)'
 dashboard-project-add-translations: 'In the meantime, you can add translations to your project, this might help you to increase its visibility.'

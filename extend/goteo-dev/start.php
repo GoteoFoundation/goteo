@@ -32,6 +32,10 @@ if(App::debug()) {
     // Adding grunt-livereload script
     $sc->register('dev.listener.livereload', 'Goteodev\Application\EventListener\LiveReloadListener');
     $sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Reference('dev.listener.livereload')));
+
+    // Adding mock variables from settings
+    $sc->register('dev.listener.dev_mocks', 'Goteodev\Application\EventListener\MockListener');
+    $sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Reference('dev.listener.dev_mocks')));
 }
 
 // Adding Routes:

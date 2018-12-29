@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Goteo\Application\Config;
+use Goteo\Application\App;
 
 class LiveReloadListener implements EventSubscriberInterface
 {
@@ -29,7 +30,7 @@ class LiveReloadListener implements EventSubscriberInterface
             $response->isRedirection()) {
             return;
         }
-        if(Config::get('env') !== 'local') return;
+        if(!App::debug()) return;
 
         $port = Config::get('plugins.goteo-dev.liveport');
         // if(empty($port)) $port = 35729;

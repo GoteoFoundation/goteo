@@ -25,8 +25,7 @@ plugins:
         # Recomended paths are
         public:
             - /img
-            - /json/keepAlive
-            - /json/geolocate
+            - /api
         # Private paths must be defined under the "private" key
         # This is a list of users (http), configure paths and passwords as desired
         private:
@@ -37,7 +36,7 @@ plugins:
             some-path-user:
                 password: my-password
                 paths:
-                    - /json
+                    - /api
                     - /projects/some-project
 ...
 
