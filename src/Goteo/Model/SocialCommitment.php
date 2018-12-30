@@ -20,8 +20,8 @@ class SocialCommitment extends \Goteo\Core\Model {
     public
     $id,
     $name,
-    $description,
-    $icon,
+    $description = '',
+    $icon = '',
     $modified;
 
 
