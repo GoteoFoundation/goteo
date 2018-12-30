@@ -51,8 +51,10 @@ class Config {
 			}
             // Default system_lang to 'es' if not defined
             if(!array_key_exists('sql_lang', self::$config)) {
-                self::$config['sql_lang'] = 'es';
+                self::set('sql_lang', 'es');
             }
+            // assets url to main if not defined
+            if(!self::get('url.assets')) self::set('url.assets', self::get('url.main'));
 
 			// handles legacy config values
 			self::setConstants();
