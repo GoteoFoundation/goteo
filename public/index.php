@@ -31,6 +31,7 @@ set_error_handler('Goteo\Application\App::errorHandler');
 $config = getenv('GOTEO_CONFIG_FILE');
 if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
 Config::load($config);
+Config::autosave();
 
 // Error traces
 if(Config::get('debug')) {

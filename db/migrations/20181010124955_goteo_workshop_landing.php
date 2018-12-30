@@ -2,11 +2,39 @@
 /**
  * Migration Task class.
  */
+use Goteo\Core\Model;
 class GoteoWorkshopLanding
 {
   public function preUp()
   {
       // add the pre-migration code here
+      if(!Model::query("SHOW TABLES LIKE 'workshop'")->rowCount()) {
+        $sql = "CREATE TABLE `workshop`(
+         `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+         `title` CHAR(255) NOT NULL,
+         `description` TEXT NOT NULL,
+         `date_in` DATE NOT NULL,
+         `date_out` DATE NOT NULL,
+         `schedule` CHAR(255) NOT NULL,
+         `url` CHAR(255) NULL ,
+         `call_id` VARCHAR(50),
+         `modified` TIMESTAMP NOT NULL,
+         PRIMARY KEY (`id`),
+         FOREIGN KEY (`call_id`) REFERENCES `call`(`id`) ON UPDATE CASCADE
+        ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Talleres';
+        CREATE TABLE `workshop_lang` (
+        `id` bigint(20) unsigned NOT NULL,
+        `lang` varchar(2) NOT NULL,
+        `title` CHAR(255) NOT NULL,
+        `description` TEXT NOT NULL,
+        `schedule` CHAR(255) NOT NULL,
+        `pending` INT(1) NULL DEFAULT '0' COMMENT 'To be reviewed',
+         UNIQUE KEY `id_lang` (`id`,`lang`),
+         FOREIGN KEY (`id`) REFERENCES `workshop`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+        ";
+        Model::query($sql);
+      }
   }
 
   public function postUp()
