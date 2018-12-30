@@ -43,6 +43,7 @@ We recommend not to use the `-d` flag on `docker-compose` to be aware of the log
 # TL;TR
 
 1. [How to use Docker](#how-to-use-docker)
+1. [Upgrade Goteo](#upgrade-goteo)
 2. [SSL configuration for development](#ssl-configuration)
 3. [Mailhog: Development mail debugging](#mailhog-development-mail-debugging)
 4. [Cron: background processes](#cron-background-processes)
@@ -97,6 +98,17 @@ docker/exec bin/console migrate all
 docker/exec bin/console toolkit project
 docker/exec bin/console --help
 ```
+
+### Upgrade Goteo
+
+If using Git, you can upgrade to any new version of Goteo pulling the new code:
+
+```
+git clone git@github.com:GoteoFoundation/goteo.git
+git pull origin devel
+docker/up --rebuild
+```
+
 
 ### SSL configuration
 
@@ -183,3 +195,50 @@ tail -n100 var/logs/app_real.log | grep INFO | jq
 tail -f var/logs/app_real.log | grep -v DEBUG | jq
 ```
 
+### Running tests
+
+You can run test by using the wrapper `docker/test`. Arguments are the same as phpunit.
+
+**It is recommended to create a test file the first time.**
+
+#### Preparation:
+
+```bash
+cp config/local-docker-settings.yml config/test-docker-settings.yml
+```
+
+Edit the database setting, and put `goteo_test` in it:
+
+```yaml
+# Database stuff
+db:
+    driver:   mysql     # Database driver (mysql)
+    host:     mariadb # Database host
+    port:     3306      # Database port
+    charset:  utf8mb4     # Database charset
+    database: goteo_test     # Database schema (database name)
+    username: goteo      # Database user for the goteo database
+    password: goteo      # Password for the goteo database
+```
+
+Then, create the database and grant permissions in the mariadb container:
+
+```bash
+docker-compose exec mariadb mysql -uroot -pcrowdfunding -e 'CREATE DATABASE goteo_test;'
+docker-compose exec mariadb mysql -uroot -pcrowdfunding -e "GRANT ALL PRIVILEGES ON goteo_test.* TO 'goteo'@'%';"
+```
+
+Finally, nstall the database:
+
+```bash
+GOTEO_CONFIG_FILE='config/test-docker-settings.yml' docker/exec bin/console migrate install
+```
+---
+
+From now on, just run tests as:
+
+```bash
+docker/test tests/Goteo/Core/ModelTest.php
+docker/test tests/
+...
+```

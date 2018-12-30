@@ -46,8 +46,8 @@ $api->add('api-user-property', new Route(
 ));
 
 // User keepalive compatibility service
-$api->add('api-user-property', new Route(
-    '/users/keepalive',
+$api->add('api-keepalive', new Route(
+    '/keepalive',
     array('_controller' => 'Goteo\Controller\Api\UsersApiController::keepAliveAction'
         )
 ));

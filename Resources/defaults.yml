@@ -5,6 +5,9 @@
 # Maintenance
 maintenance: false
 
+# Execute sql persistent updates in some cases if some sync is required
+autosave: true
+
 # Max session time
 session:
     time: 3600

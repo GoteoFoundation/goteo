@@ -48,6 +48,7 @@ $config = getenv('GOTEO_CONFIG_FILE');
 if(!is_file($config)) $config = __DIR__ . '/../config/dev-settings.yml';
 if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
 Config::load($config);
+Config::autosave();
 
 //Get from globals defaults
 App::setRequest($request);

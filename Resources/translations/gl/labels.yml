@@ -1,3 +1,79 @@
 ---
+accounts-lb: Achegas
+accounts-lb-add: 'Achega manual'
+accounts-lb-cancel: 'Cancelando achega'
+accounts-lb-details: 'Detalles da achega'
+accounts-lb-list: A listar
+banners-lb-details: 'Detalles da achega'
+banners-lb-list: A listar
+blog-lb-list: A listar
+categories-lb: Categorías
+categories-lb-add: 'Nova categoría'
+categories-lb-keywords: 'Palabras chave'
+categories-lb-list: A listar
+commons-lb-list: A listar
+criteria-lb-list: A listar
+faq-lb: FAQ
+faq-lb-add: 'Nova pregunta'
+faq-lb-list: A listar
+glossary-lb: Glosario
+glossary-lb-list: A listar
+icons-lb-list: A listar
+info-lb-list: A listar
+licenses-lb: Licenzas
+licenses-lb-list: A listar
+mailing-lb: Comunicacións
+mailing-lb-edit: 'Escribindo contido'
+mailing-lb-send: 'Comunicación enviada'
+milestones-lb: Fitos
+milestones-lb-add: 'Novo fito'
+milestones-lb-list: A listar
+news-lb: Micronovas
+news-lb-add: 'Nova micronova'
+news-lb-edit: 'Editando a micronova'
+news-lb-list: A listar
+news-lb-translate: 'Traducindo a micronova'
+node-lb: 'Datos da canle'
+node-lb-list: 'Datos actuais'
+nodes-lb: Canles
+nodes-lb-add: 'Nova canle'
+nodes-lb-admins: 'Asignando administradores da canle'
+nodes-lb-edit: 'Xestionando a canle'
+nodes-lb-list: A listar
+pages-lb: Páxinas
+pages-lb-add: 'Nova páxina'
+pages-lb-list: A listar
+pages-lb-translate: 'Traducindo páxina'
+pages-lbedit: 'Editando páxina'
+projects-lb: Proxectos
+projects-lb-accounts: 'Contas do proxecto'
+projects-lb-dates: 'Datas do proxecto'
+projects-lb-images: 'Imaxes do proxecto'
+projects-lb-list: A listar
+projects-lb-rebase: 'Trocando a Id do proxecto'
+promote-lb: 'Proxectos populares'
+promote-lb-list: A listar
 recent-lb: 'Actividade recente'
+recent-lb-list: A listar
+reviews-lb-list: A listar
+rewards-lb-list: A listar
 sponsors-lb: 'Apoios Institucionais'
+sponsors-lb-list: A listar
+tags-lb: 'Etiquetas do blogue'
+tags-lb-add: 'Nova etiqueta'
+tags-lb-edit: 'Editando a etiqueta'
+tags-lb-list: A listar
+tags-lb-translate: 'Traducindo a etiqueta'
+templates-lb: 'Modelos de correo electrónico'
+templates-lb-edit: 'Editando o modelo'
+templates-lb-list: A listar
+texts-lb: 'Textos da interface'
+texts-lb-edit: 'Editando o orixinal'
+texts-lb-list: A listar
+translates-lb-list: A listar
+transnodes-lb-list: A listar
+users-lb: Usuarios
+users-lb-add: 'Creando usuario'
+users-lb-list: A listar
+word-lb-list: A listar
+worth-lb-list: A listar

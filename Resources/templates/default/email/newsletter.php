@@ -82,7 +82,7 @@ img a {
 <?php endif ?>
 <div style="width: 100%; background-color:#CDE4E5; padding-top:7px; padding-bottom:7px;"><span style="margin-left:50px;"><img src="<?= $this->get_url() ?>/goteo_logo.png" alt="Logo" /></span></div>
 
-<div style="width:630px; margin-left:50px; margin-top:20px;">
+<div style="width:630px;">
 
 <div><!--mensaje - contenido-->
   <?= $this->raw('content') ?>

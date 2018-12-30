@@ -1,1 +1,83 @@
 ---
+admin-action: 'Acción de administrador'
+admin-NO: 'NON'
+admin-YES: SI
+admin-account-amount: 'Cantidade aportada'
+admin-account-change-user: 'Trocar de usuario'
+admin-account-change-user-confirm: 'Tes a certeza de querer trocar o usuario da achega? O novo usuario será:'
+admin-account-detail: 'Detalles da transacción'
+admin-account-donation: Doazón
+admin-account-invalid-invest: 'Achega [%s] non atopada!'
+admin-account-invest-date: 'Data da achega'
+admin-account-issue-solved: 'Fixéronnos a transferencia'
+admin-account-modify-status: 'Modificar o estado'
+admin-account-modify-status-confirm: "Tes a certeza de trocar manualmente o estado a esta achega? É delicado!\nNON SE REALIZARÁ NINGUNHA operación de retorno da achega.\n"
+admin-account-payment-method: 'Método de pagamento'
+admin-account-switch-donation: 'Conmutar doazón'
+admin-account-switch-donation-confirm: 'Tes a certeza de querer trocar o estado da doazón?'
+admin-account-switch-pool: 'Conmutar o pool'
+admin-account-transaction: 'Códigos de seguimento'
+admin-account-user-changed-error: 'Non se puido trocar o usuario da achega [%ID%] a [%NAME%]!'
+admin-account-user-changed-successfully: 'Trocouse o usuario da achega [%ID%] a [%NAME%]'
+admin-address: Enderezo
+admin-all: Todos
+admin-global: Global
+admin-back: Volver
+admin-back-detail: 'Volver ao detalle'
+admin-back-list: 'Volver á listaxe'
+admin-contents: 'Texto e traducións'
+admin-empty-list: 'Non se atoparon rexistros'
+admin-activity: Actividade
+admin-communications: Comunicacións
+admin-home: Capa
+admin-items: entradas
+admin-mailing-back-to-list: 'Volver a comunicacións'
+admin-mailing-created: 'Creado o'
+admin-mailing-status: 'Estado do envío automático'
+admin-mailing-subject: Asunto
+admin-mailing-view-message: 'Ver a mensaxe'
+admin-newsletter-langs-to-send: 'Idiomas: %LANGS%'
+admin-newsletter-mind-activate: 'Actívao para que se envíe'
+admin-prev-page: 'Páxina anterior'
+admin-next-page: 'Páxina seguinte'
+admin-no: 'Non'
+admin-percent: Porcentaxe
+admin-project: Proxecto
+admin-main: Principal
+admin-legacy: Antigos
+admin-projects: Proxectos
+admin-consultants: 'Asesores'
+admin-invests: Achegas
+admin-filters: 'Filtros'
+admin-remove-filters: 'Eliminar filtros'
+admin-remove-entry: 'Eliminar entrada'
+admin-remove-entry-confirm: 'Tes a certeza de querer eliminar esta entrada? Esta operación non se pode desfacer!'
+admin-remove-entry-ok: 'Entrada eliminada correctamente'
+admin-services: Servizos
+admin-slug-seo-help: 'Este campo é importante para SEO. Editar só se hai unha boa razón.'
+admin-others: Outros
+admin-channels: Canles
+admin-yes: Si
+admin-project-to-publish: 'Publicar'
+admin-stats: Estatísticas
+admin-view-user-invests: 'Tódalas achegas'
+admin-user-create-invest: 'Crear achega'
+admin-no-project: 'Sen proxecto'
+admin-title-id: Id
+admin-title-name: Nome
+admin-title-about: Info
+admin-title-info: Info
+admin-title-image: Imaxe
+admin-title-title: Título
+admin-title-subtitle: Subtí­tulo
+admin-title-section: Sección
+admin-title-text: Texto
+admin-title-publish: Publicado
+admin-title-langs: Traducións
+admin-title-actions: Accións
+admin-title-tags: Etiquetas
+admin-title-deleted: Eliminado
+admin-aggregate-invests: 'Total de achegas'
+admin-aggregate-invests-average: 'Media de achegas'
+admin-stats-invest-totals: 'Achegas e comisións'
+admin-stats-projects-project-desc: 'Achegas ao proxecto'

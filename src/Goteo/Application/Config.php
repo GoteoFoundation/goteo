@@ -24,14 +24,20 @@ class Config {
     // Initial translation groups (groupped in yml files into Resources/translations/)
     static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop'];
 	static protected $loader;
-	static protected $config;
+    static protected $config;
+
+    static protected $f_defaults = __DIR__ . '/../../../Resources/defaults.yml';
+    static protected $f_permissions = __DIR__ . '/../../../Resources/permissions.yml';
+    static protected $f_roles = __DIR__ . '/../../../Resources/roles.yml';
+	static protected $f_locales = __DIR__ . '/../../../Resources/locales.yml';
+    static protected $f_currencies = __DIR__ . '/../../../Resources/currencies.yml';
 
 	/**
 	 * Loads all configurations
 	 */
 	static public function load($config_file) {
 		try {
-            self::$config = self::loadFromYaml(__DIR__ . '/../../../Resources/defaults.yml');
+            self::$config = self::loadFromYaml(static::$f_defaults);
 
             if(!is_file($config_file)) $config_file = __DIR__ . '/../../../config/' . $config_file;
 			// load the main config
@@ -55,25 +61,21 @@ class Config {
 			Model::factory();
 
             // Load default permissions from yaml
-            $permissions = self::loadFromYaml(__DIR__ . '/../../../Resources/permissions.yml');
+            $permissions = self::loadFromYaml(static::$f_permissions);
             Role::addPermsFromArray($permissions);
 
             // Load default roles from yaml
-            $froles = __DIR__ . '/../../../Resources/roles.yml';
-            $not_cached = !YamlSettingsLoader::getConfigCache(YamlSettingsLoader::getCacheFilename($froles))->isFresh();
-            $roles = self::loadFromYaml($froles);
+
+            $roles = self::loadFromYaml(static::$f_roles);
             Role::addRolesFromArray($roles);
-            if($not_cached) {
-                Role::saveRoles();
-            }
 
 			// load the language configuration
-			$locales = self::loadFromYaml(__DIR__ . '/../../../Resources/locales.yml');
+			$locales = self::loadFromYaml(static::$f_locales);
 			if (is_array($locales) && $locales) {
 				Lang::setLangsAvailable($locales);
 			}
             // load the currency configuration
-            $currencies = self::loadFromYaml(__DIR__ . '/../../../Resources/currencies.yml');
+            $currencies = self::loadFromYaml(static::$f_currencies);
             if (is_array($currencies) && $currencies) {
                 Currency::setCurrenciesAvailable($currencies);
             }
@@ -113,6 +115,19 @@ class Config {
 			return;
 		}
 	}
+
+    /**
+     * Performs some saving operations to database if required
+     */
+    static public function autosave() {
+        if(!Config::get('autosave')) return false;
+
+        $not_cached = !YamlSettingsLoader::getConfigCache(YamlSettingsLoader::getCacheFilename(static::$f_roles))->isFresh();
+        if($not_cached) {
+            Role::saveRoles();
+        }
+        return true;
+    }
 
 	/**
 	 * Loads a configuration from a file

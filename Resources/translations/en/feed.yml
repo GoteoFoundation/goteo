@@ -1,20 +1,16 @@
 ---
 feed-admin-action: 'The admin %USER% has %ACTION%'
-
 feed-admin-invest-manual-subject: 'Manual invest (admin)'
 feed-admin-invest-manual: '%ADMIN% has added %AMOUNT% to the project %PROJECT% in the name of %USER%'
 feed-admin-invest-modified-subject: 'Invest manually modified (admin)'
 feed-admin-invest-modified: 'The admin %ADMIN% has modified the invest %INVEST% of %AMOUNT%. Old user: %OLDUSER%. New user: %NEWUSER%'
-
 feed-admin-project-new: 'User creates a new project'
 feed-admin-project-created: '%USER% has created a new project, %PROJECT%'
 feed-admin-project-call: 'new project assigned to a call'
 feed-admin-project-call-desc: 'New project %PROJECT% applied to the call %CALL%'
-
 feed-admin-project-action: 'Project action in admin'
 feed-admin-project-published-ko: 'Admin %USER% failed to set the project %PROJECT% to the status <span class="red">in Campaign</span>'
 feed-admin-project-published-ok: 'Admin %USER% has published the project %PROJECT% to the status <span class="red">in Campaign</span>'
-
 feed-blog-comment: 'Has written a <span class="green">Comment</span> at the post "%s" from the %s blog'
 feed-invest: 'Has contributed with %AMOUNT% to %PROJECT%'
 feed-invest-by: 'Invest by %s'
@@ -29,12 +25,10 @@ feed-new_support: 'Has published a new <span class="green">Collaboration</span> 
 feed-new-support: 'Has published a new <span class="green">Collaboration</span> at the %PROJECT% project, with the title "%TITLE%"'
 feed-new_update: '%USER% has published a new post in %BLOG% about %PROJECT%'
 feed-new_user: 'New Goteo user, %s'
-
 feed-new-story: 'New user story in home page (admin)'
 feed-story-published: 'Published a user story'
 feed-deleted-story: 'User story deleted'
 feed-story-deleted: 'Deleted a user story'
-
 feed-project_fail: 'The project, %s, has <span class="red">closed</span> having only received <span class="violet">%s ? (%s %%) of the minimum contribution</span>'
 feed-project_finish: 'The project, %s, has <span class="red">completed the second round</span> having received <span class="violet">%s ? (%s %) of the minimum contribution</span>'
 feed-project_finish_unique: 'Project %s has <span class="red">completed its campaign</span>, reaching <span class="violet">%s € (%s %) of contributions against its minimum budget</span>'
@@ -57,15 +51,12 @@ feed-project-ready-ko: 'Error from %USER% while sending the project %PROJECT% to
 feed-project-ready-ok: '%USER% has sent the project %PROJECT% to <span class="red">review</span>'
 feed-project-new-post: 'User publishes an update in his project (dashboard)'
 feed-project-post-published: '%USER% has published a new post in %BLOG% about the project %PROJECT%, titled "%TITLE%"'
-
 feed-blog-new-post: 'New post in the general blog (admin)'
 feed-blog-post-action: 'The admin %USER% has %ACTION% in the general blog the post "%TITLE%"'
 feed-blog-post-deleted: 'Post deleted from the general blog (admin)'
-
 feed-admin-has-done: 'The admin %ADMIN% has %ACTION% the user %USER%'
 feed-admin-has-modified: 'The admin %ADMIN% has %ACTION% (%PROPERTY%) the user %USER%'
 feed-admin-impersonated: 'User impersonated'
 feed-admin-impersonated-action: 'impersonated'
-
 feed-admin-user-modification: 'User modified by admin'
 feed-admin-modified-action: 'modified'

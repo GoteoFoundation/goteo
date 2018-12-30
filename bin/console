@@ -29,7 +29,13 @@ App::debug(true);
 // Config file...
 $config = getenv('GOTEO_CONFIG_FILE');
 if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
+
 Config::load($config);
+// hack to avoid autosave config if installing database
+if($argv[1] === 'migrate' && $argv[2] === 'install') {
+    Config::set('autosave', false);
+}
+Config::autosave();
 
 App::debug(false);
 
