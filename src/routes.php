@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Goteo\Application\View;
+use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerException;
 
 
@@ -47,6 +48,22 @@ $routes->add('pool', new Route(
 $pool_routes = include __DIR__ . '/Routes/pool_routes.php';
 $pool_routes->addPrefix('/pool');
 $routes->addCollection($pool_routes);
+
+
+if(Config::get('donate.landing')) {
+    // Donate landing
+    $routes->add('donate-landing', new Route(
+        '/donate',
+        array('_controller' => 'Goteo\Controller\DonateController::donateLandingAction')
+    ));
+}
+
+if(Config::get('donate.dashboard')) {
+    // Donate
+    $donate_routes = include __DIR__ . '/Routes/donate_routes.php';
+    $donate_routes->addPrefix('/donate');
+    $routes->addCollection($donate_routes);
+}
 
 // New dashboard
 $dash_routes = include __DIR__ . '/Routes/dashboard_routes.php';

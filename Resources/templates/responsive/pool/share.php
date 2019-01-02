@@ -8,29 +8,7 @@ $this->section('dashboard-content-pool');
 
 <div class="pool-container">
 
-	<h2 class="padding-bottom-2"><?= $this->text('pool-share-title') ?></h2>
-	<div class="reminder">
-        <?= $this->text($this->type.'-invest-ok') ?>
-        <div class="row spacer">
-
-    		<div class="col-sm-6 margin-2">
-    				<a href="/dashboard/wallet/certificate" class="text-decoration-none" >
-    					<button type="button" class="btn btn-block btn-info" value=""><i class="icon icon-certificate"></i> <?= $this->text('pool-button-download-certificate') ?></button>
-    	  			</a>
-    	  	</div>
-
-          <?php if($this->type=='pool'): ?>
-
-    	  	<div class="col-sm-6 margin-2">
-    				<a href="/dashboard/wallet" class="text-decoration-none" >
-    					<button type="button" class="btn btn-block btn-success" value=""><i class="icon icon-wallet"></i> <?= $this->text('dashboard-menu-pool') ?></button>
-    	  			</a>
-    	  	</div>
-
-          <?php endif; ?>
-
-      	</div>
-	</div>
+    <?= $this->supply('invest-share-message', $this->insert('pool/partials/invest-share-message')) ?>
 
     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 

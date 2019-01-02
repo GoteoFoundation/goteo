@@ -53,7 +53,7 @@ class DonateController extends PoolController {
     public function donateLandingAction(Request $request)
     {
 
-        return $this->viewResponse('donate/donate', 
+        return $this->viewResponse('donate/donate',
                 [
                     'no_donor_button' => 1
                 ]
@@ -97,5 +97,5 @@ class DonateController extends PoolController {
         return $this->shareAction($invest_id, $this->type, $request);
     }
 
-   
+
 }
