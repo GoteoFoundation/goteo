@@ -54,30 +54,39 @@ Since version 3.3 where are using [Crowdin](https://crowdin.com/) as a tool for 
 
 <ul>
 	<li>Dan Walenter (cas3v0n)</li>
+	<li>m19951996</li>
 	<li>mrfinearts</li>
 	<li>Denver Moon (9003104)</li>
+	<li>Wilmer Alzate (waar19)</li>
 	<li>José Peralta (elpoliglota) (josedpg11)</li>
 	<li>Chris_W</li>
-	<li>mikahz</li>
-	<li>enolp</li>
-	<li>Udo Wierlemann (Udo.Wierlemann)</li>
-	<li>pep_laDeriva</li>
-	<li>Vanessa.Montes</li>
-	<li>CataAz</li>
-	<li>Ferran Reyes (ferranreyesgoteo)</li>
-	<li>kguanzon (Kimberly Guanzon) (kim0421)</li>
+	<li>Alessandro Ravanetti (aleravanetti)</li>
 	<li>joao.cruz</li>
-	<li>helpPAM</li>
+	<li>kguanzon (Kimberly Guanzon) (kim0421)</li>
+	<li>Ferran Reyes (ferranreyesgoteo)</li>
+	<li>ismaeljoseph</li>
+	<li>Vanessa.Montes</li>
+	<li>Xurxo Guerra (xguerrap)</li>
+	<li>Tiago Santos (tisantos)</li>
+	<li>Iulian Mongescu (iulian.mongescu)</li>
+	<li>gracine</li>
+	<li>Carine_cha</li>
 	<li>Clint Mark Cortes (cortesclintmark)</li>
-	<li>Júlia Petúlia Sol (juliaxsol)</li>
 	<li>zainalkhalid</li>
 	<li>melsmacan</li>
 	<li>franzancot</li>
-	<li>elena-2018</li>
+	<li>Herii (HERII12)</li>
 	<li>shaunmatthew</li>
 	<li>firewall (Onrkskn)</li>
 	<li>Ceyda Mutlu (translator93)</li>
-	<li>Herii (HERII12)</li>
+	<li>Júlia Petúlia Sol (juliaxsol)</li>
+	<li>enolp</li>
+	<li>elena-2018</li>
+	<li>Udo Wierlemann (Udo.Wierlemann)</li>
+	<li>helpPAM</li>
+	<li>CataAz</li>
+	<li>pep_laDeriva</li>
+	<li>jmontane</li>
 </ul>
 </translators>
 
