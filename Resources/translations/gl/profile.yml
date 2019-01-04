@@ -4,19 +4,39 @@ profile-field-about: 'Cóntanos algo sobre ti'
 profile-field-avatar_current: 'A túa imaxe actual'
 profile-field-avatar_upload: 'Cargar unha imaxe'
 profile-field-contribution: 'Que podes achegar a Goteo'
+profile-field-entity-type: 'Tipo de entidade'
+profile-field-entity-type-checkbox-public: 'Son unha entidade pública'
+profile-field-entity-type-choose: 'Selecciona un tipo de entidade'
+profile-field-entity-type-concerted: Concertado
+profile-field-entity-type-private: Privado
+profile-field-entity-type-public: Público
 profile-field-interests: 'Que tipo de proxecto motívate máis'
 profile-field-keywords: 'As miñas palabras clave'
+profile-field-legal-entity: 'Forma xurídica'
+profile-field-legal-entity-asociation: Asociación
+profile-field-legal-entity-choose: 'Selecciona unha forma xurídica'
+profile-field-legal-entity-company: Empresa
+profile-field-legal-entity-cooperative: Cooperativa
+profile-field-legal-entity-ngo: ONG
+profile-field-legal-entity-others: Outros
 profile-field-legal-entity-person: 'Persoa física'
+profile-field-legal-entity-self-employed: Autónomo
+profile-field-location: 'Lugar de residencia habitual'
 profile-field-name: 'Nome de usuario/a'
+profile-field-url: URL
 profile-field-websites: 'As miñas páxinas web'
 profile-fields-image-title: 'Imaxe de perfil'
 profile-fields-social-title: 'Perfiles sociais'
+profile-main-header: 'Datos do perfil'
+profile-suggest-projects-interest: 'Talvez desexes dar soporte a proxectos de categorías semellantes'
+step-1: Perfil
 step-userProfile: 'Paso: Usuario/Perfil'
 tooltip-user-avatar_upload: 'Texto tooltip cargar imaxe usuario'
 tooltip-user-contribution: 'Explica brevemente as túas habilidades ou os ámbitos nos que poderías axudar nun proxecto (traducindo, difundindo, probando, programando, ensinando, etc).'
 tooltip-user-facebook: 'Esta rede social pode axudar a que difundas proxectos de Goteo que che interesan entre amigos e familiares.'
 tooltip-user-google: 'A rede social de Google+ é moi nova mais tamén podes indicar o teu usuario se xa a empregas :-)'
 tooltip-user-identica: 'Esta canle pode axudar a que difundas proxecto de Goteo entre a comunidade afín ó software libre.'
+tooltip-user-instagram: 'Esta rede social permíteche compartir imaxes dun xeito doado e inmediato'
 tooltip-user-interests: 'Indica o tipo de proxectos que poden conectar cos teus intereses para cofinancialos e/ou aportar con outros recursos, coñecementos ou habelencias. Estas categorías son transversais, podes seleccionar máis dunha.'
 tooltip-user-keywords: 'Segundo vaias introducindo texto o sistema suxerirache palabras clave que xa escribiran outros usuarios/as. Estas categorías axudan a ligar o teu perfil con outras persoas e con proxectos concretos.'
 tooltip-user-linkedin: 'Esta rede social pode axudar a que espalles proxectos de Goteo que che interesan entre contactos profesionais.'
