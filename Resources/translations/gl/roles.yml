@@ -40,3 +40,8 @@ role-perm-name-rebase-users: 'Pode editar datos críticos do usuario (id, correo
 role-perm-name-admin-any-module: 'Pode administrar calquera módulo do administrador'
 role-perm-name-impersonate-everyone: 'Pode impersoar calquera usuario'
 role-perm-name-admin-module-users: 'Pode acceder ao módulo de usuarios'
+role-perm-name-admin-module-blog: 'Pode acceder ao módulo de Blogue'
+role-perm-name-admin-module-stories: 'Pode acceder ao módulo de Historias de usuario'
+role-perm-name-admin-module-stats: 'Pode acceder ao módulo de Stats'
+role-perm-name-full-html-edit: 'Pode editar publicacións con contido HTML'
+role-perm-name-admin-module-categories: 'Pode acceder ao módulo de Categorías'
