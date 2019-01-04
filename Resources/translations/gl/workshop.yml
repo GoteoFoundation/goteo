@@ -1,1 +1,9 @@
 ---
+workshop-regular: 'Obradoiro'
+workshop-register: 'Inscríbete'
+workshop-where-label: 'Onde estaremos?'
+workshop-how-label: 'Como chegar?'
+workshop-related: 'Coñece outros Fundlabs'
+workshop-btn-action: 'Quero o meu Fundlab'
+workshop-count-down: 'Restan %s días!'
+workshop-file-label: 'Programa'
