@@ -26,12 +26,14 @@ profile-field-location: 'Lugar de residencia habitual'
 profile-field-name: 'Nome de usuario/a'
 profile-field-url: URL
 profile-field-websites: 'As miñas páxinas web'
+profile-fields-analytics-title: Analítica
 profile-fields-image-title: 'Imaxe de perfil'
 profile-fields-social-title: 'Perfiles sociais'
 profile-main-header: 'Datos do perfil'
 profile-suggest-projects-interest: 'Talvez desexes dar soporte a proxectos de categorías semellantes'
 step-1: Perfil
 step-userProfile: 'Paso: Usuario/Perfil'
+tooltip-user-about: "Coma rede social, Goteo quere axudar e difundir e financiar proxectos interesantes cara o máximo de xente posible. Para iso é importante a información que poidas compartir canto as túas habilidades o experiencia (profesional, académica, afección, etc)."
 tooltip-user-analytics: 'Insire, no caso de dispoñer dun, o teu ID de seguimento do Google Analytics para activalo no teu proxecto. O ID debe estar neste formato: UA-000000-01 (exemplo de ID)'
 tooltip-user-avatar_upload: 'Texto tooltip cargar imaxe usuario'
 tooltip-user-contribution: 'Explica brevemente as túas habilidades ou os ámbitos nos que poderías axudar nun proxecto (traducindo, difundindo, probando, programando, ensinando, etc).'
