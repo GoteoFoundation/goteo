@@ -92,7 +92,7 @@ $filter = $this->a('filter');
           <th data-type="html" data-breakpoints="xs"><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('admin-user'), 'field' => 'user']) ?></th>
           <th><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('invest-amount'), 'field' => 'amount']) ?></th>
           <th><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('rewards-field-individual_reward-reward'), 'field' => 'reward']) ?></th>
-          <th><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('dashboard-rewards-fulfilled_status'), 'field' => 'fulfilled']) ?></th>
+          <th data-type="html"><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('dashboard-rewards-fulfilled_status'), 'field' => 'fulfilled']) ?></th>
           <th><?= $this->text('admin-address') ?></th>
           <th><?= $this->text('regular-actions') ?></th>
         </tr>
