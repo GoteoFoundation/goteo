@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Goteo Developer&#039;s Documentation</title>
+
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/main.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/goteo.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/highlight/styles/monokai.css">
+
+    </head>
+    <body>
+
+        <header class="navbar navbar-default navbar-fixed-top">
+
+            <a class="navbar-brand" href="http://goteofoundation.github.io/goteo/">
+                Goteo Developer&#039;s Documentation
+                <small class="hidden-xs hidden-sm">
+                    An opensource crowdfunding platform made with PHP
+                </small>
+            </a>
+
+                            <a href="https://github.com/goteofoundation/goteo">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+                </a>
+            
+        </header>
+
+        <main class="container-fluid">
+            <div class="row">
+
+                
+                    <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+
+                                                    <p class="text-muted">
+                                Main documentation
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="active">
+                                        <a href="http://goteofoundation.github.io/goteo/index.html">
+                                            About
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/install.html">
+                                            Install
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/upgrade.html">
+                                            Upgrade
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/console.html">
+                                            Console scripts
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                Developers
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/docker.html">
+                                            Docker
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/environment.html">
+                                            Environment
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/templates.html">
+                                            Template system
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/migration.html">
+                                            Legacy migration howto
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/payments.html">
+                                            Payment process
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/extend.html">
+                                            Plugins & extending
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/events.html">
+                                            Using events
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/consoledev.html">
+                                            Extending console
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                About
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/release_notes.html">
+                                            Release notes
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/LICENSE">
+                                            License
+                                        </a>
+                                    </li>
+                                                            </ul>
+                        
+                    </nav>
+
+                
+                <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                    <h1 id="goteo-the-open-source-crowdfunding-platform">Goteo The Open Source Crowdfunding Platform</h1>
+<p><a href="https://travis-ci.org/GoteoFoundation/goteo"><img src="https://travis-ci.org/GoteoFoundation/goteo.svg?branch=devel" alt="Build Status" /></a></p>
+<p>This is the source code of the <a href="http://goteo.org">Crowdfunding platform Goteo</a></p>
+<blockquote>
+<p>This is a web app that allows the receipt, review and publishing of collective campaigns for their collective funding and the receiving of collaborations as well as the dynamic visualization of the support received, classification of initiatives and campaign tracking. The system also permits secure and distributed communication with users and between users, administration of highlighted projects on the home page and the creation of periodical publications such as blogs, a FAQ section and static pages.</p>
+</blockquote>
+<p>Current version: <strong>3.5</strong></p>
+<p>Although you can try to install it in order to create your own crowdfunding platform, this won't be a <em>Wordpress</em>-like installation (probably never will). These releases are mostly for developers and for those who want to collaborate with the code.</p>
+<p>Full developers documentation is still work in progress!
+Some folders may have its own README.md file with comments. However, we will try to compile all the documents here:</p>
+<h3 id="documentation">DOCUMENTATION</h3>
+<ul>
+<li><a href="http://goteofoundation.github.io/goteo/docs/install.html">Install</a></li>
+<li><a href="http://goteofoundation.github.io/goteo/docs/upgrade.html">Upgrade</a></li>
+</ul>
+<blockquote>
+<h3 id="docker-quickstart">Docker quickstart:</h3>
+<p>First ensure you have <code>docker-compose</code> properly installed, then create a config file and use the wrapper <code>docker/up</code>:</p>
+<pre><code class="language-bash">cp config/docker-settings.yml config/local-docker-settings.yml
+docker/up</code></pre>
+<p>Then you can run commands inside the php container by using the wrapper <code>docker/exec</code>. If develping, we recommend to run this command in a separate terminal:</p>
+<pre><code class="language-bash">docker/exec grunt watch</code></pre>
+<p><a href="http://goteofoundation.github.io/goteo/docs/developers/docker.html">More info</a></p>
+</blockquote>
+<h3 id="contributing">CONTRIBUTING</h3>
+<p>There's still a lot of missing documentation. We'll try to do our best completing it, however any help will be appreciated.</p>
+<ul>
+<li><a href="http://goteofoundation.github.io/goteo/docs/developers/environment.html">Developers</a></li>
+<li><a href="http://goteofoundation.github.io/goteo/release_notes.html">Credits</a></li>
+</ul>
+<h3 id="translators">TRANSLATORS</h3>
+<p>Since version 3.3 where are using <a href="https://crowdin.com/">Crowdin</a> as a tool for collaborators translating the code. Feel free to join these awesome people who's contributed in traslating Goteo to many languages:</p>
+<translators><ul><li>Dan Walenter (cas3v0n)</li>
+    <li>m19951996</li>
+    <li>mrfinearts</li>
+    <li>Denver Moon (9003104)</li>
+    <li>Wilmer Alzate (waar19)</li>
+    <li>José Peralta (elpoliglota) (josedpg11)</li>
+    <li>Chris_W</li>
+    <li>Alessandro Ravanetti (aleravanetti)</li>
+    <li>joao.cruz</li>
+    <li>kguanzon (Kimberly Guanzon) (kim0421)</li>
+    <li>Ferran Reyes (ferranreyesgoteo)</li>
+    <li>ismaeljoseph</li>
+    <li>Vanessa.Montes</li>
+    <li>Xurxo Guerra (xguerrap)</li>
+    <li>Tiago Santos (tisantos)</li>
+    <li>Iulian Mongescu (iulian.mongescu)</li>
+    <li>gracine</li>
+    <li>Carine_cha</li>
+    <li>Clint Mark Cortes (cortesclintmark)</li>
+    <li>zainalkhalid</li>
+    <li>melsmacan</li>
+    <li>franzancot</li>
+    <li>Herii (HERII12)</li>
+    <li>shaunmatthew</li>
+    <li>firewall (Onrkskn)</li>
+    <li>Ceyda Mutlu (translator93)</li>
+    <li>Júlia Petúlia Sol (juliaxsol)</li>
+    <li>enolp</li>
+    <li>elena-2018</li>
+    <li>Udo Wierlemann (Udo.Wierlemann)</li>
+    <li>helpPAM</li>
+    <li>CataAz</li>
+    <li>pep_laDeriva</li>
+    <li>jmontane</li>
+</ul></translators>
+<p>You can join the Crowdin translator team here: <a href="https://translate.goteo.org/">https://translate.goteo.org/</a></p>
+<p><em>This documentation is created using <a href="http://couscous.io">Couscous</a>.</em></p>
+<h2 id="license">License</h2>
+<p>The code licensed here under the <strong>GNU Affero General Public License</strong>, version 3 AGPL-3.0 has been developed by the Goteo team led by Platoniq and subsequently transferred to the Fundación Goteo, as detailed in <a href="http://www.goteo.org/about#info6">http://www.goteo.org/about#info6</a></p>
+                </section>
+
+            </div>
+        </main>
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="http://goteofoundation.github.io/goteo/highlight/highlight.pack.js"></script>
+
+        <script>
+            $(function() {
+                $("section>h1").wrap('<div class="page-header" />');
+                // Syntax highlighting
+                hljs.initHighlightingOnLoad();
+            });
+        </script>
+
+    </body>
+</html>

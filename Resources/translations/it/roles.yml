@@ -1,5 +1,0 @@
----
-role-name-blogger: 'Editor del Blog'
-role-perm-name-admin-module-blog: 'È possibile accedere al modulo del Blog'
-role-perm-name-full-html-edit: 'È possibile modificare tutti i posts con contenuto HTML'
-role-perm-name-admin-module-categories: 'È possibile accedere al modulo delle Categorie'

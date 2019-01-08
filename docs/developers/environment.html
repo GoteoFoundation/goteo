@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Goteo Developer&#039;s Documentation</title>
+
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/main.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/goteo.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/highlight/styles/monokai.css">
+
+    </head>
+    <body>
+
+        <header class="navbar navbar-default navbar-fixed-top">
+
+            <a class="navbar-brand" href="http://goteofoundation.github.io/goteo/">
+                Goteo Developer&#039;s Documentation
+                <small class="hidden-xs hidden-sm">
+                    An opensource crowdfunding platform made with PHP
+                </small>
+            </a>
+
+                            <a href="https://github.com/goteofoundation/goteo">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+                </a>
+            
+        </header>
+
+        <main class="container-fluid">
+            <div class="row">
+
+                
+                    <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+
+                                                    <p class="text-muted">
+                                Main documentation
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/index.html">
+                                            About
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/install.html">
+                                            Install
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/upgrade.html">
+                                            Upgrade
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/console.html">
+                                            Console scripts
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                Developers
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/docker.html">
+                                            Docker
+                                        </a>
+                                    </li>
+                                                                    <li class="active">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/environment.html">
+                                            Environment
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/templates.html">
+                                            Template system
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/migration.html">
+                                            Legacy migration howto
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/payments.html">
+                                            Payment process
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/extend.html">
+                                            Plugins & extending
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/events.html">
+                                            Using events
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/consoledev.html">
+                                            Extending console
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                About
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/release_notes.html">
+                                            Release notes
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/LICENSE">
+                                            License
+                                        </a>
+                                    </li>
+                                                            </ul>
+                        
+                    </nav>
+
+                
+                <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                    <h2 id="development-environment">Development environment</h2>
+<p>Goteo is a web app using PHP/Javascript/Mysql. </p>
+<p>We use the <strong>grunt</strong> tool in order to execute repetitive task such as:</p>
+<ul>
+<li>Javascript minification</li>
+<li>CSS minification</li>
+<li>Image optimizations</li>
+<li>Package installers</li>
+<li>Code checks and tests</li>
+<li>... so on ...</li>
+</ul>
+<p><strong>Composer</strong> is the most popular PHP package management, we use it too.</p>
+<h2 id="setting-up-environment">Setting up environment</h2>
+<p>You can set-up a development environment in your local machine by installing all required tools. Or, you can use either a Vagrant or Docker virtual machine with all tools ready to go.</p>
+<p>To install <code>docker</code> and <code>docker-compose</code> follow the instructions:</p>
+<p><a href="https://docs.docker.com/install/">https://docs.docker.com/install/</a>
+<a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></p>
+<p>To install vagrant refer to the official web site:</p>
+<p><a href="http://www.vagrantup.com/downloads">http://www.vagrantup.com/downloads</a></p>
+<p>You may install virtualbox as well:</p>
+<p><a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a></p>
+<h1 id="using-vagrant-virtual-machine">Using Vagrant Virtual Machine</h1>
+<p><em>NOTE:</em> We think that docker is a better way to quickly install Goteo as it uses much less resources, probably we will deprecate the Vagrant development aproach in the future.</p>
+<p>The Vagrant file provided automatically configures a virtual machine with all necessary tools.</p>
+<p>Just open a terminal where you have your copy of Goteo code and execute:</p>
+<p>Start the virtual machine (it will be a while first time you do that):</p>
+<pre><code class="language-bash">vagrant up</code></pre>
+<p>You need to log into the virtual machine to start the development server:</p>
+<pre><code class="language-bash">vagrant ssh</code></pre>
+<p>The first time, a vagrant local config file will be create a a <code>config/local-vagrant-settings.yml</code>. The env variable GOTEO_CONFIG_FILE will be append to the .bashrc file in vagrant poining to that file. Database will be autocreated and dependencies installed.</p>
+<p>You just need to log into vagrant and start the development server:</p>
+<pre><code class="language-bash">grunt serve</code></pre>
+<p><strong>Vagrant Apache dist testing</strong></p>
+<p>It is possible to build the distribution goteo package (for production sites) and test it in the same vagrant installation which is already configured to serve the content of the folder <code>/home/vagrant/goteo/dist</code>.</p>
+<p>Try it on by building the package (remember to log into vagrant first):</p>
+<pre><code class="language-bash">grunt build:dist</code></pre>
+<p>And, then pointing your browser to <a href="http://localhost:8080/">http://localhost:8080/</a>
+You can tweak the Apache configuration in <code>/etc/apache2/sites-enabled/goteo.conf</code> (inside vagrant)</p>
+<p><strong>Code updates</strong></p>
+<p>To update composer or npm dependencies when code is updated, you just need to log into vagrant (<code>vagrant ssh</code>) and run these commands:</p>
+<p>Node and composer dependencies:</p>
+<pre><code class="language-bash">cd /home/vagrant/goteo
+npm install
+composer install</code></pre>
+<p>It's also safe to run the MySQL migration tool to ensure database version is up to date:</p>
+<pre><code class="language-bash">./bin/console migrate all</code></pre>
+<p>You can do the <code>grunt serve</code> command in your own machine, then vagrant will be used for mysql only.</p>
+<p>Now you can open your favorite browser on your machine and go to:</p>
+<p><code>http://localhost:8081</code></p>
+<p>Login with user &quot;root&quot; and password &quot;root&quot; (no quotes).
+Go <code>http://localhost:8081/admin/users/edit/root</code> to change the password and email</p>
+<p>A copy of PhpMyAdmin is also running on the virtual machine, just go to:</p>
+<p><code>http://localhost:8080/phpmyadmin</code></p>
+<h1 id="installing-everything-in-your-own-machine">Installing everything in your own machine</h1>
+<h2 id="installing-grunt">Installing grunt</h2>
+<p>Grunt is a scripting task tool installable trough npm, the Node.js.
+Please refer to the official guide to grunt to install it:</p>
+<p><a href="http://gruntjs.com/getting-started">http://gruntjs.com/getting-started</a></p>
+<p>If you want to install grunt on Ubuntu 16.04 for the very first time just do:</p>
+<pre><code class="language-bash">sudo apt install build-essential libssl-dev git
+sudo apt install nodejs npm
+sudo apt install ruby-dev rubygems-integration
+sudo gem install sass -v 3.4.23
+sudo gem install compass
+sudo npm install -g grunt-cli</code></pre>
+<p>If you want to install grunt on Ubuntu 12.04 or 14.04 for the very first time just do:</p>
+<pre><code class="language-bash">sudo apt-get install build-essential libssl-dev git
+sudo add-apt-repository ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install nodejs
+sudo apt-get install rubygems-integration
+sudo gem install sass -v 3.4.23
+sudo gem install compass
+sudo npm install -g grunt-cli</code></pre>
+<p>Additionally, you may remove the configuration npm user directory to avoid
+unexpected permissions problems when using npm as non root user afterwards:</p>
+<pre><code class="language-bash">sudo rm ~/.npm -rf</code></pre>
+<h2 id="installing-composer">Installing composer</h2>
+<p>To install Composer on Ubuntu or any other *nix execute this commands:</p>
+<pre><code class="language-bash">curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer</code></pre>
+<p>For other OS, please refer to the official install guides:
+Install Composer: <a href="https://getcomposer.org/doc/00-intro.md">https://getcomposer.org/doc/00-intro.md</a></p>
+<h2 id="installing-mysql">Installing mysql</h2>
+<p>Instead of installing MySQL on your own machine, you may consider to install vagrant and use it as your msyql local server.</p>
+<p>If you have copied the vagrant-settings.yml as you initial starting settings:</p>
+<ul>
+<li>change in settings.yml db port from 3306 to 3307, localhost to 0.0.0.0</li>
+<li>change in settings.yml url port from 8082 to 8081</li>
+</ul>
+<pre><code>url:
+    main: //localhost:8081
+    # url de recursos estaticos (imagenes, CSS)
+    assets: //localhost:8081
+
+...
+
+# Database stuff
+db:
+    driver:   mysql     # Database driver (mysql)
+    host:     0.0.0.0 # Database host
+    port:     3307      # Database port
+    charset:  utf8mb4     # Database charset
+    database: goteo     # Database schema (database name)
+    username: root     # Database user for the goteo database
+    password: root  # Password for the goteo database</code></pre>
+<p>Otherwise, you can install mysql on your own machine and proceed to import the database into it.</p>
+<h1><a name="grunt"></a>
+Using grunt in Goteo</h1>
+<p>Once you have your copy of grunt installed you need to install the tasks used.
+To do so you may just execute in the path where you have your copy of the Goteo code:</p>
+<pre><code class="language-bash">npm install</code></pre>
+<p>After that you're ready to execute any of the task available in the same directory:</p>
+<pre><code class="language-bash">grunt jshint
+grunt phplint
+...</code></pre>
+<h2 id="grunt-commands-in-goteo">Grunt commands in Goteo</h2>
+<ul>
+<li>
+<p><strong>Build</strong>: <code>grunt build</code>
+This will create a <code>dist</code> folder ready to point a web server (apache, nginx) onto it</p>
+</li>
+<li>
+<p><strong>Development Build</strong>: <code>grunt build:devel</code>
+Same as build, but the files created into <code>dist</code> will not be minimized</p>
+</li>
+<li>
+<p><strong>Development server</strong>: <code>grunt serve</code>
+Php standalone server. For localhost developing.</p>
+</li>
+<li>
+<p><strong>Multi-threading development server</strong>: <code>grunt serve:nginx</code>
+For localhost developing as well. But you need to have nginx installed on your machine, it may speed up significantly the development process.</p>
+</li>
+<li>
+<p><strong>Deploy assets</strong>: <code>grunt deploy</code>
+Can be used to upload files assets to Amazon S3 (settings.yml must be configured)</p>
+</li>
+<li>
+<p><strong>Run phpunit</strong>: <code>./run-tests.sh</code>
+bash script to wrap phpunit tests (run it with <code>--help</code> for more info)</p>
+</li>
+<li>
+<p><strong>Default task</strong>: <code>grunt</code>
+This task is the same as execute as doing: <code>grunt lint</code>
+It performs static code analysis in order to quick detect mistakes or misspe -hllings</p>
+</li>
+<li><strong>Code linter</strong>: <code>grunt lint</code>
+Same as default</li>
+</ul>
+<h1><a name="docker"></a>
+Docker</h1>
+<p>The whole section has been moved to the <a href="http://goteofoundation.github.io/goteo/docs/developers/docker.html">Docker section</a></p>
+                </section>
+
+            </div>
+        </main>
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="http://goteofoundation.github.io/goteo/highlight/highlight.pack.js"></script>
+
+        <script>
+            $(function() {
+                $("section>h1").wrap('<div class="page-header" />');
+                // Syntax highlighting
+                hljs.initHighlightingOnLoad();
+            });
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Goteo Developer&#039;s Documentation</title>
+
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/main.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/goteo.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/highlight/styles/monokai.css">
+
+    </head>
+    <body>
+
+        <header class="navbar navbar-default navbar-fixed-top">
+
+            <a class="navbar-brand" href="http://goteofoundation.github.io/goteo/">
+                Goteo Developer&#039;s Documentation
+                <small class="hidden-xs hidden-sm">
+                    An opensource crowdfunding platform made with PHP
+                </small>
+            </a>
+
+                            <a href="https://github.com/goteofoundation/goteo">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+                </a>
+            
+        </header>
+
+        <main class="container-fluid">
+            <div class="row">
+
+                
+                    <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+
+                                                    <p class="text-muted">
+                                Main documentation
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/index.html">
+                                            About
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/install.html">
+                                            Install
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/upgrade.html">
+                                            Upgrade
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/console.html">
+                                            Console scripts
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                Developers
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/docker.html">
+                                            Docker
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/environment.html">
+                                            Environment
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/templates.html">
+                                            Template system
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/migration.html">
+                                            Legacy migration howto
+                                        </a>
+                                    </li>
+                                                                    <li class="active">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/payments.html">
+                                            Payment process
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/extend.html">
+                                            Plugins & extending
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/events.html">
+                                            Using events
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/consoledev.html">
+                                            Extending console
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                About
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/release_notes.html">
+                                            Release notes
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/LICENSE">
+                                            License
+                                        </a>
+                                    </li>
+                                                            </ul>
+                        
+                    </nav>
+
+                
+                <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                    <h1 id="payment-processing">Payment processing</h1>
+<p>The following graphic shows the life-cycle of a final user payment.</p>
+<p><img src="assets/end-user-payment-flow.png" alt="Payment workflow" /></p>
+<h3 id="invest-status">Invest status:</h3>
+<p>The status of the Invest Model object (table <code>invest</code>, column <code>status</code>) relates to which part of the payments' cycle we are.</p>
+<ul>
+<li><span style="background:#FC0000;font-weight:700;color:#000;padding:2px">-1</span> <code>STATUS_PROCESSING</code> payment gateway not reached yet or just a failed payment</li>
+<li><span style="background:#f0f0f0;font-weight:700;color:#000;padding:2px"> 0</span> <code>STATUS_PENDING</code>    Requires post-processing (for deprecated paypal preapprovals)</li>
+<li><span style="background:#93C2E5;font-weight:700;color:#000;padding:2px"> 1</span> <code>STATUS_CHARGED</code>    Charged by the platform</li>
+<li><span style="background:#FF5A5D;font-weight:700;color:#000;padding:2px"> 2</span> <code>STATUS_CANCELLED</code>  Refunded to the user by some admin manual action, it won't be added to any total</li>
+<li><span style="background:#00AA00;font-weight:700;color:#000;padding:2px"> 3</span> <code>STATUS_PAID</code>       Paid to the project (successful project)</li>
+<li><span style="background:#BB0000;font-weight:700;color:#000;padding:2px"> 4</span> <code>STATUS_RETURNED</code>   Automatically refunded to the user due a failed project</li>
+<li><span style="background:#f0f0f0;font-weight:700;color:#000;padding:2px"> 5</span> <code>STATUS_RELOCATED</code>  Deprecated status</li>
+<li><span style="background:#9E9ECE;font-weight:700;color:#000;padding:2px"> 6</span> <code>STATUS_TO_POOL</code>       Refunded to user's pool</li>
+</ul>
+<h3 id="payment-events">Payment events</h3>
+<p>Events can be used to attach or modify functionality when some action happens.</p>
+<p>In addition to the <a href="http://symfony.com/doc/current/components/http_kernel/introduction.html#component-http-kernel-event-table">Symfony's Built-in Kernel Events</a>, this are the events related to the payment process:</p>
+<ul>
+<li><code>INVEST_INIT</code> The invest.init event is thrown each time a user starts a payment process</li>
+<li><code>INVEST_INIT_REQUEST</code> The invest.init.request event is thrown each time a user sends a request to the payment gateway</li>
+<li><code>INVEST_INIT_REDIRECT</code> The invest.init.redirect event is thrown each time a user its been redirected to the payment gateway</li>
+<li><code>INVEST_NOTIFY</code> The invest.notify event is thrown each time the payment gateway reaches the notifyUrl to confirm the transaction</li>
+<li><code>INVEST_COMPLETE</code> The invest.compelte event is thrown each time the payment gateway returns to a notifyUrl or returnUrl</li>
+<li><code>INVEST_COMPLETE_REQUEST</code> The invest.complete.request event is thrown each time a user sends a request to the payment gateway to confirm the transaction</li>
+<li><code>INVEST_FAILED</code> The invest.failed event is thrown each time a user fails to complete a payment process</li>
+<li><code>INVEST_SUCCEEDED</code> The invest.success event is thrown each time a user completes a successful payment</li>
+<li><code>INVEST_FINISHED</code> The invest.finished event is thrown each time a user completes a successful personal data entry</li>
+<li><code>INVEST_CANCELLED</code> The invest.refund.cancel event is thrown each time a payments processes a refund</li>
+<li><code>INVEST_CANCEL_FAILED =</code> The invest.refund.cancel.failed event is thrown when manual refund it's done (normally a admin call)</li>
+<li><code>INVEST_RETURNED</code> The invest.refund.return event is thrown each time a payments processes a refund</li>
+<li><code>INVEST_RETURN_FAILED</code> The invest.refund.cancel event is thrown a refund process</li>
+</ul>
+<p>Full list of Application Events can be found in <code>src/Goteo/Application/AppEvents.php</code></p>
+<p>Some other Console events may be taken into account as well (in addition to <a href="http://symfony.com/doc/current/components/console/events.html">Symfony's Built-in Console Events</a>):</p>
+<ul>
+<li><code>INVEST_CANCELLED</code> The console.refund.cancel event is thrown each time a payments processes a refund for any reason others than the project related is not archived/failed</li>
+<li><code>INVEST_CANCEL_FAILED</code> The console.refund.cancel.failed event is thrown when manual refund it's done (normally a admin call)</li>
+<li><code>INVEST_RETURNED</code> The console.refund.return event is thrown each time a payments processes a refund</li>
+<li><code>INVEST_RETURN_FAILED</code> The console.refund.cancel event is thrown a refund process</li>
+</ul>
+<p>Full list of Console Events can be found in <code>src/Goteo/Console/ConsoleEvents.php</code></p>
+<h3 id="payment-gateway">Payment gateway</h3>
+<p>Since version 3.0, Goteo uses the <a href="http://omnipay.thephpleague.com/">Omnipay</a> payment processing library.
+Any gateway supported by that library should be able to work with Goteo. However there's still a couple of things to be refactored to really achieved this goal. So, at the moment only the Paypal gateway is implemented (there are 2 others internal gateways added for development Dummy and Cash).</p>
+<p>Still to be done:</p>
+<ul>
+<li>Payment reports in the admin with any gateway <code>src/Goteo/Controller/Admin/ReportsSubController.php</code>) and (<code>src/Goteo/Model/Invest.php</code>, function <code>getReportData()</code>)</li>
+</ul>
+                </section>
+
+            </div>
+        </main>
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="http://goteofoundation.github.io/goteo/highlight/highlight.pack.js"></script>
+
+        <script>
+            $(function() {
+                $("section>h1").wrap('<div class="page-header" />');
+                // Syntax highlighting
+                hljs.initHighlightingOnLoad();
+            });
+        </script>
+
+    </body>
+</html>

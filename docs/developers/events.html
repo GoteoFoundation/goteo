@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Goteo Developer&#039;s Documentation</title>
+
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/main.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/goteo.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/highlight/styles/monokai.css">
+
+    </head>
+    <body>
+
+        <header class="navbar navbar-default navbar-fixed-top">
+
+            <a class="navbar-brand" href="http://goteofoundation.github.io/goteo/">
+                Goteo Developer&#039;s Documentation
+                <small class="hidden-xs hidden-sm">
+                    An opensource crowdfunding platform made with PHP
+                </small>
+            </a>
+
+                            <a href="https://github.com/goteofoundation/goteo">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+                </a>
+            
+        </header>
+
+        <main class="container-fluid">
+            <div class="row">
+
+                
+                    <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+
+                                                    <p class="text-muted">
+                                Main documentation
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/index.html">
+                                            About
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/install.html">
+                                            Install
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/upgrade.html">
+                                            Upgrade
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/console.html">
+                                            Console scripts
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                Developers
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/docker.html">
+                                            Docker
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/environment.html">
+                                            Environment
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/templates.html">
+                                            Template system
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/migration.html">
+                                            Legacy migration howto
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/payments.html">
+                                            Payment process
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/extend.html">
+                                            Plugins & extending
+                                        </a>
+                                    </li>
+                                                                    <li class="active">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/events.html">
+                                            Using events
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/consoledev.html">
+                                            Extending console
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                About
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/release_notes.html">
+                                            Release notes
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/LICENSE">
+                                            License
+                                        </a>
+                                    </li>
+                                                            </ul>
+                        
+                    </nav>
+
+                
+                <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                    <h1 id="event-in-goteo">Event in Goteo</h1>
+<p>The Goteo framework is based in Symfony, and uses the <a href="https://symfony.com/doc/2.8/components/event_dispatcher.html">Event Dispatcher</a> to throw events that can be used to alter the default behaviour of many aspects of Goteo, like the payment flow, project creation, route flow, etc.</p>
+<h2 id="kernel-events">Kernel events</h2>
+<p>These events are thrown by the Kernel of Symfony Components. For a full specification please check the <a href="https://symfony.com/doc/2.8/components/http_kernel.html">official documentation</a>.</p>
+<p>A part from the <code>Symfony/Component/HttpKernel/HttpKernel.php</code> itself, the 2 most important classes used in the Symfony's Http workflow are the classes <code>Symfony/Component/HttpFoundation/Request.php</code> and <code>Symfony/Component/HttpFoundation/Response.php</code></p>
+<p>They cover the 5 events carried out by the Symfony Kernel when handling an http petition:</p>
+<p><img src="assets/http-workflow.svg" alt="Payment workflow" /></p>
+<ol>
+<li>
+<p><strong>REQUEST</strong> Used to know about the http request before doing anything else. Several Event Listeners in <code>src/Goteo/Application/EventListener/*.php</code> classes use this event.</p>
+</li>
+<li>
+<p><strong>EXCEPTION</strong> Can be used to intercept any (non fatal) exception occurring during normal operation. The <code>src/Goteo/Application/EventListener/ExceptionListener.php</code> uses this event to convert different types of exceptions to appropriate http responses (404, 500, etc).</p>
+</li>
+<li>
+<p><strong>CONTROLLER</strong> This event allows you to change or manipulate the controller <em>before</em> the original specified in the routing system is executed.<br><br>As an example, check the plugin <code>custom-domains</code>, file <code>extend/custom-domains/src/CustomDomains/EventListener/DomainListener.php</code>, which uses this event to find the appropriate controller for a custom domain/subdomain route.</p>
+</li>
+<li>
+<p><strong>VIEW</strong> Although this event is available, it is not currently used internally by Goteo. This event is thrown after executing the controller <strong>only if it doesn't return any Response object</strong>.</p>
+</li>
+<li>
+<p><strong>RESPONSE</strong> Once controller returns a Response object, this event is thrown, allowing to manipulate the response if needed.<br><br>As an example, check the file <code>extend/goteo-dev/src/Goteodev/Profiler/EventListener/ProfilerListener.php</code> of the plugin <code>goteo-dev</code> that adds some custom html (a debug bottom bar) content to generated pages.</p>
+</li>
+<li>
+<p><strong>TERMINATE</strong> This event is thrown after the response has been sent to the browser, so it allows you to perform some &quot;heavy&quot; operations without making the user wait for it. We use this basically to send mails in some cases.</p>
+</li>
+<li><strong>FINISH_REQUEST</strong> We don't use this event. It is thrown after a Response has been generated for a Request.</li>
+</ol>
+<h2 id="application-events">Application events</h2>
+<p>These are custom events thrown during the normal execution of an http workflow in Goteo. They allow the listeners to perform extra operations (or change the default behavior) on many specific Goteo tasks. Such as creating a project, a new payment is done, a user has logged, a post has been created, etc.</p>
+<p>The <code>file src/Goteo/Application/AppEvents.php</code> has a full list of these events. Some of them are:</p>
+<ol>
+<li>
+<p><strong>VIEW_RENDER</strong> Thrown when a Foil template view is about to be rendered. These allows (for example), to add some custom vars that can be used when a template is overwritten by a plugin.</p>
+</li>
+<li>
+<p><strong>LOGIN_SUCCEEDED</strong> As you probably guess, this event happens after a successful user's login action. Other similar events are provided for failed logins, logout and user registration. Please consult the <code>AppEvents.php</code> source file for more info.<br><br>As an example, check the file <code>src/Goteo/Application/EventListener/AuthListener.php</code> that uses this event to establish a &quot;remember-me&quot; cookie on login.</p>
+</li>
+<li>
+<p><strong>RESET_PASSWORD</strong> Thrown when a user reset his password. This event is used in the same <code>AuthListener</code> class to add a log entry in the system when this happens.</p>
+</li>
+<li>
+<p><strong>INVEST_INIT</strong> This, and all the other <code>INVEST_*</code> events manages the payment workflow in Goteo. You can have more information about that in the <a href="payments.html">payments section</a>.<br><br>The <code>src/Goteo/Application/EventListener/InvestListener.php</code> class uses these events intensively in order to process the invest entry status.</p>
+</li>
+<li>
+<p><strong>PROJECT_CREATED</strong> This event is thrown when a project is created by the controller <code>ProjectController</code>. It allows you to perform operations on the project when it's created. <br><br>For example, the <code>src/Goteo/Application/EventListener/ProjectChannelListener.php</code> class uses this event in combination with the Symfony's <code>KernelEvent::REQUEST</code> to change the <code>node</code> property of the created project if it's created by the controller ChannelController instead of the ProjectController (note that ChannelController forwards the creation of the project to the original ProjectController so the event PROJECT_CREATED is thrown anyway).</p>
+</li>
+<li>
+<p><strong>PROJECT_PUBLISH</strong> Thrown when a project is published. The <code>src/Goteo/Application/EventListener/ProjectListener.php</code> uses this event to create appropriate feed/log entries.</p>
+</li>
+<li>
+<p><strong>PROJECT_READY</strong> This is thrown when the project passes from <em>editing</em> to <em>reviewing</em>, this is the status before publishing when it's supposed to be checked by the consultants.<br><br>In the <code>ProjectListener</code> class we use this event to (among other things) send emails to the consultants in order to review the project before publishing.</p>
+</li>
+<li>
+<p><strong>PROJECT_VALIDATION</strong> This event is thrown every time the function <code>-&gt;getValidation()</code> from an object Goteo\Model\Project is called. This allows to change or substitute the default project validation logic if needed.</p>
+</li>
+<li>
+<p><strong>PROJECT_POST</strong> Event thrown when a project's owner creates a post. Internally it's used by the class <code>src/Goteo/Application/ProjectPostListener.php</code> to create a project milestone when that happens.</p>
+</li>
+<li>
+<p><strong>MESSAGE_CREATED</strong> Thrown when a message communication between users is created.</p>
+</li>
+<li>
+<p><strong>MESSAGE_UPDATED</strong> Sames as before, when a message is updated.</p>
+</li>
+<li><strong>MATCHER_PROJECT</strong> Matchers are the matchfunding operation system in Goteo. They allow to perform automatic invest operations according to users invests actions (or any other event). This event is thrown when a project is added to a matcher (currently must be specifically dispatched by a plugin or using the internal user dashboard AJAX api, url <code>/dashboard/ajax/matchers/{matcher-id}/{action}/{project-id}</code>).<br><br>We are currently working in this area to provide a better support for it.</li>
+</ol>
+<h2 id="console-events">Console events</h2>
+<p>Console events are thrown the the Goteo Cron operation, they are unrelated to users/web actions, mostly, involve operations like return invests when a project fails, a project is automatically published, changes round or a massive mailing is sent.</p>
+<p>Check the <code>src/Goteo/Console/ConsoleEvents.php</code> file for a full description of the available events.</p>
+<p>Internally Goteo uses theses events in different event listeners attached by console commands (executed by the cron). Check the folder <code>src/Goteo/Console/EventListener</code> for examples.</p>
+<h2 id="model-events">Model events</h2>
+<p>Model events are events thrown before and after a CRUD database operation is done by any Goteo\Model* instance. As they are low level operation there are in the Core namespace. The file <code>src/Goteo/Core/ModelEvents.php</code> has the full list and description.</p>
+<p>They are meant to allow plugins a high flexibility to perform very specific custom actions when certain database table entry changes.</p>
+<h2><a name="plugin"></a>
+Using events in plugins</h2>
+<p>To use the events in plugins you can use the service container to  attach new actions for the purpose of the plugin.</p>
+<p>Typically, the <code>start.php</code> file must be used to add custom event listeners to any event.</p>
+<p>Let's say we want to built a plugin that performs a custom action when a Project is published (for example, publish a twit, send an email, or something similar). Specifically we will create a twit in this example.</p>
+<p>First, we create the new plugin structure in the folder extend:</p>
+<p>File <code>extend/project-twit/start.php</code> (entry point for the plugin):</p>
+<pre><code class="language-php">&lt;?php 
+
+// Empty file to start</code></pre>
+<p>File <code>extend/project-twit/manifest.yml</code> (meta-information about the plugin):</p>
+<pre><code class="language-yaml">name: ProjectTwitter
+version: 1.0</code></pre>
+<p>Now we need to create an application in <a href="https://apps.twitter.com">https://apps.twitter.com</a>, grab the consumer key and the consumer secret, generate an access token and a  access token secret and copy everything in our goteo settings:</p>
+<p>In the <code>config/settings.yml</code> we add these lines in order to activate the plugin:</p>
+<pre><code class="language-yaml">plugins:
+    project-twit:
+        active: true
+        # Some custom vars, we will use
+        # Generated in https://apps.twitter.com/
+        oauth_access_token: YOUR_OAUTH_ACCESS_TOKEN
+        oauth_access_token_secret: YOUR_OAUTH_ACCESS_TOKEN_SECRET
+        consumer_key: YOUR_CONSUMER_KEY
+        consumer_secret: YOUR_CONSUMER_SECRET</code></pre>
+<p>Great, the plugin is created and already working, however it does nothing yet. </p>
+<p>We want to keep track of projects in order to automatically create a twit every time is published.</p>
+<p>To do that, we must create the event listener class:</p>
+<p>File <code>extend/project-twit/ProjectTwitter/TwitterListener.php</code>:</p>
+<pre><code class="language-php">&lt;?php
+namespace ProjectTwitter;
+
+use Goteo\Application\EventListener\AbstractListener;
+
+use Goteo\Application\AppEvents;
+use Goteo\Application\Message;
+
+use Goteo\Application\Event\FilterProjectEvent;
+
+class TwitterListener extends AbstractListener {
+    public function onProjectPublished(FilterProjectEvent $event) {
+        $project = $event-&gt;getProject();
+
+        Message::info("I've notice that the project {$project-&gt;name} has been published");
+
+    }
+
+    public static function getSubscribedEvents() {
+        return array(
+            AppEvents::PROJECT_PUBLISH =&gt; 'onProjectPublished'
+        );
+    }
+}</code></pre>
+<p>This is a very basic listener, for the moment it only will write a flash notification in the web page when a project is published by an admin.</p>
+<p>But, to get it to work, we need to subscribe this event in the <code>start.php</code> file in order to Goteo to use it, we add these lines to the file <code>start.php</code>:</p>
+<pre><code class="language-php">&lt;?php
+
+// Not empty anymore
+
+use Goteo\Application\App;
+use Goteo\Application\Config;
+use Symfony\Component\DependencyInjection\Reference;
+
+// Autoload additional Classes in this plugin
+Config::addAutoloadDir(__DIR__ );
+
+// Get the service container to add our custom services in it:
+$sc = App::getServiceContainer();
+
+// Register a custom reference with our EventListener class
+$sc-&gt;register('project-twit.twitter_listener', 'ProjectTwitter\TwitterListener')
+   -&gt;setArguments(array(new Reference('logger'))); // 'logger' is the default logger defined in the main container.php file, because our event listener inherits from the standard AbstractListener used in Goteo that needs a Logger class as argument's constructor
+
+// Add the subscriber to the service container
+$sc-&gt;getDefinition('dispatcher')
+   -&gt;addMethodCall('addSubscriber', array(new Reference('project-twit.twitter_listener')))
+;
+</code></pre>
+<p>We've added the code to tell Goteo about our event listener, now every time the event <code>AppEvent::PROJECT_PUBLISH</code> is thrown, our code in the function <code>onProjectPublished</code> will be executed.</p>
+<p>From here, the only thing to do is to improve the code on that function to actually perform the desired action (ie: publish a twit).</p>
+<p>But, before to do that, let's notice that there are 2 different situations in which a project can be published. One is when and admin (in the admin web interface), manually publishes the project. The other possibility is when a project is published automatically (because and admin has programed the project to do that on certain day). The automatic publishing is done by the cron and fires a different Event, in this case whe need to subscribe to <code>ConsoleEvent::PROJECT_PUBLISH</code> as well.</p>
+<p>Let's modify the file <code>extend/project-twit/ProjectTwitter/TwitterListener.php</code> file accordingly:</p>
+<pre><code class="language-php">&lt;?php
+namespace ProjectTwitter;
+
+use Goteo\Application\EventListener\AbstractListener;
+
+use Goteo\Application\AppEvents;
+use Goteo\Console\ConsoleEvents;
+
+use Goteo\Application\Event\FilterProjectEvent;
+// we use the Console\EventFilterProjectEvent because is compatible with either the AppEvents::PROJECT_PUBLISH or the ConsoleEvents::PROJECT_PUBLISH. This way we can use the same function for both events
+use Goteo\Console\Event\FilterProjectEvent as ConsoleProjectEvent;;
+
+class TwitterListener extends AbstractListener {
+    public function onProjectPublished(ConsoleProjectEvent $event) {
+        $project = $event-&gt;getProject();
+
+        Message::info("I've notice that the project {$project-&gt;name} has been published");
+
+    }
+
+    public static function getSubscribedEvents() {
+        return array(
+            AppEvents::PROJECT_PUBLISH =&gt; 'onProjectPublished',
+            ConsoleEvents::PROJECT_PUBLISH =&gt; 'onProjectPublished'
+        );
+    }
+}</code></pre>
+<p>Now we are not going to miss any project publication event. And we're ready to complete the code of the <code>onProjectPublished</code> function:</p>
+<pre><code class="language-php">&lt;?php
+
+// We are going to use settings.yml values
+use Goteo\Application\Config;
+// This allows to create info/errors messages in the web
+use Goteo\Application\Message;
+// A simple class to interact with twitter
+// https://github.com/J7mbo/twitter-api-php
+use TwitterAPIExchange;
+
+... // &lt;- same coded as before here
+
+   public function onProjectPublished(ConsoleProjectEvent $event) {
+        $project = $event-&gt;getProject();
+        $domain = Config::getMainUrl();
+
+        $name = trim($project-&gt;name ? $project-&gt;name : $project-&gt;id);
+        // TODO: make this text configurable from settings
+        $twit = "The new project \"name\" has been published. Check it out here in $domain/project/{$project-&gt;id} #crowdfunding #opensource";
+
+        // publish the twit:
+        $resource = 'https://api.twitter.com/1.1/statuses/update.json';
+        // Get the auth settings from the config settings
+        $settings = array(
+            'oauth_access_token' =&gt; Config::get('plugins.project-twit.oauth_access_token'),
+            'oauth_access_token_secret' =&gt; Config::get('plugins.project-twit.oauth_access_token_secret'),
+            'consumer_key' =&gt; Config::get('plugins.project-twit.consumer_key'),
+            'consumer_secret' =&gt; Config::get('plugins.project-twit.consumer_secret')
+        );
+
+        $postfields = [
+            'status' =&gt; $twit
+        ];
+        $twitter = new TwitterAPIExchange($settings);
+        $result = $twitter-&gt;buildOauth($resource, 'POST')
+            -&gt;setPostfields($postfields)
+            -&gt;performRequest();
+
+        // Add a flash Message if the event it's created in the website
+        if($event instanceOf FilterProjectEvent) {
+            if($result-&gt;errors) {
+                $reason = $result-&gt;errors[0]-&gt;message;
+                Message::error("Couldn't create a new twit: &lt;strong&gt;$reason&lt;/strong&gt;");
+            } else {
+                $url = $result-&gt;entities-&gt;urls[0]-&gt;url;
+                Message::info("A new twit has been created: &lt;a href=\"$url\"&gt;$url&lt;/a&gt;");
+            }
+        }
+
+        // TODO: perform some loggging or other operation depending on the twitter post operation
+   }
+</code></pre>
+<p>Ok, now the code is complete, but we've used an external component to publish our twit, the <code>TwitterAPIExchange</code> class, so we need to include it in our plugin, otherwise Goteo will not now where to find it and it will throw a fatal error.</p>
+<p>The easiest way to include it is by using composer: in a terminal execute (we are going to use the class <a href="https://github.com/J7mbo/twitter-api-php">TwitterAPIExchange</a>):</p>
+<pre><code class="language-bash">cd extend/project-twit
+composer require j7mbo/twitter-api-php -d ./</code></pre>
+<p>Now we will have a new <code>vendor</code> folder in our plugin, we need to include that in Goteo's autoload class system, let's add some lines in the <code>start.php</code> file:</p>
+<pre><code class="language-php">&lt;?php
+
+// Not empty anymore
+use Goteo\Application\App;
+use Goteo\Application\Config;
+use Symfony\Component\DependencyInjection\Reference;
+
+// Autoload additional Classes in this plugin
+Config::addAutoloadDir(__DIR__ );
+// Include our custom composer vendor file
+Config::addComposerAutoload(__DIR__  . '/vendor/autoload.php');
+
+... // rest of the code as before</code></pre>
+<p>That's it! You can check the whole source code of this plugin in this repository: </p>
+<p><a href="https://github.com/microstudi/goteo-project-twitter-plugin">https://github.com/microstudi/goteo-project-twitter-plugin</a></p>
+                </section>
+
+            </div>
+        </main>
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="http://goteofoundation.github.io/goteo/highlight/highlight.pack.js"></script>
+
+        <script>
+            $(function() {
+                $("section>h1").wrap('<div class="page-header" />');
+                // Syntax highlighting
+                hljs.initHighlightingOnLoad();
+            });
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Goteo Developer&#039;s Documentation</title>
+
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/main.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/goteo.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/highlight/styles/monokai.css">
+
+    </head>
+    <body>
+
+        <header class="navbar navbar-default navbar-fixed-top">
+
+            <a class="navbar-brand" href="http://goteofoundation.github.io/goteo/">
+                Goteo Developer&#039;s Documentation
+                <small class="hidden-xs hidden-sm">
+                    An opensource crowdfunding platform made with PHP
+                </small>
+            </a>
+
+                            <a href="https://github.com/goteofoundation/goteo">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+                </a>
+            
+        </header>
+
+        <main class="container-fluid">
+            <div class="row">
+
+                
+                    <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+
+                                                    <p class="text-muted">
+                                Main documentation
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/index.html">
+                                            About
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/install.html">
+                                            Install
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/upgrade.html">
+                                            Upgrade
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/console.html">
+                                            Console scripts
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                Developers
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/docker.html">
+                                            Docker
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/environment.html">
+                                            Environment
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/templates.html">
+                                            Template system
+                                        </a>
+                                    </li>
+                                                                    <li class="active">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/migration.html">
+                                            Legacy migration howto
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/payments.html">
+                                            Payment process
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/extend.html">
+                                            Plugins & extending
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/events.html">
+                                            Using events
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/consoledev.html">
+                                            Extending console
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                About
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/release_notes.html">
+                                            Release notes
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/LICENSE">
+                                            License
+                                        </a>
+                                    </li>
+                                                            </ul>
+                        
+                    </nav>
+
+                
+                <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                    <h1 id="mysql-migrations">MySQL migrations</h1>
+<p>Starting in version <strong>3.2</strong> a SQL migrations uses the library <a href="http://kohkimakimoto.github.io/lib-migration/">LibMigration</a>.</p>
+<p>The console command <code>migrate</code> must be used to create sql migrations:</p>
+<p><strong>Creates a new PHP Class file to write migrations inside:</strong></p>
+<pre><code class="language-bash">php bin/console create some_description</code></pre>
+<p>A new file will be created in <code>db/migrations/{timestamp}_dbname_some_description.php</code>, edit it and write the UP/DOWN SQL commands there.</p>
+<p>To apply migrations these commands can be used:</p>
+<p><strong>Shows the current status:</strong></p>
+<pre><code class="language-bash">php bin/console migrate</code></pre>
+<p><strong>Execute all the migrations up pending:</strong></p>
+<pre><code class="language-bash">php bin/console migrate all</code></pre>
+<p><strong>Execute only the next migration up pending:</strong></p>
+<pre><code class="language-bash">php bin/console migrate up</code></pre>
+<p>In case you need to downgrade:</p>
+<p><strong>Execute the next migration down:</strong></p>
+<pre><code class="language-bash">php bin/console migrate up</code></pre>
+<h1 id="legacy-views-migration">Legacy views migration:</h1>
+<p>This is about how to change Controllers and views (templates) from the old system to the new one:</p>
+<h2 id="response">Response</h2>
+<p>New controllers are intended to be used with the <a href="http://symfony.com/doc/current/components/routing/introduction.html">Route</a> component from Symfony. Therefore all must return a proper <a href="http://symfony.com/doc/current/components/http_foundation/introduction.html#response">Response</a>:</p>
+<p>Controllers can also return redirections by using the <a href="http://symfony.com/doc/current/components/http_foundation/introduction.html#redirecting-the-user">RedirectResponse</a> sub-class. In short, any sub-class of <code>Response</code> will do.</p>
+<p>New controllers <strong>must</strong> follow these guidelines:</p>
+<ul>
+<li>Don't use global variables like <code>$_GET</code> or <code>$_POST</code>, Use the <a href="http://symfony.com/doc/current/components/http_foundation/introduction.html#request">Request</a> object which will be automatically injected into the controller (better to put it as an argument at the end of the controller method). </li>
+<li>Names of vars follows the Symfony <a href="http://symfony.com/doc/current/components/routing/introduction.html#load-routes-from-a-file">Route specification</a>, i.e. variables names must match the ones defined in the routes (view <a href="#routes">Routes</a> for more info). The order of variables has no importance.</li>
+<li>Session global variables such as <code>$_SESSION</code> or <code>$_COOKIE</code> must be substituted by the static classes <code>src/Goteo/Application/Session.php</code> and <code>src/Goteo/Application/Cookie.php</code>. Take a look a the source code on that files for more info.</li>
+</ul>
+<p><strong>Example</strong></p>
+<pre><code class="language-php">&lt;?php
+    // src/extend/goteo-private/src/Goteo/Controller/DiscoverAddonsController.php
+    namespace Goteo\Controller;
+    use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Component\HttpFoundation\RedirectResponse;
+    use Symfony\Component\HttpFoundation\Request;
+    // use ...
+    class DiscoverAddonsController extends \Goteo\Core\Controller {
+        public function callAction () {
+            return new RedirectResponse('/discover/calls');
+            }
+        public function callsAction () {
+            return $this-&gt;viewResponse('discover/calls', [
+                    'title' =&gt; Text::html('discover-calls-header'),
+                    'list'  =&gt; Model\Call::getActive(null, true)
+                   ]);
+            }
+        public function testAction ($foo, $bar = 'default', Request $request) {
+            // Variable in "POST":
+            $post_var = $request-&gt;request-&gt;get('var');
+            // Variable in "GET":
+            $get_var = $request-&gt;query-&gt;get('var');
+        }
+    }
+?&gt;</code></pre>
+<h2 id="template-system">Template system</h2>
+<p>The new <code>src/Goteo/Application/View.php</code> class must be used to provide the views. Legacy <code>src/Goteo/Core/View.php</code> must be progressively removed.</p>
+<p>Rendering a view in a controller is easy as calling <code>return new Response(View::render(...));</code> as the return statement.</p>
+<p>Controllers extending <code>src/Goteo/Core/Controller.php</code> can make use of some short cuts:</p>
+<ul>
+<li><code>return $this-&gt;viewResponse('template', ['obj' =&gt; ...]);</code> instead of <code>return new Response(View::render('template', ['obj' =&gt; ...]));</code></li>
+<li><code>return $this-&gt;redirect('url');</code> instead of <code>return new RedirectResponse('url');</code></li>
+<li>...</li>
+</ul>
+<h2 id="migrating-views">Migrating views</h2>
+<ol>
+<li>
+<p>Views must be transferred from the old folder  <code>Resources/templates/legacy/controller/view.html.php</code> to the new <code>Resources/templates/default/controller/view.php</code>. Sub extension <code>.html.php</code> is not needed any more.</p>
+</li>
+<li>
+<p>New view uses template inheritance so there's no need for including headers, prologues or any other common partial sub-view.
+Includes to <code>prologue.html.php</code>, <code>header.html.php</code>, etc. from the begging and the end of must be removed.</p>
+</li>
+<li>Rebuild the content of the templates in blocks (sections). Main sections are in the default layout <code>Resources/templates/default/layout.php</code>.
+All sub-views must implement section <code>content</code>.
+Long Javascript blocks should be avoided as much as possible. Little scripts can be included by extending the section <code>footer</code>.</li>
+</ol>
+<p><strong>Example: including javascript inside a view:</strong></p>
+<p><code>Resources/templates/default/discover/index.php</code></p>
+<pre><code class="language-php">&lt;?php $this-&gt;layout("layout", ['bodyClass' =&gt; 'discover']) ?&gt;
+
+&lt;?php $this-&gt;section('content') // Section 'content' in template "layout" will be replace by this ?&gt;
+
+    ... HTML main content ...
+
+&lt;?php $this-&gt;replace() ?&gt;
+
+&lt;?php $this-&gt;section('footer') // This content will be appended into the section 'footer' in template "layout" ?&gt;
+
+    &lt;script type="text/javascript"&gt;
+        jQuery(document).ready(function ($) {
+            ...
+        });
+
+    &lt;/script&gt;
+
+&lt;?php $this-&gt;append() ?&gt;</code></pre>
+<ol start="4">
+<li>
+<p>References to the formers <code>$this['variable']</code> or <code>$vars['variable']</code> arrays must be replaced by calling the automatically escaped variable on the self-object <code>$this</code>: <code>&lt;?= $this-&gt;variable ?&gt;</code>. Un-escaped variables can be reached using the method <code>raw</code>: <code>&lt;?= $this-&gt;raw('variable') ?&gt;</code>. Check <a href="http://www.foilphp.it/docs/DATA/RETRIEVE-DATA.html">Foil documentation on this matter</a> for more info.</p>
+</li>
+<li>Avoid calling full namespaced classes inside templates, particularly the heavily used <code>&lt;?php echo Text::get('id') ?&gt;</code> method must be changed by the <code>&lt;?= $this-&gt;text('id') ?&gt;</code> extension method.</li>
+</ol>
+<p>For other handy methods, take a look into:</p>
+<pre><code>src/Goteo/Util/Foil/GoteoCore.php
+src/Goteo/Util/Foil/LangUtils.php
+src/Goteo/Util/Foil/Pages.php
+src/Goteo/Util/Foil/TextUtils.php</code></pre>
+<p><strong>Note</strong> plugins can also add methods in templates.</p>
+<ol start="6">
+<li>Also avoid using global vars inside templates. Needless to say that assign values into <code>$_SESSION</code> or <code>$_COOKIE</code> must be strictly avoided,
+Methods such as <code>$this-&gt;get_session('foo')</code> or <code>$this-&gt;get_cookie('foo')</code> can be used if absolutely necessary.</li>
+</ol>
+<p>Refer to <a href="templates.html#extensions">templates documentation</a> for more info.</p>
+<p><a name="routes"></a></p>
+<h2 id="routes">Routes</h2>
+<p>Routes are defined primarily in the <code>src/routes.php</code> file. Plugins however can either add or replace routes. New routes use <a href="http://symfony.com/doc/current/components/routing/introduction.html">Symfony route component</a>..</p>
+<p>Consequently, in order for the controllers to be active in the routing sub-system, they must be added in the above-mentioned file.</p>
+<p><strong>NOTES:</strong></p>
+<ul>
+<li>Do not append <code>/</code>  at the end of the route (there's a controller at the end which redirect any trailing slash <code>/</code> at the end of the route to the proper url)</li>
+<li>For readability, append the word <strong>Action</strong> at the end of the Controller method (e.g: <code>edit()</code> becomes into <code>editAction()</code>)</li>
+</ul>
+<p><strong>Once all controller methods are processed</strong>:</p>
+<ul>
+<li>Append <strong>Controller</strong> at the end of the controller's file name. That's for readability as well.</li>
+</ul>
+<pre><code class="language-php">&lt;?php
+// src/routes.php
+
+$routes = new RouteCollection();
+
+// ...
+
+// This route has parameters, some of them optional:
+// Matching urls:
+//      /discover/results/2
+//      /discover/resultss (if 'category' wasn't optional this url would not match)
+$routes-&gt;add('discover-results', new Route(
+    '/discover/results/{category}',
+    array('category' =&gt; null,
+          'name' =&gt; null,
+          '_controller' =&gt; 'Goteo\Controller\DiscoverController::resultsAction',
+          'category' =&gt; '' // optional parameter
+         )
+));
+// This route has no parameters
+$routes-&gt;add('discover', new Route(
+    '/discover',
+    array('_controller' =&gt; 'Goteo\Controller\DiscoverController::discoverAction')
+));
+
+return $routes;
+?&gt;</code></pre>
+<h2 id="real-example">REAL EXAMPLE</h2>
+<p>This is an example of the conversion for the view <code>discover/results.html.php</code> of the controller <code>DiscoverController</code>:</p>
+<p><strong>Before:</strong></p>
+<pre><code class="language-php">&lt;?php
+// Resources/templates/legacy/discover/results.html.php
+
+use Goteo\Core\View,
+    Goteo\Library\Text;
+
+$bodyClass = 'discover';
+
+include __DIR__ . '/../prologue.html.php';
+
+include __DIR__ . '/../header.html.php' ?&gt;
+
+        &lt;div id="sub-header"&gt;
+            &lt;div&gt;
+                &lt;h2 class="title"&gt;&lt;?php echo Text::get('discover-results-header'); ?&gt;&lt;/h2&gt;
+            &lt;/div&gt;
+
+        &lt;/div&gt;
+
+        &lt;div id="main"&gt;
+            &lt;?php echo View::get('discover/searcher.html.php',
+                                array('params'     =&gt; $vars['params'])); ?&gt;
+
+            &lt;div class="widget projects"&gt;
+                &lt;?php if (!empty($vars['results'])) :
+                    foreach ($vars['results'] as $result) :
+                        echo View::get('project/widget/project.html.php', array(
+                            'project' =&gt; $result
+                        ));
+                    endforeach;
+                else :
+                    echo Text::get('discover-results-empty');
+                endif; ?&gt;
+            &lt;/div&gt;
+
+        &lt;/div&gt;
+
+        &lt;?php include __DIR__ . '/../footer.html.php' ?&gt;
+
+&lt;?php include __DIR__ . '/../epilogue.html.php' ?&gt;</code></pre>
+<p><strong>After</strong></p>
+<pre><code class="language-php">&lt;?php
+// Resources/templates/default/discover/results.php
+
+$this-&gt;layout("layout", [
+    'bodyClass' =&gt; 'discover', // Class variable into &lt;body class="..."&gt;
+    'title' =&gt; $this-&gt;text('meta-title-discover'), // Let's change the default page title
+    'meta_description' =&gt; $this-&gt;text('meta-description-discover') // idem
+    ]);
+
+$this-&gt;section('content');
+
+?&gt;
+
+    &lt;div id="sub-header"&gt;
+        &lt;div&gt;
+            &lt;h2 class="title"&gt;&lt;?= $this-&gt;text('discover-results-header') ?&gt;&lt;/h2&gt;
+            &lt;/div&gt;
+
+    &lt;/div&gt;
+
+    &lt;div id="main"&gt;
+
+        &lt;?= $this-&gt;insert('discover/partials/searcher', ['params' =&gt; $this-&gt;params]) ?&gt;
+
+        &lt;div class="widget projects"&gt;
+            &lt;?php if ($this-&gt;results) : ?&gt;
+                &lt;?php foreach ($this-&gt;results as $result) : ?&gt;
+                    &lt;?= $this-&gt;insert('project/widget/project', ['project' =&gt; $result]) ?&gt;
+                    &lt;?php endforeach ?&gt;
+            &lt;?php else : ?&gt;
+                &lt;?= $this-&gt;text('discover-results-empty') ?&gt;
+            &lt;?php endif ?&gt;
+        &lt;/div&gt;
+
+    &lt;/div&gt;
+
+&lt;?php $this-&gt;replace() ?&gt;
+</code></pre>
+<p>Note that this conversion implies that the sub-views <code>Resources/templates/default/discover/partials/searcher.php</code> and <code>Resources/templates/default/project/widget/project.php</code> has been converted in a similar way.</p>
+                </section>
+
+            </div>
+        </main>
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="http://goteofoundation.github.io/goteo/highlight/highlight.pack.js"></script>
+
+        <script>
+            $(function() {
+                $("section>h1").wrap('<div class="page-header" />');
+                // Syntax highlighting
+                hljs.initHighlightingOnLoad();
+            });
+        </script>
+
+    </body>
+</html>

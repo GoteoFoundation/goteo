@@ -1,9 +1,0 @@
----
-dashboard-user-location-change: 'Kullanıcı profilinizdeki konumunuzu değiştirebilirsiniz.'
-dashboard-user-location-locate: 'Konumumu paylaş'
-dashboard-user-location-located-text: "Eğer konum verilerinizi bizimle paylaşmak istemiyorsanız, ileri butonuna tıklamanız yeterlidir:"
-dashboard-user-location-located-title: 'Uygun bir biçimde coğrafi olarak konumlandınlmışsınız'
-dashboard-user-location-unlocate: 'Konumumu paylaşma'
-dashboard-user-location-unlocated-text: "Bunun nedeni, tanınmamış bir adres girmeniz olabilir veya bazı aşamalarda coğrafi konumunuzu bulmak için bir tarayıcı istemini reddettiğiniz için vadesi dolmuş olabilir. Bu, Goteo sistemi için önemli verilerdir; bu, iş ve proje desteğimizin verimliliğini artırmak için etki göstergeleri oluşturmanın dışında, (anonim olarak, kişisel verilerinizin herhangi birisini dışarıya açıklamadan) üretmemize olanak sağlamaktadır."
-dashboard-user-location-unlocated-title: 'Sistem konumunuzu belirlemeyebilir.'
-dashboard-user-location-help: 'Coğrafi konumunuz, Goteo sistemi için önemli verilerdir, çünkü iş ve proje desteğimizin verimliliğini artırmak için etki göstergelerinin dışında (anonim olarak kişisel verilerinizi dışarıya açıklamadan) bilgi üretmemizi sağlar.'

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Goteo Developer&#039;s Documentation</title>
+
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/main.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/goteo.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/highlight/styles/monokai.css">
+
+    </head>
+    <body>
+
+        <header class="navbar navbar-default navbar-fixed-top">
+
+            <a class="navbar-brand" href="http://goteofoundation.github.io/goteo/">
+                Goteo Developer&#039;s Documentation
+                <small class="hidden-xs hidden-sm">
+                    An opensource crowdfunding platform made with PHP
+                </small>
+            </a>
+
+                            <a href="https://github.com/goteofoundation/goteo">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+                </a>
+            
+        </header>
+
+        <main class="container-fluid">
+            <div class="row">
+
+                
+                    <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+
+                                                    <p class="text-muted">
+                                Main documentation
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/index.html">
+                                            About
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/install.html">
+                                            Install
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/upgrade.html">
+                                            Upgrade
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/console.html">
+                                            Console scripts
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                Developers
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="active">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/docker.html">
+                                            Docker
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/environment.html">
+                                            Environment
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/templates.html">
+                                            Template system
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/migration.html">
+                                            Legacy migration howto
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/payments.html">
+                                            Payment process
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/extend.html">
+                                            Plugins & extending
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/events.html">
+                                            Using events
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/consoledev.html">
+                                            Extending console
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                About
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/release_notes.html">
+                                            Release notes
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/LICENSE">
+                                            License
+                                        </a>
+                                    </li>
+                                                            </ul>
+                        
+                    </nav>
+
+                
+                <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                    <h1 id="docker">Docker</h1>
+<p>Docker is the recommended way to setup a development machine as it has all necessary tools already installed. </p>
+<p>To install <code>docker</code> and <code>docker-compose</code> follow the instructions:</p>
+<p><a href="https://docs.docker.com/install/">https://docs.docker.com/install/</a></p>
+<p><a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></p>
+<p>We've only tested using Linux hosts, any comments or fixes on other hosts will be appreciated.</p>
+<hr />
+<p>The first time, it is necessary to create a local docker config that you can personalize:</p>
+<pre><code class="language-bash">cp config/docker-settings.yml config/local-docker-settings.yml</code></pre>
+<p>Then, you can set up a development server using:</p>
+<pre><code class="language-bash">docker/up</code></pre>
+<p><code>docker/up</code> is a wrapper for <code>docker-compose</code>, you can use any command line modificator (ie: <code>docker/up -d</code> instead of <code>docker-compose -d</code>).</p>
+<blockquote>
+<p>We use the wrapper <code>docker/up</code> because it automatically tries to export your user ID to the docker container. Otherwise all generated files by the php server will be owned by another user or root.</p>
+<p>However, to ensure compatibility with the traditional <code>docker-compose up</code>, all created files inside the php container will have full-writeable permissions (ie: folder 777 and files 666)</p>
+</blockquote>
+<p>At this point you should be able to point your browser to <a href="http://localhost:8081">http://localhost:8081</a> (or whatever host name you have in your local-docker-settings.yml). </p>
+<p><strong>The correct URL will be shown in the docker-compose log when all preparation commands finish</strong></p>
+<p>We recommend not to use the <code>-d</code> flag on <code>docker-compose</code> to be aware of the log messages while building the container or php/server errors while browsing.</p>
+<h1 id="tltr">TL;TR</h1>
+<ol>
+<li><a href="#how-to-use-docker">How to use Docker</a></li>
+<li><a href="#upgrade-goteo">Upgrade Goteo</a></li>
+<li><a href="#ssl-configuration">SSL configuration for development</a></li>
+<li><a href="#mailhog-development-mail-debugging">Mailhog: Development mail debugging</a></li>
+<li><a href="#cron-background-processes">Cron: background processes</a></li>
+<li><a href="#geolocation">Geolocation</a></li>
+<li><a href="#debugging-logs">Debugging logs</a></li>
+</ol>
+<h2 id="how-to-use-docker">How to use Docker</h2>
+<p>The <code>docker/up</code> wrapper export the variable of the current user in order to match the UID of the docker user. This way we avoid permission problems while developing. For more info check this post: <a href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/">https://denibertovic.com/posts/handling-permissions-with-docker-volumes/</a></p>
+<p>The <code>docker-compose up</code> command executes <code>docker/php/init.sh</code> script, which is equivalent as running the next commands:</p>
+<pre><code class="language-bash">docker/exec composer install
+docker/exec npm install
+docker/exec bin/console migrate install
+docker/exec grunt build:tmp</code></pre>
+<p>You can (or must) run any of the above commands if the are changes in relevant files (database changes, css, javascript or public template files).</p>
+<p>In general, any command used in Goteo to be executed in the docker virtual machine should use the wrapper <code>docker/exec</code> as it will run the command with the proper user.</p>
+<p>If you want to test a production environment, you can pass the var <code>DEBUG=0</code> to the docker-compose command:</p>
+<pre><code class="language-bash">DEBUG=false docker/up</code></pre>
+<p>You can overwrite the default <code>local-docker-settings.yml</code> file with the GOTEO_CONFIG_FILE environment variable:</p>
+<pre><code class="language-bash">GOTEO_CONFIG_FILE=config/my-alternative-settings.yml docker/up</code></pre>
+<p>Finally -optionally-, by running the <code>grunt watch</code> command alone allows you to rebuild assets automatically while editing files. Note that assets are always recompiled when docker starts.</p>
+<pre><code class="language-bash">docker/exec grunt watch</code></pre>
+<p>Alternatively, you can just build the assets any time some css or javascript file has been modified by executing:</p>
+<pre><code class="language-bash">docker/exec grunt build:tmp</code></pre>
+<p>Upgrades and other commands can be executed the same way:</p>
+<pre><code class="language-bash">docker/exec bin/console migrate all
+docker/exec bin/console toolkit project
+docker/exec bin/console --help</code></pre>
+<h3 id="upgrade-goteo">Upgrade Goteo</h3>
+<p>If using Git, you can upgrade to any new version of Goteo pulling the new code:</p>
+<pre><code>git clone git@github.com:GoteoFoundation/goteo.git
+git pull origin devel
+docker/up --rebuild</code></pre>
+<h3 id="ssl-configuration">SSL configuration</h3>
+<p>The Docker image comes with (experimental) support for SSL. However, to use it you need to:</p>
+<ol>
+<li>
+<p>Use a <strong>test domain</strong> supported by the certificate and configure your <code>/etc/hosts</code> to point it to your machine, for example <code>goteo.test</code>.
+Add a line to your <code>/etc/hosts</code> file like this:</p>
+<pre><code class="language-ini">127.0.0.1 localhost goteo.test www.goteo.test ca.goteo.test en.goteo.test es.goteo.test
+eo.test</code></pre>
+</li>
+<li>
+<p>Change the URL in your <code>local-docker-settings.yml</code> settings file, use <code>//goteo.test:8443</code> instead of <code>localhost:8081</code>. Something like:</p>
+<pre><code class="language-yaml"># url
+url:
+  main: //goteo.test:8443
+  assets: //goteo.test:8443
+  # optionally:
+  url_lang: goteo.test:8443
+...</code></pre>
+</li>
+<li>
+<p>Configure Chrome to trust the Docker certificate in order to show the site as secure. To add the certificate to the trusted CA root store you can just do (in Ubuntu you need <code>libnss3-tools</code> installed):</p>
+<pre><code class="language-bash">sudo apt install libnss3-tools
+certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n "localhost" -i docker/certs/localhost.crt</code></pre>
+</li>
+</ol>
+<h3 id="mailhog-development-mail-debugging">Mailhog: Development mail debugging</h3>
+<p><a href="https://github.com/mailhog/MailHog">Mailhog</a> is an email testing tool for developers. It creates a fake smtp server that caches all messages and uses a web interface to debug them.</p>
+<p>Goteo docker is preconfigured out of the box to use Mailhog, you just need to point your browser to the address <a href="http://localhost:8082">http://localhost:8082</a> and view the email generated by the platform.</p>
+<blockquote>
+<p>Some emails are sent by the cron process. Docker does not run cron by default. You can manually trigger the mailing process by executing the command:</p>
+<pre><code class="language-bash">docker/exec bin/console mailing last -u</code></pre>
+</blockquote>
+<h3 id="cron-background-processes">Cron: background processes</h3>
+<p>Goteo uses some background processes to certain task. For instance, sending newsletters, emails to several users, control project statuses daily or process payment refunds.</p>
+<p>For developing is usually interesting to trigger this events manually, you can execute cron in a terminal with this command:</p>
+<pre><code class="language-bash">docker/exec bin/console cron</code></pre>
+<p>All pending tasks will be executed.</p>
+<h3 id="geolocation">Geolocation</h3>
+<p>Some actions need geolocation services. Docker uses a container with the <a href="https://dev.maxmind.com/geoip/geoip2/geolite2/">Maxmind Geolite2</a> database configured. </p>
+<p>This databases are updated every time docker starts. If for some reason you want to update them manually, just run:</p>
+<pre><code class="language-bash">docker-compose up geoip</code></pre>
+<h3 id="debugging-logs">Debugging logs</h3>
+<p>Goteo, by default, generates Logs in JSON format. This is convenient for machine processing but it may be a little confusing. The Docker image comes with the <a href="https://stedolan.github.io/jq/">jq</a> parser program installed.</p>
+<p>You can filter some logs and prettify them by doing thinks like:</p>
+<p>Enter into the container:</p>
+<pre><code class="language-bash">docker/exec bash</code></pre>
+<p>Once inside, use  <code>tail</code>, <code>jq</code> and <code>grep</code> for fitering:</p>
+<pre><code>tail -n100 var/logs/app_real.log | grep INFO | jq
+tail -f var/logs/app_real.log | grep -v DEBUG | jq</code></pre>
+<h3 id="running-tests">Running tests</h3>
+<p>You can run test by using the wrapper <code>docker/test</code>. Arguments are the same as phpunit.</p>
+<p><strong>It is recommended to create a test file the first time.</strong></p>
+<h4 id="preparation">Preparation:</h4>
+<pre><code class="language-bash">cp config/local-docker-settings.yml config/test-docker-settings.yml</code></pre>
+<p>Edit the database setting, and put <code>goteo_test</code> in it:</p>
+<pre><code class="language-yaml"># Database stuff
+db:
+    driver:   mysql     # Database driver (mysql)
+    host:     mariadb # Database host
+    port:     3306      # Database port
+    charset:  utf8mb4     # Database charset
+    database: goteo_test     # Database schema (database name)
+    username: goteo      # Database user for the goteo database
+    password: goteo      # Password for the goteo database</code></pre>
+<p>Then, create the database and grant permissions in the mariadb container:</p>
+<pre><code class="language-bash">docker-compose exec mariadb mysql -uroot -pcrowdfunding -e 'CREATE DATABASE goteo_test;'
+docker-compose exec mariadb mysql -uroot -pcrowdfunding -e "GRANT ALL PRIVILEGES ON goteo_test.* TO 'goteo'@'%';"</code></pre>
+<p>Finally, nstall the database:</p>
+<pre><code class="language-bash">GOTEO_CONFIG_FILE='config/test-docker-settings.yml' docker/exec bin/console migrate install</code></pre>
+<hr />
+<p>From now on, just run tests as:</p>
+<pre><code class="language-bash">docker/test tests/Goteo/Core/ModelTest.php
+docker/test tests/
+...</code></pre>
+                </section>
+
+            </div>
+        </main>
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="http://goteofoundation.github.io/goteo/highlight/highlight.pack.js"></script>
+
+        <script>
+            $(function() {
+                $("section>h1").wrap('<div class="page-header" />');
+                // Syntax highlighting
+                hljs.initHighlightingOnLoad();
+            });
+        </script>
+
+    </body>
+</html>

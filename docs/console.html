@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Goteo Developer&#039;s Documentation</title>
+
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/main.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/goteo.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/highlight/styles/monokai.css">
+
+    </head>
+    <body>
+
+        <header class="navbar navbar-default navbar-fixed-top">
+
+            <a class="navbar-brand" href="http://goteofoundation.github.io/goteo/">
+                Goteo Developer&#039;s Documentation
+                <small class="hidden-xs hidden-sm">
+                    An opensource crowdfunding platform made with PHP
+                </small>
+            </a>
+
+                            <a href="https://github.com/goteofoundation/goteo">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+                </a>
+            
+        </header>
+
+        <main class="container-fluid">
+            <div class="row">
+
+                
+                    <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+
+                                                    <p class="text-muted">
+                                Main documentation
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/index.html">
+                                            About
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/install.html">
+                                            Install
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/upgrade.html">
+                                            Upgrade
+                                        </a>
+                                    </li>
+                                                                    <li class="active">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/console.html">
+                                            Console scripts
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                Developers
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/docker.html">
+                                            Docker
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/environment.html">
+                                            Environment
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/templates.html">
+                                            Template system
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/migration.html">
+                                            Legacy migration howto
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/payments.html">
+                                            Payment process
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/extend.html">
+                                            Plugins & extending
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/events.html">
+                                            Using events
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/consoledev.html">
+                                            Extending console
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                About
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/release_notes.html">
+                                            Release notes
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/LICENSE">
+                                            License
+                                        </a>
+                                    </li>
+                                                            </ul>
+                        
+                    </nav>
+
+                
+                <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                    <h1 id="console-scripts">Console scripts</h1>
+<p>Part of the behaviour of Goteo must be achieved by the use of console commands.
+These commands processes end-round termination project status changes, refunding payments for failed processes, etc.</p>
+<p>All commands uses the <a href="http://symfony.com/doc/current/components/console/introduction.html">Symfony Console component</a></p>
+<p>Should be run in a terminal with the cli version of PHP:</p>
+<pre><code class="language-bash">php bin/console</code></pre>
+<p>Or, if bin/console is executable (which is by default), simply type (in the Goteo project folder):</p>
+<pre><code class="language-bash">bin/console</code></pre>
+<p>Or, if using Docker, just add <code>docker/exec</code> in front of the commands.</p>
+<p>Last commands should show you a list of available commands.</p>
+<p>Any command has his help message:</p>
+<pre><code class="language-bash">bin/console test --help</code></pre>
+<h2 id="mandatory-cron-commands">Mandatory Cron commands:</h2>
+<p>Goteo system needs to execute some periodic tasks in order to keep the projects funding status up to date. Other task involve sending mails to owners and investors (backers) and database cleaning.</p>
+<p>Although there are many required commands that need to be executed periodically, a convenient <strong>cron</strong> script is available in order to keep the installation clean.</p>
+<p>Just add to your <code>/etc/cron.d/goteo</code> (or similar) system:</p>
+<pre><code class="language-cron">* * * * *   www-data    nice /usr/bin/php /path/to/installation/bin/console cron --lock --logmail &gt; /dev/null 2&gt;&amp;1</code></pre>
+<p>Where <em>www-data</em> is the web server user. Alternatively you can use a crontab format in case you prefer the <code>crontab</code> command:</p>
+<pre><code class="language-cron">* * * * *   nice /usr/bin/php /path/to/installation/bin/console cron --lock --logmail &gt; /dev/null 2&gt;&amp;1</code></pre>
+<h2 id="goteo-commands">Goteo Commands:</h2>
+<ol>
+<li>
+<p><code>bin/console endround</code> This is the most important command of all. Should be run by cron process once a day in order to check and change projects status, process refunds (if needed) among other stuff (like sending mails to owner or backers).
+This command triggers <code>bin/console refund</code> command to process refunds for failed projects.
+Running this command without the <code>--update</code> options will not make any changes.
+Run <code>bin/console endround --help</code> for options and description</p>
+</li>
+<li>
+<p><code>bin/console refund</code> This command allows to process refund invests manually or automatically.
+Running this command without the <code>--update</code> options will not make any changes.
+Run <code>bin/console refund --help</code> for options and description</p>
+</li>
+<li>
+<p><code>bin/console cron</code> This programs just runs other commands based on a schedule.<br />
+Schedule table is in <code>Resources/crontab.yml</code>
+This command should be placed in a cron management system with the <code>--lock</code> option activated:
+<strong>Cron line suggested example</strong>
+<code>* * * * *   www-data    nice /usr/bin/php /path/to/installation/bin/console cron --lock --logmail &gt; /dev/null 2&gt;&amp;1</code></p>
+</li>
+<li>
+<p><code>bin/console mailing</code> This program processes pending massive mailing. This makes use of the concurrent capabilities <a href="http://symfony.com/doc/current/components/process.html">Symfony process commponent</a> so be aware that you'll need <a href="http://php.net/manual/es/function.proc-open.php">proc_open()</a> function active in your PHP installation.</p>
+</li>
+<li>
+<p><code>bin/console sendmail</code> This program sends and individual mail from the massive mailing list. Althoug it can be used manually for testing, it's basically used by the <code>mailing</code> task to make concurrent sending.</p>
+</li>
+<li>
+<p><code>bin/console projectwatch</code> This command sends tips to the project's owners depending on the status of of the project (advises base on template mails).
+<strong>Note that this command is old and needs to be refactored (You cannot execute this command in read-only mode)</strong></p>
+</li>
+<li><code>bin/console dbverify</code> Another old command that needs refactoring. Cleans some old databases entries.<br />
+<strong>Note that this command is old and needs to be refactored (You cannot execute this command in read-only mode)</strong></li>
+</ol>
+<h2 id="global-options">Global options</h2>
+<p>Some options are common for all commands:</p>
+<ol>
+<li>
+<p><code>--help</code> displays help about the command.
+Example: <code>bin/console endround --help</code></p>
+</li>
+<li>
+<p><code>--verbose</code> Displays on the standard console output (like <code>echo</code> command) the generated log
+Example: <code>bin/console endround --verbose</code></p>
+</li>
+<li>
+<p><code>--logmail</code> Emails the full log if a ERROR level is triggered.
+Email should be defined into <code>settings.yml</code> -&gt; <code>mail.fail</code>
+Example: <code>bin/console endround --logmail</code></p>
+</li>
+<li><code>--lock</code> Locks the process by using the <code>GET_LOCK</code> function on MySQL server.
+This way the running process can be used in a replicated distributed cron system
+ensuring that only one instance of the process will be running.
+<strong>Note</strong>: Command called without this option may be allowed to execute even if some lock exists
+Example: <code>bin/console endround --lock --logmail</code></li>
+</ol>
+                </section>
+
+            </div>
+        </main>
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="http://goteofoundation.github.io/goteo/highlight/highlight.pack.js"></script>
+
+        <script>
+            $(function() {
+                $("section>h1").wrap('<div class="page-header" />');
+                // Syntax highlighting
+                hljs.initHighlightingOnLoad();
+            });
+        </script>
+
+    </body>
+</html>

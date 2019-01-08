@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Goteo Developer&#039;s Documentation</title>
+
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/main.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/css/goteo.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+        <link rel="stylesheet" href="http://goteofoundation.github.io/goteo/highlight/styles/monokai.css">
+
+    </head>
+    <body>
+
+        <header class="navbar navbar-default navbar-fixed-top">
+
+            <a class="navbar-brand" href="http://goteofoundation.github.io/goteo/">
+                Goteo Developer&#039;s Documentation
+                <small class="hidden-xs hidden-sm">
+                    An opensource crowdfunding platform made with PHP
+                </small>
+            </a>
+
+                            <a href="https://github.com/goteofoundation/goteo">
+                    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+                </a>
+            
+        </header>
+
+        <main class="container-fluid">
+            <div class="row">
+
+                
+                    <nav id="sidebar" class="col-sm-3 col-lg-2" role="navigation">
+
+                                                    <p class="text-muted">
+                                Main documentation
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/index.html">
+                                            About
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/install.html">
+                                            Install
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/upgrade.html">
+                                            Upgrade
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/console.html">
+                                            Console scripts
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                Developers
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/docker.html">
+                                            Docker
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/environment.html">
+                                            Environment
+                                        </a>
+                                    </li>
+                                                                    <li class="active">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/templates.html">
+                                            Template system
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/migration.html">
+                                            Legacy migration howto
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/payments.html">
+                                            Payment process
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/extend.html">
+                                            Plugins & extending
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/events.html">
+                                            Using events
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/docs/developers/consoledev.html">
+                                            Extending console
+                                        </a>
+                                    </li>
+                                                            </ul>
+                                                    <p class="text-muted">
+                                About
+                            </p>
+
+                            <ul class="nav nav-pills nav-stacked">
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/release_notes.html">
+                                            Release notes
+                                        </a>
+                                    </li>
+                                                                    <li class="">
+                                        <a href="http://goteofoundation.github.io/goteo/LICENSE">
+                                            License
+                                        </a>
+                                    </li>
+                                                            </ul>
+                        
+                    </nav>
+
+                
+                <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+                    <h2 id="template-system">Template system</h2>
+<p>The new template system in Goteo uses <a href="https://foilphp.github.io/Foil/">FOIL</a> which is a powerful php-native template system.</p>
+<p>However, there's still a lot of the legacy views in use. They will coexist until we can fully get rid of the old system.</p>
+<p>This document compares the old and new template system and highlights the main differences:</p>
+<p><strong>Old class system:</strong></p>
+<p><code>\Goteo\Core\View::get('template.html.php', array( 'obj' =&gt; ... ));</code></p>
+<p><strong>New Foil base templates:</strong></p>
+<p><code>\Goteo\Application\View::render('template', [ 'obj' =&gt; ... ]);</code></p>
+<p>Or, inside a Controller which extends <code>\Goteo\Core\Controller</code> just do:</p>
+<p><code>$this-&gt;viewResponse('template', ['obj' =&gt; ...]);</code></p>
+<h2 id="main-differences">Main differences</h2>
+<p><strong>Before:</strong></p>
+<p>Variables were located inside the array  <code>$vars[]</code> (or event for even older behaviour inside the <code>$this</code> <a href="http://php.net/manual/es/class.arrayobject.php">ArrayObject</a> instance);</p>
+<p>File <code>template.html.php</code></p>
+<pre><code class="language-php">&lt;?php
+
+// Object
+$obj = $this['obj'];
+
+$obj-&gt;doSomething();
+
+echo htmlspecialchars($this['obj']-&gt;doMore()); // Strings needed to be manually escaped
+
+// Scalar
+echo htmlspecialchars($this['variable']); // escaped
+echo $this['variable']; // non-escaped
+
+?&gt;</code></pre>
+<p><strong>After:</strong></p>
+<p>Variables are instantiated by default as properties of the object <code>$this</code> (that's Foil's behaviour).</p>
+<p><strong>NOTE</strong>: For compatibility reasons an automatic array <code>$this-&gt;vars</code> is created with all variables copied inside. New views (or completely refactored) must not use this array.</p>
+<p>File <code>template.php</code></p>
+<pre><code class="language-php">&lt;?php
+// Object
+$obj-&gt;doSomething();
+
+echo $this-&gt;e($this-&gt;raw('obj')-&gt;doMore()); // Escaped with $this-&gt;e() function
+
+// Scalar
+echo $this-&gt;variable; // HTML escaped by default (strings &amp; arrays)
+echo $this-&gt;raw('variable'); // Non escaped
+
+// Compatibility with old views needing and array
+echo $this-&gt;vars['variable']; // HTML escaped if it's a string or a simple array
+?&gt;</code></pre>
+<h2 id="new-features">New features</h2>
+<p>FOIL supports inheritance, custom functions &amp; a great variables manipulation capabilities between templates.</p>
+<p><strong>Basic operation:</strong></p>
+<p>It starts with a basic layout used as the base by the other templates. Please refer to the official documentation of Foil to know more about this.</p>
+<p>File <code>layout.php</code></p>
+<pre><code class="language-php">&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;?= $this-&gt;title ?&gt;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;?php $this-&gt;section('content') ?&gt;
+&lt;?php $this-&gt;stop() ?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>Let's override some vars in a final template extending <code>layout.php</code>, in this case the <em>title</em> variable and the section <em>content</em>:</p>
+<p><code>profile.php</code></p>
+<pre><code class="language-php">&lt;?php $this-&gt;layout('template', ['title' =&gt; 'User Profile']) ?&gt;
+
+&lt;?php $this-&gt;section('content') ?&gt;
+    &lt;h1&gt;User Profile&lt;/h1&gt;
+    &lt;p&gt;Hello, &lt;?=$this-&gt;name?&gt;&lt;/p&gt;
+&lt;?php $this-&gt;stop() ?&gt;</code></pre>
+<p>More info:</p>
+<p><a href="https://foilphp.github.io/Foil/docs/TEMPLATES/INHERITANCE.html">https://foilphp.github.io/Foil/docs/TEMPLATES/INHERITANCE.html</a>
+<a href="https://foilphp.github.io/Foil/docs/DATA/PASS-DATA.html">https://foilphp.github.io/Foil/docs/DATA/PASS-DATA.html</a></p>
+<h2 id="template-inheritance">Template inheritance:</h2>
+<p>The new Goteo views can have themes, currently there are 2, <code>default</code> &amp; <code>responsive</code> (which will be the future theme). Located under the folder <code>Resources/templates/</code>. There's another sub-folder <code>legacy</code> which contains the old view system (which will disappear someday).</p>
+<p>Plugins can override any view by recreating the same structure and placing a new view with the same name:</p>
+<pre><code class="language-text">Resources/templates                  &lt;- Main template folder
+Resources/templates/legacy           &lt;- Default deprecated theme (old system)
+Resources/templates/default          &lt;- Default non-responsive theme (migrated)
+Resources/templates/responsive       &lt;- New responsive theme (brand new)
+extend/{plugin}/Resources/templates  &lt;- Main view plugin template overrider
+                                        Any view here will be processed before the default one</code></pre>
+<p><strong>Example:</strong></p>
+<p>Having this default view and the plugin substitute:</p>
+<pre><code>Resources/templates/devault/discover/index.php
+extend/my-plugin/Resources/templates/devault/discover/index.php</code></pre>
+<p>When a controller calls the view, the second one will be used if the plugin is activated. If the plugin is not activated, then the first one will be used:</p>
+<p><strong>Controller</strong></p>
+<pre><code class="language-php">&lt;?php
+// src/Goteo/Controller/DiscoverController.php
+
+namespace Goteo\Controller;
+
+class DiscoverController extends \Goteo\Core\Controller {
+    public function index () {
+        // This will render the discover/index.php file 
+        // from my-plugin if activated
+        return $this-&gt;viewResponse('discover/index',
+            [ 'test' =&gt; 'automatic html escaped text' ]
+        );
+    }
+}
+?&gt;</code></pre>
+<p><strong>Default view</strong>:</p>
+<pre><code class="language-php">&lt;?php 
+// Resources/templates/default/discover/index.php
+$this-&gt;layout("layout", ['bodyClass' =&gt; 'discover']);
+?&gt;
+
+&lt;?php $this-&gt;section('content') ?&gt;
+
+Show me the test var: &lt;?=$this-&gt;test?&gt;
+
+&lt;?php $this-&gt;replace() ?&gt;</code></pre>
+<p><strong>Plugin view</strong>:</p>
+<pre><code class="language-php">&lt;?php 
+// extend/my-plugin/Resources/templates/default/discover/index.php
+$this-&gt;layout("layout", ['bodyClass' =&gt; 'discover']);
+?&gt;
+
+&lt;?php $this-&gt;section('content') ?&gt;
+
+I am the plugin view,
+Show me the test var: &lt;?=$this-&gt;test?&gt;
+
+&lt;?php $this-&gt;replace() ?&gt;</code></pre>
+<p>Plugin views can also extend from a default view instead of the default layout:</p>
+<pre><code class="language-php">&lt;?php 
+// extend/my-plugin/Resources/templates/default/discover/index.php
+$this-&gt;layout("default:discover/index");
+?&gt;
+
+&lt;?php $this-&gt;section('content') ?&gt;
+
+I am the plugin view
+
+&lt;?php $this-&gt;replace() ?&gt;</code></pre>
+<p>Views can have partials, same principle applies to it.<br />
+Better check the <a href="http://www.foilphp.it/docs/TEMPLATES/PARTIALS.html">Foil's</a> documentation for more information.</p>
+<pre><code class="language-text">Resources/templates/default/partials/  &lt;- Partials views better placed
+                                          in a specific folder</code></pre>
+<p>Partial include example (<code>Resources/templates/default/layout.php</code>):</p>
+<pre><code class="language-php">&lt;html&gt;
+&lt;head&gt;
+&lt;?=$this-&gt;insert("partials/header/metas")?&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;?php $this-&gt;section('content') ?&gt;
+&lt;?php $this-&gt;stop() ?&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>The partial <code>Resources/templates/defaul/partials/header/metas.php</code> will inherit all variables from <code>layout.php</code></p>
+<h2><a name="extensions"></a>
+Template extensions:</h2>
+<p>Views can make use of many built-in functions in order to avoid calling Classes or main functions directly. This classes provides additional functionality to views in Goteo:</p>
+<pre><code>src/Goteo/Util/Foil/GoteoCore.php
+src/Goteo/Util/Foil/LangUtils.php
+src/Goteo/Util/Foil/Pages.php
+src/Goteo/Util/Foil/TextUtils.php</code></pre>
+<p><strong>Some useful functions</strong></p>
+<ul>
+<li><code>$this-&gt;text('id-text')</code> =&gt; Get the copy of the <code>id-text</code> in the current language</li>
+<li><code>$this-&gt;get_session('foo')</code> =&gt; Gets the session var &quot;foo&quot;</li>
+<li><code>$this-&gt;get_cookie('foo')</code> =&gt; Gets the cookie var &quot;foo&quot;</li>
+<li><code>$this-&gt;is_logged()</code> =&gt; Return &quot;true&quot; if user is logged in</li>
+<li>...</li>
+</ul>
+<p>Custom functions can be called like this:</p>
+<pre><code class="language-php">&lt;a href="#"&gt;&lt;?= $this-&gt;text('view-project') ?&gt;&lt;/a&gt;</code></pre>
+<h2 id="guidelines">Guidelines</h2>
+<p>Ideally, templates must be kept as simple as possible, we will try to follow these guidelines for the new views using Foil (extracted from the <a href="http://platesphp.com/templates/syntax/">Plates templates system</a>):</p>
+<ul>
+<li>Always use HTML with inline PHP. Never use blocks of PHP.</li>
+<li>Always escape potentially dangerous variables prior to outputting using the built-in escape functions. More on escaping <a href="http://www.foilphp.it/docs/DATA/RETRIEVE-DATA.html">here</a>.</li>
+<li>Always use the short echo syntax (<code>&lt;?=</code>) when outputting variables. For all other inline PHP code, use full the <code>&lt;?php</code> tag. Do not use <a href="http://us3.php.net/manual/en/ini.core.php#ini.short-open-tag">short tags</a>.</li>
+<li>Always use the <a href="http://php.net/manual/en/control-structures.alternative-syntax.php">alternative syntax for control structures</a>, which are designed to make templates more legible.</li>
+<li>Never use PHP curly brackets.</li>
+<li>Only ever have one statement in each PHP tag.</li>
+<li>Avoid using semicolons. They are not needed when there is only one statement per PHP tag.</li>
+<li>Never use the <code>use</code> operator. Templates should not be interacting with classes in this way. Use <a href="http://www.foilphp.it/docs/EXTENDING/CUSTOM-EXTENSIONS.html">custom extensions</a> for that.</li>
+<li>Never use the <code>for</code>, <code>while</code> or <code>switch</code> control structures. Instead use <code>if</code> and <code>foreach</code>. Additionally you can take a look at the built-in <a href="http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html">loop</a> and <a href="http://www.foilphp.it/docs/FUNCTIONS/ARRAY-HELPERS.html">array</a> Foil structures</li>
+<li>Avoid variable assignment.</li>
+</ul>
+                </section>
+
+            </div>
+        </main>
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script src="http://goteofoundation.github.io/goteo/highlight/highlight.pack.js"></script>
+
+        <script>
+            $(function() {
+                $("section>h1").wrap('<div class="page-header" />');
+                // Syntax highlighting
+                hljs.initHighlightingOnLoad();
+            });
+        </script>
+
+    </body>
+</html>
