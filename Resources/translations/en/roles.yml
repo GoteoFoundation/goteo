@@ -22,7 +22,6 @@ role-perm-name-edit-published-projects: 'Edit any published project'
 role-perm-name-publish-projects: 'Publish//unpublish assigned projects as a consultant'
 role-perm-name-edit-projects: 'Edit projects assigned as a consultant'
 role-perm-name-remove-projects: 'Remove projects assigned as a consultant'
-
 role-perm-name-create-call: 'Create own calls'
 role-perm-name-edit-call: 'Edit own calls'
 role-perm-name-remove-call: 'Remove own call'
@@ -34,7 +33,6 @@ role-perm-name-publish-calls: 'Publish//unpublish assigned calls as a consultant
 role-perm-name-edit-calls: 'Edit calls assigned as a consultant'
 role-perm-name-remove-calls: 'Remove calls assigned as a consultant'
 role-perm-name-publish-any-call: 'Publish/unpublish any call'
-
 role-perm-name-impersonate-owners: 'Impersonate projects owners assigned as a consultant'
 role-perm-name-assign-checker: 'Assignate any other user for review projects'
 role-perm-name-publish-any-project: 'Publish/unpublish any project'

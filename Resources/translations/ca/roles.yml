@@ -19,7 +19,6 @@ role-perm-name-edit-published-projects: 'Pot editar qualsevol projecte publicat'
 role-perm-name-publish-projects: 'Pot publicar/despublicar projectes assignats com a assessor'
 role-perm-name-edit-projects: 'Pot editar projectes assignats com a assessor'
 role-perm-name-remove-projects: 'Pot esborrar projectes assignats com a assessor'
-
 role-perm-name-create-call: 'Pot crear convocatòries'
 role-perm-name-edit-call: 'Pot editar els seus convocatòries'
 role-perm-name-remove-call: 'Pot esborrar els seus convocatòries'
@@ -31,7 +30,6 @@ role-perm-name-publish-calls: 'Pot publicar/despublicar convocatòries assignats
 role-perm-name-edit-calls: 'Pot editar convocatòries assignats com a assessor'
 role-perm-name-remove-calls: 'Pot esborrar convocatòries assignats com a assessor'
 role-perm-name-publish-any-call: 'Pot publicar/despublicar qualsevol convocatòria'
-
 role-perm-name-impersonate-owners: 'Pot impersonar impulsors dels projectes assignats com a assessor'
 role-perm-name-assign-checker: 'Pot assignar usuaris com a revisors'
 role-perm-name-publish-any-project: 'Pot publicar/despublicar qualsevol projecte'
