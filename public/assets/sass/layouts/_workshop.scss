@@ -243,6 +243,15 @@ body.workshop {
           font-size: $font-size*0.83;
         }
       }
+      div.schedule{
+        text-align: center;
+        display: block;
+        padding-bottom: 30px;
+        border-bottom: 6px #555555 dotted;
+        width: 60%;
+        margin: 0 auto 30px auto;
+        font-size: $font-size*1.4;
+      }
 
       div.file-icon-label{
         text-align: center;
