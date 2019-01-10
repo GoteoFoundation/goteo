@@ -465,18 +465,19 @@ class InvestController extends \Goteo\Core\Controller {
                 throw new \RuntimeException('The setRequest() should provide a valid Invest object in notifyPaymentAction');
             }
 
-            $response = $method->completePurchase();
-
-            if($invest->status != Invest::STATUS_PROCESSING) {
-                $this->warning('Payment Notification Duplicated', [$invest, $invest->getUser(), 'user_agent' => $request->server->get('HTTP_USER_AGENT'), 'get' => $request->query->all(), 'post' => $request->request->all()]);
+            // Some weird payment gateways may send you the same notification and then charge again
+            // Abort if the invest is not pending
+            if($invest->isPending()) {
+                $response = $method->completePurchase();
+            } else {
+                $this->critical('Payment Notification Duplicated', [$invest, $invest->getUser(), 'user_agent' => $request->server->get('HTTP_USER_AGENT'), 'get' => $request->query->all(), 'post' => $request->request->all()]);
                 if($invest->getProject()) {
                     return $this->redirect('/invest/' . $invest->getProject()->id . '/' . $invest->id);
-                } else {
-                    // This case belongs to pool controller
-                    // It's here because some Gateways does'nt allow to change
-                    // the notify URL
-                    return $this->redirect('/pool/' . $invest->id);
                 }
+                // This case belongs to pool controller
+                // It's here because some Gateways does'nt allow to change
+                // the notify URL
+                return $this->redirect('/pool/' . $invest->id);
             }
 
             // New Invest Notify Event (a HttpResponse will be assigned here)
@@ -510,10 +511,16 @@ class InvestController extends \Goteo\Core\Controller {
         $reward = $this->validate($project_id, null, $_dummy, $invest);
 
         if($reward instanceOf Response) return $reward;
-        if($invest->status != Invest::STATUS_PROCESSING) {
+
+        // If the payment has online communication the payment process has been processed by
+        // the notifyAction therefore redirect the user to the final stage here
+        if(!$invest->isPending()) {
             Message::info(Text::get('invest-process-completed'));
             return $this->redirect('/invest/' . $project_id . '/' . $invest->id);
         }
+
+        // print_r($invest);die;
+
         try {
             $method = $invest->getMethod();
             $method = $this->dispatch(AppEvents::INVEST_COMPLETE, new FilterInvestInitEvent($invest, $method, $request))->getMethod();

@@ -116,6 +116,10 @@ class Invest extends \Goteo\Core\Model {
         return $this->status == self::STATUS_TO_POOL;
     }
 
+    public function isPending() {
+        return $this->status == self::STATUS_PROCESSING;
+    }
+
     public function isCharged() {
         return in_array($this->status, self::$ACTIVE_STATUSES);
     }
