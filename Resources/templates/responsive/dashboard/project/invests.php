@@ -84,7 +84,7 @@ $filter = $this->a('filter');
         <a href="#mailingModal" data-toggle="modal"><i class="fa fa-envelope-o"></i> <?= $this->text('dashboard-project-mailing-view') ?></a>
     </p>
     </div>
-    <table class="footable table">
+    <table class="-footable table">
       <thead>
         <tr>
           <th data-type="number" data-breakpoints="xs"><?= $this->insert('dashboard/partials/table_th', ['text' => '#', 'field' => 'id']) ?></th>
@@ -125,7 +125,6 @@ $filter = $this->a('filter');
             if(!$resign && !$reward) {
                 $reward = '<span class="label label-danger">' . $this->text('regular-unknown') . '</span>';
             }
-
 
       ?>
         <tr<?= $invest->isCharged() ? '' : ' class="strikethrough"'?>>
