@@ -13,10 +13,16 @@ if ($project->media->url):
         echo $this->insert('project/partials/video', ['embed' => $project->media->getEmbedCode()]);
     }
 
+elseif(!empty($project->secGallery['play-video'][0])):
+?>
+    <div class="project-media video-holder" style="position:relative;height:auto;" id="video_holder">
+            <img class="img-responsive" src="<?php echo $project->secGallery['play-video'][0]->imageData->getLink(780, 478); ?>" />
+    </div>
+<?php
 elseif($project->image && $project->image->id):
 ?>
         <div class="project-media video-holder" style="position:relative;height:auto;" id="video_holder">
-            <img class="img-responsive" src="<?php echo $project->image->getLink(620, 380); ?>" />
+            <img class="img-responsive" src="<?php echo $project->image->getLink(780, 478); ?>" />
         </div>
 <?php
     // Eliminar de la galeria si ya se ha mostrado
