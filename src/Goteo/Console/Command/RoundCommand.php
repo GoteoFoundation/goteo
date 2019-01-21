@@ -34,6 +34,7 @@ class RoundCommand extends AbstractCommand {
 				new InputOption('project', 'p', InputOption::VALUE_OPTIONAL, 'Only processes the specified Project ID'),
                 new InputOption('skip-invests', 's', InputOption::VALUE_NONE, 'Do not processes Invests returns'),
 				new InputOption('predict', 't', InputOption::VALUE_REQUIRED, 'Try to predict the endround in the number of days specified'),
+                new InputOption('force', 'f', InputOption::VALUE_NONE, 'Forces the processing of a project, even if it is already processed'),
 			))
 		->setHelp(<<<EOT
 This script proccesses active projects reaching ending rounds.
@@ -66,10 +67,11 @@ EOT
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$update       = $input->getOption('update');
-		$project_id   = $input->getOption('project');
+        $update       = $input->getOption('update');
+        $project_id   = $input->getOption('project');
         $skip_invests = $input->getOption('skip-invests');
-		$predict = $input->getOption('predict');
+        $predict      = $input->getOption('predict');
+		$force        = $input->getOption('force');
 
 		if ($project_id) {
 			$output->writeln("<info>Processing Project [$project_id]:</info>");
@@ -111,8 +113,12 @@ EOT
         $returnd_code = 0;
         foreach ($projects as $project) {
             if ((int) $project->status !== Project::STATUS_IN_CAMPAIGN) {
-                $this->debug("Skipping status [{$project->status}] from PROJECT: {$project->id}. Only projects IN CAMPAIGN will be processed");
-                continue;
+                if($force) {
+                    $this->warning("Project is not in campaign but force is active. Project [{$project->id}] WILL BE PROCESSED");
+                } else {
+                    $this->debug("Skipping status [{$project->status}] from PROJECT: {$project->id}. Only projects IN CAMPAIGN will be processed");
+                    continue;
+                }
             }
 
             // Make sure amounts are correct
