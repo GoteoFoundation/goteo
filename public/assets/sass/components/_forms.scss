@@ -381,6 +381,9 @@
   .CodeMirror .uploading {
     top: 0px;
   }
+  .CodeMirror, .CodeMirror-scroll {
+    min-height: 100px;
+  }
 }
 
 .material-switch {
