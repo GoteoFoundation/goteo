@@ -52,7 +52,7 @@ if($this->key==0):
     <div style="font-size: 12px;text-transform: uppercase; padding-bottom:10px; padding-top:10px; color: #38b5b1;"><?= $this->text('project-view-categories-title') ?>: <?php $sep = ''; foreach ($project->cat_names as $key=>$value) {echo $sep.htmlspecialchars($value); $sep = ', '; } ?></div>
 
     <div style="width:600px;vertical-align:top;border-right:2px solid #f1f1f1;line-height:15px;padding-right:10px;">
-        <a style="text-decoration:none;font-size:14px;color: #797979;" href="<?= $url ?>"><?= $this->text_truncate($this->markdown($project->description), 500) ?></a>
+        <a style="text-decoration:none;font-size:14px;color: #797979;" href="<?= $url ?>"><?= $this->text_truncate($this->markdown($project->subtitle), 500) ?></a>
     </div>
 
     <div style="width: 25px;height: 2px;border-bottom: 1px solid #38b5b1;margin-bottom: 10px; margin-top:10px;"></div>
