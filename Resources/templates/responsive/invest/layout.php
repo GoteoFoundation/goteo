@@ -1,6 +1,6 @@
 <?php
 $this->layout('layout', [
-    'bodyClass' => '',
+    'bodyClass' => 'invest',
     'title' => ($this->alt_title ? $this->alt_title : $this->text('invest-method-title')). ' :: Goteo.org',
     'meta_description' => $this->alt_description ? $this->alt_description : $this->text('invest-method-title')
     ]);

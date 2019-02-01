@@ -70,6 +70,27 @@ $this->section('main-content');
                     </div>
                     <?php endif ?>
 
+                    <?php if($this->tip): ?>
+                    <div class="checkbox">
+                        <label class="tip">
+                            <input class="no-margin-checkbox big-checkbox" type="checkbox" name="tip" id="tip" value="1"<?= $this->donate_amount ? ' checked="checked"' : ''?> >
+                            <div class="label-checkbox">
+                                <div class="txt-1"><?= $this->text('invest-tip-part-1') ?></div>
+                                <div class="input-container">
+                                    <div class="input-group">
+                                            <div class="input-group-addon"><?= $this->get_currency('html') ?></div>
+                                            <input type="number" min="0" class="form-control input-md input-amount" name="donate_amount" value="<?= $this->donate_amount ? $this->donate_amount : '2' ?>" id="donate_amount">
+                                    </div>
+                                </div>
+                                <div class="txt-2">
+                                    <?= $this->text('invest-tip-part-2') ?>
+                                </div>
+                            </div>
+                        </label>
+
+                    </div>
+                    <?php endif; ?>
+
                 </div>
 
 

@@ -294,6 +294,8 @@ class InvestController extends \Goteo\Core\Controller {
     public function selectPaymentMethodAction($project_id, Request $request)
     {
         $amount = $request->query->get('amount');
+        $donate_amount = $request->query->get('donate_amount');
+        
         $email = $request->query->has('email');
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
         if(!($this->skip_login && $email) && !Session::isLogged()) {
@@ -302,6 +304,12 @@ class InvestController extends \Goteo\Core\Controller {
 
         if($reward instanceOf Response) return $reward;
         $vars = ['step' => 2];
+
+        // Donate amount
+        $vars['donate_amount']= $donate_amount;
+
+        // tip to the platform active
+        $vars['tip']= Config::get('tip');
         if($this->skip_login) {
             $vars['email'] = $this->getUser() ? $this->getUser()->email : '';
             if($request->query->get('email')) {
@@ -324,7 +332,10 @@ class InvestController extends \Goteo\Core\Controller {
      */
     public function paymentFormAction($project_id, Request $request) {
         $amount = $amount_original = $request->query->get('amount');
+        $tip=$request->query->get('tip');
+        $donate_amount = $donate_amount_original = $tip ? $request->query->get('donate_amount') : 0;
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+
         if($reward instanceOf Response) return $reward;
 
         if($this->skip_login) {
@@ -383,8 +394,9 @@ class InvestController extends \Goteo\Core\Controller {
             // Creating the invest entry
             $invest = new Invest(
                 array(
-                    'amount' => $amount,
-                    'amount_original' => $amount_original,
+                    'amount' => $amount+$donate_amount,
+                    'donate_amount' => $donate_amount,
+                    'amount_original' => $amount_original+$donate_amount,
                     'currency' => Currency::current(),
                     'currency_rate' => Currency::rate(),
                     'user' => $user->id,

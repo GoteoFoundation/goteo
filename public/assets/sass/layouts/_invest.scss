@@ -1,0 +1,48 @@
+@import "compass/css3";
+
+/* invest styles */
+
+body.invest {
+  .invest-container{
+    label.tip{
+      background: $background-yellow;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 7px;
+      .big-checkbox{
+        margin-left: -7px;
+        margin-top: -8px !important;
+      }
+      .label-checkbox{
+        margin-left: 18px;
+        display: flex;
+        div.txt-1{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          float: left;
+          font-weight: bold;
+        }
+        div.input-container{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          float: left;
+          margin-left: 15px;
+        }
+        input.input-amount{
+          width: 110px;
+          background: transparent;
+        }
+        div.txt-2{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          float: left;
+          margin-left: 15px;
+        }
+      }
+    }
+
+  }
+}
