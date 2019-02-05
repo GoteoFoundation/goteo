@@ -70,7 +70,7 @@ usermod -u $USER_ID goteo
 export HOME=/application
 # ensure php can write in this directories
 chown goteo.goteo /application
-chown goteo.goteo /application/var/log
+chown goteo.goteo /application/var/logs
 chown goteo.goteo /application/var/cache
 chown goteo.goteo /application/var/data
 
