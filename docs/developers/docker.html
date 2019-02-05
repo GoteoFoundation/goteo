@@ -137,16 +137,20 @@
 <p><a href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></p>
 <p>We've only tested using Linux hosts, any comments or fixes on other hosts will be appreciated.</p>
 <hr />
-<p>The first time, it is necessary to create a local docker config that you can personalize:</p>
+<p>The first time, it is necessary to create a local docker configuration file that you can personalize:</p>
 <pre><code class="language-bash">cp config/docker-settings.yml config/local-docker-settings.yml</code></pre>
 <p>Then, you can set up a development server using:</p>
 <pre><code class="language-bash">docker/up</code></pre>
 <p><code>docker/up</code> is a wrapper for <code>docker-compose</code>, you can use any command line modificator (ie: <code>docker/up -d</code> instead of <code>docker-compose -d</code>).</p>
 <blockquote>
-<p>We use the wrapper <code>docker/up</code> because it automatically tries to export your user ID to the docker container. Otherwise all generated files by the php server will be owned by another user or root.</p>
-<p>However, to ensure compatibility with the traditional <code>docker-compose up</code>, all created files inside the php container will have full-writeable permissions (ie: folder 777 and files 666)</p>
+<p>👉 We use the wrapper <code>docker/up</code> because it automatically tries to export your user ID to the docker container. Otherwise all generated files by the php server will be owned by another user or root.</p>
+<p>👉 <strong>This script assumes to run <code>docker-compose</code> without root privileges</strong>. Its important for the user running docker to belong to the <code>docker</code> group. As is explained in the <a href="https://docs.docker.com/install/linux/linux-postinstall/">Post-installation steps in docker.com</a> (just run <code>sudo usermod -aG docker $USER</code> to be sure).</p>
+<p>In any case, to ensure compatibility with the traditional <code>docker-compose up</code>, all created files inside the php container will have full-writeable permissions (ie: folder 777 and files 666)</p>
+<p>👉 You can specify a custom <code>docker-compose.yml</code> file if necessary. Just copy it or create a new one with the name <code>docker-compose-local.yml</code>, this file is listed in the <code>.gitignore</code> and won't be committed.</p>
+<p>👉 When updating from older versions (with other configurations of the <code>docker-compose.yml</code> file) it maybe necessary to rebuild the containers. To do that just run the same command with the modifier <code>--build</code>:</p>
+<pre><code class="language-bash">docker/up --build</code></pre>
 </blockquote>
-<p>At this point you should be able to point your browser to <a href="http://localhost:8081">http://localhost:8081</a> (or whatever host name you have in your local-docker-settings.yml). </p>
+<p>At this point you should be able to point your browser to <a href="http://localhost:8081">http://localhost:8081</a> (or whatever host name you have in your local-docker-settings.yml).</p>
 <p><strong>The correct URL will be shown in the docker-compose log when all preparation commands finish</strong></p>
 <p>We recommend not to use the <code>-d</code> flag on <code>docker-compose</code> to be aware of the log messages while building the container or php/server errors while browsing.</p>
 <h1 id="tltr">TL;TR</h1>
@@ -168,7 +172,7 @@ docker/exec bin/console migrate install
 docker/exec grunt build:tmp</code></pre>
 <p>You can (or must) run any of the above commands if the are changes in relevant files (database changes, css, javascript or public template files).</p>
 <p>In general, any command used in Goteo to be executed in the docker virtual machine should use the wrapper <code>docker/exec</code> as it will run the command with the proper user.</p>
-<p>If you want to test a production environment, you can pass the var <code>DEBUG=0</code> to the docker-compose command:</p>
+<p>If you want to test a production environment, you can pass the shell variable <code>DEBUG=0</code> to the docker-compose command:</p>
 <pre><code class="language-bash">DEBUG=false docker/up</code></pre>
 <p>You can overwrite the default <code>local-docker-settings.yml</code> file with the GOTEO_CONFIG_FILE environment variable:</p>
 <pre><code class="language-bash">GOTEO_CONFIG_FILE=config/my-alternative-settings.yml docker/up</code></pre>
@@ -252,7 +256,7 @@ db:
 <p>Then, create the database and grant permissions in the mariadb container:</p>
 <pre><code class="language-bash">docker-compose exec mariadb mysql -uroot -pcrowdfunding -e 'CREATE DATABASE goteo_test;'
 docker-compose exec mariadb mysql -uroot -pcrowdfunding -e "GRANT ALL PRIVILEGES ON goteo_test.* TO 'goteo'@'%';"</code></pre>
-<p>Finally, nstall the database:</p>
+<p>Finally, install the database:</p>
 <pre><code class="language-bash">GOTEO_CONFIG_FILE='config/test-docker-settings.yml' docker/exec bin/console migrate install</code></pre>
 <hr />
 <p>From now on, just run tests as:</p>
