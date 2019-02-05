@@ -30,7 +30,8 @@ docker/up
 
 `docker/up` is a wrapper for `docker-compose`, you can use any command line modificator (ie: `docker/up -d` instead of `docker-compose -d`).
 
-> We use the wrapper `docker/up` because it automatically tries to export your user ID to the docker container. Otherwise all generated files by the php server will be owned by another user or root.
+> We use the wrapper `docker/up` because it automatically tries to export your user ID to the docker container. Otherwise all generated files by the php server will be owned by another user or root. It's necessary that your user is member of the docker group.
+
 > 
 > However, to ensure compatibility with the traditional `docker-compose up`, all created files inside the php container will have full-writeable permissions (ie: folder 777 and files 666)
 
