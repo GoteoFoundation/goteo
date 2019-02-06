@@ -1,3 +1,9 @@
 #!/bin/sh
 export UID=`id -u`
-docker-compose up $@
+
+DOCKER_FILE=
+if [ -f "docker-compose-local.yml" ]; then
+	DOCKER_FILE='-f docker-compose-local.yml'
+fi
+
+docker-compose $DOCKER_FILE up $@

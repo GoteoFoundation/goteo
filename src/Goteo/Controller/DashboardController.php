@@ -53,7 +53,9 @@ class DashboardController extends \Goteo\Core\Controller {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-wallet-sidebar"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'wallet');
             Session::addToSidebarMenu('<i class="fa fa-2x fa-fw fa-download"></i> ' . Text::get('recharge-button'), '/pool', 'recharge');
 
-            Session::addToSidebarMenu('<i class="icon icon-2x fa-fw icon-save-the-world"></i> ' . Text::get('donate-button'), '/donate-select', 'donate');
+            if(Config::get('donate.dashboard')) {
+                Session::addToSidebarMenu('<i class="icon icon-2x fa-fw icon-save-the-world"></i> ' . Text::get('donate-button'), '/donate/select', 'donate');
+            }
         }
         View::getEngine()->useData([
             'zone' => $zone,

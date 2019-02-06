@@ -74,8 +74,10 @@ class Promote extends \Goteo\Core\Model {
 
         if(self::default_lang($lang) == Config::get('sql_lang')) {
             $different_select=" IFNULL(promote_lang.title, promote.title) as title,
-                                IFNULL(promote_lang.description, promote.description) as promo_text";
-            $different_select_project=" IFNULL(project_lang.description, project.description) as description";
+                                IFNULL(promote_lang.description, promote.description) as promo_text
+                                ";
+            $different_select_project=" IFNULL(project_lang.description, project.description) as description, 
+                                        IFNULL(project_lang.subtitle, project.subtitle) as subtitle";
             }
         else {
                 $different_select=" IFNULL(promote_lang.title, IFNULL(eng.title, promote.title)) as title,
@@ -83,7 +85,9 @@ class Promote extends \Goteo\Core\Model {
                 $eng_join=" LEFT JOIN promote_lang as eng
                                 ON  eng.id = promote.id
                                 AND eng.lang = 'en'";
-                $different_select_project=" IFNULL(project_lang.description, IFNULL(eng_proj.description, project.description)) as description";
+                $different_select_project=" IFNULL(project_lang.description, IFNULL(eng_proj.description, project.description)) as description,
+                    IFNULL(project_lang.subtitle, IFNULL(eng_proj.subtitle, project.subtitle)) as subtitle
+                ";
                 $eng_join_project=" LEFT JOIN project_lang as eng_proj
                                 ON  eng_proj.id = project.id
                                    AND eng_proj.lang = 'en'";

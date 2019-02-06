@@ -1,5 +1,5 @@
 # Base URL of the published website
-baseUrl: http://goteofoundation.github.io/goteo
+baseUrl: https://goteofoundation.github.io/goteo
 
 template:
     # url: https://github.com/CouscousPHP/Template-ReadTheDocs

@@ -84,7 +84,7 @@ $filter = $this->a('filter');
         <a href="#mailingModal" data-toggle="modal"><i class="fa fa-envelope-o"></i> <?= $this->text('dashboard-project-mailing-view') ?></a>
     </p>
     </div>
-    <table class="footable table">
+    <table class="-footable table">
       <thead>
         <tr>
           <th data-type="number" data-breakpoints="xs"><?= $this->insert('dashboard/partials/table_th', ['text' => '#', 'field' => 'id']) ?></th>
@@ -92,7 +92,7 @@ $filter = $this->a('filter');
           <th data-type="html" data-breakpoints="xs"><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('admin-user'), 'field' => 'user']) ?></th>
           <th><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('invest-amount'), 'field' => 'amount']) ?></th>
           <th><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('rewards-field-individual_reward-reward'), 'field' => 'reward']) ?></th>
-          <th><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('dashboard-rewards-fulfilled_status'), 'field' => 'fulfilled']) ?></th>
+          <th data-type="html"><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('dashboard-rewards-fulfilled_status'), 'field' => 'fulfilled']) ?></th>
           <th><?= $this->text('admin-address') ?></th>
           <th><?= $this->text('regular-actions') ?></th>
         </tr>
@@ -125,7 +125,6 @@ $filter = $this->a('filter');
             if(!$resign && !$reward) {
                 $reward = '<span class="label label-danger">' . $this->text('regular-unknown') . '</span>';
             }
-
 
       ?>
         <tr<?= $invest->isCharged() ? '' : ' class="strikethrough"'?>>

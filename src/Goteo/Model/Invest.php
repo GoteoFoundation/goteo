@@ -116,6 +116,10 @@ class Invest extends \Goteo\Core\Model {
         return $this->status == self::STATUS_TO_POOL;
     }
 
+    public function isPending() {
+        return $this->status == self::STATUS_PROCESSING;
+    }
+
     public function isCharged() {
         return in_array($this->status, self::$ACTIVE_STATUSES);
     }
@@ -130,7 +134,20 @@ class Invest extends \Goteo\Core\Model {
 
     public function isDonated() {
         return $this->status == self::STATUS_DONATED;
-    }   
+    }
+
+    /**
+     * Returns the amount of the Invest
+     * @param  string $include [description]
+     * @return [type]          [description]
+     */
+    public function getAmount($include = 'all') {
+        $amount = $this->amount;
+        if($include === 'all') {
+            $amount += $this->donate_amount;
+        }
+        return $amount;
+    }
 
     public function getStatusText($simple = false) {
         $status = $this->status;

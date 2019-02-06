@@ -42,12 +42,14 @@ admin-account-user-changed-error: 'Zu dem Beitrag [%ID%] konnte der Benutzer nic
 admin-account-user-changed-successfully: 'Für den Beitrag [%ID%] wurde der Benutzer auf [%NAME%] geändert!'
 admin-address: Anschrift
 admin-all: Alle
+admin-global: Global
 admin-back: Zurück
 admin-back-detail: 'Zurück zu den Details'
 admin-back-list: 'Zurück zur Liste'
 admin-contents: 'Texte und Übersetzungen'
 admin-empty-list: 'Es wurden keine registrierten Einträge gefunden'
 admin-activity: Aktivität
+admin-communications: Kommunikation
 admin-home: Startseite
 admin-items: Eingänge
 admin-mailing-back-to-list: 'Zurück zu Kommunikation'
@@ -68,9 +70,15 @@ admin-next-page: 'Nächste Seite'
 admin-no: 'Nein'
 admin-percent: Prozentsatz
 admin-project: Projekt
+admin-main: Hauptbereich
+admin-legacy: Ältere
 admin-projects: Projekte
+admin-consultants: 'Berater'
+admin-invests: Beiträge
 admin-filters: 'Filter'
 admin-remove-filters: 'Filter entfernen'
+admin-remove-entry: 'Eintrag löschen'
+admin-remove-entry-confirm: 'Möchten Sie wirklich diesen Eintrag löschen? Dieser Vorgang kann nicht rückgängig gemacht werden!'
 admin-sponsors: Dienstleister (Unterstützer/admin-sponsors)
 admin-status: Status
 admin-text-type: 'Bearbeite den Text als'
