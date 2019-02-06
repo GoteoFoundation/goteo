@@ -35,3 +35,4 @@ composer.lock
 phpunit.xml
 /tests/build
 .couscous
+/docker-compose-local.yml
