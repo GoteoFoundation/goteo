@@ -165,7 +165,6 @@ class ConsoleWatcherListener extends AbstractListener {
         if( $days_funded >= 1 && $days_funded < 3) {
             // si ha superado el mínimo
             if ($project->amount >= $project->mincost) {
-                echo "si";
                 $this->info("Requesting contract data", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded]);
                 $this->send($project, '1d_after', ['owner']);
             }
