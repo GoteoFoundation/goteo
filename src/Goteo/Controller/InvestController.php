@@ -309,7 +309,7 @@ class InvestController extends \Goteo\Core\Controller {
         $vars['donate_amount']= $donate_amount;
 
         // tip to the platform active
-        $vars['tip']= Config::get('tip');
+        $vars['tip']= Config::get('donate.tip');
         if($this->skip_login) {
             $vars['email'] = $this->getUser() ? $this->getUser()->email : '';
             if($request->query->get('email')) {
