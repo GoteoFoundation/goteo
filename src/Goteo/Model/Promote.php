@@ -23,6 +23,7 @@ class Promote extends \Goteo\Core\Model {
         $id,
         $node,
         $project,
+        $status,
         $name,
         $title,
         $description,
@@ -296,6 +297,21 @@ class Promote extends \Goteo\Core\Model {
         $order = $query->fetchColumn(0);
         return ++$order;
 
+    }
+
+    public function getProject() {
+        if(isset($this->projectObject)) return $this->projectObject;
+        try {
+            $this->projectObject = Project::get($this->project);
+        } catch(ModelNotFoundException $e) {
+            $this->projectObject = false;
+        }
+        return $this->projectObject;
+    }
+
+    public function getStatus() {
+        $array = Project::Status();
+        return $array[$this->status];
     }
 
 
