@@ -4,7 +4,7 @@ $this->layout('admin/promote/layout');
 
 $this->section('admin-search-box-addons');
 ?>
-<!-- <a class="btn btn-cyan" href="/admin/home/add"><i class="fa fa-plus"></i> <?= $this->text('admin-home-add') ?></a> -->
+<a class="btn btn-cyan" href="/admin/promote/add"><i class="fa fa-plus"></i> <?= $this->text('admin-promote-add') ?></a>
 
 <?php $this->replace() ?>
 
