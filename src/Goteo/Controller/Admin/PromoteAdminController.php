@@ -41,9 +41,6 @@ class PromoteAdminController extends AbstractAdminController {
     $promoted = Promote::getList(false);
 		$fields = ['id','project','name','status','active','order','actions'];
 
-    // estados de proyectos
-    // $status = Model\Project::status();
-
 		return $this->viewResponse('admin/promote/list', [
 			'list' => $promoted,
 			'fields' => $fields,
