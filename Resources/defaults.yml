@@ -346,7 +346,9 @@ oauth:
 # google: UA-0000000-01
 analytics:
     google:
-
+    matomo:
+      id:
+      url: //xxx.matomo.cloud
 
 # Default required rewards
 rewards:
