@@ -1,6 +1,4 @@
 <?php
-echo "*****";
-print_r($this->google);
 if($google = $this->a('google')):
     $id = array_shift($google);
 ?>
