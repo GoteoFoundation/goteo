@@ -55,7 +55,6 @@ class ModelsData implements ExtensionInterface
         if(!class_exists($class)) throw new \LogicException("Class [$model] not found, nor in Models or Library");
         if(!method_exists($class, $func)) throw new \LogicException("Method [$func] not found in class [$class]");
         $res = call_user_func_array([$class, $func], $args);
-        // print_r($res);die;
         return $res;
 
     }
@@ -75,7 +74,6 @@ class ModelsData implements ExtensionInterface
                 $array[] = $normalizer->get();
             }
         }
-        print_r($array);
         return $array;
     }
 
