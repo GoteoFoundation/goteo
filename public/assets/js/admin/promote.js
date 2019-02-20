@@ -23,17 +23,17 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
-$(function(){
+$(function () {
 
     // Allow drag&drop reorder by the column `order`
     var settings = {
-        apiUrl: function(row) {
-            return '/api/promote/' + $(row).find('[data-key="id"]').data('value') + '/sort';
+        apiUrl: function (row) {
+            return '/api/promote/' + $(row).find('[data-key="id"]').data('value') + '/sort'; // /api/promote/{id}/sort
         }
     };
     adminOrderColumn('table.model-promote', settings);
 
-    $(window).on("pronto.render", function(e){
+    $(window).on("pronto.render", function (e) {
         adminOrderColumn('table.model-promote', settings);
     });
 
