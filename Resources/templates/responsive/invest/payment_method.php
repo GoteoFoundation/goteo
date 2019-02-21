@@ -28,6 +28,8 @@ $this->section('main-content');
                 <form role="form" method="GET" action="/invest/<?= $this->project->id ?>/form">
                 <input type="hidden" name="reward" value="<?= $this->reward ? $this->reward->id : '0' ?>">
                 <input type="hidden" name="amount" value="<?= $this->amount_original . $this->currency ?>">
+                <input type="hidden" id="project_amount" name="project_amount" value="<?= $this->amount ?>">
+                <input type="hidden" id="currency" name="currency" value="<?= $this->get_currency('html') ?>">
 
                 <div class="row pay-methods">
                 <?php foreach($this->pay_methods as $method => $pay): ?>
@@ -73,13 +75,13 @@ $this->section('main-content');
                     <?php if($this->tip): ?>
                     <div class="checkbox">
                         <label class="tip">
-                            <input class="no-margin-checkbox big-checkbox" type="checkbox" name="tip" id="tip" value="1"<?= $this->donate_amount ? ' checked="checked"' : ''?> >
+                            <input class="no-margin-checkbox big-checkbox" autocomplete="off" type="checkbox" name="tip" id="tip" value="1"<?= $this->donate_amount ? ' checked="checked"' : ''?> >
                             <div class="label-checkbox">
                                 <div class="txt-1"><?= $this->text('invest-tip-part-1') ?></div>
                                 <div class="input-container">
                                     <div class="input-group">
                                             <div class="input-group-addon"><?= $this->get_currency('html') ?></div>
-                                            <input type="number" min="0" class="form-control input-md input-amount" name="donate_amount" value="<?= $this->donate_amount ? $this->donate_amount : '2' ?>" id="donate_amount">
+                                            <input type="number" min="0" class="form-control input-md input-amount" name="donate_amount" value="<?= $this->donate_amount ? $this->donate_amount : '2' ?>" id="donate_amount" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="txt-2">
@@ -88,6 +90,10 @@ $this->section('main-content');
                             </div>
                         </label>
 
+                    </div>
+
+                    <div class="tip-message" style="<?= $this->donate_amount ? '' : 'display:none;' ?>" id="tip-message">
+                       <?= $this->text('invest-update-total', ['%TOTAL_AMOUNT%' => amount_format($this->amount+$this->donate_amount), '%PROJECT_AMOUNT%' => amount_format($this->amount), '%DONATE_AMOUNT%' => amount_format($this->donate_amount)]) ?>
                     </div>
                     <?php endif; ?>
 
@@ -174,6 +180,23 @@ $(':radio').change(function(){
 
 });
 
+
+$('input#tip').change(function(){
+    if ($(this).is(":checked")) {
+        $('#tip-message').show();
+    }
+    else
+        $('#tip-message').hide();
+    
+});
+
+//Update tip message
+
+$('input#donate_amount').change(function(){
+   var total=parseInt($(this).val())+parseInt($('#project_amount').val());
+   $('#total-amount').html($('#currency').val()+' '+total); 
+   $('#tip-amount').html($(this).val()); 
+});
 
 // @license-end
 </script>
