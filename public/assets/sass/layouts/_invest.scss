@@ -44,5 +44,24 @@ body.invest {
       }
     }
 
+    .tip-message{
+      font-size: 18px;
+      padding: 20px;
+      border: 1px solid #E5F3F4;
+      border-radius:10px;
+      margin:30px 0;
+
+      .amount-reminder {
+        color: #96238F;
+        font-size: 20px;
+        font-weight: bold;
+        margin:0 5px;
+      }
+      .break-down{
+        font-size:16px;
+      }
+
+    }
+
   }
 }
