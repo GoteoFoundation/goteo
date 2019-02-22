@@ -5,7 +5,7 @@ $this->layout('admin/container');
 $this->section('admin-container-head');
 
 ?>
-    <h2><?= $this->text('admin-promote') ?></h2>
+    <h2><?= $this->text('translator-promote') ?></h2>
 
     <?= $this->insert('admin/partials/search_box') ?>
 

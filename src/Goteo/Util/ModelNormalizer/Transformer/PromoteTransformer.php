@@ -44,7 +44,7 @@ class PromoteTransformer extends AbstractTransformer {
 
     public function getActions() {
         if(!$u = $this->getUser()) return [];
-        $ret = ['edit' => '/admin/promote/edit/' . $this->model->id];
+        $ret = ['delete' => '/admin/promote/delete/' . $this->model->id];
 
         if($this->getUser()->hasPerm('translate-language')) {
             $ret['translate'] = '/translate/' . $this->getModelName() . '/' . $this->model->id;
@@ -53,12 +53,5 @@ class PromoteTransformer extends AbstractTransformer {
         // $ret['preview'] = '/promote/' . $this->model->id . '?preview';
         return $ret;
     }
-
-    public function getLink($type = 'public', $key = null) {
-        if($key !== 'id') return '';
-        if($type === 'public') {
-            return '/promote/' . $this->model->id .'?preview';
-        }
-        return '';
-    }
+    
 }

@@ -4,7 +4,16 @@ $this->layout('admin/promote/layout');
 
 $this->section('admin-search-box-addons');
 ?>
-<a class="btn btn-cyan" href="/admin/promote/add"><i class="fa fa-plus"></i> <?= $this->text('admin-promote-add') ?></a>
+
+<div class="btn btn-cyan" style='margin-bottom:1em;' onclick="toggle_typeahead()"><?= $this->text('admin-promote-add') ?></div>
+ 
+<div id='typeahead_promote' style="display:none;">
+
+  <?= $this->insert('admin/partials/typeahead', ['engines' => ['project'], 'defaults' => ['project']]) ?>
+
+  <div id='send_promote' class="btn btn-cyan" data-value="" onclick="send_promote()"><?= $this->text('admin-promote-submit') ?></div>
+
+</div>
 
 <?php $this->replace() ?>
 
@@ -17,4 +26,39 @@ $this->section('admin-search-box-addons');
   </div>
 </div>
 
+
+
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+  <script type="text/javascript">
+    $('.admin-typeahead').on('typeahead:select', function(event, datum, name) {
+      const btn = document.querySelector('#send_promote');
+      btn.dataset.value = datum.id;
+    });
+
+    function toggle_typeahead() {
+      var x = document.getElementById("typeahead_promote");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    };
+
+    function send_promote() {
+      const btn = document.querySelector('#send_promote');
+
+      $.ajax({
+        url: '/api/promote/add',
+        type: 'POST',
+        data: {
+          value: btn.dataset.value
+        }
+      }).done(function (data) {
+        location.reload();
+      });
+    };
+
+  </script>
+<?php $this->append() ?>

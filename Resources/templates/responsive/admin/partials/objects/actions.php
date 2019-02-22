@@ -16,7 +16,9 @@ foreach($value as $k => $link) {
         $t = '<span class="fa fa-eye" title="' . $t . '"></span>';
         $add = ' target="_blank"';
     }
+    if($k == 'delete') {
+        $t = '<span class="fa fa-trash" title="' . $t . '"></span>';
+    }
 
     echo '<a class="btn btn-sm btn-default" href="' . $link . '"' . $add . '>' . $t . '</a> ';
 }
-
