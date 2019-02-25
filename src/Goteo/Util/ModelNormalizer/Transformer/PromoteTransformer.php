@@ -24,13 +24,6 @@ class PromoteTransformer extends AbstractTransformer {
         return '<strong>'.($prj ? $prj->name.' - ' : '') . $this->getAuthor() . '</strong><br>' . Text::recorta($this->getReview(), 30);
     }
 
-    public function getReview() {
-        return $this->model->review;
-    }
-    public function getAuthor() {
-        return $this->model->getUser() ? $this->model->getUser()->name : ('<span class="label label-info">' . Text::get('admin-no-project') . '</span>');
-    }
-
     function getProject() {
         return $this->model->getProject();
     }
@@ -46,11 +39,6 @@ class PromoteTransformer extends AbstractTransformer {
         if(!$u = $this->getUser()) return [];
         $ret = ['delete' => '/admin/promote/delete/' . $this->model->id];
 
-        if($this->getUser()->hasPerm('translate-language')) {
-            $ret['translate'] = '/translate/' . $this->getModelName() . '/' . $this->model->id;
-        }
-
-        // $ret['preview'] = '/promote/' . $this->model->id . '?preview';
         return $ret;
     }
     

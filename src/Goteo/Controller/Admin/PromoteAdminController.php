@@ -24,7 +24,7 @@ use Goteo\Library\Check;
 
 
 class PromoteAdminController extends AbstractAdminController {
-	protected static $icon = '<i class="fa fa-2x fa-cubes"></i>';
+	protected static $icon = '<i class="fa fa-2x fa-star"></i>';
 
 	// this modules is part of a specific group
 	public static function getGroup() {
@@ -79,7 +79,7 @@ class PromoteAdminController extends AbstractAdminController {
 	public function deleteAction($id, Request $request) {
         $promote = $this->validatePromote($id);
 
-		Check::reorder_decrease($id,'promote', 'id', 'order', ['node' => Config::get('node')]);
+		Check::reorderDecrease($id,'promote', 'id', 'order', ['node' => Config::get('node')]);
 		$promote->dbDelete();
 
         return $this->redirect('/admin/promote');

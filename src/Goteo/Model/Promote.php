@@ -63,6 +63,36 @@ class Promote extends \Goteo\Core\Model {
             return $promote;
     }
 
+    
+    /*
+     *  It returns a promote by the Project Id
+     */
+    public static function getByProjectId ($id, $lang = null) {
+
+            if(!$lang) $lang = Lang::current();
+            list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+            $query = static::query("
+                SELECT
+                    promote.id as id,
+                    promote.node as node,
+                    promote.project as project,
+                    project.name as name,
+                    $fields,
+                    promote.order as `order`,
+                    promote.active as `active`
+                FROM    promote
+                $joins
+                INNER JOIN project
+                    ON project.id = promote.project
+                WHERE promote.project = :id
+                ", array(':id'=>$id));
+            $promote = $query->fetchObject(__CLASS__);
+
+            return $promote;
+    }
+
+
     /*
      * Lista de proyectos destacados
      */

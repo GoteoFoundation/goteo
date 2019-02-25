@@ -324,6 +324,9 @@ admin-last_year_complete: Todo el año pasado
 
 admin-promote-add: 'Nuevo destacado'
 admin-promote-submit: 'Guardar'
+admin-promote-already-exists: 'Este proyecto ya está destacado'
+admin-promote-correct: 'El proyecto está destacado'
+
 
 admin-projects-created-today: 'Creados hoy'
 admin-projects-created-yesterday: 'Creados ayer'

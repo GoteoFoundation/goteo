@@ -78,13 +78,20 @@ class PromoteApiController extends AbstractApiController {
                 'active' => 1 
             );
 
-            $promo = new Promote($data);
+            $promote = Promote::getByProjectId($project->id);
 
-            if ($promo->save($errors)) {
-                Check::reorder($promo->id, -1, 'promote', 'id', 'order', ['node' => Config::get('node')]);
-            }
-            else {
-                Message::error(implode(', ', $errors));
+            if ($promote InstanceOf Promote ) {
+                Message::error(Text::get('admin-promote-already-exists'));
+            } else {
+                $promote = new Promote($data);
+
+                if ($promote->save($errors)) {
+                    Message::info(Text::get('admin-promote-correct'));
+                    Check::reorder($promote->id, -1, 'promote', 'id', 'order', ['node' => Config::get('node')]);
+                }
+                else {
+                    Message::error(implode(', ', $errors));
+                }
             }
 
         }

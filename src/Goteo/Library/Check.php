@@ -283,7 +283,7 @@ namespace Goteo\Library {
          * following the one that we pass as $id
          * The table needs a column with an updatable order, by default 'order'
          */
-        public static function reorder_decrease($id,  $table, $idField = 'id', $orderField = 'order', $extra = array()) {
+        public static function reorderDecrease($id,  $table, $idField = 'id', $orderField = 'order', $extra = array()) {
 
             $model = '\Goteo\Core\Model';
 
