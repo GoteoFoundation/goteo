@@ -147,9 +147,9 @@ $api->add('api-promote-add', new Route(
     array('_controller' => 'Goteo\Controller\Api\PromoteApiController::promoteAddAction')
 ));
 
-// Promote sort up/down arbitrarily (use the PUT method to sort)
+// Promote sort up/down (use the PUT method to sort)
 $api->add('api-promote-sort', new Route(
-    '/promote/{id}/sort',
+    '/promote/id/{id}/sort',
     array('_controller' => 'Goteo\Controller\Api\PromoteApiController::promoteSortAction')
 ));
 

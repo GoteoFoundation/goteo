@@ -28,7 +28,8 @@ $(function () {
     // Allow drag&drop reorder by the column `order`
     var settings = {
         apiUrl: function (row) {
-            return '/api/promote/' + $(row).find('[data-key="id"]').data('value') + '/sort'; // /api/promote/{id}/sort
+            // '/promote/channel/{channel}/id/{id}/sort',
+            return '/api/promote/id/' + $(row).find('[data-key="id"]').data('value') + '/sort';
         }
     };
     adminOrderColumn('table.model-promote', settings);

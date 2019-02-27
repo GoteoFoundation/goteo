@@ -48,7 +48,7 @@ class PromoteApiController extends AbstractApiController {
 
         if($request->isMethod('put') && $request->request->has('value')) {
 
-            $res = Check::reorder($id, $request->request->get('value'), 'promote', 'id', 'order', ['node' => Config::get('node')]);
+            $res = Check::reorder($id, $request->request->get('value'), 'promote', 'id', 'order', ['node' => $promote->node]);
 
             if($res != $result['value']) {
                 $result['value'] = $res;
@@ -72,7 +72,7 @@ class PromoteApiController extends AbstractApiController {
             $project = Project::get($request->request->get('value'));
 
             $data = array(
-                'node' => Config::get('node'),
+                'node' => $project->node,
                 'project' => $project->id,
                 'order' => 0,  
                 'active' => 1 
@@ -87,7 +87,7 @@ class PromoteApiController extends AbstractApiController {
 
                 if ($promote->save($errors)) {
                     Message::info(Text::get('admin-promote-correct'));
-                    Check::reorder($promote->id, -1, 'promote', 'id', 'order', ['node' => Config::get('node')]);
+                    Check::reorder($promote->id, -1, 'promote', 'id', 'order', ['node' => $promote->node]);
                 }
                 else {
                     Message::error(implode(', ', $errors));
@@ -96,7 +96,7 @@ class PromoteApiController extends AbstractApiController {
 
         }
         return $this->jsonResponse($promo);
-    }			
+    }
     
     public function promotePropertyAction($id, $prop, Request $request) {
         $promote = $this->validatePromote($id);

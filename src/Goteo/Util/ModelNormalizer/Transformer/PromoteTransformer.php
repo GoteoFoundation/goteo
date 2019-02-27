@@ -37,7 +37,7 @@ class PromoteTransformer extends AbstractTransformer {
 
     public function getActions() {
         if(!$u = $this->getUser()) return [];
-        $ret = ['delete' => '/admin/promote/delete/' . $this->model->id];
+        $ret = ['delete' => '/admin/promote/delete/channel/'. $this->model->getProject()->node . '/id/'. $this->model->id];
 
         return $ret;
     }

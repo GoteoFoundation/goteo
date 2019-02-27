@@ -18,6 +18,7 @@ use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Promote;
 use Goteo\Model\Project;
+use Goteo\Model\Node;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 use Goteo\Library\Check;
@@ -35,10 +36,14 @@ class PromoteAdminController extends AbstractAdminController {
 		return [
 			new Route(
 				'/',
+				['_controller' => __CLASS__ . "::showNodeAction"]
+			),
+			new Route(
+				'/channel/{channel}',
 				['_controller' => __CLASS__ . "::listAction"]
 			),
 			new Route(
-				'/delete/{id}',
+				'/delete/channel/{channel}/id/{id}',
 				['_controller' => __CLASS__ . "::deleteAction"]
 			)
 		];
@@ -59,15 +64,27 @@ class PromoteAdminController extends AbstractAdminController {
         }
 
         throw new ControllerAccessDeniedException(Text::get('admin-promote-not-active-yet'));
-    }
+	}
+	
+	public function showNodeAction() {
 
+		$nodes = Node::getList();
 
-	public function listAction(Request $request) {
-    	$promoted = Promote::getList(false, Config::get('node')); // This method has to be changed for a new Promote::getList that does paging. Similar to Stories::getList
+        return $this->viewResponse('admin/promote/node_list', [
+            'nodes' => $nodes,
+        ]);
+
+	}
+
+	public function listAction($channel, Request $request) {
+    	$promoted = Promote::getList(false, $channel); // This method has to be changed for a new Promote::getList that does paging. Similar to Stories::getList
 		$fields = ['id','name','status','active','order','actions'];
 		$total = count($promoted);
+		$nodes = Node::getList();
 
 		return $this->viewResponse('admin/promote/list', [
+			'selectedNode' => $channel,
+			'nodes' => $nodes,
 			'list' => $promoted,
 			'fields' => $fields,
 			'total' => $total,
@@ -76,12 +93,12 @@ class PromoteAdminController extends AbstractAdminController {
 
 	}
 
-	public function deleteAction($id, Request $request) {
+	public function deleteAction($channel, $id, Request $request) {
         $promote = $this->validatePromote($id);
 
-		Check::reorderDecrease($id,'promote', 'id', 'order', ['node' => Config::get('node')]);
+		Check::reorderDecrease($id,'promote', 'id', 'order', ['node' => $channel]);
 		$promote->dbDelete();
 
-        return $this->redirect('/admin/promote');
+        return $this->redirect('/admin/promote/channel/' . $channel);
 	}
 }
