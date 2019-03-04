@@ -85,7 +85,7 @@ class PromoteAdminController extends AbstractAdminController {
 			$promoted = [];
 			$total = 0;
 			$selectedNode = false;
-			Message::error(Text::get('fatal-error-node'));
+			Message::error(Text::get('fatal-error-channel'));
 		}
 
 		return $this->viewResponse('admin/promote/list', [
