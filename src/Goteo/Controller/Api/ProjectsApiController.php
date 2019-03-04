@@ -71,6 +71,10 @@ class ProjectsApiController extends AbstractApiController {
             $filters['status'] = $s;
         }
 
+        if($request->query->has('node')) {
+            $filters['node'] = $request->query->get('node');
+        }
+
         $limit = 25;
         $offset = $page * $limit;
         $total = Project::getList($filters, $node, 0, 0, true);
@@ -611,4 +615,3 @@ class ProjectsApiController extends AbstractApiController {
         return $response;
     }
 }
-
