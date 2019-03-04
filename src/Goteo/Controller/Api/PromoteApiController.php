@@ -30,10 +30,7 @@ class PromoteApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException();
 
         $promote = $id ? Promote::get($id) : new Promote();
-
-        if(!$promote)
-            throw new ModelNotFoundException();
-
+        
         if($this->user->hasPerm('admin-module-promote') ) {
             return $promote;
         }

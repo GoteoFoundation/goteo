@@ -11,28 +11,32 @@ $this->section('admin-search-box-addons');
 <?php $this->section('admin-container-body') ?>
 
     <div >
-        <select id="nodes-filter" name="nodes-list"  class="form-control" style="margin-bottom:1em;">
+        <select id="nodes-filter" name="nodes-list"  class="form-control" style="margin-bottom:1em;" onchange="goChannelPromote()">
+        <?php if (!$this->selectedNode): ?>
+          <option  selected="selected" hidden></option>
+        <?php endif; ?>
         <?php foreach ($this->nodes as $nodeId=>$nodeName) : ?>
             <option value="<?php echo $nodeId;?>" <?php if ($nodeId == $this->selectedNode) echo 'selected="selected"';?>><?php echo $nodeName; ?></option>
         <?php endforeach; ?>
         </select>
-        <div class="btn btn-cyan" style="margin-bottom:1em;"onclick="goChannelPromote()"> <?= $this->text('form-next-button')?> </div>
     </div>
+    <?php if ($this->selectedNode): ?>
 
-    <div class="btn btn-cyan" style='margin-bottom:1em;' onclick="toggle_typeahead()"><?= $this->text('admin-promote-add') ?></div>
+      <div class="btn btn-cyan" style='margin-bottom:1em;' onclick="toggle_typeahead()"><?= $this->text('admin-promote-add') ?></div>
     
-    <div id='typeahead_promote' style="display:none;">
+      <div id='typeahead_promote' style="display:none;">
 
-      <?= $this->insert('admin/partials/typeahead', ['engines' => ['project'], 'defaults' => ['project']]) ?>
+        <?= $this->insert('admin/partials/typeahead', ['engines' => ['project'], 'defaults' => ['project'], 'extra' => ['node' => $this->selectedNode]]) ?>
 
-      <div id='send_promote' class="btn btn-cyan" data-value="" onclick="send_promote()"><?= $this->text('admin-promote-submit') ?></div>
+        <div id='send_promote' class="btn btn-cyan" data-value="" onclick="send_promote()"><?= $this->text('admin-promote-submit') ?></div>
 
-    </div>
+      </div>
+    <?php endif; ?>
 
 
     <h5><?= $this->text('admin-list-total', $this->total) ?></h5>
 
-    <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, $this->fields)]) ?>
+    <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['id','name','status','active','order','actions'])]) ?>
 
     </div>
   </div>

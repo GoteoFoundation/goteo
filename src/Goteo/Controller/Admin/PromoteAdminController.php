@@ -68,25 +68,30 @@ class PromoteAdminController extends AbstractAdminController {
 	
 	public function showNodeAction() {
 
-		$nodes = Node::getList();
-
-        return $this->viewResponse('admin/promote/node_list', [
-            'nodes' => $nodes,
-        ]);
-
+		$nodes = array_keys(Node::getList());
+		return $this->redirect('/admin/promote/channel/' . $nodes[0]);
 	}
 
 	public function listAction($channel, Request $request) {
-    	$promoted = Promote::getList(false, $channel); // This method has to be changed for a new Promote::getList that does paging. Similar to Stories::getList
-		$fields = ['id','name','status','active','order','actions'];
-		$total = count($promoted);
-		$nodes = Node::getList();
+
+		try {
+			Node::get($channel);
+			$selectedNode = $channel;
+			$promoted = Promote::getList(false, $channel); // This method has to be changed for a new Promote::getList that does paging. Similar to Stories::getList
+			$total = count($promoted);
+		}
+
+		catch (ModelNotFoundException $exception) {
+			$promoted = [];
+			$total = 0;
+			$selectedNode = false;
+			Message::error(Text::get('fatal-error-node'));
+		}
 
 		return $this->viewResponse('admin/promote/list', [
-			'selectedNode' => $channel,
-			'nodes' => $nodes,
+			'selectedNode' => $selectedNode,
+			'nodes' => $this->user->getNodeNames(),
 			'list' => $promoted,
-			'fields' => $fields,
 			'total' => $total,
 			'limit' => 20,
 		]);
