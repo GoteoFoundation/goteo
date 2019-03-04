@@ -140,6 +140,24 @@ $api->add('api-stories-images-upload', new Route(
     array('POST') // methods
 ));
 
+//Promote
+// Add project to promote
+$api->add('api-promote-add', new Route(
+    '/promote/add',
+    array('_controller' => 'Goteo\Controller\Api\PromoteApiController::promoteAddAction')
+));
+
+// Promote sort up/down (use the PUT method to sort)
+$api->add('api-promote-sort', new Route(
+    '/promote/id/{id}/sort',
+    array('_controller' => 'Goteo\Controller\Api\PromoteApiController::promoteSortAction')
+));
+
+// Promote change property of active
+$api->add('api-promote-property', new Route(
+    '/promote/{id}/property/{prop}',
+    array('_controller' => 'Goteo\Controller\Api\PromoteApiController::promotePropertyAction')
+));
 
 // Projects list
 $api->add('api-projects', new Route(

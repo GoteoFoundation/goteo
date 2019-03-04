@@ -196,7 +196,8 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesAdminController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteAdminController');
+		    \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
 
         // TODO: to be replace by the new AdminController
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
@@ -220,7 +221,7 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NewsletterSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PagesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ProjectsSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteSubController');
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RecentSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ReviewsSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RewardsSubController');

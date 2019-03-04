@@ -118,6 +118,10 @@ admin-channels: Channels
 admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
+admin-promote-add: 'New promote'
+admin-promote-submit: 'Save'
+admin-promote-already-exists: 'This project is already promoted'
+admin-promote-correct: 'The project is promoted'
 admin-project-express-discard: 'Express discard'
 admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
 admin-project-express-discard-sure: 'The project will be discarded and the owner will receive an email, ok?'
@@ -190,6 +194,7 @@ admin-title-footprints: 'Footprints'
 admin-title-categories: 'Categories'
 admin-title-social_commitments: 'Social commitments'
 admin-title-order: Sort
+admin-title-status: Status
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'

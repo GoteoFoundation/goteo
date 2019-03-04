@@ -2,4 +2,5 @@
 fatal-error-project: 'The project you''re looking for... <span class="red">does not exist :(</span>'
 fatal-error-teapot: '<span class="greenblue">How embarrassing...</span> an unexpected  error occurred'
 fatal-error-user: 'The user you''re looking for... <span class="red">does not exist :(</span>'
+fatal-error-channel: 'The channel you''re looking for... <span class="red">does not exist :(</span>'
 ajax-load-error: 'Page could''nt be loaded due the error [<strong>%ERROR%</strong>]. Maybe you session has expired?'

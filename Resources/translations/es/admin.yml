@@ -207,6 +207,7 @@ admin-title-footprints: 'Huellas'
 admin-title-categories: 'Categorías'
 admin-title-social_commitments: 'Compromisos sociales'
 admin-title-order: Ordenar
+admin-title-status: Estado
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
@@ -321,6 +322,10 @@ admin-last_year: El mismo día del año pasado
 admin-last_year_complete: Todo el año pasado
 
 
+admin-promote-add: 'Nuevo destacado'
+admin-promote-submit: 'Guardar'
+admin-promote-already-exists: 'Este proyecto ya está destacado'
+admin-promote-correct: 'El proyecto está destacado'
 
 
 admin-projects-created-today: 'Creados hoy'

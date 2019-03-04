@@ -102,6 +102,10 @@ admin-footprint-add: Crea un nova petjada
 admin-footprint-edit: Editant la petjada %s
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
+admin-promote-add: Nou destacat
+admin-promote-submit: Guardar
+admin-promote-already-exists: Aquest projecte ja està destacat
+admin-promote-correct: El projecte està destacat
 admin-project-express-discard: 'Rebuig expres'
 admin-project-express-discard-desc: 'Passa el projecte a estat Descartat i envia un email'
 admin-project-express-discard-sure: 'S''enviarà un email automàtic i es passarà a estat descartat,Ok?'
@@ -168,6 +172,7 @@ admin-title-footprints: 'Petjades'
 admin-title-categories: 'Categories'
 admin-title-social_commitments: 'Compromisos socials'
 admin-title-order: Ordena
+admin-title-status: Estat
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
 admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'
