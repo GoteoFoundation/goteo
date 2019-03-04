@@ -1,6 +1,7 @@
 <?php
 
 $defaults = [];
+$extra = [];
 $engines = $this->a('engines');
 if(empty($engines)) $engines = ['channel', 'call', 'matcher', 'project', 'user', 'consultant'];
 foreach($engines as $q) {
@@ -10,10 +11,11 @@ foreach($engines as $q) {
 if(empty($defaults)) $defaults = $this->a('defaults');
 if(empty($defaults)) $defaults = ['call', 'channel', 'matcher'];
 $defaults = array_intersect($defaults, $engines);
+$extra = $this->a('extra');
 $value = $this->text;
 
 ?>
-<div class="admin-typeahead" data-sources="<?= implode(',', $defaults) ?>">
+<div class="admin-typeahead" data-sources="<?= implode(',', $defaults) ?>" data-extra-params="<?= $this->ee(json_encode($extra)) ?>">
   <div class="form-group has-feedback<?= ($value ? ' has-error' : '') ?>">
 
     <input class="typeahead form-control" autocomplete="off" type="text" placeholder="<?= $this->placeholder ?: $this->text('admin-search-global') ?>" value="<?= $value ?>">
