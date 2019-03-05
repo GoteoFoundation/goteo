@@ -67,7 +67,7 @@ class Promote extends \Goteo\Core\Model {
     /*
      *  It returns a promote by the Project Id
      */
-    public static function getByProjectId ($id, $lang = null) {
+    public static function getByProjectIdAndChannel($id, $channel, $lang = null) {
 
             if(!$lang) $lang = Lang::current();
             list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
@@ -86,7 +86,8 @@ class Promote extends \Goteo\Core\Model {
                 INNER JOIN project
                     ON project.id = promote.project
                 WHERE promote.project = :id
-                ", array(':id'=>$id));
+                    AND promote.node = :channel
+                ", array(':id'=>$id, ':channel'=>$channel));
             $promote = $query->fetchObject(__CLASS__);
 
             return $promote;

@@ -65,17 +65,19 @@ class PromoteApiController extends AbstractApiController {
 
         $result = [];
         
-        if($request->isMethod('post') && $request->request->has('value')) {
+        if($request->isMethod('post') && $request->request->has('value')
+            && $request->request->has('channel')) {
             $project = Project::get($request->request->get('value'));
+            $channel = $request->request->get('channel');
 
             $data = array(
-                'node' => $project->node,
+                'node' => $channel,
                 'project' => $project->id,
                 'order' => 0,  
                 'active' => 1 
             );
 
-            $promote = Promote::getByProjectId($project->id);
+            $promote = Promote::getByProjectIdAndChannel($project->id, $channel);
 
             if ($promote InstanceOf Promote ) {
                 Message::error(Text::get('admin-promote-already-exists'));
@@ -84,7 +86,7 @@ class PromoteApiController extends AbstractApiController {
 
                 if ($promote->save($errors)) {
                     Message::info(Text::get('admin-promote-correct'));
-                    Check::reorder($promote->id, -1, 'promote', 'id', 'order', ['node' => $promote->node]);
+                    Check::reorder($promote->id, -1, 'promote', 'id', 'order', ['node' => $channel]);
                 }
                 else {
                     Message::error(implode(', ', $errors));
