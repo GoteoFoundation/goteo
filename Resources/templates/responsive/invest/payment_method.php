@@ -184,6 +184,10 @@ $(':radio').change(function(){
 $('input#tip').change(function(){
     if ($(this).is(":checked")) {
         $('#tip-message').show();
+        var total=parseInt($('input#donate_amount').val())+parseInt($('#project_amount').val());
+       $('#total-amount').html($('#currency').val()+' '+total); 
+       $('#tip-amount').html($('#currency').val()+' '+$('input#donate_amount').val());
+
     }
     else
         $('#tip-message').hide();
@@ -195,7 +199,7 @@ $('input#tip').change(function(){
 $('input#donate_amount').change(function(){
    var total=parseInt($(this).val())+parseInt($('#project_amount').val());
    $('#total-amount').html($('#currency').val()+' '+total); 
-   $('#tip-amount').html($(this).val()); 
+   $('#tip-amount').html($('#currency').val()+' '+$(this).val()); 
 });
 
 // @license-end
