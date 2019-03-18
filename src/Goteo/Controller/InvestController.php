@@ -85,6 +85,7 @@ class InvestController extends \Goteo\Core\Controller {
         }
 
         $this->project = $project;
+
         $amount_original = (int)$custom_amount;
         $currency = (string)substr($custom_amount, strlen($amount_original));
         if(empty($currency)) $currency = Currency::current('id');
@@ -331,9 +332,20 @@ class InvestController extends \Goteo\Core\Controller {
      * If called via AJAX, returns a JSON response with the payment gateway form vars
      */
     public function paymentFormAction($project_id, Request $request) {
-        $amount = $amount_original = $request->query->get('amount');
+        $project_amount=$request->query->get('project_amount');
+        $currency = Currency::current('id');
+
         $tip=$request->query->get('tip');
-        $donate_amount = $donate_amount_original = $tip ? $request->query->get('donate_amount') : 0;
+        $donate_amount =  $tip ? $request->query->get('donate_amount') : 0;
+
+        // echo "Original amount: ".$amount;
+        // echo "Project amount".$project_amount;
+        // echo "Donate amount".$donate_amount;
+        // echo "Currency: ".$currency;
+
+
+        $amount = $amount_original = $request->query->get('amount');
+
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
 
         if($reward instanceOf Response) return $reward;
@@ -394,8 +406,8 @@ class InvestController extends \Goteo\Core\Controller {
             // Creating the invest entry
             $invest = new Invest(
                 array(
-                    'amount' => $amount+$donate_amount,
-                    'donate_amount' => $donate_amount,
+                    'amount' => $amount,
+                    'donate_amount' => Currency::amountInverse($donate_amount, $currency),
                     'amount_original' => $amount_original+$donate_amount,
                     'currency' => Currency::current(),
                     'currency_rate' => Currency::rate(),

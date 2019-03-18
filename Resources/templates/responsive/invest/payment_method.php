@@ -28,7 +28,7 @@ $this->section('main-content');
                 <form role="form" method="GET" action="/invest/<?= $this->project->id ?>/form">
                 <input type="hidden" name="reward" value="<?= $this->reward ? $this->reward->id : '0' ?>">
                 <input type="hidden" name="amount" value="<?= $this->amount_original . $this->currency ?>">
-                <input type="hidden" id="project_amount" name="project_amount" value="<?= $this->amount ?>">
+                <input type="hidden" id="project_amount" name="project_amount" value="<?= $this->amount_original ?>">
                 <input type="hidden" id="currency" name="currency" value="<?= $this->get_currency('html') ?>">
 
                 <div class="row pay-methods">

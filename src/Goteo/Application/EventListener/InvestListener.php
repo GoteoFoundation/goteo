@@ -127,9 +127,10 @@ class InvestListener extends AbstractListener {
             return;
         }
 
-        //Split again the donation between project and donate to the organization
-        $invest->amount = $invest->amount-$invest->donate_amount;
-        $invest->amount_original = $invest->amount_original-$invest->donate_amount;
+        // Set amounts for response
+        $currency = Currency::current('id');
+        $donate_amount_original= Currency::amount($invest->donate_amount, $currency);
+        $invest->amount_original= $invest->amount_original-$donate_amount_original;
 
         $errors = [];
         $invest->save($errors);
@@ -165,7 +166,7 @@ class InvestListener extends AbstractListener {
         // Assign response if not previously assigned
         // Goto user start
         if (!$event->getHttpResponse()) {
-            $event->setHttpResponse(new RedirectResponse('/invest/' . $invest->project . '/payment?' . http_build_query(['amount' => $invest->amount_original . $invest->currency, 'reward' => $reward ? $reward->id : '0', 'donate_amount' => $invest->donate_amount])));
+            $event->setHttpResponse(new RedirectResponse('/invest/' . $invest->project . '/payment?' . http_build_query(['amount' => $invest->amount_original . $invest->currency, 'reward' => $reward ? $reward->id : '0', 'donate_amount' => $donate_amount_original])));
         }
 
     }
@@ -191,10 +192,6 @@ class InvestListener extends AbstractListener {
         if (empty($invest->charged)) {
             $invest->charged = date('Y-m-d');
         }
-
-        //Split again the donation between project and donate to the organization
-        $invest->amount = $invest->amount-$invest->donate_amount;
-        $invest->amount_original = $invest->amount_original-$invest->donate_amount;
 
         $errors = [];
         $invest->save($errors);
