@@ -16,6 +16,7 @@ use Omnipay\Common\Message\ResponseInterface;
 
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
+use Goteo\Application\App;
 use Goteo\Application\Session;
 use Goteo\Application\Message;
 use Goteo\Application\View;
@@ -176,8 +177,9 @@ class PoolController extends \Goteo\Core\Controller {
         if($amount_return instanceOf Response) return $amount_validated;
         $amount = $amount_validated;
 
-        // part donated to the organization
+        // take into account if is donated to the organization
         $donate_amount= $type=='pool' ? 0 : $amount;
+        $amount= $type=='pool' ? $amount : 0;
 
         // pay method required
         try {
@@ -284,7 +286,7 @@ class PoolController extends \Goteo\Core\Controller {
             }
 
             $msg_fail=Text::get('invest-payment-fail');
-            $msg_fail.= $this->debug() ?  ' [ '.$response->getMessage().' ]' : '' ;
+            $msg_fail.= App::debug() ?  ' [ '.$response->getMessage().' ]' : '' ;
 
             Message::error($msg_fail);
 

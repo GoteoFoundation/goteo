@@ -4,6 +4,7 @@ $this->layout('invest/layout');
 
 $this->section('main-content');
 
+
 ?>
 
 <div class="container">
@@ -81,7 +82,7 @@ $this->section('main-content');
                                 <div class="input-container">
                                     <div class="input-group">
                                             <div class="input-group-addon"><?= $this->get_currency('html') ?></div>
-                                            <input type="number" min="0" class="form-control input-md input-amount" name="donate_amount" value="<?= $this->donate_amount ? $this->donate_amount : '2' ?>" id="donate_amount" autocomplete="off">
+                                            <input type="number" min="0" class="form-control input-md input-amount" name="donate_amount" value="<?= $this->donate_amount ? amount_format($this->donate_amount, 0, true) : '2' ?>" id="donate_amount" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="txt-2">
@@ -92,8 +93,10 @@ $this->section('main-content');
 
                     </div>
 
+                    <?php $total_amount=amount_format($this->amount, 0, true)+amount_format($this->donate_amount, 0, true); ?>
+
                     <div class="tip-message" style="<?= $this->donate_amount ? '' : 'display:none;' ?>" id="tip-message">
-                       <?= $this->text('invest-update-total', ['%TOTAL_AMOUNT%' => amount_format($this->amount+$this->donate_amount), '%PROJECT_AMOUNT%' => amount_format($this->amount), '%DONATE_AMOUNT%' => amount_format($this->donate_amount)]) ?>
+                       <?= $this->text('invest-update-total', ['%TOTAL_AMOUNT%' => $this->get_currency('html').' '.$total_amount, '%PROJECT_AMOUNT%' => amount_format($this->amount), '%DONATE_AMOUNT%' => amount_format($this->donate_amount) ]) ?>
                     </div>
                     <?php endif; ?>
 

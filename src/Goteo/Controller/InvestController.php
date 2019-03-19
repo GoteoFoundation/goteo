@@ -307,7 +307,7 @@ class InvestController extends \Goteo\Core\Controller {
         $vars = ['step' => 2];
 
         // Donate amount
-        $vars['donate_amount']= $donate_amount;
+        $vars['donate_amount']= Currency::amountInverse($donate_amount, $currency);
 
         // tip to the platform active
         $vars['tip']= Config::get('donate.tip');
@@ -336,13 +336,8 @@ class InvestController extends \Goteo\Core\Controller {
         $currency = Currency::current('id');
 
         $tip=$request->query->get('tip');
+
         $donate_amount =  $tip ? $request->query->get('donate_amount') : 0;
-
-        // echo "Original amount: ".$amount;
-        // echo "Project amount".$project_amount;
-        // echo "Donate amount".$donate_amount;
-        // echo "Currency: ".$currency;
-
 
         $amount = $amount_original = $request->query->get('amount');
 
@@ -456,6 +451,7 @@ class InvestController extends \Goteo\Core\Controller {
         } catch(\Exception $e) {
             Message::error($e->getMessage());
             $this->error('Init Payment Exception', ['class' => get_class($e), $invest, 'code' => $e->getCode(), 'message' => $e->getMessage()]);
+
             return $this->redirect('/invest/' . $project_id . '/payment?' . $this->query);
         }
 

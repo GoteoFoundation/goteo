@@ -105,7 +105,7 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
         $request = $this->getRequest();
         $invest = $this->getInvest();
         $payment = $gateway->purchase([
-                    'amount' => (float) $this->getInvestAmount(),
+                    'amount' => (float) $this->getTotalAmount(),
                     'card' => [
                         'number' => $request->request->get('number'),
                         'expiryMonth' => '12',
