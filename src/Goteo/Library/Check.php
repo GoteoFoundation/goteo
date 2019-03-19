@@ -279,6 +279,40 @@ namespace Goteo\Library {
         }
 
         /**
+         * Method to reorder a table, decreasing the order of the elements
+         * following the one that we pass as $id
+         * The table needs a column with an updatable order, by default 'order'
+         */
+        public static function reorderDecrease($id,  $table, $idField = 'id', $orderField = 'order', $extra = array()) {
+
+            $model = '\Goteo\Core\Model';
+
+            // treat extra array
+            $sqlSec = '';
+            $and = 'WHERE';
+            foreach ($extra as $column=>$value) {
+                $sqlSec .= ($value == '') ? " $and (`{$column}` = '{$value}' OR `{$column}` IS NULL)" : " $and `{$column}` = '{$value}'";
+                $and = 'AND';
+            }
+            
+                // hacer updates segun el nuevo orden en una transaccion
+            try {
+                $model::query("START TRANSACTION");
+
+                $sql = "UPDATE `{$table}` as t SET t.`{$orderField}` = t.`{$orderField}`-1 WHERE t.`{$idField}` IN (
+                SELECT t1.`{$idField}` FROM ( SELECT * FROM `{$table}` ) AS t1 $sqlSec AND t1.`{$orderField}` > 
+                (SELECT t2.`{$orderField}` FROM ( SELECT * FROM `{$table}` ) as t2 WHERE t2.`{$idField}` = :id) );";     
+                $query = $model::query($sql,[':id' => $id]);
+                $model::query("COMMIT");
+
+                return true;
+            } catch(\PDOException $e) {
+                return false;
+            }
+
+        }
+
+        /**
          * Metodo para calcular cuanto falta para una fecha (para las 0:00 de esa fecha)
          *
          * Usa los mismos periodos que feed::time_ago y la misma idea pero con la resta a la inversa
