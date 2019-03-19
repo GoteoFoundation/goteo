@@ -39,7 +39,7 @@ class PaypalPaymentMethod extends AbstractPaymentMethod {
         $invest = $this->getInvest();
         $gateway->setCurrency(Currency::getDefault('id'));
         $payment = $gateway->completePurchase([
-                    'amount' => (float) $invest->amount,
+                    'amount' => (float) $this->getTotalAmount(),
                     'description' => $this->getInvestDescription(),
                     'clientIp' => $this->getRequest()->getClientIp(),
                     'returnUrl' => $this->getCompleteUrl(),

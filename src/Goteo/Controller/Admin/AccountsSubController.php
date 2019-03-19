@@ -662,6 +662,7 @@ class AccountsSubController extends AbstractSubController {
             'manual' => 'Solo los manuales',
             'campaign' => 'Solo con riego',
             'pool' => 'Monedero virtual',
+            'donation' => 'Con Donación a Fundación'
         );
 
         // filtros de revisión de proyecto

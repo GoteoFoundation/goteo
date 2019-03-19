@@ -43,7 +43,7 @@
             <span <?= $class1 ?>>
             <?= $project ? $project : '' ?>
             </span>
-            <?= !$invest->isDonated()&$invest->donate_amount ? '<br><span class="label label-info">'.$this->text('invest-status-donated').'</span>' : '' ?> 
+            <?= (!$invest->isDonated()&&$invest->donate_amount) ? '<br><span class="label label-info">'.$this->text('invest-status-donated').'</span>' : '' ?> 
         </td>
         <td<?= $class1 ?>><?= implode(",", $reward) ?></td> 
         <td><span class="label label-<?= $class2 ?>"><?= $invest->status!=$invest::STATUS_DONATED ? $invest->getStatusText() : $this->text('invest-status-charged') ?></span></td>
