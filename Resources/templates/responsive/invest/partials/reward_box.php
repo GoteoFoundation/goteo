@@ -14,7 +14,7 @@ $available = $reward->available();
             <div class="col-sm-9">
                 <strong><?= $reward->reward ?></strong>
                 <div class="reward-description">
-                <?= $reward->description ?>
+                <?= $this->markdown($reward->description) ?>
                 </div>
                 <div style="margin-top:10px">
                     <?php if (!$available) : // no quedan ?>

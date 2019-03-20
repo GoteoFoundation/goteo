@@ -176,7 +176,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <td>&nbsp;</td>
     </tr>
 
-    <?php if (!$invest->resign && $project) : ?>
+    <?php if ($project) : ?>
     <tr>
         <td><?= $this->text('admin-account-rewards') ?>:</td>
         <td>
