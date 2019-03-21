@@ -106,6 +106,6 @@ invest-user-name-or-anonymous: 'Name is mandatory unless you want to donate anon
 invest-created-manually-ok: 'Manual invest created successfully, select reward and address now'
 invest-created-manually-ko: 'Error on creating manual invest [%s]'
 invest-tip-part-1: 'I want to add to my donation: '
-invest-tip-part-2: 'to contribute to the mission of the <strong>Goteo Foundation</strong>'
+invest-tip-part-2: 'to contribute to the mission of the <b>Goteo Foundation</b><br> for a more ethical and collaborative society'
 invest-mail-donate-tip: 'With your donation you have decided to collaborate with the <strong>Goteo Foundation</strong> with %s € extra, thank you very much!.'
 invest-update-total: 'You are going to make a total donation of <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% to the project + <span id="tip-amount">%DONATE_AMOUNT%</span> to Goteo Foundation'
