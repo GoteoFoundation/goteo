@@ -188,6 +188,12 @@ textarea.widget-code {
   font-weight: normal;
   color: $color-grey;
   width: 100%;
+  img{
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 4px 0;
+  }
 }
 
 label {

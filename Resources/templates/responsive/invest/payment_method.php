@@ -52,7 +52,7 @@ $this->section('main-content');
 
 
                 <div class="form-group">
-                    <div class="checkbox">
+                    <div class="checkbox no-tip">
                         <label>
                             <input class="no-margin-checkbox big-checkbox" type="checkbox" name="anonymous" id="anonymous" value="1"<?= $this->skip_login && !$this->name ? ' checked="checked"' : ''?>>
                                 <p class="label-checkbox">
@@ -63,7 +63,7 @@ $this->section('main-content');
                     </div>
 
                     <?php if(!$this->skip_login && array_key_exists('pool', $this->pay_methods)): ?>
-                    <div class="checkbox">
+                    <div class="checkbox no-tip">
                         <label>
                             <input class="no-margin-checkbox big-checkbox" type="checkbox" name="pool_on_fail" id="pool_on_fail" value="1">
                                 <p class="label-checkbox">
