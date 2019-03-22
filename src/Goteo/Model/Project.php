@@ -3896,7 +3896,7 @@ class Project extends \Goteo\Core\Model {
     * Return the success projects porcentage
     */
 
-    static public function getSucessfulPercentage($matchfunding=false) {
+    static public function getSucessfulPercentage($matchfunding=false, $matcher= false) {
 
         $status_published=[self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED];
 
@@ -3909,6 +3909,12 @@ class Project extends \Goteo\Core\Model {
         {
             $filters_published['called']=$matchfunding;
             $filters_succesful['called']=$matchfunding;
+        }
+
+        if($matcher)
+        {
+            $filters_published['matcher']=$matcher;
+            $filters_succesful['matcher']=$matcher;
         }
 
         $num_published_projects=self::getList($filters_published, null, 0, 0, true);
