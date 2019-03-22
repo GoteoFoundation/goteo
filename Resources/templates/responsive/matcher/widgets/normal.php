@@ -3,11 +3,13 @@
 $link = $this->link ? $this->link : '/matcher/' . $this->matcher->id;
 $sphere = $this->matcher->getMainSphere();
 $location = explode(",", $this->matcher->matcher_location);
+$status = $this->matcher->getAvailableAmount() ? 'open' : 'completed';
+
 ?>
 
-<div class="flip-widget call-widget normal open" id="matcher-<?= $this->matcher->id ?>">
+<div class="flip-widget call-widget normal <?= $status ?>" id="matcher-<?= $this->matcher->id ?>">
     <div class="status">
-        <?= $this->text('call-tagmark-open') ?>
+        <?= $this->text('call-tagmark-'.$status) ?>
     </div>
 
     <div class="sphere">
