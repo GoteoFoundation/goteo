@@ -152,17 +152,11 @@ class AccountsSubController extends AbstractSubController {
         try {
             // Omnipay refund()
 
-            // Add the direct donation to the organization
-            $invest->amount=$invest->amount+$invest->donate_amount;
-
             $method = $invest->getMethod();
             // print_r($method);die;
             // process gateway refund
             // go to the gateway, gets the response
             $response = $method->refund();
-
-            // Remove the direct donation to the organization
-            $invest->amount=$invest->amount-$invest->donate_amount;
 
             // Checks and redirects
             if (!$response instanceof ResponseInterface) {
@@ -662,6 +656,7 @@ class AccountsSubController extends AbstractSubController {
             'manual' => 'Solo los manuales',
             'campaign' => 'Solo con riego',
             'pool' => 'Monedero virtual',
+            'donation' => 'Con Donación a Fundación'
         );
 
         // filtros de revisión de proyecto

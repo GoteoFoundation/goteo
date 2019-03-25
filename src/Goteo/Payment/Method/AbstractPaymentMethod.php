@@ -163,7 +163,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         $gateway = $this->getGateway();
         $gateway->setCurrency(Currency::getDefault('id'));
         return $gateway->purchase([
-                    'amount' => (float) $this->getInvest()->amount,
+                    'amount' => (float) $this->getTotalAmount(),
                     'description' => $this->getInvestDescription(),
                     'returnUrl' => $this->getCompleteUrl(),
                     'cancelUrl' => $this->getCompleteUrl(),
@@ -180,7 +180,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         $gateway = $this->getGateway();
         $gateway->setCurrency(Currency::getDefault('id'));
         return $gateway->completePurchase([
-                    'amount' => (float) $this->getInvest()->amount,
+                    'amount' => (float) $this->getTotalAmount(),
                     'description' => $this->getInvestDescription(),
                     'clientIp' => $this->getRequest()->getClientIp(),
                     'returnUrl' => $this->getCompleteUrl(),
@@ -215,7 +215,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         App::dispatch(AppEvents::INVEST_REFUND, new FilterInvestEvent($invest, $this));
 
         return $gateway->refund([
-            'amount' => (float) $invest->amount,
+            'amount' => (float) $this->getTotalAmount(),
             'transactionReference' => $invest->transaction, // some gateway may require extra data saved
             ])
             ->send();
@@ -251,6 +251,20 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         }
         $msg .= $project->name;
         return $msg;
+    }
+
+    /**
+     * Calculates the total amount, taking into account additional amounts
+     * @param  Invest $invest [description]
+     * @return [type]         [int]
+     */
+    public function getTotalAmount() {
+        $invest = $this->getInvest();
+
+        // Add to amount project the tip to the orgization
+        $amount= $invest->amount+$invest->donate_amount;
+        
+        return $amount;
     }
 
     /**

@@ -127,6 +127,17 @@ class InvestListener extends AbstractListener {
             return;
         }
 
+        // Set amounts for response
+        $currency = Currency::current('id');
+        $donate_amount_original= Currency::amount($invest->donate_amount, $currency);
+        $project_amount= $invest->amount_original-$donate_amount_original;
+
+        $errors = [];
+        $invest->save($errors);
+        if ($errors) {
+            throw new \RuntimeException('Error saving Invest details! '.implode("\n", $errors));
+        }
+
         $this->warning('Invest finish failed', [$invest, $project, $invest->getFirstReward(), $invest->getUser(), 'message' => $response->getMessage()]);
 
         // not making changes on invest status...
@@ -155,7 +166,7 @@ class InvestListener extends AbstractListener {
         // Assign response if not previously assigned
         // Goto user start
         if (!$event->getHttpResponse()) {
-            $event->setHttpResponse(new RedirectResponse('/invest/' . $invest->project . '/payment?' . http_build_query(['amount' => $invest->amount_original . $invest->currency, 'reward' => $reward ? $reward->id : '0'])));
+            $event->setHttpResponse(new RedirectResponse('/invest/' . $invest->project . '/payment?' . http_build_query(['amount' => $project_amount . $invest->currency, 'reward' => $reward ? $reward->id : '0', 'donate_amount' => $donate_amount_original])));
         }
 
     }
@@ -181,6 +192,7 @@ class InvestListener extends AbstractListener {
         if (empty($invest->charged)) {
             $invest->charged = date('Y-m-d');
         }
+
         $errors = [];
         $invest->save($errors);
         if ($errors) {
@@ -238,9 +250,13 @@ class InvestListener extends AbstractListener {
             $txt_droped = Text::get('invest-mail_info-drop', $call->user->name, \amount_format($drop->amount), $call->name);
         }
 
+        // If extra donation to the organization
+        if($invest->donate_amount)
+            $txt_tip_donate= Text::get('invest-mail-donate-tip', $invest->donate_amount);
+
         // En el contenido:
-        $search = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%', '%METHOD%');
-        $replace = array($user->name, $project->name, Config::getUrl($lang) . '/project/' . $project->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_method);
+        $search = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%', '%METHOD%', '%TIP%');
+        $replace = array($user->name, $project->name, Config::getUrl($lang) . '/project/' . $project->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_method, $txt_tip_donate);
         $content = str_replace($search, $replace, $template->parseText());
 
         if(!$event->skipMail()) {

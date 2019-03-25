@@ -59,7 +59,9 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     </tr>
     <tr>
         <td><?= $this->text('admin-account-amount') ?>:</td>
-        <td><?php echo $invest->amount+$invest->donate_amount ?> &euro;
+        <td><?php echo $invest->amount ?> &euro;
+            <?= $invest->amount ? ' + ' : '' ?>
+            <?= $invest->donate_amount? $invest->donate_amount.' &euro; (Donación)' : '' ?>
             <?php
                 if (!empty($invest->campaign))
                     echo 'Campaña: ' . $campaign->name;
