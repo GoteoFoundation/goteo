@@ -594,6 +594,13 @@ class Matcher extends \Goteo\Core\Model {
         return [];
     }
 
+    /*
+     *   Porcentage of sucess projects
+    */
+    public function getSuccessPorcentage(){
+        return Project::getSucessfulPercentage(false, $this->id);
+    }
+
     /**
      * [findProject description]
      * @return [type] [description]
