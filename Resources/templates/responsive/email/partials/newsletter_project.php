@@ -11,7 +11,7 @@ $url = SITE_URL . '/project/' . $project->id;
 <div style="width: 600px; background-color: #ffffff;padding: 20px 10px 20px 20px;margin-top: 20px;">
 
     <div>
-        <a style="font-size:14px;font-weight:bold;text-transform:uppercase;text-decoration:none;color:#58595b;" href="<?= $url ?>"><?= $project->name ?></a>
+        <a style="font-size:14px;font-weight:bold;text-transform:uppercase;text-decoration:none;color:#58595b;" href="<?= $url ?>"><?= $this->ee($project->name) ?></a>
     </div>
     <div style="vertical-align:top;padding-bottom:5px;padding-top:5px;">
         <a style="text-decoration:none;color: #929292;font-size:12px;" href="<?= $url ?>"><?= $this->text('regular-by').' '.$project->user->name ?></a>
@@ -25,7 +25,7 @@ $url = SITE_URL . '/project/' . $project->id;
                 $url_imagen = 'http://'.substr($url_imagen, 2);
             }
             ?>
-        <a href="<?= $url ?>"><img alt="<?= $project->name ?>" src="<?= $url_imagen ?>" width="255" height="130" /></a>
+        <a href="<?= $url ?>"><img alt="<? $this->ee($project->name) ?>" src="<?= $url_imagen ?>" width="255" height="130" /></a>
         <?php endif ?>
     </div>
 

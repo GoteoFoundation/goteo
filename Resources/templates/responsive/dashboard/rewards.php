@@ -15,7 +15,7 @@
     foreach($this->invests as $invest):
         $project = $invest->getProject();
         $no_project= $invest->isDonated() ? $this->text('invest-status-donated') : $this->text('invest-status-to-pool');
-        $project = $project ? ('<a href="/project/' . $project->id .'">' . $project->name . '</a>') : '<span class="label label-info">'.$no_project.'</span>';
+        $project = $project ? ('<a href="/project/' . $project->id .'">' . $this->ee($project->name) . '</a>') : '<span class="label label-info">'.$no_project.'</span>';
         $reward = [];
         $rewards = $invest->getRewards();
         if($rewards) {
@@ -60,4 +60,3 @@
 </div>
 
 <?php $this->replace() ?>
-
