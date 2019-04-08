@@ -47,7 +47,7 @@ foreach ($this->invests as $invest) {
 
 <?php $this->section('admin-content') ?>
 <div class="widget report">
-    <p>Informe de financiación de <strong><?php echo $project->name ?></strong> al d&iacute;a <?php echo date('d-m-Y') ?></p>
+    <p>Informe de financiación de <strong><?php echo $this->ee($project->name) ?></strong> al d&iacute;a <?php echo date('d-m-Y') ?></p>
     <p>Se encuentra en estado <strong><?php echo $this->projectStatus[$project->status] ?></strong>
         <?php if ($project->round > 0) : ?>
             , en <?php echo $project->round . 'ª ronda' ?> y le quedan <strong><?php echo $project->days ?> d&iacute;as</strong> para finalizarla
