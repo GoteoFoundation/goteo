@@ -37,7 +37,7 @@ if (!empty($project->num_posts)) {
 $URL = \SITE_URL;
 
 // metas og: para que al compartir en facebook coja bien el nombre y la imagen (todas las de proyecto y las novedades
-$title = $project->name;
+$title = $this->ee($project->name);
 $url = $URL . '/project/'.$project->id;
 $images = array();
 if ($show == 'updates') {

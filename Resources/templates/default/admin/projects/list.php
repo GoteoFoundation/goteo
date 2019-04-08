@@ -127,7 +127,7 @@ foreach ($filters as $key=>$value) {
 
         <tbody>
             <tr>
-                <td><a href="/project/<?= $project->id ?>" target="_blank" title="Preview" style="<?php if ($project->called) echo 'color: blue;' ?>"><?php echo (!empty($project->name)) ? $project->name : 'SIN NOMBRE' ?></a></td>
+                <td><a href="/project/<?= $project->id ?>" target="_blank" title="Preview" style="<?php if ($project->called) echo 'color: blue;' ?>"><?php echo (!empty($this->ee($project->name))) ? $this->ee($project->name) : 'SIN NOMBRE' ?></a></td>
                 <td><a href="mailto:<?= $project->user->email ?>"><?php echo substr($project->user->email, 0, 100) ?></a></td>
                 <td><?php echo date('d-m-Y', strtotime($project->updated)) ?></td>
                 <td><?php echo ($project->status == 1 && !$project->draft) ? '<span style="color: green;">En negociación</span>' : $this->status[$project->status] ?></td>

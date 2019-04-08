@@ -26,7 +26,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <?php $no_project=$no_project= ($invest->isDonated()||$invest->donate_amount) ? $this->text('donate-foundation-step-1') : $this->text('invest-status-to-pool'); ?>
         <?php if($project): ?>
             <td>
-                <?php echo $project->name ?> (<?php echo $this->projectStatus[$project->status] ?>)
+                <?= $this->ee($project->name) ?> (<?= $this->projectStatus[$project->status] ?>)
             </td>
             <td>[<a href="/admin/accounts/converttopool/<?= $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-convert-to-pool-confirm'), 'js') ?>')"><?= $this->text('admin-account-convert-to-pool') ?></a>]</td>
         <?php else: ?>
