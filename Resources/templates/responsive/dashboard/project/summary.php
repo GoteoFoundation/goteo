@@ -5,7 +5,7 @@
 <div class="dashboard-content">
   <div class="inner-container">
     <h1><?= $this->text('dashboard-menu-activity-summary') ?></h1>
-    <h5><?= $this->project->name ?></h5>
+    <h5><?= $this->ee($this->project->name) ?></h5>
 
     <div class="panel section-content">
         <div class="panel-body">

@@ -1,8 +1,8 @@
 <?php
 
 $this->layout('widget/layout', [
-    'title' => $this->project->name,
-    'meta_description' => $this->project->subtitle
+    'title' => $this->ee($this->project->name),
+    'meta_description' => $this->ee($this->project->subtitle)
     ]);
 
 $this->section('content');
