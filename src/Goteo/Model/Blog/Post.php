@@ -378,6 +378,13 @@ class Post extends \Goteo\Core\Model {
             $values[':tag'] = $filters['tag'];
         }
 
+        // Filter by workshop
+        if (!empty($filters['workshop'])) {
+            $sqlWhere .= " AND post.id IN (SELECT post_id FROM workshop_post WHERE workshop_id = :workshop)
+            ";
+            $values[':workshop'] = $filters['workshop'];
+        }
+
         if (!empty($filters['section'])) {
             $sqlWhere .= " AND post.section = :section
             ";
