@@ -155,7 +155,7 @@ class InvestListener extends AbstractListener {
                     '%MESSAGE%' => $response->getMessage(),
                     '%USER%'    => Feed::item('user', $user->name, $user->id),
                     '%AMOUNT%'  => Feed::item('money', $invest->amount.' '.$coin, $invest->id),
-                    '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                    '%PROJECT%' => Feed::item('project', strip_tags($project->name), $project->id),
                     '%METHOD%'  => strtoupper($method::getId())
                 ])
             )
@@ -238,7 +238,7 @@ class InvestListener extends AbstractListener {
         $txt_address = Text::get('invest-mail_info-address') . '<br>' . $txt_address;
 
         // Sustituimos los datos
-        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+        $subject = str_replace('%PROJECTNAME%', strip_tags($project->name), $template->title);
 
         $txt_droped = '';
 
@@ -256,7 +256,7 @@ class InvestListener extends AbstractListener {
 
         // En el contenido:
         $search = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%', '%METHOD%', '%TIP%');
-        $replace = array($user->name, $project->name, Config::getUrl($lang) . '/project/' . $project->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_method, $txt_tip_donate);
+        $replace = array($user->name, strip_tags($project->name), Config::getUrl($lang) . '/project/' . $project->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_method, $txt_tip_donate);
         $content = str_replace($search, $replace, $template->parseText());
 
         if(!$event->skipMail()) {
@@ -321,11 +321,11 @@ class InvestListener extends AbstractListener {
                 $this->warning('Template lang changed', [$template, 'old_lang' => $original_lang, 'new_lang' => $lang, $invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser() ]);
             }
             // Sustituimos los datos
-            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+            $subject = str_replace('%PROJECTNAME%', strip_tags($project->name), $template->title);
 
             // En el contenido:
             $search = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%', '%DROPED%');
-            $replace = array($project->user->name, $user->name, $project->name, $URL, $invest->amount, Config::getUrl() . '/user/profile/' . $user->id . '/message', $txt_droped);
+            $replace = array($project->user->name, $user->name, strip_tags($project->name), $URL, $invest->amount, Config::getUrl() . '/user/profile/' . $user->id . '/message', $txt_droped);
             $content = str_replace($search, $replace, $template->parseText());
 
             $mailHandler = new Mail();
@@ -357,7 +357,7 @@ class InvestListener extends AbstractListener {
                 new FeedBody(null, null, 'feed-user-invest', [
                         '%USER%' => Feed::item('user', $user->name, $user->id),
                         '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin, $invest->id),
-                        '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                        '%PROJECT%' => Feed::item('project', strip_tags($project->name), $project->id),
                         '%METHOD%' => strtoupper($method::getId())
                     ])
             )
@@ -366,7 +366,7 @@ class InvestListener extends AbstractListener {
         // Public Feed
         $log_html = new FeedBody(null, null, 'feed-invest', [
                 '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin, $invest->id),
-                '%PROJECT%' => Feed::item('project', $project->name, $project->id)
+                '%PROJECT%' => Feed::item('project', strip_tags($project->name), $project->id)
                 ]);
         if ($invest->anonymous) {
             $log->populate('regular-anonymous',
