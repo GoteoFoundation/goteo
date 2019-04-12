@@ -73,15 +73,15 @@ class ProjectController extends \Goteo\Core\Controller {
 
         if ($request->isMethod('post')) {
 
-        	$social_commitment=$request->request->get('social');
+        	$social_commitment= strip_tags($request->request->get('social'));
 
             $data=[
-                'name'         => $request->request->get('name'),
-                'subtitle'   => $request->request->get('subtitle'),
+                'name'         =>  strip_tags($request->request->get('name')),
+                'subtitle'   =>  strip_tags($request->request->get('subtitle')),
                 'social_commitment'   => $social_commitment,
-                'social_description' => $request->request->get('social-description'),
-                'location'          => $request->request->get('location'),
-                'project_location'			=> $request->request->get('project_location')
+                'social_description' =>  strip_tags($request->request->get('social-description')),
+                'location'          =>  $request->request->get('location'),
+                'project_location'			=>  $request->request->get('project_location')
             ];
 
             $project = Project::createNewProject($data);

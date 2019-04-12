@@ -16,7 +16,7 @@ $this->section('main-content');
 
                 <div class="reminder">
                     <div class="level-1">
-                       <?= $this->text('invest-alert-investing') ?><span class="amount-reminder"><?= $this->raw('amount_formated') ?></span> <?= $this->text('invest-project') ?> <span class="uppercase"><?= $this->project->name ?></span>
+                       <?= $this->text('invest-alert-investing') ?><span class="amount-reminder"><?= $this->raw('amount_formated') ?></span> <?= $this->text('invest-project') ?> <span class="uppercase"><?= $this->ee($this->project->name) ?></span>
                     </div>
                 <?php if($this->reward): ?>
                     <div class="level-2">
@@ -208,4 +208,3 @@ $('input#donate_amount').change(function(){
 // @license-end
 </script>
 <?php $this->append() ?>
-
