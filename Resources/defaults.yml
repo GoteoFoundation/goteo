@@ -373,3 +373,5 @@ stories:
 donate:
     landing: false # Activate a landing page explaining why donate to the Goteo Foundation
     dashboard: false # Activate a dashboard user menu with donate options
+    tip: false # User can leave a tip to the platform
+

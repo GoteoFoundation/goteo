@@ -14,8 +14,8 @@
     <?php
     foreach($this->invests as $invest):
         $project = $invest->getProject();
-        $no_project= $invest->isDonated() ? $this->text('donate-foundation-step-1') : $this->text('invest-status-to-pool');
-        $project = $project ? ('<a href="/project/' . $project->id .'">' . $project->name . '</a>') : '<span class="label label-info">'.$no_project.'</span>';
+        $no_project= $invest->isDonated() ? $this->text('invest-status-donated') : $this->text('invest-status-to-pool');
+        $project = $project ? ('<a href="/project/' . $project->id .'">' . $this->ee($project->name) . '</a>') : '<span class="label label-info">'.$no_project.'</span>';
         $reward = [];
         $rewards = $invest->getRewards();
         if($rewards) {
@@ -23,7 +23,7 @@
                 $reward[] = $r->reward;
             }
         }
-        $class1 = (!$invest->project || $invest->isCharged()) ? '' : ' class="strikethrough"';
+        $class1 = (!$invest->project || $invest->isCharged()) ? '' : ' style="text-decoration: line-through"';
         $class2 = 'danger';
         if($invest->inPool()) $class2 = 'info';
         elseif($invest->isCharged()||$invest->isDonated()) $class2 = 'success';
@@ -32,10 +32,21 @@
         <td><?= $invest->id ?></td>
         <td><?= \date_formater($invest->invested) ?></td>
         <td><?= $invest->getMethod()->getName() ?></td>
-        <td<?= $class1 ?>><?= \amount_format($invest->amount+$invest->donate_amount) ?></td>
-        <td<?= $class1 ?>><?= $project ?></td>
-        <td<?= $class1 ?>><?= implode(",", $reward) ?></td>
-        <td><span class="label label-<?= $class2 ?>"><?= $invest->getStatusText() ?></span></td>
+        <td>
+            <span <?= $class1 ?>>
+            <?= $invest->amount ? \amount_format($invest->amount) : '' ?>
+            </span>
+            <?= $invest->amount&&$invest->donate_amount ? '<br>' : '' ?>
+            <?= $invest->donate_amount ? \amount_format($invest->donate_amount) : '' ?>
+        </td>
+        <td>
+            <span <?= $class1 ?>>
+            <?= $project ? $project : '' ?>
+            </span>
+            <?= (!$invest->isDonated()&&$invest->donate_amount) ? '<br><span class="label label-info">'.$this->text('invest-status-donated').'</span>' : '' ?> 
+        </td>
+        <td<?= $class1 ?>><?= implode(",", $reward) ?></td> 
+        <td><span class="label label-<?= $class2 ?>"><?= $invest->status!=$invest::STATUS_DONATED ? $invest->getStatusText() : $this->text('invest-status-charged') ?></span></td>
     </tr>
   <?php endforeach ?>
     </table>
@@ -49,4 +60,3 @@
 </div>
 
 <?php $this->replace() ?>
-

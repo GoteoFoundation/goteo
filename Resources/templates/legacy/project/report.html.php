@@ -66,7 +66,7 @@ $cName = "P-{$cNum}-{$cDate}";
     td {padding: 3px 10px;}
 </style>
 <div class="widget report">
-    <h3 class="title" style="text-transform: none;">Informe de financiación del proyecto <?php echo $cName; ?><br /><span style="color:#20B2B3;"><?php echo $project->name ?></span></h3>
+    <h3 class="title" style="text-transform: none;">Informe de financiación del proyecto <?php echo $cName; ?><br /><span style="color:#20B2B3;"><?php echo htmlspecialchars($project->name) ?></span></h3>
 
     <?php
     // tanto los aportes de riego como los cash-no-cobrados: aparecen en el termómetro, cobran comisión, pero no se incluyen en el previsto a transferir

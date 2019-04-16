@@ -63,10 +63,12 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
     public function purchase() {
         $invest = $this->getInvest();
 
-        if($this->getPool() && $this->getPool()->getAmount() >= $invest->amount) {
+        $total_amount=$this->getTotalAmount();
+
+        if($this->getPool() && $this->getPool()->getAmount() >= $total_amount) {
             // remove current quantity from user pool
             $errors = [];
-            $this->user->getPool()->withdraw($invest->amount, $errors);
+            $this->user->getPool()->withdraw($total_amount, $errors);
             if (empty($errors)) {
                 // Sets pool next failed payment go to pool as well
                 // Pool payments cannot be returned in cash
@@ -74,7 +76,7 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
 
                 // return response
                 return $this->getGateway()->authorize([
-                            'amount' => (float) $this->getInvest()->amount,
+                            'amount' => (float) $total_amount,
                             'description' => $this->getInvestDescription(),
                             'returnUrl' => $this->getCompleteUrl(),
                             'cancelUrl' => $this->getCompleteUrl(),

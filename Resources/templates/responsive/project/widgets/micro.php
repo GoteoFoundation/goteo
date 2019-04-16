@@ -44,6 +44,6 @@ if($this->project->inEdition()) {
             <?php endif ?>
 
         <?php endif ?>
-        <div class="title"><a href="/project/<?= $this->project->id ?>"><?= $this->text_truncate($this->project->name, 80); ?></a></div>
+        <div class="title"><a href="/project/<?= $this->project->id ?>"><?= $this->text_truncate($this->ee($this->project->name), 80); ?></a></div>
     </div>
 </div>

@@ -99,8 +99,6 @@ class DonateInvestListener extends AbstractListener {
         // Invest status to charged
         $invest->status = Invest::STATUS_DONATED;
 
-        $invest->amount = $invest->amount-$invest->donate_amount;
-
         // Set charged date if empty
         if (empty($invest->charged)) {
             $invest->charged = date('Y-m-d');

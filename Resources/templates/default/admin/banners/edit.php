@@ -12,7 +12,7 @@ if ($this->is_master_node($node)) {
     // si tenemos ya proyecto seleccionado lo incluimos
     $projects = \Goteo\Model\Banner::available($banner->project);
     foreach ($projects as $project) {
-        $items[] = '{ value: "' . str_replace('"', '\"', $project->name) . '", id: "' . $project->id . '" }';
+        $items[] = '{ value: "' . str_replace('"', '\"', $this->ee($project->name)) . '", id: "' . $project->id . '" }';
     }
     $status = \Goteo\Model\Project::status();
 
@@ -128,4 +128,3 @@ if ($this->is_master_node($node)) {
 // @license-end
 </script>
 <?php $this->append() ?>
-

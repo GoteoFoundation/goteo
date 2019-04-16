@@ -43,7 +43,7 @@ $filters = $vars['filters'];
                     <?php foreach ($vars['projects'] as $project) : ?>
                     <tr>
                         <td><a href="/admin/translates/edit/<?php echo $project->id; ?>">[Editar]</a></td>
-                        <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview"><?php echo $project->name; ?></a></td>
+                        <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview"><?php echo htmlspecialchars($project->name); ?></a></td>
                         <td><?php echo $project->user->name; ?></td>
                         <td><?php echo $project->lang; ?></td>
                     </tr>

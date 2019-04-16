@@ -393,6 +393,10 @@ class Invest extends \Goteo\Core\Model {
                     $sqlFilter[] = "invest.resign = 0";
                     $sqlFilter[] = "invest.campaign = 0";
                     break;
+                // Include donation to the organization
+                case 'donation':
+                    $sqlFilter[] = "invest.donate_amount > 0";
+                    break;
                 case 'anonymous':
                     $sqlFilter[] = "invest.anonymous = 1";
                     break;

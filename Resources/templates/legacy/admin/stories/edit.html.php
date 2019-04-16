@@ -44,7 +44,7 @@ $langs = \Goteo\Application\Lang::listAll('name', false);
             <select id="story-project" name="project" style="width:67%">
                 <option value="" >Seleccionar el proyecto a mostrar en la historia exitosa</option>
             <?php foreach ($projects as $project) : ?>
-                <option value="<?php echo $project->id; ?>"<?php if ($story->project_id == $project->id) echo' selected="selected"';?>><?php echo $project->name . ' ('. $status[$project->status] . ')'; ?></option>
+                <option value="<?php echo $project->id; ?>"<?php if ($story->project_id == $project->id) echo' selected="selected"';?>><?php echo htmlspecialchars($project->name) . ' ('. $status[$project->status] . ')'; ?></option>
             <?php endforeach; ?>
             </select>
         </p>
