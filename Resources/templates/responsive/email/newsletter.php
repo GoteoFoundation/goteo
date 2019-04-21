@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Goteo Newsletter</title>
     <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic|Open+Sans+Condensed:300|Kalam);
         /* A simple css reset */
         body,table,thead,tbody,tr,td,img {
             padding: 0;
@@ -14,10 +15,12 @@
             border-spacing: 0px;
             border-collapse: collapse;
             vertical-align: top;
-            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-family: Roboto,sans-serif;
+            color: #3a3a3a;
         }
         a{
-            text-decoration: underline;
+            text-decoration: none;
+            color: #337ab7;
         }
         /* Add some padding for small screens */
         .wrapper {
@@ -28,7 +31,6 @@
             margin: 0;
             padding: 0 20px 20px 20px;
             line-height: 1.6;
-            font-family: 'Helvetica', 'Arial', sans-serif;
         }
         .margin-btn{
         	margin-top: 40px;
@@ -50,12 +52,12 @@
         	text-align: center;
         }
         h1{
-        	font-size: 21px;
+        	font-size: 28px;
         	color: #149290;
         	text-align: center;
         	margin-top: 20px;
         }
-        .subtitle-header{
+        h2{
         	font-size: 18px;
         	color: #a63c98;
         	text-align: center;
@@ -103,7 +105,7 @@
         	padding: 40px 0px 40px 370px;
         }
         .pd-fundacion-dos{
-        	padding: 0px 100px 40px 0px !important;
+        	padding: 0px 100px 30px 0px !important;
         }
         .btn-fundacion{
 			color: #58595b;
@@ -158,9 +160,11 @@
 			padding-bottom: 0px;
             font-weight: 200;
 		}
-        p,a,li {
-            font-family: 'Helvetica', 'Arial', sans-serif;
+
+        li{
+            margin-bottom: 10px;
         }
+        
 		.text-center{
 			text-align: center;
 		}
@@ -281,7 +285,7 @@
                                     <tbody>
                                         <tr>
                                             <td align="left">
-                                            	<img class="img-header" src="<?= $this->asset('img/blog/header_default.png') ?>" alt="Goteo" />
+                                            	<img class="img-header" src="<?= $this->asset('img/newsletter/header.png') ?>" alt="Goteo" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -289,332 +293,11 @@
                             </td>
                         </tr>
                     </table>
+
                     <!-- Contenido -->
-                    <table class="section header" cellpadding="0" cellspacing="0" width="600">
-                        <tr>
-                            <td class="column">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td align="left">
-                                            	<div><!--mensaje - contenido-->
-													<?= $this->raw('content') ?>
-												</div>
-                                                <h1 class="title-header">Goteo #162: Querellas populares en Goteo</h1>
-                                                <p style="text-align:left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquipex ea commodo consequat.</p>
-                                                <p style="text-align:left;">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id estlaborum. Ut enim ad minim veniam.
-                                                </p>
-                                                <p style="text-align:left;">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id estlaborum. Ut enim ad minim veniam. <span style="background-color:#FFED6A"><strong>elemento decorativo</strong></span>
-                                                </p>
-                                                <img src="img/la-comuna.jpg" alt="" />
+                    
+					<?= $this->raw('content') ?>
 
-                                                <p style="text-align:left;">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id estlaborum. Ut enim ad minim veniam. <span style="background-color:#FFED6A"><strong>elemento decorativo</strong></span>
-                                                </p>
-                                                <h3 class="subtitle-header">Eventos que vienen</h3>
-                                                <p style="text-align:left;">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id estlaborum. Ut enim ad minim veniam. <span style="background-color:#FFED6A"><strong>elemento decorativo</strong></span>
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-	                    <!-- QUOTES -->
-	                    <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#f8f8f8">
-	                        <tr>
-	                        	<td class="column" width="250" valign="top">
-	                                <table>
-	                                    <tbody>
-	                                        <tr>
-	                                            <td> &nbsp; </td>
-	                                        </tr>
-	                                    </tbody>
-	                                </table>
-	                            </td>
-	                            <td class="column" width="20" valign="top">
-	                                <table>
-	                                    <tbody>
-	                                        <tr>
-	                                            <td>
-	                                                <img class="img-center" src="img/quotes.png" alt="" />
-	                                            </td>
-	                                        </tr>
-	                                    </tbody>
-	                                </table>
-	                            </td>
-	                        	<td class="column" width="250" valign="top">
-	                                <table>
-	                                    <tbody>
-	                                        <tr>
-	                                            <td> &nbsp; </td>
-	                                        </tr>
-	                                    </tbody>
-	                                </table>
-	                            </td>
-	                        </tr>
-	                    </table>
-	                    <!-- QUOTES -->
-	                    <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#f8f8f8">
-	                        <tr>
-	                        	<td class="column" width="150" valign="top">
-	                                <table>
-	                                    <tbody>
-	                                        <tr>
-	                                            <td> &nbsp; </td>
-	                                        </tr>
-	                                    </tbody>
-	                                </table>
-	                            </td>
-	                            <td class="column" width="300" valign="top">
-	                                <table>
-	                                    <tbody>
-	                                        <tr>
-	                                            <td>
-	                                                <p style="text-align: center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit quam rerum, commodi ullam illum tempore eum reiciendis accusantium id, delectus sed cupiditate excepturi. Nostrum, laborum alias. Voluptatum nihil eos nesciunt.</p>
-	                                            </td>
-	                                        </tr>
-	                                    </tbody>
-	                                </table>
-	                            </td>
-	                        	<td class="column" width="150" valign="top">
-	                                <table>
-	                                    <tbody>
-	                                        <tr>
-	                                            <td> &nbsp; </td>
-	                                        </tr>
-	                                    </tbody>
-	                                </table>
-	                            </td>
-	                        </tr>
-	                    </table>
-                        <!-- FUNDACION TEST II -->
-                        <table class="section header mt-40" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#ffec61">
-                            <tr>
-                                <td class="column" width="150" valign="top">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td> &nbsp; </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td class="column" width="300" valign="top">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <h3 class="claim-fundacion" style="text-align: center">Para que podamos seguir ayudando a que más y más iniciativas cívicas salgan adelante</h3>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td class="column" width="150" valign="top">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td> &nbsp; </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <!-- FUNDACION TEST -->
-                        <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#ffec61">
-                            <tr>
-                                <td class="column" width="420" valign="top">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td> &nbsp; </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td class="column" width="100" valign="top">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <p class="pd-fundacion-dos">
-                                                        <a class="btn-fundacion" href="">DONA A FUNDACIÓN GOTEO</a>
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td class="column" width="200" valign="top">
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td> &nbsp; </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-
-
-                    <!-- FUNDACIÓN -->
-<!--                     <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#ffec61">
-                        <tr>
-                            <td class="column" width="300" valign="top">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td align="left">
-                                                <h3 class="pd-fundacion">Para que podamos seguir ayudando a que más y más iniciativas cívicas salgan adelante</h3>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td class="column" width="20" valign="top">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td> &nbsp; </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td class="column" width="150" valign="top">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td align="left">
-                                                <p class="pd-fundacion-dos">
-                                                	<a class="btn-fundacion" href="">DONA A FUNDACIÓN GOTEO</a>
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                    </table> -->
-                    <!-- Title proyectos -->
-                    <table class="section" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td class="column" width="100%" valign="top">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <h2 class="title-algunos">Algunos de nuestros Proyectos</h2>                        
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                    <!-- Proyectos I -->
-                    <table class="section proyectos" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td class="column" width="290" valign="top">
-                                <table bgcolor="#FFFFFF">
-                                    <tbody>
-                                        <tr>
-                                            <td align="left">
-                                                <img src="img/kafka.jpg" alt="Kafka" width="300" />
-                                                <h3 class="title-projects">Kafka anarquista</h3>
-                                                <h4 class="subtitle-projects">Por: LaMalatesta librería editorial</h4>
-                                                <p> <span><img class="icons" src="img/crear-cultura.png" alt=""/></span> <span class="icon-info">Crea Cultura</span></p>
-                                                <p style="text-align:left;">En este libro se resalta la dimensión político-anarquista de los escritos de Kafka y se investiga por qué la crítica... </p>
-                                                <p style="padding-bottom: 0px;"><span style="font-size: 20px; font-weight: 500;">€4.175</span> <span style="color: #868788;">Conseguido</span></p>
-                                                <hr />
-                                                <p><span style="font-size: 16px; font-weight: 500;">38 días</span> <span style="color: #868788;">faltan</span></p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td class="column" width="20" valign="top">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td> &nbsp; </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td class="column" width="290" valign="top">
-                                <table bgcolor="#FFFFFF">
-                                    <tbody>
-                                        <tr>
-                                            <td align="left">
-                                                <img src="img/kafka.jpg" alt="Kafka" width="300" />
-                                                <h3 class="title-projects">Kafka anarquista</h3>
-                                                <h4 class="subtitle-projects">Por: LaMalatesta librería editorial</h4>
-                                                <p> <span><img class="icons" src="img/crear-cultura.png" alt=""/></span> <span class="icon-info">Crea Cultura</span></p>
-                                                <p style="text-align:left;">En este libro se resalta la dimensión político-anarquista de los escritos de Kafka y se investiga por qué la crítica... </p>
-                                                <p style="padding-bottom: 0px;"><span style="font-size: 20px; font-weight: 500;">€4.175</span> <span style="color: #868788;">Conseguido</span></p>
-                                                <hr />
-                                                <p><span style="font-size: 16px; font-weight: 500;">38 días</span> <span style="color: #868788;">faltan</span></p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                    <!-- Proyectos II -->
-                    <table class="section" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td class="column" width="290" valign="top">
-                                <table bgcolor="#FFFFFF">
-                                    <tbody>
-                                        <tr>
-                                            <td align="left">
-                                                <img src="img/kafka.jpg" alt="Kafka" width="300" />
-                                                <h3 class="title-projects">Kafka anarquista</h3>
-                                                <h4 class="subtitle-projects">Por: LaMalatesta librería editorial</h4>
-                                                <p> <span><img class="icons" src="img/crear-cultura.png" alt=""/></span> <span class="icon-info">Crea Cultura</span></p>
-                                                <p style="text-align:left;">En este libro se resalta la dimensión político-anarquista de los escritos de Kafka y se investiga por qué la crítica... </p>
-                                                <p style="padding-bottom: 0px;"><span style="font-size: 20px; font-weight: 500;">€4.175</span> <span style="color: #868788;">Conseguido</span></p>
-                                                <hr />
-                                                <p><span style="font-size: 16px; font-weight: 500;">38 días</span> <span style="color: #868788;">faltan</span></p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td class="column" width="20" valign="top">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td> &nbsp; </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td class="column" width="290" valign="top">
-                                <table bgcolor="#FFFFFF">
-                                    <tbody>
-                                        <tr>
-                                            <td align="left">
-                                                <img src="img/kafka.jpg" alt="Kafka" width="300" />
-                                                <h3 class="title-projects">Kafka anarquista</h3>
-                                                <h4 class="subtitle-projects">Por: LaMalatesta librería editorial</h4>
-                                                <p> <span><img class="icons" src="img/crear-cultura.png" alt=""/></span> <span class="icon-info">Crea Cultura</span></p>
-                                                <p style="text-align:left;">En este libro se resalta la dimensión político-anarquista de los escritos de Kafka y se investiga por qué la crítica... </p>
-                                                <p style="padding-bottom: 0px;"><span style="font-size: 20px; font-weight: 500;">€4.175</span> <span style="color: #868788;">Conseguido</span></p>
-                                                <hr />
-                                                <p><span style="font-size: 16px; font-weight: 500;">38 días</span> <span style="color: #868788;">faltan</span></p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
                     <!-- BOTON VER PROYECTOS -->
                     <table class="section margin-btn" cellpadding="0" cellspacing="0">
                         <tr>
@@ -633,6 +316,7 @@
                             </td>
                         </tr>
                     </table>
+
 	               <!-- FOOTER SOCIAL -->
                     <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#555555">
 	                   <tr> 
@@ -641,35 +325,46 @@
                                     <tbody>
                                         <tr>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
-                                                <a style="text-decoration: none; color: #212121;" href="https://t.me/goteofunding" target="_blank"><img src="img/telegram.png" alt="Telegram" width="30" height="30" border="0" style="display: block;" /></a>
+                                                <a style="text-decoration: none; color: #212121;" href="https://t.me/goteofunding" target="_blank">
+                                                    <img src="<?= $this->asset('img/newsletter/telegram.png') ?>" alt="Telegram" width="30" height="30" border="0" style="display: block;" />
+                                                </a>
                                             </td>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
-                                                <a style="text-decoration: none; color: #212121;" href="http://twitter.com/goteofunding" target="_blank"><img src="img/twitter.png" alt="Twitter" width="30" height="30" border="0" style="display: block;" /></a>
+                                                <a style="text-decoration: none; color: #212121;" href="http://twitter.com/goteofunding" target="_blank">
+                                                    <img src="<?= $this->asset('img/newsletter/twitter.png') ?>" alt="Twitter" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
-                                                <a style="text-decoration: none; color: #212121;" href="https://www.facebook.com/goteofunding/" target="_blank"><img src="img/facebook.png" alt="Facebook" width="30" height="30" border="0" style="display: block;" /></a>
+                                                <a style="text-decoration: none; color: #212121;" href="https://www.facebook.com/goteofunding/" target="_blank">
+                                                    <img src="<?= $this->asset('img/newsletter/facebook.png') ?>" alt="Facebook" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
-                                                <a style="text-decoration: none; color: #212121;" href="https://instagram.com/goteofunding/" target="_blank"><img src="img/instagram.png" alt="Instagram" width="30" height="30" border="0" style="display: block;" /></a>
+                                                <a style="text-decoration: none; color: #212121;" href="https://instagram.com/goteofunding/" target="_blank">
+                                                    <img src="<?= $this->asset('img/newsletter/instagram.png') ?>" alt="Instagram" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                         </tr>
                                 </td>
                             </tr>
 	                    </table>
-                            <!-- PRE-FOOTER -->
-                            <table class="section footer header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#555555">
-                               <tr> 
-                                <td align="center">
-                                    <table border="0" cellpadding="0" cellspacing="0">
-                                        <tbody>
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
-                                                    <p><a href="https://goteo.org/project/create">Crea un proyecto</a></p>
-                                                    <p><a href="https://www.goteo.org/newsletter">¿No quieres recibir más boletines de Goteo?</a></p>
-                                                </td>
-                                            </tr>
-                                </tr>
-                            </table>
+
+                    <!-- PRE-FOOTER -->
+                    <table class="section footer header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#555555">
+                       <tr> 
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
+                                            <p>
+                                                <a href="https://goteo.org/project/create"><?= $this->text('regular-create') ?></a>
+                                            </p>
+                                            <p>
+                                                <?= $this->text('newsletter-block', $this->raw('unsubscribe')) ?>       
+                                            </p>
+                                        </td>
+                                    </tr>
+                        </tr>
+                    </table>
+
  					<!-- PRE-FOOTER II -->
                     <table class="section footer" width="100%" cellpadding="0" cellspacing="0" bgcolor="#555555">
                         <tr>
