@@ -411,7 +411,7 @@
                                                 <p>Una iniciativa de: </p>
                                             </td>
                                             <td style="padding-right: 10px;" colspan="0" align="center">
-                                                <a style="text-decoration: none; color: #212121;" href="http://fundacion.goteo.org/" target="_blank"><img src="img/logo-fundacion.png" alt="Fundación Goteo" width="30" height="30" border="0" style="display: block;" /></a>
+                                                <a style="text-decoration: none; color: #212121;" href="http://fundacion.goteo.org/" target="_blank"><img src="" alt="Fundación Goteo" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                         </tr>
                                 </td>
