@@ -8,36 +8,180 @@ $url = SITE_URL . '/project/' . $project->id;
 
 ?>
 
-<div style="width: 600px; background-color: #ffffff;padding: 20px 10px 20px 20px;margin-top: 20px;">
+<?php
+// Only first
+if($this->key==0):
 
-    <div>
-        <a style="font-size:14px;font-weight:bold;text-transform:uppercase;text-decoration:none;color:#58595b;" href="<?= $url ?>"><?= $this->ee($project->name) ?></a>
-    </div>
-    <div style="vertical-align:top;padding-bottom:5px;padding-top:5px;">
-        <a style="text-decoration:none;color: #929292;font-size:12px;" href="<?= $url ?>"><?= $this->text('regular-by').' '.$project->user->name ?></a>
-    </div>
+?>
 
-    <div style="width: 226px; padding-bottom:10px;">
-        <?php if ($project->image):
+<!-- FUNDACION TEST II -->
 
-            $url_imagen = $project->image->getLink(255, 130, true);
-            if (strpos($url_imagen, '//') === 0) {
-                $url_imagen = 'http://'.substr($url_imagen, 2);
-            }
-            ?>
-        <a href="<?= $url ?>"><img alt="<? $this->ee($project->name) ?>" src="<?= $url_imagen ?>" width="255" height="130" /></a>
-        <?php endif ?>
-    </div>
+<table class="section header mt-40" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#ffec61">
+    <tr>
+        <td class="column" width="150" valign="top">
+            <table>
+                <tbody>
+                    <tr>
+                        <td> &nbsp; </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="column" width="300" valign="top">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <h3 class="claim-fundacion" style="text-align: center">
+                                <?= $this->text('newsletter-donate-description') ?>
+                            </h3>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="column" width="150" valign="top">
+            <table>
+                <tbody>
+                    <tr>
+                        <td> &nbsp; </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
 
-    <div style="font-size: 12px;text-transform: uppercase; padding-bottom:10px; padding-top:10px; color: #38b5b1;"><?= $this->text('project-view-categories-title') ?>: <?php $sep = ''; foreach ($project->cat_names as $key=>$value) {echo $sep.htmlspecialchars($value); $sep = ', '; } ?></div>
+<!-- FUNDACION TEST -->
 
-    <div style="width:600px;vertical-align:top;border-right:2px solid #f1f1f1;line-height:15px;padding-right:10px;">
-        <a style="text-decoration:none;font-size:14px;color: #797979;" href="<?= $url ?>"><?= $this->text_truncate($project->description, 500) ?></a>
-    </div>
+<table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#ffec61">
+    <tr>
+        <td class="column" width="420" valign="top">
+            <table>
+                <tbody>
+                    <tr>
+                        <td> &nbsp; </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="column" width="100" valign="top">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p class="pd-fundacion-dos">
+                                <a class="btn-fundacion" href=""><?= $this->text('support-our-mission') ?></a>
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="column" width="200" valign="top">
+            <table>
+                <tbody>
+                    <tr>
+                        <td> &nbsp; </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
 
-    <div style="width: 25px;height: 2px;border-bottom: 1px solid #38b5b1;margin-bottom: 10px; margin-top:10px;"></div>
+<!-- Projects title -->
 
-    <div style="font-size: 14px;vertical-align: top;text-transform: uppercase; padding-bottom:10px;"><?= $this->text('project-view-metter-investment') ?>: <span style="font-size:14px;color:#96238F;font-weight: bold;"><?= $this->text('project-view-metter-minimum') . ' ' . \amount_format($project->mincost) ?></span>  <span style="color:#FFF;">_</span>  <span style="font-size:14px;color:#ba6fb6;font-weight: bold;"><?= $this->text('project-view-metter-optimum') . ' ' . \amount_format($project->maxcost) ?></span>
-    </div>
-    <span style="font-size: 14px;line-height: 14px; padding-top:10px; padding-bottom:10px; margin-bottom:10px;text-transform: uppercase;"><?= $this->text('project-view-metter-days') ?>: <strong style="text-transform: none;"><?= $project->days.' '. $this->text('regular-days') ?></strong></span>
-</div>
+<table class="section" cellpadding="0" cellspacing="0">
+    <tr>
+        <td class="column" width="100%" valign="top">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <h2 class="title-projects-section">Algunos de nuestros Proyectos</h2>                        
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<?php endif; ?>
+
+
+<?php if($this->key%2==0): ?>
+
+<table class="section proyectos" cellpadding="0" cellspacing="0">
+
+    <tr>
+
+<?php endif; ?>
+
+        <td class="column" width="290" valign="top">
+            <table bgcolor="#FFFFFF">
+                <tbody>
+                    <tr>
+                        <td align="left">
+                             <?php if ($project->image):
+
+                                $url_imagen = $project->image->getLink(255, 130, true);
+                                if (strpos($url_imagen, '//') === 0) {
+                                    $url_imagen = 'http://'.substr($url_imagen, 2);
+                                }
+                                ?>
+                            <a href="<?= $url ?>"><img alt="<?= $this->ee($project->name) ?>" src="<?= $url_imagen ?>" width="300" height="130" /></a>
+
+                            <?php endif ?>
+
+                            <a href="<?= $url ?>" class="title-projects">
+                                <?= $this->ee($project->name) ?>
+                            </a>
+                            <h4 class="subtitle-projects">
+                                <?= $this->text('regular-by') .' ' ?><span style="font-weight: 400; "><?= $project->user->name ?></span>
+                            </h4>
+
+                            <?php if($promote->getSocialCommitment()): ?>
+
+                            <p> 
+                                <span>
+                                    <img class="icons" src="<?= $promote->getSocialCommitment()->getIcon()->getLink(60, 60, false) ?>">
+                                <span class="icon-info"><?= $promote->getSocialCommitment()->name ?></span>
+                            </p>
+                            <?php endif; ?>
+
+                            <p style="text-align:left;"><?= $project->subtitle ?></p>
+                            <p style="padding-bottom: 0px;">
+                                <span style="font-size: 20px; font-weight: 500;">
+                                <?= \amount_format($project->amount) ?> 
+                                </span> <span style="color: #868788;"><?= $this->text('horizontal-project-reached') ?></span></p>
+                            <hr />
+                            <p><span style="font-size: 16px; font-weight: 500;"><?= $project->days.' '.$this->text('regular-days') ?></span> <span style="color: #868788;"><?= $this->text('project-view-metter-days') ?></span></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+
+        <?php if($this->key%2==0): ?>
+
+        <td class="column" width="20" valign="top">
+            <table>
+                <tbody>
+                    <tr>
+                        <td> &nbsp; </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+
+    <?php endif; ?>
+
+<?php if($this->key%2!=0): ?>
+
+    </tr>
+
+</table>
+
+<?php endif; ?>
