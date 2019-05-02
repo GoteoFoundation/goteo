@@ -99,7 +99,7 @@ if($this->key==0):
                 <tbody>
                     <tr>
                         <td>
-                            <h2 class="title-algunos">Algunos de nuestros Proyectos</h2>                        
+                            <h2 class="title-projects-section">Algunos de nuestros Proyectos</h2>                        
                         </td>
                     </tr>
                 </tbody>
@@ -135,16 +135,29 @@ if($this->key==0):
 
                             <?php endif ?>
 
-                            <h3 class="title-projects"><?= $this->ee($project->name) ?></h3>
-                            <h4 class="subtitle-projects"><?= $this->text('regular-by').' '.$project->user->name ?></h4>
-                            <p> <span><img class="icons" src="img/crear-cultura.png" alt=""/></span> <span class="icon-info">Crea Cultura</span></p>
+                            <a href="<?= $url ?>" class="title-projects">
+                                <?= $this->ee($project->name) ?>
+                            </a>
+                            <h4 class="subtitle-projects">
+                                <?= $this->text('regular-by') .' ' ?><span style="font-weight: 400; "><?= $project->user->name ?></span>
+                            </h4>
+
+                            <?php if($promote->getSocialCommitment()): ?>
+
+                            <p> 
+                                <span>
+                                    <img class="icons" src="<?= $promote->getSocialCommitment()->getIcon()->getLink(60, 60, false) ?>">
+                                <span class="icon-info"><?= $promote->getSocialCommitment()->name ?></span>
+                            </p>
+                            <?php endif; ?>
+
                             <p style="text-align:left;"><?= $project->subtitle ?></p>
                             <p style="padding-bottom: 0px;">
                                 <span style="font-size: 20px; font-weight: 500;">
                                 <?= \amount_format($project->amount) ?> 
-                                </span> <span style="color: #868788;">Conseguido</span></p>
+                                </span> <span style="color: #868788;"><?= $this->text('horizontal-project-reached') ?></span></p>
                             <hr />
-                            <p><span style="font-size: 16px; font-weight: 500;"><?= $project->days.' '.$this->text('regular-days') ?></span> <span style="color: #868788;">faltan</span></p>
+                            <p><span style="font-size: 16px; font-weight: 500;"><?= $project->days.' '.$this->text('regular-days') ?></span> <span style="color: #868788;"><?= $this->text('project-view-metter-days') ?></span></p>
                         </td>
                     </tr>
                 </tbody>

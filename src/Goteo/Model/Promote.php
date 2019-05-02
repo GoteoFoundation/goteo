@@ -151,7 +151,8 @@ class Promote extends \Goteo\Core\Model {
                 project_conf.noinvest as noinvest,
                 project_conf.one_round as one_round,
                 project_conf.days_round1 as days_round1,
-                project_conf.days_round2 as days_round2
+                project_conf.days_round2 as days_round2,
+                project.social_commitment AS social_commitment
             FROM    promote
             LEFT JOIN promote_lang
                 ON promote_lang.id = promote.id
