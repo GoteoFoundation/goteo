@@ -46,11 +46,7 @@
         .mt-40{
             margin-top: 40px;
         }
-        .title-algunos{
-        	font-size: 21px;
-        	margin-top: 30px;
-        	text-align: center;
-        }
+
         h1{
         	font-size: 28px;
         	color: #149290;
@@ -62,14 +58,26 @@
         	color: #a63c98;
         	text-align: center;
         }
-        .title-projects{
-        	padding-bottom: 10px;
-            padding-top: 10px;
-        	font-size: 22px;
-        	line-height: 1;
-        	color: #2bbbb7;
-            font-weight: 500;
+
+        h2.title-projects-section{
+            font-size: 21px;
+            margin-top: 35px;
+            text-align: center;
+            color: #3a3a3a;
+            margin-bottom: 20px;
         }
+
+        .title-projects{
+        	padding-bottom: 20px;
+            padding-top: 10px;
+            padding-left: 20px;
+            font-size: 22px;
+            line-height: 1.;
+            color: #2bbbb7;
+            font-weight: 400;
+            display: block;
+        }
+
         .subtitle-projects{
         	padding-bottom: 4px;
         	font-size: 15px;
@@ -154,12 +162,25 @@
 			color: #FFF;
 			text-align: center;
 		}
-		.footer p{
+		.footer p a{
 			color: #FFF;
 			text-align: center;
 			padding-bottom: 0px;
-            font-weight: 200;
+            font-weight: 400;
+            text-decoration: underline;
 		}
+
+        .footer p{
+            color: #FFF;
+            text-align: center;
+            padding-bottom: 0px;
+            font-weight: 200;
+            font-weight: 400;
+        }
+        
+        .footer img{
+            width: 100%;
+        }
 
         li{
             margin-bottom: 10px;
@@ -169,7 +190,7 @@
 			text-align: center;
 		}
         img {
-            width: 100%;
+            max-width: 100%;
             display: block;
         }
         @media only screen and (max-width: 620px) {
@@ -307,7 +328,7 @@
                                         <tr>
                                             <td align="left">
                                                 <p>
-                                                	<a class="btn-proyectos" href="">VER MÁS PROYECTOS</a>
+                                                	<a class="btn-proyectos" href="https://goteo.org/discover">VER MÁS PROYECTOS</a>
                                                 </p>
                                             </td>
                                         </tr>
@@ -382,7 +403,9 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                            	<p class="pd-description">Goteo es una plataforma para apoyar proyectos cívicos, éticos y abiertos de ciudadan@s, emprendedor@s, innovador@s sociales y creativ@s que compartan conocimiento significativo para la sociedad.</p>
+                                            	<p class="pd-description">
+                                                 <?= $this->text('mailer-disclaimer') ?>   
+                                                </p>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -408,10 +431,12 @@
                                     <tbody>
                                         <tr>
                                             <td colspan="0" align="center">
-                                                <p>Una iniciativa de: </p>
+                                                <p>
+                                                <?= $this->text('footer-platoniq-iniciative') ?>
+                                                </p>
                                             </td>
                                             <td style="padding-right: 10px;" colspan="0" align="center">
-                                                <a style="text-decoration: none; color: #212121;" href="http://fundacion.goteo.org/" target="_blank"><img src="" alt="Fundación Goteo" width="30" height="30" border="0" style="display: block;" /></a>
+                                                <a style="text-decoration: none; color: #212121;" href="http://fundacion.goteo.org/" target="_blank"><img src="<?= $this->asset('img/logo-fg-white.png') ?>" alt="Fundación Goteo" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                         </tr>
                                 </td>
@@ -421,5 +446,6 @@
             </tr>
         </tbody>
     </table>
+    <?php if ($this->tracker) : ?><img src="<?= $this->tracker ?>" alt="" /><?php endif ?>
 </body>
 </html>
