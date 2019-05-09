@@ -135,24 +135,7 @@
         .btn-fundacion:hover{
             background-color: #e6e6e6;
         }
-        .btn-proyectos{
-			color: #ffffff;
-    		padding: 13px 0;
-    		background-color: #19b4b2;
-    		display: inline-block;
-		    padding: 6px 12px;
-		    margin-bottom: 0;
-		    font-size: 14px;
-		    font-weight: 400;
-		    line-height: 1.42857143;
-		    text-align: center;
-		    white-space: nowrap;
-		    cursor: pointer;
-		    border: 1px solid transparent;
-		    border-radius: 4px;
-		    text-decoration: none;
-		}
-        .btn-proyectos:hover{
+		.btn-proyectos:hover{
             background-color: #1DAAA9;
         }
 		.proyectos{
@@ -253,7 +236,7 @@
     </style>
 </head>
 
-<body>
+<body style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse; vertical-align: top; font-family: Roboto,sans-serif; color: #3a3a3a;">
     <table width="100%">
         <tbody>
             <tr>
@@ -278,7 +261,7 @@
                                     <tbody>
                                         <tr>
                                             <td align="left">
-                                            	<img class="pd-all" src="<?= $this->asset('img/goteo-white.svg') ?>" alt="" />
+                                            	<img class="pd-all" src="<?= $this->get_url().'/assets/img/goteo-white.svg' ?>" alt="" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -306,7 +289,7 @@
                                     <tbody>
                                         <tr>
                                             <td align="left">
-                                            	<img class="img-header" src="<?= $this->asset('img/newsletter/header.png') ?>" alt="Goteo" />
+                                            	<img class="img-header" src="<?= $this->get_url().'/assets/img/newsletter/header.png' ?>" alt="Goteo" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -328,7 +311,7 @@
                                         <tr>
                                             <td align="left">
                                                 <p>
-                                                	<a class="btn-proyectos" href="https://goteo.org/discover">VER MÁS PROYECTOS</a>
+                                                	<a class="btn-proyectos" style="color: #ffffff; padding: 13px 0; background-color: #19b4b2; display: inline-block; padding: 6px 12px; margin-bottom: 0;font-size: 14px;font-weight: 400; line-height: 1.42857143; text-align: center; white-space: nowrap; cursor: pointer; border: 1px solid transparent; border-radius: 4px; text-decoration: none;" href="https://goteo.org/discover">VER MÁS PROYECTOS</a>
                                                 </p>
                                             </td>
                                         </tr>
@@ -347,20 +330,20 @@
                                         <tr>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
                                                 <a style="text-decoration: none; color: #212121;" href="https://t.me/goteofunding" target="_blank">
-                                                    <img src="<?= $this->asset('img/newsletter/telegram.png') ?>" alt="Telegram" width="30" height="30" border="0" style="display: block;" />
+                                                    <img src="<?= $this->get_url().'/assets/img/newsletter/telegram.png' ?>" alt="Telegram" width="30" height="30" border="0" style="display: block;" />
                                                 </a>
                                             </td>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
                                                 <a style="text-decoration: none; color: #212121;" href="http://twitter.com/goteofunding" target="_blank">
-                                                    <img src="<?= $this->asset('img/newsletter/twitter.png') ?>" alt="Twitter" width="30" height="30" border="0" style="display: block;" /></a>
+                                                    <img src="<?= $this->get_url().'/assets/img/newsletter/twitter.png' ?>" alt="Twitter" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
                                                 <a style="text-decoration: none; color: #212121;" href="https://www.facebook.com/goteofunding/" target="_blank">
-                                                    <img src="<?= $this->asset('img/newsletter/facebook.png') ?>" alt="Facebook" width="30" height="30" border="0" style="display: block;" /></a>
+                                                    <img src="<?= $this->get_url().'/assets/img/newsletter/facebook.png' ?>" alt="Facebook" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
                                                 <a style="text-decoration: none; color: #212121;" href="https://instagram.com/goteofunding/" target="_blank">
-                                                    <img src="<?= $this->asset('img/newsletter/instagram.png') ?>" alt="Instagram" width="30" height="30" border="0" style="display: block;" /></a>
+                                                    <img src="<?= $this->get_url().'/assets/img/newsletter/instagram.png' ?>" alt="Instagram" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                         </tr>
                                 </td>
