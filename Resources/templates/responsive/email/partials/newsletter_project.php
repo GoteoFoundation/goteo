@@ -146,7 +146,7 @@ if($this->key==0):
 
                             <p> 
                                 <span>
-                                    <img class="icons" src="<?= $promote->getSocialCommitment()->getIcon()->getLink(60, 60, false) ?>">
+                                    <img class="icons" src="<?= $promote->getSocialCommitment()->getIcon()->getLink(60, 60, false, true) ?>">
                                 <span class="icon-info"><?= $promote->getSocialCommitment()->name ?></span>
                             </p>
                             <?php endif; ?>
