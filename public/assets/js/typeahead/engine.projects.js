@@ -3,7 +3,12 @@ goteo.typeahead_engines = goteo.typeahead_engines || {};
 goteo.typeahead_engines.project = function (settings) {
     var prefetch_statuses = settings && settings.prefetch_statuses || '3',
         remote_statuses = settings && settings.remote_statuses || '3,4,5,6',
-        defaults = settings && settings.defaults || false;
+        defaults = settings && settings.defaults || false,
+        extra = settings && settings.extra || [];
+
+    var extra_params = Object.keys(extra).reduce(function (prev, current, indez, array) {
+        return encodeURI((extra[prev] || '') + '&' + current + '=' + extra[current])
+    }, '');
 
     var engine = new Bloodhound({
         // datumTokenizer: function (list) {
@@ -15,14 +20,14 @@ goteo.typeahead_engines.project = function (settings) {
         dupDetector: function (a, b) { return a.id === b.id; },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: {
-            url: '/api/projects?status=' + prefetch_statuses,
+            url: '/api/projects?status=' + prefetch_statuses + extra_params,
             filter: function (response) {
                 // console.log('prefetch hit', response);
                 return response.list;
             }
         },
         remote: {
-            url: '/api/projects?status=' + remote_statuses + '&q=%QUERY',
+            url: '/api/projects?status=' + remote_statuses + extra_params + '&q=%QUERY',
             wildcard: '%QUERY',
             filter: function (response) {
                 // console.log('remote hit', response);

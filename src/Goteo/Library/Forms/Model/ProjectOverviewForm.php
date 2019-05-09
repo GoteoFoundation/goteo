@@ -108,7 +108,9 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => [
-                    'help' => Text::get('tooltip-project-description'),
+                    'help' => Text::get('tooltip-project-description') .
+                              '<br><i class="fa fa-hand-o-right" aria-hidden="true"></i> ' .
+                              Text::get('tooltip-drag-and-drop-images'),
                     'rows' => 8,
                     'data-image-upload' => '/api/projects/' . $project->id . '/images'
                 ]
@@ -120,8 +122,11 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'required' => false,
                 // 'row_class' => 'extra',
                 'attr' => [
-                    'help' => Text::get('tooltip-project-about'),
-                    'rows' => 8
+                    'help' => Text::get('tooltip-project-about') .
+                              '<br><i class="fa fa-hand-o-right" aria-hidden="true"></i> ' .
+                              Text::get('tooltip-drag-and-drop-images'),
+                    'rows' => 8,
+                    'data-image-upload' => '/api/projects/' . $project->id . '/images'
                 ]
             ])
             ->add('motivation', 'markdown', [
@@ -130,14 +135,26 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 // 'row_class' => 'extra',
-                'attr' => ['help' => Text::get('tooltip-project-motivation'), 'rows' => 8]
+                'attr' => [
+                    'help' => Text::get('tooltip-project-motivation') .
+                              '<br><i class="fa fa-hand-o-right" aria-hidden="true"></i> ' .
+                              Text::get('tooltip-drag-and-drop-images'),
+                    'rows' => 8,
+                    'data-image-upload' => '/api/projects/' . $project->id . '/images'
+                ]
             ])
             ->add('related', 'markdown', [
                 'label' => 'overview-field-related',
                 'constraints' => $this->getConstraints('related'),
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-related'), 'rows' => 8]
+                'attr' => [
+                    'help' => Text::get('tooltip-project-related') .
+                              '<br><i class="fa fa-hand-o-right" aria-hidden="true"></i> ' .
+                              Text::get('tooltip-drag-and-drop-images'),
+                    'rows' => 8,
+                    'data-image-upload' => '/api/projects/' . $project->id . '/images'
+                ]
             ])
             // ->add('spread', 'textarea', [
             //     'label' => 'overview-field-spread',

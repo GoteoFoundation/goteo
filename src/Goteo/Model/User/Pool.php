@@ -67,7 +67,7 @@ class Pool extends \Goteo\Core\Model {
      * @return [type] [description]
      */
     public function calculate($save = false) {
-        $sql = "SELECT SUM(amount) AS total FROM invest WHERE user=:user AND method!='pool' AND status=:status";
+        $sql = "SELECT SUM(amount+donate_amount) AS total FROM invest WHERE user=:user AND method!='pool' AND status=:status";
         $query = static::query($sql, [':user' => $this->user, ':status' => Invest::STATUS_TO_POOL]);
         $total_to_pool = (int) $query->fetchColumn();
 

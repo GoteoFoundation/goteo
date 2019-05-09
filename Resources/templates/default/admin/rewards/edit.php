@@ -14,7 +14,7 @@ foreach ($invest->rewards as $key => $data) {
 ?>
 <div class="widget">
     <p>
-        <strong>Proyecto:</strong> <?= $project->name ?> (<?= $this->status[$project->status] ?>)<br />
+        <strong>Proyecto:</strong> <?= $this->ee($project->name) ?> (<?= $this->status[$project->status] ?>)<br />
         <strong>Usuario: </strong><?= $user->name ?><br />
         <strong>Cantidad aportada: </strong><?= $invest->amount ?> &euro; <br />
     </p>

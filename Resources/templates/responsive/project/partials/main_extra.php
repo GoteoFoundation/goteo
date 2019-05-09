@@ -14,7 +14,7 @@ $author_twitter = str_replace(
                             '@'
                         ), '', $project->user->twitter);
 $author = !empty($author_twitter) ? ' '.$this->text('regular-by').' @'.$author_twitter.' ' : '';
-$share_title = $project->name . $author;
+$share_title = $this->ee($project->name) . $author;
 
 $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
 $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($share_title . ': ' . $share_url . ' #Goteo');
@@ -217,7 +217,7 @@ $langs = $project->getLangs();
 
                             <div class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></div>
                             <div class="text-bold spacer-20"><?= $individual->reward ?></div>
-                            <div class="spacer-20"><?= $this->text_url_link($individual->description) ?></div>
+                            <div class="spacer-20"><?= $this->markdown($individual->description) ?></div>
 
                             <div class="investors">
                                 <?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?>

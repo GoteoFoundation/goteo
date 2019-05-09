@@ -226,6 +226,7 @@ $(function(){
         $('.admin-typeahead').each(function () {
             var $this = $(this);
             var sources = $this.data('sources').split(',');
+            var extra_params = $this.data('extraParams');
             // console.log('initialize with sources', sources);
             var engines = [{
                 minLength: 0,
@@ -239,7 +240,8 @@ $(function(){
                 if(goteo.typeahead_engines[source]) {
                     engines.push(goteo.typeahead_engines[source]({
                         remote_statuses: '1,2,3,4,5,6', // TODO: from data-attributes
-                        defaults: true // Show a list of prefetch projects without typing
+                        defaults: true, // Show a list of prefetch projects without typing
+                        extra: extra_params
                     }));
                 }
             });
@@ -291,25 +293,25 @@ $(function(){
       var $modal = $(this);
       var $title = $modal.find('.modal-title');
       var $body = $modal.find('.modal-body');
-      if(title) $title.text(title).show();
+        if(title) $title.text(title).show();
       else $title.hide();
-      if(url) {
+        if(url) {
         $body.html('').addClass('loading');
         // Request new content
         var request = $.ajax({
             url: url,
             dataType: "json",
-            success: function(resp, status, jqXHR) {
-                response  = (typeof resp === "string") ? $.parseJSON(resp) : resp;
+                success: function(resp, status, jqXHR) {
+                    response  = (typeof resp === "string") ? $.parseJSON(resp) : resp;
                 // console.log(response);
                 var text = response.content || response;
                 $body.html(text);
                 $body.removeClass('loading');
                 initBindings();
             },
-            error: function(jqXHR, status, err) {
+                error: function(jqXHR, status, err) {
                 var error = err;
-                if(response.responseJSON && response.responseJSON.error) error = response.responseJSON.error;
+                    if(response.responseJSON && response.responseJSON.error) error = response.responseJSON.error;
                 else error = response.responseText;
                 console.log('error', err, error);
                 $body.html(error);
@@ -318,4 +320,3 @@ $(function(){
       }
     });
 });
-

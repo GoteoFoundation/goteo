@@ -1414,6 +1414,17 @@ class User extends \Goteo\Core\Model {
         return false;
     }
 
+    public function getNodeNames() {
+        // all node names
+        $all_nodes = $this->getAdminNodes();
+        // simple list of administrable nodes
+        $admin_nodes = array();
+        foreach (Node::getList() as $node_id => $name) {
+            $admin_nodes[$node_id] = $name;
+        }
+        return $admin_nodes;
+    }
+
     /**
      * Returns all nodes administrable by the user along with the highest role in that node
      * @return array Array of nodes containing a simple object of node, name, role property

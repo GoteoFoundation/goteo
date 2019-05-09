@@ -600,6 +600,13 @@ div {
     margin-bottom: 5px;
     font-size: 13px;
     word-wrap: break-word;
+    // make all images resonsive here
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 4px 0;
+    }
   }
   &.collaborations {
     margin-top: 15px;

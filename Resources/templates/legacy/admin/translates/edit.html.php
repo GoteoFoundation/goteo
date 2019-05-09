@@ -23,7 +23,7 @@ function assign() {
 </script>
 <div class="widget">
 <?php if ($vars['action'] == 'edit') : ?>
-    <h3 class="title">Traductores para el proyecto <?php echo $project->name ?></h3>
+    <h3 class="title">Traductores para el proyecto <?php echo htmlspecialchars($project->name) ?></h3>
         <!-- asignar -->
         <table>
             <tr>

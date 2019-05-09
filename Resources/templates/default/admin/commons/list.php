@@ -61,7 +61,7 @@ $status = $this->statuses;
 
             ?>
             <tr>
-                <td><a href="/project/<?= $project->id?>" target="blank"><?= $project->name ?></a></td>
+                <td><a href="/project/<?= $project->id?>" target="blank"><?= $this->ee($project->name) ?></a></td>
                 <td><?= $status[$project->status] ?></td>
                 <td style="text-align: center;"><?= $project->cumplidos.'/'.count($project->social_rewards) ?></td>
                 <td><?= date('d-m-Y', $deadline) ?></td>

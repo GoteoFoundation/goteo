@@ -85,6 +85,7 @@ class InvestController extends \Goteo\Core\Controller {
         }
 
         $this->project = $project;
+
         $amount_original = (int)$custom_amount;
         $currency = (string)substr($custom_amount, strlen($amount_original));
         if(empty($currency)) $currency = Currency::current('id');
@@ -294,6 +295,8 @@ class InvestController extends \Goteo\Core\Controller {
     public function selectPaymentMethodAction($project_id, Request $request)
     {
         $amount = $request->query->get('amount');
+        $donate_amount = $request->query->get('donate_amount');
+        
         $email = $request->query->has('email');
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
         if(!($this->skip_login && $email) && !Session::isLogged()) {
@@ -302,6 +305,12 @@ class InvestController extends \Goteo\Core\Controller {
 
         if($reward instanceOf Response) return $reward;
         $vars = ['step' => 2];
+
+        // Donate amount
+        $vars['donate_amount']= Currency::amountInverse($donate_amount, $currency);
+
+        // tip to the platform active
+        $vars['tip']= Config::get('donate.tip');
         if($this->skip_login) {
             $vars['email'] = $this->getUser() ? $this->getUser()->email : '';
             if($request->query->get('email')) {
@@ -323,8 +332,17 @@ class InvestController extends \Goteo\Core\Controller {
      * If called via AJAX, returns a JSON response with the payment gateway form vars
      */
     public function paymentFormAction($project_id, Request $request) {
+        $project_amount=$request->query->get('project_amount');
+        $currency = Currency::current('id');
+
+        $tip=$request->query->get('tip');
+
+        $donate_amount =  $tip ? $request->query->get('donate_amount') : 0;
+
         $amount = $amount_original = $request->query->get('amount');
+
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+
         if($reward instanceOf Response) return $reward;
 
         if($this->skip_login) {
@@ -384,7 +402,8 @@ class InvestController extends \Goteo\Core\Controller {
             $invest = new Invest(
                 array(
                     'amount' => $amount,
-                    'amount_original' => $amount_original,
+                    'donate_amount' => Currency::amountInverse($donate_amount, $currency),
+                    'amount_original' => $amount_original+$donate_amount,
                     'currency' => Currency::current(),
                     'currency_rate' => Currency::rate(),
                     'user' => $user->id,
@@ -432,6 +451,7 @@ class InvestController extends \Goteo\Core\Controller {
         } catch(\Exception $e) {
             Message::error($e->getMessage());
             $this->error('Init Payment Exception', ['class' => get_class($e), $invest, 'code' => $e->getCode(), 'message' => $e->getMessage()]);
+
             return $this->redirect('/invest/' . $project_id . '/payment?' . $this->query);
         }
 

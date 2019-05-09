@@ -134,12 +134,19 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 'constraints' => $this->getConstraints("reward$suffix"),
                 'required' => false,
             ])
-            ->add("description$suffix", 'textarea', [
+            ->add("description$suffix", 'markdown', [
                 'label' => 'rewards-field-individual_reward-description',
                 'disabled' => $readonly,
                 'data' => $reward->description,
                 'constraints' => $this->getConstraints("description$suffix"),
                 'required' => false,
+                'attr'=> [
+                    'data-image-upload' => '/api/projects/' . $project->id . '/images',
+                    'help' => Text::get('tooltip-drag-and-drop-images'),
+                    'rows' => 4,
+                    'data-toolbar' => 'close,bold,italic,link,unordered-list,ordered-list,preview,fullscreen,guide'
+                ]
+
             ]);
         if(!$readonly) {
             $this->getBuilder()

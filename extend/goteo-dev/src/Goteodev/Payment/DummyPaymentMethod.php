@@ -88,7 +88,7 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
                     $output,
                     htmlentities($this->getCompleteUrl(), ENT_QUOTES, 'UTF-8', false),
                     htmlentities($this->getCompleteUrl(), ENT_QUOTES, 'UTF-8', false),
-                    $this->getInvest()->amount . ' ' .Currency::getDefault('html')
+                    $this->getTotalAmount() . ' ' .Currency::getDefault('html')
                 ));
     }
 
@@ -105,7 +105,7 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
         $request = $this->getRequest();
         $invest = $this->getInvest();
         $payment = $gateway->purchase([
-                    'amount' => (float) $this->getInvest()->amount,
+                    'amount' => (float) $this->getTotalAmount(),
                     'card' => [
                         'number' => $request->request->get('number'),
                         'expiryMonth' => '12',
@@ -126,8 +126,12 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
     }
 
     public function refund() {
+
+        $invest=$this->getInvest();
+        $invest->amount+=$this->getTotalAmount();
+
         // Any plugin can throw a PaymentException here in order to abort the refund process
-        App::dispatch(AppEvents::INVEST_REFUND, new FilterInvestEvent($this->getInvest(), $this));
+        App::dispatch(AppEvents::INVEST_REFUND, new FilterInvestEvent($invest, $this));
 
         return new EmptySuccessfulResponse();
     }

@@ -218,3 +218,7 @@ admin-module-stories: # Can access to module BlogAdminController
 admin-module-categories: # Can access to module CategoriesAdminController
     model: null
     relational: null
+
+admin-module-promote: # Can access to module PromoteAdminController
+    model: null
+    relational: null

@@ -15,8 +15,8 @@ $action = $this->action;
 $items = array();
 
 foreach ($projects as $project) {
-    $items[] = '{ value: "'.str_replace('"','\"',$project->name).'", id: "'.$project->id.'" }';
-        if($promo->project === $project->id) $preval=$project->name;
+    $items[] = '{ value: "'.str_replace('"','\"',$this->ee($project->name)).'", id: "'.$project->id.'" }';
+        if($promo->project === $project->id) $preval=$this->ee($project->name);
 }
 ?>
 <div class="widget board">

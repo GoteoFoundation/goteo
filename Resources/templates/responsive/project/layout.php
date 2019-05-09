@@ -4,16 +4,16 @@ $project=$this->project;
 
 if($this->is_pronto()):
     echo json_encode([
-        'title' => $this->project->name,
+        'title' => $this->ee($this->project->name),
         'content' => $this->supply('main-content')
         ]);
     return;
 endif;
 
-if($project->gallery[0]){
-    if($project->image)
+if($project->image)
         $meta_img=$project->image->getLink(700, 700, false, true);
-    elseif($project->secGallery['play-video'][0])
+elseif($project->gallery[0]){
+    if($project->secGallery['play-video'][0])
         $meta_img=$this->project->secGallery['play-video'][0]->imageData->getLink(780, 478, false, true);
     else
         $meta_img=$project->gallery[0]->imageData->getLink(700, 700, false, true);
@@ -22,8 +22,8 @@ if($project->gallery[0]){
 
 $this->layout('layout', [
     'bodyClass' => 'project',
-    'title' => $this->project->name,
-    'meta_description' => $this->project->subtitle,
+    'title' => $this->ee($this->project->name),
+    'meta_description' => $this->ee($this->project->subtitle),
     'tw_image' => $meta_img,
     'og_image' => $meta_img
     ]);
@@ -51,7 +51,7 @@ $this->section('content');
 <div class="container-fluid main-info"  >
 	<div class="container-fluid">
 		<div class="row header text-center">
-			<h1 class="project-title"><?= $project->name ?></h1>
+			<h1 class="project-title"><?= $this->ee($project->name) ?></h1>
 			<div class="project-by"><a href="/user/<?= $project->owner ?>"><?= $project->user->name ?></a></div>
 		</div>
 
@@ -375,5 +375,3 @@ $this->section('content');
 <?= $this->insert('partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel]) ?>
 
 <?php $this->append() ?>
-
-

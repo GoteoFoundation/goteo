@@ -254,9 +254,9 @@ class Node extends \Goteo\Core\Model {
                 id,
                 name
             FROM node
-            ORDER BY name ASC
-            ");
-
+            ORDER BY id=:config DESC, name ASC
+            ", [':config' => Config::get('node')]);
+            
         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
             $list[$item->id] = $item->name;
         }
@@ -931,4 +931,3 @@ class Node extends \Goteo\Core\Model {
     }
 
 }
-

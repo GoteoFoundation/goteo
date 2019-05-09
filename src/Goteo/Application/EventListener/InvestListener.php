@@ -127,6 +127,17 @@ class InvestListener extends AbstractListener {
             return;
         }
 
+        // Set amounts for response
+        $currency = Currency::current('id');
+        $donate_amount_original= Currency::amount($invest->donate_amount, $currency);
+        $project_amount= $invest->amount_original-$donate_amount_original;
+
+        $errors = [];
+        $invest->save($errors);
+        if ($errors) {
+            throw new \RuntimeException('Error saving Invest details! '.implode("\n", $errors));
+        }
+
         $this->warning('Invest finish failed', [$invest, $project, $invest->getFirstReward(), $invest->getUser(), 'message' => $response->getMessage()]);
 
         // not making changes on invest status...
@@ -144,7 +155,7 @@ class InvestListener extends AbstractListener {
                     '%MESSAGE%' => $response->getMessage(),
                     '%USER%'    => Feed::item('user', $user->name, $user->id),
                     '%AMOUNT%'  => Feed::item('money', $invest->amount.' '.$coin, $invest->id),
-                    '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                    '%PROJECT%' => Feed::item('project', strip_tags($project->name), $project->id),
                     '%METHOD%'  => strtoupper($method::getId())
                 ])
             )
@@ -155,7 +166,7 @@ class InvestListener extends AbstractListener {
         // Assign response if not previously assigned
         // Goto user start
         if (!$event->getHttpResponse()) {
-            $event->setHttpResponse(new RedirectResponse('/invest/' . $invest->project . '/payment?' . http_build_query(['amount' => $invest->amount_original . $invest->currency, 'reward' => $reward ? $reward->id : '0'])));
+            $event->setHttpResponse(new RedirectResponse('/invest/' . $invest->project . '/payment?' . http_build_query(['amount' => $project_amount . $invest->currency, 'reward' => $reward ? $reward->id : '0', 'donate_amount' => $donate_amount_original])));
         }
 
     }
@@ -181,6 +192,7 @@ class InvestListener extends AbstractListener {
         if (empty($invest->charged)) {
             $invest->charged = date('Y-m-d');
         }
+
         $errors = [];
         $invest->save($errors);
         if ($errors) {
@@ -226,7 +238,7 @@ class InvestListener extends AbstractListener {
         $txt_address = Text::get('invest-mail_info-address') . '<br>' . $txt_address;
 
         // Sustituimos los datos
-        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+        $subject = str_replace('%PROJECTNAME%', strip_tags($project->name), $template->title);
 
         $txt_droped = '';
 
@@ -238,9 +250,13 @@ class InvestListener extends AbstractListener {
             $txt_droped = Text::get('invest-mail_info-drop', $call->user->name, \amount_format($drop->amount), $call->name);
         }
 
+        // If extra donation to the organization
+        if($invest->donate_amount)
+            $txt_tip_donate= Text::get('invest-mail-donate-tip', $invest->donate_amount);
+
         // En el contenido:
-        $search = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%', '%METHOD%');
-        $replace = array($user->name, $project->name, Config::getUrl($lang) . '/project/' . $project->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_method);
+        $search = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%', '%METHOD%', '%TIP%');
+        $replace = array($user->name, strip_tags($project->name), Config::getUrl($lang) . '/project/' . $project->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_method, $txt_tip_donate);
         $content = str_replace($search, $replace, $template->parseText());
 
         if(!$event->skipMail()) {
@@ -305,11 +321,11 @@ class InvestListener extends AbstractListener {
                 $this->warning('Template lang changed', [$template, 'old_lang' => $original_lang, 'new_lang' => $lang, $invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser() ]);
             }
             // Sustituimos los datos
-            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+            $subject = str_replace('%PROJECTNAME%', strip_tags($project->name), $template->title);
 
             // En el contenido:
             $search = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%', '%DROPED%');
-            $replace = array($project->user->name, $user->name, $project->name, $URL, $invest->amount, Config::getUrl() . '/user/profile/' . $user->id . '/message', $txt_droped);
+            $replace = array($project->user->name, $user->name, strip_tags($project->name), $URL, $invest->amount, Config::getUrl() . '/user/profile/' . $user->id . '/message', $txt_droped);
             $content = str_replace($search, $replace, $template->parseText());
 
             $mailHandler = new Mail();
@@ -341,7 +357,7 @@ class InvestListener extends AbstractListener {
                 new FeedBody(null, null, 'feed-user-invest', [
                         '%USER%' => Feed::item('user', $user->name, $user->id),
                         '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin, $invest->id),
-                        '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                        '%PROJECT%' => Feed::item('project', strip_tags($project->name), $project->id),
                         '%METHOD%' => strtoupper($method::getId())
                     ])
             )
@@ -350,7 +366,7 @@ class InvestListener extends AbstractListener {
         // Public Feed
         $log_html = new FeedBody(null, null, 'feed-invest', [
                 '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin, $invest->id),
-                '%PROJECT%' => Feed::item('project', $project->name, $project->id)
+                '%PROJECT%' => Feed::item('project', strip_tags($project->name), $project->id)
                 ]);
         if ($invest->anonymous) {
             $log->populate('regular-anonymous',

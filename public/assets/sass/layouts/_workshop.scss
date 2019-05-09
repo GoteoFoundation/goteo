@@ -83,6 +83,11 @@ body.workshop {
 
     div.section.banner-header{
       position: relative;
+      div.image{
+        img{
+          filter: brightness(85%);
+        }
+      }
       div.info{
         position: absolute;
         width: 100%;
@@ -344,6 +349,18 @@ body.workshop {
     .section.stories{
       padding-top: 30px;
       margin-bottom: 0;
+    }
+
+    div.section.related-posts{
+      padding: 40px 0 50px 0;
+      h2.title{
+        text-align: center;
+        margin-top: 0;
+        padding-bottom: 30px;
+      }
+      .a-unstyled{
+        color: #3a3a3a;
+      }
     }
 
 

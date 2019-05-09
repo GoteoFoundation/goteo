@@ -23,6 +23,7 @@ class Promote extends \Goteo\Core\Model {
         $id,
         $node,
         $project,
+        $status,
         $name,
         $title,
         $description,
@@ -62,6 +63,37 @@ class Promote extends \Goteo\Core\Model {
             return $promote;
     }
 
+    
+    /*
+     *  It returns a promote by the Project Id
+     */
+    public static function getByProjectIdAndChannel($id, $channel, $lang = null) {
+
+            if(!$lang) $lang = Lang::current();
+            list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+            $query = static::query("
+                SELECT
+                    promote.id as id,
+                    promote.node as node,
+                    promote.project as project,
+                    project.name as name,
+                    $fields,
+                    promote.order as `order`,
+                    promote.active as `active`
+                FROM    promote
+                $joins
+                INNER JOIN project
+                    ON project.id = promote.project
+                WHERE promote.project = :id
+                    AND promote.node = :channel
+                ", array(':id'=>$id, ':channel'=>$channel));
+            $promote = $query->fetchObject(__CLASS__);
+
+            return $promote;
+    }
+
+
     /*
      * Lista de proyectos destacados
      */
@@ -74,8 +106,10 @@ class Promote extends \Goteo\Core\Model {
 
         if(self::default_lang($lang) == Config::get('sql_lang')) {
             $different_select=" IFNULL(promote_lang.title, promote.title) as title,
-                                IFNULL(promote_lang.description, promote.description) as promo_text";
-            $different_select_project=" IFNULL(project_lang.description, project.description) as description";
+                                IFNULL(promote_lang.description, promote.description) as promo_text
+                                ";
+            $different_select_project=" IFNULL(project_lang.description, project.description) as description, 
+                                        IFNULL(project_lang.subtitle, project.subtitle) as subtitle";
             }
         else {
                 $different_select=" IFNULL(promote_lang.title, IFNULL(eng.title, promote.title)) as title,
@@ -83,7 +117,9 @@ class Promote extends \Goteo\Core\Model {
                 $eng_join=" LEFT JOIN promote_lang as eng
                                 ON  eng.id = promote.id
                                 AND eng.lang = 'en'";
-                $different_select_project=" IFNULL(project_lang.description, IFNULL(eng_proj.description, project.description)) as description";
+                $different_select_project=" IFNULL(project_lang.description, IFNULL(eng_proj.description, project.description)) as description,
+                    IFNULL(project_lang.subtitle, IFNULL(eng_proj.subtitle, project.subtitle)) as subtitle
+                ";
                 $eng_join_project=" LEFT JOIN project_lang as eng_proj
                                 ON  eng_proj.id = project.id
                                    AND eng_proj.lang = 'en'";
@@ -296,6 +332,21 @@ class Promote extends \Goteo\Core\Model {
         $order = $query->fetchColumn(0);
         return ++$order;
 
+    }
+
+    public function getProject() {
+        if(isset($this->projectObject)) return $this->projectObject;
+        try {
+            $this->projectObject = Project::get($this->project);
+        } catch(ModelNotFoundException $e) {
+            $this->projectObject = false;
+        }
+        return $this->projectObject;
+    }
+
+    public function getStatus() {
+        $array = Project::Status();
+        return $array[$this->status];
     }
 
 

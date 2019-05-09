@@ -261,7 +261,7 @@ EOT
             $paid_status = Invest::STATUS_PAID .','. Invest::STATUS_CHARGED.','. Invest::STATUS_DONATED;
 
 
-            $sql_total_to_pool = "SELECT SUM(amount) FROM invest i1 WHERE i1.user=u.id
+            $sql_total_to_pool = "SELECT SUM(amount + donate_amount) FROM invest i1 WHERE i1.user=u.id
                 # AND status IN ($returned_status)
                 AND status > 0
                 AND pool=1
