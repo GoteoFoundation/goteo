@@ -11,7 +11,6 @@
 namespace Goteo\Library {
 
     use Goteo\Application\Config;
-    use Goteo\Application\App;
 	use Goteo\Core\Model,
         Goteo\Core\Exception,
         Goteo\Model\Template,
@@ -303,14 +302,6 @@ namespace Goteo\Library {
             }
 
             Lang::set($current_lang);
-
-            // convert to css inline styles the content
-            $parser=App::getService('app.html.emogrifier');
-            $parser->setHtml($tmpcontent);
-            $css=View::render('email/partials/newsletter_style');
-            $parser->setCss($css);
-            $tmpcontent=$parser->emogrifyBodyContent();
-
             return $tmpcontent;
 		}
 
