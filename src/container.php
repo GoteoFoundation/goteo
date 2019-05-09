@@ -173,11 +173,6 @@ $sc->register('app.md.parser', 'Parsedown')
    ->addMethodCall('setBreaksEnabled', [true])
    ->addMethodCall('setUrlsLinked', [true])
 ;
-
-// Markdown parser
-$sc->register('app.html.emogrifier', 'Pelago\Emogrifier')
-;
-
 // Currency convertes
 $sc->register('app.currency.converter', 'Goteo\Library\Converter');
 
