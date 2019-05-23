@@ -556,6 +556,9 @@ class ProjectsApiController extends AbstractApiController {
                      Text::get('overview-field-reward'),
                      Text::get('dashboard-rewards-fulfilled_status'),
                      Text::get('admin-address'),
+                     Text::get('personal-field-location'),
+                     Text::get('personal-field-zipcode'),
+                     Text::get('personal-field-country'),
                      Text::get('regular-date')];
             fputcsv($buffer, $data);
             flush();
@@ -570,7 +573,10 @@ class ProjectsApiController extends AbstractApiController {
                     $name = $inv->getUser()->name;
                     $email = $inv->getUser()->email;
                     $a = $inv->getAddress();
-                    $address = $a->address . ', ' . $a->location . ', ' . $a->zipcode .' ' . $a->country;
+                    $address = $a->address;
+                    $location= $a->location;
+                    $zipcode=$a->zipcode;
+                    $country= $a->country;
                     $reward = $inv->getRewards() ? $inv->getRewards()[0]->getTitle() : '';
                     if($inv->resign) {
                         $reward = $address = '';
@@ -595,6 +601,9 @@ class ProjectsApiController extends AbstractApiController {
                              $reward,
                              Text::get('regular-' . ($inv->fulfilled ? 'yes' : 'no')),
                              $address,
+                             $location,
+                             $zipcode,
+                             $country,
                              date_formater($inv->invested) ];
                     fputcsv($buffer, $data);
                 }
