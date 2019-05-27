@@ -14,6 +14,7 @@ if (empty($page_var)) $page_var = 'pag';
 // Default search from current query
 $pag = (int) $this->page;
 if(empty($pag)) $pag = (int) $this->get_query($page_var);
+$pag = max(0, $pag);
 
 // URL to be added the page_var variable
 $baselink =  (string) $this->baselink;
