@@ -11,7 +11,7 @@ The console command `migrate` must be used to create sql migrations:
 **Creates a new PHP Class file to write migrations inside:**
 
 ```bash
-php bin/console create some_description
+php bin/console migrate create some_description
 ```
 
 A new file will be created in `db/migrations/{timestamp}_dbname_some_description.php`, edit it and write the UP/DOWN SQL commands there.
