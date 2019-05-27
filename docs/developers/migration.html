@@ -134,7 +134,7 @@
 <p>Starting in version <strong>3.2</strong> a SQL migrations uses the library <a href="http://kohkimakimoto.github.io/lib-migration/">LibMigration</a>.</p>
 <p>The console command <code>migrate</code> must be used to create sql migrations:</p>
 <p><strong>Creates a new PHP Class file to write migrations inside:</strong></p>
-<pre><code class="language-bash">php bin/console create some_description</code></pre>
+<pre><code class="language-bash">php bin/console migrate create some_description</code></pre>
 <p>A new file will be created in <code>db/migrations/{timestamp}_dbname_some_description.php</code>, edit it and write the UP/DOWN SQL commands there.</p>
 <p>To apply migrations these commands can be used:</p>
 <p><strong>Shows the current status:</strong></p>
