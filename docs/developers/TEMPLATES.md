@@ -275,6 +275,6 @@ Ideally, templates must be kept as simple as possible, we will try to follow the
 - Never use PHP curly brackets.
 - Only ever have one statement in each PHP tag.
 - Avoid using semicolons. They are not needed when there is only one statement per PHP tag.
-- Never use the `use` operator. Templates should not be interacting with classes in this way. Use [custom extensions](http://www.foilphp.it/docs/EXTENDING/CUSTOM-EXTENSIONS.html) for that.
+- Never use the `use` operator. Templates should not be interacting with classes in this way. Use [custom extensions](https://github.com/FoilPHP/Foil/blob/master/docs/EXTENDING/CUSTOM-EXTENSIONS.md) for that.
 - Never use the `for`, `while` or `switch` control structures. Instead use `if` and `foreach`. Additionally you can take a look at the built-in [loop](http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html) and [array](http://www.foilphp.it/docs/FUNCTIONS/ARRAY-HELPERS.html) Foil structures
 - Avoid variable assignment.
