@@ -303,7 +303,8 @@ class ProjectController extends \Goteo\Core\Controller {
             if ($show == 'participate') {
                 $viewData['worthcracy']=Worth::getAll();
                 $limit=15;
-                $viewData['investors_list']= Invest::investors($project->id, false, false, (int)$request->query->get('pag') * $limit, $limit, false);
+                $pag = max(0, (int)$request->query->get('pag'));
+                $viewData['investors_list']= Invest::investors($project->id, false, false, $pag * $limit, $limit, false);
                 $viewData['investors_total'] = Invest::investors($project->id, false, false, 0, 0, true);
                 $viewData['investors_limit'] = $limit;
 
