@@ -45,7 +45,6 @@ invest-fiscal-skip: 'Ora non voglio compilare questi dati.'
 invest-fiscal-title: 'Assicurati di poter detrarre il tuo contributo (per i/le contribuenti in Spagna)'
 invest-login-alert: 'Devi registrarti o <a href="%s">iniciar sesión</a> per poter realizzare la donazione'
 invest-mail_info-address: 'Hai indicato il seguente indirizzo '
-invest-mail_info-drop: 'In più, %s ha donato %s di Matchfunding con la campagna%s'
 invest-make-sure-save: Salvare
 invest-make-sure-title: Conferma
 invest-method: 'Metodo di pagamento'
