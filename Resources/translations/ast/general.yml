@@ -19,9 +19,11 @@ goteo-return-button: 'Volver a Goteo'
 guide-dashboard-user-personal: "Namái has cumplimentar estos datos si creesti un proyeutu y quies que seya cofinanciáu y sofitáu pente Goteo. La información d'esti apartáu ye precisa pa contautate en casu de que consigas la financiación riquida, y qu'asina puea efectúe l'ingresu."
 guide-project-comment: guide-project-comment
 guide-project-support: guide-project-support
+guide-project-invests: 'Dende esti apartáu va poder xestionar los cofinanciadores, les recompenses qu''escoyeren y tamién ponete en contautu con ello si lo consideres preciso.'
 header-about-side: 'Lo que nos mueve'
 home-posts-header: Novedaes
 horizontal-project-investors: 'cofinanciadores'
+horizontal-project-percent: 'financiáu'
 project-invest-total: 'Total d''aportaciones'
 regular-add: Rexistru nuevu
 regular-ask: Entrugar

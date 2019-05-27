@@ -47,7 +47,6 @@ invest-fiscal-skip: 'Ich möchte diese Daten jetzt nicht ausfüllen.'
 invest-fiscal-title: 'Vergewissern Sie sich, dass Sie die Belohnung anrechnen können'
 invest-login-alert: 'Sie müssen sich anmelden oder <a href="%s">einloggen, </a> um die Unterstützung zu tätigen'
 invest-mail_info-address: 'Sie werden die Belohung an folgende Adresse erhalten:'
-invest-mail_info-drop: 'Sie haben dem Projekt auch %s %s durch die %s Kampagne aus dem Matchfunding beigetragen'
 invest-make-sure-save: Speichern
 invest-make-sure-title: Bestätigen
 invest-method: 'Zahlungsmethode'

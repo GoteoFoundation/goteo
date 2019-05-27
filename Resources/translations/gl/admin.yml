@@ -53,19 +53,64 @@ admin-remove-filters: 'Eliminar filtros'
 admin-remove-entry: 'Eliminar entrada'
 admin-remove-entry-confirm: 'Tes a certeza de querer eliminar esta entrada? Esta operación non se pode desfacer!'
 admin-remove-entry-ok: 'Entrada eliminada correctamente'
+admin-add-entry-ok: 'Nova entrada creada correctamente'
+admin-edit-entry-ok: 'Entrada editada correctamente'
 admin-services: Servizos
+admin-sponsors: Servizos
 admin-slug-seo-help: 'Este campo é importante para SEO. Editar só se hai unha boa razón.'
 admin-others: Outros
+admin-summary: Resumo
+admin-origins: Análise de visitas
+admin-status: Estado
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Texto simple'
+admin-user: Usuario
+admin-users: Usuarios
+admin-users-add: Crear novo usuario
+admin-blog-not-public: 'Esta publicación aínda non é pública'
+admin-stories: Historias de usuarios no Goteo
+admin-stories-add: Crear unha nova historia
+admin-stories-edit: Editando a historia %s
+admin-category-add: Crear unha nova categoría
+admin-category-edit: Editando a categoría %s
+admin-socialcommitment-add: Crear un novo compromiso social
 admin-channels: Canles
 admin-yes: Si
 admin-project-to-publish: 'Publicar'
+admin-home-title: Administrar Goteo
+admin-list: Listaxe
 admin-stats: Estatísticas
+admin-list-total: 'Total: <strong>%s</strong> resultados'
+admin-search-global: 'Proxecto, canle, convocatoria...'
+admin-rebase-user: 'Mudar o ID de usuario'
+admin-edit-name: 'Mudar o nome'
+admin-edit-roles: 'Mudar os roles do usuario'
+admin-send-email: 'Enviar correo electrónico'
+admin-show-roles-info: 'Que pode facer cada rol?'
+admin-view-user-projects: 'Tódolos proxectos'
 admin-view-user-invests: 'Tódalas achegas'
+admin-user-hidden: 'Privado (oculto)'
+admin-user-active: 'Conta activa'
 admin-user-create-invest: 'Crear achega'
+admin-view-user-mailing: 'Tódolos envíos'
+admin-role-change-forbidden: 'Non tes permiso para xestionar o rol %ROLE% neste usuario'
+admin-users-global-search: 'Id, nome, correo electrónico ou proxecto'
+admin-blog-global-search: 'Id, título, subtítulo ou texto'
+admin-blog-stories-search: 'Id, título, texto ou proxecto'
 admin-no-project: 'Sen proxecto'
 admin-title-id: Id
 admin-title-name: Nome
 admin-title-about: Info
+admin-title-active: Activo
+admin-title-location: Localización
+admin-title-fullname: Nome
+admin-title-email: Correo electrónico
+admin-title-password: Contrasinal
+admin-title-avatar: Avatar
+admin-title-roles: Roles
+admin-title-amount: Investido
+admin-title-icon: Icona
 admin-title-info: Info
 admin-title-image: Imaxe
 admin-title-title: Título
@@ -77,7 +122,96 @@ admin-title-langs: Traducións
 admin-title-actions: Accións
 admin-title-tags: Etiquetas
 admin-title-deleted: Eliminado
+admin-title-social_commitment: Compromiso social
+admin-title-footprints: 'Pegadas'
+admin-title-categories: 'Categorías'
+admin-title-social_commitments: 'Compromisos sociais'
+admin-title-order: Ordenar
+admin-aggregate-timeline: 'Cronoloxía'
 admin-aggregate-invests: 'Total de achegas'
 admin-aggregate-invests-average: 'Media de achegas'
 admin-stats-invest-totals: 'Achegas e comisións'
+admin-stats-project-totals: 'Estado dos proxectos'
+admin-stats-fees: 'Comisión plataforma'
+admin-stats-citizens-part: 'Parte Cidadá'
+admin-stats-to_projects: 'A proxectos'
+admin-stats-to_wallet: 'Ao portamoedas'
+admin-stats-to_fee: 'A comisións'
+admin-stats-to_fee-percent: 'Comisión efectiva'
+admin-stats-in_wallet: 'No portamoedas'
+admin-losts: Perdas
+admin-raised: Recadado
+admin-active: Cobrado
+admin-refunded: Devolto
+admin-commissions: Comisión
+admin-fees: Comisión plataforma
+admin-user-fee: Comisión cidadá
+admin-vat: IVE
+admin-diff: Diferenza
+admin-the_day: O día
+admin-the_week: A semana
+admin-the_month: O mes
+admin-the_year: O ano
+admin-custom: Segundo filtro
+admin-total: Total
+admin-today: Hoxe
+admin-yesterday: Onte
+admin-week: Esta semana
+admin-last_week: O mesmo día da semana pasada
+admin-last_week_complete: Toda a semana pasada
+admin-last_year_week: A mesma semana hai un ano
+admin-month: Este mes
+admin-last_month: O mesmo día do mes pasado
+admin-last_month_complete: Todo o mes pasado
+admin-last_year_month: O mesmo mes hai un ano
+admin-year: Este ano
+admin-last_year: O mesmo día do ano pasado
+admin-last_year_complete: Todo o ano pasado
+admin-projects-created-today: 'Creados hoxe'
+admin-projects-created-yesterday: 'Creados onte'
+admin-projects-created-week: 'Creados esta semana'
+admin-projects-created-last_week: 'Creados a semana pasada'
+admin-projects-created-month: 'Creados este mes'
+admin-projects-created-last_month: 'Creados o mes pasado'
+admin-projects-created-year: 'Creados este ano'
+admin-projects-created-last_year: 'Creados o ano pasado'
+admin-projects-negotiating-today: 'En negociación hoxe'
+admin-projects-negotiating-yesterday: 'En negociación onte'
+admin-projects-negotiating-week: 'En negociación esta semana'
+admin-projects-negotiating-last_week: 'En negociación a semana pasada'
+admin-projects-negotiating-month: 'En negociación este mes'
+admin-projects-rejected-month: 'Descartados este mes'
+admin-projects-rejected-year: 'Descartados este ano'
+admin-projects-rejected-last_year: 'Descartados o ano pasado'
+admin-projects-review-today: 'En revisión hoxe'
+admin-projects-review-yesterday: 'En revisión onte'
+admin-projects-review-week: 'En revisión esta semana'
+admin-projects-review-last_week: 'En revisión a semana pasada'
+admin-projects-review-month: 'En revisión este mes'
+admin-projects-review-last_month: 'En revisión o mes pasado'
+admin-projects-review-year: 'En revisión este ano'
+admin-projects-review-last_year: 'En revisión o ano pasado'
+admin-invest-raised-amount-today: 'Recadado hoxe'
+admin-invest-raised-total-today: 'Doazóns hoxe'
+admin-invest-raised-amount-yesterday: 'Recadado onte'
+admin-invest-raised-total-yesterday: 'Doazóns onte'
+admin-invest-raised-amount-week: 'Recadado esta semana'
+admin-invest-raised-amount-last_week: 'Recadado a semana pasada'
+admin-invest-raised-total-week: 'Doazóns esta semana'
+admin-invest-raised-total-last_week: 'Doazóns a semana pasada'
+admin-invest-raised-amount-month: 'Recadado este mes'
+admin-invest-raised-amount-last_month: 'Recadado o mes pasado'
+admin-invest-raised-total-month: 'Doazóns este mes'
+admin-invest-raised-total-last_month: 'Doazóns o mes pasado'
+admin-invest-raised-amount-year: 'Recadado este ano'
+admin-invest-raised-total-year: 'Recadado este ano'
+admin-invest-raised-amount-last_year: 'Recadado o ano pasado'
+admin-invest-raised-total-last_year: 'Doazóns do ano pasado'
+admin-invest-commissions-today: 'Comisión banco hoxe'
+admin-invest-commissions-yesterday: 'Comisión banco onte'
+admin-invest-commissions-week: 'Comisión banco esta semana'
+admin-invest-commissions-last_week: 'Comisión banco a semana pasada'
+admin-invest-commissions-month: 'Comisión banco este mes'
+admin-invest-commissions-last_month: 'Comisión banco o mes pasado'
+admin-invest-commissions-year: 'Comisión banco este ano'
 admin-stats-projects-project-desc: 'Achegas ao proxecto'
