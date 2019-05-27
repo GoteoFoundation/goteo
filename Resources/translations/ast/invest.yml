@@ -39,7 +39,6 @@ invest-fiscal-skip: 'Agora nun quiero rellenar estos datos.'
 invest-fiscal-title: 'Asegúrate que pues desgrabar la to aportación (pa contribuyentes n''España)'
 invest-login-alert: 'Has rexistrate o <a href="%s">aniciar sesión</a> pa poder facer l''aporte'
 invest-mail_info-address: 'Especifiquesti la direición de darréu:'
-invest-mail_info-drop: 'Amás, %s aportó %s de capital riegu pente la campaña %s'
 invest-make-sure-save: Guardar
 invest-make-sure-title: Confirmar
 invest-method: 'Métodu de pagu'

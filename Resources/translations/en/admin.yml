@@ -38,6 +38,8 @@ admin-account-switch-pool: 'Commute the pool'
 admin-account-switch-pool-confirm: "This only applies when the project fails, it will not generate or take away money from the wallet.\nContinue?"
 admin-account-switch-pool-fail: 'The status of this contribution pool can not be changed'
 admin-account-transaction: 'Tracking codes'
+admin-account-user-changed-error: 'The username [%ID%] could not be changed to [%NAME%]!'
+admin-account-user-changed-successfully: 'The username [%ID%] has changed to [%NAME%]'
 admin-address: Address
 admin-all: All
 admin-global: Global
@@ -51,12 +53,14 @@ admin-communications: Comunications
 admin-home: Dashboard
 admin-items: entries
 admin-mailing-back-to-list: 'Back to messages'
+admin-mailing-communicating-with: 'We tried to communicate with %DESC%'
 admin-mailing-created: 'Created on'
 admin-mailing-new-massive: 'A new mass mailing was created to %TOTAL% users'
 admin-mailing-status: 'Automatic delivery status'
 admin-mailing-subject: Subject
 admin-mailing-view-and-activate: 'See the post admin to start sending'
 admin-mailing-view-in-newsletter: 'See the post admin'
+admin-mailing-view-in-sent: 'View of shipping history (statistics)'
 admin-mailing-view-message: 'View message'
 admin-newsletter-generated: 'Newsletter [%ID%] generated'
 admin-newsletter-langs-to-send: 'Languages: %LANGS%'
@@ -91,6 +95,8 @@ admin-text-type-html: HTML
 admin-text-type-md: Markdown
 admin-text-type-plain: 'Simple text'
 admin-user: User
+admin-user-no-projects: 'You have not created any projects yet'
+admin-user-no-invests: 'You have not made any donations yet'
 admin-users: Users
 admin-users-add: Create new user
 admin-blog: General blog
@@ -114,6 +120,8 @@ admin-sdg-add: Create a new ODS
 admin-sdg-edit: Editing ODS %s
 admin-footprint-add: Create a new footprint
 admin-footprint-edit: Editing footprint %s
+admin-calls: Announcements
+admin-matchers: Matchers
 admin-channels: Channels
 admin-yes: "Yes"
 admin-impersonate: Impersonate
@@ -163,6 +171,7 @@ admin-view-user-mailing: 'All mailing'
 admin-role-change-forbidden: 'You don''t have permission to manage the role %ROLE% as this user'
 admin-users-global-search: 'Id, name, email or project'
 admin-blog-global-search: 'Id, title, subtitle or text'
+admin-blog-stories-search: 'ID, title, text, or project'
 admin-no-project: 'No project'
 admin-title-id: Id
 admin-title-name: Name
@@ -213,4 +222,6 @@ admin-all-call-referers: 'Origin of visits to matchfunding pages'
 admin-all-project-devices: 'Device used on project pages'
 admin-all-invests-devices: 'Device used in successful contributions to projects'
 admin-all-call-devices: 'Device used on matchfunding pages'
+admin-aggregate-timeline: 'Timeline'
 admin-stats-refunded: 'Returns'
+admin-stats-matchfunding-part: 'Projects with Matchfunding'
