@@ -228,7 +228,7 @@
             padding: 0px 10% 40px 25% !important;
             }
         }
-        @media (min-width: 320px) and (max-width: 414px) {
+        @media(min-width: 320px) and (max-width: 414px) {
             .claim-fundacion{
                 padding: 20px 10px 0px 10px !important;
             }
