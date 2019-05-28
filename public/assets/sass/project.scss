@@ -1007,6 +1007,9 @@ div {
     font-size: 32px !important;
   }
   div {
+    &.general-text h1{
+      word-break: break-word; 
+    }
     &.project-by a {
       font-size: 16px !important;
     }
@@ -1096,6 +1099,9 @@ div {
     font-size: 2.28em;
   }
   div {
+    &.general-text h1{
+      word-break: break-word; 
+    }
     &.project-by a {
       font-size: 1.29em;
     }
