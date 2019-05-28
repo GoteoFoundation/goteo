@@ -8,7 +8,7 @@
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic|Open+Sans+Condensed:300|Kalam);
         /* A simple css reset */
-        body,table,thead,tbody,tr,td,img {
+        /*body,table,thead,tbody,tr,td,img {
             padding: 0;
             margin: 0;
             border: none;
@@ -17,7 +17,7 @@
             vertical-align: top;
             font-family: Roboto,sans-serif;
             color: #3a3a3a;
-        }
+        }*/
         a{
             text-decoration: none;
             color: #337ab7;
@@ -237,12 +237,12 @@
 </head>
 
 <body style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse; vertical-align: top; font-family: Roboto,sans-serif; color: #3a3a3a;">
-    <table width="100%">
-        <tbody>
+    <table width="100%" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
+        <tbody style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
             <tr>
-                <td class="wrapper" width="600" align="center">
+                <td class="wrapper" width="600" align="center" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
                  <!-- Top bar logo -->
-                    <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#19b4b2">
+                    <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#19b4b2" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
                         <tr>
                             <td class="column" width="250" valign="top">
                                 <table>
@@ -256,12 +256,12 @@
                                 </table>
                             </td>
 
-                            <td class="column" width="100" valign="top">
-                                <table>
+                            <td class="column" width="100" valign="top" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
+                                <table style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
                                     <tbody>
                                         <tr>
-                                            <td align="left">
-                                            	<img class="pd-all" src="<?= $this->asset('img/goteo-white.svg') ?>" alt="" />
+                                            <td align="left" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
+                                            	<img width="100%" class="pd-all" src="<?= $this->asset('img/newsletter/goteo-white.png') ?>" alt="" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -285,10 +285,10 @@
                     <table class="section header" cellpadding="0" cellspacing="0" width="100%">
                         <tr>
                             <td class="column">
-                                <table>
+                                <table style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
                                     <tbody>
                                         <tr>
-                                            <td align="left">
+                                            <td align="left" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
                                             	<img class="img-header" src="<?= $this->asset('img/newsletter/header.png') ?>" alt="Goteo" />
                                             </td>
                                         </tr>
