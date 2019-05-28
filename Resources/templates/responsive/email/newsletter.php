@@ -261,7 +261,7 @@
                                     <tbody>
                                         <tr>
                                             <td align="left">
-                                            	<img class="pd-all" src="<?= $this->get_url().'/assets/img/goteo-white.svg' ?>" alt="" />
+                                            	<img class="pd-all" src="<?= $this->asset('img/goteo-white.svg') ?>" alt="" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -289,7 +289,7 @@
                                     <tbody>
                                         <tr>
                                             <td align="left">
-                                            	<img class="img-header" src="<?= $this->get_url().'/assets/img/newsletter/header.png' ?>" alt="Goteo" />
+                                            	<img class="img-header" src="<?= $this->asset('img/newsletter/header.png') ?>" alt="Goteo" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -330,20 +330,20 @@
                                         <tr>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
                                                 <a style="text-decoration: none; color: #212121;" href="https://t.me/goteofunding" target="_blank">
-                                                    <img src="<?= $this->get_url().'/assets/img/newsletter/telegram.png' ?>" alt="Telegram" width="30" height="30" border="0" style="display: block;" />
+                                                    <img src="<?= $this->asset('img/newsletter/telegram.png') ?>" alt="Telegram" width="30" height="30" border="0" style="display: block;" />
                                                 </a>
                                             </td>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
                                                 <a style="text-decoration: none; color: #212121;" href="http://twitter.com/goteofunding" target="_blank">
-                                                    <img src="<?= $this->get_url().'/assets/img/newsletter/twitter.png' ?>" alt="Twitter" width="30" height="30" border="0" style="display: block;" /></a>
+                                                    <img src="<?= $this->asset('img/newsletter/twitter.png') ?>" alt="Twitter" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
                                                 <a style="text-decoration: none; color: #212121;" href="https://www.facebook.com/goteofunding/" target="_blank">
-                                                    <img src="<?= $this->get_url().'/assets/img/newsletter/facebook.png' ?>" alt="Facebook" width="30" height="30" border="0" style="display: block;" /></a>
+                                                    <img src="<?= $this->asset('img/newsletter/facebook.png') ?>" alt="Facebook" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                             <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
                                                 <a style="text-decoration: none; color: #212121;" href="https://instagram.com/goteofunding/" target="_blank">
-                                                    <img src="<?= $this->get_url().'/assets/img/newsletter/instagram.png' ?>" alt="Instagram" width="30" height="30" border="0" style="display: block;" /></a>
+                                                    <img src="<?= $this->asset('img/newsletter/instagram.png') ?>" alt="Instagram" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                         </tr>
                                 </td>
