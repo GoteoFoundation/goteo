@@ -22,11 +22,12 @@
             text-decoration: none;
             color: #337ab7;
         }
+
         /* Add some padding for small screens */
-        .wrapper {
+        /*.wrapper {
             padding-left: 0px;
             padding-right: 0px;
-        }
+        }*/
         h1,h2,h3,h4,h5,h6,p {
             margin: 0;
             padding: 0 20px 20px 20px;
@@ -289,7 +290,7 @@
                                     <tbody>
                                         <tr>
                                             <td align="left" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
-                                            	<img class="img-header" src="<?= $this->asset('img/newsletter/header.png') ?>" alt="Goteo" />
+                                            	<img class="img-header" style="max-width:100%;" src="<?= $this->asset('img/newsletter/header.png') ?>" alt="Goteo" />
                                             </td>
                                         </tr>
                                     </tbody>
