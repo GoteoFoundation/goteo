@@ -22,6 +22,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Worth;
 use Goteo\Model\Message as SupportMessage;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Account;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Invest;
 use Goteo\Model\Project\Favourite;
@@ -118,6 +119,15 @@ class ProjectController extends \Goteo\Core\Controller {
             $conf->mincost_estimation = $request->request->get('minimum');
             $conf->publishing_estimation = $request->request->get('publishing_date');
             $conf->save();
+
+
+            // Save default fee
+            $accounts = new Account();
+            $accounts->project = $project->id;
+            $accounts->allowpp = false;
+            $accounts->fee = Config::get('fee');
+            $accounts->save();
+
 
             // CREATED EVENT
             $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();

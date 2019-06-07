@@ -172,6 +172,11 @@ foreach ($filters as $key=>$value) {
                         $add[] = "<strong>{$project->project_location}</strong>";
                     }
 
+                    $add[] = "Comisión: <strong>{$project->getAccount()->fee} %</stroong>";
+
+                    if($project->user->getTotalPublishedProjects()>1)
+                        $add[] = "Proyectos publicados: <strong>{$project->user->getTotalPublishedProjects()}</strong>";
+
                     echo implode(' | ', $add);
                 ?></td>
             </tr>
