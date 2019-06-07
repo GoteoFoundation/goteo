@@ -7,6 +7,7 @@ use Goteo\Library\Text;
 use Goteo\Model\User;
 use Goteo\Model\Project;
 use Goteo\Model\License;
+use Goteo\Application\Config;
 
 class Contract extends \Goteo\Core\Model {
 
@@ -62,6 +63,7 @@ class Contract extends \Goteo\Core\Model {
         $project_description, // descripción del proyecto
         $project_invest, // objetivo de financiación
         $project_return, // retornos comprometidos
+        $project_fee,   //  Platform fees
 
         // seguimiento (es un objeto, cada atributo es un valor de seguimiento)
         $status,
@@ -176,6 +178,7 @@ class Contract extends \Goteo\Core\Model {
         $contract->bank_owner = $account->bank_owner;
         $contract->paypal = $account->paypal;
         $contract->paypal_owner = $account->paypal_owner;
+        $contract->fee = $account->fee;
 
         return $contract->save($errors);
     }
@@ -207,9 +210,11 @@ class Contract extends \Goteo\Core\Model {
             // si no tiene flag de "listo para imprimir" solo lo mostramos y como borrador
             $contract->draft = ($contract->status->ready) ? false : true;
 
-
             // cargamos los documentos
             $contract->docs = Contract\Document::getDocs($id);
+
+            if(!$contract->fee)
+                $contract->fee=Config::get('fee');
 
             return $contract;
         } else {
@@ -365,6 +370,7 @@ class Contract extends \Goteo\Core\Model {
                 'bank_owner',
                 'paypal',
                 'paypal_owner',
+                'fee',
                 'birthdate',
                 'reg_name',
                 'reg_date',
