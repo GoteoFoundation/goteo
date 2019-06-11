@@ -197,8 +197,9 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteAdminController');
-		    \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
-
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommunicationAdminController');
+		
         // TODO: to be replace by the new AdminController
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
