@@ -1305,6 +1305,11 @@ class User extends \Goteo\Core\Model {
         return (int) self::query($sql, $this->id)->fetchColumn();
     }
 
+    public function getTotalPublishedProjects() {
+        $sql = "SELECT COUNT(*) as total FROM project p WHERE p.owner = ? AND p.status IN (3,4,5,6)";
+        return (int) self::query($sql, $this->id)->fetchColumn();
+    }
+
     public function getInvests($limit = 10) {
         return Invest::getList(['status' => Invest::$RAISED_STATUSES, 'users' => $this->id], null, 0, $limit);
     }
