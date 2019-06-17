@@ -100,8 +100,10 @@ if($this->key==0):
 
                             <?php endif ?>
 
-                            <a style="padding-bottom: 20px;padding-top: 10px;padding-left: 20px;font-size: 22px;line-height: 1.;color: #2bbbb7 !important;font-weight: 400;display: block;" href="<?= $url ?>">
+                            <a style="padding-bottom: 20px;padding-top: 10px;padding-left: 20px;font-size: 22px;line-height: 1;color: #2bbbb7 !important;font-weight: 400;display: block;" href="<?= $url ?>">
+                            <span style="">
                             <?= $this->ee($project->name) ?>
+                            </span>
                             </a>
                             <h4 style="margin: 0;padding: 0 20px 20px 20px;line-height: 0.8;padding-bottom: 4px;font-size: 15px;font-weight: 400;">
                                 <?= $this->text('regular-by') .' ' ?><span style="font-weight: 400; "><?= $project->user->name ?></span>
