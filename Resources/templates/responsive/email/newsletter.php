@@ -33,21 +33,17 @@
             padding: 0 20px 20px 20px;
             line-height: 1.6;
         }
-        .margin-btn{
+        /*.margin-btn{
         	margin-top: 40px;
         	margin-bottom: 80px;
-        }
-        .pd-footer{
+        }*/
+        /*.pd-footer{
         	padding: 40px 0px 40px 0px !important;
-        }
-        .pd-description{
+        }*/
+        /*.pd-description{
         	padding: 30px 0px 30px 0px !important;
             font-weight: 200;
-        }
-        .mt-40{
-            margin-top: 40px;
-        }
-
+        }*/
         h1{
         	font-size: 28px;
         	color: #149290;
@@ -60,15 +56,15 @@
         	text-align: center;
         }
 
-        h2.title-projects-section{
+        /*h2.title-projects-section{
             font-size: 21px;
             margin-top: 35px;
             text-align: center;
             color: #3a3a3a;
             margin-bottom: 20px;
-        }
+        }*/
 
-        .title-projects{
+        /*.title-projects{
         	padding-bottom: 20px;
             padding-top: 10px;
             padding-left: 20px;
@@ -84,39 +80,39 @@
         	font-size: 15px;
         	line-height: 0.8;
             font-weight: 400;
-        }
-        .icon-info{
+        }*/
+        /*.icon-info{
         	padding-bottom: 4px;
         	font-size: 13px;
         	color: #919193;
         	line-height: 0.8;
-        }
-        .icons{
+        }*/
+        /*.icons{
         	width: 8% !important;
         	display: inline-block;
-        }
-        .logo-fundacion{
+        }*/
+        /*.logo-fundacion{
         	width: 80% !important;
         	display: inline-block;
-        }
-        .claim-fundacion{
+        }*/
+        /*.claim-fundacion{
             padding: 20px 0 20px 60px;
-        }
-        hr{
+        }*/
+        /*hr{
         	width: 55%;
         	margin-left: 20px;
         	border: 1px solid #c6cdcc;
-        }
-        .pd-all{
+        }*/
+        /*.pd-all{
         	padding: 10px 0px 10px 0px !important;
-        }
-        .pd-fundacion{
+        }*/
+        /*.pd-fundacion{
         	padding: 40px 0px 40px 370px;
-        }
-        .pd-fundacion-dos{
+        }*/
+        /*.pd-fundacion-dos{
         	padding: 0px 100px 30px 0px !important;
-        }
-        .btn-fundacion{
+        }*/
+        /*.btn-fundacion{
 			color: #58595b;
     		padding: 13px 0;
     		background-color: #fff;
@@ -138,14 +134,14 @@
         }
 		.btn-proyectos:hover{
             background-color: #1DAAA9;
-        }
-		.proyectos{
+        }*/
+		/*.proyectos{
 			margin-bottom: 30px;
-		}
-		.footer{
+		}*/
+		/*.footer{
 			color: #FFF;
 			text-align: center;
-		}
+		}*/
 		.footer p a{
 			color: #FFF;
 			text-align: center;
@@ -262,7 +258,7 @@
                                     <tbody>
                                         <tr>
                                             <td align="left" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
-                                            	<img width="100%" class="pd-all" src="<?= $this->asset('img/newsletter/goteo-white.png') ?>" alt="" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;" />
+                                            	<img width="100%" src="<?= $this->asset('img/newsletter/goteo-white.png') ?>" alt="" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -304,7 +300,7 @@
 					<?= $this->raw('content') ?>
 
                     <!-- BOTON VER PROYECTOS -->
-                    <table class="section margin-btn" cellpadding="0" cellspacing="0">
+                    <table class="section" style="margin-top: 40px; margin-bottom: 80px;" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="column" width="100%" valign="top">
                                 <table>
@@ -312,7 +308,7 @@
                                         <tr>
                                             <td align="left">
                                                 <p>
-                                                	<a class="btn-proyectos" style="color: #ffffff; padding: 13px 0; background-color: #19b4b2; display: inline-block; padding: 6px 12px; margin-bottom: 0;font-size: 14px;font-weight: 400; line-height: 1.42857143; text-align: center; white-space: nowrap; cursor: pointer; border: 1px solid transparent; border-radius: 4px; text-decoration: none;" href="https://goteo.org/discover">VER MÁS PROYECTOS</a>
+                                                	<a style="color: #ffffff; padding: 13px 0; background-color: #19b4b2; display: inline-block; padding: 6px 12px; margin-bottom: 0;font-size: 14px;font-weight: 400; line-height: 1.42857143; text-align: center; white-space: nowrap; cursor: pointer; border: 1px solid transparent; border-radius: 4px; text-decoration: none;" href="https://goteo.org/discover">VER MÁS PROYECTOS</a>
                                                 </p>
                                             </td>
                                         </tr>
