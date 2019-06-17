@@ -171,7 +171,6 @@
 		}
         img {
             max-width: 100%;
-            display: block;
         }
         @media only screen and (max-width: 620px) {
             .wrapper .section {
@@ -241,41 +240,17 @@
                  <!-- Top bar logo -->
                     <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#19b4b2" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
                         <tr>
-                            <td class="column" width="250" valign="top">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td align="left">
-                                                <td> &nbsp; </td>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-
                             <td class="column" width="100" valign="top" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
-                                <table style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
+                                <table style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top; margin: 0 auto;">
                                     <tbody>
                                         <tr>
                                             <td align="left" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
-                                            	<img width="100%" src="<?= $this->asset('img/newsletter/goteo-white.png') ?>" alt="" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;" />
+                                            	<img width="100%" src="<?= $this->asset('img/newsletter/goteo-white.png') ?>" alt="" style="padding: 15px 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;" />
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </td>
-                            <td class="column" width="200" valign="top">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td align="left">
-                                                <td> &nbsp; </td>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-
                         </tr>
                     </table>
                     <!-- IMG HEADER -->
