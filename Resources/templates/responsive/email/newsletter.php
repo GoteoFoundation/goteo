@@ -233,14 +233,14 @@
 </head>
 
 <body style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse; vertical-align: top; font-family: Roboto,sans-serif; color: #3a3a3a;">
-    <table width="100%" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
+    <table style=" width: 100%; padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
         <tbody style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
             <tr>
-                <td class="wrapper" width="600" align="center" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
+                <td class="wrapper" align="center" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top; mso-table-lspace: 0pt; mso-table-rspace: 0pt; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; max-width: 600px !important;">
                  <!-- Top bar logo -->
                     <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#19b4b2" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
                         <tr>
-                            <td class="column" width="100" valign="top" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
+                            <td class="column" valign="top" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top;">
                                 <table style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top; margin: 0 auto;">
                                     <tbody>
                                         <tr>
@@ -357,7 +357,7 @@
                                     </tbody>
                                 </table>
                             </td>
-                        	<td class="column" width="400" valign="top">
+                        	<td class="column" valign="top" style="max-width: 400px; ">
                                 <table>
                                     <tbody>
                                         <tr>
@@ -370,7 +370,7 @@
                                     </tbody>
                                 </table>
                             </td>
-                        	<td class="column" width="100" valign="top">
+                        	<td class="column" valign="top" style="max-width: 100px">
                                 <table>
                                     <tbody>
                                         <tr>
