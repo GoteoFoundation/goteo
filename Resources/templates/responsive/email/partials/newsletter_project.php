@@ -131,14 +131,14 @@ if($this->key==0):
                                     $url_imagen = 'http://'.substr($url_imagen, 2);
                                 }
                                 ?>
-                            <a href="&lt;?= $url ?&gt;"><img alt="&lt;?= $this-&gt;ee($project-&gt;name) ?&gt;" src="&lt;?= $url_imagen ?&gt;" width="300" height="130" style="max-width: 100%;display: block;"></a>
+                            <a href="<?= $url ?>"><img alt="<?= $this->ee($project->name) ?>" src="<?= $url_imagen ?>" width="300" height="130" style="max-width: 100%;display: block;"></a>
 
                             <?php endif ?>
 
-                            <a href="&lt;?= $url ?&gt;" class="title-projects" style="padding-bottom: 20px;padding-top: 10px;padding-left: 20px;font-size: 22px;line-height: 1.;color: #2bbbb7;font-weight: 400;display: block;">
-                                <?= $this->ee($project->name) ?>
+                            <a href="<?= $url ?>" style="padding-bottom: 20px;padding-top: 10px;padding-left: 20px;font-size: 22px;line-height: 1.;color: #2bbbb7;font-weight: 400;display: block;">
+                            <?= $this->ee($project->name) ?>
                             </a>
-                            <h4 class="subtitle-projects" style="margin: 0;padding: 0 20px 20px 20px;line-height: 0.8;padding-bottom: 4px;font-size: 15px;font-weight: 400;">
+                            <h4 style="margin: 0;padding: 0 20px 20px 20px;line-height: 0.8;padding-bottom: 4px;font-size: 15px;font-weight: 400;">
                                 <?= $this->text('regular-by') .' ' ?><span style="font-weight: 400; "><?= $project->user->name ?></span>
                             </h4>
 
@@ -146,8 +146,8 @@ if($this->key==0):
 
                             <p style="margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;"> 
                                 <span>
-                                    <img class="icons" src="&lt;?= $promote-&gt;getSocialCommitment()-&gt;getIcon()-&gt;getLink(60, 60, false, true) ?&gt;" style="max-width: 100%;display: inline-block;width: 8% !important;">
-                                <span class="icon-info" style="padding-bottom: 4px;font-size: 13px;color: #919193;line-height: 0.8;"><?= $promote->getSocialCommitment()->name ?></span>
+                                    <img src="<?= $promote->getSocialCommitment()->getIcon()->getLink(60, 60, false, true) ?>" style="max-width: 100%;display: inline-block;width: 8% !important;">
+                                <span style="padding-bottom: 4px;font-size: 13px;color: #919193;line-height: 0.8;"><?= $promote->getSocialCommitment()->name ?></span>
                             </span></p>
                             <?php endif; ?>
 
