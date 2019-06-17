@@ -271,8 +271,12 @@
                     </table>
 
                     <!-- Contenido -->
+
+                    <div style="font-size: 16px">
                     
 					<?= $this->raw('content') ?>
+
+                    </div>
 
                     <!-- BOTON VER PROYECTOS -->
                     <table class="section" style="margin-top: 40px; margin-bottom: 80px;" cellpadding="0" cellspacing="0">
