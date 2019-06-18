@@ -4,6 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name=”x-apple-disable-message-reformatting”>
     <title>Goteo Newsletter</title>
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic|Open+Sans+Condensed:300|Kalam);
@@ -18,6 +19,9 @@
             font-family: Roboto,sans-serif;
             color: #3a3a3a;
         }*/
+        body {
+            -webkit-text-size-adjust: none;
+        }
         a{
             text-decoration: none;
             color: #337ab7;
@@ -390,12 +394,12 @@
                                     <tbody>
                                         <tr>
                                             <td colspan="0" align="center">
-                                                <p>
+                                                <p style="color: #FFF;">
                                                 <?= $this->text('footer-platoniq-iniciative') ?>
                                                 </p>
                                             </td>
                                             <td style="padding-right: 10px;" colspan="0" align="center">
-                                                <a style="text-decoration: none; color: #212121;" href="http://fundacion.goteo.org/" target="_blank"><img src="<?= $this->asset('img/logo-fg-white.png') ?>" alt="Fundación Goteo" width="30" height="30" border="0" style="display: block;" /></a>
+                                                <a style="text-decoration: none; color: #212121;" href="http://fundacion.goteo.org/" target="_blank"><img src="<?= $this->asset('img/logo-fg-white.png') ?>" alt="Fundación Goteo" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                         </tr>
                                 </td>
