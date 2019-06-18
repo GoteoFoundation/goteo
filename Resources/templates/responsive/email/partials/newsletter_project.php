@@ -89,7 +89,7 @@ if($this->key==0):
                         <td align="left">
                              <?php if ($project->image):
 
-                                $url_imagen = $project->image->getLink(300, 130, true);
+                                $url_imagen = $project->image->getLink(500, 200, true);
                                 if (strpos($url_imagen, '//') === 0) {
                                     $url_imagen = 'http://'.substr($url_imagen, 2);
                                 }
