@@ -19,6 +19,9 @@
             font-family: Roboto,sans-serif;
             color: #3a3a3a;
         }*/
+        body {
+            -webkit-text-size-adjust: none;
+        }
         a{
             text-decoration: none;
             color: #337ab7;
@@ -273,7 +276,7 @@
 
                     <!-- Contenido -->
 
-                    <div style="font-size: 80%">
+                    <div style="font-size: 16px">
                     
 					<?= $this->raw('content') ?>
 
