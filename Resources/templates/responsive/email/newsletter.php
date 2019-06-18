@@ -287,7 +287,7 @@
 
                     <!-- Contenido -->
 
-                    <div style="font-size: 16px">
+                    <div style="font-size: 80%">
                     
 					<?= $this->raw('content') ?>
 
