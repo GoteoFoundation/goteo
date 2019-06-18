@@ -89,13 +89,13 @@ if($this->key==0):
                         <td align="left">
                              <?php if ($project->image):
 
-                                $url_imagen = $project->image->getLink(255, 130, true);
+                                $url_imagen = $project->image->getLink(300, 130, true);
                                 if (strpos($url_imagen, '//') === 0) {
                                     $url_imagen = 'http://'.substr($url_imagen, 2);
                                 }
                                 ?>
                             <a href="<?= $url ?>">
-                                <img alt="<?= $this->ee($project->name) ?>" src="<?= $url_imagen ?>" width="300" height="130" style="max-width: 100%;display: block;">
+                                <img alt="<?= $this->ee($project->name) ?>" src="<?= $url_imagen ?>" style="max-width: 100%;display: block; max-width: 300px; height: 130px;">
                             </a>
 
                             <?php endif ?>
@@ -119,12 +119,12 @@ if($this->key==0):
                             <?php endif; ?>
 
                             <p style="text-align: left;margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;"><?= $project->subtitle ?></p>
-                            <p style="padding-bottom: 0px;margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;">
+                            <p style="padding-bottom: 0px;margin: 0;padding: 0 20px 0 20px;line-height: 1.6;">
                                 <span style="font-size: 20px; font-weight: 500;">
                                    <?= \amount_format($project->amount) ?> 
                                 </span> <span style="color: #868788;"><?= $this->text('horizontal-project-reached') ?></span></p>
                             <hr style="width: 55%;margin-left: 20px;border: 1px solid #c6cdcc;">
-                            <p style="margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;"><span style="font-size: 16px; font-weight: 500;"><?= $project->days.' '.$this->text('regular-days') ?></span> <span style="color: #868788;"><?= $this->text('project-view-metter-days') ?></span></p>
+                            <p style="margin: 0;padding: 0 20px 0 20px;line-height: 1.6;"><span style="font-size: 16px; font-weight: 500;"><?= $project->days.' '.$this->text('regular-days') ?></span> <span style="color: #868788;"><?= $this->text('project-view-metter-days') ?></span></p>
                         </td>
                     </tr>
                 </tbody>
