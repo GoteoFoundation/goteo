@@ -21,6 +21,7 @@
         }*/
         body {
             -webkit-text-size-adjust: none;
+            text-size-adjust: none;
         }
         a{
             text-decoration: none;
@@ -162,9 +163,9 @@
             font-weight: 400;
         }
         
-        .footer img{
+        /*.footer img{
             width: 100%;
-        }
+        }*/
 
         li{
             margin-bottom: 10px;
