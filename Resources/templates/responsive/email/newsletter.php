@@ -182,8 +182,9 @@
                 width: 100%;
             }
             .wrapper .column {
-                width: 100%;
+                width: 100% !important;
                 display: block;
+                max-width: 100% !important;
             }
             .pd-fundacion {
                 padding: 20px 20px 0px 20px !important;
@@ -210,23 +211,25 @@
         }
         @media only screen and (max-width: 320px) {
             .wrapper .section .full-img {
-                width: 100%;
+                width: 100% !important;
+                display: block;
+                max-width: 100% !important;
             }
             .wrapper .column {
                 width: 100%;
                 display: block;
             }
             .pd-fundacion {
-            padding: 0px 0px 0px 0px !important;
+                padding: 0px 0px 0px 0px !important;
             }
             .pd-all {
-            padding:  0 85% !important;
+                padding:  0 85% !important;
             }
             .claim-fundacion{
                 padding-left: 0px !important;
             }
             .pd-fundacion-dos {
-            padding: 0px 10% 40px 25% !important;
+                padding: 0px 10% 40px 25% !important;
             }
         }
         @media(min-width: 320px) and (max-width: 414px) {
