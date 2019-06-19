@@ -18,7 +18,7 @@ if($this->key==0):
 
 <table class="section header mt-40" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#ffec61" style="margin-top: 40px;">
     <tr>
-        <td class="column" width="300" valign="top">
+        <td class="column" valign="top" style="max-width: 300px; margin: 0 auto;">
             <table style="margin: 0 auto;">
                 <tbody>
                     <tr>
@@ -82,20 +82,20 @@ if($this->key==0):
 
 <?php endif; ?>
 
-        <td class="column" width="290" valign="top">
+        <td class="column" valign="top" style="max-width: 300px;">
             <table bgcolor="#FFFFFF">
                 <tbody>
                     <tr>
                         <td align="left">
                              <?php if ($project->image):
 
-                                $url_imagen = $project->image->getLink(500, 200, true);
+                                $url_imagen = $project->image->getLink(500, 300, true);
                                 if (strpos($url_imagen, '//') === 0) {
                                     $url_imagen = 'http://'.substr($url_imagen, 2);
                                 }
                                 ?>
                             <a href="<?= $url ?>">
-                                <img alt="<?= $this->ee($project->name) ?>" src="<?= $url_imagen ?>" style="max-width: 100%;display: block; max-width: 300px; height: 130px;">
+                                <img alt="<?= $this->ee($project->name) ?>" src="<?= $url_imagen ?>" style="width: 100%;display: block; height: auto">
                             </a>
 
                             <?php endif ?>
