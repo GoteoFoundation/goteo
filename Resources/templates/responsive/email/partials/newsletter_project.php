@@ -86,7 +86,7 @@ if($this->key==0):
             <table bgcolor="#FFFFFF">
                 <tbody>
                     <tr>
-                        <td align="left" style="background: #FAF8F8; height: 560px; padding:0; vertical-align: top; position: relative;">
+                        <td align="left" class="project-container" style="background: #FAF8F8; height: 560px; padding:0; vertical-align: top; position: relative;">
                              <?php if ($project->image):
 
                                 $url_imagen = $project->image->getLink(500, 300, true);
@@ -119,7 +119,7 @@ if($this->key==0):
                             <?php endif; ?>
 
                             <p style="text-align: left;margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;"><?= $project->subtitle ?></p>
-                            <span style="display:block; position: absolute; bottom: 13px;">
+                            <span class="progress-container" style="display:block; position: absolute; bottom: 13px;">
                                 <p style="padding-bottom: 0px;margin: 0;padding: 0 20px 0 20px;line-height: 1.6;">
                                     <span style="font-size: 20px; font-weight: 500;">
                                        <?= \amount_format($project->amount) ?> 
