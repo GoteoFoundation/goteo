@@ -205,9 +205,16 @@
             margin-right: 50%;
             text-align: center;
             }
-        .btn-proyectos{
-            margin-left: 50% !important;
-        }
+            .btn-proyectos{
+                margin-left: 50% !important;
+            }
+            .project-container{
+                height: auto !important
+            }
+            .progress-container{
+                position: inherit !important;
+                padding: 20px 0 10px 0; 
+            }
         }
         @media only screen and (max-width: 320px) {
             .wrapper .section .full-img {
