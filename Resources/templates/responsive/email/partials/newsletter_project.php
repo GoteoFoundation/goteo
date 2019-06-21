@@ -105,15 +105,15 @@ if($this->key==0):
                             <?= $this->ee($project->name) ?>
                             </span>
                             </a>
-                            <h4 style="margin: 0;padding: 0 20px 20px 20px;line-height: 0.8;padding-bottom: 4px;font-size: 15px;font-weight: 400;">
+                            <h4 style="margin: 0;padding: 0 20px 20px 20px;line-height: 1.3;padding-bottom: 4px;font-size: 15px;font-weight: 400;">
                                 <?= $this->text('regular-by') .' ' ?><span style="font-weight: 400; "><?= $project->user->name ?></span>
                             </h4>
 
                             <?php if($promote->getSocialCommitment()): ?>
 
-                            <p style="margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;"> 
+                            <p style="margin: 0;padding: 10px 20px 20px 20px;line-height: 1.6;"> 
                                 <span>
-                                    <img src="<?= $promote->getSocialCommitment()->getIcon()->getLink(60, 60, false, true) ?>" style="max-width: 100%;display: inline-block;width: 8% !important;">
+                                    <img src="<?= $promote->getSocialCommitment()->getIcon()->getLink(60, 60, false, true) ?>" style="max-width: 100%;display: inline-block;width: 8% !important; vertical-align: middle;">
                                 <span style="padding-bottom: 4px;font-size: 13px;color: #919193;line-height: 0.8;"><?= $promote->getSocialCommitment()->name ?></span>
                             </span></p>
                             <?php endif; ?>
