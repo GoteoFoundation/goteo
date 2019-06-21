@@ -287,10 +287,10 @@
                     </div>
 
                     <!-- BOTON VER PROYECTOS -->
-                    <table class="section" style="margin-top: 40px; margin-bottom: 80px;" cellpadding="0" cellspacing="0">
+                    <table class="section" style="margin-top: 40px; margin-bottom: 80px; margin-right: 22px;" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="column" width="100%" valign="top">
-                                <table>
+                                <table align="center">
                                     <tbody>
                                         <tr>
                                             <td align="left">
@@ -354,38 +354,12 @@
                     </table>
 
  					<!-- PRE-FOOTER II -->
-                    <table class="section footer" width="100%" cellpadding="0" cellspacing="0" bgcolor="#555555">
+                    <table class="section footer" cellpadding="0" cellspacing="0" bgcolor="#555555">
                         <tr>
-                        	<td class="column" width="100" valign="top">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td>&nbsp;</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        	<td class="column" valign="top" style="max-width: 400px; ">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                            	<p class="pd-description">
-                                                 <?= $this->text('mailer-disclaimer') ?>   
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        	<td class="column" valign="top" style="max-width: 100px">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td>&nbsp;</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        	<td class="column" align="center" valign="top" style="max-width: 900px; padding: 20px 0;">
+                            	<p class="pd-description">
+                                 <?= $this->text('mailer-disclaimer') ?>   
+                                </p>                                    
                             </td>
                         </tr>
                     </table>
