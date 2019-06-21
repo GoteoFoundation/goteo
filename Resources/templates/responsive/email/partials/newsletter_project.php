@@ -101,7 +101,7 @@ if($this->key==0):
                             <?php endif ?>
 
                             <a style="padding: 10px 20px 20px 20px; font-size: 22px;line-height: 1;color: #2bbbb7 !important;font-weight: 400;display: block;" href="<?= $url ?>">
-                            <span style="">
+                            <span style="" class="font-weight: 500;">
                             <?= $this->ee($project->name) ?>
                             </span>
                             </a>
