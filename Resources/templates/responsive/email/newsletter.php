@@ -361,9 +361,9 @@
                     </table>
 
  					<!-- PRE-FOOTER II -->
-                    <table class="section footer" cellpadding="0" cellspacing="0" bgcolor="#555555">
+                    <table class="section footer" cellpadding="0" width="100%" cellspacing="0" bgcolor="#555555">
                         <tr>
-                        	<td class="column" align="center" valign="top" style="max-width: 900px; padding: 20px 0;">
+                        	<td class="column" align="center" valign="top" style="max-width: 900px; padding: 20px 0; display: block; margin: 0 auto;">
                             	<p class="pd-description">
                                  <?= $this->text('mailer-disclaimer') ?>   
                                 </p>                                    
