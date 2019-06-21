@@ -82,11 +82,11 @@ if($this->key==0):
 
 <?php endif; ?>
 
-        <td class="column" valign="top" style="max-width: 300px;">
+        <td class="column" valign="top" style="max-width: 300px; ">
             <table bgcolor="#FFFFFF">
                 <tbody>
                     <tr>
-                        <td align="left">
+                        <td align="left" style="background: #FAF8F8; height: 560px; padding:0; vertical-align: top; position: relative;">
                              <?php if ($project->image):
 
                                 $url_imagen = $project->image->getLink(500, 300, true);
@@ -100,7 +100,7 @@ if($this->key==0):
 
                             <?php endif ?>
 
-                            <a style="padding-bottom: 20px;padding-top: 10px;padding-left: 20px;font-size: 22px;line-height: 1;color: #2bbbb7 !important;font-weight: 400;display: block;" href="<?= $url ?>">
+                            <a style="padding: 10px 20px 20px 20px; font-size: 22px;line-height: 1;color: #2bbbb7 !important;font-weight: 400;display: block;" href="<?= $url ?>">
                             <span style="">
                             <?= $this->ee($project->name) ?>
                             </span>
@@ -119,12 +119,14 @@ if($this->key==0):
                             <?php endif; ?>
 
                             <p style="text-align: left;margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;"><?= $project->subtitle ?></p>
-                            <p style="padding-bottom: 0px;margin: 0;padding: 0 20px 0 20px;line-height: 1.6;">
-                                <span style="font-size: 20px; font-weight: 500;">
-                                   <?= \amount_format($project->amount) ?> 
-                                </span> <span style="color: #868788;"><?= $this->text('horizontal-project-reached') ?></span></p>
-                            <hr style="width: 55%;margin-left: 20px;border: 1px solid #c6cdcc;">
-                            <p style="margin: 0;padding: 0 20px 0 20px;line-height: 1.6;"><span style="font-size: 16px; font-weight: 500;"><?= $project->days.' '.$this->text('regular-days') ?></span> <span style="color: #868788;"><?= $this->text('project-view-metter-days') ?></span></p>
+                            <span style="display:block; position: absolute; bottom: 13px;">
+                                <p style="padding-bottom: 0px;margin: 0;padding: 0 20px 0 20px;line-height: 1.6;">
+                                    <span style="font-size: 20px; font-weight: 500;">
+                                       <?= \amount_format($project->amount) ?> 
+                                    </span> <span style="color: #868788;"><?= $this->text('horizontal-project-reached') ?></span></p>
+                                <hr style="width: 55%;margin-left: 20px;border: 1px solid #c6cdcc;">
+                                <p style="margin: 0;padding: 0 20px 0 20px;line-height: 1.6;"><span style="font-size: 16px; font-weight: 500;"><?= $project->days.' '.strtolower($this->text('regular-days')) ?></span> <span style="color: #868788;"><?= $this->text('project-view-metter-days') ?></span></p>
+                            </span>
                         </td>
                     </tr>
                 </tbody>
