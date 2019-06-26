@@ -980,6 +980,8 @@ class ProjectDashboardController extends DashboardController {
             $order = "$key $dir";
         }
 
+        $order .= ', id DESC';
+
         // TODO: save to session with current filter values?
         $filter = $request->query->get('filter');
         list($filters, $filter_by) = static::getInvestFilters($project, $filter);

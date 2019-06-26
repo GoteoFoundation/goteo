@@ -537,8 +537,8 @@ class ProjectsApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
-        $limit = 10;
-        $order = 'invested DESC';
+        $limit = 50;
+        $order = 'invested DESC, id DESC';
         $filter = ['projects' => $prj->id, 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL]];
         $total = Invest::getList($filter, null, 0, 0, true);
 
