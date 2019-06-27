@@ -302,7 +302,9 @@
                                         <tr>
                                             <td align="left">
                                                 <p>
-                                                	<a style="color: #ffffff; padding: 13px 0; background-color: #19b4b2; display: inline-block; padding: 6px 12px; margin-bottom: 0;font-size: 14px;font-weight: 400; line-height: 1.42857143; text-align: center; white-space: nowrap; cursor: pointer; border: 1px solid transparent; border-radius: 4px; text-decoration: none;" href="https://goteo.org/discover">VER MÁS PROYECTOS</a>
+                                                	<a style="color: #ffffff; padding: 13px 0; background-color: #19b4b2; display: inline-block; padding: 6px 12px; margin-bottom: 0;font-size: 14px;font-weight: 400; line-height: 1.42857143; text-align: center; white-space: nowrap; cursor: pointer; border: 1px solid transparent; border-radius: 4px; text-decoration: none;" href="https://goteo.org/discover">
+                                                        <?= $this->text('mailer-more-projects-button') ?>    
+                                                        </a>
                                                 </p>
                                             </td>
                                         </tr>

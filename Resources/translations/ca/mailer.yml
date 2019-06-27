@@ -10,3 +10,4 @@ newsletter-subscribe-cancel: 'No et volies subscriure? <a href="%s">cancel·la l
 subscribe-request-success: 'Felicitats! T''has subscript al nostre butlletí (%s).'
 unsubscribe-request-success: 'Has cancel·lat la teva subscripció al butlletí (%s).'
 mailer-to: Per
+mailer-more-projects-button: 'VEURE MÉS PROJECTES'
