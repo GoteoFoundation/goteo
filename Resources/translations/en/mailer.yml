@@ -11,3 +11,4 @@ subscribe-request-success: 'Congratulations! You have been subscribed to our new
 unsubscribe-request-success: 'You have cancelled your subscription to the newsletter (%s).'
 mailer-from: From
 mailer-to: To
+mailer-more-projects-button: 'DISCOVER MORE PROJECTS'
