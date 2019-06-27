@@ -43,7 +43,7 @@ if($this->key==0):
                 <tbody>
                     <tr>
                         <td>
-                            <a class="btn-fundacion" href="" style="color: #58595b;padding: 6px 12px;background-color: #fff;display: inline-block;margin-bottom: 20px;font-size: 14px;font-weight: 400;line-height: 1.42857143;text-align: center;white-space: nowrap;cursor: pointer;border: 1px solid transparent;border-radius: 4px;text-decoration: none; margin-top: 5px;"><?= $this->text('support-our-mission') ?>
+                            <a class="btn-fundacion" href="https://goteo.org/donate" style="color: #58595b;padding: 6px 12px;background-color: #fff;display: inline-block;margin-bottom: 20px;font-size: 14px;font-weight: 400;line-height: 1.42857143;text-align: center;white-space: nowrap;cursor: pointer;border: 1px solid transparent;border-radius: 4px;text-decoration: none; margin-top: 5px;"><?= $this->text('support-our-mission') ?>
                             </a>
                         </td>
                     </tr>
@@ -62,7 +62,9 @@ if($this->key==0):
                 <tbody>
                     <tr>
                         <td>
-                            <h2 class="title-projects-section" style="margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;font-size: 21px;color: #3a3a3a;text-align: center;margin-top: 35px;margin-bottom: 20px;">Algunos de nuestros Proyectos</h2>                        
+                            <h2 class="title-projects-section" style="margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;font-size: 21px;color: #3a3a3a;text-align: center;margin-top: 35px;margin-bottom: 20px;">
+                                <?= $this->text('home-projects-title') ?>
+                            </h2>                        
                         </td>
                     </tr>
                 </tbody>
