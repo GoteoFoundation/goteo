@@ -833,7 +833,7 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
             'noreg' => 'Sin registro de contrato',
             'onform' => 'Editando datos',
             'owner' => 'Formulario cerrado',
-            'ready' => 'Enviado',
+            'ready' => 'Enviado por gestor para firma',
             'received' => 'Firmado',
             'prepay' => 'Pago adelantado',
             'payed' => 'Pagos realizados',
