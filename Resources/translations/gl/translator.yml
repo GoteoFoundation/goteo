@@ -24,6 +24,7 @@ translator-field-facebook_msg_owner: 'Autor de facebook'
 translator-field-legend: Lenda
 translator-field-media: Media
 translator-field-name: Nome
+translator-field-review: Revisión
 translator-field-schedule: Horario
 translator-field-share_facebook: 'Texto compartir facebook'
 translator-field-share_twitter: 'Texto compartir twitter'
@@ -62,6 +63,7 @@ translator-saved-ok: 'Traducións gardadas con éxito para os idiomas [%s]'
 translator-skipped-fields: "Algúns campos non se copiaron xa que contiñan texto.\nBorra o texto orixinal para poder copiar dende outro idioma."
 translator-sphere: 'Ámbitos da convocatoria'
 translator-social_commitment: 'Compromisos sociais'
+translator-sdg: 'ODS'
 translator-footprint: 'Pegadas'
 translator-stories: 'Casos de éxito'
 translator-system: Sistema

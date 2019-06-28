@@ -2,4 +2,5 @@
 fatal-error-project: 'Este proxecto que buscas... <span class="red">non existe :(</span>'
 fatal-error-teapot: '<span class="greenblue">Que vergoñoso...</span> Ocorreu un error inesperado'
 fatal-error-user: 'Este usuario que estás a buscar... <span class="red">non existe :(</span>'
+fatal-error-channel: 'A canle que buscas <span class="red">non existe :(</span>'
 ajax-load-error: 'Non foi posible cargar a páxina debido ao erro [<strong>%ERROR%</strong>]. É posible que caducara a sesión do teu usuario?'

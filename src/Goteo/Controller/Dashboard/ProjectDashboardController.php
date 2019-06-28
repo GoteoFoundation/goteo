@@ -680,9 +680,9 @@ class ProjectDashboardController extends DashboardController {
 
         $errors = [];
         if ($project->remove($errors)) {
-            Message::info(Text::get('dashboard-project-delete-ok', '<strong>' . $project->name . '</strong>'));
+            Message::info(Text::get('dashboard-project-delete-ok', '<strong>' . strip_tags($project->name) . '</strong>'));
         } else {
-            Message::error(Text::get('dashboard-project-delete-ko', '<strong>' . $project->name . '</strong>. ') . implode("\n", $errors));
+            Message::error(Text::get('dashboard-project-delete-ko', '<strong>' . strip_tags($project->name) . '</strong>. ') . implode("\n", $errors));
         }
         return $this->redirect($referer);
     }
@@ -979,6 +979,8 @@ class ProjectDashboardController extends DashboardController {
         if(in_array($key, ['id', 'invested', 'user', 'amount', 'reward', 'fulfilled']) && in_array($dir, ['ASC', 'DESC'])) {
             $order = "$key $dir";
         }
+
+        $order .= ', id DESC';
 
         // TODO: save to session with current filter values?
         $filter = $request->query->get('filter');

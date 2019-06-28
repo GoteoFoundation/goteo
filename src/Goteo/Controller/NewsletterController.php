@@ -12,6 +12,7 @@ namespace Goteo\Controller;
 
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
+use Goteo\Application\View;
 use Goteo\Core\Model;
 use Goteo\Model\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,11 +23,11 @@ class NewsletterController extends \Goteo\Core\Controller {
         // Cache & replica read activated in this controller
         $this->dbReplica(true);
         $this->dbCache(true);
+        View::setTheme('responsive');
 	}
 
-	// última newsletter enviada
+	// last newsletter public view
 	public function indexAction($id = null, Request $request) {
-
 		$lang = Lang::current('id');
 
 		$sql = "SELECT content FROM mail WHERE
@@ -43,7 +44,7 @@ class NewsletterController extends \Goteo\Core\Controller {
 		if (($query = Model::query($sql)) && $query->rowCount() > 0) {
 
 			if ($content = $query->fetchColumn()) {
-				return $this->viewResponse('email/newsletter', array('content' => $content));
+				return $this->viewResponse('email/newsletter', ['content' => $content]);
 			}
 		}
 		throw new ModelNotFoundException('Newsletter not found!');

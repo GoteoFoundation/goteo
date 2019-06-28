@@ -57,7 +57,7 @@ $filters = $vars['filters'];
 
                 <tbody>
                     <tr>
-                        <td><a href="/project/<?php echo $project->project; ?>" target="_blank" title="Preview"><?php echo $project->name; ?></a></td>
+                        <td><a href="/project/<?php echo $project->project; ?>" target="_blank" title="Preview"><?php echo htmlspecialchars($project->name); ?></a></td>
                         <td><?php echo $project->owner; ?></td>
                         <td><?php echo $project->progress; ?></td>
                         <td><?php echo $project->score . ' / ' . $project->max; ?></td>

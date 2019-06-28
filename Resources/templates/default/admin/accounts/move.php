@@ -28,7 +28,7 @@ $this->layout('admin/layout') ?>
 <?php $this->section('admin-content') ?>
 
 <div class="widget">
-    <p>Movemos el aporte de <strong><?php echo $user->name ?></strong> al proyecto <strong><?php echo $project->name; ?></strong> de <strong><?php echo $original->amount; ?> &euro;</strong> mediante <strong><?php echo $original->method; ?></strong> del d&iacute;a <strong><?php echo date('d-m-Y', strtotime($original->invested)); ?></strong>.</p>
+    <p>Movemos el aporte de <strong><?php echo $user->name ?></strong> al proyecto <strong><?php echo $this->ee($project->name); ?></strong> de <strong><?php echo $original->amount; ?> &euro;</strong> mediante <strong><?php echo $original->method; ?></strong> del d&iacute;a <strong><?php echo date('d-m-Y', strtotime($original->invested)); ?></strong>.</p>
     <form id="filter-form" action="/admin/accounts/move/<?php echo $original->id ?>" method="post">
         <p>
             <label for="invest-project">Al proyecto:</label><br />

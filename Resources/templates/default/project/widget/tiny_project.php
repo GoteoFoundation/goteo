@@ -6,8 +6,8 @@ use Goteo\Library\Check,
 $project = $this->project;
 
 $proj_id        = $project->id;
-$proj_name      = $project->name;
-$proj_subtitle  = $project->subtitle;
+$proj_name      = $this->ee($project->name);
+$proj_subtitle  = $this->ee($project->subtitle);
 $proj_description = $project->description;
 $categories     = $project->categories;
 $tagmark        = $project->tagmark;

@@ -517,7 +517,13 @@ class Mail extends \Goteo\Core\Model {
         if ($plain) {
             return strip_tags($this->content) . ($extra_vars['alternate'] ? "\n\n" . $extra_vars['alternate'] : '');
         }
+
         // Render in a separate instance of Foil to avoid some unexpected problems
+        if ($this->template == Template::NEWSLETTER) 
+        {
+            View::setTheme('responsive');
+        }
+
         $engine = View::createEngine();
         $engine->setFolders(View::getFolders());
         // para plantilla boletin

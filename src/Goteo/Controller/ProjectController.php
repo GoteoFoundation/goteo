@@ -22,6 +22,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Worth;
 use Goteo\Model\Message as SupportMessage;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Account;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Invest;
 use Goteo\Model\Project\Favourite;
@@ -73,15 +74,15 @@ class ProjectController extends \Goteo\Core\Controller {
 
         if ($request->isMethod('post')) {
 
-        	$social_commitment=$request->request->get('social');
+        	$social_commitment= strip_tags($request->request->get('social'));
 
             $data=[
-                'name'         => $request->request->get('name'),
-                'subtitle'   => $request->request->get('subtitle'),
+                'name'         =>  strip_tags($request->request->get('name')),
+                'subtitle'   =>  strip_tags($request->request->get('subtitle')),
                 'social_commitment'   => $social_commitment,
-                'social_description' => $request->request->get('social-description'),
-                'location'          => $request->request->get('location'),
-                'project_location'			=> $request->request->get('project_location')
+                'social_description' =>  strip_tags($request->request->get('social-description')),
+                'location'          =>  $request->request->get('location'),
+                'project_location'			=>  $request->request->get('project_location')
             ];
 
             $project = Project::createNewProject($data);
@@ -118,6 +119,15 @@ class ProjectController extends \Goteo\Core\Controller {
             $conf->mincost_estimation = $request->request->get('minimum');
             $conf->publishing_estimation = $request->request->get('publishing_date');
             $conf->save();
+
+
+            // Save default fee
+            $accounts = new Account();
+            $accounts->project = $project->id;
+            $accounts->allowpp = false;
+            $accounts->fee = Config::get('fee');
+            $accounts->save();
+
 
             // CREATED EVENT
             $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();
@@ -303,7 +313,8 @@ class ProjectController extends \Goteo\Core\Controller {
             if ($show == 'participate') {
                 $viewData['worthcracy']=Worth::getAll();
                 $limit=15;
-                $viewData['investors_list']= Invest::investors($project->id, false, false, (int)$request->query->get('pag') * $limit, $limit, false);
+                $pag = max(0, (int)$request->query->get('pag'));
+                $viewData['investors_list']= Invest::investors($project->id, false, false, $pag * $limit, $limit, false);
                 $viewData['investors_total'] = Invest::investors($project->id, false, false, 0, 0, true);
                 $viewData['investors_limit'] = $limit;
 

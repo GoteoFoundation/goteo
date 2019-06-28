@@ -5,10 +5,8 @@ donate-main-text-line-1: '<strong>We don''t leave anybody behind,</strong> suppo
 donate-main-text-line-2: '<strong>We innovate by default,</strong> leading innovative processes for co-responsible funding, together with public and private institutions.'
 donate-main-text-line-3: '<strong>We share what we have,</strong> creating free software, opening our <a href="stats.goteo.org">data</a> and our <a href="https://github.com/GoteoFoundation">source code</a> in order to grow our community, strengthen the knowledge society and being actively involved in it, with no complexes!'
 donate-main-text-line-4: ''
-
-
 donate-select-amount-title: 'Support Goteo Foundation'
-donate-select-amount-description: Select the amount of your donation so we can continue supporting projects'
+donate-select-amount-description: 'Select the amount of your donation so we can continue supporting projects'''
 donate-foundation-accounts-title: 'Our expenses'
 donate-foundation-accounts-data-1: '150.006 €'
 donate-foundation-accounts-data-label-1: 'Operational expenses 2017'
