@@ -88,7 +88,7 @@ if($this->key==0):
             <table bgcolor="#FFFFFF">
                 <tbody>
                     <tr>
-                        <td align="left" class="project-container" style="background: #FAF8F8; height: 560px; padding:0; vertical-align: top; position: relative;">
+                        <td align="left" class="project-container" style="background: #FAF8F8; height: 580px; padding:0; vertical-align: top; position: relative;">
                              <?php if ($project->image):
 
                                 $url_imagen = $project->image->getLink(500, 300, true);
@@ -102,7 +102,7 @@ if($this->key==0):
 
                             <?php endif ?>
 
-                            <a style="padding: 10px 20px 20px 20px; font-size: 22px;line-height: 1;color: #2bbbb7 !important;font-weight: 400;display: block;" href="<?= $url ?>">
+                            <a style="padding: 10px 20px 10px 20px; font-size: 22px;line-height: 1;color: #2bbbb7 !important;font-weight: 400;display: block;" href="<?= $url ?>">
                             <span style="" class="font-weight: 500;">
                             <?= $this->ee($project->name) ?>
                             </span>
@@ -113,7 +113,7 @@ if($this->key==0):
 
                             <?php if($promote->getSocialCommitment()): ?>
 
-                            <p style="margin: 0;padding: 10px 20px 20px 20px;line-height: 1.6;"> 
+                            <p style="margin: 0;padding: 10px 20px 10px 20px;line-height: 1.6;"> 
                                 <span>
                                     <img src="<?= $promote->getSocialCommitment()->getIcon()->getLink(60, 60, false, true) ?>" style="max-width: 100%;display: inline-block;width: 8% !important; vertical-align: middle;">
                                 <span style="padding-bottom: 4px;font-size: 13px;color: #919193;line-height: 0.8;"><?= $promote->getSocialCommitment()->name ?></span>
@@ -126,7 +126,7 @@ if($this->key==0):
                                     <span style="font-size: 20px; font-weight: 500;">
                                        <?= \amount_format($project->amount) ?> 
                                     </span> <span style="color: #868788;"><?= $this->text('horizontal-project-reached') ?></span></p>
-                                <hr style="width: 55%;margin-left: 20px;border: 1px solid #c6cdcc;">
+                                <hr style="width: 55%;margin-left: 20px;border: 1px solid #c6cdcc; font-size: 7px;">
                                 <p style="margin: 0;padding: 0 20px 0 20px;line-height: 1.6;"><span style="font-size: 16px; font-weight: 500;"><?= $project->days.' '.strtolower($this->text('regular-days')) ?></span> <span style="color: #868788;"><?= $this->text('project-view-metter-days') ?></span></p>
                             </span>
                         </td>
