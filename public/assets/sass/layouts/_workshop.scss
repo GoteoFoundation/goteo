@@ -83,6 +83,11 @@ body.workshop {
 
     div.section.banner-header{
       position: relative;
+      div.image{
+        img{
+          filter: brightness(85%);
+        }
+      }
       div.info{
         position: absolute;
         width: 100%;

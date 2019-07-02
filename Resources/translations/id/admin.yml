@@ -1,1 +1,53 @@
 ---
+admin-action: 'Pengaturan tindakan'
+admin-NO: 'TIDAK'
+admin-YES: YA
+admin-account-amount: 'Jumlah Donasi'
+admin-account-change-user: 'Ubah Pengguna'
+admin-account-change-user-confirm: 'Apakah Anda yakin Anda ingin mengubah pengguna kontribusi? Pengguna baru akan menjadi:'
+admin-account-convert-to-pool: 'Mengkonversi ke dompet'
+admin-account-convert-to-pool-confirm: 'Ini akan menghilangkan proyek terkait dengan kontribusi ini dan akan seolah-olah adalah pembelian dompet. SEMUA PENGHARGAAN TERKAIT AKAN HILANG. Yakin Akan melanjutkan?'
+admin-account-convert-to-pool-ko: 'Tidak dapat mengonversi kontribusi ke dompet: %s'
+admin-account-convert-to-pool-ok: 'Berhasil dikonversi menjadi kontribusi dompet '
+admin-account-detail: 'Detail transaksi'
+admin-account-donation: Donasi
+admin-account-edit-reward: 'Kelola hadiah/alamat'
+admin-account-invalid-invest: 'Kontribusi [%s] tidak ditemukan!'
+admin-account-invest-date: 'Tanggal kontribusi'
+admin-account-invest-non-pool-refundable: 'Kontribusi ini tidak dapat dikembalikan ke dompet virtual. Hanya kontribusi dalam status "Dibebankan" yang dapat diganti'
+admin-account-invest-non-user-refundable: "Kontribusi ini tidak dapat dikembalikan. Anda dapat mengembalikan kontribusi di negara bagian:\n\"Tertunda\", \"Dibebankan\" dan \"Ke dompet\" jika ada cukup uang di dompet untuk didiskon\n"
+admin-account-invest-to-pool-ko: 'Gagal mengembalikan kontribusi ke dompet'
+admin-account-invest-to-pool-ok: 'Kontribusi dikembalikan ke dompet. Meningkatkan dompet dengan nilai (%s)'
+admin-account-invest-user-refund-fail-pool-amount: 'Kontribusi ini tidak dapat dikembalikan karena pengguna tidak memiliki cukup uang di dompet (%s)'
+admin-account-invest-user-refund-ko: 'Kontribusi tidak dapat dikembalikan: [%s]'
+admin-account-invest-user-refund-ok: 'Kontribusi diganti dengan benar'
+admin-account-invest-user-refund-ok-pool: 'Kontribusi dikembalikan dengan benar. Dompet telah berkurang dalam %s'
+admin-account-issue-solved: 'Kami telah melakukan transfer'
+admin-account-modify-status: 'Perubahan status'
+admin-account-modify-status-confirm: "Yakin ingin mengubah status ke kontribusi ini secara manual? Ini rumit!\nOperasi pengembalian kontribusi tidak akan dilakukan.\n"
+admin-account-payment-method: 'Metode pembayaran'
+admin-account-pool-on-fail: 'Pool (kembali ke dompet jika gagal)'
+admin-account-refund-to-pool: 'Kembalikan kontribusi ke dompet'
+admin-account-refund-to-pool-confirm: "Ini akan menandai kontribusi sebagai:\nKembali jika proyek gagal\nDibatalkan jika proyek aktif atau berhasil\nPengguna tidak akan diganti, uang akan dihasilkan di dompet pengguna.\nLanjutkan?\n"
+admin-account-refund-to-user: 'Kembalikan kontribusi kepada pengguna'
+admin-account-refund-to-user-confirm: "Ini akan menandai kontribusi sebagai:\nKembali jika proyek gagal\nDibatalkan jika proyek aktif atau berhasil\nUang pengguna akan dikembalikan.\nIni TIDAK BISA berfungsi jika kontribusi sudah sangat lama atau metode pembayaran tidak mendukungnya.\nLanjutkan?\n"
+admin-account-rewards: 'Hadiah yang dipilih'
+admin-account-switch-donation: 'Ubah donasi'
+admin-account-switch-donation-confirm: 'Anda yakin ingin mengubah status donasi?'
+admin-account-switch-pool: 'Ganti pool'
+admin-account-switch-pool-confirm: 'Ini hanya mempengaruhi ketika proyek gagal, itu tidak menghasilkan atau mengeluarkan uang dari dompet. Lanjutkan?'
+admin-account-switch-pool-fail: 'Anda tidak dapat mengubah status pool dari kontribusi ini'
+admin-account-transaction: 'Kode pelacakan'
+admin-account-user-changed-error: 'Pengguna kontribusi [%ID%] tidak dapat diubah menjadi [%NAME%]!'
+admin-account-user-changed-successfully: 'Pengguna kontribusi [%ID%] telah diubah menjadi [%NAME%]'
+admin-address: Alamat
+admin-all: Semua
+admin-global: Keseluruhan
+admin-back: Coba lagi
+admin-back-detail: 'Kembali ke Rincian'
+admin-back-list: 'Kembali ke Portal'
+admin-contents: 'Teks dan terjemahan'
+admin-empty-list: 'Hasil pencarian tidak ditemukan'
+admin-activity: Aktifitas
+admin-communications: Komunikasi
+admin-blog-add: Membuat posting baru

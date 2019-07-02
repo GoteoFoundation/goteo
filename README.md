@@ -6,9 +6,17 @@ Goteo The Open Source Crowdfunding Platform
 
 [![Build Status](https://travis-ci.org/GoteoFoundation/goteo.svg?branch=devel)](https://travis-ci.org/GoteoFoundation/goteo)
 
-This is the source code of the [Crowdfunding platform Goteo](http://goteo.org)
+This is the source code of the [Crowdfunding platform Goteo](http://goteo.org).
 
-> This is a web app that allows the receipt, review and publishing of collective campaigns for their collective funding and the receiving of collaborations as well as the dynamic visualization of the support received, classification of initiatives and campaign tracking. The system also permits secure and distributed communication with users and between users, administration of highlighted projects on the home page and the creation of periodical publications such as blogs, a FAQ section and static pages.
+The Goteo platform is a recognized, award-winning creator of an open standard for crowdfunding for social impact and generating new digital commons, which has been founded and designed by [Platoniq](http://platoniq.net). Platoniq is also the founding board member of the Goteo Foundation which is the responsible for the maintenance of this code.
+
+[![Backed by Goteo Foundation](docs/developers/assets/foundation-logo.png)](https://foundation.goteo.org) &nbsp; [![Created by  Platoniq Sistema Cultural](docs/developers/assets/platoniq-logo.png)](http://platoniq.net)
+
+### Features
+
+This is a web app that allows the receipt, review and publishing of collective campaigns for their collective funding and the receiving of collaborations as well as the dynamic visualization of the support received, classification of initiatives and campaign tracking. The system also permits secure and distributed communication with users and between users, administration of highlighted projects on the home page and the creation of periodical publications such as blogs, a FAQ section and static pages.
+
+### INSTALL
 
 Current version: **3.5**
 
@@ -53,40 +61,40 @@ Since version 3.3 where are using [Crowdin](https://crowdin.com/) as a tool for 
 <translators>
 
 <ul>
-	<li>Dan Walenter (cas3v0n)</li>
-	<li>m19951996</li>
-	<li>mrfinearts</li>
-	<li>Denver Moon (9003104)</li>
-	<li>Wilmer Alzate (waar19)</li>
-	<li>José Peralta (elpoliglota) (josedpg11)</li>
-	<li>Chris_W</li>
-	<li>Alessandro Ravanetti (aleravanetti)</li>
-	<li>joao.cruz</li>
-	<li>kguanzon (Kimberly Guanzon) (kim0421)</li>
-	<li>Ferran Reyes (ferranreyesgoteo)</li>
-	<li>ismaeljoseph</li>
-	<li>Vanessa.Montes</li>
-	<li>Xurxo Guerra (xguerrap)</li>
-	<li>Tiago Santos (tisantos)</li>
-	<li>Iulian Mongescu (iulian.mongescu)</li>
-	<li>gracine</li>
-	<li>Carine_cha</li>
-	<li>Clint Mark Cortes (cortesclintmark)</li>
-	<li>zainalkhalid</li>
-	<li>melsmacan</li>
-	<li>franzancot</li>
-	<li>Herii (HERII12)</li>
-	<li>shaunmatthew</li>
-	<li>firewall (Onrkskn)</li>
-	<li>Ceyda Mutlu (translator93)</li>
-	<li>Júlia Petúlia Sol (juliaxsol)</li>
-	<li>enolp</li>
-	<li>elena-2018</li>
-	<li>Udo Wierlemann (Udo.Wierlemann)</li>
-	<li>helpPAM</li>
-	<li>CataAz</li>
-	<li>pep_laDeriva</li>
-	<li>jmontane</li>
+    <li>Dan Walenter (cas3v0n)</li>
+    <li>m19951996</li>
+    <li>mrfinearts</li>
+    <li>Denver Moon (9003104)</li>
+    <li>Wilmer Alzate (waar19)</li>
+    <li>José Peralta (elpoliglota) (josedpg11)</li>
+    <li>Chris_W</li>
+    <li>Alessandro Ravanetti (aleravanetti)</li>
+    <li>joao.cruz</li>
+    <li>kguanzon (Kimberly Guanzon) (kim0421)</li>
+    <li>Ferran Reyes (ferranreyesgoteo)</li>
+    <li>ismaeljoseph</li>
+    <li>Vanessa.Montes</li>
+    <li>Xurxo Guerra (xguerrap)</li>
+    <li>Tiago Santos (tisantos)</li>
+    <li>Iulian Mongescu (iulian.mongescu)</li>
+    <li>gracine</li>
+    <li>Carine_cha</li>
+    <li>Clint Mark Cortes (cortesclintmark)</li>
+    <li>zainalkhalid</li>
+    <li>melsmacan</li>
+    <li>franzancot</li>
+    <li>Herii (HERII12)</li>
+    <li>shaunmatthew</li>
+    <li>firewall (Onrkskn)</li>
+    <li>Ceyda Mutlu (translator93)</li>
+    <li>Júlia Petúlia Sol (juliaxsol)</li>
+    <li>enolp</li>
+    <li>elena-2018</li>
+    <li>Udo Wierlemann (Udo.Wierlemann)</li>
+    <li>helpPAM</li>
+    <li>CataAz</li>
+    <li>pep_laDeriva</li>
+    <li>jmontane</li>
 </ul>
 </translators>
 

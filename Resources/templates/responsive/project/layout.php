@@ -4,7 +4,7 @@ $project=$this->project;
 
 if($this->is_pronto()):
     echo json_encode([
-        'title' => $this->ee($this->project->name),
+        'title' => $this->project->name,
         'content' => $this->supply('main-content')
         ]);
     return;
@@ -22,7 +22,7 @@ elseif($project->gallery[0]){
 
 $this->layout('layout', [
     'bodyClass' => 'project',
-    'title' => $this->ee($this->project->name),
+    'title' => $this->project->name,
     'meta_description' => $this->ee($this->project->subtitle),
     'tw_image' => $meta_img,
     'og_image' => $meta_img

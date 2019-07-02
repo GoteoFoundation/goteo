@@ -16,7 +16,7 @@ We've only tested using Linux hosts, any comments or fixes on other hosts will b
 
 ---
 
-The first time, it is necessary to create a local docker config that you can personalize:
+The first time, it is necessary to create a local docker configuration file that you can personalize:
 
 ```bash
 cp config/docker-settings.yml config/local-docker-settings.yml
@@ -30,11 +30,23 @@ docker/up
 
 `docker/up` is a wrapper for `docker-compose`, you can use any command line modificator (ie: `docker/up -d` instead of `docker-compose -d`).
 
-> We use the wrapper `docker/up` because it automatically tries to export your user ID to the docker container. Otherwise all generated files by the php server will be owned by another user or root.
+> 👉 We use the wrapper `docker/up` because it automatically tries to export your user ID to the docker container. Otherwise all generated files by the php server will be owned by another user or root.
 > 
-> However, to ensure compatibility with the traditional `docker-compose up`, all created files inside the php container will have full-writeable permissions (ie: folder 777 and files 666)
+> 👉 **This script assumes to run `docker-compose` without root privileges**. Its important for the user running docker to belong to the `docker` group. As is explained in the [Post-installation steps in docker.com](https://docs.docker.com/install/linux/linux-postinstall/) (just run `sudo usermod -aG docker $USER` to be sure).
+> 
+> In any case, to ensure compatibility with the traditional `docker-compose up`, all created files inside the php container will have full-writeable permissions (ie: folder 777 and files 666)
+> 
+> 👉 You can specify a custom `docker-compose.yml` file if necessary. Just copy it or create a new one with the name `docker-compose-local.yml`, this file is listed in the `.gitignore` and won't be committed.
+> 
+> 👉 When updating from older versions (with other configurations of the `docker-compose.yml` file) it maybe necessary to rebuild the containers. To do that just run the same command with the modifier `--build`:
+> 
+> ```bash
+> docker/up --build
+> ```
+> 
 
-At this point you should be able to point your browser to http://localhost:8081 (or whatever host name you have in your local-docker-settings.yml). 
+
+At this point you should be able to point your browser to http://localhost:8081 (or whatever host name you have in your local-docker-settings.yml).
 
 **The correct URL will be shown in the docker-compose log when all preparation commands finish**
 
@@ -67,7 +79,7 @@ You can (or must) run any of the above commands if the are changes in relevant f
 
 In general, any command used in Goteo to be executed in the docker virtual machine should use the wrapper `docker/exec` as it will run the command with the proper user.
 
-If you want to test a production environment, you can pass the var `DEBUG=0` to the docker-compose command:
+If you want to test a production environment, you can pass the shell variable `DEBUG=0` to the docker-compose command:
 
 ```bash
 DEBUG=false docker/up
@@ -228,11 +240,12 @@ docker-compose exec mariadb mysql -uroot -pcrowdfunding -e 'CREATE DATABASE gote
 docker-compose exec mariadb mysql -uroot -pcrowdfunding -e "GRANT ALL PRIVILEGES ON goteo_test.* TO 'goteo'@'%';"
 ```
 
-Finally, nstall the database:
+Finally, install the database:
 
 ```bash
 GOTEO_CONFIG_FILE='config/test-docker-settings.yml' docker/exec bin/console migrate install
 ```
+
 ---
 
 From now on, just run tests as:

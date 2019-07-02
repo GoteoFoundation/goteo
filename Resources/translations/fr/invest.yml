@@ -28,7 +28,6 @@ invest-donation-header: 'Entrer les informations fiscal pour cette donation'
 invest-fiscal-skip: 'Fournir les détails plus tard'
 invest-fiscal-title: 'Assurez vous de recevoir votre certificat de donation donnant droit à des avantages fiscaux (Seulement en Espagne pour le moment)'
 invest-mail_info-address: 'A précisé l''addresse suivante:'
-invest-mail_info-drop: 'De plus, %s a apporté %s de matchfunding à travers la campagne %s'
 invest-make-sure-save: Valider
 invest-make-sure-title: Confirmation
 invest-method-title: 'Choisissez votre moyen de paiement '

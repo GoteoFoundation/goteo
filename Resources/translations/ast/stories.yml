@@ -1,1 +1,5 @@
 ---
+dashboard-story-form-title: 'La mio historia en Goteo'
+dashboard-story-translate-title: 'La mio historia'
+story-field-author-organization: 'Autor/Organización'
+story-save-fail: 'Fallu al guardar la historia'

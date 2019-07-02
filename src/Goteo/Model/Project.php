@@ -2359,11 +2359,12 @@ class Project extends \Goteo\Core\Model {
             $this->status = $status;
             $this->published = $date;
             // update fee in bank account if exists
-            $query = static::query("SELECT fee FROM project_account WHERE project = ?", array($this->id));
+            
+            /*$query = static::query("SELECT fee FROM project_account WHERE project = ?", array($this->id));
             $fee = $query->fetchObject();
             if($fee && $fee->fee != Config::get('fee')) {
                 static::query("UPDATE project_account SET fee=:fee WHERE project = :id", array(':fee' => Config::get('fee'), ':id' => $this->id));
-            }
+            }*/
 
             // actualizar numero de proyectos publicados del usuario
             User::updateOwned($this->owner);

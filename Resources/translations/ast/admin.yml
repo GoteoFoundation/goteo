@@ -23,36 +23,129 @@ admin-account-switch-donation: 'Conmutar donativu'
 admin-account-switch-donation-confirm: '¿De xuru que quies camudar l''estáu del donativu?'
 admin-account-transaction: 'Códigos de siguimientu'
 admin-account-user-changed-error: '¡Nun pudo camudase l''usuariu del aporte [%ID%] a [%NAME%]!'
+admin-account-user-changed-successfully: 'Camudó l''usuariu del aporte [%ID%] a [%NAME%]'
 admin-address: Direición
+admin-global: Global
 admin-back: Volver
 admin-back-list: 'Volver al llistáu'
 admin-contents: 'Testos y traducciones'
 admin-empty-list: 'Nun s''alcontraron rexistros'
+admin-communications: Comunicaciones
 admin-home: Portada
 admin-items: entraes
 admin-mailing-back-to-list: 'Volver a les comunicaciones'
 admin-mailing-created: 'Creóse''l'
 admin-mailing-status: 'Estáu del unviu automáticu'
 admin-mailing-subject: Asuntu
+admin-mailing-view-in-sent: 'Ver nel historial d''unvios (estadístiques)'
+admin-mailing-view-message: 'Ver el mensaxe'
 admin-newsletter-generated: 'Xeneróse''l boletín [%ID%]'
 admin-newsletter-langs-to-send: 'Llingües: %LANGS%'
 admin-newsletter-mind-activate: 'Actívalo pa que s''unvie'
+admin-prev-page: 'Páxina anterior'
+admin-next-page: 'Páxina siguiente'
 admin-no: 'Non'
 admin-percent: Porcentaxe
 admin-project: Proyeutu
+admin-main: Principal
 admin-projects: Proyeutos
+admin-consultants: 'Asesores'
 admin-filters: 'Peñeres'
 admin-remove-filters: 'Quitar peñeres'
+admin-remove-entry-confirm: '¿De xuru que quies desaniciar esta entrada? ¡Esta aición nun pue desfacese!'
+admin-services: Servicios
 admin-sponsors: Servicios
+admin-summary: Resume
+admin-origins: Analítica de visites
 admin-status: Estáu
 admin-text-type: 'Procesar testu como'
 admin-text-type-html: HTML
 admin-text-type-md: Markdown
 admin-text-type-plain: 'Testu simple'
 admin-user: Usuariu
+admin-user-no-projects: 'Entá nun se creó dengún proyeutu'
+admin-user-no-invests: 'Entá nun se fizo denguna donación'
 admin-users: Usuarios
+admin-blog: Blogue xeneral
+admin-blog-slug-exists: 'El identificador [%s] se está usando en otro post!'
+admin-blog-slug-chars: '¡L''identificador [%s] contién caráuteres que nun son válidos!'
+admin-blog-not-public: 'Esti artículu entá nun s''espublizó'
+admin-stories: Histories d'usuarios en Goteo
+admin-categories: 'Estayes y ámbitos'
+admin-calls: Convocatories
+admin-channels: Canales
 admin-yes: Sí
+admin-project-express-discard: 'Refugu nel intre'
 admin-project-to-review: 'A revisión'
 admin-project-to-negotiation: 'A negociación'
 admin-project-to-publish: 'Espublizar'
 admin-project-derivation-discard: 'Refugu con derivación'
+admin-home-title: Alministrar Goteo
+admin-stats: Estadístiques
+admin-list-total: 'Total: <strong>%s</strong> resultaos'
+admin-search-global: 'Proyeutu, canal, convocatoria...'
+admin-rebase-user: 'Camudar l''ID d''usuariu'
+admin-show-roles-info: '¿Qué pue facer cada rol?'
+admin-view-user-projects: 'Tolos proyeutos'
+admin-user-no-mailing: 'Entá nun se-y unvió dengún corréu'
+admin-view-user-mailing: 'Tolos unvios'
+admin-title-id: ID
+admin-title-name: Nome
+admin-title-about: Información
+admin-title-fullname: Nome
+admin-title-password: Contraseña
+admin-title-avatar: Avatar
+admin-title-roles: Roles
+admin-title-icon: Iconu
+admin-title-image: Imaxe
+admin-title-title: Títulu
+admin-title-subtitle: Sotítulu
+admin-title-section: Seición
+admin-title-text: Testu
+admin-title-langs: Traducciones
+admin-title-actions: Aiciones
+admin-title-tags: Etiquetes
+admin-title-sphere: Ámbitu
+admin-title-social_commitment: Compromisu social
+admin-title-sdgs: 'Oxetivos de Desendolcu Global'
+admin-title-footprints: 'Buelgues'
+admin-title-categories: 'Estayes'
+admin-title-social_commitments: 'Compromisos sociales'
+admin-title-order: Ordenar
+admin-title-status: Estáu
+admin-aggregate-timeline: 'Llinia temporal'
+admin-stats-project-totals: 'Estáu de los proyeutos'
+admin-stats-raised: 'Ingresos brutos'
+admin-stats-active: 'Ingresos netos'
+admin-stats-refunded: 'Devoluciones'
+admin-stats-citizens-part: 'Parte Ciudadana'
+admin-stats-in_wallet: 'Nel monederu'
+admin-commissions: Comisión
+admin-user-fee: Comisión ciudadana
+admin-vat: IVA
+admin-the_day: El día
+admin-the_week: La selmana
+admin-the_month: El mes
+admin-the_year: L'añu
+admin-total: Total
+admin-today: Güei
+admin-yesterday: Ayeri
+admin-week: Esta selmana
+admin-last_week: El mesmu día de la selmana pasada
+admin-last_week_complete: Tola selmana pasada
+admin-last_year_week: La mesma selmana d'hai un añu
+admin-month: Esti mes
+admin-last_month: El mesmu día del mes pasáu
+admin-last_month_complete: Tol mes pasáu
+admin-last_year_month: El mesmu mes d'hai un añu
+admin-year: Esti añu
+admin-last_year: El mesmu día del añu pasáu
+admin-last_year_complete: Tol añu pasáu
+admin-promote-submit: 'Guardar'
+admin-promote-already-exists: 'Esti proyeutu yá ta destacáu'
+admin-promote-correct: 'El proyeutu ta destacáu'
+admin-invest-raised-total-yesterday: 'Donaciones ayeri'
+admin-invest-diff-yesterday: 'Diferencia dol día anterior'
+admin-invest-diff-last_week: 'Diferencia cola selmana anterior'
+admin-invest-diff-last_month: 'Diferencia col mes anterior'
+admin-invest-diff-last_year: 'Diferencia col añu anterior'
