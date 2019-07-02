@@ -815,7 +815,6 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
             'noreg' => 'Sin registro de contrato',
             'onform' => 'Editando datos',
             'owner' => 'Formulario cerrado',
-            'admin' => 'Datos en revision',
             'ready' => 'Listo para imprimir',
             'pdf' => 'Pdf descargado',
             'received' => 'Sobre recibido',
@@ -835,6 +834,23 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
             'owner' => 'Formulario cerrado',
             'ready' => 'Enviado por gestor para firma',
             'received' => 'Firmado',
+            'prepay' => 'Pago adelantado',
+            'payed' => 'Pagos realizados',
+            'closed' => 'Contrato cumplido'
+            );
+    }
+
+    /*
+     * Transition status
+     */
+    public static function procTransitionStatus () {
+        return array(
+            'noreg' => 'Sin registro de contrato',
+            'onform' => 'Editando datos',
+            'owner' => 'Formulario cerrado',
+            'ready' => 'Listo para imprimir / Enviado por gestor para firma',
+            'pdf' => 'Pdf descargado (obsoleto en electrónico)',
+            'received' => 'Sobre recibido / Firmado digitalmente',
             'prepay' => 'Pago adelantado',
             'payed' => 'Pagos realizados',
             'closed' => 'Contrato cumplido'
