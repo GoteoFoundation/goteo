@@ -208,7 +208,7 @@ class Contract extends \Goteo\Core\Model {
             $contract->status = self::getStatus($id);
 
             // si no tiene flag de "listo para imprimir" solo lo mostramos y como borrador
-            $contract->draft = ($contract->status->ready) ? false : true;
+            $contract->draft = ($contract->status->ready||$contract->electronic) ? false : true;
 
             // cargamos los documentos
             $contract->docs = Contract\Document::getDocs($id);
