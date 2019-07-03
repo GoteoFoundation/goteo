@@ -143,6 +143,9 @@ class Contract extends \Goteo\Core\Model {
 
         $contract->type = 0; // inicialmente persona fisica
 
+        $contract->electronic = 1; // electronic by default
+
+
         // @FIXME esto tendria que venir de lo rellenado en el paso 2 del formulario de proyecto
         $personalData = User::getPersonal($projData->owner);
         // persona física o representante
@@ -205,7 +208,7 @@ class Contract extends \Goteo\Core\Model {
             $contract->status = self::getStatus($id);
 
             // si no tiene flag de "listo para imprimir" solo lo mostramos y como borrador
-            $contract->draft = ($contract->status->ready) ? false : true;
+            $contract->draft = ($contract->status->ready||$contract->electronic) ? false : true;
 
             // cargamos los documentos
             $contract->docs = Contract\Document::getDocs($id);
@@ -393,7 +396,7 @@ class Contract extends \Goteo\Core\Model {
             return $ok;
 
 		} catch(\PDOException $e) {
-			$errors[] = "Los datos de contrato no se han gaurdado correctamente. Por favor, revise los datos." . $e->getMessage();
+			$errors[] = "Los datos de contrato no se han guardado correctamente. Por favor, revise los datos." . $e->getMessage();
             return false;
 		}
 	}
@@ -812,10 +815,42 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
             'noreg' => 'Sin registro de contrato',
             'onform' => 'Editando datos',
             'owner' => 'Formulario cerrado',
-            'admin' => 'Datos en revision',
             'ready' => 'Listo para imprimir',
             'pdf' => 'Pdf descargado',
             'received' => 'Sobre recibido',
+            'prepay' => 'Pago adelantado',
+            'payed' => 'Pagos realizados',
+            'closed' => 'Contrato cumplido'
+            );
+    }
+
+    /*
+     * Estados de proceso de contrato
+     */
+    public static function procElectronicStatus () {
+        return array(
+            'noreg' => 'Sin registro de contrato',
+            'onform' => 'Editando datos',
+            'owner' => 'Formulario cerrado',
+            'ready' => 'Enviado por gestor para firma',
+            'received' => 'Firmado',
+            'prepay' => 'Pago adelantado',
+            'payed' => 'Pagos realizados',
+            'closed' => 'Contrato cumplido'
+            );
+    }
+
+    /*
+     * Transition status
+     */
+    public static function procTransitionStatus () {
+        return array(
+            'noreg' => 'Sin registro de contrato',
+            'onform' => 'Editando datos',
+            'owner' => 'Formulario cerrado',
+            'ready' => 'Listo para imprimir / Enviado por gestor para firma',
+            'pdf' => 'Pdf descargado (obsoleto en electrónico)',
+            'received' => 'Sobre recibido / Firmado digitalmente',
             'prepay' => 'Pago adelantado',
             'payed' => 'Pagos realizados',
             'closed' => 'Contrato cumplido'
