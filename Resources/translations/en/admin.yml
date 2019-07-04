@@ -50,6 +50,13 @@ admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
 admin-activity: Activity
 admin-communications: Comunications
+admin-communications-userid-content: ' for the id of the recipient'
+admin-communications-useremail-content: ' for the email of the recipient'
+admin-communications-username-content: ' for the name of the recipient'
+admin-communications-siteurl-content: ' for the url of this platform (%SITEURL%)'
+admin-communications-subscribeurl-content: ' subscribe link to the newsletter of the user'
+admin-communications-unsubscribeurl-content: '  unsubscribe link to the newsletter of the user'
+admin-communications-poolamount-content: ' quantity of money disposable in the wallet'
 admin-home: Dashboard
 admin-items: entries
 admin-mailing-back-to-list: 'Back to messages'
@@ -76,6 +83,8 @@ admin-projects: Projects
 admin-consultants: 'Consultants'
 admin-invests: Contributions
 admin-filters: 'Filters'
+admin-filters-edit: 'Edit filter'
+admin-filters-create: 'Create filter'
 admin-remove-filters: 'Remove filters'
 admin-remove-entry: 'Remove entry'
 admin-remove-entry-confirm: 'Are you sure to remove this entry? This action cannot be undone!'
@@ -235,7 +244,10 @@ admin-filter-typeofdonor: 'Type of donor'
 admin-filter-donor: 'Donor'
 admin-filter-promoter: 'Promoter'
 admin-filter-matcher: 'Matcher'
+admin-filter-test: 'Prueba'
 admin-filter-type-unique: 'Unique'
 admin-filter-type-multidonor: 'Multidonor'
+admin-filter-type-foundation-donor: 'Donor to the foundation'
 admin-filter-type-all: 'All'
 admin-filter-predefined-date: 'Predefined dates'
+admin-mail-body: 'Body of the message'
