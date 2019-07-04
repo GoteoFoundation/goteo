@@ -100,6 +100,7 @@ class Template extends \Goteo\Core\Model {
     const MATCHER_PROJECT_ADDED_ADMIN = 'matcher_project_added_admin';    // inform to admin that a new project is added to a matcher
     const PROJECT_DERIVATION_DISCARD = 'project_derivation_discard';    // Discard derivating to others platforms.
     const PROJECT_MY_STORY_AVAILABLE = 'project_my_story_available';    // My story form open
+    const CONTRACT_PREVIOUS_INFORMATION = 'contract_previous_information';    // Send information about the contract documentation
     const DONATE_ORGANIZATION_THANKS = 'donate_thanks';    // Thanks by donation to the organization
     const MESSAGE_PROJECT_THREAD = 'project_thread';    // Project owner creates a thread
     const MESSAGE_THREAD_RESPONSE = 'thread_response';    // Response from user in a thread
