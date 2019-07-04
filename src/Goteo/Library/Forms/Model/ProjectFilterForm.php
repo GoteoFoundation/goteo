@@ -15,6 +15,7 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Goteo\Application\Session;
 use Goteo\Library\Forms\FormModelException;
 use Symfony\Component\Form\FormInterface;
@@ -41,12 +42,15 @@ class ProjectFilterForm extends AbstractFormProcessor {
         $roles = [
             '0' => Text::get('admin-filter-donor') ,
             '1' => Text::get('admin-filter-promoter') ,
-            '2' => Text::get('admin-filter-matcher') 
+            '2' => Text::get('admin-filter-matcher'),
+            '3' => Text::get('admin-filter-test')
         ];
+        
         $typeofdonor = [
             '0' => Text::get('admin-filter-type-unique'),
             '1' => Text::get('admin-filter-type-multidonor'),
-            '2' => Text::get('admin-filter-type-all')
+            '2' => Text::get('admin-filter-type-foundation-donor'),
+            '3' => Text::get('admin-filter-type-all')
         ];
 
         $builder
@@ -77,81 +81,59 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 'choices' => $roles,
                 'required' => true,
             ))
-            ->add('projects', 'typeahead', [
-                'label' => 'admin-projects',
-                'disabled' => $this->getReadonly(),
-                'required' => false,
-                'sources' => 'project'
-            ])
-            ->add('calls', 'typeahead', [
-                'label' => 'admin-calls',
-                'disabled' => $this->getReadonly(),
-                'required' => false,
-                'sources' => 'call'
-            ])
-            ->add('matchers', 'typeahead', [
-                'label' => 'admin-matchers',
-                'disabled' => $this->getReadonly(),
-                'required' => false,
-                'sources' => 'matcher'
-            ])
-            ->add('status', 'choice', array(
-                'label' => 'regular-status',
-                'required' => false,
-                'choices' => Project::status(),
-                'attr' => [
-                    'data-editor-type' => 'text',
-                    'help' => Text::get('tooltip-text-type-change')
-                ]
-            ))
-            ->add('typeofdonor', 'choice', array(
-                'label' => 'admin-filter-typeofdonor',
-                'required' => false,
-                'choices' => $typeofdonor,
-            ))
-            ->add('wallet', 'boolean', array(
-                'required' => false,
-                'label' => Text::get('admin-user-wallet-amount'), 
-                'color' => 'cyan',
-            ))
-            ->add('cert', 'boolean', array(
-                'required' => false,
-                'label' => Text::get('home-advantages-certificates-title'),
-                'color' => 'cyan',
-            ))
-            ->add('project_location', 'location', [
-                'label' => 'overview-field-project_location',
-                'disabled' => $this->getReadonly(),
-                'location_class' => 'Goteo\Model\Project\ProjectLocation',
-                'required' => false,
-                'pre_addon' => '<i class="fa fa-globe"></i>',
-            ])
-            ->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
-            ])
+            ->add($builder->create('admin-filters-dependent', 'form', array(
+                    'virtual' => true,
+                    'label' => false
+                ))
+                ->add('projects', 'typeahead', [
+                    'label' => 'admin-projects',
+                    'disabled' => $this->getReadonly(),
+                    'required' => false,
+                    'sources' => 'project'
+                ])
+                ->add('calls', 'typeahead', [
+                    'label' => 'admin-calls',
+                    'disabled' => $this->getReadonly(),
+                    'required' => false,
+                    'sources' => 'call'
+                ])
+                ->add('matchers', 'typeahead', [
+                    'label' => 'admin-matchers',
+                    'disabled' => $this->getReadonly(),
+                    'required' => false,
+                    'sources' => 'matcher'
+                ])
+                ->add('status', 'choice', array(
+                    'label' => 'regular-status',
+                    'required' => false,
+                    'choices' => Project::status(),
+                ))
+                ->add('typeofdonor', 'choice', array(
+                    'label' => 'admin-filter-typeofdonor',
+                    'required' => false,
+                    'choices' => $typeofdonor,
+                ))
+                ->add('wallet', 'boolean', array(
+                    'required' => false,
+                    'label' => Text::get('admin-user-wallet-amount'), 
+                    'color' => 'cyan',
+                ))
+                ->add('cert', 'boolean', array(
+                    'required' => false,
+                    'label' => Text::get('home-advantages-certificates-title'),
+                    'color' => 'cyan',
+                ))
+                ->add('project_location', 'location', [
+                    'label' => 'overview-field-project_location',
+                    'disabled' => $this->getReadonly(),
+                    'location_class' => 'Goteo\Model\Project\ProjectLocation',
+                    'required' => false,
+                    'pre_addon' => '<i class="fa fa-globe"></i>',
+                ])
+            )
             ;
         
         return $this;
     }
-
-    // public function save(FormInterface $form = null, $force_save = false) {
-    //     if(!$form) $form = $this->getBuilder()->getForm();
-    //     if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
-
-    //     $data = $form->getData();
-    //     print_r($data); die;
-    //     $filter = $this->getModel();
-    //     $filter->rebuildData($data, array_keys($form->all())); // match de variables con los valores del form.
-
-    //     $filter->
-    //     $errors = [];
-    //     if (!$filter->save($errors)) {
-    //         throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
-    //     }
-
-    //     if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
-
-    //     return $this;
-    // }
 
 }

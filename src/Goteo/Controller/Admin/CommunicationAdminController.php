@@ -14,12 +14,17 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Model\Filter;
+use Goteo\Model\Communication;
+use Goteo\Model\User;
 use Goteo\Controller\Message;
 use Goteo\Library\Text;
+use Goteo\Application\Lang;
+use Goteo\Model\User\Translate;
+use Goteo\Application\Session;
 
 class CommunicationAdminController extends AbstractAdminController
 {
-    protected static $icon = '<i class="fa fa-envelope-o"></i>';
+    protected static $icon = '<i class="fa fa-2x fa-envelope-o"></i>';
 
     public static function getGroup() {
         return 'communications';
@@ -31,41 +36,34 @@ class CommunicationAdminController extends AbstractAdminController
             new Route(
                 '/',
                 ['_controller' => __CLASS__ . "::listAction"]
-            ),
-            new Route(
-                '/detail/{id}', 
-                ['_controller' => __CLASS__ . "::detailAction"]
-            ),
-            new Route(
-                '/edit/{template}',
-                ['_controller' => __CLASS__ . "::editAction"]
             )
-
         ];
     }
 
     public function listAction(Request $request)
     {
-        // $list = Sender::getMailingList();
-        
-		// $filter = $id ? Filter::get($id) : new Filter();
-
-		// if (!$filter) {
-		// 	throw new ModelNotFoundException("Not found filter [$id]");
-		// }
-
         $filter = new Filter();
         $processor = $this->getModelForm('ProjectFilter', $filter , Array(), Array(), $request);
         $processor->createForm();
-        $form = $processor->getForm();
+        $form_filter = $processor->getForm();
+        $form_filter->handleRequest($request);
 
-        $form->handleRequest($request);
         $filters = $filter->getAll();
 
+        $template = ['0' => 'General communication', '1' => Text::get('newsletter-lb')];
+        $translates = Translate::getLangs(Session::getUserId());
+        $langs = Lang::listAll('name', false);
+        $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
+
+
         return $this->viewResponse('admin/communication/list',[
-            // 'filters' => $filters
             'filters' => $filter->getAll(),
-            'form' => $form->createView()
+            'form_filter' => $form_filter->createView(),
+            'templates' => $template,
+            'languages' => $langs,
+            'editor_types' => $editor_types,
+            'translations' => $translates,
+            'variables' => Communication::variables()
         ]);
 
     }

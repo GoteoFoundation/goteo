@@ -39,13 +39,13 @@ class Filter extends \Goteo\Core\Model {
         $query = static::query('SELECT * FROM filter WHERE id = ?', $id);
         $filter = $query->fetchObject(__CLASS__);
 
-        if (!$filter instanceof \Goteo\Model\Filter) {
+        if (!$filter instanceof Filter) {
             throw new ModelNotFoundException("[$id] not found");
         }
 
-        $filter->projects = self::get_filterprojects($id);
-        $filter->calls = self::get_filtercalls($id);
-        $filter->matcher = self::get_filtermatcher($id);
+        $filter->projects = self::getFilterProjects($id);
+        $filter->calls = self::getFilterCalls($id);
+        $filter->matcher = self::getFilterMatcher($id);
 
         return $filter;
     }
@@ -57,21 +57,21 @@ class Filter extends \Goteo\Core\Model {
     }
 
     static public function getFilterProjects ($filter){
-        $query = static::query('SELECT project FROM filter_projects WHERE filter = ?', $filter);
+        $query = static::query('SELECT `project` FROM filter_projects WHERE filter = ?', $filter);
         $projects = $query->fetchAll(\PDO::FETCH_CLASS);
 
         return $projects;
     }
 
     static public function getFilterCalls ($filter){
-        $query = static::query('SELECT call FROM filter_calls WHERE filter = ?', $filter);
+        $query = static::query('SELECT `call` FROM filter_calls WHERE filter = ?', $filter);
         $calls = $query->fetchAll(\PDO::FETCH_OBJ);
 
         return $calls;
     }
     
     static public function getFilterMatcher ($filter){
-        $query = static::query('SELECT matcher FROM filter_matcher WHERE filter = ?', $filter);
+        $query = static::query('SELECT `matcher` FROM filter_matcher WHERE filter = ?', $filter);
         $matchers = $query->fetchAll(\PDO::FETCH_OBJ);
 
         return $matchers;
@@ -91,7 +91,7 @@ class Filter extends \Goteo\Core\Model {
         // if(!$this->validate($errors)) return false;
 
         $fields = array(
-            // 'id',
+            'id',
             'name',
             'cert',
             'role',

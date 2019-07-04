@@ -267,6 +267,23 @@ $api->add('api-channels', new Route(
         )
 ));
 
+// Filter
+
+$api->add('api-filter-create', new Route(
+    '/filter',
+    array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::addFilterAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+$api->add('api-filter', new Route(
+    '/filter/{id}',
+    array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::filterAction')
+));
+
 
 // Licenses list
 $api->add('api-licenses', new Route(
