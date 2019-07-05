@@ -7,7 +7,7 @@ $project = $this->project;
 if (!$project->isApproved()){
     // Project will be published automatically if date is present
     if(!empty($project->published)) {
-        if ($project->published > date('Y-m-d')) {
+        if ($project->published >= date('Y-m-d')) {
             // si la fecha es en el futuro, es que se publicará
             $status_text = $this->text('project-willpublish', date('d/m/Y', strtotime($project->published)));
             $status_class = 'orange';

@@ -172,7 +172,7 @@ class ProjectController extends \Goteo\Core\Controller {
         // mensaje cuando, sin estar en campaña, tiene fecha de publicación
         if (!$project->isApproved()) {
             if (!empty($project->published)) {
-                if ($project->published > date('Y-m-d')) {
+                if ($project->published >= date('Y-m-d')) {
                     // si la fecha es en el futuro, es que se publicará
                     Message::info(Text::get('project-willpublish', date('d/m/Y', strtotime($project->published))));
                 } else {
