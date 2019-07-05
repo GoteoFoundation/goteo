@@ -203,10 +203,11 @@ $(function () {
                     var filterSelect = document.getElementById('filter-select');
                     filterSelect.options[filterSelect.selectedIndex].innerHTML = resp.name;
                 }
-                _show_success_msg();
                 newFilter = false;
                 filter = resp;
-                form.hide();
+                form.fadeOut();
+                $('body,html').animate({scrollTop : 0}, 500);
+                _show_success_msg();
             }
         });
     };
@@ -222,7 +223,7 @@ $(function () {
 
     document.getElementById('form_close').onclick = function() {
         form.fadeOut();
-        $('body').animate({scrollTop : 0}, 500);
+        $('body,html').animate({scrollTop : 0}, 500);
     }
 
     document.getElementById('templates').onchange = function() {

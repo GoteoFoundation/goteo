@@ -68,7 +68,6 @@ $langs = array_diff_key($this->languages, $this->translations);
   <label for="text"> <?= $this->text('admin-text-type') ?> </label>
   <div class="input-wrap">
     <select id="text" class="form-control" name="autoform[data-editor-type]">
-      <option selected disabled hidden></option>
       <?php foreach($this->editor_types as $id => $name) : ?>
         <option value="<?= $id ?>" > <?= $name ?> </option>
       <?php endforeach ?>
