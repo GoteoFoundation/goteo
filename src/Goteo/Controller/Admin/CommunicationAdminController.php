@@ -21,6 +21,9 @@ use Goteo\Library\Text;
 use Goteo\Application\Lang;
 use Goteo\Model\User\Translate;
 use Goteo\Application\Session;
+use Goteo\Library\Translator\ModelTranslator;
+use Goteo\Application\Config;
+
 
 class CommunicationAdminController extends AbstractAdminController
 {
@@ -36,37 +39,96 @@ class CommunicationAdminController extends AbstractAdminController
             new Route(
                 '/',
                 ['_controller' => __CLASS__ . "::listAction"]
+            ),
+            new Route(
+                '/preview',
+                ['_controller' => __CLASS__ . "::previewAction"]
+            ),
+            new Route(
+                '/detail/id/{id}',
+                ['_controller' => __CLASS__ . "::detailAction"]
             )
         ];
     }
 
+    public function doSave(Request $request){
+
+        if($request->isMethod('POST')) {
+            // validate()
+            $communication = new Communication();
+            $langs_ok = [];
+            $all = $request->request->get('t');
+            $form = $request->request->get('autoform');
+            $communication->type = $form['data-editor-type']; 
+            $communication->original_lang = Config::get('lang');
+            $communication->filter = $form['filter'];
+            $communication->template = $form['template'];
+            $communication->subject = all[$communication->original_lang]['subject'];
+            $communication->content = all[$communication->original_lang]['body'];
+            $communication->save();
+             
+            $translator = new ModelTranslator();
+            $translator = $translator::get('communication', $communication->id);
+            $fields = $translator::getFields('communication');
+    
+            foreach($all as $lang => $texts) {
+                // $values = [];
+
+                if(trim($texts['subject']) === '') continue;
+                if(trim($texts['body']) === '') continue;
+
+                $fields['subject'] = $texts['subject'];
+                $fields['content'] = $texts['body'];
+                // Insert if not exists
+                // Update if exists
+                // Exception on failure
+                try {
+                    $translator->save($lang, $fields);
+                } catch(\Exception $e) {
+                    Message::error(Text::get('translator-saved-ko', ['%LANG%' => $lang, '%ERROR%' => $e->getMessage()]));
+                }
+            }
+            return $communication;
+        }
+    }
+
+
+
     public function listAction(Request $request)
     {
-        $filter = new Filter();
-        $processor = $this->getModelForm('ProjectFilter', $filter , Array(), Array(), $request);
-        $processor->createForm();
-        $form_filter = $processor->getForm();
-        $form_filter->handleRequest($request);
 
-        $filters = $filter->getAll();
-
-        $template = ['0' => 'General communication', '1' => Text::get('newsletter-lb')];
-        $translates = Translate::getLangs(Session::getUserId());
-        $langs = Lang::listAll('name', false);
-        $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
-
-
-        return $this->viewResponse('admin/communication/list',[
-            'filters' => $filter->getAll(),
-            'form_filter' => $form_filter->createView(),
-            'templates' => $template,
-            'languages' => $langs,
-            'editor_types' => $editor_types,
-            'translations' => $translates,
-            'variables' => Communication::variables()
-        ]);
+        if ($request->isMethod('post') ) {
+            $communication = $this->doSave($request);
+            return $this->redirect('/admin/communication/detail/id/'.$communication->id);
+        }
+        else {
+            $filter = new Filter();
+            $processor = $this->getModelForm('ProjectFilter', $filter , Array(), Array(), $request);
+            $processor->createForm();
+            $form_filter = $processor->getForm();
+            $form_filter->handleRequest($request);
+    
+            $filters = $filter->getAll();
+    
+            $template = ['0' => 'General communication', '1' => Text::get('newsletter-lb')];
+            $translates = Translate::getLangs(Session::getUserId());
+            $langs = Lang::listAll('name', false);
+            $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
+    
+    
+            return $this->viewResponse('admin/communication/list',[
+                'filters' => $filter->getAll(),
+                'form_filter' => $form_filter->createView(),
+                'templates' => $template,
+                'languages' => $langs,
+                'editor_types' => $editor_types,
+                'translations' => $translates,
+                'variables' => Communication::variables()
+            ]);
+        }
 
     }
+
 
     public function editAction(Request $request)
     {
@@ -74,5 +136,6 @@ class CommunicationAdminController extends AbstractAdminController
 
     public function detailAction(Request $request)
     {
+        return $this->viewResponse('admin/communication/detail');
     }
 }

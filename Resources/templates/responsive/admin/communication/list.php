@@ -51,12 +51,14 @@ $langs = array_diff_key($this->languages, $this->translations);
 </div>
 
 
-<form action="/communication" class="autoform" method="post">
+<form class="autoform" method="post">
+
+<input type="hidden" name="autoform[filter]" id="form-filter" required>
 
 <div class="form-group">
   <label for="templates"> <?= $this->text('regular-template') ?> </label>
   <div class="input-wrap">
-    <select id="templates" class="form-control">
+    <select id="templates" class="form-control" name="autoform[template]" required>
       <option selected disabled hidden></option>
       <?php foreach($this->templates as $id => $name) : ?>
         <option value="<?= $id ?>" > <?= $name ?> </option>
@@ -65,9 +67,20 @@ $langs = array_diff_key($this->languages, $this->translations);
 </div>
 
 <div class="form-group">
+  <label for="langs"> <?= $this->text('overview-field-lang') ?> </label>
+  <div class="input-wrap">
+    <select id="lang" class="form-control" name="autoform[original-lang]" required>
+      <?php foreach($this->translations as $lang => $name) : ?>
+        <option value="<?= $lang ?>" > <?= $name ?> </option>
+      <?php endforeach ?>
+    </select>
+  </div>
+</div>
+
+<div class="form-group">
   <label for="text"> <?= $this->text('admin-text-type') ?> </label>
   <div class="input-wrap">
-    <select id="text" class="form-control" name="autoform[data-editor-type]">
+    <select id="text" class="form-control" name="autoform[data-editor-type]" required>
       <?php foreach($this->editor_types as $id => $name) : ?>
         <option value="<?= $id ?>" > <?= $name ?> </option>
       <?php endforeach ?>
@@ -114,8 +127,6 @@ $langs = array_diff_key($this->languages, $this->translations);
 <div class="tab-content">
 <?php foreach($this->languages as $lang => $name): 
   ?>
-
-  
   <div role="tabpanel" class="tab-pane<?= $default_lang == $lang ? ' active' : '' ?>" id="t-<?= $lang ?>">
 
     <div class="form-group">
@@ -132,6 +143,7 @@ $langs = array_diff_key($this->languages, $this->translations);
 <?php endforeach ?>
 
 <button type="submit" class="btn btn-cyan" name="save"><?= $this->text('form-next-button') ?></button>
+<button type="button" class="btn btn-cyan" name="preview"><?= $this->text('regular-preview') ?></button>
 
 </div>
 </form>

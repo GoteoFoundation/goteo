@@ -199,6 +199,7 @@ $(function () {
             success: function(resp, status, jqXHR) {
                 if (newFilter) {
                     $('#filter-select').append('<option selected="selected" value="'+resp.id+'"> ' + resp.name + ' </option>');
+                    $('#filter-select').change();
                 } else {
                     var filterSelect = document.getElementById('filter-select');
                     filterSelect.options[filterSelect.selectedIndex].innerHTML = resp.name;
@@ -219,6 +220,10 @@ $(function () {
         form.fadeIn();
         changeForm(0, true);
         newFilter = true;
+    }
+
+    document.getElementById('filter-select').onchange = function() {
+        document.getElementById('form-filter').value = this.value;
     }
 
     document.getElementById('form_close').onclick = function() {

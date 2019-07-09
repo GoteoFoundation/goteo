@@ -95,7 +95,8 @@ class Config {
 
             // Add model zones for the translator
             \Goteo\Controller\TranslateController::addTranslateModel('criteria');
-            \Goteo\Controller\TranslateController::addTranslateModel('sphere');
+			\Goteo\Controller\TranslateController::addTranslateModel('sphere');
+			\Goteo\Controller\TranslateController::addTranslateModel('communication');
 
 			// sets up the rest...
 			self::setDirConfiguration();
