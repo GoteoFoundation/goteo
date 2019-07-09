@@ -20,34 +20,30 @@ class Communication extends \Goteo\Core\Model {
         $id,
         $subject,
         $content,
-        $header_image,
-        $type_of_editor = true,
+        $header,
+        $type,
         $template = null,
         $sent = null,
         $error = '',
-        $status = 'pending',
         $original_lang,
         $filter;
 
+    public static function getLangFields() {
+        return ['subject', 'content'];
+    }
+    
 
     /**
      * Validar mensaje.
      * @param type array	$errors
      */
 	public function validate(&$errors = array()) {
-	    if(empty($this->to)) {
-            $errors['email'] = 'El mensaje no tiene destinatario.';
-        }
-        elseif(!filter_var($this->to, FILTER_VALIDATE_EMAIL)) {
-	        $errors['email'] = 'Email destinatario inválido ['. $this->to. ']';
-	    }
 	    if(empty($this->content)) {
 	        $errors['content'] = 'El mensaje no tiene contenido.';
 	    }
         if(empty($this->subject)) {
             $errors['subject'] = 'El mensaje no tiene asunto.';
         }
-
         return empty($errors);
 	}
 
@@ -123,13 +119,21 @@ class Communication extends \Goteo\Core\Model {
 
     public function save(&$errors = []) {
         $this->validate($errors);
-        if($this->massive) unset($errors['email']);
         if( !empty($errors) ) return false;
-
-        $this->email = ($this->massive) ? 'any' : $this->to;
+        
+        $fields = array(
+            'id',
+            'subject',
+            'content',
+            'header',
+            'type',
+            'template',
+            'original_lang',
+            'filter'
+        );
 
         try {
-            $this->dbInsertUpdate(['email', 'subject', 'content', 'template', 'node', 'lang', 'sent', 'error', 'message_id']);
+            $this->dbInsertUpdate($fields);
             return true;
         }
         catch(\PDOException $e) {
