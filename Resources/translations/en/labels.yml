@@ -122,6 +122,10 @@ promote-lb-add: 'New Featured'
 promote-lb-edit: 'Editing Featured'
 promote-lb-list: 'Listing'
 promote-lb-translate: 'Translating Featured'
+categories-lb: Categories
+communication-lb: 'Communications'
+glossary-lb: Glossary
+nodes-lb: Channels
 recent-lb: 'Recent activity'
 recent-lb-list: 'Listing'
 
