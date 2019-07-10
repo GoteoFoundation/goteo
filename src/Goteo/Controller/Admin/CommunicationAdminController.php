@@ -23,7 +23,7 @@ use Goteo\Model\User\Translate;
 use Goteo\Application\Session;
 use Goteo\Library\Translator\ModelTranslator;
 use Goteo\Application\Config;
-
+use Goteo\Application\Exception\ModelNotFoundException;
 
 class CommunicationAdminController extends AbstractAdminController
 {
@@ -41,7 +41,7 @@ class CommunicationAdminController extends AbstractAdminController
                 ['_controller' => __CLASS__ . "::listAction"]
             ),
             new Route(
-                '/preview',
+                '/preview/id/{id}',
                 ['_controller' => __CLASS__ . "::previewAction"]
             ),
             new Route(
@@ -92,6 +92,21 @@ class CommunicationAdminController extends AbstractAdminController
         }
     }
 
+    public function getReceivers($filter, $offset = 0, $limit = 10, $count = false, $sender_id = null){
+        
+        switch($filter->typeofdonor) {
+            case 0: // donor
+                break; 
+            case 1: // promoter
+                break;
+            case 2: // matcher
+                break;
+            case 3: //test
+                break;
+        }
+
+    }
+
 
 
     public function listAction(Request $request)
@@ -99,7 +114,7 @@ class CommunicationAdminController extends AbstractAdminController
 
         if ($request->isMethod('post') ) {
             $communication = $this->doSave($request);
-            return $this->redirect('/admin/communication/detail/id/'.$communication->id);
+            return $this->redirect('/admin/communication/id/'.$communication->id);
         }
         else {
             $filter = new Filter();
@@ -111,7 +126,8 @@ class CommunicationAdminController extends AbstractAdminController
             $filters = $filter->getAll();
     
             $template = ['0' => 'General communication', '1' => Text::get('newsletter-lb')];
-            $translates = Translate::getLangs(Session::getUserId());
+            $translates = [User::get(Session::getUserId())->lang => Lang::getName(User::get(Session::getUserId())->lang)];
+            
             $langs = Lang::listAll('name', false);
             $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
     
@@ -130,12 +146,28 @@ class CommunicationAdminController extends AbstractAdminController
     }
 
 
-    public function editAction(Request $request)
+    public function previewAction(Request $request)
     {
+        
     }
 
-    public function detailAction(Request $request)
+    public function detailAction(Request $request, $id)
     {
+        $communication = $id ? Communication::get($id) : new Communication();
+
+		if (!$communication) {
+			throw new ModelNotFoundException("Not found communication [$id]");
+        }
+        
+        // $filter = Filter::get($communication->filter);
+
+        // if (!$filter) {
+        //     throw new ModelNotFoundException("Not found filter [$communication->filter]");
+        // }
+
+        $this->getReceivers();
+
+
         return $this->viewResponse('admin/communication/detail');
     }
 }
