@@ -106,6 +106,12 @@ class UsersSend extends AbstractCommandController {
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
                 break;
 
+            case '14_days': // info about required contract documentation 
+                $tpl = Template::CONTRACT_PREVIOUS_INFORMATION;
+                $search  = array('%USERNAME%', '%PROJECTNAME%');
+                $replace = array($project->user->name, $project->name);
+                break;
+
             case 'two_weeks': // template 19, "no bajes la guardia!" 25 días de campaña
                 $tpl = 19;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');

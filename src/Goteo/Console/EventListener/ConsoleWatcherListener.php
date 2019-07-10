@@ -321,6 +321,12 @@ class ConsoleWatcherListener extends AbstractListener {
                     $this->warning("Not sending message to project as already has reached the minimum amount or more than 70%", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 }
                 break;
+
+            // Extra
+            case 26: // Send information about contract in order to prepare documentacion
+                    $this->info("Sending information about contract", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
+                    $this->send($project, "14_days", ['owner']);
+                    break;
         }
 
         // Avisos periodicos

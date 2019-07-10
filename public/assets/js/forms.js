@@ -252,6 +252,17 @@ $(function(){
             tagClass: 'label label-lilac',
             maxTags: maxTags
           };
+          // Convert default values to object if non data-values defined
+          if(!values || !values.length) {
+            values = [];
+            $this.val().split(',').forEach(function(val) {
+                var o = {};
+                o[itemValue] = val;
+                o[itemText] = val;
+                values.push(o);
+            });
+          }
+          // console.log('tags input ops', ops, 'values', values, $this.val());
 
           if(url) {
             var tags = new Bloodhound({
@@ -304,7 +315,6 @@ $(function(){
 
           $this.tagsinput(ops);
           values.forEach(function(tag) {
-            // console.log('add',tag);
             $this.tagsinput('add', tag);
           });
 

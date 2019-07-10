@@ -42,6 +42,7 @@ commons-lb-info: 'Información de contacto'
 commons-lb-list: Listando
 commons-lb-report: 'Informe de proyecto'
 commons-lb-view: 'Gestión de retornos'
+communication-lb: 'Comunicaciones'
 criteria-lb: 'Criterios de revisión'
 criteria-lb-add: 'Nuevo Criterio'
 criteria-lb-edit: 'Editando Criterio'
