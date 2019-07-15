@@ -208,6 +208,7 @@ admin-title-image: Imagen
 admin-title-landing_match: Landing matchfunding
 admin-title-title: Título
 admin-title-subtitle: Subtítulo
+admin-title-description: Descripción
 admin-title-section: Sección
 admin-title-text: Texto
 admin-title-slug: Slug
@@ -224,6 +225,7 @@ admin-title-categories: 'Categorías'
 admin-title-social_commitments: 'Compromisos sociales'
 admin-title-order: Ordenar
 admin-title-status: Estado
+admin-title-users: Usuarios
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
@@ -453,6 +455,7 @@ admin-stats-projects-matcher-desc: 'Proyectos que están activos en el matcher'
 admin-stats-projects-consultant-desc: 'Proyectos que tienen asignados este asesor'
 admin-stats-projects-project-desc: 'Aportes al proyecto'
 
+admin-filter-add: 'Añadir filtro'
 admin-filter-last-week: 'Últimos 7 días'
 admin-filter-last-month: 'Últimos 30 días'
 admin-filter-last-year: 'Últimos 365 días'
@@ -471,4 +474,5 @@ admin-filter-type-foundation-donor: 'Donante a la fundación'
 admin-filter-type-all: 'Todos'
 
 admin-filter-predefined-date: 'Fecha predeterminada'
+admin-filter-predefined-date-choose: 'Puedes seleccionar una fecha predeterminada'
 admin-mail-body: 'Cuerpo del mensaje'

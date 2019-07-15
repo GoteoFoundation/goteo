@@ -168,6 +168,7 @@ admin-title-icon: Icona
 admin-title-image: Imatge
 admin-title-title: Títol
 admin-title-subtitle: Subtítol
+admin-title-description: Descripció
 admin-title-section: Secció
 admin-title-text: Text
 admin-title-publish: Publicat
@@ -182,6 +183,7 @@ admin-title-categories: 'Categories'
 admin-title-social_commitments: 'Compromisos socials'
 admin-title-order: Ordena
 admin-title-status: Estat
+admin-title-users: Usuaris
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
 admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'
@@ -200,6 +202,7 @@ admin-all-call-referers: 'Origen de visites a les convocatòries'
 admin-all-project-devices: 'Dispositiu usat en les pàgines de projectes'
 admin-all-invests-devices: 'Dispositiu usat en les aportacions a projectes'
 admin-all-call-devices: 'Dispositiu usat en las pàgines de convocatòries'
+admin-filter-add: 'Afegir filtre'
 admin-filter-last-week: 'Últims 7 dies'
 admin-filter-last-month: 'Últims 30 dies'
 admin-filter-last-year: 'Últims 365 dies'
@@ -216,4 +219,5 @@ admin-filter-type-multidonor: 'Multidonant'
 admin-filter-type-foundation-donor: 'Donant a la fundació'
 admin-filter-type-all: 'Tots'
 admin-filter-predefined-date: 'Dates predefinides'
+admin-filter-predefined-date-choose: 'Pots seleccionar una data predeterminada'
 admin-mail-body: 'Cos del missatge'
