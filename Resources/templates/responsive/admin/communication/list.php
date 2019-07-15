@@ -7,11 +7,8 @@ $this->section('admin-container-head');
 $langs = array_diff_key($this->languages, $this->translations);
 
 ?>
-<div id="alert-success" class="new-material-success alert alert-success" style='display: none' >
-  <strong class="msg"><?= $this->text('form-sent-success') ?></strong>
-</div>
 
-<div class="input_wrap">
+<!-- <div class="input_wrap">
     <div class="row">
       <div class="form-group col-xs-12 col-md-6">
         <select id="filter-select" class="form-control">
@@ -29,31 +26,38 @@ $langs = array_diff_key($this->languages, $this->translations);
         <button id="filter-create" class="btn btn-cyan"> <?= $this->text('admin-filters-create') ?></button>
       </div>
     </div>
-</div>
+</div> -->
 
 <?php $this->append() ?>
 
 
 <?php $this->section('admin-container-body') ?>
 
-
-<div id="filter-form" class="hidden form-group">
-
-  <?= $this->form_form($this->raw('form_filter')) ?>
-
-  <button id="form_submit" type="submit" class="btn btn-cyan btn-lg" name="send">
-    <i class="fa fa-save"></i> <?= $this->text('regular-submit') ?> 
-  </button>
-
-  <button id="form_close" type="submit" class="btn btn-cyan btn-lg">
-    <i class="fa fa-ban"></i> <?= $this->text('regular-cancel') ?> 
-  </button>
-</div>
-
-
 <form class="autoform" method="post">
 
-<input type="hidden" name="autoform[filter]" id="form-filter" required>
+<div class="form-group">
+  <label for="filters"> <?= $this->text('admin-filters') ?> </label>
+  <div class="input-wrap">
+    <div class="row">
+      <div class="form-group col-xs-8 col-md-10">
+        <select id="filter-select" class="form-control" name="autoform[filter]" required>
+          <option value="0" selected disabled hidden><?= $this->text('admin-filters') ?></option>
+          <?php foreach ($this->filters as $filter) : ?>
+                  <option value=<?= $filter->id?> > <?= $filter->name?>  </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+
+      <div class="col-xs-2 col-md-1">
+        <a id="filter-edit" class="btn btn-cyan fa fa-pencil"></a>
+      </div>
+      
+      <div class="col-xs-2 col-md-1">
+        <a id="filter-create" href="filter/add" class="btn btn-cyan fa fa-plus"></a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="form-group">
   <label for="templates"> <?= $this->text('regular-template') ?> </label>

@@ -60,6 +60,7 @@ class CommunicationApiController extends AbstractApiController {
             }
 
             $filter->name = $request->request->get('name');
+            $filter->description = $request->request->get('description');
             $filter->cert = $request->request->get('cert');
             $filter->role = $request->request->get('role');
             $filter->startdate = \DateTime::createFromFormat("d/m/Y", $request->request->get('startdate'));
