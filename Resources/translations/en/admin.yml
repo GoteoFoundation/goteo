@@ -86,6 +86,24 @@ admin-consultants: 'Consultants'
 admin-invests: Contributions
 admin-filters: 'Filters'
 admin-filters-edit: 'Edit filter'
+admin-filter-add: 'Add filter'
+admin-filter-last-week: 'Last 7 days'
+admin-filter-last-month: 'Last 30 days'
+admin-filter-last-year: 'Last 365 days'
+admin-filter-from-new-year: 'From 1st of January'
+admin-filter-previous-year: 'Previous year'
+admin-filter-two-years-ago: 'Two years ago'
+admin-filter-typeofdonor: 'Type of donor'
+admin-filter-donor: 'Donor'
+admin-filter-promoter: 'Promoter'
+admin-filter-matcher: 'Matcher'
+admin-filter-test: 'Prueba'
+admin-filter-type-unique: 'Unique'
+admin-filter-type-multidonor: 'Multidonor'
+admin-filter-type-foundation-donor: 'Donor to the foundation'
+admin-filter-type-all: 'All'
+admin-filter-predefined-date: 'Predefined dates'
+admin-filter-predefined-date-choose: 'You can choose a predefined date'
 admin-filters-create: 'Create filter'
 admin-remove-filters: 'Remove filters'
 admin-remove-entry: 'Remove entry'
@@ -202,6 +220,7 @@ admin-title-image: Image
 admin-title-landing_match: Landing matchfunding
 admin-title-title: Title
 admin-title-subtitle: Subtitle
+admin-title-description: Description
 admin-title-section: Section
 admin-title-text: Text
 admin-title-slug: Slug
@@ -218,6 +237,7 @@ admin-title-categories: 'Categories'
 admin-title-social_commitments: 'Social commitments'
 admin-title-order: Sort
 admin-title-status: Status
+admin-title-users: Users
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'
@@ -289,23 +309,6 @@ admin-stats-refunded-parts: 'Returns breakdown'
 admin-stats-fees-parts: 'Commission breakdown'
 admin-stats-invest-active-parts: 'Destination net income'
 admin-stats-invest-in_wallet-parts: 'Wallet breakdown'
-
-admin-filter-last-week: 'Last 7 days'
-admin-filter-last-month: 'Last 30 days'
-admin-filter-last-year: 'Last 365 days'
-admin-filter-from-new-year: 'From 1st of January'
-admin-filter-previous-year: 'Previous year'
-admin-filter-two-years-ago: 'Two years ago'
-admin-filter-typeofdonor: 'Type of donor'
-admin-filter-donor: 'Donor'
-admin-filter-promoter: 'Promoter'
-admin-filter-matcher: 'Matcher'
-admin-filter-test: 'Prueba'
-admin-filter-type-unique: 'Unique'
-admin-filter-type-multidonor: 'Multidonor'
-admin-filter-type-foundation-donor: 'Donor to the foundation'
-admin-filter-type-all: 'All'
-admin-filter-predefined-date: 'Predefined dates'
 
 admin-losts: Losses
 admin-raised: Raised

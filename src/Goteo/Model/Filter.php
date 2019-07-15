@@ -20,12 +20,14 @@ class Filter extends \Goteo\Core\Model {
     public
         $id,
         $name,
+        $description,
         $cert,
         $role,
         $startdate,
         $enddate,
         $status,
         $typeofdonor,
+        $foundationdonor,
         $wallet,
         $project_latitude,
         $project_longitude,
@@ -51,7 +53,13 @@ class Filter extends \Goteo\Core\Model {
     }
 
     static public function getAll() {
-        $query = static::query('SELECT id, name FROM filter');
+        $query = static::query('SELECT * FROM filter');
+        $filters = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        return $filters;
+    }
+
+    static public function getList(){
+        $query = static::query('SELECT * FROM filter');
         $filters = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         return $filters;
     }
@@ -70,11 +78,65 @@ class Filter extends \Goteo\Core\Model {
         return $calls;
     }
     
-    static public function getFilterMatcher ($filter){
-        $query = static::query('SELECT `matcher` FROM filter_matcher WHERE filter = ?', $filter);
+    static public function getFilterMatchers ($filter){
+        $query = static::query('SELECT `matcher` FROM filter_matchers WHERE filter = ?', $filter);
         $matchers = $query->fetchAll(\PDO::FETCH_OBJ);
 
         return $matchers;
+    }
+
+    public function setFilterProjects($filter, $projects = Array()){
+        $values = Array(':filter' => $filter, ':project' => '');
+
+        foreach($projects as $id) {
+            $values[':project'] = $id;
+            try {
+                $query = static::query('REPLACE INTO filter_projects(`filter`, `project`) VALUES(:filter,:project)', $values);
+            }
+            catch (\PDOException $e) {
+                Message::error("Error saving filter projects " . $e->getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function setFilterCalls($filter, $calls = Array()){
+        $values = Array(':filter' => $filter, ':call' => '');
+
+        foreach($calls as $id) {
+            $values[':call'] = $id;
+            try {
+                $query = static::query('REPLACE INTO filter_calls(`filter`, `call`) VALUES(:filter,:call)', $values);
+            }
+            catch (\PDOException $e) {
+                Message::error("Error saving filter calls " . $e->getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public function setFilterMatcher($filter, $matchers = Array()){
+        $values = Array(':filter' => $filter, ':matcher' => '');
+
+        foreach($matchers as $id) {
+            $values[':matcher'] = $id;
+            try {
+                $query = static::query('REPLACE INTO filter_matchers(`filter`, `matcher`) VALUES(:filter,:matcher)', $values);
+            }
+            catch (\PDOException $e) {
+                Message::error("Error saving filter matchers " . $e->getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function getReceivers(){
+        $receivers = 100; 
+        return $receivers;
     }
 
     public function validate(&$errors = array()) {
@@ -93,29 +155,43 @@ class Filter extends \Goteo\Core\Model {
         $fields = array(
             'id',
             'name',
+            'description',
             'cert',
             'role',
             'startdate',
             'enddate',
-            'status',
+            'status',                    
             'typeofdonor',
+            'foundationdonor',
             'wallet',
             'project_latitude',
             'project_longitude',
             'project_radius',
             'project_location'
         );
+        
+        
 
         try {
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
-            return true;
+            // return true;
 
         } catch(\PDOException $e) {
             print("exception");
             $errors[] = "Error updating filter " . $e->getMessage();
             return false;
         }
+
+        if ($this->role = "donor") {
+            $this->setFilterProjects($this->projects);
+        } else if ($this->role == "promoter") {
+            $this->setFilterCalls($this->calls);
+        } else if ($this->role == "matcher") {
+            $this->setFilterMatcher($this->matchers);
+        }
+
+        return true;
 
     }
 
