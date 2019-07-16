@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Model\Filter;
 use Goteo\Model\Communication;
-use Goteo\Controller\Message;
+use Goteo\Application\Message;
 use Goteo\Library\Text;
 use Goteo\Application\Lang;
 use Goteo\Library\Translator\ModelTranslator;
@@ -35,7 +35,11 @@ class CommunicationAdminController extends AbstractAdminController
         return [
             new Route(
                 '/',
-                ['_controller' => __CLASS__ . "::listAction"]
+                ['_controller' => __CLASS__ . "::addAction"]
+            ),
+            new Route(
+                '/add',
+                ['_controller' => __CLASS__ . "::addAction"]
             ),
             new Route(
                 '/preview/id/{id}',
@@ -57,16 +61,16 @@ class CommunicationAdminController extends AbstractAdminController
             $all = $request->request->get('t');
             $form = $request->request->get('autoform');
             $communication->type = $form['data-editor-type']; 
-            $communication->original_lang = Config::get('lang');
+            $communication->lang = Config::get('lang');
             $communication->filter = $form['filter'];
             $communication->template = $form['template'];
-            $communication->subject = $all[$communication->original_lang]['subject'];
-            $communication->content = $all[$communication->original_lang]['body'];
+            $communication->subject = $all[$communication->lang]['subject'];
+            $communication->content = $all[$communication->lang]['body'];
             $communication->save();
              
             $translator = new ModelTranslator();
-            $translator = $translator::get('communication', $communication->id);
             $fields = $translator::getFields('communication');
+            $translator = $translator::get('communication', $communication->id);
     
             foreach($all as $lang => $texts) {
                 // $values = [];
@@ -105,8 +109,15 @@ class CommunicationAdminController extends AbstractAdminController
     }
 
 
-
     public function listAction(Request $request)
+    {
+        $limit = 25;
+        $page = $request->query->get('pag') ?: 0;
+        $communications = Communication::getList(Array(), 0, $limit, false, Config::get('lang'));
+        
+    }
+
+    public function addAction(Request $request)
     {
 
         if ($request->isMethod('post') ) {
@@ -129,7 +140,7 @@ class CommunicationAdminController extends AbstractAdminController
             $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
     
     
-            return $this->viewResponse('admin/communication/list',[
+            return $this->viewResponse('admin/communication/add',[
                 'filters' => $filter->getAll(),
                 'form_filter' => $form_filter->createView(),
                 'templates' => $template,

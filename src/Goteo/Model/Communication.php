@@ -11,6 +11,7 @@
 namespace Goteo\Model;
 
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Library\Text;
 
@@ -25,7 +26,7 @@ class Communication extends \Goteo\Core\Model {
         $template = null,
         $sent = null,
         $error = '',
-        $original_lang,
+        $lang,
         $filter;
 
     public static function getLangFields() {
@@ -45,7 +46,83 @@ class Communication extends \Goteo\Core\Model {
             $errors['subject'] = 'El mensaje no tiene asunto.';
         }
         return empty($errors);
-	}
+    }
+    
+    /**
+     * Communication listing
+     *
+     * @param array filters
+     * @param int offset items
+     * @param int limit items per page or 0 for unlimited
+     * @param int count the number of instances
+     * @return array of communication instances or the number of instances if count == true
+     */
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
+
+        if(!$lang) $lang = Lang::current();
+        $values = [];
+        $sqlFilters = [];
+        $sql = '';
+
+        foreach(['subject', 'type', 'template'] as $key) {
+            if (isset($filters[$key])) {
+                $filter[] = "communication.$key = :$key";
+                $values[":$key"] = $filters[$key];
+            }
+        }
+
+        if(isset($filters['id'])) {
+            $filter[] = "communication.id LIKE :id";
+            $values[":id"] = '%' . $filters['id'] . '%';
+        }
+        if(isset($filters['subject'])) {
+            $filter[] = "communication.subject LIKE :subject";
+            $values[":subject"] = '%' . $filters['subject'] . '%';
+        }
+        if(isset($filters['type'])) {
+            $filter[] = "communication.type = :type";
+            $values[":type"] = $filters['type'];
+        }
+
+        // print_r($filter);die;
+        if($filter) {
+            $sql = " WHERE " . implode(' AND ', $filter);
+        }
+
+        if($count) {
+            // Return count
+            $sql = "SELECT COUNT(id) FROM communication$sql";
+            // echo \sqldbg($sql, $values);
+            return (int) self::query($sql, $values)->fetchColumn();
+        }
+
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+
+        if(!$lang) $lang = Lang::current();
+        $values['lang'] = $lang;
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+        // print_r($fields); print_r($joins); die;
+
+        $sql ="SELECT
+                communication.id as id,
+                communication.subject as subject,
+                communication.content as content,
+                communication.type as type
+                $fields,
+                communication.lang as lang
+            FROM communication
+            $joins
+            $sql
+            ORDER BY `id` ASC
+            LIMIT $offset,$limit";
+
+        print_r($values);die(\sqldbg($sql, $values));
+        if($query = self::query($sql, $values)) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        }
+        return [];
+    }
 
 	/**
 	 * Enviar mensaje.
@@ -128,7 +205,7 @@ class Communication extends \Goteo\Core\Model {
             'header',
             'type',
             'template',
-            'original_lang',
+            'lang',
             'filter'
         );
 

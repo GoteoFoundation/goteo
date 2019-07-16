@@ -81,7 +81,7 @@ class GoteoCommunicationModule
           `template` varchar(100) NOT NULL,
           `filter` int(11) NOT NULL,
           `type` char(20) CHARACTER SET utf8 NOT NULL DEFAULT 'md',
-          `original_lang` varchar(3) NOT NULL,
+          `lang` varchar(3) NOT NULL,
           `header` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
           `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
           `error` tinytext,
