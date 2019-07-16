@@ -54,6 +54,9 @@ class ModelNormalizer {
         elseif($this->model instanceOf Model\Filter) {
             $ob = new Transformer\FilterTransformer($this->model, $this->keys);
         }
+        elseif($this->model instanceOf Model\Communication) {
+            $ob = new Transformer\CommunicationTransformer($this->model, $this->keys)
+        }
         else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
 
         $ob->setUser(Session::getUser())->rebuild();
