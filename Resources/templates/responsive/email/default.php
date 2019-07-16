@@ -158,7 +158,7 @@
 
                     <div style="font-size: 16px">
                     
-                        <?= $this->markdown($this->content)) ?>
+                        <?= $this->raw($this->markdown($this->content)) ?>
 
                     </div>
 
