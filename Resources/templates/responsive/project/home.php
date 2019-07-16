@@ -254,7 +254,7 @@
                                 </h3>
                                 </div>
                                 <div class="col-sm-10 description">
-                                    <?= $project->social_commitment_description ?>
+                                    <?= $this->markdown($project->social_commitment_description) ?>
                                 </div>
                             </div>
 
