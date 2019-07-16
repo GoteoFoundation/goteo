@@ -163,7 +163,7 @@ class CommunicationAdminController extends AbstractAdminController
 			throw new ModelNotFoundException("Not found communication [$id]");
         }
 
-        return $this->viewResponse('email/newsletter', [
+        return $this->viewResponse('email/default', [
             'content' => $communication->content
         ]);
     }
