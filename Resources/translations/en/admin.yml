@@ -51,6 +51,7 @@ admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
 admin-activity: Activity
 admin-communications: Comunications
+admin-communications-add: Create new communication 
 admin-communications-userid-content: ' for the id of the recipient'
 admin-communications-useremail-content: ' for the email of the recipient'
 admin-communications-username-content: ' for the name of the recipient'
@@ -225,6 +226,7 @@ admin-title-section: Section
 admin-title-text: Text
 admin-title-slug: Slug
 admin-title-publish: Published
+admin-title-lang: Language
 admin-title-langs: Translations
 admin-title-actions: Actions
 admin-title-tags: Tags

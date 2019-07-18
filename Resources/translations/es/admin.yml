@@ -50,6 +50,7 @@ admin-contents: 'Textos y Traducciones'
 admin-empty-list: 'No se han encontrado registros'
 admin-activity: Actividad
 admin-communications: Comunicaciones
+admin-communications-add: Crear nueva comunicación
 admin-communications-userid-label: '<strong>%USERID%</strong>'
 admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
 admin-communications-username-label: '<strong>%USERNAME%</strong>'
@@ -213,6 +214,7 @@ admin-title-section: Sección
 admin-title-text: Texto
 admin-title-slug: Slug
 admin-title-publish: Publicado
+admin-title-lang: Idioma
 admin-title-langs: Traducciones
 admin-title-actions: Acciones
 admin-title-tags: Tags

@@ -50,6 +50,7 @@ class FilterAdminController extends AbstractAdminController
         
         return $this->viewResponse('admin/filter/list',[
             'list' => $list,
+            'total' => sizeof($list)
         ]);
     }
 

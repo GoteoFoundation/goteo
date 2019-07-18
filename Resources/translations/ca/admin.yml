@@ -42,6 +42,7 @@ admin-contents: 'Textos i traduccions'
 admin-empty-list: 'Sense resultats'
 admin-activity: Activitat
 admin-communications: Comunicacions
+admin-communications-add: Crear nova comunicació
 admin-communications-userid-content: ' per l''id d''accés del destinatari'
 admin-communications-useremail-content: ' per l''email del destinatari'
 admin-communications-username-content: ' per al nom del destinatari'
@@ -172,6 +173,7 @@ admin-title-description: Descripció
 admin-title-section: Secció
 admin-title-text: Text
 admin-title-publish: Publicat
+admin-title-lang: Idioma
 admin-title-langs: Traduccions
 admin-title-actions: Accions
 admin-title-deleted: Eliminat
