@@ -64,7 +64,7 @@ class Communication extends \Goteo\Core\Model {
         $sqlFilters = [];
         $sql = '';
 
-        foreach(['subject', 'type', 'template'] as $key) {
+        foreach(['type', 'template'] as $key) {
             if (isset($filters[$key])) {
                 $filter[] = "communication.$key = :$key";
                 $values[":$key"] = $filters[$key];
@@ -72,16 +72,12 @@ class Communication extends \Goteo\Core\Model {
         }
 
         if(isset($filters['id'])) {
-            $filter[] = "communication.id LIKE :id";
+            $filter[] = "communication.id = :id";
             $values[":id"] = '%' . $filters['id'] . '%';
         }
         if(isset($filters['subject'])) {
             $filter[] = "communication.subject LIKE :subject";
-            $values[":subject"] = '%' . $filters['subject'] . '%';
-        }
-        if(isset($filters['type'])) {
-            $filter[] = "communication.type = :type";
-            $values[":type"] = $filters['type'];
+            $values["subject"] = '%' . $filters['subject'] . '%';
         }
 
         // print_r($filter);die;
@@ -100,15 +96,13 @@ class Communication extends \Goteo\Core\Model {
         $limit = (int) $limit;
 
         if(!$lang) $lang = Lang::current();
-        $values['lang'] = $lang;
+        // $values['lang'] = $lang;
         list($fields, $joins) = self::getLangsSQLJoins($lang);
         // print_r($fields); print_r($joins); die;
 
         $sql ="SELECT
                 communication.id as id,
-                communication.subject as subject,
-                communication.content as content,
-                communication.type as type
+                communication.type as type, 
                 $fields,
                 communication.lang as lang
             FROM communication
@@ -117,7 +111,7 @@ class Communication extends \Goteo\Core\Model {
             ORDER BY `id` ASC
             LIMIT $offset,$limit";
 
-        print_r($values);die(\sqldbg($sql, $values));
+        // var_dump($values); var_dump($sql); die(\sqldbg($sql, $values));
         if($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
@@ -221,6 +215,10 @@ class Communication extends \Goteo\Core\Model {
 
     }
 
+    public function getOriginalLang(){
+        return $this->lang;
+    }
+
     public static function variables () {
         return array(
             'userid' => Text::get('admin-communications-userid-content'),
@@ -231,6 +229,29 @@ class Communication extends \Goteo\Core\Model {
             'unsubscribeurl' => Text::get('admin-communications-unsubscribeurl-content'),
             'poolamount' => Text::get('admin-communications-poolamount-content')
         );
+    }
+
+    public function getLangsAvailable() {
+        $langs = [];
+        $sql = "SELECT GROUP_CONCAT(a.lang)
+                FROM (
+                    SELECT lang
+                    FROM`communication`
+                    WHERE id = 1
+                    UNION DISTINCT
+                    SELECT lang
+                    FROM `communication_lang`
+                    WHERE id = 1
+                ) a
+              ";
+        try {
+            if($query = static::query($sql, array(':id' => $this->id))) {
+                $res = $query->fetchColumn();
+                if($res) $langs = explode(',', $res);
+            }
+        } catch (\Exception $e) {
+        }
+        return $langs;
     }
 
 

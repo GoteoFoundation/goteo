@@ -6,7 +6,7 @@ $this->section('admin-search-box-addons');
 
 ?>
 
-<a class="btn btn-cyan" href="/admin/communication/add"><i class="fa fa-plus"></i> <?= $this->text('admin-communication-add') ?></a>
+<a class="btn btn-cyan" href="/admin/communication/add"><i class="fa fa-plus"></i> <?= $this->text('admin-communications-add') ?></a>
 
 <?php $this->replace() ?>
 
@@ -15,7 +15,7 @@ $this->section('admin-search-box-addons');
 
   <h5><?= $this->text('admin-list-total', $this->total) ?></h5>
 
-  <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['id', 'image', 'subject', 'info', 'langs', 'actions'])]) ?>
+  <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['id', 'image', 'subject', 'langs', 'actions'])]) ?>
 
   </div>
 </div>

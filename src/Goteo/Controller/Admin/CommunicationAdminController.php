@@ -35,7 +35,7 @@ class CommunicationAdminController extends AbstractAdminController
         return [
             new Route(
                 '/',
-                ['_controller' => __CLASS__ . "::addAction"]
+                ['_controller' => __CLASS__ . "::listAction"]
             ),
             new Route(
                 '/add',
@@ -111,9 +111,21 @@ class CommunicationAdminController extends AbstractAdminController
 
     public function listAction(Request $request)
     {
+        $filters = ['subject' => $request->query->get('q')];
         $limit = 25;
         $page = $request->query->get('pag') ?: 0;
-        $communications = Communication::getList(Array(), 0, $limit, false, Config::get('lang'));
+        $list = Communication::getList($filters, 0, $limit, false, Config::get('lang'));
+        $total = Communication::getList($filters, 0, $limit, true, Config::get('lang'));
+        return $this->viewResponse('admin/communication/list', [
+            'list' => $list,
+            'total' => $total,
+            'limit' => $limit,
+            'filter' => [
+                '_action' => '/communication',
+                'q' => Text::get('admin-communication-global-search')
+                ]
+            ] 
+        );
         
     }
 
@@ -133,7 +145,7 @@ class CommunicationAdminController extends AbstractAdminController
     
             $filters = $filter->getAll();
     
-            $template = ['0' => 'General communication', '1' => Text::get('newsletter-lb')];
+            $template = ['default' => 'General communication', 'newsletter' => Text::get('newsletter-lb')];
             $translates = [Config::get('lang') => Lang::getName(Config::get('lang'))];
             
             $langs = Lang::listAll('name', false);
@@ -163,8 +175,8 @@ class CommunicationAdminController extends AbstractAdminController
 			throw new ModelNotFoundException("Not found communication [$id]");
         }
 
-        return $this->viewResponse('email/default', [
-            'content' => $communication->content
+        return $this->viewResponse('email/'.$communication->template, [
+            'content' => $communication->content,
         ]);
     }
 

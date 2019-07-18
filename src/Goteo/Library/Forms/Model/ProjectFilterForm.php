@@ -49,7 +49,6 @@ class ProjectFilterForm extends AbstractFormProcessor {
         $typeofdonor = [
             'unique' => Text::get('admin-filter-type-unique'),
             'multidonor' => Text::get('admin-filter-type-multidonor'),
-            'all' => Text::get('admin-filter-type-all')
         ];
 
         $builder
@@ -89,61 +88,56 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 'choices' => $roles,
                 'required' => true,
             ))
-            // ->add($builder->create('admin-filters-dependent', 'form', array(
-            //         'virtual' => true,
-            //         'label' => false
-            //     ))
-                ->add('projects', 'typeahead', [
-                    'label' => 'admin-projects',
-                    'disabled' => $this->getReadonly(),
-                    'required' => false,
-                    'sources' => 'project'
-                ])
-                ->add('calls', 'typeahead', [
-                    'label' => 'admin-calls',
-                    'disabled' => $this->getReadonly(),
-                    'required' => false,
-                    'sources' => 'call'
-                ])
-                ->add('matchers', 'typeahead', [
-                    'label' => 'admin-matchers',
-                    'disabled' => $this->getReadonly(),
-                    'required' => false,
-                    'sources' => 'matcher'
-                ])
-                ->add('status', 'choice', array(
-                    'label' => 'regular-status',
-                    'required' => false,
-                    'choices' => Project::status(),
-                ))
-                ->add('typeofdonor', 'choice', array(
-                    'label' => 'admin-filter-typeofdonor',
-                    'required' => false,
-                    'choices' => $typeofdonor,
-                ))
-                ->add('foundationdonor', 'boolean', array(
-                    'required' => false,
-                    'label' => 'admin-filter-type-foundation-donor',
-                    'color' => 'cyan',
-                ))
-                ->add('wallet', 'boolean', array(
-                    'required' => false,
-                    'label' => Text::get('admin-user-wallet-amount'), 
-                    'color' => 'cyan',
-                ))
-                ->add('cert', 'boolean', array(
-                    'required' => false,
-                    'label' => Text::get('home-advantages-certificates-title'),
-                    'color' => 'cyan',
-                ))
-                ->add('project_location', 'location', [
-                    'label' => 'overview-field-project_location',
-                    'disabled' => $this->getReadonly(),
-                    'location_class' => 'Goteo\Model\Project\ProjectLocation',
-                    'required' => false,
-                    'pre_addon' => '<i class="fa fa-globe"></i>',
-                ])
-            // )
+            ->add('projects', 'typeahead', [
+                'label' => 'admin-projects',
+                'disabled' => $this->getReadonly(),
+                'required' => false,
+                'sources' => 'project'
+            ])
+            ->add('calls', 'typeahead', [
+                'label' => 'admin-calls',
+                'disabled' => $this->getReadonly(),
+                'required' => false,
+                'sources' => 'call'
+            ])
+            ->add('matchers', 'typeahead', [
+                'label' => 'admin-matchers',
+                'disabled' => $this->getReadonly(),
+                'required' => false,
+                'sources' => 'matcher'
+            ])
+            ->add('status', 'choice', array(
+                'label' => 'regular-status',
+                'required' => false,
+                'choices' => Project::status(),
+            ))
+            ->add('typeofdonor', 'choice', array(
+                'label' => 'admin-filter-typeofdonor',
+                'required' => false,
+                'choices' => $typeofdonor,
+            ))
+            ->add('foundationdonor', 'choice', array(
+                'required' => false,
+                'label' => 'admin-filter-type-foundation-donor',
+                'choices' => [Text::get('admin-no'), Text::get('admin-yes')]
+            ))
+            ->add('wallet', 'choice', array(
+                'required' => false,
+                'label' => Text::get('admin-user-wallet-amount'), 
+                'choices' => [Text::get('admin-no'), Text::get('admin-yes')]
+            ))
+            ->add('cert', 'choice', array(
+                'required' => false,
+                'label' => Text::get('home-advantages-certificates-title'),
+                'choices' => [Text::get('admin-no'), Text::get('admin-yes')]
+            ))
+            ->add('project_location', 'location', [
+                'label' => 'overview-field-project_location',
+                'disabled' => $this->getReadonly(),
+                'location_class' => 'Goteo\Model\Project\ProjectLocation',
+                'required' => false,
+                'pre_addon' => '<i class="fa fa-globe"></i>',
+            ])
             ->add('submit', 'submit', [
                 'label' => 'regular-submit',
                 'attr' => ['class' => 'btn btn-cyan'],

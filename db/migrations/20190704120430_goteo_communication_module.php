@@ -52,21 +52,21 @@ class GoteoCommunicationModule
           `project_location` VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
           PRIMARY KEY (`id`)
         );
-        CREATE TABLE `filter_projects` (
+        CREATE TABLE `filter_project` (
           `filter` INT(11) NOT NULL,
           `project` VARCHAR(50) NOT NULL COLLATE utf8_general_ci,
           FOREIGN KEY (`filter`) REFERENCES `filter`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           UNIQUE KEY `id_filterprojects` (`filter`,`project`)
         );
-        CREATE TABLE `filter_calls` (
+        CREATE TABLE `filter_call` (
           `filter` INT(11) NOT NULL,
           `call` VARCHAR(50) NOT NULL COLLATE utf8_general_ci,
           FOREIGN KEY (`filter`) REFERENCES `filter`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           UNIQUE KEY `id_filtercalls` (`filter`,`call`)
         );
-        CREATE TABLE `filter_matchers` (
+        CREATE TABLE `filter_matcher` (
           `filter` INT(11) NOT NULL,
           `matcher` VARCHAR(50) NOT NULL COLLATE utf8_general_ci,
           FOREIGN KEY (`filter`) REFERENCES `filter`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -107,8 +107,8 @@ class GoteoCommunicationModule
   {
      return "
      DROP TABLE IF EXISTS `filter_matcher`;
-     DROP TABLE IF EXISTS `filter_calls`;
-     DROP TABLE IF EXISTS `filter_projects`;
+     DROP TABLE IF EXISTS `filter_call`;
+     DROP TABLE IF EXISTS `filter_project`;
      DROP TABLE IF EXISTS `communication_lang`;
      DROP TABLE IF EXISTS `communication`;
      DROP TABLE IF EXISTS `filter`;

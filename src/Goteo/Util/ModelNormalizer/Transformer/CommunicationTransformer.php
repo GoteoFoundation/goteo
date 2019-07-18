@@ -34,13 +34,14 @@ class CommunicationTransformer extends AbstractTransformer {
         return $type;
     }
 
-    function getLangs(){
-        $langs = $this->model->
+    function getLang() {
+        $lang = $this->model->getLangsAvailable();
+        return $lang;
     }
 
     public function getActions() {
         $ret = [
-            'edit' => '/admin/communication/edit/' . $this->model->id,
+            'preview' => '/admin/communication/preview/id/' . $this->model->id,
         ];
 
         return $ret;

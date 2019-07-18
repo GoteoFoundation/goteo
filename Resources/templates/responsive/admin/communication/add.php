@@ -136,7 +136,6 @@ $langs = array_diff_key($this->languages, $this->translations);
 <?php endforeach ?>
 
 <button type="submit" class="btn btn-cyan" name="save"><?= $this->text('form-next-button') ?></button>
-<button type="button" class="btn btn-cyan" name="preview"><?= $this->text('regular-preview') ?></button>
 
 </div>
 </form>
