@@ -253,6 +253,16 @@ $api->add('api-projects-invests-csv', new Route(
         )
 ));
 
+$api->add('api-invest-msg-delete', new Route(
+    '/projects/invest-msg/{mid}',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectDeleteSupportMsgAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('DELETE') // methods
+));
+
 // Calls list
 $api->add('api-calls', new Route(
     '/calls',

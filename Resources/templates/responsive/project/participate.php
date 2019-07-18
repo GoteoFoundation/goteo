@@ -79,6 +79,10 @@
 							<div class="msg">
 								<div class="msg-label"><?= $this->text('project-invest-msg') ?></div>
 								<div class="text-font-normal"><?= $invest->msg ?></div>
+								<?php if ($this->is_admin()): ?>
+			                       <button class="btn btn-default delete-msg" data-url="/api/projects/invest-msg/<?= $invest->id ?>" data-confirm="<?= $this->text('support-sure-to-delete') ?>" title="<?= $this->text('regular-delete') ?>"><i class="fa fa-fw fa-trash"></i>
+			                       </button>
+			                    <?php endif ?>
 							</div>
 							<?php endif ?>
 						</div>
