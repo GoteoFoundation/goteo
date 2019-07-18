@@ -237,11 +237,11 @@ class Communication extends \Goteo\Core\Model {
                 FROM (
                     SELECT lang
                     FROM`communication`
-                    WHERE id = 1
+                    WHERE id = :id
                     UNION DISTINCT
                     SELECT lang
                     FROM `communication_lang`
-                    WHERE id = 1
+                    WHERE id = :id
                 ) a
               ";
         try {
