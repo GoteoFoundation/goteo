@@ -118,7 +118,7 @@ class DiscoverController extends \Goteo\Core\Controller {
         $category = $request->query->get('category');
         $vars = ['q' => $q, 'category' => $category, 'location' => $location, 'latitude' => $latitude, 'longitude' => $longitude];
         if(Session::isAdmin()) {
-            $vars['review'] = $request->query->get('review') !== '0';
+            $vars['review'] = $request->query->get('review') === '1' ? 1 : 0 ;
         }
 
         $filters = $this->getProjectFilters($filter, $vars);
