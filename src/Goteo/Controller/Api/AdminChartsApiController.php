@@ -403,6 +403,26 @@ class AdminChartsApiController extends ChartsApiController {
                 } else {
                     $totals[$slot]['fee_percent'] = '--';
                 }
+            } elseif($target === 'donations') {
+
+                if($method === 'global') $filter['methods'][] = 'pool';
+                $filter['status'] = array_merge(Invest::$ACTIVE_STATUSES, [Invest::STATUS_DONATED]);
+                $totals[$slot] = $stats->investTotals($filter);
+
+                // Add direct donations calc
+                $direct = $stats->investTotals(['types' => 'donation', 'status' => Invest::STATUS_DONATED] + $filter);
+                $totals[$slot]['direct_amount'] = $direct['donations_amount'];
+                $totals[$slot]['direct_invests'] = $direct['invests'];
+                $totals[$slot]['direct_users'] = $direct['users'];
+                $totals[$slot]['tip_amount'] = $totals[$slot]['donations_amount'] - $direct['donations_amount'];
+                $totals[$slot]['tip_invests'] = $totals[$slot]['invests'] - $direct['invests'];
+                $totals[$slot]['tip_users'] = $totals[$slot]['users'] - $direct['users'];
+
+                // Add expired-wallet donations calc (expropiations)
+                $expired = $stats->investTotals(['types' => 'expired', 'status' => Invest::STATUS_DONATED] + $filter);
+                $totals[$slot]['expired_amount'] = $expired['donations_amount'];
+                $totals[$slot]['expired_invests'] = $expired['invests'];
+                $totals[$slot]['expired_users'] = $expired['users'];
 
             } elseif($target === 'raw') {
 
@@ -544,7 +564,7 @@ class AdminChartsApiController extends ChartsApiController {
                 }
 
             } elseif($target !== 'global') {
-                throw new ControllerException("[$target] not found, try one of [raised, active, raw, refunded, commissions, fees, matchfunding]");
+                throw new ControllerException("[$target] not found, try one of [raised, active, raw, refunded, commissions, fees, donations, matchfunding]");
             }
         }
         $increments = [ 'today' => 'yesterday',

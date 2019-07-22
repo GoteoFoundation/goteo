@@ -394,8 +394,15 @@ class Invest extends \Goteo\Core\Model {
                     $sqlFilter[] = "invest.campaign = 0";
                     break;
                 // Include donation to the organization
+                // NOTE:
+                // donations are not counted when goes to user pool!
                 case 'donation':
-                    $sqlFilter[] = "invest.donate_amount > 0";
+                    $sqlFilter[] = "invest.donate_amount > 0 AND invest.status != " . Invest::STATUS_TO_POOL;
+                    break;
+                // Expired donations are those expropiated from the user due inactivity
+                case 'expired':
+                    $sqlFilter[] = "invest.donate_amount > 0 AND invest.status != " . Invest::STATUS_TO_POOL;
+                    $sqlFilter[] = "invest.account = 'expired_wallet'";
                     break;
                 case 'anonymous':
                     $sqlFilter[] = "invest.anonymous = 1";
@@ -563,6 +570,7 @@ class Invest extends \Goteo\Core\Model {
         if($count) {
             if($count === 'all') {
                 $what = 'SUM(invest.amount) AS total_amount,
+                SUM(invest.donate_amount) AS total_donations,
                 COUNT(invest.id) AS total_invests,
                 COUNT(DISTINCT invest.user) AS total_users';
             }
@@ -593,7 +601,7 @@ class Invest extends \Goteo\Core\Model {
 
             if($count === 'all') {
                 $ob = self::query($sql, $values)->fetchObject();
-                return ['amount' => (float) $ob->total_amount, 'invests' => (int) $ob->total_invests, 'users' => (int) $ob->total_users];
+                return ['amount' => (float) $ob->total_amount, 'donations_amount' => (float) $ob->total_donations, 'invests' => (int) $ob->total_invests, 'users' => (int) $ob->total_users];
             }
             $total = self::query($sql, $values)->fetchColumn();
             if($count === 'money'||$count='donate_money') {
