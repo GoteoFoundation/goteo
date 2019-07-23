@@ -478,3 +478,25 @@ admin-filter-type-all: 'Todos'
 admin-filter-predefined-date: 'Fecha predeterminada'
 admin-filter-predefined-date-choose: 'Puedes seleccionar una fecha predeterminada'
 admin-mail-body: 'Cuerpo del mensaje'
+admin-stats-donations: 'Donaciones'
+admin-stats-donations-method: 'Donaciones según método de pago'
+admin-stats-donations-method-desc: 'Donaciones incluyen el dinero que el usuario da voluntariamente a la fundación cuando aporta a un proyecto, donaciones directas o bien cuando la cantidad en el monedero expira.'
+admin-stats-donations-tip: 'Donaciones durante aportes a proyectos (Propinas o "tips")'
+admin-stats-donations-direct: 'Donaciones directas (incluye monederos expirados)'
+admin-stats-donations-generosity: 'Porcentajes de generosidad'
+admin-stats-donations-generosity-desc: 'Cantidades de usuarios con donaciones versus cantidades totales. Sólo se tienen en cuenta los proyectos con donaciones.'
+admin-stats-donations-expired: 'Donaciones directas debido a monederos expirados'
+admin-stats-donations-refunded: 'Donaciones que se han devuelto debido a proyectos fallidos'
+
+admin-donations: Donaciones
+admin-donations-tip: Propinas
+admin-donations-tip-invests: Aportes con propinas
+admin-donations-tip-users: Usuarios con propina
+admin-donations-direct: Donaciones directas
+admin-donations-expired: Donaciones expiradas
+admin-donations-refunded: Donaciones devueltas
+admin-donations-amount-percent: '% dinero donado'
+admin-donations-users-percent: '% usuarios donantes'
+admin-donations-tip-percent: '% dinero en propinas'
+admin-donations-direct-percent: '% dinero directo'
+

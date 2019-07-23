@@ -406,11 +406,14 @@ class AdminChartsApiController extends ChartsApiController {
             } elseif($target === 'donations') {
 
                 if($method === 'global') $filter['methods'][] = 'pool';
+                $filter['types'] = 'donation';
+                // donations with STATUS_TO_POOL are not donations! they stay in the pool until the user decides
                 $filter['status'] = array_merge(Invest::$ACTIVE_STATUSES, [Invest::STATUS_DONATED]);
+
                 $totals[$slot] = $stats->investTotals($filter);
 
                 // Add direct donations calc
-                $direct = $stats->investTotals(['types' => 'donation', 'status' => Invest::STATUS_DONATED] + $filter);
+                $direct = $stats->investTotals(['status' => Invest::STATUS_DONATED] + $filter);
                 $totals[$slot]['direct_amount'] = $direct['donations_amount'];
                 $totals[$slot]['direct_invests'] = $direct['invests'];
                 $totals[$slot]['direct_users'] = $direct['users'];
@@ -423,6 +426,26 @@ class AdminChartsApiController extends ChartsApiController {
                 $totals[$slot]['expired_amount'] = $expired['donations_amount'];
                 $totals[$slot]['expired_invests'] = $expired['invests'];
                 $totals[$slot]['expired_users'] = $expired['users'];
+
+                // Add refunded donations due project failure
+                $refunded = $stats->investTotals(['types' => 'refunded_donation', 'status' => Invest::$FAILED_STATUSES] + $filter);
+                $totals[$slot]['refunded_amount'] = $refunded['donations_amount'];
+                $totals[$slot]['refunded_invests'] = $refunded['invests'];
+                $totals[$slot]['refunded_users'] = $refunded['users'];
+
+                // Calculate generosity percents
+                $generosity = [];
+                foreach($totals[$slot] as $part => $value) {
+                    if(strpos($part, '_') ===  false) continue;
+                    list($type, $field) = explode("_", $part);
+                    if($totals[$slot][$field]) {
+                        $generosity["{$part}_percent"] = 100 * round($value / $totals[$slot][$field], 4);
+                    }
+                    else {
+                        $generosity["{$part}_percent"] = 0;
+                    }
+                }
+                $totals[$slot] = array_merge($totals[$slot], $generosity);
 
             } elseif($target === 'raw') {
 
@@ -577,6 +600,7 @@ class AdminChartsApiController extends ChartsApiController {
                 if(($inc = $increments[$slot]) && is_numeric($v)) {
                     if(!is_array($inc)) $inc = [$inc];
                     foreach($inc as $cmp) {
+                        if(!is_numeric($totals[$cmp][$k])) continue;
                         $totals[$slot]["{$k}_{$cmp}_diff"] = $v - $totals[$cmp][$k];
                         if($totals[$cmp][$k] && $totals[$cmp][$k] != '--') {
                             $totals[$slot]["{$k}_{$cmp}_gain"] = $totals[$cmp][$k] ? round(100 * (($v / $totals[$cmp][$k]) - 1), 2) : '--';

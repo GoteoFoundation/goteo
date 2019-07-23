@@ -397,11 +397,18 @@ class Invest extends \Goteo\Core\Model {
                 // NOTE:
                 // donations are not counted when goes to user pool!
                 case 'donation':
-                    $sqlFilter[] = "invest.donate_amount > 0 AND invest.status != " . Invest::STATUS_TO_POOL;
+                    $sqlFilter[] = "invest.donate_amount > 0";
+                    $sqlFilter[] = "invest.status != " . Invest::STATUS_TO_POOL;
+                    break;
+                // Refunded donations are those returned to the user due project failure
+                case 'refunded_donation':
+                    $sqlFilter[] = "invest.donate_amount > 0";
+                    $sqlFilter[] = "project.status = " .  Project::STATUS_UNFUNDED;
                     break;
                 // Expired donations are those expropiated from the user due inactivity
                 case 'expired':
-                    $sqlFilter[] = "invest.donate_amount > 0 AND invest.status != " . Invest::STATUS_TO_POOL;
+                    $sqlFilter[] = "invest.donate_amount > 0";
+                    $sqlFilter[] = "invest.status != " . Invest::STATUS_TO_POOL;
                     $sqlFilter[] = "invest.account = 'expired_wallet'";
                     break;
                 case 'anonymous':
