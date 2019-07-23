@@ -51,6 +51,18 @@ $query = http_build_query($this->filters);
 
     </div>
 
+    <h5><?= $this->text('admin-stats-donations') ?></h5>
+        <div class="row">
+        <ul class="list-unstyled d3-chart loading discrete-values" data-source="/api/charts/totals/invests/donations/global/today,week" data-interval="40" data-interval-delay="10" data-flash-time="30">
+            <li class="col-xs-2 col-xxs-4" data-property="donations.global.today.donations_amount_formatted" data-title="<?= $this->text('admin-today') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="donations.global.yesterday.donations_amount_formatted" data-title="<?= $this->text('admin-yesterday') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="donations.global.today.donations_amount_yesterday_gain_formatted" data-title="<?= $this->text('admin-invest-diff-yesterday') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="donations.global.week.donations_amount_formatted" data-title="<?= $this->text('admin-week') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="donations.global.last_week.donations_amount_formatted" data-title="<?= $this->text('admin-last_week') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="donations.global.week.donations_amount_last_week_gain_formatted" data-title="<?= $this->text('admin-invest-diff-last_week') ?>"></li>
+        </ul>
+
+    </div>
     <p><a class="pronto" href="/admin/stats/totals/projects"><i class="fa fa-search"></i> <?= $this->text('regular-see_more') ?></a></p>
 
   </div>
