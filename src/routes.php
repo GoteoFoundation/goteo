@@ -198,6 +198,15 @@ $routes->add('matcher', new Route(
     })
 ));
 
+// Workshops
+
+$routes->add('workshop-view', new Route(
+    '/workshop/{id}',
+    array('_controller' => 'Goteo\Controller\WorkshopController::indexAction',
+        'id' => null
+        )
+));
+
 
 // Images processing (no prefix)
 $images_routes = include __DIR__ . '/Routes/images_routes.php';

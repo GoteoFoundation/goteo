@@ -235,6 +235,7 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TranslatesSubController');
 		// \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WordcountSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesSubController');

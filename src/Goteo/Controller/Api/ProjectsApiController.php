@@ -24,6 +24,7 @@ use Goteo\Application\Config;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterProjectPostEvent;
 use Goteo\Model\Invest;
+use Goteo\Model\Invest\InvestMsg;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Reward;
@@ -623,4 +624,27 @@ class ProjectsApiController extends AbstractApiController {
 
         return $response;
     }
+
+     /**
+     * Delete a comment
+     */
+    public function projectDeleteSupportMsgAction($mid, Request $request) {
+        if(!$this->user) {
+            throw new ControllerAccessDeniedException();
+        }
+        if( !$message = InvestMsg::get($mid) ) {
+            throw new ModelNotFoundException("Message [$mid] not found");
+        }
+
+        if(!$this->user->hasRole(['admin', 'superadmin', 'root'])) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $message->dbDelete(['invest']);
+
+        // Send and event to create the Feed and/or update number of collaborations
+
+        return $this->jsonResponse(['invest' => $message->invest]);
+    }
+
 }

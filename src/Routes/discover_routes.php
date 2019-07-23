@@ -26,7 +26,7 @@ $discover->add('discover-results', new Route(
         'name' => null,
         '_controller' => function($category, Request $request) {
             $qs = [];
-            if($request->query->has('query')) $qs['q'] = $request->query->get('query');
+            if($request->query->has('query')) $qs['q'] = strip_tags($request->query->get('query'));
             if($category) $qs['category'] = $category;
             $loc = '/discover' . ($qs ? '?'.http_build_query($qs) : '');
             return new RedirectResponse($loc);

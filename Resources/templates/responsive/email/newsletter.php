@@ -276,7 +276,11 @@
                                     <tbody style="display: block; width: 100%;">
                                         <tr style="display: block; width: 100%;">
                                             <td align="left" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top; display: block; width: 100%;">
+<<<<<<< HEAD
                                             	<img class="img-header" style="max-width:100%; object-fit: cover; width: 100%;" src="<?= $this->asset('img/newsletter/headerd.png') ?>" alt="Goteo" />
+=======
+                                            	<img class="img-header" style="max-width:100%; object-fit: cover; width: 100%;" src="<?= $this->asset('img/newsletter/header10.png') ?>" alt="Goteo" />
+>>>>>>> new-admin-workshops
                                             </td>
                                         </tr>
                                     </tbody>

@@ -319,6 +319,29 @@ $this->section('content');
             $(".info-hover-call").toggle();
         });
 
+        // Delete support msg
+        $('.msg').on('click', ".delete-msg", function (e) {
+            e.preventDefault();
+            var ask = $(this).data('confirm');
+            var url = $(this).data('url');
+            var $item = $(this).closest('.msg');
+            var $error = $item.find('.error-message');
+            if(confirm(ask)) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    success: function(data) {
+                       //console.log('success', data);
+                      $item.remove();
+                    }
+                }).fail(function(data) {
+                  var error = JSON.parse(data.responseText);
+                   //console.log('error', data, error)
+                  $error.removeClass('hidden').html(error.error);
+                });
+            }
+        });
+
 
         // Send comments
         $(document).on('click', '.ajax-comments .send-comment', function (e) {
