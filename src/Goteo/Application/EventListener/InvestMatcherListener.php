@@ -49,7 +49,12 @@ class InvestMatcherListener extends AbstractMatcherListener {
                 if ($drop->save($errors)) {
                     // recalcular campos en cache
                     Invest::invested($project->id, 'users');
-
+                    if($invest) {
+                        Invest::query("UPDATE invest SET droped = :drop, `matcher`= :matcher WHERE id = :id",
+                                array(':id' => $invest->id, ':drop' => $drop->id, ':matcher' => $matcher->id));
+                        $invest->droped = $drop->id;
+                        $invest->matcher = $matcher->id;
+                    }
                     $this->info('Invest dropped by matcher', $log);
 
                     // Feed this payment
@@ -158,12 +163,8 @@ class InvestMatcherListener extends AbstractMatcherListener {
                 // find processor, and execute it
                 if($processor = $this->getService('app.matcher.finder')->getProcessor($matcher)) {
                     $processor->setProject($project);
+                    $processor->setInvest($invest);
                     $this->processPayments($matcher, $processor, $invest);
-
-                    Invest::query("UPDATE invest SET droped = :drop, `matcher`= :matcher WHERE id = :id",
-                            array(':id' => $invest->id, ':drop' => $drop->id, ':matcher' => $matcher->id));
-                    $invest->droped = $drop->id;
-                    $invest->matcher = $matcher->id;
                 }
             }
         }
