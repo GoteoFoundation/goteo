@@ -418,7 +418,7 @@ class AccountsSubController extends AbstractSubController {
                     'invested'  => date('Y-m-d'),
                     'charged'   => date('Y-m-d'),
                     'anonymous' => (bool)$this->getPost('anonymous'),
-                    'resign'    => 1,
+                    'resign'    => 0,
                     'admin'     => $this->user->id
                 )
             );
