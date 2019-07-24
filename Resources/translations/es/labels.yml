@@ -166,6 +166,7 @@ users-lb-impersonate: 'Suplantando al Usuario'
 users-lb-list: Listando
 users-lb-manage: 'Gestionando Usuario'
 users-lb-move: 'Moviendo a otro Nodo el usuario'
+workshop-lb: 'Talleres'
 word-lb: 'Conteo de palabras'
 word-lb-list: Listando
 worth-lb: 'Niveles de meritocracia'
