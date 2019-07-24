@@ -19,15 +19,27 @@ class Workshop extends \Goteo\Core\Model {
     $id,
     $title,
     $subtitle,
+    $blockquote,
+    $type,
     $description,
     $date_in,
     $date_out,
     $schedule,
-    $venue,
-    $venue_address,
     $url,
+    $header_image,
+    $venue,
+    $city,
+    $venue_address,
+    $how_to_get,
+    $map_iframe,
+    $schedule_file_url,
     $call_id,
     $modified;
+
+
+    public static function getLangFields() {
+        return ['title', 'subtitle', 'description'];
+    }
 
     /**
      * Get data about a workshop
@@ -134,6 +146,65 @@ class Workshop extends \Goteo\Core\Model {
     }
 
     /**
+     * Workshops listing
+     *
+     * @param array filters
+     * @param string node id
+     * @param int limit items per page or 0 for unlimited
+     * @param int page
+     * @param int pages
+     * @return array of project instances
+     */
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
+
+        $values = [];
+        $sqlFilters = [];
+        $sql = '';
+
+        if($count) {
+            // Return count
+            $sql = "SELECT COUNT(id) FROM workshop$sql";
+            // echo \sqldbg($sql, $values);
+            return (int) self::query($sql, $values)->fetchColumn();
+        }
+
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+
+        if(!$lang) $lang = Lang::current();
+        $values['viewLang'] = $lang;
+        //list($fields, $joins) = self::getLangsSQLJoins($lang);*/
+
+        $sql ="SELECT
+                workshop.id,
+                workshop.title,
+                workshop.subtitle,
+                workshop.description,
+                workshop.date_in,
+                workshop.date_out,
+                workshop.schedule,
+                workshop.url,
+                workshop.call_id,
+                workshop.venue,
+                workshop.city,
+                workshop.venue_address,
+                :viewLang as viewLang
+
+            FROM workshop
+            $joins
+            $sql
+            ORDER BY `id` DESC
+            LIMIT $offset,$limit";
+
+        // print_r($values);die(\sqldbg($sql, $values));
+        if($query = self::query($sql, $values)) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        }
+        return [];
+    }
+
+
+    /**
      *  Spheres of this workshop
      */
     public function getSpheres () {
@@ -215,6 +286,13 @@ class Workshop extends \Goteo\Core\Model {
 
     }
 
+    /*
+     *  List of types
+     */
+    public static function getListTypes(){
+        return Config::get('workshop.types');
+    }
+
     /**
      * Save.
      *
@@ -230,11 +308,21 @@ class Workshop extends \Goteo\Core\Model {
             'id',
             'title',
             'subtitle',
+            'blockquote',
+            'type',
             'description',
-            'schedule',
             'url',
             'date_in',
             'date_out',
+            'schedule',
+            'url',
+            'header_image',
+            'venue',
+            'city',
+            'venue_address',
+            'how_to_get',
+            'map_iframe',
+            'schedule_file_url'
         );
 
         if($this->call_id) $fields[] = 'call_id';
