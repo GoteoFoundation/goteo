@@ -51,6 +51,9 @@ class ModelNormalizer {
         elseif($this->model instanceOf Model\Promote) {
             $ob = new Transformer\PromoteTransformer($this->model, $this->keys);
         }
+        elseif($this->model instanceOf Model\Workshop) {
+            $ob = new Transformer\WorkshopTransformer($this->model, $this->keys);
+        }
         else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
 
         $ob->setUser(Session::getUser())->rebuild();

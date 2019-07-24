@@ -16,6 +16,7 @@ use Goteo\Application\Message;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Stories;
+use Goteo\Model\Workshop;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
@@ -46,40 +47,35 @@ class WorkshopAdminController extends AbstractAdminController {
 	}
 
 	public function listAction(Request $request) {
-		$filters = ['superglobal' => $request->query->get('q')];
+		$filters = [];
         $limit = 20;
 		$page = $request->query->get('pag') ?: 0;
-		$list = Stories::getList($filters, $page * $limit, $limit, false, Config::get('lang'));
-		$total = Stories::getList($filters, 0, 0, true);
+		$list = Workshop::getList($filters, $page * $limit, $limit, false, Config::get('lang'));
+		$total = Workshop::getList($filters, 0, 0, true);
 
-		return $this->viewResponse('admin/stories/list', [
+		return $this->viewResponse('admin/workshop/list', [
 			'list' => $list,
-			'link_prefix' => '/stories/edit/',
 			'total' => $total,
-			'limit' => $limit,
-			'filter' => [
-				'_action' => '/stories',
-				'q' => Text::get('admin-stories-global-search'),
-			],
+			'limit' => $limit
 		]);
 	}
 
 	public function editAction($id = '', Request $request) {
 
-		$story = $id ? Stories::get($id) : new Stories();
+		$workshop = $id ? Workshop::get($id) : new workshop();
 
-		if (!$story) {
-			throw new ModelNotFoundException("Not found story [$id]");
+		if (!$workshop) {
+			throw new ModelNotFoundException("Not found workshop [$id]");
 		}
 
-		$defaults = (array) $story;
-		$processor = $this->getModelForm('AdminStoryEdit', $story, $defaults, [], $request);
+		$defaults = (array) $workshop;
+		$processor = $this->getModelForm('AdminWorkshopEdit', $workshop, $defaults, [], $request);
 		$processor->createForm();
 		$processor->getBuilder()
 			->add('submit', 'submit', [
 				'label' => $submit_label ? $submit_label : 'regular-submit',
 			]);
-		if ($story->id) {
+		if ($workshop->id) {
 			$processor->getBuilder()
 				->add('remove', 'submit', [
 					'label' => Text::get('admin-remove-entry'),
@@ -97,28 +93,23 @@ class WorkshopAdminController extends AbstractAdminController {
 		if ($form->isSubmitted() && $request->isMethod('post')) {
 			// Check if we want to remove an entry
 			if ($form->has('remove') && $form->get('remove')->isClicked()) {
-				if ((bool) $story->active) {
-					Message::error(Text::get('admin-remove-entry-forbidden'));
-					return $this->redirect('/admin/stories');
-				}
-
-				$story->dbDelete(); //Throws and exception if fails
+				$workshop->dbDelete(); //Throws and exception if fails
 				Message::info(Text::get('admin-remove-entry-ok'));
-				return $this->redirect('/admin/stories');
+				return $this->redirect('/admin/workshop');
 			}
 
 			try {
 				$processor->save($form); // Allow save event if does not validate
-				Message::info(Text::get('admin-stories-edit-success'));
-				return $this->redirect('/admin/stories?' . $request->getQueryString());
+				Message::info(Text::get('admin-workshop-edit-success'));
+				return $this->redirect('/admin/workshop?' . $request->getQueryString());
 			} catch (FormModelException $e) {
 				Message::error($e->getMessage());
 			}
 		}
 
-		return $this->viewResponse('admin/stories/edit', [
+		return $this->viewResponse('admin/workshop/edit', [
 			'form' => $form->createView(),
-			'story' => $story,
+			'workshop' => $workshop,
 			'user' => $user,
 		]);
 	}
