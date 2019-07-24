@@ -19,15 +19,27 @@ class Workshop extends \Goteo\Core\Model {
     $id,
     $title,
     $subtitle,
+    $blockquote,
+    $type,
     $description,
     $date_in,
     $date_out,
     $schedule,
-    $venue,
-    $venue_address,
     $url,
+    $header_image,
+    $venue,
+    $city,
+    $venue_address,
+    $how_to_get,
+    $map_iframe,
+    $schedule_file_url,
     $call_id,
     $modified;
+
+
+    public static function getLangFields() {
+        return ['title', 'subtitle', 'description'];
+    }
 
     /**
      * Get data about a workshop
@@ -149,44 +161,9 @@ class Workshop extends \Goteo\Core\Model {
         $sqlFilters = [];
         $sql = '';
 
-        foreach(['owner', 'active', 'landing_match', 'landing_pitch', 'pool', 'node', 'type'] as $key) {
-            if (isset($filters[$key])) {
-                $filter[] = "stories.$key = :$key";
-                $values[":$key"] = $filters[$key];
-            }
-        }
-
-        if(isset($filters['project'])) {
-            $filter[] = "stories.project LIKE :project";
-            $values[":project"] = '%' . $filters['project'] . '%';
-        }
-        if(isset($filters['project_owner'])) {
-            $filter[] = "stories.project_owner = :project_owner";
-            $values[":project_owner"] = $filters['project_owner'];
-        }
-
-        foreach(['id', 'title', 'description', 'review'] as $key) {
-            if (isset($filters[$key])) {
-                $filter[] = "stories.$key LIKE :$key";
-                $values[":$key"] = '%'.$filters[$key].'%';
-            }
-        }
-        if($filters['superglobal']) {
-            $filter[] = "(stories.title LIKE :superglobal OR stories.description LIKE :superglobal OR stories.review LIKE :superglobal)";
-            $values[':superglobal'] = '%'.$filters['superglobal'].'%';
-        }
-        if($filters['supersuperglobal']) {
-            $filter[] = "(stories.title LIKE :superglobal OR stories.description LIKE :superglobal OR stories.review LIKE :superglobal)";
-            $values[':superglobal'] = '%'.$filters['superglobal'].'%';
-        }
-        // print_r($filter);die;
-        if($filter) {
-            $sql = " WHERE " . implode(' AND ', $filter);
-        }
-
         if($count) {
             // Return count
-            $sql = "SELECT COUNT(id) FROM stories$sql";
+            $sql = "SELECT COUNT(id) FROM workshop$sql";
             // echo \sqldbg($sql, $values);
             return (int) self::query($sql, $values)->fetchColumn();
         }
@@ -196,43 +173,27 @@ class Workshop extends \Goteo\Core\Model {
 
         if(!$lang) $lang = Lang::current();
         $values['viewLang'] = $lang;
-        list($fields, $joins) = self::getLangsSQLJoins($lang);
+        //list($fields, $joins) = self::getLangsSQLJoins($lang);*/
 
         $sql ="SELECT
-                stories.id as id,
-                stories.node as node,
-                stories.project as project,
-                stories.lang as lang,
-                $fields,
-                stories.url as url,
-                stories.image as image,
-                stories.pool_image as pool_image,
-                stories.pool as pool,
-                stories.text_position as text_position,
-                stories.order as `order`,
-                stories.post as `post`,
-                stories.active as `active`,
-                stories.type as `type`,
-                stories.landing_pitch as `landing_pitch`,
-                stories.landing_match as `landing_match`,
-                stories.sphere as `sphere`,
-
-                project.id as project_id,
-                project.name as project_name,
-                project.amount as project_amount,
-                project.num_investors as project_num_investors,
-
-                user.id as user_id,
-                user.name as user_name,
+                workshop.id,
+                workshop.title,
+                workshop.subtitle,
+                workshop.description,
+                workshop.date_in,
+                workshop.date_out,
+                workshop.schedule,
+                workshop.url,
+                workshop.call_id,
+                workshop.venue,
+                workshop.city,
+                workshop.venue_address,
                 :viewLang as viewLang
-            FROM stories
-            LEFT JOIN project
-                ON project.id = stories.project
-            LEFT JOIN user
-                ON user.id = project.owner
+
+            FROM workshop
             $joins
             $sql
-            ORDER BY `order` ASC
+            ORDER BY `id` DESC
             LIMIT $offset,$limit";
 
         // print_r($values);die(\sqldbg($sql, $values));
@@ -325,6 +286,13 @@ class Workshop extends \Goteo\Core\Model {
 
     }
 
+    /*
+     *  List of types
+     */
+    public static function getListTypes(){
+        return Config::get('workshop.types');
+    }
+
     /**
      * Save.
      *
@@ -340,11 +308,21 @@ class Workshop extends \Goteo\Core\Model {
             'id',
             'title',
             'subtitle',
+            'blockquote',
+            'type',
             'description',
-            'schedule',
             'url',
             'date_in',
             'date_out',
+            'schedule',
+            'url',
+            'header_image',
+            'venue',
+            'city',
+            'venue_address',
+            'how_to_get',
+            'map_iframe',
+            'schedule_file_url'
         );
 
         if($this->call_id) $fields[] = 'call_id';

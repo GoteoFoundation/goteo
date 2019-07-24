@@ -228,6 +228,8 @@ admin-title-social_commitments: 'Compromisos sociales'
 admin-title-order: Ordenar
 admin-title-status: Estado
 admin-title-users: Usuarios
+admin-title-city: Ciudad
+admin-title-date: Fecha
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
@@ -500,3 +502,6 @@ admin-donations-users-percent: '% usuarios donantes'
 admin-donations-tip-percent: '% dinero en propinas'
 admin-donations-direct-percent: '% dinero directo'
 
+admin-workshop: Talleres Goteo
+admin-workshop-add: Crear un nuevo taller
+admin-workshop-edit: Editando el taller %s
