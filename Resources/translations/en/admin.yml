@@ -200,6 +200,7 @@ admin-title-info: Info
 admin-title-image: Image
 admin-title-title: Title
 admin-title-subtitle: Subtitle
+admin-title-subject: Subject
 admin-title-description: Description
 admin-title-section: Section
 admin-title-text: Text
@@ -217,6 +218,7 @@ admin-title-social_commitments: 'Social commitments'
 admin-title-order: Sort
 admin-title-status: Status
 admin-title-users: Users
+admin-title-date: Date
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'

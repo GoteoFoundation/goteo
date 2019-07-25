@@ -14,6 +14,7 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Library\Text;
+use Goteo\Model\Image;
 
 class Communication extends \Goteo\Core\Model {
 
@@ -27,12 +28,25 @@ class Communication extends \Goteo\Core\Model {
         $sent = null,
         $error = '',
         $lang,
+        $date,
         $filter;
 
     public static function getLangFields() {
         return ['subject', 'content'];
     }
     
+
+    static public function get($id) {
+		if (empty($id)) {
+			// throw new Exception("Delete error: ID not defined!");
+			return false;
+		}
+		$class = get_called_class();
+		$ob = new $class();
+		$query = static::query('SELECT * FROM ' . $ob->getTable() . ' WHERE id = :id', array(':id' => $id));
+        $communication = $query->fetchObject($class);
+        return $communication;
+	}
 
     /**
      * Validar mensaje.
@@ -104,7 +118,9 @@ class Communication extends \Goteo\Core\Model {
                 communication.id as id,
                 communication.type as type, 
                 $fields,
-                communication.lang as lang
+                communication.lang as lang,
+                communication.date as date,
+                communication.filter as filter
             FROM communication
             $joins
             $sql
@@ -215,6 +231,14 @@ class Communication extends \Goteo\Core\Model {
 
     }
 
+    public function getImage() {
+        if(!$this->imageInstance instanceOf Image) {
+            $this->imageInstance = new Image($this->header);
+        }
+        return $this->imageInstance;
+    }
+
+
     public function getOriginalLang(){
         return $this->lang;
     }
@@ -233,27 +257,24 @@ class Communication extends \Goteo\Core\Model {
 
     public function getLangsAvailable() {
         $langs = [];
-        $sql = "SELECT GROUP_CONCAT(a.lang)
-                FROM (
-                    SELECT lang
-                    FROM`communication`
-                    WHERE id = :id
-                    UNION DISTINCT
-                    SELECT lang
-                    FROM `communication_lang`
-                    WHERE id = :id
-                ) a
+        $sql = "
+                SELECT lang
+                FROM`communication`
+                WHERE id = :id
+                UNION DISTINCT
+                SELECT lang
+                FROM `communication_lang`
+                WHERE id = :id
               ";
         try {
-            if($query = static::query($sql, array(':id' => $this->id))) {
-                $res = $query->fetchColumn();
-                if($res) $langs = explode(',', $res);
+            $query = static::query($sql, array(':id' => $this->id));
+            while ($lang = $query->fetchColumn()) {
+                array_push($langs, $lang);
             }
         } catch (\Exception $e) {
         }
         return $langs;
     }
-
 
 }
 

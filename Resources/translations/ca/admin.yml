@@ -169,6 +169,7 @@ admin-title-icon: Icona
 admin-title-image: Imatge
 admin-title-title: Títol
 admin-title-subtitle: Subtítol
+admin-title-subject: Assumpte
 admin-title-description: Descripció
 admin-title-section: Secció
 admin-title-text: Text
@@ -186,6 +187,7 @@ admin-title-social_commitments: 'Compromisos socials'
 admin-title-order: Ordena
 admin-title-status: Estat
 admin-title-users: Usuaris
+admin-title-date: Data  
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
 admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'

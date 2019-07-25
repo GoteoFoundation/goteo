@@ -209,6 +209,7 @@ admin-title-image: Imagen
 admin-title-landing_match: Landing matchfunding
 admin-title-title: Título
 admin-title-subtitle: Subtítulo
+admin-title-subject: Asunto
 admin-title-description: Descripción
 admin-title-section: Sección
 admin-title-text: Texto
@@ -228,6 +229,7 @@ admin-title-social_commitments: 'Compromisos sociales'
 admin-title-order: Ordenar
 admin-title-status: Estado
 admin-title-users: Usuarios
+admin-title-date: Fecha
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'

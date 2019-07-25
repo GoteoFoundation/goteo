@@ -4,29 +4,13 @@ $this->layout('admin/communication/layout');
 
 $this->section('admin-container-head');
 
+$data = $this->data;
+$translator = $this->translator;
 $langs = array_diff_key($this->languages, $this->translations);
-
+$langs_available = $this->langs_available;
+$languages = [$translator->original => $translator->original_name]+ array_diff_key($this->languages, [$translator->original => $translator->original_name]);
+if($data) $image = $data->getImage();
 ?>
-
-<!-- <div class="input_wrap">
-    <div class="row">
-      <div class="form-group col-xs-12 col-md-6">
-        <select id="filter-select" class="form-control">
-          <option value="0" selected disabled hidden><?= $this->text('admin-filters') ?></option>
-          <?php foreach ($this->filters as $filter) : ?>
-                  <option value=<?= $filter->id?> > <?= $filter->name?>  </option>
-          <?php endforeach; ?>
-        </select>
-      </div>
-
-      <div class="col-xs-4 col-md-2">
-        <button id="filter-edit" class="btn btn-cyan"><?= $this->text('admin-filters-edit') ?></button>
-      </div>
-      <div class="col-xs-4 col-md-2">
-        <button id="filter-create" class="btn btn-cyan"> <?= $this->text('admin-filters-create') ?></button>
-      </div>
-    </div>
-</div> -->
 
 <?php $this->append() ?>
 
@@ -43,7 +27,7 @@ $langs = array_diff_key($this->languages, $this->translations);
         <select id="filter-select" class="form-control" name="autoform[filter]" required>
           <option value="0" selected disabled hidden><?= $this->text('admin-filters') ?></option>
           <?php foreach ($this->filters as $filter) : ?>
-                  <option value=<?= $filter->id?> > <?= $filter->name?>  </option>
+                  <option value=<?= $filter->id?> <?= ($data->filter == $filter->id) ? 'selected="selected"' : "" ?>  > <?= $filter->name?>  </option>
           <?php endforeach; ?>
         </select>
       </div>
@@ -65,7 +49,7 @@ $langs = array_diff_key($this->languages, $this->translations);
     <select id="templates" class="form-control" name="autoform[template]" required>
       <option selected disabled hidden></option>
       <?php foreach($this->templates as $id => $name) : ?>
-        <option value="<?= $id ?>" > <?= $name ?> </option>
+        <option value="<?= $id ?>"  <?= ($data->template == $id) ? 'selected="selected"' : "" ?> > <?= $name ?> </option>
       <?php endforeach ?>
   </select>
 </div>
@@ -75,7 +59,7 @@ $langs = array_diff_key($this->languages, $this->translations);
   <div class="input-wrap">
     <select id="text" class="form-control" name="autoform[data-editor-type]" required>
       <?php foreach($this->editor_types as $id => $name) : ?>
-        <option value="<?= $id ?>" > <?= $name ?> </option>
+        <option value="<?= $id ?>"  <?= ($data->type == $id) ? 'selected="selected"' : "" ?> > <?= $name ?> </option>
       <?php endforeach ?>
     </select>
   </div>
@@ -83,8 +67,22 @@ $langs = array_diff_key($this->languages, $this->translations);
 
 <div id="dropzone-image" class="form-group hidden">
   <label for="image"> <?= $this->text('admin-title-header-image') ?> </label>
-  <div class="image-zone">
-    <div class="dragndrop"><div class="dropzone"></div></div>
+  <div class="input-wrap">
+    <div class="image-zone image">
+    <ul class="list-inline image-list-sortable">
+      <li data-name="">
+        <?php if($image): ?>
+          <div class="image <?=$image ? ' file-type-' .$image->getType() : '' ?>" <?= $image->getLink() ? 'style="background-image:url(' . $image->getLink(300,300,true) . ');background-size:cover"' : '' ?>></div>
+          <div class="options">
+          <a class="delete-image btn btn-default"><i class="fa fa-trash" title="<?= $this->text('dashboard-project-delete-image') ?>"></i></a>
+        </div>
+        <?php endif ?>
+      </li>
+    </ul>
+    <input id="image-upload" type="hidden" name="autoform[image]" value=" <?= ($image)? $image->getName() : '' ?>">
+      <div class="dragndrop <?=($image)? 'hidden' : '' ?>"><div class="dropzone">
+      </div></div>
+    </div>
   </div>
 </div>
 
@@ -124,11 +122,11 @@ $langs = array_diff_key($this->languages, $this->translations);
 
     <div class="form-group">
       <label for="i-<?= $lang ?>-subject"> <?= $this->text('admin-mailing-subject') ?></label>
-      <input class="form-control editor" id="i-<?= $lang ?>-subject" name="t[<?= $lang ?>][subject]">
+      <input class="form-control editor" id="i-<?= $lang ?>-subject" name="t[<?= $lang ?>][subject]" <?php if($data->id): ?> value="<?= $this->ee($translator->getTranslation($lang, 'subject', true)) ?> <?php endif ?>"> 
     </div>
     <div class="form-group">
       <label for="i-<?= $lang ?>-body"> <?= $this->text('admin-mail-body') ?></label>
-        <textarea rows="10" class="form-control editor" id="i-<?= $lang ?>-body" name="t[<?= $lang ?>][body]" <?= $default_lang != $lang ? ' class="hidden"' : '' ?> ></textarea>
+        <textarea rows="10" class="form-control editor" id="i-<?= $lang ?>-body" name="t[<?= $lang ?>][body]" <?= $default_lang != $lang ? ' class="hidden"' : '' ?> > <?php if($data->id): ?> <?= $this->ee($translator->getTranslation($lang, 'content', true)) ?> <?php endif ?> </textarea>
     </div>
 
     
@@ -145,3 +143,102 @@ $langs = array_diff_key($this->languages, $this->translations);
 </div>
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
+
+$(function(){
+  Dropzone.autoDiscover = false;
+
+  $('.image-zone').each(function(){
+    var $zone = $(this);
+    var $error = $zone.next();
+    var $list = $(this).find('.image-list-sortable');
+    var element = $zone.find('.dragndrop>div').get(0);
+
+    var dropzone = new Dropzone(element, {
+        url: '/api/communication/images',
+        uploadMultiple: false,
+        createImageThumbnails: true,
+        maxFiles:10,
+        maxFilesize: MAX_FILE_SIZE,
+        autoProcessQueue: true,
+        dictDefaultMessage: '<i style="font-size:2em" class="fa fa-plus"></i><br><br><?= $this->ee($this->text('dashboard-project-dnd-image'), 'js') ?>'
+    });
+    dropzone.on('error', function(file, error) {
+        $error.html(error.error);
+        $error.removeClass('hidden');
+        console.log('error', error);
+    });
+    dropzone.on("queuecomplete", function (progress) {
+      document.querySelector("#total-progress").style.opacity = "0.0";
+    });
+    dropzone.on('addedfile', function(file, response) {
+        console.log(this.hiddenFileInput.files);
+    });
+    dropzone.on('success', function(file, response) {
+        $error.addClass('hidden');
+        // see if all files are uploaded ok in response
+        if(response && !response.success) {
+            $error.html(response.msg);
+            $error.removeClass('hidden');
+            for(var i in response.files) {
+                if(!response.files[i].success)
+                    $error.append('<br>' + response.files[i].msg);
+            }
+            return;
+        }
+        // Add to list
+        var li = '<?= $this->ee($this->insert('admin/communication/partials/image_list_item', ['image_url' => '{URL}', 'image_name' => '{NAME}']), 'js') ?>';
+        var name = file.name;
+        for(var i in response.files) {
+            if(response.files[i].originalName == name) {
+                name = response.files[i].name;
+            }
+        }
+
+        var img = '/img/300x300c/' + name;
+        document.getElementById('image-upload').value = name;
+        li = li.replace('{URL}', img);
+        li = li.replace('{NAME}', name);
+        $list.append(li);
+        if(response.cover) {
+            $('#menu-item-images').removeClass('ko').addClass('ok');
+        }
+        console.log('success', file, response, li);
+      });
+      dropzone.on("complete", function(file) {
+          dropzone.removeFile(file);
+          $zone.find('.dragndrop').addClass('hidden');
+      });
+      dropzone.on("sending", function(file, xhr, formData) {
+        // Will send the section value along with the file as POST data.
+        // formData.append("section", $zone.data('section'));
+        // formData.append("add_to_gallery", 'project_image');
+      });
+  });
+
+  // Delete actions
+  $('.image-list-sortable').on( 'click', '.delete-image', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var $li = $(this).closest('li');
+      // console.log('remove', $li);
+      var $drop = $(this).closest('.dropfiles');
+      var $zone = $(this).closest('.image-zone');
+      var $list = $(this).closest('.image-list-sortable');
+      var $error = $zone.next();
+      $li.remove();
+      $error.addClass('hidden');
+      var total = $list.find('li').length;
+      $zone.find('.dragndrop').removeClass('hidden');
+  });
+});
+
+
+// @license-end
+</script>
+
+<?php $this->append() ?>
