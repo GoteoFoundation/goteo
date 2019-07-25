@@ -391,4 +391,15 @@ $api->add('api-matcher-item', new Route(
     array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matcherAction')
 ));
 
+// Workshops images upload (POST method only)
+$api->add('api-workshops-images-upload', new Route(
+    '/workshops/images',
+    array('_controller' => 'Goteo\Controller\Api\WorkshopsApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 return $api;

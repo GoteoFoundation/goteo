@@ -31,6 +31,8 @@ class WorkshopTransformer extends AbstractTransformer {
             $ret['translate'] = '/translate/' . $this->getModelName() . '/' . $this->model->id;
         }
 
+        $ret['preview'] = '/workshop/' . $this->model->id;
+
         return $ret;
     }
 

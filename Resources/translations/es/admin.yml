@@ -210,6 +210,10 @@ admin-title-order: Ordenar
 admin-title-status: Estado
 admin-title-city: Ciudad
 admin-title-date: Fecha
+admin-title-blockquote: 'Cita personalizada'
+admin-title-type: 'Tipo'
+admin-title-date-in: Fecha inicio
+admin-title-date-out: Fecha fin
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
