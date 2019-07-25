@@ -214,6 +214,13 @@ admin-title-blockquote: 'Cita personalizada'
 admin-title-type: 'Tipo'
 admin-title-date-in: Fecha inicio
 admin-title-date-out: Fecha fin
+admin-title-venue: Lugar (Visible en call to action)
+admin-title-venue-address: Dirección
+admin-title-how-to-get: ¿Cómo llegar?
+admin-title-iframe: 'Iframe localización'
+admin-title-schedule-file: 'Url programa'
+admin-title-call: 'Convocatoria de Matchfunding'
+admin-title-url-inscription: Enlace a inscripción
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
@@ -469,3 +476,5 @@ admin-donations-direct-percent: '% dinero directo'
 admin-workshop: Talleres Goteo
 admin-workshop-add: Crear un nuevo taller
 admin-workshop-edit: Editando el taller %s
+admin-workshop-edit-success: La entrada de taller se ha editado correctamente
+admin-remove-entry-confirm: 

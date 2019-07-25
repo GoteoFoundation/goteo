@@ -10,6 +10,7 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Model\Workshop\WorkshopSponsor;
+use Goteo\Model\Workshop\WorkshopLocation;
 use Goteo\Model\Blog\Post as GeneralPost;
 
 
@@ -34,6 +35,7 @@ class Workshop extends \Goteo\Core\Model {
     $map_iframe,
     $schedule_file_url,
     $call_id,
+    $workshop_location,
     $modified;
 
 
@@ -341,6 +343,17 @@ class Workshop extends \Goteo\Core\Model {
         if($this->header_image instanceOf Image) 
             $this->header_image = $this->header_image->getName();
 
+        if($this->workshop_location instanceOf WorkshopLocation) {
+            $this->workshop_location->id = $this->id;
+            if($this->workshop_location->save($errors)) {
+                $this->workshop_location = $this->workshop_location->location ? $this->workshop_location->location : $this->workshop_location->name;
+            } else {
+                $fail = true;
+                unset($this->workshop_location);
+            }
+
+        }
+
         $fields = array(
             'id',
             'title',
@@ -352,7 +365,6 @@ class Workshop extends \Goteo\Core\Model {
             'date_in',
             'date_out',
             'schedule',
-            'url',
             'header_image',
             'venue',
             'city',
