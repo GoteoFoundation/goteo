@@ -19,6 +19,7 @@ use Goteo\Library\Text;
 use Goteo\Model\Stories;
 use Goteo\Model\Sphere;
 use Goteo\Model\Workshop;
+use Goteo\Model\Workshop\WorkshopLocation;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Application\Lang;
 
@@ -41,19 +42,14 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('blockquote', 'text', [
+            ->add('blockquote', 'textarea', [
                 'label' => 'admin-title-blockquote',
                 'required' => false,
-                'disabled' => $this->getReadonly()
+                'disabled' => $this->getReadonly(),
+                'attr' => [
+                    'rows' => 2
+                ]
             ])
-            ->add('type', 'choice', array(
-                'label' => 'admin-title-type',
-                'required' => false,
-                'expanded' => true,
-                'row_class' => 'extra',
-                'wrap_class' => 'col-xs-6',
-                'choices' => Workshop::getListTypes()
-            ))
            ->add('description', 'markdown', [
                 'label' => 'regular-description',
                 'required' => true,
@@ -61,12 +57,25 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                     'rows' => 8
                 ]
             ])
+           ->add('workshop_location', 'location', [
+                'label' => 'overview-field-project_location',
+                'type' => 'workshop', // API geoloc
+                'item' => $this->getModel()->id,
+                'disabled' => $this->getReadonly(),
+                'location_object' => WorkshopLocation::get($project),
+                'location_class' => 'Goteo\Model\Workshop\WorkshopLocation',
+                'required' => false,
+                'pre_addon' => '<i class="fa fa-globe"></i>',
+                'attr' => ['help' => Text::get('tooltip-project-project_location')]
+            ])
            ->add('date_in', 'datepicker', array(
                 'label' => 'admin-title-date-in',
+                'required' => true,
                 'constraints' => array(new Constraints\NotBlank()),
             ))
            ->add('date_out', 'datepicker', array(
                 'label' => 'admin-title-date-out',
+                'required' => true,
                 'constraints' => array(new Constraints\NotBlank()),
             ))
             ->add('schedule', 'text', [
@@ -75,7 +84,7 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'disabled' => $this->getReadonly()
             ])
             ->add('url', 'text', [
-                'label' => 'regular-url',
+                'label' => 'admin-title-url-inscription',
                 'required' => false,
                 'disabled' => $this->getReadonly()
             ])
@@ -96,33 +105,47 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
+            ->add('venue_address', 'textarea', [
+                'label' => 'admin-title-venue-address',
+                'required' => true,
+                'disabled' => $this->getReadonly(),
+                'attr' => [
+                    'rows' => 4
+                ]
+            ])
             ->add('city', 'text', [
-                'label' => 'regular-city',
+                'label' => 'admin-title-city',
                 'required' => true,
                 'disabled' => $this->getReadonly()
-            ])
+            ])    
             ->add('how_to_get', 'text', [
-                'label' => 'regular-how-to-get',
+                'label' => 'admin-title-how-to-get',
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('map_iframe', 'text', [
-                'label' => 'regular-map-iframe',
-                'required' => true,
-                'disabled' => $this->getReadonly()
+            ->add('map_iframe', 'textarea', [
+                'label' => 'admin-title-iframe',
+                'required' => false,
+                'disabled' => $this->getReadonly(),
+                'attr' => [
+                    'rows' => 4
+                ]
             ])
             ->add('schedule_file_url', 'text', [
-                'label' => 'regular-schedule-file',
-                'required' => true,
+                'label' => 'admin-title-schedule-file',
+                'required' => false,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('call_id', 'text', [
-                'label' => 'regular-call',
-                'required' => true,
-                'disabled' => $this->getReadonly()
-            ])
+            ->add('type', 'choice', array(
+                'label' => 'admin-title-type',
+                'required' => false,
+                'expanded' => true,
+                'row_class' => 'extra',
+                'wrap_class' => 'col-xs-6',
+                'choices' => Workshop::getListTypes()
+            ))
              ->add('call_id', 'typeahead', [
-                'label' => 'regular-call',
+                'label' => 'admin-title-call',
                 'row_class' => 'extra',
                 'required' => false,
                 'disabled' => $this->getReadonly(),
@@ -130,93 +153,7 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'text' => ($workshop && $workshop->getCall()) ? $workshop->getCall()->name : null
             ])
 
-            /*->add('pool_image', 'dropfiles', [
-                'label' => 'story-field-pool-image',
-                'disabled' => $this->getReadonly(),
-                'data' => $story->getPoolImage(),
-                'url' => '/api/stories/images',
-                'required' => false,
-                'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1]),
-                    ]
-
-            ])
-            ->add('review', 'text', [
-                'label' => 'admin-stories-review',
-                'required' => false,
-                'row_class' => 'extra',
-                'disabled' => $this->getReadonly()
-            ])
-            ->add('url', 'url', [
-                'label' => 'regular-url',
-                'required' => false,
-                'row_class' => 'extra',
-                'disabled' => $this->getReadonly()
-            ])
-            ->add('project', 'typeahead', [
-                'label' => 'admin-project',
-                'row_class' => 'extra',
-                'required' => false,
-                'disabled' => $this->getReadonly(),
-                'sources' => 'project',
-                'text' => ($story && $story->getProject()) ? $story->getProject()->name : null
-            ])
-            ->add('lang', 'choice', array(
-                'label' => 'regular-lang',
-                'row_class' => 'extra',
-                'choices' => Lang::listAll('name', false)
-            ))
-            ->add('pool', 'boolean', array(
-                'required' => false,
-                'row_class' => 'extra',
-                'disabled' => $this->getReadonly(),
-                'label' => 'admin-stories-pool', // Form has integrated translations
-                'color' => 'cyan', // bootstrap label-* (default, success, ...)
-            ))
-            ->add('landing_pitch', 'boolean', array(
-                'required' => false,
-                'row_class' => 'extra',
-                'disabled' => $this->getReadonly(),
-                'label' => 'admin-stories-landing_pitch', // Form has integrated translations
-                'color' => 'lilac', // bootstrap label-* (default, success, ...)
-            ))
-            ->add('landing_match', 'boolean', array(
-                'required' => false,
-                'row_class' => 'extra',
-                'disabled' => $this->getReadonly(),
-                'label' => 'admin-stories-landing_match', // Form has integrated translations
-                'color' => 'lilac', // bootstrap label-* (default, success, ...)
-            ))
-            ->add('type', 'choice', array(
-                'label' => 'admin-stories-type',
-                'required' => true,
-                'expanded' => true,
-                'row_class' => 'extra',
-                'wrap_class' => 'col-xs-6',
-                'choices' => Stories::getListTypes(),
-                'constraints' => [
-                    new Constraints\NotBlank()
-                ]
-            ))
-            ->add('sphere', 'choice', array(
-                'label' => 'admin-title-sphere',
-                'required' => true,
-                // 'expanded' => true,
-                'row_class' => 'extra',
-                'wrap_class' => 'col-xs-6',
-                'choices' => array_column(Sphere::getAll(), 'name', 'id'),
-                'constraints' => [
-                    new Constraints\NotBlank()
-                ]
-            ))
-            ->add('active', 'boolean', array(
-                'required' => false,
-                'row_class' => 'extra',
-                'disabled' => $this->getReadonly(),
-                'label' => 'admin-stories-active', // Form has integrated translations
-                'color' => 'cyan', // bootstrap label-* (default, success, ...)
-            ))*/
+            
             ;
 
 
