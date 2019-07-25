@@ -35,9 +35,11 @@ $(function () {
     }
 
     document.getElementById('templates').onchange = function() {
-        if (this.value == 1) document.getElementById('dropzone-image').classList.remove('hidden');
+        if (this.value == "newsletter") document.getElementById('dropzone-image').classList.remove('hidden');
         else document.getElementById('dropzone-image').classList.add('hidden');
     }
+
+    $('#templates').change();
 
     var mdeditor = [];
     var summernote = [];
@@ -136,32 +138,5 @@ $(function () {
         });
         mdeditor[i].render();
       });
-
-    var dropzone = new Dropzone('div.dropzone', {
-        url: '/communication',
-        uploadMultiple: false,
-        createImageThumbnails: true,
-        maxFiles:1,
-        maxFilesize: MAX_FILE_SIZE,
-        autoProcessQueue: true,
-        dictDefaultMessage: '<i style="font-size:2em" class="fa fa-plus"></i><br><br>'
-    });
-    
-    dropzone.on('error', function(file, error) {
-        $error.html(error.error);
-        $error.removeClass('hidden');
-        console.log('error', error);
-    });
-    dropzone.on('addedfile', function(file, response) {
-        console.log(this.hiddenFileInput.files);
-    });
-    dropzone.on("complete", function(file) {
-        dropzone.removeFile(file);
-    });
-    dropzone.on("sending", function(file, xhr, formData) {
-        // Will send the section value along with the file as POST data.
-        // formData.append("section", $zone.data('section'));
-        // formData.append("add_to_gallery", 'project_image');
-    });
       
 });

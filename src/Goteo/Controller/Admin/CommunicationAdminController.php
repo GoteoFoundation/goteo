@@ -42,21 +42,30 @@ class CommunicationAdminController extends AbstractAdminController
                 ['_controller' => __CLASS__ . "::addAction"]
             ),
             new Route(
-                '/preview/id/{id}',
+                '/edit/{id}',
+                ['_controller' => __CLASS__ . "::addAction"]
+            ),
+            new Route(
+                '/copy/{id}',
+                ['_controller' => __CLASS__ . "::copyAction"]
+            ),
+            new Route(
+                '/preview/{id}',
                 ['_controller' => __CLASS__ . "::previewAction"]
             ),
             new Route(
-                '/detail/id/{id}',
+                '/detail/{id}',
                 ['_controller' => __CLASS__ . "::detailAction"]
             )
         ];
     }
 
-    public function doSave(Request $request){
+    public function doSave($id = null, Request $request){
 
         if($request->isMethod('POST')) {
             // validate()
-            $communication = new Communication();
+            $communication = ($id) ? Communication::get($id) : new Communication();
+            
             $langs_ok = [];
             $all = $request->request->get('t');
             $form = $request->request->get('autoform');
@@ -66,6 +75,7 @@ class CommunicationAdminController extends AbstractAdminController
             $communication->template = $form['template'];
             $communication->subject = $all[$communication->lang]['subject'];
             $communication->content = $all[$communication->lang]['body'];
+            $communication->header = $form['image'];
             $communication->save();
              
             $translator = new ModelTranslator();
@@ -129,21 +139,14 @@ class CommunicationAdminController extends AbstractAdminController
         
     }
 
-    public function addAction(Request $request)
+    public function addAction($id = null, Request $request)
     {
-
         if ($request->isMethod('post') ) {
-            $communication = $this->doSave($request);
-            return $this->redirect('/admin/communication/preview/id/'.$communication->id);
+            $communication = $this->doSave($id, $request);
+            return $this->redirect('/admin/communication/preview/'.$communication->id);
         }
         else {
-            $filter = new Filter();
-            $processor = $this->getModelForm('ProjectFilter', $filter , Array(), Array(), $request);
-            $processor->createForm();
-            $form_filter = $processor->getForm();
-            $form_filter->handleRequest($request);
-    
-            $filters = $filter->getAll();
+            $filters = Filter::getAll();
     
             $template = ['default' => 'General communication', 'newsletter' => Text::get('newsletter-lb')];
             $translates = [Config::get('lang') => Lang::getName(Config::get('lang'))];
@@ -151,20 +154,75 @@ class CommunicationAdminController extends AbstractAdminController
             $langs = Lang::listAll('name', false);
             $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
     
+            if ($id){
+                $communication = Communication::get($id);
+                if (!$communication) {
+                    throw new ModelNotFoundException("Not found communication [$id]");
+                }
+
+                $translator = new ModelTranslator();
+                $translator = $translator::get('communication', $communication->id);
+        
+            }
     
             return $this->viewResponse('admin/communication/add',[
-                'filters' => $filter->getAll(),
-                'form_filter' => $form_filter->createView(),
+                'filters' => $filters,
                 'templates' => $template,
                 'languages' => $langs,
                 'editor_types' => $editor_types,
                 'translations' => $translates,
+                'data' => $communication,
+                'translator' => $translator,
                 'variables' => Communication::variables()
             ]);
         }
 
     }
 
+
+    public function copyAction($id, Request $request)
+    {
+
+        
+        $communication = $id ? Communication::get($id) : new Communication();
+        
+		if (!$communication) {
+            throw new ModelNotFoundException("Not found communication [$id]");
+        }
+        
+        if ($request->isMethod('post') ) {
+            $communication = $this->doSave($request);
+            return $this->redirect('/admin/communication/preview/'.$communication->id);
+        }
+        
+        $translator = new ModelTranslator();
+        $translator = $translator::get('communication', $communication->id);
+
+        $filters = Filter::getAll();
+    
+        $template = ['default' => 'General communication', 'newsletter' => Text::get('newsletter-lb')];
+        $translates = [];
+
+        foreach($communication->getLangsAvailable() as $lang) {
+            $translates[$lang] = Lang::getName($lang);
+        }
+        // $translates = [Config::get('lang') => Lang::getName(Config::get('lang'))];
+        
+        $langs = Lang::listAll('name', false);
+        $langs_available = $communication->getLangsAvailable();
+        $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
+
+        return $this->viewResponse('admin/communication/add',[
+            'filters' => $filters,
+            'templates' => $template,
+            'languages' => $langs,
+            'editor_types' => $editor_types,
+            'translations' => $translates,
+            'variables' => Communication::variables(),
+            'data' => $communication,
+            'translator' => $translator,
+        ]);
+    }
 
     public function previewAction($id, Request $request)
     {
@@ -175,8 +233,9 @@ class CommunicationAdminController extends AbstractAdminController
 			throw new ModelNotFoundException("Not found communication [$id]");
         }
 
+
         return $this->viewResponse('email/'.$communication->template, [
-            'content' => $communication->content,
+            'communication' => $communication
         ]);
     }
 
@@ -187,15 +246,6 @@ class CommunicationAdminController extends AbstractAdminController
 		if (!$communication) {
 			throw new ModelNotFoundException("Not found communication [$id]");
         }
-        
-        // $filter = Filter::get($communication->filter);
-
-        // if (!$filter) {
-        //     throw new ModelNotFoundException("Not found filter [$communication->filter]");
-        // }
-
-        // $this->getReceivers();
-
 
         return $this->viewResponse('admin/communication/detail');
     }

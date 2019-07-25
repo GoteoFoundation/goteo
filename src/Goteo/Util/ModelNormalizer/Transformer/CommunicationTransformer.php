@@ -10,6 +10,7 @@
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
 use Goteo\Core\Model;
+use Goteo\Model\Filter;
 use Goteo\Library\Text;
 
 /**
@@ -35,14 +36,24 @@ class CommunicationTransformer extends AbstractTransformer {
     }
 
     function getLang() {
-        $lang = $this->model->getLangsAvailable();
-        return $lang;
+        $langs = $this->model->getLangsAvailable();
+        return explode(',', $langs);
+        ;
+    }
+
+    function getFilter() {
+        $filter = Filter::get($this->model->filter);
+        return $filter->name;
     }
 
     public function getActions() {
-        $ret = [
-            'preview' => '/admin/communication/preview/id/' . $this->model->id,
-        ];
+
+        // if (!$this->model->sent) {
+        $ret['edit'] = '/admin/communication/edit/' . $this->model->id;
+        // }
+        $ret['preview'] = '/admin/communication/preview/' . $this->model->id;
+        $ret['clone'] = '/admin/communication/copy/' . $this->model->id;
+        $ret['details'] = '/admin/communication/detail/' . $this->model->id;
 
         return $ret;
     }
