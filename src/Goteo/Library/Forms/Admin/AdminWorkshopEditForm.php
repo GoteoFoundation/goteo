@@ -37,30 +37,22 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'disabled' => $this->getReadonly()
             ])
             ->add('subtitle', 'text', [
-                'label' => 'regular-subtitle',
+                'label' => 'admin-title-subtitle',
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
             ->add('blockquote', 'text', [
-                'label' => 'regular-blockquote',
-                'required' => false,
-                'disabled' => $this->getReadonly()
-            ])
-            ->add('type', 'text', [
-                'label' => 'regular-type',
+                'label' => 'admin-title-blockquote',
                 'required' => false,
                 'disabled' => $this->getReadonly()
             ])
             ->add('type', 'choice', array(
-                'label' => 'regular-type',
+                'label' => 'admin-title-type',
                 'required' => false,
                 'expanded' => true,
                 'row_class' => 'extra',
                 'wrap_class' => 'col-xs-6',
-                'choices' => Workshop::getListTypes(),
-                'constraints' => [
-                    new Constraints\NotBlank()
-                ]
+                'choices' => Workshop::getListTypes()
             ))
            ->add('description', 'markdown', [
                 'label' => 'regular-description',
@@ -70,11 +62,11 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 ]
             ])
            ->add('date_in', 'datepicker', array(
-                'label' => 'regular-date-in',
+                'label' => 'admin-title-date-in',
                 'constraints' => array(new Constraints\NotBlank()),
             ))
            ->add('date_out', 'datepicker', array(
-                'label' => 'regular-date-out',
+                'label' => 'admin-title-date-out',
                 'constraints' => array(new Constraints\NotBlank()),
             ))
             ->add('schedule', 'text', [
@@ -88,19 +80,19 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'disabled' => $this->getReadonly()
             ])
            
-            ->add('header_image', 'dropfiles', [
-                'label' => 'story-field-image',
-                'disabled' => $this->getReadonly(),
-                'url' => '/api/workshop/images',
-                'required' => true,
-                'data' => $workshop->getHeaderImage(),
+            ->add('header_image', 'dropfiles', array(
+                'required' => false,
                 'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1]),
-                    ]
-            ])
+                'data' => [$workshop->header_image ? $workshop->getHeaderImage() : null],
+                'label' => 'admin-title-header-image',
+                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
+                'url' => '/api/workshops/images',
+                'constraints' => array(
+                    new Constraints\Count(array('max' => 1))
+                )
+            ))
             ->add('venue', 'text', [
-                'label' => 'regular-venue',
+                'label' => 'admin-title-venue',
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
@@ -128,6 +120,14 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'label' => 'regular-call',
                 'required' => true,
                 'disabled' => $this->getReadonly()
+            ])
+             ->add('call_id', 'typeahead', [
+                'label' => 'regular-call',
+                'row_class' => 'extra',
+                'required' => false,
+                'disabled' => $this->getReadonly(),
+                'sources' => 'call',
+                'text' => ($workshop && $workshop->getCall()) ? $workshop->getCall()->name : null
             ])
 
             /*->add('pool_image', 'dropfiles', [

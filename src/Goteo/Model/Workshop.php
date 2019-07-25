@@ -293,6 +293,31 @@ class Workshop extends \Goteo\Core\Model {
         return Config::get('workshop.types');
     }
 
+    public function getHeaderImage() {
+        if(!$this->HeaderImageInstance instanceOf Image) {
+            $this->HeaderImageInstance = new Image($this->header_image);
+        }
+        return $this->HeaderImageInstance;
+    }
+
+    // returns the current project
+    public function getCall() {
+        if(isset($this->callObject)) return $this->callObject;
+        try {
+            $this->callObject = Call::get($this->call_id);
+        } catch(ModelNotFoundException $e) {
+            $this->callObject = false;
+        }
+        return $this->callObject;
+    }
+
+    public function expired() {
+        $date=new \Datetime($this->date_in);
+        $date_now=new \DateTime("now"); 
+
+        return $date<=$date_now;
+    }
+
     /**
      * Save.
      *
@@ -303,6 +328,18 @@ class Workshop extends \Goteo\Core\Model {
 
         if (!$this->validate($errors))
             return false;
+
+        // Dropfiles type always return an array, just get the first element if required
+        if($this->header_image && is_array($this->header_image)) {
+            $this->header_image = $this->header_image[0];
+        } else {
+            $this->header_image = null;
+        }
+
+        // TODO: handle uploaded files here?
+        // If instanceOf Image, means already uploaded (via API probably), just get the name
+        if($this->header_image instanceOf Image) 
+            $this->header_image = $this->header_image->getName();
 
         $fields = array(
             'id',
@@ -350,22 +387,6 @@ class Workshop extends \Goteo\Core\Model {
         }
         return empty($errors);
     }
-
-    public function getHeaderImage() {
-        if(!$this->HeaderImageInstance instanceOf Image) {
-            $this->HeaderImageInstance = new Image($this->header_image);
-        }
-        return $this->HeaderImageInstance;
-    }
-
-    public function expired() {
-        $date=new \Datetime($this->date_in);
-        $date_now=new \DateTime("now"); 
-
-        return $date<=$date_now;
-    }
-
-
 
 
 }
