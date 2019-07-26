@@ -62,7 +62,7 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'type' => 'workshop', // API geoloc
                 'item' => $this->getModel()->id,
                 'disabled' => $this->getReadonly(),
-                'location_object' => WorkshopLocation::get($project),
+                'location_object' => WorkshopLocation::get($workshop),
                 'location_class' => 'Goteo\Model\Workshop\WorkshopLocation',
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>',
@@ -156,6 +156,39 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
             
             ;
 
+
+        return $this;
+    }
+
+    public function save(FormInterface $form = null, $force_save = false) {
+        if(!$form) $form = $this->getBuilder()->getForm();
+        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
+
+        $data = $form->getData();
+
+        // Instance of workshop location
+        $workshop_location=$data['workshop_location'];
+        $data['workshop_location'] = $data['workshop_location']->location ? $data['workshop_location']->location : $data['workshop_location']->name;
+       
+        $model = $this->getModel();
+        $model->rebuildData($data, array_keys($form->all()));
+
+        $errors = [];
+        if (!$model->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
+
+        if($workshop_location instanceOf WorkshopLocation) {
+            $workshop_location->id = $model->id;
+            if($workshop_location->save($errors)) {
+                //
+            } else {
+                $fail = true;
+            }
+
+        }
+
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }

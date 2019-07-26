@@ -36,8 +36,16 @@ class Workshop extends \Goteo\Core\Model {
     $schedule_file_url,
     $call_id,
     $workshop_location,
+    $lang,
     $modified;
 
+
+    public function __construct() {
+        $args = func_get_args();
+        call_user_func_array(array('parent', '__construct'), $args);
+
+        if(empty($this->lang)) $this->lang = Config::get('sql_lang');
+    }
 
     public static function getLangFields() {
         return ['title', 'subtitle', 'description'];
@@ -175,11 +183,12 @@ class Workshop extends \Goteo\Core\Model {
 
         if(!$lang) $lang = Lang::current();
         $values['viewLang'] = $lang;
-        //list($fields, $joins) = self::getLangsSQLJoins($lang);*/
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
 
         $sql ="SELECT
                 workshop.id,
                 workshop.title,
+                $fields,
                 workshop.subtitle,
                 workshop.description,
                 workshop.date_in,
@@ -343,20 +352,10 @@ class Workshop extends \Goteo\Core\Model {
         if($this->header_image instanceOf Image) 
             $this->header_image = $this->header_image->getName();
 
-        if($this->workshop_location instanceOf WorkshopLocation) {
-            $this->workshop_location->id = $this->id;
-            if($this->workshop_location->save($errors)) {
-                $this->workshop_location = $this->workshop_location->location ? $this->workshop_location->location : $this->workshop_location->name;
-            } else {
-                $fail = true;
-                unset($this->workshop_location);
-            }
-
-        }
-
         $fields = array(
             'id',
             'title',
+            'lang',
             'subtitle',
             'blockquote',
             'type',
@@ -371,6 +370,7 @@ class Workshop extends \Goteo\Core\Model {
             'venue_address',
             'how_to_get',
             'map_iframe',
+            'workshop_location',
             'schedule_file_url'
         );
 
