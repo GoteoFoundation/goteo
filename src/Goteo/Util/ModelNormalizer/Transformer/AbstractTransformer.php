@@ -117,7 +117,7 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
     }
 
     public function getDate() {
-        return \date_formater($this->model->date);
+        return $this->model->date ? \date_formater($this->model->date) : \date_formater($this->model->date_in);
     }
 
     public function getActions() {
@@ -136,6 +136,10 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
 
     public function getOrder() {
         return $this->model->order;
+    }
+
+    public function getCity() {
+        return $this->model->city;
     }
 
 

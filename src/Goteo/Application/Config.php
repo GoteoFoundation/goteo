@@ -197,7 +197,8 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteAdminController');
-		    \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
 
         // TODO: to be replace by the new AdminController
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
@@ -233,6 +234,7 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TranslatesSubController');
 		// \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WordcountSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
+		//\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesSubController');
