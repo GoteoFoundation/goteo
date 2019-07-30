@@ -15,6 +15,7 @@ $extra = $this->a('extra');
 $value = $this->text;
 
 ?>
+
 <div class="admin-typeahead" data-sources="<?= implode(',', $defaults) ?>" data-extra-params="<?= $this->ee(json_encode($extra)) ?>">
   <div class="form-group has-feedback<?= ($value ? ' has-error' : '') ?>">
 
