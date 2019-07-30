@@ -15,7 +15,7 @@ $extra = $this->a('extra');
 $value = $this->text;
 
 ?>
-<div class="admin-typeahead" data-sources="<?= implode(',', $defaults) ?>" data-extra-params="<?= $this->ee(json_encode($extra)) ?>">
+<div class="admin-typeahead" data-type="<?= $this->type ?>" data-sources="<?= implode(',', $defaults) ?>" data-extra-params="<?= $this->ee(json_encode($extra)) ?>">
   <div class="form-group has-feedback<?= ($value ? ' has-error' : '') ?>">
 
     <input class="typeahead form-control" autocomplete="off" type="text" placeholder="<?= $this->placeholder ?: $this->text('admin-search-global') ?>" value="<?= $value ?>">
@@ -26,6 +26,12 @@ $value = $this->text;
       <?php endforeach ?>
     </span>
 
+    <?php if ($this->type == "multiple") : ?>
+    
+      <ul class="tag" id="typeadhead-multiple"></ul>
+
+    <?php endif ?>
+      
     <?php if($value) {
       echo '<span class="help-block text-right"><a href="' . $this->get_pathinfo() . '" class="pronto text-danger"><i class="fa fa-close"></i> ' . $this->text('admin-remove-filters') . '</a> &nbsp;</span>';
     } ?>
