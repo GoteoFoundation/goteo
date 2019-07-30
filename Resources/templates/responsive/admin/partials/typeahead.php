@@ -25,7 +25,7 @@ $value = $this->text;
         <label><input type="checkbox" autocomplete="off" name="<?= $k ?>"<?= in_array($k, $defaults) ? ' checked' : '' ?>> <?= $this->text('admin-' . $k . 's') ?></label>
       <?php endforeach ?>
     </span>
-
+  
     <?php if($value) {
       echo '<span class="help-block text-right"><a href="' . $this->get_pathinfo() . '" class="pronto text-danger"><i class="fa fa-close"></i> ' . $this->text('admin-remove-filters') . '</a> &nbsp;</span>';
     } ?>
