@@ -216,13 +216,13 @@ $(function(){
                 .on('typeahead:select', function (event, datum, name) {
                     // console.info(datum[id_field]);
                     // console.log('selected',name, event, datum, $(this).attr('name'));
-                    if ($(this).data('type') == "simple" ) {
+                    if ($(this).data('type') === "simple" ) {
                       
                       $('#' + $(this).data('real-id')).val(datum[id_field]);
 
-                    } else if ($(this).data('type') == "multiple") {
+                    } else if ($(this).data('type') === "multiple") {
 
-                      if ($('[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').length == 0) {
+                      if ($('[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').length === 0) {
                         
                         $('.input-typeahead')
                           .append('<span class="tag label label-lilac">'+ datum[id_field] +'<span id="remove-'+datum['id']+'" data-real-id="'+ $(this).data('real-id')+ '" data-value="'+ datum['id'] + '"data-role="remove"></span></span>');
