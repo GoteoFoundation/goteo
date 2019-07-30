@@ -36,7 +36,7 @@ class TypeaheadType extends TextType
         $resolver->setDefault('text', ''); // If exists, the text shown instead of the value
         $resolver->setDefault('fake_id', ''); // Created automatically, the id of the typeahead input field (real data is placed in a hidden field)
         $resolver->setDefault('value_field', 'id'); // Field where to extract the Value from API calls, placed in the hidden field
-        $resolver->setDefault('type','simple');
+        $resolver->setDefault('type','simple'); // Field to change between typeahead with only one input or with multiple ['simple', 'multiple']
     }
 
     /**
