@@ -214,14 +214,49 @@ $(function(){
                 // typeahead:select event is done when needed.
                 // For example: assets/js/admin/stats.js
                 .on('typeahead:select', function (event, datum, name) {
+                    // console.info(datum[id_field]);
                     // console.log('selected',name, event, datum, $(this).attr('name'));
-                    $('#' + $(this).data('real-id')).val(datum[id_field]);
+                    if ($(this).data('type') == "simple" ) {
+                      
+                      $('#' + $(this).data('real-id')).val(datum[id_field]);
 
+                    } else if ($(this).data('type') == "multiple") {
+
+                      if ($('[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').length == 0) {
+                        
+                        $('.input-typeahead')
+                          .append('<span class="tag label label-lilac">'+ datum[id_field] +'<span id="remove-'+datum['id']+'" data-real-id="'+ $(this).data('real-id')+ '" data-value="'+ datum['id'] + '"data-role="remove"></span></span>');
+
+                        $('#remove-'+datum['id']).click(function(){
+                          if ($('[id="'+$(this).data('real-id')+'"]').length > 1) {
+                            $('[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').remove();
+                          } else {
+                            $('[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]')[0].value = "";
+                          }
+                          $(this).parent().remove();
+                        });
+
+                        $('#' + $(this).data('real-id')).clone().appendTo($('.input-typeahead')).val(datum['id']);
+                      }
+                    }
                 })
                 .on('typeahead:change', function (event) {
                     // console.log('change', event, $(this).val(), $(this).attr('name'));
                     if($(this).val().trim() === '') $('#' + $(this).data('real-id')).val('');
                 });
+
+                if ($('.typeahead').find('[data-type="multiple"]')) {
+                  if ($('span').find('[data-role="remove"]').length) {
+                    $('span').find('[data-role="remove"]').click(function(){
+                      if ($('[id="'+$(this).data('real-id')+'"]').length > 1) {
+                        $('[id="'+$(this).data('real-id')+'"][value="'+$(this).data('value')+'"]').remove();
+                      } else {
+                        $('[id="'+$(this).data('real-id')+'"]')[0].value = "";
+                      }
+                      $(this).parent().remove();
+                    });
+                  }
+                }
         });
 
         // Tags input fields
