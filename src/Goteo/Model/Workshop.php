@@ -156,7 +156,7 @@ class Workshop extends \Goteo\Core\Model {
                 $order
                 ";
 
-        die(\sqldbg($sql, $values));
+        //die(\sqldbg($sql, $values));
 
         $query = self::query($sql, $values);
 
