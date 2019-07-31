@@ -236,8 +236,8 @@ $(function(){
                         });
 
                           $('input[id="' + $(this).data('real-id') + '"]').last().clone().appendTo($('#' + $(this).data('real-id')).last().parent()).val(datum['id']);
-                          $('.typeahead').typeahead('close');
                       }
+                      $('.typeahead').typeahead('close');
                     }
                 })
                 .on('typeahead:close', function(event) {
