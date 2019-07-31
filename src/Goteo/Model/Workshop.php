@@ -91,7 +91,16 @@ class Workshop extends \Goteo\Core\Model {
             $values[':call'] = $filters['call'];
         }
 
-        if ($filters['type']) {
+        if (is_array($filters['type'])) {
+            $parts = [];
+            foreach($filters['type'] as $i => $type) {
+                    $parts[] = ':type' . $i;
+                    $values[':type' . $i] = $type;
+            }
+            if($parts) $sqlFilter .= "type IN (" . implode(',', $parts) . ")";
+        }
+
+        elseif ($filters['type']) {
             $sqlFilter = 'workshop.type = :type';
             $values[':type'] = $filters['type'];
         }
@@ -100,6 +109,8 @@ class Workshop extends \Goteo\Core\Model {
             $sqlFilter .=' AND workshop.id != :excluded';
             $values[':excluded'] = $filters['excluded'];
         }
+
+
 
         if($sqlFilter) {
             $sqlFilter = 'WHERE ' . $sqlFilter;
@@ -145,7 +156,7 @@ class Workshop extends \Goteo\Core\Model {
                 $order
                 ";
 
-        //die(\sqldbg($sql, $values));
+        die(\sqldbg($sql, $values));
 
         $query = self::query($sql, $values);
 
