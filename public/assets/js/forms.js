@@ -235,12 +235,8 @@ $(function(){
                           $(this).parent().remove();
                         });
 
-                        if ($('input[id="'+$(this).data('real-id')+'"]').length > 1) {
-                          $('input[id="' + $(this).data('real-id') + '"]').clone().insertAfter($('#' + $(this).data('real-id'))).val(datum['id']);
-                        } else {
-                          $('input[id="'+$(this).data('real-id')+'"]').value = datum['id'];
-                        }
-
+                          $('input[id="' + $(this).data('real-id') + '"]').last().clone().appendTo($('#' + $(this).data('real-id')).last().parent()).val(datum['id']);
+                          $('.typeahead').typeahead('close');
                       }
                     }
                 })
