@@ -214,7 +214,6 @@ $(function(){
                 // typeahead:select event is done when needed.
                 // For example: assets/js/admin/stats.js
                 .on('typeahead:select', function (event, datum, name) {
-                    // console.info(datum[id_field]);
                     // console.log('selected',name, event, datum, $(this).attr('name'));
                     if ($(this).data('type') === "simple" ) {
                       
@@ -224,21 +223,27 @@ $(function(){
 
                       if ($('[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').length === 0) {
                         
-                        $('.input-typeahead')
-                          .append('<span class="tag label label-lilac">'+ datum[id_field] +'<span id="remove-'+datum['id']+'" data-real-id="'+ $(this).data('real-id')+ '" data-value="'+ datum['id'] + '"data-role="remove"></span></span>');
+                        $('.bootstrap-tagsinput.help-text#'+$(this).data('real-id'))
+                          .append('<span class="tag label label-lilac">'+ datum[id_field] +'<span id="remove-'+datum['id']+'-'+$(this).data('real-id')+'" data-real-id="'+ $(this).data('real-id')+ '" data-value="'+ datum['id'] + '"data-role="remove"></span></span>');
 
-                        $('#remove-'+datum['id']).click(function(){
-                          if ($('[id="'+$(this).data('real-id')+'"]').length > 1) {
-                            $('[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').remove();
+                        $('#remove-'+datum['id'].replace(/\./g, '\\.')+'-'+$(this).data('real-id')).click(function(){
+                          if ($('input[id="'+$(this).data('real-id')+'"]').length > 1) {
+                            $('input[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').remove();
                           } else {
-                            $('[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]')[0].value = "";
+                            $('input[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').value = "";
                           }
                           $(this).parent().remove();
                         });
 
-                        $('#' + $(this).data('real-id')).clone().appendTo($('.input-typeahead')).val(datum['id']);
+                          $('input[id="' + $(this).data('real-id') + '"]').last().clone().appendTo($('#' + $(this).data('real-id')).last().parent()).val(datum['id']);
                       }
+                      $('.typeahead').typeahead('close');
                     }
+                })
+                .on('typeahead:close', function(event) {
+                  if ($(this).data('type') === "multiple" ) {
+                    $(this).typeahead('val', '');
+                  }
                 })
                 .on('typeahead:change', function (event) {
                     // console.log('change', event, $(this).val(), $(this).attr('name'));
@@ -248,10 +253,10 @@ $(function(){
                 if ($('.typeahead').find('[data-type="multiple"]')) {
                   if ($('span').find('[data-role="remove"]').length) {
                     $('span').find('[data-role="remove"]').click(function(){
-                      if ($('[id="'+$(this).data('real-id')+'"]').length > 1) {
-                        $('[id="'+$(this).data('real-id')+'"][value="'+$(this).data('value')+'"]').remove();
+                      if ($('input[id="'+$(this).data('real-id')+'"]').length > 1) {
+                        $('input[id="'+$(this).data('real-id')+'"][value="'+$(this).data('value')+'"]').remove();
                       } else {
-                        $('[id="'+$(this).data('real-id')+'"]')[0].value = "";
+                        $('input[id="'+$(this).data('real-id')+'"][value="'+$(this).data('value')+'"]').value = "";
                       }
                       $(this).parent().remove();
                     });
