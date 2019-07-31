@@ -1,8 +1,3 @@
-<?php if ($type == "multiple") : ?>
-    <div class="bootstrap-tagsinput">
-<?php endif ?>
-
-
  <div class="input-typeahead" data-sources="<?= $sources ?>" data-value-field="<?= $value_field ?>">
  <?php if ($type == "multiple") : ?>
     <?php echo $view['form']->block($form, 'form_widget_simple', ['type' => 'text', 'name' => $fake_id, 'id' => $fake_id, 'full_name' => $fake_id, 'attr' => ['data-real-id' => $id, 'data-type' => $type], 'value' => '', 'required' => '']); ?>
@@ -19,8 +14,6 @@
 
 
 <?php if ($type == "multiple") : ?>
-
-</div>
 
     <div id="<?= $id ?>" class="bootstrap-tagsinput help-text">
     <?php foreach($text as $idText => $nameText) : ?>
