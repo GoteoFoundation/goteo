@@ -79,7 +79,7 @@ if($data) $image = $data->getImage();
         <?php endif ?>
       </li>
     </ul>
-    <input id="image-upload" type="hidden" name="autoform[image]" value=" <?= ($image)? $image->getName() : '' ?>">
+    <input id="image-upload" type="hidden" name="autoform[image]" value="<?= ($image)? $image->getName() : '' ?>">
       <div class="dragndrop <?=($image)? 'hidden' : '' ?>"><div class="dropzone">
       </div></div>
     </div>
