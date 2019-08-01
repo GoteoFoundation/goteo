@@ -48,7 +48,7 @@ class Filter extends \Goteo\Core\Model {
 
         $filter->projects = self::getFilterProject($id);
         $filter->calls = self::getFilterCall($id);
-        $filter->matcher = self::getFilterMatcher($id);
+        $filter->matchers = self::getFilterMatcher($id);
 
         return $filter;
     }
@@ -67,32 +67,66 @@ class Filter extends \Goteo\Core\Model {
 
     static public function getFilterProject ($filter){
         $query = static::query('SELECT `project` FROM filter_project WHERE filter = ?', $filter);
-        $projects = $query->fetch(\PDO::FETCH_NUM);
+        $projects = $query->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $projects;
+        $filter_projects = [];
+
+        foreach($projects as $project) {
+            foreach($project as $key => $value) {
+                $project = Project::getMini($value);
+                $filter_projects[$value] = $project->name;
+            }
+        }
+
+        return $filter_projects;
     }
 
     static public function getFilterCall ($filter){
         $query = static::query('SELECT `call` FROM filter_call WHERE filter = ?', $filter);
-        $calls = $query->fetch(\PDO::FETCH_NUM);
+        $calls = $query->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $calls;
+        $filter_calls = [];
+
+        foreach($calls as $call) {
+            foreach($call as $key => $value) {
+                $call = Call::getMini($value);
+                $filter_calls[$value] = $call->name;
+            }
+        }
+
+        return $filter_calls;
     }
     
     static public function getFilterMatcher ($filter){
         $query = static::query('SELECT `matcher` FROM filter_matcher WHERE filter = ?', $filter);
-        $matchers = $query->fetch(\PDO::FETCH_NUM);
+        $matchers = $query->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $matchers;
+        $filter_matchers = [];
+
+        foreach($matchers as $matcher) {
+            foreach($matcher as $key => $value) {
+                $matcher = Matcher::get($value);
+                $filter_matchers[$value] = $matcher->name;
+            }
+        }
+
+        return $filter_matchers;
     }
 
     public function setFilterProjects(){
         $values = Array(':filter' => $this->id, ':project' => '');
+        
+        try {
+            $query = static::query('DELETE FROM filter_project WHERE filter = :filter', Array(':filter' => $this->id));
+        }
+        catch (\PDOException $e) {
+            Message::error("Error deleting previous filter projects for filter " . $this->id . " " . $e->getMessage());
+        }
 
         foreach($this->projects as $key => $value) {
             $values[':project'] = $value;
             try {
-                $query = static::query('REPLACE INTO filter_project(`filter`, `project`) VALUES(:filter,:project)', $values);
+                $query = static::query('INSERT INTO filter_project(`filter`, `project`) VALUES(:filter,:project)', $values);
             }
             catch (\PDOException $e) {
                 Message::error("Error saving filter projects " . $e->getMessage());
@@ -104,11 +138,18 @@ class Filter extends \Goteo\Core\Model {
 
     public function setFilterCalls(){
         $values = Array(':filter' => $this->id, ':call' => '');
+        
+        try {
+            $query = static::query('DELETE FROM filter_call WHERE filter = :filter', Array(':filter' => $this->id));
+        }
+        catch (\PDOException $e) {
+            Message::error("Error deleting previous filter calls for filter " . $this->id . " " . $e->getMessage());
+        }
 
         foreach($this->calls as $key => $value) {
             $values[':call'] = $value;
             try {
-                $query = static::query('REPLACE INTO filter_call(`filter`, `call`) VALUES(:filter,:call)', $values);
+                $query = static::query('INSERT INTO filter_call(`filter`, `call`) VALUES(:filter,:call)', $values);
             }
             catch (\PDOException $e) {
                 Message::error("Error saving filter call " . $e->getMessage());
@@ -121,11 +162,18 @@ class Filter extends \Goteo\Core\Model {
 
     public function setFilterMatcher(){
         $values = Array(':filter' => $this->id, ':matcher' => '');
+        
+        try {
+            $query = static::query('DELETE FROM filter_matcher WHERE filter = :filter', Array(':filter' => $this->id));
+        }
+        catch (\PDOException $e) {
+            Message::error("Error deleting previous filter matcher for filter " . $this->id . " " . $e->getMessage());
+        }
 
         foreach($this->matchers as $key => $value) {
             $values[':matcher'] = $value;
             try {
-                $query = static::query('REPLACE INTO filter_matcher(`filter`, `matcher`) VALUES(:filter,:matcher)', $values);
+                $query = static::query('INSERT INTO filter_matcher(`filter`, `matcher`) VALUES(:filter,:matcher)', $values);
             }
             catch (\PDOException $e) {
                 Message::error("Error saving filter matcher " . $e->getMessage());
