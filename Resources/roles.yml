@@ -84,6 +84,7 @@ consultant:
         - admin-module-stories # create/edit/delete non-project posts
         - admin-module-stats # Can access to stats
         - admin-module-promote # Can access to promote admin module
+        - admin-module-workshops # Can access to workshops admin module
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 60
 

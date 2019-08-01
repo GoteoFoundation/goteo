@@ -253,6 +253,16 @@ $api->add('api-projects-invests-csv', new Route(
         )
 ));
 
+$api->add('api-invest-msg-delete', new Route(
+    '/projects/invest-msg/{mid}',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectDeleteSupportMsgAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('DELETE') // methods
+));
+
 // Calls list
 $api->add('api-calls', new Route(
     '/calls',
@@ -391,6 +401,17 @@ $api->add('api-matcher-list', new Route(
 $api->add('api-matcher-item', new Route(
     '/matchers/{mid}',
     array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matcherAction')
+));
+
+// Workshops images upload (POST method only)
+$api->add('api-workshops-images-upload', new Route(
+    '/workshops/images',
+    array('_controller' => 'Goteo\Controller\Api\WorkshopsApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
 ));
 
 return $api;

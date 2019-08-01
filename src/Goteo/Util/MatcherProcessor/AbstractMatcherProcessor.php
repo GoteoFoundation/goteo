@@ -90,14 +90,16 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
         $pools = [];
         foreach($users as $user) {
             $pool = $user->getPool()->amount;
-            $share = $pool / $total_amount;
-            $amount = floor($share * $total);
-            // echo "pool[$pool] share[$share] total[$total] amount[$amount]";
-            if($amount > $pool) $amount = $pool;
-            $pools[$user->id] = $pool - $amount;
+            if($pool){
+                $share = $pool / $total_amount;
+                $amount = floor($share * $total);
+                // echo "pool[$pool] share[$share] total[$total] amount[$amount]";
+                if($amount > $pool) $amount = $pool;
+                $pools[$user->id] = $pool - $amount;
 
-            $list[$user->id] = $amount;
-            $calculated += $amount;
+                $list[$user->id] = $amount;
+                $calculated += $amount;
+            }
         }
 
         if($missing = max(0, $total - $calculated)) {

@@ -2,6 +2,16 @@
 
 /* workshop styles */
 
+@font-face {
+    font-family: Lovelo;
+    src: url(/assets/vendor/fonts/lovelo/lovelo_line_light.otf);
+}
+@font-face {
+    font-family: Lovelo;
+    src: url(/assets/vendor/fonts/lovelo/lovelo_line_bold.otf);
+    font-weight: bold;
+}
+
 body.workshop {
 
     background-color: $background-white;

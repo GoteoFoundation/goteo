@@ -369,6 +369,11 @@ stories:
         pitcher: stories-type-pitcher
         matcher: stories-type-matcher
 
+workshop:
+    types:
+        fundlab: workshop-type-fundlab
+        fundlab-esil: workshop-type-fundlab-esil
+
 # Donate pages (intended for the Goteo Foundation)
 donate:
     landing: false # Activate a landing page explaining why donate to the Goteo Foundation
