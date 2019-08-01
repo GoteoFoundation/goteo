@@ -12,10 +12,3 @@ $this->section('admin-container-head');
     <?= $this->supply('admin-workshop-head') ?>
 
 <?php $this->replace() ?>
-
-
-<?php $this->section('footer') ?>
-
-<!-- <script type="text/javascript" src="<?= $this->asset('js/admin/workshop.js') ?>"></script>
- -->
-<?php $this->append() ?>

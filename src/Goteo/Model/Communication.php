@@ -11,8 +11,10 @@
 namespace Goteo\Model;
 
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Library\Text;
+use Goteo\Model\Image;
 
 class Communication extends \Goteo\Core\Model {
 
@@ -25,13 +27,26 @@ class Communication extends \Goteo\Core\Model {
         $template = null,
         $sent = null,
         $error = '',
-        $original_lang,
+        $lang,
+        $date,
         $filter;
 
     public static function getLangFields() {
         return ['subject', 'content'];
     }
     
+
+    static public function get($id) {
+		if (empty($id)) {
+			// throw new Exception("Delete error: ID not defined!");
+			return false;
+		}
+		$class = get_called_class();
+		$ob = new $class();
+		$query = static::query('SELECT * FROM ' . $ob->getTable() . ' WHERE id = :id', array(':id' => $id));
+        $communication = $query->fetchObject($class);
+        return $communication;
+	}
 
     /**
      * Validar mensaje.
@@ -45,7 +60,79 @@ class Communication extends \Goteo\Core\Model {
             $errors['subject'] = 'El mensaje no tiene asunto.';
         }
         return empty($errors);
-	}
+    }
+    
+    /**
+     * Communication listing
+     *
+     * @param array filters
+     * @param int offset items
+     * @param int limit items per page or 0 for unlimited
+     * @param int count the number of instances
+     * @return array of communication instances or the number of instances if count == true
+     */
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
+
+        if(!$lang) $lang = Lang::current();
+        $values = [];
+        $sqlFilters = [];
+        $sql = '';
+
+        foreach(['type', 'template'] as $key) {
+            if (isset($filters[$key])) {
+                $filter[] = "communication.$key = :$key";
+                $values[":$key"] = $filters[$key];
+            }
+        }
+
+        if(isset($filters['id'])) {
+            $filter[] = "communication.id = :id";
+            $values[":id"] = '%' . $filters['id'] . '%';
+        }
+        if(isset($filters['subject'])) {
+            $filter[] = "communication.subject LIKE :subject";
+            $values["subject"] = '%' . $filters['subject'] . '%';
+        }
+
+        // print_r($filter);die;
+        if($filter) {
+            $sql = " WHERE " . implode(' AND ', $filter);
+        }
+
+        if($count) {
+            // Return count
+            $sql = "SELECT COUNT(id) FROM communication$sql";
+            // echo \sqldbg($sql, $values);
+            return (int) self::query($sql, $values)->fetchColumn();
+        }
+
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+
+        if(!$lang) $lang = Lang::current();
+        // $values['lang'] = $lang;
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+        // print_r($fields); print_r($joins); die;
+
+        $sql ="SELECT
+                communication.id as id,
+                communication.type as type, 
+                $fields,
+                communication.lang as lang,
+                communication.date as date,
+                communication.filter as filter
+            FROM communication
+            $joins
+            $sql
+            ORDER BY `id` ASC
+            LIMIT $offset,$limit";
+
+        // var_dump($values); var_dump($sql); die(\sqldbg($sql, $values));
+        if($query = self::query($sql, $values)) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        }
+        return [];
+    }
 
 	/**
 	 * Enviar mensaje.
@@ -128,7 +215,7 @@ class Communication extends \Goteo\Core\Model {
             'header',
             'type',
             'template',
-            'original_lang',
+            'lang',
             'filter'
         );
 
@@ -144,6 +231,18 @@ class Communication extends \Goteo\Core\Model {
 
     }
 
+    public function getImage() {
+        if(!$this->imageInstance instanceOf Image) {
+            $this->imageInstance = new Image($this->header);
+        }
+        return $this->imageInstance;
+    }
+
+
+    public function getOriginalLang(){
+        return $this->lang;
+    }
+
     public static function variables () {
         return array(
             'userid' => Text::get('admin-communications-userid-content'),
@@ -156,6 +255,26 @@ class Communication extends \Goteo\Core\Model {
         );
     }
 
+    public function getLangsAvailable() {
+        $langs = [];
+        $sql = "
+                SELECT lang
+                FROM`communication`
+                WHERE id = :id
+                UNION DISTINCT
+                SELECT lang
+                FROM `communication_lang`
+                WHERE id = :id
+              ";
+        try {
+            $query = static::query($sql, array(':id' => $this->id));
+            while ($lang = $query->fetchColumn()) {
+                array_push($langs, $lang);
+            }
+        } catch (\Exception $e) {
+        }
+        return $langs;
+    }
 
 }
 

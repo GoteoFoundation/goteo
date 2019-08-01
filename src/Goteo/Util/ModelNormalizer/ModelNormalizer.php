@@ -51,6 +51,12 @@ class ModelNormalizer {
         elseif($this->model instanceOf Model\Promote) {
             $ob = new Transformer\PromoteTransformer($this->model, $this->keys);
         }
+        elseif($this->model instanceOf Model\Filter) {
+            $ob = new Transformer\FilterTransformer($this->model, $this->keys);
+        }
+        elseif($this->model instanceOf Model\Communication) {
+            $ob = new Transformer\CommunicationTransformer($this->model, $this->keys);
+        }
         elseif($this->model instanceOf Model\Workshop) {
             $ob = new Transformer\WorkshopTransformer($this->model, $this->keys);
         }

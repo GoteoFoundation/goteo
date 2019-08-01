@@ -277,24 +277,6 @@ $api->add('api-channels', new Route(
         )
 ));
 
-// Filter
-
-$api->add('api-filter-create', new Route(
-    '/filter',
-    array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::addFilterAction'),
-    array(), // requirements
-    array(), // options
-    '', // host
-    array(), // schemes
-    array('POST') // methods
-));
-
-$api->add('api-filter', new Route(
-    '/filter/{id}',
-    array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::filterAction')
-));
-
-
 // Licenses list
 $api->add('api-licenses', new Route(
     '/licenses',
@@ -361,6 +343,19 @@ $api->add('api-comments-delete', new Route(
     array('DELETE') // methods
 ));
 
+// Communication 
+
+// Post images upload (POST method only)
+$api->add('api-communication-images-upload', new Route(
+    '/communication/images',
+    array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 // Messages list
 $api->add('api-messages-project', new Route(
     '/projects/{pid}/messages',
@@ -406,6 +401,17 @@ $api->add('api-matcher-list', new Route(
 $api->add('api-matcher-item', new Route(
     '/matchers/{mid}',
     array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matcherAction')
+));
+
+// Workshops images upload (POST method only)
+$api->add('api-workshops-images-upload', new Route(
+    '/workshops/images',
+    array('_controller' => 'Goteo\Controller\Api\WorkshopsApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
 ));
 
 return $api;

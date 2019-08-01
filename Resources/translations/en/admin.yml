@@ -50,6 +50,7 @@ admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
 admin-activity: Activity
 admin-communications: Comunications
+admin-communications-add: Create new communication 
 admin-communications-userid-content: ' for the id of the recipient'
 admin-communications-useremail-content: ' for the email of the recipient'
 admin-communications-username-content: ' for the name of the recipient'
@@ -199,9 +200,12 @@ admin-title-info: Info
 admin-title-image: Image
 admin-title-title: Title
 admin-title-subtitle: Subtitle
+admin-title-subject: Subject
+admin-title-description: Description
 admin-title-section: Section
 admin-title-text: Text
 admin-title-publish: Published
+admin-title-lang: Language
 admin-title-langs: Translations
 admin-title-actions: Actions
 admin-title-deleted: Deleted
@@ -213,6 +217,8 @@ admin-title-categories: 'Categories'
 admin-title-social_commitments: 'Social commitments'
 admin-title-order: Sort
 admin-title-status: Status
+admin-title-users: Users
+admin-title-date: Date
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'
@@ -234,6 +240,7 @@ admin-all-call-devices: 'Device used on matchfunding pages'
 admin-aggregate-timeline: 'Timeline'
 admin-stats-refunded: 'Returns'
 admin-stats-matchfunding-part: 'Projects with Matchfunding'
+admin-filter-add: 'Create filter'
 admin-filter-last-week: 'Last 7 days'
 admin-filter-last-month: 'Last 30 days'
 admin-filter-last-year: 'Last 365 days'
@@ -250,4 +257,5 @@ admin-filter-type-multidonor: 'Multidonor'
 admin-filter-type-foundation-donor: 'Donor to the foundation'
 admin-filter-type-all: 'All'
 admin-filter-predefined-date: 'Predefined dates'
+admin-filter-predefined-date-choose: 'You can choose a predefined date'
 admin-mail-body: 'Body of the message'

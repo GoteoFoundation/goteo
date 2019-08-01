@@ -37,12 +37,14 @@ class GoteoCommunicationModule
         CREATE TABLE `filter` (
           `id` INT(11) NOT NULL AUTO_INCREMENT,
           `name` VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+          `description` text NOT NULL,
           `cert` TINYINT(1) DEFAULT NULL,
-          `role` INT(1) DEFAULT NULL,
+          `role` VARCHAR(50) DEFAULT NULL,
           `startdate` DATE DEFAULT NULL,
           `enddate` DATE DEFAULT NULL,
-          `status` INT(1) DEFAULT NULL,
-          `typeofdonor` INT(1) DEFAULT NULL,
+          `status` VARCHAR(50) DEFAULT NULL,
+          `typeofdonor` VARCHAR(50) DEFAULT NULL,
+          `foundationdonor` TINYINT(1) DEFAULT NULL,
           `wallet` TINYINT(1) DEFAULT NULL,
           `project_latitude` DECIMAL(16,14) DEFAULT NULL,
           `project_longitude` DECIMAL(16,14) DEFAULT NULL,
@@ -50,38 +52,36 @@ class GoteoCommunicationModule
           `project_location` VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
           PRIMARY KEY (`id`)
         );
-        CREATE TABLE `filter_projects` (
-          `id` INT(11) NOT NULL AUTO_INCREMENT,
+        CREATE TABLE `filter_project` (
           `filter` INT(11) NOT NULL,
           `project` VARCHAR(50) NOT NULL COLLATE utf8_general_ci,
-          PRIMARY KEY (`id`),
           FOREIGN KEY (`filter`) REFERENCES `filter`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-          FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+          FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+          UNIQUE KEY `id_filterprojects` (`filter`,`project`)
         );
-        CREATE TABLE `filter_calls` (
-          `id` INT(11) NOT NULL AUTO_INCREMENT,
+        CREATE TABLE `filter_call` (
           `filter` INT(11) NOT NULL,
           `call` VARCHAR(50) NOT NULL COLLATE utf8_general_ci,
-          PRIMARY KEY (`id`),
           FOREIGN KEY (`filter`) REFERENCES `filter`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-          FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+          FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+          UNIQUE KEY `id_filtercalls` (`filter`,`call`)
         );
         CREATE TABLE `filter_matcher` (
-          `id` INT(11) NOT NULL AUTO_INCREMENT,
           `filter` INT(11) NOT NULL,
           `matcher` VARCHAR(50) NOT NULL COLLATE utf8_general_ci,
-          PRIMARY KEY (`id`),
-          FOREIGN KEY (`matcher`) REFERENCES `matcher`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+          FOREIGN KEY (`filter`) REFERENCES `filter`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+          FOREIGN KEY (`matcher`) REFERENCES `matcher`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+          UNIQUE KEY `id_filtermatcher` (`filter`,`matcher`)
         );
 
         CREATE TABLE `communication` (
           `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-          `subject` char(255) DEFAULT NULL,
+          `subject` char(255),
           `content` longtext NOT NULL,
           `template` varchar(100) NOT NULL,
-          `filter` INT(11) NOT NULL,
+          `filter` int(11) NOT NULL,
           `type` char(20) CHARACTER SET utf8 NOT NULL DEFAULT 'md',
-          `original_lang` varchar(3) NOT NULL,
+          `lang` varchar(3) NOT NULL,
           `header` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
           `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
           `error` tinytext,
@@ -107,9 +107,9 @@ class GoteoCommunicationModule
   {
      return "
      DROP TABLE IF EXISTS `filter_matcher`;
-     DROP TABLE IF EXISTS `filter_calls`;
-     DROP TABLE IF EXISTS `filter_projects`;
-     DROP TABLE IF EXISTS `communication_lang`
+     DROP TABLE IF EXISTS `filter_call`;
+     DROP TABLE IF EXISTS `filter_project`;
+     DROP TABLE IF EXISTS `communication_lang`;
      DROP TABLE IF EXISTS `communication`;
      DROP TABLE IF EXISTS `filter`;
      ";

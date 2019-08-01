@@ -10,6 +10,7 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Model\Workshop\WorkshopSponsor;
+use Goteo\Model\Workshop\WorkshopLocation;
 use Goteo\Model\Blog\Post as GeneralPost;
 
 
@@ -34,8 +35,17 @@ class Workshop extends \Goteo\Core\Model {
     $map_iframe,
     $schedule_file_url,
     $call_id,
+    $workshop_location,
+    $lang,
     $modified;
 
+
+    public function __construct() {
+        $args = func_get_args();
+        call_user_func_array(array('parent', '__construct'), $args);
+
+        if(empty($this->lang)) $this->lang = Config::get('sql_lang');
+    }
 
     public static function getLangFields() {
         return ['title', 'subtitle', 'description'];
@@ -81,7 +91,16 @@ class Workshop extends \Goteo\Core\Model {
             $values[':call'] = $filters['call'];
         }
 
-        if ($filters['type']) {
+        if (is_array($filters['type'])) {
+            $parts = [];
+            foreach($filters['type'] as $i => $type) {
+                    $parts[] = ':type' . $i;
+                    $values[':type' . $i] = $type;
+            }
+            if($parts) $sqlFilter .= "type IN (" . implode(',', $parts) . ")";
+        }
+
+        elseif ($filters['type']) {
             $sqlFilter = 'workshop.type = :type';
             $values[':type'] = $filters['type'];
         }
@@ -90,6 +109,8 @@ class Workshop extends \Goteo\Core\Model {
             $sqlFilter .=' AND workshop.id != :excluded';
             $values[':excluded'] = $filters['excluded'];
         }
+
+
 
         if($sqlFilter) {
             $sqlFilter = 'WHERE ' . $sqlFilter;
@@ -173,11 +194,12 @@ class Workshop extends \Goteo\Core\Model {
 
         if(!$lang) $lang = Lang::current();
         $values['viewLang'] = $lang;
-        //list($fields, $joins) = self::getLangsSQLJoins($lang);*/
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
 
         $sql ="SELECT
                 workshop.id,
                 workshop.title,
+                $fields,
                 workshop.subtitle,
                 workshop.description,
                 workshop.date_in,
@@ -293,6 +315,31 @@ class Workshop extends \Goteo\Core\Model {
         return Config::get('workshop.types');
     }
 
+    public function getHeaderImage() {
+        if(!$this->HeaderImageInstance instanceOf Image) {
+            $this->HeaderImageInstance = new Image($this->header_image);
+        }
+        return $this->HeaderImageInstance;
+    }
+
+    // returns the current project
+    public function getCall() {
+        if(isset($this->callObject)) return $this->callObject;
+        try {
+            $this->callObject = Call::get($this->call_id);
+        } catch(ModelNotFoundException $e) {
+            $this->callObject = false;
+        }
+        return $this->callObject;
+    }
+
+    public function expired() {
+        $date=new \Datetime($this->date_in);
+        $date_now=new \DateTime("now"); 
+
+        return $date<=$date_now;
+    }
+
     /**
      * Save.
      *
@@ -304,9 +351,22 @@ class Workshop extends \Goteo\Core\Model {
         if (!$this->validate($errors))
             return false;
 
+        // Dropfiles type always return an array, just get the first element if required
+        if($this->header_image && is_array($this->header_image)) {
+            $this->header_image = $this->header_image[0];
+        } else {
+            $this->header_image = null;
+        }
+
+        // TODO: handle uploaded files here?
+        // If instanceOf Image, means already uploaded (via API probably), just get the name
+        if($this->header_image instanceOf Image) 
+            $this->header_image = $this->header_image->getName();
+
         $fields = array(
             'id',
             'title',
+            'lang',
             'subtitle',
             'blockquote',
             'type',
@@ -315,13 +375,13 @@ class Workshop extends \Goteo\Core\Model {
             'date_in',
             'date_out',
             'schedule',
-            'url',
             'header_image',
             'venue',
             'city',
             'venue_address',
             'how_to_get',
             'map_iframe',
+            'workshop_location',
             'schedule_file_url'
         );
 
@@ -350,22 +410,6 @@ class Workshop extends \Goteo\Core\Model {
         }
         return empty($errors);
     }
-
-    public function getHeaderImage() {
-        if(!$this->HeaderImageInstance instanceOf Image) {
-            $this->HeaderImageInstance = new Image($this->header_image);
-        }
-        return $this->HeaderImageInstance;
-    }
-
-    public function expired() {
-        $date=new \Datetime($this->date_in);
-        $date_now=new \DateTime("now"); 
-
-        return $date<=$date_now;
-    }
-
-
 
 
 }
