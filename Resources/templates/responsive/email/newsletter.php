@@ -276,7 +276,7 @@
                                     <tbody style="display: block; width: 100%;">
                                         <tr style="display: block; width: 100%;">
                                             <td align="left" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top; display: block; width: 100%;">
-                                            	<img class="img-header" style="max-width:100%; object-fit: cover; width: 100%;" src="<?= $this->communication->getImage()->getLink(1920,335) ?>" alt="Goteo" />
+                                            	<img class="img-header" style="max-width:100%; object-fit: cover; width: 100%;" src="<?= $this->communication->getImage()->getLink(1920,335,true) ?>" alt="Goteo" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -289,7 +289,7 @@
 
                     <div style="font-size: 16px">
                     
-					<?= $this->communication->content ?>
+					<?= $this->markdown($this->communication->content) ?>
 
                     </div>
 
