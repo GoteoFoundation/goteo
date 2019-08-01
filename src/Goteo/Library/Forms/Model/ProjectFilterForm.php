@@ -89,18 +89,21 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 'required' => true,
             ))
             ->add('projects', 'typeahead', [
+                'type' => 'multiple',
                 'label' => 'admin-projects',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'sources' => 'project'
             ])
             ->add('calls', 'typeahead', [
+                'type' => 'multiple',
                 'label' => 'admin-calls',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'sources' => 'call'
             ])
             ->add('matchers', 'typeahead', [
+                'type' => 'multiple',
                 'label' => 'admin-matchers',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
@@ -155,6 +158,21 @@ class ProjectFilterForm extends AbstractFormProcessor {
         $data = $form->getData();
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
+
+        $model->projects = array();
+        $model->calls = array();
+        $model->matchers = array();
+
+        foreach($data['projects'] as $key => $value) {
+            if (!empty($value)) array_push($model->projects,$value);
+        }
+        foreach($data['calls'] as $key => $value) {
+            if (!empty($value)) array_push($model->calls,$value);
+        }
+        foreach($data['matchers'] as $key => $value) {
+            if (!empty($value)) array_push($model->matchers,$value);
+        }
+
         $errors = [];
         if (!$model->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));

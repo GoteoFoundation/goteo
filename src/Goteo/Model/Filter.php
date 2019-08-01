@@ -11,6 +11,7 @@
 
 namespace Goteo\Model;
 
+use Goteo\Application\Message;
 use Goteo\Library\Text;
 use Goteo\Model\Location\LocationItem;
 use Goteo\Model\Project\ProjectLocation;
@@ -66,30 +67,30 @@ class Filter extends \Goteo\Core\Model {
 
     static public function getFilterProject ($filter){
         $query = static::query('SELECT `project` FROM filter_project WHERE filter = ?', $filter);
-        $projects = $query->fetchAll(\PDO::FETCH_CLASS);
+        $projects = $query->fetch(\PDO::FETCH_NUM);
 
         return $projects;
     }
 
     static public function getFilterCall ($filter){
         $query = static::query('SELECT `call` FROM filter_call WHERE filter = ?', $filter);
-        $calls = $query->fetchAll(\PDO::FETCH_OBJ);
+        $calls = $query->fetch(\PDO::FETCH_NUM);
 
         return $calls;
     }
     
     static public function getFilterMatcher ($filter){
         $query = static::query('SELECT `matcher` FROM filter_matcher WHERE filter = ?', $filter);
-        $matchers = $query->fetchAll(\PDO::FETCH_OBJ);
+        $matchers = $query->fetch(\PDO::FETCH_NUM);
 
         return $matchers;
     }
 
-    public function setFilterProjects($filter, $projects = Array()){
-        $values = Array(':filter' => $filter, ':project' => '');
+    public function setFilterProjects(){
+        $values = Array(':filter' => $this->id, ':project' => '');
 
-        foreach($projects as $id) {
-            $values[':project'] = $id;
+        foreach($this->projects as $key => $value) {
+            $values[':project'] = $value;
             try {
                 $query = static::query('REPLACE INTO filter_project(`filter`, `project`) VALUES(:filter,:project)', $values);
             }
@@ -101,11 +102,11 @@ class Filter extends \Goteo\Core\Model {
         return true;
     }
 
-    public function setFilterCalls($filter, $calls = Array()){
-        $values = Array(':filter' => $filter, ':call' => '');
+    public function setFilterCalls(){
+        $values = Array(':filter' => $this->id, ':call' => '');
 
-        foreach($calls as $id) {
-            $values[':call'] = $id;
+        foreach($this->calls as $key => $value) {
+            $values[':call'] = $value;
             try {
                 $query = static::query('REPLACE INTO filter_call(`filter`, `call`) VALUES(:filter,:call)', $values);
             }
@@ -118,11 +119,11 @@ class Filter extends \Goteo\Core\Model {
     }
 
 
-    public function setFilterMatcher($filter, $matchers = Array()){
-        $values = Array(':filter' => $filter, ':matcher' => '');
+    public function setFilterMatcher(){
+        $values = Array(':filter' => $this->id, ':matcher' => '');
 
-        foreach($matchers as $id) {
-            $values[':matcher'] = $id;
+        foreach($this->matchers as $key => $value) {
+            $values[':matcher'] = $value;
             try {
                 $query = static::query('REPLACE INTO filter_matcher(`filter`, `matcher`) VALUES(:filter,:matcher)', $values);
             }
@@ -177,18 +178,14 @@ class Filter extends \Goteo\Core\Model {
             $this->dbInsertUpdate($fields);
             // return true;
 
+            $this->setFilterProjects();
+            $this->setFilterCalls();
+            $this->setFilterMatcher();
+
         } catch(\PDOException $e) {
             print("exception");
             $errors[] = "Error updating filter " . $e->getMessage();
             return false;
-        }
-
-        if ($this->role = "donor") {
-            $this->setFilterProjects($this->projects);
-        } else if ($this->role == "promoter") {
-            $this->setFilterCalls($this->calls);
-        } else if ($this->role == "matcher") {
-            $this->setFilterMatcher($this->matchers);
         }
 
         return true;
