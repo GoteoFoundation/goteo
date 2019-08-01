@@ -91,6 +91,7 @@ class ProjectFilterForm extends AbstractFormProcessor {
             ->add('projects', 'typeahead', [
                 'type' => 'multiple',
                 'label' => 'admin-projects',
+                'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'sources' => 'project'
@@ -98,6 +99,7 @@ class ProjectFilterForm extends AbstractFormProcessor {
             ->add('calls', 'typeahead', [
                 'type' => 'multiple',
                 'label' => 'admin-calls',
+                'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'sources' => 'call'
@@ -105,6 +107,7 @@ class ProjectFilterForm extends AbstractFormProcessor {
             ->add('matchers', 'typeahead', [
                 'type' => 'multiple',
                 'label' => 'admin-matchers',
+                'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'sources' => 'matcher'
