@@ -25,118 +25,120 @@ for the JavaScript code in this page.
 
 $(function () {
 
-    if (document.getElementById('filter-select').value > 0) {
-        document.getElementById('filter-edit').href = "filter/edit/" + document.getElementById('filter-select').value;
-    }
+    if ($('.autoform').length) {
 
-    document.getElementById('filter-select').onchange = function(){
-        document.getElementById('filter-edit').href = "filter/edit/" + this.value;
-        
-    }
-
-    document.getElementById('templates').onchange = function() {
-        if (this.value == "newsletter") document.getElementById('dropzone-image').classList.remove('hidden');
-        else document.getElementById('dropzone-image').classList.add('hidden');
-    }
-
-    $('#templates').change();
-
-    var mdeditor = [];
-    var summernote = [];
-    var summernote_config = {
-        toolbar: [
-            ['tag', ['style']],
-            ['style', ['bold', 'italic', 'underline', 'clear']],
-            // ['font', ['strikethrough', 'superscript', 'subscript']],
-            // ['fontsize', ['fontsize']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            // ['height', ['height']],
-            ['insert', ['link', 'picture', 'video', 'hr', 'table']],
-            ['misc', ['fullscreen', 'codeview', 'help']]
-        ],
-        popatmouse: false,
-        callbacks: {
-            onFocus: function() {
-            // console.log('Editable area is focused');
-            $(this).closest('.summernote').addClass('focused');
-            },
-            onBlur: function() {
-            // console.log('Editable area loses focus');
-            $(this).closest('.summernote').removeClass('focused');
-            }
+        if (document.getElementById('filter-select').value > 0) {
+            document.getElementById('filter-edit').href = "filter/edit/" + document.getElementById('filter-select').value;
         }
-    };
-
-    $('#text').change(function(){
-        if (this.value === "html") {
-            $('textarea.editor').each(function(i) {
-                mdeditor[i].toTextArea();
-                summernote[i] = $(this).summernote(summernote_config);
-            });
+    
+        document.getElementById('filter-select').onchange = function(){
+            document.getElementById('filter-edit').href = "filter/edit/" + this.value;
+            
         }
-        else if (this.value === "md"){
-            $('textarea.editor').each(function(i) {
-                summernote[i].summernote('destroy');
-                mdeditor[i] = new SimpleMDE({
-                    element: this,
-                    spellChecker: false,
-                    promptURLs: true,
-                    forceSync: true
-                });
-              });
+    
+        document.getElementById('templates').onchange = function() {
+            if (this.value == "newsletter") document.getElementById('dropzone-image').classList.remove('hidden');
+            else document.getElementById('dropzone-image').classList.add('hidden');
         }
-    });
-
-    $('textarea.editor').each(function(i) {
-        var el = this;
-        mdeditor[i] = new SimpleMDE({
-            element: this,
-            spellChecker: false,
-            promptURLs: true,
-            forceSync: true
-        });
-  
-        // Tweak codemirror to accept drag&drop any file
-        mdeditor[i].codemirror.setOption("allowDropFileTypes", null);
-  
-        mdeditor[i].codemirror.on('drop', function(codemirror, event) {
-            // console.log('codemirror',codemirror,'event',event);
-  
-            var loading_text = '![](loading image...)';
-  
-            if(event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length) {
-              var images = $.grep(event.dataTransfer.files, function(file,i) {
-                if(file && file.type && file.type.startsWith('image/')) {
-                  return true;
+    
+        $('#templates').change();
+    
+        var mdeditor = [];
+        var summernote = [];
+        var summernote_config = {
+            toolbar: [
+                ['tag', ['style']],
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                // ['font', ['strikethrough', 'superscript', 'subscript']],
+                // ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                // ['height', ['height']],
+                ['insert', ['link', 'picture', 'video', 'hr', 'table']],
+                ['misc', ['fullscreen', 'codeview', 'help']]
+            ],
+            popatmouse: false,
+            callbacks: {
+                onFocus: function() {
+                // console.log('Editable area is focused');
+                $(this).closest('.summernote').addClass('focused');
+                },
+                onBlur: function() {
+                // console.log('Editable area loses focus');
+                $(this).closest('.summernote').removeClass('focused');
                 }
-                return false;
-              });
-              // console.log('images', images);
-              if(images.length) {
-                // Do not allow predefined codemirror behaviour if are images
-                event.preventDefault();
-                event.stopPropagation();
-                var $cm = $(el).closest('.form-group').find('.CodeMirror.CodeMirror-wrap');
-                var $up = $('<div class="uploading">');
-                $cm.prepend($up);
-  
-                var coords = codemirror.coordsChar({
-                  left: event.pageX,
-                  top: event.pageY
-                });
-  
-                codemirror.replaceRange("\n" + loading_text + "\n", coords);
-                coords.line++;
-                coords.ch = 0;
-                codemirror.setCursor(coords);
-                // console.log('codemirror',codemirror,'coords',coords);
-  
-                
             }
-          }
+        };
+    
+        $('#text').change(function(){
+            if (this.value === "html") {
+                $('textarea.editor').each(function(i) {
+                    mdeditor[i].toTextArea();
+                    summernote[i] = $(this).summernote(summernote_config);
+                });
+            }
+            else if (this.value === "md"){
+                $('textarea.editor').each(function(i) {
+                    summernote[i].summernote('destroy');
+                    mdeditor[i] = new SimpleMDE({
+                        element: this,
+                        spellChecker: false,
+                        promptURLs: true,
+                        forceSync: true
+                    });
+                  });
+            }
         });
-        mdeditor[i].render();
-      });
+    
+        $('textarea.editor').each(function(i) {
+            var el = this;
+            mdeditor[i] = new SimpleMDE({
+                element: this,
+                spellChecker: false,
+                promptURLs: true,
+                forceSync: true
+            });
       
+            // Tweak codemirror to accept drag&drop any file
+            mdeditor[i].codemirror.setOption("allowDropFileTypes", null);
+      
+            mdeditor[i].codemirror.on('drop', function(codemirror, event) {
+                // console.log('codemirror',codemirror,'event',event);
+      
+                var loading_text = '![](loading image...)';
+      
+                if(event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length) {
+                  var images = $.grep(event.dataTransfer.files, function(file,i) {
+                    if(file && file.type && file.type.startsWith('image/')) {
+                      return true;
+                    }
+                    return false;
+                  });
+                  // console.log('images', images);
+                  if(images.length) {
+                    // Do not allow predefined codemirror behaviour if are images
+                    event.preventDefault();
+                    event.stopPropagation();
+                    var $cm = $(el).closest('.form-group').find('.CodeMirror.CodeMirror-wrap');
+                    var $up = $('<div class="uploading">');
+                    $cm.prepend($up);
+      
+                    var coords = codemirror.coordsChar({
+                      left: event.pageX,
+                      top: event.pageY
+                    });
+      
+                    codemirror.replaceRange("\n" + loading_text + "\n", coords);
+                    coords.line++;
+                    coords.ch = 0;
+                    codemirror.setCursor(coords);
+                    // console.log('codemirror',codemirror,'coords',coords);
+      
+                    
+                }
+              }
+            });
+            mdeditor[i].render();
+          });
+    }
 });
