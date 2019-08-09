@@ -21,7 +21,7 @@
 				     <ul class="social list-inline">
 			           <?php if ($channel->facebook): ?>
 			           <li class="facebook">
-			           		<a href="<?= $channel->facebook ?>" target="_blank">
+			           		<a href="//<?= $channel->facebook ?>" target="_blank">
 			           			<img src="/assets/img/project/facebook.svg" >
 			           		</a>
 			           	</li>
@@ -29,7 +29,7 @@
 
 			            <?php if ($channel->twitter): ?>
 			            <li class="twitter">
-			            	<a  href="<?= $channel->twitter ?>" target="_blank">
+			            	<a  href="//<?= $channel->twitter ?>" target="_blank">
 			            		<img src="/assets/img/project/twitter.svg" >
 			            	</a>
 			            </li>
