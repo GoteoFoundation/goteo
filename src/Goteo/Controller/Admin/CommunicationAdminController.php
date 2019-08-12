@@ -21,6 +21,7 @@ use Goteo\Application\Lang;
 use Goteo\Library\Translator\ModelTranslator;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 class CommunicationAdminController extends AbstractAdminController
 {
@@ -105,16 +106,7 @@ class CommunicationAdminController extends AbstractAdminController
 
     public function getReceivers($filter, $offset = 0, $limit = 10, $count = false, $sender_id = null){
         
-        switch($filter->typeofdonor) {
-            case 0: // donor
-                break; 
-            case 1: // promoter
-                break;
-            case 2: // matcher
-                break;
-            case 3: //test
-                break;
-        }
+        $receivers = $filter->getFiltered();
 
     }
 
@@ -146,7 +138,7 @@ class CommunicationAdminController extends AbstractAdminController
             return $this->redirect('/admin/communication/preview/'.$communication->id);
         }
         else {
-            $filters = Filter::getAll();
+            $filters = Filter ::getAll();
     
             $template = ['default' => 'General communication', 'newsletter' => Text::get('newsletter-lb')];
             $translates = [Config::get('lang') => Lang::getName(Config::get('lang'))];
@@ -155,9 +147,14 @@ class CommunicationAdminController extends AbstractAdminController
             $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
     
             if ($id){
-                $communication = Communication::get($id);
-                if (!$communication) {
-                    throw new ModelNotFoundException("Not found communication [$id]");
+                try {
+                    $communication = Communication::get($id);
+                    if ($communication->sent){
+                        throw new ControllerAccessDeniedException("Communication [$id] is already sent");
+                    }
+                }
+                catch (Exception $exception){
+                    Message::error($exception->getMessage());
                 }
 
                 $translator = new ModelTranslator();
