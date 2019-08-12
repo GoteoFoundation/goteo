@@ -72,12 +72,28 @@ class Filter extends \Goteo\Core\Model {
         return $filters;
     }
 
-    static public function getList(){
-        $query = static::query('SELECT * FROM filter');
+    public static function getList ($filters = array(), $offset = 0, $limit = 10, $count = false) {
+
+        $sqlWhere = "";
+
+        if ($count) {
+            $sql = "SELECT COUNT(filter.id)
+            FROM filter
+            $sqlWhere";
+            return (int) self::query($sql)->fetchColumn();
+        }
+
+        $sql = "SELECT * 
+                FROM filter
+                $sqlWhere
+                LIMIT $offset, $limit
+            ";
+            
+        $query = static::query($sql);
         $filters = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         return $filters;
     }
-
+    
     static public function getFilterProject ($filter){
         $query = static::query('SELECT `project` FROM filter_project WHERE filter = ?', $filter);
         $projects = $query->fetchAll(\PDO::FETCH_ASSOC);
