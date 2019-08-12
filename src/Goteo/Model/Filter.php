@@ -650,7 +650,7 @@ class Filter extends \Goteo\Core\Model {
         }
     }
 
-    public function getFiltred($count = false)
+    public function getFiltered($count = false)
     {
 
         if ($this->role == $this::DONOR) {

@@ -39,7 +39,7 @@ class FilterTransformer extends AbstractTransformer {
     }
 
     function getUsers(){
-        $receivers = $this->model->getFiltred(true);
+        $receivers = $this->model->getFiltered(true);
         return $receivers;
     }
 
