@@ -58,7 +58,9 @@ class CommunicationTransformer extends AbstractTransformer {
 
     public function getActions() {
 
-        $ret['edit'] = '/admin/communication/edit/' . $this->model->id;
+        if (!$this->model->sent) {
+            $ret['edit'] = '/admin/communication/edit/' . $this->model->id;
+        }
         $ret['preview'] = '/admin/communication/preview/' . $this->model->id;
         $ret['clone'] = '/admin/communication/copy/' . $this->model->id;
         $ret['details'] = '/admin/communication/detail/' . $this->model->id;
