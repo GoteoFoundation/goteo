@@ -160,6 +160,5 @@ $(function () {
             };
 
         document.getElementById('autoform_role').onchange();
-        document.getElementById('autoform_predefineddata').onchange();
     }
 });
