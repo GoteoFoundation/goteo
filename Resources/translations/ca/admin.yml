@@ -225,3 +225,7 @@ admin-filter-type-all: 'Tots'
 admin-filter-predefined-date: 'Dates predefinides'
 admin-filter-predefined-date-choose: 'Pots seleccionar una data predeterminada'
 admin-mail-body: 'Cos del missatge'
+
+mandatory-filter-name: Manca el nom
+mandatory-filter-description: Manca una descripció
+mandatory-filter-role: Manca un rol

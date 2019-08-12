@@ -259,3 +259,7 @@ admin-filter-type-all: 'All'
 admin-filter-predefined-date: 'Predefined dates'
 admin-filter-predefined-date-choose: 'You can choose a predefined date'
 admin-mail-body: 'Body of the message'
+
+mandatory-filter-name: Missing name
+mandatory-filter-description: Missing description
+mandatory-filter-role: Missing role
