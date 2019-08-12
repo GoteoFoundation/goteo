@@ -518,3 +518,7 @@ admin-workshop: Talleres Goteo
 admin-workshop-add: Crear un nuevo taller
 admin-workshop-edit: Editando el taller %s
 admin-workshop-edit-success: La entrada de taller se ha editado correctamente
+
+mandatory-filter-name: Falta nombre
+mandatory-filter-description: Falta descripción
+mandatory-filter-role: Falta un rol

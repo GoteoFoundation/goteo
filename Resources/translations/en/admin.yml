@@ -466,3 +466,6 @@ admin-stats-projects-matcher-desc: 'Projects that are active in the matcher'
 admin-stats-projects-consultant-desc: 'Projects assigned to this advisor'
 admin-stats-projects-project-desc: 'Contributions to the project'
 
+mandatory-filter-name: Missing name
+mandatory-filter-description: Missing description
+mandatory-filter-role: Missing role
