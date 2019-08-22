@@ -150,7 +150,7 @@ admin-sdg-add: Create a new ODS
 admin-sdg-edit: Editing ODS %s
 admin-footprint-add: Create a new footprint
 admin-footprint-edit: Editing footprint %s
-admin-calls: Announcements
+admin-calls: Calls
 admin-matchers: Matchers
 admin-channels: Channels
 admin-yes: "Yes"
