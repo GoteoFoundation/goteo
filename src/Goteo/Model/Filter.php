@@ -15,6 +15,7 @@ use Goteo\Library\Text;
 use Goteo\Application\Message;
 use Goteo\Model\User;
 use Goteo\Application\Config;
+use DateTime;
 
 class Filter extends \Goteo\Core\Model {
 
@@ -267,7 +268,7 @@ class Filter extends \Goteo\Core\Model {
 
     }
 
-    public function getDonors($count = false) {
+    public function getDonors($count = false, $offset = 0, $limit = 10) {
 
         $receivers = array();
 
@@ -278,22 +279,32 @@ class Filter extends \Goteo\Core\Model {
         $investStatus = Invest::$RAISED_STATUSES;
 
         if (isset($this->foundationdonor)) {
-            if ($this->foundationdonor) $investStatus = Invest::$RAISED_STATUSES_AND_DONATED;
+            if ($this->foundationdonor) {
+                $investStatus = array(Invest::STATUS_DONATED);
+            }
+            else if (!$this->foundationdonor) {
+                $sqlFilter .= " AND user.id NOT IN ( 
+                    SELECT i.`user` 
+                    FROM invest i 
+                    WHERE 
+                    i.status= :status_donated
+                    )";
+                $values[':status_donated'] = Invest::STATUS_DONATED;
+            }
         }
         
         $sqlInner .= "INNER JOIN ( 
             SELECT * from invest 
-            WHERE invest.status IN (";
-            
+            WHERE invest.status IN ";
+
+            $parts = [];
             foreach($investStatus as $index => $status) {
-                if ($index < 1) {
-                    $sqlInner .= ":status_".$status;
-                } else {
-                    $sqlInner .= ", :status_".$status;
-                }
-                $values[':status_'.$status] = $status;
+                $parts[] = ':status' . $index;
+                $values[':status' . $index] = $status;
             }
-            $sqlInner .= " ) 
+            if($parts) $sqlInner .= " (" . implode(',', $parts) . ")";
+
+            $sqlInner .= "
             GROUP BY invest.user
             ";
             
@@ -313,21 +324,19 @@ class Filter extends \Goteo\Core\Model {
         $this->projects = $this->getFilterProject($this->id);
 
         if (!empty($this->projects)) {
+            $sqlInner .= " 
+                INNER JOIN project
+                ON project.id = invest.project
+            ";
+
+            $parts = [];
             foreach(array_keys($this->projects) as $index => $id) {
-                if ($index < 1) {
-                    $sqlFilter .= " AND ( invest.project =  :project_".$index;
-                } else {
-                    $sqlFilter .= " OR invest.project = :project_".$index;
-                }
-                $values[':project_'.$index] = $id;
+                $parts[] = ':project_' . $index;
+                $values[':project_' . $index] = $id;
             }
-            $sqlFilter .= " ) ";
+            if($parts) $sqlFilter .= " AND invest.project IN (" . implode(',', $parts) . ")";
         }
             
-        $sqlInner .= " 
-            INNER JOIN project
-            ON project.id = invest.project
-        ";
 
         $this->calls = $this->getFilterCall($this->id);
 
@@ -336,15 +345,12 @@ class Filter extends \Goteo\Core\Model {
                 on call_project.project = invest.project
             ";
 
+            $parts = [];
             foreach(array_keys($this->calls) as $index => $id) {
-                if ($index < 1) {
-                    $sqlFilter .= " AND ( call_project.call =  :calls_".$index;
-                } else {
-                    $sqlFilter .= " OR call_project.call = :calls_".$index;
-                }
-                $values[':calls_'.$index] = $id;
+                $parts[] = ':calls_' . $index;
+                $values[':calls_' . $index] = $id;
             }
-            $sqlFilter .= " ) ";
+            if($parts) $sqlFilter .= " AND call_project.call IN (" . implode(',', $parts) . ")";
 
         }
 
@@ -355,36 +361,33 @@ class Filter extends \Goteo\Core\Model {
                 on matcher_project.project_id = invest.project
             ";
 
-            foreach(array_keys($this->matchers) as $index => $id) {
-                if ($index < 1) {
-                    $sqlFilter .= " AND ( matcher_project.matcher_id =  :calls_".$index;
-                } else {
-                    $sqlFilter .= " OR matcher_project.matcher_id = :calls_".$index;
-                }
-                $values[':calls_'.$index] = $id;
+            $parts = [];
+            foreach(array_keys($this->projects) as $index => $id) {
+                $parts[] = ':matchers_' . $index;
+                $values[':matchers_' . $index] = $id;
             }
-            $sqlFilter .= " ) ";
+            if($parts) $sqlFilter .= " AND matcher_project.matcher_id IN (" . implode(',', $parts) . ")";
 
         }
 
-        if (isset($this->status) && $this->status > -1 && !empty($sqlInner)) { // just one status?
+        if (isset($this->status) && $this->status > -1 && !empty($sqlInner)) { 
             $sqlFilter .= " AND project.status = :status ";
             $values[':status'] = $this->status;
         }
 
         if (isset($this->startdate)) {
             $sqlFilter .= " AND invest.invested BETWEEN :startdate";
-            $values['startdate'] = $this->startdate;
+            $values[':startdate'] = $this->startdate;
 
             if(isset($this->enddate)) {
                 $sqlFilter .= " AND :enddate";
-                $values['enddate'] = $this->enddate;
+                $values[':enddate'] = $this->enddate;
             } else {
                 $sqlFilter .= " AND curdate()";
             }
         } else if (isset($this->enddate)) {
             $sqlFilter .= " AND invest.invested < :enddate";
-            $values['enddate'] = $this->enddate;
+            $values[':enddate'] = $this->enddate;
         }
 
         if (isset($this->wallet)) {
@@ -403,15 +406,34 @@ class Filter extends \Goteo\Core\Model {
             ON user.id = wallet.user ";
         }
 
-        // if (isset($this->cert)) {
-        //     if ($this->cert) {
-        //         $sqlInner .= " " // user_donation
-        //     }
-        // }
+        if (isset($this->cert)) {
+            $sqlInner .= " INNER JOIN donor
+            ON donor.user = user.id ";
+            if ($this->cert) {
+                $sqlInner .= " AND donor.confirmed = 1 ";
+            } else {
+                $sqlInner .= " AND donor.confirmed = 0 "; 
+            }
+            
+            if (isset($this->startdate)) {
+                $sqlInner .= " AND donor.year BETWEEN :startyear ";
+                $values[':startyear'] = DateTime::createFromFormat("Y-m-d",$this->startdate)->format("Y");
+
+                if(isset($this->enddate)) {
+                    $sqlInner .= " AND :endyear ";
+                    $values[':endyear'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");
+                } else {
+                    $sqlFilter .= " AND YEAR()";
+                }
+            } else if (isset($this->enddate)) {
+                $sqlFilter .= " AND donor.year <= :endyear";
+                $values[':enddate'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");;
+            }
+        }
 
         if($count) {
             $sql = "SELECT COUNT(DISTINCT(user.id)) FROM user $sqlInner WHERE user.active = 1 $sqlFilter";
-            // if ($this->id == 4) {die(\sqldbg($sql, $values) );}
+            // die(\sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
         }
 
@@ -425,20 +447,19 @@ class Filter extends \Goteo\Core\Model {
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
-                -- LIMIT $offset, $limit
+                LIMIT $offset, $limit
                 ";
 
         //  die( \sqldbg($sql, $values) );
 
-        if ($query = User::query($sql, $values)) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
-                $receiver->id = $receiver->user;
-                $receivers[$receiver->id] = $receiver;
-            }
+         if ($query = User::query($sql, $values)) {
+            $receivers = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User');
         }
+
+        return $receivers;
     }
 
-    public function getPromoters($count = false) {
+    public function getPromoters($count = false, $offset = 0, $limit = 10) {
 
         $receivers = array();
 
@@ -541,21 +562,20 @@ class Filter extends \Goteo\Core\Model {
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
-                -- LIMIT $offset, $limit
+                LIMIT $offset, $limit
                 ";
 
          //die( \sqldbg($sql, $values) );
 
-        if ($query = User::query($sql, $values)) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
-                $receiver->id = $receiver->user;
-                $receivers[$receiver->id] = $receiver;
-            }
+         if ($query = User::query($sql, $values)) {
+            $receivers = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User');
         }
+
+        return $receivers;
 
     }
 
-    public function getMatchers($count = false) {
+    public function getMatchers($count = false, $offset = 0, $limit = 10) {
 
         $receivers = array();
 
@@ -593,20 +613,19 @@ class Filter extends \Goteo\Core\Model {
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
-                -- LIMIT $offset, $limit
+                LIMIT $offset, $limit
                 ";
 
          //die( \sqldbg($sql, $values) );
 
-        if ($query = User::query($sql, $values)) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
-                $receiver->id = $receiver->user;
-                $receivers[$receiver->id] = $receiver;
-            }
+         if ($query = User::query($sql, $values)) {
+            $receivers = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User');
         }
+
+        return $receivers;
     }
 
-    public function getTesters($count = false) {
+    public function getTesters($count = false, $offset = 0, $limit = 10) {
 
         $receivers = array();
 
@@ -640,14 +659,13 @@ class Filter extends \Goteo\Core\Model {
                 LIMIT $offset, $limit
                 ";
 
-         //die( \sqldbg($sql, $values) );
+        //  die( \sqldbg($sql, $values) );
 
-        if ($query = Model\User::query($sql, $values)) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
-                $receiver->id = $receiver->user;
-                $receivers[$receiver->id] = $receiver;
-            }
+        if ($query = User::query($sql, $values)) {
+            $receivers = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User');
         }
+
+        return $receivers;
     }
 
     public function getFiltered($count = false)
