@@ -28,6 +28,9 @@ use Goteo\Model\Location\LocationInterface;
 
 class Project extends \Goteo\Core\Model {
 
+    use Traits\SdgRelationsTrait;
+
+
     // PROJECT STATUS IDs
     const STATUS_DRAFT       = -1; // is this really necessary?
     const STATUS_REJECTED    = 0;
