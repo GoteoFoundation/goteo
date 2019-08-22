@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Model\Filter;
 use Goteo\Model\Communication;
 use Goteo\Application\Message;
+use Goteo\Model\Mail\Sender;
 use Goteo\Library\Text;
 use Goteo\Application\Lang;
 use Goteo\Library\Translator\ModelTranslator;
@@ -116,7 +117,7 @@ class CommunicationAdminController extends AbstractAdminController
         $filters = ['subject' => $request->query->get('q')];
         $limit = 25;
         $page = $request->query->get('pag') ?: 0;
-        $list = Communication::getList($filters, 0, $limit, false, Config::get('lang'));
+        $list = Communication::getList($filters, $page * $limit, $limit, false, Config::get('lang'));
         $total = Communication::getList($filters, 0, $limit, true, Config::get('lang'));
         return $this->viewResponse('admin/communication/list', [
             'list' => $list,
@@ -238,12 +239,24 @@ class CommunicationAdminController extends AbstractAdminController
 
     public function detailAction(Request $request, $id)
     {
-        $communication = $id ? Communication::get($id) : new Communication();
+        $communication = Communication::get($id);
+        $limit = 25;
+        $page = $request->query->get('pag') ?: 0;
+
 
 		if (!$communication) {
 			throw new ModelNotFoundException("Not found communication [$id]");
         }
 
-        return $this->viewResponse('admin/communication/detail');
+        $filter = Filter::get($communication->filter);
+        $list = $filter->getFiltered(false, $limit, $page);
+        // print_r($list); die;
+        $total = $filter->getFiltered(true);
+
+        return $this->viewResponse('admin/communication/detail', [
+            'list' => $list,
+            'total' => $total,
+        ]);
     }
+
 }
