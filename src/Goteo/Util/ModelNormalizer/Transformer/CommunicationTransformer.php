@@ -10,6 +10,7 @@
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
 use Goteo\Core\Model;
+use Goteo\Model\Image;
 use Goteo\Model\Filter;
 use Goteo\Library\Text;
 
@@ -46,11 +47,20 @@ class CommunicationTransformer extends AbstractTransformer {
         return $filter->name;
     }
 
+    public function getImage() {
+        if ($this->model->template == "newsletter") {
+            return $this->model->getImage()->getLink(64, 64, true);
+        }
+        else return "";
+
+    }
+
+
     public function getActions() {
 
-        // if (!$this->model->sent) {
-        $ret['edit'] = '/admin/communication/edit/' . $this->model->id;
-        // }
+        if (!$this->model->sent) {
+            $ret['edit'] = '/admin/communication/edit/' . $this->model->id;
+        }
         $ret['preview'] = '/admin/communication/preview/' . $this->model->id;
         $ret['clone'] = '/admin/communication/copy/' . $this->model->id;
         $ret['details'] = '/admin/communication/detail/' . $this->model->id;

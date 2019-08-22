@@ -226,3 +226,7 @@ admin-module-promote: # Can access to module PromoteAdminController
 admin-module-workshops: # Can access to module WorkshopsAdminController
     model: null
     relational: null
+
+receive-test-communications: # Can receive test communications
+    model: null
+    relational: null

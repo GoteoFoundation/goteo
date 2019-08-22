@@ -130,7 +130,7 @@ admin-sdg-add: Create a new ODS
 admin-sdg-edit: Editing ODS %s
 admin-footprint-add: Create a new footprint
 admin-footprint-edit: Editing footprint %s
-admin-calls: Announcements
+admin-calls: Calls
 admin-matchers: Matchers
 admin-channels: Channels
 admin-yes: "Yes"
@@ -259,3 +259,7 @@ admin-filter-type-all: 'All'
 admin-filter-predefined-date: 'Predefined dates'
 admin-filter-predefined-date-choose: 'You can choose a predefined date'
 admin-mail-body: 'Body of the message'
+
+mandatory-filter-name: Missing name
+mandatory-filter-description: Missing description
+mandatory-filter-role: Missing role

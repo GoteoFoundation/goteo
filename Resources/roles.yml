@@ -18,6 +18,11 @@ vip:
         - recommend-projects # personal list of recommended projects
     level: 10
 
+tester:
+    extends: user
+    perms:
+        - receive-test-communications
+    level: 10
 
 translator:
     extends: user # inherits permissions from role "user"
@@ -101,6 +106,7 @@ admin:
         - rebase-users # Edit sensitive data in users (id, email, password) without confirmation (for users below admin unless is superadmin)
         - impersonate-users # Impersonate any user with roles below admin if user is admin (unless user is superadmin)
         - admin-module-categories # Can access to module CategoriesAdminController
+        - receive-test-communications
     level: 70
 
 superadmin:

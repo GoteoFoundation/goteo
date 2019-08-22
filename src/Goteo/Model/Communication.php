@@ -25,7 +25,7 @@ class Communication extends \Goteo\Core\Model {
         $header,
         $type,
         $template = null,
-        $sent = null,
+        $sent = 0,
         $error = '',
         $lang,
         $date,
@@ -38,13 +38,16 @@ class Communication extends \Goteo\Core\Model {
 
     static public function get($id) {
 		if (empty($id)) {
-			// throw new Exception("Delete error: ID not defined!");
-			return false;
+			throw new Exception("Delete error: ID not defined!");
 		}
 		$class = get_called_class();
 		$ob = new $class();
 		$query = static::query('SELECT * FROM ' . $ob->getTable() . ' WHERE id = :id', array(':id' => $id));
         $communication = $query->fetchObject($class);
+
+        if (!$communication instanceof Communication) {
+            throw ModelNotFoundException("Not found communication [$id]");
+        }
         return $communication;
 	}
 
@@ -94,7 +97,6 @@ class Communication extends \Goteo\Core\Model {
             $values["subject"] = '%' . $filters['subject'] . '%';
         }
 
-        // print_r($filter);die;
         if($filter) {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
@@ -112,13 +114,14 @@ class Communication extends \Goteo\Core\Model {
         if(!$lang) $lang = Lang::current();
         // $values['lang'] = $lang;
         list($fields, $joins) = self::getLangsSQLJoins($lang);
-        // print_r($fields); print_r($joins); die;
 
         $sql ="SELECT
                 communication.id as id,
                 communication.type as type, 
                 $fields,
                 communication.lang as lang,
+                communication.header as header,
+                communication.template as template,
                 communication.date as date,
                 communication.filter as filter
             FROM communication

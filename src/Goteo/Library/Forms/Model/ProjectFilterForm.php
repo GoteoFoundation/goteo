@@ -57,7 +57,6 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
-                    new Constraints\Length(array('min' => 4)),
                 ),
             ))
             ->add('description', 'text', array(
@@ -65,7 +64,6 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
-                    new Constraints\Length(array('min' => 10)),
                 )
             ))
             // ->add() // interests

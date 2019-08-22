@@ -47,10 +47,14 @@ class FilterAdminController extends AbstractAdminController
     public function listAction(Request $request)
     {
         $list = Filter::getAll();
+        $page = $request->query->get('pag') ?: 0;
+        $limit = 10;
+        $list = Filter::getList(array(), $page * $limit, $limit, false);
+        $total = Filter::getList(array(), 0, 0, true);
         
         return $this->viewResponse('admin/filter/list',[
             'list' => $list,
-            'total' => sizeof($list)
+            'total' => $total
         ]);
     }
 
