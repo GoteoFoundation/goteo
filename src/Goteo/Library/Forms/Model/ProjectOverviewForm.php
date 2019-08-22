@@ -14,6 +14,7 @@ namespace Goteo\Library\Forms\Model;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Form\FormInterface;
 use Goteo\Application\Lang;
 use Goteo\Model\Project;
 use Goteo\Model\SocialCommitment;
@@ -21,6 +22,8 @@ use Goteo\Library\Text;
 use Goteo\Application\Currency;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Sdg;
+
 
 class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
 
@@ -49,8 +52,15 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
     }
 
     public function createForm() {
+        $model = $this->getModel();
         $currencies = Currency::listAll('name', false);
         $langs = Lang::listAll('name', false);
+
+        $sdgs = [];
+        foreach(Sdg::getList([],0,100) as $s) {
+            $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
+        }
+
         $project = $this->getModel();
         $builder = $this->getBuilder();
         $builder
@@ -211,6 +221,20 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-social-description'), 'rows' => 8]
             ])
+            
+
+            ->add('sdgs', 'choice', array(
+                'label' => 'admin-title-sdgs',
+                'data' => array_column($model->getSdgs(), 'id'),
+                'expanded' => true,
+                'multiple' => true,
+                'required' => false,
+                'choices' => $sdgs,
+                'choices_as_values' => true,
+                'choices_label_escape' => false,
+                'wrap_class' => 'col-xs-6 col-xxs-12',
+                'attr' => ['help' => Text::get('tooltip-project-sdg')]
+            ))
             ;
         return $this;
     }
