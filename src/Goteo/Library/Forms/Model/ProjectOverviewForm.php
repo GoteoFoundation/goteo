@@ -58,7 +58,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
 
         $sdgs = [];
         foreach(Sdg::getList([],0,100) as $s) {
-            $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
+            $sdgs['<img style="display: block; margin: 0 auto;" src="'.$s->getIcon()->getLink().'" class="icon icon-5x"><span style="text-align: center; display: block;">'.$s->name.'</span>'] = $s->id;
         }
 
         $project = $this->getModel();
@@ -228,16 +228,8 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'expanded' => true,
                 'attr' => ['help' => Text::get('tooltip-project-social-category')]
             ])
-            ->add('social_commitment_description', 'textarea', [
-                'disabled' => $this->getReadonly(),
-                'label' => 'overview-field-social-description',
-                'constraints' => $this->getConstraints('social_commitment_description'),
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-social-description'), 'rows' => 8]
-            ])
             
-
-            ->add('sdgs', 'choice', array(
+            ->add('sdgs', 'choice', [
                 'label' => 'admin-title-sdgs',
                 'data' => array_column($model->getSdgs(), 'id'),
                 'expanded' => true,
@@ -246,13 +238,23 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'choices' => $sdgs,
                 'choices_as_values' => true,
                 'choices_label_escape' => false,
-                'wrap_class' => 'col-xs-6 col-xxs-12',
+                'wrap_class' => 'col-md-2 col-sm-4 col-xs-4 col-xxs-6',
                 'attr' => [
                     'pre-help' => $sdg_pre_help,
-                    'help' => Text::get('tooltip-project-sdg')
+                    'help' => Text::get('tooltip-project-sdg'),
+                    'label_class'=> 'center-block'
                 ]
-            ))
+            ])
+
+            ->add('social_commitment_description', 'textarea', [
+                'disabled' => $this->getReadonly(),
+                'label' => 'overview-field-social-description',
+                'constraints' => $this->getConstraints('social_commitment_description'),
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-social-description'), 'rows' => 8]
+            ])
             ;
+
         return $this;
     }
 
