@@ -23,6 +23,7 @@ use Goteo\Application\Event\FilterMatcherProjectEvent;
 
 use Goteo\Controller\DashboardController;
 use Goteo\Model\Project;
+use Goteo\Model\SocialCommitment;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
 use Goteo\Model\User\Interest as UserInterest;
@@ -192,6 +193,26 @@ class AjaxDashboardController extends DashboardController {
             Message::error($e->getMessage());
         }
         return $this->redirect($referer);
+    }
+
+    /**
+     * ODS suggestion by social commitment
+     */
+    public function odsSuggestionAction(Request $request)
+    {
+        if($request->isMethod('post') && $request->request->has('social_commitment')
+            ) {
+            $social_commitment_id = $request->request->get('social_commitment');
+
+            $social_commitment=SocialCommitment::get($social_commitment_id);
+
+            foreach($social_commitment->getSdgs() as $s) {
+                $sdgs_suggestion.='<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name. ' ';
+            }
+        }
+
+        return $this->jsonResponse($sdgs_suggestion);
+
     }
 
 }
