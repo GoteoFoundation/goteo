@@ -15,6 +15,10 @@ $label_view = $label_position === 'none' ? '' : $view['form']->label($form);
 
     <?php if(!$no_input_wrap): ?><div class="input-wrap"><?php endif ?>
 
+    <?php if($attr['pre-help']): ?>
+        <div class="pre-help"><?= $attr['pre-help'] ?></div>
+    <?php endif ?>
+
     <?php
 
     // This is a hack

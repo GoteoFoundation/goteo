@@ -26,83 +26,26 @@ for the JavaScript code in this page.
 $(function(){
     // Send the form via AJAX
     $('#autoform_social_commitment').on('click', 'label', function(e){
-        e.preventDefault();
         var $but = $(this);
-        var $item = $but.closest('input');
-        alert($item.attr('id'));
-        /*var $form = $(this).closest('form');
-        var $list = $form.find('.reward-list');
-        var serial = $form.serialize() + '&' + encodeURIComponent($(this).attr('name')) + '=';
-        // console.log('add reward', serial);
+        var $item = $but.find('input');
+        var social_commitment=$item.val();
 
-        $but = $(this).hide();
-        $list.find('>.text-danger').remove();
-        $list.append('<div class="loading"></div>');
-        $.ajax({
-            type: $form.attr('method'),
-            url: $form.attr('action'),
-            data: serial
-        }).done(function (data) {
-            var $data = $(data);
-            $list.append($data.hide());
-            $data.slideDown();
-        }).fail(function (data) {
-            $list.append('<p class="text-danger">' + data.responseText + '</p>');
-        }).always(function() {
-            $but.show();
-            $list.find('>.loading').remove();
-        });*/
-    });
+        if(social_commitment){
 
-   /* $('form.autoform').on('click', '.remove-reward', function(e){
-        if(e.isPropagationStopped()) return false;
-        e.preventDefault();
-        var $but = $(this);
-        var $form = $but.closest('form');
-        var $list = $form.find('.reward-list');
-        var serial = $form.serialize() + '&' + encodeURIComponent($but.attr('name')) + '=';
-        var $item = $but.closest('.panel');
-        $but.hide().after('<div class="loading"></div>');
-        $item.find(':input').attr('disabled', true);
-        // console.log('del reward', serial);
-        $.ajax({
-            type: $form.attr('method'),
-            url: $form.attr('action'),
-            data: serial
-        }).done(function () {
-            $item.slideUp(function(){
-                $(this).remove();
-            });
-        }).fail(function (data) {
-            console.log('An error occurred.', data);
-            alert(data.responseText);
-        }).always(function() {
-            $but.show().next('.loading').remove();
-        });
-
-    });
-
-    //material switch checkbox
-    $('form.autoform').on('click', '.reward-item .unlimited .material-switch', function(){
-        var $reward = $(this).closest('.reward-item');
-        var $input = $reward.find('input[type="checkbox"]');
-        if($input.prop('disabled')) return;
-        var $units = $reward.find('.units');
-
-        if($input.prop('checked')) {
-            $units.addClass('out').removeClass('in');
-            // $units.val(0);
-        } else {
-            $units.addClass('in').removeClass('out');
-            // $units.prop('disabled', false);
-            $units.find('input[type="text"]').select();
+            $.ajax({
+                url: '/api/social-commitment/ods-suggestion',
+                type: 'POST',
+                data: {
+                    'social_commitment' : social_commitment
+                }
+            }).done(function(data) {
+                $("#sdgs_suggestion_label").show();
+                $("#sdgs_suggestion").html(data);
+            }); 
         }
-    });
 
-    $('form.autoform').on('change', '.reward-item .units input', function(){
-        var $reward = $(this).closest('.reward-item');
-        var $material = $reward.find('.material-switch');
-        var $input = $material.find('input[type="checkbox"]');
-        $input.prop('checked', $(this).val() == 0);
-    });*/
+        else
+            $("#sdgs_suggestion_label").hide();
+            $("#sdgs_suggestion").html('');
+    });
 });
