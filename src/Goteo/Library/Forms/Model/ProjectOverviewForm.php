@@ -64,10 +64,18 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
         $project = $this->getModel();
         $social_commitment=$project->getSocialCommitment();
 
-        foreach($social_commitment->getSdgs() as $s) {
-            $sdgs_suggestion.='<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name. ' ';
+        if($social_commitment)
+        {
+            foreach($social_commitment->getSdgs() as $s) {
+                $sdgs_suggestion.='<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name. ' ';
+            }
+
+            $sdg_pre_help ='<span id="sdgs_suggestion_label" style="font-size: 14px;">'.Text::get('tooltip-project-sdg-suggestion'). '</span><span id="sdgs_suggestion">'.$sdgs_suggestion.'</span>';
         }
 
+        else
+            $sdg_pre_help ='<span id="sdgs_suggestion_label" style="display: none; font-size: 14px;">'.Text::get('tooltip-project-sdg-suggestion').'</span><span id="sdgs_suggestion"></span>';
+       
         $builder = $this->getBuilder();
         $builder
             ->add('name', 'text', [
@@ -239,7 +247,10 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'choices_as_values' => true,
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12',
-                'attr' => ['help' => Text::get('tooltip-project-sdg'). $sdgs_suggestion]
+                'attr' => [
+                    'pre-help' => $sdg_pre_help,
+                    'help' => Text::get('tooltip-project-sdg')
+                ]
             ))
             ;
         return $this;

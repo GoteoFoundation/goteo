@@ -253,6 +253,13 @@ $api->add('api-projects-invests-csv', new Route(
         )
 ));
 
+// Projects list
+$api->add('api-ods-suggestion', new Route(
+    '/social-commitment/ods-suggestion',
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::odsSuggestionAction',
+        )
+));
+
 $api->add('api-invest-msg-delete', new Route(
     '/projects/invest-msg/{mid}',
     array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectDeleteSupportMsgAction'),
