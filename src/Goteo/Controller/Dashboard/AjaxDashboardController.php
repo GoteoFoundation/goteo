@@ -207,7 +207,7 @@ class AjaxDashboardController extends DashboardController {
             $social_commitment=SocialCommitment::get($social_commitment_id);
 
             foreach($social_commitment->getSdgs() as $s) {
-                $sdgs_suggestion.='<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name. ' ';
+                $sdgs_suggestion.='<img src="'.$s->getIcon()->getLink().'" class="icon icon icon-6x"> ';
             }
         }
 
