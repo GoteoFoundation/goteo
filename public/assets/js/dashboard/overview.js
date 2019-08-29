@@ -48,4 +48,15 @@ $(function(){
             $("#sdgs_suggestion_label").hide();
             $("#sdgs_suggestion").html('');
     });
+
+    $('.pre-help').on('click', '#sdgs_suggestion img', function(e){
+        var $ods = $(this);
+        var $ods_id=$ods.data('value');
+
+        var $item=$('#autoform_sdgs').find('input[value="' + $ods_id + '"]');
+        $item.prop('checked', true);
+    });
+
 });
+
+
