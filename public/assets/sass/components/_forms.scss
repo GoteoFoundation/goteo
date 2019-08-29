@@ -225,6 +225,9 @@
     margin-bottom: 30px;
     margin-top: 9px;
     font-size: 13px;
+    img.clickable{
+      cursor: pointer;
+    }
   }
   .help-text {
     display: block;
