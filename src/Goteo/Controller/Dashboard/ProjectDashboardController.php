@@ -315,6 +315,9 @@ class ProjectDashboardController extends DashboardController {
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
                 $processor->save($form, true);
+                $data = $form->getData();
+                $project->replaceSdgs($data['sdgs']);
+
                 Message::info(Text::get('dashboard-project-saved'));
                 return $this->redirect($this->getEditRedirect('overview', $request));
             } catch(FormModelException $e) {
