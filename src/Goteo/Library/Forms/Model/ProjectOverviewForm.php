@@ -67,7 +67,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
         if($social_commitment)
         {
             foreach($social_commitment->getSdgs() as $s) {
-                $sdgs_suggestion.='<img data-value="'.$s->id.'" display="block;" src="'.$s->getIcon()->getLink().'" class="icon icon-6x clickable" style="margin-left: 5px;"> ';
+                $sdgs_suggestion.='<img data-toggle="tooltip" title="'.$s->name .'" data-placement="bottom" data-value="'.$s->id.'" display="block;" src="'.$s->getIcon()->getLink().'" class="icon icon-6x clickable" style="margin-left: 5px;"> ';
             }
 
             $sdg_pre_help ='<span id="sdgs_suggestion_label" style="font-size: 14px;">'.Text::get('tooltip-project-sdg-suggestion'). '</span><span id="sdgs_suggestion" class="center-block">'.$sdgs_suggestion.'</span><hr style="margin-top: 30px; margin-bottom: 30px; border: 2px solid #FFF;">';
