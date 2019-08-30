@@ -55,6 +55,7 @@ class Mail extends \Goteo\Core\Model {
         $log,
         $status = 'pending',
         $message_id = null,
+        $communication_id = null,
         $lang = null;
 
     /**
@@ -199,6 +200,25 @@ class Mail extends \Goteo\Core\Model {
         if ($query = static::query('SELECT * FROM mail WHERE message_id = ?', $message_id)) {
             if( ! ($mail = $query->fetchObject(__CLASS__)) ) return null;
             $mail->to = $mail->email;
+            return $mail;
+        }
+        return null;
+    }
+
+    /**
+     * Get instance of mail already on table using communication_id identifier and an optional lang parameter.
+     * @return [type] [description]
+     */
+    static public function getFromCommunicationId($communication_id, $lang = null) {
+        $sql = "SELECT * FROM mail WHERE communication_id = :communication_id";
+        $values[':communication_id'] = $communication_id;
+        if (isset($lang)) {
+            $sql .= " AND lang = :lang";
+            $values[':lang'] = $lang;
+        }
+        // die(\sqldbg($sql, $values));
+        if ($query = static::query($sql, $values)) {
+            if( ! ($mail = $query->fetchAll(\PDO::FETCH_CLASS,__CLASS__)) ) return null;
             return $mail;
         }
         return null;
@@ -519,14 +539,22 @@ class Mail extends \Goteo\Core\Model {
         }
 
         // Render in a separate instance of Foil to avoid some unexpected problems
+        if (isset($this->communication_id)) {
+            $communication = Communication::get($this->communication_id); 
+            $extra_vars['image'] = $communication->getImage()->getLink(1920,335,true);
+            $extra_vars['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
+        }
+
         if ($this->template == Template::NEWSLETTER) 
         {
             View::setTheme('responsive');
+            
         }
 
         $engine = View::createEngine();
         $engine->setFolders(View::getFolders());
         // para plantilla boletin
+
         if ($this->template == Template::NEWSLETTER) {
             $extra_vars['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
             return $engine->render('email/newsletter', $extra_vars, false);
@@ -547,7 +575,7 @@ class Mail extends \Goteo\Core\Model {
         $this->email = ($this->massive) ? 'any' : $this->to;
 
         try {
-            $this->dbInsertUpdate(['email', 'subject', 'content', 'template', 'node', 'lang', 'sent', 'error', 'message_id']);
+            $this->dbInsertUpdate(['email', 'subject', 'content', 'template', 'node', 'lang', 'sent', 'error', 'message_id', 'communication_id']);
             return true;
         }
         catch(\PDOException $e) {
