@@ -345,12 +345,17 @@ class Sender extends \Goteo\Core\Model
                 WHERE mail = :mail
                 LIMIT 1
                 ";
+            // die(\sqldbg($sql, $values));
 
             $query = static::query($sql, $values);
-            return $query->fetchObject(__CLASS__);
+            $mailing = $query->fetchObject(__CLASS__);
 
+            if( ! $mailing instanceOf Sender) {
+                throw new ModelNotFoundException('Not found sender [' . $$mail_id . ']');
+            }
+            return $mailing;
         } catch(\PDOException $e) {
-            throw new ModelNotFoundException('Not found sending [' . $id . ']' . $e->getMessage());
+            throw new ModelException('SQL error while getting sender [' . $id . ']' . $e->getMessage());
         }
         return $mailing;
     }

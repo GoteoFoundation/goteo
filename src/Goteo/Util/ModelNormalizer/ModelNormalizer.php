@@ -60,6 +60,10 @@ class ModelNormalizer {
         elseif($this->model instanceOf Model\Workshop) {
             $ob = new Transformer\WorkshopTransformer($this->model, $this->keys);
         }
+        elseif(
+            $this->model instanceOf Model\Mail) {
+            $ob = new Transformer\MailTransformer($this->model, $this->keys);
+        }
         else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
 
         $ob->setUser(Session::getUser())->rebuild();

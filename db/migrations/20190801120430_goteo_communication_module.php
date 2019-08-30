@@ -93,8 +93,18 @@ class GoteoCommunicationModule
           `lang` varchar(3) NOT NULL,
           `subject` char(255) DEFAULT NULL,
           `content` longtext NOT NULL,
+          UNIQUE KEY `id_lang` (`id`,`lang`),
           CONSTRAINT `communication_lang_fk` FOREIGN KEY (`id`) REFERENCES `communication` (`id`) ON UPDATE CASCADE
         );
+
+        ALTER TABLE `mail` 
+        ADD COLUMN communication_id bigint(20) UNSIGNED after message_id;
+        ADD CONSTRAINT `mail_ibfk_4`
+        FOREIGN KEY (`communication_id`)
+        REFERENCES `communication` (`id`)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE;
+
       ";
   }
 
@@ -112,6 +122,11 @@ class GoteoCommunicationModule
      DROP TABLE IF EXISTS `communication_lang`;
      DROP TABLE IF EXISTS `communication`;
      DROP TABLE IF EXISTS `filter`;
+
+     ALTER TABLE `mail` 
+     DROP FOREIGN KEY `mail_ibfk_4`;
+     DROP COLUMN communication_id;
+
      ";
   }
 
