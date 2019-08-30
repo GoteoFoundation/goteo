@@ -13,6 +13,8 @@ use Goteo\Core\Model;
 use Goteo\Model\Image;
 use Goteo\Model\Filter;
 use Goteo\Library\Text;
+use Goteo\Model\Mail;
+use Goteo\Model\Template;
 
 /**
  * Transform a Model
@@ -48,17 +50,21 @@ class CommunicationTransformer extends AbstractTransformer {
     }
 
     public function getImage() {
-        if ($this->model->template == "newsletter") {
+        if ($this->model->template == Template::NEWSLETTER) {
             return $this->model->getImage()->getLink(64, 64, true);
         }
         else return "";
 
     }
 
+    public function getStatus() {
+        $status = $this->model->getStatus();
+        return '<span class="label label-percent" style="background-color:hsl(' . (120 * $status/100) . ',45%,50%);">' . $status . ' % </span>';
+    }
 
     public function getActions() {
 
-        if (!$this->model->sent) {
+        if (!$this->model->isActive()) {
             $ret['edit'] = '/admin/communication/edit/' . $this->model->id;
         }
         $ret['preview'] = '/admin/communication/preview/' . $this->model->id;
