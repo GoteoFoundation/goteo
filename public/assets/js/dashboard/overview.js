@@ -26,8 +26,8 @@ for the JavaScript code in this page.
 $(function(){
     // Send the form via AJAX
     $('#autoform_social_commitment').on('click', 'label', function(e){
-        var $but = $(this);
-        var $item = $but.find('input');
+        var $label = $(this);
+        var $item = $label.find('input');
         var social_commitment=$item.val();
 
         if(social_commitment){
@@ -41,6 +41,7 @@ $(function(){
             }).done(function(data) {
                 $("#sdgs_suggestion_label").show();
                 $("#sdgs_suggestion").html(data);
+                $('[data-toggle="tooltip"]').tooltip();
             }); 
         }
 
@@ -55,7 +56,12 @@ $(function(){
 
         var $item=$('#autoform_sdgs').find('input[value="' + $ods_id + '"]');
         $item.prop('checked', true);
+        $item.parent().animateCss('wobble');
+
     });
+
+    $('[data-toggle="tooltip"]').tooltip(); 
+
 
 });
 
