@@ -11,10 +11,28 @@ $this->section('admin-container-head');
 
 <?php $this->section('admin-container-body') ?>
 
-<h5><?= $this->text('admin-list-total', $this->total) ?></h5>
+
+<div class="panel section-content spacer">
+  <div class="panel-body">
+        <h5><?= $this->text('admin-mailing-subject') ?></h5>
+        <p><?= $this->communication->subject ?></p>
+
+        <h5 class="spacer-20"><?= $this->text('regular-date') ?></h5>
+        <p><?= $this->communication->date ?></p>
+
+        <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->mails, ['subject', 'lang', 'receivers', 'sent', 'failed', 'pending', 'success', 'status', 'percent'])]) ?>
 
 
-<?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['name', 'email'])]) ?>
+    <div class="spacer-20 forms">
+        <p class="buttons">
+            <a class="show-form btn btn-cyan btn-lg" href="/admin/communication/cancel/<?= $this->communication->id?>"><i class="fa fa-ban"></i> <?= $this->text('admin-communications-cancel') ?></a>
+            <a class="show-form btn btn-cyan btn-lg" href="/admin/communication/send/<?= $this->communication->id?>"><i class="fa fa-send"></i> <?= $this->text('admin-communications-send') ?></a>
+        </p>
+
+    </div>
+
+  </div>
+</div>
 
   </div>
 </div>

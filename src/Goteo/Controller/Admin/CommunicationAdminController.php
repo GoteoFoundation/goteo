@@ -15,10 +15,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Model\Filter;
 use Goteo\Model\Communication;
-use Goteo\Application\Message;
+use Goteo\Model\Mail;
+use Goteo\Model\Template;
+use Goteo\Model\Promote;
 use Goteo\Model\Mail\Sender;
-use Goteo\Library\Text;
+use Goteo\Application\App;
 use Goteo\Application\Lang;
+use Goteo\Application\Message;
+use Goteo\Application\View;
+use Goteo\Library\Text;
+use Goteo\Library\Feed;
 use Goteo\Library\Translator\ModelTranslator;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
@@ -58,17 +64,25 @@ class CommunicationAdminController extends AbstractAdminController
             new Route(
                 '/detail/{id}',
                 ['_controller' => __CLASS__ . "::detailAction"]
+            ),
+            new Route(
+                'send/{id}',
+                ['_controller' => __CLASS__ . "::activateAction"]
+            ),
+            new Route(
+                'cancel/{id}',
+                ['_controller' => __CLASS__ . "::cancelAction"]
             )
         ];
     }
 
     public function doSave($id = null, Request $request){
 
+        $communication = ($id) ? Communication::get($id) : new Communication();
+
         if($request->isMethod('POST')) {
             // validate()
-            $communication = ($id) ? Communication::get($id) : new Communication();
             
-            $langs_ok = [];
             $all = $request->request->get('t');
             $form = $request->request->get('autoform');
             $communication->type = $form['data-editor-type']; 
@@ -85,7 +99,6 @@ class CommunicationAdminController extends AbstractAdminController
             $translator = $translator::get('communication', $communication->id);
     
             foreach($all as $lang => $texts) {
-                // $values = [];
 
                 if(trim($texts['subject']) === '') continue;
                 if(trim($texts['body']) === '') continue;
@@ -101,8 +114,99 @@ class CommunicationAdminController extends AbstractAdminController
                     Message::error(Text::get('translator-saved-ko', ['%LANG%' => $lang, '%ERROR%' => $e->getMessage()]));
                 }
             }
-            return $communication;
+
+            
+            
+            // montamos el mailing
+            // - se crea un registro de tabla mail
+            $receivers = array();
+            
+            if ($id) {
+                $mails = Mail::getFromCommunicationId($id);
+                foreach($mails as $mail) {
+                    $mailing = Sender::getFromMailId($mail->id);
+                    $mailing->dbDelete();
+                    $mail->dbDelete();
+                }
+            }
+
+            foreach($communication->getAllLangs()  as $communication_lang) {
+                $mailHandler = new Mail();
+                $mailHandler->lang = $communication_lang->lang;
+                $mailHandler->subject = $communication_lang->subject;
+                $mailHandler->template = Template::NEWSLETTER;
+                $mailHandler->communication_id = $communication->id;
+                
+                $communication_lang->content = \str_replace('%SITEURL%', \SITE_URL, $communication_lang->content);
+                // if($communication->type === 'md') {
+                    // $communication_lang->content = App::getService('app.md.parser')->text($communication_lang->content);
+                // }
+                
+                $token = $mailHandler->getToken();
+
+                // $mailHandler->content .= View::render('email/'.$communication->template, [
+                //     'content' => $communication_lang->content,
+                //     'image' => $communication->getImage()->getLink(1920,335,true),
+                //     'unsubscribe' => SITE_URL . '/user/unsubscribe/' . $token,
+                //     'alternate' => SITE_URL . '/mail/' . $token,
+                //     'tracker' => SITE_URL . '/mail/track/' . $token . '.gif'
+                //     ]);
+                $mailHandler->content .= $communication_lang->content;
+                $mailHandler->massive = true;
+                // $mailHandler->content = $content;
+
+                $errors = [];
+
+                $mailHandler->save($errors);
+
+                $sender = new Sender(['mail' => $mailHandler->id]);
+                $errors = [];
+                if ( ! $sender->save($errors) ) { //persists in database
+                    Message::error('Sender saving: ' . implode('<br>', $errors));
+                    return $this->redirect('/admin/communication/detail/'.$communication->id);
+                }
+
+                // get the equivalent communication languages from preferences
+                // $comlangs = [];
+                // foreach($user_langs as $user_lang) {
+                //     $comlang = trim($user_lang);
+                //     if(!$comlang) continue;
+                //     // Get first fallback
+                //     if(!in_array($comlang, $template_langs)) {
+                //         $comlang = Lang::getFallback($comlang);
+                //     }
+                //     // Get the second fallback
+                //     if(!in_array($comlang, $template_langs)) {
+                //         $comlang = Lang::getFallback($comlang);
+                //     }
+                //     if($comlang === $lang) {
+                //         $comlangs[] = $user_lang;
+                //     }
+                // }
+                
+
+                $filter = Filter::get($communication->filter);
+                $receivers = $filter->getFiltered(0,0, false, $communication_lang->lang);
+    
+                // $this->debug("SQL receivers", ['sql' => $sql, $sender, $this->user]);
+        
+                // add subscribers
+                $sender->addSubscribers($receivers);
+        
+                // Evento Feed
+                $log = new Feed();
+                $log->populate(Text::sys('feed-admin-massive-subject'), '/admin/communication',
+                    Text::sys('feed-admin-massive', [
+                        '%USER%' =>  Feed::item('user', $this->user->name, $this->user->id),
+                        '%TYPE%' =>  Feed::item('relevant', Text::sys('feed-admin-massive-communication')),
+                        // '%TO%' => $filters_txt
+                    ]))
+                    ->doAdmin('admin');
+            }
+            // return $this->redirect('/admin/communication/detail/' . $communication->id);    
         }
+
+        return $communication;
     }
 
     public function getReceivers($filter, $offset = 0, $limit = 10, $count = false, $sender_id = null){
@@ -136,12 +240,12 @@ class CommunicationAdminController extends AbstractAdminController
     {
         if ($request->isMethod('post') ) {
             $communication = $this->doSave($id, $request);
-            return $this->redirect('/admin/communication/preview/'.$communication->id);
+            return $this->redirect('/admin/communication/detail/'.$communication->id);
         }
         else {
             $filters = Filter ::getAll();
     
-            $template = ['default' => 'General communication', 'newsletter' => Text::get('newsletter-lb')];
+            $template = [Template::COMMUNICATION => 'General communication', Template::NEWSLETTER => Text::get('newsletter-lb')];
             $translates = [Config::get('lang') => Lang::getName(Config::get('lang'))];
             
             $langs = Lang::listAll('name', false);
@@ -189,8 +293,8 @@ class CommunicationAdminController extends AbstractAdminController
         }
         
         if ($request->isMethod('post') ) {
-            $communication = $this->doSave($request);
-            return $this->redirect('/admin/communication/preview/'.$communication->id);
+            $communication = $this->doSave(null, $request);
+            return $this->redirect('/admin/communication/detail/'.$communication->id);
         }
         
         $translator = new ModelTranslator();
@@ -232,31 +336,86 @@ class CommunicationAdminController extends AbstractAdminController
         }
 
 
-        return $this->viewResponse('email/'.$communication->template, [
-            'communication' => $communication
+        if ($communication->template == Template::NEWSLETTER) $template = "newsletter";
+        else $template = "default";
+
+        $promotes = Promote::getAll(true, Config::get('node'), $this->lang);
+
+        return $this->viewResponse('email/'.$template, [
+            'communication' => $communication,
+            'promotes' => Promote::getAll(true, Config::get('node'), $this->lang)
         ]);
     }
 
     public function detailAction(Request $request, $id)
     {
         $communication = Communication::get($id);
-        $limit = 25;
-        $page = $request->query->get('pag') ?: 0;
-
 
 		if (!$communication) {
 			throw new ModelNotFoundException("Not found communication [$id]");
         }
 
-        $filter = Filter::get($communication->filter);
-        $list = $filter->getFiltered(false, $limit, $page);
-        // print_r($list); die;
-        $total = $filter->getFiltered(true);
+        $mails = Mail::getFromCommunicationId($id);
 
         return $this->viewResponse('admin/communication/detail', [
-            'list' => $list,
-            'total' => $total,
+            'communication' => $communication,
+            'mails' => $mails,
         ]);
     }
 
+    public function activateAction($id = null, Request $request) {
+
+        $communication = Communication::get($id);
+        $mails = Mail::getFromCommunicationId($id);
+
+        foreach($mails as $mail) {
+            
+            $mailing = Sender::getFromMailId($mail->id);
+            // $mailing = Sender::get(22616);
+            if($mailing->getStatus() == 'inactive' && $mailing->setActive(true)) {
+                Message::info("Communication [$mail->id] activated for immediate sending!");
+                $ok = true;
+                // Evento Feed
+                $log = new Feed();
+                $log->populate(Text::sys('feed-admin-newsletter-activate-subject'), '/admin/communication',
+                    Text::sys('feed-admin-newsletter-activate', [
+                        '%USER%' =>  Feed::item('user', $this->user->name, $this->user->id),
+                        '%SUBJECT%' =>  Feed::item('relevant', $mailing->subject),
+                        '%ID%' => $mailing->id
+                    ]))
+                    ->doAdmin('admin');
+            }
+            else {
+                Message::error("Communication [$mail->id] cannot be activated for immediate sending!");
+                $ok = false;
+                // Evento Feed
+                $log = new Feed();
+                $log->populate(Text::sys('feed-admin-newsletter-activate-subject'), '/admin/communication',
+                    Text::sys('feed-admin-newsletter-activate-failed', [
+                        '%USER%' =>  Feed::item('user', $this->user->name, $this->user->id),
+                        '%SUBJECT%' =>  Feed::item('relevant', $mailing->subject),
+                        '%ID%' => $mailing->id
+                    ]))
+                    ->doAdmin('admin');
+            }
+        }
+        $this->notice('Communication activated', [$mailing, $this->user]);
+        return $this->redirect('/admin/communication/detail/' . $communication->id);
+
+    }
+
+    public function cancelAction($id = null, Request $request) {
+
+        $mails = Mail::getFromCommunicationId($id);
+        foreach($mails as $mail) {
+            if ($mailing = Sender::getFromMailId($mail->id)) {
+                $mailing->setActive(false);
+                $this->notice('Communication mails canceled', [$mailing, $this->user]);
+                Message::info("Communication [$id] mails canceled!");
+            }
+        }
+
+        return $this->redirect('/admin/communication/detail/' . $id);
+    }
+    
 }

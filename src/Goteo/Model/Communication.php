@@ -279,5 +279,45 @@ class Communication extends \Goteo\Core\Model {
         return $langs;
     }
 
+    public function getAllLangs() {
+        try {
+            $sql = "SELECT a.id, a.lang, a.subject, a.content FROM `{$this->Table}` a WHERE a.id = :id 
+                    UNION 
+                    SELECT * FROM `{$this->Table}_lang` b WHERE b.id = :id";
+            $values = array(':id' => $this->id);
+            // die(\sqldbg($sql, $values));
+            if($query = static::query($sql, $values)) {
+                return $query->fetchAll(\PDO::FETCH_OBJ);
+            }
+        } catch (\Exception $e) {}
+        return [];
+    }
+
+    public function getStatus() {
+        $mails = Mail::getFromCommunicationId($this->id);
+        $success = 0;
+        if ($mails) {
+            foreach($mails as $mail) {
+                $success += round($mail->getStats()->getEmailOpenedCollector()->getPercent());
+            }
+            return round($success/sizeof($mails));
+        }
+
+        return $success;
+    }
+
+    public function isActive() {
+        $mails = Mail::getFromCommunicationId($this->id);
+        $sent = 0;
+        
+        if ($mails) {
+            foreach($mails as $mail) {
+                $sent = $sent || $mail->getSender()->isActive();
+            }
+        }
+        
+        return $sent;
+    }
+
 }
 
