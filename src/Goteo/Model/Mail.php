@@ -545,10 +545,9 @@ class Mail extends \Goteo\Core\Model {
             $extra_vars['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
         }
 
-        if ($this->template == Template::NEWSLETTER) 
+        if ($this->template == Template::NEWSLETTER || $this->template == Template::COMMUNICATION) 
         {
             View::setTheme('responsive');
-            
         }
 
         $engine = View::createEngine();
