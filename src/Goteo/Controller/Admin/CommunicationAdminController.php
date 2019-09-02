@@ -83,6 +83,8 @@ class CommunicationAdminController extends AbstractAdminController
         if($request->isMethod('POST')) {
             // validate()
             
+            $errors = [];
+
             $all = $request->request->get('t');
             $form = $request->request->get('autoform');
             $communication->type = $form['data-editor-type']; 
@@ -92,7 +94,12 @@ class CommunicationAdminController extends AbstractAdminController
             $communication->subject = $all[$communication->lang]['subject'];
             $communication->content = $all[$communication->lang]['body'];
             $communication->header = $form['image'];
-            $communication->save();
+            $communication->save($errors);
+
+            if ($errors) {
+                throw new FormModelException(Text::get('form-sent-error'));
+                return;
+            }
              
             $translator = new ModelTranslator();
             $fields = $translator::getFields('communication');
@@ -134,23 +141,9 @@ class CommunicationAdminController extends AbstractAdminController
                 $mailHandler = new Mail();
                 $mailHandler->lang = $communication_lang->lang;
                 $mailHandler->subject = $communication_lang->subject;
-                $mailHandler->template = Template::NEWSLETTER;
+                $mailHandler->template = $communication->template;
                 $mailHandler->communication_id = $communication->id;
                 
-                $communication_lang->content = \str_replace('%SITEURL%', \SITE_URL, $communication_lang->content);
-                // if($communication->type === 'md') {
-                    // $communication_lang->content = App::getService('app.md.parser')->text($communication_lang->content);
-                // }
-                
-                $token = $mailHandler->getToken();
-
-                // $mailHandler->content .= View::render('email/'.$communication->template, [
-                //     'content' => $communication_lang->content,
-                //     'image' => $communication->getImage()->getLink(1920,335,true),
-                //     'unsubscribe' => SITE_URL . '/user/unsubscribe/' . $token,
-                //     'alternate' => SITE_URL . '/mail/' . $token,
-                //     'tracker' => SITE_URL . '/mail/track/' . $token . '.gif'
-                //     ]);
                 $mailHandler->content .= $communication_lang->content;
                 $mailHandler->massive = true;
                 // $mailHandler->content = $content;
@@ -205,7 +198,6 @@ class CommunicationAdminController extends AbstractAdminController
             }
             // return $this->redirect('/admin/communication/detail/' . $communication->id);    
         }
-
         return $communication;
     }
 
@@ -245,7 +237,11 @@ class CommunicationAdminController extends AbstractAdminController
         else {
             $filters = Filter ::getAll();
     
-            $template = [Template::COMMUNICATION => 'General communication', Template::NEWSLETTER => Text::get('newsletter-lb')];
+            $template = [
+                Template::COMMUNICATION => Text::get('admin-communications-communication'), 
+                Template::NEWSLETTER => Text::get('admin-communications-newsletter')
+            ];
+
             $translates = [Config::get('lang') => Lang::getName(Config::get('lang'))];
             
             $langs = Lang::listAll('name', false);
