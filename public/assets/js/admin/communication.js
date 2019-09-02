@@ -37,7 +37,7 @@ $(function () {
         }
     
         document.getElementById('templates').onchange = function() {
-            if (this.value == "newsletter") document.getElementById('dropzone-image').classList.remove('hidden');
+            if (this.value == 33) document.getElementById('dropzone-image').classList.remove('hidden');
             else document.getElementById('dropzone-image').classList.add('hidden');
         }
     

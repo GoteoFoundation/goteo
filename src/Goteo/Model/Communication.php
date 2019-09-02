@@ -46,7 +46,7 @@ class Communication extends \Goteo\Core\Model {
         $communication = $query->fetchObject($class);
 
         if (!$communication instanceof Communication) {
-            throw ModelNotFoundException("Not found communication [$id]");
+            throw new ModelNotFoundException("Not found communication [$id]");
         }
         return $communication;
 	}
@@ -57,10 +57,13 @@ class Communication extends \Goteo\Core\Model {
      */
 	public function validate(&$errors = array()) {
 	    if(empty($this->content)) {
-	        $errors['content'] = 'El mensaje no tiene contenido.';
+	        $errors['content'] = 'The communication has no content';
 	    }
         if(empty($this->subject)) {
-            $errors['subject'] = 'El mensaje no tiene asunto.';
+            $errors['subject'] = 'The communication has no subject';
+        }
+        if($this->template == Template::NEWSLETTER && empty($this->header)) {
+            $errors['header'] = 'The newsletter has no header';
         }
         return empty($errors);
     }
@@ -277,6 +280,46 @@ class Communication extends \Goteo\Core\Model {
         } catch (\Exception $e) {
         }
         return $langs;
+    }
+
+    public function getAllLangs() {
+        try {
+            $sql = "SELECT a.id, a.lang, a.subject, a.content FROM `{$this->Table}` a WHERE a.id = :id 
+                    UNION 
+                    SELECT * FROM `{$this->Table}_lang` b WHERE b.id = :id";
+            $values = array(':id' => $this->id);
+            // die(\sqldbg($sql, $values));
+            if($query = static::query($sql, $values)) {
+                return $query->fetchAll(\PDO::FETCH_OBJ);
+            }
+        } catch (\Exception $e) {}
+        return [];
+    }
+
+    public function getStatus() {
+        $mails = Mail::getFromCommunicationId($this->id);
+        $success = 0;
+        if ($mails) {
+            foreach($mails as $mail) {
+                $success += round($mail->getStats()->getEmailOpenedCollector()->getPercent());
+            }
+            return round($success/sizeof($mails));
+        }
+
+        return $success;
+    }
+
+    public function isActive() {
+        $mails = Mail::getFromCommunicationId($this->id);
+        $sent = 0;
+        
+        if ($mails) {
+            foreach($mails as $mail) {
+                $sent = $sent || $mail->getSender()->isActive();
+            }
+        }
+        
+        return $sent;
     }
 
 }

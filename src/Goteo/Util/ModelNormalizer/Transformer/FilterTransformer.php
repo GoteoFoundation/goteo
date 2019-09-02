@@ -24,6 +24,13 @@ class FilterTransformer extends AbstractTransformer {
         return '<strong>'.($prj ? $prj->name.' - ' : '') . $this->getAuthor() . '</strong><br>' . Text::recorta($this->getReview(), 30);
     }
 
+    public function getLabel($key) {
+        if ($key == "users") {
+            return "<i class='fa fa-users'>" . Text::get("admin-title-$key") . "</i>";
+        }
+        return Text::get("admin-title-$key");
+    }
+
     function getProject() {
         return $this->model->getProject();
     }
@@ -39,15 +46,18 @@ class FilterTransformer extends AbstractTransformer {
     }
 
     function getUsers(){
-        $receivers = $this->model->getFiltered(true);
+        $receivers = $this->model->getFiltered(0, 0, true);
         return $receivers;
     }
 
     public function getActions() {
         if(!$u = $this->getUser()) return [];
         $ret = [
-            'edit' => '/admin/filter/edit/' . $this->model->id
+            'edit' => '/admin/filter/edit/' . $this->model->id,
         ];
+
+        if (!$this->model->isUsed())
+            $ret['delete'] = '/admin/filter/delete/'. $this->model->id;
 
         return $ret;
     }

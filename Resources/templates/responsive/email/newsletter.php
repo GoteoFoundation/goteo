@@ -276,7 +276,7 @@
                                     <tbody style="display: block; width: 100%;">
                                         <tr style="display: block; width: 100%;">
                                             <td align="left" style="padding: 0; margin: 0; border: none; border-spacing: 0px; border-collapse: collapse;vertical-align: top; display: block; width: 100%;">
-                                            	<img class="img-header" style="max-width:100%; object-fit: cover; width: 100%;" src="<?= $this->asset('img/newsletter/header14.png') ?>" alt="Goteo" />
+                                            	<img class="img-header" style="max-width:100%; object-fit: cover; width: 100%;" src="<?= $this->image ?>" alt="Goteo" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -289,9 +289,18 @@
 
                     <div style="font-size: 16px">
                     
-					<?= $this->markdown($this->communication->content) ?>
+					<?= $this->markdown($this->content) ?>
 
                     </div>
+
+
+                    <!-- PROMOTED PROJECTS -->
+
+                    <?php foreach($this->promotes as $key => $promote) : ?>
+
+                        <?= $this->insert('email/partials/newsletter_project', ['promote'=>$promote, 'project'=>$promote->projectData, 'key' => $key]); ?>
+
+                    <?php endforeach ?>
 
                     <!-- BOTON VER PROYECTOS -->
                     <table class="section" style="margin-top: 40px; margin-bottom: 80px; margin-right: 22px;" cellpadding="0" cellspacing="0">

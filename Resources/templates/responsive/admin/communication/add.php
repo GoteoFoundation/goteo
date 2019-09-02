@@ -79,7 +79,7 @@ if($data) $image = $data->getImage();
         <?php endif ?>
       </li>
     </ul>
-    <input id="image-upload" type="hidden" name="autoform[image]" value="<?= ($image)? $image->getName() : '' ?>">
+    <input id="image-upload" type="hidden" name="autoform[image]" value="<?= ($image)? $image->getName() : null ?>" required>
       <div class="dragndrop <?=($image)? 'hidden' : '' ?>"><div class="dropzone">
       </div></div>
     </div>
@@ -233,6 +233,7 @@ $(function(){
       $li.remove();
       $error.addClass('hidden');
       var total = $list.find('li').length;
+      document.getElementById('image-upload').value = "";
       $zone.find('.dragndrop').removeClass('hidden');
   });
 });
