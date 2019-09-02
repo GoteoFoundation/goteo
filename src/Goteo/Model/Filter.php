@@ -687,7 +687,7 @@ class Filter extends \Goteo\Core\Model {
 
         if($count) {
             $sql = "SELECT COUNT(DISTINCT(user.id)) FROM user $sqlInner WHERE user.active = 1 $sqlFilter";
-            die( \sqldbg($sql, $values) );
+            // die( \sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
         }
 
