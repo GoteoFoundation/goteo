@@ -46,7 +46,7 @@ class Communication extends \Goteo\Core\Model {
         $communication = $query->fetchObject($class);
 
         if (!$communication instanceof Communication) {
-            throw ModelNotFoundException("Not found communication [$id]");
+            throw new ModelNotFoundException("Not found communication [$id]");
         }
         return $communication;
 	}

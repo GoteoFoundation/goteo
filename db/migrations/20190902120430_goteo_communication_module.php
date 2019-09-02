@@ -118,7 +118,7 @@ class GoteoCommunicationModule
      return "
 
      ALTER TABLE `mail` 
-     DROP FOREIGN KEY `mail_ibfk_4`;
+     DROP FOREIGN KEY `mail_ibfk_4`,
      DROP COLUMN communication_id;
 
      DROP TABLE IF EXISTS `filter_matcher`;
