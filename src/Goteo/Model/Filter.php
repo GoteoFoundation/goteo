@@ -469,7 +469,7 @@ class Filter extends \Goteo\Core\Model {
                     $sqlInner 
                     WHERE user.active = 1 AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) 
                     $sqlFilter";
-            // if ($this->id == 15) die(\sqldbg($sql, $values) );
+            // die(\sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
         }
 
@@ -1020,7 +1020,7 @@ class Filter extends \Goteo\Core\Model {
 
         if($count) {
             $sql = "SELECT COUNT(DISTINCT(user.id)) FROM user $sqlInner WHERE user.active = 1 $sqlFilter";
-            die( \sqldbg($sql, $values) );
+            // die( \sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
         }
 

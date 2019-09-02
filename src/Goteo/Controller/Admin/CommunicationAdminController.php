@@ -180,11 +180,12 @@ class CommunicationAdminController extends AbstractAdminController
 
                 $filter = Filter::get($communication->filter);
                 $receivers = $filter->getFiltered(0,0, false, $communication_lang->lang);
-    
+                // $sql = $filter->getFilteredSQL( $values,$communication_lang->lang );
                 // $this->debug("SQL receivers", ['sql' => $sql, $sender, $this->user]);
         
                 // add subscribers
                 $sender->addSubscribers($receivers);
+                // $sender->addSubscribersFromSQL($sql);
         
                 // Evento Feed
                 $log = new Feed();
@@ -345,10 +346,11 @@ class CommunicationAdminController extends AbstractAdminController
 
     public function detailAction(Request $request, $id)
     {
+        try {
         $communication = Communication::get($id);
-
-		if (!$communication) {
-			throw new ModelNotFoundException("Not found communication [$id]");
+        } catch (ModelNotFoundException $e) {
+            Message::error($e->getMessage());
+            return $this->redirect('/admin/communication/');
         }
 
         $mails = Mail::getFromCommunicationId($id);
