@@ -62,6 +62,10 @@ class MailTransformer extends AbstractTransformer {
         return '<span class="label label-percent" style="background-color:hsl(' . (120 * $success/100) . ',45%,50%);">' . $success . ' % </span>';
     }
 
+    function getLink($type = 'public', $key = null) {
 
+        if($key == 'subject') return '/admin/sent/detail/' . $this->model->id;
+        return '';
+    }
     
 }
