@@ -65,6 +65,10 @@ admin-communications-siteurl-content: ' para la url de esta plataforma (%SITEURL
 admin-communications-subscribeurl-content: ' link directo de suscripción a la newsletter del usuario'
 admin-communications-unsubscribeurl-content: ' link directo de desuscripción a la newsletter del usuario'
 admin-communications-poolamount-content: ' cantidad de dinero disponible en el mondero del usuario'
+admin-communications-send: 'Enviar comunicación'
+admin-communications-cancel: 'Cancelar comunicación'
+admin-communications-newsletter: 'Boletín'
+admin-communications-communication: 'Comunicación general'
 admin-home: Portada
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicaciones'
@@ -94,6 +98,7 @@ admin-filters: 'Filtros'
 admin-filters-edit: 'Editar filtro'
 admin-filters-create: 'Crear filtro'
 admin-remove-filters: 'Quitar filtros'
+admin-remove-filters-forbidden: 'Los filtros que se han utilizado no se pueden eliminar.'
 admin-remove-entry: 'Borrar entrada'
 admin-remove-entry-confirm: '¿Seguro que quieres borrar esta entrada? Este acción no se puede deshacer!'
 admin-remove-entry-forbidden: 'No se pueden borrar entradas de blog publicadas. Despublica la entrada primero.'
@@ -242,6 +247,14 @@ admin-title-iframe: 'Iframe localización'
 admin-title-schedule-file: 'Url programa'
 admin-title-call: 'Convocatoria de Matchfunding'
 admin-title-url-inscription: Enlace a inscripción
+admin-title-filter: Filtro
+admin-title-template: Plantilla
+admin-title-receivers: Destinatarios
+admin-title-sent: Enviados
+admin-title-failed: No enviados
+admin-title-pending: Pendientes
+admin-title-success: Exitosos
+admin-title-percent: Porcentaje
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
