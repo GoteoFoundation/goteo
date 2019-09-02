@@ -57,10 +57,13 @@ class Communication extends \Goteo\Core\Model {
      */
 	public function validate(&$errors = array()) {
 	    if(empty($this->content)) {
-	        $errors['content'] = 'El mensaje no tiene contenido.';
+	        $errors['content'] = 'The communication has no content';
 	    }
         if(empty($this->subject)) {
-            $errors['subject'] = 'El mensaje no tiene asunto.';
+            $errors['subject'] = 'The communication has no subject';
+        }
+        if($this->template == Template::NEWSLETTER && empty($this->header)) {
+            $errors['header'] = 'The newsletter has no header';
         }
         return empty($errors);
     }

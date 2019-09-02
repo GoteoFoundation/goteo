@@ -29,7 +29,7 @@ class CommunicationTransformer extends AbstractTransformer {
     }
 
     function getTemplate(){
-        $template = $this->model->template;
+        $template = ($this->model->template == Template::NEWSLETTER ) ? Text::get('admin-communications-newsletter'): Text::get('admin-communications-communication');
         return $template;
     }
 
@@ -51,9 +51,9 @@ class CommunicationTransformer extends AbstractTransformer {
 
     public function getImage() {
         if ($this->model->template == Template::NEWSLETTER) {
-            return $this->model->getImage()->getLink(64, 64, true);
+            return ($this->model->header) ? $this->model->getImage()->getLink(64, 64, true) : '';
         }
-        else return "";
+        return '';
 
     }
 
