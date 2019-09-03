@@ -702,6 +702,43 @@ class Invest extends \Goteo\Core\Model {
         return ['user' => $users_fee, 'call' => $calls_fee, 'matcher' => $matchers_fee];
     }
 
+    /**
+     * 
+     */
+    public static function calculateVat($filters = []) {
+        $vat = (float) Config::get('vat'); // default platform fee
+        list($sqlFilter, $values) = self::getSQLFilter($filters);
+        $sqlFilter = preg_replace('/^WHERE/', 'AND', $sqlFilter);
+        // Normal invests vat
+        $sql = "SELECT SUM(IFNULL(project_account.vat, $vat) * invest.amount) / 100
+                FROM invest
+                LEFT JOIN project ON invest.project = project.id
+                LEFT JOIN project_account ON invest.project = project_account.project
+                WHERE invest.campaign=0 $sqlFilter";
+        $users_vat = (float) self::query($sql, $values)->fetchColumn();
+
+        // Call Matchfunding invests vat
+        $sql = "SELECT SUM(IFNULL(`call`.vat_projects_drop, $vat) * invest.amount) / 100
+                FROM invest
+                LEFT JOIN project ON invest.project = project.id
+                LEFT JOIN `call` ON invest.call = `call`.id
+                WHERE invest.campaign=1 AND project.fee AND invest.method='drop' $sqlFilter";
+        $calls_vat = (float) self::query($sql, $values)->fetchColumn();
+        // echo \sqldbg($sql, $values);
+        // Matcher Matchfunding invests vat
+        $sql = "SELECT SUM(IFNULL(`matcher`.vat, $vat) * invest.amount) / 100
+                FROM invest
+                LEFT JOIN project ON invest.project = project.id
+                LEFT JOIN `matcher` ON invest.matcher = `matcher`.id
+                WHERE invest.campaign=1 AND AND project.fee invest.method!='drop' $sqlFilter";
+        $matchers_fee = (float) self::query($sql, $values)->fetchColumn();
+
+        return ['user' => $users_vat, 'call' => $calls_vat, 'matcher' => $matchers_vat];
+    }
+
+
+
+
     // returns the current project
     public function getProject() {
         if(isset($this->projectObject)) return $this->projectObject;
