@@ -157,8 +157,20 @@
                     <!-- Contenido -->
 
                     <div style="font-size: 16px">
-                    
-                        <?= $this->markdown($this->content) ?>
+                    <table class="section header" cellpadding="0" cellspacing="0" width="600">
+                        <tr>
+                            <td class="column">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td align="left"> <?= $this->markdown($this->content) ?> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                        
 
                     </div>
 

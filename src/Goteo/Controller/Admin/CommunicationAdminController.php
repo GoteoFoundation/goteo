@@ -337,10 +337,10 @@ class CommunicationAdminController extends AbstractAdminController
         $values['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
         $values['content'] = $communication->content;
         $values['subject'] = $communication->subject;
+        $values['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
 
         if ($communication->template == Template::NEWSLETTER) {
             $template = "newsletter";
-            $values['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
             $values['image'] = $communication->getImage()->getLink(1920,335,true);
         }
         else $template = "default";
