@@ -333,15 +333,16 @@ class CommunicationAdminController extends AbstractAdminController
         }
 
 
-        if ($communication->template == Template::NEWSLETTER) $template = "newsletter";
+        if ($communication->template == Template::NEWSLETTER) {
+            $template = "newsletter";
+            $values['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
+            $values['image'] = $communication->getImage()->getLink(1920,335,true);
+        }
         else $template = "default";
 
-        $promotes = Promote::getAll(true, Config::get('node'), $this->lang);
+        $values['communication'] = $communication;
 
-        return $this->viewResponse('email/'.$template, [
-            'communication' => $communication,
-            'promotes' => Promote::getAll(true, Config::get('node'), $this->lang)
-        ]);
+        return $this->viewResponse('email/'.$template, $values);
     }
 
     public function detailAction(Request $request, $id)
