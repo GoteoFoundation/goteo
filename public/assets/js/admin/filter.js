@@ -50,6 +50,7 @@ $(function () {
         if (role == "donor") {
             projects.show();
             calls.show();
+            matchers.show()
             status.show();
             typeofdonor.show();
             foundationdonor.show();
@@ -61,6 +62,7 @@ $(function () {
         else if (role == "promoter") { 
             projects.show();
             calls.show();
+            matchers.show();
             status.show();
             typeofdonor.hide();
             typeofdonor.val = '';
