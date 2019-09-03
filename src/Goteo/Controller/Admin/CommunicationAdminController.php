@@ -283,12 +283,13 @@ class CommunicationAdminController extends AbstractAdminController
     {
 
         
-        $communication = $id ? Communication::get($id) : new Communication();
-        
-		if (!$communication) {
-            throw new ModelNotFoundException("Not found communication [$id]");
-        }
-        
+        try {
+            $communication = Communication::get($id);
+        } catch (ModelNotFoundException $e) {
+            Message::error($e->getMessage());
+            return $this->redirect('/admin/communication/');
+        }       
+         
         if ($request->isMethod('post') ) {
             $communication = $this->doSave(null, $request);
             return $this->redirect('/admin/communication/detail/'.$communication->id);
@@ -326,12 +327,16 @@ class CommunicationAdminController extends AbstractAdminController
     public function previewAction($id, Request $request)
     {
 
-        $communication = $id ? Communication::get($id) : new Communication();
-
-		if (!$communication) {
-			throw new ModelNotFoundException("Not found communication [$id]");
+        try {
+            $communication = Communication::get($id);
+        } catch (ModelNotFoundException $e) {
+            Message::error($e->getMessage());
+            return $this->redirect('/admin/communication/');
         }
 
+        $values['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
+        $values['content'] = $communication->content;
+        $values['subject'] = $communication->subject;
 
         if ($communication->template == Template::NEWSLETTER) {
             $template = "newsletter";
@@ -339,8 +344,6 @@ class CommunicationAdminController extends AbstractAdminController
             $values['image'] = $communication->getImage()->getLink(1920,335,true);
         }
         else $template = "default";
-
-        $values['communication'] = $communication;
 
         return $this->viewResponse('email/'.$template, $values);
     }
