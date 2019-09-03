@@ -111,7 +111,8 @@ class Stats {
     }
 
     public function getInvestFees($filter = []) {
-        $totals = Invest::calculateFees($filter);
+        $total_fees = Invest::calculateFees($filter, 'sum');
+        $total_vat= Invest::calculateVat($filter, 'sum');
         // print_r($filter);print_r($totals);
         // Add some extra useful calcs
         foreach($totals as $k => $a) {
