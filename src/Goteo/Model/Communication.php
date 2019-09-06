@@ -29,6 +29,7 @@ class Communication extends \Goteo\Core\Model {
         $error = '',
         $lang,
         $date,
+        $projects,
         $filter;
 
     public static function getLangFields() {
@@ -48,6 +49,8 @@ class Communication extends \Goteo\Core\Model {
         if (!$communication instanceof Communication) {
             throw new ModelNotFoundException("Not found communication [$id]");
         }
+        $communication->projects = self::getCommunicationProjects($communication->id);
+
         return $communication;
 	}
 
@@ -97,7 +100,11 @@ class Communication extends \Goteo\Core\Model {
         }
         if(isset($filters['subject'])) {
             $filter[] = "communication.subject LIKE :subject";
-            $values["subject"] = '%' . $filters['subject'] . '%';
+            $values[":subject"] = '%' . $filters['subject'] . '%';
+        }
+        if(isset($filters['filter'])) {
+            $filter[] = "communication.filter LIKE :filter";
+            $values[":filter"] = '%' . $filters['filter'] . '%';
         }
 
         if($filter) {
@@ -139,76 +146,60 @@ class Communication extends \Goteo\Core\Model {
         }
         return [];
     }
+    
+    public function setPromotedProjects() {
+        $values = Array(':communication' => $this->id, ':project' => '');
+        
+        try {
+            $query = static::query('DELETE FROM communication_project WHERE communication = :communication', Array(':communication' => $this->id));
+        }
+        catch (\PDOException $e) {
+            Message::error("Error deleting previous communication projects for communication " . $this->id . " " . $e->getMessage());
+        }
 
-	/**
-	 * Enviar mensaje.
-	 * @param type array	$errors
-	 */
-    public function send(&$errors = array()) {
-        if (!self::checkLimit(1)) {
-            $errors[] = 'Daily limit reached!';
-            return false;
-        }
-        if (empty($this->id)) {
-            $this->save();
-        }
-        $ok = false;
-        if($this->validate($errors)) {
+        foreach($this->projects as $key => $value) {
+            $values[':project'] = $value;
             try {
-                if (self::checkBlocked($this->to, $reason)) {
-                    throw new \phpmailerException("The recipient is blocked due too many bounces or complaints [$reason]");
-                }
-
-                $allowed = false;
-                if (Config::get('env') === 'real') {
-                    $allowed = true;
-                }
-                elseif (Config::get('env') === 'beta' && Config::get('mail.beta_senders') && preg_match('/' . str_replace('/', '\/', Config::get('mail.beta_senders')) .'/i', $this->to)) {
-                    $allowed = true;
-                }
-
-                $communication = $this->buildMessage();
-
-                if ($allowed) {
-                    // Envía el mensaje
-                    if ($communication->send()) {
-                        $ok = true;
-                    } else {
-                        $errors[] = 'Internal mail server error!';
-                    }
-                } else {
-                    // exit if not allowed
-                    // TODO: log this?
-                        // add any debug here
-                    $this->logger('SKIPPING MAIL SENDING', [$this, 'mail_to' => $this->to, 'mail_from' => $this->from, 'template' => $this->template , 'error' => 'Settings restrictions']);
-                    // Log this email
-                    $communication->preSend();
-                    $path = GOTEO_LOG_PATH . 'mail-send/';
-                    @mkdir($path, 0777, true);
-                    $path .= $this->id .'-' . str_replace(['@', '.'], ['_', '_'], $this->to) . '.eml';
-                    if(@file_put_contents($path, $communication->getSentMIMEMessage())) {
-                        $this->logger('Logged email content into: ' . $path);
-                    }
-                    else {
-                        $this->logger('ERROR while logging email content into: ' . $path, [], 'error');
-                    }
-                    // return true is ok, let's pretend the mail is sent...
-                    $ok = true;
-                }
-
-            } catch(\PDOException $e) {
-                $errors[] = "Error sending message: " . $e->getMessage();
-            } catch(\phpmailerException $e) {
-                $errors[] = $e->getMessage();
+                if ($value)
+                    $query = static::query('INSERT INTO communication_project(`communication`, `project`) VALUES(:communication,:project)', $values);
+            }
+            catch (\PDOException $e) {
+                Message::error("Error saving filter projects " . $e->getMessage());
+                return false;
             }
         }
-        if(!$this->massive) {
-            $this->sent = $ok;
-            $this->error = implode("\n", $errors);
-            $this->save();
+        return true;
+    }
+
+    static public function getCommunicationProjects ($communication){
+        $query = static::query('SELECT `project` FROM communication_project WHERE communication = ?', $communication);
+        $projects = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        $communication_projects = [];
+
+        foreach($projects as $project) {
+            foreach($project as $key => $value) {
+                $project = Project::getMini($value);
+                $communication_projects[] = $project;
+            }
         }
-        return $ok;
-	}
+        return $communication_projects;
+    }
+
+    static public function getCommunicationProjectsMini ($communication){
+        $query = static::query('SELECT `project` FROM communication_project WHERE communication = ?', $communication);
+        $projects = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        $communication_projects = [];
+
+        foreach($projects as $project) {
+            foreach($project as $key => $value) {
+                $project = Project::getMini($value);
+                $communication_projects[] = $project;
+            }
+        }
+        return $communication_projects;
+    }
 
     public function save(&$errors = []) {
         $this->validate($errors);
@@ -227,6 +218,8 @@ class Communication extends \Goteo\Core\Model {
 
         try {
             $this->dbInsertUpdate($fields);
+
+            $this->setPromotedProjects();
             return true;
         }
         catch(\PDOException $e) {
