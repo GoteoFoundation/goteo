@@ -26,6 +26,7 @@ use Goteo\Application\View;
 use Goteo\Library\Text;
 use Goteo\Library\Feed;
 use Goteo\Library\Translator\ModelTranslator;
+use Goteo\Library\Forms\FormModelException;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
@@ -94,7 +95,9 @@ class CommunicationAdminController extends AbstractAdminController
             $communication->subject = $all[$communication->lang]['subject'];
             $communication->content = $all[$communication->lang]['body'];
             $communication->header = $form['image'];
+            $communication->projects = $request->request->get('communication_add');
             $communication->save($errors);
+            
 
             if ($errors) {
                 throw new FormModelException(Text::get('form-sent-error'));
@@ -232,7 +235,12 @@ class CommunicationAdminController extends AbstractAdminController
     public function addAction($id = null, Request $request)
     {
         if ($request->isMethod('post') ) {
-            $communication = $this->doSave($id, $request);
+            try {
+                $communication = $this->doSave($id, $request);
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+                return $this->redirect();
+            }
             return $this->redirect('/admin/communication/detail/'.$communication->id);
         }
         else {
@@ -337,7 +345,8 @@ class CommunicationAdminController extends AbstractAdminController
         $values['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
         $values['content'] = $communication->content;
         $values['subject'] = $communication->subject;
-        $values['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
+        // $values['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
+        $values['promotes'] = $communication->getCommunicationProjects($communication->id);
 
         if ($communication->template == Template::NEWSLETTER) {
             $template = "newsletter";
