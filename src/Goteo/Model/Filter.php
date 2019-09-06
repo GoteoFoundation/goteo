@@ -14,7 +14,7 @@ namespace Goteo\Model;
 use Goteo\Library\Text;
 use Goteo\Application\Message;
 use Goteo\Model\User;
-use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelNotFoundException;
 use DateTime;
 
 class Filter extends \Goteo\Core\Model {
@@ -63,6 +63,8 @@ class Filter extends \Goteo\Core\Model {
         $filter->projects = self::getFilterProject($id);
         $filter->calls = self::getFilterCall($id);
         $filter->matchers = self::getFilterMatcher($id);
+        $filter->sdgs = self::getFilterSDG($id);
+        $filter->footprints = self::getFilterFootprint($id);
 
         return $filter;
     }
@@ -143,6 +145,38 @@ class Filter extends \Goteo\Core\Model {
         return $filter_matchers;
     }
 
+    static public function getFiltersdg ($filter){
+        $query = static::query('SELECT `sdg` FROM filter_sdg WHERE filter = ?', $filter);
+        $sdgs = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        $filter_sdgs = [];
+
+        foreach($sdgs as $sdg) {
+            foreach($sdg as $key => $value) {
+                $sdg = Sdg::get($value);
+                $filter_sdgs[$value] = $sdg->name;
+            }
+        }
+
+        return $filter_sdgs;
+    }
+
+    static public function getFilterfootprint ($filter){
+        $query = static::query('SELECT `footprint` FROM filter_footprint WHERE filter = ?', $filter);
+        $footprints = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        $filter_footprints = [];
+
+        foreach($footprints as $footprint) {
+            foreach($footprint as $key => $value) {
+                $footprint = Footprint::get($value);
+                $filter_footprints[$value] = $footprint->name;
+            }
+        }
+
+        return $filter_footprints;
+    }
+
     public function setFilterProjects(){
         $values = Array(':filter' => $this->id, ':project' => '');
         
@@ -213,6 +247,52 @@ class Filter extends \Goteo\Core\Model {
         return true;
     }
 
+    public function setFilterSDG(){
+        $values = Array(':filter' => $this->id, ':sdg' => '');
+        
+        try {
+            $query = static::query('DELETE FROM filter_sdg WHERE filter = :filter', Array(':filter' => $this->id));
+        }
+        catch (\PDOException $e) {
+            Message::error("Error deleting previous filter sdg for filter " . $this->id . " " . $e->getMessage());
+        }
+
+        foreach($this->sdgs as $key => $value) {
+            $values[':sdg'] = $value;
+            try {
+                $query = static::query('INSERT INTO filter_sdg(`filter`, `sdg`) VALUES(:filter,:sdg)', $values);
+            }
+            catch (\PDOException $e) {
+                Message::error("Error saving filter sdg " . $e->getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function setFilterFootprint(){
+        $values = Array(':filter' => $this->id, ':footprint' => '');
+        
+        try {
+            $query = static::query('DELETE FROM filter_footprint WHERE filter = :filter', Array(':filter' => $this->id));
+        }
+        catch (\PDOException $e) {
+            Message::error("Error deleting previous filter footprint for filter " . $this->id . " " . $e->getMessage());
+        }
+
+        foreach($this->footprints as $key => $value) {
+            $values[':footprint'] = $value;
+            try {
+                $query = static::query('INSERT INTO filter_footprint(`filter`, `footprint`) VALUES(:filter,:footprint)', $values);
+            }
+            catch (\PDOException $e) {
+                Message::error("Error saving filter footprint " . $e->getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
     public function validate(&$errors = array()) {
 
         if (empty($this->name))
@@ -257,6 +337,8 @@ class Filter extends \Goteo\Core\Model {
             $this->setFilterProjects();
             $this->setFilterCalls();
             $this->setFilterMatcher();
+            $this->setFilterSDG();
+            $this->setFilterFootprint();
 
         } catch(\PDOException $e) {
             print("exception");
@@ -411,7 +493,7 @@ class Filter extends \Goteo\Core\Model {
 
         if (isset($this->wallet)) {
             
-            $sqlFilter .= "AND user.id ";
+            $sqlFilter .= " AND user.id ";
             $sqlFilter .= ($this->wallet)? "IN " : "NOT IN ";
             $sqlFilter .= " ( SELECT user_pool.user
                               FROM user_pool
@@ -433,12 +515,9 @@ class Filter extends \Goteo\Core\Model {
 
         if (isset($this->cert)) {
             $sqlInner .= " INNER JOIN donor
-            ON donor.user = user.id ";
-            if ($this->cert) {
-                $sqlInner .= " AND donor.confirmed = 1 ";
-            } else {
-                $sqlInner .= " AND donor.confirmed = 0 "; 
-            }
+            ON donor.user = user.id AND donor.confirmed = :cert ";
+            $values[':cert'] = $this->cert;
+
             
             if (isset($this->startdate)) {
                 $sqlInner .= " AND donor.year BETWEEN :startyear ";
@@ -498,7 +577,7 @@ class Filter extends \Goteo\Core\Model {
         return $receivers;
     }
 
-    public function getDonorsSQL(&$values, $lang = null) {
+    public function getDonorsSQL($lang = null) {
 
         $receivers = array();
 
@@ -620,7 +699,7 @@ class Filter extends \Goteo\Core\Model {
 
         if (isset($this->wallet)) {
             
-            $sqlFilter .= "AND user.id ";
+            $sqlFilter .= " AND user.id ";
             $sqlFilter .= ($this->wallet)? "IN " : "NOT IN ";
             $sqlFilter .= " ( SELECT user_pool.user
                               FROM user_pool
@@ -685,7 +764,7 @@ class Filter extends \Goteo\Core\Model {
         
         //  die( \sqldbg($sql, $values) );
 
-        return $sql;
+        return [$sql, $values];
     }
 
     public function getPromoters($offset = 0, $limit = 0, $count = false, $lang = null) {
@@ -805,9 +884,7 @@ class Filter extends \Goteo\Core\Model {
 
     }
 
-    public function getPromotersSQL(&$values, $lang = null) {
-
-        $receivers = array();
+    public function getPromotersSQL($lang = null) {
 
         $values = array();
         $sqlInner  = '';
@@ -906,7 +983,7 @@ class Filter extends \Goteo\Core\Model {
         
          //die( \sqldbg($sql, $values) );
 
-        return $sql;
+         return [$sql, $values];
 
     }
 
@@ -961,7 +1038,7 @@ class Filter extends \Goteo\Core\Model {
         return $receivers;
     }
 
-    public function getMatchersSQL(&$values, $lang = null) {
+    public function getMatchersSQL($lang = null) {
 
         $receivers = array();
 
@@ -1048,7 +1125,7 @@ class Filter extends \Goteo\Core\Model {
         return $receivers;
     }
 
-    public function getTestersSQL(&$values, $lang = null) {
+    public function getTestersSQL($lang = null) {
 
         $receivers = array();
 
@@ -1081,7 +1158,7 @@ class Filter extends \Goteo\Core\Model {
 
         //  die( \sqldbg($sql, $values) );
 
-        return $sql;
+        return [$sql, $values];
     }
 
     public function getFiltered($offset = 0, $limit = 0, $count = false, $lang = null)
@@ -1100,22 +1177,20 @@ class Filter extends \Goteo\Core\Model {
         return $result;
     }
 
-    public function getFilteredSQL(&$values, $lang = null)
+    public function getFilteredSQL($lang = null)
     {
 
-        $sql = '';
-        $values = [];
         if ($this->role == $this::DONOR) {
-            $sql = $this->getDonorsSQL($values, $lang);
+            list($sqlFilter, $values) = $this->getDonorsSQL($lang);
         } else if ($this->role == $this::PROMOTER) {
-            $sql = $this->getPromotersSQL($values, $lang);
+             list($sqlFilter, $values) = $this->getPromotersSQL($lang);
         } else if ($this->role == $this::MATCHER) {
-            $sql = $this->getMatchersSQL($values , $lang);            
+             list($sqlFilter, $values) = $this->getMatchersSQL($lang);            
         } else if ($this->role == $this::TEST) {
-            $sql = $this->getTestersSQL($values, $lang);
+             list($sqlFilter, $values) = $this->getTestersSQL($lang);
         }
 
-        return $sql;
+        return  [$sqlFilter, $values];
     }
 
 

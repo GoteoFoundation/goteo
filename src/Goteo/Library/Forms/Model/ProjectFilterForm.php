@@ -14,17 +14,17 @@ namespace Goteo\Library\Forms\Model;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
-use Goteo\Model\Image;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Goteo\Application\Session;
 use Goteo\Library\Forms\FormModelException;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Model\Project;
+use Goteo\Model\Sdg;
+use Goteo\Model\Footprint;
 
 class ProjectFilterForm extends AbstractFormProcessor {
 
     public function createForm() {
 
+        $model = $this->getModel();
         $builder = $this->getBuilder();
         $options = $builder->getOptions();
         $filter = $this->getModel();
@@ -50,6 +50,16 @@ class ProjectFilterForm extends AbstractFormProcessor {
             'unique' => Text::get('admin-filter-type-unique'),
             'multidonor' => Text::get('admin-filter-type-multidonor'),
         ];
+
+        $sdgs = [];
+        foreach(Sdg::getList([],0,100) as $s) {
+            $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
+        }
+
+        $footprints = [];
+        foreach(Footprint::getList([],0,100) as $f) {
+            $footprints['<img src="'.$f->getIcon()->getLink().'" class="icon icon-3x"> '.$f->name] = $f->id;
+        }
 
         $builder
             ->add('name', 'text', array(
@@ -110,6 +120,28 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'matcher'
             ])
+            ->add('sdgs', 'choice', array(
+                'label' => 'admin-title-sdgs',
+                'data' => null,
+                'expanded' => true,
+                'multiple' => true,
+                'required' => false,
+                'choices' => $sdgs,
+                'choices_as_values' => true,
+                'choices_label_escape' => false,
+                'wrap_class' => 'col-xs-6 col-xxs-12',
+            ))
+            ->add('footprints', 'choice', array(
+                'label' => 'admin-title-footprints',
+                'data' => null,
+                'expanded' => true,
+                'multiple' => true,
+                'required' => false,
+                'choices' => $footprints,
+                'choices_as_values' => true,
+                'choices_label_escape' => false,
+                'wrap_class' => 'col-xs-6 col-xxs-12'
+            ))
             ->add('status', 'choice', array(
                 'label' => 'regular-status',
                 'required' => false,
@@ -173,6 +205,12 @@ class ProjectFilterForm extends AbstractFormProcessor {
         }
         foreach($data['matchers'] as $key => $value) {
             if (!empty($value)) array_push($model->matchers,$value);
+        }
+        foreach($data['sdgs'] as $key => $value) {
+            if (!empty($value)) array_push($model->sdgs, $value);
+        }
+        foreach($data['footprints'] as $key => $value) {
+            if (!empty($value)) array_push($model->footprints, $value);
         }
 
         $errors = [];

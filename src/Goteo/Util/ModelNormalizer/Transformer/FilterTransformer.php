@@ -26,7 +26,7 @@ class FilterTransformer extends AbstractTransformer {
 
     public function getLabel($key) {
         if ($key == "users") {
-            return "<i class='fa fa-users'>" . Text::get("admin-title-$key") . "</i>";
+            return "<i class='fa fa-users'></i> " . Text::get("admin-title-$key");
         }
         return Text::get("admin-title-$key");
     }

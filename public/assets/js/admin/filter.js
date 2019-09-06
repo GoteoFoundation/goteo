@@ -36,6 +36,8 @@ $(function () {
     var projects = $('#form-projects');
     var calls = $('#form-calls');
     var matchers = $('#form-matchers');
+    var sdgs = $('#form-sdgs');
+    var footprints = $('#form-footprints');
     var status = $('#form-status');
     var typeofdonor = $('#form-typeofdonor');
     var foundationdonor = $('#form-foundationdonor');
@@ -51,6 +53,8 @@ $(function () {
             projects.show();
             calls.show();
             matchers.show()
+            footprints.show();
+            sdgs.show();
             status.show();
             typeofdonor.show();
             foundationdonor.show();
@@ -63,6 +67,8 @@ $(function () {
             projects.show();
             calls.show();
             matchers.show();
+            sdgs.show();
+            footprints.show();
             status.show();
             typeofdonor.hide();
             typeofdonor.val = '';
@@ -77,9 +83,9 @@ $(function () {
         }
         else if (role == "matcher") {
             projects.hide();
-            projects.val = '';
             calls.hide();
-            calls.val = '';
+            footprints.hide();
+            sdgs.hide();
             status.hide();
             status.val = '';
             typeofdonor.hide();
@@ -97,9 +103,10 @@ $(function () {
         }
         else if (role == "test") {
             projects.hide();
-            projects.val = '';
             calls.hide();
-            calls.val = '';
+            matchers.hide();
+            sdgs.hide();
+            footprints.hide();
             status.hide();
             status.val = '';
             typeofdonor.hide();
@@ -112,8 +119,6 @@ $(function () {
             wallet.val = '';
             location.hide();
             location.val = '';
-            matchers.hide();
-            matchers.val = '';
         }
     }
 

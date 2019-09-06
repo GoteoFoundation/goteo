@@ -63,10 +63,12 @@ class FilterAdminController extends AbstractAdminController
 
     public function editAction($id = '', Request $request)
     {        
-        $filter = $id ? Filter::get($id) : new Filter(); 
-		if (!$filter) {
-			throw new ModelNotFoundException("Not found filter [$id]");
-		}
+        try  {
+            $filter = $id ? Filter::get($id) : new Filter(); 
+        } catch (ModelNotFoundException $e) {
+            Message::error($e->getMessage());
+            return $this->redirect('/admin/filter');
+        }
 
 
         $defaults = (array) $filter;
