@@ -310,7 +310,7 @@
 
                     <?php foreach($this->promotes as $key => $promote) : ?>
 
-                        <?= $this->insert('email/partials/newsletter_project', ['promote'=>$promote, 'project'=>$promote->projectData, 'key' => $key]); ?>
+                        <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key]); ?>
 
                     <?php endforeach ?>
 
