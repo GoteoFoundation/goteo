@@ -514,9 +514,38 @@ class Mail extends \Goteo\Core\Model {
      */
     public function render($plain = false, Array $extra_vars = [], $process_links = true) {
         $content = $this->content;
+        
+        $extra_vars['content'] = $content;
+        $extra_vars['subject'] = $this->subject;
+
+        $extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
+
+        if ($plain) {
+            return strip_tags($this->content) . ($extra_vars['alternate'] ? "\n\n" . $extra_vars['alternate'] : '');
+        }
+
+        if (isset($this->communication_id)) {
+            $communication = Communication::get($this->communication_id); 
+            $extra_vars['image'] = $communication->getImage()->getLink(1920,335,true);
+            $extra_vars['promotes'] = $communication->getCommunicationProjects($communication->id);
+        }
+
+        if ($this->template == Template::NEWSLETTER || $this->template == Template::COMMUNICATION) 
+        {
+            View::setTheme('responsive');
+        }
+
+        $engine = View::createEngine();
+        $engine->setFolders(View::getFolders());
+
+        if ($this->template == Template::NEWSLETTER) {
+            $extra_vars['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
+            $content = $engine->render('email/newsletter', $extra_vars, false);
+        }
+        $content = $engine->render('email/default', $extra_vars, false);
+
         // Process links if tracker var present
         if($process_links) {
-            // compilar links y cambiarlos por redirecciones a un controlador
             $content = preg_replace_callback([
                 '/(<a.*)href=(")([^"]*)"([^>]*)>/U',
                 "/(<a.*)href=(')([^']*)'([^>]*)>/U"
@@ -529,36 +558,7 @@ class Mail extends \Goteo\Core\Model {
                 $content);
         }
 
-        $extra_vars['content'] = $content;
-        $extra_vars['subject'] = $this->subject;
-
-        $extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
-
-        if ($plain) {
-            return strip_tags($this->content) . ($extra_vars['alternate'] ? "\n\n" . $extra_vars['alternate'] : '');
-        }
-
-        // Render in a separate instance of Foil to avoid some unexpected problems
-        if (isset($this->communication_id)) {
-            $communication = Communication::get($this->communication_id); 
-            $extra_vars['image'] = $communication->getImage()->getLink(1920,335,true);
-            $extra_vars['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
-        }
-
-        if ($this->template == Template::NEWSLETTER || $this->template == Template::COMMUNICATION) 
-        {
-            View::setTheme('responsive');
-        }
-
-        $engine = View::createEngine();
-        $engine->setFolders(View::getFolders());
-        // para plantilla boletin
-
-        if ($this->template == Template::NEWSLETTER) {
-            $extra_vars['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
-            return $engine->render('email/newsletter', $extra_vars, false);
-        }
-        return $engine->render('email/default', $extra_vars, false);
+        return $content;
     }
 
     /**
