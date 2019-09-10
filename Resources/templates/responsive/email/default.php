@@ -163,7 +163,7 @@
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td align="left"> <?= $this->markdown($this->content) ?> </td>
+                                            <td align="left"> <?= ($this->type == 'md')? $this->markdown($this->content) : $this->raw('content') ?> </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -173,6 +173,14 @@
                         
 
                     </div>
+
+                    <!-- PROMOTED PROJECTS -->
+
+                    <?php foreach($this->promotes as $key => $promote) : ?>
+
+                        <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key]); ?>
+
+                    <?php endforeach ?>
 
                    <!-- FOOTER SOCIAL -->
                     <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#555555">

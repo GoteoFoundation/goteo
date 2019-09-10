@@ -295,7 +295,7 @@
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td align="left"> <?= $this->markdown($this->content) ?> </td>
+                                            <td align="left"> <?= ($this->type == 'md')? $this->markdown($this->content) : $this->raw('content') ?> </td>
                                         </tr>
                                     </tbody>
                                 </table>
