@@ -31,7 +31,7 @@ $(function () {
     var title = $('#form-title');
     var startdate = $('#form-startdate');
     var enddate = $('#form-enddate');
-    var predefineddate = $('#form-predefineddate');
+    var predefineddate = $('#form-predefineddata');
     var role = $('#form-role');
     var projects = $('#form-projects');
     var calls = $('#form-calls');
@@ -46,62 +46,11 @@ $(function () {
     var location = $('#form-project_location');
 
     function changeForm(role){
-        $('#form-admin-filters-dependent').hide(400);
-        $('body,html').animate({scrollTop : $('#form-admin-filters-dependent').height()}, 500);
 
-        if (role == "donor") {
-            projects.show();
-            calls.show();
-            matchers.show()
-            footprints.show();
-            sdgs.show();
-            status.show();
-            typeofdonor.show();
-            foundationdonor.show();
-            cert.show();
-            wallet.show();
-            location.show();
-            $('#form-admin-filters-dependent').show(400);
-        }
-        else if (role == "promoter") { 
-            projects.show();
-            calls.show();
-            matchers.show();
-            sdgs.show();
-            footprints.show();
-            status.show();
-            typeofdonor.hide();
-            typeofdonor.val = '';
-            foundationdonor.hide();
-            foundationdonor.val = '';
-            cert.hide();
-            cert.val = '';
-            wallet.hide();
-            wallet.val = '';
-            location.show();
-            $('#form-admin-filters-dependent').show(400);
-        }
-        else if (role == "matcher") {
-            projects.hide();
-            calls.hide();
-            footprints.hide();
-            sdgs.hide();
-            status.hide();
-            status.val = '';
-            typeofdonor.hide();
-            typeofdonor.val = '';
-            foundationdonor.hide();
-            foundationdonor.val = '';
-            cert.hide();
-            cert.val = '';
-            wallet.hide();
-            wallet.val = '';
-            location.hide();
-            location.val = '';
-            matchers.show();
-            $('#form-admin-filters-dependent').show(400);
-        }
-        else if (role == "test") {
+        if (role == "user" || role == "test") {
+            startdate.hide();
+            enddate.hide();
+            predefineddate.hide();
             projects.hide();
             calls.hide();
             matchers.hide();
@@ -119,6 +68,64 @@ $(function () {
             wallet.val = '';
             location.hide();
             location.val = '';
+        }
+        else if (role == "donor" || role == "no-donor") {
+            startdate.show();
+            enddate.show();
+            predefineddate.show();
+            projects.show();
+            calls.show();
+            matchers.show()
+            footprints.show();
+            sdgs.show();
+            status.show();
+            typeofdonor.show();
+            foundationdonor.show();
+            cert.show();
+            wallet.show();
+            location.show();
+        }
+        else if (role == "promoter") { 
+            startdate.show();
+            enddate.show();
+            predefineddate.show();
+            projects.show();
+            calls.show();
+            matchers.show();
+            sdgs.show();
+            footprints.show();
+            status.show();
+            typeofdonor.hide();
+            typeofdonor.val = '';
+            foundationdonor.hide();
+            foundationdonor.val = '';
+            cert.hide();
+            cert.val = '';
+            wallet.hide();
+            wallet.val = '';
+            location.show();
+        }
+        else if (role == "matcher") {
+            startdate.show();
+            enddate.show();
+            predefineddate.show();
+            projects.hide();
+            calls.hide();
+            footprints.hide();
+            sdgs.hide();
+            status.hide();
+            status.val = '';
+            typeofdonor.hide();
+            typeofdonor.val = '';
+            foundationdonor.hide();
+            foundationdonor.val = '';
+            cert.hide();
+            cert.val = '';
+            wallet.hide();
+            wallet.val = '';
+            location.hide();
+            location.val = '';
+            matchers.show();
         }
     }
 
