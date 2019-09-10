@@ -19,7 +19,9 @@ use DateTime;
 
 class Filter extends \Goteo\Core\Model {
 
+    const USER = "user";
     const DONOR = "donor";
+    const NODONOR = "no-donor";
     const PROMOTER = "promoter";
     const MATCHER = "matcher";
     const TEST = "test";
@@ -371,6 +373,105 @@ class Filter extends \Goteo\Core\Model {
 
     }
 
+    public function getUsers($offset = 0, $limit = 0, $count = false, $lang = null) {
+        $receivers = array();
+
+        $values = array();
+        $sqlFields  = '';
+        $sqlInner  = '';
+        $sqlFilter = '';
+
+        if (isset($lang)) {
+            $parts = [];
+            $sqlFilter .= " AND user.lang ";
+            foreach($lang as $key => $value) {
+                $parts[] = ':lang' . $key;
+                $values[':lang' . $key] = $value;
+            }
+            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
+        }
+
+        if($count) {
+            $sql = "SELECT COUNT(DISTINCT(user.id)) 
+                    FROM user 
+                    LEFT JOIN user_prefer
+                        ON user.id = user_prefer.user
+                    $sqlInner 
+                    WHERE user.active = 1 AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) $sqlFilter";
+            // die( \sqldbg($sql, $values) );
+            return (int) User::query($sql, $values)->fetchColumn();
+        }
+
+        $sql = "SELECT
+                    user.id as user,
+                    user.name as name,
+                    user.email as email
+                    $sqlFields
+                FROM user
+                LEFT JOIN user_prefer
+                    ON user.id = user_prefer.user
+                $sqlInner
+                WHERE user.active = 1 AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) 
+                $sqlFilter
+                GROUP BY user.id
+                ORDER BY user.name ASC
+                ";
+
+        if ($limit) $sql .= "LIMIT $offset, $limit ";
+
+        //  die( \sqldbg($sql, $values) );
+
+        if ($query = User::query($sql, $values)) {
+            $receivers = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User');
+        }
+
+        return $receivers;
+    }
+
+    public function getUsersSQL($lang = null, $prefix = '') {
+
+        $receivers = array();
+
+        $values = array();
+        $sqlFields  = '';
+        $sqlInner  = '';
+        $sqlFilter = '';
+
+        $values[':prefix'] = $prefix;
+
+
+        if (isset($lang)) {
+            $parts = [];
+            $sqlFilter .= " AND user.lang ";
+            foreach($lang as $key => $value) {
+                $parts[] = ':lang' . $key;
+                $values[':lang' . $key] = $value;
+            }
+            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
+            
+        }
+
+        $sql = "SELECT
+                    :prefix,
+                    user.id as user,
+                    user.name as name,
+                    user.email as email
+                    $sqlFields
+                FROM user
+                LEFT JOIN user_prefer
+                    ON user.id = user_prefer.user
+                $sqlInner
+                WHERE user.active = 1 AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) 
+                $sqlFilter
+                GROUP BY user.id
+                ORDER BY user.name ASC
+                ";
+
+        sqldbg($sql, $values);
+
+        return [$sql, $values];
+    }
+
     public function getDonors($offset = 0, $limit = 0, $count = false, $lang = null) {
 
         $receivers = array();
@@ -536,8 +637,13 @@ class Filter extends \Goteo\Core\Model {
         }
 
         if (isset($lang)) {
-            $sqlFilter .= " AND user.lang = :lang";
-            $values[':lang'] = $lang;
+            $parts = [];
+            $sqlFilter .= " AND user.lang ";
+            foreach($lang as $key => $value) {
+                $parts[] = ':lang' . $key;
+                $values[':lang' . $key] = $value;
+            }
+            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
         }
 
         if($count) {
@@ -577,13 +683,15 @@ class Filter extends \Goteo\Core\Model {
         return $receivers;
     }
 
-    public function getDonorsSQL($lang = null) {
+    public function getDonorsSQL($lang = null, $prefix = '') {
 
         $receivers = array();
 
         $values = array();
         $sqlInner  = '';
         $sqlFilter = '';
+
+        $values[':prefix'] = $prefix;
 
         $investStatus = Invest::$RAISED_STATUSES;
 
@@ -744,11 +852,17 @@ class Filter extends \Goteo\Core\Model {
         }
 
         if (isset($lang)) {
-            $sqlFilter .= " AND user.lang = :lang";
-            $values[':lang'] = $lang;
+            $parts = [];
+            $sqlFilter .= " AND user.lang ";
+            foreach($lang as $key => $value) {
+                $parts[] = ':lang' . $key;
+                $values[':lang' . $key] = $value;
+            }
+            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
         }
 
         $sql = "SELECT
+                    :prefix,
                     user.id as user,
                     user.name as name,
                     user.email as email
@@ -853,6 +967,17 @@ class Filter extends \Goteo\Core\Model {
             $values['enddate'] = $this->enddate;
         }
 
+        if (isset($lang)) {
+            $parts = [];
+            $sqlFilter .= " AND user.lang ";
+            foreach($lang as $key => $value) {
+                $parts[] = ':lang' . $key;
+                $values[':lang' . $key] = $value;
+            }
+            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
+        }
+
+
         if($count) {
             $sql = "SELECT COUNT(DISTINCT(user.id)) FROM user $sqlInner WHERE user.active = 1 $sqlFilter";
             // die( \sqldbg($sql, $values) );
@@ -884,12 +1009,13 @@ class Filter extends \Goteo\Core\Model {
 
     }
 
-    public function getPromotersSQL($lang = null) {
+    public function getPromotersSQL($lang = null, $prefix = '') {
 
         $values = array();
         $sqlInner  = '';
         $sqlFilter = '';
 
+        $values[':prefix'] = $prefix;
         
         $sqlInner .= "INNER JOIN project 
             ON project.owner = user.id
@@ -968,7 +1094,18 @@ class Filter extends \Goteo\Core\Model {
             $values['enddate'] = $this->enddate;
         }
 
+        if (isset($lang)) {
+            $parts = [];
+            $sqlFilter .= " AND user.lang ";
+            foreach($lang as $key => $value) {
+                $parts[] = ':lang' . $key;
+                $values[':lang' . $key] = $value;
+            }
+            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
+        }
+
         $sql = "SELECT
+                    :prefix,
                     user.id as user,
                     user.name as name,
                     user.email as email
@@ -1009,6 +1146,16 @@ class Filter extends \Goteo\Core\Model {
             $values[':matchers'] = implode(',', array_keys($this->matchers));
         }
 
+        if (isset($lang)) {
+            $parts = [];
+            $sqlFilter .= " AND user.lang ";
+            foreach($lang as $key => $value) {
+                $parts[] = ':lang' . $key;
+                $values[':lang' . $key] = $value;
+            }
+            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
+        }
+
         if($count) {
             $sql = "SELECT COUNT(DISTINCT(user.id)) FROM user $sqlInner WHERE user.active = 1 $sqlFilter";
             // die( \sqldbg($sql, $values) );
@@ -1038,7 +1185,7 @@ class Filter extends \Goteo\Core\Model {
         return $receivers;
     }
 
-    public function getMatchersSQL($lang = null) {
+    public function getMatchersSQL($lang = null, $prefix = '') {
 
         $receivers = array();
 
@@ -1046,6 +1193,7 @@ class Filter extends \Goteo\Core\Model {
         $sqlInner  = '';
         $sqlFilter = '';
 
+        $values[':prefix'] = $prefix;
         
         $sqlInner .= "INNER JOIN matcher 
             ON matcher.owner = user.id
@@ -1060,7 +1208,18 @@ class Filter extends \Goteo\Core\Model {
             $values[':matchers'] = implode(',', array_keys($this->matchers));
         }
 
+        if (isset($lang)) {
+            $parts = [];
+            $sqlFilter .= " AND user.lang ";
+            foreach($lang as $key => $value) {
+                $parts[] = ':lang' . $key;
+                $values[':lang' . $key] = $value;
+            }
+            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
+        }
+
         $sql = "SELECT
+                    :prefix,
                     user.id as user,
                     user.name as name,
                     user.email as email
@@ -1091,8 +1250,13 @@ class Filter extends \Goteo\Core\Model {
         $sqlFilter .= " AND user_interest.interest = 15";
 
         if (isset($lang)) {
-            $sqlFilter .= " AND user.lang = :lang";
-            $values[':lang'] = $lang;
+            $parts = [];
+            $sqlFilter .= " AND user.lang ";
+            foreach($lang as $key => $value) {
+                $parts[] = ':lang' . $key;
+                $values[':lang' . $key] = $value;
+            }
+            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
         }
 
         if($count) {
@@ -1125,7 +1289,7 @@ class Filter extends \Goteo\Core\Model {
         return $receivers;
     }
 
-    public function getTestersSQL($lang = null) {
+    public function getTestersSQL($lang = null, $prefix = '') {
 
         $receivers = array();
 
@@ -1134,16 +1298,24 @@ class Filter extends \Goteo\Core\Model {
         $sqlInner  = '';
         $sqlFilter = '';
 
+        $values[':prefix'] = $prefix;
+
         $sqlInner .= "INNER JOIN user_interest
             on user_interest.user = user.id";
         $sqlFilter .= " AND user_interest.interest = 15";
 
         if (isset($lang)) {
-            $sqlFilter .= " AND user.lang = :lang";
-            $values[':lang'] = $lang;
+            $parts = [];
+            $sqlFilter .= " AND user.lang ";
+            foreach($lang as $key => $value) {
+                $parts[] = ':lang' . $key;
+                $values[':lang' . $key] = $value;
+            }
+            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
         }
 
         $sql = "SELECT
+                    :prefix,
                     user.id as user,
                     user.name as name,
                     user.email as email
@@ -1164,8 +1336,12 @@ class Filter extends \Goteo\Core\Model {
     public function getFiltered($offset = 0, $limit = 0, $count = false, $lang = null)
     {
 
-        if ($this->role == $this::DONOR) {
+        if ($this->role == $this::USER) {
+            $result = $this->getUsers($offset, $limit, $count, $lang);
+        } else if ($this->role == $this::DONOR) {
             $result = $this->getDonors($offset, $limit, $count, $lang);
+        } else if ($this->role == $this::NODONOR) {
+            $result = $this->getNoDonors($offset, $limit, $count, $lang);
         } else if ($this->role == $this::PROMOTER) {
             $result = $this->getPromoters($offset, $limit, $count, $lang);
         } else if ($this->role == $this::MATCHER) {
@@ -1177,17 +1353,21 @@ class Filter extends \Goteo\Core\Model {
         return $result;
     }
 
-    public function getFilteredSQL($lang = null)
+    public function getFilteredSQL($lang = null, $prefix = '')
     {
 
-        if ($this->role == $this::DONOR) {
-            list($sqlFilter, $values) = $this->getDonorsSQL($lang);
+        if ($this->role == $this::USER) {
+            list($sqlFilter, $values) = $this->getUsersSQL($lang, $prefix);
+        } else if ($this->role == $this::DONOR) {
+            list($sqlFilter, $values) = $this->getDonorsSQL($lang, $prefix);
+        } else if ($this->role == $this::NODONOR) {
+            list($sqlFilter, $values) = $this->getNoDonorsSQL($lang, $prefix);
         } else if ($this->role == $this::PROMOTER) {
-             list($sqlFilter, $values) = $this->getPromotersSQL($lang);
+            list($sqlFilter, $values) = $this->getPromotersSQL($lang, $prefix);
         } else if ($this->role == $this::MATCHER) {
-             list($sqlFilter, $values) = $this->getMatchersSQL($lang);            
+            list($sqlFilter, $values) = $this->getMatchersSQL($lang, $prefix);            
         } else if ($this->role == $this::TEST) {
-             list($sqlFilter, $values) = $this->getTestersSQL($lang);
+            list($sqlFilter, $values) = $this->getTestersSQL($lang, $prefix);
         }
 
         return  [$sqlFilter, $values];
