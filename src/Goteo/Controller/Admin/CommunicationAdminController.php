@@ -162,33 +162,12 @@ class CommunicationAdminController extends AbstractAdminController
                     return $this->redirect('/admin/communication/detail/'.$communication->id);
                 }
 
-                // get the equivalent communication languages from preferences
-                // $comlangs = [];
-                // foreach($user_langs as $user_lang) {
-                //     $comlang = trim($user_lang);
-                //     if(!$comlang) continue;
-                //     // Get first fallback
-                //     if(!in_array($comlang, $template_langs)) {
-                //         $comlang = Lang::getFallback($comlang);
-                //     }
-                //     // Get the second fallback
-                //     if(!in_array($comlang, $template_langs)) {
-                //         $comlang = Lang::getFallback($comlang);
-                //     }
-                //     if($comlang === $lang) {
-                //         $comlangs[] = $user_lang;
-                //     }
-                // }
-                
-
                 $filter = Filter::get($communication->filter);
-                $receivers = $filter->getFiltered(0,0, false, $communication_lang->lang);
-                // $sql = $filter->getFilteredSQL( $values,$communication_lang->lang );
-                // $this->debug("SQL receivers", ['sql' => $sql, $sender, $this->user]);
-        
+                $langs = array_keys(Lang::getDependantLanguages($communication_lang->lang));
+                $langs = array_merge(array_diff($langs,$communication->getLangsAvailable()), [$communication_lang->lang]);
+                list($sqlFilter, $values) = $filter->getFilteredSQL($langs, $sender->id);
                 // add subscribers
-                $sender->addSubscribers($receivers);
-                // $sender->addSubscribersFromSQL($sql);
+                $sender->addSubscribersFromSQLValues($sqlFilter, $values);
         
                 // Evento Feed
                 $log = new Feed();
@@ -308,7 +287,11 @@ class CommunicationAdminController extends AbstractAdminController
 
         $filters = Filter::getAll();
     
-        $template = ['default' => 'General communication', 'newsletter' => Text::get('newsletter-lb')];
+        $template = [
+            Template::COMMUNICATION => Text::get('admin-communications-communication'), 
+            Template::NEWSLETTER => Text::get('admin-communications-newsletter')
+        ];
+        
         $translates = [];
 
         foreach($communication->getLangsAvailable() as $lang) {
