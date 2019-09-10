@@ -120,6 +120,8 @@
 
                 <!-- carousel slider -->
 
+                <?php if(count($project->gallery)): ?>
+
                 <div id="infoCarousel" class="carousel slide spacer-20" data-ride="carousel" data-interval="false">
 
                  <!-- Indicators -->
@@ -149,6 +151,8 @@
                  </a>
 
                 </div>
+
+            <?php endif; ?>
 
                 <!-- About -->
 
