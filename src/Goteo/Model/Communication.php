@@ -180,6 +180,7 @@ class Communication extends \Goteo\Core\Model {
         foreach($projects as $project) {
             foreach($project as $key => $value) {
                 $project = Project::getMini($value);
+                $project->image = Image::get($project->image);
                 $communication_projects[] = $project;
             }
         }
@@ -304,15 +305,29 @@ class Communication extends \Goteo\Core\Model {
 
     public function isActive() {
         $mails = Mail::getFromCommunicationId($this->id);
-        $sent = 0;
+        $active = 0;
         
         if ($mails) {
             foreach($mails as $mail) {
-                $sent = $sent || $mail->getSender()->isActive();
+                $active = $active || $mail->getSender()->isActive();
+            }
+        }
+        
+        return $active;
+    }
+
+    public function isSent() {
+        $mails = Mail::getFromCommunicationId($this->id);
+        $sent = 0;
+
+        if ($mails) {
+            foreach($mails as $mail) {
+                $sent = $sent || $mail->getSender()->getStatusObject()->sent;
             }
         }
         
         return $sent;
+
     }
 
 }
