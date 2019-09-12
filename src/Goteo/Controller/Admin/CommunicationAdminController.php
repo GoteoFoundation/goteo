@@ -26,6 +26,7 @@ use Goteo\Application\View;
 use Goteo\Library\Text;
 use Goteo\Library\Feed;
 use Goteo\Library\Translator\ModelTranslator;
+use Goteo\Library\Forms\FormModelException;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
@@ -94,7 +95,9 @@ class CommunicationAdminController extends AbstractAdminController
             $communication->subject = $all[$communication->lang]['subject'];
             $communication->content = $all[$communication->lang]['body'];
             $communication->header = $form['image'];
+            $communication->projects = $request->request->get('communication_add');
             $communication->save($errors);
+            
 
             if ($errors) {
                 throw new FormModelException(Text::get('form-sent-error'));
@@ -159,33 +162,12 @@ class CommunicationAdminController extends AbstractAdminController
                     return $this->redirect('/admin/communication/detail/'.$communication->id);
                 }
 
-                // get the equivalent communication languages from preferences
-                // $comlangs = [];
-                // foreach($user_langs as $user_lang) {
-                //     $comlang = trim($user_lang);
-                //     if(!$comlang) continue;
-                //     // Get first fallback
-                //     if(!in_array($comlang, $template_langs)) {
-                //         $comlang = Lang::getFallback($comlang);
-                //     }
-                //     // Get the second fallback
-                //     if(!in_array($comlang, $template_langs)) {
-                //         $comlang = Lang::getFallback($comlang);
-                //     }
-                //     if($comlang === $lang) {
-                //         $comlangs[] = $user_lang;
-                //     }
-                // }
-                
-
                 $filter = Filter::get($communication->filter);
-                $receivers = $filter->getFiltered(0,0, false, $communication_lang->lang);
-                // $sql = $filter->getFilteredSQL( $values,$communication_lang->lang );
-                // $this->debug("SQL receivers", ['sql' => $sql, $sender, $this->user]);
-        
+                $langs = array_keys(Lang::getDependantLanguages($communication_lang->lang));
+                $langs = array_merge(array_diff($langs,$communication->getLangsAvailable()), [$communication_lang->lang]);
+                list($sqlFilter, $values) = $filter->getFilteredSQL($langs, $sender->id);
                 // add subscribers
-                $sender->addSubscribers($receivers);
-                // $sender->addSubscribersFromSQL($sql);
+                $sender->addSubscribersFromSQLValues($sqlFilter, $values);
         
                 // Evento Feed
                 $log = new Feed();
@@ -232,7 +214,12 @@ class CommunicationAdminController extends AbstractAdminController
     public function addAction($id = null, Request $request)
     {
         if ($request->isMethod('post') ) {
-            $communication = $this->doSave($id, $request);
+            try {
+                $communication = $this->doSave($id, $request);
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+                return $this->redirect();
+            }
             return $this->redirect('/admin/communication/detail/'.$communication->id);
         }
         else {
@@ -300,7 +287,11 @@ class CommunicationAdminController extends AbstractAdminController
 
         $filters = Filter::getAll();
     
-        $template = ['default' => 'General communication', 'newsletter' => Text::get('newsletter-lb')];
+        $template = [
+            Template::COMMUNICATION => Text::get('admin-communications-communication'), 
+            Template::NEWSLETTER => Text::get('admin-communications-newsletter')
+        ];
+        
         $translates = [];
 
         foreach($communication->getLangsAvailable() as $lang) {
@@ -337,7 +328,8 @@ class CommunicationAdminController extends AbstractAdminController
         $values['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
         $values['content'] = $communication->content;
         $values['subject'] = $communication->subject;
-        $values['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
+        // $values['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
+        $values['promotes'] = $communication->getCommunicationProjects($communication->id);
 
         if ($communication->template == Template::NEWSLETTER) {
             $template = "newsletter";

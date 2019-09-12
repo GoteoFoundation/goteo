@@ -407,6 +407,16 @@ class Sender extends \Goteo\Core\Model
         throw new ModelException('Inserting SQL [' . $sql .'] has failed!');
     }
 
+    static public function addSubscribersFromSQLValues($sql, $values)
+    {
+        $sql = 'INSERT INTO `mailer_send` (`mailing`, `user`, `name`, `email`) ' .$sql;
+        // die(\sqldbg($sql, $values));
+        if(static::query($sql, $values)) {
+            return true;
+        }
+        throw new ModelException('Inserting SQL [' . $sql .'] has failed!');
+    }
+
     public function addSubscribers(array $subscribers = []) {
         foreach($subscribers as $user) {
             if(!$user instanceOf User) {

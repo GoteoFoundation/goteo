@@ -295,7 +295,7 @@
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td align="left"> <?= $this->markdown($this->content) ?> </td>
+                                            <td align="left"> <?= ($this->type == 'md')? $this->markdown($this->content) : $this->raw('content') ?> </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -310,7 +310,7 @@
 
                     <?php foreach($this->promotes as $key => $promote) : ?>
 
-                        <?= $this->insert('email/partials/newsletter_project', ['promote'=>$promote, 'project'=>$promote->projectData, 'key' => $key]); ?>
+                        <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key]); ?>
 
                     <?php endforeach ?>
 
