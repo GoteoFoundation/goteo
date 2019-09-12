@@ -334,7 +334,7 @@ class CommunicationAdminController extends AbstractAdminController
 
         if ($communication->template == Template::NEWSLETTER) {
             $template = "newsletter";
-            $values['image'] = $communication->getImage()->getLink(1920,335,true);
+            $values['image'] = $communication->getImage()->getLink(1920,335,true, true);
         }
         else $template = "default";
 
