@@ -517,7 +517,6 @@ class Mail extends \Goteo\Core\Model {
         
         $extra_vars['content'] = $content;
         $extra_vars['subject'] = $this->subject;
-
         $extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
 
         if ($plain) {
@@ -526,6 +525,7 @@ class Mail extends \Goteo\Core\Model {
 
         if (isset($this->communication_id)) {
             $communication = Communication::get($this->communication_id); 
+            $extra_vars['type'] = $communication->type;
             $extra_vars['image'] = $communication->getImage()->getLink(1920,335,true);
             $extra_vars['promotes'] = $communication->getCommunicationProjects($communication->id);
         }

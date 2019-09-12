@@ -330,6 +330,7 @@ class CommunicationAdminController extends AbstractAdminController
         $values['subject'] = $communication->subject;
         // $values['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
         $values['promotes'] = $communication->getCommunicationProjects($communication->id);
+        $values['type'] = $communication->type;
 
         if ($communication->template == Template::NEWSLETTER) {
             $template = "newsletter";
