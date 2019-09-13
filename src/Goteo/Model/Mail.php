@@ -526,7 +526,7 @@ class Mail extends \Goteo\Core\Model {
         if (isset($this->communication_id)) {
             $communication = Communication::get($this->communication_id); 
             $extra_vars['type'] = $communication->type;
-            $extra_vars['image'] = $communication->getImage()->getLink(1920,335,true);
+            $extra_vars['image'] = $communication->getImage()->getLink(1920,335,true, true);
             $extra_vars['promotes'] = $communication->getCommunicationProjects($communication->id);
         }
 
