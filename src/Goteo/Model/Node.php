@@ -15,6 +15,8 @@ use Goteo\Application\Config;
 use Goteo\Model\Image;
 use Goteo\Application\Exception;
 use Goteo\Library\Text;
+use Goteo\Model\Blog\Post as GeneralPost;
+
 
 class Node extends \Goteo\Core\Model {
 
@@ -929,5 +931,18 @@ class Node extends \Goteo\Core\Model {
         }
 
     }
+
+    /**
+     *  Posts of this workshop
+     */
+    public function getPosts () {
+       if($this->postsList) return $this->postsList;
+        
+        $this->postsList = GeneralPost::getList(['node' => $this->id ], true, 0, $limit = 3, false);
+
+        return $this->postsList;
+
+    }
+
 
 }

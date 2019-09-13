@@ -385,6 +385,13 @@ class Post extends \Goteo\Core\Model {
             $values[':workshop'] = $filters['workshop'];
         }
 
+        // Filter by node
+        if (!empty($filters['node'])) {
+            $sqlWhere .= " AND post.id IN (SELECT post_id FROM node_post WHERE node_id = :node)
+            ";
+            $values[':node'] = $filters['node'];
+        }
+
         if (!empty($filters['section'])) {
             $sqlWhere .= " AND post.section = :section
             ";

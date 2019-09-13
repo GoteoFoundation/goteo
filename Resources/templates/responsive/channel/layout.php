@@ -31,6 +31,8 @@ $background = $this->channel->owner_background;
         </div>
     </div>
 
+    <?= $this->insert("channel/partials/posts_section") ?>
+
     <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
 
 <?php $this->replace() ?>
