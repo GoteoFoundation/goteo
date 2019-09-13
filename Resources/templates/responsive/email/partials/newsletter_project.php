@@ -148,7 +148,7 @@ if($this->key==0):
 
     <?php endif; ?>
 
-<?php if($this->key%2!=0): ?>
+<?php if($this->key%2!=0 || ($this->total-1) == $this->key): ?>
 
     </tr>
 
