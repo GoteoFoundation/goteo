@@ -295,44 +295,86 @@
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td align="left"> <?= ($this->type == 'md')? $this->markdown($this->content) : $this->raw('content') ?> 
-
-                                            <!-- PROMOTED PROJECTS -->
-
-                                            <?php foreach($this->promotes as $key => $promote) : ?>
-
-                                            <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key]); ?>
-
-                                            <?php endforeach ?>
-
-                                            <!-- BOTON VER PROYECTOS -->
-                                            <table class="section" style="margin-top: 40px; margin-bottom: 80px; margin-right: 22px;" cellpadding="0" cellspacing="0">
-                                            <tr>
-                                                <td class="column" width="100%" valign="top">
-                                                    <table align="center">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td align="left">
-                                                                    <p>
-                                                                        <a style="color: #ffffff; padding: 13px 0; background-color: #19b4b2; display: inline-block; padding: 6px 12px; margin-bottom: 0;font-size: 14px;font-weight: 400; line-height: 1.42857143; text-align: center; white-space: nowrap; cursor: pointer; border: 1px solid transparent; border-radius: 4px; text-decoration: none;" href="https://goteo.org/discover">
-                                                                            <?= $this->text('mailer-more-projects-button') ?>    
-                                                                            </a>
-                                                                    </p>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            </table>
+                                            <td align="left"> <?= ($this->type == 'md')? $this->markdown($this->content) : $this->raw('content') ?> </td>
 
 
+
+                                            
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- FUNDACION TEST II -->
+
+                    <table class="section header mt-40" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#ffec61" style="margin-top: 40px;">
+                        <tr>
+                            <td class="column" valign="top" style="max-width: 300px; margin: 0 auto;">
+                                <table style="margin: 0 auto;">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <h3 class="claim-fundacion" style="text-align: center;margin: 0; padding: 15px 0 15px 0;line-height: 1.6;">
+                                                    <?= $this->text('newsletter-donate-description') ?>
+                                                </h3>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
+                    </table>
+
+                    <!-- FUNDACION TEST -->
+
+                    <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#ffec61">
+                        <tr>
+                            <td class="column" width="100" valign="top">
+                                <table style="margin: 0 auto;">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <a class="btn-fundacion" href="https://goteo.org/donate" style="color: #58595b;padding: 6px 12px;background-color: #fff;display: inline-block;margin-bottom: 20px;font-size: 14px;font-weight: 400;line-height: 1.42857143;text-align: center;white-space: nowrap;cursor: pointer;border: 1px solid transparent;border-radius: 4px;text-decoration: none; margin-top: 5px;"><?= $this->text('support-our-mission') ?>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- PROMOTED PROJECTS -->
+
+                    <?php foreach($this->promotes as $key => $promote) : ?>
+                    
+                    <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key]); ?>
+
+                    <?php endforeach ?>
+
+                    <!-- BOTON VER PROYECTOS -->
+                    <table class="section" style="margin-top: 40px; margin-bottom: 80px; margin-right: 22px;" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="column" width="100%" valign="top">
+                            <table align="center">
+                                <tbody>
+                                    <tr>
+                                        <td align="left">
+                                            <p>
+                                                <a style="color: #ffffff; padding: 13px 0; background-color: #19b4b2; display: inline-block; padding: 6px 12px; margin-bottom: 0;font-size: 14px;font-weight: 400; line-height: 1.42857143; text-align: center; white-space: nowrap; cursor: pointer; border: 1px solid transparent; border-radius: 4px; text-decoration: none;" href="https://goteo.org/discover">
+                                                    <?= $this->text('mailer-more-projects-button') ?>    
+                                                    </a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
                     </table>
 
                     </div>
