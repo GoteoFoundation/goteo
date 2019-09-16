@@ -702,6 +702,49 @@ class Invest extends \Goteo\Core\Model {
         return ['user' => $users_fee, 'call' => $calls_fee, 'matcher' => $matchers_fee];
     }
 
+    /**
+     * 
+     */
+    public static function calculateVats($filters = []) {
+        $fee = (float) Config::get('fee'); // default platform fee
+        $vat = (float) Config::get('vat'); // default platform vat
+        $tax_base_percentage= (float) Config::get('tax-base-percentage');
+
+        list($sqlFilter, $values) = self::getSQLFilter($filters);
+        $sqlFilter = preg_replace('/^WHERE/', 'AND', $sqlFilter);
+        // Normal invests vat
+        $sql = "SELECT SUM(IFNULL(project_account.vat, $vat) * invest.amount * IFNULL(project_account.tax_base_percentage,  $tax_base_percentage) * IFNULL(`project_account`.fee, $fee)) / 1000000
+                FROM invest
+                LEFT JOIN project ON invest.project = project.id
+                LEFT JOIN project_account ON invest.project = project_account.project
+                WHERE invest.campaign=0 $sqlFilter";
+        $users_vat = (float) self::query($sql, $values)->fetchColumn();
+        //echo \sqldbg($sql, $values);
+
+        // Call Matchfunding invests vat
+        $sql = "SELECT SUM(IFNULL(project_account.vat, $vat) * invest.amount * IFNULL(project_account.tax_base_percentage,  $tax_base_percentage) * IFNULL(`call`.fee_projects_drop, $fee)) / 1000000
+                FROM invest
+                LEFT JOIN project ON invest.project = project.id
+                LEFT JOIN project_account ON invest.project = project_account.project
+                LEFT JOIN `call` ON invest.call = `call`.id
+                WHERE invest.campaign=1 AND project_account.fee AND invest.method='drop' $sqlFilter";
+        $calls_vat = (float) self::query($sql, $values)->fetchColumn();
+        // echo \sqldbg($sql, $values);
+        // Matcher Matchfunding invests vat
+        $sql = "SELECT SUM(IFNULL(project_account.vat, $vat) * invest.amount * IFNULL(project_account.tax_base_percentage,  $tax_base_percentage) * IFNULL(`matcher`.fee, $fee) ) / 1000000
+                FROM invest
+                LEFT JOIN project ON invest.project = project.id
+                LEFT JOIN project_account ON invest.project = project_account.project
+                LEFT JOIN `matcher` ON invest.matcher = `matcher`.id
+                WHERE invest.campaign=1 AND invest.method!='drop' $sqlFilter";
+        $matchers_fee = (float) self::query($sql, $values)->fetchColumn();
+
+        return ['user' => $users_vat, 'call' => $calls_vat, 'matcher' => $matchers_vat];
+    }
+
+
+
+
     // returns the current project
     public function getProject() {
         if(isset($this->projectObject)) return $this->projectObject;
