@@ -171,10 +171,6 @@
                         </tr>
                     </table>
                         
-
-                    </div>
-
-                    
                     <?php if ($this->promotes): ?>
                     
                         <!-- PROMOTED PROJECTS -->
@@ -183,6 +179,13 @@
                         <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key]); ?>
                         
                         <?php endforeach ?>
+
+                    <?php endif ?>
+
+                    </div>
+
+
+                    <?php if ($this->promotes): ?>
                         
                         <!-- BOTON VER PROYECTOS -->
                         <table class="section" style="margin-top: 40px; margin-bottom: 80px; margin-right: 22px;" cellpadding="0" cellspacing="0">
@@ -204,6 +207,7 @@
                                 </td>
                             </tr>
                         </table>
+
                     <?php endif ?>
 
                    <!-- FOOTER SOCIAL -->

@@ -69,7 +69,7 @@ $(function () {
             location.hide();
             location.val = '';
         }
-        else if (role == "donor" || role == "no-donor") {
+        else if (role == "donor") {
             startdate.show();
             enddate.show();
             predefineddate.show();
@@ -84,6 +84,22 @@ $(function () {
             cert.show();
             wallet.show();
             location.show();
+        }
+        else if (role == "no-donor") {
+            startdate.show();
+            enddate.show();
+            predefineddate.show();
+            projects.hide();
+            calls.hide();
+            matchers.hide()
+            footprints.hide();
+            sdgs.hide();
+            status.hide();
+            typeofdonor.hide();
+            foundationdonor.hide();
+            cert.hide();
+            wallet.hide();
+            location.hide();
         }
         else if (role == "promoter") { 
             startdate.show();
