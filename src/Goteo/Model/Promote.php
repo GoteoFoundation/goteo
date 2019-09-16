@@ -16,6 +16,7 @@ use Goteo\Model\Blog;
 use Goteo\Library\Check;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelNotFoundException;
 
 class Promote extends \Goteo\Core\Model {
 
@@ -189,17 +190,35 @@ class Promote extends \Goteo\Core\Model {
 
         return $promos;
     }
-    /*
-     * Lista de destacados para Admin
-     */
-    public static function getList ($activeonly = false, $node = \GOTEO_NODE) {
+
+    /**
+     * Promote listing
+     *
+     * @param  array   $filters [description]
+     * @param  [type]  $offset  [description]
+     * @param  integer $limit   [description]
+     * @param  boolean $count   [description]
+     * @return array     
+     * */
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false) {
 
         $list = array();
 
-        $sqlFilter = ($activeonly) ? " AND promote.active = 1" : '';
+        $sqlFilter = ($filters['activeonly']) ? " AND promote.active = 1" : '';
 
-        $query = static::query("
-            SELECT
+        $values[':channel'] = $filters['channel'];
+
+        if ($count) {
+            $sql = "SELECT count(promote.id)
+                    FROM promote
+                    WHERE promote.node = :channel
+                    $sqlFilter
+                    ";
+            // echo \sqldbg($sql, $values);
+            return (int) self::query($sql, $values)->fetchColumn();        
+        }
+
+        $sql = "SELECT
                 promote.id as id,
                 promote.project as project,
                 project.name as name,
@@ -209,17 +228,17 @@ class Promote extends \Goteo\Core\Model {
             FROM    promote
             LEFT JOIN project
                 ON project.id = promote.project
-            WHERE promote.node = :node
+            WHERE promote.node = :channel
             $sqlFilter
-            ORDER BY promote.order ASC, title ASC
-            ", array(':node' => $node));
+            ORDER BY promote.`order` ASC
+            LIMIT $offset,$limit 
+            ";
 
-        foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
-            $list[] = $promo;
+        if($query = self::query($sql, $values)) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
-            // print_r($promos);die;
 
-        return $list;
+        return [];
     }
 
     /*
