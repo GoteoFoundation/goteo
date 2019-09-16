@@ -10,6 +10,7 @@ $langs = array_diff_key($this->languages, $this->translations);
 $langs_available = $this->langs_available;
 $languages = [$translator->original => $translator->original_name]+ array_diff_key($this->languages, [$translator->original => $translator->original_name]);
 if($data) $image = $data->getImage();
+$dataProjects = ($data)? $data->getCommunicationProjects($data->id) : '';
 ?>
 
 <?php $this->append() ?>
@@ -37,7 +38,7 @@ if($data) $image = $data->getImage();
       </div>
       
       <div class="col-xs-2 col-md-1">
-        <a id="filter-create" href="filter/add" class="btn btn-cyan fa fa-plus"></a>
+        <a id="filter-create" href="/admin/filter/add" class="btn btn-cyan fa fa-plus"></a>
       </div>
     </div>
   </div>
@@ -79,10 +80,17 @@ if($data) $image = $data->getImage();
         <?php endif ?>
       </li>
     </ul>
-    <input id="image-upload" type="hidden" name="autoform[image]" value="<?= ($image)? $image->getName() : '' ?>">
+    <input id="image-upload" type="hidden" name="autoform[image]" value="<?= ($image)? $image->getName() : null ?>" required>
       <div class="dragndrop <?=($image)? 'hidden' : '' ?>"><div class="dropzone">
       </div></div>
     </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="promotes"> <?= $this->text('translator-promote') ?> </label>
+  <div class="input-wrap">
+    <?= $this->insert('admin/partials/typeahead', ['id' => 'communication_add', 'field' => 'name', 'type' => 'multiple', 'engines' => ['project'], 'defaults' => ['project'], 'extra' => [], 'hidden' => 'hidden', 'data' => $dataProjects]) ?>
   </div>
 </div>
 
@@ -126,7 +134,7 @@ if($data) $image = $data->getImage();
     </div>
     <div class="form-group">
       <label for="i-<?= $lang ?>-body"> <?= $this->text('admin-mail-body') ?></label>
-        <textarea rows="10" class="form-control editor" id="i-<?= $lang ?>-body" name="t[<?= $lang ?>][body]" <?= $default_lang != $lang ? ' class="hidden"' : '' ?> > <?php if($data->id): ?> <?= $this->ee($translator->getTranslation($lang, 'content', true)) ?> <?php endif ?> </textarea>
+        <textarea rows="10" class="form-control editor" id="i-<?= $lang ?>-body" name="t[<?= $lang ?>][body]" <?= $default_lang != $lang ? ' class="hidden"' : '' ?> ><?php if($data->id): ?><?= $this->ee($translator->getTranslation($lang, 'content', true)) ?><?php endif ?></textarea>
     </div>
 
     
@@ -233,6 +241,7 @@ $(function(){
       $li.remove();
       $error.addClass('hidden');
       var total = $list.find('li').length;
+      document.getElementById('image-upload').value = "";
       $zone.find('.dragndrop').removeClass('hidden');
   });
 });

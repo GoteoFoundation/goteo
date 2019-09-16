@@ -50,6 +50,10 @@ admin-communications-siteurl-content: ' per la url d''aquesta plataforma (%SITEU
 admin-communications-subscribeurl-content: ' link directe de subscripció al butlletí de l''usuari'
 admin-communications-unsubscribeurl-content: ' link directe de desubscripció a la newsletter de l''usuari'
 admin-communications-poolamount-content: ' quantitat de diners disponible al moneder'
+admin-communications-send: 'Enviar comunicació'
+admin-communications-cancel: 'Cancel·lar comunicació'
+admin-communications-newsletter: 'Butlletí'
+admin-communications-communication: 'Comunicació general'
 admin-mailing-back-to-list: 'Tornar a comunicacions'
 admin-mailing-communicating-with: 'Cercàvem comunicar-nos amb %DESC%'
 admin-mailing-created: 'Creat el'
@@ -74,6 +78,7 @@ admin-filters: 'Filtres'
 admin-filters-edit: 'Editar filtre'
 admin-filters-create: 'Crear filtre'
 admin-remove-filters: 'Treure filtres'
+admin-remove-filters-forbidden: 'Els filtres que s''han fet servir no es poden esborrar.'
 admin-remove-entry: 'Esborra l''entrada'
 admin-remove-entry-confirm: 'Segur que vols esborrar aquesta entrada? Aquesta acció no es pot desfer!'
 admin-remove-entry-forbidden: 'No es poden esborrar entrades de blog publicades. Despublica l''entrada primer.'
@@ -156,6 +161,7 @@ admin-view-user-mailing: 'Tots els enviaments'
 admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aquest usuari'
 admin-users-global-search: 'Id, nom, email o projecte'
 admin-blog-global-search: 'Id, títol, subtítol o text'
+admin-communication-global-search: 'Assumpte'
 admin-no-project: 'Sense projecte'
 admin-title-name: Nom
 admin-title-active: Actiu
@@ -188,6 +194,14 @@ admin-title-order: Ordena
 admin-title-status: Estat
 admin-title-users: Usuaris
 admin-title-date: Data  
+admin-title-filter: Filtre
+admin-title-template: Plantilla
+admin-title-receivers: Destinataris
+admin-title-sent: Enviats
+admin-title-failed: No enviats
+admin-title-pending: Pendents
+admin-title-success: Exitós
+admin-title-percent: Percentatge
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
 admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'
@@ -213,8 +227,10 @@ admin-filter-last-year: 'Últims 365 dies'
 admin-filter-from-new-year: 'Des de l''1 de Gener'
 admin-filter-previous-year: 'L''any passat'
 admin-filter-two-years-ago: 'Fa dos anys'
-admin-filter-typeofdonor: 'Tipus de donant'
+admin-filter-typeofuser: 'Tipus d''usuari'
+admin-filter-user: 'Usuari'
 admin-filter-donor: 'Donant'
+admin-filter-no-donor: 'Donant inactiu'
 admin-filter-promoter: 'Promotor'
 admin-filter-matcher: 'Matcher'
 admin-filter-test: 'Prova'

@@ -14,17 +14,17 @@ namespace Goteo\Library\Forms\Model;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
-use Goteo\Model\Image;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Goteo\Application\Session;
 use Goteo\Library\Forms\FormModelException;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Model\Project;
+use Goteo\Model\Sdg;
+use Goteo\Model\Footprint;
 
 class ProjectFilterForm extends AbstractFormProcessor {
 
     public function createForm() {
 
+        $model = $this->getModel();
         $builder = $this->getBuilder();
         $options = $builder->getOptions();
         $filter = $this->getModel();
@@ -40,7 +40,9 @@ class ProjectFilterForm extends AbstractFormProcessor {
         ];
 
         $roles = [
-            'donor' => Text::get('admin-filter-donor') ,
+            'user' => Text::get('admin-filter-user'),
+            'donor' => Text::get('admin-filter-donor'),
+            'no-donor' => Text::get('admin-filter-no-donor'),
             'promoter' => Text::get('admin-filter-promoter') ,
             'matcher' => Text::get('admin-filter-matcher'),
             'test' => Text::get('admin-filter-test')
@@ -50,6 +52,16 @@ class ProjectFilterForm extends AbstractFormProcessor {
             'unique' => Text::get('admin-filter-type-unique'),
             'multidonor' => Text::get('admin-filter-type-multidonor'),
         ];
+
+        $sdgs = [];
+        foreach(Sdg::getList([],0,100) as $s) {
+            $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
+        }
+
+        $footprints = [];
+        foreach(Footprint::getList([],0,100) as $f) {
+            $footprints['<img src="'.$f->getIcon()->getLink().'" class="icon icon-3x"> '.$f->name] = $f->id;
+        }
 
         $builder
             ->add('name', 'text', array(
@@ -67,6 +79,11 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 )
             ))
             // ->add() // interests
+            ->add('role', 'choice', array(
+                'label' => 'admin-filter-typeofuser',
+                'choices' => $roles,
+                'required' => true,
+                ))
             ->add('predefineddata', 'choice', array(
                 'label' => 'admin-filter-predefined-date',
                 'required' => false,
@@ -80,11 +97,6 @@ class ProjectFilterForm extends AbstractFormProcessor {
             ->add('enddate', 'datepicker', array(
                 'label' => 'regular-date_out',
                 'required' => false,
-            ))
-            ->add('role', 'choice', array(
-                'label' => 'admin-filter-typeofdonor',
-                'choices' => $roles,
-                'required' => true,
             ))
             ->add('projects', 'typeahead', [
                 'type' => 'multiple',
@@ -110,6 +122,28 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'matcher'
             ])
+            ->add('sdgs', 'choice', array(
+                'label' => 'admin-title-sdgs',
+                'data' => null,
+                'expanded' => true,
+                'multiple' => true,
+                'required' => false,
+                'choices' => $sdgs,
+                'choices_as_values' => true,
+                'choices_label_escape' => false,
+                'wrap_class' => 'col-xs-6 col-xxs-12',
+            ))
+            ->add('footprints', 'choice', array(
+                'label' => 'admin-title-footprints',
+                'data' => null,
+                'expanded' => true,
+                'multiple' => true,
+                'required' => false,
+                'choices' => $footprints,
+                'choices_as_values' => true,
+                'choices_label_escape' => false,
+                'wrap_class' => 'col-xs-6 col-xxs-12'
+            ))
             ->add('status', 'choice', array(
                 'label' => 'regular-status',
                 'required' => false,
@@ -173,6 +207,12 @@ class ProjectFilterForm extends AbstractFormProcessor {
         }
         foreach($data['matchers'] as $key => $value) {
             if (!empty($value)) array_push($model->matchers,$value);
+        }
+        foreach($data['sdgs'] as $key => $value) {
+            if (!empty($value)) array_push($model->sdgs, $value);
+        }
+        foreach($data['footprints'] as $key => $value) {
+            if (!empty($value)) array_push($model->footprints, $value);
         }
 
         $errors = [];

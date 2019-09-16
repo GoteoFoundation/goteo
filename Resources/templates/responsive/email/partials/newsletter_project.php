@@ -1,6 +1,5 @@
 <?php
 
-$promote = $this->promote;
 $project = $this->project;
 
 
@@ -13,45 +12,6 @@ $url = SITE_URL . '/project/' . $project->id;
 if($this->key==0):
 
 ?>
-
-<!-- FUNDACION TEST II -->
-
-<table class="section header mt-40" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#ffec61" style="margin-top: 40px;">
-    <tr>
-        <td class="column" valign="top" style="max-width: 300px; margin: 0 auto;">
-            <table style="margin: 0 auto;">
-                <tbody>
-                    <tr>
-                        <td>
-                            <h3 class="claim-fundacion" style="text-align: center;margin: 0; padding: 15px 0 15px 0;line-height: 1.6;">
-                                <?= $this->text('newsletter-donate-description') ?>
-                            </h3>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </td>
-    </tr>
-</table>
-
-<!-- FUNDACION TEST -->
-
-<table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#ffec61">
-    <tr>
-        <td class="column" width="100" valign="top">
-            <table style="margin: 0 auto;">
-                <tbody>
-                    <tr>
-                        <td>
-                            <a class="btn-fundacion" href="https://goteo.org/donate" style="color: #58595b;padding: 6px 12px;background-color: #fff;display: inline-block;margin-bottom: 20px;font-size: 14px;font-weight: 400;line-height: 1.42857143;text-align: center;white-space: nowrap;cursor: pointer;border: 1px solid transparent;border-radius: 4px;text-decoration: none; margin-top: 5px;"><?= $this->text('support-our-mission') ?>
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </td>
-    </tr>
-</table>
 
 <!-- Projects title -->
 
@@ -111,12 +71,12 @@ if($this->key==0):
                                 <?= $this->text('regular-by') .' ' ?><span style="font-weight: 400; "><?= $project->user->name ?></span>
                             </h4>
 
-                            <?php if($promote->getSocialCommitment()): ?>
+                            <?php if($project->getSocialCommitment()): ?>
 
                             <p style="margin: 0;padding: 10px 20px 10px 20px;line-height: 1.6;"> 
                                 <span>
-                                    <img src="<?= $promote->getSocialCommitment()->getIcon()->getLink(60, 60, false, true) ?>" style="max-width: 100%;display: inline-block;width: 8% !important; vertical-align: middle;">
-                                <span style="padding-bottom: 4px;font-size: 13px;color: #919193;line-height: 0.8;"><?= $promote->getSocialCommitment()->name ?></span>
+                                    <img src="<?= $project->getSocialCommitment()->getIcon()->getLink(60, 60, false, true) ?>" style="max-width: 100%;display: inline-block;width: 8% !important; vertical-align: middle;">
+                                <span style="padding-bottom: 4px;font-size: 13px;color: #919193;line-height: 0.8;"><?= $project->getSocialCommitment()->name ?></span>
                             </span></p>
                             <?php endif; ?>
 
@@ -149,7 +109,7 @@ if($this->key==0):
 
     <?php endif; ?>
 
-<?php if($this->key%2!=0): ?>
+<?php if($this->key%2!=0 || ($this->total-1) == $this->key): ?>
 
     </tr>
 

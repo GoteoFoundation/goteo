@@ -195,6 +195,17 @@ class Lang {
     }
 
     /**
+     * returns the languages whose fallback language is the parameter language
+     * @param string $lang  [description]
+     * @return array       [description]
+     */
+    static public function getDependantLanguages($fallbacklang = '') {
+        return array_filter(self::$langs_available, function($lang) use($fallbacklang) {
+            return (self::getFallback($lang) == $fallbacklang);
+        });
+    } 
+
+    /**
      * set the system lang
      * @param string $lang Language ID (es, en, fr, etc.)
      */

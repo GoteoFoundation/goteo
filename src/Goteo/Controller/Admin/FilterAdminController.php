@@ -41,12 +41,15 @@ class FilterAdminController extends AbstractAdminController
                 '/add',
                 ['_controller' => __CLASS__ . "::editAction"]
             ),
+            new Route(
+                '/delete/{id}',
+                ['_controller' => __CLASS__ . "::deleteAction"]
+            )
         ];
     }
 
     public function listAction(Request $request)
     {
-        $list = Filter::getAll();
         $page = $request->query->get('pag') ?: 0;
         $limit = 10;
         $list = Filter::getList(array(), $page * $limit, $limit, false);
@@ -60,10 +63,12 @@ class FilterAdminController extends AbstractAdminController
 
     public function editAction($id = '', Request $request)
     {        
-        $filter = $id ? Filter::get($id) : new Filter(); 
-		if (!$filter) {
-			throw new ModelNotFoundException("Not found filter [$id]");
-		}
+        try  {
+            $filter = $id ? Filter::get($id) : new Filter(); 
+        } catch (ModelNotFoundException $e) {
+            Message::error($e->getMessage());
+            return $this->redirect('/admin/filter');
+        }
 
 
         $defaults = (array) $filter;
@@ -88,5 +93,30 @@ class FilterAdminController extends AbstractAdminController
         ]);
 
     }
+
+    public function deleteAction($id, Request $request) {
+        
+        try {
+            $filter = Filter::get($id);
+        } catch (ModelNotFoundException $exception) {
+            Message::error($exception->getMessage());
+        }
+
+
+        try {
+            if ($filter->isUsed()) {
+                Message::error(Text::get('admin-remove-filters-forbidden'));
+            }
+            else {
+                $filter->dbDelete();
+                Message::info(Text::get('admin-remove-entry-ok'));
+            }
+        } catch (\PDOException $e) {
+          Message::error($e->getMessage());  
+        } 
+
+        return $this->redirect('/admin/filter/');
+	}
+
 
 }
