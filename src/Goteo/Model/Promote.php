@@ -221,6 +221,7 @@ class Promote extends \Goteo\Core\Model {
         $sql = "SELECT
                 promote.id as id,
                 promote.project as project,
+                promote.node as node,
                 project.name as name,
                 project.status as status,
                 promote.active as active,
