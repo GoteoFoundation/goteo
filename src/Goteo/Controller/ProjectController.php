@@ -319,7 +319,7 @@ class ProjectController extends \Goteo\Core\Controller {
                 $viewData['investors_limit'] = $limit;
 
                 //Colaborations
-                $viewData['messages'] = SupportMessage::getAll($project->id);
+                $viewData['messages'] = SupportMessage::getAll($project->id, Lang::current());
 
                 if (empty($user)) {
                     Message::info(Text::html('user-login-required'));
