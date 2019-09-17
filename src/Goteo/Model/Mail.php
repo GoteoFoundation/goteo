@@ -528,13 +528,9 @@ class Mail extends \Goteo\Core\Model {
             $extra_vars['type'] = $communication->type;
             $extra_vars['image'] = $communication->getImage()->getLink(1920,335,true, true);
             $extra_vars['promotes'] = $communication->getCommunicationProjects($communication->id);
-        }
-
-        if ($this->template == Template::NEWSLETTER || $this->template == Template::COMMUNICATION) 
-        {
             View::setTheme('responsive');
         }
-
+        
         $engine = View::createEngine();
         $engine->setFolders(View::getFolders());
 
