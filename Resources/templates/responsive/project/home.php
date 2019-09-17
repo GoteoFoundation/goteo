@@ -201,7 +201,7 @@
                 <?php endforeach ?>
 
                 <h2 class="pink-title spacer-20" >
-                    <span class="anchor-mark" id="related">
+                    <span id="related">
                     <?= $this->text('overview-field-related') ?>
                     </span>
                     <?php if (!empty($project->video->url)): ?>
