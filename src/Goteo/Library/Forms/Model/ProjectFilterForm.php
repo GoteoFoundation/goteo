@@ -122,28 +122,6 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'matcher'
             ])
-            ->add('sdgs', 'choice', array(
-                'label' => 'admin-title-sdgs',
-                'data' => null,
-                'expanded' => true,
-                'multiple' => true,
-                'required' => false,
-                'choices' => $sdgs,
-                'choices_as_values' => true,
-                'choices_label_escape' => false,
-                'wrap_class' => 'col-xs-6 col-xxs-12',
-            ))
-            ->add('footprints', 'choice', array(
-                'label' => 'admin-title-footprints',
-                'data' => null,
-                'expanded' => true,
-                'multiple' => true,
-                'required' => false,
-                'choices' => $footprints,
-                'choices_as_values' => true,
-                'choices_label_escape' => false,
-                'wrap_class' => 'col-xs-6 col-xxs-12'
-            ))
             ->add('status', 'choice', array(
                 'label' => 'regular-status',
                 'required' => false,
