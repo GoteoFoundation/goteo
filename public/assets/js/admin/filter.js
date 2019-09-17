@@ -96,9 +96,9 @@ $(function () {
             sdgs.hide();
             status.hide();
             typeofdonor.hide();
-            foundationdonor.hide();
+            foundationdonor.show();
             cert.hide();
-            wallet.hide();
+            wallet.show();
             location.hide();
         }
         else if (role == "promoter") { 
