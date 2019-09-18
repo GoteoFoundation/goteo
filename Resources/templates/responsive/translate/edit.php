@@ -174,7 +174,7 @@ $default_lang = $this->get_query('hl');
             // console.log('success', result, result.files);
             if(result && result.files) {
               var files = $.map(result.files, function(file) {
-                return IMG_URL + '/600x600/' + file.name;
+                return IMG_URL + '/700x0/' + file.name;
               });
               callback('success', files);
             } else {

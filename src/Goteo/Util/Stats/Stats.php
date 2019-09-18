@@ -112,12 +112,14 @@ class Stats {
 
     public function getInvestFees($filter = []) {
         $totals = Invest::calculateFees($filter);
-        // print_r($filter);print_r($totals);
+        $totals_vat= Invest::calculateVats($filter);
+        //print_r($filter);print_r($totals);
         // Add some extra useful calcs
-        foreach($totals as $k => $a) {
-            $totals['subtotal'] += $a;
-            $totals['vat'] += ((float)Config::get('vat')) * $a / 100;
-        }
+
+
+        $totals['subtotal'] = array_reduce($totals, function($v, $w) { return $v +$w; }, 0);
+
+        $totals['vat'] = array_reduce($totals_vat, function($v, $w) { return $v +$w; }, 0);
         $totals['total'] = $totals['subtotal'] + $totals['vat'];
         return $totals;
     }
