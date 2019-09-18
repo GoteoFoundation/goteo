@@ -169,7 +169,7 @@
                                 </table>
                             </td>
                         </tr>
-                    </table>
+                    </table> 
                         
                     <?php if ($this->promotes): ?>
                     
