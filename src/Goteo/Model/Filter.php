@@ -483,7 +483,9 @@ class Filter extends \Goteo\Core\Model {
         $investStatus = Invest::$RAISED_STATUSES;
 
         if (isset($this->foundationdonor)) {
-            $sqlFilter .= " AND user.id " + ($this->foundationdonor)? "" : "NOT" + " IN ( 
+            $sqlFilter .= " AND user.id ";
+            $sqlFilter .= ($this->foundationdonor)? "" : "NOT ";
+            $sqlFilter .= " IN ( 
                 SELECT i.`user` 
                 FROM invest i 
                 WHERE 
@@ -500,9 +502,11 @@ class Filter extends \Goteo\Core\Model {
         $sqlInner .= "INNER JOIN ( 
             SELECT invest.user FROM invest ";
         
+
+
         if (!empty($this->calls)) {
             $sqlInner .= "INNER JOIN call_project
-            on call_project.project = invest.project
+            ON call_project.project = invest.project
             ";
             $parts = [];
             foreach(array_keys($this->calls) as $index => $id) {
@@ -513,10 +517,11 @@ class Filter extends \Goteo\Core\Model {
 
         }
 
+
         if (!empty($this->matchers)) {
 
             $sqlInner .= "INNER JOIN matcher_project
-            on matcher_project.project_id = invest.project
+            ON matcher_project.project_id = invest.project
             ";
 
             $parts = [];
@@ -528,8 +533,7 @@ class Filter extends \Goteo\Core\Model {
         }
 
         if (isset($this->status) && $this->status > -1 && !empty($sqlInner)) { 
-            $sqlInner .= "INNER JOIN project on project.id = invest.project";
-            $sqlFilter .= " AND project.status = :status ";
+            $sqlInner .= "INNER JOIN project ON project.id = invest.project AND project.status = :status ";
             $values[':status'] = $this->status;
         }
 
@@ -552,36 +556,49 @@ class Filter extends \Goteo\Core\Model {
         }
 
         if (isset($this->startdate) && !isset($this->cert)) {
-            $sqlFilter .= " AND invest.invested BETWEEN :startdate";
+
+            $sqlInner .= " AND  invest.status IN ";
+            $parts = [];
+            foreach($investStatus as $index => $status) {
+                $parts[] = ':status_' . $index;
+                $values[':status_' . $index] = $status;
+            }
+            $sqlInner .= " (" . implode(',', $parts) . ") ";
+    
+            $sqlInner .= " AND invest.invested BETWEEN :startdate ";
             $values[':startdate'] = $this->startdate;
 
             if(isset($this->enddate)) {
-                $sqlFilter .= " AND :enddate";
+                $sqlInner .= " AND :enddate ";
                 $values[':enddate'] = $this->enddate;
             } else {
-                $sqlFilter .= " AND curdate()";
+                $sqlInner .= " AND curdate() ";
             }
         } else if (isset($this->enddate) && !isset($this->cert)) {
-            $sqlFilter .= " AND invest.invested < :enddate";
+            $sqlInner .= "AND invest.invested < :enddate
+                         AND  invest.status IN ";
+            $parts = [];
+            foreach($investStatus as $index => $status) {
+                $parts[] = ':status_' . $index;
+                $values[':status_' . $index] = $status;
+            }
+            $sqlInner .= " (" . implode(',', $parts) . ") ";
+    
             $values[':enddate'] = $this->enddate;
         }
-        
-        $sqlInner .= "GROUP BY invest.user";
 
-                
+        $sqlInner .= "GROUP BY invest.user
+                     ) AS invest_user ON invest_user.user = user.id ";
+        
         if (isset($this->typeofdonor)) {
             if ($this->typeofdonor == $this::UNIQUE) {            
-                $sqlInner .= "  HAVING count(*) = 1
+                $sqlFilter .= "  AND user.num_invested = 1
             ";
             } else if ($this->typeofdonor == $this::MULTIDONOR) {
-            $sqlInner .= " HAVING count(*) > 1  
+            $sqlFilter .= " AND user.num_invested > 1
             ";
             }
         }
-
-        $sqlInner .= " ) as invest_user ON invest_user.user = user.id
-            ";
-        
 
 
         if (isset($this->wallet)) {
@@ -610,7 +627,7 @@ class Filter extends \Goteo\Core\Model {
                     $sqlFilter .= " AND YEAR()";
                 }
             } else if (isset($this->enddate)) {
-                $sqlFilter .= " AND donor.year <= :endyear";
+                $sqlFilter .= " AND donor.year <= :endyear ";
                 $values[':enddate'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");;
             }
         }
@@ -626,14 +643,14 @@ class Filter extends \Goteo\Core\Model {
         }
 
         if($count) {
-            $sql = "SELECT COUNT(DISTINCT(user.id)) 
+            $sql = "SELECT COUNT(user.id)
                     FROM user 
                     LEFT JOIN user_prefer
                     ON user.id = user_prefer.user
                     $sqlInner 
                     WHERE user.active = 1 AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) 
                     $sqlFilter";
-            // if ($this->id == 6) die(\sqldbg($sql, $values) );
+            // die(\sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
         }
 
@@ -870,7 +887,7 @@ class Filter extends \Goteo\Core\Model {
 
         $investStatus = Invest::$RAISED_STATUSES_AND_DONATED;
 
-        $sqlFilter .= " user.id NOT IN (
+        $sqlFilter .= " AND user.id NOT IN (
             SELECT invest.user
             FROM invest 
             WHERE invest.status IN "; 
@@ -897,8 +914,50 @@ class Filter extends \Goteo\Core\Model {
             $sqlFilter .= " AND invest.invested < :enddate ";
             $values[':enddate'] = $this->enddate;
         }
-        
+
         $sqlFilter .= "GROUP BY invest.user )";
+        
+        if (isset($this->startdate)) {
+            $sqlFilter .= " AND user.id IN (
+                SELECT invest.user
+                FROM invest
+                WHERE invest.status IN ";
+
+            $parts = [];
+            foreach([Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL] as $index => $status) {
+                    $parts[] = ':status' . $index;
+                    $values[':status' . $index] = $status;
+                }
+            $sqlFilter .= " (" . implode(',', $parts) . ") ";
+
+
+            $sqlFilter .= " AND invest.invested < :startdate ";
+            $values[':startdate'] = $this->startdate;
+
+            if(isset($this->enddate)) {
+                $sqlFilter .= " OR invest.invested > :enddate ";
+                $values[':enddate'] = $this->enddate;
+            }
+            $sqlFilter .= "GROUP BY invest.user )";
+
+        } else if (isset($this->enddate)) {
+            $sqlFilter .= " AND user.id IN (
+                SELECT invest.user
+                FROM invest
+                WHERE invest.status IN ";
+
+            $parts = [];
+            foreach([Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL] as $index => $status) {
+                    $parts[] = ':status' . $index;
+                    $values[':status' . $index] = $status;
+                }
+            $sqlFilter .= " (" . implode(',', $parts) . ") ";
+
+            $sqlFilter .= "AND invest.invested > :enddate ";
+            $values[':enddate'] = $this->enddate;
+            $sqlFilter .= "GROUP BY invest.user )";
+        }
+
 
         if (isset($lang)) {
             $parts = [];
@@ -910,12 +969,34 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ") ";
         }
 
+
+
+        if (isset($this->wallet)) {
+            $sqlFilter .= " AND user.id ";
+            $sqlFilter .= ($this->wallet)? "IN " : "NOT IN ";
+            $sqlFilter .= " ( SELECT user_pool.user
+                              FROM user_pool
+                              WHERE user_pool.amount > 0 )";
+        }
+
+        if (isset($this->foundationdonor)) {
+            $sqlFilter .= " AND user.id ";
+            $sqlFilter .= ($this->foundationdonor)? "" : "NOT ";
+            $sqlFilter .= " IN ( 
+                SELECT i.`user` 
+                FROM invest i 
+                WHERE 
+                i.status= :status_donated
+                )";
+            $values[':status_donated'] = Invest::STATUS_DONATED;
+        }
+        
         if($count) {
-            $sql = "SELECT COUNT(DISTINCT(user.id)) 
+            $sql = "SELECT COUNT(user.id)
                     FROM user 
-                    INNER JOIN user_pool 
-                    ON user.id = user_pool.user and user_pool.amount > 0 
-                    WHERE 
+                    LEFT JOIN user_prefer ON user_prefer.user = user.id
+                    $sqlInner
+                    WHERE user.active AND (user_prefer.mailing = 0 OR user_prefer.mailing IS NULL)
                     $sqlFilter";
             // die(\sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
@@ -926,9 +1007,9 @@ class Filter extends \Goteo\Core\Model {
                     user.name as name,
                     user.email as email
                 FROM user
-                INNER JOIN user_pool
-                ON user.id = user_pool.user and user_pool.amount > 0
-                WHERE  
+                LEFT JOIN user_prefer ON user_prefer.user = user.id
+                $sqlInner
+                WHERE user.active AND (user_prefer.mailing = 0 OR user_prefer.mailing IS NULL)
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
