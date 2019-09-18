@@ -369,7 +369,7 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table> 
                     </td>
                 </tr>
                 </table>
