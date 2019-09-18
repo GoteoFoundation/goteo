@@ -27,6 +27,14 @@ body.channel {
 
   @media (max-width: $breakpoint-sm - 1) {
     padding-bottom: 57px;
+    .sponsors-section{
+      ul{
+        li:not(:first-child){
+          margin-top: 30px;
+        }
+      }
+
+    }
   }
 
   @media (max-width: $breakpoint-xs - 1) {
@@ -60,6 +68,25 @@ body.channel {
       color: $color-lilac;
     }
   }
+
+  .sponsors-section{
+      padding-top: 10px;
+      margin-bottom: 0;
+      background-color: $background-white;
+      padding-bottom: 20px;
+
+      .title{
+        padding-bottom: 20px;
+      }
+
+      ul{
+        padding: 15px 0;
+        li{
+          padding: 0 20px;
+        }
+      }
+
+    }
 
   .stories-section{
       padding-top: 30px;

@@ -16,6 +16,7 @@ use Goteo\Model\Image;
 use Goteo\Application\Exception;
 use Goteo\Library\Text;
 use Goteo\Model\Blog\Post as GeneralPost;
+use Goteo\Model\Node\NodeSponsor;
 
 
 class Node extends \Goteo\Core\Model {
@@ -966,6 +967,27 @@ class Node extends \Goteo\Core\Model {
         $query = static::query($sql, $values);
         $this->storiesList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Stories');
         return $this->storiesList;
+
+    }
+
+
+    /**
+     *  Sponsors of this node
+     */
+    public function getSponsors () {
+        if($this->sponsorsList) return $this->sponsorsList;
+        $values = [':node' => $this->id];
+
+        $sql = "SELECT
+                node_sponsor.*
+            FROM node_sponsor
+
+            WHERE node_sponsor.node_id = :node
+            ORDER BY node_sponsor.order ASC";
+         //die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->sponsorsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeSponsor');
+        return $this->sponsorsList;
 
     }
 

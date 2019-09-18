@@ -44,6 +44,8 @@ $background = $this->channel->owner_background;
         </div>
     </div>
 
+    <?= $this->insert("channel/partials/sponsors_section") ?>
+
     <?= $this->insert("channel/partials/stories_section") ?>
 
     <?= $this->insert("channel/partials/posts_section") ?>
