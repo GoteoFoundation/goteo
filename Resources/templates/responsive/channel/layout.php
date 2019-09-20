@@ -9,6 +9,7 @@ $this->layout('layout', [
 
 $this->section('content');
 
+$summary = ($this->summary) ? $this->summary: false;
 $background = $this->channel->owner_background;
 
 ?>
@@ -31,6 +32,8 @@ $background = $this->channel->owner_background;
         </div>
     </div>
 
-    <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
+    <?php if ($summary): ?>
+        <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
+    <?php endif ?>
 
 <?php $this->replace() ?>
