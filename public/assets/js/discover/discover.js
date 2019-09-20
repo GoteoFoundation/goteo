@@ -53,7 +53,6 @@ $(function(){
             $last.after('<div class="loading-container">' + goteo.texts['regular-loading'] + '</div>');
 
             // console.log('end reached, loading more. total', total, 'query', query);
-            console.info(window.location.pathname);
             $.getJSON(window.location.pathname + '/ajax', query, function(result) {
                 total = result.total;
                 query.limit = result.limit;

@@ -24,6 +24,7 @@ use Goteo\Model\Category;
 use Goteo\Library\Text;
 use Goteo\Model\Page;
 use Goteo\Model\SocialCommitment;
+use Goteo\Model\Project\ProjectLocation;
 
 
 class ChannelController extends \Goteo\Core\Controller {
