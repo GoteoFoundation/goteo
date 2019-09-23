@@ -535,8 +535,10 @@ class Mail extends \Goteo\Core\Model {
 
         if ($this->template == Template::NEWSLETTER) {
             $extra_vars['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
+            View::setTheme('responsive');
             $content = $engine->render('email/newsletter', $extra_vars, false);
         } else if ($this->template == Template::COMMUNICATION) {
+            View::setTheme('responsive');
             $content = $engine->render('email/default', $extra_vars, false);
         } else {
             $content = $engine->render('email/simple', $extra_vars, false);
