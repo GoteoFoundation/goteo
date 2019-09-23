@@ -36,7 +36,7 @@ class GoteoCommunicationModule
 
         CREATE TABLE `filter` (
           `id` INT(11) NOT NULL AUTO_INCREMENT,
-          `name` VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+          `name` VARCHAR(100) NOT NULL,
           `description` text NOT NULL,
           `cert` TINYINT(1) DEFAULT NULL,
           `role` VARCHAR(50) DEFAULT NULL,
@@ -51,7 +51,7 @@ class GoteoCommunicationModule
           `project_radius` SMALLINT(6) UNSIGNED DEFAULT NULL,
           `project_location` VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
           PRIMARY KEY (`id`)
-        ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+        );
 
         CREATE TABLE `filter_project` (
           `filter` INT(11) NOT NULL,
@@ -59,7 +59,7 @@ class GoteoCommunicationModule
           FOREIGN KEY (`filter`) REFERENCES `filter`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           UNIQUE KEY `id_filterprojects` (`filter`,`project`)
-        ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+        );
 
         CREATE TABLE `filter_call` (
           `filter` INT(11) NOT NULL,
@@ -67,7 +67,7 @@ class GoteoCommunicationModule
           FOREIGN KEY (`filter`) REFERENCES `filter`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           UNIQUE KEY `id_filtercalls` (`filter`,`call`)
-        ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+        );
 
         CREATE TABLE `filter_matcher` (
           `filter` INT(11) NOT NULL,
@@ -75,7 +75,7 @@ class GoteoCommunicationModule
           FOREIGN KEY (`filter`) REFERENCES `filter`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           FOREIGN KEY (`matcher`) REFERENCES `matcher`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           UNIQUE KEY `id_filtermatcher` (`filter`,`matcher`)
-        ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+        );
 
         CREATE TABLE `filter_sdg` (
           `filter` INT(11) NOT NULL,
@@ -83,7 +83,7 @@ class GoteoCommunicationModule
           FOREIGN KEY (`filter`) REFERENCES `filter`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           FOREIGN KEY (`sdg`) REFERENCES `sdg`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           UNIQUE KEY `id_filtersdg` (`filter`,`sdg`)
-        ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+        );
 
         CREATE TABLE `filter_footprint` (
           `filter` INT(11) NOT NULL,
@@ -91,12 +91,12 @@ class GoteoCommunicationModule
           FOREIGN KEY (`filter`) REFERENCES `filter`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           FOREIGN KEY (`footprint`) REFERENCES `footprint`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           UNIQUE KEY `id_filterfootprint` (`filter`,`footprint`)
-        ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+        );
 
         CREATE TABLE `communication` (
           `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-          `subject` char(255),
-          `content` longtext NOT NULL,
+          `subject` char(255) COLLATE utf8mb4_unicode_ci,
+          `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
           `template` varchar(100) NOT NULL,
           `filter` int(11) NOT NULL,
           `type` char(20) CHARACTER SET utf8 NOT NULL DEFAULT 'md',
@@ -106,16 +106,16 @@ class GoteoCommunicationModule
           `error` tinytext,
           PRIMARY KEY (`id`),
           CONSTRAINT `communication_fk_1` FOREIGN KEY (`filter`) REFERENCES `filter` (`id`) ON UPDATE CASCADE
-        ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+        );
 
         CREATE TABLE `communication_lang` (
           `id` bigint(20) UNSIGNED,
           `lang` varchar(3) NOT NULL,
-          `subject` char(255) DEFAULT NULL,
-          `content` longtext NOT NULL,
+          `subject` char(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+          `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
           UNIQUE KEY `id_lang` (`id`,`lang`),
           CONSTRAINT `communication_lang_fk` FOREIGN KEY (`id`) REFERENCES `communication` (`id`) ON UPDATE CASCADE
-        ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+        );
 
         CREATE TABLE `communication_project` (
           `communication` bigint(20) UNSIGNED,
@@ -123,7 +123,7 @@ class GoteoCommunicationModule
           FOREIGN KEY (`communication`) REFERENCES `communication`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           UNIQUE KEY `id_communicationproject` (`communication`,`project`)
-        ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+        );
 
         ALTER TABLE `mail` ADD COLUMN communication_id bigint(20) UNSIGNED after message_id;
 
