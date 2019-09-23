@@ -529,20 +529,23 @@ class Mail extends \Goteo\Core\Model {
             $extra_vars['image'] = $communication->getImage()->getLink(1920,335,true, true);
             $extra_vars['promotes'] = $communication->getCommunicationProjects($communication->id);
         }
-        
-        $engine = View::createEngine();
-        $engine->setFolders(View::getFolders());
 
         if ($this->template == Template::NEWSLETTER) {
             $extra_vars['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
+            $template = "newsletter";
             View::setTheme('responsive');
-            $content = $engine->render('email/newsletter', $extra_vars, false);
+            
         } else if ($this->template == Template::COMMUNICATION) {
             View::setTheme('responsive');
-            $content = $engine->render('email/default', $extra_vars, false);
+            $template = "default";
         } else {
-            $content = $engine->render('email/simple', $extra_vars, false);
+            $template = "simple";
         }
+
+        $engine = View::createEngine();
+        $engine->setFolders(View::getFolders());
+
+        $content = $engine->render('email/' . $template, $extra_vars, false);
 
         // Process links if tracker var present
         if($process_links) {
