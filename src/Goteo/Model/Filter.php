@@ -361,7 +361,7 @@ class Filter extends \Goteo\Core\Model {
 
         foreach($constraints as $i => $constraint) {
             $sql .= "INNER JOIN ". $constraint['TABLE_NAME'] . " as " . $constraint['TABLE_NAME'] . "_" . $i .
-                    " ON filter.id = ". $constraint['TABLE_NAME'] . ".filter ";
+                    " ON filter.id = ". $constraint['TABLE_NAME'] . "_" . $i . ".filter ";
         }
         $sql .= "WHERE filter.id = :id";
         $values[':id'] = $this->id;
