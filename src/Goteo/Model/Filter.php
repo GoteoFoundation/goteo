@@ -354,13 +354,13 @@ class Filter extends \Goteo\Core\Model {
 
     public function isUsed() {
 
-        $constraints = $this->dbReferencialConstraints(['delete_rule' => 'RESTRICT']);
+        $constraints = self::dbReferencialConstraints(['delete_rule' => 'RESTRICT']);
 
         $sql = "SELECT filter.id FROM filter ";
         $values = [];
 
-        foreach($constraints as $constraint) {
-            $sql .= "INNER JOIN ". $constraint['TABLE_NAME'] .
+        foreach($constraints as $i => $constraint) {
+            $sql .= "INNER JOIN ". $constraint['TABLE_NAME'] . " as " . $constraint['TABLE_NAME'] . "_" . $i .
                     " ON filter.id = ". $constraint['TABLE_NAME'] . ".filter ";
         }
         $sql .= "WHERE filter.id = :id";
