@@ -42,6 +42,18 @@ admin-contents: 'Textos i traduccions'
 admin-empty-list: 'Sense resultats'
 admin-activity: Activitat
 admin-communications: Comunicacions
+admin-communications-add: Crear nova comunicació
+admin-communications-userid-content: ' per l''id d''accés del destinatari'
+admin-communications-useremail-content: ' per l''email del destinatari'
+admin-communications-username-content: ' per al nom del destinatari'
+admin-communications-siteurl-content: ' per la url d''aquesta plataforma (%SITEURL%)'
+admin-communications-subscribeurl-content: ' link directe de subscripció al butlletí de l''usuari'
+admin-communications-unsubscribeurl-content: ' link directe de desubscripció a la newsletter de l''usuari'
+admin-communications-poolamount-content: ' quantitat de diners disponible al moneder'
+admin-communications-send: 'Enviar comunicació'
+admin-communications-cancel: 'Cancel·lar comunicació'
+admin-communications-newsletter: 'Butlletí'
+admin-communications-communication: 'Comunicació general'
 admin-mailing-back-to-list: 'Tornar a comunicacions'
 admin-mailing-communicating-with: 'Cercàvem comunicar-nos amb %DESC%'
 admin-mailing-created: 'Creat el'
@@ -63,7 +75,10 @@ admin-projects: Projectes
 admin-consultants: 'Assessors'
 admin-invests: Aportacions
 admin-filters: 'Filtres'
+admin-filters-edit: 'Editar filtre'
+admin-filters-create: 'Crear filtre'
 admin-remove-filters: 'Treure filtres'
+admin-remove-filters-forbidden: 'Els filtres que s''han fet servir no es poden esborrar.'
 admin-remove-entry: 'Esborra l''entrada'
 admin-remove-entry-confirm: 'Segur que vols esborrar aquesta entrada? Aquesta acció no es pot desfer!'
 admin-remove-entry-forbidden: 'No es poden esborrar entrades de blog publicades. Despublica l''entrada primer.'
@@ -146,6 +161,7 @@ admin-view-user-mailing: 'Tots els enviaments'
 admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aquest usuari'
 admin-users-global-search: 'Id, nom, email o projecte'
 admin-blog-global-search: 'Id, títol, subtítol o text'
+admin-communication-global-search: 'Assumpte'
 admin-no-project: 'Sense projecte'
 admin-title-name: Nom
 admin-title-active: Actiu
@@ -159,9 +175,12 @@ admin-title-icon: Icona
 admin-title-image: Imatge
 admin-title-title: Títol
 admin-title-subtitle: Subtítol
+admin-title-subject: Assumpte
+admin-title-description: Descripció
 admin-title-section: Secció
 admin-title-text: Text
 admin-title-publish: Publicat
+admin-title-lang: Idioma
 admin-title-langs: Traduccions
 admin-title-actions: Accions
 admin-title-deleted: Eliminat
@@ -173,6 +192,16 @@ admin-title-categories: 'Categories'
 admin-title-social_commitments: 'Compromisos socials'
 admin-title-order: Ordena
 admin-title-status: Estat
+admin-title-users: Usuaris
+admin-title-date: Data  
+admin-title-filter: Filtre
+admin-title-template: Plantilla
+admin-title-receivers: Destinataris
+admin-title-sent: Enviats
+admin-title-failed: No enviats
+admin-title-pending: Pendents
+admin-title-success: Exitós
+admin-title-percent: Percentatge
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
 admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'
@@ -191,3 +220,29 @@ admin-all-call-referers: 'Origen de visites a les convocatòries'
 admin-all-project-devices: 'Dispositiu usat en les pàgines de projectes'
 admin-all-invests-devices: 'Dispositiu usat en les aportacions a projectes'
 admin-all-call-devices: 'Dispositiu usat en las pàgines de convocatòries'
+admin-filter-add: 'Afegir filtre'
+admin-filter-last-week: 'Últims 7 dies'
+admin-filter-last-month: 'Últims 30 dies'
+admin-filter-last-year: 'Últims 365 dies'
+admin-filter-from-new-year: 'Des de l''1 de Gener'
+admin-filter-previous-year: 'L''any passat'
+admin-filter-two-years-ago: 'Fa dos anys'
+admin-filter-typeofuser: 'Tipus d''usuari'
+admin-filter-typeofdonor: 'Tipus de donant'
+admin-filter-user: 'Usuari'
+admin-filter-donor: 'Donant'
+admin-filter-no-donor: 'Donant inactiu'
+admin-filter-promoter: 'Promotor'
+admin-filter-matcher: 'Matcher'
+admin-filter-test: 'Prova'
+admin-filter-type-unique: 'Únic'
+admin-filter-type-multidonor: 'Multidonant'
+admin-filter-type-foundation-donor: 'Donant a la fundació'
+admin-filter-type-all: 'Tots'
+admin-filter-predefined-date: 'Dates predefinides'
+admin-filter-predefined-date-choose: 'Pots seleccionar una data predeterminada'
+admin-mail-body: 'Cos del missatge'
+
+mandatory-filter-name: Manca el nom
+mandatory-filter-description: Manca una descripció
+mandatory-filter-role: Manca un rol

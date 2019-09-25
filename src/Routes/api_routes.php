@@ -284,7 +284,6 @@ $api->add('api-channels', new Route(
         )
 ));
 
-
 // Licenses list
 $api->add('api-licenses', new Route(
     '/licenses',
@@ -349,6 +348,19 @@ $api->add('api-comments-delete', new Route(
     '', // host
     array(), // schemes
     array('DELETE') // methods
+));
+
+// Communication 
+
+// Post images upload (POST method only)
+$api->add('api-communication-images-upload', new Route(
+    '/communication/images',
+    array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
 ));
 
 // Messages list

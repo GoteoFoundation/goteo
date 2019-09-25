@@ -95,7 +95,8 @@ class Config {
 
             // Add model zones for the translator
             \Goteo\Controller\TranslateController::addTranslateModel('criteria');
-            \Goteo\Controller\TranslateController::addTranslateModel('sphere');
+			\Goteo\Controller\TranslateController::addTranslateModel('sphere');
+			\Goteo\Controller\TranslateController::addTranslateModel('communication');
 
 			// sets up the rest...
 			self::setDirConfiguration();
@@ -198,8 +199,11 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommunicationAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FilterAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
-
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
+		
         // TODO: to be replace by the new AdminController
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');

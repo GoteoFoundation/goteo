@@ -1,0 +1,144 @@
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this page.
+
+Copyright (C) 2010  Goteo Foundation
+
+The JavaScript code in this page is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this page.
+*/
+
+$(function () {
+
+    if ($('.autoform').length) {
+
+        if (document.getElementById('filter-select').value > 0) {
+            document.getElementById('filter-edit').href = "filter/edit/" + document.getElementById('filter-select').value;
+        }
+    
+        document.getElementById('filter-select').onchange = function(){
+            document.getElementById('filter-edit').href = "filter/edit/" + this.value;
+            
+        }
+    
+        document.getElementById('templates').onchange = function() {
+            if (this.value == 33) document.getElementById('dropzone-image').classList.remove('hidden');
+            else document.getElementById('dropzone-image').classList.add('hidden');
+        }
+    
+        $('#templates').change();
+    
+        var mdeditor = [];
+        var summernote = [];
+        var summernote_config = {
+            toolbar: [
+                ['tag', ['style']],
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                // ['font', ['strikethrough', 'superscript', 'subscript']],
+                // ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                // ['height', ['height']],
+                ['insert', ['link', 'picture', 'video', 'hr', 'table']],
+                ['misc', ['fullscreen', 'codeview', 'help']]
+            ],
+            popatmouse: false,
+            callbacks: {
+                onFocus: function() {
+                // console.log('Editable area is focused');
+                $(this).closest('.summernote').addClass('focused');
+                },
+                onBlur: function() {
+                // console.log('Editable area loses focus');
+                $(this).closest('.summernote').removeClass('focused');
+                }
+            }
+        };
+    
+        $('#text').change(function(){
+            if (this.value === "html") {
+                $('textarea.editor').each(function(i) {
+                    mdeditor[i].toTextArea();
+                    summernote[i] = $(this).summernote(summernote_config);
+                });
+            }
+            else if (this.value === "md"){
+                $('textarea.editor').each(function(i) {
+                    summernote[i].summernote('destroy');
+                    mdeditor[i] = new SimpleMDE({
+                        element: this,
+                        spellChecker: false,
+                        promptURLs: true,
+                        forceSync: true
+                    });
+                  });
+            }
+        });
+    
+        $('textarea.editor').each(function(i) {
+            var el = this;
+            mdeditor[i] = new SimpleMDE({
+                element: this,
+                spellChecker: false,
+                promptURLs: true,
+                forceSync: true
+            });
+      
+            // Tweak codemirror to accept drag&drop any file
+            mdeditor[i].codemirror.setOption("allowDropFileTypes", null);
+      
+            mdeditor[i].codemirror.on('drop', function(codemirror, event) {
+                // console.log('codemirror',codemirror,'event',event);
+      
+                var loading_text = '![](loading image...)';
+      
+                if(event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length) {
+                  var images = $.grep(event.dataTransfer.files, function(file,i) {
+                    if(file && file.type && file.type.startsWith('image/')) {
+                      return true;
+                    }
+                    return false;
+                  });
+                  // console.log('images', images);
+                  if(images.length) {
+                    // Do not allow predefined codemirror behaviour if are images
+                    event.preventDefault();
+                    event.stopPropagation();
+                    var $cm = $(el).closest('.form-group').find('.CodeMirror.CodeMirror-wrap');
+                    var $up = $('<div class="uploading">');
+                    $cm.prepend($up);
+      
+                    var coords = codemirror.coordsChar({
+                      left: event.pageX,
+                      top: event.pageY
+                    });
+      
+                    codemirror.replaceRange("\n" + loading_text + "\n", coords);
+                    coords.line++;
+                    coords.ch = 0;
+                    codemirror.setCursor(coords);
+                    // console.log('codemirror',codemirror,'coords',coords);
+      
+                    
+                }
+              }
+            });
+            mdeditor[i].render();
+          });
+    }
+});

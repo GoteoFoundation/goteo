@@ -15,13 +15,20 @@ use Goteo\Library\Text;
 /**
  * Transform a Model
  */
-class PromoteTransformer extends AbstractTransformer {
+class FilterTransformer extends AbstractTransformer {
 
-    protected $keys = ['id', 'image', 'title', 'subtitle'];
+    protected $keys = ['id', 'name', 'description'];
 
     public function getInfo() {
         $prj = $this->model->getProject();
         return '<strong>'.($prj ? $prj->name.' - ' : '') . $this->getAuthor() . '</strong><br>' . Text::recorta($this->getReview(), 30);
+    }
+
+    public function getLabel($key) {
+        if ($key == "users") {
+            return "<i class='fa fa-users'></i> " . Text::get("admin-title-$key");
+        }
+        return Text::get("admin-title-$key");
     }
 
     function getProject() {
@@ -33,9 +40,25 @@ class PromoteTransformer extends AbstractTransformer {
         return $status;
     }
 
+    function getDescription(){
+        $description = $this->model->description;
+        return $description;
+    }
+
+    function getUsers(){
+        $receivers = $this->model->getFiltered(0, 0, true);
+        return $receivers;
+    }
 
     public function getActions() {
-        $ret = ['delete' => '/admin/promote/delete/channel/'. $this->model->node . '/id/'. $this->model->id];
+        if(!$u = $this->getUser()) return [];
+        $ret = [
+            'edit' => '/admin/filter/edit/' . $this->model->id,
+        ];
+
+        if (!$this->model->isUsed())
+            $ret['delete'] = '/admin/filter/delete/'. $this->model->id;
+
         return $ret;
     }
     
