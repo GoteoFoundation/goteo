@@ -159,9 +159,10 @@ class Communication extends \Goteo\Core\Model {
 
         foreach($this->projects as $key => $value) {
             $values[':project'] = $value;
+            $values[':order'] = $key;
             try {
                 if ($value)
-                    $query = static::query('INSERT INTO communication_project(`communication`, `project`) VALUES(:communication,:project)', $values);
+                    $query = static::query('INSERT INTO communication_project(`communication`, `project`, `order`) VALUES(:communication,:project,:order)', $values);
             }
             catch (\PDOException $e) {
                 Message::error("Error saving filter projects " . $e->getMessage());
@@ -172,7 +173,7 @@ class Communication extends \Goteo\Core\Model {
     }
 
     static public function getCommunicationProjects ($communication){
-        $query = static::query('SELECT `project` FROM communication_project WHERE communication = ?', $communication);
+        $query = static::query('SELECT `project` FROM communication_project WHERE `communication` = ? ORDER BY `order` ASC', $communication);
         $projects = $query->fetchAll(\PDO::FETCH_ASSOC);
 
         $communication_projects = [];
