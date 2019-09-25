@@ -137,7 +137,7 @@ class Communication extends \Goteo\Core\Model {
             FROM communication
             $joins
             $sql
-            ORDER BY `id` ASC
+            ORDER BY `id` DESC
             LIMIT $offset,$limit";
 
         // var_dump($values); var_dump($sql); die(\sqldbg($sql, $values));
@@ -310,7 +310,8 @@ class Communication extends \Goteo\Core\Model {
         
         if ($mails) {
             foreach($mails as $mail) {
-                $active = $active || $mail->getSender()->isActive();
+                if ($mail->getSender())
+                    $active = $active || $mail->getSender()->isActive();
             }
         }
         
@@ -323,7 +324,8 @@ class Communication extends \Goteo\Core\Model {
 
         if ($mails) {
             foreach($mails as $mail) {
-                $sent = $sent || $mail->getSender()->getStatusObject()->sent;
+                if ($mail->getSender())
+                    $sent = $sent || $mail->getSender()->getStatusObject()->sent;
             }
         }
         
