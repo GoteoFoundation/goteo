@@ -57,7 +57,7 @@ class CommunicationTransformer extends AbstractTransformer {
 
     }
 
-    public function getStatus() {
+    public function getSuccess() {
         $status = $this->model->getStatus();
         return '<span class="label label-percent" style="background-color:hsl(' . (120 * $status/100) . ',45%,50%);">' . $status . ' % </span>';
     }
