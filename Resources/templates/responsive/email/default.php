@@ -28,7 +28,6 @@
             font-size: 28px;
             color: #149290;
             text-align: center;
-            margin-top: 20px;
         }
         h2{
             font-size: 18px;
@@ -156,7 +155,7 @@
 
                     <!-- Contenido -->
 
-                    <div style="font-size: 16px">
+                    <div style="font-size: 16px; margin: 30px 0;">
                     <table class="section header" cellpadding="0" cellspacing="0" width="600">
                         <tr>
                             <td class="column">
