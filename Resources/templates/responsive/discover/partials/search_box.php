@@ -4,7 +4,7 @@
 
     <div class="row">
       <div class="col-xs-12 col-sm-4">
-        <form class="form-search" method="get" action="/discover">
+        <form class="form-search" method="get" action="">
           <div class="form-group">
             <label for="search-q"><?= $this->text('discover-by-keyword') ?></label>
             <div class="input-group">
@@ -16,7 +16,7 @@
       </div>
 
       <div class="col-xs-12 col-sm-4">
-        <form class="form-search" method="get" action="/discover">
+        <form class="form-search" method="get" action="">
           <div class="form-group">
             <label for="search-location"><?= $this->text('discover-near-by') ?></label>
             <div class="input-group">
@@ -31,7 +31,7 @@
       </div>
 
       <div class="col-xs-12 col-sm-4">
-        <form class="form-search" method="get" action="/discover">
+        <form class="form-search" method="get" action="">
           <div class="form-group">
             <label for="search-category"><?= $this->text('discover-searcher-bycategory-header') ?></label>
             <?= $this->html('select', ['name' => 'category', 'value' => $this->get_query('category'), 'options' => ['' => ''] + $this->raw('categories'), 'attribs' => ['id' => 'search-category', 'class' => 'form-control']]) ?>
