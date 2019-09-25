@@ -120,6 +120,7 @@ class GoteoCommunicationModule
         CREATE TABLE `communication_project` (
           `communication` bigint(20) UNSIGNED,
           `project` VARCHAR(50) NOT NULL COLLATE utf8_general_ci,
+          `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
           FOREIGN KEY (`communication`) REFERENCES `communication`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
           UNIQUE KEY `id_communicationproject` (`communication`,`project`)
