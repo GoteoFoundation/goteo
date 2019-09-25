@@ -986,9 +986,8 @@ class Filter extends \Goteo\Core\Model {
         if($count) {
             $sql = "SELECT COUNT(user.id)
                     FROM user 
-                    LEFT JOIN user_prefer ON user_prefer.user = user.id
                     $sqlInner
-                    WHERE user.active AND (user_prefer.mailing = 0 OR user_prefer.mailing IS NULL)
+                    WHERE user.active
                     $sqlFilter";
             // die(\sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
@@ -999,9 +998,8 @@ class Filter extends \Goteo\Core\Model {
                     user.name as name,
                     user.email as email
                 FROM user
-                LEFT JOIN user_prefer ON user_prefer.user = user.id
                 $sqlInner
-                WHERE user.active AND (user_prefer.mailing = 0 OR user_prefer.mailing IS NULL)
+                WHERE user.active
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
@@ -1138,9 +1136,8 @@ class Filter extends \Goteo\Core\Model {
                     user.name as name,
                     user.email as email
                 FROM user
-                LEFT JOIN user_prefer ON user_prefer.user = user.id
                 $sqlInner
-                WHERE user.active AND (user_prefer.mailing = 0 OR user_prefer.mailing IS NULL)
+                WHERE user.active
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
