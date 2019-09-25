@@ -16,4 +16,7 @@
             </li>
         </a>
     <?php endforeach; ?>
+    <a href="<?= '/channel/' . $this->channel->id . '/discover' ?>">
+        <li class="fa fa-search"></li>
+    </a>
 </ul>
