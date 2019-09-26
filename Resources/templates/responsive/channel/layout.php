@@ -22,6 +22,7 @@ $this->append();
 
 $this->section('content');
 
+$summary = ($this->summary) ? $this->summary: false;
 $background = $this->channel->owner_background;
 
 ?>
@@ -50,7 +51,9 @@ $background = $this->channel->owner_background;
 
     <?= $this->insert("channel/partials/posts_section") ?>
 
-    <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
+    <?php if ($summary): ?>
+        <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
+    <?php endif ?>
 
 <?php $this->replace() ?>
 
@@ -84,7 +87,6 @@ through which recipients can access the Corresponding Source.
 @licend  The above is the entire license notice
 for the JavaScript code in this page.
 */
-//workshop
     
     
 $('.slider-stories').slick({
