@@ -21,13 +21,20 @@ body.channel {
                 max-width: 1170px;
             }
         }
-
     }
 
     background: $color-white;
 
   @media (max-width: $breakpoint-sm - 1) {
     padding-bottom: 57px;
+    .sponsors-section{
+      ul{
+        li:not(:first-child){
+          margin-top: 30px;
+        }
+      }
+
+    }
   }
 
   @media (max-width: $breakpoint-xs - 1) {
@@ -61,6 +68,44 @@ body.channel {
       color: $color-lilac;
     }
   }
+
+  .sponsors-section{
+      padding-top: 10px;
+      margin-bottom: 0;
+      background-color: $background-white;
+      padding-bottom: 20px;
+
+      .title{
+        padding-bottom: 20px;
+      }
+
+      ul{
+        padding: 15px 0;
+        li{
+          padding: 0 20px;
+        }
+      }
+
+    }
+
+  .stories-section{
+      padding-top: 30px;
+      margin-bottom: 0;
+      background-color: $background-white;
+    }
+  
+  .posts-section{
+    padding: 40px 0 50px 0;
+    h2.title{
+      text-align: center;
+      margin-top: 0;
+      padding-bottom: 30px;
+    }
+    .a-unstyled{
+        color: #3a3a3a;
+      }
+  }
+
   .summary-section {
     background-color: $color-white;
     .summary{

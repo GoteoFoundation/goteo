@@ -15,6 +15,9 @@ use Goteo\Application\Config;
 use Goteo\Model\Image;
 use Goteo\Application\Exception;
 use Goteo\Library\Text;
+use Goteo\Model\Blog\Post as GeneralPost;
+use Goteo\Model\Node\NodeSponsor;
+
 
 class Node extends \Goteo\Core\Model {
 
@@ -929,5 +932,64 @@ class Node extends \Goteo\Core\Model {
         }
 
     }
+
+    /**
+     *  Posts of this node
+     */
+    public function getPosts () {
+       if($this->postsList) return $this->postsList;
+        
+        $this->postsList = GeneralPost::getList(['node' => $this->id ], true, 0, $limit = 3, false);
+
+        return $this->postsList;
+
+    }
+
+     /**
+     *  Stories of this node
+     */
+    public function getStories () {
+       if($this->storiesList) return $this->storiesList;
+        $values = [':node' => $this->id];
+
+        list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+
+        $sql = "SELECT
+                stories.id,
+                stories.image,
+                $fields
+            FROM node_stories
+            INNER JOIN stories ON stories.id = node_stories.stories_id
+            $joins
+            WHERE node_stories.node_id = :node
+            ORDER BY node_stories.order ASC";
+        // die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->storiesList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Stories');
+        return $this->storiesList;
+
+    }
+
+
+    /**
+     *  Sponsors of this node
+     */
+    public function getSponsors () {
+        if($this->sponsorsList) return $this->sponsorsList;
+        $values = [':node' => $this->id];
+
+        $sql = "SELECT
+                node_sponsor.*
+            FROM node_sponsor
+
+            WHERE node_sponsor.node_id = :node
+            ORDER BY node_sponsor.order ASC";
+         //die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->sponsorsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeSponsor');
+        return $this->sponsorsList;
+
+    }
+
 
 }

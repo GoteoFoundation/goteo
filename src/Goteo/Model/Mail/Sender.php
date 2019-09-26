@@ -350,9 +350,6 @@ class Sender extends \Goteo\Core\Model
             $query = static::query($sql, $values);
             $mailing = $query->fetchObject(__CLASS__);
 
-            if( ! $mailing instanceOf Sender) {
-                throw new ModelNotFoundException('Not found sender [' . $$mail_id . ']');
-            }
             return $mailing;
         } catch(\PDOException $e) {
             throw new ModelException('SQL error while getting sender [' . $id . ']' . $e->getMessage());

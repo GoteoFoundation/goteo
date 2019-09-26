@@ -354,14 +354,14 @@ class Filter extends \Goteo\Core\Model {
 
     public function isUsed() {
 
-        $constraints = $this->dbReferencialConstraints(['delete_rule' => 'RESTRICT']);
+        $constraints = self::dbReferencialConstraints(['delete_rule' => 'RESTRICT']);
 
         $sql = "SELECT filter.id FROM filter ";
         $values = [];
 
-        foreach($constraints as $constraint) {
-            $sql .= "INNER JOIN ". $constraint['TABLE_NAME'] .
-                    " ON filter.id = ". $constraint['TABLE_NAME'] . ".filter ";
+        foreach($constraints as $i => $constraint) {
+            $sql .= "INNER JOIN ". $constraint['TABLE_NAME'] . " as " . $constraint['TABLE_NAME'] . "_" . $i .
+                    " ON filter.id = ". $constraint['TABLE_NAME'] . "_" . $i . ".filter ";
         }
         $sql .= "WHERE filter.id = :id";
         $values[':id'] = $this->id;
@@ -986,9 +986,8 @@ class Filter extends \Goteo\Core\Model {
         if($count) {
             $sql = "SELECT COUNT(user.id)
                     FROM user 
-                    LEFT JOIN user_prefer ON user_prefer.user = user.id
                     $sqlInner
-                    WHERE user.active AND (user_prefer.mailing = 0 OR user_prefer.mailing IS NULL)
+                    WHERE user.active
                     $sqlFilter";
             // die(\sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
@@ -999,9 +998,8 @@ class Filter extends \Goteo\Core\Model {
                     user.name as name,
                     user.email as email
                 FROM user
-                LEFT JOIN user_prefer ON user_prefer.user = user.id
                 $sqlInner
-                WHERE user.active AND (user_prefer.mailing = 0 OR user_prefer.mailing IS NULL)
+                WHERE user.active
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
@@ -1138,9 +1136,8 @@ class Filter extends \Goteo\Core\Model {
                     user.name as name,
                     user.email as email
                 FROM user
-                LEFT JOIN user_prefer ON user_prefer.user = user.id
                 $sqlInner
-                WHERE user.active AND (user_prefer.mailing = 0 OR user_prefer.mailing IS NULL)
+                WHERE user.active
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC

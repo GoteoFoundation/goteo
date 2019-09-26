@@ -763,9 +763,10 @@ abstract class Model {
 	public static function dbReferencialConstraints($filter = []) {
 
 		$sql = "SELECT * FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
-				WHERE REFERENCED_TABLE_NAME = :table ";
+				WHERE REFERENCED_TABLE_NAME = :table AND CONSTRAINT_SCHEMA = :ddbb";
 
 		$values[':table'] = self::getTableStatic();
+		$values[':ddbb'] = Config::get('db.database');
 
 		if ($filter['delete_rule']) {
 			$sql .= " AND DELETE_RULE = :delete_rule";
