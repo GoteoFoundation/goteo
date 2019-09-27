@@ -13,7 +13,7 @@ $this->section('channel-content');
 
         <?= $this->insert('channel/partials/filters_block') ?>
 
-        <?= $this->insert('channel/partials/projects_block') ?>
+        <?= $this->insert('channel/partials/projects') ?>
 
     </div>
 
