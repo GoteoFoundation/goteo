@@ -9,11 +9,4 @@
             <?= $this->text('regular-see_all') ?>
         </li>
     </a>
-    <?php foreach ($this->types as $type) : ?>
-        <a href="<?= '/channel/' . $this->channel->id . '/' . $type ?>" >
-            <li class="<?php if ($type == $this->type) echo 'active' ?>">
-                <?= $this->text('node-side-searcher-' . $type) ?>
-            </li>
-        </a>
-    <?php endforeach; ?>
 </ul>
