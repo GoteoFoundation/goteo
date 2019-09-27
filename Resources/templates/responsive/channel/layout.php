@@ -34,3 +34,11 @@ $background = $this->channel->owner_background;
     <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
 
 <?php $this->replace() ?>
+
+<?php $this->section('head') ?>
+    <?= $this->insert('channel/partials/styles') ?>
+<?php $this->append() ?>
+
+<?php $this->section('footer') ?>
+    <?= $this->insert('channel/partials/javascript') ?>
+<?php $this->append() ?>
