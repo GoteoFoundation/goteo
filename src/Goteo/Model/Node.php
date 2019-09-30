@@ -34,7 +34,9 @@ class Node extends \Goteo\Core\Model {
         $active,
         $image,
         $default_consultant,
-        $sponsors_limit;
+        $sponsors_limit,
+        $call_for_action_background,
+        $premium;
 
 
     public function __construct() {
@@ -94,7 +96,9 @@ class Node extends \Goteo\Core\Model {
                 node.owner_font_color as owner_font_color,
                 node.owner_social_color as owner_social_color,
                 node.default_consultant as default_consultant,
-                node.sponsors_limit as sponsors_limit
+                node.sponsors_limit as sponsors_limit,
+                node.call_for_action_background as call_for_action_background,
+                node.premium as premium
             FROM node
             $joins
             WHERE node.id = :id";
