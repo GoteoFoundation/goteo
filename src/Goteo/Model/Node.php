@@ -61,7 +61,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['subtitle', 'description'];
+        return ['subtitle', 'description', 'call_to_action_description'];
     }
 
     /**
@@ -94,7 +94,8 @@ class Node extends \Goteo\Core\Model {
                 node.owner_font_color as owner_font_color,
                 node.owner_social_color as owner_social_color,
                 node.default_consultant as default_consultant,
-                node.sponsors_limit as sponsors_limit
+                node.sponsors_limit as sponsors_limit,
+                node.call_to_action_background_color as call_to_action_background_color
             FROM node
             $joins
             WHERE node.id = :id";
@@ -988,6 +989,26 @@ class Node extends \Goteo\Core\Model {
         $query = static::query($sql, $values);
         $this->sponsorsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeSponsor');
         return $this->sponsorsList;
+
+    }
+
+     /**
+     *  Resources of this node
+     */
+    public function getResources () {
+        if($this->resourcesList) return $this->resourcesList;
+        $values = [':node' => $this->id];
+
+        $sql = "SELECT
+                node_resources.*
+            FROM node_resources
+
+            WHERE node_resources.node_id = :node
+            ORDER BY node_resources.order ASC";
+         //die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->resourcesList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeResource');
+        return $this->resourcesList;
 
     }
 

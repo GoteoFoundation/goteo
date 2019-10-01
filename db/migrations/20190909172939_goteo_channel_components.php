@@ -60,6 +60,35 @@ class GoteoChannelComponents
             FOREIGN KEY (`node_id`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
             FOREIGN KEY (`stories_id`) REFERENCES `stories`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
+
+        CREATE TABLE `node_resources` (
+          `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+          `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+          `title` VARCHAR(255) NOT NULL,
+          `icon` varchar(255) NULL,
+          `description` TEXT NOT NULL,
+          `action` VARCHAR(255) NOT NULL,
+          `action_url` TINYTEXT NULL,
+          `action_icon` varchar(255) NULL,
+          `order` INT(11),
+           PRIMARY KEY (`id`),
+           CONSTRAINT `node_resources_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+        );
+
+        ALTER TABLE `node` ADD COLUMN `call_to_action_description` TEXT NOT NULL AFTER `description`;
+        ALTER TABLE `node` ADD COLUMN `call_to_action_background_color` TEXT NOT NULL AFTER `owner_font_color`;
+        ALTER TABLE `node` ADD COLUMN `premium` TINYINT(1) AFTER `description`;
+        ALTER TABLE `node_lang` ADD COLUMN `call_to_action_description` TEXT NOT NULL AFTER `description`;
+
+
+        CREATE TABLE `node_workshop` (
+          `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+          `workshop_id` BIGINT(20) UNSIGNED NOT NULL,
+           PRIMARY KEY (`node_id`, `workshop_id`),
+            FOREIGN KEY (`node_id`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+            FOREIGN KEY (`workshop_id`) REFERENCES `workshop`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        );
+
      ";
 
   }
@@ -75,6 +104,7 @@ class GoteoChannelComponents
        DROP TABLE `node_post`;
        DROP TABLE `node_sponsor`;
        DROP TABLE `node_stories`;
+       DROP TABLE `node_resources`;
      ";
   }
 

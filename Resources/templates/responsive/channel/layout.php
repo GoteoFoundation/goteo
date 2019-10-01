@@ -32,7 +32,7 @@ $background = $this->channel->owner_background;
             <?= $this->insert("channel/partials/owner_info") ?>
         </div>
 
-        <?= $this->supply('channel-header', $this->insert("channel/partials/join_action", ['color' => $background])) ?>
+        <?= $this->supply('channel-header', $this->insert("channel/partials/join_action", ['main_color' => $background])) ?>
 
     </div>
 
@@ -45,14 +45,18 @@ $background = $this->channel->owner_background;
         </div>
     </div>
 
+    <?php if ($summary): ?>
+
     <?= $this->insert("channel/partials/sponsors_section") ?>
+
+    <?= $this->insert("channel/partials/resources_section") ?>
 
     <?= $this->insert("channel/partials/stories_section") ?>
 
     <?= $this->insert("channel/partials/posts_section") ?>
 
-    <?php if ($summary): ?>
-        <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
+    <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
+
     <?php endif ?>
 
 <?php $this->replace() ?>
