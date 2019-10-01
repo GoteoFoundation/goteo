@@ -77,7 +77,7 @@ class GoteoChannelComponents
 
         ALTER TABLE `node` ADD COLUMN `call_to_action_description` TEXT NOT NULL AFTER `description`;
         ALTER TABLE `node` ADD COLUMN `call_to_action_background_color` TEXT NOT NULL AFTER `owner_font_color`;
-        ALTER TABLE `node` ADD COLUMN `premium` TINYINT(1) AFTER `description`;
+        ALTER TABLE `node` ADD COLUMN `premium` TINYINT(1) NOT NULL AFTER `description`;
         ALTER TABLE `node_lang` ADD COLUMN `call_to_action_description` TEXT NOT NULL AFTER `description`;
 
 

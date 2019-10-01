@@ -3,7 +3,6 @@ $premium = $this->channel->premium;
 
 $values = [
     'bodyClass' => 'channel',
-    'background' => $this->channel->owner_background,
     'premium' => $premium,
     'title' =>  $this->text('regular-channel').' '.$this->channel->name,
     'meta_description' => $this->channel->description,
@@ -12,7 +11,7 @@ $values = [
 
 if ($premium) {
     $values['premium'] = $premium;
-    $values['header_background'] = $header_background;
+    $values['background'] = $this->channel->owner_background;
     $values['call_for_action_background'] = $call_for_action_background;
 } else {
     $values['navClass'] = 'white';
