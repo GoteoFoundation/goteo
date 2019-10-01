@@ -1,6 +1,18 @@
 @import "compass/css3";
 
+
 /* Channel */
+
+@font-face {
+  font-family: Lovelo;
+  src: url(/assets/vendor/fonts/lovelo/lovelo_line_light.otf);
+}
+@font-face {
+  font-family: Lovelo;
+  src: url(/assets/vendor/fonts/lovelo/lovelo_line_bold.otf);
+  font-weight: bold;
+}
+
 
 body.channel {
 
@@ -181,11 +193,27 @@ body.channel {
 
           .channel-name{
             font-size: $font-size*2.1;
+            &.premium{
+              color: #3D3D3C;
+            }
+          }
+
+          .channel-subtitle {
+            font-size: $font-size*1.4;
+            max-width: 80%;
+            margin: 5px;
           }
 
           .channel-description{
             font-size: $font-size*1.2;
             max-width: 80%;
+            &.premium{
+              font-size: $font-size;
+            }
+          }
+
+          .channel-hashtag{
+            font-family: lovelo
           }
 
           .channel-location{
@@ -267,6 +295,7 @@ body.channel {
     width: 760px;
   }
 
+<<<<<<< HEAD
   @media (max-width: $breakpoint-sm - 1) {
     padding-bottom: 57px;
     .sponsors-section{
@@ -283,7 +312,17 @@ body.channel {
             margin-top: 20px;
           }
       }
+    .top-navbar {
+      &.premium {
+        padding-top: 2em;
+      }
     }
+
+    .logo{
+      &.premium{
+        height:50px;
+        margin-left: 10em;
+      }
   }
 
   @media (max-width: $breakpoint-xs - 1) {
@@ -337,12 +376,22 @@ body.channel {
       }
     }
 
-
+    .logo{
+      &.premium{
+        height: 50px;
+        margin-left: 2em;
+      }
+    }
+  
   }
 
+<<<<<<< HEAD
    @media (max-width: $breakpoint-xxs - 1) {
     //font-size: 9px !important;
   }
+=======
+  
+>>>>>>> Change channel layout for premium channels
 
 }
 

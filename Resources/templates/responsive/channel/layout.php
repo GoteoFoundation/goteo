@@ -6,13 +6,14 @@ $values = [
     'premium' => $premium,
     'title' =>  $this->text('regular-channel').' '.$this->channel->name,
     'meta_description' => $this->channel->description,
-    'tw_image' =>  $this->channel->logo ? $this->channel->logo->getlink(400,0, false, true) : ''
+    'tw_image' =>  $this->channel->logo ? $this->channel->logo->getlink(300,0, false, true) : '',
 ];
 
 if ($premium) {
     $values['premium'] = $premium;
     $values['background'] = $this->channel->owner_background;
     $values['call_for_action_background'] = $call_for_action_background;
+    $values['powered'] = true;
 } else {
     $values['navClass'] = 'white';
 }
@@ -40,7 +41,11 @@ $background = $this->channel->owner_background;
 
     <div class="heading-section">
         <div class="owner-section"<?php if($background) echo ' style="background-color:' . $background . '"'; ?>>
-            <?= $this->insert("channel/partials/owner_info") ?>
+            <?php if ($premium): ?>
+                <?= $this->insert("channel/partials/owner_info_premium") ?>
+            <?php else: ?>
+                <?= $this->insert("channel/partials/owner_info") ?>
+            <?php endif ?>
         </div>
 
         <?= $this->supply('channel-header', $this->insert("channel/partials/join_action", ['main_color' => $background])) ?>

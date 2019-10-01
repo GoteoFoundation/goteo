@@ -81,6 +81,7 @@ class Node extends \Goteo\Core\Model {
                 node.id as id,
                 node.name as name,
                 node.email as email,
+                node.subtitle as subtitle,
                 $fields,
                 node.logo as logo,
                 node.label as label,
