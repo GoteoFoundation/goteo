@@ -295,7 +295,19 @@ body.channel {
     width: 760px;
   }
 
-<<<<<<< HEAD
+  .top-navbar {
+    &.premium {
+      padding-top: 2em;
+    }
+  }
+
+  .logo{
+    &.premium{
+      height:50px;
+      margin-left: 10em;
+    }
+  }
+
   @media (max-width: $breakpoint-sm - 1) {
     padding-bottom: 57px;
     .sponsors-section{
@@ -312,17 +324,7 @@ body.channel {
             margin-top: 20px;
           }
       }
-    .top-navbar {
-      &.premium {
-        padding-top: 2em;
-      }
     }
-
-    .logo{
-      &.premium{
-        height:50px;
-        margin-left: 10em;
-      }
   }
 
   @media (max-width: $breakpoint-xs - 1) {
@@ -385,14 +387,9 @@ body.channel {
   
   }
 
-<<<<<<< HEAD
    @media (max-width: $breakpoint-xxs - 1) {
     //font-size: 9px !important;
   }
-=======
-  
->>>>>>> Change channel layout for premium channels
-
 }
 
 
