@@ -1016,5 +1016,25 @@ class Node extends \Goteo\Core\Model {
 
     }
 
+    /**
+     *  Workshops of this node
+     */
+    public function getWorkshops () {
+        if($this->workshopList) return $this->workshopList;
+        $values = [':node' => $this->id];
+
+        $sql = "SELECT
+                node_workshop.*
+            FROM node_workshop
+
+            WHERE node_workshop.node_id = :node
+            ORDER BY node_workshop.order ASC";
+         //die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->workshopList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Workshop');
+        return $this->workshopList;
+
+    }
+
 
 }
