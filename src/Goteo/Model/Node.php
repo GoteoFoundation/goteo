@@ -26,6 +26,7 @@ class Node extends \Goteo\Core\Model {
         $name,
         $subtitle,
         $description,
+        $hashtag,
         $email,
         $admins = array(), // administradores
         $logo,
@@ -82,6 +83,7 @@ class Node extends \Goteo\Core\Model {
                 node.name as name,
                 node.email as email,
                 node.subtitle as subtitle,
+                node.hashtag as hashtag,
                 $fields,
                 node.logo as logo,
                 node.label as label,
