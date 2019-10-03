@@ -7,7 +7,7 @@
         		<img src="<?= $channel->logo ? $channel->logo->getlink(400,0) : '' ?>" alt="<?= $channel->name ?>"/>
     		</a>
 		</div>
-		<div class="col-md-4 info col-center" <?php if($channel->owner_font_color) echo 'style="color:'.$channel->owner_font_color.'"'; ?>>
+		<div class="col-md-6 info col-center" <?php if($channel->owner_font_color) echo 'style="color:'.$channel->owner_font_color.'"'; ?>>
 			<?php $this->section('channel-owner-info') ?>
 			    <!-- Nombre y texto presentación -->
 			    <h2 class="channel-name premium"><?= $channel->name ?></h2>

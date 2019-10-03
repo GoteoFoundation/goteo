@@ -84,13 +84,6 @@ class GoteoChannelComponents
             FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
 
-        ALTER TABLE `node` ADD COLUMN `call_to_action_description` TEXT NOT NULL AFTER `description`;
-        ALTER TABLE `node` ADD COLUMN `call_to_action_background_color` TEXT NOT NULL AFTER `owner_font_color`;
-        ALTER TABLE `node` ADD COLUMN `hashtag` VARCHAR(255) AFTER `description`;
-        ALTER TABLE `node` ADD COLUMN `premium` TINYINT(1) NOT NULL AFTER `hashtag`;
-        ALTER TABLE `node_lang` ADD COLUMN `call_to_action_description` TEXT NOT NULL AFTER `description`;
-
-
         CREATE TABLE `node_workshop` (
           `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
           `workshop_id` BIGINT(20) UNSIGNED NOT NULL,
@@ -98,6 +91,12 @@ class GoteoChannelComponents
             FOREIGN KEY (`node_id`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
             FOREIGN KEY (`workshop_id`) REFERENCES `workshop`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
+
+        ALTER TABLE `node` ADD COLUMN `call_to_action_description` TEXT NOT NULL AFTER `description`;
+        ALTER TABLE `node` ADD COLUMN `call_to_action_background_color` TEXT NOT NULL AFTER `owner_font_color`;
+        ALTER TABLE `node` ADD COLUMN `hashtag` VARCHAR(255) AFTER `description`;
+        ALTER TABLE `node` ADD COLUMN `premium` TINYINT(1) NOT NULL AFTER `hashtag`;
+        ALTER TABLE `node_lang` ADD COLUMN `call_to_action_description` TEXT NOT NULL AFTER `description`;
 
      ";
 
@@ -115,6 +114,7 @@ class GoteoChannelComponents
        DROP TABLE `node_sponsor`;
        DROP TABLE `node_stories`;
        DROP TABLE `node_resources`;
+       DROP TABLE `node_project`;
        DROP TABLE `node_workshop`;
        ALTER TABLE `node` DROP COLUMN `call_to_action_description`;
        ALTER TABLE `node` DROP COLUMN `call_to_action_background_color`;
