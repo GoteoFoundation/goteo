@@ -63,6 +63,8 @@ class ChannelController extends \Goteo\Core\Controller {
             'outdate'
         );
 
+        
+
         //check if there are elements to show by type
         foreach($types as $key => $type)
         {
@@ -113,7 +115,6 @@ class ChannelController extends \Goteo\Core\Controller {
             $total = $limit;
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
-
 
         return $this->viewResponse(
             'channel/list_projects',

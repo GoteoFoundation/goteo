@@ -1,6 +1,18 @@
 @import "compass/css3";
 
+
 /* Channel */
+
+@font-face {
+  font-family: Lovelo;
+  src: url(/assets/vendor/fonts/lovelo/lovelo_line_light.otf);
+}
+@font-face {
+  font-family: Lovelo;
+  src: url(/assets/vendor/fonts/lovelo/lovelo_line_bold.otf);
+  font-weight: bold;
+}
+
 
 body.channel {
 
@@ -23,27 +35,7 @@ body.channel {
         }
     }
 
-    background: $color-white;
-
-  @media (max-width: $breakpoint-sm - 1) {
-    padding-bottom: 57px;
-    .sponsors-section{
-      ul{
-        li:not(:first-child){
-          margin-top: 30px;
-        }
-      }
-
-    }
-  }
-
-  @media (max-width: $breakpoint-xs - 1) {
-    //font-size: 10px !important;
-  }
-
-  @media (max-width: $breakpoint-xxs - 1) {
-    //font-size: 9px !important;
-  }
+  background: $color-white;
 
   .btn {
     text-transform: uppercase;
@@ -64,9 +56,7 @@ body.channel {
     .matcher-action-section {
       background: transparentize($background-light-lilac, 0.2);
     }
-    .btn-white {
-      color: $color-lilac;
-    }
+    
   }
 
   .sponsors-section{
@@ -87,6 +77,72 @@ body.channel {
       }
 
     }
+
+  .resources-section{
+
+    padding:30px 0;
+
+    h2.title{
+      text-align: center;
+      margin-top: 0;
+      padding: 30px 0;
+    }
+
+    .row.details{
+      padding:15px 0;
+      display: flex;
+      font-weight: bold;
+
+      span.icon {
+        width: 30px;
+        height: 30px;
+        &.icon-action{
+          mask-position-y: inherit;
+        }
+      }
+
+      .title{
+          img{
+          }
+          span.text{
+              border: 1px solid #CAD7D8;
+              font-size: 12px;
+              padding: 7px;
+              text-transform: uppercase;
+              margin-left: 10px;
+          }
+      }
+      .description
+      {
+          padding: 15px 40px;
+          font-size: 24px;
+      }
+      .more-description
+      {
+          padding: 5px 40px 25px 40px;
+          font-size: 12px;
+          font-weight: normal;
+      }
+      .action a{
+          font-size: 13px;
+          padding: 0 40px;
+          color: #3A3A3A;
+          text-transform: uppercase;
+          .glyphicon{
+              font-size: 18px;
+              vertical-align: top;
+              margin-left: 5px;
+          }
+      }
+    }
+
+    .adventage:not(:last-child)
+        {
+            border-right: 1px solid #CAD7D8;
+            padding-bottom: 15px;
+        }
+
+  }
 
   .stories-section{
       padding-top: 30px;
@@ -137,11 +193,30 @@ body.channel {
 
           .channel-name{
             font-size: $font-size*2.1;
+            &.premium{
+              color: #3D3D3C;
+              font-weight: bold;
+            }
+          }
+
+          .channel-subtitle {
+            font-size: $font-size*1.4;
+            max-width: 80%;
+            margin-bottom: 10px;
+            line-height: 1;
           }
 
           .channel-description{
             font-size: $font-size*1.2;
             max-width: 80%;
+            &.premium{
+              font-size: $font-size;
+            }
+          }
+
+          .channel-hashtag{
+            font-family: Kalam,cursive;
+            font-size: $font-size*2;
           }
 
           .channel-location{
@@ -185,6 +260,12 @@ body.channel {
     }
   }
 
+  .workshops{
+    .title{
+      padding-top: 20px;
+    }
+  }
+
   .projects-section{
     padding-bottom: 40px;
     .filters {
@@ -221,6 +302,38 @@ body.channel {
 
   .modal-dialog{
     width: 760px;
+  }
+
+  .top-navbar {
+    &.premium {
+      padding-top: 2em;
+    }
+  }
+
+  .logo{
+    &.premium{
+      height:50px;
+      margin-left: 10em;
+    }
+  }
+
+  @media (max-width: $breakpoint-sm - 1) {
+    padding-bottom: 57px;
+    .sponsors-section{
+      ul{
+        li:not(:first-child){
+          margin-top: 30px;
+        }
+      }
+    }
+    .resources-section{
+      .row.details{
+          display: block !important;
+          .adventage{
+            margin-top: 20px;
+          }
+      }
+    }
   }
 
   @media (max-width: $breakpoint-xs - 1) {
@@ -274,13 +387,79 @@ body.channel {
       }
     }
 
+    .logo{
+      &.premium{
+        height: 50px;
+        margin-left: 2em;
+      }
+    }
+  
+  }
 
+  .section.projects{
+    padding: 40px 0;
+    .title{
+        margin-top: 0;
+    }
+    ul.project-filters {
+      margin:40px 0 35px 0;
+    }
+
+
+    // Hide while loading
+
+    .slider-projects{
+         visibility:hidden;
+         opacity:0;
+         transition: opacity 1s;
+        .custom-left-arrow{
+            top: 34%;
+            position: absolute;
+            font-size: $font-size*5;
+            left: -2.4%;
+            color: $background-light-green;
+            cursor: pointer;
+        }
+        .custom-right-arrow{
+            top: 34%;
+            position: absolute;
+            font-size: $font-size*5;
+            right: -4%;
+            color: $background-light-green;
+            cursor: pointer;
+        }
+    }
+
+    .slider-projects.slick-initialized{
+        visibility:visible;
+        opacity:1;
+    }
+
+    .slider-projects .item{
+        display:none ;
+    }
+
+    .slider-projects .item:first-child{
+        display:block; visibility:hidden;
+    }
+
+    .slider-projects.slick-initialized .item{
+        display:block;visibility:visible!important;
+    }
+
+    .slick-list {
+        padding-left: 0px!important; // half partial
+        .widget-slide{
+            margin-left: 20px;
+            .project-widget.normal{
+                box-shadow: none;
+            }
+        }
+    }
+  }
+
+  @media (max-width: $breakpoint-xxs - 1) {
+    //font-size: 9px !important;
   }
 
 }
-
-
-
-
-
-

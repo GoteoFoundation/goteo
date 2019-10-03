@@ -26,6 +26,7 @@ class Node extends \Goteo\Core\Model {
         $name,
         $subtitle,
         $description,
+        $hashtag,
         $email,
         $admins = array(), // administradores
         $logo,
@@ -34,7 +35,9 @@ class Node extends \Goteo\Core\Model {
         $active,
         $image,
         $default_consultant,
-        $sponsors_limit;
+        $sponsors_limit,
+        $call_for_action_background,
+        $premium;
 
 
     public function __construct() {
@@ -61,7 +64,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['subtitle', 'description'];
+        return ['subtitle', 'description', 'call_to_action_description'];
     }
 
     /**
@@ -79,6 +82,8 @@ class Node extends \Goteo\Core\Model {
                 node.id as id,
                 node.name as name,
                 node.email as email,
+                node.subtitle as subtitle,
+                node.hashtag as hashtag,
                 $fields,
                 node.logo as logo,
                 node.label as label,
@@ -94,7 +99,9 @@ class Node extends \Goteo\Core\Model {
                 node.owner_font_color as owner_font_color,
                 node.owner_social_color as owner_social_color,
                 node.default_consultant as default_consultant,
-                node.sponsors_limit as sponsors_limit
+                node.sponsors_limit as sponsors_limit,
+                node.call_to_action_background_color as call_to_action_background_color,
+                node.premium as premium
             FROM node
             $joins
             WHERE node.id = :id";
@@ -989,6 +996,48 @@ class Node extends \Goteo\Core\Model {
         $this->sponsorsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeSponsor');
         return $this->sponsorsList;
 
+    }
+
+     /**
+     *  Resources of this node
+     */
+    public function getResources () {
+        if($this->resourcesList) return $this->resourcesList;
+        $values = [':node' => $this->id];
+
+        $sql = "SELECT
+                node_resources.*
+            FROM node_resources
+
+            WHERE node_resources.node_id = :node
+            ORDER BY node_resources.order ASC";
+         //die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->resourcesList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeResource');
+        return $this->resourcesList;
+
+    }
+
+    /**
+     *  Workshops of this node
+     */
+    public function getWorkshops () {
+if($this->workshopsList) return $this->workshopsList;
+        $values = [':node' => $this->id];
+
+        //list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+
+        $sql = "SELECT
+                workshop.*
+            FROM node_workshop
+            INNER JOIN workshop ON workshop.id = node_workshop.workshop_id
+            $joins
+            WHERE node_workshop.node_id = :node AND workshop.date_in >= NOW()
+            ORDER BY workshop.date_in ASC";
+        // die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->workshopsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Workshop');
+        return $this->workshopsList;
     }
 
 
