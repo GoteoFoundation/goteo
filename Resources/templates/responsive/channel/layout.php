@@ -36,6 +36,7 @@ $this->append();
 $this->section('content');
 
 $summary = ($this->summary) ? $this->summary: false;
+
 $background = $this->channel->owner_background;
 ?>
 
@@ -61,19 +62,18 @@ $background = $this->channel->owner_background;
         </div>
     </div>
 
-    <?php if ($summary): ?>
+<?= $this->insert("channel/partials/sponsors_section") ?>
 
-    <?= $this->insert("channel/partials/sponsors_section") ?>
+<?= $this->insert("channel/partials/resources_section") ?>
 
-    <?= $this->insert("channel/partials/resources_section") ?>
+<?= $this->insert("channel/partials/stories_section") ?>
 
-    <?= $this->insert("channel/partials/stories_section") ?>
+<?= $this->insert("channel/partials/posts_section") ?>
 
-    <?= $this->insert("channel/partials/posts_section") ?>
+<?= $this->insert("channel/partials/related_workshops") ?>
 
-    <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
+<?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
 
-    <?php endif ?>
 
 <?php $this->replace() ?>
 

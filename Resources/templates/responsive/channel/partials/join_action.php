@@ -18,7 +18,7 @@ elseif($this->main_color)
                 </div>
             </div>
             <div class="col-xs-12 col-sm-3 col-sm-offset-1 col-button">
-                <a href="/channel/<?= $this->channel->id ?>/create" class="btn btn-white"<?php if($this->color) echo ' style="color:' . $this->color . '"'; ?>><?= $this->text('regular-create') ?></a>
+                <a href="/channel/<?= $this->channel->id ?>/create" class="btn btn-white"<?php if($this->main_color) echo ' style="color:' . $this->main_color . '"'; ?>><?= $this->text('regular-create') ?></a>
             </div>
         </div>
     </div>

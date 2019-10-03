@@ -75,6 +75,15 @@ class GoteoChannelComponents
            CONSTRAINT `node_resources_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );
 
+        CREATE TABLE `node_project` (
+          `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+          `project_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+          `order` INT(11),
+           PRIMARY KEY (`node_id`, `project_id`),
+            FOREIGN KEY (`node_id`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+            FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        );
+
         ALTER TABLE `node` ADD COLUMN `call_to_action_description` TEXT NOT NULL AFTER `description`;
         ALTER TABLE `node` ADD COLUMN `call_to_action_background_color` TEXT NOT NULL AFTER `owner_font_color`;
         ALTER TABLE `node` ADD COLUMN `hashtag` VARCHAR(255) AFTER `description`;

@@ -1020,20 +1020,22 @@ class Node extends \Goteo\Core\Model {
      *  Workshops of this node
      */
     public function getWorkshops () {
-        if($this->workshopList) return $this->workshopList;
+if($this->workshopsList) return $this->workshopsList;
         $values = [':node' => $this->id];
 
+        //list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+
         $sql = "SELECT
-                node_workshop.*
+                workshop.*
             FROM node_workshop
-
-            WHERE node_workshop.node_id = :node
-            ORDER BY node_workshop.order ASC";
-         //die(\sqldbg($sql, $values));
+            INNER JOIN workshop ON workshop.id = node_workshop.workshop_id
+            $joins
+            WHERE node_workshop.node_id = :node AND workshop.date_in >= NOW()
+            ORDER BY workshop.date_in ASC";
+        // die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
-        $this->workshopList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Workshop');
-        return $this->workshopList;
-
+        $this->workshopsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Workshop');
+        return $this->workshopsList;
     }
 
 
