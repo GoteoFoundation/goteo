@@ -5,6 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\TestCase;
 use Goteo\Model\User;
+use Goteo\Core\Model;
 
 class UserTest extends TestCase {
     private static $related_tables = array('user_api' => 'user_id',
@@ -93,8 +94,10 @@ class UserTest extends TestCase {
         $suggestions = User::suggestUserId("IHopeThisUserDoesNotexists:👑");
         $this->assertEquals('ihopethisuserdoesnotexists', $suggestions[0]);
 
-        $this->assertEquals('a-n', User::idealiza("a.ñ"));
+        // $punto is false in Model but true in User by default
+        $this->assertEquals('a-n', Model::idealiza("a.ñ"));
         $this->assertEquals('a.n', User::idealiza("a.ñ", true));
+        $this->assertEquals('a.n', User::idealiza("a.ñ"));
         $this->assertEquals('a.ñ', User::idealiza("a.ñ", true, true));
     }
 
