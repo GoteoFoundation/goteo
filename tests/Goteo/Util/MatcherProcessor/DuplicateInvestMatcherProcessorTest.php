@@ -143,36 +143,6 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
     /**
      * @depends testVars
      */
-    public function testAmount($processor) {
-        $invest = new Invest([
-            'user' => get_test_user()->id,
-            'project' => get_test_project()->id,
-            'method' => 'dummy',
-            'currency' => 'EUR',
-            'currency_rate' => 1,
-            'status' => Invest::STATUS_CHARGED,
-            'amount' => 110
-        ]);
-        $processor->setInvest($invest);
-        $processor->setProject(get_test_project());
-        $this->assertEquals(100, $processor->getAmount());
-        $invest->amount = 99;
-        $this->assertEquals(99, $processor->getAmount());
-
-        // save
-        $errors = [];
-        $this->assertTrue($invest->save($errors), implode("\n", $errors));
-
-        $this->assertEquals(0, $processor->getAmount());
-        $invest->user = self::$user_data[1]['userid'];
-        $this->assertEquals(99, $processor->getAmount());
-
-        return $processor;
-    }
-
-    /**
-     * @depends testAmount
-     */
     public function testUserAmounts($processor) {
         $amounts = $processor->getUserAmounts(160);
         $this->assertCount(2, $amounts);
@@ -187,6 +157,54 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         return $processor;
     }
 
+
+    /**
+     * @depends testVars
+     */
+    public function testAmount($processor) {
+        $invest = new Invest([
+            'user' => get_test_user()->id,
+            'project' => get_test_project()->id,
+            'method' => 'dummy',
+            'currency' => 'EUR',
+            'currency_rate' => 1,
+            'status' => Invest::STATUS_CHARGED,
+            'amount' => 110
+        ]);
+        $processor->setInvest($invest);
+        $processor->setProject(get_test_project());
+        $matcher = $processor->getMatcher();
+        $this->assertEquals(100, $processor->getAmount());
+        $invest->amount = 99;
+        $this->assertEquals(99, $processor->getAmount());
+
+        // save
+        $errors = [];
+        $this->assertTrue($invest->save($errors), implode("\n", $errors));
+        $drop = new Invest([
+            'amount'    => $invest->amount,
+            'user'      => self::$user_data[0]['userid'],
+            'project'   => get_test_project()->id,
+            'currency'    => $invest->currency,
+            'currency_rate'    => $invest->currency_rate,
+            'method'    => 'pool',
+            'status'    => Invest::STATUS_CHARGED,
+            'anonymous' => false,
+            'resign'    => true,
+            'campaign'  => true,
+            'drops'     => $invest ? $invest->id : null,
+            'matcher'   => $matcher->id
+        ]);
+        $this->assertTrue($drop->save($errors), implode("\n", $errors));
+        Invest::query("UPDATE invest SET droped = :drop, `matcher`= :matcher WHERE id = :id",
+                array(':id' => $invest->id, ':drop' => $drop->id, ':matcher' => $matcher->id));
+        $invest->droped = $drop->id;
+        $invest->matcher = $matcher->id;
+        $matcher->save();
+        $this->assertEquals(51, $processor->getAmount($error), "Error[$error]");
+        return $processor;
+    }
+
     /**
      * @depends testAmount
      */
@@ -197,8 +215,8 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $this->assertInstanceOf('Goteo\Model\Invest', $invests[0]);
         $this->assertInstanceOf('Goteo\Model\Invest', $invests[1]);
 
-        $this->assertEquals(66, $invests[0]->amount);
-        $this->assertEquals(33, $invests[1]->amount);
+        $this->assertEquals(1, $invests[0]->amount);
+        $this->assertEquals(50, $invests[1]->amount);
 
         $errors = [];
         $this->assertTrue($invests[0]->save($errors), implode("\n", $errors));
@@ -206,7 +224,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
 
         $this->assertEquals(self::$user_data[0]['userid'], $invests[0]->user);
         $this->assertEquals(self::$user_data[1]['userid'], $invests[1]->user);
-        $this->assertEquals(198, Project::get($project->id)->amount);
+        $this->assertEquals(249, Project::get($project->id)->amount);
         return $processor;
     }
 
@@ -231,9 +249,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $this->assertEquals(0, $processor->getAmount());
 
         $invest->user = self::$user_data[2]['userid'];
-        $this->assertEquals(5, $processor->getAmount());
-        $invest->amount = 100;
-        $this->assertEquals(51, $processor->getAmount());
+        $this->assertEquals(0, $processor->getAmount());
 
         return $processor;
     }

@@ -15,10 +15,6 @@ App::debug(true);
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_DEPRECATED);
 ini_set("display_errors", 1);
 
-//TODO: to be deprecate
-define('HTTPS_ON', false);
-define('LANG', 'es');
-define('SITE_URL', 'http://localhost');
 
 // Config file...
 $config = getenv('GOTEO_TEST_CONFIG_FILE');
@@ -26,6 +22,11 @@ if(!is_file($config)) $config = getenv('GOTEO_CONFIG_FILE');
 if(!is_file($config)) $config = __DIR__ . '/../config/test-settings.yml';
 if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
 Config::load($config);
+//TODO: to be deprecate
+define('HTTPS_ON', false);
+define('LANG', Config::get('lang'));
+define('SITE_URL', Config::getMainUrl());
+
 Config::set('db.cache.time', 1);
 Model::factory();
 // TODO: mock service container logger...
