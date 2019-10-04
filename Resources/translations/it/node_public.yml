@@ -22,10 +22,12 @@ node-side-searcher-success: Finanziati
 node-side-sumcalls-budget: 'Totale (tutte le campagne)'
 node-side-sumcalls-calls: Aperto
 node-side-sumcalls-campaigns: Attivo 
+node-side-sumcalls-header: 'Matchfunding'
 node-side-sumcalls-rest: 'Resta da distribuire'
 node-side-summary-active: Attivi
 node-side-summary-amount: 'Quantità di denaro raccolto'
 node-side-summary-investors: Co-finanziatori 
 node-side-summary-success: Finanziati
 node-side-summary-supporters: Collaborazioni 
+node-stats-title: 'Dati di impatto'
 node-projects-title: 'Progetti'
