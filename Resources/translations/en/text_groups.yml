@@ -1,7 +1,7 @@
 ---
 text-group-admin: 'Admin Texts'
 text-group-banners: 'Banners and headers'
-text-group-blog: 'Blog / Updates'
+text-group-blog: Blog / Updates
 text-group-bluead: 'Blue ads'
 text-group-call_dash: 'Calls: dashboard'
 text-group-call_feed: 'Calls: feed'
@@ -17,17 +17,15 @@ text-group-donor: 'Donor Certificate'
 text-group-error: 'Catastrophic errors'
 text-group-faq: 'FAQ page'
 text-group-feed: 'Recent events'
-text-group-footer: 'Footer'
 text-group-form: 'General of the project form'
 text-group-general: 'General purpose'
-text-group-home: 'Cover'
+text-group-home: Cover
 text-group-invest: 'Page to contribute to a project'
-text-group-location: 'Geolocation'
+text-group-location: Geolocation
 text-group-login: 'Login page'
 text-group-mailer: 'Automatic emails'
 text-group-menu: 'Top menu'
-text-group-goals: 'SEO: Goals'
-text-group-node_public: 'Nodes'
+text-group-node_public: Nodes
 text-group-overview: 'Project description'
 text-group-personal: 'Personal data of the user'
 text-group-preview: 'Project preview'
@@ -43,6 +41,5 @@ text-group-template: 'In thanks template'
 text-group-text_groups: 'Description of text groupings'
 text-group-translate: 'Translator panel'
 text-group-types: 'Tooltips for types of needs'
-text-group-url: 'Social external URL'
-text-group-widget: 'Banner/Title...'
+text-group-widget: Banner/Title...
 text-group-wof: 'Wall of friends'

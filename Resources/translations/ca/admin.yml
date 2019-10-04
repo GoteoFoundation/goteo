@@ -117,10 +117,6 @@ admin-footprint-add: Crea un nova petjada
 admin-footprint-edit: Editant la petjada %s
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
-admin-promote-add: Nou destacat
-admin-promote-submit: Guardar
-admin-promote-already-exists: Aquest projecte ja està destacat
-admin-promote-correct: El projecte està destacat
 admin-project-express-discard: 'Rebuig expres'
 admin-project-express-discard-desc: 'Passa el projecte a estat Descartat i envia un email'
 admin-project-express-discard-sure: 'S''enviarà un email automàtic i es passarà a estat descartat,Ok?'
@@ -180,7 +176,6 @@ admin-title-description: Descripció
 admin-title-section: Secció
 admin-title-text: Text
 admin-title-publish: Publicat
-admin-title-lang: Idioma
 admin-title-langs: Traduccions
 admin-title-actions: Accions
 admin-title-deleted: Eliminat
@@ -193,9 +188,8 @@ admin-title-social_commitments: 'Compromisos socials'
 admin-title-order: Ordena
 admin-title-status: Estat
 admin-title-users: Usuaris
-admin-title-date: Data  
+admin-title-date: Data
 admin-title-filter: Filtre
-admin-title-template: Plantilla
 admin-title-receivers: Destinataris
 admin-title-sent: Enviats
 admin-title-failed: No enviats
@@ -220,6 +214,9 @@ admin-all-call-referers: 'Origen de visites a les convocatòries'
 admin-all-project-devices: 'Dispositiu usat en les pàgines de projectes'
 admin-all-invests-devices: 'Dispositiu usat en les aportacions a projectes'
 admin-all-call-devices: 'Dispositiu usat en las pàgines de convocatòries'
+admin-promote-add: 'Nou destacat'
+admin-promote-already-exists: 'Aquest projecte ja està destacat'
+admin-promote-correct: 'El projecte està destacat'
 admin-filter-add: 'Afegir filtre'
 admin-filter-last-week: 'Últims 7 dies'
 admin-filter-last-month: 'Últims 30 dies'
@@ -232,8 +229,6 @@ admin-filter-typeofdonor: 'Tipus de donant'
 admin-filter-user: 'Usuari'
 admin-filter-donor: 'Donant'
 admin-filter-no-donor: 'Donant inactiu'
-admin-filter-promoter: 'Promotor'
-admin-filter-matcher: 'Matcher'
 admin-filter-test: 'Prova'
 admin-filter-type-unique: 'Únic'
 admin-filter-type-multidonor: 'Multidonant'
@@ -242,7 +237,6 @@ admin-filter-type-all: 'Tots'
 admin-filter-predefined-date: 'Dates predefinides'
 admin-filter-predefined-date-choose: 'Pots seleccionar una data predeterminada'
 admin-mail-body: 'Cos del missatge'
-
 mandatory-filter-name: Manca el nom
 mandatory-filter-description: Manca una descripció
 mandatory-filter-role: Manca un rol

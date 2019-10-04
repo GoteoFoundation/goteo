@@ -8,18 +8,18 @@ mandatory-social_reward-field-name: 'Itzulera zehaztea derrigorrekoa da.'
 rewards-field-individual_reward-amount: 'Zenbatekoa'
 rewards-field-individual_reward-description: Deskribapena
 rewards-field-individual_reward-other: 'Sari mota zehaztu'
-rewards-field-individual_reward-reward: Saria
-rewards-field-individual_reward-type: 'Sari mota'
-rewards-field-individual_reward-units: 'Neurri-unitateak'
+rewards-field-individual_reward-reward: Ordain saria
+rewards-field-individual_reward-type: 'Ordain sari mota'
+rewards-field-individual_reward-units: 'Unitate erabilgarriak'
 rewards-field-social_reward-description: Deskribapena
 rewards-field-social_reward-license: 'Lizentzia aukerak'
 rewards-field-social_reward-other: 'Itzulera mota zehaztu'
 rewards-field-social_reward-reward: Itzulera
 rewards-field-social_reward-type: 'Itzulera mota'
-rewards-fields-individual_reward-title: 'Banakako sariak'
+rewards-fields-individual_reward-title: 'Banakako ordain sariak'
 rewards-fields-social_reward-title: 'Talde itzulerak'
-rewards-main-header: 'Itzulerak eta sariak'
-step-5: 'Itzulera'
+rewards-main-header: 'Ordain sariak'
+step-5: 'Ordain sariak'
 step-rewards: 'urratsa: Proiektua / Itzulerak'
 tooltip-project-individual_reward-amount: 'Sari hau jasotzeko diru kopuru minimoa.'
 tooltip-project-individual_reward-description: 'Azaldu ezazu laburki zertan datza jasoko duten saria, proiektua diru kopuru honekin alde berean finantzatuko dutenentzat.'
