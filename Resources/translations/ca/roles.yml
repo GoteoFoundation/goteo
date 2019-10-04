@@ -47,3 +47,5 @@ role-perm-name-admin-module-stories: 'Pot accedir al mòdul d''Histories d''usua
 role-perm-name-admin-module-stats: 'Pot accedir al mòdul de Stats'
 role-perm-name-full-html-edit: 'Pot editar posts amb contingut HTML'
 role-perm-name-admin-module-categories: 'Pot accedir al mòdul de Categories'
+role-perm-name-admin-module-workshops: 'Pot accedir al mòdul de tallers'
+role-perm-name-admin-module-promote: 'Pot accedir al mòdul de descatar projectes a la home'
