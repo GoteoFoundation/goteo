@@ -12,12 +12,12 @@ admin-account-convert-to-pool-ok: 'Converti en contribution de portefeuille corr
 admin-account-detail: 'Détails de la transaction'
 admin-account-donation: Faire un Don
 admin-account-edit-reward: 'Gérer récompense / adresse'
-admin-account-invalid-invest: 'Contribution [% s] non trouvée!'
+admin-account-invalid-invest: 'Contribution [%s] non trouvée!'
 admin-account-invest-date: 'Date de cotisation'
 admin-account-invest-non-pool-refundable: 'Cette contribution ne peut pas être remboursée au portefeuille virtuel. Seules les contributions en statut "Recueillies" peuvent être remboursées'
 admin-account-invest-non-user-refundable: "Cette contribution ne peut être remboursée. Les contributions peuvent être remboursées dans les états suivants:\n\"En attente\", \"Chargé\" et \"Vers le portefeuille\" s'il y a suffisamment d'argent dans le portefeuille pour le déduire"
 admin-account-invest-to-pool-ko: 'Échec pour retourner la contribution dans le portefeuille'
-admin-account-invest-to-pool-ok: 'Contribution remboursée à la bourse. Augmentation de la valeur du portefeuille (% s)'
+admin-account-invest-to-pool-ok: 'Contribution remboursée à la bourse. Augmentation de la valeur du portefeuille (%s)'
 admin-account-invest-user-refund-fail-pool-amount: 'Cette contribution ne peut pas être retournée car l''utilisateur n''a pas assez d''argent dans le portefeuille (%s)'
 admin-account-invest-user-refund-ko: 'La contribution n''a pas pu être retournée: [%s]'
 admin-account-invest-user-refund-ok: 'Contribution remboursée correctement'
