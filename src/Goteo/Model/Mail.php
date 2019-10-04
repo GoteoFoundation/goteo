@@ -270,7 +270,8 @@ class Mail extends \Goteo\Core\Model {
         $mail->subject = $tpl->title;
         $mail->template = $tpl->id;
         $text = $tpl->parseText();
-        $mail->content = ($template == Template::NEWSLETTER) ? Newsletter::getContent($text, $mail->lang) : $content = $text;
+        // $mail->content = ($template == Template::NEWSLETTER) ? Newsletter::getContent($text, $mail->lang) : $content = $text;
+        $mail->content = $text;
         // En el contenido:
         if($vars) {
             $mail->content = str_replace(array_keys($vars), array_values($vars), $mail->content);
@@ -514,7 +515,7 @@ class Mail extends \Goteo\Core\Model {
      */
     public function render($plain = false, Array $extra_vars = [], $process_links = true) {
         $content = $this->content;
-        
+
         $extra_vars['content'] = $content;
         $extra_vars['subject'] = $this->subject;
         $extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
@@ -524,7 +525,7 @@ class Mail extends \Goteo\Core\Model {
         }
 
         if (isset($this->communication_id)) {
-            $communication = Communication::get($this->communication_id); 
+            $communication = Communication::get($this->communication_id);
             $extra_vars['type'] = $communication->type;
             $extra_vars['image'] = $communication->getImage()->getLink(1920,335,true, true);
             $extra_vars['promotes'] = $communication->getCommunicationProjects($communication->id);
@@ -534,7 +535,7 @@ class Mail extends \Goteo\Core\Model {
             $extra_vars['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
             $template = "newsletter";
             View::setTheme('responsive');
-            
+
         } else if ($this->template == Template::COMMUNICATION) {
             View::setTheme('responsive');
             $template = "default";
@@ -555,7 +556,7 @@ class Mail extends \Goteo\Core\Model {
                 ],
                 function ($matches){
                     $url = $matches[3];
-                    $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $url) . '¬' . $this->to  . '¬' . $this->id . '¬' . $url);
+                    $new = SITE_URL . '/mail/url/' . self::encodeToken([$this->to, $this->id, $url]);
                     return $matches[1] . 'href="' . $new . '"'. $matches[4] . '>';
                 },
                 $content);
