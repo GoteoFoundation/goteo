@@ -26,7 +26,7 @@ mandatory-cost-field-task_dates: 'Derrigorrekoa da lanaren gutxi gora beherako d
 mandatory-project-field-resource: 'Derrigorrekoa da bestelako baliabideak dituzun ala ez zehaztea'
 mandatory-project-resource: 'Derrigorrekoa da bestelako baliabideak dituzun ala ez zehaztea'
 mandatory-project-total-costs: 'Derrigorrekoa da gastu baten bat zehaztea'
-step-4: Balioa
+step-4: Balioak
 step-costs: 'urratsa: Proiektua / Gastuak'
 tooltip-project-cost-amount: 'Zure iritzian, gastu honen zenbatekoa (eurotan) zehaztu. Ez erabili punttua milakako zenbakiak idazteko ados?'
 tooltip-project-cost-cost: 'Gastu honetarako izenburua ahalik eta esanguratsuen idatzi ezazu.'
