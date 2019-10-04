@@ -230,6 +230,10 @@ body.channel {
               display: flex;
               flex-direction: column;
               justify-content: center;
+
+              a img {
+                max-width: 100%;
+              }
             }
           }
 
