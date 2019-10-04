@@ -1,5 +1,6 @@
 ---
 blog-coments-header: Commenti 
+blog-comments_no_allowed: '...'
 blog-comments_no_comments: 'Non ci sono commenti in questa entrata'
 blog-no_comments: 'Senza commenti'
 blog-no_posts: 'Nessuna entrata pubblicata'
@@ -8,13 +9,21 @@ blog-send_comment-header: 'Scrivi il tuo commento'
 blog-side-last_comments: 'Ultimi commenti'
 blog-side-last_posts: 'Ultime entrate'
 blog-side-tags: Categorie 
+blog-allow-comments: Permetti commenti
 blog-publish: Pubblica
 blog-published: Pubblicato
+blog-related-posts: 'Relazionati'
 blog-section-mission: 'Mission'
 blog-section-milestones: 'Milestones'
+blog-section-matchfunding: 'Matchfunding'
+blog-section-voices: 'Voci'
 blog-section-transparency: 'Trasparenza'
 blog-section-team: 'Team'
 blog-main-description: 'Qui condividiamo, discutiamo, annunciamo, celebriamo, contestualizziamo e valutiamo le azioni della fondazione'
 blog-section-mission-description: 'La mission della nostra fondazione è vincolata ai principi della trasparenza, progresso e miglioramento della società'
+blog-section-milestones-description: 'Consideriamo fondamentale comunicare i risultati della fondazione, dalle nuove alleanze per i nuovi sviluppi tecnologici, passando per eventi rilevanti'
+blog-section-matchfunding-description: 'Il matchfunding è la pratica che non permette di portare la corresponsabilità, che forma parte dell''ADN di Goteo e della sua missione come fondazione, al suo massimo esponente'
+blog-section-voices-description: 'Giranti, donanti ed istituzioni hanno voce in Goteo, mettiamo le persone al centro'
+blog-section-transparency-description: 'La trasparenza è una delle chiavi di volta della nostra fondazione, per esso diamo conto alla nostra comunità'
 blog-section-team-description: 'Goteo è costituito da un team multidisciplinare impegnato nel crowdfunding civico'
 
