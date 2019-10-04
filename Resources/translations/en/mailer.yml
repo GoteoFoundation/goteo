@@ -9,6 +9,6 @@ newsletter-unsubscribe-cancel: 'Did''nt want to unsubscribe? <a href="%s">Subscr
 newsletter-subscribe-cancel: 'Did''nt want to subscribe? <a href="%s">Unsubscribe</a>'
 subscribe-request-success: 'Congratulations! You have been subscribed to our newsletter (%s).'
 unsubscribe-request-success: 'You have cancelled your subscription to the newsletter (%s).'
+mailer-more-projects-button: 'DISCOVER MORE PROJECTS'
 mailer-from: From
 mailer-to: To
-mailer-more-projects-button: 'DISCOVER MORE PROJECTS'
