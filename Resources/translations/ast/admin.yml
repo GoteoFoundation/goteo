@@ -67,7 +67,7 @@ admin-user-no-projects: 'Entá nun se creó dengún proyeutu'
 admin-user-no-invests: 'Entá nun se fizo denguna donación'
 admin-users: Usuarios
 admin-blog: Blogue xeneral
-admin-blog-slug-exists: 'El identificador [%s] se está usando en otro post!'
+admin-blog-slug-exists: 'º'
 admin-blog-slug-chars: '¡L''identificador [%s] contién caráuteres que nun son válidos!'
 admin-blog-not-public: 'Esti artículu entá nun s''espublizó'
 admin-stories: Histories d'usuarios en Goteo
