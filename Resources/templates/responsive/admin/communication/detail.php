@@ -25,9 +25,9 @@ $this->section('admin-container-head');
 
     <div class="spacer-20 forms">
         <p class="buttons">
-            <?php if (!$this->communication->isSent() & $this->communication->isActive()): ?>
+            <?php if (!$this->communication->isSent() && $this->communication->isActive()): ?>
               <a class="show-form btn btn-danger btn-lg" href="/admin/communication/cancel/<?= $this->communication->id?>"><i class="fa fa-ban"></i> <?= $this->text('admin-communications-cancel') ?></a>
-            <?php elseif (!$this->communication->isActive()): ?>
+            <?php elseif (!$this->communication->isActive() && !$this->communication->isSent()): ?>
               <a class="show-form btn btn-cyan btn-lg" href="/admin/communication/send/<?= $this->communication->id?>"><i class="fa fa-send"></i> <?= $this->text('admin-communications-send') ?></a>
             <?php endif ?>
             <a class="show-form btn btn-cyan btn-lg" href="/admin/communication/preview/<?= $this->communication->id?>"><i class="fa fa-eye"></i> <?= $this->text('regular-preview') ?></a>
