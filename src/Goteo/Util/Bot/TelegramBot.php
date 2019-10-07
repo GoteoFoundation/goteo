@@ -15,8 +15,6 @@ use \unreal4u\TelegramAPI\HttpClientRequestHandler;
 use \unreal4u\TelegramAPI\TgLog;
 use \unreal4u\TelegramAPI\Telegram\Methods\SendMessage;
 use \unreal4u\TelegramAPI\Telegram\Methods\SetWebhook;
-use \unreal4u\TelegramAPI\Telegram\Methods\GetUpdates;
-use \unreal4u\TelegramAPI\Abstracts\TraversableCustomType;
 
 use Goteo\Application\Config;
 
