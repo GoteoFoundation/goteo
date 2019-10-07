@@ -23,7 +23,6 @@ class BotApiController extends AbstractApiController {
      * Get Update from webhook
      */
     public function getUpdate(Request $request) {
-        return $this->jsonResponse([]);
 
         if ($content = $request->getContent()) {
             $data = json_decode($content, true);
