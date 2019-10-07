@@ -61,40 +61,55 @@ Since version 3.3 where are using [Crowdin](https://crowdin.com/) as a tool for 
 <translators>
 
 <ul>
-    <li>Dan Walenter (cas3v0n)</li>
-    <li>m19951996</li>
-    <li>mrfinearts</li>
-    <li>Denver Moon (9003104)</li>
-    <li>Wilmer Alzate (waar19)</li>
-    <li>José Peralta (elpoliglota) (josedpg11)</li>
-    <li>Chris_W</li>
-    <li>Alessandro Ravanetti (aleravanetti)</li>
-    <li>joao.cruz</li>
-    <li>kguanzon (Kimberly Guanzon) (kim0421)</li>
-    <li>Ferran Reyes (ferranreyesgoteo)</li>
-    <li>ismaeljoseph</li>
-    <li>Vanessa.Montes</li>
-    <li>Xurxo Guerra (xguerrap)</li>
-    <li>Tiago Santos (tisantos)</li>
-    <li>Iulian Mongescu (iulian.mongescu)</li>
-    <li>gracine</li>
-    <li>Carine_cha</li>
-    <li>Clint Mark Cortes (cortesclintmark)</li>
-    <li>zainalkhalid</li>
-    <li>melsmacan</li>
-    <li>franzancot</li>
-    <li>Herii (HERII12)</li>
-    <li>shaunmatthew</li>
-    <li>firewall (Onrkskn)</li>
-    <li>Ceyda Mutlu (translator93)</li>
-    <li>Júlia Petúlia Sol (juliaxsol)</li>
-    <li>enolp</li>
-    <li>elena-2018</li>
-    <li>Udo Wierlemann (Udo.Wierlemann)</li>
-    <li>helpPAM</li>
-    <li>CataAz</li>
-    <li>pep_laDeriva</li>
-    <li>jmontane</li>
+	<li>Dan Walenter (cas3v0n)</li>
+	<li>m19951996</li>
+	<li>X (owenthe4th)</li>
+	<li>mrfinearts</li>
+	<li>Cyberience</li>
+	<li>Denver Moon (9003104)</li>
+	<li>Wilmer Alzate (waar19)</li>
+	<li>Pierre Cardin (reportreport)</li>
+	<li>elpoliglota (josedpg11)</li>
+	<li>erinbash</li>
+	<li>ErikaInsalata</li>
+	<li>Chris_W</li>
+	<li>David (dabeig)</li>
+	<li>Ismaila (iandiaye)</li>
+	<li>Joy Lohmann (j.lohmann)</li>
+	<li>gracine</li>
+	<li>Alessandro Ravanetti (aleravanetti)</li>
+	<li>CataAz</li>
+	<li>jmontane</li>
+	<li>fundycharity</li>
+	<li>Ahmad Ainul Rizki (netfr13nd)</li>
+	<li>Ahmad Wafa Mansur (wafa.mansur21)</li>
+	<li>Tiago Santos (tisantos)</li>
+	<li>pep_laDeriva</li>
+	<li>detotty</li>
+	<li>Ruwan Egodawatte (ruwanego)</li>
+	<li>susinho_pantani</li>
+	<li>Iulian Mongescu (iulian.mongescu)</li>
+	<li>Udo Wierlemann (Udo.Wierlemann)</li>
+	<li>Xurxo Guerra (xguerrap)</li>
+	<li>melsmacan</li>
+	<li>enolp</li>
+	<li>Júlia Petúlia Sol (juliaxsol)</li>
+	<li>Harun Demirel (translator93)</li>
+	<li>firewall (Onrkskn)</li>
+	<li>shaunmatthew</li>
+	<li>Herii (HERII12)</li>
+	<li>franzancot</li>
+	<li>zainalkhalid</li>
+	<li>elena-2018</li>
+	<li>Clint Mark Cortes (cortesclintmark)</li>
+	<li>Alexander Stellmach (helpPAM)</li>
+	<li>joao.cruz</li>
+	<li>kguanzon (Kimberly Guanzon) (kim0421)</li>
+	<li>Ferran Reyes (ferranreyesgoteo)</li>
+	<li>Vanessa.Montes</li>
+	<li>ismaeljoseph</li>
+	<li>Carine_cha</li>
+	<li>arkimessi</li>
 </ul>
 </translators>
 
