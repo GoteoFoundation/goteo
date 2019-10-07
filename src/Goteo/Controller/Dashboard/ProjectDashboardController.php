@@ -42,6 +42,8 @@ use Goteo\Library\Forms\FormModelException;
 use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Event\FilterProjectPostEvent;
 use Goteo\Controller\DashboardController;
+use Goteo\Application\Config;
+use Goteo\Util\Bot\TelegramBot;
 
 class ProjectDashboardController extends DashboardController {
     protected $user, $admin = false;
@@ -100,7 +102,8 @@ class ProjectDashboardController extends DashboardController {
          $submenu = [
             ['text' => '<i class="fa fa-2x fa-globe"></i> ' . Text::get('regular-translations'), 'link' => $prefix . '/translate', 'id' => 'translate'],
             ['text' => '<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), 'link' => $prefix . '/analytics', 'id' => 'analytics'],
-            ['text' => '<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), 'link' => $prefix . '/materials', 'id' => 'materials']
+            ['text' => '<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), 'link' => $prefix . '/materials', 'id' => 'materials'],
+            ['text' => '<i class="fa fa-bell fa-2x"></i> ' . 'Integraciones', 'link' => $prefix . '/integration', 'id' => 'integration']
         ];
 
 
@@ -1123,6 +1126,22 @@ class ProjectDashboardController extends DashboardController {
             'form' => $form->createView(),
             'story'=> $story,
             'languages' => Lang::listAll('name', false)
+        ]);
+    }
+
+    public function integrationAction($pid, Request $request) {
+
+        $project = $this->validateProject($pid);
+        if($project instanceOf Response) return $project;
+        
+        $token = \mybase64_encode($project->id);
+
+        $url = TelegramBot::URL . "/" . TelegramBot::getName() . "?start=" . $token;
+        
+        return $this->viewResponse('dashboard/project/integration',[
+            'project' => $project,
+            'token' => $token,
+            'url' => $url
         ]);
     }
 

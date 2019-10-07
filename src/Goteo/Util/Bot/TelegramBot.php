@@ -10,12 +10,20 @@
 
 namespace Goteo\Util\Bot;
 
+use \React\EventLoop\Factory;
 use \unreal4u\TelegramAPI\HttpClientRequestHandler;
 use \unreal4u\TelegramAPI\TgLog;
 use \unreal4u\TelegramAPI\Telegram\Methods\SendMessage;
+use \unreal4u\TelegramAPI\Telegram\Methods\SetWebhook;
+use \unreal4u\TelegramAPI\Telegram\Methods\GetUpdates;
+use \unreal4u\TelegramAPI\Abstracts\TraversableCustomType;
+
 use Goteo\Application\Config;
 
 Class TelegramBot implements Bot {
+
+    const PLATFORM = "telegram";
+    const URL = "t.me";
 
     private
         $loop,
@@ -23,7 +31,7 @@ Class TelegramBot implements Bot {
         $tgLog;
 
     public function createBot() {
-        $this->loop = \React\EventLoop\Factory::create();
+        $this->loop = Factory::create();
         $this->handler = new HttpClientRequestHandler($this->loop);
         try {
             $this->tgLog = new TgLog(Config::get('bot.telegram.token'), $this->handler);
@@ -38,5 +46,18 @@ Class TelegramBot implements Bot {
         $sendMessage->text = $text;
         $this->tgLog->performApiRequest($sendMessage);
         $this->loop->run();
+    }
+
+    public function setWebhook() {
+        $setWebhook = new SetWebhook();
+        $setWebhook->url = Config::get('url.main') . '/telegram/' . Config::get('bot.telegram.token');
+
+        $this->tgLog = new TgLog(Config::get('bot.telegram.token'), new HttpClientRequestHandler($this->loop));
+        $this->tgLog->performApiRequest($setWebhook);
+        $this->loop->run();
+    }
+
+    public static function getName() {
+        return Config::get('bot.telegram.name');
     }
 }
