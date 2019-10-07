@@ -2,7 +2,7 @@
 /**
  * Migration Task class.
  */
-class GoteoChannelComponents
+class GoteoBotModule
 {
   public function preUp()
   {
