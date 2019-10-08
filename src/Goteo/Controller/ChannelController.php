@@ -323,6 +323,7 @@ class ChannelController extends \Goteo\Core\Controller {
             'categories' => Category::getNames(),
             'filter' => $filter,
             'total' => $total,
+            'discover_module' => true,
             'limit' => $limit
         ]);
 
