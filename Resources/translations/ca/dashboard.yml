@@ -285,3 +285,5 @@ dashboard-origin-invests-referer: 'Origen de visites en les aportacions reeixide
 dashboard-origin-project-device: 'Dispositiu usat en la pàgina del projecte'
 dashboard-origin-invests-device: 'Dispositiu usat en les aportacions reeixides'
 dashboard-origin-disclaimer: '⚠ *Aquestes dades son orientatives i no inclouen la totalitat de les visites degut a limitacions tècniques.*  > Et recomanem que configuris Google Analytics o Facebook Pixel per obtenir dades més detallades'
+dashboard-project-integration-token: 'Token'
+dashboard-project-integration-link: 'Link'
