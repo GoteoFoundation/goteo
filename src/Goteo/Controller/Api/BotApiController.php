@@ -28,7 +28,7 @@ class BotApiController extends AbstractApiController {
             $data = json_decode($content, true);
             $update = new Update($data);
             
-            if (substr( $update->message->text, 0, 5 ) === "/start") {
+            if (substr( $update->message->text, 0, 6 ) === "/start") {
 
                 $project = \mybase64_decode(explode('/start', $update->message->text)[1]);
                 if (!$project) 
