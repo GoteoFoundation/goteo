@@ -45,7 +45,8 @@ class TextUtils implements ExtensionInterface
           'sanitize' => [$this, 'sanitize'],
           'markdown' => [$this, 'markdown'],
           'to_rgba' => [$this, 'to_rgba'],
-          'image_src' => [$this, 'image_src']
+          'image_src' => [$this, 'image_src'],
+          'lang' => [$this, 'lang']
         ];
     }
 
@@ -117,6 +118,10 @@ class TextUtils implements ExtensionInterface
       $src = $img->getLink($w, $h);
 
       return $src;
+    }
+
+    public function lang() {
+        return call_user_func_array ( 'Goteo\Library\Text::getByLang' , func_get_args() );
     }
 
     /**
