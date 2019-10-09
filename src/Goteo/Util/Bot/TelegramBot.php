@@ -48,7 +48,7 @@ Class TelegramBot implements Bot {
 
     public function setWebhook() {
         $setWebhook = new SetWebhook();
-        $setWebhook->url = Config::get('url.main') . '/telegram/' . Config::get('bot.telegram.token');
+        $setWebhook->url = 'https:' . Config::get('url.main') . '/api/telegram/' . Config::get('bot.telegram.token');
 
         $this->tgLog = new TgLog(Config::get('bot.telegram.token'), new HttpClientRequestHandler($this->loop));
         $this->tgLog->performApiRequest($setWebhook);
