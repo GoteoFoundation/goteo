@@ -677,7 +677,7 @@ class InvestController extends \Goteo\Core\Controller {
 
         $share_url = $URL . '/project/'.$project_id;
         $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
-        $twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': ' . $share_url);
+        $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($share_title . ': ' . $share_url);
 
         if($reward instanceOf Response) return $reward;
 

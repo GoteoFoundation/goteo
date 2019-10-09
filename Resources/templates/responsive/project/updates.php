@@ -97,7 +97,7 @@ foreach($milestones as $update):
                         $URL = \SITE_URL;
                         $share_url = $URL . '/project/' . $this->project->id.'/updates#milestone-'.$update->milestone->id;
                         $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($update->milestone->description);
-                        $twitter_url = 'http://twitter.com/home?status=' . urlencode($update->milestone->description . ': ' . $share_url . ' #Goteo');
+                        $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($update->milestone->description . ': ' . $share_url . ' #Goteo');
                    ?>
                    <a href="<?= $twitter_url ?>" target="_blank">
                         <img class="twitter-icon" width="20" src="<?= SRC_URL . '/assets/img/project/updates/twitter-milestone.png' ?> ">
