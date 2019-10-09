@@ -442,7 +442,7 @@ class Text {
         $author = !empty($author_twitter) ? ' '.self::get('regular-by').' @'.$author_twitter.' ' : '';
 
         $urls = array(
-            'twitter' => 'http://twitter.com/home?status=' . rawurlencode($title . $author.': ' . $url . ' #Goteo'),
+            'twitter' => 'http://twitter.com/intent/tweet?text=' . rawurlencode($title . $author.': ' . $url . ' #Goteo'),
             'facebook' => 'http://facebook.com/sharer.php?u=' . rawurlencode($url . '&t=' . rawurlencode($title))
         );
 

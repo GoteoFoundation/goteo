@@ -95,7 +95,7 @@ $this->section('content');
                             $share_url = \SITE_URL . '/about'.$share_lang.'#info'.$post->id;
 
                             $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($post->share_facebook);
-                            $twitter_url = 'http://twitter.com/home?status=' . urlencode($post->share_twitter . ': ' . $share_url);
+                            $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($post->share_twitter . ': ' . $share_url);
                             
                             ?>
                             <p><?= $this->text('regular-spread') ?></p>
