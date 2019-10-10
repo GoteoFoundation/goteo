@@ -4008,7 +4008,7 @@ Grid.mixin({
               $("#category-letter").addClass("category-legend "+ event.category.substr(0,1).toLowerCase());
 
               $("#event-facebook").attr("href", "http://facebook.com/sharer.php?u="+document.URL);
-              $("#event-twitter").attr("href", "http://twitter.com/home?status="+document.URL);
+              $("#event-twitter").attr("href", "http://twitter.com/intent/tweet?text="+document.URL);
               $("#event-calendar-add").attr("href", event.url);
               other_events(event.start);
 
