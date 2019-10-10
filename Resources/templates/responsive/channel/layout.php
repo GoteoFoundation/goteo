@@ -1,24 +1,53 @@
 <?php
-$this->layout('layout', [
+$premium = $this->channel->premium;
+
+$values = [
     'bodyClass' => 'channel',
-    'navClass' => 'white',
+    'premium' => $premium,
     'title' =>  $this->text('regular-channel').' '.$this->channel->name,
     'meta_description' => $this->channel->description,
-    'tw_image' =>  $this->channel->logo ? $this->channel->logo->getlink(400,0, false, true) : ''
-    ]);
+    'tw_image' =>  $this->channel->logo ? $this->channel->logo->getlink(300,0, false, true) : '',
+];
+
+if ($premium) {
+    $values['premium'] = $premium;
+    $values['background'] = $this->channel->owner_background;
+    $values['call_for_action_background'] = $call_for_action_background;
+    $values['powered'] = true;
+} else {
+    $values['navClass'] = 'white';
+}
+
+$this->layout('layout', $values);
+
+$this->section('head');
+
+?>
+
+
+<?= $this->insert('channel/partials/styles') ?>
+
+<?php
+
+$this->append();
 
 $this->section('content');
 
-$background = $this->channel->owner_background;
+$summary = ($this->summary) ? $this->summary: false;
 
+$background = $this->channel->owner_background;
 ?>
 
     <div class="heading-section">
         <div class="owner-section"<?php if($background) echo ' style="background-color:' . $background . '"'; ?>>
-            <?= $this->insert("channel/partials/owner_info") ?>
+            <?php if ($premium): ?>
+                <?= $this->insert("channel/partials/owner_info_premium") ?>
+            <?php else: ?>
+                <?= $this->insert("channel/partials/owner_info") ?>
+            <?php endif ?>
         </div>
 
-        <?= $this->supply('channel-header', $this->insert("channel/partials/join_action", ['color' => $background])) ?>
+        <?= $this->supply('channel-header', $this->insert("channel/partials/join_action", ['main_color' => $background])) ?>
 
     </div>
 
@@ -31,6 +60,27 @@ $background = $this->channel->owner_background;
         </div>
     </div>
 
-    <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
+<?php if(!$this->discover_module): ?>
+
+<?= $this->insert("channel/partials/sponsors_section") ?>
+
+<?= $this->insert("channel/partials/resources_section") ?>
+
+<?= $this->insert("channel/partials/stories_section") ?>
+
+<?= $this->insert("channel/partials/posts_section") ?>
+
+<?= $this->insert("channel/partials/related_workshops") ?>
+
+<?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
+
+<?php endif; ?>
 
 <?php $this->replace() ?>
+
+
+
+
+<?php $this->section('footer') ?>
+    <?= $this->insert('channel/partials/javascript') ?>
+<?php $this->append() ?>

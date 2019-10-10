@@ -26,8 +26,7 @@
             	</div>
             	<div class="subtitle">
                 	<?= $workshop->subtitle ?>
-            	</div>
-            
+            	</div>         
         </div>
 
     <?php endforeach; ?>

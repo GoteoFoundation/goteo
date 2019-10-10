@@ -277,7 +277,7 @@ class Workshop extends \Goteo\Core\Model {
     }
 
     /**
-     *  Stories of this workshop
+     *  Posts of this workshop
      */
     public function getPosts () {
        if($this->postsList) return $this->postsList;

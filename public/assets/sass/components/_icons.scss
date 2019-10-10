@@ -145,7 +145,28 @@
     &.icon-match-blog {
         @include svg-background('../img/icons/match_blog.svg');
     }
-    &.icon-goteo-logo {
-        @include svg-background('../img/icons/goteo_logo.svg');
+    &.icon-goteo-book {
+        @include svg-background('../img/icons/book.svg');
+    }
+    &.icon-goteo-chat {
+        @include svg-background('../img/icons/chat.svg');
+    }
+    &.icon-goteo-check {
+        @include svg-background('../img/icons/check.svg');
+    }
+    &.icon-goteo-list {
+        @include svg-background('../img/icons/list.svg');
+    }
+    &.icon-goteo-pdf {
+        @include svg-background('../img/icons/pdf.svg');
+    }
+    &.icon-goteo-screen {
+        @include svg-background('../img/icons/screen.svg');
+    }
+    &.icon-goteo-video {
+        @include svg-background('../img/icons/video.svg');
+    }
+    &.icon-goteo-write {
+        @include svg-background('../img/icons/write.svg');
     }
 }
