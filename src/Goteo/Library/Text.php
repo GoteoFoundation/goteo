@@ -57,28 +57,6 @@ class Text {
     }
 
     /**
-     * Compatibility text translation getter (instead of Lang::trans())
-     * @param  string $id key to translate (will be searched in all group translations)
-     * @param  [type] $lang [description]
-     * @return string     [description]
-     */
-    static public function getByLang ($id, $lang = null, $args = null) {
-        // Compatibilize with random number of arguments included
-        if(!is_array($args)) {
-            $args = func_get_args();
-            if (count($args) > 1) {
-                array_shift($args);
-            } else {
-                $args = array();
-            }
-        }
-
-        if (!$lang) $lang = Lang::current();
-
-        return static::lang($id, $lang, $args);
-    }
-
-    /**
      * Gets the required text.
      * If text does not exists a fallback will be returned
      * @param  [type] $id   [description]

@@ -31,7 +31,7 @@ class TextUtils implements ExtensionInterface
     public function provideFunctions()
     {
         return [
-          't' => [$this, 'get'],
+          't' => [$this, 'lang'],
           'text' => [$this, 'get'],
           'text_sys' => [$this, 'sys'],
           'text_html' => [$this, 'html'],
@@ -45,8 +45,7 @@ class TextUtils implements ExtensionInterface
           'sanitize' => [$this, 'sanitize'],
           'markdown' => [$this, 'markdown'],
           'to_rgba' => [$this, 'to_rgba'],
-          'image_src' => [$this, 'image_src'],
-          'lang' => [$this, 'lang']
+          'image_src' => [$this, 'image_src']
         ];
     }
 
@@ -121,7 +120,7 @@ class TextUtils implements ExtensionInterface
     }
 
     public function lang() {
-        return call_user_func_array ( 'Goteo\Library\Text::getByLang' , func_get_args() );
+        return call_user_func_array ( 'Goteo\Library\Text::lang' , func_get_args() );
     }
 
     /**
