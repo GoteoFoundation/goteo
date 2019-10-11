@@ -25,7 +25,9 @@ use Goteo\Model\Blog;
 use Goteo\Model\User;
 use Goteo\Model\Event;
 use Goteo\Model\Milestone;
+use Goteo\Model\Project\ProjectBot;
 use Goteo\Model\Project\ProjectMilestone;
+use Goteo\Util\Bot\TelegramBot;
 
 class ConsoleMilestoneListener extends AbstractListener {
 
@@ -40,14 +42,24 @@ class ConsoleMilestoneListener extends AbstractListener {
             $action = [$project->id, 'milestone-day', $type];
             $event = new Event($action, 'milestone');
 
-            } catch(DuplicatedEventException $e) {
-                $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
-                return;
-            }
+        } catch(DuplicatedEventException $e) {
+            $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
+            return;
+        }
 
         $event->fire(function() use ($project_milestone) {
             $project_milestone->save($errors);
         });
+
+        $projectBot = ProjectBot::get($project->id);
+        if ($projectBot) {
+            if ($projectBot->platform == ProjectBot::TELEGRAM) {
+                $bot = new TelegramBot();
+                $bot->createBot();
+                $milestone = Milestone::get($project_milestone->milestone, $project->lang);
+                $bot->sendMessage($projectBot->channel_id, $milestone->description);
+            }
+        }
     }
 
     /**

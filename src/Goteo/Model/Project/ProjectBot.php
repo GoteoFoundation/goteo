@@ -23,6 +23,8 @@ namespace Goteo\Model\Project {
         protected $Table = 'project_bot';
         protected static $Table_static = 'project_bot';    
 
+        const TELEGRAM = "telegram";
+
         public
             $project,
             $platform,
