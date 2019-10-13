@@ -92,6 +92,7 @@ admin-view-user-projects: 'Tódolos proxectos'
 admin-view-user-invests: 'Tódalas achegas'
 admin-user-hidden: 'Privado (oculto)'
 admin-user-active: 'Conta activa'
+admin-user-wallet-amount: 'Crédito no portamoedas'
 admin-user-create-invest: 'Crear achega'
 admin-view-user-mailing: 'Tódolos envíos'
 admin-role-change-forbidden: 'Non tes permiso para xestionar o rol %ROLE% neste usuario'
@@ -139,6 +140,7 @@ admin-stats-to_wallet: 'Ao portamoedas'
 admin-stats-to_fee: 'A comisións'
 admin-stats-to_fee-percent: 'Comisión efectiva'
 admin-stats-in_wallet: 'No portamoedas'
+admin-stats-in_users_wallet: 'No portamoedas de usuarios'
 admin-losts: Perdas
 admin-raised: Recadado
 admin-active: Cobrado
