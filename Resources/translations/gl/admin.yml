@@ -98,8 +98,13 @@ admin-text-type-html: HTML
 admin-text-type-md: Markdown
 admin-text-type-plain: 'Texto simple'
 admin-user: Usuario
+admin-user-no-projects: 'Aínda non se creou ningún proxecto'
+admin-user-no-invests: 'Aínda non se fixo ningunha doazón'
 admin-users: Usuarios
 admin-users-add: Crear novo usuario
+admin-blog: Blogue xeral
+admin-blog-add: Crear nova publicación
+admin-blog-edit: Editando publicación %s
 admin-blog-not-public: 'Esta publicación aínda non é pública'
 admin-stories: Historias de usuarios no Goteo
 admin-stories-add: Crear unha nova historia
@@ -126,10 +131,12 @@ admin-user-hidden: 'Privado (oculto)'
 admin-user-active: 'Conta activa'
 admin-user-wallet-amount: 'Crédito no portamoedas'
 admin-user-create-invest: 'Crear achega'
+admin-user-no-mailing: 'Aínda non se enviou ningún correo'
 admin-view-user-mailing: 'Tódolos envíos'
 admin-role-change-forbidden: 'Non tes permiso para xestionar o rol %ROLE% neste usuario'
 admin-users-global-search: 'Id, nome, correo electrónico ou proxecto'
 admin-blog-global-search: 'Id, título, subtítulo ou texto'
+admin-communication-global-search: 'Asunto'
 admin-blog-stories-search: 'Id, título, texto ou proxecto'
 admin-no-project: 'Sen proxecto'
 admin-title-id: Id
@@ -139,6 +146,7 @@ admin-title-active: Activo
 admin-title-location: Localización
 admin-title-fullname: Nome
 admin-title-email: Correo electrónico
+admin-title-header-image: Imaxe de cabeceira
 admin-title-password: Contrasinal
 admin-title-avatar: Avatar
 admin-title-roles: Roles
@@ -148,18 +156,42 @@ admin-title-info: Info
 admin-title-image: Imaxe
 admin-title-title: Título
 admin-title-subtitle: Subtí­tulo
+admin-title-subject: Asunto
+admin-title-description: Descrición
 admin-title-section: Sección
 admin-title-text: Texto
+admin-title-slug: Slug
 admin-title-publish: Publicado
+admin-title-lang: Idioma
 admin-title-langs: Traducións
 admin-title-actions: Accións
 admin-title-tags: Etiquetas
 admin-title-deleted: Eliminado
 admin-title-social_commitment: Compromiso social
+admin-title-sdgs: 'Obxectivos de desenvolvemento sostible'
 admin-title-footprints: 'Pegadas'
 admin-title-categories: 'Categorías'
 admin-title-social_commitments: 'Compromisos sociais'
 admin-title-order: Ordenar
+admin-title-status: Estado
+admin-title-users: Usuarios
+admin-title-city: Cidade
+admin-title-date: Data
+admin-title-type: 'Tipo'
+admin-title-date-in: Data de inicio
+admin-title-date-out: Data fin
+admin-title-venue-address: Enderezo
+admin-title-how-to-get: Como chegar?
+admin-title-schedule-file: 'Url programa'
+admin-title-url-inscription: Ligazón a inscrición
+admin-title-filter: Filtro
+admin-title-template: Modelo
+admin-title-receivers: Destinatarios
+admin-title-sent: Enviados
+admin-title-failed: Sen enviar
+admin-title-pending: Pendentes
+admin-title-percent: Porcentaxe
+admin-stories-type: 'Tipo de protagonista'
 admin-aggregate-timeline: 'Cronoloxía'
 admin-aggregate-invests: 'Total de achegas'
 admin-aggregate-invests-average: 'Media de achegas'
@@ -177,6 +209,7 @@ admin-losts: Perdas
 admin-raised: Recadado
 admin-active: Cobrado
 admin-refunded: Devolto
+admin-refunded-to_users: Devolto a usuarios
 admin-refunded-to_wallet: Devolto ao portamoedas
 admin-commissions: Comisión
 admin-fees: Comisión plataforma
@@ -202,6 +235,9 @@ admin-last_year_month: O mesmo mes hai un ano
 admin-year: Este ano
 admin-last_year: O mesmo día do ano pasado
 admin-last_year_complete: Todo o ano pasado
+admin-promote-submit: 'Gardar'
+admin-promote-already-exists: 'Este proxecto xa está destacado'
+admin-promote-correct: 'O proxecto está destacado'
 admin-projects-created-today: 'Creados hoxe'
 admin-projects-created-yesterday: 'Creados onte'
 admin-projects-created-week: 'Creados esta semana'
@@ -215,6 +251,21 @@ admin-projects-negotiating-yesterday: 'En negociación onte'
 admin-projects-negotiating-week: 'En negociación esta semana'
 admin-projects-negotiating-last_week: 'En negociación a semana pasada'
 admin-projects-negotiating-month: 'En negociación este mes'
+admin-projects-negotiating-last_month: 'En negociación o mes pasado'
+admin-projects-negotiating-year: 'En negociación este año'
+admin-projects-negotiating-last_year: 'En negociación o ano pasado'
+admin-projects-published-today: 'Publicados hoxe'
+admin-projects-published-yesterday: 'Publicados onte'
+admin-projects-published-week: 'Publicados esta semana'
+admin-projects-published-last_week: 'Publicados a semana pasada'
+admin-projects-published-month: 'Publicados este mes'
+admin-projects-published-last_month: 'Publicados o mes pasado'
+admin-projects-published-year: 'Publicados este ano'
+admin-projects-published-last_year: 'Publicados o año pasado'
+admin-projects-rejected-today: 'Descartados hoxe'
+admin-projects-rejected-yesterday: 'Descartados onte'
+admin-projects-rejected-week: 'Descartados esta semana'
+admin-projects-rejected-last_week: 'Descartados a semana pasada'
 admin-projects-rejected-month: 'Descartados este mes'
 admin-projects-rejected-year: 'Descartados este ano'
 admin-projects-rejected-last_year: 'Descartados o ano pasado'
