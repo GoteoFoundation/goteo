@@ -5,14 +5,21 @@ admin-YES: SI
 admin-account-amount: 'Cantidade aportada'
 admin-account-change-user: 'Trocar de usuario'
 admin-account-change-user-confirm: 'Tes a certeza de querer trocar o usuario da achega? O novo usuario será:'
+admin-account-convert-to-pool: 'Converter en portamoedas'
+admin-account-convert-to-pool-confirm: 'Eliminarase o proxecto asociado a esta achega e pasará a ser coma unha compra do portamoedas. PERDERANSE TÓDALAS RECOMPENSAS ASOCIADAS. Continuar?'
+admin-account-convert-to-pool-ko: 'Non foi posible converter a achega a portamoedas: %s'
+admin-account-convert-to-pool-ok: 'Convertido a achega de portamoedas con éxito'
 admin-account-detail: 'Detalles da transacción'
 admin-account-donation: Doazón
 admin-account-invalid-invest: 'Achega [%s] non atopada!'
 admin-account-invest-date: 'Data da achega'
+admin-account-invest-to-pool-ko: 'Erro ao devolver a achega ao portamoedas'
 admin-account-issue-solved: 'Fixéronnos a transferencia'
 admin-account-modify-status: 'Modificar o estado'
 admin-account-modify-status-confirm: "Tes a certeza de trocar manualmente o estado a esta achega? É delicado!\nNON SE REALIZARÁ NINGUNHA operación de retorno da achega.\n"
 admin-account-payment-method: 'Método de pagamento'
+admin-account-pool-on-fail: 'Pool (devolver ao portamoedas se falla)'
+admin-account-refund-to-pool: 'Reembolsar a achega ao portamoedas'
 admin-account-switch-donation: 'Conmutar doazón'
 admin-account-switch-donation-confirm: 'Tes a certeza de querer trocar o estado da doazón?'
 admin-account-switch-pool: 'Conmutar o pool'
@@ -29,6 +36,18 @@ admin-contents: 'Texto e traducións'
 admin-empty-list: 'Non se atoparon rexistros'
 admin-activity: Actividade
 admin-communications: Comunicacións
+admin-communications-add: Crear nova comunicación
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' para o id de acceso do destinatario'
+admin-communications-useremail-content: ' para o correo do destinatario'
+admin-communications-username-content: ' para o nome do destinatario'
+admin-communications-siteurl-content: ' para o url desta plataforma (%SITEURL%)'
 admin-home: Capa
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicacións'
@@ -145,6 +164,7 @@ admin-losts: Perdas
 admin-raised: Recadado
 admin-active: Cobrado
 admin-refunded: Devolto
+admin-refunded-to_wallet: Devolto ao portamoedas
 admin-commissions: Comisión
 admin-fees: Comisión plataforma
 admin-user-fee: Comisión cidadá
