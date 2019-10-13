@@ -16,12 +16,14 @@ form-project-progress-title: 'Avaliación de datos'
 form-project-status-title: 'Estado do proxecto'
 form-project_status-campaing: 'En campaña'
 form-project_status-cancel: Descartado
+form-project_status-cancelled: Descartado
 form-project_status-expired: Arquivado
 form-project_status-fulfilled: 'Retorno cumprido'
 form-project_status-review: 'Pendente de valoración'
 form-self_review-button: Corrixir
 form-send_review-button: Enviar
 form-upload-button: Enviar
+overview-extra-fields: 'Campos complementarios'
 project-form-header: Formulario
 project-one-round: 'Rolda única de 40 días'
 project-personal-field-entity_name: 'Entidade en nome da que se actúa (se procede)'
@@ -30,6 +32,7 @@ tooltip-drag-and-drop-images: 'Para anexar imaxes, podes arrastrar e soltar os f
 form-sent-success: 'Datos gardados con éxito!'
 form-sent-error: 'Produciuse un erro ao gardar os datos: [%s]'
 form-confirm-exit: "Perderanse os datos non gardados\nTes a certeza de querer saír da páxina?"
+form-editor-italic: 'Cursiva'
 form-editor-heading: 'Cabeceira'
 form-editor-smaller_heading: 'Diminuír a cabeceira'
 form-editor-bigger_heading: 'Aumentar a cabeceira'
