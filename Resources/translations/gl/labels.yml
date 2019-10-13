@@ -12,15 +12,31 @@ categories-lb-add: 'Nova categoría'
 categories-lb-keywords: 'Palabras chave'
 categories-lb-list: A listar
 commons-lb-list: A listar
+communication-lb: 'Comunicacións'
+criteria-lb: 'Criterios de avaliación'
+criteria-lb-add: 'Novo criterio'
+criteria-lb-edit: 'Editando criterio'
 criteria-lb-list: A listar
+criteria-lb-translate: 'Traducindo criterio'
 faq-lb: FAQ
 faq-lb-add: 'Nova pregunta'
+faq-lb-edit: 'Editando pregunta'
 faq-lb-list: A listar
+faq-lb-translate: 'Traducindo pregunta'
+filter-lb: 'Filtros'
 glossary-lb: Glosario
+glossary-lb-edit: 'Editando termo'
 glossary-lb-list: A listar
+glossary-lb-translate: 'Traducindo termo'
+home-lb: 'Elementos na portada'
+home-lb-list: 'Elementos na portada'
 icons-lb-list: A listar
+info-lb-add: 'Creando idea'
+info-lb-edit: 'Editando idea'
 info-lb-list: A listar
+info-lb-translate: 'Traducindo idea'
 licenses-lb: Licenzas
+licenses-lb-add: 'Creando idea'
 licenses-lb-list: A listar
 mailing-lb: Comunicacións
 mailing-lb-edit: 'Escribindo contido'
@@ -75,5 +91,6 @@ transnodes-lb-list: A listar
 users-lb: Usuarios
 users-lb-add: 'Creando usuario'
 users-lb-list: A listar
+workshop-lb: 'Obradoiros'
 word-lb-list: A listar
 worth-lb-list: A listar
