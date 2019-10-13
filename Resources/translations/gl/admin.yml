@@ -48,13 +48,21 @@ admin-communications-userid-content: ' para o id de acceso do destinatario'
 admin-communications-useremail-content: ' para o correo do destinatario'
 admin-communications-username-content: ' para o nome do destinatario'
 admin-communications-siteurl-content: ' para o url desta plataforma (%SITEURL%)'
+admin-communications-subscribeurl-content: ' ligazón directa de subscrición ao boletín do usuario'
+admin-communications-poolamount-content: ' cantidade de cartos dispoñible no portamoedas do usuario'
+admin-communications-send: 'Enviar comunicación'
+admin-communications-cancel: 'Cancelar comunicación'
+admin-communications-newsletter: 'Boletín'
+admin-communications-communication: 'Comunicación xeral'
 admin-home: Capa
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicacións'
 admin-mailing-created: 'Creado o'
 admin-mailing-status: 'Estado do envío automático'
 admin-mailing-subject: Asunto
+admin-mailing-view-in-sent: 'Ver no histórico de envíos (estatísticas)'
 admin-mailing-view-message: 'Ver a mensaxe'
+admin-newsletter-generated: 'Xerouse o boletín [%ID%]'
 admin-newsletter-langs-to-send: 'Idiomas: %LANGS%'
 admin-newsletter-mind-activate: 'Actívao para que se envíe'
 admin-prev-page: 'Páxina anterior'
@@ -68,9 +76,13 @@ admin-projects: Proxectos
 admin-consultants: 'Asesores'
 admin-invests: Achegas
 admin-filters: 'Filtros'
+admin-filters-edit: 'Editar filtro'
+admin-filters-create: 'Crear filtro'
 admin-remove-filters: 'Eliminar filtros'
+admin-remove-filters-forbidden: 'Os filtros empregados non poden eliminarse.'
 admin-remove-entry: 'Eliminar entrada'
 admin-remove-entry-confirm: 'Tes a certeza de querer eliminar esta entrada? Esta operación non se pode desfacer!'
+admin-remove-entry-forbidden: 'Non é posible borrar entradas publicadas no blog. Deixa de publicar a entrada primeiro.'
 admin-remove-entry-ok: 'Entrada eliminada correctamente'
 admin-add-entry-ok: 'Nova entrada creada correctamente'
 admin-edit-entry-ok: 'Entrada editada correctamente'
@@ -81,6 +93,7 @@ admin-others: Outros
 admin-summary: Resumo
 admin-origins: Análise de visitas
 admin-status: Estado
+admin-text-type: 'Procesar o texto como'
 admin-text-type-html: HTML
 admin-text-type-md: Markdown
 admin-text-type-plain: 'Texto simple'
