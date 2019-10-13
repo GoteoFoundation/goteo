@@ -55,14 +55,19 @@ project-messages-send_message-your_answer: 'Escribe aquí a túa resposta'
 project-messages-send_message_support-your_answer: 'Escribe aquí a túa mensaxe de colaboración para %s'
 regular-add: Novo rexistro
 regular-all: Todos
+regular-author: 'Autor/a'
 regular-allsome: 'todos/algúns de'
 regular-anonymous: Anónimo
 regular-ask: Preguntar
 regular-submit: Enviar
 regular-slug: Identificador único
+regular-by: 'Por:'
 regular-calendar: Calendario
 regular-cancel: Cancelar
 regular-cancel-back: 'Cancelar e volver atrás'
+regular-categories: 'Categorías'
+regular-social_commitments: 'Compromisos sociais'
+regular-footprints: 'Pegadas'
 regular-back: 'Volver atrás'
 regular-channel: Canle
 regular-collaborate: Colabora
@@ -74,6 +79,7 @@ regular-date: Data
 regular-date_in: Data de entrada
 regular-date_out: Data de saída
 regular-days: días
+regular-delete: Borrar
 regular-description: Descrición
 regular-discover: 'Atopa proxectos'
 regular-discard: 'Desbotar'
@@ -111,12 +117,14 @@ regular-last: Derradeira
 regular-license: Licenza
 regular-linkedin: LinkedIn
 regular-loading: Cargando...
+regular-login: Accede
 regular-logout: 'Pechar sesión'
 regular-main-header: Goteo.org
 regular-male: Home
 regular-others: Outros
 regular-manage_board: 'Panel Xestoría'
 regular-mandatory: 'Campo obrigado!'
+regular-matchfunding: 'Matchfunding'
 regular-media_legend: Lenda
 regular-menu: Menú
 regular-menu-personal: Menú persoal
@@ -127,6 +135,7 @@ regular-months: meses
 regular-more_info: '+ info'
 regular-news: 'Novas:'
 regular-no: 'Non'
+regular-of: de
 regular-preview: Vista Previa
 regular-projects: proxectos
 regular-published_yes: Publicado
