@@ -51,3 +51,5 @@ role-perm-name-admin-module-stories: 'Pode acceder ao módulo de Historias de us
 role-perm-name-admin-module-stats: 'Pode acceder ao módulo de Stats'
 role-perm-name-full-html-edit: 'Pode editar publicacións con contido HTML'
 role-perm-name-admin-module-categories: 'Pode acceder ao módulo de Categorías'
+role-perm-name-admin-module-workshops: 'Pode acceder ao módulo de talleres'
+role-perm-name-admin-module-promote: 'Pode acceder ao módulo para destacar proxectos na páxina principal'
