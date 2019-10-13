@@ -1,10 +1,20 @@
 ---
 imperative-register: Rexístrate
 invest-address-address-field: 'Dirección:'
+invest-address-birthyear-field: 'Ano de nacemento'
 invest-address-country-field: 'País:'
+invest-address-fail: 'Hai campos baleiros ou con erros, verifica o formulario para poder recibir a túa recompensa!'
+invest-address-friend-field: 'Selecciona está opción se é un agasallo para outra persoa'
+invest-address-gender-field: Sexo
 invest-address-header: 'Onde queres recibir a recompensa (só en caso de envíos postais)'
 invest-address-location-field: 'Cidade:'
+invest-address-maildest-field: 'Correo do destinatario'
+invest-address-msgdest-field: 'Mensaxe para o destinatario'
+invest-address-myemail-field: 'O teu correo electrónico'
+invest-address-myname-field: 'O teu nome'
 invest-address-name-field: 'Nome e apelidos:'
+invest-address-namedest-field: 'Nome do destinatario'
+invest-address-nif-field: 'Número de NIF / NIE / CIF / VAT'
 invest-address-zipcode-field: 'Código postal:'
 invest-alert-investing: 'Vas aportar'
 invest-alert-lackamount: 'A achega debe ser maior cá recompensa elixida'
@@ -16,26 +26,56 @@ invest-alert-rewards: 'Elixiches as seguintes recompensas:'
 invest-amount: Cantidade
 invest-amount-tooltip: 'Insire a cantidade coa que apoiaras ó proxecto'
 invest-anonymous: 'Quero que a miña achega sexa anónima'
+invest-button: Achegar
 invest-called-allready: 'A este proxecto xa lle deches <strong>Matchfunding</strong> da campaña <span class="call">%s</span>, non obterá máis Matchfunding polas túas achegas'
 invest-called-maxdrop: 'Ata un máximo de <strong>%s &euro;</strong>'
 invest-called-maxproj: 'Xa se acadou o máximo de <strong>Matchfunding</strong> posible na campaña <span class="call">%s</span>.'
 invest-called-nodrop: 'Actualmente non hai <strong>Matchfunding</strong> dispoñible na campaña %s'
 invest-called-rest: 'Só quedan <strong>%s €</strong> de <strong>Matchfunding</strong> na campaña <span class="call">%s</span>'
+invest-card-method: Tarxeta
+invest-cash-method: 'Manual (efectivo)'
 invest-donation-header: 'Inserir os datos fiscais para a doazón'
 invest-mail_info-address: 'Especificaches a seguinte dirección:'
 invest-make-sure-save: Gardar
+invest-make-sure-title: Confirmar
+invest-method: 'Método de pagamento'
+invest-method-title: 'Fai a túa achega'
+invest-modal-fiscal-title: 'Información fiscal'
+invest-more-info: 'Máis información'
 invest-next_step: 'Paso seguinte'
 invest-payment-email: 'Insire a túa conta de PayPal'
 invest-payment_method-header: 'Elixe o método de pago'
+invest-payment-method: 'Método de pagamento'
+invest-paypal-method: Paypal
+invest-pool-available: dispoñibles
+invest-pool-error: 'Non tes cartos abondo non teu portamoedas virtual'
+invest-pool-method: 'Portamoedas virtual'
 invest-process-completed: 'Esta achega xa se completou anteriormente'
+invest-project: 'ao proxecto'
 invest-resign: 'Renuncio a unha recompensa individual, só quero axudar ó proxecto'
+invest-reward-first: 'Lembra que a cantidade a achegar ten que ser maior a 0'
 invest-reward-none: 'Xa non se pode elixir'
+invest-share-title: Compartir
 invest-social-header: 'Cos retornos colectivos gañamos tod@s'
+invest-status-cancelled: Cancelado
+invest-status-charged: Cobrado
+invest-status-paid: 'Pagado ao proxecto'
+invest-status-returned: 'Devolto (arquivado)'
+invest-status-to-pool: 'Ao portamoedas'
+invest-step-1: Recompensa
+invest-step-2: Pagamento
+invest-step-3: Confirmar
+invest-step-4: Compartir
 proj-widget-my_invest: 'As miñas achegas'
 project-invest-confirm: 'Estás a un paso de cofinanciar este proxecto...'
 project-invest-continue: 'Preme no logo do sistema de pago que empregarás:'
 project-invest-fail: 'Algo fallou, por favor ténteo de novo'
 project-invest-guest: '¡Xenial!'
 project-invest-ok: 'Tramitouse a túa achega para confinanciar este proxecto :)'
+project-invest-pool-button: 'Usar o meu portamoedas virtual'
 project-invest-start: 'Estás a un intre de cofinanciar este proxecto...'
+project-return-button: 'Volver ao proxecto'
+project-see-msg: 'Ver a túa mensaxe'
+spread-facebook: 'Difunde no Facebook'
+spread-twitter: 'Difunde no Twitter'
 user-login-required-login: 'Se xa estás rexistrado debes <a href="%s">iniciar sesión</a>, se non, debes crear un novo usuario.'
