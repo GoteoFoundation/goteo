@@ -142,8 +142,10 @@ regular-published_yes: Publicado
 regular-read_more: 'Ler máis'
 regular-recent-activity: Actividade recente
 regular-recomended_by: 'Proxecto aconsellado por:'
+regular-review_board: 'Panel revisor'
 regular-round: 'ª rolda'
 regular-save: Gardar
+regular-schedule: Horario
 regular-search: Procurar
 regular-search-user: Procurar un usuario
 regular-search-desc: 'Escribe a túa procura aquí'
@@ -165,6 +167,7 @@ regular-title: Título
 regular-text: Texto
 regular-media: Vídeo (Youtube, Vimeo)
 regular-total: Total
+regular-donations: Doazóns (Sen incluír nas achegas)
 regular-translate: Traducir
 regular-translations: 'Traducións'
 regular-translate_board: 'Panel tradutor'
@@ -182,6 +185,18 @@ regular-images: Imaxes
 regular-load-more: 'Cargar máis'
 regular-analytics: 'Google Analytics'
 regular-facebook-pixel: 'Facebook Pixel'
+regular-call: Matchfunding
+regular-num-comments: '%s comentarios'
+regular-manage: 'Xestionar'
+regular-no-edit-permissions: Non tes permiso para editar esta entrada!
+regular-messages: Mensaxes
+regular-unknown: Descoñecido
+regular-input: Achega
+regular-amount: Importe
+regular-copied: 'Copiado ao portarretallos!'
+regular-remember-me: 'Lembrar os meus datos'
+regular-next: Seguinte
+regular-previous: Anterior
 tooltip-dashboard-user-access_data: 'Estes son os teus datos actuais de acceso. O único que non se pode cambiar é o login de usuario.'
 tooltip-dashboard-user-change_email: 'Dende aquí podes cambiar a dirección de correo electrónico na que recibes as mensaxes de Goteo.'
 tooltip-dashboard-user-change_password: 'Dende aquí podes cambiar o contrasinal co que accedes a Goteo.'
