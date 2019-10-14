@@ -14,13 +14,17 @@ $this->section('admin-container-head');
 
 <div class="panel section-content spacer">
   <div class="panel-body">
+
+        <h5><?= $this->text('admin-communications-id') ?></h5>
+        <p id = "communication-id"><?= $this->communication->id ?></p>
+
         <h5><?= $this->text('admin-mailing-subject') ?></h5>
         <p><?= $this->communication->subject ?></p>
 
         <h5 class="spacer-20"><?= $this->text('regular-date') ?></h5>
         <p><?= $this->communication->date ?></p>
 
-        <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->mails, ['subject', 'lang', 'receivers', 'sent', 'failed', 'pending', 'success', 'status', 'percent'])]) ?>
+        <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->mails, ['id', 'subject', 'lang', 'receivers', 'sent', 'failed', 'pending', 'success', 'status', 'percent'])]) ?>
 
 
     <div class="spacer-20 forms">
