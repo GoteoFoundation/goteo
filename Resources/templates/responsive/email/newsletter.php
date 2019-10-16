@@ -346,7 +346,7 @@
 
                     <?php foreach($this->promotes as $key => $promote) : ?>
                     
-                    <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key, 'total' => sizeof($this->promotes)]); ?>
+                    <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key, 'total' => count($this->promotes), 'lang' => $this->lang]); ?>
 
                     <?php endforeach ?>
 
