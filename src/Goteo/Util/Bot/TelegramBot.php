@@ -14,6 +14,7 @@ use \React\EventLoop\Factory;
 use \unreal4u\TelegramAPI\HttpClientRequestHandler;
 use \unreal4u\TelegramAPI\TgLog;
 use \unreal4u\TelegramAPI\Telegram\Methods\SendMessage;
+use \unreal4u\TelegramAPI\Telegram\Methods\SendPhoto;
 use \unreal4u\TelegramAPI\Telegram\Methods\SetWebhook;
 
 use Goteo\Application\Config;
@@ -43,6 +44,14 @@ Class TelegramBot implements Bot {
         $sendMessage->chat_id = $chatId;
         $sendMessage->text = $text;
         $this->tgLog->performApiRequest($sendMessage);
+        $this->loop->run();
+    }
+
+    public function sendImage($chatId, $image, $caption) {
+        $sendImage = new SendPhoto();
+        $sendImage->chat_id = $image->getLink();
+        $sendImage->caption = $caption;
+        $this->tgLog->performApiRequest($sendImage);
         $this->loop->run();
     }
 

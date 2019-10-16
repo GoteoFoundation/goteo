@@ -25,6 +25,7 @@ class Milestone extends \Goteo\Core\Model {
         $type,
         $link,
         $description,
+        $bot_message,
         $image,
         $image_emoji;
     /*
@@ -41,7 +42,8 @@ class Milestone extends \Goteo\Core\Model {
                     milestone.image_emoji,
                     milestone.type,
                     milestone.link,
-                    IFNULL(milestone_lang.description, milestone.description) as description
+                    IFNULL(milestone_lang.description, milestone.description) as description,
+                    INFULL(milestone_lang.bot_message, milestone.bot_message) as bot_message
                 FROM milestone
                 LEFT JOIN milestone_lang
                     ON  milestone_lang.id = milestone.id

@@ -12,4 +12,6 @@ namespace Goteo\Util\Bot;
 
 interface Bot {
     public function sendMessage($chadId, $text);
+    public function sendImage($chatId, $image, $caption);
+    
 }

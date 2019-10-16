@@ -57,7 +57,12 @@ class ConsoleMilestoneListener extends AbstractListener {
                 $bot = new TelegramBot();
                 $bot->createBot();
                 $milestone = Milestone::get($project_milestone->milestone, $project->lang);
-                $bot->sendMessage($projectBot->channel_id, $milestone->description);
+                if ($milestone->image) {
+                    $image = Image::get($milestone->image);
+                    $bot->sendImage($projectBot->channel_id, $image, $milestone->description);
+                } else {
+                    $bot->sendMessage($projectBot->channel_id, $milestone->description);
+                }
             }
         }
     }

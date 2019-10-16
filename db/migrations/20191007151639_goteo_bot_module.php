@@ -38,6 +38,9 @@ class GoteoBotModule
               UNIQUE KEY `project_platform_channel` (`project`,`platform`),
               CONSTRAINT `project_bot_ibfk_1` FOREIGN KEY (`project`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+            ALTER TABLE `milestone` ADD COLUMN `bot_message` text NULL AFTER `image`;
+            ALTER TABLE `milestone_lang` ADD COLUMN `bot_message` text NULL AFTER `description`;
      ";
 
   }
