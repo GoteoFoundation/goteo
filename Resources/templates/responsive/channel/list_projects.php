@@ -13,7 +13,11 @@ $this->section('channel-content');
 
         <?= $this->insert('channel/partials/filters_block') ?>
 
-        <?= $this->insert('channel/partials/projects_block') ?>
+        <?php if ($this->type !== 'available' && sizeof($this->projects) > 6) : ?>
+            <?= $this->insert('channel/partials/projects') ?>
+        <?php else: ?>
+            <?= $this->insert('channel/partials/projects_block') ?>
+        <?php endif ?>
 
     </div>
 
