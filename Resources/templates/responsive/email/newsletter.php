@@ -313,7 +313,7 @@
                                         <tr>
                                             <td>
                                                 <h3 class="claim-fundacion" style="text-align: center;margin: 0; padding: 15px 0 15px 0;line-height: 1.6;">
-                                                    <?= $this->text('newsletter-donate-description') ?>
+                                                    <?= $this->t('newsletter-donate-description', $this->lang) ?>
                                                 </h3>
                                             </td>
                                         </tr>
@@ -332,7 +332,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <a class="btn-fundacion" href="https://goteo.org/donate" style="color: #58595b;padding: 6px 12px;background-color: #fff;display: inline-block;margin-bottom: 20px;font-size: 14px;font-weight: 400;line-height: 1.42857143;text-align: center;white-space: nowrap;cursor: pointer;border: 1px solid transparent;border-radius: 4px;text-decoration: none; margin-top: 5px;"><?= $this->text('support-our-mission') ?>
+                                                <a class="btn-fundacion" href="https://goteo.org/donate" style="color: #58595b;padding: 6px 12px;background-color: #fff;display: inline-block;margin-bottom: 20px;font-size: 14px;font-weight: 400;line-height: 1.42857143;text-align: center;white-space: nowrap;cursor: pointer;border: 1px solid transparent;border-radius: 4px;text-decoration: none; margin-top: 5px;"><?= $this->t('support-our-mission', $this->lang) ?>
                                                 </a>
                                             </td>
                                         </tr>
@@ -363,7 +363,7 @@
                                     <td align="left">
                                         <p>
                                             <a style="color: #ffffff; padding: 13px 0; background-color: #19b4b2; display: inline-block; padding: 6px 12px; margin-bottom: 0;font-size: 14px;font-weight: 400; line-height: 1.42857143; text-align: center; white-space: nowrap; cursor: pointer; border: 1px solid transparent; border-radius: 4px; text-decoration: none;" href="https://goteo.org/discover">
-                                                <?= $this->text('mailer-more-projects-button') ?>    
+                                                <?= $this->t('mailer-more-projects-button', $this->lang) ?>    
                                                 </a>
                                         </p>
                                     </td>
@@ -412,10 +412,10 @@
                                     <tr>
                                         <td style="padding-right: 10px; padding-top:20px;" colspan="0" align="center">
                                             <p>
-                                                <a href="https://goteo.org/project/create"><?= $this->text('regular-create') ?></a>
+                                                <a href="https://goteo.org/project/create"><?= $this->t('regular-create', $this->lang) ?></a>
                                             </p>
                                             <p>
-                                                <?= $this->text('newsletter-block', $this->raw('unsubscribe')) ?>       
+                                                <?= $this->t('newsletter-block', $this->lang, [$this->raw('unsubscribe')]) ?>
                                             </p>
                                         </td>
                                     </tr>
@@ -427,7 +427,7 @@
                         <tr>
                         	<td class="column" align="center" valign="top" style="max-width: 900px; padding: 20px 0; display: block; margin: 0 auto;">
                             	<p class="pd-description">
-                                 <?= $this->text('mailer-disclaimer') ?>   
+                                 <?= $this->t('mailer-disclaimer', $this->lang) ?>   
                                 </p>                                    
                             </td>
                         </tr>
@@ -442,7 +442,7 @@
                                         <tr>
                                             <td colspan="0" align="center">
                                                 <p style="color: #FFF;">
-                                                <?= $this->text('footer-platoniq-iniciative') ?>
+                                                <?= $this->t('footer-platoniq-iniciative', $this->lang) ?>
                                                 </p>
                                             </td>
                                             <td style="padding-right: 10px;" colspan="0" align="center">
