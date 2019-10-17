@@ -41,7 +41,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <?= $this->insert('discover/partials/projects_nav') ?>
+            <?= $this->insert('discover/partials/projects_nav', ['link' => $this->link]) ?>
         </div>
     </div>
 

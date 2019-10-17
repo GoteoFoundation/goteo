@@ -17,7 +17,7 @@ $this->section('channel-content');
         <h2 class="title">
             <?=$this->text('discover-searcher-header')?>
         </h2>
-        <?= $this->supply('search-box', $this->insert('discover/partials/search_box')) ?>
+        <?= $this->supply('search-box', $this->insert('discover/partials/search_box', ['link' => '/channel/'.$this->channel->id])) ?>
     </div>
 </div>
 

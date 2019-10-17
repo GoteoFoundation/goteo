@@ -35,6 +35,12 @@ $channel->add('channel-discover-projects', new Route(
     array('_controller' => 'Goteo\Controller\ChannelController::discoverProjectsAction')
 ));
 
+$channel->add('channel-discover-projects-filter', new Route(
+    '/{id}/discover/{filter}',
+    array('_controller' => 'Goteo\Controller\ChannelController::discoverProjectsAction')
+));
+
+
 
 $channel->add('channel-list-projects', new Route(
     '/{id}/{type}/{category}',
