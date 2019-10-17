@@ -710,6 +710,7 @@ class Node extends \Goteo\Core\Model {
             ";
         try {
             $query = self::query($sql, array(':node' => $this->id));
+            //die(\sqldbg($sql, array(':node' => $this->id)));
             $data = $query->fetch(\PDO::FETCH_ASSOC);
 
             // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
@@ -785,7 +786,7 @@ class Node extends \Goteo\Core\Model {
             SELECT
                 COUNT(project.id)
             FROM    project
-            WHERE node = :node
+            WHERE ( node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND status IN (3, 4, 5, 6)
             ", $values);
         $data['projects'] = $query->fetchColumn();
@@ -795,7 +796,7 @@ class Node extends \Goteo\Core\Model {
             SELECT
                 COUNT(project.id)
             FROM    project
-            WHERE node = :node
+            WHERE ( node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND status = 3
             ", $values);
         $data['active'] = $query->fetchColumn();
@@ -816,7 +817,7 @@ class Node extends \Goteo\Core\Model {
                 AND     invest.status IN ('0', '1', '3', '4')
                 ) as `getamount`
             FROM    project
-            WHERE node = :node
+            WHERE ( node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND status IN ('3', '4', '5')
             HAVING getamount >= mincost
             ", $values);
@@ -829,7 +830,7 @@ class Node extends \Goteo\Core\Model {
             FROM  invest
             INNER JOIN project
                 ON project.id = invest.project
-            WHERE project.node = :node
+            WHERE ( project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND invest.status IN ('0', '1', '3', '4')
             ", $values);
         $data['investors'] = $query->fetchColumn();
@@ -841,7 +842,7 @@ class Node extends \Goteo\Core\Model {
             FROM  message
             INNER JOIN project
                 ON project.id = message.project
-            WHERE project.node = :node
+            WHERE ( project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND message.user != project.owner
             ", $values);
         $data['supporters'] = $query->fetchColumn();
@@ -853,7 +854,7 @@ class Node extends \Goteo\Core\Model {
             FROM  invest
             INNER JOIN project
                 ON project.id = invest.project
-            WHERE project.node = :node
+            WHERE ( project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND invest.status IN ('0', '1', '3')
             ", $values);
         $data['amount'] = $query->fetchColumn();
@@ -866,7 +867,7 @@ class Node extends \Goteo\Core\Model {
             FROM    `call`
             INNER JOIN campaign
                 ON call.id = campaign.call
-                AND node = :node
+                AND node = :node 
             ", $values);
         $data['budget'] = $query->fetchColumn();
 
