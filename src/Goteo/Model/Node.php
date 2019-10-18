@@ -65,7 +65,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['subtitle', 'description', 'call_to_action_description'];
+        return ['name', 'subtitle', 'description', 'call_to_action_description'];
     }
 
     /**
