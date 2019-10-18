@@ -61,7 +61,7 @@ class GoteoChannelComponents
             FOREIGN KEY (`stories_id`) REFERENCES `stories`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
 
-        CREATE TABLE `node_resources` (
+        CREATE TABLE `node_resource` (
           `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
           `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
           `title` VARCHAR(255) NOT NULL,
@@ -70,10 +70,21 @@ class GoteoChannelComponents
           `action` VARCHAR(255) NOT NULL,
           `action_url` TINYTEXT NULL,
           `action_icon` varchar(255) NULL,
+          `lang` VARCHAR(6) NULL,
           `order` INT(11),
            PRIMARY KEY (`id`),
            CONSTRAINT `node_resources_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );
+
+        CREATE TABLE `node_resource_lang` (
+          `id` BIGINT(20) UNSIGNED NOT NULL,
+          `lang` VARCHAR (6),
+          `title` VARCHAR(255) NOT NULL,
+          `description` TEXT NOT NULL,
+          `action` VARCHAR(255) NOT NULL,
+          `pending` TINYINT (1),
+           FOREIGN KEY (`id`) REFERENCES `node_resources`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        ); 
 
         CREATE TABLE `node_project` (
           `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -91,6 +102,8 @@ class GoteoChannelComponents
             FOREIGN KEY (`node_id`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
             FOREIGN KEY (`workshop_id`) REFERENCES `workshop`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
+
+
 
         ALTER TABLE `node` ADD COLUMN `call_to_action_description` TEXT NOT NULL AFTER `description`;
         ALTER TABLE `node` ADD COLUMN `call_to_action_background_color` TEXT NOT NULL AFTER `owner_font_color`;

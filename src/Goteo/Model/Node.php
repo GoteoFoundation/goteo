@@ -17,6 +17,7 @@ use Goteo\Application\Exception;
 use Goteo\Library\Text;
 use Goteo\Model\Blog\Post as GeneralPost;
 use Goteo\Model\Node\NodeSponsor;
+use Goteo\Model\Node\NodeResource;
 
 
 class Node extends \Goteo\Core\Model {
@@ -960,7 +961,7 @@ class Node extends \Goteo\Core\Model {
        if($this->storiesList) return $this->storiesList;
         $values = [':node' => $this->id];
 
-        list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+        list($fields, $joins) = Stories::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
 
         $sql = "SELECT
                 stories.id,
@@ -1006,12 +1007,18 @@ class Node extends \Goteo\Core\Model {
         if($this->resourcesList) return $this->resourcesList;
         $values = [':node' => $this->id];
 
-        $sql = "SELECT
-                node_resources.*
-            FROM node_resources
+        list($fields, $joins) = NodeResource::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
 
-            WHERE node_resources.node_id = :node
-            ORDER BY node_resources.order ASC";
+        $sql = "SELECT
+                node_resource.id,
+                node_resource.icon,
+                node_resource.action_url,
+                node_resource.action_icon,
+                $fields
+            FROM node_resource
+            $joins
+            WHERE node_resource.node_id = :node
+            ORDER BY node_resource.order ASC LIMIT 3";
          //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
         $this->resourcesList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeResource');
