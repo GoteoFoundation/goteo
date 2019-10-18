@@ -6,7 +6,7 @@
             <h2 class="title"><?= $this->text('node-resources-title') ?></h2>
             <div class="row details">
             	<?php foreach($channel->getResources() as $resource): ?>
-        		<div class="col-sm-12 col-md-3 adventage">
+        		<div class="col-sm-12 col-md-4 adventage">
         			<div class="title">
         				<?php if($resource->icon): ?>
         					<span class="icon icon-<?= $resource->icon ?>"></span>
