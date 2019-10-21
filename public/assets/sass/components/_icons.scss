@@ -145,28 +145,28 @@
     &.icon-match-blog {
         @include svg-background('../img/icons/match_blog.svg');
     }
-    &.icon-goteo-book {
+    &.icon-book {
         @include svg-background('../img/icons/book.svg');
     }
-    &.icon-goteo-chat {
+    &.icon-chat {
         @include svg-background('../img/icons/chat.svg');
     }
-    &.icon-goteo-check {
+    &.icon-check {
         @include svg-background('../img/icons/check.svg');
     }
-    &.icon-goteo-list {
+    &.icon-list {
         @include svg-background('../img/icons/list.svg');
     }
-    &.icon-goteo-pdf {
+    &.icon-pdf {
         @include svg-background('../img/icons/pdf.svg');
     }
-    &.icon-goteo-screen {
+    &.icon-screen {
         @include svg-background('../img/icons/screen.svg');
     }
-    &.icon-goteo-video {
+    &.icon-video {
         @include svg-background('../img/icons/video.svg');
     }
-    &.icon-goteo-write {
+    &.icon-write {
         @include svg-background('../img/icons/write.svg');
     }
 }

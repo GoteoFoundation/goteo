@@ -82,6 +82,7 @@ class GoteoChannelComponents
           `title` VARCHAR(255) NOT NULL,
           `description` TEXT NOT NULL,
           `action` VARCHAR(255) NOT NULL,
+          `action_url` TINYTEXT NULL,
           `pending` TINYINT (1),
            FOREIGN KEY (`id`) REFERENCES `node_resources`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         ); 

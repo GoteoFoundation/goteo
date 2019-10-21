@@ -29,7 +29,7 @@ class NodeResource extends \Goteo\Core\Model {
     $order;
 
     public static function getLangFields() {
-        return ['title', 'description', 'action'];
+        return ['title', 'description', 'action', 'action_url'];
     }
 
 
