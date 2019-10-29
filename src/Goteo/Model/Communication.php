@@ -325,7 +325,7 @@ class Communication extends \Goteo\Core\Model {
         if ($mails) {
             foreach($mails as $mail) {
                 if ($mail->getSender())
-                    $sent = $sent || $mail->getSender()->getStatusObject()->sent;
+                    $sent = $sent && $mail->getSender()->getStatusObject()->sent;
             }
         }
         

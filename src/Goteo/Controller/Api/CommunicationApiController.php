@@ -12,13 +12,10 @@ namespace Goteo\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Message;
-use Goteo\Application\AppEvents;
 
-use Goteo\Model\Post;
-use Goteo\Library\Text;
 use Goteo\Model\Communication;
+use Goteo\Model\Mail;
+
 
 class CommunicationApiController extends AbstractApiController {
 
@@ -40,6 +37,26 @@ class CommunicationApiController extends AbstractApiController {
         //     throw new ControllerAccessDeniedException();
 
         $result = $this->genericFileUpload($request, 'file'); // 'file' is the expected form input name in the post object
+        return $this->jsonResponse($result);
+    }
+
+    public function successAction($id, Request $request) {
+        $communication = Communication::get($id);
+        return $this->jsonResponse([ 'id' => $id , 'success' => $communication->getStatus()]);
+    }
+
+    public function mailStatusAction($id, $mail, Request $request) {
+        $sender = Mail::get($mail);
+
+        $result = [
+            'id' => $mail,
+            'sent' => $sender->getStatusObject()->sent,
+            'failed' => $sender->getStatusObject()->failed,
+            'pending' => $sender->getStatusObject()->pending,
+            'success' => (int) $sender->getStats()->getEmailOpenedCollector()->getPercent(),
+            'status' => $sender->getStatus(),
+            'percent' => (int) $sender->getStatusObject()->percent
+        ];
         return $this->jsonResponse($result);
     }
 

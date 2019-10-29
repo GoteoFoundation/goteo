@@ -28,6 +28,10 @@ class NodeResource extends \Goteo\Core\Model {
     $action_icon,
     $order;
 
+    public static function getLangFields() {
+        return ['title', 'description', 'action', 'action_url'];
+    }
+
 
     /**
      * Get data about node resource

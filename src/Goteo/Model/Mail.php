@@ -518,6 +518,7 @@ class Mail extends \Goteo\Core\Model {
         $extra_vars['content'] = $content;
         $extra_vars['subject'] = $this->subject;
         $extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
+        $extra_vars['lang'] = ($this->lang)? $this->lang : Lang::current();
 
         if ($plain) {
             return strip_tags($this->content) . ($extra_vars['alternate'] ? "\n\n" . $extra_vars['alternate'] : '');

@@ -69,6 +69,7 @@ admin-communications-send: 'Enviar comunicación'
 admin-communications-cancel: 'Cancelar comunicación'
 admin-communications-newsletter: 'Boletín'
 admin-communications-communication: 'Comunicación general'
+admin-communications-id: 'ID de la Comunicación'
 admin-home: Portada
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicaciones'

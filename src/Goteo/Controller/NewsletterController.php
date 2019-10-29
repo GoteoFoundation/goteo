@@ -58,7 +58,8 @@ class NewsletterController extends \Goteo\Core\Controller {
 				$extra_vars['content'] = $mail['content'];
 				$extra_vars['subject'] = $mail['subject'];
 				$extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $mail['to'];
-		
+				$extra_vars['lang'] = $lang;
+				
 				if (isset($mail['communication_id'])) {
 					$communication = Communication::get($mail['communication_id']); 
 					$extra_vars['type'] = $communication->type;

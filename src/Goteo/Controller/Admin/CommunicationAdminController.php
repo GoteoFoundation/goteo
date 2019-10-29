@@ -135,7 +135,8 @@ class CommunicationAdminController extends AbstractAdminController
                 $mails = Mail::getFromCommunicationId($id);
                 foreach($mails as $mail) {
                     $mailing = Sender::getFromMailId($mail->id);
-                    $mailing->dbDelete();
+                    if ($mailing) 
+                        $mailing->dbDelete();
                     $mail->dbDelete();
                 }
             }
@@ -331,6 +332,7 @@ class CommunicationAdminController extends AbstractAdminController
         // $values['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
         $values['promotes'] = $communication->getCommunicationProjects($communication->id);
         $values['type'] = $communication->type;
+        $values['lang'] = $communication->lang;
 
         if ($communication->template == Template::NEWSLETTER) {
             $template = "newsletter";
