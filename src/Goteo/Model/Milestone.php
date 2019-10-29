@@ -43,7 +43,7 @@ class Milestone extends \Goteo\Core\Model {
                     milestone.type,
                     milestone.link,
                     IFNULL(milestone_lang.description, milestone.description) as description,
-                    INFULL(milestone_lang.bot_message, milestone.bot_message) as bot_message
+                    IFNULL(milestone_lang.bot_message, milestone.bot_message) as bot_message
                 FROM milestone
                 LEFT JOIN milestone_lang
                     ON  milestone_lang.id = milestone.id
