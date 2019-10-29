@@ -54,6 +54,9 @@ class GoteoBotModule
   {
     return "
       DROP TABLE IF EXISTS `project_bot`;
+      ALTER TABLE `milestone` DROP COLUMN `bot_message`;
+      ALTER TABLE `milestone_lang` DROP COLUMN `bot_message`;
+
     ";
   }
 
