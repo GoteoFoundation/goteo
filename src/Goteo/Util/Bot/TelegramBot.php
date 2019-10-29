@@ -49,7 +49,8 @@ Class TelegramBot implements Bot {
 
     public function sendImage($chatId, $image, $caption) {
         $sendImage = new SendPhoto();
-        $sendImage->chat_id = $image->getLink();
+        $sendImage->chat_id = $chatId;
+        $sendImage->photo = $image->getLink(300,300,true);
         $sendImage->caption = $caption;
         $this->tgLog->performApiRequest($sendImage);
         $this->loop->run();

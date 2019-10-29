@@ -28,6 +28,7 @@ use Goteo\Model\Milestone;
 use Goteo\Model\Project\ProjectBot;
 use Goteo\Model\Project\ProjectMilestone;
 use Goteo\Util\Bot\TelegramBot;
+use Goteo\Model\Image;
 
 class ConsoleMilestoneListener extends AbstractListener {
 
