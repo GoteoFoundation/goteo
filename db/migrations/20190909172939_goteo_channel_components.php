@@ -72,8 +72,19 @@ class GoteoChannelComponents
           `action_icon` varchar(255) NULL,
           `order` INT(11),
            PRIMARY KEY (`id`),
-           CONSTRAINT `node_resources_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+           CONSTRAINT `node_resource_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );
+
+        CREATE TABLE `node_resource_lang` (
+          `id` BIGINT(20) UNSIGNED NOT NULL,
+          `lang` VARCHAR (6),
+          `title` VARCHAR(255) NOT NULL,
+          `description` TEXT NOT NULL,
+          `action` VARCHAR(255) NOT NULL,
+          `action_url` TINYTEXT NULL,
+          `pending` TINYINT (1),
+           FOREIGN KEY (`id`) REFERENCES `node_resource`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        ); 
 
         CREATE TABLE `node_project` (
           `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -113,7 +124,7 @@ class GoteoChannelComponents
        DROP TABLE `node_post`;
        DROP TABLE `node_sponsor`;
        DROP TABLE `node_stories`;
-       DROP TABLE `node_resources`;
+       DROP TABLE `node_resource`;
        DROP TABLE `node_project`;
        DROP TABLE `node_workshop`;
        ALTER TABLE `node` DROP COLUMN `call_to_action_description`;
