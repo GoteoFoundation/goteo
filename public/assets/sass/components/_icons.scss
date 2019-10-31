@@ -145,7 +145,28 @@
     &.icon-match-blog {
         @include svg-background('../img/icons/match_blog.svg');
     }
-    &.icon-goteo-logo {
-        @include svg-background('../img/icons/goteo_logo.svg');
+    &.icon-book {
+        @include svg-background('../img/icons/book.svg');
+    }
+    &.icon-chat {
+        @include svg-background('../img/icons/chat.svg');
+    }
+    &.icon-check {
+        @include svg-background('../img/icons/check.svg');
+    }
+    &.icon-list {
+        @include svg-background('../img/icons/list.svg');
+    }
+    &.icon-pdf {
+        @include svg-background('../img/icons/pdf.svg');
+    }
+    &.icon-screen {
+        @include svg-background('../img/icons/screen.svg');
+    }
+    &.icon-video {
+        @include svg-background('../img/icons/video.svg');
+    }
+    &.icon-write {
+        @include svg-background('../img/icons/write.svg');
     }
 }

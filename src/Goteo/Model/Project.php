@@ -2494,7 +2494,8 @@ class Project extends \Goteo\Core\Model {
         $order = 'name ASC';
 
         if($node) {
-            $where[] = 'project.node = :node';
+            // Check main node in project table and in relation table
+            $where[] = '(project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node) )';
             $values[':node'] = $node;
         }
 
@@ -2642,6 +2643,8 @@ class Project extends \Goteo\Core\Model {
             ";
 
         $values[':lang'] = $lang;
+
+        //print_r(sqldbg($sql, $values) ); die;
 
         // if($filter['type'] == 'recent') {sqldbg($sql, $values);die;}
         $projects = array();
@@ -3043,10 +3046,12 @@ class Project extends \Goteo\Core\Model {
             }
         }
         if (!empty($filters['node'])) {
-            $sqlFilter .= " AND project.node = :node";
+            // Check main node in project table and in relation table
+            $sqlFilter .= ' AND (project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node) )';
             $values[':node'] = $filters['node'];
         } elseif (!empty($node) && !Config::isMasterNode($node)) {
-            $sqlFilter .= " AND project.node = :node";
+            // Check main node in project table and in relation table
+            $sqlFilter .= ' AND (project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node) )';
             $values[':node'] = $node;
         }
         if (!empty($filters['success'])) {
