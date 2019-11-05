@@ -20,15 +20,7 @@ use Goteo\Application\View;
 use Goteo\Application\Message;
 use Goteo\Application\Lang;
 use Goteo\Model\Invest;
-use Goteo\Model\Project;
-use Goteo\Model\Project\Account;
-use Goteo\Model\Project\Cost;
-use Goteo\Model\Project\Reward;
-use Goteo\Model\Project\Image as ProjectImage;
-use Goteo\Model\Project\Support;
 use Goteo\Model\User;
-use Goteo\Model\Blog;
-use Goteo\Model\Stories;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Message as Comment;
 use Goteo\Library\Text;
@@ -43,7 +35,7 @@ use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Event\FilterProjectPostEvent;
 use Goteo\Controller\DashboardController;
 
-class ProjectDashboardController extends DashboardController {
+class MatcherDashboardController extends DashboardController {
     protected $user, $admin = false;
 
     public function __construct() {

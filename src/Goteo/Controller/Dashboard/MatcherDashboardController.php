@@ -22,11 +22,6 @@ use Goteo\Application\Lang;
 use Goteo\Model\Invest;
 use Goteo\Model\Matcher;
 use Goteo\Model\Project;
-use Goteo\Model\Project\Account;
-use Goteo\Model\Project\Cost;
-use Goteo\Model\Project\Reward;
-use Goteo\Model\Project\Image as ProjectImage;
-use Goteo\Model\Project\Support;
 use Goteo\Model\User;
 use Goteo\Model\Blog;
 use Goteo\Model\Stories;
@@ -63,7 +58,7 @@ class MatcherDashboardController extends DashboardController {
 
 
         // Create sidebar menu
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . 'Matcher', $prefix . '/summary', 'summary');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' .Text::get('dashboard-matcher-summary') , $prefix . '/summary', 'summary');
 
         /*$validation = false;
         $admin = false;
@@ -73,16 +68,13 @@ class MatcherDashboardController extends DashboardController {
 
         //if($project->inEdition() || $admin) {
             $steps = [
-                ['text' => '<i class="icon icon-2x icon-user"></i> 1. ' . Text::get('profile-about-header'), 'link' => $prefix . '/profile', 'id' => 'profile', 'class' => $validation->profile == 100 ? 'ok' : 'ko'],
+                ['text' => '<i class="icon icon-2x icon-user"></i> 1. ' . Text::get('dashboard-matcher-about'), 'link' => $prefix . '/profile', 'id' => 'profile', 'class' => $validation->profile == 100 ? 'ok' : 'ko'],
                 // ['text' => '<i class="fa fa-2x fa-id-card-o"></i> 2. ' . Text::get('step-2'), 'link' => $prefix . '/personal', 'id' => 'personal'],
-                ['text' => '<i class="icon icon-2x icon-edit"></i> 2. ' . Text::get('step-3'), 'link' => $prefix . '/overview', 'id' => 'overview', 'class' => $validation->overview == 100 ? 'ok' : 'ko'],
-                ['text' => '<i class="icon icon-2x icon-images"></i> 3. ' . Text::get('step-3b'), 'link' => $prefix . '/images', 'id' => 'images', 'class' => $validation->images == 100 ? 'ok' : 'ko'],
-                ['text' => '<i class="fa fa-2x fa-tasks"></i> 4. ' . Text::get('step-4'), 'link' => $prefix . '/costs', 'id' => 'costs', 'class' => $validation->costs == 100 ? 'ok' : 'ko'],
-                ['text' => '<i class="fa fa-2x fa-gift"></i> 5. ' . Text::get('step-5'), 'link' => $prefix . '/rewards', 'id' => 'rewards', 'class' => $validation->rewards == 100 ? 'ok' : 'ko'],
-                ['text' => '<i class="fa fa-2x fa-sliders"></i> 6. ' . Text::get('project-campaign'), 'link' => $prefix . '/campaign', 'id' => 'campaign', 'class' => $validation->campaign == 100 ? 'ok' : 'ko'],
-                ['text' => '<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), 'link' => $prefix . '/supports', 'id' => 'supports'],
+                ['text' => '<i class="icon icon-2x icon-edit"></i> 2. ' . Text::get('dashboard-matcher-overview'), 'link' => $prefix . '/overview', 'id' => 'overview', 'class' => $validation->overview == 100 ? 'ok' : 'ko'],
+                ['text' => '<i class="icon icon-2x icon-images"></i> 3. ' . Text::get('dashboard-matcher-configuration'), 'link' => $prefix . '/images', 'id' => 'images', 'class' => $validation->images == 100 ? 'ok' : 'ko'],
+                ['text' => '<i class="fa fa-2x fa-tasks"></i> 4. ' . Text::get('dashboard-matcher-criteria'), 'link' => $prefix . '/costs', 'id' => 'costs', 'class' => $validation->costs == 100 ? 'ok' : 'ko']
             ];
-            Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $steps, 'project', null, 'sidebar' . ($admin ? ' admin' : ''));
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('matcher-edit'), $steps, 'project', null, 'sidebar' . ($admin ? ' admin' : ''));
         //}
 
        /* if($project->isApproved()) {
@@ -155,7 +147,7 @@ class MatcherDashboardController extends DashboardController {
         return true;
     }
 
-    public function summaryAction($pid = null, Request $request) {
+    public function summaryAction($mid = null, Request $request) {
         /*$project = $this->validateProject($pid, 'summary');
         if($project instanceOf Response) return $project;*/
 
