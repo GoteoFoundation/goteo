@@ -101,6 +101,7 @@ class Template extends \Goteo\Core\Model {
     const PROJECT_DERIVATION_DISCARD = 'project_derivation_discard';    // Discard derivating to others platforms.
     const PROJECT_MY_STORY_AVAILABLE = 'project_my_story_available';    // My story form open
     const CONTRACT_PREVIOUS_INFORMATION = 'contract_previous_information';    // Send information about the contract documentation
+    const CONTRACT_FIRST_REMINDER = 'contract_first_reminder';    // Send a reminder in order to fill the contract form
     const DONATE_ORGANIZATION_THANKS = 'donate_thanks';    // Thanks by donation to the organization
     const MESSAGE_PROJECT_THREAD = 'project_thread';    // Project owner creates a thread
     const MESSAGE_THREAD_RESPONSE = 'thread_response';    // Response from user in a thread
