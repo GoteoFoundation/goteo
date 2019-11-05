@@ -1,7 +1,6 @@
 <?php
 
 $this->layout('layout', [    
-    'navClass' => 'lilac',
     'bodyClass' => 'dashboard',
     'title' => 'Dashboard :: Goteo.org',
     'meta_description' => $this->text('meta-description-discover')
