@@ -2,18 +2,18 @@ group: contract
 name: 'Contract first reminder'
 purpose: 'Mail para recordar al impulsor que tiene pendiente completar el formulario de contrato'
 type: 'md'
-title: '¿Qué necesito para completar mi contrato con Goteo?'
+title: 'Todavía no has completado tu contrato en Goteo'
 text: >
     Hola %USERNAME%,
+
 
     Te recordamos que tienes abierto el formulario de contrato, y tienes pendiente completarlo, a continuación la url donde puedes hacerlo:
 
     
-    
-    Si tienes cualquier consulta, no dudes en escribir a tu asesor/a, o a [gestion@goteo.org](mailto:gestion@goteo.org).
+    %PROJECTCONTRACTURL%
 
     
-    ¡Mucha suerte en el sprint final!
+    Si tienes cualquier consulta, no dudes en escribir a tu asesor/a, o a [gestion@goteo.org](mailto:gestion@goteo.org).
     
 
     Saludos,
