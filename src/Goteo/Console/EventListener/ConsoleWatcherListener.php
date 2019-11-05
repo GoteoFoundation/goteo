@@ -172,9 +172,6 @@ class ConsoleWatcherListener extends AbstractListener {
             }
         }
 
-       print_r($contract_status);
-       echo $days_funded;
-
         if($days_funded == 15 && $contract_status->owner) {
                 $this->info("Contract form reminder", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded, 'contract_status' => $contract_status]);
 
