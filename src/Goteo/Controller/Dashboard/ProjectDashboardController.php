@@ -58,7 +58,6 @@ class ProjectDashboardController extends DashboardController {
 
     static function createProjectSidebar(Project $project, $zone = '', &$form = null) {
         $user = Session::getUser();
-
         if(!$project->userCanEdit($user)) return false;
         $prefix = '/dashboard/project/' . $project->id ;
 
@@ -103,7 +102,6 @@ class ProjectDashboardController extends DashboardController {
             ['text' => '<i class="fa fa-2x fa-globe"></i> ' . Text::get('regular-translations'), 'link' => $prefix . '/translate', 'id' => 'translate'],
             ['text' => '<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), 'link' => $prefix . '/analytics', 'id' => 'analytics'],
             ['text' => '<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), 'link' => $prefix . '/materials', 'id' => 'materials'],
-            ['text' => '<i class="fa fa-bell fa-2x"></i> ' . 'Integraciones', 'link' => $prefix . '/integration', 'id' => 'integration']
         ];
 
 

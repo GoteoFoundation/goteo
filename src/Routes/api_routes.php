@@ -10,7 +10,6 @@
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Goteo\Application\Config;
 
 $api = new RouteCollection();
 
@@ -414,11 +413,4 @@ $api->add('api-workshops-images-upload', new Route(
     array(), // schemes
     array('POST') // methods
 ));
-
-if (Config::get('bot.telegram.token')) 
-    $api->add('api-telegram-webhook', new Route(
-        '/telegram/' . Config::get('bot.telegram.token'),
-        array('_controller' => 'Goteo\Controller\Api\BotApiController::getUpdate')
-    ));
-
 return $api;
