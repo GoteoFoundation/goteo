@@ -9,8 +9,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 use GoteoBot\Model\Bot\TelegramBot;
 
-if (!Config::get('bot')) return;
-
 // Autoload additional Classes (if necessary)
 Config::addAutoloadDir(__DIR__ .'/src');
 
@@ -41,15 +39,12 @@ $routes->add('dashboard-project-integrations', new Route(
 ));
 
 // Set up the webhooks for the bots
-if (Config::get('bot.telegram.token')) {
-	$routes->add('telegram-webhook', new Route(
-			'bot/telegram/' . Config::get('bot.telegram.token'),
-			array('_controller' => 'GoteoBot\Controller\Api\BotApiController::getUpdate')
-	));
+$routes->add('goteobot-telegram-webhook', new Route(
+		'/goteobot/api/telegram/{token}',
+		array('_controller' => 'GoteoBot\Controller\Api\BotApiController::getUpdate')
+));
 
-	$bot = new TelegramBot();
-	$bot->createBot();
-	$bot->setWebhook();
-
-}
+$bot = new TelegramBot();
+$bot->createBot();
+$bot->setWebhook();
 
