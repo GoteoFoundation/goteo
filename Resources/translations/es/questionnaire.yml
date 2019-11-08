@@ -1,0 +1,7 @@
+questionnaire-type-of-question: 'Tipo de pregunta'
+questionnaire-required: 'Es obligatorio responderla'
+questionnaire-text: 'Pregunta para responder'
+
+questionnaire-textarea: 'Respuesta larga'
+questionnaire-boolean: 'Respuesta única sí/no'
+questionnaire-dropfiles: 'Documento'

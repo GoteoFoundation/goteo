@@ -1,0 +1,7 @@
+questionnaire-type-of-question: 'Type of question'
+questionnaire-required: 'It is mandatory to answer'
+questionnaire-text: 'Question to answer'
+
+questionnaire-textarea: 'Long answer'
+questionnaire-boolean: 'Single option'
+questionnaire-dropfiles: 'Document'
