@@ -4,7 +4,7 @@ namespace Goteo\Model;
 
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
-use Goteo\Application\Config;
+use Goteo\Library\Text;
 
 class Questionnaire extends \Goteo\Core\Model {
 
@@ -13,6 +13,14 @@ class Questionnaire extends \Goteo\Core\Model {
     $matcher,
     $vars,
     $description;
+
+    static public function getTypes() {
+        return [
+            'textarea' => Text::get('questionnaire-textarea'), 
+            'boolean' => Text::get('questionnaire-boolean'),
+            'dropfiles' => Text::get('questionnaire-dropfiles')
+        ];
+    }
 
 
     /**
