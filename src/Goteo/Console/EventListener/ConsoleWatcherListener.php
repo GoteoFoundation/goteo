@@ -156,6 +156,8 @@ class ConsoleWatcherListener extends AbstractListener {
         $project = $event->getProject();
         $days_active = $event->getDays();
         $days_funded = $event->getDaysFunded();
+        $contract_status=$event->getContractStatus();
+
         $this->info("Project in-campaign event", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
 
         // CONTRACT DATA
@@ -168,6 +170,12 @@ class ConsoleWatcherListener extends AbstractListener {
                 $this->info("Requesting contract data", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded]);
                 $this->send($project, '1d_after', ['owner']);
             }
+        }
+
+        if($days_funded == 15 && $contract_status->owner) {
+                $this->info("Contract form reminder", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded, 'contract_status' => $contract_status]);
+
+                $this->send($project, '15d_after', ['owner']);
         }
 
         // ahora checkeamos bloqueo de consejos
@@ -389,6 +397,8 @@ class ConsoleWatcherListener extends AbstractListener {
         $days_active = $event->getDays();
         $days_succeeded = $event->getDaysSucceeded();
         $days_funded = $event->getDaysFunded();
+        $contract_status=$event->getContractStatus();
+
         $this->info("Project vigilant", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded]);
 
         // CONTRACT DATA for first round
@@ -407,6 +417,12 @@ class ConsoleWatcherListener extends AbstractListener {
                 $this->info("My story form available", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded]);
 
                 $this->send($project, '7d_after', ['owner']);
+        }
+
+        if($project->one_round && $days_funded == 15 && $contract_status->owner) {
+                $this->info("Contract form reminder", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded, 'contract_status' => $contract_status]);
+
+                $this->send($project, '15d_after', ['owner']);
         }
 
         // die("[$days_funded]\n");

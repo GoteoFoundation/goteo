@@ -1,23 +1,20 @@
 group: contract
-name: 'Project story available to fill'
-purpose: 'Mail template to be sent to a project owner in order to giving information about the contract documentation, 15 days before the finish'
+name: 'Contract first reminder'
+purpose: 'Mail para recordar al impulsor que tiene pendiente completar el formulario de contrato'
 type: 'md'
-title: '¿Qué necesito para completar mi contrato con Goteo?'
+title: 'Recordatorio importante desde Goteo'
 text: >
     Hola %USERNAME%,
 
 
-    Si tu campaña consigue superar la primera ronda con éxito, es importante que empieces a preparar los **documentos necesarios** para que podamos transferir los fondos recaudados una vez que haya finalizado la segunda ronda. 
+    Queremos recordarte que es imprescindible que subas los **documentos necesarios** para que podamos transferir los fondos recaudados. 
 
 
-    Dentro de 15 días estará habilitado el contrato para que puedas empezar a rellenarlo con los datos requeridos, a continuación te indicamos la documentación que vas a necesitar. 
+    Está habilitado el contrato para que puedas rellenarlo con los datos requeridos, aquí tienes el link directo: %PROJECTCONTRACTURL%
 
 
-    Toda la documentación requerida es en su versión digital, ya que se sube a la plataforma, y no nos tendrás que enviar ninguna copia física. 
-
-
-    Te agradecemos mucho si la vas recopilando para evitar futuras demoras en los pagos :) 
-
+    A continuación te recordamos la documentación solicitada en su versión digital, ya que se sube a la plataforma, y no es necesario enviar ninguna copia física.
+    
 
     **Personas físicas:**
 
@@ -40,8 +37,5 @@ text: >
     Si tienes cualquier consulta, no dudes en escribir a tu asesor/a, o a [gestion@goteo.org](mailto:gestion@goteo.org).
 
     
-    ¡Mucha suerte en el sprint final!
-    
-
     Saludos,
 

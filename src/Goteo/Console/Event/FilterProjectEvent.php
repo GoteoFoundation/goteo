@@ -12,6 +12,8 @@ namespace Goteo\Console\Event;
 
 use Goteo\Model\Project;
 
+use Goteo\Model\Contract;
+
 use Symfony\Component\EventDispatcher\Event;
 
 class FilterProjectEvent extends Event {
@@ -56,4 +58,12 @@ class FilterProjectEvent extends Event {
 
         return $date2->diff($date1)->format("%a");
     }
+
+     /**
+     * Get contract status
+     */
+    public function getContractStatus() {
+        return Contract::getStatus($this->project->id);
+    }
+
 }
