@@ -172,7 +172,7 @@ class ConsoleWatcherListener extends AbstractListener {
             }
         }
 
-        if($days_funded == 15 && $contract_status->owner) {
+        if($days_funded == 15 && !$contract_status->owner) {
                 $this->info("Contract form reminder", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded, 'contract_status' => $contract_status]);
 
                 $this->send($project, '15d_after', ['owner']);
@@ -419,7 +419,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 $this->send($project, '7d_after', ['owner']);
         }
 
-        if($project->one_round && $days_funded == 15 && $contract_status->owner) {
+        if($project->one_round && $days_funded == 15 && !$contract_status->owner) {
                 $this->info("Contract form reminder", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded, 'contract_status' => $contract_status]);
 
                 $this->send($project, '15d_after', ['owner']);
