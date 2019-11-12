@@ -20,6 +20,7 @@ class Workshop extends \Goteo\Core\Model {
     $id,
     $title,
     $subtitle,
+    $online,
     $blockquote,
     $type,
     $description,
@@ -138,6 +139,7 @@ class Workshop extends \Goteo\Core\Model {
 
         $sql = "SELECT
                     workshop.id,
+                    workshop.online,
                     workshop.date_in,
                     workshop.date_out,
                     workshop.schedule,
@@ -198,6 +200,7 @@ class Workshop extends \Goteo\Core\Model {
 
         $sql ="SELECT
                 workshop.id,
+                workshop.online,
                 workshop.title,
                 $fields,
                 workshop.subtitle,
@@ -368,6 +371,7 @@ class Workshop extends \Goteo\Core\Model {
             'title',
             'lang',
             'subtitle',
+            'online',
             'blockquote',
             'type',
             'description',

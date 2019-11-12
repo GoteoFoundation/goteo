@@ -42,6 +42,12 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
+            ->add('online', 'boolean', array(
+                'required' => false,
+                'disabled' => $this->getReadonly(),
+                'label' => 'admin-online', //
+                'color' => 'cyan'
+            ))
             ->add('blockquote', 'textarea', [
                 'label' => 'admin-title-blockquote',
                 'required' => false,
@@ -75,12 +81,12 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
             ))
            ->add('date_out', 'datepicker', array(
                 'label' => 'admin-title-date-out',
-                'required' => true,
+                'required' => false,
                 'constraints' => array(new Constraints\NotBlank()),
             ))
             ->add('schedule', 'text', [
                 'label' => 'regular-schedule',
-                'required' => true,
+                'required' => false,
                 'disabled' => $this->getReadonly()
             ])
             ->add('url', 'text', [
@@ -102,12 +108,12 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
             ))
             ->add('venue', 'text', [
                 'label' => 'admin-title-venue',
-                'required' => true,
+                'required' => false,
                 'disabled' => $this->getReadonly()
             ])
             ->add('venue_address', 'textarea', [
                 'label' => 'admin-title-venue-address',
-                'required' => true,
+                'required' => false,
                 'disabled' => $this->getReadonly(),
                 'attr' => [
                     'rows' => 4
@@ -115,12 +121,12 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
             ])
             ->add('city', 'text', [
                 'label' => 'admin-title-city',
-                'required' => true,
+                'required' => false,
                 'disabled' => $this->getReadonly()
             ])    
             ->add('how_to_get', 'text', [
                 'label' => 'admin-title-how-to-get',
-                'required' => true,
+                'required' => false,
                 'disabled' => $this->getReadonly()
             ])
             ->add('map_iframe', 'textarea', [
