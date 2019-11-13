@@ -58,11 +58,27 @@ class Workshop extends \Goteo\Core\Model {
      * @param   int    $id         workshop id.
      * @return  Workshop object
      */
-    static public function get($id) {
+    static public function get($id, $lang = null) {
+
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
         $sql="SELECT
-                    workshop.*
+                    workshop.id,
+                    workshop.online,
+                    workshop.date_in,
+                    workshop.date_out,
+                    workshop.schedule,
+                    $fields,
+                    workshop.url,
+                    workshop.call_id,
+                    workshop.venue,
+                    workshop.city,
+                    workshop.venue_address
               FROM workshop
+              $joins
               WHERE workshop.id = ?";
+              
         $query = static::query($sql, array($id));
         $item = $query->fetchObject(__CLASS__);
 
