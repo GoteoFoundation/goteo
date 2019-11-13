@@ -33,6 +33,7 @@ class GoteoWorkshopOnline
   {
      return "
            ALTER TABLE `workshop` ADD COLUMN `online` TINYINT(1) NOT NULL AFTER `subtitle`;
+           ALTER TABLE `workshop_lang` ADD COLUMN `blockquote` TINYTEXT NULL AFTER `subtitle`;
 
      ";
   }
@@ -46,6 +47,7 @@ class GoteoWorkshopOnline
   {
      return "
         ALTER TABLE `workshop` DROP COLUMN `online`;
+        ALTER TABLE `workshop_lang` DROP COLUMN `blockquote`;
      ";
   }
 

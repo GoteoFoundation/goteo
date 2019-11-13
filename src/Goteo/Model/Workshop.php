@@ -49,7 +49,7 @@ class Workshop extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['title', 'subtitle', 'description'];
+        return ['title', 'subtitle', 'blockquote', 'description'];
     }
 
     /**
@@ -277,7 +277,9 @@ class Workshop extends \Goteo\Core\Model {
        if($this->storiesList) return $this->storiesList;
         $values = [':workshop' => $this->id];
 
-        list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+        $lang = Lang::current();
+
+        list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, $lang);
 
         $sql = "SELECT
                 stories.id,
