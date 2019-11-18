@@ -49,7 +49,7 @@ class Workshop extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['title', 'subtitle', 'blockquote', 'description'];
+        return ['title', 'subtitle', 'blockquote', 'description', 'schedule'];
     }
 
     /**
@@ -68,7 +68,6 @@ class Workshop extends \Goteo\Core\Model {
                     workshop.online,
                     workshop.date_in,
                     workshop.date_out,
-                    workshop.schedule,
                     $fields,
                     workshop.url,
                     workshop.call_id,
