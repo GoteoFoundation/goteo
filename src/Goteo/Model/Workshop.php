@@ -73,7 +73,9 @@ class Workshop extends \Goteo\Core\Model {
                     workshop.call_id,
                     workshop.venue,
                     workshop.city,
-                    workshop.venue_address
+                    workshop.venue_address,
+                    workshop.header_image,
+                    workshop.map_iframe
               FROM workshop
               $joins
               WHERE workshop.id = ?";
