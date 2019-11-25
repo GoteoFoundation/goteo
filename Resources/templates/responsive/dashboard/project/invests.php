@@ -94,6 +94,7 @@ $filter = $this->a('filter');
           <th><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('rewards-field-individual_reward-reward'), 'field' => 'reward']) ?></th>
           <th data-type="html"><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('dashboard-rewards-fulfilled_status'), 'field' => 'fulfilled']) ?></th>
           <th><?= $this->text('admin-address') ?></th>
+          <th><?= $this->text('invest-extra-info') ?></th>
           <th><?= $this->text('regular-actions') ?></th>
         </tr>
       </thead>
@@ -125,6 +126,7 @@ $filter = $this->a('filter');
             if(!$resign && !$reward) {
                 $reward = '<span class="label label-danger">' . $this->text('regular-unknown') . '</span>';
             }
+            $extra_info = $invest->extra_info;
 
       ?>
         <tr<?= $invest->isCharged() ? '' : ' class="strikethrough"'?>>
@@ -145,6 +147,7 @@ $filter = $this->a('filter');
               <?php endif ?>
           </td>
           <td><?= $address ?></td>
+          <td><?= $extra_info ?></td>
           <td>
             <?php if(!$this->project->userIsOwner($invest->getUser())): ?>
             <a data-toggle="modal" href="#messageModal" data-user="<?= $invest->getUser()->id ?>" data-name="<?= $invest->getUser()->name ?>" class="send-private" title="<?= $this->text('support-send-private-message') ?>"><span><?= (int)$this->messages[$invest->getUser()->id] ?></span> <i class="icon-1x icon icon-partners"></i></a>
