@@ -54,9 +54,10 @@ class Reward extends \Goteo\Core\Model {
         return $empty && $this->getTaken() == 0;
     }
 
-    public static function get($id) {
+    public static function get($id, $lang = null) {
         try {
-            list($fields, $joins) = self::getLangsSQLJoins(Lang::current());
+            
+            list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'project');
             $query = static::query("
                 SELECT 
                     reward.id as id,
