@@ -36,7 +36,7 @@ class Reward extends \Goteo\Core\Model {
             $units;
 
     public static function getLangFields() {
-        return ['reward', 'description', 'other'];
+        return ['reward', 'description', 'other', 'extra_info_message'];
     }
 
     public function setLang($lang, $data = [], array &$errors = []) {
@@ -54,9 +54,29 @@ class Reward extends \Goteo\Core\Model {
         return $empty && $this->getTaken() == 0;
     }
 
-    public static function get($id) {
+    public static function get($id, $lang = null) {
         try {
-            $query = static::query("SELECT * FROM reward WHERE id = :id", array(':id' => $id));
+            
+            list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'project');
+            $query = static::query("
+                SELECT 
+                    reward.id as id,
+                    reward.project as project,
+                    $fields,
+                    reward.type as type,
+                    reward.icon as icon,
+                    reward.license as license,
+                    reward.amount as amount,
+                    reward.units as units,
+                    reward.fulsocial as fulsocial,
+                    reward.url,
+                    reward.bonus,
+                    reward.category
+                FROM reward
+                $joins
+                WHERE 
+                    reward.id = :id
+                ", array(':id' => $id));
             return $query->fetchObject(__CLASS__);
         } catch (\PDOException $e) {
             throw new ModelException($e->getMessage());
@@ -105,6 +125,7 @@ class Reward extends \Goteo\Core\Model {
                         reward.url,
                         reward.bonus,
                         reward.category
+
                     FROM    reward
                     $joins
                     WHERE   reward.project = :project

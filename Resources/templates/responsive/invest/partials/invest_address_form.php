@@ -1,6 +1,17 @@
 <h3 class="clear-both padding-bottom-2 clear-both"><?= $this->text('invest-address-title') ?></h3>
 
 
+<?php if ($this->reward->extra_info_message) : ?>
+
+    <div class="form-group<?= in_array($part, $this->a('invest_errors')) ? ' has-error' : '' ?>">
+        <label for="invest-extra_info"><?= $this->reward->extra_info_message ?></label>
+        <div class="input-wrap">
+            <input type="textarea" class="form-control" name="invest[extra_info]" id="invest-extra-info" required>
+        </div>
+    </div>
+
+<?php endif ?>
+
 <?php foreach(['name', 'address', 'location', 'zipcode'] as $part): ?>
 
     <div class="form-group<?= in_array($part, $this->a('invest_errors')) ? ' has-error' : '' ?>">
