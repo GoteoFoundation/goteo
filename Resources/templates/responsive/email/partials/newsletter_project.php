@@ -23,7 +23,7 @@ if($this->key==0):
                     <tr>
                         <td>
                             <h2 class="title-projects-section" style="margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;font-size: 21px;color: #3a3a3a;text-align: center;margin-top: 35px;margin-bottom: 20px;">
-                                <?= $this->text('home-projects-title') ?>
+                                <?= $this->t('home-projects-title', $this->lang) ?>
                             </h2>                        
                         </td>
                     </tr>
@@ -68,7 +68,7 @@ if($this->key==0):
                             </span>
                             </a>
                             <h4 style="margin: 0;padding: 0 20px 20px 20px;line-height: 1.3;padding-bottom: 4px;font-size: 15px;font-weight: 400;">
-                                <?= $this->text('regular-by') .' ' ?><span style="font-weight: 400; "><?= $project->user->name ?></span>
+                                <?= $this->t('regular-by', $this->lang) .' ' ?><span style="font-weight: 400; "><?= $project->user->name ?></span>
                             </h4>
 
                             <?php if($project->getSocialCommitment()): ?>
@@ -85,9 +85,9 @@ if($this->key==0):
                                 <p style="padding-bottom: 0px;margin: 0;padding: 0 20px 0 20px;line-height: 1.6;">
                                     <span style="font-size: 20px; font-weight: 500;">
                                        <?= \amount_format($project->amount) ?> 
-                                    </span> <span style="color: #868788;"><?= $this->text('horizontal-project-reached') ?></span></p>
+                                    </span> <span style="color: #868788;"><?= $this->t('horizontal-project-reached', $this->lang) ?></span></p>
                                 <hr style="width: 55%;margin-left: 20px;border: 1px solid #c6cdcc; font-size: 7px;">
-                                <p style="margin: 0;padding: 0 20px 0 20px;line-height: 1.6;"><span style="font-size: 16px; font-weight: 500;"><?= $project->days.' '.strtolower($this->text('regular-days')) ?></span> <span style="color: #868788;"><?= $this->text('project-view-metter-days') ?></span></p>
+                                <p style="margin: 0;padding: 0 20px 0 20px;line-height: 1.6;"><span style="font-size: 16px; font-weight: 500;"><?= $project->days.' '.strtolower($this->t('regular-days', $this->lang)) ?></span> <span style="color: #868788;"><?= $this->t('project-view-metter-days', $this->lang) ?></span></p>
                             </span>
                         </td>
                     </tr>

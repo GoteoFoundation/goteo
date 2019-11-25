@@ -3446,7 +3446,7 @@ class Project extends \Goteo\Core\Model {
         if (!empty($filters['node'])) {
             // Check main node in project table and in relation table
             $sqlFilter .= ' AND (project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node) )';
-            $values[':node'] = $node;
+            $values[':node'] = $filters['node'];
         } elseif (!empty($node) && !Config::isMasterNode($node)) {
             // Check main node in project table and in relation table
             $sqlFilter .= ' AND (project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node) )';

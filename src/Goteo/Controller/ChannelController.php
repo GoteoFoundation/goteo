@@ -56,12 +56,12 @@ class ChannelController extends \Goteo\Core\Controller {
 
         $side_order = Home::getAll($id, 'side'); // side order
 
-        $types = array(
+        $types = (!$channel->premium) ? array(
             'popular',
             'recent',
             'success',
             'outdate'
-        );
+        ): [];
 
         
 
@@ -323,6 +323,7 @@ class ChannelController extends \Goteo\Core\Controller {
             'categories' => Category::getNames(),
             'filter' => $filter,
             'total' => $total,
+            'discover_module' => true,
             'limit' => $limit
         ]);
 

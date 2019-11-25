@@ -142,6 +142,12 @@ class UsersSend extends AbstractCommandController {
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/project/'.$project->id.'/story');
                 break;
 
+            case '15d_after': // reminder to fill the contract form
+                $tpl = Template::CONTRACT_FIRST_REMINDER;
+                $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTCONTRACTURL%');
+                $replace = array($project->user->name, $project->name, self::getURL().'/dashboard/project/'.$project->id.'/contract');
+                break;
+
             case '2m_after': // template 25, dos meses despues de financiado
                 $tpl = 25;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');

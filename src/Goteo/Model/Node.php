@@ -17,6 +17,7 @@ use Goteo\Application\Exception;
 use Goteo\Library\Text;
 use Goteo\Model\Blog\Post as GeneralPost;
 use Goteo\Model\Node\NodeSponsor;
+use Goteo\Model\Node\NodeResource;
 
 
 class Node extends \Goteo\Core\Model {
@@ -64,7 +65,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['subtitle', 'description', 'call_to_action_description'];
+        return ['name', 'subtitle', 'description', 'call_to_action_description'];
     }
 
     /**
@@ -710,6 +711,7 @@ class Node extends \Goteo\Core\Model {
             ";
         try {
             $query = self::query($sql, array(':node' => $this->id));
+            //die(\sqldbg($sql, array(':node' => $this->id)));
             $data = $query->fetch(\PDO::FETCH_ASSOC);
 
             // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
@@ -785,7 +787,7 @@ class Node extends \Goteo\Core\Model {
             SELECT
                 COUNT(project.id)
             FROM    project
-            WHERE node = :node
+            WHERE ( node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND status IN (3, 4, 5, 6)
             ", $values);
         $data['projects'] = $query->fetchColumn();
@@ -795,7 +797,7 @@ class Node extends \Goteo\Core\Model {
             SELECT
                 COUNT(project.id)
             FROM    project
-            WHERE node = :node
+            WHERE ( node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND status = 3
             ", $values);
         $data['active'] = $query->fetchColumn();
@@ -816,7 +818,7 @@ class Node extends \Goteo\Core\Model {
                 AND     invest.status IN ('0', '1', '3', '4')
                 ) as `getamount`
             FROM    project
-            WHERE node = :node
+            WHERE ( node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND status IN ('3', '4', '5')
             HAVING getamount >= mincost
             ", $values);
@@ -829,7 +831,7 @@ class Node extends \Goteo\Core\Model {
             FROM  invest
             INNER JOIN project
                 ON project.id = invest.project
-            WHERE project.node = :node
+            WHERE ( project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND invest.status IN ('0', '1', '3', '4')
             ", $values);
         $data['investors'] = $query->fetchColumn();
@@ -841,7 +843,7 @@ class Node extends \Goteo\Core\Model {
             FROM  message
             INNER JOIN project
                 ON project.id = message.project
-            WHERE project.node = :node
+            WHERE ( project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND message.user != project.owner
             ", $values);
         $data['supporters'] = $query->fetchColumn();
@@ -853,7 +855,7 @@ class Node extends \Goteo\Core\Model {
             FROM  invest
             INNER JOIN project
                 ON project.id = invest.project
-            WHERE project.node = :node
+            WHERE ( project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND invest.status IN ('0', '1', '3')
             ", $values);
         $data['amount'] = $query->fetchColumn();
@@ -866,7 +868,7 @@ class Node extends \Goteo\Core\Model {
             FROM    `call`
             INNER JOIN campaign
                 ON call.id = campaign.call
-                AND node = :node
+                AND node = :node 
             ", $values);
         $data['budget'] = $query->fetchColumn();
 
@@ -959,7 +961,7 @@ class Node extends \Goteo\Core\Model {
        if($this->storiesList) return $this->storiesList;
         $values = [':node' => $this->id];
 
-        list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+        list($fields, $joins) = Stories::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
 
         $sql = "SELECT
                 stories.id,
@@ -1005,12 +1007,18 @@ class Node extends \Goteo\Core\Model {
         if($this->resourcesList) return $this->resourcesList;
         $values = [':node' => $this->id];
 
-        $sql = "SELECT
-                node_resources.*
-            FROM node_resources
+        list($fields, $joins) = NodeResource::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
 
-            WHERE node_resources.node_id = :node
-            ORDER BY node_resources.order ASC";
+        $sql = "SELECT
+                node_resource.id,
+                node_resource.icon,
+                node_resource.action_url,
+                node_resource.action_icon,
+                $fields
+            FROM node_resource
+            $joins
+            WHERE node_resource.node_id = :node
+            ORDER BY node_resource.order ASC LIMIT 3";
          //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
         $this->resourcesList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeResource');

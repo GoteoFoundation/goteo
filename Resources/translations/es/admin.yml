@@ -69,6 +69,7 @@ admin-communications-send: 'Enviar comunicación'
 admin-communications-cancel: 'Cancelar comunicación'
 admin-communications-newsletter: 'Boletín'
 admin-communications-communication: 'Comunicación general'
+admin-communications-id: 'ID de la Comunicación'
 admin-home: Portada
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicaciones'
@@ -535,6 +536,7 @@ admin-workshop: Talleres Goteo
 admin-workshop-add: Crear un nuevo taller
 admin-workshop-edit: Editando el taller %s
 admin-workshop-edit-success: La entrada de taller se ha editado correctamente
+admin-online: Online
 
 mandatory-filter-name: Falta nombre
 mandatory-filter-description: Falta descripción
