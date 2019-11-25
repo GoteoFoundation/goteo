@@ -47,7 +47,7 @@ class GoteoRewardExtraInfo
   {
      return "
             ALTER TABLE `reward` DROP COLUMN `extra_info_message`;
-            ALTER TABLE `reward_lang` ADD COLUMN `extra_info_message`;
+            ALTER TABLE `reward_lang` DROP COLUMN `extra_info_message`;
             ALTER TABLE `invest` DROP COLUMN `extra_info`;
         ";
   }
