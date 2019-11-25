@@ -68,6 +68,7 @@ class Workshop extends \Goteo\Core\Model {
                     workshop.online,
                     workshop.date_in,
                     workshop.date_out,
+                    workshop.schedule_file_url,
                     $fields,
                     workshop.url,
                     workshop.call_id,
