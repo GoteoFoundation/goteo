@@ -33,7 +33,8 @@ class Reward extends \Goteo\Core\Model {
             $other, // para el icono de otro, texto que diga el tipo
             $license,
             $amount,
-            $units;
+            $units,
+            $extra_info_message;
 
     public static function getLangFields() {
         return ['reward', 'description', 'other', 'extra_info_message'];
