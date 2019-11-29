@@ -43,7 +43,9 @@ class GoteoFilterAddForce
    */
   public function getDownSQL()
   {
-     return "";
+     return "
+        ALTER TABLE `filter` DROP COLUMN `forced`
+        ";
   }
 
 }
