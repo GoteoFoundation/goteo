@@ -155,10 +155,10 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 'pre_addon' => '<i class="fa fa-globe"></i>',
             ])
             ->add('forced', 'boolean', [
-                'label' => 'forced-filter',
+                'label' => 'admin-filter-forced',
                 'required' => false,
                 'attr' => [
-                    'pre-help' => 'Si seleccionas esta opción, se aplicarán los filtros independientemente de lo que haya escodigo el usuario como preferencia para el envío de información por parte de la plataforma.'
+                    'pre-help' => Text::get('admin-filter-forced-help')
                     ]
             ])
             ->add('submit', 'submit', [
