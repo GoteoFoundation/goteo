@@ -124,3 +124,9 @@ ro:
     public: false
     locale: ro_RO
     fallback: en
+da: 
+    name: Dansk
+    short: DAN
+    public: false
+    locale: da_DK
+    fallback: en
