@@ -50,6 +50,11 @@ class FilterTransformer extends AbstractTransformer {
         return $receivers;
     }
 
+    function getRole() {
+        $role = $this->model->role;
+        return Text::get("admin-filter-" . $role);
+    }
+
     public function getActions() {
         if(!$u = $this->getUser()) return [];
         $ret = [

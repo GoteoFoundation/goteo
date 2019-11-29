@@ -171,6 +171,7 @@ admin-title-fullname: Nom
 admin-title-header-image: Imatge de capçalera
 admin-title-password: Contrasenya
 admin-title-roles: Rols
+admin-title-role: Rol
 admin-title-amount: Invertit
 admin-title-icon: Icona
 admin-title-image: Imatge
@@ -229,6 +230,7 @@ admin-filter-from-new-year: 'Des de l''1 de Gener'
 admin-filter-previous-year: 'L''any passat'
 admin-filter-two-years-ago: 'Fa dos anys'
 admin-filter-typeofuser: 'Tipus d''usuari'
+admin-filter-typeofdonor: 'Tipus de donant'
 admin-filter-typeofdonor: 'Tipus de donant'
 admin-filter-user: 'Usuari'
 admin-filter-donor: 'Donant'
