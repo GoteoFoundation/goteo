@@ -25,7 +25,7 @@ class Document extends \Goteo\Core\Model {
         $tmp,
         $filedir,
         $dir = 'contracts/';
-    private $fp;
+    protected $fp;
 
     /**
      * Constructor.
@@ -94,7 +94,6 @@ class Document extends \Goteo\Core\Model {
         if(empty($this->size)) {
             $errors['image'] = Text::get('error-image-size');
         }
-
 
         return empty($errors);
 	}
