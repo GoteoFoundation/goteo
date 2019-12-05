@@ -592,10 +592,10 @@ class Filter extends \Goteo\Core\Model {
         
         if (isset($this->typeofdonor)) {
             if ($this->typeofdonor == $this::UNIQUE) {            
-                $sqlFilter .= "  AND user.num_invested = 1
+                $sqlFilter .= "  AND 1 = (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL)
             ";
             } else if ($this->typeofdonor == $this::MULTIDONOR) {
-            $sqlFilter .= " AND user.num_invested > 1
+            $sqlFilter .= " AND 1 < (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL)
             ";
             }
         }
@@ -802,10 +802,10 @@ class Filter extends \Goteo\Core\Model {
         
         if (isset($this->typeofdonor)) {
             if ($this->typeofdonor == $this::UNIQUE) {            
-                $sqlFilter .= "  AND user.num_invested = 1
+                $sqlFilter .= "  AND 1 = (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL )
             ";
             } else if ($this->typeofdonor == $this::MULTIDONOR) {
-            $sqlFilter .= " AND user.num_invested > 1
+            $sqlFilter .= " AND 1 < (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL )
             ";
             }
         }
