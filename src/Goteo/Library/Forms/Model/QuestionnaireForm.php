@@ -40,7 +40,7 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 $question->vars->url = '/api/matcher/' . $questionnaire->matcher . '/project/' . $this->model->project_id . '/documents';
                 $question->vars->constraints = $this->getConstraints('docs');
             }
-            $builder->add($question->title, $question->type, (array) $question->vars);
+            $builder->add($question->id, $question->type, (array) $question->vars);
         }
 
         $builder->add('submit', 'submit', [

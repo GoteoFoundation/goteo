@@ -43,20 +43,21 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
         $builder = $this->getBuilder();
         
         $builder
-            ->add($question->title . '_typeofquestion', 'choice', [
+            ->add($question->id . '_typeofquestion', 'choice', [
                 'label' => Text::get('questionnaire-type-of-question'),
                 'choices' => Questionnaire::getTypes(),
                 'data' => $question->type
             ])
-            ->add($question->title . '_required', 'boolean',[
+            ->add($question->id . '_required', 'boolean',[
                 'label' => Text::get('questionnaire-required'),
-                'data' => $question->required ? true : false
+                'data' => $question->vars->required ? true : false,
+                'required' => false
             ])
-            ->add($question->title . '_question', 'textarea', [
+            ->add($question->id . '_question', 'textarea', [
                 'label' => Text::get('questionnaire-text'),
                 'data' => $question->vars->label,
             ])
-            ->add($question->title . "_remove", 'submit', [
+            ->add($question->id . "_remove", 'submit', [
                 'label' => Text::get('regular-delete'),
                 'icon_class' => 'fa fa-trash',
                 'span' => 'hidden-xs',
