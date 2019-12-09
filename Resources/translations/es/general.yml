@@ -85,6 +85,7 @@ regular-calendar: Calendar
 regular-cancel: Cancelar
 regular-cancel-back: 'Cancelar y volver atrás'
 
+
 regular-categories: 'Categorías'
 regular-social_commitments: 'Compromisos sociales'
 regular-spheres: 'Ámbitos'
@@ -225,6 +226,7 @@ regular-remember-me: 'Recordar mis datos'
 regular-next: Siguiente
 regular-previous: Anterior
 regular-next-workshops: 'Agenda de Fundlabs'
+regular-write-description: 'Escribe un texto descriptivo...'
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 spread-about: 'Texto spread-about'
