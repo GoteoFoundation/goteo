@@ -18,6 +18,7 @@ use Goteo\Model\Project;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Payment\Method\PoolPaymentMethod;
+use Goteo\Model\Matcher\MatcherLocation;
 
 /**
  * Matcher Model
@@ -27,6 +28,7 @@ class Matcher extends \Goteo\Core\Model {
 
     public $id,
            $name,
+           $description,
            $logo,
            $lang,
            $owner,
@@ -51,7 +53,7 @@ class Matcher extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'terms'];
+        return ['name', 'description', 'terms'];
     }
 
     /**
@@ -89,6 +91,7 @@ class Matcher extends \Goteo\Core\Model {
         if ($query = static::query($sql, $values)) {
             if( $matcher = $query->fetchObject(__CLASS__) ) {
                 $matcher->viewLang = $lang;
+                $matcher->logo = Image::get($matcher->logo);
                 return $matcher;
             }
         }
@@ -226,7 +229,7 @@ class Matcher extends \Goteo\Core\Model {
         if(!$this->created) $this->created = date('Y-m-d');
 
 
-        $fields = ['name', 'logo', 'lang', 'owner', 'terms', 'processor', 'vars', 'amount', 'used', 'crowd', 'active', 'projects', 'created'];
+        $fields = ['name', 'description', 'logo', 'lang', 'owner', 'terms', 'processor', 'vars', 'amount', 'used', 'crowd', 'active', 'projects', 'created'];
         try {
             // Update pool amounts
             foreach($this->getUserPools() as $pool) {
@@ -237,6 +240,18 @@ class Matcher extends \Goteo\Core\Model {
             $this->crowd = $this->calculateCrowdAmount();
             $this->amount = $this->calculatePoolAmount() + $this->calculateUsedAmount();
             $this->projects = $this->calculateProjects();
+
+
+            if($this->location instanceOf MatcherLocation) {
+                $this->location->id = $this->id;
+                if($this->location->save($errors)) {
+                    $this->location = $this->location->location ? $this->location->location : $this->location->name;
+                } else {
+                    $fail = true;
+                    unset($this->location);
+                }
+
+            }
 
             if(empty($this->modified_at)) {
                 $this->modified_at = date('Y-m-d H:i:s');
