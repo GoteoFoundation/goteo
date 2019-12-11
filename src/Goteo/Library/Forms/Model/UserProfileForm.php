@@ -174,14 +174,14 @@ class UserProfileForm extends AbstractFormProcessor {
                 'choices' => Interest::getAll(),
                 'required' => false
             ])
-            ->add('keywords', 'tags', [
-                'label' => 'profile-field-keywords',
-                'constraints' => $this->getConstraints('keywords'),
-                'disabled' => $this->getReadonly(),
-                'attr' => ['help' => Text::get('tooltip-user-keywords')],
-                'required' => false,
-                'url' => '/api/keywords?q=%QUERY'
-            ])
+            // ->add('keywords', 'tags', [
+            //     'label' => 'profile-field-keywords',
+            //     'constraints' => $this->getConstraints('keywords'),
+            //     'disabled' => $this->getReadonly(),
+            //     'attr' => ['help' => Text::get('tooltip-user-keywords')],
+            //     'required' => false,
+            //     'url' => '/api/keywords?q=%QUERY'
+            // ])
             // ->add('contribution', 'textarea', [
             //     'label' => 'profile-field-contribution',
             //     'constraints' => $this->getConstraints('contribution'),
