@@ -1000,6 +1000,48 @@ div {
   }
 }
 
+// Hide while loading
+
+.slider-matchers{
+     visibility:hidden;
+     opacity:0;
+     transition: opacity 1s;
+     .slick-dots{
+      width: 76%;
+      bottom: 0px !important;
+      li.slick-active button::before {
+        color: $background-dark-lilac !important;
+
+}
+     }
+}
+
+.slider-matchers.slick-initialized{
+    visibility:visible;
+    opacity:1;
+}
+
+.slider-matchers .item{
+    display:none ;
+}
+
+.slider-matchers .item:first-child{
+    display:block; visibility:hidden;
+}
+
+.slider-matchers.slick-initialized .item{
+    display:block;visibility:visible!important;
+}
+
+.slider.slider-matchers{
+    opacity:1;
+    .slick-slide img {
+        display: block;
+        width: 100%;
+        padding-bottom: 5px;
+    }
+}
+
 /* Responsive fixes */
 
 @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {

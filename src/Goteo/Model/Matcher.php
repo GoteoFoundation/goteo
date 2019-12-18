@@ -137,6 +137,13 @@ class Matcher extends \Goteo\Core\Model {
         return $list;
     }
 
+    public function getLogo() {
+        if(!$this->imageInstance instanceOf Image) {
+            $this->imageInstance = new Image($this->logo);
+        }
+        return $this->imageInstance;
+    }
+
     /**
      * Lists available matchers
      * @param  array   $filters [description]

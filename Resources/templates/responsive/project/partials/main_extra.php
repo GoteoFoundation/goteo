@@ -1,4 +1,10 @@
-<?php $project=$this->project; ?>
+<?php 
+$project=$this->project; 
+$matchers=$this->matchers;
+
+?>
+
+
 
 <?php
 
@@ -106,13 +112,14 @@ $langs = $project->getLangs();
                             <input type="text" class="form-control" value="<?= $share_url ?>" >
                         </div>
 
+
                         <!-- Call in sm version -->
                         <?php if($project->called): ?>
                             <a href="<?= $this->get_url() ?>/call/<?= $project->called->id ?>/projects" target="_blank">
                                 <div class="call-info-container visible-sm">
                                     <div class="row call-info col-lg-10 col-md-11 col-sm-12">
                                         <div class="col-xs-2 no-padding" >
-                                            <img src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
+                                            <img width="35" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
                                             <div class="label-call" >
                                             <?= $this->text('node-side-sumcalls-header') ?>
                                             </div>
@@ -184,6 +191,29 @@ $langs = $project->getLangs();
                     </div>
                 </div>
             </a>
+            <?php elseif($matchers): ?>
+            
+                <div class="col-sm-4 slider slider-matchers" id="matchers">
+
+                <?php foreach ($matchers as $matcher): ?>
+        
+                    <a href="" target="_blank">
+                        <div class=" call-info-container hidden-sm hidden-xs">
+                            <div class="row call-info col-lg-10 col-md-11 col-sm-12">
+                                <div class="col-xs-2 no-padding" >
+                                    <img width="40" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
+                                </div>
+                                <div class="col-xs-6 col-xs-offset-1">
+                                    <img src="<?= $matcher->getLogo()->getLink(240, 240, true) ?>" class="img-responsive">
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <?php endforeach; ?>
+
+                </div>
+
             <?php endif; ?>
 
             <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>

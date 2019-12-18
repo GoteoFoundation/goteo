@@ -211,6 +211,8 @@ class ProjectController extends \Goteo\Core\Controller {
                 'widget_code' => $widget_code
             );
 
+            $viewData['matchers'] = $project->getMatchers('active');
+
             // recompensas
             $viewData['individual_rewards'] = [];
             foreach ($project->getIndividualRewards(Lang::current(false)) as $reward) {
