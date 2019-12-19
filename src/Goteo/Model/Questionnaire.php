@@ -30,15 +30,17 @@ class Questionnaire extends \Goteo\Core\Model {
      * @return  Questionnaire object
      */
     static public function get($id) {
-        if (empty($id)) {
-			return false;
-        }
         
         $lang = Lang::current();
         // list($fields, $joins) = self::getLangsSQLJoins($lang);
 
 		$query = static::query('SELECT * FROM questionnaire WHERE id = :id', array(':id' => $id));
         $questionnaire = $query->fetchObject(__CLASS__);
+
+        if (!$questionnaire instanceOf Questionnaire) {
+            throw new ModelNotFoundException();
+        }
+
         $questionnaire->vars = json_decode($questionnaire->vars);
         return $questionnaire;
 
@@ -51,16 +53,15 @@ class Questionnaire extends \Goteo\Core\Model {
      * @return  Questionnaire object
      */
     static public function getByMatcher($id) {
-        if (empty($id)) {
-			return false;
-        }
         
         $lang = Lang::current();
         // list($fields, $joins) = self::getLangsSQLJoins($lang);
 
 		$query = static::query('SELECT * FROM questionnaire WHERE matcher = :id', array(':id' => $id));
         $questionnaire = $query->fetchObject(__CLASS__);
-        // print_r($questionnaire->vars); die;
+        if (!$questionnaire instanceOf Questionnaire) {
+            throw new ModelNotFoundException();
+        }
         $questionnaire->vars = json_decode($questionnaire->vars);
         return $questionnaire;
 
