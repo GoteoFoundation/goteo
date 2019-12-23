@@ -10,17 +10,18 @@
 
 namespace Goteo\Model\Questionnaire;
 
-use Goteo\Application\Config;
 use Goteo\Application\Message;
 
-class Answers extends \Goteo\Core\Model
+class Answer extends \Goteo\Core\Model
 {
 
     public
-        $questionnaire,
-        $project;
+      $id,
+      $questionnaire_answer,
+      $question,
+      $answer;
 
-    protected $Table = 'questionnaire_answer';
+    protected $Table = 'question_answer';
 
     public function validate(&$errors = array())
     {
@@ -33,8 +34,8 @@ class Answers extends \Goteo\Core\Model
         }
 
         $fields = array(
-            'questionnaire',
-            'project',
+            'questionnaire_answer',
+            'question',
             'answer'
             );
 

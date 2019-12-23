@@ -5,16 +5,19 @@ namespace Goteo\Model;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Library\Text;
+use Goteo\Model\Questionnaire\Question;
 
-class Questionnaire extends \Goteo\Core\Model {
+class Questionnaire extends \Goteo\Core\Model
+{
 
     public
     $id,
     $matcher,
-    $vars,
-    $description;
+    $lang,
+    $questions;
 
-    static public function getTypes() {
+    static public function getTypes()
+    {
         return [
             'textarea' => Text::get('questionnaire-textarea'), 
             'boolean' => Text::get('questionnaire-boolean'),
@@ -26,22 +29,25 @@ class Questionnaire extends \Goteo\Core\Model {
     /**
      * Get data about a questionnaire
      *
-     * @param   int    $id questionnaire id.
-     * @return  Questionnaire object
+     * @param  int $id questionnaire id.
+     * @return Questionnaire object
      */
-    static public function get($id) {
+    static public function get($id)
+    {
         
         $lang = Lang::current();
         // list($fields, $joins) = self::getLangsSQLJoins($lang);
 
-		$query = static::query('SELECT * FROM questionnaire WHERE id = :id', array(':id' => $id));
+        $query = static::query('SELECT * FROM questionnaire WHERE id = :id', array(':id' => $id));
         $questionnaire = $query->fetchObject(__CLASS__);
 
         if (!$questionnaire instanceOf Questionnaire) {
             throw new ModelNotFoundException();
         }
 
-        $questionnaire->vars = json_decode($questionnaire->vars);
+        $questionnaire->questions = Question::getByQuestionnaire($id);
+
+        // $questionnaire->vars = json_decode($questionnaire->vars);
         return $questionnaire;
 
     }
@@ -49,20 +55,24 @@ class Questionnaire extends \Goteo\Core\Model {
     /**
      * Get data about questionnaire by matcher id
      *
-     * @param   int    $id matcher id.
-     * @return  Questionnaire object
+     * @param  int $id matcher id.
+     * @return Questionnaire object
      */
-    static public function getByMatcher($id) {
+    static public function getByMatcher($qid)
+    {
         
         $lang = Lang::current();
         // list($fields, $joins) = self::getLangsSQLJoins($lang);
 
-		$query = static::query('SELECT * FROM questionnaire WHERE matcher = :id', array(':id' => $id));
+        $query = static::query('SELECT * FROM questionnaire WHERE matcher = :id', array(':id' => $qid));
         $questionnaire = $query->fetchObject(__CLASS__);
         if (!$questionnaire instanceOf Questionnaire) {
             throw new ModelNotFoundException();
         }
-        $questionnaire->vars = json_decode($questionnaire->vars);
+
+        $questionnaire->questions = Question::getByQuestionnaire($questionnaire->id);
+
+        // $questionnaire->vars = json_decode($questionnaire->vars);
         return $questionnaire;
 
     }
@@ -70,19 +80,20 @@ class Questionnaire extends \Goteo\Core\Model {
     /**
      * Save.
      *
-     * @param   type array  $errors
-     * @return  type bool   true|false
+     * @param  type array $errors
+     * @return type bool   true|false
      */
-    public function save(&$errors = array()) {
-        if (!$this->validate($errors)) return false;
+    public function save(&$errors = array())
+    {
+        if (!$this->validate($errors)) { return false;
+        }
 
         $fields = array(
             'id',
-            'matcher',
-            'vars'
+            'lang',    
+            'matcher'
             );
 
-        $this->vars = json_encode($this->vars);
         try {
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
@@ -96,10 +107,11 @@ class Questionnaire extends \Goteo\Core\Model {
     /**
      * Validate.
      *
-     * @param   type array  $errors     Errores devueltos pasados por referencia.
-     * @return  type bool   true|false
+     * @param  type array $errors Errores devueltos pasados por referencia.
+     * @return type bool   true|false
      */
-    public function validate(&$errors = array()) {
+    public function validate(&$errors = array())
+    {
         return true;
     }
 

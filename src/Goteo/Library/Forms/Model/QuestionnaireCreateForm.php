@@ -21,9 +21,11 @@ use Goteo\Model\Questionnaire\Answers;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Model\Contract\Document;
 
-class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProcessorInterface {
+class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProcessorInterface
+{
 
-    public function getConstraints($field) {
+    public function getConstraints($field)
+    {
         $constraints = [];
         if($this->getFullValidation()) {
             // $constraints[] = new Constraints\NotBlank();
@@ -31,33 +33,50 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
         return $constraints;
     }
 
-    public function addQuestion($question) {
+    public function delQuestion($id)
+    {
 
-        $questionnaire = $this->getModel();
+        $this->getBuilder()
+            ->remove("{$id}_typeofquestion")
+            ->remove("{$id}_required")
+            ->remove("{$id}_question")
+            ->remove("{$id}_remove");
+    }
 
-        if ($question->vars->attr) $question->vars->attr = (array) $question->vars->attr;
-        if ($question->type == "dropfiles") {
-            $question->vars->url = '/api/matcher/' . $questionnaire->matcher . '/project/' . $this->model->project_id . '/documents';
-            $question->vars->constraints = $this->getConstraints('docs');
-        }
-        $builder = $this->getBuilder();
+    public function addQuestion($question)
+    {
+
+        $config = $question->vars;
         
-        $builder
-            ->add($question->id . '_typeofquestion', 'choice', [
+        if ($config->attr) { $config->attr = (array) $config->attr;
+        }
+        if ($config->type == "dropfiles") {
+            $config->url = '/api/matcher/' . $question->matcher . '/project/' . $this->model->project_id . '/documents';
+            $config->constraints = $this->getConstraints('docs');
+        }
+        $this->getBuilder()
+            ->add(
+                $question->id . '_typeofquestion', 'choice', [
                 'label' => Text::get('questionnaire-type-of-question'),
                 'choices' => Questionnaire::getTypes(),
-                'data' => $question->type
-            ])
-            ->add($question->id . '_required', 'boolean',[
+                'data' => $config->type
+                ]
+            )
+            ->add(
+                $question->id . '_required', 'boolean', [
                 'label' => Text::get('questionnaire-required'),
-                'data' => $question->vars->required ? true : false,
+                'data' => $config->vars->required ? true : false,
                 'required' => false
-            ])
-            ->add($question->id . '_question', 'textarea', [
+                ]
+            )
+            ->add(
+                $question->id . '_question', 'textarea', [
                 'label' => Text::get('questionnaire-text'),
-                'data' => $question->vars->label,
-            ])
-            ->add($question->id . "_remove", 'submit', [
+                'data' => $question->title,
+                ]
+            )
+            ->add(
+                $question->id . "_remove", 'submit', [
                 'label' => Text::get('regular-delete'),
                 'icon_class' => 'fa fa-trash',
                 'span' => 'hidden-xs',
@@ -65,44 +84,21 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                     'class' => 'pull-right btn btn-default remove-question',
                     'data-confirm' => Text::get('project-remove-reward-confirm')
                     ]
-            ]);
+                ]
+            );
 
     }
     
-    public function createForm() {
+    public function createForm()
+    {
         $questionnaire = $this->getModel();
-
         $builder = $this->getBuilder();
-        foreach($questionnaire->vars as $question) {
+
+        foreach((array) $questionnaire->questions as $question) {
             $this->addQuestion($question);
         }
 
-        $builder->add('add-question', 'submit', [
-            'label' => 'add-question',
-            'attr' => ['class' => 'btn btn-lg btn-lilac text-uppercase add-question'],
-            'icon_class' => 'icon icon-match-blog '
-        ])->add('submit', 'submit', [
-            'label' => 'regular-submit'
-        ]);
-
         return $this;
     }
 
-    public function save(FormInterface $form = null, $force_save = false) {
-        if(!$form) $form = $this->getBuilder()->getForm();
-        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
-        
-        $data = $form->getData();
-        $answers = new Answers();
-        $answers->project  = $this->model->project_id;
-        $answers->questionnaire = $this->model->id;
-        
-        foreach($data as $key => $answer) {
-            $answers->answer->{$key} = $answer;
-        }
-
-        $answers->save();
-        $errors = [];
-        return $this;
-    }
 }

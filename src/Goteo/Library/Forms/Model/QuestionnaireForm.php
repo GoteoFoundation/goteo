@@ -17,12 +17,16 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Model\Questionnaire\Answers;
+use Goteo\Model\Questionnaire\Answer;
+use Goteo\Model\Questionnaire\Question;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Model\Contract\Document;
 
-class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorInterface {
+class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorInterface
+{
 
-    public function getConstraints($field) {
+    public function getConstraints($field)
+    {
         $constraints = [];
         if($this->getFullValidation()) {
             // $constraints[] = new Constraints\NotBlank();
@@ -30,43 +34,61 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
         return $constraints;
     }
 
-    public function createForm() {
+    public function createForm()
+    {
         $questionnaire = $this->getModel();
 
         $builder = $this->getBuilder();
-        foreach($questionnaire->vars as $question) {
-            if ($question->vars->attr) $question->vars->attr = (array) $question->vars->attr;
-            if ($question->type == "dropfiles") {
-                $question->vars->url = '/api/matcher/' . $questionnaire->matcher . '/project/' . $this->model->project_id . '/documents';
-                $question->vars->constraints = $this->getConstraints('docs');
+        foreach((array) $questionnaire->questions as $question) {
+            $type = $question->vars->type;
+            unset($question->vars->type);
+            if ($question->vars->attr) { $question->vars->attr = (array) $question->vars->attr;
             }
-            $builder->add($question->id, $question->type, (array) $question->vars);
+            if ($question->vars->type == "dropfiles") {
+                
+                $question->vars->vars->url = '/api/matcher/' . $questionnaire->matcher . '/project/' . $this->model->project_id . '/documents';
+                $question->vars->vars->constraints = $this->getConstraints('docs');
+            }
+            $question->vars->label = $question->title;
+            $builder->add($question->id, $type, (array) $question->vars);
         }
 
-        $builder->add('submit', 'submit', [
+        $builder->add(
+            'submit', 'submit', [
             'label' => 'regular-submit',
             'attr' => ['class' => 'btn btn-lg btn-lilac text-uppercase'],
             'icon_class' => 'icon icon-match-blog '
-        ]);
+            ]
+        );
 
         return $this;
     }
 
-    public function save(FormInterface $form = null, $force_save = false) {
-        if(!$form) $form = $this->getBuilder()->getForm();
-        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
+    public function save(FormInterface $form = null, $force_save = false)
+    {
+        if(!$form) { $form = $this->getBuilder()->getForm();
+        }
+        if(!$form->isValid() && !$force_save) { throw new FormModelException(Text::get('form-has-errors'));
+        }
         
-        $data = $form->getData();
+        // $data = $form->getData();
+        $data = array_intersect_key($form->getData(), $form->all());
         $answers = new Answers();
         $answers->project  = $this->model->project_id;
         $answers->questionnaire = $this->model->id;
+        $answers->save();
         
-        foreach($data as $key => $answer) {
-            $answers->answer->{$key} = $answer;
+        foreach($data as $key => $value) {
+            $answer = new Answer();
+            $answer->questionnaire_answer = $answers->id;
+            $answer->question = $key;
+            $answer->answer = $value; 
+            if (Question::get($key)->vars->type == "dropfiles") { 
+                $answer->answer = $value[0]->name; 
+            }
+            $answer->save();
         }
 
-        $answers->save();
-        $errors = [];
         return $this;
     }
 }
