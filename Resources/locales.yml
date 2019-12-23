@@ -130,3 +130,9 @@ da:
     public: false
     locale: da_DK
     fallback: en
+sl: 
+    name: Slovenski Jezik
+    short: SLV
+    public: false
+    locale: sl-SI
+    fallback: en
