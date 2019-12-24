@@ -45,6 +45,7 @@ class GoteoQuestionnaire
           `questionnaire` BIGINT(20) UNSIGNED NOT NULL,
           `lang` varchar(3) NOT NULL,
           `title` text,
+          `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
           `vars` text,
           PRIMARY KEY (`id`),
           CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`questionnaire`) REFERENCES `questionnaire` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

@@ -12,6 +12,7 @@ class Question extends \Goteo\Core\Model
     $title,
     $questionnaire,
     $lang,
+    $order,
     $vars;
 
     static public function getTypes()
@@ -44,7 +45,11 @@ class Question extends \Goteo\Core\Model
     {
         // $lang == Lang::current();
 
-        $query = static::query('SELECT * FROM question WHERE questionnaire = :qid', array(':qid' => $qid));
+        $query = static::query('
+            SELECT *
+            FROM question
+            WHERE questionnaire = :qid
+            ORDER BY `order`', array(':qid' => $qid));
         $questions = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         foreach((array)$questions as $question) {
             $question->vars = json_decode($question->vars);
@@ -69,6 +74,7 @@ class Question extends \Goteo\Core\Model
         'title',
         'questionnaire',
         'lang',
+        'order',
         'vars'
         );
 
@@ -83,6 +89,35 @@ class Question extends \Goteo\Core\Model
             Message::error($e->getMessage());
             return false;
         }
+    }
+
+    public static function getList ($filters = array(), $offset = 0, $limit = 0, $count = false) {
+        $sqlWhere = "";
+        $values = [];
+
+        if ($filters['qid']) {
+            $sqlWhere .= "questionnaire = :qid";
+            $values[":qid"] = $filters["qid"];
+        }
+
+        if ($count) {
+            $sql = "SELECT COUNT(question.id)
+            FROM question
+            $sqlWhere";
+            return (int) self::query($sql)->fetchColumn();
+        }
+
+        $sql = "SELECT * 
+                FROM question
+                WHERE
+                $sqlWhere
+                ORDER BY `order` ASC
+                LIMIT $offset, $limit
+            ";
+            
+        $query = static::query($sql, $values);
+        $questions = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        return $questions;
     }
 
     /**

@@ -101,5 +101,8 @@ $(
             }
         );
 
+        var list = document.getElementById("question-list");
+        new Sortable(list);
+    
     }
 );
