@@ -34,6 +34,17 @@ class GoteoMatcherAdmin
      return "
             ALTER TABLE `matcher` ADD COLUMN description TEXT DEFAULT NULL after `name`;
             ALTER TABLE `matcher_lang` ADD COLUMN description TEXT DEFAULT NULL after `name`;
+
+            CREATE TABLE `matcher_conf` (
+                `matcher` varchar(50) CHARACTER SET utf8 NOT NULL,
+                `budget` INT(6),
+                `algorithm` varchar(50) NOT NULL,
+                `max_donation_per_invest` INT(6),
+                `max_donation_per_project`INT(6),
+                `percent_of_donation` INT(6),
+                `donation_per_project` INT(6),
+                CONSTRAINT `matcher_conf_ibfk_1` FOREIGN KEY (`matcher`) REFERENCES `matcher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
      ";
   }
 
@@ -47,6 +58,8 @@ class GoteoMatcherAdmin
      return "
             ALTER TABLE `matcher` DROP COLUMN description;
             ALTER TABLE `matcher_lang` DROP COLUMN description;
+
+            DROP TABLE `matcher_conf`;
      ";
   }
 

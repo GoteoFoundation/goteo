@@ -16,12 +16,12 @@ use Goteo\Model\User;
 class MatcherLocation extends \Goteo\Model\Location\LocationItem {
     protected $Table = 'matcher_location';
     protected static $Table_static = 'matcher_location';
-    public $call;
+    public $matcher;
 
     public function __construct() {
         $args = func_get_args();
         call_user_func_array(array('parent', '__construct'), $args);
-        $this->call = $this->id;
+        $this->matcher = $this->id;
     }
 
     public static function get($matcher) {

@@ -248,7 +248,6 @@ class Matcher extends \Goteo\Core\Model {
             $this->amount = $this->calculatePoolAmount() + $this->calculateUsedAmount();
             $this->projects = $this->calculateProjects();
 
-
             if($this->location instanceOf MatcherLocation) {
                 $this->location->id = $this->id;
                 if($this->location->save($errors)) {
@@ -257,9 +256,8 @@ class Matcher extends \Goteo\Core\Model {
                     $fail = true;
                     unset($this->location);
                 }
-
             }
-
+            
             if(empty($this->modified_at)) {
                 $this->modified_at = date('Y-m-d H:i:s');
                 $fields[] = 'id';
