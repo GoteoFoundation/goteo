@@ -22,6 +22,7 @@ dashboard-certificates-details-desc: 'Llista d''aportacions per al certificat %C
 dashboard-certificates-download: 'Confirmar i descarregar'
 dashboard-certificates-empty: 'Has de fer alguna aportació a un projecte o recarregar el moneder virtual per veure els teus certificats'
 dashboard-certificates-expired: caducat
+dashboard-certificates-expired-description: 'Ha expirat el termini per a la confirmació del teu certificat'
 dashboard-certificates-no-pending: 'No hi ha cap aportació pendent'
 dashboard-certificates-pending: Pendent
 dashboard-certificates-pending-desc: 'Aquestes són les aportacions que s''inclouran en certificats futurs.'
