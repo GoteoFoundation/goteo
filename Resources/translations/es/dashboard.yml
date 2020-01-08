@@ -22,6 +22,7 @@ dashboard-certificates-details-desc: 'Lista de aportes para el certificado %CERT
 dashboard-certificates-download: 'Confirmar y descargar'
 dashboard-certificates-empty: 'Debes hacer algún aporte a un proyecto o recargar el monedero virtual para ver tus certificados'
 dashboard-certificates-expired: Caducado
+dashboard-certificates-expired-description: 'Ha expirado el plazo para confirmar tu certificado'
 dashboard-certificates-no-pending: 'No hay ningún aporte pendiente'
 dashboard-certificates-pending: Pendiente
 dashboard-certificates-pending-desc: 'Estos son los aportes que se incluirán en certificados futuros.'
