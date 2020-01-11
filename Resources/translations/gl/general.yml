@@ -36,14 +36,17 @@ explain-project-progress: 'Este gráfico explica dun modo visual o nivel de dato
 fancybox: 'Texto fancybox'
 goteo-return-button: 'Volver a Goteo'
 guide-dashboard-user-access: 'Dende aquí podes modificar os datos cos que accedes a túa conta de Goteo.'
+guide-project-comment: guide-project-comment
 guide-project-contract-information: 'A información desde apartado é necesaria pra contactarte se obtés o financiamento requirida, e que así se poida efectuar o ingreso. No caso de entidades, recoméndase que quen represente á organización poida logo acreditalo formalmente (por exemplo a través dos estatutos ou dun certificado do secretario co visto bo do presidente, no caso de asociacións).'
 guide-project-rewards: "<strong>Neste apartado debes establecer qué ofrece o proxecto a cambio ós seus cofinancieiros.</strong>"
+guide-project-support: guide-project-support
 guide-project-supports: '<strong>Neste apartado podes especificar qué outras axudas, aparte da financiación, necesítanse para levar a cabo o proxecto.</strong><br><br> Poden ser tarefas ou accións a cargo de outras persoas (traducións, xestións, difusión, etc), ou ben préstamos específicos (de material, transporte, hardaware, etc).'
 header-about-side: 'O que nos move'
 home-posts-header: Novidades
 horizontal-project-percent: 'financiado'
 horizontal-project-reached: 'acadado'
 invest-individual-header: 'Podes renunciar a recibir recompensas pola túa achega, ou seleccionar as que igualen ou estean por debaixo do importe que inseriches.'
+login-accept-conditions: 'Acepto os <a href="/legal/terms">termos de uso</a>, <a href="/legal/privacy">política de privacidade</a> e a <a href="/legal/cookies">política de cookies</a>.'
 mandatory-cost-field-type: 'É obrigado poñer indicar o tipo de custo'
 mandatory-individual_reward-field-amount: 'É obrigado indicar o importe que permite obter a recompensa'
 mandatory-project-costs: 'Debe detallarse polo menos dous custos.'
@@ -89,6 +92,7 @@ regular-download: Descargar
 regular-actions: Accións
 regular-edit: Editar
 regular-email: Correo electrónico
+regular-join: 'Únete'
 regular-facebook: Facebook
 regular-faq: 'Preguntas usuais'
 regular-female: Muller
@@ -120,6 +124,7 @@ regular-linkedin: LinkedIn
 regular-loading: Cargando...
 regular-login: Accede
 regular-logout: 'Pechar sesión'
+regular-looks_for: 'pescuda:'
 regular-main-header: Goteo.org
 regular-male: Home
 regular-others: Outros
@@ -139,6 +144,7 @@ regular-no: 'Non'
 regular-of: de
 regular-preview: Vista Previa
 regular-projects: proxectos
+regular-published_no: Borrador
 regular-published_yes: Publicado
 regular-read_more: 'Ler máis'
 regular-recent-activity: Actividade recente
