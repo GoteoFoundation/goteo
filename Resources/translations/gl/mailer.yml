@@ -5,6 +5,10 @@ mailer-sinoves: 'Se non podes ver esta mensaxe emprega esta <a href="%s">ligazó
 newsletter-block: '¿Non queres recibir máis boletíns de Goteo? <br>Podes bloquear o envío de próximos newsletter dende o menú ''Meu perfil > Preferencias'' do teu <a href="%s">Unsubscribe</a>.'
 newsletter-subscribe: 'Subscribirse ao boletín'
 newsletter-unsubscribe: 'Anular a subscrición ao boletín'
+newsletter-unsubscribe-cancel: 'Equivocácheste? <a href="%s">Volve subscribirte</a>'
+newsletter-subscribe-cancel: 'Non querías subscribirte? <a href="%s">anula a túa subscrición</a>'
+subscribe-request-success: 'Parabéns! Subscribícheste ó noso boletín (%s).'
+unsubscribe-request-success: 'Anulaches a túa subscrición ó boletín (%s).'
 mailer-more-projects-button: 'VER MÁIS PROXECTOS'
 mailer-from: De
 mailer-to: Para
