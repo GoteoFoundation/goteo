@@ -12,7 +12,7 @@ profile-field-entity-type-concerted: Concertado
 profile-field-entity-type-private: Privado
 profile-field-entity-type-public: Público
 profile-field-interests: 'Que tipo de proxecto motívate máis'
-profile-field-keywords: 'As miñas palabras clave'
+profile-field-keywords: 'Temas que che interesan'
 profile-field-legal-entity: 'Forma xurídica'
 profile-field-legal-entity-asociation: Asociación
 profile-field-legal-entity-choose: 'Selecciona unha forma xurídica'
@@ -28,7 +28,7 @@ profile-field-url: URL
 profile-field-websites: 'As miñas páxinas web'
 profile-fields-analytics-title: Analítica
 profile-fields-image-title: 'Imaxe de perfil'
-profile-fields-social-title: 'Perfiles sociais'
+profile-fields-social-title: 'Perfís sociais'
 profile-main-header: 'Datos do perfil'
 profile-suggest-projects-interest: 'Talvez desexes dar soporte a proxectos de categorías semellantes'
 step-1: Perfil
