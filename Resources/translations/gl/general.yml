@@ -41,6 +41,7 @@ guide-project-rewards: "<strong>Neste apartado debes establecer qué ofrece o pr
 guide-project-supports: '<strong>Neste apartado podes especificar qué outras axudas, aparte da financiación, necesítanse para levar a cabo o proxecto.</strong><br><br> Poden ser tarefas ou accións a cargo de outras persoas (traducións, xestións, difusión, etc), ou ben préstamos específicos (de material, transporte, hardaware, etc).'
 header-about-side: 'O que nos move'
 home-posts-header: Novidades
+horizontal-project-percent: 'financiado'
 horizontal-project-reached: 'acadado'
 invest-individual-header: 'Podes renunciar a recibir recompensas pola túa achega, ou seleccionar as que igualen ou estean por debaixo do importe que inseriches.'
 mandatory-cost-field-type: 'É obrigado poñer indicar o tipo de custo'
@@ -197,6 +198,10 @@ regular-copied: 'Copiado ao portarretallos!'
 regular-remember-me: 'Lembrar os meus datos'
 regular-next: Seguinte
 regular-previous: Anterior
+session-about-to-expire: 'A túa sesión caducará en 10 minutos. Queres volver cargar a páxina para anovala?'
+session-expired: 'A túa sesión en goteo caducou!'
+stories-user-project: '%s, do proxecto: %s'
+support-our-mission: 'DOA Á FUNDACIÓN GOTEO'
 tooltip-dashboard-user-access_data: 'Estes son os teus datos actuais de acceso. O único que non se pode cambiar é o login de usuario.'
 tooltip-dashboard-user-change_email: 'Dende aquí podes cambiar a dirección de correo electrónico na que recibes as mensaxes de Goteo.'
 tooltip-dashboard-user-change_password: 'Dende aquí podes cambiar o contrasinal co que accedes a Goteo.'
@@ -212,3 +217,4 @@ user-activate-fail: 'Error ó activar a conta do usuario'
 user-changeemail-fail: 'Erro ó cambiar o email'
 user-register-success: 'O usuario rexistrouse correctamente. Seguidamente recibirás unha mensaxe de correo para activalo.'
 validate-project-social_rewards: 'É obrigado indicar coma mínimo un retorno colectivo'
+user-promoter: 'O usuario promotor'
