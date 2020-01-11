@@ -13,6 +13,7 @@ login-new-user-label: 'Crear un novo usuario?'
 login-oneclick-header: 'Accede cun só click'
 login-recover-button: Recuperar contrasinal
 login-recover-email-field: 'Email da conta'
+login-recover-header: "Enche o campo co correo electrónico que empregaches para darte de alta na plataforma. Moitas veces é o mesmo que tes vinculado ás túas redes sociais. Atención: Recibirás un correo nesa mesma conta de correo cunha ligazón para mudar o contrasinal. Se non recibes o correo, verifica que non estea no cartafol do spam. Se solicitaches máis dunha vez un contrasinal novo, terás tantos correos cunha ligazón autoxerada como solicitudes feitas. Emprega a ligazón do último correo recibido. Se non lembras o correo podes contacta connosco, non esquezas mencionar algúns datos para facer máis doada a pescuda do teu usuario/a (nome completo, alcume, data de alta ou se fixeches algunha achega nalgún proxecto en concreto)."
 login-recover-label: 'Esqueciches o teu contrasinal?'
 login-recover-link: 'Recuperar contrasinal'
 login-recover-modal-button: Enviar
