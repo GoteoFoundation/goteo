@@ -1,5 +1,5 @@
 ---
-node-footer-about: 'Rede social para cofinanciar e colaborar con proxectos creativos que fomentan o ben común <a href="/project/create">¿Tes un proxecto con adn aberto?</a>'
+node-footer-about: 'Rede social para cofinanciar e colaborar con proxectos creativos que fomentan o ben común <a href="/project/create">Tes un proxecto con adn aberto?</a>'
 node-footer-help-what: 'Que é o Crowdfunding'
 node-footer-help-why: 'Porqué Goteo é diferente'
 node-footer-investors-donate: 'Doazóns e desgravacións'
@@ -9,6 +9,7 @@ node-footer-title-creators: Impulsores
 node-footer-title-help: 'Precisas axuda?'
 node-footer-title-investors: Cofinanceiros
 node-footer-title-social: Séguenos
+node-header-sponsorby: 'Apoia este espazo'
 node-home-calls-headers: Convocatorias
 node-home-posts-header: Novidades
 node-side-searcher-bycategory: 'Por categoría'
@@ -30,3 +31,5 @@ node-side-summary-success: Éxitos
 node-side-summary-supporters: Colaboradores
 node-stats-title: 'Datos de impacto'
 node-projects-title: 'Proxectos'
+node-resources-title: 'Que che fai falla?'
+node-workshops-title: 'Non perdas as nosas formacións'
