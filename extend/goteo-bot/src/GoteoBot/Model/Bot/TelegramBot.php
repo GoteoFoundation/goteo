@@ -17,6 +17,8 @@ use \unreal4u\TelegramAPI\Telegram\Methods\SendMessage;
 use \unreal4u\TelegramAPI\Telegram\Methods\SendPhoto;
 use \unreal4u\TelegramAPI\Telegram\Methods\SetWebhook;
 use Goteo\Application\Config;
+use unreal4u\TelegramAPI\Telegram\Methods\SendAnimation;
+use Goteo\Model\Image;
 
 Class TelegramBot implements \GoteoBot\Model\Bot {
 
@@ -52,6 +54,16 @@ Class TelegramBot implements \GoteoBot\Model\Bot {
         $sendImage->photo = $image->getLink(300,300,true);
         $sendImage->caption = $caption;
         $this->tgLog->performApiRequest($sendImage);
+        $this->loop->run();
+    }
+
+    public function sendAnimation($chatId, $animation, $caption) {
+        $sendAnimation = new SendAnimation();
+        $sendAnimation->chat_id = $chatId;
+        // $sendAnimation->animation = $animation->getLink(300,300);
+        $sendAnimation->animation = $animation;
+        $sendAnimation->caption = $caption;
+        $this->tgLog->performApiRequest($sendAnimation);
         $this->loop->run();
     }
 

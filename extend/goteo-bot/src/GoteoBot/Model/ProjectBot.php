@@ -8,12 +8,6 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-/**
- * Opciones de configuración especiales para proyectos.
- * Si el proyecto no tiene una entrada en esta tabla (project_conf), se asumen valores por defecto:
- *      noinvest = 0
- *      watch = 0
- */
 namespace GoteoBot\Model {
 
     use Goteo\Library\Text;

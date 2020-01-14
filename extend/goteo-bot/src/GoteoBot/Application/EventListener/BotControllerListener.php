@@ -7,7 +7,16 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 use Goteo\Model\Project;
+use Goteo\Model\Project\ProjectMilestone;
+use Goteo\Model\Event;
+use Goteo\Model\Milestone;
+use Goteo\Model\Image;
 use Goteo\Application\AppEvents;
+use Goteo\Console\ConsoleEvents;
+use Goteo\Application\Event\FilterInvestRequestEvent;
+
+use GoteoBot\Model\ProjectBot;
+use GoteoBot\Model\Bot\TelegramBot;
 use GoteoBot\Controller\BotProjectDashboardController;
 
 class BotControllerListener implements EventSubscriberInterface
@@ -36,9 +45,10 @@ class BotControllerListener implements EventSubscriberInterface
 
     private function create_milestone($project, $type){
         //Insert milestone
-        $project_milestone= new ProjectMilestone;
+        $project_milestone= new ProjectMilestone();
         $project_milestone->project=$project->id;
         $project_milestone->milestone_type=$type;
+        $project_milestone->source_message='bot_message';
 
 
         try {
@@ -62,12 +72,28 @@ class BotControllerListener implements EventSubscriberInterface
                 $milestone = Milestone::get($project_milestone->milestone, $project->lang);
                 if ($milestone->image) {
                     $image = Image::get($milestone->image);
-                    $bot->sendImage($projectBot->channel_id, $image, $milestone->description);
+                    if ($image->getType() == "gif") {
+                        $bot->sendAnimation($projectBot->channel_id, $image, $milestone->bot_message);
+                    }
+                    else {
+                        $bot->sendImage($projectBot->channel_id, $image, $milestone->bot_message);
+                    }
                 } else {
-                    $bot->sendMessage($projectBot->channel_id, $milestone->description);
+                    $bot->sendMessage($projectBot->channel_id, $milestone->bot_message);
                 }
             }
         }
+    }
+
+    /**
+     * Insert milestone depending on day
+     * @param  FilterProjectEvent $event
+     */
+    public function onProjectActive(FilterProjectEvent $event) {
+        $project = $event->getProject();
+        $type = 'day-'.$event->getDays();
+
+        $this->create_milestone($project, $type);
     }
 
 
@@ -82,40 +108,22 @@ class BotControllerListener implements EventSubscriberInterface
         $invest   = $method->getInvest();
         $project  = $invest->getProject();
 
-        $this->info("Creating milestones on invest");
 
         //Milestones by percentage
         $percentage = $project->mincost ? ($project->invested / $project->mincost) * 100 : 0;
 
-        if($percentage>=20&&$percentage<50)
+        if($percentage>=15&&$percentage<20)
+            $type='15-percent-reached';
+        elseif($percentage>=20&&$percentage<40)
             $type='20-percent-reached';
-        elseif($percentage>=50&&$percentage<90)
+        elseif($percentage>=40&&$percentage<50)
+            $type='40-percent-reached';
+        elseif($percentage>=50&&$percentage<70)
             $type='50-percent-reached';
-        elseif($percentage>=90&&$percentage<100)
-            $type='90-percent-reached';
-        elseif($percentage>=100&&$percentage<200)
-            $type='100-percent-reached';
-        elseif($percentage>=200)
-            $type='200-percent-reached';
-
-        //Milestones by amount
-        if($invest->amount>=500&&$invest->amount<1000)
-            $type='invest-500';
-        if($invest->amount>=1000&&$invest->amount<2500)
-            $type='invest-1000';
-        elseif($invest->amount>=2500)
-            $type='invest-2500';
-
-        //Milestones by donors
-        if($project->num_investors==2)
-            $type='2-donors';
-        elseif($project->num_investors==99)
-            $type='99-donors';
-        elseif($project->num_investors==200)
-            $type='200-donors';
-        elseif($project->num_investors==500)
-            $type='500-donors';
-
+        elseif($percentage>=70&&$percentage<80)
+            $type='70-percent-reached';
+        elseif($percentage>=80)
+            $type='80-percent-reached';
 
         if($type)
             $this->create_milestone($project, $type);
@@ -126,7 +134,8 @@ class BotControllerListener implements EventSubscriberInterface
     {
         return array(
             KernelEvents::CONTROLLER => 'onController',
-            AppEvents::INVEST_SUCCEEDED    => array('onInvestSucceeded', 100)
+            AppEvents::INVEST_SUCCEEDED    => array('onInvestSucceeded', 100),
+            ConsoleEvents::PROJECT_WATCH    => 'onProjectActive'
         );
     }
 }
