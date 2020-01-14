@@ -19,6 +19,7 @@ use \unreal4u\TelegramAPI\Telegram\Methods\SetWebhook;
 use Goteo\Application\Config;
 use unreal4u\TelegramAPI\Telegram\Methods\SendAnimation;
 use Goteo\Model\Image;
+use Goteo\Application\Message;
 
 Class TelegramBot implements \GoteoBot\Model\Bot {
 
@@ -62,7 +63,14 @@ Class TelegramBot implements \GoteoBot\Model\Bot {
         $sendAnimation->chat_id = $chatId;
         $sendAnimation->animation = $animation->getLink(300,300, true);
         $sendAnimation->caption = $caption;
-        $this->tgLog->performApiRequest($sendAnimation);
+        $result = $this->tgLog->performApiRequest($sendAnimation);
+
+        $result->then(
+            function (\Exception $exception) use ($sendAnimation) {
+                Message::error('Exception ' . get_class($exception) . ' caught, message: ' . $exception->getMessage().PHP_EOL . " - " . $sendAnimation->animation);
+            }
+        );
+
         $this->loop->run();
     }
 
