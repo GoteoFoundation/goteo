@@ -15,6 +15,7 @@ use Goteo\Application\Config\YamlSettingsLoader;
 use Goteo\Console\UsersSend;
 use Goteo\Core\Model;
 use Goteo\Application\Currency;
+
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
@@ -97,9 +98,10 @@ class Config {
             \Goteo\Controller\TranslateController::addTranslateModel('criteria');
 			\Goteo\Controller\TranslateController::addTranslateModel('sphere');
 			\Goteo\Controller\TranslateController::addTranslateModel('communication');
-
+			
 			// sets up the rest...
 			self::setDirConfiguration();
+
 
 		} catch (\Exception $e) {
 			if (PHP_SAPI === 'cli') {
@@ -534,5 +536,14 @@ class Config {
 		}
 
 		return self::isCurrentNode(self::get('node'));
+	}
+
+	static private function setWebhooks() {
+
+		if (Config::get('bot.telegram.token')) {
+			$bot = new TelegramBot();
+			$bot->createBot();
+			$bot->setWebhook();
+		}
 	}
 }

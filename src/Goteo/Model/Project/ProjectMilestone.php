@@ -28,7 +28,8 @@ class ProjectMilestone extends \Goteo\Core\Model {
         $milestone=null,
         $milestone_type,
         $post=null,
-        $date;
+        $date,
+        $source_message = 'description';
 
     /*
      *  Get Project milestone
@@ -101,7 +102,7 @@ class ProjectMilestone extends \Goteo\Core\Model {
         try {
             if($this->milestone_type)
             {
-                $milestone = Milestone::random_milestone($this->milestone_type);
+                $milestone = Milestone::random_milestone($this->milestone_type, 'type', $this->source_message);
                 $this->milestone = $milestone->id;
                 $this->date = date('Y-m-d');
             }
