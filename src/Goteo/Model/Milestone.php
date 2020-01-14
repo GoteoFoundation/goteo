@@ -25,10 +25,11 @@ class Milestone extends \Goteo\Core\Model {
         $type,
         $link,
         $description,
-        $bot_message,
         $image,
-        $image_emoji;
-    /*
+        $image_emoji,
+        $bot_message;
+        
+        /*
      *  Get milestone
      */
     public static function get ($id, $lang = null) {
@@ -179,8 +180,9 @@ class Milestone extends \Goteo\Core\Model {
      * @param   type array
      * @return  type bool
     */
-    static public function random_milestone($type, $field='type') {
-        if ($query = static::query("SELECT * FROM milestone WHERE `$field` = ? ORDER BY rand() LIMIT 1", $type)) {
+    static public function random_milestone($type, $field='type', $source_message = 'description') {
+        if ($query = static::query("SELECT * FROM milestone WHERE `$field` = ? AND `$source_message` IS NOT NULL ORDER BY rand() LIMIT 1",$type)) {
+        // if ($query = static::query("SELECT * FROM milestone WHERE `$field` = ? ORDER BY rand() LIMIT 1", $type, $field_not_empty)) {
 
             if( $milestone = $query->fetchObject(__CLASS__) )
                 return $milestone;
