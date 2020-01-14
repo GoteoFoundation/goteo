@@ -72,7 +72,7 @@ class BotControllerListener implements EventSubscriberInterface
                 $bot->createBot();
                 $milestone = Milestone::get($project_milestone->milestone, $project->lang);
                 if ($milestone->image) {
-                    $image = Image::get($milestone->image);
+                    $image = $milestone->image;
                     if ($image->getType() == "gif") {
                         $bot->sendAnimation($projectBot->channel_id, $image, $milestone->bot_message);
                     }
