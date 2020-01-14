@@ -52,20 +52,6 @@ class ConsoleMilestoneListener extends AbstractListener {
             $project_milestone->save($errors);
         });
 
-        $projectBot = ProjectBot::get($project->id);
-        if ($projectBot) {
-            if ($projectBot->platform == ProjectBot::TELEGRAM) {
-                $bot = new TelegramBot();
-                $bot->createBot();
-                $milestone = Milestone::get($project_milestone->milestone, $project->lang);
-                if ($milestone->image) {
-                    $image = Image::get($milestone->image);
-                    $bot->sendImage($projectBot->channel_id, $image, $milestone->description);
-                } else {
-                    $bot->sendMessage($projectBot->channel_id, $milestone->description);
-                }
-            }
-        }
     }
 
     /**
