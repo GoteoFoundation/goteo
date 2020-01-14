@@ -19,6 +19,8 @@ use GoteoBot\Model\ProjectBot;
 use GoteoBot\Model\Bot\TelegramBot;
 use GoteoBot\Controller\BotProjectDashboardController;
 
+use Goteo\Application\Exception\DuplicatedEventException;
+
 class BotControllerListener implements EventSubscriberInterface
 {
 
@@ -54,9 +56,8 @@ class BotControllerListener implements EventSubscriberInterface
         try {
             $action = [$project->id, 'milestone-day-bot', $type];
             $event = new Event($action, 'milestone');
-
         } catch(DuplicatedEventException $e) {
-            $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
+            // $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
             return;
         }
 
