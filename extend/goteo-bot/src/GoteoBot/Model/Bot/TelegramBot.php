@@ -66,11 +66,12 @@ Class TelegramBot implements \GoteoBot\Model\Bot {
         $result = $this->tgLog->performApiRequest($sendAnimation);
 
         $result->then(
+            function ($response) {
+            },
             function (\Exception $exception) use ($sendAnimation) {
                 Message::error('Exception ' . get_class($exception) . ' caught, message: ' . $exception->getMessage().PHP_EOL . " - " . $sendAnimation->animation);
             }
         );
-
         $this->loop->run();
     }
 
