@@ -61,7 +61,7 @@ Class TelegramBot implements \GoteoBot\Model\Bot {
     public function sendAnimation($chatId, $animation, $caption) {
         $sendAnimation = new SendAnimation();
         $sendAnimation->chat_id = $chatId;
-        $sendAnimation->animation = $animation->getLink(300,300, true);
+        $sendAnimation->animation = $animation->getLink(300,300, true, true);
         $sendAnimation->caption = $caption;
         $result = $this->tgLog->performApiRequest($sendAnimation);
 
