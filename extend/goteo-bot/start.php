@@ -21,12 +21,19 @@ foreach (['bot'] as $group) {
 
 // Adding custom services to the service container:
 $sc = App::getServiceContainer();
-$sc->register('goteo.listener.controller_sidemenu', 'GoteoBot\Application\EventListener\BotControllerListener')
+$sc->register('goteo.listener.bot_listener', 'GoteoBot\Application\EventListener\BotControllerListener')
 	->setArguments(array(new Reference('logger')));
 	
 $sc->getDefinition('dispatcher')
-	->addMethodCall('addSubscriber', array(new Reference('goteo.listener.controller_sidemenu')));
+	->addMethodCall('addSubscriber', array(new Reference('goteo.listener.bot_listener')));
 	
+
+// Console adds
+// Project processing for contracts
+$sc->register('console_goteo.listener.bot_listener', 'GoteoBot\Application\EventListener\BotControllerListener')
+   ->setArguments(array(new Reference('console_logger')));
+$sc->getDefinition('console_dispatcher')
+   ->addMethodCall('addSubscriber', array(new Reference('console_goteo.listener.bot_listener')));
 
 
 // Adding Routes:
