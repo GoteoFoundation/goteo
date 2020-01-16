@@ -20,6 +20,7 @@ use GoteoBot\Model\Bot\TelegramBot;
 use GoteoBot\Controller\BotProjectDashboardController;
 
 use Goteo\Application\Exception\DuplicatedEventException;
+use Goteo\Console\Event\FilterProjectEvent;
 
 class BotControllerListener implements EventSubscriberInterface
 {
@@ -47,26 +48,26 @@ class BotControllerListener implements EventSubscriberInterface
 
     private function create_milestone($project, $type){
         //Insert milestone
-        $project_milestone= new ProjectMilestone();
-        $project_milestone->project=$project->id;
-        $project_milestone->milestone_type=$type;
-        $project_milestone->source_message='bot_message';
-
-
-        try {
-            $action = [$project->id, 'milestone-day-bot', $type];
-            $event = new Event($action, 'milestone');
-        } catch(DuplicatedEventException $e) {
-            // $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
-            return;
-        }
-
-        $event->fire(function() use ($project_milestone) {
-            $project_milestone->save($errors);
-        });
-
         $projectBot = ProjectBot::get($project->id);
         if ($projectBot) {
+            $project_milestone= new ProjectMilestone();
+            $project_milestone->project=$project->id;
+            $project_milestone->milestone_type=$type;
+            $project_milestone->source_message='bot_message';
+
+
+            try {
+                $action = [$project->id, 'milestone-day-bot', $type];
+                $event = new Event($action, 'milestone');
+            } catch(DuplicatedEventException $e) {
+                // $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
+                return;
+            }
+
+            $event->fire(function() use ($project_milestone) {
+                $project_milestone->save($errors);
+            });
+
             if ($projectBot->platform == ProjectBot::TELEGRAM) {
                 $bot = new TelegramBot();
                 $bot->createBot();
@@ -93,6 +94,18 @@ class BotControllerListener implements EventSubscriberInterface
     public function onProjectActive(FilterProjectEvent $event) {
         $project = $event->getProject();
         $type = 'day-'.$event->getDays();
+
+        if ($event->getDays() == 2) {
+
+            //Milestones by percentage
+            $percentage = $project->mincost ? ($project->invested / $project->mincost) * 100 : 0;
+
+            if ($percentage < 5) {
+                $type = 'day-2-lt-5';
+            } else {
+                $type = 'day-2-gt-5';
+            }
+        }
 
         $this->create_milestone($project, $type);
     }
@@ -130,13 +143,25 @@ class BotControllerListener implements EventSubscriberInterface
             $this->create_milestone($project, $type);
     }
 
+    public function onProjectPublish(FilterProjectEvent $event) {
+        $method   = $event->getMethod();
+        $invest   = $method->getInvest();
+        $project  = $invest->getProject();
+        
+        $type = 'on-publish';
+
+        $this->create_milestone($project, $type);
+    }
 
     public static function getSubscribedEvents()
     {
         return array(
             KernelEvents::CONTROLLER => 'onController',
-            AppEvents::INVEST_SUCCEEDED    => array('onInvestSucceeded', 100),
-            ConsoleEvents::PROJECT_WATCH    => 'onProjectActive'
+            AppEvents::INVEST_SUCCEEDED    => array('onInvestSucceeded', 200),
+            ConsoleEvents::PROJECT_ACTIVE    => 'onProjectActive',
+            ConsoleEvents::PROJECT_PUBLISH => 'onProjectPublish',
+            AppEvents::PROJECT_PUBLISH => 'onProjectPublish'
+            
         );
     }
 }
