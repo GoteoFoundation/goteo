@@ -207,6 +207,9 @@ $langs = $project->getLangs();
                                     <img src="<?= $matcher->getLogo()->getLink(240, 240, true) ?>" class="img-responsive">
                                 </div>
                             </div>
+                            <div>
+                            <?= $matcher->calculateProjectAmount($project->id); ?>
+                            </div>
                         </div>
                     </a>
 

@@ -337,7 +337,7 @@ class Matcher extends \Goteo\Core\Model {
     }
 
     /**
-     * Gets the used amount fot the matching by adding up currently made invests
+     * Gets the civic funding amount
      * @return int amount
      */
     protected function calculateCrowdAmount() {
@@ -353,6 +353,7 @@ class Matcher extends \Goteo\Core\Model {
         return (int) self::query($sql, $values)->fetchColumn();
     }
 
+    
     /**
      * Gets the total number of active projects available fot the matching
      * @return int num of projects
@@ -364,6 +365,26 @@ class Matcher extends \Goteo\Core\Model {
                 WHERE matcher_project.matcher_id = :match AND matcher_project.status = 'active'";
         // echo \sqldbg($sql, [':match' => $this->id]);
         return (int) self::query($sql, [':match' => $this->id])->fetchColumn();
+    }
+
+     /**
+     * Gets the used amount in a project for the matching by adding up currently made invests
+     * @return int amount
+     */
+    public function calculateProjectAmount($project) {
+         $sql = "SELECT
+                SUM(invest.amount) AS total
+                FROM invest
+                RIGHT JOIN matcher_user ON matcher_user.user_id = invest.user AND matcher_user.pool = 1
+                WHERE
+                invest.matcher = :match
+                AND invest.project = :project
+                AND invest.method = :method
+                AND invest.campaign = 1
+                AND invest.status IN (" . implode(', ', Invest::$ACTIVE_STATUSES) . ") ";
+        $values = [':match' => $this->id, ':method' => PoolPaymentMethod::getId(), ':project' => $project];
+        // echo \sqldbg($sql, $values);
+        return (int) self::query($sql, $values)->fetchColumn();
     }
 
     /**
