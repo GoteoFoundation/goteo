@@ -1127,21 +1127,4 @@ class ProjectDashboardController extends DashboardController {
         ]);
     }
 
-    public function integrationAction($pid, Request $request) {
-
-        $project = $this->validateProject($pid);
-        if($project instanceOf Response) return $project;
-        
-        $token = \mybase64_encode($project->id);
-
-        $url = TelegramBot::URL . "/" . TelegramBot::getName() . "?start=" . $token;
-        
-        return $this->viewResponse('dashboard/project/integration',[
-            'project' => $project,
-            'token' => $token,
-            'url' => $url
-        ]);
-    }
-
-
 }

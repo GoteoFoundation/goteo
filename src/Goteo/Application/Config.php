@@ -537,13 +537,4 @@ class Config {
 
 		return self::isCurrentNode(self::get('node'));
 	}
-
-	static private function setWebhooks() {
-
-		if (Config::get('bot.telegram.token')) {
-			$bot = new TelegramBot();
-			$bot->createBot();
-			$bot->setWebhook();
-		}
-	}
 }
