@@ -414,6 +414,10 @@ class ProjectController extends \Goteo\Core\Controller {
         $html2pdf->setTestTdInOnePage(false);
         $html2pdf->writeHTML(View::render('poster/project.php', ["project" => $project]));
         $html2pdf->pdf->SetTitle('Poster');
-        $pdfcontent = $html2pdf->output();
+        $pdf = $html2pdf->output();
+
+        $response = new Response($pdf);
+        $response->headers->set('Content-Type', 'application/pdf');
+        return $response;
     }
 }
