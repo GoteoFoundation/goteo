@@ -445,9 +445,4 @@ $dash->add('dashboard-old-translate', new Route(
     )
 ));
 
-$dash->add('dashboard-project-integrations', new Route(
-    'project/{pid}/integration',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::integrationAction')
-));
-
 return $dash;
