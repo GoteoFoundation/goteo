@@ -37,6 +37,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Goteo\Controller\Dashboard\ProjectDashboardController;
+use Spipu\Html2Pdf\Html2Pdf;
 
 
 class ProjectController extends \Goteo\Core\Controller {
@@ -403,5 +404,16 @@ class ProjectController extends \Goteo\Core\Controller {
         }
 
         return $this->jsonResponse(['result' => true]);
+    }
+
+    public function posterAction($pid, Request $request) {
+
+        $project=Project::get($pid, Lang::current(false));
+
+        $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', array(5,0,5,8));
+        $html2pdf->setTestTdInOnePage(false);
+        $html2pdf->writeHTML(View::render('poster/project.php', ["project" => $project]));
+        $html2pdf->pdf->SetTitle('Poster');
+        $pdfcontent = $html2pdf->output();
     }
 }
