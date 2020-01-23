@@ -16,10 +16,13 @@ use \unreal4u\TelegramAPI\TgLog;
 use \unreal4u\TelegramAPI\Telegram\Methods\SendMessage;
 use \unreal4u\TelegramAPI\Telegram\Methods\SendPhoto;
 use \unreal4u\TelegramAPI\Telegram\Methods\SetWebhook;
-use Goteo\Application\Config;
 use unreal4u\TelegramAPI\Telegram\Methods\SendAnimation;
+use unreal4u\TelegramAPI\Telegram\Methods\SendDocument;
+
+use Goteo\Application\Config;
 use Goteo\Model\Image;
 use Goteo\Application\Message;
+use Goteo\Model\Contract\Document;
 
 Class TelegramBot implements \GoteoBot\Model\Bot {
 
@@ -70,6 +73,23 @@ Class TelegramBot implements \GoteoBot\Model\Bot {
             },
             function (\Exception $exception) use ($sendAnimation) {
                 Message::error('Exception ' . get_class($exception) . ' caught, message: ' . $exception->getMessage().PHP_EOL . " - " . $sendAnimation->animation);
+            }
+        );
+        $this->loop->run();
+    }
+
+    public function sendDocument($chatId, $document, $caption) {
+        $sendDocument = new SendDocument();
+        $sendDocument->chat_id = $chatId;
+        $sendDocument->document = $document->getLink(true);
+        $sendDocument->caption = $caption;
+        $result = $this->tgLog->performApiRequest($sendDocument);
+
+        $result->then(
+            function ($response) {
+            },
+            function (\Exception $exception) use ($sendDocument) {
+                Message::error('Exception ' . get_class($exception) . ' caught, message: ' . $exception->getMessage().PHP_EOL . " - " . $sendDocument->animation);
             }
         );
         $this->loop->run();
