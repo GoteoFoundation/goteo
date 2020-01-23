@@ -67,7 +67,7 @@ $prjs->add('project-delete-favourite', new Route(
 ));
 
 $prjs->add('project-poster', new Route(
-    '/{pid}/poster',
+    '/poster/{pid}',
     array('_controller' => 'Goteo\Controller\ProjectController::posterAction')
 ));
 
