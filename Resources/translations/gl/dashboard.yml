@@ -198,6 +198,7 @@ dashboard-translate-project-translating: 'Estás a traducir este proxecto ao %LA
 dashboard-translate-project-ok: '%ZONE% traducido de xeito correcto ao %LANG%'
 dashboard-project-updates-translate-ok: 'Publicación %TITLE% traducida de xeito correcto ao %LANG%'
 dashboard-translate-costs: 'Traducir os custos do proxecto'
+dashboard-translate-story: 'Traducir a miña historia en Goteo'
 dashboard-project-mailing-ago: 'Enviada hai %s'
 dashboard-project-mailing-sending: 'Enviando mensaxe %s'
 dashboard-project-mailing-percent_success: 'Porcentaxe de mensaxes xa enviadas'
