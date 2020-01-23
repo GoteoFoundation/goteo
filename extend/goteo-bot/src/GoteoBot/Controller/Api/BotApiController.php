@@ -74,7 +74,7 @@ class BotApiController extends \Goteo\Controller\Api\AbstractApiController {
             
         }
 
-        return $this->jsonResponse([$project_bot]);
+        return $this->jsonResponse([]);
     }
 
 }
