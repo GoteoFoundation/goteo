@@ -35,7 +35,7 @@ class GoteoBotModule
               `project` varchar(50) CHARACTER SET utf8 NOT NULL,
               `platform` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
               `channel_id` int(11) NOT NULL,
-              UNIQUE KEY `project_platform_channel` (`project`,`platform`),
+              UNIQUE KEY `project_platform_channel` (`project`,`platform`, `channel_id`),
               CONSTRAINT `project_bot_ibfk_1` FOREIGN KEY (`project`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

@@ -47,7 +47,7 @@ namespace GoteoBot\Model {
         public static function get ($id) {
             try {
                 $query = static::query("SELECT * FROM project_bot WHERE project = :id", array(':id' => $id));
-                return $query->fetchObject(__CLASS__);
+                return $query->fetchAll(\PDO::FETCH_OBJ);
             } catch(\PDOException $e) {
                 throw new \Goteo\Core\Exception($e->getMessage());
             }

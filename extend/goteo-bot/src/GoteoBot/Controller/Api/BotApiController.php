@@ -55,8 +55,11 @@ class BotApiController extends \Goteo\Controller\Api\AbstractApiController {
                 if (!$project) 
                     return $this->jsonResponse(['error' => 'no project with this id']);
     
-                if (ProjectBot::get($project))
-                    return $this->jsonResponse(['error' => 'bot already exists']);
+                if ($project_bot = ProjectBot::get($project)) {
+                    if ($project_bot->channel_id == $update->message->chat->id) {
+                        return $this->jsonResponse(['error' => 'bot already exists']);
+                    }
+                }
                 
                 $project_bot = new ProjectBot();
                 $project_bot->project = $project;
@@ -71,7 +74,7 @@ class BotApiController extends \Goteo\Controller\Api\AbstractApiController {
             
         }
 
-        return $this->jsonResponse([]);
+        return $this->jsonResponse([$project_bot]);
     }
 
 }

@@ -51,26 +51,27 @@ class BotControllerListener implements EventSubscriberInterface
     private function create_milestone($project, $type){
         //Insert milestone
         $projectBot = ProjectBot::get($project->id);
-        if ($projectBot) {
-            $project_milestone= new ProjectMilestone();
-            $project_milestone->project=$project->id;
-            $project_milestone->milestone_type=$type;
-            $project_milestone->source_message='bot_message';
+        $project_milestone= new ProjectMilestone();
+        $project_milestone->project=$project->id;
+        $project_milestone->milestone_type=$type;
+        $project_milestone->source_message='bot_message';
 
 
-            try {
-                $action = [$project->id, 'milestone-day-bot', $type];
-                $event = new Event($action, 'milestone');
-            } catch(DuplicatedEventException $e) {
-                // $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
-                return;
-            }
+        try {
+            $action = [$project->id, 'milestone-day-bot', $type];
+            $event = new Event($action, 'milestone');
+        } catch(DuplicatedEventException $e) {
+            // $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
+            return;
+        }
+        
+        $event->fire(function() use ($project_milestone) {
+            $project_milestone->save($errors);
+        });
 
-            $event->fire(function() use ($project_milestone) {
-                $project_milestone->save($errors);
-            });
+        foreach($projectBot as $projBot) {
 
-            if ($projectBot->platform == ProjectBot::TELEGRAM) {
+            if ($projBot->platform == ProjectBot::TELEGRAM) {
                 $bot = new TelegramBot();
                 $bot->createBot();
                 $milestone = Milestone::get($project_milestone->milestone, $project->lang);
@@ -80,13 +81,13 @@ class BotControllerListener implements EventSubscriberInterface
                 if ($milestone->image) {
                     $image = $milestone->image;
                     if ($image->getType() == "gif") {
-                        $bot->sendAnimation($projectBot->channel_id, $image, $milestone->bot_message);
+                        $bot->sendAnimation($projBot->channel_id, $image, $milestone->bot_message);
                     }
                     else {
-                        $bot->sendImage($projectBot->channel_id, $image, $milestone->bot_message);
+                        $bot->sendImage($projBot->channel_id, $image, $milestone->bot_message);
                     }
                 } else {
-                    $bot->sendMessage($projectBot->channel_id, $milestone->bot_message);
+                    $bot->sendMessage($projBot->channel_id, $milestone->bot_message);
                 }
             }
         }
