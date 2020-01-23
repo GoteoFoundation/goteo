@@ -44,10 +44,12 @@
         <?php
             if($this->project->media->url) {
                 if(!empty($this->project->secGallery['play-video'][0])) {
-                    $img_url=$this->project->secGallery['play-video'][0]->imageData->getLink(780, 478);
+                    $img_url=$this->project->secGallery['play-video'][0]->imageData->getLink(780, 478, false, true);
                 }
+            } elseif(!empty($project->secGallery['play-video'][0])) {
+                $img_url=$this->project->secGallery['play-video'][0]->imageData->getLink(780, 478, false, true);
             } else {
-                $img_url = $this->project->image->getLink(780, 478);
+                $img_url = $this->project->image->getLink(780, 478, false, true);
             }
         ?>
 
