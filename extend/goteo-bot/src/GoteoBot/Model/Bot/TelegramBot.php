@@ -89,7 +89,7 @@ Class TelegramBot implements \GoteoBot\Model\Bot {
             function ($response) {
             },
             function (\Exception $exception) use ($sendDocument) {
-                Message::error('Exception ' . get_class($exception) . ' caught, message: ' . $exception->getMessage().PHP_EOL . " - " . $sendDocument->animation);
+                Message::error('Exception ' . get_class($exception) . ' caught, message: ' . $exception->getMessage().PHP_EOL . " - " . $sendDocument->document);
             }
         );
         $this->loop->run();

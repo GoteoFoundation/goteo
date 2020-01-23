@@ -74,6 +74,9 @@ class BotControllerListener implements EventSubscriberInterface
                 $bot = new TelegramBot();
                 $bot->createBot();
                 $milestone = Milestone::get($project_milestone->milestone, $project->lang);
+                if ($type == "50-percent-reached") {
+                    $milestone->bot_message =  str_replace('%s',SITE_URL . '/project/'. $project->id .'/poster', $milestone->bot_message);
+                }
                 if ($milestone->image) {
                     $image = $milestone->image;
                     if ($image->getType() == "gif") {
@@ -83,18 +86,7 @@ class BotControllerListener implements EventSubscriberInterface
                         $bot->sendImage($projectBot->channel_id, $image, $milestone->bot_message);
                     }
                 } else {
-                    if ($type == "50-percent-reached") {
-
-                        $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', array(5,0,5,8));
-                        $html2pdf->setTestTdInOnePage(false);
-                        $html2pdf->writeHTML(View::render('poster/project.php', ["project" => $project]));
-                        $html2pdf->pdf->SetTitle('Poster');
-                        $pdfcontent = $html2pdf->output();
-                        $document = new Document($pdfcontent);
-                        $bot->sendDocument($projectBot->channel_id, $document, $milestone->bot_message);
-                    } else {
-                        $bot->sendMessage($projectBot->channel_id, $milestone->bot_message);
-                    }
+                    $bot->sendMessage($projectBot->channel_id, $milestone->bot_message);
                 }
             }
         }
