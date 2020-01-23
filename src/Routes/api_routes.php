@@ -434,5 +434,4 @@ $api->add('api-workshops-images-upload', new Route(
     array(), // schemes
     array('POST') // methods
 ));
-
 return $api;

@@ -66,6 +66,10 @@ $prjs->add('project-delete-favourite', new Route(
     array('_controller' => 'Goteo\Controller\ProjectController::DeletefavouriteAction')
 ));
 
+$prjs->add('project-poster', new Route(
+    '/{pid}/poster',
+    array('_controller' => 'Goteo\Controller\ProjectController::posterAction')
+));
 
 $prjs->add('project-sections', new Route(
     '/{pid}/{show}/{post}',
@@ -75,5 +79,6 @@ $prjs->add('project-sections', new Route(
         'post' => null //optional
         )
 ));
+
 
 return $prjs;
