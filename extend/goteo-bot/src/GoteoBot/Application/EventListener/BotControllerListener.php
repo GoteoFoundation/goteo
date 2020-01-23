@@ -21,6 +21,8 @@ use GoteoBot\Controller\BotProjectDashboardController;
 
 use Goteo\Application\Exception\DuplicatedEventException;
 use Goteo\Console\Event\FilterProjectEvent;
+use Goteo\Model\Contract\Document;
+use Spipu\Html2Pdf\Html2Pdf;
 
 class BotControllerListener implements EventSubscriberInterface
 {
@@ -81,7 +83,18 @@ class BotControllerListener implements EventSubscriberInterface
                         $bot->sendImage($projectBot->channel_id, $image, $milestone->bot_message);
                     }
                 } else {
-                    $bot->sendMessage($projectBot->channel_id, $milestone->bot_message);
+                    if ($type == "50-percent-reached") {
+
+                        $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', array(5,0,5,8));
+                        $html2pdf->setTestTdInOnePage(false);
+                        $html2pdf->writeHTML(View::render('poster/project.php', ["project" => $project]));
+                        $html2pdf->pdf->SetTitle('Poster');
+                        $pdfcontent = $html2pdf->output();
+                        $document = new Document($pdfcontent);
+                        $bot->sendDocument($projectBot->channel_id, $document, $milestone->bot_message);
+                    } else {
+                        $bot->sendMessage($projectBot->channel_id, $milestone->bot_message);
+                    }
                 }
             }
         }
