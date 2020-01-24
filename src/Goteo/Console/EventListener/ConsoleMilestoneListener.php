@@ -25,10 +25,7 @@ use Goteo\Model\Blog;
 use Goteo\Model\User;
 use Goteo\Model\Event;
 use Goteo\Model\Milestone;
-use Goteo\Model\Project\ProjectBot;
 use Goteo\Model\Project\ProjectMilestone;
-use Goteo\Util\Bot\TelegramBot;
-use Goteo\Model\Image;
 
 class ConsoleMilestoneListener extends AbstractListener {
 
@@ -43,10 +40,10 @@ class ConsoleMilestoneListener extends AbstractListener {
             $action = [$project->id, 'milestone-day', $type];
             $event = new Event($action, 'milestone');
 
-        } catch(DuplicatedEventException $e) {
-            $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
-            return;
-        }
+            } catch(DuplicatedEventException $e) {
+                $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
+                return;
+            }
 
         $event->fire(function() use ($project_milestone) {
             $project_milestone->save($errors);

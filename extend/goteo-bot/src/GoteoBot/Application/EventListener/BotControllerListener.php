@@ -51,6 +51,8 @@ class BotControllerListener implements EventSubscriberInterface
     private function create_milestone($project, $type){
         //Insert milestone
         $projectBot = ProjectBot::get($project->id);
+        if (!$projectBot) return;
+        
         $project_milestone= new ProjectMilestone();
         $project_milestone->project=$project->id;
         $project_milestone->milestone_type=$type;
@@ -150,9 +152,7 @@ class BotControllerListener implements EventSubscriberInterface
     }
 
     public function onProjectPublish(FilterProjectEvent $event) {
-        $method   = $event->getMethod();
-        $invest   = $method->getInvest();
-        $project  = $invest->getProject();
+        $project = $event->getProject();
         
         $type = 'on-publish';
 

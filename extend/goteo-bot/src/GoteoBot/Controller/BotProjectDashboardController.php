@@ -27,8 +27,8 @@ class BotProjectDashboardController extends \Goteo\Controller\Dashboard\ProjectD
         if(!$project instanceOf Project) $project = Project::get($project);
         if(!$project->userCanEdit(Session::getUser())) return;
 
-        $prefix = '/dashboard/project/' . $project->id;
-        Session::addToSidebarMenu('<i class="fa fa-bell fa-2x"></i> ' . Text::get('dashboard-bot-project-integration'), $prefix . '/integration',  'integration', 100);
+        // $prefix = '/dashboard/project/' . $project->id;
+        // Session::addToSidebarMenu('<i class="fa fa-bell fa-2x"></i> ' . Text::get('dashboard-bot-project-integration'), $prefix . '/integration',  'integration', 100);
     }
 
     public function integrationAction($pid, Request $request) {
