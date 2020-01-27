@@ -1006,14 +1006,19 @@ div {
      visibility:hidden;
      opacity:0;
      transition: opacity 1s;
+     margin-bottom: 0px !important;
      .slick-dots{
       width: 76%;
-      bottom: 0px !important;
+      top: 138px !important;
       li.slick-active button::before {
         color: $background-dark-lilac !important;
-
-}
+      }
      }
+  .matcher-amount{
+    margin-top: 5px;
+    text-align: center;
+    color:$background-dark-lilac;
+  }
 }
 
 .slider-matchers.slick-initialized{
@@ -1118,6 +1123,11 @@ div {
   }
   div.call-info {
     margin-top: 40px !important;
+  }
+  .slider-matchers{ 
+     .slick-dots{
+      top: 130px !important;
+     }
   }
 }
 
@@ -1241,6 +1251,7 @@ div {
         margin-left: 0;
       }
     }
+    
   }
   /* Investors section */
   /* Buttons meter */
@@ -1351,6 +1362,30 @@ div {
     font-size: 2em;
   }
 
+  .slider-matchers{
+     visibility:hidden;
+     opacity:0;
+     transition: opacity 1s;
+     margin-bottom: 25px !important;
+     .call-info{
+      margin-bottom: 0 !important;
+     }
+     .slick-dots{
+      width: 100%;
+      top: 150px !important;
+      li.slick-active button::before {
+        color: $background-dark-lilac !important;
+      }
+     }
+     
+      .matcher-amount{
+        margin-top: 5px;
+        text-align: center;
+        color:$background-dark-lilac;
+        font-size: $font-size;
+      }
+    }
+
 
 }
 
@@ -1384,4 +1419,5 @@ div {
       min-height: 59px;
     }
   }
+
 }

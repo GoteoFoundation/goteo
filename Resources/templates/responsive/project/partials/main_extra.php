@@ -196,9 +196,8 @@ $langs = $project->getLangs();
                 <div class="col-sm-4 slider slider-matchers" id="matchers">
 
                 <?php foreach ($matchers as $matcher): ?>
-        
-                    <a href="" target="_blank">
-                        <div class=" call-info-container hidden-sm hidden-xs">
+                        <?php $matcher_amount=$matcher->calculateProjectAmount($project->id); ?>
+                        <div class="call-info-container hidden-sm hidden-xs">
                             <div class="row call-info col-lg-10 col-md-11 col-sm-12">
                                 <div class="col-xs-2 no-padding" >
                                     <img width="40" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
@@ -207,12 +206,18 @@ $langs = $project->getLangs();
                                     <img src="<?= $matcher->getLogo()->getLink(240, 240, true) ?>" class="img-responsive">
                                 </div>
                             </div>
-                            <div>
-                            <?= $matcher->calculateProjectAmount($project->id); ?>
-                            </div>
+                            <?php if($matcher_amount): ?>
+                                <div class="row col-lg-10 col-md-11 col-sm-12">
+                                    <div class="col-xs-12 matcher-amount">
+                                        <?= $this->text('matcher-amount') ?>        
+                                        <strong>
+                                            <?= ' '.amount_format($matcher_amount) ?>
+                                        </strong>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                    </a>
-
+                    
                     <?php endforeach; ?>
 
                 </div>
