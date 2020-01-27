@@ -76,7 +76,8 @@ class GoteoQuestionnaire
         CONSTRAINT `question_answer_answer` FOREIGN KEY (`questionnaire_answer`) REFERENCES `questionnaire_answer` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
         CONSTRAINT `question_answer_question` FOREIGN KEY (`question`) REFERENCES `question` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
       );
-      ALTER TABLE `document` ALTER COLUMN `contract` varchar(50) NULL;
+
+      ALTER TABLE `document` CHANGE `contract` `contract` VARCHAR(50) NULL;
 
      ";
     }

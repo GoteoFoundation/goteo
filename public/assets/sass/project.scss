@@ -853,6 +853,12 @@ div {
         font-weight: bold;
         line-height: 1;
       }
+      &.matcher-img{
+        margin-left: 40px;
+      }
+      &.drop-logo{
+        margin-left: 10px;
+      }
     }
   }
   &.message img.avatar {
@@ -891,6 +897,13 @@ div {
       div {
         &.green {
           background-color: #149290;
+          margin-right: 0.5%;
+          height: 15px;
+          float: left;
+          border-radius: 10px;
+        }
+        &.blue {
+          background-color: #00AFEC;
           margin-right: 0.5%;
           height: 15px;
           float: left;
