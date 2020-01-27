@@ -5,3 +5,4 @@ questionnaire-text: 'Question to answer'
 questionnaire-textarea: 'Long answer'
 questionnaire-boolean: 'Single option'
 questionnaire-dropfiles: 'Document'
+questionnaire-add-question: "Add question"
