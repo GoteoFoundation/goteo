@@ -35,6 +35,7 @@ use Goteo\Model\User;
 use Goteo\Payment\Payment;
 use Goteo\Payment\PaymentException;
 use Goteo\Util\Monolog\Processor\WebProcessor;
+use Goteo\Model\Project\Reward;
 
 class InvestController extends \Goteo\Core\Controller {
 
@@ -588,6 +589,7 @@ class InvestController extends \Goteo\Core\Controller {
         $reward = $this->validate($project_id, null, $_dummy, $invest);
 
         if($reward instanceOf Response) return $reward;
+        $reward = Reward::get($reward->id, Lang::current());
 
         if(!in_array($invest->status, [Invest::STATUS_CHARGED, Invest::STATUS_PAID])) {
             Message::error(Text::get('project-invest-fail'));
@@ -614,6 +616,9 @@ class InvestController extends \Goteo\Core\Controller {
                         $errors[] = $part;
                     }
                 }
+                $invest->extra_info = $invest_address['extra_info'];
+                $invest->save();
+                
                 if($ok) {
                     if($invest->setAddress($invest_address)) {
                         // Event invest failed
@@ -625,7 +630,7 @@ class InvestController extends \Goteo\Core\Controller {
 
         }
         // show form
-        return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3]);
+        return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3, 'reward' => $reward]);
 
     }
 

@@ -24,35 +24,36 @@ class MatcherConfig extends  \Goteo\Core\Model {
    protected $Table = 'matcher_conf';
    protected static $Table_static = 'matcher_conf';
 
-    public static function get($matcher) {
+  public static function get($matcher) {
 
-      $query = static::query("SELECT * FROM matcher_conf WHERE matcher = ?", array($matcher));
-      $matcher_conf = $query->fetchObject(__CLASS__);
-      return $matcher_conf;
+    $query = static::query("SELECT * FROM matcher_conf WHERE matcher = ?", array($matcher));
+    $matcher_conf = $query->fetchObject(__CLASS__);
+    return $matcher_conf;
+  }
+
+  public function save(&$errors = array()) {
+    if (!$this->validate($errors)) return false;
+
+    try {
+        $sql = "REPLACE INTO matcher_conf (matcher,budget,algorithm,max_donation_per_invest,max_donation_per_project,percent_of_donation,donation_per_project) 
+                VALUES(:matcher,:budget,:algorithm,:max_donation_per_invest,:max_donation_per_project,:percent_of_donation,:donation_per_project)";
+        $values = array(':matcher' => $this->matcher,
+                        ':budget' => $this->budget,
+                        ':algorithm' => $this->algorithm,
+                        ':max_donation_per_invest' => $this->max_donation_per_invest,
+                        ':max_donation_per_project' => $this->max_donation_per_project,
+                        ':percent_of_donation' => $this->percent_of_donation,
+                        ':donation_per_project' => $this->donation_per_project);
+
+        self::query($sql, $values);
+    } catch(\PDOException $e) {
+        $errors[] = "Error updating configuration. " . $e->getMessage();
+        return false;
     }
 
-		public function save (&$errors = array()) {
-      if(!$this->validate($errors)) return false;
+    return true;
 
-      $fields = array(
-        'matcher',
-        'budget',
-        'algorithm',
-        'max_donation_per_invest',
-        'max_donation_per_project',
-        'percent_of_donation',
-        'donation_per_project'
-      );
-      
-      try {
-        $this->dbInsertUpdate($fields, ["matcher"]);
-      } catch(\PDOException $e) {
-          $errors[] = "Error updating filter " . $e->getMessage();
-          return false;
-      }
-
-      return true;
-}
+  }
 
   public function validate(&$errors = array()) {
 
@@ -63,14 +64,14 @@ class MatcherConfig extends  \Goteo\Core\Model {
       if (!isset($this->donation_per_project)) return false;
       return true;
     } else if ($this->algorithm == "multiply") {
-      return true;
       $this->percent_of_donation = 0;
       $this->donation_per_project = 0;
       if (!isset($this->max_donation_per_invest)) return false;
       if (!isset($this->max_donation_per_project)) return false;
+      return true;
     }
     return false;
-}
+  }
 
 }
 

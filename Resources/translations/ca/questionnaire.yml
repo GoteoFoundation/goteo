@@ -5,3 +5,4 @@ questionnaire-text: 'Pregunta per respondre'
 questionnaire-textarea: 'Resposta llarga'
 questionnaire-boolean: 'Resposta única sí/no'
 questionnaire-dropfiles: 'Document'
+questionnaire-add-question: "Afegir pregunta"

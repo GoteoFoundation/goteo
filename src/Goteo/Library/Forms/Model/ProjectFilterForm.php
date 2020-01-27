@@ -154,6 +154,13 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>',
             ])
+            ->add('forced', 'boolean', [
+                'label' => 'admin-filter-forced',
+                'required' => false,
+                'attr' => [
+                    'pre-help' => Text::get('admin-filter-forced-help')
+                    ]
+            ])
             ->add('submit', 'submit', [
                 'label' => 'regular-submit',
                 'attr' => ['class' => 'btn btn-cyan'],

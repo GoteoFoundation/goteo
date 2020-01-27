@@ -65,7 +65,7 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
             ->add(
                 $question->id . '_required', 'boolean', [
                 'label' => Text::get('questionnaire-required'),
-                'data' => $config->vars->required ? true : false,
+                'data' => $config->required ? true : false,
                 'required' => false
                 ]
             )
@@ -85,6 +85,16 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                     'data-confirm' => Text::get('project-remove-reward-confirm')
                     ]
                 ]
+            )->add(
+                'add-question', 'submit', [
+                'label' => Text::get('questionnaire-add-question'),
+                'attr' => ['class' => 'btn btn-lg btn-lilac text-uppercase add-question'],
+                'icon_class' => 'icon icon-match-blog '
+                ]
+            )->add(
+                'submit', 'submit', [
+                    'label' => 'regular-submit'
+                    ]
             );
 
     }

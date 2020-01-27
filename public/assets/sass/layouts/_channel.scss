@@ -354,7 +354,11 @@ body.channel {
     }
     .owner-section{
       .owner-info{
-            .channel-name{
+            .channel-name.premium{
+              margin-bottom: 25px;
+            }
+            .channel-subtitle{
+               margin-top: 20px;
             }
 
             .channel-description{

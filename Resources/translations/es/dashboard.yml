@@ -22,6 +22,7 @@ dashboard-certificates-details-desc: 'Lista de aportes para el certificado %CERT
 dashboard-certificates-download: 'Confirmar y descargar'
 dashboard-certificates-empty: 'Debes hacer algún aporte a un proyecto o recargar el monedero virtual para ver tus certificados'
 dashboard-certificates-expired: Caducado
+dashboard-certificates-expired-description: 'Ha expirado el plazo para confirmar tu certificado'
 dashboard-certificates-no-pending: 'No hay ningún aporte pendiente'
 dashboard-certificates-pending: Pendiente
 dashboard-certificates-pending-desc: 'Estos son los aportes que se incluirán en certificados futuros.'
@@ -289,3 +290,5 @@ dashboard-origin-invests-referer: 'Origen de visitas en los aportes exitosos'
 dashboard-origin-project-device: 'Dispositivo usado en la página del proyecto'
 dashboard-origin-invests-device: 'Dispositivo usado en los aportes exitosos'
 dashboard-origin-disclaimer: '⚠ *Estos datos son orientativos y no incluyen la totalidad de las visitas debido a limitaciones técnicas.*  > Te recomendamos que configures Google Analytics o Facebook Pixel para tener datos más detallados'
+dashboard-project-integration-token: 'Token'
+dashboard-project-integration-link: 'Link'
