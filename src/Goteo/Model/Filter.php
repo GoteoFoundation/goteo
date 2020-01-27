@@ -52,7 +52,8 @@ class Filter extends \Goteo\Core\Model {
         $project_location,
         $projects = [],
         $calls = [],
-        $matchers = [];
+        $matchers = [],
+        $forced;
 
     static public function get($id) {
         $query = static::query('SELECT * FROM filter WHERE id = ?', $id);
@@ -326,7 +327,8 @@ class Filter extends \Goteo\Core\Model {
             'project_latitude',
             'project_longitude',
             'project_radius',
-            'project_location'
+            'project_location',
+            'forced'
         );
         
         
@@ -391,13 +393,14 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
         }
 
+        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         if($count) {
             $sql = "SELECT COUNT(DISTINCT(user.id)) 
                     FROM user 
                     LEFT JOIN user_prefer
                         ON user.id = user_prefer.user
                     $sqlInner 
-                    WHERE user.active = 1 AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) $sqlFilter";
+                    WHERE user.active = 1 $sqlFilter";
             // die( \sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
         }
@@ -411,8 +414,7 @@ class Filter extends \Goteo\Core\Model {
                 LEFT JOIN user_prefer
                     ON user.id = user_prefer.user
                 $sqlInner
-                WHERE user.active = 1 AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) 
-                $sqlFilter
+                WHERE user.active = 1 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
                 ";
@@ -449,6 +451,7 @@ class Filter extends \Goteo\Core\Model {
 
         $values[':prefix'] = $prefix;
 
+        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         $sql = "SELECT
                     :prefix,
                     user.id as user,
@@ -459,7 +462,7 @@ class Filter extends \Goteo\Core\Model {
                 LEFT JOIN user_prefer
                     ON user.id = user_prefer.user
                 $sqlInner
-                WHERE user.active = 1 AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) 
+                WHERE user.active = 1 
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
@@ -589,10 +592,10 @@ class Filter extends \Goteo\Core\Model {
         
         if (isset($this->typeofdonor)) {
             if ($this->typeofdonor == $this::UNIQUE) {            
-                $sqlFilter .= "  AND user.num_invested = 1
+                $sqlFilter .= "  AND 1 = (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL)
             ";
             } else if ($this->typeofdonor == $this::MULTIDONOR) {
-            $sqlFilter .= " AND user.num_invested > 1
+            $sqlFilter .= " AND 1 < (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL)
             ";
             }
         }
@@ -639,13 +642,14 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ") ";
         }
 
+        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         if($count) {
             $sql = "SELECT COUNT(user.id)
                     FROM user 
                     LEFT JOIN user_prefer
                     ON user.id = user_prefer.user
                     $sqlInner 
-                    WHERE user.active = 1 AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) 
+                    WHERE user.active = 1 
                     $sqlFilter";
             // die(\sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
@@ -659,7 +663,7 @@ class Filter extends \Goteo\Core\Model {
                 LEFT JOIN user_prefer
                 ON user_prefer.user = user.id
                 $sqlInner
-                WHERE user.active = 1 AND (user_prefer.mailing= 0 OR user_prefer.`mailing` IS NULL) 
+                WHERE user.active = 1 
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
@@ -798,10 +802,10 @@ class Filter extends \Goteo\Core\Model {
         
         if (isset($this->typeofdonor)) {
             if ($this->typeofdonor == $this::UNIQUE) {            
-                $sqlFilter .= "  AND user.num_invested = 1
+                $sqlFilter .= "  AND 1 = (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL )
             ";
             } else if ($this->typeofdonor == $this::MULTIDONOR) {
-            $sqlFilter .= " AND user.num_invested > 1
+            $sqlFilter .= " AND 1 < (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL )
             ";
             }
         }
@@ -848,6 +852,7 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ") ";
         }
 
+        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         $sql = "SELECT
                     :prefix,
                     user.id as user,
@@ -857,7 +862,7 @@ class Filter extends \Goteo\Core\Model {
                 LEFT JOIN user_prefer
                 ON user_prefer.user = user.id
                 $sqlInner
-                WHERE user.active = 1 AND (user_prefer.mailing= 0 OR user_prefer.`mailing` IS NULL) 
+                WHERE user.active = 1 
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
@@ -983,9 +988,12 @@ class Filter extends \Goteo\Core\Model {
             $values[':status_donated'] = Invest::STATUS_DONATED;
         }
         
+        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         if($count) {
             $sql = "SELECT COUNT(user.id)
                     FROM user 
+                    LEFT JOIN user_prefer
+                    ON user_prefer.user = user.id
                     $sqlInner
                     WHERE user.active
                     $sqlFilter";
@@ -1000,6 +1008,8 @@ class Filter extends \Goteo\Core\Model {
                 FROM user
                 $sqlInner
                 WHERE user.active
+                LEFT JOIN user_prefer
+                ON user.id = user_prefer.user
                 $sqlFilter
                 GROUP BY user.id
                 ORDER BY user.name ASC
@@ -1130,12 +1140,15 @@ class Filter extends \Goteo\Core\Model {
             $values[':status_donated'] = Invest::STATUS_DONATED;
         }
         
+        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         $sql = "SELECT
                     :prefix,
                     user.id as user,
                     user.name as name,
                     user.email as email
                 FROM user
+                LEFT JOIN user_prefer
+                ON user_prefer.user = user.id
                 $sqlInner
                 WHERE user.active
                 $sqlFilter
@@ -1244,9 +1257,15 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
         }
 
-
+        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         if($count) {
-            $sql = "SELECT COUNT(DISTINCT(user.id)) FROM user $sqlInner WHERE user.active = 1 $sqlFilter";
+            $sql = "SELECT COUNT(DISTINCT(user.id)) 
+                FROM user 
+                LEFT JOIN user_prefer
+                ON user.id = user_prefer.user
+                $sqlInner
+                WHERE user.active = 1 
+                $sqlFilter";
             // die( \sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
         }
@@ -1257,6 +1276,8 @@ class Filter extends \Goteo\Core\Model {
                     user.email as email
                     $sqlFields
                 FROM user
+                LEFT JOIN user_prefer
+                ON user_prefer.user = user.id
                 $sqlInner
                 WHERE user.active = 1
                 $sqlFilter
@@ -1372,12 +1393,15 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
         }
 
+        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         $sql = "SELECT
                     :prefix,
                     user.id as user,
                     user.name as name,
                     user.email as email
                 FROM user
+                LEFT JOIN user_prefer
+                ON user_prefer.user = user.id
                 $sqlInner
                 WHERE user.active = 1
                 $sqlFilter
@@ -1423,8 +1447,15 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
         }
 
+        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         if($count) {
-            $sql = "SELECT COUNT(DISTINCT(user.id)) FROM user $sqlInner WHERE user.active = 1 $sqlFilter";
+            $sql = "SELECT COUNT(DISTINCT(user.id)) 
+                FROM user 
+                LEFT JOIN user_prefer
+                ON user.id = user_prefer.user
+                $sqlInner
+                WHERE user.active = 1 
+                $sqlFilter";
             // die( \sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
         }
@@ -1434,6 +1465,8 @@ class Filter extends \Goteo\Core\Model {
                     user.name as name,
                     user.email as email
                 FROM user
+                LEFT JOIN user_prefer
+                ON user_prefer.user = user.id
                 $sqlInner
                 WHERE user.active = 1
                 $sqlFilter
@@ -1483,12 +1516,15 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
         }
 
+        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         $sql = "SELECT
                     :prefix,
                     user.id as user,
                     user.name as name,
                     user.email as email
                 FROM user
+                LEFT JOIN user_prefer
+                ON user_prefer.user = user.id
                 $sqlInner
                 WHERE user.active = 1
                 $sqlFilter

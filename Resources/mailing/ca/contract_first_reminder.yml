@@ -1,0 +1,40 @@
+group: contract
+name: 'Contract first reminder'
+purpose: 'Mail para recordar al impulsor que tiene pendiente completar el formulario de contrato'
+type: 'md'
+title: 'Recordatori important des de Goteo'
+text: >
+    Hola %USERNAME%,
+
+
+    Volem recordar-vos que és imprescindible que hagis pujat els documents necessaris per a poder transferir els fons recaudats.
+
+
+    Está habilitat ja el el contracte per a que puguis omplir-l’ho amb les dades necessàries: %PROJECTCONTRACTURL%
+
+
+    A continuació t'indiquem la documentació sol.licitada en la seva versió digital, ja que es puja a la plataforma, y no es necessari enviar cap còpia física. 
+ 
+
+    **Persones físiques:**
+
+
+
+      *   **Còpia digital del DNI / NIE o passaport** de la persona que signa (PDF)
+      *   **Certificat de titularitat del compte corrent** (PDF), emès per l'entitat financera en la qual es rebran els fons recaptats. En cas que el banc es trobi fora d'Espanya, a més haurà d'aparèixer el codi IBAN (si és un banc Internacional Europeu) i un codi SWIFT si és un Banc no Europeu.
+
+
+    **Entitats jurídiques:**
+
+
+
+      *   **Còpia digital del DNI / NIE o passaport** de la persona que signa (PDF)
+      *   **Certificat de titularitat del compte corrent** (PDF), ** emès per l'entitat financera en la qual es rebran els fons recaptats. En cas que el banc es trobi fora d'Espanya, a més haurà d'aparèixer el codi IBAN (si és un banc Internacional Europeu) i un codi SWIFT si és un Banc no Europeu.
+      *   **Còpia digital del CIF** de la vostra entitat (PDF). En cas que no estigui registrada a Espanya, còpia digital del registre de l'organització en l'entitat oficial corresponent. 
+      *   **Còpia digital del document acreditatiu d'apoderament** (estatuts, u/o escriptures, o poders on s’acredita la representació de la persona que firma) (PDF).
+
+    
+    Si tens qualsevol consulta, no dubtis a escriure al teu assessor/a o a gestion@goteo.org.
+
+    
+    Salutacions,
