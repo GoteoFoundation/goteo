@@ -3,6 +3,7 @@
 namespace Goteo\Model\Questionnaire;
 
 use Goteo\Application\Message;
+use Goteo\Application\Exception\ModelNotFoundException;
 
 class Question extends \Goteo\Core\Model
 {

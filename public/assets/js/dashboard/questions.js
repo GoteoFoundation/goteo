@@ -91,7 +91,6 @@ $(
                 ).fail(
                     function (data) {
                         console.log('An error occurred.', data);
-                        alert(data.responseText);
                     }
                 ).always(
                     function () {
