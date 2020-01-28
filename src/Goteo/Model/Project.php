@@ -890,6 +890,18 @@ class Project extends \Goteo\Core\Model {
     }
 
     /**
+     * Get the main image of the project
+     * @return array array of user id that are consultants
+     */
+    public function getImage() {
+        if(!$this->imageInstance instanceOf Image) {
+            $this->imageInstance = new Image($this->image);
+        }
+        return $this->imageInstance;
+    }
+
+
+    /**
      * Handy method to know if project can be edited (not in campaing or finished)
      */
     public function inEdition() {
