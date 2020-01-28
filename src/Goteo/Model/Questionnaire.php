@@ -66,13 +66,9 @@ class Questionnaire extends \Goteo\Core\Model
 
         $query = static::query('SELECT * FROM questionnaire WHERE matcher = :id', array(':id' => $qid));
         $questionnaire = $query->fetchObject(__CLASS__);
-        if (!$questionnaire instanceOf Questionnaire) {
-            throw new ModelNotFoundException();
-        }
+        if ($questionnaire instanceOf Questionnaire)
+            $questionnaire->questions = Question::getByQuestionnaire($questionnaire->id);
 
-        $questionnaire->questions = Question::getByQuestionnaire($questionnaire->id);
-
-        // $questionnaire->vars = json_decode($questionnaire->vars);
         return $questionnaire;
 
     }

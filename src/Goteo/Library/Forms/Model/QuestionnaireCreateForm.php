@@ -85,16 +85,6 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                     'data-confirm' => Text::get('project-remove-reward-confirm')
                     ]
                 ]
-            )->add(
-                'add-question', 'submit', [
-                'label' => Text::get('questionnaire-add-question'),
-                'attr' => ['class' => 'btn btn-lg btn-lilac text-uppercase add-question'],
-                'icon_class' => 'icon icon-match-blog '
-                ]
-            )->add(
-                'submit', 'submit', [
-                    'label' => 'regular-submit'
-                    ]
             );
 
     }
@@ -107,6 +97,18 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
         foreach((array) $questionnaire->questions as $question) {
             $this->addQuestion($question);
         }
+        
+        $builder->add(
+            'add-question', 'submit', [
+            'label' => Text::get('questionnaire-add-question'),
+            'attr' => ['class' => 'btn btn-lg btn-lilac text-uppercase add-question'],
+            'icon_class' => 'icon icon-match-blog '
+            ]
+        )->add(
+            'submit', 'submit', [
+                'label' => 'regular-submit'
+                ]
+        );
 
         return $this;
     }
