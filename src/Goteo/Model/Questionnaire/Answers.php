@@ -50,5 +50,20 @@ class Answers extends \Goteo\Core\Model
 
     }
 
+    /**
+     * Get answers by questionnaire answer id
+     *
+     * @param  int $id questionnaire answer id.
+     * @return Answer object
+     */
+    public static function getByQuestionnaireProject($qid, $pid) {
+
+        $query = static::query('SELECT * FROM questionnaire_answer WHERE questionnaire = :qid AND project = :pid', array(':qid' => $qid, ':pid' => $pid));
+        $questionnaire_answer = $query->fetchObject(__CLASS__);
+
+        return $questionnaire_answer;
+
+    }
+
 }
 

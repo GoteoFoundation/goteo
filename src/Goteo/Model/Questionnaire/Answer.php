@@ -51,5 +51,21 @@ class Answer extends \Goteo\Core\Model
 
     }
 
+    /**
+     * Get answers by questionnaire answer id
+     *
+     * @param  int $id questionnaire answer id.
+     * @return Answer object
+     */
+    static public function getByQuestionnaireAnswer($qid)
+    {
+
+        $query = static::query('SELECT * FROM question_answer WHERE questionnaire_answer = :id', array(':id' => $qid));
+        $questionnaire_answer = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+
+        return $questionnaire_answer;
+
+    }
+
 }
 

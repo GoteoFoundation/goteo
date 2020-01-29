@@ -58,13 +58,13 @@ class Questionnaire extends \Goteo\Core\Model
      * @param  int $id matcher id.
      * @return Questionnaire object
      */
-    static public function getByMatcher($qid)
+    static public function getByMatcher($mid)
     {
         
         $lang = Lang::current();
         // list($fields, $joins) = self::getLangsSQLJoins($lang);
 
-        $query = static::query('SELECT * FROM questionnaire WHERE matcher = :id', array(':id' => $qid));
+        $query = static::query('SELECT * FROM questionnaire WHERE matcher = :id', array(':id' => $mid));
         $questionnaire = $query->fetchObject(__CLASS__);
         if ($questionnaire instanceOf Questionnaire)
             $questionnaire->questions = Question::getByQuestionnaire($questionnaire->id);

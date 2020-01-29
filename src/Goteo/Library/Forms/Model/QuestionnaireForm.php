@@ -84,6 +84,9 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
             $answer->question = $key;
             $answer->answer = $value; 
             if (Question::get($key)->vars->type == "dropfiles") { 
+                $document = new Document();
+                $document = $value[0];
+                $document->save();
                 $answer->answer = $value[0]->name; 
             }
             $answer->save();
