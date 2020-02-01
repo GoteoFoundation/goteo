@@ -346,10 +346,12 @@ admin-filter-last-week: 'Últimos 7 días'
 admin-filter-last-month: 'Últimos 30 días'
 admin-donations-amount-percent: '% diñeiro doado'
 admin-donations-users-percent: '% usuarios doantes'
+admin-donations-tip-percent: '% diñeiro en adeallas'
 admin-donations-direct-percent: '% diñeiro directo'
 admin-workshop: Obradoiros Goteo
 admin-workshop-add: Crear un novo obradoiro
 admin-workshop-edit: Editando o obradoiro %s
+admin-workshop-edit-success: A entrada do obradoiro editouse con éxito
 mandatory-filter-name: Falta o nome
 mandatory-filter-description: Falta a descrición
 mandatory-filter-role: Falta un rol
