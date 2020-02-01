@@ -8,9 +8,11 @@ dashboard-donor-confirmed: 'O certificado %s desta doazón creouse correctamente
 dashboard-donor-download_certificate: 'Descargar o certificado'
 dashboard-donor-edit_data: 'Modificar datos'
 dashboard-donor-edit_guide: 'Enche os datos que queiras que aparezan no certificado. Unha vez que descargues o arquivo estes datos non se poderán modificar.'
+dashboard-donor-main_guide: 'Pasado o ano: Pódense confirmar os datos até o 15 de xaneiro. Até xullo é posible descargar o certificado. <br>Para este ano: A partires de xullo pódense confirmar datos e descargar o certificado.'
 dashboard-donor-mandatory: 'É OBRIGATORIO ENCHER OS DATOS FISCAIS'
 dashboard-donor-no_donor: 'Non costa que fixeras ningunha doazón a %s. Se fixeches algunha, por favor, ponte en contacto con nós.'
 dashboard-donor-pdf_closed: 'Os datos fiscais para o certificado de doazóns de %s non están confirmados, non é posible a descarga'
+dashboard-donor-save_fail: "Producíronse erros ao gardar os datos. Por favor, revísaos e de continuar os problemas contacta connosco."
 dashboard-donor-saved: 'Grazas por modificar os teus datos. Para descargar o certificado asegúrate de que sexan correctos. Despois verifícaos co botón de pechar datos.'
 dashboard-menu-activity-donor: 'Certificado de doazón'
 donor-address-country-field: País
