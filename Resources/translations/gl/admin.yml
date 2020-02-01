@@ -105,15 +105,22 @@ admin-users-add: Crear novo usuario
 admin-blog: Blogue xeral
 admin-blog-add: Crear nova publicación
 admin-blog-edit: Editando publicación %s
+admin-blog-slug-exists: 'O identificador [%s] está a se empregar noutra publicación!'
+admin-blog-slug-chars: 'O identificador [%s] contén caracteres non válidos!'
 admin-blog-not-public: 'Esta publicación aínda non é pública'
 admin-stories: Historias de usuarios no Goteo
 admin-stories-add: Crear unha nova historia
 admin-stories-edit: Editando a historia %s
+admin-categories: 'Categorías e ámbitos'
 admin-category-add: Crear unha nova categoría
 admin-category-edit: Editando a categoría %s
 admin-socialcommitment-add: Crear un novo compromiso social
+admin-footprint-edit: Editando a pegada %s
+admin-calls: Convocatorias
 admin-channels: Canles
 admin-yes: Si
+admin-project-to-review-sure: 'O creador non poderá editalo máis, aceptar?'
+admin-project-to-negotiation: 'A negociación'
 admin-project-to-publish: 'Publicar'
 admin-home-title: Administrar Goteo
 admin-list: Listaxe
@@ -167,6 +174,7 @@ admin-title-langs: Traducións
 admin-title-actions: Accións
 admin-title-tags: Etiquetas
 admin-title-deleted: Eliminado
+admin-title-sphere: Ámbito
 admin-title-social_commitment: Compromiso social
 admin-title-sdgs: 'Obxectivos de desenvolvemento sostible'
 admin-title-footprints: 'Pegadas'
