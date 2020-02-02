@@ -88,6 +88,7 @@ social_reward-access: Accede
 social_reward-access_title: 'Accede a este recurso colectivo'
 tooltip-project-bank: 'Se non queres poñela agora poderás poñela máis adiante cando formalicemos o contrato'
 tooltip-project-help-cost: 'Se non tes claro o detalle de custos ou precisas consultarnos algunha cousa, marca esta opción. Tes que rematar e enviar o formulario para poderche asesorar nisto.'
+tooltip-project-help-license: 'Se tes dúbidas canto as licenzas máis axeitadas para os retornos colectivos do teu proxecto, marca esta opción. Tes que rematar e enviar o formulario para poderche asesorar nisto.'
 tooltip-project-scope: 'Indica o impacto xeográfico ó que aspira ter o proxecto (cada categoría inclúe a anterior).'
 tooltip-updates-allow_comments: ' tooltip-updates-allow_comments'
 tooltip-updates-date: tooltip-updates-date
