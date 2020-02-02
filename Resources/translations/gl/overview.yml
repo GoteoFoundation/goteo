@@ -26,16 +26,20 @@ overview-field-name: 'Título do proxecto'
 overview-field-options-currently_avanzado: Avanzado
 overview-field-options-currently_finalizado: Rematado
 overview-field-options-currently_inicial: Inicial
+overview-field-options-scope_global: Global
 overview-field-options-scope_local: Local
 overview-field-options-scope_nacional: Nacional
 overview-field-options-scope_regional: Rexional
+overview-field-play-video: 'Capa do vídeo'
 overview-field-project_location: Localización
 overview-field-related: 'Experiencia previa e equipo'
 overview-field-reward: Recompensas
 overview-field-scope: 'Alcance do proxecto'
 overview-field-subtitle: 'Frase de resumo'
+overview-field-usubs: 'Cargar con Universal Subtitles'
 overview-field-video: 'Vídeo adicional sobre a motivación'
 overview-field-social-category: 'Compromiso social'
+overview-field-social-description: 'Descrición Compromiso social e a súa relación cos ODS seleccionados'
 overview-fields-images-title: 'Imaxes do proxecto'
 overview-main-header: 'Descrición do proxecto'
 step-3: Descrición
@@ -71,4 +75,8 @@ validate-project-value-keywords: 'Indica un mínimo de 5 palabras clave do proxe
 overview-field-execution-plan: 'Plan de execución'
 tooltip-project-execution-plan: 'Explica o teu plan de execución'
 overview-field-sustainability-model: 'Modelo de sostibilidade'
+overview-field-sustainability-model-url: 'URL do teu business canvas'
 tooltip-project-sustainability-model: 'Explica o modelo de sostibilidade do teu proxecto'
+tooltip-project-sustainability-model-url: 'Engade un Url co teu <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">business canvas</a>'
+tooltip-project-sdg: 'Escolle os obxectivos do teu proxecto, tentando seleccionar un máximo de tres.'
+tooltip-project-sdg-suggestion: 'A seguir, suxerímosche algúns ODS que poderían ir ben segundo o compromiso social escollido para o teu proxecto, recomendámosche que consultes <a href="https://www.un.org/sustainabledevelopment/es/objetivos-de-desarrollo-sostenible/" target="_blank">aquí</a> o seu contido.<br><br>'
