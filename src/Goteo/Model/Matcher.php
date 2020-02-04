@@ -236,7 +236,7 @@ class Matcher extends \Goteo\Core\Model {
         if(!$this->created) $this->created = date('Y-m-d');
 
 
-        $fields = ['name', 'description', 'logo', 'lang', 'owner', 'terms', 'processor', 'vars', 'amount', 'used', 'crowd', 'active', 'projects', 'created'];
+        $fields = ['name', 'description', 'logo', 'lang', 'owner', 'terms', 'processor', 'vars', 'amount', 'used', 'crowd', 'active', 'projects', 'created', 'matcher_location'];
         try {
             // Update pool amounts
             foreach($this->getUserPools() as $pool) {
@@ -248,13 +248,13 @@ class Matcher extends \Goteo\Core\Model {
             $this->amount = $this->calculatePoolAmount() + $this->calculateUsedAmount();
             $this->projects = $this->calculateProjects();
 
-            if($this->location instanceOf MatcherLocation) {
-                $this->location->id = $this->id;
-                if($this->location->save($errors)) {
-                    $this->location = $this->location->location ? $this->location->location : $this->location->name;
+            if($this->matcher_location instanceOf MatcherLocation) {
+                $this->matcher_location->id = $this->id;
+                if($this->matcher_location->save($errors)) {
+                    $this->matcher_location = $this->matcher_location->location ? $this->matcher_location->location : $this->matcher_location->name;
                 } else {
                     $fail = true;
-                    unset($this->location);
+                    unset($this->matcher_location);
                 }
             }
             
