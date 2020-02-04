@@ -3940,6 +3940,9 @@ class Project extends \Goteo\Core\Model {
 
         $num_published_projects=self::getList($filters_published, null, 0, 0, true);
 
+        if ($num_published_projects == 0)
+            return 0;
+
         $num_successful_projects=self::getList($filters_succesful, null, 0, 0, true);
 
         $succesful_percentage=round(($num_successful_projects/$num_published_projects)*100,2);
