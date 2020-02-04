@@ -19,6 +19,7 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Payment\Method\PoolPaymentMethod;
 use Goteo\Model\Matcher\MatcherLocation;
+use Goteo\Model\Project\ProjectLocation;
 
 /**
  * Matcher Model
@@ -774,4 +775,30 @@ class Matcher extends \Goteo\Core\Model {
                 ->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Matcher');
 
     }
+    
+    /*
+     *   Get matchers available for a project
+    */
+    static public function getMatchersAvailable(Project $project, $max_distance = null, $filters = ['status' => self::STATUS_OPEN, 'active' => true]){
+
+        $matchers = [];
+        if($location = ProjectLocation::get($project)) {
+            foreach(self::getList($filters) as $matcher) {
+                if($matcher_loc = MatcherLocation::get($matcher)) {
+                    $max = is_null($max_distance) ? ($matcher_loc->radius ? $matcher_loc->radius :  100) : $max_distance;
+                    $distance = MatcherLocation::haversineDistance($location->latitude, $location->longitude, $matcher_loc->latitude, $matcher_loc->longitude);
+                    if($distance < $max) {
+                        $matcher->distance = $distance;
+                        $matchers[] = $matcher;
+                    }
+                }
+            }
+            usort($matchers, function($a, $b) {
+                return $a->distance > $b->distance;
+            });
+        }
+        // TODO Filter by location
+        return $matchers;
+    }
+
 }
