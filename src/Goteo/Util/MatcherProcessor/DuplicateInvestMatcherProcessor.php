@@ -67,9 +67,9 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         }
 
         // Check if there's enough total to extract from user's pool
-        if($matcher->getTotalAmount() < $amount) {
+        if($matcher->getAvailableAmount() < $amount) {
             $error = 'Matcher funds exhausted';
-            $amount = $matcher->getTotalAmount();
+            $amount = $matcher->getAvailableAmount();
         }
 
         return $amount;
