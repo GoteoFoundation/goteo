@@ -19,6 +19,7 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Payment\Method\PoolPaymentMethod;
 use Goteo\Model\Matcher\MatcherLocation;
+use Goteo\Model\Project\ProjectLocation;
 
 /**
  * Matcher Model
@@ -26,9 +27,14 @@ use Goteo\Model\Matcher\MatcherLocation;
 class Matcher extends \Goteo\Core\Model {
     use Traits\SphereRelationsTrait;
 
+
+    const STATUS_OPEN = 0;
+    const STATUS_COMPLETED = 1;
+
     public $id,
            $name,
            $description,
+           $status = self::STATUS_OPEN,
            $logo,
            $lang,
            $owner,
@@ -66,6 +72,7 @@ class Matcher extends \Goteo\Core\Model {
 
         $sql = "SELECT matcher.id,
                        $fields,
+                       matcher.status,
                        matcher.logo,
                        matcher.lang,
                        matcher.owner,
@@ -161,7 +168,7 @@ class Matcher extends \Goteo\Core\Model {
                 $values[":$key"] = $filters[$key];
             }
         }
-        foreach(['id', 'name', 'terms'] as $key) {
+        foreach(['id', 'name', 'terms', 'status'] as $key) {
             if (isset($filters[$key])) {
                 $filter[] = "matcher.$key LIKE :$key";
                 $values[":$key"] = '%'.$filters[$key].'%';
@@ -199,6 +206,7 @@ class Matcher extends \Goteo\Core\Model {
 
         $sql = "SELECT matcher.id,
                        $fields,
+                       matcher.status,
                        matcher.logo,
                        matcher.lang,
                        matcher.owner,
@@ -236,7 +244,7 @@ class Matcher extends \Goteo\Core\Model {
         if(!$this->created) $this->created = date('Y-m-d');
 
 
-        $fields = ['name', 'description', 'logo', 'lang', 'owner', 'terms', 'processor', 'vars', 'amount', 'used', 'crowd', 'active', 'projects', 'created', 'matcher_location'];
+        $fields = ['name', 'description', 'status', 'logo', 'lang', 'owner', 'terms', 'processor', 'vars', 'amount', 'used', 'crowd', 'active', 'projects', 'created', 'matcher_location'];
         try {
             // Update pool amounts
             foreach($this->getUserPools() as $pool) {
@@ -247,6 +255,7 @@ class Matcher extends \Goteo\Core\Model {
             $this->crowd = $this->calculateCrowdAmount();
             $this->amount = $this->calculatePoolAmount() + $this->calculateUsedAmount();
             $this->projects = $this->calculateProjects();
+            $this->status = ($this->calculatePoolAmount()) ? self::STATUS_OPEN : self::STATUS_COMPLETED;
 
             if($this->matcher_location instanceOf MatcherLocation) {
                 $this->matcher_location->id = $this->id;
@@ -757,5 +766,39 @@ class Matcher extends \Goteo\Core\Model {
         return $this;
     }
 
+    public static function getUserMatchersList($user) {
+        $sql = "SELECT *
+        FROM matcher
+        RIGHT JOIN matcher_user ON matcher_user.matcher_id = matcher.id
+        WHERE matcher_user.user_id = :user AND matcher_user.pool";
+        return self::query($sql, [':user' => $user->id])
+                ->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Matcher');
+
+    }
+    
+    /*
+     *   Get matchers available for a project
+    */
+    static public function getMatchersAvailable(Project $project, $max_distance = null, $filters = ['status' => self::STATUS_OPEN, 'active' => true]){
+
+        $matchers = [];
+        if($location = ProjectLocation::get($project)) {
+            foreach(self::getList($filters) as $matcher) {
+                if($matcher_loc = MatcherLocation::get($matcher)) {
+                    $max = is_null($max_distance) ? ($matcher_loc->radius ? $matcher_loc->radius :  100) : $max_distance;
+                    $distance = MatcherLocation::haversineDistance($location->latitude, $location->longitude, $matcher_loc->latitude, $matcher_loc->longitude);
+                    if($distance < $max) {
+                        $matcher->distance = $distance;
+                        $matchers[] = $matcher;
+                    }
+                }
+            }
+            usort($matchers, function($a, $b) {
+                return $a->distance > $b->distance;
+            });
+        }
+        // TODO Filter by location
+        return $matchers;
+    }
 
 }
