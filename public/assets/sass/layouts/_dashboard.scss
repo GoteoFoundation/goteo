@@ -855,3 +855,17 @@ table.social-commitment {
 div.new-material-success {
   margin-top: 20px;
 }
+
+.scoring-container{
+  .label{
+    font-size: 15px; 
+    text-transform: uppercase; 
+    font-weight: normal; 
+    display: inline-block; 
+    padding: 7px 13px;
+    .icon{
+      background-color: $color-white;
+    }
+  }
+
+}
