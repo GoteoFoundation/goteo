@@ -50,7 +50,7 @@ class Matcher extends \Goteo\Core\Model {
            $created,
            $modified_at;
 
-    public static $statuses = ['pending', 'accepted', 'rejected', 'active', 'discarded'];
+    public static $statuses = ['pending', 'accepted', 'rejected', 'active', 'discarded', 'completed'];
 
     public function __construct() {
         $args = func_get_args();
