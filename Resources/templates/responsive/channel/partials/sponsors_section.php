@@ -9,7 +9,7 @@
 	    <?php foreach ($channel->getSponsors() as $sponsor): ?>
 		<?php $sponsor_image=$sponsor->getImage(); ?>
 			<li>
-				<img src="<?= $sponsor_image->getLink(200, 0, false) ?>" >
+				<img src="<?= $sponsor_image->getLink(150, 80, false) ?>" >
 			</li>
 	<?php endforeach; ?>
 		</ul>
