@@ -75,6 +75,15 @@ class Questionnaire extends \Goteo\Core\Model
 
     }
 
+    public function getMaxScore() {
+        $query = static::query('SELECT sum(question.max_score)
+                                FROM question 
+                                WHERE question.questionnaire = :questionnaire
+                                ', [':questionnaire' => $this->id]);
+        
+        return $query->fetchColumn();
+    }
+
     /**
      * Save.
      *

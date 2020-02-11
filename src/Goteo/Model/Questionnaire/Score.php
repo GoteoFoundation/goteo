@@ -83,7 +83,7 @@ class Score extends \Goteo\Core\Model
     static public function getScoreByAnswers($answers = []) {
       $query = static::query('SELECT sum(question_score.score)
                             FROM question_score
-                            WHERE question_score.answer IN (:answers)', [":answers" => implode(",", $answers)]);
+                            WHERE question_score.answer IN (' . implode(",", $answers) . ')');
       $score = $query->fetchColumn();
       return $score;
     }
@@ -104,7 +104,6 @@ class Score extends \Goteo\Core\Model
           $this->dbInsertUpdate($fields);
 
         } catch(\PDOException $e) {
-          print_r($e->getMessage()); die;
           $errors[] = $e->getMessage();
           return false;
       }
