@@ -629,7 +629,9 @@ class Matcher extends \Goteo\Core\Model {
     public function getProjects($status = 'active') {
         $sql = "SELECT a.*,b.status AS matcher_status, b.score FROM project a
                 RIGHT JOIN matcher_project b ON a.id = b.project_id
-                WHERE b.matcher_id = :matcher AND a.status IN (2,3,4,5,6)";
+                WHERE b.matcher_id = :matcher AND a.status IN (2,3,4,5,6)
+                ORDER BY b.score DESC
+                ";
         $values = [':matcher' => $this->id];
         if($status && $status !== 'all') {
             if(!in_array($status, self::$statuses)) {
