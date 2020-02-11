@@ -33,51 +33,67 @@ class GoteoQuestionnaire
     {
         return "
 
-      CREATE TABLE `questionnaire` (
-            `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-            `matcher` VARCHAR(50) NOT NULL,
-            `lang` varchar(3) NOT NULL,
-            PRIMARY KEY (`id`)
+        CREATE TABLE `questionnaire` (
+                `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                `lang` varchar(3) NOT NULL,
+                PRIMARY KEY (`id`)
+            );
+
+        CREATE TABLE `questionnaire_matcher` (
+            `questionnaire` BIGINT(20) UNSIGNED NOT NULL,
+            `matcher` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+            PRIMARY_KEY (`questionnaire`),
+            CONSTRAINT `questionnaire_matcher_ibfk` FOREIGN KEY (`questionnaire`) REFERENCES `questionnaire` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+            CONSTRAINT `questionnaire_matcher_ibfk_2` FOREIGN KEY (`matcher`) REFERENCES `matcher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );
 
-      CREATE TABLE `question` (
-          `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-          `questionnaire` BIGINT(20) UNSIGNED NOT NULL,
-          `lang` varchar(3) NOT NULL,
-          `title` text,
-          `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
-          `vars` text,
-          PRIMARY KEY (`id`),
-          CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`questionnaire`) REFERENCES `questionnaire` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-      );
-        
-      CREATE TABLE `question_lang` (
-          `question` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-          `lang` varchar(3) NOT NULL,
-          `title` text,
-          CONSTRAINT `question_lang_ibfk_1` FOREIGN KEY (`question`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-      );
+        CREATE TABLE `question` (
+            `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `questionnaire` BIGINT(20) UNSIGNED NOT NULL,
+            `lang` varchar(3) NOT NULL,
+            `title` text,
+            `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+            `max_score` INT(2),
+            `vars` text,
+            PRIMARY KEY (`id`),
+            CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`questionnaire`) REFERENCES `questionnaire` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+        );
+            
+        CREATE TABLE `question_lang` (
+            `question` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `lang` varchar(3) NOT NULL,
+            `title` text,
+            CONSTRAINT `question_lang_ibfk_1` FOREIGN KEY (`question`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+        );
 
-      CREATE TABLE `questionnaire_answer` (
-          `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-          `questionnaire` BIGINT(20) UNSIGNED NOT NULL,
-          `project` VARCHAR(50) NOT NULL COLLATE utf8_general_ci,
-          PRIMARY KEY (`id`),
-          CONSTRAINT `questionnaire_answer_project` FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-          CONSTRAINT `questionnaire_answer_ibfk_1` FOREIGN KEY (`questionnaire`) REFERENCES `questionnaire` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-      );
+        CREATE TABLE `question_answer` (
+            `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `question` BIGINT(20) UNSIGNED NOT NULL,
+            `answer` TEXT,
+            PRIMARY KEY (`id`),
+            CONSTRAINT `question_answer_question` FOREIGN KEY (`question`) REFERENCES `question` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        );
 
-      CREATE TABLE `question_answer` (
-        `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-        `questionnaire_answer` BIGINT(20) UNSIGNED NOT NULL,
-        `question` BIGINT(20) UNSIGNED NOT NULL,
-        `answer` TEXT,
-        PRIMARY KEY (`id`),
-        CONSTRAINT `question_answer_answer` FOREIGN KEY (`questionnaire_answer`) REFERENCES `questionnaire_answer` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-        CONSTRAINT `question_answer_question` FOREIGN KEY (`question`) REFERENCES `question` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
-      );
+        CREATE TABLE `question_answer_project` (
+            `answer` BIGINT(20) UNSIGNED NOT NULL,
+            `project` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+            CONSTRAINT `question_answer_ibfk` FOREIGN KEY (`answer`) REFERENCES `question_answer` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+            CONSTRAINT `question_answer_project_ibfk` FOREIGN KEY (`project`) REFERENCES `project` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        );
 
-      ALTER TABLE `document` CHANGE `contract` `contract` VARCHAR(50) NULL;
+        CREATE TABLE `question_score` (
+            `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `question` BIGINT(20) UNSIGNED NOT NULL,
+            `answer` BIGINT(20) UNSIGNED NOT NULL,
+            `score` INT(3) NOT NULL,
+            `evaluator` VARCHAR(50) COLLATE utf8_general_ci NOT NULL,
+            PRIMARY KEY (`id`),
+            CONSTRAINT `question_score_question` FOREIGN KEY (`question`) REFERENCES `question`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+            CONSTRAINT `question_score_evaluator` FOREIGN KEY (`evaluator`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+            CONSTRAINT `question_score_answer` FOREIGN_KEY (`answer`) REFERENCES `question_answer` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        );
+
+        ALTER TABLE `document` CHANGE `contract` `contract` VARCHAR(50) NULL;
 
      ";
     }
@@ -90,11 +106,14 @@ class GoteoQuestionnaire
     public function getDownSQL()
     {
         return "
+        DROP TABLE `question_score`;
+        DROP TABLE `question_answer_project`;
         DROP TABLE `question_answer`;
         DROP TABLE `question_lang`;
         DROP TABLE `question`;
-        DROP TABLE `questionnaire_answer`;
-        DROP TABLE `questionnaire`;    ";
+        DROP TABLE `questionnaire_matcher`;
+        DROP TABLE `questionnaire`;
+        ";
     }
 
 }
