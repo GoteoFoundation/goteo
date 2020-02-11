@@ -10,3 +10,4 @@ questionnaire-dropfiles: 'Document'
 questionnaire-add-question: "Afegir pregunta"
 questionnaire-answer: "Resposta"
 questionnaire-scoring-mark: "Puntuació"
+questionnaire-scoring-save: "Puntuació guardada correctament"
