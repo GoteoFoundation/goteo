@@ -48,7 +48,7 @@ class GoteoMatcherAdmin
                 CONSTRAINT `matcher_conf_ibfk_1` FOREIGN KEY (`matcher`) REFERENCES `matcher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
             )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-            ALTER TABLE `matcher_project` ADD COLUMN score INT (3) after `status`;
+            ALTER TABLE `matcher_project` ADD COLUMN score INT (3) DEFAULT 0 after `status`;
      ";
   }
 
@@ -61,6 +61,7 @@ class GoteoMatcherAdmin
   {
      return "
             ALTER TABLE `matcher` DROP COLUMN description;
+            ALTER TABLE `matcher` DROP COLUMN status;
             ALTER TABLE `matcher_lang` DROP COLUMN description;
             ALTER TABLE `matcher_project` DROP COLUMN score;
             DROP TABLE `matcher_conf`;
