@@ -42,7 +42,7 @@ class GoteoQuestionnaire
         CREATE TABLE `questionnaire_matcher` (
             `questionnaire` BIGINT(20) UNSIGNED NOT NULL,
             `matcher` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
-            PRIMARY_KEY (`questionnaire`),
+            PRIMARY KEY (`questionnaire`),
             CONSTRAINT `questionnaire_matcher_ibfk` FOREIGN KEY (`questionnaire`) REFERENCES `questionnaire` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
             CONSTRAINT `questionnaire_matcher_ibfk_2` FOREIGN KEY (`matcher`) REFERENCES `matcher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );
@@ -90,7 +90,7 @@ class GoteoQuestionnaire
             PRIMARY KEY (`id`),
             CONSTRAINT `question_score_question` FOREIGN KEY (`question`) REFERENCES `question`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
             CONSTRAINT `question_score_evaluator` FOREIGN KEY (`evaluator`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-            CONSTRAINT `question_score_answer` FOREIGN_KEY (`answer`) REFERENCES `question_answer` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+            CONSTRAINT `question_score_answer` FOREIGN KEY (`answer`) REFERENCES `question_answer` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
 
         ALTER TABLE `document` CHANGE `contract` `contract` VARCHAR(50) NULL;
