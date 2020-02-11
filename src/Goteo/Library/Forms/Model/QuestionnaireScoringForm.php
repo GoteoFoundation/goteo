@@ -90,7 +90,8 @@ class QuestionnaireScoringForm extends AbstractFormProcessor implements FormProc
         foreach($data as $key => $val) {
           list($score_id, $field) = explode('_', $key);
           $score = Score::get($score_id);
-          $score->score = $val;
+          $question = Question::get($score->question);
+          $score->score = ($val < 0)? 0 : (($val > $question->max_score)? $question->max_score : $val);
           $score->save();
         }
         
