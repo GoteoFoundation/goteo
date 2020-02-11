@@ -644,6 +644,34 @@ class Matcher extends \Goteo\Core\Model {
         return [];
     }
 
+    /**
+     * Return projects
+     * @return [type] [description]
+     */
+    public function getListProjects($status = 'active') {
+        $sql = "SELECT a.*,b.status AS matcher_status FROM project a
+                RIGHT JOIN matcher_project b ON a.id = b.project_id
+                WHERE b.matcher_id = :matcher AND a.status IN (2,3,4,5,6)";
+        $values = [':matcher' => $this->id];
+        if($status && $status !== 'all') {
+            if(!in_array($status, self::$statuses)) {
+                throw new ModelException("Status [$status] not valid");
+            }
+            $sql .= ' AND b.status = :status';
+            $values[':status'] = $status;
+        }
+
+        // die(\sqldbg($sql, $values));
+        $query = self::query($sql, $values);
+
+        $projects = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project');
+
+        foreach ($projects as $proj) {
+                    $projects_list[] = Project::getWidget($proj);
+                }
+        return $projects_list;
+    }
+
     /*
      *   Porcentage of sucess projects
     */
