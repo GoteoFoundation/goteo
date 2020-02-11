@@ -14,6 +14,7 @@ class Question extends \Goteo\Core\Model
     $questionnaire,
     $lang,
     $order,
+    $max_score,
     $vars;
 
     static public function getTypes()
@@ -76,6 +77,7 @@ class Question extends \Goteo\Core\Model
         'questionnaire',
         'lang',
         'order',
+        'max_score',
         'vars'
         );
 

@@ -12,7 +12,6 @@ class Questionnaire extends \Goteo\Core\Model
 
     public
     $id,
-    $matcher,
     $lang,
     $questions;
 
@@ -64,13 +63,25 @@ class Questionnaire extends \Goteo\Core\Model
         $lang = Lang::current();
         // list($fields, $joins) = self::getLangsSQLJoins($lang);
 
-        $query = static::query('SELECT * FROM questionnaire WHERE matcher = :id', array(':id' => $mid));
+        $query = static::query('SELECT * 
+                                FROM questionnaire 
+                                INNER JOIN questionnaire_matcher
+                                ON questionnaire_matcher.matcher = :matcher', array(':matcher' => $mid));
         $questionnaire = $query->fetchObject(__CLASS__);
         if ($questionnaire instanceOf Questionnaire)
             $questionnaire->questions = Question::getByQuestionnaire($questionnaire->id);
 
         return $questionnaire;
 
+    }
+
+    public function getMaxScore() {
+        $query = static::query('SELECT sum(question.max_score)
+                                FROM question 
+                                WHERE question.questionnaire = :questionnaire
+                                ', [':questionnaire' => $this->id]);
+        
+        return $query->fetchColumn();
     }
 
     /**
@@ -86,13 +97,21 @@ class Questionnaire extends \Goteo\Core\Model
 
         $fields = array(
             'id',
-            'lang',    
-            'matcher'
+            'lang'
             );
 
         try {
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
+
+            if ($this->matcher) {
+                $sql = "REPLACE INTO questionnaire_matcher VALUES(:questionnaire, :matcher)";
+                $values = [":questionnaire" => $this->id, ":matcher" => $this->matcher];
+
+                // die(\sqldbg($sql, $values));
+                static::query($sql, $values);
+            }
+
             return true;
         } catch(\PDOException $e) {
             $errors[] = "Save error " . $e->getMessage();

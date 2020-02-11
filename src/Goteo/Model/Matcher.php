@@ -20,6 +20,9 @@ use Goteo\Application\Exception\ModelException;
 use Goteo\Payment\Method\PoolPaymentMethod;
 use Goteo\Model\Matcher\MatcherLocation;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Questionnaire;
+use Goteo\Model\Questionnaire\Answer;
+use Goteo\Model\Questionnaire\Score;
 
 /**
  * Matcher Model
@@ -624,7 +627,7 @@ class Matcher extends \Goteo\Core\Model {
      * @return [type] [description]
      */
     public function getProjects($status = 'active') {
-        $sql = "SELECT a.*,b.status AS matcher_status FROM project a
+        $sql = "SELECT a.*,b.status AS matcher_status, b.score FROM project a
                 RIGHT JOIN matcher_project b ON a.id = b.project_id
                 WHERE b.matcher_id = :matcher AND a.status IN (2,3,4,5,6)";
         $values = [':matcher' => $this->id];
@@ -793,6 +796,37 @@ class Matcher extends \Goteo\Core\Model {
         }
         return $this;
     }
+
+    /**
+     * [updateProjectScore description]
+     * @param [type] $project [description]
+     * @param [type] $bool [description]
+     */
+    public function updateProjectScore($pid) {
+        if($pid instanceOf Project) $pid = $pid->id;
+        $questionnaire = Questionnaire::getByMatcher($this->id);
+        $answers = Answer::getList(['project' => $pid, 'questionnaire' => $questionnaire->id]);
+        $answers_id = [];
+        foreach($answers as $index => $answer) {
+            $answers_id[] = $answer->id;
+        }
+        $score = Score::getScoreByAnswers($answers_id);
+        
+        $sql = "UPDATE matcher_project SET score = :score WHERE matcher_id = :matcher AND project_id = :project";
+        $values = [':matcher' => $this->id, ':project' => $pid, ':score' => $score];
+        try {
+            self::query($sql, $values);
+            $errors = [];
+            if(!$this->save($errors)) {
+                throw new ModelException("Error updating totals: " . implode("\n", $errors));
+            }
+        } catch (\PDOException $e) {
+            throw new ModelException('Failed to change project matcher status: ' . $e->getMessage());
+        }
+        return $this;
+    }
+
+
 
     public static function getUserMatchersList($user) {
         $sql = "SELECT *

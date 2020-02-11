@@ -17,7 +17,6 @@ class Answer extends \Goteo\Core\Model
 
     public
       $id,
-      $questionnaire_answer,
       $question,
       $answer;
 
@@ -34,7 +33,6 @@ class Answer extends \Goteo\Core\Model
         }
 
         $fields = array(
-            'questionnaire_answer',
             'question',
             'answer'
             );
@@ -42,6 +40,16 @@ class Answer extends \Goteo\Core\Model
         try {
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
+
+            if ($this->project) {
+                $sql = "REPLACE INTO question_answer_project VALUES(:question, :project)";
+                $values = [":question" => $this->id, ":project" => $this->project];
+                
+                // die(\sqldbg($sql, $values));
+                static::query($sql, $values);
+            }
+
+
             return true;
         } catch(\PDOException $e) {
             Message::error($e->getMessage());
@@ -52,19 +60,48 @@ class Answer extends \Goteo\Core\Model
     }
 
     /**
-     * Get answers by questionnaire answer id
-     *
-     * @param  int $id questionnaire answer id.
-     * @return Answer object
+     * Lists answers
+     * @param  array   $filters [description]
+     * @param  [type]  $offset  [description]
+     * @param  integer $limit   [description]
+     * @param  boolean $count   [description]
+     * @param  string  $lang    [description]
+     * @return array[Answer]
      */
-    static public function getByQuestionnaireAnswer($qid)
-    {
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
+        $values = [];
+        $filter = [];
+        $sqlInner = "";
 
-        $query = static::query('SELECT * FROM question_answer WHERE questionnaire_answer = :id', array(':id' => $qid));
-        $questionnaire_answer = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        if ($filters['questionnaire']) {
+            $sqlInner .= "LEFT JOIN question
+            ON question.questionnaire = :questionnaire AND question_answer.question = question.id
+            ";
+            $values[":questionnaire"] = $filters['questionnaire'];
+        }
+        if ($filters['project']) {
+            $sqlInner .= "INNER JOIN question_answer_project
+            ON question_answer_project.project = :project AND question_answer.id = question_answer_project.answer";
+            $values[":project"] = $filters["project"];
+        }
+        
+        if ($count) {
+            $sql = "SELECT count(id)
+                    FROM question_answer
+                    $sqlInner
+                    ";
+            return (int) self::query($sql, $values)->fetchColumn();
+        }
 
-        return $questionnaire_answer;
+        $sql = "SELECT question_answer.*
+                FROM question_answer
+                $sqlInner";
 
+        // die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $answers = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+
+        return $answers;
     }
 
 }
