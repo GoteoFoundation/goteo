@@ -70,6 +70,16 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                 ]
             )
             ->add(
+                $question->id . '_max_score', 'number', [
+                'label' => Text::get('questionnaire-max-score'),
+                'data' => $question->max_score,
+                'required' => true,
+                'attr' => [
+                    'help' => Text::get('questionnaire-max-score-help')
+                    ]
+                ]
+            )
+            ->add(
                 $question->id . '_question', 'textarea', [
                 'label' => Text::get('questionnaire-text'),
                 'data' => $question->title,
@@ -94,7 +104,7 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
         $questionnaire = $this->getModel();
         $builder = $this->getBuilder();
 
-        foreach((array) $questionnaire->questions as $question) {
+        foreach($questionnaire->questions as $question) {
             $this->addQuestion($question);
         }
         

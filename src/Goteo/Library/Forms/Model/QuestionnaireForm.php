@@ -16,7 +16,6 @@ use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
-use Goteo\Model\Questionnaire\Answers;
 use Goteo\Model\Questionnaire\Answer;
 use Goteo\Model\Questionnaire\Question;
 use Symfony\Component\Validator\Constraints;
@@ -73,14 +72,10 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
         
         // $data = $form->getData();
         $data = array_intersect_key($form->getData(), $form->all());
-        $answers = new Answers();
-        $answers->project  = $this->model->project_id;
-        $answers->questionnaire = $this->model->id;
-        $answers->save();
         
         foreach($data as $key => $value) {
             $answer = new Answer();
-            $answer->questionnaire_answer = $answers->id;
+            $answer->project  = $this->model->project_id;
             $answer->question = $key;
             $answer->answer = $value; 
             if (Question::get($key)->vars->type == "dropfiles") { 
