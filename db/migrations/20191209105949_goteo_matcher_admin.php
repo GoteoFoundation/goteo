@@ -63,6 +63,7 @@ class GoteoMatcherAdmin
             ALTER TABLE `matcher` DROP COLUMN description;
             ALTER TABLE `matcher` DROP COLUMN status;
             ALTER TABLE `matcher_lang` DROP COLUMN description;
+            ALTER TABLE `matcher` DROP COLUMN status;
             ALTER TABLE `matcher_project` DROP COLUMN score;
             DROP TABLE `matcher_conf`;
      ";
