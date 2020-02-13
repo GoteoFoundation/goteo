@@ -133,4 +133,13 @@ class MatchersApiController extends AbstractApiController {
         return $this->jsonResponse($properties);
     }
 
+    public function uploadImagesAction(Request $request) {
+        if(!$this->user)
+            throw new ControllerAccessDeniedException();
+
+        $result = $this->genericFileUpload($request, 'file'); // 'file' is the expected form input name in the post object
+        return $this->jsonResponse($result);
+    }
+
+
 }

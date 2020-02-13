@@ -471,6 +471,15 @@ body.matchfunding-landing {
       }
     }
 
+    .text-cyan {
+      color: $color-cyan;
+    }
+
+    .matcher-contact-input {
+      background-color: $background-blue;
+    }
+
+
 
     @media (max-width: $breakpoint-sm - 1) 
     {
@@ -515,4 +524,31 @@ body.matchfunding-landing {
 
 }
 
+body.matcher-landing {
+  background-color: white;
+        
+  .top-navbar {
+      background-color: #B30097;
+      margin-bottom: 1em;
+  }
 
+  .matcher-info {
+    .description {
+      color: #537880;
+      font-size: 14px;
+      margin: 1em;
+    }
+  }
+
+  .matcher-title {
+    color: #B30097;
+    margin: 1em;
+  }
+
+  .matcher-logo {
+    width: 100px;
+    margin-top: 2em;
+  }
+
+
+}

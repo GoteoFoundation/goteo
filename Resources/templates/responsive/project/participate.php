@@ -30,48 +30,69 @@
 				<?php foreach($this->investors_list as $invest): ?>
 					<div class="invest">
 						<div class="row info">
-							<div class="pull-left">
-								<?php if($invest->user!= 'anonymous'): ?>
-									<a href="/user/<?= $invest->user ?>"><img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true) ?>">
-									</a>
-								<?php else: ?>
-									<img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true) ?>">
-								<?php endif ?>
-							</div>
-							<div class="pull-left personal">
-								<h3 class="name" id="invest-<?= $invest->id ?>">
-								<?php if($invest->user!= 'anonymous'): ?>
-								<a href="/user/<?= $invest->user ?>"><?= ucfirst($invest->name) ?></a>
-								<?php else: ?>
-									<?= ucfirst($invest->name) ?>
-								<?php endif;?>
-								</h3>
-								<div class="worth"><?= $this->worthcracy[$invest->worth]->name ?></div>
-							</div>
-                            <?php if ($invest->droped || $invest->campaign) : ?>
-                                <div class="pull-right text-right drop">
-                                    <div>
-                                        <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>">
-                                    </div>
-							      <?php if ($invest->method === 'drop'): ?>
-									<div class="x2">
-									x2
+							<?php if($invest->matcher): ?>
+								<div class="pull-left drop-logo">
+	                                <div>
+	                                    <img width="60" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>">
+	                                </div>
+		                        </div>
+		                        <div class="pull-left matcher-img">
+		                        	<a href="/user/<?= $invest->user ?>">
+		                        		<img src="<?= $invest->avatar->getLink(0, 50, false) ?>">
+		                        	</a>
+								</div>
+								<div class="pull-right text-right">
+									<div>
+									<?= $this->text('project-invest') ?>
 									</div>
-							       <?php endif ?>
-                                </div>
-                            <?php endif ?>
-							<div class="pull-right text-right">
-								<div>
-								<?= $this->text('project-invest') ?>
+									<div class="amount">
+									<?= amount_format($invest->amount) ?>
+									</div>
 								</div>
-								<div class="amount">
-								<?= amount_format($invest->amount) ?>
+							<?php else: ?>
+								<div class="pull-left">
+									<?php if($invest->user!= 'anonymous'): ?>
+										<a href="/user/<?= $invest->user ?>"><img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true) ?>">
+										</a>
+									<?php else: ?>
+										<img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true) ?>">
+									<?php endif ?>
 								</div>
-							</div>
+								<div class="pull-left personal">
+									<h3 class="name" id="invest-<?= $invest->id ?>">
+									<?php if($invest->user!= 'anonymous'): ?>
+									<a href="/user/<?= $invest->user ?>"><?= ucfirst($invest->name) ?></a>
+									<?php else: ?>
+										<?= ucfirst($invest->name) ?>
+									<?php endif;?>
+									</h3>
+									<div class="worth"><?= $this->worthcracy[$invest->worth]->name ?></div>
+								</div>
+	                            <?php if ($invest->droped || $invest->campaign) : ?>
+	                                <div class="pull-right text-right drop">
+	                                    <div>
+	                                        <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>">
+	                                    </div>
+								      <?php if ($invest->method === 'drop'): ?>
+										<div class="x2">
+										x2
+										</div>
+								       <?php endif ?>
+	                                </div>
+	                            <?php endif ?>
+								<div class="pull-right text-right">
+									<div>
+									<?= $this->text('project-invest') ?>
+									</div>
+									<div class="amount">
+									<?= amount_format($invest->amount) ?>
+									</div>
+								</div>
+							<?php endif; ?>
 						</div>
 
 						<div class="row chart">
-							<div class="green <?= $invest->worth==5 ? 'full-bar' : ''  ?> <?= empty($invest->worth) ? 'hidden' : ''  ?>" <?php if($invest->worth!=5): ?> style="width:<?= $invest->worth*20-1 ?>%; border-top-right-radius: 0px; border-bottom-right-radius: 0px;" <?php endif ?> >
+							<div class="<?= $invest->matcher ? 'blue' : 'green' ?> <?= $invest->worth==5 ? 'full-bar' : ''  ?> <?= empty($invest->worth) ? 'hidden' : ''  ?>" <?php if($invest->worth!=5): ?> style="width:<?= $invest->worth*20-1 ?>%; border-top-right-radius: 0px; border-bottom-right-radius: 0px;" <?php endif ?> >
 							</div>
 							<div class="grey <?= empty($invest->worth) ? 'full-bar' : ''  ?>" <?php if(!empty($invest->worth)): ?> style="width:<?= 100-$invest->worth*20 ?>%; border-top-left-radius: 0px; border-bottom-left-radius: 0px;" <?php endif ?> >
 							</div>

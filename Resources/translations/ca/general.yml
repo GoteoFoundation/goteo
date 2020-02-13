@@ -148,6 +148,7 @@ regular-news: 'Notícies: '
 regular-no: 'No'
 regular-of: de
 regular-preview: Previsualitzar 
+regular-evaluate: Avaluar
 regular-projects: projectes
 regular-published_no: Esborrany
 regular-published_yes: Publicat
@@ -208,6 +209,7 @@ regular-amount: Import
 regular-copied: 'Copiat al porta-retalls!'
 regular-remember-me: 'Recorda''m'
 regular-next: Següent
+regular-write-description: 'Escriu un text descriptiu...'
 session-about-to-expire: 'La teva sessió expirarà en 10 minuts. ¿Vols recarregar la pàgina per renovar-la?'
 session-expired: 'La teva sessió ha expirat!'
 stories-user-project: '%s, del projecte: %s'

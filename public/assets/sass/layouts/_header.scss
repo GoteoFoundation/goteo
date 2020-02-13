@@ -298,6 +298,10 @@
     }
   }
 
+  &.lilac{
+    background-color: $color-lilac;
+  }
+
   // Blog, admin, corporative
   &.yellow, &.light-yellow{
     background-color: $background-dark-yellow;
