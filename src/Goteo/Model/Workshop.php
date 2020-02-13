@@ -69,6 +69,7 @@ class Workshop extends \Goteo\Core\Model {
                     workshop.date_in,
                     workshop.date_out,
                     workshop.schedule_file_url,
+                    workshop.terms_file_url,
                     $fields,
                     workshop.url,
                     workshop.call_id,
@@ -408,7 +409,8 @@ d                :viewLang as viewLang
             'how_to_get',
             'map_iframe',
             'workshop_location',
-            'schedule_file_url'
+            'schedule_file_url',
+            'terms_file_url'
         );
 
         if($this->call_id) $fields[] = 'call_id';
