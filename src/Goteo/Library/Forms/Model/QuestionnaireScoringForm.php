@@ -21,6 +21,7 @@ use Goteo\Model\Questionnaire\Question;
 use Goteo\Model\Questionnaire;
 use Goteo\Model\Contract\Document;
 use Goteo\Model\Questionnaire\Score;
+use Goteo\Model\Image;
 
 class QuestionnaireScoringForm extends AbstractFormProcessor implements FormProcessorInterface
 {
@@ -66,6 +67,17 @@ class QuestionnaireScoringForm extends AbstractFormProcessor implements FormProc
             
           ])
           ;
+
+          if ($type == "dropfiles") {
+            $builder->add(
+              $scoring_answers[$index]->id . "_file", "dropfiles", [
+                'label' => 'Resposta',
+                // 'data' => Document::get($answer->answer),
+                'data' => Image::get($answer->answer),
+                'disabled' => $this->getReadonly()
+              ]
+            );
+          }
         }
 
         $builder->add(

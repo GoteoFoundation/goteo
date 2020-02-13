@@ -21,6 +21,7 @@ class Questionnaire extends \Goteo\Core\Model
             'textarea' => Text::get('questionnaire-textarea'), 
             'boolean' => Text::get('questionnaire-boolean'),
             'dropfiles' => Text::get('questionnaire-dropfiles')
+            // 'choice' => Text::get('questionnaire-choice')
         ];
     }
 

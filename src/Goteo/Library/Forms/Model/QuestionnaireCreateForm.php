@@ -45,7 +45,6 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
 
     public function addQuestion($question)
     {
-
         $config = $question->vars;
         
         if ($config->attr) { $config->attr = (array) $config->attr;
@@ -54,7 +53,8 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
             $config->url = '/api/matcher/' . $question->matcher . '/project/' . $this->model->project_id . '/documents';
             $config->constraints = $this->getConstraints('docs');
         }
-        $this->getBuilder()
+        $builder = $this->getBuilder();
+        $builder
             ->add(
                 $question->id . '_typeofquestion', 'choice', [
                 'label' => Text::get('questionnaire-type-of-question'),
@@ -95,7 +95,22 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                     'data-confirm' => Text::get('project-remove-reward-confirm')
                     ]
                 ]
-            );
+            )->add(
+                $question->id . "_choice_answer", 'text', [
+                    'label' => 'Resposta'
+            ]);
+
+        if ($config->type == "choice") {
+            foreach ($config->vars->choices as $key => $value) {
+                $builder
+                    ->add(
+                        $question->id . "_choice_" . $key, 'text', [
+                            'label' => 'Resposta',
+                            'data' => $value
+                        ]
+                    );
+            }
+        }
 
     }
     
@@ -104,8 +119,10 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
         $questionnaire = $this->getModel();
         $builder = $this->getBuilder();
 
-        foreach($questionnaire->questions as $question) {
-            $this->addQuestion($question);
+        if ($questionnaire->questions) {
+            foreach($questionnaire->questions as $question) {
+                $this->addQuestion($question);
+            }
         }
         
         $builder->add(

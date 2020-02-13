@@ -20,9 +20,24 @@
         </div>
       </div>
     </div>
+
     
     <?= $this->form_row($form[$this->question->id . "_question"]) ?>
+
+    <div class="form-group">
+      <div class="input-wrap">
+        <?php if ($this->question->type == "choice") : ?>
+          <?php foreach ($this->question->vars->choice as $key => $value) : ?>
+            <?= $this->form_row($form[$this->question->id] . "_choice_" . $key) ?>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </div>
+    </div>
     
     <div class="remove"><?= $this->form_row($form[$this->question->id . "_remove"], [],  true) ?></div>
   </div>
 </div>
+
+<template id="new_choice_answer" >
+  <?= $this->form_row($form[$this->question->id . "_choice_answer"]) ?>
+</template>
