@@ -76,7 +76,9 @@ class Workshop extends \Goteo\Core\Model {
                     workshop.city,
                     workshop.venue_address,
                     workshop.header_image,
-                    workshop.map_iframe
+                    workshop.map_iframe,
+                    workshop.how_to_get,
+                    workshop.type
               FROM workshop
               $joins
               WHERE workshop.id = ?";
@@ -231,7 +233,7 @@ class Workshop extends \Goteo\Core\Model {
                 workshop.venue,
                 workshop.city,
                 workshop.venue_address,
-                :viewLang as viewLang
+d                :viewLang as viewLang
 
             FROM workshop
             $joins
