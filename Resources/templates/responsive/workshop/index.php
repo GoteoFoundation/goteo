@@ -33,4 +33,6 @@ $this->section('workshop-content');
 
 <?= $this->workshop->type=='fundlab-esil' ? $this->insert('workshop/partials/partner') : '' ?>
 
+<?= $this->workshop->type=='crowdcoop' ? $this->insert('workshop/partials/partner_singulars') : '' ?>
+
 <?php $this->replace() ?>
