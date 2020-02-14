@@ -72,7 +72,7 @@ class QuestionnaireScoringForm extends AbstractFormProcessor implements FormProc
             $builder->add(
               $scoring_answers[$index]->id . "_file", "dropfiles", [
                 'label' => 'Resposta',
-                'data' => Document::get($answer->answer),
+                'data' => Document::getByName($answer->answer),
                 'type' => 'pdf',
                 'disabled' => $this->getReadonly()
               ]

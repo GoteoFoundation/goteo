@@ -45,7 +45,7 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
             }
             if ($type == "dropfiles") {
                 
-                $question->vars->url = '/api/matcher/' . $questionnaire->matcher . '/project/' . $this->model->project_id . '/documents';
+                $question->vars->url = '/api/questionnaire/documents';
                 $question->vars->constraints = $this->getConstraints('docs');
             }
             $question->vars->label = $question->title;
@@ -81,7 +81,7 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 $document = new Document();
                 $document = $value[0];
                 $document->save();
-                $answer->answer = $value[0]->id; 
+                $answer->answer = $document->id; 
             }
             $answer->save();
         }
