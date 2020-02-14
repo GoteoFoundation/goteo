@@ -234,7 +234,7 @@ class Workshop extends \Goteo\Core\Model {
                 workshop.venue,
                 workshop.city,
                 workshop.venue_address,
-d                :viewLang as viewLang
+                :viewLang as viewLang
 
             FROM workshop
             $joins
