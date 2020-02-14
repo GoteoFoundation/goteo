@@ -560,7 +560,8 @@ class ProjectsApiController extends AbstractApiController {
                      Text::get('personal-field-location'),
                      Text::get('personal-field-zipcode'),
                      Text::get('personal-field-country'),
-                     Text::get('regular-date')];
+                     Text::get('regular-date'),
+                     Text::get('invest-extra-info')];
             fputcsv($buffer, $data);
             flush();
             fclose($buffer);
@@ -579,6 +580,7 @@ class ProjectsApiController extends AbstractApiController {
                     $zipcode=$a->zipcode;
                     $country= $a->country;
                     $reward = $inv->getRewards() ? $inv->getRewards()[0]->getTitle() : '';
+                    $extra_info = $inv->extra_info;
                     if($inv->resign) {
                         $reward = $address = '';
                         if($inv->anonymous) {
@@ -605,7 +607,8 @@ class ProjectsApiController extends AbstractApiController {
                              $location,
                              $zipcode,
                              $country,
-                             date_formater($inv->invested) ];
+                             date_formater($inv->invested),
+                             $extra_info ];
                     fputcsv($buffer, $data);
                 }
                 $offset += $limit;

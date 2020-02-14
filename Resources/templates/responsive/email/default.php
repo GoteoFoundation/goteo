@@ -175,7 +175,7 @@
                         <!-- PROMOTED PROJECTS -->
                         <?php foreach($this->promotes as $key => $promote) : ?>
                         
-                        <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key]); ?>
+                        <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key, 'total' => count($this->promotes), 'lang' => $this->lang]); ?>
                         
                         <?php endforeach ?>
 
@@ -196,7 +196,7 @@
                                                 <td align="left">
                                                     <p>
                                                         <a style="color: #ffffff; padding: 13px 0; background-color: #19b4b2; display: inline-block; padding: 6px 12px; margin-bottom: 0;font-size: 14px;font-weight: 400; line-height: 1.42857143; text-align: center; white-space: nowrap; cursor: pointer; border: 1px solid transparent; border-radius: 4px; text-decoration: none;" href="https://goteo.org/discover">
-                                                            <?= $this->text('mailer-more-projects-button') ?>    
+                                                            <?= $this->t('mailer-more-projects-button', $this->lang) ?>    
                                                             </a>
                                                     </p>
                                                 </td>
@@ -244,7 +244,7 @@
                         <tr>
                             <td class="column" align="center" valign="top" style="max-width: 900px; padding: 20px 0; display: block; margin: 0 auto;">
                                 <p class="pd-description">
-                                 <?= $this->text('mailer-disclaimer') ?>   
+                                 <?= $this->t('mailer-disclaimer', $this->lang) ?>   
                                 </p>                                    
                             </td>
                         </tr>
@@ -259,7 +259,7 @@
                                         <tr>
                                             <td colspan="0" align="center">
                                                 <p style="color: #FFF;">
-                                                <?= $this->text('footer-platoniq-iniciative') ?>
+                                                <?= $this->t('footer-platoniq-iniciative', $this->lang) ?>
                                                 </p>
                                             </td>
                                             <td style="padding-right: 10px;" colspan="0" align="center">

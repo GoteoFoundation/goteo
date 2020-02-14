@@ -141,4 +141,45 @@ $(function () {
             mdeditor[i].render();
           });
     }
+
+    function refreshMailValues() {
+        $("tr[id^='tr-']").each(function(index) { 
+
+            if (document.getElementsByClassName('model-communication').length > 0) {
+                $.ajax({
+                   url: '/api/communication/' + $(this).find('.td-id').find('.id')[0].innerHTML + '/success',
+                   'method': 'GET',
+               })
+               .done(function(data){
+                   $("tr[id^='tr-"+ data.id +"']").find('.td-success').find('.text').children()[0].innerHTML = data.success + " %";
+               });
+            }
+            else if (document.getElementsByClassName('model-mail').length > 0) {
+                $(this).find('.td-id').addClass('loading');
+                $.ajax({
+                    url: '/api/communication/' + document.getElementById('communication-id').innerHTML + '/mail/' + $(this).find('.td-id').find('.id')[0].innerHTML,
+                    'method': 'GET'
+                })
+                .done(function(data){
+
+                    if (data.status !== "sent") {
+                        $("tr[id^='tr-"+ data.id +"']").find('.td-sent').find('.text')[0].innerHTML = data.sent;
+                        $("tr[id^='tr-"+ data.id +"']").find('.td-failed').find('.text')[0].innerHTML = data.failed;
+                        $("tr[id^='tr-"+ data.id +"']").find('.td-pending').find('.text')[0].innerHTML = data.pending;
+                        $("tr[id^='tr-"+ data.id +"']").find('.td-status').find('.text')[0].innerHTML = data.status;
+                        $("tr[id^='tr-"+ data.id +"']").find('.td-percent').find('.text').children()[0].style.backgroundColor = 'hsl(' + 120 * data.percent/100 +',45%,50%)'; 
+                        if (data.status == "sent") $("tr[id^='tr-"+ data.id +"']").find('.td-id').removeClass('loading');
+                        $("tr[id^='tr-"+ data.id +"']").find('.td-percent').find('.text').children()[0].innerHTML = data.percent + " %"; 
+                    } 
+
+                    $("tr[id^='tr-"+ data.id +"']").find('.td-success').find('.text').children()[0].style.backgroundColor = 'hsl(' + 120 * data.success/100 +',45%,50%)'; 
+                    $("tr[id^='tr-"+ data.id +"']").find('.td-success').find('.text').children()[0].innerHTML = data.success + " %";
+                });
+            }
+         });
+    }
+
+    setInterval(function() {
+        refreshMailValues();
+    }, 10000);
 });

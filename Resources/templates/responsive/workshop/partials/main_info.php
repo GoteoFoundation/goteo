@@ -47,6 +47,8 @@ $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($share_title 
 				<div class="schedule text-center">
 					<i class="fa fa-clock-o"></i> <?= $this->workshop->schedule ?>
 				</div>
+
+			<?php if($this->workshop->schedule_file_url): ?>
 				<div class="file-icon-label">
 					<?= $this->text('workshop-file-label') ?>
 				</div>
@@ -56,6 +58,20 @@ $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($share_title 
 						</i>
 					</a>
 				</div>
+			<?php endif; ?>
+
+			<?php if($this->workshop->terms_file_url): ?>
+				<div class="file-icon-label terms">
+					<?= $this->text('workshop-terms-label') ?>
+				</div>
+				<div class="file-icon">
+					<a target="_blank" href="<?= $this->workshop->terms_file_url ?>">
+						<i class="fa fa-file"> 
+						</i>
+					</a>
+				</div>
+			<?php endif; ?>
+
 				<div class="share-label">
 					<?= $this->text('workshop-share') ?>
 				</div>

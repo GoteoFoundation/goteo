@@ -981,7 +981,8 @@ class Invest extends \Goteo\Core\Model {
             'matcher',
             'drops',
             'pool',
-            'donate_amount'
+            'donate_amount',
+            'extra_info'
             );
 
         try {

@@ -31,7 +31,8 @@ class MailTransformer extends AbstractTransformer {
 
     function getPercent(){
         $percent = $this->model->getStatusObject()->percent;
-        return '<span class="label label-percent" style="background-color:hsl(' . (120 * $percent/100) . ',45%,50%);">' . $percent . ' % </span>';
+        $percent = '<span class="label label-percent" style="background-color:hsl(' . (120 * $percent/100) . ',45%,50%);">' . (int) $percent . ' % </span>';
+        return $percent;
     }
 
     function getLang() {
@@ -58,7 +59,7 @@ class MailTransformer extends AbstractTransformer {
     }
 
     function getSuccess() {
-        $success = round($this->model->getStats()->getEmailOpenedCollector()->getPercent());
+        $success = (int) $this->model->getStats()->getEmailOpenedCollector()->getPercent();
         return '<span class="label label-percent" style="background-color:hsl(' . (120 * $success/100) . ',45%,50%);">' . $success . ' % </span>';
     }
 

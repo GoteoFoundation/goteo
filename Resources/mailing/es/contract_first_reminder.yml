@@ -1,0 +1,41 @@
+group: contract
+name: 'Contract first reminder'
+purpose: 'Mail para recordar al impulsor que tiene pendiente completar el formulario de contrato'
+type: 'md'
+title: 'Recordatorio importante desde Goteo'
+text: >
+    Hola %USERNAME%,
+
+
+    Queremos recordarte que es imprescindible que subas los **documentos necesarios** para que podamos transferir los fondos recaudados. 
+
+
+    Está habilitado el contrato para que puedas rellenarlo con los datos requeridos, aquí tienes el link directo: %PROJECTCONTRACTURL%
+
+
+    A continuación te recordamos la documentación solicitada en su versión digital, ya que se sube a la plataforma, y no es necesario enviar ninguna copia física.
+    
+
+    **Personas físicas:**
+
+
+
+      *   **Copia digital del DNI/NIE o Pasaporte** de la persona que firma (PDF)
+      *   **Certificado de titularidad de la cuenta corriente** (PDF), **emitido por la entidad financiera** en la que se recibirán los fondos recaudados. En caso de que el banco se encuentre fuera de España, además deberá aparecer el código IBAN (si es un banco Internacional Europeo) y un código SWIFT si es un Banco no Europeo.
+
+
+    **Entidades jurídicas:**
+
+
+
+      *   **Copia digital del DNI/NIE o Pasaporte** de la persona que firma (PDF)
+      *   **Certificado de titularidad de la cuenta corriente** (PDF), **emitido por la entidad financiera** en la que se recibirán los fondos recaudados. En caso de que el banco se encuentre fuera de España, además deberá aparecer el código IBAN (si es un banco Internacional Europeo) y un código SWIFT si es un Banco no Europeo.
+      *   **Copia digital del CIF** de vuestra entidad (PDF). En caso de que no esté registrada en España, copia digital del registro de la organización en la entidad oficial correspondiente. 
+      *   **Copia digital del documento acreditativo de apoderamiento** (estatutos, o escrituras, o poderes donde se acredita la representación de la persona que firma) (PDF)
+
+    
+    Si tienes cualquier consulta, no dudes en escribir a tu asesor/a, o a [gestion@goteo.org](mailto:gestion@goteo.org).
+
+    
+    Saludos,
+

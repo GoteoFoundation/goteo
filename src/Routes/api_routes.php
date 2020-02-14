@@ -363,6 +363,20 @@ $api->add('api-communication-images-upload', new Route(
     array('POST') // methods
 ));
 
+// Get success of a communication
+$api->add('api-communication-success', new Route(
+    '/communication/{id}/success',
+    array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::successAction')
+));
+
+
+// Get update of a communication
+$api->add('api-communication-mail-success', new Route(
+    '/communication/{id}/mail/{mail}',
+    array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::mailStatusAction')
+));
+
+
 // Messages list
 $api->add('api-messages-project', new Route(
     '/projects/{pid}/messages',
@@ -420,5 +434,4 @@ $api->add('api-workshops-images-upload', new Route(
     array(), // schemes
     array('POST') // methods
 ));
-
 return $api;

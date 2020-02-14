@@ -48,6 +48,7 @@ class ConsoleMilestoneListener extends AbstractListener {
         $event->fire(function() use ($project_milestone) {
             $project_milestone->save($errors);
         });
+
     }
 
     /**

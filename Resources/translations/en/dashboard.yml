@@ -22,6 +22,7 @@ dashboard-certificates-details-desc: 'List of donations for the certificate %CER
 dashboard-certificates-download: 'Confirm and download'
 dashboard-certificates-empty: 'You need to make at least a donation to any project or charge an amount to your virtual wallet to see your certificates'
 dashboard-certificates-expired: Expired
+dashboard-certificates-expired-description: 'The deadline to confirm the certificate expired'
 dashboard-certificates-no-pending: 'There''s no pending donation'
 dashboard-certificates-pending: Pending
 dashboard-certificates-pending-desc: 'These donations will be included in future certificates.'
@@ -283,3 +284,5 @@ dashboard-origin-invests-referer: 'Origin of visits in successful contributions'
 dashboard-origin-project-device: 'Device used on the project page'
 dashboard-origin-invests-device: 'Device used in successful contributions'
 dashboard-origin-disclaimer: '⚠ *These data are indicative and do not include all visits due to technical limitations.*  > We recommend you to configure Google Analytics or Facebook Pixel for a better detailed data'
+dashboard-project-integration-token: 'Token'
+dashboard-project-integration-link: 'Link'

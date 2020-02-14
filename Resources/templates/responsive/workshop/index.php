@@ -21,7 +21,7 @@ $this->section('workshop-content');
 
 <?= $this->insert('workshop/partials/main_info') ?>
 
-<?= $this->insert('workshop/partials/how_to_get') ?>
+<?= !$this->workshop->online ? $this->insert('workshop/partials/how_to_get') : '' ?>
 
 <?= !$this->workshop->expired() ? $this->insert('workshop/partials/extra_call_to_action') : '' ?>
 
@@ -32,5 +32,7 @@ $this->section('workshop-content');
 <?= $this->insert('workshop/partials/posts') ?>
 
 <?= $this->workshop->type=='fundlab-esil' ? $this->insert('workshop/partials/partner') : '' ?>
+
+<?= $this->workshop->type=='crowdcoop' ? $this->insert('workshop/partials/partner_singulars') : '' ?>
 
 <?php $this->replace() ?>

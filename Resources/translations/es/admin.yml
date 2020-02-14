@@ -69,6 +69,7 @@ admin-communications-send: 'Enviar comunicación'
 admin-communications-cancel: 'Cancelar comunicación'
 admin-communications-newsletter: 'Boletín'
 admin-communications-communication: 'Comunicación general'
+admin-communications-id: 'ID de la Comunicación'
 admin-home: Portada
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicaciones'
@@ -208,6 +209,7 @@ admin-title-header-image: Imagen de cabecera
 admin-title-password: Contraseña
 admin-title-avatar: Avatar
 admin-title-roles: Roles
+admin-title-role: Rol
 admin-title-amount: Invertido
 admin-title-icon: Icono
 admin-title-info: Info
@@ -508,6 +510,8 @@ admin-filter-type-all: 'Todos'
 
 admin-filter-predefined-date: 'Fecha predeterminada'
 admin-filter-predefined-date-choose: 'Puedes seleccionar una fecha predeterminada'
+admin-filter-forced: 'Forzar filtro'
+admin-filter-forced-help: 'Si seleccionas esta opción se aplicarán los filtros independientemente de lo que haya escodigo el usuario como preferencia para el envío de información por parte de la plataforma.'
 admin-mail-body: 'Cuerpo del mensaje'
 
 admin-stats-donations: 'Donaciones'
@@ -536,6 +540,7 @@ admin-workshop: Talleres Goteo
 admin-workshop-add: Crear un nuevo taller
 admin-workshop-edit: Editando el taller %s
 admin-workshop-edit-success: La entrada de taller se ha editado correctamente
+admin-online: Online
 
 mandatory-filter-name: Falta nombre
 mandatory-filter-description: Falta descripción
