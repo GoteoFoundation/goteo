@@ -21,6 +21,7 @@ contract-step-documents: Documentación
 contract-step-entity: 'Entidade xurídica'
 contract-step-final: Revisión
 contract-step-promoter: Representante
+guide-contract-documents: "É obrigado subir os documentos que acrediten os datos inseridos e que detallamos a seguir:- EN TODOS OS CASOS, copia do DNI/NIE da persoa que asina (sexa no teu propio nome o en nome dunha entidade)- EN TODOS OS CASOS, copia dalgún documento no que apareza (completo) o número da conta corrente (cartilla bancaria, recibos...)- só no caso de que o contrato sexa cunha EMPRESA, FUNDACIÓN ou ASOCIACIÓN: ADEMAIS, copia do CIF e copia do documento acreditativo de apoderamento (acta de xuntanza da asociación on faga constar dun xeito claro o nome e cargo da persoa que asina o contrato, ou folla das escrituras da empresa, ou carta de poderes onde manifeste que a persoa que asina pode facelo en representación da entidade) "
 guide-contract-entity: 'Neste paso debes encher os datos da entidade que representas. Se firmarás o contrato no teu propio nome debes volver ó primeiro paso (''Representante'') e indicalo axeitadamente.'
 guide-contract-final: 'Verificar os datos inseridos. Se non hai errores, pódese pechar para que o revisemos. Se hai errores, débense corrixir.'
 guide-contract-no_entity: 'Como promotor en nome propio e dereito non tes nada que encher neste paso.'
