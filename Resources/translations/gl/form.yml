@@ -28,6 +28,8 @@ form-remove-button: Eliminar
 form-self_review-button: Corrixir
 form-send_review-button: Enviar
 form-upload-button: Enviar
+help-cost-to-consultant: '- Precisa axuda nos custos<br>'
+help-license-to-consultant: '- Precisa axuda cos retornos colectivos e licenzas<br>'
 overview-extra-fields: 'Campos complementarios'
 project-form-header: Formulario
 project-one-round: 'Rolda única de 40 días'
@@ -54,6 +56,9 @@ form-editor-create_link: 'Crear unha ligazón'
 form-editor-insert_image: 'Inserir unha imaxe'
 form-editor-insert_table: 'Inserir táboa'
 form-editor-insert_horizontal_line: 'Liña horizontal'
+form-editor-toggle_preview: 'Trocar a vista previa'
+form-editor-toggle_side_by_side: 'Trocar vista paralela'
+form-editor-toggle_fullscreen: 'Trocar pantalla completa'
 form-editor-markdown_guide: 'Guía markdown'
 form-editor-undo: 'Desfacer'
 form-editor-redo: 'Refacer'
