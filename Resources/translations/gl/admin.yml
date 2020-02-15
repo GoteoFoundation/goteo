@@ -159,6 +159,7 @@ admin-title-header-image: Imaxe de cabeceira
 admin-title-password: Contrasinal
 admin-title-avatar: Avatar
 admin-title-roles: Roles
+admin-title-role: Rol
 admin-title-amount: Investido
 admin-title-icon: Icona
 admin-title-info: Info
@@ -345,6 +346,8 @@ admin-stats-projects-project-desc: 'Achegas ao proxecto'
 admin-filter-add: 'Engadir filtro'
 admin-filter-last-week: 'Últimos 7 días'
 admin-filter-last-month: 'Últimos 30 días'
+admin-filter-forced: 'Forzar filtro'
+admin-filter-forced-help: 'A seleccionar esta opción aplicaranse os filtros independentemente do escollido polo usuario coma preferencia para o envío de información por parte da plataforma.'
 admin-donations-amount-percent: '% diñeiro doado'
 admin-donations-users-percent: '% usuarios doantes'
 admin-donations-tip-percent: '% diñeiro en adeallas'
