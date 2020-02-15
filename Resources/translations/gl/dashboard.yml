@@ -13,6 +13,7 @@ dashboard-certificates-details: 'Ver detalles'
 dashboard-certificates-download: 'Confirmar e descargar'
 dashboard-certificates-empty: 'Tes que facer algunha achega a un proxecto ou recargar o portamoedas virtual para ver os teu certificados'
 dashboard-certificates-expired: Caducado
+dashboard-certificates-expired-description: 'Caducou po prazo para confirmar o teu certificado'
 dashboard-certificates-no-pending: 'Sen achega pendente'
 dashboard-certificates-pending: Pendente
 dashboard-certificates-pending-desc: 'Estas son as achegas a incluír en certificados futuros.'
