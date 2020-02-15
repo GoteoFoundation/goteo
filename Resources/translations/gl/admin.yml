@@ -54,6 +54,7 @@ admin-communications-send: 'Enviar comunicación'
 admin-communications-cancel: 'Cancelar comunicación'
 admin-communications-newsletter: 'Boletín'
 admin-communications-communication: 'Comunicación xeral'
+admin-communications-id: 'ID da comunicación'
 admin-home: Capa
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicacións'
@@ -352,6 +353,7 @@ admin-workshop: Obradoiros Goteo
 admin-workshop-add: Crear un novo obradoiro
 admin-workshop-edit: Editando o obradoiro %s
 admin-workshop-edit-success: A entrada do obradoiro editouse con éxito
+admin-online: En liña
 mandatory-filter-name: Falta o nome
 mandatory-filter-description: Falta a descrición
 mandatory-filter-role: Falta un rol
