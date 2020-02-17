@@ -12,6 +12,7 @@ mandatory-project-field-motivation: 'É obrigado explicar a motivación na descr
 mandatory-project-field-name: 'É obrigado poñer un nome ó proxecto'
 mandatory-project-field-related: 'É obrigado explicar na descrición do proxecto a experiencia relacionada e/ou o equipo co que se conta'
 overview-field-categories: Categorías
+overview-field-currency: 'Divisa orixinal'
 overview-field-currently: 'Estado actual'
 overview-field-description: 'Descripción curta'
 overview-field-goal: 'Obxectivos da campaña de crowdfunding'
@@ -26,6 +27,7 @@ overview-field-name: 'Título do proxecto'
 overview-field-options-currently_avanzado: Avanzado
 overview-field-options-currently_finalizado: Rematado
 overview-field-options-currently_inicial: Inicial
+overview-field-options-currently_medio: Medio
 overview-field-options-scope_global: Global
 overview-field-options-scope_local: Local
 overview-field-options-scope_nacional: Nacional
@@ -67,6 +69,7 @@ tooltip-project-subtitle: 'Define cunha frase un subtítulo que remate de explic
 tooltip-project-usubs: 'Marca o check en caso de que subtitularas a outros idiomas o vídeo mediante Universal Subtitles:  http://www.universalsubtitles.org/'
 tooltip-project-video: 'Considera aquí a posibilidade de publicar e ligar un vídeo (en Youtube ou Vimeo) onde expliques brevemente á cámara o porque do teu proxecto. Se se trata dalgo que poida complementar o vídeo principal, cunha persoa que transmita a súa necesidade ou orixinalidade, do modo máis directo posible. Se che da vergoña falar á cámara, tamén pode ser algunha persoa que coñezas e que siga o proxecto ou a idea e pida facer esa aportación coma "fan". A empatía e a necesidade de ver a alguen ó outro lado do proxecto é moi importante para determinado tipo de confinanceiros.'
 tooltip-project-social-category: 'Selecciona o teu compromiso social de entre os que che amosamos'
+tooltip-project-social-description: 'Explica en que consiste o compromiso social que escolliches, e como xustificas os ODS cos que cumpre o teu proxecto no caso de así sexa.'
 validate-project-field-about: 'A explicación do proxecto é demasiado curta'
 validate-project-field-currently: 'Indica o estado do proxecto para mellorar a valoración do mesmo, de cara a determinar se publicalo en Goteo.'
 validate-project-field-description: 'A descripción do proxecto é demasiado curta'
@@ -74,6 +77,7 @@ validate-project-value-description: "A descrición do proxecto é curta de máis
 validate-project-value-keywords: 'Indica un mínimo de 5 palabras clave do proxecto para mellorar a valoración do mesmo, de cara a determinar se publicalo en Goteo.'
 overview-field-execution-plan: 'Plan de execución'
 tooltip-project-execution-plan: 'Explica o teu plan de execución'
+tooltip-project-execution-plan-url: 'Url do teu plan de execución'
 overview-field-sustainability-model: 'Modelo de sostibilidade'
 overview-field-sustainability-model-url: 'URL do teu business canvas'
 tooltip-project-sustainability-model: 'Explica o modelo de sostibilidade do teu proxecto'
