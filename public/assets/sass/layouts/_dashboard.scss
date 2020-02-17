@@ -869,3 +869,46 @@ div.new-material-success {
   }
 
 }
+
+ div.stats{
+    margin-top: 50px;
+      padding: 40px 0;
+      background-color: $background-light-lilac;
+      color: $color-white;
+      border-radius: 10px;
+      .impact-title{
+          font-size: 30px;
+          font-weight: 700;
+          text-align: center;
+          padding-top: 0;
+          margin-top: 0;
+          padding-bottom: 65px;
+      }
+      h5{
+        color: $color-white;
+        padding-top: 25px;
+      }
+      .row.impact-data{
+        border-top: 1px solid #FFF;
+        margin-top: 70px;
+        .item{
+          margin-top: 25px;
+          text-align: center;
+          font-size: 30px;
+          font-weight: 700;
+        }
+        .description{
+          font-size: 11px;
+          font-weight: 400;
+          text-transform: uppercase;
+        }
+      }
+      
+      @media (max-width: $breakpoint-sm - 1) 
+      {
+        .item{
+          margin-bottom: 20px !important;
+        }
+      }
+
+    }
