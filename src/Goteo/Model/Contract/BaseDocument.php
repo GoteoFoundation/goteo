@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 // use Goteo\Application\Exception\ModelException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
-class DocumentMatcher extends Document {
+class BaseDocument extends Document {
 
 	/**
 	 * (non-PHPdoc)
