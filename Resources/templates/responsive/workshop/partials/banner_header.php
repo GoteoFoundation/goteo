@@ -18,7 +18,7 @@
 	<div class="info">
 		<div class="container">
 			<h1>
-				<?= $this->workshop->type ? strtok($this->workshop->type, '-') : $this->workshop->title ?>
+				<?= $this->workshop->event_type ? strtok($this->workshop->event_type, '-') : $this->workshop->title ?>
 			</h1>
 			<div class="subtitle hidden-xs">
 				<?= $this->workshop->subtitle ?>
