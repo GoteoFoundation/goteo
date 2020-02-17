@@ -24,7 +24,9 @@ categories-lb-edit: 'Editando categoría'
 categories-lb-keywords: 'Palabras chave'
 categories-lb-list: A listar
 categories-lb-translate: 'Traducindo categoría'
+commons-lb-info: 'Información de contacto'
 commons-lb-list: A listar
+commons-lb-report: 'Informe do proxecto'
 communication-lb: 'Comunicacións'
 criteria-lb: 'Criterios de avaliación'
 criteria-lb-add: 'Novo criterio'
@@ -63,6 +65,8 @@ news-lb-edit: 'Editando a micronova'
 news-lb-list: A listar
 news-lb-translate: 'Traducindo a micronova'
 newsletter-lb: Boletín
+newsletter-lb-init: 'Iniciando un novo envío'
+newsletter-lb-list: 'Estado do envío automático'
 node-lb: 'Datos da canle'
 node-lb-edit: Editando
 node-lb-list: 'Datos actuais'
