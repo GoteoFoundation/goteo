@@ -5,10 +5,18 @@ accounts-lb-cancel: 'Cancelando achega'
 accounts-lb-details: 'Detalles da achega'
 accounts-lb-list: A listar
 banners-lb-details: 'Detalles da achega'
+banners-lb-execute: 'Execución do cargo'
 banners-lb-list: A listar
+banners-lb-viewer: 'Vendo rexistros'
+blog-lb: Blog
+blog-lb-add: 'Nova entrada'
+blog-lb-edit: 'Editando entrada'
+blog-lb-footer: 'Ordenando as entradas no Footer'
 blog-lb-list: A listar
+blog-lb-translate: 'Traducindo entrada'
 categories-lb: Categorías
 categories-lb-add: 'Nova categoría'
+categories-lb-edit: 'Editando categoría'
 categories-lb-keywords: 'Palabras chave'
 categories-lb-list: A listar
 commons-lb-list: A listar
@@ -49,7 +57,9 @@ news-lb-add: 'Nova micronova'
 news-lb-edit: 'Editando a micronova'
 news-lb-list: A listar
 news-lb-translate: 'Traducindo a micronova'
+newsletter-lb: Boletín
 node-lb: 'Datos da canle'
+node-lb-edit: Editando
 node-lb-list: 'Datos actuais'
 nodes-lb: Canles
 nodes-lb-add: 'Nova canle'
@@ -74,6 +84,8 @@ recent-lb-list: A listar
 reviews-lb-list: A listar
 rewards-lb-list: A listar
 sponsors-lb: 'Apoios Institucionais'
+sponsors-lb-add: 'Novo pratrocinador'
+sponsors-lb-edit: 'Editando patrocinador'
 sponsors-lb-list: A listar
 tags-lb: 'Etiquetas do blogue'
 tags-lb-add: 'Nova etiqueta'
@@ -86,11 +98,19 @@ templates-lb-list: A listar
 texts-lb: 'Textos da interface'
 texts-lb-edit: 'Editando o orixinal'
 texts-lb-list: A listar
+translates-lb: 'Traducións de proxectos'
+translates-lb-add: 'Habilitando tradución'
+translates-lb-edit: 'Asignando tradución'
 translates-lb-list: A listar
+translates-lb-translate: 'Traducindo texto'
+transnodes-lb-edit: 'Asignando tradución'
 transnodes-lb-list: A listar
 users-lb: Usuarios
 users-lb-add: 'Creando usuario'
+users-lb-edit: 'Editando Usuario'
+users-lb-impersonate: 'Suplantando ao usuario'
 users-lb-list: A listar
+users-lb-manage: 'Xestionando usuario'
 workshop-lb: 'Obradoiros'
 word-lb-list: A listar
 worth-lb-list: A listar
