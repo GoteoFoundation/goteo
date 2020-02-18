@@ -57,13 +57,13 @@ class MatcherConfig extends  \Goteo\Core\Model {
 
   public function validate(&$errors = array()) {
 
-    if ($this->algorithm == "match") {
+    if ($this->algorithm == "criteriainvest") {
       $this->max_donation_per_invest = 0;
       $this->max_donation_per_project = 0;
       if (!isset($this->percent_of_donation)) return false;
       if (!isset($this->donation_per_project)) return false;
       return true;
-    } else if ($this->algorithm == "multiply") {
+    } else if ($this->algorithm == "duplicateinvest") {
       $this->percent_of_donation = 0;
       $this->donation_per_project = 0;
       if (!isset($this->max_donation_per_invest)) return false;

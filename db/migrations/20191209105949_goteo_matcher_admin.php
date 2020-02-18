@@ -33,7 +33,7 @@ class GoteoMatcherAdmin
   {
      return "
             ALTER TABLE `matcher` ADD COLUMN description TEXT DEFAULT NULL after `name`;
-            ALTER TABLE `matcher` ADD COLUMN status INT(1) DEFAULT 0 after `description`;
+            ALTER TABLE `matcher` ADD COLUMN status varchar(10) DEFAULT 'open' after `description`;
             ALTER TABLE `matcher_lang` ADD COLUMN description TEXT DEFAULT NULL after `name`;
 
             CREATE TABLE `matcher_conf` (

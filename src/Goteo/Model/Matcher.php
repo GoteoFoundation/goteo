@@ -31,8 +31,8 @@ class Matcher extends \Goteo\Core\Model {
     use Traits\SphereRelationsTrait;
 
 
-    const STATUS_OPEN = 0;
-    const STATUS_COMPLETED = 1;
+    const STATUS_OPEN = 'open';
+    const STATUS_COMPLETED = 'completed';
 
     public $id,
            $name,

@@ -446,4 +446,17 @@ $api->add('api-workshops-images-upload', new Route(
     array('POST') // methods
 ));
 
+// User images upload (POST method only)
+$api->add('api-questionnaire-documents-upload', new Route(
+    '/questionnaire/documents',
+    array('_controller' => 'Goteo\Controller\Api\QuestionnaireApiController::questionnaireUploadDocumentsAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+
+
 return $api;
