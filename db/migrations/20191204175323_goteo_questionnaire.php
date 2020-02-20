@@ -53,7 +53,7 @@ class GoteoQuestionnaire
             `lang` varchar(3) NOT NULL,
             `title` text,
             `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
-            `max_score` INT(2),
+            `max_score` INT(2) NOT NULL DEFAULT 0,
             `vars` text,
             PRIMARY KEY (`id`),
             CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`questionnaire`) REFERENCES `questionnaire` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
