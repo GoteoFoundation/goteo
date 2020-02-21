@@ -64,10 +64,10 @@ class Questionnaire extends \Goteo\Core\Model
         $lang = Lang::current();
         // list($fields, $joins) = self::getLangsSQLJoins($lang);
 
-        $query = static::query('SELECT * 
+        $query = static::query('SELECT questionnaire.* 
                                 FROM questionnaire 
                                 INNER JOIN questionnaire_matcher
-                                ON questionnaire_matcher.matcher = :matcher', array(':matcher' => $mid));
+                                ON questionnaire.id = questionnaire_matcher.questionnaire AND questionnaire_matcher.matcher = :matcher', array(':matcher' => $mid));
         $questionnaire = $query->fetchObject(__CLASS__);
         if ($questionnaire instanceOf Questionnaire)
             $questionnaire->questions = Question::getByQuestionnaire($questionnaire->id);
