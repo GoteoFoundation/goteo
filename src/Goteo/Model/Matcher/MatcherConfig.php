@@ -10,14 +10,16 @@
 
 namespace Goteo\Model\Matcher;
 
+use Goteo\Model\Matcher;
+
 class MatcherConfig extends  \Goteo\Core\Model {
     
   public
    $matcher,
    $budget,
-   $algorithm,
-   $max_donation_per_invest,
-   $max_donation_per_project,
+   $algorithm = "duplicateinvest",
+   $max_donation_per_invest = 100,
+   $max_donation_per_project = 0,
    $percent_of_donation,
    $donation_per_project;
 
@@ -46,6 +48,12 @@ class MatcherConfig extends  \Goteo\Core\Model {
                         ':donation_per_project' => $this->donation_per_project);
 
         self::query($sql, $values);
+        $matcher = Matcher::get($this->matcher);
+        $matcher->processor = $this->algorithm;
+        if (!$matcher->save($errors)) {
+          throw new FormModelException(Text::get('form-sent-error'));
+        }
+
     } catch(\PDOException $e) {
         $errors[] = "Error updating configuration. " . $e->getMessage();
         return false;
@@ -74,4 +82,3 @@ class MatcherConfig extends  \Goteo\Core\Model {
   }
 
 }
-
