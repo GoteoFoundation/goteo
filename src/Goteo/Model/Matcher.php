@@ -23,6 +23,9 @@ use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Questionnaire;
 use Goteo\Model\Questionnaire\Answer;
 use Goteo\Model\Questionnaire\Score;
+use Goteo\Application\App;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\MatcherValidationEvent;
 
 /**
  * Matcher Model
@@ -299,6 +302,23 @@ class Matcher extends \Goteo\Core\Model {
         if(empty($this->name)) $errors[] = 'Empty name for matcher';
         return empty($errors);
     }
+
+    /**
+     * Gets the % of the filled matcher. 100% means it can be activated
+     * @return stdClass Object with parts and globals percents
+     */
+    public function getValidation() {
+
+        $event = App::dispatch(AppEvents::MATCHER_VALIDATION, new MatcherValidationEvent($this));
+
+        $scores = $event->calculate()->getScores();
+        $scores->errors = $event->getErrors();
+        $scores->fields = $event->getFields();
+        $scores->matcher = $this->id;
+
+        return $scores;
+    }
+
 
 
     /**
