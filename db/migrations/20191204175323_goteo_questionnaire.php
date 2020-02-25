@@ -93,7 +93,7 @@ class GoteoQuestionnaire
             CONSTRAINT `question_score_answer` FOREIGN KEY (`answer`) REFERENCES `question_answer` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
 
-        ALTER TABLE `document` CHANGE `contract` `contract` VARCHAR(50) NULL;
+        ALTER TABLE document MODIFY COLUMN contract varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
 
      ";
     }
