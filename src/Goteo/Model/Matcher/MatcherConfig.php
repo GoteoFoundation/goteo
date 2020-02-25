@@ -21,7 +21,8 @@ class MatcherConfig extends  \Goteo\Core\Model {
    $max_donation_per_invest = 100,
    $max_donation_per_project = 0,
    $percent_of_donation,
-   $donation_per_project;
+   $donation_per_project,
+   $filter_by_location = false;
 
    protected $Table = 'matcher_conf';
    protected static $Table_static = 'matcher_conf';
@@ -37,15 +38,16 @@ class MatcherConfig extends  \Goteo\Core\Model {
     if (!$this->validate($errors)) return false;
 
     try {
-        $sql = "REPLACE INTO matcher_conf (matcher,budget,algorithm,max_donation_per_invest,max_donation_per_project,percent_of_donation,donation_per_project) 
-                VALUES(:matcher,:budget,:algorithm,:max_donation_per_invest,:max_donation_per_project,:percent_of_donation,:donation_per_project)";
+        $sql = "REPLACE INTO matcher_conf (matcher,budget,algorithm,max_donation_per_invest,max_donation_per_project,percent_of_donation,donation_per_project, filter_by_location) 
+                VALUES(:matcher,:budget,:algorithm,:max_donation_per_invest,:max_donation_per_project,:percent_of_donation,:donation_per_project, :filter_by_location)";
         $values = array(':matcher' => $this->matcher,
                         ':budget' => $this->budget,
                         ':algorithm' => $this->algorithm,
                         ':max_donation_per_invest' => $this->max_donation_per_invest,
                         ':max_donation_per_project' => $this->max_donation_per_project,
                         ':percent_of_donation' => $this->percent_of_donation,
-                        ':donation_per_project' => $this->donation_per_project);
+                        ':donation_per_project' => $this->donation_per_project,
+                        ':filter_by_location' => $this->filter_by_location);
 
         self::query($sql, $values);
         $matcher = Matcher::get($this->matcher);

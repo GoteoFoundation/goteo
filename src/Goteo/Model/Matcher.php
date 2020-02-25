@@ -26,6 +26,7 @@ use Goteo\Model\Questionnaire\Score;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\MatcherValidationEvent;
+use Goteo\Model\Matcher\MatcherConfig;
 
 /**
  * Matcher Model
@@ -868,11 +869,18 @@ class Matcher extends \Goteo\Core\Model {
         $matchers = [];
         if($location = ProjectLocation::get($project)) {
             foreach(self::getList($filters) as $matcher) {
-                if($matcher_loc = MatcherLocation::get($matcher)) {
-                    $max = is_null($max_distance) ? ($matcher_loc->radius ? $matcher_loc->radius :  100) : $max_distance;
-                    $distance = MatcherLocation::haversineDistance($location->latitude, $location->longitude, $matcher_loc->latitude, $matcher_loc->longitude);
-                    if($distance < $max) {
-                        $matcher->distance = $distance;
+                if($matcher_config = MatcherConfig::get($matcher->id)) {
+                    if ($matcher_config->filter_by_location) {
+                        if($matcher_loc = MatcherLocation::get($matcher)) {
+                            $max = is_null($max_distance) ? ($matcher_loc->radius ? $matcher_loc->radius :  100) : $max_distance;
+                            $distance = MatcherLocation::haversineDistance($location->latitude, $location->longitude, $matcher_loc->latitude, $matcher_loc->longitude);
+                            if($distance < $max) {
+                                $matcher->distance = $distance;
+                                $matchers[] = $matcher;
+                            }
+                        }
+                    } else {
+                        $matcher->distance = 0;
                         $matchers[] = $matcher;
                     }
                 }
