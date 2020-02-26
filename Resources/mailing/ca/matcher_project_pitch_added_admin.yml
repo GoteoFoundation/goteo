@@ -2,7 +2,6 @@ group: project
 name: 'Project added to a Matcher'
 purpose: 'Mail template to be sent to a matcher owner when a project is added to his Matcher call'
 type: 'md'
-title: 'Nuevo proyecto %PROJECTNAME% ha aplicado para recibir fondos de %CALLNAME%'
 title: 'Nou projecte %PROJECTNAME% ha aplicat per rebre fons de %CALLNAME%'
 text: >
     # El projecte **%PROJECTNAME%** ha aplicat per rebre fons del Matcher **%CALLNAME%**
