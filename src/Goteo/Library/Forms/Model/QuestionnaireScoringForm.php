@@ -11,6 +11,7 @@
 
 namespace Goteo\Library\Forms\Model;
 
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
@@ -55,20 +56,24 @@ class QuestionnaireScoringForm extends AbstractFormProcessor implements FormProc
           $builder->add($scoring_answers[$index]->id . "_mark", 'number', [
             'label' => Text::get('questionnaire-scoring-mark'),
             'data' => $scoring_answers[$index]->score,
-            'attr' => [
-              'class'=> 'border',
-              'min' => 0,
-              'max' => $question->max_score,
-            ],
             'required' => true,
             'attr' => [
-              'help' => Text::get('questionnaire-help-max-score', $question->max_score)
+              'class'=> 'border',
+              'help' => Text::get('questionnaire-help-max-score', $question->max_score),
+              'min' => 0,
+              'max' => $question->max_score,
             ]
             
           ])
           ;
 
           if ($type == "dropfiles") {
+            try {
+              $doc = Document::getByName($answer->answer);
+            } catch(\ModelNotFoundException $e){
+              $doc = null;
+            }
+
             $builder->add(
               $scoring_answers[$index]->id . "_file", "dropfiles", [
                 'label' => 'Resposta',

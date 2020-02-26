@@ -53,7 +53,7 @@ class GoteoQuestionnaire
             `lang` varchar(3) NOT NULL,
             `title` text,
             `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
-            `max_score` INT(2),
+            `max_score` INT(2) NOT NULL DEFAULT 0,
             `vars` text,
             PRIMARY KEY (`id`),
             CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`questionnaire`) REFERENCES `questionnaire` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -93,7 +93,7 @@ class GoteoQuestionnaire
             CONSTRAINT `question_score_answer` FOREIGN KEY (`answer`) REFERENCES `question_answer` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
 
-        ALTER TABLE `document` CHANGE `contract` `contract` VARCHAR(50) NULL;
+        ALTER TABLE document MODIFY COLUMN contract varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
 
      ";
     }

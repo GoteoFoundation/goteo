@@ -14,7 +14,7 @@ class Question extends \Goteo\Core\Model
     $questionnaire,
     $lang,
     $order,
-    $max_score,
+    $max_score = 0,
     $vars;
 
     static public function getTypes()
@@ -56,7 +56,6 @@ class Question extends \Goteo\Core\Model
         foreach((array)$questions as $question) {
             $question->vars = json_decode($question->vars);
         }
-        // $questions->vars = json_decode($questions->vars);
         return $questions;
     }
 

@@ -349,5 +349,14 @@ final class AppEvents
      */
     const MATCHER_PROJECT = 'matcher.project';
 
+    /**
+     * The matcher.validation event is thrown when a matcher calls the function ->getValidation()
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\MatcherValidationEvent instance.
+     *
+     * @var string
+     */
+    const MATCHER_VALIDATION = 'matcher.validation';
 
 }

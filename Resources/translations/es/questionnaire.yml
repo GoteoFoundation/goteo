@@ -1,4 +1,4 @@
-questionnaire-type-of-question: 'Tipo de pregunta'
+questionnaire-type-of-question: 'Tipo de respuesta'
 questionnaire-required: 'Es obligatorio responderla'
 questionnaire-text: 'Pregunta para responder'
 questionnaire-max-score: 'Puntuación máxima'
@@ -6,9 +6,10 @@ questionnaire-help-max-score: 'Puntuación máxima: %s'
 
 questionnaire-textarea: 'Respuesta larga'
 questionnaire-boolean: 'Respuesta única sí/no'
-questionnaire-dropfiles: 'Documento'
+questionnaire-dropfiles: 'Subida de archivo'
 questionnaire-add-question: "Añadir pregunta"
 questionnaire-answer: "Respuesta"
 questionnaire-scoring-mark: "Puntuación"
 questionnaire-scoring-save: "Puntuación guardada correctamente"
 questionnaire-max-score-help: "Esta es la puntuación máxima para esta pregunta."
+question-save-error: "Pregunta no borrada"

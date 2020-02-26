@@ -15,6 +15,7 @@ use Goteo\Util\MatcherProcessor\MatcherProcessorException;
 use Goteo\Model\Matcher;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
+use Goteo\Model\Matcher\MatcherConfig;
 
 /**
  * This Processor duplicates invests with some (customizable) limits
@@ -49,6 +50,12 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         $vars = $this->getVars();
         $amount = $invest->amount;
 
+        $config = MatcherConfig::get($matcher->id);
+        if ($config) {
+            $vars['max_amount_per_invest'] = $config->max_donation_per_invest;
+            $vars['max_amount_per_project'] = $config->max_donation_per_project;
+        }
+
         if($amount > $vars['max_amount_per_invest']) {
             $amount = $vars['max_amount_per_invest'];
         }
@@ -56,7 +63,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         $invested = Invest::getList(['methods' => 'pool', 'status' => Invest::$ACTIVE_STATUSES, 'projects' => $project,'users' => $matcher->getUsers()], null, 0, 0, 'money');
 
         // check if current invested amount is over the maxim per project allowed
-        if($invested + $amount > $vars['max_amount_per_project']) {
+        if($vars['max_amount_per_project'] && ( $invested + $amount > $vars['max_amount_per_project']))  {
             $amount = max(0, $vars['max_amount_per_project'] - $invested);
         }
         $count = Invest::getList(['projects' => $project, 'status' => Invest::$ACTIVE_STATUSES, 'users' => $invest->user], null, 0, 0, true);
