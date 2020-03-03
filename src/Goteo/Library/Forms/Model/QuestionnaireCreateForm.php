@@ -75,6 +75,7 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                 'data' => $question->max_score,
                 'required' => true,
                 'attr' => [
+                    'min' => 0,
                     'help' => Text::get('questionnaire-max-score-help')
                     ]
                 ]
@@ -97,7 +98,7 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                 ]
             )->add(
                 $question->id . "_choice_answer", 'text', [
-                    'label' => 'Resposta'
+                    'label' => 'question-choice-answer'
             ]);
 
         if ($config->type == "choice") {
@@ -105,7 +106,7 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                 $builder
                     ->add(
                         $question->id . "_choice_" . $key, 'text', [
-                            'label' => 'Resposta',
+                            'label' => 'question-choice-answer',
                             'data' => $value
                         ]
                     );
