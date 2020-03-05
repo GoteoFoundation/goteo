@@ -651,7 +651,6 @@ class Matcher extends \Goteo\Core\Model {
         $sql = "SELECT a.*,b.status AS matcher_status, b.score FROM project a
                 RIGHT JOIN matcher_project b ON a.id = b.project_id
                 WHERE b.matcher_id = :matcher AND a.status IN (2,3,4,5,6)
-                ORDER BY b.score DESC
                 ";
         $values = [':matcher' => $this->id];
         if($status && $status !== 'all') {
@@ -661,6 +660,7 @@ class Matcher extends \Goteo\Core\Model {
             $sql .= ' AND b.status = :status';
             $values[':status'] = $status;
         }
+        $sql .= ' ORDER BY b.score DESC';
         // die(\sqldbg($sql, $values));
         if($query = self::query($sql, $values)) {
             if( $projects = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') ) {
