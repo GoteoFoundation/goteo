@@ -15,7 +15,6 @@ use Goteo\Util\MatcherProcessor\MatcherProcessorException;
 use Goteo\Model\Matcher;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
-use Goteo\Model\Matcher\MatcherConfig;
 
 /**
  * This Processor duplicates invests with some (customizable) limits
@@ -49,12 +48,6 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         $matcher = $this->getMatcher();
         $vars = $this->getVars();
         $amount = $invest->amount;
-
-        $config = MatcherConfig::get($matcher->id);
-        if ($config) {
-            $vars['max_amount_per_invest'] = $config->max_donation_per_invest;
-            $vars['max_amount_per_project'] = $config->max_donation_per_project;
-        }
 
         if($amount > $vars['max_amount_per_invest']) {
             $amount = $vars['max_amount_per_invest'];

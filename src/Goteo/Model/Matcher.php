@@ -26,7 +26,6 @@ use Goteo\Model\Questionnaire\Score;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\MatcherValidationEvent;
-use Goteo\Model\Matcher\MatcherConfig;
 
 /**
  * Matcher Model
@@ -47,8 +46,13 @@ class Matcher extends \Goteo\Core\Model {
            $owner,
            $terms,
            $fee = 0,
-           $processor = '',
-           $vars = [],
+           $processor = 'duplicateinvest',
+           $vars = [
+               'max_donation_per_invest' => 100,
+               'max_donation_per_project' => 0,
+               'max_invests_per_user' => 1,
+               'filter_by_platform' => 0
+           ],
            $crowd = 0, // Calculated field with the sum of all invests made by the peoplo
            $used = 0, // Calculated field with the sum of all invests made by the matching
            $amount = 0, // Calculated field with the sum of all pools in the Matcher
@@ -869,8 +873,8 @@ class Matcher extends \Goteo\Core\Model {
         $matchers = [];
         if($location = ProjectLocation::get($project)) {
             foreach(self::getList($filters) as $matcher) {
-                if($matcher_config = MatcherConfig::get($matcher->id)) {
-                    if ($matcher_config->filter_by_location) {
+                if($matcher_config = $matcher->getVars()) {
+                    if ($matcher_config['filter_by_location']) {
                         if($matcher_loc = MatcherLocation::get($matcher)) {
                             $max = is_null($max_distance) ? ($matcher_loc->radius ? $matcher_loc->radius :  100) : $max_distance;
                             $distance = MatcherLocation::haversineDistance($location->latitude, $location->longitude, $matcher_loc->latitude, $matcher_loc->longitude);
