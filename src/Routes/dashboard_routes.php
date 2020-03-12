@@ -41,12 +41,6 @@ $dash->add('dashboard-wallet', new Route(
         )
 ));
 
-$dash->add('become-matcher', new Route(
-    '/becomematcher',
-    array('_controller' => 'Goteo\Controller\DashboardController::becomeMatcherAction'
-    )
-));
-
 // AJAX utils
 $dash->add('dashboard-ajax-projects-interests', new Route(
     '/ajax/projects/interests',

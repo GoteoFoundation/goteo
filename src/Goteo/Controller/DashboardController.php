@@ -202,23 +202,4 @@ class DashboardController extends \Goteo\Core\Controller {
 
     }
 
-    /**
-     *  Become matcher
-     */
-    public function becomeMatcherAction(Request $request) {
-        $user = $this->user;
-        $matcher = new Matcher();
-        $matcher->id = $user->id;
-        $matcher->name = $user->name;
-        $matcher->owner = $user->id;
-        
-        $errors = [];
-        if ($matcher->save($errors)) {
-            return $this->redirect('matcher/' . $matcher->id);
-        } else {
-            Message::error('Error: ' . implode(',', $errors));
-            return $this->redirect('wallet');
-        }
-    }
-
 }
