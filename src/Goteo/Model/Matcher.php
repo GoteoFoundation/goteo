@@ -36,6 +36,7 @@ class Matcher extends \Goteo\Core\Model {
 
     const STATUS_OPEN = 'open';
     const STATUS_COMPLETED = 'completed';
+    const MINIMUM_WALLET_AMOUNT = 3000;
 
     public $id,
            $name,
