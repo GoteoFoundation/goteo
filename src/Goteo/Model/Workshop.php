@@ -22,7 +22,7 @@ class Workshop extends \Goteo\Core\Model {
     $subtitle,
     $online,
     $blockquote,
-    $type,
+    $event_type,
     $description,
     $date_in,
     $date_out,
@@ -38,7 +38,8 @@ class Workshop extends \Goteo\Core\Model {
     $call_id,
     $workshop_location,
     $lang,
-    $modified;
+    $modified,
+    $type;
 
 
     public function __construct() {
@@ -49,7 +50,7 @@ class Workshop extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['title', 'subtitle', 'blockquote', 'description', 'schedule'];
+        return ['title', 'subtitle', 'blockquote', 'description', 'schedule', 'how_to_get'];
     }
 
     /**
@@ -69,6 +70,7 @@ class Workshop extends \Goteo\Core\Model {
                     workshop.date_in,
                     workshop.date_out,
                     workshop.schedule_file_url,
+                    workshop.terms_file_url,
                     $fields,
                     workshop.url,
                     workshop.call_id,
@@ -77,8 +79,7 @@ class Workshop extends \Goteo\Core\Model {
                     workshop.venue_address,
                     workshop.header_image,
                     workshop.map_iframe,
-                    workshop.how_to_get,
-                    workshop.type
+                    workshop.event_type
               FROM workshop
               $joins
               WHERE workshop.id = ?";
@@ -112,18 +113,18 @@ class Workshop extends \Goteo\Core\Model {
             $values[':call'] = $filters['call'];
         }
 
-        if (is_array($filters['type'])) {
+        if (is_array($filters['event_type'])) {
             $parts = [];
             foreach($filters['type'] as $i => $type) {
-                    $parts[] = ':type' . $i;
-                    $values[':type' . $i] = $type;
+                    $parts[] = ':event_type' . $i;
+                    $values[':event_type' . $i] = $type;
             }
             if($parts) $sqlFilter .= "type IN (" . implode(',', $parts) . ")";
         }
 
-        elseif ($filters['type']) {
-            $sqlFilter = 'workshop.type = :type';
-            $values[':type'] = $filters['type'];
+        elseif ($filters['event_type']) {
+            $sqlFilter = 'workshop.event_type = :event_type';
+            $values[':event_type'] = $filters['type'];
         }
 
         if ($filters['excluded']) {
@@ -233,7 +234,7 @@ class Workshop extends \Goteo\Core\Model {
                 workshop.venue,
                 workshop.city,
                 workshop.venue_address,
-d                :viewLang as viewLang
+                :viewLang as viewLang
 
             FROM workshop
             $joins
@@ -336,8 +337,8 @@ d                :viewLang as viewLang
     /*
      *  List of types
      */
-    public static function getListTypes(){
-        return Config::get('workshop.types');
+    public static function getListEventTypes(){
+        return Config::get('workshop.event_types');
     }
 
     public function getHeaderImage() {
@@ -395,7 +396,7 @@ d                :viewLang as viewLang
             'subtitle',
             'online',
             'blockquote',
-            'type',
+            'event_type',
             'description',
             'url',
             'date_in',
@@ -408,7 +409,8 @@ d                :viewLang as viewLang
             'how_to_get',
             'map_iframe',
             'workshop_location',
-            'schedule_file_url'
+            'schedule_file_url',
+            'terms_file_url'
         );
 
         if($this->call_id) $fields[] = 'call_id';

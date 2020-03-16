@@ -96,7 +96,8 @@ class NodesSubController extends AbstractSubController {
             $node->name = $this->getPost('name');
             $node->email = $this->getPost('email');
             $node->default_consultant = $this->getPost('default_consultant');
-
+            $node->iframe = $this->getPost('iframe');
+            
             if(!$node->isMasterNode()) {
                 if($this->hasPost('id')) {
                     try {

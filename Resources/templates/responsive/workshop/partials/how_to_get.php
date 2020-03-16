@@ -12,7 +12,7 @@
 				<h2>
 					<?= $this->text('workshop-how-label') ?>
 				</h2>
-				<?= $this->workshop->how_to_get ?>
+				<?= $this->markdown($this->workshop->how_to_get) ?>
 			</div>
 			<div class="col-md-9">
 				<?= $this->workshop->map_iframe ?>
