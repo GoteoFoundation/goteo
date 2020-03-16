@@ -51,6 +51,17 @@ $background = $this->channel->owner_background;
 
     </div>
 
+    <?php if (isset($this->channel->iframe)): ?>
+        <section class="influence-map">
+            <div class="container">
+                <h2 class="title"><?= $this->text('node-iframe-title') ?></h2>
+                <div class="map-container">
+                    <iframe src="<?= $this->channel->iframe ?>" width="100%" height="500" style="border:none;" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+    <?php endif; ?>
+    
     <div class="projects-section">
         <div class="container-fluid">
             <div id="content">
