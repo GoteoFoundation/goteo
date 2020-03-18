@@ -137,22 +137,15 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
      * @depends testInstance
      */
     public function testVars($processor) {   
-        $defaults = [
-            'max_amount_per_project' => 500,
-            'max_amount_per_invest' => 100,
-            'max_invests_per_user' => 1
-        ];
         $matcher = $processor->getMatcher();
         $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher);
-        $this->assertEquals($defaults, $processor->getVars());
+        // $this->assertEquals($defaults, $processor->getVars());
         // Custom vars
         // $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher->setVars(['max_amount_per_project' => 150]));
         $vars = $processor->getVars();
-        $this->assertNotEquals($defaults, $vars);
-        $this->assertEquals(150, $vars['max_amount_per_project']);
-        $this->assertEquals(100, $vars['max_amount_per_invest']);
-        $this->assertEquals(1, $vars['max_invests_per_user']);
-        $this->assertEquals(array_keys($defaults), array_keys($processor->getVarLabels()));
+        // $this->assertNotEquals($defaults, $vars);
+        $this->assertEquals(50, $vars['percent_of_donation']);
+        $this->assertEquals(100, $vars['donation_per_project']);
 
         return $processor;
     }
@@ -177,7 +170,6 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         // $project->save();
         $processor->setProject($project);
         $processor->setInvest($invest);
-        print_r($invest);
         $this->assertEquals(0, $processor->getAmount());
         $invest->amount = 100;
         $project->amount += $invest->amount;
@@ -257,6 +249,152 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
 
         return $processor;
     }
+    
+    /**
+     * @depends testCreate
+     */
+    public function testCreateConfigAmount($matcher) {
+        $conf = [];
+        $matcher->algorithm = 'criteriainvest';
+        $conf['min_amount_per_project'] = 500;
+        $conf['donation_per_project'] = 100;
+        $matcher->setVars($conf);
+
+        $this->assertTrue($matcher->save($errors), print_r($errors,1));
+        return $matcher;
+    }
+
+    
+    /**
+     * @depends testCreate
+     */
+    public function testCleanInvests($matcher) {
+        // Delete invests
+        Matcher::query("DELETE FROM invest WHERE project=?", get_test_project()->id);
+        $this->assertEquals(0, Matcher::query("SELECT COUNT(*) FROM `invest` WHERE project = ?", get_test_project()->id)->fetchColumn());
+        $this->assertTrue($matcher->save($errors), print_r($errors,1));
+        return $matcher;
+    }
+
+
+    /**
+     * @depends testCleanInvests
+     */
+    public function testRefillUsersPool($matcher) {
+        $total = 0;
+        //Creates users first
+        foreach(self::$user_data as $i => $user) {
+            if(!($uob = User::get($user['userid']))) {
+                echo "\nCreating user [{$user['userid']}]";
+                $uob = new User($user);
+                $this->assertTrue($uob->save($errors, ['active']), print_r($errors, 1));
+            }
+
+            $this->assertInstanceOf('\Goteo\Model\User', $uob, print_r($errors, 1));
+
+            self::$user_data[$i]['ob'] = $uob;
+            if(isset($user['pool'])) {
+
+                echo "\nSetting user's pool [{$user['userid']}]";
+                Matcher::query("REPLACE invest (`user`, amount, status, method, invested, charged, pool) VALUES (:user, :amount, :status, 'dummy', NOW(), NOW(), 1)", [':user' => $user['userid'], ':amount' => $user['pool'], ':status' => Invest::STATUS_TO_POOL]);
+
+                Matcher::query("REPLACE user_pool (`user`, amount) VALUES (:user, :amount)", [':user' => $user['userid'], ':amount' => $user['pool']]);
+
+                $this->assertEquals($user['pool'], $uob->getPool()->amount);
+
+            }
+
+            $total += $user['pool'];
+        }
+
+        $this->assertEquals($total, $matcher->getTotalAmount());
+        $this->assertGreaterThan(0, $matcher->getTotalAmount());
+
+    }
+
+    /**
+     * @depends testInstance
+     * @depends testCreateConfigAmount
+     * @depends testCleanInvests
+     * @depends testRefillUsersPool
+     */
+    public function testAmountByAmount($processor) {
+        $invest = new Invest([
+            'user' => get_test_user()->id,
+            'project' => get_test_project()->id,
+            'method' => 'dummy',
+            'currency' => 'EUR',
+            'currency_rate' => 1,
+            'status' => Invest::STATUS_CHARGED,
+            'amount' => 100
+        ]);
+        $project = get_test_project();
+        $project->mincost = 200;
+        $project->maxcost = 4000;
+        $project->amount = $invest->amount;
+        // $project->save();
+        $processor->setProject($project);
+        $processor->setInvest($invest);
+        $this->assertEquals(0, $processor->getAmount());
+        $invest->amount = 1000;
+        $project->amount += $invest->amount;
+        $this->assertEquals(100, $processor->getAmount());
+
+        // save
+        $errors = [];
+        $this->assertTrue($invest->save($errors), implode("\n", $errors));
+
+        return $processor;
+    }
+
+        /**
+     * @depends testAmountByAmount
+     */
+    public function testInvestsByAmount($processor) {
+        $invests = $processor->getInvests();
+        $project = $processor->getProject();
+        $this->assertCount(2, $invests);
+        $this->assertInstanceOf('Goteo\Model\Invest', $invests[0]);
+        $this->assertInstanceOf('Goteo\Model\Invest', $invests[1]);
+
+        $this->assertEquals(67, $invests[0]->amount);
+        $this->assertEquals(33, $invests[1]->amount);
+
+        $errors = [];
+        $this->assertTrue($invests[0]->save($errors), implode("\n", $errors));
+        $this->assertTrue($invests[1]->save($errors), implode("\n", $errors));
+
+        $this->assertEquals(self::$user_data[0]['userid'], $invests[0]->user);
+        $this->assertEquals(self::$user_data[1]['userid'], $invests[1]->user);
+        $this->assertEquals(1100, Project::get($project->id)->amount);
+        return $processor;
+    }
+
+    /**
+     * @depends testAmountByAmount
+     */
+    public function testInvestsRepeatByAmount($processor) {
+        $invest = new Invest([
+            'user' => get_test_user()->id,
+            'project' => get_test_project()->id,
+            'method' => 'dummy',
+            'currency' => 'EUR',
+            'currency_rate' => 1,
+            'status' => Invest::STATUS_CHARGED,
+            'amount' => 5
+        ]);
+        $errors = [];
+        $this->assertTrue($invest->save($errors), implode("\n", $errors));
+
+        $processor->setInvest($invest);
+        $processor->setProject(get_test_project());
+        $this->assertEquals(0, $processor->getAmount());
+
+        $invest->user = self::$user_data[2]['userid'];
+        $this->assertEquals(0, $processor->getAmount());
+
+        return $processor;
+    }
 
     /**
      * @depends testCreate
@@ -266,9 +404,10 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         Matcher::query("DELETE FROM invest WHERE project=?", get_test_project()->id);
         // delete matcher
         $this->assertTrue($matcher->dbDelete());
-
+        
         return $matcher;
     }
+
     public function testCleanUsers() {
         foreach(self::$user_data as $user) {
             echo "\nDeleting user [{$user['userid']}]";
