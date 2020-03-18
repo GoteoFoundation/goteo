@@ -71,7 +71,8 @@ class NodeSubController extends AbstractSubController {
                 'linkedin',
                 'owner_background',
                 'owner_font_color',
-                'owner_social_color'
+                'owner_social_color',
+                'iframe'
             );
 
             foreach ($fields as $field) {

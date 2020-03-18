@@ -544,3 +544,5 @@ admin-online: Online
 mandatory-filter-name: Falta nombre
 mandatory-filter-description: Falta descripción
 mandatory-filter-role: Falta un rol
+
+admin-node-iframe: Iframe

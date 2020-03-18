@@ -50,7 +50,7 @@ $background = $this->channel->owner_background;
         <?= $this->supply('channel-header', $this->insert("channel/partials/join_action", ['main_color' => $background])) ?>
 
     </div>
-
+    
     <div class="projects-section">
         <div class="container-fluid">
             <div id="content">
@@ -74,6 +74,17 @@ $background = $this->channel->owner_background;
 
 <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
 
+<?php endif; ?>
+
+<?php if (isset($this->channel->iframe)): ?>
+    <section class="influence-map">
+        <div class="container">
+            <h2 class="title"><?= $this->text('node-iframe-title') ?></h2>
+            <div class="map-container">
+                <iframe src="<?= $this->channel->iframe ?>" width="100%" height="500" style="border:none;" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
 <?php endif; ?>
 
 <?php $this->replace() ?>
