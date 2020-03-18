@@ -77,11 +77,22 @@ $background = $this->channel->owner_background;
 <?php endif; ?>
 
 <?php if (isset($this->channel->iframe)): ?>
+
+    <?php
+            // Custom iframe depending on the lang
+            $current_lang=$this->lang_current();
+            if(preg_match("!/[a-z]{2,2}/|/[a-z]{2,2}$!", $this->channel->iframe))
+                $iframe=preg_replace("!/[a-z]{2,2}/|/[a-z]{2,2}$!", '/'.$current_lang.'/', $this->channel->iframe);
+            else
+                $iframe=$this->channel->iframe.'/'.$current_lang.'/';
+
+    ?>
+
     <section class="influence-map">
         <div class="container">
             <h2 class="title"><?= $this->text('node-iframe-title') ?></h2>
             <div class="map-container">
-                <iframe src="<?= $this->channel->iframe ?>" width="100%" height="500" style="border:none;" allowfullscreen></iframe>
+                <iframe src="<?= $iframe ?>" width="100%" height="500" style="border:none;" allowfullscreen></iframe>
             </div>
         </div>
     </section>
