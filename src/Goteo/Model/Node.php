@@ -35,12 +35,15 @@ class Node extends \Goteo\Core\Model {
         $home_img,
         $active,
         $project_creation_open,
+        $show_team,
         $image,
         $default_consultant,
         $sponsors_limit,
         $call_for_action_background,
         $premium,
-        $iframe;
+        $iframe,
+        $terms
+        ;
 
 
     public function __construct() {
@@ -67,7 +70,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'subtitle', 'description', 'call_to_action_description'];
+        return ['name', 'subtitle', 'description', 'call_to_action_description', 'terms'];
     }
 
     /**
@@ -95,6 +98,7 @@ class Node extends \Goteo\Core\Model {
                 node.url as url,
                 node.active as active,
                 node.project_creation_open as project_creation_open,
+                node.show_team as show_team,
                 node.twitter as twitter,
                 node.facebook as facebook,
                 node.linkedin as linkedin,
