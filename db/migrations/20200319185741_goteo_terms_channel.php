@@ -34,6 +34,9 @@ class GoteoTermsChannel
      return "
               ALTER TABLE `node` ADD COLUMN `terms` longtext CHARSET utf8 COLLATE utf8_general_ci;
               ALTER TABLE `node` ADD COLUMN `show_team` TINYINT(1) DEFAULT 0 NOT NULL AFTER `project_creation_open`;
+              ALTER TABLE `node` ADD COLUMN `chatbot_url` VARCHAR(256);
+              ALTER TABLE `node` ADD COLUMN `chatbot_id` INT(11);
+
               ALTER TABLE `node_lang` ADD COLUMN `terms` longtext CHARSET utf8 COLLATE utf8_general_ci;
 
 
@@ -50,6 +53,9 @@ class GoteoTermsChannel
      return "
         ALTER TABLE `node` DROP COLUMN `terms`;
         ALTER TABLE `node` DROP COLUMN `show_team`;
+        ALTER TABLE `node` DROP COLUMN `chatbot_url`;
+        ALTER TABLE `node` DROP COLUMN `chatbot_id`;
+        
         ALTER TABLE `node_lang` DROP COLUMN `terms`;
      ";
   }
