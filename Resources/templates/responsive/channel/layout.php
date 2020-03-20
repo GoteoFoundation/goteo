@@ -150,4 +150,20 @@ $background = $this->channel->owner_background;
 
     <?php endif; ?>
 
+    <?php if($this->channel->chatbot_url): ?>
+
+    <!-- Chatbot code -->
+
+    <?php $current_lang=$this->lang_current(); ?>
+
+    <script src="<?= $this->channel->chatbot_url ?>/widget/widget.js"></script>
+    <script>
+        (window.goteoHelpWidget=window.goteoHelpWidget||{}).load("<?= $this->channel->chatbot_url ?>", "<?= $current_lang ?>", <?= $this->channel->chatbot_id ?>, true);
+    </script>
+
+    <!-- End Chatbot code -->
+
+    <?php endif ?>
+
+
 <?php $this->append() ?>

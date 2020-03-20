@@ -42,7 +42,9 @@ class Node extends \Goteo\Core\Model {
         $call_for_action_background,
         $premium,
         $iframe,
-        $terms
+        $terms,
+        $chatbot_url,
+        $chatbot_id
         ;
 
 
@@ -110,7 +112,9 @@ class Node extends \Goteo\Core\Model {
                 node.sponsors_limit as sponsors_limit,
                 node.call_to_action_background_color as call_to_action_background_color,
                 node.premium as premium,
-                node.iframe as iframe
+                node.iframe as iframe,
+                node.chatbot_url as chatbot_url,
+                node.chatbot_id as chatbot_id
             FROM node
             $joins
             WHERE node.id = :id";
