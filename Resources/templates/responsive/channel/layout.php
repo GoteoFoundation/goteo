@@ -68,9 +68,6 @@ $background = $this->channel->owner_background;
 
 <?= $this->insert("channel/partials/stories_section") ?>
 
-<?= $this->insert("channel/partials/posts_section") ?>
-
-
 <?= $this->insert("channel/partials/related_workshops") ?>
 
 <?php endif; ?>
@@ -80,6 +77,8 @@ $background = $this->channel->owner_background;
 <?= $this->insertif('foundation/donor') ?>
 
 <?php endif; ?>
+
+<?= $this->insert("channel/partials/posts_section") ?>
 
 <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
 
