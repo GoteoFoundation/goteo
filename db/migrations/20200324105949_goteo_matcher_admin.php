@@ -35,21 +35,6 @@ class GoteoMatcherAdmin
             ALTER TABLE `matcher` ADD COLUMN description TEXT DEFAULT NULL after `name`;
             ALTER TABLE `matcher` ADD COLUMN status varchar(10) DEFAULT 'open' after `description`;
             ALTER TABLE `matcher_lang` ADD COLUMN description TEXT DEFAULT NULL after `name`;
-
-            CREATE TABLE `matcher_conf` (
-                `matcher` varchar(50) CHARACTER SET utf8 NOT NULL,
-                `budget` INT(6),
-                `algorithm` varchar(50) NOT NULL,
-                `max_donation_per_invest` INT(6),
-                `max_donation_per_project`INT(6),
-                `percent_of_donation` INT(6),
-                `donation_per_project` INT(6),
-                `filter_by_location` INT(1) NOT NULL DEFAULT 0,
-                `filter_by_platform` INT(1) NOT NULL DEFAULT 0,
-                PRIMARY KEY (`matcher`),
-                CONSTRAINT `matcher_conf_ibfk_1` FOREIGN KEY (`matcher`) REFERENCES `matcher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
             ALTER TABLE `matcher_project` ADD COLUMN score INT (3) DEFAULT 0 after `status`;
      ";
   }
@@ -66,7 +51,6 @@ class GoteoMatcherAdmin
             ALTER TABLE `matcher` DROP COLUMN status;
             ALTER TABLE `matcher_lang` DROP COLUMN description;
             ALTER TABLE `matcher_project` DROP COLUMN score;
-            DROP TABLE `matcher_conf`;
      ";
   }
 
