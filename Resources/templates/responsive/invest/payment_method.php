@@ -86,7 +86,7 @@ $this->section('main-content');
                                     </div>
                                 </div>
                                 <div class="txt-2">
-                                    <?= $this->text('invest-tip-part-2') ?>
+                                    <?= $this->project->tip_msg ? $this->project->tip_msg : $this->text('invest-tip-part-2') ?>
                                 </div>
                             </div>
                         </label>

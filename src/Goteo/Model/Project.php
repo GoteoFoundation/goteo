@@ -536,6 +536,7 @@ class Project extends \Goteo\Core\Model {
                 node.url as node_url,
                 node.label as node_label,
                 node.active as node_active,
+                IFNULL(node_lang.tip_msg, node.tip_msg) as tip_msg,
                 node.owner_background as node_owner_background,
                 project_conf.*,
                 user.name as user_name,
@@ -555,6 +556,9 @@ class Project extends \Goteo\Core\Model {
                 ON project_conf.project = project.id
             LEFT JOIN node
                 ON node.id = project.node
+            LEFT JOIN node_lang
+                ON  node_lang.id = node.id
+                AND node_lang.lang = :lang
             INNER JOIN user
                 ON user.id=project.owner
             LEFT JOIN user_lang
