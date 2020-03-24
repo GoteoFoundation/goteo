@@ -393,7 +393,7 @@ class Matcher extends \Goteo\Core\Model {
 
     
     /**
-     * Gets the total number of active projects available fot the matching
+     * Gets the total number of active projects available for the matching
      * @return int num of projects
      */
     protected function calculateProjects() {
