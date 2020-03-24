@@ -124,10 +124,13 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'required' => false,
                 'disabled' => $this->getReadonly()
             ])    
-            ->add('how_to_get', 'text', [
+            ->add('how_to_get', 'markdown', [
                 'label' => 'admin-title-how-to-get',
                 'required' => false,
-                'disabled' => $this->getReadonly()
+                'disabled' => $this->getReadonly(),
+                'attr' => [
+                    'rows' => 4
+                ]
             ])
             ->add('map_iframe', 'textarea', [
                 'label' => 'admin-title-iframe',
@@ -142,13 +145,13 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'required' => false,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('type', 'choice', array(
+            ->add('event_type', 'choice', array(
                 'label' => 'admin-title-type',
                 'required' => false,
                 'expanded' => true,
                 'row_class' => 'extra',
                 'wrap_class' => 'col-xs-6',
-                'choices' => Workshop::getListTypes()
+                'choices' => Workshop::getListEventTypes()
             ))
              ->add('call_id', 'typeahead', [
                 'label' => 'admin-title-call',

@@ -373,9 +373,10 @@ stories:
         matcher: stories-type-matcher
 
 workshop:
-    types:
+    event_types:
         fundlab: workshop-type-fundlab
         fundlab-esil: workshop-type-fundlab-esil
+        crowdcoop: workshop-type-crowdcoop
 
 # Donate pages (intended for the Goteo Foundation)
 donate:

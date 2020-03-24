@@ -34,11 +34,13 @@ class Node extends \Goteo\Core\Model {
         $sello,
         $home_img,
         $active,
+        $project_creation_open,
         $image,
         $default_consultant,
         $sponsors_limit,
         $call_for_action_background,
-        $premium;
+        $premium,
+        $iframe;
 
 
     public function __construct() {
@@ -92,6 +94,7 @@ class Node extends \Goteo\Core\Model {
                 node.location as location,
                 node.url as url,
                 node.active as active,
+                node.project_creation_open as project_creation_open,
                 node.twitter as twitter,
                 node.facebook as facebook,
                 node.linkedin as linkedin,
@@ -102,7 +105,8 @@ class Node extends \Goteo\Core\Model {
                 node.default_consultant as default_consultant,
                 node.sponsors_limit as sponsors_limit,
                 node.call_to_action_background_color as call_to_action_background_color,
-                node.premium as premium
+                node.premium as premium,
+                node.iframe as iframe
             FROM node
             $joins
             WHERE node.id = :id";
@@ -354,23 +358,25 @@ class Node extends \Goteo\Core\Model {
             'description',
             'url',
             'default_consultant',
-            'sponsors_limit'
+            'sponsors_limit',
+            'iframe'
             );
 
         $set = '';
         $values = array(':id' => $this->id);
 
+        
         foreach ($fields as $field) {
             if ($set != '') $set .= ", ";
             if($field === 'default_consultant' && empty($this->default_consultant)) {
                 $set .= "`$field` = NULL ";
                 continue;
             }
-
+            
             $set .= "`$field` = :$field ";
             $values[":$field"] = (string)$this->$field;
         }
-
+        
         try {
             $sql = "UPDATE node SET " . $set . " WHERE id = :id";
 
@@ -570,7 +576,8 @@ class Node extends \Goteo\Core\Model {
             'linkedin',
             'owner_background',
             'owner_font_color',
-            'owner_social_color'
+            'owner_social_color',
+            'iframe'
             );
 
         $values = array (':id' => $this->id);

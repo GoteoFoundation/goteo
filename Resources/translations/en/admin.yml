@@ -283,3 +283,5 @@ admin-mail-body: 'Body of the message'
 mandatory-filter-name: Missing name
 mandatory-filter-description: Missing description
 mandatory-filter-role: Missing role
+
+admin-node-iframe: Iframe
