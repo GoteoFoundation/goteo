@@ -249,28 +249,28 @@ class ChartsApiController extends AbstractApiController {
             $available = $matcher->getTotalAmount() - $used;
             $result[] = [
                 'label' => Text::get('dashboard-matcher-api-amount-used'),
-                'counter' => $used
+                'counter' => (int) $used
             ];
             $result[] = [
                 'label' => Text::get('dashboard-matcher-api-amount-available'),
-                'counter' => $available
+                'counter' => (int) $available
             ];
         } else if ($type == 'raised') {
             $raised = $matcher->getTotalRaised();
             $used = $matcher->getUsedAmount();
             $result[] = [
                 'label' => Text::get('dashboard-matcher-api-raised-raised'),
-                'counter' => $raised
+                'counter' => (int) $raised
             ];
             $result[] = [
                 'label' => Text::get('dashboard-matcher-api-raised-used'),
-                'counter' => $used
+                'counter' => (int) $used
             ];
         } else if ($type == 'projects') {
             foreach (Matcher::$statuses as $key => $value) {
                 $result[] = [
                     'label' => Text::get('dashboard-matcher-api-projects-' . $value),
-                    'counter' => count($matcher->getProjects($value))
+                    'counter' => (int) count($matcher->getProjects($value))
                 ];
             }
         }
