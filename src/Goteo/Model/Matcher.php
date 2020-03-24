@@ -26,7 +26,6 @@ use Goteo\Model\Questionnaire\Score;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\MatcherValidationEvent;
-use Goteo\Model\Matcher\MatcherConfig;
 
 /**
  * Matcher Model
@@ -37,6 +36,7 @@ class Matcher extends \Goteo\Core\Model {
 
     const STATUS_OPEN = 'open';
     const STATUS_COMPLETED = 'completed';
+    const MINIMUM_WALLET_AMOUNT = 3000;
 
     public $id,
            $name,
@@ -47,8 +47,13 @@ class Matcher extends \Goteo\Core\Model {
            $owner,
            $terms,
            $fee = 0,
-           $processor = '',
-           $vars = [],
+           $processor = 'duplicateinvest',
+           $vars = [
+               'max_donation_per_invest' => 100,
+               'max_donation_per_project' => 0,
+               'max_invests_per_user' => 1,
+               'filter_by_platform' => 0
+           ],
            $crowd = 0, // Calculated field with the sum of all invests made by the peoplo
            $used = 0, // Calculated field with the sum of all invests made by the matching
            $amount = 0, // Calculated field with the sum of all pools in the Matcher
@@ -388,7 +393,7 @@ class Matcher extends \Goteo\Core\Model {
 
     
     /**
-     * Gets the total number of active projects available fot the matching
+     * Gets the total number of active projects available for the matching
      * @return int num of projects
      */
     protected function calculateProjects() {
@@ -651,7 +656,6 @@ class Matcher extends \Goteo\Core\Model {
         $sql = "SELECT a.*,b.status AS matcher_status, b.score FROM project a
                 RIGHT JOIN matcher_project b ON a.id = b.project_id
                 WHERE b.matcher_id = :matcher AND a.status IN (2,3,4,5,6)
-                ORDER BY b.score DESC
                 ";
         $values = [':matcher' => $this->id];
         if($status && $status !== 'all') {
@@ -661,6 +665,7 @@ class Matcher extends \Goteo\Core\Model {
             $sql .= ' AND b.status = :status';
             $values[':status'] = $status;
         }
+        $sql .= ' ORDER BY b.score DESC';
         // die(\sqldbg($sql, $values));
         if($query = self::query($sql, $values)) {
             if( $projects = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') ) {
@@ -869,8 +874,8 @@ class Matcher extends \Goteo\Core\Model {
         $matchers = [];
         if($location = ProjectLocation::get($project)) {
             foreach(self::getList($filters) as $matcher) {
-                if($matcher_config = MatcherConfig::get($matcher->id)) {
-                    if ($matcher_config->filter_by_location) {
+                if($matcher_config = $matcher->getVars()) {
+                    if ($matcher_config['filter_by_location']) {
                         if($matcher_loc = MatcherLocation::get($matcher)) {
                             $max = is_null($max_distance) ? ($matcher_loc->radius ? $matcher_loc->radius :  100) : $max_distance;
                             $distance = MatcherLocation::haversineDistance($location->latitude, $location->longitude, $matcher_loc->latitude, $matcher_loc->longitude);

@@ -68,13 +68,19 @@ $background = $this->channel->owner_background;
 
 <?= $this->insert("channel/partials/stories_section") ?>
 
-<?= $this->insert("channel/partials/posts_section") ?>
-
 <?= $this->insert("channel/partials/related_workshops") ?>
 
-<?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
+<?php endif; ?>
+
+<?php if($this->channel->show_team): ?>
+
+<?= $this->insertif('foundation/donor') ?>
 
 <?php endif; ?>
+
+<?= $this->insert("channel/partials/posts_section") ?>
+
+<?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
 
 <?php if (isset($this->channel->iframe)): ?>
 
@@ -98,6 +104,23 @@ $background = $this->channel->owner_background;
     </section>
 <?php endif; ?>
 
+<?php if($this->channel->terms): ?>
+
+<!-- Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title"><?= $this->text('matcher-terms-desc') ?></h3>
+      </div>
+      <div class="modal-body"><?= $this->markdown($this->channel->terms) ?></div>
+    </div>
+  </div>
+</div>
+
+<?php endif; ?>
+
 <?php $this->replace() ?>
 
 
@@ -105,4 +128,41 @@ $background = $this->channel->owner_background;
 
 <?php $this->section('footer') ?>
     <?= $this->insert('channel/partials/javascript') ?>
+
+    <?php if($this->channel->show_team): ?>
+
+    <script>
+    $(function(){
+
+        $('.slider-team').slick({
+            dots: false,
+            autoplay: true,
+            infinite: true,
+            speed: 2000,
+            autoplaySpeed: 3000,
+            fade: true,
+            arrows: false,
+            cssEase: 'linear'
+        });
+    });
+    </script>
+
+    <?php endif; ?>
+
+    <?php if($this->channel->chatbot_url): ?>
+
+    <!-- Chatbot code -->
+
+    <?php $current_lang=$this->lang_current(); ?>
+
+    <script src="<?= $this->channel->chatbot_url ?>/widget/widget.js"></script>
+    <script>
+        (window.goteoHelpWidget=window.goteoHelpWidget||{}).load("<?= $this->channel->chatbot_url ?>", "<?= $current_lang ?>", <?= $this->channel->chatbot_id ?>, true);
+    </script>
+
+    <!-- End Chatbot code -->
+
+    <?php endif ?>
+
+
 <?php $this->append() ?>

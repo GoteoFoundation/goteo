@@ -24,6 +24,8 @@ use Goteo\Model\Mail;
 use Goteo\Library\Text;
 use Goteo\Model\User\Interest;
 use Goteo\Model\Page;
+use Goteo\Model\Matcher;
+use Goteo\Application\Message;
 
 class DashboardController extends \Goteo\Core\Controller {
 

@@ -15,7 +15,6 @@ use Goteo\Application\Config;
 use Goteo\Model\Project;
 use Goteo\Model\Image;
 use Goteo\Model\Matcher;
-use Goteo\Model\Matcher\MatcherConfig;
 use Symfony\Component\HttpFoundation\Response;
 use Goteo\Model\Questionnaire;
 
@@ -139,8 +138,9 @@ class MatcherValidationEvent extends \Goteo\Console\Event\FilterProjectEvent
 
     public function getConfigurationScore() {
         $res = 0;
-        if (MatcherConfig::get($this->matcher->id))
+        if (!empty($this->matcher->getVars())) {
             $res = 100;
+        }
 
         if($res) {
             $this->errors['configuration'][] = 'configuration';

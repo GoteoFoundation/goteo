@@ -24,6 +24,7 @@ use Goteo\Model\Invest;
 use Goteo\Model\Image;
 use Goteo\Model\Origin;
 use Goteo\Util\Stats\Stats;
+use Goteo\Model\Matcher;
 
 
 class ChartsApiController extends AbstractApiController {
@@ -226,6 +227,55 @@ class ChartsApiController extends AbstractApiController {
         }, $ret);
 
         return $this->jsonResponse($ret);
+    }
+
+
+    /**
+     * Gets amount for a Matcher
+     * @param  Matcher $mid 
+     * @param  string type amount, raised, projects
+     * @param  Request $request [description]
+     */
+    public function statsMatcherAction($mid = null, $type = 'amount') {
+        $matcher = Matcher::get($mid);
+        if (!$matcher) {
+            return $this->jsonResponse(null);
+        }
+
+        $result = [];
+
+        if ($type == 'amount') {
+            $used = $matcher->getUsedAmount();
+            $available = $matcher->getTotalAmount() - $used;
+            $result[] = [
+                'label' => Text::get('dashboard-matcher-api-amount-used'),
+                'counter' => (int) $used
+            ];
+            $result[] = [
+                'label' => Text::get('dashboard-matcher-api-amount-available'),
+                'counter' => (int) $available
+            ];
+        } else if ($type == 'raised') {
+            $raised = $matcher->getTotalRaised();
+            $used = $matcher->getUsedAmount();
+            $result[] = [
+                'label' => Text::get('dashboard-matcher-api-raised-raised'),
+                'counter' => (int) $raised
+            ];
+            $result[] = [
+                'label' => Text::get('dashboard-matcher-api-raised-used'),
+                'counter' => (int) $used
+            ];
+        } else if ($type == 'projects') {
+            foreach (Matcher::$statuses as $key => $value) {
+                $result[] = [
+                    'label' => Text::get('dashboard-matcher-api-projects-' . $value),
+                    'counter' => (int) count($matcher->getProjects($value))
+                ];
+            }
+        }
+
+        return $this->jsonResponse($result);
     }
 
 }

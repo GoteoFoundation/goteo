@@ -18,7 +18,6 @@ use Goteo\Model\Template;
 use Goteo\Model\User;
 use Goteo\Model\Mail;
 use Goteo\Model\Matcher;
-use Goteo\Model\Matcher\MatcherConfig;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Conf as ProjectConf;
 use Goteo\Model\Event;
@@ -69,7 +68,7 @@ class MailingMatcherListener extends AbstractMatcherListener {
 
         $user = $project->getOwner();
         $admin = $matcher->getOwner();
-        $matcher_conf = MatcherConfig::get($matcher->id);
+        $matcher_conf = $matcher->getVars();
         $original_lang = $lang = User::getPreferences($user)->comlang;
         $original_lang_admin = $lang_admin = User::getPreferences($admin)->comlang;
 
@@ -92,7 +91,7 @@ class MailingMatcherListener extends AbstractMatcherListener {
                 $mail = Mail::createFromTemplate($user->email, $user->name, $tpl, $vars, $lang);
             case 'accepted':
                 // Send mail to admin: accepted project to review only if project in campaign
-                if($project->inCampaign() && $matcher_conf->filter_by_platform) {
+                if($project->inCampaign() && $matcher_conf['filter_by_platform']) {
                     $tpl_admin = Template::MATCHER_PROJECT_ADDED_ADMIN;
                     $mail_admin = Mail::createFromTemplate($admin->email, $admin->name, $tpl_admin, $vars, $lang_admin);
                 } else {
@@ -104,7 +103,7 @@ class MailingMatcherListener extends AbstractMatcherListener {
                 break;
             case 'active':
                 // Send mail to owner: project accepted in the Matcher
-                if ($matcher_conf->filter_by_platform) {
+                if ($matcher_conf['filter_by_platform']) {
                     $tpl = Template::MATCHER_PROJECT_ACTIVATED;
                 } else {
                     $tpl = Template::MATCHER_PROJECT_PITCH_ACTIVATED;
@@ -113,7 +112,7 @@ class MailingMatcherListener extends AbstractMatcherListener {
                 break;
             case 'discarded':
                 // Send mail to owner: project not accepted in the Matcher
-                if ($matcher_conf->filter_by_platform) {
+                if ($matcher_conf['filter_by_platform']) {
                     $tpl = Template::MATCHER_PROJECT_DISCARDED;
                 } else {
                     $tpl = Template::MATCHER_PROJECT_PITCH_DISCARDED;
