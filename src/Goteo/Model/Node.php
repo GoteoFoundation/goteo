@@ -44,7 +44,8 @@ class Node extends \Goteo\Core\Model {
         $iframe,
         $terms,
         $chatbot_url,
-        $chatbot_id
+        $chatbot_id,
+        $tip_msg
         ;
 
 
@@ -72,7 +73,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'subtitle', 'description', 'call_to_action_description', 'terms'];
+        return ['name', 'subtitle', 'description', 'call_to_action_description', 'terms', 'tip_msg'];
     }
 
     /**
@@ -114,7 +115,8 @@ class Node extends \Goteo\Core\Model {
                 node.premium as premium,
                 node.iframe as iframe,
                 node.chatbot_url as chatbot_url,
-                node.chatbot_id as chatbot_id
+                node.chatbot_id as chatbot_id,
+                node.tip_msg as tip_msg
             FROM node
             $joins
             WHERE node.id = :id";
