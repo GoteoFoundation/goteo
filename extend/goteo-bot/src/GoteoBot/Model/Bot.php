@@ -8,8 +8,10 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Util\Bot;
+namespace GoteoBot\Model;
 
 interface Bot {
     public function sendMessage($chadId, $text);
+    public function sendImage($chatId, $image, $caption);
+    public function sendAnimation($chatId, $animation, $caption);
 }

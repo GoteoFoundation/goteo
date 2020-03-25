@@ -235,10 +235,7 @@ $cName = "P-{$cNum}-{$cDate}";
             <th style="text-align:left;">3) Transferencias de la Fundación Goteo (Goteo.org) a los/as  impulsores/as</th>
         </tr>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Envío a través de PayPal (sin descontar comisiones de PayPal  de 3,4&#37;+ 0,35  por transacción/usuario/a, cobradas automáticamente al receptor del dinero): <strong><?php echo \amount_format($sumData['pp_project'], 2); ?> (<?= $dated ? $date_today : '[fecha transferencia]' ?>)</strong></td>
-        </tr>
-        <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Envío a través de cuenta bancaria: <strong><?php echo \amount_format($sumData['tpv_project'], 2); ?> (<?= $dated ? $date_today : '[fecha transferencia]' ?>)</strong></td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Envío a través de cuenta bancaria: <strong><?php echo \amount_format($sumData['project'], 2); ?> (<?= $dated ? $date_today : '[fecha transferencia]' ?>)</strong></td>
         </tr>
         <tr>
             <td>En estas cantidades ya se ha descontado el importe de la factura [N&uacute;mero de factura] por importe de <?php echo \amount_format($sumData['total_fee_project'], 2); ?></td>

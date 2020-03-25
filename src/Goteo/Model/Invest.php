@@ -981,7 +981,8 @@ class Invest extends \Goteo\Core\Model {
             'matcher',
             'drops',
             'pool',
-            'donate_amount'
+            'donate_amount',
+            'extra_info'
             );
 
         try {
@@ -1285,6 +1286,7 @@ class Invest extends \Goteo\Core\Model {
                 invest.droped as droped,
                 invest.campaign as campaign,
                 invest.call as `call`,
+                invest.matcher as `matcher`,
                 invest.anonymous as anonymous,
                 invest_msg.msg as msg
             FROM    invest
@@ -1338,6 +1340,7 @@ class Invest extends \Goteo\Core\Model {
                     'droped' => $investor->droped,
                     'campaign' => $investor->campaign,
                     'call' => $investor->call,
+                    'matcher'   => $investor->matcher,
                     'msg' => $investor->msg
                 );
 

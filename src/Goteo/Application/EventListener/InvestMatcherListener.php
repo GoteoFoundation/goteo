@@ -150,6 +150,14 @@ class InvestMatcherListener extends AbstractMatcherListener {
 		$invest   = $method->getInvest();
 		$project  = $invest->getProject();
 
+
+        if ($invest->status = Invest::STATUS_TO_POOL ) {
+            $matchers = Matcher::getUserMatchersList($invest->getUser());
+            foreach($matchers as $matcher) {
+                $matcher->save(); // update amount field
+            }
+        }
+
         // Only for invests on projects
         if(!$project) return;
 

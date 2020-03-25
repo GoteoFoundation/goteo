@@ -171,6 +171,7 @@ admin-title-fullname: Nom
 admin-title-header-image: Imatge de capçalera
 admin-title-password: Contrasenya
 admin-title-roles: Rols
+admin-title-role: Rol
 admin-title-amount: Invertit
 admin-title-icon: Icona
 admin-title-image: Imatge
@@ -242,8 +243,12 @@ admin-filter-type-foundation-donor: 'Donant a la fundació'
 admin-filter-type-all: 'Tots'
 admin-filter-predefined-date: 'Dates predefinides'
 admin-filter-predefined-date-choose: 'Pots seleccionar una data predeterminada'
+admin-filter-forced: 'Forçar filtre'
+admin-filter-forced-help: 'Si esculls aquesta opció s''aplicaran els filtres independentment del que hagi escollit l''usuari com a preferència per l''enviament d''informació per part de la plataforma.'
 admin-mail-body: 'Cos del missatge'
 
 mandatory-filter-name: Manca el nom
 mandatory-filter-description: Manca una descripció
 mandatory-filter-role: Manca un rol
+
+admin-node-iframe: Iframe

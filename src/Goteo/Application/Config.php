@@ -15,7 +15,7 @@ use Goteo\Application\Config\YamlSettingsLoader;
 use Goteo\Console\UsersSend;
 use Goteo\Core\Model;
 use Goteo\Application\Currency;
-use Goteo\Util\Bot\TelegramBot;
+
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Route;
 
 class Config {
     // Initial translation groups (groupped in yml files into Resources/translations/)
-    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate', 'bot'];
+    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate', 'questionnaire', 'poster'];
 	static protected $loader;
     static protected $config;
 
@@ -99,9 +99,6 @@ class Config {
 			\Goteo\Controller\TranslateController::addTranslateModel('sphere');
 			\Goteo\Controller\TranslateController::addTranslateModel('communication');
 			
-			// Set up the webhooks for the bots
-			self::setWebhooks();
-
 			// sets up the rest...
 			self::setDirConfiguration();
 
@@ -119,7 +116,7 @@ class Config {
 			}
 
             \Goteo\Application\View::setTheme('responsive');
-			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
+			// die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
 			return;
 		}
 	}
@@ -293,6 +290,7 @@ class Config {
         //
         // App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\ExpressionLanguageProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor');
+        App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\CriteriaInvestMatcherProcessor');
 
 		//Cache dir in libs
 		\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
@@ -539,14 +537,5 @@ class Config {
 		}
 
 		return self::isCurrentNode(self::get('node'));
-	}
-
-	static private function setWebhooks() {
-
-		if (Config::get('bot.telegram.token')) {
-			$bot = new TelegramBot();
-			$bot->createBot();
-			$bot->setWebhook();
-		}
 	}
 }

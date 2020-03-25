@@ -201,6 +201,7 @@ admin-title-header-image: Header image
 admin-title-password: Password
 admin-title-avatar: Avatar
 admin-title-roles: Roles
+admin-title-role: Role
 admin-title-amount: Invested
 admin-title-icon: Icon
 admin-title-info: Info
@@ -276,8 +277,11 @@ admin-filter-type-foundation-donor: 'Donor to the foundation'
 admin-filter-type-all: 'All'
 admin-filter-predefined-date: 'Predefined dates'
 admin-filter-predefined-date-choose: 'You can choose a predefined date'
+admin-filter-forced: 'Force filter'
+admin-filter-forced-help: 'If you select this option, the filters will be applied regardless of what the user has chosen as a preference for sending information by the platform.'
 admin-mail-body: 'Body of the message'
-
 mandatory-filter-name: Missing name
 mandatory-filter-description: Missing description
 mandatory-filter-role: Missing role
+
+admin-node-iframe: Iframe

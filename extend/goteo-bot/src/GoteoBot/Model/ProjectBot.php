@@ -8,13 +8,7 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-/**
- * Opciones de configuración especiales para proyectos.
- * Si el proyecto no tiene una entrada en esta tabla (project_conf), se asumen valores por defecto:
- *      noinvest = 0
- *      watch = 0
- */
-namespace Goteo\Model\Project {
+namespace GoteoBot\Model {
 
     use Goteo\Library\Text;
 
@@ -22,6 +16,8 @@ namespace Goteo\Model\Project {
 
         protected $Table = 'project_bot';
         protected static $Table_static = 'project_bot';    
+
+        const TELEGRAM = "telegram";
 
         public
             $project,
@@ -51,7 +47,7 @@ namespace Goteo\Model\Project {
         public static function get ($id) {
             try {
                 $query = static::query("SELECT * FROM project_bot WHERE project = :id", array(':id' => $id));
-                return $query->fetchObject(__CLASS__);
+                return $query->fetchAll(\PDO::FETCH_OBJ);
             } catch(\PDOException $e) {
                 throw new \Goteo\Core\Exception($e->getMessage());
             }

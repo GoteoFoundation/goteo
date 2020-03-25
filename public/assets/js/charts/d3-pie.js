@@ -105,11 +105,12 @@ d3.goteo.pieChart = function(settings){
 
         var legend = svg.append("g")
               .attr("font-family", "sans-serif")
-              .attr("font-size", 10)
+              .attr("font-size", 14)
               .attr("text-anchor", "end")
               .selectAll("g")
               .data(dataSet)
               .enter().append("g")
+              //.attr("fill","#fff")
               .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
           legend.append("rect")

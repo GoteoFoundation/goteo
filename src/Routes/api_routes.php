@@ -10,7 +10,6 @@
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Goteo\Application\Config;
 
 $api = new RouteCollection();
 
@@ -419,6 +418,17 @@ $api->add('api-matcher-list', new Route(
     array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matchersAction')
 ));
 
+// Matcher images upload (POST method only)
+$api->add('api-matchers-images-upload', new Route(
+    '/matchers/images',
+    array('_controller' => 'Goteo\Controller\Api\MatchersApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 // Matcher detail
 $api->add('api-matcher-item', new Route(
     '/matchers/{mid}',
@@ -436,10 +446,17 @@ $api->add('api-workshops-images-upload', new Route(
     array('POST') // methods
 ));
 
-if (Config::get('bot.telegram.token')) 
-    $api->add('api-telegram-webhook', new Route(
-        '/telegram/' . Config::get('bot.telegram.token'),
-        array('_controller' => 'Goteo\Controller\Api\BotApiController::getUpdate')
-    ));
+// User images upload (POST method only)
+$api->add('api-questionnaire-documents-upload', new Route(
+    '/questionnaire/documents',
+    array('_controller' => 'Goteo\Controller\Api\QuestionnaireApiController::questionnaireUploadDocumentsAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+
 
 return $api;

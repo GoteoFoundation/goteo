@@ -1,0 +1,13 @@
+group: project
+name: 'Project added to a Matcher'
+purpose: 'Mail template to be sent to a matcher owner when a project is added to his Matcher call'
+type: 'md'
+title: 'Nou projecte %PROJECTNAME% ha aplicat per rebre fons de %CALLNAME%'
+text: >
+    # El projecte **%PROJECTNAME%** ha aplicat per rebre fons del Matcher **%CALLNAME%**
+
+    Ara pots visitar el projecte des de l'**Evaluador** i activar-lo o descartar-lo.
+
+    Per veure el projecte i/o descartar-lo dirigeix-te aquí:
+
+    [%EVALUATORURL%](%EVALUATORURL%)

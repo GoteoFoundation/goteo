@@ -271,6 +271,9 @@ body.workshop {
       div.file-icon-label{
         text-align: center;
       }
+      div.terms{
+        margin-top: 30px;
+      }
       div.file-icon{
         text-align: center;
         display: block;
@@ -337,6 +340,14 @@ body.workshop {
 
     .partner{
       padding: 20px 0;
+      img.no-title{
+        margin-top: 20px;
+        max-height: 56px;
+        padding-left: 22px;
+      }
+      .title{
+        margin-bottom: 10px;
+      }
       .disclaimer{
         font-size: $font-size*0.8;
       }
@@ -384,68 +395,81 @@ body.workshop {
 
     @media (max-width: $breakpoint-sm - 1) {
 
-    div.section.banner-header{
-      div.info{
-        .container{
-          h1{
-            font-size: $font-size*3;
+      div.section.banner-header{
+        div.info{
+          .container{
+            h1{
+              font-size: $font-size*3;
+            }
           }
         }
       }
-    }
 
-    div.main-call-to-action{
-      .call-action{
-          padding: 20px 0;
-          display:block;
-          .date{
-              margin-right:0;
-          }
-          .col-location{
-              margin: 25px 0 15px;
-          }
+      div.main-call-to-action{
+        .call-action{
+            padding: 20px 0;
+            display:block;
+            .date{
+                margin-right:0;
+            }
+            .col-location{
+                margin: 25px 0 15px;
+            }
 
-      }
-    }
-
-    div.main-info{
-        .file-icon-label{
-            margin-top: 30px;
         }
-    }
-
-    div.how-to-get{
-      .description{
-        margin-bottom:30px;
       }
-    }
 
-    div.extra-call-to-action{
-      .call-action{
-          padding: 20px 0;
-          display:block;
-          .col-time{
-            text-align: center;
-            margin-bottom: 20px;
+      div.main-info{
+          .file-icon-label{
+              margin-top: 30px;
           }
       }
-    }
 
-    div.sticky-menu, .filters {
-          bottom: 0;
-          top: auto;
-          z-index: 1000;
-          overflow-y: scroll;
-          white-space: nowrap;
-          -webkit-overflow-scrolling: touch;
-          background-color: $background-yellow;
-          margin-bottom: 0px;
-      }
-      div.sticky-menu{
-        padding: 15px 0 0px 0 !important;
+      div.how-to-get{
+        .description{
+          margin-bottom:30px;
+        }
       }
 
-    }
+      div.extra-call-to-action{
+        .call-action{
+            padding: 20px 0;
+            display:block;
+            .col-time{
+              text-align: center;
+              margin-bottom: 20px;
+            }
+        }
+      }
+
+      div.sticky-menu, .filters {
+            bottom: 0;
+            top: auto;
+            z-index: 1000;
+            overflow-y: scroll;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            background-color: $background-yellow;
+            margin-bottom: 0px;
+        }
+        div.sticky-menu{
+          padding: 15px 0 0px 0 !important;
+        }
+
+      }
+
+      .partner{
+        padding: 20px 0;
+        img.no-title{
+          max-height: 100%;
+          margin-top: 20px;
+          padding-left: 0;
+        }
+        .title{
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+      }
 
 
 }
