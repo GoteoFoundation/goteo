@@ -690,7 +690,7 @@ class Matcher extends \Goteo\Core\Model {
     public function getProjects($status = 'active') {
         $sql = "SELECT a.*,b.status AS matcher_status, b.score FROM project a
                 RIGHT JOIN matcher_project b ON a.id = b.project_id
-                WHERE b.matcher_id = :matcher AND a.status IN (2,3,4,5,6)
+                WHERE b.matcher_id = :matcher AND a.id NOT REGEXP '[0-9a-f]{32}'
                 ";
         $values = [':matcher' => $this->id];
         if($status && $status !== 'all') {
