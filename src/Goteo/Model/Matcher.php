@@ -425,43 +425,39 @@ class Matcher extends \Goteo\Core\Model {
         return (int) self::query($sql, $values)->fetchColumn();
     }
 
-    /**
-     * Permissions check
-     */
-    /**
-     * Check if the matcher is can be seen by the user id
-     * @param  Goteo\Model\User $user  the user to check (if empty checks )
-     * @return boolean          true if success, false otherwise
-     */
-    public function userCanView($user = null) {
-
-        // already published:
-        if($this->active) return true;
-        if(empty($user)) return false;
-        if(!$user instanceOf User) return false;
-        // owns the match
-        if($this->owner === $user->id) return true;
-        // is admin in the project node
-        if($user->hasRoleInNode(null, ['admin', 'superadmin', 'root'])) return true;
-
-        return false;
-    }
-
      /**
-     * Check if the matcher is editable by the user id
+     * Check if the matcher is owned (or co-owned) by the user id
      * @param  Goteo\Model\User $user  the user to check
      * @return boolean          true if success, false otherwise
      */
-    public function userCanEdit($user = null, $check_status = false) {
-
+    public function userIsOwner($user = null) {
         if(empty($user)) return false;
         if(!$user instanceOf User) return false;
         // owns the project
+        if($this->owner === $user->id) {
+            return true;
+        }
+        return false;
+    }
+
+
+    
+     /**
+     * Check if the matcher is editable by the user id
+     * @param  Goteo\Model\User $user  the user to check
+     */
+    public function userCanEdit($user = null) {
+
+        if(empty($user)) return false;
+        if(!$user instanceOf User) return false;
+
+        // owns the matcher
         if($this->userIsOwner($user)) return true;
     
         if($user->hasPerm('edit-any-matcher')) return true;
+
+        // matcher admin or matcher consultant
         if($user->hasPerm('edit-matcher', $this->id)) return true;
-        if($user->hasPerm('review-project', $this->id)) return true;
 
         return false;
     }
@@ -478,12 +474,10 @@ class Matcher extends \Goteo\Core\Model {
         // owns the project
         if($this->userIsOwner($user)) return true;
 
-        if($user->hasPerm('delete-any-project')) return true;
-        if($user->hasPerm('remove-projects', $this->id)) return true;
+        if($user->hasPerm('delete-any-matcher')) return true;
 
-        // Legacy roles
-        // is superadmin in the project node
-        // if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+        // matcher admin or matcher consultant
+        if($user->hasPerm('remove-matcher', $this->id)) return true;
 
         return false;
     }
