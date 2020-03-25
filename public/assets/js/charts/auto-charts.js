@@ -58,6 +58,17 @@ $(function(){
             var time = d3.goteo.timemetricsChart(settings);
             d3.select($ob[0]).datum(data_transformed).call(time);
 
+        } else if ($ob.hasClass('arc-pie')) {
+            var arcData = data.map(function(x){
+                return {label:x.label, value: x.counter};
+            });
+            if ($ob.hasClass('percentage')) {
+                settings.type = 'percentage';
+            } else if ($ob.hasClass('amount')) {
+                settings.type = "amount";
+            }
+            var arc = d3.goteo.arcChart(settings);
+            d3.select($ob[0]).datum(arcData).call(arc);
         } else {
             $ob.html('<small class="text-danger">Chart not found</small>');
         }
