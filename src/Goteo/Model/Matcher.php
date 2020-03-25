@@ -447,6 +447,47 @@ class Matcher extends \Goteo\Core\Model {
         return false;
     }
 
+     /**
+     * Check if the matcher is editable by the user id
+     * @param  Goteo\Model\User $user  the user to check
+     * @return boolean          true if success, false otherwise
+     */
+    public function userCanEdit($user = null, $check_status = false) {
+
+        if(empty($user)) return false;
+        if(!$user instanceOf User) return false;
+        // owns the project
+        if($this->userIsOwner($user)) return true;
+    
+        if($user->hasPerm('edit-any-matcher')) return true;
+        if($user->hasPerm('edit-matcher', $this->id)) return true;
+        if($user->hasPerm('review-project', $this->id)) return true;
+
+        return false;
+    }
+
+    /**
+     * Check if the project is removable by the user id
+     * @param  Goteo\Model\User $user  the user to check
+     * @return boolean          true if success, false otherwise
+     */
+    public function userCanDelete($user = null) {
+        if(empty($user)) return false;
+        if(!$user instanceOf User) return false;
+        if(!in_array($this->status, array(self::STATUS_DRAFT, self::STATUS_REJECTED, self::STATUS_EDITING))) return false;
+        // owns the project
+        if($this->userIsOwner($user)) return true;
+
+        if($user->hasPerm('delete-any-project')) return true;
+        if($user->hasPerm('remove-projects', $this->id)) return true;
+
+        // Legacy roles
+        // is superadmin in the project node
+        // if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+
+        return false;
+    }
+
 
     /**
      * Getters & setters
