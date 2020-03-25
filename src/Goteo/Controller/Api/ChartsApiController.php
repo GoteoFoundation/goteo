@@ -256,7 +256,7 @@ class ChartsApiController extends AbstractApiController {
                 'counter' => (int) $available
             ];
         } else if ($type == 'raised') {
-            $raised = $matcher->getTotalRaised();
+            $raised = $matcher->getCrowdAmount();
             $used = $matcher->getUsedAmount();
             $result[] = [
                 'label' => Text::get('dashboard-matcher-api-raised-raised'),
