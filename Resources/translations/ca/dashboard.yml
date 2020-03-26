@@ -81,6 +81,8 @@ dashboard-menu-projects-story: 'La meva història'
 dashboard-menu-review_board: Revisió
 dashboard-menu-translate_board: Traducció
 dashboard-menu-translates: 'Traduccions'
+dashboard-menu-matchers: "Matchers"
+dashboard-menu-admin-matchers: "Admin Matchers"
 dashboard-messegers-mail-sendto: 'Enviat a %s els/les participants:'
 dashboard-my-wallet-available: 'Actualment tens <span class="pool-amount">%s</span> <span class="pool-desc">al teu moneder Goteo</span>'
 dashboard-my-wallet-contribute-button: Repartir
