@@ -507,7 +507,7 @@ class Matcher extends \Goteo\Core\Model {
 
     // returns the current user
     public function getOwner() {
-        if($this->userInstance) return $this->userIntance;
+        if($this->userInstance) return $this->userInstance;
         $this->userInstance = User::get($this->owner);
         return $this->userInstance;
     }
