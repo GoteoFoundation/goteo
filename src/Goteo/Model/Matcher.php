@@ -482,6 +482,21 @@ class Matcher extends \Goteo\Core\Model {
         return false;
     }
 
+    /**
+     * Check if the matcher can be created by the user id
+     * @param  Goteo\Model\User $user  the user to check
+     * @return boolean          true if success, false otherwise
+     */
+    public static function userCanCreate($user = null) {
+        if(empty($user)) return false;
+        if(!$user instanceOf User) return false;
+
+        if ($user->getPool()->getAmount() >= Matcher::MINIMUM_WALLET_AMOUNT) return true;
+
+        return false;
+    }
+
+
 
     /**
      * Getters & setters
