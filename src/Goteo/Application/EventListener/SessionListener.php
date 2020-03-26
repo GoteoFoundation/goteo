@@ -243,12 +243,6 @@ class SessionListener extends AbstractListener {
 
             if ( Session::isAdmin() ) {
               Session::addToUserMenu(Text::get('regular-admin_board'), Lang::getUrl() . 'admin', 'admin', 90);
-              Session::addToUserMenu('<i class="icon icon-call"></i> ' . Text::get('dashboard-menu-admin-matchers'), Lang::getUrl() . 'admin/calls', 'dashboard-admin-matchers', 70);
-              $matchers = Matcher::getList([], 0, 9);
-              foreach($matchers as $i => $matcher) {
-                  Session::addToUserMenu('<img src="' . Image::get($matcher->logo)->getLink(30, 30, true) . '"> '.strip_tags($matcher->name), Lang::getUrl() . 'dashboard/matcher/' . $matcher->id , 'matcher-' . $matcher->id, 71 + $i, 'ident');
-              }
-
             }
 
             // Add last 2 owned projects
