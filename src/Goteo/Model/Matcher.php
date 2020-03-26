@@ -925,11 +925,11 @@ class Matcher extends \Goteo\Core\Model {
     static public function getMatchersAvailable(Project $project, $max_distance = null, $filters = ['status' => self::STATUS_OPEN, 'active' => true]){
 
         $matchers = [];
-        if($location = ProjectLocation::get($project)) {
-            foreach(self::getList($filters) as $matcher) {
-                if($matcher_config = $matcher->getVars()) {
-                    if ($matcher_config['filter_by_location']) {
-                        if($matcher_loc = MatcherLocation::get($matcher)) {
+        foreach(self::getList($filters) as $matcher) {
+            if($matcher_config = $matcher->getVars()) {
+                if ($matcher_config['filter_by_location']) {
+                    if($matcher_loc = MatcherLocation::get($matcher)) {
+                        if($location = ProjectLocation::get($project)) {
                             $max = is_null($max_distance) ? ($matcher_loc->radius ? $matcher_loc->radius :  100) : $max_distance;
                             $distance = MatcherLocation::haversineDistance($location->latitude, $location->longitude, $matcher_loc->latitude, $matcher_loc->longitude);
                             if($distance < $max) {
@@ -937,10 +937,10 @@ class Matcher extends \Goteo\Core\Model {
                                 $matchers[] = $matcher;
                             }
                         }
-                    } else {
-                        $matcher->distance = 0;
-                        $matchers[] = $matcher;
                     }
+                } else {
+                    $matcher->distance = 0;
+                    $matchers[] = $matcher;
                 }
             }
             usort($matchers, function($a, $b) {
