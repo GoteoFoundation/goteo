@@ -121,7 +121,11 @@ d3.goteo.arcChart = function(settings){
                 addText('EUROS',25,'10px', '#FFF', 'normal');
         
             } else if (type == "percentage") {
-                var percentage=(dataSet[0].value/total)*100;
+                var percentage = 0;
+
+                if (total) {
+                    percentage = (dataSet[0].value/total)*100;
+                } 
         
                 percentage=percentage.toFixed();
         
