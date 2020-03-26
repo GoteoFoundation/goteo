@@ -81,6 +81,8 @@ dashboard-menu-projects-story: 'My history'
 dashboard-menu-review_board: Review
 dashboard-menu-translate_board: Translation
 dashboard-menu-translates: 'My translations'
+dashboard-menu-matchers: "Matchers"
+dashboard-menu-admin-matchers: "Admin Matchers"
 dashboard-messegers-mail-sendto: 'Sent to %s the participants:'
 dashboard-my-wallet-available: 'You currently have <span class="pool-amount">%s</span> <span class="pool-desc">in your virtual wallet in Goteo</span>'
 dashboard-my-wallet-contribute-button: Donate

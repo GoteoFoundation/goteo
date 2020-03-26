@@ -239,6 +239,7 @@ class Matcher extends \Goteo\Core\Model {
         $sql LIMIT $offset,$limit";
 
         // print(\sqldbg($sql, $values));
+
         if($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
@@ -492,7 +493,7 @@ class Matcher extends \Goteo\Core\Model {
         if(empty($user)) return false;
         if(!$user instanceOf User) return false;
 
-        if ($user->getPool()->getAmount() >= Matcher::MINIMUM_WALLET_AMOUNT && empty(Matcher::getList(['owner' => $user->id]))) {
+        if ($user->getPool()->getAmount() >= self::MINIMUM_WALLET_AMOUNT && empty(self::getList(['owner' => $user->id]))) {
             return true;
         }
         return false;
