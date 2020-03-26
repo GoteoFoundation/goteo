@@ -62,6 +62,7 @@ class Matcher extends \Goteo\Core\Model {
            $created,
            $modified_at;
 
+    // status for projects assigned to matcher 
     public static $statuses = ['pending', 'accepted', 'rejected', 'active', 'discarded', 'completed'];
 
     public function __construct() {
