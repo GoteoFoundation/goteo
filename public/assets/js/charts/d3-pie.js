@@ -47,6 +47,7 @@ d3.goteo.pieChart = function(settings){
         var pie = d3.pie().value(function(d) { return d.value; });
         var tot = 0;
         dataSet.forEach(function(e){ tot += e.value; });
+        if (!tot) tot = 1;
         //Create SVG element
         var viewBox = "0 0 " + width + " " + height;
         var svg = d3.select(this)
