@@ -491,8 +491,9 @@ class Matcher extends \Goteo\Core\Model {
         if(empty($user)) return false;
         if(!$user instanceOf User) return false;
 
-        if ($user->getPool()->getAmount() >= Matcher::MINIMUM_WALLET_AMOUNT) return true;
-
+        if ($user->getPool()->getAmount() >= Matcher::MINIMUM_WALLET_AMOUNT && empty(Matcher::getList(['owner' => $user->id]))) {
+            return true;
+        }
         return false;
     }
 
@@ -504,7 +505,7 @@ class Matcher extends \Goteo\Core\Model {
 
     // returns the current user
     public function getOwner() {
-        if($this->userInstance) return $this->userInstance;
+        if($this->userInstance) return $this->userIntance;
         $this->userInstance = User::get($this->owner);
         return $this->userInstance;
     }
