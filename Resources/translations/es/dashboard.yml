@@ -81,6 +81,8 @@ dashboard-menu-projects-story: 'Mi historia'
 dashboard-menu-review_board: Revisión
 dashboard-menu-translate_board: Traducción
 dashboard-menu-translates: 'Mis Traducciones'
+dashboard-menu-matchers: "Matchers"
+dashboard-menu-admin-matchers: "Admin Matchers"
 dashboard-messegers-mail-sendto: 'Enviado a %s los participantes:'
 dashboard-my-wallet-available: 'Actualmente tienes <span class="pool-amount">%s</span> <span class="pool-desc">en tu monedero Goteo</span>'
 dashboard-my-wallet-contribute-button: Donar

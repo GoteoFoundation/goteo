@@ -903,6 +903,10 @@ div.new-material-success {
           text-transform: uppercase;
         }
       }
+
+      .row.impact-visu {
+        text-align: center;
+      }
       
       @media (max-width: $breakpoint-sm - 1) 
       {
