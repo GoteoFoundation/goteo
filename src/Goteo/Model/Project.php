@@ -884,6 +884,28 @@ class Project extends \Goteo\Core\Model {
     }
 
     /**
+     * get a readable description of the status of the project
+     */
+    function getStatusforMatcher() {
+        switch ($this->status) {
+            case self::STATUS_REVIEWING:
+                $text = 'form-project_status-review';
+                break;
+            case self::STATUS_IN_CAMPAIGN:
+                $text = 'form-project_status-campaing';
+                break;
+            case self::STATUS_FUNDED:
+            case self::STATUS_FULFILLED:
+                $text = 'project-view-metter-day_success';
+                break;
+            case self::STATUS_UNFUNDED: // archivado
+                $text = 'project-view-metter-day_closed';
+                break;
+        }
+        return strtolower(Text::get($text));
+    }
+
+    /**
      * Get consultants for this project
      * @return array array of user id that are consultants
      */
@@ -892,6 +914,18 @@ class Project extends \Goteo\Core\Model {
         $this->consultants = self::getConsultantsForProject($this);
         return $this->consultants;
     }
+
+    /**
+     * Get the main image of the project
+     * @return array array of user id that are consultants
+     */
+    public function getImage() {
+        if(!$this->imageInstance instanceOf Image) {
+            $this->imageInstance = new Image($this->image);
+        }
+        return $this->imageInstance;
+    }
+
 
     /**
      * Handy method to know if project can be edited (not in campaing or finished)
@@ -3931,6 +3965,9 @@ class Project extends \Goteo\Core\Model {
         }
 
         $num_published_projects=self::getList($filters_published, null, 0, 0, true);
+
+        if ($num_published_projects == 0)
+            return 0;
 
         $num_successful_projects=self::getList($filters_succesful, null, 0, 0, true);
 

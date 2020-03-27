@@ -39,6 +39,20 @@ $this->section('lang-metas');
     }
 $this->replace();
 
+$this->section('head');
+
+?>
+
+
+<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick-theme.css"/>
+
+
+<?php
+
+$this->append();
+
+
 $this->section('sidebar-header');
     echo $this->insert('project/widgets/micro', ['project' => $project, 'admin' => $this->admin]);
 $this->replace();
@@ -67,7 +81,7 @@ $this->section('content');
 		<!-- Tags and share info -->
 		<div class="row">
 
-		<?= $this->insert('project/partials/main_extra', ['project' => $project ]) ?>
+		<?= $this->insert('project/partials/main_extra', ['project' => $project, 'matchers' => $this->matchers ]) ?>
 
 		</div>
 </div>
@@ -171,7 +185,10 @@ $this->section('content');
 
 <?= $this->insert('project/partials/chart_amount.php', ['project' => $project]) ?>
 
+<script src="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.min.js"></script>
+
 <script type="text/javascript">
+
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
     $(function(){
@@ -370,6 +387,16 @@ $this->section('content');
                 $error.removeClass('hidden').html(error.error);
               });
         });
+
+        $('.slider-matchers').slick({
+        dots: true,
+        infinite: true,
+        speed: 1000,
+        fade: true,
+        arrows: false,
+        cssEase: 'linear'
+    });
+
 
 
 

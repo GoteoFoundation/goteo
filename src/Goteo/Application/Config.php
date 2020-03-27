@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Route;
 
 class Config {
     // Initial translation groups (groupped in yml files into Resources/translations/)
-    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate', 'poster'];
+    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate', 'questionnaire', 'poster'];
 	static protected $loader;
     static protected $config;
 
@@ -116,7 +116,7 @@ class Config {
 			}
 
             \Goteo\Application\View::setTheme('responsive');
-			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
+			// die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
 			return;
 		}
 	}
@@ -290,6 +290,7 @@ class Config {
         //
         // App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\ExpressionLanguageProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor');
+        App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\CriteriaInvestMatcherProcessor');
 
 		//Cache dir in libs
 		\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);

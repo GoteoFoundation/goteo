@@ -1,6 +1,6 @@
 <?php
 
-$this->layout('layout', [
+$this->layout('layout', [    
     'bodyClass' => 'dashboard',
     'title' => 'Dashboard :: Goteo.org',
     'meta_description' => $this->text('meta-description-discover')
@@ -13,6 +13,7 @@ $this->section('content');
 ?>
 
 <div class="dashboard">
+
 
     <?= $this->supply('dashboard-sections', $this->insert('dashboard/partials/sections')) ?>
 

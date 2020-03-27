@@ -418,6 +418,17 @@ $api->add('api-matcher-list', new Route(
     array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matchersAction')
 ));
 
+// Matcher images upload (POST method only)
+$api->add('api-matchers-images-upload', new Route(
+    '/matchers/images',
+    array('_controller' => 'Goteo\Controller\Api\MatchersApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 // Matcher detail
 $api->add('api-matcher-item', new Route(
     '/matchers/{mid}',
@@ -434,4 +445,18 @@ $api->add('api-workshops-images-upload', new Route(
     array(), // schemes
     array('POST') // methods
 ));
+
+// User images upload (POST method only)
+$api->add('api-questionnaire-documents-upload', new Route(
+    '/questionnaire/documents',
+    array('_controller' => 'Goteo\Controller\Api\QuestionnaireApiController::questionnaireUploadDocumentsAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+
+
 return $api;

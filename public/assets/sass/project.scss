@@ -853,6 +853,12 @@ div {
         font-weight: bold;
         line-height: 1;
       }
+      &.matcher-img{
+        margin-left: 40px;
+      }
+      &.drop-logo{
+        margin-left: 10px;
+      }
     }
   }
   &.message img.avatar {
@@ -891,6 +897,13 @@ div {
       div {
         &.green {
           background-color: #149290;
+          margin-right: 0.5%;
+          height: 15px;
+          float: left;
+          border-radius: 10px;
+        }
+        &.blue {
+          background-color: #00AFEC;
           margin-right: 0.5%;
           height: 15px;
           float: left;
@@ -1000,6 +1013,53 @@ div {
   }
 }
 
+// Hide while loading
+
+.slider-matchers{
+     visibility:hidden;
+     opacity:0;
+     transition: opacity 1s;
+     margin-bottom: 0px !important;
+     .slick-dots{
+      width: 76%;
+      top: 138px !important;
+      li.slick-active button::before {
+        color: $background-dark-lilac !important;
+      }
+     }
+  .matcher-amount{
+    margin-top: 5px;
+    text-align: center;
+    color:$background-dark-lilac;
+  }
+}
+
+.slider-matchers.slick-initialized{
+    visibility:visible;
+    opacity:1;
+}
+
+.slider-matchers .item{
+    display:none ;
+}
+
+.slider-matchers .item:first-child{
+    display:block; visibility:hidden;
+}
+
+.slider-matchers.slick-initialized .item{
+    display:block;visibility:visible!important;
+}
+
+.slider.slider-matchers{
+    opacity:1;
+    .slick-slide img {
+        display: block;
+        width: 100%;
+        padding-bottom: 5px;
+    }
+}
+
 /* Responsive fixes */
 
 @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {
@@ -1076,6 +1136,11 @@ div {
   }
   div.call-info {
     margin-top: 40px !important;
+  }
+  .slider-matchers{ 
+     .slick-dots{
+      top: 130px !important;
+     }
   }
 }
 
@@ -1199,6 +1264,7 @@ div {
         margin-left: 0;
       }
     }
+    
   }
   /* Investors section */
   /* Buttons meter */
@@ -1309,6 +1375,30 @@ div {
     font-size: 2em;
   }
 
+  .slider-matchers{
+     visibility:hidden;
+     opacity:0;
+     transition: opacity 1s;
+     margin-bottom: 25px !important;
+     .call-info{
+      margin-bottom: 0 !important;
+     }
+     .slick-dots{
+      width: 100%;
+      top: 150px !important;
+      li.slick-active button::before {
+        color: $background-dark-lilac !important;
+      }
+     }
+     
+      .matcher-amount{
+        margin-top: 5px;
+        text-align: center;
+        color:$background-dark-lilac;
+        font-size: $font-size;
+      }
+    }
+
 
 }
 
@@ -1342,4 +1432,5 @@ div {
       min-height: 59px;
     }
   }
+
 }

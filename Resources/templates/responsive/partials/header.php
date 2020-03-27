@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="navbar-header">
       <?php $this->section('header-navbar-brand') ?>
-      <?php if($this->navClass): ?>
+      <?php if($this->navLogo=='black'): ?>
       <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/goteo.svg') ?>" class="logo" alt="Goteo"></a>
       <?php elseif($this->premium): ?>
       <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/logo-fg-white.png') ?>" class="logo premium" alt="Goteo"></a>

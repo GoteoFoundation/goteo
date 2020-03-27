@@ -95,9 +95,13 @@ class Template extends \Goteo\Core\Model {
     const COMMUNICATION = 72;    // Multi-purpose communication
     const PROJECT_CREATED = 73;    // Project created
     const MATCHER_PROJECT_ADDED = 'matcher_project_added';    // inform to owner that a new project is added to a matcher
+    const MATCHER_PROJECT_PITCH_ADDED = 'matcher_project_pitch_added';    // inform to owner that a new project is added to a matcher
     const MATCHER_PROJECT_ACTIVATED = 'matcher_project_activated';    // inform to owner that a new project is activated in a matcher
+    const MATCHER_PROJECT_PITCH_ACTIVATED = 'matcher_project_pitch_activated';    // inform to owner that a new project is activated in a matcher
     const MATCHER_PROJECT_DISCARDED = 'matcher_project_discarded';    // inform to owner that a new project is discarded from a matcher
-    const MATCHER_PROJECT_ADDED_ADMIN = 'matcher_project_added_admin';    // inform to admin that a new project is added to a matcher
+    const MATCHER_PROJECT_PITCH_DISCARDED = 'matcher_project_pitch_discarded';    // inform to owner that a new project is discarded from a matcher
+    const MATCHER_PROJECT_ADDED_ADMIN = 'matcher_project_added_admin';    // inform to admin that a new project is added to a matcher ()
+    const MATCHER_PROJECT_PITCH_ADDED_ADMIN = 'matcher_project_pitch_added_admin';    // inform to admin that a new project is added to a matcher
     const PROJECT_DERIVATION_DISCARD = 'project_derivation_discard';    // Discard derivating to others platforms.
     const PROJECT_MY_STORY_AVAILABLE = 'project_my_story_available';    // My story form open
     const CONTRACT_PREVIOUS_INFORMATION = 'contract_previous_information';    // Send information about the contract documentation

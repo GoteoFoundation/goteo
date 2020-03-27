@@ -66,6 +66,8 @@ use Goteo\Library\Check;
 
     }
 
+    $matchers=$this->matchers;
+
 ?>
 
 <?php if($project->status==3): ?>
@@ -160,7 +162,39 @@ use Goteo\Library\Check;
     </div>
 </a>
 
+ <?php elseif($matchers): ?>
+            
+    <div class="slider slider-matchers visible-xs" id="matchers">
+
+    <?php foreach ($matchers as $matcher): ?>
+            <?php $matcher_amount=$matcher->calculateProjectAmount($project->id); ?>
+            <div class="call-info-container ">
+                <div class="row call-info">
+                    <div class="col-xs-3" >
+                        <img width="40" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
+                    </div>
+                    <div class="col-xs-6">
+                        <img src="<?= $matcher->getLogo()->getLink(150, 150, true) ?>" class="img-responsive">
+                    </div>
+                </div>
+                <?php if($matcher_amount): ?>
+                    <div class="row">
+                        <div class="col-xs-12 matcher-amount">
+                            <?= $this->text('matcher-amount') ?>        
+                            <strong>
+                                <?= ' '.amount_format($matcher_amount) ?>
+                            </strong>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        
+        <?php endforeach; ?>
+
+    </div>
+
 <?php endif; ?>
+
 
  <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
 

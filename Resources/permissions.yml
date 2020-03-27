@@ -230,3 +230,23 @@ admin-module-workshops: # Can access to module WorkshopsAdminController
 receive-test-communications: # Can receive test communications
     model: null
     relational: null
+
+create-matcher: # create own matcher, if meet the requeriment
+    model: null
+    relational: null
+
+edit-matcher:   # edit own matcher
+    model: null
+    relational: null
+
+remove-matcher: # remove own matcher, currently not used as a real perm
+    model: null
+    relational: null
+
+edit-any-matcher: # View any editing matcher
+    model: null
+    relational: null
+
+remove-any-matcher: # Remove any matcher
+    model: null
+    relational: null

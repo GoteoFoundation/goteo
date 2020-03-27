@@ -1,0 +1,17 @@
+group: project
+name: 'Project activated in a Matchfunding call'
+purpose: 'Mail template to be sent to a project owner when his project has been activated by a Matcher'
+type: 'md'
+title: 'El teu projecte ha estat acceptat per %MATCHERNAME%!'
+text: >
+    # El **%MATCHERNAME%** ha acceptat el teu projecte **%PROJECTNAME%**!
+
+    Això significa que pots accedir a un fons de finançament addicional per la teva campanya.
+
+    Depenent de la forma de repartiment dels fons, rebràs un o més aportacions per part del matcher.
+
+    Per altra banda, et recordem que aquest matcher no està relacionat amb la Fundació Goteo i, per tant,
+    qualsevol qüestió relacionada ha d'anar dirigida al següent email:
+
+    %ADMINMAIL%
+
