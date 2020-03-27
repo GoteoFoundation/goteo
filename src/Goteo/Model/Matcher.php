@@ -36,6 +36,8 @@ class Matcher extends \Goteo\Core\Model {
 
     const STATUS_OPEN = 'open';
     const STATUS_COMPLETED = 'completed';
+    const STATUS_PITCH_CLOSED = 'pitch_closed';
+    const STATUS_PITCH_OPEN = 'open';
     const MINIMUM_WALLET_AMOUNT = 3000;
 
     public $id,
@@ -927,20 +929,22 @@ class Matcher extends \Goteo\Core\Model {
         $matchers = [];
         foreach(self::getList($filters) as $matcher) {
             if($matcher_config = $matcher->getVars()) {
-                if ($matcher_config['filter_by_location']) {
-                    if($matcher_loc = MatcherLocation::get($matcher)) {
-                        if($location = ProjectLocation::get($project)) {
-                            $max = is_null($max_distance) ? ($matcher_loc->radius ? $matcher_loc->radius :  100) : $max_distance;
-                            $distance = MatcherLocation::haversineDistance($location->latitude, $location->longitude, $matcher_loc->latitude, $matcher_loc->longitude);
-                            if($distance < $max) {
-                                $matcher->distance = $distance;
-                                $matchers[] = $matcher;
+                if ($matcher_config['pitch_status'] == self::STATUS_PITCH_OPEN) {
+                    if ($matcher_config['filter_by_location'] ) {
+                        if($matcher_loc = MatcherLocation::get($matcher)) {
+                            if($location = ProjectLocation::get($project)) {
+                                $max = is_null($max_distance) ? ($matcher_loc->radius ? $matcher_loc->radius :  100) : $max_distance;
+                                $distance = MatcherLocation::haversineDistance($location->latitude, $location->longitude, $matcher_loc->latitude, $matcher_loc->longitude);
+                                if($distance < $max) {
+                                    $matcher->distance = $distance;
+                                    $matchers[] = $matcher;
+                                }
                             }
                         }
+                    } else {
+                        $matcher->distance = 0;
+                        $matchers[] = $matcher;
                     }
-                } else {
-                    $matcher->distance = 0;
-                    $matchers[] = $matcher;
                 }
             }
             usort($matchers, function($a, $b) {
