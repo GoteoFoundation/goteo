@@ -25,6 +25,7 @@ class Node extends \Goteo\Core\Model {
     public
         $id = null,
         $name,
+        $type,
         $subtitle,
         $description,
         $hashtag,
@@ -91,6 +92,7 @@ class Node extends \Goteo\Core\Model {
                 node.id as id,
                 node.name as name,
                 node.email as email,
+                node.type as type,
                 node.subtitle as subtitle,
                 node.hashtag as hashtag,
                 $fields,
