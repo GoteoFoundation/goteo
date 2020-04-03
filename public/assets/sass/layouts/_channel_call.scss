@@ -9,8 +9,27 @@ body.channel-call {
 div.section.banner-header{
   	position: relative;
  	min-height: 450px;
+
+ 	div.custom-header{
+ 		position: absolute;
+ 		top:0;
+ 		width: 95%;
+ 		margin-left: 2.5%;
+ 		border-bottom: 1px solid $color-white;
+ 		padding: 20px 0 10px 0;
+ 		color: $color-white;
+ 		font-weight: bold;
+ 		img{
+ 			margin-left: 5px;
+ 			vertical-align: sub;
+ 		}
+ 	}
+
+ 	div.img{
+ 		filter: brightness(85%);
+ 	}
       
-     div.info{
+    div.info{
      	position: absolute;
 		bottom: 0;
         width: 50%;
