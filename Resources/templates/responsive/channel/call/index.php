@@ -17,4 +17,6 @@ $this->section('channel-content');
 
 <?= $this->insert('channel/call/partials/main_info') ?>
 
+<?= $this->insert('channel/call/partials/call_to_action') ?>
+
 <?php $this->replace() ?>
