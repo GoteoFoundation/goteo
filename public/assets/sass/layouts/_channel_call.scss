@@ -6,4 +6,39 @@
 body.channel-call {
 
 
+div.section.banner-header{
+  	position: relative;
+ 	min-height: 450px;
+      
+     div.info{
+     	position: absolute;
+		bottom: 0;
+        width: 50%;
+		padding-left: 19%;
+		background: white; 
+        div.subtitle{
+        	padding-top: 50px;
+        	color: $color-new-lilac;
+        	font-weight: 500;
+         }
+    }
+}
+
+div.section.main-info{
+	background-color: $background-white;
+	}
+	h1.title{
+		padding-top: 5px;
+		color: $color-new-green;
+		font-weight: bold;
+		font-size: $font-size*3;
+	}
+	p.description{
+		color: $color-new-lilac;
+		padding-top: 80px;
+		font-size: $font-size*1.1;
+		line-height: 1.7;
+		font-weight: 500;
+	}
+
 }

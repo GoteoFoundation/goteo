@@ -1,4 +1,4 @@
-<div class="section channel-header">
+<div class="section banner-header">
 	<div class="image">
 		<?php if($this->channel->header_image): ?>
 			<img src="<?= $this->post->header_image->getLink(1920, 600, true) ?>" class="display-none-important header-default img-responsive  hidden-xs visible-up-1400">
@@ -15,10 +15,8 @@
 
 	</div>
 	<div class="info">
-		<div class="container">
-			<h1>
-				<?= $this->channel->name ?>
-			</h1>
+		<div class="subtitle">
+			Nueva convocatoria		
 		</div>
 	</div>
 </div>
