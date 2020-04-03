@@ -32,7 +32,7 @@ div.section.banner-header{
     div.info{
      	position: absolute;
 		bottom: 0;
-    width: 50%;
+    	width: 50%;
 		padding-left: 19%;
 		background: white; 
         div.subtitle{
@@ -58,44 +58,46 @@ div.section.main-info{
 		font-size: $font-size*1.1;
 		line-height: 1.7;
 		font-weight: 500;
-  }
-  
-  div.section.call-to-action{
-    background-color: $background-white;
-  }
-
-  div.create-project {
-    .info {
-      background-color: $background-new-dark-blue;
-      color: white;
-
-      .title  {
-        font-weight: bold;
-        font-size: $font-size*2;    
-      }
-
-      .description {
-        font-size: $font-size;
-        line-height: 1.7;
-      }
     }
-  }
-
-  div.join-call {
-    .info {
-      background-color: $background-new-yellow;
-      color: $background-new-dark-blue;
-
-      .title  {
-        font-weight: bold;
-        font-size: $font-size*2;    
-      }
-
-      .description {
-        font-size: $font-size;
-        line-height: 1.7;
-      }
-    }
-  }
 
 }
+  
+div.section.call-to-action{
+    background-color: $background-white;
+    padding: 50px 0;
+    .info{
+    	padding: 15px;
+    }
+	div.create-project {
+	    .info {
+	      background-color: $background-new-dark-blue;
+	      color: $color-white;
+	      .title  {
+	        font-weight: bold;
+	        font-size: $font-size*2;    
+	      }
+	      .description {
+	        font-size: $font-size;
+	        line-height: 1.7;
+	      }
+	    }
+	 }
+
+	div.join-call {
+		.info {
+		  background-color: $background-new-yellow;
+		  color: $color-new-dark-blue;
+		  .title  {
+		    font-weight: bold;
+		    font-size: $font-size*2;    
+		  }
+		  .description {
+		    font-size: $font-size;
+		    line-height: 1.7;
+		  }
+		}
+	}
+}
+
+
+// end body 
