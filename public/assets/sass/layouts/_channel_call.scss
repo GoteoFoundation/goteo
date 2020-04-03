@@ -5,6 +5,17 @@
 
 body.channel-call {
 
+//button customization
+
+.btn{
+	padding: 15px 23px;
+	border: 10px;
+	.icon{
+		width: 29px;
+		height: 29px;
+	}
+}
+
 
 div.section.banner-header{
   	position: relative;
@@ -39,13 +50,13 @@ div.section.banner-header{
         	padding-top: 50px;
         	color: $color-new-lilac;
         	font-weight: 500;
-         }
+        }
     }
 }
 
 div.section.main-info{
 	background-color: $background-white;
-	}
+	padding-bottom: 30px;
 	h1.title{
 		padding-top: 5px;
 		color: $color-new-green;
@@ -58,6 +69,15 @@ div.section.main-info{
 		font-size: $font-size*1.1;
 		line-height: 1.7;
 		font-weight: 500;
+    }
+    .btn-transparent{
+    	margin-top: 15px;
+    	color: $color-new-green;
+    	border: 1px solid $color-new-lilac;
+    	font-weight: bold;
+    	.icon{
+    		background-color: $color-new-lilac;
+    	}
     }
 
 }
@@ -99,5 +119,6 @@ div.section.call-to-action{
 	}
 }
 
+/* Body end */
 
-// end body 
+}
