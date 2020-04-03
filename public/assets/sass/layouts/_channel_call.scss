@@ -122,8 +122,11 @@ div.section.call-to-action{
     	padding: 15px;
     }
 	div.create-project {
+		background-color: $background-new-dark-blue;
+			.col-md-6 {
+				padding-left: 0 !important;
+			}
 	    .info {
-	      background-color: $background-new-dark-blue;
 	      color: $color-white;
 	      .title  {
 	        font-weight: bold;
@@ -139,7 +142,7 @@ div.section.call-to-action{
 	div.join-call {
 		.info {
 		  background-color: $background-new-yellow;
-		  color: $color-new-dark-blue;
+			color: $color-new-dark-blue;
 		  .title  {
 		    font-weight: bold;
 		    font-size: $font-size*2;    
