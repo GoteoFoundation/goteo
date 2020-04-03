@@ -37,7 +37,6 @@
             </div>
           </div>
         <?php else : ?>
-          <div class="col-md-10 col-md-offset-1">
             <div class="row create-project">
               <div class="col-md-6">
                 <img class="img-responsive" src="/assets/img/channel/call/create_project.png" >
@@ -55,7 +54,6 @@
                     </div>
                   </div>
                 <div>
-              </div>
           </div>
         <?php endif; ?>
       </div>

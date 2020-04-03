@@ -120,11 +120,16 @@ div.section.call-to-action{
     padding: 50px 0;
     .info{
     	padding: 15px;
-    }
+		}
+		.col-sm-12 {
+			padding-bottom: 15px !important;
+		}
+
 	div.create-project {
 		background-color: $background-new-dark-blue;
 			.col-md-6 {
 				padding-left: 0 !important;
+				padding-right: 0 !important;
 			}
 	    .info {
 	      color: $color-white;
@@ -140,6 +145,9 @@ div.section.call-to-action{
 	 }
 
 	div.join-call {
+		&.col-md-6 &.col-sm-12 {
+			padding-bottom: 15px !important;
+		}
 		.info {
 		  background-color: $background-new-yellow;
 			color: $color-new-dark-blue;
@@ -152,6 +160,10 @@ div.section.call-to-action{
 		    line-height: 1.7;
 		  }
 		}
+	}
+
+	img {
+		width: 100%;
 	}
 }
 
