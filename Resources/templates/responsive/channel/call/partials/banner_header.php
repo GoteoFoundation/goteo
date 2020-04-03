@@ -23,6 +23,25 @@
 		<?php endif; ?>
 
 	</div>
+
+	<div class="banner-info">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-7 col-sm-9 col-xs-8">
+					<div>
+						<span class="title hidden-xs">
+						Cooperativismo en Catalunya
+						</span>
+					</div>
+					<div class="description">
+						Espacio digital para la creación y consolidación de proyectos cooperativos
+					</div>
+						<a href="<?= $banner->url ?>" class="btn btn-yellow scroller"><i class="icon icon-preview icon-2x"></i><?= $this->text('landing-more-info') ?></a>
+					</div>
+				</div>
+			</div>
+	</div>
+
 	<div class="info">
 		<div class="subtitle">
 			Nueva convocatoria		

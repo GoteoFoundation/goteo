@@ -9,7 +9,7 @@ body.channel-call {
 
 .btn{
 	padding: 15px 23px;
-	border: 10px;
+	border-radius: 10px;
 	.icon{
 		width: 29px;
 		height: 29px;
@@ -39,6 +39,39 @@ div.section.banner-header{
  	div.img{
  		filter: brightness(85%);
  	}
+
+ 	div.banner-info{
+        position: absolute;
+        bottom: 30%;
+        z-index: 150;
+        color: $color-white;
+        width: 100%;
+        span.title{
+            @include background-clip(padding-box);
+            font-size: $font-size*1.1;
+            font-weight: bold;
+            text-shadow: 0.4px 0.4px #3A3A3A;
+        }
+        div.description{
+            margin: 15px 0;
+            font-size:3*$font-size;
+            font-weight: bold;
+            text-shadow: 0.5px 0.5px #3A3A3A;
+            line-height: 1.1;
+        }
+        .btn-yellow{
+        	margin-top: 10px;
+            color: $color-new-lilac !important;
+            font-weight: 500;
+            .icon{
+            	background: $background-new-lilac;
+            	margin-right: 5px;
+            }
+        }
+        img{
+            filter: brightness(85%) contrast(80%);
+        }
+    }
       
     div.info{
      	position: absolute;
