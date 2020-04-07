@@ -31,7 +31,7 @@ $this->section('content');
 <?php $this->section('footer') ?>
 
 <script src="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.min.js"></script>
-
+<script type="text/javascript" src="<?= $this->asset('js/channel/call.js') ?>"></script>
 <script>
 
 /*
