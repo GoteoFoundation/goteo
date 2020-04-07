@@ -119,7 +119,7 @@ div.section.call-to-action{
     background-color: $background-white;
     padding: 50px 0;
     .info{
-    	padding: 15px;
+			padding: 30px;
 		}
 		.col-sm-12 {
 			padding-bottom: 15px !important;
@@ -133,14 +133,22 @@ div.section.call-to-action{
 			}
 	    .info {
 	      color: $color-white;
+				font-weight: bold;
 	      .title  {
-	        font-weight: bold;
-	        font-size: $font-size*2;    
+					font-size: $font-size*2.3;    
+					padding-bottom: 10px;
 	      }
 	      .description {
 	        font-size: $font-size;
-	        line-height: 1.7;
-	      }
+					line-height: 1.5;
+					padding-bottom: 20px;
+				}
+				.col-button {
+					.btn-transparent {
+						font-weight: bold !important;
+						font-size: $font-size*1.2;
+					}
+				}	
 	    }
 	 }
 
@@ -151,14 +159,23 @@ div.section.call-to-action{
 		.info {
 		  background-color: $background-new-yellow;
 			color: $color-new-dark-blue;
+			font-weight: bold;
 		  .title  {
-		    font-weight: bold;
-		    font-size: $font-size*2;    
+				font-size: $font-size*2.3;
+				padding-bottom: 10px;
 		  }
 		  .description {
 		    font-size: $font-size;
-		    line-height: 1.7;
-		  }
+				line-height: 1.5;
+				padding-bottom: 20px;
+			}
+			.col-button {
+				.btn-transparent {
+					color: $color-new-dark-blue !important;
+					font-weight: bold !important;
+					font-size: $font-size*1.2;
+				}
+			}
 		}
 	}
 
