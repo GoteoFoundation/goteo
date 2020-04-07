@@ -34,6 +34,7 @@ class GoteoChannelCall
      return "
         ALTER TABLE `node` ADD COLUMN type VARCHAR(255) DEFAULT 'normal' AFTER `active`;
         ALTER TABLE `node` ADD COLUMN call_inscription_open INT(1) DEFAULT 1 AFTER project_creation_open;
+        ALTER TABLE `node_sponsor` ADD COLUMN `label` TINYTEXT CHARSET utf8 COLLATE utf8_general_ci NULL AFTER `image`;
      ";
   }
 
@@ -47,6 +48,7 @@ class GoteoChannelCall
      return "
         ALTER TABLE `node` DROP COLUMN type;
         ALTER TABLE `node` DROP COLUMN call_inscription_open;
+        ALTER TABLE `node_sponsor` DROP COLUMN label;
      ";
   }
 

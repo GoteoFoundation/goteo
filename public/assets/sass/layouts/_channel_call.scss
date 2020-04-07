@@ -16,6 +16,18 @@ body.channel-call {
 	}
 }
 
+h2.title{
+	color: $color-new-green;
+	font-size: $font-size*2.1;
+	border-bottom: 1px solid $color-new-dark-blue;
+	font-weight: bold;
+	padding-bottom: 10px;
+	.icon{
+		background-color: $color-new-dark-blue;
+		vertical-align: sub;
+	}
+}
+
 
 div.section.banner-header{
   	position: relative;
@@ -181,6 +193,12 @@ div.section.call-to-action{
 
 	img {
 		width: 100%;
+	}
+}
+
+div.section.sponsors{
+	ul.main-sponsors{
+		padding-top: 25px;
 	}
 }
 

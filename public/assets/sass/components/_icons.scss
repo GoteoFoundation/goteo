@@ -169,4 +169,7 @@
     &.icon-write {
         @include svg-background('../img/icons/write.svg');
     }
+     &.icon-rocket {
+        @include svg-background('../img/icons/rocket.svg');
+    }
 }
