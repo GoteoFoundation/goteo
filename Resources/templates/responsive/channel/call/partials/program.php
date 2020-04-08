@@ -5,9 +5,7 @@
 
 <div class="section program">
   <div class="container">
-    <div class="title">
-      <h1><i class="fa fa-calendar"></i> El programa Crowdcoop </h1>
-    </div>
+    <h2 class="title"><span class="icon icon-calendar-2 icon-3x"></span>El programa Crowdcoop</h2>
     
     <div class="description">
       Enterate de todo lo que va a pasar.
