@@ -181,4 +181,10 @@
     &.icon-terms {
         @include svg-background('../img/icons/channel-call/terms.svg');
     }
+    &.icon-news {
+        @include svg-background('../img/icons/channel-call/news.svg');
+    }
+    &.icon-arrow {
+        @include svg-background('../img/icons/channel-call/flecha.svg');
+    }
 }
