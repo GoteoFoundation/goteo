@@ -27,5 +27,19 @@ $(function(){
   $('.tabs').hover( function() {
     $('.tabs').removeClass('hover');
     $(this).addClass('hover');
-  })
+  });
+
+  var $slider = $('.slider-programs');
+
+  function initSlickPrograms() {
+    $slider.slick({
+      infinite: false,
+      arrows: true,
+      dots: false,
+      prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
+      nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>'
+    });
+  }
+
+  initSlickPrograms();
 });
