@@ -967,10 +967,10 @@ class Node extends \Goteo\Core\Model {
     /**
      *  Posts of this node
      */
-    public function getPosts () {
+    public function getPosts ($limit = 3) {
        if($this->postsList) return $this->postsList;
         
-        $this->postsList = GeneralPost::getList(['node' => $this->id ], true, 0, $limit = 3, false);
+        $this->postsList = GeneralPost::getList(['node' => $this->id ], true, 0, $limit, false);
 
         return $this->postsList;
 
