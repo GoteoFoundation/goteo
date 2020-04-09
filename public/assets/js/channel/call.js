@@ -24,10 +24,11 @@ for the JavaScript code in this page.
 */
 
 $(function(){
-  $('.tabs').hover( function() {
-    $('.tabs').removeClass('hover');
-    $(this).addClass('hover');
-  });
+  // $('.tabs').click( function() {
+  //   $('.tabs').removeClass('slick-current');
+  //   $(this).addClass('slick-current');
+  // });
+  
 
   var $slider = $('.slider-programs');
 
@@ -40,6 +41,7 @@ $(function(){
       dots: false,
       variableWidth: true,
       centerMode: true,
+      focusOnSelect: true,
       prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
       nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>'
     });

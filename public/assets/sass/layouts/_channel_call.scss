@@ -348,28 +348,6 @@ div.section.program {
 				opacity:1;
 		}
 
-		.slider-programs .item{
-				display:none ;
-		}
-
-		.slider-programs .item:first-child{
-				display:block; visibility:hidden;
-		}
-
-		.slider-programs.slick-initialized .item{
-				display:block;visibility:visible!important;
-		}
-
-		.slick-list {
-				padding-left: 0px!important; // half partial
-				.widget-slide{
-						margin-left: 20px;
-						.project-widget.normal{
-								box-shadow: none;
-						}
-				}
-		}
-			
 		.slick-current {
 				width: 450px !important;
 		}
