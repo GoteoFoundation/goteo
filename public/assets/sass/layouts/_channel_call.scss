@@ -353,6 +353,48 @@ div.section.program {
 		}
 }
 
+div.section.posts {
+	color:$color-new-dark-blue;
+	padding-bottom: 30px;
+	background-color: $color-white !important;
+	.description{
+		font-size: $font-size*1.1;
+		margin-top: 15px;
+		font-weight: 500;
+	}
+	
+	.post-widget {
+
+		border: 1px solid $color-new-green;
+		div.content {
+			color: $color-new-dark-blue !important;
+			background-color: $color-white !important;
+
+			div.title {
+				color: $color-new-dark-blue !important;
+			}
+
+			div.subtitle {
+				color: $color-new-dark-blue !important;
+			}
+
+			a.arrow {
+				span.icon-arrow {
+					position: absolute;
+					transform: rotate(180deg);
+					right: 0;
+					bottom: 0;
+					background-color: $color-new-green;
+				}
+			}
+		}
+
+		a.img-link {
+			padding: 10px;
+			height: 150px !important;
+		}
+	}
+}
 
 div.section.sponsors{
 	color:$color-new-dark-blue;
