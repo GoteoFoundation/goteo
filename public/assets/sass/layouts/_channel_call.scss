@@ -253,7 +253,6 @@ div.section.call-to-action{
 				text-align: center;
 				display: block;
 				list-style-type: none;
-				overflow: hidden;
 				height: 400px;
 				font-size: 0;
 
@@ -274,9 +273,9 @@ div.section.call-to-action{
 				font-size: 16px;
 				@include transition( all 0.4s 0.1s ease-in-out );
 			
-				&.hover  {
-					width: 450px !important;
-				}
+				// &.hover  {
+				// 	width: 450px !important;
+				// }
 
 				.date {
 					writing-mode: vertical-lr;
@@ -323,7 +322,7 @@ div.section.call-to-action{
 			.slider-programs{
 				visibility:hidden;
 				opacity:0;
-				transition: opacity 1s;
+				// transition: opacity 1s;
 			.custom-left-arrow{
 						top: 34%;
 						position: absolute;
@@ -368,8 +367,11 @@ div.section.call-to-action{
 								}
 						}
 				}
+
+				.slick-current {
+						width: 450px !important;
+				}
 			}
-		}
 
 
 div.section.sponsors{

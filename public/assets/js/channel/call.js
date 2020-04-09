@@ -33,9 +33,13 @@ $(function(){
 
   function initSlickPrograms() {
     $slider.slick({
-      infinite: false,
+      slidesToShow: 6,
+      slidesToScroll: 1,
+      true: false,
       arrows: true,
       dots: false,
+      variableWidth: true,
+      centerMode: true,
       prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
       nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>'
     });
