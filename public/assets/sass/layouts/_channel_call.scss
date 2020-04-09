@@ -348,6 +348,23 @@ div.section.sponsors{
 	}
 }
 
-/* Body end */
 
+@media (max-width: $breakpoint-sm - 1) {
+  	div.section.sponsors{
+	  	ul.main-sponsors{
+		    li{
+		    	display: block;
+	   			text-align: center;
+	   			margin-bottom: 10px;
+			}
+		}
+		.secondary-sponsor
+		{
+		text-align: center;
+		}
+	}
+}
+
+
+/* Body end */
 }
