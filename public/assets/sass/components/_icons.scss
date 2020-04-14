@@ -169,4 +169,22 @@
     &.icon-write {
         @include svg-background('../img/icons/write.svg');
     }
+    &.icon-rocket {
+        @include svg-background('../img/icons/channel-call/rocket.svg');
+    }
+    &.icon-calendar-2 {
+        @include svg-background('../img/icons/channel-call/calendar.svg');
+    }
+    &.icon-plus {
+        @include svg-background('../img/icons/channel-call/plus.svg');
+    }
+    &.icon-terms {
+        @include svg-background('../img/icons/channel-call/terms.svg');
+    }
+    &.icon-news {
+        @include svg-background('../img/icons/channel-call/news.svg');
+    }
+    &.icon-arrow {
+        @include svg-background('../img/icons/channel-call/flecha.svg');
+    }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="9px" height="16px" viewBox="0 0 9 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>fb</title>
+    <desc>Created with Sketch.</desc>
+    <g id="CrowdCoop_Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="01_Home_01" transform="translate(-742.000000, -7466.000000)" fill="#4367B2" fill-rule="nonzero">
+            <g id="footer" transform="translate(0.000000, 7288.000000)">
+                <g id="RRSS" transform="translate(736.000000, 138.000000)">
+                    <path d="M8,48.842449 L8,56 L11.7886323,56 L11.7886323,48.8767347 L14.374778,48.8767347 L15,45.9069388 L11.8134991,45.9069388 C11.8134991,45.9069388 11.8134991,44.5093878 11.8134991,43.7273469 C11.8134991,43.4269388 11.9893428,43.0236735 12.5186501,43.0236735 C13.3357016,43.0236735 14.3587922,43.0236735 14.3587922,43.0236735 L14.3587922,40 C14.3587922,40 12.7015986,40 10.9218472,40 C9.73534636,40 7.98401421,41.3420408 7.98401421,42.7706122 C7.98401421,44.2383673 7.98401421,45.8220408 7.98401421,45.8220408 L6,45.8220408 L6,48.8293878 L8,48.842449 Z" id="fb"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

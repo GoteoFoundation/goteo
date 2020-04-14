@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>Oval</title>
+    <desc>Created with Sketch.</desc>
+    <g id="CrowdCoop_Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="03_Bases" transform="translate(-1112.000000, -3800.000000)">
+            <g id="descarga-el-.pdf" transform="translate(151.000000, 3696.000000)">
+                <g id="botón-copy" transform="translate(945.000000, 90.000000)">
+                    <rect id="Rectangle" stroke="#06566D" x="0.5" y="0.5" width="164" height="59" rx="10"></rect>
+                    <circle id="Oval" fill="#06566D" cx="32" cy="30" r="16"></circle>
+                    <path d="M32.5,38 L32.5,22" id="Path-7" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"></path>
+                    <polyline id="Path-8" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" points="26 32 32.5 38 39 32"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

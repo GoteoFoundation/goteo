@@ -106,6 +106,9 @@ class ChannelController extends \Goteo\Core\Controller {
 
         $limit = 999;
 
+        $channel = Node::get($id);
+
+
         if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
             $total = count($list);
         }
@@ -116,8 +119,10 @@ class ChannelController extends \Goteo\Core\Controller {
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
 
+        $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/index';
+
         return $this->viewResponse(
-            'channel/list_projects',
+            $view,
             array(
                 'projects' => $list,
                 'category'=> $category,

@@ -18,6 +18,7 @@ use Goteo\Library\Text;
 use Goteo\Model\Blog\Post as GeneralPost;
 use Goteo\Model\Node\NodeSponsor;
 use Goteo\Model\Node\NodeResource;
+use Goteo\Model\Node\NodeProgram;
 
 
 class Node extends \Goteo\Core\Model {
@@ -25,6 +26,7 @@ class Node extends \Goteo\Core\Model {
     public
         $id = null,
         $name,
+        $type,
         $subtitle,
         $description,
         $hashtag,
@@ -35,6 +37,8 @@ class Node extends \Goteo\Core\Model {
         $home_img,
         $active,
         $project_creation_open,
+        $call_inscription_open,
+        $banner_header_image,
         $show_team,
         $image,
         $default_consultant,
@@ -91,6 +95,7 @@ class Node extends \Goteo\Core\Model {
                 node.id as id,
                 node.name as name,
                 node.email as email,
+                node.type as type,
                 node.subtitle as subtitle,
                 node.hashtag as hashtag,
                 $fields,
@@ -101,6 +106,8 @@ class Node extends \Goteo\Core\Model {
                 node.url as url,
                 node.active as active,
                 node.project_creation_open as project_creation_open,
+                node.call_inscription_open as call_inscription_open,
+                node.banner_header_image as banner_header_image,
                 node.show_team as show_team,
                 node.twitter as twitter,
                 node.facebook as facebook,
@@ -336,6 +343,13 @@ class Node extends \Goteo\Core\Model {
             $this->homeImageInstance = new Image($this->home_img);
         }
         return $this->homeImageInstance;
+    }
+
+    public function getBannerHeaderImage() {
+        if(!$this->bannerHeaderImageInstance instanceOf Image) {
+            $this->bannerHeaderImageInstance = new Image($this->banner_header_image);
+        }
+        return $this->bannerHeaderImageInstance;
     }
 
     public function getLogo() {
@@ -962,10 +976,10 @@ class Node extends \Goteo\Core\Model {
     /**
      *  Posts of this node
      */
-    public function getPosts () {
+    public function getPosts ($limit = 3) {
        if($this->postsList) return $this->postsList;
         
-        $this->postsList = GeneralPost::getList(['node' => $this->id ], true, 0, $limit = 3, false);
+        $this->postsList = GeneralPost::getList(['node' => $this->id ], true, 0, $limit, false);
 
         return $this->postsList;
 
@@ -1063,6 +1077,24 @@ if($this->workshopsList) return $this->workshopsList;
         $query = static::query($sql, $values);
         $this->workshopsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Workshop');
         return $this->workshopsList;
+    }
+
+    public function getPrograms() {
+        if($this->programsList) return $this->programsList;
+        $values = [':node' => $this->id];
+
+        //list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+
+        $sql = "SELECT
+                node_program.*
+            FROM node_program
+            WHERE node_program.node_id = :node
+            ORDER BY node_program.order ASC";
+        // die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->programsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeProgram');
+        return $this->programsList;
+
     }
 
 
