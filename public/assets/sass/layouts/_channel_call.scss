@@ -362,12 +362,6 @@ div.section.posts {
 	padding: 50px 0 80px 0;
 	background-color: $color-white !important;
 
-	.container {
-		&:after {
-			border-bottom: 1px solid $color-new-dark-blue;
-		}	
-	}
-
 	.description{
 		font-size: $font-size*1.1;
 		margin-top: 15px;
@@ -380,7 +374,7 @@ div.section.posts {
 		text-align: right;
 		font-size: $font-size * 1.5;
 		padding-top: 20px;
-		a {
+		i {
 			color: $color-new-green
 		}
 	}
