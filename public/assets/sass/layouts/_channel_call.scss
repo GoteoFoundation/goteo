@@ -237,6 +237,8 @@ div.section.call-to-action{
 		}
 		
 div.section.program {
+		background-color: #E8F4F4 !important;
+		padding: 20px 0;
 
 		.container {
 			margin: 100px auto;
@@ -357,7 +359,7 @@ div.section.program {
 
 div.section.posts {
 	color:$color-new-dark-blue;
-	padding-bottom: 30px;
+	padding: 50px 0 80px 0;
 	background-color: $color-white !important;
 	.description{
 		font-size: $font-size*1.1;
@@ -400,7 +402,7 @@ div.section.posts {
 
 div.section.sponsors{
 	color:$color-new-dark-blue;
-	padding-bottom: 30px;
+	padding: 50px 0 80px 0;
 	.description{
 		font-size: $font-size*1.1;
 		margin-top: 15px;
