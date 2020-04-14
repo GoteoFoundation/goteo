@@ -430,7 +430,7 @@ div.section.sponsors{
 @media (max-width: $breakpoint-md + 1) {
     div.section.banner-header{
         div.banner-info{
-            margin-left: 15%;
+            padding-left: 15%;
             span.title{
                 font-size: $font-size*0.8;
             }
@@ -448,7 +448,7 @@ div.section.sponsors{
 	div.section.banner-header{
 		min-height: 400px;
         div.banner-info{
-            margin-left: 20%;
+            padding-left: 20%;
      		bottom: 25%;
             span.title{
                 font-size: $font-size*0.8 !important;
