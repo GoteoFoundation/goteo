@@ -361,32 +361,63 @@ div.section.posts {
 	color:$color-new-dark-blue;
 	padding: 50px 0 80px 0;
 	background-color: $color-white !important;
+
 	.description{
 		font-size: $font-size*1.1;
 		margin-top: 15px;
 		font-weight: 500;
 	}
+
+	div.more {
+		border-top: 1px solid $color-new-dark-blue;
+		width: 100%;
+		text-align: right;
+		font-size: $font-size * 1.5;
+		padding-top: 20px;
+		i {
+			color: $color-new-green
+		}
+	}
 	
 	.post-widget {
 
-		border: 1px solid $color-new-green;
+		border: 1px solid $border;
+		height: 370px;
+		margin-bottom: 20px; 
 		div.content {
+			height: 190px;
 			color: $color-new-dark-blue !important;
 			background-color: $color-white !important;
+			font-weight: bold;
 
+			div.date {
+				color: $color-new-green !important;
+			}
 			div.title {
 				color: $color-new-dark-blue !important;
+				font-size: $font-size * 1.2;
 			}
 
 			div.subtitle {
 				color: $color-new-dark-blue !important;
+				$font-size: $font-size;
+			}
+
+			div.author {
+				color: $color-new-green !important;
+				font-weight: inherit;
+				border-top: 2px solid $border;
+				padding-top: 10px;
+				position: absolute;
+				bottom: 25px;
+				width: 90%
 			}
 
 			a.arrow {
 				span.icon-arrow {
 					position: absolute;
 					transform: rotate(180deg);
-					right: 0;
+					right: 3%;
 					bottom: 0;
 					background-color: $color-new-green;
 				}
@@ -395,7 +426,7 @@ div.section.posts {
 
 		a.img-link {
 			padding: 10px;
-			height: 150px !important;
+			height: 170px !important;
 		}
 	}
 }
