@@ -38,6 +38,7 @@ class Node extends \Goteo\Core\Model {
         $active,
         $project_creation_open,
         $call_inscription_open,
+        $banner_header_image,
         $show_team,
         $image,
         $default_consultant,
@@ -106,6 +107,7 @@ class Node extends \Goteo\Core\Model {
                 node.active as active,
                 node.project_creation_open as project_creation_open,
                 node.call_inscription_open as call_inscription_open,
+                node.banner_header_image as banner_header_image,
                 node.show_team as show_team,
                 node.twitter as twitter,
                 node.facebook as facebook,
@@ -341,6 +343,13 @@ class Node extends \Goteo\Core\Model {
             $this->homeImageInstance = new Image($this->home_img);
         }
         return $this->homeImageInstance;
+    }
+
+    public function getBannerHeaderImage() {
+        if(!$this->bannerHeaderImageInstance instanceOf Image) {
+            $this->bannerHeaderImageInstance = new Image($this->banner_header_image);
+        }
+        return $this->bannerHeaderImageInstance;
     }
 
     public function getLogo() {

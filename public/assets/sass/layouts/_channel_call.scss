@@ -59,8 +59,9 @@ div.section.banner-header{
  	}
 
  	div.banner-info{
+        
         position: absolute;
-        bottom: 30%;
+        bottom: 27%;
         z-index: 150;
         color: $color-white;
         width: 100%;
@@ -72,7 +73,7 @@ div.section.banner-header{
         }
         div.description{
             margin: 15px 0;
-            font-size:3*$font-size;
+            font-size:2.8*$font-size;
             font-weight: bold;
             text-shadow: 0.5px 0.5px #3A3A3A;
             line-height: 1.1;
@@ -91,11 +92,12 @@ div.section.banner-header{
     }
       
     div.info{
-     	position: absolute;
-		  bottom: 0;
-    	width: 50%;
-		padding-left: 19%;
-		background: white; 
+    	position: absolute;
+        bottom: 0;
+        z-index: 150;
+        width: 100%;
+		background: linear-gradient(to right, #FFF 0%,#FFF 50%,transparent 50%,transparent 100%);
+		
         div.subtitle{
         	padding-top: 50px;
         	color: $color-new-lilac;
@@ -422,8 +424,42 @@ div.section.sponsors{
 	}
 }
 
+// Tablets customization
+@media (max-width: $breakpoint-md + 1) {
+    div.section.banner-header{
+        div.banner-info{
+            margin-left: 15%;
+            span.title{
+                font-size: $font-size*0.8;
+            }
+            div.description{
+                font-size: $font-size*1.4;
+            }
+             .btn{
+                font-size: $font-size*0.8 !important;
+            }
+        }
+    }
+}
 
 @media (max-width: $breakpoint-sm - 1) {
+	div.section.banner-header{
+		min-height: 400px;
+        div.banner-info{
+            margin-left: 20%;
+     		bottom: 25%;
+            span.title{
+                font-size: $font-size*0.8 !important;
+            }
+            div.description{
+                font-size: $font-size*1.1 !important;
+                margin-bottom: 10px;
+            }
+            .btn{
+                font-size: $font-size*0.7 !important;
+            }
+        }
+	}
   	div.section.sponsors{
 	  	ul.main-sponsors{
 		    li{
