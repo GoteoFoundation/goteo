@@ -478,6 +478,10 @@ div.section.sponsors{
 @media (max-width: $breakpoint-sm - 1) {
 	div.section.banner-header{
 		min-height: 400px;
+		div.custom-header{
+			img{
+				height: 22px;
+			}
         div.banner-info{
             padding-left: 20%;
      		bottom: 25%;
