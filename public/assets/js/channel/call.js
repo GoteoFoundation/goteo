@@ -36,6 +36,7 @@ $(function(){
     $slider.slick({
       slidesToShow: 6,
       slidesToScroll: 1,
+      infinite: false,
       true: false,
       arrows: true,
       dots: false,
