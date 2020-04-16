@@ -30,14 +30,14 @@ $(function(){
   // });
   
 
-  var $slider = $('.slider-programs');
+  var $slider_program = $('.slider-programs');
+  var $slider_post = $('.slider-post');
 
   function initSlickPrograms() {
-    $slider.slick({
+    $slider_program.slick({
       slidesToShow: 6,
       slidesToScroll: 1,
       infinite: false,
-      true: false,
       arrows: true,
       dots: false,
       variableWidth: true,
@@ -45,6 +45,33 @@ $(function(){
       focusOnSelect: true,
       prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
       nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>'
+    });
+
+    $slider_post.slick({
+      slidesToShow: 3.5,
+      infinite: false,
+      slidesToScroll: 1,
+      arrows: true,
+      dots: false,
+      focusOnSelect: true,
+      prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
+      nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
+      responsive: [
+        {
+          breakpoint: 769,
+          settings: {
+            slidesToShow: 2.5,
+            arrows: false
+          }
+        },
+        {
+          breakpoint: 481,
+          settings: {
+            slidesToShow: 1,
+            arrows: false
+          }
+        }]
+
     });
   }
 

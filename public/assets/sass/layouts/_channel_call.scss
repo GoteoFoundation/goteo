@@ -383,7 +383,9 @@ div.section.posts {
 
 		border: 1px solid $border;
 		height: 370px;
-		margin-bottom: 20px; 
+		margin-bottom: 20px;
+		margin-left: 15px;
+		margin-right: 15px;
 		div.content {
 			height: 190px;
 			color: $color-new-dark-blue !important;
@@ -427,6 +429,33 @@ div.section.posts {
 		a.img-link {
 			padding: 10px;
 			height: 170px !important;
+		}
+	}
+
+	.slider-post{
+		visibility:hidden;
+		opacity:0;
+		transition: opacity 1s;
+		
+		.custom-left-arrow{
+					top: 34%;
+					position: absolute;
+					font-size: $font-size*5;
+					left: -4%;
+					color: $color-new-green;
+					cursor: pointer;
+		}
+		.custom-right-arrow{
+					top: 34%;
+					position: absolute;
+					font-size: $font-size*5;
+					right: -4%;
+					color: $color-new-green;
+					cursor: pointer;
+		}
+		&.slick-initialized{
+				visibility:visible;
+				opacity:1;
 		}
 	}
 }
