@@ -187,4 +187,22 @@
     &.icon-arrow {
         @include svg-background('../img/icons/channel-call/flecha.svg');
     }
+    &.icon-crowd {
+        @include svg-background('../img/icons/channel-call/crowd.svg');
+    }
+    &.icon-people {
+        @include svg-background('../img/icons/channel-call/people.svg');
+    }
+    &.icon-binoculars {
+        @include svg-background('../img/icons/channel-call/binoculars.svg');
+    }
+    &.icon-empty-calendar {
+        @include svg-background('../img/icons/channel-call/empty_calendar.svg');
+    }
+    &.icon-pdf {
+        @include svg-background('../img/icons/channel-call/pdf.svg');
+    }
+    &.icon-download {
+        @include svg-background('../img/icons/channel-call/download.svg');
+    }
 }

@@ -8,7 +8,7 @@
 				<p class="description">
 					CrowdCoop acoge actividades culturales emprendidas por la sociedad civil organizada y contempladas dentro de las líneas de actuación del Departamento de Cultura, Turismo, Juventud y Deportes de la Diputación. El plazo para participar es hasta el 7 de junio, consulta atentamente las bases reguladoras abajo para todos los detalles.
 				</p>
-				<a href="/project/create" class="btn btn-transparent"><i class="icon icon-terms icon-2x"></i> Leer las bases</a>
+				<a href="<?= '/channel/'.$this->channel->id.'/terms' ?>" class="btn btn-transparent"><i class="icon icon-terms icon-2x"></i> Leer las bases</a>
 			</div>
 		</div>
 	</div>

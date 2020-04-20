@@ -28,10 +28,12 @@
 					<div class="description">
 						Espacio digital para la creación y consolidación de proyectos cooperativos
 					</div>
-						<a href="<?= $banner->url ?>" class="btn btn-yellow scroller"><i class="icon icon-plus icon-2x"></i><?= $this->text('landing-more-info') ?></a>
-					</div>
+					<a href="<?= $banner->url ?>" class="btn btn-yellow scroller"><i class="icon icon-plus icon-2x">		
+						</i><?= $this->text('landing-more-info') ?>
+					</a>
 				</div>
 			</div>
+		</div>
 	</div>
 
 	<div class="info">

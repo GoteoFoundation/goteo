@@ -171,6 +171,17 @@ class ChannelController extends \Goteo\Core\Controller {
         );
     }
 
+    /**
+     * Channel terms
+     * @param  Request $request [description]
+     */
+    public function termsAction ($id, Request $request)
+    {
+        $this->setChannelContext($id);
+
+        return $this->viewResponse('channel/call/terms');
+    }
+
 
     /**
      * Initial create project action
@@ -198,6 +209,7 @@ class ChannelController extends \Goteo\Core\Controller {
             'project_defaults' => ['node' => $id]
         ]);
     }
+
 
      /**
      * List of channels
