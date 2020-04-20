@@ -19,6 +19,7 @@ use Goteo\Model\Blog\Post as GeneralPost;
 use Goteo\Model\Node\NodeSponsor;
 use Goteo\Model\Node\NodeResource;
 use Goteo\Model\Node\NodeProgram;
+use Goteo\Model\Node\NodeTerm;
 
 
 class Node extends \Goteo\Core\Model {
@@ -1054,6 +1055,30 @@ class Node extends \Goteo\Core\Model {
         $query = static::query($sql, $values);
         $this->resourcesList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeResource');
         return $this->resourcesList;
+
+    }
+
+    /**
+     *  Resources of this node
+     */
+    public function getTerms () {
+        if($this->termsList) return $this->termsList;
+        $values = [':node' => $this->id];
+
+        list($fields, $joins) = NodeTerm::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
+
+        $sql = "SELECT
+                node_term.id,
+                node_term.icon,
+                $fields
+            FROM node_term
+            $joins
+            WHERE node_term.node_id = :node
+            ORDER BY node_term.order ASC LIMIT 3";
+         //die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->termsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeTerm');
+        return $this->termsList;
 
     }
 

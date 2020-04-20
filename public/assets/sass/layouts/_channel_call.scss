@@ -27,6 +27,7 @@ h2.title{
 	border-bottom: 1px solid $color-new-dark-blue;
 	font-weight: bold;
 	padding-bottom: 10px;
+	position: relative;
 	.icon{
 		background-color: $color-new-dark-blue;
 		vertical-align: sub;
@@ -48,15 +49,16 @@ div.section.banner-header{
  		padding: 20px 0 10px 0;
  		color: $color-white;
  		font-weight: bold;
+ 		z-index: 100;
  		img{
  			margin-left: 5px;
  			vertical-align: sub;
  		}
  	}
 
- 	div.img{
- 		filter: brightness(85%);
- 	}
+ 	.image{
+        filter: brightness(85%) contrast(80%);
+    }
 
  	div.banner-info{
         
@@ -86,9 +88,6 @@ div.section.banner-header{
             	background: $background-new-lilac;
             }
         }
-        img{
-            filter: brightness(85%) contrast(80%);
-        }
     }
       
     div.info{
@@ -97,12 +96,41 @@ div.section.banner-header{
         z-index: 150;
         width: 100%;
 		background: linear-gradient(to right, #FFF 0%,#FFF 50%,transparent 50%,transparent 100%);
-		
         div.subtitle{
         	padding-top: 50px;
         	color: $color-new-lilac;
         	font-weight: 500;
         }
+        &.terms{
+			background: linear-gradient(to right, #FFF 0%,#FFF 75%,transparent 75%,transparent 100%);
+			.item{
+				background-color: $background-white;
+			}
+			.title{
+			color: $color-new-dark-blue;
+				.icon{
+					background-color: $color-new-green;
+				}    
+				&::after{
+					color: #333;
+					bottom: 0px;
+					right: 0px;
+					position: absolute;
+				    font-family: "FontAwesome";
+				    color:$color-new-green;
+				    font-size: $font-size*2.7;
+				    font-weight: normal;
+				}
+				  
+				&[aria-expanded="false"]::after {
+					content: "\f107";
+				}
+
+				&[aria-expanded="true"]::after {
+					content: "\f106";
+				}
+			}
+		}
     }
 }
 
@@ -237,7 +265,7 @@ div.section.call-to-action{
 		}
 		
 div.section.program {
-		background-color: #E8F4F4 !important;
+		background-color: $background-new-light-green !important;
 		padding: 20px 0;
 
 		.container {
@@ -383,7 +411,9 @@ div.section.posts {
 
 		border: 1px solid $border;
 		height: 370px;
-		margin-bottom: 20px; 
+		margin-bottom: 20px;
+		margin-left: 15px;
+		margin-right: 15px;
 		div.content {
 			height: 190px;
 			color: $color-new-dark-blue !important;
@@ -429,6 +459,33 @@ div.section.posts {
 			height: 170px !important;
 		}
 	}
+
+	.slider-post{
+		visibility:hidden;
+		opacity:0;
+		transition: opacity 1s;
+		
+		.custom-left-arrow{
+					top: 34%;
+					position: absolute;
+					font-size: $font-size*5;
+					left: -4%;
+					color: $color-new-green;
+					cursor: pointer;
+		}
+		.custom-right-arrow{
+					top: 34%;
+					position: absolute;
+					font-size: $font-size*5;
+					right: -4%;
+					color: $color-new-green;
+					cursor: pointer;
+		}
+		&.slick-initialized{
+				visibility:visible;
+				opacity:1;
+		}
+	}
 }
 
 div.section.sponsors{
@@ -453,6 +510,74 @@ div.section.sponsors{
 			padding-bottom: 5px;
 			margin-bottom: 10px;
 			font-weight: bold;
+		}
+	}
+}
+
+div.section.terms-items{
+    background-color: $background-white;
+    padding-bottom:80px;
+    font-size: $font-size*1.1;
+    color: $color-new-dark-blue;
+    .title{
+    	color: $color-new-dark-blue;
+		.icon{
+			background-color: $color-new-green;
+		}
+		&::after{
+			color: #333;
+			bottom: 0px;
+			right: 0px;
+			position: absolute;
+		    font-family: "FontAwesome";
+		    color:$color-new-green;
+			font-size: $font-size*2.7;
+			font-weight: normal;
+		}
+		  
+		&[aria-expanded="false"]::after {
+			content: "\f107";
+		}
+
+		&[aria-expanded="true"]::after {
+			content: "\f106";
+		}    
+    }
+
+    .description{
+    	padding: 20px 0;
+    }
+}
+
+div.section.download{
+	background-color: $color-white;
+	padding: 40px 0;
+	color: $color-new-dark-blue;
+	.container{
+		background-color: $background-new-light-green;
+		padding: 16px 35px 30px 50px;
+		img.pdf{
+			margin-top: 28px;
+		}
+		.title{
+			color: $color-new-dark-blue;
+			font-weight: 500;
+			font-size: $font-size*1.5;
+			margin-bottom: 25px;
+		}
+		.description{
+			max-width: 70%;
+			float: left;
+			font-weight: 400;
+		}
+		.btn{
+			float: right;
+			color: $color-new-dark-blue;
+	    	border: 1px solid $color-new-dark-blue;
+	    	font-weight: bold;
+	    	.icon{
+	    		background-color: $color-new-dark-blue;
+	    	}
 		}
 	}
 }
@@ -497,8 +622,18 @@ div.section.sponsors{
             .btn{
                 font-size: $font-size*0.7 !important;
             }
+            &.terms{
+            	bottom: 35%;
+            }
+        }
+        div.info{
+        	&.terms{
+        		background-color: $background-white;
+        		position: static;
+        	}
         }
 	}
+	
   	div.section.sponsors{
 	  	ul.main-sponsors{
 		    li{
@@ -510,6 +645,16 @@ div.section.sponsors{
 		.secondary-sponsor
 		{
 		text-align: center;
+		}
+	}
+
+	div.section.download{
+		.description{
+			width: 100%;
+		}
+		.btn{
+			float: left !important;
+			margin-top: 20px;
 		}
 	}
 }

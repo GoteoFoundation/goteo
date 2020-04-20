@@ -40,7 +40,10 @@ $channel->add('channel-discover-projects-filter', new Route(
     array('_controller' => 'Goteo\Controller\ChannelController::discoverProjectsAction')
 ));
 
-
+$channel->add('channel-terms', new Route(
+    '/{id}/terms',
+    array('_controller' => 'Goteo\Controller\ChannelController::termsAction')
+));
 
 $channel->add('channel-list-projects', new Route(
     '/{id}/{type}/{category}',

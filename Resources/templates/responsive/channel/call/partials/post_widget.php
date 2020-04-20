@@ -13,7 +13,7 @@ $image= $this->post->header_image ? $this->post->header_image : $this->post->ima
     </a>
     <div class="content">
         <div class="date">
-          <?=  $this->post->date ?>
+          <?=  date_formater($this->post->date) ?>
         </div>
         <div class="title">
           <?= $this->text_truncate($this->post->title, 20) ?>
