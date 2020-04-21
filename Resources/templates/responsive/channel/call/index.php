@@ -23,6 +23,8 @@ $this->section('channel-content');
 
 <?= $this->insert('channel/call/partials/sponsors') ?>
 
+<?= $this->insert('channel/call/partials/related_workshops') ?>
+
 <?= $this->insert('channel/call/partials/posts_section') ?>
 
 <?php $this->replace() ?>
