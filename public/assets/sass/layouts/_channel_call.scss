@@ -57,7 +57,7 @@ div.section.banner-header{
  	}
 
  	.image{
-        filter: brightness(85%) contrast(80%);
+        //filter: brightness(85%) contrast(80%);
     }
 
  	div.banner-info{
@@ -559,6 +559,73 @@ div.section.workshops{
 		}
 
 	}
+}
+
+div.section.projects{
+	.filters {
+        margin: 40px 0 35px 0;
+        a > li {
+            font-weight: 700;
+            padding: 5px 15px;
+            cursor: pointer;
+            display: inline-block;
+            color: $primary-color;
+            &.active{
+              background-color: $color-new-green;
+              border-radius: 5px;
+              color: $color-white !important;
+            }
+        }
+    }
+
+   	.slick{
+   		.project-widget{
+   			margin-left: 35px;
+   		}
+   	}
+
+    // custom project widget to skin
+    .project-widget{
+    	border-radius: 0px;
+    	.floating{
+    		top:168px;
+    		background:$color-new-green;
+    	}
+    	.img-link{
+    		padding:10px;
+    		background-color: $color-white;
+    		border-radius: 0px;
+    	}
+    	.description{
+    		color: $color-new-dark-blue;
+    	}
+    	.categories{
+    		display: none;
+    	}
+    	.amount ul li {
+    	color: $color-new-green;
+	    	strong{
+	    		color:$color-new-dark-blue;
+	    		font-size: $font-size*1.4;
+	    	}
+    	}
+
+    	.progress-bar{
+    		background-color:$color-new-green;
+    	}
+
+    	.percent p{
+    		color: $color-new-green;
+    	}
+    	>.backside{
+    		background-color: $color-white;
+    		.data-list p{
+    			color: $color-new-dark-blue;
+    		}
+    	}
+
+    }
+
 }
 
 div.section.sponsors{
