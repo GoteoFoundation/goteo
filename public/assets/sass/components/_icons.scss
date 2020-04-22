@@ -205,4 +205,10 @@
     &.icon-download {
         @include svg-background('../img/icons/channel-call/download.svg');
     }
+    &.icon-bell {
+        @include svg-background('../img/icons/channel-call/event.svg');
+    }
+    &.icon-desktop {
+        @include svg-background('../img/icons/channel-call/desktop.svg')
+    }
 }

@@ -32,8 +32,9 @@ $(function(){
 
   var $slider_program = $('.slider-programs');
   var $slider_post = $('.slider-post');
+  var $slider_workshop = $('.slider-workshops');
 
-  function initSlickPrograms() {
+  function initSlickSliders() {
     $slider_program.slick({
       slidesToShow: 6,
       slidesToScroll: 1,
@@ -44,7 +45,14 @@ $(function(){
       centerMode: true,
       focusOnSelect: true,
       prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
-      nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>'
+      nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
+      responsive: [
+        {
+          breakpoint: 481,
+          settings: {
+            arrows: false
+          }
+        }]
     });
 
     $slider_post.slick({
@@ -58,14 +66,14 @@ $(function(){
       nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
       responsive: [
         {
-          breakpoint: 769,
+          breakpoint: 992,
           settings: {
             slidesToShow: 2.5,
             arrows: false
           }
         },
         {
-          breakpoint: 481,
+          breakpoint: 768,
           settings: {
             slidesToShow: 1,
             arrows: false
@@ -73,7 +81,64 @@ $(function(){
         }]
 
     });
+    
+      $slider_workshop.slick({
+      slidesToShow: 3.5,
+      infinite: false,
+      slidesToScroll: 1,
+      arrows: true,
+      dots: false,
+      focusOnSelect: true,
+      prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
+      nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
+      responsive: [
+        {
+          breakpoint: 992,
+          settings: {
+            slidesToShow: 2.5,
+            arrows: false
+          }
+        },
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 1.2,
+            arrows: false
+          }
+        }]
+
+    });
+
+    var $container = $('#projects-container');
+    var $slider_projects = $container.contents('.slider-projects');
+    
+    $slider_projects.slick({
+      infinite: false,
+      slidesToShow: 3.5,
+      slidesToScroll: 1,
+      arrows: true,
+      dots: false,
+      prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
+      nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
+      responsive: [
+        {
+          breakpoint: 769,
+          settings: {
+            slidesToShow: 2,
+            arrows:false
+          }
+        },
+        {
+          breakpoint: 500,
+          settings: {
+            slidesToShow: 1,
+          }
+        }]
+    });
+    
+
   }
 
-  initSlickPrograms();
+
+  initSlickSliders();
 });
