@@ -41,7 +41,6 @@ class GoteoChannelCall
             `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
             `title` VARCHAR(255) NOT NULL,
-            `subtitle` VARCHAR(255) NOT NULL,
             `icon` varchar(255) NULL,
             `description` TEXT NOT NULL,
             `action` VARCHAR(255) NOT NULL,

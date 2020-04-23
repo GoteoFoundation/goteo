@@ -21,7 +21,6 @@ class NodeProgram extends \Goteo\Core\Model {
     $id,
     $node_id,
     $title,
-    $subtitle,
     $description,
     $icon,
     $action,
@@ -30,7 +29,7 @@ class NodeProgram extends \Goteo\Core\Model {
     $order;
 
     public static function getLangFields() {
-        return ['title', 'subtitle', 'description', 'action', 'action_url'];
+        return ['title', 'description', 'action', 'action_url'];
     }
 
 

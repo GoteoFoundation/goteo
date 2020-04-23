@@ -520,38 +520,38 @@ div.section.workshops{
 			cursor: pointer;
 	}
 
-		.workshop-widget {
-			height: 400px;
-			background-color: $background-white;
-			margin-left: 15px;
-			margin-right: 15px;
+	.workshop-widget {
+		height: 400px;
+		background-color: $background-white;
+		margin-left: 15px;
+		margin-right: 15px;
 
-			.image {
-				color: $color-white;
-				font-weight: bold;
-				position:inherit;
-				display: flex;
-				
-				img {
-					width: 100%;
-					padding-top: 10px;
-					filter: brightness(85%) contrast(80%);
-				}
+		.image {
+			color: $color-white;
+			font-weight: bold;
+			position:inherit;
+			display: flex;
+			
+			img {
+				width: 100%;
+				padding-top: 15px;
+				filter: brightness(85%) contrast(80%);
+			}
 
-				.date {
-					position: absolute;
-					bottom: 20%;
-					left: 5%;
-					font-size: $font-size*1.5;
-				}
-		
-				.location {
-					position: absolute;
-					bottom: 10%;
-					left: 5%;
-					width: 90%;
-					border-top: 1px solid $color-white;
-					border-bottom: 1px solid $color-white;
+			.date {
+				position: absolute;
+				bottom: 20%;
+				left: 5%;
+				font-size: $font-size*1.5;
+			}
+	
+			.location {
+				position: absolute;
+				bottom: 10%;
+				left: 5%;
+				width: 90%;
+				border-top: 1px solid $color-white;
+				border-bottom: 1px solid $color-white;
 			}
 		}
 
@@ -559,6 +559,10 @@ div.section.workshops{
 			font-weight: bold;
 			color: $color-new-dark-blue;
 			font-size: $font-size*1.5;
+			
+			a:hover {
+				color: $color-new-green;
+			}
 		}
 
 		a.arrow {
