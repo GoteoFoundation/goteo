@@ -254,9 +254,8 @@ div.section.call-to-action{
 			text-decoration: inherit;
 			font-weight: normal;
 			font-style: normal;
-			vertical-align: top;
-		}
-		
+			vertical-align: top;	
+		}	
 		/* IE7 */
 		[class*="genericon"] {
 			*overflow: auto;
@@ -267,6 +266,20 @@ div.section.call-to-action{
 div.section.program {
 		background-color: $background-new-light-green !important;
 		padding: 20px 0;
+
+		h2.title{
+			.btn-transparent{
+		    	margin-top: 15px;
+		    	color: $color-new-green;
+		    	border: 1px solid $color-new-lilac;
+		    	font-weight: bold;
+		    	float: right;
+		    	margin-top: 0px;
+		    	.icon{
+		    		background-color: $color-new-lilac;
+		    	}
+		    }
+		}
 
 		.container {
 			margin: 100px auto;
@@ -631,6 +644,7 @@ div.section.projects{
 div.section.sponsors{
 	color:$color-new-dark-blue;
 	padding: 50px 0 80px 0;
+	background-color: $background-white;
 	.description{
 		font-size: $font-size*1.1;
 		margin-top: 15px;

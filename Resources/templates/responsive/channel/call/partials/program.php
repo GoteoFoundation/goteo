@@ -5,8 +5,13 @@
 
 <div class="section program">
   <div class="container">
-    <h2 class="title"><span class="icon icon-calendar-2 icon-3x"></span>El programa Crowdcoop</h2>
-    
+    <h2 class="title">
+        <span class="icon icon-calendar-2 icon-3x"></span>
+        <span>El programa Crowdcoop</span>
+        <a class="btn btn-transparent" href="<?= '/channel/'.$this->channel->id.'/terms' ?>" class="btn btn-transparent">
+          <i class="icon icon-terms icon-2x"></i> Leer las bases
+        </a>
+    </h2>
     <div class="description">
       Enterate de todo lo que va a pasar.
     </div>
