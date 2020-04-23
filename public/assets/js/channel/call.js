@@ -35,8 +35,10 @@ $(function(){
   var $slider_workshop = $('.slider-workshops');
 
   function initSlickSliders() {
+    var initial_slide = $slider_program.data('initial-slide');
     $slider_program.slick({
       slidesToShow: 6,
+      initialSlide: parseInt(initial_slide),
       slidesToScroll: 1,
       infinite: false,
       arrows: true,

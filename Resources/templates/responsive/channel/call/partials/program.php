@@ -1,6 +1,14 @@
 <?php
 
   $programs = $this->channel->getPrograms();
+  $initial_slide = 0;
+
+  foreach ($programs as $key => $program) {
+    if ($program->date >= date('Y-m-d')) {
+      $initial_slide = $key;
+      continue;
+    }
+  }
 ?>
 
 <div class="section program">
@@ -10,10 +18,10 @@
     <div class="description">
       Enterate de todo lo que va a pasar.
     </div>
-    <div class="accordion spacer-20 slider slider-programs">
+    <div class="accordion spacer-20 slider slider-programs" data-initial-slide="<?= $initial_slide ?>">
 
     <?php foreach ($programs as $key => $program): ?>
-      <div class="tabs <?= ($program->order == 1)? 'hover' : '' ?>">
+      <div class="tabs">
         <div class="date"> <?= $program->date ?> </div>
         <div class="paragraph">
           <img class="img-responsive" src="/assets/img/channel/call/fase1.png" >
