@@ -6,7 +6,7 @@
   foreach ($programs as $key => $program) {
     if ($program->date >= date('Y-m-d')) {
       $initial_slide = $key;
-      continue;
+      break;
     }
   }
 ?>
