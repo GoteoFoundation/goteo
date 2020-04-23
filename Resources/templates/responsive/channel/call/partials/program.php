@@ -24,9 +24,8 @@
       <div class="tabs">
         <div class="date"> <?= $program->date ?> </div>
         <div class="paragraph">
-          <img class="img-responsive" src="/assets/img/channel/call/fase1.png" >
+          <img class="img-responsive" src="<?= $program->getIcon()->getLink(350,150) ?>" >
           <h1><?= $program->title ?></h1>
-          <h3><?= $program->subtitle ?></h3>
           <p><?= $program->description ?></p>
           <a href="<?= $program->action_url ?>" class="btn btn-transparent"><i class="icon icon-projects icon-2x"></i> <?= $program->action ?></a>
         </div>
