@@ -275,8 +275,12 @@ div.section.program {
 		    	font-weight: bold;
 		    	float: right;
 		    	margin-top: 0px;
+		    	position: absolute;
+				right: 0;
+				bottom: 8px;
 		    	.icon{
 		    		background-color: $color-new-lilac;
+		    		vertical-align: middle;
 		    	}
 		    }
 		}
@@ -759,6 +763,17 @@ div.section.download{
 }
 
 @media (max-width: $breakpoint-sm - 1) {
+
+	div.section.program{
+		.title{
+			padding-bottom: 105px;
+			a.btn{
+				bottom: 20px;
+				left: 0;
+			}
+		}
+	}
+
 	div.section.banner-header{
 		min-height: 400px;
 
