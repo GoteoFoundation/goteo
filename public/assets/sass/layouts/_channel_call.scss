@@ -254,9 +254,8 @@ div.section.call-to-action{
 			text-decoration: inherit;
 			font-weight: normal;
 			font-style: normal;
-			vertical-align: top;
-		}
-		
+			vertical-align: top;	
+		}	
 		/* IE7 */
 		[class*="genericon"] {
 			*overflow: auto;
@@ -267,6 +266,24 @@ div.section.call-to-action{
 div.section.program {
 		background-color: $background-new-light-green !important;
 		padding: 20px 0;
+
+		h2.title{
+			.btn-transparent{
+		    	margin-top: 15px;
+		    	color: $color-new-green;
+		    	border: 1px solid $color-new-lilac;
+		    	font-weight: bold;
+		    	float: right;
+		    	margin-top: 0px;
+		    	position: absolute;
+				right: 0;
+				bottom: 8px;
+		    	.icon{
+		    		background-color: $color-new-lilac;
+		    		vertical-align: middle;
+		    	}
+		    }
+		}
 
 		.container {
 			margin: 100px auto;
@@ -507,38 +524,38 @@ div.section.workshops{
 			cursor: pointer;
 	}
 
-		.workshop-widget {
-			height: 400px;
-			background-color: $background-white;
-			margin-left: 15px;
-			margin-right: 15px;
+	.workshop-widget {
+		height: 400px;
+		background-color: $background-white;
+		margin-left: 15px;
+		margin-right: 15px;
 
-			.image {
-				color: $color-white;
-				font-weight: bold;
-				position:inherit;
-				display: flex;
-				
-				img {
-					width: 100%;
-					padding-top: 10px;
-					filter: brightness(85%) contrast(80%);
-				}
+		.image {
+			color: $color-white;
+			font-weight: bold;
+			position:inherit;
+			display: flex;
+			
+			img {
+				width: 100%;
+				padding-top: 15px;
+				filter: brightness(85%) contrast(80%);
+			}
 
-				.date {
-					position: absolute;
-					bottom: 20%;
-					left: 5%;
-					font-size: $font-size*1.5;
-				}
-		
-				.location {
-					position: absolute;
-					bottom: 10%;
-					left: 5%;
-					width: 90%;
-					border-top: 1px solid $color-white;
-					border-bottom: 1px solid $color-white;
+			.date {
+				position: absolute;
+				bottom: 20%;
+				left: 5%;
+				font-size: $font-size*1.5;
+			}
+	
+			.location {
+				position: absolute;
+				bottom: 10%;
+				left: 5%;
+				width: 90%;
+				border-top: 1px solid $color-white;
+				border-bottom: 1px solid $color-white;
 			}
 		}
 
@@ -546,6 +563,10 @@ div.section.workshops{
 			font-weight: bold;
 			color: $color-new-dark-blue;
 			font-size: $font-size*1.5;
+			
+			a:hover {
+				color: $color-new-green;
+			}
 		}
 
 		a.arrow {
@@ -631,6 +652,7 @@ div.section.projects{
 div.section.sponsors{
 	color:$color-new-dark-blue;
 	padding: 50px 0 80px 0;
+	background-color: $background-white;
 	.description{
 		font-size: $font-size*1.1;
 		margin-top: 15px;
@@ -741,6 +763,17 @@ div.section.download{
 }
 
 @media (max-width: $breakpoint-sm - 1) {
+
+	div.section.program{
+		.title{
+			padding-bottom: 105px;
+			a.btn{
+				bottom: 20px;
+				left: 0;
+			}
+		}
+	}
+
 	div.section.banner-header{
 		min-height: 400px;
 

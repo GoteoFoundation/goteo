@@ -4,7 +4,7 @@
 			<a class="image" href="<?= '/workshop/' . $workshop->id ?>">
 				<img src="<?= $workshop->getHeaderImage()->getLink(265,280, true)?>">
 				<div class="date"> <?= $workshop->date_in ?> </div>
-				<div class="location"> <i class="fa fa-map-marker"></i> <?= $workshop->workshop_location ?> </div>
+				<div class="location"> <i class="fa fa-map-marker"></i> <?= $this->text_truncate($workshop->workshop_location, 30) ?> </div>
 			</a>
 
 

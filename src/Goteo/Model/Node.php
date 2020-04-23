@@ -1114,7 +1114,7 @@ if($this->workshopsList) return $this->workshopsList;
                 node_program.*
             FROM node_program
             WHERE node_program.node_id = :node
-            ORDER BY node_program.order ASC";
+            ORDER BY node_program.date ASC";
         // die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
         $this->programsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeProgram');
