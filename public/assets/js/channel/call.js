@@ -37,14 +37,14 @@ $(function(){
   function initSlickSliders() {
     var initial_slide = $slider_program.data('initial-slide');
     $slider_program.slick({
-      slidesToShow: 6,
+      slidesToShow: 1,
       initialSlide: parseInt(initial_slide),
       slidesToScroll: 1,
       infinite: false,
       arrows: true,
       dots: false,
       variableWidth: true,
-      centerMode: true,
+      centerMode: false,
       focusOnSelect: true,
       prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
       nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
