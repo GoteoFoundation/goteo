@@ -126,14 +126,15 @@ $(function(){
         {
           breakpoint: 769,
           settings: {
-            slidesToShow: 2,
+            slidesToShow: 2.5,
             arrows:false
           }
         },
         {
           breakpoint: 500,
           settings: {
-            slidesToShow: 1,
+            slidesToShow: 1.2,
+            arrows: false
           }
         }]
     });
