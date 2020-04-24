@@ -405,7 +405,7 @@ div.section.program {
 div.section.posts {
 	color:$color-new-dark-blue;
 	padding: 50px 0 80px 0;
-	background-color: $color-white !important;
+	background-color: $background-new-light-green !important;
 
 	.description{
 		font-size: $font-size*1.1;
@@ -583,6 +583,7 @@ div.section.workshops{
 }
 
 div.section.projects{
+	padding-bottom: 30px;
 	.filters {
         margin: 40px 0 35px 0;
         a > li {
@@ -599,11 +600,50 @@ div.section.projects{
         }
     }
 
-   	.slick{
-   		.project-widget{
-   			margin-left: 35px;
+   	.slick-list{
+   		.widget-slide{
+            margin-left: 20px
    		}
    	}
+
+   	.slider-projects{
+         visibility:hidden;
+         opacity:0;
+         transition: opacity 1s;
+        .custom-left-arrow{
+            top: 34%;
+            position: absolute;
+            font-size: $font-size*5;
+            left: -2.4%;
+            color: $background-light-green;
+            cursor: pointer;
+        }
+        .custom-right-arrow{
+            top: 34%;
+            position: absolute;
+            font-size: $font-size*5;
+            right: -4%;
+            color: $background-light-green;
+            cursor: pointer;
+        }
+    }
+
+    .slider-projects.slick-initialized{
+        visibility:visible;
+        opacity:1;
+    }
+
+    .slider-projects .item{
+        display:none ;
+    }
+
+    .slider-projects .item:first-child{
+        display:block; visibility:hidden;
+    }
+
+    .slider-projects.slick-initialized .item{
+        display:block;visibility:visible!important;
+    }
 
     // custom project widget to skin
     .project-widget{
@@ -805,6 +845,17 @@ div.section.download{
         		position: static;
         	}
         }
+	}
+
+	div.section.projects{
+		.slick-list{
+	   		.widget-slide {
+	            margin-left: 0px !important;
+	            .project-widget.normal{
+	                box-shadow: none;
+	                margin-left: 20px;	            }
+	   			}
+	   	}
 	}
 	
   	div.section.sponsors{
