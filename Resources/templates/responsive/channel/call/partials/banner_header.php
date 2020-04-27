@@ -10,10 +10,13 @@
 	</div>
 	<div class="image">
 		<?php $header_image=$this->channel->getBannerHeaderImage(); ?>
+		<?php $header_image_md=$this->channel->getBannerHeaderImageMd(); ?>
+		<?php $header_image_sm=$this->channel->getBannerHeaderImageSm(); ?>
+		<?php $header_image_xs=$this->channel->getBannerHeaderImageXs(); ?>
 		<img src="<?= $header_image->getLink(1920, 600, true) ?>" class="display-none-important header-default img-responsive  hidden-xs visible-up-1400">
-		<img src="<?= $header_image->getLink(1400, 600, true) ?>" class="display-none-important header-default img-responsive  hidden-xs visible-1051-1400">
-		<img src="<?= $header_image->getLink(1051, 600, true) ?>" class="display-none-important header-default img-responsive  hidden-xs visible-768-1050">
-		<img src="<?= $header_image->getLink(550, 600, true) ?>" class="img-responsive visible-xs">
+		<img src="<?= $header_image_md->getLink(1400, 600, true) ?>" class="display-none-important header-default img-responsive  hidden-xs visible-1051-1400">
+		<img src="<?= $header_image_sm->getLink(1051, 600, true) ?>" class="display-none-important header-default img-responsive  hidden-xs visible-768-1050">
+		<img src="<?= $header_image_xs->getLink(550, 600, true) ?>" class="img-responsive visible-xs">
 	</div>
 
 	<div class="banner-info">
@@ -36,6 +39,8 @@
 		</div>
 	</div>
 
+	<?php if($this->type!='available'): ?>
+
 	<div class="info">
 		<div class="container">
 			<div class="row">
@@ -45,4 +50,7 @@
 			</div>
 		</div>
 	</div>
+
+	<?php endif; ?>
+
 </div>

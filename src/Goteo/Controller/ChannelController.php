@@ -123,14 +123,14 @@ class ChannelController extends \Goteo\Core\Controller {
 
         return $this->viewResponse(
             $view,
-            array(
+                [
                 'projects' => $list,
                 'category'=> $category,
                 'title_text' => Text::get('node-side-searcher-promote'),
                 'type' => $type,
                 'total' => $total,
                 'limit' => $limit
-                )
+                ]
         );
     }
 
@@ -142,6 +142,8 @@ class ChannelController extends \Goteo\Core\Controller {
     public function listProjectsAction($id, $type = 'available', $category = null, Request $request)
     {
         $this->setChannelContext($id);
+
+        $channel = Node::get($id);
 
         $limit = 9;
         $status=[3,4,5];
@@ -158,16 +160,18 @@ class ChannelController extends \Goteo\Core\Controller {
         $list = Project::published($filter, $id, (int)$request->query->get('pag') * $limit, $limit);
         $total = Project::published($filter, $id, 0, 0, true);
 
+        $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/list_projects';
+
         return $this->viewResponse(
-            'channel/list_projects',
-            array(
+            $view,
+                [
                 'projects' => $list,
                 'category'=> $category,
                 'title_text' => $title_text,
                 'type' => $type,
                 'total' => $total,
                 'limit' => $limit
-                )
+                ]
         );
     }
 

@@ -58,6 +58,10 @@ div.section.banner-header{
 
  	.image{
         //filter: brightness(85%) contrast(80%);
+        img{
+        object-fit: cover;
+		width: 100%;
+		}
     }
 
  	div.banner-info{
@@ -798,6 +802,12 @@ div.section.download{
              .btn{
                 font-size: $font-size*0.8 !important;
             }
+        }
+        div.info{
+        	&.terms{
+        		background-color: $background-white;
+        		position: static;
+        	}
         }
     }
 }

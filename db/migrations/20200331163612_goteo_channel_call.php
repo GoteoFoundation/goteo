@@ -35,6 +35,9 @@ class GoteoChannelCall
         ALTER TABLE `node` ADD COLUMN type VARCHAR(255) DEFAULT 'normal' AFTER `active`;
         ALTER TABLE `node` ADD COLUMN call_inscription_open INT(1) DEFAULT 1 AFTER project_creation_open;
         ALTER TABLE `node` ADD COLUMN banner_header_image VARCHAR(255) NULL AFTER call_inscription_open;
+        ALTER TABLE `node` ADD COLUMN banner_header_image_md VARCHAR(255) NULL AFTER banner_header_image;
+        ALTER TABLE `node` ADD COLUMN banner_header_image_sm VARCHAR(255) NULL AFTER banner_header_image_md;
+        ALTER TABLE `node` ADD COLUMN banner_header_image_xs VARCHAR(255) NULL AFTER banner_header_image_sm;
         ALTER TABLE `node_sponsor` ADD COLUMN `label` TINYTEXT CHARSET utf8 COLLATE utf8_general_ci NULL AFTER `image`;
 
         CREATE TABLE `node_program` (
@@ -99,6 +102,9 @@ class GoteoChannelCall
         ALTER TABLE `node` DROP COLUMN type;
         ALTER TABLE `node` DROP COLUMN call_inscription_open;
         ALTER TABLE `node` DROP COLUMN banner_header_image;
+        ALTER TABLE `node` DROP COLUMN banner_header_image_md;
+        ALTER TABLE `node` DROP COLUMN banner_header_image_sm;
+        ALTER TABLE `node` DROP COLUMN banner_header_image_xs;
         ALTER TABLE `node_sponsor` DROP COLUMN label;
         DROP TABLE `node_program`;
         DROP TABLE `node_program_lang`;
