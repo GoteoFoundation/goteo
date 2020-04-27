@@ -5,8 +5,10 @@
     <h2 class="title"><span class="icon icon-desktop icon-3x"></span>Algunos proyectos en marcha</h2>
     <?= $this->insert('channel/call/partials/filters_block') ?>
 
-        <?php if ($this->type !== 'available' && $this->type !== 'popular' && $this->type !== 'success') : ?>
+        <?php if ($this->type !== 'available') : ?>
             <?= $this->insert('channel/partials/projects') ?>
+        <?php else: ?>
+            <?= $this->insert('channel/partials/projects_block') ?>
         <?php endif ?>
   </div>
 

@@ -40,6 +40,9 @@ class Node extends \Goteo\Core\Model {
         $project_creation_open,
         $call_inscription_open,
         $banner_header_image,
+        $banner_header_image_md,
+        $banner_header_image_sm,
+        $banner_header_image_xs,
         $show_team,
         $image,
         $default_consultant,
@@ -109,6 +112,9 @@ class Node extends \Goteo\Core\Model {
                 node.project_creation_open as project_creation_open,
                 node.call_inscription_open as call_inscription_open,
                 node.banner_header_image as banner_header_image,
+                node.banner_header_image_md as banner_header_image_md,
+                node.banner_header_image_sm as banner_header_image_sm,
+                node.banner_header_image_xs as banner_header_image_xs,
                 node.show_team as show_team,
                 node.twitter as twitter,
                 node.facebook as facebook,
@@ -351,6 +357,24 @@ class Node extends \Goteo\Core\Model {
             $this->bannerHeaderImageInstance = new Image($this->banner_header_image);
         }
         return $this->bannerHeaderImageInstance;
+    }
+    public function getBannerHeaderImageMd() {
+        if(!$this->bannerHeaderImageInstanceMd instanceOf Image) {
+            $this->bannerHeaderImageInstanceMd = new Image($this->banner_header_image_md);
+        }
+        return $this->bannerHeaderImageInstanceMd;
+    }
+    public function getBannerHeaderImageSm() {
+        if(!$this->bannerHeaderImageInstanceSm instanceOf Image) {
+            $this->bannerHeaderImageInstanceSm = new Image($this->banner_header_image_sm);
+        }
+        return $this->bannerHeaderImageInstanceSm;
+    }
+    public function getBannerHeaderImageXs() {
+        if(!$this->bannerHeaderImageInstanceXs instanceOf Image) {
+            $this->bannerHeaderImageInstanceXs = new Image($this->banner_header_image_xs);
+        }
+        return $this->bannerHeaderImageInstanceXs;
     }
 
     public function getLogo() {
