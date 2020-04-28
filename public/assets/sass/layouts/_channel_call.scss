@@ -788,6 +788,66 @@ div.section.download{
 	}
 }
 
+.footer {
+	font-weight: bold;
+	color: $color-new-dark-blue;
+	background-color: $background-new-light-green !important;
+	padding-bottom:80px;
+
+	.header {
+		border-bottom: 1px solid $color-new-dark-blue;
+	}
+	
+	ul {
+		list-style-type: none;
+		padding-inline-start: 0px;
+		
+		li {
+			border-bottom: 1px solid $color-new-dark-blue;
+			padding: 5px;
+			font-size: $font-size;
+			font-weight: normal;
+			
+			a {
+				color: $color-new-green;
+			}
+
+			.icon {
+
+				width: 20px !important;
+				height: 20px !important;
+
+				&-channel-instagram {
+					background-color: #FC514F
+				}
+
+				&-channel-telegram {
+					background-color: #1DA1F2
+				}
+
+				&-channel-twitter {
+					background-color: #1DA1F2
+				}
+
+				&-channel-fb {
+					height: 20px !important;
+					width: 10px !important;
+					margin: 5px;
+					background-color: #4367B2
+				}
+
+				&-channel-github {
+					background-color: #282828
+				}
+
+				&-channel-mail {
+					background-color: #26BDB9
+				}
+			}
+		}
+	}
+}
+
 // Tablets customization
 @media (max-width: $breakpoint-md + 1) {
     div.section.banner-header{
