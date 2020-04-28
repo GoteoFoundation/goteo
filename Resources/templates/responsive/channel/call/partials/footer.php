@@ -34,14 +34,14 @@
           <div class="col-md-6 col-sm-4">
             <?= $this->t('channel-call-footer-social-networks') ?>
             <div class="row">
-              <div class="col-md-6 col-xs-6">
+              <div class="col-md-6 col-sm-12 col-xs-12">
                 <ul>
                   <li><a href="<?=$this->text('social-account-twitter') ?>" target="_blank"><span class="icon icon-channel-twitter"></span> <?= $this->t('channel-call-footer-twitter') ?> </a></li>
                   <li><a href="<?=$this->text('social-account-facebook') ?>" target="_blank"><span class="icon icon-channel-fb"></span> <?= $this->t('channel-call-footer-facebook') ?> </a></li>
                   <li><a href="<?=$this->text('social-account-instagram') ?>" target="_blank"><span class="icon icon-channel-instagram"></span> <?= $this->t('channel-call-footer-instagram') ?> </a></li>
                 </ul>
               </div>
-              <div class="col-md-6 col-xs-6">
+              <div class="col-md-6 col-sm-12 col-xs-12">
               <ul>
                   <li><a href="<?=$this->text('social-account-telegram') ?>" target="_blank"><span class="icon icon-channel-telegram"></span> <?= $this->t('channel-call-footer-telegram') ?> </a></li>
                   <li><a href="<?=$this->text('social-account-github') ?>" target="_blank"><span class="icon icon-channel-github"></span> <?= $this->t('channel-call-footer-github') ?> </a></li>
