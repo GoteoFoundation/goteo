@@ -22,6 +22,7 @@ class NodeProgram extends \Goteo\Core\Model {
     $node_id,
     $title,
     $description,
+    $header,
     $icon,
     $action,
     $action_url,
@@ -48,6 +49,7 @@ class NodeProgram extends \Goteo\Core\Model {
                     node_program.id as id,
                     node_program.node_id as node_id,
                     $fields,
+                    node_program.header as `header`,
                     node_program.icon as `icon`,
                     node_program.date as `date`,
                     node_program.order as `order`
@@ -82,6 +84,7 @@ class NodeProgram extends \Goteo\Core\Model {
             'id',
             'node_id',
             'title',
+            `header`,
             'icon',
             'description',
             'action',
@@ -101,9 +104,9 @@ class NodeProgram extends \Goteo\Core\Model {
         }
     }
 
-    public function getIcon() {
+    public function getHeader() {
         if(!$this->imageInstance instanceOf Image) {
-            $this->imageInstance = new Image($this->icon);
+            $this->imageInstance = new Image($this->header);
         }
         return $this->imageInstance;
     }

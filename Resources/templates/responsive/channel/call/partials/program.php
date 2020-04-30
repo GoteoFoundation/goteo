@@ -29,10 +29,10 @@
       <div class="tabs">
         <div class="date"> <?= $program->date ?> </div>
         <div class="paragraph">
-          <img class="img-responsive" src="<?= $program->getIcon()->getLink(350,150) ?>" >
+          <img class="img-responsive" src="<?= $program->getHeader()->getLink(350,150) ?>" >
           <h1><?= $program->title ?></h1>
           <p><?= $program->description ?></p>
-          <a href="<?= $program->action_url ?>" class="btn btn-transparent"><i class="icon icon-projects icon-2x"></i> <?= $program->action ?></a>
+          <a href="<?= $program->action_url ?>" class="btn btn-transparent"><i class="icon icon-<?= $program->icon ?> icon-2x"></i> <?= $program->action ?></a>
         </div>
       </div>
     <?php endforeach; ?>
