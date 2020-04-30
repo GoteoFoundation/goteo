@@ -12,7 +12,9 @@
         </div>
         <div class="row spacer-20">
           <div class="col-md-6 col-sm-8">
-            <?= $this->t('channel-call-footer-information') ?>
+            <div class="spacer-20">
+              <?= $this->t('channel-call-footer-information') ?>
+            </div>
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <ul>
@@ -32,7 +34,9 @@
             </div>
           </div>
           <div class="col-md-6 col-sm-4">
-            <?= $this->t('channel-call-footer-social-networks') ?>
+            <div class="spacer-20">
+              <?= $this->t('channel-call-footer-social-networks') ?>
+            </div>
             <div class="row">
               <div class="col-md-6 col-sm-12 col-xs-6">
                 <ul>
