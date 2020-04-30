@@ -1134,18 +1134,8 @@ if($this->workshopsList) return $this->workshopsList;
         if($this->programsList) return $this->programsList;
         $values = [':node' => $this->id];
 
-        //list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
-
-        $sql = "SELECT
-                node_program.*
-            FROM node_program
-            WHERE node_program.node_id = :node
-            ORDER BY node_program.date ASC";
-        // die(\sqldbg($sql, $values));
-        $query = static::query($sql, $values);
-        $this->programsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeProgram');
+        $this->programsList = NodeProgram::get($this->id);
         return $this->programsList;
-
     }
 
 
