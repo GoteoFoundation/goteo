@@ -37,21 +37,33 @@ class NodeProgram extends \Goteo\Core\Model {
      * Get data about node program
      *
      * @param   int    $id         check id.
-     * @return  Workshop program object
+     * @return  NodeProgram object
      */
     static public function get($id) {
+
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
         $sql="SELECT
-                    node_program.*
+                    node_program.id as id,
+                    node_program.node_id as node_id,
+                    $fields,
+                    node_program.icon as `icon`,
+                    node_program.date as `date`,
+                    node_program.order as `order`
               FROM node_program
-              WHERE node_program.node_id = ?";
+              $joins
+              WHERE node_program.node_id = ?
+              ORDER BY node_program.date ASC";
+        // die(\sqldbg($sql, array($id)));
         $query = static::query($sql, array($id));
-        $item = $query->fetchObject(__CLASS__);
+        $item = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 
-        if($item) {
-          return $item;
+        if(!$item) {
+            throw new ModelNotFoundException("Node program not found for ID [$id]");
         }
-
-        throw new ModelNotFoundException("Node program not found for ID [$id]");
+        
+        return $item;
     }
 
    
