@@ -1128,11 +1128,12 @@ class Node extends \Goteo\Core\Model {
                 workshop.date_out,
                 workshop.schedule,
                 workshop.url,
+                workshop.workshop_location,
                 workshop.call_id,
                 workshop.venue,
                 workshop.city,
-                workshop.venue_address,
-                :viewLang as viewLang
+                workshop.header_image,
+                workshop.venue_address
             FROM node_workshop
             INNER JOIN workshop ON workshop.id = node_workshop.workshop_id
             $joins
