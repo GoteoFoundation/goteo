@@ -788,6 +788,50 @@ div.section.download{
 	}
 }
 
+div.section.team {
+	background-color: $color-white;
+	padding: 40px 0;
+
+	.container {
+
+		.image {
+			img {
+				width: 100%;
+			}
+		}
+
+		.title {
+			color: $color-new-green;
+			font-weight: bold;
+		}
+
+		.description {
+			color: $color-new-dark-blue;
+			font-weight: bold;
+		}
+		
+		.team_widget {
+			color: $color-new-dark-blue;
+			padding-bottom: 20px;
+			height: 350px;
+
+			.name {
+				font-size: $font-size*1.5;
+				border-bottom: 1px $color-new-dark-blue solid;
+				width: 100%;
+				padding-top: 10px;
+				font-weight: bold;
+			}
+			
+			.role {
+				border-bottom: 1px $color-new-dark-blue solid;
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+		}
+	}
+}
+
 .footer {
 	font-weight: bold;
 	color: $color-new-dark-blue;

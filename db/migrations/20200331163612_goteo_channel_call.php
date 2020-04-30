@@ -113,6 +113,16 @@ class GoteoChannelCall
              FOREIGN KEY (`id`) REFERENCES `node_sponsor`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         ); 
       
+
+        CREATE TABLE `node_team` (
+            `id` BIGINT(20) UNSIGNED NOT NULL,
+            `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+            `name` VARCHAR(100) NOT NULL,
+            `role` VARCHAR(50) DEFAULT NULL,
+            `image` VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+            CONSTRAINT `node_team_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+        );
+
        ";
   }
 
@@ -154,6 +164,7 @@ class GoteoChannelCall
         DROP TABLE `node_faq_lang`;
         DROP TABLE `node_faq`;
         DROP TABLE `node_sponsor_lang`;
+        DROP TABLE `node_team`;
      ";
   }
 
