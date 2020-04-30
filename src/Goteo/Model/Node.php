@@ -1112,13 +1112,27 @@ class Node extends \Goteo\Core\Model {
      *  Workshops of this node
      */
     public function getWorkshops () {
-if($this->workshopsList) return $this->workshopsList;
+        if($this->workshopsList) return $this->workshopsList;
         $values = [':node' => $this->id];
 
-        //list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+        list($fields, $joins) = Workshop::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
 
         $sql = "SELECT
-                workshop.*
+                workshop.id,
+                workshop.online,
+                workshop.title,
+                $fields,
+                workshop.subtitle,
+                workshop.description,
+                workshop.date_in,
+                workshop.date_out,
+                workshop.schedule,
+                workshop.url,
+                workshop.call_id,
+                workshop.venue,
+                workshop.city,
+                workshop.venue_address,
+                :viewLang as viewLang
             FROM node_workshop
             INNER JOIN workshop ON workshop.id = node_workshop.workshop_id
             $joins
