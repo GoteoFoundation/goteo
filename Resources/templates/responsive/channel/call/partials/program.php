@@ -15,13 +15,13 @@
   <div class="container">
     <h2 class="title">
         <span class="icon icon-calendar-2 icon-3x"></span>
-        <span>El programa Crowdcoop</span>
+        <span><?= $this->t('channel-call-program-title') ?></span>
         <a class="btn btn-transparent" href="<?= '/channel/'.$this->channel->id.'/terms' ?>" class="btn btn-transparent">
-          <i class="icon icon-terms icon-2x"></i> Leer las bases
+          <i class="icon icon-terms icon-2x"></i> <?= $this->t('channel-call-program-terms') ?>
         </a>
     </h2>
     <div class="description">
-      Enterate de todo lo que va a pasar.
+      <?= $this->t('channel-call-program-description') ?>
     </div>
     <div class="accordion spacer-20 slider slider-programs" data-initial-slide="<?= $initial_slide ?>">
 
