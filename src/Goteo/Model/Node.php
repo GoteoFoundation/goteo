@@ -19,6 +19,7 @@ use Goteo\Model\Blog\Post as GeneralPost;
 use Goteo\Model\Node\NodeSponsor;
 use Goteo\Model\Node\NodeResource;
 use Goteo\Model\Node\NodeProgram;
+use Goteo\Model\Node\NodeTeam;
 use Goteo\Model\Node\NodeTerm;
 
 
@@ -1147,10 +1148,16 @@ class Node extends \Goteo\Core\Model {
 
     public function getPrograms() {
         if($this->programsList) return $this->programsList;
-        $values = [':node' => $this->id];
 
         $this->programsList = NodeProgram::get($this->id);
         return $this->programsList;
+    }
+
+    public function getTeam() {
+        if($this->teamList) return $this->teamList;
+        
+        $this->teamList = NodeTeam::get($this->id);
+        return $this->teamList;
     }
 
 

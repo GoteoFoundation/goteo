@@ -28,6 +28,8 @@ $this->section('channel-content');
 
 <?= $this->insert('channel/call/partials/posts_section') ?>
 
+<?= $this->insert('channel/call/partials/team') ?>
+
 <?= $this->insert('channel/call/partials/sponsors') ?>
 
 <?php $this->replace() ?>
