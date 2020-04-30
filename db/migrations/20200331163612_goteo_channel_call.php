@@ -94,15 +94,19 @@ class GoteoChannelCall
              CONSTRAINT `node_term_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
           );
 
-        CREATE TABLE `node_sponsor_lang` (
-            `id` BIGINT(20) UNSIGNED NOT NULL,
-            `lang` VARCHAR (6),
-            `label` TINYTEXT CHARSET utf8 COLLATE utf8_general_ci,
-            `pending` TINYINT (1),
-             FOREIGN KEY (`id`) REFERENCES `node_sponsor`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
-        ); 
-  
-        CREATE TABLE `node_term_lang` (
+        CREATE TABLE `node_faq` (
+            `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+            `title` VARCHAR(255) NOT NULL,
+            `icon` varchar(255) NULL,
+            `description` TEXT NOT NULL,
+            `lang` VARCHAR(6) NULL,
+            `order` INT(11),
+             PRIMARY KEY (`id`),
+             CONSTRAINT `node_term_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+          );
+
+         CREATE TABLE `node_term_lang` (
             `id` BIGINT(20) UNSIGNED NOT NULL,
             `lang` VARCHAR (6),
             `title` VARCHAR(255) NOT NULL,
@@ -111,7 +115,24 @@ class GoteoChannelCall
              FOREIGN KEY (`id`) REFERENCES `node_term`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         ); 
 
+        CREATE TABLE `node_sponsor_lang` (
+            `id` BIGINT(20) UNSIGNED NOT NULL,
+            `lang` VARCHAR (6),
+            `label` TINYTEXT CHARSET utf8 COLLATE utf8_general_ci,
+            `pending` TINYINT (1),
+             FOREIGN KEY (`id`) REFERENCES `node_sponsor`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        ); 
 
+        CREATE TABLE `node_faq_lang` (
+            `id` BIGINT(20) UNSIGNED NOT NULL,
+            `lang` VARCHAR (6),
+            `title` VARCHAR(255) NOT NULL,
+            `description` TEXT NOT NULL,
+            `pending` TINYINT (1),
+             FOREIGN KEY (`id`) REFERENCES `node_term`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        ); 
+  
+      
        ";
   }
 
