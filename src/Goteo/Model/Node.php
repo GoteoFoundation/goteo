@@ -1045,10 +1045,18 @@ class Node extends \Goteo\Core\Model {
         if($this->sponsorsList) return $this->sponsorsList;
         $values = [':node' => $this->id];
 
-        $sql = "SELECT
-                node_sponsor.*
-            FROM node_sponsor
+        list($fields, $joins) = NodeSponsor::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
 
+        $sql = "SELECT
+                node_sponsor.id,
+                node_sponsor.node_id,
+                node_sponsor.name,
+                node_sponsor.url,
+                node_sponsor.image,
+                node_sponsor.order,
+                $fields
+            FROM node_sponsor
+            $joins
             WHERE node_sponsor.node_id = :node
             ORDER BY node_sponsor.order ASC";
          //die(\sqldbg($sql, $values));

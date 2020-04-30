@@ -93,6 +93,14 @@ class GoteoChannelCall
              PRIMARY KEY (`id`),
              CONSTRAINT `node_term_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
           );
+
+        CREATE TABLE `node_sponsor_lang` (
+            `id` BIGINT(20) UNSIGNED NOT NULL,
+            `lang` VARCHAR (6),
+            `label` TINYTEXT CHARSET utf8 COLLATE utf8_general_ci,
+            `pending` TINYINT (1),
+             FOREIGN KEY (`id`) REFERENCES `node_sponsor`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        ); 
   
         CREATE TABLE `node_term_lang` (
             `id` BIGINT(20) UNSIGNED NOT NULL,
@@ -139,11 +147,12 @@ class GoteoChannelCall
         ALTER TABLE `node_lang` DROP COLUMN terms_download_url;  
 
         ALTER TABLE `node_sponsor` DROP COLUMN label;
-        DROP TABLE `node_program`;
-        DROP TABLE `node_program_lang`;
-        DROP TABLE `node_term`;
-        DROP TABLE `node_term_lang`;
 
+        DROP TABLE `node_program_lang`;
+        DROP TABLE `node_program`;
+        DROP TABLE `node_term_lang`;
+        DROP TABLE `node_term`;
+        DROP TABLE `node_sponsor_lang`;
      ";
   }
 
