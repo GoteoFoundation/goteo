@@ -1,7 +1,7 @@
 <?php
 
 /*
-* Model for Node term
+* Model for Node Faq
 */
 
 namespace Goteo\Model\Node;
@@ -13,13 +13,14 @@ use Goteo\Model\Image;
 
 
 
-class NodeTerm extends \Goteo\Core\Model {
+class NodeFaq extends \Goteo\Core\Model {
 
-    protected $Table = 'node_term';
-    protected static $Table_static = 'node_term';
+    protected $Table = 'node_faq';
+    protected static $Table_static = 'node_faq';
     public
     $id,
     $node_id,
+    $type,
     $title,
     $description,
     $icon,
@@ -31,16 +32,16 @@ class NodeTerm extends \Goteo\Core\Model {
 
 
     /**
-     * Get data about node term
+     * Get data about node faq
      *
      * @param   int    $id         check id.
-     * @return  Workshop term object
+     * @return  Workshop faq object
      */
     static public function get($id) {
         $sql="SELECT
-                    node_term.*
-              FROM node_term
-              WHERE node_term.node_id = ?";
+                    node_faq.*
+              FROM node_faq
+              WHERE node_faq.node_id = ?";
         $query = static::query($sql, array($id));
         $item = $query->fetchObject(__CLASS__);
 
@@ -48,7 +49,7 @@ class NodeTerm extends \Goteo\Core\Model {
           return $item;
         }
 
-        throw new ModelNotFoundException("Node term not found for ID [$id]");
+        throw new ModelNotFoundException("Node faq not found for ID [$id]");
     }
 
    
@@ -66,6 +67,7 @@ class NodeTerm extends \Goteo\Core\Model {
         $fields = array(
             'id',
             'node_id',
+            'type',
             'title',
             'icon',
             'description',
@@ -78,7 +80,7 @@ class NodeTerm extends \Goteo\Core\Model {
 
             return true;
         } catch(\PDOException $e) {
-            $errors[] = "Node term save error: " . $e->getMessage();
+            $errors[] = "Node faq save error: " . $e->getMessage();
             return false;
         }
     }

@@ -19,7 +19,7 @@ use Goteo\Model\Blog\Post as GeneralPost;
 use Goteo\Model\Node\NodeSponsor;
 use Goteo\Model\Node\NodeResource;
 use Goteo\Model\Node\NodeProgram;
-use Goteo\Model\Node\NodeTerm;
+use Goteo\Model\Node\NodeFaq;
 
 
 class Node extends \Goteo\Core\Model {
@@ -1093,25 +1093,25 @@ class Node extends \Goteo\Core\Model {
     }
 
     /**
-     *  Resources of this node
+     *  Faq of this node
      */
-    public function getTerms () {
+    public function getFaq ($type = 'general') {
         if($this->termsList) return $this->termsList;
-        $values = [':node' => $this->id];
+        $values = [':node' => $this->id, ':type' => $type];
 
-        list($fields, $joins) = NodeTerm::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
+        list($fields, $joins) = NodeFaq::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
 
         $sql = "SELECT
-                node_term.id,
-                node_term.icon,
+                node_faq.id,
+                node_faq.icon,
                 $fields
-            FROM node_term
+            FROM node_faq
             $joins
-            WHERE node_term.node_id = :node
-            ORDER BY node_term.order ASC LIMIT 3";
+            WHERE node_faq.node_id = :node AND node_faq.type = :type
+            ORDER BY node_faq.order ASC";
          //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
-        $this->termsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeTerm');
+        $this->termsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeFaq');
         return $this->termsList;
 
     }

@@ -4,7 +4,7 @@
 
 $this->layout('channel/call/layout', [
 	'bodyClass' => 'channel-call',
-    'title' => 'Bases',
+    'title' => 'FAQ',
     'meta_description' => $this->channel->subtitle,
     'tw_image' => $meta_img
     ]);
@@ -13,10 +13,8 @@ $this->section('channel-content');
 
 ?>
 
-<?= $this->insert('channel/call/partials/faq/banner_terms') ?>
+<?= $this->insert('channel/call/partials/faq/banner_terms', []) ?>
 
-<?= $this->insert('channel/call/partials/faq/terms_items') ?>
-
-<?= $this->insert('channel/call/partials/faq/download') ?>
+<?= $this->insert('channel/call/partials/faq/terms_items'), [] ) ?>
 
 <?php $this->replace() ?>
