@@ -38,6 +38,22 @@ class GoteoChannelCall
         ALTER TABLE `node` ADD COLUMN banner_header_image_md VARCHAR(255) NULL AFTER banner_header_image;
         ALTER TABLE `node` ADD COLUMN banner_header_image_sm VARCHAR(255) NULL AFTER banner_header_image_md;
         ALTER TABLE `node` ADD COLUMN banner_header_image_xs VARCHAR(255) NULL AFTER banner_header_image_sm;
+        ALTER TABLE `node` ADD COLUMN main_info_title VARCHAR(255) NULL AFTER description;
+        ALTER TABLE `node` ADD COLUMN main_info_description TEXT NULL AFTER main_info_title;
+        ALTER TABLE `node` ADD COLUMN terms_banner_title VARCHAR(255) NULL;
+        ALTER TABLE `node` ADD COLUMN terms_banner_description TEXT NULL;
+        ALTER TABLE `node` ADD COLUMN terms_download_title VARCHAR(255)  NULL;
+        ALTER TABLE `node` ADD COLUMN terms_download_description TEXT NULL;
+        ALTER TABLE `node` ADD COLUMN terms_download_url VARCHAR(255)  NULL;
+
+        ALTER TABLE `node_lang` ADD COLUMN `main_info_title` VARCHAR(255) NULL AFTER description;
+        ALTER TABLE `node_lang` ADD COLUMN main_info_description TEXT NULL AFTER main_info_title;
+        ALTER TABLE `node_lang` ADD COLUMN terms_banner_title VARCHAR(255) NULL;
+        ALTER TABLE `node_lang` ADD COLUMN terms_banner_description TEXT NULL;
+        ALTER TABLE `node_lang` ADD COLUMN terms_download_title VARCHAR(255)  NULL;
+        ALTER TABLE `node_lang` ADD COLUMN terms_download_description TEXT NULL;
+        ALTER TABLE `node_lang` ADD COLUMN terms_download_url VARCHAR(255)  NULL;
+
         ALTER TABLE `node_sponsor` ADD COLUMN `label` TINYTEXT CHARSET utf8 COLLATE utf8_general_ci NULL AFTER `image`;
 
         CREATE TABLE `node_program` (
@@ -105,6 +121,23 @@ class GoteoChannelCall
         ALTER TABLE `node` DROP COLUMN banner_header_image_md;
         ALTER TABLE `node` DROP COLUMN banner_header_image_sm;
         ALTER TABLE `node` DROP COLUMN banner_header_image_xs;
+        ALTER TABLE `node` DROP COLUMN main_info_title;
+        ALTER TABLE `node` DROP COLUMN main_info_description;
+        ALTER TABLE `node` DROP COLUMN terms_banner_title;  
+        ALTER TABLE `node` DROP COLUMN terms_banner_description;
+        ALTER TABLE `node` DROP COLUMN terms_download_title;
+        ALTER TABLE `node` DROP COLUMN terms_download_description;
+        ALTER TABLE `node` DROP COLUMN terms_download_url;
+
+
+        ALTER TABLE `node_lang` DROP COLUMN main_info_title;
+        ALTER TABLE `node_lang` DROP COLUMN main_info_description;  
+        ALTER TABLE `node_lang` DROP COLUMN terms_banner_title;  
+        ALTER TABLE `node_lang` DROP COLUMN terms_banner_description;  
+        ALTER TABLE `node_lang` DROP COLUMN terms_download_title;  
+        ALTER TABLE `node_lang` DROP COLUMN terms_download_description;  
+        ALTER TABLE `node_lang` DROP COLUMN terms_download_url;  
+
         ALTER TABLE `node_sponsor` DROP COLUMN label;
         DROP TABLE `node_program`;
         DROP TABLE `node_program_lang`;

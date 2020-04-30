@@ -31,6 +31,8 @@ class Node extends \Goteo\Core\Model {
         $subtitle,
         $description,
         $hashtag,
+        $main_info_title,
+        $main_info_description,
         $email,
         $admins = array(), // administradores
         $logo,
@@ -81,7 +83,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'subtitle', 'description', 'call_to_action_description', 'terms', 'tip_msg'];
+        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description', 'terms', 'tip_msg', 'terms_banner_title', 'terms_banner_description', 'terms_download_title', 'terms_download_description', 'terms_download_url'];
     }
 
     /**

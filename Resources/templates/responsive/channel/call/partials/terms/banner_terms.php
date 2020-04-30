@@ -26,11 +26,11 @@
 				<div class="col-lg-6 col-md-7 col-sm-9 col-xs-8">
 					<div>
 						<span class="title">
-						Participar
+						<?= $this->channel->terms_banner_title ?>
 						</span>
 					</div>
 					<div class="description">
-						Bases del programa CrowdCoop
+						<?= $this->channel->terms_banner_description ?>
 					</div>
 				</div>
 			</div>
