@@ -26,12 +26,12 @@
                   node_team.*
             FROM node_team
             WHERE node_team.node_id = ?";
-    
+
     $query = static::query($sql, array($id));
     $team = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 
-    if (!$team)
-      throw new ModelNotFoundException("Team not found");
+    /*if (!$team)
+      throw new ModelNotFoundException("Team not found");*/
 
     return $team;
   }
