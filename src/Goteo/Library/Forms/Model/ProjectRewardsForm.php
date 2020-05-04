@@ -86,8 +86,10 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
         $this->rewards[$reward->id] = $reward;
         $project = $this->getModel();
         $suffix = "_{$reward->id}";
+        
         // readonly only if has no invests associated
-        $units_readonly = $readonly = $this->getReadonly() && !$reward->isDraft();
+        $units_readonly = $readonly = $this->getReadonly() && !$reward->isDraft() && $reward->getTaken();
+        $remove_readonly = $this->getReadonly()&&$reward->getTaken();
         // Readonly allows edit number of rewards if project in campaign
         if($project->inCampaign()) {
             $units_readonly = false;
@@ -150,7 +152,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 ]
 
             ]);
-        if(!$readonly) {
+        if(!$remove_readonly) {
             $this->getBuilder()
                 ->add("remove$suffix", 'submit', [
                     'label' => Text::get('regular-delete'),
