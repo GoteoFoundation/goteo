@@ -269,7 +269,7 @@ div.section.call-to-action{
 		
 div.section.program {
 		background-color: $background-new-light-green !important;
-		padding: 20px 0;
+		padding: 20px 0px 80px 0px !important;
 
 		h2.title{
 			.btn-transparent{
@@ -939,8 +939,7 @@ div.section.team {
 							left: 0%;
 							cursor: pointer;
 							width: 45%;
-							background-color: $color-new-green;
-							opacity: 20%;
+							background-color: rgba(21,174,152, 0.2);
 
 							span.fa {
 								color: $color-new-green;
@@ -954,8 +953,7 @@ div.section.team {
 							right: 0%;
 							cursor: pointer;
 							width: 45%;
-							background-color: $color-new-green;
-							opacity: 20%;
+							background-color: rgba(21,174,152, 0.2);
 
 							span.fa {
 								color: $color-new-green;

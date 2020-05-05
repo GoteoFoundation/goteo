@@ -47,14 +47,7 @@ $(function(){
       centerMode: false,
       focusOnSelect: true,
       prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
-      nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
-      responsive: [
-        {
-          breakpoint: 481,
-          settings: {
-            arrows: false
-          }
-        }]
+      nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>'
     });
 
     $slider_post.slick({
