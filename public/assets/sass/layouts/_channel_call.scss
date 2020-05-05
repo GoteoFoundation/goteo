@@ -923,6 +923,46 @@ div.section.team {
 				margin-bottom: 0px;
 			}
 		}
+
+		div.section.program {
+			.slider-programs{
+				visibility:hidden;
+				opacity:0;
+				transition: opacity 1s;
+				
+				// transition: opacity 1s;
+				.custom-left-arrow{
+							top: unset;
+							bottom: -30%;
+							position: absolute;
+							font-size: $font-size*5;
+							left: 0%;
+							cursor: pointer;
+							width: 45%;
+							background-color: $color-new-green;
+							opacity: 20%;
+
+							span.fa {
+								color: $color-new-green;
+							}
+				}
+				.custom-right-arrow{
+							top: unset;
+							bottom: -30%;
+							position: absolute;
+							font-size: $font-size*5;
+							right: 0%;
+							cursor: pointer;
+							width: 45%;
+							background-color: $color-new-green;
+							opacity: 20%;
+
+							span.fa {
+								color: $color-new-green;
+							}
+				}
+			}	
+		}
 }
 
 @media (max-width: $breakpoint-sm - 1) {
