@@ -12,6 +12,9 @@ body.blog {
         font-size: $font-size*1.1;
         margin-left:10px;
         float: left;
+        a{
+          color: $primary-color;
+        }
       }
     }
 
@@ -180,6 +183,7 @@ body.blog {
     ul.filters {
       padding: 40px 0 35px 0;
       background-color: $background-yellow;
+      margin-bottom: 0px;
       a > li {
           font-weight: 700;
           padding: 5px 15px;
