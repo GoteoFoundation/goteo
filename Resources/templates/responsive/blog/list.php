@@ -14,6 +14,7 @@ $this->section('blog-content');
 
 <?= $this->insert('partials/components/main_slider', [
             	  'banners' => $this->banners,
+            	  'nav' => 'blog/partials/main_slider_nav',
             	  'button_text' => $this->text('regular-read_more')
 ]) ?>
 <?= $this->insert('blog/partials/list_posts') ?>
