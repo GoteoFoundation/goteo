@@ -6,7 +6,7 @@
         <?= $this->t('channel-call-workshop-description') ?>
       </div>
     <?= $this->channel->getWorkshops() ? $this->insert('channel/call/partials/workshops_slider', [
-        'workshops' => $this->channel->getWorkshops()
+        'workshops' => $this->channel->getAllWorkshops()
     ]) : '' ?>
   </div>
 </div>

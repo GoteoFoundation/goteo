@@ -1,5 +1,18 @@
-<div class="slider slider-workshops" id="slider-workshops">
-	<?php foreach($this->workshops as $workshop): ?>
+<?php
+
+  $workshops = $this->channel->getAllWorkshops();
+  $initial_slide = 0;
+
+  foreach ($workshops as $key => $workshop) {
+    if ($workshop->date_in >= date('Y-m-d')) {
+      $initial_slide = $key;
+      break;
+    }
+  }
+?>
+
+<div class="slider slider-workshops" id="slider-workshops" data-initial-slide="<?= $initial_slide ?>">
+	<?php foreach($workshops as $workshop): ?>
 		<div class="workshop-widget col-md-3">
 			<a class="image" href="<?= '/workshop/' . $workshop->id ?>">
 				<img src="<?= $workshop->getHeaderImage()->getLink(265,280, true)?>">
