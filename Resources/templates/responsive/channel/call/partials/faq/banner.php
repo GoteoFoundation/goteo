@@ -1,5 +1,5 @@
 <?php //Extract the first title for the alement embebed in the header banner ?>
-<?php $faq=$this->channel->getFaq (); ?>
+<?php $faq=$this->channel->getFaq($this->faq_type); ?>
 
 <?php $first_faq=current($faq); ?>
 

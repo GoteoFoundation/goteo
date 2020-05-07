@@ -13,9 +13,9 @@ $this->section('channel-content');
 
 ?>
 
-<?= $this->insert('channel/call/partials/faq/banner_terms') ?>
+<?= $this->insert('channel/call/partials/faq/banner', ['faq_type' => 'terms']) ?>
 
-<?= $this->insert('channel/call/partials/faq/terms_items') ?>
+<?= $this->insert('channel/call/partials/faq/items', ['faq_type' => 'terms']) ?>
 
 <?= $this->insert('channel/call/partials/faq/download') ?>
 
