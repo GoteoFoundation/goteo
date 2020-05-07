@@ -1,6 +1,6 @@
 <?php
 
-  $workshops = $this->channel->getAllWorkshops();
+  $workshops = $this->workshops;
   $initial_slide = 0;
 
   foreach ($workshops as $key => $workshop) {
