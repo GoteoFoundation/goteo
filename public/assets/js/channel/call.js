@@ -77,8 +77,10 @@ $(function(){
 
     });
     
+      var workshop_initial_slide = $slider_workshop.data('initial-slide');
       $slider_workshop.slick({
       slidesToShow: 3.5,
+      initialSlide: parseInt(workshop_initial_slide),
       infinite: false,
       slidesToScroll: 1,
       arrows: true,
