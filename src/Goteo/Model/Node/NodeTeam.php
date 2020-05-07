@@ -7,8 +7,9 @@
  namespace Goteo\Model\Node;
 
  use Goteo\Model\Image;
- use Goteo\Application\Exception\ModelNotFoundException;
-
+ use Goteo\Application\Lang;
+ use Goteo\Application\Config;
+ 
  class NodeTeam extends \Goteo\Core\Model {
 
   protected $Table = 'node_team';
@@ -21,17 +22,34 @@
       $image,
       $node_id;
 
+    public static function getLangFields() {
+        return ['role'];
+    }
+
+
+  /**
+   * Get data about node team
+   *
+   * @param   int    $id         check id.
+   * @return  NodeTeam object
+   */
   public static function get($id) {
+
+    if(!$lang) $lang = Lang::current();
+    list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
     $sql = "SELECT 
-                  node_team.*
+                  node_team.id as id,
+                  node_team.name as name,
+                  $fields,
+                  node_team.image as image,
+                  node_team.node_id as node_id
             FROM node_team
+            $joins
             WHERE node_team.node_id = ?";
 
     $query = static::query($sql, array($id));
     $team = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
-
-    /*if (!$team)
-      throw new ModelNotFoundException("Team not found");*/
 
     return $team;
   }
