@@ -15,6 +15,6 @@ $this->section('channel-content');
 
 <?= $this->insert('channel/call/partials/faq/banner_terms', []) ?>
 
-<?= $this->insert('channel/call/partials/faq/terms_items'), [] ) ?>
+<?= $this->insert('channel/call/partials/faq/terms_items', [] ) ?>
 
 <?php $this->replace() ?>
