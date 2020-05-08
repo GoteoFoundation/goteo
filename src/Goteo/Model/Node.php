@@ -1160,9 +1160,6 @@ class Node extends \Goteo\Core\Model {
         return Workshop::getAll(['node' => $this->id ]);
     }
 
-
-
-
     public function getPrograms() {
         if($this->programsList) return $this->programsList;
 
@@ -1175,6 +1172,20 @@ class Node extends \Goteo\Core\Model {
         
         $this->teamList = NodeTeam::get($this->id);
         return $this->teamList;
+    }
+
+    public function getFaqType($type) {
+        if($this->faqType) return $this->faqType;
+        
+        $this->faqType = NodeTeam::get($this->id, $type);
+        return $this->faqType;
+    }
+
+     public function getFaqDownloads($type) {
+        if($this->faqDownloads) return $this->faqDownloads;
+        
+        $this->faqDownloads = NodeTeam::get($this->id, $type);
+        return $this->faqDownloads;
     }
 
 

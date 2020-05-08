@@ -110,9 +110,9 @@ class GoteoChannelCall
             `banner_header_image_md` VARCHAR(255) NULL,
             `banner_header_image_sm` VARCHAR(255) NULL,
             `banner_header_image_xs` VARCHAR(255) NULL,
-            `lang` VARCHAR(6) NULL
-             PRIMARY KEY (`id`),
-             CONSTRAINT `node_faq_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+            `lang` VARCHAR(6) NULL,
+             PRIMARY KEY (`id`), 
+             CONSTRAINT `node_faq_type_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
           );
 
          CREATE TABLE `node_faq_type_lang` (
@@ -135,7 +135,7 @@ class GoteoChannelCall
             `lang` VARCHAR(6) NULL,
             `order` INT(11),
              PRIMARY KEY (`id`),
-             CONSTRAINT `node_faq_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+             CONSTRAINT `node_faq_download_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
           );
 
          CREATE TABLE `node_faq_download_lang` (
@@ -144,7 +144,7 @@ class GoteoChannelCall
             `title` VARCHAR(255) NOT NULL,
             `description` TEXT NOT NULL,
             `pending` TINYINT (1),
-             FOREIGN KEY (`id`) REFERENCES `node_faq`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+             FOREIGN KEY (`id`) REFERENCES `node_faq_download`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         ); 
 
         CREATE TABLE `node_sponsor_lang` (
@@ -171,7 +171,7 @@ class GoteoChannelCall
             `id` BIGINT(20) UNSIGNED NOT NULL,
             `lang` VARCHAR (6),
             `role` VARCHAR(50) DEFAULT NULL,
-            FOREIGN KEY (`id`) REFERENCES `node_team`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+             FOREIGN KEY (`id`) REFERENCES `node_team`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
 
         ALTER TABLE `node_lang` ADD COLUMN terms_banner_title VARCHAR(255) NULL;
@@ -179,14 +179,6 @@ class GoteoChannelCall
         ALTER TABLE `node_lang` ADD COLUMN terms_download_title VARCHAR(255)  NULL;
         ALTER TABLE `node_lang` ADD COLUMN terms_download_description TEXT NULL;
         ALTER TABLE `node_lang` ADD COLUMN terms_download_url VARCHAR(255)  NULL;
-
-        CREATE TABLE `node_team_lang` (
-            `id` BIGINT(20) UNSIGNED NOT NULL,
-            `lang` VARCHAR (6),
-            `role` VARCHAR(50) DEFAULT NULL,
-            FOREIGN KEY (`id`) REFERENCES `node_team`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
-        );
-
 
        ";
   }
