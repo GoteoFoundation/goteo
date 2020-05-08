@@ -1157,23 +1157,24 @@ class Node extends \Goteo\Core\Model {
      *  next Workshops of this node
      */
     public function getAllWorkshops () {
-        return Workshop::getAll(['node' => $this->id ]);
+        if($this->workshopList) return $this->workshopList;
+
+        $this->workshopList =  Workshop::getList(['node' => $this->id]);
+        return $this->workshopList;
     }
 
-
-
-
     public function getPrograms() {
-        if($this->programsList) return $this->programsList;
+        // if($this->programsList) return $this->programsList;
 
-        $this->programsList = NodeProgram::get($this->id);
+        // $this->programsList = NodeProgram::get($this->id);
+        $this->programsList = NodeProgram::getList(['node' => $this->id]);
         return $this->programsList;
     }
 
     public function getTeam() {
         if($this->teamList) return $this->teamList;
         
-        $this->teamList = NodeTeam::get($this->id);
+        $this->teamList = NodeTeam::getList(['node' => $this->id]);
         return $this->teamList;
     }
 

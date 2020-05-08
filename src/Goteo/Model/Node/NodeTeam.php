@@ -46,12 +46,54 @@
                   node_team.node_id as node_id
             FROM node_team
             $joins
-            WHERE node_team.node_id = ?";
+            WHERE node_team.id = ?";
 
     $query = static::query($sql, array($id));
-    $team = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    $team = $query->fetchObject(__CLASS__);
 
     return $team;
+  }
+
+    /**
+     * Node Team listing
+     *
+     * @param array filters
+     * @param string node id
+     * @param int limit items per page or 0 for unlimited
+     * @param int page
+     * @param int pages
+     * @return array of team member instances
+     */
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
+
+      if(!$lang) $lang = Lang::current();
+      list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+      $filter = [];
+      $values = [];
+
+      if ($filters['node']) {
+          $filter[] = "node_team.node_id = :node";
+          $values[':node'] = $filters['node'];
+      }
+
+      if($filter) {
+          $sql = " WHERE " . implode(' AND ', $filter);
+      }
+
+      $sql="SELECT
+                  node_team.id as id,
+                  node_team.name as name,
+                  $fields,
+                  node_team.image as image,
+                  node_team.node_id as node_id
+            FROM node_team
+            $joins
+            $sql
+            LIMIT $offset, $limit";
+      // die(\sqldbg($sql, $values));
+      $query = static::query($sql, $values);
+      return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
   }
 
   public function getImage() {

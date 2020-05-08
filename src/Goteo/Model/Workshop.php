@@ -244,6 +244,8 @@ class Workshop extends \Goteo\Core\Model {
                 workshop.venue,
                 workshop.city,
                 workshop.venue_address,
+                workshop.header_image,
+                workshop.workshop_location,
                 :viewLang as viewLang
 
             FROM workshop
