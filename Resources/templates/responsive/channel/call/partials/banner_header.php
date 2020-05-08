@@ -25,11 +25,11 @@
 				<div class="col-lg-6 col-md-7 col-sm-9 col-xs-8">
 					<div>
 						<span class="title">
-						Cooperativismo en Catalunya
+						<?= $this->channel->name ?>
 						</span>
 					</div>
 					<div class="description">
-						Espacio digital para la creación y consolidación de proyectos cooperativos
+						<?= $this->channel->subtitle ?>
 					</div>
 					<a href="<?= $banner->url ?>" class="btn btn-yellow scroller"><i class="icon icon-plus icon-2x">		
 						</i><?= $this->text('landing-more-info') ?>
@@ -45,7 +45,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6 subtitle">
-					Nueva convocatoria		
+					<?= $this->text('channel-call-main-info-subtitle') ?>
 				</div>
 			</div>
 		</div>

@@ -33,6 +33,7 @@ $(function(){
   var $slider_program = $('.slider-programs');
   var $slider_post = $('.slider-post');
   var $slider_workshop = $('.slider-workshops');
+  var $slider_stories = $('.slider-stories');
 
   function initSlickSliders() {
     var initial_slide = $slider_program.data('initial-slide');
@@ -47,14 +48,7 @@ $(function(){
       centerMode: false,
       focusOnSelect: true,
       prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
-      nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
-      responsive: [
-        {
-          breakpoint: 481,
-          settings: {
-            arrows: false
-          }
-        }]
+      nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>'
     });
 
     $slider_post.slick({
@@ -84,8 +78,10 @@ $(function(){
 
     });
     
+      var workshop_initial_slide = $slider_workshop.data('initial-slide');
       $slider_workshop.slick({
       slidesToShow: 3.5,
+      initialSlide: parseInt(workshop_initial_slide),
       infinite: false,
       slidesToScroll: 1,
       arrows: true,
@@ -138,6 +134,34 @@ $(function(){
           }
         }]
     });
+
+    $slider_stories.slick({
+      slidesToShow: 1,
+      infinite: false,
+      slidesToScroll: 1,
+      arrows: true,
+      dots: false,
+      focusOnSelect: true,
+      prevArrow: '<div class="custom-left-arrow"><span class="icon icon-arrow icon-2x"></span><span class="sr-only">Prev</span></div>',
+      nextArrow: '<div class="custom-right-arrow"><span class="icon icon-arrow icon-2x"></span><span class="sr-only">Prev</span></div>',
+      responsive: [
+        {
+          breakpoint: 769,
+          settings: {
+            slidesToShow: 1,
+            arrows:true
+          }
+        },
+        {
+          breakpoint: 500,
+          settings: {
+            slidesToShow: 1,
+            arrows: true
+          }
+        }]
+
+    });
+
     
 
   }

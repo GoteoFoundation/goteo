@@ -269,7 +269,7 @@ div.section.call-to-action{
 		
 div.section.program {
 		background-color: $background-new-light-green !important;
-		padding: 20px 0;
+		padding: 20px 0px 80px 0px !important;
 
 		h2.title{
 			.btn-transparent{
@@ -339,6 +339,7 @@ div.section.program {
 				border-left: $border 1px solid;
 				color: $color-new-green;
 				font-weight: bold;
+				padding-right: 5px;
 			}
 		
 			.paragraph {
@@ -788,6 +789,203 @@ div.section.download{
 	}
 }
 
+div.section.team {
+	background-color: $color-white;
+	padding: 40px 0;
+
+	.container {
+
+		.image {
+			img {
+				width: 100%;
+			}
+		}
+
+		.title {
+			color: $color-new-green;
+			font-weight: bold;
+		}
+
+		.description {
+			color: $color-new-dark-blue;
+			font-weight: bold;
+		}
+		
+		.team_widget {
+			color: $color-new-dark-blue;
+			padding-bottom: 20px;
+			height: 350px;
+
+			.name {
+				font-size: $font-size*1.5;
+				border-bottom: 1px $color-new-dark-blue solid;
+				width: 100%;
+				padding-top: 10px;
+				font-weight: bold;
+			}
+			
+			.role {
+				border-bottom: 1px $color-new-dark-blue solid;
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+		}
+	}
+}
+
+div.section.stories {
+	background-color: $color-white;
+	color: $color-white;
+	min-height: 400px;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	margin-bottom: unset;
+
+	.container {
+		background-color: $color-new-dark-blue;
+		height: 350px;
+
+		h2.title {
+			color: $color-white;
+			font-weight: bold;
+
+			.icon {
+				background-color: $color-white;
+			}
+			
+			span {
+				background-color: $color-new-dark-blue;
+			}
+
+		}
+		
+		div.white-line {
+			border-bottom: 1px solid $color-white;
+			height: 50px;
+			// position: absolute;
+			// bottom: 50%;
+			// width: 70%;
+			// right: -0%;
+		}
+		
+		.slider-stories {
+			background-color: $color-new-dark-blue;
+			color: $color-white;
+			height: 240px;
+			
+			.slick-list {
+				border-left: 1px solid $color-white;
+				height: 200px;
+				margin-left: 10px;
+			}
+
+			.story {
+				.image {
+					img {
+						width: 150px;
+						border-radius: 10px;
+					}
+				}
+
+				p {
+					font-size: $font-size*1.5;
+					font-weight: bold;
+				}
+	
+				div.author {
+					color: $color-white;
+				}
+			}
+
+			.custom-left-arrow{
+				top: unset;
+				bottom: 0%;
+				position: absolute;
+				font-size: $font-size*2;
+				left: 0%;
+				cursor: pointer;
+				span.icon {
+					background-color: $color-white;
+				}
+			}
+			.custom-right-arrow{
+				top: unset;
+				bottom: 0%;
+				position: absolute;
+				font-size: $font-size*2;
+				rotate: 180;
+				right: 0%;
+				cursor: pointer;
+				span.icon {
+					background-color: $color-white;
+					transform: rotate(180deg); 
+				}
+			}
+		}
+	}
+}
+
+.footer {
+	font-weight: bold;
+	color: $color-new-dark-blue;
+	background-color: $background-new-light-green !important;
+	padding-bottom:80px;
+
+	.header {
+		border-bottom: 1px solid $color-new-dark-blue;
+		padding-bottom: 20px;
+	}
+	
+	ul {
+		list-style-type: none;
+		padding-inline-start: 0px;
+		
+		li {
+			border-bottom: 1px solid $color-new-dark-blue;
+			padding: 5px;
+			font-size: $font-size;
+			font-weight: normal;
+			
+			a {
+				color: $color-new-green;
+			}
+
+			.icon {
+
+				width: 20px !important;
+				height: 20px !important;
+
+				&-channel-instagram {
+					background-color: #FC514F
+				}
+
+				&-channel-telegram {
+					background-color: #1DA1F2
+				}
+
+				&-channel-twitter {
+					background-color: #1DA1F2
+				}
+
+				&-channel-fb {
+					height: 20px !important;
+					width: 10px !important;
+					margin: 5px;
+					background-color: #4367B2
+				}
+
+				&-channel-github {
+					background-color: #282828
+				}
+
+				&-channel-mail {
+					background-color: #26BDB9
+				}
+			}
+		}
+	}
+}
+
 // Tablets customization
 @media (max-width: $breakpoint-md + 1) {
     div.section.banner-header{
@@ -809,7 +1007,53 @@ div.section.download{
         		position: static;
         	}
         }
-    }
+		}
+		
+		footer {
+
+			ul {
+				margin-top: 0px;
+				margin-bottom: 0px;
+			}
+		}
+
+		div.section.program {
+			.slider-programs{
+				visibility:hidden;
+				opacity:0;
+				transition: opacity 1s;
+				
+				// transition: opacity 1s;
+				.custom-left-arrow{
+							top: unset;
+							bottom: -30%;
+							position: absolute;
+							font-size: $font-size*5;
+							left: 0%;
+							cursor: pointer;
+							width: 45%;
+							background-color: rgba(21,174,152, 0.2);
+
+							span.fa {
+								color: $color-new-green;
+							}
+				}
+				.custom-right-arrow{
+							top: unset;
+							bottom: -30%;
+							position: absolute;
+							font-size: $font-size*5;
+							right: 0%;
+							cursor: pointer;
+							width: 45%;
+							background-color: rgba(21,174,152, 0.2);
+
+							span.fa {
+								color: $color-new-green;
+							}
+				}
+			}	
+		}
 }
 
 @media (max-width: $breakpoint-sm - 1) {

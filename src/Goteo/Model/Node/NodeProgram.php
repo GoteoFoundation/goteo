@@ -22,6 +22,7 @@ class NodeProgram extends \Goteo\Core\Model {
     $node_id,
     $title,
     $description,
+    $header,
     $icon,
     $action,
     $action_url,
@@ -37,22 +38,80 @@ class NodeProgram extends \Goteo\Core\Model {
      * Get data about node program
      *
      * @param   int    $id         check id.
-     * @return  Workshop program object
+     * @return  NodeProgram object
      */
     static public function get($id) {
-        $sql="SELECT
-                    node_program.*
-              FROM node_program
-              WHERE node_program.node_id = ?";
-        $query = static::query($sql, array($id));
-        $item = $query->fetchObject(__CLASS__);
 
-        if($item) {
-          return $item;
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+        $sql="SELECT
+                    node_program.id as id,
+                    node_program.node_id as node_id,
+                    $fields,
+                    node_program.header as `header`,
+                    node_program.icon as `icon`,
+                    node_program.date as `date`,
+                    node_program.order as `order`
+              FROM node_program
+              $joins
+              WHERE node_program.id = ?";
+        // die(\sqldbg($sql, array($id)));
+        $query = static::query($sql, array($id));
+        $item = $query->fetchObject( __CLASS__);
+
+        if(!$item) {
+            throw new ModelNotFoundException("Node program not found for ID [$id]");
+        }
+        
+        return $item;
+    }
+
+    /**
+     * Node Programs listing
+     *
+     * @param array filters
+     * @param string node id
+     * @param int limit items per page or 0 for unlimited
+     * @param int page
+     * @param int pages
+     * @return array of programs instances
+     */
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
+
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+        $filter = [];
+        $values = [];
+
+        if ($filters['node']) {
+            $filter[] = "node_program.node_id = :node";
+            $values[':node'] = $filters['node'];
         }
 
-        throw new ModelNotFoundException("Node program not found for ID [$id]");
+        if($filter) {
+            $sql = " WHERE " . implode(' AND ', $filter);
+        }
+
+        $sql="SELECT
+                    node_program.id as id,
+                    node_program.node_id as node_id,
+                    $fields,
+                    node_program.header as `header`,
+                    node_program.icon as `icon`,
+                    node_program.date as `date`,
+                    node_program.order as `order`
+              FROM node_program
+              $joins
+              $sql
+              ORDER BY node_program.date ASC
+              LIMIT $offset, $limit";
+        // die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
+
 
    
     /**
@@ -70,6 +129,7 @@ class NodeProgram extends \Goteo\Core\Model {
             'id',
             'node_id',
             'title',
+            `header`,
             'icon',
             'description',
             'action',
@@ -89,9 +149,9 @@ class NodeProgram extends \Goteo\Core\Model {
         }
     }
 
-    public function getIcon() {
+    public function getHeader() {
         if(!$this->imageInstance instanceOf Image) {
-            $this->imageInstance = new Image($this->icon);
+            $this->imageInstance = new Image($this->header);
         }
         return $this->imageInstance;
     }

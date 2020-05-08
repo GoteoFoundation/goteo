@@ -16,8 +16,8 @@ endforeach;
 
 <div class="section sponsors">
   <div class="container">
-    <h2 class="title"><span class="icon icon-rocket icon-3x"></span>Nuestros impulsores y colaboradores</h2>
-    <p class="description">A partir de la convocatoria Singulars en ejecución durante 2019/2020</p>
+    <h2 class="title"><span class="icon icon-rocket icon-3x"></span><?= $this->text('channel-call-sponsors-title') ?></h2>
+    <p class="description"><?= $this->text('channel-call-sponsors-subtitle') ?></p>
     <ul class="img-list list-inline text-center">
     
    <ul class="list-inline text-left main-sponsors">

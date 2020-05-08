@@ -186,6 +186,17 @@ class ChannelController extends \Goteo\Core\Controller {
         return $this->viewResponse('channel/call/terms');
     }
 
+    /**
+     * Channel terms
+     * @param  Request $request [description]
+     */
+    public function faqAction ($id, Request $request)
+    {
+        $this->setChannelContext($id);
+
+        return $this->viewResponse('channel/call/faq');
+    }
+
 
     /**
      * Initial create project action

@@ -1,7 +1,7 @@
 <?php //Extract the first title for the alement embebed in the header banner ?>
-<?php $terms=$this->channel->getTerms (); ?>
+<?php $faq=$this->channel->getFaq (); ?>
 
-<?php $first_term=current($terms); ?>
+<?php $first_faq=current($faq); ?>
 
 <div class="section banner-header">
 	<div class="custom-header">
@@ -26,11 +26,11 @@
 				<div class="col-lg-6 col-md-7 col-sm-9 col-xs-8">
 					<div>
 						<span class="title">
-						Participar
+						<?= $this->channel->terms_banner_title ?>
 						</span>
 					</div>
 					<div class="description">
-						Bases del programa CrowdCoop
+						<?= $this->channel->terms_banner_description ?>
 					</div>
 				</div>
 			</div>
@@ -41,9 +41,9 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-10 item">
-					<h2 class="title" role="button" data-toggle="collapse" href="<?= '#collapse-'.$first_term->id ?>" aria-expanded="true">
-						<span class="icon icon-<?= $first_term->icon ?> icon-3x"></span>
-						<?= $first_term->title ?>
+					<h2 class="title" role="button" data-toggle="collapse" href="<?= '#collapse-'.$first_faq->id ?>" aria-expanded="true">
+						<span class="icon icon-<?= $first_faq->icon ?> icon-3x"></span>
+						<?= $first_faq->title ?>
 					</h2>	
 				</div>
 			</div>
