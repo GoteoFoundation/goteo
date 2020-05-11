@@ -833,6 +833,98 @@ div.section.team {
 	}
 }
 
+div.section.stories {
+	background-color: $color-white;
+	color: $color-white;
+	min-height: 400px;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	margin-bottom: unset;
+
+	.container {
+		background-color: $color-new-dark-blue;
+		height: 350px;
+
+		h2.title {
+			color: $color-white;
+			font-weight: bold;
+
+			.icon {
+				background-color: $color-white;
+			}
+			
+			span {
+				background-color: $color-new-dark-blue;
+			}
+
+		}
+		
+		div.white-line {
+			border-bottom: 1px solid $color-white;
+			height: 50px;
+			// position: absolute;
+			// bottom: 50%;
+			// width: 70%;
+			// right: -0%;
+		}
+		
+		.slider-stories {
+			background-color: $color-new-dark-blue;
+			color: $color-white;
+			height: 240px;
+			
+			.slick-list {
+				border-left: 1px solid $color-white;
+				height: 200px;
+				margin-left: 10px;
+			}
+
+			.story {
+				.image {
+					img {
+						width: 150px;
+						border-radius: 10px;
+					}
+				}
+
+				p {
+					font-size: $font-size*1.5;
+					font-weight: bold;
+				}
+	
+				div.author {
+					color: $color-white;
+				}
+			}
+
+			.custom-left-arrow{
+				top: unset;
+				bottom: 0%;
+				position: absolute;
+				font-size: $font-size*2;
+				left: 0%;
+				cursor: pointer;
+				span.icon {
+					background-color: $color-white;
+				}
+			}
+			.custom-right-arrow{
+				top: unset;
+				bottom: 0%;
+				position: absolute;
+				font-size: $font-size*2;
+				rotate: 180;
+				right: 0%;
+				cursor: pointer;
+				span.icon {
+					background-color: $color-white;
+					transform: rotate(180deg); 
+				}
+			}
+		}
+	}
+}
+
 .footer {
 	font-weight: bold;
 	color: $color-new-dark-blue;

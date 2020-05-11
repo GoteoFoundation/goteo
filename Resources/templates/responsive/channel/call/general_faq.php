@@ -15,6 +15,8 @@ $this->section('channel-content');
 
 <?= $this->insert('channel/call/partials/faq/banner', ['faq_type' => 'general']) ?>
 
+
 <?= $this->insert('channel/call/partials/faq/items', ['faq_type' => 'general']) ?>
+
 
 <?php $this->replace() ?>

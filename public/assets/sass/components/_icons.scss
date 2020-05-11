@@ -229,5 +229,8 @@
     &.icon-channel-mail {
         @include svg-background('../img/icons/channel-call/mail.svg');
     }
+    &.icon-channel-chat {
+        @include svg-background('../img/icons/channel-call/chat.svg');
+    }
 
 }

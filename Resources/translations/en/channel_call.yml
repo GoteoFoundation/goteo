@@ -1,7 +1,7 @@
 channel-call-main-info-subtitle: 'New call'
 channel-call-projects-title: 'Some ongoing projects'
 channel-call-sponsors-title: 'Our promoters and collaborators'
-channel-call-sponsors-title: 'A project carried out by the following entities:'
+channel-call-sponsors-subtitle: 'A project carried out by the following entities:'
 
 channel-call-cta-create-project-title: I want to create a project
 channel-call-cta-create-project-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit etiam at convallis risu duis nibh ex, ullamcorper non posuere id
@@ -31,3 +31,4 @@ channel-call-program-terms: Read the terms
 channel-call-program-description: "Find out what's going to happen"
 channel-call-team-title: Our team
 channel-call-team-description: "A whole team working for civic crowdfunding!"
+channel-call-stories-title: They say about us
