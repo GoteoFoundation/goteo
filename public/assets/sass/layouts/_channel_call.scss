@@ -998,6 +998,56 @@ div.section.stories {
 	}
 }
 
+div.section.resources{
+	background-color: $background-white;
+	// padding: 50px 0;
+
+	.container {
+		background-color: $background-new-dark-blue;
+	}
+
+	.col-sm-12 {
+		padding-bottom: 15px !important;
+	}
+	
+	.col-md-6 {
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+	.icon {
+		background: $background-white;
+	}
+	
+	.info {
+		padding: 30px;
+		color: $color-white;
+		font-weight: bold;
+		background-color: $background-new-dark-blue;
+	
+		.title  {
+			font-size: $font-size*2.3;    
+			padding-bottom: 10px;
+		}
+	
+		.description {
+			font-size: $font-size;
+			line-height: 1.5;
+			padding-bottom: 20px;
+		}
+		.col-button {
+			.btn {
+				font-weight: bold !important;
+				font-size: $font-size*1.2;
+			}
+		}	
+	}
+
+	img {
+		width: 100%;
+	}
+}
+
+
 .footer {
 	font-weight: bold;
 	color: $color-new-dark-blue;
