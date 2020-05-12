@@ -19,6 +19,24 @@ body.channel-call {
 			height: 35px;
 		}
 	}
+
+	&.btn-yellow {
+
+		color: $color-new-lilac !important;
+
+		.icon{
+			background: $background-new-lilac;
+		}
+
+		&:hover {
+			background-color: $background-new-dark-blue;
+			color: $color-white !important;
+			
+			.icon {
+				background-color: $color-white !important;
+			}
+		}
+	}
 }
 
 h2.title{
@@ -89,11 +107,7 @@ div.section.banner-header{
         }
         .btn-yellow{
         	margin-top: 10px;
-            color: $color-new-lilac !important;
-            font-weight: 500;
-            .icon{
-            	background: $background-new-lilac;
-            }
+					font-weight: 500;
         }
     }
       
@@ -201,7 +215,7 @@ div.section.call-to-action{
 					padding-bottom: 20px;
 				}
 				.col-button {
-					.btn-transparent {
+					.btn {
 						font-weight: bold !important;
 						font-size: $font-size*1.2;
 					}
@@ -230,8 +244,8 @@ div.section.call-to-action{
 					padding-bottom: 20px;
 				}
 				.col-button {
-					.btn-transparent {
-						color: $color-new-dark-blue !important;
+					.btn-yellow {
+						border: 1px solid $color-new-lilac;
 						font-weight: bold !important;
 						font-size: $font-size*1.2;
 					}
@@ -276,20 +290,28 @@ div.section.program {
 
 		h2.title{
 			.btn-transparent{
-		    	margin-top: 15px;
-		    	color: $color-new-green;
-		    	border: 1px solid $color-new-lilac;
-		    	font-weight: bold;
-		    	float: right;
-		    	margin-top: 0px;
-		    	position: absolute;
+				margin-top: 15px;
+				color: $color-new-green;
+				font-weight: bold;
+				float: right;
+				margin-top: 0px;
+				position: absolute;
 				right: 0;
 				bottom: 8px;
-		    	.icon{
-		    		background-color: $color-new-lilac;
-		    		vertical-align: middle;
-		    	}
-		    }
+				.icon{
+					background-color: $color-new-lilac;
+					vertical-align: middle;
+				}
+				
+				&:hover {
+					background-color: $background-new-green;
+					color: $color-white;
+					.icon {
+						background-color: $color-white !important;
+					}
+				}
+					
+			}
 		}
 
 		.description {
@@ -367,6 +389,16 @@ div.section.program {
 					.icon{
 						background-color: $color-new-lilac;
 					}
+
+					&:hover {
+						background-color: $background-new-green;
+						color: $color-white;
+						border: unset;
+
+						.icon {
+							background-color: $color-white !important;
+						}
+					}	
 				}			
 			}
 		}
