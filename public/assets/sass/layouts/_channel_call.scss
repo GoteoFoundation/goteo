@@ -35,6 +35,9 @@ h2.title{
 	}
 }
 
+div.section {
+	padding: 50px 0px 80px 0px !important;
+}
 
 div.section.banner-header{
   	position: relative;
@@ -168,7 +171,7 @@ div.section.main-info{
   
 div.section.call-to-action{
     background-color: $background-white;
-    padding: 50px 0;
+    // padding: 50px 0;
     .info{
 			padding: 30px;
 		}
@@ -269,7 +272,7 @@ div.section.call-to-action{
 		
 div.section.program {
 		background-color: $background-new-light-green !important;
-		padding: 20px 0px 80px 0px !important;
+		// padding: 50px 0px 80px 0px !important;
 
 		h2.title{
 			.btn-transparent{
@@ -287,11 +290,6 @@ div.section.program {
 		    		vertical-align: middle;
 		    	}
 		    }
-		}
-
-		.container {
-			margin: 100px auto;
-			// width: max-content !important;
 		}
 
 		.description {
@@ -409,7 +407,7 @@ div.section.program {
 
 div.section.posts {
 	color:$color-new-dark-blue;
-	padding: 50px 0 80px 0;
+	// padding: 50px 0 80px 0;
 	background-color: $background-new-light-green !important;
 
 	.description{
@@ -501,6 +499,8 @@ div.section.posts {
 
 div.section.workshops{
 	background-color: $background-new-yellow !important;
+	// padding: 50px 0px 80px 0px !important;
+
 	.title {
 		text-align: left;
 		margin-bottom: 10px;
@@ -588,7 +588,8 @@ div.section.workshops{
 }
 
 div.section.projects{
-	padding-bottom: 30px;
+	// padding-bottom: 30px;
+	// padding: 50px 0 80px 0 !important;
 	.filters {
         margin: 40px 0 35px 0;
         a > li {
@@ -603,7 +604,11 @@ div.section.projects{
               color: $color-white !important;
             }
         }
-    }
+		}
+		
+		.projects {
+			padding: unset !important;
+		}
 
    	.slick-list{
    		.widget-slide{
@@ -696,7 +701,7 @@ div.section.projects{
 
 div.section.sponsors{
 	color:$color-new-dark-blue;
-	padding: 50px 0 80px 0;
+	// padding: 50px 0 80px 0;
 	background-color: $background-white;
 	.description{
 		font-size: $font-size*1.1;
@@ -723,7 +728,7 @@ div.section.sponsors{
 
 div.section.terms-items{
     background-color: $background-white;
-    padding-bottom:80px;
+    // padding-bottom:80px;
     font-size: $font-size*1.1;
     color: $color-new-dark-blue;
     .title{
@@ -758,7 +763,7 @@ div.section.terms-items{
 
 div.section.download{
 	background-color: $color-white;
-	padding: 40px 0;
+	// padding: 40px 0;
 	color: $color-new-dark-blue;
 	.container{
 		background-color: $background-new-light-green;
@@ -791,7 +796,7 @@ div.section.download{
 
 div.section.team {
 	background-color: $color-white;
-	padding: 40px 0;
+	// padding: 50px 0px 80px 0px !important;
 
 	.container {
 
@@ -839,8 +844,7 @@ div.section.stories {
 	background-color: $color-white;
 	color: $color-white;
 	min-height: 400px;
-	padding-top: 50px;
-	padding-bottom: 50px;
+	// padding: 50px 0px 80px 0px !important;
 	margin-bottom: unset;
 
 	.container {
