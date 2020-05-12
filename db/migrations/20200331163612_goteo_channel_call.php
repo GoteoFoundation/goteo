@@ -174,6 +174,7 @@ class GoteoChannelCall
         DROP TABLE `node_faq_lang`;
         DROP TABLE `node_faq`;
         DROP TABLE `node_sponsor_lang`;
+        DROP TABLE `node_team_lang`;
         DROP TABLE `node_team`;
      ";
   }
