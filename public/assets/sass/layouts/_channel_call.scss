@@ -410,20 +410,55 @@ div.section.program {
 			
 			// transition: opacity 1s;
 			.custom-left-arrow{
-						top: 34%;
+						// top: 34%;
 						position: absolute;
 						font-size: $font-size*5;
-						left: -2.4%;
+						left: -4%;
 						color: $color-new-green;
 						cursor: pointer;
+						height: 100%;
+						background-color: rgba(21,174,152, 0.2);
+
+						.icon-arrow {
+							position: relative;
+							top: 34%;
+							background-color: $color-new-green;
+						}
+
+						&:hover {
+							color: $color-new-dark-blue;
+							background-color: $background-new-green;
+
+							.icon-arrow {
+								background-color: $color-white;
+							}
+						}
 			}
 			.custom-right-arrow{
-						top: 34%;
+						top: 0;
 						position: absolute;
 						font-size: $font-size*5;
 						right: -4%;
 						color: $color-new-green;
 						cursor: pointer;
+						height: 100%;
+						background-color: rgba(21,174,152, 0.2);
+
+						.icon-arrow {
+							position: relative;
+							top: 34%;
+							transform: rotate(180deg);
+							background-color: $color-new-green;
+						}
+
+						&:hover {
+							color: $color-new-dark-blue;
+							background-color: $background-new-green;
+
+							.icon-arrow {
+								background-color: $color-white;
+							}
+						}
 			}
 		}
 
@@ -1071,8 +1106,9 @@ div.section.stories {
 							cursor: pointer;
 							width: 45%;
 							background-color: rgba(21,174,152, 0.2);
+							height: unset;
 
-							span.fa {
+							icon-arrow {
 								color: $color-new-green;
 							}
 				}
@@ -1085,8 +1121,9 @@ div.section.stories {
 							cursor: pointer;
 							width: 45%;
 							background-color: rgba(21,174,152, 0.2);
-
-							span.fa {
+							height: unset;
+							
+							icon-arrow {
 								color: $color-new-green;
 							}
 				}
@@ -1145,7 +1182,8 @@ div.section.stories {
 	            margin-left: 0px !important;
 	            .project-widget.normal{
 	                box-shadow: none;
-	                margin-left: 20px;	            }
+									margin-left: 20px;	            
+								}
 	   			}
 	   	}
 	}
