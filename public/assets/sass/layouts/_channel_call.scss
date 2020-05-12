@@ -798,6 +798,7 @@ div.section.team {
 		.image {
 			img {
 				width: 100%;
+				background-color: $background-new-light-green;
 			}
 		}
 
@@ -813,7 +814,7 @@ div.section.team {
 		
 		.team_widget {
 			color: $color-new-dark-blue;
-			padding-bottom: 20px;
+			margin: 20px 0 20px 0;
 			height: 350px;
 
 			.name {
@@ -825,6 +826,7 @@ div.section.team {
 			}
 			
 			.role {
+				color: $color-new-green;
 				border-bottom: 1px $color-new-dark-blue solid;
 				padding-top: 10px;
 				padding-bottom: 10px;
