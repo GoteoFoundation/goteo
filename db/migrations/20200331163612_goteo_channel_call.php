@@ -132,6 +132,7 @@ class GoteoChannelCall
             `title` VARCHAR(255) NOT NULL,
             `icon` varchar(255) NULL,
             `description` TEXT NOT NULL,
+            `url` VARCHAR(255) NOT NULL,
             `lang` VARCHAR(6) NULL,
             `order` INT(11),
              PRIMARY KEY (`id`),

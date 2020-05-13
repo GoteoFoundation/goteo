@@ -17,6 +17,8 @@ use Goteo\Application\Session;
 use Goteo\Application\Message;
 use Goteo\Application\View;
 use Goteo\Model\Node;
+use Goteo\Model\Node\NodeFaqType;
+use Goteo\Model\Node\NodeFaqDownload;
 use Goteo\Model\Home;
 use Goteo\Model\Project;
 use Goteo\Model\Sponsor;
@@ -179,22 +181,18 @@ class ChannelController extends \Goteo\Core\Controller {
      * Channel terms
      * @param  Request $request [description]
      */
-    public function termsAction ($id, Request $request)
+    public function faqAction ($id, $type, Request $request)
     {
         $this->setChannelContext($id);
 
-        return $this->viewResponse('channel/call/terms');
-    }
+        $faq_type= NodeFaqType::get($id, $type);
+        $downloads=NodeFaqDownload::getList(['id' => $id, 'type' => $type]);
 
-    /**
-     * Channel terms
-     * @param  Request $request [description]
-     */
-    public function generalFaqAction ($id, Request $request)
-    {
-        $this->setChannelContext($id);
-
-        return $this->viewResponse('channel/call/general_faq');
+        return $this->viewResponse('channel/call/terms',
+            ['faq_type' => $faq_type,
+             'downloads' => $downloads
+            ]
+        );
     }
 
 

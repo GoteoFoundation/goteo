@@ -1,7 +1,8 @@
-<?php //Extract the first title for the alement embebed in the header banner ?>
-<?php $faq=$this->channel->getFaq($this->faq_type); ?>
+<?php //Extract the first title for the element embebed in the header banner ?>
+<?php $faq=$this->channel->getFaq($this->faq_type->name); ?>
 
 <?php $first_faq=current($faq); ?>
+
 
 <div class="section banner-header">
 	<div class="custom-header">
@@ -26,11 +27,11 @@
 				<div class="col-lg-6 col-md-7 col-sm-9 col-xs-8">
 					<div>
 						<span class="title">
-						<?= $this->channel->terms_banner_title ?>
+						<?= $this->faq_type->banner_title ?>
 						</span>
 					</div>
 					<div class="description">
-						<?= $this->channel->terms_banner_description ?>
+						<?= $this->faq_type->banner_description ?>
 					</div>
 				</div>
 			</div>

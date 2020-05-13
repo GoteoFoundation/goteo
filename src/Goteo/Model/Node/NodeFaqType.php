@@ -37,7 +37,7 @@
    * @param   int    $id         check id.
    * @return  NodeFaq object
    */
-  public static function get($id, $type) {
+  public static function get($id, $name) {
 
     if(!$lang) $lang = Lang::current();
     list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
@@ -52,12 +52,16 @@
                   node_faq_type.node_id as node_id
             FROM node_faq_type
             $joins
-            WHERE node_faq_type.node_id = ?";
+            WHERE node_faq_type.node_id = ? AND node_faq_type.name = ?";
 
-    $query = static::query($sql, array($id));
-    $team = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    $query = static::query($sql, [$id, $name]);
+    $item = $query->fetchObject(__CLASS__);
 
-    return $team;
+        if($item) {
+          return $item;
+        }
+
+    return $item;
   }
 
  public function getBannerHeaderImage() {

@@ -1,4 +1,4 @@
-<?php $faq=$this->channel->getFaq ($this->faq_type); ?>
+<?php $faq=$this->channel->getFaq ($this->faq_type->name); ?>
 
 <div class="section terms-items">
 	<div class="container">
