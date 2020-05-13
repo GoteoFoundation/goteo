@@ -17,13 +17,12 @@
   
   public
       $id,
-      $type,
+      $node_faq,
       $title,
       $icon,
       $description,
       $url,
-      $order,
-      $node_id;
+      $order;
 
     public static function getLangFields() {
         return ['title', 'description', 'url'];
@@ -46,8 +45,8 @@
                   $fields,
                   node_faq_download.icon as icon,
                   node_faq_download.lang as lang,
-                  node_faq_download.order as order,
-                  node_faq_download.node_id as node_id
+                  node_faq_download.node_faq as node_faq,
+                  node_faq_download.order as order
             FROM node_faq_download
             $joins
             WHERE node_faq_download.node_id = ?";
@@ -81,9 +80,9 @@
             $values[':node'] = $filters['node'];
         }
 
-         if ($filters['type']) {
-            $filter[] = "node_faq_download.type = :type";
-            $values[':type'] = $filters['type'];
+         if ($filters['node_faq']) {
+            $filter[] = "node_faq_download.node_faq = :node_faq";
+            $values[':node_faq'] = $filters['node_faq'];
         }
 
         if($filter) {
@@ -94,8 +93,8 @@
                   node_faq_download.id as id,
                   $fields,
                   node_faq_download.icon as icon,
-                  node_faq_download.order,
-                  node_faq_download.node_id as node_id
+                  node_faq_download.node_faq as node_faq,
+                  node_faq_download.order
               FROM node_faq_download
               $joins
               $sql

@@ -60,6 +60,7 @@ div.section {
 div.section.banner-header{
   	position: relative;
  	min-height: 450px;
+ 	padding: 0 !important;
 
  	div.custom-header{
  		position: absolute;
@@ -798,6 +799,7 @@ div.section.terms-items{
     // padding-bottom:80px;
     font-size: $font-size*1.1;
     color: $color-new-dark-blue;
+    padding: 0 !important;
     .title{
     	color: $color-new-dark-blue;
 		.icon{

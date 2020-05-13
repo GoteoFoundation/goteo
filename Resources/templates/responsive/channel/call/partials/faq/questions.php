@@ -1,8 +1,6 @@
-<?php $faq=$this->channel->getFaq ($this->faq_type->name); ?>
-
 <div class="section terms-items">
 	<div class="container">
-		<?php foreach($faq as $key => $item): ?>
+		<?php foreach($this->questions as $key => $item): ?>
 			<?php if($key==0): ?>
 			<div class="row">
 				<div class="col-md-10">
@@ -15,8 +13,7 @@
 			<?php else: ?>
 			<div class="row">
 				<div class="col-md-10">
-					<h2 class="title" role="button" data-toggle="collapse" href="<?= '#collapse-'.$item->id ?>" aria-expanded="false">
-							<span class="icon icon-<?= $item->icon ?> icon-3x"></span>
+					<h2 class="title" <?= $this->faq->question_color ? 'style="color:'.$this->faq->question_color.';"' : '' ?> role="button" data-toggle="collapse" href="<?= '#collapse-'.$item->id ?>" aria-expanded="false">
 							<?= $item->title ?>
 					</h2>
 

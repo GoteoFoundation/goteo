@@ -12,7 +12,7 @@
 				<div class="description">
 					<?= $item->description ?>
 				</div>
-				<a href="<?= $this->channel->terms_download_url ?>" class="btn btn-transparent pull-right">
+				<a href="<?= $item->url ?>" class="btn btn-transparent pull-right">
 					<i class="icon icon-download icon-2x"></i><?= $this->text('regular-download') ?>
 				</a>
 			</div>

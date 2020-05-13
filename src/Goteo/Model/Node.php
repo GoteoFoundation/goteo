@@ -83,7 +83,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description', 'terms', 'tip_msg', 'terms_banner_title', 'terms_banner_description', 'terms_download_title', 'terms_download_description', 'terms_download_url'];
+        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description'];
     }
 
     /**
@@ -1089,30 +1089,6 @@ class Node extends \Goteo\Core\Model {
         $query = static::query($sql, $values);
         $this->resourcesList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeResource');
         return $this->resourcesList;
-
-    }
-
-    /**
-     *  Faq of this node
-     */
-    public function getFaq ($type = 'general') {
-        if($this->termsList) return $this->termsList;
-        $values = [':node' => $this->id, ':type' => $type];
-
-        list($fields, $joins) = NodeFaq::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
-
-        $sql = "SELECT
-                node_faq.id,
-                node_faq.icon,
-                $fields
-            FROM node_faq
-            $joins
-            WHERE node_faq.node_id = :node AND node_faq.type = :type
-            ORDER BY node_faq.order ASC";
-         //die(\sqldbg($sql, $values));
-        $query = static::query($sql, $values);
-        $this->termsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeFaq');
-        return $this->termsList;
 
     }
 
