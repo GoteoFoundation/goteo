@@ -19,6 +19,24 @@ body.channel-call {
 			height: 35px;
 		}
 	}
+
+	&.btn-yellow {
+
+		color: $color-new-lilac !important;
+
+		.icon{
+			background: $background-new-lilac;
+		}
+
+		&:hover {
+			background-color: $background-new-dark-blue;
+			color: $color-white !important;
+			
+			.icon {
+				background-color: $color-white !important;
+			}
+		}
+	}
 }
 
 h2.title{
@@ -35,10 +53,14 @@ h2.title{
 	}
 }
 
+div.section {
+	padding: 50px 0px 80px 0px !important;
+}
 
 div.section.banner-header{
   	position: relative;
  	min-height: 450px;
+ 	padding: 0 !important;
 
  	div.custom-header{
  		position: absolute;
@@ -86,11 +108,7 @@ div.section.banner-header{
         }
         .btn-yellow{
         	margin-top: 10px;
-            color: $color-new-lilac !important;
-            font-weight: 500;
-            .icon{
-            	background: $background-new-lilac;
-            }
+					font-weight: 500;
         }
     }
       
@@ -168,7 +186,7 @@ div.section.main-info{
   
 div.section.call-to-action{
     background-color: $background-white;
-    padding: 50px 0;
+    // padding: 50px 0;
     .info{
 			padding: 30px;
 		}
@@ -198,7 +216,7 @@ div.section.call-to-action{
 					padding-bottom: 20px;
 				}
 				.col-button {
-					.btn-transparent {
+					.btn {
 						font-weight: bold !important;
 						font-size: $font-size*1.2;
 					}
@@ -227,8 +245,8 @@ div.section.call-to-action{
 					padding-bottom: 20px;
 				}
 				.col-button {
-					.btn-transparent {
-						color: $color-new-dark-blue !important;
+					.btn-yellow {
+						border: 1px solid $color-new-lilac;
 						font-weight: bold !important;
 						font-size: $font-size*1.2;
 					}
@@ -269,29 +287,32 @@ div.section.call-to-action{
 		
 div.section.program {
 		background-color: $background-new-light-green !important;
-		padding: 20px 0;
+		// padding: 50px 0px 80px 0px !important;
 
 		h2.title{
 			.btn-transparent{
-		    	margin-top: 15px;
-		    	color: $color-new-green;
-		    	border: 1px solid $color-new-lilac;
-		    	font-weight: bold;
-		    	float: right;
-		    	margin-top: 0px;
-		    	position: absolute;
+				margin-top: 15px;
+				color: $color-new-green;
+				font-weight: bold;
+				float: right;
+				margin-top: 0px;
+				position: absolute;
 				right: 0;
 				bottom: 8px;
-		    	.icon{
-		    		background-color: $color-new-lilac;
-		    		vertical-align: middle;
-		    	}
-		    }
-		}
-
-		.container {
-			margin: 100px auto;
-			// width: max-content !important;
+				.icon{
+					background-color: $color-new-lilac;
+					vertical-align: middle;
+				}
+				
+				&:hover {
+					background-color: $background-new-green;
+					color: $color-white;
+					.icon {
+						background-color: $color-white !important;
+					}
+				}
+					
+			}
 		}
 
 		.description {
@@ -339,6 +360,7 @@ div.section.program {
 				border-left: $border 1px solid;
 				color: $color-new-green;
 				font-weight: bold;
+				padding-right: 5px;
 			}
 		
 			.paragraph {
@@ -368,6 +390,16 @@ div.section.program {
 					.icon{
 						background-color: $color-new-lilac;
 					}
+
+					&:hover {
+						background-color: $background-new-green;
+						color: $color-white;
+						border: unset;
+
+						.icon {
+							background-color: $color-white !important;
+						}
+					}	
 				}			
 			}
 		}
@@ -379,20 +411,55 @@ div.section.program {
 			
 			// transition: opacity 1s;
 			.custom-left-arrow{
-						top: 34%;
+						// top: 34%;
 						position: absolute;
 						font-size: $font-size*5;
-						left: -2.4%;
+						left: -4%;
 						color: $color-new-green;
 						cursor: pointer;
+						height: 100%;
+						background-color: rgba(21,174,152, 0.2);
+
+						.icon-arrow {
+							position: relative;
+							top: 34%;
+							background-color: $color-new-green;
+						}
+
+						&:hover {
+							color: $color-new-dark-blue;
+							background-color: $background-new-green;
+
+							.icon-arrow {
+								background-color: $color-white;
+							}
+						}
 			}
 			.custom-right-arrow{
-						top: 34%;
+						top: 0;
 						position: absolute;
 						font-size: $font-size*5;
 						right: -4%;
 						color: $color-new-green;
 						cursor: pointer;
+						height: 100%;
+						background-color: rgba(21,174,152, 0.2);
+
+						.icon-arrow {
+							position: relative;
+							top: 34%;
+							transform: rotate(180deg);
+							background-color: $color-new-green;
+						}
+
+						&:hover {
+							color: $color-new-dark-blue;
+							background-color: $background-new-green;
+
+							.icon-arrow {
+								background-color: $color-white;
+							}
+						}
 			}
 		}
 
@@ -408,7 +475,7 @@ div.section.program {
 
 div.section.posts {
 	color:$color-new-dark-blue;
-	padding: 50px 0 80px 0;
+	// padding: 50px 0 80px 0;
 	background-color: $background-new-light-green !important;
 
 	.description{
@@ -500,6 +567,8 @@ div.section.posts {
 
 div.section.workshops{
 	background-color: $background-new-yellow !important;
+	// padding: 50px 0px 80px 0px !important;
+
 	.title {
 		text-align: left;
 		margin-bottom: 10px;
@@ -587,7 +656,8 @@ div.section.workshops{
 }
 
 div.section.projects{
-	padding-bottom: 30px;
+	// padding-bottom: 30px;
+	// padding: 50px 0 80px 0 !important;
 	.filters {
         margin: 40px 0 35px 0;
         a > li {
@@ -602,7 +672,11 @@ div.section.projects{
               color: $color-white !important;
             }
         }
-    }
+		}
+		
+		.projects {
+			padding: unset !important;
+		}
 
    	.slick-list{
    		.widget-slide{
@@ -695,7 +769,7 @@ div.section.projects{
 
 div.section.sponsors{
 	color:$color-new-dark-blue;
-	padding: 50px 0 80px 0;
+	// padding: 50px 0 80px 0;
 	background-color: $background-white;
 	.description{
 		font-size: $font-size*1.1;
@@ -722,9 +796,10 @@ div.section.sponsors{
 
 div.section.terms-items{
     background-color: $background-white;
-    padding-bottom:80px;
+    // padding-bottom:80px;
     font-size: $font-size*1.1;
     color: $color-new-dark-blue;
+    padding: 0 !important;
     .title{
     	color: $color-new-dark-blue;
 		.icon{
@@ -757,7 +832,7 @@ div.section.terms-items{
 
 div.section.download{
 	background-color: $color-white;
-	padding: 40px 0;
+	// padding: 40px 0;
 	color: $color-new-dark-blue;
 	.container{
 		background-color: $background-new-light-green;
@@ -788,6 +863,254 @@ div.section.download{
 	}
 }
 
+div.section.team {
+	background-color: $color-white;
+	// padding: 50px 0px 80px 0px !important;
+
+	.container {
+
+		.image {
+			img {
+				width: 100%;
+				background-color: $background-new-light-green;
+			}
+		}
+
+		.title {
+			color: $color-new-green;
+			font-weight: bold;
+		}
+
+		.description {
+			color: $color-new-dark-blue;
+			font-weight: bold;
+		}
+		
+		.team_widget {
+			color: $color-new-dark-blue;
+			margin: 20px 0 20px 0;
+			height: 350px;
+
+			.name {
+				font-size: $font-size*1.5;
+				border-bottom: 1px $color-new-dark-blue solid;
+				width: 100%;
+				padding-top: 10px;
+				font-weight: bold;
+			}
+			
+			.role {
+				color: $color-new-green;
+				border-bottom: 1px $color-new-dark-blue solid;
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+		}
+	}
+}
+
+div.section.stories {
+	background-color: $color-white;
+	color: $color-white;
+	min-height: 400px;
+	// padding: 50px 0px 80px 0px !important;
+	margin-bottom: unset;
+
+	.container {
+		background-color: $color-new-dark-blue;
+		height: 350px;
+
+		h2.title {
+			color: $color-white;
+			font-weight: bold;
+
+			.icon {
+				background-color: $color-white;
+			}
+			
+			span {
+				background-color: $color-new-dark-blue;
+			}
+
+		}
+		
+		div.white-line {
+			border-bottom: 1px solid $color-white;
+			height: 50px;
+			// position: absolute;
+			// bottom: 50%;
+			// width: 70%;
+			// right: -0%;
+		}
+		
+		.slider-stories {
+			background-color: $color-new-dark-blue;
+			color: $color-white;
+			height: 240px;
+			
+			.slick-list {
+				border-left: 1px solid $color-white;
+				height: 200px;
+				margin-left: 10px;
+			}
+
+			.story {
+				.image {
+					img {
+						width: 150px;
+						border-radius: 10px;
+					}
+				}
+
+				p {
+					font-size: $font-size*1.5;
+					font-weight: bold;
+				}
+	
+				div.author {
+					color: $color-white;
+				}
+			}
+
+			.custom-left-arrow{
+				top: unset;
+				bottom: 0%;
+				position: absolute;
+				font-size: $font-size*2;
+				left: 0%;
+				cursor: pointer;
+				span.icon {
+					background-color: $color-white;
+				}
+			}
+			.custom-right-arrow{
+				top: unset;
+				bottom: 0%;
+				position: absolute;
+				font-size: $font-size*2;
+				rotate: 180;
+				right: 0%;
+				cursor: pointer;
+				span.icon {
+					background-color: $color-white;
+					transform: rotate(180deg); 
+				}
+			}
+		}
+	}
+}
+
+div.section.resources{
+	background-color: $background-white;
+	// padding: 50px 0;
+
+	.container {
+		background-color: $background-new-dark-blue;
+	}
+
+	.col-sm-12 {
+		padding-bottom: 15px !important;
+	}
+	
+	.col-md-6 {
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+	.icon {
+		background: $background-white;
+	}
+	
+	.info {
+		padding: 30px;
+		color: $color-white;
+		font-weight: bold;
+		background-color: $background-new-dark-blue;
+	
+		.title  {
+			font-size: $font-size*2.3;    
+			padding-bottom: 10px;
+		}
+	
+		.description {
+			font-size: $font-size;
+			line-height: 1.5;
+			padding-bottom: 20px;
+		}
+		.col-button {
+			.btn {
+				font-weight: bold !important;
+				font-size: $font-size*1.2;
+			}
+		}	
+	}
+
+	img {
+		width: 100%;
+	}
+}
+
+
+.footer {
+	font-weight: bold;
+	color: $color-new-dark-blue;
+	background-color: $background-new-light-green !important;
+	padding-bottom:80px;
+
+	.header {
+		border-bottom: 1px solid $color-new-dark-blue;
+		padding-bottom: 20px;
+	}
+	
+	ul {
+		list-style-type: none;
+		padding-inline-start: 0px;
+		
+		li {
+			border-bottom: 1px solid $color-new-dark-blue;
+			padding: 5px;
+			font-size: $font-size;
+			font-weight: normal;
+			
+			a {
+				color: $color-new-green;
+			}
+
+			.icon {
+
+				width: 20px !important;
+				height: 20px !important;
+
+				&-channel-instagram {
+					background-color: #FC514F
+				}
+
+				&-channel-telegram {
+					background-color: #1DA1F2
+				}
+
+				&-channel-twitter {
+					background-color: #1DA1F2
+				}
+
+				&-channel-fb {
+					height: 20px !important;
+					width: 10px !important;
+					margin: 5px;
+					background-color: #4367B2
+				}
+
+				&-channel-github {
+					background-color: #282828
+				}
+
+				&-channel-mail {
+					background-color: #26BDB9
+				}
+			}
+		}
+	}
+}
+
 // Tablets customization
 @media (max-width: $breakpoint-md + 1) {
     div.section.banner-header{
@@ -809,7 +1132,55 @@ div.section.download{
         		position: static;
         	}
         }
-    }
+		}
+		
+		footer {
+
+			ul {
+				margin-top: 0px;
+				margin-bottom: 0px;
+			}
+		}
+
+		div.section.program {
+			.slider-programs{
+				visibility:hidden;
+				opacity:0;
+				transition: opacity 1s;
+				
+				// transition: opacity 1s;
+				.custom-left-arrow{
+							top: unset;
+							bottom: -30%;
+							position: absolute;
+							font-size: $font-size*5;
+							left: 0%;
+							cursor: pointer;
+							width: 45%;
+							background-color: rgba(21,174,152, 0.2);
+							height: unset;
+
+							icon-arrow {
+								color: $color-new-green;
+							}
+				}
+				.custom-right-arrow{
+							top: unset;
+							bottom: -30%;
+							position: absolute;
+							font-size: $font-size*5;
+							right: 0%;
+							cursor: pointer;
+							width: 45%;
+							background-color: rgba(21,174,152, 0.2);
+							height: unset;
+							
+							icon-arrow {
+								color: $color-new-green;
+							}
+				}
+			}	
+		}
 }
 
 @media (max-width: $breakpoint-sm - 1) {
@@ -863,7 +1234,8 @@ div.section.download{
 	            margin-left: 0px !important;
 	            .project-widget.normal{
 	                box-shadow: none;
-	                margin-left: 20px;	            }
+									margin-left: 20px;	            
+								}
 	   			}
 	   	}
 	}

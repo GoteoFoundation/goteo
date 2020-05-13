@@ -1,7 +1,7 @@
 <?php
 
 /*
-* Model for Node program
+* Model for Node Faq
 */
 
 namespace Goteo\Model\Node;
@@ -13,62 +13,46 @@ use Goteo\Model\Image;
 
 
 
-class NodeProgram extends \Goteo\Core\Model {
+class NodeFaqQuestion extends \Goteo\Core\Model {
 
-    protected $Table = 'node_program';
-    protected static $Table_static = 'node_program';
+    protected $Table = 'node_faq_question';
+    protected static $Table_static = 'node_faq_question';
     public
     $id,
-    $node_id,
+    $node_faq,
     $title,
     $description,
-    $header,
     $icon,
-    $action,
-    $action_url,
-    $date,
     $order;
 
     public static function getLangFields() {
-        return ['title', 'description', 'action', 'action_url'];
+        return ['title', 'description'];
     }
 
 
     /**
-     * Get data about node program
+     * Get data about node faq question
      *
      * @param   int    $id         check id.
-     * @return  NodeProgram object
+     * @return  Workshop faq object
      */
     static public function get($id) {
-
-        if(!$lang) $lang = Lang::current();
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
-
         $sql="SELECT
-                    node_program.id as id,
-                    node_program.node_id as node_id,
-                    $fields,
-                    node_program.header as `header`,
-                    node_program.icon as `icon`,
-                    node_program.date as `date`,
-                    node_program.order as `order`
-              FROM node_program
-              $joins
-              WHERE node_program.id = ?";
-        // die(\sqldbg($sql, array($id)));
+                    node_faq_question.*
+              FROM node_faq_question
+              WHERE node_faq_question.node_id = ?";
         $query = static::query($sql, array($id));
-        $item = $query->fetchObject( __CLASS__);
+        $item = $query->fetchObject(__CLASS__);
 
-        if(!$item) {
-            throw new ModelNotFoundException("Node program not found for ID [$id]");
+        if($item) {
+          return $item;
         }
-        
-        return $item;
+
+        throw new ModelNotFoundException("Node faq not found for ID [$id]");
     }
 
-    /**
-     * Node Programs listing
+     /**
+     * Node Faq Download listing
      *
      * @param array filters
      * @param string node id
@@ -86,8 +70,13 @@ class NodeProgram extends \Goteo\Core\Model {
         $values = [];
 
         if ($filters['node']) {
-            $filter[] = "node_program.node_id = :node";
+            $filter[] = "node_faq_question.node_id = :node";
             $values[':node'] = $filters['node'];
+        }
+
+         if ($filters['node_faq']) {
+            $filter[] = "node_faq_question.node_faq = :node_faq";
+            $values[':node_faq'] = $filters['node_faq'];
         }
 
         if($filter) {
@@ -95,23 +84,19 @@ class NodeProgram extends \Goteo\Core\Model {
         }
 
         $sql="SELECT
-                    node_program.id as id,
-                    node_program.node_id as node_id,
-                    $fields,
-                    node_program.header as `header`,
-                    node_program.icon as `icon`,
-                    node_program.date as `date`,
-                    node_program.order as `order`
-              FROM node_program
+                  node_faq_question.id as id,
+                  $fields,
+                  node_faq_question.order,
+                  node_faq_question.node_faq
+              FROM node_faq_question
               $joins
               $sql
-              ORDER BY node_program.date ASC
+              ORDER BY node_faq_question.order ASC
               LIMIT $offset, $limit";
-        // die(\sqldbg($sql, $values));
+         //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
-
 
    
     /**
@@ -127,14 +112,10 @@ class NodeProgram extends \Goteo\Core\Model {
 
         $fields = array(
             'id',
-            'node_id',
+            'node_faq',
             'title',
-            `header`,
             'icon',
             'description',
-            'action',
-            'action_url',
-            'action_icon',
             'order'
         );
 
@@ -144,16 +125,9 @@ class NodeProgram extends \Goteo\Core\Model {
 
             return true;
         } catch(\PDOException $e) {
-            $errors[] = "Node program save error: " . $e->getMessage();
+            $errors[] = "Node faq save error: " . $e->getMessage();
             return false;
         }
-    }
-
-    public function getHeader() {
-        if(!$this->imageInstance instanceOf Image) {
-            $this->imageInstance = new Image($this->header);
-        }
-        return $this->imageInstance;
     }
 
     /**

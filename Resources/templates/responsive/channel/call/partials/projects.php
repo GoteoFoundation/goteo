@@ -2,7 +2,7 @@
 
 <div class="section projects">
   <div class="container">
-    <h2 class="title"><span class="icon icon-desktop icon-3x"></span>Algunos proyectos en marcha</h2>
+    <h2 class="title"><span class="icon icon-desktop icon-3x"></span><?= $this->text('channel-call-projects-title') ?></h2>
     <?= $this->insert('channel/call/partials/filters_block') ?>
 
         <?php if ($this->type !== 'available') : ?>

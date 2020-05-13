@@ -13,10 +13,10 @@ $this->section('channel-content');
 
 ?>
 
-<?= $this->insert('channel/call/partials/banner_terms') ?>
+<?= $this->insert('channel/call/partials/faq/banner') ?>
 
-<?= $this->insert('channel/call/partials/terms_items') ?>
+<?= $this->insert('channel/call/partials/faq/questions') ?>
 
-<?= $this->insert('channel/call/partials/download') ?>
+<?= $this->insert('channel/call/partials/faq/download') ?>
 
 <?php $this->replace() ?>

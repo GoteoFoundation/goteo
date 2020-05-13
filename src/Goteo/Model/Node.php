@@ -19,8 +19,8 @@ use Goteo\Model\Blog\Post as GeneralPost;
 use Goteo\Model\Node\NodeSponsor;
 use Goteo\Model\Node\NodeResource;
 use Goteo\Model\Node\NodeProgram;
-use Goteo\Model\Node\NodeTerm;
-
+use Goteo\Model\Node\NodeFaq;
+use Goteo\Model\Node\NodeTeam;
 
 class Node extends \Goteo\Core\Model {
 
@@ -31,6 +31,8 @@ class Node extends \Goteo\Core\Model {
         $subtitle,
         $description,
         $hashtag,
+        $main_info_title,
+        $main_info_description,
         $email,
         $admins = array(), // administradores
         $logo,
@@ -81,7 +83,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'subtitle', 'description', 'call_to_action_description', 'terms', 'tip_msg'];
+        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description'];
     }
 
     /**
@@ -1043,10 +1045,18 @@ class Node extends \Goteo\Core\Model {
         if($this->sponsorsList) return $this->sponsorsList;
         $values = [':node' => $this->id];
 
-        $sql = "SELECT
-                node_sponsor.*
-            FROM node_sponsor
+        list($fields, $joins) = NodeSponsor::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
 
+        $sql = "SELECT
+                node_sponsor.id,
+                node_sponsor.node_id,
+                node_sponsor.name,
+                node_sponsor.url,
+                node_sponsor.image,
+                node_sponsor.order,
+                $fields
+            FROM node_sponsor
+            $joins
             WHERE node_sponsor.node_id = :node
             ORDER BY node_sponsor.order ASC";
          //die(\sqldbg($sql, $values));
@@ -1083,40 +1093,31 @@ class Node extends \Goteo\Core\Model {
     }
 
     /**
-     *  Resources of this node
-     */
-    public function getTerms () {
-        if($this->termsList) return $this->termsList;
-        $values = [':node' => $this->id];
-
-        list($fields, $joins) = NodeTerm::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
-
-        $sql = "SELECT
-                node_term.id,
-                node_term.icon,
-                $fields
-            FROM node_term
-            $joins
-            WHERE node_term.node_id = :node
-            ORDER BY node_term.order ASC LIMIT 3";
-         //die(\sqldbg($sql, $values));
-        $query = static::query($sql, $values);
-        $this->termsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeTerm');
-        return $this->termsList;
-
-    }
-
-    /**
-     *  Workshops of this node
+     *  next Workshops of this node
      */
     public function getWorkshops () {
-if($this->workshopsList) return $this->workshopsList;
+        if($this->workshopsList) return $this->workshopsList;
         $values = [':node' => $this->id];
 
-        //list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+        list($fields, $joins) = Workshop::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
 
         $sql = "SELECT
-                workshop.*
+                workshop.id,
+                workshop.online,
+                workshop.title,
+                $fields,
+                workshop.subtitle,
+                workshop.description,
+                workshop.date_in,
+                workshop.date_out,
+                workshop.schedule,
+                workshop.url,
+                workshop.workshop_location,
+                workshop.call_id,
+                workshop.venue,
+                workshop.city,
+                workshop.header_image,
+                workshop.venue_address
             FROM node_workshop
             INNER JOIN workshop ON workshop.id = node_workshop.workshop_id
             $joins
@@ -1128,22 +1129,43 @@ if($this->workshopsList) return $this->workshopsList;
         return $this->workshopsList;
     }
 
+        /**
+     *  next Workshops of this node
+     */
+    public function getAllWorkshops () {
+        if($this->workshopList) return $this->workshopList;
+
+        $this->workshopList =  Workshop::getList(['node' => $this->id]);
+        return $this->workshopList;
+    }
+
     public function getPrograms() {
-        if($this->programsList) return $this->programsList;
-        $values = [':node' => $this->id];
+        // if($this->programsList) return $this->programsList;
 
-        //list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
-
-        $sql = "SELECT
-                node_program.*
-            FROM node_program
-            WHERE node_program.node_id = :node
-            ORDER BY node_program.date ASC";
-        // die(\sqldbg($sql, $values));
-        $query = static::query($sql, $values);
-        $this->programsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeProgram');
+        // $this->programsList = NodeProgram::get($this->id);
+        $this->programsList = NodeProgram::getList(['node' => $this->id]);
         return $this->programsList;
+    }
 
+    public function getTeam() {
+        if($this->teamList) return $this->teamList;
+        
+        $this->teamList = NodeTeam::getList(['node' => $this->id]);
+        return $this->teamList;
+    }
+
+    public function getFaqType($type) {
+        if($this->faqType) return $this->faqType;
+        
+        $this->faqType = NodeTeam::get($this->id, $type);
+        return $this->faqType;
+    }
+
+     public function getFaqDownloads($type) {
+        if($this->faqDownloads) return $this->faqDownloads;
+        
+        $this->faqDownloads = NodeTeam::get($this->id, $type);
+        return $this->faqDownloads;
     }
 
 
