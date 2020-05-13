@@ -19,13 +19,13 @@ $this->section('channel-content');
 
 <?= $this->insert('channel/call/partials/call_to_action') ?>
 
+<?= $this->insert('channel/call/partials/stories') ?>
+
 <?= $this->insert('channel/call/partials/program') ?>
 
 <?= $this->insert('channel/call/partials/projects') ?>
 
 <?= $this->insert('channel/call/partials/related_workshops') ?>
-
-<?= $this->insert('channel/call/partials/stories') ?>
 
 <?= $this->insert('channel/call/partials/resources') ?>
 
