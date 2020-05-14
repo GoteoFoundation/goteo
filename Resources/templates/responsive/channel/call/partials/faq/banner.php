@@ -1,5 +1,6 @@
 <?php //Extract the first title for the element embebed in the header banner ?>
 
+<?php print_r($this->questions) ?>
 <?php $first_faq=current($this->questions); ?>
 
 
