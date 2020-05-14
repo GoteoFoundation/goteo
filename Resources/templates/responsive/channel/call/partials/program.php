@@ -9,6 +9,8 @@
       break;
     }
   }
+
+  if ($programs) :
 ?>
 
 <div class="section program">
@@ -39,3 +41,5 @@
     </div>
   </div>
 </div>
+
+<?php endif; ?>

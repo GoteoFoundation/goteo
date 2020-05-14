@@ -16,7 +16,9 @@ $image= $this->post->header_image ? $this->post->header_image : $this->post->ima
           <?=  date_formater($this->post->date) ?>
         </div>
         <div class="title">
-          <?= $this->text_truncate($this->post->title, 20) ?>
+          <a href="<?= '/blog/' . $this->post->getSlug() ?>">
+            <?= $this->text_truncate($this->post->title, 20) ?>
+          </a>
         </div>
         <div class="subtitle">
           <?= $this->text_truncate($this->post->subtitle, 80) ?>
