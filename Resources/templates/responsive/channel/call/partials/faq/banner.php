@@ -1,8 +1,7 @@
 <?php //Extract the first title for the element embebed in the header banner ?>
+<?php $questions=$this->questions; ?>
 
-<?php print_r($this->questions) ?>
-<?php $first_faq=current($this->questions); ?>
-<?php print_r($first_faq); ?>
+<?php $first_faq=$questions[0]; ?>
 
 
 <div class="section banner-header">
