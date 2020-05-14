@@ -491,11 +491,13 @@ div.section.posts {
 		margin-bottom: 20px;
 		margin-left: 15px;
 		margin-right: 15px;
+		background-color: $background-white;
+		
 		div.content {
 			height: 190px;
 			color: $color-new-dark-blue !important;
-			background-color: $color-white !important;
 			font-weight: bold;
+			background-color: $background-white;
 
 			div.date {
 				color: $color-new-green !important;
@@ -534,6 +536,11 @@ div.section.posts {
 		a.img-link {
 			padding: 10px;
 			height: 170px !important;
+
+			img.img-link {
+				border-top-left-radius: unset;
+				border-top-right-radius: unset;
+			}
 		}
 	}
 
