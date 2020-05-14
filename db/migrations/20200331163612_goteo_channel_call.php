@@ -43,7 +43,7 @@ class GoteoChannelCall
             `action` VARCHAR(255) NOT NULL,
             `action_url` TINYTEXT NULL,
             `lang` VARCHAR(6) NULL,
-            `date` date NOT NULL,
+            `date` date NULL,
             `order` INT(11),
              PRIMARY KEY (`id`),
              CONSTRAINT `node_program_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
