@@ -188,7 +188,8 @@ class ChannelController extends \Goteo\Core\Controller {
 
         $faq= NodeFaq::getBySlug($id, $slug);
 
-        $questions=NodeFaqQuestion::getList(['faq' => $faq->id]);
+        $questions=NodeFaqQuestion::getList(['node_faq' => $faq->id]);
+
         $downloads=NodeFaqDownload::getList(['faq' => $faq->id]);
 
         return $this->viewResponse('channel/call/faq',
