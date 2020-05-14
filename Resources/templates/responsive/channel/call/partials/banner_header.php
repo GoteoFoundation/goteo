@@ -31,7 +31,7 @@
 					<div class="description">
 						<?= $this->channel->subtitle ?>
 					</div>
-					<a href="<?= '/channel/'.$this->channel->id.'/faq' ?>" class="btn btn-yellow scroller"><i class="icon icon-plus icon-2x">		
+					<a href="<?= $this->channel->banner_button_url ?>" class="btn btn-yellow scroller"><i class="icon icon-plus icon-2x">		
 						</i><?= $this->text('landing-more-info') ?>
 					</a>
 				</div>

@@ -45,6 +45,7 @@ class Node extends \Goteo\Core\Model {
         $banner_header_image_md,
         $banner_header_image_sm,
         $banner_header_image_xs,
+        $banner_button_url,
         $show_team,
         $image,
         $default_consultant,
@@ -53,6 +54,7 @@ class Node extends \Goteo\Core\Model {
         $premium,
         $iframe,
         $terms,
+        $terms_url,
         $chatbot_url,
         $chatbot_id,
         $tip_msg
@@ -83,7 +85,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description'];
+        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description', 'banner_button_url', 'terms_url'];
     }
 
     /**
