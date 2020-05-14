@@ -13,7 +13,7 @@
             <?= $this->t('channel-call-resources-description') ?>
           </div>
           <div class="col-button">
-            <a href="<?= '/channel/'.$this->channel->id.'/create' ?>" class="btn btn-transparent"><i class="icon icon-plus icon-2x"></i><?= $this->text('channel-call-resources-button') ?></a>
+            <a href="<?= '/channel/'.$this->channel->id.'/resources' ?>" class="btn btn-transparent"><i class="icon icon-plus icon-2x"></i><?= $this->text('channel-call-resources-button') ?></a>
           </div>
         </div>
       </div>
