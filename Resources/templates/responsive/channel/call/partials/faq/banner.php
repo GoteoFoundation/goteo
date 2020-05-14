@@ -2,6 +2,7 @@
 
 <?php print_r($this->questions) ?>
 <?php $first_faq=current($this->questions); ?>
+<?php print_r($first_faq); ?>
 
 
 <div class="section banner-header">
