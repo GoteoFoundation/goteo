@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <img class="img-responsive" src="/assets/img/channel/call/create_project.png" >
+        <img class="img-responsive" src="/assets/img/channel/call/resources.png" >
       </div>
       <div class="col-md-6">
         <div class="info">
