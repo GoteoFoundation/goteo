@@ -29,7 +29,7 @@ body.channel-call {
 		}
 
 		&:hover {
-			background-color: $background-new-dark-blue;
+			background-color: $background-new-lilac;
 			color: $color-white !important;
 			
 			.icon {
@@ -491,18 +491,28 @@ div.section.posts {
 		margin-bottom: 20px;
 		margin-left: 15px;
 		margin-right: 15px;
+		background-color: $background-white;
+		
 		div.content {
 			height: 190px;
 			color: $color-new-dark-blue !important;
-			background-color: $color-white !important;
 			font-weight: bold;
+			background-color: $background-white;
 
 			div.date {
 				color: $color-new-green !important;
 			}
 			div.title {
-				color: $color-new-dark-blue !important;
 				font-size: $font-size * 1.2;
+				
+				a {
+					color: $color-new-dark-blue;
+
+					&:hover {
+						text-decoration: underline;
+						color: $color-new-green;
+					}
+				}
 			}
 
 			div.subtitle {
@@ -534,6 +544,11 @@ div.section.posts {
 		a.img-link {
 			padding: 10px;
 			height: 170px !important;
+
+			img.img-link {
+				border-top-left-radius: unset;
+				border-top-right-radius: unset;
+			}
 		}
 	}
 
@@ -639,6 +654,7 @@ div.section.workshops{
 			
 			a:hover {
 				color: $color-new-green;
+				text-decoration: underline;
 			}
 		}
 
@@ -728,7 +744,11 @@ div.section.projects{
     	border-radius: 0px;
     	.floating{
     		top:168px;
-    		background:$color-new-green;
+				background:$background-new-light-green;
+				
+				&:hover {
+					background: $background-new-green;
+				}
     	}
     	.img-link{
     		padding:10px;
