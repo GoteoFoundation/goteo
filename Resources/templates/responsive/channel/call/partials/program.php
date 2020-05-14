@@ -16,7 +16,7 @@
     <h2 class="title">
         <span class="icon icon-calendar-2 icon-3x"></span>
         <span><?= $this->t('channel-call-program-title') ?></span>
-        <a class="btn btn-transparent" href="<?= '/channel/'.$this->channel->id.'/terms' ?>" class="btn btn-transparent">
+        <a class="btn btn-transparent" href="<?= $this->channel->terms_url ?>" class="btn btn-transparent">
           <i class="icon icon-terms icon-2x"></i> <?= $this->t('channel-call-program-terms') ?>
         </a>
     </h2>

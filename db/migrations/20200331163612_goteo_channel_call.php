@@ -164,12 +164,17 @@ class GoteoChannelCall
         ALTER TABLE `node` ADD COLUMN banner_header_image_md VARCHAR(255) NULL AFTER banner_header_image;
         ALTER TABLE `node` ADD COLUMN banner_header_image_sm VARCHAR(255) NULL AFTER banner_header_image_md;
         ALTER TABLE `node` ADD COLUMN banner_header_image_xs VARCHAR(255) NULL AFTER banner_header_image_sm;
+        ALTER TABLE `node` ADD column banner_button_url VARCHAR(255) NOT NULL AFTER banner_header_image_xs;
+        ALTER TABLE `node` ADD column terms_url VARCHAR(255) NOT NULL AFTER terms;
+
         ALTER TABLE `node` ADD COLUMN main_info_title VARCHAR(255) NULL AFTER description;
         ALTER TABLE `node` ADD COLUMN main_info_description TEXT NULL AFTER main_info_title;
         ALTER TABLE `node_sponsor` ADD COLUMN `label` TINYTEXT CHARSET utf8 COLLATE utf8_general_ci NULL AFTER `image`;
 
         ALTER TABLE `node_lang` ADD COLUMN `main_info_title` VARCHAR(255) NULL AFTER description;
         ALTER TABLE `node_lang` ADD COLUMN main_info_description TEXT NULL AFTER main_info_title;
+        ALTER TABLE `node_lang` ADD column banner_button_url VARCHAR(255) NOT NULL;
+        ALTER TABLE `node_lang` ADD column terms_url VARCHAR(255) NOT NULL;
        
        ";
   }
@@ -188,6 +193,8 @@ class GoteoChannelCall
         ALTER TABLE `node` DROP COLUMN banner_header_image_md;
         ALTER TABLE `node` DROP COLUMN banner_header_image_sm;
         ALTER TABLE `node` DROP COLUMN banner_header_image_xs;
+        ALTER TABLE `node` DROP COLUMN banner_button_url;  
+        ALTER TABLE `node` DROP COLUMN terms_url;  
         ALTER TABLE `node` DROP COLUMN main_info_title;
         ALTER TABLE `node` DROP COLUMN main_info_description;
         ALTER TABLE `node_sponsor` DROP COLUMN label;
@@ -196,6 +203,8 @@ class GoteoChannelCall
 
         ALTER TABLE `node_lang` DROP COLUMN main_info_title;
         ALTER TABLE `node_lang` DROP COLUMN main_info_description;  
+        ALTER TABLE `node_lang` DROP COLUMN banner_button_url;  
+        ALTER TABLE `node_lang` DROP COLUMN terms_url;  
 
 
         DROP TABLE `node_program_lang`;
