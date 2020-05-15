@@ -21,6 +21,7 @@ use Goteo\Model\Node\NodeResource;
 use Goteo\Model\Node\NodeProgram;
 use Goteo\Model\Node\NodeFaq;
 use Goteo\Model\Node\NodeTeam;
+use Goteo\Model\Node\NodeCallToAction;
 
 class Node extends \Goteo\Core\Model {
 
@@ -1169,6 +1170,14 @@ class Node extends \Goteo\Core\Model {
         $this->faqDownloads = NodeTeam::get($this->id, $type);
         return $this->faqDownloads;
     }
+
+    public function getCallToActions() {
+        if($this->callToActionList) return $this->callToActionList;
+    
+        $this->callToActionList = NodeCallToAction::get($this->id);
+        return $this->callToActionList;
+    }
+    
 
 
 }
