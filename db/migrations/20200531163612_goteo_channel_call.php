@@ -147,6 +147,7 @@ class GoteoChannelCall
             `name` VARCHAR(100) NOT NULL,
             `role` VARCHAR(50) DEFAULT NULL,
             `image` VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `order` INT(11),
             PRIMARY KEY (`id`),
             CONSTRAINT `node_team_ibfk_1` FOREIGN KEY (`node_id`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );

@@ -20,7 +20,8 @@
       $name,
       $role,
       $image,
-      $node_id;
+      $node_id,
+      $order;
 
     public static function getLangFields() {
         return ['role'];
@@ -90,6 +91,7 @@
             FROM node_team
             $joins
             $sql
+            ORDER BY node_team.order
             LIMIT $offset, $limit";
       // die(\sqldbg($sql, $values));
       $query = static::query($sql, $values);
@@ -120,7 +122,8 @@
         'name',
         'role',
         'image',
-        'node_id'
+        'node_id',
+        'order'
     );
 
     try {
