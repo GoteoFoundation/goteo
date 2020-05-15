@@ -141,7 +141,7 @@ class GoteoChannelCall
       
 
         CREATE TABLE `node_team` (
-            `id` BIGINT(20) UNSIGNED NOT NULL,
+            `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
             `lang` VARCHAR (6),
             `name` VARCHAR(100) NOT NULL,
@@ -156,6 +156,16 @@ class GoteoChannelCall
             `lang` VARCHAR (6),
             `role` VARCHAR(50) DEFAULT NULL,
              FOREIGN KEY (`id`) REFERENCES `node_team`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        );
+
+        CREATE TABLE `node_call_to_action` (
+            `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
+            `call_to_action_id` BIGINT(20) UNSIGNED NOT NULL,
+            `background_color` VARCHAR(8) NOT NULL,
+            `order` INT(11),
+            `active` INT(1) DEFAULT 0,
+            FOREIGN KEY (`node_id`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+            FOREIGN KEY (`call_to_action_id`) REFERENCES `call_to_action` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
         );
 
         ALTER TABLE `node` ADD COLUMN type VARCHAR(255) DEFAULT 'normal' AFTER `active`;
