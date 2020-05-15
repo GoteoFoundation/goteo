@@ -161,7 +161,7 @@ class GoteoChannelCall
         CREATE TABLE `node_call_to_action` (
             `node_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
             `call_to_action_id` BIGINT(20) UNSIGNED NOT NULL,
-            `background_color` VARCHAR(8) NOT NULL,
+            `style` VARCHAR(255) NOT NULL,
             `order` INT(11),
             `active` INT(1) DEFAULT 0,
             FOREIGN KEY (`node_id`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
