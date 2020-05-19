@@ -31,7 +31,9 @@
       <div class="tabs">
         <div class="date"> <?= $program->date ?> </div>
         <div class="paragraph">
-          <img class="img-responsive" src="<?= $program->getHeader()->getLink(350,150) ?>" >
+          <?php if($program->header): ?>
+            <img class="img-responsive" src="<?= $program->getHeader()->getLink(350,150) ?>" >
+          <?php endif; ?>
           <h1><?= $program->title ?></h1>
           <p><?= $program->description ?></p>
           <?php if ($program->action): ?>
