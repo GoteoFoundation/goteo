@@ -1280,10 +1280,10 @@ div.section.resources{
 		.slick-list{
 	   		.widget-slide {
 	            margin-left: 0px !important;
-	            .project-widget.normal{
-	                box-shadow: none;
-									margin-left: 20px;	            
-								}
+		            .project-widget.normal{
+		                box-shadow: none;
+						margin-left: 20px;	            
+					}
 	   			}
 	   	}
 	}
@@ -1301,17 +1301,16 @@ div.section.resources{
   	div.section.sponsors{
 	  	ul.main-sponsors{
 		    li{
-		    	/*display: block;
-	   			text-align: center;
-	   			margin-bottom: 10px;*/
 	   			img{
-	   				height: 45px;
+	   				height: 41px;
 	   			}
 			}
 		}
 		.secondary-sponsor
 		{
-		//text-align: center;
+			img{
+				height: 35px;
+			}
 		}
 	}
 
