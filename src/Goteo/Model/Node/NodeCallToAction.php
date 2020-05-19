@@ -69,6 +69,68 @@
       return [];
   }
 
+      /**
+     * Node Team listing
+     *
+     * @param array filters
+     * @param string node id
+     * @param int limit items per page or 0 for unlimited
+     * @param int page
+     * @param int pages
+     * @return array of team member instances
+     */
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
+
+      if(!$lang) $lang = Lang::current();
+      list($fields, $joins) = CallToAction::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+      $filter = [];
+      $values = [];
+
+      if ($filters['node']) {
+          $filter[] = "node_call_to_action.node_id = :node";
+          $values[':node'] = $filters['node'];
+      }
+
+      if ($filters['active']) {
+        $filter[] = "node_call_to_action.active";
+      }
+
+      if($filter) {
+          $sql = " WHERE " . implode(' AND ', $filter);
+      }
+
+      $sql="SELECT
+                  node_call_to_action.node_id,
+                  node_call_to_action.call_to_action_id,
+                  $fields,
+                  call_to_action.header,
+                  call_to_action.icon,
+                  call_to_action.action_url,
+                  call_to_action.lang,
+                  node_call_to_action.style,
+                  node_call_to_action.order,
+                  node_call_to_action.active
+            FROM node_call_to_action
+            INNER JOIN call_to_action
+              ON call_to_action.id = node_call_to_action.call_to_action_id
+            $joins
+            $sql
+            ORDER BY node_call_to_action.order
+            LIMIT $offset, $limit";
+      // die(\sqldbg($sql, $values));
+
+      $list = [];
+      if($query = self::query($sql, $values)) {
+        foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $cta) {
+          $cta->header = Image::get($cta->header);
+          $list[] = $cta;
+        }
+      }
+      return $list;
+
+  }
+
   /**
    * Save.
    *
