@@ -33,7 +33,7 @@ endforeach;
 
         <?php foreach($secondary_sponsors as $sponsor): ?>
         <?php $sponsor_image=$sponsor->getImage(); ?>
-        <div class="col-md-4 secondary-sponsor">
+        <div class="col-md-4 col-sm-4 col-xs-6 secondary-sponsor">
           <div class="sponsor-label">
             <?= $sponsor->label ?>
           </div>
