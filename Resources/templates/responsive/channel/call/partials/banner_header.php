@@ -1,11 +1,15 @@
 <div class="section banner-header">
 	<div class="custom-header">
 		<div class="pull-left">
-			<img src="/assets/img/channel/call/logo_crowdcoop.png" height="30px">
+			<a href"<?= '/channel/'.$this->channel->id ?>">
+				<img src="/assets/img/channel/call/logo_crowdcoop.png" height="30px">
+			</a>
 		</div>
 		<div class="pull-right">
 			<span><?= $this->text('call-header-powered-by') ?></span>
-          	<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
+			<a href="">
+          		<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
+          	</a>
       	</div>
 	</div>
 	<div class="image">
