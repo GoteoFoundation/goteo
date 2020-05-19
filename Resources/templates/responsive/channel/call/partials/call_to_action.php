@@ -10,7 +10,7 @@
       <div class="row">
         <?php foreach ($call_to_actions as $cta): ?>
           <div class="col-md-6 col-sm-12">
-            <div class="cta" <?= $cta->background_color ? 'style="background-color:'.$cta->background_color.';"' : '' ?> >
+            <div class="cta <?= $cta->style?>" >
               <img class="img-responsive" src="<?= $cta->header->getLink(500,300)?>" >
               <div class="info">
                 <div class="title">

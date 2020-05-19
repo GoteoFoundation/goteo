@@ -25,7 +25,7 @@
       $icon,
       $action,
       $action_url,
-      $background_color,
+      $style,
       $lang,
       $order,
       $active;
@@ -49,7 +49,7 @@
                 call_to_action.icon,
                 call_to_action.action_url,
                 call_to_action.lang,
-                node_call_to_action.background_color,
+                node_call_to_action.style,
                 node_call_to_action.order,
                 node_call_to_action.active
           FROM node_call_to_action
@@ -79,8 +79,8 @@
     if (!$this->validate($errors)) return false;
 
     try {
-          $sql = "REPLACE INTO node_call_to_action (`node_id`, `call_to_action_id`, `order`, `active`, `background_color`) VALUES(:node_id, :call_to_action_id, :order, :active, :background_color)";
-          $values = array(':node_id'=>$this->node_id, ':call_to_action_id'=>$this->call_to_action_id, ':order' => $this->order, ':active' => $this->active, ':background_color' => $this->background_color);
+          $sql = "REPLACE INTO node_call_to_action (`node_id`, `call_to_action_id`, `order`, `active`, `style`) VALUES(:node_id, :call_to_action_id, :order, :active, :style)";
+          $values = array(':node_id'=>$this->node_id, ':call_to_action_id'=>$this->call_to_action_id, ':order' => $this->order, ':active' => $this->active, ':style' => $this->style);
     if (self::query($sql, $values)) {
         return true;
             } else {
