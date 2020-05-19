@@ -1260,6 +1260,11 @@ div.section.resources{
 			visibility:hidden;
 			opacity:0;
 			transition: opacity 1s;
+
+			.paragraph {
+				position: relative;
+				width: 200px;
+			}
 			
 			// transition: opacity 1s;
 			.custom-left-arrow{
@@ -1279,6 +1284,10 @@ div.section.resources{
 					color: $color-new-green;
 					top: -50% !important;
 				}
+			}
+
+			.slick-current {
+				width: 300px !important;
 			}
 		}	
 	}
