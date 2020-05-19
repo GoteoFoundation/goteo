@@ -195,67 +195,80 @@ div.section.call-to-action{
 		}
 	
 	div.cta {
-		background-color: $background-new-dark-blue;
-		.col-md-6 {
-			padding-left: 0 !important;
-			padding-right: 0 !important;
-		}
-		.icon{
-        	background: $background-white;
-        }
-	    .info {
-	      	color: $color-white;
-		  	font-weight: bold;
-	      .title  {
-					font-size: $font-size*2.3;    
-					padding-bottom: 10px;
-	      }
-	      .description {
-	        font-size: $font-size;
-					line-height: 1.5;
-					padding-bottom: 20px;
-				}
-				.col-button {
-					.btn {
-						font-weight: bold !important;
-						font-size: $font-size*1.2;
-					}
-				}	
-	    }
-	 	}
 
-		div.join-call {
-			&.col-md-6 &.col-sm-12 {
+			&.blue {
+				display: inline-block;
+				background-color: $background-new-dark-blue;
+				
+				.icon {
+					background: $background-white;
+				}
+
+				.info {
+					color: $color-white;
+					font-weight: bold;
+					.title  {
+						font-size: $font-size*2.3;    
+						padding-bottom: 10px;
+					}
+					.description {
+						font-size: $font-size;
+						line-height: 1.5;
+						padding-bottom: 20px;
+					}
+					.col-button {
+						.btn {
+							font-weight: bold !important;
+							font-size: $font-size*1.2;
+						}
+					}	
+				}
+			}
+
+			&.yellow {
+				.icon{
+					background: $background-new-dark-blue;
+						}
+				.info {
+					background-color: $background-new-yellow;
+					color: $color-new-dark-blue;
+					font-weight: bold;
+					.title  {
+						font-size: $font-size*2.3;
+						padding-bottom: 10px;
+					}
+					.description {
+						font-size: $font-size;
+						line-height: 1.5;
+						padding-bottom: 20px;
+					}
+					.col-button {
+						.btn-yellow {
+							border: 1px solid $color-new-lilac;
+							font-weight: bold !important;
+							font-size: $font-size*1.2;
+						}
+
+						.btn-transparent {
+							@extend #{'.btn-yellow'};
+						}
+
+					}
+				}
+			}
+
+			.col-md-6 {
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+			}
+				
+			.col-md-6 .col-sm-12 {
 				padding-bottom: 15px !important;
 			}
-			.icon{
-        		background: $background-new-dark-blue;
-      		}
-			.info {
-				background-color: $background-new-yellow;
-				color: $color-new-dark-blue;
-				font-weight: bold;
-				.title  {
-					font-size: $font-size*2.3;
-					padding-bottom: 10px;
-				}
-				.description {
-					font-size: $font-size;
-					line-height: 1.5;
-					padding-bottom: 20px;
-				}
-				.col-button {
-					.btn-yellow {
-						border: 1px solid $color-new-lilac;
-						font-weight: bold !important;
-						font-size: $font-size*1.2;
-					}
-				}
-			}
-		}
 
-		img {
-			width: 100%;
+			img {
+				width: 100%;
+			}
 		}
 	}
 		/* Variables */
@@ -1133,17 +1146,30 @@ div.section.resources{
 
 // Tablets customization
 @media (max-width: $breakpoint-md + 1) {
+
+	h2.title{
+		color: $color-new-green;
+		font-size: $font-size*1.5;
+		border-bottom: 1px solid $color-new-dark-blue;
+		font-weight: bold;
+		padding-bottom: 10px;
+		position: relative;
+		.icon{
+			background-color: $color-new-dark-blue;
+			vertical-align: sub;
+			margin-right: 7px;
+		}
+	}
     div.section.banner-header{
         div.banner-info{
-            padding-left: 15%;
             span.title{
-                font-size: $font-size*0.8;
+                font-size: $font-size*1.1;
             }
             div.description{
-                font-size: $font-size*1.4;
+                font-size: $font-size*2.5;
             }
              .btn{
-                font-size: $font-size*0.8 !important;
+                font-size: $font-size*1 !important;
             }
         }
         div.info{
@@ -1205,36 +1231,27 @@ div.section.resources{
 
 @media (max-width: $breakpoint-sm - 1) {
 
-	div.section.program{
-		.title{
-			padding-bottom: 105px;
-			a.btn{
-				bottom: 20px;
-				left: 0;
-			}
-		}
-	}
-
 	div.section.banner-header{
 		min-height: 400px;
 
 		div.custom-header{
+			font-size: $font-size*0.8;
 			img{
 				height: 22px !important;
 			}
 		}
         div.banner-info{
-            padding-left: 20%;
+            padding-left: 0px !important;
      		bottom: 25%;
             span.title{
-                font-size: $font-size*0.8 !important;
+                font-size: $font-size*1 !important;
             }
             div.description{
-                font-size: $font-size*1.1 !important;
+                font-size: $font-size*1.8 !important;
                 margin-bottom: 10px;
             }
             .btn{
-                font-size: $font-size*0.7 !important;
+                font-size: $font-size*1 !important;
             }
             &.terms{
             	bottom: 35%;
@@ -1248,6 +1265,17 @@ div.section.resources{
         }
 	}
 
+	div.section.main-info{
+		padding: 0 !important;
+
+		h1.title{
+			line-height: 1;
+		}
+		p.description{
+			padding-top: 0px;
+		}
+	}
+
 	div.section.projects{
 		.slick-list{
 	   		.widget-slide {
@@ -1259,18 +1287,31 @@ div.section.resources{
 	   			}
 	   	}
 	}
+
+	div.section.program{
+		.title{
+			padding-bottom: 105px;
+			a.btn{
+				bottom: 20px;
+				left: 0;
+			}
+		}
+	}
 	
   	div.section.sponsors{
 	  	ul.main-sponsors{
 		    li{
-		    	display: block;
+		    	/*display: block;
 	   			text-align: center;
-	   			margin-bottom: 10px;
+	   			margin-bottom: 10px;*/
+	   			img{
+	   				height: 45px;
+	   			}
 			}
 		}
 		.secondary-sponsor
 		{
-		text-align: center;
+		//text-align: center;
 		}
 	}
 
