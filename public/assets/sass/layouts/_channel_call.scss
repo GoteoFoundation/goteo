@@ -1191,6 +1191,10 @@ div.section.resources{
 		}
 
 		div.section.program {
+
+			padding: 50px 0px 80px 0px !important;
+			height: 800px;
+
 			.slider-programs{
 				visibility:hidden;
 				opacity:0;
@@ -1206,10 +1210,11 @@ div.section.resources{
 							cursor: pointer;
 							width: 45%;
 							background-color: rgba(21,174,152, 0.2);
-							height: unset;
+							height: 20%;
 
-							icon-arrow {
+							.icon-arrow {
 								color: $color-new-green;
+								top: -20% !important;
 							}
 				}
 				.custom-right-arrow{
@@ -1221,10 +1226,11 @@ div.section.resources{
 							cursor: pointer;
 							width: 45%;
 							background-color: rgba(21,174,152, 0.2);
-							height: unset;
+							height: 20%;
 							
-							icon-arrow {
+							.icon-arrow {
 								color: $color-new-green;
+								top: -20% !important;
 							}
 				}
 			}	
@@ -1239,6 +1245,9 @@ div.section.resources{
 	
 
 	div.section.program{
+
+		height: 800px;
+
 		.title{
 			padding-bottom: 105px;
 			a.btn{
@@ -1246,6 +1255,32 @@ div.section.resources{
 				left: 0;
 			}
 		}
+
+		.slider-programs{
+			visibility:hidden;
+			opacity:0;
+			transition: opacity 1s;
+			
+			// transition: opacity 1s;
+			.custom-left-arrow{
+				bottom: -20%;
+				height: 15%;
+
+				.icon-arrow {
+					color: $color-new-green;
+					top: -50% !important;
+				}
+			}
+			.custom-right-arrow{
+				bottom: -20%;
+				height: 15%;
+				
+				.icon-arrow {
+					color: $color-new-green;
+					top: -50% !important;
+				}
+			}
+		}	
 	}
 
 	div.section.banner-header{
