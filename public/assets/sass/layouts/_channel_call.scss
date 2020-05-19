@@ -602,6 +602,11 @@ div.section.workshops{
 	.title {
 		text-align: left;
 		margin-bottom: 10px;
+		color: $color-new-dark-blue;
+		
+		span.icon {
+			background-color: $background-white;
+		}
 	}
 
 	.description {
