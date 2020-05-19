@@ -185,7 +185,8 @@ div.section.main-info{
 }
   
 div.section.call-to-action{
-    background-color: $background-white;
+		background-color: $background-white;
+		line-height: 1;
     // padding: 50px 0;
     .info{
 			padding: 30px;
@@ -196,81 +197,82 @@ div.section.call-to-action{
 	
 	div.cta {
 
-			&.blue {
-				display: inline-block;
-				background-color: $background-new-dark-blue;
-				
-				.icon {
-					background: $background-white;
-				}
+		display: inline-block;
 
-				.info {
-					color: $color-white;
-					font-weight: bold;
-					.title  {
-						font-size: $font-size*2.3;    
-						padding-bottom: 10px;
-					}
-					.description {
-						font-size: $font-size;
-						line-height: 1.5;
-						padding-bottom: 20px;
-					}
-					.col-button {
-						.btn {
-							font-weight: bold !important;
-							font-size: $font-size*1.2;
-						}
-					}	
-				}
+		&.blue {
+			background-color: $background-new-dark-blue;
+
+			.icon {
+				background: $background-white;
 			}
 
-			&.yellow {
-				.icon{
-					background: $background-new-dark-blue;
-						}
-				.info {
-					background-color: $background-new-yellow;
-					color: $color-new-dark-blue;
-					font-weight: bold;
-					.title  {
-						font-size: $font-size*2.3;
-						padding-bottom: 10px;
-					}
-					.description {
-						font-size: $font-size;
-						line-height: 1.5;
-						padding-bottom: 20px;
-					}
-					.col-button {
-						.btn-yellow {
-							border: 1px solid $color-new-lilac;
-							font-weight: bold !important;
-							font-size: $font-size*1.2;
-						}
-
-						.btn-transparent {
-							@extend #{'.btn-yellow'};
-						}
-
+			.info {
+				color: $color-white;
+				font-weight: bold;
+				.title  {
+					font-size: $font-size*1.7;
+					padding-bottom: 10px;
+				}
+				.description {
+					font-size: $font-size;
+					line-height: 1.5;
+					padding-bottom: 20px;
+				}
+				.col-button {
+					.btn {
+						font-weight: bold !important;
+						font-size: $font-size*1.2;
 					}
 				}
-			}
-
-			.col-md-6 {
-				padding-left: 0 !important;
-				padding-right: 0 !important;
-			}
-				
-			.col-md-6 .col-sm-12 {
-				padding-bottom: 15px !important;
-			}
-
-			img {
-				width: 100%;
 			}
 		}
+
+		&.yellow {
+			.icon{
+				background: $background-new-dark-blue;
+					}
+			.info {
+				background-color: $background-new-yellow;
+				color: $color-new-dark-blue;
+				font-weight: bold;
+				.title  {
+					font-size: $font-size*1.7;
+					padding-bottom: 10px;
+				}
+				.description {
+					font-size: $font-size;
+					line-height: 1.5;
+					padding-bottom: 20px;
+				}
+				.col-button {
+					.btn-yellow {
+						border: 1px solid $color-new-lilac;
+						font-weight: bold !important;
+						font-size: $font-size*1.2;
+					}
+
+					.btn-transparent {
+						@extend #{'.btn-yellow'};
+					}
+
+				}
+			}
+		}
+
+		.col-md-6 {
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+		}
+			
+		.col-md-6 .col-sm-12 {
+			padding-bottom: 15px !important;
+		}
+
+		img {
+			width: 100%;
+		}
 	}
+}
 		/* Variables */
 		
 		$backgroundColor: #f77462;
