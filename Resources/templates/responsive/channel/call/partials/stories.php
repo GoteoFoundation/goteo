@@ -1,5 +1,7 @@
 <?php
   $stories = $this->channel->getStories();
+
+  if ($stories):
 ?>
 
 <div class="section stories">
@@ -35,3 +37,4 @@
     </div>
   </div>
 </div>
+<?php endif; ?>
