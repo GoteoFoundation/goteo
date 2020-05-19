@@ -1384,6 +1384,11 @@ div.section.resources{
 			margin-top: 20px;
 		}
 	}
+
+	span.icon-2x {
+		@include icon-responsive(4, 4);
+	}
+
 }
 
 
