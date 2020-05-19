@@ -1174,7 +1174,7 @@ class Node extends \Goteo\Core\Model {
     public function getCallToActions() {
         if($this->callToActionList) return $this->callToActionList;
     
-        $this->callToActionList = NodeCallToAction::get($this->id);
+        $this->callToActionList = NodeCallToAction::getList(['node' => $this->id, 'active' => true], 0, 2);
         return $this->callToActionList;
     }
     

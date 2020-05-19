@@ -197,7 +197,7 @@ div.section.call-to-action{
 	div.cta {
 
 			&.blue {
-				
+				display: inline-block;
 				background-color: $background-new-dark-blue;
 				
 				.icon {
