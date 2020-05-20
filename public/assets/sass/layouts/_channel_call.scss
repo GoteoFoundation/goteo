@@ -127,6 +127,7 @@ div.section.banner-header{
 			background: linear-gradient(to right, #FFF 0%,#FFF 75%,transparent 75%,transparent 100%);
 			.item{
 				background-color: $background-white;
+				padding-top:10px;
 			}
 			.title{
 			color: $color-new-dark-blue;
@@ -840,7 +841,7 @@ div.section.terms-items{
     // padding-bottom:80px;
     font-size: $font-size*1.1;
     color: $color-new-dark-blue;
-    padding: 0 !important;
+    padding: 0 0 60px 0 !important;
     .title{
     	color: $color-new-dark-blue;
 		.icon{
