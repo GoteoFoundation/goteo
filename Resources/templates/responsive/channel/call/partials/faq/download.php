@@ -8,7 +8,7 @@
 				<img class="pdf" src="/assets/img/icons/channel-call/pdf.svg" width="55px">
 			</div>
 			<div class="col-md-11 col-xs-9">
-				<h2 class="title"><?= $item->title ?></h3>
+				<h2 class="title"><?= $item->title ?></h2>
 				<div class="description">
 					<?= $item->description ?>
 				</div>
@@ -16,6 +16,7 @@
 					<i class="icon icon-download icon-2x"></i><?= $this->text('regular-download') ?>
 				</a>
 			</div>
+		</div>
 	</div>
 </div>
 
