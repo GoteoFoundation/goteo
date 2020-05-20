@@ -1,11 +1,17 @@
 <div class="section banner-header">
 	<div class="custom-header">
 		<div class="pull-left">
-			<img src="/assets/img/channel/call/logo_crowdcoop.png" height="30px">
+			<a href="<?= '/channel/'.$this->channel->id ?> ">
+				<img src="/assets/img/channel/call/logo_crowdcoop.png" height="30px">
+			</a>
 		</div>
 		<div class="pull-right">
 			<span><?= $this->text('call-header-powered-by') ?></span>
-          	<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
+			<a href="">
+				<a href="<?= $this->get_config('url.main') ?>">
+          			<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
+          		</a>
+          	</a>
       	</div>
 	</div>
 	<div class="image">
@@ -25,11 +31,11 @@
 				<div class="col-lg-6 col-md-7 col-sm-8 col-xs-12">
 					<div>
 						<span class="title">
-						<?= $this->channel->name ?>
+						<?= $this->channel->subtitle ?>
 						</span>
 					</div>
 					<div class="description">
-						<?= $this->channel->subtitle ?>
+						<?= $this->channel->description ?>
 					</div>
 					<a href="<?= $this->channel->banner_button_url ?>" class="btn btn-yellow scroller"><i class="icon icon-plus icon-2x">		
 						</i><?= $this->text('landing-more-info') ?>

@@ -4,8 +4,8 @@
 
 $this->layout('channel/call/layout', [
 	'bodyClass' => 'channel-call',
-    'title' => 'Bases',
-    'meta_description' => $this->channel->subtitle,
+    'title' => ucfirst($this->faq->name).' :: FAQ',
+    'meta_description' => $this->faq->banner_description,
     'tw_image' => $meta_img
     ]);
 

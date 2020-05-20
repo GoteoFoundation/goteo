@@ -31,10 +31,14 @@
       <div class="tabs">
         <div class="date"> <?= $program->date ?> </div>
         <div class="paragraph">
-          <img class="img-responsive" src="<?= $program->getHeader()->getLink(350,150) ?>" >
+          <?php if($program->header): ?>
+            <img class="img-responsive" src="<?= $program->getHeader()->getLink(350,150) ?>" >
+          <?php endif; ?>
           <h1><?= $program->title ?></h1>
           <p><?= $program->description ?></p>
-          <a href="<?= $program->action_url ?>" class="btn btn-transparent"><i class="icon icon-<?= $program->icon ?> icon-2x"></i> <?= $program->action ?></a>
+          <?php if ($program->action): ?>
+            <a href="<?= $program->action_url ?>" class="btn btn-transparent"><i class="icon icon-<?= $program->icon ?> icon-2x"></i> <?= $program->action ?></a>
+          <?php endif; ?>
         </div>
       </div>
     <?php endforeach; ?>
