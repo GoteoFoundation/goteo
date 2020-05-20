@@ -602,6 +602,11 @@ div.section.workshops{
 	.title {
 		text-align: left;
 		margin-bottom: 10px;
+		color: $color-new-dark-blue;
+		
+		span.icon {
+			background-color: $background-white;
+		}
 	}
 
 	.description {
@@ -666,6 +671,7 @@ div.section.workshops{
 			font-weight: bold;
 			color: $color-new-dark-blue;
 			font-size: $font-size*1.5;
+			line-height: 1.2;
 			
 			a:hover {
 				color: $color-new-green;
@@ -927,11 +933,12 @@ div.section.team {
 			height: 350px;
 
 			.name {
-				font-size: $font-size*1.5;
+				font-size: $font-size*1.2;
 				border-bottom: 1px $color-new-dark-blue solid;
 				width: 100%;
 				padding-top: 10px;
 				font-weight: bold;
+				line-height: 1.2;
 			}
 			
 			.role {
@@ -939,6 +946,7 @@ div.section.team {
 				border-bottom: 1px $color-new-dark-blue solid;
 				padding-top: 10px;
 				padding-bottom: 10px;
+				font-size: $font-size;
 			}
 		}
 	}
@@ -1104,10 +1112,10 @@ div.section.resources{
 			border-bottom: 1px solid $color-new-dark-blue;
 			padding: 5px;
 			font-size: $font-size;
-			font-weight: normal;
+			font-weight: bold;
 			
 			a {
-				color: $color-new-green;
+				color: $color-new-dark-green;
 			}
 
 			.icon {

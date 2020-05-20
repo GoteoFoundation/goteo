@@ -378,6 +378,14 @@ class Workshop extends \Goteo\Core\Model {
         return $date<=$date_now;
     }
 
+    // returns the current location
+    public function getLocation() {
+        if($this->locationObject) return $this->locationObject;
+        $this->locationObject = WorkshopLocation::get($this);
+        return $this->locationObject;
+    }
+    
+
     /**
      * Save.
      *
