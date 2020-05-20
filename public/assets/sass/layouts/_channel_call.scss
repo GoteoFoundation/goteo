@@ -812,7 +812,7 @@ div.section.projects{
 div.section.sponsors{
 	color:$color-new-dark-blue;
 	// padding: 50px 0 80px 0;
-	background-color: $background-white;
+	//background-color: $background-white;
 	.description{
 		font-size: $font-size*1.1;
 		margin-top: 15px;
@@ -1203,6 +1203,7 @@ div.section.resources{
 
 			padding: 50px 0px 80px 0px !important;
 			height: 800px;
+			background-color: $background-white;
 
 			.slider-programs{
 				visibility:hidden;
