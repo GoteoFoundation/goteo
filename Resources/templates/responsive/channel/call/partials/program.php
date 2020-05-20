@@ -36,8 +36,10 @@
           <?php endif; ?>
           <h1><?= $program->title ?></h1>
           <p><?= $program->description ?></p>
-          <?php if ($program->action): ?>
+          <?php if ($program->action_url): ?>
             <a href="<?= $program->action_url ?>" class="btn btn-transparent"><i class="icon icon-<?= $program->icon ?> icon-2x"></i> <?= $program->action ?></a>
+          <?php elseif ($program->modal_description): ?>
+           <a href="#" data-toggle="modal" data-target="#programModal" class="btn btn-transparent"><i class="icon icon-<?= $program->icon ?> icon-2x"></i> <?= $program->action ?></a>
           <?php endif; ?>
         </div>
       </div>
