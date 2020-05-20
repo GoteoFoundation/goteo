@@ -31,9 +31,10 @@ $this->section('channel-content');
 
 <?= $this->insert('channel/call/partials/resources') ?>
 
-
 <?= $this->insert('channel/call/partials/team') ?>
 
 <?= $this->insert('channel/call/partials/sponsors') ?>
+
+<?= $this->insert('channel/call/partials/modal_program') ?>
 
 <?php $this->replace() ?>
