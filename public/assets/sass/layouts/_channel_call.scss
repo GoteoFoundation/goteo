@@ -931,7 +931,7 @@ div.section.team {
 		.team_widget {
 			color: $color-new-dark-blue;
 			margin: 20px 0 20px 0;
-			height: max-content;
+			height: 350px;
 
 			.name {
 				font-size: $font-size*1.2;
@@ -1417,6 +1417,10 @@ footer {
 		.container {
 			.row {
 				div:nth-child(odd) { clear: both; }
+			}
+
+			.team_widget {
+				height: max-content !important;
 			}
 		}
 	}
