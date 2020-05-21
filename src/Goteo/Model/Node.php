@@ -1164,7 +1164,7 @@ class Node extends \Goteo\Core\Model {
     public function getTeam() {
         if($this->teamList) return $this->teamList;
         
-        $this->teamList = NodeTeam::getList(['node' => $this->id]);
+        $this->teamList = NodeTeam::getList(['node' => $this->id], 0, 999);
         return $this->teamList;
     }
 
