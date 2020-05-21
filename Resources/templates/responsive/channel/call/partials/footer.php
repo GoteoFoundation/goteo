@@ -3,11 +3,11 @@
       <div class="container">
         <div class="row header">
           <div class="pull-left">
-            <img src="/assets/img/channel/call/logo_crowdcoop_blue.png" height="50">
+            <img src="/assets/img/channel/call/logo_crowdcoop_blue.png">
           </div>
           <div class="pull-right">
             <span><?= $this->text('call-header-powered-by') ?></span>
-            <img height="30 " src="<?= '/assets/img/goteo-blue-green.svg' ?>" >
+            <img src="<?= '/assets/img/goteo-blue-green.svg' ?>" >
           </div>
         </div>
         <div class="row spacer-20">
