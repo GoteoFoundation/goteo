@@ -1157,7 +1157,7 @@ class Node extends \Goteo\Core\Model {
         // if($this->programsList) return $this->programsList;
 
         // $this->programsList = NodeProgram::get($this->id);
-        $this->programsList = NodeProgram::getList(['node' => $this->id]);
+        $this->programsList = NodeProgram::getList(['node' => $this->id], 0, 999);
         return $this->programsList;
     }
 

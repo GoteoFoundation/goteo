@@ -7,11 +7,9 @@
 		</div>
 		<div class="pull-right">
 			<span><?= $this->text('call-header-powered-by') ?></span>
-			<a href="">
-				<a href="<?= $this->get_config('url.main') ?>">
-          			<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
-          		</a>
-          	</a>
+			<a href="<?= $this->get_config('url.main') ?>">
+      			<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
+      		</a>
       	</div>
 	</div>
 	<div class="image">
