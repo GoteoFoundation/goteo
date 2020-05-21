@@ -214,6 +214,13 @@ class Workshop extends \Goteo\Core\Model {
         $values = [];
         $sqlFilters = [];
         $sql = '';
+        $sqlJoin = '';
+
+        if (isset($filters['node'])) {
+            $sqlJoin .= "INNER JOIN node_workshop ON node_workshop.workshop_id = workshop.id and node_workshop.node_id = :node ";
+            $values[":node"] = $filters['node'];
+        }
+
 
         if($count) {
             // Return count
@@ -250,6 +257,7 @@ class Workshop extends \Goteo\Core\Model {
 
             FROM workshop
             $joins
+            $sqlJoin
             $sql
             ORDER BY `id` DESC
             LIMIT $offset,$limit";
