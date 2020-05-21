@@ -934,19 +934,21 @@ div.section.team {
 			height: 350px;
 
 			.name {
-				font-size: $font-size*1.2;
+				font-size: $font-size*1.5;
 				border-bottom: 1px $color-new-dark-blue solid;
 				width: 100%;
 				padding-top: 10px;
+				padding-bottom: 10px;
 				font-weight: bold;
 				line-height: 1.2;
 			}
 			
 			.role {
-				color: $color-new-green;
+				color: $color-new-dark-green;
 				border-bottom: 1px $color-new-dark-blue solid;
-				padding-top: 10px;
-				padding-bottom: 10px;
+				padding-top: 5px;
+				padding-bottom: 5px;
+				font-weight: bold;
 				font-size: $font-size;
 			}
 		}
