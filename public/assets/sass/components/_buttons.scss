@@ -166,6 +166,17 @@
     }
 }
 
+.btn-yellow{
+    background-color: $color-new-yellow;
+    color: $color-white !important;
+    &:hover {
+        background-color:darken($color-new-yellow, 10%);
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
+
 .btn-transparent {
     background-color: transparent;
     color: $color-white;

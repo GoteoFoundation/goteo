@@ -17,6 +17,9 @@ use Goteo\Application\Session;
 use Goteo\Application\Message;
 use Goteo\Application\View;
 use Goteo\Model\Node;
+use Goteo\Model\Node\NodeFaq;
+use Goteo\Model\Node\NodeFaqQuestion;
+use Goteo\Model\Node\NodeFaqDownload;
 use Goteo\Model\Home;
 use Goteo\Model\Project;
 use Goteo\Model\Sponsor;
@@ -106,6 +109,9 @@ class ChannelController extends \Goteo\Core\Controller {
 
         $limit = 999;
 
+        $channel = Node::get($id);
+
+
         if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
             $total = count($list);
         }
@@ -116,16 +122,18 @@ class ChannelController extends \Goteo\Core\Controller {
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
 
+        $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/index';
+
         return $this->viewResponse(
-            'channel/list_projects',
-            array(
+            $view,
+                [
                 'projects' => $list,
                 'category'=> $category,
                 'title_text' => Text::get('node-side-searcher-promote'),
                 'type' => $type,
                 'total' => $total,
                 'limit' => $limit
-                )
+                ]
         );
     }
 
@@ -137,6 +145,8 @@ class ChannelController extends \Goteo\Core\Controller {
     public function listProjectsAction($id, $type = 'available', $category = null, Request $request)
     {
         $this->setChannelContext($id);
+
+        $channel = Node::get($id);
 
         $limit = 9;
         $status=[3,4,5];
@@ -153,16 +163,40 @@ class ChannelController extends \Goteo\Core\Controller {
         $list = Project::published($filter, $id, (int)$request->query->get('pag') * $limit, $limit);
         $total = Project::published($filter, $id, 0, 0, true);
 
+        $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/list_projects';
+
         return $this->viewResponse(
-            'channel/list_projects',
-            array(
+            $view,
+                [
                 'projects' => $list,
                 'category'=> $category,
                 'title_text' => $title_text,
                 'type' => $type,
                 'total' => $total,
                 'limit' => $limit
-                )
+                ]
+        );
+    }
+
+    /**
+     * Channel terms
+     * @param  Request $request [description]
+     */
+    public function faqAction ($id, $slug, Request $request)
+    {
+        $this->setChannelContext($id);
+
+        $faq= NodeFaq::getBySlug($id, $slug);
+
+        $questions=NodeFaqQuestion::getList(['node_faq' => $faq->id]);
+
+        $downloads=NodeFaqDownload::getList(['node_faq' => $faq->id]);
+
+        return $this->viewResponse('channel/call/faq',
+            ['faq' => $faq,
+             'questions' => $questions,
+             'downloads' => $downloads
+            ]
         );
     }
 
@@ -193,6 +227,7 @@ class ChannelController extends \Goteo\Core\Controller {
             'project_defaults' => ['node' => $id]
         ]);
     }
+
 
      /**
      * List of channels

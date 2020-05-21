@@ -18,16 +18,22 @@ use Goteo\Library\Text;
 use Goteo\Model\Blog\Post as GeneralPost;
 use Goteo\Model\Node\NodeSponsor;
 use Goteo\Model\Node\NodeResource;
-
+use Goteo\Model\Node\NodeProgram;
+use Goteo\Model\Node\NodeFaq;
+use Goteo\Model\Node\NodeTeam;
+use Goteo\Model\Node\NodeCallToAction;
 
 class Node extends \Goteo\Core\Model {
 
     public
         $id = null,
         $name,
+        $type,
         $subtitle,
         $description,
         $hashtag,
+        $main_info_title,
+        $main_info_description,
         $email,
         $admins = array(), // administradores
         $logo,
@@ -35,6 +41,12 @@ class Node extends \Goteo\Core\Model {
         $home_img,
         $active,
         $project_creation_open,
+        $call_inscription_open,
+        $banner_header_image,
+        $banner_header_image_md,
+        $banner_header_image_sm,
+        $banner_header_image_xs,
+        $banner_button_url,
         $show_team,
         $image,
         $default_consultant,
@@ -43,6 +55,7 @@ class Node extends \Goteo\Core\Model {
         $premium,
         $iframe,
         $terms,
+        $terms_url,
         $chatbot_url,
         $chatbot_id,
         $tip_msg
@@ -73,7 +86,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'subtitle', 'description', 'call_to_action_description', 'terms', 'tip_msg'];
+        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description', 'banner_button_url', 'terms_url'];
     }
 
     /**
@@ -91,6 +104,7 @@ class Node extends \Goteo\Core\Model {
                 node.id as id,
                 node.name as name,
                 node.email as email,
+                node.type as type,
                 node.subtitle as subtitle,
                 node.hashtag as hashtag,
                 $fields,
@@ -101,6 +115,11 @@ class Node extends \Goteo\Core\Model {
                 node.url as url,
                 node.active as active,
                 node.project_creation_open as project_creation_open,
+                node.call_inscription_open as call_inscription_open,
+                node.banner_header_image as banner_header_image,
+                node.banner_header_image_md as banner_header_image_md,
+                node.banner_header_image_sm as banner_header_image_sm,
+                node.banner_header_image_xs as banner_header_image_xs,
                 node.show_team as show_team,
                 node.twitter as twitter,
                 node.facebook as facebook,
@@ -336,6 +355,31 @@ class Node extends \Goteo\Core\Model {
             $this->homeImageInstance = new Image($this->home_img);
         }
         return $this->homeImageInstance;
+    }
+
+    public function getBannerHeaderImage() {
+        if(!$this->bannerHeaderImageInstance instanceOf Image) {
+            $this->bannerHeaderImageInstance = new Image($this->banner_header_image);
+        }
+        return $this->bannerHeaderImageInstance;
+    }
+    public function getBannerHeaderImageMd() {
+        if(!$this->bannerHeaderImageInstanceMd instanceOf Image) {
+            $this->bannerHeaderImageInstanceMd = new Image($this->banner_header_image_md);
+        }
+        return $this->bannerHeaderImageInstanceMd;
+    }
+    public function getBannerHeaderImageSm() {
+        if(!$this->bannerHeaderImageInstanceSm instanceOf Image) {
+            $this->bannerHeaderImageInstanceSm = new Image($this->banner_header_image_sm);
+        }
+        return $this->bannerHeaderImageInstanceSm;
+    }
+    public function getBannerHeaderImageXs() {
+        if(!$this->bannerHeaderImageInstanceXs instanceOf Image) {
+            $this->bannerHeaderImageInstanceXs = new Image($this->banner_header_image_xs);
+        }
+        return $this->bannerHeaderImageInstanceXs;
     }
 
     public function getLogo() {
@@ -973,10 +1017,10 @@ class Node extends \Goteo\Core\Model {
     /**
      *  Posts of this node
      */
-    public function getPosts () {
+    public function getPosts ($limit = 3) {
        if($this->postsList) return $this->postsList;
         
-        $this->postsList = GeneralPost::getList(['node' => $this->id ], true, 0, $limit = 3, false);
+        $this->postsList = GeneralPost::getList(['node' => $this->id ], true, 0, $limit, false);
 
         return $this->postsList;
 
@@ -1015,10 +1059,18 @@ class Node extends \Goteo\Core\Model {
         if($this->sponsorsList) return $this->sponsorsList;
         $values = [':node' => $this->id];
 
-        $sql = "SELECT
-                node_sponsor.*
-            FROM node_sponsor
+        list($fields, $joins) = NodeSponsor::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
 
+        $sql = "SELECT
+                node_sponsor.id,
+                node_sponsor.node_id,
+                node_sponsor.name,
+                node_sponsor.url,
+                node_sponsor.image,
+                node_sponsor.order,
+                $fields
+            FROM node_sponsor
+            $joins
             WHERE node_sponsor.node_id = :node
             ORDER BY node_sponsor.order ASC";
          //die(\sqldbg($sql, $values));
@@ -1055,16 +1107,31 @@ class Node extends \Goteo\Core\Model {
     }
 
     /**
-     *  Workshops of this node
+     *  next Workshops of this node
      */
     public function getWorkshops () {
-if($this->workshopsList) return $this->workshopsList;
+        if($this->workshopsList) return $this->workshopsList;
         $values = [':node' => $this->id];
 
-        //list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+        list($fields, $joins) = Workshop::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
 
         $sql = "SELECT
-                workshop.*
+                workshop.id,
+                workshop.online,
+                workshop.title,
+                $fields,
+                workshop.subtitle,
+                workshop.description,
+                workshop.date_in,
+                workshop.date_out,
+                workshop.schedule,
+                workshop.url,
+                workshop.workshop_location,
+                workshop.call_id,
+                workshop.venue,
+                workshop.city,
+                workshop.header_image,
+                workshop.venue_address
             FROM node_workshop
             INNER JOIN workshop ON workshop.id = node_workshop.workshop_id
             $joins
@@ -1075,6 +1142,53 @@ if($this->workshopsList) return $this->workshopsList;
         $this->workshopsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Workshop');
         return $this->workshopsList;
     }
+
+        /**
+     *  next Workshops of this node
+     */
+    public function getAllWorkshops () {
+        if($this->workshopList) return $this->workshopList;
+
+        $this->workshopList =  Workshop::getList(['node' => $this->id]);
+        return $this->workshopList;
+    }
+
+    public function getPrograms() {
+        // if($this->programsList) return $this->programsList;
+
+        // $this->programsList = NodeProgram::get($this->id);
+        $this->programsList = NodeProgram::getList(['node' => $this->id]);
+        return $this->programsList;
+    }
+
+    public function getTeam() {
+        if($this->teamList) return $this->teamList;
+        
+        $this->teamList = NodeTeam::getList(['node' => $this->id]);
+        return $this->teamList;
+    }
+
+    public function getFaqType($type) {
+        if($this->faqType) return $this->faqType;
+        
+        $this->faqType = NodeTeam::get($this->id, $type);
+        return $this->faqType;
+    }
+
+     public function getFaqDownloads($type) {
+        if($this->faqDownloads) return $this->faqDownloads;
+        
+        $this->faqDownloads = NodeTeam::get($this->id, $type);
+        return $this->faqDownloads;
+    }
+
+    public function getCallToActions() {
+        if($this->callToActionList) return $this->callToActionList;
+    
+        $this->callToActionList = NodeCallToAction::getList(['node' => $this->id, 'active' => true], 0, 2);
+        return $this->callToActionList;
+    }
+    
 
 
 }

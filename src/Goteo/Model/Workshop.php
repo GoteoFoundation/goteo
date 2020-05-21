@@ -108,9 +108,16 @@ class Workshop extends \Goteo\Core\Model {
 
         $list = array();
 
+        $sqlJoin = "";
+
         if ($filters['call']) {
             $sqlFilter = 'workshop.call_id = :call';
             $values[':call'] = $filters['call'];
+        }
+
+        if (isset($filters['node'])) {
+            $sqlJoin .= "INNER JOIN node_workshop ON node_workshop.workshop_id = workshop.id and node_workshop.node_id = :node ";
+            $values[":node"] = $filters['node'];
         }
 
         if (is_array($filters['event_type'])) {
@@ -169,12 +176,15 @@ class Workshop extends \Goteo\Core\Model {
                     workshop.venue,
                     workshop.city,
                     workshop.venue_address,
+                    workshop.header_image,
+                    workshop.workshop_location,
                     $different_select
                 FROM workshop
                 LEFT JOIN workshop_lang
                     ON  workshop_lang.id = workshop.id
                     AND workshop_lang.lang = :lang
                 $eng_join
+                $sqlJoin
                 $sqlFilter
                 $order
                 ";
@@ -234,6 +244,8 @@ class Workshop extends \Goteo\Core\Model {
                 workshop.venue,
                 workshop.city,
                 workshop.venue_address,
+                workshop.header_image,
+                workshop.workshop_location,
                 :viewLang as viewLang
 
             FROM workshop
@@ -365,6 +377,14 @@ class Workshop extends \Goteo\Core\Model {
 
         return $date<=$date_now;
     }
+
+    // returns the current location
+    public function getLocation() {
+        if($this->locationObject) return $this->locationObject;
+        $this->locationObject = WorkshopLocation::get($this);
+        return $this->locationObject;
+    }
+    
 
     /**
      * Save.
