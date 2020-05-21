@@ -931,7 +931,7 @@ div.section.team {
 		.team_widget {
 			color: $color-new-dark-blue;
 			margin: 20px 0 20px 0;
-			height: 350px;
+			height: max-content;
 
 			.name {
 				font-size: $font-size*1.2;
@@ -1394,6 +1394,14 @@ div.section.resources{
 		.btn{
 			float: left !important;
 			margin-top: 20px;
+		}
+	}
+
+	div.section.team {
+		.container {
+			.row {
+				div:nth-child(odd) { clear: both; }
+			}
 		}
 	}
 
