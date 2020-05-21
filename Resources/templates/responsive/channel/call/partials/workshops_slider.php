@@ -17,7 +17,7 @@
 			<a class="image" href="<?= '/workshop/' . $workshop->id ?>">
 				<img src="<?= $workshop->getHeaderImage()->getLink(265,280, true)?>">
 				<div class="date"> <?= $workshop->date_in ?> </div>
-				<div class="location"> <i class="fa fa-map-marker"></i> <?= ($workshop->workshop_location)? $this->text_truncate($workshop->workshop_location, 30) : $this->text_truncate($workshop->getLocation()->city, 30) ?> </div>
+				<div class="location"> <i class="fa fa-map-marker"></i> <?= ($workshop->workshop_location)? $this->text_truncate($workshop->workshop_location, 30) : ( ($workshop->getLocation()->city)? $this->text_truncate($workshop->getLocation()->city, 30) : $workshop->venue ) ?> </div>
 			</a>
 
 
