@@ -3,11 +3,15 @@
       <div class="container">
         <div class="row header">
           <div class="pull-left">
-            <img src="/assets/img/channel/call/logo_crowdcoop_blue.png">
+            <a href="<?= '/channel/'.$this->channel->id ?> ">
+              <img src="/assets/img/channel/call/logo_crowdcoop_blue.png">
+            </a>
           </div>
           <div class="pull-right">
             <span><?= $this->text('call-header-powered-by') ?></span>
-            <img src="<?= '/assets/img/goteo-blue-green.svg' ?>" >
+            <a href="<?= $this->get_config('url.main') ?>">
+              <img src="<?= '/assets/img/goteo-blue-green.svg' ?>" >
+            </a>
           </div>
         </div>
         <div class="row spacer-20">
@@ -20,13 +24,13 @@
                 <ul>
                   <li><a href="/about" target="_blank"><?= $this->t('channel-call-footer-about') ?> </a></li>
                   <li><a href="https://stats.goteo.org" target="_blank"><?= $this->t('channel-call-footer-stats') ?> </a></li>
-                  <li><a href="" target="_blank"><?= $this->t('channel-call-footer-conditions') ?> </a></li>
-                  <li><a href="" target="_blank"><?= $this->t('channel-call-footer-privacy') ?> </a></li>
+                  <li><a href="/legal/terms" target="_blank"><?= $this->t('channel-call-footer-conditions') ?> </a></li>
+                  <li><a href="/legal/privacy" target="_blank"><?= $this->t('channel-call-footer-privacy') ?> </a></li>
                 </ul>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <ul>
-                  <li><a href="" target="_blank"><?= $this->t('channel-call-footer-licenses') ?> </a></li>
+                  <li><a href="/about/librejs" target="_blank"><?= $this->t('channel-call-footer-licenses') ?> </a></li>
                   <li><a href="/faq" target="_blank"><?= $this->t('channel-call-footer-faq') ?> </a></li>
                   <li><a href="/contact" target="_blank"><?= $this->t('channel-call-footer-contact') ?> </a></li>
                 </ul>

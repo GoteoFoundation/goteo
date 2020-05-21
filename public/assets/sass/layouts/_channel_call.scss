@@ -1107,6 +1107,9 @@ footer {
 	}
 
 	.pull-right {
+		span{
+			vertical-align: sub;
+		}
 		img {
 			height: 30px;
 		}
