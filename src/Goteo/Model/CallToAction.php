@@ -26,7 +26,7 @@
       $lang;
 
   public static function getLangFields() {
-      return ['title', 'description', 'action'];
+      return ['title', 'description', 'action', 'action_url'];
   }
 
 
@@ -46,7 +46,6 @@
                 $fields,
                 call_to_action.header,
                 call_to_action.icon,
-                call_to_action.action_url,
                 call_to_action.lang
           FROM call_to_action
           $joins
@@ -95,7 +94,6 @@
         $fields,
         call_to_action.header,
         call_to_action.icon,
-        call_to_action.action_url,
         call_to_action.lang,
     FROM call_to_action
     $joins
