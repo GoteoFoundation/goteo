@@ -213,9 +213,6 @@ class Contract extends \Goteo\Core\Model {
             // cargamos los documentos
             $contract->docs = Contract\Document::getDocs($id);
 
-            if(!$contract->fee)
-                $contract->fee=Config::get('fee');
-
             return $contract;
         } else {
             // aun no tenemos datos de contrato
