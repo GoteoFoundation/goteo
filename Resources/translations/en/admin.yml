@@ -51,6 +51,13 @@ admin-empty-list: 'No results found'
 admin-activity: Activity
 admin-communications: Comunications
 admin-communications-add: Create new communication
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
 admin-communications-userid-content: ' for the id of the recipient'
 admin-communications-useremail-content: ' for the email of the recipient'
 admin-communications-username-content: ' for the name of the recipient'
@@ -62,6 +69,7 @@ admin-communications-send: 'Send communication'
 admin-communications-cancel: 'Cancel communication'
 admin-communications-newsletter: 'Newsletter'
 admin-communications-communication: 'General communication'
+admin-communications-id: 'Communication ID'
 admin-home: Dashboard
 admin-items: entries
 admin-mailing-back-to-list: 'Back to messages'
@@ -196,6 +204,7 @@ admin-title-header-image: Header image
 admin-title-password: Password
 admin-title-avatar: Avatar
 admin-title-roles: Roles
+admin-title-role: Role
 admin-title-amount: Invested
 admin-title-icon: Icon
 admin-title-info: Info
@@ -223,7 +232,15 @@ admin-title-social_commitments: 'Social commitments'
 admin-title-order: Sort
 admin-title-status: Status
 admin-title-users: Users
+admin-title-city: City
 admin-title-date: Date
+admin-title-blockquote: 'Personalized appointment'
+admin-title-type: 'Type'
+admin-title-date-in: Start date
+admin-title-date-out: Finish date
+admin-title-venue: Place (Visible in call to action)
+admin-title-venue-address: Address
+admin-title-how-to-get: How to get there?
 admin-title-filter: Filter
 admin-title-template: Template
 admin-title-receivers: Receivers
@@ -455,6 +472,7 @@ admin-filter-type-all: 'All'
 admin-filter-predefined-date: 'Predefined dates'
 admin-filter-predefined-date-choose: 'You can choose a predefined date'
 admin-mail-body: 'Body of the message'
+admin-donations: Donations
 mandatory-filter-name: Missing name
 mandatory-filter-description: Missing description
 mandatory-filter-role: Missing role
