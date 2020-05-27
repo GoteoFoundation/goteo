@@ -99,6 +99,7 @@ class Config {
 			\Goteo\Controller\TranslateController::addTranslateModel('sphere');
 			\Goteo\Controller\TranslateController::addTranslateModel('communication');
 			\Goteo\Controller\TranslateController::addTranslateModel('call_to_action');
+			\Goteo\Controller\TranslateController::addTranslateModel('node');
 			\Goteo\Controller\TranslateController::addTranslateModel('node_program');
 			\Goteo\Controller\TranslateController::addTranslateModel('node_faq');
 			\Goteo\Controller\TranslateController::addTranslateModel('node_faq_question');

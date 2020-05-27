@@ -80,6 +80,7 @@ translator-percent: '%d&#37; traducido'
 translator-add-translation: 'Añadir una nueva traducción'
 translator-communication: Communicación
 translator-call_to_action: Call To Action
+translator-node: Canal
 translator-node_program: Programas del Canal
 translator-node_faq: Faq del Canal
 translator-node_faq_question: Preguntas del Faq del Canal
@@ -93,3 +94,10 @@ translator-field-banner_title: Título del banner
 translator-field-banner_description: Descripción del banner
 translator-field-label: Etiqueta
 translator-field-role: Rol
+translator-field-main_info_title: Título de información principal
+translator-field-main_info_description: Descripción de información principal
+translator-field-call_to_action_description: Descripción del Call To Action
+translator-field-terms: Bases
+translator-field-tip_msg:  Mensaje
+translator-field-banner_button_url: Url del botón del banner
+translator-field-terms_url: Url de las bases

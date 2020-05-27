@@ -215,10 +215,12 @@ class Workshop extends \Goteo\Core\Model {
         $sqlFilters = [];
         $sql = '';
         $sqlJoin = '';
+        $other_fields = [];
 
         if (isset($filters['node'])) {
             $sqlJoin .= "INNER JOIN node_workshop ON node_workshop.workshop_id = workshop.id and node_workshop.node_id = :node ";
             $values[":node"] = $filters['node'];
+            $other_fields[] = 'node_workshop.header_image as header_image';
         }
 
 
@@ -235,6 +237,9 @@ class Workshop extends \Goteo\Core\Model {
         if(!$lang) $lang = Lang::current();
         $values['viewLang'] = $lang;
         list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        $other_fields = implode(",\n", $other_fields);
+        if ($other_fields) $other_fields .= ',';
 
         $sql ="SELECT
                 workshop.id,
@@ -253,6 +258,7 @@ class Workshop extends \Goteo\Core\Model {
                 workshop.venue_address,
                 workshop.header_image,
                 workshop.workshop_location,
+                $other_fields
                 :viewLang as viewLang
 
             FROM workshop
