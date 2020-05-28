@@ -36,7 +36,6 @@ use Goteo\Payment\Payment;
 use Goteo\Payment\PaymentException;
 use Goteo\Util\Monolog\Processor\WebProcessor;
 use Goteo\Model\Project\Reward;
-use Goteo\Model\User\Donor;
 
 class InvestController extends \Goteo\Core\Controller {
 
@@ -632,7 +631,7 @@ class InvestController extends \Goteo\Core\Controller {
         }
 
         // show form
-        return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3, 'reward' => $reward, 'legal_entities' => Donor::getLegalEntities(), 'legal_documents' => Donor::getLegalDocumentTypes()]);
+        return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3, 'reward' => $reward]);
 
     }
 
