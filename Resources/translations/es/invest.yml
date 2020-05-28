@@ -21,6 +21,8 @@ invest-address-namedest-field: 'Nombre del destinatario'
 invest-address-nif-field: 'Número de NIF / NIE / CIF / VAT'
 invest-address-title: 'Asegúrate de que recibes tu recompensa'
 invest-address-zipcode-field: 'Código postal'
+invest-address-legal-entity-field: Entidad legal
+invest-address-legal-document-type-field: Tipo de documento
 invest-alert-investing: 'Vas a aportar'
 invest-alert-lackamount: 'El aporte debe ser mayor a la recompensa elegida'
 invest-alert-lackdrop: 'No queda suficiente Capital riego para cubrir tu aportacion, solamente quedan'

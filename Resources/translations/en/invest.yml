@@ -20,6 +20,8 @@ invest-address-namedest-field: 'Name of the recipient'
 invest-address-nif-field: 'VAT Number'
 invest-address-title: 'Make sure you receive your reward'
 invest-address-zipcode-field: 'ZIP code'
+invest-address-legal-entity-field: Legal entity
+invest-address-legal-document-type-field: Type of document
 invest-alert-investing: 'You''re about to contribute with '
 invest-alert-lackamount: 'The quantity must be superior to the reward selected'
 invest-alert-lackdrop: 'There is no Matchfunding left to multiply your contribution, left amount is'

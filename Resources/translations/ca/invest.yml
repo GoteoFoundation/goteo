@@ -20,6 +20,8 @@ invest-address-namedest-field: 'Nom del destinatari'
 invest-address-nif-field: 'Número de NIF / NIE / CIF / VAT:'
 invest-address-title: 'Assegura''t de rebre la teva recompensa'
 invest-address-zipcode-field: 'Codi postal'
+invest-address-legal-entity-field: Entitat legal
+invest-address-legal-document-type-field: Tipus de document
 invest-alert-investing: 'Estàs a punt d''aportar'
 invest-alert-lackamount: 'L''aportació ha de ser de valor més elevat que la recompensa escollida'
 invest-alert-lackdrop: 'No queda prou capital Matchfunding per cobrir la teva aportació, només queden'

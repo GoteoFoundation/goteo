@@ -22,3 +22,8 @@ personal-field-donor_name: 'Name '
 personal-field-donor_surname: 'Surname'
 personal-field-donor_surname2: 'Second surname (if any)'
 validate-donor-mandatory: 'All fields are compulsory'
+donor-legal-entities-natural-person: Natural person
+donor-legal-entities-legal-person: Legal person
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-vat: VAT

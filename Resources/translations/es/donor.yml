@@ -25,3 +25,8 @@ personal-field-donor_name: 'Nombre de la persona física o denominación fiscal 
 personal-field-donor_surname: 'Primer apellido (no completar para entidades jurídicas)'
 personal-field-donor_surname2: 'Segundo apellido (no completar para entidades jurídicas)'
 validate-donor-mandatory: 'Todos los campos son obligatorios'
+donor-legal-entities-natural-person: Persona física
+donor-legal-entities-legal-person: Persona jurídica
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-vat: VAT
