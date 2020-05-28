@@ -111,3 +111,8 @@ invest-tip-part-2: 'to contribute to the mission of the <b>Goteo Foundation</b><
 invest-mail-donate-tip: 'With your donation you have decided to collaborate with the <strong>Goteo Foundation</strong> with %s € extra, thank you very much!.'
 invest-update-total: 'You are going to make a total donation of <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% to the project + <span id="tip-amount">%DONATE_AMOUNT%</span> to Goteo Foundation'
 invest-extra-info: 'Extra info'
+donor-legal-entities-natural-person: Natural person
+donor-legal-entities-legal-person: Legal person
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-vat: VAT

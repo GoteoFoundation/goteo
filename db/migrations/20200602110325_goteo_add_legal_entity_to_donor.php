@@ -34,8 +34,7 @@ class GoteoAddLegalEntityToDonor
      return "
         ALTER TABLE `donor` ADD COLUMN `legal_entity` TINYTEXT AFTER `surname2`;
         ALTER TABLE `donor` ADD COLUMN `legal_document_type` TINYTEXT after `legal_entity`;
-        ALTER TABLE `invest_address` ADD COLUMN `legal_entity` TINYTEXT AFTER `name`;
-        ALTER TABLE `invest_address` ADD COLUMN `legal_document_type` TINYTEXT after `legal_entity`;
+        ALTER TABLE `contract` ADD COLUMN `legal_document_type` TINYTEXT after `name`;
      ";
   }
 
@@ -47,8 +46,7 @@ class GoteoAddLegalEntityToDonor
   public function getDownSQL()
   {
      return "
-        ALTER TABLE `invest_address` DROP COLUMN `legal_document_type`;
-        ALTER TABLE `invest_address` DROP COLUMN `legal_entity`;
+        ALTER TABLE `contract` DROP COLUMN `legal_document_type`;
         ALTER TABLE `donor` DROP COLUMN `legal_document_type`;
         ALTER TABLE `donor` DROP COLUMN `legal_entity`;
      ";

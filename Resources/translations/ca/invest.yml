@@ -116,3 +116,8 @@ invest-tip-part-2: 'per a contribuir a la missió de la <b>Fundació Goteo</b><b
 invest-mail-donate-tip: 'Amb la teva donació has decidit col·laborar amb la <strong>Fundació Goteo</strong> amb %s € adicionals, gràcies de cor.'
 invest-update-total: 'Realitzaràs una donació total de <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% al projecte + <span id="tip-amount">%DONATE_AMOUNT%</span> a Fundació Goteo'
 invest-extra-info: 'Informació extra'
+donor-legal-entities-natural-person: Persona física
+donor-legal-entities-legal-person: Persona jurídica
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-vat: VAT
