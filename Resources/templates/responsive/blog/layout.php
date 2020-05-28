@@ -25,8 +25,8 @@ $this->layout('layout', [
 
 <?php $this->section('header-navbar-brand'); ?>
 
-    <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/icons/foundation.svg') ?>" class="logo" alt="Goteo"></a>
-    <h3><?= $this->text('home-foundation-title') ?></h3>
+    <a class="navbar-brand" href="/blog"><img src="<?= $this->asset('img/icons/foundation.svg') ?>" class="logo" alt="Goteo"></a>
+    <h3><a href="/blog"><?= $this->text('home-foundation-title') ?></a></h3>
 
 <?php
 

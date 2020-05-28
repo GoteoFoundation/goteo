@@ -934,19 +934,21 @@ div.section.team {
 			height: 350px;
 
 			.name {
-				font-size: $font-size*1.2;
+				font-size: $font-size*1.5;
 				border-bottom: 1px $color-new-dark-blue solid;
 				width: 100%;
 				padding-top: 10px;
+				padding-bottom: 10px;
 				font-weight: bold;
 				line-height: 1.2;
 			}
 			
 			.role {
-				color: $color-new-green;
+				color: $color-new-dark-green;
 				border-bottom: 1px $color-new-dark-blue solid;
-				padding-top: 10px;
-				padding-bottom: 10px;
+				padding-top: 5px;
+				padding-bottom: 5px;
+				font-weight: bold;
 				font-size: $font-size;
 			}
 		}
@@ -1094,11 +1096,26 @@ div.section.resources{
 }
 
 
-.footer {
+footer {
 	font-weight: bold;
 	color: $color-new-dark-blue;
 	background-color: $background-new-light-green !important;
 	padding-bottom:80px;
+
+	.pull-left {
+		img {
+			height: 50px;
+		}
+	}
+
+	.pull-right {
+		span{
+			vertical-align: sub;
+		}
+		img {
+			height: 30px;
+		}
+	}
 
 	.header {
 		border-bottom: 1px solid $color-new-dark-blue;
@@ -1397,6 +1414,35 @@ div.section.resources{
 			margin-top: 20px;
 		}
 	}
+
+	div.section.team {
+		.container {
+			.row {
+				div:nth-child(odd) { clear: both; }
+			}
+
+			.team_widget {
+				height: max-content !important;
+			}
+		}
+	}
+
+	footer {
+
+		.pull-left {
+			img {
+				height: 30px;
+			}
+		}
+
+		.pull-right {
+			img {
+				height: 25px !important;
+			}
+		}
+
+	}
+
 
 	span.icon-2x {
 		@include icon-responsive(4, 4);

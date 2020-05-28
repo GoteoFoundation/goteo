@@ -21,6 +21,8 @@ invest-address-namedest-field: 'Nombre del destinatario'
 invest-address-nif-field: 'Número de NIF / NIE / CIF / VAT'
 invest-address-title: 'Asegúrate de que recibes tu recompensa'
 invest-address-zipcode-field: 'Código postal'
+invest-address-legal-entity-field: Entidad legal
+invest-address-legal-document-type-field: Tipo de documento
 invest-alert-investing: 'Vas a aportar'
 invest-alert-lackamount: 'El aporte debe ser mayor a la recompensa elegida'
 invest-alert-lackdrop: 'No queda suficiente Capital riego para cubrir tu aportacion, solamente quedan'
@@ -118,3 +120,8 @@ invest-tip-part-2: 'para contribuir a la misión de la <b>Fundación Goteo</b><b
 invest-mail-donate-tip: 'Con tu donación has decidido colaborar con la <strong>Fundación Goteo</strong> con %s € adicionales, gracias de corazón.'
 invest-update-total: 'Vas a realizar una donación total de<span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% al proyecto + <span id="tip-amount">%DONATE_AMOUNT%</span> a Fundación Goteo'
 invest-extra-info: 'Información extra'
+donor-legal-entities-natural-person: Persona física
+donor-legal-entities-legal-person: Persona jurídica
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-vat: VAT

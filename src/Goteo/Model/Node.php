@@ -910,15 +910,26 @@ class Node extends \Goteo\Core\Model {
         $data['supporters'] = $query->fetchColumn();
 
         // cantidad recaudada en total
+        // $query = static::query("
+        //     SELECT
+        //         SUM(invest.amount)
+        //     FROM  invest
+        //     INNER JOIN project
+        //         ON project.id = invest.project
+        //     LEFT JOIN node_project
+        //         ON node_project.project_id = project.id
+        //     WHERE project.node = :node OR node_project.node_id = :node
+        //     AND invest.status IN ('0', '1', '3')
+        //     ", $values);
+
         $query = static::query("
             SELECT
-                SUM(invest.amount)
-            FROM  invest
-            INNER JOIN project
-                ON project.id = invest.project
-            WHERE ( project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
-            AND invest.status IN ('0', '1', '3')
-            ", $values);
+                SUM(project.amount)
+            FROM project
+            LEFT JOIN node_project
+                ON node_project.project_id = project.id
+            WHERE project.node = 'ahoracomparte' OR node_project.node_id = 'ahoracomparte'
+        ", $values);
         $data['amount'] = $query->fetchColumn();
 
         // datos de convocatorias (destacadas por el nodo)
@@ -1146,14 +1157,14 @@ class Node extends \Goteo\Core\Model {
         // if($this->programsList) return $this->programsList;
 
         // $this->programsList = NodeProgram::get($this->id);
-        $this->programsList = NodeProgram::getList(['node' => $this->id]);
+        $this->programsList = NodeProgram::getList(['node' => $this->id], 0, 999);
         return $this->programsList;
     }
 
     public function getTeam() {
         if($this->teamList) return $this->teamList;
         
-        $this->teamList = NodeTeam::getList(['node' => $this->id]);
+        $this->teamList = NodeTeam::getList(['node' => $this->id], 0, 999);
         return $this->teamList;
     }
 

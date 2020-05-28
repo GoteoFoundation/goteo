@@ -20,6 +20,8 @@ invest-address-namedest-field: 'Name of the recipient'
 invest-address-nif-field: 'VAT Number'
 invest-address-title: 'Make sure you receive your reward'
 invest-address-zipcode-field: 'ZIP code'
+invest-address-legal-entity-field: Legal entity
+invest-address-legal-document-type-field: Type of document
 invest-alert-investing: 'You''re about to contribute with '
 invest-alert-lackamount: 'The quantity must be superior to the reward selected'
 invest-alert-lackdrop: 'There is no Matchfunding left to multiply your contribution, left amount is'
@@ -109,3 +111,8 @@ invest-tip-part-2: 'to contribute to the mission of the <b>Goteo Foundation</b><
 invest-mail-donate-tip: 'With your donation you have decided to collaborate with the <strong>Goteo Foundation</strong> with %s € extra, thank you very much!.'
 invest-update-total: 'You are going to make a total donation of <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% to the project + <span id="tip-amount">%DONATE_AMOUNT%</span> to Goteo Foundation'
 invest-extra-info: 'Extra info'
+donor-legal-entities-natural-person: Natural person
+donor-legal-entities-legal-person: Legal person
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-vat: VAT

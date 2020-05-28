@@ -59,10 +59,10 @@ class Workshop extends \Goteo\Core\Model {
      * @param   int    $id         workshop id.
      * @return  Workshop object
      */
-    static public function get($id, $lang = null) {
+    static public function get($id, $lang = null, $model_lang = null) {
 
-        if(!$lang) $lang = Lang::current();
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+        if(!$model_lang) $model_lang = Config::get('lang');
+        list($fields, $joins) = self::getLangsSQLJoins($lang, $model_lang);
 
         $sql="SELECT
                     workshop.id,
@@ -214,6 +214,15 @@ class Workshop extends \Goteo\Core\Model {
         $values = [];
         $sqlFilters = [];
         $sql = '';
+        $sqlJoin = '';
+        $other_fields = [];
+
+        if (isset($filters['node'])) {
+            $sqlJoin .= "INNER JOIN node_workshop ON node_workshop.workshop_id = workshop.id and node_workshop.node_id = :node ";
+            $values[":node"] = $filters['node'];
+            $other_fields[] = 'node_workshop.header_image as header_image';
+        }
+
 
         if($count) {
             // Return count
@@ -228,6 +237,9 @@ class Workshop extends \Goteo\Core\Model {
         if(!$lang) $lang = Lang::current();
         $values['viewLang'] = $lang;
         list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        $other_fields = implode(",\n", $other_fields);
+        if ($other_fields) $other_fields .= ',';
 
         $sql ="SELECT
                 workshop.id,
@@ -246,10 +258,12 @@ class Workshop extends \Goteo\Core\Model {
                 workshop.venue_address,
                 workshop.header_image,
                 workshop.workshop_location,
+                $other_fields
                 :viewLang as viewLang
 
             FROM workshop
             $joins
+            $sqlJoin
             $sql
             ORDER BY `id` DESC
             LIMIT $offset,$limit";

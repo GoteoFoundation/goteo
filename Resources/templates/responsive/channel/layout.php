@@ -157,7 +157,7 @@ $background = $this->channel->owner_background;
 
     <script src="<?= $this->channel->chatbot_url ?>/widget/widget.js"></script>
     <script>
-        (window.goteoHelpWidget=window.goteoHelpWidget||{}).load("<?= $this->channel->chatbot_url ?>", "<?= $current_lang ?>", <?= $this->channel->chatbot_id ?>, true);
+        (window.goteoHelpWidget=window.goteoHelpWidget||{}).load("<?= $this->channel->chatbot_url ?>", "<?= $current_lang ?>", <?= $this->channel->chatbot_id ?>, false);
     </script>
 
     <!-- End Chatbot code -->

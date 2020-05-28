@@ -48,6 +48,7 @@ mandatory-project-field-region: 'Es obligatorio poner la provincia'
 personal-field-contract_entity: 'Representante del proyecto'
 personal-field-contract_name: 'Nombre y apellidos'
 personal-field-contract_nif: 'Número de NIF / NIE / VAT'
+personal-field-contract_legal_document_type: Tipo de documento
 personal-field-main_address: 'Dirección postal'
 personal-field-post_address: 'Dirección social'
 personal-field-region: Provincia
@@ -104,3 +105,12 @@ contract-validation-error-entity: 'Faltan campos para llenar en la entidad'
 contract-validation-error-accounts: 'Faltan campos para llenar en las cuentas'
 contract-validation-error-documentos: 'Falta documentación'
 contract-already-processed: 'El contrato ya ha sido procesado.'
+contract-legal-entities-natural-person: Persona física
+contract-legal-entities-legal-person: Persona jurídica
+contract-legal-document-type-cif: CIF
+contract-legal-document-type-nif: NIF
+contract-legal-document-type-nie: NIE
+contract-legal-document-type-vat: VAT
+validate-contract-nif-document-type: 'El número del documento no coincide en formato con el tipo de documento'
+validate-contract-cif-document-type: 'El número del CIF no coincide en formato'
+validate-contract-legal-nif-entity-legal: "La entidad legal no coincide con el tipo de documento"

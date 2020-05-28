@@ -75,6 +75,8 @@ class BlogController extends \Goteo\Core\Controller {
     {
         // Get related posts
         $post = Post::getBySlug($slug, Lang::current());
+        $blog_sections = Post::getListSections();
+
 
         if(!$post) {
             throw new ModelNotFoundException("Post [$slug] not found!");
@@ -107,6 +109,7 @@ class BlogController extends \Goteo\Core\Controller {
 
         return $this->viewResponse('blog/post', [
             'post' => $post,
+            'blog_sections'     => $blog_sections,
             'related_posts' => $related_posts,
             'author' => $author
         ]);
