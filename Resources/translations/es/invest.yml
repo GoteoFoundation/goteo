@@ -46,6 +46,7 @@ invest-donation-header: 'Introduce los datos fiscales para el donativo'
 invest-drop-method: Riego
 invest-fiscal-fail: 'Hay campos vacíos o con errores, comprueba el formulario fiscal para que puedas desgravar tu aporte!'
 invest-fiscal-skip: 'Ahora no quiero rellenar estos datos.'
+invest-fiscal-renounce: 'Renuncio a desgravar mi aportación!'
 invest-fiscal-title: 'Asegúrate de que puedas desgravar tu aportación (para contribuyentes en España)'
 invest-login-alert: 'Debes registrarte o <a href="%s">iniciar sesión</a> para poder realizar el aporte'
 invest-mail_info-address: 'Has especificado la siguiente dirección:'
