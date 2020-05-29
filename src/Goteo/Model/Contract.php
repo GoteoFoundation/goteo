@@ -19,7 +19,8 @@ class Contract extends \Goteo\Core\Model {
     const NIF = 'nif';
     const NIE = 'nie';
     const VAT = 'vat';
-    const LEGAL_DOCUMENTS = [self::CIF, self::NIF, self::NIE, self::VAT];
+    const PASSPORT = 'passport';
+    const LEGAL_DOCUMENTS = [self::NIF, self::NIE, self::PASSPORT];
 
     public
         $project,
@@ -240,8 +241,10 @@ class Contract extends \Goteo\Core\Model {
 
         $nif_type = '';
         $valid_nif = Check::nif($this->nif, $nif_type);
-        if(!$valid_nif || $nif_type != $this->legal_document_type ) {
-            $errors['nif'] = Text::get('validate-contract-nif-document-type');
+        if ($this->legal_document_type != self::PASSPORT) {
+            if(!$valid_nif || $nif_type != $this->legal_document_type ) {
+                $errors['nif'] = Text::get('validate-contract-nif-document-type');
+            }
         }
 
         $cif_type = '';
@@ -917,7 +920,7 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
         return  [
             self::NIF => Text::get('contract-legal-document-type-nif'),
             self::NIE => Text::get('contract-legal-document-type-nie'),
-            self::VAT => Text::get('contract-legal-document-type-vat'),
+            self::PASSPORT => Text::get('contract-legal-document-type-passport'),
           ];
     }
 

@@ -107,6 +107,7 @@ contract-legal-document-type-cif: CIF
 contract-legal-document-type-nif: NIF
 contract-legal-document-type-nie: NIE
 contract-legal-document-type-vat: VAT
+contract-legal-document-type-passport: Passaport
 validate-contract-nif-document-type: 'El número del document no coincideix en format amb el tipus de document'
 validate-contract-cif-document-type: 'El número del document no coincideix en format CIF'
 validate-contract-legal-nif-entity-legal: "L'entitat legal no coincideix amb el tipus de document"
