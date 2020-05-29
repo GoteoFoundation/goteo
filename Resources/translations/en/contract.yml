@@ -29,6 +29,7 @@ guide-contract-no_entity: 'As a promoter in your own name and right you have not
 guide-contract-promoter: 'In this step you must fill in the data of the legal representative of the entity, or the driver if you represent yourself. In all cases it must be the same person who will sign the contract. '
 mandatory-contract-bank: 'It is mandatory to indicate a bank account for the project'
 mandatory-contract-bank_owner: 'It is mandatory to put the name of the bank account holder'
+mandatory-contract-docs: mandatory-contract-docs
 mandatory-contract-paypal_owner: 'It is mandatory to put the name of the PayPal account holder of the project'
 mandatory-contract-reg_date_2: 'It is mandatory to indicate the date on which the notary granted the public deed'
 mandatory-contract-reg_id_2: 'It is mandatory to indicate the protocol number of the notary'
@@ -56,6 +57,7 @@ tooltip-contract-docs: 'You can upload as many files as you need, each with a ma
 tooltip-contract-entity_cif: 'Indicates the entity''s CIF'
 tooltip-contract-entity_name: 'Indicates the full name of the entity on behalf of which the contract will be signed.'
 tooltip-contract-entity_office: 'You must indicate what position you hold within the entity. We will need you to attach the documentation proving that you have powers to act on your behalf (in the section '' Documentation '') '
+tooltip-contract-main_address: tooltip-contract-main_address
 tooltip-contract-paypal_owner: 'Tell us what is the name of the person who owns the PayPal account'
 tooltip-contract-project_description: 'This description of the project may vary to fit the wording of the contract (a person from the Drip team will do it)'
 tooltip-contract-project_invest: 'Correct the self-generated text for the Financing Objective'
@@ -100,4 +102,5 @@ contract-validation-error-promoter: 'Missing fields to fill in the promoter'
 contract-validation-error-promoter_nif: 'The NIF is not correct.'
 contract-validation-error-entity: 'Missing fields to fill in the entity'
 contract-validation-error-accounts: 'Missing fields to fill in accounts'
+contract-validation-error-documentos: 'Missing Documentation'
 contract-already-processed: 'The contract has already been processed.'
