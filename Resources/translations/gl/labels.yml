@@ -11,6 +11,7 @@ accounts-lb-viewer: 'Vendo rexistros'
 banners-lb-details: 'Detalles da achega'
 banners-lb-execute: 'Execución do cargo'
 banners-lb-list: A listar
+banners-lb-report: 'Informe do proxecto'
 banners-lb-viewer: 'Vendo rexistros'
 blog-lb: Blog
 blog-lb-add: 'Nova entrada'
@@ -90,6 +91,7 @@ promote-lb: 'Proxectos populares'
 promote-lb-list: A listar
 recent-lb: 'Actividade recente'
 recent-lb-list: A listar
+reviews-lb: Revisións
 reviews-lb-list: A listar
 rewards-lb-list: A listar
 sent-lb: 'Historial de envíos'
