@@ -333,7 +333,7 @@ class Lang {
         $url_lang = Config::get('url.url_lang');
         $path = '/';
         if($request) {
-            $path = $request->getBaseUrl().$request->getPathInfo();
+            $path = $request->getPathInfo();
             $get = $request->query->all();
             if(isset($get['lang'])) unset($get['lang']);
             if(!$url_lang) {
