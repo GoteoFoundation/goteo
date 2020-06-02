@@ -28,6 +28,10 @@ $(function(){
   //   $('.tabs').removeClass('slick-current');
   //   $(this).addClass('slick-current');
   // });
+
+  $("div.languages div.active").click(function(){
+    $("ul.languages-list").slideToggle();
+  });
   
 
   var $slider_program = $('.slider-programs');
