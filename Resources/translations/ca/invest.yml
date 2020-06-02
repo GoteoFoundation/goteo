@@ -44,9 +44,10 @@ invest-cash-method: 'Manual (efectiu)'
 invest-donation-header: 'Introdueix les dades fiscals per al donatiu'
 invest-drop-method: Matchfunding
 invest-fiscal-fail: 'Hi ha camps buits o amb errors, comprova el formulari fiscal perquè puguis desgravar la teva aportació!'
-invest-fiscal-renounce: 'Renuncio a desgravar la meva aportació'
+invest-fiscal-renounce: 'No desitjo rebre Certificat de Donació'
 invest-fiscal-skip: 'Prefereixo omplir aquestes dades en un altre moment'
-invest-fiscal-title: 'Assegura''t de que puguis desgravar la teva aportació (per a contribuents a l''estat espanyol)'
+invest-fiscal-title: 'Sol·licitud del certificat de donació'
+invest-fiscal-warning: "A partir de l'1 de Març del %s, podràs descarregar el teu certificat de donació sempre que hagis facilitat les teves dades completes abans del 15 de Gener."
 invest-login-alert: 'T''has de registrar o <a href="%s">iniciar sessió</a> per poder realitzar l''aportació'
 invest-mail_info-address: 'Has especificat la següent direcció:'
 invest-make-sure-save: Desar
