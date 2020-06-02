@@ -5,6 +5,56 @@
 
 body.channel-call {
 
+	div.languages{
+		text-transform: uppercase;
+		float:right;
+		color:#3E3E3E;
+		font-weight: bold;
+			border-left: 1px solid #E4E4E4;
+			font-size: 12px;
+			position: relative;
+			cursor: pointer;
+
+			div.active{
+				padding: 0px 40px 0px 45px;
+			}
+
+			.glyphicon{
+				color:#00A19D;
+				font-size: 20px;
+				vertical-align: text-bottom;
+				margin-left: 5px;
+			}
+
+			ul.languages-list{
+				position: absolute;
+				top: 100%;
+				left: 0;
+				background-color: #FFF;
+				z-index: 1000;
+				width: 100%;
+				display: none;
+
+				li{
+					border-bottom: 1px solid #DEDEDE;
+
+					&:first-child{
+						border-top: 1px solid #DEDEDE;
+					}
+
+					&:last-child{
+						border:none;
+					}
+
+					a {
+						padding: 13px 40px 10px 45px;
+						color:#3D3D3D !important;
+						display: block;
+					}
+				}
+			}
+	}
+
 //button customization
 
 .btn{
