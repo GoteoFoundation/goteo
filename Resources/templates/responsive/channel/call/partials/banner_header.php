@@ -11,13 +11,7 @@
 				<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
 			</a>
 		</div>
-		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-					<span class="sr-only">Navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-		</button>
-		<div id="navbar" class="navbar-collapse collapse languages">
+		<div id="navbar" class="navbar languages">
 			<div class="active">
 				<span><?= $this->lang_name($this->lang_current()) ?></span>
 				<span class="glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span>

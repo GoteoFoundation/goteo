@@ -38,6 +38,8 @@ body.channel-call {
 			width: 100%;
 			display: none;
 			margin-top: 10px;
+			border: 1px solid #DEDEDE;
+
 
 			li{
 				border-bottom: 1px solid #DEDEDE;
@@ -1258,6 +1260,8 @@ footer {
             }
         }
         div.info{
+					z-index: unset;
+
         	&.terms{
         		background-color: $background-white;
         		position: static;
@@ -1387,17 +1391,12 @@ footer {
 			}
 
 			div.languages {
-				float: left !important;
-	
-				ul.languages-list{
-					position: static;
-				}
+				margin-right: 0px;
 			}
-	
 		}
         div.banner-info{
             padding-left: 0px !important;
-     		bottom: 25%;
+     				bottom: 25%;
             span.title{
                 font-size: $font-size*1 !important;
             }
