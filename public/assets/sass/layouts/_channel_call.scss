@@ -37,7 +37,9 @@ body.channel-call {
 			z-index: 1000;
 			width: 100%;
 			display: none;
-			margin-bottom: 10px;
+			margin-top: 10px;
+			border: 1px solid #DEDEDE;
+
 
 			li{
 				border-bottom: 1px solid #DEDEDE;
@@ -1258,6 +1260,8 @@ footer {
             }
         }
         div.info{
+					z-index: unset;
+
         	&.terms{
         		background-color: $background-white;
         		position: static;
@@ -1318,14 +1322,6 @@ footer {
 							}
 				}
 			}	
-		}
-
-		div.languages {
-			float: left;
-
-			ul.languages-list{
-				position: static;
-			}
 		}
 
 }
@@ -1393,10 +1389,14 @@ footer {
 			img{
 				height: 22px !important;
 			}
+
+			div.languages {
+				margin-right: 0px;
+			}
 		}
         div.banner-info{
             padding-left: 0px !important;
-     		bottom: 25%;
+     				bottom: 25%;
             span.title{
                 font-size: $font-size*1 !important;
             }
