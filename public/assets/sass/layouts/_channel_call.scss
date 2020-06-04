@@ -37,7 +37,7 @@ body.channel-call {
 			z-index: 1000;
 			width: 100%;
 			display: none;
-			margin-bottom: 10px;
+			margin-top: 10px;
 
 			li{
 				border-bottom: 1px solid #DEDEDE;
@@ -1320,14 +1320,6 @@ footer {
 			}	
 		}
 
-		div.languages {
-			float: left;
-
-			ul.languages-list{
-				position: static;
-			}
-		}
-
 }
 
 @media (max-width: $breakpoint-sm - 1) {
@@ -1393,6 +1385,15 @@ footer {
 			img{
 				height: 22px !important;
 			}
+
+			div.languages {
+				float: left !important;
+	
+				ul.languages-list{
+					position: static;
+				}
+			}
+	
 		}
         div.banner-info{
             padding-left: 0px !important;
