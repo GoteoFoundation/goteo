@@ -129,7 +129,11 @@ div.section.banner-header{
  		img{
  			margin-left: 5px;
  			vertical-align: sub;
- 		}
+		 }
+		 
+		 .navbar-toggle {
+			 background-color: unset;
+		 }
  	}
 
  	.image{
@@ -1315,6 +1319,15 @@ footer {
 				}
 			}	
 		}
+
+		div.languages {
+			float: left;
+
+			ul.languages-list{
+				position: static;
+			}
+		}
+
 }
 
 @media (max-width: $breakpoint-sm - 1) {

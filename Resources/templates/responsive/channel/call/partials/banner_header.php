@@ -5,12 +5,18 @@
 				<img src="/assets/img/channel/call/logo_crowdcoop.png" height="30px">
 			</a>
 		</div>
-		<div class="pull-right">
+		<div class="pull-right hidden-xs">
 			<span><?= $this->text('call-header-powered-by') ?></span>
 			<a href="<?= $this->get_config('url.main') ?>">
 				<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
 			</a>
 		</div>
+		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+		</button>
 		<div id="navbar" class="navbar-collapse collapse languages">
 			<div class="active">
 				<span><?= $this->lang_name($this->lang_current()) ?></span>
