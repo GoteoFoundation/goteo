@@ -781,6 +781,7 @@ class Node extends \Goteo\Core\Model {
                     return $newdata;
                 }
             }*/
+            
             return $data;
         } catch(\PDOException $e) {
 
