@@ -1018,48 +1018,44 @@ div.section.stories {
 	background-color: $color-white;
 	color: $color-white;
 	min-height: 400px;
-	// padding: 50px 0px 80px 0px !important;
 	margin-bottom: unset;
-
-	.container {
-		background-color: $color-new-dark-blue;
-		height: 350px;
-
-		h2.title {
-			color: $color-white;
-			font-weight: bold;
-
-			.icon {
-				background-color: $color-white;
-			}
-			
-			span {
-				background-color: $color-new-dark-blue;
-			}
-
-		}
 		
-		div.white-line {
-			border-bottom: 1px solid $color-white;
-			height: 50px;
-			// position: absolute;
-			// bottom: 50%;
-			// width: 70%;
-			// right: -0%;
-		}
-		
-		.slider-stories {
-			background-color: $color-new-dark-blue;
+	.slider-stories {
 			color: $color-white;
-			height: 240px;
-			
+
 			.slick-list {
-				border-left: 1px solid $color-white;
-				height: 200px;
 				margin-left: 10px;
 			}
 
+		.container {
+			height: 550px;
+
+			img {
+				width: 100%;
+			}
+
 			.story {
+				background-color: $background-white;
+				position: absolute;
+				top: 50px;
+				margin-left: 200px;
+				width: 675px;
+				height: 450px;
+
+				.row {
+					h2.title {
+						color: $color-new-dark-green;
+						font-weight: bold;
+						border-bottom: unset;
+						padding: 20px 10px;
+					}
+
+					div.green-line {
+						border-bottom: 1px solid $background-new-dark-green;
+						height: 50px;
+					}
+				}
+
 				.image {
 					img {
 						width: 150px;
@@ -1067,39 +1063,55 @@ div.section.stories {
 					}
 				}
 
-				p {
-					font-size: $font-size*1.5;
-					font-weight: bold;
-				}
-	
-				div.author {
-					color: $color-white;
-				}
-			}
+				.info {
 
-			.custom-left-arrow{
-				top: unset;
-				bottom: 0%;
-				position: absolute;
-				font-size: $font-size*2;
-				left: 0%;
-				cursor: pointer;
-				span.icon {
-					background-color: $color-white;
+					border-left: 1px solid $background-new-dark-green;
+					margin-left: 25px;
+
+					q {
+						font-size: $font-size*1.5;
+						font-weight: bold;
+						color: $color-new-dark-blue;
+					}
+
+					div.author {
+						color: $color-new-dark-blue;
+						margin-left: unset;
+						padding-top: 20px;
+
+						img.author-avatar {
+							height: 50px;
+							width: 50px;
+							display: inline-block;
+							border-radius: 50%;
+						}
+					}
 				}
 			}
-			.custom-right-arrow{
-				top: unset;
-				bottom: 0%;
-				position: absolute;
-				font-size: $font-size*2;
-				rotate: 180;
-				right: 0%;
-				cursor: pointer;
-				span.icon {
-					background-color: $color-white;
-					transform: rotate(180deg); 
-				}
+		}
+
+		.custom-left-arrow{
+			top: unset;
+			bottom: 10%;
+			position: absolute;
+			font-size: $font-size*2;
+			left: 12%;
+			cursor: pointer;
+			span.icon {
+				background-color: $color-new-green;
+			}
+		}
+		.custom-right-arrow{
+			top: unset;
+			bottom: 10%;
+			position: absolute;
+			font-size: $font-size*2;
+			rotate: 180;
+			right: 54%;
+			cursor: pointer;
+			span.icon {
+				background-color: $color-new-green;
+				transform: rotate(180deg); 
 			}
 		}
 	}
