@@ -730,15 +730,18 @@ div.section.workshops{
 		}
 
 		.title {
-			font-weight: bold;
-			color: $color-new-dark-blue;
-			font-size: $font-size*1.5;
-			line-height: 1.2;
 			margin-top: 10px;
+
+			a {
+				font-weight: bold;
+				color: $color-new-dark-blue !important;
+				font-size: $font-size*1.5;
+				line-height: 1.2;
 			
-			a:hover {
-				color: $color-new-green;
-				text-decoration: underline;
+				&:hover {
+					color: $color-new-green;
+					text-decoration: underline;
+				}
 			}
 		}
 
@@ -1026,18 +1029,14 @@ div.section.stories {
 	.slider-stories {
 			color: $color-white;
 
-			.slick-list {
-				margin-left: 10px;
-			}
-
-			img {
-				width: 100%;
+			div.story-desktop-container {
+				display: block;
 				height: 550px;
-			}
-
-		.container {
-			height: 550px;
-
+				
+				img {
+					width: 100%;
+					height: 550px;
+				}
 
 			.story {
 				background-color: $background-white;
@@ -1045,18 +1044,19 @@ div.section.stories {
 				top: 50px;
 				margin-left: 200px;
 				width: 675px;
-				height: 450px;
+				height: max-content;
+				padding-bottom: 50px;
 
 				.row {
 					h2.title {
-						color: $color-new-dark-green;
+						color: $color-new-green;
 						font-weight: bold;
 						border-bottom: unset;
 						padding: 20px 10px;
 					}
 
 					div.green-line {
-						border-bottom: 1px solid $background-new-dark-green;
+						border-bottom: 1px solid $background-new-green;
 						height: 50px;
 					}
 				}
@@ -1070,7 +1070,7 @@ div.section.stories {
 
 				.info {
 
-					border-left: 1px solid $background-new-dark-green;
+					border-left: 1px solid $background-new-green;
 					margin-left: 25px;
 
 					q {
@@ -1085,14 +1085,25 @@ div.section.stories {
 						padding-top: 20px;
 
 						img.author-avatar {
-							height: 50px;
-							width: 50px;
+							height: 70px;
+							width: 70px;
 							display: inline-block;
 							border-radius: 50%;
+						}
+
+						div.author-name {
+							display: inline-block;
+							margin-left: 20px;
+							line-height: 1.7;
+							font-size: $font-size;
 						}
 					}
 				}
 			}
+		}
+
+		.story-xs {
+			display: none;
 		}
 
 		.custom-left-arrow{
@@ -1337,6 +1348,22 @@ footer {
 			}	
 		}
 
+		div.section.stories {
+			.slider-stories {
+				div.story-desktop-container {
+					img {
+						width: unset;
+					}
+
+					.story {
+						top: 20px !important;
+						margin-top: unset;
+						max-width: 450px;
+						margin-left: 150px;
+					}
+				}
+			}
+		}
 }
 
 @media (max-width: $breakpoint-sm - 1) {
@@ -1525,6 +1552,40 @@ footer {
 
 	span.icon-2x {
 		@include icon-responsive(4, 4);
+	}
+
+	div.section.stories {
+		.slider-stories {
+			div.story-desktop-container {
+				display: none;
+			}
+
+			div.story-xs {
+				display: block;
+
+				.info-container {
+					margin-top: 10%;
+
+					q {
+						font-size: $font-size*1.5;
+						font-weight: bold;
+						color: $color-new-dark-blue;
+					}
+	
+					div.author {
+						color: $color-new-dark-blue;
+					}
+				}
+			}
+
+			.custom-left-arrow{
+				top: 53%;
+			}
+			.custom-right-arrow{
+				top: 53%;
+			}	
+		}
+
 	}
 
 }
