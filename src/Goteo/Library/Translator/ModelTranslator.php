@@ -39,7 +39,10 @@ class ModelTranslator implements TranslatorInterface {
     ];
     static protected $_forced_types = [
         'info' => 'html',
-        'glossary' => 'html'
+        'glossary' => 'html',
+        'node_faq' => 'md',
+        'node_faq_question' => 'md',
+        'node_faq_download' => 'md'
     ];
     static protected $_forced_filters = [
         'post' => '`blog` = 1' // Field "blog" in table "post" must be "1" (goteo general posts)
