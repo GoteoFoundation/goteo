@@ -20,13 +20,13 @@
 				<?php else: ?>
 					<img src="/assets/img/channel/call/training.png">
 				<?php endif; ?>
-				<div class="date"> <?= $workshop->date_in ?> </div>
+				<div class="date"> <?= date('d/m/Y', strtotime($workshop->date_in)) ?> </div>
 				<div class="location"> <i class="fa fa-map-marker"></i> <?= ($workshop->workshop_location)? $this->text_truncate($workshop->workshop_location, 30) : ( ($workshop->getLocation()->city)? $this->text_truncate($workshop->getLocation()->city, 30) : $workshop->venue ) ?> </div>
 			</a>
 
 
 			<div class="title">
-				<a href="<?= '/workshop/' . $workshop->id ?>"><?= $workshop->title ?></a>
+				<a href="<?= '/workshop/' . $workshop->id ?>"><?= $this->text_truncate($workshop->title, 60) ?></a>
 			</div>
 
 			<a class="arrow" href="<?= '/workshop/' . $workshop->id ?>">
