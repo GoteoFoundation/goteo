@@ -54,6 +54,18 @@ class AdminStoryEditForm extends ProjectStoryForm {
                     ]
 
             ])
+            ->add('background_image', 'dropfiles', [
+                'label' => 'story-field-background-image',
+                'disabled' => $this->getReadonly(),
+                'data' => $story->getBackgroundImage(),
+                'url' => '/api/stories/images',
+                'required' => false,
+                'limit' => 1,
+                'constraints' => [
+                        new Constraints\Count(['max' => 1]),
+                    ]
+
+            ])
             ->add('review', 'text', [
                 'label' => 'admin-stories-review',
                 'required' => false,
