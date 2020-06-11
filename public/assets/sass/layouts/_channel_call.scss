@@ -703,8 +703,10 @@ div.section.workshops{
 			font-weight: bold;
 			position:inherit;
 			display: flex;
+			height: 275px;
 			
 			img {
+				height: 100%;
 				width: 100%;
 				padding-top: 15px;
 				filter: brightness(85%) contrast(80%);
@@ -712,14 +714,14 @@ div.section.workshops{
 
 			.date {
 				position: absolute;
-				bottom: 20%;
+				bottom: 13%;
 				left: 5%;
 				font-size: $font-size*1.5;
 			}
 	
 			.location {
 				position: absolute;
-				bottom: 10%;
+				bottom: 5%;
 				left: 5%;
 				width: 90%;
 				border-top: 1px solid $color-white;
@@ -732,6 +734,7 @@ div.section.workshops{
 			color: $color-new-dark-blue;
 			font-size: $font-size*1.5;
 			line-height: 1.2;
+			margin-top: 10px;
 			
 			a:hover {
 				color: $color-new-green;
