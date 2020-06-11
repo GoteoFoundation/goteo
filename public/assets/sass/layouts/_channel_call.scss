@@ -971,12 +971,14 @@ div.section.stories {
 				margin-left: 10px;
 			}
 
+			img {
+				width: 100%;
+				height: 550px;
+			}
+
 		.container {
 			height: 550px;
 
-			img {
-				width: 100%;
-			}
 
 			.story {
 				background-color: $background-white;
@@ -1035,27 +1037,23 @@ div.section.stories {
 		}
 
 		.custom-left-arrow{
-			top: unset;
-			bottom: 10%;
+			top: 33%;
 			position: absolute;
-			font-size: $font-size*2;
-			left: 12%;
+			font-size: $font-size*5;
+			left: .7%;
 			cursor: pointer;
-			span.icon {
-				background-color: $color-new-green;
+			span.fa {
+				color: $color-new-green;
 			}
 		}
 		.custom-right-arrow{
-			top: unset;
-			bottom: 10%;
+			top: 33%;
 			position: absolute;
-			font-size: $font-size*2;
-			rotate: 180;
-			right: 54%;
+			font-size: $font-size*5;
+			right: .7%;
 			cursor: pointer;
-			span.icon {
-				background-color: $color-new-green;
-				transform: rotate(180deg); 
+			span.fa {
+				color: $color-new-green;
 			}
 		}
 	}
