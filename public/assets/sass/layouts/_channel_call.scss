@@ -671,15 +671,18 @@ div.section.workshops{
 		}
 
 		.title {
-			font-weight: bold;
-			color: $color-new-dark-blue;
-			font-size: $font-size*1.5;
-			line-height: 1.2;
 			margin-top: 10px;
+
+			a {
+				font-weight: bold;
+				color: $color-new-dark-blue !important;
+				font-size: $font-size*1.5;
+				line-height: 1.2;
 			
-			a:hover {
-				color: $color-new-green;
-				text-decoration: underline;
+				&:hover {
+					color: $color-new-green;
+					text-decoration: underline;
+				}
 			}
 		}
 
