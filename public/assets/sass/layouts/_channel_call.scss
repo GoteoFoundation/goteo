@@ -1031,19 +1031,19 @@ div.section.stories {
 						color: $color-new-dark-blue;
 						margin-left: unset;
 						padding-top: 20px;
+						display: flex;
 
 						img.author-avatar {
 							height: 70px;
 							width: 70px;
-							display: inline-block;
 							border-radius: 50%;
 						}
 
 						div.author-name {
-							display: inline-block;
 							margin-left: 20px;
 							line-height: 1.7;
 							font-size: $font-size;
+							margin: auto auto auto 20px;
 						}
 					}
 				}
