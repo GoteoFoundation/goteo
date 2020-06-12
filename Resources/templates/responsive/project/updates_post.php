@@ -70,7 +70,7 @@
                 <img class="avatar" src="<?= $child->user->avatar->getLink(45, 45, true); ?>">
             </div>
             <?php endif; ?>
-            <div class="pull-left user-name" ><?= ucfirst($child->user->name) ?></div>
+            <div class="pull-left user-name" ><?= ucfirst($this->ee($child->user->name)) ?></div>
             <div class="pull-right time-ago">
                 Hace <?= $child->timeago ?>
              </div>

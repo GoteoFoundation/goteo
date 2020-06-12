@@ -83,7 +83,7 @@ elseif (!empty($status)) {
     <div class="content <?= $project->called ? 'called': '' ?>  ">
         <div class="title"><a href="/project/<?= $this->project->id ?>"><?= $this->text_truncate($this->ee($this->project->name), 80); ?></a></div>
         <div class="author">
-            <a href="/user/profile/<?= $this->project->user->id?>" style="color:#20B3B2 !important" target="_blank"><?= $this->text('regular-by').' '.$this->project->user->name ?></a>
+            <a href="/user/profile/<?= $this->project->user->id?>" style="color:#20B3B2 !important" target="_blank"><?= $this->text('regular-by').' '.$this->ee($this->project->user->name) ?></a>
         </div>
         <div class="description">
             <?= $this->text_truncate($this->project->subtitle, 140) ?>

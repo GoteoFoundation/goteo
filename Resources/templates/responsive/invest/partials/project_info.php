@@ -6,7 +6,7 @@
           <?= $this->project->subtitle ?>
           </div>
           <div class="project-owner pull-left">
-          	<a href="/user/profile/<?= $this->project->user->id ?>"><?= $this->text('regular-by')." ". $this->project->user->name ?></a>
+          	<a href="/user/profile/<?= $this->project->user->id ?>"><?= $this->text('regular-by')." ". $this->ee($this->project->user->name) ?></a>
         	</div>
           <?php if ($this->project_categories) : ?>
             <div class="project-tags pull-left hidden-xs hidden-sm">

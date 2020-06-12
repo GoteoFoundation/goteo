@@ -2,8 +2,8 @@
 
 $this->layout('layout', [
     'bodyClass' => 'user',
-    'title' =>  ucfirst($this->user->name). ':: Goteo.org' ,
-    'meta_description' => $this->text($this->user->about),
+    'title' =>  $this->ee(ucfirst($this->user->name)). ':: Goteo.org' ,
+    'meta_description' => $this->ee($this->markdown($this->user->about)),
     'tw_image' =>  ''
     ]);
 
@@ -40,7 +40,7 @@ $worthcracy=$this->worthcracy;
 						<?= $this->text('profile-name-header') ?>
 					</div>
 					<h1 class="name">
-						<?= ucfirst($user->name) ?>
+						<?= $this->ee(ucfirst($user->name)) ?>
 					</h1>
 					
 					<?php if($user->location): ?>
@@ -48,13 +48,13 @@ $worthcracy=$this->worthcracy;
 						<div class="location">
 							<span class="icon glyphicon glyphicon glyphicon-map-marker" aria-hidden="true"></span> 
 							<span class="content">
-								<?= $user->location ?>
+								<?= $this->ee($user->location) ?>
 							</span>
 						</div>
 					
 					<?php endif; ?>
 					<p class="description">
-						<?= $this->markdown($user->about) ?>
+						<?= $this->markdown($this->ee($user->about)) ?>
 					</p>
 					<div class="worthcracy-label">
 						<?= $this->text('profile-my_worth-header') ?>
