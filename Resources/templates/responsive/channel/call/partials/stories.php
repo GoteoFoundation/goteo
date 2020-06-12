@@ -5,7 +5,7 @@
 ?>
 
 <div class="section stories">
-  <div class="spacer-20 slider slider-stories">
+  <div class="slider slider-stories">
 
     <?php foreach ($stories as $key => $story): ?>
       <?php $title=explode("/", $story->title); ?>
