@@ -11,7 +11,7 @@
   }
 ?>
 
-<div class="slider slider-workshops" id="slider-workshops" data-initial-slide="<?= $initial_slide ?>">
+<div class="spacer-20 slider slider-workshops" id="slider-workshops" data-initial-slide="<?= $initial_slide ?>">
 	<?php foreach($workshops as $workshop): ?>
 		<div class="workshop-widget col-md-3">
 			<a class="image" href="<?= '/workshop/' . $workshop->id ?>">
