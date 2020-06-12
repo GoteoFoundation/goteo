@@ -1,4 +1,4 @@
-<div class="col-md-6 col-sm-6 col-xs-12">
+<div class="item col-md-6 col-sm-6 col-xs-12">
   <div class="cta <?= $this->cta->style?>" >
     <img class="img-responsive" src="<?= $this->cta->header->getLink(500,300)?>" >
     <div class="info">

@@ -1272,6 +1272,7 @@ footer {
 			margin-right: 7px;
 		}
 	}
+
     div.section.banner-header{
         div.banner-info{
             span.title{
@@ -1292,15 +1293,21 @@ footer {
         		position: static;
         	}
         }
-		}
-		
-		footer {
+	}
 
-			ul {
-				margin-top: 0px;
-				margin-bottom: 0px;
-			}
+	div.section.call-to-action{
+		.item{
+			margin-top: 20px;
 		}
+	}
+		
+	footer {
+
+		ul {
+			margin-top: 0px;
+			margin-bottom: 0px;
+		}
+	}
 
 		div.section.program {
 
