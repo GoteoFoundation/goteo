@@ -5,6 +5,62 @@
 
 body.channel-call {
 
+	div.languages{
+		text-transform: uppercase;
+		float:right;
+		color:#3E3E3E;
+		font-weight: bold;
+		border-right: 1px solid #E4E4E4;
+		margin-left: 5px;
+		margin-right: 30px;
+		font-size: 12px;
+		position: relative;
+		cursor: pointer;
+
+		div.active{
+			padding: 10px 30px 10px 30px;
+			color: $color-white;
+		}
+
+		.glyphicon{
+			color:#00A19D;
+			font-size: 20px;
+			vertical-align: text-bottom;
+			margin-left: 5px;
+		}
+
+		ul.languages-list{
+			position: absolute;
+			top: 100%;
+			left: 0;
+			background-color: #FFF;
+			z-index: 1000;
+			width: 100%;
+			display: none;
+			margin-top: 10px;
+			border: 1px solid #DEDEDE;
+
+
+			li{
+				border-bottom: 1px solid #DEDEDE;
+
+				&:first-child{
+					border-top: 1px solid #DEDEDE;
+				}
+
+				&:last-child{
+					border:none;
+				}
+
+				a {
+					padding: 13px 40px 10px 45px;
+					color:#3D3D3D !important;
+					display: block;
+				}
+			}
+		}
+	}
+
 //button customization
 
 .btn{
@@ -75,7 +131,11 @@ div.section.banner-header{
  		img{
  			margin-left: 5px;
  			vertical-align: sub;
- 		}
+		 }
+		 
+		 .navbar-toggle {
+			 background-color: unset;
+		 }
  	}
 
  	.image{
@@ -90,7 +150,6 @@ div.section.banner-header{
         
         position: absolute;
         bottom: 27%;
-        z-index: 150;
         color: $color-white;
         width: 100%;
         span.title{
@@ -1232,6 +1291,8 @@ footer {
             }
         }
         div.info{
+					z-index: unset;
+
         	&.terms{
         		background-color: $background-white;
         		position: static;
@@ -1375,10 +1436,14 @@ footer {
 			img{
 				height: 22px !important;
 			}
+
+			div.languages {
+				margin-right: 0px;
+			}
 		}
         div.banner-info{
             padding-left: 0px !important;
-     		bottom: 25%;
+     				bottom: 25%;
             span.title{
                 font-size: $font-size*1 !important;
             }

@@ -59,10 +59,10 @@ class Workshop extends \Goteo\Core\Model {
      * @param   int    $id         workshop id.
      * @return  Workshop object
      */
-    static public function get($id, $lang = null) {
+    static public function get($id, $lang = null, $model_lang = null) {
 
-        if(!$lang) $lang = Lang::current();
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+        if(!$model_lang) $model_lang = Config::get('lang');
+        list($fields, $joins) = self::getLangsSQLJoins($lang, $model_lang);
 
         $sql="SELECT
                     workshop.id,

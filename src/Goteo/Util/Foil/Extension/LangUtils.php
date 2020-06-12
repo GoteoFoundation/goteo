@@ -44,6 +44,7 @@ class LangUtils implements ExtensionInterface
           'lang_active' => [$this, 'lang_active'],
           'lang_list' => [$this, 'lang_list'],
           'lang_url' => [$this, 'lang_url'],
+          'lang_url_query' => [$this, 'lang_url_query'],
           'lang_host' => [$this, 'lang_host'],
           'list_countries' => [$this, 'list_countries'],
         ];
@@ -86,6 +87,11 @@ class LangUtils implements ExtensionInterface
     public function lang_url($lang = null)
     {
         return Lang::getUrl($lang, self::getRequest());
+    }
+
+    public function lang_url_query($lang = null)
+    {
+        return Lang::getUrlQuery($lang, self::getRequest());
     }
 
     public function lang_host($lang = null)
