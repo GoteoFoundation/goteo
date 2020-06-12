@@ -1039,6 +1039,8 @@ class Node extends \Goteo\Core\Model {
         $sql = "SELECT
                 stories.id,
                 stories.image,
+                stories.pool_image,
+                stories.background_image,
                 $fields
             FROM node_stories
             INNER JOIN stories ON stories.id = node_stories.stories_id
