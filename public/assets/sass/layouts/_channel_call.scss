@@ -195,11 +195,17 @@ div.section.call-to-action{
 		.col-sm-12 {
 			padding-bottom: 15px !important;
 		}
+
+		.col-center{
+			display: flex;
+			justify-content: center;
+		}
+
 	
 	div.cta {
 
 		display: inline-block;
-
+		
 		&.blue {
 			background-color: $background-new-dark-blue;
 
