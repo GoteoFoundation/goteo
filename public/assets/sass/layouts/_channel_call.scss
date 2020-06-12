@@ -1509,7 +1509,7 @@ footer {
 					margin-top: 10%;
 
 					q {
-						font-size: $font-size*1.5;
+						font-size: $font-size*1.3;
 						font-weight: bold;
 						color: $color-new-dark-blue;
 					}
@@ -1522,9 +1522,11 @@ footer {
 
 			.custom-left-arrow{
 				top: 53%;
+				font-size: $font-size*3;
 			}
 			.custom-right-arrow{
 				top: 53%;
+				font-size: $font-size*3;
 			}	
 		}
 
