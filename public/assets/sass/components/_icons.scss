@@ -145,6 +145,9 @@
     &.icon-match-blog {
         @include svg-background('../img/icons/match_blog.svg');
     }
+    &.icon-goteo-logo {
+        @include svg-background('../img/icons/goteo_logo.svg');
+    }
     &.icon-book {
         @include svg-background('../img/icons/book.svg');
     }

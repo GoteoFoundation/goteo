@@ -255,12 +255,6 @@ div.section.call-to-action{
 			padding-bottom: 15px !important;
 		}
 
-		.col-center{
-			display: flex;
-			justify-content: center;
-		}
-
-	
 	div.cta {
 
 		display: inline-block;
@@ -1278,6 +1272,7 @@ footer {
 			margin-right: 7px;
 		}
 	}
+
     div.section.banner-header{
         div.banner-info{
             span.title{
@@ -1298,15 +1293,21 @@ footer {
         		position: static;
         	}
         }
-		}
-		
-		footer {
+	}
 
-			ul {
-				margin-top: 0px;
-				margin-bottom: 0px;
-			}
+	div.section.call-to-action{
+		.item{
+			margin-top: 20px;
 		}
+	}
+		
+	footer {
+
+		ul {
+			margin-top: 0px;
+			margin-bottom: 0px;
+		}
+	}
 
 		div.section.program {
 
