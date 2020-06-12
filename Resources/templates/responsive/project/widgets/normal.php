@@ -54,7 +54,7 @@ if (!($label = $this->label)) {
 
     <div class="content">
         <h4>
-            <a href="/user/profile/<?= $this->project->user->id ?>" <?= $target ?>><?= $this->text('regular-by') . ' ' . $this->project->user->name ?></a>
+            <a href="/user/profile/<?= $this->project->user->id ?>" <?= $target ?>><?= $this->text('regular-by') . ' ' . $this->ee($this->project->user->name) ?></a>
         </h4>
         <div class="description">
             <?= $this->text_truncate($this->ee($this->project->subtitle), 140) ?>

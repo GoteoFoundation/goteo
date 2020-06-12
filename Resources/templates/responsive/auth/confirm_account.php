@@ -34,7 +34,7 @@ $this->section('inner-content');
             <img class="img-responsive" src="<?= $oauth->user_data['avatar'] ?>" alt="Profile image" >
         </div>
         <div class="col-md-8 standard-margin-top">
-            <div><?= $user->name ?></div>
+            <div><?= $this->ee($user->name) ?></div>
             <div><?= $email ?></div>
         </div>
 

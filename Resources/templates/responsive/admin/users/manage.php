@@ -20,7 +20,7 @@ $role_names = $roles->getRoleNames();
 $all_roles = $roles::getAllRoleNames();
 ?>
 
-<h5 class="title"><?= $this->user->name ?>:</h5>
+<h5 class="title"><?= $this->ee($this->user->name) ?>:</h5>
 
 <div class="row">
   <div class="col-sm-6 col-xs-12">
@@ -28,15 +28,15 @@ $all_roles = $roles::getAllRoleNames();
     <ul class="admin-list">
         <li>
             <strong><?= $this->text('admin-title-name') ?>:</strong>
-            <span id="name-<?= $id ?>" title="<?= $this->text('admin-edit-name') ?>" data-url="/api/users/<?= $id ?>/property/name" data-name="value" data-pk="<?= $id ?>" class="<?= $editable_impersonate ?>"><?= $this->user->name ?></span>
+            <span id="name-<?= $id ?>" title="<?= $this->text('admin-edit-name') ?>" data-url="/api/users/<?= $id ?>/property/name" data-name="value" data-pk="<?= $id ?>" class="<?= $editable_impersonate ?>"><?= $this->ee($this->user->name) ?></span>
         </li>
         <!--li>
             <strong><?= $this->text('admin-title-about') ?>:</strong>
-            <span id="about-<?= $id ?>" title="<?= $this->text('admin-edit-about') ?>" data-url="/api/users/<?= $id ?>/property/about" data-name="value" data-type="textarea" data-pk="<?= $id ?>" class="<?= $editable_impersonate ?>"><?= $this->user->about ?></span>
+            <span id="about-<?= $id ?>" title="<?= $this->text('admin-edit-about') ?>" data-url="/api/users/<?= $id ?>/property/about" data-name="value" data-type="textarea" data-pk="<?= $id ?>" class="<?= $editable_impersonate ?>"><?= $this->ee($this->user->about) ?></span>
         </li-->
         <li>
             <strong><?= $this->text('admin-title-location') ?>:</strong>
-            <span id="location-<?= $id ?>" title="<?= $this->text('admin-edit-location') ?>" data-url="/api/users/<?= $id ?>/property/location" data-name="value" data-pk="<?= $id ?>" _class="<?= $editable_impersonate ?>"><?= $this->user->location ?></span>
+            <span id="location-<?= $id ?>" title="<?= $this->text('admin-edit-location') ?>" data-url="/api/users/<?= $id ?>/property/location" data-name="value" data-pk="<?= $id ?>" _class="<?= $editable_impersonate ?>"><?= $this->ee($this->user->location) ?></span>
         </li>
     </ul>
     <ul class="admin-list">

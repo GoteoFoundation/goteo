@@ -160,8 +160,8 @@ class AuthController extends \Goteo\Core\Controller {
             // print_r($vars);die;
 
             $user = new User();
-            $user->userid = $vars['userid'];
-            $user->name = $vars['name'];
+            $user->userid = strip_tags($vars['userid']);
+            $user->name = strip_tags($vars['name']);
             $user->email = $vars['email'];
             $user->password = $vars['password'];
             $user->active = true;

@@ -148,15 +148,15 @@ use Goteo\Library\Check;
             <img src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
         </div>
         <div class="col-xs-10 info-default-call" >
-            <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
+            <div class="header-text"><?= $this->ee($project->called->user->name).' '.$this->text('call-project-get') ?></div>
             <div class="call-name">
                 <?= $project->called->name ?>
             </div>
         </div>
         <div class="col-xs-10 info-hover-call display-none" >
-            <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
+            <div class="header-text"><?= $this->ee($project->called->user->name).' '.$this->text('call-project-get') ?></div>
                 <div class="call-name">
-                <?= $this->text('project-call-got', amount_format($project->amount_call), $project->called->user->name) ?>
+                <?= $this->text('project-call-got', amount_format($project->amount_call), $this->ee($project->called->user->name)) ?>
                 </div>
         </div>
     </div>

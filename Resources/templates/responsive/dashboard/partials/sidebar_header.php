@@ -12,6 +12,6 @@ if(!$user) return;
         <?php if($admin): ?>
             <span class="label label-danger">ADMIN</span>
         <?php endif ?>
-        <div class="title"><a href="/dashboard/settings/profile"><?= $this->text_truncate($user->name, $truncate); ?></a></div>
+        <div class="title"><a href="/dashboard/settings/profile"><?= $this->ee($this->text_truncate($user->name, $truncate)); ?></a></div>
     </div>
 </div>
