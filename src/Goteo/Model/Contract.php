@@ -263,14 +263,14 @@ class Contract extends \Goteo\Core\Model {
         if($this->type > 0) {
             $entity = ['entity_name', 'entity_cif', 'office', 'entity_address', 'entity_location', 'entity_region', 'entity_zipcode', 'entity_country'];
             $total = count($entity);
-            $entity[] = 'reg_name';
-            $entity[] = 'reg_number';
-            if($this->type == 2) {
+            //$entity[] = 'reg_name';
+            //$entity[] = 'reg_number';
+            /*if($this->type == 2) {
                 $entity[] = 'reg_date';
                 $entity[] = 'reg_id';
                 $entity[] = 'reg_idname';
                 $entity[] = 'reg_idloc';
-            }
+            }*/
             $count = 0;
             foreach($entity as $field) {
                 if(!empty($this->{$field})) {
@@ -294,9 +294,7 @@ class Contract extends \Goteo\Core\Model {
 
         // 3. accounts
         $accounts = ['bank', 'bank_owner'];
-        if ($this->paypal) {
-            $accounts[] = 'paypal_owner';
-        }
+        
         $total = count($accounts);
         $count = 0;
         foreach($accounts as $field) {
