@@ -14,7 +14,7 @@ dashboard-certificates-processed: Processed
 dashboard-certificates-confirmed-ok: 'Your fiscal data are confirmed now.'
 dashboard-certificates-data-alert: 'Keep in mind that once confirmed, the data can not be modified!'
 dashboard-certificates-data-desc: 'Please make sure the data in the form is correct and confirm the form'
-dashboard-certificates-data-download-all: 'Please confirm your certificates in order to active your deduction. Afterward, you can download a copy of them. Once a year, Goteo Foundation notifies all your confirmed donations to the tax office.'
+dashboard-certificates-data-download-all: 'Please confirm your certificates in order to active your deduction. Once a year, Goteo Foundation notifies all your confirmed donations to the tax office.'
 dashboard-certificates-data-new-invests: 'And hey, don''t worry! Any further donation you make through Goteo will generate a new certificate'
 dashboard-certificates-desc: 'These certificates will allow a deduction in your income tax declaration only if you are a taxpayer in Spain.'
 dashboard-certificates-details: 'Show details'
