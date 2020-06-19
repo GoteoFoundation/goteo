@@ -11,7 +11,7 @@ dashboard-certificates-confirm: 'Confirmar datos'
 dashboard-certificates-confirm-checkbox: 'Confirmo que estos son mis datos legales reales y soy consciente de que no voy a poder modificar estos datos una vez confirmados'
 dashboard-certificates-confirmed: Confirmado
 dashboard-certificates-processed: Procesado
-dashboard-certificates-confirmed-ok: 'Datos fiscales confirmados correctamente, si tu certificado no se descarga automáticamente haz click %HERE%'
+dashboard-certificates-confirmed-ok: 'Datos fiscales confirmados correctamente'
 dashboard-certificates-data-alert: '¡Ten en cuenta que una vez confirmado no se pueden modificar los datos!'
 dashboard-certificates-data-desc: 'Por favor, asegúrate de que los datos del formulario son correctos y confirma el formulario'
 dashboard-certificates-data-download-all: 'Confirma tus certificados para activar la desgravación fiscal. Una vez hecho podrás descargar una copia de los mismos. Anualmente la Fundación Goteo realiza la notificación a Hacienda de todas las donaciones confirmadas.'
@@ -23,6 +23,7 @@ dashboard-certificates-download: 'Confirmar y descargar'
 dashboard-certificates-empty: 'Debes hacer algún aporte a un proyecto o recargar el monedero virtual para ver tus certificados'
 dashboard-certificates-expired: Caducado
 dashboard-certificates-expired-description: 'Ha expirado el plazo para confirmar tu certificado'
+dashboard-certificates-no-downloable: 'La descarga del certificado estará disponible a partir del 1 de marzo de %YEAR%'
 dashboard-certificates-no-pending: 'No hay ningún aporte pendiente'
 dashboard-certificates-pending: Pendiente
 dashboard-certificates-pending-desc: 'Estos son los aportes que se incluirán en certificados futuros.'
