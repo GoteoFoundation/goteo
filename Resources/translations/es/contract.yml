@@ -103,7 +103,7 @@ contract-validation-error-promoter: 'Faltan campos para llenar en el promotor'
 contract-validation-error-promoter_nif: 'El NIF no es correcto.'
 contract-validation-error-entity: 'Faltan campos para llenar en la entidad'
 contract-validation-error-accounts: 'Faltan campos para llenar en las cuentas'
-contract-validation-error-documentos: 'Falta documentación'
+contract-validation-error-documents: 'Falta documentación'
 contract-already-processed: 'El contrato ya ha sido procesado.'
 contract-legal-entities-natural-person: Persona física
 contract-legal-entities-legal-person: Persona jurídica

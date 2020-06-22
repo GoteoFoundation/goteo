@@ -52,6 +52,7 @@ class Filter extends \Goteo\Core\Model {
         $project_location,
         $projects = [],
         $calls = [],
+        $channels = [],
         $matchers = [],
         $forced;
 
@@ -65,6 +66,7 @@ class Filter extends \Goteo\Core\Model {
 
         $filter->projects = self::getFilterProject($id);
         $filter->calls = self::getFilterCall($id);
+        $filter->channels = self::getFilterNode($id);
         $filter->matchers = self::getFilterMatcher($id);
         $filter->sdgs = self::getFilterSDG($id);
         $filter->footprints = self::getFilterFootprint($id);
@@ -130,6 +132,22 @@ class Filter extends \Goteo\Core\Model {
         }
 
         return $filter_calls;
+    }
+
+    static public function getFilterNode ($filter){
+        $query = static::query('SELECT `node` FROM filter_node WHERE filter = ?', $filter);
+        $nodes = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        $filter_nodes = [];
+
+        foreach($nodes as $node) {
+            foreach($node as $key => $value) {
+                $node = Node::getMini($value);
+                $filter_nodes[$value] = $node->name;
+            }
+        }
+
+        return $filter_nodes;
     }
     
     static public function getFilterMatcher ($filter){
@@ -220,6 +238,29 @@ class Filter extends \Goteo\Core\Model {
             }
             catch (\PDOException $e) {
                 Message::error("Error saving filter call " . $e->getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function setFilterNodes(){
+        $values = Array(':filter' => $this->id, ':node' => '');
+        
+        try {
+            $query = static::query('DELETE FROM filter_node WHERE filter = :filter', Array(':filter' => $this->id));
+        }
+        catch (\PDOException $e) {
+            Message::error("Error deleting previous filter nodes for filter " . $this->id . " " . $e->getMessage());
+        }
+
+        foreach($this->channels as $key => $value) {
+            $values[':node'] = $value;
+            try {
+                $query = static::query('INSERT INTO filter_node(`filter`, `node`) VALUES(:filter,:node)', $values);
+            }
+            catch (\PDOException $e) {
+                Message::error("Error saving filter node " . $e->getMessage());
                 return false;
             }
         }
@@ -340,6 +381,7 @@ class Filter extends \Goteo\Core\Model {
 
             $this->setFilterProjects();
             $this->setFilterCalls();
+            $this->setFilterNodes();
             $this->setFilterMatcher();
             $this->setFilterSDG();
             $this->setFilterFootprint();
@@ -496,6 +538,7 @@ class Filter extends \Goteo\Core\Model {
         
         $this->projects = $this->getFilterProject($this->id);
         $this->calls = $this->getFilterCall($this->id);
+        $this->channels = $this->getFilterNode($this->id);
         $this->matchers = $this->getFilterMatcher($this->id);
 
 
@@ -515,6 +558,20 @@ class Filter extends \Goteo\Core\Model {
             }
             if($parts) $sqlInner .= " AND call_project.call IN (" . implode(',', $parts) . ") ";
 
+        }
+
+        if (!empty($this->channels)) {
+            $sqlInner .= "LEFT JOIN node_project
+                ON node_project.project_id = invest.project
+            INNER JOIN project
+                ON project.id = invest.project
+            ";
+            $parts = [];
+            foreach(array_keys($this->channels) as $index => $id) {
+                $parts[] = ':nodes_' . $index;
+                $values[':nodes_' . $index] = $id;
+            }
+            if($parts) $sqlInner .= " AND ( node_project.node_id IN (" . implode(',', $parts) . ") OR  project.node IN (" . implode(',', $parts) . ") ) ";
         }
 
 
@@ -706,6 +763,7 @@ class Filter extends \Goteo\Core\Model {
         
         $this->projects = $this->getFilterProject($this->id);
         $this->calls = $this->getFilterCall($this->id);
+        $this->channels = $this->getFilterNode($this->id);
         $this->matchers = $this->getFilterMatcher($this->id);
 
 
@@ -725,6 +783,20 @@ class Filter extends \Goteo\Core\Model {
             }
             if($parts) $sqlInner .= " AND call_project.call IN (" . implode(',', $parts) . ") ";
 
+        }
+
+        if (!empty($this->channels)) {
+            $sqlInner .= "LEFT JOIN node_project
+                ON node_project.project_id = invest.project
+            INNER JOIN project
+                ON project.id = invest.project
+            ";
+            $parts = [];
+            foreach(array_keys($this->channels) as $index => $id) {
+                $parts[] = ':nodes_' . $index;
+                $values[':nodes_' . $index] = $id;
+            }
+            if($parts) $sqlInner .= " AND ( node_project.node_id IN (" . implode(',', $parts) . ") OR  project.node IN (" . implode(',', $parts) . ") ) ";
         }
 
 
@@ -1183,6 +1255,7 @@ class Filter extends \Goteo\Core\Model {
 
         $this->projects = $this->getFilterProject($this->id);
         $this->calls = $this->getFilterCall($this->id);
+        $this->channels = $this->getFilterNode($this->id);
         $this->matchers = $this->getFilterMatcher($this->id);
 
         if (!empty($this->projects)) {
@@ -1212,6 +1285,18 @@ class Filter extends \Goteo\Core\Model {
                 $values[':call_'.$index] = $id;
             }
             $sqlFilter .= ") ";
+        }
+
+        if (!empty($this->channels)) {
+            $sqlInner .= "LEFT JOIN node_project
+                on node_project.project_id = project.id
+            ";
+
+            foreach(array_keys($this->channels) as $index => $id) {
+                $parts[] = ':nodes_' . $index;
+                $values[':nodes_' . $index] = $id;
+            }
+            if($parts) $sqlFilter .= " AND ( node_project.node_id IN (" . implode(',', $parts) . ") OR  project.node IN (" . implode(',', $parts) . ") ) ";
         }
 
         if (!empty($this->matchers)) {
@@ -1319,6 +1404,7 @@ class Filter extends \Goteo\Core\Model {
 
         $this->projects = $this->getFilterProject($this->id);
         $this->calls = $this->getFilterCall($this->id);
+        $this->channels = $this->getFilterNode($this->id);
         $this->matchers = $this->getFilterMatcher($this->id);
 
         if (!empty($this->projects)) {
@@ -1348,6 +1434,18 @@ class Filter extends \Goteo\Core\Model {
                 $values[':call_'.$index] = $id;
             }
             $sqlFilter .= ") ";
+        }
+
+        if (!empty($this->channels)) {
+            $sqlInner .= "LEFT JOIN node_project
+                on node_project.project_id = project.id
+            ";
+
+            foreach(array_keys($this->channels) as $index => $id) {
+                $parts[] = ':nodes_' . $index;
+                $values[':nodes_' . $index] = $id;
+            }
+            if($parts) $sqlFilter .= " AND ( node_project.node_id IN (" . implode(',', $parts) . ") OR  project.node IN (" . implode(',', $parts) . ") ) ";
         }
 
         if (!empty($this->matchers)) {
