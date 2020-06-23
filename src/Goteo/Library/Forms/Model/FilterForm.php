@@ -192,6 +192,8 @@ class FilterForm extends AbstractFormProcessor {
         $model->calls = array();
         $model->channels = array();
         $model->matchers = array();
+        $model->footprints = array();
+        $model->sdgs = array();
 
         foreach($data['projects'] as $key => $value) {
             if (!empty($value)) array_push($model->projects,$value);
