@@ -54,6 +54,8 @@ class Filter extends \Goteo\Core\Model {
         $calls = [],
         $channels = [],
         $matchers = [],
+        $sdgs = [],
+        $footprints = [],
         $forced;
 
     static public function get($id) {
@@ -166,7 +168,7 @@ class Filter extends \Goteo\Core\Model {
         return $filter_matchers;
     }
 
-    static public function getFiltersdg ($filter){
+    static public function getFilterSDG ($filter){
         $query = static::query('SELECT `sdg` FROM filter_sdg WHERE filter = ?', $filter);
         $sdgs = $query->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -182,7 +184,7 @@ class Filter extends \Goteo\Core\Model {
         return $filter_sdgs;
     }
 
-    static public function getFilterfootprint ($filter){
+    static public function getFilterFootprint ($filter){
         $query = static::query('SELECT `footprint` FROM filter_footprint WHERE filter = ?', $filter);
         $footprints = $query->fetchAll(\PDO::FETCH_ASSOC);
 
