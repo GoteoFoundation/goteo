@@ -20,7 +20,7 @@ use Goteo\Model\Project;
 use Goteo\Model\Sdg;
 use Goteo\Model\Footprint;
 
-class ProjectFilterForm extends AbstractFormProcessor {
+class FilterForm extends AbstractFormProcessor {
 
     public function createForm() {
 
@@ -114,6 +114,14 @@ class ProjectFilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'call'
             ])
+            ->add('channels', 'typeahead', [
+                'type' => 'multiple',
+                'label' => 'admin-channels',
+                'value_field' => 'name',
+                'disabled' => $this->getReadonly(),
+                'required' => false,
+                'sources' => 'channel'
+            ])
             ->add('matchers', 'typeahead', [
                 'type' => 'multiple',
                 'label' => 'admin-matchers',
@@ -182,13 +190,19 @@ class ProjectFilterForm extends AbstractFormProcessor {
 
         $model->projects = array();
         $model->calls = array();
+        $model->channels = array();
         $model->matchers = array();
+        $model->footprints = array();
+        $model->sdgs = array();
 
         foreach($data['projects'] as $key => $value) {
             if (!empty($value)) array_push($model->projects,$value);
         }
         foreach($data['calls'] as $key => $value) {
             if (!empty($value)) array_push($model->calls,$value);
+        }
+        foreach($data['channels'] as $key => $value) {
+            if (!empty($value)) array_push($model->channels,$value);
         }
         foreach($data['matchers'] as $key => $value) {
             if (!empty($value)) array_push($model->matchers,$value);

@@ -35,6 +35,7 @@ $(function () {
     var role = $('#form-role');
     var projects = $('#form-projects');
     var calls = $('#form-calls');
+    var channels = $('#form-channels');
     var matchers = $('#form-matchers');
     var sdgs = $('#form-sdgs');
     var footprints = $('#form-footprints');
@@ -53,6 +54,7 @@ $(function () {
             predefineddate.hide();
             projects.hide();
             calls.hide();
+            channels.hide();
             matchers.hide();
             sdgs.hide();
             footprints.hide();
@@ -75,6 +77,7 @@ $(function () {
             predefineddate.show();
             projects.show();
             calls.show();
+            channels.show();
             matchers.show()
             footprints.show();
             sdgs.show();
@@ -91,6 +94,7 @@ $(function () {
             predefineddate.show();
             projects.hide();
             calls.hide();
+            channels.hide();
             matchers.hide()
             footprints.hide();
             sdgs.hide();
@@ -107,6 +111,7 @@ $(function () {
             predefineddate.show();
             projects.show();
             calls.show();
+            channels.show();
             matchers.show();
             sdgs.show();
             footprints.show();
@@ -127,6 +132,7 @@ $(function () {
             predefineddate.show();
             projects.hide();
             calls.hide();
+            channels.hide();
             footprints.hide();
             sdgs.hide();
             status.hide();

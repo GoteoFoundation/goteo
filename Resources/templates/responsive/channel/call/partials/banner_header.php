@@ -5,12 +5,28 @@
 				<img src="/assets/img/channel/call/logo_crowdcoop.png" height="30px">
 			</a>
 		</div>
-		<div class="pull-right">
+		<div class="pull-right hidden-xs">
 			<span><?= $this->text('call-header-powered-by') ?></span>
 			<a href="<?= $this->get_config('url.main') ?>">
-      			<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
-      		</a>
-      	</div>
+				<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
+			</a>
+		</div>
+		<div id="navbar" class="navbar languages">
+			<div class="active">
+				<span><?= $this->lang_name($this->lang_current()) ?></span>
+				<span class="glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+			</div>
+			<ul class="languages-list list-unstyled">
+			<?php foreach($this->lang_list('name') as $key => $lang): ?>
+				<?php if ($this->lang_active($key)) continue; ?>
+					<li>
+					<a href="<?= $this->lang_url_query($key) ?>">
+						<?= $lang ?>
+					</a>
+					</li>
+			<?php endforeach; ?>
+			</ul>
+		</div>
 	</div>
 	<div class="image">
 		<?php $header_image=$this->channel->getBannerHeaderImage(); ?>

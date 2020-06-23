@@ -776,11 +776,12 @@ class Node extends \Goteo\Core\Model {
             $data = $query->fetch(\PDO::FETCH_ASSOC);
 
             // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
-            if (empty($data) || $data['timeago'] > (30*60)) {
+            /*if (empty($data) || $data['timeago'] > (30*60)) {
                 if ($newdata = $this->updateData()) {
                     return $newdata;
                 }
-            }
+            }*/
+            
             return $data;
         } catch(\PDOException $e) {
 
@@ -814,11 +815,11 @@ class Node extends \Goteo\Core\Model {
         $data = $query->fetch(\PDO::FETCH_ASSOC);
 
         // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
-        if (empty($data) || $data['timeago'] > (30*60)) {
+        /*if (empty($data) || $data['timeago'] > (30*60)) {
             if ($newdata = $this->updateData()) {
                 return $newdata;
             }
-        }
+        }*/
 
         return $data;
     }
@@ -1038,6 +1039,8 @@ class Node extends \Goteo\Core\Model {
         $sql = "SELECT
                 stories.id,
                 stories.image,
+                stories.pool_image,
+                stories.background_image,
                 $fields
             FROM node_stories
             INNER JOIN stories ON stories.id = node_stories.stories_id
