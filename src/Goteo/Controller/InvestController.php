@@ -629,6 +629,7 @@ class InvestController extends \Goteo\Core\Controller {
             Message::error(Text::get('invest-address-fail'));
 
         }
+
         // show form
         return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3, 'reward' => $reward]);
 

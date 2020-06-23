@@ -21,6 +21,8 @@ invest-address-namedest-field: 'Nombre del destinatario'
 invest-address-nif-field: 'Número de NIF / NIE / CIF / VAT'
 invest-address-title: 'Asegúrate de que recibes tu recompensa'
 invest-address-zipcode-field: 'Código postal'
+invest-address-legal-entity-field: Entidad legal
+invest-address-legal-document-type-field: Tipo de documento
 invest-alert-investing: 'Vas a aportar'
 invest-alert-lackamount: 'El aporte debe ser mayor a la recompensa elegida'
 invest-alert-lackdrop: 'No queda suficiente Capital riego para cubrir tu aportacion, solamente quedan'
@@ -44,7 +46,9 @@ invest-donation-header: 'Introduce los datos fiscales para el donativo'
 invest-drop-method: Riego
 invest-fiscal-fail: 'Hay campos vacíos o con errores, comprueba el formulario fiscal para que puedas desgravar tu aporte!'
 invest-fiscal-skip: 'Ahora no quiero rellenar estos datos.'
-invest-fiscal-title: 'Asegúrate de que puedas desgravar tu aportación (para contribuyentes en España)'
+invest-fiscal-renounce: 'No deseo recibir Certificado de Donación'
+invest-fiscal-title: 'Solicitud del certificado de donación'
+invest-fiscal-warning: 'A partir del 1 de Marzo de %s, podrás descargarte tu certificado de donación siempre que hayas facilitado tus datos completos anteriormente al 15 de enero.'
 invest-login-alert: 'Debes registrarte o <a href="%s">iniciar sesión</a> para poder realizar el aporte'
 invest-mail_info-address: 'Has especificado la siguiente dirección:'
 invest-mail_info-drop: 'Además, %s ha aportado %s de matchfunding a través de la campaña %s'
@@ -118,3 +122,8 @@ invest-tip-part-2: 'para contribuir a la misión de la <b>Fundación Goteo</b><b
 invest-mail-donate-tip: 'Con tu donación has decidido colaborar con la <strong>Fundación Goteo</strong> con %s € adicionales, gracias de corazón.'
 invest-update-total: 'Vas a realizar una donación total de<span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% al proyecto + <span id="tip-amount">%DONATE_AMOUNT%</span> a Fundación Goteo'
 invest-extra-info: 'Información extra'
+donor-legal-entities-natural-person: Persona física
+donor-legal-entities-legal-person: Persona jurídica
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-vat: VAT
