@@ -490,6 +490,24 @@ admin-stats-donations-tip: 'Donazioni durante apporti a progetti (Suggerimenti o
 admin-stats-donations-direct: 'Donazioni dirette ( includono portamonete scaduti)'
 admin-stats-donations-generosity: 'Percentuale di generosità'
 admin-stats-donations-generosity-desc: 'Quantità di utenti con donazioni verso quantità totali. Solo se tengono in conto i progetti con donazioni.'
+admin-stats-donations-expired: 'Donazioni dirette dovute a portamonete scaduti'
+admin-stats-donations-refunded: 'Donazioni que si sono restituite dovute a progetti falliti'
+admin-donations: Donazioni
+admin-donations-tip: Mance
+admin-donations-tip-invests: Apporti con mance
+admin-donations-tip-users: Utenti con mancia
+admin-donations-direct: Donazioni dirette
+admin-donations-expired: Donazioni scadute
+admin-donations-refunded: Donazioni restituite
+admin-donations-amount-percent: '% denaro donato'
+admin-donations-users-percent: '% utenti donanti'
+admin-donations-tip-percent: '% denaro in mance'
+admin-donations-direct-percent: '% denado diretto'
+admin-workshop: Laboratori di gocciolamento
+admin-workshop-add: Creare un nuovo laboratorio
+admin-workshop-edit: Modificando il laboratorio %s
+admin-workshop-edit-success: L'entrata del laboratorio si è modificata correttamente
+admin-online: Online
 mandatory-filter-name: Manca nome
 mandatory-filter-description: Manca descrizione
 mandatory-filter-role: Manca un ruolo
