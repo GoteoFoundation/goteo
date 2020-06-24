@@ -99,6 +99,7 @@ admin-filters: 'Filtri'
 admin-filters-edit: 'Editare filtro'
 admin-filters-create: 'Creare filtro'
 admin-remove-filters: 'Eliminare filtri'
+admin-remove-filters-forbidden: 'I filtri che sono stati utilizzati non si possono eliminare.'
 admin-remove-entry: 'Cancellare voce'
 admin-remove-entry-confirm: 'Sicuro di voler eliminare questa voce? Questa azione non può essere annullata!'
 admin-remove-entry-forbidden: 'Non si possono cancellare voci pubblicate di blog. Annulla la pubblicazione della voce prima.'
@@ -189,6 +190,7 @@ admin-view-user-mailing: 'Tutti gli invii'
 admin-role-change-forbidden: 'Non hai il permesso per gestire il ruolo %ROLE% in questo utente'
 admin-users-global-search: 'Id, nome, email o progetto'
 admin-blog-global-search: 'Id, titolo, sottotitolo o testo'
+admin-communication-global-search: 'Assunto'
 admin-blog-stories-search: 'Id, titolo, testo o progetto'
 admin-no-project: 'Nessun progetto'
 admin-title-id: Id
@@ -202,6 +204,7 @@ admin-title-header-image: Immagine di intestazione
 admin-title-password: Password
 admin-title-avatar: Avatar
 admin-title-roles: Ruoli
+admin-title-role: Ruolo
 admin-title-amount: Invertito
 admin-title-icon: Icona
 admin-title-info: Info
@@ -209,21 +212,38 @@ admin-title-image: Immagine
 admin-title-landing_match: Finanziamento di atterraggio
 admin-title-title: Titolo
 admin-title-subtitle: Sottotitolo
+admin-title-subject: Assunto
+admin-title-description: Descrizione
 admin-title-section: Sezione
 admin-title-text: Testo
 admin-title-slug: Slug
 admin-title-publish: Pubblicato
+admin-title-lang: Lingua
 admin-title-langs: Traduzioni
 admin-title-actions: Azioni
 admin-title-tags: Tag
 admin-title-deleted: Eliminato
 admin-title-sphere: Ambito
 admin-title-social_commitment: Impegno sociale
+admin-title-sdgs: 'Obbiettivi di sviluppo sostenibile'
 admin-title-footprints: 'Impronte'
 admin-title-categories: 'Categorie'
 admin-title-social_commitments: 'Compromessi sociali'
 admin-title-order: Ordinare
 admin-title-status: Stato
+admin-title-users: Utenti
+admin-title-city: Città
+admin-title-date: Data
+admin-title-blockquote: 'Appuntamento personalizzato'
+admin-title-type: 'Genere'
+admin-title-date-in: Data d'inizio
+admin-title-date-out: Data di fine
+admin-title-venue: Posto (visibile in chiamata all'azione)
+admin-title-venue-address: Direzione
+admin-title-how-to-get: '¿Come raggiungere?'
+admin-title-iframe: 'Iframe localizzazione'
+admin-title-schedule-file: 'Programma Url'
+admin-title-call: 'Annuncio di Matchfunding'
 admin-blog-not-published-yet: 'La voce del blog non è ancora pubblica'
 admin-blog-initialized: 'Ha inizializzato lo spazio del blog'
 admin-blog-deactivated: 'Spiacenti, la gestione del blog è disattivata'
