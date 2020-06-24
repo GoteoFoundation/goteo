@@ -122,6 +122,7 @@ project-create-social-select-alert: '<strong>GOTEO-TASTICO!!</strong><p>In Goteo
 project-create-social-text-field: 'Spiega in poche parole in che consiste questo compromesso sociale'
 project-create-social-text-alert: '<strong>TROPPO BELLO!!</strong><p>Ora abbiamo bisogno che tu ci spieghi un po'' questo compromesso che hai selezionato</p>'
 project-create-location-text-alert: '<strong>COOL!!</strong><p>Ci siamo quasi! Pensa a dove sarà localizzato il tuo progetto</p>'
+project-create-terms-field: 'Ho letto, capisco e accetto le <a target="_blank" href="/legal/terms"> condizoni</a> e requisiti per creare un progetto in Goteo, così come la<a target="_blank" href="/legal/privacy"> la politica della privacy</a> della piattaforma.'
 project-create-save-button: 'Salva e continua'
 project-create-save-alert: '<strong>GRANDE!!</strong><p>Ora che abbiamo un''idea sul progetto, passerai al passo successivo con un formulario ampliato sul tuo progetto</p>'
 project-create-modal-no-social-title: 'Compromesso Sociale'
