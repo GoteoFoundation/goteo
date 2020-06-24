@@ -503,7 +503,7 @@ admin-donations-amount-percent: '% denaro donato'
 admin-donations-users-percent: '% utenti donanti'
 admin-donations-tip-percent: '% denaro in mance'
 admin-donations-direct-percent: '% denado diretto'
-admin-workshop: Laboratori di gocciolamento
+admin-workshop: Laboratori di Goteo
 admin-workshop-add: Creare un nuovo laboratorio
 admin-workshop-edit: Modificando il laboratorio %s
 admin-workshop-edit-success: L'entrata del laboratorio si è modificata correttamente
