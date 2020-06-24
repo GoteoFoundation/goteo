@@ -479,6 +479,17 @@ admin-filter-type-multidonor: 'Multidonatore'
 admin-filter-type-foundation-donor: 'Donatore alla fondazione'
 admin-filter-type-all: 'Tutti'
 admin-filter-predefined-date: 'Data prestabilita'
+admin-filter-predefined-date-choose: 'Puoi selezionare una data predefinita'
+admin-filter-forced: 'Forzare filtro'
+admin-filter-forced-help: 'Se selezioni questa opzione si applicheranno i filtri indipendentemente da quello che ha scelto l''utente come preferenza per l''invio dell''informazione per parte della piattaforma.'
+admin-mail-body: 'Corpo del messaggio'
+admin-stats-donations: 'Donazioni'
+admin-stats-donations-method: 'Donazioni secondo metodo di pagamento'
+admin-stats-donations-method-desc: 'Le donazioni includono il denaro che l''utente invia volontariamente alla fondazione quando apporta ad un progetto, le donaziono dirette o anche quando l''importo nel portamonete scade.'
+admin-stats-donations-tip: 'Donazioni durante apporti a progetti (Suggerimenti o "tips")'
+admin-stats-donations-direct: 'Donazioni dirette ( includono portamonete scaduti)'
+admin-stats-donations-generosity: 'Percentuale di generosità'
+admin-stats-donations-generosity-desc: 'Quantità di utenti con donazioni verso quantità totali. Solo se tengono in conto i progetti con donazioni.'
 mandatory-filter-name: Manca nome
 mandatory-filter-description: Manca descrizione
 mandatory-filter-role: Manca un ruolo
