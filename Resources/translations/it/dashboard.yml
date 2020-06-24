@@ -288,3 +288,4 @@ dashboard-origin-project-device: 'Dispositivo utilizzato nella pagina del proget
 dashboard-origin-invests-device: 'Dispositivo utilizzato nei contributi di successo'
 dashboard-origin-disclaimer: '⚠ *Questi dati sono orientativi e non includono la totalità delle visite a causa di limiti tecnici.*  > Ti suggeriamo di configurare Google Analytics o Facebook Pixel per ottenere dati più dettagliati'
 dashboard-project-integration-token: 'Token'
+dashboard-project-integration-link: 'Collegamento'
