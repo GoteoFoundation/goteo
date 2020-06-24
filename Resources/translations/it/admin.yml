@@ -50,6 +50,17 @@ admin-contents: 'Testi e traduzioni'
 admin-empty-list: 'Nessun risultato trovato'
 admin-activity: Attività
 admin-communications: Comunicazioni
+admin-communications-add: Creare nuova comunicazione
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' per l''id di accesso del proprietario'
+admin-communications-useremail-content: ' per l''email del destinatario'
+admin-communications-username-content: ' per il nome del destinatario'
 admin-home: Prima Pagina
 admin-items: voci
 admin-mailing-back-to-list: 'Tornare a comunicazioni'
