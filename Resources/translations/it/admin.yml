@@ -244,6 +244,15 @@ admin-title-how-to-get: '¿Come raggiungere?'
 admin-title-iframe: 'Iframe localizzazione'
 admin-title-schedule-file: 'Programma Url'
 admin-title-call: 'Annuncio di Matchfunding'
+admin-title-url-inscription: Collegamento a iscrizione
+admin-title-filter: Filtro
+admin-title-template: Modello
+admin-title-receivers: Destinatari
+admin-title-sent: Inviati
+admin-title-failed: Non inviati
+admin-title-pending: Orecchini
+admin-title-success: Uscite
+admin-title-percent: Percentuale
 admin-blog-not-published-yet: 'La voce del blog non è ancora pubblica'
 admin-blog-initialized: 'Ha inizializzato lo spazio del blog'
 admin-blog-deactivated: 'Spiacenti, la gestione del blog è disattivata'
@@ -450,3 +459,26 @@ admin-stats-projects-call-desc: 'Progetti che appartengono alla convocatoria'
 admin-stats-projects-matcher-desc: 'Progetti attivi nel matcher'
 admin-stats-projects-consultant-desc: 'Progetti che hanno assegnato questo consigliere'
 admin-stats-projects-project-desc: 'Contributi al progetto'
+admin-filter-add: 'Inserire filtro'
+admin-filter-last-week: 'Ultimi 7 giorni'
+admin-filter-last-month: 'Ultimi 30 giorni'
+admin-filter-last-year: 'Ultimi 365 giorni'
+admin-filter-from-new-year: 'Dal 1 di Gennaio'
+admin-filter-previous-year: 'Lo scorso anno'
+admin-filter-two-years-ago: 'Da due anni'
+admin-filter-typeofuser: 'Genere di utente'
+admin-filter-typeofdonor: 'Genere di donatore'
+admin-filter-user: 'Utente'
+admin-filter-donor: 'Donante'
+admin-filter-no-donor: 'Donatore inattivo'
+admin-filter-promoter: 'Promotore'
+admin-filter-matcher: 'Matcher'
+admin-filter-test: 'Test'
+admin-filter-type-unique: 'Unico'
+admin-filter-type-multidonor: 'Multidonatore'
+admin-filter-type-foundation-donor: 'Donatore alla fondazione'
+admin-filter-type-all: 'Tutti'
+admin-filter-predefined-date: 'Data prestabilita'
+mandatory-filter-name: Manca nome
+mandatory-filter-description: Manca descrizione
+mandatory-filter-role: Manca un ruolo
