@@ -51,3 +51,5 @@ role-perm-name-admin-module-stories: 'Può accedere al modulo di Cronologie uten
 role-perm-name-admin-module-stats: 'Può accedere al modulo delle Statistiche'
 role-perm-name-full-html-edit: 'È possibile modificare tutti i posts con contenuto HTML'
 role-perm-name-admin-module-categories: 'È possibile accedere al modulo delle Categorie'
+role-perm-name-admin-module-workshops: 'Puoi accedere al modulo di laboratori'
+role-perm-name-admin-module-promote: 'Puoi accedere al modulo per distaccare progetti nella pagina principale'
