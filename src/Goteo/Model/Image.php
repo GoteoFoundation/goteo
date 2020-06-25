@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Goteo\Model\Image\Credits;
 
 class Image extends \Goteo\Core\Model {
 
@@ -681,6 +682,13 @@ class Image extends \Goteo\Core\Model {
 
     public function __toString() {
         return $this->getName();
+    }
+
+    public function getCredits() {
+        if ($this->credits) return $this->credits;
+        
+        $this->credits = Credits::get($this->name);
+        return $this->credits;
     }
 
     /**
