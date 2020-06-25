@@ -1054,6 +1054,15 @@ class Node extends \Goteo\Core\Model {
 
     }
 
+    public function addStory($story) {
+        $sql = "REPLACE INTO node_stories (node_id, stories_id) VALUES(:channel, :story)";
+        $values = [
+            ':channel' => $this->id,
+            ':story' => $story->id
+        ];
+        $query = static::query($sql, $values);
+    }
+
 
     /**
      *  Sponsors of this node
