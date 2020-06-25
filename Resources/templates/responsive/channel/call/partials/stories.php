@@ -11,12 +11,20 @@
       <?php $title=explode("/", $story->title); ?>
       <div class="story-container">
         <div class="story-desktop-container">
-          <img src='<?= $story->getBackgroundImage()->getLink(1350,400,true) ?>'>
-          <figcaption>
-            <cite>
-              <?= $story->background_image_credits ?>
-            </cite>
-          </figcaption>
+          <?php
+            $background_image = $story->getBackgroundImage();
+          ?>
+          <img src='<?= $background_image->getLink(1350,400,true) ?>'>
+          <?php
+            $credits = $background_image->getCredits();
+            if ($credits):
+          ?>
+            <figcaption>
+              <cite>
+                <?= $credits->credits ?>
+              </cite>
+            </figcaption>
+          <?php endif; ?>
           <div class="story">
             <div class="row">
               <div class="col-md-7 col-sm-9">
