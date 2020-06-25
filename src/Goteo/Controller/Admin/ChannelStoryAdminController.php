@@ -12,6 +12,13 @@ namespace Goteo\Controller\Admin;
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+use Goteo\Application\Config;
+use Goteo\Model\Node;
+use Goteo\Model\Stories;
+
+use Goteo\Application\Message;
 
 
 class ChannelStoryAdminController extends AbstractAdminController
@@ -21,4 +28,69 @@ protected static $icon = '<i class="fa fa-2x fa-connect"></i>';
     public static function getGroup() {
         return 'channel';
     }
+
+    public static function getRoutes() {
+		return [
+			new Route(
+				'/',
+				['_controller' => function () {
+                    return new RedirectResponse("/admin/channelstory/" . Config::get('node'));
+                }]
+			),
+			new Route(
+				'/{id}',
+				['_controller' => __CLASS__ . "::listAction"]
+			),
+			new Route(
+				'/{id}/add',
+				['_controller' => __CLASS__ . "::addAction"]
+			)
+		];
+    }
+    
+	public function listAction($id, Request $request) {
+		try {
+			$channel = Node::get($id);
+		} catch (ModelNotFoundException $e) {
+			Message::error($e->getMessage());
+			return $this->redirect('/admin');
+		}
+
+		$limit = 20;
+		$list = $channel->getStories();
+		$total = count($list);
+
+		return $this->viewResponse('admin/channelstories/list', [
+			'selectedNode' => $id,
+			'nodes' => $this->user->getNodeNames(),
+			'list' => $list,
+			'total' => $total,
+			'limit' => $limit,
+		]);
+
+		}
+		
+		public function addAction($id, Request $request) {
+				if(!$this->user && !$this->user->hasPerm('admin-module-channelstory') )
+            throw new ControllerAccessDeniedException();
+
+        $result = [];
+        
+        if($request->isMethod('post') && $request->request->has('value')) {
+            $story = Stories::get($request->request->get('value'));
+            $channel = Node::get($id);
+
+						if ($channel->addStory($story)) {
+								Message::info(Text::get('admin-channelstory-correct'));
+						}
+						else {
+								Message::error(implode(', ', $errors));
+						}
+
+        }
+        return $this->jsonResponse($story);
+
+		}
+    
+
 }
