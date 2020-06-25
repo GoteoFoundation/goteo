@@ -239,18 +239,26 @@ class Contract extends \Goteo\Core\Model {
             return false;
         }
 
-        $nif_type = '';
-        $valid_nif = Check::nif($this->nif, $nif_type);
-        if ($this->legal_document_type != self::PASSPORT) {
-            if(!$valid_nif || $nif_type != $this->legal_document_type ) {
-                $errors['nif'] = Text::get('validate-contract-nif-document-type');
+        if (isset($this->nif)) {
+            $nif_type = '';
+            $valid_nif = Check::nif($this->nif, $nif_type);
+            if ($this->legal_document_type != self::PASSPORT) {
+                if(!$valid_nif || $nif_type != $this->legal_document_type ) {
+                    if ($this->legal_document_type == self::NIF)  {
+                        $errors['nif'] = Text::get('validate-contract-nif-document-type');
+                    } else {
+                        $errors['nif'] = Text::get('validate-contract-cif-document-type');
+                    }
+                }
             }
         }
 
-        $cif_type = '';
-        $valid_cif = Check::nif($this->entity_cif, $cif_type);
-        if(!$valid_cif || $cif_type != self::CIF ) {
-            $errors['entity_cif'] = Text::get('validate-contract-cif-document-type');
+        if(isset($this->entity_cif)) {
+            $cif_type = '';
+            $valid_cif = Check::nif($this->entity_cif, $cif_type);
+            if(!$valid_cif || $cif_type != self::CIF ) {
+                $errors['entity_cif'] = Text::get('validate-contract-cif-document-type');
+            }
         }
 
         return empty($errors);
@@ -919,6 +927,12 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
             self::NIF => Text::get('contract-legal-document-type-nif'),
             self::NIE => Text::get('contract-legal-document-type-nie'),
             self::PASSPORT => Text::get('contract-legal-document-type-passport'),
+          ];
+    }
+
+    static public function getLegalPersonDocumentTypes() {
+        return  [
+            self::CIF => Text::get('contract-legal-document-type-cif')
           ];
     }
 
