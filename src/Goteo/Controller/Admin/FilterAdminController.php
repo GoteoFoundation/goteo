@@ -72,7 +72,7 @@ class FilterAdminController extends AbstractAdminController
 
 
         $defaults = (array) $filter;
-        $processor = $this->getModelForm('ProjectFilter', $filter, $defaults, Array(), $request);
+        $processor = $this->getModelForm('Filter', $filter, $defaults, Array(), $request);
         $processor->createForm();
         $form = $processor->getForm();
         $form->handleRequest($request);
