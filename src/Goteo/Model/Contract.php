@@ -318,7 +318,7 @@ class Contract extends \Goteo\Core\Model {
             }
 
             $valid_nif = Check::nif($this->entity_cif, $nif_type);
-            if(!$valid_nif || $nif_type != $this->legal_document_type ) {
+            if(!$valid_nif || $nif_type != self::CIF ) {
                 $count++;
                 $errors['entity'][] = 'promoter_nif';
             }
