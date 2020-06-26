@@ -23,10 +23,10 @@ use Goteo\Application\Message;
 
 class ChannelStoryAdminController extends AbstractAdminController
 {
-protected static $icon = '<i class="fa fa-2x fa-connect"></i>';
+	protected static $icon = '<i class="fa fa-2x fa-id-card-o"></i>';
 
     public static function getGroup() {
-        return 'channel';
+        return 'channels';
     }
 
     public static function getRoutes() {

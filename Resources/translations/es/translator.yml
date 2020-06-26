@@ -55,6 +55,7 @@ translator-pending: 'Pendiente de traducción'
 translator-pending-desc: 'Este contenido está "pendiente", cosa que significa que <strong>NO ES PÚBLICO</strong> y queda cómo borrador hasta que se quite la opción "Pendiente de traducción"'
 translator-post: Blog
 translator-promote: 'Proyectos destacados'
+translator-channelstory: 'Historias de usuarios destacadas'
 translator-save: 'Guardar y publicar'
 translator-save-original: 'Guardar en la tabla original'
 translator-save-draft: 'Guardar como borrador'
