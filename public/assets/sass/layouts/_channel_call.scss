@@ -109,6 +109,15 @@ h2.title{
 	}
 }
 
+h5.title{
+	color: $color-new-green;
+	font-size: $font-size;
+	border-bottom: 1px solid $color-new-dark-blue;
+	font-weight: bold;
+	padding-bottom: 10px;
+	position: relative;
+}
+
 div.section {
 	padding: 50px 0px 80px 0px !important;
 }
