@@ -438,6 +438,20 @@ class Stories extends \Goteo\Core\Model {
             }
         }
 
+        // Background image in channel call view
+        if(is_array($this->background_image)&&empty($this->background_image['name'])) {
+            $this->background_image = reset($this->background_image);
+        }
+        if (is_array($this->background_image) && !empty($this->background_image['name'])||($this->background_image instanceOf Image && $this->background_image->tmp)) {
+            $background_image = new Image($this->background_image);
+            if ($background_image->save($errors)) {
+                $this->background_image = $background_image->id;
+            } else {
+                \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
+                $this->image = '';
+            }
+        }
+
         $fields = array(
             'id',
             'node',
