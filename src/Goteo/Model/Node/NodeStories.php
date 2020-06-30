@@ -106,6 +106,21 @@
 
   }
 
+  public function getImage() {
+    if(!$this->imageInstance instanceOf Image) {
+        $this->imageInstance = new Image($this->image);
+    }
+    return $this->imageInstance;
+  }
+
+
+  public function getBackgroundImage() {
+    if(!$this->BackgroundImageInstance instanceOf Image) {
+        $this->BackgroundImageInstance = new Image($this->background_image);
+    }
+    return $this->BackgroundImageInstance;
+  }
+
   /**
    * Save.
    *

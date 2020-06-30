@@ -121,6 +121,7 @@ admin-blog-edit: Editing post %s
 admin-blog-slug-exists: 'The slug [%s] is being used by another post!'
 admin-blog-slug-chars: 'The slug [%s] contains invalid characters!'
 admin-blog-not-public: 'This post is not public yet!'
+admin-storys: User histories in Goteo
 admin-stories: User histories in Goteo
 admin-stories-add: Create new user history
 admin-stories-edit: Editing user history %s
