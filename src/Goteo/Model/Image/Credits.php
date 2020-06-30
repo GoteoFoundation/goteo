@@ -51,6 +51,7 @@
             WHERE image_credits.id = ?";
 
     $query = static::query($sql, array($id));
+    // die(\sqldbg($sql, array($id)));
     $credits = $query->fetchObject(__CLASS__);
 
     return $credits;

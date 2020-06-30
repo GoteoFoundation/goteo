@@ -691,6 +691,22 @@ class Image extends \Goteo\Core\Model {
         return $this->credits;
     }
 
+    public function setCredits($credits) {
+        
+        $this->credits = Credits::get($this->name);
+        if (!$this->credits) {
+            $this->credits = new Credits();
+            $this->credits->id = $this->name;
+        }
+        $this->credits->credits = $credits;
+
+        try {
+            $this->credits->save();
+        } catch(\PDOException $e) {
+            return false;
+        }
+    }
+
     /**
      * Quita una imagen de la tabla de relaciones y de la tabla de imagenes
      *

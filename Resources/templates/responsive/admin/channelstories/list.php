@@ -22,13 +22,13 @@ $this->section('admin-search-box-addons');
 </div>
 <?php if ($this->selectedNode) : ?>
 
-<div class="btn btn-cyan" style='margin-bottom:1em;' onclick="toggle_typeahead()"><?= $this->text('admin-story-add') ?></div>
+<div class="btn btn-cyan" style='margin-bottom:1em;' onclick="toggle_typeahead()"><?= $this->text('admin-channelstory-add') ?></div>
 
 <div id='typeahead_story' style="display:none;">
 
     <?= $this->insert('admin/partials/typeahead', ['engines' => ['story'], 'defaults' => ['story']]) ?>
 
-    <div id='send_story' class="btn btn-cyan" data-value="" onclick="send_story()"><?= $this->text('admin-story-submit') ?></div>
+    <div id='send_story' class="btn btn-cyan" data-value="" onclick="send_story()"><?= $this->text('admin-channelstory-submit') ?></div>
 
 </div>
 <?php endif; ?>
@@ -36,7 +36,7 @@ $this->section('admin-search-box-addons');
 
 <h5><?= $this->text('admin-list-total', $this->total) ?></h5>
 
-<?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['id', 'image', 'title', 'langs', 'order', 'actions'])]) ?>
+<?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['id', 'image', 'title', 'order', 'actions'])]) ?>
 
 </div>
 </div>
@@ -80,5 +80,6 @@ $this->section('admin-search-box-addons');
         var selected = document.getElementById("nodes-filter").value;
         window.location = "/admin/channelstory/" + selected;
     }
+
 </script>
 <?php $this->append() ?> 

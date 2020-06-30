@@ -101,6 +101,7 @@ admin-blog-edit: Editant post %s
 admin-blog-slug-exists: 'L''identificador [%s] s''està fent servir en un altre post!'
 admin-blog-slug-chars: 'L''identificador [%s] conté caràcters invàlids!'
 admin-blog-not-public: 'Aquest post no és públic encara'
+admin-storys: Histories d'usuaris a Goteo
 admin-stories: Histories d'usuaris a Goteo
 admin-stories-add: Crea una nova història
 admin-stories-edit: Editant l'història %s

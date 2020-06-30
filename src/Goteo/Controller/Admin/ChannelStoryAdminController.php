@@ -17,16 +17,17 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Goteo\Application\Config;
 use Goteo\Model\Node;
 use Goteo\Model\Stories;
+use Goteo\Model\Node\NodeStories;
 
 use Goteo\Application\Message;
 
 
 class ChannelStoryAdminController extends AbstractAdminController
 {
-protected static $icon = '<i class="fa fa-2x fa-connect"></i>';
+	protected static $icon = '<i class="fa fa-2x fa-id-card-o"></i>';
 
     public static function getGroup() {
-        return 'channel';
+        return 'channels';
     }
 
     public static function getRoutes() {
@@ -44,6 +45,10 @@ protected static $icon = '<i class="fa fa-2x fa-connect"></i>';
 			new Route(
 				'/{id}/add',
 				['_controller' => __CLASS__ . "::addAction"]
+			),
+			new Route(
+				'/{id}/delete/{stories_id}',
+				['_controller' => __CLASS__ . "::deleteAction"]
 			)
 		];
     }
@@ -91,6 +96,15 @@ protected static $icon = '<i class="fa fa-2x fa-connect"></i>';
         return $this->jsonResponse($story);
 
 		}
-    
+
+		public function deleteAction($id, $stories_id, Request $request) {
+			if(!$this->user && !$this->user->hasPerm('admin-module-channelstory') )
+				throw new ControllerAccessDeniedException();
+
+				$node_story = NodeStories::getNodeStory($id, $stories_id);
+				$node_story->dbDelete();
+
+			return $this->redirect('/admin/channelstory/' . $id);
+		}
 
 }

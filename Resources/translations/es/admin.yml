@@ -133,6 +133,9 @@ admin-stories: Historias de usuarios en Goteo
 admin-stories-add: Crear una nueva historia
 admin-stories-edit: Editando la historia %s
 
+admin-channelstory-add: Añadir historia al canal
+admin-channelstory-submit: Guardar historia
+
 admin-categories: 'Categorías y ámbitos'
 admin-categories-if-empty-then-asset: 'Si se deja vacío se usará el icono por defecto: %s'
 admin-category-add: Crear una nueva categoría
