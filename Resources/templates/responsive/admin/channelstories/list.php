@@ -36,7 +36,7 @@ $this->section('admin-search-box-addons');
 
 <h5><?= $this->text('admin-list-total', $this->total) ?></h5>
 
-<?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['id', 'image', 'title', 'langs', 'order', 'actions'])]) ?>
+<?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['id', 'image', 'title', 'order', 'actions'])]) ?>
 
 </div>
 </div>
@@ -80,5 +80,6 @@ $this->section('admin-search-box-addons');
         var selected = document.getElementById("nodes-filter").value;
         window.location = "/admin/channelstory/" + selected;
     }
+
 </script>
 <?php $this->append() ?> 
