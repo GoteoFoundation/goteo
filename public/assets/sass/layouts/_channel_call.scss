@@ -1188,6 +1188,55 @@ div.section.resources{
 	}
 }
 
+div.section.resource-download{
+	background-color: $color-white;
+	color: $color-new-dark-blue;
+	.container{
+		padding: 16px 35px 30px 50px;
+		.category{
+			color: $color-new-green;
+			font-size: $font-size*1.3;
+			border-bottom: 1px solid $color-new-dark-blue;
+			padding-bottom: 10px;
+		}
+		.item{
+			margin-bottom: 20px;
+			display: flex;			
+			.img{
+				background-color: $background-new-light-green;
+			}
+			.content{
+				background-color: $background-new-light-green;
+				padding-bottom: 20px;
+				.title{
+					color: $color-new-green;
+					font-weight: 500;
+					font-size: $font-size*1.5;
+					margin-top: 0px;
+				}
+				.description{
+					max-width: 70%;
+					float: left;
+					font-weight: 400;
+				}
+				.btn{
+					margin-top: 14px;
+					img.pdf{
+						margin-right: 10px;
+					}
+					float: right;
+					color: $color-new-dark-blue;
+			    	border: 1px solid $color-new-dark-blue;
+			    	font-weight: bold;
+			    	.icon{
+			    		background-color: $color-new-dark-blue;
+			    	}
+				}
+			}
+		}
+	}
+}
+
 
 footer {
 	font-weight: bold;

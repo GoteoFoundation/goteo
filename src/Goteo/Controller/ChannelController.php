@@ -209,7 +209,7 @@ class ChannelController extends \Goteo\Core\Controller {
     {
         $this->setChannelContext($id);
 
-        $resources=NodeResource::getList(['channel_id' => $id]);
+        $resources=NodeResource::getList(['node' => $id]);
 
         return $this->viewResponse('channel/call/resources',
             ['resources' => $resources
