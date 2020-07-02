@@ -148,7 +148,7 @@ div.section.banner-header{
  	div.banner-info{
         
         position: absolute;
-        bottom: 27%;
+				top: 20%;
         color: $color-white;
         width: 100%;
         span.title{
@@ -1294,7 +1294,6 @@ footer {
 
     div.section.banner-header{
         div.banner-info{
-					bottom: 20% !important;
             span.title{
                 font-size: $font-size*1.1;
             }
@@ -1464,7 +1463,6 @@ footer {
 		}
         div.banner-info{
             padding-left: 0px !important;
-     				bottom: 20% !important;
             span.title{
                 font-size: $font-size*1 !important;
             }
