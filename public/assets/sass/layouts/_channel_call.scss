@@ -37,7 +37,6 @@ body.channel-call {
 			z-index: 1000;
 			width: 100%;
 			display: none;
-			margin-top: 10px;
 			border: 1px solid #DEDEDE;
 
 
@@ -124,7 +123,7 @@ div.section.banner-header{
  		width: 95%;
  		margin-left: 2.5%;
  		border-bottom: 1px solid $color-white;
- 		padding: 20px 0 10px 0;
+ 		padding: 20px 0 0px 0;
  		color: $color-white;
  		font-weight: bold;
  		z-index: 100;
@@ -1295,6 +1294,7 @@ footer {
 
     div.section.banner-header{
         div.banner-info{
+					bottom: 20% !important;
             span.title{
                 font-size: $font-size*1.1;
             }
@@ -1464,7 +1464,7 @@ footer {
 		}
         div.banner-info{
             padding-left: 0px !important;
-     				top: 20%;
+     				bottom: 20% !important;
             span.title{
                 font-size: $font-size*1 !important;
             }
