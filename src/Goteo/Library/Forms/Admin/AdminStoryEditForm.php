@@ -168,8 +168,7 @@ class AdminStoryEditForm extends ProjectStoryForm {
         }
 
         if ($model->background_image && $data['background_image_credits']) {
-            $background_image = Image::get($model->background_image);
-            $background_image->setCredits($data['background_image_credits']);
+            $model->background_image->setCredits($data['background_image_credits']);
         }
         
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
