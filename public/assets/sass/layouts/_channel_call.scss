@@ -18,7 +18,7 @@ body.channel-call {
 		cursor: pointer;
 
 		div.active{
-			padding: 10px 30px 10px 30px;
+			padding: 0px 30px 10px 30px;
 			color: $color-white;
 		}
 
@@ -1464,7 +1464,7 @@ footer {
 		}
         div.banner-info{
             padding-left: 0px !important;
-     				bottom: 25%;
+     				top: 20%;
             span.title{
                 font-size: $font-size*1 !important;
             }
