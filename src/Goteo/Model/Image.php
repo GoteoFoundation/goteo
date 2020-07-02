@@ -20,6 +20,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Goteo\Model\Image\Credits;
+use Goteo\Application\Lang;
 
 class Image extends \Goteo\Core\Model {
 
@@ -697,6 +698,7 @@ class Image extends \Goteo\Core\Model {
         if (!$this->credits) {
             $this->credits = new Credits();
             $this->credits->id = $this->name;
+            $this->credits->lang = Lang::current();
         }
         $this->credits->credits = $credits;
 

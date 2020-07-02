@@ -106,18 +106,15 @@
    */
   public function save(&$errors = array()) {
 
-    if (!$this->validate($errors))
-        return false;
-
-    $fields = array(
-        'credits',
-        'lang',
-    );
+    if (!$this->validate($errors)) {
+      return false;
+    }
 
     try {
         //automatic $this->id assignation
-        $this->dbInsertUpdate($fields);
-
+        $sql = "REPLACE INTO image_credits (`id`, `credits`, `lang`) VALUES (:id, :credits, :lang)";
+        $query = static::query($sql, [":id" => $this->id, ":credits" => $this->credits, ":lang" => $this->lang]);
+  
         return true;
     } catch(\PDOException $e) {
         $errors[] = "Image's credits save error: " . $e->getMessage();
