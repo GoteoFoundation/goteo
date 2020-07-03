@@ -117,6 +117,12 @@ $api->add('api-blog-post-property', new Route(
         )
 ));
 
+$api->add('api-stories', new Route(
+    '/stories',
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesAction',
+        )
+));
+
 // Stories property individual updates
 $api->add('api-stories-property', new Route(
     '/stories/{id}/property/{prop}',
@@ -138,6 +144,14 @@ $api->add('api-stories-images-upload', new Route(
     '', // host
     array(), // schemes
     array('POST') // methods
+));
+
+// Node Stories
+// Stories sort up/down arbitrarily (use the PUT method to sort)
+$api->add('api-channelstory-sort', new Route(
+    '/channelstories/{node_id}/{stories_id}sort',
+    array('_controller' => 'Goteo\Controller\Api\NodeStoriesApiController::nodestoriesSortAction'
+        )
 ));
 
 //Promote

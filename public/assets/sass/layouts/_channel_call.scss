@@ -18,7 +18,7 @@ body.channel-call {
 		cursor: pointer;
 
 		div.active{
-			padding: 10px 30px 10px 30px;
+			padding: 0px 30px 10px 30px;
 			color: $color-white;
 		}
 
@@ -37,7 +37,6 @@ body.channel-call {
 			z-index: 1000;
 			width: 100%;
 			display: none;
-			margin-top: 10px;
 			border: 1px solid #DEDEDE;
 
 
@@ -124,7 +123,7 @@ div.section.banner-header{
  		width: 95%;
  		margin-left: 2.5%;
  		border-bottom: 1px solid $color-white;
- 		padding: 20px 0 10px 0;
+ 		padding: 20px 0 0px 0;
  		color: $color-white;
  		font-weight: bold;
  		z-index: 100;
@@ -149,7 +148,7 @@ div.section.banner-header{
  	div.banner-info{
         
         position: absolute;
-        bottom: 27%;
+				top: 20%;
         color: $color-white;
         width: 100%;
         span.title{
@@ -1030,6 +1029,22 @@ div.section.stories {
 	.slider-stories {
 			color: $color-white;
 
+			figcaption {
+
+				position: absolute;
+				bottom: 0;
+				padding-left: 200px;
+
+				cite {
+					background: $background-white;
+					border-top-left-radius: .25rem;
+					border-top-right-radius: .25rem;
+					margin: 0 1rem 0 0;
+					padding: .5rem 1rem;
+					color: $color-new-dark-blue;
+				}
+			}
+
 			div.story-desktop-container {
 				display: block;
 				height: 550px;
@@ -1037,6 +1052,10 @@ div.section.stories {
 				img {
 					width: 100%;
 					height: 550px;
+
+					&::after {
+						content: "\00a9"
+					}
 				}
 
 			.story {
@@ -1444,7 +1463,6 @@ footer {
 		}
         div.banner-info{
             padding-left: 0px !important;
-     				bottom: 25%;
             span.title{
                 font-size: $font-size*1 !important;
             }

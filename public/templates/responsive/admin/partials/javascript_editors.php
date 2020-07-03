@@ -65,6 +65,7 @@
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.consultants.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.channels.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.matchers.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.stories.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/forms.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-discrete-values.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-pie.js"></script>
