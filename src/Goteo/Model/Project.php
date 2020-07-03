@@ -23,6 +23,7 @@ use Goteo\Model\Message;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
 use Goteo\Model\Project\Account;
+use Goteo\Model\Project\Conf as ProjectConf;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Location\LocationInterface;
 
@@ -3836,6 +3837,16 @@ class Project extends \Goteo\Core\Model {
             return false;
         }
     }
+
+    /*
+     * Mode mosaic to show the rewards
+     * @return: boolean
+     */
+    public static function showRewardsMosaic($id) {
+        return ProjectConf::showRewardsMosaic($id);
+    }
+
+
 
     /*
      * Para saber si un proyecto tiene traducción en cierto idioma

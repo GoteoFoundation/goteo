@@ -243,7 +243,10 @@ class InvestController extends \Goteo\Core\Controller {
         if($reward instanceOf Response) return $reward;
 
         // Aqui cambiar por escoger recompensa
-        return $this->viewResponse('invest/select_reward', ['step' => 1]);
+
+        $rewards_mosaic=Project::showRewardsMosaic($project_id);
+        $view=  $rewards_mosaic ? 'select_reward_mosaic' : 'select_reward';
+        return $this->viewResponse('invest/'.$view, ['step' => 1]);
 
     }
 
