@@ -106,6 +106,7 @@ class Config {
 			\Goteo\Controller\TranslateController::addTranslateModel('node_faq_download');
 			\Goteo\Controller\TranslateController::addTranslateModel('node_sponsor');
 			\Goteo\Controller\TranslateController::addTranslateModel('node_team');
+			\Goteo\Controller\TranslateController::addTranslateModel('image_credits');
 			
 			// sets up the rest...
 			self::setDirConfiguration();
