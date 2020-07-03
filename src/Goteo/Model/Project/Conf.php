@@ -201,6 +201,24 @@ namespace Goteo\Model\Project {
         }
 
         /**
+         * Check if is available mosaic mode to show the rewards
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
+        public static function showRewardsMosaic($id) {
+            try {
+                $query = static::query("SELECT rewards_mosaic FROM project_conf WHERE project = ?", array($id));
+                $mosaic = $query->fetchColumn();
+                return ($mosaic == 1);
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
+
+
+        /**
          * Cambiar el numero de días para que termine la ronda esta noche
          *
          * Si el proyecto está en primera ronda cambia el número de días y marca 'Ronda única'.

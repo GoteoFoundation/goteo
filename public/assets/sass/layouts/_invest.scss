@@ -74,6 +74,43 @@ body.invest {
 
   }
 
+  .rewards-mosaic{
+
+    h2.title{
+      color: #20B3B2 !important;
+      margin-bottom: 40px;
+      text-align: center;
+      font-size: 35px;
+    }
+
+    .reward-box-resign{
+      margin-bottom: 30px;
+    }
+
+    .label-reward{
+      padding: 10px;
+
+      .reward-title{
+        display: block;
+        margin-bottom: 7px;
+      }
+
+      .reward-amount{
+        margin-left: 0px !important;
+      }
+
+      .amount-box{
+        #amount-container{
+          padding: 10px 0;
+          margin: 10px 0px 0px 0px;
+        }
+      }
+    }
+
+    
+
+  }
+
   // Tablets customization
 
   @media (max-width: $breakpoint-md + 1) {
