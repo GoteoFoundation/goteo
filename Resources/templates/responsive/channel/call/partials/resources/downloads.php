@@ -1,15 +1,16 @@
 <?php if($this->resources): ?>
+
 <div class="section resource-download">	
 	<div class="container">
 
 <?php foreach ($this->resources as $item): ?>
-	
+		<?php $image=$item->getImage(); ?>
 		<div class="row item">
-			<div class="col-md-1 col-xs-3 img">
-				<img class="pdf" src="/assets/img/icons/channel-call/pdf.svg" width="55px">
+			<div class="col-md-2 col-xs-3 img">
+				<img class="responsive" src="<?= $image->getLink(200, 150, true) ?>">
 			</div>
-			<div class="col-md-9 col-xs-9 content">
-				<h2 class="category"><?= $item->title ?></h2>
+			<div class="col-md-8 col-xs-9 content">
+				<h2 class="category"><?= $item->getCategory()->name ?></h2>
 				<div class="description">
 					<h3 class="title"><?= $item->title ?></h2>
 					<?= $item->description ?>
