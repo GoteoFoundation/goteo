@@ -22,6 +22,7 @@ use Goteo\Model\Node\NodeProgram;
 use Goteo\Model\Node\NodeFaq;
 use Goteo\Model\Node\NodeTeam;
 use Goteo\Model\Node\NodeCallToAction;
+use Goteo\Model\Node\NodeStories;
 
 class Node extends \Goteo\Core\Model {
 
@@ -1032,26 +1033,25 @@ class Node extends \Goteo\Core\Model {
      */
     public function getStories () {
        if($this->storiesList) return $this->storiesList;
-        $values = [':node' => $this->id];
 
-        list($fields, $joins) = Stories::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
+       return NodeStories::getList(['node' => $this->id]);
+    }
 
-        $sql = "SELECT
-                stories.id,
-                stories.image,
-                stories.pool_image,
-                stories.background_image,
-                $fields
-            FROM node_stories
-            INNER JOIN stories ON stories.id = node_stories.stories_id
-            $joins
-            WHERE node_stories.node_id = :node
-            ORDER BY node_stories.order ASC";
-        // die(\sqldbg($sql, $values));
-        $query = static::query($sql, $values);
-        $this->storiesList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Stories');
-        return $this->storiesList;
-
+    public function addStory($story) {
+        $node_story = new NodeStories();
+        $node_story->node_id = $this->id;
+        $node_story->stories_id = $story->id;
+        $errors = array();
+        $node_story->save($errors);
+        if ($errors) {
+            print_r($errors); die;
+        }
+        // $sql = "REPLACE INTO node_stories (node_id, stories_id) VALUES(:channel, :story)";
+        // $values = [
+        //     ':channel' => $this->id,
+        //     ':story' => $story->id
+        // ];
+        // $query = static::query($sql, $values);
     }
 
 

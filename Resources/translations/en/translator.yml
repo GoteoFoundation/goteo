@@ -48,6 +48,7 @@ translator-patron: 'Sponsored projects'
 translator-pending: 'Translation pending'
 translator-pending-desc: 'This content is "pending", which means that <strong>IS NOT PUBLIC</strong> and will hold as a draft until the "Pending translation" option is removed'
 translator-promote: 'Promoted projects'
+translator-channelstory: 'Promoted user stories'
 translator-save: 'Save & publish'
 translator-save-original: 'Save in the original table'
 translator-save-draft: 'Save as draft'
@@ -79,6 +80,7 @@ translator-node_faq_question: "FAQ's questions of the channel"
 translator-node_faq_download: FAQ's downloads of the channel
 translator-node_sponsor: "Channel's sponsors"
 translator-node_team: "Channel's team"
+translator-image_credits: Image credits
 translator-field-modal_description: "Modal's description"
 translator-field-action: Action
 translator-field-action_url: "Action's url"
@@ -93,3 +95,4 @@ translator-field-terms: Terms
 translator-field-tip_msg:  Message
 translator-field-banner_button_url: "Banner's button url"
 translator-field-terms_url: "Term's url"
+translator-field-credits: Credits

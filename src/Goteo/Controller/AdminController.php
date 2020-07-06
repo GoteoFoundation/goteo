@@ -43,6 +43,7 @@ class AdminController extends \Goteo\Core\Controller {
         'contents' => ['text' => 'admin-contents', 'icon' => '<i class="fa fa-2x fa-font"></i>', 'position' => 30],
         'services' => ['text' => 'admin-services', 'icon' => '<i class="fa fa-2x fa-globe"></i>', 'position' => 40],
         'main' => ['text' => 'admin-home', 'icon' => '<i class="fa fa-2x fa-home"></i>', 'position' => 60],
+        'channels' => ['text' => 'admin-channels', 'icon' => '<i class="icon icon-2x icon-channel"></i>', 'position' => 70],
         'others' => ['text' => 'admin-others', 'icon' => '<i class="fa fa-2x fa-folder"></i>', 'position' => 100]
     ];
     private static $legacy_groups = [

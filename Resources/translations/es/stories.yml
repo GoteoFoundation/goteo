@@ -9,4 +9,5 @@ story-tooltip-description: 'Explica en una frase cómo fue tu experiencia en Got
 story-field-image: 'Imagen (Dimensiones recomendadas 600x400px)'
 story-field-pool-image: 'Imagen opcional en formato polaroid (Dimensiones recomendadas 360x355px)'
 story-field-background-image: 'Imagen de fondo'
+story-field-background-image-credits: 'Créditos de la imagen de fondo'
 story-save-fail: 'Error al guardar tu historia'

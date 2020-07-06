@@ -35,7 +35,8 @@ class ModelTranslator implements TranslatorInterface {
         'node_faq_question' => 'Node\NodeFaqQuestion',
         'node_faq_download' => 'Node\NodeFaqDownload',
         'node_sponsor' => 'Node\NodeSponsor',
-        'node_team' => 'Node\NodeTeam'
+        'node_team' => 'Node\NodeTeam',
+        'image_credits' => 'Image\Credits'
     ];
     static protected $_forced_types = [
         'info' => 'html',
