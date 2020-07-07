@@ -30,6 +30,7 @@ use Goteo\Library\Text;
 use Goteo\Model\Page;
 use Goteo\Model\SocialCommitment;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Util\Map\MapOSM;
 
 
 class ChannelController extends \Goteo\Core\Controller {
@@ -124,6 +125,8 @@ class ChannelController extends \Goteo\Core\Controller {
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
 
+        $map = new MapOSM(400,500);
+
         $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/index';
 
         return $this->viewResponse(
@@ -134,7 +137,8 @@ class ChannelController extends \Goteo\Core\Controller {
                 'title_text' => Text::get('node-side-searcher-promote'),
                 'type' => $type,
                 'total' => $total,
-                'limit' => $limit
+                'limit' => $limit,
+                'map' => $map
                 ]
         );
     }

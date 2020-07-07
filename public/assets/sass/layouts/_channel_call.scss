@@ -1286,6 +1286,12 @@ div.section.resource-download{
 	}
 }
 
+div.section.map {
+	.map {
+		overflow: hidden;
+	}	
+}
+
 
 footer {
 	font-weight: bold;
