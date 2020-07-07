@@ -24,7 +24,7 @@
           $donations;
 
 
-  public function __construct($h, $w) {
+  public function __construct($h, $w = "100%") {
     $this->tile_layer = Config::get('map.open_street_maps.tile_layer');
     $this->height = $h;
     $this->width = $w;
