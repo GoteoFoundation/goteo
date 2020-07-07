@@ -125,7 +125,7 @@ class ChannelController extends \Goteo\Core\Controller {
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
 
-        $map = new MapOSM(400,500);
+        $map = new MapOSM(400,1000);
 
         $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/index';
 

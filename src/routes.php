@@ -278,4 +278,9 @@ $routes->add('remove-starting-slash', new Route(
         )
 ));
 
+// User stuff routes
+$map_routes = include __DIR__ . '/Routes/map_routes.php';
+$map_routes->addPrefix('/map');
+$routes->addCollection($map_routes);
+
 return $routes;
