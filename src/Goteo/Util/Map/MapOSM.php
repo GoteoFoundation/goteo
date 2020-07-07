@@ -54,15 +54,15 @@
     $this->donations = $donations;
   }
 
-  public function getProjects($projects) {
+  public function getProjects() {
     return $this->projects;
   }
 
-  public function getWorkshops($workshops) {
+  public function getWorkshops() {
     return $this->workshops;
   }
 
-  public function getDonations($donations) {
+  public function getDonations() {
     return $this->donations;
   }
 
