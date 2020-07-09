@@ -29,29 +29,22 @@ class MapController extends \Goteo\Core\Controller {
     View::setTheme('responsive');
   }
 
-	public function channelAction($cid = null, Request $request) {
+	public function mapAction(Request $request) {
 
     $height = strip_tags($request->get('height'));
-		try {
-			$channel = Node::get($cid);
-		} catch (ModelNotFoundException $e) {
-			Message::error($e->getMessage());
-    }
-
-    $projects = Project::getList(['node' => $channel->id]);
-    foreach($projects as $project) {
-      $project->project_location = ProjectLocation::get($project->id);
-    }
+    $cid = strip_tags($request->get('channel'));
     
-    $workshops = $channel->getAllWorkshops();
-    foreach($workshops as $workshop) {
-      $workshop->workshop_location = $workshop->getLocation();
-    }
-
     $map = new MapOSM(($height)? $height : 500);
-    $map->setProjects($projects);
-    $map->setWorkshops($workshops);
-    
+
+    if ($cid) {
+      try {
+        $channel = Node::get($cid);
+      } catch (ModelNotFoundException $e) {
+        Message::error($e->getMessage());
+      }
+      $map->setChannel($cid);
+    }
+
     return $this->viewResponse('map/map_canvas', ['map'  => $map]);
   }
 }

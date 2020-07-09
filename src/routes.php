@@ -239,6 +239,9 @@ $routes->addCollection($api_routes);
 $api_charts_routes = include __DIR__ . '/Routes/api_charts_routes.php';
 $api_charts_routes->addPrefix('/api');
 $routes->addCollection($api_charts_routes);
+$api_maps_routes = include __DIR__ . '/Routes/api_maps_routes.php';
+$api_maps_routes->addPrefix('/api');
+$routes->addCollection($api_maps_routes);
 
 // Any route not handeled before in /api
 $routes->add('api-any-route', new Route(
@@ -279,8 +282,16 @@ $routes->add('remove-starting-slash', new Route(
 ));
 
 // User stuff routes
-$map_routes = include __DIR__ . '/Routes/map_routes.php';
-$map_routes->addPrefix('/map');
-$routes->addCollection($map_routes);
+
+$routes->add('map', new Route(
+    '/map',
+    array(
+        '_controller' => 'Goteo\Controller\MapController::mapAction'
+    )
+));
+
+// $map_routes = include __DIR__ . '/Routes/map_routes.php';
+// $map_routes->addPrefix('/map');
+// $routes->addCollection($map_routes);
 
 return $routes;
