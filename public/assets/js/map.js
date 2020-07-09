@@ -24,7 +24,7 @@ for the JavaScript code in this page.
 */
 
 $(function(){
-  var map = L.map('map').setView([51.505, -0.09], 13);
+  
 
   var projectIcon = L.icon({
     iconUrl: '/assets/img/map/pin-project.svg',
@@ -39,9 +39,6 @@ var workshopIcon = L.icon({
   // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   // }).addTo(map);
-  L.tileLayer($('#map').data('tile-layer'), {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
   
   var channel = $('#map').data('channel');
   if (channel) {
@@ -71,10 +68,21 @@ var workshopIcon = L.icon({
         }
       });
         
-      map.addLayer(project_markers);
-      map.addLayer(workshop_markers)
+      var projects_layer = L.layerGroup(project_markers);
+      var workshops_layer = L.layerGroup(workshop_markers);
       var latLngBounds = L.latLngBounds(latlngs);
-      map.setView(latLngBounds.getCenter(), 5);
-    })
+      var map = L.map('map', {
+        center: latLngBounds.getCenter(),
+        zoom: 5
+      });
+      L.tileLayer($('#map').data('tile-layer'), {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+  
+      map.addLayer(project_markers);
+      map.addLayer(workshop_markers);
+      L.control.layers({'projects': projects_layer, 'workshops': workshops_layer}).addTo(map);
+      // map.setView(latLngBounds.getCenter(), 5);
+    });
   }
 });
