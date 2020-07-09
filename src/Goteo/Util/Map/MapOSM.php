@@ -19,6 +19,7 @@
   private $tile_layer,
           $height,
           $width,
+          $channel,
           $projects,
           $workshops,
           $donations;
@@ -42,6 +43,10 @@
     return $this->height;
   }
 
+  public function setChannel($channel) {
+    $this->channel = $channel;
+  }
+
   public function setProjects($projects) {
     $this->projects = $projects;
   }
@@ -52,6 +57,10 @@
 
   public function setDonations($donations) {
     $this->donations = $donations;
+  }
+  
+  public function getChannel() {
+    return $this->channel;
   }
 
   public function getProjects() {
