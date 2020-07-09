@@ -20,6 +20,8 @@ use Goteo\Model\Node;
 use Goteo\Model\Node\NodeFaq;
 use Goteo\Model\Node\NodeFaqQuestion;
 use Goteo\Model\Node\NodeFaqDownload;
+use Goteo\Model\Node\NodeResource;
+use Goteo\Model\Node\NodeResourceCategory;
 use Goteo\Model\Home;
 use Goteo\Model\Project;
 use Goteo\Model\Sponsor;
@@ -196,6 +198,26 @@ class ChannelController extends \Goteo\Core\Controller {
             ['faq' => $faq,
              'questions' => $questions,
              'downloads' => $downloads
+            ]
+        );
+    }
+
+     /**
+     * Channel resorces pagee
+     * @param  Request $request [description]
+     */
+    public function resourcesAction ($id, Request $request)
+    {
+        $this->setChannelContext($id);
+
+        $resources=NodeResource::getList(['node' => $id]);
+
+        $resources_categories=NodeResourceCategory::getlist();
+
+        return $this->viewResponse('channel/call/resources',
+            [
+            'resources' => $resources,
+            'resources_categories' => $resources_categories
             ]
         );
     }

@@ -10,43 +10,36 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Model\Image;
-use Goteo\Model\Node\NodeResourceCategory;
 
 
 
-class NodeResource extends \Goteo\Core\Model {
+class NodeResourceCategory extends \Goteo\Core\Model {
 
-    protected $Table = 'node_resource';
-    protected static $Table_static = 'node_resource';
+    protected $Table = 'node_resource_category';
+    protected static $Table_static = 'node_resource_category';
     public
     $id,
-    $node_id,
-    $title,
+    $name,
     $icon,
-    $description,
-    $action,
-    $action_url,
-    $action_icon,
-    $image,
-    $category,
+    $lang,
     $order;
 
     public static function getLangFields() {
-        return ['title', 'description', 'action', 'action_url'];
+        return ['name'];
     }
 
 
     /**
-     * Get data about node resource
+     * Get data about node resource category
      *
      * @param   int    $id         check id.
      * @return  Workshop resource object
      */
     static public function get($id) {
         $sql="SELECT
-                    node_resource.*
-              FROM node_resource
-              WHERE node_resource.node_id = ?";
+                    node_resource_category.*
+              FROM node_resource_category
+              WHERE node_resource_category.id = ?";
         $query = static::query($sql, array($id));
         $item = $query->fetchObject(__CLASS__);
 
@@ -58,7 +51,7 @@ class NodeResource extends \Goteo\Core\Model {
     }
 
     /**
-     * Node Resource listing
+     * Node Resource category listing
      *
      * @param array filters
      * @param string node id
@@ -75,27 +68,20 @@ class NodeResource extends \Goteo\Core\Model {
         $filter = [];
         $values = [];
 
-        if ($filters['node']) {
-            $filter[] = "node_resource.node_id = :node";
-            $values[':node'] = $filters['node'];
-        }
-
         if($filter) {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
 
         $sql="SELECT
-                  node_resource.id as id,
-                  node_resource.node_id as node,
+                  node_resource_category.id as id,
                   $fields,
-                  node_resource.action_icon as action_icon,
-                  node_resource.image as image,
-                  node_resource.category as category,
-                  node_resource.order
-              FROM node_resource
+                  node_resource_category.icon as icon,
+                  node_resource_category.lang,
+                  node_resource_category.order
+              FROM node_resource_category
               $joins
               $sql
-              ORDER BY node_resource.order ASC
+              ORDER BY node_resource_category.order ASC
               LIMIT $offset, $limit";
          //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
@@ -116,15 +102,9 @@ class NodeResource extends \Goteo\Core\Model {
 
         $fields = array(
             'id',
-            'node_id',
-            'title',
+            'name',
             'icon',
-            'description',
-            'action',
-            'action_url',
-            'action_icon',
-            'image',
-            'category',
+            'lang',
             'order'
         );
 
@@ -134,36 +114,17 @@ class NodeResource extends \Goteo\Core\Model {
 
             return true;
         } catch(\PDOException $e) {
-            $errors[] = "Node resource save error: " . $e->getMessage();
+            $errors[] = "Node resource category save error: " . $e->getMessage();
             return false;
         }
     }
 
-    public function getIcon() {
-        if(!$this->iconInstance instanceOf Image) {
-            $this->iconInstance = new Image($this->icon);
-        }
-        return $this->iconInstance;
-    }
-
-
-    public function getActionIcon() {
-        if(!$this->actionIconInstance instanceOf Image) {
-            $this->actionIconInstance = new Image($this->action_icon);
-        }
-        return $this->actionIconInstance;
-    }
-
-    public function getImage() {
+    /*public function getIcon() {
         if(!$this->imageInstance instanceOf Image) {
-            $this->imageInstance = new Image($this->image);
+            $this->imageInstance = new Image($this->icon);
         }
         return $this->imageInstance;
-    }
-
-    public function getCategory() {
-      return NodeResourceCategory::get($this->category);
-    }
+    }*/
 
 
     /**

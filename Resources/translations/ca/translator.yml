@@ -72,6 +72,7 @@ translator-node_faq_question: Preguntes del Faq del Canal
 translator-node_faq_download: Descarregues del Faq del Canal
 translator-node_sponsor: Sponsors del Canal
 translator-node_team: Equip del Canal
+translator-image_credits: Crèdits de les imatges
 translator-field-modal_description: Descripció de la modal
 translator-field-action: Acció
 translator-field-action_url: "Url de l'acció"
@@ -86,3 +87,4 @@ translator-field-terms: Bases
 translator-field-tip_msg:  Missatge
 translator-field-banner_button_url: Url del botó del banner
 translator-field-terms_url: Url de les bases
+translator-field-credits: Crèdits

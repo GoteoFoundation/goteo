@@ -698,7 +698,7 @@ class Image extends \Goteo\Core\Model {
         if (!$this->credits) {
             $this->credits = new Credits();
             $this->credits->id = $this->name;
-            $this->credits->lang = Lang::current();
+            $this->credits->lang = Config::get('lang');
         }
         $this->credits->credits = $credits;
 
