@@ -195,6 +195,9 @@ div.section.banner-header{
 			.item{
 				background-color: $background-white;
 				padding-top:10px;
+				&.item-resources{
+					padding-top: 15px;
+				}
 			}
 			.title{
 			color: $color-new-dark-blue;
@@ -1647,6 +1650,17 @@ footer {
 		}
 	}
 
+	div.section.resource-download{
+		.item{
+			display: block !important;
+			.description{
+				.btn{
+					float:left !important;
+				}
+			}
+		}
+	}
+
 	footer {
 
 		.pull-left {
@@ -1703,6 +1717,9 @@ footer {
 		}
 
 	}
+
+	
+
 
 }
 
