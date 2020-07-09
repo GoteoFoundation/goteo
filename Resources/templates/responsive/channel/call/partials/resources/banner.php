@@ -39,7 +39,7 @@
 	<div class="info terms">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-10 item">
+				<div class="col-md-10 item item-resources">
 					<h5 class="title">
 						Filtra por categorías
 					</h5>	
