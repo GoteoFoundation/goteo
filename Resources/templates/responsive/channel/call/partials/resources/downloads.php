@@ -10,7 +10,8 @@
 				<img class="responsive" src="<?= $image->getLink(200, 150, true) ?>">
 			</div>
 			<div class="col-md-8 col-xs-9 content">
-				<h2 class="category"><?= $item->getCategory()->name ?></h2>
+				<h2 class="category">
+					<i class="icon icon-resource-<?= $item->getCategory()->icon ?> icon-2x"></i> <?= $item->getCategory()->name ?></h2>
 				<div class="description">
 					<h3 class="title"><?= $item->title ?></h2>
 					<?= $item->description ?>

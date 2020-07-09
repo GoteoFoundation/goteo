@@ -119,12 +119,12 @@ class NodeResourceCategory extends \Goteo\Core\Model {
         }
     }
 
-    public function getIcon() {
+    /*public function getIcon() {
         if(!$this->imageInstance instanceOf Image) {
             $this->imageInstance = new Image($this->icon);
         }
         return $this->imageInstance;
-    }
+    }*/
 
 
     /**
