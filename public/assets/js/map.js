@@ -52,24 +52,27 @@ var workshopIcon = L.icon({
       var latlngs = [];
       var projects = data.projects;
       var workshops = data.workshops;
+      var project_markers = L.markerClusterGroup();
       projects.forEach(function(project){
+
         if (project.project_location.latitude && project.project_location.longitude) {
           latlngs.push([project.project_location.latitude, project.project_location.longitude]);
-          L.marker([project.project_location.latitude, 
-                    project.project_location.longitude], { icon: projectIcon }).addTo(map)
-            .bindPopup(project.popup);
+          project_markers.addLayer(L.marker([project.project_location.latitude, 
+            project.project_location.longitude], { icon: projectIcon }).bindPopup(project.popup));
         }
       });
-    
+        
+      var workshop_markers = L.markerClusterGroup();
       workshops.forEach(function(workshop){
-        if (workshop.workshop_location.latitude && workshop.workshop_location.longitude) {
-          latlngs.push([workshop.workshop_location.latitude, workshop.workshop_location.longitude]);
-          L.marker([workshop.workshop_location.latitude, 
-                    workshop.workshop_location.longitude], { icon: workshopIcon }).addTo(map)
-            .bindPopup(project.popup);
+      if (workshop.workshop_location.latitude && workshop.workshop_location.longitude) {
+        latlngs.push([workshop.workshop_location.latitude, workshop.workshop_location.longitude]);
+        workshop_markers.addLayer(L.marker([workshop.workshop_location.latitude, 
+          workshop.workshop_location.longitude], { icon: workshopIcon }).bindPopup(project.popup));
         }
       });
-    
+        
+      map.addLayer(project_markers);
+      map.addLayer(workshop_markers)
       var latLngBounds = L.latLngBounds(latlngs);
       map.setView(latLngBounds.getCenter(), 5);
     })

@@ -7,6 +7,8 @@
     <meta name=”x-apple-disable-message-reformatting”>
     <title>Goteo Map</title>
     <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.markercluster/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
     
 </head>
 
@@ -28,6 +30,7 @@
   <?php $this->section('footer') ?>
     <?= $this->insert('partials/footer/javascript') ?>
     <script src="<?= SRC_URL ?>/assets/vendor/leaflet/dist/leaflet.js"></script>
+    <script src="<?= SRC_URL ?>/assets/vendor/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
     <script type="text/javascript" src="<?= $this->asset('js/map.js') ?>"></script>
     <?= $this->insert('partials/footer/analytics') ?>
 
