@@ -39,7 +39,5 @@ $this->section('content');
 <?= $this->insert('partials/footer/analytics') ?>
 
 <script src="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.min.js"></script>
-<script src="<?= SRC_URL ?>/assets/vendor/leaflet/dist/leaflet.js"></script>
 <script type="text/javascript" src="<?= $this->asset('js/channel/call.js') ?>"></script>
-<script type="text/javascript" src="<?= $this->asset('js/map.js') ?>"></script>
 <?php $this->replace() ?>
