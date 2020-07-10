@@ -20,6 +20,7 @@ class NodeResourceCategory extends \Goteo\Core\Model {
     public
     $id,
     $name,
+    $slug,
     $icon,
     $lang,
     $order;
@@ -50,6 +51,23 @@ class NodeResourceCategory extends \Goteo\Core\Model {
         throw new ModelNotFoundException("Node resource not found for ID [$id]");
     }
 
+    static public function getIdBySlug($slug){
+        $sql="SELECT
+                    node_resource_category.id
+              FROM node_resource_category
+              WHERE node_resource_category.slug = ?";
+
+        $query = static::query($sql, array($slug));
+
+        $id = $query->fetchColumn();
+
+        if($id) {
+            return $id;
+        }
+
+        throw new ModelNotFoundException("Node resource not found for SLUG [$slug]");
+    }
+
     /**
      * Node Resource category listing
      *
@@ -75,6 +93,7 @@ class NodeResourceCategory extends \Goteo\Core\Model {
         $sql="SELECT
                   node_resource_category.id as id,
                   $fields,
+                  node_resource_category.slug as slug,
                   node_resource_category.icon as icon,
                   node_resource_category.lang,
                   node_resource_category.order

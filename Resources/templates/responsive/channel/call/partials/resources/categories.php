@@ -3,12 +3,16 @@
 	<div class="container">
 		<div class="row">
 			<ul class="list-inline">
-				<li class="selected">
-					<?= $this->text('regular-all') ?>
+				<li <?= $this->category ? '' : 'class="selected"' ?>>
+					<a href="<?= '/channel/'.$this->channel->id.'/resources' ?>">
+						<?= $this->text('regular-all') ?>
+					</a>
 				</li>
 			<?php foreach ($this->resources_categories as $item): ?>
-					<li>
-						<i class="icon icon-resource-<?= $item->icon ?> icon-2x"></i> <?= $item->name ?>
+					<li <?= $this->category!=$item->id ? '' : 'class="selected"' ?>>
+						<a href="<?= '/channel/'.$this->channel->id.'/resources/'.$item->slug ?>">
+							<i class="icon icon-resource-<?= $item->icon ?> icon-2x"></i> <?= $item->name ?>
+						</a>
 					</li>
 
 			<?php endforeach ?>

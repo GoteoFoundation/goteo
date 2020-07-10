@@ -210,17 +210,21 @@ class ChannelController extends \Goteo\Core\Controller {
      * Channel resorces pagee
      * @param  Request $request [description]
      */
-    public function resourcesAction ($id, Request $request)
+    public function resourcesAction ($id, $slug='', Request $request)
     {
         $this->setChannelContext($id);
 
-        $resources=NodeResource::getList(['node' => $id]);
+        if($slug)
+            $category_id=NodeResourceCategory::getIdBySlug($slug);
+
+        $resources=NodeResource::getList(['node' => $id, 'category' => $category_id]);
 
         $resources_categories=NodeResourceCategory::getlist();
 
         return $this->viewResponse('channel/call/resources',
             [
             'resources' => $resources,
+            'category'  => $category_id,
             'resources_categories' => $resources_categories
             ]
         );

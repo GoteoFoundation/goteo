@@ -50,6 +50,11 @@ $channel->add('channel-resources', new Route(
     ['_controller' => 'Goteo\Controller\ChannelController::resourcesAction']
 ));
 
+$channel->add('channel-resources-category', new Route(
+    '/{id}/resources/{slug}',
+    ['_controller' => 'Goteo\Controller\ChannelController::resourcesAction']
+));
+
 
 $channel->add('channel-list-projects', new Route(
     '/{id}/{type}/{category}',
