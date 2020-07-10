@@ -36,6 +36,7 @@ class GoteoChannelResources
       CREATE TABLE `node_resource_category` (
             `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `name` VARCHAR(255) NOT NULL,
+            `slug` VARCHAR(150) NOT NULL,
             `icon` varchar(255) NULL,
             `lang` VARCHAR(6) NULL,
             `order` INT(11),

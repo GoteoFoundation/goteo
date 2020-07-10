@@ -1218,17 +1218,26 @@ div.section.resources-categories{
 		padding: 0px 15px;
 		margin: 0px 15px;
 		li{
-			color:$color-new-green;
-			font-weight: bold;
-			padding:0 25px;
+			a{
+				color:$color-new-green !important;
+				font-weight: bold;
+				padding:0 25px;
+			}
 			.icon{
 				background-color: $color-new-green;
 			}
 
 			&.selected{
-				color: $color-new-dark-blue;
-				border-bottom: 3px solid $color-new-dark-blue;
+				a{
+					color: $color-new-dark-blue !important;
+					border-bottom: 3px solid $color-new-dark-blue;
+					padding-bottom: 5px;
+					.icon{
+						background-color: $color-new-dark-blue;
+					}
+				}
 			}
+
 			&:first-child{
 				margin-left: 15px;
 			}
@@ -1653,9 +1662,19 @@ footer {
 	div.section.resource-download{
 		.item{
 			display: block !important;
-			.description{
-				.btn{
-					float:left !important;
+			.btn{
+				float: left !important;
+			}
+		}
+	}
+
+	div.section.resources-categories{
+		ul{
+			overflow-y: scroll;
+			white-space: nowrap;
+			li{
+				&:first-child{
+					margin-left: 0px;
 				}
 			}
 		}

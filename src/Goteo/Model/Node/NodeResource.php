@@ -80,6 +80,11 @@ class NodeResource extends \Goteo\Core\Model {
             $values[':node'] = $filters['node'];
         }
 
+        if ($filters['category']) {
+            $filter[] = "node_resource.category = :category";
+            $values[':category'] = $filters['category'];
+        }
+
         if($filter) {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
@@ -97,7 +102,7 @@ class NodeResource extends \Goteo\Core\Model {
               $sql
               ORDER BY node_resource.order ASC
               LIMIT $offset, $limit";
-         //die(\sqldbg($sql, $values));
+        //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
