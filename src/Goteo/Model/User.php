@@ -1970,6 +1970,8 @@ class User extends \Goteo\Core\Model {
                                   contract_name AS name,
                                   contract_nif,
                                   contract_nif AS nif,
+                                  contract_legal_document_type,
+                                  contract_legal_document_type as legal_document_type,
                                   phone,
                                   address,
                                   zipcode,
@@ -2011,9 +2013,12 @@ class User extends \Goteo\Core\Model {
             }
         }
 
+        //TODO Validate
+        //TODO Create class for user_personal
         $fields = array(
             'contract_name',
             'contract_nif',
+            'contract_legal_document_type',
             'phone',
             'address',
             'zipcode',
