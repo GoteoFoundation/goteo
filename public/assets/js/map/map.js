@@ -82,7 +82,7 @@ var workshopIcon = L.icon({
   
       map.addLayer(project_markers);
       map.addLayer(workshop_markers);
-      L.control.layers({'projects': projects_layer, 'workshops': workshops_layer}).addTo(map);
+      // L.control.layers({'projects': projects_layer, 'workshops': workshops_layer}).addTo(map);
       // map.setView(latLngBounds.getCenter(), 5);
     });
   }
