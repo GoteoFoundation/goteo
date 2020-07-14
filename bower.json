@@ -39,6 +39,7 @@
     "turndown": "^4.0.1",
     "TableDnD": "https://github.com/isocra/TableDnD.git#^1.0.3",
     "leaflet": "^1.6.0",
-    "leaflet.markercluster": "^1.4.1"
+    "leaflet.markercluster": "^1.4.1",
+    "leaflet.fullscreen": "^1.6.0"
   }
 }
