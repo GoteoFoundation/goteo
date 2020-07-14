@@ -163,10 +163,14 @@ class Contract extends \Goteo\Core\Model {
         // persona física o representante
         $contract->name = $personalData->contract_name;
         $contract->nif = $personalData->contract_nif;
+        $contract->legal_document_type = $personalData->contract_legal_document_type;
 
-        if ($contract->nif && Check::nif($contract->nif, $legal_document_type)) {
-            $contract->legal_document_type = $legal_document_type;
+        if ($contract->nif && !isset($contrat->legal_document_type)) {
+            Check::nif($contract->nif, $legal_document_type);
+            if ($legal_document_type)
+                $contract->legal_document_type = $legal_document_type;
         }
+        
         $contract->address = $personalData->address;
         $contract->location = $personalData->location;
         $contract->region = '';

@@ -29,6 +29,7 @@ use Goteo\Model\Project;
 use Goteo\Application\Lang;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Controller\DashboardController;
+use Goteo\Model\Contract;
 
 class SettingsDashboardController extends DashboardController {
     protected $user;
@@ -280,6 +281,12 @@ class SettingsDashboardController extends DashboardController {
             ->add('contract_nif', 'text', [
                 'label' => 'personal-field-contract_nif',
                 'attr' => ['help' => Text::get('tooltip-project-contract_nif')]
+            ])
+            ->add('contract_legal_document_type', 'choice', [
+                'label' => 'personal-field-contract_legal_document_type',
+                'choices' => Contract::getNaturalPersonDocumentTypes(),
+                'attr' => ['help' => Text::get('tooltip-project-contract_nif')],
+                'required' => false
             ])
             ->add('phone', 'text', [
                 'label' => 'personal-field-phone',
