@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet/dist/leaflet.css"/>
     <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.markercluster/dist/MarkerCluster.css"/>
     <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.fullscreen/Control.FullScreen.css"/>
     
 </head>
 

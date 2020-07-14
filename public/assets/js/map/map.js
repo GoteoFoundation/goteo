@@ -72,6 +72,7 @@ var workshopIcon = L.icon({
       var workshops_layer = L.layerGroup(workshop_markers);
       var latLngBounds = L.latLngBounds(latlngs);
       var map = L.map('map', {
+        fullscreenControl: true,
         center: latLngBounds.getCenter(),
         zoom: 5
       });
