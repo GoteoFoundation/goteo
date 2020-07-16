@@ -78,8 +78,16 @@ var workshopIcon = L.icon({
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
   
-      map.addLayer(project_markers);
-      map.addLayer(workshop_markers);
+      if (projects.length) {
+        map.addLayer(project_markers);
+        $('#button-projects-hide').removeClass('hidden');
+      }
+
+      if (workshops.length) {
+        map.addLayer(workshop_markers);
+        $('#button-workshops-hide').removeClass('hidden');
+      }
+
       // L.control.layers({'projects': projects_layer, 'workshops': workshops_layer}).addTo(map);
       // map.setView(latLngBounds.getCenter(), 5);
 
