@@ -1,9 +1,8 @@
-<div class="infowindow prj">
+<div class="workshop">
   <div class="left">
-    <img src="https://goteo.org/img/medium/img-6667.jpg">
+    <a href="/workshop/<?= $this->workshop->id ?>"><img src="<?= $this->workshop->getHeaderImage()->getLink(120,120) ?>"></a>
   </div>
   <div class="right">
-    <h3>{{name}}</h3>
-    <h2>{{author}}</h2>
+    <h3><?= $this->workshop->title ?> </h3>
   </div>
 </div>
