@@ -23,9 +23,10 @@ body {
         float: left;
         width: 220px;
       }
-      img {
-        width: 118px;
-        align-content: center;
+
+      .bottom {
+        display: flex;
+        justify-content: space-around;
       }
     }
 
