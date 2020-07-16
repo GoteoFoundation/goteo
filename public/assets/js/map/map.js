@@ -88,8 +88,7 @@ var workshopIcon = L.icon({
         $('#button-workshops-hide').removeClass('hidden');
       }
 
-      // L.control.layers({'projects': projects_layer, 'workshops': workshops_layer}).addTo(map);
-      // map.setView(latLngBounds.getCenter(), 5);
+      map.fitBounds(latLngBounds);
 
       $('#button-projects-activate').click(function() {
         map.addLayer(project_markers);
