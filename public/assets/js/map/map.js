@@ -55,7 +55,7 @@ var workshopIcon = L.icon({
         if (project.project_location.latitude && project.project_location.longitude) {
           latlngs.push([project.project_location.latitude, project.project_location.longitude]);
           project_markers.addLayer(L.marker([project.project_location.latitude, 
-            project.project_location.longitude], { icon: projectIcon }).bindPopup(project.popup));
+            project.project_location.longitude], { icon: projectIcon }).bindPopup(project.popup, { width: 340 }));
         }
       });
         
@@ -64,7 +64,7 @@ var workshopIcon = L.icon({
       if (workshop.workshop_location.latitude && workshop.workshop_location.longitude) {
         latlngs.push([workshop.workshop_location.latitude, workshop.workshop_location.longitude]);
         workshop_markers.addLayer(L.marker([workshop.workshop_location.latitude, 
-          workshop.workshop_location.longitude], { icon: workshopIcon }).bindPopup(workshop.popup));
+          workshop.workshop_location.longitude], { icon: workshopIcon }).bindPopup(workshop.popup, { width: 340 }));
         }
       });
         
