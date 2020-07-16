@@ -10,10 +10,18 @@ body {
     .project {
       width: 340px;
       overflow: hidden;
+      height: max-content;
 
       .top {
         border-bottom: 1px solid #ccc;
-        height: 73px;
+        height: max-content;
+        display: inline-block;
+        font-size: 14px;
+
+        img {
+          height: 72px;
+          width: 118px;
+        }
       }
 
       .left {
@@ -21,7 +29,8 @@ body {
       }
       .right {
         float: left;
-        width: 220px;
+        width: 200px;
+        margin-left:10px;
       }
 
       .bottom {
@@ -41,7 +50,8 @@ body {
 
       .right {
         float: left;
-        width: 220px;
+        width: 200px;
+        margin-left: 10px;
       }
       img {
         width: 118px;
