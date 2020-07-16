@@ -1,0 +1,67 @@
+@import "compass/css3";
+
+/* map styles */
+
+body {
+
+  height: unset !important;
+
+  .leaflet-popup-content {
+    .project {
+      width: 340px;
+      overflow: hidden;
+
+      .top {
+        border-bottom: 1px solid #ccc;
+        height: 73px;
+      }
+
+      .left {
+        float:left;
+      }
+      .right {
+        float: left;
+        width: 220px;
+      }
+      img {
+        width: 118px;
+        align-content: center;
+      }
+    }
+
+    .workshop {
+      width: 340px;
+      overflow: hidden;
+      display: flex;
+
+      .left {
+        float:left;
+      }
+
+      .right {
+        float: left;
+        width: 220px;
+      }
+      img {
+        width: 118px;
+      }
+    }
+  }
+
+  .map-layouts {
+    display: flex;
+    justify-content: center;
+
+    .btn {
+      margin: 0px 20px 0px 20px;
+
+      img {
+        width: 30px;
+
+      }
+      .title {
+        display: inline;
+      }
+    }
+  }
+}

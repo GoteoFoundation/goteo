@@ -60,14 +60,21 @@ class MapsApiController extends AbstractApiController {
             }
             
             $workshops = $channel->getAllWorkshops();
-            foreach($workshops as $workshop) {
-              $workshop->workshop_location = $workshop->getLocation();
-            }
+            $list_workshops = array_map(function($workshop) {
+              $ob = [
+                'id' => $workshop->id,
+                'title' => $workshop->title,
+                'subtitle' => $workshop->subtitle,
+                'workshop_location' => $workshop->getLocation(),
+                'popup' => View::render('map/partials/workshop_popup.php', array('workshop' => $workshop))
+              ];
+              return $ob;
+            }, $workshops);
           }
 
         return $this->jsonResponse([
             'projects' => $list_projects,
-            'workshops' => $workshops,
+            'workshops' => $list_workshops,
         ]);
       
     }

@@ -11,6 +11,9 @@
     <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
     <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.fullscreen/Control.FullScreen.css"/>
     
+    <?= $this->insert('partials/header/styles') ?>
+    <?= $this->insert('map//partials/styles') ?>
+
 </head>
 
 <body>
@@ -27,6 +30,13 @@
         data-channel='<?= $this->map->getChannel() ?>'
       <?php endif; ?>
   ></div>
+
+  <div class="map-layouts spacer-20">
+		<div id="button-projects-activate" class="btn btn-cyan btn-lg hidden" sel-label=""><img src="/assets/img/map/pin-project.svg" alt="RECEIVED PROJECTS" title="RECEIVED PROJECTS"> <div class="title">SHOW RECEIVED PROJECTS</div></div>
+		<div id="button-projects-hide" class="btn btn-cyan btn-lg" sel-label=""><img src="/assets/img/map/pin-project.svg" alt="RECEIVED PROJECTS" title="RECEIVED PROJECTS"> <div class="title">HIDE PROJECTS</div></div>
+		<div id="button-workshops-activate" class="btn btn-lilac btn-lg hidden" sel-label=""><img src="/assets/img/map/pin-workshop.svg" alt="WORKSHOPS" title="WORKSHOPS"> <div class="title">SHOW WORKSHOPS</div></div>
+		<div id="button-workshops-hide" class="btn btn-lilac btn-lg" sel-label=""><img src="/assets/img/map/pin-workshop.svg" alt="WORKSHOPS" title="WORKSHOPS"> <div class="title">HIDE WORKSHOPS</div></div>
+	</div>
   
   <?php $this->section('footer') ?>
     <?= $this->insert('partials/footer/javascript') ?>

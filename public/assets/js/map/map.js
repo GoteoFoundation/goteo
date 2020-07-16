@@ -64,12 +64,10 @@ var workshopIcon = L.icon({
       if (workshop.workshop_location.latitude && workshop.workshop_location.longitude) {
         latlngs.push([workshop.workshop_location.latitude, workshop.workshop_location.longitude]);
         workshop_markers.addLayer(L.marker([workshop.workshop_location.latitude, 
-          workshop.workshop_location.longitude], { icon: workshopIcon }).bindPopup(project.popup));
+          workshop.workshop_location.longitude], { icon: workshopIcon }).bindPopup(workshop.popup));
         }
       });
         
-      var projects_layer = L.layerGroup(project_markers);
-      var workshops_layer = L.layerGroup(workshop_markers);
       var latLngBounds = L.latLngBounds(latlngs);
       var map = L.map('map', {
         fullscreenControl: true,
@@ -84,6 +82,30 @@ var workshopIcon = L.icon({
       map.addLayer(workshop_markers);
       // L.control.layers({'projects': projects_layer, 'workshops': workshops_layer}).addTo(map);
       // map.setView(latLngBounds.getCenter(), 5);
+
+      $('#button-projects-activate').click(function() {
+        map.addLayer(project_markers);
+        $('#button-projects-hide').removeClass('hidden');
+        $(this).addClass('hidden');
+      });
+
+      $('#button-workshops-activate').click(function() {
+        map.addLayer(workshop_markers);
+        $('#button-workshops-hide').removeClass('hidden');
+        $(this).addClass('hidden');
+      });
+
+      $('#button-projects-hide').click(function() {
+        map.removeLayer(project_markers);
+        $('#button-projects-activate').removeClass('hidden');
+        $(this).addClass('hidden');
+      });
+
+      $('#button-workshops-hide').click(function() {
+        map.removeLayer(workshop_markers);
+        $('#button-workshops-activate').removeClass('hidden');
+        $(this).addClass('hidden');
+      });
     });
   }
 });
