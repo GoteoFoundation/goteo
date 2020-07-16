@@ -32,10 +32,10 @@
   ></div>
 
   <div class="map-layouts spacer-20">
-		<div id="button-projects-activate" class="btn btn-cyan btn-lg hidden" sel-label=""><img src="/assets/img/map/pin-project.svg" alt="RECEIVED PROJECTS" title="RECEIVED PROJECTS"> <div class="title">SHOW RECEIVED PROJECTS</div></div>
-		<div id="button-projects-hide" class="btn btn-cyan btn-lg" sel-label=""><img src="/assets/img/map/pin-project.svg" alt="RECEIVED PROJECTS" title="RECEIVED PROJECTS"> <div class="title">HIDE PROJECTS</div></div>
-		<div id="button-workshops-activate" class="btn btn-lilac btn-lg hidden" sel-label=""><img src="/assets/img/map/pin-workshop.svg" alt="WORKSHOPS" title="WORKSHOPS"> <div class="title">SHOW WORKSHOPS</div></div>
-		<div id="button-workshops-hide" class="btn btn-lilac btn-lg" sel-label=""><img src="/assets/img/map/pin-workshop.svg" alt="WORKSHOPS" title="WORKSHOPS"> <div class="title">HIDE WORKSHOPS</div></div>
+		<div id="button-projects-activate" class="btn btn-cyan btn-lg hidden" sel-label=""><img src="/assets/img/map/pin-project.svg" alt="<?= $this->t('button-project-icon') ?>"> <div class="title"><?= $this->t('button-projects-activate') ?></div></div>
+		<div id="button-projects-hide" class="btn btn-cyan btn-lg hidden" sel-label=""><img src="/assets/img/map/pin-project.svg" alt="<?= $this->t('button-project-icon') ?>"> <div class="title"><?= $this->t('button-projects-hide') ?></div></div>
+		<div id="button-workshops-activate" class="btn btn-lilac btn-lg hidden" sel-label=""><img src="/assets/img/map/pin-workshop.svg" alt="<?= $this->t('button-workshop-icon') ?>"> <div class="title"><?= $this->t('button-workshops-activate') ?></div></div>
+		<div id="button-workshops-hide" class="btn btn-lilac btn-lg hidden" sel-label=""><img src="/assets/img/map/pin-workshop.svg" alt="<?= $this->t('button-workshop-icon') ?>"> <div class="title"><?= $this->t('button-workshops-hide') ?></div></div>
 	</div>
   
   <?php $this->section('footer') ?>
