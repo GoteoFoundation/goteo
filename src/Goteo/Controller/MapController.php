@@ -31,10 +31,9 @@ class MapController extends \Goteo\Core\Controller {
 
 	public function mapAction(Request $request) {
 
-    $height = strip_tags($request->get('height'));
     $cid = strip_tags($request->get('channel'));
     
-    $map = new MapOSM(($height)? $height : 500);
+    $map = new MapOSM('100%');
 
     if ($cid) {
       try {
