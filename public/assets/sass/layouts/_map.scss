@@ -62,6 +62,7 @@ body {
   .map-layouts {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 
     .btn {
       margin: 0px 20px 0px 20px;
@@ -73,6 +74,16 @@ body {
       }
       .title {
         display: inline;
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-xs + 1) {
+    .map-layouts {
+      display: grid;
+  
+      .btn {
+        margin: 0px 0px 20px 0px;
       }
     }
   }
