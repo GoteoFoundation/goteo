@@ -46,16 +46,21 @@ glossary-lb-list: A listar
 glossary-lb-translate: 'Traducindo termo'
 home-lb: 'Elementos na portada'
 home-lb-list: 'Elementos na portada'
+icons-lb-edit: 'Editando tipo'
 icons-lb-list: A listar
+icons-lb-translate: 'Traducindo tipo'
 info-lb-add: 'Creando idea'
 info-lb-edit: 'Editando idea'
 info-lb-list: A listar
 info-lb-translate: 'Traducindo idea'
 licenses-lb: Licenzas
 licenses-lb-add: 'Creando idea'
+licenses-lb-edit: 'Editando licenza'
 licenses-lb-list: A listar
+licenses-lb-translate: 'Traducindo licenza'
 mailing-lb: Comunicacións
 mailing-lb-edit: 'Escribindo contido'
+mailing-lb-list: 'Seleccionando destinatarios'
 mailing-lb-send: 'Comunicación enviada'
 milestones-lb: Fitos
 milestones-lb-add: 'Novo fito'
@@ -83,12 +88,17 @@ pages-lb-translate: 'Traducindo páxina'
 pages-lbedit: 'Editando páxina'
 projects-lb: Proxectos
 projects-lb-accounts: 'Contas do proxecto'
+projects-lb-cancel: 'Cancelando achega'
+projects-lb-consultants: 'Trocando o asesor do proxecto'
 projects-lb-dates: 'Datas do proxecto'
+projects-lb-execute: 'Execución do cargo'
 projects-lb-images: 'Imaxes do proxecto'
 projects-lb-list: A listar
 projects-lb-rebase: 'Trocando a Id do proxecto'
 promote-lb: 'Proxectos populares'
+promote-lb-edit: 'Editando destacado'
 promote-lb-list: A listar
+promote-lb-translate: 'Traducindo destacado'
 recent-lb: 'Actividade recente'
 recent-lb-list: A listar
 reviews-lb: Revisións
@@ -116,6 +126,7 @@ translates-lb-add: 'Habilitando tradución'
 translates-lb-edit: 'Asignando tradución'
 translates-lb-list: A listar
 translates-lb-translate: 'Traducindo texto'
+transnodes-lb: 'Traducións de nodos'
 transnodes-lb-edit: 'Asignando tradución'
 transnodes-lb-list: A listar
 users-lb: Usuarios
@@ -127,5 +138,7 @@ users-lb-manage: 'Xestionando usuario'
 workshop-lb: 'Obradoiros'
 word-lb: 'Contado de palabras'
 word-lb-list: A listar
+worth-lb: 'Niveis de meritocracia'
 worth-lb-edit: 'Editando nivel'
 worth-lb-list: A listar
+stories-lb: 'Historias de usuario'
