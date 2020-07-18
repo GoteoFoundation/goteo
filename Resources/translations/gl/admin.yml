@@ -14,6 +14,7 @@ admin-account-donation: Doazón
 admin-account-invalid-invest: 'Achega [%s] non atopada!'
 admin-account-invest-date: 'Data da achega'
 admin-account-invest-to-pool-ko: 'Erro ao devolver a achega ao portamoedas'
+admin-account-invest-user-refund-ko: 'Non foi posible devolver a achega: [%s]'
 admin-account-issue-solved: 'Fixéronnos a transferencia'
 admin-account-modify-status: 'Modificar o estado'
 admin-account-modify-status-confirm: "Tes a certeza de trocar manualmente o estado a esta achega? É delicado!\nNON SE REALIZARÁ NINGUNHA operación de retorno da achega.\n"
@@ -348,10 +349,38 @@ admin-stats-projects-project-desc: 'Achegas ao proxecto'
 admin-filter-add: 'Engadir filtro'
 admin-filter-last-week: 'Últimos 7 días'
 admin-filter-last-month: 'Últimos 30 días'
+admin-filter-last-year: 'Últimos 365 días'
+admin-filter-from-new-year: 'Dende o 1 de Xaneiro'
+admin-filter-previous-year: 'O pasado ano'
+admin-filter-two-years-ago: 'Hai dous anos'
+admin-filter-typeofuser: 'Tipo de usuario'
+admin-filter-typeofdonor: 'Tipo de doador'
+admin-filter-user: 'Usuario'
+admin-filter-donor: 'Doador'
+admin-filter-no-donor: 'Doador inactivo'
+admin-filter-type-unique: 'Único'
+admin-filter-type-multidonor: 'Multidoador'
+admin-filter-type-foundation-donor: 'Doador á fundación'
+admin-filter-type-all: 'Todos'
+admin-filter-predefined-date: 'Data predefinida'
+admin-filter-predefined-date-choose: 'Podes escoller unha data predefinida'
 admin-filter-forced: 'Forzar filtro'
 admin-filter-forced-help: 'A seleccionar esta opción aplicaranse os filtros independentemente do escollido polo usuario coma preferencia para o envío de información por parte da plataforma.'
+admin-mail-body: 'Corpo da mensaxe'
+admin-stats-donations: 'Doazóns'
+admin-stats-donations-method: 'Doazóns segundo o método de pagamento'
+admin-stats-donations-tip: 'Doazóns durante achegas a proxectos (Adeallas ou "tips")'
+admin-stats-donations-expired: 'Doazóns directas por expiración de portamoedas'
+admin-stats-donations-refunded: 'Doazóns devoltas por proxectos sen éxito'
+admin-donations: Doazóns
+admin-donations-tip: Adeallas
+admin-donations-tip-invests: Achegas con adeallas
+admin-donations-tip-users: Usuarios con adeallas
+admin-donations-direct: Doazóns directas
+admin-donations-expired: Doazóns expiradas
+admin-donations-refunded: Doazóns devoltas
 admin-donations-amount-percent: '% diñeiro doado'
-admin-donations-users-percent: '% usuarios doantes'
+admin-donations-users-percent: '% usuarios doadores'
 admin-donations-tip-percent: '% diñeiro en adeallas'
 admin-donations-direct-percent: '% diñeiro directo'
 admin-workshop: Obradoiros Goteo
