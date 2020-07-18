@@ -120,7 +120,9 @@ admin-footprint-edit: Editando a pegada %s
 admin-calls: Convocatorias
 admin-channels: Canles
 admin-yes: Si
+admin-project-to-review: 'A revisión'
 admin-project-to-review-sure: 'O creador non poderá editalo máis, aceptar?'
+admin-project-view-in-admin: 'Ver no admin'
 admin-project-to-negotiation: 'A negociación'
 admin-project-to-publish: 'Publicar'
 admin-project-derivation-discard: 'Rexeitamento con derivación'
