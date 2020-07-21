@@ -220,7 +220,6 @@ class Workshop extends \Goteo\Core\Model {
         if (isset($filters['node'])) {
             $sqlJoin .= "INNER JOIN node_workshop ON node_workshop.workshop_id = workshop.id and node_workshop.node_id = :node ";
             $values[":node"] = $filters['node'];
-            $other_fields[] = 'node_workshop.header_image as header_image';
         }
 
 
