@@ -28,6 +28,7 @@ use Goteo\Library\Text;
 use Goteo\Model\Page;
 use Goteo\Model\SocialCommitment;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Util\Map\MapOSM;
 
 
 class ChannelController extends \Goteo\Core\Controller {
@@ -111,7 +112,6 @@ class ChannelController extends \Goteo\Core\Controller {
 
         $channel = Node::get($id);
 
-
         if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
             $total = count($list);
         }
@@ -132,7 +132,8 @@ class ChannelController extends \Goteo\Core\Controller {
                 'title_text' => Text::get('node-side-searcher-promote'),
                 'type' => $type,
                 'total' => $total,
-                'limit' => $limit
+                'limit' => $limit,
+                'map' => $map
                 ]
         );
     }
