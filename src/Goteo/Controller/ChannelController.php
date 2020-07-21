@@ -112,7 +112,6 @@ class ChannelController extends \Goteo\Core\Controller {
 
         $channel = Node::get($id);
 
-
         if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
             $total = count($list);
         }
@@ -122,8 +121,6 @@ class ChannelController extends \Goteo\Core\Controller {
             $total = $limit;
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
-
-        $map = new MapOSM(400,1000);
 
         $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/index';
 
