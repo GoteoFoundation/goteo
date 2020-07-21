@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <iframe src="/map?channel=<?= $this->channel->id ?>" width="100%" height="500" style="border:none;" allowfullscreen></iframe>
+      <iframe src="<?= $this->get_url() ?>/map?channel=<?= $this->channel->id ?>" width="100%" height="500" style="border:none;" allowfullscreen></iframe>
     </div>
   </div>
 </div>
