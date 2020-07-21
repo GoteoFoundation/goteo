@@ -1,8 +1,8 @@
 <div class="project">
   <div class="top">
-    <a class="left" href="/project/<?= $this->project->id ?>"><img src="<?= $this->project->image ?>"></a>
+    <a class="left" href="/project/<?= $this->project->id ?>"><img src="<?= $this->project->image->getLink(118,73) ?>"></a>
     <div class="right">
-      <h3><?= $this->project->name ?> </h3>
+      <div  ><?= $this->project->name ?> </div  >
     </div>
   </div>
   <div class="bottom">
