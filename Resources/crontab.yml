@@ -69,3 +69,8 @@ real:
         command: 'bin/console mailing last --update --logmail'
         type: php
         nice: true
+    -
+        schedule: '0 * * * *'
+        command: 'bin/console channel --update'
+        type: php
+        

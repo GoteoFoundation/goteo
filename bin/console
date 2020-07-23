@@ -58,6 +58,7 @@ Console::add(new Command\CronCommand());
 Console::add(new Command\ToolkitCommand());
 Console::add(new Command\LocationCommand());
 Console::add(new Command\SqlMigrationCommand());
+Console::add(new Command\ChannelCommand());
 
 // Plugins can add commands by running
 // Console::add(new Command...);
