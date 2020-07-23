@@ -56,7 +56,7 @@ EOT
 
         $update = $input->getOption('update');
         $channel_id  = $input->getOption('channel');
-        $channel_provided = empty($channel_id);
+        $channel_provided = isset($channel_id);
 
         $output->writeln("<info>Update channels thrown</info>");
 
