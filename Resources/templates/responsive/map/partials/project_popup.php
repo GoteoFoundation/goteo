@@ -1,6 +1,6 @@
 <div class="project">
   <div class="top">
-    <a class="left" href="/project/<?= $this->project->id ?>"><img src="<?= $this->project->image->getLink(118,73) ?>"></a>
+    <a class="left" target="_blank" href="/project/<?= $this->project->id ?>"><img src="<?= $this->project->image->getLink(118,73) ?>"></a>
     <div class="right">
       <div  ><?= $this->project->name ?> </div  >
     </div>
