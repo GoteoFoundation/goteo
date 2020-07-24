@@ -452,14 +452,17 @@ class Contract extends \Goteo\Core\Model {
             SELECT
                 project.id as id,
                 contract.number as number,
-                project.name as project
+                project.name as project,
+                contract.nif as nif,
+                contract.legal_document_type as legal_document_type,
+                contract.entity_cif as entity_cif
             FROM contract
             INNER JOIN project
                 ON project.id = contract.project
             ORDER BY project.name ASC
             ");
 
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
             $item->status = self::getStatus($item->id);
             $list[$item->id] = $item;
         }
