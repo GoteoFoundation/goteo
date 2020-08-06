@@ -51,6 +51,10 @@ class Filter extends \Goteo\Core\Model {
         $project_longitude,
         $project_radius,
         $project_location,
+        $donor_latitude,
+        $donor_longitude,
+        $donor_radius,
+        $donor_location,
         $projects = [],
         $calls = [],
         $channels = [],
@@ -373,6 +377,10 @@ class Filter extends \Goteo\Core\Model {
             'project_longitude',
             'project_radius',
             'project_location',
+            'donor_latitude',
+            'donor_longitude',
+            'donor_radius',
+            'donor_location',
             'forced'
         );
         
