@@ -42,7 +42,8 @@ class Filter extends \Goteo\Core\Model {
         $role,
         $startdate,
         $enddate,
-        $status,
+        $project_status,
+        $invest_status,
         $typeofdonor,
         $foundationdonor,
         $wallet,
@@ -363,7 +364,8 @@ class Filter extends \Goteo\Core\Model {
             'role',
             'startdate',
             'enddate',
-            'status',                    
+            'project_status',
+            'invest_status',                  
             'typeofdonor',
             'foundationdonor',
             'wallet',
@@ -525,6 +527,9 @@ class Filter extends \Goteo\Core\Model {
         $sqlFilter = '';
 
         $investStatus = Invest::$RAISED_STATUSES;
+        if ($this->invest_status) {
+            $investStatus = [$this->invest_status];
+        }
 
         if (isset($this->foundationdonor)) {
             $sqlFilter .= " AND user.id ";
@@ -591,17 +596,17 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlInner .= " AND matcher_project.matcher_id IN (" . implode(',', $parts) . ") ";
         }
 
-        if (isset($this->status) && $this->status > -1 && !empty($sqlInner)) { 
-            $sqlInner .= "INNER JOIN project ON project.id = invest.project AND project.status = :status ";
-            $values[':status'] = $this->status;
+        if (isset($this->project_status) && $this->project_status > -1 && !empty($sqlInner)) { 
+            $sqlInner .= "INNER JOIN project ON project.id = invest.project AND project.status = :project_status ";
+            $values[':project_status'] = $this->project_status;
         }
 
         $sqlInner .= "WHERE  invest.status IN ";
         
         $parts = [];
         foreach($investStatus as $index => $status) {
-            $parts[] = ':status' . $index;
-            $values[':status' . $index] = $status;
+            $parts[] = ':invest_status' . $index;
+            $values[':invest_status' . $index] = $status;
         }
         $sqlInner .= " (" . implode(',', $parts) . ") ";
 
@@ -619,8 +624,8 @@ class Filter extends \Goteo\Core\Model {
             $sqlInner .= " AND  invest.status IN ";
             $parts = [];
             foreach($investStatus as $index => $status) {
-                $parts[] = ':status_' . $index;
-                $values[':status_' . $index] = $status;
+                $parts[] = ':invest_status_' . $index;
+                $values[':invest_status_' . $index] = $status;
             }
             $sqlInner .= " (" . implode(',', $parts) . ") ";
     
@@ -638,8 +643,8 @@ class Filter extends \Goteo\Core\Model {
                          AND  invest.status IN ";
             $parts = [];
             foreach($investStatus as $index => $status) {
-                $parts[] = ':status_' . $index;
-                $values[':status_' . $index] = $status;
+                $parts[] = ':invest_status_' . $index;
+                $values[':invest_status_' . $index] = $status;
             }
             $sqlInner .= " (" . implode(',', $parts) . ") ";
     
@@ -750,6 +755,9 @@ class Filter extends \Goteo\Core\Model {
         $values[':prefix'] = $prefix;
 
         $investStatus = Invest::$RAISED_STATUSES;
+        if ($this->invest_status) {
+            $investStatus = [$this->invest_status];
+        }
 
         if (isset($this->foundationdonor)) {
             $sqlFilter .= " AND user.id ";
@@ -816,17 +824,17 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlInner .= " AND matcher_project.matcher_id IN (" . implode(',', $parts) . ") ";
         }
 
-        if (isset($this->status) && $this->status > -1 && !empty($sqlInner)) { 
-            $sqlInner .= "INNER JOIN project ON project.id = invest.project AND project.status = :status ";
-            $values[':status'] = $this->status;
+        if (isset($this->project_status) && $this->project_status > -1 && !empty($sqlInner)) { 
+            $sqlInner .= "INNER JOIN project ON project.id = invest.project AND project.status = :project_status ";
+            $values[':project_status'] = $this->project_status;
         }
 
         $sqlInner .= "WHERE  invest.status IN ";
         
         $parts = [];
         foreach($investStatus as $index => $status) {
-            $parts[] = ':status' . $index;
-            $values[':status' . $index] = $status;
+            $parts[] = ':invest_status' . $index;
+            $values[':invest_status' . $index] = $status;
         }
         $sqlInner .= " (" . implode(',', $parts) . ") ";
 
@@ -844,8 +852,8 @@ class Filter extends \Goteo\Core\Model {
             $sqlInner .= " AND  invest.status IN ";
             $parts = [];
             foreach($investStatus as $index => $status) {
-                $parts[] = ':status_' . $index;
-                $values[':status_' . $index] = $status;
+                $parts[] = ':invest_status_' . $index;
+                $values[':invest_status_' . $index] = $status;
             }
             $sqlInner .= " (" . implode(',', $parts) . ") ";
     
@@ -863,8 +871,8 @@ class Filter extends \Goteo\Core\Model {
                          AND  invest.status IN ";
             $parts = [];
             foreach($investStatus as $index => $status) {
-                $parts[] = ':status_' . $index;
-                $values[':status_' . $index] = $status;
+                $parts[] = ':invest_status_' . $index;
+                $values[':invest_status_' . $index] = $status;
             }
             $sqlInner .= " (" . implode(',', $parts) . ") ";
     
@@ -957,6 +965,9 @@ class Filter extends \Goteo\Core\Model {
         $sqlFilter = '';
 
         $investStatus = Invest::$RAISED_STATUSES_AND_DONATED;
+        if ($this->invest_status) {
+            $investStatus = [$this->invest_status];
+        }
 
         $sqlFilter .= " AND user.id NOT IN (
             SELECT invest.user
@@ -965,8 +976,8 @@ class Filter extends \Goteo\Core\Model {
 
         $parts = [];
         foreach($investStatus as $index => $status) {
-                $parts[] = ':status' . $index;
-                $values[':status' . $index] = $status;
+                $parts[] = ':invest_status' . $index;
+                $values[':invest_status' . $index] = $status;
             }
         $sqlFilter .= " (" . implode(',', $parts) . ") ";
             
@@ -996,8 +1007,8 @@ class Filter extends \Goteo\Core\Model {
 
             $parts = [];
             foreach([Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL] as $index => $status) {
-                    $parts[] = ':status' . $index;
-                    $values[':status' . $index] = $status;
+                    $parts[] = ':invest_status' . $index;
+                    $values[':invest_status' . $index] = $status;
                 }
             $sqlFilter .= " (" . implode(',', $parts) . ") ";
 
@@ -1019,8 +1030,8 @@ class Filter extends \Goteo\Core\Model {
 
             $parts = [];
             foreach([Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL] as $index => $status) {
-                    $parts[] = ':status' . $index;
-                    $values[':status' . $index] = $status;
+                    $parts[] = ':invest_status' . $index;
+                    $values[':invest_status' . $index] = $status;
                 }
             $sqlFilter .= " (" . implode(',', $parts) . ") ";
 
@@ -1109,6 +1120,9 @@ class Filter extends \Goteo\Core\Model {
         $values[':prefix'] = $prefix;
 
         $investStatus = Invest::$RAISED_STATUSES_AND_DONATED;
+        if ($this->invest_status) {
+            $investStatus = [$this->invest_status];
+        }
 
         $sqlFilter .= " AND user.id NOT IN (
             SELECT invest.user
@@ -1117,8 +1131,8 @@ class Filter extends \Goteo\Core\Model {
 
         $parts = [];
         foreach($investStatus as $index => $status) {
-                $parts[] = ':status' . $index;
-                $values[':status' . $index] = $status;
+                $parts[] = ':invest_status' . $index;
+                $values[':invest_status' . $index] = $status;
             }
         $sqlFilter .= " (" . implode(',', $parts) . ") ";
             
@@ -1148,8 +1162,8 @@ class Filter extends \Goteo\Core\Model {
 
             $parts = [];
             foreach([Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL] as $index => $status) {
-                    $parts[] = ':status' . $index;
-                    $values[':status' . $index] = $status;
+                    $parts[] = ':invest_status' . $index;
+                    $values[':invest_status' . $index] = $status;
                 }
             $sqlFilter .= " (" . implode(',', $parts) . ") ";
 
@@ -1171,8 +1185,8 @@ class Filter extends \Goteo\Core\Model {
 
             $parts = [];
             foreach([Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL] as $index => $status) {
-                    $parts[] = ':status' . $index;
-                    $values[':status' . $index] = $status;
+                    $parts[] = ':invest_status' . $index;
+                    $values[':invest_status' . $index] = $status;
                 }
             $sqlFilter .= " (" . implode(',', $parts) . ") ";
 
@@ -1248,11 +1262,11 @@ class Filter extends \Goteo\Core\Model {
             ON project.owner = user.id
         ";
 
-        if (isset($this->status) && $this->status > -1) {
+        if (isset($this->project_status) && $this->project_status > -1) {
             $sqlFilter .= "
-                AND project.status = :status
+                AND project.status = :project_status
                 ";
-            $values[':status'] = $this->status;
+            $values[':project_status'] = $this->project_status;
         }
 
         $this->projects = $this->getFilterProject($this->id);
@@ -1397,11 +1411,11 @@ class Filter extends \Goteo\Core\Model {
             ON project.owner = user.id
         ";
 
-        if (isset($this->status) && $this->status > -1) {
+        if (isset($this->project_status) && $this->project_status > -1) {
             $sqlFilter .= "
-                AND project.status = :status
+                AND project.status = :project_status
                 ";
-            $values[':status'] = $this->status;
+            $values[':project_status'] = $this->project_status;
         }
 
         $this->projects = $this->getFilterProject($this->id);

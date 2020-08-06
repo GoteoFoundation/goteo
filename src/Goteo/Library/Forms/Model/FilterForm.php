@@ -19,6 +19,7 @@ use Symfony\Component\Form\FormInterface;
 use Goteo\Model\Project;
 use Goteo\Model\Sdg;
 use Goteo\Model\Footprint;
+use Goteo\Model\Invest;
 
 class FilterForm extends AbstractFormProcessor {
 
@@ -130,10 +131,15 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'matcher'
             ])
-            ->add('status', 'choice', array(
-                'label' => 'regular-status',
+            ->add('project_status', 'choice', array(
+                'label' => 'admin-filter-project-status',
                 'required' => false,
                 'choices' => Project::status(),
+            ))
+            ->add('invest_status', 'choice', array(
+                'label' => 'admin-filter-invest-status',
+                'required' => false,
+                'choices' => Invest::status(),
             ))
             ->add('typeofdonor', 'choice', array(
                 'label' => 'admin-filter-typeofdonor',

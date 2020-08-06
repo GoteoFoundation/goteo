@@ -280,6 +280,8 @@ admin-filter-predefined-date: 'Predefined dates'
 admin-filter-predefined-date-choose: 'You can choose a predefined date'
 admin-filter-forced: 'Force filter'
 admin-filter-forced-help: 'If you select this option, the filters will be applied regardless of what the user has chosen as a preference for sending information by the platform.'
+admin-filter-project-status: Project status
+admin-filter-invest-status: Invest status
 admin-mail-body: 'Body of the message'
 mandatory-filter-name: Missing name
 mandatory-filter-description: Missing description
