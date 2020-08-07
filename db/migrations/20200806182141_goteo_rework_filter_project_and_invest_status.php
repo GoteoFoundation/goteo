@@ -36,7 +36,7 @@ class GoteoReworkFilterProjectAndInvestStatus
         ALTER TABLE `filter` ADD COLUMN `invest_status` INT(1) DEFAULT NULL;
 
         ALTER TABLE `filter` ADD COLUMN `donor_latitude` DECIMAL(16,14) DEFAULT NULL;
-        ALTER TBALE `filter` ADD COLUMN `donor_longitude` DECIMAL(16,14) DEFAULT NULL;
+        ALTER TABLE `filter` ADD COLUMN `donor_longitude` DECIMAL(16,14) DEFAULT NULL;
         ALTER TABLE `filter` ADD COLUMN `donor_radius` SMALLINT(6) UNSIGNED DEFAULT NULL;
         ALTER TABLE `filter` ADD COLUMN `donor_location` VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL;
      ";

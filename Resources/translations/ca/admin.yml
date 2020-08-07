@@ -248,6 +248,8 @@ admin-filter-forced: 'Forçar filtre'
 admin-filter-forced-help: 'Si esculls aquesta opció s''aplicaran els filtres independentment del que hagi escollit l''usuari com a preferència per l''enviament d''informació per part de la plataforma.'
 admin-filter-project-status: Estat del projecte
 admin-filter-invest-status: Estat de la donació
+admin-filter-project-location: Ubicació del projecte
+admin-filter-donor-location: Ubicació del donant
 admin-mail-body: 'Cos del missatge'
 
 mandatory-filter-name: Manca el nom

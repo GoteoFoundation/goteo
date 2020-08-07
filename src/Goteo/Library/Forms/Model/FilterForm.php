@@ -86,8 +86,6 @@ class FilterForm extends AbstractFormProcessor {
             $model->donor_location = new DonorLocation();
         }
 
-        print_r($model->donor_location); die;
-
         $builder
             ->add('name', 'text', array(
                 'label' => 'regular-title',
@@ -186,7 +184,7 @@ class FilterForm extends AbstractFormProcessor {
                 'choices' => [Text::get('admin-no'), Text::get('admin-yes')]
             ))
             ->add('project_location', 'location', [
-                'label' => 'overview-field-project_location',
+                'label' => 'admin-filter-project-location',
                 'disabled' => $this->getReadonly(),
                 'location_object' => $model->project_location,
                 'location_class' => 'Goteo\Model\Project\ProjectLocation',
@@ -194,7 +192,7 @@ class FilterForm extends AbstractFormProcessor {
                 'pre_addon' => '<i class="fa fa-globe"></i>',
             ])
             ->add('donor_location', 'location', [
-                'label' => 'overview-field-donor_location',
+                'label' => 'admin-filter-donor-location',
                 'disabled' => $this->getReadonly(),
                 'location_object' => $model->donor_location,
                 'location_class' => 'Goteo\Model\User\DonorLocation',
