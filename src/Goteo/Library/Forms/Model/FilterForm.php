@@ -19,6 +19,9 @@ use Symfony\Component\Form\FormInterface;
 use Goteo\Model\Project;
 use Goteo\Model\Sdg;
 use Goteo\Model\Footprint;
+use Goteo\Model\Invest;
+use Goteo\Model\User\DonorLocation;
+use Goteo\Model\Project\ProjectLocation;
 
 class FilterForm extends AbstractFormProcessor {
 
@@ -61,6 +64,26 @@ class FilterForm extends AbstractFormProcessor {
         $footprints = [];
         foreach(Footprint::getList([],0,100) as $f) {
             $footprints['<img src="'.$f->getIcon()->getLink().'" class="icon icon-3x"> '.$f->name] = $f->id;
+        }
+
+        if ($model->project_location) {
+            $project_location = new ProjectLocation();
+            $project_location->location = $model->project_location;
+            $project_location->latitude = $model->project_latitude;
+            $project_location->longitude = $model->project_longitude;
+            $model->project_location = $project_location;
+        } else {
+            $model->project_location = new ProjectLocation();
+        }
+
+        if ($model->donor_location) {
+            $donor_location = new DonorLocation();
+            $donor_location->location = $model->donor_location;
+            $donor_location->latitude = $model->donor_latitude;
+            $donor_location->longitude = $model->donor_longitude;
+            $model->donor_location = $donor_location;
+        } else {
+            $model->donor_location = new DonorLocation();
         }
 
         $builder
@@ -130,10 +153,15 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'matcher'
             ])
-            ->add('status', 'choice', array(
-                'label' => 'regular-status',
+            ->add('project_status', 'choice', array(
+                'label' => 'admin-filter-project-status',
                 'required' => false,
                 'choices' => Project::status(),
+            ))
+            ->add('invest_status', 'choice', array(
+                'label' => 'admin-filter-invest-status',
+                'required' => false,
+                'choices' => Invest::status(),
             ))
             ->add('typeofdonor', 'choice', array(
                 'label' => 'admin-filter-typeofdonor',
@@ -156,9 +184,18 @@ class FilterForm extends AbstractFormProcessor {
                 'choices' => [Text::get('admin-no'), Text::get('admin-yes')]
             ))
             ->add('project_location', 'location', [
-                'label' => 'overview-field-project_location',
+                'label' => 'admin-filter-project-location',
                 'disabled' => $this->getReadonly(),
+                'location_object' => $model->project_location,
                 'location_class' => 'Goteo\Model\Project\ProjectLocation',
+                'required' => false,
+                'pre_addon' => '<i class="fa fa-globe"></i>',
+            ])
+            ->add('donor_location', 'location', [
+                'label' => 'admin-filter-donor-location',
+                'disabled' => $this->getReadonly(),
+                'location_object' => $model->donor_location,
+                'location_class' => 'Goteo\Model\User\DonorLocation',
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>',
             ])
@@ -213,6 +250,20 @@ class FilterForm extends AbstractFormProcessor {
         foreach($data['footprints'] as $key => $value) {
             if (!empty($value)) array_push($model->footprints, $value);
         }
+
+        if($model->project_location instanceOf ProjectLocation) {
+            $model->project_latitude = $model->project_location->latitude;
+            $model->project_longitude = $model->project_location->longitude;
+            $model->project_location = $model->project_location->location;
+        }
+
+
+        if($model->donor_location instanceOf DonorLocation) {
+            $model->donor_latitude = $model->donor_location->latitude;
+            $model->donor_longitude = $model->donor_location->longitude;
+            $model->donor_location = $model->donor_location->location;
+        }
+
 
         $errors = [];
         if (!$model->save($errors)) {
