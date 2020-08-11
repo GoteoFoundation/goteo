@@ -141,7 +141,11 @@ $dataProjects = ($data)? $data->getCommunicationProjects($data->id) : '';
   </div>
 <?php endforeach ?>
 
-<button type="submit" class="btn btn-cyan" name="save"><?= $this->text('form-next-button') ?></button>
+<?php if ($data->isActive() || $data->isSent()): ?> 
+  <a class="btn btn-cyan" href="/admin/communication/detail/<?= $data->id ?>"> <?= $this->text('form-next-button') ?> </a>
+<?php else: ?>
+  <button type="submit" class="btn btn-cyan" name="save"><?= $this->text('regular-save') ?></button>
+<?php endif; ?>
 
 </div>
 </form>
