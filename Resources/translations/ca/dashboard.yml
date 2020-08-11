@@ -23,7 +23,8 @@ dashboard-certificates-download: 'Confirmar i descarregar'
 dashboard-certificates-empty: 'Has de fer alguna aportació a un projecte o recarregar el moneder virtual per veure els teus certificats'
 dashboard-certificates-expired: caducat
 dashboard-certificates-expired-description: 'Ha expirat el termini per a la confirmació del teu certificat'
-dashboard-certificates-no-downloable: 'La descàrrega de l''certificat estarà disponible a partir de l''1 de març de %YEAR%, mentrestant pots descarregar el justificant de donació.'
+dashboard-certificates-no-downloable: 'La descàrrega de l''certificat estarà disponible a partir de l''1 de març de %YEAR%.'
+dashboard-certificates-legal-entities-no-downloable: 'La descàrrega de l''certificat estarà disponible a partir de l''1 de març de %YEAR%, mentrestant pots descarregar el justificant de donació.'
 dashboard-certificates-no-pending: 'No hi ha cap aportació pendent'
 dashboard-certificates-pending: Pendent
 dashboard-certificates-pending-desc: 'Aquestes són les aportacions que s''inclouran en certificats futurs.'
