@@ -23,7 +23,8 @@ dashboard-certificates-download: 'Confirm and download'
 dashboard-certificates-empty: 'You need to make at least a donation to any project or charge an amount to your virtual wallet to see your certificates'
 dashboard-certificates-expired: Expired
 dashboard-certificates-expired-description: 'The deadline to confirm the certificate expired'
-dashboard-certificates-no-downloable: 'The certificate download will be available from March 1, %YEAR%. Meanwhile you can download the proof of donation.'
+dashboard-certificates-no-downloable: 'The certificate download will be available from March 1, %YEAR%'
+dashboard-certificates-legal-entities-no-downloable: 'The certificate download will be available from March 1, %YEAR%. Meanwhile you can download the proof of donation.'
 dashboard-certificates-no-pending: 'There''s no pending donation'
 dashboard-certificates-pending: Pending
 dashboard-certificates-pending-desc: 'These donations will be included in future certificates.'
