@@ -23,7 +23,7 @@ dashboard-certificates-download: 'Confirmar i descarregar'
 dashboard-certificates-empty: 'Has de fer alguna aportació a un projecte o recarregar el moneder virtual per veure els teus certificats'
 dashboard-certificates-expired: caducat
 dashboard-certificates-expired-description: 'Ha expirat el termini per a la confirmació del teu certificat'
-dashboard-certificates-no-downloable: 'La descàrrega de l''certificat estarà disponible a partir de l''1 de març de %YEAR%'
+dashboard-certificates-no-downloable: 'La descàrrega de l''certificat estarà disponible a partir de l''1 de març de %YEAR%, mentrestant pots descarregar el justificant de donació.'
 dashboard-certificates-no-pending: 'No hi ha cap aportació pendent'
 dashboard-certificates-pending: Pendent
 dashboard-certificates-pending-desc: 'Aquestes són les aportacions que s''inclouran en certificats futurs.'
@@ -34,6 +34,7 @@ dashboard-certificates-totals: '%NUM% aportacions, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'Per a descarregar aquest certificat has confirmar les dades primer!'
 dashboard-certificates-view-pending: 'No es mostren les aportacions a projectes que encara no hagin passat la primera ronda. Pots consultar aquestes aportacions %HERE%.<br>Les aportacions fetes amb el moneder virtual s''inclouen en el certificat generat en el moment del pagament físic.'
 dashboard-certificates-no-invests: 'No es pot confirmar el certificat ja que no té aportacions!'
+dashboard-certificates-download-proof: Descarregar justificant de donació
 dashboard-chart-days: 'QUEDEN %s DIES'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
 dashboard-chart-investors: COFINANÇADORS
