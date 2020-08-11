@@ -23,7 +23,7 @@ dashboard-certificates-download: 'Confirmar y descargar'
 dashboard-certificates-empty: 'Debes hacer algún aporte a un proyecto o recargar el monedero virtual para ver tus certificados'
 dashboard-certificates-expired: Caducado
 dashboard-certificates-expired-description: 'Ha expirado el plazo para confirmar tu certificado'
-dashboard-certificates-no-downloable: 'La descarga del certificado estará disponible a partir del 1 de marzo de %YEAR%'
+dashboard-certificates-no-downloable: 'La descarga del certificado estará disponible a partir del 1 de marzo de %YEAR%, hasta entonces puedes descargar el justificante de donación.'
 dashboard-certificates-no-pending: 'No hay ningún aporte pendiente'
 dashboard-certificates-pending: Pendiente
 dashboard-certificates-pending-desc: 'Estos son los aportes que se incluirán en certificados futuros.'
@@ -34,6 +34,7 @@ dashboard-certificates-totals: '%NUM% aportes, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'Para descargar este certificado debes confirmar los datos primero!'
 dashboard-certificates-view-pending: 'No se muestran tus aportes directos a proyectos que todavía no hayan acabado la primera ronda. Puedes consultarlos %HERE%.<br>Les aportaciones hechas con el monedero virtual se incluyen en el certificado generado en el momento del pago físico.'
 dashboard-certificates-no-invests: 'No se puede confirmar el certificado si no tiene aportaciones!'
+dashboard-certificates-download-proof: Descargar justificante de donación
 dashboard-chart-days: 'QUEDAN %s DÍAS'
 dashboard-chart-invested: 'FINANCIACIÓN OBTENIDA'
 dashboard-chart-investors: COFINANCIADORES
