@@ -41,6 +41,10 @@ class Post extends \Goteo\Core\Model {
         $node;  // las entradas en portada para nodos se guardan en la tabla post_node con unos metodos alternativos
 
 
+    public static function getLangFields() {
+        return ['title', 'subtitle', 'text', 'legend'];
+    }
+    
     // fallbacks to getbyid
     public static function getBySlug($slug, $lang = null, $model_lang = null) {
         $post = self::get((string)$slug, $lang, $model_lang);
@@ -130,6 +134,169 @@ class Post extends \Goteo\Core\Model {
         }
         return $post;
 
+    }
+
+        /*
+     * Lista de entradas filtradas
+     *  por tag
+     * de mas nueva a mas antigua
+     */
+    public static function getFilteredList ($filters = array(), $offset = 0, $limit = 10, $count = false, $lang = null, $model_lang = null) {
+        if(!$lang) $lang = Lang::current();
+        if(!$model_lang) $model_lang = Config::get('lang');
+        $values = [];
+
+        $list = [];
+
+        list($fields, $joins) = self::getLangsSQLJoins($lang, $model_lang);
+
+
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+
+        $sql = "
+            SELECT
+                post.id as id,
+                post.blog as blog,
+                post.slug as slug,
+                $fields,
+                post.image as `image`,
+                post.type as `type`,
+                post.section as `section`,
+                post.glossary as `glossary`,
+                post.header_image as `header_image`,
+                post.media as `media`,
+                post.date as `date`,
+                DATE_FORMAT(post.date, '%d-%m-%Y') as fecha,
+                post.publish as publish,
+                post.home as home,
+                post.footer as footer,
+                post.num_comments as num_comments
+            FROM    post
+            $joins
+            ";
+
+        $sqlWhere = '';
+
+        if(!is_array($filters)) {
+            if(is_integer($filters))
+                $filters = ['show' => 'all', 'blog' => $filters];
+            else
+                $filters = ['show' => $filters];
+        }
+        if (!empty($filters['blog'])) {
+            $sqlWhere = " WHERE post.blog = :blog
+            ";
+            $values[':blog'] = $filters['blog'];
+        }
+
+        if (!empty($filters['superglobal'])) {
+            $sqlWhere .= " AND (post.id LIKE :qid OR post.slug LIKE :superglobal OR post.title LIKE :superglobal OR post.subtitle LIKE :superglobal OR post.text LIKE :superglobal)";
+            $values[':qid'] = $filters['superglobal'];
+            $values[':superglobal'] = '%' . $filters['superglobal'] . '%';
+        }
+        if (!empty($filters['tag'])) {
+            $sqlWhere .= " AND post.id IN (SELECT post FROM post_tag WHERE tag = :tag)
+            ";
+            $values[':tag'] = $filters['tag'];
+        }
+
+        // Filter by workshop
+        if (!empty($filters['workshop'])) {
+            $sqlWhere .= " AND post.id IN (SELECT post_id FROM workshop_post WHERE workshop_id = :workshop)
+            ";
+            $values[':workshop'] = $filters['workshop'];
+        }
+
+        // Filter by node
+        if (!empty($filters['node'])) {
+            $sqlWhere .= " AND post.id IN (SELECT post_id FROM node_post WHERE node_id = :node)
+            ";
+            $values[':node'] = $filters['node'];
+        }
+
+        if (!empty($filters['section'])) {
+            $sqlWhere .= " AND post.section = :section
+            ";
+            $values[':section'] = $filters['section'];
+        }
+
+        // Post excluded from the
+        if (!empty($filters['excluded'])) {
+            $sqlWhere .= " AND post.id  != :excluded
+            ";
+            $values[':excluded'] = $filters['excluded'];
+        }
+
+        if (!empty($filters['author'])) {
+            $sqlWhere .= " AND post.author = :author
+            ";
+            $values[':author'] = $filters['author'];
+        }
+
+        // solo las publicadas
+        if ($filter['published'] || $filters['show'] == 'published') {
+            $sqlWhere .= " AND post.publish = 1
+            ";
+        }
+
+        // solo las de la portada
+        if ($filters['show'] == 'home') {
+            if ($filters['node'] == Config::get('node')) {
+                $sqlWhere .= " AND post.home = 1
+                ";
+            } else {
+                $sqlWhere .= " AND post.id IN (SELECT post FROM post_node WHERE node = :node)
+                ";
+                $values[':node'] = $filters['node'];
+            }
+        }
+
+        if ($filters['show'] == 'footer') {
+            if ($filters['node'] == Config::get('node')) {
+                $sqlWhere .= " AND post.footer = 1
+                ";
+            }
+        }
+
+        if($count) {
+            // Return count
+            $sql = "SELECT COUNT(post.id)
+                FROM post
+                $sqlWhere";
+            return (int) self::query($sql, $values)->fetchColumn();
+        }
+
+        $sql .= "$sqlWhere
+            ORDER BY post.date DESC, post.id DESC
+            LIMIT $offset, $limit
+            ";
+
+        // die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
+
+            $post->user   = new User;
+            $post->user->name = $post->user_name;
+
+            $post->gallery = Image::getModelGallery('post', $post->id);
+            $post->image = Image::getModelImage($post->image, $post->gallery);
+            $post->header_image = Image::getModelImage($post->header_image);
+
+            // video
+            if (isset($post->media)) {
+                $post->media = new Media($post->media);
+            }
+
+            if (!isset($post->num_comments)) {
+                $post->num_comments = Post\Comment::getCount($post->id);
+            }
+
+            $list[$post->id] = $post;
+        }
+
+        return $list;
     }
 
     /*
