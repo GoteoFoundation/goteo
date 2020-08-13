@@ -71,6 +71,12 @@ $api->add('api-geoloc-locate', new Route(
 
 
 // Blog
+$api->add('api-blog-posts', new Route(
+    '/blog/posts',
+    array('_controller' => 'Goteo\Controller\Api\BlogApiController::postsAction',
+        )
+));
+
 // Tags list
 $api->add('api-blog-tags', new Route(
     '/blog/tags',

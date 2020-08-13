@@ -125,6 +125,10 @@ admin-storys: User histories in Goteo
 admin-stories: User histories in Goteo
 admin-stories-add: Create new user history
 admin-stories-edit: Editing user history %s
+admin-channelstory-add: Add story to the channel
+admin-channelstory-submit: Save story
+admin-channelpost-add: Add Post tot he channel
+admin-channelpost-submit: Save post
 admin-categories: 'Categories and scopes'
 admin-categories-if-empty-then-asset: 'If empty the default icon will be used: %s'
 admin-category-add: Create a new category

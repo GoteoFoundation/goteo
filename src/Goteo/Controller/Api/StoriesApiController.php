@@ -150,7 +150,7 @@ class StoriesApiController extends AbstractApiController {
 
     }
 
-        /**
+    /**
      * Simple listing of stories
      * TODO: according to permissions, filter this stories
      * @param  Request $request [description]

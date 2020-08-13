@@ -42,6 +42,41 @@ class BlogApiController extends AbstractApiController {
     }
 
     /**
+     * Simple listing of posts
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function postsAction(Request $request) {
+        if(!$this->user) throw new ControllerAccessDeniedException();
+
+        $filters = [];
+        $post = null;
+        $page = max((int) $request->query->get('pag'), 0);
+        // General search
+        if($request->query->has('q')) {
+            $filters['superglobal'] = $request->query->get('q');
+        }
+        $limit = 25;
+        $offset = $page * $limit;
+        $list = [];
+        
+        foreach(Post::getFilteredList($filters, $offset, $limit) as $post) {
+            $ob = ['id' => $post->id,
+                   'title' => $post->title
+                ];
+            $list[] = $ob;
+        }
+
+        return $this->jsonResponse([
+            'list' => $list,
+            'total' => count($list),
+            'page' => $page,
+            'limit' => $limit
+            ]);
+    }
+
+
+    /**
      * Returns a list of tags for suggestions
      */
     public function tagsAction(Request $request) {
