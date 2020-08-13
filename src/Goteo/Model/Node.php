@@ -23,6 +23,7 @@ use Goteo\Model\Node\NodeFaq;
 use Goteo\Model\Node\NodeTeam;
 use Goteo\Model\Node\NodeCallToAction;
 use Goteo\Model\Node\NodeStories;
+use Goteo\Model\Node\NodePost;
 
 class Node extends \Goteo\Core\Model {
 
@@ -1043,15 +1044,17 @@ class Node extends \Goteo\Core\Model {
         $node_story->stories_id = $story->id;
         $errors = array();
         $node_story->save($errors);
-        if ($errors) {
-            print_r($errors); die;
-        }
-        // $sql = "REPLACE INTO node_stories (node_id, stories_id) VALUES(:channel, :story)";
-        // $values = [
-        //     ':channel' => $this->id,
-        //     ':story' => $story->id
-        // ];
-        // $query = static::query($sql, $values);
+        return empty($errors);
+    }
+
+    public function addPost($post, &$errors = array()) {
+        $node_post = new NodePost();
+        $node_post->node_id = $this->id;
+        $node_post->post_id = $post;
+        $errors = array();
+        $node_post->save($errors);
+
+        return empty($errors);
     }
 
 
