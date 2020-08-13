@@ -39,6 +39,20 @@ $this->section('lang-metas');
     }
 $this->replace();
 
+$this->section('head');
+
+?>
+
+
+<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick-theme.css"/>
+
+
+<?php
+
+$this->append();
+
+
 $this->section('sidebar-header');
     echo $this->insert('project/widgets/micro', ['project' => $project, 'admin' => $this->admin]);
 $this->replace();
@@ -67,7 +81,7 @@ $this->section('content');
 		<!-- Tags and share info -->
 		<div class="row">
 
-		<?= $this->insert('project/partials/main_extra', ['project' => $project ]) ?>
+		<?= $this->insert('project/partials/main_extra', ['project' => $project, 'matchers' => $this->matchers ]) ?>
 
 		</div>
 </div>
@@ -93,24 +107,7 @@ $this->section('content');
 
 </div>
 
-<aside class="related-projects">
-    <div class="container-fluid">
-		<h2 class="green-title">
-		<?= $this->text('project-related') ?>
-		</h2>
-
-		<div class="row">
-	    <?php foreach ($this->related_projects as $related_project) : ?>
-
-	              <div class="col-sm-6 col-md-4 col-xs-12 spacer">
-	                <?= $this->insert('project/widgets/normal', ['project' => $related_project, 'admin' => false]) ?>
-	              </div>
-	    <?php endforeach ?>
-    	</div>
-
-    </div>
-</aside>
-
+    <?= $this->insert('project/partials/related_projects') ?>
 
 <!-- sticky menu -->
 
@@ -188,7 +185,10 @@ $this->section('content');
 
 <?= $this->insert('project/partials/chart_amount.php', ['project' => $project]) ?>
 
+<script src="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.min.js"></script>
+
 <script type="text/javascript">
+
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
     $(function(){
@@ -336,6 +336,29 @@ $this->section('content');
             $(".info-hover-call").toggle();
         });
 
+        // Delete support msg
+        $('.msg').on('click', ".delete-msg", function (e) {
+            e.preventDefault();
+            var ask = $(this).data('confirm');
+            var url = $(this).data('url');
+            var $item = $(this).closest('.msg');
+            var $error = $item.find('.error-message');
+            if(confirm(ask)) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    success: function(data) {
+                       //console.log('success', data);
+                      $item.remove();
+                    }
+                }).fail(function(data) {
+                  var error = JSON.parse(data.responseText);
+                   //console.log('error', data, error)
+                  $error.removeClass('hidden').html(error.error);
+                });
+            }
+        });
+
 
         // Send comments
         $(document).on('click', '.ajax-comments .send-comment', function (e) {
@@ -364,6 +387,16 @@ $this->section('content');
                 $error.removeClass('hidden').html(error.error);
               });
         });
+
+        $('.slider-matchers').slick({
+        dots: true,
+        infinite: true,
+        speed: 1000,
+        fade: true,
+        arrows: false,
+        cssEase: 'linear'
+    });
+
 
 
 

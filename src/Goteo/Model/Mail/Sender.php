@@ -345,12 +345,14 @@ class Sender extends \Goteo\Core\Model
                 WHERE mail = :mail
                 LIMIT 1
                 ";
+            // die(\sqldbg($sql, $values));
 
             $query = static::query($sql, $values);
-            return $query->fetchObject(__CLASS__);
+            $mailing = $query->fetchObject(__CLASS__);
 
+            return $mailing;
         } catch(\PDOException $e) {
-            throw new ModelNotFoundException('Not found sending [' . $id . ']' . $e->getMessage());
+            throw new ModelException('SQL error while getting sender [' . $id . ']' . $e->getMessage());
         }
         return $mailing;
     }
@@ -397,6 +399,16 @@ class Sender extends \Goteo\Core\Model
     {
         $sql = 'INSERT INTO `mailer_send` (`mailing`, `user`, `name`, `email`) ' .$sql;
         if(static::query($sql)) {
+            return true;
+        }
+        throw new ModelException('Inserting SQL [' . $sql .'] has failed!');
+    }
+
+    static public function addSubscribersFromSQLValues($sql, $values)
+    {
+        $sql = 'INSERT INTO `mailer_send` (`mailing`, `user`, `name`, `email`) ' .$sql;
+        // die(\sqldbg($sql, $values));
+        if(static::query($sql, $values)) {
             return true;
         }
         throw new ModelException('Inserting SQL [' . $sql .'] has failed!');

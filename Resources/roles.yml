@@ -18,6 +18,11 @@ vip:
         - recommend-projects # personal list of recommended projects
     level: 10
 
+tester:
+    extends: user
+    perms:
+        - receive-test-communications
+    level: 10
 
 translator:
     extends: user # inherits permissions from role "user"
@@ -33,6 +38,13 @@ caller:
         - edit-call # can edit his own calls
         - remove-call # can remove his own calls
     level: 30
+
+matcher:
+    extends: user
+    perms:
+        - create-matcher # create own matcher, if meet the requeriment
+        - edit-matcher  # edit own matcher
+        - remove-matcher # remove own matcher
 
 checker:
     extends: user
@@ -84,6 +96,7 @@ consultant:
         - admin-module-stories # create/edit/delete non-project posts
         - admin-module-stats # Can access to stats
         - admin-module-promote # Can access to promote admin module
+        - admin-module-workshops # Can access to workshops admin module
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 60
 
@@ -100,6 +113,10 @@ admin:
         - rebase-users # Edit sensitive data in users (id, email, password) without confirmation (for users below admin unless is superadmin)
         - impersonate-users # Impersonate any user with roles below admin if user is admin (unless user is superadmin)
         - admin-module-categories # Can access to module CategoriesAdminController
+        - receive-test-communications
+        - create-matcher # Create a matcher for a user
+        - edit-any-matcher # View any editing matcher
+        - remove-any-matcher # Remove any matcher
     level: 70
 
 superadmin:

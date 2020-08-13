@@ -195,6 +195,17 @@ class Lang {
     }
 
     /**
+     * returns the languages whose fallback language is the parameter language
+     * @param string $lang  [description]
+     * @return array       [description]
+     */
+    static public function getDependantLanguages($fallbacklang = '') {
+        return array_filter(self::$langs_available, function($lang) use($fallbacklang) {
+            return (self::getFallback($lang) == $fallbacklang);
+        });
+    } 
+
+    /**
      * set the system lang
      * @param string $lang Language ID (es, en, fr, etc.)
      */
@@ -312,6 +323,26 @@ class Lang {
             $url .= $url_lang;
         }
         return $url . $path;
+    }
+
+    static public function getUrlQuery($lang = null, Request $request = null) {
+        if(is_null($lang)) {
+            $lang = self::current();
+        }
+        $url = Lang::getLangUrl();
+        $url_lang = Config::get('url.url_lang');
+        $path = '';
+        if($request) {
+            $get = $request->query->all();
+            if(isset($get['lang'])) unset($get['lang']);
+            if(!$url_lang) {
+                $get['lang'] = $lang;
+            }
+            if ($get) {
+                $path = '?' . http_build_query($get);
+            }
+        }
+        return $path;
     }
 
     static public function setFromGlobals(Request $request = null) {

@@ -136,3 +136,7 @@ oauth:
 # google: UA-0000000-01
 analytics:
     google:
+
+map:
+    open_street_maps:
+        tile_layer: https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png

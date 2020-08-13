@@ -35,6 +35,7 @@ use Goteo\Model\User;
 use Goteo\Payment\Payment;
 use Goteo\Payment\PaymentException;
 use Goteo\Util\Monolog\Processor\WebProcessor;
+use Goteo\Model\Project\Reward;
 
 class InvestController extends \Goteo\Core\Controller {
 
@@ -242,7 +243,10 @@ class InvestController extends \Goteo\Core\Controller {
         if($reward instanceOf Response) return $reward;
 
         // Aqui cambiar por escoger recompensa
-        return $this->viewResponse('invest/select_reward', ['step' => 1]);
+
+        $rewards_mosaic=Project::showRewardsMosaic($project_id);
+        $view=  $rewards_mosaic ? 'select_reward_mosaic' : 'select_reward';
+        return $this->viewResponse('invest/'.$view, ['step' => 1]);
 
     }
 
@@ -588,6 +592,7 @@ class InvestController extends \Goteo\Core\Controller {
         $reward = $this->validate($project_id, null, $_dummy, $invest);
 
         if($reward instanceOf Response) return $reward;
+        $reward = Reward::get($reward->id, Lang::current());
 
         if(!in_array($invest->status, [Invest::STATUS_CHARGED, Invest::STATUS_PAID])) {
             Message::error(Text::get('project-invest-fail'));
@@ -614,6 +619,9 @@ class InvestController extends \Goteo\Core\Controller {
                         $errors[] = $part;
                     }
                 }
+                $invest->extra_info = $invest_address['extra_info'];
+                $invest->save();
+                
                 if($ok) {
                     if($invest->setAddress($invest_address)) {
                         // Event invest failed
@@ -624,8 +632,9 @@ class InvestController extends \Goteo\Core\Controller {
             Message::error(Text::get('invest-address-fail'));
 
         }
+
         // show form
-        return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3]);
+        return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3, 'reward' => $reward]);
 
     }
 
@@ -677,7 +686,7 @@ class InvestController extends \Goteo\Core\Controller {
 
         $share_url = $URL . '/project/'.$project_id;
         $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
-        $twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': ' . $share_url);
+        $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($share_title . ': ' . $share_url);
 
         if($reward instanceOf Response) return $reward;
 

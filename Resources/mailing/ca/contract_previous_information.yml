@@ -1,0 +1,44 @@
+group: contract
+name: 'Project story available to fill'
+purpose: 'Mail template to be sent to a project owner in order to giving information about the contract documentation, 15 days before the finish'
+type: 'md'
+title: 'Què necessito per completar el meu contracte amb Goteo?'
+text: >
+    Hola %USERNAME%,
+
+
+    Si la teva campanya aconsegueix superar la primera ronda amb èxit (potser ja ho has aconseguit, felicitats!), és important que comencis a preparar els documents necessaris perquè puguem transferir-te els fons recaptats.
+
+
+    A més, d'aquí a 15 dies estarà habilitat el contracte perquè puguis començar a omplir-lo amb les dades requerides, i com que no volem embolicar-te després amb paperassa!, a continuació t'indiquem la documentació que necessitaràs. Tota la documentació requerida ens l'has d'enviar en versió digital, ja que es puja a la plataforma, i no ens hauràs d'enviar cap còpia física.
+ 
+
+    T'agraïm molt si la vas recopilant per evitar futures demores en els pagaments :) 
+
+
+    **Persones físiques:**
+
+
+
+      *   **Còpia digital del DNI / NIE o passaport** de la persona que signa (PDF)
+      *   **Certificat de titularitat del compte corrent** (PDF), emès per l'entitat financera en la qual es rebran els fons recaptats. En cas que el banc es trobi fora d'Espanya, a més haurà d'aparèixer el codi IBAN (si és un banc Internacional Europeu) i un codi SWIFT si és un Banc no Europeu.
+
+
+    **Entitats jurídiques:**
+
+
+
+      *   **Còpia digital del DNI / NIE o passaport** de la persona que signa (PDF)
+      *   **Certificat de titularitat del compte corrent** (PDF), ** emès per l'entitat financera en la qual es rebran els fons recaptats. En cas que el banc es trobi fora d'Espanya, a més haurà d'aparèixer el codi IBAN (si és un banc Internacional Europeu) i un codi SWIFT si és un Banc no Europeu.
+      *   **Còpia digital del CIF** de la vostra entitat (PDF). En cas que no estigui registrada a Espanya, còpia digital del registre de l'organització en l'entitat oficial corresponent. 
+      *   **Còpia digital del document acreditatiu d'apoderament** (estatutos, u/o escrituras, o poderes donde se acredita la representación de la persona que firma) (PDF).
+
+    
+    Si tens qualsevol consulta, no dubtis a escriure al teu assessor/a o a gestion@goteo.org.
+
+    
+    Molta sort en l'esprint final!
+    
+
+    Salutacions,
+

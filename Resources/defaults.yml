@@ -220,7 +220,10 @@ meta:
 fee: 4
 
 # VAT to apply to the commission fee
-vat: 10.5 # In Spain VAT is 21% but as a foundation and other considerations only applies at 50%
+vat: 21 # In Spain VAT is 21% but as a foundation and other considerations only applies at 50%
+
+# Base VAT
+tax-base-percentage: 50
 
 # Filesystem used by goteo
 filesystem:
@@ -368,6 +371,12 @@ stories:
     types:
         pitcher: stories-type-pitcher
         matcher: stories-type-matcher
+
+workshop:
+    event_types:
+        fundlab: workshop-type-fundlab
+        fundlab-esil: workshop-type-fundlab-esil
+        crowdcoop: workshop-type-crowdcoop
 
 # Donate pages (intended for the Goteo Foundation)
 donate:

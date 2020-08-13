@@ -90,4 +90,25 @@ $api->add('api-chart-totals-projects', new Route(
         )
 ));
 
+// MATCHER
+
+// Total donation over available money
+
+$api->add('api-chart-matcher-amount', new Route(
+    '/matcher/{mid}/charts/amount',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::statsMatcherAction')
+));
+
+$api->add('api-chart-matcher-raised', new Route(
+    '/matcher/{mid}/charts/raised',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::statsMatcherAction',
+    'type' => 'raised')
+));
+
+$api->add('api-chart-matcher-projects', new Route(
+    '/matcher/{mid}/charts/projects',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::statsMatcherAction',
+    'type' => 'projects')
+));
+
 return $api;

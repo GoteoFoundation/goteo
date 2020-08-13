@@ -22,6 +22,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Worth;
 use Goteo\Model\Message as SupportMessage;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Account;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Invest;
 use Goteo\Model\Project\Favourite;
@@ -36,6 +37,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Goteo\Controller\Dashboard\ProjectDashboardController;
+use Spipu\Html2Pdf\Html2Pdf;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
 
 
 class ProjectController extends \Goteo\Core\Controller {
@@ -119,6 +122,15 @@ class ProjectController extends \Goteo\Core\Controller {
             $conf->publishing_estimation = $request->request->get('publishing_date');
             $conf->save();
 
+
+            // Save default fee
+            $accounts = new Account();
+            $accounts->project = $project->id;
+            $accounts->allowpp = false;
+            $accounts->fee = Config::get('fee');
+            $accounts->save();
+
+
             // CREATED EVENT
             $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();
             if($response instanceOf Response) return $response;
@@ -162,7 +174,7 @@ class ProjectController extends \Goteo\Core\Controller {
         // mensaje cuando, sin estar en campaña, tiene fecha de publicación
         if (!$project->isApproved()) {
             if (!empty($project->published)) {
-                if ($project->published > date('Y-m-d')) {
+                if ($project->published >= date('Y-m-d')) {
                     // si la fecha es en el futuro, es que se publicará
                     Message::info(Text::get('project-willpublish', date('d/m/Y', strtotime($project->published))));
                 } else {
@@ -200,6 +212,8 @@ class ProjectController extends \Goteo\Core\Controller {
                 'related_projects' => $related_projects,
                 'widget_code' => $widget_code
             );
+
+            $viewData['matchers'] = $project->getMatchers('active');
 
             // recompensas
             $viewData['individual_rewards'] = [];
@@ -309,7 +323,7 @@ class ProjectController extends \Goteo\Core\Controller {
                 $viewData['investors_limit'] = $limit;
 
                 //Colaborations
-                $viewData['messages'] = SupportMessage::getAll($project->id);
+                $viewData['messages'] = SupportMessage::getAll($project->id, Lang::current());
 
                 if (empty($user)) {
                     Message::info(Text::html('user-login-required'));
@@ -393,5 +407,23 @@ class ProjectController extends \Goteo\Core\Controller {
         }
 
         return $this->jsonResponse(['result' => true]);
+    }
+
+    public function posterAction($pid, Request $request) {
+
+        $project=Project::get($pid, Lang::current(false));
+        try {
+            $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', array(5,0,5,8));
+            $html2pdf->setTestTdInOnePage(false);
+            $html2pdf->writeHTML(View::render('poster/project.php', ["project" => $project]));
+            $html2pdf->pdf->SetTitle('Poster');
+            $pdf = $html2pdf->output();
+    
+            $response = new Response($pdf);
+            $response->headers->set('Content-Type', 'application/pdf');
+            return $response;
+        } catch(Html2PdfException $e) {
+            return new RedirectResponse('/project/' . $project->id );
+        }
     }
 }

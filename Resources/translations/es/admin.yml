@@ -50,6 +50,26 @@ admin-contents: 'Textos y Traducciones'
 admin-empty-list: 'No se han encontrado registros'
 admin-activity: Actividad
 admin-communications: Comunicaciones
+admin-communications-add: Crear nueva comunicación
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' para el id de acceso del destinatario'
+admin-communications-useremail-content: ' para el email del destinatario'
+admin-communications-username-content: ' para el nombre del destinatario'
+admin-communications-siteurl-content: ' para la url de esta plataforma (%SITEURL%)'
+admin-communications-subscribeurl-content: ' link directo de suscripción a la newsletter del usuario'
+admin-communications-unsubscribeurl-content: ' link directo de desuscripción a la newsletter del usuario'
+admin-communications-poolamount-content: ' cantidad de dinero disponible en el mondero del usuario'
+admin-communications-send: 'Enviar comunicación'
+admin-communications-cancel: 'Cancelar comunicación'
+admin-communications-newsletter: 'Boletín'
+admin-communications-communication: 'Comunicación general'
+admin-communications-id: 'ID de la Comunicación'
 admin-home: Portada
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicaciones'
@@ -76,7 +96,10 @@ admin-projects: Proyectos
 admin-consultants: 'Asesores'
 admin-invests: Aportes
 admin-filters: 'Filtros'
+admin-filters-edit: 'Editar filtro'
+admin-filters-create: 'Crear filtro'
 admin-remove-filters: 'Quitar filtros'
+admin-remove-filters-forbidden: 'Los filtros que se han utilizado no se pueden eliminar.'
 admin-remove-entry: 'Borrar entrada'
 admin-remove-entry-confirm: '¿Seguro que quieres borrar esta entrada? Este acción no se puede deshacer!'
 admin-remove-entry-forbidden: 'No se pueden borrar entradas de blog publicadas. Despublica la entrada primero.'
@@ -109,6 +132,9 @@ admin-blog-not-public: 'Este post no es público todavía'
 admin-stories: Historias de usuarios en Goteo
 admin-stories-add: Crear una nueva historia
 admin-stories-edit: Editando la historia %s
+
+admin-channelstory-add: Añadir historia al canal
+admin-channelstory-submit: Guardar historia
 
 admin-categories: 'Categorías y ámbitos'
 admin-categories-if-empty-then-asset: 'Si se deja vacío se usará el icono por defecto: %s'
@@ -172,6 +198,7 @@ admin-role-change-forbidden: 'No tienes permiso para gestionar el rol %ROLE% en 
 
 admin-users-global-search: 'Id, nombre, email o proyecto'
 admin-blog-global-search: 'Id, título, subtítulo o texto'
+admin-communication-global-search: 'Asunto'
 admin-blog-stories-search: 'Id, título, texto o proyecto'
 admin-no-project: 'Sin proyecto'
 admin-title-id: Id
@@ -185,6 +212,7 @@ admin-title-header-image: Imagen de cabecera
 admin-title-password: Contraseña
 admin-title-avatar: Avatar
 admin-title-roles: Roles
+admin-title-role: Rol
 admin-title-amount: Invertido
 admin-title-icon: Icono
 admin-title-info: Info
@@ -192,22 +220,46 @@ admin-title-image: Imagen
 admin-title-landing_match: Landing matchfunding
 admin-title-title: Título
 admin-title-subtitle: Subtítulo
+admin-title-subject: Asunto
+admin-title-description: Descripción
 admin-title-section: Sección
 admin-title-text: Texto
 admin-title-slug: Slug
 admin-title-publish: Publicado
+admin-title-lang: Idioma
 admin-title-langs: Traducciones
 admin-title-actions: Acciones
 admin-title-tags: Tags
 admin-title-deleted: Eliminado
 admin-title-sphere: Ámbito
 admin-title-social_commitment: Compromiso social
-admin-title-sdgs: 'Objetivos de Desarrollo Global'
+admin-title-sdgs: 'Objetivos de Desarrollo Sostenible'
 admin-title-footprints: 'Huellas'
 admin-title-categories: 'Categorías'
 admin-title-social_commitments: 'Compromisos sociales'
 admin-title-order: Ordenar
 admin-title-status: Estado
+admin-title-city: Ciudad
+admin-title-date: Fecha
+admin-title-blockquote: 'Cita personalizada'
+admin-title-type: 'Tipo'
+admin-title-date-in: Fecha inicio
+admin-title-date-out: Fecha fin
+admin-title-venue: Lugar (Visible en call to action)
+admin-title-venue-address: Dirección
+admin-title-how-to-get: ¿Cómo llegar?
+admin-title-iframe: 'Iframe localización'
+admin-title-schedule-file: 'Url programa'
+admin-title-call: 'Convocatoria de Matchfunding'
+admin-title-url-inscription: Enlace a inscripción
+admin-title-filter: Filtro
+admin-title-template: Plantilla
+admin-title-receivers: Destinatarios
+admin-title-sent: Enviados
+admin-title-failed: No enviados
+admin-title-pending: Pendientes
+admin-title-success: Exitosos
+admin-title-percent: Porcentaje
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
@@ -436,3 +488,69 @@ admin-stats-projects-call-desc: 'Proyectos que pertenecen a la convocatoria'
 admin-stats-projects-matcher-desc: 'Proyectos que están activos en el matcher'
 admin-stats-projects-consultant-desc: 'Proyectos que tienen asignados este asesor'
 admin-stats-projects-project-desc: 'Aportes al proyecto'
+
+admin-filter-add: 'Añadir filtro'
+admin-filter-last-week: 'Últimos 7 días'
+admin-filter-last-month: 'Últimos 30 días'
+admin-filter-last-year: 'Últimos 365 días'
+admin-filter-from-new-year: 'Desde el 1 de Enero'
+admin-filter-previous-year: 'El año pasado'
+admin-filter-two-years-ago: 'Hace dos años'
+admin-filter-typeofuser: 'Tipo de usuario'
+admin-filter-typeofdonor: 'Tipo de donante'
+admin-filter-user: 'Usuario'
+admin-filter-donor: 'Donante'
+admin-filter-no-donor: 'Donante inactivo'
+admin-filter-promoter: 'Promotor'
+admin-filter-matcher: 'Matcher'
+admin-filter-test: 'Test'
+
+admin-filter-type-unique: 'Único'
+admin-filter-type-multidonor: 'Multidonante'
+admin-filter-type-foundation-donor: 'Donante a la fundación'
+admin-filter-type-all: 'Todos'
+
+admin-filter-predefined-date: 'Fecha predeterminada'
+admin-filter-predefined-date-choose: 'Puedes seleccionar una fecha predeterminada'
+admin-filter-forced: 'Forzar filtro'
+admin-filter-forced-help: 'Si seleccionas esta opción se aplicarán los filtros independientemente de lo que haya escodigo el usuario como preferencia para el envío de información por parte de la plataforma.'
+admin-filter-project-status: Estado del proyecto
+admin-filter-invest-status: Estado de la donación
+admin-filter-project-location: Ubicación del proyecto
+admin-filter-donor-location: Ubicación del donante
+
+admin-mail-body: 'Cuerpo del mensaje'
+
+admin-stats-donations: 'Donaciones'
+admin-stats-donations-method: 'Donaciones según método de pago'
+admin-stats-donations-method-desc: 'Donaciones incluyen el dinero que el usuario da voluntariamente a la fundación cuando aporta a un proyecto, donaciones directas o bien cuando la cantidad en el monedero expira.'
+admin-stats-donations-tip: 'Donaciones durante aportes a proyectos (Propinas o "tips")'
+admin-stats-donations-direct: 'Donaciones directas (incluye monederos expirados)'
+admin-stats-donations-generosity: 'Porcentajes de generosidad'
+admin-stats-donations-generosity-desc: 'Cantidades de usuarios con donaciones versus cantidades totales. Sólo se tienen en cuenta los proyectos con donaciones.'
+admin-stats-donations-expired: 'Donaciones directas debido a monederos expirados'
+admin-stats-donations-refunded: 'Donaciones que se han devuelto debido a proyectos fallidos'
+
+admin-donations: Donaciones
+admin-donations-tip: Propinas
+admin-donations-tip-invests: Aportes con propinas
+admin-donations-tip-users: Usuarios con propina
+admin-donations-direct: Donaciones directas
+admin-donations-expired: Donaciones expiradas
+admin-donations-refunded: Donaciones devueltas
+admin-donations-amount-percent: '% dinero donado'
+admin-donations-users-percent: '% usuarios donantes'
+admin-donations-tip-percent: '% dinero en propinas'
+admin-donations-direct-percent: '% dinero directo'
+
+admin-workshop: Talleres Goteo
+admin-workshop-add: Crear un nuevo taller
+admin-workshop-edit: Editando el taller %s
+admin-workshop-edit-success: La entrada de taller se ha editado correctamente
+admin-online: Online
+
+mandatory-filter-name: Falta nombre
+mandatory-filter-description: Falta descripción
+mandatory-filter-role: Falta un rol
+
+admin-node-iframe: Iframe

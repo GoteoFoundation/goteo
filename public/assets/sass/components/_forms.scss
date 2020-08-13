@@ -221,6 +221,14 @@
     margin-left: 10px;
     margin-right: 10px;
   }
+  .pre-help{
+    margin-bottom: 30px;
+    margin-top: 9px;
+    font-size: 13px;
+    img.clickable{
+      cursor: pointer;
+    }
+  }
   .help-text {
     display: block;
     margin: 10px 5px 0 5px;

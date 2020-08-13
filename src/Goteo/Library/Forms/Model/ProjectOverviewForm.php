@@ -14,6 +14,7 @@ namespace Goteo\Library\Forms\Model;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Form\FormInterface;
 use Goteo\Application\Lang;
 use Goteo\Model\Project;
 use Goteo\Model\SocialCommitment;
@@ -21,6 +22,8 @@ use Goteo\Library\Text;
 use Goteo\Application\Currency;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Sdg;
+
 
 class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
 
@@ -49,9 +52,30 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
     }
 
     public function createForm() {
+        $model = $this->getModel();
         $currencies = Currency::listAll('name', false);
         $langs = Lang::listAll('name', false);
+
+        $sdgs = [];
+        foreach(Sdg::getList([],0,100) as $s) {
+            $sdgs['<img style="display: block; margin: 0 auto;" src="'.$s->getIcon()->getLink().'" class="icon icon-5x"><span style="text-align: center; display: block;">'.$s->name.'</span>'] = $s->id;
+        }
+
         $project = $this->getModel();
+        $social_commitment=$project->getSocialCommitment();
+
+        if($social_commitment)
+        {
+            foreach($social_commitment->getSdgs() as $s) {
+                $sdgs_suggestion.='<img data-toggle="tooltip" title="'.$s->name .'" data-placement="bottom" data-value="'.$s->id.'" display="block;" src="'.$s->getIcon()->getLink().'" class="icon icon-6x clickable" style="margin-left: 5px;"> ';
+            }
+
+            $sdg_pre_help ='<span id="sdgs_suggestion_label" style="font-size: 14px;">'.Text::get('tooltip-project-sdg-suggestion'). '</span><span id="sdgs_suggestion" class="center-block">'.$sdgs_suggestion.'</span><hr style="margin-top: 30px; margin-bottom: 30px; border: 2px solid #FFF;">';
+        }
+
+        else
+            $sdg_pre_help ='<span id="sdgs_suggestion_label" style="display: none; font-size: 14px;">'.Text::get('tooltip-project-sdg-suggestion').'</span><span id="sdgs_suggestion" class="center-block"></span><hr style="margin-top: 30px; margin-bottom: 30px; border: 2px solid #FFF;">';
+       
         $builder = $this->getBuilder();
         $builder
             ->add('name', 'text', [
@@ -204,6 +228,24 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'expanded' => true,
                 'attr' => ['help' => Text::get('tooltip-project-social-category')]
             ])
+            
+            ->add('sdgs', 'choice', [
+                'label' => 'admin-title-sdgs',
+                'data' => array_column($model->getSdgs(), 'id'),
+                'expanded' => true,
+                'multiple' => true,
+                'required' => false,
+                'choices' => $sdgs,
+                'choices_as_values' => true,
+                'choices_label_escape' => false,
+                'wrap_class' => 'col-md-2 col-sm-4 col-xs-4 col-xxs-6',
+                'attr' => [
+                    'pre-help' => $sdg_pre_help,
+                    'help' => Text::get('tooltip-project-sdg'),
+                    'label_class'=> 'center-block'
+                ]
+            ])
+
             ->add('social_commitment_description', 'textarea', [
                 'disabled' => $this->getReadonly(),
                 'label' => 'overview-field-social-description',
@@ -212,6 +254,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'attr' => ['help' => Text::get('tooltip-project-social-description'), 'rows' => 8]
             ])
             ;
+
         return $this;
     }
 

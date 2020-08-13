@@ -3,7 +3,7 @@
 $this->layout('admin/stats/layout');
 
 $filters = $this->a('filters');
-$parts = ['raised', 'active', 'refunded', 'fees', 'commissions', 'matchfunding'];
+$parts = ['raised', 'active', 'refunded', 'donations', 'fees', 'commissions', 'matchfunding'];
 
 $interval_active = $this->active ?: 'week';
 $method_active = $this->methods ? key($this->methods) : 'global';

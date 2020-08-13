@@ -50,6 +50,19 @@ admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
 admin-activity: Activity
 admin-communications: Comunications
+admin-communications-add: Create new communication 
+admin-communications-userid-content: ' for the id of the recipient'
+admin-communications-useremail-content: ' for the email of the recipient'
+admin-communications-username-content: ' for the name of the recipient'
+admin-communications-siteurl-content: ' for the url of this platform (%SITEURL%)'
+admin-communications-subscribeurl-content: ' subscribe link to the newsletter of the user'
+admin-communications-unsubscribeurl-content: '  unsubscribe link to the newsletter of the user'
+admin-communications-poolamount-content: ' quantity of money disposable in the wallet'
+admin-communications-send: 'Send communication'
+admin-communications-cancel: 'Cancel communication'
+admin-communications-newsletter: 'Newsletter'
+admin-communications-communication: 'General communication'
+admin-communications-id: 'Communication''s ID'
 admin-home: Dashboard
 admin-items: entries
 admin-mailing-back-to-list: 'Back to messages'
@@ -76,7 +89,10 @@ admin-projects: Projects
 admin-consultants: 'Consultants'
 admin-invests: Contributions
 admin-filters: 'Filters'
+admin-filters-edit: 'Edit filter'
+admin-filters-create: 'Create filter'
 admin-remove-filters: 'Remove filters'
+admin-remove-filters-forbidden: 'Used filters cannot be removed.'
 admin-remove-entry: 'Remove entry'
 admin-remove-entry-confirm: 'Are you sure to remove this entry? This action cannot be undone!'
 admin-remove-entry-forbidden: 'Published entries cannot be removed. Unpublish it first.'
@@ -105,6 +121,7 @@ admin-blog-edit: Editing post %s
 admin-blog-slug-exists: 'The slug [%s] is being used by another post!'
 admin-blog-slug-chars: 'The slug [%s] contains invalid characters!'
 admin-blog-not-public: 'This post is not public yet!'
+admin-storys: User histories in Goteo
 admin-stories: User histories in Goteo
 admin-stories-add: Create new user history
 admin-stories-edit: Editing user history %s
@@ -120,7 +137,7 @@ admin-sdg-add: Create a new ODS
 admin-sdg-edit: Editing ODS %s
 admin-footprint-add: Create a new footprint
 admin-footprint-edit: Editing footprint %s
-admin-calls: Announcements
+admin-calls: Calls
 admin-matchers: Matchers
 admin-channels: Channels
 admin-yes: "Yes"
@@ -171,6 +188,7 @@ admin-view-user-mailing: 'All mailing'
 admin-role-change-forbidden: 'You don''t have permission to manage the role %ROLE% as this user'
 admin-users-global-search: 'Id, name, email or project'
 admin-blog-global-search: 'Id, title, subtitle or text'
+admin-communication-global-search: 'Subject'
 admin-blog-stories-search: 'ID, title, text, or project'
 admin-no-project: 'No project'
 admin-title-id: Id
@@ -184,15 +202,19 @@ admin-title-header-image: Header image
 admin-title-password: Password
 admin-title-avatar: Avatar
 admin-title-roles: Roles
+admin-title-role: Role
 admin-title-amount: Invested
 admin-title-icon: Icon
 admin-title-info: Info
 admin-title-image: Image
 admin-title-title: Title
 admin-title-subtitle: Subtitle
+admin-title-subject: Subject
+admin-title-description: Description
 admin-title-section: Section
 admin-title-text: Text
 admin-title-publish: Published
+admin-title-lang: Language
 admin-title-langs: Translations
 admin-title-actions: Actions
 admin-title-deleted: Deleted
@@ -204,6 +226,16 @@ admin-title-categories: 'Categories'
 admin-title-social_commitments: 'Social commitments'
 admin-title-order: Sort
 admin-title-status: Status
+admin-title-users: Users
+admin-title-date: Date
+admin-title-filter: Filter
+admin-title-template: Template
+admin-title-receivers: Receivers
+admin-title-sent: Sent
+admin-title-failed: Failed
+admin-title-pending: Pending
+admin-title-success: Successful
+admin-title-percent: Percentage
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'
@@ -225,3 +257,36 @@ admin-all-call-devices: 'Device used on matchfunding pages'
 admin-aggregate-timeline: 'Timeline'
 admin-stats-refunded: 'Returns'
 admin-stats-matchfunding-part: 'Projects with Matchfunding'
+admin-filter-add: 'Create filter'
+admin-filter-last-week: 'Last 7 days'
+admin-filter-last-month: 'Last 30 days'
+admin-filter-last-year: 'Last 365 days'
+admin-filter-from-new-year: 'From 1st of January'
+admin-filter-previous-year: 'Previous year'
+admin-filter-two-years-ago: 'Two years ago'
+admin-filter-typeofuser: 'Type of user'
+admin-filter-typeofdonor: 'Type of donor'
+admin-filter-user: 'User'
+admin-filter-donor: 'Donor'
+admin-filter-no-donor: 'Inactive donor'
+admin-filter-promoter: 'Promoter'
+admin-filter-matcher: 'Matcher'
+admin-filter-test: 'Test'
+admin-filter-type-unique: 'Unique'
+admin-filter-type-multidonor: 'Multidonor'
+admin-filter-type-foundation-donor: 'Donor to the foundation'
+admin-filter-type-all: 'All'
+admin-filter-predefined-date: 'Predefined dates'
+admin-filter-predefined-date-choose: 'You can choose a predefined date'
+admin-filter-forced: 'Force filter'
+admin-filter-forced-help: 'If you select this option, the filters will be applied regardless of what the user has chosen as a preference for sending information by the platform.'
+admin-filter-project-status: Project status
+admin-filter-invest-status: Invest status
+admin-filter-project-location: "Project's location"
+admin-filter-donor-location: "Donor's location"
+admin-mail-body: 'Body of the message'
+mandatory-filter-name: Missing name
+mandatory-filter-description: Missing description
+mandatory-filter-role: Missing role
+
+admin-node-iframe: Iframe

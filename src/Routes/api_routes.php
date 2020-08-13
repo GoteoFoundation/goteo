@@ -117,6 +117,12 @@ $api->add('api-blog-post-property', new Route(
         )
 ));
 
+$api->add('api-stories', new Route(
+    '/stories',
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesAction',
+        )
+));
+
 // Stories property individual updates
 $api->add('api-stories-property', new Route(
     '/stories/{id}/property/{prop}',
@@ -138,6 +144,14 @@ $api->add('api-stories-images-upload', new Route(
     '', // host
     array(), // schemes
     array('POST') // methods
+));
+
+// Node Stories
+// Stories sort up/down arbitrarily (use the PUT method to sort)
+$api->add('api-channelstory-sort', new Route(
+    '/channelstories/{node_id}/{stories_id}sort',
+    array('_controller' => 'Goteo\Controller\Api\NodeStoriesApiController::nodestoriesSortAction'
+        )
 ));
 
 //Promote
@@ -253,6 +267,23 @@ $api->add('api-projects-invests-csv', new Route(
         )
 ));
 
+// Projects list
+$api->add('api-ods-suggestion', new Route(
+    '/social-commitment/ods-suggestion',
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::odsSuggestionAction',
+        )
+));
+
+$api->add('api-invest-msg-delete', new Route(
+    '/projects/invest-msg/{mid}',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectDeleteSupportMsgAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('DELETE') // methods
+));
+
 // Calls list
 $api->add('api-calls', new Route(
     '/calls',
@@ -266,7 +297,6 @@ $api->add('api-channels', new Route(
     array('_controller' => 'Goteo\Controller\Api\ChannelsApiController::channelsAction',
         )
 ));
-
 
 // Licenses list
 $api->add('api-licenses', new Route(
@@ -334,6 +364,33 @@ $api->add('api-comments-delete', new Route(
     array('DELETE') // methods
 ));
 
+// Communication 
+
+// Post images upload (POST method only)
+$api->add('api-communication-images-upload', new Route(
+    '/communication/images',
+    array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+// Get success of a communication
+$api->add('api-communication-success', new Route(
+    '/communication/{id}/success',
+    array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::successAction')
+));
+
+
+// Get update of a communication
+$api->add('api-communication-mail-success', new Route(
+    '/communication/{id}/mail/{mail}',
+    array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::mailStatusAction')
+));
+
+
 // Messages list
 $api->add('api-messages-project', new Route(
     '/projects/{pid}/messages',
@@ -375,10 +432,45 @@ $api->add('api-matcher-list', new Route(
     array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matchersAction')
 ));
 
+// Matcher images upload (POST method only)
+$api->add('api-matchers-images-upload', new Route(
+    '/matchers/images',
+    array('_controller' => 'Goteo\Controller\Api\MatchersApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 // Matcher detail
 $api->add('api-matcher-item', new Route(
     '/matchers/{mid}',
     array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matcherAction')
 ));
+
+// Workshops images upload (POST method only)
+$api->add('api-workshops-images-upload', new Route(
+    '/workshops/images',
+    array('_controller' => 'Goteo\Controller\Api\WorkshopsApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+// User images upload (POST method only)
+$api->add('api-questionnaire-documents-upload', new Route(
+    '/questionnaire/documents',
+    array('_controller' => 'Goteo\Controller\Api\QuestionnaireApiController::questionnaireUploadDocumentsAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+
 
 return $api;

@@ -1,6 +1,5 @@
 <?php
 
-$promote = $this->promote;
 $project = $this->project;
 
 
@@ -8,36 +7,112 @@ $url = SITE_URL . '/project/' . $project->id;
 
 ?>
 
-<div style="width: 600px; background-color: #ffffff;padding: 20px 10px 20px 20px;margin-top: 20px;">
+<?php
+// Only first
+if($this->key==0):
 
-    <div>
-        <a style="font-size:14px;font-weight:bold;text-transform:uppercase;text-decoration:none;color:#58595b;" href="<?= $url ?>"><?= $this->ee($project->name) ?></a>
-    </div>
-    <div style="vertical-align:top;padding-bottom:5px;padding-top:5px;">
-        <a style="text-decoration:none;color: #929292;font-size:12px;" href="<?= $url ?>"><?= $this->text('regular-by').' '.$project->user->name ?></a>
-    </div>
+?>
 
-    <div style="width: 226px; padding-bottom:10px;">
-        <?php if ($project->image):
+<!-- Projects title -->
 
-            $url_imagen = $project->image->getLink(255, 130, true);
-            if (strpos($url_imagen, '//') === 0) {
-                $url_imagen = 'http://'.substr($url_imagen, 2);
-            }
-            ?>
-        <a href="<?= $url ?>"><img alt="<? $this->ee($project->name) ?>" src="<?= $url_imagen ?>" width="255" height="130" /></a>
-        <?php endif ?>
-    </div>
+<table class="section" cellpadding="0" cellspacing="0">
+    <tr>
+        <td class="column" width="100%" valign="top">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <h2 class="title-projects-section" style="margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;font-size: 21px;color: #3a3a3a;text-align: center;margin-top: 35px;margin-bottom: 20px;">
+                                <?= $this->t('home-projects-title', $this->lang) ?>
+                            </h2>                        
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
 
-    <div style="font-size: 12px;text-transform: uppercase; padding-bottom:10px; padding-top:10px; color: #38b5b1;"><?= $this->text('project-view-categories-title') ?>: <?php $sep = ''; foreach ($project->cat_names as $key=>$value) {echo $sep.htmlspecialchars($value); $sep = ', '; } ?></div>
+<?php endif; ?>
 
-    <div style="width:600px;vertical-align:top;border-right:2px solid #f1f1f1;line-height:15px;padding-right:10px;">
-        <a style="text-decoration:none;font-size:14px;color: #797979;" href="<?= $url ?>"><?= $this->text_truncate($project->description, 500) ?></a>
-    </div>
 
-    <div style="width: 25px;height: 2px;border-bottom: 1px solid #38b5b1;margin-bottom: 10px; margin-top:10px;"></div>
+<?php if($this->key%2==0): ?>
 
-    <div style="font-size: 14px;vertical-align: top;text-transform: uppercase; padding-bottom:10px;"><?= $this->text('project-view-metter-investment') ?>: <span style="font-size:14px;color:#96238F;font-weight: bold;"><?= $this->text('project-view-metter-minimum') . ' ' . \amount_format($project->mincost) ?></span>  <span style="color:#FFF;">_</span>  <span style="font-size:14px;color:#ba6fb6;font-weight: bold;"><?= $this->text('project-view-metter-optimum') . ' ' . \amount_format($project->maxcost) ?></span>
-    </div>
-    <span style="font-size: 14px;line-height: 14px; padding-top:10px; padding-bottom:10px; margin-bottom:10px;text-transform: uppercase;"><?= $this->text('project-view-metter-days') ?>: <strong style="text-transform: none;"><?= $project->days.' '. $this->text('regular-days') ?></strong></span>
-</div>
+<table class="section proyectos" cellpadding="0" cellspacing="0" style="margin-bottom: 30px;">
+
+    <tr>
+
+<?php endif; ?>
+
+        <td class="column" valign="top" style="max-width: 300px; ">
+            <table bgcolor="#FFFFFF">
+                <tbody>
+                    <tr>
+                        <td align="left" class="project-container" style="background: #FAF8F8; height: 580px; padding:0; vertical-align: top; position: relative;">
+                             <?php if ($project->image):
+
+                                $url_imagen = $project->image->getLink(500, 300, true);
+                                if (strpos($url_imagen, '//') === 0) {
+                                    $url_imagen = 'http://'.substr($url_imagen, 2);
+                                }
+                                ?>
+                            <a href="<?= $url ?>">
+                                <img alt="<?= $this->ee($project->name) ?>" src="<?= $url_imagen ?>" style="width: 100%;display: block; height: auto">
+                            </a>
+
+                            <?php endif ?>
+
+                            <a style="padding: 10px 20px 10px 20px; font-size: 22px;line-height: 1;color: #2bbbb7 !important;font-weight: 400;display: block;" href="<?= $url ?>">
+                            <span style="" class="font-weight: 500;">
+                            <?= $this->ee($project->name) ?>
+                            </span>
+                            </a>
+                            <h4 style="margin: 0;padding: 0 20px 20px 20px;line-height: 1.3;padding-bottom: 4px;font-size: 15px;font-weight: 400;">
+                                <?= $this->t('regular-by', $this->lang) .' ' ?><span style="font-weight: 400; "><?= $project->user->name ?></span>
+                            </h4>
+
+                            <?php if($project->getSocialCommitment()): ?>
+
+                            <p style="margin: 0;padding: 10px 20px 10px 20px;line-height: 1.6;"> 
+                                <span>
+                                    <img src="<?= $project->getSocialCommitment()->getIcon()->getLink(60, 60, false, true) ?>" style="max-width: 100%;display: inline-block;width: 8% !important; vertical-align: middle;">
+                                <span style="padding-bottom: 4px;font-size: 13px;color: #919193;line-height: 0.8;"><?= $project->getSocialCommitment()->name ?></span>
+                            </span></p>
+                            <?php endif; ?>
+
+                            <p style="text-align: left;margin: 0;padding: 0 20px 20px 20px;line-height: 1.6;"><?= $project->subtitle ?></p>
+                            <span class="progress-container" style="display:block; position: absolute; bottom: 13px;">
+                                <p style="padding-bottom: 0px;margin: 0;padding: 0 20px 0 20px;line-height: 1.6;">
+                                    <span style="font-size: 20px; font-weight: 500;">
+                                       <?= \amount_format($project->amount) ?> 
+                                    </span> <span style="color: #868788;"><?= $this->t('horizontal-project-reached', $this->lang) ?></span></p>
+                                <hr style="width: 55%;margin-left: 20px;border: 1px solid #c6cdcc; font-size: 7px;">
+                                <p style="margin: 0;padding: 0 20px 0 20px;line-height: 1.6;"><span style="font-size: 16px; font-weight: 500;"><?= $project->days.' '.strtolower($this->t('regular-days', $this->lang)) ?></span> <span style="color: #868788;"><?= $this->t('project-view-metter-days', $this->lang) ?></span></p>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+
+        <?php if($this->key%2==0): ?>
+
+        <td class="column" width="20" valign="top">
+            <table>
+                <tbody>
+                    <tr>
+                        <td> &nbsp; </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+
+    <?php endif; ?>
+
+<?php if($this->key%2!=0 || ($this->total-1) == $this->key): ?>
+
+    </tr>
+
+</table>
+
+<?php endif; ?>

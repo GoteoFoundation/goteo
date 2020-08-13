@@ -24,6 +24,28 @@ $channel->add('channel', new Route(
     array('_controller' => 'Goteo\Controller\ChannelController::indexAction')
 ));
 
+// AJAX search
+$channel->add('channel-discover-ajax', new Route(
+    '/{id}/discover/ajax',
+    array('_controller' => 'Goteo\Controller\ChannelController::ajaxSearchAction')
+));
+
+$channel->add('channel-discover-projects', new Route(
+    '/{id}/discover',
+    array('_controller' => 'Goteo\Controller\ChannelController::discoverProjectsAction')
+));
+
+$channel->add('channel-discover-projects-filter', new Route(
+    '/{id}/discover/{filter}',
+    array('_controller' => 'Goteo\Controller\ChannelController::discoverProjectsAction')
+));
+
+$channel->add('channel-faq', new Route(
+    '/{id}/faq/{slug}',
+    ['_controller' => 'Goteo\Controller\ChannelController::faqAction']
+));
+
+
 $channel->add('channel-list-projects', new Route(
     '/{id}/{type}/{category}',
     array('_controller' => 'Goteo\Controller\ChannelController::listProjectsAction',
@@ -31,5 +53,6 @@ $channel->add('channel-list-projects', new Route(
         'category' => null
         )
 ));
+
 
 return $channel;

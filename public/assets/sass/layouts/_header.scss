@@ -108,6 +108,17 @@
         }
     }
 
+    div.powered{
+        float: right;
+        color: white;
+        padding: 18px 10px 20px 50px;
+        border-left: 1px solid #e4e4e4;
+        img{
+        margin-left: 10px;
+        vertical-align: text-bottom;
+        }
+    }
+
     // main menus
     .top-menu {
         position: absolute;
@@ -285,6 +296,10 @@
     .navbar-always > a i.icon{
       background-color: $primary-color;
     }
+  }
+
+  &.lilac{
+    background-color: $color-lilac;
   }
 
   // Blog, admin, corporative

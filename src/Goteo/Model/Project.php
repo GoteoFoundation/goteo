@@ -23,10 +23,14 @@ use Goteo\Model\Message;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
 use Goteo\Model\Project\Account;
+use Goteo\Model\Project\Conf as ProjectConf;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Location\LocationInterface;
 
 class Project extends \Goteo\Core\Model {
+
+    use Traits\SdgRelationsTrait;
+
 
     // PROJECT STATUS IDs
     const STATUS_DRAFT       = -1; // is this really necessary?
@@ -533,6 +537,7 @@ class Project extends \Goteo\Core\Model {
                 node.url as node_url,
                 node.label as node_label,
                 node.active as node_active,
+                IFNULL(node_lang.tip_msg, node.tip_msg) as tip_msg,
                 node.owner_background as node_owner_background,
                 project_conf.*,
                 user.name as user_name,
@@ -552,6 +557,9 @@ class Project extends \Goteo\Core\Model {
                 ON project_conf.project = project.id
             LEFT JOIN node
                 ON node.id = project.node
+            LEFT JOIN node_lang
+                ON  node_lang.id = node.id
+                AND node_lang.lang = :lang
             INNER JOIN user
                 ON user.id=project.owner
             LEFT JOIN user_lang
@@ -877,6 +885,28 @@ class Project extends \Goteo\Core\Model {
     }
 
     /**
+     * get a readable description of the status of the project
+     */
+    function getStatusforMatcher() {
+        switch ($this->status) {
+            case self::STATUS_REVIEWING:
+                $text = 'form-project_status-review';
+                break;
+            case self::STATUS_IN_CAMPAIGN:
+                $text = 'form-project_status-campaing';
+                break;
+            case self::STATUS_FUNDED:
+            case self::STATUS_FULFILLED:
+                $text = 'project-view-metter-day_success';
+                break;
+            case self::STATUS_UNFUNDED: // archivado
+                $text = 'project-view-metter-day_closed';
+                break;
+        }
+        return strtolower(Text::get($text));
+    }
+
+    /**
      * Get consultants for this project
      * @return array array of user id that are consultants
      */
@@ -885,6 +915,18 @@ class Project extends \Goteo\Core\Model {
         $this->consultants = self::getConsultantsForProject($this);
         return $this->consultants;
     }
+
+    /**
+     * Get the main image of the project
+     * @return array array of user id that are consultants
+     */
+    public function getImage() {
+        if(!$this->imageInstance instanceOf Image) {
+            $this->imageInstance = new Image($this->image);
+        }
+        return $this->imageInstance;
+    }
+
 
     /**
      * Handy method to know if project can be edited (not in campaing or finished)
@@ -2359,11 +2401,12 @@ class Project extends \Goteo\Core\Model {
             $this->status = $status;
             $this->published = $date;
             // update fee in bank account if exists
-            $query = static::query("SELECT fee FROM project_account WHERE project = ?", array($this->id));
+            
+            /*$query = static::query("SELECT fee FROM project_account WHERE project = ?", array($this->id));
             $fee = $query->fetchObject();
             if($fee && $fee->fee != Config::get('fee')) {
                 static::query("UPDATE project_account SET fee=:fee WHERE project = :id", array(':fee' => Config::get('fee'), ':id' => $this->id));
-            }
+            }*/
 
             // actualizar numero de proyectos publicados del usuario
             User::updateOwned($this->owner);
@@ -2888,7 +2931,8 @@ class Project extends \Goteo\Core\Model {
         $order = 'name ASC';
 
         if($node) {
-            $where[] = 'project.node = :node';
+            // Check main node in project table and in relation table
+            $where[] = '(project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node) )';
             $values[':node'] = $node;
         }
 
@@ -3036,6 +3080,8 @@ class Project extends \Goteo\Core\Model {
             ";
 
         $values[':lang'] = $lang;
+
+        //print_r(sqldbg($sql, $values) ); die;
 
         // if($filter['type'] == 'recent') {sqldbg($sql, $values);die;}
         $projects = array();
@@ -3437,10 +3483,12 @@ class Project extends \Goteo\Core\Model {
             }
         }
         if (!empty($filters['node'])) {
-            $sqlFilter .= " AND project.node = :node";
+            // Check main node in project table and in relation table
+            $sqlFilter .= ' AND (project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node) )';
             $values[':node'] = $filters['node'];
         } elseif (!empty($node) && !Config::isMasterNode($node)) {
-            $sqlFilter .= " AND project.node = :node";
+            // Check main node in project table and in relation table
+            $sqlFilter .= ' AND (project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node) )';
             $values[':node'] = $node;
         }
         if (!empty($filters['success'])) {
@@ -3791,6 +3839,16 @@ class Project extends \Goteo\Core\Model {
     }
 
     /*
+     * Mode mosaic to show the rewards
+     * @return: boolean
+     */
+    public static function showRewardsMosaic($id) {
+        return ProjectConf::showRewardsMosaic($id);
+    }
+
+
+
+    /*
      * Para saber si un proyecto tiene traducción en cierto idioma
      * @return: boolean
      */
@@ -3918,6 +3976,9 @@ class Project extends \Goteo\Core\Model {
         }
 
         $num_published_projects=self::getList($filters_published, null, 0, 0, true);
+
+        if ($num_published_projects == 0)
+            return 0;
 
         $num_successful_projects=self::getList($filters_succesful, null, 0, 0, true);
 

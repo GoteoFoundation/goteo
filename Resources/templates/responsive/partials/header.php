@@ -1,9 +1,11 @@
-<nav class="navbar navbar-default top-navbar <?= $this->navClass ? $this->navClass  : '' ?>">
+<nav class="navbar navbar-default top-navbar <?= $this->navClass ? $this->navClass  : '' ?>  <?= ($this->premium)? "premium" : "" ?>" <?php if($this->background) echo ' style="background-color:'.$this->background.'"'; ?>>
   <div class="container-fluid">
     <div class="navbar-header">
       <?php $this->section('header-navbar-brand') ?>
-      <?php if($this->navClass): ?>
+      <?php if($this->navLogo=='black'): ?>
       <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/goteo.svg') ?>" class="logo" alt="Goteo"></a>
+      <?php elseif($this->premium): ?>
+      <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/logo-fg-white.png') ?>" class="logo premium" alt="Goteo"></a>
       <?php else: ?>
       <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/goteo-white.svg') ?>" class="logo" alt="Goteo"></a>
       <?php endif ?>
@@ -25,6 +27,16 @@
         <span class="show-menu"><i class="fa fa-bars"></i></span>
         <span class="close-menu"><i class="icon icon-close"></i></span>
       </button>
+
+      <?php if($this->powered): ?>
+      <div class="powered hidden-xs">
+      <span><?= $this->text('call-header-powered-by') ?></span>
+        <a href="/">
+          <img height="20" src="<?= '/assets/img/call/logo-call.png' ?>" >
+        </a>
+      </div>
+      <?php endif ?>
+
     </div>
 
     <div class="top-menu" id="user-menu">

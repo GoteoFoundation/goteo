@@ -1,0 +1,17 @@
+group: project
+name: 'Project activated in a Matchfunding call'
+purpose: 'Mail template to be sent to a project owner when his project has been activated by a Matcher'
+type: 'md'
+title: 'Your project has been accepted by %MATCHERNAME%!'
+text: >
+    # **%MATCHERNAME%** has acceepted your project **%PROJECTNAME%**!
+
+    This means that you can access an additional source of funding for your campaign.
+
+    Depending on the type of distribution of the funds, you will receive one or more contributions from the matcher.
+
+    On the other hand, we remind you that this matcher is not related with the Goteo Foundation and, 
+    therefore, any related question should be directed to the following email:
+
+    %ADMINMAIL%
+

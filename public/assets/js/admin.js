@@ -226,6 +226,7 @@ $(function(){
         $('.admin-typeahead').each(function () {
             var $this = $(this);
             var sources = $this.data('sources').split(',');
+            var id_field = $this.data('value-field') ? $this.data('value-field') : 'id';
             var extra_params = $this.data('extraParams');
             // console.log('initialize with sources', sources);
             var engines = [{
@@ -255,13 +256,58 @@ $(function(){
                 })
                 .on('typeahead:asynccancel typeahead:asyncreceive', function (event) {
                     $(event.target).removeClass('loading');
-                });
+                })
                 // typeahead:select event is done when needed.
                 // For example: assets/js/admin/stats.js
                 // .on('typeahead:select', function (event, datum, name) {
                 //     console.log('selected',name, event, datum);
                 //     if(datum.url) location.href = datum.url;
                 // });
+                .on('typeahead:select', function (event, datum, name) {
+                    // console.log('selected',name, event, datum, $(this).attr('name'));
+                    if ($(this).data('type') === "simple" ) {
+                      
+                      $this.val(datum[id_field]);
+
+                    } else if ($(this).data('type') === "multiple") {
+
+                      if ($('[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').length === 0) {
+                        
+                        $('.bootstrap-tagsinput.help-text#'+$(this).data('real-id'))
+                          .append('<div><span class="tag label label-lilac">'+ datum[id_field] +'<span id="remove-'+datum['id']+'-'+$(this).data('real-id')+'" data-real-id="'+ $(this).data('real-id')+ '" data-value="'+ datum['id'] + '"data-role="remove"></span></span></div>');
+
+                        $('#remove-'+datum['id'].replace(/\./g, '\\.')+'-'+$(this).data('real-id')).click(function(){
+                          if ($('input[id="'+$(this).data('real-id')+'"]').length > 1) {
+                            $('input[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').remove();
+                          } else {
+                            $('input[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').value = "";
+                          }
+                          $(this).parent().remove();
+                        });
+
+                          $('input[id="' + $(this).data('real-id') + '"]').last().clone().appendTo($('#' + $(this).data('real-id')).last().parent()).val(datum['id']);
+                      }
+                      $('.typeahead').typeahead('close');
+                    }
+                })
+                .on('typeahead:close', function(event) {
+                    if ($(this).data('type') === "multiple" ) {
+                      $(this).typeahead('val', '');
+                    }
+                  });
+                  
+                if ($('.typeahead').find('[data-type="multiple"]')) {
+                if ($('span').find('[data-role="remove"]').length) {
+                    $('span').find('[data-role="remove"]').click(function(){
+                    if ($('input[id="'+$(this).data('real-id')+'"]').length > 1) {
+                        $('input[id="'+$(this).data('real-id')+'"][value="'+$(this).data('value')+'"]').remove();
+                    } else {
+                        $('input[id="'+$(this).data('real-id')+'"][value="'+$(this).data('value')+'"]').value = "";
+                    }
+                    $(this).parent().remove();
+                    });
+                }
+                }
         });
 
     };

@@ -45,6 +45,7 @@ mandatory-project-field-region: 'It is compulsory to indicate the province'
 personal-field-contract_entity: 'Project promoter'
 personal-field-contract_name: 'First and last names'
 personal-field-contract_nif: 'NIF / NIE / VAT number'
+personal-field-contract_legal_document_type: Type of document
 personal-field-main_address: 'Legal address'
 personal-field-post_address: 'Postal address'
 personal-field-region: Province
@@ -99,3 +100,13 @@ contract-validation-error-promoter_nif: 'The NIF is incorrect'
 contract-validation-error-entity: 'There are missing fields in the entity'
 contract-validation-error-accounts: 'There are missing fields in accounts'
 contract-already-processed: 'Contract already processed.'
+contract-legal-entities-natural-person: Natural person
+contract-legal-entities-legal-person: Legal person
+contract-legal-document-type-cif: CIF
+contract-legal-document-type-nif: NIF
+contract-legal-document-type-nie: NIE
+contract-legal-document-type-vat: VAT
+contract-legal-document-type-passport: Passport
+validate-contract-nif-document-type: 'The number of the document does not match the format of the type of document'
+validate-contract-cif-document-type: 'The number of the document does not match the CIF format'
+validate-contract-legal-nif-entity-legal: "The legal entity does not match the type of document"

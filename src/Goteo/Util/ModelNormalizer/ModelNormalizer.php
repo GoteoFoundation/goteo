@@ -36,6 +36,9 @@ class ModelNormalizer {
         elseif($this->model instanceOf Model\Stories) {
             $ob = new Transformer\StoriesTransformer($this->model, $this->keys);
         }
+        elseif ($this->model instanceOf Model\Node\NodeStories) {
+            $ob = new Transformer\ChannelStoriesTransformer($this->model, $this->keys);
+        }
         elseif(
             $this->model instanceOf Model\Category
             || $this->model instanceOf Model\Sphere
@@ -50,6 +53,19 @@ class ModelNormalizer {
         }
         elseif($this->model instanceOf Model\Promote) {
             $ob = new Transformer\PromoteTransformer($this->model, $this->keys);
+        }
+        elseif($this->model instanceOf Model\Filter) {
+            $ob = new Transformer\FilterTransformer($this->model, $this->keys);
+        }
+        elseif($this->model instanceOf Model\Communication) {
+            $ob = new Transformer\CommunicationTransformer($this->model, $this->keys);
+        }
+        elseif($this->model instanceOf Model\Workshop) {
+            $ob = new Transformer\WorkshopTransformer($this->model, $this->keys);
+        }
+        elseif(
+            $this->model instanceOf Model\Mail) {
+            $ob = new Transformer\MailTransformer($this->model, $this->keys);
         }
         else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
 

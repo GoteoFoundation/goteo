@@ -19,6 +19,11 @@
         </select>
     </p>
 
+    <p>
+        <label for="node-iframe"> <?= $this->t('admin-node-iframe') ?>: <br /> </label>
+        <input id="node-iframe" name="iframe" type="text" value='<?= $this->node->iframe ?>' style="width:250px"/>
+    </p>
+
 <?php if(!$this->masternode): ?>
     <p>
         <label for="node-sponsors">Límite sponsors:</label><br />

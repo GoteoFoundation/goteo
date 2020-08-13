@@ -15,6 +15,7 @@ use Goteo\Application\Config\YamlSettingsLoader;
 use Goteo\Console\UsersSend;
 use Goteo\Core\Model;
 use Goteo\Application\Currency;
+
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
@@ -22,7 +23,7 @@ use Symfony\Component\Routing\Route;
 
 class Config {
     // Initial translation groups (groupped in yml files into Resources/translations/)
-    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate'];
+    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate', 'questionnaire', 'poster', 'channel_call', 'map'];
 	static protected $loader;
     static protected $config;
 
@@ -95,10 +96,21 @@ class Config {
 
             // Add model zones for the translator
             \Goteo\Controller\TranslateController::addTranslateModel('criteria');
-            \Goteo\Controller\TranslateController::addTranslateModel('sphere');
-
+			\Goteo\Controller\TranslateController::addTranslateModel('sphere');
+			\Goteo\Controller\TranslateController::addTranslateModel('communication');
+			\Goteo\Controller\TranslateController::addTranslateModel('call_to_action');
+			\Goteo\Controller\TranslateController::addTranslateModel('node');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_program');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_faq');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_faq_question');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_faq_download');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_sponsor');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_team');
+			\Goteo\Controller\TranslateController::addTranslateModel('image_credits');
+			
 			// sets up the rest...
 			self::setDirConfiguration();
+
 
 		} catch (\Exception $e) {
 			if (PHP_SAPI === 'cli') {
@@ -113,7 +125,7 @@ class Config {
 			}
 
             \Goteo\Application\View::setTheme('responsive');
-			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
+			// die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
 			return;
 		}
 	}
@@ -197,8 +209,12 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteAdminController');
-		    \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
-
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommunicationAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FilterAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
+		
         // TODO: to be replace by the new AdminController
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
@@ -233,11 +249,13 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TranslatesSubController');
 		// \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WordcountSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
+		//\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesSubController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SocialCommitmentSubController');
-        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SphereSubController');
+		// \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SphereSubController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelStoryAdminController');
 
 
 		// Adding Pool (internal credit) payment method
@@ -282,6 +300,7 @@ class Config {
         //
         // App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\ExpressionLanguageProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor');
+        App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\CriteriaInvestMatcherProcessor');
 
 		//Cache dir in libs
 		\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);

@@ -17,6 +17,7 @@ $this->section('blog-content');
     <?= $this->insertif('foundation/donor') ?>
 
 	<?= $this->insert('blog/partials/related_posts') ?>
+	<?= $this->insert('blog/partials/filters') ?>
 	<?= $this->insert('blog/partials/sticky') ?>
 
 

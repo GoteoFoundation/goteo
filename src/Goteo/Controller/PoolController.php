@@ -35,7 +35,7 @@ use Goteo\Model\User;
 use Goteo\Model\Relief;
 use Goteo\Payment\Payment;
 use Goteo\Payment\PaymentException;
-
+use Goteo\Model\User\Donor;
 
 class PoolController extends \Goteo\Core\Controller {
 
@@ -332,7 +332,7 @@ class PoolController extends \Goteo\Core\Controller {
             return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
         }
         // show form
-        return $this->viewResponse('pool/user_data', ['type' => $type, 'invest' => $invest, 'invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3]);
+        return $this->viewResponse('pool/user_data', ['type' => $type, 'invest' => $invest, 'invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3, 'legal_entities' => Donor::getLegalEntities(), 'legal_documents' => Donor::getLegalDocumentTypes()]);
 
     }
 
@@ -372,7 +372,7 @@ class PoolController extends \Goteo\Core\Controller {
 
         $share_url = $URL .'/'.$type;
         $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
-        $twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': ' . $share_url);
+        $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($share_title . ': ' . $share_url);
 
         $user=Session::getUserId();
 

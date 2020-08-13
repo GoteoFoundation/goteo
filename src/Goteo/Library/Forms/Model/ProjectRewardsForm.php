@@ -86,8 +86,10 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
         $this->rewards[$reward->id] = $reward;
         $project = $this->getModel();
         $suffix = "_{$reward->id}";
+        
         // readonly only if has no invests associated
-        $units_readonly = $readonly = $this->getReadonly() && !$reward->isDraft();
+        $units_readonly = $readonly = $this->getReadonly() && !$reward->isDraft() && $reward->getTaken();
+        $remove_readonly = $this->getReadonly()&&$reward->getTaken();
         // Readonly allows edit number of rewards if project in campaign
         if($project->inCampaign()) {
             $units_readonly = false;
@@ -97,6 +99,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             ->add("amount$suffix", 'number', [
                 'label' => 'rewards-field-individual_reward-amount',
                 'data' => $reward->amount,
+                'type' => 'text',
                 'disabled' => $readonly,
                 // 'pre_addon' => '<i class="fa fa-money"></i>',
                 'pre_addon' => Currency::get($project->currency, 'html'),
@@ -107,6 +110,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             ->add("units$suffix", 'number', [
                 'label' => 'rewards-field-individual_reward-units',
                 'data' => (int)$reward->units,
+                'type' => 'text',
                 'disabled' => $units_readonly,
                 'pre_addon' => '#',
                 'constraints' => $this->getConstraints("units$suffix"),
@@ -148,7 +152,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 ]
 
             ]);
-        if(!$readonly) {
+        if(!$remove_readonly) {
             $this->getBuilder()
                 ->add("remove$suffix", 'submit', [
                     'label' => Text::get('regular-delete'),

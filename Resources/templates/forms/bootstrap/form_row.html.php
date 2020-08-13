@@ -9,11 +9,15 @@ if($type === 'title') {
 
 $label_view = $label_position === 'none' ? '' : $view['form']->label($form);
 ?>
-<div class="form-group<?= $row_class ? " $row_class" : '' ?><?= (count($errors) > 0) ? ' has-error' : '' ?>">
+<div class="form-group<?= $row_class ? " $row_class" : '' ?><?= (count($errors) > 0) ? ' has-error' : '' ?>" id="form-<?= $form->vars['name'] ?>">
 
     <?= $label_position === 'right' ? '' :  $label_view ?>
 
     <?php if(!$no_input_wrap): ?><div class="input-wrap"><?php endif ?>
+
+    <?php if($attr['pre-help']): ?>
+        <div class="pre-help"><?= $attr['pre-help'] ?></div>
+    <?php endif ?>
 
     <?php
 

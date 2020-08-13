@@ -106,6 +106,12 @@ class UsersSend extends AbstractCommandController {
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
                 break;
 
+            case '14_days': // info about required contract documentation 
+                $tpl = Template::CONTRACT_PREVIOUS_INFORMATION;
+                $search  = array('%USERNAME%', '%PROJECTNAME%');
+                $replace = array($project->user->name, $project->name);
+                break;
+
             case 'two_weeks': // template 19, "no bajes la guardia!" 25 días de campaña
                 $tpl = 19;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
@@ -134,6 +140,12 @@ class UsersSend extends AbstractCommandController {
                 $tpl = Template::PROJECT_MY_STORY_AVAILABLE;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%STORYURL%');
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/project/'.$project->id.'/story');
+                break;
+
+            case '15d_after': // reminder to fill the contract form
+                $tpl = Template::CONTRACT_FIRST_REMINDER;
+                $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTCONTRACTURL%');
+                $replace = array($project->user->name, $project->name, self::getURL().'/dashboard/project/'.$project->id.'/contract');
                 break;
 
             case '2m_after': // template 25, dos meses despues de financiado

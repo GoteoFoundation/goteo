@@ -111,14 +111,14 @@ class DiscoverController extends \Goteo\Core\Controller {
         if(empty($type)) $type = 'promoted';
 
         $limit = 12;
-        $q = $request->query->get('q');
-        $location = $request->query->get('location');
-        $latitude = $request->query->get('latitude');
-        $longitude = $request->query->get('longitude');
+        $q = strip_tags($request->query->get('q'));
+        $location = strip_tags($request->query->get('location'));
+        $latitude = strip_tags($request->query->get('latitude'));
+        $longitude = strip_tags($request->query->get('longitude'));
         $category = $request->query->get('category');
         $vars = ['q' => $q, 'category' => $category, 'location' => $location, 'latitude' => $latitude, 'longitude' => $longitude];
         if(Session::isAdmin()) {
-            $vars['review'] = $request->query->get('review') !== '0';
+            $vars['review'] = $request->query->get('review') === '1' ? 1 : 0 ;
         }
 
         $filters = $this->getProjectFilters($filter, $vars);
@@ -146,10 +146,10 @@ class DiscoverController extends \Goteo\Core\Controller {
         $limit = max(1, min(25, abs($limit)));
         $pag = max(0, abs($pag));
         $filter = $request->get('filter');
-        $q = $request->get('q');
-        $location = $request->get('location');
-        $latitude = $request->get('latitude');
-        $longitude = $request->get('longitude');
+        $q = strip_tags($request->get('q'));
+        $location = strip_tags($request->get('location'));
+        $latitude = strip_tags($request->get('latitude'));
+        $longitude = strip_tags($request->get('longitude'));
         $category = $request->get('category');
 
         $ofilters = [

@@ -19,8 +19,10 @@ use Goteo\Application\View;
 use Goteo\Core\Model;
 use Goteo\Model\Project;
 use Goteo\Model\Node;
+use Goteo\Model\Matcher;
 use Goteo\Application\Currency;
 use Goteo\Library\Text;
+use Goteo\Model\Image;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -223,6 +225,14 @@ class SessionListener extends AbstractListener {
         Session::addToUserMenu('<i class="icon icon-settings"></i> ' . Text::get('dashboard-menu-profile-preferences'), Lang::getUrl() . 'dashboard/settings', 'dashboard-setting', 50);
 
         if($user = Session::getUser()) {
+            $matchers = Matcher::getList(['owner' => $user->id]);
+            if ($matchers) {
+                Session::addToUserMenu('<i class="icon icon-call"></i> ' . Text::get('dashboard-menu-matchers'), Lang::getUrl() . 'matchfunding', 'dashboard-matchers', 60);
+                foreach($matchers as $i => $matcher) {
+                    Session::addToUserMenu('<img src="' . Image::get($matcher->logo)->getLink(30, 30, true) . '"> '.strip_tags($matcher->name), Lang::getUrl() . 'dashboard/matcher/' . $matcher->id , 'matcher-' . $matcher->id, 61 + $i, 'ident');
+                }
+            }
+
             if ( isset($user->roles['translator']) ||  isset($user->roles['admin']) || isset($user->roles['superadmin']) ) {
                 Session::addToUserMenu(Text::get('regular-translate_board'), Lang::getUrl() . 'translate', 'translate', 80);
             }

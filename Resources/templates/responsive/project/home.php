@@ -120,6 +120,8 @@
 
                 <!-- carousel slider -->
 
+                <?php if(count($project->gallery)): ?>
+
                 <div id="infoCarousel" class="carousel slide spacer-20" data-ride="carousel" data-interval="false">
 
                  <!-- Indicators -->
@@ -149,6 +151,8 @@
                  </a>
 
                 </div>
+
+            <?php endif; ?>
 
                 <!-- About -->
 
@@ -197,7 +201,7 @@
                 <?php endforeach ?>
 
                 <h2 class="pink-title spacer-20" >
-                    <span class="anchor-mark" id="related">
+                    <span id="related">
                     <?= $this->text('overview-field-related') ?>
                     </span>
                     <?php if (!empty($project->video->url)): ?>
@@ -254,7 +258,7 @@
                                 </h3>
                                 </div>
                                 <div class="col-sm-10 description">
-                                    <?= $project->social_commitment_description ?>
+                                    <?= $this->markdown($project->social_commitment_description) ?>
                                 </div>
                             </div>
 

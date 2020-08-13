@@ -760,4 +760,29 @@ abstract class Model {
 		return array('pages' => $pages, 'offset' => $offset);
 	}
 
+	public static function dbReferencialConstraints($filter = []) {
+
+		$sql = "SELECT * FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS
+				WHERE REFERENCED_TABLE_NAME = :table AND CONSTRAINT_SCHEMA = :ddbb";
+
+		$values[':table'] = self::getTableStatic();
+		$values[':ddbb'] = Config::get('db.database');
+
+		if ($filter['delete_rule']) {
+			$sql .= " AND DELETE_RULE = :delete_rule";
+			$values[':delete_rule'] = $filter['delete_rule'];
+		}
+
+		if ($filter['update_rule']) {
+			$sql .= " AND UPDATE_RULE = :update_rule";
+			$values[':update_rule'] = $filter['update_rule'];
+		}
+
+		try {
+			return self::query($sql, $values)->fetchAll();
+		} catch (\PDOException $e) {
+		}
+		return 0;
+	}
+
 }

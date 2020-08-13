@@ -16,10 +16,13 @@ use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\Model\ProjectStoryForm;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
+use Goteo\Model\Call;
 use Goteo\Model\Stories;
 use Goteo\Model\Sphere;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Application\Lang;
+use Goteo\Model\Image;
+use Goteo\Model\Image\Credits;
 
 class AdminStoryEditForm extends ProjectStoryForm {
 
@@ -53,6 +56,23 @@ class AdminStoryEditForm extends ProjectStoryForm {
                     ]
 
             ])
+            ->add('background_image', 'dropfiles', [
+                'label' => 'story-field-background-image',
+                'disabled' => $this->getReadonly(),
+                'data' => $story->getBackgroundImage(),
+                'url' => '/api/stories/images',
+                'required' => false,
+                'limit' => 1,
+                'constraints' => [
+                        new Constraints\Count(['max' => 1]),
+                    ]
+
+            ])
+            ->add('background_image_credits', 'text', array(
+                'label' => 'story-field-background-image-credits',
+                'data' => Credits::get($story->background_image)->credits,
+                'required' => false,
+            ))
             ->add('review', 'text', [
                 'label' => 'admin-stories-review',
                 'required' => false,
@@ -130,6 +150,28 @@ class AdminStoryEditForm extends ProjectStoryForm {
             ))
             ;
 
+
+        return $this;
+    }
+
+    public function save(FormInterface $form = null, $force_save = false) {
+        if(!$form) $form = $this->getBuilder()->getForm();
+        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
+
+        $data = $form->getData();
+        $model = $this->getModel();
+        $model->rebuildData($data, array_keys($form->all()));
+
+        $errors = [];
+        if (!$model->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
+
+        if ($model->background_image && $data['background_image_credits']) {
+            $model->background_image->setCredits($data['background_image_credits']);
+        }
+        
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }

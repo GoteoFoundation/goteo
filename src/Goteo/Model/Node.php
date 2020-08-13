@@ -15,23 +15,52 @@ use Goteo\Application\Config;
 use Goteo\Model\Image;
 use Goteo\Application\Exception;
 use Goteo\Library\Text;
+use Goteo\Model\Blog\Post as GeneralPost;
+use Goteo\Model\Node\NodeSponsor;
+use Goteo\Model\Node\NodeResource;
+use Goteo\Model\Node\NodeProgram;
+use Goteo\Model\Node\NodeFaq;
+use Goteo\Model\Node\NodeTeam;
+use Goteo\Model\Node\NodeCallToAction;
+use Goteo\Model\Node\NodeStories;
 
 class Node extends \Goteo\Core\Model {
 
     public
         $id = null,
         $name,
+        $type,
         $subtitle,
         $description,
+        $hashtag,
+        $main_info_title,
+        $main_info_description,
         $email,
         $admins = array(), // administradores
         $logo,
         $sello,
         $home_img,
         $active,
+        $project_creation_open,
+        $call_inscription_open,
+        $banner_header_image,
+        $banner_header_image_md,
+        $banner_header_image_sm,
+        $banner_header_image_xs,
+        $banner_button_url,
+        $show_team,
         $image,
         $default_consultant,
-        $sponsors_limit;
+        $sponsors_limit,
+        $call_for_action_background,
+        $premium,
+        $iframe,
+        $terms,
+        $terms_url,
+        $chatbot_url,
+        $chatbot_id,
+        $tip_msg
+        ;
 
 
     public function __construct() {
@@ -58,7 +87,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['subtitle', 'description'];
+        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description', 'banner_button_url', 'terms_url'];
     }
 
     /**
@@ -76,6 +105,9 @@ class Node extends \Goteo\Core\Model {
                 node.id as id,
                 node.name as name,
                 node.email as email,
+                node.type as type,
+                node.subtitle as subtitle,
+                node.hashtag as hashtag,
                 $fields,
                 node.logo as logo,
                 node.label as label,
@@ -83,6 +115,13 @@ class Node extends \Goteo\Core\Model {
                 node.location as location,
                 node.url as url,
                 node.active as active,
+                node.project_creation_open as project_creation_open,
+                node.call_inscription_open as call_inscription_open,
+                node.banner_header_image as banner_header_image,
+                node.banner_header_image_md as banner_header_image_md,
+                node.banner_header_image_sm as banner_header_image_sm,
+                node.banner_header_image_xs as banner_header_image_xs,
+                node.show_team as show_team,
                 node.twitter as twitter,
                 node.facebook as facebook,
                 node.linkedin as linkedin,
@@ -91,7 +130,13 @@ class Node extends \Goteo\Core\Model {
                 node.owner_font_color as owner_font_color,
                 node.owner_social_color as owner_social_color,
                 node.default_consultant as default_consultant,
-                node.sponsors_limit as sponsors_limit
+                node.sponsors_limit as sponsors_limit,
+                node.call_to_action_background_color as call_to_action_background_color,
+                node.premium as premium,
+                node.iframe as iframe,
+                node.chatbot_url as chatbot_url,
+                node.chatbot_id as chatbot_id,
+                node.tip_msg as tip_msg
             FROM node
             $joins
             WHERE node.id = :id";
@@ -313,6 +358,31 @@ class Node extends \Goteo\Core\Model {
         return $this->homeImageInstance;
     }
 
+    public function getBannerHeaderImage() {
+        if(!$this->bannerHeaderImageInstance instanceOf Image) {
+            $this->bannerHeaderImageInstance = new Image($this->banner_header_image);
+        }
+        return $this->bannerHeaderImageInstance;
+    }
+    public function getBannerHeaderImageMd() {
+        if(!$this->bannerHeaderImageInstanceMd instanceOf Image) {
+            $this->bannerHeaderImageInstanceMd = new Image($this->banner_header_image_md);
+        }
+        return $this->bannerHeaderImageInstanceMd;
+    }
+    public function getBannerHeaderImageSm() {
+        if(!$this->bannerHeaderImageInstanceSm instanceOf Image) {
+            $this->bannerHeaderImageInstanceSm = new Image($this->banner_header_image_sm);
+        }
+        return $this->bannerHeaderImageInstanceSm;
+    }
+    public function getBannerHeaderImageXs() {
+        if(!$this->bannerHeaderImageInstanceXs instanceOf Image) {
+            $this->bannerHeaderImageInstanceXs = new Image($this->banner_header_image_xs);
+        }
+        return $this->bannerHeaderImageInstanceXs;
+    }
+
     public function getLogo() {
         if(!$this->logoInstance instanceOf Image) {
             $this->logoInstance = new Image($this->logo);
@@ -343,23 +413,25 @@ class Node extends \Goteo\Core\Model {
             'description',
             'url',
             'default_consultant',
-            'sponsors_limit'
+            'sponsors_limit',
+            'iframe'
             );
 
         $set = '';
         $values = array(':id' => $this->id);
 
+        
         foreach ($fields as $field) {
             if ($set != '') $set .= ", ";
             if($field === 'default_consultant' && empty($this->default_consultant)) {
                 $set .= "`$field` = NULL ";
                 continue;
             }
-
+            
             $set .= "`$field` = :$field ";
             $values[":$field"] = (string)$this->$field;
         }
-
+        
         try {
             $sql = "UPDATE node SET " . $set . " WHERE id = :id";
 
@@ -559,7 +631,8 @@ class Node extends \Goteo\Core\Model {
             'linkedin',
             'owner_background',
             'owner_font_color',
-            'owner_social_color'
+            'owner_social_color',
+            'iframe'
             );
 
         $values = array (':id' => $this->id);
@@ -700,14 +773,16 @@ class Node extends \Goteo\Core\Model {
             ";
         try {
             $query = self::query($sql, array(':node' => $this->id));
+            //die(\sqldbg($sql, array(':node' => $this->id)));
             $data = $query->fetch(\PDO::FETCH_ASSOC);
 
             // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
-            if (empty($data) || $data['timeago'] > (30*60)) {
+            /*if (empty($data) || $data['timeago'] > (30*60)) {
                 if ($newdata = $this->updateData()) {
                     return $newdata;
                 }
-            }
+            }*/
+            
             return $data;
         } catch(\PDOException $e) {
 
@@ -741,11 +816,11 @@ class Node extends \Goteo\Core\Model {
         $data = $query->fetch(\PDO::FETCH_ASSOC);
 
         // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
-        if (empty($data) || $data['timeago'] > (30*60)) {
+        /*if (empty($data) || $data['timeago'] > (30*60)) {
             if ($newdata = $this->updateData()) {
                 return $newdata;
             }
-        }
+        }*/
 
         return $data;
     }
@@ -764,7 +839,7 @@ class Node extends \Goteo\Core\Model {
 
     }
 
-    private function updateData () {
+    public function updateData () {
         $values = array(':node' => $this->id);
         $data = array();
 
@@ -775,7 +850,7 @@ class Node extends \Goteo\Core\Model {
             SELECT
                 COUNT(project.id)
             FROM    project
-            WHERE node = :node
+            WHERE ( node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND status IN (3, 4, 5, 6)
             ", $values);
         $data['projects'] = $query->fetchColumn();
@@ -785,7 +860,7 @@ class Node extends \Goteo\Core\Model {
             SELECT
                 COUNT(project.id)
             FROM    project
-            WHERE node = :node
+            WHERE ( node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND status = 3
             ", $values);
         $data['active'] = $query->fetchColumn();
@@ -806,7 +881,7 @@ class Node extends \Goteo\Core\Model {
                 AND     invest.status IN ('0', '1', '3', '4')
                 ) as `getamount`
             FROM    project
-            WHERE node = :node
+            WHERE ( node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND status IN ('3', '4', '5')
             HAVING getamount >= mincost
             ", $values);
@@ -819,7 +894,7 @@ class Node extends \Goteo\Core\Model {
             FROM  invest
             INNER JOIN project
                 ON project.id = invest.project
-            WHERE project.node = :node
+            WHERE ( project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND invest.status IN ('0', '1', '3', '4')
             ", $values);
         $data['investors'] = $query->fetchColumn();
@@ -831,21 +906,32 @@ class Node extends \Goteo\Core\Model {
             FROM  message
             INNER JOIN project
                 ON project.id = message.project
-            WHERE project.node = :node
+            WHERE ( project.node = :node OR project.id IN (SELECT project_id FROM node_project WHERE node_id = :node ) )
             AND message.user != project.owner
             ", $values);
         $data['supporters'] = $query->fetchColumn();
 
         // cantidad recaudada en total
+        // $query = static::query("
+        //     SELECT
+        //         SUM(invest.amount)
+        //     FROM  invest
+        //     INNER JOIN project
+        //         ON project.id = invest.project
+        //     LEFT JOIN node_project
+        //         ON node_project.project_id = project.id
+        //     WHERE project.node = :node OR node_project.node_id = :node
+        //     AND invest.status IN ('0', '1', '3')
+        //     ", $values);
+
         $query = static::query("
             SELECT
-                SUM(invest.amount)
-            FROM  invest
-            INNER JOIN project
-                ON project.id = invest.project
-            WHERE project.node = :node
-            AND invest.status IN ('0', '1', '3')
-            ", $values);
+                SUM(project.amount)
+            FROM project
+            LEFT JOIN node_project
+                ON node_project.project_id = project.id
+            WHERE project.node = 'ahoracomparte' OR node_project.node_id = 'ahoracomparte'
+        ", $values);
         $data['amount'] = $query->fetchColumn();
 
         // datos de convocatorias (destacadas por el nodo)
@@ -856,7 +942,7 @@ class Node extends \Goteo\Core\Model {
             FROM    `call`
             INNER JOIN campaign
                 ON call.id = campaign.call
-                AND node = :node
+                AND node = :node 
             ", $values);
         $data['budget'] = $query->fetchColumn();
 
@@ -929,5 +1015,183 @@ class Node extends \Goteo\Core\Model {
         }
 
     }
+
+    /**
+     *  Posts of this node
+     */
+    public function getPosts ($limit = 3) {
+       if($this->postsList) return $this->postsList;
+        
+        $this->postsList = GeneralPost::getList(['node' => $this->id ], true, 0, $limit, false);
+
+        return $this->postsList;
+
+    }
+
+     /**
+     *  Stories of this node
+     */
+    public function getStories () {
+       if($this->storiesList) return $this->storiesList;
+
+       return NodeStories::getList(['node' => $this->id]);
+    }
+
+    public function addStory($story) {
+        $node_story = new NodeStories();
+        $node_story->node_id = $this->id;
+        $node_story->stories_id = $story->id;
+        $errors = array();
+        $node_story->save($errors);
+        if ($errors) {
+            print_r($errors); die;
+        }
+        // $sql = "REPLACE INTO node_stories (node_id, stories_id) VALUES(:channel, :story)";
+        // $values = [
+        //     ':channel' => $this->id,
+        //     ':story' => $story->id
+        // ];
+        // $query = static::query($sql, $values);
+    }
+
+
+    /**
+     *  Sponsors of this node
+     */
+    public function getSponsors () {
+        if($this->sponsorsList) return $this->sponsorsList;
+        $values = [':node' => $this->id];
+
+        list($fields, $joins) = NodeSponsor::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
+
+        $sql = "SELECT
+                node_sponsor.id,
+                node_sponsor.node_id,
+                node_sponsor.name,
+                node_sponsor.url,
+                node_sponsor.image,
+                node_sponsor.order,
+                $fields
+            FROM node_sponsor
+            $joins
+            WHERE node_sponsor.node_id = :node
+            ORDER BY node_sponsor.order ASC";
+         //die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->sponsorsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeSponsor');
+        return $this->sponsorsList;
+
+    }
+
+     /**
+     *  Resources of this node
+     */
+    public function getResources () {
+        if($this->resourcesList) return $this->resourcesList;
+        $values = [':node' => $this->id];
+
+        list($fields, $joins) = NodeResource::getLangsSQLJoins(Lang::current(), Config::get('sql_lang'));
+
+        $sql = "SELECT
+                node_resource.id,
+                node_resource.icon,
+                node_resource.action_url,
+                node_resource.action_icon,
+                $fields
+            FROM node_resource
+            $joins
+            WHERE node_resource.node_id = :node
+            ORDER BY node_resource.order ASC LIMIT 3";
+         //die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->resourcesList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Node\NodeResource');
+        return $this->resourcesList;
+
+    }
+
+    /**
+     *  next Workshops of this node
+     */
+    public function getWorkshops () {
+        if($this->workshopsList) return $this->workshopsList;
+        $values = [':node' => $this->id];
+
+        list($fields, $joins) = Workshop::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+
+        $sql = "SELECT
+                workshop.id,
+                workshop.online,
+                workshop.title,
+                $fields,
+                workshop.subtitle,
+                workshop.description,
+                workshop.date_in,
+                workshop.date_out,
+                workshop.schedule,
+                workshop.url,
+                workshop.workshop_location,
+                workshop.call_id,
+                workshop.venue,
+                workshop.city,
+                workshop.header_image,
+                workshop.venue_address
+            FROM node_workshop
+            INNER JOIN workshop ON workshop.id = node_workshop.workshop_id
+            $joins
+            WHERE node_workshop.node_id = :node AND workshop.date_in >= NOW()
+            ORDER BY workshop.date_in ASC";
+        // die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->workshopsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Workshop');
+        return $this->workshopsList;
+    }
+
+        /**
+     *  next Workshops of this node
+     */
+    public function getAllWorkshops () {
+        if($this->workshopList) return $this->workshopList;
+
+        $this->workshopList =  Workshop::getList(['node' => $this->id]);
+        return $this->workshopList;
+    }
+
+    public function getPrograms() {
+        // if($this->programsList) return $this->programsList;
+
+        // $this->programsList = NodeProgram::get($this->id);
+        $this->programsList = NodeProgram::getList(['node' => $this->id], 0, 999);
+        return $this->programsList;
+    }
+
+    public function getTeam() {
+        if($this->teamList) return $this->teamList;
+        
+        $this->teamList = NodeTeam::getList(['node' => $this->id], 0, 999);
+        return $this->teamList;
+    }
+
+    public function getFaqType($type) {
+        if($this->faqType) return $this->faqType;
+        
+        $this->faqType = NodeTeam::get($this->id, $type);
+        return $this->faqType;
+    }
+
+     public function getFaqDownloads($type) {
+        if($this->faqDownloads) return $this->faqDownloads;
+        
+        $this->faqDownloads = NodeTeam::get($this->id, $type);
+        return $this->faqDownloads;
+    }
+
+    public function getCallToActions() {
+        if($this->callToActionList) return $this->callToActionList;
+    
+        $this->callToActionList = NodeCallToAction::getList(['node' => $this->id, 'active' => true], 0, 2);
+        return $this->callToActionList;
+    }
+    
+
 
 }

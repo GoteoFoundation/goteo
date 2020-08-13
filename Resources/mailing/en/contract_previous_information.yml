@@ -1,0 +1,37 @@
+group: contract
+name: 'Project story available to fill'
+purpose: 'Mail template to be sent to a project owner in order to giving information about the contract documentation, 15 days before the finish'
+type: 'md'
+title: 'What do I need to complete my contract with Goteo?'
+text: >
+    Hi %USERNAME%,
+
+
+    If your campaign successfully reaches the first round or minimum requested budget -maybe you already did, congrats! - is important that you start preparing some of the documents we will request you in the coming weeks.
+
+
+    Moreover, the contract -by which the funds are transferred- will be activated in 15 days. Since we don't want you to waste a minute in bureaucracy, we inform you in advance so that you have enough time. This will also make the payment process much more agile. We only need the digital version of the documents, since you will be able to upload them to the platform. The requested docs are:  
+
+
+    **Physical persons:**
+
+
+
+      *   **Digital copy of the DNI/NIE** of the person signing the contract (if Spanish resident) or passport (non-Spanish resident) (PDF)
+      *   **Certificate of ownership of the bank account** (PDF), issued by the financial institution in which the funds collected will be received. In case your bank is outside of Spain, you must also have the IBAN code (if it is an European International bank) and a SWIFT code if it is a non-European Bank.
+
+
+    **Legal persons/entities:**
+
+
+
+      *   **Digital copy of the DNI/NIE** of the person signing the contract (if Spanish resident) or passport (non-Spanish resident) (PDF)
+      *   **Certificate of ownership of the bank account** (PDF), issued by the financial institution in which the funds collected will be received. In case your bank is outside of Spain, you must also have the IBAN code (if it is an European International bank) and a SWIFT code if it is a non-European Bank.
+      *   **Digital copy of the CIF of the entity** (PDF). In case it is not registered in Spain, a digital copy of the organization's registration in the corresponding official entity. 
+      *   **Digital copy of the document certifying the power of attorney** legal status, or deed, or power of attorney which accredit the representative person who signs) (PDF).
+
+    
+    If you have any question, do not hesitate to write us to gestion@goteo.org.
+
+    
+    Good luck in the final sprint!

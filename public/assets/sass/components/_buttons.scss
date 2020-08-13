@@ -6,6 +6,13 @@
         background-color: $color-white;
     }
 }
+
+.btn-danger {
+    .icon {
+        background-color: $color-white;
+    }
+}
+
 .btn-success{
     background-color: $background-green !important;
     border-color: $background-green !important;
@@ -116,6 +123,14 @@
         color: $color-white;
     }
 }
+.btn-sign {
+    background-color: $background-light-red;
+    color: $color-white;
+    &:hover {
+        background-color:$background-dark-red;
+        color: $color-white;
+    }
+}
 .btn-fashion {
     background: $color-pink;
     @include background(linear-gradient(to right, $color-pink 28%,$color-red 100%));
@@ -145,6 +160,17 @@
         background: darken($color-orange, 10%);
         @include background(linear-gradient(to right, darken($color-orange, 10%) 28%, darken($color-red, 10%) 100%));
         color: $color-white !important;
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
+
+.btn-yellow{
+    background-color: $color-new-yellow;
+    color: $color-white !important;
+    &:hover {
+        background-color:darken($color-new-yellow, 10%);
     }
     .icon {
         background-color: $color-white;

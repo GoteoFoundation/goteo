@@ -394,8 +394,22 @@ class Invest extends \Goteo\Core\Model {
                     $sqlFilter[] = "invest.campaign = 0";
                     break;
                 // Include donation to the organization
+                // NOTE:
+                // donations are not counted when goes to user pool!
                 case 'donation':
                     $sqlFilter[] = "invest.donate_amount > 0";
+                    $sqlFilter[] = "invest.status != " . Invest::STATUS_TO_POOL;
+                    break;
+                // Refunded donations are those returned to the user due project failure
+                case 'refunded_donation':
+                    $sqlFilter[] = "invest.donate_amount > 0";
+                    $sqlFilter[] = "project.status = " .  Project::STATUS_UNFUNDED;
+                    break;
+                // Expired donations are those expropiated from the user due inactivity
+                case 'expired':
+                    $sqlFilter[] = "invest.donate_amount > 0";
+                    $sqlFilter[] = "invest.status != " . Invest::STATUS_TO_POOL;
+                    $sqlFilter[] = "invest.account = 'expired_wallet'";
                     break;
                 case 'anonymous':
                     $sqlFilter[] = "invest.anonymous = 1";
@@ -563,6 +577,7 @@ class Invest extends \Goteo\Core\Model {
         if($count) {
             if($count === 'all') {
                 $what = 'SUM(invest.amount) AS total_amount,
+                SUM(invest.donate_amount) AS total_donations,
                 COUNT(invest.id) AS total_invests,
                 COUNT(DISTINCT invest.user) AS total_users';
             }
@@ -593,7 +608,7 @@ class Invest extends \Goteo\Core\Model {
 
             if($count === 'all') {
                 $ob = self::query($sql, $values)->fetchObject();
-                return ['amount' => (float) $ob->total_amount, 'invests' => (int) $ob->total_invests, 'users' => (int) $ob->total_users];
+                return ['amount' => (float) $ob->total_amount, 'donations_amount' => (float) $ob->total_donations, 'invests' => (int) $ob->total_invests, 'users' => (int) $ob->total_users];
             }
             $total = self::query($sql, $values)->fetchColumn();
             if($count === 'money'||$count='donate_money') {
@@ -686,6 +701,49 @@ class Invest extends \Goteo\Core\Model {
 
         return ['user' => $users_fee, 'call' => $calls_fee, 'matcher' => $matchers_fee];
     }
+
+    /**
+     * 
+     */
+    public static function calculateVats($filters = []) {
+        $fee = (float) Config::get('fee'); // default platform fee
+        $vat = (float) Config::get('vat'); // default platform vat
+        $tax_base_percentage= (float) Config::get('tax-base-percentage');
+
+        list($sqlFilter, $values) = self::getSQLFilter($filters);
+        $sqlFilter = preg_replace('/^WHERE/', 'AND', $sqlFilter);
+        // Normal invests vat
+        $sql = "SELECT SUM(IFNULL(project_account.vat, $vat) * invest.amount * IFNULL(project_account.tax_base_percentage,  $tax_base_percentage) * IFNULL(`project_account`.fee, $fee)) / 1000000
+                FROM invest
+                LEFT JOIN project ON invest.project = project.id
+                LEFT JOIN project_account ON invest.project = project_account.project
+                WHERE invest.campaign=0 $sqlFilter";
+        $users_vat = (float) self::query($sql, $values)->fetchColumn();
+        //echo \sqldbg($sql, $values);
+
+        // Call Matchfunding invests vat
+        $sql = "SELECT SUM(IFNULL(project_account.vat, $vat) * invest.amount * IFNULL(project_account.tax_base_percentage,  $tax_base_percentage) * IFNULL(`call`.fee_projects_drop, $fee)) / 1000000
+                FROM invest
+                LEFT JOIN project ON invest.project = project.id
+                LEFT JOIN project_account ON invest.project = project_account.project
+                LEFT JOIN `call` ON invest.call = `call`.id
+                WHERE invest.campaign=1 AND project_account.fee AND invest.method='drop' $sqlFilter";
+        $calls_vat = (float) self::query($sql, $values)->fetchColumn();
+        // echo \sqldbg($sql, $values);
+        // Matcher Matchfunding invests vat
+        $sql = "SELECT SUM(IFNULL(project_account.vat, $vat) * invest.amount * IFNULL(project_account.tax_base_percentage,  $tax_base_percentage) * IFNULL(`matcher`.fee, $fee) ) / 1000000
+                FROM invest
+                LEFT JOIN project ON invest.project = project.id
+                LEFT JOIN project_account ON invest.project = project_account.project
+                LEFT JOIN `matcher` ON invest.matcher = `matcher`.id
+                WHERE invest.campaign=1 AND invest.method!='drop' $sqlFilter";
+        $matchers_fee = (float) self::query($sql, $values)->fetchColumn();
+
+        return ['user' => $users_vat, 'call' => $calls_vat, 'matcher' => $matchers_vat];
+    }
+
+
+
 
     // returns the current project
     public function getProject() {
@@ -923,7 +981,8 @@ class Invest extends \Goteo\Core\Model {
             'matcher',
             'drops',
             'pool',
-            'donate_amount'
+            'donate_amount',
+            'extra_info'
             );
 
         try {
@@ -1227,6 +1286,7 @@ class Invest extends \Goteo\Core\Model {
                 invest.droped as droped,
                 invest.campaign as campaign,
                 invest.call as `call`,
+                invest.matcher as `matcher`,
                 invest.anonymous as anonymous,
                 invest_msg.msg as msg
             FROM    invest
@@ -1280,6 +1340,7 @@ class Invest extends \Goteo\Core\Model {
                     'droped' => $investor->droped,
                     'campaign' => $investor->campaign,
                     'call' => $investor->call,
+                    'matcher'   => $investor->matcher,
                     'msg' => $investor->msg
                 );
 

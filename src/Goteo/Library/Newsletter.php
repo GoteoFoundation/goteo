@@ -221,6 +221,9 @@ namespace Goteo\Library {
         }
 
 		static public function getContent ($content, $lang = null) {
+
+            View::setTheme('responsive');
+
             $current_lang = Lang::current();
             if(empty($lang)) $lang = $current_lang;
             // necesitamos generar contenido en diferentes idiomas
@@ -255,7 +258,7 @@ namespace Goteo\Library {
                    // $promotes_content = '<div class="section-tit">'.Text::get('home-promotes-header').'</div>';
                     foreach ($home_promotes as $key => $promote) {
                         try {
-                            $promotes_content .= View::render('email/partials/newsletter_project', array('promote'=>$promote, 'project'=>$promote->projectData, 'key' => $key));
+                            $promotes_content .= View::render('email/partials/newsletter_project', ['promote'=>$promote, 'project'=>$promote->projectData, 'key' => $key]);
                         } catch (\Goteo\Core\Error $e) {
                             continue;
                         }
@@ -278,7 +281,20 @@ namespace Goteo\Library {
             */
 
             // montammos el contenido completo
-            $tmpcontent = '<div style="background: #fff;padding:20px 20px 5px;margin-bottom:20px;">' . $content . '</div>';
+            $tmpcontent = '<table class="section header" cellpadding="0" cellspacing="0" width="600">
+                        <tr>
+                            <td class="column">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td align="left">' . $content . 
+                        '</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>';
 
             foreach (\array_keys($order) as $item) {
                 $var = $item.'_content';

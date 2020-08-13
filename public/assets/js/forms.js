@@ -215,13 +215,53 @@ $(function(){
                 // For example: assets/js/admin/stats.js
                 .on('typeahead:select', function (event, datum, name) {
                     // console.log('selected',name, event, datum, $(this).attr('name'));
-                    $('#' + $(this).data('real-id')).val(datum[id_field]);
+                    if ($(this).data('type') === "simple" ) {
+                      
+                      $('#' + $(this).data('real-id')).val(datum[id_field]);
 
+                    } else if ($(this).data('type') === "multiple") {
+
+                      if ($('[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').length === 0) {
+                        
+                        $('.bootstrap-tagsinput.help-text#'+$(this).data('real-id'))
+                          .append('<span class="tag label label-lilac">'+ datum[id_field] +'<span id="remove-'+datum['id']+'-'+$(this).data('real-id')+'" data-real-id="'+ $(this).data('real-id')+ '" data-value="'+ datum['id'] + '"data-role="remove"></span></span>');
+
+                        $('#remove-'+datum['id'].replace(/\./g, '\\.')+'-'+$(this).data('real-id')).click(function(){
+                          if ($('input[id="'+$(this).data('real-id')+'"]').length > 1) {
+                            $('input[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').remove();
+                          } else {
+                            $('input[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').value = "";
+                          }
+                          $(this).parent().remove();
+                        });
+
+                          $('input[id="' + $(this).data('real-id') + '"]').last().clone().appendTo($('#' + $(this).data('real-id')).last().parent()).val(datum['id']);
+                      }
+                      $('.typeahead').typeahead('close');
+                    }
+                })
+                .on('typeahead:close', function(event) {
+                  if ($(this).data('type') === "multiple" ) {
+                    $(this).typeahead('val', '');
+                  }
                 })
                 .on('typeahead:change', function (event) {
                     // console.log('change', event, $(this).val(), $(this).attr('name'));
                     if($(this).val().trim() === '') $('#' + $(this).data('real-id')).val('');
                 });
+
+                if ($('.typeahead').find('[data-type="multiple"]')) {
+                  if ($('span').find('[data-role="remove"]').length) {
+                    $('span').find('[data-role="remove"]').click(function(){
+                      if ($('input[id="'+$(this).data('real-id')+'"]').length > 1) {
+                        $('input[id="'+$(this).data('real-id')+'"][value="'+$(this).data('value')+'"]').remove();
+                      } else {
+                        $('input[id="'+$(this).data('real-id')+'"][value="'+$(this).data('value')+'"]').value = "";
+                      }
+                      $(this).parent().remove();
+                    });
+                  }
+                }
         });
 
         // Tags input fields
@@ -252,6 +292,17 @@ $(function(){
             tagClass: 'label label-lilac',
             maxTags: maxTags
           };
+          // Convert default values to object if non data-values defined
+          if(!values || !values.length) {
+            values = [];
+            $this.val().split(',').forEach(function(val) {
+                var o = {};
+                o[itemValue] = val;
+                o[itemText] = val;
+                values.push(o);
+            });
+          }
+          // console.log('tags input ops', ops, 'values', values, $this.val());
 
           if(url) {
             var tags = new Bloodhound({
@@ -304,7 +355,6 @@ $(function(){
 
           $this.tagsinput(ops);
           values.forEach(function(tag) {
-            // console.log('add',tag);
             $this.tagsinput('add', tag);
           });
 
@@ -394,7 +444,7 @@ $(function(){
                   // console.log('success', result, result.files);
                   if(result && result.files) {
                     var files = $.map(result.files, function(file) {
-                      return IMG_URL + '/600x600/' + file.name;
+                      return IMG_URL + '/700x0/' + file.name;
                     });
                     callback('success', files);
                   } else {

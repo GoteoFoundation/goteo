@@ -9,7 +9,7 @@ node-footer-title-creators: Impulsores
 node-footer-title-help: 'Necesitas ayuda?'
 node-footer-title-investors: Cofinanciadores
 node-footer-title-social: Síguenos
-node-header-sponsorby: 'Con el soporte de:'
+node-header-sponsorby: 'Apoyan este espacio'
 node-home-calls-headers: Convocatorias
 node-home-posts-header: Novedades
 node-side-searcher-bycategory: 'Por categoría'
@@ -31,3 +31,6 @@ node-side-summary-success: Exitosos
 node-side-summary-supporters: Colaboradores
 node-stats-title: 'Datos de impacto'
 node-projects-title: 'Proyectos'
+node-resources-title: '¿Qué te hace falta?'
+node-workshops-title: 'No te pierdas nuestras formaciones'
+node-iframe-title: 'Mapa de influencia del canal'
