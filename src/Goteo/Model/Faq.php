@@ -78,6 +78,45 @@ class Faq extends \Goteo\Core\Model {
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
+     /*
+     * List of FAQs
+     */
+    public static function getList ($filters = array(), $offset = 0, $limit = 0, $count = false) {
+        $lang = Lang::current();
+        $sqlWhere = array();
+        $values = array();
+
+        if (isset($filters['section'])) {
+            $sqlWhere[]= "faq.section = :section";
+            $values[':section'] = $filters['section'];
+        }
+
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+        $sqlWhere = implode(' AND ', $sqlWhere);
+        if ($sqlWhere) {
+            $sqlWhere = "WHERE " . $sqlWhere;
+        } else {
+            $sqlWhere = '';
+        }
+
+        $sql="SELECT
+                    faq.id as id,
+                    faq.node as node,
+                    faq.section as section,
+                    $fields,
+                    faq.order as `order`
+                FROM faq
+                $joins
+                $sqlWhere
+                ORDER BY `order` ASC";
+
+        // die(\sqldbg($sql, $values) );
+        $query = static::query($sql, $values);
+
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    }
+
     public function validate (&$errors = array()) {
         if (empty($this->node))
             $errors[] = 'Missing node';

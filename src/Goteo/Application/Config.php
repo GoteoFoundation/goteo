@@ -71,7 +71,7 @@ use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\Routing\Route;
 
 class Config {
-    static public $trans_groups = [
+    static public array $trans_groups = [
         'home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs',
         'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog',
         'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate',
@@ -341,6 +341,7 @@ class Config {
         AdminController::addSubController(ChannelStoryAdminController::class);
         AdminController::addSubController(ChannelProjectsAdminController::class);
         AdminController::addSubController(ImpactDataAdminController::class);
+        AdminController::addSubController(FaqAdminController::class);
     }
 
     static public function addLegacyAdminControllers()
