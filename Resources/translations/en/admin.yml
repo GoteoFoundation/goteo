@@ -290,3 +290,7 @@ mandatory-filter-description: Missing description
 mandatory-filter-role: Missing role
 
 admin-node-iframe: Iframe
+
+admin-faqs: Faqs
+admin-faq-add: Add Faq
+admin-faq-pending: Check as translation is pending

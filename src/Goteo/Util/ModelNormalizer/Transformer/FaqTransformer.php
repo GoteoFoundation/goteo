@@ -27,8 +27,8 @@ class FaqTransformer extends AbstractTransformer {
     public function getActions() {
         if(!$u = $this->getUser()) return [];
         $ret = [
-            'edit' => '/admin/filter/' . $this->model->id . '/edit',
-            'delete' => 'admin/faq/' . $this->model->id . '/delete'
+            'edit' => '/admin/faq/edit/' . $this->model->id,
+            'delete' => '/admin/faq/delete/' . $this->model->id
         ];
 
         return $ret;

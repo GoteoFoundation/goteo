@@ -7,17 +7,17 @@ $this->section('admin-search-box-addons');
 ?>
 
 <div>
-    <select id="sections-filter" name="sections-list" class="form-control" style="margin-bottom:1em;" onchange="goChannelPromote()">
-        <?php if (!$this->selectedNode) : ?>
+    <select id="sections-filter" name="sections-list" class="form-control" style="margin-bottom:1em;" onchange="window.location.href='/admin/faq/' + this.value">
+        <?php if (!$this->current_section) : ?>
         <option selected="selected" hidden></option>
         <?php endif; ?>
-        <?php foreach ($this->sections as $nodeId => $nodeName) : ?>
-        <option value="<?php echo $nodeId; ?>" <?php if ($nodeId == $this->selectedNode) echo 'selected="selected"'; ?>><?php echo $nodeName; ?></option>
+        <?php foreach ($this->faq_sections as $section => $section_name) : ?>
+        <option value="<?php echo $section; ?>" <?php if ($section == $this->current_section) echo 'selected="selected"'; ?>><?php echo $section_name; ?></option>
         <?php endforeach; ?>
     </select>
 </div>
 
-<a class="btn btn-cyan" href="/add"><i class="fa fa-plus"></i> <?= $this->text('admin-faqs-add') ?></a>
+<a class="btn btn-cyan" href="/admin/faq/add"><i class="fa fa-plus"></i> <?= $this->text('admin-faq-add') ?></a>
 
 <?php $this->replace() ?>
 

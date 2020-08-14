@@ -39,24 +39,28 @@ class FaqAdminController extends AbstractAdminController
                 ['_controller' => __CLASS__ . "::listAction"]
             ),
             new Route(
+                '/add',
+                ['_controller' => __CLASS__ . "::editAction"]
+            ),
+            new Route(
+                '/edit/{id}',
+                ['_controller' => __CLASS__ . "::editAction"]
+            ),
+            new Route(
+                '/delete/{id}',
+                ['_controller' => __CLASS__ . "::deleteAction"]
+            ),
+            new Route(
                 '/{section}',
                 ['_controller' => __CLASS__ . "::listAction"]
             ),
-            new Route(
-                '/{section}/add',
-                ['_controller' => __CLASS__ . "::addAction"]
-            ),
-            new Route(
-                '/{section}/edit/{id}',
-                ['_controller' => __CLASS__ . "::addAction"]
-            )
         ];
     }
 
     public function listAction($section = null, Request $request)
     {
         if ($section) {
-            $filters['subject'] = $section;
+            $filters['section'] = $section;
         }
 
         $limit = 25;
@@ -64,21 +68,63 @@ class FaqAdminController extends AbstractAdminController
 
         $sections = Faq::sections();
         $list = Faq::getList($filters, $page, $limit);
-        $list = Faq::getList($filters, $page, $limit, true);
+        $total = Faq::getList($filters, $page, $limit, true);
 
-        // $list = Communication::getList($filters, $page * $limit, $limit, false, Config::get('lang'));
-        // $total = Communication::getList($filters, 0, $limit, true, Config::get('lang'));
         return $this->viewResponse('admin/faq/list', [
             'list' => $list,
             'total' => $total,
             'limit' => $limit,
-            'sections' => $sections
+            'faq_sections' => $sections,
+            'current_section' => $section
         ]);
         
     }   
 
-    public function addAction($id = null, Request $request)
+    public function editAction($id = null, Request $request)
     {
+        if ($id) {
+            $faq = Faq::get($id);
+        } else {
+            $faq = new Faq();
+        }
+
+        $processor = $this->getModelForm('AdminFaq', $faq, (array) $faq, Array(), $request);
+        $processor->createForm();
+        $form = $processor->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $request->isMethod('post')) {
+            try {
+                $processor->save($form);
+                Message::info(Text::get('admin-' . ($id ? 'edit' : 'add') . '-entry-ok'));
+                return $this->redirect("/admin/faq/" . $faq->section);
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+
+        return $this->viewResponse('admin/faq/edit', [
+            'form' => $form->createView()
+        ]);
     }
+
+    public function deleteAction($id, Request $request) {
+        
+        try {
+            $faq = Faq::get($id);
+        } catch (ModelNotFoundException $exception) {
+            Message::error($exception->getMessage());
+        }
+
+
+        try {
+            $faq->dbDelete();
+            Message::info(Text::get('admin-remove-entry-ok'));
+        } catch (\PDOException $e) {
+          Message::error($e->getMessage());  
+        } 
+
+        return $this->redirect('/admin/faq/' . $faq->section);
+	}
+
 
 }
