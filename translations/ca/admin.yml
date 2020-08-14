@@ -294,3 +294,6 @@ mandatory-filter-description: Manca una descripció
 mandatory-filter-role: Manca un rol
 admin-node-iframe: Iframe
 admin-impact_data: "Dades d'impacte"
+admin-faqs: Faqs
+admin-faq-add: Afegir Faq
+admin-faq-pending: "Marcar com pendent de traduïr"

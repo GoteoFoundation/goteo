@@ -100,6 +100,15 @@ class Faq extends \Goteo\Core\Model {
             $sqlWhere = '';
         }
 
+        if ($count) {
+            $sql = "SELECT count(faq.id)
+                    FROM faq
+                    $joins
+                    $sqlWhere
+                    ";
+            return (int) self::query($sql, $values)->fetchColumn();
+        }
+
         $sql="SELECT
                     faq.id as id,
                     faq.node as node,
@@ -109,7 +118,8 @@ class Faq extends \Goteo\Core\Model {
                 FROM faq
                 $joins
                 $sqlWhere
-                ORDER BY `order` ASC";
+                ORDER BY `order` ASC
+                LIMIT $offset, $limit";
 
         // die(\sqldbg($sql, $values) );
         $query = static::query($sql, $values);

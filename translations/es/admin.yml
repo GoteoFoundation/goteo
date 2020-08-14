@@ -590,12 +590,12 @@ mandatory-filter-description: Falta descripción
 mandatory-filter-role: Falta un rol
 
 admin-node-iframe: Iframe
-
-
 admin-channel-resource: 'Recursos Canal'
 admin-channel-resource-add: 'Crear recurso'
 admin-channel-projects-add: "Añadir proyecto"
 admin-channel-projects-not-exists: "No existe esta relación"
-
 admin-posts: 'Posts'
 admin-impact_data: "Datos de impacto"
+admin-faqs: Faqs
+admin-faq-add: Añadir Faq
+admin-faq-pending: "Marcar com pendiente de traducir"

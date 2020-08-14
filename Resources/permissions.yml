@@ -1,7 +1,7 @@
 ---
 # Full list of Permissions in Goteo
 #
-# Some permission require to check if the user and the model.id is present in
+# Some permission require checking if the user and the model.id is present in
 # a table.
 #
 # Example:
@@ -236,6 +236,7 @@ admin-module-workshops: # Can access to module WorkshopsAdminController
     model: null
     relational: null
 
+<<<<<<< HEAD
 admin-module-channels: # Can access to modules Channel*AdminController
     model: null
     relational: null
@@ -249,6 +250,10 @@ admin-module-impact_data: # Can access to module ImpactDataAdminController
     relational: null
 
 admin-module-communication: # Can access to module CommunicationAdminController
+    model: null
+    relational: null
+
+admin-module-faqs: # Can access to module FaqAdminController
     model: null
     relational: null
 
