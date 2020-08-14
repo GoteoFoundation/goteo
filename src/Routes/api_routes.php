@@ -477,6 +477,12 @@ $api->add('api-questionnaire-documents-upload', new Route(
     array('POST') // methods
 ));
 
+// Stories sort up/down arbitrarily (use the PUT method to sort)
+$api->add('api-faq-sort', new Route(
+    '/faq/{id}/sort',
+    array('_controller' => 'Goteo\Controller\Api\FaqApiController::faqSortAction'
+        )
+));
 
 
 return $api;
