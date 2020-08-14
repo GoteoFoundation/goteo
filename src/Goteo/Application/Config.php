@@ -213,7 +213,7 @@ class Config {
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommunicationAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FilterAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FaqAdminController');
 		
         // TODO: to be replace by the new AdminController
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
@@ -227,7 +227,7 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommonsSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CriteriaSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\HomeSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\GlossarySubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\IconsSubController');
