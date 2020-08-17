@@ -10,10 +10,6 @@
 
         <?php $available = $individual->available(); ?>
 
-        <?php //check if show the exhausted rewards ?>
-        <?php if($available||!$project::hideExhaustedRewards($project->id)||!$project->inCampaign()): ?>
-
-
         <?php $units = ($individual->units - $individual->taken); // units left?>
         <div class="side-widget">
 
@@ -33,7 +29,6 @@
                     </div>
                 <?php endif ?>
 
-                <?php endif; ?>
             </div>
 
 

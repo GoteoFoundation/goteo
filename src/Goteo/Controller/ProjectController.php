@@ -218,13 +218,20 @@ class ProjectController extends \Goteo\Core\Controller {
             // recompensas
             $viewData['individual_rewards'] = [];
             foreach ($project->getIndividualRewards(Lang::current(false)) as $reward) {
-                $reward->none  = false;
-                $reward->taken = $reward->getTaken();// cofinanciadores quehan optado por esta recompensas
-                // si controla unidades de esta recompensa, mirar si quedan
-                if ($reward->units > 0 && $reward->taken >= $reward->units) {
-                    $reward->none = true;
+
+                //check if show the exhausted rewards
+                if($reward->available()||!$project::hideExhaustedRewards($project->id)||!$project->inCampaign())
+                {
+
+                    $reward->none  = false;
+                    $reward->taken = $reward->getTaken();// cofinanciadores quehan optado por esta recompensas
+                    // si controla unidades de esta recompensa, mirar si quedan
+                    if ($reward->units > 0 && $reward->taken >= $reward->units) {
+                        $reward->none = true;
+                    }
+                    $viewData['individual_rewards'][] = $reward;
                 }
-                $viewData['individual_rewards'][] = $reward;
+
             }
 
             // retornos adicionales (bonus)
