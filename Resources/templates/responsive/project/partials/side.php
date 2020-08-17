@@ -9,6 +9,11 @@
         <?php foreach ($this->individual_rewards as $individual) : ?>
 
         <?php $available = $individual->available(); ?>
+
+        <?php //check if show the exhausted rewards ?>
+        <?php if($available||!$project::hideExhaustedRewards($project->id)||!$project->inCampaign()): ?>
+
+
         <?php $units = ($individual->units - $individual->taken); // units left?>
         <div class="side-widget">
 
@@ -43,6 +48,9 @@
             <?php endif; ?>
 
         </div>
+
+        <?php endif ?>
+        
         <?php endforeach ?>
 
         <h2 class="green-title spacer">

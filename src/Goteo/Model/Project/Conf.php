@@ -217,6 +217,23 @@ namespace Goteo\Model\Project {
         }
 
 
+        /**
+         * Check if is activated the option to hide exhausted rewards
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
+        public static function hideExhaustedRewards($id) {
+            try {
+                $query = static::query("SELECT hide_exhausted_rewards FROM project_conf WHERE project = ?", array($id));
+                $hide_exhausted_rewards = $query->fetchColumn();
+                
+                return ($hide_exhausted_rewards == 1);
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
 
         /**
          * Cambiar el numero de días para que termine la ronda esta noche
