@@ -28,6 +28,13 @@ $faq->add('faq-section', new Route(
     ]
 ));
 
+$faq->add('faq-individual', new Route(
+    '/{section}/{faq}',
+    [
+        '_controller' => 'Goteo\Controller\FaqController::individualAction'
+    ]
+));
+
 
 
 return $faq;
