@@ -2,7 +2,6 @@
 
 <?php $this->section('faq-content') ?>
 
-    <nav class="container-fluid" style="background-color:#19b4b2; height:55px;"></nav>
   <!-- Start -- Cesc -->
     <header id="header_faqs" class="container-fluid home_faqs">
 		<div class="container barra_superior">
@@ -68,12 +67,5 @@
         </article>
       </div>
     </section>
-    <!-- The end -- Cesc -->
-    <footer class="container-fluid">
-      <div class="row">
-        <div class="col-12" style="background-color:#ddf2f2; height:84px;"></div>
-        <div class="col-12" style="background-color:#333333; height:117px;"></div>
-      </div>
-    </footer>
- 
+   
 <?php $this->replace() ?>

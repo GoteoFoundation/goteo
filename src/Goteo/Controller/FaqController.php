@@ -50,10 +50,16 @@ class FaqController extends \Goteo\Core\Controller {
     {
 
         return $this->viewResponse('faq/section', [
-            'post' => $post,
-            'blog_sections'     => $blog_sections,
-            'related_posts' => $related_posts,
-            'author' => $author
+            
+        ]);
+
+    }
+
+    public function individualAction($faq, Request $request)
+    {
+
+        return $this->viewResponse('faq/individual', [
+            
         ]);
 
     }
