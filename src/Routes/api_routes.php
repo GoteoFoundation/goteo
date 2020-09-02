@@ -71,6 +71,12 @@ $api->add('api-geoloc-locate', new Route(
 
 
 // Blog
+$api->add('api-blog-posts', new Route(
+    '/blog/posts',
+    array('_controller' => 'Goteo\Controller\Api\BlogApiController::postsAction',
+        )
+));
+
 // Tags list
 $api->add('api-blog-tags', new Route(
     '/blog/tags',
@@ -471,6 +477,12 @@ $api->add('api-questionnaire-documents-upload', new Route(
     array('POST') // methods
 ));
 
+// Stories sort up/down arbitrarily (use the PUT method to sort)
+$api->add('api-faq-sort', new Route(
+    '/faq/{id}/sort',
+    array('_controller' => 'Goteo\Controller\Api\FaqApiController::faqSortAction'
+        )
+));
 
 
 return $api;

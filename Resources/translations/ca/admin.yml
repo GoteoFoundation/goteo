@@ -105,6 +105,10 @@ admin-storys: Histories d'usuaris a Goteo
 admin-stories: Histories d'usuaris a Goteo
 admin-stories-add: Crea una nova història
 admin-stories-edit: Editant l'història %s
+admin-channelstory-add: Afegir història al canal
+admin-channelstory-submit: Guardar història
+admin-channelpost-add: Afegir Post al canal
+admin-channelpost-submit: Guardar Post
 admin-categories: 'Categories i àmbits'
 admin-categories-if-empty-then-asset: 'Si es deixa buit es farà servir l''icona per defecte: %s'
 admin-category-add: Crea una nova categoria
@@ -257,3 +261,7 @@ mandatory-filter-description: Manca una descripció
 mandatory-filter-role: Manca un rol
 
 admin-node-iframe: Iframe
+
+admin-faqs: Faqs
+admin-faq-add: Afegir Faq
+admin-faq-pending: "Marcar com pendent de traduïr"
