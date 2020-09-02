@@ -66,6 +66,7 @@ class MapsApiController extends AbstractApiController {
                 'title' => $workshop->title,
                 'subtitle' => $workshop->subtitle,
                 'workshop_location' => $workshop->getLocation(),
+                'image' => Image::get($workshop->header_image)->getLink(120,120),
                 'popup' => View::render('map/partials/workshop_popup.php', array('workshop' => $workshop))
               ];
               return $ob;

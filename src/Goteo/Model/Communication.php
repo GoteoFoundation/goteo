@@ -310,6 +310,8 @@ class Communication extends \Goteo\Core\Model {
         
         if ($mails) {
             foreach($mails as $mail) {
+                if ($active)
+                    break;
                 if ($mail->getSender())
                     $active = $active || $mail->getSender()->isActive();
             }
@@ -320,12 +322,13 @@ class Communication extends \Goteo\Core\Model {
 
     public function isSent() {
         $mails = Mail::getFromCommunicationId($this->id);
-        $sent = 0;
+        $sent = true;
 
         if ($mails) {
             foreach($mails as $mail) {
                 if ($mail->getSender())
-                    $sent = $sent && $mail->getSender()->getStatusObject()->sent;
+                    if (!$mail->getSender()->getStatusObject()->sent);
+                        return false;
             }
         }
         

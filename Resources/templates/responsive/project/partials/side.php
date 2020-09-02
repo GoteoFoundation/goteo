@@ -9,6 +9,7 @@
         <?php foreach ($this->individual_rewards as $individual) : ?>
 
         <?php $available = $individual->available(); ?>
+
         <?php $units = ($individual->units - $individual->taken); // units left?>
         <div class="side-widget">
 
@@ -17,18 +18,22 @@
             <div class="spacer-20"><?= $this->markdown($individual->description) ?></div>
 
             <div class="investors">
-                <div><?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?></div>
+                <div>
+                    <?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?>   
+                </div>
+                
                 <?php if ($project->inCampaign()): ?>
 
-                <?php if (!$available):  ?>
-                    <div class="left"><?= ' > '.$this->text('invest-reward-none') ?></div>
-                <?php elseif (!empty($individual->units)) : ?>
-                    <div class="left">
-                        <?= ' > '.$this->text('project-rewards-individual_reward-units_left', sprintf("%02d", $units)) ?>
-                    </div>
-                <?php endif ?>
+                    <?php if (!$available):  ?>
+                        <div class="left"><?= ' > '.$this->text('invest-reward-none') ?></div>
+                    <?php elseif (!empty($individual->units)) : ?>
+                        <div class="left">
+                            <?= ' > '.$this->text('project-rewards-individual_reward-units_left', sprintf("%02d", $units)) ?>
+                        </div>
+                    <?php endif ?>
 
                 <?php endif; ?>
+
             </div>
 
 
@@ -43,6 +48,7 @@
             <?php endif; ?>
 
         </div>
+        
         <?php endforeach ?>
 
         <h2 class="green-title spacer">

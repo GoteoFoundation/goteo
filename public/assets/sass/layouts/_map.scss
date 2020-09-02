@@ -11,7 +11,7 @@ body {
 
   padding: 0;
   margin: 0;
-  margin-bottom: unset;
+  margin-bottom: unset !important;
 
   .leaflet-popup-content {
     .project {

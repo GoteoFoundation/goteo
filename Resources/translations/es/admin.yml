@@ -514,6 +514,11 @@ admin-filter-predefined-date: 'Fecha predeterminada'
 admin-filter-predefined-date-choose: 'Puedes seleccionar una fecha predeterminada'
 admin-filter-forced: 'Forzar filtro'
 admin-filter-forced-help: 'Si seleccionas esta opción se aplicarán los filtros independientemente de lo que haya escodigo el usuario como preferencia para el envío de información por parte de la plataforma.'
+admin-filter-project-status: Estado del proyecto
+admin-filter-invest-status: Estado de la donación
+admin-filter-project-location: Ubicación del proyecto
+admin-filter-donor-location: Ubicación del donante
+
 admin-mail-body: 'Cuerpo del mensaje'
 
 admin-stats-donations: 'Donaciones'
