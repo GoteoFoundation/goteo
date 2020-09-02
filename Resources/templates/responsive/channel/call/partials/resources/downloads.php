@@ -7,7 +7,7 @@
 		<?php $image=$item->getImage(); ?>
 		<div class="row item">
 			<div class="col-md-2 col-xs-12 img">
-				<img class="responsive" src="<?= $image->getLink(200, 150, true) ?>">
+				<img class="img-responsive" src="<?= $image->getLink(400, 300, true) ?>">
 			</div>
 			<div class="col-md-8 col-xs-12 content">
 				<h2 class="category">

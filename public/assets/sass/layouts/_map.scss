@@ -1,0 +1,105 @@
+@import "compass/css3";
+
+/* map styles */
+
+html, body, #map {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+
+  padding: 0;
+  margin: 0;
+  margin-bottom: unset !important;
+
+  .leaflet-popup-content {
+    .project {
+      width: 340px;
+      overflow: hidden;
+      height: max-content;
+
+      .top {
+        border-bottom: 1px solid #ccc;
+        height: max-content;
+        display: inline-block;
+        font-size: 14px;
+
+        img {
+          height: 72px;
+          width: 118px;
+        }
+      }
+
+      .left {
+        float:left;
+      }
+      .right {
+        float: left;
+        width: 200px;
+        margin-left:10px;
+      }
+
+      .bottom {
+        display: flex;
+        justify-content: space-around;
+      }
+    }
+
+    .workshop {
+      width: 340px;
+      overflow: hidden;
+      display: flex;
+
+      .left {
+        float:left;
+      }
+
+      .right {
+        float: left;
+        width: 200px;
+        margin-left: 10px;
+      }
+      img {
+        width: 118px;
+      }
+    }
+  }
+
+  .map-layouts {
+    position: absolute;
+    z-index: 1000;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+
+    .btn {
+      margin: 0px 20px 0px 20px;
+      text-transform: uppercase;
+
+      img {
+        width: 30px;
+
+      }
+      .title {
+        display: inline;
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-xs + 1) {
+    .map-layouts {
+      display: grid;
+  
+      .btn {
+        margin: 0px 0px 20px 0px;
+      }
+    }
+  }
+}

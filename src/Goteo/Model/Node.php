@@ -839,7 +839,7 @@ class Node extends \Goteo\Core\Model {
 
     }
 
-    private function updateData () {
+    public function updateData () {
         $values = array(':node' => $this->id);
         $data = array();
 

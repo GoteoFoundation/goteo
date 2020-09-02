@@ -79,6 +79,7 @@ class Call extends \Goteo\Core\Model {
     $apply, // como publicar un convocatoria
     $legal, // terminos y condiciones
     $dossier, // url del dosier informativo
+    $selection_result, // url selection results
     $tweet, // texto con los hashtags en twitter
     $fbappid = null, // id de la app de facebook
     $categories = array(),
@@ -109,7 +110,7 @@ class Call extends \Goteo\Core\Model {
 
 
     public static function getLangFields() {
-        return ['name', 'subtitle', 'description', 'description_summary', 'description_nav', 'whom', 'apply', 'legal', 'dossier', 'tweet', 'resources'];
+        return ['name', 'subtitle', 'description', 'description_summary', 'description_nav', 'whom', 'apply', 'legal', 'dossier', 'selection_result', 'tweet', 'resources'];
     }
 
     /**
@@ -728,6 +729,7 @@ class Call extends \Goteo\Core\Model {
                 'apply',
                 'legal',
                 'dossier',
+                'selection_result',
                 'tweet',
                 'fbappid',
                 'call_location',

@@ -163,6 +163,14 @@ class Contract extends \Goteo\Core\Model {
         // persona física o representante
         $contract->name = $personalData->contract_name;
         $contract->nif = $personalData->contract_nif;
+        $contract->legal_document_type = $personalData->contract_legal_document_type;
+
+        if ($contract->nif && !isset($contrat->legal_document_type)) {
+            Check::nif($contract->nif, $legal_document_type);
+            if ($legal_document_type)
+                $contract->legal_document_type = $legal_document_type;
+        }
+        
         $contract->address = $personalData->address;
         $contract->location = $personalData->location;
         $contract->region = '';
@@ -444,14 +452,17 @@ class Contract extends \Goteo\Core\Model {
             SELECT
                 project.id as id,
                 contract.number as number,
-                project.name as project
+                project.name as project,
+                contract.nif as nif,
+                contract.legal_document_type as legal_document_type,
+                contract.entity_cif as entity_cif
             FROM contract
             INNER JOIN project
                 ON project.id = contract.project
             ORDER BY project.name ASC
             ");
 
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
             $item->status = self::getStatus($item->id);
             $list[$item->id] = $item;
         }
