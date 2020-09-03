@@ -283,6 +283,7 @@ admin-filter-forced-help: 'If you select this option, the filters will be applie
 admin-filter-project-status: Project status
 admin-filter-invest-status: Invest status
 admin-filter-project-location: "Project's location"
+admin-filter-location: "Locaiton to be used by the filter"
 admin-filter-donor-location: "Donor's location"
 admin-mail-body: 'Body of the message'
 mandatory-filter-name: Missing name

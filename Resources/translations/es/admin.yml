@@ -517,6 +517,7 @@ admin-filter-forced-help: 'Si seleccionas esta opción se aplicarán los filtros
 admin-filter-project-status: Estado del proyecto
 admin-filter-invest-status: Estado de la donación
 admin-filter-project-location: Ubicación del proyecto
+admin-filter-location: Ubicación a utilizar en el filtro
 admin-filter-donor-location: Ubicación del donante
 
 admin-mail-body: 'Cuerpo del mensaje'
