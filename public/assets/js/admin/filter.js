@@ -45,8 +45,9 @@ $(function () {
     var foundationdonor = $('#form-foundationdonor');
     var wallet = $('#form-wallet');
     var cert = $('#form-cert');
-    var project_location = $('#form-project_location');
-    var donor_location = $('#form-donor_location');
+    // var project_location = $('#form-project_location');
+    // var donor_location = $('#form-donor_location');
+    var filter_location = $('#form-filter_location');
 
     function changeForm(role){
 
@@ -72,10 +73,12 @@ $(function () {
             cert.val = '';
             wallet.hide();
             wallet.val = '';
-            project_location.hide();
-            project_location.val = '';
-            donor_location.hide();
-            donor_location.val = '';
+            // project_location.hide();
+            // project_location.val = '';
+            // donor_location.hide();
+            // donor_location.val = '';
+            filter_location.hide();
+            filter_location.val = '';
         }
         else if (role == "donor") {
             startdate.show();
@@ -93,9 +96,10 @@ $(function () {
             foundationdonor.show();
             cert.show();
             wallet.show();
-            project_location.hide();
-            project_location.val = '';
-            donor_location.show();
+            // project_location.hide();
+            // project_location.val = '';
+            // donor_location.show();
+            filter_location.show();
         }
         else if (role == "no-donor") {
             startdate.show();
@@ -113,9 +117,11 @@ $(function () {
             foundationdonor.show();
             cert.hide();
             wallet.show();
-            project_location.hide();
-            donor_location.hide();
-            donor_location.val = '';
+            // project_location.hide();
+            // donor_location.hide();
+            // donor_location.val = '';
+            filter_location.hide();
+            filter_location.val = '';
         }
         else if (role == "promoter") { 
             startdate.show();
@@ -137,9 +143,10 @@ $(function () {
             cert.val = '';
             wallet.hide();
             wallet.val = '';
-            project_location.show();
-            donor_location.hide();
-            donor_location.val = '';
+            // project_location.show();
+            filter_location.show();
+            // donor_location.hide();
+            // donor_location.val = '';
         }
         else if (role == "matcher") {
             startdate.show();
@@ -162,10 +169,12 @@ $(function () {
             cert.val = '';
             wallet.hide();
             wallet.val = '';
-            project_location.hide();
-            project_location.val = '';
-            donor_location.hide();
-            donor_location.val = '';
+            // project_location.hide();
+            // project_location.val = '';
+            // donor_location.hide();
+            // donor_location.val = '';
+            filter_location.hide();
+            filter_location.val = '';
             matchers.show();
         }
     }

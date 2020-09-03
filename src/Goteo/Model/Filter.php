@@ -15,6 +15,7 @@ use Goteo\Library\Text;
 use Goteo\Application\Message;
 use Goteo\Model\User;
 use Goteo\Model\User\DonorLocation;
+use Goteo\Model\Filter\FilterLocation;
 use Goteo\Application\Exception\ModelNotFoundException;
 use DateTime;
 
@@ -48,14 +49,15 @@ class Filter extends \Goteo\Core\Model {
         $typeofdonor,
         $foundationdonor,
         $wallet,
-        $project_latitude,
-        $project_longitude,
-        $project_radius,
-        $project_location,
-        $donor_latitude,
-        $donor_longitude,
-        $donor_radius,
-        $donor_location,
+        $filter_location,
+        // $project_latitude,
+        // $project_longitude,
+        // $project_radius,
+        // $project_location,
+        // $donor_latitude,
+        // $donor_longitude,
+        // $donor_radius,
+        // $donor_location,
         $projects = [],
         $calls = [],
         $channels = [],
@@ -72,6 +74,7 @@ class Filter extends \Goteo\Core\Model {
             throw new ModelNotFoundException("[$id] not found");
         }
 
+        $filter->filter_location = FilterLocation::get($id);
         $filter->projects = self::getFilterProject($id);
         $filter->calls = self::getFilterCall($id);
         $filter->channels = self::getFilterNode($id);
@@ -374,20 +377,33 @@ class Filter extends \Goteo\Core\Model {
             'typeofdonor',
             'foundationdonor',
             'wallet',
-            'project_latitude',
-            'project_longitude',
-            'project_radius',
-            'project_location',
-            'donor_latitude',
-            'donor_longitude',
-            'donor_radius',
-            'donor_location',
+            'filter_location',
+            // 'project_latitude',
+            // 'project_longitude',
+            // 'project_radius',
+            // 'project_location',
+            // 'donor_latitude',
+            // 'donor_longitude',
+            // 'donor_radius',
+            // 'donor_location',
             'forced'
         );
         
         
 
         try {
+
+            if($this->filter_location instanceOf FilterLocation) {
+                $this->filter_location->id = $this->id;
+                if($this->filter_location->save($errors)) {
+                    $this->filter_location = $this->filter_location->location ? $this->filter_location->location : $this->filter_location->name;
+                } else {
+                    $fail = true;
+                    unset($this->filter_location);
+                }
+
+            }
+
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
             // return true;
@@ -715,11 +731,12 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ") ";
         }
 
-        if ($this->donor_location) {
-            $loc = new DonorLocation();
+        if (isset($this->filter_location)) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new DonorLocation($loc);
             $loc->location = $this->donor_location;
-            $loc->latitude = $this->donor_latitude;
-            $loc->longitude = $this->donor_longitude;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
             $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
 
 
@@ -728,11 +745,12 @@ class Filter extends \Goteo\Core\Model {
 
             $sqlInner .= " INNER JOIN donor_location
                             ON donor_location.id = donor.id ";
-            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor_location');
+            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor.location');
             $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
             $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
             $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
             $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
             $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
             // $values = array_merge($values, $location_parts['params']);
         }
@@ -965,11 +983,12 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ") ";
         }
 
-        if ($this->donor_location) {
-            $loc = new DonorLocation();
+        if (isset($this->filter_location)) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new DonorLocation($loc);
             $loc->location = $this->donor_location;
-            $loc->latitude = $this->donor_latitude;
-            $loc->longitude = $this->donor_longitude;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
             $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
 
 
@@ -978,11 +997,12 @@ class Filter extends \Goteo\Core\Model {
 
             $sqlInner .= " INNER JOIN donor_location
                             ON donor_location.id = donor.id ";
-            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor_location');
+            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor.location');
             $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
             $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
             $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
             $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
             $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
             // $values = array_merge($values, $location_parts['params']);
         }
@@ -1126,11 +1146,12 @@ class Filter extends \Goteo\Core\Model {
             $values[':status_donated'] = Invest::STATUS_DONATED;
         }
 
-        if ($this->donor_location) {
-            $loc = new DonorLocation();
+        if (isset($this->filter_location)) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new DonorLocation($loc);
             $loc->location = $this->donor_location;
-            $loc->latitude = $this->donor_latitude;
-            $loc->longitude = $this->donor_longitude;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
             $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
 
 
@@ -1139,11 +1160,12 @@ class Filter extends \Goteo\Core\Model {
 
             $sqlInner .= " INNER JOIN donor_location
                             ON donor_location.id = donor.id ";
-            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor_location');
+            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor.location');
             $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
             $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
             $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
             $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
             $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
             // $values = array_merge($values, $location_parts['params']);
         }
@@ -1303,11 +1325,12 @@ class Filter extends \Goteo\Core\Model {
             $values[':status_donated'] = Invest::STATUS_DONATED;
         }
 
-        if ($this->donor_location) {
-            $loc = new DonorLocation();
+        if (isset($this->filter_location)) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new DonorLocation($loc);
             $loc->location = $this->donor_location;
-            $loc->latitude = $this->donor_latitude;
-            $loc->longitude = $this->donor_longitude;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
             $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
 
 
@@ -1316,11 +1339,12 @@ class Filter extends \Goteo\Core\Model {
 
             $sqlInner .= " INNER JOIN donor_location
                             ON donor_location.id = donor.id ";
-            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor_location');
+            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor.location');
             $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
             $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
             $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
             $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
             $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
             // $values = array_merge($values, $location_parts['params']);
         }
