@@ -54,7 +54,7 @@ class GoteoReworkFilterProjectAndInvestStatus
         ALTER TABLE `filter` CHANGE `project_status` `status` VARCHAR(50) DEFAULT NULL;
 
         ALTER TABLE `filter` DROP COLUMN `donor_latitude`;
-        ALTER TBALE `filter` DROP COLUMN `donor_longitude`;
+        ALTER TABLE `filter` DROP COLUMN `donor_longitude`;
         ALTER TABLE `filter` DROP COLUMN `donor_radius`;
         ALTER TABLE `filter` DROP COLUMN `donor_location`;
      ";
