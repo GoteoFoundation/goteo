@@ -3846,6 +3846,14 @@ class Project extends \Goteo\Core\Model {
         return ProjectConf::showRewardsMosaic($id);
     }
 
+    /*
+     * Hide exhausted rewards
+     * @return: boolean
+     */
+    public static function hideExhaustedRewards($id) {
+        return ProjectConf::hideExhaustedRewards($id);
+    }
+
 
 
     /*

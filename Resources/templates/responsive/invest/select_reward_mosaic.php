@@ -20,11 +20,17 @@ $this->section('main-content');
 
                 <?php $cont=0; ?>
                 <?php foreach($this->rewards as $reward_item): ?>
-                    <?php $cont++; ?>
-                    <?php $clear=0; ?>
-                    <?php if($cont==5) $clear=1; ?>
-                    <?= $this->insert('invest/partials/reward_box_mosaic', ['reward_item' => $reward_item, 'clear' => $clear]) ?>
-                    <?php if($cont==5) $cont=1; ?>
+
+                    <?php //check if show the exhausted rewards ?>
+                    <?php if($reward_item->available()||!$this->project::hideExhaustedRewards($this->project->id)||!$this->project->inCampaign()): ?>
+
+                        <?php $cont++; ?>
+                        <?php $clear=0; ?>
+                        <?php if($cont==5) $clear=1; ?>
+                        <?= $this->insert('invest/partials/reward_box_mosaic', ['reward_item' => $reward_item, 'clear' => $clear]) ?>
+                        <?php if($cont==5) $cont=1; ?>
+
+                    <?php endif; ?>
                 <?php endforeach ?>
 
                 </form>
