@@ -25,11 +25,11 @@
 				<div class="col-lg-6 col-md-7 col-sm-8 col-xs-12">
 					<div>
 						<span class="title">
-						Conocimiento abierto
+						<?= $this->text('channel-call-resources-banner-title') ?>
 						</span>
 					</div>
 					<div class="description">
-						Recursos
+						<?= $this->text('channel-call-resources-banner-description') ?>
 					</div>
 				</div>
 			</div>
@@ -41,7 +41,7 @@
 			<div class="row">
 				<div class="col-md-10 item item-resources">
 					<h5 class="title">
-						Filtra por categorías
+						<?= $this->text('channel-call-resources-filter-title') ?>
 					</h5>	
 				</div>
 			</div>

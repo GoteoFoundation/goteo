@@ -9,9 +9,11 @@
 					</a>
 				</li>
 			<?php foreach ($this->resources_categories as $item): ?>
+					<?php $icon=$item->getIcon(); ?>
 					<li <?= $this->category!=$item->id ? '' : 'class="selected"' ?>>
 						<a href="<?= '/channel/'.$this->channel->id.'/resources/'.$item->slug ?>">
-							<i class="icon icon-resource-<?= $item->icon ?> icon-2x"></i> <?= $item->name ?>
+							<img src="<?= $icon->getLink(0, 25, false)?>">
+							<?= $item->name ?>
 						</a>
 					</li>
 

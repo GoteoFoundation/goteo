@@ -37,9 +37,16 @@ class NodeResourceCategory extends \Goteo\Core\Model {
      * @return  Workshop resource object
      */
     static public function get($id) {
+
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
         $sql="SELECT
-                    node_resource_category.*
+                    node_resource_category.id,
+                    $fields,
+                    node_resource_category.icon
               FROM node_resource_category
+              $joins
               WHERE node_resource_category.id = ?";
         $query = static::query($sql, array($id));
         $item = $query->fetchObject(__CLASS__);
@@ -105,6 +112,21 @@ class NodeResourceCategory extends \Goteo\Core\Model {
          //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    }
+
+
+
+    /**
+     * GetIcon.
+     *
+     * @param   type array  $errors
+     * @return  type bool   true|false
+     */
+    public function getIcon() {
+      if(!$this->iconImageInstance instanceOf Image) {
+          $this->iconImageInstance = new Image($this->icon);
+      }
+      return $this->iconImageInstance;
     }
 
    
