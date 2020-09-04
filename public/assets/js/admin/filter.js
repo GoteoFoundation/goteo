@@ -77,8 +77,7 @@ $(function () {
             // project_location.val = '';
             // donor_location.hide();
             // donor_location.val = '';
-            filter_location.hide();
-            filter_location.val = '';
+            filter_location.show();
         }
         else if (role == "donor") {
             startdate.show();
