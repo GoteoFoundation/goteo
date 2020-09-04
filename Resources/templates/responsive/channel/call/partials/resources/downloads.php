@@ -5,13 +5,15 @@
 
 <?php foreach ($this->resources as $item): ?>
 		<?php $image=$item->getImage(); ?>
+		<?php $category=$item->getCategory(); ?>
+		<?php $icon=$category->getIcon(); ?>
 		<div class="row item">
 			<div class="col-md-2 col-xs-12 img">
 				<img class="img-responsive" src="<?= $image->getLink(400, 300, true) ?>">
 			</div>
 			<div class="col-md-8 col-xs-12 content">
 				<h2 class="category">
-					<i class="icon icon-resource-<?= $item->getCategory()->icon ?> icon-2x"></i> <?= $item->getCategory()->name ?></h2>
+					<img src="<?= $icon->getLink(0, 25, false)?>"> <?= $category->name ?></h2>
 				<div class="description">
 					<h3 class="title"><?= $item->title ?></h2>
 					<?= $item->description ?>
