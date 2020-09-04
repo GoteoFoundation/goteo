@@ -56,6 +56,9 @@ class BlogApiController extends AbstractApiController {
         if($request->query->has('q')) {
             $filters['superglobal'] = $request->query->get('q');
         }
+
+        $filters['blog'] = 1;
+        
         $limit = 25;
         $offset = $page * $limit;
         $list = [];
