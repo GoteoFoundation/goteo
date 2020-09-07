@@ -123,6 +123,7 @@ admin-footprint-add: Crea un nova petjada
 admin-footprint-edit: Editant la petjada %s
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
+admin-posts: 'Posts'
 admin-promote-add: Nou destacat
 admin-promote-submit: Guardar
 admin-promote-already-exists: Aquest projecte ja està destacat
