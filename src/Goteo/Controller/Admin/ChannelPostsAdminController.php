@@ -16,16 +16,16 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Goteo\Application\Config;
 use Goteo\Model\Node;
-use Goteo\Model\Stories;
-use Goteo\Model\Node\NodeStories;
+use Goteo\Model\Node\NodePost;
+use Goteo\Model\Blog\Post as GeneralPost;
 
 use Goteo\Application\Message;
 use Goteo\Library\Text;
 
 
-class ChannelStoryAdminController extends AbstractAdminController
+class ChannelPostsAdminController extends AbstractAdminController
 {
-	protected static $icon = '<i class="fa fa-2x fa-id-card-o"></i>';
+	protected static $icon = '<i class="fa fa-2x fa-file-text-o"></i>';
 
     public static function getGroup() {
         return 'channels';
@@ -36,7 +36,7 @@ class ChannelStoryAdminController extends AbstractAdminController
 			new Route(
 				'/',
 				['_controller' => function () {
-                    return new RedirectResponse("/admin/channelstory/" . Config::get('node'));
+                    return new RedirectResponse("/admin/channelposts/" . Config::get('node'));
                 }]
 			),
 			new Route(
@@ -48,7 +48,7 @@ class ChannelStoryAdminController extends AbstractAdminController
 				['_controller' => __CLASS__ . "::addAction"]
 			),
 			new Route(
-				'/{id}/delete/{stories_id}',
+				'/{id}/delete/{post_id}',
 				['_controller' => __CLASS__ . "::deleteAction"]
 			)
 		];
@@ -63,10 +63,10 @@ class ChannelStoryAdminController extends AbstractAdminController
 		}
 
 		$limit = 20;
-		$list = $channel->getStories();
+		$list = NodePost::getList(['node' => $channel->id], 0, $limit);
 		$total = count($list);
 
-		return $this->viewResponse('admin/channelstories/list', [
+		return $this->viewResponse('admin/channelposts/list', [
 			'selectedNode' => $id,
 			'nodes' => $this->user->getNodeNames(),
 			'list' => $list,
@@ -77,35 +77,35 @@ class ChannelStoryAdminController extends AbstractAdminController
 		}
 		
 		public function addAction($id, Request $request) {
-				if(!$this->user && !$this->user->hasPerm('admin-module-channelstory') )
+				if(!$this->user && !$this->user->hasPerm('admin-module-channel') )
             throw new ControllerAccessDeniedException();
 
         $result = [];
         
         if($request->isMethod('post') && $request->request->has('value')) {
-            $story = Stories::get($request->request->get('value'));
+						$post = GeneralPost::get(intval($request->request->get('value')));
             $channel = Node::get($id);
 
-						if ($channel->addStory($story)) {
-								Message::info(Text::get('admin-channelstory-correct'));
+						if ($channel->addPost($post->id, $errors)) {
+								Message::info(Text::get('admin-channel-correct'));
 						}
 						else {
 								Message::error(implode(', ', $errors));
 						}
 
-        }
-        return $this->jsonResponse($story);
+				}
+        return $this->jsonResponse($post);
 
 		}
 
-		public function deleteAction($id, $stories_id, Request $request) {
-			if(!$this->user && !$this->user->hasPerm('admin-module-channelstory') )
+		public function deleteAction($id, $post_id, Request $request) {
+			if(!$this->user && !$this->user->hasPerm('admin-module-channel') )
 				throw new ControllerAccessDeniedException();
 
-				$node_story = NodeStories::getNodeStory($id, $stories_id);
-				$node_story->dbDelete();
+				$node_post = NodePost::getNodePost($id, $post_id);
+				$node_post->dbDelete();
 
-			return $this->redirect('/admin/channelstory/' . $id);
+			return $this->redirect('/admin/channelposts/' . $id);
 		}
 
 }
