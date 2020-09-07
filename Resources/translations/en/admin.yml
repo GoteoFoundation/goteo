@@ -147,6 +147,7 @@ admin-channels: Channels
 admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
+admin-posts: 'Posts'
 admin-promote-add: 'New promote'
 admin-promote-submit: 'Save'
 admin-promote-already-exists: 'This project is already promoted'
