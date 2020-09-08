@@ -19,6 +19,13 @@ class ChannelPostsTransformer extends AbstractTransformer {
 
     protected $keys = ['id', 'title', 'order'];
 
+    public function getRawValue($key) {
+        if ($key == 'id') {
+            return $this->model->post_id;
+        }
+        return $this->model->{$key};
+    }
+
     public function getId() {
         return $this->model->post_id;
     }

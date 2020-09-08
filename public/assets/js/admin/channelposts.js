@@ -29,7 +29,7 @@ $(function () {
     var settings = {
         apiUrl: function (row) {
             var selected = document.getElementById("nodes-filter").value;
-            return '/channelpost/' + selected + '/' + $(row).find('[data-key="id"]').data('value') + '/sort';
+            return '/api/channelposts/' + selected + '/' + $(row).find('[data-key="id"]').data('value') + '/sort';
         }
     };
     adminOrderColumn('table.model-nodepost', settings);
