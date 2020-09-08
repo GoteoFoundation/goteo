@@ -34,7 +34,7 @@ class NodeStoriesApiController extends AbstractApiController {
             throw new ModelNotFoundException();
 
         $is_owner = $node_story->getUser() ? ($node_story->getUser()->id === $this->user->id) : false;
-        if($this->user->hasPerm('admin-module-channelstory')) {
+        if($this->user->hasPerm('admin-module-channels')) {
             return $node_story;
         }
 
@@ -63,7 +63,7 @@ class NodeStoriesApiController extends AbstractApiController {
                 $result['message'] = 'Sorting failed';
             }
 
-            if(!$this->user || !$this->user->hasPerm('admin-module-channelstory'))
+            if(!$this->user || !$this->user->hasPerm('admin-module-channels'))
                 throw new ControllerAccessDeniedException();
         }
 
