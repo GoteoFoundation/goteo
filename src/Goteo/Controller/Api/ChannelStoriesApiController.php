@@ -21,7 +21,7 @@ use Goteo\Model\Node\NodeStories;
 use Goteo\Library\Text;
 use Goteo\Library\Check;
 
-class NodeStoriesApiController extends AbstractApiController {
+class ChannelStoriesApiController extends AbstractApiController {
 
     protected function validateNodeStory($node_id, $stories_id) {
 
@@ -33,7 +33,6 @@ class NodeStoriesApiController extends AbstractApiController {
         if(!$node_story)
             throw new ModelNotFoundException();
 
-        $is_owner = $node_story->getUser() ? ($node_story->getUser()->id === $this->user->id) : false;
         if($this->user->hasPerm('admin-module-channels')) {
             return $node_story;
         }
@@ -54,7 +53,7 @@ class NodeStoriesApiController extends AbstractApiController {
 
         if($request->isMethod('put') && $request->request->has('value')) {
 
-            $res = Check::reorder($id, $request->request->get('value'), 'node_stories', 'node_id', 'order');
+            $res = Check::reorder($stories_id, $request->request->get('value'), 'node_stories', 'stories_id', 'order');
 
             if($res != $result['value']) {
                 $result['value'] = $res;

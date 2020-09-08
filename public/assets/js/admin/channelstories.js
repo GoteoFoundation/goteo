@@ -29,7 +29,8 @@ $(function () {
     var settings = {
         apiUrl: function (row) {
             var selected = document.getElementById("nodes-filter").value;
-            return '/api/channelstory/' + selected + '/' + $(row).find('[data-key="id"]').data('value') + '/sort';
+            // '/promote/channel/{channel}/id/{id}/sort',
+            return '/api/channelstories/' + selected + '/' + $(row).find('[data-key="id"]').data('value') + '/sort';
         }
     };
     adminOrderColumn('table.model-nodestories', settings);

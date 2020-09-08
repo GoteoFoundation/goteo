@@ -155,8 +155,16 @@ $api->add('api-stories-images-upload', new Route(
 // Node Stories
 // Stories sort up/down arbitrarily (use the PUT method to sort)
 $api->add('api-channelstory-sort', new Route(
-    '/channelstories/{node_id}/{stories_id}sort',
-    array('_controller' => 'Goteo\Controller\Api\NodeStoriesApiController::nodestoriesSortAction'
+    '/channelstories/{node_id}/{stories_id}/sort',
+    array('_controller' => 'Goteo\Controller\Api\ChannelStoriesApiController::nodestoriesSortAction'
+        )
+));
+
+// Node Posts
+// Post sort up/down arbitrarily (use the PUT method to sort)
+$api->add('api-channelpost-sort', new Route(
+    '/channelposts/{node_id}/{post_id}/sort',
+    array('_controller' => 'Goteo\Controller\Api\ChannelPostsApiController::channelpostsSortAction'
         )
 ));
 
