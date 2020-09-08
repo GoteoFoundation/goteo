@@ -29,14 +29,13 @@ $(function () {
     var settings = {
         apiUrl: function (row) {
             var selected = document.getElementById("nodes-filter").value;
-            // '/promote/channel/{channel}/id/{id}/sort',
-            return '/api/channelstories/' + selected + '/' + $(row).find('[data-key="id"]').data('value') + '/sort';
+            return '/api/channelposts/' + selected + '/' + $(row).find('[data-key="id"]').data('value') + '/sort';
         }
     };
-    adminOrderColumn('table.model-nodestories', settings);
+    adminOrderColumn('table.model-nodepost', settings);
 
     $(window).on("pronto.render", function (e) {
-        adminOrderColumn('table.model-model-model-nodestories', settings);
+        adminOrderColumn('table.model-nodepost', settings);
     });
 
 });
