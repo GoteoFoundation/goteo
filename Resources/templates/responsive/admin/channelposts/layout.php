@@ -16,6 +16,6 @@ $this->section('admin-container-head');
 
 <?php $this->section('footer') ?>
 
-<script type="text/javascript" src="<?= $this->asset('js/admin/channelstories.js') ?>"></script>
+<script type="text/javascript" src="<?= $this->asset('js/admin/channelposts.js') ?>"></script>
 
 <?php $this->append() ?>
