@@ -77,7 +77,7 @@ class ChannelStoryAdminController extends AbstractAdminController
 		}
 		
 		public function addAction($id, Request $request) {
-				if(!$this->user && !$this->user->hasPerm('admin-module-channelstory') )
+				if(!$this->user && !$this->user->hasPerm('admin-module-channels') )
             throw new ControllerAccessDeniedException();
 
         $result = [];
@@ -99,7 +99,7 @@ class ChannelStoryAdminController extends AbstractAdminController
 		}
 
 		public function deleteAction($id, $stories_id, Request $request) {
-			if(!$this->user && !$this->user->hasPerm('admin-module-channelstory') )
+			if(!$this->user && !$this->user->hasPerm('admin-module-channels') )
 				throw new ControllerAccessDeniedException();
 
 				$node_story = NodeStories::getNodeStory($id, $stories_id);
