@@ -87,7 +87,7 @@ class ChannelPostsAdminController extends AbstractAdminController
             $channel = Node::get($id);
 
 						if ($channel->addPost($post->id, $errors)) {
-								Message::info(Text::get('admin-channel-correct'));
+								Message::info(Text::get('admin-channelpost-correct'));
 						}
 						else {
 								Message::error(implode(', ', $errors));
