@@ -46,7 +46,7 @@ class NodeResource extends \Goteo\Core\Model {
         $sql="SELECT
                     node_resource.*
               FROM node_resource
-              WHERE node_resource.node_id = ?";
+              WHERE node_resource.id = ?";
         $query = static::query($sql, array($id));
         $item = $query->fetchObject(__CLASS__);
 
@@ -119,6 +119,18 @@ class NodeResource extends \Goteo\Core\Model {
         if (!$this->validate($errors))
             return false;
 
+        // Dropfiles type always return an array, just get the first element if required
+        if($this->image && is_array($this->image)) {
+            $this->image = $this->image[0];
+        } else {
+            $this->image = null;
+        }
+
+        // TODO: handle uploaded files here?
+        // If instanceOf Image, means already uploaded (via API probably), just get the name
+        if($this->image instanceOf Image) 
+            $this->image = $this->image->getName();
+
         $fields = array(
             'id',
             'node_id',
@@ -178,8 +190,8 @@ class NodeResource extends \Goteo\Core\Model {
      * @return  type bool   true|false
      */
     public function validate(&$errors = array()) {
-        if(empty($this->name)) {
-            $errors[] = "Empty name";
+        if(empty($this->title)) {
+            $errors[] = "Empty title";
         }
         return empty($errors);
     }

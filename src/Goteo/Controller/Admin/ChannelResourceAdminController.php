@@ -68,7 +68,7 @@ class ChannelResourceAdminController extends AbstractAdminController {
 		}
 
 		$defaults = (array) $resource;
-		$processor = $this->getModelForm('AdminResourceEdit', $resource, $defaults, [], $request);
+		$processor = $this->getModelForm('AdminChannelResourceEdit', $resource, $defaults, [], $request);
 		$processor->createForm();
 		$processor->getBuilder()
 			->add('submit', 'submit', [
@@ -100,13 +100,13 @@ class ChannelResourceAdminController extends AbstractAdminController {
 			try {
 				$processor->save($form); // Allow save event if does not validate
 				Message::info(Text::get('admin-resource-edit-success'));
-				return $this->redirect('/admin/resource?' . $request->getQueryString());
+				return $this->redirect('/admin/channelresource?' . $request->getQueryString());
 			} catch (FormModelException $e) {
 				Message::error($e->getMessage());
 			}
 		}
 
-		return $this->viewResponse('admin/resource/edit', [
+		return $this->viewResponse('admin/channel/resource/edit', [
 			'form' => $form->createView(),
 			'resource' => $resource,
 			'user' => $user,

@@ -17,21 +17,20 @@ use Goteo\Library\Text;
  */
 class ChannelResourceTransformer extends AbstractTransformer {
 
-    protected $keys = ['id', 'title', 'icon'];
+    protected $keys = ['id', 'image', 'title'];
 
     public function getInfo() {
         return '<strong>'.$this->getTitle().'</strong>';
     }
 
+
     public function getActions() {
         if(!$u = $this->getUser()) return [];
-        $ret = ['edit' => '/admin/workshop/edit/' . $this->model->id];
+        $ret = ['edit' => '/admin/channelresource/edit/' . $this->model->id];
 
         if($this->getUser()->hasPerm('translate-language')) {
-            $ret['translate'] = '/translate/' . $this->getModelName() . '/' . $this->model->id;
+            $ret['translate'] = '/translate/node_resource/' . $this->model->id;
         }
-
-        $ret['preview'] = '/workshop/' . $this->model->id;
 
         return $ret;
     }

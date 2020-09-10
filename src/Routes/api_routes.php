@@ -460,6 +460,16 @@ $api->add('api-workshops-images-upload', new Route(
     array('POST') // methods
 ));
 
+// Workshops images upload (POST method only)
+$api->add('api-channel-resources-images-upload', new Route(
+    '/channel-resources/images',
+    array('_controller' => 'Goteo\Controller\Api\ChannelResourcesApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
 // User images upload (POST method only)
 $api->add('api-questionnaire-documents-upload', new Route(
     '/questionnaire/documents',
