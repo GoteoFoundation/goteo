@@ -53,7 +53,7 @@ class ChannelStoriesApiController extends AbstractApiController {
 
         if($request->isMethod('put') && $request->request->has('value')) {
 
-            $res = Check::reorder($stories_id, $request->request->get('value'), 'node_stories', 'stories_id', 'order');
+            $res = Check::reorder($stories_id, $request->request->get('value'), 'node_stories', 'stories_id', 'order', [ 'node_id' => $node_id]);
 
             if($res != $result['value']) {
                 $result['value'] = $res;
