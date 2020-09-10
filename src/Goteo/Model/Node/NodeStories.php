@@ -75,7 +75,7 @@
       $values = [];
 
       if ($filters['node']) {
-          $filter[] = "node_stories.node_id = :node or stories.node = :node";
+          $filter[] = "node_stories.node_id = :node";
           $values[':node'] = $filters['node'];
       }
 

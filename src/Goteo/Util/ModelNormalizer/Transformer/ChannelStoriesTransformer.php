@@ -19,9 +19,17 @@ class ChannelStoriesTransformer extends AbstractTransformer {
 
     protected $keys = ['id', 'image', 'title'];
 
+    public function getRawValue($key) {
+        if ($key == 'id') {
+            return $this->model->stories_id;
+        }
+        return $this->model->{$key};
+    }
+
     public function getId() {
         return $this->model->stories_id;
     }
+    
     public function getActions() {
         if(!$u = $this->getUser()) return [];
         $ret = ['delete' => '/admin/channelstory/' . $this->model->node_id . '/delete/' . $this->model->stories_id];

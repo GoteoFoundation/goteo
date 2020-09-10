@@ -135,8 +135,11 @@ admin-stories-edit: Editando la historia %s
 
 admin-channelstory-add: Añadir historia al canal
 admin-channelstory-submit: Guardar historia
+admin-channelstory-correct: 'Se ha añadido la historia al canal'
 admin-channelpost-add: Añadir Post al canal
 admin-channelpost-submit: Guardar Post
+admin-channelpost-correct: 'Se ha añadido el post al canal'
+
 
 admin-categories: 'Categorías y ámbitos'
 admin-categories-if-empty-then-asset: 'Si se deja vacío se usará el icono por defecto: %s'
