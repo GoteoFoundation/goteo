@@ -53,8 +53,7 @@ class ChannelPostsApiController extends AbstractApiController {
 
         if($request->isMethod('put') && $request->request->has('value')) {
 
-            $res = Check::reorder($post_id, $request->request->get('value'), 'node_post', 'post_id', 'order');
-
+            $res = Check::reorder($post_id, $request->request->get('value'), 'node_post', 'post_id', 'order', [ 'node_id' => $node_id]);
             if($res != $result['value']) {
                 $result['value'] = $res;
             } else {
