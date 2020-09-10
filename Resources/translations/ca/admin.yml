@@ -107,8 +107,10 @@ admin-stories-add: Crea una nova història
 admin-stories-edit: Editant l'història %s
 admin-channelstory-add: Afegir història al canal
 admin-channelstory-submit: Guardar història
+admin-channelstory-correct: "S'ha afegit la història al canal"
 admin-channelpost-add: Afegir Post al canal
 admin-channelpost-submit: Guardar Post
+admin-channelpost-correct: "S'ha afegit el post al canal"
 admin-categories: 'Categories i àmbits'
 admin-categories-if-empty-then-asset: 'Si es deixa buit es farà servir l''icona per defecte: %s'
 admin-category-add: Crea una nova categoria
