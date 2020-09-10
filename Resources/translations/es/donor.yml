@@ -31,5 +31,7 @@ donor-legal-document-type-cif: CIF
 donor-legal-document-type-nif: NIF
 donor-legal-document-type-nie: NIE
 donor-legal-document-type-vat: VAT
+validate-donor-legal_entity-empty: El campo Entidad legal es obligatorio.
+validate-donor-legal_document_type-empty: 'El campp tipo de documento es obligatorio.'
 validate-donor-nif-document-type: 'El número del documento no coincide en formato con el tipo de documento'
 validate-donor-legal-nif-entity-legal: "La entidad legal no coincide con el tipo de documento"
