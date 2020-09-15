@@ -492,5 +492,17 @@ $api->add('api-faq-sort', new Route(
         )
 ));
 
+// Post images upload (POST method only)
+$api->add('api-faq-images-upload', new Route(
+    '/faq/{id}/images',
+    array('_controller' => 'Goteo\Controller\Api\FaqApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+
 
 return $api;
