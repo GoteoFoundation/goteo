@@ -57,4 +57,18 @@ class FaqApiController extends AbstractApiController {
         return $this->jsonResponse($result);
     }
 
+
+    /**
+     * AJAX upload image for the faq
+     */
+    public function uploadImagesAction($id, Request $request) {
+        if(!$this->user || !$this->user->hasPerm('admin-module-faqs'))
+            throw new ControllerAccessDeniedException();
+
+        $result = $this->genericFileUpload($request, 'file'); // 'file' is the expected form input name in the post object
+        return $this->jsonResponse($result);
+    }
+
+
+
 }

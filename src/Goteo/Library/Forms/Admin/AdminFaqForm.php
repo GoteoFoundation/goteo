@@ -50,7 +50,11 @@ class AdminFaqForm extends AbstractFormProcessor {
             ->add('description', 'markdown', [
                 'disabled' => $this->getReadonly(),
                 'required' => true,
-                'label' => 'regular-description'
+                'label' => 'regular-description',
+                'attr' => [
+                    'data-image-upload' => '/api/blog/images',
+                    'help' => Text::get('tooltip-drag-and-drop-images')
+                ]
             ])
             ->add('pending', 'boolean', array(
                 'label' => 'admin-faq-pending',
