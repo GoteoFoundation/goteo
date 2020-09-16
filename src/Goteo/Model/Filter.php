@@ -454,7 +454,7 @@ class Filter extends \Goteo\Core\Model {
         $sqlInner  = '';
         $sqlFilter = '';
 
-        if (isset($this->filter_location)) {
+        if ($this->filter_location) {
             $loc = FilterLocation::get($this->id);
             $loc = new UserLocation($loc);
             $loc->location = $this->donor_location;
@@ -534,7 +534,7 @@ class Filter extends \Goteo\Core\Model {
         $sqlInner  = '';
         $sqlFilter = '';
 
-        if (isset($this->filter_location)) {
+        if ($this->filter_location) {
             $loc = FilterLocation::get($this->id);
             $loc = new UserLocation($loc);
             $loc->location = $this->donor_location;
@@ -779,7 +779,7 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ") ";
         }
 
-        if (isset($this->filter_location)) {
+        if ($this->filter_location) {
             $loc = FilterLocation::get($this->id);
             $loc = new DonorLocation($loc);
             $loc->location = $this->donor_location;
@@ -1031,7 +1031,7 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ") ";
         }
 
-        if (isset($this->filter_location)) {
+        if ($this->filter_location) {
             $loc = FilterLocation::get($this->id);
             $loc = new DonorLocation($loc);
             $loc->location = $this->donor_location;
@@ -1194,7 +1194,7 @@ class Filter extends \Goteo\Core\Model {
             $values[':status_donated'] = Invest::STATUS_DONATED;
         }
 
-        if (isset($this->filter_location)) {
+        if ($this->filter_location) {
             $loc = FilterLocation::get($this->id);
             $loc = new DonorLocation($loc);
             $loc->location = $this->donor_location;
@@ -1373,7 +1373,7 @@ class Filter extends \Goteo\Core\Model {
             $values[':status_donated'] = Invest::STATUS_DONATED;
         }
 
-        if (isset($this->filter_location)) {
+        if ($this->filter_location) {
             $loc = FilterLocation::get($this->id);
             $loc = new DonorLocation($loc);
             $loc->location = $this->donor_location;
@@ -1527,7 +1527,7 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
         }
 
-        if (isset($this->filter_location)) {
+        if ($this->filter_location) {
             $loc = FilterLocation::get($this->id);
             $loc = new UserLocation($loc);
             $loc->location = $this->donor_location;
@@ -1700,7 +1700,7 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
         }
 
-        if (isset($this->filter_location)) {
+        if ($this->filter_location) {
             $loc = FilterLocation::get($this->id);
             $loc = new UserLocation($loc);
             $loc->location = $this->donor_location;
