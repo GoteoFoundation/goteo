@@ -231,10 +231,6 @@ admin-module-faqs: # Can access to module FaqAdminController
     model: null
     relational: null
 
-admin-module-channels: # Can access to modules Channel*AdminController
-    model: null
-    relational: null
-
 receive-test-communications: # Can receive test communications
     model: null
     relational: null
