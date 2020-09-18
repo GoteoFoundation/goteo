@@ -74,7 +74,7 @@ class Matcher extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'description', 'terms'];
+        return ['name', 'description'];
     }
 
     /**
