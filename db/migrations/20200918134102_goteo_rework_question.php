@@ -33,7 +33,7 @@ class GoteoReworkQuestion
   {
      return "
         ALTER TABLE `question_lang` DROP CONSTRAINT `question_lang_ibfk_1`;
-        ALTER TABLE `question_lang` CHANGE question id BIGINT(20) UNSIGNED NOT NULL;
+        ALTER TABLE `question_lang` CHANGE `question` `id` BIGINT(20) UNSIGNED NOT NULL;
         ALTER TABLE `question_lang` ADD CONSTRAINT `question_lang_ibfk_1` FOREIGN KEY(`id`) REFERENCES `question`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
         ALTER TABLE `question_lang` ADD UNIQUE KEY `id_lang` (`id`,`lang`);
 
@@ -49,7 +49,7 @@ class GoteoReworkQuestion
   {
      return "
         ALTER TABLE `question_lang` DROP CONSTRAINT `question_lang_ibfk_1`;
-        ALTER TABLE `question_lang` CHANGE id question BIGINT(20) UNSIGNED NOT NULL;
+        ALTER TABLE `question_lang` CHANGE `id` `question` BIGINT(20) UNSIGNED NOT NULL;
         ALTER TABLE `question_lang` ADD CONSTRAINT `question_lang_ibfk_1` FOREIGN KEY(`question`) REFERENCES `question`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
         DROP INDEX `id_lang` on `question_lang`;
      ";
