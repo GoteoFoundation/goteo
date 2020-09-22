@@ -21,6 +21,7 @@ use Goteo\Model\Sphere;
 use Goteo\Model\Workshop;
 use Goteo\Model\Node;
 use Goteo\Model\Node\NodeResource;
+use Goteo\Model\Node\NodeResourceCategory;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Application\Lang;
 
@@ -31,6 +32,12 @@ class AdminChannelResourceEditForm extends AbstractFormProcessor {
         $options = $builder->getOptions();
         $resource = $this->getModel();
         $data = $options['data'];
+
+        $categories = [];
+        foreach(NodeResourceCategory::getList() as $c) {
+            $categories[$c->id] = $c->name;
+        }
+
         parent::createForm();
         $builder
             ->add('title', 'text', [
@@ -52,11 +59,11 @@ class AdminChannelResourceEditForm extends AbstractFormProcessor {
             ])
             ->add('action_url', 'text', [
                 'label' => 'admin-title-url-inscription',
-                'required' => false,
+                'required' => true,
                 'disabled' => $this->getReadonly()
             ]) 
             ->add('image', 'dropfiles', array(
-                'required' => false,
+                'required' => true,
                 'limit' => 1,
                 'data' => [$resource->image ? $resource->getImage() : null],
                 'label' => 'admin-title-image',
@@ -68,11 +75,19 @@ class AdminChannelResourceEditForm extends AbstractFormProcessor {
             ))
             ->add('node_id', 'choice', array(
                 'label' => 'admin-title-channel',
-                'required' => false,
+                'required' => true,
                 'expanded' => true,
                 'row_class' => 'extra',
                 'wrap_class' => 'col-xs-6',
                 'choices' => Node::getList()
+            ))
+            ->add('category', 'choice', array(
+                'label' => 'admin-title-channel',
+                'required' => true,
+                'expanded' => true,
+                'row_class' => 'extra',
+                'wrap_class' => 'col-xs-6',
+                'choices' => $categories
             ))
             
             ;

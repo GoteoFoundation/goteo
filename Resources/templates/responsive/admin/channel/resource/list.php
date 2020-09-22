@@ -4,7 +4,7 @@ $this->layout('admin/channel/resource/layout');
 
 $this->section('admin-search-box-addons');
 ?>
-<a class="btn btn-cyan" href="/admin/resource/add"><i class="fa fa-plus"></i> <?= $this->text('admin-resource-add') ?></a>
+<a class="btn btn-cyan" href="/admin/channelresource/add"><i class="fa fa-plus"></i> <?= $this->text('admin-channel-resource-add') ?></a>
 
 <?php $this->replace() ?>
 

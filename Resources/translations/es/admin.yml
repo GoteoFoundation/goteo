@@ -554,3 +554,6 @@ mandatory-filter-description: Falta descripción
 mandatory-filter-role: Falta un rol
 
 admin-node-iframe: Iframe
+
+admin-channel-resource: 'Recursos Canal'
+admin-channel-resource-add: 'Crear recurso'
