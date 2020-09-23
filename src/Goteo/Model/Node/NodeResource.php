@@ -26,10 +26,18 @@ class NodeResource extends \Goteo\Core\Model {
     $description,
     $action,
     $action_url,
+    $lang,
     $action_icon,
     $image,
     $category,
     $order;
+
+    public function __construct() {
+        $args = func_get_args();
+        call_user_func_array(array('parent', '__construct'), $args);
+
+        if(empty($this->lang)) $this->lang = Config::get('sql_lang');
+    }
 
     public static function getLangFields() {
         return ['title', 'description', 'action', 'action_url'];

@@ -53,12 +53,12 @@ class AdminChannelResourceEditForm extends AbstractFormProcessor {
                 ]
             ])
            ->add('action', 'text', [
-                'label' => 'admin-title-action',
+                'label' => 'admin-title-action-url',
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
             ->add('action_url', 'text', [
-                'label' => 'admin-title-url-inscription',
+                'label' => 'admin-title-download-url',
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ]) 
@@ -82,7 +82,7 @@ class AdminChannelResourceEditForm extends AbstractFormProcessor {
                 'choices' => Node::getList()
             ))
             ->add('category', 'choice', array(
-                'label' => 'admin-title-channel',
+                'label' => 'admin-title-resource-category',
                 'required' => true,
                 'expanded' => true,
                 'row_class' => 'extra',
