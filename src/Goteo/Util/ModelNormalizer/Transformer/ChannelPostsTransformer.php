@@ -15,33 +15,33 @@ use Goteo\Library\Text;
 /**
  * Transform a Model
  */
-class ChannelStoriesTransformer extends AbstractTransformer {
+class ChannelPostsTransformer extends AbstractTransformer {
 
-    protected $keys = ['id', 'image', 'title'];
+    protected $keys = ['id', 'title', 'order'];
 
     public function getRawValue($key) {
         if ($key == 'id') {
-            return $this->model->stories_id;
+            return $this->model->post_id;
         }
         return $this->model->{$key};
     }
 
     public function getId() {
-        return $this->model->stories_id;
+        return $this->model->post_id;
     }
-    
     public function getActions() {
         if(!$u = $this->getUser()) return [];
-        $ret = ['delete' => '/admin/channelstory/' . $this->model->node_id . '/delete/' . $this->model->stories_id];
 
-        // $ret['preview'] = '/stories/' . $this->model->id . '?preview';
+        $ret = ['delete' => '/admin/channelposts/' . $this->model->node_id . '/delete/' . $this->model->post_id];
+
         return $ret;
     }
 
     public function getLink($type = 'public', $key = null) {
+
         if($key !== 'id') return '';
         if($type === 'public') {
-            return '/stories/' . $this->model->id .'?preview';
+            return '/post/' . $this->model->id .'?preview';
         }
         return '';
     }

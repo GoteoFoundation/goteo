@@ -492,8 +492,12 @@ class ProjectsSubController extends AbstractSubController {
 
             foreach ($fields as $field) {
                 $val = $this->getPost($field);
-                if (empty($val) || $val === '0000-00-00')
+                if (empty($val) || $val === '0000-00-00') {
                     $val = null;
+                    $values[":$field"] = $val;
+                    if ($set != '') $set .= ", ";
+                    $set .= "`$field` = :$field ";
+                }
                 if(!is_null($val))
                 {
                     //validate date

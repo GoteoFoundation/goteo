@@ -259,6 +259,8 @@ class Config {
 		// \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SphereSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelStoryAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelResourceAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelPostsAdminController');
+
 
 
 		// Adding Pool (internal credit) payment method

@@ -135,6 +135,11 @@ admin-stories-edit: Editando la historia %s
 
 admin-channelstory-add: Añadir historia al canal
 admin-channelstory-submit: Guardar historia
+admin-channelstory-correct: 'Se ha añadido la historia al canal'
+admin-channelpost-add: Añadir Post al canal
+admin-channelpost-submit: Guardar Post
+admin-channelpost-correct: 'Se ha añadido el post al canal'
+
 
 admin-categories: 'Categorías y ámbitos'
 admin-categories-if-empty-then-asset: 'Si se deja vacío se usará el icono por defecto: %s'
@@ -521,6 +526,7 @@ admin-filter-forced-help: 'Si seleccionas esta opción se aplicarán los filtros
 admin-filter-project-status: Estado del proyecto
 admin-filter-invest-status: Estado de la donación
 admin-filter-project-location: Ubicación del proyecto
+admin-filter-location: Ubicación a utilizar en el filtro
 admin-filter-donor-location: Ubicación del donante
 
 admin-mail-body: 'Cuerpo del mensaje'
@@ -559,5 +565,9 @@ mandatory-filter-role: Falta un rol
 
 admin-node-iframe: Iframe
 
+
 admin-channel-resource: 'Recursos Canal'
 admin-channel-resource-add: 'Crear recurso'
+
+admin-posts: 'Posts'
+
