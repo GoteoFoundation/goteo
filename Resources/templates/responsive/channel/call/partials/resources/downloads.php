@@ -19,7 +19,8 @@
 					<?= $item->description ?>
 				</div>
 				<a href="<?= $item->action_url ?>" class="btn btn-transparent pull-right">
-					<img class="pdf" src="/assets/img/icons/channel-call/pdf.svg" width="20px"><?= $this->text('regular-download').' .PDF' ?>
+					<img class="pdf" src="/assets/img/icons/channel-call/pdf.svg" width="20px">
+					<?= $item->action ? $item->action : $this->text('regular-download').' .PDF' ?>
 				</a>
 			</div>
 		</div>

@@ -262,7 +262,7 @@ admin-title-success: Exitosos
 admin-title-percent: Porcentaje
 admin-title-action-url: 'Texto botón de descarga'
 admin-title-download-url: 'Enlace a descarga'
-admin-title-channel: Canal
+admin-title-channel: 'Canal'
 admin-title-resource-category: 'Categoría de recurso'
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'

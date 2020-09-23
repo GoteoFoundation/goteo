@@ -50,7 +50,7 @@ class ChannelResourceAdminController extends AbstractAdminController {
         $limit = 20;
 		$page = $request->query->get('pag') ?: 0;
 		$list = Resource::getList($filters, $page * $limit, $limit, false, Config::get('lang'));
-		$total = Resource::getList($filters, 0, 0, true);
+		$total = count($list);
 
 		return $this->viewResponse('admin/channel/resource/list', [
 			'list' => $list,
@@ -94,7 +94,7 @@ class ChannelResourceAdminController extends AbstractAdminController {
 			if ($form->has('remove') && $form->get('remove')->isClicked()) {
 				$resource->dbDelete(); //Throws and exception if fails
 				Message::info(Text::get('admin-remove-entry-ok'));
-				return $this->redirect('/admin/resource');
+				return $this->redirect('/admin/channelresource');
 			}
 
 			try {

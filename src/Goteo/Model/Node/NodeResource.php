@@ -150,6 +150,7 @@ class NodeResource extends \Goteo\Core\Model {
             'action_icon',
             'image',
             'category',
+            'lang',
             'order'
         );
 
