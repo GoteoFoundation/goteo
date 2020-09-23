@@ -106,6 +106,8 @@ class Config {
 			\Goteo\Controller\TranslateController::addTranslateModel('node_faq_download');
 			\Goteo\Controller\TranslateController::addTranslateModel('node_sponsor');
 			\Goteo\Controller\TranslateController::addTranslateModel('node_team');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_resource');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_resource_category');
 			\Goteo\Controller\TranslateController::addTranslateModel('image_credits');
 			
 			// sets up the rest...
@@ -256,7 +258,9 @@ class Config {
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SocialCommitmentSubController');
 		// \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SphereSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelStoryAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelResourceAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelPostsAdminController');
+
 
 
 		// Adding Pool (internal credit) payment method
