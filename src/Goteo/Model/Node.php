@@ -60,7 +60,8 @@ class Node extends \Goteo\Core\Model {
         $terms_url,
         $chatbot_url,
         $chatbot_id,
-        $tip_msg
+        $tip_msg,
+        $analytics_id
         ;
 
 
@@ -137,7 +138,8 @@ class Node extends \Goteo\Core\Model {
                 node.iframe as iframe,
                 node.chatbot_url as chatbot_url,
                 node.chatbot_id as chatbot_id,
-                node.tip_msg as tip_msg
+                node.tip_msg as tip_msg,
+                node.analytics_id as analytics_id
             FROM node
             $joins
             WHERE node.id = :id";
@@ -415,7 +417,8 @@ class Node extends \Goteo\Core\Model {
             'url',
             'default_consultant',
             'sponsors_limit',
-            'iframe'
+            'iframe',
+            'analytics_id'
             );
 
         $set = '';

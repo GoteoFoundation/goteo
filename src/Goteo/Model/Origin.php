@@ -28,6 +28,7 @@ class Origin extends \Goteo\Core\Model {
            $project_id,
            $invest_id,
            $call_id,
+           $channel_id,
            $counter = 0,
            $created_at,
            $modified_at;
@@ -203,8 +204,17 @@ class Origin extends \Goteo\Core\Model {
                 // Only calls
                 $add_sql = 'AND !ISNULL(origin.call_id)';
             }
+
+        } elseif($model instanceOf Matcher) {
+            if($model->id) {
+                $values[':matcher'] = $model->id;
+                $add_sql = 'AND origin.channel_id = :matcher';
+            } else {
+                // Only calls
+                $add_sql = 'AND !ISNULL(origin.channel_id)';
+            }
         } elseif(!is_null($model)) {
-            throw new ModelException("[$model] should be an instance of Project, Call or null"); // TODO: add call in the future
+            throw new ModelException("[$model] should be an instance of Project, Call, Matcher or null"); // TODO: add call in the future
         }
 
         $group_by = ($group_by === 'category') ? 'category' : 'tag';
@@ -243,6 +253,7 @@ class Origin extends \Goteo\Core\Model {
         $sql = "SELECT
         origin.tag,
         origin.category,
+        origin.project_id,
         MIN(origin.created_at) AS created,
         MAX(origin.modified_at) AS updated,
         SUM(origin.counter) AS counter
@@ -270,7 +281,7 @@ class Origin extends \Goteo\Core\Model {
         $this->counter++;
 
         try {
-            $this->dbInsertUpdate(['tag', 'category', 'type', 'project_id', 'invest_id', 'call_id', 'counter', 'created_at']);
+            $this->dbInsertUpdate(['tag', 'category', 'type', 'project_id', 'invest_id', 'call_id', 'channel_id', 'counter', 'created_at']);
             return true;
         }
         catch(\PDOException $e) {
