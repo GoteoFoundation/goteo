@@ -212,22 +212,22 @@
         @include svg-background('../img/icons/channel-call/event.svg');
     }
     &.icon-desktop {
-        @include svg-background('../img/icons/channel-call/desktop.svg')
+        @include svg-background('../img/icons/channel-call/desktop.svg');
     }
     &.icon-channel-telegram {
-        @include svg-background('../img/icons/channel-call/telegram-1.svg')
+        @include svg-background('../img/icons/channel-call/telegram-1.svg');
     }
     &.icon-channel-twitter {
-        @include svg-background('../img/icons/channel-call/tw.svg')
+        @include svg-background('../img/icons/channel-call/tw.svg');
     }
     &.icon-channel-fb {
-        @include svg-background('../img/icons/channel-call/fb.svg')
+        @include svg-background('../img/icons/channel-call/fb.svg');
     }
     &.icon-channel-github {
-        @include svg-background('../img/icons/channel-call/Github.svg')
+        @include svg-background('../img/icons/channel-call/Github.svg');
     }
     &.icon-channel-instagram {
-        @include svg-background('../img/icons/channel-call/instagram.svg')
+        @include svg-background('../img/icons/channel-call/instagram.svg');
     }
     &.icon-channel-mail {
         @include svg-background('../img/icons/channel-call/mail.svg');
@@ -235,5 +235,19 @@
     &.icon-channel-chat {
         @include svg-background('../img/icons/channel-call/chat.svg');
     }
+    &.icon-resource-crowdfunding {
+        @include svg-background('../img/icons/channel-call/crowdfunding.svg');
+    }
+    &.icon-resource-idea {
+        @include svg-background('../img/icons/channel-call/idea.svg');
+    }
+    &.icon-resource-taxes {
+        @include svg-background('../img/icons/channel-call/taxes.svg');
+    }
+    &.icon-resource-communication {
+        @include svg-background('../img/icons/channel-call/communication.svg');
+    }
+
+
 
 }
