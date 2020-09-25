@@ -34,6 +34,7 @@ class GoteoAddOriginMatcher
      return "
         ALTER TABLE `origin` ADD COLUMN `channel_id` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci DEFAULT NULL;
         ALTER TABLE `origin` ADD CONSTRAINT `fk_origin_channel` FOREIGN KEY (`channel_id`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE; 
+        ALTER TABLE `node` ADD COLUMN `analytics_id` varchar(30) DEFAULT NULL;
      ";
   }
 
@@ -47,6 +48,7 @@ class GoteoAddOriginMatcher
      return "
         ALTER TABLE `origin` DROP FOREIGN KEY `fk_origin_channel`;
         ALTER TABLE `origin` DROP COLUMN `channel_id`;
+        ALTER TABLE `node` DROP COLUMN `analytics_id`; 
      ";
   }
 

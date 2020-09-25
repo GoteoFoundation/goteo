@@ -299,7 +299,7 @@ class ChartsApiController extends AbstractApiController {
      * @param  Request $request [description]
      */
     public function originMatcherStatsAction($id = null, $type = 'project', $group = 'referer', Request $request) {
-
+        
         $model = new Project();
 
         $group_by = $request->query->get('group_by');
