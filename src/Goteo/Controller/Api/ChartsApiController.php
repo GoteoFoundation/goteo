@@ -65,6 +65,19 @@ class ChartsApiController extends AbstractApiController {
         return $call;
     }
 
+    protected function getMatcher($matcher, $private = false) {
+        if( ! $matcher instanceOf Matcher) {
+            $matcher = Matcher::get($matcher);
+        }
+
+        $is_mine = $matcher->owner === $this->user->id;
+        if(!$this->is_admin && !$is_mine) {
+            throw new ControllerAccessDeniedException();
+        }
+        return $matcher;
+    }
+
+
     /**
      * Simple projects info data specially formatted for D3 charts
      * COSTS
@@ -193,6 +206,9 @@ class ChartsApiController extends AbstractApiController {
 
         if($type === 'call')
             $model = $id ? $this->getCall($id, true) : new Call();
+        else if ($type == 'matcher') {
+            $model = $id ? $this->getMatcher($id, true) : new Matcher();
+        }
         else
             $model = $id ? $this->getProject($id, true) : new Project();
 
@@ -213,7 +229,7 @@ class ChartsApiController extends AbstractApiController {
 
         $ret = array_map(function($ob) use ($group_by) {
             $label = $ob->tag ? $ob->tag : 'unknown';
-            if($group_by === 'category') $label = $ob->category ? $ob->category : 'unknown';
+            if($group_by === '  ') $label = $ob->category ? $ob->category : 'unknown';
             elseif($ob->category === 'internal') {
                 $label = $ob->category . ": " . ucfirst($label);
             }
@@ -277,5 +293,43 @@ class ChartsApiController extends AbstractApiController {
 
         return $this->jsonResponse($result);
     }
+
+    /**
+     * Simple matcher's projects origins data
+     * @param  Request $request [description]
+     */
+    public function originMatcherStatsAction($id = null, $type = 'project', $group = 'referer', Request $request) {
+
+        $model = new Project();
+
+        $group_by = $request->query->get('group_by');
+        $filters = [
+            'from' =>$request->query->get('from'),
+            'to' => $request->query->get('to'),
+            'call' => $request->query->get('call'),
+            'matcher' => $request->query->get('matcher'),
+            'channel' => $request->query->get('channel'),
+            'project' => $request->query->get('project'),
+            'user' => $request->query->get('user'),
+            'consultant' => $request->query->get('consultant')
+        ];
+
+        $ret = Origin::getModelStats($model, $group, $group_by, $filters);
+
+        $ret = array_map(function($ob) use ($group_by) {
+            $label = $ob->tag ? $ob->tag : 'unknown';
+            if($group_by === 'project_id') $label = $ob->project_id;
+
+            return [
+                'label' => ucfirst($label),
+                'counter' => (int) $ob->counter,
+                'created' => $ob->created,
+                'updated' => $ob->updated
+            ];
+        }, $ret);
+
+        return $this->jsonResponse($ret);
+    }
+
 
 }
