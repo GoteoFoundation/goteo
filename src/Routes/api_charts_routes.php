@@ -111,4 +111,17 @@ $api->add('api-chart-matcher-projects', new Route(
     'type' => 'projects')
 ));
 
+$api->add('api-chart-matcher-origin', new Route(
+    '/matcher/{id}/charts/referer/{type}',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::originStatsAction',
+    'type' => 'matcher')
+));
+
+$api->add('api-chart-matcher-origin-projects', new Route(
+    '/matcher/{id}/charts/origin/referer/{type}',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::originMatcherStatsAction',
+    'type' => 'projects')
+));
+
+
 return $api;
