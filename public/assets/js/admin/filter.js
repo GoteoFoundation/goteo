@@ -42,6 +42,7 @@ $(function () {
     var project_status = $('#form-project_status');
     var invest_status = $('#form-invest_status');
     var typeofdonor = $('#form-typeofdonor');
+    var typeofentity = $('#form-type_of_entity');
     var foundationdonor = $('#form-foundationdonor');
     var wallet = $('#form-wallet');
     var cert = $('#form-cert');
@@ -67,6 +68,7 @@ $(function () {
             invest_status.val = '';
             typeofdonor.hide();
             typeofdonor.val = '';
+            typeofentity.show();
             foundationdonor.hide();
             foundationdonor.val = '';
             cert.hide();
@@ -95,6 +97,8 @@ $(function () {
             foundationdonor.show();
             cert.show();
             wallet.show();
+            typeofentity.hide();
+            typeofentity.val = '';
             // project_location.hide();
             // project_location.val = '';
             // donor_location.show();
@@ -116,6 +120,8 @@ $(function () {
             foundationdonor.show();
             cert.hide();
             wallet.show();
+            typeofentity.hide();
+            typeofentity.val = '';
             // project_location.hide();
             // donor_location.hide();
             // donor_location.val = '';
@@ -136,6 +142,8 @@ $(function () {
             invest_status.hide();
             typeofdonor.hide();
             typeofdonor.val = '';
+            typeofentity.hide();
+            typeofentity.val = '';
             foundationdonor.hide();
             foundationdonor.val = '';
             cert.hide();
@@ -162,6 +170,8 @@ $(function () {
             invest_status.val = '';
             typeofdonor.hide();
             typeofdonor.val = '';
+            typeofentity.hide();
+            typeofentity.val = '';
             foundationdonor.hide();
             foundationdonor.val = '';
             cert.hide();
