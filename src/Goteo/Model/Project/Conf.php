@@ -56,6 +56,7 @@ namespace Goteo\Model\Project {
                     $project_conf->help_cost = 0;
                     $project_conf->help_license = 0;
                     $project_conf->mincost_estimation=0;
+                    $project_conf->hide_exhausted_rewards=0;
                 }
 
                 return $project_conf;
