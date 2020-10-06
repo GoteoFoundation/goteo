@@ -243,6 +243,9 @@ admin-title-failed: Failed
 admin-title-pending: Pending
 admin-title-success: Successful
 admin-title-percent: Percentage
+admin-title-year: Year
+admin-title-nif: ID
+admin-title-country: Country
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'
@@ -298,3 +301,4 @@ mandatory-filter-description: Missing description
 mandatory-filter-role: Missing role
 
 admin-node-iframe: Iframe
+admin-certificates: Certificates
