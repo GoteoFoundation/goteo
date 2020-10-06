@@ -35,6 +35,7 @@ class CriteriaInvestMatcherProcessor extends AbstractMatcherProcessor {
         $amount = $invest->amount;
 
         $project_amount = Invest::getList(['projects' => $project, 'types' => 'nondrop', 'status' => Invest::$ACTIVE_STATUSES], null, 0, 0, 'money');
+        $project->amount = $project_amount;
 
         $investors = Invest::getList(['projects' => $project, 'types' => 'nondrop', 'status' => Invest::$ACTIVE_STATUSES], null, 0, 0, 'user');
 
