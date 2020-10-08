@@ -172,6 +172,8 @@ admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aqu
 admin-users-global-search: 'Id, nom, email o projecte'
 admin-blog-global-search: 'Id, títol, subtítol o text'
 admin-communication-global-search: 'Assumpte'
+admin-donor-name-search: 'ID, nom, email'
+admin-donor-date-search: 'Processats per data'
 admin-no-project: 'Sense projecte'
 admin-title-name: Nom
 admin-title-active: Actiu

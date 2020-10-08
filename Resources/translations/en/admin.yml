@@ -197,6 +197,8 @@ admin-users-global-search: 'Id, name, email or project'
 admin-blog-global-search: 'Id, title, subtitle or text'
 admin-communication-global-search: 'Subject'
 admin-blog-stories-search: 'ID, title, text, or project'
+admin-donor-name-search: 'ID, name, email'
+admin-donor-date-search: 'Processed by date'
 admin-no-project: 'No project'
 admin-title-id: Id
 admin-title-name: Name
