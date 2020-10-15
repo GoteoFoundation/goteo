@@ -97,6 +97,7 @@ consultant:
         - admin-module-stats # Can access to stats
         - admin-module-promote # Can access to promote admin module
         - admin-module-workshops # Can access to workshops admin module
+        - admin-module-channel-resource # Can access to channel resource admin module
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 60
 
@@ -117,6 +118,7 @@ admin:
         - create-matcher # Create a matcher for a user
         - edit-any-matcher # View any editing matcher
         - remove-any-matcher # Remove any matcher
+        - admin-module-channels # Can access to channels admin modules
     level: 70
 
 superadmin:

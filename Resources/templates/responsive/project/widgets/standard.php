@@ -71,7 +71,7 @@ elseif (!empty($status)) {
 ?>
 <div class="project-widget standard" id="project-<?= $this->project->id ?>">
     <?php if(!empty($this->project->image)): ?>
-    <a class="img-link" href="/project/<?= $this->project->id ?>">
+    <a class="img-link" href="/project/<?= $this->project->id ?>" target="_blank">
         <img class="img-responsive img-project" src="<?= $this->project->image->getLink(600, 250, true); ?>">
         <?php if($this->project->called): ?>
         <div class="call-mark">
@@ -81,9 +81,9 @@ elseif (!empty($status)) {
     </a>
     <?php endif; ?>
     <div class="content <?= $project->called ? 'called': '' ?>  ">
-        <div class="title"><a href="/project/<?= $this->project->id ?>"><?= $this->text_truncate($this->ee($this->project->name), 80); ?></a></div>
+        <div class="title"><a href="/project/<?= $this->project->id ?>" target="_blank"><?= $this->text_truncate($this->ee($this->project->name), 50); ?></a></div>
         <div class="author">
-            <a href="/user/profile/<?= $this->project->user->id?>" style="color:#20B3B2 !important" target="_blank"><?= $this->text('regular-by').' '.$this->project->user->name ?></a>
+            <a target="_blank" href="/user/profile/<?= $this->project->user->id?>" style="color:#20B3B2 !important" target="_blank"><?= $this->text('regular-by').' '.$this->project->user->name ?></a>
         </div>
         <div class="description">
             <?= $this->text_truncate($this->project->subtitle, 140) ?>

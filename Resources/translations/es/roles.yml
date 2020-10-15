@@ -58,6 +58,7 @@ role-perm-name-full-html-edit: 'Puede editar posts con contenido HTML'
 role-perm-name-admin-module-categories: 'Puede acceder al módulo de Categorías'
 role-perm-name-admin-module-workshops: 'Puede acceder al módulo de talleres'
 role-perm-name-admin-module-promote: 'Puede acceder al módulo para destacar proyectos en la home'
+role-perm-name-admin-module-channels: 'Puede acceder a los módulos de administración de los canales'
 
 role-perm-name-create-matcher: 'Puede crear matchers'
 role-perm-name-edit-matcher: 'Puede editar matchers'

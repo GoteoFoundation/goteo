@@ -24,19 +24,19 @@ for the JavaScript code in this page.
 */
 
 $(function () {
-
+    
     // Allow drag&drop reorder by the column `order`
     var settings = {
         apiUrl: function (row) {
             var selected = document.getElementById("nodes-filter").value;
             // '/promote/channel/{channel}/id/{id}/sort',
-            return '/channelstory/' + selected + '/' + $(row).find('[data-key="id"]').data('value') + '/sort';
+            return '/api/channelstories/' + selected + '/' + $(row).find('[data-key="id"]').data('value') + '/sort';
         }
     };
-    adminOrderColumn('table.model-node_stories', settings);
+    adminOrderColumn('table.model-nodestories', settings);
 
     $(window).on("pronto.render", function (e) {
-        adminOrderColumn('table.model-node_stories', settings);
+        adminOrderColumn('table.model-model-model-nodestories', settings);
     });
 
 });

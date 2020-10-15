@@ -39,6 +39,12 @@ class ModelNormalizer {
         elseif ($this->model instanceOf Model\Node\NodeStories) {
             $ob = new Transformer\ChannelStoriesTransformer($this->model, $this->keys);
         }
+        elseif ($this->model instanceOf Model\Node\NodeResource) {
+            $ob = new Transformer\ChannelResourceTransformer($this->model, $this->keys);
+        }    
+        elseif ($this->model instanceOf Model\Node\NodePost) {
+            $ob = new Transformer\ChannelPostsTransformer($this->model, $this->keys);
+        }
         elseif(
             $this->model instanceOf Model\Category
             || $this->model instanceOf Model\Sphere

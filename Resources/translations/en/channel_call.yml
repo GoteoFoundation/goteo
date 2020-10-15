@@ -33,9 +33,12 @@ channel-call-team-title: Our team
 channel-call-team-description: "A whole team working for civic crowdfunding!"
 channel-call-stories-title: They say about us
 channel-call-resources-title: Resources
-channel-call-resources-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit etiam at convallis risu duis nibh ex, ullamcorper non posuere id
+channel-call-resources-description: 'Download the open resources created in crowdcoop: learn about crowdfunding, taxation or ideation.'
 channel-call-resources-button: See all the resources
 channel-call-map-section-title: Map of influence
 channel-call-impact-data-amount: Money collected
 channel-call-impact-data-projects: Projects
 channel-call-impact-data-investors: Backers
+channel-call-resources-banner-title: 'Open knowledge'
+channel-call-resources-banner-description: 'Resources'
+channel-call-resources-filter-title: 'Filter by category'

@@ -105,6 +105,12 @@ admin-storys: Histories d'usuaris a Goteo
 admin-stories: Histories d'usuaris a Goteo
 admin-stories-add: Crea una nova història
 admin-stories-edit: Editant l'història %s
+admin-channelstory-add: Afegir història al canal
+admin-channelstory-submit: Guardar història
+admin-channelstory-correct: "S'ha afegit la història al canal"
+admin-channelpost-add: Afegir Post al canal
+admin-channelpost-submit: Guardar Post
+admin-channelpost-correct: "S'ha afegit el post al canal"
 admin-categories: 'Categories i àmbits'
 admin-categories-if-empty-then-asset: 'Si es deixa buit es farà servir l''icona per defecte: %s'
 admin-category-add: Crea una nova categoria
@@ -119,6 +125,7 @@ admin-footprint-add: Crea un nova petjada
 admin-footprint-edit: Editant la petjada %s
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
+admin-posts: 'Posts'
 admin-promote-add: Nou destacat
 admin-promote-submit: Guardar
 admin-promote-already-exists: Aquest projecte ja està destacat
@@ -250,6 +257,7 @@ admin-filter-project-status: Estat del projecte
 admin-filter-invest-status: Estat de la donació
 admin-filter-project-location: Ubicació del projecte
 admin-filter-donor-location: Ubicació del donant
+admin-filter-location: Ubicació a fer servir al filtre
 admin-mail-body: 'Cos del missatge'
 
 mandatory-filter-name: Manca el nom
