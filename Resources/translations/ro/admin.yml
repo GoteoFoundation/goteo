@@ -217,6 +217,7 @@ admin-title-order: Sortează
 admin-title-status: Status
 admin-title-users: Utilizatori
 admin-title-city: Oraș
+admin-title-date: Dată
 admin-blog-not-published-yet: 'Noul articol din blog incă nu este public'
 admin-blog-initialized: 'S-a inițializat spațiul pentru blog'
 admin-blog-deactivated: 'Din păcate, administrarea blog-ului este dezactivată'
