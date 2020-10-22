@@ -12,6 +12,7 @@ namespace Goteo\Model;
 
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
+use Goteo\Model\Faq\FaqSubsection;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
 
@@ -19,9 +20,11 @@ class Faq extends \Goteo\Core\Model {
 
     public
         $id,
+        $slug,
         $node,
         $section,
         $title,
+        $subsection_id,
         $description,
         $order;
 
@@ -29,32 +32,58 @@ class Faq extends \Goteo\Core\Model {
         return ['title', 'description'];
     }
 
+    // fallbacks to getbyid
+    public static function getBySlug($slug, $lang = null) {
+        $faq = self::get((string)$slug, $lang);
+        if(!$faq) {
+            $faq = self::get((int)$slug, $lang);
+        }
+        return $faq;
+    }
+
+    public static function getById($id, $lang = null) {
+        return self::get((int)$id, $lang);
+    }
+
     /*
-     *  Devuelve datos de un destacado
+     *  Faq data
      */
     public static function get ($id, $lang = null) {
-
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
-        $query = static::query("
+        $sql = "
             SELECT
                 faq.id as id,
+                faq.id as slug,
+                faq.subsection_id as subsection_id,
                 faq.node as node,
                 faq.section as section,
                 $fields,
                 faq.order as `order`
             FROM faq
             $joins
-            WHERE faq.id = :id
-            ", array(':id' => $id));
+            ";
+
+
+        if(is_string($id)) {
+            $sql .= "WHERE faq.slug = :slug";
+            $values = [':slug' => $id];
+        } else {
+            $sql .= "WHERE faq.id = :id";
+            $values = [':id' => $id];
+        }
+
+         //die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+
         $faq = $query->fetchObject(__CLASS__);
 
         return $faq;
     }
 
     /*
-     * Lista de proyectos destacados
+     * Lista de faqs
      */
     public static function getAll ($section = 'node', $lang = null) {
         if(!$lang) $lang = Lang::current();
@@ -78,52 +107,61 @@ class Faq extends \Goteo\Core\Model {
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-     /*
-     * List of FAQs
+     /**
+     * Faq listing
+     *
+     * @param array filters
+     * @param string node id
+     * @param int limit items per page or 0 for unlimited
+     * @param int page
+     * @param int pages
+     * @return array of programs instances
      */
-    public static function getList ($filters = array(), $offset = 0, $limit = 0, $count = false) {
-        $lang = Lang::current();
-        $sqlWhere = array();
-        $values = array();
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
 
-        if (isset($filters['section'])) {
-            $sqlWhere[]= "faq.section = :section";
-            $values[':section'] = $filters['section'];
-        }
-
+        if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
-        $sqlWhere = implode(' AND ', $sqlWhere);
-        if ($sqlWhere) {
-            $sqlWhere = "WHERE " . $sqlWhere;
-        } else {
-            $sqlWhere = '';
+        $filter = [];
+        $values = [];
+
+        if ($filters['section']) {
+
+            // get subsections from a section
+            $subsections= FaqSubsection::getList(['section'=>$filters['section']]);
+
+            foreach ($subsections as $subsection)
+                $subsections_id[]=$subsection->id;
+
+            $filter[] = "faq.subsection_id in ('".implode("','", $subsections_id)."')";
+
         }
 
-        if ($count) {
-            $sql = "SELECT count(faq.id)
-                    FROM faq
-                    $joins
-                    $sqlWhere
-                    ";
-            return (int) self::query($sql, $values)->fetchColumn();
+        if ($filters['subsection']) {
+            $filter[] = "faq.subsection_id = :subsection_id";
+            $values[':subsection_id'] = $filters['subsection'];
+
+        }
+
+        if($filter) {
+            $sql = " WHERE " . implode(' AND ', $filter);
         }
 
         $sql="SELECT
-                    faq.id as id,
-                    faq.node as node,
-                    faq.section as section,
-                    $fields,
-                    faq.order as `order`
-                FROM faq
-                $joins
-                $sqlWhere
-                ORDER BY `order` ASC
-                LIMIT $offset, $limit";
-
-        // die(\sqldbg($sql, $values) );
+                  faq.id as id,
+                  faq.slug as slug,
+                  faq.node as node,
+                  $fields,
+                  faq.section as section,
+                  faq.subsection_id as subsection,
+                  faq.order
+              FROM faq
+              $joins
+              $sql
+              ORDER BY faq.order ASC
+              LIMIT $offset, $limit";
+        //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
-
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 

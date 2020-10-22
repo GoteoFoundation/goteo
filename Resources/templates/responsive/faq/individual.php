@@ -4,10 +4,10 @@
 
   <div id="breadcrumb" class="container-fluid">
 	    <div class="container">
-			<a href="index.html">FAQs</a><span class="slash"> / </span><a href="pas2_donantes.htm">Para Donantes</a><span class="slash"> / </span>¿Es mi proyecto apto?
+			<a href="/faq">FAQs</a><span class="slash"> / </span><a href="<?= '/faq/'.$this->faq_section->slug ?>"><?= $this->faq_section->name ?></a><span class="slash"> / </span><?= $this->faq->title ?>
 	    </div>
     </div>
-    <header id="header_faqs" class="container-fluid donantes">
+    <header id="header_faqs" class="container-fluid donors">
 		<div class="container">
 			<div class="row barra_superior">
 				<form class="col-sm-6 buscador_faqs">
@@ -15,27 +15,24 @@
 						<span class="a-hidden">¿Qué estás buscando?</span>
 						<input type="search" class="search-field" name="" placeholder="¿Qué estás buscando?">
 					</label>
-					<button class="search-submit icon-search"><span class="a-hidden">Buscar</span></button>
+					<button class="search-submit icon-search"><span class="a-hidden"><?= $this->text('regular-search') ?></span></button>
 				</form>
-				<div class="col-sm-6 hidden-xs" style="text-align: right;"><a href="" class="btn btn-fashion">crea un proyecto</a></div>
+				<div class="col-sm-6 hidden-xs" style="text-align: right;">
+					<a href="/project/create" target="_blank" class="btn btn-fashion"><?= $this->text('regular-create') ?></a>
+				</div>                
 			</div>
 			<div class="row">
 				<h3><a href="pas2_donantes.htm">Para Donantes</a></h3>
-				<h1>¿Es mi proyecto apto?</h1>
+				<h1><?= $this->faq->title ?></h1>
 			</div>
 		</div>
     </header>
     <section class="container pas3">
       	<div class="row">
 	        <article class="col-sm-8 col-sm-offset-1 col-sm-push-3">
-		       	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> 
-
-<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
-<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
+		       	<?= $this->faq->description ?>
 	    		<footer class="no_resuelto">
-		    		<a href="" class="btn">¿NO HEMOS RESUELTO TU DUDA?</a>
+		    		<a href="/contact" class="btn">¿NO HEMOS RESUELTO TU DUDA?</a>
 		    	</footer>
 	        </article>
 	        <aside class="col-sm-3 col-sm-pull-9">
