@@ -11,3 +11,5 @@ workshop-lb: 'Workshops'
 channelstory-lb: 'Stories in channels'
 channelresource-lb: 'Resources'
 channelposts-lb: 'Posts in channels'
+certificate-lb: 'Certificates'
+certificatemanagement-lb: "Certificates management"

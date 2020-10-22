@@ -42,6 +42,7 @@ admin-contents: 'Textos i traduccions'
 admin-empty-list: 'Sense resultats'
 admin-activity: Activitat
 admin-certificates: Certificats
+admin-certificates-management: Gestió de Certificats
 admin-communications: Comunicacions
 admin-communications-add: Crear nova comunicació
 admin-communications-userid-content: ' per l''id d''accés del destinatari'
