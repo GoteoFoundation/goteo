@@ -71,6 +71,7 @@ admin-communications-newsletter: 'Boletín'
 admin-communications-communication: 'Comunicación general'
 admin-communications-id: 'ID de la Comunicación'
 admin-certificates: Certificados
+admin-certificates-management: Gestión de Certificados
 admin-home: Portada
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicaciones'
