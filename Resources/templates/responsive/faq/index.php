@@ -13,59 +13,36 @@
 					</label>
 					<button class="search-submit icon-search"><span class="a-hidden">Buscar</span></button>
 				</form>
-				<div class="col-sm-6 hidden-xs" style="text-align: right;"><a href="" class="btn btn-fashion">crea un proyecto</a></div>
+				<div class="col-sm-6 hidden-xs" style="text-align: right;">
+					<a href="/project/create" target="_blank" class="btn btn-fashion"><?= $this->text('regular-create') ?></a>
+				</div>
 			</div>
 		</div>    
-      <h1>FAQs</h1>
+      <h1><?= $this->text('faq-title') ?></h1>
     </header>
     <section class="container pas1">
       <div class="row">
+
+      	<?php foreach ($this->faq_sections as $section): ?>
+      	
+      	<?php //Get first 3 faq by section ?>
+      	<?php $section_faq=$section->getFaqbySection(3); ?>
         <article class="col-sm-6 col-lg-3">
 	       	<div class="modul_faqs card">
-		       	<header class="sobre_goteo"><h2>Sobre Goteo</h2></header>
+		       	<header class="<?= $section->slug ?>"><h2><?= $section->name ?></h2></header>
 		        <ul>
-			        <li><a href="pas2_sobre_goteo.htm">Què és el finançament col.lectiu i com es planteja aquí?</a></li>
-			        <li><a href="pas2_sobre_goteo.htm">¿Cuándo recibiré el dinero?</a></li>
-			        <li><a href="pas2_sobre_goteo.htm">Quins són els punts forts i diferencials de la plataforma?</a></li>
+		        	<?php foreach ($section_faq as $faq): ?>
+		        		<?php $faq_id= $faq->slug ? $faq->slug : $faq->id; ?>
+			        	<li><a href="<?= $section->slug.'/'.$faq_id ?>"><?= $faq->title ?></a></li>
+			    	<?php endforeach; ?>
+
 		        </ul>
-		        <footer class="ver_todo"><hr><a href="pas2_sobre_goteo.htm">TODO SOBRE GOTEO</a></footer>
+		        <footer class="ver_todo">
+		        	<hr><a href="<?= '/faq/'.$section->slug ?>"><?= $section->button_action ?></a>
+		        </footer>
 	       	</div>
         </article>
-        <article class="col-sm-6 col-lg-3">
-	       	<div class="modul_faqs card">
-		       	<header class="impulsores"><h2>Para impulsores</h2></header>
-		        <ul>
-			        <li><a href="pas2_impulsores.htm">Què és el finançament col.lectiu i com es planteja aquí?</a></li>
-			        <li><a href="pas2_impulsores.htm">¿Cuándo recibiré el dinero?</a></li>
-			        <li><a href="pas2_impulsores.htm">Quins són els punts forts i diferencials de la plataforma?</a></li>
-		        </ul>
-		        <footer class="ver_todo"><hr><a href="pas2_impulsores.htm">TODO para impulsores</a></footer>
-	       	</div>
-        </article>
-        <article class="col-sm-6 col-lg-3">
-	       	<div class="modul_faqs card">
-		       	<header class="donantes"><h2>Para Donantes</h2></header>
-		        <ul>
-			        <li><a href="pas2_donantes.htm">Què és el finançament col.lectiu i com es planteja aquí?</a></li>
-			        <li><a href="pas2_donantes.htm">¿Cuándo recibiré el dinero?</a></li>
-			        <li><a href="pas2_donantes.htm">Quins són els punts forts i diferencials de la plataforma?</a></li>
-		        </ul>
-		        <footer class="ver_todo"><hr><a href="pas2_donantes.htm">TODO PARA DONANTES</a></footer>
-	       	</div>
-        </article>
-        <article class="col-sm-6 col-lg-3">
-	        <div class="modul_faqs card">
-		       	<header class="matchers"><h2>Para Matchers</h2></header>
-		        <ul>
-			        <li><a href="pas2_matchers.htm">Què és el finançament col.lectiu i com es planteja aquí?</a></li>
-			        <li><a href="pas2_matchers.htm">¿Cuándo recibiré el dinero?</a></li>
-			        <li><a href="pas2_matchers.htm">Quins són els punts forts i diferencials de la plataforma?</a></li>
-			        <li><a href="pas2_matchers.htm">Què és el finançament col.lectiu i com es planteja aquí?</a></li>
-		        </ul>
-		        <footer class="ver_todo"><hr><a href="pas2_matchers.htm">TODO PARA MATCHERS</a></footer>
-	        </div>
-        </article>
-      </div>
-    </section>
+
+    	<?php  endforeach; ?>
    
 <?php $this->replace() ?>
