@@ -8,7 +8,7 @@
 			<div class="row">
 				<form class="col-sm-6 buscador_faqs">
 					<label>
-						<span class="a-hidden">¿Qué estás buscando?</span>
+						<span class="a-hidden"><?= $this->text('faq-search') ?></span>
 						<input type="search" class="search-field" name="" placeholder="¿Qué estás buscando?">
 					</label>
 					<button class="search-submit icon-search"><span class="a-hidden">Buscar</span></button>
@@ -33,7 +33,7 @@
 		        <ul>
 		        	<?php foreach ($section_faq as $faq): ?>
 		        		<?php $faq_id= $faq->slug ? $faq->slug : $faq->id; ?>
-			        	<li><a href="<?= $section->slug.'/'.$faq_id ?>"><?= $faq->title ?></a></li>
+			        	<li><a href="<?= '/faq/'.$section->slug.'/'.$faq_id ?>"><?= $faq->title ?></a></li>
 			    	<?php endforeach; ?>
 
 		        </ul>
