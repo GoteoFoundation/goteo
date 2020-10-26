@@ -39,6 +39,8 @@ class FaqController extends \Goteo\Core\Controller {
         $faq_sections=FaqSection::getList();
 
         return $this->viewResponse('faq/index', [
+                    'meta_title' => Text::get('faq-meta-title'),
+                    'meta_description' => Text::get('faq-meta-description'),
                     'faq_sections' => $faq_sections
                 ]
         );
@@ -50,6 +52,8 @@ class FaqController extends \Goteo\Core\Controller {
         $subsections=FaqSubsection::getList(['section' => $faq_section->id]);
 
         return $this->viewResponse('faq/section', [
+            'meta_title' => $faq_section->name.' :: Faq',
+            'meta_description' => Text::get('faq-meta-description'),
             'faq_section' => $faq_section,
             'subsections' => $subsections
         ]);
@@ -62,9 +66,15 @@ class FaqController extends \Goteo\Core\Controller {
         $faq_subsection=FaqSubsection::get($faq->subsection_id);
         $faq_section=FaqSection::getById($faq_subsection->section_id);
 
+        // Sidebar menu
+        $subsections=FaqSubsection::getList(['section' => $faq_section->id]);
+
         return $this->viewResponse('faq/individual', [
+            'meta_title' => $faq->title.' :: Faq',
+            'meta_description' => Text::get('faq-meta-description'),
             'faq' => $faq,
-            'faq_section' => $faq_section
+            'faq_section' => $faq_section,
+            'subsections' => $subsections
         ]);
 
     }
