@@ -36,7 +36,7 @@ class GoteoAddStatusDonor
                             ADD COLUMN `pending` DATETIME,
                             ADD COLUMN `completed` DATETIME,
                             ADD COLUMN `validated` DATETIME,
-                            ADD COLUMN `accepted` DATETIME;
+                            ADD COLUMN `declared` DATETIME;
      ";
   }
 
@@ -52,7 +52,7 @@ class GoteoAddStatusDonor
                         DROP COLUMN `pending`,
                         DROP COLUMN `completed`,
                         DROP COLUMN `validated`,
-                        DROP COLUMN `accepted`;
+                        DROP COLUMN `declared`;
         ";
   }
 
