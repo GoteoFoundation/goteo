@@ -72,7 +72,7 @@ EOT
 
         if ($update_amounts) {
             $user = $input->getOption('user');
-            $year = $input->getOption('year') ? $input->getOptions('year') : date('Y');
+            $year = $input->getOption('year')? $input->getOption('year') : date('Y');
         }
 
         $output->writeln("<info>Update donors thrown</info>");
