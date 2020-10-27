@@ -240,8 +240,7 @@ EOT
                     $user_invests = Invest::getList($invest_filters, null, 0, 0, 'all');
                     $donor_amount = $user_invests['amount'] + $user_invests['donations_amount'];
                     if ($donor_amount != $donor->amount) {
-                        $output->writeln("<info>Update {$donor->name} donor</info>");
-                        $output->writeln("<info>Update {$donor->name} has {$donor_amount} but only {$donor->amount} in the certificate.</info>");
+                        $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} has {$donor_amount} but only {$donor->amount} in the certificate.</info>");
                         $updated_donors++;
                         if ($update) {
                             $donor->updateInvestions();
