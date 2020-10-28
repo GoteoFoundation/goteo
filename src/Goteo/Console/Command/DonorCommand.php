@@ -210,6 +210,7 @@ EOT
             $status_to_filter = Donor::$DONOR_STATUSES;
 
             $updated_donors = 0;
+            $updated_status_donors = 0;
 
             $offset = 0;
             $limit = 100;
@@ -221,7 +222,7 @@ EOT
                 $filter['donor_status'] = $status;
                 $total = Donor::getList($filter, 0, 0, true);
                 if (!$total) {
-                    $output->writeln("<info>There are no donors in this state-</info>");
+                    $output->writeln("<info>There are no donors in this state</info>");
                     continue;
                 }
 
@@ -266,6 +267,13 @@ EOT
                             $updated_donors++;
                             if ($update) {
                                 $donor->updateInvestions();
+                                if ($donor->status == Donor::PENDING) {
+                                    $donor->status = Donor::COMPLETED;
+                                    $donor->completed = date('Y-m-d H:i:s');
+                                    $donor->save();
+
+                                    $updated_status_donors++;
+                                }
                             }
                         }
                         $progress_bar->advance();
@@ -280,6 +288,8 @@ EOT
 
             if ($update) {
                 $output->writeln("<info>A total of {$updated_donors} out of {$total_donors} have been updated.</info>");
+                $output->writeln("<info>A total of {$updated_status_donors} out of {$total_donors} have the status changed to completed.</info>");
+
             } else {
                 $output->writeln("<info>A total of {$updated_donors} out of {$total_donors} can be updated using --update");
             }
