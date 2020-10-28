@@ -2,6 +2,9 @@
 /**
  * Migration Task class.
  */
+
+ use Goteo\Core\Model;
+
 class GoteoAddStatusDonor
 {
   public function preUp()
@@ -12,6 +15,17 @@ class GoteoAddStatusDonor
   public function postUp()
   {
       // add the post-migration code here
+
+      $sql = "
+        UPDATE `donor` SET status = 'pending', donor.pending = NOW() WHERE donor.year = :year;
+        UPDATE `donor` SET completed = processed WHERE confirmed AND processed IS NOT NULL AND processed != '0000-00-00' AND year = :year;
+      ";
+
+      $values = [
+          'year' => date('Y')
+      ];
+
+      Model::query($sql, $values);
   }
 
   public function preDown()
@@ -32,7 +46,7 @@ class GoteoAddStatusDonor
   public function getUpSQL()
   {
      return "
-        ALTER TABLE `donor` ADD COLUMN `status` VARCHAR(10),
+        ALTER TABLE `donor` ADD COLUMN `status` VARCHAR(50),
                             ADD COLUMN `pending` DATETIME,
                             ADD COLUMN `completed` DATETIME,
                             ADD COLUMN `validated` DATETIME,
