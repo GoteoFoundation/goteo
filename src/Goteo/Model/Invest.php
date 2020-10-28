@@ -375,6 +375,9 @@ class Invest extends \Goteo\Core\Model {
                 case 'second': // en segunda ronda
                     $sqlFilter[] = "project.status = " . Project::STATUS_IN_CAMPAIGN . " AND (project.passed IS NOT NULL AND project.passed != '0000-00-00' )";
                     break;
+                case 'passed': // project's that have passed
+                    $sqlFilter[] = "project.passed IS NOT NULL AND project.passed != '0000-00-00'";
+                    break;
                 case 'completed': // financiados
                     $sqlFilter[] = "project.status IN (" . Project::STATUS_FUNDED . ',' . Project::STATUS_FULFILLED . ")";
                     break;
