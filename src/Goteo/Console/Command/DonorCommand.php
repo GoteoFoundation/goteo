@@ -16,7 +16,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Finder\Finder;
+
 
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
@@ -67,6 +69,7 @@ EOT
         $update = $input->getOption('update');
         $donor  = $input->getOption('donor');
         $donor_provided = isset($donor);
+        $verbose = $output->isVerbose();
 
         $update_amounts = $input->getOption('update_amounts');
 
@@ -196,7 +199,7 @@ EOT
 
             $filter = [
                 'year' => $year,
-                'status' => Donor::UNCONFIRMED,
+                'status' => Donor::DATA_FILLED,
                 'show_empty' => true,
             ];
 
@@ -204,56 +207,81 @@ EOT
                 $filter['user'] = $user;
             }
 
+            $status_to_filter = Donor::$DONOR_STATUSES;
+
             $updated_donors = 0;
 
             $offset = 0;
             $limit = 100;
+            $total_donors = 0;
 
-            $total = Donor::getList($filter, 0, 0, true);
-            $output->writeln("<info>About to treat {$total} donors </info>");
+            foreach ($status_to_filter as $status) {
+                $output->writeln("<info>About to treat donors with {$status} status </info>");
 
-            while ($donors = Donor::getList($filter, $offset, $limit)) {
-                                $output->writeln("<info>About to treat {$offset} offset of {$total}</info>");
-                foreach($donors as $donor) {
-
-                    // $pending_investions = Donor::getPendingInvestions($donor->user);
-
-                    // $donor_year = $donor->year;
-                    // if (!empty($pending_investions)) {
-                    //     $missing_investions = count($pending_investions);
-                    //     $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} has {$missing_investions} invest to be added to the certificate.</info>");
-                    //     $updated_donors++;
-                    //     if ($update) {
-                    //         $donor->updateInvestions();
-                    //     }
-                    // }
-
-                    $donor_year = $donor->year;
-                    $invest_filters = [
-                        'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_TO_POOL, Invest::STATUS_DONATED],
-                        'date_from' => $donor_year . '-01-01',
-                        'date_until' => $donor_year . '-12-31',
-                        'users' => $donor->user,
-                        'procStatus' => 'passed'
-                    ];
-
-                    $user_invests = Invest::getList($invest_filters, null, 0, 0, 'all');
-                    $donor_amount = $user_invests['amount'] + $user_invests['donations_amount'];
-                    if ($donor_amount != $donor->amount) {
-                        $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} has {$donor_amount} but only {$donor->amount} in the certificate.</info>");
-                        $updated_donors++;
-                        if ($update) {
-                            $donor->updateInvestions();
-                        }
-                    }
+                $filter['donor_status'] = $status;
+                $total = Donor::getList($filter, 0, 0, true);
+                if (!$total) {
+                    $output->writeln("<info>There are no donors in this state-</info>");
+                    continue;
                 }
 
-                $offset+=$limit;
+                $output->writeln("<info>About to treat {$total} donors </info>");
+
+                $progress_bar = new ProgressBar($output, $total);
+                $progress_bar->start();
+
+                while ($donors = Donor::getList($filter, $offset, $limit)) {
+                    
+                    foreach($donors as $donor) {
+
+                        // $pending_investions = Donor::getPendingInvestions($donor->user);
+
+                        // $donor_year = $donor->year;
+                        // if (!empty($pending_investions)) {
+                        //     $missing_investions = count($pending_investions);
+                        //     $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} has {$missing_investions} invest to be added to the certificate.</info>");
+                        //     $updated_donors++;
+                        //     if ($update) {
+                        //         $donor->updateInvestions();
+                        //     }
+                        // }
+
+                        $donor_year = $donor->year;
+                        $invest_filters = [
+                            'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_TO_POOL, Invest::STATUS_DONATED],
+                            'date_from' => $donor_year . '-01-01',
+                            'date_until' => $donor_year . '-12-31',
+                            'users' => $donor->user,
+                            'procStatus' => 'passed'
+                        ];
+
+                        $user_invests = Invest::getList($invest_filters, null, 0, 0, 'all');
+                        $donor_amount = $user_invests['amount'] + $user_invests['donations_amount'];
+                        if ($donor_amount != $donor->amount) {
+                            if ($verbose) {
+                                $progress_bar->clear();
+                                $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} has {$donor_amount} but only {$donor->amount} in the certificate.</info>");
+                                $progress_bar->display();
+                            }
+                            $updated_donors++;
+                            if ($update) {
+                                $donor->updateInvestions();
+                            }
+                        }
+                        $progress_bar->advance();
+                    }
+
+                    $offset+=$limit;
+                }
+                $progress_bar->finish();
+                $total_donors += $total;
+                $output->writeln('');
             }
+
             if ($update) {
-                $output->writeln("<info>A total of {$updated_donors} out of {$total} have been updated.</info>");
+                $output->writeln("<info>A total of {$updated_donors} out of {$total_donors} have been updated.</info>");
             } else {
-                $output->writeln("<info>A total of {$updated_donors} out of {$total} can be updated using --update");
+                $output->writeln("<info>A total of {$updated_donors} out of {$total_donors} can be updated using --update");
             }
 
         }
