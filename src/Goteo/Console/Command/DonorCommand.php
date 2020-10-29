@@ -403,9 +403,6 @@ EOT
 
                         $donor_year = $donor->year;
 
-                        $user_invests = Invest::getList($invest_filters, null, 0, 0, 'all');
-                        $donor_amount = $user_invests['amount'] + $user_invests['donations_amount'];
-
                         if ($donor->amount != 0) {
                             if ($verbose) {
                                 $progress_bar->clear();
