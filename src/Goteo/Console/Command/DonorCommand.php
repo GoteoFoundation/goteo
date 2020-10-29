@@ -339,6 +339,8 @@ EOT
                                 $progress_bar->display();
                             }
 
+                            $errors = [];
+
                             if ($donor->validateData($errors)) {
                                 $updated_donors++;
                                 if ($update) {
@@ -353,10 +355,12 @@ EOT
                                 }
                             } else {
                                 $donors_with_errors++;
-                                $progress_bar->clear();
-                                $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
-                                $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
-                                $progress_bar->display();
+                                if ($verbose) {
+                                    $progress_bar->clear();
+                                    $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
+                                    $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
+                                    $progress_bar->display();
+                                }
                             }
                         }
                         $progress_bar->advance();
@@ -417,13 +421,13 @@ EOT
                         $donor_year = $donor->year;
 
                         if ($donor->amount != 0) {
-                            if ($verbose) {
-                                $progress_bar->clear();
-                                $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} has {$donor_amount} but only {$donor->amount} in the certificate.</info>");
-                                $progress_bar->display();
-                            }
-
+                            $errors = [];
                             if ($donor->validateData($errors)) {
+                                if ($verbose) {
+                                    $progress_bar->clear();
+                                    $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} can change it's status .</info>");
+                                    $progress_bar->display();
+                                }
                                 $updated_donors++;
                                 if ($update) {
                                     $errors = [];
@@ -431,8 +435,16 @@ EOT
                                     $donor->completed = date('Y-m-d H:i:s');
                                     if (!$donor->save($errors)) {   
                                         if ($verbose) {
+                                            $progress_bar->clear();
                                             $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
                                             $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
+                                            $progress_bar->display();
+                                        }
+                                    } else {
+                                        if ($verbose) {
+                                            $progress_bar->clear();
+                                            $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} can change it's status .</info>");
+                                            $progress_bar->display();
                                         }
                                     }
                                 }
