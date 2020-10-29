@@ -18,8 +18,6 @@ class GoteoAddStatusDonor
 
       $sql = "
         UPDATE `donor` SET status = 'pending', donor.pending = NOW() WHERE donor.year = :year;
-        UPDATE `donor` SET completed = TIMESTAMP(processed), completed = NOW() WHERE confirmed AND processed IS NOT NULL AND processed != '0000-00-00' AND year = :year;
-        UPDATE `donor` SET status = 'completed' WHERE amount != 0 AND donor.name != '' AND donor.name IS NOT NULL AND donor.nif != '' AND donor.nif IS NOT NULL AND donor.zipcode != '' AND donor.zipcode IS NOT NULL and year = :year;
       ";
 
       $values = [

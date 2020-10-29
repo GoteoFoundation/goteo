@@ -38,7 +38,7 @@ class DonorCommand extends AbstractCommand {
              ->setDefinition(array(
                       new InputOption('update', 'u', InputOption::VALUE_NONE, 'Actually does the job. If not specified, nothing is done, readonly process.'),
                       new InputOption('update_donors', 'c', InputOption::VALUE_NONE, "If specified, checks all donor's data"),
-                      new InputOption('donor', 'd', InputOption::VALUE_NONE, "If specified, checks donor's data"),
+                      new InputOption('donor', 'd', InputOption::VALUE_OPTIONAL, "If specified, checks donor's data"),
                       new InputOption('update_amounts', 'a', InputOption::VALUE_NONE, "If specified calculates new amounts for donors"),
                       new InputOption('update_status', 's', InputOption::VALUE_NONE, "If specified updates the status of the donors"),
                       new InputOption('user', 'usr', InputOption::VALUE_OPTIONAL, "If specified used to search donations from a user" ),
@@ -283,6 +283,7 @@ EOT
 
             $updated_donors = 0;
             $updated_status_donors = 0;
+            $donors_with_errors = 0;
 
             $offset = 0;
             $limit = 100;
@@ -337,16 +338,25 @@ EOT
                                 $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} has {$donor_amount} but only {$donor->amount} in the certificate.</info>");
                                 $progress_bar->display();
                             }
-                            $updated_donors++;
-                            if ($update) {
-                                $donor->updateInvestions();
-                                if ($donor->status == Donor::PENDING) {
-                                    $donor->status = Donor::COMPLETED;
-                                    $donor->completed = date('Y-m-d H:i:s');
-                                    $donor->save();
 
-                                    $updated_status_donors++;
+                            if ($donor->validateData($errors)) {
+                                $updated_donors++;
+                                if ($update) {
+                                    $donor->updateInvestions();
+                                    if ($donor->status == Donor::PENDING) {
+                                        $donor->status = Donor::COMPLETED;
+                                        $donor->completed = date('Y-m-d H:i:s');
+                                        $donor->save();
+    
+                                        $updated_status_donors++;
+                                    }
                                 }
+                            } else {
+                                $donors_with_errors++;
+                                $progress_bar->clear();
+                                $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
+                                $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
+                                $progress_bar->display();
                             }
                         }
                         $progress_bar->advance();
@@ -360,10 +370,12 @@ EOT
             }
 
             if ($update) {
+                $output->writeln("<info>A total of {$donors_with_errors} out of {$total_donors} have errors.</info>");
                 $output->writeln("<info>A total of {$updated_donors} out of {$total_donors} have been updated.</info>");
                 $output->writeln("<info>A total of {$updated_status_donors} out of {$total_donors} have the status changed to completed.</info>");
 
             } else {
+                $output->writeln("<info>A total of {$donors_with_errors} out of {$total_donors} have errors.</info>");
                 $output->writeln("<info>A total of {$updated_donors} out of {$total_donors} can be updated using --update");
             }
 
@@ -380,6 +392,7 @@ EOT
             $status = Donor::PENDING;
 
             $updated_donors = 0;
+            $donors_with_errors = 0;
 
             $offset = 0;
             $limit = 100;
@@ -410,15 +423,23 @@ EOT
                                 $progress_bar->display();
                             }
 
-                            $updated_donors++;
-                            if ($update) {
-                                $errors = [];
-                                $donor->status = Donor::COMPLETED;
-                                $donor->completed = date('Y-m-d H:i:s');
-                                if (!$donor->save($errors)) {   
-                                    $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
-                                    $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
+                            if ($donor->validateData($errors)) {
+                                $updated_donors++;
+                                if ($update) {
+                                    $errors = [];
+                                    $donor->status = Donor::COMPLETED;
+                                    $donor->completed = date('Y-m-d H:i:s');
+                                    if (!$donor->save($errors)) {   
+                                        $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
+                                        $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
+                                    }
                                 }
+                            } else {
+                                $donors_with_errors++;
+                                $progress_bar->clear();
+                                $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
+                                $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
+                                $progress_bar->display();
                             }
                         }
 
@@ -434,9 +455,11 @@ EOT
 
             if ($update) {
                 $output->writeln("<info>A total of {$updated_donors} out of {$total_donors} have been updated.</info>");
+                $output->writeln("<info>A total of {$donors_with_errors} out of {$total_donors} have errors.</info>");
 
             } else {
                 $output->writeln("<info>A total of {$updated_donors} out of {$total_donors} can be updated using --update");
+                $output->writeln("<info>A total of {$donors_with_errors} out of {$total_donors} have errors.</info>");
             }
         }
 
