@@ -430,16 +430,20 @@ EOT
                                     $donor->status = Donor::COMPLETED;
                                     $donor->completed = date('Y-m-d H:i:s');
                                     if (!$donor->save($errors)) {   
-                                        $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
-                                        $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
+                                        if ($verbose) {
+                                            $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
+                                            $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
+                                        }
                                     }
                                 }
                             } else {
                                 $donors_with_errors++;
-                                $progress_bar->clear();
-                                $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
-                                $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
-                                $progress_bar->display();
+                                if ($verbose) {
+                                    $progress_bar->clear();
+                                    $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
+                                    $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
+                                    $progress_bar->display();
+                                }
                             }
                         }
 
