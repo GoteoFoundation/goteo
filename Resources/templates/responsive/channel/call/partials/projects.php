@@ -1,5 +1,7 @@
 <?php $channel=$this->channel; ?>
 
+<?php if($this->projects): ?>
+
 <div class="section projects">
   <div class="container">
     <h2 class="title"><span class="icon icon-desktop icon-3x"></span><?= $this->text('channel-call-projects-title') ?></h2>
@@ -17,3 +19,5 @@
   </div>
 
 </div>
+
+<?php endif; ?>
