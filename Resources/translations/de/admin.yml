@@ -50,6 +50,7 @@ admin-contents: 'Texte und Übersetzungen'
 admin-empty-list: 'Es wurden keine registrierten Einträge gefunden'
 admin-activity: Aktivität
 admin-communications: Kommunikation
+admin-communications-add: Neue Unterhaltung erstellen
 admin-home: Startseite
 admin-items: Eingänge
 admin-mailing-back-to-list: 'Zurück zu Kommunikation'
