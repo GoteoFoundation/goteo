@@ -565,9 +565,9 @@ mandatory-filter-role: Falta un rol
 
 admin-node-iframe: Iframe
 
-
 admin-channel-resource: 'Recursos Canal'
 admin-channel-resource-add: 'Crear recurso'
-
+admin-faqs: Faqs
+admin-faq-add: Añadir Faq
+admin-faq-pending: "Marcar com pendiente de traducir"
 admin-posts: 'Posts'
-

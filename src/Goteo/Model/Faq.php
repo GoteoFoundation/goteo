@@ -147,6 +147,16 @@ class Faq extends \Goteo\Core\Model {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
 
+        if ($count) {
+            $sql = "SELECT count(faq.id)
+                    FROM faq
+                    $joins
+                    $sql
+                    ";
+            return (int) self::query($sql, $values)->fetchColumn();
+        }
+
+
         $sql="SELECT
                   faq.id as id,
                   faq.slug as slug,
@@ -162,6 +172,7 @@ class Faq extends \Goteo\Core\Model {
               LIMIT $offset, $limit";
         //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
+
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
