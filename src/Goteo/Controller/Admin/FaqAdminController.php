@@ -83,7 +83,7 @@ class FaqAdminController extends AbstractAdminController
     public function editAction($id = null, Request $request)
     {
         if ($id) {
-            $faq = Faq::get($id);
+            $faq = Faq::getById($id);
         } else {
             $faq = new Faq();
         }
