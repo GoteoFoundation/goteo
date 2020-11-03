@@ -51,6 +51,7 @@ admin-empty-list: 'Es wurden keine registrierten Einträge gefunden'
 admin-activity: Aktivität
 admin-communications: Kommunikation
 admin-communications-add: Neue Unterhaltung erstellen
+admin-communications-cancel: 'Mitteilung abbrechen'
 admin-home: Startseite
 admin-items: Eingänge
 admin-mailing-back-to-list: 'Zurück zu Kommunikation'
@@ -89,6 +90,7 @@ admin-text-type-plain: 'einfacher Text'
 admin-user: Benutzer
 admin-users: Benutzer
 admin-users-add: Neuen Benutzer anlegen
+admin-blog-add: Neuen Beitrag erstellen
 admin-yes: Ja
 admin-impersonate-user: Sich als %s ausgeben
 admin-project-express-discard: 'Express verwerfen'
