@@ -13,17 +13,17 @@ login-new-user-label: 'Neuen Benutzer anlegen?'
 login-oneclick-header: '1-Klick-Anmeldung'
 login-recover-button: Wiederherstellen
 login-recover-email-field: 'Account Email-Adresse'
-login-recover-header: "Füllen Sie das Feld mit der E-Mail aus, mit der Sie sich auf der Plattform registriert haben. Viele Male fällt es mit derselben E-Mail zusammen, die mit Ihren sozialen Netzwerken verknüpft ist. Achtung: Sie erhalten eine E-Mail mit einem direkten Link zur Änderung Ihres Passwortes. Wenn Sie die E-Mail nicht erhalten, vergewissern Sie sich, dass sie sich nicht im Spam-Ordner befindet. Wenn Sie mehrmals ein neues Passwort angefordert haben, wird jedes Mal eine E-Mail mit einem neuen, automatisch generierten Link versendet. Verwenden Sie den Link aus der letzten E-Mail, die Sie erhalten haben. Wenn Sie sich nicht an die E-Mail erinnern, können Sie uns kontaktieren. Vergessen Sie dabei nicht, einige Daten anzugeben, um uns die Suche nach Ihrem Benutzerkonto zu erleichtern (vollständiger Name, Spitzname, den Sie normalerweise verwenden, Datum der Registrierung oder wenn Sie einen Beitrag zu einem bestimmten Projekt geleistet haben)."
-login-recover-label: 'Password vergessen?'
+login-recover-header: "Füllen Sie das Feld mit der E-Mail aus, mit der Sie sich auf der Plattform registriert haben. Oft fällt es mit derselben E-Mail zusammen, die mit Ihren sozialen Netzwerken verknüpft ist. Achtung: Sie erhalten eine E-Mail mit einem direkten Link zur Änderung Ihres Passwortes. Wenn Sie die E-Mail nicht erhalten, vergewissern Sie sich, dass sie sich nicht im Spam-Ordner befindet. Wenn Sie mehrmals ein neues Passwort angefordert haben, wird jedes Mal eine E-Mail mit einem neuen, automatisch generierten Link versendet. Verwenden Sie den Link aus der letzten E-Mail, die Sie erhalten haben. Wenn Sie sich nicht an die E-Mail erinnern, können Sie uns kontaktieren. Vergessen Sie dabei nicht, einige Daten anzugeben, um uns die Suche nach Ihrem Benutzerkonto zu erleichtern (vollständiger Name, Spitzname, den Sie normalerweise verwenden, Datum der Registrierung oder wenn Sie einen Beitrag zu einem bestimmten Projekt geleistet haben)."
+login-recover-label: 'Passwort vergessen?'
 login-recover-link: 'Passwort wiederherstellen'
 login-recover-modal-button: Senden
-login-recover-modal-sucess: 'Fertig! - Wir haben Ihnen eine Email mit einem Link zum Rücksetzen Ihres Passwortes an %s geschickt.'
-login-recover-modal-text: 'Geben Sie die bei der Registrierung verwendete Email-Adresse ein und wir senden Ihnen einen Link zum Rücksetzen Ihres Passwortes.'
+login-recover-modal-sucess: 'Fertig! - Wir haben Ihnen eine E-Mail mit einem Link zum Rücksetzen Ihres Passwortes an %s geschickt.'
+login-recover-modal-text: 'Geben Sie die bei der Registrierung verwendete E-Mail-Adresse ein und wir senden Ihnen einen Link zum Rücksetzen Ihres Passwortes.'
 login-recover-username-field: 'Benutzername'
 login-register-button: Registrieren
-login-register-confirm-field: 'Email-Adresse bestätigen'
+login-register-confirm-field: 'E-Mail-Adresse bestätigen'
 login-register-confirm_password-field: 'Passwort bestätigen'
-login-register-email-field: Email-Adresse
+login-register-email-field: E-Mail-Adresse
 login-register-header: 'Neuer Benutzer'
 login-register-password-field: Passwort
 login-register-password-minlength: 'Mindestens 6 Zeichen'
