@@ -17,7 +17,7 @@
   <div class="container">
     <h2 class="title">
         <span class="icon icon-calendar-2 icon-3x"></span>
-        <span><?= $this->t('channel-call-program-title') ?></span>
+        <span><?= $this->t('channel-call-program-title').$this->channel->name ?></span>
         <a class="btn btn-transparent" href="<?= $this->channel->terms_url ?>" class="btn btn-transparent">
           <i class="icon icon-terms icon-2x"></i> <?= $this->t('channel-call-program-terms') ?>
         </a>
@@ -32,7 +32,7 @@
         <div class="date"> <?= $program->date ?> </div>
         <div class="paragraph">
           <?php if($program->header): ?>
-            <img class="img-responsive" src="<?= $program->getHeader()->getLink(350,150) ?>" >
+            <img class="img-responsive" src="<?= $program->getHeader()->getLink(0,120) ?>" >
           <?php endif; ?>
           <h1><?= $program->title ?></h1>
           <p><?= $program->description ?></p>
