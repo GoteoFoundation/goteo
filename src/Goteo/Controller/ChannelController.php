@@ -31,6 +31,7 @@ use Goteo\Model\Page;
 use Goteo\Model\SocialCommitment;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Util\Map\MapOSM;
+use Goteo\Model\Questionnaire;
 
 
 class ChannelController extends \Goteo\Core\Controller {
@@ -253,6 +254,64 @@ class ChannelController extends \Goteo\Core\Controller {
             'terms'      => Page::get('howto'),
             'project_defaults' => ['node' => $id]
         ]);
+    }
+
+    /**
+     * Initial apply project action
+     * @param  Request $request [description]
+     */
+
+    public function applyAction ($id, $pid, Request $request)
+    {
+        if (!Session::isLogged()) {
+            Message::info(Text::get('user-login-required-to_create'));
+            return $this->redirect('/user/login?return='.urldecode("/channel/$id/apply/$pid"));
+        }
+
+        $channel = Node::get($id);
+
+        $project = Project::get($pid);
+        if(!$project->inEdition()) {
+            Message::error('Project must be in edition to assign to a call');
+            return $this->redirect("/dashboard/project/$pid");
+        }
+
+        $questionnaire = Questionnaire::getByChannel($id);
+
+        if ($questionnaire->isAnswered($pid)) {
+            Message::error(Text::get('questionnaire-already-answered-by-project'));
+            return $this->redirect("/dashboard/project/$pid");
+        }
+
+        if ($questionnaire->questions) {
+            $questionnaire->project_id = $pid;
+            $processor = $this->getModelForm('Questionnaire', $questionnaire, (array) $questionnaire, [], $request);
+            $processor->createForm();
+            $form = $processor->getForm();
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $request->isMethod('post')) {
+                // Check if we want to remove an entry
+
+                try {
+                    $processor->save($form); // Allow save event if does not validate
+                    // Message::info(Text::get(''));
+                    return $this->redirect('/dashboard/project/' . $project->id . '/profile');
+                } catch (FormModelException $e) {
+                    Message::error($e->getMessage());
+                }
+            }
+
+            return $this->viewResponse(
+                'questionnaire/apply',
+                [
+                    'model' => $channel,
+                    'form' => $form->createView()
+                ]
+            );
+        }
+
+        return $this->redirect('/dashboard/project/'. $project->id .'/profile');
+
     }
 
 

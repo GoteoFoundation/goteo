@@ -152,6 +152,18 @@ class Questionnaire extends \Goteo\Core\Model
         }
     }
 
+    public function isAnswered($project_id)
+    {
+        $query = static::query('SELECT DISTINCT(qap.project)
+        FROM question_answer_project qap
+        INNER JOIN question_answer qa ON qa.question  = qap.answer
+        INNER JOIN question q ON q.id = qa.question
+        WHERE qap.project = :project AND q.questionnaire = :id
+        ', [':id' => $this->id, ':project' => $project_id]);
+
+        return $query->fetchColumn();
+    }
+
     /**
      * Validate.
      *
