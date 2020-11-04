@@ -95,7 +95,13 @@ class ChannelCriteriaAdminController extends AbstractAdminController
   }
 
   $processor = $this->getModelForm('QuestionnaireCreate', $questionnaire, (array) $questionnaire, [], $request);
-  $processor->createForm()->getBuilder();
+  $processor->createForm()->getBuilder()
+    ->add(
+    'add-question', 'submit', [
+    'label' => Text::get('questionnaire-add-question'),
+    'attr' => ['class' => 'btn btn-lg btn-cyan text-uppercase add-question'],
+    'icon_class' => 'fa fa-plus'
+    ]);
 
   $form = $processor->getForm();
   $form->handleRequest($request);

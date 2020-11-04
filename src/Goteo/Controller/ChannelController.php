@@ -286,8 +286,16 @@ class ChannelController extends \Goteo\Core\Controller {
         if ($questionnaire->questions) {
             $questionnaire->project_id = $pid;
             $processor = $this->getModelForm('Questionnaire', $questionnaire, (array) $questionnaire, [], $request);
-            $processor->createForm();
-            $form = $processor->getForm();
+            $processor->createForm()
+                ->add(
+                    'submit', 'submit', [
+                    'label' => 'regular-submit',
+                    'attr' => ['class' => 'btn btn-lg btn-cyan text-uppercase'],
+                    'icon_class' => 'fa fa-save'
+                    ]
+                );
+
+                $form = $processor->getForm();
             $form->handleRequest($request);
             if ($form->isSubmitted() && $request->isMethod('post')) {
                 // Check if we want to remove an entry
