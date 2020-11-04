@@ -181,12 +181,32 @@ class Faq extends \Goteo\Core\Model {
         return empty($errors);
     }
 
+    public function slugExists($slug) {
+        $values = [':slug' => $slug];
+        $sql = 'SELECT COUNT(*) FROM faq WHERE slug=:slug';
+        if($this->id) {
+            $values[':id'] = $this->id;
+            $sql .= ' AND id!=:id';
+        }
+
+        return self::query($sql, $values)->fetchColumn() > 0;
+    }
+
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
+
+         // Attempt to create slug if not exists
+        if(!$this->slug) {
+            $this->slug = self::idealiza($this->title, false, false, 150);
+            if($this->slug && $this->slugExists($this->slug)) {
+                $this->slug = $this->slug .'-' . ($this->id ? $this->id : time());
+            }
+        }
 
         try {
             $this->dbInsertUpdate([
                 'id',
+                'slug',
                 'node',
                 'section',
                 'title',

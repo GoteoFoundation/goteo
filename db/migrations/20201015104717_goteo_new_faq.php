@@ -11,7 +11,17 @@ class GoteoNewFaq
 
   public function postUp()
   {
-      // add the post-migration code here
+      // add the faq-migration code here
+      // Create default slugs for everybody
+      foreach(Post::query("SELECT id,title FROM faq")->fetchAll(\PDO::FETCH_OBJ) as $faq) {
+        $slug = Faq::idealiza($faq->title, false, false, 150);
+        try {
+            // If duplicate, let it null
+            Faq::query("UPDATE faq SET slug=:slug WHERE id=:id", [':id' => $faq->id, ':slug' => $slug]);
+        } catch(\PDOException $e) {
+            //
+        }
+      }
   }
 
   public function preDown()
