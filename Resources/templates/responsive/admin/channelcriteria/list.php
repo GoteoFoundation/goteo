@@ -49,7 +49,9 @@ $this->section('admin-search-box-addons');
     <?php echo $submit ?>
 
     <?php echo $this->form_end($form) ?>
-
+    
+  </div>
+</div>
 
 <?php $this->replace() ?>
 
