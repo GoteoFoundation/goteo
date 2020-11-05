@@ -40,15 +40,17 @@
     	
 		    		<?php $faq_subsection=$subsection->getFaqbySubsection(5); ?>
 		      		<section>
-			      		<h3 class="collapsed" data-toggle="collapse" data-target="#collapse-<?= $subsection->id ?>" aria-expanded="true" aria-controls="collapse-<?= $subsection->id ?>"><?= $subsection->name ?></h3>
-			      		<ul id="collapse-<?= $subsection->id ?>" class="collapse" aria-labelledby="heading-<?= $subsection->id ?>" data-parent="#accordion">
+			      		<h3 role="button" data-toggle="collapse" href="<?= '#collapse-'.$subsection->id ?>" aria-expanded="<?= $this->faq->subsection_id==$subsection->id ? 'true' : 'false' ?>">
+			      			<?= $subsection->name ?>
+			      		</h3>
+			      		<ul class="description collapse <?= $this->faq->subsection_id==$subsection->id ? 'in' : 'false' ?>" id="<?= 'collapse-'.$subsection->id ?>">
 			      			<?php foreach($faq_subsection as $faq): ?>
-						        <?php $faq_id= $faq->slug ? $faq->slug : $faq->id; ?>
+						        
 						    	<?php if($faq->id==$this->faq->id): ?>
 						 			<li class="select"><?= $faq->title ?></li>
 						 		<?php else: ?>
 						 			<li>
-						 				<a href="<?= '/faq/'.$this->faq_section->slug.'/'.$this->faq->id ?>">
+						 				<a href="<?= '/faq/'.$this->faq_section->slug.'/'.$faq->slug ?>">
 						 				<?= $faq->title ?>	
 						 				</a>
 						 			</li>
