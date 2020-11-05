@@ -52,8 +52,12 @@ admin-activity: Aktivität
 admin-communications: Kommunikation
 admin-communications-add: Neue Unterhaltung erstellen
 admin-communications-userid-content: 'Fürdie ID des Empfängers'
-admin-communications-username-content: 'Bitte gib den Namen des Empfängers an'
+admin-communications-useremail-content: 'für die ID des Empfängers'
+admin-communications-username-content: 'für den Namen des Empfängers'
 admin-communications-siteurl-content: "\n30/5000\nfür die URL dieser Plattform (%SITEURL%)"
+admin-communications-subscribeurl-content: 'Persönlicher Link zur Anmeldung zum Newsletter'
+admin-communications-unsubscribeurl-content: 'Link zur Newsletter-Abmeldung'
+admin-communications-poolamount-content: 'verfügbarer Betrag in der Geldbörse'
 admin-communications-cancel: 'Mitteilung abbrechen'
 admin-home: Startseite
 admin-items: Eingänge
