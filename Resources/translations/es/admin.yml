@@ -139,6 +139,8 @@ admin-channelstory-correct: 'Se ha añadido la historia al canal'
 admin-channelpost-add: Añadir Post al canal
 admin-channelpost-submit: Guardar Post
 admin-channelpost-correct: 'Se ha añadido el post al canal'
+admin-channelcriteria-title: 'Cuestionarios del canal'
+admin-channelcriteria-subtitle: 'Establece los criterios con los que evaluarás un proyecto que quiera presentarse a tu canal. Procura ser conciso en lo que esperas obtener de las iniciativas que quieran presentarse, ayudará a facilitarte la evaluación final.'
 
 
 admin-categories: 'Categorías y ámbitos'

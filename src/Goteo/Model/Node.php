@@ -43,7 +43,7 @@ class Node extends \Goteo\Core\Model {
         $home_img,
         $active,
         $project_creation_open,
-        $call_inscription_open,
+        $call_inscription_open, // TODO: remove
         $banner_header_image,
         $banner_header_image_md,
         $banner_header_image_sm,
