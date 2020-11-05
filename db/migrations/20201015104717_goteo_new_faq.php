@@ -1,4 +1,7 @@
 <?php
+
+use Goteo\Model\Faq;
+
 /**
  * Migration Task class.
  */
@@ -13,7 +16,7 @@ class GoteoNewFaq
   {
       // add the faq-migration code here
       // Create default slugs for everybody
-      foreach(Post::query("SELECT id,title FROM faq")->fetchAll(\PDO::FETCH_OBJ) as $faq) {
+      foreach(Faq::query("SELECT id,title FROM faq")->fetchAll(\PDO::FETCH_OBJ) as $faq) {
         $slug = Faq::idealiza($faq->title, false, false, 150);
         try {
             // If duplicate, let it null
@@ -86,6 +89,7 @@ class GoteoNewFaq
 
       ALTER TABLE `faq` ADD COLUMN `slug` VARCHAR(150) AFTER id;
       ALTER TABLE `faq` ADD COLUMN `subsection_id` BIGINT(20) UNSIGNED NOT NULL AFTER title;
+      ALTER TABLE `faq` DROP `section`; 
       SET FOREIGN_KEY_CHECKS=0;
       ALTER TABLE `faq` ADD CONSTRAINT `faq_ibfk_2` FOREIGN KEY (`subsection_id`) REFERENCES `faq_subsection`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
       SET FOREIGN_KEY_CHECKS=1;
@@ -106,6 +110,7 @@ class GoteoNewFaq
        ALTER TABLE `faq` DROP FOREIGN KEY `faq_ibfk_2`;
        ALTER TABLE `faq` DROP COLUMN `subsection_id`;
        ALTER TABLE `faq` DROP COLUMN `slug`;
+       ALTER TABLE `faq` ADD COLUMN `section` VARCHAR(150) AFTER id;
        DROP TABLE `faq_subsection`;
        DROP TABLE `faq_section_lang`;
        DROP TABLE `faq_section`;

@@ -269,6 +269,7 @@ admin-title-action-url: 'Texto botón de descarga'
 admin-title-download-url: 'Enlace a descarga'
 admin-title-channel: 'Canal'
 admin-title-resource-category: 'Categoría de recurso'
+admin-title-subsection: 'Subsección'
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'

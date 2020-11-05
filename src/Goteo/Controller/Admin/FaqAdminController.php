@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Model\Faq;
+use Goteo\Model\Faq\FaqSubsection;
 use Goteo\Application\App;
 use Goteo\Application\Lang;
 use Goteo\Application\Message;
@@ -51,22 +52,22 @@ class FaqAdminController extends AbstractAdminController
                 ['_controller' => __CLASS__ . "::deleteAction"]
             ),
             new Route(
-                '/{section}',
+                '/{subsection}',
                 ['_controller' => __CLASS__ . "::listAction"]
             ),
         ];
     }
 
-    public function listAction($section = null, Request $request)
+    public function listAction($subsection = null, Request $request)
     {
-        if ($section) {
-            $filters['section'] = $section;
+        if ($subsection) {
+            $filters['subsection'] = $subsection;
         }
 
         $limit = 25;
         $page = $request->query->get('pag') ?: 0;
 
-        $sections = Faq::sections();
+        $faq_subsections = FaqSubsection::getList();
         $list = Faq::getList($filters, $page, $limit);
         $total = Faq::getList($filters, $page, $limit, true);
 
@@ -74,8 +75,8 @@ class FaqAdminController extends AbstractAdminController
             'list' => $list,
             'total' => $total,
             'limit' => $limit,
-            'faq_sections' => $sections,
-            'current_section' => $section
+            'faq_subsections' => $faq_subsections,
+            'current_subsection' => $subsection
         ]);
         
     }   
@@ -96,7 +97,7 @@ class FaqAdminController extends AbstractAdminController
             try {
                 $processor->save($form);
                 Message::info(Text::get('admin-' . ($id ? 'edit' : 'add') . '-entry-ok'));
-                return $this->redirect("/admin/faq/" . $faq->section);
+                return $this->redirect("/admin/faq/" . $faq->subsection_id);
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }
@@ -110,7 +111,7 @@ class FaqAdminController extends AbstractAdminController
     public function deleteAction($id, Request $request) {
         
         try {
-            $faq = Faq::get($id);
+            $faq = Faq::getById($id);
         } catch (ModelNotFoundException $exception) {
             Message::error($exception->getMessage());
         }

@@ -30,18 +30,18 @@
     <section class="container pas3">
       	<div class="row">
 	        <article class="col-sm-8 col-sm-offset-1 col-sm-push-3">
-		       	<?= $this->faq->description ?>
+		       	<?= $this->markdown($this->faq->description) ?>
 	    		<footer class="no_resuelto">
 		    		<a href="/contact" class="btn">¿NO HEMOS RESUELTO TU DUDA?</a>
 		    	</footer>
 	        </article>
-	        <aside class="col-sm-3 col-sm-pull-9">
+	        <aside class="col-sm-3 col-sm-pull-9" id="accordion">
 	      		<?php foreach ($this->subsections as $subsection): ?>
     	
 		    		<?php $faq_subsection=$subsection->getFaqbySubsection(5); ?>
 		      		<section>
-			      		<h3 class="open"><?= $subsection->name ?></h3>
-			      		<ul>
+			      		<h3 class="collapsed" data-toggle="collapse" data-target="#collapse-<?= $subsection->id ?>" aria-expanded="true" aria-controls="collapse-<?= $subsection->id ?>"><?= $subsection->name ?></h3>
+			      		<ul id="collapse-<?= $subsection->id ?>" class="collapse" aria-labelledby="heading-<?= $subsection->id ?>" data-parent="#accordion">
 			      			<?php foreach($faq_subsection as $faq): ?>
 						        <?php $faq_id= $faq->slug ? $faq->slug : $faq->id; ?>
 						    	<?php if($faq->id==$this->faq->id): ?>
