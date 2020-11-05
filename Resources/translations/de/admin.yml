@@ -51,6 +51,9 @@ admin-empty-list: 'Es wurden keine registrierten Einträge gefunden'
 admin-activity: Aktivität
 admin-communications: Kommunikation
 admin-communications-add: Neue Unterhaltung erstellen
+admin-communications-userid-content: 'Fürdie ID des Empfängers'
+admin-communications-username-content: 'Bitte gib den Namen des Empfängers an'
+admin-communications-siteurl-content: "\n30/5000\nfür die URL dieser Plattform (%SITEURL%)"
 admin-communications-cancel: 'Mitteilung abbrechen'
 admin-home: Startseite
 admin-items: Eingänge
