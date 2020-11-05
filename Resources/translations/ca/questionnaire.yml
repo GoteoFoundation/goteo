@@ -14,3 +14,6 @@ questionnaire-scoring-save: "Puntuació guardada correctament"
 questionnaire-max-score-help: "Aquesta és la puntuació màxima per aquesta pregunta."
 question-save-error: "Pregunta no esborrada"
 question-choice-answer: "Resposta"
+questionnaire-apply-title: Sol·licitut de participació a %s
+questionnaire-answer-questions: Respon aquestes preguntes
+questionnaire-already-answered-by-project: Aquest qüestionari ja ha estat respost.
