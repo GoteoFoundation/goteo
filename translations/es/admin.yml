@@ -294,6 +294,7 @@ admin-title-resource-category: 'Categoría de recurso'
 admin-title-year: Año
 admin-title-nif: NIF
 admin-title-country: País
+admin-title-subsection: 'Subsección'
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'

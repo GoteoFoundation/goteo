@@ -19,6 +19,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
 
 use Goteo\Model\Faq;
+use Goteo\Model\Faq\FaqSubsection;
 use Goteo\Application\Config;
 
 class AdminFaqForm extends AbstractFormProcessor {
@@ -34,13 +35,12 @@ class AdminFaqForm extends AbstractFormProcessor {
         $options = $builder->getOptions();
         $defaults = $options['data'];
 
+        $subsections = [];
+        foreach(FaqSubsection::getList() as $s) {
+            $subsections[$s->id] = $s->name;
+        }
+
         $builder
-            ->add('section', 'choice', [
-                'disabled' => $this->getReadonly(),
-                'required' => true,
-                'label' => 'regular-description',
-                'choices' => Faq::sections()
-            ])
             ->add('title', 'text', [
                 'disabled' => $this->getReadonly(),
                 'required' => true,
@@ -51,6 +51,12 @@ class AdminFaqForm extends AbstractFormProcessor {
                 'disabled' => $this->getReadonly(),
                 'required' => true,
                 'label' => 'regular-description'
+            ])
+            ->add('subsection_id', 'choice', [
+                'disabled' => $this->getReadonly(),
+                'required' => true,
+                'label' => 'regular-subsection',
+                'choices' => $subsections
             ])
             ->add('pending', 'boolean', array(
                 'label' => 'admin-faq-pending',

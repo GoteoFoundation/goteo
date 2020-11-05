@@ -22,7 +22,6 @@ class Faq extends \Goteo\Core\Model {
         $id,
         $slug,
         $node,
-        $section,
         $title,
         $subsection_id,
         $description,
@@ -55,10 +54,9 @@ class Faq extends \Goteo\Core\Model {
         $sql = "
             SELECT
                 faq.id as id,
-                faq.id as slug,
+                faq.slug as slug,
                 faq.subsection_id as subsection_id,
                 faq.node as node,
-                faq.section as section,
                 $fields,
                 faq.order as `order`
             FROM faq
@@ -85,7 +83,7 @@ class Faq extends \Goteo\Core\Model {
     /*
      * Lista de faqs
      */
-    public static function getAll ($section = 'node', $lang = null) {
+    public static function getAll ($subsection = 'node', $lang = null) {
         if(!$lang) $lang = Lang::current();
         $values = array(':section' => $section);
 
@@ -94,12 +92,11 @@ class Faq extends \Goteo\Core\Model {
         $sql="SELECT
                     faq.id as id,
                     faq.node as node,
-                    faq.section as section,
                     $fields,
                     faq.order as `order`
                 FROM faq
                 $joins
-                WHERE faq.section = :section
+                WHERE faq.subsection_id = :subsection
                 ORDER BY `order` ASC";
 
         $query = static::query($sql, $values);
@@ -152,7 +149,6 @@ class Faq extends \Goteo\Core\Model {
                   faq.slug as slug,
                   faq.node as node,
                   $fields,
-                  faq.section as section,
                   faq.subsection_id as subsection,
                   faq.order
               FROM faq
@@ -170,8 +166,8 @@ class Faq extends \Goteo\Core\Model {
             $errors[] = 'Missing node';
             //Text::get('mandatory-faq-node');
 
-        if (empty($this->section))
-            $errors[] = 'Missing section';
+        if (empty($this->subsection_id))
+            $errors[] = 'Missing subsection';
             //Text::get('mandatory-faq-section');
 
         if (empty($this->title))
@@ -208,14 +204,13 @@ class Faq extends \Goteo\Core\Model {
                 'id',
                 'slug',
                 'node',
-                'section',
                 'title',
+                'subsection_id',
                 'description',
                 'order'
             ]);
 
             $extra = array(
-                'section' => $this->section,
                 'node' => $this->node
             );
             Check::reorder($this->id, $this->move, 'faq', 'id', 'order', $extra);

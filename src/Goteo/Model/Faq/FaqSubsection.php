@@ -8,6 +8,7 @@
 
  use Goteo\Model\Image;
  use Goteo\Model\Faq;
+ use Goteo\Application\Exception;
  use Goteo\Application\Lang;
  use Goteo\Application\Config;
  
@@ -47,7 +48,7 @@
           return $item;
         }
 
-        throw new ModelNotFoundException("Faq subsection not found for ID [$id]");
+        throw new Exception\ModelNotFoundException("Faq subsection not found for ID [$id]");
     }
 
     /**

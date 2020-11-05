@@ -10,6 +10,7 @@
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
 use Goteo\Core\Model;
+use Goteo\Model\Faq\FaqSubsection;
 use Goteo\Library\Text;
 
 /**
@@ -17,11 +18,16 @@ use Goteo\Library\Text;
  */
 class FaqTransformer extends AbstractTransformer {
 
-    protected $keys = ['id', 'title', 'section','order'];
+    protected $keys = ['id', 'title', 'subsection_id','order'];
 
 
     public function getSection() {
         return $this->model->section;
+    }
+
+    public function getSubsection() {
+        $subsection=FaqSubsection::get($this->model->subsection);
+        return $subsection->name;
     }
 
     public function getActions() {
