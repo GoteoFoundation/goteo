@@ -95,10 +95,8 @@ EOT
             throw new \InvalidArgumentException('No action defined. Please define any action with --update_donors, --update_amounts or --update_status');
         }
 
-        if ($update_amounts) {
-            $user = $input->getOption('user');
-            $year = $input->getOption('year')? $input->getOption('year') : date('Y');
-        }
+        $user = $input->getOption('user');
+        $year = $input->getOption('year')? $input->getOption('year') : date('Y');
 
         $output->writeln("<info>Update donors thrown</info>");
 
@@ -260,7 +258,7 @@ EOT
                             } else {
                                 if ($verbose) {
                                     $progress_bar->clear();        
-                                    $output->writeln("<error>The donor still has invalid data: " . implode(',', $errors));
+                                    $output->writeln("<error>The donor still has invalid data.");
                                     $progress_bar->display();
                                 }
                             }
@@ -335,10 +333,11 @@ EOT
                             'procStatus' => 'passed'
                         ];
 
-                        $user_invests = Invest::getList($invest_filters, null, 0, 0, 'all');
+                        // $user_invests = Invest::getList($invest_filters, null, 0, 0, 'all');
+                        $user_invests = Donor::getPendingInvestionsAmount($donor->user);
                         $donor_amount = $user_invests['amount'] + $user_invests['donations_amount'];
 
-                        if ($donor_amount != $donor->amount) {
+                        if ($donor_amount != 0 || $donor->amount != $donor->getAmount()) {
                             if ($verbose_debug) {
                                 $progress_bar->clear();
                                 $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} has {$donor_amount} but only {$donor->amount} in the certificate.</info>");
@@ -376,6 +375,7 @@ EOT
             }
 
         } else if ($update_status) {
+            
             $filter = [
                 'year' => $year
             ];
@@ -386,11 +386,14 @@ EOT
 
             $status = Donor::PENDING;
 
+            $can_be_updated = 0;
             $updated_donors = 0;
             $donors_with_errors = 0;
             $donor_without_amount = 0;
             $donors_valid_and_amount = 0;
             $donors_valid_without_amount = 0;
+            $donors_treated = 0;
+            $donors_invalid_and_amount = 0;
 
             $offset = 0;
             $limit = 100;
@@ -411,14 +414,16 @@ EOT
                 while ($donors = Donor::getList($filter, $offset, $limit)) {
                     
                     foreach($donors as $donor) {
+                        ++$donors_treated;
 
                         $donor_year = $donor->year;
 
                         $errors = [];
                         $is_valid = $donor->validateData($errors);
+                        
                         if ($is_valid) {
-                            $updated_donors++;
-                            if ($very_verbose || $verbose_debug) {
+                            $can_be_updated++;
+                            if ($verbose || $verbose_debug) {
                                 $progress_bar->clear();
                                 $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} can change it's status .</info>");
                                 $progress_bar->display();
@@ -428,8 +433,7 @@ EOT
                             $donors_with_errors++;
                             if ($verbose_debug) {
                                 $progress_bar->clear();
-                                $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
-                                $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
+                                $output->writeln("<error> {$donor->id} - {$donor->name} - {$donor->nif}. The donor still has invalid data.</error>");
                                 $progress_bar->display();
                             }
                         }
@@ -437,26 +441,28 @@ EOT
                         if ($donor->amount != 0) {
                             if ($is_valid) {
                                 $donors_valid_and_amount++;
-                            }
 
-                            if ($update) {
-                                $errors = [];
-                                $donor->status = Donor::COMPLETED;
-                                $donor->completed = date('Y-m-d H:i:s');
-                                if (!$donor->save($errors)) {   
-                                    if ($verbose) {
-                                        $progress_bar->clear();
-                                        $output->writeln("<warning> {$donor->id} - {$donor->name} - {$donor->nif} </warning>");
-                                        $output->writeln("<warning> ". implode(',',$errors) . "</warning>");
-                                        $progress_bar->display();
-                                    }
-                                } else {
-                                    if ($verbose_debug) {
-                                        $progress_bar->clear();
-                                        $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} can change it's status .</info>");
-                                        $progress_bar->display();
+                                if ($update) {
+                                    $errors = [];
+                                    $donor->status = Donor::COMPLETED;
+                                    $donor->completed = date('Y-m-d H:i:s');
+                                    if ($donor->save($errors)) {   
+                                        $updated_donors++;
+                                        if ($verbose_debug) {
+                                            $progress_bar->clear();
+                                            $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} has changed it's status .</info>");
+                                            $progress_bar->display();
+                                        }
+                                    } else {
+                                        if ($verbose || $verbose_debug) {
+                                            $progress_bar->clear();
+                                            $output->writeln("<error> {$donor->id} - {$donor->name} - {$donor->nif}. ".  implode(',', $errors)  . "</error>");
+                                            $progress_bar->display();
+                                        }
                                     }
                                 }
+                            } else {
+                                $donors_invalid_and_amount++;
                             }
                         } else {
                             $donor_without_amount++;
@@ -482,7 +488,8 @@ EOT
                 $output->writeln("<info>A total of {$donor_without_amount} out of {$total_donors} have no amount.</info>");
 
             } else {
-                $output->writeln("<info>A total of {$updated_donors} out of {$total_donors} can be updated using --update");
+                $output->writeln("<info>A total of {$donors_treated} out of {$total_donors} have been treated");
+                $output->writeln("<info>A total of {$can_be_updated} out of {$total_donors} can be updated using --update");
                 $output->writeln("<info>A total of {$donors_with_errors} out of {$total_donors} have errors.</info>");
                 $output->writeln("<info>A total of {$donor_without_amount} out of {$total_donors} have no amount.</info>");
                 $output->writeln("<info>A total of {$donors_valid_and_amount} out of {$total_donors} is valid and has amount.</info>");
