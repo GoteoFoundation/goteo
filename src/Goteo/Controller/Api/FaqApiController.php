@@ -44,7 +44,7 @@ class FaqApiController extends AbstractApiController {
 
         if($request->isMethod('put') && $request->request->has('value')) {
 
-            $res = Check::reorder($id, $request->request->get('value'), 'faq', 'id', 'order', ['section' => $faq->section]);
+            $res = Check::reorder($id, $request->request->get('value'), 'faq', 'id', 'order', ['subsection_id' => $faq->subsection_id]);
 
             if($res != $result['value']) {
                 $result['value'] = $res;

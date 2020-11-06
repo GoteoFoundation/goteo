@@ -2,8 +2,8 @@
 
 $this->layout('layout', [
     'bodyClass' => 'faq',
-    'title' => $this->text('meta-title-faq'),
-    'meta_description' => $this->text('meta-description-faq')
+    'title' => $this->meta_title,
+    'meta_description' => $this->meta_description
     ]);
 
 $this->section('content');

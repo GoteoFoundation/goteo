@@ -41,7 +41,7 @@ class ModelNormalizer {
         }
         elseif ($this->model instanceOf Model\Node\NodeResource) {
             $ob = new Transformer\ChannelResourceTransformer($this->model, $this->keys);
-        }    
+        }
         elseif ($this->model instanceOf Model\Node\NodePost) {
             $ob = new Transformer\ChannelPostsTransformer($this->model, $this->keys);
         }
