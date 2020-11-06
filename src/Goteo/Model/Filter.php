@@ -456,6 +456,7 @@ class Filter extends \Goteo\Core\Model {
         $sqlInner  = '';
         $sqlFilter = '';
 
+
         if (isset($this->type_of_entity)) {
             $sqlFilter .= " AND user.legal_entity = :type_of_entity";
             $values[":type_of_entity"] = $this->type_of_entity;

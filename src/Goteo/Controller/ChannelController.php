@@ -276,7 +276,9 @@ class ChannelController extends \Goteo\Core\Controller {
             return $this->redirect("/dashboard/project/$pid");
         }
 
-        $questionnaire = Questionnaire::getByChannel($id);
+        $questionnaire = Questionnaire::getByMatcher($id);
+        if (!$questionnaire)
+            $questionnaire = Questionnaire::getByChannel($id);
 
         if ($questionnaire->isAnswered($pid)) {
             Message::error(Text::get('questionnaire-already-answered-by-project'));
@@ -286,8 +288,16 @@ class ChannelController extends \Goteo\Core\Controller {
         if ($questionnaire->questions) {
             $questionnaire->project_id = $pid;
             $processor = $this->getModelForm('Questionnaire', $questionnaire, (array) $questionnaire, [], $request);
-            $processor->createForm();
-            $form = $processor->getForm();
+            $processor->createForm()->getBuilder()
+                ->add(
+                    'submit', 'submit', [
+                    'label' => 'regular-submit',
+                    'attr' => ['class' => 'btn btn-lg btn-cyan text-uppercase'],
+                    'icon_class' => 'fa fa-save'
+                    ]
+                );
+
+                $form = $processor->getForm();
             $form->handleRequest($request);
             if ($form->isSubmitted() && $request->isMethod('post')) {
                 // Check if we want to remove an entry

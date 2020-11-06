@@ -54,7 +54,7 @@ class ProjectChannelListener extends AbstractListener {
             Message::error("Error applying your project to the channel!\n" . implode(',',$errors));
         }
 
-        if (Questionnaire::getByChannel($project->node)) {
+        if (Questionnaire::getByMatcher($project->node) || Questionnaire::getByChannel($project->node)) {
             $event->setResponse(new RedirectResponse('/channel/'. $project->node .'/apply/'.$project->id ));
             return;
         }
