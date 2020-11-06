@@ -38,7 +38,7 @@
 	        <aside class="col-sm-3 col-sm-pull-9" id="accordion">
 	      		<?php foreach ($this->subsections as $subsection): ?>
     	
-		    		<?php $faq_subsection=$subsection->getFaqbySubsection(5); ?>
+		    		<?php $faq_subsection=$subsection->getFaqbySubsection(100); ?>
 		      		<section>
 			      		<h3 role="button" data-toggle="collapse" href="<?= '#collapse-'.$subsection->id ?>" aria-expanded="<?= $this->faq->subsection_id==$subsection->id ? 'true' : 'false' ?>">
 			      			<?= $subsection->name ?>
