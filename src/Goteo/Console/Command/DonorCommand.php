@@ -384,8 +384,6 @@ EOT
                 $filter['user'] = $user;
             }
 
-            $status = Donor::PENDING;
-
             $can_be_updated = 0;
             $updated_donors = 0;
             $donors_with_errors = 0;
@@ -401,7 +399,6 @@ EOT
 
             $output->writeln("<info>About to treat donors with pending status and data filled </info>");
 
-            $filter['donor_status'] = $status;
             $total = Donor::getList($filter, 0, 0, true);
             if (!$total) {
                 $output->writeln("<info>There are no donors in this state</info>");
@@ -416,6 +413,9 @@ EOT
                     foreach($donors as $donor) {
                         ++$donors_treated;
 
+                        if ($donor->status != Donor::PENDING)
+                            continue;
+                            
                         $donor_year = $donor->year;
 
                         $errors = [];
