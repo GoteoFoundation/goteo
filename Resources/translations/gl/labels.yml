@@ -25,9 +25,12 @@ categories-lb-edit: 'Editando categoría'
 categories-lb-keywords: 'Palabras chave'
 categories-lb-list: A listar
 categories-lb-translate: 'Traducindo categoría'
+commons-lb-add: 'Novo retorno'
+commons-lb-edit: 'Editando retorno'
 commons-lb-info: 'Información de contacto'
 commons-lb-list: A listar
 commons-lb-report: 'Informe do proxecto'
+commons-lb-view: 'Xestión de retornos'
 communication-lb: 'Comunicacións'
 criteria-lb: 'Criterios de avaliación'
 criteria-lb-add: 'Novo criterio'
