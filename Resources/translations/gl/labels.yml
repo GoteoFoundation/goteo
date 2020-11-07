@@ -109,6 +109,7 @@ projects-lb-images: 'Imaxes do proxecto'
 projects-lb-list: A listar
 projects-lb-rebase: 'Trocando a Id do proxecto'
 promote-lb: 'Proxectos populares'
+promote-lb-add: 'Novo destacado'
 promote-lb-edit: 'Editando destacado'
 promote-lb-list: A listar
 promote-lb-translate: 'Traducindo destacado'
@@ -148,6 +149,7 @@ users-lb-edit: 'Editando Usuario'
 users-lb-impersonate: 'Suplantando ao usuario'
 users-lb-list: A listar
 users-lb-manage: 'Xestionando usuario'
+users-lb-move: 'Movendo o usuario a outro nodo'
 workshop-lb: 'Obradoiros'
 word-lb: 'Contado de palabras'
 word-lb-list: A listar
