@@ -11,6 +11,7 @@ admin-account-convert-to-pool-ko: 'Non foi posible converter a achega a portamoe
 admin-account-convert-to-pool-ok: 'Convertido a achega de portamoedas con éxito'
 admin-account-detail: 'Detalles da transacción'
 admin-account-donation: Doazón
+admin-account-edit-reward: 'Xestionar recompensa/enderezo'
 admin-account-invalid-invest: 'Achega [%s] non atopada!'
 admin-account-invest-date: 'Data da achega'
 admin-account-invest-to-pool-ko: 'Erro ao devolver a achega ao portamoedas'
@@ -121,11 +122,14 @@ admin-footprint-edit: Editando a pegada %s
 admin-calls: Convocatorias
 admin-channels: Canles
 admin-yes: Si
+admin-project-express-discard: 'Rexeitamento no intre'
 admin-project-to-review: 'A revisión'
 admin-project-to-review-sure: 'O creador non poderá editalo máis, aceptar?'
 admin-project-view-in-admin: 'Ver no admin'
 admin-project-to-negotiation: 'A negociación'
 admin-project-to-publish: 'Publicar'
+admin-project-to-publish-desc: 'Pasa o proxecto ao estado "En campaña"'
+admin-project-to-publish-sure: 'O proxecto comezará a súa campaña, comezamos?'
 admin-project-derivation-discard: 'Rexeitamento con derivación'
 admin-home-title: Administrar Goteo
 admin-list: Listaxe
@@ -205,14 +209,23 @@ admin-title-sent: Enviados
 admin-title-failed: Sen enviar
 admin-title-pending: Pendentes
 admin-title-percent: Porcentaxe
+admin-blog-deactivated: 'Sentímolo, a xestión do blog está desactivada'
+admin-blog-edit-success: 'A entrada do blog editouse con éxito'
+admin-stories-not-active-yet: 'Esta historia de usuario aínda non está activa'
 admin-stories-type: 'Tipo de protagonista'
 admin-aggregate-timeline: 'Cronoloxía'
 admin-aggregate-invests: 'Total de achegas'
 admin-aggregate-invests-average: 'Media de achegas'
 admin-stats-invest-totals: 'Achegas e comisións'
 admin-stats-project-totals: 'Estado dos proxectos'
+admin-stats-raised: 'Ingresos brutos'
+admin-stats-active: 'Ingresos netos'
+admin-stats-refunded: 'Devolucións'
 admin-stats-fees: 'Comisión plataforma'
+admin-stats-commissions: 'Comisión banco'
 admin-stats-citizens-part: 'Parte Cidadá'
+admin-stats-invest-destination: 'Destino das achegas'
+admin-stats-invest-in_wallet: 'Total acumulado no portamoedas'
 admin-stats-to_projects: 'A proxectos'
 admin-stats-to_wallet: 'Ao portamoedas'
 admin-stats-to_fee: 'A comisións'
@@ -224,6 +237,7 @@ admin-raised: Recadado
 admin-active: Cobrado
 admin-refunded: Devolto
 admin-refunded-to_users: Devolto a usuarios
+admin-refunded-to_users-invests: Nº devolucións a usuarios
 admin-refunded-to_wallet: Devolto ao portamoedas
 admin-commissions: Comisión
 admin-fees: Comisión plataforma
@@ -315,6 +329,12 @@ admin-invest-commissions-month: 'Comisión banco este mes'
 admin-invest-commissions-last_month: 'Comisión banco o mes pasado'
 admin-invest-commissions-year: 'Comisión banco este ano'
 admin-invest-commissions-last_year: 'Comisión banco do pasado ano'
+admin-invest-commissions-lost-today: 'Perdas por achegas devoltas hoxe'
+admin-invest-commissions-lost-yesterday: 'Perdas por achegas devoltas onte'
+admin-invest-commissions-lost-week: 'Perdas por achegas devoltas esta semana'
+admin-invest-commissions-lost-month: 'Perdas por achegas devoltas este mes'
+admin-invest-commissions-lost-year: 'Perdas por achegas devoltas este ano'
+admin-invest-commissions-lost-last_year: 'Perdas por achegas devoltas o pasado ano'
 admin-invest-commissions-tpv-today: 'Comisión TPV hoxe'
 admin-invest-commissions-tpv-yesterday: 'Comisión TPV onte'
 admin-invest-commissions-tpv-week: 'Comisión TPV esta semana'
@@ -359,6 +379,8 @@ admin-filter-typeofdonor: 'Tipo de doador'
 admin-filter-user: 'Usuario'
 admin-filter-donor: 'Doador'
 admin-filter-no-donor: 'Doador inactivo'
+admin-filter-promoter: 'Promotor/a'
+admin-filter-test: 'Proba'
 admin-filter-type-unique: 'Único'
 admin-filter-type-multidonor: 'Multidoador'
 admin-filter-type-foundation-donor: 'Doador á fundación'
