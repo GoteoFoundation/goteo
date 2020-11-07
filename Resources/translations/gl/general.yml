@@ -6,6 +6,7 @@ blog-comments: Comentarios
 blog-main-header: 'Blogue de Goteo'
 calendar-calls-category: Convocatorias
 calendar-events-category: Eventos
+calendar-home-hour: a
 calendar-home-title: 'Vindeiro evento'
 calendar-net-category: 'Rede e política'
 calendar-projects-category: Proxectos
@@ -51,6 +52,8 @@ mandatory-cost-field-type: 'É obrigado poñer indicar o tipo de custo'
 mandatory-individual_reward-field-amount: 'É obrigado indicar o importe que permite obter a recompensa'
 mandatory-project-costs: 'Debe detallarse polo menos dous custos.'
 mandatory-register-field-email: 'Tes que indicar un email'
+mark-pending: 'Marcar coma pendente de traducir'
+node-menu-home: Nodo
 overview-field-about: 'Características básicas'
 overview-field-motivation: 'Motivación e a quen vai dirixido o proxecto'
 profile-about-header: 'Sobre mín'
@@ -59,6 +62,7 @@ project-messages-send_message-your_answer: 'Escribe aquí a túa resposta'
 project-messages-send_message_support-your_answer: 'Escribe aquí a túa mensaxe de colaboración para %s'
 regular-add: Novo rexistro
 regular-all: Todos
+regular-admin_board: 'Panel admin'
 regular-author: 'Autor/a'
 regular-allsome: 'todos/algúns de'
 regular-anonymous: Anónimo
@@ -167,6 +171,7 @@ regular-share-rss: RSS/BLOGUE
 regular-share-twitter: 'Séguenos en Twitter'
 regular-share_this: 'Compartir en:'
 regular-sorry: 'Sentímolo'
+regular-spread: DIFUSIÓN
 regular-status: Estado
 regular-template: Modelo
 regular-thanks: Grazas
@@ -208,6 +213,7 @@ session-about-to-expire: 'A túa sesión caducará en 10 minutos. Queres volver 
 session-expired: 'A túa sesión en goteo caducou!'
 stories-user-project: '%s, do proxecto: %s'
 support-our-mission: 'DOA Á FUNDACIÓN GOTEO'
+tooltip: 'Texto de axuda'
 tooltip-dashboard-user-access_data: 'Estes son os teus datos actuais de acceso. O único que non se pode cambiar é o login de usuario.'
 tooltip-dashboard-user-change_email: 'Dende aquí podes cambiar a dirección de correo electrónico na que recibes as mensaxes de Goteo.'
 tooltip-dashboard-user-change_password: 'Dende aquí podes cambiar o contrasinal co que accedes a Goteo.'
@@ -220,7 +226,10 @@ tooltip-project-schedule: 'Visualización de como queda a axenda de produción. 
 translate-home-guide: 'Mensaxe para o tradutor'
 user-account-inactive: 'A conta está desactivada. Debes recuperar o teu contrasinal para activala de novo'
 user-activate-fail: 'Error ó activar a conta do usuario'
+user-changeemail-invalid-token: 'Esta acción caducou ou ben foi executada con anterioridade'
 user-changeemail-fail: 'Erro ó cambiar o email'
 user-register-success: 'O usuario rexistrouse correctamente. Seguidamente recibirás unha mensaxe de correo para activalo.'
 validate-project-social_rewards: 'É obrigado indicar coma mínimo un retorno colectivo'
+validate-project-total-costs: "O custo óptimo non pode exceder en máis dun 50% o custo mínimo. Ou sobes os custos imprescindibles ou baixas os custos adicionais."
 user-promoter: 'O usuario promotor'
+newsletter-donate-description: 'Para que poidamos continuar axudando a que máis e máis iniciativas cívicas sexan unha realidade'
