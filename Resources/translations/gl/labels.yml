@@ -84,9 +84,11 @@ news-lb-edit: 'Editando a micronova'
 news-lb-list: A listar
 news-lb-translate: 'Traducindo a micronova'
 newsletter-lb: Boletín
+newsletter-lb-detail: 'Vendo destinatarios'
 newsletter-lb-init: 'Iniciando un novo envío'
 newsletter-lb-list: 'Estado do envío automático'
 node-lb: 'Datos da canle'
+node-lb-admins: 'Vendo administradores'
 node-lb-edit: Editando
 node-lb-list: 'Datos actuais'
 nodes-lb: Canles
@@ -107,7 +109,10 @@ projects-lb-dates: 'Datas do proxecto'
 projects-lb-execute: 'Execución do cargo'
 projects-lb-images: 'Imaxes do proxecto'
 projects-lb-list: A listar
+projects-lb-move: 'Movendo o proxecto a outro nodo'
+projects-lb-open_tags: 'Asignando unha agrupación ao proxecto'
 projects-lb-rebase: 'Trocando a Id do proxecto'
+projects-lb-report: 'Informe financeiro do proxecto'
 promote-lb: 'Proxectos populares'
 promote-lb-add: 'Novo destacado'
 promote-lb-edit: 'Editando destacado'
@@ -117,6 +122,8 @@ recent-lb: 'Actividade recente'
 recent-lb-list: A listar
 reviews-lb: Revisións
 reviews-lb-list: A listar
+rewards-lb: Recompensas
+rewards-lb-edit: 'Xestionando recompensa'
 rewards-lb-list: A listar
 sent-lb: 'Historial de envíos'
 sent-lb-list: 'Correos enviados'
@@ -156,4 +163,5 @@ word-lb-list: A listar
 worth-lb: 'Niveis de meritocracia'
 worth-lb-edit: 'Editando nivel'
 worth-lb-list: A listar
+stats-lb: Estatísticas & datos
 stories-lb: 'Historias de usuario'
