@@ -33,7 +33,7 @@
 
       		<?php foreach ($this->subsections as $subsection): ?>
     	
-	    		<?php $faq_subsection=$subsection->getFaqbySubsection(5); ?>
+	    		<?php $faq_subsection=$subsection->getFaqbySubsection(100); ?>
 
 		        <article class="col-sm-4">
 			       	<div class="modul_faqs">
