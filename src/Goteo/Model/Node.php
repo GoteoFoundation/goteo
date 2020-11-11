@@ -61,7 +61,8 @@ class Node extends \Goteo\Core\Model {
         $chatbot_url,
         $chatbot_id,
         $tip_msg,
-        $analytics_id
+        $analytics_id,
+        $config
         ;
 
 
@@ -139,7 +140,8 @@ class Node extends \Goteo\Core\Model {
                 node.chatbot_url as chatbot_url,
                 node.chatbot_id as chatbot_id,
                 node.tip_msg as tip_msg,
-                node.analytics_id as analytics_id
+                node.analytics_id as analytics_id,
+                node.config as config
             FROM node
             $joins
             WHERE node.id = :id";
@@ -418,7 +420,8 @@ class Node extends \Goteo\Core\Model {
             'default_consultant',
             'sponsors_limit',
             'iframe',
-            'analytics_id'
+            'analytics_id',
+            'config'
             );
 
         $set = '';
@@ -1192,12 +1195,20 @@ class Node extends \Goteo\Core\Model {
     }
 
     public function getCallToActions() {
-        if($this->callToActionList) return $this->callToActionList;
+        // if($this->callToActionList) return $this->callToActionList;
     
         $this->callToActionList = NodeCallToAction::getList(['node' => $this->id, 'active' => true], 0, 2);
         return $this->callToActionList;
     }
     
+    public function setConfig(array $config) {
+        $this->config = $config ? json_encode($config) : '';
+        return $this;
+    }
 
+    public function getConfig() {
+        if($this->config) return json_decode($this->config, true);
+        return [];
+    }
 
 }
