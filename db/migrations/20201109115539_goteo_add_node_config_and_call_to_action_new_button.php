@@ -2,7 +2,7 @@
 /**
  * Migration Task class.
  */
-class GoteoAddChannelConfig
+class GoteoAddNodeConfigAndCallToActionNewButton
 {
   public function preUp()
   {
@@ -40,8 +40,7 @@ class GoteoAddChannelConfig
 
         ALTER TABLE `call_to_action_lang` ADD COLUMN `action_2` VARCHAR(255) NULL,
                                         ADD COLUMN `action_url_2` TINYTEXT NULL;
-
-     ";
+        ";
   }
 
   /**
