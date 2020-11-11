@@ -24,6 +24,7 @@ use Goteo\Model\Node\NodeTeam;
 use Goteo\Model\Node\NodeCallToAction;
 use Goteo\Model\Node\NodeStories;
 use Goteo\Model\Node\NodePost;
+use Goteo\Model\Node\NodeSections;
 
 class Node extends \Goteo\Core\Model {
 
@@ -1195,7 +1196,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public function getCallToActions() {
-        // if($this->callToActionList) return $this->callToActionList;
+        if($this->callToActionList) return $this->callToActionList;
     
         $this->callToActionList = NodeCallToAction::getList(['node' => $this->id, 'active' => true], 0, 2);
         return $this->callToActionList;
@@ -1209,6 +1210,19 @@ class Node extends \Goteo\Core\Model {
     public function getConfig() {
         if($this->config) return json_decode($this->config, true);
         return [];
+    }
+
+    public function getSections($section) {
+        if($this->sectionsList) return $this->sectionsList;
+
+        $filter = [
+            'node' => $this->id
+        ];
+
+        if ($section) $filter['section'] = $section;
+
+        $this->sectionsList = NodeSections::getList($filter, 0, 10);
+        return $this->sectionsList;
     }
 
 }
