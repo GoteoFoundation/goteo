@@ -85,6 +85,8 @@ translator-image_credits: Image credits
 translator-field-modal_description: "Modal's description"
 translator-field-action: Action
 translator-field-action_url: "Action's url"
+translator-field-action_2: Action 2
+translator-field-action_url_2: "Action's url 2"
 translator-field-banner_title: Title of the banner
 translator-field-banner_description: Description of the banner
 translator-field-label: Label
