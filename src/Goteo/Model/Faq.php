@@ -25,7 +25,7 @@ class Faq extends \Goteo\Core\Model {
         $title,
         $subsection_id,
         $description,
-        $order=1;
+        $order;
 
     static public function getLangFields() {
         return ['title', 'description'];
