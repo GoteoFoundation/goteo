@@ -88,7 +88,6 @@ class AdminFaqForm extends AbstractFormProcessor {
         if ($data['pendign']) {
           $model->setPending($model->id, 'post');
         }
-        $model->order = Faq::getList([], 0, 0, true) + 1;
 
         $errors = [];
         if (!$model->save($errors)) {
