@@ -24,6 +24,7 @@ use Goteo\Model\Node\NodeTeam;
 use Goteo\Model\Node\NodeCallToAction;
 use Goteo\Model\Node\NodeStories;
 use Goteo\Model\Node\NodePost;
+use Goteo\Model\Node\NodeSections;
 
 class Node extends \Goteo\Core\Model {
 
@@ -61,7 +62,8 @@ class Node extends \Goteo\Core\Model {
         $chatbot_url,
         $chatbot_id,
         $tip_msg,
-        $analytics_id
+        $analytics_id,
+        $config
         ;
 
 
@@ -139,7 +141,8 @@ class Node extends \Goteo\Core\Model {
                 node.chatbot_url as chatbot_url,
                 node.chatbot_id as chatbot_id,
                 node.tip_msg as tip_msg,
-                node.analytics_id as analytics_id
+                node.analytics_id as analytics_id,
+                node.config as config
             FROM node
             $joins
             WHERE node.id = :id";
@@ -418,7 +421,8 @@ class Node extends \Goteo\Core\Model {
             'default_consultant',
             'sponsors_limit',
             'iframe',
-            'analytics_id'
+            'analytics_id',
+            'config'
             );
 
         $set = '';
@@ -1198,6 +1202,27 @@ class Node extends \Goteo\Core\Model {
         return $this->callToActionList;
     }
     
+    public function setConfig(array $config) {
+        $this->config = $config ? json_encode($config) : '';
+        return $this;
+    }
 
+    public function getConfig() {
+        if($this->config) return json_decode($this->config, true);
+        return [];
+    }
+
+    public function getSections($section) {
+        if($this->sectionsList) return $this->sectionsList;
+
+        $filter = [
+            'node' => $this->id
+        ];
+
+        if ($section) $filter['section'] = $section;
+
+        $this->sectionsList = NodeSections::getList($filter, 0, 10);
+        return $this->sectionsList;
+    }
 
 }

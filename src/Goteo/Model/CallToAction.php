@@ -23,10 +23,13 @@
       $icon,
       $action,
       $action_url,
-      $lang;
+      $lang,
+      $icon_2,
+      $action_2,
+      $action_url_2;
 
   public static function getLangFields() {
-      return ['title', 'description', 'action', 'action_url'];
+      return ['title', 'description', 'action', 'action_url', 'action_2', 'action_url_2'];
   }
 
 
@@ -46,6 +49,7 @@
                 $fields,
                 call_to_action.header,
                 call_to_action.icon,
+                call_to_action.icon_2,
                 call_to_action.lang
           FROM call_to_action
           $joins
@@ -94,7 +98,8 @@
         $fields,
         call_to_action.header,
         call_to_action.icon,
-        call_to_action.lang,
+        call_to_action.icon_2,
+        call_to_action.lang
     FROM call_to_action
     $joins
     $where
@@ -127,6 +132,9 @@
       'action',
       'action_url',
       'lang',
+      'icon_2',
+      'action_2',
+      'action_url_2'
   );
 
     try {
