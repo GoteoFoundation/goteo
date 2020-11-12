@@ -257,3 +257,7 @@ user-promoter: 'El usuario impulsor'
 stories-type-pitcher: 'Pitcher'
 stories-type-matcher: 'Matcher'
 newsletter-donate-description: 'Para que podamos seguir ayudando a que más y más iniciativas cívicas salgan adelante'
+regular-icon: Icono
+regular-action: Accción
+regular-action_url: Acción URL
+regular-modal-decription: Descripción en la modal

@@ -131,6 +131,8 @@ admin-channelstory-correct: 'The story has been added to the channel'
 admin-channelpost-add: Add Post tot he channel
 admin-channelpost-submit: Save post
 admin-channelpost-correct: 'The post has been added to the channel'
+admin-channelprogram-create: 'Create'
+admin-channelprogram-add: 'Add program'
 admin-categories: 'Categories and scopes'
 admin-categories-if-empty-then-asset: 'If empty the default icon will be used: %s'
 admin-category-add: Create a new category
