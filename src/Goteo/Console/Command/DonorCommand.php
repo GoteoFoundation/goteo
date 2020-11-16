@@ -140,7 +140,7 @@ EOT
                     }
 
                 } else {
-                    $valid_donors++;
+                    $output->writeln("<info>The donor has no errors in its data</info>");
                 }
             } else {
                 $filter = [
