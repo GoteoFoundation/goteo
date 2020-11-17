@@ -732,11 +732,11 @@ class Project extends \Goteo\Core\Model {
      * @param $status to boolean false to return all status
      * @return [type] [description]
      */
-    public function getMatchers($status = false) {
+    public function getMatchers($status = false, $filters = []) {
         if(!$this->matcherInstances) $this->matcherInstances = [];
         if(is_array($status)) $key = serialize($status);
         if($this->matcherInstances[$key]) return $this->matcherInstances[$key];
-        $this->matcherInstances[$key] = Matcher::getFromProject($this->id, $status);
+        $this->matcherInstances[$key] = Matcher::getFromProject($this->id, $status, $filters);
         return $this->matcherInstances[$key];
     }
 

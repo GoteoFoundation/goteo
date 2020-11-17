@@ -16,7 +16,7 @@ if ($this->admin && !$this->link) {
 if (!($label = $this->label)) {
     $tagmark = $this->project->getTagmark();
     $call = $this->project->getCall();
-    $matchers = $this->project->getMatchers('active');
+    $matchers = $this->project->getMatchers('active', ['has_channel' => true]);
 }
 
 ?><div class="project-widget flip-widget normal<?= $this->project->isApproved() ? '' : ' non-public' ?>" id="project-<?= $this->project->id ?>">
