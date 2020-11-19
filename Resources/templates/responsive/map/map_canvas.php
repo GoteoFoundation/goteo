@@ -29,6 +29,9 @@
       <?php if ($this->map->getChannel()): ?>
         data-channel='<?= $this->map->getChannel() ?>'
       <?php endif; ?>
+      <?php if ($this->map->getGeoJSON()): ?>
+        data-geojson='<?= $this->map->getGeoJSON() ?>'
+      <?php endif; ?>
   ></div>
 
   <div class="map-layouts">
