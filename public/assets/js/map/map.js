@@ -29,18 +29,36 @@ $(function(){
   var projectIcon = L.icon({
     iconUrl: '/assets/img/map/pin-project.svg',
     iconSize:     [38, 95] // size of the icon
-});
+  });
 
-var workshopIcon = L.icon({
-  iconUrl: '/assets/img/map/pin-workshop.svg',
-  iconSize:     [38, 95] // size of the icon
-});
+  var workshopIcon = L.icon({
+    iconUrl: '/assets/img/map/pin-workshop.svg',
+    iconSize:     [38, 95] // size of the icon
+  });
 
   // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   // }).addTo(map);
   
   var channel = $('#map').data('channel');
+  var geojson = $('#map').data('geojson');
+
+  var map = L.map('map', {
+    fullscreenControl: true,
+    setView: true,
+    zoom: 5
+  });
+  L.tileLayer($('#map').data('tile-layer'), {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+
+  if (geojson) {
+    $.getJSON(geojson, function(data) {
+      geojsonLayer = L.geoJson(data).addTo(map);
+    })
+  }
+
   if (channel) {
     $.ajax({
       url: '/api/map/channel/' + channel,
@@ -69,15 +87,9 @@ var workshopIcon = L.icon({
       });
         
       var latLngBounds = L.latLngBounds(latlngs);
-      var map = L.map('map', {
-        fullscreenControl: true,
-        center: latLngBounds.getCenter(),
-        zoom: 5
-      });
-      L.tileLayer($('#map').data('tile-layer'), {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-  
+      map.setView(latLngBounds.getCenter());
+      map.setMaxBounds(latLngBounds);
+
       if (projects.length) {
         map.addLayer(project_markers);
         $('#button-projects-hide').removeClass('hidden');
