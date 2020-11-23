@@ -87,7 +87,7 @@ $(function(){
         }
       });
         
-      if (latLngBounds.length) {
+      if (latlngs.length) {
         var latLngBounds = L.latLngBounds(latlngs);
         map.fitBounds(latLngBounds);
       }
