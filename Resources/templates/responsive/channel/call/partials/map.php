@@ -45,7 +45,7 @@ if($this->projects || $section):
         </div>
       </div>
 
-      <iframe src="/map?<?= http_build_query($params) ?>"
+      <iframe src="<?= $this->get_url() ?>/map?<?= http_build_query($params) ?>"
             width="100%"
             height="500"
             style="border:none;"
