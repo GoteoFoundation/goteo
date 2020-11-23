@@ -19,11 +19,11 @@ use Goteo\Application\Message;
 use Goteo\Library\Text;
 
 use Goteo\Model\Node;
-use Goteo\Model\Node\NodeProgram;
+use Goteo\Model\Node\NodeSections;
 
-class ChannelProgramAdminController extends AbstractAdminController
+class ChannelSectionAdminController extends AbstractAdminController
 {
-  protected static $icon = '<i class="fa fa-2x fa-calendar-check-o"></i>';
+  protected static $icon = '<i class="fa fa-2x fa-tasks"></i>';
 
   public static function getGroup() {
     return 'channels';
@@ -34,7 +34,7 @@ class ChannelProgramAdminController extends AbstractAdminController
       new Route(
         '/',
         ['_controller' => function () {
-            return new RedirectResponse("/admin/channelprogram/" . Config::get('node'));
+            return new RedirectResponse("/admin/channelsection/" . Config::get('node'));
         }]
       ),
       new Route(
@@ -46,8 +46,12 @@ class ChannelProgramAdminController extends AbstractAdminController
         ['_controller' => __CLASS__ . "::addAction"]
       ),
       new Route(
-        '/{node}/edit/{program_id}',
+        '/{node}/edit/{section_id}',
         ['_controller' => __CLASS__ . "::editAction"]
+      ),
+      new Route(
+        '/{node}/delete/{section_id}',
+        ['_controller' => __CLASS__ . "::deleteAction"]
       )
       ];
   }
@@ -63,13 +67,13 @@ class ChannelProgramAdminController extends AbstractAdminController
     $page = $request->query->get('pag') ?: 0;
     $limit = 10;
 
-    $list = NodeProgram::getList(['node' => $id], $page * $limit, $limit, false);
-    $total = NodeProgram::getList(['node' => $id], 0, 0, true);
+    $list = NodeSections::getList(['node' => $id], $page * $limit, $limit, false);
+    $total = NodeSections::getList(['node' => $id], 0, 0, true);
     
-    return $this->viewResponse('admin/channelprogram/list', [
+    return $this->viewResponse('admin/channelsection/list', [
       'current_node' => $id,
       'nodes' => $this->user->getNodeNames(),
-      'program' => $program,
+      'program' => $section,
       'total' => $total,
       'list' => $list
     ]);
@@ -80,16 +84,19 @@ class ChannelProgramAdminController extends AbstractAdminController
 			$channel = Node::get($node);
 		} catch (ModelNotFoundException $e) {
 			Message::error($e->getMessage());
-			return $this->redirect('/admin/channelprogram');
+			return $this->redirect('/admin/channelsection');
     }
 
-    $program = new NodeProgram();
-    $program->node_id = $node;
-    
-    $processor = $this->getModelForm('AdminProgram', $program, [], [], $request);
+    $section = new NodeSections();
+    $section->node = $node;
+    $order = NodeSections::next($node);
+    if ($order)
+      $section->order = NodeSections::next($node);
+
+    $processor = $this->getModelForm('AdminSection', $section, [], [], $request);
     $processor->createForm()->getBuilder()
       ->add('submit', 'submit', [
-        'label' => 'admin-channelprogram-create',
+        'label' => 'admin-channelsection-create',
         'attr' => ['class' => 'btn btn-cyan'],
         'icon_class' => 'fa fa-save'
     ]);
@@ -101,7 +108,7 @@ class ChannelProgramAdminController extends AbstractAdminController
       try {
         $processor->save($form);
         Message::info(Text::get('admin-edit-add-ok'));
-        return $this->redirect("/admin/channelprogram/" . $node);
+        return $this->redirect("/admin/channelsection/" . $node);
 
       } catch (FormModelException $e) {
         Message::error(Text::get('form-has-errors'));
@@ -109,24 +116,23 @@ class ChannelProgramAdminController extends AbstractAdminController
     }
   
 
-    return $this->viewResponse('admin/channelprogram/edit', [
+    return $this->viewResponse('admin/channelsection/edit', [
       'current_node' => $node,
       'form' => $form->createView()
     ]);
 
   }
 
-  public function editAction($node, $program_id, Request $request) {
+  public function editAction($node, $section_id, Request $request) {
     try {
 			$channel = Node::get($node);
 		} catch (ModelNotFoundException $e) {
 			Message::error($e->getMessage());
-			return $this->redirect('/admin/channelprogram');
+			return $this->redirect('/admin/channelsection');
     }
 
-    $program = NodeProgram::get($program_id);
-    
-    $processor = $this->getModelForm('AdminProgram', $program, (array) $program, [], $request);
+    $section = NodeSections::get($section_id);
+    $processor = $this->getModelForm('AdminSection', $section, (array) $section, [], $request);
     $processor->createForm()->getBuilder()
       ->add('submit', 'submit', [
         'label' => 'regular-submit',
@@ -141,18 +147,38 @@ class ChannelProgramAdminController extends AbstractAdminController
       try {
         $processor->save($form);
         Message::info(Text::get('admin-edit-entry-ok'));
-        return $this->redirect("/admin/channelprogram/" . $node);
+        return $this->redirect("/admin/channelsection/" . $node);
 
       } catch (FormModelException $e) {
         Message::error(Text::get('form-has-errors'));
       }
     }
     
-    return $this->viewResponse('admin/channelprogram/edit', [
+    return $this->viewResponse('admin/channelsection/edit', [
       'current_node' => $node,
-      'program' => $program,
+      'program' => $section,
       'form' => $form->createView()
     ]);
 
   }
+
+  public function deleteAction($node, $section_id, Request $request) {
+        
+    try {
+        $section = NodeSections::get($section_id);
+    } catch (ModelNotFoundException $exception) {
+        Message::error($exception->getMessage());
+    }
+
+
+    try {
+      $section->dbDelete();
+      Message::info(Text::get('admin-remove-entry-ok'));
+    } catch (\PDOException $e) {
+      Message::error($e->getMessage());  
+    } 
+
+    return $this->redirect('/admin/channelsections/' . $node);
+  }
+
 }

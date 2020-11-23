@@ -109,6 +109,7 @@ class Config {
 			\Goteo\Controller\TranslateController::addTranslateModel('node_resource');
 			\Goteo\Controller\TranslateController::addTranslateModel('node_resource_category');
 			\Goteo\Controller\TranslateController::addTranslateModel('image_credits');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_sections');
 			
 			// sets up the rest...
 			self::setDirConfiguration();
@@ -262,6 +263,7 @@ class Config {
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelPostsAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelCriteriaAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelProgramAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelSectionAdminController');
 
 
 

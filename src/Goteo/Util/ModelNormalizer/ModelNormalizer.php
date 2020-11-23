@@ -48,6 +48,9 @@ class ModelNormalizer {
         elseif ($this->model instanceOf Model\Node\NodeProgram) {
             $ob = new Transformer\ChannelProgramTransformer($this->model, $this->keys);
         }
+        elseif ($this->model instanceOf Model\Node\NodeSections) {
+            $ob = new Transformer\ChannelSectionTransformer($this->model, $this->keys);
+        }
         elseif(
             $this->model instanceOf Model\Category
             || $this->model instanceOf Model\Sphere
