@@ -934,7 +934,7 @@ class Node extends \Goteo\Core\Model {
             FROM project
             LEFT JOIN node_project
                 ON node_project.project_id = project.id
-            WHERE project.node = 'ahoracomparte' OR node_project.node_id = 'ahoracomparte'
+            WHERE project.node = :node OR node_project.node_id = :node
         ", $values);
         $data['amount'] = $query->fetchColumn();
 
