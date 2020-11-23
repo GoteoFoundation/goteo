@@ -312,6 +312,11 @@ $api->add('api-channels', new Route(
         )
 ));
 
+$api->add('api-channels-images', new Route(
+    '/channels/images',
+    array('_controller' => 'Goteo\Controller\Api\ChannelsApiController::uploadImagesAction')
+));
+
 // Licenses list
 $api->add('api-licenses', new Route(
     '/licenses',
