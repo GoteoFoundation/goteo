@@ -132,10 +132,23 @@ admin-blog-not-public: 'Este post no es público todavía'
 admin-stories: Historias de usuarios en Goteo
 admin-stories-add: Crear una nueva historia
 admin-stories-edit: Editando la historia %s
-
 admin-channelstory-add: Añadir historia al canal
 admin-channelstory-submit: Guardar historia
 admin-channelstory-correct: 'Se ha añadido la historia al canal'
+admin-channelsection-section: 'Sección'
+admin-channelsection-map: 'Mapa'
+admin-channelsection-resource: 'Recursos'
+admin-channelsection-call_to_action: 'Call To Action'
+admin-channelsection-projects: 'Proyectos'
+admin-channelsection-posts: 'Posts'
+admin-channelsection-program: 'Programas'
+admin-channelsection-stories: 'Stories'
+admin-channelsection-workshops: 'Talleres'
+admin-channelsection-team: 'Equipo'
+admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-button: 'Botón'
+admin-channelsection-create: 'Crear'
+admin-channelsection-add: 'Añadir una sección'
 admin-channelpost-add: Añadir Post al canal
 admin-channelpost-submit: Guardar Post
 admin-channelpost-correct: 'Se ha añadido el post al canal'

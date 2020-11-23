@@ -105,6 +105,20 @@ admin-storys: Histories d'usuaris a Goteo
 admin-stories: Histories d'usuaris a Goteo
 admin-stories-add: Crea una nova història
 admin-stories-edit: Editant l'història %s
+admin-channelsection-section: 'Secció'
+admin-channelsection-map: 'Mapa'
+admin-channelsection-resource: 'Recursos'
+admin-channelsection-call_to_action: 'Call To Action'
+admin-channelsection-projects: 'Projectes'
+admin-channelsection-posts: 'Posts'
+admin-channelsection-program: 'Programes'
+admin-channelsection-stories: 'Stories'
+admin-channelsection-workshops: 'Tallers'
+admin-channelsection-team: 'Equip'
+admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-button: 'Botó'
+admin-channelsection-create: 'Crear'
+admin-channelsection-add: 'Afegir una secció'
 admin-channelstory-add: Afegir història al canal
 admin-channelstory-submit: Guardar història
 admin-channelstory-correct: "S'ha afegit la història al canal"
