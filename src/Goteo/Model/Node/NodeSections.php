@@ -9,12 +9,39 @@
  use Goteo\Model\Image;
  use Goteo\Application\Lang;
  use Goteo\Application\Config;
+ use Goteo\Library\Text;
  
  class NodeSections extends \Goteo\Core\Model {
 
   protected $Table = 'node_sections';
   protected static $Table_static = 'node_sections';
   
+  const SECTION_MAP             = 'map';
+  const SECTION_RESOURCES       = 'resources';
+  const SECTION_CALL_TO_ACTION  = 'call_to_action';
+  const SECTION_PROJECTS        = 'projects';
+  const SECTION_POSTS           = 'posts';
+  const SECTION_PROGRAM         = 'program';
+  const SECTION_STORIES         = 'stories';
+  const SECTION_WORKSHOPS       = 'workshops';
+  const SECTION_TEAM            = 'team';
+  const SECTION_SPONSORS        = 'sponsors';
+
+
+
+  static $SECTIONS = [
+    self::SECTION_MAP,
+    self::SECTION_RESOURCES,
+    self::SECTION_CALL_TO_ACTION,
+    self::SECTION_PROJECTS,
+    self::SECTION_POSTS,
+    self::SECTION_PROGRAM,
+    self::SECTION_STORIES,
+    self::SECTION_WORKSHOPS,
+    self::SECTION_TEAM,
+    self::SECTION_SPONSORS
+  ];
+
   public
       $id,
       $node,
@@ -23,7 +50,7 @@
       $main_description,
       $main_image,
       $main_button,
-      $order;
+      $order = 1;
 
     public static function getLangFields() {
         return ['main_title', 'main_description', 'main_button'];
@@ -52,7 +79,7 @@
             $joins
             WHERE node_sections.id = ?";
 
-    $query = static::query($sql, array($node));
+    $query = static::query($sql, $id);
     $sections = $query->fetchObject(__CLASS__);
 
     return $sections;
@@ -98,6 +125,13 @@
           $sql = " WHERE " . implode(' AND ', $filter);
       }
 
+      if ($count) {
+        $sql = "SELECT count(node_sections.id)
+                FROM node_sections
+                $sql";
+        return (int) self::query($sql, $values)->fetchColumn(0);
+      }
+
       $sql="SELECT
                 node_sections.id as id,
                 node_sections.node as node,
@@ -130,19 +164,23 @@
     if (!$this->validate($errors))
         return false;
 
-    $fields = array(
-        'id',
-        'node',
-        'section',
-        'maint_title',
-        'main_description',
-        'main_image',
-        'order'
-    );
-
     try {
         //automatic $this->id assignation
-        $this->dbInsertUpdate($fields);
+        // $this->dbInsertUpdate($fields);
+        $sql = "REPLACE INTO node_sections (`id`,`node`,`section`,`main_title`,`main_description`,`main_button`,`main_image`,`order`)
+                        VALUES (:id, :node, :section, :main_title, :main_description, :main_button, :main_image, :order)";
+
+        $values = [
+          'id' => $this->id,
+          'node' => $this->node,
+          'section' => $this->section,
+          'main_title' => $this->main_title,
+          'main_description' => $this->main_description,
+          'main_button' => $this->main_button,
+          'main_image' => $this->main_image,
+          'order' => $this->order
+        ];
+        self::query($sql, $values);
 
         return true;
     } catch(\PDOException $e) {
@@ -167,5 +205,29 @@
       return empty($errors);
     }
 
+    /*
+    * Order to set it at the end
+    */
+    public static function next ($node) {
+      $query = self::query('SELECT MAX(`order`) FROM node_sections WHERE node = :node'
+          , array(':node'=>$node));
+      $order = $query->fetchColumn(0);
+      return $order++;
+    }
 
+
+    public static function getSectionNames() {
+      return [
+        self::SECTION_MAP => Text::get('admin-channelsection-map'),
+        self::SECTION_RESOURCES => Text::get('admin-channelsection-resource'),
+        self::SECTION_CALL_TO_ACTION => Text::get('admin-channelsection-call_to_action'),
+        self::SECTION_PROJECTS => Text::get('admin-channelsection-projects'),
+        self::SECTION_POSTS => Text::get('admin-channelsection-posts'),
+        self::SECTION_PROGRAM => Text::get('admin-channelsection-program'),
+        self::SECTION_STORIES => Text::get('admin-channelsection-stories'),
+        self::SECTION_WORKSHOPS => Text::get('admin-channelsection-workshops'),
+        self::SECTION_TEAM => Text::get('admin-channelsection-team'),
+        self::SECTION_SPONSORS => Text::get('admin-channelsection-sponsors')
+      ];
+    }
  }

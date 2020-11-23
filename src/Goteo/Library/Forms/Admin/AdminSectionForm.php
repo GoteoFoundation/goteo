@@ -18,9 +18,9 @@ use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
 
-use Goteo\Model\Node\NodeProgram;
+use Goteo\Model\Node\NodeSections;
 
-class AdminProgramForm extends AbstractFormProcessor {
+class AdminSectionForm extends AbstractFormProcessor {
 
     public function getConstraints($field) {
         return [new Constraints\NotBlank()];
@@ -34,53 +34,38 @@ class AdminProgramForm extends AbstractFormProcessor {
         $defaults = $options['data'];
 
         $builder
-            ->add('title', 'text', [
+            ->add('section', 'choice', [
                 'disabled' => $this->getReadonly(),
-                'constraints' => $this->getConstraints('title'),
                 'required' => true,
+                'label' => 'admin-channelsection-section',
+                'choices' => NodeSections::getSectionNames(),
+            ])
+            ->add('main_title', 'text', [
+                'disabled' => $this->getReadonly(),
+                'required' => false,
                 'label' => 'regular-title'
             ])
-            ->add('description', 'text', [
+            ->add('main_description', 'textarea', [
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'label' => 'regular-description'
             ])
-            ->add('modal_description', 'textarea', [
+            ->add('main_button', 'textarea', [
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'label' => 'regular-modal-decription'
+                'label' => 'admin-channelsection-button'
             ])
-            ->add('header', 'dropfiles', array(
+            ->add('main_image', 'dropfiles', array(
                 'required' => false,
                 'limit' => 1,
-                'data' => [$model->header ? $model->getHeader() : null],
-                'label' => 'admin-title-icon',
-                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
+                'data' => [$model->main_image ? $model->getMainImage() : null],
+                'label' => 'regular-image',
+                'accepted_files' => 'image/jpeg,image/png,image/svg+xml',
                 'url' => '/api/channels/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 1))
                 ),
             ))
-            ->add('icon', 'text', [
-              'disabled' => $this->getReadonly(),
-              'required' => false,
-              'label' => 'regular-icon'
-            ])
-            ->add('action', 'text', [
-              'disabled' => $this->getReadonly(),
-              'required' => true,
-              'label' => 'regular-action'
-            ])
-            ->add('action_url', 'text', [
-              'disabled' => $this->getReadonly(),
-              'required' => false,
-              'label' => 'regular-action_url'
-            ])
-            ->add('date', 'datepicker', [
-              'disabled' => $this->getReadonly(),
-              'required' => true,
-              'label' => 'regular-date'
-            ])
             ;
 
         return $this;
@@ -95,15 +80,15 @@ class AdminProgramForm extends AbstractFormProcessor {
 
         $data = $form->getData();
         // Dropfiles type always return an array, just get the first element if required
-        if($data['header'] && is_array($data['header'])) {
-            $data['header'] = $data['header'][0];
+        if($data['main_image'] && is_array($data['main_image'])) {
+            $data['main_image'] = $data['main_image'][0];
         } else {
-            $data['header'] = null;
+            $data['main_image'] = null;
         }
 
         $model = $this->getModel();
+        
         $model->rebuildData($data, array_keys($form->all()));
-
         $errors = [];
         if (!$model->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
