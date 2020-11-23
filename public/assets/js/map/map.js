@@ -45,8 +45,8 @@ $(function(){
 
   var map = L.map('map', {
     fullscreenControl: true,
-    setView: true,
-    zoom: 5
+    center: [0,0],
+    zoom: 3
   });
   L.tileLayer($('#map').data('tile-layer'), {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -56,6 +56,7 @@ $(function(){
   if (geojson) {
     $.getJSON(geojson, function(data) {
       geojsonLayer = L.geoJson(data).addTo(map);
+      map.fitBounds(geojsonLayer.getBounds());
     })
   }
 
@@ -87,8 +88,7 @@ $(function(){
       });
         
       var latLngBounds = L.latLngBounds(latlngs);
-      map.setView(latLngBounds.getCenter());
-      map.setMaxBounds(latLngBounds);
+      map.fitBounds(latLngBounds);
 
       if (projects.length) {
         map.addLayer(project_markers);
