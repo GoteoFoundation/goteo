@@ -12,12 +12,14 @@ namespace Goteo\Controller;
 
 use Goteo\Util\Map\MapOSM;
 use Goteo\Application\View;
+use Goteo\Application\Exception;
 
 use Goteo\Model\Node;
 use Goteo\Model\Project;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Call;
 use Goteo\Model\Workshop;
+use Goteo\Model\Contract\BaseDocument;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -32,8 +34,14 @@ class MapController extends \Goteo\Core\Controller {
 	public function mapAction(Request $request) {
 
     $cid = strip_tags($request->get('channel'));
-    
+    $geojson = strip_tags($request->get('geojson'));
+
     $map = new MapOSM('100%');
+
+    try {
+      $geojson_document = BaseDocument::getByName($geojson);
+      $map->setGeoJSON($geojson_document->getLink());
+    } catch(\Exception $e) {}
 
     if ($cid) {
       try {

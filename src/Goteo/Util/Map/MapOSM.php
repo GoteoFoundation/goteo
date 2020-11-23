@@ -22,7 +22,8 @@
           $channel,
           $projects,
           $workshops,
-          $donations;
+          $donations,
+          $geojson;
 
 
   public function __construct($h, $w = "100%") {
@@ -58,6 +59,10 @@
   public function setDonations($donations) {
     $this->donations = $donations;
   }
+
+  public function setGeoJSON($geojson) {
+    $this->geojson = $geojson;
+  }
   
   public function getChannel() {
     return $this->channel;
@@ -73,6 +78,10 @@
 
   public function getDonations() {
     return $this->donations;
+  }
+
+  public function getGeoJSON() {
+    return $this->geojson;
   }
 
   public function map() {

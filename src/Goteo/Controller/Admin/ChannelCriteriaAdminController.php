@@ -24,7 +24,7 @@ use Goteo\Model\Questionnaire\Question;
 
 class ChannelCriteriaAdminController extends AbstractAdminController
 {
-  protected static $icon = '<i class="fa fa-2x fa-tasks"></i>';
+  protected static $icon = '<i class="fa fa-2x fa-question-circle-o"></i>';
 
   public static function getGroup() {
     return 'channels';

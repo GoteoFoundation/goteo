@@ -22,6 +22,7 @@ class NodeProgram extends \Goteo\Core\Model {
     $node_id,
     $title,
     $description,
+    $modal_description,
     $header,
     $icon,
     $action,
@@ -94,6 +95,13 @@ class NodeProgram extends \Goteo\Core\Model {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
 
+        if ($count) {
+            $sql = "SELECT COUNT(node_program.id)
+            FROM node_program
+            $sql";
+            return (int) self::query($sql, $values)->fetchColumn();
+        }
+
         $sql="SELECT
                     node_program.id as id,
                     node_program.node_id as node_id,
@@ -132,9 +140,11 @@ class NodeProgram extends \Goteo\Core\Model {
             `header`,
             'icon',
             'description',
+            'modal_description',
             'action',
             'action_url',
             'action_icon',
+            'date',
             'order'
         );
 

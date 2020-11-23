@@ -1,4 +1,20 @@
-<?php if($this->projects): ?>
+<?php 
+
+$section = current($this->channel->getSections('map'));
+
+if($this->projects || $section):
+  $config = $this->channel->getConfig();
+  $map_config = $config['map'];
+
+  $params = [
+    'channel' => $this->channel->id
+  ];
+
+  if ($map_config['geojson']) {
+    $params['geojson'] = urlencode($map_config['geojson']);
+  }
+
+?>
 
 <div class="section map">
   <div class="container">
@@ -29,7 +45,11 @@
         </div>
       </div>
 
-      <iframe src="<?= $this->get_url() ?>/map?channel=<?= $this->channel->id ?>" width="100%" height="500" style="border:none;" allowfullscreen></iframe>
+      <iframe src="/map?<?= http_build_query($params) ?>"
+            width="100%"
+            height="500"
+            style="border:none;"
+            allowfullscreen></iframe>
     </div>
   </div>
 </div>
