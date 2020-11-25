@@ -23,7 +23,9 @@
           $projects,
           $workshops,
           $donations,
-          $geojson;
+          $geojson,
+          $center,
+          $zoom;
 
 
   public function __construct($h, $w = "100%") {
@@ -63,6 +65,14 @@
   public function setGeoJSON($geojson) {
     $this->geojson = $geojson;
   }
+
+  public function setZoom($zoom) {
+    $this->zoom = $zoom;
+  }
+
+  public function setCenter($center = array()) {
+    $this->center = $center;
+  }
   
   public function getChannel() {
     return $this->channel;
@@ -82,6 +92,14 @@
 
   public function getGeoJSON() {
     return $this->geojson;
+  }
+
+  public function getZoom() {
+    return $this->zoom;
+  }
+
+  public function getCenter() {
+    return $this->center;
   }
 
   public function map() {

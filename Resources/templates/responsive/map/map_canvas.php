@@ -26,12 +26,10 @@
         style="height:<?= $map->getHeight() ?>px; width:<?= $map->getWidth() ?>;"
       <?php endif; ?>
       data-tile-layer='<?= $this->map->getTileLayer() ?>'
-      <?php if ($this->map->getChannel()): ?>
-        data-channel='<?= $this->map->getChannel() ?>'
-      <?php endif; ?>
-      <?php if ($this->map->getGeoJSON()): ?>
-        data-geojson='<?= $this->map->getGeoJSON() ?>'
-      <?php endif; ?>
+      data-channel='<?= $this->map->getChannel() ?>'
+      data-geojson='<?= $this->map->getGeoJSON() ?>'
+      data-zoom='<?= $this->map->getZoom() ?>'
+      data-center='<?= json_encode($this->map->getCenter()) ?>'
   ></div>
 
   <div class="map-layouts">
