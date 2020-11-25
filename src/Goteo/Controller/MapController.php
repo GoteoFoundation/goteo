@@ -54,4 +54,31 @@ class MapController extends \Goteo\Core\Controller {
 
     return $this->viewResponse('map/map_canvas', ['map'  => $map]);
   }
+
+  public function exactMapAction($zoom, $latlng, Request $request) {
+
+    $cid = strip_tags($request->get('channel'));
+    $geojson = strip_tags($request->get('geojson'));
+
+    $map = new MapOSM('100%');
+    $map->setZoom($zoom);
+    $map->setCenter(explode(',',$latlng));
+
+    try {
+      $geojson_document = BaseDocument::getByName($geojson);
+      $map->setGeoJSON($geojson_document->getLink());
+    } catch(\Exception $e) {}
+
+    if ($cid) {
+      try {
+        $channel = Node::get($cid);
+      } catch (ModelNotFoundException $e) {
+        Message::error($e->getMessage());
+      }
+      $map->setChannel($cid);
+    }
+
+    return $this->viewResponse('map/map_canvas', ['map'  => $map]);
+  }
+
 }

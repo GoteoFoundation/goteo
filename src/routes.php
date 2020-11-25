@@ -299,6 +299,13 @@ $routes->add('map', new Route(
     )
 ));
 
+$routes->add('map-zoom-latlng', new Route(
+    '/map/{zoom}/{latlng}',
+    array(
+        '_controller' => 'Goteo\Controller\MapController::exactMapAction'
+    )
+));
+
 // $map_routes = include __DIR__ . '/Routes/map_routes.php';
 // $map_routes->addPrefix('/map');
 // $routes->addCollection($map_routes);

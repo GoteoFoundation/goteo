@@ -42,12 +42,15 @@ $(function(){
   
   var channel = $('#map').data('channel');
   var geojson = $('#map').data('geojson');
+  var zoom = $('#map').data('zoom');
+  var center = $('#map').data('center');
 
   var map = L.map('map', {
     fullscreenControl: true,
-    center: [0,0],
-    zoom: 3
+    center: center ? center : [0,0],
+    zoom: zoom? zoom : 3
   });
+
   L.tileLayer($('#map').data('tile-layer'), {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
@@ -56,7 +59,7 @@ $(function(){
   if (geojson) {
     $.getJSON(geojson, function(data) {
       geojsonLayer = L.geoJson(data).addTo(map);
-      map.fitBounds(geojsonLayer.getBounds());
+      // map.fitBounds(geojsonLayer.getBounds());
     })
   }
 
@@ -87,8 +90,10 @@ $(function(){
         }
       });
         
-      var latLngBounds = L.latLngBounds(latlngs);
-      map.fitBounds(latLngBounds);
+      if (latlngs.length) {
+        var latLngBounds = L.latLngBounds(latlngs);
+        // map.fitBounds(latLngBounds);
+      }
 
       if (projects.length) {
         map.addLayer(project_markers);
@@ -100,7 +105,7 @@ $(function(){
         $('#button-workshops-hide').removeClass('hidden');
       }
 
-      map.fitBounds(latLngBounds);
+      // map.fitBounds(latLngBounds);
 
       $('#button-projects-activate').click(function() {
         map.addLayer(project_markers);
