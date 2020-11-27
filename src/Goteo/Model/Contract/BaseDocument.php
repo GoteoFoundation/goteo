@@ -117,7 +117,7 @@ class BaseDocument extends Document {
 
             $query = static::query($sql, array(':name' => $name));
             if($doc = $query->fetchObject(__CLASS__)) {
-                $doc->filedir = $doc->dir . $doc->contract . '/';
+                $doc->filedir = $doc->dir . '/';
                 return $doc;
             }
 
