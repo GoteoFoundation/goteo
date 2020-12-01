@@ -94,15 +94,15 @@ class AdminProgramForm extends AbstractFormProcessor {
         }
 
         $data = $form->getData();
+        $model = $this->getModel();
+        $model->rebuildData($data, array_keys($form->all()));
+
         // Dropfiles type always return an array, just get the first element if required
         if($data['header'] && is_array($data['header'])) {
-            $data['header'] = $data['header'][0];
+            $data['header'] = $data['header'][0]->name;
         } else {
             $data['header'] = null;
         }
-
-        $model = $this->getModel();
-        $model->rebuildData($data, array_keys($form->all()));
 
         $errors = [];
         if (!$model->save($errors)) {
