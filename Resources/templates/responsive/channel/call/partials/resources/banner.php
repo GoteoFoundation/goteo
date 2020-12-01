@@ -4,7 +4,7 @@
 	<div class="custom-header">
 		<div class="pull-left">
 			<a href="<?= '/channel/'.$this->channel->id ?> ">
-				<img src="<?= $channel->logo ? $channel->logo->getlink(0,30) : '' ?>" height="30px">
+				<img src="<?= $channel->logo ? $channel->logo->getlink(0,40) : '' ?>" height="40px">
 			</a>
 		</div>
 		<div class="pull-right">
