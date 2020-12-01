@@ -40,6 +40,7 @@ class Node extends \Goteo\Core\Model {
         $email,
         $admins = array(), // administradores
         $logo,
+        $logo_footer,
         $sello,
         $home_img,
         $active,
@@ -81,6 +82,9 @@ class Node extends \Goteo\Core\Model {
             // logo
             $this->logo = (!empty($this->logo)) ? Image::get($this->logo) : null;
 
+            // logo footer
+            $this->logo_footer = (!empty($this->logo_footer)) ? Image::get($this->logo_footer) : null;
+
             // label
             $this->label = (!empty($this->label)) ? Image::get($this->label) : null;
 
@@ -114,6 +118,7 @@ class Node extends \Goteo\Core\Model {
                 node.hashtag as hashtag,
                 $fields,
                 node.logo as logo,
+                node.logo_footer as logo_footer,
                 node.label as label,
                 node.home_img as home_img,
                 node.location as location,
@@ -267,6 +272,7 @@ class Node extends \Goteo\Core\Model {
                        node.active,
                        node.url,
                        node.logo,
+                       node.logo_footer,
                        node.location,
                        node.twitter,
                        node.facebook,
@@ -395,6 +401,14 @@ class Node extends \Goteo\Core\Model {
         }
         return $this->logoInstance;
     }
+
+    public function getLogoFooter() {
+        if(!$this->logoFooterInstance instanceOf Image) {
+            $this->logoFooterInstance = new Image($this->logo_footer);
+        }
+        return $this->logoFooterInstance;
+    }
+
 
     public function getLabel() {
         if(!$this->labelInstance instanceOf Image) {
