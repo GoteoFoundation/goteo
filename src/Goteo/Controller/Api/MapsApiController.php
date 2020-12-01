@@ -52,7 +52,7 @@ class MapsApiController extends AbstractApiController {
               $total = Project::getList($conf['projects'], $cid, 0, 0, true);
               $projects = Project::getList($conf['projects'], $cid, 0, $total);
             } else {
-              $total = Project::getList($conf['projects'], $cid, 0, 0, true);
+              $total = Project::getList(['node' => $channel->id], $cid, 0, 0, true);
               $projects = Project::getList(['node' => $channel->id], $cid, 0, $total);
             }
             
