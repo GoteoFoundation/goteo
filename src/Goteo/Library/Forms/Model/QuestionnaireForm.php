@@ -115,7 +115,7 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 } else {
                     $answer_option = new AnswerOptions();
                     $answer_option->answer = $answer->id;
-                    $answer_option->option = $option;
+                    $answer_option->option = $value;
                     $answer_option->save();
                 }
             }
