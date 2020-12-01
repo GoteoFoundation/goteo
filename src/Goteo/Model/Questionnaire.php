@@ -20,8 +20,8 @@ class Questionnaire extends \Goteo\Core\Model
         return [
             'textarea' => Text::get('questionnaire-textarea'), 
             'boolean' => Text::get('questionnaire-boolean'),
-            'dropfiles' => Text::get('questionnaire-dropfiles')
-            // 'choice' => Text::get('questionnaire-choice')
+            'dropfiles' => Text::get('questionnaire-dropfiles'),
+            'choice' => Text::get('questionnaire-choice')
         ];
     }
 

@@ -12,7 +12,9 @@ namespace Goteo\Controller\Admin;
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use Goteo\Application\Config;
 use Goteo\Application\Message;
@@ -21,6 +23,8 @@ use Goteo\Library\Text;
 use Goteo\Model\Node;
 use Goteo\Model\Questionnaire;
 use Goteo\Model\Questionnaire\Question;
+use Goteo\Model\Questionnaire\Answer;
+use Goteo\Model\Project;
 
 class ChannelCriteriaAdminController extends AbstractAdminController
 {
@@ -41,6 +45,10 @@ class ChannelCriteriaAdminController extends AbstractAdminController
       new Route(
         '/{id}',
         ['_controller' => __CLASS__ . "::listAction"]
+      ),
+      new Route(
+        '/{id}/export',
+        ['_controller' => __CLASS__ . "::exportAction"]
       )
       ];
   }
@@ -147,6 +155,64 @@ class ChannelCriteriaAdminController extends AbstractAdminController
       'form' => $form->createView(),
       'questionnaire' => $questionnaire
     ]);
+  }
+
+  public function exportAction($id, Request $request) {
+
+    try {
+			$channel = Node::get($id);
+		} catch (ModelNotFoundException $e) {
+			Message::error($e->getMessage());
+			return $this->redirect('/admin/channelcriteria');
+    }
+
+    $questionnaire = Questionnaire::getByChannel($id);
+    $questions = $questionnaire->questions;
+    
+    $total = Project::getList(['node' => $id], $cid, 0, 0, true);
+    $projects = Project::getList(['node' => $id], $cid, 0, $total);
+
+    $response = new StreamedResponse(function () use ($questions, $projects) {
+      $buffer = fopen('php://output', 'w');
+
+      $header = ['ID'];
+
+      foreach ($questions as $question) {
+        array_push($header, $question->id . ' - ' . $question->title);
+      }
+
+      fputcsv($buffer, $header);
+      flush();
+      fclose($buffer);
+      $offset = 0;
+
+      foreach ($projects as $project) {
+        $answers = Answer::getList(['questionnaire' => $questionnaire->id, 'project' => $project->id]);
+        if (empty($answers))
+          continue;
+
+        $project_answers = [$project->id];
+
+        foreach ($answers as $answer) {
+          array_push($project_answers, $answer->answer); 
+        }
+
+        $buffer = fopen('php://output', 'w');
+        fputcsv($buffer, $project_answers);
+        flush();
+        fclose($buffer);
+      }
+    });
+
+    $d = $response->headers->makeDisposition(
+			ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+			'channel_' . $id .'_answers_.csv'
+		);
+
+		$response->headers->set('Content-Disposition', $d);
+		$response->headers->set('Content-Type', 'text/csv');
+
+		return $response;
   }
 
 

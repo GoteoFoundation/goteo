@@ -300,7 +300,7 @@ class ChannelController extends \Goteo\Core\Controller {
                     ]
                 );
 
-                $form = $processor->getForm();
+            $form = $processor->getForm();
             $form->handleRequest($request);
             if ($form->isSubmitted() && $request->isMethod('post')) {
                 // Check if we want to remove an entry

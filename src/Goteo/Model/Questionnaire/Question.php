@@ -5,6 +5,8 @@ namespace Goteo\Model\Questionnaire;
 use Goteo\Application\Message;
 use Goteo\Application\Exception\ModelNotFoundException;
 
+use Goteo\Model\Questionnaire\Question\QuestionOptions;
+
 class Question extends \Goteo\Core\Model
 {
 
@@ -124,6 +126,16 @@ class Question extends \Goteo\Core\Model
         $query = static::query($sql, $values);
         $questions = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         return $questions;
+    }
+
+    public function getChoices() {
+        if ($this->optionsList)
+            return $this->optionsList;
+
+        $total = QuestionOptions::getList(['question' => $this->id], 0, 0, true);
+        $this->optionsList = QuestionOptions::getList(['question' => $this->id], 0, $total);
+
+        return $this->optionsList;
     }
 
     /**
