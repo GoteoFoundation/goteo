@@ -131,7 +131,6 @@ The Docker image comes with (experimental) support for SSL. However, to use it y
 
   ```ini
   127.0.0.1 localhost goteo.test www.goteo.test ca.goteo.test en.goteo.test es.goteo.test
-eo.test
   ```
 
 2. Change the URL in your `local-docker-settings.yml` settings file, use `//goteo.test:8443` instead of `localhost:8081`. Something like:
@@ -215,6 +214,16 @@ You can run test by using the wrapper `docker/test`. Arguments are the same as p
 
 #### Preparation:
 
+In order to run test using docker, you need to have the containers up and running.
+
+So first, start the normal docker environment, and keep it opened in an independent terminal:
+
+```
+docker/up
+```
+
+On a different terminal, generate the test settings file:
+
 ```bash
 cp config/local-docker-settings.yml config/test-docker-settings.yml
 ```
@@ -240,10 +249,10 @@ docker-compose exec mariadb mysql -uroot -pcrowdfunding -e 'CREATE DATABASE gote
 docker-compose exec mariadb mysql -uroot -pcrowdfunding -e "GRANT ALL PRIVILEGES ON goteo_test.* TO 'goteo'@'%';"
 ```
 
-Finally, install the database:
+Finally, reset the database:
 
 ```bash
-GOTEO_CONFIG_FILE='config/test-docker-settings.yml' docker/exec bin/console migrate install
+docker/test -r
 ```
 
 ---

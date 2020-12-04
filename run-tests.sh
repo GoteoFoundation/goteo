@@ -48,7 +48,7 @@ export GOTEO_TEST_CONFIG_FILE=$CONFIG;
 export GOTEO_CONFIG_FILE=$CONFIG;
 
 if [ "$RESET_DATABASE" != "" ]; then
-    echo "Removing database"
+    echo "Wiping database:"
     DB=$(cat $CONFIG | grep 'db:' -A8)
     #remove spaces
     DB=${DB// /}
@@ -97,7 +97,8 @@ if [ "$RESET_DATABASE" != "" ]; then
         exit 2
     fi
 
-    echo "Done, now testing"
+    echo "Done, now exiting. Run without the -r modifier to run tests"
+    exit
 fi
 
 ./vendor/bin/phpunit "${ARGS[@]}"
