@@ -44,7 +44,6 @@ invest-donation-header: 'Inserir os datos fiscais para a doazón'
 invest-drop-method: Rego
 invest-fiscal-fail: 'Hai campos baleiros ou con erros, verifica o formulario fiscal para poder desgravar a túa achega!'
 invest-fiscal-skip: 'Non quero encher estes datos neste momento.'
-invest-fiscal-title: 'Asegúrate de poder desgravar a túa achega (para contribuíntes en España)'
 invest-login-alert: 'Tes de estar rexistrado ou <a href="%s">Iniciar sesión</a> para poder face-la achega'
 invest-mail_info-address: 'Especificaches a seguinte dirección:'
 invest-make-sure-save: Gardar
