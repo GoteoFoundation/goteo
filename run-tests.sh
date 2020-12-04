@@ -101,4 +101,6 @@ if [ "$RESET_DATABASE" != "" ]; then
     exit
 fi
 
+echo executing ./vendor/bin/phpunit "${ARGS[@]}"
+
 ./vendor/bin/phpunit "${ARGS[@]}"
