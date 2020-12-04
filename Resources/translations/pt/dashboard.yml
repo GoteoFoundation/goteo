@@ -10,7 +10,6 @@ dashboard-certificates-confirm: 'Confirmar dados'
 dashboard-certificates-confirm-checkbox: 'Confirmo que estes são os meus dados legais reais e estou consciente de que não vou poder modificá-los depois de confirmados'
 dashboard-certificates-confirmed: Confirmado
 dashboard-certificates-processed: Processado
-dashboard-certificates-confirmed-ok: 'Dados fiscais confirmados correctamente. Se o seu certificado não se descarregar automaticamente, clique %HERE%'
 dashboard-certificates-data-alert: 'Tenha em conta que, uma vez confirmado, não se podem modificar os dados!'
 dashboard-certificates-data-desc: 'Por favor assegure-se de que os dados do formulário são os correctos antes de confirmá-lo'
 dashboard-header-main: 'Dashboard'
