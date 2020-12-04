@@ -24,3 +24,4 @@ admin-project-to-publish-sure: 'Proje kendi kampanyasına başlayacak, tamam mı
 admin-project-derivation-discard: 'At ve türet'
 admin-project-derivation-discard-desc: 'Proje durumunu Atılmış olarak değiştirir ve diğer platformlara türetilen bir e-posta gönderir'
 admin-project-derivation-discard-sure: 'Proje atılacak ve sahibi diğer platformlara türetilen bir e-posta alacaktır, tamam mı?'
+

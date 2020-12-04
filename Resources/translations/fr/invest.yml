@@ -26,7 +26,6 @@ invest-called-nodrop: 'Il n''y a pas actuellement de <strong>Matchfunding</stron
 invest-called-rest: 'Il ne reste que <strong>%s €</strong> de <strong>Matchfunding</strong> dans la campagne <span class="call">%s</span>'
 invest-donation-header: 'Entrer les informations fiscal pour cette donation'
 invest-fiscal-skip: 'Fournir les détails plus tard'
-invest-fiscal-title: 'Assurez vous de recevoir votre certificat de donation donnant droit à des avantages fiscaux (Seulement en Espagne pour le moment)'
 invest-mail_info-address: 'A précisé l''addresse suivante:'
 invest-make-sure-save: Valider
 invest-make-sure-title: Confirmation

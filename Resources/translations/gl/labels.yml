@@ -2,28 +2,78 @@
 accounts-lb: Achegas
 accounts-lb-add: 'Achega manual'
 accounts-lb-cancel: 'Cancelando achega'
+accounts-lb-cancel-pool: 'Cancelando opción de crédito'
 accounts-lb-details: 'Detalles da achega'
+accounts-lb-execute: 'Execución do cargo'
 accounts-lb-list: A listar
+accounts-lb-move: 'Ubicando de novo a achega'
+accounts-lb-report: 'Informe do proxecto'
+accounts-lb-update: 'Cambiando o estado á achega'
+accounts-lb-viewer: 'Vendo rexistros'
+banners-lb: Pancarta
+banners-lb-add: 'Nova pancarta'
+banners-lb-cancel: 'Cancelando achega'
 banners-lb-details: 'Detalles da achega'
+banners-lb-edit: 'Editando a pancarta'
+banners-lb-execute: 'Execución do cargo'
 banners-lb-list: A listar
+banners-lb-move: 'Ubicando de novo a achega'
+banners-lb-report: 'Informe do proxecto'
+banners-lb-translate: 'Traducindo a pancarta'
+banners-lb-update: 'Trocando o estado da achega'
+banners-lb-viewer: 'Vendo rexistros'
+blog-lb: Blog
+blog-lb-add: 'Nova entrada'
+blog-lb-edit: 'Editando entrada'
+blog-lb-footer: 'Ordenando as entradas no Footer'
 blog-lb-list: A listar
+blog-lb-reorder: 'Ordenando as entradas da Portada'
+blog-lb-translate: 'Traducindo entrada'
 categories-lb: Categorías
 categories-lb-add: 'Nova categoría'
+categories-lb-edit: 'Editando categoría'
 categories-lb-keywords: 'Palabras chave'
 categories-lb-list: A listar
+categories-lb-translate: 'Traducindo categoría'
+commons-lb-add: 'Novo retorno'
+commons-lb-edit: 'Editando retorno'
+commons-lb-info: 'Información de contacto'
 commons-lb-list: A listar
+commons-lb-report: 'Informe do proxecto'
+commons-lb-view: 'Xestión de retornos'
+communication-lb: 'Comunicacións'
+criteria-lb: 'Criterios de avaliación'
+criteria-lb-add: 'Novo criterio'
+criteria-lb-edit: 'Editando criterio'
 criteria-lb-list: A listar
+criteria-lb-translate: 'Traducindo criterio'
 faq-lb: FAQ
 faq-lb-add: 'Nova pregunta'
+faq-lb-edit: 'Editando pregunta'
 faq-lb-list: A listar
+faq-lb-translate: 'Traducindo pregunta'
+filter-lb: 'Filtros'
 glossary-lb: Glosario
+glossary-lb-edit: 'Editando termo'
 glossary-lb-list: A listar
+glossary-lb-translate: 'Traducindo termo'
+home-lb: 'Elementos na portada'
+home-lb-list: 'Elementos na portada'
+icons-lb-edit: 'Editando tipo'
 icons-lb-list: A listar
+icons-lb-translate: 'Traducindo tipo'
+info-lb-add: 'Creando idea'
+info-lb-edit: 'Editando idea'
 info-lb-list: A listar
+info-lb-translate: 'Traducindo idea'
 licenses-lb: Licenzas
+licenses-lb-add: 'Creando idea'
+licenses-lb-edit: 'Editando licenza'
 licenses-lb-list: A listar
+licenses-lb-translate: 'Traducindo licenza'
 mailing-lb: Comunicacións
 mailing-lb-edit: 'Escribindo contido'
+mailing-lb-list: 'Seleccionando destinatarios'
 mailing-lb-send: 'Comunicación enviada'
 milestones-lb: Fitos
 milestones-lb-add: 'Novo fito'
@@ -33,7 +83,13 @@ news-lb-add: 'Nova micronova'
 news-lb-edit: 'Editando a micronova'
 news-lb-list: A listar
 news-lb-translate: 'Traducindo a micronova'
+newsletter-lb: Boletín
+newsletter-lb-detail: 'Vendo destinatarios'
+newsletter-lb-init: 'Iniciando un novo envío'
+newsletter-lb-list: 'Estado do envío automático'
 node-lb: 'Datos da canle'
+node-lb-admins: 'Vendo administradores'
+node-lb-edit: Editando
 node-lb-list: 'Datos actuais'
 nodes-lb: Canles
 nodes-lb-add: 'Nova canle'
@@ -47,17 +103,33 @@ pages-lb-translate: 'Traducindo páxina'
 pages-lbedit: 'Editando páxina'
 projects-lb: Proxectos
 projects-lb-accounts: 'Contas do proxecto'
+projects-lb-cancel: 'Cancelando achega'
+projects-lb-consultants: 'Trocando o asesor do proxecto'
 projects-lb-dates: 'Datas do proxecto'
+projects-lb-execute: 'Execución do cargo'
 projects-lb-images: 'Imaxes do proxecto'
 projects-lb-list: A listar
+projects-lb-move: 'Movendo o proxecto a outro nodo'
+projects-lb-open_tags: 'Asignando unha agrupación ao proxecto'
 projects-lb-rebase: 'Trocando a Id do proxecto'
+projects-lb-report: 'Informe financeiro do proxecto'
 promote-lb: 'Proxectos populares'
+promote-lb-add: 'Novo destacado'
+promote-lb-edit: 'Editando destacado'
 promote-lb-list: A listar
+promote-lb-translate: 'Traducindo destacado'
 recent-lb: 'Actividade recente'
 recent-lb-list: A listar
+reviews-lb: Revisións
 reviews-lb-list: A listar
+rewards-lb: Recompensas
+rewards-lb-edit: 'Xestionando recompensa'
 rewards-lb-list: A listar
+sent-lb: 'Historial de envíos'
+sent-lb-list: 'Correos enviados'
 sponsors-lb: 'Apoios Institucionais'
+sponsors-lb-add: 'Novo pratrocinador'
+sponsors-lb-edit: 'Editando patrocinador'
 sponsors-lb-list: A listar
 tags-lb: 'Etiquetas do blogue'
 tags-lb-add: 'Nova etiqueta'
@@ -70,10 +142,26 @@ templates-lb-list: A listar
 texts-lb: 'Textos da interface'
 texts-lb-edit: 'Editando o orixinal'
 texts-lb-list: A listar
+translates-lb: 'Traducións de proxectos'
+translates-lb-add: 'Habilitando tradución'
+translates-lb-edit: 'Asignando tradución'
 translates-lb-list: A listar
+translates-lb-translate: 'Traducindo texto'
+transnodes-lb: 'Traducións de nodos'
+transnodes-lb-edit: 'Asignando tradución'
 transnodes-lb-list: A listar
 users-lb: Usuarios
 users-lb-add: 'Creando usuario'
+users-lb-edit: 'Editando Usuario'
+users-lb-impersonate: 'Suplantando ao usuario'
 users-lb-list: A listar
+users-lb-manage: 'Xestionando usuario'
+users-lb-move: 'Movendo o usuario a outro nodo'
+workshop-lb: 'Obradoiros'
+word-lb: 'Contado de palabras'
 word-lb-list: A listar
+worth-lb: 'Niveis de meritocracia'
+worth-lb-edit: 'Editando nivel'
 worth-lb-list: A listar
+stats-lb: Estatísticas & datos
+stories-lb: 'Historias de usuario'

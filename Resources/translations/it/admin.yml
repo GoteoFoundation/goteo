@@ -50,6 +50,26 @@ admin-contents: 'Testi e traduzioni'
 admin-empty-list: 'Nessun risultato trovato'
 admin-activity: Attività
 admin-communications: Comunicazioni
+admin-communications-add: Creare nuova comunicazione
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' per l''id di accesso del proprietario'
+admin-communications-useremail-content: ' per l''email del destinatario'
+admin-communications-username-content: ' per il nome del destinatario'
+admin-communications-siteurl-content: ' per l''url di questa piattaforma'
+admin-communications-subscribeurl-content: ' link diretto di sottoiscrizione alla newsletter dell''utente'
+admin-communications-unsubscribeurl-content: ' link diretto di disiscrizione alla newsletter dell''utente'
+admin-communications-poolamount-content: ' quantità di denaro disponibile nel portamonete dell''utente'
+admin-communications-send: 'Inviare comunicazione'
+admin-communications-cancel: 'Cancellare comunicazione'
+admin-communications-newsletter: 'Bollettino'
+admin-communications-communication: 'Comunicazione generale'
+admin-communications-id: 'ID della comunicazione'
 admin-home: Prima Pagina
 admin-items: voci
 admin-mailing-back-to-list: 'Tornare a comunicazioni'
@@ -76,7 +96,10 @@ admin-projects: Progetti
 admin-consultants: 'Consiglieri'
 admin-invests: Contributi
 admin-filters: 'Filtri'
+admin-filters-edit: 'Editare filtro'
+admin-filters-create: 'Creare filtro'
 admin-remove-filters: 'Eliminare filtri'
+admin-remove-filters-forbidden: 'I filtri che sono stati utilizzati non si possono eliminare.'
 admin-remove-entry: 'Cancellare voce'
 admin-remove-entry-confirm: 'Sicuro di voler eliminare questa voce? Questa azione non può essere annullata!'
 admin-remove-entry-forbidden: 'Non si possono cancellare voci pubblicate di blog. Annulla la pubblicazione della voce prima.'
@@ -167,6 +190,7 @@ admin-view-user-mailing: 'Tutti gli invii'
 admin-role-change-forbidden: 'Non hai il permesso per gestire il ruolo %ROLE% in questo utente'
 admin-users-global-search: 'Id, nome, email o progetto'
 admin-blog-global-search: 'Id, titolo, sottotitolo o testo'
+admin-communication-global-search: 'Assunto'
 admin-blog-stories-search: 'Id, titolo, testo o progetto'
 admin-no-project: 'Nessun progetto'
 admin-title-id: Id
@@ -180,6 +204,7 @@ admin-title-header-image: Immagine di intestazione
 admin-title-password: Password
 admin-title-avatar: Avatar
 admin-title-roles: Ruoli
+admin-title-role: Ruolo
 admin-title-amount: Invertito
 admin-title-icon: Icona
 admin-title-info: Info
@@ -187,21 +212,47 @@ admin-title-image: Immagine
 admin-title-landing_match: Finanziamento di atterraggio
 admin-title-title: Titolo
 admin-title-subtitle: Sottotitolo
+admin-title-subject: Assunto
+admin-title-description: Descrizione
 admin-title-section: Sezione
 admin-title-text: Testo
 admin-title-slug: Slug
 admin-title-publish: Pubblicato
+admin-title-lang: Lingua
 admin-title-langs: Traduzioni
 admin-title-actions: Azioni
 admin-title-tags: Tag
 admin-title-deleted: Eliminato
 admin-title-sphere: Ambito
 admin-title-social_commitment: Impegno sociale
+admin-title-sdgs: 'Obbiettivi di sviluppo sostenibile'
 admin-title-footprints: 'Impronte'
 admin-title-categories: 'Categorie'
 admin-title-social_commitments: 'Compromessi sociali'
 admin-title-order: Ordinare
 admin-title-status: Stato
+admin-title-users: Utenti
+admin-title-city: Città
+admin-title-date: Data
+admin-title-blockquote: 'Appuntamento personalizzato'
+admin-title-type: 'Genere'
+admin-title-date-in: Data d'inizio
+admin-title-date-out: Data di fine
+admin-title-venue: Posto (visibile in chiamata all'azione)
+admin-title-venue-address: Direzione
+admin-title-how-to-get: '¿Come raggiungere?'
+admin-title-iframe: 'Iframe localizzazione'
+admin-title-schedule-file: 'Programma Url'
+admin-title-call: 'Annuncio di Matchfunding'
+admin-title-url-inscription: Collegamento a iscrizione
+admin-title-filter: Filtro
+admin-title-template: Modello
+admin-title-receivers: Destinatari
+admin-title-sent: Inviati
+admin-title-failed: Non inviati
+admin-title-pending: Orecchini
+admin-title-success: Uscite
+admin-title-percent: Percentuale
 admin-blog-not-published-yet: 'La voce del blog non è ancora pubblica'
 admin-blog-initialized: 'Ha inizializzato lo spazio del blog'
 admin-blog-deactivated: 'Spiacenti, la gestione del blog è disattivata'
@@ -408,3 +459,56 @@ admin-stats-projects-call-desc: 'Progetti che appartengono alla convocatoria'
 admin-stats-projects-matcher-desc: 'Progetti attivi nel matcher'
 admin-stats-projects-consultant-desc: 'Progetti che hanno assegnato questo consigliere'
 admin-stats-projects-project-desc: 'Contributi al progetto'
+admin-filter-add: 'Inserire filtro'
+admin-filter-last-week: 'Ultimi 7 giorni'
+admin-filter-last-month: 'Ultimi 30 giorni'
+admin-filter-last-year: 'Ultimi 365 giorni'
+admin-filter-from-new-year: 'Dal 1 di Gennaio'
+admin-filter-previous-year: 'Lo scorso anno'
+admin-filter-two-years-ago: 'Da due anni'
+admin-filter-typeofuser: 'Genere di utente'
+admin-filter-typeofdonor: 'Genere di donatore'
+admin-filter-user: 'Utente'
+admin-filter-donor: 'Donante'
+admin-filter-no-donor: 'Donatore inattivo'
+admin-filter-promoter: 'Promotore'
+admin-filter-matcher: 'Matcher'
+admin-filter-test: 'Test'
+admin-filter-type-unique: 'Unico'
+admin-filter-type-multidonor: 'Multidonatore'
+admin-filter-type-foundation-donor: 'Donatore alla fondazione'
+admin-filter-type-all: 'Tutti'
+admin-filter-predefined-date: 'Data prestabilita'
+admin-filter-predefined-date-choose: 'Puoi selezionare una data predefinita'
+admin-filter-forced: 'Forzare filtro'
+admin-filter-forced-help: 'Se selezioni questa opzione si applicheranno i filtri indipendentemente da quello che ha scelto l''utente come preferenza per l''invio dell''informazione per parte della piattaforma.'
+admin-mail-body: 'Corpo del messaggio'
+admin-stats-donations: 'Donazioni'
+admin-stats-donations-method: 'Donazioni secondo metodo di pagamento'
+admin-stats-donations-method-desc: 'Le donazioni includono il denaro che l''utente invia volontariamente alla fondazione quando apporta ad un progetto, le donaziono dirette o anche quando l''importo nel portamonete scade.'
+admin-stats-donations-tip: 'Donazioni durante apporti a progetti (Suggerimenti o "tips")'
+admin-stats-donations-direct: 'Donazioni dirette ( includono portamonete scaduti)'
+admin-stats-donations-generosity: 'Percentuale di generosità'
+admin-stats-donations-generosity-desc: 'Quantità di utenti con donazioni verso quantità totali. Solo se tengono in conto i progetti con donazioni.'
+admin-stats-donations-expired: 'Donazioni dirette dovute a portamonete scaduti'
+admin-stats-donations-refunded: 'Donazioni que si sono restituite dovute a progetti falliti'
+admin-donations: Donazioni
+admin-donations-tip: Mance
+admin-donations-tip-invests: Apporti con mance
+admin-donations-tip-users: Utenti con mancia
+admin-donations-direct: Donazioni dirette
+admin-donations-expired: Donazioni scadute
+admin-donations-refunded: Donazioni restituite
+admin-donations-amount-percent: '% denaro donato'
+admin-donations-users-percent: '% utenti donanti'
+admin-donations-tip-percent: '% denaro in mance'
+admin-donations-direct-percent: '% denado diretto'
+admin-workshop: Laboratori di Goteo
+admin-workshop-add: Creare un nuovo laboratorio
+admin-workshop-edit: Modificando il laboratorio %s
+admin-workshop-edit-success: L'entrata del laboratorio si è modificata correttamente
+admin-online: Online
+mandatory-filter-name: Manca nome
+mandatory-filter-description: Manca descrizione
+mandatory-filter-role: Manca un ruolo
+

@@ -6,6 +6,7 @@ blog-comments: Comentarios
 blog-main-header: 'Blogue de Goteo'
 calendar-calls-category: Convocatorias
 calendar-events-category: Eventos
+calendar-home-hour: a
 calendar-home-title: 'Vindeiro evento'
 calendar-net-category: 'Rede e política'
 calendar-projects-category: Proxectos
@@ -36,17 +37,23 @@ explain-project-progress: 'Este gráfico explica dun modo visual o nivel de dato
 fancybox: 'Texto fancybox'
 goteo-return-button: 'Volver a Goteo'
 guide-dashboard-user-access: 'Dende aquí podes modificar os datos cos que accedes a túa conta de Goteo.'
+guide-project-comment: guide-project-comment
 guide-project-contract-information: 'A información desde apartado é necesaria pra contactarte se obtés o financiamento requirida, e que así se poida efectuar o ingreso. No caso de entidades, recoméndase que quen represente á organización poida logo acreditalo formalmente (por exemplo a través dos estatutos ou dun certificado do secretario co visto bo do presidente, no caso de asociacións).'
 guide-project-rewards: "<strong>Neste apartado debes establecer qué ofrece o proxecto a cambio ós seus cofinancieiros.</strong>"
+guide-project-support: guide-project-support
 guide-project-supports: '<strong>Neste apartado podes especificar qué outras axudas, aparte da financiación, necesítanse para levar a cabo o proxecto.</strong><br><br> Poden ser tarefas ou accións a cargo de outras persoas (traducións, xestións, difusión, etc), ou ben préstamos específicos (de material, transporte, hardaware, etc).'
 header-about-side: 'O que nos move'
 home-posts-header: Novidades
+horizontal-project-percent: 'financiado'
 horizontal-project-reached: 'acadado'
 invest-individual-header: 'Podes renunciar a recibir recompensas pola túa achega, ou seleccionar as que igualen ou estean por debaixo do importe que inseriches.'
+login-accept-conditions: 'Acepto os <a href="/legal/terms">termos de uso</a>, <a href="/legal/privacy">política de privacidade</a> e a <a href="/legal/cookies">política de cookies</a>.'
 mandatory-cost-field-type: 'É obrigado poñer indicar o tipo de custo'
 mandatory-individual_reward-field-amount: 'É obrigado indicar o importe que permite obter a recompensa'
 mandatory-project-costs: 'Debe detallarse polo menos dous custos.'
 mandatory-register-field-email: 'Tes que indicar un email'
+mark-pending: 'Marcar coma pendente de traducir'
+node-menu-home: Nodo
 overview-field-about: 'Características básicas'
 overview-field-motivation: 'Motivación e a quen vai dirixido o proxecto'
 profile-about-header: 'Sobre mín'
@@ -55,14 +62,20 @@ project-messages-send_message-your_answer: 'Escribe aquí a túa resposta'
 project-messages-send_message_support-your_answer: 'Escribe aquí a túa mensaxe de colaboración para %s'
 regular-add: Novo rexistro
 regular-all: Todos
+regular-admin_board: 'Panel admin'
+regular-author: 'Autor/a'
 regular-allsome: 'todos/algúns de'
 regular-anonymous: Anónimo
 regular-ask: Preguntar
 regular-submit: Enviar
 regular-slug: Identificador único
+regular-by: 'Por:'
 regular-calendar: Calendario
 regular-cancel: Cancelar
 regular-cancel-back: 'Cancelar e volver atrás'
+regular-categories: 'Categorías'
+regular-social_commitments: 'Compromisos sociais'
+regular-footprints: 'Pegadas'
 regular-back: 'Volver atrás'
 regular-channel: Canle
 regular-collaborate: Colabora
@@ -74,6 +87,7 @@ regular-date: Data
 regular-date_in: Data de entrada
 regular-date_out: Data de saída
 regular-days: días
+regular-delete: Borrar
 regular-description: Descrición
 regular-discover: 'Atopa proxectos'
 regular-discard: 'Desbotar'
@@ -82,6 +96,7 @@ regular-download: Descargar
 regular-actions: Accións
 regular-edit: Editar
 regular-email: Correo electrónico
+regular-join: 'Únete'
 regular-facebook: Facebook
 regular-faq: 'Preguntas usuais'
 regular-female: Muller
@@ -111,12 +126,15 @@ regular-last: Derradeira
 regular-license: Licenza
 regular-linkedin: LinkedIn
 regular-loading: Cargando...
+regular-login: Accede
 regular-logout: 'Pechar sesión'
+regular-looks_for: 'pescuda:'
 regular-main-header: Goteo.org
 regular-male: Home
 regular-others: Outros
 regular-manage_board: 'Panel Xestoría'
 regular-mandatory: 'Campo obrigado!'
+regular-matchfunding: 'Matchfunding'
 regular-media_legend: Lenda
 regular-menu: Menú
 regular-menu-personal: Menú persoal
@@ -127,14 +145,18 @@ regular-months: meses
 regular-more_info: '+ info'
 regular-news: 'Novas:'
 regular-no: 'Non'
+regular-of: de
 regular-preview: Vista Previa
 regular-projects: proxectos
+regular-published_no: Borrador
 regular-published_yes: Publicado
 regular-read_more: 'Ler máis'
 regular-recent-activity: Actividade recente
 regular-recomended_by: 'Proxecto aconsellado por:'
+regular-review_board: 'Panel revisor'
 regular-round: 'ª rolda'
 regular-save: Gardar
+regular-schedule: Horario
 regular-search: Procurar
 regular-search-user: Procurar un usuario
 regular-search-desc: 'Escribe a túa procura aquí'
@@ -149,6 +171,7 @@ regular-share-rss: RSS/BLOGUE
 regular-share-twitter: 'Séguenos en Twitter'
 regular-share_this: 'Compartir en:'
 regular-sorry: 'Sentímolo'
+regular-spread: DIFUSIÓN
 regular-status: Estado
 regular-template: Modelo
 regular-thanks: Grazas
@@ -156,6 +179,7 @@ regular-title: Título
 regular-text: Texto
 regular-media: Vídeo (Youtube, Vimeo)
 regular-total: Total
+regular-donations: Doazóns (Sen incluír nas achegas)
 regular-translate: Traducir
 regular-translations: 'Traducións'
 regular-translate_board: 'Panel tradutor'
@@ -173,6 +197,23 @@ regular-images: Imaxes
 regular-load-more: 'Cargar máis'
 regular-analytics: 'Google Analytics'
 regular-facebook-pixel: 'Facebook Pixel'
+regular-call: Matchfunding
+regular-num-comments: '%s comentarios'
+regular-manage: 'Xestionar'
+regular-no-edit-permissions: Non tes permiso para editar esta entrada!
+regular-messages: Mensaxes
+regular-unknown: Descoñecido
+regular-input: Achega
+regular-amount: Importe
+regular-copied: 'Copiado ao portarretallos!'
+regular-remember-me: 'Lembrar os meus datos'
+regular-next: Seguinte
+regular-previous: Anterior
+session-about-to-expire: 'A túa sesión caducará en 10 minutos. Queres volver cargar a páxina para anovala?'
+session-expired: 'A túa sesión en goteo caducou!'
+stories-user-project: '%s, do proxecto: %s'
+support-our-mission: 'DOA Á FUNDACIÓN GOTEO'
+tooltip: 'Texto de axuda'
 tooltip-dashboard-user-access_data: 'Estes son os teus datos actuais de acceso. O único que non se pode cambiar é o login de usuario.'
 tooltip-dashboard-user-change_email: 'Dende aquí podes cambiar a dirección de correo electrónico na que recibes as mensaxes de Goteo.'
 tooltip-dashboard-user-change_password: 'Dende aquí podes cambiar o contrasinal co que accedes a Goteo.'
@@ -185,6 +226,10 @@ tooltip-project-schedule: 'Visualización de como queda a axenda de produción. 
 translate-home-guide: 'Mensaxe para o tradutor'
 user-account-inactive: 'A conta está desactivada. Debes recuperar o teu contrasinal para activala de novo'
 user-activate-fail: 'Error ó activar a conta do usuario'
+user-changeemail-invalid-token: 'Esta acción caducou ou ben foi executada con anterioridade'
 user-changeemail-fail: 'Erro ó cambiar o email'
 user-register-success: 'O usuario rexistrouse correctamente. Seguidamente recibirás unha mensaxe de correo para activalo.'
 validate-project-social_rewards: 'É obrigado indicar coma mínimo un retorno colectivo'
+validate-project-total-costs: "O custo óptimo non pode exceder en máis dun 50% o custo mínimo. Ou sobes os custos imprescindibles ou baixas os custos adicionais."
+user-promoter: 'O usuario promotor'
+newsletter-donate-description: 'Para que poidamos continuar axudando a que máis e máis iniciativas cívicas sexan unha realidade'

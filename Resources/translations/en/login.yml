@@ -13,6 +13,7 @@ login-new-user-label: 'New user?'
 login-oneclick-header: 'Log in with a single click'
 login-recover-button: Recover
 login-recover-email-field: 'Email or user name'
+login-recover-header: "Fill in the field with the email you used to register on the platform. This is usually the same email you have linked to your social networks. Attention: You'll receive an email in the same email with a link to change your password. If you don't receive  an email, check your spam folder. If you have requested a new password multiple times, you will receive a new email each time with a new auto-generated link. Use the link from the last email you received. If you don't remember your email, you can contact us. Don't forget to mention some information about yourself (such as your full name, the date you signed up, if you made a contribution to a specific project, etc.)."
 login-recover-label: 'Forgot your password?'
 login-recover-link: 'Recover password'
 login-recover-modal-button: Send
@@ -41,6 +42,7 @@ login-signin-yahoo: 'Log in with Yahoo'
 login-title: 'Log in'
 oauth-confirm-user: 'Connect with existing user'
 oauth-facebook-access-denied: 'Facebook access denied'
+oauth-goteo-openid-sync-password: 'You''re trying to link an existing Goteo account with an external provider. In the future, you''ll be able to sign in with a single click<br>This time, you''ll need to enter your Goteo account password to confirm your identity.'
 oauth-goteo-user-not-exists: 'That user does not exist in Goteo'
 oauth-goteo-user-password-error: 'This account already uses a different password-free login provider. If you want to use more than one login provider for this account, you need to establish a password first.'
 oauth-goteo-user-password-exists: 'That user already exists in Goteo'

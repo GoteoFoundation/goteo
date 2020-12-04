@@ -22,6 +22,7 @@ dashboard-certificates-details-desc: 'Elenco di contributi per il certificato %C
 dashboard-certificates-download: 'Conferma e scarica'
 dashboard-certificates-empty: 'È necessario dare un contributo a un progetto o ricaricare il portafoglio virtuale per la visualizzazione dei certificati'
 dashboard-certificates-expired: Scaduto
+dashboard-certificates-expired-description: 'Ha ispirato il termine per confermare il tuo certificato'
 dashboard-certificates-no-pending: 'Non c''è nessun contributo in attesa'
 dashboard-certificates-pending: In attesa
 dashboard-certificates-pending-desc: 'Questi sono i contributi che verranno inclusi nei certificati futuri.'
@@ -286,3 +287,5 @@ dashboard-origin-invests-referer: 'Origine delle visite nei contributi di succes
 dashboard-origin-project-device: 'Dispositivo utilizzato nella pagina del progetto'
 dashboard-origin-invests-device: 'Dispositivo utilizzato nei contributi di successo'
 dashboard-origin-disclaimer: '⚠ *Questi dati sono orientativi e non includono la totalità delle visite a causa di limiti tecnici.*  > Ti suggeriamo di configurare Google Analytics o Facebook Pixel per ottenere dati più dettagliati'
+dashboard-project-integration-token: 'Token'
+dashboard-project-integration-link: 'Collegamento'
