@@ -307,7 +307,7 @@ admin-aggregate-invests-desc: 'Sum of contributions per unit of time'
 admin-aggregate-invests-average: 'Average contributions'
 admin-aggregate-invests-average-desc: 'Average contributions per unit of time'
 admin-aggregate-projects: 'Total raised in projects'
-admin-aggretate-projects-format: '%CURRENCY%%VALUE% (%TOTAL% projects')
+admin-aggretate-projects-format: '%CURRENCY%%VALUE% (%TOTAL% projects)'
 admin-aggregate-projects-desc: 'Sum of contributions per unit of time'
 admin-aggregate-projects-average: 'Average collection in projects'
 admin-aggregate-projects-average-desc: 'Average collection per unit of time'
