@@ -130,7 +130,7 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
         if($amount = $this->getAmount($error)) {
 
             // Check if there's enough total to extract from user's pool
-            if($matcher->getTotalAmount() < $amount) {
+            if($matcher->getAvailableAmount() < $amount) {
                 throw new MatcherProcessorException("Not enough amount to match");
             }
 

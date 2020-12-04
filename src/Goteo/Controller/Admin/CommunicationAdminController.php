@@ -260,7 +260,8 @@ class CommunicationAdminController extends AbstractAdminController
                 'translations' => $translates,
                 'data' => $communication,
                 'translator' => $translator,
-                'variables' => Communication::variables()
+                'variables' => Communication::variables(),
+                'copy' => false
             ]);
         }
 
@@ -313,6 +314,7 @@ class CommunicationAdminController extends AbstractAdminController
             'variables' => Communication::variables(),
             'data' => $communication,
             'translator' => $translator,
+            'copy' => true
         ]);
     }
 

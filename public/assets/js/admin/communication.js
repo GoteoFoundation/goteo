@@ -28,11 +28,11 @@ $(function () {
     if ($('.autoform').length) {
 
         if (document.getElementById('filter-select').value > 0) {
-            document.getElementById('filter-edit').href = "filter/edit/" + document.getElementById('filter-select').value;
+            document.getElementById('filter-edit').href = "/admin/filter/edit/" + document.getElementById('filter-select').value;
         }
     
         document.getElementById('filter-select').onchange = function(){
-            document.getElementById('filter-edit').href = "filter/edit/" + this.value;
+            document.getElementById('filter-edit').href = "/admin/filter/edit/" + this.value;
             
         }
     

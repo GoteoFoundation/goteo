@@ -26,6 +26,10 @@ class NodeSponsor extends \Goteo\Core\Model {
     $order;
 
 
+    public static function getLangFields() {
+        return ['label'];
+    }
+
     /**
      * Get data about node Sponsor
      *

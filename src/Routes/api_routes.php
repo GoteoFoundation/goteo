@@ -71,6 +71,12 @@ $api->add('api-geoloc-locate', new Route(
 
 
 // Blog
+$api->add('api-blog-posts', new Route(
+    '/blog/posts',
+    array('_controller' => 'Goteo\Controller\Api\BlogApiController::postsAction',
+        )
+));
+
 // Tags list
 $api->add('api-blog-tags', new Route(
     '/blog/tags',
@@ -117,6 +123,12 @@ $api->add('api-blog-post-property', new Route(
         )
 ));
 
+$api->add('api-stories', new Route(
+    '/stories',
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesAction',
+        )
+));
+
 // Stories property individual updates
 $api->add('api-stories-property', new Route(
     '/stories/{id}/property/{prop}',
@@ -138,6 +150,22 @@ $api->add('api-stories-images-upload', new Route(
     '', // host
     array(), // schemes
     array('POST') // methods
+));
+
+// Node Stories
+// Stories sort up/down arbitrarily (use the PUT method to sort)
+$api->add('api-channelstory-sort', new Route(
+    '/channelstories/{node_id}/{stories_id}/sort',
+    array('_controller' => 'Goteo\Controller\Api\ChannelStoriesApiController::nodestoriesSortAction'
+        )
+));
+
+// Node Posts
+// Post sort up/down arbitrarily (use the PUT method to sort)
+$api->add('api-channelpost-sort', new Route(
+    '/channelposts/{node_id}/{post_id}/sort',
+    array('_controller' => 'Goteo\Controller\Api\ChannelPostsApiController::channelpostsSortAction'
+        )
 ));
 
 //Promote
@@ -284,6 +312,11 @@ $api->add('api-channels', new Route(
         )
 ));
 
+$api->add('api-channels-images', new Route(
+    '/channels/images',
+    array('_controller' => 'Goteo\Controller\Api\ChannelsApiController::uploadImagesAction')
+));
+
 // Licenses list
 $api->add('api-licenses', new Route(
     '/licenses',
@@ -418,6 +451,17 @@ $api->add('api-matcher-list', new Route(
     array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matchersAction')
 ));
 
+// Matcher images upload (POST method only)
+$api->add('api-matchers-images-upload', new Route(
+    '/matchers/images',
+    array('_controller' => 'Goteo\Controller\Api\MatchersApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 // Matcher detail
 $api->add('api-matcher-item', new Route(
     '/matchers/{mid}',
@@ -434,4 +478,28 @@ $api->add('api-workshops-images-upload', new Route(
     array(), // schemes
     array('POST') // methods
 ));
+
+// Workshops images upload (POST method only)
+$api->add('api-channel-resources-images-upload', new Route(
+    '/channel-resources/images',
+    array('_controller' => 'Goteo\Controller\Api\ChannelResourcesApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+// User images upload (POST method only)
+$api->add('api-questionnaire-documents-upload', new Route(
+    '/questionnaire/documents',
+    array('_controller' => 'Goteo\Controller\Api\QuestionnaireApiController::questionnaireUploadDocumentsAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+
+
 return $api;

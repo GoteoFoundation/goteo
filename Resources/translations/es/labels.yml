@@ -174,3 +174,11 @@ worth-lb-edit: 'Editando Nivel'
 worth-lb-list: Listando
 stats-lb: Stats & data
 stories-lb: 'Historias de usuario'
+channelstory-lb: 'Historias en canales'
+channelresource-lb: 'Recursos'
+channelposts-lb: 'Posts en canales'
+channelcriteria-lb: 'Cuestionarios en canales'
+channelprogram-lb: 'Programas de los canales'
+channelsection-lb: 'Secciones de los canales'
+certificate-lb: 'Certificados'
+certificatemanagement-lb: 'Gestión de certificados'

@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Route;
 
 class Config {
     // Initial translation groups (groupped in yml files into Resources/translations/)
-    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate', 'poster'];
+    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate', 'questionnaire', 'poster', 'channel_call', 'map'];
 	static protected $loader;
     static protected $config;
 
@@ -98,6 +98,18 @@ class Config {
             \Goteo\Controller\TranslateController::addTranslateModel('criteria');
 			\Goteo\Controller\TranslateController::addTranslateModel('sphere');
 			\Goteo\Controller\TranslateController::addTranslateModel('communication');
+			\Goteo\Controller\TranslateController::addTranslateModel('call_to_action');
+			\Goteo\Controller\TranslateController::addTranslateModel('node');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_program');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_faq');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_faq_question');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_faq_download');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_sponsor');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_team');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_resource');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_resource_category');
+			\Goteo\Controller\TranslateController::addTranslateModel('image_credits');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_sections');
 			
 			// sets up the rest...
 			self::setDirConfiguration();
@@ -116,7 +128,7 @@ class Config {
 			}
 
             \Goteo\Application\View::setTheme('responsive');
-			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
+			// die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
 			return;
 		}
 	}
@@ -244,7 +256,14 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesSubController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SocialCommitmentSubController');
-        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SphereSubController');
+		// \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SphereSubController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelStoryAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelResourceAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelPostsAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelCriteriaAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelProgramAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelSectionAdminController');
+
 
 
 		// Adding Pool (internal credit) payment method
@@ -289,6 +308,7 @@ class Config {
         //
         // App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\ExpressionLanguageProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor');
+        App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\CriteriaInvestMatcherProcessor');
 
 		//Cache dir in libs
 		\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);

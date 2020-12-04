@@ -14,6 +14,9 @@ namespace Goteo\Model;
 use Goteo\Library\Text;
 use Goteo\Application\Message;
 use Goteo\Model\User;
+use Goteo\Model\User\UserLocation;
+use Goteo\Model\User\DonorLocation;
+use Goteo\Model\Filter\FilterLocation;
 use Goteo\Application\Exception\ModelNotFoundException;
 use DateTime;
 
@@ -42,17 +45,26 @@ class Filter extends \Goteo\Core\Model {
         $role,
         $startdate,
         $enddate,
-        $status,
+        $project_status,
+        $invest_status,
         $typeofdonor,
         $foundationdonor,
         $wallet,
-        $project_latitude,
-        $project_longitude,
-        $project_radius,
-        $project_location,
+        $filter_location,
+        // $project_latitude,
+        // $project_longitude,
+        // $project_radius,
+        // $project_location,
+        // $donor_latitude,
+        // $donor_longitude,
+        // $donor_radius,
+        // $donor_location,
         $projects = [],
         $calls = [],
+        $channels = [],
         $matchers = [],
+        $sdgs = [],
+        $footprints = [],
         $forced;
 
     static public function get($id) {
@@ -63,8 +75,10 @@ class Filter extends \Goteo\Core\Model {
             throw new ModelNotFoundException("[$id] not found");
         }
 
+        $filter->filter_location = FilterLocation::get($id);
         $filter->projects = self::getFilterProject($id);
         $filter->calls = self::getFilterCall($id);
+        $filter->channels = self::getFilterNode($id);
         $filter->matchers = self::getFilterMatcher($id);
         $filter->sdgs = self::getFilterSDG($id);
         $filter->footprints = self::getFilterFootprint($id);
@@ -131,6 +145,22 @@ class Filter extends \Goteo\Core\Model {
 
         return $filter_calls;
     }
+
+    static public function getFilterNode ($filter){
+        $query = static::query('SELECT `node` FROM filter_node WHERE filter = ?', $filter);
+        $nodes = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+        $filter_nodes = [];
+
+        foreach($nodes as $node) {
+            foreach($node as $key => $value) {
+                $node = Node::getMini($value);
+                $filter_nodes[$value] = $node->name;
+            }
+        }
+
+        return $filter_nodes;
+    }
     
     static public function getFilterMatcher ($filter){
         $query = static::query('SELECT `matcher` FROM filter_matcher WHERE filter = ?', $filter);
@@ -148,7 +178,7 @@ class Filter extends \Goteo\Core\Model {
         return $filter_matchers;
     }
 
-    static public function getFiltersdg ($filter){
+    static public function getFilterSDG ($filter){
         $query = static::query('SELECT `sdg` FROM filter_sdg WHERE filter = ?', $filter);
         $sdgs = $query->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -164,7 +194,7 @@ class Filter extends \Goteo\Core\Model {
         return $filter_sdgs;
     }
 
-    static public function getFilterfootprint ($filter){
+    static public function getFilterFootprint ($filter){
         $query = static::query('SELECT `footprint` FROM filter_footprint WHERE filter = ?', $filter);
         $footprints = $query->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -220,6 +250,29 @@ class Filter extends \Goteo\Core\Model {
             }
             catch (\PDOException $e) {
                 Message::error("Error saving filter call " . $e->getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function setFilterNodes(){
+        $values = Array(':filter' => $this->id, ':node' => '');
+        
+        try {
+            $query = static::query('DELETE FROM filter_node WHERE filter = :filter', Array(':filter' => $this->id));
+        }
+        catch (\PDOException $e) {
+            Message::error("Error deleting previous filter nodes for filter " . $this->id . " " . $e->getMessage());
+        }
+
+        foreach($this->channels as $key => $value) {
+            $values[':node'] = $value;
+            try {
+                $query = static::query('INSERT INTO filter_node(`filter`, `node`) VALUES(:filter,:node)', $values);
+            }
+            catch (\PDOException $e) {
+                Message::error("Error saving filter node " . $e->getMessage());
                 return false;
             }
         }
@@ -320,14 +373,20 @@ class Filter extends \Goteo\Core\Model {
             'role',
             'startdate',
             'enddate',
-            'status',                    
+            'project_status',
+            'invest_status',                  
             'typeofdonor',
             'foundationdonor',
             'wallet',
-            'project_latitude',
-            'project_longitude',
-            'project_radius',
-            'project_location',
+            'filter_location',
+            // 'project_latitude',
+            // 'project_longitude',
+            // 'project_radius',
+            // 'project_location',
+            // 'donor_latitude',
+            // 'donor_longitude',
+            // 'donor_radius',
+            // 'donor_location',
             'forced'
         );
         
@@ -340,9 +399,21 @@ class Filter extends \Goteo\Core\Model {
 
             $this->setFilterProjects();
             $this->setFilterCalls();
+            $this->setFilterNodes();
             $this->setFilterMatcher();
             $this->setFilterSDG();
             $this->setFilterFootprint();
+            
+            if($this->filter_location instanceOf FilterLocation) {
+                $this->filter_location->id = $this->id;
+                if($this->filter_location->save($errors)) {
+                    $this->filter_location = $this->filter_location->location ? $this->filter_location->location : $this->filter_location->name;
+                } else {
+                    $fail = true;
+                    unset($this->filter_location);
+                }
+
+            }
 
         } catch(\PDOException $e) {
             print("exception");
@@ -382,6 +453,30 @@ class Filter extends \Goteo\Core\Model {
         $sqlFields  = '';
         $sqlInner  = '';
         $sqlFilter = '';
+
+        if ($this->filter_location) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new UserLocation($loc);
+            $loc->location = $this->donor_location;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
+            $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
+
+
+            // $sqlInner .= " INNER JOIN user
+            // ON user.user = user.id ";
+
+            $sqlInner .= " INNER JOIN user_location
+                            ON user_location.id = user.id ";
+            $location_parts = UserLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'user.location');
+            $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
+            $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
+            $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
+            $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
+            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
+            // $values = array_merge($values, $location_parts['params']);
+        }
 
         if (isset($lang)) {
             $parts = [];
@@ -439,6 +534,30 @@ class Filter extends \Goteo\Core\Model {
         $sqlInner  = '';
         $sqlFilter = '';
 
+        if ($this->filter_location) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new UserLocation($loc);
+            $loc->location = $this->donor_location;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
+            $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
+
+
+            // $sqlInner .= " INNER JOIN user
+            // ON user.user = user.id ";
+
+            $sqlInner .= " INNER JOIN user_location
+                            ON user_location.id = user.id ";
+            $location_parts = UserLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'user.location');
+            $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
+            $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
+            $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
+            $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
+            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
+            // $values = array_merge($values, $location_parts['params']);
+        }
+
         if (isset($lang)) {
             $parts = [];
             $sqlFilter .= " AND user.lang ";
@@ -481,6 +600,9 @@ class Filter extends \Goteo\Core\Model {
         $sqlFilter = '';
 
         $investStatus = Invest::$RAISED_STATUSES;
+        if ($this->invest_status) {
+            $investStatus = [$this->invest_status];
+        }
 
         if (isset($this->foundationdonor)) {
             $sqlFilter .= " AND user.id ";
@@ -496,6 +618,7 @@ class Filter extends \Goteo\Core\Model {
         
         $this->projects = $this->getFilterProject($this->id);
         $this->calls = $this->getFilterCall($this->id);
+        $this->channels = $this->getFilterNode($this->id);
         $this->matchers = $this->getFilterMatcher($this->id);
 
 
@@ -517,6 +640,20 @@ class Filter extends \Goteo\Core\Model {
 
         }
 
+        if (!empty($this->channels)) {
+            $sqlInner .= "LEFT JOIN node_project
+                ON node_project.project_id = invest.project
+            INNER JOIN project
+                ON project.id = invest.project
+            ";
+            $parts = [];
+            foreach(array_keys($this->channels) as $index => $id) {
+                $parts[] = ':nodes_' . $index;
+                $values[':nodes_' . $index] = $id;
+            }
+            if($parts) $sqlInner .= " AND ( node_project.node_id IN (" . implode(',', $parts) . ") OR  project.node IN (" . implode(',', $parts) . ") ) ";
+        }
+
 
         if (!empty($this->matchers)) {
 
@@ -532,17 +669,17 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlInner .= " AND matcher_project.matcher_id IN (" . implode(',', $parts) . ") ";
         }
 
-        if (isset($this->status) && $this->status > -1 && !empty($sqlInner)) { 
-            $sqlInner .= "INNER JOIN project ON project.id = invest.project AND project.status = :status ";
-            $values[':status'] = $this->status;
+        if (isset($this->project_status) && $this->project_status > -1 && !empty($sqlInner)) { 
+            $sqlInner .= "INNER JOIN project ON project.id = invest.project AND project.status = :project_status ";
+            $values[':project_status'] = $this->project_status;
         }
 
         $sqlInner .= "WHERE  invest.status IN ";
         
         $parts = [];
         foreach($investStatus as $index => $status) {
-            $parts[] = ':status' . $index;
-            $values[':status' . $index] = $status;
+            $parts[] = ':invest_status' . $index;
+            $values[':invest_status' . $index] = $status;
         }
         $sqlInner .= " (" . implode(',', $parts) . ") ";
 
@@ -560,8 +697,8 @@ class Filter extends \Goteo\Core\Model {
             $sqlInner .= " AND  invest.status IN ";
             $parts = [];
             foreach($investStatus as $index => $status) {
-                $parts[] = ':status_' . $index;
-                $values[':status_' . $index] = $status;
+                $parts[] = ':invest_status_' . $index;
+                $values[':invest_status_' . $index] = $status;
             }
             $sqlInner .= " (" . implode(',', $parts) . ") ";
     
@@ -579,8 +716,8 @@ class Filter extends \Goteo\Core\Model {
                          AND  invest.status IN ";
             $parts = [];
             foreach($investStatus as $index => $status) {
-                $parts[] = ':status_' . $index;
-                $values[':status_' . $index] = $status;
+                $parts[] = ':invest_status_' . $index;
+                $values[':invest_status_' . $index] = $status;
             }
             $sqlInner .= " (" . implode(',', $parts) . ") ";
     
@@ -642,6 +779,30 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ") ";
         }
 
+        if ($this->filter_location) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new DonorLocation($loc);
+            $loc->location = $this->donor_location;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
+            $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
+
+
+            $sqlInner .= " INNER JOIN donor
+            ON donor.user = user.id ";
+
+            $sqlInner .= " INNER JOIN donor_location
+                            ON donor_location.id = donor.id ";
+            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor.location');
+            $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
+            $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
+            $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
+            $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
+            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
+            // $values = array_merge($values, $location_parts['params']);
+        }
+
         $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         if($count) {
             $sql = "SELECT COUNT(user.id)
@@ -691,6 +852,9 @@ class Filter extends \Goteo\Core\Model {
         $values[':prefix'] = $prefix;
 
         $investStatus = Invest::$RAISED_STATUSES;
+        if ($this->invest_status) {
+            $investStatus = [$this->invest_status];
+        }
 
         if (isset($this->foundationdonor)) {
             $sqlFilter .= " AND user.id ";
@@ -706,6 +870,7 @@ class Filter extends \Goteo\Core\Model {
         
         $this->projects = $this->getFilterProject($this->id);
         $this->calls = $this->getFilterCall($this->id);
+        $this->channels = $this->getFilterNode($this->id);
         $this->matchers = $this->getFilterMatcher($this->id);
 
 
@@ -727,6 +892,20 @@ class Filter extends \Goteo\Core\Model {
 
         }
 
+        if (!empty($this->channels)) {
+            $sqlInner .= "LEFT JOIN node_project
+                ON node_project.project_id = invest.project
+            INNER JOIN project
+                ON project.id = invest.project
+            ";
+            $parts = [];
+            foreach(array_keys($this->channels) as $index => $id) {
+                $parts[] = ':nodes_' . $index;
+                $values[':nodes_' . $index] = $id;
+            }
+            if($parts) $sqlInner .= " AND ( node_project.node_id IN (" . implode(',', $parts) . ") OR  project.node IN (" . implode(',', $parts) . ") ) ";
+        }
+
 
         if (!empty($this->matchers)) {
 
@@ -742,17 +921,17 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlInner .= " AND matcher_project.matcher_id IN (" . implode(',', $parts) . ") ";
         }
 
-        if (isset($this->status) && $this->status > -1 && !empty($sqlInner)) { 
-            $sqlInner .= "INNER JOIN project ON project.id = invest.project AND project.status = :status ";
-            $values[':status'] = $this->status;
+        if (isset($this->project_status) && $this->project_status > -1 && !empty($sqlInner)) { 
+            $sqlInner .= "INNER JOIN project ON project.id = invest.project AND project.status = :project_status ";
+            $values[':project_status'] = $this->project_status;
         }
 
         $sqlInner .= "WHERE  invest.status IN ";
         
         $parts = [];
         foreach($investStatus as $index => $status) {
-            $parts[] = ':status' . $index;
-            $values[':status' . $index] = $status;
+            $parts[] = ':invest_status' . $index;
+            $values[':invest_status' . $index] = $status;
         }
         $sqlInner .= " (" . implode(',', $parts) . ") ";
 
@@ -770,8 +949,8 @@ class Filter extends \Goteo\Core\Model {
             $sqlInner .= " AND  invest.status IN ";
             $parts = [];
             foreach($investStatus as $index => $status) {
-                $parts[] = ':status_' . $index;
-                $values[':status_' . $index] = $status;
+                $parts[] = ':invest_status_' . $index;
+                $values[':invest_status_' . $index] = $status;
             }
             $sqlInner .= " (" . implode(',', $parts) . ") ";
     
@@ -789,8 +968,8 @@ class Filter extends \Goteo\Core\Model {
                          AND  invest.status IN ";
             $parts = [];
             foreach($investStatus as $index => $status) {
-                $parts[] = ':status_' . $index;
-                $values[':status_' . $index] = $status;
+                $parts[] = ':invest_status_' . $index;
+                $values[':invest_status_' . $index] = $status;
             }
             $sqlInner .= " (" . implode(',', $parts) . ") ";
     
@@ -852,6 +1031,30 @@ class Filter extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ") ";
         }
 
+        if ($this->filter_location) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new DonorLocation($loc);
+            $loc->location = $this->donor_location;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
+            $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
+
+
+            $sqlInner .= " INNER JOIN donor
+            ON donor.user = user.id ";
+
+            $sqlInner .= " INNER JOIN donor_location
+                            ON donor_location.id = donor.id ";
+            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor.location');
+            $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
+            $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
+            $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
+            $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
+            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
+            // $values = array_merge($values, $location_parts['params']);
+        }
+
         $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         $sql = "SELECT
                     :prefix,
@@ -883,6 +1086,9 @@ class Filter extends \Goteo\Core\Model {
         $sqlFilter = '';
 
         $investStatus = Invest::$RAISED_STATUSES_AND_DONATED;
+        if ($this->invest_status) {
+            $investStatus = [$this->invest_status];
+        }
 
         $sqlFilter .= " AND user.id NOT IN (
             SELECT invest.user
@@ -891,8 +1097,8 @@ class Filter extends \Goteo\Core\Model {
 
         $parts = [];
         foreach($investStatus as $index => $status) {
-                $parts[] = ':status' . $index;
-                $values[':status' . $index] = $status;
+                $parts[] = ':invest_status' . $index;
+                $values[':invest_status' . $index] = $status;
             }
         $sqlFilter .= " (" . implode(',', $parts) . ") ";
             
@@ -922,8 +1128,8 @@ class Filter extends \Goteo\Core\Model {
 
             $parts = [];
             foreach([Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL] as $index => $status) {
-                    $parts[] = ':status' . $index;
-                    $values[':status' . $index] = $status;
+                    $parts[] = ':invest_status' . $index;
+                    $values[':invest_status' . $index] = $status;
                 }
             $sqlFilter .= " (" . implode(',', $parts) . ") ";
 
@@ -945,8 +1151,8 @@ class Filter extends \Goteo\Core\Model {
 
             $parts = [];
             foreach([Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL] as $index => $status) {
-                    $parts[] = ':status' . $index;
-                    $values[':status' . $index] = $status;
+                    $parts[] = ':invest_status' . $index;
+                    $values[':invest_status' . $index] = $status;
                 }
             $sqlFilter .= " (" . implode(',', $parts) . ") ";
 
@@ -986,6 +1192,30 @@ class Filter extends \Goteo\Core\Model {
                 i.status= :status_donated
                 )";
             $values[':status_donated'] = Invest::STATUS_DONATED;
+        }
+
+        if ($this->filter_location) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new DonorLocation($loc);
+            $loc->location = $this->donor_location;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
+            $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
+
+
+            $sqlInner .= " INNER JOIN donor
+            ON donor.user = user.id ";
+
+            $sqlInner .= " INNER JOIN donor_location
+                            ON donor_location.id = donor.id ";
+            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor.location');
+            $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
+            $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
+            $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
+            $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
+            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
+            // $values = array_merge($values, $location_parts['params']);
         }
         
         $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
@@ -1035,6 +1265,9 @@ class Filter extends \Goteo\Core\Model {
         $values[':prefix'] = $prefix;
 
         $investStatus = Invest::$RAISED_STATUSES_AND_DONATED;
+        if ($this->invest_status) {
+            $investStatus = [$this->invest_status];
+        }
 
         $sqlFilter .= " AND user.id NOT IN (
             SELECT invest.user
@@ -1043,8 +1276,8 @@ class Filter extends \Goteo\Core\Model {
 
         $parts = [];
         foreach($investStatus as $index => $status) {
-                $parts[] = ':status' . $index;
-                $values[':status' . $index] = $status;
+                $parts[] = ':invest_status' . $index;
+                $values[':invest_status' . $index] = $status;
             }
         $sqlFilter .= " (" . implode(',', $parts) . ") ";
             
@@ -1074,8 +1307,8 @@ class Filter extends \Goteo\Core\Model {
 
             $parts = [];
             foreach([Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL] as $index => $status) {
-                    $parts[] = ':status' . $index;
-                    $values[':status' . $index] = $status;
+                    $parts[] = ':invest_status' . $index;
+                    $values[':invest_status' . $index] = $status;
                 }
             $sqlFilter .= " (" . implode(',', $parts) . ") ";
 
@@ -1097,8 +1330,8 @@ class Filter extends \Goteo\Core\Model {
 
             $parts = [];
             foreach([Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL] as $index => $status) {
-                    $parts[] = ':status' . $index;
-                    $values[':status' . $index] = $status;
+                    $parts[] = ':invest_status' . $index;
+                    $values[':invest_status' . $index] = $status;
                 }
             $sqlFilter .= " (" . implode(',', $parts) . ") ";
 
@@ -1139,6 +1372,30 @@ class Filter extends \Goteo\Core\Model {
                 )";
             $values[':status_donated'] = Invest::STATUS_DONATED;
         }
+
+        if ($this->filter_location) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new DonorLocation($loc);
+            $loc->location = $this->donor_location;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
+            $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
+
+
+            $sqlInner .= " INNER JOIN donor
+            ON donor.user = user.id ";
+
+            $sqlInner .= " INNER JOIN donor_location
+                            ON donor_location.id = donor.id ";
+            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor.location');
+            $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
+            $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
+            $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
+            $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
+            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
+            // $values = array_merge($values, $location_parts['params']);
+        }
         
         $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
         $sql = "SELECT
@@ -1174,15 +1431,16 @@ class Filter extends \Goteo\Core\Model {
             ON project.owner = user.id
         ";
 
-        if (isset($this->status) && $this->status > -1) {
+        if (isset($this->project_status) && $this->project_status > -1) {
             $sqlFilter .= "
-                AND project.status = :status
+                AND project.status = :project_status
                 ";
-            $values[':status'] = $this->status;
+            $values[':project_status'] = $this->project_status;
         }
 
         $this->projects = $this->getFilterProject($this->id);
         $this->calls = $this->getFilterCall($this->id);
+        $this->channels = $this->getFilterNode($this->id);
         $this->matchers = $this->getFilterMatcher($this->id);
 
         if (!empty($this->projects)) {
@@ -1212,6 +1470,18 @@ class Filter extends \Goteo\Core\Model {
                 $values[':call_'.$index] = $id;
             }
             $sqlFilter .= ") ";
+        }
+
+        if (!empty($this->channels)) {
+            $sqlInner .= "LEFT JOIN node_project
+                on node_project.project_id = project.id
+            ";
+
+            foreach(array_keys($this->channels) as $index => $id) {
+                $parts[] = ':nodes_' . $index;
+                $values[':nodes_' . $index] = $id;
+            }
+            if($parts) $sqlFilter .= " AND ( node_project.node_id IN (" . implode(',', $parts) . ") OR  project.node IN (" . implode(',', $parts) . ") ) ";
         }
 
         if (!empty($this->matchers)) {
@@ -1255,6 +1525,30 @@ class Filter extends \Goteo\Core\Model {
                 $values[':lang' . $key] = $value;
             }
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
+        }
+
+        if ($this->filter_location) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new UserLocation($loc);
+            $loc->location = $this->donor_location;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
+            $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
+
+
+            // $sqlInner .= " INNER JOIN user
+            // ON user.user = user.id ";
+
+            $sqlInner .= " INNER JOIN user_location
+                            ON user_location.id = user.id ";
+            $location_parts = UserLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'user.location');
+            $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
+            $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
+            $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
+            $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
+            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
+            // $values = array_merge($values, $location_parts['params']);
         }
 
         $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
@@ -1310,15 +1604,16 @@ class Filter extends \Goteo\Core\Model {
             ON project.owner = user.id
         ";
 
-        if (isset($this->status) && $this->status > -1) {
+        if (isset($this->project_status) && $this->project_status > -1) {
             $sqlFilter .= "
-                AND project.status = :status
+                AND project.status = :project_status
                 ";
-            $values[':status'] = $this->status;
+            $values[':project_status'] = $this->project_status;
         }
 
         $this->projects = $this->getFilterProject($this->id);
         $this->calls = $this->getFilterCall($this->id);
+        $this->channels = $this->getFilterNode($this->id);
         $this->matchers = $this->getFilterMatcher($this->id);
 
         if (!empty($this->projects)) {
@@ -1348,6 +1643,18 @@ class Filter extends \Goteo\Core\Model {
                 $values[':call_'.$index] = $id;
             }
             $sqlFilter .= ") ";
+        }
+
+        if (!empty($this->channels)) {
+            $sqlInner .= "LEFT JOIN node_project
+                on node_project.project_id = project.id
+            ";
+
+            foreach(array_keys($this->channels) as $index => $id) {
+                $parts[] = ':nodes_' . $index;
+                $values[':nodes_' . $index] = $id;
+            }
+            if($parts) $sqlFilter .= " AND ( node_project.node_id IN (" . implode(',', $parts) . ") OR  project.node IN (" . implode(',', $parts) . ") ) ";
         }
 
         if (!empty($this->matchers)) {
@@ -1391,6 +1698,30 @@ class Filter extends \Goteo\Core\Model {
                 $values[':lang' . $key] = $value;
             }
             if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ")";
+        }
+
+        if ($this->filter_location) {
+            $loc = FilterLocation::get($this->id);
+            $loc = new UserLocation($loc);
+            $loc->location = $this->donor_location;
+            // $loc->latitude = $this->donor_latitude;
+            // $loc->longitude = $this->donor_longitude;
+            $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
+
+
+            $sqlInner .= " INNER JOIN user
+            ON user.user = user.id ";
+
+            $sqlInner .= " INNER JOIN user_location
+                            ON user_location.id = user.id ";
+            $location_parts = UserLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'user.location');
+            $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
+            $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
+            $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
+            $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
+            $values[":location_text"] = $location_parts['params'][':location_text'];
+            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
+            // $values = array_merge($values, $location_parts['params']);
         }
 
         $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;

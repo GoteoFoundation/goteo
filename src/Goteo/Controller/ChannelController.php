@@ -17,6 +17,11 @@ use Goteo\Application\Session;
 use Goteo\Application\Message;
 use Goteo\Application\View;
 use Goteo\Model\Node;
+use Goteo\Model\Node\NodeFaq;
+use Goteo\Model\Node\NodeFaqQuestion;
+use Goteo\Model\Node\NodeFaqDownload;
+use Goteo\Model\Node\NodeResource;
+use Goteo\Model\Node\NodeResourceCategory;
 use Goteo\Model\Home;
 use Goteo\Model\Project;
 use Goteo\Model\Sponsor;
@@ -25,6 +30,8 @@ use Goteo\Library\Text;
 use Goteo\Model\Page;
 use Goteo\Model\SocialCommitment;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Util\Map\MapOSM;
+use Goteo\Model\Questionnaire;
 
 
 class ChannelController extends \Goteo\Core\Controller {
@@ -106,7 +113,12 @@ class ChannelController extends \Goteo\Core\Controller {
 
         $limit = 999;
 
-        if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
+        $channel = Node::get($id);
+        $config = $channel->getConfig();
+
+        if ($config['projects']) {
+            $list = Project::getList($config['projects'], $id, 0, $limit);
+        } else if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
             $total = count($list);
         }
         else {
@@ -116,16 +128,19 @@ class ChannelController extends \Goteo\Core\Controller {
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
 
+        $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/index';
+
         return $this->viewResponse(
-            'channel/list_projects',
-            array(
+            $view,
+                [
                 'projects' => $list,
                 'category'=> $category,
                 'title_text' => Text::get('node-side-searcher-promote'),
                 'type' => $type,
                 'total' => $total,
-                'limit' => $limit
-                )
+                'limit' => $limit,
+                'map' => $map
+                ]
         );
     }
 
@@ -137,6 +152,8 @@ class ChannelController extends \Goteo\Core\Controller {
     public function listProjectsAction($id, $type = 'available', $category = null, Request $request)
     {
         $this->setChannelContext($id);
+
+        $channel = Node::get($id);
 
         $limit = 9;
         $status=[3,4,5];
@@ -153,16 +170,64 @@ class ChannelController extends \Goteo\Core\Controller {
         $list = Project::published($filter, $id, (int)$request->query->get('pag') * $limit, $limit);
         $total = Project::published($filter, $id, 0, 0, true);
 
+        $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/list_projects';
+
         return $this->viewResponse(
-            'channel/list_projects',
-            array(
+            $view,
+                [
                 'projects' => $list,
                 'category'=> $category,
                 'title_text' => $title_text,
                 'type' => $type,
                 'total' => $total,
                 'limit' => $limit
-                )
+                ]
+        );
+    }
+
+    /**
+     * Channel terms
+     * @param  Request $request [description]
+     */
+    public function faqAction ($id, $slug, Request $request)
+    {
+        $this->setChannelContext($id);
+
+        $faq= NodeFaq::getBySlug($id, $slug);
+
+        $questions=NodeFaqQuestion::getList(['node_faq' => $faq->id]);
+
+        $downloads=NodeFaqDownload::getList(['node_faq' => $faq->id]);
+
+        return $this->viewResponse('channel/call/faq',
+            ['faq' => $faq,
+             'questions' => $questions,
+             'downloads' => $downloads
+            ]
+        );
+    }
+
+     /**
+     * Channel resorces pagee
+     * @param  Request $request [description]
+     */
+    public function resourcesAction ($id, $slug='', Request $request)
+    {
+        $this->setChannelContext($id);
+
+        if($slug)
+            $category_id=NodeResourceCategory::getIdBySlug($slug);
+
+        $resources=NodeResource::getList(['node' => $id, 'category' => $category_id]);
+
+        $resources_categories=NodeResourceCategory::getlist();
+
+        return $this->viewResponse('channel/call/resources',
+            [
+            'resources' => $resources,
+            'category'  => $category_id,
+            'resources_categories' => $resources_categories
+            ]
         );
     }
 
@@ -193,6 +258,75 @@ class ChannelController extends \Goteo\Core\Controller {
             'project_defaults' => ['node' => $id]
         ]);
     }
+
+    /**
+     * Initial apply project action
+     * @param  Request $request [description]
+     */
+
+    public function applyAction ($id, $pid, Request $request)
+    {
+        if (!Session::isLogged()) {
+            Message::info(Text::get('user-login-required-to_create'));
+            return $this->redirect('/user/login?return='.urldecode("/channel/$id/apply/$pid"));
+        }
+
+        $channel = Node::get($id);
+
+        $project = Project::get($pid);
+        if(!$project->inEdition()) {
+            Message::error('Project must be in edition to assign to a call');
+            return $this->redirect("/dashboard/project/$pid");
+        }
+
+        $questionnaire = Questionnaire::getByMatcher($id);
+        if (!$questionnaire)
+            $questionnaire = Questionnaire::getByChannel($id);
+
+        if ($questionnaire->isAnswered($pid)) {
+            Message::error(Text::get('questionnaire-already-answered-by-project'));
+            return $this->redirect("/dashboard/project/$pid");
+        }
+
+        if ($questionnaire->questions) {
+            $questionnaire->project_id = $pid;
+            $processor = $this->getModelForm('Questionnaire', $questionnaire, (array) $questionnaire, [], $request);
+            $processor->createForm()->getBuilder()
+                ->add(
+                    'submit', 'submit', [
+                    'label' => 'regular-submit',
+                    'attr' => ['class' => 'btn btn-lg btn-cyan text-uppercase'],
+                    'icon_class' => 'fa fa-save'
+                    ]
+                );
+
+            $form = $processor->getForm();
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $request->isMethod('post')) {
+                // Check if we want to remove an entry
+
+                try {
+                    $processor->save($form); // Allow save event if does not validate
+                    // Message::info(Text::get(''));
+                    return $this->redirect('/dashboard/project/' . $project->id . '/profile');
+                } catch (FormModelException $e) {
+                    Message::error($e->getMessage());
+                }
+            }
+
+            return $this->viewResponse(
+                'questionnaire/apply',
+                [
+                    'model' => $channel,
+                    'form' => $form->createView()
+                ]
+            );
+        }
+
+        return $this->redirect('/dashboard/project/'. $project->id .'/profile');
+
+    }
+
 
      /**
      * List of channels

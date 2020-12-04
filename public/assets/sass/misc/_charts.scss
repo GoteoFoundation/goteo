@@ -3,8 +3,11 @@
 .d3-chart {
   &.auto-enlarge {
     cursor: pointer;
-    max-width: 300px;
     transition: all 0.5s ease;
+    width: 100%;
+    > svg {
+      max-width: 300px;
+    }
   }
   font-size:16px;
 
@@ -30,9 +33,11 @@
 
   .d3-chart {
     &.auto-enlarge {
-      max-width: 100%;
       font-size: 10px;
       transition: all 0.5s ease;
+      > svg {
+        max-width: 100%;
+      }
     }
   }
 }

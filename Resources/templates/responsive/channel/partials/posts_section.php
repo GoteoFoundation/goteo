@@ -1,7 +1,7 @@
 <?php $channel=$this->channel; ?>
 
 <?php if($channel->getPosts()): ?>
-	<div class="section posts-section">
+	<div class="section posts">
 		<div class="container">
             <h2 class="title"><?= $this->text('home-posts-header') ?></h2>
 			<div class="row">

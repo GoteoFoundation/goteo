@@ -1,0 +1,15 @@
+{
+  "name": "leaflet.fullscreen",
+  "homepage": "https://github.com/brunob/leaflet.fullscreen",
+  "version": "1.6.0",
+  "_release": "1.6.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.6.0",
+    "commit": "a59fc463af87d04f280e8f4e8e2dd011e6ff9b5d"
+  },
+  "_source": "https://github.com/brunob/leaflet.fullscreen.git",
+  "_target": "^1.6.0",
+  "_originalSource": "leaflet.fullscreen",
+  "_direct": true
+}

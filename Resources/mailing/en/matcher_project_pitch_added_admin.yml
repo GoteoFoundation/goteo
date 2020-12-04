@@ -1,0 +1,13 @@
+group: project
+name: 'Project added to a Matcher'
+purpose: 'Mail template to be sent to a matcher owner when a project is added to his Matcher call'
+type: 'md'
+title: 'The new project %PROJECTNAME% has applied to receive funds by %CALLNAME%'
+text: >
+    # The project **%PROJECTNAME%** has applied to receive funds by **%CALLNAME%**
+
+    Now you can visit the project from the **Evaluator** and activate or discard it.
+
+    To see the project and/or reject it go here:
+
+    [%EVALUATORURL%](%EVALUATORURL%)

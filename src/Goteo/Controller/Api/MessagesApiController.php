@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Exception\InvalidDataException;
 
 use Goteo\Application\View;
 use Goteo\Application\AppEvents;
@@ -108,7 +109,7 @@ class MessagesApiController extends AbstractApiController {
         }
 
         if(!$comment->save($errors)) {
-            throw new ModelException('Update failed '. implode(", ", $errors));
+            throw new InvalidDataException('Update failed '. implode(", ", $errors));
         }
 
         $event = new FilterMessageEvent($comment);

@@ -50,7 +50,7 @@ admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
 admin-activity: Activity
 admin-communications: Comunications
-admin-communications-add: Create new communication
+admin-communications-add: Create new communication 
 admin-communications-userid-content: ' for the id of the recipient'
 admin-communications-useremail-content: ' for the email of the recipient'
 admin-communications-username-content: ' for the name of the recipient'
@@ -121,9 +121,32 @@ admin-blog-edit: Editing post %s
 admin-blog-slug-exists: 'The slug [%s] is being used by another post!'
 admin-blog-slug-chars: 'The slug [%s] contains invalid characters!'
 admin-blog-not-public: 'This post is not public yet!'
+admin-storys: User histories in Goteo
 admin-stories: User histories in Goteo
 admin-stories-add: Create new user history
 admin-stories-edit: Editing user history %s
+admin-channelstory-add: Add story to the channel
+admin-channelstory-submit: Save story
+admin-channelstory-correct: 'The story has been added to the channel'
+admin-channelsection-section: 'Section'
+admin-channelsection-map: 'Map'
+admin-channelsection-resource: 'Resource'
+admin-channelsection-call_to_action: 'Call To Action'
+admin-channelsection-projects: 'Projects'
+admin-channelsection-posts: 'Posts'
+admin-channelsection-program: 'Program'
+admin-channelsection-stories: 'Stories'
+admin-channelsection-workshops: 'Workshops'
+admin-channelsection-team: 'Team'
+admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-button: 'Button'
+admin-channelsection-create: 'Create'
+admin-channelsection-add: 'Add a Section'
+admin-channelpost-add: Add Post tot he channel
+admin-channelpost-submit: Save post
+admin-channelpost-correct: 'The post has been added to the channel'
+admin-channelprogram-create: 'Create'
+admin-channelprogram-add: 'Add program'
 admin-categories: 'Categories and scopes'
 admin-categories-if-empty-then-asset: 'If empty the default icon will be used: %s'
 admin-category-add: Create a new category
@@ -142,6 +165,11 @@ admin-channels: Channels
 admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
+admin-posts: 'Posts'
+admin-promote-add: 'New promote'
+admin-promote-submit: 'Save'
+admin-promote-already-exists: 'This project is already promoted'
+admin-promote-correct: 'The project is promoted'
 admin-project-express-discard: 'Express discard'
 admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
 admin-project-express-discard-sure: 'The project will be discarded and the owner will receive an email, ok?'
@@ -450,6 +478,8 @@ admin-filter-user: 'User'
 admin-filter-donor: 'Donor'
 admin-filter-no-donor: 'Inactive donor'
 admin-filter-promoter: 'Promoter'
+admin-filter-matcher: 'Matcher'
+admin-filter-test: 'Test'
 admin-filter-type-unique: 'Unique'
 admin-filter-type-multidonor: 'Multidonor'
 admin-filter-type-foundation-donor: 'Donor to the foundation'
@@ -458,7 +488,14 @@ admin-filter-predefined-date: 'Predefined dates'
 admin-filter-predefined-date-choose: 'You can choose a predefined date'
 admin-filter-forced: 'Force filter'
 admin-filter-forced-help: 'If you select this option, the filters will be applied regardless of what the user has chosen as a preference for sending information by the platform.'
+admin-filter-project-status: Project status
+admin-filter-invest-status: Invest status
+admin-filter-project-location: "Project's location"
+admin-filter-location: "Locaiton to be used by the filter"
+admin-filter-donor-location: "Donor's location"
 admin-mail-body: 'Body of the message'
 mandatory-filter-name: Missing name
 mandatory-filter-description: Missing description
 mandatory-filter-role: Missing role
+
+admin-node-iframe: Iframe

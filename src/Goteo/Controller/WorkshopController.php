@@ -41,12 +41,12 @@ class WorkshopController extends \Goteo\Core\Controller {
      */
     public function indexAction($id, Request $request) {
 
-        $workshop= Workshop::get($id);
-        $type= $workshop->type ? $workshop->type : 'other';
-        $related_workshops= Workshop::getAll(['type' => $type, 'excluded' => $id ]);
+        $workshop= Workshop::get($id, Lang::Current());
+        $event_type= $workshop->event_type ? $workshop->event_type : 'other';
+        $related_workshops= Workshop::getAll(['event_type' => $event_type, 'excluded' => $id ]);
 
-        if($type=='fundlab' ||$type=='fundlab-esil')
-            $related_workshops=array_merge(Workshop::getAll(['type' => 'fundlab-esil', 'excluded' => $id ]), Workshop::getAll(['type' => 'fundlab', 'excluded' => $id ]));
+        if($event_type=='fundlab' ||$event_type=='fundlab-esil')
+            $related_workshops=array_merge(Workshop::getAll(['event_type' => 'fundlab-esil', 'excluded' => $id ]), Workshop::getAll(['event_type' => 'fundlab', 'excluded' => $id ]));
 
 
 

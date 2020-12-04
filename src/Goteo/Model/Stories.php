@@ -42,7 +42,8 @@ class Stories extends \Goteo\Core\Model {
         $type,
         $landing_match = 0,
         $landing_pitch = 0,
-        $sphere
+        $sphere,
+        $background_image
         ;
 
 
@@ -84,6 +85,7 @@ class Stories extends \Goteo\Core\Model {
                 stories.landing_pitch as `landing_pitch`,
                 stories.landing_match as `landing_match`,
                 stories.sphere as `sphere`,
+                stories.background_image as `background_image`,
 
                 project.id as project_id,
                 project.name as project_name,
@@ -160,6 +162,7 @@ class Stories extends \Goteo\Core\Model {
                 stories.landing_pitch as `landing_pitch`,
                 stories.landing_match as `landing_match`,
                 stories.sphere as `sphere`,
+                stories.background_image as `background_image`,
                 project.id as project_id,
                 project.name as project_name,
                 project.amount as project_amount,
@@ -291,6 +294,7 @@ class Stories extends \Goteo\Core\Model {
                 stories.landing_pitch as `landing_pitch`,
                 stories.landing_match as `landing_match`,
                 stories.sphere as `sphere`,
+                stories.background_image as `background_image`,
 
                 project.id as project_id,
                 project.name as project_name,
@@ -395,6 +399,13 @@ class Stories extends \Goteo\Core\Model {
         return $this->PoolImageInstance;
     }
 
+    public function getBackgroundImage() {
+        if(!$this->BackgroundImageInstance instanceOf Image) {
+            $this->BackgroundImageInstance = new Image($this->background_image);
+        }
+        return $this->BackgroundImageInstance;
+    }
+
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
 
@@ -427,6 +438,20 @@ class Stories extends \Goteo\Core\Model {
             }
         }
 
+        // Background image in channel call view
+        if(is_array($this->background_image)&&empty($this->background_image['name'])) {
+            $this->background_image = reset($this->background_image);
+        }
+        if (is_array($this->background_image) && !empty($this->background_image['name'])||($this->background_image instanceOf Image && $this->background_image->tmp)) {
+            $background_image = new Image($this->background_image);
+            if ($background_image->save($errors)) {
+                $this->background_image = $background_image->id;
+            } else {
+                \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
+                $this->image = '';
+            }
+        }
+
         $fields = array(
             'id',
             'node',
@@ -446,7 +471,8 @@ class Stories extends \Goteo\Core\Model {
             'description',
             'review',
             'url',
-            'post'
+            'post',
+            'background_image'
             );
 
         try {

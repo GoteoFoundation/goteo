@@ -22,7 +22,7 @@ class Workshop extends \Goteo\Core\Model {
     $subtitle,
     $online,
     $blockquote,
-    $type,
+    $event_type,
     $description,
     $date_in,
     $date_out,
@@ -38,7 +38,8 @@ class Workshop extends \Goteo\Core\Model {
     $call_id,
     $workshop_location,
     $lang,
-    $modified;
+    $modified,
+    $type;
 
 
     public function __construct() {
@@ -49,7 +50,7 @@ class Workshop extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['title', 'subtitle', 'blockquote', 'description', 'schedule'];
+        return ['title', 'subtitle', 'blockquote', 'description', 'schedule', 'how_to_get'];
     }
 
     /**
@@ -58,10 +59,10 @@ class Workshop extends \Goteo\Core\Model {
      * @param   int    $id         workshop id.
      * @return  Workshop object
      */
-    static public function get($id, $lang = null) {
+    static public function get($id, $lang = null, $model_lang = null) {
 
-        if(!$lang) $lang = Lang::current();
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+        if(!$model_lang) $model_lang = Config::get('lang');
+        list($fields, $joins) = self::getLangsSQLJoins($lang, $model_lang);
 
         $sql="SELECT
                     workshop.id,
@@ -78,8 +79,7 @@ class Workshop extends \Goteo\Core\Model {
                     workshop.venue_address,
                     workshop.header_image,
                     workshop.map_iframe,
-                    workshop.how_to_get,
-                    workshop.type
+                    workshop.event_type
               FROM workshop
               $joins
               WHERE workshop.id = ?";
@@ -108,23 +108,30 @@ class Workshop extends \Goteo\Core\Model {
 
         $list = array();
 
+        $sqlJoin = "";
+
         if ($filters['call']) {
             $sqlFilter = 'workshop.call_id = :call';
             $values[':call'] = $filters['call'];
         }
 
-        if (is_array($filters['type'])) {
+        if (isset($filters['node'])) {
+            $sqlJoin .= "INNER JOIN node_workshop ON node_workshop.workshop_id = workshop.id and node_workshop.node_id = :node ";
+            $values[":node"] = $filters['node'];
+        }
+
+        if (is_array($filters['event_type'])) {
             $parts = [];
             foreach($filters['type'] as $i => $type) {
-                    $parts[] = ':type' . $i;
-                    $values[':type' . $i] = $type;
+                    $parts[] = ':event_type' . $i;
+                    $values[':event_type' . $i] = $type;
             }
             if($parts) $sqlFilter .= "type IN (" . implode(',', $parts) . ")";
         }
 
-        elseif ($filters['type']) {
-            $sqlFilter = 'workshop.type = :type';
-            $values[':type'] = $filters['type'];
+        elseif ($filters['event_type']) {
+            $sqlFilter = 'workshop.event_type = :event_type';
+            $values[':event_type'] = $filters['type'];
         }
 
         if ($filters['excluded']) {
@@ -169,12 +176,15 @@ class Workshop extends \Goteo\Core\Model {
                     workshop.venue,
                     workshop.city,
                     workshop.venue_address,
+                    workshop.header_image,
+                    workshop.workshop_location,
                     $different_select
                 FROM workshop
                 LEFT JOIN workshop_lang
                     ON  workshop_lang.id = workshop.id
                     AND workshop_lang.lang = :lang
                 $eng_join
+                $sqlJoin
                 $sqlFilter
                 $order
                 ";
@@ -204,6 +214,14 @@ class Workshop extends \Goteo\Core\Model {
         $values = [];
         $sqlFilters = [];
         $sql = '';
+        $sqlJoin = '';
+        $other_fields = [];
+
+        if (isset($filters['node'])) {
+            $sqlJoin .= "INNER JOIN node_workshop ON node_workshop.workshop_id = workshop.id and node_workshop.node_id = :node ";
+            $values[":node"] = $filters['node'];
+        }
+
 
         if($count) {
             // Return count
@@ -218,6 +236,9 @@ class Workshop extends \Goteo\Core\Model {
         if(!$lang) $lang = Lang::current();
         $values['viewLang'] = $lang;
         list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        $other_fields = implode(",\n", $other_fields);
+        if ($other_fields) $other_fields .= ',';
 
         $sql ="SELECT
                 workshop.id,
@@ -234,10 +255,14 @@ class Workshop extends \Goteo\Core\Model {
                 workshop.venue,
                 workshop.city,
                 workshop.venue_address,
+                workshop.header_image,
+                workshop.workshop_location,
+                $other_fields
                 :viewLang as viewLang
 
             FROM workshop
             $joins
+            $sqlJoin
             $sql
             ORDER BY `id` DESC
             LIMIT $offset,$limit";
@@ -337,8 +362,8 @@ class Workshop extends \Goteo\Core\Model {
     /*
      *  List of types
      */
-    public static function getListTypes(){
-        return Config::get('workshop.types');
+    public static function getListEventTypes(){
+        return Config::get('workshop.event_types');
     }
 
     public function getHeaderImage() {
@@ -365,6 +390,14 @@ class Workshop extends \Goteo\Core\Model {
 
         return $date<=$date_now;
     }
+
+    // returns the current location
+    public function getLocation() {
+        if($this->locationObject) return $this->locationObject;
+        $this->locationObject = WorkshopLocation::get($this);
+        return $this->locationObject;
+    }
+    
 
     /**
      * Save.
@@ -396,7 +429,7 @@ class Workshop extends \Goteo\Core\Model {
             'subtitle',
             'online',
             'blockquote',
-            'type',
+            'event_type',
             'description',
             'url',
             'date_in',

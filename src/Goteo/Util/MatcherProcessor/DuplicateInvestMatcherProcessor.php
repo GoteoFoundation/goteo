@@ -56,7 +56,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         $invested = Invest::getList(['methods' => 'pool', 'status' => Invest::$ACTIVE_STATUSES, 'projects' => $project,'users' => $matcher->getUsers()], null, 0, 0, 'money');
 
         // check if current invested amount is over the maxim per project allowed
-        if($invested + $amount > $vars['max_amount_per_project']) {
+        if($vars['max_amount_per_project'] && ( $invested + $amount > $vars['max_amount_per_project']))  {
             $amount = max(0, $vars['max_amount_per_project'] - $invested);
         }
         $count = Invest::getList(['projects' => $project, 'status' => Invest::$ACTIVE_STATUSES, 'users' => $invest->user, 'types' => 'nondrop'], null, 0, 0, true);
@@ -67,9 +67,9 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         }
 
         // Check if there's enough total to extract from user's pool
-        if($matcher->getTotalAmount() < $amount) {
+        if($matcher->getAvailableAmount() < $amount) {
             $error = 'Matcher funds exhausted';
-            $amount = $matcher->getTotalAmount();
+            $amount = $matcher->getAvailableAmount();
         }
 
         return $amount;

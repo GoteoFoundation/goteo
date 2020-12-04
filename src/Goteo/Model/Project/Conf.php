@@ -30,7 +30,8 @@ namespace Goteo\Model\Project {
             $help_cost,
             $help_license,
             $mincost_estimation,
-            $publishing_estimation;
+            $publishing_estimation,
+            $hide_exhausted_rewards;
 
         /**
          * Get the conf for a project
@@ -55,6 +56,7 @@ namespace Goteo\Model\Project {
                     $project_conf->help_cost = 0;
                     $project_conf->help_license = 0;
                     $project_conf->mincost_estimation=0;
+                    $project_conf->hide_exhausted_rewards=0;
                 }
 
                 return $project_conf;
@@ -79,9 +81,9 @@ namespace Goteo\Model\Project {
             if (!$this->validate($errors)) return false;
 
             try {
-                $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round, help_cost, help_license, mincost_estimation, publishing_estimation) VALUES(:project, :noinvest, :watch, :round1, :round2, :one, :helpcost, :helplicense, :mincost_estimation, :publishing_estimation)";
+                $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round, help_cost, help_license, mincost_estimation, publishing_estimation, hide_exhausted_rewards) VALUES(:project, :noinvest, :watch, :round1, :round2, :one, :helpcost, :helplicense, :mincost_estimation, :publishing_estimation, :hide_exhausted_rewards)";
                 $values = array(':project'=>$this->project, ':noinvest'=>$this->noinvest, ':watch'=>$this->watch,
-                                ':round1'=>$this->days_round1, ':round2'=>$this->days_round2, ':one'=>$this->one_round, ':helpcost'=>$this->help_cost, ':helplicense'=>$this->help_license, ':mincost_estimation'=>$this->mincost_estimation, ':publishing_estimation'=>$this->publishing_estimation);
+                                ':round1'=>$this->days_round1, ':round2'=>$this->days_round2, ':one'=>$this->one_round, ':helpcost'=>$this->help_cost, ':helplicense'=>$this->help_license, ':mincost_estimation'=>$this->mincost_estimation, ':publishing_estimation'=>$this->publishing_estimation, ':hide_exhausted_rewards' => $this->hide_exhausted_rewards);
                 return self::query($sql, $values);
             } catch(\PDOException $e) {
                 $errors[] = "La configuración del proyecto no se ha guardado correctamente. Por favor, revise los datos." . $e->getMessage();
@@ -199,6 +201,41 @@ namespace Goteo\Model\Project {
                 return false;
             }
         }
+
+        /**
+         * Check if is available mosaic mode to show the rewards
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
+        public static function showRewardsMosaic($id) {
+            try {
+                $query = static::query("SELECT rewards_mosaic FROM project_conf WHERE project = ?", array($id));
+                $mosaic = $query->fetchColumn();
+                return ($mosaic == 1);
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
+
+        /**
+         * Check if is activated the option to hide exhausted rewards
+         *
+         * @param varcahr(50) $id  Project identifier
+         * @return bool
+         */
+        public static function hideExhaustedRewards($id) {
+            try {
+                $query = static::query("SELECT hide_exhausted_rewards FROM project_conf WHERE project = ?", array($id));
+                $hide_exhausted_rewards = $query->fetchColumn();
+                
+                return ($hide_exhausted_rewards == 1);
+            } catch(\PDOException $e) {
+                return false;
+            }
+        }
+
 
         /**
          * Cambiar el numero de días para que termine la ronda esta noche

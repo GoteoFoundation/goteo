@@ -29,10 +29,24 @@ class ModelTranslator implements TranslatorInterface {
         'tag' => 'Blog\Post\Tag',
         'opentag' => 'OpenTag',
         'social_commitment' => 'SocialCommitment',
+        'call_to_action' => 'CallToAction',
+        'node_program' => 'Node\NodeProgram',
+        'node_faq' => 'Node\NodeFaq',
+        'node_faq_question' => 'Node\NodeFaqQuestion',
+        'node_faq_download' => 'Node\NodeFaqDownload',
+        'node_sponsor' => 'Node\NodeSponsor',
+        'node_team' => 'Node\NodeTeam',
+        'node_resource' => 'Node\NodeResource',
+        'node_resource_category' => 'Node\NodeResourceCategory',
+        'image_credits' => 'Image\Credits',
+        'node_sections' => 'Node\NodeSections'
     ];
     static protected $_forced_types = [
         'info' => 'html',
-        'glossary' => 'html'
+        'glossary' => 'html',
+        'node_faq' => 'md',
+        'node_faq_question' => 'md',
+        'node_faq_download' => 'md'
     ];
     static protected $_forced_filters = [
         'post' => '`blog` = 1' // Field "blog" in table "post" must be "1" (goteo general posts)

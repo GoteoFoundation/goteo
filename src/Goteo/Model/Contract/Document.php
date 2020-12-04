@@ -25,7 +25,7 @@ class Document extends \Goteo\Core\Model {
         $tmp,
         $filedir,
         $dir = 'contracts/';
-    private $fp;
+    protected $fp;
 
     /**
      * Constructor.
@@ -94,7 +94,6 @@ class Document extends \Goteo\Core\Model {
         if(empty($this->size)) {
             $errors['image'] = Text::get('error-image-size');
         }
-
 
         return empty($errors);
 	}
@@ -301,6 +300,30 @@ class Document extends \Goteo\Core\Model {
 		return $name;
 	}
 	*/
+
+    /**
+     * Get document data
+     * @param varchar(50) $id  Document name
+     * @return object instanceof Document or false if it doesn't exist
+     */
+    public static function getByName ($name) {
+
+        try {
+            $sql = "SELECT *
+                FROM document
+                WHERE name = :name";
+
+            $query = static::query($sql, array(':name' => $name));
+            if($doc = $query->fetchObject(__CLASS__)) {
+                $doc->filedir = $doc->dir . $doc->contract . '/';
+                return $doc;
+            }
+
+        } catch(\PDOException $e) {
+            throw new ModelNotFoundException($e->getMessage());
+        }
+		throw new ModelNotFoundException('Document not found!');
+	}
 
 }
 

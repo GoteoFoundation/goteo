@@ -39,6 +39,13 @@ caller:
         - remove-call # can remove his own calls
     level: 30
 
+matcher:
+    extends: user
+    perms:
+        - create-matcher # create own matcher, if meet the requeriment
+        - edit-matcher  # edit own matcher
+        - remove-matcher # remove own matcher
+
 checker:
     extends: user
     perms:
@@ -90,6 +97,7 @@ consultant:
         - admin-module-stats # Can access to stats
         - admin-module-promote # Can access to promote admin module
         - admin-module-workshops # Can access to workshops admin module
+        - admin-module-channel-resource # Can access to channel resource admin module
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 60
 
@@ -107,6 +115,10 @@ admin:
         - impersonate-users # Impersonate any user with roles below admin if user is admin (unless user is superadmin)
         - admin-module-categories # Can access to module CategoriesAdminController
         - receive-test-communications
+        - create-matcher # Create a matcher for a user
+        - edit-any-matcher # View any editing matcher
+        - remove-any-matcher # Remove any matcher
+        - admin-module-channels # Can access to channels admin modules
     level: 70
 
 superadmin:

@@ -80,7 +80,7 @@ class OriginListener extends AbstractListener {
         $ua = Session::get('origin.ua');
         $referer = Session::get('origin.referer');
         // TODO: add channel, blog (post): requires db migration
-        if(in_array($type, ['project', 'call'])) {
+        if(in_array($type, ['project', 'call', 'channel'])) {
             // print_r($referer);print_r(Session::get("origin.{$type}_referer"));die("[$type] $id");
             if($ua && is_array($ua)) {
                 $ua_id = $ua + ["{$type}_id" => $id];

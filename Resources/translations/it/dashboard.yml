@@ -11,7 +11,7 @@ dashboard-certificates-confirm: 'Confermare i dati'
 dashboard-certificates-confirm-checkbox: 'Posso confermare che questi sono mio dati giuridici reali e sono consapevole del fatto che non sarò in grado di modificare questi dati una volta confermati'
 dashboard-certificates-confirmed: Confermato
 dashboard-certificates-processed: Elaborato
-dashboard-certificates-confirmed-ok: 'Dati fiscali confermati correttamente, se il certificato non viene scaricato automaticamente clicca qui %HERE%'
+dashboard-certificates-confirmed-ok: 'Dati fiscali confermati correttamente'
 dashboard-certificates-data-alert: 'Ricorda che una volta confermato, non è possibile modificare i dati!'
 dashboard-certificates-data-desc: 'Si prega di assicurarsi che i dati nel modulo siano corretti e, successivamente, confermare il modulo'
 dashboard-certificates-data-download-all: 'Conferma i tuoi certificati per attivare lo sgravio fiscale. Una volta fatto ciò, sarà possibile scaricarne una copia. La Fondazione Goteo dichiara annualmente al fisco tutte le donazioni confermate.'

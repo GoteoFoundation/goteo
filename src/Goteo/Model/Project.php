@@ -23,6 +23,7 @@ use Goteo\Model\Message;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
 use Goteo\Model\Project\Account;
+use Goteo\Model\Project\Conf as ProjectConf;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Location\LocationInterface;
 
@@ -536,6 +537,7 @@ class Project extends \Goteo\Core\Model {
                 node.url as node_url,
                 node.label as node_label,
                 node.active as node_active,
+                IFNULL(node_lang.tip_msg, node.tip_msg) as tip_msg,
                 node.owner_background as node_owner_background,
                 project_conf.*,
                 user.name as user_name,
@@ -555,6 +557,9 @@ class Project extends \Goteo\Core\Model {
                 ON project_conf.project = project.id
             LEFT JOIN node
                 ON node.id = project.node
+            LEFT JOIN node_lang
+                ON  node_lang.id = node.id
+                AND node_lang.lang = :lang
             INNER JOIN user
                 ON user.id=project.owner
             LEFT JOIN user_lang
@@ -727,11 +732,11 @@ class Project extends \Goteo\Core\Model {
      * @param $status to boolean false to return all status
      * @return [type] [description]
      */
-    public function getMatchers($status = false) {
+    public function getMatchers($status = false, $filters = []) {
         if(!$this->matcherInstances) $this->matcherInstances = [];
         if(is_array($status)) $key = serialize($status);
         if($this->matcherInstances[$key]) return $this->matcherInstances[$key];
-        $this->matcherInstances[$key] = Matcher::getFromProject($this->id, $status);
+        $this->matcherInstances[$key] = Matcher::getFromProject($this->id, $status, $filters);
         return $this->matcherInstances[$key];
     }
 
@@ -880,6 +885,28 @@ class Project extends \Goteo\Core\Model {
     }
 
     /**
+     * get a readable description of the status of the project
+     */
+    function getStatusforMatcher() {
+        switch ($this->status) {
+            case self::STATUS_REVIEWING:
+                $text = 'form-project_status-review';
+                break;
+            case self::STATUS_IN_CAMPAIGN:
+                $text = 'form-project_status-campaing';
+                break;
+            case self::STATUS_FUNDED:
+            case self::STATUS_FULFILLED:
+                $text = 'project-view-metter-day_success';
+                break;
+            case self::STATUS_UNFUNDED: // archivado
+                $text = 'project-view-metter-day_closed';
+                break;
+        }
+        return strtolower(Text::get($text));
+    }
+
+    /**
      * Get consultants for this project
      * @return array array of user id that are consultants
      */
@@ -888,6 +915,18 @@ class Project extends \Goteo\Core\Model {
         $this->consultants = self::getConsultantsForProject($this);
         return $this->consultants;
     }
+
+    /**
+     * Get the main image of the project
+     * @return array array of user id that are consultants
+     */
+    public function getImage() {
+        if(!$this->imageInstance instanceOf Image) {
+            $this->imageInstance = new Image($this->image);
+        }
+        return $this->imageInstance;
+    }
+
 
     /**
      * Handy method to know if project can be edited (not in campaing or finished)
@@ -3402,6 +3441,24 @@ class Project extends \Goteo\Core\Model {
     }
 
     /*
+     * Mode mosaic to show the rewards
+     * @return: boolean
+     */
+    public static function showRewardsMosaic($id) {
+        return ProjectConf::showRewardsMosaic($id);
+    }
+
+    /*
+     * Hide exhausted rewards
+     * @return: boolean
+     */
+    public static function hideExhaustedRewards($id) {
+        return ProjectConf::hideExhaustedRewards($id);
+    }
+
+
+
+    /*
      * Para saber si un proyecto tiene traducción en cierto idioma
      * @return: boolean
      */
@@ -3529,6 +3586,9 @@ class Project extends \Goteo\Core\Model {
         }
 
         $num_published_projects=self::getList($filters_published, null, 0, 0, true);
+
+        if ($num_published_projects == 0)
+            return 0;
 
         $num_successful_projects=self::getList($filters_succesful, null, 0, 0, true);
 

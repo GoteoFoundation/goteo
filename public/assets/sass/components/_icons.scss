@@ -145,6 +145,9 @@
     &.icon-match-blog {
         @include svg-background('../img/icons/match_blog.svg');
     }
+    &.icon-goteo-logo {
+        @include svg-background('../img/icons/goteo_logo.svg');
+    }
     &.icon-book {
         @include svg-background('../img/icons/book.svg');
     }
@@ -169,4 +172,82 @@
     &.icon-write {
         @include svg-background('../img/icons/write.svg');
     }
+    &.icon-rocket {
+        @include svg-background('../img/icons/channel-call/rocket.svg');
+    }
+    &.icon-calendar-2 {
+        @include svg-background('../img/icons/channel-call/calendar.svg');
+    }
+    &.icon-plus {
+        @include svg-background('../img/icons/channel-call/plus.svg');
+    }
+    &.icon-terms {
+        @include svg-background('../img/icons/channel-call/terms.svg');
+    }
+    &.icon-news {
+        @include svg-background('../img/icons/channel-call/news.svg');
+    }
+    &.icon-arrow {
+        @include svg-background('../img/icons/channel-call/flecha.svg');
+    }
+    &.icon-crowd {
+        @include svg-background('../img/icons/channel-call/crowd.svg');
+    }
+    &.icon-people {
+        @include svg-background('../img/icons/channel-call/people.svg');
+    }
+    &.icon-binoculars {
+        @include svg-background('../img/icons/channel-call/binoculars.svg');
+    }
+    &.icon-empty-calendar {
+        @include svg-background('../img/icons/channel-call/empty_calendar.svg');
+    }
+    &.icon-pdf {
+        @include svg-background('../img/icons/channel-call/pdf.svg');
+    }
+    &.icon-download {
+        @include svg-background('../img/icons/channel-call/download.svg');
+    }
+    &.icon-bell {
+        @include svg-background('../img/icons/channel-call/event.svg');
+    }
+    &.icon-desktop {
+        @include svg-background('../img/icons/channel-call/desktop.svg');
+    }
+    &.icon-channel-telegram {
+        @include svg-background('../img/icons/channel-call/telegram-1.svg');
+    }
+    &.icon-channel-twitter {
+        @include svg-background('../img/icons/channel-call/tw.svg');
+    }
+    &.icon-channel-fb {
+        @include svg-background('../img/icons/channel-call/fb.svg');
+    }
+    &.icon-channel-github {
+        @include svg-background('../img/icons/channel-call/Github.svg');
+    }
+    &.icon-channel-instagram {
+        @include svg-background('../img/icons/channel-call/instagram.svg');
+    }
+    &.icon-channel-mail {
+        @include svg-background('../img/icons/channel-call/mail.svg');
+    }
+    &.icon-channel-chat {
+        @include svg-background('../img/icons/channel-call/chat.svg');
+    }
+    &.icon-resource-crowdfunding {
+        @include svg-background('../img/icons/channel-call/crowdfunding.svg');
+    }
+    &.icon-resource-idea {
+        @include svg-background('../img/icons/channel-call/idea.svg');
+    }
+    &.icon-resource-taxes {
+        @include svg-background('../img/icons/channel-call/taxes.svg');
+    }
+    &.icon-resource-communication {
+        @include svg-background('../img/icons/channel-call/communication.svg');
+    }
+
+
+
 }

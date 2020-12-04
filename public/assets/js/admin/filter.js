@@ -35,15 +35,19 @@ $(function () {
     var role = $('#form-role');
     var projects = $('#form-projects');
     var calls = $('#form-calls');
+    var channels = $('#form-channels');
     var matchers = $('#form-matchers');
     var sdgs = $('#form-sdgs');
     var footprints = $('#form-footprints');
-    var status = $('#form-status');
+    var project_status = $('#form-project_status');
+    var invest_status = $('#form-invest_status');
     var typeofdonor = $('#form-typeofdonor');
     var foundationdonor = $('#form-foundationdonor');
     var wallet = $('#form-wallet');
     var cert = $('#form-cert');
-    var location = $('#form-project_location');
+    // var project_location = $('#form-project_location');
+    // var donor_location = $('#form-donor_location');
+    var filter_location = $('#form-filter_location');
 
     function changeForm(role){
 
@@ -53,11 +57,14 @@ $(function () {
             predefineddate.hide();
             projects.hide();
             calls.hide();
+            channels.hide();
             matchers.hide();
             sdgs.hide();
             footprints.hide();
-            status.hide();
-            status.val = '';
+            project_status.hide();
+            project_status.val = '';
+            invest_status.hide();
+            invest_status.val = '';
             typeofdonor.hide();
             typeofdonor.val = '';
             foundationdonor.hide();
@@ -66,8 +73,11 @@ $(function () {
             cert.val = '';
             wallet.hide();
             wallet.val = '';
-            location.hide();
-            location.val = '';
+            // project_location.hide();
+            // project_location.val = '';
+            // donor_location.hide();
+            // donor_location.val = '';
+            filter_location.show();
         }
         else if (role == "donor") {
             startdate.show();
@@ -75,15 +85,20 @@ $(function () {
             predefineddate.show();
             projects.show();
             calls.show();
+            channels.show();
             matchers.show()
             footprints.show();
             sdgs.show();
-            status.show();
+            project_status.show();
+            invest_status.show();
             typeofdonor.show();
             foundationdonor.show();
             cert.show();
             wallet.show();
-            location.show();
+            // project_location.hide();
+            // project_location.val = '';
+            // donor_location.show();
+            filter_location.show();
         }
         else if (role == "no-donor") {
             startdate.show();
@@ -91,15 +106,21 @@ $(function () {
             predefineddate.show();
             projects.hide();
             calls.hide();
+            channels.hide();
             matchers.hide()
             footprints.hide();
             sdgs.hide();
-            status.hide();
+            project_status.hide();
+            invest_status.hide();
             typeofdonor.hide();
             foundationdonor.show();
             cert.hide();
             wallet.show();
-            location.hide();
+            // project_location.hide();
+            // donor_location.hide();
+            // donor_location.val = '';
+            filter_location.hide();
+            filter_location.val = '';
         }
         else if (role == "promoter") { 
             startdate.show();
@@ -107,10 +128,12 @@ $(function () {
             predefineddate.show();
             projects.show();
             calls.show();
+            channels.show();
             matchers.show();
             sdgs.show();
             footprints.show();
-            status.show();
+            project_status.show();
+            invest_status.hide();
             typeofdonor.hide();
             typeofdonor.val = '';
             foundationdonor.hide();
@@ -119,7 +142,10 @@ $(function () {
             cert.val = '';
             wallet.hide();
             wallet.val = '';
-            location.show();
+            // project_location.show();
+            filter_location.show();
+            // donor_location.hide();
+            // donor_location.val = '';
         }
         else if (role == "matcher") {
             startdate.show();
@@ -127,10 +153,13 @@ $(function () {
             predefineddate.show();
             projects.hide();
             calls.hide();
+            channels.hide();
             footprints.hide();
             sdgs.hide();
-            status.hide();
-            status.val = '';
+            project_status.hide();
+            project_status.val = '';
+            invest_status.hide();
+            invest_status.val = '';
             typeofdonor.hide();
             typeofdonor.val = '';
             foundationdonor.hide();
@@ -139,8 +168,12 @@ $(function () {
             cert.val = '';
             wallet.hide();
             wallet.val = '';
-            location.hide();
-            location.val = '';
+            // project_location.hide();
+            // project_location.val = '';
+            // donor_location.hide();
+            // donor_location.val = '';
+            filter_location.hide();
+            filter_location.val = '';
             matchers.show();
         }
     }

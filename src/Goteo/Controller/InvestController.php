@@ -243,7 +243,10 @@ class InvestController extends \Goteo\Core\Controller {
         if($reward instanceOf Response) return $reward;
 
         // Aqui cambiar por escoger recompensa
-        return $this->viewResponse('invest/select_reward', ['step' => 1]);
+
+        $rewards_mosaic=Project::showRewardsMosaic($project_id);
+        $view=  $rewards_mosaic ? 'select_reward_mosaic' : 'select_reward';
+        return $this->viewResponse('invest/'.$view, ['step' => 1]);
 
     }
 
@@ -629,6 +632,7 @@ class InvestController extends \Goteo\Core\Controller {
             Message::error(Text::get('invest-address-fail'));
 
         }
+
         // show form
         return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3, 'reward' => $reward]);
 

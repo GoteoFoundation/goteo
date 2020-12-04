@@ -149,5 +149,43 @@ class StoriesApiController extends AbstractApiController {
         return $this->jsonResponse($result);
 
     }
+
+    /**
+     * Simple listing of stories
+     * TODO: according to permissions, filter this stories
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function storiesAction(Request $request) {
+        if(!$this->user) throw new ControllerAccessDeniedException();
+
+        $filters = [];
+        $story = null;
+        $page = max((int) $request->query->get('pag'), 0);
+        // General search
+        if($request->query->has('q')) {
+            $filters['title'] = $request->query->get('q');
+        }
+        $limit = 25;
+        $offset = $page * $limit;
+        $list = [];
+        
+        foreach(Stories::getList($filters, $offset, $limit) as $story) {
+            $ob = ['id' => $story->id,
+                   'title' => $story->title,
+                   'subtitle' => $story->subtitle,
+                   'image' => $story->image ? $story->getImage()->getLink(64,64,true) : null,
+                ];
+            $list[] = $ob;
+        }
+
+        return $this->jsonResponse([
+            'list' => $list,
+            'total' => count($list),
+            'page' => $page,
+            'limit' => $limit
+            ]);
+    }
+
 }
 

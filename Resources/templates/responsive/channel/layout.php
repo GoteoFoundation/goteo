@@ -50,7 +50,7 @@ $background = $this->channel->owner_background;
         <?= $this->supply('channel-header', $this->insert("channel/partials/join_action", ['main_color' => $background])) ?>
 
     </div>
-
+    
     <div class="projects-section">
         <div class="container-fluid">
             <div id="content">
@@ -68,11 +68,56 @@ $background = $this->channel->owner_background;
 
 <?= $this->insert("channel/partials/stories_section") ?>
 
-<?= $this->insert("channel/partials/posts_section") ?>
-
 <?= $this->insert("channel/partials/related_workshops") ?>
 
+<?php endif; ?>
+
+<?php if($this->channel->show_team): ?>
+
+<?= $this->insertif('foundation/donor') ?>
+
+<?php endif; ?>
+
+<?= $this->insert("channel/partials/posts_section") ?>
+
 <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
+
+<?php if (isset($this->channel->iframe)): ?>
+
+    <?php
+            // Custom iframe depending on the lang
+            $current_lang=$this->lang_current();
+            if(preg_match("!/[a-z]{2,2}/|/[a-z]{2,2}$!", $this->channel->iframe))
+                $iframe=preg_replace("!/[a-z]{2,2}/|/[a-z]{2,2}$!", '/'.$current_lang.'/', $this->channel->iframe);
+            else
+                $iframe=$this->channel->iframe.'/'.$current_lang.'/';
+
+    ?>
+
+    <section class="influence-map">
+        <div class="container">
+            <h2 class="title"><?= $this->text('node-iframe-title') ?></h2>
+            <div class="map-container">
+                <iframe src="<?= $iframe ?>" width="100%" height="500" style="border:none;" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
+
+<?php if($this->channel->terms): ?>
+
+<!-- Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title"><?= $this->text('matcher-terms-desc') ?></h3>
+      </div>
+      <div class="modal-body"><?= $this->markdown($this->channel->terms) ?></div>
+    </div>
+  </div>
+</div>
 
 <?php endif; ?>
 
@@ -83,4 +128,41 @@ $background = $this->channel->owner_background;
 
 <?php $this->section('footer') ?>
     <?= $this->insert('channel/partials/javascript') ?>
+
+    <?php if($this->channel->show_team): ?>
+
+    <script>
+    $(function(){
+
+        $('.slider-team').slick({
+            dots: false,
+            autoplay: true,
+            infinite: true,
+            speed: 2000,
+            autoplaySpeed: 3000,
+            fade: true,
+            arrows: false,
+            cssEase: 'linear'
+        });
+    });
+    </script>
+
+    <?php endif; ?>
+
+    <?php if($this->channel->chatbot_url): ?>
+
+    <!-- Chatbot code -->
+
+    <?php $current_lang=$this->lang_current(); ?>
+
+    <script src="<?= $this->channel->chatbot_url ?>/widget/widget.js"></script>
+    <script>
+        (window.goteoHelpWidget=window.goteoHelpWidget||{}).load("<?= $this->channel->chatbot_url ?>", "<?= $current_lang ?>", <?= $this->channel->chatbot_id ?>, false);
+    </script>
+
+    <!-- End Chatbot code -->
+
+    <?php endif ?>
+
+
 <?php $this->append() ?>

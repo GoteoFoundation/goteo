@@ -11,6 +11,17 @@ use Goteo\Application\Config;
 
 class Contract extends \Goteo\Core\Model {
 
+    const NATURAL_PERSON = 'natural_person';
+    const LEGAL_PERSON = 'legal_person';
+    const LEGAL_ENTITIES = [self::NATURAL_PERSON, self::LEGAL_PERSON];
+
+    const CIF = 'cif';
+    const NIF = 'nif';
+    const NIE = 'nie';
+    const VAT = 'vat';
+    const PASSPORT = 'passport';
+    const LEGAL_DOCUMENTS = [self::NIF, self::NIE, self::PASSPORT];
+
     public
         $project,
         $number, //numero de contrato
@@ -21,6 +32,7 @@ class Contract extends \Goteo\Core\Model {
 
         // datos del representante
         $name,
+        $legal_document_type,
         $nif,
         $birthdate,
         $office, // Cargo en la asociación o empresa
@@ -151,6 +163,14 @@ class Contract extends \Goteo\Core\Model {
         // persona física o representante
         $contract->name = $personalData->contract_name;
         $contract->nif = $personalData->contract_nif;
+        $contract->legal_document_type = $personalData->contract_legal_document_type;
+
+        if ($contract->nif && !isset($contrat->legal_document_type)) {
+            Check::nif($contract->nif, $legal_document_type);
+            if ($legal_document_type)
+                $contract->legal_document_type = $legal_document_type;
+        }
+        
         $contract->address = $personalData->address;
         $contract->location = $personalData->location;
         $contract->region = '';
@@ -212,10 +232,7 @@ class Contract extends \Goteo\Core\Model {
 
             // cargamos los documentos
             $contract->docs = Contract\Document::getDocs($id);
-
-            if(!$contract->fee)
-                $contract->fee=Config::get('fee');
-
+            
             return $contract;
         } else {
             // aun no tenemos datos de contrato
@@ -230,7 +247,29 @@ class Contract extends \Goteo\Core\Model {
             return false;
         }
 
-        return true;
+        if (isset($this->nif)) {
+            $nif_type = '';
+            $valid_nif = Check::nif($this->nif, $nif_type);
+            if ($this->legal_document_type != self::PASSPORT) {
+                if(!$valid_nif || $nif_type != $this->legal_document_type ) {
+                    if ($this->legal_document_type == self::NIF)  {
+                        $errors['nif'] = Text::get('validate-contract-nif-document-type');
+                    } else {
+                        $errors['nif'] = Text::get('validate-contract-cif-document-type');
+                    }
+                }
+            }
+        }
+
+        if(isset($this->entity_cif)) {
+            $cif_type = '';
+            $valid_cif = Check::nif($this->entity_cif, $cif_type);
+            if(!$valid_cif || $cif_type != self::CIF ) {
+                $errors['entity_cif'] = Text::get('validate-contract-cif-document-type');
+            }
+        }
+
+        return empty($errors);
     }
 
     /**
@@ -266,14 +305,14 @@ class Contract extends \Goteo\Core\Model {
         if($this->type > 0) {
             $entity = ['entity_name', 'entity_cif', 'office', 'entity_address', 'entity_location', 'entity_region', 'entity_zipcode', 'entity_country'];
             $total = count($entity);
-            $entity[] = 'reg_name';
-            $entity[] = 'reg_number';
-            if($this->type == 2) {
+            //$entity[] = 'reg_name';
+            //$entity[] = 'reg_number';
+            /*if($this->type == 2) {
                 $entity[] = 'reg_date';
                 $entity[] = 'reg_id';
                 $entity[] = 'reg_idname';
                 $entity[] = 'reg_idloc';
-            }
+            }*/
             $count = 0;
             foreach($entity as $field) {
                 if(!empty($this->{$field})) {
@@ -285,11 +324,13 @@ class Contract extends \Goteo\Core\Model {
             if($count > 0) {
                 $errors['entity'][] = 'entity';
             }
-            if(!Check::nif($this->entity_cif)) {
+
+            $valid_nif = Check::nif($this->entity_cif, $nif_type);
+            if(!$valid_nif || $nif_type != self::CIF ) {
                 $count++;
                 $errors['entity'][] = 'promoter_nif';
             }
-
+    
             $res->entity = round(100 * ($total - $count)/$total);
         } else {
             $res->entity = 100;
@@ -297,9 +338,7 @@ class Contract extends \Goteo\Core\Model {
 
         // 3. accounts
         $accounts = ['bank', 'bank_owner'];
-        if ($this->paypal) {
-            $accounts[] = 'paypal_owner';
-        }
+        
         $total = count($accounts);
         $count = 0;
         foreach($accounts as $field) {
@@ -352,6 +391,7 @@ class Contract extends \Goteo\Core\Model {
                 'enddate',
                 'type',
                 'name',
+                'legal_document_type',
                 'nif',
                 'office',
                 'address',
@@ -412,14 +452,17 @@ class Contract extends \Goteo\Core\Model {
             SELECT
                 project.id as id,
                 contract.number as number,
-                project.name as project
+                project.name as project,
+                contract.nif as nif,
+                contract.legal_document_type as legal_document_type,
+                contract.entity_cif as entity_cif
             FROM contract
             INNER JOIN project
                 ON project.id = contract.project
             ORDER BY project.name ASC
             ");
 
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
             $item->status = self::getStatus($item->id);
             $list[$item->id] = $item;
         }
@@ -628,9 +671,11 @@ class Contract extends \Goteo\Core\Model {
                  $okeys['entity']['entity_name'] = 'ok';
             }
 
+            $cif_type = ''; 
+            $valid_cif = Check::nif($this->entity_cif, $cif_type);
             if (empty($this->entity_cif)) {
                 $errors['entity']['entity_cif'] = Text::get('mandatory-project-field-entity_cif');
-            } elseif (!Check::nif($this->entity_cif)) {
+            } elseif (!valid_cif || $cif_type != self::CIF) {
                 $errors['entity']['entity_cif'] = Text::get('validate-project-value-entity_cif');
             } else {
                  $okeys['entity']['entity_cif'] = 'ok';
@@ -886,6 +931,20 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
 
         return $nexts;
 
+    }
+
+    static public function getNaturalPersonDocumentTypes() {
+        return  [
+            self::NIF => Text::get('contract-legal-document-type-nif'),
+            self::NIE => Text::get('contract-legal-document-type-nie'),
+            self::PASSPORT => Text::get('contract-legal-document-type-passport'),
+          ];
+    }
+
+    static public function getLegalPersonDocumentTypes() {
+        return  [
+            self::CIF => Text::get('contract-legal-document-type-cif')
+          ];
     }
 
 }

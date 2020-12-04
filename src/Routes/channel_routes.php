@@ -40,7 +40,25 @@ $channel->add('channel-discover-projects-filter', new Route(
     array('_controller' => 'Goteo\Controller\ChannelController::discoverProjectsAction')
 ));
 
+$channel->add('channel-faq', new Route(
+    '/{id}/faq/{slug}',
+    ['_controller' => 'Goteo\Controller\ChannelController::faqAction']
+));
 
+$channel->add('channel-resources', new Route(
+    '/{id}/resources',
+    ['_controller' => 'Goteo\Controller\ChannelController::resourcesAction']
+));
+
+$channel->add('channel-resources-category', new Route(
+    '/{id}/resources/{slug}',
+    ['_controller' => 'Goteo\Controller\ChannelController::resourcesAction']
+));
+
+$channel->add('channel-project-apply', new Route(
+    '/{id}/apply/{pid}',
+    array('_controller' => 'Goteo\Controller\ChannelController::applyAction')
+));
 
 $channel->add('channel-list-projects', new Route(
     '/{id}/{type}/{category}',

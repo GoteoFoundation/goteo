@@ -20,6 +20,8 @@ invest-address-namedest-field: 'Nom del destinatari'
 invest-address-nif-field: 'Número de NIF / NIE / CIF / VAT:'
 invest-address-title: 'Assegura''t de rebre la teva recompensa'
 invest-address-zipcode-field: 'Codi postal'
+invest-address-legal-entity-field: Entitat legal
+invest-address-legal-document-type-field: Tipus de document
 invest-alert-investing: 'Estàs a punt d''aportar'
 invest-alert-lackamount: 'L''aportació ha de ser de valor més elevat que la recompensa escollida'
 invest-alert-lackdrop: 'No queda prou capital Matchfunding per cobrir la teva aportació, només queden'
@@ -42,8 +44,10 @@ invest-cash-method: 'Manual (efectiu)'
 invest-donation-header: 'Introdueix les dades fiscals per al donatiu'
 invest-drop-method: Matchfunding
 invest-fiscal-fail: 'Hi ha camps buits o amb errors, comprova el formulari fiscal perquè puguis desgravar la teva aportació!'
+invest-fiscal-renounce: 'No desitjo rebre Certificat de Donació'
 invest-fiscal-skip: 'Prefereixo omplir aquestes dades en un altre moment'
-invest-fiscal-title: 'Assegura''t de que puguis desgravar la teva aportació (per a contribuents a l''estat espanyol)'
+invest-fiscal-title: 'Sol·licitud del certificat de donació'
+invest-fiscal-warning: "<b>Si desitges que t'emetem el teu certificat de donació per a ser titular dels beneficis fiscals</b> de la teva aportació, és <b>necessari que ens facilitis les teves dades</b> personals assenyalades <b>ABANS del 15 de gener</b>, ja que en virtut de l'article <b>5 d'Ordre EHA/3021/2007, d'11 d'octubre, per la qual s'aprova el model 182 de declaració informativa de donatius, donacions i aportacions rebudes</b>, tenim l'obligació de presentar aquesta declaració el mes de gener de cada any, en relació amb els donatius, donacions i aportacions rebudes o disposicions realitzades durant l'any natural anterior. <br><br> En cas de no rebre les teves dades en termini, renúncies als beneficis fiscals de la teva aportació, ja que l'incompliment en el termini de presentació de la declaració el model 182, de donatius rebuts, implica multes per a la Fundació Degoteig per incompliment de la normativa anterior.<br>"
 invest-login-alert: 'T''has de registrar o <a href="%s">iniciar sessió</a> per poder realitzar l''aportació'
 invest-mail_info-address: 'Has especificat la següent direcció:'
 invest-make-sure-save: Desar
@@ -114,3 +118,8 @@ invest-tip-part-2: 'per a contribuir a la missió de la <b>Fundació Goteo</b><b
 invest-mail-donate-tip: 'Amb la teva donació has decidit col·laborar amb la <strong>Fundació Goteo</strong> amb %s € adicionals, gràcies de cor.'
 invest-update-total: 'Realitzaràs una donació total de <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% al projecte + <span id="tip-amount">%DONATE_AMOUNT%</span> a Fundació Goteo'
 invest-extra-info: 'Informació extra'
+donor-legal-entities-natural-person: Persona física
+donor-legal-entities-legal-person: Persona jurídica
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-vat: VAT

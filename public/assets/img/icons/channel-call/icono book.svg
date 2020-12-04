@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="24px" viewBox="0 0 20 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>icono book</title>
+    <desc>Created with Sketch.</desc>
+    <g id="CrowdCoop_Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="01_Home_01" transform="translate(-231.000000, -4592.000000)">
+            <g id="recursos" transform="translate(150.000000, 4279.000000)">
+                <g id="botón" transform="translate(65.000000, 295.000000)">
+                    <rect id="Rectangle" stroke="#1A2C69" x="0.5" y="0.5" width="225" height="59" rx="10"></rect>
+                    <path d="M33.7504726,22 L32.1270321,22 L32.1270321,20.4 L25.6332703,20.4 L25.6332703,22 L19.1395085,22 C18.2291643,22 17.5160681,21.2972 17.5160681,20.4 C17.5160681,19.5028 18.2291643,18.8 19.1395085,18.8 L33.7504726,18.8 L33.7504726,22 Z M31.3153119,32.2344 L28.8801512,29.8344 L26.4449905,32.2344 L26.4449905,21.2 L31.3153119,21.2 L31.3153119,32.2344 Z M34.9680529,22 L34.5621928,22 L34.5621928,18.4 C34.5621928,18.1792 34.3807733,18 34.1563327,18 L19.1395085,18 C17.7741951,18 16.7043478,19.0544 16.7043478,20.4 L16.7043478,39.6 C16.7043478,40.9456 17.7741951,42 19.1395085,42 L34.9680529,42 C35.1924936,42 35.373913,41.8208 35.373913,41.6 L35.373913,22.4 C35.373913,22.1792 35.1924936,22 34.9680529,22 L34.9680529,22 Z" id="icono-book" fill="#1A2C69"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

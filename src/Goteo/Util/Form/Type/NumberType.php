@@ -32,6 +32,7 @@ class NumberType extends SymfonyNumberType
         $resolver->setDefault('row_class', '');
         $resolver->setDefault('pre_addon', '');
         $resolver->setDefault('post_addon', '');
+        $resolver->setDefault('type', 'number');
     }
     /**
      * {@inheritdoc}
@@ -42,5 +43,6 @@ class NumberType extends SymfonyNumberType
         $view->vars['row_class'] = $options['row_class'];
         $view->vars['pre_addon'] = $options['pre_addon'];
         $view->vars['post_addon'] = $options['post_addon'];
+        $view->vars['type'] = $options['type'];
     }
 }
