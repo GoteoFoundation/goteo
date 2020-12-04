@@ -41,7 +41,6 @@ invest-donation-header: 'Enter the fiscal information for this donation'
 invest-drop-method: Matching funds
 invest-fiscal-fail: 'There are faulty of empty fields. Please check the fiscal form to go forward and deduct your contribution!'
 invest-fiscal-skip: 'I don’t want to fill in this now'
-invest-fiscal-title: 'Make sure you can get a Tax return on your contribution (only for declarants in Spain)'
 invest-login-alert: 'You must register or <a href="%s">log in</a> to make your contribution'
 invest-mail_info-address: 'You''ll receive the reward at the following address:'
 invest-make-sure-save: Save
