@@ -203,7 +203,7 @@ $langs = $project->getLangs();
                             <div>    
                                 <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo">
                                 <span class="matcher-label">
-                                Agentes de Matchfunding<br>multiplicando aportes
+                                <?= $this->text('matcher-label-project') ?>
                                 </span>
                             </div>
                             <div class="matcher-description">
@@ -219,7 +219,8 @@ $langs = $project->getLangs();
                                         </div>
                                     </div>
                                     <div class="matcher-amount">
-                                    <?= 'Aportados: '.amount_format($matcher_amount).' de '.amount_format($matcher_vars['max_amount_per_project']) ?>
+
+                                    <?= $this->text('matcher-amount-project', ['%AMOUNT%' => amount_format($matcher_amount), '%PROJECT_AMOUNT%' => amount_format($matcher_vars['max_amount_per_project'])] ) ?>
                                     </div>
                                     </strong>
                                 </div>

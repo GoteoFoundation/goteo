@@ -51,7 +51,7 @@ class Matcher extends \Goteo\Core\Model {
            $fee = 0,
            $processor = 'duplicateinvest',
            $vars = [
-               'max_donation_per_invest' => 100,
+               'max_amount_per_invest' => 100,
                'max_amount_per_project' => 0,
                'max_invests_per_user' => 1,
                'filter_by_platform' => 0

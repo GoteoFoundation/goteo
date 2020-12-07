@@ -167,14 +167,14 @@ use Goteo\Library\Check;
     <div class="slider slider-matchers visible-xs" id="matchers">
 
     <?php foreach ($matchers as $matcher): ?>
-            <?php $matcher_amount=$matcher->calculateProjectAmount($project->id); ?>
-            <?php $matcher_vars=$matcher->getVars(); ?>
-            <?php $progress=round(($matcher_amount/$matcher_vars['max_amount_per_project'])*100); ?>
+           <?php $matcher_amount=$matcher->calculateProjectAmount($project->id); ?>
+                <?php $matcher_vars=$matcher->getVars(); ?>
+                <?php $progress=round(($matcher_amount/$matcher_vars['max_amount_per_project'])*100); ?>
                 <div class="matcher-info">
                     <div>    
                         <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo">
                         <span class="matcher-label">
-                        Agentes de Matchfunding<br>multiplicando aportes
+                        <?= $this->text('matcher-label-project') ?>
                         </span>
                     </div>
                     <div class="matcher-description">
@@ -186,17 +186,18 @@ use Goteo\Library\Check;
                             <?= $matcher->name ?>
                             </div>
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width:62%">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $progress ?>%">
                                 </div>
                             </div>
                             <div class="matcher-amount">
-                            <?= 'Aportados: '.amount_format($matcher_amount).' de '.amount_format($matcher_vars['max_amount_per_project']) ?>
+
+                            <?= $this->text('matcher-amount-project', ['%AMOUNT%' => amount_format($matcher_amount), '%PROJECT_AMOUNT%' => amount_format($matcher_vars['max_amount_per_project'])] ) ?>
                             </div>
                             </strong>
                         </div>
                     </div>
-                    
-                </div>
+                            
+                        </div>
         
         <?php endforeach; ?>
 

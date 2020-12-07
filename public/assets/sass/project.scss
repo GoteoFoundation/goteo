@@ -450,10 +450,14 @@ div.matcher-info {
         width: 25%;
         .logo{
           border-radius: 50%;
-          background-color: #FFF;
+          background-color: #E5F3F4;
           max-width: 75px;
           max-height: 75px;
+          min-width: 50px;
+          min-height: 50px;
           float: left;
+          padding: 5px;
+          border: 3px solid #fff;
         }    
       }
       .info-container{
