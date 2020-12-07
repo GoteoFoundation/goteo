@@ -44,10 +44,10 @@
 								<div class="pull-left personal">
 									<h3 class="name" id="invest-<?= $invest->id ?>">
 										<?php if($invest->user!= 'anonymous'): ?>
-									<a href="/user/<?= $invest->user ?>"><?= ucfirst($invest->name) ?></a>
-									<?php else: ?>
-										<?= ucfirst($invest->name) ?>
-									<?php endif;?>
+											<a href="/user/<?= $invest->user ?>"><?= ucfirst($invest->name) ?></a>
+										<?php else: ?>
+											<?= ucfirst($invest->name) ?>
+										<?php endif;?>
 									</h3>
 									<div class="worth"><?= $this->worthcracy[$invest->worth]->name ?></div>
 								</div>
