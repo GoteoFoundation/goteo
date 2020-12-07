@@ -924,6 +924,9 @@ class Matcher extends \Goteo\Core\Model {
 
 
 
+    /*
+    *  Get the matchers that a given user administrates
+    */
     public static function getUserMatchersList($user) {
         $sql = "SELECT *
         FROM matcher
