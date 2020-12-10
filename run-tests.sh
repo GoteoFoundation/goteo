@@ -48,7 +48,6 @@ export GOTEO_TEST_CONFIG_FILE=$CONFIG;
 export GOTEO_CONFIG_FILE=$CONFIG;
 
 if [ "$RESET_DATABASE" != "" ]; then
-    echo "Wiping database:"
     DB=$(cat $CONFIG | grep 'db:' -A8)
     #remove spaces
     DB=${DB// /}
@@ -68,7 +67,7 @@ if [ "$RESET_DATABASE" != "" ]; then
     PASS=$(echo "$DB" | grep 'password:')
     PASS=${PASS/password:/}
     PASS=${PASS%\#*}
-    echo $DATABASE $HOST:$PORT $USER $PASS
+    echo "Wiping database: $DATABASE $USER@$HOST:$PORT"
 
     if [[ $DATABASE != *"test"* ]]; then
         echo "[$DATABASE] should contain the work 'test' to reset schema from here"
