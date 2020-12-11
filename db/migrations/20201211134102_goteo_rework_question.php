@@ -32,7 +32,7 @@ class GoteoReworkQuestion
   public function getUpSQL()
   {
      return "
-        ALTER TABLE `question_lang` CHANGE `question` `id` BIGINT(20) UNSIGNED NOT NULL,
+        ALTER TABLE `question_lang` CHANGE `question` `id` BIGINT(20) UNSIGNED NOT NULL;
         ADD UNIQUE KEY `id_lang` (`id`,`lang`);
      ";
   }
