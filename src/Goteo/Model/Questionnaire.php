@@ -164,6 +164,31 @@ class Questionnaire extends \Goteo\Core\Model
         return $query->fetchColumn();
     }
 
+    public function removeLang($lang) {
+        if ($this->questions) {
+            foreach($this->questions as $question) {
+                $question->removeLang($lang);
+            }
+        }
+    }
+
+        /**
+     * Returns percent (from 0 to 100) translations
+     * by grouping all items sharing some common keys
+     */
+    public function getLangsGroupPercent($lang, array $keys) {
+        $percent = 0;
+        if ($this->questions) {
+            foreach($this->questions as $question) {
+                $percent += $question->getLangsGroupPercent($lang, ['title']);
+            }
+            $percent = $percent/count($this->questions);
+        }
+
+        return $percent;
+    }
+
+
     /**
      * Validate.
      *

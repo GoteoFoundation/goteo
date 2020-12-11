@@ -28,6 +28,10 @@ class Question extends \Goteo\Core\Model
         ];
     }
 
+    public static function getLangFields() {
+        return ['title'];
+    }
+
     static public function get($id)
     {
         // $lang = Lang::current();
@@ -35,7 +39,7 @@ class Question extends \Goteo\Core\Model
 
         $query = static::query('SELECT * FROM question WHERE id = :id', array(':id' => $id));
         $question = $query->fetchObject(__CLASS__);
-
+        
         if (!$question instanceOf Question) {
             throw new ModelNotFoundException();
         }
