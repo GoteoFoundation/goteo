@@ -98,7 +98,6 @@ class CommunicationAdminController extends AbstractAdminController
             $communication->projects = $request->request->get('communication_add');
             $communication->save($errors);
             
-
             if ($errors) {
                 throw new FormModelException(Text::get('form-sent-error'));
                 return;
