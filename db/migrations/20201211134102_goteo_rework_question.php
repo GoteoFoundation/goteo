@@ -32,9 +32,11 @@ class GoteoReworkQuestion
   public function getUpSQL()
   {
      return "
-        ALTER TABLE `question_lang` CHANGE `question` `id` BIGINT(20) UNSIGNED NOT NULL,
-        ADD UNIQUE KEY `id_lang` (`id`,`lang`);
-     ";
+      ALTER TABLE `question_lang` DROP FOREIGN KEY `question_lang_ibfk_1`;
+      ALTER TABLE `question_lang` CHANGE `question` `id` BIGINT(20) UNSIGNED NOT NULL;
+      ALTER TABLE `question_lang` ADD CONSTRAINT `question_lang_ibfk_1` FOREIGN KEY (`id`) REFERENCES `question` (`id`);
+      ALTER TABLE `question_lang` ADD UNIQUE KEY `id_lang` (`id`,`lang`);
+    ";
   }
 
   /**
@@ -46,7 +48,9 @@ class GoteoReworkQuestion
   {
      return "
         ALTER TABLE `question_lang` DROP INDEX `id_lang`;
+        ALTER TABLE `question_lang` DROP FOREIGN KEY `question_lang_ibfk_1`;
         ALTER TABLE `question_lang` CHANGE `id` `question` BIGINT UNSIGNED NOT NULL;
+        ALTER TABLE `question_lang` ADD CONSTRAINT `question_lang_ibfk_1` FOREIGN KEY (`question`) REFERENCES `question` (`id`);
     ";
   }
 
