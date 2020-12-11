@@ -167,9 +167,10 @@ use Goteo\Library\Check;
     <div class="slider slider-matchers visible-xs" id="matchers">
 
     <?php foreach ($matchers as $matcher): ?>
-           <?php $matcher_amount=$matcher->calculateProjectAmount($project->id); ?>
-                <?php $matcher_vars=$matcher->getVars(); ?>
-                <?php $progress=round(($matcher_amount/$matcher_vars['max_amount_per_project'])*100); ?>
+            <?php $matcher_amount=$matcher->calculateProjectAmount($project->id); ?>
+            <?php $matcher_vars=$matcher->getVars(); ?>
+            <?php $max_project= $matcher_vars['max_amount_per_project'] ? $matcher_vars['max_amount_per_project'] : $matcher_vars['donation_per_project']; ?>
+            <?php $progress=round(($matcher_amount/$max_project)*100); ?>
                 <div class="matcher-info">
                     <div>    
                         <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo">
@@ -191,7 +192,7 @@ use Goteo\Library\Check;
                             </div>
                             <div class="matcher-amount">
 
-                            <?= $this->text('matcher-amount-project', ['%AMOUNT%' => amount_format($matcher_amount), '%PROJECT_AMOUNT%' => amount_format($matcher_vars['max_amount_per_project'])] ) ?>
+                            <?= $this->text('matcher-amount-project', ['%AMOUNT%' => amount_format($matcher_amount), '%PROJECT_AMOUNT%' => amount_format($max_project)] ) ?>
                             </div>
                             </strong>
                         </div>
