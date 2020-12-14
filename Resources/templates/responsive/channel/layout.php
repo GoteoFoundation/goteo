@@ -1,4 +1,4 @@
-<?php
+Fpremium<?php
 $premium = $this->channel->premium;
 
 $values = [
@@ -16,6 +16,7 @@ if ($premium) {
     $values['powered'] = true;
 } else {
     $values['navClass'] = 'white';
+    $values['navLogo'] = 'black';
 }
 
 $this->layout('layout', $values);
