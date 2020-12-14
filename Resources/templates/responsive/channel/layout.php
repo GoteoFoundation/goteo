@@ -1,4 +1,4 @@
-Fpremium<?php
+<?php
 $premium = $this->channel->premium;
 
 $values = [
