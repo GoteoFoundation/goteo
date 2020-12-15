@@ -335,16 +335,6 @@ EOT
 
                 foreach($donors as $donor) {
 
-                    $donor_year = $donor->year;
-                    $invest_filters = [
-                        'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_TO_POOL, Invest::STATUS_DONATED],
-                        'date_from' => date_format(date_sub(date_create($donor_year . '-01-01'), date_interval_create_from_date_string('40 days')), 'Y-m-d'),
-                        'date_until' => $donor_year . '-12-31',
-                        'users' => $donor->user,
-                        'procStatus' => 'passed'
-                    ];
-
-                    // $user_invests = Invest::getList($invest_filters, null, 0, 0, 'all');
                     $user_invests = Donor::getPendingInvestionsAmount($donor->user);
                     $donor_amount = $user_invests['amount'] + $user_invests['donations_amount'];
 
@@ -366,21 +356,21 @@ EOT
                         } else {
                             $can_be_updated++;
                         }
-                        // if ($verbose_debug)
-                            // print_r($donor);
-
                     }
                     $progress_bar->advance();
                 }
+
+                $total_donors += $total;
 
                 $progress_bar->finish();
                 $output->writeln('');
             }
 
             if ($update) {
-                $output->writeln("<info>A total of {$updated_donors} out of {$total} have been updated.</info>");
+                $output->writeln("<info>A total of {$updated_donors} out of {$total_donors} have been updated.</info>");
+                $output->writeln("<info>A total of {$update_errors} out of {$total_donors} have errors.</info>");
             } else {
-                $output->writeln("<info>A total of {$can_be_updated} out of {$total} can be updated using --update");
+                $output->writeln("<info>A total of {$can_be_updated} out of {$total_donors} can be updated using --update");
             }
 
         } else if ($update_status) {
@@ -425,8 +415,6 @@ EOT
                         if ($donor->status != Donor::PENDING)
                             continue;
                             
-                        $donor_year = $donor->year;
-
                         $errors = [];
                         $is_valid = $donor->validateData($errors);
                         
