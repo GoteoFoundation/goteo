@@ -236,3 +236,7 @@ user-register-success: 'L''usuari s''ha registrat correctament. A continuació r
 validate-project-social_rewards: 'És obligatori indicar com a mínim un retorn col·lectiu'
 user-promoter: 'L''usuari impulsor'
 newsletter-donate-description: 'Perquè puguem seguir ajudant a que més i més iniciatives cíviques es facin realitat'
+regular-icon: Icona
+regular-action: Acció
+regular-action_url: Acció URL
+regular-modal-decription: Decripció a la modal

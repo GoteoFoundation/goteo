@@ -31,15 +31,29 @@ endforeach;
 
     <div class="row">
 
-        <?php foreach($secondary_sponsors as $sponsor): ?>
-        <?php $sponsor_image=$sponsor->getImage(); ?>
-        <div class="col-md-4 col-sm-4 col-xs-6 secondary-sponsor">
-          <div class="sponsor-label">
-            <?= $sponsor->label ?>
+        <?php if(count($secondary_sponsors)==1): ?>
+          <?php $sponsor=$secondary_sponsors[0]; ?>
+          <?php $sponsor_image=$sponsor->getImage(); ?>
+          <div class="col-md-9 col-sm-9 col-xs-9 secondary-sponsor">
+            <div class="sponsor-label">
+              <?= $sponsor->label ?>
+            </div>
+            <img src="<?= $sponsor_image->getLink(800, 0, false) ?>" >
           </div>
-          <img src="<?= $sponsor_image->getLink(200, 65, false) ?>" >
-        </div>
-        <?php endforeach; ?>
+
+        <?php else: ?>
+
+          <?php foreach($secondary_sponsors as $sponsor): ?>
+          <?php $sponsor_image=$sponsor->getImage(); ?>
+          <div class="col-md-4 col-sm-4 col-xs-6 secondary-sponsor">
+            <div class="sponsor-label">
+              <?= $sponsor->label ?>
+            </div>
+            <img src="<?= $sponsor_image->getLink(200, 65, false) ?>" >
+          </div>
+          <?php endforeach; ?>
+
+        <?php endif; ?>
 
     </div>
   </div>

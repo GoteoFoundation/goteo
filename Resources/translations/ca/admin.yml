@@ -107,12 +107,30 @@ admin-storys: Histories d'usuaris a Goteo
 admin-stories: Histories d'usuaris a Goteo
 admin-stories-add: Crea una nova història
 admin-stories-edit: Editant l'història %s
+admin-channelsection-section: 'Secció'
+admin-channelsection-map: 'Mapa'
+admin-channelsection-resource: 'Recursos'
+admin-channelsection-call_to_action: 'Call To Action'
+admin-channelsection-projects: 'Projectes'
+admin-channelsection-posts: 'Posts'
+admin-channelsection-program: 'Programes'
+admin-channelsection-stories: 'Stories'
+admin-channelsection-workshops: 'Tallers'
+admin-channelsection-team: 'Equip'
+admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-button: 'Botó'
+admin-channelsection-create: 'Crear'
+admin-channelsection-add: 'Afegir una secció'
 admin-channelstory-add: Afegir història al canal
 admin-channelstory-submit: Guardar història
 admin-channelstory-correct: "S'ha afegit la història al canal"
 admin-channelpost-add: Afegir Post al canal
 admin-channelpost-submit: Guardar Post
 admin-channelpost-correct: "S'ha afegit el post al canal"
+admin-channelcriteria-title: 'Questionari del canal'
+admin-channelcriteria-subtitle: "Estableix les preguntes amb les que evaluaràs un projecte que vulgui presentar-se al teu canal. Procura ser concís en el que esperes obtenir de les iniciatives que es vulguin presentar, ajudarà a facilitar-te l'evaluació final"
+admin-channelprogram-create: 'Crear'
+admin-channelprogram-add: 'Afegir programa'
 admin-categories: 'Categories i àmbits'
 admin-categories-if-empty-then-asset: 'Si es deixa buit es farà servir l''icona per defecte: %s'
 admin-category-add: Crea una nova categoria

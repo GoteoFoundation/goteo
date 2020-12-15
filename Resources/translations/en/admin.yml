@@ -128,9 +128,25 @@ admin-stories-edit: Editing user history %s
 admin-channelstory-add: Add story to the channel
 admin-channelstory-submit: Save story
 admin-channelstory-correct: 'The story has been added to the channel'
+admin-channelsection-section: 'Section'
+admin-channelsection-map: 'Map'
+admin-channelsection-resource: 'Resource'
+admin-channelsection-call_to_action: 'Call To Action'
+admin-channelsection-projects: 'Projects'
+admin-channelsection-posts: 'Posts'
+admin-channelsection-program: 'Program'
+admin-channelsection-stories: 'Stories'
+admin-channelsection-workshops: 'Workshops'
+admin-channelsection-team: 'Team'
+admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-button: 'Button'
+admin-channelsection-create: 'Create'
+admin-channelsection-add: 'Add a Section'
 admin-channelpost-add: Add Post tot he channel
 admin-channelpost-submit: Save post
 admin-channelpost-correct: 'The post has been added to the channel'
+admin-channelprogram-create: 'Create'
+admin-channelprogram-add: 'Add program'
 admin-categories: 'Categories and scopes'
 admin-categories-if-empty-then-asset: 'If empty the default icon will be used: %s'
 admin-category-add: Create a new category

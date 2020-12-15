@@ -5,6 +5,8 @@ namespace Goteo\Model\Questionnaire;
 use Goteo\Application\Message;
 use Goteo\Application\Exception\ModelNotFoundException;
 
+use Goteo\Model\Questionnaire\Question\QuestionOptions;
+
 class Question extends \Goteo\Core\Model
 {
 
@@ -26,6 +28,10 @@ class Question extends \Goteo\Core\Model
         ];
     }
 
+    public static function getLangFields() {
+        return ['title'];
+    }
+
     static public function get($id)
     {
         // $lang = Lang::current();
@@ -33,7 +39,7 @@ class Question extends \Goteo\Core\Model
 
         $query = static::query('SELECT * FROM question WHERE id = :id', array(':id' => $id));
         $question = $query->fetchObject(__CLASS__);
-
+        
         if (!$question instanceOf Question) {
             throw new ModelNotFoundException();
         }
@@ -120,6 +126,16 @@ class Question extends \Goteo\Core\Model
         $query = static::query($sql, $values);
         $questions = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         return $questions;
+    }
+
+    public function getChoices() {
+        if ($this->optionsList)
+            return $this->optionsList;
+
+        $total = QuestionOptions::getList(['question' => $this->id], 0, 0, true);
+        $this->optionsList = QuestionOptions::getList(['question' => $this->id], 0, $total);
+
+        return $this->optionsList;
     }
 
     /**

@@ -29,18 +29,40 @@ $(function(){
   var projectIcon = L.icon({
     iconUrl: '/assets/img/map/pin-project.svg',
     iconSize:     [38, 95] // size of the icon
-});
+  });
 
-var workshopIcon = L.icon({
-  iconUrl: '/assets/img/map/pin-workshop.svg',
-  iconSize:     [38, 95] // size of the icon
-});
+  var workshopIcon = L.icon({
+    iconUrl: '/assets/img/map/pin-workshop.svg',
+    iconSize:     [38, 95] // size of the icon
+  });
 
   // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   // }).addTo(map);
   
   var channel = $('#map').data('channel');
+  var geojson = $('#map').data('geojson');
+  var zoom = $('#map').data('zoom');
+  var center = $('#map').data('center');
+
+  var map = L.map('map', {
+    fullscreenControl: true,
+    center: center ? center : [0,0],
+    zoom: zoom? zoom : 3
+  });
+
+  L.tileLayer($('#map').data('tile-layer'), {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+
+  if (geojson) {
+    $.getJSON(geojson, function(data) {
+      geojsonLayer = L.geoJson(data).addTo(map);
+      // map.fitBounds(geojsonLayer.getBounds());
+    })
+  }
+
   if (channel) {
     $.ajax({
       url: '/api/map/channel/' + channel,
@@ -68,16 +90,11 @@ var workshopIcon = L.icon({
         }
       });
         
-      var latLngBounds = L.latLngBounds(latlngs);
-      var map = L.map('map', {
-        fullscreenControl: true,
-        center: latLngBounds.getCenter(),
-        zoom: 5
-      });
-      L.tileLayer($('#map').data('tile-layer'), {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-  
+      if (latlngs.length) {
+        var latLngBounds = L.latLngBounds(latlngs);
+        // map.fitBounds(latLngBounds);
+      }
+
       if (projects.length) {
         map.addLayer(project_markers);
         $('#button-projects-hide').removeClass('hidden');
@@ -88,7 +105,7 @@ var workshopIcon = L.icon({
         $('#button-workshops-hide').removeClass('hidden');
       }
 
-      map.fitBounds(latLngBounds);
+      // map.fitBounds(latLngBounds);
 
       $('#button-projects-activate').click(function() {
         map.addLayer(project_markers);

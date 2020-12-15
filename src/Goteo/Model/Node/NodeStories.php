@@ -56,8 +56,8 @@
       return [];
   }
 
-      /**
-     * Node Team listing
+    /**
+     * Node Stories listing
      *
      * @param array filters
      * @param string node id

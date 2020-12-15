@@ -20,8 +20,8 @@ class Questionnaire extends \Goteo\Core\Model
         return [
             'textarea' => Text::get('questionnaire-textarea'), 
             'boolean' => Text::get('questionnaire-boolean'),
-            'dropfiles' => Text::get('questionnaire-dropfiles')
-            // 'choice' => Text::get('questionnaire-choice')
+            'dropfiles' => Text::get('questionnaire-dropfiles'),
+            'choice' => Text::get('questionnaire-choice')
         ];
     }
 
@@ -76,6 +76,30 @@ class Questionnaire extends \Goteo\Core\Model
 
     }
 
+        /**
+     * Get data about questionnaire by matcher id
+     *
+     * @param  int $id matcher id.
+     * @return Questionnaire object
+     */
+    static public function getByChannel($cid)
+    {
+        
+        $lang = Lang::current();
+        // list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        $query = static::query('SELECT questionnaire.* 
+                                FROM questionnaire 
+                                INNER JOIN questionnaire_channel
+                                ON questionnaire.id = questionnaire_channel.questionnaire AND questionnaire_channel.channel = :channel', array(':channel' => $cid));
+        $questionnaire = $query->fetchObject(__CLASS__);
+        if ($questionnaire instanceOf Questionnaire)
+            $questionnaire->questions = Question::getByQuestionnaire($questionnaire->id);
+
+        return $questionnaire;
+
+    }
+
     public function getMaxScore() {
         $query = static::query('SELECT sum(question.max_score)
                                 FROM question 
@@ -113,12 +137,57 @@ class Questionnaire extends \Goteo\Core\Model
                 static::query($sql, $values);
             }
 
+            if ($this->channel) {
+                $sql = "REPLACE INTO questionnaire_channel VALUES(:questionnaire, :channel)";
+                $values = [":questionnaire" => $this->id, ":channel" => $this->channel];
+
+                // die(\sqldbg($sql, $values));
+                static::query($sql, $values);
+            }
+            
             return true;
         } catch(\PDOException $e) {
             $errors[] = "Save error " . $e->getMessage();
             return false;
         }
     }
+
+    public function isAnswered($project_id)
+    {
+        $query = static::query('SELECT DISTINCT(qap.project)
+        FROM question_answer_project qap
+        INNER JOIN question_answer qa ON qa.question  = qap.answer
+        INNER JOIN question q ON q.id = qa.question
+        WHERE qap.project = :project AND q.questionnaire = :id
+        ', [':id' => $this->id, ':project' => $project_id]);
+
+        return $query->fetchColumn();
+    }
+
+    public function removeLang($lang) {
+        if ($this->questions) {
+            foreach($this->questions as $question) {
+                $question->removeLang($lang);
+            }
+        }
+    }
+
+        /**
+     * Returns percent (from 0 to 100) translations
+     * by grouping all items sharing some common keys
+     */
+    public function getLangsGroupPercent($lang, array $keys) {
+        $percent = 0;
+        if ($this->questions) {
+            foreach($this->questions as $question) {
+                $percent += $question->getLangsGroupPercent($lang, ['title']);
+            }
+            $percent = $percent/count($this->questions);
+        }
+
+        return $percent;
+    }
+
 
     /**
      * Validate.

@@ -24,6 +24,7 @@ use Goteo\Model\Node\NodeTeam;
 use Goteo\Model\Node\NodeCallToAction;
 use Goteo\Model\Node\NodeStories;
 use Goteo\Model\Node\NodePost;
+use Goteo\Model\Node\NodeSections;
 
 class Node extends \Goteo\Core\Model {
 
@@ -39,11 +40,12 @@ class Node extends \Goteo\Core\Model {
         $email,
         $admins = array(), // administradores
         $logo,
+        $logo_footer,
         $sello,
         $home_img,
         $active,
         $project_creation_open,
-        $call_inscription_open,
+        $call_inscription_open, // TODO: remove
         $banner_header_image,
         $banner_header_image_md,
         $banner_header_image_sm,
@@ -61,7 +63,8 @@ class Node extends \Goteo\Core\Model {
         $chatbot_url,
         $chatbot_id,
         $tip_msg,
-        $analytics_id
+        $analytics_id,
+        $config
         ;
 
 
@@ -78,6 +81,9 @@ class Node extends \Goteo\Core\Model {
 
             // logo
             $this->logo = (!empty($this->logo)) ? Image::get($this->logo) : null;
+
+            // logo footer
+            $this->logo_footer = (!empty($this->logo_footer)) ? Image::get($this->logo_footer) : null;
 
             // label
             $this->label = (!empty($this->label)) ? Image::get($this->label) : null;
@@ -112,6 +118,7 @@ class Node extends \Goteo\Core\Model {
                 node.hashtag as hashtag,
                 $fields,
                 node.logo as logo,
+                node.logo_footer as logo_footer,
                 node.label as label,
                 node.home_img as home_img,
                 node.location as location,
@@ -139,7 +146,8 @@ class Node extends \Goteo\Core\Model {
                 node.chatbot_url as chatbot_url,
                 node.chatbot_id as chatbot_id,
                 node.tip_msg as tip_msg,
-                node.analytics_id as analytics_id
+                node.analytics_id as analytics_id,
+                node.config as config
             FROM node
             $joins
             WHERE node.id = :id";
@@ -264,6 +272,7 @@ class Node extends \Goteo\Core\Model {
                        node.active,
                        node.url,
                        node.logo,
+                       node.logo_footer,
                        node.location,
                        node.twitter,
                        node.facebook,
@@ -393,6 +402,14 @@ class Node extends \Goteo\Core\Model {
         return $this->logoInstance;
     }
 
+    public function getLogoFooter() {
+        if(!$this->logoFooterInstance instanceOf Image) {
+            $this->logoFooterInstance = new Image($this->logo_footer);
+        }
+        return $this->logoFooterInstance;
+    }
+
+
     public function getLabel() {
         if(!$this->labelInstance instanceOf Image) {
             $this->labelInstance = new Image($this->label);
@@ -418,7 +435,8 @@ class Node extends \Goteo\Core\Model {
             'default_consultant',
             'sponsors_limit',
             'iframe',
-            'analytics_id'
+            'analytics_id',
+            'config'
             );
 
         $set = '';
@@ -934,7 +952,7 @@ class Node extends \Goteo\Core\Model {
             FROM project
             LEFT JOIN node_project
                 ON node_project.project_id = project.id
-            WHERE project.node = 'ahoracomparte' OR node_project.node_id = 'ahoracomparte'
+            WHERE project.node = :node OR node_project.node_id = :node
         ", $values);
         $data['amount'] = $query->fetchColumn();
 
@@ -1198,6 +1216,27 @@ class Node extends \Goteo\Core\Model {
         return $this->callToActionList;
     }
     
+    public function setConfig(array $config) {
+        $this->config = $config ? json_encode($config) : '';
+        return $this;
+    }
 
+    public function getConfig() {
+        if($this->config) return json_decode($this->config, true);
+        return [];
+    }
+
+    public function getSections($section) {
+        if($this->sectionsList) return $this->sectionsList;
+
+        $filter = [
+            'node' => $this->id
+        ];
+
+        if ($section) $filter['section'] = $section;
+
+        $this->sectionsList = NodeSections::getList($filter, 0, 10);
+        return $this->sectionsList;
+    }
 
 }

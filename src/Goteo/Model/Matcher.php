@@ -51,8 +51,8 @@ class Matcher extends \Goteo\Core\Model {
            $fee = 0,
            $processor = 'duplicateinvest',
            $vars = [
-               'max_donation_per_invest' => 100,
-               'max_donation_per_project' => 0,
+               'max_amount_per_invest' => 100,
+               'max_amount_per_project' => 0,
                'max_invests_per_user' => 1,
                'filter_by_platform' => 0
            ],
@@ -74,7 +74,7 @@ class Matcher extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'description', 'terms'];
+        return ['name', 'description'];
     }
 
     /**
@@ -129,12 +129,18 @@ class Matcher extends \Goteo\Core\Model {
      *                  if 'array' search for all of that statuses in active matchers
      * @return array of Matchers available for the project
      */
-    static public function getFromProject($pid, $status = true) {
+    static public function getFromProject($pid, $status = true, $filters = array()) {
         if($pid instanceOf Project) $pid = $pid->id;
         $values = [':pid' => $pid];
         $sql = "SELECT a.* FROM `matcher` a
             RIGHT JOIN `matcher_project` b ON a.id = b.matcher_id
             WHERE b.project_id = :pid";
+
+        if($filters['has_channel']) {
+            $sql .= " AND EXISTS ( SELECT node.id
+                                    FROM node
+                                    WHERE node.id = a.id )";
+        }
 
         if((is_bool($status) && $status) || $status == 'all') {
             $sql .= " AND a.active=1 AND b.status = 'active'";
@@ -193,6 +199,13 @@ class Matcher extends \Goteo\Core\Model {
             $filter[] = "(matcher.name LIKE :global OR matcher.matcher_location LIKE :global)";
             $values[':global'] = '%'.$filters['global'].'%';
         }
+
+        if($filters['has_channel']) {
+            $filter[] = "EXISTS ( SELECT node.id
+                                    FROM node
+                                    WHERE node.id = matcher.id )";
+        }
+
         // print_r($filter);die;
         if($filter) {
             $sql = " WHERE " . implode(' AND ', $filter);
@@ -911,6 +924,9 @@ class Matcher extends \Goteo\Core\Model {
 
 
 
+    /*
+    *  Get the matchers that a given user administrates
+    */
     public static function getUserMatchersList($user) {
         $sql = "SELECT *
         FROM matcher

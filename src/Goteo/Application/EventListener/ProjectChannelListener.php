@@ -17,6 +17,9 @@ use Goteo\Application\Message;
 use Goteo\Application\Event\FilterProjectEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+use Goteo\Model\Questionnaire;
 
 class ProjectChannelListener extends AbstractListener {
     protected $request;
@@ -49,6 +52,11 @@ class ProjectChannelListener extends AbstractListener {
         $errors = [];
         if(!$project->save($errors)) {
             Message::error("Error applying your project to the channel!\n" . implode(',',$errors));
+        }
+
+        if (Questionnaire::getByMatcher($project->node) || Questionnaire::getByChannel($project->node)) {
+            $event->setResponse(new RedirectResponse('/channel/'. $project->node .'/apply/'.$project->id ));
+            return;
         }
     }
 
