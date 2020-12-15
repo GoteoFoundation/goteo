@@ -1,4 +1,5 @@
 <?php //Extract the first title for the element embebed in the header banner ?>
+<?php $channel=$this->channel; ?>
 <?php $questions=$this->questions; ?>
 
 <?php $first_faq=$questions[0]; ?>
@@ -8,7 +9,7 @@
 	<div class="custom-header">
 		<div class="pull-left">
 			<a href="<?= '/channel/'.$this->channel->id ?> ">
-				<img src="/assets/img/channel/call/logo_crowdcoop.png" height="30px">
+				<img src="<?= $channel->logo ? $channel->logo->getlink(0,40) : '' ?>" height="40px">
 			</a>
 		</div>
 		<div class="pull-right">

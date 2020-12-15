@@ -161,6 +161,9 @@ EOT
                 $valid_donors = 0;
                 $invalid_donors = 0;
                 $updated_donors = 0;
+                $could_not_update = 0;
+                $updated = 0;
+                $invalid_nif = 0;
 
                 foreach($donors as $donor) {
                     if ($verbose) {
@@ -169,10 +172,14 @@ EOT
                         $progress_bar->display();
                     }
 
+
                     $errors = array();
                     $donor->validateData($errors);
 
                     if (!empty($errors)) {
+
+                        $can_be_updated = false;
+
                         if ($verbose) {
                             $progress_bar->clear();
                             $this->warning("This donor has invalid data " . implode(',', $errors));
@@ -181,94 +188,95 @@ EOT
 
                         $invalid_donors++;
 
+                        if(isset($errors['nif'])) {
+                            $valid_nif = Check::nif($donor->nif, $nif_type);
+                            
+                            if ($valid_nif) {
+                                $donor->legal_document_type = $nif_type;
+                                if ($nif == Donor::NIF || Donor::NIE) {
+                                    $donor->legal_entity = Donor::NATURAL_PERSON;
+                                } else if ($nif == Donor::CIF) {
+                                    $donor->legal_entity = Donor::LEGAL_PERSON;
+                                }
+                                $can_be_updated = true;
+
+                                if ($verbose) {
+                                    $progress_bar->clear();        
+                                    $output->writeln("<info>The donor legal document type can be changed to {$nif_type} and the legal entity to {$donor->legal_entity} if used --update </info>");
+                                    $progress_bar->display();
+                                }        
+                            } else {
+                                $invalid_nif++;
+                            }
+                        }
+
                         if (isset($errors['legal_entity'])) {
 
                             Check::nif($donor->nif, $nif_type);
                             
-
                             if ($verbose) {
                                 $progress_bar->clear();
-                                $output->writeln("<info>The donor has not specified the legal entity</info>");
-                                $progress_bar->display();
-
-                                $progress_bar->clear();
-                                $output->writeln("<info>Check proves the nif to be from a " . $nif_type);
+                                $output->writeln("<info>The donor has not specified the legal entity or there is a mismatch between legal entity and type of document</info>");
                                 $progress_bar->display();
                             }
 
                             if ($nif_type == Donor::CIF) {
-                                if ($update) {
-                                    $progress_bar->clear();
-                                    $output->writeln("<info>The donor legal entity will be changed to " . Donor::LEGAL_PERSON);
+                                if ($verbose) {
+                                    $progress_bar->clear();        
+                                    $output->writeln("<info>The donor legal entity will be changed to " . Donor::LEGAL_PERSON . "</info>");
                                     $progress_bar->display();
-                                    $donor->legal_entity = Donor::LEGAL_PERSON;
-                                } else {
-                                    if ($verbose) {
-                                        $progress_bar->clear();        
-                                        $output->writeln("<info>The donor legal entity could be changed to " . Donor::LEGAL_PERSON);
-                                        $progress_bar->display();
-                                    }
                                 }
-                            } else {
-                                if ($update) {
-                                    $progress_bar->clear();
-                                    $output->writeln("<info>The donor legal entity will be changed to " . Donor::NATURAL_PERSON);
-                                    $progress_bar->display();
 
-                                    $donor->legal_entity = Donor::NATURAL_PERSON;
-                                } else {
-                                    if ($verbose) {
-                                        $progress_bar->clear();
-                                        $output->writeln("<info>The donor legal entity could be changed to " . Donor::NATURAL_PERSON);
-                                        $progress_bar->display();
-                                    }
+                                $donor->legal_entity = Donor::LEGAL_PERSON;
+                                $can_be_updated = true;
+                            } else {
+                                if ($verbose) {
+                                    $progress_bar->clear();
+                                    $output->writeln("<info>The donor legal entity will be changed to " . Donor::NATURAL_PERSON . "</info>");
+                                    $progress_bar->display();
                                 }
+
+                                $donor->legal_entity = Donor::NATURAL_PERSON;
+                                $can_be_updated = true;
                             }
                         }
-        
-                        if(isset($errors['nif'])) {
+
+                        if (isset($errors['legal_document_type'])) {
+
                             Check::nif($donor->nif, $nif_type);
-                            if ($donor->legal_document_type == '') {
-                                if ($verbose) {
-                                    $progress_bar->clear();        
-                                    $this->warning("The donor had no legal document type defined");
-                                    $progress_bar->display();
-                                }
+                            
+                            if ($verbose) {
+                                $progress_bar->clear();
+                                $output->writeln("<info>The donor has not specified the legal document type</info>");
+                                $output->writeln("<info>The donor legal entity will be changed to " . $nif_type . "</info>");
+                                $progress_bar->display();
                             }
+
                             $donor->legal_document_type = $nif_type;
-                            $error_save = array();
-                            if ($update) {
-                                if ($verbose) {
-                                    $progress_bar->clear();        
-                                    $output->writeln("<info>The donor legal document will be changed to {$nif_type}</info>");
-                                    $progress_bar->display();
-                                }
-                            }
+                            $can_be_updated = true;
                         }
+
+                        if ($can_be_updated)
+                            $updated_donors++;
 
                         if ($update) {
                             $error_save = array();
                             if ($donor->save($error_save)) {
+                                $updated++;
                                 if ($verbose) {
                                     $progress_bar->clear();        
-                                    $output->writeln("<info>The donor legal document has been updated to {$nif_type}</info>");
+                                    $output->writeln("<info>The donor legal document has been updated</info>");
                                     $progress_bar->display();
                                 }
-                                $updated_donors++;
                             } else {
+                                $could_not_update++;
                                 if ($verbose) {
                                     $progress_bar->clear();        
-                                    $output->writeln("<error>The donor still has invalid data.");
+                                    $this->warning("This donor still has invalid data " . implode(',', $error_save));
                                     $progress_bar->display();
                                 }
                             }
-                        } else {
-                            if ($verbose) {
-                                $progress_bar->clear();        
-                                $output->writeln("<info>The donor legal document type can be changed to {$nif_type} and the legal entity to {$donor->legal_entity} if used --update");
-                                $progress_bar->display();
-                            }
-                        }
+                        } 
 
                     } else {
                         $valid_donors++;
@@ -282,7 +290,10 @@ EOT
 
                 $output->writeln("<info>Found {$valid_donors} valid donors</info>");
                 $output->writeln("<info>Found {$invalid_donors} invalid donors </info>");
-                $output->writeln("<info>Could update {$updated_donors} invalid donors</info>");
+                $output->writeln("<info>Found {$invalid_nif} invalid donors with invalid nif</info>");
+                $output->writeln("<info>Can update {$updated_donors} invalid donors</info>");
+                $output->writeln("<info>Could NOT update {$could_not_update} invalid donors</info>");
+                $output->writeln("<info>{$updated} invalid donors HAVE been updated</info>");
 
             }
         } else if ($update_amounts) {
@@ -304,6 +315,7 @@ EOT
             $offset = 0;
             $limit = 100;
             $total_donors = 0;
+            $update_errors = 0;
 
             foreach ($status_to_filter as $status) {
                 $output->writeln("<info>About to treat donors with {$status} status </info>");
@@ -319,59 +331,56 @@ EOT
 
                 $progress_bar = new ProgressBar($output, $total);
                 $progress_bar->start();
+                $donors = Donor::getList($filter, 0, $total);
 
-                while ($donors = Donor::getList($filter, $offset, $limit)) {
-                    
-                    foreach($donors as $donor) {
+                foreach($donors as $donor) {
 
-                        $donor_year = $donor->year;
-                        $invest_filters = [
-                            'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_TO_POOL, Invest::STATUS_DONATED],
-                            'date_from' => date_format(date_sub(date_create($donor_year . '-01-01'), date_interval_create_from_date_string('40 days')), 'Y-m-d'),
-                            'date_until' => $donor_year . '-12-31',
-                            'users' => $donor->user,
-                            'procStatus' => 'passed'
-                        ];
+                    $donor_year = $donor->year;
+                    $invest_filters = [
+                        'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_TO_POOL, Invest::STATUS_DONATED],
+                        'date_from' => date_format(date_sub(date_create($donor_year . '-01-01'), date_interval_create_from_date_string('40 days')), 'Y-m-d'),
+                        'date_until' => $donor_year . '-12-31',
+                        'users' => $donor->user,
+                        'procStatus' => 'passed'
+                    ];
 
-                        // $user_invests = Invest::getList($invest_filters, null, 0, 0, 'all');
-                        $user_invests = Donor::getPendingInvestionsAmount($donor->user);
-                        $donor_amount = $user_invests['amount'] + $user_invests['donations_amount'];
+                    // $user_invests = Invest::getList($invest_filters, null, 0, 0, 'all');
+                    $user_invests = Donor::getPendingInvestionsAmount($donor->user);
+                    $donor_amount = $user_invests['amount'] + $user_invests['donations_amount'];
 
-                        if ($donor_amount != 0 || $donor->amount != $donor->getAmount()) {
-                            if ($verbose_debug) {
-                                $progress_bar->clear();
-                                $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} has {$donor_amount} but only {$donor->amount} in the certificate.</info>");
-                                $progress_bar->display();
-                            }
-
-                            $errors = [];
-
-                            if ($update) {
-                                if ($donor->updateInvestions()) {
-                                    $updated_donors++;
-                                }
-                            } else {
-                                $can_be_updated++;
-                            }
-                            // if ($verbose_debug)
-                                // print_r($donor);
-
+                    if ($donor_amount != 0 || $donor->amount != $donor->getAmount()) {
+                        if ($verbose_debug) {
+                            $progress_bar->clear();
+                            $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} has {$donor_amount} but only {$donor->amount} in the certificate.</info>");
+                            $progress_bar->display();
                         }
-                        $progress_bar->advance();
-                    }
 
-                    $offset+=$limit;
+                        $errors = [];
+
+                        if ($update) {
+                            if ($donor->updateInvestions()) {
+                                $updated_donors++;
+                            } else {
+                                $update_errors++;
+                            }
+                        } else {
+                            $can_be_updated++;
+                        }
+                        // if ($verbose_debug)
+                            // print_r($donor);
+
+                    }
+                    $progress_bar->advance();
                 }
+
                 $progress_bar->finish();
-                $total_donors += $total;
                 $output->writeln('');
             }
 
             if ($update) {
-                $output->writeln("<info>A total of {$updated_donors} out of {$total_donors} have been updated.</info>");
-
+                $output->writeln("<info>A total of {$updated_donors} out of {$total} have been updated.</info>");
             } else {
-                $output->writeln("<info>A total of {$can_be_updated} out of {$total_donors} can be updated using --update");
+                $output->writeln("<info>A total of {$can_be_updated} out of {$total} can be updated using --update");
             }
 
         } else if ($update_status) {
