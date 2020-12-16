@@ -174,11 +174,11 @@ EOT
 
 
                     $errors = array();
+                    $can_be_updated = false;
                     $donor->validateData($errors);
 
                     if (!empty($errors)) {
 
-                        $can_be_updated = false;
 
                         if ($verbose) {
                             $progress_bar->clear();
@@ -301,6 +301,7 @@ EOT
             $filter = [
                 'year' => $year,
                 'show_empty' => true,
+                'status' => Donor::UNCONFIRMED
             ];
 
             if ($user) {
