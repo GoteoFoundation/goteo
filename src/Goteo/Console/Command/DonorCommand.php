@@ -188,8 +188,9 @@ EOT
 
                         $invalid_donors++;
 
+                        $valid_nif = Check::nif($donor->nif, $nif_type);
+
                         if(isset($errors['nif'])) {
-                            $valid_nif = Check::nif($donor->nif, $nif_type);
                             
                             if ($valid_nif) {
                                 $donor->legal_document_type = $nif_type;
@@ -212,39 +213,37 @@ EOT
 
                         if (isset($errors['legal_entity'])) {
 
-                            Check::nif($donor->nif, $nif_type);
-                            
                             if ($verbose) {
                                 $progress_bar->clear();
                                 $output->writeln("<info>The donor has not specified the legal entity or there is a mismatch between legal entity and type of document</info>");
                                 $progress_bar->display();
                             }
 
-                            if ($nif_type == Donor::CIF) {
-                                if ($verbose) {
-                                    $progress_bar->clear();        
-                                    $output->writeln("<info>The donor legal entity will be changed to " . Donor::LEGAL_PERSON . "</info>");
-                                    $progress_bar->display();
-                                }
+                            if ($valid_nif) {
+                                if ($nif_type == Donor::CIF) {
+                                    if ($verbose) {
+                                        $progress_bar->clear();        
+                                        $output->writeln("<info>The donor legal entity will be changed to " . Donor::LEGAL_PERSON . "</info>");
+                                        $progress_bar->display();
+                                    }
 
-                                $donor->legal_entity = Donor::LEGAL_PERSON;
-                                $can_be_updated = true;
-                            } else {
-                                if ($verbose) {
-                                    $progress_bar->clear();
-                                    $output->writeln("<info>The donor legal entity will be changed to " . Donor::NATURAL_PERSON . "</info>");
-                                    $progress_bar->display();
-                                }
+                                    $donor->legal_entity = Donor::LEGAL_PERSON;
+                                    $can_be_updated = true;
+                                } else {
+                                    if ($verbose) {
+                                        $progress_bar->clear();
+                                        $output->writeln("<info>The donor legal entity will be changed to " . Donor::NATURAL_PERSON . "</info>");
+                                        $progress_bar->display();
+                                    }
 
-                                $donor->legal_entity = Donor::NATURAL_PERSON;
-                                $can_be_updated = true;
+                                    $donor->legal_entity = Donor::NATURAL_PERSON;
+                                    $can_be_updated = true;
+                                }
                             }
                         }
 
                         if (isset($errors['legal_document_type'])) {
 
-                            Check::nif($donor->nif, $nif_type);
-                            
                             if ($verbose) {
                                 $progress_bar->clear();
                                 $output->writeln("<info>The donor has not specified the legal document type</info>");
@@ -252,8 +251,10 @@ EOT
                                 $progress_bar->display();
                             }
 
-                            $donor->legal_document_type = $nif_type;
-                            $can_be_updated = true;
+                            if ($valid_nif) {
+                                $donor->legal_document_type = $nif_type;
+                                $can_be_updated = true;
+                            }
                         }
 
                         if ($can_be_updated)
