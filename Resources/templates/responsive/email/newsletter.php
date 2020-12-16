@@ -162,7 +162,7 @@
             font-weight: 200;
             font-weight: 400;
         }
-        
+
         /*.footer img{
             width: 100%;
         }*/
@@ -170,7 +170,7 @@
         li{
             margin-bottom: 10px;
         }
-        
+
 		.text-center{
 			text-align: center;
 		}
@@ -213,7 +213,7 @@
             }
             .progress-container{
                 position: inherit !important;
-                padding: 20px 0 10px 0; 
+                padding: 20px 0 10px 0;
             }
         }
         @media only screen and (max-width: 320px) {
@@ -288,7 +288,7 @@
                     <!-- Contenido -->
 
                     <div style="font-size: 16px">
-                    
+
                     <table class="section header" cellpadding="0" cellspacing="0" width="600">
                         <tr>
                             <td class="column">
@@ -350,9 +350,9 @@
 
                     <?php endforeach ?>
 
-                    
+
                 </div>
-                
+
                 <!-- BOTON VER PROYECTOS -->
                 <table class="section" style="margin-top: 40px; margin-bottom: 80px; margin-right: 22px;" cellpadding="0" cellspacing="0">
                 <tr>
@@ -369,14 +369,14 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table> 
+                        </table>
                     </td>
                 </tr>
                 </table>
 
 	               <!-- FOOTER SOCIAL -->
                     <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#555555">
-	                   <tr> 
+	                   <tr>
                             <td align="center">
                                 <table border="0" cellpadding="0" cellspacing="0">
                                     <tbody>
@@ -405,7 +405,7 @@
 
                     <!-- PRE-FOOTER -->
                     <table class="section footer header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#555555">
-                       <tr> 
+                       <tr>
                         <td align="center">
                             <table border="0" cellpadding="0" cellspacing="0">
                                 <tbody>
@@ -435,7 +435,7 @@
 
                    <!-- INICIATIVA GOTEO -->
                     <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#555555">
-                       <tr> 
+                       <tr>
                             <td align="center">
                                 <table border="0" cellpadding="0" cellspacing="0">
                                     <tbody>

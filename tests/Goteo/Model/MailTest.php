@@ -4,6 +4,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\Template;
 use Goteo\Model\Mail;
+use Goteo\Application\Config;
 
 class MailTest extends \PHPUnit_Framework_TestCase {
     /**
@@ -47,6 +48,9 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $this->assertContains('<title>' . $mail->subject . '</title>', $mailer->Body);
     }
 
+    private function encode($mail, $url='') {
+        return mybase64_encode(md5(Config::get('secret') . '-' . $mail->to . '-' . $mail->id. '-' . $url) . '¬' . $mail->to  . '¬' . $mail->id . '¬' . $url);
+    }
     /**
      * @depends testValidate
      */
@@ -54,9 +58,11 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $mail->template = Template::NEWSLETTER;
         $mailer = $mail->buildMessage();
         // este test no funciona si no hay base de datos
-        $this->assertContains('/user/unsubscribe', $mailer->Body);
-        $this->assertContains('/goteo_logo.png" alt="Logo" />', $mailer->Body);
-        $this->assertContains($mail->subject . '</title>', $mailer->Body);
+        $leave_url = Config::getMainUrl() . '/user/unsubscribe/' . $mail->getToken();
+        $unsubscribe_url = Config::getMainUrl() . '/mail/url/' . $this->encode($mail, $leave_url);
+        $this->assertContains($unsubscribe_url, $mailer->Body);
+        $this->assertContains('/goteo-white.png"', $mailer->Body);
+        $this->assertContains($mail->content, $mailer->Body);
     }
 
     /**

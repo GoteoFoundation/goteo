@@ -9,5 +9,5 @@ newsletter-unsubscribe-cancel: 'T''has equivocat? <a href="%s">Torna''t a subscr
 newsletter-subscribe-cancel: 'No et volies subscriure? <a href="%s">cancel·la la teva subscripció</a>'
 subscribe-request-success: 'Felicitats! T''has subscript al nostre butlletí (%s).'
 unsubscribe-request-success: 'Has cancel·lat la teva subscripció al butlletí (%s).'
-mailer-to: Per
 mailer-more-projects-button: 'VEURE MÉS PROJECTES'
+mailer-to: Per

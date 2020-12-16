@@ -127,7 +127,7 @@ project-create-save-alert: '<strong>GROSSARTIG!!</strong><p>Nachdem wir nun eine
 project-create-modal-no-social-title: 'Soziales Engagement'
 project-create-modal-no-social-description: 'Es ist zwingend erforderlich, ein soziales Engagement zu haben, damit Ihr Projekt in Goteo akzeptiert wird. Wenn Sie sich nicht selbst festlegen, indem Sie eine davon auswählen, wird die Schaltfläche, mit der Sie fortfahren können, nicht aktiviert: - ('
 project-share-materials: 'Gemeinsame Materialien'
-project-create-no-social-commitment: 'Ich habe nicht'
+project-create-no-social-commitment: 'Keines'
 project-progress-title: Wie geht das Projekt voran
 project-edit: Projekt bearbeiten
 project-remove-cost-confirm: 'Sind Sie sicher, dass Sie diese Kosten löschen möchten?'

@@ -1,1 +1,2 @@
-telegram-welcome-channel-project: "Welcome to this bot! We will help you with your project [%s]"
+---
+telegram-welcome-channel-project: "Welcome to this bot! We'll help you with your project [%s]"

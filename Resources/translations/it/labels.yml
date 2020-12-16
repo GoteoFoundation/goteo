@@ -4,22 +4,31 @@ accounts-lb-add: 'Contributo manuale'
 accounts-lb-cancel: 'Annullando il contributo'
 accounts-lb-cancel-pool: 'Annullamento dell''opzione di credito'
 accounts-lb-details: 'Dettagli del contributo'
+accounts-lb-execute: 'Esecuzione del carico'
 accounts-lb-list: Creando lista
 accounts-lb-move: 'Spostando il contributo'
 accounts-lb-report: 'Rapporto di progetto'
 accounts-lb-update: 'Modifica dello stato del contributo'
+accounts-lb-viewer: 'Guardando logs'
 banners-lb: Banner
 banners-lb-add: 'Nuovo banner'
 banners-lb-cancel: 'Annullando il contributo'
 banners-lb-details: 'Dettagli del contributo'
 banners-lb-edit: 'Modificando Banner'
+banners-lb-execute: 'Esecuzione del carico'
 banners-lb-list: Creando lista
 banners-lb-move: 'Spostando il contributo'
 banners-lb-report: 'Rapporto di progetto'
 banners-lb-translate: 'Traducendo Banner'
 banners-lb-update: 'Modificando lo stato del contributo'
+banners-lb-viewer: 'Guardando logs'
 blog-lb: Blog
 blog-lb-add: 'Nuovo Post'
+blog-lb-edit: 'Modificando Voce'
+blog-lb-footer: 'Ordinando le voci nel Footer'
+blog-lb-list: Elencando
+blog-lb-reorder: 'Ordinando le voci in Portada'
+blog-lb-translate: 'Traducendo Voce'
 categories-lb: Categorie
 categories-lb-add: 'Nuova Categoria'
 categories-lb-edit: 'Modificando la categoria'
@@ -27,32 +36,95 @@ categories-lb-keywords: 'Parole Chiave'
 categories-lb-list: Creando lista
 categories-lb-translate: 'Traducendo Categoria'
 commons-lb: 'Beneficio collettivo'
+commons-lb-add: 'Nuovo ritorno'
+commons-lb-edit: 'Modificando ritorno'
 commons-lb-info: 'Informazioni di contatto'
 commons-lb-list: Creando lista
 commons-lb-report: 'Rapporto di progetto'
+commons-lb-view: 'Gestione dei ritorni'
+communication-lb: 'Comunicazioni'
 criteria-lb: 'Criteri di revisione'
+criteria-lb-add: 'Nuovo Criterio'
+criteria-lb-edit: 'Modificando Criterio'
 criteria-lb-list: Creando lista
 criteria-lb-translate: 'Traducendo Criterio'
 faq-lb: '* FAQ'
 faq-lb-add: 'Nuova Domanda'
 faq-lb-edit: 'Modifica Domanda'
 faq-lb-list: Creando lista
+faq-lb-translate: 'Traducendo Domanda'
+filter-lb: 'Filtri'
 glossary-lb: Glossario
+glossary-lb-edit: 'Modificando Termine'
+glossary-lb-list: Elencando
+glossary-lb-translate: 'Traducendo Termine'
+home-lb: 'Elementi in portata'
+home-lb-list: 'Elementi in portata'
+icons-lb: 'Tipi di Ritorno'
+icons-lb-edit: 'Modificando Tipo'
+icons-lb-list: Elencando
+icons-lb-translate: 'Traducendo Tipo'
+info-lb: 'Idee su'
+info-lb-add: 'Creando Idea'
+info-lb-edit: 'Modificando Idea'
+info-lb-list: Elencando
+info-lb-translate: 'Traducendo Idea'
+licenses-lb: Licenze
+licenses-lb-add: 'Creando Idea'
+licenses-lb-edit: 'Modificando Licenza'
+licenses-lb-list: Elencando
+licenses-lb-translate: 'Traducendo Licenza'
+mailing-lb: Comunicazioni
+mailing-lb-edit: 'Scrivendo contenuto'
+mailing-lb-list: 'Selezionando destinatari'
+mailing-lb-send: 'Comunicazione inviata'
+milestones-lb: Traguardi
+milestones-lb-add: 'Nuovo Traguardo'
+milestones-lb-edit: 'Modificando Traguardo'
+milestones-lb-list: Elencando
+milestones-lb-translate: 'Traducendo Traguardo'
+news-lb: Micronotizie
+news-lb-add: 'Nuova Micronotizia'
+news-lb-edit: 'Modificando Micronotizia'
+news-lb-list: Elencando
+news-lb-translate: 'Traducendo Micronotizia'
+newsletter-lb: Bollettino
+newsletter-lb-detail: 'Guardando destinatari'
 newsletter-lb-init: 'Iniziando un nuovo invio'
 newsletter-lb-list: 'Stato di consegna automatica'
 node-lb: 'Dati del Canale'
+node-lb-admins: 'Guarda amministratori'
+node-lb-edit: Modificando
+node-lb-list: 'Dati attuali'
+nodes-lb: Canali
+nodes-lb-add: 'Nuovo Canale'
+nodes-lb-admins: 'Assegnando amministratori del Canale'
+nodes-lb-edit: 'Gestendo Canale'
 nodes-lb-list: Creando lista
+pages-lb: Pagine
 pages-lb-add: 'Nuova pagina'
+pages-lb-list: Elencando
 pages-lb-translate: 'Traducendo Pagina'
 pages-lbedit: 'Modifica pagina'
 projects-lb: Progetti
 projects-lb-accounts: 'Conti del progetto'
+projects-lb-assign: 'Assegnando ad una Chiamata il progetto'
+projects-lb-cancel: 'Cancellando contributo'
+projects-lb-conf: 'Configurazione di campagna del progetto'
+projects-lb-consultants: 'Cambiando consigliere del progetto'
+projects-lb-dates: 'Date del progetto'
+projects-lb-execute: 'Esecuzione del carico'
 projects-lb-images: 'Immagini del progetto'
 projects-lb-list: Creando lista
+projects-lb-move: 'Muovendo ad un altro Nodo il progetto'
+projects-lb-open_tags: 'Assegnando un raggruppamento al progetto'
 projects-lb-rebase: 'Cambiando Id del progetto'
 projects-lb-report: 'Rapporto finanziario sul progetto'
 promote-lb: 'Progetti In Evidenza'
+promote-lb-add: 'Nuova Funzionalità'
+promote-lb-edit: 'Modificando Funzionalità'
 promote-lb-list: Creando lista
+promote-lb-translate: 'Traducendo Funzionalità'
 recent-lb: 'Attività recente '
 recent-lb-list: Creando lista
 reviews-lb: Revisioni
@@ -62,10 +134,43 @@ reviews-lb-list: Creando lista
 rewards-lb: Ricompense
 rewards-lb-edit: 'Gestendo ricompensa'
 rewards-lb-list: Creando lista
+sent-lb: 'Cronologia invii'
+sent-lb-list: 'Mail Inviate'
 sponsors-lb: 'Partner istituzionali'
+sponsors-lb-add: 'Nuovo Patrocinatore'
+sponsors-lb-edit: 'Modificando Patrocinatore'
 sponsors-lb-list: Creando lista
+tags-lb: 'Tag del blog'
 tags-lb-add: 'Nuova Tag'
+tags-lb-edit: 'Modificando Tag'
+tags-lb-list: Elencando
+tags-lb-translate: 'Traducendo Tag'
+templates-lb: 'Modello di mail'
+templates-lb-edit: 'Modificando Modello'
+templates-lb-list: Elencando
+texts-lb: 'Interfaccia testi'
+texts-lb-edit: 'Modificando Originale'
+texts-lb-list: Elencando
+translates-lb: 'Traduzioni di progetti'
+translates-lb-add: 'Abilitando traduzione'
+translates-lb-edit: 'Assegnando traduzione'
+translates-lb-list: Elencando
+translates-lb-translate: 'Traducendo Testo'
+transnodes-lb: 'Traduzioni di nodi'
+transnodes-lb-edit: 'Assegnando traduzione'
+transnodes-lb-list: Elencando
+users-lb: Utenti
+users-lb-add: 'Creando Utente'
+users-lb-edit: 'Modificando utente'
+users-lb-impersonate: 'Gestendo l''Utente'
+users-lb-list: Elencando
+users-lb-manage: 'Gestendo Utente'
+users-lb-move: 'Muovendo ad un altro Nodo l''utente'
+workshop-lb: 'Laboratori'
+word-lb: 'Conteggio di parole'
 word-lb-list: Creando lista
 worth-lb: 'Livelli di meritocrazia'
 worth-lb-edit: 'Modificando livello'
 worth-lb-list: Creando lista
+stats-lb: Statistiche & dati
+stories-lb: 'Cronologie dell''utente'
