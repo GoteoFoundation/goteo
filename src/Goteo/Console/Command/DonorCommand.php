@@ -179,7 +179,6 @@ EOT
 
                     if (!empty($errors)) {
 
-
                         if ($verbose) {
                             $progress_bar->clear();
                             $this->warning("This donor has invalid data " . implode(',', $errors));
@@ -292,7 +291,7 @@ EOT
                 $output->writeln("<info>Found {$valid_donors} valid donors</info>");
                 $output->writeln("<info>Found {$invalid_donors} invalid donors </info>");
                 $output->writeln("<info>Found {$invalid_nif} invalid donors with invalid nif</info>");
-                $output->writeln("<info>Can update {$updated_donors} invalid donors</info>");
+                $output->writeln("<info>Can update {$updated_donors} donors entity or document type. Might not be able to update due to other mandatory fields.</info>");
                 $output->writeln("<info>Could NOT update {$could_not_update} invalid donors</info>");
                 $output->writeln("<info>{$updated} invalid donors HAVE been updated</info>");
 
@@ -466,7 +465,6 @@ EOT
                         } else {
                             $donor_without_amount++;
                             if ($is_valid) {
-                                // print_r($donor);
                                 $donors_valid_without_amount++;
                             }
                         }
