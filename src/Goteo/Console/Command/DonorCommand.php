@@ -377,7 +377,8 @@ EOT
         } else if ($update_status) {
             
             $filter = [
-                'year' => $year
+                'year' => $year,
+                'report' => true
             ];
 
             if ($user) {
