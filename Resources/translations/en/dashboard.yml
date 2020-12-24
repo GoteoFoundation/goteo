@@ -11,6 +11,7 @@ dashboard-certificates-confirm: 'Confirm data'
 dashboard-certificates-confirm-checkbox: 'I hereby confirm that these are my real legal data and I''m conscious that I will not be able to modify them once confirmed'
 dashboard-certificates-confirmed: Confirmed
 dashboard-certificates-processed: Processed
+dashboard-certificates-confirmed-ok: 'Tax ID was successfully confirmed'
 dashboard-certificates-data-alert: 'Keep in mind that once confirmed, the data can not be modified!'
 dashboard-certificates-data-desc: 'Please make sure the data in the form is correct and confirm the form'
 dashboard-certificates-data-new-invests: 'And hey, don''t worry! Any further donation you make through Goteo will generate a new certificate'
@@ -20,6 +21,7 @@ dashboard-certificates-details-desc: 'List of donations for the certificate %CER
 dashboard-certificates-download: 'Confirm and download'
 dashboard-certificates-empty: 'You need to make at least a donation to any project or charge an amount to your virtual wallet to see your certificates'
 dashboard-certificates-expired: Expired
+dashboard-certificates-expired-description: 'Your certificate''s confirmation date has expired'
 dashboard-certificates-no-pending: 'There''s no pending donation'
 dashboard-certificates-pending: Pending
 dashboard-certificates-pending-desc: 'These donations will be included in future certificates.'
@@ -30,6 +32,7 @@ dashboard-certificates-totals: '%NUM% donations, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'For downloading this certificate, you need to confirm the data first!'
 dashboard-certificates-view-pending: 'Donations to projects which have still not passed its first round are not displayed. You can check them %HERE%.<br>Donations using the virtual wallet are included in the certificates generated when the physical payment was made.'
 dashboard-certificates-no-invests: 'Certificate cannot be confirmed without any donation!'
+dashboard-certificates-download-proof: Download donation receipt
 dashboard-chart-days: '%s DAYS LEFT'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
 dashboard-chart-investors: CO-FINANCIERS
@@ -82,6 +85,7 @@ dashboard-messegers-mail-sendto: 'Sent to %s the participants:'
 dashboard-my-wallet-available: 'You currently have <span class="pool-amount">%s</span> <span class="pool-desc">in your virtual wallet in Goteo</span>'
 dashboard-my-wallet-contribute-button: Donate
 dashboard-my-wallet-pool-info: 'More information on using your wallet'
+dashboard-no-projects: 'You still have no projects, create one <a href="/project/create">here</a>'
 dashboard-password-recover-advice: 'You are recovering your password. Remember to put your user name in the "current password" field to change it.'
 dashboard-project-analytics-fail: 'Error while saving analytics IDs'
 dashboard-project-analytics-ok: 'Your analytics IDs have been saved correctly'
