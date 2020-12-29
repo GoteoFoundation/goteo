@@ -109,12 +109,13 @@ EOT
                 if ($errors) {
                     $this->warning("This donor has invalid data " . implode(',', $errors));
 
+                    $valid_nif = Check::nif($donor->nif, $nif_type);
+
                     if (isset($errors['legal_entity'])) {
                         $output->writeln("<info>The donor has not specified the legal entity</info>");
-                        Check::nif($donor->nif, $nif_type);
                         $output->writeln("<info>Check proves the nif to be from a " . $nif_type);
                         if ($nif_type == Donor::CIF) {
-                            $output->writeln("<info>The donor legal entity will be changed to " . Donor::LEGAL_PERSONA);
+                            $output->writeln("<info>The donor legal entity will be changed to " . Donor::LEGAL_PERSON);
                             $donor->legal_entity = Donor::LEGAL_PERSON;
                         } else {
                             $output->writeln("<info>The donor legal entity will be changed to " . Donor::NATURAL_PERSON);
@@ -123,19 +124,20 @@ EOT
                     }
 
                     if(isset($errors['nif'])) {
-                        Check::nif($donor->nif, $nif_type);
-                        $donor->legal_document_type = $nif_type;
-                        $error_save = array();
-                        if ($update) {
-                            $output->writeln("<info>The donor legal document will be changed to {$nif_type}");
-                            if ($donor->save($error_save)) {
-                                $output->writeln("<info>The donor legal document has been updated to {$nif_type}</info>");
-                                $updated_donors++;
+                        if ($valid_nif && $nif_type != Donor::VAT) {
+                            $donor->legal_document_type = $nif_type;
+                            $error_save = array();
+                            if ($update) {
+                                $output->writeln("<info>The donor legal document will be changed to {$nif_type}");
+                                if ($donor->save($error_save)) {
+                                    $output->writeln("<info>The donor legal document has been updated to {$nif_type}</info>");
+                                    $updated_donors++;
+                                } else {
+                                    $output->writeln("<error>The donor still has invalid data: " . implode(',', $errors));
+                                }
                             } else {
-                                $output->writeln("<error>The donor still has invalid data: " . implode(',', $errors));
+                                $output->writeln("<info>The donor legal document type can be changed to {$nif_type} if used --update");
                             }
-                        } else {
-                            $output->writeln("<info>The donor legal document type can be changed to {$nif_type} if used --update");
                         }
                     }
 
@@ -164,6 +166,7 @@ EOT
                 $could_not_update = 0;
                 $updated = 0;
                 $invalid_nif = 0;
+                $cant_update = 0;
 
                 foreach($donors as $donor) {
                     if ($verbose) {
@@ -171,7 +174,6 @@ EOT
                         $output->writeln("<info>Update  {$donor->id} - {$donor->name} - {$donor->nif} donor</info>");
                         $progress_bar->display();
                     }
-
 
                     $errors = array();
                     $can_be_updated = false;
@@ -186,17 +188,16 @@ EOT
                         }
 
                         $invalid_donors++;
-
                         $valid_nif = Check::nif($donor->nif, $nif_type);
 
                         if(isset($errors['nif'])) {
                             
-                            if ($valid_nif) {
+                            if ($valid_nif && $nif_type != Donor::VAT) {
                                 $donor->legal_document_type = $nif_type;
-                                if ($nif == Donor::NIF || Donor::NIE) {
-                                    $donor->legal_entity = Donor::NATURAL_PERSON;
-                                } else if ($nif == Donor::CIF) {
+                                 if ($nif_type == Donor::CIF) {
                                     $donor->legal_entity = Donor::LEGAL_PERSON;
+                                } else {
+                                    $donor->legal_entity = Donor::NATURAL_PERSON;
                                 }
                                 $can_be_updated = true;
 
@@ -250,16 +251,30 @@ EOT
                                 $progress_bar->display();
                             }
 
-                            if ($valid_nif) {
+                            if ($valid_nif && $nif_type != Donor::VAT) {
                                 $donor->legal_document_type = $nif_type;
                                 $can_be_updated = true;
+
+                                if ($verbose) {
+                                    $progress_bar->clear();        
+                                    $output->writeln("<info>The donor legal document type can be changed to {$nif_type} and the legal entity to {$donor->legal_entity} if used --update </info>");
+                                    $progress_bar->display();
+                                }
                             }
                         }
 
-                        if ($can_be_updated)
-                            $updated_donors++;
+                        $errors = array();
+                        $valid = $donor->validateData($errors);
 
-                        if ($update) {
+                        if ($can_be_updated && $valid) {
+                            $updated_donors++;
+                        } else if ($can_be_updated && !$valid) {
+                            $could_not_update++;
+                        } else{
+                            $cant_update++;
+                        }
+
+                        if ($update && $can_be_updated && $valid) {
                             $error_save = array();
                             if ($donor->save($error_save)) {
                                 $updated++;
@@ -269,14 +284,13 @@ EOT
                                     $progress_bar->display();
                                 }
                             } else {
-                                $could_not_update++;
                                 if ($verbose) {
                                     $progress_bar->clear();        
                                     $this->warning("This donor still has invalid data " . implode(',', $error_save));
                                     $progress_bar->display();
                                 }
                             }
-                        } 
+                        }
 
                     } else {
                         $valid_donors++;
@@ -291,8 +305,9 @@ EOT
                 $output->writeln("<info>Found {$valid_donors} valid donors</info>");
                 $output->writeln("<info>Found {$invalid_donors} invalid donors </info>");
                 $output->writeln("<info>Found {$invalid_nif} invalid donors with invalid nif</info>");
-                $output->writeln("<info>Can update {$updated_donors} donors entity or document type. Might not be able to update due to other mandatory fields.</info>");
-                $output->writeln("<info>Could NOT update {$could_not_update} invalid donors</info>");
+                $output->writeln("<info>Can update {$updated_donors} donors entity or document type.</info>");
+                $output->writeln("<info>Can NOT update  {$could_not_update} invalid donors that have changes due to validation</info>");
+                $output->writeln("<info>Can NOT make changes to {$cant_update} invalid donors </info>");
                 $output->writeln("<info>{$updated} invalid donors HAVE been updated</info>");
 
             }
