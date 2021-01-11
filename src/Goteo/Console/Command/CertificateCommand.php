@@ -29,11 +29,11 @@ use Goteo\Model\Invest;
 use FileSystemCache;
 
 
-class DonorCommand extends AbstractCommand {
+class CertificateCommand extends AbstractCommand {
 
     protected function configure()
     {
-        $this->setName("donor")
+        $this->setName("certificate")
              ->setDescription("Manages donors data")
              ->setDefinition(array(
                       new InputOption('update', 'u', InputOption::VALUE_NONE, 'Actually does the job. If not specified, nothing is done, readonly process.'),
@@ -351,7 +351,7 @@ EOT
 
                 foreach($donors as $donor) {
 
-                    $user_invests = Donor::getPendingInvestionsAmount($donor->user);
+                    $user_invests = Donor::getPendingInvestionsAmount($donor->user, $year);
                     $donor_amount = $user_invests['amount'] + $user_invests['donations_amount'];
 
                     if ($donor_amount != 0 || $donor->amount != $donor->getAmount()) {
