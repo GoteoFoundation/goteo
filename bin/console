@@ -60,7 +60,7 @@ Console::add(new Command\LocationCommand());
 Console::add(new Command\SqlMigrationCommand());
 Console::add(new Command\ChannelCommand());
 Console::add(new Command\ContractCommand());
-Console::add(new Command\DonorCommand());
+Console::add(new Command\CertificateCommand());
 
 // Plugins can add commands by running
 // Console::add(new Command...);
