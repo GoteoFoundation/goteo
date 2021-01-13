@@ -41,7 +41,7 @@
             <div class="info col-md-10 col-sm-11">
               <q><?= $story->description ?></q>
               <div class="author" >
-                <?php if ($story->pool_image): ?>
+                <?php if ($story->image): ?>
                   <img class="author-avatar" src="<?= $story->getImage()->getLink(70,70, true) ?>">
                 <?php endif; ?>
                 <div class="author-name">
