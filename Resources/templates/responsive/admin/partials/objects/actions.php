@@ -25,6 +25,9 @@ foreach($value as $k => $link) {
     if($k == 'details') {
         $t = '<span class="fa fa-info" title"' . $t . '"></span>';
     }
+    if($k == 'download') {
+        $t = '<span class="fa fa-download" title"' . $t . '"></span>';
+    }
 
     echo '<a class="btn btn-sm btn-default" href="' . $link . '"' . $add . '>' . $t . '</a> ';
 }

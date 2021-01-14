@@ -216,6 +216,8 @@ admin-users-global-search: 'Id, name, email or project'
 admin-blog-global-search: 'Id, title, subtitle or text'
 admin-communication-global-search: 'Subject'
 admin-blog-stories-search: 'ID, title, text, or project'
+admin-donor-name-search: 'ID, name, email'
+admin-donor-date-search: 'Processed by date'
 admin-no-project: 'No project'
 admin-title-id: Id
 admin-title-name: Name
@@ -277,6 +279,9 @@ admin-title-failed: Failed
 admin-title-pending: Pending
 admin-title-success: Successful
 admin-title-percent: Percentage
+admin-title-year: Year
+admin-title-nif: ID
+admin-title-country: Country
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'
@@ -520,3 +525,5 @@ mandatory-filter-name: Missing name
 mandatory-filter-description: Missing description
 mandatory-filter-role: Missing role
 admin-node-iframe: Iframe
+admin-certificates: Certificates
+admin-certificates-management: Certificates Management

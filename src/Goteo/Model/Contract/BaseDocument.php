@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class BaseDocument extends Document {
 
+    public
+        $dir = '';
 	/**
 	 * (non-PHPdoc)
 	 * @see Goteo\Core.Model::validate()
@@ -32,11 +34,11 @@ class BaseDocument extends Document {
         }
 
         if(empty($this->tmp) || $this->tmp == "none") {
-            $errors['image'] = Text::get('error-image-tmp');
+            $errors['tmp'] = Text::get('error-image-tmp');
         }
 
         if(empty($this->size)) {
-            $errors['image'] = Text::get('error-image-size');
+            $errors['size'] = Text::get('error-image-size');
         }
 
         return empty($errors);
@@ -100,6 +102,30 @@ class BaseDocument extends Document {
         return false;
 
     }
+
+    /**
+     * Get document data
+     * @param varchar(50) $id  Document name
+     * @return object instanceof Document or false if it doesn't exist
+     */
+    public static function getByName ($name) {
+
+        try {
+            $sql = "SELECT *
+                FROM document
+                WHERE name = :name";
+
+            $query = static::query($sql, array(':name' => $name));
+            if($doc = $query->fetchObject(__CLASS__)) {
+                $doc->filedir = $doc->dir . '/';
+                return $doc;
+            }
+
+        } catch(\PDOException $e) {
+            throw new ModelNotFoundException($e->getMessage());
+        }
+		throw new ModelNotFoundException('Document not found!');
+	}
 
 
 }
