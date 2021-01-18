@@ -91,6 +91,7 @@ class Matcher extends \Goteo\Core\Model {
                        matcher.logo,
                        matcher.lang,
                        matcher.owner,
+                       matcher.terms,
                        matcher.fee,
                        matcher.processor,
                        matcher.vars,
