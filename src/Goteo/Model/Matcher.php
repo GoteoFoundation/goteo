@@ -204,7 +204,7 @@ class Matcher extends \Goteo\Core\Model {
         if($filters['has_channel']) {
             $filter[] = "EXISTS ( SELECT node.id
                                     FROM node
-                                    WHERE node.id = matcher.id )";
+                                    WHERE node.id = matcher.id AND node.active )";
         }
 
         // print_r($filter);die;
