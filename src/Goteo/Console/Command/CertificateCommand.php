@@ -395,7 +395,8 @@ EOT
             
             $filter = [
                 'year' => $year,
-                'report' => true
+                'report' => true,
+                'donor_status' => Donor::PENDING
             ];
 
             if ($user) {
