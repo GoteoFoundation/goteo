@@ -39,6 +39,7 @@ dashboard-certificates-download-proof: Descargar justificante de donación
 dashboard-certificates-completed: Completado
 dashboard-certificates-validated: Validado
 dashboard-certificates-declared: Declarado
+dashboard-certificates-rejected: Rechazado
 dashboard-chart-days: 'QUEDAN %s DÍAS'
 dashboard-chart-invested: 'FINANCIACIÓN OBTENIDA'
 dashboard-chart-investors: COFINANCIADORES
