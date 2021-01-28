@@ -2,5 +2,41 @@
 admin-action: 'Action administrateur'
 admin-NO: 'Non'
 admin-YES: Oui
+admin-account-amount: 'Montant contribué'
 admin-account-change-user: 'Changer d''utilisateur'
+admin-account-change-user-confirm: 'Êtes-vous sûr de vouloir changer d''utilisateur (contribualble)? Le nouvel utilisateur sera:'
+admin-account-convert-to-pool: 'Convertir en portefeuille'
+admin-account-convert-to-pool-confirm: 'Cela éliminera le projet associé à cette contribution et cela deviendra comme un acquisition dans le portefeuille. TOUTES LES RÉCOMPENSES ASSOCIÉES SERONT PERDUES. Continuer?'
+admin-account-convert-to-pool-ko: 'Impossible de convertir la contribution en portefeuille: %s'
+admin-account-convert-to-pool-ok: 'Converti en contribution de portefeuille correctement'
 admin-account-detail: 'Détails de la transaction'
+admin-account-donation: Faire un Don
+admin-account-edit-reward: 'Gérer récompense / adresse'
+admin-account-invalid-invest: 'Contribution [%s] non trouvée!'
+admin-account-invest-date: 'Date de cotisation'
+admin-account-invest-non-pool-refundable: 'Cette contribution ne peut pas être remboursée au portefeuille virtuel. Seules les contributions en statut "Recueillies" peuvent être remboursées'
+admin-account-invest-non-user-refundable: "Cette contribution ne peut être remboursée. Les contributions peuvent être remboursées dans les états suivants:\n\"En attente\", \"Chargé\" et \"Vers le portefeuille\" s'il y a suffisamment d'argent dans le portefeuille pour le déduire"
+admin-account-invest-to-pool-ko: 'Échec pour retourner la contribution dans le portefeuille'
+admin-account-invest-to-pool-ok: 'Contribution remboursée à la bourse. Augmentation de la valeur du portefeuille (%s)'
+admin-account-invest-user-refund-fail-pool-amount: 'Cette contribution ne peut pas être retournée car l''utilisateur n''a pas assez d''argent dans le portefeuille (%s)'
+admin-account-invest-user-refund-ko: 'La contribution n''a pas pu être retournée: [%s]'
+admin-account-invest-user-refund-ok: 'Contribution remboursée correctement'
+admin-account-invest-user-refund-ok-pool: 'Contribution remboursée correctement. Le portefeuille a été réduit de %s'
+admin-account-issue-solved: 'Nous avons fait le transfert'
+admin-account-modify-status: 'Modifier le statut'
+admin-account-modify-status-confirm: "Êtes-vous sûr de vouloir modifier manuellement le statut sur cette contribution? C'est délicat!\nAUCUNE opération de retour de contribution ne sera effectuée."
+admin-account-payment-method: 'Mode de paiement'
+admin-address: Adresse
+admin-all: Tout
+admin-global: Global
+admin-back: Revenir
+admin-back-detail: 'Retour aux détails'
+admin-back-list: 'Retour à la liste'
+admin-contents: 'Textes et traductions'
+admin-empty-list: 'Aucun enregistrement trouvé'
+admin-activity: Activité
+admin-communications: Communications
+admin-home: FrontPage
+admin-items: articles
+admin-mailing-back-to-list: 'Aller à ''Message & Forums'''
+admin-mailing-communicating-with: 'Communiquer avec %DESC%'

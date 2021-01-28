@@ -48,7 +48,6 @@ export GOTEO_TEST_CONFIG_FILE=$CONFIG;
 export GOTEO_CONFIG_FILE=$CONFIG;
 
 if [ "$RESET_DATABASE" != "" ]; then
-    echo "Removing database"
     DB=$(cat $CONFIG | grep 'db:' -A8)
     #remove spaces
     DB=${DB// /}
@@ -68,7 +67,7 @@ if [ "$RESET_DATABASE" != "" ]; then
     PASS=$(echo "$DB" | grep 'password:')
     PASS=${PASS/password:/}
     PASS=${PASS%\#*}
-    echo $DATABASE $HOST:$PORT $USER $PASS
+    echo "Wiping database: $DATABASE $USER@$HOST:$PORT"
 
     if [[ $DATABASE != *"test"* ]]; then
         echo "[$DATABASE] should contain the work 'test' to reset schema from here"
@@ -97,7 +96,10 @@ if [ "$RESET_DATABASE" != "" ]; then
         exit 2
     fi
 
-    echo "Done, now testing"
+    echo "Done, now exiting. Run without the -r modifier to run tests"
+    exit
 fi
+
+echo executing ./vendor/bin/phpunit "${ARGS[@]}"
 
 ./vendor/bin/phpunit "${ARGS[@]}"

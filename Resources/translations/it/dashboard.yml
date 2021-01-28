@@ -22,6 +22,7 @@ dashboard-certificates-details-desc: 'Elenco di contributi per il certificato %C
 dashboard-certificates-download: 'Conferma e scarica'
 dashboard-certificates-empty: 'È necessario dare un contributo a un progetto o ricaricare il portafoglio virtuale per la visualizzazione dei certificati'
 dashboard-certificates-expired: Scaduto
+dashboard-certificates-expired-description: 'Ha ispirato il termine per confermare il tuo certificato'
 dashboard-certificates-no-pending: 'Non c''è nessun contributo in attesa'
 dashboard-certificates-pending: In attesa
 dashboard-certificates-pending-desc: 'Questi sono i contributi che verranno inclusi nei certificati futuri.'
@@ -69,12 +70,14 @@ dashboard-menu-projects-commons: Benefici
 dashboard-menu-projects-contract: Contratto
 dashboard-menu-projects-social-commitment: 'Impegno sociale'
 dashboard-menu-projects-messegers: Partecipanti 
+dashboard-menu-projects-recipients: destinatari
 dashboard-menu-projects-preview: 'Pagina pubblica '
 dashboard-menu-projects-rewards: Co-finanziatori 
 dashboard-menu-projects-summary: Riassunto
 dashboard-menu-projects-supports: Collaborazioni 
 dashboard-menu-projects-updates: Novità
 dashboard-menu-projects-widgets: Widget
+dashboard-menu-projects-story: 'La mia storia'
 dashboard-menu-review_board: Correzione 
 dashboard-menu-translate_board: Traduzione
 dashboard-menu-translates: 'Le mie Traduzioni '
@@ -104,6 +107,14 @@ dashboard-project-updates-noblog: 'Non si è trovato nessun blog per questo prog
 dashboard-project-updates-nopost: 'Accesso non trovato '
 dashboard-project-updates-postcorrupt: 'L''entrata è erronea, mettiti in contatto con noi'
 dashboard-project-updates-saved: 'Il post si è aggiornato correttamente'
+dashboard-project-updates-add: 'Nuovo post'
+dashboard-project-updates-editing: 'Modificando post'
+dashboard-project-updates-translating: 'Traducendo post'
+dashboard-project-updates-sent-to-investors: 'È stata inviata una mail a tutti i cofinanziatori con il contenuto di questo post.'
+dashboard-project-updates-sent-to-investors-error: 'Nessuna mail inviata ai cofinanziatori: %s'
+dashboard-project-updates-sent-reason-no-investors: 'Non hai ancora cofinanziatori!'
+dashboard-project-updates-sent-reason-no-unique: 'Precedentemente è stata già inviata una mail con questo post!'
+dashboard-project-updates-sent-reason-too-old: 'La data del post è troppo vecchia!'
 dashboard-rewards-address: 'Indirizzo di spedizione:'
 dashboard-rewards-all_filter: Tutte
 dashboard-rewards-amount_group: 'Donazioni di '
@@ -170,8 +181,52 @@ user-preferences-tips: 'Bloccare consigli per la diffusione della campagna (per 
 user-preferences-updates: 'Bloccare notifiche di aggiornamenti dei progetti che sostengo'
 user-profile-saved: 'Informazione di profilo attualizzata '
 user-save-fail: 'Si è verificato un errore nel salvataggio dei dati'
+dashboard-modal-url-success-msg: 'L''URL è stato aggiornato correttamente'
+dashboard-add-new-share-material: 'Nuovo materiale'
+dashboard-edit-share-material-url: 'Modificare URL'
+dashboard-modal-edit-url: 'Url dove si trova il materiale condiviso'
+dashboard-modal-placeholder-edit-url: 'Url'
+dashboard-new-material-form-success: 'Il nuovo materiale condiviso è stato aggiunto correttamente.'
 dashboard-new-material-form-material: 'Materiale'
 dashboard-new-material-form-description: 'Descrizione'
+dashboard-new-material-form-url: 'URL'
+dashboard-new-material-form-type: 'Tipo di materiale'
+dashboard-new-material-form-license: 'Licenza del materiale'
+dashboard-menu-projects-shared-materials: 'Materiali'
+project-no-share-material: 'Nessun materiale condiviso per il progetto'
+dashboard-project-images-desc: 'Organizza le immagini come vuoi trascinando e rilasciando nelle aree incluse.'
+dashboard-project-default-image: 'Immagine predefinita'
+dashboard-project-delete-image: 'Cancella file'
+dashboard-project-delete-image-confirm: 'Sicuro di voler cancellare questo file?'
+dashboard-project-delete-default-image: "Impossibile eliminare l'immagine predefinita. Scegli un'altra immagine predefinita prima di cancellare questa."
+dashboard-project-dnd-image: 'Trascina e rilascia qui una o più immagini'
+dashboard-project-dnd-file: 'Trascina e rilascia qui uno o più file'
+dashboard-project-image-delete-ko: 'Impossibile eliminare l''immagine!'
+project-upload-images-some-ko: 'Alcune immagini non sono state caricate!'
+dashboard-project-default-image-confirm: 'Vuoi usare questa immagine come predefinita del progetto?'
+dashboard-project-image-default-ko: 'Impossibile mettere l''immagine predefinita!'
+dashboard-project-image-reorder-ko: 'Impossibile ordinare le immagini!'
+dashboard-project-send-to-markdown: "Introdurre questa immagine nel testo"
+dashboard-max-files-reached: "Hai raggiunto il numero massimo di file!"
+dashboard-file-type-error: "Questo tipo di file non è permesso!"
+all-files-uploaded: "Tutti i file sono stati caricati correttamente"
+uploaded-ok: "Caricato correttamente"
+publish-confirm-yes: "Vuoi pubblicare una voce?"
+publish-confirm-no: "Vuoi annullare la pubblicazione di questa voce?"
+active-confirm-yes: "Vuoi attivare questa voce?"
+active-confirm-no: "Vuoi disattivare questa voce?"
+dashboard-project-support-empty: 'Non hai alcuna petizione di collaborazioni ancora.'
+dashboard-project-support-responses: Risposte
+dashboard-project-support-no-responses: 'Non hai ancora risposte.'
+dashboard-project-support-add: 'Chiedi per una nuova petizione di collaborazione'
+dashboard-search-invests-totals: "In questa ricerca:\n%TOTAL_INVESTS% donazione di %TOTAL_USERS% utenti. Totale %TOTAL_AMOUNT%"
+dashboard-search-invests-msg: 'Invia un messaggio ai cofinanziatori di questa ricerca'
+dashboard-project-filter-by-reward: 'Filtra per ricompensa'
+dashboard-project-filter-by-others: 'Altri filtri'
+dashboard-project-filter-by-donative: 'Vedi solo chi rinuncia alla ricompensa'
+dashboard-project-filter-by-nondonative: 'Nascondi chi rinuncia alla ricompensa'
+dashboard-project-filter-by-drop: 'Vedi solo contributi di matchfunding'
+dashboard-project-filter-by-nondrop: 'Nascondi contributi di matchfunding'
 dashboard-project-filter-by-pending: 'Vedi solo quelli in attesa'
 dashboard-project-filter-by-fulfilled: 'Vedi solo i completati'
 dashboard-project-no-invests: 'Non sono presenti contributi per questo criterio di ricerca'
@@ -185,9 +240,19 @@ dashboard-message-donors-pending: 'sono in attesa'
 dashboard-message-donors-fulfilled: 'sono stati completati'
 dashboard-message-donors-error: 'Non c''è nessun destinatario valido, il messaggio non può essere inviato'
 dashboard-message-donors-total: '%s cofinanziatori/trici'
+dashboard-message-donors-filtered-by: 'contiene: %s'
 dashboard-message-no-message: 'Non hai ancora dei messaggi.'
 dashboard-message-threads: 'Hai %s thread di messaggi'
+dashboard-mails-no-mails: 'Non hai ancora alcuna comunicazione inviata.'
+dashboard-mail-mailing: 'Comunicazioni'
+dashboard-mail-sent-mails: 'Comunicazioni inviate a %s'
+dashboard-mail-sent-mails-desc: 'Queste sono le ultime comunicazioni inviate alla tua mail personale.<br><em>NOTA: Le comunicazioni vecchie si eliminano automaticamente.</em>'
+dashboard-rewards-my-invests: 'Mie donazioni'
+dashboard-rewards-no-invests: 'Non hai ancora fatto alcuna donazione.'
+dashboard-rewards-invests-totals: 'Questa è la tua cronologia delle donazioni e ricompense.<br>Hai realizzato %TOTAL% contributi per un valore totale di <strong>%RAISED%</strong>, di cui ti hanno devoluto <strong>%RETURNED%</strong> (al tuo portafogli virtuale o al tuo conto bancario) per progetti che non hanno raggiunto il loro obiettivo.'
+dashboard-rewards-invests-wallet: 'Inoltre, nel tuo portafoglio virtuale hai <strong>%AMOUNT%</strong> che puoi usare in qualunque momento.'
 dashboard-translate-profile: 'Traduci profilo'
+dashboard-translate-profile-desc: 'Stai traducendo il tuo profilo personale in %LANG%. Gli utenti che visitano il tuo profilo personale in questa lingua vedranno questa traduzione. Il resto delle lingue mostreranno i <a href="%URL%">dati predefiniti</a> a meno che abbiano anche una traduzione assegnata.'
 dashboard-translate-profile-ok: 'Profilo correttamente tradotto al %s'
 dashboard-translate-project: 'Tradurre il progetto'
 dashboard-translate-empty: 'Ancora nessuna traduzione.'
@@ -201,8 +266,17 @@ dashboard-translate-overview: 'Tradurre i dati principali dei costi del progetto
 dashboard-translate-costs: 'Tradurre i costi del progetto'
 dashboard-translate-rewards: 'Tradurre le ricompense del progetto'
 dashboard-translate-supports: 'Tradurre le collaborazioni del progetto'
+dashboard-translate-story: 'Tradurre la mia storia in Goteo'
+dashboard-project-support-translate-ok: 'Voce di supporto %TITLE% tradotta correttamente in %LANG%'
+dashboard-project-support-translating: 'Stai traducendo questa voce di supporto in %LANG%. La lingua originale è %ORIGINAL%.'
 dashboard-project-saved: 'Progetto aggiornato correttamente'
 dashboard-project-is-dead: 'Il progetto è archiviato e non può essere modificato'
+dashboard-project-mailing-view: 'Messaggi inviati'
+dashboard-project-mailing-ago: 'Inviato %s fa'
+dashboard-project-mailing-sending: 'Inviando messaggio %s'
+dashboard-project-mailing-percent_success: 'Percentuale di messaggi già inviati'
+dashboard-project-mailing-percent_opened: 'Percentuale di utenti che hanno confermato la ricezione'
+dashboard-project-mailing-write_again: 'Scrivi a tutti'
 dashboard-project-not-alive-yet: 'Questa sezione sarà disponibile quando il tuo progetto verrà lanciato'
 dashboard-project-not-funded-yet: 'Questa sezione sarà disponibile quando il progetto termina con successo la campagna di raccolta fondi'
 dashboard-project-reward-cannot: 'In questo momento non possono essere inserite nuove ricompense. Durante la campagna è possibile introdurre nuove ricompense (ma non eliminare quelle esistenti)'
@@ -213,3 +287,5 @@ dashboard-origin-invests-referer: 'Origine delle visite nei contributi di succes
 dashboard-origin-project-device: 'Dispositivo utilizzato nella pagina del progetto'
 dashboard-origin-invests-device: 'Dispositivo utilizzato nei contributi di successo'
 dashboard-origin-disclaimer: '⚠ *Questi dati sono orientativi e non includono la totalità delle visite a causa di limiti tecnici.*  > Ti suggeriamo di configurare Google Analytics o Facebook Pixel per ottenere dati più dettagliati'
+dashboard-project-integration-token: 'Token'
+dashboard-project-integration-link: 'Collegamento'

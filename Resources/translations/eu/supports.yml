@@ -1,12 +1,12 @@
 ---
 mandatory-support-field-description: 'Derrigorrekoa da deskribapena idaztea'
 mandatory-support-field-name: 'Derrigorrekoa da elkarlanaren izena idaztea'
-step-6: Elkarlanak
-step-supports: 'urratsa: Proiektua / Elkarlanak'
+step-6: Kolaborazioak
+step-supports: 'Urratsa: Proiektua / Kolaborazioak'
 supports-field-description: Deskribapena
 supports-field-support: Laburpena
 supports-field-type: 'Laguntza mota'
-supports-fields-support-title: Elkarlanak
+supports-fields-support-title: Kolaborazioak
 supports-main-header: 'Elkarlanen eskaera'
 tooltip-project-nsupport: 'Elkarlan berri bat betetzeko alholkua'
 tooltip-project-support: 'Dauden elkarlanak editatzeko alhokua'

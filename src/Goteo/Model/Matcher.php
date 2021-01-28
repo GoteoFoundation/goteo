@@ -38,7 +38,7 @@ class Matcher extends \Goteo\Core\Model {
     const STATUS_COMPLETED = 'completed';
     const STATUS_PITCH_CLOSED = 'pitch_closed';
     const STATUS_PITCH_OPEN = 'open';
-    const MINIMUM_WALLET_AMOUNT = 3000;
+    const MINIMUM_WALLET_AMOUNT = 1000;
 
     public $id,
            $name,
@@ -91,6 +91,7 @@ class Matcher extends \Goteo\Core\Model {
                        matcher.logo,
                        matcher.lang,
                        matcher.owner,
+                       matcher.terms,
                        matcher.fee,
                        matcher.processor,
                        matcher.vars,
@@ -203,7 +204,7 @@ class Matcher extends \Goteo\Core\Model {
         if($filters['has_channel']) {
             $filter[] = "EXISTS ( SELECT node.id
                                     FROM node
-                                    WHERE node.id = matcher.id )";
+                                    WHERE node.id = matcher.id AND node.active )";
         }
 
         // print_r($filter);die;

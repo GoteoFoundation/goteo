@@ -4,15 +4,11 @@ donate-main-text-intro: ' Goteo is a vital part of Goteo Foundation, which promo
 donate-main-text-line-1: '<strong>We don''t leave anybody behind,</strong> supporting “case-by-case and step by step”, by training, disseminating and assisting more than 200 projects per year.'
 donate-main-text-line-2: '<strong>We innovate by default,</strong> leading innovative processes for co-responsible funding, together with public and private institutions.'
 donate-main-text-line-3: '<strong>We share what we have,</strong> creating free software, opening our <a href="stats.goteo.org">data</a> and our <a href="https://github.com/GoteoFoundation">source code</a> in order to grow our community, strengthen the knowledge society and being actively involved in it, with no complexes!'
-donate-main-text-line-4: ''
 donate-select-amount-title: 'Support Goteo Foundation'
 donate-select-amount-description: 'Select the amount of your donation so we can continue supporting projects'''
 donate-foundation-accounts-title: 'Our expenses'
-donate-foundation-accounts-data-1: '150.006 €'
 donate-foundation-accounts-data-label-1: 'Operational expenses 2017'
-donate-foundation-accounts-data-2: '29%'
 donate-foundation-accounts-data-label-2: 'Expenses covered by 4% commission'
-donate-foundation-accounts-data-3: '79%'
 donate-foundation-accounts-data-label-3: 'Expenses dedicated to salaries'
 donate-foundation-accounts-text-1: 'In 2017, we raised more than <strong>1.150.000€</strong> to fund projects. The commission collected from successful projects is 4%, which means covering the <strong>29%</strong> of our operational expenses. And what are our operational expenses? Mainly, our team salary payments, that make possible the day-to-day of the organization. Check out <a href="/blog/9050">aquí</a> our annual account from 2017 and help us to keep working.'
 donate-foundation-accounts-text-2: 'All donations to the Goteo Foundation are tax-deductible. For example, if you donate € 100, Tax Office will pay you back €75. Use our <a href="/calculadora-fiscal">Tax Calculator</a> to calculate your Tax savings. You are going to receive the Donation Certificate that belongs to you.'
@@ -22,31 +18,6 @@ donate-pay-method-title: 'Donate to Goteo Foundation'
 donate-alert-recharging: 'You are about to donate'
 donate-invest-success-make-sure: 'Your donation to the Goteo Foundation has been successfully completed! ¡Thanks a lot!'
 donate-invest-ok: 'Your donation has been processed to the Goteo Foundation! Download your certificate and spread your generosity!'
-
-
 donate-invest-spread-social: 'You have just donated to the Goteo Foundation! Thanks to your support for creating a space where to boost more social initiatives and to improve an open and transparent #CivicCrowdfunding @goteofunding Anybody else?'
-
-
-donate-invest-spread-header: 'Difunde y ayúdanos a que más gente apoye nuestro trabajo con su donación'
+donate-invest-spread-header: 'Share and help us get more people to support our work with a donation'
 donate-button: 'Donate to Goteo Foundation'
-donate-select-amount-prologue: 'Más información sobre la desgravación fiscal de hasta el 75% de tu donación'
-donate-modal-relief-title: 'Tu desgravación fiscal'
-donate-modal-relief-description: '<p>Haz tu donación a la Fundación Goteo, y consigue tu desgravación fiscal.</p>
-<p>Los porcentajes de desgravación dependen de cuánto aportas: así, para aportaciones de todo un año que no superen los 150€ hay unos porcentajes y para los que superen los 150€ hay otros.</p>
-<ul>
-  <li>Hasta 150€                -  75%</li>
-  <li>A partir de 150€          -  30%</li>
-  <li>Personas jurídicas        -  30%</li>
-</ul>
-<p>
-Si has colaborado con la misma entidad en los últimos tres años, los porcentajes de desgravación son superiores. De esta manera tu fidelidad se ve recompensada con una mayor devolución.
-</p>
-<p>
- * <strong>Importante</strong> Esta mejora fiscal no aplica fuera de España, ni tampoco al País Vasco ni a Navarra, que mantienen una deducción del 30% y del 25% respectivamente del total aportado.
-</p>
-<p>
-(*) El límite de la deducción sobre la base liquidable se mantiene en el 10%.
-Artículo 19 (Deducción de la cuota del Impuesto sobre la Renta de las Personas Físicas) de la ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.
-</p>
-'
-

@@ -1,19 +1,24 @@
 ---
 dashboard-activity-donor-header: 'Datos fiscais para obter o certificado de doazón'
 dashboard-donor-confirm_button: 'Pechar datos e emitir certificado'
+dashboard-donor-confirm_closed: 'O período de confirmación dos datos fiscais para o certificado de %s está pechado'
 dashboard-donor-confirm_data: 'Os datos fiscais desta doazón xa non se poderan modificar. Premendo ACEPTAR confirmas a autenticidade dos mesmos.'
 dashboard-donor-confirm_succes: 'Confirmaches a validez dos teus datos. Grazas!'
 dashboard-donor-confirmed: 'O certificado %s desta doazón creouse correctamente. Para consultas relacionadas co certificado podes porte en contacto con nós empregando o email donate@goteo.org.'
 dashboard-donor-download_certificate: 'Descargar o certificado'
 dashboard-donor-edit_data: 'Modificar datos'
 dashboard-donor-edit_guide: 'Enche os datos que queiras que aparezan no certificado. Unha vez que descargues o arquivo estes datos non se poderán modificar.'
+dashboard-donor-main_guide: 'Pasado o ano: Pódense confirmar os datos até o 15 de xaneiro. Até xullo é posible descargar o certificado. <br>Para este ano: A partires de xullo pódense confirmar datos e descargar o certificado.'
 dashboard-donor-mandatory: 'É OBRIGATORIO ENCHER OS DATOS FISCAIS'
 dashboard-donor-no_donor: 'Non costa que fixeras ningunha doazón a %s. Se fixeches algunha, por favor, ponte en contacto con nós.'
+dashboard-donor-pdf_closed: 'Os datos fiscais para o certificado de doazóns de %s non están confirmados, non é posible a descarga'
+dashboard-donor-save_fail: "Producíronse erros ao gardar os datos. Por favor, revísaos e de continuar os problemas contacta connosco."
 dashboard-donor-saved: 'Grazas por modificar os teus datos. Para descargar o certificado asegúrate de que sexan correctos. Despois verifícaos co botón de pechar datos.'
 dashboard-menu-activity-donor: 'Certificado de doazón'
 donor-address-country-field: País
 donor-address-location-field: 'Provincia:'
 donor-field-amount: 'Importe doazón'
+donor-field-amount-relief: Desgravación
 donor-field-lot-relief: Tramo
 donor-field-numproj: 'Achegas realizadas o %s'
 personal-field-donor_name: 'Nome '

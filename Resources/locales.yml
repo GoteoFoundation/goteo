@@ -34,6 +34,12 @@ ast:
     public: true
     locale: as_ES
     fallback: es
+oc: 
+    name: Occitan aranés
+    short: OCI
+    public: false
+    locale: oc_ES
+    fallback: ca
 fr:
     name: Français
     short: FRA

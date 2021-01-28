@@ -2,20 +2,21 @@
 contract-paypal_account: 'Paypal kontua:'
 overview-field-spread: Hedapena
 project-about-title: 'Proiektu honi buruz'
-project-collaborations-available: 'lankidetza erabilgarria'
-project-collaborations-number: 'Laguntzaileak'
-project-collaborations-supertitle: 'Dirua ez diren beharrak'
+project-collaborations-available: 'Erabilgarri diren kolaborazioak'
+project-collaborations-number: 'Kolaboratzaileak'
+project-collaborations-supertitle: 'Diruak ez diren beharrak'
 project-collaborations-title: 'Bila'
 project-general-information: 'Informazio orokorra'
 project-go-up: 'Itzuli gora'
 project-hide-donors: 'Ezkutatu kofinantzatzaiileak'
+project-hide-needs: 'Beharren zerrenda ezkutatu'
 project-media-play_video: 'Ikusi bideoa'
 project-menu-home: Proiektua
 project-menu-messages: Kolaboratzaileak
-project-menu-needs: Beharrizanak
-project-menu-news: 'Berriak'
+project-menu-needs: Beharrak
+project-menu-news: 'Albisteak'
 project-menu-participate: 'Parte hartu'
-project-menu-supporters: Finantzakideak
+project-menu-supporters: Aldi bereko finantzakideak
 project-menu-updates: Berriak
 project-menu_title-home: 'Gizarte inpaktua: proiektu honek bere kodea irekitzen du eta ezagutza, datuak edo fitxategiak partekatzen ditu zure laguntzaren truk.'
 project-menu_title-messages: 'Ez dirua bakarrik: zure gaitasunak, materiala, denbora, kontaktuak, ezagutzak… eskain ditzakezu.'
@@ -27,20 +28,20 @@ project-messages-closed: 'Oraindik ezin da mezurik proiektura bidali'
 project-messages-send_direct-header: 'Bidali esaiozu mezua proiektuaren bultzatzaileari'
 project-messages-send_message-button: Bidali
 project-messages-send_message-header: 'Idatz ezazu zure mezua'
-project-not_published: 'Oraindik proiektu hau ez da publikoa'
+project-not_published: 'Proiektu hau oraindik ez da publikoa'
 project-regular-support: Kofinantzatu
 project-related: 'Zerikusia duten proiektuak'
 project-rewards-header: Itzulera
 project-rewards-individual_reward-limited: 'Sari mugatua'
 project-rewards-individual_reward-title: 'Banakako sariak'
 project-rewards-individual_reward-units_left: '<span class="left">%s</span> unitate gelditzen dira'
-project-rewards-side-title: 'Sariak'
+project-rewards-side-title: 'Ordain sariak'
 project-rewards-social_reward-title: 'Talde itzulera'
 project-rewards-supertitle: 'Zer ematen du trukean'
 project-share-header: 'Proiektu hau konpartitu'
 project-share-pre_header: 'Zure sarean jakinarazi zeren '
 project-show-donors: 'Erakutsi kofinantzatzaileak'
-project-show-needs: 'Erakutsi beharren zerrenda'
+project-show-needs: 'Beharren zerrenda erakutsi'
 project-side-investors-header: 'Jada eman dute'
 project-spread-embed_code: 'Embed kodea'
 project-spread-header: 'Egin proiektu honen zabalkundea eta lagun iezaiezu ikusgaitasuna eta dohaintza gehiago lortzen!'
@@ -49,7 +50,7 @@ project-spread-social: 'Goteo.org-en %s proiektua aldi berean finantzatzen dut'
 project-spread-widget: 'Proiektuaren widgeta'
 project-spread-widget_legend: 'Kopiatu eta itsatsi kode hau zure webgunean edo blogean eta lagundu ezazu proiektu hau zabaltzen'
 project-spread-widget_title: 'Proiektuaren widget-a argitaratzen du'
-project-support-supertitle: 'Diru beharrak'
+project-support-supertitle: 'Behar ekonomikoak'
 project-view-categories-title: Kategoriak
 project-view-metter-day_closed: 'artxibatua'
 project-view-metter-day_created: 'sortua'
@@ -59,9 +60,9 @@ project-view-metter-days: Falta dira
 project-view-metter-favourite: 'Gogorarazi'
 project-view-metter-got: Jasota
 project-view-metter-investment: Kofinantzaketa
-project-view-metter-investors: Finantzakideak
-project-view-metter-minimum: Minimoa
-project-view-metter-optimum: Hobezina
+project-view-metter-investors: Aldi bereko finantzakideak
+project-view-metter-minimum: Gutxienekoa
+project-view-metter-optimum: Hobeezina
 regular-new_project: 'Proiektu berria'
 social_reward-access: Sartu
 tooltip-project-scope: 'Zehaztu proiektu honek ustez izan duen eragin geografikoa (kategori bakoitzak haurrekoa du barne).'
@@ -69,3 +70,11 @@ tooltip-updates-home: 'tooltip-updates-home testua'
 tooltip-updates-tags: 'tooltip-updates-tags testua'
 project-obtained: 'Jasota'
 project-costs-total: 'Guztira'
+project-social-commitment-title: 'Giza konpromezua'
+project-create-minimum-field: 'Gutxienekoa (€)'
+project-create-social-select-field: 'Giza konpromezua aukeratu'
+project-create-modal-no-social-title: 'Giza konpromezua'
+project-share-materials: 'Partekatutako materialak'
+project-edit: Proiektua editatu
+project-send-review: 'Berrikustera bidali'
+project-campaign: 'Konfigurazioa'

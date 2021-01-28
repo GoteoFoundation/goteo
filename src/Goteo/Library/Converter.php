@@ -19,9 +19,8 @@ use Goteo\Application\Config;
 use Goteo\Library\Cacher;
 
 class Converter {
-
-
     const
+        //the file is updated daily between 2.15 p.m. and 3.00 p.m. CET
         ECB_URL = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml',
         FLR_URL =  'https://www.floatrates.com/daily/$BASE$.xml',
         TEXT_RequestRatesFailed = 'Unable to fetch the currency rates feed.';
@@ -31,34 +30,26 @@ class Converter {
     private $source = 'ecb'; // 'flr' = floatrates.com
 
     public function __construct() {
-        //TODO: mejor pasar la dependencia por el constructor?
-        $this->cache = new Cacher('currency');
+        $this->setCache(new Cacher('currency'));
+        $this->setReader(new ConverterReader(self::ECB_URL));
     }
 
+    public function setCache($cache) {
+        $this->cache = $cache;
+        return $this;
+    }
 
-    /**
-     *  Do a cUrl request
-     *
-     * //@TODO  cambiar $debug por 'debug mode' para unittest
-     *
-     */
-    private function doRequest($url, $debug = false)
-    {
-        if ($debug) echo $url.'<hr />';
+    public function getCache() {
+        return $this->cache;
+    }
 
-        $curl = \curl_init();
-        \curl_setopt( $curl, CURLOPT_URL, $url );
-        \curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
-        \curl_setopt( $curl, CURLOPT_USERAGENT, 'Goteo.org Currency Getter');
+    public function setReader($reader) {
+        $this->reader = $reader;
+        return $this;
+    }
 
-        $result = \curl_exec( $curl );
-
-        \curl_close( $curl );
-
-        if ($debug)  echo htmlentities($result);
-        if ($debug) die;
-
-        return array('body' => $result);
+    public function getReader() {
+        return $this->reader;
     }
 
     /**
@@ -69,37 +60,13 @@ class Converter {
     private function getData ($base) {
 
         // European central bank is just for euro
+        $this->getReader()->setUrl(self::ECB_URL);
         if ($base != 'EUR' && $this->source == 'ecb') {
             $this->source = 'flr';
+            $this->getReader()->setUrl(str_replace('$BASE$', $base, self::FLR_URL));
         }
 
-        $rates = array();
-
-        // Get the raw data
-        switch ($this->source) {
-            case 'ecb': // european central bank
-                //the file is updated daily between 2.15 p.m. and 3.00 p.m. CET
-                $feed_url = self::ECB_URL;
-                if( ini_get('allow_url_fopen') ) {
-                    $XML=simplexml_load_file($feed_url);
-                    $response['body'] = $XML;
-                } else {
-                    $response = self::doRequest($feed_url); //@TODO
-                    $file = $response['body'];
-                    @$XML=simplexml_load_string($file);
-                }
-
-                break;
-
-            case 'flr': // the money converter . com
-                // feed request
-                $feed_url = str_replace('$BASE$', $base, self::FLR_URL);
-
-                $response = self::doRequest($feed_url); //@TODO
-                $file = $response['body'];
-                @$XML=simplexml_load_string($file);
-                break;
-        }
+        $XML = @simplexml_load_string($this->getReader()->get());
 
         // verify data
         if (!$XML) {
@@ -107,7 +74,7 @@ class Converter {
             $mailHandler = new Mail();
             $mailHandler->to = Config::getMail('fail');
             $mailHandler->subject = 'No coge divisas '.$this->source;
-            $mailHandler->content = 'Application\Currency->getData  no obtiene feed desde '.$feed_url.' la respuesta es de '.strlen($response['body']);
+            $mailHandler->content = 'Application\Currency->getData  no obtiene feed desde '.$this->getReader()->getUrl().' la respuesta es de '.strlen($this->getReader()->getResult());
             $mailHandler->html = false;
             $mailHandler->template = null;
             $mailHandler->send();
@@ -117,11 +84,12 @@ class Converter {
         }
 
         if ($this->debug) {
-            echo $feed_url;
+            echo $this->getReader()->getUrl();
             echo \trace($XML);
             die;
         }
 
+        $rates = array();
         // parse the data
         switch ($this->source) {
             case 'ecb': // european central bank
@@ -187,14 +155,14 @@ class Converter {
         $base = strtoupper($base);
 
         // check cache (if not debugging)
-        if ($this->cache && !$this->debug) {
-            $key = $this->cache->getKey($base, 'rates');
-            $rates = $this->cache->retrieve($key);
+        if ($this->getCache() && !$this->debug) {
+            $key = $this->getCache()->getKey($base, 'rates');
+            $rates = $this->getCache()->retrieve($key);
         }
         if(empty($rates)) {
             $rates = $this->getData($base);
             // sets cache
-            if($this->cache) $this->cache->store($key, $rates, $ttl);
+            if($this->getCache()) $this->getCache()->store($key, $rates, $ttl);
         }
 
         return $rates;
@@ -206,6 +174,6 @@ class Converter {
      * Invalidates the cache
      */
     public function cleanCache() {
-        if($this->cache) $this->cache->clean();
+        if($this->getCache()) $this->getCache()->clean();
     }
 }

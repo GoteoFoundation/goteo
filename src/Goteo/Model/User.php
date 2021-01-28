@@ -70,6 +70,11 @@ class User extends \Goteo\Core\Model {
     $webs = array(),
     $roles = array();
 
+    // Cambia el valor por defecto de $punto solo para la clase User
+    public static function idealiza($value, $punto = true, $enye = false, $max = 50) {
+        return parent::idealiza($value, $punto, $enye, $max);
+    }
+
     public function __construct() {
         $args = func_get_args();
         call_user_func_array(array('parent', '__construct'), $args);
@@ -140,7 +145,7 @@ class User extends \Goteo\Core\Model {
             // Nuevo usuario.
             if (empty($this->id)) {
                 $insert = true;
-                $this->id = static::idealiza($this->userid, true);
+                $this->id = static::idealiza($this->userid);
                 $data[':id'] = $this->id;
                 $data[':name'] = $this->name;
                 $data[':location'] = $this->location;
@@ -344,7 +349,7 @@ class User extends \Goteo\Core\Model {
             if (empty($this->userid)) {
                 $errors['userid'] = Text::get('error-register-userid');
             } else {
-                $id = self::idealiza($this->userid, true);
+                $id = self::idealiza($this->userid);
                 $query = self::query('SELECT id FROM user WHERE id = ?', array($id));
                 if ($query->fetchColumn()) {
                     $errors['userid'] = Text::get('error-register-user-exists'). " ($id)";
@@ -2351,7 +2356,7 @@ class User extends \Goteo\Core\Model {
             $parts = preg_split("/[\s,\-\@\.]+/", $string);
             $id = '';
             foreach($parts as $part) {
-                $id .= self::idealiza($part, true);
+                $id .= self::idealiza($part);
                 if(strlen($id) < 4) continue;
                 if($id) {
                     $originals[] = $id;

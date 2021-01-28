@@ -10,7 +10,7 @@
 		<div class="col-md-6 info col-center" <?php if($channel->owner_font_color) echo 'style="color:'.$channel->owner_font_color.'"'; ?>>
 			<?php $this->section('channel-owner-info') ?>
 			    <!-- Nombre y texto presentación -->
-			    <h2 class="channel-name premium"><?= $channel->name ?></h2>
+			    <h2 class="channel-name premium" <?php if($channel->owner_font_color) echo 'style="color:'.$channel->owner_font_color.'"'; ?>><?= $channel->name ?></h2>
 			    <strong class="channel-subtitle"><?= $channel->subtitle ?></strong>
 				<p class="channel-description premium"><?= $channel->description; ?></p>
 				<p class="channel-hashtag"><?= $channel->hashtag ?></p>

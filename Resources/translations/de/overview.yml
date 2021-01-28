@@ -47,7 +47,7 @@ overview-main-header: 'Projektbeschreibung'
 step-3: Beschreibung
 step-main: Grunddaten
 step-3b: Bilder
-step-images: 'Schritt: PProjektbilder'
+step-images: 'Schritt: Projektbilder'
 step-overview: 'Schritt: Projektbeschreibung'
 tooltip-project-about: 'Beschreiben Sie kurz die konzeptionellen, technischen und praktischen Aspekte Ihres Projektes. Beispielsweise, wie es funktioniert, wofür und woraus es gemacht ist. Stellen Sie sich vor, wie es aussieht und wirkt, wenn es fertig ist und was Leute damit machen werden.'
 tooltip-project-category: 'Wählen Sie auf Grundlage aller bisherigen Projektbeschreibungen alle sinnvollen Kategorien, die Ihr Projekt betreffen. Ihre Auswahl hilft uns, Ihr Projekt an interessierte Goteo-Nutzer zu kommunizieren.'
@@ -64,7 +64,7 @@ tooltip-project-motivation: 'Beschreiben Sie die Gründe und Umstände, die zu d
 tooltip-project-name: 'Tragen Sie einen Projekttitel ein – je kürzer, desto besser. Eine Beschreibung können Sie im nächsten Feld eingeben.'
 tooltip-project-project_location: 'Hier steht die Stadt oder Region, in der das Projekt angesiedelt ist.'
 tooltip-project-related: 'Fassen Sie zusammen, wie Sie oder die Projektgruppe bis zu diesem Projektstand gekommen sind. Welche Erfahrungen haben Sie in Bezug auf diesen Projektvorschlag? Erzählen Sie uns etwas über Ihr Team, die Ressourcen und ihre Infrastruktur.'
-tooltip-project-reward: 'Hier wird beschrieben, welche Dankeschöns und Belohnungen Unterstützer/innen erhalten.'
+tooltip-project-reward: 'Hier wird beschrieben, welches Dankeschön oder welche Belohnungen Unterstützer/innen erhalten.'
 tooltip-project-subtitle: 'Beschreiben Sie in einem einzigen Satz, worum es bei Ihrem Projekt geht, sodass man ein Gefühl dafür bekommt und erkennt, woraus es besteht und wozu es dient. Dieser Untertitel wird zusammen mit dem Projekttitel dargestellt.'
 tooltip-project-usubs: 'Prüfen Sie, ob Sie den Film mit „Universal Subtitles“ in anderen Sprachen untertitelt haben: http://www.universalsubtitles.org/'
 tooltip-project-video: 'Publizieren oder verlinken Sie ein Video (YouTube, Vimeo oder Giss.tv), in dem Sie kurz Ihre Vision des Projektes erklären. Dies ist eine hilfreiche Ergänzung Ihres Hauptfilms, bei dem Sie möglichen Unterstützer/innen möglichst direkt den Nutzen oder die Einzigartigkeit Ihres Projektes darstellen. Wenn es Ihnen schwer fällt, direkt in die Kamera zu sprechen, kann vielleicht ein früher Fan oder Unterstützer Ihres Projektes diese Referenz für Ihr Projekt aufnehmen? Für vielen Unterstützer/innen sind Empathie und Vertrauen in die projektleitende Person ausschlaggebende Elemente für ihr Engagement.'
@@ -82,3 +82,5 @@ overview-field-sustainability-model: 'Nachhaltigkeitsmodell'
 overview-field-sustainability-model-url: 'URL zur Übersicht ihres Geschäftsmodel - Canvas'
 tooltip-project-sustainability-model: 'Erklären Sie das Nachhaltigkeitsmodell Ihres Projekts'
 tooltip-project-sustainability-model-url: 'Fügen Sie eine URL mit Ihrer <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">Geschäftsmodell - Canvas</a>'
+tooltip-project-sdg: 'Wählen Sie die Ziele aus, mit denen Ihr Projekt erreicht wird, und versuchen Sie, maximal drei Ziele auszuwählen.'
+tooltip-project-sdg-suggestion: 'Im Folgenden schlagen wir einige ODS vor, die dem für Ihr Projekt ausgewählten sozialen Engagement entsprechen könnten. Wir empfehlen, dass Sie <a href = "https://www.un.org/sustainabledevelopment/es/objetivos-de-desarrollo-sostenible/" konsultieren. target = "_ blank"> hier </a> Ihr spezifischer Inhalt. <br> <br>'

@@ -14,7 +14,7 @@ $status = $vars['statuses'];
 -->
 <br /><br />
 <div class="widget board">
-    <h3><?php htmlspecialchars($project->name); ?> (<?php echo $status[$project->status]; ?>)</h3>
+    <h3><?php echo htmlspecialchars($project->name); ?> (<?php echo $status[$project->status]; ?>)</h3>
     <?php echo View::get('project/edit/rewards/view_commons.html.php', $vars); ?>
 </div>
 <?php echo View::get('project/edit/rewards/commons.js.php'); ?>
