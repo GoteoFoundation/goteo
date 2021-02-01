@@ -39,6 +39,7 @@ dashboard-certificates-download-proof: Descarregar justificant de donació
 dashboard-certificates-completed: Completat
 dashboard-certificates-validated: Validat
 dashboard-certificates-declared: Declarat
+dashboard-certificates-rejected: Rebutjat
 dashboard-chart-days: 'QUEDEN %s DIES'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
 dashboard-chart-investors: COFINANÇADORS
