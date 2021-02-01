@@ -2,7 +2,7 @@
 /**
  * Migration Task class.
  */
-class GoteoAddNotifyToDonor
+class GoteoAddNotifyToDonorAndDonorStatusToFilter
 {
   public function preUp()
   {
@@ -33,6 +33,7 @@ class GoteoAddNotifyToDonor
   {
      return "
         ALTER TABLE `donor` ADD COLUMN `notify` TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Notify donor of change in status';
+        ALTER TABLE `filter` ADD COLUMN `donor_status` VARCHAR(50) DEFAULT NULL after `invest_status`;
      ";
   }
 
@@ -45,6 +46,7 @@ class GoteoAddNotifyToDonor
   {
      return "
         ALTER TABLE `donor` DROP COLUMN `notify`;
+        ALTER TABLE `filter` DROP COLUMN `donor_status`;
      ";
   }
 
