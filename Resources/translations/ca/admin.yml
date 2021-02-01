@@ -283,6 +283,7 @@ admin-filter-project-status: Estat del projecte
 admin-filter-invest-status: Estat de la donació
 admin-filter-project-location: Ubicació del projecte
 admin-filter-donor-location: Ubicació del donant
+admin-filter-donor-status: Estat del certificat
 admin-filter-location: Ubicació a fer servir al filtre
 admin-mail-body: 'Cos del missatge'
 mandatory-filter-name: Manca el nom

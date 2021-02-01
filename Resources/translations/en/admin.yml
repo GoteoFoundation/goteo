@@ -517,6 +517,7 @@ admin-filter-invest-status: Invest status
 admin-filter-project-location: "Project's location"
 admin-filter-location: "Locaiton to be used by the filter"
 admin-filter-donor-location: "Donor's location"
+admin-filter-donor-status: Certificate status
 admin-mail-body: 'Body of the message'
 admin-stats-donations: 'Donations'
 admin-stats-donations-method: 'Donations by payment method'
