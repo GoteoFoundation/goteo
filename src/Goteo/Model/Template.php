@@ -332,6 +332,25 @@ class Template extends \Goteo\Core\Model {
         }
         return $langs;
     }
+
+    /**
+     * Returns available langs for a template in the file system
+     */
+    static public function getAvailableLangsYaml($id) {
+
+        $langs = [];
+        $languages = Lang::getLangsAvailable();
+        // Find the languages for this in the file system template
+        foreach($languages as $lng => $language) {
+            $file = GOTEO_PATH . "Resources/mailing/$lng/$id.yml";
+            if(is_file($file)) {
+                $langs[] = $lng;
+            }
+        }
+
+        return $langs;
+    }
+
     /*
      * Grupos de textos
      */
