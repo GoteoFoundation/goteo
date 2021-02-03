@@ -124,7 +124,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
             'max_amount_per_project' => 0,
             'max_amount_per_invest' => 100,
             'max_invests_per_user' => 1,
-            'match-factor' => 1
+            'match_factor' => 1
         ];
         $matcher = $processor->getMatcher();
         $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher);
@@ -136,7 +136,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $this->assertEquals(150, $vars['max_amount_per_project']);
         $this->assertEquals(100, $vars['max_amount_per_invest']);
         $this->assertEquals(1, $vars['max_invests_per_user']);
-        $this->assertEquals(1, $vars['match-factor']);
+        $this->assertEquals(1, $vars['match_factor']);
         $this->assertEquals(array_keys($defaults), array_keys($processor->getVarLabels()));
 
         return $processor;
@@ -177,11 +177,11 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $processor->setProject(get_test_project());
         $matcher = $processor->getMatcher();
         $vars = $matcher->getVars();
-        $vars['match-factor'] = 2;
+        $vars['match_factor'] = 2;
         $matcher->setVars($vars);
         $this->assertEquals(40, $processor->getAmount());
 
-        $vars['match-factor'] = 1;
+        $vars['match_factor'] = 1;
         $matcher->setVars($vars);
         $this->assertEquals(20, $processor->getAmount());
 
