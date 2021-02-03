@@ -54,7 +54,7 @@ class Matcher extends \Goteo\Core\Model {
                'max_amount_per_invest' => 100,
                'max_amount_per_project' => 0,
                'max_invests_per_user' => 1,
-               'match-factor' => 1
+               'match_factor' => 1
            ],
            $crowd = 0, // Calculated field with the sum of all invests made by the peoplo
            $used = 0, // Calculated field with the sum of all invests made by the matching

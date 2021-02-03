@@ -24,7 +24,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         'max_amount_per_project' => 500,
         'max_amount_per_invest' => 100,
         'max_invests_per_user' => 1,
-        'match-factor' => 1
+        'match_factor' => 1
     ];
 
     static public function getVarLabels() {
@@ -32,7 +32,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
             'max_amount_per_project' => Text::get('matcher-duplicateinvest-max_amount_per_project'),
             'max_amount_per_invest' => Text::get('matcher-duplicateinvest-max_amount_per_invest'),
             'max_invests_per_user' => Text::get('matcher-duplicateinvest-max_invests_per_user'),
-            'match-factor' => Text::get('matcher-duplicateinvest-match-factor')
+            'match_factor' => Text::get('matcher-duplicateinvest-match-factor')
         ];
     }
 
@@ -49,7 +49,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         $project = $this->getProject();
         $matcher = $this->getMatcher();
         $vars = $this->getVars();
-        $amount = $invest->amount * $vars['match-factor'];
+        $amount = $invest->amount * $vars['match_factor'];
 
         if($amount > $vars['max_amount_per_invest']) {
             $amount = $vars['max_amount_per_invest'];
