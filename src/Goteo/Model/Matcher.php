@@ -54,7 +54,7 @@ class Matcher extends \Goteo\Core\Model {
                'max_amount_per_invest' => 100,
                'max_amount_per_project' => 0,
                'max_invests_per_user' => 1,
-               'filter_by_platform' => 0
+               'match-factor' => 1
            ],
            $crowd = 0, // Calculated field with the sum of all invests made by the peoplo
            $used = 0, // Calculated field with the sum of all invests made by the matching
@@ -296,7 +296,10 @@ class Matcher extends \Goteo\Core\Model {
                     unset($this->matcher_location);
                 }
             }
-            
+
+            if (is_array($this->vars))
+                $this->setVars($this->vars);
+
             if(empty($this->modified_at)) {
                 $this->modified_at = date('Y-m-d H:i:s');
                 $fields[] = 'id';
@@ -305,7 +308,6 @@ class Matcher extends \Goteo\Core\Model {
             else {
                 $this->dbUpdate($fields);
             }
-
 
             return true;
         }

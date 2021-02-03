@@ -5,6 +5,6 @@
     </a>
   </div>
   <div class="right">
-    <h3><?= $this->workshop->title ?> </h3>
+    <h4><?= $this->workshop->title ?> </h4>
   </div>
 </div>
