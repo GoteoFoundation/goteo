@@ -25,3 +25,9 @@ $this->section('content');
 <?php $this->section('footer') ?>
     <?= $this->insert('home/partials/javascript') ?>
 <?php $this->append() ?>
+
+<?php $this->section('footer') ?>
+	<?= $this->insert('partials/utils/chatbot', [
+	  'chatbot' => $this->get_config('chatbot')
+	]) ?>
+<?php $this->append() ?>
