@@ -49,6 +49,7 @@ $(function () {
     // var project_location = $('#form-project_location');
     // var donor_location = $('#form-donor_location');
     var filter_location = $('#form-filter_location');
+    var donor_status = $('#form-donor_status')
 
     function changeForm(role){
 
@@ -75,6 +76,8 @@ $(function () {
             cert.val = '';
             wallet.hide();
             wallet.val = '';
+            donor_status.hide();
+            donor_status.val = '';
             // project_location.hide();
             // project_location.val = '';
             // donor_location.hide();
@@ -99,6 +102,7 @@ $(function () {
             wallet.show();
             typeofentity.hide();
             typeofentity.val = '';
+            donor_status.show();
             // project_location.hide();
             // project_location.val = '';
             // donor_location.show();
@@ -122,6 +126,8 @@ $(function () {
             wallet.show();
             typeofentity.hide();
             typeofentity.val = '';
+            donor_status.hide();
+            donor_status.val = '';
             // project_location.hide();
             // donor_location.hide();
             // donor_location.val = '';
@@ -150,6 +156,8 @@ $(function () {
             cert.val = '';
             wallet.hide();
             wallet.val = '';
+            donor_status.hide()
+            donor_status.val = '';
             // project_location.show();
             filter_location.show();
             // donor_location.hide();
@@ -178,6 +186,8 @@ $(function () {
             cert.val = '';
             wallet.hide();
             wallet.val = '';
+            donor_status.hide()
+            donor_status.val = '';
             // project_location.hide();
             // project_location.val = '';
             // donor_location.hide();
