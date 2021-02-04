@@ -170,7 +170,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
             'currency' => 'EUR',
             'currency_rate' => 1,
             'status' => Invest::STATUS_CHARGED,
-            'amount' => 20
+            'amount' => 75
         ]);
 
         $processor->setInvest($invest);
@@ -179,11 +179,11 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $vars = $matcher->getVars();
         $vars['match_factor'] = 2;
         $matcher->setVars($vars);
-        $this->assertEquals(40, $processor->getAmount());
+        $this->assertEquals(150, $processor->getAmount());
 
         $vars['match_factor'] = 1;
         $matcher->setVars($vars);
-        $this->assertEquals(20, $processor->getAmount());
+        $this->assertEquals(75, $processor->getAmount());
 
         return $processor;
     }

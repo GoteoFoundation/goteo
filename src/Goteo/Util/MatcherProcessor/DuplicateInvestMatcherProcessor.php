@@ -49,11 +49,13 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         $project = $this->getProject();
         $matcher = $this->getMatcher();
         $vars = $this->getVars();
-        $amount = $invest->amount * $vars['match_factor'];
+        $amount = $invest->amount;
 
         if($amount > $vars['max_amount_per_invest']) {
             $amount = $vars['max_amount_per_invest'];
         }
+
+        $amount *= $vars['match_factor'];
 
         $invested = Invest::getList(['methods' => 'pool', 'status' => Invest::$ACTIVE_STATUSES, 'projects' => $project,'users' => $matcher->getUsers()], null, 0, 0, 'money');
 
