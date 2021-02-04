@@ -552,6 +552,7 @@ admin-filter-invest-status: Estado de la donación
 admin-filter-project-location: Ubicación del proyecto
 admin-filter-location: Ubicación a utilizar en el filtro
 admin-filter-donor-location: Ubicación del donante
+admin-filter-donor-status: Estado del certificado
 
 admin-mail-body: 'Cuerpo del mensaje'
 
