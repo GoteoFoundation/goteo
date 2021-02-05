@@ -1,5 +1,5 @@
 ---
-api-key-no-generated: 'Non hai ancora creato una key'
+api-key-no-generated: 'Non hai ancora creato una chiave'
 api-key-tool-tip: 'Con il tuo nome utente e la chiave Api è possibile consultare il nostro API'
 api-key-documentation: 'Visualizza la documentazione della API'
 api-key-user: 'Nome utente'
@@ -7,23 +7,24 @@ api-key-key: 'Password'
 api-key-generate-new: 'Genera una nuova chiave'
 api-key-generate-new-confirm: 'Questa azione eliminerà la password corrente e creerà una nuova chiave. Vuoi continuare?'
 contract-data_title: 'Dati del contratto'
-dashboard-certificates-confirm: 'Confermare i dati'
-dashboard-certificates-confirm-checkbox: 'Posso confermare che questi sono mio dati giuridici reali e sono consapevole del fatto che non sarò in grado di modificare questi dati una volta confermati'
+dashboard-certificates-confirm: 'Conferma i dati'
+dashboard-certificates-confirm-checkbox: 'Confermo che questi sono i miei dati giuridici reali e sono consapevole del fatto che non sarò in grado di modificare questi dati una volta confermati'
 dashboard-certificates-confirmed: Confermato
 dashboard-certificates-processed: Elaborato
 dashboard-certificates-confirmed-ok: '-> dashboard-certificates-confirmed-ok'
 dashboard-certificates-data-alert: 'Ricorda che una volta confermato, non è possibile modificare i dati!'
 dashboard-certificates-data-desc: 'Si prega di assicurarsi che i dati nel modulo siano corretti e, successivamente, confermare il modulo'
 dashboard-certificates-data-download-all: 'Confermate i vostri certificati per attivare la detrazione fiscale. Ogni anno la Fondazione Goteo notifica alle autorità fiscali tutte le donazioni confermate.'
-dashboard-certificates-data-new-invests: 'Ma non preoccuparti, ogni nuovo contributo che tu dia dentro Goteo genererà un nuovo certificato'
-dashboard-certificates-desc: 'Questi certificati consentono di dedurre dalla tua dichiarazione dei redditi, se sei un/a contribuente nello stato spagnolo.'
+dashboard-certificates-data-new-invests: 'Ma non preoccuparti, ogni nuovo contributo che tu inserisci nella piattaforma di Goteo genererà un nuovo certificato'
+dashboard-certificates-desc: 'Questi certificati consentono di dedurre la somma dalla tua dichiarazione dei redditi, se sei un/a contribuente residente in Spagna.'
 dashboard-certificates-details: 'Vedi dettagli'
 dashboard-certificates-details-desc: 'Elenco di contributi per il certificato %CERT%'
 dashboard-certificates-download: 'Conferma e scarica'
 dashboard-certificates-empty: 'È necessario dare un contributo a un progetto o ricaricare il portafoglio virtuale per la visualizzazione dei certificati'
 dashboard-certificates-expired: Scaduto
-dashboard-certificates-expired-description: 'Ha ispirato il termine per confermare il tuo certificato'
-dashboard-certificates-no-downloable: 'Il downoad del certificato sarà disponibile dal 1 marzo %YEAR%'
+dashboard-certificates-expired-description: 'E'' scaduto il termine per confermare il tuo certificato'
+dashboard-certificates-no-downloable: 'Sarà possibile scaricare il certificato dal 1 marzo %YEAR%'
+dashboard-certificates-legal-entities-no-downloable: 'Sarà possibile scaricare il certificato dal 1 marzo  %YEAR%, fino ad allora puoi scaricare la ricevuta della donazione.'
 dashboard-certificates-no-pending: 'Non c''è nessun contributo in attesa'
 dashboard-certificates-pending: In attesa
 dashboard-certificates-pending-desc: 'Questi sono i contributi che verranno inclusi nei certificati futuri.'
@@ -34,6 +35,7 @@ dashboard-certificates-totals: '%NUM% contributi, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'Per scaricare questo certificato devi prima confermare i dati!'
 dashboard-certificates-view-pending: 'Non è possibile visualizzare i tuoi contributi diretti a progetti che ancora non abbiano raggiunto il loro obiettivo minimo. Puoi verificarlo %HERE%.<br>I contributi realizzati attraverso il portafoglio virtuale sono inclusi nel certificato creato nel momento stesso del pagamento.'
 dashboard-certificates-no-invests: 'Non è possibile confermare il certificato se non hai realizzato contributi!'
+dashboard-certificates-download-proof: Scarica la ricevuta della donazione.
 dashboard-chart-days: 'RIMANGONO %s GIORNI'
 dashboard-chart-invested: 'FINANZIAMENTO OTTENUTO'
 dashboard-chart-investors: CO-FINANZIATORI
@@ -82,6 +84,8 @@ dashboard-menu-projects-story: 'La mia storia'
 dashboard-menu-review_board: Correzione 
 dashboard-menu-translate_board: Traduzione
 dashboard-menu-translates: 'Le mie Traduzioni '
+dashboard-menu-matchers: "Cofinanziatori"
+dashboard-menu-admin-matchers: "Amministratori Cofinanziatori"
 dashboard-messegers-mail-sendto: 'Inviato a %s dei partecipanti:'
 dashboard-my-wallet-available: 'Attualmente disponi di <span class="pool-amount">%s</span> <span class="pool-desc"> nel tuo portafoglio virtuale Goteo</span>'
 dashboard-my-wallet-contribute-button: Dona
