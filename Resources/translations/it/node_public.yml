@@ -22,7 +22,7 @@ node-side-searcher-success: Finanziati
 node-side-sumcalls-budget: 'Totale (tutte le campagne)'
 node-side-sumcalls-calls: Aperto
 node-side-sumcalls-campaigns: Attivo 
-node-side-sumcalls-header: 'Matchfunding'
+node-side-sumcalls-header: 'Finanziamento aggiuntivo'
 node-side-sumcalls-rest: 'Resta da distribuire'
 node-side-summary-active: Attivi
 node-side-summary-amount: 'Quantità di denaro raccolto'
@@ -33,3 +33,4 @@ node-stats-title: 'Dati di impatto'
 node-projects-title: 'Progetti'
 node-resources-title: 'Di cosa hai bisogno?'
 node-workshops-title: 'Non perderti nostre formazioni'
+node-iframe-title: 'Mappa di influenza del canale'
