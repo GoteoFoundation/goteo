@@ -43,16 +43,16 @@ dashboard-chart-no-invested: 'Nessun apporto'
 dashboard-chart-optimum: ottimo
 dashboard-embed_code: 'CODICE DIFFUSIONE SEMPLICE'
 dashboard-embed_code_investor: 'CODICE CON IMMAGINE DEL CO-FINANZIATORE'
-dashboard-header-main: 'Il mio panel'
-dashboard-investors-mail-fail: 'Errore nell''invio del messaggio a a %s'
-dashboard-investors-mail-nowho: 'Non si sono trovati destinatari '
+dashboard-header-main: 'Il mio panello'
+dashboard-investors-mail-fail: 'Errore nell''invio del messaggio a %s'
+dashboard-investors-mail-nowho: 'Non sono stati trovati destinatari '
 dashboard-investors-mail-sendto: 'Inviato a %s dei tuoi co-finanziatori:'
 dashboard-investors-mail-sent: 'Messaggi inviati correttamente'
 dashboard-investors-mail-text-required: 'Scrivi il messaggio'
-dashboard-investors_table-disclaimer: 'Si ricorda al promotore che, come da contratto, si offrono i dati dei finanziatori nell''archivio scaricabile con l''unico scopo di far avere ai finanziatori le ricompense e i benefici del progetto e per informargli sulle novità, progressi e attività relative al progetto e che è assolutamente vietato usarli con altre finalità. L''inadempienza di questa norma autorizza la Fondazione le corrispettive intraprendere azioni legali e ritirare il progetto dalla piattaforma'
+dashboard-investors_table-disclaimer: 'Si ricorda al promotore che, come da contratto, si offrono i dati dei finanziatori nell''archivio scaricabile con l''unico scopo di far avere ai finanziatori le ricompense e i benefici del progetto e per informarli sulle novità, progressi e attività relative al progetto e che è assolutamente vietato usarli con altre finalità. L''inadempienza di questa norma autorizza la Fondazione Goteo ad intraprendere azioni legali e ritirare il progetto dalla piattaforma'
 dashboard-menu-activity: 'La mia attività'
 dashboard-menu-activity-apikey: 'Chiave API'
-dashboard-menu-activity-spread: Diffusione
+dashboard-menu-activity-spread: Trasmissione
 dashboard-menu-activity-summary: Riassunto
 dashboard-menu-activity-wall: 'La mia bacheca'
 dashboard-menu-admin_board: Amministrazione
@@ -68,7 +68,7 @@ dashboard-menu-profile-preferences: 'I miei preferiti '
 dashboard-menu-profile-profile: 'Modificare il profilo '
 dashboard-menu-profile-public: 'Profilo pubblico'
 dashboard-menu-projects: 'I miei progetti '
-dashboard-menu-projects-analytics: Analitici
+dashboard-menu-projects-analytics: Dati Analitici
 dashboard-menu-projects-commons: Benefici
 dashboard-menu-projects-contract: Contratto
 dashboard-menu-projects-social-commitment: 'Impegno sociale'
@@ -86,7 +86,7 @@ dashboard-menu-translate_board: Traduzione
 dashboard-menu-translates: 'Le mie Traduzioni '
 dashboard-menu-matchers: "Cofinanziatori"
 dashboard-menu-admin-matchers: "Amministratori Cofinanziatori"
-dashboard-messegers-mail-sendto: 'Inviato a %s dei partecipanti:'
+dashboard-messegers-mail-sendto: 'Inviato a %s partecipanti:'
 dashboard-my-wallet-available: 'Attualmente disponi di <span class="pool-amount">%s</span> <span class="pool-desc"> nel tuo portafoglio virtuale Goteo</span>'
 dashboard-my-wallet-contribute-button: Dona
 dashboard-my-wallet-modal-pool-info: "Il portafoglio virtuale Goteo è una funzionalità della nostra piattaforma che ti permette di fare la tua donazione e decidere in seguito a quale progetto destinare l'importo.<br> <p> Le donazioni effettuate attraverso la nostra piattaforma sono deducibili dalle tasse, secondo la legge 49/2002, del 23 dicembre, il regime fiscale di enti non profit e incentivi fiscali per le sponsorizzazioni.</p> <p>Quando tu fai la tua donazione, è possibile scaricare un certificato di donazione che giustifica con il fisco il tuo contributo a un'entità senza scopo di lucro. È possibile accedere al registro dei certificati disponibili associati con le vostre donazioni dentro Goteo attraverso il tuo pannello dell'utente, nella specifico nella la sezione <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Certificado de donación</a>.</p><p> Nota importante: vi ricordiamo che tutti i contributi che hanno ottenuto un certificato di donazione da parte della nostra Fondazione non verranno restituiti. Ciò significa che se avete fatto una donazione collegata a un progetto concreto all'interno della nostra piattaforma e questo non raggiunge l'obiettivo minimo del finanziamento durante la sua campagna, il vostro contributo andrà al tuo portafoglio virtuale ma non tornerà al tuo conto corrente bancario. Tuttavia, è possibile destinare tale importo dal tuo portafoglio virtuale in Goteo.org a qualsiasi altro progetto desiderato e che sia attivo nel momento in cui si esegue la donazione, senza dover inserire nuovamente i tuoi dati bancari o PayPal.</p>"
