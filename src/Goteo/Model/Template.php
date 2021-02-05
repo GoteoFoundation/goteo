@@ -110,6 +110,13 @@ class Template extends \Goteo\Core\Model {
     const MESSAGE_PROJECT_THREAD = 'project_thread';    // Project owner creates a thread
     const MESSAGE_THREAD_RESPONSE = 'thread_response';    // Response from user in a thread
     const SUPPORT_THREAD_RESPONSE = 'support_response';    // Response from user in a support thread
+    const DONOR_CHANGE_STATUS_PENDING = 'donor_change_status_pending';
+    const DONOR_CHANGE_STATUS_COMPLETED = 'donor_change_status_completed';
+    const DONOR_CHANGE_STATUS_PROCESSED = 'donor_change_status_processed';
+    const DONOR_CHANGE_STATUS_VALIDATED = 'donor_change_status_validated';
+    const DONOR_CHANGE_STATUS_DECLARED = 'donor_change_status_declared';
+    const DONOR_CHANGE_STATUS_REJECTED = 'donor_change_status_rejected';
+
 
 
     public
@@ -325,6 +332,25 @@ class Template extends \Goteo\Core\Model {
         }
         return $langs;
     }
+
+    /**
+     * Returns available langs for a template in the file system
+     */
+    static public function getAvailableLangsYaml($id) {
+
+        $langs = [];
+        $languages = Lang::getLangsAvailable();
+        // Find the languages for this in the file system template
+        foreach($languages as $lng => $language) {
+            $file = GOTEO_PATH . "Resources/mailing/$lng/$id.yml";
+            if(is_file($file)) {
+                $langs[] = $lng;
+            }
+        }
+
+        return $langs;
+    }
+
     /*
      * Grupos de textos
      */
