@@ -1,18 +1,18 @@
 ---
 blog-coments-header: Commenti 
 blog-comments_no_allowed: '...'
-blog-comments_no_comments: 'Non ci sono commenti in questa entrata'
+blog-comments_no_comments: 'Non ci sono commenti in questa voce'
 blog-no_comments: 'Senza commenti'
-blog-no_posts: 'Nessuna entrata pubblicata'
-blog-send_comment-button: Inviare
+blog-no_posts: 'Nessuna voce pubblicata '
+blog-send_comment-button: Invia
 blog-send_comment-header: 'Scrivi il tuo commento'
 blog-side-last_comments: 'Ultimi commenti'
-blog-side-last_posts: 'Ultime entrate'
+blog-side-last_posts: 'Ultime voci'
 blog-side-tags: Categorie 
 blog-allow-comments: Permetti commenti
 blog-publish: Pubblica
 blog-published: Pubblicato
-blog-related-posts: 'Relazionati'
+blog-related-posts: 'Correlati'
 blog-section-mission: 'Mission'
 blog-section-milestones: 'Milestones'
 blog-section-matchfunding: 'Matchfunding'
