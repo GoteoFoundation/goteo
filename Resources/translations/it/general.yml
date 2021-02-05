@@ -113,6 +113,7 @@ regular-join: 'Unisciti'
 regular-facebook: '* Facebook'
 regular-faq: 'Domande frequenti '
 regular-female: Femmina
+regular-other-gender: Altro
 regular-first: Prima 
 regular-from: Da 
 regular-getit: Ottienilo 
@@ -160,6 +161,7 @@ regular-news: 'Notizie '
 regular-no: 'No '
 regular-of: di 
 regular-preview: Pre-visualizzazare 
+regular-evaluate: Valuta
 regular-projects: Progetti 
 regular-published_no: Bozza
 regular-published_yes: Pubblicato 
@@ -223,6 +225,8 @@ regular-remember-me: 'Ricorda i miei dati'
 regular-next: Seguente
 regular-previous: Precedente
 regular-next-workshops: 'Agenda di Fundlabs'
+regular-write-description: 'Scrivi un testo descrittivo...'
+regular-choice-placeholder: 'Seleziona una opzione'
 session-about-to-expire: 'La tua sessione scadrà tra 10 minuti. Vuoi ricaricare la pagina per rinnovarla? '
 session-expired: 'La tua sessione su Goteo è scaduta '
 spread-about: 'Testo spread-about'
@@ -250,3 +254,7 @@ user-promoter: 'L''utente guida'
 stories-type-pitcher: 'Pitcher'
 stories-type-matcher: 'Matcher'
 newsletter-donate-description: 'Perchè possiamo seguire aiutando più e più iniziative civiche ad andare avanti'
+regular-icon: Icona
+regular-action: Azione
+regular-action_url: Azione URL
+regular-modal-decription: Meta-descrizione
