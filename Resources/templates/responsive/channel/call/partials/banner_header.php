@@ -8,7 +8,7 @@
 			</a>
 		</div>
 		<div class="pull-right hidden-xs">
-			<span><?= $this->text('call-header-powered-by') ?></span>
+			<span style="<?= $this->colors['header'] ? "color:".$this->colors['header'] : '' ?>"><?= $this->text('call-header-powered-by') ?></span>
 			<a href="<?= $this->get_config('url.main') ?>">
 				<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
 			</a>
@@ -46,11 +46,11 @@
 			<div class="row">
 				<div class="col-lg-6 col-md-7 col-sm-8 col-xs-12">
 					<div>
-						<span class="title">
+						<span class="title" style="<?= $this->colors['header'] ? "color:".$this->colors['header'] : '' ?>" >
 						<?= $this->channel->subtitle ?>
 						</span>
 					</div>
-					<div class="description">
+					<div class="description" style="<?= $this->colors['header'] ? "color:".$this->colors['header'] : '' ?>" >
 						<?= $this->channel->description ?>
 					</div>
 					<a href="<?= $this->channel->banner_button_url ?>" class="btn btn-yellow scroller"><i class="icon icon-plus icon-2x">		
@@ -66,7 +66,7 @@
 	<div class="info">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-6 subtitle">
+				<div class="col-md-6 subtitle" style="<?= $this->colors['secondary'] ? "color:".$this->colors['secondary'] : '' ?>">
 					<?= $this->text('channel-call-main-info-subtitle') ?>
 				</div>
 			</div>
