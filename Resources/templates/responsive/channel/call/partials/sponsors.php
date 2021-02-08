@@ -24,7 +24,13 @@ endforeach;
       <?php foreach ($main_sponsors as $sponsor): ?>
         <?php $sponsor_image=$sponsor->getImage(); ?>
         <li>
-          <img src="<?= $sponsor_image->getLink(150, 80, false) ?>" >
+          <?php if ($sponsor->url) :?>
+            <a href="<?= $sponsor->url?>" target="_blank">
+          <?php endif; ?>
+          <img alt="<?= $sponsor->name ?>" src="<?= $sponsor_image->getLink(150, 80, false) ?>" >
+          <?php if ($sponsor->url) :?>
+            </a>
+          <?php endif; ?>
         </li>
       <?php endforeach; ?>
     </ul>
@@ -38,7 +44,13 @@ endforeach;
             <div class="sponsor-label">
               <?= $sponsor->label ?>
             </div>
-            <img src="<?= $sponsor_image->getLink(800, 0, false) ?>" >
+            <?php if ($sponsor->url) :?>
+              <a href="<?= $sponsor->url?>" target="_blank">
+            <?php endif; ?>
+            <img alt="<?= $sponsor->name ?>" src="<?= $sponsor_image->getLink(800, 0, false) ?>" >
+            <?php if ($sponsor->url) :?>
+              </a>
+            <?php endif; ?>
           </div>
 
         <?php else: ?>
@@ -49,7 +61,14 @@ endforeach;
             <div class="sponsor-label">
               <?= $sponsor->label ?>
             </div>
-            <img src="<?= $sponsor_image->getLink(200, 65, false) ?>" >
+            <?php if ($sponsor->url) :?>
+              <a href="<?= $sponsor->url?>" target="_blank">
+            <?php endif; ?>
+
+            <img alt="<?= $sponsor->name ?>" src="<?= $sponsor_image->getLink(200, 65, false) ?>" >
+            <?php if ($sponsor->url) :?>
+              </a>
+            <?php endif; ?>
           </div>
           <?php endforeach; ?>
 
