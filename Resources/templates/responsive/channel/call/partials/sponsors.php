@@ -16,8 +16,11 @@ endforeach;
 
 <div class="section sponsors">
   <div class="container">
-    <h2 class="title"><span class="icon icon-rocket icon-3x"></span><?= $this->text('channel-call-sponsors-title') ?></h2>
-    <p class="description"><?= $this->text('channel-call-sponsors-subtitle') ?></p>
+    <h2 class="title" style="<?= $this->colors['primary'] ? "color:".$this->colors['primary'] : '' ?>">
+      <span class="icon icon-rocket icon-3x" style="<?= $this->colors['secondary'] ? "color:".$this->colors['secondary'] : '' ?>"></span>
+      <?= $this->text('channel-call-sponsors-title') ?>
+    </h2>
+    <p class="description" style="<?= $this->colors['secondary'] ? "color:".$this->colors['secondary'] : '' ?>"><?= $this->text('channel-call-sponsors-subtitle') ?></p>
     <ul class="img-list list-inline text-center">
     
    <ul class="list-inline text-left main-sponsors">
@@ -41,7 +44,7 @@ endforeach;
           <?php $sponsor=$secondary_sponsors[0]; ?>
           <?php $sponsor_image=$sponsor->getImage(); ?>
           <div class="col-md-9 col-sm-9 col-xs-9 secondary-sponsor">
-            <div class="sponsor-label">
+            <div class="sponsor-label" style="<?= $this->colors['secondary'] ? "color:".$this->colors['secondary'] : '' ?>">
               <?= $sponsor->label ?>
             </div>
             <?php if ($sponsor->url) :?>
