@@ -70,7 +70,10 @@ class ChannelController extends \Goteo\Core\Controller {
             'outdate'
         ): [];
 
-        
+        $config = $channel->getConfig();
+
+        // get custom colors from config field
+        $colors=$config['colors'];
 
         //check if there are elements to show by type
         foreach($types as $key => $type)
@@ -97,6 +100,7 @@ class ChannelController extends \Goteo\Core\Controller {
             'sponsors' => $sponsors,
             'categories' => $categories,
             'types' => $types,
+            'colors' => $colors,
             'url_project_create' => '/channel/' . $id . '/create'
         ], 'channel/');
     }
