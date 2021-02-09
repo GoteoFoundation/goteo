@@ -29,7 +29,10 @@ if($this->projects || $section):
 <div class="section map">
   <div class="container">
     <div class="row">
-      <h2 class="title"><span class="icon icon-news icon-3x"></span><?= $this->t('channel-call-map-section-title') ?></h2>
+      <h2 class="title" style="<?= $this->colors['primary'] ? "color:".$this->colors['primary'] : '' ?>">
+        <span class="icon icon-news icon-3x" style="<?= $this->colors['secondary'] ? "color:".$this->colors['secondary'] : '' ?>"></span>
+        <?= $this->t('channel-call-map-section-title') ?>
+      </h2>
 
       <?php 
         $summary = $this->channel->getSummary();
