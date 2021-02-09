@@ -1335,6 +1335,28 @@ div.section.map {
 	}	
 }
 
+div.section.pitch-and-match {
+
+	padding: 0px 50px 0px 50px !important;
+
+	background-color: #fed383;
+	color: $color-new-dark-blue;
+
+	.character {
+		border-right: 1px rgba(255, 255, 255, 0.3);
+	}
+	.img-responsive {
+		height: 240px;
+		display: block;
+		margin: auto
+	}
+
+	.btn {
+		color: $color-new-dark-blue;
+	}
+
+}
+
 
 footer {
 	font-weight: bold;
