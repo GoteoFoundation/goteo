@@ -1332,7 +1332,41 @@ div.section.map {
 
 	.map {
 		overflow: hidden;
-	}	
+	} 
+}
+
+div.section.pitch-and-match {
+
+	padding: 0px 50px 0px 50px !important;
+
+	background-color: #fed383;
+	color: $color-new-dark-blue;
+
+	hr {
+		width: 90%;
+	} 
+
+	.divider {
+		position: relative;
+		left: 0;
+		border-top: 1px solid white;
+		width: 100%;
+	}
+
+	.character {
+		margin: 50px 0px 50px 10px
+	}
+
+	.img-responsive {
+		height: 240px;
+		display: block;
+		margin: auto
+	}
+
+	.btn {
+		color: $color-new-dark-blue;
+	}
+
 }
 
 
@@ -1714,6 +1748,15 @@ footer {
 					margin-left: 0px;
 				}
 			}
+		}
+	}
+
+	div.section.pitch-and-match {
+		.divider {
+			position: relative;
+			left: 0;
+			border-top: 1px solid white;
+			width: 100%;
 		}
 	}
 
