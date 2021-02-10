@@ -1344,14 +1344,11 @@ div.section.pitch-and-match {
 
 	hr {
 		width: 90%;
-		color: $color-grey;
+		border-color: $color-light-grey;
 	} 
 
 	.divider {
-		position: relative;
-		left: 0;
-		border-top: 1px solid white;
-		width: 100%;
+		border-right: 1px solid rgba(255,255,255,0.3);
 	}
 
 	.character {
@@ -1569,6 +1566,13 @@ footer {
 				}
 			}
 		}
+
+		div.section.pitch-and-match {
+			.divider {
+				border-right: unset;
+				border-bottom: 1px solid rgba(255,255,255,0.3);
+			}
+		}
 }
 
 @media (max-width: $breakpoint-sm - 1) {
@@ -1758,14 +1762,6 @@ footer {
 		}
 	}
 
-	div.section.pitch-and-match {
-		.divider {
-			position: relative;
-			left: 0;
-			border-top: 1px solid white;
-			width: 100%;
-		}
-	}
 
 	footer {
 
