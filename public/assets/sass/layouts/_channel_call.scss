@@ -1332,7 +1332,7 @@ div.section.map {
 
 	.map {
 		overflow: hidden;
-	}	
+	} 
 }
 
 div.section.pitch-and-match {
@@ -1342,9 +1342,21 @@ div.section.pitch-and-match {
 	background-color: #fed383;
 	color: $color-new-dark-blue;
 
-	.character {
-		border-right: 1px rgba(255, 255, 255, 0.3);
+	hr {
+		width: 90%;
+	} 
+
+	.divider {
+		position: relative;
+		left: 0;
+		border-top: 1px solid white;
+		width: 100%;
 	}
+
+	.character {
+		margin: 50px 0px 50px 10px
+	}
+
 	.img-responsive {
 		height: 240px;
 		display: block;
@@ -1736,6 +1748,15 @@ footer {
 					margin-left: 0px;
 				}
 			}
+		}
+	}
+
+	div.section.pitch-and-match {
+		.divider {
+			position: relative;
+			left: 0;
+			border-top: 1px solid white;
+			width: 100%;
 		}
 	}
 
