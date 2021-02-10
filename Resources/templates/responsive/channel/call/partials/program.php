@@ -31,7 +31,10 @@
 
     <?php foreach ($programs as $key => $program): ?>
       <div class="tabs">
-        <div class="date" style="<?= $this->colors['primary'] ? "color:".$this->colors['primary'] : '' ?>"> <?= $program->date ?> </div>
+        <div class="date" style="<?= $this->colors['primary'] ? "color:".$this->colors['primary'].";" : '' ?> <?= $this->colors['secondary'] ? "
+border-left-color:".$this->colors['secondary'] : '' ?>" > 
+          <?= $program->date ?> 
+        </div>
         <div class="paragraph">
           <?php if($program->header): ?>
             <img class="img-responsive" src="<?= $program->getHeader()->getLink(0,120) ?>" >

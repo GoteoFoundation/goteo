@@ -1,24 +1,13 @@
 <?php $channel=$this->channel; ?>
 
 <div class="section banner-header">
-	<div class="custom-header">
-		<div class="pull-left">
-			<a href="<?= '/channel/'.$this->channel->id ?> ">
-				<img src="<?= $channel->logo ? $channel->logo->getlink(0,40) : '' ?>" height="40px">
-			</a>
-		</div>
-		<div class="pull-right">
-			<span><?= $this->text('call-header-powered-by') ?></span>
-          	<a href="<?= $this->get_config('url.main') ?>">
-          		<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
-          	</a>
-      	</div>
-	</div>
+	<!-- Navbar header -->
+	<?= $this->insert('channel/call/partials/navbar') ?>
 	<div class="image">
-		<img src="/assets/img/channel/call/resources/goteo-1920x600_RECURSOS.jpg" class="display-none-important header-default img-responsive  hidden-xs visible-up-1400">
-		<img src="/assets/img/channel/call/resources/goteo-1400x600_RECURSOS.jpg" class="display-none-important header-default img-responsive  hidden-xs visible-1051-1400">
-		<img src="/assets/img/channel/call/resources/goteo-1051x600_RECURSOS.jpg" class="display-none-important header-default img-responsive  hidden-xs visible-768-1050">
-		<img src="/assets/img/channel/call/resources/goteo-550x600_RECURSOS.jpg" class="img-responsive visible-xs">
+		<img src="/assets/img/channel/call/recursos-crowdcoop.jpg" class="display-none-important header-default img-responsive  hidden-xs visible-up-1400">
+		<img src="/assets/img/channel/call/recursos-crowdcoop.jpg" class="display-none-important header-default img-responsive  hidden-xs visible-1051-1400">
+		<img src="/assets/img/channel/call/recursos-crowdcoop.jpg" class="display-none-important header-default img-responsive  hidden-xs visible-768-1050">
+		<img src="/assets/img/channel/call/recursos-crowdcoop.jpg" class="img-responsive visible-xs">
 	</div>
 
 	<div class="banner-info terms">
@@ -26,11 +15,11 @@
 			<div class="row">
 				<div class="col-lg-6 col-md-7 col-sm-8 col-xs-12">
 					<div>
-						<span class="title">
+						<span class="title" style="<?= $this->colors['header'] ? "color:".$this->colors['header'].";" : '' ?> <?= $this->colors['header_shadow'] ? "text-shadow:none" : '' ?>">
 						<?= $this->text('channel-call-resources-banner-title') ?>
 						</span>
 					</div>
-					<div class="description">
+					<div class="description" style="<?= $this->colors['header'] ? "color:".$this->colors['header'].";" : '' ?> <?= $this->colors['header_shadow'] ? "text-shadow:none" : '' ?>">
 						<?= $this->text('channel-call-resources-banner-description') ?>
 					</div>
 				</div>
