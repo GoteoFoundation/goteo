@@ -4,7 +4,7 @@
 			<?php if($key==0): ?>
 			<div class="row">
 				<div class="col-md-10">
-					<div class="description collapse in" id="<?= 'collapse-'.$item->id ?>">
+					<div class="description collapse in" id="<?= 'collapse-'.$item->id ?>" style="<?= $this->colors['secondary'] ? "color:".$this->colors['secondary'].";" : '' ?> ">
 					<?= $this->markdown($item->description) ?>
 					</div>
 				</div>
