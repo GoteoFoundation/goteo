@@ -1338,12 +1338,13 @@ div.section.map {
 div.section.pitch-and-match {
 
 	padding: 0px 50px 0px 50px !important;
-
 	background-color: #fed383;
 	color: $color-new-dark-blue;
+	font-size: $font-size*1.2;
 
 	hr {
 		width: 90%;
+		color: $color-grey;
 	} 
 
 	.divider {
@@ -1354,19 +1355,25 @@ div.section.pitch-and-match {
 	}
 
 	.character {
-		margin: 50px 0px 50px 10px
-	}
+		margin: 50px 0px 50px 10px;
 
-	.img-responsive {
-		height: 240px;
-		display: block;
-		margin: auto
-	}
+		h2 {
+			margin-top: 10px;
+		}
 
-	.btn {
-		color: $color-new-dark-blue;
-	}
+		.img-responsive {
+			height: 240px;
+			display: block;
+			margin: auto
+		}
 
+		.call-to-action {
+
+			.btn {
+				color: $color-new-dark-blue;
+			}
+		}
+	}
 }
 
 
