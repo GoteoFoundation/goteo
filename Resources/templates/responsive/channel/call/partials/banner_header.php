@@ -36,13 +36,51 @@
 		</div>
 	</div>
 
-	<?php if($this->type!='available'): ?>
+	<?php if($this->type!='available'&&!$this->channel->getSections('intro')): ?>
+
 
 	<div class="info">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6 subtitle" style="<?= $this->colors['secondary'] ? "color:".$this->colors['secondary'] : '' ?>">
 					<?= $this->text('channel-call-main-info-subtitle') ?>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<?php elseif($this->channel->getSections('intro')): ?>
+
+	<div class="info intro">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<ul class="list-inline filters" >
+							<li class="selected" data-rol="pitcher">
+								<a href="#">
+									<img height="22px" src="/assets/img/channel/call/characters_icons/pitcher.png">
+									Pitcher
+								</a>
+							</li>
+							<li data-rol="matcher">
+								<a href="#" >
+									<img height="22px" src="/assets/img/channel/call/characters_icons/matcher.png">
+									Matcher
+								</a>
+							</li>
+							<li data-rol="donor">
+								<a href="#" >
+									<img height="22px" src="/assets/img/channel/call/characters_icons/donor.png">
+									Donante
+								</a>
+							</li>
+							<li data-rol="goteo">
+								<a href="#">
+									<img height="18px" src="/assets/img/channel/call/characters_icons/goteo.png">
+									Goteo
+								</a>
+							</li>
+					</ul>
 				</div>
 			</div>
 		</div>
