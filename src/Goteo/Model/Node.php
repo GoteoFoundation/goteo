@@ -1226,17 +1226,15 @@ class Node extends \Goteo\Core\Model {
         return [];
     }
 
-    public function getSections($section) {
-        if($this->sectionsList) return $this->sectionsList;
-
+    public function getSections($section = null) {
         $filter = [
             'node' => $this->id
         ];
 
         if ($section) $filter['section'] = $section;
 
-        $this->sectionsList = NodeSections::getList($filter, 0, 10);
-        return $this->sectionsList;
+        $sections = NodeSections::getList($filter, 0, 10);
+        return $sections;
     }
 
 }
