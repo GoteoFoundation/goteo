@@ -15,6 +15,12 @@ $this->section('channel-content');
 
 <?= $this->insert('channel/call/partials/banner_header') ?>
 
+<?php if($this->channel->getSections('intro')): ?>
+
+<?= $this->insert('channel/call/partials/intro') ?>
+
+<?php endif; ?>
+
 <?= $this->insert('channel/call/partials/main_info') ?>
 
 <?= $this->insert('channel/call/partials/call_to_action') ?>
@@ -38,5 +44,11 @@ $this->section('channel-content');
 <?= $this->insert('channel/call/partials/sponsors') ?>
 
 <?= $this->insert('channel/call/partials/modal_program') ?>
+
+<?php if($this->channel->getSections('intro')): ?>
+
+<?= $this->insert('channel/call/partials/modals') ?>
+
+<?php endif; ?>
 
 <?php $this->replace() ?>
