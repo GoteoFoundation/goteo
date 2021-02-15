@@ -168,10 +168,14 @@ class ChannelCriteriaAdminController extends AbstractAdminController
 
     $questionnaire = Questionnaire::getByChannel($id);
     $questions = $questionnaire->questions;
+    if(empty($questions)) {
+      Message::error(Text::get('questionnaire-questions-export-empty'));
+      return $this->redirect('/admin/channelcriteria/' . $id);
+    }
     
-    $total = Project::getList(['node' => $id], $cid, 0, 0, true);
-    $projects = Project::getList(['node' => $id], $cid, 0, $total);
-
+    $total = Project::getList(['node' => $id], $id, 0, 0, true);
+    $projects = Project::getList(['node' => $id], $id, 0, $total);
+    
     $response = new StreamedResponse(function () use ($questions, $projects) {
       $buffer = fopen('php://output', 'w');
 
