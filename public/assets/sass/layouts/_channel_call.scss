@@ -234,25 +234,23 @@ div.section.banner-header{
 				li{
 					margin-right: 15px;
 					margin-left: 15px;
+					color: $color-new-lilac;
+					cursor:pointer;
 					img{
 						vertical-align: sub;
 	    				margin-right: 3px;
-					}
-					a{
-							color: $color-new-lilac;
-						}
-					}
+					}	
+				}
 				li.selected{
 					background-color: #15ae98;
 					border-radius: 5px;
 					color: #fff !important;
 					padding: 8px 10px;
+					cursor: none;
+					height: 41px;
 					img{
 						filter: brightness(.55) saturate(3) grayscale(100%);
-					}
-					a{
-						color: $color-white;
-					}
+					}		
 				}
 			}
 		}
@@ -1696,6 +1694,9 @@ footer {
         	&.terms{
         		background-color: $background-white;
         		position: static;
+        	}
+        	&.intro{
+        		background-color: $background-white;
         	}
         }
 	}

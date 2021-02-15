@@ -43,3 +43,32 @@ channel-call-impact-data-investors: Cofinanciadores
 channel-call-resources-banner-title: 'Conocimiento abierto'
 channel-call-resources-banner-description: 'Recursos'
 channel-call-resources-filter-title: 'Filtra por categorías'
+
+channel-call-intro-pitcher-title: 'Pitcher'
+channel-call-intro-matcher-title: 'Matcher'
+channel-call-intro-donor-title: 'Donor'
+channel-call-intro-factory-title: 'Goteo'
+
+channel-call-intro-pitcher-tab-title: 'Crea tu proyecto'
+channel-call-intro-pitcher-tab-description: 'Lanza tu idea y proyecto al mundo mediante una plataforma de crowdfunding cívico, cooperativo, social y sostenible.</br>Crea comunidad alrededor de tu cooperativa.'
+channel-call-intro-pitcher-tab-action: '¡Házte impulsor!'
+channel-call-intro-pitcher-tab-action-url: '/project/create'
+channel-call-intro-pitcher-tab-video: 'https://www.youtube.com/embed/5bzfj2IkznQ'
+
+channel-call-intro-matcher-tab-title: 'Cofinancia proyectos'
+channel-call-intro-matcher-tab-description: '¿Eres una cooperativa, empresa responsable o fundación? <br>¿Quieres colaborar dando impulso al mundo cooperativo?'
+channel-call-intro-matcher-tab-action: '¡Házte matcher!'
+channel-call-intro-matcher-tab-action-url: 'https://fundacion.goteo.org/blog/como-funciona-el-matcher'
+channel-call-intro-matcher-tab-video: 'https://www.youtube.com/embed/rZFvAfZLZSI'
+
+channel-call-intro-donor-tab-title: 'Adelante'
+channel-call-intro-donor-tab-description: 'Con tu donación desgravable haces posible la creación y la sostenibilidad de proyectos cooperativos comprometidos con el cambio social.'
+channel-call-intro-donor-tab-action: '¡Dona!'
+channel-call-intro-donor-tab-action-url: '/channel/crowdcoop/available'
+channel-call-intro-donor-tab-video: 'https://www.youtube.com/embed/U_AAioupuk8'
+
+channel-call-intro-factory-tab-title: 'Fábrica Crowdcoop'
+channel-call-intro-factory-tab-description: 'Únete a nuestra fábrica de proyectos cooperativos por una democracia económica. Pongamos el dinero al servicio del bien común y la justicia social.'
+channel-call-intro-factory-tab-action: '¡Házte impulsor!'
+channel-call-intro-factory-tab-action-url: '/project/create'
+channel-call-intro-factory-tab-video: 'https://www.youtube.com/embed/Q-qHZK36HLA'

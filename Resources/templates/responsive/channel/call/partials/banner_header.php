@@ -57,28 +57,20 @@
 				<div class="col-md-6">
 					<ul class="list-inline filters" >
 							<li class="selected" data-rol="pitcher">
-								<a href="#">
-									<img height="22px" src="/assets/img/channel/call/characters_icons/pitcher.png">
-									Pitcher
-								</a>
+								<img height="22px" src="/assets/img/channel/call/characters_icons/pitcher.png">
+								<?= $this->text('channel-call-intro-pitcher-title') ?>
 							</li>
 							<li data-rol="matcher">
-								<a href="#" >
-									<img height="22px" src="/assets/img/channel/call/characters_icons/matcher.png">
-									Matcher
-								</a>
+								<img height="22px" src="/assets/img/channel/call/characters_icons/matcher.png">
+								<?= $this->text('channel-call-intro-matcher-title') ?>
 							</li>
 							<li data-rol="donor">
-								<a href="#" >
-									<img height="22px" src="/assets/img/channel/call/characters_icons/donor.png">
-									Donante
-								</a>
+								<img height="22px" src="/assets/img/channel/call/characters_icons/donor.png">
+								<?= $this->text('channel-call-intro-donor-title') ?>
 							</li>
-							<li data-rol="goteo">
-								<a href="#">
-									<img height="18px" src="/assets/img/channel/call/characters_icons/goteo.png">
-									Goteo
-								</a>
+							<li data-rol="goteo" style="padding: 10px;">
+								<img height="18px" src="/assets/img/channel/call/characters_icons/goteo.png">
+								<?= $this->text('channel-call-intro-factory-title') ?>
 							</li>
 					</ul>
 				</div>
