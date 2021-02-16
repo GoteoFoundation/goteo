@@ -1563,6 +1563,9 @@ footer {
         		background-color: $background-white;
         		position: static;
         	}
+        	&.intro{
+        		background-color: $background-white;
+        	}
         }
 	}
 
@@ -1665,7 +1668,6 @@ footer {
 	div.section {
 		padding: 50px 0px 0px 0px !important;
 	}
-	
 
 	div.section.program{
 
@@ -1751,6 +1753,14 @@ footer {
         	}
         	&.intro{
         		background-color: $background-white;
+        		ul{
+					bottom: 0;
+					top: auto;
+					z-index: 1000;
+					overflow-y: scroll;
+					white-space: nowrap;
+					-webkit-overflow-scrolling: touch;
+				}
         	}
         }
 	}
@@ -1763,6 +1773,21 @@ footer {
 		}
 		p.description{
 			padding-top: 0px;
+		}
+	}
+
+	div.section.intro{
+		h2.title{
+			text-align: center;
+		}
+		p.description{
+			text-align: center;
+		}
+		.btn{
+			display: block;
+		}
+		img.cover{
+			margin: 35px auto 0 auto;
 		}
 	}
 

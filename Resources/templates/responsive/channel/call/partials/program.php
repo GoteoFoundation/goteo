@@ -33,7 +33,7 @@
       <div class="tabs">
         <div class="date" style="<?= $this->colors['primary'] ? "color:".$this->colors['primary'].";" : '' ?> <?= $this->colors['secondary'] ? "
 border-left-color:".$this->colors['secondary'] : '' ?>" > 
-          <?= $program->date ?> 
+          <?= date('d/m/Y', strtotime($program->date)) ?>
         </div>
         <div class="paragraph">
           <?php if($program->header): ?>
