@@ -1332,7 +1332,45 @@ div.section.map {
 
 	.map {
 		overflow: hidden;
-	}	
+	} 
+}
+
+div.section.pitch-and-match {
+
+	padding: 0px 50px 0px 50px !important;
+	background-color: #fed383;
+	color: $color-new-dark-blue;
+	font-size: $font-size*1.2;
+
+	hr {
+		width: 90%;
+		border-color: $color-light-grey;
+	} 
+
+	.divider {
+		border-right: 1px solid rgba(255,255,255,0.3);
+	}
+
+	.character {
+		margin: 50px 0px 50px 10px;
+
+		h2 {
+			margin-top: 10px;
+		}
+
+		.img-responsive {
+			height: 240px;
+			display: block;
+			margin: auto
+		}
+
+		.call-to-action {
+
+			.btn {
+				color: $color-new-dark-blue;
+			}
+		}
+	}
 }
 
 
@@ -1528,6 +1566,20 @@ footer {
 				}
 			}
 		}
+
+		div.section.pitch-and-match {
+
+			.call-to-action {
+				div {
+					margin-bottom: 1em;
+				}
+			}
+
+			.divider {
+				border-right: unset;
+				border-bottom: 1px solid rgba(255,255,255,0.3);
+			}
+		}
 }
 
 @media (max-width: $breakpoint-sm - 1) {
@@ -1716,6 +1768,7 @@ footer {
 			}
 		}
 	}
+
 
 	footer {
 
