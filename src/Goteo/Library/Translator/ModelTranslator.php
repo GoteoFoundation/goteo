@@ -39,7 +39,9 @@ class ModelTranslator implements TranslatorInterface {
         'node_resource' => 'Node\NodeResource',
         'node_resource_category' => 'Node\NodeResourceCategory',
         'image_credits' => 'Image\Credits',
-        'node_sections' => 'Node\NodeSections'
+        'node_sections' => 'Node\NodeSections',
+        'question' => 'Questionnaire\Question',
+        'question_options' => 'Questionnaire\Question\QuestionOptions'
     ];
     static protected $_forced_types = [
         'info' => 'html',
