@@ -110,6 +110,8 @@ class Config {
 			\Goteo\Controller\TranslateController::addTranslateModel('node_resource_category');
 			\Goteo\Controller\TranslateController::addTranslateModel('image_credits');
 			\Goteo\Controller\TranslateController::addTranslateModel('node_sections');
+			\Goteo\Controller\TranslateController::addTranslateModel('question');
+			\Goteo\Controller\TranslateController::addTranslateModel('question_options');
 			
 			// sets up the rest...
 			self::setDirConfiguration();
