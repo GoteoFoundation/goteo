@@ -298,6 +298,7 @@ div.section.intro{
 				display: block;
 				margin-top: 35px;
 				cursor:pointer;
+				border-radius: 12px;
 			}
 		}
 	}
@@ -1564,6 +1565,7 @@ footer {
         	}
         	&.intro{
         		background-color: $background-white;
+        		position: static;
         	}
         }
 	}
