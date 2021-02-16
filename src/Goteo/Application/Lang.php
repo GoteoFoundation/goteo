@@ -330,17 +330,12 @@ class Lang {
             $lang = self::current();
         }
         $url = Lang::getLangUrl();
-        $url_lang = Config::get('url.url_lang');
         $path = '';
         if($request) {
             $get = $request->query->all();
             if(isset($get['lang'])) unset($get['lang']);
-            if(!$url_lang) {
-                $get['lang'] = $lang;
-            }
-            if ($get) {
-                $path = '?' . http_build_query($get);
-            }
+            $get['lang'] = $lang;
+            $path = '?' . http_build_query($get);
         }
         return $path;
     }
