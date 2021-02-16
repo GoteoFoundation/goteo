@@ -1,4 +1,5 @@
 ---
+questionnaire: Questionnaire
 questionnaire-type-of-question: 'Type of answer'
 questionnaire-required: 'It is mandatory to answer'
 questionnaire-text: 'Question to answer'
