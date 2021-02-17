@@ -73,7 +73,7 @@ class ChannelController extends \Goteo\Core\Controller {
         $config = $channel->getConfig();
 
         // get custom colors from config field
-        $colors=$config['colors'];
+        $colors=$config['colors'] ? $config['colors'] : [];
 
         //check if there are elements to show by type
         foreach($types as $key => $type)
