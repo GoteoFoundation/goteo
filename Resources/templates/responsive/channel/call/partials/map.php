@@ -6,7 +6,8 @@ if($this->projects || $section):
   $config = $this->channel->getConfig();
   $map_config = $config['map'];
   $params = [
-    'channel' => $this->channel->id
+    'channel' => $this->channel->id,
+    'lang' => $this->lang_url_query($this->lang_current())
   ];
 
   $url = '/map';
