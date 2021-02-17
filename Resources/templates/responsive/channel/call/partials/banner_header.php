@@ -36,13 +36,43 @@
 		</div>
 	</div>
 
-	<?php if($this->type!='available'): ?>
+	<?php if($this->type!='available'&&!$this->channel->getSections('intro')): ?>
+
 
 	<div class="info">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6 subtitle" style="<?= $this->colors['secondary'] ? "color:".$this->colors['secondary'] : '' ?>">
 					<?= $this->text('channel-call-main-info-subtitle') ?>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<?php elseif($this->channel->getSections('intro')): ?>
+
+	<div class="info intro">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<ul class="list-inline filters" >
+							<li class="selected" data-rol="pitcher">
+								<img height="22px" src="/assets/img/channel/call/characters_icons/pitcher.png">
+								<?= $this->text('channel-call-intro-pitcher-title') ?>
+							</li>
+							<li data-rol="matcher">
+								<img height="22px" src="/assets/img/channel/call/characters_icons/matcher.png">
+								<?= $this->text('channel-call-intro-matcher-title') ?>
+							</li>
+							<li data-rol="donor">
+								<img height="22px" src="/assets/img/channel/call/characters_icons/donor.png">
+								<?= $this->text('channel-call-intro-donor-title') ?>
+							</li>
+							<li data-rol="goteo" style="padding: 10px;">
+								<img height="18px" src="/assets/img/channel/call/characters_icons/goteo.png">
+								<?= $this->text('channel-call-intro-factory-title') ?>
+							</li>
+					</ul>
 				</div>
 			</div>
 		</div>

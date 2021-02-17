@@ -224,7 +224,84 @@ div.section.banner-header{
 				}
 			}
 		}
+
+		&.intro{
+			ul{
+				padding-top: 50px; 
+				color: $color-new-lilac; 
+				font-weight: 500; 
+				text-align: center;	
+				li{
+					margin-right: 15px;
+					margin-left: 15px;
+					color: $color-new-lilac;
+					cursor:pointer;
+					img{
+						vertical-align: sub;
+	    				margin-right: 3px;
+					}	
+				}
+				li.selected{
+					background-color: #15ae98;
+					border-radius: 5px;
+					color: #fff !important;
+					padding: 8px 10px;
+					cursor: none;
+					height: 41px;
+					img{
+						filter: brightness(.55) saturate(3) grayscale(100%);
+					}		
+				}
+			}
+		}
     }
+}
+
+div.section.intro{
+	background-color: $color-white;
+	padding-top: 35px !important;
+	padding-bottom: 0 !important;
+	.container{
+		border-bottom: 1px #86ADB8 solid;
+		padding-bottom: 40px;
+		.left-side{
+			.img-responsive{
+				height: 421px;
+				margin: 0 auto;
+			}
+		}
+		.right-side{
+			h2.title{
+				border-bottom: none;
+				padding-bottom: 0;
+			}
+			p.description{
+				color: $color-new-lilac;
+				padding-top: 10px;
+				font-size: $font-size*1.1;
+				line-height: 1.5;
+				font-weight: 500;
+			}
+		    .btn-transparent{
+		    	margin-top: 15px;
+		    	color: $color-new-lilac;
+		    	border: 1px solid $color-new-lilac;
+		    	font-weight: 450;
+				font-size: 17px;
+				padding: 20px 24px;
+			}
+			.btn-transparent:hover{
+				background-color: $color-new-lilac;
+				color: $color-white;
+			}
+			img.cover{
+				display: block;
+				margin-top: 35px;
+				cursor:pointer;
+				border-radius: 12px;
+			}
+		}
+	}
 }
 
 div.section.main-info{
@@ -1486,6 +1563,10 @@ footer {
         		background-color: $background-white;
         		position: static;
         	}
+        	&.intro{
+        		background-color: $background-white;
+        		position: static;
+        	}
         }
 	}
 
@@ -1587,7 +1668,6 @@ footer {
 	div.section {
 		padding: 50px 0px 0px 0px !important;
 	}
-	
 
 	div.section.program{
 
@@ -1671,6 +1751,17 @@ footer {
         		background-color: $background-white;
         		position: static;
         	}
+        	&.intro{
+        		background-color: $background-white;
+        		ul{
+					bottom: 0;
+					top: auto;
+					z-index: 1000;
+					overflow-y: scroll;
+					white-space: nowrap;
+					-webkit-overflow-scrolling: touch;
+				}
+        	}
         }
 	}
 
@@ -1682,6 +1773,21 @@ footer {
 		}
 		p.description{
 			padding-top: 0px;
+		}
+	}
+
+	div.section.intro{
+		h2.title{
+			text-align: center;
+		}
+		p.description{
+			text-align: center;
+		}
+		.btn{
+			display: block;
+		}
+		img.cover{
+			margin: 35px auto 0 auto;
 		}
 	}
 
