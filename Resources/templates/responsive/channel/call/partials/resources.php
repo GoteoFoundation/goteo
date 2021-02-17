@@ -20,7 +20,7 @@ if ($this->channel->getResources()):
             <?= $section->main_description? $section->main_description : $this->t('channel-call-resources-description') ?>
           </div>
           <div class="col-button">
-            <a href="<?= '/channel/'.$this->channel->id.'/resources' ?>" class="btn btn-transparent"><i class="icon icon-plus icon-2x"></i><?= $section->main_button? $section->main_button: $this->text('channel-call-resources-button') ?></a>
+            <a href="<?= '/channel/'.$this->channel->id.'/resources' . $this->lang_url_query($this->lang_current()) ?>" class="btn btn-transparent"><i class="icon icon-plus icon-2x"></i><?= $section->main_button? $section->main_button: $this->text('channel-call-resources-button') ?></a>
           </div>
         </div>
       </div>
