@@ -49,7 +49,7 @@
 		</div>
 	</div>
 
-	<?php elseif($this->channel->getSections('intro')): ?>
+	<?php elseif($this->channel->getSections('intro')&&$this->type!='available'): ?>
 
 	<div class="info intro">
 		<div class="container">
