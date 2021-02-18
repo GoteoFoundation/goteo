@@ -25,6 +25,7 @@ use Goteo\Model\Questionnaire;
 use Goteo\Model\Questionnaire\Question;
 use Goteo\Model\Questionnaire\Answer;
 use Goteo\Model\Project;
+use Goteo\Model\Contract\BaseDocument;
 
 class ChannelCriteriaAdminController extends AbstractAdminController
 {
@@ -193,8 +194,13 @@ class ChannelCriteriaAdminController extends AbstractAdminController
 
         $project_answers = [$project->id];
 
-        foreach ($answers as $answer) {
-          array_push($project_answers, $answer->answer); 
+        foreach ($answers as $index => $answer) {
+          if ($questions[$index]->vars->type == "dropfiles") {
+            $document = BaseDocument::getByName($answer->answer);
+            array_push($project_answers, Config::get('url.main') . $document->getLink());
+          } else {
+            array_push($project_answers, $answer->answer); 
+          }
         }
 
         $buffer = fopen('php://output', 'w');
