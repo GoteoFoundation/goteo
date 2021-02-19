@@ -197,7 +197,9 @@ class ChannelCriteriaAdminController extends AbstractAdminController
         foreach ($answers as $index => $answer) {
           if ($questions[$index]->vars->type == "dropfiles") {
             $document = BaseDocument::getByName($answer->answer);
-            array_push($project_answers, Config::get('url.main') . $document->getLink());
+            $document_link = Config::get('url.main') . $document->getLink();
+            if(substr($document_link,0,2) == '//') $document_link = (Config::get('ssl') ? 'https:' : 'http:') . $document_link;
+            array_push($project_answers, $document_link);
           } else {
             array_push($project_answers, $answer->answer); 
           }
