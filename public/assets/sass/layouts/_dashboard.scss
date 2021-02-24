@@ -769,7 +769,26 @@
     width: 50%;
     padding-bottom: 20px;
   }
+
+  .impact-filter {
+    input[type="checkbox"] + img {
+      filter: grayscale(100%);
+    }
+
+    input[type="checkbox"]:checked + img {
+      filter: unset !important;
+    }
+    
+    input[type="hidden"] + img {
+      filter: grayscale(100%);
+    }
+
+    input[type="hidden"][value = "1"] + img, input[type="hidden"][value = "2"] + img,input[type="hidden"][value = "3"] + img {
+      filter: unset !important;
+    }
+  }
 }
+
 .user-pool {
     text-align: center;
     .pool-amount {
