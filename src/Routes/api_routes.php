@@ -519,5 +519,10 @@ $api->add('api-faq-images-upload', new Route(
 ));
 
 
+//Sdg list based on  footprints
+$api->add('api-sdg-footprint-list', new Route(
+    '/sdg/footprint',
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::sdgFootprintAction')
+));
 
 return $api;

@@ -2719,7 +2719,7 @@ class Project extends \Goteo\Core\Model {
             $joins
             WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
             GROUP BY project.id
-            ORDER BY  project.id ASC
+            ORDER BY project.published DESC
             $sql_limit
             ";
             // die(\sqldbg($sql, $values));

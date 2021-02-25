@@ -87,6 +87,14 @@ class Sdg extends \Goteo\Core\Model {
             $filter[] = "(sdg.name LIKE :global OR sdg.description OR sdg.link LIKE :global)";
             $values[':global'] = '%'.$filters['global'].'%';
         }
+
+        if ($filters['footprint']) {
+            $sqlJoins .="INNER JOIN sdg_footprint ON sdg_footprint.sdg_id = sdg.id ";
+            $filter[] = "sdg_footprint.footprint_id = :footprint";
+            $values[':footprint'] = $filters['footprint'];
+
+        }
+
         // print_r($filter);die;
         if($filter) {
             $sql = " WHERE " . implode(' AND ', $filter);
@@ -94,7 +102,7 @@ class Sdg extends \Goteo\Core\Model {
 
         if($count) {
             // Return count
-            $sql = "SELECT COUNT(id) FROM sdg$sql";
+            $sql = "SELECT COUNT(id) FROM sdg $sqlJoins $sql";
             // echo \sqldbg($sql, $values);
             return (int) self::query($sql, $values)->fetchColumn();
         }
@@ -111,6 +119,7 @@ class Sdg extends \Goteo\Core\Model {
                        sdg.modified
                 FROM sdg
                 $joins
+                $sqlJoins
         $sql LIMIT $offset,$limit";
 
         // print(\sqldbg($sql, $values));
