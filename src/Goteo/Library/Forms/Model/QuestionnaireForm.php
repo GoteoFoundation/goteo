@@ -96,6 +96,9 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
             $answer->project  = $this->model->project_id;
             $answer->question = $key;
 
+            if ($question->vars->hidden)
+                continue;
+
             $type = $question->vars->type;
             if ($type != "choice")
                 $answer->answer = $value;
