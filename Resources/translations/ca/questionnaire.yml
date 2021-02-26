@@ -5,6 +5,7 @@ questionnaire-required: 'És obligatori respondre'
 questionnaire-text: 'Pregunta per respondre'
 questionnaire-max-score: 'Puntuació màxima'
 questionnaire-help-max-score: 'Puntuació màxima: %s'
+questionnaire-hidden: "Amagar pregunta"
 
 questionnaire-textarea: 'Resposta llarga'
 questionnaire-boolean: 'Resposta única sí/no'

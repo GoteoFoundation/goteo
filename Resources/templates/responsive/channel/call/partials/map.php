@@ -6,7 +6,8 @@ $config = $this->channel->getConfig();
 if($config['map'] || $section):
   $map_config = $config['map'];
   $params = [
-    'channel' => $this->channel->id
+    'channel' => $this->channel->id,
+    'lang' => $this->lang_url_query($this->lang_current())
   ];
 
   $url = '/map';

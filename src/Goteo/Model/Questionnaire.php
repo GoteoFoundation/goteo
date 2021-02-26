@@ -199,6 +199,23 @@ class Questionnaire extends \Goteo\Core\Model
         return true;
     }
 
+    /**
+     * Returns if the questionnaire has questions to show
+     * @return type bool true|false
+     */
+    public function hasQuestionsToShow() {
+        $questions = $this->questions;
+
+        $questionsToShow = false;
+        foreach ($questions as $question) {
+            if (!$question->vars->hidden) {
+                return true;
+            }
+        }
+
+        return $questionsToShow;
+    }
+
 
 }
 

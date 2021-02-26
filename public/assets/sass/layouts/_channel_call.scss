@@ -536,7 +536,7 @@ div.section.program {
 				width: 360px;
 				margin-left: 80px;
 				padding: 20px 0 0 10px;
-				height: 500px;
+				height: 400px;
 				font-weight: bold;
 				color: $color-new-dark-blue;
 
@@ -1691,6 +1691,14 @@ footer {
 			.paragraph {
 				position: relative;
 				width: 200px;
+
+				p {
+					padding-right: unset;
+					display: -webkit-box;
+					overflow: hidden;
+					-webkit-line-clamp: 3;
+					-webkit-box-orient: vertical;
+				}
 			}
 			
 			// transition: opacity 1s;

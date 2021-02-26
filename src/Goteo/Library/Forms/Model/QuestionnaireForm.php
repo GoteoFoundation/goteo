@@ -40,21 +40,27 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
 
         $builder = $this->getBuilder();
         foreach((array) $questionnaire->questions as $question) {
+
+            if ($question->vars->hidden)
+                continue;
+            else {
+                unset($question->vars->hidden);
+            }
+
             $type = $question->vars->type;
             unset($question->vars->type);
-            if ($question->vars->attr) { $question->vars->attr = (array) $question->vars->attr;
-            }
+            if ($question->vars->attr)
+                $question->vars->attr = (array) $question->vars->attr;
+
             if ($type == "dropfiles") {
-                
                 $question->vars->url = '/api/questionnaire/documents';
                 $question->vars->accepted_files = 'image/jpeg,image/gif,image/png,application/pdf';
                 $question->vars->constraints = [
                     new Constraints\Count(['max' => 1]),
                 ];
             }
-            if ($type == "choice") {
+            if ($type == "choice")
                 $question->vars->choices = array_column($question->getChoices(), 'option', 'id');
-            }
 
             $question->vars->label = $question->title;
             $builder->add($question->id, $type, (array) $question->vars);

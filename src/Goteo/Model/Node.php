@@ -1176,7 +1176,8 @@ class Node extends \Goteo\Core\Model {
     public function getAllWorkshops () {
         if($this->workshopList) return $this->workshopList;
 
-        $this->workshopList =  Workshop::getList(['node' => $this->id]);
+        $total = Workshop::getList(['node' => $this->id], 0, 0, 1);
+        $this->workshopList =  Workshop::getList(['node' => $this->id], 0, $total);
         return $this->workshopList;
     }
 
