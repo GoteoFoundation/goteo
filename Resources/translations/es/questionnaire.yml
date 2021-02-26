@@ -4,7 +4,8 @@ questionnaire-required: 'Es obligatorio responderla'
 questionnaire-text: 'Pregunta para responder'
 questionnaire-max-score: 'Puntuación máxima'
 questionnaire-help-max-score: 'Puntuación máxima: %s'
-
+questionnaire-hidden: "Esconder pregunta"
+questionnaire-choice: Opciones
 questionnaire-textarea: 'Respuesta larga'
 questionnaire-boolean: 'Respuesta única sí/no'
 questionnaire-dropfiles: 'Subida de archivo'

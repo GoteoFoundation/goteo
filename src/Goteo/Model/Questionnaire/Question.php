@@ -50,7 +50,7 @@ class Question extends \Goteo\Core\Model
                 question.vars as `vars` 
             FROM question 
             $joins
-            WHERE id = :id",
+            WHERE question.id = :id",
             array(':id' => $id));
 
         $question = $query->fetchObject(__CLASS__);

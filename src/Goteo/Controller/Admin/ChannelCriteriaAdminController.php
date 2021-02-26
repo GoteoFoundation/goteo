@@ -75,6 +75,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
               $question->title = $data[$id . "_question"];
               $question->vars->type = $data[$id . "_typeofquestion"];
               $question->vars->required = $data[$id . "_required"] ? true : false;
+              $question->vars->hidden = $data[$id . "_hidden"] ? true : false;
               $question->max_score = $data[$id . "_max_score"];
               $question->order = $order++;
               if (!$question->save($errors)) {
@@ -101,7 +102,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
       $questionnaire->channel = $channel->id;
       $questionnaire->lang = Config::get('lang');
       $questionnaire->save();
-  }
+   }
 
   $processor = $this->getModelForm('QuestionnaireCreate', $questionnaire, (array) $questionnaire, [], $request);
   $processor->createForm()->getBuilder()
