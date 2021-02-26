@@ -85,12 +85,12 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
         
         $questionnaire = $this->getModel();
         $questions = Question::getByQuestionnaire($questionnaire->id);
-
+        $questions = array_column($questions, NULL, 'id');
         // $data = $form->getData();]
         $index = 0;
         $data = array_intersect_key($form->getData(), $form->all());
         foreach($data as $key => $value) {
-            $question = $questions[$index];
+            $question = $questions[$key];
 
             $answer = new Answer();
             $answer->project  = $this->model->project_id;
@@ -104,7 +104,6 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 $answer->answer = $value;
             
             if ($type == "dropfiles") { 
-                
                 if($value[0] && $err = $value[0]->getUploadError()) {
                     throw new FormModelException(Text::get('form-sent-error', $err));
                 }
