@@ -786,6 +786,11 @@
     input[type="hidden"][value = "1"] + img, input[type="hidden"][value = "2"] + img,input[type="hidden"][value = "3"] + img {
       filter: unset !important;
     }
+
+    .discover-sdg {
+      text-align: center;
+      height: 8em;
+    }
   }
 }
 
