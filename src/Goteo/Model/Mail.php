@@ -542,7 +542,7 @@ class Mail extends \Goteo\Core\Model {
             $template = "default";
         } else {
             View::setTheme('responsive');
-            $template = "simple";
+            $template = "default";
         }
 
         $engine = View::createEngine();
