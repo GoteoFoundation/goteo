@@ -771,25 +771,46 @@
   }
 
   .impact-filter {
-    input[type="checkbox"] + img {
-      filter: grayscale(100%);
+
+    input {
+
+      cursor: pointer;
+
+      &[type="checkbox"] {
+
+        & + img {
+          filter: grayscale(100%);
+        }
+
+        &:checked + img {
+          filter: unset !important;
+        }
+      } 
+
+      &[type="hidden"]{
+        
+
+        & + img {
+          filter: grayscale(100%);
+        }
+        
+        &[value = "1"] + img, &[value = "2"] + img,&[value = "3"] + img {
+          filter: unset !important;
+        }
+      }
     }
 
-    input[type="checkbox"]:checked + img {
-      filter: unset !important;
-    }
-    
-    input[type="hidden"] + img {
-      filter: grayscale(100%);
-    }
-
-    input[type="hidden"][value = "1"] + img, input[type="hidden"][value = "2"] + img,input[type="hidden"][value = "3"] + img {
-      filter: unset !important;
+    img {
+      cursor: pointer;
     }
 
     .discover-sdg {
       text-align: center;
       height: 9em;
+
+      label {
+        cursor: pointer;
+      }
     }
   }
 }
