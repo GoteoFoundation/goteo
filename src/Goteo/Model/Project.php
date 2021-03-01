@@ -2668,7 +2668,7 @@ class Project extends \Goteo\Core\Model {
 
         if($count) {
             $sql = "
-            SELECT COUNT(project.id) FROM project
+            SELECT COUNT(distinct(project.id)) FROM project
             INNER JOIN sdg_project on sdg_project.project_id = project.id
             INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
             WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
