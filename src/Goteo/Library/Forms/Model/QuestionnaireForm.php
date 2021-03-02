@@ -88,16 +88,20 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
         $questions = array_column($questions, NULL, 'id');
         // $data = $form->getData();]
         $index = 0;
+
+        if ($answers = Answer::getList(['project' => $this->model->project_id, 'questionnaire' => $questionnaire->id]))
+            $answers = array_column($answers, NULL, 'question');
+
         $data = array_intersect_key($form->getData(), $form->all());
         foreach($data as $key => $value) {
             $question = $questions[$key];
 
-            $answer = new Answer();
-            $answer->project  = $this->model->project_id;
-            $answer->question = $key;
-
             if ($question->vars->hidden)
                 continue;
+
+            $answer = ($answers[$question->id])? $answers[$question->id] : new Answer();
+            $answer->project  = $this->model->project_id;
+            $answer->question = $key;
 
             $type = $question->vars->type;
             if ($type != "choice")
