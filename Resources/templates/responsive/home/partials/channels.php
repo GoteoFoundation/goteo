@@ -23,7 +23,7 @@
                                 </div>
                             </div>
                             <div class="content" style="<?php if($background) echo ' background-color:' . $this->to_rgba($background, 0.8); if($channel->owner_font_color) echo '; color:' . $channel->owner_font_color; ?>" >
-                                <div class="title">
+                                <div class="title" title="<?= $channel->name ?>">
                                     <a class="a-unstyled" href="<?= '/channel/'.$channel->id ?>">
                                     <?= $channel->name ?>
                                     </a>
