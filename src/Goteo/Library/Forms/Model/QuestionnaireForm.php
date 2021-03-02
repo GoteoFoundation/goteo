@@ -117,6 +117,12 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
             $answer->save();
 
             if ($type == "choice") {
+                if ($answer_options = AnswerOptions::getList(['answer' => $answer->id])) {
+                    foreach ($answer_options as $index => $answer_option) {
+                        $answer_option->dbDelete(['answer', 'option']);
+                    }
+                }
+
                 if (is_array($value)) {
                     foreach ($value as $index => $option) {
                         $answer_option = new AnswerOptions();
