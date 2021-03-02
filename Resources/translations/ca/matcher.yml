@@ -31,3 +31,4 @@ matcher-project-activate: 'El projecte ha sigut activat en la convocatòria %s'
 matcher-budget-amount: 'Pressupost total'
 matcher-label-project: 'Agents de Matchfunding<br>multiplicant aportacions'
 matcher-amount-project: 'Aportats: %AMOUNT% de %PROJECT_AMOUNT%'
+matcher-apply-answer-questionnaire: "Respondre qüestionari"

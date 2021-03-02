@@ -974,4 +974,13 @@ class Matcher extends \Goteo\Core\Model {
         return $matchers;
     }
 
+    public function hasQuestionnaire() {
+        $questionnaire = Questionnaire::getByMatcher($this->id);
+        return isset($questionnaire);
+    }
+
+    public function getQuestionnaire() {
+        return Questionnaire::getByMatcher($this->id);
+    }
+
 }

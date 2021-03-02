@@ -41,3 +41,4 @@ matcher-label-completed: 'Completado'
 matcher-label-rejected: 'Descartado'
 matcher-label-project: 'Agentes de Matchfunding<br>multiplicando aportes'
 matcher-amount-project: 'Aportados: %AMOUNT% de %PROJECT_AMOUNT%'
+matcher-apply-answer-questionnaire: "Responder cuestionario"
