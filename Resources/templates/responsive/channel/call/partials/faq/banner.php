@@ -6,19 +6,10 @@
 
 
 <div class="section banner-header">
-	<div class="custom-header">
-		<div class="pull-left">
-			<a href="<?= '/channel/'.$this->channel->id ?> ">
-				<img src="<?= $channel->logo ? $channel->logo->getlink(0,40) : '' ?>" height="40px">
-			</a>
-		</div>
-		<div class="pull-right">
-			<span><?= $this->text('call-header-powered-by') ?></span>
-          	<a href="<?= $this->get_config('url.main') ?>">
-          		<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
-          	</a>
-      	</div>
-	</div>
+
+	<!-- Navbar header -->
+	<?= $this->insert('channel/call/partials/navbar') ?>
+
 	<div class="image">
 		<?php $header_image=$this->faq->getBannerHeaderImage(); ?>
 		<?php $header_image_md=$this->faq->getBannerHeaderImageMd(); ?>
@@ -35,11 +26,11 @@
 			<div class="row">
 				<div class="col-lg-6 col-md-7 col-sm-8 col-xs-12">
 					<div>
-						<span class="title">
+						<span class="title" style="<?= $this->colors['header'] ? "color:".$this->colors['header'].";" : '' ?> <?= $this->colors['header_shadow'] ? "text-shadow:none" : '' ?>">
 						<?= $this->faq->banner_title ?>
 						</span>
 					</div>
-					<div class="description">
+					<div class="description" style="<?= $this->colors['header'] ? "color:".$this->colors['header'].";" : '' ?> <?= $this->colors['header_shadow'] ? "text-shadow:none" : '' ?>">
 						<?= $this->faq->banner_description ?>
 					</div>
 				</div>

@@ -121,9 +121,10 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
      */
     public function testVars($processor) {
         $defaults = [
-            'max_amount_per_project' => 500,
+            'max_amount_per_project' => 0,
             'max_amount_per_invest' => 100,
-            'max_invests_per_user' => 1
+            'max_invests_per_user' => 1,
+            'match_factor' => 1
         ];
         $matcher = $processor->getMatcher();
         $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher);
@@ -135,6 +136,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $this->assertEquals(150, $vars['max_amount_per_project']);
         $this->assertEquals(100, $vars['max_amount_per_invest']);
         $this->assertEquals(1, $vars['max_invests_per_user']);
+        $this->assertEquals(1, $vars['match_factor']);
         $this->assertEquals(array_keys($defaults), array_keys($processor->getVarLabels()));
 
         return $processor;
@@ -157,6 +159,34 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         return $processor;
     }
 
+    /**
+     * @depends testVars
+     */
+    public function testMatchFactor($processor) {
+        $invest = new Invest([
+            'user' => get_test_user()->id,
+            'project' => get_test_project()->id,
+            'method' => 'dummy',
+            'currency' => 'EUR',
+            'currency_rate' => 1,
+            'status' => Invest::STATUS_CHARGED,
+            'amount' => 75
+        ]);
+
+        $processor->setInvest($invest);
+        $processor->setProject(get_test_project());
+        $matcher = $processor->getMatcher();
+        $vars = $matcher->getVars();
+        $vars['match_factor'] = 2;
+        $matcher->setVars($vars);
+        $this->assertEquals(150, $processor->getAmount());
+
+        $vars['match_factor'] = 1;
+        $matcher->setVars($vars);
+        $this->assertEquals(75, $processor->getAmount());
+
+        return $processor;
+    }
 
     /**
      * @depends testVars
@@ -204,6 +234,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $this->assertEquals(51, $processor->getAmount($error), "Error[$error]");
         return $processor;
     }
+
 
     /**
      * @depends testAmount

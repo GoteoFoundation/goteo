@@ -68,7 +68,7 @@ class AdminProgramForm extends AbstractFormProcessor {
             ])
             ->add('action', 'text', [
               'disabled' => $this->getReadonly(),
-              'required' => true,
+              'required' => false,
               'label' => 'regular-action'
             ])
             ->add('action_url', 'text', [

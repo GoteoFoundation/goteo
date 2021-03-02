@@ -12,7 +12,6 @@
             <?php foreach($this->channels as $channel): ?>
                 <?php $summary = $channel->getSummary(); ?>
                 <?php $background = $channel->owner_background; ?>
-                <?= $channel->owner_font_color ?>
 
                 <div class="channel col-sm-4">
                         <div class="widget-channel">
@@ -23,7 +22,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="content" style="<?php if($background) echo ' background-color:' . $this->to_rgba($background, 0.8); if($channel->owner_font_color) echo ' color:' . $channel->owner_font_color; ?>" >
+                            <div class="content" style="<?php if($background) echo ' background-color:' . $this->to_rgba($background, 0.8); if($channel->owner_font_color) echo '; color:' . $channel->owner_font_color; ?>" >
                                 <div class="title">
                                     <a class="a-unstyled" href="<?= '/channel/'.$channel->id ?>">
                                     <?= $channel->name ?>

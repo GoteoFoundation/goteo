@@ -43,3 +43,33 @@ channel-call-impact-data-investors: Persones cofinançadores
 channel-call-resources-banner-title: 'Coneixement obert'
 channel-call-resources-banner-description: 'Recursos'
 channel-call-resources-filter-title: 'Filtra per categories'
+
+channel-call-intro-pitcher-title: 'Pitcher'
+channel-call-intro-matcher-title: 'Matcher'
+channel-call-intro-donor-title: 'Donor'
+channel-call-intro-factory-title: 'Goteo'
+
+channel-call-intro-pitcher-tab-title: 'Crea el teu projecte'
+channel-call-intro-pitcher-tab-description: 'Llança la teva idea i projecte al món mitjançant una plataforma de crowdfunding cívic, cooperatiu, social i sostenible. </br> Crea comunitat al voltant de la teva cooperativa.'
+channel-call-intro-pitcher-tab-action: 'Fes-te impulsor!'
+channel-call-intro-pitcher-tab-action-url: '/project/create'
+channel-call-intro-pitcher-tab-video: 'https://www.youtube.com/embed/HCYx6yft3ZU'
+
+channel-call-intro-matcher-tab-title: 'Cofinança projectes'
+channel-call-intro-matcher-tab-description: 'Ets una cooperativa, empresa responsable o fundació? <br> Vols col·laborar donant impuls al món cooperatiu?'
+channel-call-intro-matcher-tab-action: 'Fes-te matcher!'
+channel-call-intro-matcher-tab-action-url: 'https://fundacion.goteo.org/blog/como-funciona-el-matcher?lang=ca'
+channel-call-intro-matcher-tab-video: 'https://www.youtube.com/embed/AEwlYO5HBQg'
+
+channel-call-intro-donor-tab-title: 'Ciutadania compromesa'
+channel-call-intro-donor-tab-description: 'Amb la teva donació desgravable fas possible la creació i la sostenibilitat de projectes cooperatius compromesos amb el canvi social.'
+channel-call-intro-donor-tab-action: 'Dóna!'
+channel-call-intro-donor-tab-action-url: '/channel/crowdcoop/available'
+channel-call-intro-donor-tab-video: 'https://www.youtube.com/embed/AuQ_XxYoVXU'
+
+channel-call-intro-factory-tab-title: 'Fàbrica Crowdcoop'
+channel-call-intro-factory-tab-description: 'Uneix-te a la nostra fàbrica de projectes cooperatius per una democràcia econòmica. Posem els diners al servei del bé comú i la justícia social.'
+channel-call-intro-factory-tab-action: 'Fes-te impulsor!'
+channel-call-intro-factory-tab-action-url: '/project/create'
+channel-call-intro-factory-tab-video: 'https://www.youtube.com/embed/50DGGGTtiN4'
+

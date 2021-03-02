@@ -57,6 +57,15 @@ class FilterForm extends AbstractFormProcessor {
             'multidonor' => Text::get('admin-filter-type-multidonor'),
         ];
 
+        $donor_status = [
+            'pending' => Text::get('donor-status-pending'),
+            'completed' => Text::get('donor-status-completed'),
+            'processed' => Text::get('donor-status-processed'),
+            'validated' => Text::get('donor-status-validated'),
+            'declared' => Text::get('donor-status-declared'),
+            'rejected' => Text::get('donor-status-rejected')
+        ];
+
         $sdgs = [];
         foreach(Sdg::getList([],0,100) as $s) {
             $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
@@ -163,6 +172,11 @@ class FilterForm extends AbstractFormProcessor {
                 'label' => 'admin-filter-invest-status',
                 'required' => false,
                 'choices' => Invest::status(),
+            ))
+            ->add('donor_status', 'choice', array(
+                'label' => 'admin-filter-donor-status',
+                'required' => false,
+                'choices' => $donor_status
             ))
             ->add('typeofdonor', 'choice', array(
                 'label' => 'admin-filter-typeofdonor',

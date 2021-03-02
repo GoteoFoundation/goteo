@@ -1,4 +1,4 @@
-<div class="cta <?= $this->cta->style?> col-center" >
+<div class="cta <?= $this->cta->style?> col-center" style="<?= $this->colors['secondary'] ? "background-color:".$this->colors['secondary'] : '' ?>" >
   <div class="col-md-6">
     <img class="img-responsive" src="<?= $this->cta->header->getLink(500,300)?>" >
   </div>

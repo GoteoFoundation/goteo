@@ -41,6 +41,8 @@ admin-back-list: 'Tornar al llistat'
 admin-contents: 'Textos i traduccions'
 admin-empty-list: 'Sense resultats'
 admin-activity: Activitat
+admin-certificates: Certificats
+admin-certificates-management: Gestió de Certificats
 admin-communications: Comunicacions
 admin-communications-add: Crear nova comunicació
 admin-communications-userid-content: ' per l''id d''accés del destinatari'
@@ -189,6 +191,8 @@ admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aqu
 admin-users-global-search: 'Id, nom, email o projecte'
 admin-blog-global-search: 'Id, títol, subtítol o text'
 admin-communication-global-search: 'Assumpte'
+admin-donor-name-search: 'ID, nom, email'
+admin-donor-date-search: 'Processats per data'
 admin-no-project: 'Sense projecte'
 admin-title-name: Nom
 admin-title-active: Actiu
@@ -230,6 +234,9 @@ admin-title-failed: No enviats
 admin-title-pending: Pendents
 admin-title-success: Exitós
 admin-title-percent: Percentatge
+admin-title-year: Any
+admin-title-nif: NIF
+admin-title-country: País
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
 admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'
@@ -275,6 +282,7 @@ admin-filter-project-status: Estat del projecte
 admin-filter-invest-status: Estat de la donació
 admin-filter-project-location: Ubicació del projecte
 admin-filter-donor-location: Ubicació del donant
+admin-filter-donor-status: Estat del certificat
 admin-filter-location: Ubicació a fer servir al filtre
 admin-mail-body: 'Cos del missatge'
 mandatory-filter-name: Manca el nom

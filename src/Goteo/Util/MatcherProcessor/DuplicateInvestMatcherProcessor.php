@@ -23,14 +23,16 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
     protected $default_vars = [
         'max_amount_per_project' => 500,
         'max_amount_per_invest' => 100,
-        'max_invests_per_user' => 1
+        'max_invests_per_user' => 1,
+        'match_factor' => 1
     ];
 
     static public function getVarLabels() {
         return [
             'max_amount_per_project' => Text::get('matcher-duplicateinvest-max_amount_per_project'),
             'max_amount_per_invest' => Text::get('matcher-duplicateinvest-max_amount_per_invest'),
-            'max_invests_per_user' => Text::get('matcher-duplicateinvest-max_invests_per_user')
+            'max_invests_per_user' => Text::get('matcher-duplicateinvest-max_invests_per_user'),
+            'match_factor' => Text::get('matcher-duplicateinvest-match-factor')
         ];
     }
 
@@ -52,6 +54,8 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         if($amount > $vars['max_amount_per_invest']) {
             $amount = $vars['max_amount_per_invest'];
         }
+
+        $amount *= $vars['match_factor'];
 
         $invested = Invest::getList(['methods' => 'pool', 'status' => Invest::$ACTIVE_STATUSES, 'projects' => $project,'users' => $matcher->getUsers()], null, 0, 0, 'money');
 

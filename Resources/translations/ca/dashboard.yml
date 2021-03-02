@@ -36,6 +36,10 @@ dashboard-certificates-unconfirmed: 'Per a descarregar aquest certificat has con
 dashboard-certificates-view-pending: 'No es mostren les aportacions a projectes que encara no hagin passat la primera ronda. Pots consultar aquestes aportacions %HERE%.<br>Les aportacions fetes amb el moneder virtual s''inclouen en el certificat generat en el moment del pagament físic.'
 dashboard-certificates-no-invests: 'No es pot confirmar el certificat ja que no té aportacions!'
 dashboard-certificates-download-proof: Descarregar justificant de donació
+dashboard-certificates-completed: Completat
+dashboard-certificates-validated: Validat
+dashboard-certificates-declared: Declarat
+dashboard-certificates-rejected: Rebutjat
 dashboard-chart-days: 'QUEDEN %s DIES'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
 dashboard-chart-investors: COFINANÇADORS

@@ -16,6 +16,7 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Session;
 use Goteo\Application\Message;
 use Goteo\Application\View;
+use Goteo\Application\Config;
 use Goteo\Model\Node;
 use Goteo\Model\Node\NodeFaq;
 use Goteo\Model\Node\NodeFaqQuestion;
@@ -70,7 +71,14 @@ class ChannelController extends \Goteo\Core\Controller {
             'outdate'
         ): [];
 
-        
+        $config = $channel->getConfig();
+
+        if($config['google_analytics']) {
+                Config::set('analytics.google', array_merge(Config::get('analytics.google'), [$config['google_analytics']]));
+            }
+
+        // get custom colors from config field
+        $colors=$config['colors'] ? $config['colors'] : [];
 
         //check if there are elements to show by type
         foreach($types as $key => $type)
@@ -97,6 +105,7 @@ class ChannelController extends \Goteo\Core\Controller {
             'sponsors' => $sponsors,
             'categories' => $categories,
             'types' => $types,
+            'colors' => $colors,
             'url_project_create' => '/channel/' . $id . '/create'
         ], 'channel/');
     }

@@ -140,3 +140,8 @@ analytics:
 map:
     open_street_maps:
         tile_layer: https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+
+# Optional Chatbot from https://github.com/GoteoFoundation/chatbot
+chatbot:
+    url: 
+    id: 

@@ -36,6 +36,10 @@ dashboard-certificates-unconfirmed: 'Para descargar este certificado debes confi
 dashboard-certificates-view-pending: 'No se muestran tus aportes directos a proyectos que todavía no hayan acabado la primera ronda. Puedes consultarlos %HERE%.<br>Les aportaciones hechas con el monedero virtual se incluyen en el certificado generado en el momento del pago físico.'
 dashboard-certificates-no-invests: 'No se puede confirmar el certificado si no tiene aportaciones!'
 dashboard-certificates-download-proof: Descargar justificante de donación
+dashboard-certificates-completed: Completado
+dashboard-certificates-validated: Validado
+dashboard-certificates-declared: Declarado
+dashboard-certificates-rejected: Rechazado
 dashboard-chart-days: 'QUEDAN %s DÍAS'
 dashboard-chart-invested: 'FINANCIACIÓN OBTENIDA'
 dashboard-chart-investors: COFINANCIADORES

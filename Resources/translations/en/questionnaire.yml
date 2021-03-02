@@ -1,10 +1,12 @@
 ---
+questionnaire: Questionnaire
 questionnaire-type-of-question: 'Type of answer'
 questionnaire-required: 'It is mandatory to answer'
 questionnaire-text: 'Question to answer'
 questionnaire-max-score: 'Maximum score'
 questionnaire-help-max-score: 'Maximum score: %s'
-
+questionnaire-hidden: "Hide question"
+questionnaire-choice: Choices
 questionnaire-textarea: 'Long answer'
 questionnaire-boolean: 'Single option'
 questionnaire-dropfiles: 'File upload'

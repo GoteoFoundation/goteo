@@ -25,6 +25,7 @@ use Goteo\Model\Questionnaire;
 use Goteo\Model\Questionnaire\Question;
 use Goteo\Model\Questionnaire\Answer;
 use Goteo\Model\Project;
+use Goteo\Model\Contract\BaseDocument;
 
 class ChannelCriteriaAdminController extends AbstractAdminController
 {
@@ -74,6 +75,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
               $question->title = $data[$id . "_question"];
               $question->vars->type = $data[$id . "_typeofquestion"];
               $question->vars->required = $data[$id . "_required"] ? true : false;
+              $question->vars->hidden = $data[$id . "_hidden"] ? true : false;
               $question->max_score = $data[$id . "_max_score"];
               $question->order = $order++;
               if (!$question->save($errors)) {
@@ -100,7 +102,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
       $questionnaire->channel = $channel->id;
       $questionnaire->lang = Config::get('lang');
       $questionnaire->save();
-  }
+   }
 
   $processor = $this->getModelForm('QuestionnaireCreate', $questionnaire, (array) $questionnaire, [], $request);
   $processor->createForm()->getBuilder()
@@ -193,8 +195,15 @@ class ChannelCriteriaAdminController extends AbstractAdminController
 
         $project_answers = [$project->id];
 
-        foreach ($answers as $answer) {
-          array_push($project_answers, $answer->answer); 
+        foreach ($answers as $index => $answer) {
+          if ($questions[$index]->vars->type == "dropfiles") {
+            $document = BaseDocument::getByName($answer->answer);
+            $document_link = Config::get('url.main') . $document->getLink();
+            if(substr($document_link,0,2) == '//') $document_link = (Config::get('ssl') ? 'https:' : 'http:') . $document_link;
+            array_push($project_answers, $document_link);
+          } else {
+            array_push($project_answers, $answer->answer); 
+          }
         }
 
         $buffer = fopen('php://output', 'w');

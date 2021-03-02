@@ -70,6 +70,13 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                 ]
             )
             ->add(
+                $question->id . '_hidden', 'boolean', [
+                'label' => Text::get('questionnaire-hidden'),
+                'data' => $config->hidden ? true : false,
+                'required' => false
+                ]
+            )
+            ->add(
                 $question->id . '_max_score', 'number', [
                 'label' => Text::get('questionnaire-max-score'),
                 'data' => $question->max_score,
