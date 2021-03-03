@@ -220,17 +220,17 @@ class SessionListener extends AbstractListener {
 
         // Minimal User menu
         Session::addToUserMenu('<i class="icon icon-activity"></i> ' . Text::get('dashboard-menu-activity'), Lang::getUrl() . 'dashboard/activity', 'dashboard-activity', 20);
-        Session::addToUserMenu('<i class="icon icon-projects"></i> ' . Text::get('dashboard-menu-projects'), Lang::getUrl() . 'dashboard/projects', 'dashboard-projects', 30);
         Session::addToUserMenu('<i class="icon icon-wallet"></i> ' . Text::get('dashboard-menu-pool'), Lang::getUrl() . 'dashboard/wallet', 'dashboard-wallet', 40);
         Session::addToUserMenu('<i class="icon icon-settings"></i> ' . Text::get('dashboard-menu-profile-preferences'), Lang::getUrl() . 'dashboard/settings', 'dashboard-setting', 50);
 
         if($user = Session::getUser()) {
             $matchers = Matcher::getList(['owner' => $user->id]);
             if ($matchers) {
-                Session::addToUserMenu('<i class="icon icon-call"></i> ' . Text::get('dashboard-menu-matchers'), Lang::getUrl() . 'matchfunding', 'dashboard-matchers', 60);
+                $submenu = [];
                 foreach($matchers as $i => $matcher) {
-                    Session::addToUserMenu('<img src="' . Image::get($matcher->logo)->getLink(30, 30, true) . '"> '.strip_tags($matcher->name), Lang::getUrl() . 'dashboard/matcher/' . $matcher->id , 'matcher-' . $matcher->id, 61 + $i, 'ident');
+                    $submenu[] = ['text' => '<img src="' . Image::get($matcher->logo)->getLink(30, 30, true) . '"> '.strip_tags($matcher->name), 'link' => Lang::getUrl() . 'dashboard/matcher/' . $matcher->id , 'id' => 'matcher-' . $matcher->id];
                 }
+                Session::addToUserMenu('<i class="icon icon-call"></i> ' . Text::get('dashboard-menu-matchers'), $submenu, 'dashboard-matchers', 60, 'main');
             }
 
             if ( isset($user->roles['translator']) ||  isset($user->roles['admin']) || isset($user->roles['superadmin']) ) {
@@ -245,11 +245,15 @@ class SessionListener extends AbstractListener {
               Session::addToUserMenu(Text::get('regular-admin_board'), Lang::getUrl() . 'admin', 'admin', 90);
             }
 
-            // Add last 2 owned projects
+            // Add last 4 owned projects
             if($projects = Project::ofmine($user->id, false, 0, 4)) {
+                $submenu = [];
                 foreach($projects as $i => $prj) {
-                    Session::addToUserMenu('<img src="' . $prj->image->getLink(30, 30, true) . '"> '.strip_tags($prj->name), Lang::getUrl() . 'dashboard/project/' . $prj->id , 'project-' . $prj->id, 31 + $i, 'ident');
+                    $submenu[] = ['text' => '<img src="' . $prj->image->getLink(30, 30, true) . '"> '.strip_tags($prj->name), 'link' => Lang::getUrl() . 'dashboard/project/' . $prj->id , 'id' => 'project-' . $prj->id];
                 }
+                Session::addToUserMenu('<i class="icon icon-projects"></i> ' . Text::get('dashboard-menu-projects'), $submenu, 'dashboard-projects', 30, 'main');
+            } else {
+                Session::addToUserMenu('<i class="icon icon-projects"></i> ' . Text::get('dashboard-menu-projects'), Lang::getUrl() . 'dashboard/projects', 'dashboard-projects', 30);
             }
         }
 
