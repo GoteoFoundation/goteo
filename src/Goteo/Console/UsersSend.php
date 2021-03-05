@@ -270,7 +270,7 @@ class UsersSend extends AbstractCommandController {
 
         // Sustituimos los datos
         $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-        $content = \str_replace($search, $replace, $template->parseText());
+        $content = \str_replace($search, $replace, $template->text);
         // iniciamos mail
         $mailHandler = new Mail();
         $mailHandler->lang = $comlang;
@@ -388,13 +388,14 @@ class UsersSend extends AbstractCommandController {
 
         $errors = array();
         // Obtenemos la plantilla para asunto y contenido
-        $template = Template::get($tpl);
-        // Sustituimos los datos
-        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-        $pre_content = \str_replace($search, $replace, $template->parseText());
 
         foreach ($consultants as $id=>$name) {
             $consultant = Model\User::getMini($id);
+
+            $template = Template::get($tpl, $consultant->lang);
+            // Sustituimos los datos
+            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+            $pre_content = \str_replace($search, $replace, $template->text);
 
             // Sustituimos el nombre del asesor en el cuerpo del e-mail
             $content = \str_replace('%USERNAME%', $name, $pre_content);
@@ -471,7 +472,10 @@ class UsersSend extends AbstractCommandController {
                     $tpl = 18;
                     $post_url = self::getURL().'/project/'.$project->id.'/updates/'.$post->id;
                     // contenido del post
-                    $post_content = "<p><strong>{$post->title}</strong><br />".  nl2br( Text::recorta($post->text, 500) )  ."</p>";
+                    $template_type = Template::get($tpl)->type;
+
+                    $post_content = "**{$post->title}**  
+                        ".  nl2br( Text::recorta($post->text, 500) );
                     // y preparar los enlaces para compartir en redes sociales
                     $share_urls = Text::shareLinks($post_url, $post->title);
 
@@ -558,7 +562,7 @@ class UsersSend extends AbstractCommandController {
             }
 
             // content
-            $content = \str_replace($search, $replace, $template->parseText());
+            $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();
             $mailHandler->template = $tpl;
@@ -630,7 +634,7 @@ class UsersSend extends AbstractCommandController {
                 $template = Template::get(Template::PROJECT_FAILED_RECEIVERS, $comlang);
                 // Sustituimos los datos
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-                $content = \str_replace($search, $replace, $template->parseText());
+                $content = \str_replace($search, $replace, $template->text);
                 // iniciamos mail
                 $mailHandler = new Mail();
                 $mailHandler->lang = $comlang;
