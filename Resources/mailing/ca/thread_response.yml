@@ -4,7 +4,7 @@ purpose: 'Message answered in a thread originated by the project''s owner'
 type: 'md'
 title: 'Nova resposta a missatge de projecte'
 text: >
-    Hola <span class="message-highlight-red">%USERNAME%</span>,
+    Hola %USERNAME%,
 
 
     **%SENDERNAME%** ha respos al missatge *%THREADSUBJECT%*:

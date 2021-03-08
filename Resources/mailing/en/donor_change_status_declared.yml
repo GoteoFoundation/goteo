@@ -4,7 +4,7 @@ purpose: 'Communicate the change in the status to the user'
 type: 'md'
 title: "Update in your certificate status"
 text: >
-    Hi <span class="message-highlight-red">%USERNAME%</span>,
+    Hi %USERNAME%,
 
     Your certificate has changed it's status. The current status is completed.
 

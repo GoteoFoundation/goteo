@@ -4,10 +4,10 @@ purpose: 'Message answered in a thread originated by the project''s participate 
 type: 'md'
 title: 'Nova resposta a missatge de suport'
 text: >
-    Hola <span class="message-highlight-red">%USERNAME%</span>,
+    Hola %USERNAME%,
 
 
-    **%SENDERNAME%** ha respos al missatge de la secció "participa" *%THREADSUBJECT%*:
+    **%SENDERNAME%** ha respost al missatge de la secció "participa" *%THREADSUBJECT%*:
 
 
     %MESSAGE%
