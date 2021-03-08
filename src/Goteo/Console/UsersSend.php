@@ -475,7 +475,8 @@ class UsersSend extends AbstractCommandController {
                     $template_type = Template::get($tpl)->type;
 
                     $post_content = "**{$post->title}**  
-                        ".  nl2br( Text::recorta($post->text, 500) );
+                        " . Text::recorta($post->text, 500);
+
                     // y preparar los enlaces para compartir en redes sociales
                     $share_urls = Text::shareLinks($post_url, $post->title);
 
