@@ -353,7 +353,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                     'required' => false,
                     'attr' => ['help' => $reward->reward]
                 ])
-                ->add("description$suffix", 'textarea', [
+                ->add("description$suffix", 'markdown', [
                     'label' => 'rewards-field-individual_reward-description',
                     'data' => $translated->description,
                     'required' => false,
@@ -371,7 +371,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                     'required' => false,
                     'attr' => ['help' => $reward->reward]
                 ])
-                ->add("description$suffix", 'textarea', [
+                ->add("description$suffix", 'markdown', [
                     'label' => 'rewards-field-social_reward-description',
                     'data' => $translated->description,
                     'required' => false,
