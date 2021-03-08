@@ -4,7 +4,7 @@ purpose: 'Communicate the change in the status to the user'
 type: 'md'
 title: "Nuevo cambio de estado en su certificado"
 text: >
-    Hola <span class="message-highlight-red">%USERNAME%</span>,
+    Hola %USERNAME%,
 
     Su certificado ha cambiado de estado. Ahora se encuentra en estado validado.
 
