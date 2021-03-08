@@ -270,7 +270,7 @@ class UsersSend extends AbstractCommandController {
 
         // Sustituimos los datos
         $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-        $content = \str_replace($search, $replace, $template->parseText());
+        $content = \str_replace($search, $replace, $template->text);
         // iniciamos mail
         $mailHandler = new Mail();
         $mailHandler->lang = $comlang;
@@ -388,13 +388,14 @@ class UsersSend extends AbstractCommandController {
 
         $errors = array();
         // Obtenemos la plantilla para asunto y contenido
-        $template = Template::get($tpl);
-        // Sustituimos los datos
-        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-        $pre_content = \str_replace($search, $replace, $template->parseText());
 
         foreach ($consultants as $id=>$name) {
             $consultant = Model\User::getMini($id);
+
+            $template = Template::get($tpl, $consultant->lang);
+            // Sustituimos los datos
+            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+            $pre_content = \str_replace($search, $replace, $template->text);
 
             // Sustituimos el nombre del asesor en el cuerpo del e-mail
             $content = \str_replace('%USERNAME%', $name, $pre_content);
@@ -471,7 +472,11 @@ class UsersSend extends AbstractCommandController {
                     $tpl = 18;
                     $post_url = self::getURL().'/project/'.$project->id.'/updates/'.$post->id;
                     // contenido del post
-                    $post_content = "<p><strong>{$post->title}</strong><br />".  nl2br( Text::recorta($post->text, 500) )  ."</p>";
+                    $template_type = Template::get($tpl)->type;
+
+                    $post_content = "**{$post->title}**  
+                        " . Text::recorta($post->text, 500);
+
                     // y preparar los enlaces para compartir en redes sociales
                     $share_urls = Text::shareLinks($post_url, $post->title);
 
@@ -486,9 +491,6 @@ class UsersSend extends AbstractCommandController {
             return false;
         }
 
-        // con esto montamos el receivers
-        $receivers = array();
-
         // para cada inversor que no tenga bloqueado esta notificacion
         // sacamos idioma de preferencia
         // Y esto también tendía que mirar idioma alternativo al de preferencia
@@ -497,80 +499,92 @@ class UsersSend extends AbstractCommandController {
         foreach($invest_status as $val) {
             $status[":status$val"] = $val;
         }
-        $sql = "
-            SELECT
-                invest.user as id,
-                user.name as name,
-                user.email as email,
-                IFNULL(user_prefer.comlang, IFNULL(user.lang, 'es')) as lang
-            FROM  invest
-            INNER JOIN user
-                ON user.id = invest.user
-                AND user.active = 1
-            LEFT JOIN user_prefer
-                ON user_prefer.user = invest.user
-            WHERE   invest.project = :project
-            AND invest.status IN (" . implode(", ", array_keys($status)) . ")
-            AND (user_prefer.{$notif} = 0 OR user_prefer.{$notif} IS NULL)
-            GROUP BY user.id
-            ";
-        $values = $status + [':project' => $project->id];
-        // static::debug('Retrieving donors list SQL', ['sql' => str_replace("\n", " ", \sqldbg($sql, $values))]);
-
-        if ($query = Model\Invest::query($sql, $values)) {
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User') as $investor) {
-                static::info('Adding donor to massive sending', [$investor, 'type' => $type, $project, 'template' => $tpl]);
-
-                // $receivers[$investor->lang][] = (object) array(
-                $receivers[] = (object) array(
-                    'user' => $investor->id,
-                    'name' => $investor->name,
-                    'email' => $investor->email,
-                    'lang' => $investor->lang
-                    );
-            }
-        }
-        if(empty($receivers)) {
-            static::warning("No receivers found for massive sending", ['type' => $type, $project, 'template' => $tpl]);
-        }
 
         $comlang = Lang::current();
 
         // Obtenemos la plantilla para asunto y contenido
-        $template = Template::get($tpl, $comlang);
+        $template_langs = Template::getAvailableLangs($tpl);
+        foreach ($template_langs as $comlang) {
+            // con esto montamos el receivers
+            $receivers = array();
+
+            $template = Template::get($tpl, $comlang);
+
+            $langs = array_keys(Lang::getDependantLanguages($comlang));
+            $langs = array_merge(array_diff($langs,$template_langs), [$comlang]);
+            $langs = "('" .implode("','", $langs) . "')";
+
+            $sql = "
+                SELECT
+                    invest.user as id,
+                    user.name as name,
+                    user.email as email,
+                    IFNULL(user_prefer.comlang, IFNULL(user.lang, 'es')) as lang
+                FROM  invest
+                INNER JOIN user
+                    ON user.id = invest.user
+                    AND user.active = 1
+                LEFT JOIN user_prefer
+                    ON user_prefer.user = invest.user
+                WHERE   invest.project = :project
+                AND invest.status IN (" . implode(", ", array_keys($status)) . ")
+                AND (user_prefer.{$notif} = 0 OR user_prefer.{$notif} IS NULL)
+                AND (user_prefer.comlang IN $langs OR (ISNULL(user_prefer.comlang) AND user.lang IN $langs))
+                GROUP BY user.id
+                ";
+            $values = $status + [':project' => $project->id];
+            // static::debug('Retrieving donors list SQL', ['sql' => str_replace("\n", " ", \sqldbg($sql, $values))]);
+
+            if ($query = Model\Invest::query($sql, $values)) {
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User') as $investor) {
+                    static::info('Adding donor to massive sending', [$investor, 'type' => $type, $project, 'template' => $tpl]);
+
+                    // $receivers[$investor->lang][] = (object) array(
+                    $receivers[] = (object) array(
+                        'user' => $investor->id,
+                        'name' => $investor->name,
+                        'email' => $investor->email,
+                        'lang' => $investor->lang
+                        );
+                }
+            }
+            if(empty($receivers)) {
+                static::warning("No receivers found for massive sending", ['type' => $type, $project, 'template' => $tpl]);
+                continue;
+            }
+
+            // - subject
+            if (!empty($post)) {
+                $subject = str_replace(array('%PROJECTNAME%', '%OWNERNAME%', '%P_TITLE%')
+                        , array($project->name, $project->user->name, $post->title)
+                        , $template->title);
+            } else {
+                $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+            }
+
+            // content
+            $content = \str_replace($search, $replace, $template->text);
+
+            $mailHandler = new Mail();
+            $mailHandler->template = $tpl;
+            $mailHandler->subject = $subject;
+            $mailHandler->content = $content;
+            $mailHandler->node = \GOTEO_NODE;
+            $mailHandler->lang = $comlang;
+            $mailHandler->massive = true;
+            if( ! $mailHandler->save() ) {
+                static::critical("ERROR saving mailHandler", ['type' => $type, $project, $mailHandler]);
+                return false;
+            }
 
 
-        // - subject
-        if (!empty($post)) {
-            $subject = str_replace(array('%PROJECTNAME%', '%OWNERNAME%', '%P_TITLE%')
-                    , array($project->name, $project->user->name, $post->title)
-                    , $template->title);
-        } else {
-            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-        }
-
-        // content
-        $content = \str_replace($search, $replace, $template->parseText());
-
-        $mailHandler = new Mail();
-        $mailHandler->template = $tpl;
-        $mailHandler->subject = $subject;
-        $mailHandler->content = $content;
-        $mailHandler->node = \GOTEO_NODE;
-        $mailHandler->lang = $comlang;
-        $mailHandler->massive = true;
-        if( ! $mailHandler->save() ) {
-            static::critical("ERROR saving mailHandler", ['type' => $type, $project, $mailHandler]);
-            return false;
-        }
-
-
-        // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
-        if (\Goteo\Model\Mail\Sender::initiateSending($mailHandler->id, $receivers, 1)) {
-            static::notice('Newsletter activated', ['type' => $type, $project, $mailHandler]);
-        }
-        else {
-            static::critical("ERROR initiating massive sending", ['type' => $type, $project, $mailHandler]);
+            // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
+            if (\Goteo\Model\Mail\Sender::initiateSending($mailHandler->id, $receivers, 1)) {
+                static::notice('Newsletter activated', ['type' => $type, $project, $mailHandler]);
+            }
+            else {
+                static::critical("ERROR initiating massive sending", ['type' => $type, $project, $mailHandler]);
+            }
         }
 
         return true;
@@ -621,7 +635,7 @@ class UsersSend extends AbstractCommandController {
                 $template = Template::get(Template::PROJECT_FAILED_RECEIVERS, $comlang);
                 // Sustituimos los datos
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-                $content = \str_replace($search, $replace, $template->parseText());
+                $content = \str_replace($search, $replace, $template->text);
                 // iniciamos mail
                 $mailHandler = new Mail();
                 $mailHandler->lang = $comlang;
