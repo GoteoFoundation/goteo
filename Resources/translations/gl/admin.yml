@@ -28,6 +28,8 @@ admin-account-modify-status-confirm: "Tes a certeza de trocar manualmente o esta
 admin-account-payment-method: 'Método de pagamento'
 admin-account-pool-on-fail: 'Pool (devolver ao portamoedas se falla)'
 admin-account-refund-to-pool: 'Reembolsar a achega ao portamoedas'
+admin-account-refund-to-pool-confirm: "Isto marcará o porte como:\nRetornado se o proxecto falla\nCancelado se o proxecto está activo ou é exitoso\nNon se reembolsará ao usuario, xerarase diñeiro no moedeiro do usuario.\nContinuar?\n"
+admin-account-refund-to-user: 'Reembolsar o porte ao usuario'
 admin-account-switch-donation: 'Conmutar doazón'
 admin-account-switch-donation-confirm: 'Tes a certeza de querer trocar o estado da doazón?'
 admin-account-switch-pool: 'Conmutar o pool'
