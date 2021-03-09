@@ -233,6 +233,7 @@ admin-title-amount: Investido
 admin-title-icon: Icona
 admin-title-info: Info
 admin-title-image: Imaxe
+admin-title-landing_match: Financiamento de chegada
 admin-title-title: Título
 admin-title-subtitle: Subtí­tulo
 admin-title-subject: Asunto
@@ -257,12 +258,16 @@ admin-title-status: Estado
 admin-title-users: Usuarios
 admin-title-city: Cidade
 admin-title-date: Data
+admin-title-blockquote: 'Cita personalizada'
 admin-title-type: 'Tipo'
 admin-title-date-in: Data de inicio
 admin-title-date-out: Data fin
+admin-title-venue: Lugar (visible en chamada á acción)
 admin-title-venue-address: Enderezo
 admin-title-how-to-get: Como chegar?
+admin-title-iframe: 'Mostra a localización'
 admin-title-schedule-file: 'Url programa'
+admin-title-call: 'Convocatoria de financiamento'
 admin-title-url-inscription: Ligazón a inscrición
 admin-title-filter: Filtro
 admin-title-template: Modelo
@@ -270,10 +275,19 @@ admin-title-receivers: Destinatarios
 admin-title-sent: Enviados
 admin-title-failed: Sen enviar
 admin-title-pending: Pendentes
+admin-title-success: Exitosos
 admin-title-percent: Porcentaxe
+admin-title-action-url: 'Texto botón de descarga'
+admin-title-download-url: 'Ligazón a descarga'
+admin-title-channel: 'Canle'
+admin-title-resource-category: 'Categoría de recurso'
+admin-blog-not-published-yet: 'A entrada de blog non é pública aínda'
+admin-blog-initialized: 'Iniciouse o espazo de blog'
 admin-blog-deactivated: 'Sentímolo, a xestión do blog está desactivada'
 admin-blog-edit-success: 'A entrada do blog editouse con éxito'
 admin-stories-not-active-yet: 'Esta historia de usuario aínda non está activa'
+admin-stories-edit-success: 'A historia de usuario editouse correctamente'
+admin-stories-pool: 'Mostrar en chegada moedeiro'
 admin-stories-type: 'Tipo de protagonista'
 admin-aggregate-timeline: 'Cronoloxía'
 admin-aggregate-invests: 'Total de achegas'
