@@ -20,3 +20,4 @@ question-choice-answer: "Resposta"
 questionnaire-apply-title: Sol·licitut de participació a %s
 questionnaire-answer-questions: Respon aquestes preguntes
 questionnaire-already-answered-by-project: Aquest qüestionari ja ha estat respost.
+questionnaire-question-answer-dropfile-not-found: "El document no s'ha trobat"
