@@ -4,7 +4,11 @@ admin-NO: 'NO'
 admin-YES: SI
 admin-account-amount: 'Quantitat aportada'
 admin-account-change-user: 'Canvia d''usuari'
+admin-account-change-user-confirm: 'Seguro que vols canviar l''usuària de l''aportació? La nova usuària serà:'
 admin-account-convert-to-pool: 'Converteix a moneder virtual'
+admin-account-convert-to-pool-confirm: 'Això eliminarà el projecte associat a aquesta aportació i passarà a ser como si fos una compra de moneder. TOTES LES RECOMPENSES ASSOCIADES ES PERDRAN. Continuar?'
+admin-account-convert-to-pool-ko: 'No s''ha pogut convertir l''aportació a moneder: %s'
+admin-account-convert-to-pool-ok: 'Convertit a aportació de moneder correctament'
 admin-account-detail: 'Detalls de la transacció'
 admin-account-donation: Donatiu
 admin-account-edit-reward: 'Gestionar recompensa/direcció'
@@ -34,7 +38,11 @@ admin-account-switch-pool: 'Commutar el pool'
 admin-account-switch-pool-confirm: 'Això només afecta quan falla el projecte, no genera ni treu diners del moneder. Continuar?'
 admin-account-switch-pool-fail: 'No es pot canviar l''estat del pool d''aquesta aportació'
 admin-account-transaction: 'Codis de seguiment'
+admin-account-user-changed-error: 'No s''ha pogut canviar l''usuari de l''aportació [%ID%] a [%NAME%]!'
+admin-account-user-changed-successfully: 'S''ha canviat l''usuari de l''aportació [%ID%] a [%NAME%]'
 admin-address: Adreça
+admin-all: Tots
+admin-global: Global
 admin-back: Tornar
 admin-back-detail: 'Tornar al detall'
 admin-back-list: 'Tornar al llistat'
@@ -43,6 +51,13 @@ admin-empty-list: 'Sense resultats'
 admin-activity: Activitat
 admin-communications: Comunicacions
 admin-communications-add: Crear nova comunicació
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
 admin-communications-userid-content: ' per l''id d''accés del destinatari'
 admin-communications-useremail-content: ' per l''email del destinatari'
 admin-communications-username-content: ' per al nom del destinatari'
@@ -54,6 +69,9 @@ admin-communications-send: 'Enviar comunicació'
 admin-communications-cancel: 'Cancel·lar comunicació'
 admin-communications-newsletter: 'Butlletí'
 admin-communications-communication: 'Comunicació general'
+admin-communications-id: 'ID de la Comunicació'
+admin-home: Portada
+admin-items: entrades
 admin-mailing-back-to-list: 'Tornar a comunicacions'
 admin-mailing-communicating-with: 'Cercàvem comunicar-nos amb %DESC%'
 admin-mailing-created: 'Creat el'
@@ -69,7 +87,10 @@ admin-newsletter-langs-to-send: 'Idiomes: %LANGS%'
 admin-newsletter-mind-activate: 'Activa''l per que s''envii'
 admin-prev-page: 'Pàgina anterior'
 admin-next-page: 'Pàgina següent'
+admin-no: 'No'
+admin-percent: Percentatge
 admin-project: Projecte
+admin-main: Principal
 admin-legacy: Antics
 admin-projects: Projectes
 admin-consultants: 'Assessors'
@@ -89,12 +110,19 @@ admin-services: Serveis
 admin-sponsors: Serveis
 admin-slug-seo-help: 'Aquest camp és important per SEO. Editeu-lo només per una bona raó.'
 admin-others: Altres
+admin-summary: Resum
+admin-origins: Analítica de visites
 admin-status: Estat
 admin-text-type: 'Processa el text com a'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
 admin-text-type-plain: 'Text simple'
 admin-user: Usuari
+admin-user-no-projects: 'No s''ha creat cap projecte encara'
+admin-user-no-invests: 'No s''ha fet cap donació encara'
 admin-users: Usuaris
 admin-users-add: Crea un nou usuari
+admin-blog: Blog general
 admin-blog-add: Crea un nou post
 admin-blog-edit: Editant post %s
 admin-blog-slug-exists: 'L''identificador [%s] s''està fent servir en un altre post!'
@@ -103,6 +131,27 @@ admin-blog-not-public: 'Aquest post no és públic encara'
 admin-stories: Histories d'usuaris a Goteo
 admin-stories-add: Crea una nova història
 admin-stories-edit: Editant l'història %s
+admin-channelstory-add: Afegir història al canal
+admin-channelstory-submit: Guardar història
+admin-channelstory-correct: 'S''ha afegit la història al canal'
+admin-channelsection-section: 'Secció'
+admin-channelsection-map: 'Mapa'
+admin-channelsection-resource: 'Recursos'
+admin-channelsection-call_to_action: 'Call To Action'
+admin-channelsection-projects: 'Projectes'
+admin-channelsection-posts: 'Posts'
+admin-channelsection-program: 'Programes'
+admin-channelsection-stories: 'Stories'
+admin-channelsection-workshops: 'Tallers'
+admin-channelsection-team: 'Equip'
+admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-button: 'Botó'
+admin-channelsection-create: 'Crear'
+admin-channelsection-add: 'Afegir una secció'
+admin-channelpost-add: Afegir Post al canal
+admin-channelpost-submit: Guardar Post
+admin-channelpost-correct: 'S''ha afegit el post al canal'
+admin-channelcriteria-title: 'Qüestionaris del canal'
 admin-categories: 'Categories i àmbits'
 admin-categories-if-empty-then-asset: 'Si es deixa buit es farà servir l''icona per defecte: %s'
 admin-category-add: Crea una nova categoria
