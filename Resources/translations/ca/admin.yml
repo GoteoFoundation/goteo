@@ -152,6 +152,9 @@ admin-channelpost-add: Afegir Post al canal
 admin-channelpost-submit: Guardar Post
 admin-channelpost-correct: 'S''ha afegit el post al canal'
 admin-channelcriteria-title: 'Qüestionaris del canal'
+admin-channelcriteria-subtitle: 'Estableix els criteris amb què avaluaràs un projecte que vulgui presentar-se al teu canal. Procura ser concís/a en el que esperes obtenir de les iniciatives que vulguin presentar-se, ajudarà a facilitar l''avaluació final.'
+admin-channelprogram-create: 'Crear'
+admin-channelprogram-add: 'Afegir programa'
 admin-categories: 'Categories i àmbits'
 admin-categories-if-empty-then-asset: 'Si es deixa buit es farà servir l''icona per defecte: %s'
 admin-category-add: Crea una nova categoria
@@ -164,6 +167,10 @@ admin-sdg-add: Crea un nou ODS
 admin-sdg-edit: Editant l'ODS %s
 admin-footprint-add: Crea un nova petjada
 admin-footprint-edit: Editant la petjada %s
+admin-calls: Convocatòries
+admin-matchers: Matchers
+admin-channels: Canals
+admin-yes: Si
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
 admin-project-express-discard: 'Rebuig expres'
@@ -201,32 +208,44 @@ admin-user-active: 'Compte actiu'
 admin-user-warning: 'Atenció: Aquestes operacions s''executen sense enviar cap avís a l''usuari'
 admin-user-wallet-amount: 'Crèdit al moneder'
 admin-user-create-invest: 'Crea una aportació'
+admin-mailing: 'Mailing'
 admin-user-no-mailing: 'No se l''hi ha enviat cap email encara'
 admin-view-user-mailing: 'Tots els enviaments'
 admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aquest usuari'
 admin-users-global-search: 'Id, nom, email o projecte'
 admin-blog-global-search: 'Id, títol, subtítol o text'
 admin-communication-global-search: 'Assumpte'
+admin-blog-stories-search: 'Id, títol, text o projecte'
 admin-no-project: 'Sense projecte'
+admin-title-id: Id
 admin-title-name: Nom
+admin-title-about: Info
 admin-title-active: Actiu
 admin-title-location: Localització
 admin-title-fullname: Nom
+admin-title-email: Email
 admin-title-header-image: Imatge de capçalera
 admin-title-password: Contrasenya
+admin-title-avatar: Avatar
 admin-title-roles: Rols
+admin-title-role: Rol
 admin-title-amount: Invertit
 admin-title-icon: Icona
+admin-title-info: Info
 admin-title-image: Imatge
+admin-title-landing_match: Landing matchfunding
 admin-title-title: Títol
 admin-title-subtitle: Subtítol
 admin-title-subject: Assumpte
 admin-title-description: Descripció
 admin-title-section: Secció
 admin-title-text: Text
+admin-title-slug: Slug
 admin-title-publish: Publicat
+admin-title-lang: Idioma
 admin-title-langs: Traduccions
 admin-title-actions: Accions
+admin-title-tags: Tags
 admin-title-deleted: Eliminat
 admin-title-sphere: Àmbit
 admin-title-social_commitment: Compromís social
@@ -237,7 +256,11 @@ admin-title-social_commitments: 'Compromisos socials'
 admin-title-order: Ordena
 admin-title-status: Estat
 admin-title-users: Usuaris
+admin-title-city: Població
 admin-title-date: Data
+admin-title-blockquote: 'Cita personalitzada'
+admin-title-type: 'Tipus'
+admin-title-date-in: Data d'inici
 admin-title-filter: Filtre
 admin-title-receivers: Destinataris
 admin-title-sent: Enviats
@@ -263,6 +286,18 @@ admin-all-call-referers: 'Origen de visites a les convocatòries'
 admin-all-project-devices: 'Dispositiu usat en les pàgines de projectes'
 admin-all-invests-devices: 'Dispositiu usat en les aportacions a projectes'
 admin-all-call-devices: 'Dispositiu usat en las pàgines de convocatòries'
+admin-stats-active: 'Ingressos nets'
+admin-stats-refunded: 'Devolucions'
+admin-stats-fees: 'Comissió plataforma'
+admin-stats-commissions: 'Comisió banco'
+admin-stats-matchfunding: 'Matchfunding'
+admin-stats-raised-method: 'Ingressos bruts segons mètode de pagament'
+admin-stats-raised-method-desc: 'Els ingressos bruts inclouen tots els diners que s''ha cobrat per la plataforma en algun moment (s''inclouen les aportacions a projectes fallits, a més de les aportacions directes al moneder o provinents de projectes fallits amb retorn al moneder). <br> <em> no s''inclouen les aportacions provinents del moneder </em> (a menys que s''esculli aquest mitjà de pagament) </b>'
+admin-stats-active-method: 'Ingressos nets segons mètode de pagament'
+admin-stats-active-method-desc: 'Els ingressos nets inclouen tots els diners cobrat per la plataforma excloent devolucions (s''inclouen les aportacions al moneder, directes i provinents de projectes fallits amb retorn al moneder). <br> <em> No s''inclouen les aportacions provinents del moneder </em> (a menys que s''esculli aquest mitjà de pagament).'
+admin-stats-refunded-method: 'Devolucions segons mètode de pagament'
+admin-stats-refunded-method-desc: 'Les devolucions inclouen tots els mètodes de pagament (inclouen les aportacions des del moneder)'
+admin-stats-commissions-method: 'Comissions bancàries segons mètode de pagament'
 admin-promote-add: 'Nou destacat'
 admin-promote-already-exists: 'Aquest projecte ja està destacat'
 admin-promote-correct: 'El projecte està destacat'
