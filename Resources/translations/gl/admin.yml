@@ -30,9 +30,13 @@ admin-account-pool-on-fail: 'Pool (devolver ao portamoedas se falla)'
 admin-account-refund-to-pool: 'Reembolsar a achega ao portamoedas'
 admin-account-refund-to-pool-confirm: "Isto marcará o porte como:\nRetornado se o proxecto falla\nCancelado se o proxecto está activo ou é exitoso\nNon se reembolsará ao usuario, xerarase diñeiro no moedeiro do usuario.\nContinuar?\n"
 admin-account-refund-to-user: 'Reembolsar o porte ao usuario'
+admin-account-refund-to-user-confirm: "Isto marcará o porte como:\nRetornado se o proxecto fallou\nCancelado se o proxecto está activo ou se é exitoso\nReembolsarase o diñeiro ao usuario.\nIsto pode NON funcionar se o porte é moi antigo ou se o método de pagamento non o soporta.\nContinuar?\n"
+admin-account-rewards: 'Recompensas elixidas'
 admin-account-switch-donation: 'Conmutar doazón'
 admin-account-switch-donation-confirm: 'Tes a certeza de querer trocar o estado da doazón?'
 admin-account-switch-pool: 'Conmutar o pool'
+admin-account-switch-pool-confirm: 'Isto só afecta para cando falla o proxecto, non xera nin quita diñeiro do moedeiro. Continuar?'
+admin-account-switch-pool-fail: 'Non se pode cambiar o estado do "pool" deste porte'
 admin-account-transaction: 'Códigos de seguimento'
 admin-account-user-changed-error: 'Non se puido trocar o usuario da achega [%ID%] a [%NAME%]!'
 admin-account-user-changed-successfully: 'Trocouse o usuario da achega [%ID%] a [%NAME%]'
@@ -59,6 +63,7 @@ admin-communications-useremail-content: ' para o correo do destinatario'
 admin-communications-username-content: ' para o nome do destinatario'
 admin-communications-siteurl-content: ' para o url desta plataforma (%SITEURL%)'
 admin-communications-subscribeurl-content: ' ligazón directa de subscrición ao boletín do usuario'
+admin-communications-unsubscribeurl-content: ' ligazón directa de fin de subscrición ao boletín informativo do usuario'
 admin-communications-poolamount-content: ' cantidade de cartos dispoñible no portamoedas do usuario'
 admin-communications-send: 'Enviar comunicación'
 admin-communications-cancel: 'Cancelar comunicación'
@@ -68,9 +73,13 @@ admin-communications-id: 'ID da comunicación'
 admin-home: Capa
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicacións'
+admin-mailing-communicating-with: 'Buscabamos comunicarnos con %DESC%'
 admin-mailing-created: 'Creado o'
+admin-mailing-new-massive: 'Creouse un novo correo colectivo a %TOTAL% usuarios'
 admin-mailing-status: 'Estado do envío automático'
 admin-mailing-subject: Asunto
+admin-mailing-view-and-activate: 'Ver no administrador do boletín para activar o envío'
+admin-mailing-view-in-newsletter: 'Ver no administrador do boletín'
 admin-mailing-view-in-sent: 'Ver no histórico de envíos (estatísticas)'
 admin-mailing-view-message: 'Ver a mensaxe'
 admin-newsletter-generated: 'Xerouse o boletín [%ID%]'
@@ -122,6 +131,14 @@ admin-blog-not-public: 'Esta publicación aínda non é pública'
 admin-stories: Historias de usuarios no Goteo
 admin-stories-add: Crear unha nova historia
 admin-stories-edit: Editando a historia %s
+admin-channelstory-add: Engadir historia á canle
+admin-channelstory-submit: Gardar historia
+admin-channelstory-correct: 'Engadiuse a historia á canle'
+admin-channelsection-section: 'Sección'
+admin-channelsection-map: 'Mapa'
+admin-channelsection-resource: 'Recursos'
+admin-channelsection-call_to_action: 'Chamada á acción'
+admin-channelsection-projects: 'Proxectos'
 admin-categories: 'Categorías e ámbitos'
 admin-category-add: Crear unha nova categoría
 admin-category-edit: Editando a categoría %s
