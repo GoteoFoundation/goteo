@@ -163,24 +163,38 @@ admin-socialcommitment-add: Crear un novo compromiso social
 admin-socialcommitment-edit: Editando o compromiso social %s
 admin-sphere-add: Crear un novo ámbito
 admin-sphere-edit: Editando o ámbito %s
+admin-sdg-add: Crear un novo ODS
+admin-sdg-edit: Editando o ODS %s
+admin-footprint-add: Crear unha nova pegada
 admin-footprint-edit: Editando a pegada %s
 admin-calls: Convocatorias
+admin-matchers: Emparelladores
 admin-channels: Canles
 admin-yes: Si
+admin-impersonate: Suplantar
+admin-impersonate-user: Suplantar a %s
 admin-project-express-discard: 'Rexeitamento no intre'
+admin-project-express-discard-desc: 'Pasa o proxecto a estado "Descartado" e manda un correo'
+admin-project-express-discard-sure: 'Vai enviarse un correo automaticamente e pasará a estado "Descartado", de acordo?'
 admin-project-to-review: 'A revisión'
+admin-project-to-review-desc: 'Pasa o proxecto ao estado "Pendente de valoración"'
 admin-project-to-review-sure: 'O creador non poderá editalo máis, aceptar?'
 admin-project-view-in-admin: 'Ver no admin'
 admin-project-to-negotiation: 'A negociación'
+admin-project-to-negotiation-desc: 'Pasa o proxecto ao estado "Editándose"'
+admin-project-to-negotiation-sure: 'ALERTA! O proxecto está en campaña! Con isto imos anular a súa publicación, de acordo?'
 admin-project-to-publish: 'Publicar'
 admin-project-to-publish-desc: 'Pasa o proxecto ao estado "En campaña"'
 admin-project-to-publish-sure: 'O proxecto comezará a súa campaña, comezamos?'
 admin-project-derivation-discard: 'Rexeitamento con derivación'
+admin-project-derivation-discard-desc: 'Pasa o proxecto a estado "Descartado" e manda un correo derivando a outra plataforma máis adecuada'
+admin-project-derivation-discard-sure: 'Vai enviarse un correo automaticamente e derivar a outra plataforma e pasará a estado "Descartado", de acordo?'
 admin-home-title: Administrar Goteo
 admin-list: Listaxe
 admin-stats: Estatísticas
 admin-list-total: 'Total: <strong>%s</strong> resultados'
 admin-search-global: 'Proxecto, canle, convocatoria...'
+admin-already-impersonating: 'Xa estás suplantando un usuario, por favor, cerra primeiro a sesión!'
 admin-rebase-user: 'Mudar o ID de usuario'
 admin-edit-name: 'Mudar o nome'
 admin-edit-roles: 'Mudar os roles do usuario'
