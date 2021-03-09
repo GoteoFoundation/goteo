@@ -4,7 +4,7 @@ admin-NO: 'NO'
 admin-YES: SI
 admin-account-amount: 'Quantitat aportada'
 admin-account-change-user: 'Canvia d''usuari'
-admin-account-change-user-confirm: 'Seguro que vols canviar l''usuària de l''aportació? La nova usuària serà:'
+admin-account-change-user-confirm: 'Segur que vols canviar l''usuària de l''aportació? La nova usuària serà:'
 admin-account-convert-to-pool: 'Converteix a moneder virtual'
 admin-account-convert-to-pool-confirm: 'Això eliminarà el projecte associat a aquesta aportació i passarà a ser como si fos una compra de moneder. TOTES LES RECOMPENSES ASSOCIADES ES PERDRAN. Continuar?'
 admin-account-convert-to-pool-ko: 'No s''ha pogut convertir l''aportació a moneder: %s'
@@ -261,13 +261,26 @@ admin-title-date: Data
 admin-title-blockquote: 'Cita personalitzada'
 admin-title-type: 'Tipus'
 admin-title-date-in: Data d'inici
+admin-title-date-out: Data final
+admin-title-venue: Lloc (Visible a call to action)
+admin-title-venue-address: Adreça
+admin-title-how-to-get: Com arribar?
+admin-title-iframe: 'Mostra la ubicació'
+admin-title-schedule-file: 'Url programa'
+admin-title-call: 'Convocatòria de Matchfunding'
+admin-title-url-inscription: Enllaç a inscripció
 admin-title-filter: Filtre
+admin-title-template: Plantilla
 admin-title-receivers: Destinataris
 admin-title-sent: Enviats
 admin-title-failed: No enviats
 admin-title-pending: Pendents
 admin-title-success: Exitós
 admin-title-percent: Percentatge
+admin-title-action-url: 'Text botó de descàrrega'
+admin-title-download-url: 'Enllaç de descàrrega'
+admin-title-channel: 'Canal'
+admin-title-resource-category: 'Categoria de recurs'
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
 admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'
@@ -286,6 +299,21 @@ admin-all-call-referers: 'Origen de visites a les convocatòries'
 admin-all-project-devices: 'Dispositiu usat en les pàgines de projectes'
 admin-all-invests-devices: 'Dispositiu usat en les aportacions a projectes'
 admin-all-call-devices: 'Dispositiu usat en las pàgines de convocatòries'
+admin-aggregate-autoupdate: 'Auto-update'
+admin-aggregate-timeline: 'Línia de temps'
+admin-aggregate-invests: 'Total d''aportacions'
+admin-aggretate-invests-format: '%CURRENCY% %VALUE% (%TOTAL% invests)'
+admin-aggregate-invests-desc: 'Suma d''aportacions per unitat de temps'
+admin-aggregate-invests-average: 'Mitjana d''aportacions'
+admin-aggregate-invests-average-desc: 'Mitjana d''aportacions per unitat de temps'
+admin-aggregate-projects: 'Total recaptat en projectes'
+admin-aggretate-projects-format: '%CURRENCY% %VALUE% - %TOTAL% projects'
+admin-aggregate-projects-desc: 'Suma d''aportacions per unitat de temps'
+admin-aggregate-projects-average: 'Mitjana de recaptació en projectes'
+admin-aggregate-projects-average-desc: 'Mitjana de recaptació per unitat de temps'
+admin-stats-invest-totals: 'Aportacions i comissions'
+admin-stats-project-totals: 'Estat del projectes'
+admin-stats-raised: 'Ingressos bruts'
 admin-stats-active: 'Ingressos nets'
 admin-stats-refunded: 'Devolucions'
 admin-stats-fees: 'Comissió plataforma'
@@ -298,6 +326,13 @@ admin-stats-active-method-desc: 'Els ingressos nets inclouen tots els diners cob
 admin-stats-refunded-method: 'Devolucions segons mètode de pagament'
 admin-stats-refunded-method-desc: 'Les devolucions inclouen tots els mètodes de pagament (inclouen les aportacions des del moneder)'
 admin-stats-commissions-method: 'Comissions bancàries segons mètode de pagament'
+admin-stats-fees-method: 'Comissió de la plataforma segons mètode de pagament'
+admin-stats-from_matchfunding: 'Detall de projectes amb Matchfunding'
+admin-stats-matchfunding-part: 'Projectes amb Matchfunding'
+admin-stats-users-part: 'Projectes sense Matchfunding'
+admin-stats-match-part: 'Part Multiplicadora'
+admin-stats-citizens-part: 'Part Ciutadana'
+admin-stats-matcher-part: 'Part Matcher'
 admin-promote-add: 'Nou destacat'
 admin-promote-already-exists: 'Aquest projecte ja està destacat'
 admin-promote-correct: 'El projecte està destacat'
