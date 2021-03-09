@@ -61,14 +61,14 @@ translator-save-draft: 'Gardar como borrador'
 translator-saved-ko: 'Erro ao gardar a tradución ao %LANG% (%ERROR%)'
 translator-saved-ok: 'Traducións gardadas correctamente para os idiomas [%s]'
 translator-skipped-fields: "Algúns campos non se copiaron xa que contiñan texto.\nElimina o texto orixinal para poder copiar dede outro idioma."
-translator-sphere: 'Ámbitos da convocatoria'
+translator-sphere: 'Ámbitos de convocatoria'
 translator-social_commitment: 'Compromisos sociais'
 translator-sdg: 'ODS'
 translator-footprint: 'Pegadas'
-translator-stories: 'Casos de éxito'
+translator-stories: 'Historias exitosas'
 translator-system: Sistema
 translator-tables: 'Táboas xerais'
-translator-tag: 'Etiquetas do blogue'
+translator-tag: 'Etiquetas de blog'
 translator-template: 'Patróns correos automáticos'
 translator-texts: 'Textos da interface'
 translator-translations: Traducións
