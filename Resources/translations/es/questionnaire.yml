@@ -19,3 +19,4 @@ question-choice-answer: "Respuesta"
 questionnaire-apply-title: Solicitud de participación en %s
 questionnaire-answer-questions: Contesta esta pregunta
 questionnaire-already-answered-by-project: Este cuestionario ya ha sido contestado.
+questionnaire-question-answer-dropfile-not-found: "No se encuentra el documento"

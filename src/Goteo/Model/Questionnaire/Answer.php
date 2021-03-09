@@ -95,7 +95,9 @@ class Answer extends \Goteo\Core\Model
 
         $sql = "SELECT question_answer.*
                 FROM question_answer
-                $sqlInner";
+                INNER JOIN question ON question_answer.question = question.id
+                $sqlInner
+                ORDER BY question.order";
 
         // die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
