@@ -139,10 +139,30 @@ admin-channelsection-map: 'Mapa'
 admin-channelsection-resource: 'Recursos'
 admin-channelsection-call_to_action: 'Chamada á acción'
 admin-channelsection-projects: 'Proxectos'
+admin-channelsection-posts: 'Publicacións'
+admin-channelsection-program: 'Programas'
+admin-channelsection-stories: 'Historias'
+admin-channelsection-workshops: 'Talleres'
+admin-channelsection-team: 'Equipo'
+admin-channelsection-sponsors: 'Patrocinadores'
+admin-channelsection-button: 'Botón'
+admin-channelsection-create: 'Crear'
+admin-channelsection-add: 'Engadir unha sección'
+admin-channelpost-add: Engadir publicación á canle
+admin-channelpost-submit: Gardar publicación
+admin-channelpost-correct: 'Engadiuse a publicación á canle'
+admin-channelcriteria-title: 'Cuestionarios da canle'
+admin-channelcriteria-subtitle: 'Establece os criterios cos cales avaliarás un proxecto que queira presentarse á túa canle. Procura ser conciso no que esperas obter das iniciativas que queiran presentarse, axudará a facilitarche a avaliación final.'
+admin-channelprogram-create: 'Crear'
+admin-channelprogram-add: 'Engadir programa'
 admin-categories: 'Categorías e ámbitos'
+admin-categories-if-empty-then-asset: 'Se se deixa baleiro usarase a icona por defecto: %s'
 admin-category-add: Crear unha nova categoría
 admin-category-edit: Editando a categoría %s
 admin-socialcommitment-add: Crear un novo compromiso social
+admin-socialcommitment-edit: Editando o compromiso social %s
+admin-sphere-add: Crear un novo ámbito
+admin-sphere-edit: Editando o ámbito %s
 admin-footprint-edit: Editando a pegada %s
 admin-calls: Convocatorias
 admin-channels: Canles
