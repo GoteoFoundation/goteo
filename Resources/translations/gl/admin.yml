@@ -14,8 +14,14 @@ admin-account-donation: Doazón
 admin-account-edit-reward: 'Xestionar recompensa/enderezo'
 admin-account-invalid-invest: 'Achega [%s] non atopada!'
 admin-account-invest-date: 'Data da achega'
+admin-account-invest-non-pool-refundable: 'Este porte non se pode reembolsar ao moedeiro virtual. Só se poden reembolsar os portes en estado "Cobrado"'
+admin-account-invest-non-user-refundable: "Este porte non se pode reembolsar. Poden reembolsarse os portes en estados: \"Pendente\", \"Cobrado\" e \"Ao moedeiro\" se houber suficiente diñeiro no moedeiro para descontar\n"
 admin-account-invest-to-pool-ko: 'Erro ao devolver a achega ao portamoedas'
+admin-account-invest-to-pool-ok: 'Porte reembolsado ao moedeiro. Incrementado o moedeiro por valor de (%s)'
+admin-account-invest-user-refund-fail-pool-amount: 'Este porte non se pode devolver porque o usuario non ten suficiente diñeiro no moedeiro (%s)'
 admin-account-invest-user-refund-ko: 'Non foi posible devolver a achega: [%s]'
+admin-account-invest-user-refund-ok: 'Porte reembolsado correctamente'
+admin-account-invest-user-refund-ok-pool: 'Porte reembolsado correctamente. O moedeiro reduciuse en %s'
 admin-account-issue-solved: 'Fixéronnos a transferencia'
 admin-account-modify-status: 'Modificar o estado'
 admin-account-modify-status-confirm: "Tes a certeza de trocar manualmente o estado a esta achega? É delicado!\nNON SE REALIZARÁ NINGUNHA operación de retorno da achega.\n"
