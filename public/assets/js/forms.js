@@ -55,6 +55,50 @@ function parseVideoURL (url) {
     };
 }
 
+var _uploadImage = function(files, url, callback) {
+  callback = $.isFunction(callback) ? callback : function(){};
+  var data = new FormData();
+  if(!files.length) files = [files];
+  $.each(files, function(index, file){
+    // TODO: configurable input.file name
+    data.append('file[]', file);
+  });
+  var _progress = function(e) {
+      if(e.lengthComputable){
+          // console.log('progress', e.loaded, e.total);
+          callback('progress', e.loaded / e.total);
+      }
+  };
+  $.ajax({
+      url: url,
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: data,
+      type: 'POST',
+      xhr: function() {
+        var myXhr = $.ajaxSettings.xhr();
+        if (myXhr.upload) myXhr.upload.addEventListener('progress',_progress, false);
+        return myXhr;
+      },
+      success: function(result) {
+        // console.log('success', result, result.files);
+        if(result && result.files) {
+          var files = $.map(result.files, function(file) {
+            return IMG_URL + '/700x0/' + file.name;
+          });
+          callback('success', files);
+        } else {
+          callback('error', 'No files uploaded!');
+        }
+      },
+      error: function(data) {
+        console.log('upload error', data);
+        callback('error', data);
+      }
+  });
+};
+
 var default_md_toolbar = [
   {
       name: "close",
@@ -691,50 +735,6 @@ $(function(){
         });
 
         $('.autoform input.online-video').each(_addVideo);
-
-        var _uploadImage = function(files, url, callback) {
-            callback = $.isFunction(callback) ? callback : function(){};
-            var data = new FormData();
-            if(!files.length) files = [files];
-            $.each(files, function(index, file){
-              // TODO: configurable input.file name
-              data.append('file[]', file);
-            });
-            var _progress = function(e) {
-                if(e.lengthComputable){
-                    // console.log('progress', e.loaded, e.total);
-                    callback('progress', e.loaded / e.total);
-                }
-            };
-            $.ajax({
-                url: url,
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: data,
-                type: 'POST',
-                xhr: function() {
-                  var myXhr = $.ajaxSettings.xhr();
-                  if (myXhr.upload) myXhr.upload.addEventListener('progress',_progress, false);
-                  return myXhr;
-                },
-                success: function(result) {
-                  // console.log('success', result, result.files);
-                  if(result && result.files) {
-                    var files = $.map(result.files, function(file) {
-                      return IMG_URL + '/700x0/' + file.name;
-                    });
-                    callback('success', files);
-                  } else {
-                    callback('error', 'No files uploaded!');
-                  }
-                },
-                error: function(data) {
-                  console.log('upload error', data);
-                  callback('error', data);
-                }
-            });
-        };
 
         // HTML editors initializations
         $('.autoform .summernote > textarea').each(_createHtmlEditor);
