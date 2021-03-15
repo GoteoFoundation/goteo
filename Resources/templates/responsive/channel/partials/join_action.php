@@ -12,20 +12,24 @@ elseif($this->main_color)
 
             <?php if($this->channel->terms): ?>
 
-            <div class="col-xs-12 col-sm-6">
-                <div class="title">
-                    <?= $this->text('channel-join') ?>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="title">
+                        <?= $this->text('channel-join') ?>
+                    </div>
+                    <div class="description">
+                        <?= $this->channel->call_to_action_description ? $this->channel->call_to_action_description  : $this->text('channel-join-desc') ?>
+                    </div>
                 </div>
-                <div class="description">
-                    <?= $this->channel->call_to_action_description ? $this->channel->call_to_action_description  : $this->text('channel-join-desc') ?>
+
+                <div class="col-xxs-12 col-xs-6 col-md-3 col-button">
+                    <a data-toggle="modal" data-target="#termsModal" href="#"  class="btn btn-transparent"><?= $this->text('matcher-terms') ?></a>
                 </div>
-            </div>
-            <div class="col-xxs-12 col-xs-6 col-md-3 col-button">
-                <a data-toggle="modal" data-target="#termsModal" href="#"  class="btn btn-transparent"><?= $this->text('matcher-terms') ?></a>
-            </div>
-            <div class="col-xxs-12 col-xs-6 col-md-3 col-button">
-                <a href="/channel/<?= $this->channel->id ?>/create" class="btn btn-white"<?php if($this->main_color) echo ' style="color:' . $this->main_color . '"'; ?>><?= $this->text('regular-create') ?></a>
-            </div>
+
+                <?php if($this->channel->project_creation_open): ?>
+                    <div class="col-xxs-12 col-xs-6 col-md-3 col-button">
+                        <a href="/channel/<?= $this->channel->id ?>/create" class="btn btn-white"<?php if($this->main_color) echo ' style="color:' . $this->main_color . '"'; ?>><?= $this->text('regular-create') ?></a>
+                    </div>
+                <?php endif; ?>
 
             <?php else: ?>
 
