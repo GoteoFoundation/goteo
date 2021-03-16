@@ -177,6 +177,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
     
     $total = Project::getList(['node' => $id], $id, 0, 0, true);
     $projects = Project::getList(['node' => $id], $id, 0, $total);
+    $questions = array_column($questions, null, 'id');
     
     $response = new StreamedResponse(function () use ($questions, $projects) {
       $buffer = fopen('php://output', 'w');
@@ -194,15 +195,28 @@ class ChannelCriteriaAdminController extends AbstractAdminController
 
       foreach ($projects as $project) {
         $answers = Answer::getList(['questionnaire' => $questionnaire->id, 'project' => $project->id]);
+        $answers = array_column($answers, null, 'question');
         if (empty($answers))
           continue;
 
         $project_answers = [$project->id];
 
-        foreach ($answers as $index => $answer) {
-          if ($questions[$index]->vars->type == "dropfiles") {
-            $document = BaseDocument::getByName($answer->answer);
-            $document_link = Config::get('url.main') . $document->getLink();
+        foreach ($questions as $index => $question) {
+
+          $answer = $answers[$index];
+          if (!isset($answer)) {
+            array_push($project_answers, $answer);
+            continue;
+          }
+            
+          if ($question->vars->type == "dropfiles") {
+            try {
+              $document = BaseDocument::getByName($answer->answer);
+              $document_link = Config::get('url.main') . $document->getLink();
+            } catch(ModelNotFoundException $e) {
+              $document_link = Text::get('questionnaire-question-answer-dropfile-not-found');
+            }
+
             if(substr($document_link,0,2) == '//') $document_link = (Config::get('ssl') ? 'https:' : 'http:') . $document_link;
             array_push($project_answers, $document_link);
           } else {

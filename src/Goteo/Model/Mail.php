@@ -515,18 +515,19 @@ class Mail extends \Goteo\Core\Model {
      */
     public function render($plain = false, Array $extra_vars = [], $process_links = true) {
         $content = $this->content;
+        $lang = ($this->lang)? $this->lang : Lang::current();
 
         $extra_vars['content'] = $content;
         $extra_vars['subject'] = $this->subject;
         $extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
-        $extra_vars['lang'] = ($this->lang)? $this->lang : Lang::current();
+        $extra_vars['lang'] = $lang;
 
         if ($plain) {
             return strip_tags($this->content) . ($extra_vars['alternate'] ? "\n\n" . $extra_vars['alternate'] : '');
         }
 
         if (isset($this->template)) {
-            $extra_vars['type'] = Template::get($this->template)->type;
+            $extra_vars['type'] = Template::get($this->template, $lang)->type;
         }
 
         if (isset($this->communication_id)) {
