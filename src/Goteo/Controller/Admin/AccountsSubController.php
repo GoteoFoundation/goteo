@@ -645,7 +645,10 @@ class AccountsSubController extends AbstractSubController {
         $investStatus = Invest::status();
         // listado de proyectos
         // TODO: esto cambiar a getList de proyectos y convocatorias respectivamente
-        $projects = Invest::projects();
+        // $projects = Invest::projects();
+        $total_projects = Project::getList(['status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED]], null, 0, 0, true);
+        $projects = Project::getList(['status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED]], null, 0, $total_projects);
+        $projects = array_column($projects, 'name', 'id');
         // campañas que tienen aportes
         $calls = Invest::calls();
 
