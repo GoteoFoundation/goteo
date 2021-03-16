@@ -85,6 +85,7 @@ dashboard-menu-projects-supports: Col·laboracions
 dashboard-menu-projects-updates: Actualitzacions
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'La meva història'
+dashboard-menu-projects-pitch: "Aplicacions obertes"
 dashboard-menu-review_board: Revisió
 dashboard-menu-translate_board: Traducció
 dashboard-menu-translates: 'Traduccions'
@@ -297,3 +298,8 @@ dashboard-origin-invests-device: 'Dispositiu usat en les aportacions reeixides'
 dashboard-origin-disclaimer: '⚠ *Aquestes dades son orientatives i no inclouen la totalitat de les visites degut a limitacions tècniques.*  > Et recomanem que configuris Google Analytics o Facebook Pixel per obtenir dades més detallades'
 dashboard-project-integration-token: 'Token'
 dashboard-project-integration-link: 'Link'
+dashboard-project-pitch-name: "Nom"
+dashboard-project-pitch-title: 'Aplicacions obertes'
+dashboard-project-pitch-description: "Aquests són els diferentes espais als que pots aplicar, si t'interessa rebre finançament extra per la teva campanya o recolçament institucional, fes-li un cop d'ull i anima't a presentar-te!"
+dashboard-project-pitch-type: "Tipus"
+dashboard-project-pitch-already-applied: "Ja has aplicat"
