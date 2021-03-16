@@ -677,9 +677,10 @@ class AccountsSubController extends AbstractSubController {
         // listado de aportes
         $limit = 25;
         $node = null;
-        $total = Invest::getList($filters, $node, 0, 0, true);
-        $total_money = Invest::getList($filters, $node, 0, 0, 'money');
-        $total_donate_money = Invest::getList($filters, $node, 0, 0, 'donate_money');
+        $invest_data = Invest::getList($filters, $node, 0, 0, 'all');
+        $total = $invest_data['invests'];
+        $total_money = $invest_data['amount'];
+        $total_donate_money = $invest_data['donations_amount'];
         $list = Invest::getList($filters, $node, $this->getGet('pag') * $limit, $limit);
         // print_r($list);die("$total $total_money");
         $viewData = array(
