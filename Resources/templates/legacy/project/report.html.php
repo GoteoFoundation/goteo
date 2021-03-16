@@ -115,21 +115,25 @@ $cName = "P-{$cNum}-{$cDate}";
 
     $sumData['ghost_goteo'] = $Data['ghost']['total']['amount'] * $GOTEO_FEE;
 
-    //Aplicamos el IVA al 50% de la comision de Goteo
+    //Aplicamos el IVA
     $sumData['ghost_goteo']=(($sumData['ghost_goteo']*$var_percentage_applied)*($account->vat/100))+$sumData['ghost_goteo'];
 
     $sumData['pp_project'] = $Data['paypal']['total']['amount'] - $sumData['pp_goteo'];
     $sumData['pp_fee_goteo'] = ($Data['paypal']['total']['invests'] * 0.35) + ($Data['paypal']['total']['amount'] * 0.034);
+
     $sumData['pp_fee_project'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_project'] * 0.034);
     $sumData['pp_net_project'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
     $sumData['fee_goteo'] = $sumData['tpv_fee_goteo'] + $sumData['pp_fee_goteo'];
     $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'] + $sumData['drop_goteo'] + $sumData['pool_goteo'] + $sumData['ghost_goteo'] +$sumData['match_goteo']; // si que se descuenta la comisión sobre capital riego
 
+    // round to 2 decimal
+    $sumData['fee_goteo']=round($sumData['fee_goteo'],2);
+    $sumData['goteo']=round($sumData['goteo'],2);
+
     $sumData['total_fee_project'] = $sumData['fee_goteo'] + $sumData['goteo']; // este es el importe de la factura
 
-    $sumData['tpv_project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'] - $sumData['pp_project'];
     $sumData['project'] = $sumData['total'] - $sumData['fee_goteo'] - $sumData['goteo'];
-    // * el capital riego no lo manda goteo, lo manda el convocador
+
     ?>
 <p>
     <?php
