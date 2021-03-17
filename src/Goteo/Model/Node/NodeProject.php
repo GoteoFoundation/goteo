@@ -129,6 +129,28 @@ class NodeProject extends \Goteo\Core\Model {
       return empty($errors);
     }
 
+    public function remove($errors = array()) {
+        if(empty($this->node_id))
+            $errors[] = "There is no node specified";
+
+        if (empty($this->project_id))
+            $errors[] = "There is no node specified";
+
+        if ($errors)
+            return false;
+
+        try {
+          $sql = 'DELETE FROM node_project WHERE node_id = :node and project_id = :project';
+          $values = [':node' => $this->node_id, ':project' => $this->project_id];
+            self::query($sql, $values);
+        } catch (\PDOException $e) {
+            $errors[] = $e->getMessage();
+            return false;
+        }
+
+        return true;
+      }
+
 }
 
 
