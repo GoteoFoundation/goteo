@@ -676,6 +676,19 @@ body.home {
             }
         }
 
+        .container {
+            .row {
+                div {
+                    margin-top:25px;
+                    text-align: center;
+                    padding-bottom: 25px;
+                    img {
+                        max-width: 250px;
+                    }
+                }
+            }
+        }
+
         div.action{
             margin-top: 50px;
             text-align: center;
@@ -807,6 +820,16 @@ body.home {
             margin-right: 5px;
             display: block;
             margin: 0 auto;
+        }
+
+        div.section.sponsors {
+            .container {
+                .row {
+                    div:nth-child(2n+1) {
+                        clear: both;
+                    }
+                }
+            }
         }
     }
 
