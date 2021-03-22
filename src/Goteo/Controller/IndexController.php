@@ -16,6 +16,7 @@ use Goteo\Model\Banner;
 use Goteo\Model\Project;
 use Goteo\Model\Stories;
 use Goteo\Model\Node;
+use Goteo\Model\Sponsor;
 use Goteo\Util\Stats\Stats;
 
 // para sacar el contenido de about

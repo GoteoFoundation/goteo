@@ -55,7 +55,7 @@ class SponsorsSubController extends AbstractSubController {
         }
         elseif(!$this->isMasterNode()) {
             // check max number of sponsors
-            $node = Node::get(['node' => $this->node]);
+            $node = Node::get($this->node);
             $limit = (int) $node->sponsors_limit;
             $count = Sponsor::getList(['node' => $this->node], 0 , 0, true);
             if($count >= $limit) {
