@@ -11,8 +11,10 @@ dashboard-certificates-confirm: 'Confirmar dades'
 dashboard-certificates-confirm-checkbox: 'Confirmo que aquestes són les meves dades legals reals i sóc conscient que no podré modificar aquestes dades un cop confirmades'
 dashboard-certificates-confirmed: Confirmat
 dashboard-certificates-processed: Processat
+dashboard-certificates-confirmed-ok: 'Dades fiscals confirmades correctament'
 dashboard-certificates-data-alert: 'Tingues en compte que un cop confirmat no es poden modificar les dades!'
 dashboard-certificates-data-desc: 'Si us plau, comprova que les dades del formulari són correctes i confirma''l'
+dashboard-certificates-data-download-all: 'Confirma els teus certificats per activar la desgravació fiscal. Anualment la Fundació Goteo realitza la notificació a Hisenda de totes les donacions confirmades.'
 dashboard-certificates-data-new-invests: 'Però no et preocupis , qualsevol nova aportació que facis a Goteo generarà un nou certificat'
 dashboard-certificates-desc: 'Aquests certificats et permetran desgravar en la declaració de la renda si ets contribuent a l''estat Espanyol.'
 dashboard-certificates-details: 'Veure detalls'
@@ -20,6 +22,9 @@ dashboard-certificates-details-desc: 'Llista d''aportacions per al certificat %C
 dashboard-certificates-download: 'Confirmar i descarregar'
 dashboard-certificates-empty: 'Has de fer alguna aportació a un projecte o recarregar el moneder virtual per veure els teus certificats'
 dashboard-certificates-expired: caducat
+dashboard-certificates-expired-description: 'Ha expirat el plaç per confirmar el teu certificat'
+dashboard-certificates-no-downloable: 'La descàrrega del certificat estarà disponible a partir de l''1 de març de %YEAR%'
+dashboard-certificates-legal-entities-no-downloable: 'La descàrrega del certificat estarà disponible a partir de l''1 de març de %YEAR%, fins llavors pots descarregar el justificant de donació.'
 dashboard-certificates-no-pending: 'No hi ha cap aportació pendent'
 dashboard-certificates-pending: Pendent
 dashboard-certificates-pending-desc: 'Aquestes són les aportacions que s''inclouran en certificats futurs.'
