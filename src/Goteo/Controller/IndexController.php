@@ -16,6 +16,7 @@ use Goteo\Model\Banner;
 use Goteo\Model\Project;
 use Goteo\Model\Stories;
 use Goteo\Model\Node;
+use Goteo\Model\Sponsor;
 use Goteo\Util\Stats\Stats;
 
 // para sacar el contenido de about
@@ -46,6 +47,11 @@ class IndexController extends DiscoverController
 
         $stats = Stats::create('home_stats');
 
+        $sponsors = [];
+        foreach(Sponsor::getTypes() as $type) {
+            $sponsors[$type] = Sponsor::getList(['type' => $type]);
+        }
+
         return $this->viewResponse('home/index', [
             'banners'   => $banners,
             'projects'  => $projects,
@@ -54,7 +60,8 @@ class IndexController extends DiscoverController
             'limit_add' => 12, // Limit for javascript on addSlick
             'stories'   => $stories,
             'channels'  => $channels,
-            'stats'     => $stats
+            'stats'     => $stats,
+            'sponsors'  => $sponsors
         ]);
     }
 
