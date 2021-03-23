@@ -420,6 +420,22 @@ admin-projects-review-today: 'En revisió avui'
 admin-projects-review-yesterday: 'En revisió ahir'
 admin-projects-review-week: 'En revisió aquesta setmana'
 admin-projects-review-last_week: 'En revisió la setmana passada'
+admin-projects-review-month: 'En revisió aquest mes'
+admin-projects-review-last_month: 'En revisió el mes passat'
+admin-projects-review-year: 'En revisió aquest any'
+admin-projects-review-last_year: 'En revisió l''any passat'
+admin-invest-raised-amount-today: 'Recaptat avui'
+admin-invest-raised-total-today: 'Donacions avui'
+admin-invest-raised-amount-yesterday: 'Recaptat ahir'
+admin-invest-raised-total-yesterday: 'Donacions ahir'
+admin-invest-raised-amount-week: 'Recaptat aquesta setmana'
+admin-invest-raised-amount-last_week: 'Recaptat la setmana passada'
+admin-invest-raised-total-week: 'Donacions aquesta setmana'
+admin-invest-raised-total-last_week: 'Donacions la setmana passada'
+admin-invest-raised-amount-month: 'Recaptat aquest mes'
+admin-invest-raised-amount-last_month: 'Recaptat el mes passat'
+admin-invest-raised-total-month: 'Donacions aquest mes'
+admin-invest-raised-total-last_month: 'Donacions el mes passat'
 admin-invest-raised-amount-year: 'Recaptat aquest any'
 admin-invest-raised-total-year: 'Donacions aquest any'
 admin-invest-raised-amount-last_year: 'Recaptat l''any passat'
@@ -470,6 +486,7 @@ admin-stats-projects-channel-desc: 'Projectes que pertanyen al canal (o node)'
 admin-stats-projects-call-desc: 'Projectes que pertanyen a la convocatòria'
 admin-stats-projects-matcher-desc: 'Projectes que estan actius al matcher'
 admin-stats-projects-consultant-desc: 'Projectes que tenen assignats aquest/a assessor/a'
+admin-stats-projects-project-desc: 'Aportacions al projecte'
 admin-filter-add: 'Afegir filtre'
 admin-filter-last-week: 'Últims 7 dies'
 admin-filter-last-month: 'Últims 30 dies'
@@ -482,6 +499,8 @@ admin-filter-typeofdonor: 'Tipus de donant'
 admin-filter-user: 'Usuari'
 admin-filter-donor: 'Donant'
 admin-filter-no-donor: 'Donant inactiu'
+admin-filter-promoter: 'Promotor'
+admin-filter-matcher: 'Matcher'
 admin-filter-test: 'Prova'
 admin-filter-type-unique: 'Únic'
 admin-filter-type-multidonor: 'Multidonant'
@@ -489,7 +508,39 @@ admin-filter-type-foundation-donor: 'Donant a la fundació'
 admin-filter-type-all: 'Tots'
 admin-filter-predefined-date: 'Dates predefinides'
 admin-filter-predefined-date-choose: 'Pots seleccionar una data predeterminada'
+admin-filter-forced: 'Forçar filtre'
+admin-filter-forced-help: 'Si selecciones aquesta opció s''aplicaran els filtres independentment del que hagi escollit l''usuari com a preferència per a l''enviament d''informació per part de la plataforma.'
+admin-filter-project-status: Estat del projecte
+admin-filter-invest-status: Estat del donatiu
+admin-filter-project-location: Ubicació del projecte
+admin-filter-location: Ubicació a l'utilitzar al filtre
+admin-filter-donor-location: Ubicació del donant
 admin-mail-body: 'Cos del missatge'
+admin-stats-donations: 'Donacions'
+admin-stats-donations-method: 'Donacions segons mètode de pagament'
+admin-stats-donations-method-desc: 'Donacions inclouen els diners que l''usuari dóna voluntàriament a la fundació quan aporta a un projecte, donacions directes o bé quan la quantitat en el moneder expira.'
+admin-stats-donations-tip: 'Donacions durant aportacions a projectes (Propines o "tips")'
+admin-stats-donations-direct: 'Donacions directes (inclou moneders expirats)'
+admin-stats-donations-generosity: 'Percentatges de generositat'
+admin-stats-donations-generosity-desc: 'Quantitats d''usuaris amb donacions versus quantitats totals. Només es tenen en compte els projectes amb donacions.'
+admin-stats-donations-expired: 'Donacions directes degudes a moneders expirats'
+admin-stats-donations-refunded: 'Donacions que s''han retornat a causa de projectes fallits'
+admin-donations: Donacions
+admin-donations-tip: Propines
+admin-donations-tip-invests: Aportacions amb propines
+admin-donations-tip-users: Usuàries amb propina
+admin-donations-direct: Donacions directes
+admin-donations-expired: Donacions expirades
+admin-donations-refunded: Donacions retornades
+admin-donations-amount-percent: '% diners donats'
+admin-donations-users-percent: '% usuàries donants'
+admin-donations-tip-percent: '% diners en propines'
+admin-donations-direct-percent: '% diners directes'
+admin-workshop: Tallers Goteo
+admin-workshop-add: Crear un nou taller
+admin-workshop-edit: Editant el taller %s
+admin-workshop-edit-success: L'entrada de taller s'ha editat correctament
+admin-online: En línia
 mandatory-filter-name: Manca el nom
 mandatory-filter-description: Manca una descripció
 mandatory-filter-role: Manca un rol
