@@ -17,12 +17,19 @@ use Goteo\Application\Config;
 
 class Sponsor extends \Goteo\Core\Model {
 
+
+    const SPONSOR_NETWORK = 'network';
+    const SPONSOR_SUPPORT = 'support';
+
+    static $SPONSORS_LIST = [self::SPONSOR_SUPPORT, self::SPONSOR_NETWORK];
+
     public
         $id,
         $node,
         $name,
         $url,
         $image,
+        $type,
         $order;
 
     /*
@@ -36,6 +43,7 @@ class Sponsor extends \Goteo\Core\Model {
                     name,
                     url,
                     image,
+                    type,
                     `order`
                 FROM    sponsor
                 WHERE id = :id
@@ -60,6 +68,7 @@ class Sponsor extends \Goteo\Core\Model {
                 name,
                 url,
                 image,
+                type,
                 `order`
             FROM    sponsor
             WHERE node = :node
@@ -76,32 +85,41 @@ class Sponsor extends \Goteo\Core\Model {
     /*
      * Lista de patrocinadores
      */
-    public static function getList ($node = null, $offset = 0, $limit = 10, $count = false) {
-        if(empty($node)) $node = Config::get('current_node');
+    public static function getList ($filters = array(), $offset = 0, $limit = 10, $count = false) {
+
+        $values = [];
+        $values[':node'] = ($filters['node'])? $filters['node']: Config::get('current_node');
 
         $list = array();
         $offset = (int) $offset;
         $limit = (int) $limit;
+
+        if ($filters['type']) {
+            $values['type'] = $filters['type'];
+            $sqlWhere = " AND `type` = :type";
+        }
 
         $sql = "
             SELECT
                 id,
                 name,
                 url,
-                image
+                image,
+                type
             FROM    sponsor
             WHERE node = :node
+            $sqlWhere
             ORDER BY `order` ASC, name ASC
             LIMIT $offset, $limit
             ";
 
         if($count) {
             // Return count
-            $sql = 'SELECT COUNT(id) FROM sponsor where node = :node';
-            return (int) self::query($sql, [':node'=>$node])->fetchColumn();
+            $sql = 'SELECT COUNT(id) FROM sponsor where node = :node' . $sqlWhere;
+            return (int) self::query($sql, $values)->fetchColumn();
         }
         // die(\sqldbg($sql, [':node'=>$node]));
-        $query = static::query($sql, [':node'=>$node]);
+        $query = static::query($sql, $values);
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
 
@@ -151,6 +169,7 @@ class Sponsor extends \Goteo\Core\Model {
             'name',
             'url',
             'image',
+            'type',
             'order'
             );
         try {
@@ -196,6 +215,10 @@ class Sponsor extends \Goteo\Core\Model {
         $order = $sql->fetchColumn(0);
         return ++$order;
 
+    }
+
+    public static function getTypes() {
+        return self::$SPONSORS_LIST;
     }
 
 }
