@@ -354,9 +354,45 @@ admin-active: Cobrat
 admin-refunded: Retornat
 admin-refunded-to_users: Retornat a usuàries
 admin-refunded-to_users-invests: Nº devolucions a usuàries
+admin-refunded-to_wallet: Retornat al moneder
+admin-commissions: Comissió
+admin-fees: Comissió plataforma
+admin-user-fee: Comissió ciutadana
+admin-call-fee: Comissió Matchfunding (sense Matchers)
+admin-matcher-fee: Comissió Matchers
+admin-vat: IVA
+admin-diff: Diferència
+admin-the_day: El dia
+admin-the_week: La setmana
+admin-the_month: El mes
+admin-the_year: L' any
+admin-custom: Segons filtre
+admin-total: Total
+admin-today: Avui
+admin-yesterday: Ahir
+admin-week: Aquesta setmana
+admin-last_week: El mateix dia de la setmana passada
+admin-last_week_complete: Tota la setmana passada
+admin-last_year_week: La mateixa setmana farà un any
+admin-month: Aquest Mes
+admin-last_month: El mateix dia del mes passat
+admin-last_month_complete: Tot el mes passat
+admin-last_year_month: El mateix mes farà un any
+admin-year: Aquest any
+admin-last_year: El mateix dia de l'any passat
+admin-last_year_complete: Tot l'any passat
 admin-promote-add: 'Nou destacat'
+admin-promote-submit: 'Desar'
 admin-promote-already-exists: 'Aquest projecte ja està destacat'
 admin-promote-correct: 'El projecte està destacat'
+admin-projects-created-today: 'Creats avui'
+admin-invest-raised-amount-year: 'Recaptat aquest any'
+admin-invest-raised-total-year: 'Donacions aquest any'
+admin-invest-raised-amount-last_year: 'Recaptat l''any passat'
+admin-invest-raised-total-last_year: 'Donacions de l''any passat'
+admin-invest-commissions-today: 'Comissió banc avui'
+admin-invest-commissions-yesterday: 'Comissió banc ahir'
+admin-invest-commissions-week: 'Comissió banc aquesta setmana'
 admin-filter-add: 'Afegir filtre'
 admin-filter-last-week: 'Últims 7 dies'
 admin-filter-last-month: 'Últims 30 dies'
