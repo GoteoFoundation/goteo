@@ -333,6 +333,27 @@ admin-stats-users-part: 'Projectes sense Matchfunding'
 admin-stats-match-part: 'Part Multiplicadora'
 admin-stats-citizens-part: 'Part Ciutadana'
 admin-stats-matcher-part: 'Part Matcher'
+admin-stats-invest-destination: 'Destí de les aportacions'
+admin-stats-invest-in_wallet: 'Total acumulat al moneder'
+admin-stats-to_projects: 'A projectes'
+admin-stats-to_wallet: 'Al moneder'
+admin-stats-to_matcher_wallet: 'Al moneder de Matchers'
+admin-stats-to_fee: 'A comissions'
+admin-stats-to_fee-percent: 'Comissió efectiva'
+admin-stats-in_wallet: 'Al moneder'
+admin-stats-in_matcher_wallet: 'Al moneder de Matchers'
+admin-stats-in_users_wallet: 'Al moneder de Matchers'
+admin-stats-matchfunding-global: 'Influència Matchfunding'
+admin-stats-refunded-parts: 'Desglossament de devolucions'
+admin-stats-fees-parts: 'Desglossament de comissions'
+admin-stats-invest-active-parts: 'Destí ingressos nets'
+admin-stats-invest-in_wallet-parts: 'Desglossament del moneder'
+admin-losts: Pèrdues
+admin-raised: Recaptat
+admin-active: Cobrat
+admin-refunded: Retornat
+admin-refunded-to_users: Retornat a usuàries
+admin-refunded-to_users-invests: Nº devolucions a usuàries
 admin-promote-add: 'Nou destacat'
 admin-promote-already-exists: 'Aquest projecte ja està destacat'
 admin-promote-correct: 'El projecte està destacat'
