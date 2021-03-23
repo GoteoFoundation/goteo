@@ -544,4 +544,8 @@ admin-online: En línia
 mandatory-filter-name: Manca el nom
 mandatory-filter-description: Manca una descripció
 mandatory-filter-role: Manca un rol
+admin-node-iframe: Iframe
+admin-channel-resource: 'Recursos Canal'
+admin-channel-resource-add: 'Crear recurs'
+admin-posts: 'Posts'
 
