@@ -35,6 +35,7 @@ dashboard-certificates-totals: '%NUM% aportacions, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'Per a descarregar aquest certificat has confirmar les dades primer!'
 dashboard-certificates-view-pending: 'No es mostren les aportacions a projectes que encara no hagin passat la primera ronda. Pots consultar aquestes aportacions %HERE%.<br>Les aportacions fetes amb el moneder virtual s''inclouen en el certificat generat en el moment del pagament físic.'
 dashboard-certificates-no-invests: 'No es pot confirmar el certificat ja que no té aportacions!'
+dashboard-certificates-download-proof: Descarregar justificant de donació
 dashboard-chart-days: 'QUEDEN %s DIES'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
 dashboard-chart-investors: COFINANÇADORS
@@ -83,9 +84,12 @@ dashboard-menu-projects-story: 'La meva història'
 dashboard-menu-review_board: Revisió
 dashboard-menu-translate_board: Traducció
 dashboard-menu-translates: 'Traduccions'
+dashboard-menu-matchers: "Matchers"
+dashboard-menu-admin-matchers: "Admin Matchers"
 dashboard-messegers-mail-sendto: 'Enviat a %s els/les participants:'
 dashboard-my-wallet-available: 'Actualment tens <span class="pool-amount">%s</span> <span class="pool-desc">al teu moneder Goteo</span>'
 dashboard-my-wallet-contribute-button: Repartir
+dashboard-my-wallet-modal-pool-info: "El moneder de Goteo és una funcionalitat de la nostra plataforma que et permet fer la teva donació i decidir posteriorment a quin projecte aportar-la.<br> <p>Les donacions que realitzes mitjançant la nostra plataforma són fiscalment desgravables, d'acord a la Llei 49/2002, de 23 de desembre, de règim fiscal de les entitats sense fins lucratius i dels incentius fiscals al mecenatge.</p> <p>Quan fas la teva donació, pots descarregar-te un certificat de donació que justifica davant Hisenda la seva contribució a una entitat sense ànim de lucre. Pots accedir a un històric dels certificats disponibles associats a les teves donacions a Goteo al panell de l'usuari, concretament a la secció<a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Certificat de donació</a>.</p><p> NOTA IMPORTANT: Et recordem que totes les aportacions per les que hagis obtingut un certificat de donació de la nostra Fundació no es retornen. Això vol dir que si has fet una donació vinculada a un projecte concret dins la nostra plataforma i aquest no arriba al seu objectiu mínim de finançament durant la seva campanya, la teva aportació anirà al teu moneder però no tornarà al teu compte corrent. No obstant això podràs destinar aquests import des del teu moneder virtual a Goteo.org a qualsevol altre projecte actiu que desitgis en el moment que tu triïs, sense necessitat de tornar a introduir les dades bancàries o de PayPal.</p>"
 dashboard-my-wallet-pool-info: 'Més informació sobre l''ús del teu moneder'
 dashboard-no-projects: 'No tens cap projecte, pots crear-ne un <a href="/project/create">aquí</a>'
 dashboard-password-recover-advice: 'Assegura''t de restablir la teva contrasenya'
@@ -288,3 +292,5 @@ dashboard-origin-invests-referer: 'Origen de visites en les aportacions reeixide
 dashboard-origin-project-device: 'Dispositiu usat en la pàgina del projecte'
 dashboard-origin-invests-device: 'Dispositiu usat en les aportacions reeixides'
 dashboard-origin-disclaimer: '⚠ *Aquestes dades son orientatives i no inclouen la totalitat de les visites degut a limitacions tècniques.*  > Et recomanem que configuris Google Analytics o Facebook Pixel per obtenir dades més detallades'
+dashboard-project-integration-token: 'Token'
+dashboard-project-integration-link: 'Link'
