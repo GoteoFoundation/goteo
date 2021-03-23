@@ -94,7 +94,7 @@ class ChannelController extends \Goteo\Core\Controller {
 
         if (isset($side_order['sponsors'])) {
             // Patrocinadores del nodo
-            $sponsors = Sponsor::getList(['node' => $id]);
+            $sponsors = Sponsor::getList($id);
         }
 
         $this->contextVars([

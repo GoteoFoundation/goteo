@@ -2,7 +2,7 @@
 
 $categories = $this->model_static('Category', 'getNames');
 $posts = $this->model_static('Post', 'getList', 'footer');
-$sponsors = $this->model_static('Sponsor', 'getList',  ['node' => 'goteo']);
+$sponsors = $this->model_static('Sponsor', 'getList', 'goteo');
 
 ?>
 

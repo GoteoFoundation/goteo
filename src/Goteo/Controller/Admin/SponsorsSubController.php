@@ -49,7 +49,7 @@ class SponsorsSubController extends AbstractSubController {
     }
 
     private function checkItemPermission($id = null) {
-        if($sponsor = Sponsor::get(['node' => $id])) {
+        if($sponsor = Sponsor::get($id)) {
             if($sponsor->node === $this->node) return true;
             throw new ControllerAccessDeniedException('You cannot admin this sponsor');
         }
@@ -57,7 +57,7 @@ class SponsorsSubController extends AbstractSubController {
             // check max number of sponsors
             $node = Node::get($this->node);
             $limit = (int) $node->sponsors_limit;
-            $count = Sponsor::getList(['node' => $this->node], 0 , 0, true);
+            $count = Sponsor::getList($this->node, 0 , 0, true);
             if($count >= $limit) {
                 throw new ControllerAccessDeniedException('Max number of sponsor reached!');
             }
