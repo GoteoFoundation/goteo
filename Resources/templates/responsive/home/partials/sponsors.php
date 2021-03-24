@@ -12,7 +12,7 @@
                     <?php foreach($sponsors as $sponsor): ?>
                         <div class="col-md-4 col-sm-6 col-xs-12 sponsor-item">
                             <a href="<?= $sponsor->url ?>">
-                                <img alt="<?= $sponsor->name ?>" src="<?= $sponsor->image->getLink(250, 70, false) ?>" />
+                                <img alt="<?= $sponsor->name ?>" src="<?= $sponsor->image->getLink(250, 90, false) ?>" />
                             </a>
                         </div>
                     <?php endforeach; ?>
