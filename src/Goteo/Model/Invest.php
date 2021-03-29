@@ -623,7 +623,7 @@ class Invest extends \Goteo\Core\Model {
         $offset = (int) $offset;
         $limit = (int) $limit;
         $sql = "SELECT
-                    DISTINCT invest.*,
+                    invest.*,
                     invest_reward.reward as reward,
                     invest_reward.fulfilled as fulfilled,
                     project.status as projectStatus,

@@ -645,7 +645,10 @@ class AccountsSubController extends AbstractSubController {
         $investStatus = Invest::status();
         // listado de proyectos
         // TODO: esto cambiar a getList de proyectos y convocatorias respectivamente
-        $projects = Invest::projects();
+        // $projects = Invest::projects();
+        $total_projects = Project::getList(['status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED]], null, 0, 0, true);
+        $projects = Project::getList(['status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED]], null, 0, $total_projects);
+        $projects = array_column($projects, 'name', 'id');
         // campañas que tienen aportes
         $calls = Invest::calls();
 
@@ -677,9 +680,10 @@ class AccountsSubController extends AbstractSubController {
         // listado de aportes
         $limit = 25;
         $node = null;
-        $total = Invest::getList($filters, $node, 0, 0, true);
-        $total_money = Invest::getList($filters, $node, 0, 0, 'money');
-        $total_donate_money = Invest::getList($filters, $node, 0, 0, 'donate_money');
+        $invest_data = Invest::getList($filters, $node, 0, 0, 'all');
+        $total = $invest_data['invests'];
+        $total_money = $invest_data['amount'];
+        $total_donate_money = $invest_data['donations_amount'];
         $list = Invest::getList($filters, $node, $this->getGet('pag') * $limit, $limit);
         // print_r($list);die("$total $total_money");
         $viewData = array(
