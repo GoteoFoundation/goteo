@@ -921,3 +921,14 @@ div.new-material-success {
       }
 
     }
+
+table.calls-summary {
+  .channel {
+    td{
+      a.open{
+        color: $color-white;
+        background-color: $background-new-dark-blue !important;
+      }
+    }
+  }
+}

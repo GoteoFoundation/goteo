@@ -16,9 +16,9 @@
   $pitch_link = '/channel/'.$channel->id.'/apply/'. $this->project->id;
 ?>
 
-<tr>
+<tr class="channel">
   <td data-container="body" data-toggle="tooltip" title="<?= $name ?>">
-    <a class="<?= $tagmark ?>" style='background: #06566d' href="<?= $link ?>" >
+    <a class="<?= $tagmark ?>" href="<?= $link ?>" >
       <img alt="<?= $name ?>" class="img-owner" src="<?= $image_url ?>">
       <?= $tagmark_text ?>
     </a>
