@@ -174,6 +174,13 @@ $dash->add('dashboard-project-story', new Route(
         )
 ));
 
+$dash->add('dashboard-project-pitch', new Route(
+    '/project/{pid}/pitch',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::pitchAction',
+        )
+));
+
+
 
 
 
