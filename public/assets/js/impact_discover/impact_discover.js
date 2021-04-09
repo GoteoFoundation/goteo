@@ -23,4 +23,4 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
-alert("hola");
+alert("test js");
