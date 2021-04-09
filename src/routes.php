@@ -267,4 +267,17 @@ $routes->add('map-zoom-latlng', new Route(
     )
 ));
 
+// $map_routes = include __DIR__ . '/Routes/map_routes.php';
+// $map_routes->addPrefix('/map');
+// $routes->addCollection($map_routes);
+
+
+// Discover impact
+$routes->add('impact-discover', new Route(
+    '/impact-discover',
+    array(
+        '_controller' => 'Goteo\Controller\ImpactDiscoverController::indexAction'
+    )
+));
+
 return $routes;
