@@ -23,6 +23,7 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
+<<<<<<< HEAD
 //reset ODS JSON
 function resetODS() {
     $.each(odsList.ods, function(key, value){
@@ -259,3 +260,6 @@ $("#filters-mobile").on("click","a.close",function(e){
     e.preventDefault();
     contractMobileFilter();
 });
+=======
+alert("hola");
+>>>>>>> Create impact discover layout
