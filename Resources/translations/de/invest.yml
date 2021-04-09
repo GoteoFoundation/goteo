@@ -44,7 +44,6 @@ invest-donation-header: 'Tragen Sie Ihre steuerlichen Angaben für diese Spende 
 invest-drop-method: Gießkannenfinanzierung
 invest-fiscal-fail: 'Es gibt noch leere oder fehlerhafte Felder; überprüfen Sie das Steuer-Formular, um die Spende geltend machen zu können!'
 invest-fiscal-skip: 'Ich möchte diese Daten jetzt nicht ausfüllen.'
-invest-fiscal-title: 'Vergewissern Sie sich, dass Sie die Belohnung anrechnen können'
 invest-login-alert: 'Sie müssen sich anmelden oder <a href="%s">einloggen, </a> um die Unterstützung zu tätigen'
 invest-mail_info-address: 'Sie werden die Belohung an folgende Adresse erhalten:'
 invest-make-sure-save: Speichern

@@ -50,7 +50,14 @@ admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
 admin-activity: Activity
 admin-communications: Comunications
-admin-communications-add: Create new communication 
+admin-communications-add: Create new communication
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
 admin-communications-userid-content: ' for the id of the recipient'
 admin-communications-useremail-content: ' for the email of the recipient'
 admin-communications-username-content: ' for the name of the recipient'
@@ -62,7 +69,7 @@ admin-communications-send: 'Send communication'
 admin-communications-cancel: 'Cancel communication'
 admin-communications-newsletter: 'Newsletter'
 admin-communications-communication: 'General communication'
-admin-communications-id: 'Communication''s ID'
+admin-communications-id: 'Communication ID'
 admin-home: Dashboard
 admin-items: entries
 admin-mailing-back-to-list: 'Back to messages'
@@ -166,10 +173,6 @@ admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
 admin-posts: 'Posts'
-admin-promote-add: 'New promote'
-admin-promote-submit: 'Save'
-admin-promote-already-exists: 'This project is already promoted'
-admin-promote-correct: 'The project is promoted'
 admin-project-express-discard: 'Express discard'
 admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
 admin-project-express-discard-sure: 'The project will be discarded and the owner will receive an email, ok?'
@@ -213,6 +216,8 @@ admin-users-global-search: 'Id, name, email or project'
 admin-blog-global-search: 'Id, title, subtitle or text'
 admin-communication-global-search: 'Subject'
 admin-blog-stories-search: 'ID, title, text, or project'
+admin-donor-name-search: 'ID, name, email'
+admin-donor-date-search: 'Processed by date'
 admin-no-project: 'No project'
 admin-title-id: Id
 admin-title-name: Name
@@ -253,7 +258,19 @@ admin-title-social_commitments: 'Social commitments'
 admin-title-order: Sort
 admin-title-status: Status
 admin-title-users: Users
+admin-title-city: City
 admin-title-date: Date
+admin-title-blockquote: 'Personalized appointment'
+admin-title-type: 'Type'
+admin-title-date-in: Start date
+admin-title-date-out: Finish date
+admin-title-venue: Place (Visible in call to action)
+admin-title-venue-address: Address
+admin-title-how-to-get: How to get there?
+admin-title-iframe: 'Iframe localization'
+admin-title-schedule-file: 'Url program'
+admin-title-call: 'Matchfunding notification'
+admin-title-url-inscription: Registration Link
 admin-title-filter: Filter
 admin-title-template: Template
 admin-title-receivers: Receivers
@@ -262,6 +279,9 @@ admin-title-failed: Failed
 admin-title-pending: Pending
 admin-title-success: Successful
 admin-title-percent: Percentage
+admin-title-year: Year
+admin-title-nif: ID
+admin-title-country: Country
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'
@@ -288,6 +308,7 @@ admin-aggregate-invests-desc: 'Sum of contributions per unit of time'
 admin-aggregate-invests-average: 'Average contributions'
 admin-aggregate-invests-average-desc: 'Average contributions per unit of time'
 admin-aggregate-projects: 'Total raised in projects'
+admin-aggretate-projects-format: '%CURRENCY%%VALUE% (%TOTAL% projects)'
 admin-aggregate-projects-desc: 'Sum of contributions per unit of time'
 admin-aggregate-projects-average: 'Average collection in projects'
 admin-aggregate-projects-average-desc: 'Average collection per unit of time'
@@ -298,6 +319,7 @@ admin-stats-active: 'Net income'
 admin-stats-refunded: 'Returns'
 admin-stats-fees: 'Platform commission'
 admin-stats-commissions: 'Bank commission'
+admin-stats-matchfunding: 'Matchfunding'
 admin-stats-raised-method: 'Gross income according to payment method'
 admin-stats-raised-method-desc: 'Gross revenue includes all the money that has been collected by the platform at some time (contributions to failed projects are included, in addition to direct contributions to the wallet or from failed projects with return to the wallet). <br> <em> Contributions from the wallet are not included </em> (unless that means of payment is chosen) </b> '
 admin-stats-active-method: 'Net income according to payment method'
@@ -346,6 +368,7 @@ admin-the_week: The week
 admin-the_month: The month
 admin-the_year: the year
 admin-custom: According to filter
+admin-total: Total
 admin-today: Today
 admin-yesterday: Yesterday
 admin-week: This week
@@ -487,15 +510,21 @@ admin-filter-type-all: 'All'
 admin-filter-predefined-date: 'Predefined dates'
 admin-filter-predefined-date-choose: 'You can choose a predefined date'
 admin-filter-forced: 'Force filter'
-admin-filter-forced-help: 'If you select this option, the filters will be applied regardless of what the user has chosen as a preference for sending information by the platform.'
+admin-filter-forced-help: 'Selecting this option will apply filters regardless of what the user chooses as a preference for sending information by the platform.'
 admin-filter-project-status: Project status
 admin-filter-invest-status: Invest status
 admin-filter-project-location: "Project's location"
 admin-filter-location: "Locaiton to be used by the filter"
 admin-filter-donor-location: "Donor's location"
+admin-filter-donor-status: Certificate status
 admin-mail-body: 'Body of the message'
+admin-stats-donations: 'Donations'
+admin-stats-donations-method: 'Donations by payment method'
+admin-stats-donations-method-desc: 'Donations include the money that the user voluntarily gives the foundation when giving to a project, direct donations or when the amount in the wallet expires.'
+admin-donations: Donations
 mandatory-filter-name: Missing name
 mandatory-filter-description: Missing description
 mandatory-filter-role: Missing role
-
 admin-node-iframe: Iframe
+admin-certificates: Certificates
+admin-certificates-management: Certificates Management

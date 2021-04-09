@@ -22,6 +22,7 @@ banners-lb-report: 'Project report'
 banners-lb-translate: 'Translating Banner'
 banners-lb-update: 'Changing the status of the contribution'
 banners-lb-viewer: 'Watching logs'
+blog-lb: Blog
 blog-lb-add: 'New Entry'
 blog-lb-edit: 'Editing Entry'
 blog-lb-footer: 'Sorting the entries in the Footer'
@@ -47,6 +48,7 @@ criteria-lb-add: 'New Criteria'
 criteria-lb-edit: 'Editing Criteria'
 criteria-lb-list: Listing
 criteria-lb-translate: 'Translating Criteria'
+faq-lb: FAQ
 faq-lb-add: 'New Question'
 faq-lb-edit: 'Editing Question'
 faq-lb-list: Listing
@@ -62,6 +64,7 @@ icons-lb: 'Types of Return'
 icons-lb-edit: 'Editing Type'
 icons-lb-list: Listing
 icons-lb-translate: 'Translating Type'
+info-lb: 'About ideas'
 info-lb-add: 'Creating Idea'
 info-lb-edit: 'Editing Idea'
 info-lb-list: Listing
@@ -169,8 +172,8 @@ word-lb-list: Listing
 worth-lb: 'Meritocracy levels'
 worth-lb-edit: 'Editing Level'
 worth-lb-list: Listing
+stats-lb: Stats & data
 stories-lb: 'User stories'
-workshop-lb: 'Workshops'
 channelstory-lb: 'Stories in channels'
 channelresource-lb: 'Resources'
 channelposts-lb: 'Posts in channels'

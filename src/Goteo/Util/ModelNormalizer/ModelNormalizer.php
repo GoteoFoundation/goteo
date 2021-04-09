@@ -17,8 +17,8 @@ use Goteo\Application\Session;
  * This class allows to get an object standarized for its use in views
  */
 class ModelNormalizer {
-    private $model;
-    private $keys;
+    protected $model;
+    protected $keys;
 
     public function __construct(CoreModel $model,array $keys = null) {
         $this->model = $model;

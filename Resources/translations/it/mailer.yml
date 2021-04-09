@@ -9,5 +9,6 @@ newsletter-unsubscribe-cancel: 'Ti sei sbagliato? <a href="%s">Reiscriviti</a>'
 newsletter-subscribe-cancel: 'Non volevi iscriverti? <a href="%s">annulla la tua iscrizione</a>'
 subscribe-request-success: 'Felicità! Ti sei iscritto al nostro bollettino (%s).'
 unsubscribe-request-success: 'Hai cancellato la tua registrazione alla newsletter. (%s)'
+mailer-more-projects-button: 'Vedere maggiori progetti'
 mailer-from: Da
 mailer-to: Per

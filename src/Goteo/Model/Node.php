@@ -95,7 +95,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description', 'banner_button_url', 'terms_url'];
+        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description', 'banner_button_url', 'terms', 'terms_url'];
     }
 
     /**
@@ -256,6 +256,10 @@ class Node extends \Goteo\Core\Model {
             } else {
                 $sqlFilter[] = "node.active=1";
             }
+        }
+
+        if (isset($filters['inscription_open'])) {
+            $sqlFilter[] = "(node.project_creation_open OR node.call_inscription_open)";
         }
 
         if($sqlFilter) $sqlFilter = ' WHERE '. implode(' AND ', $sqlFilter);
@@ -1176,7 +1180,8 @@ class Node extends \Goteo\Core\Model {
     public function getAllWorkshops () {
         if($this->workshopList) return $this->workshopList;
 
-        $this->workshopList =  Workshop::getList(['node' => $this->id]);
+        $total = Workshop::getList(['node' => $this->id], 0, 0, 1);
+        $this->workshopList =  Workshop::getList(['node' => $this->id], 0, $total);
         return $this->workshopList;
     }
 
@@ -1226,17 +1231,34 @@ class Node extends \Goteo\Core\Model {
         return [];
     }
 
-    public function getSections($section) {
-        if($this->sectionsList) return $this->sectionsList;
-
+    public function getSections($section = null) {
         $filter = [
             'node' => $this->id
         ];
 
         if ($section) $filter['section'] = $section;
 
-        $this->sectionsList = NodeSections::getList($filter, 0, 10);
-        return $this->sectionsList;
+        $sections = NodeSections::getList($filter, 0, 10);
+        return $sections;
     }
+
+    public function findProject($pid)
+    {
+
+        $values = [
+            ':project' => $pid,
+            ':node' => $this->id
+        ];
+
+        $sql = "SELECT *
+                FROM node_project
+                WHERE node_project.project_id = :project
+                    AND node_project.node_id = :node
+            ";
+
+        // die(\sqldbg($sql, $values));
+        return self::query($sql, $values)->fetchAll(\PDO::FETCH_CLASS. __CLASS__);
+    }
+
 
 }

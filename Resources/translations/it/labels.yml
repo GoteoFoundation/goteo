@@ -42,6 +42,7 @@ commons-lb-info: 'Informazioni di contatto'
 commons-lb-list: Creando lista
 commons-lb-report: 'Rapporto di progetto'
 commons-lb-view: 'Gestione dei ritorni'
+communication-lb: 'Comunicazioni'
 criteria-lb: 'Criteri di revisione'
 criteria-lb-add: 'Nuovo Criterio'
 criteria-lb-edit: 'Modificando Criterio'
@@ -52,6 +53,7 @@ faq-lb-add: 'Nuova Domanda'
 faq-lb-edit: 'Modifica Domanda'
 faq-lb-list: Creando lista
 faq-lb-translate: 'Traducendo Domanda'
+filter-lb: 'Filtri'
 glossary-lb: Glossario
 glossary-lb-edit: 'Modificando Termine'
 glossary-lb-list: Elencando
@@ -164,6 +166,7 @@ users-lb-impersonate: 'Gestendo l''Utente'
 users-lb-list: Elencando
 users-lb-manage: 'Gestendo Utente'
 users-lb-move: 'Muovendo ad un altro Nodo l''utente'
+workshop-lb: 'Laboratori'
 word-lb: 'Conteggio di parole'
 word-lb-list: Creando lista
 worth-lb: 'Livelli di meritocrazia'

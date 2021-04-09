@@ -269,7 +269,7 @@ class Mail extends \Goteo\Core\Model {
         // Sustituimos los datos
         $mail->subject = $tpl->title;
         $mail->template = $tpl->id;
-        $text = $tpl->parseText();
+        $text = $tpl->text;
         // $mail->content = ($template == Template::NEWSLETTER) ? Newsletter::getContent($text, $mail->lang) : $content = $text;
         $mail->content = $text;
         // En el contenido:
@@ -515,14 +515,19 @@ class Mail extends \Goteo\Core\Model {
      */
     public function render($plain = false, Array $extra_vars = [], $process_links = true) {
         $content = $this->content;
+        $lang = ($this->lang)? $this->lang : Lang::current();
 
         $extra_vars['content'] = $content;
         $extra_vars['subject'] = $this->subject;
         $extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
-        $extra_vars['lang'] = ($this->lang)? $this->lang : Lang::current();
+        $extra_vars['lang'] = $lang;
 
         if ($plain) {
             return strip_tags($this->content) . ($extra_vars['alternate'] ? "\n\n" . $extra_vars['alternate'] : '');
+        }
+
+        if (isset($this->template)) {
+            $extra_vars['type'] = Template::get($this->template, $lang)->type;
         }
 
         if (isset($this->communication_id)) {
@@ -541,7 +546,8 @@ class Mail extends \Goteo\Core\Model {
             View::setTheme('responsive');
             $template = "default";
         } else {
-            $template = "simple";
+            View::setTheme('responsive');
+            $template = "default";
         }
 
         $engine = View::createEngine();

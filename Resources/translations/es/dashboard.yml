@@ -36,6 +36,10 @@ dashboard-certificates-unconfirmed: 'Para descargar este certificado debes confi
 dashboard-certificates-view-pending: 'No se muestran tus aportes directos a proyectos que todavía no hayan acabado la primera ronda. Puedes consultarlos %HERE%.<br>Les aportaciones hechas con el monedero virtual se incluyen en el certificado generado en el momento del pago físico.'
 dashboard-certificates-no-invests: 'No se puede confirmar el certificado si no tiene aportaciones!'
 dashboard-certificates-download-proof: Descargar justificante de donación
+dashboard-certificates-completed: Completado
+dashboard-certificates-validated: Validado
+dashboard-certificates-declared: Declarado
+dashboard-certificates-rejected: Rechazado
 dashboard-chart-days: 'QUEDAN %s DÍAS'
 dashboard-chart-invested: 'FINANCIACIÓN OBTENIDA'
 dashboard-chart-investors: COFINANCIADORES
@@ -81,6 +85,7 @@ dashboard-menu-projects-supports: Colaboraciones
 dashboard-menu-projects-updates: Novedades
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'Mi historia'
+dashboard-menu-projects-pitch: "Aplicaciones abiertas"
 dashboard-menu-review_board: Revisión
 dashboard-menu-translate_board: Traducción
 dashboard-menu-translates: 'Mis Traducciones'
@@ -297,3 +302,7 @@ dashboard-origin-invests-device: 'Dispositivo usado en los aportes exitosos'
 dashboard-origin-disclaimer: '⚠ *Estos datos son orientativos y no incluyen la totalidad de las visitas debido a limitaciones técnicas.*  > Te recomendamos que configures Google Analytics o Facebook Pixel para tener datos más detallados'
 dashboard-project-integration-token: 'Token'
 dashboard-project-integration-link: 'Link'
+dashboard-project-pitch-title: 'Aplicaciones abiertas'
+dashboard-project-pitch-description: "Estos son los diferentes espacios a los que puedes aplicar, si te interesa recibir financiación extra para tu campaña o apoyo institucional, échale un vistazo y ¡anímate a presentarte!"
+dashboard-project-pitch-type: "Tipo"
+dashboard-project-pitch-already-applied: "Ya has aplicado"

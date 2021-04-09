@@ -4,7 +4,7 @@ purpose: 'Message answered in a thread originated by the project''s participate 
 type: 'md'
 title: 'New project support reply'
 text: >
-    Dear <span class="message-highlight-red">%USERNAME%</span>,
+    Dear %USERNAME%,
 
 
     **%SENDERNAME%** has answered the "participate" message *%THREADSUBJECT%*:

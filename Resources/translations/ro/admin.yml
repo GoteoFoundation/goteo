@@ -50,6 +50,17 @@ admin-contents: 'Texte și traduceri'
 admin-empty-list: 'Nu s-au găsit înregistrări'
 admin-activity: Activitate
 admin-communications: Comunicatii
+admin-communications-userid-content: ' pentru id-ul de acces al destinatarului'
+admin-communications-useremail-content: ' pentru email-ul destinatarului'
+admin-communications-username-content: ' pentru numele destinatarului'
+admin-communications-siteurl-content: ' pentru url-ul acestei platforme (%SITEURL%)'
+admin-communications-subscribeurl-content: ' link direct de abonare la newsletter-ul utilizatorului'
+admin-communications-unsubscribeurl-content: ' link direct pentru dezabonare la newsletter-ul utilizatorului'
+admin-communications-poolamount-content: ' cantitatea de bani disponibilă în portofelul utilizatorului'
+admin-communications-send: 'Trimite comunicarea'
+admin-communications-cancel: 'Anulează comunicarea'
+admin-communications-communication: 'Comunicare generală'
+admin-communications-id: 'ID-ul comunicației'
 admin-home: Pagina principală
 admin-items: bilete
 admin-mailing-back-to-list: 'Înapoi la comunicare'
@@ -76,7 +87,10 @@ admin-projects: Proiecte
 admin-consultants: 'Consultanți'
 admin-invests: Contribuţii
 admin-filters: 'Filtre'
+admin-filters-edit: 'Editare filtru'
+admin-filters-create: 'Creare filtru'
 admin-remove-filters: 'Elimină filtrele'
+admin-remove-filters-forbidden: 'Filtrele folosite nu se pot șterge.'
 admin-remove-entry: 'Ștergeți intrarea'
 admin-remove-entry-confirm: 'Sigur doriți să ștergeți această intrare? Această acțiune nu poate fi anulată!'
 admin-remove-entry-forbidden: 'Nu puteți șterge înregistrările publicate în blog. Anulează înregistrarea.'
@@ -101,10 +115,20 @@ admin-blog: Blog general
 admin-blog-add: Creați o postare nouă
 admin-blog-edit: Editarea postului %s
 admin-blog-slug-exists: 'Identificatorul [%s] este utilizat într-un alt post!'
+admin-blog-slug-chars: 'Identificatorul [%s] conține caractere interzise!'
 admin-blog-not-public: 'Această postare nu este încă publică'
 admin-stories: Istoricul utilizatorilor din Goteo
 admin-stories-add: Creați o istorie nouă
 admin-stories-edit: Editarea istoric %s
+admin-categories-if-empty-then-asset: 'Dacă rămâne gol se va folosi iconița în mod implicit: %s'
+admin-category-add: Creează o categorie nouă
+admin-category-edit: Editarea categoriei %s
+admin-socialcommitment-add: Creare un nou compromis social
+admin-socialcommitment-edit: Editarea compromisului social %s
+admin-sdg-add: Creare ODS nou
+admin-sdg-edit: Editarea ODS-ului %s
+admin-footprint-add: Creare urmă nouă
+admin-footprint-edit: Editeaza urma %s
 admin-calls: Convocări
 admin-matchers: Matchers
 admin-channels: Canale
@@ -152,6 +176,7 @@ admin-view-user-mailing: 'Toată corespondența'
 admin-role-change-forbidden: 'Nu puteți gestiona rolul %ROLE% folosind acest cont de utilizator'
 admin-users-global-search: 'Id, nume, email sau proiect'
 admin-blog-global-search: 'Id, titlu, subtitlu sau text'
+admin-communication-global-search: 'Subiect'
 admin-blog-stories-search: 'Id, titlu, text sau proiect'
 admin-no-project: 'Nici un proiect'
 admin-title-id: Id
@@ -165,21 +190,34 @@ admin-title-header-image: Imaginea din antet
 admin-title-password: Parolă
 admin-title-avatar: Avatar
 admin-title-roles: Roluri
+admin-title-role: Rol
 admin-title-amount: Investit
+admin-title-icon: Pictogramă
 admin-title-info: Info
 admin-title-image: Imagine
 admin-title-title: Titlu
 admin-title-subtitle: Subtitlu
+admin-title-subject: Subiect
+admin-title-description: Descriere
 admin-title-section: Secţiune
 admin-title-text: Text
 admin-title-slug: Slug
 admin-title-publish: Publicat
+admin-title-lang: Limbă
 admin-title-langs: Traduceri
 admin-title-actions: Acţiuni
 admin-title-tags: Tag-uri
 admin-title-deleted: Eliminat
 admin-title-sphere: Domeniu
+admin-title-sdgs: 'Obiective de Dezvoltare Sustenabilă'
+admin-title-footprints: 'Urme'
+admin-title-categories: 'Categorii'
+admin-title-social_commitments: 'Compromise sociale'
 admin-title-order: Sortează
+admin-title-status: Status
+admin-title-users: Utilizatori
+admin-title-city: Oraș
+admin-title-date: Dată
 admin-blog-not-published-yet: 'Noul articol din blog incă nu este public'
 admin-blog-initialized: 'S-a inițializat spațiul pentru blog'
 admin-blog-deactivated: 'Din păcate, administrarea blog-ului este dezactivată'
@@ -206,3 +244,4 @@ admin-refunded-to_users-invests: Nº de returnări către utilizatori
 admin-refunded-to_wallet: Întors in cont portofel
 admin-commissions: Comision
 admin-fees: Comision platformă
+

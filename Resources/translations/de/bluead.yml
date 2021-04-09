@@ -26,7 +26,7 @@ review-ajax-alert: 'Die Felder zur Datenerhebung und Feedback werden bei Aktuali
 review-closed-alert: 'Sie haben diese Überarbeitung abgeschlossen. Es können keine Änderungen mehr vorgenommen werden'
 user-login-required: 'Sie müssen sich <a href="/user/login">anmelden</a> um mit der Goteo-Komunity zu kommunizieren'
 user-login-required-access: 'Für diesen Bereich müssen Sie sich anmelden oder benötigen eine Zugriffserlaubnis'
-user-login-required-to_create: 'Sie müssen sich anmelden um ein Projekt anlegen zu können'
+user-login-required-to_create: 'Sie müssen sich anmelden, um ein Projekt anlegen zu können'
 user-login-required-to_invest: 'Zur Mitfinanzierung müssen Sie angemeldet sein'
 user-login-required-to_message: 'Für das Senden von Nachrichten müssen Sie angemeldet sein'
 user-login-required-to_see: 'Um diese Seite sehen zu können müssen Sie angemeldet sein'

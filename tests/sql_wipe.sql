@@ -18,7 +18,7 @@ BEGIN
     REPEAT FETCH _cursor INTO _tableName;
 
     IF NOT _done THEN
-        SET @stmt_sql = CONCAT('DROP TABLE ', _tableName);
+        SET @stmt_sql = CONCAT('DROP TABLE `', _tableName, '`;');
         PREPARE stmt1 FROM @stmt_sql;
         EXECUTE stmt1;
         DEALLOCATE PREPARE stmt1;
@@ -28,10 +28,10 @@ BEGIN
 
     CLOSE _cursor;
     SET FOREIGN_KEY_CHECKS = 1;
-END$$
+END $$
 
 DELIMITER ;
 
-call drop_all_tables();
+CALL drop_all_tables();
 
 DROP PROCEDURE IF EXISTS `drop_all_tables`;

@@ -19,6 +19,11 @@
           <?= $this->form_row($form[$this->question->id . "_required"]) ?>
         </div>
       </div>
+      <div class="form-group col-md-4">
+        <div class="input-wrap">
+          <?= $this->form_row($form[$this->question->id . "_hidden"]) ?>
+        </div>
+      </div>
     </div>
 
     

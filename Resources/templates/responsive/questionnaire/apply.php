@@ -2,8 +2,8 @@
 
 
 $this->layout('questionnaire/layout', [
-  'title' => $this->title_text.' :: '.$this->model->name,
-  'meta_description' => $this->title_text.'. '.$this->model->description
+  'meta_title' => $this->t('questionnaire').' :: '. $this->model->name,
+  'meta_description' => $this->model->name .'. '.$this->model->description
   ]);
 
 $this->section('content');

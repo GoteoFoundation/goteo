@@ -42,7 +42,7 @@ $(function(){
         }).done(function (data) {
             var $data = $(data);
             $list.append($data.hide());
-            $data.slideDown();
+            $data.slideDown().find('textarea').each(_createMarkdownEditor);
         }).fail(function (data) {
             $list.append('<p class="text-danger">' + data.responseText + '</p>');
         }).always(function() {

@@ -41,7 +41,6 @@ invest-donation-header: 'Bu bağış için mali bilgileri giriniz'
 invest-drop-method: Eşleşen fonlar
 invest-fiscal-fail: 'Boş alanlarda hata var.İleri gitmek ve katkınızı çıkarmak için lütfen mali formu kontrol ediniz!'
 invest-fiscal-skip: 'Bunu şu an doldurmak istemiyorum'
-invest-fiscal-title: 'Katkınız üzerinde bir vergi iadesi alabildiğinizden emin olunuz(yalnızca İspanya''daki beyan eden kişiler için)'
 invest-login-alert: 'Katkınızı yapmak için kayıt olmalısınız veya <a href="%s">giriş yapmalısınız</a>'
 invest-mail_info-address: 'Ödülü aşağıdaki adresten alacaksınız:'
 invest-make-sure-save: Kaydet

@@ -13,6 +13,7 @@ login-new-user-label: 'Crear un novo usuario?'
 login-oneclick-header: 'Accede cun só click'
 login-recover-button: Recuperar contrasinal
 login-recover-email-field: 'Email da conta'
+login-recover-header: "Enche o campo co correo electrónico que empregaches para darte de alta na plataforma. Moitas veces é o mesmo que tes vinculado ás túas redes sociais. Atención: Recibirás un correo nesa mesma conta de correo cunha ligazón para mudar o contrasinal. Se non recibes o correo, verifica que non estea no cartafol do spam. Se solicitaches máis dunha vez un contrasinal novo, terás tantos correos cunha ligazón autoxerada como solicitudes feitas. Emprega a ligazón do último correo recibido. Se non lembras o correo podes contacta connosco, non esquezas mencionar algúns datos para facer máis doada a pescuda do teu usuario/a (nome completo, alcume, data de alta ou se fixeches algunha achega nalgún proxecto en concreto)."
 login-recover-label: 'Esqueciches o teu contrasinal?'
 login-recover-link: 'Recuperar contrasinal'
 login-recover-modal-button: Enviar
@@ -43,9 +44,12 @@ oauth-confirm-user: 'Ligar usuario existente'
 oauth-facebook-access-denied: 'Acceso dende Facebook denegado'
 oauth-goteo-openid-sync-password: 'Estás tentando ligar unha conta xa existente en Goteo cun provedor externo. Isto permitirache entrar en Goteo cun so clic no futuro.<br>Esta primeira vez deberás proporcionar o contrasinal da túa conta en Goteo para confirmar a túa identidade.'
 oauth-goteo-user-not-exists: 'Ese usuario non existe en Goteo'
+oauth-goteo-user-password-error: 'Esta conta xa está a usar outro provedor de acceso sen contrasinal. Se queres usar máis dun provedor de acceso primeiro tes que definir un contrasinal.'
 oauth-goteo-user-password-exists: 'Ese usuario xa existe en Goteo'
+oauth-goteo-user-provider-error: 'Tes que usar <strong>%s</strong> para acceder a este usuario.<br>Se quere usar máis dun provedor de acceso para esta conta, primeiro tes que definir un contrasinal.'
 oauth-import-about: 'Canto a ti'
 oauth-import-facebook: 'Ligazón á túa conta de Facebook'
+oauth-import-linkedin: 'Ligazón á túa conta de LinkedIn'
 oauth-import-location: 'Lugar de residencia'
 oauth-import-name: Nome
 oauth-import-twitter: 'Ligazón á túa conta de Twitter'

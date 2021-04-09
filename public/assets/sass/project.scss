@@ -412,6 +412,7 @@ div {
       color: #149290;
     }
   }
+
   &.project-menu {
     font-size: 16px;
     font-weight: bold;
@@ -420,6 +421,70 @@ div {
   }
 }
 
+/* Matcher module */
+
+div.matcher-info {
+    font-size: 13px;
+    background-color: $background-light-grey;
+    border-radius: 5px;
+    padding: 17px 3%;
+    font-weight: bold;
+    margin: 0;
+    margin-top: 20px !important;
+    color: $primary-color !important;
+    .matcher-logo{
+      width: 30px !important;
+      float: left;
+      display: inline !important;
+    }
+    .matcher-label{
+      font-weight: 401;
+      float: left;
+      margin-left: 10px;
+      font-size: 14px;
+    }
+    .matcher-description{
+      padding-top: 13px;
+      clear: both;
+      .logo-container{
+        width: 25%;
+        .logo{
+          border-radius: 50%;
+          background-color: #E5F3F4;
+          max-width: 75px;
+          max-height: 75px;
+          min-width: 50px;
+          min-height: 50px;
+          float: left;
+          padding: 5px;
+          border: 3px solid #fff;
+        }    
+      }
+      .info-container{
+        width:70%;
+        margin-left: 10px;
+        float: left;
+        .progress{
+          .progress-bar {
+              background-color: #149290;
+          }
+          margin-top: 5px;
+          width: 100%;
+          background-color: #D5D5D5;
+          box-shadow: none;
+          height: 10px;
+          border-radius: 5px;
+          margin-bottom: 5px;
+        }
+        .matcher-name{
+          font-size:14px
+        }
+        .matcher-amount{
+          font-weight: normal !important;
+        }
+      }
+    }    
+}
 
 /* Menu */
 
@@ -1022,16 +1087,11 @@ div {
      margin-bottom: 0px !important;
      .slick-dots{
       width: 76%;
-      top: 138px !important;
+      bottom: 5px !important;
       li.slick-active button::before {
         color: $background-dark-lilac !important;
       }
      }
-  .matcher-amount{
-    margin-top: 5px;
-    text-align: center;
-    color:$background-dark-lilac;
-  }
 }
 
 .slider-matchers.slick-initialized{
@@ -1391,12 +1451,6 @@ div {
       }
      }
      
-      .matcher-amount{
-        margin-top: 5px;
-        text-align: center;
-        color:$background-dark-lilac;
-        font-size: $font-size;
-      }
     }
 
 

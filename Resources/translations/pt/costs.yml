@@ -1,1 +1,22 @@
 ---
+cost-type-lend: Empréstimo
+cost-type-material: Material
+cost-type-structure: Infraestrutura
+cost-type-task: Tarefa
+costs-field-amount: Valor
+costs-field-cost: Custo
+costs-field-date_from: De
+costs-field-date_until: Até
+costs-field-dates: Datas
+costs-field-description: Descrição
+costs-field-required_cost: 'Este custo é'
+costs-field-required_cost-no: Adicional
+costs-field-required_cost-yes: Imprescindível
+costs-field-resoure: 'Outros recursos'
+costs-field-schedule: 'Agenda de trabalho'
+costs-field-type: Tipo
+costs-fields-main-title: 'Repartição dos custos'
+costs-fields-metter-title: 'Visualização de custos'
+costs-fields-resources-title: Recurso
+costs-main-header: 'Aspectos econômicos'
+step-4: Custos

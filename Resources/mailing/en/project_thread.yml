@@ -4,7 +4,7 @@ purpose: 'Message created by a project''s owner that originates a thread'
 type: 'md'
 title: 'Message from the project %PROJECTNAME%'
 text: >
-    Dear <span class="message-highlight-red">%USERNAME%</span>,
+    Dear %USERNAME%,
 
 
     This is a message sent from the Goteo platform by someone who is part of the [%PROJECTNAME%](%PROJECTURL%):

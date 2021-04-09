@@ -36,7 +36,6 @@ invest-donation-header: 'Introduz los datos fiscales pal donativu'
 invest-drop-method: Riegu
 invest-fiscal-fail: '¡Hai campos baleros o con fallos, comprueba''l formulariu fiscal pa que pueas desgravar el to aporte!'
 invest-fiscal-skip: 'Agora nun quiero rellenar estos datos.'
-invest-fiscal-title: 'Asegúrate que pues desgrabar la to aportación (pa contribuyentes n''España)'
 invest-login-alert: 'Has rexistrate o <a href="%s">aniciar sesión</a> pa poder facer l''aporte'
 invest-mail_info-address: 'Especifiquesti la direición de darréu:'
 invest-make-sure-save: Guardar

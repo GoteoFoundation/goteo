@@ -154,15 +154,42 @@ class Questionnaire extends \Goteo\Core\Model
 
     public function isAnswered($project_id)
     {
-        $query = static::query('SELECT DISTINCT(qap.project)
+        $sql = 'SELECT DISTINCT(qap.project)
         FROM question_answer_project qap
-        INNER JOIN question_answer qa ON qa.question  = qap.answer
+        INNER JOIN question_answer qa ON qa.id  = qap.answer
         INNER JOIN question q ON q.id = qa.question
-        WHERE qap.project = :project AND q.questionnaire = :id
-        ', [':id' => $this->id, ':project' => $project_id]);
+        WHERE qap.project = :project AND q.questionnaire = :id';
+
+        $values = [':id' => $this->id, ':project' => $project_id];
+        $query = static::query($sql, $values);
 
         return $query->fetchColumn();
     }
+
+    public function removeLang($lang) {
+        if ($this->questions) {
+            foreach($this->questions as $question) {
+                $question->removeLang($lang);
+            }
+        }
+    }
+
+        /**
+     * Returns percent (from 0 to 100) translations
+     * by grouping all items sharing some common keys
+     */
+    public function getLangsGroupPercent($lang, array $keys) {
+        $percent = 0;
+        if ($this->questions) {
+            foreach($this->questions as $question) {
+                $percent += $question->getLangsGroupPercent($lang, ['title']);
+            }
+            $percent = $percent/count($this->questions);
+        }
+
+        return $percent;
+    }
+
 
     /**
      * Validate.
@@ -173,6 +200,23 @@ class Questionnaire extends \Goteo\Core\Model
     public function validate(&$errors = array())
     {
         return true;
+    }
+
+    /**
+     * Returns if the questionnaire has questions to show
+     * @return type bool true|false
+     */
+    public function hasQuestionsToShow() {
+        $questions = $this->questions;
+
+        $questionsToShow = false;
+        foreach ($questions as $question) {
+            if (!$question->vars->hidden) {
+                return true;
+            }
+        }
+
+        return $questionsToShow;
     }
 
 

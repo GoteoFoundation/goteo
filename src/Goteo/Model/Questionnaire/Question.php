@@ -2,7 +2,9 @@
 
 namespace Goteo\Model\Questionnaire;
 
+use Goteo\Application\Config;
 use Goteo\Application\Message;
+use Goteo\Application\Lang;
 use Goteo\Application\Exception\ModelNotFoundException;
 
 use Goteo\Model\Questionnaire\Question\QuestionOptions;
@@ -28,14 +30,31 @@ class Question extends \Goteo\Core\Model
         ];
     }
 
+    public static function getLangFields() {
+        return ['title'];
+    }
+
     static public function get($id)
     {
-        // $lang = Lang::current();
-        // list($fields, $joins) = self::getLangsSQLJoins($lang);
+        $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
 
-        $query = static::query('SELECT * FROM question WHERE id = :id', array(':id' => $id));
+        $query = static::query(
+            "SELECT 
+                question.id as `id`,
+                question.questionnaire as `questionnaire`,
+                $fields,
+                question.lang as `lang`,
+                question.order as `order`,
+                question.max_score as `max_score`,
+                question.vars as `vars` 
+            FROM question 
+            $joins
+            WHERE question.id = :id",
+            array(':id' => $id));
+
         $question = $query->fetchObject(__CLASS__);
-
+        
         if (!$question instanceOf Question) {
             throw new ModelNotFoundException();
         }
@@ -47,13 +66,22 @@ class Question extends \Goteo\Core\Model
 
     static public function getByQuestionnaire($qid)
     {
-        // $lang == Lang::current();
+        $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
-        $query = static::query('
-            SELECT *
+        $query = static::query(
+            "SELECT 
+                question.id as `id`,
+                question.questionnaire as `questionnaire`,
+                $fields,
+                question.lang as `lang`,
+                question.order as `order`,
+                question.max_score as `max_score`,
+                question.vars as `vars`
             FROM question
+            $joins
             WHERE questionnaire = :qid
-            ORDER BY `order`', array(':qid' => $qid));
+            ORDER BY `order`", array(':qid' => $qid));
         $questions = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         foreach((array)$questions as $question) {
             $question->vars = json_decode($question->vars);

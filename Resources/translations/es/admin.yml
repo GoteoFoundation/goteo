@@ -70,6 +70,8 @@ admin-communications-cancel: 'Cancelar comunicación'
 admin-communications-newsletter: 'Boletín'
 admin-communications-communication: 'Comunicación general'
 admin-communications-id: 'ID de la Comunicación'
+admin-certificates: Certificados
+admin-certificates-management: Gestión de Certificados
 admin-home: Portada
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicaciones'
@@ -221,6 +223,8 @@ admin-users-global-search: 'Id, nombre, email o proyecto'
 admin-blog-global-search: 'Id, título, subtítulo o texto'
 admin-communication-global-search: 'Asunto'
 admin-blog-stories-search: 'Id, título, texto o proyecto'
+admin-donor-name-search: 'ID, nombre, email'
+admin-donor-date-search: 'Procesados por fecha'
 admin-no-project: 'Sin proyecto'
 admin-title-id: Id
 admin-title-name: Nombre
@@ -286,6 +290,9 @@ admin-title-action-url: 'Texto botón de descarga'
 admin-title-download-url: 'Enlace a descarga'
 admin-title-channel: 'Canal'
 admin-title-resource-category: 'Categoría de recurso'
+admin-title-year: Año
+admin-title-nif: NIF
+admin-title-country: País
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
@@ -545,6 +552,7 @@ admin-filter-invest-status: Estado de la donación
 admin-filter-project-location: Ubicación del proyecto
 admin-filter-location: Ubicación a utilizar en el filtro
 admin-filter-donor-location: Ubicación del donante
+admin-filter-donor-status: Estado del certificado
 
 admin-mail-body: 'Cuerpo del mensaje'
 

@@ -1,0 +1,12 @@
+group: massive
+name: 'Change of status in donor certificate to declared'
+purpose: 'Communicate the change in the status to the user'
+type: 'md'
+title: "Nou canvi d'estat al vostre certificat"
+text: >
+    Hola %USERNAME%,
+
+    El vostre certificat ha canviat d'estat. Ara es troba en estat declarat.
+
+    Això vol dir que ja s'ha comunicat a hisènda la vostra donació.
+

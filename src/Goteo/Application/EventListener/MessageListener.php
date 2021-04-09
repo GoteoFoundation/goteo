@@ -38,7 +38,7 @@ class MessageListener extends AbstractListener {
         if($delayed) {
             // Send as a newsletter
             $mail = Mail::createFromTemplate('any', '', $template, [
-                '%MESSAGE%' => $message->getHtml(),
+                '%MESSAGE%' => $message->message,
                 '%OWNERNAME%' => $owner->name,
                 '%SENDERNAME%' => $message->getUser()->name,
                 '%THREADSUBJECT%' => $message->getParent() ? $message->getParent()->getSubject() : '---',
@@ -85,7 +85,7 @@ class MessageListener extends AbstractListener {
             }
 
             $mail = Mail::createFromTemplate($user->email, $user->name, $template, [
-                '%MESSAGE%' => $message->getHtml(),
+                '%MESSAGE%' => $message->message,
                 '%OWNERNAME%' => $owner->name,
                 '%SENDERNAME%' => $message->getUser()->name,
                 '%THREADSUBJECT%' => $message->getParent() ? $message->getParent()->getSubject() : '---',
