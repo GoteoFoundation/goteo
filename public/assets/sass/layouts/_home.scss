@@ -531,6 +531,21 @@ body.home {
                     background-size: cover;
                     font-weight:bold;
                     font-size:2rem;
+
+                    &[data-footprint="eco"] {
+                        background:url('../img/home/footprint-bg-tab-eco.png');
+                        background-size: cover;
+                    }
+
+                    &[data-footprint="soc"] {
+                        background:url('../img/home/footprint-bg-tab-soc.png');
+                        background-size: cover;
+                    }
+
+                    &[data-footprint="dem"] {
+                        background:url('../img/home/footprint-bg-tab-dem.png');
+                        background-size: cover;
+                    }
                 }
 
                 a.active {
@@ -667,6 +682,17 @@ body.home {
                     position:absolute;
                     z-index:-1;
                     width:100%;
+                    height:100%;
+                    filter: grayscale(0%);
+                    &.eco {
+                        filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(80deg);
+                    }
+                    &.soc {
+                        filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(160deg);
+                    }
+                    &.dem {
+                        filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(300deg);
+                    }
                 }
 
                 img.footprint {
@@ -699,6 +725,11 @@ body.home {
 
             .slider-footprint-data {
                 margin-left:10px;
+
+                img {
+                    width:100px;
+                    height:290px;
+                }
 
                 h2 {
                     margin-top:3rem;
