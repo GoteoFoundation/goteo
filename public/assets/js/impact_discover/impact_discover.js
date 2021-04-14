@@ -24,3 +24,15 @@ for the JavaScript code in this page.
 */
 
 alert("test js");
+
+$(".import-discover-filters").on("click","a", function(e){
+    console.log("click");
+    footprint = $(this).attr("data-footprint");
+    console.log(footprint)
+})
+
+$(".import-discover-filters").on("change","select", function(e){
+    console.log("change");
+    ods = $(this).attr("data-footprints").split(",");
+    console.log(ods)
+})
