@@ -18,7 +18,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 RUN gem install sass -v 3.4.23
 RUN gem install compass
-RUN npm install -g grunt-cli
+RUN npm install -g grunt-cli@1.3.2
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 # PHP-FPM packages need a nudge to make them docker-friendly
