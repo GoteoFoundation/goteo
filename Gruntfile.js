@@ -224,7 +224,7 @@ module.exports = function(grunt) {
 
         'cssmin:dist', // manually minify css
         'uglify:dist', // manually minify js
-        'filerev:dist',
+        //'filerev:dist',
         'usemin'
     ]);
 };
