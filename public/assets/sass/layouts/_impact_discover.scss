@@ -1,6 +1,31 @@
 @import "compass/css3";
 
-.impact-discover{
-    background-color: red;
+.import-discover-filters {
+
+    select {
+        border: 1px solid #CAD5D6;
+        padding: 1rem;
+        border-radius: 5px;
+    }
+
+    .view-as {
+        a img {
+            opacity: 0.4;
+        }
+        a.active img {
+            opacity: 1;
+        }
+    }
+}
+
+.impact-discover-projects {
+    .row {
+        img.bg-project {
+            position: absolute;
+        }
+        h2, h3 p {
+            color: #FFFFFF;
+        }
+    }
 }
 
