@@ -465,7 +465,7 @@ class Mail extends \Goteo\Core\Model {
             $decoded = explode('¬', $token);
             $md5 = array_shift($decoded);
             if($validate) {
-                if(md5(Config::get('secret') . '-' . implode('-', $decoded)) !== $md5) {
+                if(md5( htmlspecialchars_decode(Config::get('secret') . '-' . implode('-', $decoded)) ) !== $md5) {
                     return [];
                 }
             }
