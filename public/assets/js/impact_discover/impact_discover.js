@@ -23,16 +23,75 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
-alert("test js");
+// reset ODS select
+function resetODSSelect() {
+    $(".impact-discover-filters select option").remove();
+    $(".impact-discover-filters select").append("<option>Filtra por Objetivos de Desarrollo sostenible</option");
+}
 
-$(".import-discover-filters").on("click","a", function(e){
-    console.log("click");
+// check if ODS option has selected footprint
+function hasFootprint (ods, footprint) {
+    let footprints = ods.footprints;
+    return footprints.indexOf(footprint)>=0 ? true : false;
+}
+
+// add ODS to ODS select
+function addODSToSelect(ods) {
+    $(".impact-discover-filters select").append('<option data-footprints="'+ods.footprints+'">'+ods.ods+'</option>');
+}
+
+function resetODSIcons() {
+    $("#odsicons").html("");
+}
+
+// add ODS to icon list
+function addODSIcon(ods) {
+    $("#odsicons").append('<img src="./assets/img/ods/'+ods.id+'.png" />');
+}
+
+function resetFootprints() {
+    $("a[data-footprint]").removeClass("active");
+}
+
+// activate footprints by ods select
+function activateFootprints(footprints) {
+    $.each(footprints, function(key, footprint){
+        $('a[data-footprint="'+footprint+'"]').addClass("active");
+    })
+}
+
+// filter ODS select options by footprint
+function filterODSSelectOptionsByFootprint (footprint) {
+    resetODSSelect();
+    resetODSIcons();
+    let options = odsList.ods.filter(ods => {
+        return hasFootprint(ods,footprint) ? ods.ods : false ;
+    });
+    $.each(options,function(key,option){
+        if (option) {
+            addODSToSelect(option);
+            addODSIcon(option);
+        }
+    });
+}
+
+// filter footprints by ODS
+function filterFootprintByODS (ods) {
+    resetFootprints();
+    resetODSIcons();
+    activateFootprints(ods);
+}
+
+// bind click on footprint
+$(".impact-discover-filters").on("click","a", function(e){
+    e.preventDefault();
     footprint = $(this).attr("data-footprint");
-    console.log(footprint)
-})
+    filterODSSelectOptionsByFootprint(footprint);
+});
 
-$(".import-discover-filters").on("change","select", function(e){
-    console.log("change");
-    ods = $(this).attr("data-footprints").split(",");
-    console.log(ods)
-})
+// bind ODS select change
+$(".impact-discover-filters").on("change","select", function(e){
+    ods = $(this).find("option:selected").attr("data-footprints").split(",");
+    filterFootprintByODS(ods);
+});
+
