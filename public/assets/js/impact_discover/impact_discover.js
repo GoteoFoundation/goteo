@@ -23,6 +23,7 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
+<<<<<<< HEAD
 //reset ODS JSON
 function resetODS() {
     $.each(odsList.ods, function(key, value){
@@ -39,6 +40,17 @@ function resetODSSelect() {
 // check if ODS option has selected footprint
 function hasFootprint (ods, footprint) {
     var footprints = ods.footprints;
+=======
+// reset ODS select
+function resetODSSelect() {
+    $(".impact-discover-filters select option").remove();
+    $(".impact-discover-filters select").append("<option>Filtra por Objetivos de Desarrollo sostenible</option");
+}
+
+// check if ODS option has selected footprint
+function hasFootprint (ods, footprint) {
+    let footprints = ods.footprints;
+>>>>>>> add filters js
     return footprints.indexOf(footprint)>=0 ? true : false;
 }
 
@@ -47,14 +59,20 @@ function addODSToSelect(ods) {
     $(".impact-discover-filters select").append('<option data-footprints="'+ods.footprints+'">'+ods.ods+'</option>');
 }
 
+<<<<<<< HEAD
 // reset ODS icons
 function resetODSIcons() {
     $('.impact-discover-projects h1').text("Busca un proyecto por Huellas o ODS");
     $("#ods-icons .col").html("");
+=======
+function resetODSIcons() {
+    $("#odsicons").html("");
+>>>>>>> add filters js
 }
 
 // add ODS to icon list
 function addODSIcon(ods) {
+<<<<<<< HEAD
     $('.impact-discover-projects h1').text("Proyectos que cumplen con los siguientes ODS:");
     var icon = '<img src="./assets/img/ods/'+ods.id+'.svg" />';
     var removeIcon = '<a class="close flip" href="#"><i class="icon icon-close"></i></a>';
@@ -135,11 +153,20 @@ function loadProjects(ods) {
 }
 
 // reset footprints active status
+=======
+    $("#odsicons").append('<img src="./assets/img/ods/'+ods.id+'.png" />');
+}
+
+>>>>>>> add filters js
 function resetFootprints() {
     $("a[data-footprint]").removeClass("active");
 }
 
+<<<<<<< HEAD
 // activate footprints by ods selected
+=======
+// activate footprints by ods select
+>>>>>>> add filters js
 function activateFootprints(footprints) {
     $.each(footprints, function(key, footprint){
         $('a[data-footprint="'+footprint+'"]').addClass("active");
@@ -147,18 +174,32 @@ function activateFootprints(footprints) {
 }
 
 // filter ODS select options by footprint
+<<<<<<< HEAD
 function filterODSByFootprint (footprint) {
     resetODSSelect();
     resetODS();
     var options = odsList.ods.filter(function(ods) {
+=======
+function filterODSSelectOptionsByFootprint (footprint) {
+    resetODSSelect();
+    resetODSIcons();
+    let options = odsList.ods.filter(ods => {
+>>>>>>> add filters js
         return hasFootprint(ods,footprint) ? ods.ods : false ;
     });
     $.each(options,function(key,option){
         if (option) {
+<<<<<<< HEAD
             activateODS(option);
         }
     });
     refreshODS();
+=======
+            addODSToSelect(option);
+            addODSIcon(option);
+        }
+    });
+>>>>>>> add filters js
 }
 
 // filter footprints by ODS
@@ -168,6 +209,7 @@ function filterFootprintByODS (ods) {
     activateFootprints(ods);
 }
 
+<<<<<<< HEAD
 function expandMobileFilter() {
     $("#filters-footprints").slideDown();
     $("#filters-ods-list").slideDown();
@@ -214,6 +256,13 @@ $("#filters-footprints").on("click","a", function(e){
         contractMobileFilter();
     }
     $("#filters-ods-list").slideUp();
+=======
+// bind click on footprint
+$(".impact-discover-filters").on("click","a", function(e){
+    e.preventDefault();
+    footprint = $(this).attr("data-footprint");
+    filterODSSelectOptionsByFootprint(footprint);
+>>>>>>> add filters js
 });
 
 // bind ODS select change
@@ -222,6 +271,7 @@ $(".impact-discover-filters").on("change","select", function(e){
     filterFootprintByODS(ods);
 });
 
+<<<<<<< HEAD
 // bind ODS close icon
 $("#ods-icons").on("click",".close", function(e){
     e.preventDefault();
@@ -259,3 +309,5 @@ $("#filters-mobile").on("click","a.close",function(e){
     e.preventDefault();
     contractMobileFilter();
 });
+=======
+>>>>>>> add filters js
