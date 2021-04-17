@@ -23,6 +23,13 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
+//reset ODS JSON
+function resetODS() {
+    $.each(odsList.ods, function(key, value){
+        odsList.ods[key]["active"] = false
+    })
+}
+
 // reset ODS select
 function resetODSSelect() {
     $(".impact-discover-filters select option").remove();
@@ -40,6 +47,7 @@ function addODSToSelect(ods) {
     $(".impact-discover-filters select").append('<option data-footprints="'+ods.footprints+'">'+ods.ods+'</option>');
 }
 
+// reset ODS icons
 function resetODSIcons() {
     $('.impact-discover-projects h1').text("Busca un proyecto por Huellas o ODS");
     $("#odsicons").html("");
@@ -51,21 +59,43 @@ function addODSIcon(ods) {
     var icon = '<img src="./assets/img/ods/'+ods.id+'.png" />';
     var removeIcon = '<a class="close flip" href="#backflip-l-artiga-coop-a-punt"><i class="icon icon-close"></i></a>';
     $("#odsicons").append('<div class="odsicon" data-ods="'+ods.id+'">'+icon+removeIcon+'</div>');
-    activateODS(ods);
 }
 
-//activate ODS on JSON
+// activate ODS on JSON
 function activateODS(ods){
-    console.log(ods);
+    $.each(odsList.ods, function(key, value){
+        if (value.id == ods.id) odsList.ods[key]["active"] = true
+    })
+    addODSToSelect(ods);
+    refreshODSIcons();
 }
 
-//remove ODS
+// remove ODS
 function removeODS(ods){
     console.log(ods);
-    $('.odsicon[data-ods="'+ods+'"]').remove();
+    $.each(odsList.ods, function(key, value){
+        if (value.id == ods) odsList.ods[key]["active"] = false
+    })
+    refreshODSIcons();
 }
 
-//reset footprints active status
+function isODSActive(ods) {
+    return ods.active;
+}
+
+// refresh ODS icons
+function refreshODSIcons() {
+    resetODSIcons();
+    var odsActive = odsList.ods.filter(function(ods) {
+        return isODSActive(ods) ? ods.ods : false ;
+    });
+
+    $.each(odsActive, function(key,ods){
+        addODSIcon(ods);
+    });
+}
+
+// reset footprints active status
 function resetFootprints() {
     $("a[data-footprint]").removeClass("active");
 }
@@ -78,18 +108,19 @@ function activateFootprints(footprints) {
 }
 
 // filter ODS select options by footprint
-function filterODSSelectOptionsByFootprint (footprint) {
+function filterODSByFootprint (footprint) {
     resetODSSelect();
-    resetODSIcons();
-    var options = odsList.ods.filter(ods => {
+    resetODS();
+    console.log(footprint);
+    var options = odsList.ods.filter(function(ods) {
         return hasFootprint(ods,footprint) ? ods.ods : false ;
     });
     $.each(options,function(key,option){
         if (option) {
-            addODSToSelect(option);
-            addODSIcon(option);
+            activateODS(option);
         }
     });
+    refreshODSIcons();
 }
 
 // filter footprints by ODS
@@ -104,7 +135,7 @@ $(".impact-discover-filters").on("click","a", function(e){
     e.preventDefault();
     resetFootprints();
     footprint = $(this).attr("data-footprint");
-    filterODSSelectOptionsByFootprint(footprint);
+    filterODSByFootprint(footprint);
     $(this).addClass("active");
 });
 
@@ -114,7 +145,7 @@ $(".impact-discover-filters").on("change","select", function(e){
     filterFootprintByODS(ods);
 });
 
-//bind ODS close icon
+// bind ODS close icon
 $("#odsicons").on("click",".close", function(e){
     e.preventDefault();
     ods = $(this).parent().attr("data-ods");
