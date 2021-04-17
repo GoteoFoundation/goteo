@@ -31,7 +31,7 @@ function resetODSSelect() {
 
 // check if ODS option has selected footprint
 function hasFootprint (ods, footprint) {
-    let footprints = ods.footprints;
+    var footprints = ods.footprints;
     return footprints.indexOf(footprint)>=0 ? true : false;
 }
 
@@ -41,19 +41,36 @@ function addODSToSelect(ods) {
 }
 
 function resetODSIcons() {
+    $('.impact-discover-projects h1').text("Busca un proyecto por Huellas o ODS");
     $("#odsicons").html("");
 }
 
 // add ODS to icon list
 function addODSIcon(ods) {
-    $("#odsicons").append('<img src="./assets/img/ods/'+ods.id+'.png" />');
+    $('.impact-discover-projects h1').text("Proyectos que cumplen con los siguientes ODS:");
+    var icon = '<img src="./assets/img/ods/'+ods.id+'.png" />';
+    var removeIcon = '<a class="close flip" href="#backflip-l-artiga-coop-a-punt"><i class="icon icon-close"></i></a>';
+    $("#odsicons").append('<div class="odsicon" data-ods="'+ods.id+'">'+icon+removeIcon+'</div>');
+    activateODS(ods);
 }
 
+//activate ODS on JSON
+function activateODS(ods){
+    console.log(ods);
+}
+
+//remove ODS
+function removeODS(ods){
+    console.log(ods);
+    $('.odsicon[data-ods="'+ods+'"]').remove();
+}
+
+//reset footprints active status
 function resetFootprints() {
     $("a[data-footprint]").removeClass("active");
 }
 
-// activate footprints by ods select
+// activate footprints by ods selected
 function activateFootprints(footprints) {
     $.each(footprints, function(key, footprint){
         $('a[data-footprint="'+footprint+'"]').addClass("active");
@@ -64,7 +81,7 @@ function activateFootprints(footprints) {
 function filterODSSelectOptionsByFootprint (footprint) {
     resetODSSelect();
     resetODSIcons();
-    let options = odsList.ods.filter(ods => {
+    var options = odsList.ods.filter(ods => {
         return hasFootprint(ods,footprint) ? ods.ods : false ;
     });
     $.each(options,function(key,option){
@@ -85,8 +102,10 @@ function filterFootprintByODS (ods) {
 // bind click on footprint
 $(".impact-discover-filters").on("click","a", function(e){
     e.preventDefault();
+    resetFootprints();
     footprint = $(this).attr("data-footprint");
     filterODSSelectOptionsByFootprint(footprint);
+    $(this).addClass("active");
 });
 
 // bind ODS select change
@@ -94,4 +113,11 @@ $(".impact-discover-filters").on("change","select", function(e){
     ods = $(this).find("option:selected").attr("data-footprints").split(",");
     filterFootprintByODS(ods);
 });
+
+//bind ODS close icon
+$("#odsicons").on("click",".close", function(e){
+    e.preventDefault();
+    ods = $(this).parent().attr("data-ods");
+    removeODS(ods);
+})
 

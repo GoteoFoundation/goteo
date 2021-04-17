@@ -1,6 +1,60 @@
 @import "compass/css3";
 
-.import-discover-filters {
+.impact-discover-filters {
+
+    margin-top:2rem;
+
+    ul {
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        padding:0;
+        margin:0 0 50px 0;
+
+        li {
+            margin:5px;
+            list-style: none;
+
+            a {
+                display:block;
+                border-radius:10px;
+                padding:4px 5px 2px 40px;
+                color:#FFFFFF;
+                filter: grayscale(100%);
+                width:82px;
+                background-size: cover;
+                font-weight:bold;
+                font-size:1.8rem;
+                text-decoration:none;
+
+                &[data-footprint="all"] {
+                    background-color:#91B3B8;
+                    padding-left:0;
+                    padding-right:0;
+                    text-align:center;
+                }
+
+                &[data-footprint="eco"] {
+                    background:url('../img/home/footprint-bg-tab-eco.png');
+                    background-size: cover;
+                }
+
+                &[data-footprint="soc"] {
+                    background:url('../img/home/footprint-bg-tab-soc.png');
+                    background-size: cover;
+                }
+
+                &[data-footprint="dem"] {
+                    background:url('../img/home/footprint-bg-tab-dem.png');
+                    background-size: cover;
+                }
+            }
+
+            a.active {
+                filter: grayscale(0%);
+            }
+        }
+    }
 
     select {
         border: 1px solid #CAD5D6;
@@ -11,6 +65,7 @@
     .view-as {
         a img {
             opacity: 0.4;
+            margin-left:20px;
         }
         a.active img {
             opacity: 1;
@@ -19,7 +74,41 @@
 }
 
 .impact-discover-projects {
+
+    h1 {
+        font-size:25px;
+        font-weight:bold;
+    }
+
     .row {
+
+        #odsicons {
+
+            display:flex;
+            margin-bottom:2rem;
+
+            div.odsicon {
+
+                margin-right:2rem;
+
+                a.close {
+                    float:none;
+                    margin-left:-12px;
+                    opacity:1;
+                    border:1px solid #999;
+                    border-radius:50%;
+                    padding:0 6px;
+                    vertical-align: top;
+                    background-color:#FFF;
+    
+                    i.icon.icon-close {
+                        background-color: #999;
+                        width:1rem;
+                        height:1rem;
+                    }
+                }
+            }
+        }
         
         img.bg-project {
             position:absolute;
