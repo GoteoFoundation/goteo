@@ -2,6 +2,60 @@
 
 .impact-discover-filters {
 
+    margin-top:2rem;
+
+    ul {
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        padding:0;
+        margin:0 0 50px 0;
+
+        li {
+            margin:5px;
+            list-style: none;
+
+            a {
+                display:block;
+                border-radius:10px;
+                padding:4px 5px 2px 40px;
+                color:#FFFFFF;
+                filter: grayscale(100%);
+                width:82px;
+                background-size: cover;
+                font-weight:bold;
+                font-size:1.8rem;
+                text-decoration:none;
+
+                &[data-footprint="all"] {
+                    background-color:#91B3B8;
+                    padding-left:0;
+                    padding-right:0;
+                    text-align:center;
+                }
+
+                &[data-footprint="eco"] {
+                    background:url('../img/home/footprint-bg-tab-eco.png');
+                    background-size: cover;
+                }
+
+                &[data-footprint="soc"] {
+                    background:url('../img/home/footprint-bg-tab-soc.png');
+                    background-size: cover;
+                }
+
+                &[data-footprint="dem"] {
+                    background:url('../img/home/footprint-bg-tab-dem.png');
+                    background-size: cover;
+                }
+            }
+
+            a.active {
+                filter: grayscale(0%);
+            }
+        }
+    }
+
     padding-top:2rem;
     padding-bottom:2rem;
     background-color: #FFF;
@@ -157,8 +211,6 @@
 
 .impact-discover-projects {
 
-    padding-bottom: 5em;
-
     h1 {
         font-size:25px;
         font-weight:bold;
@@ -166,25 +218,14 @@
 
     .row {
 
-        display:flex;
-        margin:0;
-
-        &#ods-icons .col {
+        #odsicons {
 
             display:flex;
-            margin:2rem 0;
-            overflow-x: scroll;
+            margin-bottom:2rem;
 
             div.odsicon {
 
-                margin-right:5px;
-                padding-top:1rem;
-                display:flex;
-                align-items: flex-start;
-
-                img {
-                    width:80px;
-                }
+                margin-right:2rem;
 
                 a.close {
                     float:none;
@@ -192,12 +233,9 @@
                     opacity:1;
                     border:1px solid #999;
                     border-radius:50%;
-                    padding:4px;
+                    padding:0 6px;
                     vertical-align: top;
                     background-color:#FFF;
-                    line-height:0;
-                    font-size:15px;
-                    margin-top:-10px;
     
                     i.icon.icon-close {
                         background-color: #999;
