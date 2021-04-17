@@ -3,11 +3,11 @@
 .impact-discover-filters {
 
     margin-top:2rem;
+    background-color: #FFF;
 
     ul {
         display:flex;
         align-items: center;
-        justify-content: center;
         padding:0;
         margin:0 0 50px 0;
 
@@ -82,14 +82,17 @@
 
     .row {
 
+        display:flex;
+        margin:0;
+
         #odsicons {
 
             display:flex;
-            margin-bottom:2rem;
+            margin:2rem 0;
 
             div.odsicon {
 
-                margin-right:2rem;
+                margin-right:5px;
 
                 a.close {
                     float:none;
@@ -97,9 +100,11 @@
                     opacity:1;
                     border:1px solid #999;
                     border-radius:50%;
-                    padding:0 6px;
+                    padding:0 4px;
                     vertical-align: top;
                     background-color:#FFF;
+                    line-height:0;
+                    font-size:15px;
     
                     i.icon.icon-close {
                         background-color: #999;
@@ -163,6 +168,17 @@
             padding-left:2rem;
             position:relative;
             z-index:10;
+        }
+    }
+
+    .col {
+        margin:0;
+        padding:0;
+        display:flex;
+        flex-direction:column;
+
+        .project-footprint {
+            flex-grow:1;
         }
     }
 }
