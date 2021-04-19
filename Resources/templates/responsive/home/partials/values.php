@@ -52,13 +52,13 @@
                 </div>
                 <div class="slider slider-footprint-projects">
                     <div class="">
-                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project">
+                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project eco">
                         <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
                     </div>
                     <div class="">
-                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project">
+                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project eco">
                         <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
@@ -111,14 +111,14 @@
                 </div>
                 <div class="slider slider-footprint-projects">
                     <div class="">
-                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project">
-                        <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
+                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project soc">
+                        <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
                     </div>
                     <div class="">
-                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project">
-                        <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
+                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project soc">
+                        <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
                     </div>
@@ -170,14 +170,14 @@
                 </div>
                 <div class="slider slider-footprint-projects">
                     <div class="">
-                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project">
-                        <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
+                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project dem">
+                        <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
                     </div>
                     <div class="">
-                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project">
-                        <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
+                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project dem">
+                        <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
                     </div>
