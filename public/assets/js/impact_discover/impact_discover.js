@@ -50,15 +50,15 @@ function addODSToSelect(ods) {
 // reset ODS icons
 function resetODSIcons() {
     $('.impact-discover-projects h1').text("Busca un proyecto por Huellas o ODS");
-    $("#odsicons").html("");
+    $("#ods-icons .col").html("");
 }
 
 // add ODS to icon list
 function addODSIcon(ods) {
     $('.impact-discover-projects h1').text("Proyectos que cumplen con los siguientes ODS:");
-    var icon = '<img src="./assets/img/ods/'+ods.id+'.png" />';
-    var removeIcon = '<a class="close flip" href="#backflip-l-artiga-coop-a-punt"><i class="icon icon-close"></i></a>';
-    $("#odsicons").append('<div class="odsicon" data-ods="'+ods.id+'">'+icon+removeIcon+'</div>');
+    var icon = '<img src="./assets/img/ods/'+ods.id+'.svg" />';
+    var removeIcon = '<a class="close flip" href="#"><i class="icon icon-close"></i></a>';
+    $("#ods-icons .col").append('<div class="odsicon" data-ods="'+ods.id+'">'+icon+removeIcon+'</div>');
 }
 
 // activate ODS on JSON
@@ -67,32 +67,71 @@ function activateODS(ods){
         if (value.id == ods.id) odsList.ods[key]["active"] = true
     })
     addODSToSelect(ods);
-    refreshODSIcons();
 }
 
 // remove ODS
 function removeODS(ods){
-    console.log(ods);
     $.each(odsList.ods, function(key, value){
         if (value.id == ods) odsList.ods[key]["active"] = false
     })
-    refreshODSIcons();
+    refreshODS();
 }
 
 function isODSActive(ods) {
     return ods.active;
 }
 
-// refresh ODS icons
-function refreshODSIcons() {
-    resetODSIcons();
+// check ODS option for mobile list
+function checkODSoption(ods){
+    $('input[name="'+ods.id+'"]').prop("checked",true);
+}
+
+
+// reset ODS options for mobile list
+function resetODScheckboxes() {
+    $('#filters-ods-list input[type=checkbox]').prop("checked",false);
+}
+
+// get active ODS
+function getActiveODS(){
     var odsActive = odsList.ods.filter(function(ods) {
         return isODSActive(ods) ? ods.ods : false ;
     });
+    return odsActive;
+}
+
+// refresh ODS icons
+function refreshODS() {
+    resetODSIcons();
+    resetODScheckboxes();
+    var odsActive = getActiveODS();
+
+    var odsArray = [];
 
     $.each(odsActive, function(key,ods){
         addODSIcon(ods);
+        checkODSoption(ods);
+        odsArray.push(ods.id);
     });
+
+    resetProjects();
+    loadProjects(odsArray);
+}
+
+function resetProjects() {
+    $('.impact-discover-projects > div.container > div:not(#ods-icons)').remove();
+}
+
+function loadProjects(ods) {
+    $('.impact-discover-projects > div.container').after('<div class="loading-container">Loading</div>');
+    var url = "https://goteo-seven.vercel.app/ods.html?ods=";
+    var url = url+ods.join(",");
+    $.get( url, function( data ) {
+        $('.impact-discover-projects > div.container').append( data );
+      })
+      .done(function(){
+        $('.loading-container').remove();
+      });
 }
 
 // reset footprints active status
@@ -111,7 +150,6 @@ function activateFootprints(footprints) {
 function filterODSByFootprint (footprint) {
     resetODSSelect();
     resetODS();
-    console.log(footprint);
     var options = odsList.ods.filter(function(ods) {
         return hasFootprint(ods,footprint) ? ods.ods : false ;
     });
@@ -120,7 +158,7 @@ function filterODSByFootprint (footprint) {
             activateODS(option);
         }
     });
-    refreshODSIcons();
+    refreshODS();
 }
 
 // filter footprints by ODS
@@ -130,13 +168,52 @@ function filterFootprintByODS (ods) {
     activateFootprints(ods);
 }
 
+function expandMobileFilter() {
+    $("#filters-footprints").slideDown();
+    $("#filters-ods-list").slideDown();
+    $("#filters-mobile").css({"width":"100%"});
+    $("#filters-mobile .close").show();
+}
+
+function contractMobileFilter() {
+    $("#filters-footprints").slideUp();
+    $("#filters-ods-list").slideUp();
+    $("#filters-mobile .close").hide();
+    $("#filters-mobile").css({"width":"50%"});
+}
+
+function needsScroll() {
+    var $last = $('.impact-discover-projects div:last');
+    return $(window).scrollTop() >= $last.offset().top - $last.height()
+}
+
+$(window).on('resize scroll', function() {
+    if(needsScroll() && !$('.loading-container').length) {
+        ods = [];
+        //TODO: find selected ODS
+        var odsActive = getActiveODS();
+
+        var odsArray = [];
+
+        $.each(odsActive, function(key,ods){
+            odsArray.push(ods.id);
+        });
+        loadProjects(odsArray);
+    };
+});
+
 // bind click on footprint
-$(".impact-discover-filters").on("click","a", function(e){
+$("#filters-footprints").on("click","a", function(e){
     e.preventDefault();
     resetFootprints();
     footprint = $(this).attr("data-footprint");
     filterODSByFootprint(footprint);
     $(this).addClass("active");
+    if ($(window).width()<721) {
+        $("#filters-footprints").slideUp();
+    }
+    contractMobileFilter();
+    $("#filters-ods-list").slideUp();
 });
 
 // bind ODS select change
@@ -146,9 +223,39 @@ $(".impact-discover-filters").on("change","select", function(e){
 });
 
 // bind ODS close icon
-$("#odsicons").on("click",".close", function(e){
+$("#ods-icons").on("click",".close", function(e){
     e.preventDefault();
     ods = $(this).parent().attr("data-ods");
     removeODS(ods);
 })
 
+// bind filter mobile
+$("#filters-mobile").on("click","a", function(e){
+    e.preventDefault();
+    expandMobileFilter();
+})
+
+// bind reset ods on mobile list
+$("#filters-ods-list").on("click","a#reset-ods", function(e){
+    e.preventDefault();
+    resetODScheckboxes();
+});
+
+// bind submit button on ods list (mobile)
+$("#filters-ods-list").on("click","button",function(e){
+    $('#filters-ods-list input').each(function(key,checkbox){
+        if (checkbox.checked) {
+            var ods = {}
+            ods.id = checkbox.name;
+            activateODS(ods);
+        }
+    });
+    refreshODS();
+    contractMobileFilter();
+});
+
+// bind close icon at mobile filters
+$("#filters-mobile").on("click","a.close",function(e){
+    e.preventDefault();
+    contractMobileFilter();
+});
