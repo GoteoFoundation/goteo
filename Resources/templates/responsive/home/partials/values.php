@@ -1,3 +1,4 @@
+<!-- Values module -->
 <div class="fluid-container data-container goteo-values">
     <div class="container">
         <div><h1 class="title text-center">Valores de Goteo</h1></div>
@@ -8,8 +9,6 @@
                 <li><a href="" data-footprint="dem">Dem</a></li>
             </ul>
         </div>
-
-        <!-- Value ECO -->
         <div class="row" id="goteo-values-eco">
             <div class="col col-sm-7 footprint-briefing">
                 <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
@@ -51,24 +50,25 @@
                     </div>
                 </div>
                 <div class="slider slider-footprint-projects">
-                    <div class="">
+                    <div class="footprint-project">
                         <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project eco">
-                        <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
+                        <div class="project-footprint">
+                            <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
+                        </div>
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
                     </div>
-                    <div class="">
+                    <div class="footprint-project">
                         <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project eco">
-                        <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
-                        <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
+                        <div class="project-footprint">
+                            <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
+                        </div>
+                        <h2>Short title</h2>
                         <p>Por: L'Espora</p>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- END Value DEM -->
-
-        <!-- Value SOC -->
         <div class="row" id="goteo-values-soc">
             <div class="col col-sm-7 footprint-briefing">
                 <img src="assets/img/home/footprint-eco.png" alt="Huella SOC" class="footprint" />
@@ -110,24 +110,25 @@
                     </div>
                 </div>
                 <div class="slider slider-footprint-projects">
-                    <div class="">
+                    <div class="footprint-project">
                         <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project soc">
-                        <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
+                        <div class="project-footprint">
+                            <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
+                        </div>
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
                     </div>
-                    <div class="">
+                    <div class="footprint-project">
                         <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project soc">
-                        <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
+                        <div class="project-footprint">
+                            <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
+                        </div>
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Value SOC -->
-
-        <!-- Value DEM -->
         <div class="row" id="goteo-values-dem">
             <div class="col col-sm-7 footprint-briefing">
                 <img src="assets/img/home/footprint-eco.png" alt="Huella DEM" class="footprint" />
@@ -169,22 +170,24 @@
                     </div>
                 </div>
                 <div class="slider slider-footprint-projects">
-                    <div class="">
+                    <div class="footprint-project">
                         <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project dem">
-                        <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
+                        <div class="project-footprint">
+                            <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
+                        </div>
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
                     </div>
-                    <div class="">
+                    <div class="footprint-project">
                         <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project dem">
-                        <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
+                        <div class="project-footprint">
+                            <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
+                        </div>
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- END Value DEM -->
-
     </div>
 </div>
