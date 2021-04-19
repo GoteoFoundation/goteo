@@ -211,8 +211,8 @@ $("#filters-footprints").on("click","a", function(e){
     $(this).addClass("active");
     if ($(window).width()<721) {
         $("#filters-footprints").slideUp();
+        contractMobileFilter();
     }
-    contractMobileFilter();
     $("#filters-ods-list").slideUp();
 });
 
