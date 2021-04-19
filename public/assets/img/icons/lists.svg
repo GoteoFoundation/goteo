@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="27px" height="22px" viewBox="0 0 27 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 669</title>
+    <defs>
+        <path d="M27,12.833 L27,19.25 C27,20.7108148 25.8770425,21.9082771 24.464253,21.9949741 L24.3,22 L9,22 L9,12.833 L27,12.833 Z M8.1,6.417 L8.1,22 L2.7,22 C1.26614815,22 0.090085048,20.856642 0.00493613778,19.4173386 L0,19.25 L0,6.417 L8.1,6.417 Z M27,6.417 L27,11.917 L9,11.917 L9,6.417 L27,6.417 Z M24.3,0 C25.7338519,0 26.909915,1.14335802 26.9950639,2.58266138 L27,2.75 L27,5.5 L0,5.5 L0,2.75 C0,1.28918519 1.12295748,0.0917229081 2.53574699,0.00502585988 L2.7,0 L24.3,0 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Goteo_buscador_OSD_03" transform="translate(-1147.000000, -83.000000)">
+            <g id="Group-669" transform="translate(1147.000000, 83.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-668"></g>
+                <polygon id="Fill-667" fill="#26BDB9" mask="url(#mask-2)" points="-5 -5 32 -5 32 27 -5 27"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
