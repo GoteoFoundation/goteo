@@ -677,7 +677,12 @@ body.home {
             margin-left:30px;
             margin-right:10px;
 
-            div {
+            div.footprint-project {
+
+                display:flex;
+                flex-direction:column;
+                height:255px;
+
                 img.bg-project {
                     position:absolute;
                     z-index:-1;
@@ -693,6 +698,10 @@ body.home {
                     &.dem {
                         filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(300deg);
                     }
+                }
+
+                div.project-footprint {
+                    flex-grow:1
                 }
 
                 img.footprint {
