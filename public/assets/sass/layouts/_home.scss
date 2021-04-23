@@ -500,6 +500,258 @@ body.home {
         }
     }
 
+    // Values module
+    div.goteo-values {
+        background-color:#F2F9F8;
+        padding-bottom:10rem;
+
+        h1, h2 {
+            font-weight:bold;
+        }
+    
+        div.footprint-tabs ul {
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            padding:0;
+            margin:0 0 50px 0;
+
+            li {
+                margin:5px;
+                list-style: none;
+    
+                a {
+                    display:block;
+                    background:url('../img/home/footprint-bg-tab.png');
+                    border-radius:5px;
+                    padding:7px 5px 7px 40px;
+                    color:#FFFFFF;
+                    filter: grayscale(100%);
+                    width:100px;
+                    background-size: cover;
+                    font-weight:bold;
+                    font-size:2rem;
+
+                    &[data-footprint="eco"] {
+                        background:url('../img/home/footprint-bg-tab-eco.png');
+                        background-size: cover;
+                    }
+
+                    &[data-footprint="soc"] {
+                        background:url('../img/home/footprint-bg-tab-soc.png');
+                        background-size: cover;
+                    }
+
+                    &[data-footprint="dem"] {
+                        background:url('../img/home/footprint-bg-tab-dem.png');
+                        background-size: cover;
+                    }
+                }
+
+                a.active {
+                    filter: grayscale(0%);
+                }
+            }
+        }
+        
+    
+        div.footprint-briefing {
+            
+            border-right:1px solid #E9EFEF;
+            padding-left:100px;
+            padding-right:50px;
+
+            img.footprint {
+                margin-left:-100px;
+                position:absolute;
+            }
+
+            span.footprint-label {
+                border: 1px solid #cad7d8;
+                padding:7px;
+                text-transform: uppercase;
+                font-weight:bold;
+            }
+
+            h3 {
+                font-size: 1.4rem;
+            }
+    
+            ul {
+                display:flex;
+                flex-wrap:wrap;
+                margin:0;
+                padding:0;
+    
+                li {
+                    list-style: none;
+                    margin:0 1px 1px 0;
+                }
+            }
+
+            div.action {
+
+                margin: 4em 0;
+
+                a {
+                    color:#53787D;
+                    text-transform:uppercase;
+                }
+            }
+        }
+
+        .slider {
+
+            margin-bottom:1rem;
+
+            .slick-arrow {
+                position: absolute;
+                background-color: #FFF;
+                z-index: 10;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                text-align: center;
+                color: #56A7A4;
+                top: 105px;
+                margin-left: -20px;
+                box-shadow: 0 0 5px rgba(0,0,0,0.2);
+                line-height:0;
+                font-size:4rem;
+
+                &.custom-left-arrow {
+                    span {
+                        margin-left:-5px;
+                    }
+                }
+
+                &.custom-right-arrow {
+                    right:0;
+                    margin-right:-20px;
+                    padding-left:5px;
+                }
+            }
+        }
+    
+        .slider-footprint-data {
+    
+            background:#FFF;
+            border-radius:5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            margin-left:30px;
+            margin-right:10px;
+    
+            img {
+                float:left;
+                margin-right:1em;
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+            }
+
+            h2, h3 {
+                font-size:1.6rem;
+                color:#74AA5F;
+            }
+
+            h2 {
+                margin-top:5rem;
+            }
+
+            h3 {
+                margin:1rem 0;
+                text-transform: uppercase;
+
+                span {
+                    font-size:4rem;
+                    font-weight:bold;
+                }
+            }
+
+            p {
+                margin:0 2rem 10px 0;
+            }
+        }
+
+        .slider-footprint-projects {
+
+            margin-left:30px;
+            margin-right:10px;
+
+            div.footprint-project {
+
+                display:flex;
+                flex-direction:column;
+                height:255px;
+
+                img.bg-project {
+                    position:absolute;
+                    z-index:-1;
+                    width:100%;
+                    height:100%;
+                    filter: grayscale(0%);
+                    &.eco {
+                        filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(80deg);
+                    }
+                    &.soc {
+                        filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(160deg);
+                    }
+                    &.dem {
+                        filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(300deg);
+                    }
+                }
+
+                div.project-footprint {
+                    flex-grow:1
+                }
+
+                img.footprint {
+                    padding:2rem;
+                }
+
+                h2 {
+                    color:#FFFFFF;
+                    width: 250px;
+                    padding-left:2rem;
+                    font-size: 2.4rem;
+                    line-height:1.2;
+                }
+
+                p {
+                    font-size: 1.4rem;
+                    color:#FFFFFF;
+                    padding-left:2rem;
+                }
+            }
+        }
+    }
+
+    @media (max-width: $breakpoint-sm - 1) {
+        div.goteo-values {
+            div.footprint-briefing {
+                padding-left:10px;
+                padding-right:10px;
+            }
+
+            .slider-footprint-data {
+                margin-left:10px;
+
+                img {
+                    width:100px;
+                    height:290px;
+                }
+
+                h2 {
+                    margin-top:3rem;
+                }
+            }
+
+            .slider-footprint-projects {
+                margin-left:10px;
+            }
+        }
+    }
+    
+
     //Fundation customization
     .advantages.foundation{
         background-color: $background-yellow !important;
