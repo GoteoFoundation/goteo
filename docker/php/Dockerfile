@@ -11,6 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y --no-install-recommends install php7.1-fpm \
     && apt-get -y --no-install-recommends install php-memcached php7.1-mysql php7.1-gd php-xdebug \
     && apt-get -y --no-install-recommends install nodejs npm build-essential ruby-dev rubygems-integration gosu \
+    && apt-get -y install zip unzip \
     && apt-get -y install mysql-client \
     && apt-get -y install jq \
     && apt-get clean \
