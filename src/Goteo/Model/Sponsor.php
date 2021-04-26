@@ -10,13 +10,12 @@
 
 namespace Goteo\Model;
 
+use Goteo\Core\Model;
 use Goteo\Library\Check;
-use Goteo\Model\Image;
 use Goteo\Application\Config;
 
 
-class Sponsor extends \Goteo\Core\Model {
-
+class Sponsor extends Model {
 
     const SPONSOR_NETWORK = 'network';
     const SPONSOR_SUPPORT = 'support';
@@ -29,12 +28,8 @@ class Sponsor extends \Goteo\Core\Model {
         $name,
         $url,
         $image,
-        $type,
         $order;
 
-    /*
-     *  Devuelve datos de un destacado
-     */
     public static function get ($id) {
             $sql = static::query("
                 SELECT
@@ -43,7 +38,6 @@ class Sponsor extends \Goteo\Core\Model {
                     name,
                     url,
                     image,
-                    type,
                     `order`
                 FROM    sponsor
                 WHERE id = :id
@@ -53,9 +47,6 @@ class Sponsor extends \Goteo\Core\Model {
             return $sponsor;
     }
 
-    /*
-     * Lista de patrocinadores (para panel admin)
-     */
     public static function getAll ($node = null) {
         if(empty($node)) $node = Config::get('current_node');
 
@@ -68,7 +59,6 @@ class Sponsor extends \Goteo\Core\Model {
                 name,
                 url,
                 image,
-                type,
                 `order`
             FROM    sponsor
             WHERE node = :node
@@ -82,9 +72,6 @@ class Sponsor extends \Goteo\Core\Model {
         return $list;
     }
 
-    /*
-     * Lista de patrocinadores
-     */
     public static function getList ($filters = array(), $offset = 0, $limit = 10, $count = false) {
 
         $values = [];
@@ -94,18 +81,12 @@ class Sponsor extends \Goteo\Core\Model {
         $offset = (int) $offset;
         $limit = (int) $limit;
 
-        if ($filters['type']) {
-            $values['type'] = $filters['type'];
-            $sqlWhere = " AND `type` = :type";
-        }
-
         $sql = "
             SELECT
                 id,
                 name,
                 url,
-                image,
-                type
+                image
             FROM    sponsor
             WHERE node = :node
             $sqlWhere
@@ -122,12 +103,7 @@ class Sponsor extends \Goteo\Core\Model {
         $query = static::query($sql, $values);
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
-
-           // echo \trace($sponsor);
-
-            // imagen
             $sponsor->image = Image::get($sponsor->image);
-
             $list[] = $sponsor;
         }
 
@@ -150,14 +126,13 @@ class Sponsor extends \Goteo\Core\Model {
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
         $fail = false;
-        // Primero la imagenImagen
+        // Primero la imagen
         if (is_array($this->image) && !empty($this->image['name'])) {
             $image = new Image($this->image);
 
             if ($image->save($errors)) {
                 $this->image = $image->id;
             } else {
-                //mmmm
                 $fail = true;
                 $this->image = '';
             }
@@ -169,11 +144,9 @@ class Sponsor extends \Goteo\Core\Model {
             'name',
             'url',
             'image',
-            'type',
             'order'
-            );
+        );
         try {
-            //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
             Check::reorder($this->id, 'up', 'sponsor');
 
@@ -217,7 +190,8 @@ class Sponsor extends \Goteo\Core\Model {
 
     }
 
-    public static function getTypes() {
+    public static function getTypes(): array
+    {
         return self::$SPONSORS_LIST;
     }
 
