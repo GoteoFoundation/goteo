@@ -28,6 +28,7 @@ class Sponsor extends Model {
         $name,
         $url,
         $image,
+        $type,
         $order;
 
     public static function get ($id) {
@@ -38,6 +39,7 @@ class Sponsor extends Model {
                     name,
                     url,
                     image,
+                    type,
                     `order`
                 FROM    sponsor
                 WHERE id = :id
@@ -59,6 +61,7 @@ class Sponsor extends Model {
                 name,
                 url,
                 image,
+                type,
                 `order`
             FROM    sponsor
             WHERE node = :node
@@ -93,7 +96,8 @@ class Sponsor extends Model {
                 id,
                 name,
                 url,
-                image
+                image,
+                type,
             FROM    sponsor
             WHERE node = :node
             $sqlWhere
@@ -150,6 +154,7 @@ class Sponsor extends Model {
             'name',
             'url',
             'image',
+            'type',
             'order'
         );
         try {
