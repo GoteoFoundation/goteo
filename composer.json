@@ -1,6 +1,6 @@
 {
     "require": {
-        "php": "^7.1",
+        "php": "^7.0",
         "foil/foil": "~0.6",
         "tpyo/amazon-s3-php-class": "~0.5",
         "phpmailer/phpmailer": "~5.2",
