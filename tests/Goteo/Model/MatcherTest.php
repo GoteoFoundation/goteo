@@ -269,13 +269,14 @@ class MatcherTest extends TestCase
     {
         $new = Matcher::get($ob->id);
         $this->assertInstanceOf('Goteo\Model\Matcher', $new);
-        $this->assertEquals(self::$data['title'], $new->title);
+        $this->assertEquals(self::$data['name'], $new->name);
         $this->assertEquals(self::$data['terms'], $new->terms);
-        Lang::set('ca');
 
+        Lang::set('ca');
         $new2 = Matcher::get($ob->id, false, 'ca');
-        $this->assertEquals(self::$trans_data['title'], $new2->title);
+        $this->assertEquals(self::$trans_data['name'], $new2->name);
         $this->assertEquals(self::$trans_data['terms'], $new2->terms);
+
         Lang::set('es');
     }
 
