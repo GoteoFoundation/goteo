@@ -26,4 +26,14 @@ donate-invest-spread-header: 'Diffonsi e aiutaci affinché più gente appoggi il
 donate-button: 'Dona alla Fondazione'
 donate-select-amount-prologue: 'Più informazioni sullo sgravo fiscale del 75% della tua donazione'
 donate-modal-relief-title: 'Il tuo sgravo fiscale'
-donate-modal-relief-description: "<p>Fai la tua donazione alla Fondazione Goteo, e ne consegue il tuo sgravo fiscale.</p> <p>Le percentuali di sgravo dipendono da quanto contribuisci: così, per contributi di tutto un anno che non superano i 150€ hai delle percentuali e per quelli che superano i 150€ ne hai altre.</p> <<ul> <li>Per 150€                -\n75%</li> <li>Da 150€          -\n30%</li> <li>Persone giuridiche        -\n30%</li> </ul> <p> Se hai collaborato con la stessa entità negli ultimi tre anni, le percentuali di sgravo sono superiori. In questo modo la tua fedeltà verrà ricompensata con una devoluzione maggiore. </p> <p> * <strong>Importante</strong> Questo miglioramento fiscale non si applica fuori della Spagna, né tantomeno al Paese Basco né a Navarra, che mantengono una deduzione del 30% e del 25% rispettivamente del totale contribuito. </p> <p> (*) Il limite della deduziobe sulla base liquidabile si mantiene nel 10%. Articolo 19 (Deduzione della Quota dell'Imposta sul Reddito delle Persone Fisiche) della legge 49/2002, del 23 di dicembre, di regime fiscale delle entità senza scopi di lucro e degli incentivi fiscali al patrocinio. </p> "
+donate-modal-relief-description: "<p>Fai la tua donazione alla Fondazione Goteo, e ne consegue il tuo sgravo fiscale.</p>
+<p>Le percentuali di sgravo dipendono da quanto contribuisci: così, per contributi di tutto un anno che non superano i 150€ hai delle percentuali e per quelli che superano i 150€ ne hai altre.</p>
+<ul>
+    <li>Per 150€                -\n75%</li>
+    <li>Da 150€          -\n30%</li>
+    <li>Persone giuridiche        -\n30%</li>
+</ul>
+<p>Se hai collaborato con la stessa entità negli ultimi tre anni, le percentuali di sgravo sono superiori. In questo modo la tua fedeltà verrà ricompensata con una devoluzione maggiore.
+</p>
+<p> * <strong>Importante</strong> Questo miglioramento fiscale non si applica fuori della Spagna, né tantomeno al Paese Basco né a Navarra, che mantengono una deduzione del 30% e del 25% rispettivamente del totale contribuito.</p>
+<p> (*) Il limite della deduziobe sulla base liquidabile si mantiene nel 10%. Articolo 19 (Deduzione della Quota dell'Imposta sul Reddito delle Persone Fisiche) della legge 49/2002, del 23 di dicembre, di regime fiscale delle entità senza scopi di lucro e degli incentivi fiscali al patrocinio.</p>"
