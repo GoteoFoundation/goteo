@@ -72,14 +72,21 @@ class Sponsor extends Model {
         return $list;
     }
 
-    public static function getList ($filters = array(), $offset = 0, $limit = 10, $count = false) {
-
+    public static function getList(
+        $filters = array(),
+        int $offset = 0,
+        int $limit = 10,
+        bool $count = false
+    ) {
+        $sqlWhere = "";
         $values = [];
         $values[':node'] = ($filters['node'])? $filters['node']: Config::get('current_node');
-
         $list = array();
-        $offset = (int) $offset;
-        $limit = (int) $limit;
+
+        if ($filters['type']) {
+            $values['type'] = $filters['type'];
+            $sqlWhere = " AND `type` = :type";
+        }
 
         $sql = "
             SELECT
@@ -95,11 +102,9 @@ class Sponsor extends Model {
             ";
 
         if($count) {
-            // Return count
             $sql = 'SELECT COUNT(id) FROM sponsor where node = :node' . $sqlWhere;
             return (int) self::query($sql, $values)->fetchColumn();
         }
-        // die(\sqldbg($sql, [':node'=>$node]));
         $query = static::query($sql, $values);
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {
@@ -126,7 +131,8 @@ class Sponsor extends Model {
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
         $fail = false;
-        // Primero la imagen
+
+        // First the image
         if (is_array($this->image) && !empty($this->image['name'])) {
             $image = new Image($this->image);
 
