@@ -89,7 +89,6 @@ class MatcherTest extends TestCase {
 
         $this->assertEquals($ob->created, date('Y-m-d'));
         $this->assertEquals(get_test_user(), $ob->getOwner());
-        $this->assertTrue($ob->userCanView(get_test_user()));
         return $ob;
     }
 
@@ -264,7 +263,7 @@ class MatcherTest extends TestCase {
     /**
      * @depends testCreate
      */
-    public function testListing($ob) {
+    public function testListing() {
         $list = Matcher::getList();
         $this->assertInternalType('array', $list);
         $new = end($list);
@@ -280,7 +279,6 @@ class MatcherTest extends TestCase {
         $this->assertEquals(self::$trans_data['terms'], $new2->terms);
 
         Lang::set('es');
-
     }
 
     /**
@@ -305,7 +303,9 @@ class MatcherTest extends TestCase {
             echo "\nDeleting user [{$user['userid']}]";
             Matcher::query("DELETE FROM user_pool WHERE `user` = ?", $user['userid']);
             Matcher::query("DELETE FROM invest WHERE `user` = ?", $user['userid']);
-            $user['ob']->dbDelete();
+            if (isset($user['ob'])) {
+                $user['ob']->dbDelete();
+            }
             $this->assertEquals(0, Matcher::query("SELECT COUNT(*) FROM `user` WHERE id = ?", $user['userid'])->fetchColumn(), "Unable to delete user [{$user['userid']}]. Please delete id manually");
         }
     }
