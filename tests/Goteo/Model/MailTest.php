@@ -44,7 +44,7 @@ class MailTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
 
-        $this->assertContains('/goteo_logo.png" alt="Logo" />', $mailer->Body);
+        $this->assertContains('/logo-fg-white.png" alt="Fundación Goteo"', $mailer->Body);
         $this->assertContains('<title>' . $mail->subject . '</title>', $mailer->Body);
     }
 
