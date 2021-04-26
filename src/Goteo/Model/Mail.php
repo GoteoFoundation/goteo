@@ -68,11 +68,8 @@ class Mail extends \Goteo\Core\Model {
 
         $this->node = Config::get('current_node');
 
-        // Inicializa la instancia PHPMailer.
         $mail = new \PHPMailer($exceptions);
         $this->from = Config::get('mail.transport.from');
-        // $this->to = Config::get('mail.transport.from');
-        // $this->toName = Config::get('mail.transport.name');
         $this->reply = Config::get('mail.transport.from');
         $this->fromName = Config::get('mail.transport.name');
         $this->replyName = Config::get('mail.transport.name');
@@ -179,7 +176,6 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Get instance of mail already on table
-     * @return [type] [description]
      */
     static public function get($id) {
         if ($query = static::query('SELECT * FROM mail WHERE id = ?', $id)) {
@@ -194,7 +190,6 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Get instance of mail already on table using message_id identifier
-     * @return [type] [description]
      */
     static public function getFromMessageId($message_id) {
         if ($query = static::query('SELECT * FROM mail WHERE message_id = ?', $message_id)) {
@@ -207,7 +202,6 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Get instance of mail already on table using communication_id identifier and an optional lang parameter.
-     * @return [type] [description]
      */
     static public function getFromCommunicationId($communication_id, $lang = null) {
         $sql = "SELECT * FROM mail WHERE communication_id = :communication_id";
@@ -226,7 +220,6 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Creates a new instance of Mail from common vars
-     * @return [type] [description]
      */
     static public function createFromText($to, $to_name, $subject, $body = '') {
         $mail = new static();
@@ -240,7 +233,6 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Creates a new instance of Mail from common vars
-     * @return [type] [description]
      */
     static public function createFromHtml($to, $to_name, $subject, $body = '') {
         $mail = new static();
@@ -254,7 +246,6 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Creates a new instance of Mail from a template
-     * @return [type] [description]
      */
     static public function createFromTemplate($to, $to_name, $template, $vars =[], $lang = null) {
         $mail = new static();
@@ -377,7 +368,6 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Construye el mensaje
-     * @return [type] [description]
      */
     public function buildMessage() {
         $mail = $this->mail;
@@ -477,7 +467,8 @@ class Mail extends \Goteo\Core\Model {
     /**
      * Cuerpo del mensaje en texto plano para los clientes de correo sin formato.
      */
-    private function bodyText() {
+    private function bodyText(): string
+    {
         // add links
         $content = preg_replace_callback([
             '/(<a.*)href=(")([^"]*)"([^>]*)>([^<]*)</U',
@@ -511,7 +502,6 @@ class Mail extends \Goteo\Core\Model {
      * Renders the appropiated view for the mail
      * @param  boolean     $plain      [description]
      * @param  Array|array $extra_vars [description]
-     * @return [type]                  [description]
      */
     public function render($plain = false, Array $extra_vars = [], $process_links = true) {
         $content = $this->content;
@@ -643,23 +633,6 @@ class Mail extends \Goteo\Core\Model {
         );
     }
 
-    /**
-     *
-     * Adjuntar cadena como archivo.
-     * @param type string	$string
-     * @param type string	$name
-     * @param type string	$encoding
-     * @param type string	$type
-     */
-    private function attachString($string, $name = false, $encoding = 'base64', $type = 'application/pdf') {
-        $this->attachments[] = array(
-            'string' => $string,
-            'name' => $name,
-            'encoding' => $encoding,
-            'type' => $name
-        );
-    }
-
     public function getStats() {
         if(!$this->stats_collector) {
             $this->stats_collector = new StatsCollector($this);
@@ -675,6 +648,7 @@ class Mail extends \Goteo\Core\Model {
         }
         return $this->sender;
     }
+
     public function getStatus() {
         if($this->getSender()) {
             return $this->getSender()->getStatus();
@@ -682,6 +656,7 @@ class Mail extends \Goteo\Core\Model {
 
         return $this->status;
     }
+
     public function getStatusObject() {
         if($this->getSender()) {
             return $this->getSender()->getStatusObject();
@@ -689,6 +664,7 @@ class Mail extends \Goteo\Core\Model {
 
         return $this->status;
     }
+
     /**
      *
      * @param array $filters    user (nombre o email),  template
@@ -859,6 +835,7 @@ class Mail extends \Goteo\Core\Model {
         static::query("DELETE FROM mailer_control WHERE email=:email", array(':email' => $email));
         return !static::query("SELECT COUNT(*) FROM mailer_control WHERE email=:email", array(':email' => $email))->fetchColumn();
     }
+
     /**
      * Añade un email a la table de control (tipo bounce), con bloqueo de futuros envios si se especifica
      * @param string  $email  email a controlar
