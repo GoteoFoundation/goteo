@@ -549,7 +549,6 @@ class Project extends \Goteo\Core\Model {
                 user.twitter as user_twitter,
                 user.linkedin as user_linkedin,
                 user.identica as user_identica,
-                user.google as user_google,
                 user.facebook as user_facebook
             FROM project
             $joins
@@ -3350,7 +3349,6 @@ class Project extends \Goteo\Core\Model {
                 project.phone as phone,
                 user.twitter as twitter,
                 user.facebook as facebook,
-                user.google as google,
                 user.identica as identica,
                 user.linkedin as linkedin
             FROM project

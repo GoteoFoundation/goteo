@@ -56,7 +56,6 @@ class User extends \Goteo\Core\Model {
     $confirmed, // si no ha confirmado el email
     $hide, // si oculto no aparece su avatar en ninguna parte (pero sus aportes cuentan)
     $facebook,
-    $google,
     $twitter,
     $identica,
     $linkedin,
@@ -241,10 +240,6 @@ class User extends \Goteo\Core\Model {
                     $data[':facebook'] = $this->facebook;
                 }
 
-                if (isset($this->google)) {
-                    $data[':google'] = $this->google;
-                }
-
                 if (isset($this->twitter)) {
                     $data[':twitter'] = $this->twitter;
                 }
@@ -412,10 +407,6 @@ class User extends \Goteo\Core\Model {
 
         if (\str_replace(Text::get('regular-facebook-url'), '', $this->facebook) == '') {
             $this->facebook = '';
-        }
-
-        if (\str_replace(Text::get('regular-google-url'), '', $this->google) == '') {
-            $this->google = '';
         }
 
         if (\str_replace(Text::get('regular-twitter-url'), '', $this->twitter) == '') {
@@ -725,7 +716,6 @@ class User extends \Goteo\Core\Model {
                     IFNULL(user_lang.contribution, user.contribution) as contribution,
                     IFNULL(user_lang.keywords, user.keywords) as keywords,
                     user.facebook as facebook,
-                    user.google as google,
                     user.twitter as twitter,
                     user.instagram as instagram,
                     user.identica as identica,

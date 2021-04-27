@@ -174,13 +174,6 @@ $colors = array(
                 'value'     => $node->facebook,
             ),
 
-            'google' => array(
-                'type'      => 'TextBox',
-                'size'      => 20,
-                'title'     => 'Google +',
-                'value'     => $node->google,
-            ),
-
             'linkedin' => array(
                 'type'      => 'TextBox',
                 'size'      => 20,
