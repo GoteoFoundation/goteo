@@ -316,7 +316,7 @@ class User extends \Goteo\Core\Model {
                     }
                     $query = substr($query, 0, -2) . " WHERE id = :id";
                 }
-                // die(\sqldbg($query, $data));
+                 //die(\sqldbg($query, $data));
                 // Ejecuta SQL.
                 if (self::query($query, $data)) {
                     return true;
@@ -419,6 +419,10 @@ class User extends \Goteo\Core\Model {
 
         if (\str_replace(Text::get('regular-linkedin-url'), '', $this->linkedin) == '') {
             $this->linkedin = '';
+        }
+
+        if (\str_replace(Text::get('regular-instagram-url'), '', $this->instagram) == '') {
+            $this->instagram = '';
         }
 
         return (empty($errors['email']) && empty($errors['password']));
