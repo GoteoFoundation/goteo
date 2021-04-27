@@ -218,15 +218,6 @@ class UserProfileForm extends AbstractFormProcessor {
                            'placeholder' => Text::get('regular-twitter-url')],
                 'required' => false
             ])
-            ->add('google', 'url', [
-                'label' => 'regular-google',
-                'constraints' => $this->getConstraints('google'),
-                'disabled' => $this->getReadonly(),
-                'pre_addon' => '<i class="fa fa-google-plus"></i>',
-                'attr' => ['help' => Text::get('tooltip-user-google'),
-                           'placeholder' => Text::get('regular-google-url')],
-                'required' => false
-            ])
             ->add('linkedin', 'url', [
                 'label' => 'regular-linkedin',
                 'constraints' => $this->getConstraints('linkedin'),

@@ -254,7 +254,6 @@ class Call extends \Goteo\Core\Model {
                         user.avatar as user_avatar,
                         user.email as user_email,
                         user.facebook as user_facebook,
-                        user.google as user_google,
                         user.twitter as user_twitter,
                         user.instagram as user_instagram,
                         user.identica as user_identica,
@@ -287,7 +286,6 @@ class Call extends \Goteo\Core\Model {
             $call->user->email = $call->user_email;
             $call->user->lang = $call->user_lang;
             $call->user->facebook = $call->user_facebook;
-            $call->user->google = $call->user_google;
             $call->user->twitter = $call->user_twitter;
             $call->user->instagram = $call->user_instagram;
             $call->user->identica = $call->user_identica;
