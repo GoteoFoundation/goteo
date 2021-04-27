@@ -47,7 +47,6 @@ class GoteoRemoveGooglePlus
      return "
         ALTER TABLE `user` ADD COLUMN `google` tinytext after `facebook`;
         ALTER TABLE `node` ADD COLUMN `google` tinytext after `facebook`;
-        ALTER TABLE `node` ADD COLUMN AL`google` tinytext after `facebook`;
      ";
   }
 
