@@ -728,6 +728,9 @@ body.home {
     @media (max-width: $breakpoint-sm - 1) {
         div.goteo-values {
             div.footprint-briefing {
+                border:0;
+                border-bottom:1px solid #E9EFEF;
+                margin-bottom:3rem;
                 padding-left:10px;
                 padding-right:10px;
             }
