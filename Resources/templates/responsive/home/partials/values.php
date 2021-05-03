@@ -51,7 +51,7 @@
                 </div>
                 <div class="slider slider-footprint-projects">
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project eco">
+                        <img src="http://data.goteo.org/7000x0c/img-20201118-111420.jpg" class="bg-project eco">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                         </div>
@@ -59,7 +59,7 @@
                         <p>Por: L'Espora</p>
                     </div>
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project eco">
+                        <img src="http://data.goteo.org/7000x0c/img-20201118-111420.jpg" class="bg-project eco">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                         </div>
@@ -111,7 +111,7 @@
                 </div>
                 <div class="slider slider-footprint-projects">
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project soc">
+                        <img src="http://data.goteo.org/7000x0c/img-20201118-111420.jpg" class="bg-project soc">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
                         </div>
@@ -119,7 +119,7 @@
                         <p>Por: L'Espora</p>
                     </div>
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project soc">
+                        <img src="http://data.goteo.org/7000x0c/img-20201118-111420.jpg" class="bg-project soc">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
                         </div>
@@ -171,7 +171,7 @@
                 </div>
                 <div class="slider slider-footprint-projects">
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project dem">
+                        <img src="http://data.goteo.org/7000x0c/img-20201118-111420.jpg" class="bg-project dem">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
                         </div>
@@ -179,7 +179,7 @@
                         <p>Por: L'Espora</p>
                     </div>
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project dem">
+                        <img src="http://data.goteo.org/7000x0c/img-20201118-111420.jpg" class="bg-project dem">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
                         </div>
