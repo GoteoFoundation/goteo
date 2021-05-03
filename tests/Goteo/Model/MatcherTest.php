@@ -23,8 +23,8 @@ class MatcherTest extends TestCase
 {
 
     private static $data = ['id' => 'matchertest', 'name' => 'Matcher test', 'terms' => 'Terms test'];
-    private static $trans_data = ['name' => 'Test de Matcher', 'terms' => 'Test de termes i condicions'];
-    private static $user_data = [
+    private static $translatedData = ['name' => 'Test de Matcher', 'terms' => 'Test de termes i condicions'];
+    private static $userData = [
         ['userid' => 'simulated-user-test1', 'name' => 'Test 1', 'email' => 'test1@goteo.org', 'password' => 'testtest', 'active' => true, 'pool' => 11],
         ['userid' => 'simulated-user-test2', 'name' => 'Test 2', 'email' => 'test2@goteo.org', 'password' => 'testtest', 'active' => true, 'pool' => 22]
     ];
@@ -56,6 +56,7 @@ class MatcherTest extends TestCase
         $this->assertFalse($ob->save());
         $ob = new Matcher(self::$data);
         $this->assertFalse($ob->save());
+
         self::$data['owner'] = get_test_user()->id;
         $ob = new Matcher(self::$data);
         $this->assertTrue($ob->validate());
@@ -126,18 +127,16 @@ class MatcherTest extends TestCase
     public function testAddUsers(Matcher $ob): Matcher
     {
         $total = 0;
-        //Creates users first
-        foreach(self::$user_data as $i => $user) {
+
+        foreach(self::$userData as $i => $user) {
             if(!($uob = User::get($user['userid']))) {
-                echo "\nCreating user [{$user['userid']}]";
                 $uob = new User($user);
                 $this->assertTrue($uob->save($errors, ['active']), print_r($errors, 1));
             }
 
             $this->assertInstanceOf('\Goteo\Model\User', $uob, print_r($errors, 1));
 
-            self::$user_data[$i]['ob'] = $uob;
-            echo "\nSetting user's pool [{$user['userid']}]";
+            self::$userData[$i]['ob'] = $uob;
             Matcher::query("REPLACE invest (`user`, amount, status, method, invested, charged, pool) VALUES (:user, :amount, :status, 'dummy', NOW(), NOW(), 1)", [':user' => $user['userid'], ':amount' => $user['pool'], ':status' => Invest::STATUS_TO_POOL]);
             Matcher::query("REPLACE user_pool (`user`, amount) VALUES (:user, :amount)", [':user' => $user['userid'], ':amount' => $user['pool']]);
             $this->assertEquals($user['pool'], $uob->getPool()->amount);
@@ -160,16 +159,16 @@ class MatcherTest extends TestCase
     public function testChangeUserPool(Matcher $ob): Matcher
     {
         $total = $ob->getTotalAmount();
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->useUserPool(self::$user_data[1]['userid'], false));
-        $this->assertEquals(self::$user_data[0]['pool'], $ob->getTotalAmount());
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->useUserPool(self::$userData[1]['userid'], false));
+        $this->assertEquals(self::$userData[0]['pool'], $ob->getTotalAmount());
 
         $pools = $ob->getUserPools();
         $this->assertCount(1, $pools);
         $this->assertInstanceOf('\Goteo\Model\User\Pool', $pools[0]);
-        $this->assertEquals(self::$user_data[0]['userid'], $pools[0]->user);
-        $this->assertEquals(self::$user_data[0]['pool'], $pools[0]->amount);
+        $this->assertEquals(self::$userData[0]['userid'], $pools[0]->user);
+        $this->assertEquals(self::$userData[0]['pool'], $pools[0]->amount);
 
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->useUserPool(self::$user_data[1]['ob'], true));
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->useUserPool(self::$userData[1]['ob'], true));
         $this->assertEquals($total, $ob->getTotalAmount());
         $pools = $ob->getUserPools();
         $this->assertCount(2, $pools);
@@ -193,6 +192,7 @@ class MatcherTest extends TestCase
         $this->assertGreaterThan(0, $ob->getTotalProjects());
         $ob->active = false;
         $ob->save();
+
         $list = Matcher::getFromProject($pob);
         $this->assertTrue(is_array($list));
         $this->assertCount(0, $list);
@@ -200,6 +200,7 @@ class MatcherTest extends TestCase
         $this->assertCount(1, $list);
         $ob->active = true;
         $ob->save();
+
         $list = Matcher::getFromProject($pob);
         $this->assertCount(1, $list);
         $ob2 = $list[0];
@@ -233,14 +234,13 @@ class MatcherTest extends TestCase
         return $ob;
     }
 
-
     /**
      * @depends testAddUsers
      */
     public function testRemoveUsers(Matcher $ob)
     {
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->removeUsers(self::$user_data[0]['userid']));
-        $this->assertEquals(self::$user_data[1]['pool'], $ob->getTotalAmount());
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->removeUsers(self::$userData[0]['userid']));
+        $this->assertEquals(self::$userData[1]['pool'], $ob->getTotalAmount());
     }
 
     /**
@@ -258,7 +258,10 @@ class MatcherTest extends TestCase
     public function testSaveLanguages(Matcher $ob): Matcher
     {
         $errors = [];
-        $this->assertTrue($ob->setLang('ca', self::$trans_data, $errors), print_r($errors, 1));
+        $isTranslatedMatcher = $ob->setLang('ca', self::$translatedData, $errors);
+
+        $this->assertTrue($isTranslatedMatcher, print_r($errors, 1));
+
         return $ob;
     }
 
@@ -274,8 +277,8 @@ class MatcherTest extends TestCase
 
         Lang::set('ca');
         $new2 = Matcher::get($ob->id, false, 'ca');
-        $this->assertEquals(self::$trans_data['name'], $new2->name);
-        $this->assertEquals(self::$trans_data['terms'], $new2->terms);
+        $this->assertEquals(self::$translatedData['name'], $new2->name);
+        $this->assertEquals(self::$translatedData['terms'], $new2->terms);
 
         Lang::set('es');
     }
@@ -289,15 +292,15 @@ class MatcherTest extends TestCase
         $this->assertInternalType('array', $list);
         $new = end($list);
         $this->assertInstanceOf('Goteo\Model\Matcher', $new);
-        $this->assertEquals(self::$data['title'], $new->title);
+        $this->assertEquals(self::$data['name'], $new->name);
         $this->assertEquals(self::$data['terms'], $new->terms);
 
         Lang::set('ca');
         $list = Matcher::getList();
         $this->assertInternalType('array', $list);
         $new2 = end($list);
-        $this->assertEquals(self::$trans_data['title'], $new2->title);
-        $this->assertEquals(self::$trans_data['terms'], $new2->terms);
+        $this->assertEquals(self::$translatedData['name'], $new2->name);
+        $this->assertEquals(self::$translatedData['terms'], $new2->terms);
 
         Lang::set('es');
     }
@@ -323,14 +326,18 @@ class MatcherTest extends TestCase
 
     public function testCleanUsers()
     {
-        foreach(self::$user_data as $user) {
-            echo "\nDeleting user [{$user['userid']}]";
+        foreach(self::$userData as $user) {
             Matcher::query("DELETE FROM user_pool WHERE `user` = ?", $user['userid']);
             Matcher::query("DELETE FROM invest WHERE `user` = ?", $user['userid']);
             if (isset($user['ob'])) {
                 $user['ob']->dbDelete();
             }
-            $this->assertEquals(0, Matcher::query("SELECT COUNT(*) FROM `user` WHERE id = ?", $user['userid'])->fetchColumn(), "Unable to delete user [{$user['userid']}]. Please delete id manually");
+
+            $this->assertEquals(
+                0,
+                Matcher::query("SELECT COUNT(*) FROM `user` WHERE id = ?", $user['userid'])->fetchColumn(),
+                "Unable to delete user [{$user['userid']}]. Please delete id manually"
+            );
         }
     }
 

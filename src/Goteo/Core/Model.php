@@ -318,14 +318,10 @@ abstract class Model {
 		}
 
 		$params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
-
-		//si no queremos leer de la replica se lo decimos
 		$result = self::$db->prepare($query, array(), $select_from_replica);
-
 		$result->execute($params);
 
 		return $result;
-
 	}
 
 	/**
@@ -567,8 +563,8 @@ abstract class Model {
         $fallback_lang = Lang::getFallback($lang);
         $default_lang = ($lang_model && !$model_join_id) ? $lang_model : Config::get('sql_lang');
         $sql_fields = [];
-        // echo "\nLANG:[$lang] SQL_LANG:[" . Config::get('sql_lang') ."] LANG_MODEL:[$lang_model] FALLBACK:[$fallback_lang]\n";
         $sql_joins = [];
+
         foreach($fields as $field) {
             if(!$lang_model && !$model_join_id) {
                 $sql_fields[] = "IF(`$table`.lang='$lang', `$table`.`$field`, IFNULL(IFNULL(b.`$field`,c.`$field`), `$table`.`$field`)) AS `$field`";
@@ -700,8 +696,11 @@ abstract class Model {
     /**
      * Save lang info in a generic way
      */
-    public function setLang($lang, $data = [], array &$errors = []) {
-
+    public function setLang(
+        $lang,
+        $data = [],
+        array &$errors = []
+    ) {
         $fields = static::getLangFields();
         if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
 
@@ -709,6 +708,7 @@ abstract class Model {
         $insert = ["`id`" => ":id", "`lang`" => ":lang"];
         $values[':id'] = $this->id;
         $values[':lang'] = $lang;
+
         foreach ($data as $key => $val) {
             if(in_array("$key", $fields) || property_exists($this, "$key")) {
                 $values[":$key"] = $val;
@@ -722,7 +722,6 @@ abstract class Model {
                 (" . implode(', ', array_keys($insert)) . ")
                 VALUES (" . implode(', ', $insert) . ")
                 ON DUPLICATE KEY UPDATE " . implode(', ', $update);
-            // print(\sqldbg($sql, $values));
             self::query($sql, $values);
 
             return true;
