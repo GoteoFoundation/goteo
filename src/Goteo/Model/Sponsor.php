@@ -32,7 +32,7 @@ class Sponsor extends Model {
         $order;
 
     public static function get ($id) {
-            $sql = static::query("
+        $sql = static::query("
                 SELECT
                     id,
                     node,
@@ -44,9 +44,9 @@ class Sponsor extends Model {
                 FROM    sponsor
                 WHERE id = :id
                 ", array(':id' => $id));
-            $sponsor = $sql->fetchObject(__CLASS__);
+        $sponsor = $sql->fetchObject(__CLASS__);
 
-            return $sponsor;
+        return $sponsor;
     }
 
     public static function getAll ($node = null) {
@@ -97,7 +97,7 @@ class Sponsor extends Model {
                 name,
                 url,
                 image,
-                type,
+                type
             FROM    sponsor
             WHERE node = :node
             $sqlWhere
@@ -174,8 +174,8 @@ class Sponsor extends Model {
     public static function up ($id, $node = null) {
         if(empty($node)) $node = Config::get('current_node');
         $extra = array (
-                'node' => $node
-            );
+            'node' => $node
+        );
         return Check::reorder($id, 'up', 'sponsor', 'id', 'order', $extra);
     }
 
@@ -185,8 +185,8 @@ class Sponsor extends Model {
     public static function down ($id, $node = null) {
         if(empty($node)) $node = Config::get('current_node');
         $extra = array (
-                'node' => $node
-            );
+            'node' => $node
+        );
         return Check::reorder($id, 'down', 'sponsor', 'id', 'order', $extra);
     }
 
