@@ -143,9 +143,9 @@
                             </div>
                             <div class="row">
                               <div class="col col-xs-12 col-sm-8">
-                                <img src="https://via.placeholder.com/420x250?text=img+project" class="bg-project eco">
+                                <img src="https://data.goteo.org/700x0c/img-0428-2.jpg" class="bg-project eco">
                                 <div class="project-footprint">
-                                  <img src="assets/img/footprint/footprint-ico-dem.svg" alt="Huella DEM" class="footprint" />
+                                  <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
                                 </div>
                                 <div class="project-description">
                                   <h2>Como tu</h2>
@@ -156,9 +156,9 @@
                               <div class="col col-xs-12 col-sm-4">
                                 <div class="row">
                                   <div class="col col-xs-12 col-sm-12">
-                                    <img src="https://via.placeholder.com/420x250?text=img+project" class="bg-project soc">
+                                    <img src="http://data.goteo.org/7000x0c/img-20201118-111420.jpg" class="bg-project soc">
                                     <div class="project-footprint">
-                                      <img src="assets/img/footprint/footprint-ico-eco.svg" alt="Huella ECO" class="footprint" />
+                                      <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                                     </div>
                                     <div class="project-description">
                                       <h2>Construïm L'Espora: llibreria i espai cooperatiu a L'H!</h2>
@@ -168,9 +168,9 @@
                                 </div>
                                 <div class="row">
                                   <div class="col col-xs-12 col-sm-12">
-                                    <img src="https://via.placeholder.com/420x250?text=img+project" class="bg-project dem">
+                                    <img src="https://data.goteo.org/700x0c/img-0428-2.jpg" class="bg-project dem">
                                     <div class="project-footprint">
-                                      <img src="assets/img/footprint/footprint-ico-eco.svg" alt="Huella ECO" class="footprint" />
+                                      <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                                     </div>
                                     <div class="project-description">
                                       <h2>Como tu</h2>
@@ -183,9 +183,9 @@
                             </div>
                             <div class="row">
                               <div class="col col-xs-12 col-sm-4">
-                                <img src="https://via.placeholder.com/420x250?text=img+project" class="bg-project dem">
+                                <img src="http://data.goteo.org/7000x0c/img-20201118-111420.jpg" class="bg-project dem">
                                 <div class="project-footprint">
-                                  <img src="assets/img/footprint/footprint-ico-eco.svg" alt="Huella ECO" class="footprint" />
+                                  <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                                 </div>
                                 <div class="project-description">
                                   <h2>Construïm L'Espora: llibreria i espai cooperatiu a L'H!</h2>
@@ -193,9 +193,9 @@
                                 </div>
                               </div>
                               <div class="col col-xs-12 col-sm-4">
-                                <img src="https://via.placeholder.com/420x250?text=img+project" class="bg-project soc">
+                                <img src="//data.goteo.org/700x0c/img01.jpg" class="bg-project soc">
                                 <div class="project-footprint">
-                                  <img src="assets/img/footprint/footprint-ico-eco.svg" alt="Huella ECO" class="footprint" />
+                                  <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                                 </div>
                                 <div class="project-description">
                                   <h2>Dale cuerda a 'Climática'</h2>
@@ -203,24 +203,24 @@
                                 </div>
                               </div>
                               <div class="col col-xs-12 col-sm-4">
-                                <img src="https://via.placeholder.com/420x250?text=img+project" class="bg-project eco">
+                                <img src="https://data.goteo.org/700x0c/img-0428-2.jpg" class="bg-project eco">
                                 <div class="project-footprint">
-                                  <img src="assets/img/footprint/footprint-ico-eco.svg" alt="Huella ECO" class="footprint" />
+                                  <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                                 </div>
                                 <div class="project-description">
                                   <h2>Como tu</h2>
                                   <h3>Implícate y apoya a las investigadoras a llevar la Ciencia y Tecnología a los centros educativos</h3>
                                   <p>Por CyT@UMA</p>
-                                </div>
+                                </div>7
                               </div>
                             </div>
                             <div class="row">
                               <div class="col col-xs-12 col-sm-4">
                                 <div class="row">
                                   <div class="col col-xs-12 col-sm-12">
-                                    <img src="https://via.placeholder.com/420x250?text=img+project" class="bg-project soc">
+                                    <img src="https://data.goteo.org/700x0c/alb9259.jpg" class="bg-project soc">
                                     <div class="project-footprint">
-                                      <img src="assets/img/footprint/footprint-ico-eco.svg" alt="Huella ECO" class="footprint" />
+                                      <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                                     </div>
                                     <div class="project-description">
                                       <h2>Tragone - DESconectar para Reconectar.</h2>
@@ -230,9 +230,9 @@
                                 </div>
                                 <div class="row">
                                   <div class="col col-xs-12 col-sm-12">
-                                    <img src="https://via.placeholder.com/420x250?text=img+project" class="bg-project dem">
+                                    <img src="https://data.goteo.org/700x0c/alb9259.jpg" class="bg-project dem">
                                     <div class="project-footprint">
-                                      <img src="assets/img/footprint/footprint-ico-eco.svg" alt="Huella ECO" class="footprint" />
+                                      <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                                     </div>
                                     <div class="project-description">
                                       <h2>Tragone - DESconectar para Reconectar.</h2>
@@ -242,9 +242,9 @@
                                 </div>
                               </div>
                               <div class="col col-xs-12 col-sm-8">
-                                <img src="https://via.placeholder.com/420x250?text=img+project" class="bg-project eco">
+                                <img src="https://data.goteo.org/700x0c/ilustracion-ptf.jpg" class="bg-project eco">
                                 <div class="project-footprint">
-                                  <img src="assets/img/footprint/footprint-ico-eco.svg" alt="Huella ECO" class="footprint" />
+                                  <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                                 </div>
                                 <div class="project-description">
                                   <h2>Documental Parias de la Tierra</h2>
