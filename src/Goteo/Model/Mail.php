@@ -96,7 +96,7 @@ class Mail extends Model {
      * @param $exceptions
      * @throws Config\ConfigException
      */
-    private function setPhpMailer($exceptions): void
+    private function setPhpMailer($exceptions)
     {
         $mail = new PHPMailer($exceptions);
         $mail->setLanguage("es");
@@ -269,7 +269,7 @@ class Mail extends Model {
         string $to_name,
         string $template,
         array $vars =[],
-        ?string $lang = null
+        string $lang = null
     ): Mail
     {
         $mail = new static();
