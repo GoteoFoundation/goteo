@@ -224,12 +224,13 @@
 
                     <!-- PROMOTED PROJECTS -->
 
-                    <?php foreach($this->promotes as $key => $promote) : ?>
+                    <?php if ($this->promotes): ?>
+                        <?php foreach($this->promotes as $key => $promote) : ?>
 
-                    <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key, 'total' => count($this->promotes), 'lang' => $this->lang]); ?>
+                        <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key, 'total' => count($this->promotes), 'lang' => $this->lang]); ?>
 
-                    <?php endforeach ?>
-
+                        <?php endforeach ?>
+                    <?php endif; ?>
 
                 </div>
 

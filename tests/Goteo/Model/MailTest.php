@@ -102,6 +102,7 @@ class MailTest extends \PHPUnit_Framework_TestCase
     {
         $mail = Mail::createFromHtml('test@goteo.org', 'Test', 'Subject', "Body<br>second line");
         $mailer = $mail->buildMessage();
+
         $this->assertInstanceOf('\PHPMailer', $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
@@ -117,12 +118,14 @@ class MailTest extends \PHPUnit_Framework_TestCase
         $tpl = Template::get(Template::NEWSLETTER);
         $mail = Mail::createFromTemplate('test@goteo.org', 'Test', Template::NEWSLETTER);
         $mailer = $mail->buildMessage();
+
         $this->assertInstanceOf('\PHPMailer', $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
         $this->assertContains($tpl->title, $mailer->Subject);
         $this->assertEmpty($mailer->isHTML());
         $this->assertContains($mail->getToken(), $mailer->Body);
+
         return $mail;
     }
 
