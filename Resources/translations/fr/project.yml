@@ -68,3 +68,4 @@ tooltip-project-spread: 'Expliquez comment vous prévoyez de diffuser le projet 
 tooltip-updates-home: 'Texte tooltip-updates-home'
 tooltip-updates-tags: 'Texte tooltip-updates-tags'
 project-obtained: 'Accumulé'
+project-create-minimum-field: 'Minimum (DH)'
