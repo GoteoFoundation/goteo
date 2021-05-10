@@ -3,7 +3,7 @@
         "php": "^7.0",
         "foil/foil": "~0.6",
         "tpyo/amazon-s3-php-class": "~0.5",
-        "phpmailer/phpmailer": "~5.2",
+        "phpmailer/phpmailer": "^6.0",
         "jdorn/file-system-cache": "dev-master",
         "intervention/image": "~2.0",
         "mibe/feedwriter": "~1.0",
