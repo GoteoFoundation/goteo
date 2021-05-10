@@ -7,7 +7,7 @@ use Goteo\Controller\Admin\MailingSubController;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
-class MailingSubControllerTest extends \PHPUnit_Framework_TestCase {
+class MailingSubControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         $user = new User();

@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\License;
 
-class LicenseTest extends \PHPUnit_Framework_TestCase {
+class LicenseTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('id' => 'test', 'name' => 'Test category', 'description' => 'Test description');
 

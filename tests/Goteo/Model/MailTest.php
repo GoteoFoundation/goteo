@@ -7,7 +7,7 @@ use Goteo\Model\Mail;
 use Goteo\Application\Config;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class MailTest extends \PHPUnit_Framework_TestCase
+class MailTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Ensures has the correct instances

@@ -4,7 +4,7 @@ namespace Goteo\Util\Tests;
 
 use Goteo\Util\Google\GoogleGeocoder;
 
-class GoogleGeocoderTest extends \PHPUnit_Framework_TestCase {
+class GoogleGeocoderTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

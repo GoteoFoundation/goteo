@@ -6,7 +6,7 @@ namespace Goteo\Model\User\Tests;
 use Goteo\Model\User;
 use Goteo\Model\User\UserRoles;
 
-class UserRolesTest extends \PHPUnit_Framework_TestCase {
+class UserRolesTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

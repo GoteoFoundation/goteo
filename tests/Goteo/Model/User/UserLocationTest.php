@@ -5,7 +5,7 @@ namespace Goteo\Model\User\Tests;
 use Goteo\Model\User;
 use Goteo\Model\User\UserLocation;
 
-class UserLocationTest extends \PHPUnit_Framework_TestCase {
+class UserLocationTest extends \PHPUnit\Framework\TestCase {
     private static $data = array(
             'city' => 'Simulated City',
             'region' => 'Simulated Region',

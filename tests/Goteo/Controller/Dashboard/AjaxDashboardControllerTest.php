@@ -8,7 +8,7 @@ use Goteo\Model\User;
 use Goteo\Controller\Dashboard\AjaxDashboardController;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
-class AjaxDashboardControllerTest extends \PHPUnit_Framework_TestCase {
+class AjaxDashboardControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

@@ -4,7 +4,7 @@ namespace Goteo\Util\Tests;
 
 use Goteo\Util\Pagination\DoubleBarLayout;
 
-class DoubleBarLayoutTest extends \PHPUnit_Framework_TestCase {
+class DoubleBarLayoutTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

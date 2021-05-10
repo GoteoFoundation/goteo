@@ -5,7 +5,7 @@ namespace Goteo\Model\Blog\Post\Tests;
 
 use Goteo\Model\Blog\Post\Tag;
 
-class TagTest extends \PHPUnit_Framework_TestCase {
+class TagTest extends \PHPUnit\Framework\TestCase {
     private static $data = array('name' => 'Test category');
 
     public function testInstance() {

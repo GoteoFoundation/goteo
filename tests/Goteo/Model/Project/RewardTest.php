@@ -5,7 +5,7 @@ namespace Goteo\Model\Project\Tests;
 
 use Goteo\Model\Project\Reward;
 
-class RewardTest extends \PHPUnit_Framework_TestCase {
+class RewardTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

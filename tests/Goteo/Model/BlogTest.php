@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\Blog;
 
-class BlogTest extends \PHPUnit_Framework_TestCase {
+class BlogTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

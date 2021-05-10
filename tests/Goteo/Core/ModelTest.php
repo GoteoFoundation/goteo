@@ -2,12 +2,13 @@
 
 namespace Goteo\Core\Tests;
 
+use Exception;
 use Goteo\Core\Model;
 use Goteo\Core\ModelEvents;
 use Goteo\Core\DB;
-use Goteo\Library\Cacher;
 use Goteo\Application\Config;
 use Goteo\Application\App;
+use PDOException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Goteo\Core\Event\CreateModelEvent;
 use Goteo\Core\Event\UpdateModelEvent;
@@ -56,19 +57,20 @@ class MockModelListener implements EventSubscriberInterface {
         $model = $event->getModel();
         $model->name .= ' post-delete';
     }
-    public static function getSubscribedEvents() {
-        return array(
+    public static function getSubscribedEvents(): array
+    {
+        return [
             ModelEvents::CREATE => 'onCreate',
             ModelEvents::CREATED => 'onCreated',
             ModelEvents::UPDATE => 'onUpdate',
             ModelEvents::UPDATED => 'onUpdated',
             ModelEvents::DELETE => 'onDelete',
             ModelEvents::DELETED => 'onDeleted'
-        );
+        ];
     }
 }
 
-class ModelTest extends \PHPUnit_Framework_TestCase {
+class ModelTest extends \PHPUnit\Framework\TestCase {
     public static $listener;
 
     public static function setUpBeforeClass() {
@@ -76,7 +78,8 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         self::$listener = new MockModelListener;
     }
 
-    public function testGetTable() {
+    public function testGetTable(): MockModel
+    {
         $mock = new MockModel();
         $this->assertEquals('mockmodel', $mock->getTable());
         return $mock;
@@ -118,7 +121,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         try {
             $mock::query('STUPID QUERY');
         }
-        catch(\Exception $e) {
+        catch(Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
         }
         return $mock;
@@ -133,8 +136,8 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
                   `name` VARCHAR(100),
                   PRIMARY KEY (`id`),
                   UNIQUE INDEX (`uniq`) )";
-        // echo $sql;
-        $query = $mock::query($sql);
+        $mock::query($sql);
+        $this->assertTrue(true);
         return $mock;
     }
 
@@ -143,8 +146,8 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDbInsert($mock) {
         $tb = $mock->getTable();
-        $query = $mock::query("INSERT INTO $tb (uniq, name) VALUES ('test1', 'Name 1')");
-        $this->assertEquals($mock::dbCount(), 1);
+        $mock::query("INSERT INTO $tb (uniq, name) VALUES ('test1', 'Name 1')");
+        $this->assertEquals(1, $mock::dbCount());
         $query = $mock::query("SELECT * FROM $tb");
         $res = $query->fetchObject();
         $this->assertEquals('test1', $res->uniq);
@@ -152,11 +155,11 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         try {
             $mock::query("INSERT INTO $tb (uniq, name) VALUES ('test1', 'Name 1')");
         }
-        catch(\Exception $e) {
+        catch(Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
         }
         $mock::query("TRUNCATE TABLE $tb");
-        $this->assertEquals($mock::dbCount(), 0);
+        $this->assertEquals(0, $mock::dbCount());
 
         $mock->uniq = 'test1';
         $mock->name = 'Name 2';
@@ -171,7 +174,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         try {
             $mock->dbInsert(['uniq', 'name']);
         }
-        catch(\Exception $e) {
+        catch(Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
         }
         return $mock;
@@ -200,7 +203,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         try {
             $mock->dbUpdate(['non-existing']);
         }
-        catch(\Exception $e) {
+        catch(Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
         }
         return $mock;
@@ -212,13 +215,13 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
     public function testDbInsertUpdate($mock) {
         $tb = $mock->getTable();
         $mock::query("TRUNCATE TABLE $tb");
-        $this->assertEquals($mock::dbCount(), 0);
+        $this->assertEquals(0, $mock::dbCount());
         $mock->id = null;
         $mock->uniq = 'test1';
         $mock->name = 'Name 1';
         try {
             $mock->dbUpdate(['uniq', 'name']);
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
         }
         $mock->dbInsertUpdate(['uniq', 'name']);
@@ -242,7 +245,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
             $mock->uniq = 'test2';
             $mock->dbInsertUpdate(['name']);
         }
-        catch(\Exception $e) {
+        catch(Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
         }
 
@@ -256,7 +259,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($mock->dbDelete());
         try {
             $mock->dbDelete();
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             $this->assertInstanceOf('\PDOException', $e);
         }
         $this->assertEquals(0, $mock::dbCount());
@@ -358,13 +361,9 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         $this->assertContains("IF('ca'='de', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
         $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='de' AND b.lang!='ca'", $joins);
 
-        // print_r($fields);
-        // print_r($joins);
         Config::set('sql_lang', $old_sql_lang);
         Config::set('lang', $old_lang);
-
     }
-
 
     /**
      */
@@ -387,7 +386,6 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
      * @depends testInsertEvents
      */
     public function testUpdateEvents($mock) {
-
         $mock->name = 'UPDATED';
         $this->assertNotEmpty($mock->dbUpdate(['name']));
         $this->assertEquals('UPDATED pre-update post-update', $mock->name);
@@ -407,7 +405,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
             $mock->name = 'DELETED';
             $mock->dbDelete([]);
 
-        } catch(\PDOException $e) {
+        } catch(PDOException $e) {
             $this->assertEquals('DELETED pre-delete', $mock->name);
         }
         $mock->name = 'DELETED';

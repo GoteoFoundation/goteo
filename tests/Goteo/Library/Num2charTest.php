@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Library\Num2char;
 
-class Num2charTest extends \PHPUnit_Framework_TestCase {
+class Num2charTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

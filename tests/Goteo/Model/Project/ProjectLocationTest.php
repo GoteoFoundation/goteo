@@ -8,7 +8,7 @@ use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\User;
 use Goteo\Model\User\UserLocation;
 
-class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
+class ProjectLocationTest extends \PHPUnit\Framework\TestCase {
     private static $data = array(
             'city' => 'Simulated City',
             'region' => 'Simulated Region',

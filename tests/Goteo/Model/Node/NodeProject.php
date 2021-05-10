@@ -6,7 +6,7 @@ namespace Goteo\Model\Node\Tests;
 use Goteo\Model\Node\NodeProject;
 use Goteo\Application\Exception\ModelNotFoundException;
 
-class NodeProjectTest extends \PHPUnit_Framework_TestCase {
+class NodeProjectTest extends \PHPUnit\Framework\TestCase {
 
   public function testInstance() {
 
@@ -16,7 +16,7 @@ class NodeProjectTest extends \PHPUnit_Framework_TestCase {
 
       return $ob;
   }
-    
+
   /**
    * @depends testInstance
    */

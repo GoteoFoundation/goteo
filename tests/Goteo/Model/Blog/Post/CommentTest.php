@@ -6,7 +6,7 @@ namespace Goteo\Model\Blog\Post\Tests;
 use Goteo\Model\Blog\Post\Comment;
 use Goteo\Model\Blog\Post;
 
-class CommentTest extends \PHPUnit_Framework_TestCase {
+class CommentTest extends \PHPUnit\Framework\TestCase {
     private static $data = array('text' => 'Test comment');
     private static $post_data = array('title' => 'Test post', 'text' => 'test text',
         'blog' => 1,
