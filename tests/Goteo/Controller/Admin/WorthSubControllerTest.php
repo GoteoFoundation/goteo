@@ -7,7 +7,7 @@ use Goteo\Controller\Admin\WorthSubController;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
-class WorthSubControllerTest extends \PHPUnit_Framework_TestCase {
+class WorthSubControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         $user = new User();

@@ -7,7 +7,7 @@ use Goteo\Model\OpenTag;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 
-class OpenTagTest extends \PHPUnit_Framework_TestCase {
+class OpenTagTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('name' => 'test name', 'description' => 'test description', 'order' => 0);
     private static $trans_data = array('name' => 'nom de test', 'description' => 'descripció test');

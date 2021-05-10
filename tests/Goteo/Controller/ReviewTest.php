@@ -5,7 +5,7 @@ namespace Goteo\Controller\Tests;
 
 use Goteo\Controller\Review;
 
-class ReviewTest extends \PHPUnit_Framework_TestCase {
+class ReviewTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

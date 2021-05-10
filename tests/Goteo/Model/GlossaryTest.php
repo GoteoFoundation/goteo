@@ -7,7 +7,7 @@ use Goteo\Model\Image;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 
-class GlossaryTest extends \PHPUnit_Framework_TestCase {
+class GlossaryTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('title' => 'Test title', 'text' => 'Test text');
     private static $trans_data = array('title' => 'Test títle', 'text' => 'Test text traduït');

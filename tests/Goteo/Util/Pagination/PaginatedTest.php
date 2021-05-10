@@ -4,7 +4,7 @@ namespace Goteo\Util\Tests;
 
 use Goteo\Util\Pagination\Paginated;
 
-class PaginatedTest extends \PHPUnit_Framework_TestCase {
+class PaginatedTest extends \PHPUnit\Framework\TestCase {
 
     protected $page;
 

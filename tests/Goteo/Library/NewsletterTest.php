@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Library\Newsletter;
 
-class NewsletterTest extends \PHPUnit_Framework_TestCase {
+class NewsletterTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

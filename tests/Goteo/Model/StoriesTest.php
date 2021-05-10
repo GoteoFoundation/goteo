@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\Stories;
 
-class StoriesTest extends \PHPUnit_Framework_TestCase {
+class StoriesTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('title' => 'story title', 'description' => 'Test description', 'order' => 1, 'active' => 0);
 

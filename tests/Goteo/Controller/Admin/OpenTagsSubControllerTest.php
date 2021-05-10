@@ -7,7 +7,7 @@ use Goteo\Controller\Admin\OpenTagsSubController;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
-class OpenTagsSubControllerTest extends \PHPUnit_Framework_TestCase {
+class OpenTagsSubControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         $user = new User();

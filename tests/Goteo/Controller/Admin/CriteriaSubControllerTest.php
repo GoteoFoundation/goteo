@@ -7,7 +7,7 @@ use Goteo\Controller\Admin\CriteriaSubController;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
-class CriteriaSubControllerTest extends \PHPUnit_Framework_TestCase {
+class CriteriaSubControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         $user = new User();

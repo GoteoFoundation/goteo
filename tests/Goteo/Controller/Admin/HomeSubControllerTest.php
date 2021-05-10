@@ -7,7 +7,7 @@ use Goteo\Controller\Admin\HomeSubController;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
-class HomeSubControllerTest extends \PHPUnit_Framework_TestCase {
+class HomeSubControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         $user = new User();

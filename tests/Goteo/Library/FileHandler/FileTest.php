@@ -7,7 +7,7 @@ use Goteo\Library\FileHandler\File;
 use Goteo\Library\FileHandler\S3File;
 use Goteo\Library\FileHandler\LocalFile;
 
-class FileTest extends \PHPUnit_Framework_TestCase {
+class FileTest extends \PHPUnit\Framework\TestCase {
     protected static $handler = 'local';
     protected static $test_img ;
     protected static $path;

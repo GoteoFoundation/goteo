@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\Post;
 
-class PostTest extends \PHPUnit_Framework_TestCase {
+class PostTest extends \PHPUnit\Framework\TestCase {
     private static $related_tables = array('post_node' => 'post',
                     'post_image' => 'post',
                     'post_lang' => 'id',

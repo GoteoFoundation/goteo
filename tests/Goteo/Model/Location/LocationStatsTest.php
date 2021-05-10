@@ -9,7 +9,7 @@ use Goteo\Model\Location\LocationStats;
 use Goteo\Model\User\UserLocation;
 use Goteo\Model\Project\ProjectLocation;
 
-class LocationStatsTest extends \PHPUnit_Framework_TestCase {
+class LocationStatsTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);

@@ -7,7 +7,7 @@ use Goteo\Controller\Admin\BannersSubController;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
-class BannersSubControllerTest extends \PHPUnit_Framework_TestCase {
+class BannersSubControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         $user = new User();

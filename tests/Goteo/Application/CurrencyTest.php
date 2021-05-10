@@ -6,7 +6,7 @@ namespace Goteo\Application\Tests;
 use Goteo\Application\Currency;
 use Goteo\Application\Session;
 
-class CurrencyTest extends \PHPUnit_Framework_TestCase {
+class CurrencyTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

@@ -5,7 +5,7 @@ namespace Goteo\Controller\Tests;
 
 use Goteo\Controller\RssController;
 
-class RssControllerTest extends \PHPUnit_Framework_TestCase {
+class RssControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

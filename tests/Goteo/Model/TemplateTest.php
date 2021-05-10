@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\Template;
 
-class TemplateTest extends \PHPUnit_Framework_TestCase {
+class TemplateTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

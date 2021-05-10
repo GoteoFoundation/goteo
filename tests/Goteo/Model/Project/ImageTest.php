@@ -5,7 +5,7 @@ namespace Goteo\Model\Project\Tests;
 
 use Goteo\Model\Project\Image;
 
-class ImageTest extends \PHPUnit_Framework_TestCase {
+class ImageTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

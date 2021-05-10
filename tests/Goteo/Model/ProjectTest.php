@@ -3,6 +3,8 @@
 
 namespace Goteo\Model\Tests;
 
+use Exception;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\TestCase;
 
 use Goteo\Application\Config;
@@ -104,7 +106,6 @@ class ProjectTest extends TestCase {
         $this->assertFalse($ob->save());
     }
 
-
     public function testCreateUser() {
         delete_test_user();
         delete_test_node();
@@ -114,7 +115,7 @@ class ProjectTest extends TestCase {
             $project = Project::get(self::$data['id']);
             $project->remove();
         } catch(\Exception $e) {
-            // project not exists, ok
+            $this->assertInstanceOf(ModelNotFoundException::class, $e);
         }
     }
 
@@ -312,12 +313,12 @@ class ProjectTest extends TestCase {
     public function testNonExisting() {
         try {
             $ob = Project::get(self::$data['id']);
-        }catch(\Exception $e) {
+        }catch(Exception $e) {
             $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
         }
         try {
             $ob = Project::get('non-existing-project');
-        }catch(\Exception $e) {
+        }catch(Exception $e) {
             $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
         }
     }

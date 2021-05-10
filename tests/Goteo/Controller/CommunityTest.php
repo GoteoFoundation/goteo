@@ -5,7 +5,7 @@ namespace Goteo\Controller\Tests;
 
 use Goteo\Controller\Community;
 
-class CommunityTest extends \PHPUnit_Framework_TestCase {
+class CommunityTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

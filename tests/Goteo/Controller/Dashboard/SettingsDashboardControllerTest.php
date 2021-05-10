@@ -8,7 +8,7 @@ use Goteo\Model\User;
 use Goteo\Controller\Dashboard\SettingsDashboardController;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
-class SettingsDashboardControllerTest extends \PHPUnit_Framework_TestCase {
+class SettingsDashboardControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 
