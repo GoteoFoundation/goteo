@@ -1,5 +1,6 @@
 {
     "require": {
+        "php": "^7.0",
         "foil/foil": "~0.6",
         "tpyo/amazon-s3-php-class": "~0.5",
         "phpmailer/phpmailer": "~5.2",
@@ -47,7 +48,8 @@
         "sensiolabs/ansi-to-html": "^1.1",
         "unreal4u/telegram-api": "~3.4",
         "spipu/html2pdf": "^5.2",
-        "snowplow/referer-parser": "0.2.0"
+        "snowplow/referer-parser": "0.2.0",
+        "ext-pdo": "*"
     },
     "autoload": {
         "psr-4": {
