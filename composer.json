@@ -31,7 +31,7 @@
         "gregwar/captcha": "^1.1",
         "geoip2/geoip2": "~2.0",
         "openclerk/country-list": "^1.0",
-        "mockery/mockery": "^0.9.4",
+        "mockery/mockery": "^1.0",
         "cron/cron": "1.0.*@dev",
         "bramus/monolog-colored-line-formatter": "~2.0",
         "setasign/fpdf": ">=1.8.1",
