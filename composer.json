@@ -49,7 +49,8 @@
         "unreal4u/telegram-api": "~3.4",
         "spipu/html2pdf": "^5.2",
         "snowplow/referer-parser": "0.2.0",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-openssl": "*"
     },
     "autoload": {
         "psr-4": {
