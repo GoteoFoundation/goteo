@@ -2,7 +2,7 @@
     "require": {
         "php": "^7.0",
         "foil/foil": "~0.6",
-        "tpyo/amazon-s3-php-class": "~0.5",
+        "tpyo/amazon-s3-php-class": "dev-master#81a35c61bf76be7c02c95a57771031d21277b1b5",
         "phpmailer/phpmailer": "^6.0",
         "jdorn/file-system-cache": "dev-master",
         "intervention/image": "~2.0",
