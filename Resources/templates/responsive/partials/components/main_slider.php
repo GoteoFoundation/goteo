@@ -13,7 +13,7 @@
 									<source media="(min-width:1400px)" srcset="<?= $banner->image->getLink(1920, 600, true) ?>" class="img-responsive">
 									<source media="(min-width:1051px)" srcset="<?= $banner->image->getLink(1400, 500, true) ?>" class="img-responsive">
 									<source media="(min-width:750px)" srcset="<?= $banner->image->getLink(1051, 460, true) ?>" class="img-responsive">
-									<img loading="lazy" src="<?= $banner->image->getLink(750, 600, true) ?>" class="img-responsive">
+									<img src="<?= $banner->image->getLink(750, 600, true) ?>" class="img-responsive">
 								</picture>
 							<?php else: ?>
 
