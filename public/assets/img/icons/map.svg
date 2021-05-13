@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="22px" viewBox="0 0 17 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 714</title>
+    <defs>
+        <path d="M8.5,0 C13.108,0 17,3.862 17,8.433 C17,11.52 15.564,14.835 12.848,18.02 C10.809,20.41 8.802,21.869 8.717,21.93 C8.653,21.977 8.576,22 8.5,22 C8.424,22 8.347,21.977 8.283,21.93 C8.198,21.869 6.191,20.41 4.152,18.02 C1.436,14.835 0,11.52 0,8.433 C0,3.862 3.892,0 8.5,0 Z M8.5,3.259 C5.598,3.259 3.238,5.635 3.238,8.556 C3.238,11.476 5.598,13.852 8.5,13.852 C11.402,13.852 13.762,11.476 13.762,8.556 C13.762,5.635 11.402,3.259 8.5,3.259 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Goteo_buscador_OSD_04" transform="translate(-1196.000000, -83.000000)">
+            <g id="Group-714" transform="translate(1196.000000, 83.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-713"></g>
+                <polygon id="Fill-712" fill="#26BDB9" mask="url(#mask-2)" points="-5 -5 22 -5 22 27 -5 27"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
