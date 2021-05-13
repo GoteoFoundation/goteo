@@ -14,7 +14,7 @@
           <?php
             $background_image = $story->getBackgroundImage();
           ?>
-          <img src='<?= $background_image->getLink(1350,400,true) ?>'>
+          <img loading="lazy" src='<?= $background_image->getLink(1350,400,true) ?>'>
           <?php
             $credits = $background_image->getCredits();
             if ($credits):

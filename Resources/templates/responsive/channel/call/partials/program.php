@@ -37,7 +37,7 @@ border-left-color:".$this->colors['secondary'] : '' ?>" >
         </div>
         <div class="paragraph">
           <?php if($program->header): ?>
-            <img class="img-responsive" src="<?= $program->getHeader()->getLink(0,120) ?>" >
+            <img loading="lazy" class="img-responsive" src="<?= $program->getHeader()->getLink(0,120) ?>" >
           <?php endif; ?>
           <h1 style="<?= $this->colors['primary'] ? "color:".$this->colors['primary'] : '' ?>" ><?= $program->title ?></h1>
           <p style="<?= $this->colors['secondary'] ? "color:".$this->colors['secondary'] : '' ?>"><?= $program->description ?></p>
