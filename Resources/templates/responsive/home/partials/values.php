@@ -10,7 +10,6 @@
                 <?php endforeach; ?>
             </ul>
         </div>
-<<<<<<< HEAD
         <?php foreach($this->footprints as $index => $footprint): ?>
             <div class="row <?= ($index != 0)? "hidden" : '' ?>" id="goteo-values-<?= $footprint->id ?>">
                 <div class="col footprint-briefing">
@@ -25,25 +24,6 @@
                             <li><a href="<?= $sdg->link ?>"><img src="assets/img/ods/ods<?= $sdg->id ?>.svg" width="75" height="75" alt="<?= $sdg->name ?>"/></a></li>
                         <?php endforeach; ?>
                     </ul>
-=======
-        <div class="row" id="goteo-values-eco">
-            <div class="col col-sm-7 footprint-briefing">
-                <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
-                <p><span class="footprint-label">Huella ecológica</span></p>
-                <h2>Cómo dejar una mejor huella en el planeta</h2>
-                <p>El impacto ambiental generado por la demanda humana hace de los recursos existentes en los ecosistemas del planeta se debiliten. Aquí apoyamos iniciativas de preservación de la capacidad ecológica de la Tierra de regenerar sus recursos</p>
-                <h3>Objetivos de desarrollo sostenible relacionados:</h3>
-                <p>Haz click para saber más:</p>
-                <ul>
-                    <li><a href=""><img src="assets/img/home/ods7.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods12.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods13.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods14.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods15.png" alt="ODS"/></a></li>
-                </ul>
-                <div class="action">
-                    <a href="">Ver proyectos de huella ecológica <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
->>>>>>> support for short titles at project slider
                 </div>
                 <div class="col footprint-info">
                     <div class="slider slider-footprint-data">
