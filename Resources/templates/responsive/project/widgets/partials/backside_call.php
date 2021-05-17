@@ -4,7 +4,7 @@
     <div class="data-list title">
         <h5 title="<?= $this->call->name ?>">
             <i class="icon icon-call"></i> <?= $this->text('regular-call') ?> x<strong>2</strong>
-            <img src="<?= $this->call->user->avatar->getLink(100,50) ?>">
+            <img loading="lazy" src="<?= $this->call->user->avatar->getLink(100,50) ?>">
         </h5>
     </div>
 

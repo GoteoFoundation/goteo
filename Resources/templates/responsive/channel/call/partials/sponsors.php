@@ -30,7 +30,7 @@ endforeach;
           <?php if ($sponsor->url) :?>
             <a href="<?= $sponsor->url?>" target="_blank">
           <?php endif; ?>
-          <img alt="<?= $sponsor->name ?>" src="<?= $sponsor_image->getLink(150, 80, false) ?>" >
+          <img loading="lazy" alt="<?= $sponsor->name ?>" src="<?= $sponsor_image->getLink(150, 80, false) ?>" >
           <?php if ($sponsor->url) :?>
             </a>
           <?php endif; ?>
@@ -50,7 +50,7 @@ endforeach;
             <?php if ($sponsor->url) :?>
               <a href="<?= $sponsor->url?>" target="_blank">
             <?php endif; ?>
-            <img alt="<?= $sponsor->name ?>" src="<?= $sponsor_image->getLink(800, 0, false) ?>" >
+            <img loading="lazy" alt="<?= $sponsor->name ?>" src="<?= $sponsor_image->getLink(800, 0, false) ?>" >
             <?php if ($sponsor->url) :?>
               </a>
             <?php endif; ?>
@@ -68,7 +68,7 @@ endforeach;
               <a href="<?= $sponsor->url?>" target="_blank">
             <?php endif; ?>
 
-            <img alt="<?= $sponsor->name ?>" src="<?= $sponsor_image->getLink(200, 65, false) ?>" >
+            <img loading="lazy" alt="<?= $sponsor->name ?>" src="<?= $sponsor_image->getLink(200, 65, false) ?>" >
             <?php if ($sponsor->url) :?>
               </a>
             <?php endif; ?>
