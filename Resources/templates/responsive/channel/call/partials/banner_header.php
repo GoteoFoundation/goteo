@@ -10,10 +10,13 @@
 		<?php $header_image_md=$this->channel->getBannerHeaderImageMd(); ?>
 		<?php $header_image_sm=$this->channel->getBannerHeaderImageSm(); ?>
 		<?php $header_image_xs=$this->channel->getBannerHeaderImageXs(); ?>
-		<img src="<?= $header_image->getLink(1920, 600, true) ?>" class="display-none-important header-default img-responsive  hidden-xs visible-up-1400">
-		<img src="<?= $header_image_md->getLink(1400, 600, true) ?>" class="display-none-important header-default img-responsive  hidden-xs visible-1051-1400">
-		<img src="<?= $header_image_sm->getLink(1051, 600, true) ?>" class="display-none-important header-default img-responsive  hidden-xs visible-768-1050">
-		<img src="<?= $header_image_xs->getLink(550, 600, true) ?>" class="img-responsive visible-xs">
+
+		<picture>
+			<source srcset="<?= $header_image->getLink(1920, 600, true) ?>" media="(min-width:1400px)"> 
+			<source srcset="<?= $header_image_md->getLink(1400, 600, true) ?>" media="(min-width:1051px)"> 
+			<source srcset="<?= $header_image_sm->getLink(1051, 600, true) ?>" media="(min-width:550px)"> 
+			<img src="<?= $header_image_xs->getLink(550, 600, true) ?>">
+		</picture>
 	</div>
 
 	<div class="banner-info">

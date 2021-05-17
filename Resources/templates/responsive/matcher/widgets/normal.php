@@ -14,7 +14,7 @@ $status = $this->matcher->getAvailableAmount() ? 'open' : 'completed';
 
     <div class="sphere">
         <?php if($sphere): ?>
-            <img class="center-block" src="<?= $sphere->getImage()->getLink(60, 60, false) ?>">
+            <img class="center-block" loading="lazy" src="<?= $sphere->getImage()->getLink(60, 60, false) ?>">
             <div class="text-center name"><?= $sphere->name ?></div>
         <?php endif; ?>
     </div>
@@ -30,7 +30,7 @@ $status = $this->matcher->getAvailableAmount() ? 'open' : 'completed';
         </div>
         <div class="bottom" >
             <div class="pull-left">
-                <img src="<?= $this->matcher->getOwner()->avatar->getLink(60,60, true) ?>">
+                <img loading="lazy" src="<?= $this->matcher->getOwner()->avatar->getLink(60,60, true) ?>">
             </div>
             <div class="location">
                 <div class="city">

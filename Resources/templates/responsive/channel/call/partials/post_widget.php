@@ -6,9 +6,9 @@ $image= $this->post->header_image ? $this->post->header_image : $this->post->ima
 <div class="post-widget">
     <a class="img-link" href="<?= '/blog/'.$this->post->getSlug() ?>">
     	<?php if($image): ?>
-        	<img class="img-link" src="<?= $image->getLink(230, 150, true); ?>" alt="<?= $this->post->title ?>"/>
+        	<img loading="lazy" class="img-link" src="<?= $image->getLink(230, 150, true); ?>" alt="<?= $this->post->title ?>"/>
         <?php else: ?>
-            <img class="img-link" src="/assets/img/blog/widget_post_default.png" alt="<?= $this->post->title ?>"/>
+            <img loading="lazy" class="img-link" src="/assets/img/blog/widget_post_default.png" alt="<?= $this->post->title ?>"/>
     	<?php endif; ?>
     </a>
     <div class="content">

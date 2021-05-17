@@ -14,7 +14,7 @@
           <?php
             $background_image = $story->getBackgroundImage();
           ?>
-          <img src='<?= $background_image->getLink(1350,400,true) ?>'>
+          <img loading="lazy" src='<?= $background_image->getLink(1350,400,true) ?>'>
           <?php
             $credits = $background_image->getCredits();
             if ($credits):
@@ -42,7 +42,7 @@
               <q><?= $story->description ?></q>
               <div class="author" >
                 <?php if ($story->image): ?>
-                  <img class="author-avatar" src="<?= $story->getImage()->getLink(70,70, true) ?>">
+                  <img loading="lazy" class="author-avatar" src="<?= $story->getImage()->getLink(70,70, true) ?>">
                 <?php endif; ?>
                 <div class="author-name">
                   <?= $title[0] ?> <br>
@@ -56,7 +56,7 @@
         <div class="story-xs">
           <div class="row">
             <div class="col-md-6">
-                <img class="img-responsive" src="<?= $story->getBackgroundImage()->getLink(600, 400, true) ?>" >
+                <img loading="lazy" class="img-responsive" src="<?= $story->getBackgroundImage()->getLink(600, 400, true) ?>" >
             </div>
             <div class="col-md-6">
                 <div class="info-container">

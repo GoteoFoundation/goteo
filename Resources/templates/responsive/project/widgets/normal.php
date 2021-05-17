@@ -46,7 +46,7 @@ if (!($label = $this->label)) {
 
 
     <a class="img-link" href="<?= $link ?>" <?= $target ?>>
-        <img class="img-project" src="<?= $this->project->image->getLink(600, 416, true); ?>">
+        <img loading="lazy" class="img-project" src="<?= $this->project->image->getLink(600, 416, true); ?>">
         <h2><?= $this->text_truncate($this->ee($this->project->name), 80); ?></h2>
     </a>
 
