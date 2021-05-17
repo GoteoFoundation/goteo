@@ -1,6 +1,8 @@
 {
     "require": {
         "php": "^7.0",
+        "ext-pdo": "*",
+        "ext-openssl": "*",
         "foil/foil": "~0.6",
         "tpyo/amazon-s3-php-class": "dev-master#81a35c61bf76be7c02c95a57771031d21277b1b5",
         "phpmailer/phpmailer": "^6.4",
@@ -49,8 +51,6 @@
         "unreal4u/telegram-api": "~3.4",
         "spipu/html2pdf": "^5.2",
         "snowplow/referer-parser": "0.2.0",
-        "ext-pdo": "*",
-        "ext-openssl": "*",
         "symfony/yaml": "^3.3"
     },
     "autoload": {
