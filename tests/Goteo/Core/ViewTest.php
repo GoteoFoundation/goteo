@@ -3,12 +3,7 @@
 namespace Goteo\Core\Tests;
 
 use Goteo\Core\View,
-    Goteo\Core\Redirection,
-    Goteo\Core\View\Exception,
-    Goteo\Application\Session,
-    Goteo\Model\Project,
-    Goteo\Model\Image,
-    Goteo\Model\User;
+    Goteo\Core\View\Exception;
 
 class ViewTest extends \Goteo\TestCase {
 
@@ -38,16 +33,10 @@ class ViewTest extends \Goteo\TestCase {
         $test = new Exception();
         $this->assertInstanceOf('\Goteo\Core\View\Exception', $test);
         try {
-            $test = new View('i-dont-exists.php');
-        }
-        catch(Exception $e) {
+            new View('i-dont-exists.php');
+        } catch(Exception $e) {
             $this->assertInstanceOf('\Goteo\Core\View\Exception', $e);
         }
-
-    }
-
-    public function testView() {
-
     }
 
     /**
