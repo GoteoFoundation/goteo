@@ -3,6 +3,7 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\Core\DB;
 use Goteo\Model\Message;
 use Goteo\Model\User;
 use Goteo\Application\Config;
@@ -20,8 +21,9 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
         Lang::set('es');
     }
 
-    public function testInstance() {
-        \Goteo\Core\DB::cache(false);
+    public function testInstance(): Message
+    {
+        DB::cache(false);
 
         $ob = new Message();
 
@@ -33,7 +35,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testInstance
      */
-    public function testValidate($ob) {
+    public function testValidate(Message $ob) {
         $this->assertFalse($ob->validate());
         $this->assertFalse($ob->save());
     }
@@ -64,7 +66,8 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testCreate
      */
-    public function testSaveLanguages($ob) {
+    public function testSaveLanguages(Message $ob): Message
+    {
         $errors = [];
         $this->assertTrue($ob->setLang('ca', self::$trans_data, $errors), print_r($errors, 1));
         return $ob;
@@ -73,7 +76,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testSaveLanguages
      */
-    public function testCheckLanguages($ob) {
+    public function testCheckLanguages(Message $ob) {
         $new = Message::get($ob->id);
         $this->assertInstanceOf('Goteo\Model\Message', $new);
         $this->assertEquals(self::$data['message'], $new->message);
@@ -87,16 +90,16 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testCreate
      */
-    public function testListing($ob) {
+    public function testListing(Message $ob) {
         $list = Message::getAll(get_test_project());
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $new = $list[$ob->id];
         $this->assertInstanceOf('Goteo\Model\Message', $new);
         $this->assertEquals(self::$data['message'], $new->message);
 
         Lang::set('ca');
         $list = Message::getAll(get_test_project());
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $new2 = $list[$ob->id];
         $this->assertEquals(self::$trans_data['message'], $new2->message);
         Lang::set('es');
@@ -105,27 +108,23 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testCreate
      */
-    public function testDelete($ob) {
+    public function testDelete(Message $ob) {
         $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
         $this->assertTrue($ob->save());
         $this->assertTrue(Message::delete($ob->id));
-
     }
 
     /**
      * @depends testCreate
      */
-    public function testNonExisting($ob) {
+    public function testNonExisting(Message $ob) {
         $ob = Message::get($ob->id);
         $this->assertFalse($ob);
         $this->assertFalse(Message::delete($ob->id));
     }
 
-    /**
-     * Some cleanup
-     */
     static function tearDownAfterClass() {
         delete_test_project();
         delete_test_user();

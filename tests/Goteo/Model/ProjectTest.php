@@ -5,6 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Exception;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Core\DB;
 use Goteo\TestCase;
 
 use Goteo\Application\Config;
@@ -69,8 +70,9 @@ class ProjectTest extends TestCase {
         self::$image2['size'] = strlen($i);
     }
 
-    public function testInstance() {
-        \Goteo\Core\DB::cache(false);
+    public function testInstance(): Project
+    {
+        DB::cache(false);
 
         $ob = new Project();
 
@@ -87,11 +89,11 @@ class ProjectTest extends TestCase {
         $unfunded = Project::dbCount(array('status' => Project::STATUS_UNFUNDED));
         $mainnode = Project::dbCount(array('node' => 'goteo'));
 
-        $this->assertInternalType('integer', $total);
-        $this->assertInternalType('integer', $campaign);
-        $this->assertInternalType('integer', $funded);
-        $this->assertInternalType('integer', $unfunded);
-        $this->assertInternalType('integer', $mainnode);
+        $this->assertIsInt($total);
+        $this->assertIsInt($campaign);
+        $this->assertIsInt($funded);
+        $this->assertIsInt($unfunded);
+        $this->assertIsInt($mainnode);
         $this->assertGreaterThanOrEqual($campaign, $total);
         $this->assertGreaterThanOrEqual($funded, $total);
         $this->assertGreaterThanOrEqual($unfunded, $total);
@@ -101,7 +103,7 @@ class ProjectTest extends TestCase {
     /**
      * @depends testInstance
      */
-    public function testValidate($ob) {
+    public function testValidate(Project $ob) {
         $this->assertFalse($ob->validate());
         $this->assertFalse($ob->save());
     }
@@ -131,7 +133,7 @@ class ProjectTest extends TestCase {
         $project = new Project(self::$data);
         $this->assertTrue($project->validate($errors), print_r($errors, 1));
         $this->assertNotFalse($project->create(self::$data, $node->id, $errors), print_r($errors, 1));
-// die($project->id);
+
         $project = Project::get($project->id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
         $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
@@ -144,7 +146,7 @@ class ProjectTest extends TestCase {
     /**
      * @depends testCreateProject
      */
-    public function testEditProject($project) {
+    public function testEditProject(Project $project) {
         $user = get_test_user();
         $errors = array();
         $project->name = self::$data['name'];
@@ -157,21 +159,21 @@ class ProjectTest extends TestCase {
         $this->assertTrue($project->save());
 
         $project = Project::get($project->id);
-        $this->assertInternalType('array', $project->all_galleries);
-        $this->assertInternalType('array', $project->gallery);
+        $this->assertIsArray($project->all_galleries);
+        $this->assertIsArray($project->gallery);
         $this->assertCount(2, $project->gallery);
         $this->assertCount(6, $project->all_galleries);
         $this->assertCount(2, $project->all_galleries['']);
         $this->assertEquals($project->image, $project->gallery[0]->imageData);
         $this->assertEquals($project->owner, $user->id);
         $this->assertEquals($project->name, self::$data['name']);
-
     }
 
     /**
      * @depends testCreateProject
      */
-    public function testRebaseProject($project) {
+    public function testRebaseProject(Project $project): string
+    {
         $errors = array();
 
         $this->assertRegExp('/^[A-Fa-f0-9]{32}$/', $project->id, $project->id);
@@ -202,8 +204,8 @@ class ProjectTest extends TestCase {
     /**
      * @depends testRebaseProject
      */
-    public function testGetProject($id) {
-        $errors = array();
+    public function testGetProject($id): Project
+    {
         $project = Project::getMini($id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
         $this->assertEquals($project->id, $id);
@@ -221,10 +223,11 @@ class ProjectTest extends TestCase {
 
         return $project;
     }
+
     /**
      * @depends testGetProject
      */
-    public function testRemoveImageProject($project) {
+    public function testRemoveImageProject(Project $project) {
         $errors = array();
 
         $this->assertTrue($project->image->remove($errors, 'project'), print_r($errors, 1));
@@ -232,14 +235,14 @@ class ProjectTest extends TestCase {
         $project->gallery = $project->all_galleries[''];
         $project->image = ProjectImage::setImage($project->id, $project->gallery);
 
-        $this->assertInternalType('array', $project->gallery);
+        $this->assertIsArray($project->gallery);
         $this->assertCount(1, $project->gallery, print_r($project->gallery, 1));
         $this->assertEquals($project->image, $project->gallery[0]->imageData, print_r($project->image, 1));
 
         //remove second image
         $this->assertTrue($project->gallery[0]->imageData->remove($errors, 'project'), print_r($errors, 1));
         $project = Project::get($project->id);
-        $this->assertInternalType('array', $project->gallery);
+        $this->assertIsArray($project->gallery);
         $this->assertCount(0, $project->gallery);
         $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
@@ -249,7 +252,7 @@ class ProjectTest extends TestCase {
         $this->assertTrue($project->validate($errors));
         $this->assertTrue($project->save());
         $project = Project::get($project->id);
-        $this->assertInternalType('array', $project->gallery);
+        $this->assertIsArray($project->gallery);
         $this->assertCount(1, $project->gallery);
         $this->assertEquals($project->image, $project->gallery[0]->imageData);
 
@@ -259,7 +262,8 @@ class ProjectTest extends TestCase {
     /**
      * @depends testGetProject
      */
-    public function testAccountProject($project) {
+    public function testAccountProject(Project $project): Project
+    {
         $account = Account::get($project->id);
         $this->assertEquals(Config::get('fee'), $account->fee);
         $account->bank = '0000-1111-222';
@@ -276,7 +280,8 @@ class ProjectTest extends TestCase {
     /**
      * @depends testAccountProject
      */
-    public function testPublishProject($project) {
+    public function testPublishProject(Project $project): Project
+    {
         $this->assertNotEquals(Project::STATUS_IN_CAMPAIGN, $project->status);
         $errors = array();
         $this->assertTrue($project->publish($errors), print_r($errors, 1));
@@ -292,7 +297,7 @@ class ProjectTest extends TestCase {
     /**
      * @depends testPublishProject
      */
-    public function testAccountFeeProject($project) {
+    public function testAccountFeeProject(Project $project) {
         $account = Account::get($project->id);
         $account->paypal = '';
         $this->assertTrue($account->save($errors), print_r($errors, 1));
@@ -303,7 +308,8 @@ class ProjectTest extends TestCase {
     /**
      * @depends testCreateProject
      */
-    public function testDeleteProject($project) {
+    public function testDeleteProject(Project $project): Project
+    {
         $errors = array();
         $this->assertTrue($project->remove($errors), print_r($errors, 1));
 
@@ -329,9 +335,6 @@ class ProjectTest extends TestCase {
         }
     }
 
-    /**
-     * Some cleanup
-     */
     static function tearDownAfterClass() {
         delete_test_user();
         delete_test_node();

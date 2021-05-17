@@ -289,7 +289,7 @@ class MatcherTest extends TestCase
     public function testListing()
     {
         $list = Matcher::getList();
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $new = end($list);
         $this->assertInstanceOf('Goteo\Model\Matcher', $new);
         $this->assertEquals(self::$data['name'], $new->name);
@@ -297,7 +297,7 @@ class MatcherTest extends TestCase
 
         Lang::set('ca');
         $list = Matcher::getList();
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $new2 = end($list);
         $this->assertEquals(self::$translatedData['name'], $new2->name);
         $this->assertEquals(self::$translatedData['terms'], $new2->terms);

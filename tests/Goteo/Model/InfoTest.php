@@ -2,6 +2,7 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\Core\DB;
 use Goteo\Model\Info;
 use Goteo\Model\Image;
 
@@ -35,8 +36,9 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
         self::$image2['size'] = strlen($i);
     }
 
-    public function testInstance() {
-        \Goteo\Core\DB::cache(false);
+    public function testInstance(): Info
+    {
+        DB::cache(false);
 
         $ob = new Info();
 
@@ -48,7 +50,7 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testInstance
      */
-    public function testValidate($ob) {
+    public function testValidate(Info $ob) {
         $this->assertFalse($ob->validate());
         $this->assertFalse($ob->save());
     }
@@ -56,19 +58,19 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
      /**
      * @depends testInstance
      */
-    public function testCreateInfo() {
+    public function testCreateInfo(): Info
+    {
         $ob = new Info(self::$data);
         $this->assertTrue($ob->validate($errors));
         $this->assertTrue($ob->save());
 
         return $ob;
-
     }
 
     /**
      * @depends testCreateInfo
      */
-    public function testGetInfo($ob) {
+    public function testGetInfo(Info $ob) {
         $ob = Info::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Info', $ob);
 
@@ -82,7 +84,7 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testGetInfo
      */
-    public function testEditInfo($ob) {
+    public function testEditInfo(Info $ob) {
         $ob->title = self::$data['title'] . " (edited)";
 
         //add image
@@ -97,8 +99,8 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
 
         $sob = Info::get($ob->id);
         $this->assertEquals($sob->title, $ob->title);
-        $this->assertInternalType('array', $ob->gallery);
-        $this->assertInternalType('array', $sob->gallery);
+        $this->assertIsArray($ob->gallery);
+        $this->assertIsArray($sob->gallery);
         $this->assertCount(2, $sob->gallery);
         $this->assertEquals($sob->gallery[0]->id, $ob->gallery[0]->id);
         $this->assertEquals($sob->image->id, $ob->gallery[0]->id);
@@ -107,13 +109,13 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testEditInfo
      */
-    public function testRemoveImageInfo($ob) {
+    public function testRemoveImageInfo(Info $ob) {
         $errors = array();
         $this->assertEquals($ob->image, Image::getModelImage('', $ob->gallery));
         $this->assertTrue($ob->image->remove($errors, 'info'), print_r($errors, 1));
         $ob->gallery = Image::getModelGallery('info', $ob->id);
         $ob->image = Image::getModelImage('', $ob->gallery);
-        $this->assertInternalType('array', $ob->gallery);
+        $this->assertIsArray($ob->gallery);
         $this->assertCount(1, $ob->gallery);
         $this->assertEquals($ob->image, $ob->gallery[0]);
 
@@ -121,7 +123,7 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals($ob->image, Image::getModelImage('', $ob->gallery));
         $this->assertTrue($ob->gallery[0]->remove($errors, 'info'), print_r($errors, 1));
         $ob = Info::get($ob->id);
-        $this->assertInternalType('array', $ob->gallery);
+        $this->assertIsArray($ob->gallery);
         $this->assertCount(0, $ob->gallery);
         $this->assertEmpty($ob->image);
 
@@ -131,30 +133,29 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
         $this->assertTrue($ob->validate($errors));
         $this->assertTrue($ob->save());
         $ob = Info::get($ob->id);
-        $this->assertInternalType('array', $ob->gallery);
+        $this->assertIsArray($ob->gallery);
         $this->assertCount(1, $ob->gallery);
         $this->assertEquals($ob->image, $ob->gallery[0]);
     }
+
     /**
      * @depends testGetInfo
      */
-    public function testDeleteInfo($ob) {
-        //delete post
+    public function testDeleteInfo(Info $ob): Info
+    {
         $this->assertTrue($ob->dbDelete());
 
         return $ob;
     }
+
     public function testCleanProjectRelated() {
         foreach(self::$related_tables as $tb => $field) {
             Info::query("DELETE FROM $tb WHERE $field NOT IN (SELECT id FROM info)");
             $this->assertEquals(0, Info::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM info)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM info)");
         }
     }
-    /**
-     * Some cleanup
-     */
+
     static function tearDownAfterClass() {
-        // Remove temporal files on finish
         unlink(self::$image['tmp_name']);
         unlink(self::$image2['tmp_name']);
     }
