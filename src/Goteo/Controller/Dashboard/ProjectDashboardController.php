@@ -19,6 +19,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\View;
 use Goteo\Application\Message;
 use Goteo\Application\Lang;
+use Goteo\Model\Call;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Account;
@@ -30,7 +31,9 @@ use Goteo\Model\User;
 use Goteo\Model\Blog;
 use Goteo\Model\Stories;
 use Goteo\Model\Blog\Post as BlogPost;
+use Goteo\Model\Matcher;
 use Goteo\Model\Message as Comment;
+use Goteo\Model\Node;
 use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
 use Goteo\Application\Exception\ModelNotFoundException;
@@ -108,6 +111,16 @@ class ProjectDashboardController extends DashboardController {
         Session::addToSidebarMenu('<i class="icon icon-2x icon-settings"></i> ' . Text::get('footer-header-resources'), $submenu, 'resources', null, 'sidebar');
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get($project->isApproved() ? 'dashboard-menu-projects-preview' : 'regular-preview' ), '/project/' . $project->id, 'preview');
+
+        $calls_available = $matchers_available = $channels_available = [];
+        $calls_available = Call::getCallsAvailable($project);
+        if($project->inEdition() || $project->inReview()) {
+            $channels_available = Node::getAll(['status' => 'active', 'type' => 'channel', 'inscription_open' => true]);
+        }
+        $matchers_available = Matcher::getList(['active' => true, 'status' => Matcher::STATUS_OPEN]);
+        if ($calls_available || $channels_available || $matchers_available) {
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-tasks"></i> ' . Text::get('dashboard-menu-projects-pitch'), $prefix . '/pitch', 'pitch');
+        }
 
         if($project->isFunded()) {
 
@@ -1130,4 +1143,33 @@ class ProjectDashboardController extends DashboardController {
         ]);
     }
 
+    /**
+     * Action to handle pitches that the project can answer
+     */
+    public function pitchAction($pid, Request $request)
+    {
+        $project = $this->validateProject($pid, 'pitch');
+        if($project instanceOf Response) return $project;
+
+        $calls_available = $matchers_available = $channels_available = [];
+
+        $calls_available = Call::getCallsAvailable($project);
+        $calls_available = array_column($calls_available, null, 'id');
+
+        if($project->inEdition() || $project->inReview()) {
+            $channels_available = Node::getAll(['status' => 'active', 'type' => 'channel', 'inscription_open' => true]);
+            $channels_available = array_column($channels_available, null, 'id');
+        }
+
+        $matchers_available = Matcher::getList(['active' => true, 'status' => Matcher::STATUS_OPEN]);
+        $matchers_available = array_column($matchers_available, null, 'id');
+
+        $pitches = array_merge($channels_available, $calls_available, $matchers_available);
+
+        return $this->viewResponse(
+            'dashboard/project/pitch', [
+            'pitches' =>   $pitches,
+            ]
+        );
+    }
 }

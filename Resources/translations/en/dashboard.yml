@@ -85,6 +85,7 @@ dashboard-menu-projects-supports: Collaborations
 dashboard-menu-projects-updates: News
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'My history'
+dashboard-menu-projects-pitch: "Open applications"
 dashboard-menu-review_board: Review
 dashboard-menu-translate_board: Translation
 dashboard-menu-translates: 'My translations'
@@ -296,3 +297,7 @@ dashboard-origin-invests-device: 'Device used in successful contributions'
 dashboard-origin-disclaimer: '⚠ *These data are indicative and do not include all visits due to technical limitations.*  > We recommend you to configure Google Analytics or Facebook Pixel for a better detailed data'
 dashboard-project-integration-token: 'Token'
 dashboard-project-integration-link: 'Link'
+dashboard-project-pitch-title: 'Open applications'
+dashboard-project-pitch-description: "These are the different spaces to which you can apply, if you are interested in receiving extra funding for your campaign or institutional support, take a look and go ahead and introduce yourself!"
+dashboard-project-pitch-type: "Type"
+dashboard-project-pitch-already-applied: "You have already applied"

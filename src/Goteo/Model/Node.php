@@ -258,6 +258,10 @@ class Node extends \Goteo\Core\Model {
             }
         }
 
+        if (isset($filters['inscription_open'])) {
+            $sqlFilter[] = "(node.project_creation_open OR node.call_inscription_open)";
+        }
+
         if($sqlFilter) $sqlFilter = ' WHERE '. implode(' AND ', $sqlFilter);
         else $sqlFilter = '';
 
@@ -1237,5 +1241,24 @@ class Node extends \Goteo\Core\Model {
         $sections = NodeSections::getList($filter, 0, 10);
         return $sections;
     }
+
+    public function findProject($pid)
+    {
+
+        $values = [
+            ':project' => $pid,
+            ':node' => $this->id
+        ];
+
+        $sql = "SELECT *
+                FROM node_project
+                WHERE node_project.project_id = :project
+                    AND node_project.node_id = :node
+            ";
+
+        // die(\sqldbg($sql, $values));
+        return self::query($sql, $values)->fetchAll(\PDO::FETCH_CLASS. __CLASS__);
+    }
+
 
 }

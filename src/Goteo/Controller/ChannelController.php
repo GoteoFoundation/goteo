@@ -18,6 +18,7 @@ use Goteo\Application\Message;
 use Goteo\Application\View;
 use Goteo\Application\Config;
 use Goteo\Model\Node;
+use Goteo\Model\Node\NodeProject;
 use Goteo\Model\Node\NodeFaq;
 use Goteo\Model\Node\NodeFaqQuestion;
 use Goteo\Model\Node\NodeFaqDownload;
@@ -279,11 +280,22 @@ class ChannelController extends \Goteo\Core\Controller {
         }
 
         $channel = Node::get($id);
-
         $project = Project::get($pid);
         if(!$project->inEdition()) {
             Message::error('Project must be in edition to assign to a call');
             return $this->redirect("/dashboard/project/$pid");
+        }
+
+        if (!NodeProject::getList(['node' => $id, 'project' => $pid])) {
+            $node_project = new NodeProject();
+            $node_project->node_id = $id;
+            $node_project->project_id = $pid;
+            $errors = array();
+            $node_project->save($errors);
+            if ($errors) {
+                Message::error(implode(',', $errors));
+                return $this->redirect($request->headers->get('referer'));
+            }
         }
 
         $questionnaire = Questionnaire::getByMatcher($id);

@@ -152,6 +152,20 @@ class Questionnaire extends \Goteo\Core\Model
         }
     }
 
+    public function isAnswered($project_id)
+    {
+        $sql = 'SELECT DISTINCT(qap.project)
+        FROM question_answer_project qap
+        INNER JOIN question_answer qa ON qa.id  = qap.answer
+        INNER JOIN question q ON q.id = qa.question
+        WHERE qap.project = :project AND q.questionnaire = :id';
+
+        $values = [':id' => $this->id, ':project' => $project_id];
+        $query = static::query($sql, $values);
+
+        return $query->fetchColumn();
+    }
+
     public function removeLang($lang) {
         if ($this->questions) {
             foreach($this->questions as $question) {
@@ -174,18 +188,6 @@ class Questionnaire extends \Goteo\Core\Model
         }
 
         return $percent;
-    }
-
-    public function isAnswered($project_id)
-    {
-        $query = static::query('SELECT DISTINCT(qap.project)
-        FROM question_answer_project qap
-        INNER JOIN question_answer qa ON qa.question  = qap.answer
-        INNER JOIN question q ON q.id = qa.question
-        WHERE qap.project = :project AND q.questionnaire = :id
-        ', [':id' => $this->id, ':project' => $project_id]);
-
-        return $query->fetchColumn();
     }
 
     /**
