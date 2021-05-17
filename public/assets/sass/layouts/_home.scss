@@ -553,6 +553,11 @@ body.home {
                 }
             }
         }
+
+        // div[id^="goteo-values-"] {
+        //     display:grid;
+        //     grid-template-columns: 60% 40%;
+        // }
         
     
         div.footprint-briefing {
@@ -560,6 +565,7 @@ body.home {
             border-right:1px solid #E9EFEF;
             padding-left:100px;
             padding-right:50px;
+            grid-row: 1 / span 1;
 
             img.footprint {
                 margin-left:-100px;
@@ -589,14 +595,22 @@ body.home {
                 }
             }
 
-            div.action {
+            
+        }
 
-                margin: 4em 0;
+        div.footprint-info {
+            grid-row: 1 / span 2;
+        }
 
-                a {
-                    color:#53787D;
-                    text-transform:uppercase;
-                }
+        div.footprint-action {
+
+            padding: 2em 50px 2em 100px;
+            grid-row: 2 / span 1;
+            border-right:1px solid #E9EFEF;
+
+            a {
+                color:#53787D;
+                text-transform:uppercase;
             }
         }
 
@@ -727,13 +741,32 @@ body.home {
 
     @media (max-width: $breakpoint-sm - 1) {
         div.goteo-values {
+
+            div[id^="goteo-values-"] {
+                display:flex;
+                flex-direction: column;
+            }
+
             div.footprint-briefing {
+                border:0;
+                border-bottom:1px solid #E9EFEF;
+                margin-bottom:3rem;
                 padding-left:10px;
                 padding-right:10px;
+
+                ul {
+                    margin-bottom:2em;
+                }
+            }
+
+            div.footprint-action {
+                border:0;
+                padding:2em 1em;
             }
 
             .slider-footprint-data {
-                margin-left:10px;
+                margin-left:20px;
+                margin-right:20px;
 
                 img {
                     width:100px;
@@ -746,7 +779,8 @@ body.home {
             }
 
             .slider-footprint-projects {
-                margin-left:10px;
+                margin-left:20px;
+                margin-right:20px;
             }
         }
     }

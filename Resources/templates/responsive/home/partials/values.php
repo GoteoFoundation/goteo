@@ -31,19 +31,19 @@
             <div class="col col-sm-5">
                 <div class="slider slider-footprint-data">
                     <div class="">
-                        <img src="https://via.placeholder.com/165x240?text=slider+1">
+                        <img src="https://data.goteo.org/165x240c/cambio-climatico-1.jpg">
                         <h2>Datos huella ecológica</h2>
                         <h3><span>2,8</span> Planetas</h3>
                         <p>Serían necesarios si todo el mundo consumiera como un ciudadano medio de la UE.</p>
                     </div>
                     <div class="">
-                        <img src="https://via.placeholder.com/165x240?text=slider+2">
+                        <img src="https://data.goteo.org/165x240c/captura-de-pantalla-2020-09-23-a-les-8.10.40.png">
                         <h2>Datos huella ecológica</h2>
                         <h3><span>2,8</span> Planetas</h3>
                         <p>Serían necesarios si todo el mundo consumiera como un ciudadano medio de la UE.</p>
                     </div>
                     <div class="">
-                        <img src="https://via.placeholder.com/165x240?text=slider+3">
+                        <img src="https://data.goteo.org/165x240c/mrlr1gd-2.jpg">
                         <h2>Datos huella ecológica</h2>
                         <h3><span>2,8</span> Planetas</h3>
                         <p>Serían necesarios si todo el mundo consumiera como un ciudadano medio de la UE.</p>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="slider slider-footprint-projects">
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project eco">
+                        <img src="http://data.goteo.org/7000x0/img-20201118-111420.jpg" class="bg-project eco">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                         </div>
@@ -59,12 +59,12 @@
                         <p>Por: L'Espora</p>
                     </div>
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project eco">
+                        <img src="//data.goteo.org/7000x0/banner750x422-lazona.jpg" class="bg-project eco">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                         </div>
-                        <h2>Short title</h2>
-                        <p>Por: L'Espora</p>
+                        <h2>La Zona, un mercat digital amb valors</h2>
+                        <p>Por: La Zona</p>
                     </div>
                 </div>
             </div>
@@ -91,19 +91,19 @@
             <div class="col col-sm-5">
                 <div class="slider slider-footprint-data">
                     <div class="">
-                        <img src="https://via.placeholder.com/165x240?text=slider+1">
+                        <img src="https://data.goteo.org/165x240c/cambio-climatico-1.jpg">
                         <h2>Datos huella ecológica</h2>
                         <h3><span>2,8</span> Planetas</h3>
                         <p>Serían necesarios si todo el mundo consumiera como un ciudadano medio de la UE.</p>
                     </div>
                     <div class="">
-                        <img src="https://via.placeholder.com/165x240?text=slider+2">
+                        <img src="https://data.goteo.org/165x240c/captura-de-pantalla-2020-09-23-a-les-8.10.40.png">
                         <h2>Datos huella ecológica</h2>
                         <h3><span>2,8</span> Planetas</h3>
                         <p>Serían necesarios si todo el mundo consumiera como un ciudadano medio de la UE.</p>
                     </div>
                     <div class="">
-                        <img src="https://via.placeholder.com/165x240?text=slider+3">
+                        <img src="https://data.goteo.org/165x240c/mrlr1gd-2.jpg">
                         <h2>Datos huella ecológica</h2>
                         <h3><span>2,8</span> Planetas</h3>
                         <p>Serían necesarios si todo el mundo consumiera como un ciudadano medio de la UE.</p>
@@ -111,7 +111,7 @@
                 </div>
                 <div class="slider slider-footprint-projects">
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project soc">
+                        <img src="http://data.goteo.org/7000x0/img-20201118-111420.jpg" class="bg-project soc">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
                         </div>
@@ -119,12 +119,12 @@
                         <p>Por: L'Espora</p>
                     </div>
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project soc">
+                        <img src="//data.goteo.org/7000x0/banner750x422-lazona.jpg" class="bg-project soc">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
                         </div>
-                        <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
-                        <p>Por: L'Espora</p>
+                        <h2>La Zona, un mercat digital amb valors</h2>
+                        <p>Por: La Zona</p>
                     </div>
                 </div>
             </div>
@@ -151,19 +151,19 @@
             <div class="col col-sm-5">
                 <div class="slider slider-footprint-data">
                     <div class="">
-                        <img src="https://via.placeholder.com/165x240?text=slider+1">
+                        <img src="https://data.goteo.org/165x240c/cambio-climatico-1.jpg">
                         <h2>Datos huella ecológica</h2>
                         <h3><span>2,8</span> Planetas</h3>
                         <p>Serían necesarios si todo el mundo consumiera como un ciudadano medio de la UE.</p>
                     </div>
                     <div class="">
-                        <img src="https://via.placeholder.com/165x240?text=slider+2">
+                        <img src="https://data.goteo.org/165x240c/captura-de-pantalla-2020-09-23-a-les-8.10.40.png">
                         <h2>Datos huella ecológica</h2>
                         <h3><span>2,8</span> Planetas</h3>
                         <p>Serían necesarios si todo el mundo consumiera como un ciudadano medio de la UE.</p>
                     </div>
                     <div class="">
-                        <img src="https://via.placeholder.com/165x240?text=slider+3">
+                        <img src="https://data.goteo.org/165x240c/mrlr1gd-2.jpg">
                         <h2>Datos huella ecológica</h2>
                         <h3><span>2,8</span> Planetas</h3>
                         <p>Serían necesarios si todo el mundo consumiera como un ciudadano medio de la UE.</p>
@@ -171,7 +171,7 @@
                 </div>
                 <div class="slider slider-footprint-projects">
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+1" class="bg-project dem">
+                        <img src="http://data.goteo.org/7000x0/img-20201118-111420.jpg" class="bg-project dem">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
                         </div>
@@ -179,12 +179,12 @@
                         <p>Por: L'Espora</p>
                     </div>
                     <div class="footprint-project">
-                        <img src="https://via.placeholder.com/420x250?text=slider+2" class="bg-project dem">
+                        <img src="//data.goteo.org/7000x0/banner750x422-lazona.jpg" class="bg-project dem">
                         <div class="project-footprint">
                             <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
                         </div>
-                        <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
-                        <p>Por: L'Espora</p>
+                        <h2>La Zona, un mercat digital amb valors</h2>
+                        <p>Por: La Zona</p>
                     </div>
                 </div>
             </div>
