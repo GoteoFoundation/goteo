@@ -81,7 +81,7 @@ class BannerTest extends TestCase {
      */
     public function testListing($ob) {
         $list = Banner::getAll(false, get_test_node()->id);
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $new = $list[$ob->id];
         $this->assertInstanceOf('Goteo\Model\Banner', $new);
         $this->assertEquals(self::$data['title'], $new->title);
@@ -89,7 +89,7 @@ class BannerTest extends TestCase {
 
         Lang::set('ca');
         $list = Banner::getAll(false, get_test_node()->id);
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $new2 = $list[$ob->id];
         $this->assertEquals(self::$trans_data['title'], $new2->title);
         $this->assertEquals(self::$trans_data['description'], $new2->description);
