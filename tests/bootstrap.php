@@ -85,7 +85,6 @@ function delete_test_node() {
 
     try {
         \Goteo\Model\Node::get('testnode');
-        error_log('unknow error deleting test node! ' . print_r($errors, 1));
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
         return true;
@@ -143,7 +142,7 @@ function get_test_project() {
         return \Goteo\Model\Project::get($data['id']);
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
-        error_log('Project [' . $data['id'] . '] not found, creating...');
+//        error_log('Project [' . $data['id'] . '] not found, creating...');
     }
     catch(\PDOException $e) {
         error_log('PDOException on deleting test project! ' . $e->getMessage());
@@ -180,7 +179,7 @@ function delete_test_project() {
         $project->dbDelete();
     }
     catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
-        error_log('Already deleted test project');
+//        error_log('Already deleted test project');
     }
 
     try {
