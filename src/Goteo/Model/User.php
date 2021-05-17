@@ -56,7 +56,6 @@ class User extends \Goteo\Core\Model {
     $confirmed, // si no ha confirmado el email
     $hide, // si oculto no aparece su avatar en ninguna parte (pero sus aportes cuentan)
     $facebook,
-    $google,
     $twitter,
     $identica,
     $linkedin,
@@ -241,10 +240,6 @@ class User extends \Goteo\Core\Model {
                     $data[':facebook'] = $this->facebook;
                 }
 
-                if (isset($this->google)) {
-                    $data[':google'] = $this->google;
-                }
-
                 if (isset($this->twitter)) {
                     $data[':twitter'] = $this->twitter;
                 }
@@ -321,7 +316,7 @@ class User extends \Goteo\Core\Model {
                     }
                     $query = substr($query, 0, -2) . " WHERE id = :id";
                 }
-                // die(\sqldbg($query, $data));
+                 //die(\sqldbg($query, $data));
                 // Ejecuta SQL.
                 if (self::query($query, $data)) {
                     return true;
@@ -414,10 +409,6 @@ class User extends \Goteo\Core\Model {
             $this->facebook = '';
         }
 
-        if (\str_replace(Text::get('regular-google-url'), '', $this->google) == '') {
-            $this->google = '';
-        }
-
         if (\str_replace(Text::get('regular-twitter-url'), '', $this->twitter) == '') {
             $this->twitter = '';
         }
@@ -428,6 +419,10 @@ class User extends \Goteo\Core\Model {
 
         if (\str_replace(Text::get('regular-linkedin-url'), '', $this->linkedin) == '') {
             $this->linkedin = '';
+        }
+
+        if (\str_replace(Text::get('regular-instagram-url'), '', $this->instagram) == '') {
+            $this->instagram = '';
         }
 
         return (empty($errors['email']) && empty($errors['password']));
@@ -725,7 +720,6 @@ class User extends \Goteo\Core\Model {
                     IFNULL(user_lang.contribution, user.contribution) as contribution,
                     IFNULL(user_lang.keywords, user.keywords) as keywords,
                     user.facebook as facebook,
-                    user.google as google,
                     user.twitter as twitter,
                     user.instagram as instagram,
                     user.identica as identica,

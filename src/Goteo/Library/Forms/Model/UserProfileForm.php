@@ -33,10 +33,10 @@ class UserProfileForm extends AbstractFormProcessor {
             if(in_array($field, ['gender', 'about'])) {
                 $constraints[] = new Constraints\NotBlank();
             }
-            if(in_array($field, ['webs', 'facebook', 'twitter'] )) {
+            if(in_array($field, ['webs', 'facebook', 'twitter', 'instagram'] )) {
                 $constraints[] = new Constraints\Callback(function($object, ExecutionContextInterface $context) use ($field) {
                     $data = $context->getRoot()->getData();
-                    if(empty($data['webs']) && empty($data['facebook']) && empty($data['twitter'])) {
+                    if(empty($data['webs']) && empty($data['facebook']) && empty($data['twitter']) && empty($data['instagram'])) {
                         $context->buildViolation(Text::get('project-validation-error-profile_social'))
                         ->atPath($field)
                         ->addViolation();
@@ -216,15 +216,6 @@ class UserProfileForm extends AbstractFormProcessor {
                 'pre_addon' => '<i class="fa fa-twitter"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-twitter'),
                            'placeholder' => Text::get('regular-twitter-url')],
-                'required' => false
-            ])
-            ->add('google', 'url', [
-                'label' => 'regular-google',
-                'constraints' => $this->getConstraints('google'),
-                'disabled' => $this->getReadonly(),
-                'pre_addon' => '<i class="fa fa-google-plus"></i>',
-                'attr' => ['help' => Text::get('tooltip-user-google'),
-                           'placeholder' => Text::get('regular-google-url')],
                 'required' => false
             ])
             ->add('linkedin', 'url', [
