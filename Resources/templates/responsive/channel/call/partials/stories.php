@@ -14,7 +14,12 @@
           <?php
             $background_image = $story->getBackgroundImage();
           ?>
-          <img src='<?= $background_image->getLink(1350,400,true) ?>'>
+          <picture>
+            <source media="(min-width:1400px)" srcset="<?= $background_image->getLink(1920,400,true) ?>">
+            <source media="(min-width:1051px)" srcset="<?= $background_image->getLink(1400,400,true) ?>">
+            <source media="(min-width:750px)" srcset="<?= $background_image->getLink(1051,400,true) ?>">
+            <img src='<?= $background_image->getLink(750,400,true) ?>' alt="<?= $story->title ?>">
+          </picture>
           <?php
             $credits = $background_image->getCredits();
             if ($credits):
@@ -42,7 +47,7 @@
               <q><?= $story->description ?></q>
               <div class="author" >
                 <?php if ($story->image): ?>
-                  <img class="author-avatar" src="<?= $story->getImage()->getLink(70,70, true) ?>">
+                  <img loading="lazy" class="author-avatar" src="<?= $story->getImage()->getLink(70,70, true) ?>">
                 <?php endif; ?>
                 <div class="author-name">
                   <?= $title[0] ?> <br>
@@ -56,7 +61,7 @@
         <div class="story-xs">
           <div class="row">
             <div class="col-md-6">
-                <img class="img-responsive" src="<?= $story->getBackgroundImage()->getLink(600, 400, true) ?>" >
+                <img loading="lazy" class="img-responsive" src="<?= $story->getBackgroundImage()->getLink(600, 400, true) ?>" >
             </div>
             <div class="col-md-6">
                 <div class="info-container">

@@ -9,7 +9,7 @@ if ($this->channel->getResources()):
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <img class="img-responsive" src="<?= $section->main_image? $section->getImage()->getLink(500, 300, false) : "/assets/img/channel/call/resources.png" ?>">
+        <img loading="lazy" class="img-responsive" src="<?= $section->main_image? $section->getImage()->getLink(500, 300, false) : "/assets/img/channel/call/resources.png" ?>">
       </div>
       <div class="col-md-6">
         <div class="info">

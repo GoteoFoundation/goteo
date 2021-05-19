@@ -29,7 +29,7 @@
     <li>
         <h5><?= $this->text('project-social-commitment-title') ?></h5>
         <p class="social">
-            <img src="<?= $social->image->getLink(60, 60, false) ?>">
+            <img loading="lazy" src="<?= $social->image->getLink(60, 60, false) ?>">
             <?= $social->name ?>
         </p>
     </li>
