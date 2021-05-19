@@ -33,7 +33,7 @@ use Goteo\Application\Event\MatcherValidationEvent;
 class Matcher extends \Goteo\Core\Model {
     use Traits\SphereRelationsTrait;
 
-
+    //matcher status
     const STATUS_OPEN = 'open';
     const STATUS_COMPLETED = 'completed';
     const STATUS_PITCH_CLOSED = 'pitch_closed';
@@ -416,7 +416,7 @@ class Matcher extends \Goteo\Core\Model {
      * Gets the total number of active projects available for the matching
      * @return int num of projects
      */
-    protected function calculateProjects() {
+    protected function calculateProjects($status = 'active') {
         $sql = "SELECT
                 COUNT(*) AS total
                 FROM matcher_project
@@ -583,7 +583,7 @@ class Matcher extends \Goteo\Core\Model {
     }
 
     /**
-     * Use to ensure a valid value of total projects
+     * Use to ensure a valid value of total projects active
      * @return [type] [description]
      */
     public function getTotalProjects() {
@@ -972,6 +972,15 @@ class Matcher extends \Goteo\Core\Model {
         }
         // TODO Filter by location
         return $matchers;
+    }
+
+    public function hasQuestionnaire() {
+        $questionnaire = Questionnaire::getByMatcher($this->id);
+        return isset($questionnaire);
+    }
+
+    public function getQuestionnaire() {
+        return Questionnaire::getByMatcher($this->id);
     }
 
 }

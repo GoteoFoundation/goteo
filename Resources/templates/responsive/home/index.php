@@ -33,6 +33,8 @@
 
     <?= $this->insert('home/partials/projects') ?>
 
+    <?= $this->insert('home/partials/values') ?>
+
     <?= $this->insertif('home/partials/call_to_action') ?>
 
     <?= $this->insertif('home/partials/advantages') ?>

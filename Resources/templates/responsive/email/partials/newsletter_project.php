@@ -68,7 +68,7 @@ if($this->key==0):
                             </span>
                             </a>
                             <h4 style="margin: 0;padding: 0 20px 20px 20px;line-height: 1.3;padding-bottom: 4px;font-size: 15px;font-weight: 400;">
-                                <?= $this->t('regular-by', $this->lang) .' ' ?><span style="font-weight: 400; "><?= $project->user->name ?></span>
+                                <?= $this->t('regular-by', $this->lang) .' ' ?><span style="font-weight: 400; "><?= $this->ee($project->user->name) ?></span>
                             </h4>
 
                             <?php if($project->getSocialCommitment()): ?>

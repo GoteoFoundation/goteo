@@ -172,7 +172,7 @@ color:#20B3B2;
 <div class="content">
 
 <div class="message">
-  <?= $this->raw('content') ?>
+	<?= ($this->type == 'md')? $this->markdown($this->content) : $this->raw('content') ?>
 </div>
 
 <div class="disclaimer"><?= $this->text('mailer-disclaimer') ?></div>

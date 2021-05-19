@@ -11,6 +11,8 @@
 namespace Goteo\Model\Project;
 
 use Goteo\Application\Config;
+use Goteo\Model\Project;
+use Goteo\Model\Invest;
 
 class Account extends \Goteo\Core\Model {
 
@@ -84,6 +86,22 @@ class Account extends \Goteo\Core\Model {
 
 	}
 
+    public function getFeeAmount($project_amount, $matcher_amount=0) {
+        $fee_amount=($project_amount*$this->fee)/100;
+        return round($fee_amount,2);
+    }
+
+
+    public function getBanksFeeAmount($project_id) {
+        $project=Project::get($project_id);
+        $report=Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
+        $paypal_fee = ($report['paypal']['total']['invests'] *0.35) + ($report['paypal']['total']['amount'] * 0.034);
+        $tpv_fee = ($report['tpv']['total']['amount']*0.8)/100;
+        $fee_amount=$paypal_fee+$tpv_fee;
+        return round($fee_amount,2);
+    }
+
+
     // comprobar, para aportar con PayPal tiene que tener puesta la cuenta
     public static function getAllowpp ($id) {
 
@@ -95,17 +113,6 @@ class Account extends \Goteo\Core\Model {
             return false;
         }
 
-        /*
-         * Esto al final no se usa, se podrá aprovechar el campo para marcar que la cuenta está verificada (o algo así)
-        try {
-            $query = static::query("SELECT allowpp FROM project_account WHERE project = ?", array($id));
-            $allowpp = $query->fetchColumn(0);
-            return $allowpp;
-        } catch(\PDOException $e) {
-			throw new \Goteo\Core\Exception($e->getMessage());
-            return false;
-        }
-        */
     }
 
 

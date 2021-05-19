@@ -2,7 +2,7 @@ group: project
 name: 'Project added to a Matchfunding call'
 purpose: 'Mail template to be sent to a project owner when his project is added to a Matcher call'
 type: 'md'
-title: "¡T'has presentat per rebre fons de %CALLNAME%!"
+title: "T'has presentat per rebre fons de %CALLNAME%!"
 text: >
     # T'has presentat per rebre fons de  %CALLNAME% amb el teu projecte **%PROJECTNAME%**!
 

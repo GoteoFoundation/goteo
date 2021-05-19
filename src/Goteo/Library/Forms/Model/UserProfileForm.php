@@ -265,6 +265,10 @@ class UserProfileForm extends AbstractFormProcessor {
             throw new FormModelException(Text::get('form-sent-error', $err));
 
         }
+
+        $data['name'] = strip_tags($data['name']);
+        $data['about'] = strip_tags($data['about']);
+
         // $data['user_avatar'] = $data['avatar'];
         unset($data['avatar']); // do not rebuild data using this
 

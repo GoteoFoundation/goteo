@@ -55,7 +55,7 @@ class AnswerOptions extends \Goteo\Core\Model
         }
     }
 
-    public static function getList ($filters = array(), $offset = 0, $limit = 0, $count = false, $lang = null) {
+    public static function getList ($filters = array(), $offset = 0, $limit = 10, $count = false, $lang = null) {
 
       $sql = "";
       $sqlWhere = [];

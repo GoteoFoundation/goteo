@@ -293,6 +293,7 @@ admin-title-resource-category: 'Categoría de recurso'
 admin-title-year: Año
 admin-title-nif: NIF
 admin-title-country: País
+admin-title-subsection: 'Subsección'
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
@@ -531,6 +532,7 @@ admin-filter-previous-year: 'El año pasado'
 admin-filter-two-years-ago: 'Hace dos años'
 admin-filter-typeofuser: 'Tipo de usuario'
 admin-filter-typeofdonor: 'Tipo de donante'
+admin-filter-typeofentity: 'Tipo de entidad'
 admin-filter-user: 'Usuario'
 admin-filter-donor: 'Donante'
 admin-filter-no-donor: 'Donante inactivo'
@@ -591,8 +593,11 @@ mandatory-filter-role: Falta un rol
 admin-node-iframe: Iframe
 
 
+
+admin-faqs: Faqs
+admin-faq-add: Añadir Faq
+admin-faq-pending: 'Marcar como pendiente de traducir'
+
 admin-channel-resource: 'Recursos Canal'
 admin-channel-resource-add: 'Crear recurso'
-
 admin-posts: 'Posts'
-

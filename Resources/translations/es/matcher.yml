@@ -39,5 +39,7 @@ matcher-btn-active: 'Activar match'
 matcher-label-active: 'Match activo'
 matcher-label-completed: 'Completado'
 matcher-label-rejected: 'Descartado'
+matcher-label-pending: "Pendiente"
 matcher-label-project: 'Agentes de Matchfunding<br>multiplicando aportes'
 matcher-amount-project: 'Aportados: %AMOUNT% de %PROJECT_AMOUNT%'
+matcher-apply-answer-questionnaire: "Responder cuestionario"

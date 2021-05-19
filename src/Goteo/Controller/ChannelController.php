@@ -126,9 +126,7 @@ class ChannelController extends \Goteo\Core\Controller {
         $channel = Node::get($id);
         $config = $channel->getConfig();
 
-        if ($config['projects']) {
-            $list = Project::getList($config['projects'], $id, 0, $limit);
-        } else if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
+        if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
             $total = count($list);
         }
         else {

@@ -1,9 +1,9 @@
 <?php 
 
 $section = current($this->channel->getSections('map'));
+$config = $this->channel->getConfig();
 
-if($this->projects || $section):
-  $config = $this->channel->getConfig();
+if($config['map'] || $section):
   $map_config = $config['map'];
   $params = [
     'channel' => $this->channel->id,

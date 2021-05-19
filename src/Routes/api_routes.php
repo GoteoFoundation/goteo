@@ -500,6 +500,29 @@ $api->add('api-questionnaire-documents-upload', new Route(
     array('POST') // methods
 ));
 
+// Stories sort up/down arbitrarily (use the PUT method to sort)
+$api->add('api-faq-sort', new Route(
+    '/faq/{id}/sort',
+    array('_controller' => 'Goteo\Controller\Api\FaqApiController::faqSortAction'
+        )
+));
 
+// Post images upload (POST method only)
+$api->add('api-faq-images-upload', new Route(
+    '/faq/{id}/images',
+    array('_controller' => 'Goteo\Controller\Api\FaqApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
+
+//Sdg list based on  footprints
+$api->add('api-sdg-footprint-list', new Route(
+    '/sdg/footprint',
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::sdgFootprintAction')
+));
 
 return $api;

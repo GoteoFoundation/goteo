@@ -190,6 +190,8 @@ EOT
                         $invalid_donors++;
                         $valid_nif = Check::nif($donor->nif, $nif_type);
 
+                        $valid_nif = Check::nif($donor->nif, $nif_type);
+
                         if(isset($errors['nif'])) {
                             
                             if ($valid_nif && $nif_type != Donor::VAT) {

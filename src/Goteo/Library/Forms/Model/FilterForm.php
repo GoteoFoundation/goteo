@@ -183,6 +183,18 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'choices' => $typeofdonor,
             ))
+            ->add('type_of_entity', 'choice', array(
+                'label' => 'admin-filter-typeofentity',
+                'required' => false,
+                'choices' => [
+                    '0' => Text::get('profile-field-legal-entity-person'),
+                    '1' => Text::get('profile-field-legal-entity-self-employed'),
+                    '2' => Text::get('profile-field-legal-entity-ngo'),
+                    '3' => Text::get('profile-field-legal-entity-company'),
+                    '4' => Text::get('profile-field-legal-entity-cooperative'),
+                    '5' => Text::get('profile-field-legal-entity-asociation'),
+                    '6' => Text::get('profile-field-legal-entity-others')]
+            ))
             ->add('foundationdonor', 'choice', array(
                 'required' => false,
                 'label' => 'admin-filter-type-foundation-donor',

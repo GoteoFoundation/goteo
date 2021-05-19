@@ -546,6 +546,7 @@ class Mail extends \Goteo\Core\Model {
             View::setTheme('responsive');
             $template = "default";
         } else {
+            // Test responsive
             View::setTheme('responsive');
             $template = "default";
         }
