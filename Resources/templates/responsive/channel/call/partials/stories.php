@@ -15,9 +15,9 @@
             $background_image = $story->getBackgroundImage();
           ?>
           <picture>
-            <source media="(min-width:1400px)" srcset="<?= $background_image->getLink(1920,400,true) ?>'">
-            <source media="(min-width:1051px)" srcset="<?= $background_image->getLink(1400,400,true) ?>'">
-            <source media="(min-width:750px)" srcset="<?= $background_image->getLink(1051,400,true) ?>'">
+            <source media="(min-width:1400px)" srcset="<?= $background_image->getLink(1920,400,true) ?>">
+            <source media="(min-width:1051px)" srcset="<?= $background_image->getLink(1400,400,true) ?>">
+            <source media="(min-width:750px)" srcset="<?= $background_image->getLink(1051,400,true) ?>">
             <img src='<?= $background_image->getLink(750,400,true) ?>' alt="<?= $story->title ?>">
           </picture>
           <?php
