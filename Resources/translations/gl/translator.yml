@@ -78,3 +78,11 @@ translator-zone-not-found: 'Esta área de tradución non é válida'
 translator-lang-not-found: 'Este idioma non está na plataforma!'
 translator-percent: '%d&#37; traducido'
 translator-add-translation: 'Engadir unha nova tradución'
+translator-field-terms: Bases
+translator-field-tip_msg: Mensaxe
+translator-field-banner_button_url: Url do botón do cartaz
+translator-field-terms_url: Url das bases
+translator-field-credits: Créditos
+translator-question: Preguntas
+translator-question_options: Opcións das preguntas
+translator-field-option: Opcións
