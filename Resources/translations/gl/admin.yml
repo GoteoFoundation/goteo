@@ -70,6 +70,8 @@ admin-communications-cancel: 'Cancelar comunicación'
 admin-communications-newsletter: 'Boletín'
 admin-communications-communication: 'Comunicación xeral'
 admin-communications-id: 'ID da comunicación'
+admin-certificates: Certificados
+admin-certificates-management: Administración de certificados
 admin-home: Capa
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicacións'
@@ -216,6 +218,7 @@ admin-users-global-search: 'Id, nome, correo electrónico ou proxecto'
 admin-blog-global-search: 'Id, título, subtítulo ou texto'
 admin-communication-global-search: 'Asunto'
 admin-blog-stories-search: 'Id, título, texto ou proxecto'
+admin-donor-name-search: 'ID, nome, correo'
 admin-no-project: 'Sen proxecto'
 admin-title-id: Id
 admin-title-name: Nome
@@ -281,6 +284,9 @@ admin-title-action-url: 'Texto botón de descarga'
 admin-title-download-url: 'Ligazón a descarga'
 admin-title-channel: 'Canle'
 admin-title-resource-category: 'Categoría de recurso'
+admin-title-year: Ano
+admin-title-nif: NIF
+admin-title-country: País
 admin-blog-not-published-yet: 'A entrada de blog non é pública aínda'
 admin-blog-initialized: 'Iniciouse o espazo de blog'
 admin-blog-deactivated: 'Sentímolo, a xestión do blog está desactivada'
@@ -505,6 +511,7 @@ admin-filter-predefined-date: 'Data predefinida'
 admin-filter-predefined-date-choose: 'Podes escoller unha data predefinida'
 admin-filter-forced: 'Forzar filtro'
 admin-filter-forced-help: 'A seleccionar esta opción aplicaranse os filtros independentemente do escollido polo usuario coma preferencia para o envío de información por parte da plataforma.'
+admin-filter-donor-status: Estado do certificado
 admin-mail-body: 'Corpo da mensaxe'
 admin-stats-donations: 'Doazóns'
 admin-stats-donations-method: 'Doazóns segundo o método de pagamento'
