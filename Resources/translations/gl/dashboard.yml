@@ -66,6 +66,7 @@ dashboard-menu-projects-supports: Colaboracións
 dashboard-menu-projects-updates: Novidades
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'A miña historia'
+dashboard-menu-projects-pitch: "Aplicacións abertas"
 dashboard-menu-review_board: Revisión
 dashboard-menu-translate_board: Tradución
 dashboard-menu-translates: 'As miñas traduccións'
@@ -214,3 +215,5 @@ dashboard-project-mailing-write_again: 'Escribir a todos'
 dashboard-project-goto-first-error: 'Ir ao primeiro erro'
 dashboard-project-integration-token: 'Token'
 dashboard-project-integration-link: 'Ligazón'
+dashboard-project-pitch-title: 'Aplicacións abertas'
+dashboard-project-pitch-type: "Tipo"
