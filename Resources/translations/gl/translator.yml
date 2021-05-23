@@ -55,6 +55,7 @@ translator-pending: 'Pendente de tradución'
 translator-pending-desc: 'Este contido está "pendente", o que significa que <strong>NON É PÚBLICO</strong> e queda como borrador até que se elimine a opción "Pendente de tradución"'
 translator-post: Blog
 translator-promote: 'Proxectos destacados'
+translator-channelpost: 'Publicacións na canle'
 translator-save: 'Gardar e publicar'
 translator-save-original: 'Gardar na táboa orixinal'
 translator-save-draft: 'Gardar como borrador'
@@ -78,6 +79,12 @@ translator-zone-not-found: 'Esta área de tradución non é válida'
 translator-lang-not-found: 'Este idioma non está na plataforma!'
 translator-percent: '%d&#37; traducido'
 translator-add-translation: 'Engadir unha nova tradución'
+translator-communication: Comunicación
+translator-node: Canle
+translator-node_program: Programas da canle
+translator-field-action: Acción
+translator-field-label: Etiqueta
+translator-field-role: Rol
 translator-field-terms: Bases
 translator-field-tip_msg: Mensaxe
 translator-field-banner_button_url: Url do botón do cartaz
