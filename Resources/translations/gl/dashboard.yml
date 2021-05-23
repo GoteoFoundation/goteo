@@ -20,6 +20,10 @@ dashboard-certificates-pending-desc: 'Estas son as achegas a incluír en certifi
 dashboard-certificates-summary: 'Certificado %ID%, Ano %YEAR%'
 dashboard-certificates-too-old: 'Este certificado e antigo de máis e non é posíbel modificalo. Se tes algunha dubida, contacta connosco'
 dashboard-certificates-view-pending: 'Non se amosan as túas achegas directas a proxectos que aínda non acadaran a primeira rolda. Podes consultalos %HERE%.<br>As achegas realizadas mediante o portamoedas inclúense no certificado xerado no momento do pagamento físico.'
+dashboard-certificates-completed: Completado
+dashboard-certificates-validated: Validado
+dashboard-certificates-declared: Declarado
+dashboard-certificates-rejected: Rexeitado
 dashboard-chart-days: 'QUEDAN %s DÍAS'
 dashboard-chart-invested: 'FINANCIAMENTO ACADADA'
 dashboard-chart-investors: COFINANCIADORES
