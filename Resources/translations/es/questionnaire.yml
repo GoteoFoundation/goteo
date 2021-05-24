@@ -1,0 +1,22 @@
+questionnaire: Cuestionario
+questionnaire-type-of-question: 'Tipo de respuesta'
+questionnaire-required: 'Es obligatorio responderla'
+questionnaire-text: 'Pregunta para responder'
+questionnaire-max-score: 'Puntuación máxima'
+questionnaire-help-max-score: 'Puntuación máxima: %s'
+questionnaire-hidden: "Esconder pregunta"
+questionnaire-choice: Opciones
+questionnaire-textarea: 'Respuesta larga'
+questionnaire-boolean: 'Respuesta única sí/no'
+questionnaire-dropfiles: 'Subida de archivo'
+questionnaire-add-question: "Añadir pregunta"
+questionnaire-answer: "Respuesta"
+questionnaire-scoring-mark: "Puntuación"
+questionnaire-scoring-save: "Puntuación guardada correctamente"
+questionnaire-max-score-help: "Esta es la puntuación máxima para esta pregunta."
+question-save-error: "Pregunta no borrada"
+question-choice-answer: "Respuesta"
+questionnaire-apply-title: Solicitud de participación en %s
+questionnaire-answer-questions: Contesta esta pregunta
+questionnaire-already-answered-by-project: Este cuestionario ya ha sido contestado.
+questionnaire-question-answer-dropfile-not-found: "No se encuentra el documento"
