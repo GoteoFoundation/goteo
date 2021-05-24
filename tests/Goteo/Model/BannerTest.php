@@ -13,7 +13,7 @@ class BannerTest extends TestCase {
     protected static $data ;
     protected static $trans_data ;
     //read config
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
 
         Config::set('lang', 'es');
         Lang::setDefault('es');
@@ -119,7 +119,7 @@ class BannerTest extends TestCase {
     /**
      * Remove temporal files on finish
      */
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass(): void {
         delete_test_project();
         delete_test_user();
         delete_test_node();

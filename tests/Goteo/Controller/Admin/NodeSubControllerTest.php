@@ -24,7 +24,7 @@ class NodeSubControllerTest extends \PHPUnit\Framework\TestCase {
     /**
      * Remove temporal files on finish
      */
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass(): void {
          delete_test_node();
     }
 

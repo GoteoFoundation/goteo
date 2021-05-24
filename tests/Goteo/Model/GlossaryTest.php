@@ -25,7 +25,7 @@ class GlossaryTest extends \PHPUnit\Framework\TestCase {
                         'size' => 0);
     private static $image2;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
 
         Config::set('lang', 'es');
         Lang::setDefault('es');
@@ -206,7 +206,7 @@ class GlossaryTest extends \PHPUnit\Framework\TestCase {
         }
     }
 
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         // Remove temporal files on finish
         unlink(self::$image['tmp_name']);
         unlink(self::$image2['tmp_name']);

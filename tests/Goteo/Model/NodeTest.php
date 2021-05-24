@@ -31,7 +31,7 @@ class NodeTest extends TestCase {
     private static $data = array('id' => 'testnode2', 'name' => 'Test node 2', 'subtitle' => 'Test subtitle', 'description' => 'Test description');
     private static $trans_data = array('subtitle' => 'Test de subtítol', 'description' => 'Test descripció');
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         Config::set('lang', 'es');
         Lang::setDefault('es');
         Lang::set('es');
@@ -230,7 +230,7 @@ class NodeTest extends TestCase {
         }
     }
 
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         delete_test_project();
         delete_test_user();
         delete_test_node();

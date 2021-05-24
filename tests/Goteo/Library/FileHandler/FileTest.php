@@ -13,7 +13,7 @@ class FileTest extends \PHPUnit\Framework\TestCase {
     protected static $start_time = 0;
 
     //read config
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
 
         if(defined('FILE_HANDLER') && FILE_HANDLER == 's3') self::$handler = 's3';
 
@@ -143,7 +143,7 @@ class FileTest extends \PHPUnit\Framework\TestCase {
     /**
      * Remove temporal files on finish
      */
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass(): void {
         unlink(self::$test_img);
     }
 }

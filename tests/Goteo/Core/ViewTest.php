@@ -9,7 +9,7 @@ class ViewTest extends \Goteo\TestCase {
 
     protected static $views = array();
 
-    static function setUpBeforeClass() {
+    static function setUpBeforeClass(): void {
         self::$views = array(
             'admin/blog/list.html.php',
             'admin/commons/list.html.php',

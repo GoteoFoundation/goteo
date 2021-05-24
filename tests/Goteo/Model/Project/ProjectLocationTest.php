@@ -218,7 +218,7 @@ class ProjectLocationTest extends \PHPUnit\Framework\TestCase {
         $this->assertFalse($project_location2);
     }
 
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         delete_test_project();
         delete_test_user();
     }

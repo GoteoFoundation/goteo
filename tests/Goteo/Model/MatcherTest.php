@@ -30,7 +30,7 @@ class MatcherTest extends TestCase
     ];
     private static $project;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         Config::set('lang', 'es');
         Lang::setDefault('es');
@@ -341,7 +341,7 @@ class MatcherTest extends TestCase
         }
     }
 
-    static function tearDownAfterClass()
+    static function tearDownAfterClass(): void
     {
         Matcher::query("DELETE FROM matcher WHERE `id` = ?", self::$data['id']);
         delete_test_project();

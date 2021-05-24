@@ -13,7 +13,7 @@ class OpenTagTest extends \PHPUnit\Framework\TestCase {
     private static $data = array('name' => 'test name', 'description' => 'test description', 'order' => 0);
     private static $trans_data = array('name' => 'nom de test', 'description' => 'descripció test');
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         Config::set('lang', 'es');
         Lang::setDefault('es');
         Lang::set('es');
