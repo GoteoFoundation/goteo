@@ -138,11 +138,7 @@ namespace Goteo\Library {
 
         static public function getDonorsSQL(array $languages = [], $prefix = '') {
 
-            if(class_exists('\Goteo\Model\User\Donor')) {
-                $year = \Goteo\Model\User\Donor::currYear();
-            } else {
-                $year = date('Y');
-            }
+            $year = date('Y');
             $year0 = $year;
             $year1 = $year + 1;
 
@@ -287,7 +283,7 @@ namespace Goteo\Library {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td align="left">' . $content . 
+                                            <td align="left">' . $content .
                         '</td>
                                         </tr>
                                     </tbody>

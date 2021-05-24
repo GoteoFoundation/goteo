@@ -100,7 +100,7 @@ namespace {
         # build a regular expression for each parameter
         foreach ($params as $key => $value) {
             if (is_string($key)) {
-                $keys[] = '/' . ($key{0} === ':' ? '' : ':') . $key . '\b/';
+                $keys[] = '/' . ($key[0] === ':' ? '' : ':') . $key . '\b/';
             } else {
                 $keys[] = '/[?]/';
             }

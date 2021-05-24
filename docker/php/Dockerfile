@@ -1,15 +1,16 @@
 ####################################
-# PHPDocker.io PHP 7.1 / FPM image #
+# PHPDocker.io PHP 7.4 / FPM image #
 ####################################
 
-FROM phpdockerio/php71-cli
+FROM phpdockerio/php74-cli
 WORKDIR /application
 
 # Install FPM
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
-    && apt-get -y --no-install-recommends install php7.1-fpm \
-    && apt-get -y --no-install-recommends install php-memcached php7.1-mysql php7.1-gd php-xdebug \
+    && apt-get -y install apt-utils \
+    && apt-get -y --no-install-recommends install php7.4-fpm php7.4-mcrypt \
+    && apt-get -y --no-install-recommends install php7.4-memcached php7.4-mysql php7.4-gd php7.4-xdebug \
     && apt-get -y --no-install-recommends install nodejs npm build-essential ruby-dev rubygems-integration gosu \
     && apt-get -y install zip unzip \
     && apt-get -y install mysql-client \
@@ -20,10 +21,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 RUN gem install sass -v 3.4.23
 RUN gem install compass
 RUN npm install -g grunt-cli@1.3.2
-RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 # PHP-FPM packages need a nudge to make them docker-friendly
-COPY overrides.conf /etc/php/7.1/fpm/pool.d/z-overrides.conf
+COPY overrides.conf /etc/php/7.4/fpm/pool.d/z-overrides.conf
 
 # PHP-FPM has really dirty logs, certainly not good for dockerising
 # The following startup script contains some magic to clean these up

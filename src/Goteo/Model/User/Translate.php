@@ -115,7 +115,6 @@ namespace Goteo\Model\User {
                             $array[] = Model\Node::getMini($item['item']);
                             break;
                         default:
-                            continue;
                     }
                 }
 
