@@ -85,6 +85,7 @@ regular-calendar: Calendar
 regular-cancel: Cancelar
 regular-cancel-back: 'Cancelar y volver atrás'
 
+
 regular-categories: 'Categorías'
 regular-social_commitments: 'Compromisos sociales'
 regular-spheres: 'Ámbitos'
@@ -115,6 +116,7 @@ regular-join: 'Únete'
 regular-facebook: Facebook
 regular-faq: 'Preguntas frecuentes'
 regular-female: Mujer
+regular-other-gender: Otro
 regular-first: Primera
 regular-from: desde
 regular-getit: Consíguelo
@@ -136,6 +138,7 @@ regular-instagram: Instagram
 regular-invest: Aportar
 regular-invest_it: 'Cofinancia este proyecto'
 regular-investing: Aportando
+regular-invests: Aportaciones
 regular-lang: Idioma
 regular-last: Última
 regular-license: Licencia
@@ -162,6 +165,7 @@ regular-news: 'Noticias:'
 regular-no: 'No'
 regular-of: de
 regular-preview: Previsualizar
+regular-evaluate: Evaluar
 regular-projects: proyectos
 regular-published_no: Borrador
 regular-published_yes: Publicado
@@ -225,6 +229,8 @@ regular-remember-me: 'Recordar mis datos'
 regular-next: Siguiente
 regular-previous: Anterior
 regular-next-workshops: 'Agenda de Fundlabs'
+regular-write-description: 'Escribe un texto descriptivo...'
+regular-choice-placeholder: 'Selecciona una opción'
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 spread-about: 'Texto spread-about'
@@ -252,3 +258,7 @@ user-promoter: 'El usuario impulsor'
 stories-type-pitcher: 'Pitcher'
 stories-type-matcher: 'Matcher'
 newsletter-donate-description: 'Para que podamos seguir ayudando a que más y más iniciativas cívicas salgan adelante'
+regular-icon: Icono
+regular-action: Accción
+regular-action_url: Acción URL
+regular-modal-decription: Descripción en la modal
