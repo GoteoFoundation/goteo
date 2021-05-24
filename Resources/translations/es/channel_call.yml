@@ -1,0 +1,74 @@
+channel-call-main-info-subtitle: 'Nueva convocatoria'
+channel-call-projects-title: 'Algunos proyectos en marcha'
+channel-call-sponsors-title: 'Nuestros impulsores y colaboradores'
+channel-call-sponsors-subtitle: 'Un proyecto llevado a cabo por las siguientes entidades:'
+
+channel-call-cta-create-project-title: Quiero crear un proyecto
+channel-call-cta-create-project-description: Crear tu proyecto de crowdfunding es muy sencillo
+
+channel-call-cta-join-program-title: Formaciones
+channel-call-cta-join-program-description: Formaciones y recursos prácticos al alcance de todo el mundo
+channel-call-workshop-title: Próximos eventos
+channel-call-workshop-description: Eventos para ayudarte a hacer crecer tu iniciativa.
+channel-call-footer-information: Información de interés
+channel-call-footer-about: Sobre Goteo
+channel-call-footer-stats: Estadísticas
+channel-call-footer-conditions: Condiciones de uso
+channel-call-footer-privacy: Política de privacidad
+channel-call-footer-licenses: Licencias
+channel-call-footer-faq: FAQ
+channel-call-footer-contact: Contacto
+channel-call-footer-twitter: Twitter
+channel-call-footer-facebook: Facebook
+channel-call-footer-instagram: Instagram
+channel-call-footer-telegram: Telegram
+channel-call-footer-github: Github
+channel-call-footer-newsletter: Newsletter
+channel-call-footer-social-networks: Redes sociales
+channel-call-posts-section-title: Últimas noticias
+channel-call-posts-section-description: 'Enterate de las últimas noticias sobre '
+channel-call-program-title: 'El programa '
+channel-call-program-terms: Leer las bases
+channel-call-program-description: Enterate de todo lo que va a pasar.
+channel-call-team-title: Nuestro equipo
+channel-call-team-description: ¡Todo un equipo trabajando por un crowdfunding cívico!
+channel-call-stories-title: Dicen de nosotros
+channel-call-resources-title: Recursos
+channel-call-resources-description: Descarga los recursos abiertos generados, aprende sobre crowdfunding, fiscalidad o ideación.
+channel-call-resources-button: Ver todos los recursos
+channel-call-map-section-title: Mapa de influencia
+channel-call-impact-data-amount: Dinero recaudado
+channel-call-impact-data-projects: Proyectos
+channel-call-impact-data-investors: Cofinanciadores
+channel-call-resources-banner-title: 'Conocimiento abierto'
+channel-call-resources-banner-description: 'Recursos'
+channel-call-resources-filter-title: 'Filtra por categorías'
+
+channel-call-intro-pitcher-title: 'Pitcher'
+channel-call-intro-matcher-title: 'Matcher'
+channel-call-intro-donor-title: 'Donor'
+channel-call-intro-factory-title: 'Goteo'
+
+channel-call-intro-pitcher-tab-title: 'Crea tu proyecto'
+channel-call-intro-pitcher-tab-description: 'Lanza tu idea y proyecto al mundo mediante una plataforma de crowdfunding cívico, cooperativo, social y sostenible.</br>Crea comunidad alrededor de tu cooperativa.'
+channel-call-intro-pitcher-tab-action: '¡Hazte impulsor!'
+channel-call-intro-pitcher-tab-action-url: '/project/create'
+channel-call-intro-pitcher-tab-video: 'https://www.youtube.com/embed/5bzfj2IkznQ'
+
+channel-call-intro-matcher-tab-title: 'Cofinancia proyectos'
+channel-call-intro-matcher-tab-description: '¿Eres una cooperativa, empresa responsable o fundación? <br>¿Quieres colaborar dando impulso al mundo cooperativo?'
+channel-call-intro-matcher-tab-action: '¡Hazte matcher!'
+channel-call-intro-matcher-tab-action-url: 'https://fundacion.goteo.org/blog/como-funciona-el-matcher'
+channel-call-intro-matcher-tab-video: 'https://www.youtube.com/embed/rZFvAfZLZSI'
+
+channel-call-intro-donor-tab-title: 'Ciudadanía comprometida'
+channel-call-intro-donor-tab-description: 'Con tu donación desgravable haces posible la creación y la sostenibilidad de proyectos cooperativos comprometidos con el cambio social.'
+channel-call-intro-donor-tab-action: '¡Dona!'
+channel-call-intro-donor-tab-action-url: '/channel/crowdcoop/available'
+channel-call-intro-donor-tab-video: 'https://www.youtube.com/embed/U_AAioupuk8'
+
+channel-call-intro-factory-tab-title: 'Fábrica Crowdcoop'
+channel-call-intro-factory-tab-description: 'Únete a nuestra fábrica de proyectos cooperativos por una democracia económica. Pongamos el dinero al servicio del bien común y la justicia social.'
+channel-call-intro-factory-tab-action: '¡Hazte impulsor!'
+channel-call-intro-factory-tab-action-url: '/project/create'
+channel-call-intro-factory-tab-video: 'https://www.youtube.com/embed/Q-qHZK36HLA'
