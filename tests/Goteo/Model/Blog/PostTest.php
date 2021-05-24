@@ -28,7 +28,7 @@ class PostTest extends \PHPUnit\Framework\TestCase {
 
     private static $image2;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
 
        //temp file
         $i = base64_decode('iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABkElEQVRYhe3Wv2qDQBgA8LxJH8BXcHLN4pCgBxIOddAlSILorFDaQRzFEHEXUWyXlo6BrkmeI32Hr1PTMyb1rtpIIQff6vdTvz83unt+giFjdAP8awCXZ8Dl2XCAcRjAOAyGA8iaDrKmDwMQ4ggQUgAhBYQ4uj5AMswjQDLM6wJE3zsm/wrR964D4NOkkbzLr2AC8GkC8gxfBMgzDHya/A2AyzOQNf1i8iNC05lmAxWAy7Na0bWFZJjUCCrAdLmoJbDmFlRFCe+bDVhz6yxiulz0AyD7HSEFHu8fgDyu7XQqylbAxP1O4NoOnB6M1YuAiet0B5CF9/by2gC0FWRnAPnAj8OBCYCQ0i+A9vQKIAfPfrtrTb7f7mqDqTOAbMF1vGoFrOMVUyu2AsZhUPukP30F8u0RUqguK1SDiJyCGKtQFWUjeVWUtZakXdFUgHNLCGMVXNsB13Yas4BlKVEvIz5NqJcRy0ZkWsdcnoHoe2dXsjzDIPoe8y3511cyPk1AiCMQ4oj5DtALoK+4AQYHfALaYBdH6m2UnQAAAABJRU5ErkJggg==');
@@ -98,7 +98,7 @@ class PostTest extends \PHPUnit\Framework\TestCase {
         $errors = [];
         $this->assertTrue($ob2->save($errors), print_r($errors, 1));
 
-        $this->assertContains('test-post-', $ob2->getSlug());
+        $this->assertStringContainsString('test-post-', $ob2->getSlug());
 
         Post::delete($ob2->id);
 
@@ -188,7 +188,7 @@ class PostTest extends \PHPUnit\Framework\TestCase {
         }
     }
 
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         unlink(self::$image['tmp_name']);
         unlink(self::$image2['tmp_name']);
     }

@@ -187,7 +187,7 @@ class UserRolesTest extends \PHPUnit\Framework\TestCase {
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         User::query('delete from `call` where id = ?', 'test-call');
         delete_test_project();
         delete_test_user();

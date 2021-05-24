@@ -14,7 +14,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase {
     private static $trans_data = ['name' => 'Categoria test', 'description' => 'Descripció test'];
     private static $sdg;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         Config::set('lang', 'es');
         Lang::setDefault('es');
         Lang::set('es');
@@ -137,7 +137,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase {
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         Sdg::query("DELETE FROM sdg WHERE `id` = ?", self::$sdg);
     }
 

@@ -13,7 +13,7 @@ class FaqTest extends TestCase {
     private static $data = array('section' => 'test-section', 'description' => 'test description', 'title' => 'Test title', 'order' => 1);
     private static $trans_data = array('description' => 'Descripció test', 'title' => 'Test títol');
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         Config::set('lang', 'es');
         Lang::setDefault('es');
         Lang::set('es');
@@ -126,7 +126,7 @@ class FaqTest extends TestCase {
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         delete_test_node();
     }
 }

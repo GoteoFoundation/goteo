@@ -53,23 +53,21 @@ class CurrencyTest extends \PHPUnit\Framework\TestCase {
         print("[$amount/$format]\n");
         // format must have . for miliar
         $this->assertRegExp('/\d?\.{1}\d?/', $format, $format);
-        $this->assertContains('€', $format);
+        $this->assertStringContainsString('€', $format);
 
         // to dollar
         Session::store('currency', 'USD');
         $format = Currency::amountFormat($amount);
-        // echo $format."\n";
         // format must have , for miliar
         $this->assertRegExp('/\d?\,{1}\d?/', $format, $format);
-        $this->assertContains('$', $format);
+        $this->assertStringContainsString('$', $format);
 
         // to pound
         Session::store('currency', 'GBP');
         $format = Currency::amountFormat($amount);
-        // echo $format."\n";
         // format must have , for miliar
         $this->assertRegExp('/\d?\,{1}\d?/', $format, $format);
-        $this->assertContains('£', $format);
+        $this->assertStringContainsString('£', $format);
 
         return true;
     }

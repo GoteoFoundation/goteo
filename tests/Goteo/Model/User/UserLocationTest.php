@@ -219,7 +219,7 @@ class UserLocationTest extends \PHPUnit\Framework\TestCase {
         $this->assertFalse($user_location2);
     }
 
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         if($user = User::get('012-second-test-user-210')) {
             $user->dbDelete();
         }

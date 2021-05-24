@@ -15,7 +15,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
     private static $trans_data = array('message' => 'Test contingut del missatge');
     private static $user_data = array('userid' => 'test', 'name' => 'Test', 'email' => 'test@goteo.org', 'password' => 'testtest', 'active' => true);
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         Config::set('lang', 'es');
         Lang::setDefault('es');
         Lang::set('es');
@@ -125,7 +125,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
         $this->assertFalse(Message::delete($ob->id));
     }
 
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         delete_test_project();
         delete_test_user();
         delete_test_node();
