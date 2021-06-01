@@ -15,6 +15,10 @@ use Goteo\Application\View;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerException;
 
+use Goteo\Model\Node;
+use Goteo\Model\Matcher;
+use Goteo\Application\Exception\ModelNotFoundException;
+
 
 $routes = new RouteCollection();
 $routes->add('home', new Route(
@@ -193,8 +197,13 @@ $routes->addCollection($channel_routes);
 $routes->add('matcher', new Route(
     '/matcher/{id}',
     array('_controller' => function($id) {
-        // Temporary redirect to a channel with the same name
-        return new RedirectResponse('/channel/' .$id);
+        try {
+            $channel = Node::get($id);
+        } catch (ModelNotFoundException $e) {
+            $matcher = Matcher::get($id);
+            return new RedirectResponse('/user/' . $matcher->owner);
+        }
+        return new RedirectResponse('/channel/' . $id);
     })
 ));
 
