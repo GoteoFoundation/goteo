@@ -25,6 +25,11 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
         $project = $this->getModel();
 
         $builder = $this->getBuilder()
+            ->add('name', 'text', [
+                'label' => 'overview-field-name',
+                'disabled' => $this->getReadonly(),
+                'attr' => ['help' => $project->name]
+            ])
             ->add('subtitle', 'text', [
                 'label' => 'overview-field-subtitle',
                 'disabled' => $this->getReadonly(),
