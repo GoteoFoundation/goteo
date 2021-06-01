@@ -465,6 +465,7 @@ class Project extends Model {
 
             $sql = "SELECT
                 project.id,
+                -- project.name,
                 $fields,
                 project.lang,
                 project.currency,
@@ -2406,6 +2407,7 @@ class Project extends Model {
                 project.num_messengers as num_messengers,
                 project.num_posts as num_posts,
                 project.days as days,
+                -- project.name as name,
                 project.project_location as project_location,
                 project.social_commitment AS social_commitment,
                 project.owner as owner,
@@ -2796,6 +2798,7 @@ class Project extends Model {
         $sql ="
             SELECT
                 project.id AS project,
+                -- project.name AS name,
                 project.subtitle AS subtitle,
                 $lang_select,
                 project.status AS status,
