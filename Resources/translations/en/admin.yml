@@ -253,6 +253,7 @@ admin-title-failed: Failed
 admin-title-pending: Pending
 admin-title-success: Successful
 admin-title-percent: Percentage
+admin-title-year: Year
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'
