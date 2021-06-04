@@ -267,7 +267,6 @@ class CategoriesSubController extends AbstractSubController {
                     'translate' => '',
                     'up' => '',
                     'down' => '',
-                    'translate' => '',
                     'remove' => ''
                 ),
                 'url' => "$url"
