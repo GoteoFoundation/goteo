@@ -102,7 +102,7 @@ class FileTest extends \PHPUnit\Framework\TestCase {
      */
     public function testGetSaveName(BaseFile $fp): BaseFile
     {
-        $this->assertEquals($fp->get_save_name("contents.txt"), "contents-1.txt");
+        $this->assertEquals("contents-1.txt", $fp->get_save_name("contents.txt"));
 
         return $fp;
     }
@@ -115,7 +115,7 @@ class FileTest extends \PHPUnit\Framework\TestCase {
         $this->assertGreaterThan(self::$start_time - 1, $fp->mtime("test/img.png"));
         $this->assertGreaterThan(self::$start_time - 1, $fp->mtime("contents.txt"));
 
-        $this->assertEquals($fp->mtime("i-dont-exist.png"), -1);
+        $this->assertEquals(-1, $fp->mtime("i-dont-exist.png"));
 
         return $fp;
     }
