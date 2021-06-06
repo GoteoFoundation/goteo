@@ -1,3 +1,6 @@
 ---
 discover-banner-header: 'بالتصنيف, المكان أو العودة,<br><span class="red">أجد المشروع</span> الذي يعبر عنك أكثر'
 login-banner-header: 'الدخول إلى منتدى التنقيط<br><span class="greenblue">مفتوح ١٠٠٪؜</span>'
+main-banner-header: '<h2 class="message">شبكة اجتماعية لأجل <span class="greenblue"> التمويل المشترك والتعاون مع </span><br> المشاريع المبتكرة التي تعزز المرافق العامة <br> هل لديك مشروع مع <span class="greenblue">adn abierto</span>?</h2><a href="/contact" class="button banner-button">تواصل معنا</a>'
+open-banner-header: '<div class="modpo-open">افتح</div><div class="modpo-percent">١٠٠&#37; مفتوح</div><div class="modpo-whyopen">%s</div>'
+regular-banner-metter: تم الحصول عليها من بقايا
