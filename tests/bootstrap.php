@@ -94,8 +94,7 @@ function delete_test_node() {
     return false;
 }
 
-function get_test_user(): ?User
-{
+function get_test_user() {
     $data = array(
         'userid' => '012-simulated-user-test-210',
         'name' => 'Test user - please delete me',
