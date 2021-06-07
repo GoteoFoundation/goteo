@@ -48,9 +48,9 @@ class MapsApiController extends AbstractApiController {
             $list_projects = [];
             $conf = $channel->getConfig();
 
-            if ($conf['projects']) {
-              $total = Project::getList($conf['projects'], $cid, 0, 0, true);
-              $projects = Project::getList($conf['projects'], $cid, 0, $total);
+            if ($conf['map'] && $conf['map']['projects']) {
+              $total = Project::getList($conf['map']['projects'], $cid, 0, 0, true);
+              $projects = Project::getList($conf['map']['projects'], $cid, 0, $total);
             } else {
               $total = Project::getList(['node' => $channel->id], $cid, 0, 0, true);
               $projects = Project::getList(['node' => $channel->id], $cid, 0, $total);

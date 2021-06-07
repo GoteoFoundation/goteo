@@ -41,7 +41,7 @@ class ModelNormalizer {
         }
         elseif ($this->model instanceOf Model\Node\NodeResource) {
             $ob = new Transformer\ChannelResourceTransformer($this->model, $this->keys);
-        }    
+        }
         elseif ($this->model instanceOf Model\Node\NodePost) {
             $ob = new Transformer\ChannelPostsTransformer($this->model, $this->keys);
         }
@@ -78,6 +78,9 @@ class ModelNormalizer {
         elseif(
             $this->model instanceOf Model\Mail) {
             $ob = new Transformer\MailTransformer($this->model, $this->keys);
+        }
+        elseif($this->model instanceOf Model\Faq) {
+            $ob = new Transformer\FaqTransformer($this->model, $this->keys);
         }
         else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
 

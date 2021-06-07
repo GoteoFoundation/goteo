@@ -40,6 +40,15 @@ $invest_routes = include __DIR__ . '/Routes/invest_routes.php';
 $invest_routes->addPrefix('/invest');
 $routes->addCollection($invest_routes);
 
+// Faq routes
+$routes->add('faq', new Route(
+    '/faq',
+    array('_controller' => 'Goteo\Controller\FaqController::indexAction')
+));
+$faq_routes = include __DIR__ . '/Routes/faq_routes.php';
+$faq_routes->addPrefix('/faq');
+$routes->addCollection($faq_routes);
+
 // Pool routes
 // Pool invest main route
 // Notify URL for gateways that need it
@@ -309,5 +318,14 @@ $routes->add('map-zoom-latlng', new Route(
 // $map_routes = include __DIR__ . '/Routes/map_routes.php';
 // $map_routes->addPrefix('/map');
 // $routes->addCollection($map_routes);
+
+
+// Discover impact
+$routes->add('impact-discover', new Route(
+    '/impact-discover',
+    array(
+        '_controller' => 'Goteo\Controller\ImpactDiscoverController::indexAction'
+    )
+));
 
 return $routes;

@@ -66,7 +66,8 @@ class Filter extends \Goteo\Core\Model {
         $matchers = [],
         $sdgs = [],
         $footprints = [],
-        $forced;
+        $forced,
+        $type_of_entity;
 
     static public function get($id) {
         $query = static::query('SELECT * FROM filter WHERE id = ?', $id);
@@ -381,7 +382,16 @@ class Filter extends \Goteo\Core\Model {
             'foundationdonor',
             'wallet',
             'filter_location',
-            'forced'
+            // 'project_latitude',
+            // 'project_longitude',
+            // 'project_radius',
+            // 'project_location',
+            // 'donor_latitude',
+            // 'donor_longitude',
+            // 'donor_radius',
+            // 'donor_location',
+            'forced',
+            'type_of_entity'
         );
         
         
@@ -448,6 +458,13 @@ class Filter extends \Goteo\Core\Model {
         $sqlInner  = '';
         $sqlFilter = '';
 
+
+        if (isset($this->type_of_entity)) {
+            $sqlFilter .= " AND user.legal_entity = :type_of_entity";
+            $values[":type_of_entity"] = $this->type_of_entity;
+        }
+
+
         if ($this->filter_location) {
             $loc = FilterLocation::get($this->id);
             $loc = new UserLocation($loc);
@@ -490,7 +507,6 @@ class Filter extends \Goteo\Core\Model {
                         ON user.id = user_prefer.user
                     $sqlInner 
                     WHERE user.active = 1 $sqlFilter";
-            // die( \sqldbg($sql, $values) );
             return (int) User::query($sql, $values)->fetchColumn();
         }
 

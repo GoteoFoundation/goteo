@@ -190,7 +190,6 @@ class Questionnaire extends \Goteo\Core\Model
         return $percent;
     }
 
-
     /**
      * Validate.
      *

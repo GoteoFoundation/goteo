@@ -147,7 +147,7 @@
 
 			<?php foreach($this->messages as $message): ?>
 				<div class="row message no-margin normalize-padding" >
-					<div class="pull-left user-name anchor-mark" id="msg-<?= $message->id ?>"><a href="/user/<?= $message->user->id ?>"><?= ucfirst($message->user->name) ?></a></div>
+					<div class="pull-left user-name anchor-mark" id="msg-<?= $message->id ?>"><a href="/user/<?= $message->user->id ?>"><?= $this->ee(ucfirst($message->user->name)) ?></a></div>
 					<div class="pull-right time-ago">
 					Hace <?= $message->timeago ?>
 					</div>

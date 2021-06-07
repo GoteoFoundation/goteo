@@ -231,7 +231,7 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesAdminController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommonsSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CriteriaSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\HomeSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\GlossarySubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\IconsSubController');
@@ -260,6 +260,7 @@ class Config {
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SocialCommitmentSubController');
 		// \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SphereSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelStoryAdminController');
+
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelResourceAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelPostsAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelCriteriaAdminController');

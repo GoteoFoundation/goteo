@@ -497,6 +497,7 @@ admin-filter-previous-year: 'Previous year'
 admin-filter-two-years-ago: 'Two years ago'
 admin-filter-typeofuser: 'Type of user'
 admin-filter-typeofdonor: 'Type of donor'
+admin-filter-typeofentity: 'Type of entity'
 admin-filter-user: 'User'
 admin-filter-donor: 'Donor'
 admin-filter-no-donor: 'Inactive donor'
@@ -526,5 +527,8 @@ mandatory-filter-name: Missing name
 mandatory-filter-description: Missing description
 mandatory-filter-role: Missing role
 admin-node-iframe: Iframe
+admin-faqs: Faqs
+admin-faq-add: Add Faq
+admin-faq-pending: Check as translation is pending
 admin-certificates: Certificates
 admin-certificates-management: Certificates Management

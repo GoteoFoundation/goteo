@@ -546,6 +546,7 @@ class Mail extends Model {
             View::setTheme('responsive');
             $template = "default";
         } else {
+            // Test responsive
             View::setTheme('responsive');
             $template = "default";
         }

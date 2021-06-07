@@ -83,7 +83,7 @@ class CommunicationAdminController extends AbstractAdminController
 
         if($request->isMethod('POST')) {
             // validate()
-
+            
             $errors = [];
 
             $all = $request->request->get('t');

@@ -230,6 +230,7 @@ regular-next: Siguiente
 regular-previous: Anterior
 regular-next-workshops: 'Agenda de Fundlabs'
 regular-write-description: 'Escribe un texto descriptivo...'
+regular-subsection: 'Subsección'
 regular-choice-placeholder: 'Selecciona una opción'
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
