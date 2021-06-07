@@ -10,7 +10,6 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\View;
 use Goteo\Model\Banner;
 use Goteo\Model\Project;
@@ -18,39 +17,30 @@ use Goteo\Model\Stories;
 use Goteo\Model\Node;
 use Goteo\Model\Sponsor;
 use Goteo\Util\Stats\Stats;
+use Symfony\Component\HttpFoundation\Response;
 
-// para sacar el contenido de about
 
 class IndexController extends DiscoverController
 {
 
     public function __construct()
     {
-        // Cache & replica read activated in this controller
         $this->dbReplica(true);
         $this->dbCache(true);
         View::setTheme('responsive');
     }
 
-    public function indexAction(Request $request)
+    public function indexAction(): Response
     {
         $limit = 24;
         $filters = $this->getProjectFilters('promoted');
         $projects = Project::getList($filters, null, 0, $limit);
         $total_projects = Project::getList($filters, null, 0, 0, true);
-
         $stories = Stories::getList(['active' => true]);
-
         $channels = Node::getAll(['status' => 'active', 'type' => 'channel']);
-
         $banners = Banner::getAll(true);
-
         $stats = Stats::create('home_stats');
-
-        $sponsors = [];
-        foreach(Sponsor::getTypes() as $type) {
-            $sponsors[$type] = Sponsor::getList(['type' => $type]);
-        }
+        $sponsors = $this->getSponsors();
 
         return $this->viewResponse('home/index', [
             'banners'   => $banners,
@@ -65,4 +55,12 @@ class IndexController extends DiscoverController
         ]);
     }
 
+    private function getSponsors(): array
+    {
+        $sponsors = [];
+        foreach(Sponsor::getTypes() as $type) {
+            $sponsors[$type] = Sponsor::getList(['type' => $type]);
+        }
+        return $sponsors;
+    }
 }

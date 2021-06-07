@@ -94,7 +94,6 @@ class ProjectTest extends TestCase {
         $this->assertGreaterThanOrEqual($funded, $total);
         $this->assertGreaterThanOrEqual($unfunded, $total);
         $this->assertGreaterThanOrEqual($mainnode, $total);
-        echo "Projects: [$total] In Campaign: [$campaign] Funded: [$funded]  Unfunded: [$unfunded] Node goteo: [$mainnode]\n";
     }
 
     /**

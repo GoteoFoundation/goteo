@@ -11,6 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y --no-install-recommends install php7.1-fpm \
     && apt-get -y --no-install-recommends install php-memcached php7.1-mysql php7.1-gd php-xdebug \
     && apt-get -y --no-install-recommends install nodejs npm build-essential ruby-dev rubygems-integration gosu \
+    && apt-get -y install zip unzip \
     && apt-get -y install mysql-client \
     && apt-get -y install jq \
     && apt-get clean \
@@ -18,7 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 RUN gem install sass -v 3.4.23
 RUN gem install compass
-RUN npm install -g grunt-cli
+RUN npm install -g grunt-cli@1.3.2
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 
 # PHP-FPM packages need a nudge to make them docker-friendly
