@@ -6,11 +6,13 @@ use Goteo\Model\Template;
 use Goteo\Model\Mail;
 use Goteo\Application\Config;
 
-class MailTest extends \PHPUnit_Framework_TestCase {
+class MailTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * Ensures has the correct instances
      */
-    public function testInstance() {
+    public function testInstance(): Mail
+    {
         $mail = new Mail();
         $this->assertInstanceOf('\Goteo\Model\Mail', $mail);
         $this->assertInstanceOf('\PHPMailer', $mail->mail);
@@ -21,8 +23,8 @@ class MailTest extends \PHPUnit_Framework_TestCase {
      * Test validate function
      * @depends testInstance
      */
-    public function testValidate($mail) {
-
+    public function testValidate(Mail $mail): Mail
+    {
         $mail->subject = "A test subject";
         $mail->content = "A test content";
         $mail->to = 'non-valid-email';
@@ -38,26 +40,31 @@ class MailTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testValidate
      */
-    public function testMessage($mail) {
+    public function testMessage(Mail $mail)
+    {
         $mailer = $mail->buildMessage();
         $this->assertInstanceOf('\PHPMailer', $mailer);
 
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
 
-        $this->assertContains('/goteo_logo.png" alt="Logo" />', $mailer->Body);
+        $this->assertContains('/logo-fg-white.png" alt="Fundación Goteo"', $mailer->Body);
         $this->assertContains('<title>' . $mail->subject . '</title>', $mailer->Body);
     }
 
-    private function encode($mail, $url='') {
+    private function encode($mail, $url='')
+    {
         return mybase64_encode(md5(Config::get('secret') . '-' . $mail->to . '-' . $mail->id. '-' . $url) . '¬' . $mail->to  . '¬' . $mail->id . '¬' . $url);
     }
+
     /**
+     * This test is likely to fail if there's no DB
+     *
      * @depends testValidate
      */
-    public function testNewsletterMessage($mail) {
+    public function testNewsletterMessage(Mail $mail)
+    {
         $mail->template = Template::NEWSLETTER;
         $mailer = $mail->buildMessage();
-        // este test no funciona si no hay base de datos
         $leave_url = Config::getMainUrl() . '/user/unsubscribe/' . $mail->getToken();
         $unsubscribe_url = Config::getMainUrl() . '/mail/url/' . $this->encode($mail, $leave_url);
         $this->assertContains($unsubscribe_url, $mailer->Body);
@@ -65,10 +72,8 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $this->assertContains($mail->content, $mailer->Body);
     }
 
-    /**
-     * @depends testValidate
-     */
-    public function testToken($mail) {
+    public function testToken()
+    {
         $mail = new Mail();
         $mail->to = 'test@goteo.org';
         $mail->id = 12345;
@@ -80,7 +85,8 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue(empty(Mail::decodeToken('invalid¬token')));
     }
 
-    public function testCreateText() {
+    public function testCreateText()
+    {
         $mail = Mail::createFromText('test@goteo.org', 'Test', 'Subject', "Body\nsecond line");
         $mailer = $mail->buildMessage();
         $this->assertInstanceOf('\PHPMailer', $mailer);
@@ -92,9 +98,11 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $this->assertContains($mail->getToken(), $mailer->Body);
     }
 
-    public function testCreateHtml() {
+    public function testCreateHtml()
+    {
         $mail = Mail::createFromHtml('test@goteo.org', 'Test', 'Subject', "Body<br>second line");
         $mailer = $mail->buildMessage();
+
         $this->assertInstanceOf('\PHPMailer', $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
@@ -105,25 +113,27 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $this->assertContains($mail->getToken(), $mailer->Body);
     }
 
-    public function testCreateTemplate() {
+    public function testCreateTemplate(): Mail
+    {
         $tpl = Template::get(Template::NEWSLETTER);
         $mail = Mail::createFromTemplate('test@goteo.org', 'Test', Template::NEWSLETTER);
         $mailer = $mail->buildMessage();
+
         $this->assertInstanceOf('\PHPMailer', $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
         $this->assertContains($tpl->title, $mailer->Subject);
         $this->assertEmpty($mailer->isHTML());
-        // $this->assertContains(strtok(strip_tags($tpl->text), "\n") , strip_tags($mailer->Body));
-        // $this->assertContains(preg_replace("/[\n]{2,}/", "\n\n" ,strip_tags(str_ireplace(['<br', '<p'], ["\n<br", "\n<p"], $tpl->text))), $mailer->AltBody);
         $this->assertContains($mail->getToken(), $mailer->Body);
+
         return $mail;
     }
 
     /**
      * @depends testCreateTemplate
      */
-    public function testSaveDB($mail) {
+    public function testSaveDB(Mail $mail)
+    {
         $errors = [];
         $this->assertEmpty($mail->id);
         $this->assertTrue($mail->save($errors), implode("\n", $errors));

@@ -47,7 +47,6 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         //Creates users first
         foreach(self::$user_data as $i => $user) {
             if(!($uob = User::get($user['userid']))) {
-                echo "\nCreating user [{$user['userid']}]";
                 $uob = new User($user);
                 $this->assertTrue($uob->save($errors, ['active']), print_r($errors, 1));
             }
@@ -56,8 +55,6 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
 
             self::$user_data[$i]['ob'] = $uob;
             if(isset($user['pool'])) {
-
-                echo "\nSetting user's pool [{$user['userid']}]";
                 Matcher::query("REPLACE invest (`user`, amount, status, method, invested, charged, pool) VALUES (:user, :amount, :status, 'dummy', NOW(), NOW(), 1)", [':user' => $user['userid'], ':amount' => $user['pool'], ':status' => Invest::STATUS_TO_POOL]);
 
                 Matcher::query("REPLACE user_pool (`user`, amount) VALUES (:user, :amount)", [':user' => $user['userid'], ':amount' => $user['pool']]);
@@ -298,7 +295,6 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
     }
     public function testCleanUsers() {
         foreach(self::$user_data as $user) {
-            echo "\nDeleting user [{$user['userid']}]";
             Matcher::query("DELETE FROM invest WHERE `user` = ?", $user['userid']);
             Matcher::query("DELETE FROM user_pool WHERE `user` = ?", $user['userid']);
             $user['ob']->dbDelete();

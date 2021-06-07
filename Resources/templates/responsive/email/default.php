@@ -8,7 +8,7 @@
     <title><?= $this->subject ? $this->subject : 'Goteo Mailer'  ?></title>
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic|Open+Sans+Condensed:300|Kalam);
-        
+
         body {
             -webkit-text-size-adjust: none;
             text-size-adjust: none;
@@ -50,11 +50,11 @@
             font-weight: 200;
             font-weight: 400;
         }
-        
+
         li{
             margin-bottom: 10px;
         }
-        
+
         .text-center{
             text-align: center;
         }
@@ -97,7 +97,7 @@
             }
             .progress-container{
                 position: inherit !important;
-                padding: 20px 0 10px 0; 
+                padding: 20px 0 10px 0;
             }
         }
         @media only screen and (max-width: 320px) {
@@ -168,15 +168,15 @@
                                 </table>
                             </td>
                         </tr>
-                    </table> 
-                        
+                    </table>
+
                     <?php if ($this->promotes): ?>
-                    
+
                         <!-- PROMOTED PROJECTS -->
                         <?php foreach($this->promotes as $key => $promote) : ?>
-                        
+
                         <?= $this->insert('email/partials/newsletter_project', ['project'=>$promote, 'key' => $key, 'total' => count($this->promotes), 'lang' => $this->lang]); ?>
-                        
+
                         <?php endforeach ?>
 
                     <?php endif ?>
@@ -185,7 +185,7 @@
 
 
                     <?php if ($this->promotes): ?>
-                        
+
                         <!-- BOTON VER PROYECTOS -->
                         <table class="section" style="margin-top: 40px; margin-bottom: 80px; margin-right: 22px;" cellpadding="0" cellspacing="0">
                             <tr>
@@ -196,7 +196,7 @@
                                                 <td align="left">
                                                     <p>
                                                         <a style="color: #ffffff; padding: 13px 0; background-color: #19b4b2; display: inline-block; padding: 6px 12px; margin-bottom: 0;font-size: 14px;font-weight: 400; line-height: 1.42857143; text-align: center; white-space: nowrap; cursor: pointer; border: 1px solid transparent; border-radius: 4px; text-decoration: none;" href="https://goteo.org/discover">
-                                                            <?= $this->t('mailer-more-projects-button', $this->lang) ?>    
+                                                            <?= $this->t('mailer-more-projects-button', $this->lang) ?>
                                                             </a>
                                                     </p>
                                                 </td>
@@ -211,7 +211,7 @@
 
                    <!-- FOOTER SOCIAL -->
                     <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#555555">
-                       <tr> 
+                       <tr>
                             <td align="center">
                                 <table border="0" cellpadding="0" cellspacing="0">
                                     <tbody>
@@ -234,9 +234,11 @@
                                                     <img src="<?= $this->asset('img/newsletter/instagram.png') ?>" alt="Instagram" width="30" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                         </tr>
-                                </td>
-                            </tr>
-                        </table>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
 
 
                     <!-- PRE-FOOTER II -->
@@ -244,15 +246,15 @@
                         <tr>
                             <td class="column" align="center" valign="top" style="max-width: 900px; padding: 20px 0; display: block; margin: 0 auto;">
                                 <p class="pd-description">
-                                 <?= $this->t('mailer-disclaimer', $this->lang) ?>   
-                                </p>                                    
+                                 <?= $this->t('mailer-disclaimer', $this->lang) ?>
+                                </p>
                             </td>
                         </tr>
                     </table>
 
                    <!-- INICIATIVA GOTEO -->
                     <table class="section header" cellpadding="0" cellspacing="0" width="100%" border="0" bgcolor="#555555">
-                       <tr> 
+                       <tr>
                             <td align="center">
                                 <table border="0" cellpadding="0" cellspacing="0">
                                     <tbody>
@@ -266,8 +268,10 @@
                                                 <a style="text-decoration: none; color: #212121;" href="http://fundacion.goteo.org/" target="_blank"><img src="<?= $this->asset('img/logo-fg-white.png') ?>" alt="Fundación Goteo" height="30" border="0" style="display: block;" /></a>
                                             </td>
                                         </tr>
-                                </td>
-                            </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
                     </table>
                 </td>
             </tr>

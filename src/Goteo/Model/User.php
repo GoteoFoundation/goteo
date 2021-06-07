@@ -16,6 +16,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Core\Exception;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
 use Goteo\Library\Password;
@@ -691,14 +692,12 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
-     * Usuario.
-     *
-     * @param string $id    Nombre de usuario
-     * @return obj|false    Objeto de usuario, en caso contrario devolverÃ¡ 'false'.
+     * @param string $id user name
+     * @return User|false
+     * @throws Exception
      */
     public static function get($id, $lang = null, $with_password = false) {
         try {
-
             // This will ensure to have fallback translations in case $lang does not exists
             // However, I find more personal to let the user choose how to present himself
             // and handle his translations manually.

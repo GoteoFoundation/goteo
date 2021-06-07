@@ -10,29 +10,24 @@
 
 namespace Goteo\Model;
 
-use Goteo\Application\Exception\ModelException;
-use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\App;
 use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\View;
-use Goteo\Application\Message;
-use Goteo\Model\User;
-use Goteo\Model\Template;
-use Goteo\Model\Mail\MailStats;
-use Goteo\Model\Mail\StatsCollector;
-use Goteo\Model\Mail\Metric;
+use Goteo\Core\Model;
 use Goteo\Model\Mail\Sender;
+use Goteo\Model\Mail\StatsCollector;
 use Goteo\Model\Message as Comment;
-use Goteo\Library\FileHandler\File;
-use Goteo\Library\Newsletter;
 use Goteo\Util\Monolog\Processor\WebProcessor;
+use PDOException;
+use PHPMailer;
 
-class Mail extends \Goteo\Core\Model {
+class Mail extends Model {
     protected $Table = 'mail';
 
     public
-        $id, // id registro en tabla mail
+        $id,
         $from,
         $fromName,
         $email,
@@ -58,49 +53,57 @@ class Mail extends \Goteo\Core\Model {
         $communication_id = null,
         $lang = null;
 
+    /** @var PHPMailer */
+    public $mail;
+    /** @var ?Sender */
+    private $sender = null;
+
     /**
-     * Constructor.
+     * @throws Config\ConfigException
      */
-    function __construct($exceptions = false) {
+    function __construct($exceptions = false)
+    {
         if($this->sent == 1) $this->status = 'sent';
         if($this->sent === 0 || $this->sent === '0') $this->status = 'failed'; // NULL values are 'pending'
         if($this->email === 'any') $this->massive = true;
 
         $this->node = Config::get('current_node');
-
-        // Inicializa la instancia PHPMailer.
-        $mail = new \PHPMailer($exceptions);
         $this->from = Config::get('mail.transport.from');
-        // $this->to = Config::get('mail.transport.from');
-        // $this->toName = Config::get('mail.transport.name');
         $this->reply = Config::get('mail.transport.from');
         $this->fromName = Config::get('mail.transport.name');
         $this->replyName = Config::get('mail.transport.name');
-        $this->node = Config::get('current_node');
 
-        // If sender defined, lets create the object
+        $this->setSender();
+        $this->setPhpMailer($exceptions);
+    }
+
+    private function setSender()
+    {
         if($this->sender_id) {
             $this->sender = new Sender([
-                        'mail' => $this->id,
-                        'id' => $this->sender_id,
-                        'active' => $this->sender_active,
-                        'datetime' => $this->sender_datetime,
-                        'blocked' => $this->sender_blocked,
-                        'reply' => $this->sender_reply,
-                        'reply_name' => $this->sender_reply_name
-                        ]);
+                'mail' => $this->id,
+                'id' => $this->sender_id,
+                'active' => $this->sender_active,
+                'datetime' => $this->sender_datetime,
+                'blocked' => $this->sender_blocked,
+                'reply' => $this->sender_reply,
+                'reply_name' => $this->sender_reply_name
+            ]);
         }
-        // Define  el idioma para los mensajes de error.
+    }
+
+    /**
+     * @param $exceptions
+     * @throws Config\ConfigException
+     */
+    private function setPhpMailer($exceptions)
+    {
+        $mail = new PHPMailer($exceptions);
         $mail->setLanguage("es");
-
-        // Define la codificación de caracteres del mensaje.
         $mail->CharSet = "UTF-8";
-
-        // Define el ajuste de texto a un número determinado de caracteres en el cuerpo del mensaje.
         $mail->WordWrap = 50;
 
-        // Define el tipo de gestor de correo
-        switch(Config::get('mail.transport.type')) {
+        switch (Config::get('mail.transport.type')) {
             default:
             case "mail":
                 $mail->isMail(); // set mailer to use PHP mail() function.
@@ -112,15 +115,16 @@ class Mail extends \Goteo\Core\Model {
                 $mail->isQmail(); // set mailer to use qmail MTA.
                 break;
             case "smtp":
-                $mail->isSMTP(); // set mailer to use SMTP
-                $mail->SMTPAuth = Config::get('mail.transport.smtp.auth'); // enable SMTP authentication
-                $mail->SMTPSecure = Config::get('mail.transport.smtp.secure'); // sets the prefix to the servier
-                $mail->Host = Config::get('mail.transport.smtp.host'); // specify main and backup server
-                $mail->Port = Config::get('mail.transport.smtp.port'); // set the SMTP port
-                $mail->Username = Config::get('mail.transport.smtp.username');  // SMTP username
-                $mail->Password = Config::get('mail.transport.smtp.password'); // SMTP password
+                $mail->isSMTP();
+                $mail->SMTPAuth = Config::get('mail.transport.smtp.auth');
+                $mail->SMTPSecure = Config::get('mail.transport.smtp.secure');
+                $mail->Host = Config::get('mail.transport.smtp.host');
+                $mail->Port = Config::get('mail.transport.smtp.port');
+                $mail->Username = Config::get('mail.transport.smtp.username');
+                $mail->Password = Config::get('mail.transport.smtp.password');
                 break;
         }
+
         $this->mail = $mail;
     }
 
@@ -179,7 +183,6 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Get instance of mail already on table
-     * @return [type] [description]
      */
     static public function get($id) {
         if ($query = static::query('SELECT * FROM mail WHERE id = ?', $id)) {
@@ -194,7 +197,6 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Get instance of mail already on table using message_id identifier
-     * @return [type] [description]
      */
     static public function getFromMessageId($message_id) {
         if ($query = static::query('SELECT * FROM mail WHERE message_id = ?', $message_id)) {
@@ -207,7 +209,6 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Get instance of mail already on table using communication_id identifier and an optional lang parameter.
-     * @return [type] [description]
      */
     static public function getFromCommunicationId($communication_id, $lang = null) {
         $sql = "SELECT * FROM mail WHERE communication_id = :communication_id";
@@ -226,9 +227,13 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Creates a new instance of Mail from common vars
-     * @return [type] [description]
      */
-    static public function createFromText($to, $to_name, $subject, $body = '') {
+    static public function createFromText(
+        string $to,
+        string $to_name,
+        string $subject,
+        string $body = ''
+    ): Mail {
         $mail = new static();
         $mail->to = $to;
         $mail->toName = $to_name;
@@ -240,9 +245,13 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Creates a new instance of Mail from common vars
-     * @return [type] [description]
      */
-    static public function createFromHtml($to, $to_name, $subject, $body = '') {
+    static public function createFromHtml(
+        string $to,
+        string $to_name,
+        string $subject,
+        string $body = ''
+    ): Mail {
         $mail = new static();
         $mail->to = $to;
         $mail->toName = $to_name;
@@ -254,9 +263,15 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Creates a new instance of Mail from a template
-     * @return [type] [description]
      */
-    static public function createFromTemplate($to, $to_name, $template, $vars =[], $lang = null) {
+    static public function createFromTemplate(
+        string $to,
+        string $to_name,
+        string $template,
+        array $vars =[],
+        string $lang = null
+    ): Mail
+    {
         $mail = new static();
         $mail->to = $to;
         $mail->toName = $to_name;
@@ -270,13 +285,11 @@ class Mail extends \Goteo\Core\Model {
         $mail->subject = $tpl->title;
         $mail->template = $tpl->id;
         $text = $tpl->text;
-        // $mail->content = ($template == Template::NEWSLETTER) ? Newsletter::getContent($text, $mail->lang) : $content = $text;
         $mail->content = $text;
         // En el contenido:
         if($vars) {
             $mail->content = str_replace(array_keys($vars), array_values($vars), $mail->content);
             $mail->subject = str_replace(array_keys($vars), array_values($vars), $mail->subject);
-
         }
 
         $mail->lang = $lang;
@@ -361,7 +374,7 @@ class Mail extends \Goteo\Core\Model {
                     $ok = true;
                 }
 
-            } catch(\PDOException $e) {
+            } catch(PDOException $e) {
                 $errors[] = "Error sending message: " . $e->getMessage();
             } catch(\phpmailerException $e) {
                 $errors[] = $e->getMessage();
@@ -375,11 +388,8 @@ class Mail extends \Goteo\Core\Model {
         return $ok;
 	}
 
-    /**
-     * Construye el mensaje
-     * @return [type] [description]
-     */
-    public function buildMessage() {
+    public function buildMessage(): PHPMailer
+    {
         $mail = $this->mail;
         // Construye el mensaje
         $mail->From = $this->from;
@@ -419,19 +429,14 @@ class Mail extends \Goteo\Core\Model {
         $mail->Subject = $this->subject;
         if (Config::get('env') === 'local') {
             $mail->Subject = '[LOCAL] ' . $mail->Subject;
-        }
-        elseif (Config::get('env') === 'beta') {
+        } elseif (Config::get('env') === 'beta') {
             $mail->Subject = '[BETA] ' . $mail->Subject;
         }
 
+        $mail->isHTML($this->html);
+        $mail->Body = $this->bodyHTML(!$this->html);
         if($this->html) {
-            $mail->isHTML(true);
-            $mail->Body    = $this->bodyHTML();
             $mail->AltBody = $this->bodyText();
-        }
-        else {
-            $mail->isHTML(false);
-            $mail->Body    = $this->bodyHTML(true);
         }
         return $mail;
     }
@@ -477,7 +482,8 @@ class Mail extends \Goteo\Core\Model {
     /**
      * Cuerpo del mensaje en texto plano para los clientes de correo sin formato.
      */
-    private function bodyText() {
+    private function bodyText(): string
+    {
         // add links
         $content = preg_replace_callback([
             '/(<a.*)href=(")([^"]*)"([^>]*)>([^<]*)</U',
@@ -493,52 +499,46 @@ class Mail extends \Goteo\Core\Model {
     }
 
     /**
-     * Cuerpo del texto en HTML para los clientes de correo con formato habilitado.
-     *
      * Se mete el contenido alrededor del diseño de email de Diego
-     *
      */
     private function bodyHTML($plain = false) {
         $token = $this->getToken();
-        return $this->render($plain, [
+        return $this->renderEmailTemplate($plain, [
                     'alternate' => SITE_URL . '/mail/' . $token,
                     'tracker' => SITE_URL . '/mail/track/' . $token . '.gif'
                 ]);
-
     }
 
-    /**
-     * Renders the appropiated view for the mail
-     * @param  boolean     $plain      [description]
-     * @param  Array|array $extra_vars [description]
-     * @return [type]                  [description]
-     */
-    public function render($plain = false, Array $extra_vars = [], $process_links = true) {
+    public function renderEmailTemplate(
+        bool $plain = false,
+        array $extras = [],
+        $processLinks = true
+    ) {
         $content = $this->content;
-        $lang = ($this->lang)? $this->lang : Lang::current();
+        $lang = Lang::current();
 
-        $extra_vars['content'] = $content;
-        $extra_vars['subject'] = $this->subject;
-        $extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
-        $extra_vars['lang'] = $lang;
+        $extras['content'] = $content;
+        $extras['subject'] = $this->subject;
+        $extras['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
+        $extras['lang'] = $lang;
 
         if ($plain) {
-            return strip_tags($this->content) . ($extra_vars['alternate'] ? "\n\n" . $extra_vars['alternate'] : '');
+            return strip_tags($this->content) . ($extras['alternate'] ? "\n\n" . $extras['alternate'] : '');
         }
 
         if (isset($this->template)) {
-            $extra_vars['type'] = Template::get($this->template, $lang)->type;
+            $extras['type'] = Template::get($this->template, $lang)->type;
         }
 
         if (isset($this->communication_id)) {
             $communication = Communication::get($this->communication_id);
-            $extra_vars['type'] = $communication->type;
-            $extra_vars['image'] = $communication->getImage()->getLink(1920,335,true, true);
-            $extra_vars['promotes'] = $communication->getCommunicationProjects($communication->id);
+            $extras['type'] = $communication->type;
+            $extras['image'] = $communication->getImage()->getLink(1920,335,true, true);
+            $extras['promotes'] = $communication->getCommunicationProjects($communication->id);
         }
 
         if ($this->template == Template::NEWSLETTER) {
-            $extra_vars['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
+            $extras['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
             $template = "newsletter";
             View::setTheme('responsive');
 
@@ -554,10 +554,9 @@ class Mail extends \Goteo\Core\Model {
         $engine = View::createEngine();
         $engine->setFolders(View::getFolders());
 
-        $content = $engine->render('email/' . $template, $extra_vars, false);
+        $content = $engine->render('email/' . $template, $extras);
 
-        // Process links if tracker var present
-        if($process_links) {
+        if($processLinks) {
             $content = preg_replace_callback([
                 '/(<a.*)href=(")([^"]*)"([^>]*)>/U',
                 "/(<a.*)href=(')([^']*)'([^>]*)>/U"
@@ -575,10 +574,9 @@ class Mail extends \Goteo\Core\Model {
 
     /**
      * Save email metadata to DB
-     * @param $email
-     * @return int ID of the inserted email
      */
-    public function save(&$errors = []) {
+    public function save(&$errors = []): bool
+    {
         $this->validate($errors);
         if($this->massive) unset($errors['email']);
         if( !empty($errors) ) return false;
@@ -588,13 +586,11 @@ class Mail extends \Goteo\Core\Model {
         try {
             $this->dbInsertUpdate(['email', 'subject', 'content', 'template', 'node', 'lang', 'sent', 'error', 'message_id', 'communication_id']);
             return true;
-        }
-        catch(\PDOException $e) {
+        } catch(PDOException $e) {
             $errors[] = 'Error saving email to database: ' . $e->getMessage();
         }
 
         return false;
-
     }
 
     /**
@@ -644,23 +640,6 @@ class Mail extends \Goteo\Core\Model {
         );
     }
 
-    /**
-     *
-     * Adjuntar cadena como archivo.
-     * @param type string	$string
-     * @param type string	$name
-     * @param type string	$encoding
-     * @param type string	$type
-     */
-    private function attachString($string, $name = false, $encoding = 'base64', $type = 'application/pdf') {
-        $this->attachments[] = array(
-            'string' => $string,
-            'name' => $name,
-            'encoding' => $encoding,
-            'type' => $name
-        );
-    }
-
     public function getStats() {
         if(!$this->stats_collector) {
             $this->stats_collector = new StatsCollector($this);
@@ -676,6 +655,7 @@ class Mail extends \Goteo\Core\Model {
         }
         return $this->sender;
     }
+
     public function getStatus() {
         if($this->getSender()) {
             return $this->getSender()->getStatus();
@@ -683,6 +663,7 @@ class Mail extends \Goteo\Core\Model {
 
         return $this->status;
     }
+
     public function getStatusObject() {
         if($this->getSender()) {
             return $this->getSender()->getStatusObject();
@@ -690,6 +671,7 @@ class Mail extends \Goteo\Core\Model {
 
         return $this->status;
     }
+
     /**
      *
      * @param array $filters    user (nombre o email),  template
@@ -860,6 +842,7 @@ class Mail extends \Goteo\Core\Model {
         static::query("DELETE FROM mailer_control WHERE email=:email", array(':email' => $email));
         return !static::query("SELECT COUNT(*) FROM mailer_control WHERE email=:email", array(':email' => $email))->fetchColumn();
     }
+
     /**
      * Añade un email a la table de control (tipo bounce), con bloqueo de futuros envios si se especifica
      * @param string  $email  email a controlar
