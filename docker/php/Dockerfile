@@ -10,7 +10,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
     && apt-get -y install apt-utils \
     && apt-get -y --no-install-recommends install php7.4-fpm php7.4-mcrypt \
-    && apt-get -y --no-install-recommends install php7.4-memcached php7.4-mysql php7.4-gd php7.4-xdebug \
+    && apt-get -y --no-install-recommends install php7.4-intl php7.4-memcached php7.4-mysql php7.4-gd php7.4-xdebug \
     && apt-get -y --no-install-recommends install nodejs npm build-essential ruby-dev rubygems-integration gosu \
     && apt-get -y install zip unzip \
     && apt-get -y install mysql-client \

@@ -52,7 +52,7 @@ class AppTest extends TestCase {
         );
         foreach($routes as $route) {
             $app = $this->getFullApp();
-            $response = $app->handle(Request::create($route, 'GET'));
+            $response = $app->handle(Request::create($route));
 
             $this->assertTrue($response->isRedirection());
         }
@@ -87,7 +87,7 @@ class AppTest extends TestCase {
     }
     */
 
-    protected function getFullApp($exception = null)
+    protected function getFullApp()
     {
         App::clearApp();
         $routes = include( __DIR__ . '/../../../src/routes.php' );

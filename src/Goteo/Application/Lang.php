@@ -203,7 +203,7 @@ class Lang {
         return array_filter(self::$langs_available, function($lang) use($fallbacklang) {
             return (self::getFallback($lang) == $fallbacklang);
         });
-    } 
+    }
 
     /**
      * set the system lang
@@ -219,7 +219,7 @@ class Lang {
             $fallback = static::getFallback($fallback);
 
         }
-        static::$translator->setFallbackLocale($fallbacks);
+        static::$translator->setFallbackLocales($fallbacks);
 
         // if(!static::isPublic($lang)) {
         if(!static::exists($lang)) {
