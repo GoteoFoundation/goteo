@@ -10,7 +10,7 @@
             </ul>
         </div>
         <div class="row" id="goteo-values-eco">
-            <div class="col col-sm-7 footprint-briefing">
+            <div class="col footprint-briefing">
                 <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
                 <p><span class="footprint-label">Huella ecológica</span></p>
                 <h2>Cómo dejar una mejor huella en el planeta</h2>
@@ -24,11 +24,8 @@
                     <li><a href=""><img src="assets/img/home/ods14.png" alt="ODS"/></a></li>
                     <li><a href=""><img src="assets/img/home/ods15.png" alt="ODS"/></a></li>
                 </ul>
-                <div class="action">
-                    <a href="">Ver proyectos de huella ecológica <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
-                </div>
             </div>
-            <div class="col col-sm-5">
+            <div class="col footprint-info">
                 <div class="slider slider-footprint-data">
                     <div class="">
                         <img src="https://data.goteo.org/165x240c/cambio-climatico-1.jpg">
@@ -68,9 +65,12 @@
                     </div>
                 </div>
             </div>
+            <div class="footprint-action">
+                <a href="">Ver proyectos de huella ecológica <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+            </div>
         </div>
         <div class="row" id="goteo-values-soc">
-            <div class="col col-sm-7 footprint-briefing">
+            <div class="col footprint-briefing">
                 <img src="assets/img/home/footprint-eco.png" alt="Huella SOC" class="footprint" />
                 <p><span class="footprint-label">Huella social</span></p>
                 <h2>Cómo dejar una mejor huella en el planeta</h2>
@@ -84,11 +84,8 @@
                     <li><a href=""><img src="assets/img/home/ods14.png" alt="ODS"/></a></li>
                     <li><a href=""><img src="assets/img/home/ods15.png" alt="ODS"/></a></li>
                 </ul>
-                <div class="action">
-                    <a href="">Ver proyectos de huella ecológica <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
-                </div>
             </div>
-            <div class="col col-sm-5">
+            <div class="col footprint-info">
                 <div class="slider slider-footprint-data">
                     <div class="">
                         <img src="https://data.goteo.org/165x240c/cambio-climatico-1.jpg">
@@ -128,9 +125,12 @@
                     </div>
                 </div>
             </div>
+            <div class="footprint-action">
+                <a href="">Ver proyectos de huella social <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+            </div>
         </div>
         <div class="row" id="goteo-values-dem">
-            <div class="col col-sm-7 footprint-briefing">
+            <div class="col footprint-briefing">
                 <img src="assets/img/home/footprint-eco.png" alt="Huella DEM" class="footprint" />
                 <p><span class="footprint-label">Huella dem</span></p>
                 <h2>Cómo dejar una mejor huella en el planeta</h2>
@@ -144,11 +144,8 @@
                     <li><a href=""><img src="assets/img/home/ods14.png" alt="ODS"/></a></li>
                     <li><a href=""><img src="assets/img/home/ods15.png" alt="ODS"/></a></li>
                 </ul>
-                <div class="action">
-                    <a href="">Ver proyectos de huella ecológica <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
-                </div>
             </div>
-            <div class="col col-sm-5">
+            <div class="col footprint-info">
                 <div class="slider slider-footprint-data">
                     <div class="">
                         <img src="https://data.goteo.org/165x240c/cambio-climatico-1.jpg">
@@ -187,6 +184,9 @@
                         <p>Por: La Zona</p>
                     </div>
                 </div>
+            </div>
+            <div class="footprint-action">
+                <a href="">Ver proyectos de huella dem <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
             </div>
         </div>
     </div>
