@@ -2504,6 +2504,233 @@ class Project extends \Goteo\Core\Model {
     }
 
 
+    public static function getBySDGs($sdgs = array(), $offset, $limit = 10, $count = false)
+    {
+        $lang = Lang::current();
+        $values = array();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        if($count) {
+            $sql = "
+            SELECT COUNT(project.id) FROM project
+            INNER JOIN sdg_project ON sdg_project.project_id = project.id
+            WHERE sdg_project.sdg_id IN (" . implode(',', $sdgs) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . "," . self::STATUS_REVIEWING . ")
+            ";
+            return (int) self::query($sql)->fetchColumn();
+        }
+
+        if($limit)
+        {
+            $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
+        }
+
+        $sql ="
+            SELECT
+                project.id as project,
+                $fields,
+                project.status as status,
+                project.published as published,
+                project.created as created,
+                project.updated as updated,
+                project.success as success,
+                project.closed as closed,
+                project.mincost as mincost,
+                project.maxcost as maxcost,
+                project.amount as amount,
+                project.image as image,
+                project.num_investors as num_investors,
+                project.num_messengers as num_messengers,
+                project.num_posts as num_posts,
+                project.days as days,
+                project.name as name,
+                project.project_location as project_location,
+                project.social_commitment AS social_commitment,
+                project.owner as owner,
+                user.id as user_id,
+                user.name as user_name,
+                project_conf.noinvest as noinvest,
+                project_conf.one_round as one_round,
+                project_conf.days_round1 as days_round1,
+                project_conf.days_round2 as days_round2
+            FROM  project
+            INNER JOIN sdg_project on sdg_project.project_id = project.id
+            INNER JOIN user ON user.id = project.owner
+            LEFT JOIN project_conf
+                ON project_conf.project = project.id
+            $joins
+            WHERE sdg_project.sdg_id IN (" . implode(',', $sdgs) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . "," . self::STATUS_REVIEWING . ")
+            GROUP BY project.id
+            ORDER BY  project.id ASC
+            $sql_limit
+            ";
+            // die(\sqldbg($sql, $values));
+        $query = self::query($sql, $values);
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+            $projects[] = self::getWidget($proj);
+        }
+
+        return $projects;
+
+    }
+
+    public static function getByFootprint($footprints = array(), $offset, $limit = 10, $count = false)
+    {
+        $lang = Lang::current();
+        $values = array();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        if($count) {
+            $sql = "
+            SELECT COUNT(project.id) FROM project
+            INNER JOIN sdg_project ON sdg_project.project_id = project.id
+            INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
+            WHERE sdg_footprint.footprint_id IN (" . implode(',', $footprints) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . ")
+            ";
+            return (int) self::query($sql)->fetchColumn();
+        }
+
+        if($limit)
+        {
+            $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
+        }
+
+
+        $sql ="
+            SELECT
+                project.id as project,
+                $fields,
+                project.status as status,
+                project.published as published,
+                project.created as created,
+                project.updated as updated,
+                project.success as success,
+                project.closed as closed,
+                project.mincost as mincost,
+                project.maxcost as maxcost,
+                project.amount as amount,
+                project.image as image,
+                project.num_investors as num_investors,
+                project.num_messengers as num_messengers,
+                project.num_posts as num_posts,
+                project.days as days,
+                project.name as name,
+                project.project_location as project_location,
+                project.social_commitment AS social_commitment,
+                project.owner as owner,
+                user.id as user_id,
+                user.name as user_name,
+                project_conf.noinvest as noinvest,
+                project_conf.one_round as one_round,
+                project_conf.days_round1 as days_round1,
+                project_conf.days_round2 as days_round2
+            FROM  project
+            INNER JOIN sdg_project on sdg_project.project_id = project.id
+            INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
+            INNER JOIN user ON user.id = project.owner
+            LEFT JOIN project_conf
+                ON project_conf.project = project.id
+            $joins
+            WHERE sdg_footprint.footprint_id IN (" . implode(',', $footprints) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . ")
+            GROUP BY project.id
+            ORDER BY  project.id ASC
+            $sql_limit
+            ";
+            // die(\sqldbg($sql, $values));
+        $query = self::query($sql, $values);
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+            $projects[] = self::getWidget($proj);
+        }
+
+        return $projects;
+
+    }
+
+
+    public static function getByFootprintOrSDGs($filters = array(), $offset, $limit, $count = false ) {
+
+        $lang = Lang::current();
+        $values = array();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+
+        if ($filters['sdgs']) {
+            $sqlWhere[]= "sdg_project.sdg_id IN (" . implode(',', $filters['sdgs']). ")";
+        }
+
+        if ($filters['footprints']) {
+            $sqlWhere[]= "sdg_footprint.footprint_id IN (" . implode(',', $filters['footprints']). ")";
+        }
+
+        if ($sqlWhere) {
+            $sqlWhere = " AND ( " . implode(' OR ', $sqlWhere) . " )";
+        }
+
+        if($count) {
+            $sql = "
+            SELECT COUNT(distinct(project.id)) FROM project
+            INNER JOIN sdg_project on sdg_project.project_id = project.id
+            INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
+            WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
+            ";
+            return (int) self::query($sql)->fetchColumn();
+        }
+
+        if($limit)
+        {
+            $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
+        }
+
+
+        $sql ="
+            SELECT
+                project.id as project,
+                $fields,
+                project.status as status,
+                project.published as published,
+                project.created as created,
+                project.updated as updated,
+                project.success as success,
+                project.closed as closed,
+                project.mincost as mincost,
+                project.maxcost as maxcost,
+                project.amount as amount,
+                project.image as image,
+                project.num_investors as num_investors,
+                project.num_messengers as num_messengers,
+                project.num_posts as num_posts,
+                project.days as days,
+                project.name as name,
+                project.project_location as project_location,
+                project.social_commitment AS social_commitment,
+                project.owner as owner,
+                user.id as user_id,
+                user.name as user_name,
+                project_conf.noinvest as noinvest,
+                project_conf.one_round as one_round,
+                project_conf.days_round1 as days_round1,
+                project_conf.days_round2 as days_round2
+            FROM  project
+            INNER JOIN sdg_project on sdg_project.project_id = project.id
+            INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
+            INNER JOIN user ON user.id = project.owner
+            LEFT JOIN project_conf
+                ON project_conf.project = project.id
+            $joins
+            WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
+            GROUP BY project.id
+            ORDER BY project.published DESC
+            $sql_limit
+            ";
+            // die(\sqldbg($sql, $values));
+        $query = self::query($sql, $values);
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+            $projects[] = self::getWidget($proj);
+        }
+
+        return $projects;
+    }
+
+
     /**
      * Lista de proyectos publicados
      * @param $type string

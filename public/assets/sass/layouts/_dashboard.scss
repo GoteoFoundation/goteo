@@ -769,7 +769,52 @@
     width: 50%;
     padding-bottom: 20px;
   }
+
+  .impact-filter {
+
+    input {
+
+      cursor: pointer;
+
+      &[type="checkbox"] {
+
+        & + img {
+          filter: grayscale(100%);
+        }
+
+        &:checked + img {
+          filter: unset !important;
+        }
+      } 
+
+      &[type="hidden"]{
+        
+
+        & + img {
+          filter: grayscale(100%);
+        }
+        
+        &[value = "1"] + img, &[value = "2"] + img,&[value = "3"] + img {
+          filter: unset !important;
+        }
+      }
+    }
+
+    img {
+      cursor: pointer;
+    }
+
+    .discover-sdg {
+      text-align: center;
+      height: 9em;
+
+      label {
+        cursor: pointer;
+      }
+    }
+  }
 }
+
 .user-pool {
     text-align: center;
     .pool-amount {
