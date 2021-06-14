@@ -63,6 +63,7 @@ class MailController extends \Goteo\Core\Controller {
 
             }
             // Content still in database?
+            /** @var Mail $mail */
             if ($mail = Mail::get($mail_id)) {
                 if ($mail->massive) {
                     if ($user = User::getByEmail($email)) {
@@ -77,7 +78,7 @@ class MailController extends \Goteo\Core\Controller {
                 if(empty($mail->template)) {
                     $mail->content = '<pre>' . $mail->content . '</pre>';
                 }
-                return new Response($mail->render(false, [], $track));
+                return new Response($mail->renderEmailTemplate(false, [], $track));
             }
 
             // TODO, check if exists as file-archived
