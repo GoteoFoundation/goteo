@@ -68,7 +68,6 @@ class UserTest extends TestCase {
         $this->assertGreaterThanOrEqual($active, $total);
         $this->assertGreaterThanOrEqual($nolocation, $total);
         $this->assertGreaterThanOrEqual($mainnode, $total);
-        echo "Users: [$total] Active: [$active] no-location: [$nolocation] Node goteo: [$mainnode]\n";
     }
 
     public function testCreateUser() {

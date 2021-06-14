@@ -8,7 +8,12 @@ use Goteo\Model\Sponsor;
 
 class SponsorTest extends TestCase {
 
-    private static $data = array('name' => 'Test Sponsor', 'url' => 'http://goteo.org', 'order' => 0);
+    private static $data = [
+        'name' => 'Test Sponsor',
+        'url' => 'http://goteo.org',
+        'order' => 0,
+        'type' => Sponsor::SPONSOR_NETWORK
+    ];
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
