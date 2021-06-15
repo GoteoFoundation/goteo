@@ -10,6 +10,7 @@
 
 namespace Goteo\Core;
 
+use Goteo\Library\Forms\FormProcessorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -159,7 +160,7 @@ abstract class Controller {
 
     /**
      * Handy method to get a form builder
-     * @return Goteo\Library\Forms\FormProcessorInterface
+     * @return FormProcessorInterface
      */
     public function getModelForm($form, Model $model, array $defaults = [], array $options = [], Request $request = null) {
         $finder = $this->getService('app.forms.finder');
