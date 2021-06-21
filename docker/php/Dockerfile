@@ -2,7 +2,7 @@
 # PHPDocker.io PHP 7.1 / FPM image #
 ####################################
 
-FROM ubuntu:bionic-20210512
+FROM ubuntu:bionic
 WORKDIR /application
 ARG PHP_VERSION=7.1
 
