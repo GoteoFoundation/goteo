@@ -183,6 +183,9 @@ class Config {
 			View::addFolder(__DIR__ . '/../../../Resources/templates/responsive');
             View::setTheme('responsive');
 
+            \Goteo\Application\View::setTheme('responsive');
+            // we die here and show a formatted error, most likely reason is a database misconfiguration
+			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
 			return;
 		}
 	}
