@@ -45,6 +45,17 @@ App::setRequest($request);
 // Get the app
 $app = App::get();
 
+if(getenv('LOG_TO_STDOUT')) {
+    $handler = new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::DEBUG);
+    $handler->setFormatter(new Bramus\Monolog\Formatter\ColoredLineFormatter());
+
+    // Add a log level debug to stderr
+    App::getService('logger')->pushHandler($handler);
+    App::getService('syslogger')->pushHandler($handler);
+    App::getService('paylogger')->pushHandler($handler);
+}
+
+
 // handle routes, flush buffer out
 $app->run();
 
