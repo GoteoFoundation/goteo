@@ -23,7 +23,6 @@
 !/var/data
 !/var/php
 /var/php/sess_*
-composer.lock
 
 /config/*
 !/config/README.md
