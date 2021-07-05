@@ -16,6 +16,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Core\Exception;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
 use Goteo\Library\Password;
@@ -56,7 +57,6 @@ class User extends \Goteo\Core\Model {
     $confirmed, // si no ha confirmado el email
     $hide, // si oculto no aparece su avatar en ninguna parte (pero sus aportes cuentan)
     $facebook,
-    $google,
     $twitter,
     $identica,
     $linkedin,
@@ -69,6 +69,11 @@ class User extends \Goteo\Core\Model {
     $interests = array(),
     $webs = array(),
     $roles = array();
+
+    // Cambia el valor por defecto de $punto solo para la clase User
+    public static function idealiza($value, $punto = true, $enye = false, $max = 50) {
+        return parent::idealiza($value, $punto, $enye, $max);
+    }
 
     public function __construct() {
         $args = func_get_args();
@@ -140,7 +145,7 @@ class User extends \Goteo\Core\Model {
             // Nuevo usuario.
             if (empty($this->id)) {
                 $insert = true;
-                $this->id = static::idealiza($this->userid, true);
+                $this->id = static::idealiza($this->userid);
                 $data[':id'] = $this->id;
                 $data[':name'] = $this->name;
                 $data[':location'] = $this->location;
@@ -236,10 +241,6 @@ class User extends \Goteo\Core\Model {
                     $data[':facebook'] = $this->facebook;
                 }
 
-                if (isset($this->google)) {
-                    $data[':google'] = $this->google;
-                }
-
                 if (isset($this->twitter)) {
                     $data[':twitter'] = $this->twitter;
                 }
@@ -316,7 +317,7 @@ class User extends \Goteo\Core\Model {
                     }
                     $query = substr($query, 0, -2) . " WHERE id = :id";
                 }
-                // die(\sqldbg($query, $data));
+                 //die(\sqldbg($query, $data));
                 // Ejecuta SQL.
                 if (self::query($query, $data)) {
                     return true;
@@ -344,7 +345,7 @@ class User extends \Goteo\Core\Model {
             if (empty($this->userid)) {
                 $errors['userid'] = Text::get('error-register-userid');
             } else {
-                $id = self::idealiza($this->userid, true);
+                $id = self::idealiza($this->userid);
                 $query = self::query('SELECT id FROM user WHERE id = ?', array($id));
                 if ($query->fetchColumn()) {
                     $errors['userid'] = Text::get('error-register-user-exists'). " ($id)";
@@ -409,10 +410,6 @@ class User extends \Goteo\Core\Model {
             $this->facebook = '';
         }
 
-        if (\str_replace(Text::get('regular-google-url'), '', $this->google) == '') {
-            $this->google = '';
-        }
-
         if (\str_replace(Text::get('regular-twitter-url'), '', $this->twitter) == '') {
             $this->twitter = '';
         }
@@ -423,6 +420,10 @@ class User extends \Goteo\Core\Model {
 
         if (\str_replace(Text::get('regular-linkedin-url'), '', $this->linkedin) == '') {
             $this->linkedin = '';
+        }
+
+        if (\str_replace(Text::get('regular-instagram-url'), '', $this->instagram) == '') {
+            $this->instagram = '';
         }
 
         return (empty($errors['email']) && empty($errors['password']));
@@ -691,14 +692,12 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
-     * Usuario.
-     *
-     * @param string $id    Nombre de usuario
-     * @return obj|false    Objeto de usuario, en caso contrario devolverÃ¡ 'false'.
+     * @param string $id user name
+     * @return User|false
+     * @throws Exception
      */
     public static function get($id, $lang = null, $with_password = false) {
         try {
-
             // This will ensure to have fallback translations in case $lang does not exists
             // However, I find more personal to let the user choose how to present himself
             // and handle his translations manually.
@@ -720,7 +719,6 @@ class User extends \Goteo\Core\Model {
                     IFNULL(user_lang.contribution, user.contribution) as contribution,
                     IFNULL(user_lang.keywords, user.keywords) as keywords,
                     user.facebook as facebook,
-                    user.google as google,
                     user.twitter as twitter,
                     user.instagram as instagram,
                     user.identica as identica,
@@ -2351,7 +2349,7 @@ class User extends \Goteo\Core\Model {
             $parts = preg_split("/[\s,\-\@\.]+/", $string);
             $id = '';
             foreach($parts as $part) {
-                $id .= self::idealiza($part, true);
+                $id .= self::idealiza($part);
                 if(strlen($id) < 4) continue;
                 if($id) {
                     $originals[] = $id;

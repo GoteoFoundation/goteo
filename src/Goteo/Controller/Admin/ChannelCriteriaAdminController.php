@@ -12,7 +12,9 @@ namespace Goteo\Controller\Admin;
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use Goteo\Application\Config;
 use Goteo\Application\Message;
@@ -21,10 +23,13 @@ use Goteo\Library\Text;
 use Goteo\Model\Node;
 use Goteo\Model\Questionnaire;
 use Goteo\Model\Questionnaire\Question;
+use Goteo\Model\Questionnaire\Answer;
+use Goteo\Model\Project;
+use Goteo\Model\Contract\BaseDocument;
 
 class ChannelCriteriaAdminController extends AbstractAdminController
 {
-  protected static $icon = '<i class="fa fa-2x fa-tasks"></i>';
+  protected static $icon = '<i class="fa fa-2x fa-question-circle-o"></i>';
 
   public static function getGroup() {
     return 'channels';
@@ -41,6 +46,10 @@ class ChannelCriteriaAdminController extends AbstractAdminController
       new Route(
         '/{id}',
         ['_controller' => __CLASS__ . "::listAction"]
+      ),
+      new Route(
+        '/{id}/export',
+        ['_controller' => __CLASS__ . "::exportAction"]
       )
       ];
   }
@@ -66,6 +75,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
               $question->title = $data[$id . "_question"];
               $question->vars->type = $data[$id . "_typeofquestion"];
               $question->vars->required = $data[$id . "_required"] ? true : false;
+              $question->vars->hidden = $data[$id . "_hidden"] ? true : false;
               $question->max_score = $data[$id . "_max_score"];
               $question->order = $order++;
               if (!$question->save($errors)) {
@@ -92,7 +102,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
       $questionnaire->channel = $channel->id;
       $questionnaire->lang = Config::get('lang');
       $questionnaire->save();
-  }
+   }
 
   $processor = $this->getModelForm('QuestionnaireCreate', $questionnaire, (array) $questionnaire, [], $request);
   $processor->createForm()->getBuilder()
@@ -147,6 +157,85 @@ class ChannelCriteriaAdminController extends AbstractAdminController
       'form' => $form->createView(),
       'questionnaire' => $questionnaire
     ]);
+  }
+
+  public function exportAction($id, Request $request) {
+
+    try {
+			$channel = Node::get($id);
+		} catch (ModelNotFoundException $e) {
+			Message::error($e->getMessage());
+			return $this->redirect('/admin/channelcriteria');
+    }
+
+    $questionnaire = Questionnaire::getByChannel($id);
+    $questions = $questionnaire->questions;
+    $questions = array_column($questions, null, 'id');
+    
+    $total = Project::getList(['node' => $id], $cid, 0, 0, true);
+    $projects = Project::getList(['node' => $id], $cid, 0, $total);
+
+    $response = new StreamedResponse(function () use ($questions, $projects) {
+      $buffer = fopen('php://output', 'w');
+
+      $header = ['ID'];
+
+      foreach ($questions as $question) {
+        array_push($header, $question->id . ' - ' . $question->title);
+      }
+
+      fputcsv($buffer, $header);
+      flush();
+      fclose($buffer);
+      $offset = 0;
+
+      foreach ($projects as $project) {
+        $answers = Answer::getList(['questionnaire' => $questionnaire->id, 'project' => $project->id]);
+        $answers = array_column($answers, null, 'question');
+        if (empty($answers))
+          continue;
+
+        $project_answers = [$project->id];
+
+        foreach ($questions as $index => $question) {
+
+          $answer = $answers[$index];
+          if (!isset($answer)) {
+            array_push($project_answers, $answer);
+            continue;
+          }
+            
+          if ($question->vars->type == "dropfiles") {
+            try {
+              $document = BaseDocument::getByName($answer->answer);
+              $document_link = Config::get('url.main') . $document->getLink();
+            } catch(ModelNotFoundException $e) {
+              $document_link = Text::get('questionnaire-question-answer-dropfile-not-found');
+            }
+
+            if(substr($document_link,0,2) == '//') $document_link = (Config::get('ssl') ? 'https:' : 'http:') . $document_link;
+            array_push($project_answers, $document_link);
+          } else {
+            array_push($project_answers, $answer->answer); 
+          }
+        }
+
+        $buffer = fopen('php://output', 'w');
+        fputcsv($buffer, $project_answers);
+        flush();
+        fclose($buffer);
+      }
+    });
+
+    $d = $response->headers->makeDisposition(
+			ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+			'channel_' . $id .'_answers_.csv'
+		);
+
+		$response->headers->set('Content-Disposition', $d);
+		$response->headers->set('Content-Type', 'text/csv');
+
+		return $response;
   }
 
 

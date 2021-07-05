@@ -1,10 +1,25 @@
 ---
+bazar-spread-text: '%s - Este Nadal, agasalla con crowdfunding aberto e para o ben común con @goteofunding #openbazaar'
+bazar-thanks: 'Grazas pola visita ao noso bazar, podes axudarnos a difundilo.'
+currency-alert: "Por favor, lembra que a xestión é en EUR. Pagarás aproximadamente <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Máis info</a>"
+faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Que sistemas de pagamento fornece Goteo? Son seguros?</a>'
 imperative-register: Rexístrate
 invest-address-address-field: 'Dirección:'
+invest-address-birthyear-field: 'Ano de nacemento'
 invest-address-country-field: 'País:'
+invest-address-fail: 'Hai campos baleiros ou con erros, verifica o formulario para poder recibir a túa recompensa!'
+invest-address-friend-field: 'Selecciona está opción se é un agasallo para outra persoa'
+invest-address-gender-field: Sexo
 invest-address-header: 'Onde queres recibir a recompensa (só en caso de envíos postais)'
 invest-address-location-field: 'Cidade:'
+invest-address-maildest-field: 'Correo do destinatario'
+invest-address-msgdest-field: 'Mensaxe para o destinatario'
+invest-address-myemail-field: 'O teu correo electrónico'
+invest-address-myname-field: 'O teu nome'
 invest-address-name-field: 'Nome e apelidos:'
+invest-address-namedest-field: 'Nome do destinatario'
+invest-address-nif-field: 'Número de NIF / NIE / CIF / VAT'
+invest-address-title: 'Asegúrate de recibir a túa recompensa'
 invest-address-zipcode-field: 'Código postal:'
 invest-alert-investing: 'Vas aportar'
 invest-alert-lackamount: 'A achega debe ser maior cá recompensa elixida'
@@ -14,28 +29,85 @@ invest-alert-noreward_renounce: '¿Desexas renunciar á recompensa e desgravar a
 invest-alert-renounce: 'Renuncias mais non puxeches o teu DNI para desgravar a doazón, ¿é correcto?'
 invest-alert-rewards: 'Elixiches as seguintes recompensas:'
 invest-amount: Cantidade
+invest-amount-in-pool: 'Tes %s no teu portamoedas virtual'
 invest-amount-tooltip: 'Insire a cantidade coa que apoiaras ó proxecto'
 invest-anonymous: 'Quero que a miña achega sexa anónima'
+invest-button: Achegar
 invest-called-allready: 'A este proxecto xa lle deches <strong>Matchfunding</strong> da campaña <span class="call">%s</span>, non obterá máis Matchfunding polas túas achegas'
 invest-called-maxdrop: 'Ata un máximo de <strong>%s &euro;</strong>'
 invest-called-maxproj: 'Xa se acadou o máximo de <strong>Matchfunding</strong> posible na campaña <span class="call">%s</span>.'
 invest-called-nodrop: 'Actualmente non hai <strong>Matchfunding</strong> dispoñible na campaña %s'
 invest-called-rest: 'Só quedan <strong>%s €</strong> de <strong>Matchfunding</strong> na campaña <span class="call">%s</span>'
+invest-card-method: Tarxeta
+invest-cash-method: 'Manual (efectivo)'
 invest-donation-header: 'Inserir os datos fiscais para a doazón'
+invest-drop-method: Rego
+invest-fiscal-fail: 'Hai campos baleiros ou con erros, verifica o formulario fiscal para poder desgravar a túa achega!'
+invest-fiscal-skip: 'Non quero encher estes datos neste momento.'
+invest-login-alert: 'Tes de estar rexistrado ou <a href="%s">Iniciar sesión</a> para poder face-la achega'
 invest-mail_info-address: 'Especificaches a seguinte dirección:'
 invest-make-sure-save: Gardar
+invest-make-sure-title: Confirmar
+invest-method: 'Método de pagamento'
+invest-method-title: 'Fai a túa achega'
+invest-modal-fiscal-description: 'Como ben sabes, facer achegas no Gateo non só fai posibles unha boa chea de proxectos que nos benefician a todos/as, mais, tamén desgrava! Ao realizar unha achega a un proxecto, e grazas ao incremento nos tipos de dedución aplicables dende o 2015 para todas as doazóns puras e simples que se fagan a favor da Fundación Goteo, como entidade acollida ao réxime fiscal especial da Lei 49/2002 do 23 de decembro, poderás deducir as cantidades que indicamos na nosa <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ 18 para comecenas</a>.'
+invest-modal-fiscal-title: 'Información fiscal'
+invest-modal-pool-title: 'Sobre o portamoedas virtual Goteo'
+invest-more-info: 'Máis información'
 invest-next_step: 'Paso seguinte'
 invest-payment-email: 'Insire a túa conta de PayPal'
+invest-payment-fail: 'Produciuse un erro no pagamento'
+invest-payment-success: 'Pagamento realizado con éxito'
 invest-payment_method-header: 'Elixe o método de pago'
+invest-payment-method: 'Método de pagamento'
+invest-paypal-method: Paypal
+invest-paypal_disabled: "Este proxecto ten desactivada a opción de pagamento a través do PayPal. <a href=\"/faq/investors#q2\" target=\"_blank\">Máis info.</a>"
+invest-pool: 'Quero que a miña doazón, no caso de que o proxecto non acade o seu obxectivo, permaneza no meu portamoedas virtual Goteo.'
+invest-pool-available: dispoñibles
+invest-pool-error: 'Non tes cartos abondo non teu portamoedas virtual'
+invest-pool-method: 'Portamoedas virtual'
 invest-process-completed: 'Esta achega xa se completou anteriormente'
+invest-project: 'ao proxecto'
 invest-resign: 'Renuncio a unha recompensa individual, só quero axudar ó proxecto'
+invest-reward-first: 'Lembra que a cantidade a achegar ten que ser maior a 0'
 invest-reward-none: 'Xa non se pode elixir'
+invest-select-reward: 'Selecciona a túa recompensa'
+invest-share-title: Compartir
 invest-social-header: 'Cos retornos colectivos gañamos tod@s'
+invest-status-cancelled: Cancelado
+invest-status-charged: Cobrado
+invest-status-paid: 'Pagado ao proxecto'
+invest-status-relocated: Reubicado
+invest-status-returned: 'Devolto (arquivado)'
+invest-status-to-pool: 'Ao portamoedas'
+invest-status-donated: 'Doado á Fundación'
+invest-step-1: Recompensa
+invest-step-2: Pagamento
+invest-step-3: Confirmar
+invest-step-4: Compartir
+invest-success-make-sure: 'Parabéns! A túa doazón ao proxecto <strong>%s</strong> realizouse con éxito.'
+investing_closed: 'Non están permitidas máis achegas nesta campaña.'
 proj-widget-my_invest: 'As miñas achegas'
 project-invest-confirm: 'Estás a un paso de cofinanciar este proxecto...'
 project-invest-continue: 'Preme no logo do sistema de pago que empregarás:'
 project-invest-fail: 'Algo fallou, por favor ténteo de novo'
 project-invest-guest: '¡Xenial!'
 project-invest-ok: 'Tramitouse a túa achega para confinanciar este proxecto :)'
+project-invest-pool-button: 'Usar o meu portamoedas virtual'
 project-invest-start: 'Estás a un intre de cofinanciar este proxecto...'
+project-return-button: 'Volver ao proxecto'
+project-see-msg: 'Ver a túa mensaxe'
+spread-facebook: 'Difunde no Facebook'
+spread-twitter: 'Difunde no Twitter'
 user-login-required-login: 'Se xa estás rexistrado debes <a href="%s">iniciar sesión</a>, se non, debes crear un novo usuario.'
+warning_nojavascript: 'Habilita javascript dende os axustes da privacidade do teu navegador para poder continuar co proceso de pagamento'
+invest-no-register: 'Omitir este paso, só desexo achegar'
+invest-user-not-ghost: 'Este email pertence a un usuario existente!'
+invest-user-name-or-anonymous: 'O nome é obrigatorio se non desexas realizar unha achega anónima'
+invest-created-manually-ok: 'Achega manual feita con éxito, seleccionar recompensa e enderezo de entrega.'
+invest-created-manually-ko: 'Erro creando a achega manual [%s]'
+invest-tip-part-1: 'Quero sumar á miña doazón: '
+invest-tip-part-2: 'para contribuír na misión da <b>Fundación Goteo</b><br> por unha sociedade máis ética e colaborativa'
+invest-mail-donate-tip: 'Coa túa doazón decidiches colaborar na <strong>Fundación Goteo</strong> con %s€ adicionais. Grazas de corazón.'
+invest-update-total: 'Realizarás unha doazón total de <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% ao proxecto + <span id="tip-amount">%DONATE_AMOUNT%</span> á Fundación Goteo'
+invest-extra-info: 'Información adicional'

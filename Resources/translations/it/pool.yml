@@ -1,3 +1,41 @@
 ---
+landing-calculate-button: Calcolare
+landing-donor-button: Donare
+landing-error-zero: 'La quantità da contribuire deve essere maggiore di 0'
+landing-less-info: 'Meno informazioni'
+landing-main-slogan: 'Calcola il tuo risparmio fiscale grazie al miglioramento fiscale dal 2015'
+landing-more-info: 'Più informazioni'
+landing-more-info-text: '<h4>La nuova legge ti permette di contribuire di più e permetterà di rendere concreti più progetti</h4><p>Ora ciò che contribuiva ad entità benefiche e simili sgravava un 25% sulla tua dichiarazione dei redditi. A partire dal 2015 potrà sgravare di più, ed ancora di più nel 2016. <br><br>Le percentuali dipendono non solo dall''anno, ma anche da quanto contribuisci: così, per contribuzioni di un annon non superiori ai 150€ si avranno percentuali, e per importi che superano i 150€ ce ne saranno altre.</p><h4>E se ripeti con Goteo durante almeno 3 anni...</h4><p>Se hai collaborato con la stessa entità negli ultimi tre anni, le percentualid is gravo sono superiori*. Così a tua fedeltà viene ricompensata con una maggiore devoluzione.</p><hr><p>(*) Il limite della deduzione su base liquidabile si mantiene nel 10%.<br>Articolo 19 (Deduzione della quota dell''Imposta sul Reddito delle Persone Fisiche) della legge 49/2002 del 23 di dicembre, dei regimi fiscali delle entità senza scopi di lucro e delle iniziative fiscali al patrocinio.</p>'
+landing-real-amount: 'La tua spesa reale sarà'
+landing-regular-invest: Contributo
+landing-spread: 'Calcola il tuo sgravo fiscale in Goteo! #mojarsedesgrava'
+landing-spread-title: 'Diffondi i vantaggi fiscali di Goteo!'
+landing-stories-title: 'Grazie ai tuoi contributi si finanziano iniziative come:'
+landing-subtitle-banner: "<span class=\"line\">Implicandoti e compromettendoti con <strong>progetti in Goteo</strong><br><strong>sgravi</strong> entro un <strong>27,5%</strong> ed un <strong>50%</strong> dell'importo della tua donazione</span>"
+landing-target-description: 'Nostro obiettivo 2015: che <strong> più del 50% degli utenti di Goteo esercitino il loro diritto di ottenere benefici fisali</strong> sui propri contributi (Nel 2014 solo un 12% lo ha fatto).'
+landing-target-title: 'Obbiettivo 2015'
+landing-taxes-explain: 'Fai ora il tuo contributo con il <strong>portafoglio Goteo</strong>: una nuova funzionalità che permette di realizzare la tua donazione al momento e decidere poi a che progetto destinarla. Otterrai all''istante il certificato che giustifica prima di Hacienda il tuo contributo alla Fondazione Goteo, entità senza scopo di lucro.'
+landing-taxes-regional: '<strong>* Importante</strong> Questo miglioramento fiscale non si applica fuori dalla Spagna, nè tantomeno al Paese Basco nè a Navarra, che mantengono una deduzione del 20% e del 25% rispettivamente del totale contribuito.'
+landing-taxes-title: 'Hacienda ti devolve*:'
+landing-title-banner: 'In Goteo, <br>rimpiangere sgrava'
+landing-type-company: Impresa
 landing-type-person: 'Persona fisica'
+pool-alert-recharging: 'Stai per caricare il tuo portafoglio virtuale con '
+pool-amount-first: 'Devi indicare una quantità maggiore di 0 per poter caricare il tuo portafoglio'
+pool-button-download-certificate: 'Scarica il tuo certificato'
+pool-invest-ok: 'Il caricamento del portafoglio virtuale è statot rasmesso :) Scarica il tuo certificato e diffondi la tua generosità!'
 pool-invest-share-discover: 'Scopri i progetti '
+pool-invest-spread-header: 'Diffondi ed aiutaci affinché più gente usi il portafoglio virtuale di Goteo'
+pool-invest-spread-social: 'Ho concluso il caricamento del mio portafoglio virtuale in #Goteo. Anche tu puoi donare ora e contribuire dove vuoi '
+pool-invest-success-make-sure: 'Il tuo portafoglio virtuale è stato caricato con successo! Da ora, ogni volta che contribuisci ad una campagna in Goteo, avrai l''opzione di donare dal tuo portafoglio virtuale, da dove resterà l''importo. Potrai volerlo caricare ogni volta che lo desideri.'
+pool-invest-suggest-projects: 'Progetti che potrebbero interessarti'
+pool-make-sure-title: 'Conferma i dati per il certificato'
+pool-pay-method-title: 'Realizza il tuo contributo'
+pool-recharge-amount-text: 'Decidi con che quantità vuoi caricare il tuo portafoglio virtuale'
+pool-recharge-title: 'Carica il tuo portafoglio virtuale'
+pool-share-title: 'Scarica il tuo certificato e diffondi'
+pool-step-1: Carica
+pool-step-2: Pagamento
+pool-step-3: Certificato
+pool-step-4: Condividi
+recharge-button: Carica

@@ -129,6 +129,7 @@ regular-instagram: Instagram
 regular-invest: Contribute
 regular-invest_it: 'Co-finance this project'
 regular-investing: Contributing
+regular-invests: Contributions
 regular-lang: Language
 regular-last: Last
 regular-license: License
@@ -242,3 +243,7 @@ validate-project-social_rewards: 'You have to specify at least one collective be
 validate-project-total-costs: "The maximum cost cannot exceed more that 50% of the minimum cost. Either you raise the base costs or lower the additional costs."
 user-promoter: 'The promoter'
 newsletter-donate-description: 'In order for us to continue our work so that more civic initiatives take place'
+regular-icon: Icon
+regular-action: Action
+regular-action_url: Action URL
+regular-modal-decription: "Modal's content"

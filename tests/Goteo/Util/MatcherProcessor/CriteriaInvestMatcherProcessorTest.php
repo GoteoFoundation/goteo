@@ -50,7 +50,6 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         //Creates users first
         foreach(self::$user_data as $i => $user) {
             if(!($uob = User::get($user['userid']))) {
-                echo "\nCreating user [{$user['userid']}]";
                 $uob = new User($user);
                 $this->assertTrue($uob->save($errors, ['active']), print_r($errors, 1));
             }
@@ -60,7 +59,6 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
             self::$user_data[$i]['ob'] = $uob;
             if(isset($user['pool'])) {
 
-                echo "\nSetting user's pool [{$user['userid']}]";
                 Matcher::query("REPLACE invest (`user`, amount, status, method, invested, charged, pool) VALUES (:user, :amount, :status, 'dummy', NOW(), NOW(), 1)", [':user' => $user['userid'], ':amount' => $user['pool'], ':status' => Invest::STATUS_TO_POOL]);
 
                 Matcher::query("REPLACE user_pool (`user`, amount) VALUES (:user, :amount)", [':user' => $user['userid'], ':amount' => $user['pool']]);
@@ -86,9 +84,10 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         $conf = [];
         $matcher->algorithm = 'criteriainvest';
         $conf['percent_of_donation'] = 50;
-        $conf['donation_per_project'] = 100;
+        $conf['donation_per_project'] = 50;
         $matcher->setVars($conf);
         $this->assertTrue($matcher->save($errors), print_r($errors,1));
+        return $matcher;
     }
 
     /**
@@ -105,7 +104,7 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
 
 
     /**
-     * @depends testCreate
+     * @depends testCreateConfig
      */
     public function testInstance($matcher) {
 
@@ -136,12 +135,19 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
     /**
      * @depends testInstance
      */
-    public function testVars($processor) {   
+    public function testVars($processor) {
+        $defaults = [
+            'percent_of_donation' => 50,
+            'donation_per_project' => 50
+        ];
         $matcher = $processor->getMatcher();
+        $vars = $processor->getVars();
         $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher);
-        // $this->assertEquals($defaults, $processor->getVars());
+        $this->assertEquals($defaults, $processor->getVars());
         // Custom vars
-        // $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher->setVars(['max_amount_per_project' => 150]));
+        $vars['donation_per_project'] = 100;
+
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher->setVars($vars));
         $vars = $processor->getVars();
         // $this->assertNotEquals($defaults, $vars);
         $this->assertEquals(50, $vars['percent_of_donation']);
@@ -151,7 +157,7 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
     }
 
     /**
-     * @depends testInstance
+     * @depends testVars
      */
     public function testAmount($processor) {
         $invest = new Invest([
@@ -163,6 +169,9 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
             'status' => Invest::STATUS_CHARGED,
             'amount' => 1
         ]);
+        $errors = [];
+        $this->assertTrue($invest->save($errors), implode("\n", $errors));
+
         $project = get_test_project();
         $project->mincost = 200;
         $project->maxcost = 4000;
@@ -172,9 +181,13 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         $processor->setInvest($invest);
         $this->assertEquals(0, $processor->getAmount());
         $invest->amount = 100;
+        $this->assertTrue($invest->save($errors), implode("\n", $errors));
+
         $project->amount += $invest->amount;
         $this->assertEquals(100, $processor->getAmount());
         $invest->amount = 150;
+        $this->assertTrue($invest->save($errors), implode("\n", $errors));
+
         $this->assertEquals(100, $processor->getAmount());
 
         // save
@@ -249,7 +262,7 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
 
         return $processor;
     }
-    
+
     /**
      * @depends testCreate
      */
@@ -264,7 +277,7 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         return $matcher;
     }
 
-    
+
     /**
      * @depends testCreate
      */
@@ -285,7 +298,6 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         //Creates users first
         foreach(self::$user_data as $i => $user) {
             if(!($uob = User::get($user['userid']))) {
-                echo "\nCreating user [{$user['userid']}]";
                 $uob = new User($user);
                 $this->assertTrue($uob->save($errors, ['active']), print_r($errors, 1));
             }
@@ -295,7 +307,6 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
             self::$user_data[$i]['ob'] = $uob;
             if(isset($user['pool'])) {
 
-                echo "\nSetting user's pool [{$user['userid']}]";
                 Matcher::query("REPLACE invest (`user`, amount, status, method, invested, charged, pool) VALUES (:user, :amount, :status, 'dummy', NOW(), NOW(), 1)", [':user' => $user['userid'], ':amount' => $user['pool'], ':status' => Invest::STATUS_TO_POOL]);
 
                 Matcher::query("REPLACE user_pool (`user`, amount) VALUES (:user, :amount)", [':user' => $user['userid'], ':amount' => $user['pool']]);
@@ -315,7 +326,6 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
     /**
      * @depends testInstance
      * @depends testCreateConfigAmount
-     * @depends testCleanInvests
      * @depends testRefillUsersPool
      */
     public function testAmountByAmount($processor) {
@@ -335,8 +345,13 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         // $project->save();
         $processor->setProject($project);
         $processor->setInvest($invest);
+        $errors = [];
+        $this->assertTrue($invest->save($errors), implode("\n", $errors));
+
         $this->assertEquals(0, $processor->getAmount());
         $invest->amount = 1000;
+        $this->assertTrue($invest->save($errors), implode("\n", $errors));
+
         $project->amount += $invest->amount;
         $this->assertEquals(100, $processor->getAmount());
 
@@ -404,13 +419,12 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         Matcher::query("DELETE FROM invest WHERE project=?", get_test_project()->id);
         // delete matcher
         $this->assertTrue($matcher->dbDelete());
-        
+
         return $matcher;
     }
 
     public function testCleanUsers() {
         foreach(self::$user_data as $user) {
-            echo "\nDeleting user [{$user['userid']}]";
             Matcher::query("DELETE FROM invest WHERE `user` = ?", $user['userid']);
             Matcher::query("DELETE FROM user_pool WHERE `user` = ?", $user['userid']);
             $user['ob']->dbDelete();

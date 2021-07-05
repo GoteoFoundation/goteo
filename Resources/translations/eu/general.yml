@@ -30,14 +30,17 @@ guide-project-images: 'Hau atala da proiektuaren irudiak igotzeko.'
 guide-project-supports: '<strong>Arlo honetan proiektua gauzatzeko, finantzaketaz aparte, zelako laguntza mota behar den zehaztu dezakezu.</strong><br><br>Lanak beste pertsona batzuek egin ditzakete (itzulketak, kudeaketa, zabalketa, etabar), edo mailegu zehatzak (materiala, garraioa, hardware-a, etabar).'
 header-about-side: 'Mugitzen gaituena'
 home-posts-header: Berriak
+horizontal-project-investors: 'Aldi bereko finantzakideak'
+horizontal-project-percent: 'finantzatuta'
+horizontal-project-reached: 'lortuta'
 invest-individual-header: 'Uko egin ahal duzu ez baduzu nahi saririk jaso zure jartzearen truke, edo beste sari bat aukeratu dezakezu, sari hori zure jartzearekin konparatuz maila berdinean edo beherago baldin badago.'
 login-register-conditions: 'Erregistratzerakoan, berresten duzu onartzen dituzula gure <a href="/legal/terms">erabilera baldintzak</a>, <a href="/legal/privacy">pribatutasun politika</a> y <a href="/legal/cookies">cookien politika</a>.'
 mandatory-cost-field-type: 'Gastu mota adieraztea derrigorrekoa da'
 mandatory-individual_reward-field-amount: 'Saria jasotzeko diru kopurua adieraztea derrigorrekoa da'
 mandatory-project-costs: 'Bi gastuetan gutxienez banakatu behar da.'
 mandatory-register-field-email: 'Emaila zehaztu behar duzu'
-overview-field-about: 'Oinarriko ezaugarriak'
-overview-field-motivation: 'Zerk bultzatzen zaitu eta nori doakio proiektua'
+overview-field-about: 'Oinarrizko ezaugarriak eta helburuak'
+overview-field-motivation: 'Zerk bultzatzen zaitu eta zeini zuzenduta dago proiektua '
 profile-about-header: 'Niri buruz'
 project-invest-total: 'Jasotako kopurua'
 project-messages-send_message-your_answer: 'Idatz ezazu hemen zure erantzuna'
@@ -48,7 +51,8 @@ regular-anonymous: Ezezaguna
 regular-ask: Galdetu
 regular-submit: Bidali
 regular-by: 'Biderrez:'
-regular-collaborate: Babestu
+regular-social_commitments: 'Giza konpromezuak'
+regular-collaborate: Lagundu
 regular-create: 'Proiektu bat sortu'
 regular-days: egun
 regular-delete: Ezabatu
@@ -67,7 +71,7 @@ regular-home: Hasiera
 regular-im: Naiz
 regular-invest: Eman
 regular-invest_it: 'KOFINANTZATU PROIEKTU HAU'
-regular-investing: Jartzen
+regular-investing: Eman
 regular-lang: hizkuntza
 regular-last: Azkenengoa
 regular-license: Lizentzia
@@ -80,7 +84,7 @@ regular-menu: Menua
 regular-message_fail: 'Nolabaiteko errorea gertatu da mezua bidaltzerakoan'
 regular-message_success: 'Mezua ondo bidali da'
 regular-months: hilak
-regular-news: 'Berriak:'
+regular-news: 'Albisteak:'
 regular-no: 'Ez'
 regular-preview: Aurreikusi
 regular-projects: proiektuak
@@ -99,10 +103,11 @@ regular-see_more: 'Gehiago ikusi'
 regular-send_message: 'Mezua bidali'
 regular-share-facebook: 'Goteo Facebook-en'
 regular-share-twitter: 'Jarraituiguzu Twitter-en'
-regular-share_this: 'Konpartitu hemen:'
+regular-share_this: 'Partekatu hemen:'
 regular-sorry: 'Sentitzen dugu'
 regular-thanks: Eskerrik asko
 regular-total: Guztira
+regular-translations: 'Itzulpenak'
 regular-translate_board: 'Itzultzailearen panela'
 regular-view_project: 'Proiektua ikusi'
 regular-web: Webgunea

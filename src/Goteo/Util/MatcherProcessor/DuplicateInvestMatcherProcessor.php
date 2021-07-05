@@ -23,14 +23,16 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
     protected $default_vars = [
         'max_amount_per_project' => 500,
         'max_amount_per_invest' => 100,
-        'max_invests_per_user' => 1
+        'max_invests_per_user' => 1,
+        'match_factor' => 1
     ];
 
     static public function getVarLabels() {
         return [
             'max_amount_per_project' => Text::get('matcher-duplicateinvest-max_amount_per_project'),
             'max_amount_per_invest' => Text::get('matcher-duplicateinvest-max_amount_per_invest'),
-            'max_invests_per_user' => Text::get('matcher-duplicateinvest-max_invests_per_user')
+            'max_invests_per_user' => Text::get('matcher-duplicateinvest-max_invests_per_user'),
+            'match_factor' => Text::get('matcher-duplicateinvest-match-factor')
         ];
     }
 
@@ -53,13 +55,15 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
             $amount = $vars['max_amount_per_invest'];
         }
 
+        $amount *= $vars['match_factor'];
+
         $invested = Invest::getList(['methods' => 'pool', 'status' => Invest::$ACTIVE_STATUSES, 'projects' => $project,'users' => $matcher->getUsers()], null, 0, 0, 'money');
 
         // check if current invested amount is over the maxim per project allowed
         if($vars['max_amount_per_project'] && ( $invested + $amount > $vars['max_amount_per_project']))  {
             $amount = max(0, $vars['max_amount_per_project'] - $invested);
         }
-        $count = Invest::getList(['projects' => $project, 'status' => Invest::$ACTIVE_STATUSES, 'users' => $invest->user], null, 0, 0, true);
+        $count = Invest::getList(['projects' => $project, 'status' => Invest::$ACTIVE_STATUSES, 'users' => $invest->user, 'types' => 'nondrop'], null, 0, 0, true);
 
         if($count > $vars['max_invests_per_user']) {
             $error = 'Max invests per user reached';

@@ -549,7 +549,6 @@ class Project extends \Goteo\Core\Model {
                 user.twitter as user_twitter,
                 user.linkedin as user_linkedin,
                 user.identica as user_identica,
-                user.google as user_google,
                 user.facebook as user_facebook
             FROM project
             $joins
@@ -732,11 +731,11 @@ class Project extends \Goteo\Core\Model {
      * @param $status to boolean false to return all status
      * @return [type] [description]
      */
-    public function getMatchers($status = false) {
+    public function getMatchers($status = false, $filters = []) {
         if(!$this->matcherInstances) $this->matcherInstances = [];
         if(is_array($status)) $key = serialize($status);
         if($this->matcherInstances[$key]) return $this->matcherInstances[$key];
-        $this->matcherInstances[$key] = Matcher::getFromProject($this->id, $status);
+        $this->matcherInstances[$key] = Matcher::getFromProject($this->id, $status, $filters);
         return $this->matcherInstances[$key];
     }
 
@@ -1896,404 +1895,6 @@ class Project extends \Goteo\Core\Model {
     }
 
     /*
-     * comprueba errores de datos y actualiza la puntuación
-     *
-     * @param steps array : pasos del formulario
-     *
-     */
-    public function check($steps = null) {
-
-        $errors = &$this->errors;
-        $okeys  = &$this->okeys ;
-
-        // reseteamos la puntuación
-        $this->setScore(0, 0, true);
-
-
-        if (isset($steps) && isset($steps['userProfile'])) {
-            /***************** Revisión de campos del paso 1, PERFIL *****************/
-            $maxScore = 12;
-            $score = 0;
-            // obligatorios: nombre, email, ciudad
-            if (empty($this->user->name)) {
-                $errors['userProfile']['name'] = Text::get('validate-user-field-name');
-            } else {
-                $okeys['userProfile']['name'] = 'ok';
-                ++$score;
-            }
-
-            // se supone que tiene email porque sino no puede tener usuario, no?
-            if (!empty($this->user->email)) {
-                ++$score;
-            }
-
-            if (empty($this->user->location)) {
-                $errors['userProfile']['location'] = Text::get('validate-user-field-location');
-            } else {
-                $okeys['userProfile']['location'] = 'ok';
-                ++$score;
-            }
-
-            if(!empty($this->user->avatar) && $this->user->avatar->id != 1) {
-                $okeys['userProfile']['avatar'] = empty($errors['userProfile']['avatar']) ? 'ok' : null;
-                $score+=2;
-            }
-
-            if (!empty($this->user->about)) {
-                $okeys['userProfile']['about'] = 'ok';
-                ++$score;
-                // otro +1 si tiene más de 1000 caracteres (pero menos de 2000)
-                if (\strlen($this->user->about) > 1000 && \strlen($this->user->about) < 2000) {
-                    ++$score;
-                }
-            } else {
-                $errors['userProfile']['about'] = Text::get('validate-user-field-about');
-            }
-
-            if (!empty($this->user->interests)) {
-                $okeys['userProfile']['interests'] = 'ok';
-                ++$score;
-            }
-
-            if (!empty($this->user->webs)) {
-                $okeys['userProfile']['webs'] = 'ok';
-                ++$score;
-                if (count($this->user->webs) > 2) ++$score;
-
-                $anyerror = false;
-                foreach ($this->user->webs as $web) {
-                    if (trim(str_replace('http://','',$web->url)) == '') {
-                        $anyerror = !$anyerror ?: true;
-                        $errors['userProfile']['web-'.$web->id.'-url'] = Text::get('validate-user-field-web');
-                    } else {
-                        $okeys['userProfile']['web-'.$web->id.'-url'] = 'ok';
-                    }
-                }
-
-                if ($anyerror) {
-                    unset($okeys['userProfile']['webs']);
-                    $errors['userProfile']['webs'] = Text::get('validate-project-userProfile-any_error');
-                }
-            }
-
-            if (!empty($this->user->facebook)) {
-                $okeys['userProfile']['facebook'] = 'ok';
-                ++$score;
-            }
-
-            if (!empty($this->user->twitter)) {
-                $okeys['userProfile']['twitter'] = 'ok';
-                ++$score;
-            }
-
-            if (!empty($this->user->linkedin)) {
-                $okeys['userProfile']['linkedin'] = 'ok';
-            }
-
-            //puntos
-            $this->setScore($score, $maxScore);
-            /***************** FIN Revisión del paso 1, PERFIL *****************/
-        }
-
-        if (isset($steps) && isset($steps['userPersonal'])) {
-            /***************** Revisión de campos del paso 2,DATOS PERSONALES *****************/
-            $maxScore = 6;
-            $score = 0;
-            // obligatorios: todos
-            if (empty($this->contract_name)) {
-                $errors['userPersonal']['contract_name'] = Text::get('mandatory-project-field-contract_name');
-            } else {
-                 $okeys['userPersonal']['contract_name'] = 'ok';
-                 ++$score;
-            }
-
-            if (empty($this->contract_nif)) {
-                $errors['userPersonal']['contract_nif'] = Text::get('mandatory-project-field-contract_nif');
-            } elseif ( !Check::nif($this->contract_nif) ) {
-                $errors['userPersonal']['contract_nif'] = Text::get('validate-project-value-contract_nif');
-            } else {
-                $okeys['userPersonal']['contract_nif'] = 'ok';
-                ++$score;
-            }
-
-            if (empty($this->contract_birthdate)) {
-                $errors['userPersonal']['contract_birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
-            } else {
-                 $okeys['userPersonal']['contract_birthdate'] = 'ok';
-            }
-
-            if (empty($this->phone)) {
-                $errors['userPersonal']['phone'] = Text::get('mandatory-project-field-phone');
-            } elseif (!Check::phone($this->phone)) {
-                $errors['userPersonal']['phone'] = Text::get('validate-project-value-phone');
-            } else {
-                 $okeys['userPersonal']['phone'] = 'ok';
-                 ++$score;
-            }
-
-
-            $this->setScore($score, $maxScore);
-            /***************** FIN Revisión del paso 2, DATOS PERSONALES *****************/
-        }
-
-        if (isset($steps) && isset($steps['overview'])) {
-            /***************** Revisión de campos del paso 3, DESCRIPCION *****************/
-            //$maxScore = 13;
-            $maxScore = 12;
-            // Remove category -1
-            $score = 0;
-            // obligatorios: nombre, subtitulo, imagen, descripcion, about, motivation, categorias, video, localización
-            if (empty($this->name)) {
-                $errors['overview']['name'] = Text::get('mandatory-project-field-name');
-            } else {
-                 $okeys['overview']['name'] = 'ok';
-                 ++$score;
-            }
-
-            if (!empty($this->subtitle)) {
-                 $okeys['overview']['subtitle'] = 'ok';
-            }
-
-            if (empty($this->description)) {
-                $errors['overview']['description'] = Text::get('mandatory-project-field-description');
-            } elseif (!Check::words($this->description, 80)) {
-                 $errors['overview']['description'] = Text::get('validate-project-field-description');
-            } else {
-                 $okeys['overview']['description'] = 'ok';
-                 ++$score;
-            }
-
-            if (!empty($this->related)) {
-                 $okeys['overview']['related'] = 'ok';
-                 ++$score;
-            }
-
-            /*if (empty($this->categories)) {
-                $errors['overview']['categories'] = Text::get('mandatory-project-field-category');
-            } else {
-                 $okeys['overview']['categories'] = 'ok';
-                 ++$score;
-            }*/
-
-            if (empty($this->media)) {
-                // solo error si no está aplicando a una convocatoria
-                if (!isset($this->called)) {
-                    $errors['overview']['media'] = Text::get('mandatory-project-field-media');
-                }
-            } else {
-                 $okeys['overview']['media'] = 'ok';
-                 $score+=3;
-            }
-
-            if (empty($this->project_location)) {
-                $errors['overview']['project_location'] = Text::get('mandatory-project-field-location');
-            } else {
-                 $okeys['overview']['project_location'] = 'ok';
-                 ++$score;
-            }
-
-                if (empty($this->about)) {
-                    $errors['overview']['about'] = Text::get('mandatory-project-field-about');
-                 } else {
-                    $okeys['overview']['about'] = 'ok';
-                    ++$score;
-                }
-
-                 if (empty($this->motivation)) {
-                $errors['overview']['motivation'] = Text::get('mandatory-project-field-motivation');
-                } else {
-                    $okeys['overview']['motivation'] = 'ok';
-                    ++$score;
-                }
-
-                 //Check only the social reward with category.
-            foreach ($this->social_rewards as $social) {
-                if($social->category)
-                {
-                    if (empty($social->reward)) {
-                    $errors['overview']['social_reward-'.$social->id.'-reward'] = Text::get('mandatory-social_reward-field-name');
-                    } else {
-                         $okeys['overview']['social_reward-'.$social->id.'-reward'] = 'ok';
-                    }
-                }
-            }
-
-                // paso 3b: imágenes
-                if (empty($this->gallery) && empty($errors['images']['image'])) {
-                    $errors['images']['image'] .= Text::get('mandatory-project-field-image');
-                } else {
-                    $okeys['images']['image'] = (empty($errors['images']['image'])) ? 'ok' : null;
-                    ++$score;
-                    if (count($this->gallery) >= 2) ++$score;
-                }
-
-                if (!empty($this->goal))  {
-                    $okeys['overview']['goal'] = 'ok';
-                    ++$score;
-                }
-
-            $this->setScore($score, $maxScore);
-            /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
-        }
-
-        if (isset($steps) && isset($steps['costs']) && (!$this->help_cost)) {
-            /***************** Revisión de campos del paso 4, COSTES *****************/
-            $maxScore = 4;
-            $score = 0; $scoreName = $scoreDesc = $scoreAmount = 0;
-
-            if (count($this->costs) < 2) {
-                $errors['costs']['costs'] = Text::get('mandatory-project-costs');
-            } else {
-                 $okeys['costs']['costs'] = 'ok';
-                ++$score;
-            }
-
-            $anyerror = false;
-            foreach($this->costs as $cost) {
-                if (empty($cost->cost)) {
-                    $errors['costs']['cost-'.$cost->id.'-cost'] = Text::get('mandatory-cost-field-name');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['costs']['cost-'.$cost->id.'-cost'] = 'ok';
-                     $scoreName = 1;
-                }
-
-                if (empty($cost->type)) {
-                    $errors['costs']['cost-'.$cost->id.'-type'] = Text::get('mandatory-cost-field-type');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['costs']['cost-'.$cost->id.'-type'] = 'ok';
-                }
-
-                if (empty($cost->description)) {
-                    $errors['costs']['cost-'.$cost->id.'-description'] = Text::get('mandatory-cost-field-description');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['costs']['cost-'.$cost->id.'-description'] = 'ok';
-                     $scoreDesc = 1;
-                }
-
-                if (empty($cost->amount)) {
-                    $errors['costs']['cost-'.$cost->id.'-amount'] = Text::get('mandatory-cost-field-amount');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['costs']['cost-'.$cost->id.'-amount'] = 'ok';
-                     $scoreAmount = 1;
-                }
-
-            }
-
-            if ($anyerror) {
-                unset($okeys['costs']['costs']);
-                $errors['costs']['costs'] = Text::get('validate-project-costs-any_error');
-            }
-
-            $score = $score + $scoreName + $scoreDesc + $scoreAmount;
-
-            // Mantenemos error si no hay costes
-            if ($this->mincost == 0) {
-                $errors['costs']['total-costs'] = Text::get('mandatory-project-total-costs');
-            } else {
-                $okeys['costs']['total-costs'] = 'ok';
-            }
-
-            $this->setScore($score, $maxScore);
-            /***************** FIN Revisión del paso 4, COSTES *****************/
-        }
-
-        if (isset($steps) && isset($steps['rewards'])) {
-            /***************** Revisión de campos del paso 5, RETORNOS *****************/
-
-            //Si ha marcado checkbox de ayuda en licencias maxScore pasa a la mitad
-            $maxScore =  4;
-            $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreLicense = 0;
-            //Si ha solicitado ayuda marcando el checkbox no lo tenemos en cuenta
-
-            if (empty($this->individual_rewards)) {
-                $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
-            } else {
-                $okeys['rewards']['individual_rewards'] = 'ok';
-                if (count($this->individual_rewards) >= 3) {
-                    ++$score;
-                }
-                else {
-                    $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
-
-                }
-            }
-
-            $anyerror = false;
-            foreach ($this->individual_rewards as $individual) {
-                if (empty($individual->reward)) {
-                    $errors['rewards']['individual_reward-'.$individual->id.'-reward'] = Text::get('mandatory-individual_reward-field-name');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['rewards']['individual_reward-'.$individual->id.'-reward'] = 'ok';
-                     $scoreName = 1;
-                }
-
-                if (empty($individual->description)) {
-                    $errors['rewards']['individual_reward-'.$individual->id.'-description'] = Text::get('mandatory-individual_reward-field-description');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['rewards']['individual_reward-'.$individual->id.'-description'] = 'ok';
-                     $scoreDesc = 1;
-                }
-
-                if (empty($individual->amount)) {
-                    $errors['rewards']['individual_reward-'.$individual->id.'-amount'] = Text::get('mandatory-individual_reward-field-amount');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['rewards']['individual_reward-'.$individual->id.'-amount'] = 'ok';
-                     $scoreAmount = 1;
-                }
-
-                if (empty($individual->icon)) {
-                    $errors['rewards']['individual_reward-'.$individual->id.'-icon'] = Text::get('mandatory-individual_reward-field-icon');
-                    $anyerror = !$anyerror ?: true;
-                } else {
-                     $okeys['rewards']['individual_reward-'.$individual->id.'-icon'] = 'ok';
-                }
-            }
-
-            if ($anyerror) {
-                unset($okeys['rewards']['individual_rewards']);
-                $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards-any_error');
-            }
-
-            $score = $score + $scoreName + $scoreDesc + $scoreAmount;
-            $this->setScore($score, $maxScore);
-            /***************** FIN Revisión del paso 5, RETORNOS *****************/
-        }
-
-        if (isset($steps) && isset($steps['suports'])) {
-            /***************** Revisión de campos del paso 6, COLABORACIONES *****************/
-            $maxScore = 2;
-            $scoreName = $scoreDesc = 0;
-            foreach ($this->supports as $support) {
-                if (!empty($support->support)) {
-                     $okeys['supports']['support-'.$support->id.'-support'] = 'ok';
-                     $scoreName = 1;
-                }
-
-                if (!empty($support->description)) {
-                     $okeys['supports']['support-'.$support->id.'-description'] = 'ok';
-                     $scoreDesc = 1;
-                }
-            }
-            $score = $scoreName + $scoreDesc;
-            $this->setScore($score, $maxScore);
-            /***************** FIN Revisión del paso 6, COLABORACIONES *****************/
-        }
-
-        //-------------- Calculo progreso ---------------------//
-        $this->setProgress();
-        //-------------- Fin calculo progreso ---------------------//
-
-        return true;
-    }
-
-    /*
      * reset de puntuación
      */
     public function setScore($score, $max, $reset = false) {
@@ -2894,6 +2495,233 @@ class Project extends \Goteo\Core\Model {
             $sql_limit
             ";
 
+        $query = self::query($sql, $values);
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+            $projects[] = self::getWidget($proj);
+        }
+
+        return $projects;
+    }
+
+
+    public static function getBySDGs($sdgs = array(), $offset, $limit = 10, $count = false)
+    {
+        $lang = Lang::current();
+        $values = array();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        if($count) {
+            $sql = "
+            SELECT COUNT(project.id) FROM project
+            INNER JOIN sdg_project ON sdg_project.project_id = project.id
+            WHERE sdg_project.sdg_id IN (" . implode(',', $sdgs) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . "," . self::STATUS_REVIEWING . ")
+            ";
+            return (int) self::query($sql)->fetchColumn();
+        }
+
+        if($limit)
+        {
+            $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
+        }
+
+        $sql ="
+            SELECT
+                project.id as project,
+                $fields,
+                project.status as status,
+                project.published as published,
+                project.created as created,
+                project.updated as updated,
+                project.success as success,
+                project.closed as closed,
+                project.mincost as mincost,
+                project.maxcost as maxcost,
+                project.amount as amount,
+                project.image as image,
+                project.num_investors as num_investors,
+                project.num_messengers as num_messengers,
+                project.num_posts as num_posts,
+                project.days as days,
+                project.name as name,
+                project.project_location as project_location,
+                project.social_commitment AS social_commitment,
+                project.owner as owner,
+                user.id as user_id,
+                user.name as user_name,
+                project_conf.noinvest as noinvest,
+                project_conf.one_round as one_round,
+                project_conf.days_round1 as days_round1,
+                project_conf.days_round2 as days_round2
+            FROM  project
+            INNER JOIN sdg_project on sdg_project.project_id = project.id
+            INNER JOIN user ON user.id = project.owner
+            LEFT JOIN project_conf
+                ON project_conf.project = project.id
+            $joins
+            WHERE sdg_project.sdg_id IN (" . implode(',', $sdgs) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . "," . self::STATUS_REVIEWING . ")
+            GROUP BY project.id
+            ORDER BY  project.id ASC
+            $sql_limit
+            ";
+            // die(\sqldbg($sql, $values));
+        $query = self::query($sql, $values);
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+            $projects[] = self::getWidget($proj);
+        }
+
+        return $projects;
+
+    }
+
+    public static function getByFootprint($footprints = array(), $offset, $limit = 10, $count = false)
+    {
+        $lang = Lang::current();
+        $values = array();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        if($count) {
+            $sql = "
+            SELECT COUNT(project.id) FROM project
+            INNER JOIN sdg_project ON sdg_project.project_id = project.id
+            INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
+            WHERE sdg_footprint.footprint_id IN (" . implode(',', $footprints) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . ")
+            ";
+            return (int) self::query($sql)->fetchColumn();
+        }
+
+        if($limit)
+        {
+            $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
+        }
+
+
+        $sql ="
+            SELECT
+                project.id as project,
+                $fields,
+                project.status as status,
+                project.published as published,
+                project.created as created,
+                project.updated as updated,
+                project.success as success,
+                project.closed as closed,
+                project.mincost as mincost,
+                project.maxcost as maxcost,
+                project.amount as amount,
+                project.image as image,
+                project.num_investors as num_investors,
+                project.num_messengers as num_messengers,
+                project.num_posts as num_posts,
+                project.days as days,
+                project.name as name,
+                project.project_location as project_location,
+                project.social_commitment AS social_commitment,
+                project.owner as owner,
+                user.id as user_id,
+                user.name as user_name,
+                project_conf.noinvest as noinvest,
+                project_conf.one_round as one_round,
+                project_conf.days_round1 as days_round1,
+                project_conf.days_round2 as days_round2
+            FROM  project
+            INNER JOIN sdg_project on sdg_project.project_id = project.id
+            INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
+            INNER JOIN user ON user.id = project.owner
+            LEFT JOIN project_conf
+                ON project_conf.project = project.id
+            $joins
+            WHERE sdg_footprint.footprint_id IN (" . implode(',', $footprints) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . ")
+            GROUP BY project.id
+            ORDER BY  project.id ASC
+            $sql_limit
+            ";
+            // die(\sqldbg($sql, $values));
+        $query = self::query($sql, $values);
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+            $projects[] = self::getWidget($proj);
+        }
+
+        return $projects;
+
+    }
+
+
+    public static function getByFootprintOrSDGs($filters = array(), $offset, $limit, $count = false ) {
+
+        $lang = Lang::current();
+        $values = array();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+
+        if ($filters['sdgs']) {
+            $sqlWhere[]= "sdg_project.sdg_id IN (" . implode(',', $filters['sdgs']). ")";
+        }
+
+        if ($filters['footprints']) {
+            $sqlWhere[]= "sdg_footprint.footprint_id IN (" . implode(',', $filters['footprints']). ")";
+        }
+
+        if ($sqlWhere) {
+            $sqlWhere = " AND ( " . implode(' OR ', $sqlWhere) . " )";
+        }
+
+        if($count) {
+            $sql = "
+            SELECT COUNT(distinct(project.id)) FROM project
+            INNER JOIN sdg_project on sdg_project.project_id = project.id
+            INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
+            WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
+            ";
+            return (int) self::query($sql)->fetchColumn();
+        }
+
+        if($limit)
+        {
+            $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
+        }
+
+
+        $sql ="
+            SELECT
+                project.id as project,
+                $fields,
+                project.status as status,
+                project.published as published,
+                project.created as created,
+                project.updated as updated,
+                project.success as success,
+                project.closed as closed,
+                project.mincost as mincost,
+                project.maxcost as maxcost,
+                project.amount as amount,
+                project.image as image,
+                project.num_investors as num_investors,
+                project.num_messengers as num_messengers,
+                project.num_posts as num_posts,
+                project.days as days,
+                project.name as name,
+                project.project_location as project_location,
+                project.social_commitment AS social_commitment,
+                project.owner as owner,
+                user.id as user_id,
+                user.name as user_name,
+                project_conf.noinvest as noinvest,
+                project_conf.one_round as one_round,
+                project_conf.days_round1 as days_round1,
+                project_conf.days_round2 as days_round2
+            FROM  project
+            INNER JOIN sdg_project on sdg_project.project_id = project.id
+            INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
+            INNER JOIN user ON user.id = project.owner
+            LEFT JOIN project_conf
+                ON project_conf.project = project.id
+            $joins
+            WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
+            GROUP BY project.id
+            ORDER BY project.published DESC
+            $sql_limit
+            ";
+            // die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
             $projects[] = self::getWidget($proj);
@@ -3748,7 +3576,6 @@ class Project extends \Goteo\Core\Model {
                 project.phone as phone,
                 user.twitter as twitter,
                 user.facebook as facebook,
-                user.google as google,
                 user.identica as identica,
                 user.linkedin as linkedin
             FROM project

@@ -70,4 +70,16 @@ class ChannelsApiController extends AbstractApiController {
             'limit' => $limit
             ]);
     }
+
+    /**
+     * AJAX upload image for the categories
+     */
+    public function uploadImagesAction(Request $request) {
+        if(!$this->user || !$this->user->hasPerm('admin-module-categories'))
+            throw new ControllerAccessDeniedException();
+
+        $result = $this->genericFileUpload($request, 'file'); // 'file' is the expected form input name in the story object
+        return $this->jsonResponse($result);
+    }
+
 }

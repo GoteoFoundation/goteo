@@ -1,1 +1,11 @@
 ---
+dashboard-story-form-title: 'La mia storia in Goteo'
+dashboard-story-guide-description: 'Parlaci della tua esperienza in Goteo, potrà servire da ispirazione ad altri promotori.<br><br>La tua storia apparirà nel tuo profilo utente e potrà essere mostrata in diverse sezioni di Goteo, inclusa la home, come parte della nostra equipe.<br>Ti raccomandiamo di visitare alcune delle storie che abbiamo pubblicato finora in <a href="/matchfunding-match" target="_blank">formato polaroid</a> e <a href="/#foundation" target="_blank">formato ampliato </a>.'
+dashboard-story-translate-title: 'La mia storia'
+story-field-author-organization: 'Autore / Organizzazione'
+story-tooltip-author-organization: 'Scrivi il tuo nome e l''organizzazione o progetto a cui appartiene separati da "/". Esempio: Luis / Fondazione Goteo'
+story-field-description: 'Tua testimonianza'
+story-tooltip-description: 'Spiega in una frase come è stata la tua esperienza in Goteo con un minimo di 20 parole (con meno errori possibili).'
+story-field-image: 'Immagine (Dimensioni raccomandate 600x400px)'
+story-field-pool-image: 'Immagine opzionale in formato polaroid (Dimensioni raccomandate 360x355px)'
+story-save-fail: 'Errore nel visualizzare la tua storia'

@@ -42,8 +42,8 @@ class Answer extends \Goteo\Core\Model
             $this->dbInsertUpdate($fields);
 
             if ($this->project) {
-                $sql = "REPLACE INTO question_answer_project VALUES(:question, :project)";
-                $values = [":question" => $this->id, ":project" => $this->project];
+                $sql = "REPLACE INTO question_answer_project VALUES(:answer, :project)";
+                $values = [":answer" => $this->id, ":project" => $this->project];
                 
                 // die(\sqldbg($sql, $values));
                 static::query($sql, $values);
@@ -95,7 +95,9 @@ class Answer extends \Goteo\Core\Model
 
         $sql = "SELECT question_answer.*
                 FROM question_answer
-                $sqlInner";
+                INNER JOIN question ON question_answer.question = question.id
+                $sqlInner
+                ORDER BY question.order";
 
         // die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);

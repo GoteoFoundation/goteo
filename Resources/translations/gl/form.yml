@@ -1,7 +1,9 @@
 ---
+costs-field-select-rounds: Prazos
 form-accept-button: Aceptar
 form-add-button: Engadir
 form-ajax-info: 'O formulario vaise gravando segundo pases por cada campo'
+form-apply-button: Aplicar
 form-edit-button: Editar
 form-has-errors: 'O formulario contén erros, revísaos antes de continuar!'
 form-errors-info: 'Total: %s | Neste paso: %s'
@@ -16,20 +18,33 @@ form-project-progress-title: 'Avaliación de datos'
 form-project-status-title: 'Estado do proxecto'
 form-project_status-campaing: 'En campaña'
 form-project_status-cancel: Descartado
+form-project_status-cancelled: Descartado
+form-project_status-edit: En edición
 form-project_status-expired: Arquivado
 form-project_status-fulfilled: 'Retorno cumprido'
 form-project_status-review: 'Pendente de valoración'
+form-project_status-success: Financiado
+form-remove-button: Eliminar
 form-self_review-button: Corrixir
 form-send_review-button: Enviar
 form-upload-button: Enviar
+help-cost-to-consultant: '- Precisa axuda nos custos<br>'
+help-license-to-consultant: '- Precisa axuda cos retornos colectivos e licenzas<br>'
+overview-extra-fields: 'Campos complementarios'
 project-form-header: Formulario
 project-one-round: 'Rolda única de 40 días'
 project-personal-field-entity_name: 'Entidade en nome da que se actúa (se procede)'
 project-two-rounds: 'Dúas roldas de 40 días'
+tooltip-project-personal-entity_name: 'Se es representante dalgunha entidade, indica o nome neste campo.'
+tooltip-text-type-change: 'Isto mudará o tipo de editor de texto.<br><b>Nota:</b> Ao trocar entre markdown e html poden perderse algúns estilos.'
 tooltip-drag-and-drop-images: 'Para anexar imaxes, podes arrastrar e soltar os ficheiros directamente no editor'
 form-sent-success: 'Datos gardados con éxito!'
 form-sent-error: 'Produciuse un erro ao gardar os datos: [%s]'
 form-confirm-exit: "Perderanse os datos non gardados\nTes a certeza de querer saír da páxina?"
+overview-extra-call: 'Campos complementarios para a convocatoria %s'
+form-editor-bold: 'Grosa'
+form-editor-italic: 'Cursiva'
+form-editor-strikethrough: 'Riscado'
 form-editor-heading: 'Cabeceira'
 form-editor-smaller_heading: 'Diminuír a cabeceira'
 form-editor-bigger_heading: 'Aumentar a cabeceira'
@@ -41,6 +56,9 @@ form-editor-create_link: 'Crear unha ligazón'
 form-editor-insert_image: 'Inserir unha imaxe'
 form-editor-insert_table: 'Inserir táboa'
 form-editor-insert_horizontal_line: 'Liña horizontal'
+form-editor-toggle_preview: 'Trocar a vista previa'
+form-editor-toggle_side_by_side: 'Trocar vista paralela'
+form-editor-toggle_fullscreen: 'Trocar pantalla completa'
 form-editor-markdown_guide: 'Guía markdown'
 form-editor-undo: 'Desfacer'
 form-editor-redo: 'Refacer'
@@ -48,5 +66,7 @@ form-editor-close: 'Pechar'
 form-editor-exact-location: 'Localización exacta'
 form-editor-change-location: 'Trocar'
 form-editor-change-unlocated: 'Sen localizar'
+form-editor-fine-locate: 'Podes afinar a localización arrastrando e soltando a marca.'
+form-editor-error-locating: 'Non se atopou un enderezo!'
 form-editor-success-locating: 'Atopouse un enderezo válido'
 form-dragndrop-unsupported: 'Produciuse un problema ao arrastrar e soltar ficheiros. Por favor, téntao de novo premendo no botón de subir ficheiros'

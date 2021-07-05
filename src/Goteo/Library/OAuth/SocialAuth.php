@@ -44,7 +44,7 @@ class SocialAuth {
 	public $user_data = array('username' => null, 'name' => null, 'email' => null, 'avatar' => null, 'website' => null, 'about' => null, 'location' => null,'twitter' => null,'facebook' => null,'google' => null,'identica' => null,'linkedin' => null);
 
 	//datos que se importaran (si se puede) a la tabla 'user'
-	public $import_user_data = array('name', 'about', 'location', 'avatar', 'twitter', 'facebook', 'google', 'identica', 'linkedin');
+	public $import_user_data = array('name', 'about', 'location', 'avatar', 'twitter', 'facebook', 'identica', 'linkedin');
 
 	//secretos generados en el oauth
 	public $tokens = array('twitter' => array('token' => '','secret' => ''), 'facebook' => array('token' => '','secret' => ''), 'google' => array('token' => '','secret' => ''), 'linkedin' => array('token' => '','secret' => ''), 'openid' => array('token' => '','secret' => ''));
@@ -52,7 +52,7 @@ class SocialAuth {
 	private $credentials = array(
 		'twitter' => array('key' => OAUTH_TWITTER_ID, 'secret' => OAUTH_TWITTER_SECRET),
 		'facebook' => array('key' => OAUTH_FACEBOOK_ID, 'secret' => OAUTH_FACEBOOK_SECRET),
-        'linkedin' => array('key' => OAUTH_LINKEDIN_ID, 'secret' => OAUTH_LINKEDIN_SECRET),
+		'linkedin' => array('key' => OAUTH_LINKEDIN_ID, 'secret' => OAUTH_LINKEDIN_SECRET),
 		'google' => array('key' => OAUTH_GOOGLE_ID, 'secret' => OAUTH_GOOGLE_SECRET)
 	);
 	//variable para los servicios

@@ -1,1 +1,14 @@
 ---
+admin-action: 'Administratzailearen ekintza'
+admin-NO: 'EZ'
+admin-YES: BAI
+admin-account-amount: 'Eskainitako kantitatea'
+admin-account-change-user: 'Erabiltzea aldatu'
+admin-account-change-user-confirm: 'Ziur zaude ekarpenaren erabiltzea aldatzeaz? Erabiltze berria hauxe izango da:'
+admin-account-convert-to-pool: 'Diru-zorrora bihurtu'
+admin-account-rewards: 'Aukeratutako ordain sariak'
+admin-contents: 'Testuak eta Itzulpenak'
+admin-blog-not-public: 'Post hau oraindik ez da publikoa'
+admin-title-langs: Itzulpenak
+admin-title-social_commitment: Giza konpromezua
+admin-title-social_commitments: 'Giza konpromezuak'

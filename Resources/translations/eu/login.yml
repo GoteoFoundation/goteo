@@ -24,7 +24,7 @@ login-register-confirm_password-field: 'Pasahitza baieztatu '
 login-register-email-field: Emaila
 login-register-header: 'Erabiltzaile berria'
 login-register-password-field: Pasahitza
-login-register-password-minlength: '6 karakter gutxienez'
+login-register-password-minlength: '6 karaktere gutxienez'
 login-register-userid-field: 'Sartzeko izena'
 login-register-username-field: 'Izen publikoa'
 login-signin-facebook: 'Hasi saioa Facebookekin'

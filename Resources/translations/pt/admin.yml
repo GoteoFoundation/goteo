@@ -1,1 +1,43 @@
 ---
+admin-action: 'Ação de administrador'
+admin-NO: 'NÃO'
+admin-YES: SIM
+admin-account-amount: 'Quantidade contribuida'
+admin-account-change-user: 'Mudar usuário'
+admin-account-detail: 'Detalhes da transação'
+admin-account-donation: Doação
+admin-account-invest-date: 'Data de contribuição'
+admin-account-modify-status: 'Modificar o estado'
+admin-account-payment-method: 'Meio de pagamento'
+admin-account-switch-donation: 'Alternar doação'
+admin-account-switch-pool: 'Alternar o pool'
+admin-account-transaction: 'Códigos de rastreamento'
+admin-address: Endereço
+admin-all: Todos
+admin-global: Global
+admin-back: Voltar
+admin-back-detail: 'Voltar ao detalhe'
+admin-back-list: 'Volta à lista'
+admin-contents: 'Textos e Traduções'
+admin-empty-list: 'Não foram encontrados registros'
+admin-activity: Atividade
+admin-communications: Comunicações
+admin-communications-add: Criar nova comunicação
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' para o id de acesso do destinatário'
+admin-communications-useremail-content: ' para o email do destinatário'
+admin-communications-username-content: ' para o nome do destinatário'
+admin-communications-siteurl-content: ' para a url desta plataforma (%SITEURL%)'
+admin-communications-subscribeurl-content: ' link direto de inscrição para a newsletter do usuário'
+admin-communications-unsubscribeurl-content: ' link direto de parar de receber a newsletter do usuário'
+admin-communications-poolamount-content: ' quantidade de dinheiro disponível na carteira do usuário'
+admin-communications-send: 'Enviar comunicado'
+admin-communications-cancel: 'Cancelar comunicado'
+admin-communications-newsletter: 'Boletim'
+admin-communications-communication: 'Comunicação geral'
+admin-communications-id: 'ID da Comunicação'
+

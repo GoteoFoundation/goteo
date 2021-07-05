@@ -20,9 +20,13 @@
           $height,
           $width,
           $channel,
+          $matcher,
           $projects,
           $workshops,
-          $donations;
+          $donations,
+          $geojson,
+          $center,
+          $zoom;
 
 
   public function __construct($h, $w = "100%") {
@@ -47,6 +51,11 @@
     $this->channel = $channel;
   }
 
+  public function setMatcher($matcher) {
+    $this->matcher = $matcher;
+  }
+
+
   public function setProjects($projects) {
     $this->projects = $projects;
   }
@@ -58,9 +67,25 @@
   public function setDonations($donations) {
     $this->donations = $donations;
   }
+
+  public function setGeoJSON($geojson) {
+    $this->geojson = $geojson;
+  }
+
+  public function setZoom($zoom) {
+    $this->zoom = $zoom;
+  }
+
+  public function setCenter($center = array()) {
+    $this->center = $center;
+  }
   
   public function getChannel() {
     return $this->channel;
+  }
+
+  public function getMatcher() {
+    return $this->matcher;
   }
 
   public function getProjects() {
@@ -73,6 +98,18 @@
 
   public function getDonations() {
     return $this->donations;
+  }
+
+  public function getGeoJSON() {
+    return $this->geojson;
+  }
+
+  public function getZoom() {
+    return $this->zoom;
+  }
+
+  public function getCenter() {
+    return $this->center;
   }
 
   public function map() {

@@ -4,7 +4,7 @@ purpose: 'Message created by a project''s owner that originates a thread'
 type: 'md'
 title: 'Missatge del projecte %PROJECTNAME%'
 text: >
-    Hola <span class="message-highlight-red">%USERNAME%</span>,
+    Hola %USERNAME%,
 
 
     Aquest és un missatge enviat des de la plataforma Goteo per part de qui impulsa el projecte [%PROJECTNAME%](%PROJECTURL%):

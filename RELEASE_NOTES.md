@@ -25,6 +25,17 @@ This is a list of (still most work-in-progress) of the new features:
 - Using grunt for developing
 - Better translations
 
+#### Version 3.5.2
+
+- New communication module for the admin.
+- New user filters module, in order to create segmentations for the communication module
+- New newsletter and default communication responsive
+- Landing workshops and new admin module to manage it.
+- Tip feature in the invest process: allow make a tip for the platform in the projects.
+- New feature to make a direct donation to the platform organization.
+- ODS integrated in the project form
+- New responsive promotes module
+
 #### Version 3.5
 
 - User stories

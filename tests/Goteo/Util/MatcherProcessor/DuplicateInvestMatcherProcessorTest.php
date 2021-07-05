@@ -47,7 +47,6 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         //Creates users first
         foreach(self::$user_data as $i => $user) {
             if(!($uob = User::get($user['userid']))) {
-                echo "\nCreating user [{$user['userid']}]";
                 $uob = new User($user);
                 $this->assertTrue($uob->save($errors, ['active']), print_r($errors, 1));
             }
@@ -56,8 +55,6 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
 
             self::$user_data[$i]['ob'] = $uob;
             if(isset($user['pool'])) {
-
-                echo "\nSetting user's pool [{$user['userid']}]";
                 Matcher::query("REPLACE invest (`user`, amount, status, method, invested, charged, pool) VALUES (:user, :amount, :status, 'dummy', NOW(), NOW(), 1)", [':user' => $user['userid'], ':amount' => $user['pool'], ':status' => Invest::STATUS_TO_POOL]);
 
                 Matcher::query("REPLACE user_pool (`user`, amount) VALUES (:user, :amount)", [':user' => $user['userid'], ':amount' => $user['pool']]);
@@ -121,9 +118,10 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
      */
     public function testVars($processor) {
         $defaults = [
-            'max_amount_per_project' => 500,
+            'max_amount_per_project' => 0,
             'max_amount_per_invest' => 100,
-            'max_invests_per_user' => 1
+            'max_invests_per_user' => 1,
+            'match_factor' => 1
         ];
         $matcher = $processor->getMatcher();
         $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher);
@@ -135,7 +133,54 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $this->assertEquals(150, $vars['max_amount_per_project']);
         $this->assertEquals(100, $vars['max_amount_per_invest']);
         $this->assertEquals(1, $vars['max_invests_per_user']);
+        $this->assertEquals(1, $vars['match_factor']);
         $this->assertEquals(array_keys($defaults), array_keys($processor->getVarLabels()));
+
+        return $processor;
+    }
+
+    /**
+     * @depends testVars
+     */
+    public function testUserAmounts($processor) {
+        $amounts = $processor->getUserAmounts(160);
+        $this->assertCount(2, $amounts);
+        $this->assertEquals(100, $amounts[self::$user_data[0]['userid']]);
+        $this->assertEquals(50, $amounts[self::$user_data[1]['userid']]);
+
+        $amounts = $processor->getUserAmounts(100);
+        $this->assertCount(2, $amounts);
+        $this->assertEquals(67, $amounts[self::$user_data[0]['userid']]);
+        $this->assertEquals(33, $amounts[self::$user_data[1]['userid']]);
+
+        return $processor;
+    }
+
+    /**
+     * @depends testVars
+     */
+    public function testMatchFactor($processor) {
+        $invest = new Invest([
+            'user' => get_test_user()->id,
+            'project' => get_test_project()->id,
+            'method' => 'dummy',
+            'currency' => 'EUR',
+            'currency_rate' => 1,
+            'status' => Invest::STATUS_CHARGED,
+            'amount' => 75
+        ]);
+
+        $processor->setInvest($invest);
+        $processor->setProject(get_test_project());
+        $matcher = $processor->getMatcher();
+        $vars = $matcher->getVars();
+        $vars['match_factor'] = 2;
+        $matcher->setVars($vars);
+        $this->assertEquals(150, $processor->getAmount());
+
+        $vars['match_factor'] = 1;
+        $matcher->setVars($vars);
+        $this->assertEquals(75, $processor->getAmount());
 
         return $processor;
     }
@@ -155,6 +200,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         ]);
         $processor->setInvest($invest);
         $processor->setProject(get_test_project());
+        $matcher = $processor->getMatcher();
         $this->assertEquals(100, $processor->getAmount());
         $invest->amount = 99;
         $this->assertEquals(99, $processor->getAmount());
@@ -162,30 +208,30 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         // save
         $errors = [];
         $this->assertTrue($invest->save($errors), implode("\n", $errors));
-
-        $this->assertEquals(0, $processor->getAmount());
-        $invest->user = self::$user_data[1]['userid'];
-        $this->assertEquals(99, $processor->getAmount());
-
+        $drop = new Invest([
+            'amount'    => $invest->amount,
+            'user'      => self::$user_data[0]['userid'],
+            'project'   => get_test_project()->id,
+            'currency'    => $invest->currency,
+            'currency_rate'    => $invest->currency_rate,
+            'method'    => 'pool',
+            'status'    => Invest::STATUS_CHARGED,
+            'anonymous' => false,
+            'resign'    => true,
+            'campaign'  => true,
+            'drops'     => $invest ? $invest->id : null,
+            'matcher'   => $matcher->id
+        ]);
+        $this->assertTrue($drop->save($errors), implode("\n", $errors));
+        Invest::query("UPDATE invest SET droped = :drop, `matcher`= :matcher WHERE id = :id",
+                array(':id' => $invest->id, ':drop' => $drop->id, ':matcher' => $matcher->id));
+        $invest->droped = $drop->id;
+        $invest->matcher = $matcher->id;
+        $matcher->save();
+        $this->assertEquals(51, $processor->getAmount($error), "Error[$error]");
         return $processor;
     }
 
-    /**
-     * @depends testAmount
-     */
-    public function testUserAmounts($processor) {
-        $amounts = $processor->getUserAmounts(160);
-        $this->assertCount(2, $amounts);
-        $this->assertEquals(100, $amounts[self::$user_data[0]['userid']]);
-        $this->assertEquals(50, $amounts[self::$user_data[1]['userid']]);
-
-        $amounts = $processor->getUserAmounts(100);
-        $this->assertCount(2, $amounts);
-        $this->assertEquals(67, $amounts[self::$user_data[0]['userid']]);
-        $this->assertEquals(33, $amounts[self::$user_data[1]['userid']]);
-
-        return $processor;
-    }
 
     /**
      * @depends testAmount
@@ -197,8 +243,8 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $this->assertInstanceOf('Goteo\Model\Invest', $invests[0]);
         $this->assertInstanceOf('Goteo\Model\Invest', $invests[1]);
 
-        $this->assertEquals(66, $invests[0]->amount);
-        $this->assertEquals(33, $invests[1]->amount);
+        $this->assertEquals(1, $invests[0]->amount);
+        $this->assertEquals(50, $invests[1]->amount);
 
         $errors = [];
         $this->assertTrue($invests[0]->save($errors), implode("\n", $errors));
@@ -206,7 +252,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
 
         $this->assertEquals(self::$user_data[0]['userid'], $invests[0]->user);
         $this->assertEquals(self::$user_data[1]['userid'], $invests[1]->user);
-        $this->assertEquals(198, Project::get($project->id)->amount);
+        $this->assertEquals(249, Project::get($project->id)->amount);
         return $processor;
     }
 
@@ -231,9 +277,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $this->assertEquals(0, $processor->getAmount());
 
         $invest->user = self::$user_data[2]['userid'];
-        $this->assertEquals(5, $processor->getAmount());
-        $invest->amount = 100;
-        $this->assertEquals(51, $processor->getAmount());
+        $this->assertEquals(0, $processor->getAmount());
 
         return $processor;
     }
@@ -251,7 +295,6 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
     }
     public function testCleanUsers() {
         foreach(self::$user_data as $user) {
-            echo "\nDeleting user [{$user['userid']}]";
             Matcher::query("DELETE FROM invest WHERE `user` = ?", $user['userid']);
             Matcher::query("DELETE FROM user_pool WHERE `user` = ?", $user['userid']);
             $user['ob']->dbDelete();

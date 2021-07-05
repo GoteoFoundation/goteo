@@ -1,6 +1,6 @@
 ---
 channel-join: 'Join channel'
-channel-join-desc: 'Want to join this channel?'
+channel-join-desc: 'Do you want to join this channel?'
 channel-join-reviewing: 'Reviewing...'
 matcher-apply-pending: 'This project is pre-selected for the matchfunding call %s'
 matcher-apply-accepted: 'This project is pending of approval for the matchfunding call %s'
@@ -29,3 +29,7 @@ matcher-project-reject: 'Your project has been removed from the call %s'
 matcher-project-discard: 'El project has been discarded from the call %s'
 matcher-project-activate: 'El project has been activated at the call %s'
 matcher-budget-amount: 'Total budget'
+matcher-label-project: 'Matchfunding Agents <br>match invests'
+matcher-label-pending: "Pending"
+matcher-amount-project: 'Invested: %AMOUNT% of %PROJECT_AMOUNT%'
+matcher-apply-answer-questionnaire: "Answer questionnaire"

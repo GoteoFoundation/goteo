@@ -32,7 +32,7 @@
       <div class="powered hidden-xs">
       <span><?= $this->text('call-header-powered-by') ?></span>
         <a href="/">
-          <img height="20" src="<?= '/assets/img/call/logo-call.png' ?>" >
+          <img height="20" src="<?= '/assets/img/goteo-white.svg' ?>" >
         </a>
       </div>
       <?php endif ?>

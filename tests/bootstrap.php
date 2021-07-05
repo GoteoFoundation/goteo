@@ -4,6 +4,7 @@
 use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Core\Model;
+use Goteo\Model\User;
 
 
 //Public Web path
@@ -15,10 +16,6 @@ App::debug(true);
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_DEPRECATED);
 ini_set("display_errors", 1);
 
-//TODO: to be deprecate
-define('HTTPS_ON', false);
-define('LANG', 'es');
-define('SITE_URL', 'http://localhost');
 
 // Config file...
 $config = getenv('GOTEO_TEST_CONFIG_FILE');
@@ -26,6 +23,11 @@ if(!is_file($config)) $config = getenv('GOTEO_CONFIG_FILE');
 if(!is_file($config)) $config = __DIR__ . '/../config/test-settings.yml';
 if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
 Config::load($config);
+//TODO: to be deprecate
+define('HTTPS_ON', false);
+define('LANG', Config::get('lang'));
+define('SITE_URL', Config::getMainUrl());
+
 Config::set('db.cache.time', 1);
 Model::factory();
 // TODO: mock service container logger...
@@ -99,29 +101,29 @@ function get_test_user() {
         'email' => 'simulated-user-test@goteo.org'
     );
     $data['node'] = get_test_node()->id;
-    // if exists, return the user
-    if($user = \Goteo\Model\User::get($data['userid'])) {
+
+    if($user = User::get($data['userid'])) {
         return $user;
     }
     $errors = array();
-    $user = new \Goteo\Model\User($data);
+    $user = new User($data);
     if ( ! $user->save($errors, array('password')) ) {
         error_log("Error creating test user! " . print_r($errors, 1));
-        return false;
     }
 
-    if($user = \Goteo\Model\User::get($data['userid'])) {
+    if($user = User::get($data['userid'])) {
         return $user;
-    }
-    else {
+    } else {
         error_log('Unknow error getting user id');
     }
+
+    return null;
 }
 
 function delete_test_user() {
-    if($user = \Goteo\Model\User::get('012-simulated-user-test-210')) {
+    if($user = User::get('012-simulated-user-test-210')) {
         $user->dbDelete();
-        if(\Goteo\Model\User::get($user->id)) {
+        if(User::get($user->id)) {
             error_log("Error deleting test user!");
             return false;
         }

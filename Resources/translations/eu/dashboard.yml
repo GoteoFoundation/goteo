@@ -1,4 +1,6 @@
 ---
+dashboard-chart-investors: Aldi bereko finantzakideak
+dashboard-chart-optimum: hobeezina
 dashboard-embed_code: 'HEDAPEN SINPLEAREN KODEA'
 dashboard-embed_code_investor: 'FINANTZAKIDEAREN IRUDI KODEA'
 dashboard-header-main: 'Nire iragarki-taula'
@@ -16,14 +18,16 @@ dashboard-menu-calls-sponsors: Babesleak
 dashboard-menu-profile: 'Nire soslaia'
 dashboard-menu-profile-access: 'Sartze datuak'
 dashboard-menu-profile-personal: 'Norbanakoaren datuak'
-dashboard-menu-profile-preferences: 'Lehetasunak'
+dashboard-menu-profile-preferences: 'Nire lehentasunak'
 dashboard-menu-profile-profile: 'Soslaia editatu'
 dashboard-menu-profile-public: 'Soslai publikoa'
 dashboard-menu-projects: 'Nire proiektuak'
+dashboard-menu-projects-analytics: Analitikoa
 dashboard-menu-projects-contract: Banketxeko kontua
+dashboard-menu-projects-social-commitment: 'Giza konpromezua'
 dashboard-menu-projects-messegers: Partaideak
 dashboard-menu-projects-preview: 'Orrialde publikoa'
-dashboard-menu-projects-rewards: Finantzakideen kudeaketa
+dashboard-menu-projects-rewards: Aldi bereko finantzakideak
 dashboard-menu-projects-summary: Laburpena
 dashboard-menu-projects-supports: Kolaborazioak
 dashboard-menu-projects-updates: Berriak
@@ -48,7 +52,7 @@ dashboard-project-updates-saved: 'Sarrera ondo eguneratu izan da'
 dashboard-rewards-address: 'Entregatzeko helbidea:'
 dashboard-rewards-all_filter: Guztiak
 dashboard-rewards-amount_order: 'Zenbatekoaren arabera'
-dashboard-rewards-choosen: 'Espero ditugun sariak:'
+dashboard-rewards-choosen: 'Espero ditugun ordain sariak:'
 dashboard-rewards-date_order: 'Dataren arabera'
 dashboard-rewards-fulfilled_filter: Beteak
 dashboard-rewards-fulfilled_status: Beteta

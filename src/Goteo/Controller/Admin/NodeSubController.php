@@ -67,7 +67,6 @@ class NodeSubController extends AbstractSubController {
                 'description',
                 'twitter',
                 'facebook',
-                'google',
                 'linkedin',
                 'owner_background',
                 'owner_font_color',

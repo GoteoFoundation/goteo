@@ -81,10 +81,15 @@ translator-node_faq_question: "FAQ's questions of the channel"
 translator-node_faq_download: FAQ's downloads of the channel
 translator-node_sponsor: "Channel's sponsors"
 translator-node_team: "Channel's team"
+translator-node_sections: "Channel's sections"
+translator-node_resource: "Channel's resources"
+translator-node_resource_category: "Resource's categories"
 translator-image_credits: Image credits
 translator-field-modal_description: "Modal's description"
 translator-field-action: Action
 translator-field-action_url: "Action's url"
+translator-field-action_2: Action 2
+translator-field-action_url_2: "Action's url 2"
 translator-field-banner_title: Title of the banner
 translator-field-banner_description: Description of the banner
 translator-field-label: Label
@@ -97,3 +102,6 @@ translator-field-tip_msg:  Message
 translator-field-banner_button_url: "Banner's button url"
 translator-field-terms_url: "Term's url"
 translator-field-credits: Credits
+translator-question: Questions
+translator-question_options: "Question's options"
+translator-field-option: Options

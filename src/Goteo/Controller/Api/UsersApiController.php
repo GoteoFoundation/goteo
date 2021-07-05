@@ -92,7 +92,7 @@ class UsersApiController extends AbstractApiController {
         $is_admin = $this->user->canImpersonate($user) || $this->user->canRebase($user);
 
         $ob = [];
-        $fields = ['id', 'name', 'about', 'keywords', 'twitter', 'facebook', 'google', 'instagram', 'identica', 'linkedin'];
+        $fields = ['id', 'name', 'about', 'keywords', 'twitter', 'facebook', 'instagram', 'identica', 'linkedin'];
         if($is_admin) {
             $fields = array_merge($fields, ['email', 'gender', 'birthyear', 'entity_type', 'legal_entity', 'hide', 'active', 'confirmed']);
         }
@@ -221,7 +221,7 @@ class UsersApiController extends AbstractApiController {
         $user = User::get($id);
         $properties = $this->getSafeUser($user);
 
-        $write_fields = ['name', 'gender', 'birthyear', 'entity_type', 'legal_entity', 'about', 'keywords', 'twitter', 'facebook', 'google', 'instagram', 'identica', 'linkedin'];
+        $write_fields = ['name', 'gender', 'birthyear', 'entity_type', 'legal_entity', 'about', 'keywords', 'twitter', 'facebook', 'instagram', 'identica', 'linkedin'];
 
         $is_admin = $this->user->canRebase($user);
 

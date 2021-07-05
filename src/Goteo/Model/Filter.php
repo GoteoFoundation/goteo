@@ -47,6 +47,7 @@ class Filter extends \Goteo\Core\Model {
         $enddate,
         $project_status,
         $invest_status,
+        $donor_status,
         $typeofdonor,
         $foundationdonor,
         $wallet,
@@ -374,19 +375,12 @@ class Filter extends \Goteo\Core\Model {
             'startdate',
             'enddate',
             'project_status',
-            'invest_status',                  
+            'invest_status',
+            'donor_status',
             'typeofdonor',
             'foundationdonor',
             'wallet',
             'filter_location',
-            // 'project_latitude',
-            // 'project_longitude',
-            // 'project_radius',
-            // 'project_location',
-            // 'donor_latitude',
-            // 'donor_longitude',
-            // 'donor_radius',
-            // 'donor_location',
             'forced'
         );
         
@@ -737,6 +731,28 @@ class Filter extends \Goteo\Core\Model {
             }
         }
 
+        if (isset($this->donor_status)) {
+
+            $sqlInner .= " INNER JOIN donor
+            ON donor.user = user.id";
+            $sqlFilter .= " AND donor.status = :donor_status";
+            $values[':donor_status'] = $this->donor_status;
+
+            if (isset($this->startdate)) {
+                $sqlFilter .= " AND donor.year BETWEEN :startyear ";
+                $values[':startyear'] = DateTime::createFromFormat("Y-m-d",$this->startdate)->format("Y");
+
+                if(isset($this->enddate)) {
+                    $sqlFilter .= " AND :endyear ";
+                    $values[':endyear'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");
+                } else {
+                    $sqlFilter .= " AND YEAR(CURDATE())";
+                }
+            } else if (isset($this->enddate)) {
+                $sqlFilter .= " AND donor.year <= :endyear ";
+                $values[':enddate'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");;
+            }
+        }
 
         if (isset($this->wallet)) {
             
@@ -761,7 +777,7 @@ class Filter extends \Goteo\Core\Model {
                     $sqlInner .= " AND :endyear ";
                     $values[':endyear'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");
                 } else {
-                    $sqlFilter .= " AND YEAR()";
+                    $sqlFilter .= " AND YEAR(CURDATE())";
                 }
             } else if (isset($this->enddate)) {
                 $sqlFilter .= " AND donor.year <= :endyear ";
@@ -989,6 +1005,27 @@ class Filter extends \Goteo\Core\Model {
             }
         }
 
+        if (isset($this->donor_status)) {
+
+            $sqlInner .= " INNER JOIN donor
+            ON donor.user = user.id AND donor.status = :donor_status ";
+            $values[':donor_status'] = $this->donor_status;
+
+            if (isset($this->startdate)) {
+                $sqlInner .= " AND donor.year BETWEEN :startyear ";
+                $values[':startyear'] = DateTime::createFromFormat("Y-m-d",$this->startdate)->format("Y");
+
+                if(isset($this->enddate)) {
+                    $sqlInner .= " AND :endyear ";
+                    $values[':endyear'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");
+                } else {
+                    $sqlFilter .= " AND YEAR(CURDATE())";
+                }
+            } else if (isset($this->enddate)) {
+                $sqlFilter .= " AND donor.year <= :endyear ";
+                $values[':enddate'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");;
+            }
+        }
 
         if (isset($this->wallet)) {
             
@@ -1013,7 +1050,7 @@ class Filter extends \Goteo\Core\Model {
                     $sqlInner .= " AND :endyear ";
                     $values[':endyear'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");
                 } else {
-                    $sqlFilter .= " AND YEAR()";
+                    $sqlFilter .= " AND YEAR(CURDATE())";
                 }
             } else if (isset($this->enddate)) {
                 $sqlFilter .= " AND donor.year <= :endyear ";
@@ -1707,10 +1744,6 @@ class Filter extends \Goteo\Core\Model {
             // $loc->latitude = $this->donor_latitude;
             // $loc->longitude = $this->donor_longitude;
             $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
-
-
-            $sqlInner .= " INNER JOIN user
-            ON user.user = user.id ";
 
             $sqlInner .= " INNER JOIN user_location
                             ON user_location.id = user.id ";

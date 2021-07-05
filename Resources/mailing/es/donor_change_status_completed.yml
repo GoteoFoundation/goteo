@@ -1,0 +1,10 @@
+group: massive
+name: 'Change of status in donor certificate to completed'
+purpose: 'Communicate the change in the status to the user'
+type: 'md'
+title: "Nuevo cambio de estado en su certificado"
+text: >
+    Hola %USERNAME%,
+
+    Su certificado ha cambiado de estado. Ahora se encuentra en estado completado.
+

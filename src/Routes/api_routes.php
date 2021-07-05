@@ -312,6 +312,11 @@ $api->add('api-channels', new Route(
         )
 ));
 
+$api->add('api-channels-images', new Route(
+    '/channels/images',
+    array('_controller' => 'Goteo\Controller\Api\ChannelsApiController::uploadImagesAction')
+));
+
 // Licenses list
 $api->add('api-licenses', new Route(
     '/licenses',
@@ -495,6 +500,12 @@ $api->add('api-questionnaire-documents-upload', new Route(
     array('POST') // methods
 ));
 
+//Sdg list based on footprints
+$api->add('api-sdg-footprint-list', new Route(
+    '/sdg/footprint',
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::sdgFootprintAction')
+));
+
 // Stories sort up/down arbitrarily (use the PUT method to sort)
 $api->add('api-faq-sort', new Route(
     '/faq/{id}/sort',
@@ -512,7 +523,5 @@ $api->add('api-faq-images-upload', new Route(
     array(), // schemes
     array('POST') // methods
 ));
-
-
 
 return $api;

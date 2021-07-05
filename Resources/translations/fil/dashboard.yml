@@ -11,10 +11,8 @@ dashboard-certificates-confirm: 'Kumpirmahin ang datos'
 dashboard-certificates-confirm-checkbox: 'Kinukumpirma ko na ang mga ito ang aking tunay na legal na datos at nalalaman ko na hindi ko mababago ang datos na ito kapag nakumpirma na'
 dashboard-certificates-confirmed: Nakumpirma
 dashboard-certificates-processed: Naproseso
-dashboard-certificates-confirmed-ok: 'Ang datos ng buwis ay nakumpirma ng tama, kung ang iyong sertipiko ay hindi awtomatikong na-download i-click ang%HERE%'
 dashboard-certificates-data-alert: 'Tandaan na kapag nakumpirma na, ang data ay hindi mababago!'
 dashboard-certificates-data-desc: 'Mangyaring tiyaking tama ang datos ng anyo at kumpirmahin ang anyo'
-dashboard-certificates-data-download-all: 'Kumpirmahin ang iyong mga sertipiko upang maisaaktibo ang pagbawas sa buwis. Sa sandaling tapos na maaari mong i-download ang isang kopya ng mga ito. Taun-taon ay ginagawa ng Goteo Foundation ang abiso sa Treasury ng lahat ng nakumpirma na mga donasyon.'
 dashboard-certificates-data-new-invests: 'Ngunit huwag mag-alala, anumang bagong kontribusyon na gagawin mo sa Goteo ay bubuo ng isang bagong sertipiko'
 dashboard-certificates-desc: 'Ang mga sertipiko ay magbibigay-daan sa iyo na ibawas sa iyong pahayag ng kita kung ikaw ay isang nagbabayad ng buwis sa estado ng Espanyol.'
 dashboard-certificates-details: 'Tingnan ang mga detalye'

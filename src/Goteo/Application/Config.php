@@ -109,6 +109,9 @@ class Config {
 			\Goteo\Controller\TranslateController::addTranslateModel('node_resource');
 			\Goteo\Controller\TranslateController::addTranslateModel('node_resource_category');
 			\Goteo\Controller\TranslateController::addTranslateModel('image_credits');
+			\Goteo\Controller\TranslateController::addTranslateModel('node_sections');
+			\Goteo\Controller\TranslateController::addTranslateModel('question');
+			\Goteo\Controller\TranslateController::addTranslateModel('question_options');
 			
 			// sets up the rest...
 			self::setDirConfiguration();
@@ -127,7 +130,8 @@ class Config {
 			}
 
             \Goteo\Application\View::setTheme('responsive');
-			// die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
+            // we die here and show a formatted error, most likely reason is a database misconfiguration
+			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
 			return;
 		}
 	}
@@ -262,6 +266,8 @@ class Config {
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelResourceAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelPostsAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelCriteriaAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelProgramAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelSectionAdminController');
 
 
 		// Adding Pool (internal credit) payment method

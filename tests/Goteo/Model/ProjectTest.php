@@ -94,7 +94,6 @@ class ProjectTest extends TestCase {
         $this->assertGreaterThanOrEqual($funded, $total);
         $this->assertGreaterThanOrEqual($unfunded, $total);
         $this->assertGreaterThanOrEqual($mainnode, $total);
-        echo "Projects: [$total] In Campaign: [$campaign] Funded: [$funded]  Unfunded: [$unfunded] Node goteo: [$mainnode]\n";
     }
 
     /**
@@ -294,8 +293,6 @@ class ProjectTest extends TestCase {
      */
     public function testAccountFeeProject($project) {
         $account = Account::get($project->id);
-        // check fee change from project publishing
-        $this->assertEquals(Config::get('fee'), $account->fee);
         $account->paypal = '';
         $this->assertTrue($account->save($errors), print_r($errors, 1));
         $account = Account::get($project->id);

@@ -1,0 +1,12 @@
+group: massive
+name: 'Change of status in donor certificate to declared'
+purpose: 'Communicate the change in the status to the user'
+type: 'md'
+title: "Update in your certificate status"
+text: >
+    Hi %USERNAME%,
+
+    Your certificate has changed it's status. The current status is completed.
+
+    This means that it has been already sent to the tax authorities.
+

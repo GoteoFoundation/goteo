@@ -1,24 +1,47 @@
 ---
+guide-project-user-information: '<strong>In questo contributo devi introdurre i dati per l''informazione pubblica del tuo profilo di utente. </strong><br><br>Tanto se vuoi presentare un progetto come incorporarti o come cofinanziatore, per formare parte della comunità di Goteo, ti raccomandiamo di porre attenzione al tuo testo di presentazione, di allegare link rilevanti su ciò che fai e di caricare un''immagine di profilo con cui ti identifichi.'
+profile-credit-available: 'Questo è il saldo disponibile nel tuo portafoglio virtuale da distribuire nei progetti di Goteo.'
 profile-field-about: 'Raccontaci qualcosa di te'
 profile-field-avatar_current: 'La tua immagina attuale'
 profile-field-avatar_upload: 'Caricare un''immagine'
 profile-field-contribution: 'Come puoi sostenere Goteo'
+profile-field-entity-type: 'Tipo di entità'
+profile-field-entity-type-checkbox-public: 'Sono un''entità pubblica'
+profile-field-entity-type-choose: 'Seleziona un tipo di entità'
+profile-field-entity-type-concerted: Concertato
+profile-field-entity-type-private: Privato
+profile-field-entity-type-public: Pubblico
 profile-field-interests: 'Che tipo di progetto ti interessa di più '
 profile-field-keywords: 'Temi che ti interessano'
+profile-field-legal-entity: 'Forma giuridica'
+profile-field-legal-entity-asociation: Associazione
+profile-field-legal-entity-choose: 'Seleziona una forma giuridica'
+profile-field-legal-entity-company: Impresa
+profile-field-legal-entity-cooperative: Cooperativa
+profile-field-legal-entity-ngo: ONG
+profile-field-legal-entity-others: Altri
 profile-field-legal-entity-person: 'Persona fisica'
+profile-field-legal-entity-self-employed: Autonomo
 profile-field-location: 'Luogo abituale di residenza'
 profile-field-name: 'Nome utente'
+profile-field-url: URL
 profile-field-websites: 'Le mie pagine web'
+profile-fields-analytics-title: Analitica
 profile-fields-image-title: 'Immagine di profilo'
 profile-fields-social-title: 'Profili social'
 profile-main-header: 'Dati del profilo '
+profile-suggest-projects-interest: 'Potresti appoggiare progetti di categorie simili'
 step-1: Profilo
 step-userProfile: 'Passaggio: Utente/Profilo'
+tooltip-user-about: "Come rete sociale, Goteo pretende di aiutare a diffondere e finanziare progetti interessanti tra il massimo possibile di gente. Perciò è importante l'informazione che si può condividere sulle tue abilità o esperienza (professionale, accademica, hobbistica, etc)."
+tooltip-user-analytics: 'Accesso, se disponi di uno, il tuo ID di puntamento di Google Analytics per abilitarlo nel tuo progetto. L''ID deve essere in formato: UA-000000-01 (esempio di ID)'
 tooltip-user-avatar_upload: 'Testo tooltip per caricare immagine utente '
 tooltip-user-contribution: 'Descrivi brevemente le tue capacità e gli ambiti in cui potresti collaborare in un progetto (traduzione, diffusione, testing, programmazione, formazione, ecc.)'
 tooltip-user-facebook: 'Questo social network può aiutarti a diffondere progetti di Goteo che ti interessano tra familiari e amici.'
+tooltip-user-facebook-pixel: 'Inserisci l''ID del tuo Facebook Pixel, se vuoi misurare le conversazioni di una campagna su Facebook.'
 tooltip-user-google: 'Il social network  Google+ va molto bene, ma se lo usi puoi indicare il nome utente :)'
 tooltip-user-identica: 'Questo canale può aiutarti a diffondere progetti di Goteo tra la comunità legata al software libero.'
+tooltip-user-instagram: 'Questa rete sociale ti permette di condividere facilmente ed immediatamente, immagini'
 tooltip-user-interests: 'Indica il tipo di progetto che possono coinvolgere i tuoi interessi per cofinanziarli o sostenerli con altre risorse, conoscenze, abilità. Queste categorie sono trasversali, puoi selezionarne più di una.'
 tooltip-user-keywords: 'Una volta che immetti testo il sistema ti suggerirà parole chiave che hanno scritto altri utenti. Queste categorie aiutano a collegare il tuo profilo con altre persone e progetti in concreto. '
 tooltip-user-linkedin: 'Questo social network può aiutarti a diffondere i progetti di Goteo che ti interessano tra i tuoi contatti professionali. '
@@ -40,3 +63,5 @@ validate-user-field-name: 'Indica il tuo nome completo per migliorare la valutaz
 validate-user-field-twitter: 'L''account di Twitter non pe corretto'
 validate-user-field-web: 'Devi indicare l''indirizzo (URL) web'
 validate-user-field-webs: 'Indica la tua pagina web per migliorare la valutazione del progetto rispetto alla pubblicazione su Goteo.'
+help-user-analytics: 'Inserisci, in caso tu ne abbia uno, il tuo ID di puntamento di Google Analytics per abilitarlo nel tuo progetto.<br>L''ID deve avere questo formato: <strong>UA-000000-01</strong> (esempio di ID)<br><a href="https://analytics.google.com" target="_blank">Vai a Google Analytics</a>'
+help-user-facebook-pixel: 'Inserisci l''ID del tuo Facebook Pixel, se vuoi misurare le conversazioni di una campagna su Facebook<br><a href="https://www.facebook.com/ads/manager/pixel/facebook_pixel" target="_blank">Vai a Pixel di Facebook</a>'

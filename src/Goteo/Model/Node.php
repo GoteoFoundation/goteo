@@ -24,6 +24,7 @@ use Goteo\Model\Node\NodeTeam;
 use Goteo\Model\Node\NodeCallToAction;
 use Goteo\Model\Node\NodeStories;
 use Goteo\Model\Node\NodePost;
+use Goteo\Model\Node\NodeSections;
 
 class Node extends \Goteo\Core\Model {
 
@@ -39,6 +40,7 @@ class Node extends \Goteo\Core\Model {
         $email,
         $admins = array(), // administradores
         $logo,
+        $logo_footer,
         $sello,
         $home_img,
         $active,
@@ -61,7 +63,8 @@ class Node extends \Goteo\Core\Model {
         $chatbot_url,
         $chatbot_id,
         $tip_msg,
-        $analytics_id
+        $analytics_id,
+        $config
         ;
 
 
@@ -79,6 +82,9 @@ class Node extends \Goteo\Core\Model {
             // logo
             $this->logo = (!empty($this->logo)) ? Image::get($this->logo) : null;
 
+            // logo footer
+            $this->logo_footer = (!empty($this->logo_footer)) ? Image::get($this->logo_footer) : null;
+
             // label
             $this->label = (!empty($this->label)) ? Image::get($this->label) : null;
 
@@ -89,7 +95,7 @@ class Node extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description', 'banner_button_url', 'terms_url'];
+        return ['name', 'subtitle', 'description', 'main_info_title', 'main_info_description', 'call_to_action_description', 'banner_button_url', 'terms', 'terms_url'];
     }
 
     /**
@@ -112,6 +118,7 @@ class Node extends \Goteo\Core\Model {
                 node.hashtag as hashtag,
                 $fields,
                 node.logo as logo,
+                node.logo_footer as logo_footer,
                 node.label as label,
                 node.home_img as home_img,
                 node.location as location,
@@ -127,7 +134,6 @@ class Node extends \Goteo\Core\Model {
                 node.twitter as twitter,
                 node.facebook as facebook,
                 node.linkedin as linkedin,
-                node.google as google,
                 node.owner_background as owner_background,
                 node.owner_font_color as owner_font_color,
                 node.owner_social_color as owner_social_color,
@@ -139,7 +145,8 @@ class Node extends \Goteo\Core\Model {
                 node.chatbot_url as chatbot_url,
                 node.chatbot_id as chatbot_id,
                 node.tip_msg as tip_msg,
-                node.analytics_id as analytics_id
+                node.analytics_id as analytics_id,
+                node.config as config
             FROM node
             $joins
             WHERE node.id = :id";
@@ -250,6 +257,10 @@ class Node extends \Goteo\Core\Model {
             }
         }
 
+        if (isset($filters['inscription_open'])) {
+            $sqlFilter[] = "(node.project_creation_open OR node.call_inscription_open)";
+        }
+
         if($sqlFilter) $sqlFilter = ' WHERE '. implode(' AND ', $sqlFilter);
         else $sqlFilter = '';
 
@@ -264,10 +275,10 @@ class Node extends \Goteo\Core\Model {
                        node.active,
                        node.url,
                        node.logo,
+                       node.logo_footer,
                        node.location,
                        node.twitter,
                        node.facebook,
-                       node.google,
                        node.linkedin,
                        node.label,
                        node.owner_background,
@@ -393,6 +404,14 @@ class Node extends \Goteo\Core\Model {
         return $this->logoInstance;
     }
 
+    public function getLogoFooter() {
+        if(!$this->logoFooterInstance instanceOf Image) {
+            $this->logoFooterInstance = new Image($this->logo_footer);
+        }
+        return $this->logoFooterInstance;
+    }
+
+
     public function getLabel() {
         if(!$this->labelInstance instanceOf Image) {
             $this->labelInstance = new Image($this->label);
@@ -418,7 +437,8 @@ class Node extends \Goteo\Core\Model {
             'default_consultant',
             'sponsors_limit',
             'iframe',
-            'analytics_id'
+            'analytics_id',
+            'config'
             );
 
         $set = '';
@@ -631,7 +651,6 @@ class Node extends \Goteo\Core\Model {
             'description',
             'twitter',
             'facebook',
-            'google',
             'linkedin',
             'owner_background',
             'owner_font_color',
@@ -934,7 +953,7 @@ class Node extends \Goteo\Core\Model {
             FROM project
             LEFT JOIN node_project
                 ON node_project.project_id = project.id
-            WHERE project.node = 'ahoracomparte' OR node_project.node_id = 'ahoracomparte'
+            WHERE project.node = :node OR node_project.node_id = :node
         ", $values);
         $data['amount'] = $query->fetchColumn();
 
@@ -1158,7 +1177,8 @@ class Node extends \Goteo\Core\Model {
     public function getAllWorkshops () {
         if($this->workshopList) return $this->workshopList;
 
-        $this->workshopList =  Workshop::getList(['node' => $this->id]);
+        $total = Workshop::getList(['node' => $this->id], 0, 0, 1);
+        $this->workshopList =  Workshop::getList(['node' => $this->id], 0, $total);
         return $this->workshopList;
     }
 
@@ -1198,6 +1218,44 @@ class Node extends \Goteo\Core\Model {
         return $this->callToActionList;
     }
     
+    public function setConfig(array $config) {
+        $this->config = $config ? json_encode($config) : '';
+        return $this;
+    }
+
+    public function getConfig() {
+        if($this->config) return json_decode($this->config, true);
+        return [];
+    }
+
+    public function getSections($section = null) {
+        $filter = [
+            'node' => $this->id
+        ];
+
+        if ($section) $filter['section'] = $section;
+
+        $sections = NodeSections::getList($filter, 0, 10);
+        return $sections;
+    }
+
+    public function findProject($pid)
+    {
+
+        $values = [
+            ':project' => $pid,
+            ':node' => $this->id
+        ];
+
+        $sql = "SELECT *
+                FROM node_project
+                WHERE node_project.project_id = :project
+                    AND node_project.node_id = :node
+            ";
+
+        // die(\sqldbg($sql, $values));
+        return self::query($sql, $values)->fetchAll(\PDO::FETCH_CLASS. __CLASS__);
+    }
 
 
 }

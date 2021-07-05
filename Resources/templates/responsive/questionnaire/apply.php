@@ -2,8 +2,8 @@
 
 
 $this->layout('questionnaire/layout', [
-  'title' => $this->title_text.' :: '.$this->model->name,
-  'meta_description' => $this->title_text.'. '.$this->model->description
+  'meta_title' => $this->t('questionnaire').' :: '. $this->model->name,
+  'meta_description' => $this->model->name .'. '.$this->model->description
   ]);
 
 $this->section('content');
@@ -18,13 +18,21 @@ $checked = $this->has_query('select');
                 <h2 class="text-center channel-title"><?= $this->text('questionnaire-apply-title', $this->model->name) ?></h1>
             </div>
         </div>
+
+        
         <div class="row">
+        <?php if ($this->model->logo): ?>
             <div class="col-md-2 col-sm-2 ">
                 <img class="logo" src="<?= $this->model->logo->getLink(150,0) ?>">
             </div>
             <div class="col-md-8 col-sm-8 description">
                <p> <?= $this->model->description; ?></p>
             </div>
+        <?php else: ?>
+            <div class="col-md-8 col-sm-8 col-sm-offset-2 col-md-offset-2 description">
+               <p> <?= $this->model->description; ?></p>
+            </div>
+        <?php endif; ?>
         </div>
     </div>
     <div class="row spacer-20">

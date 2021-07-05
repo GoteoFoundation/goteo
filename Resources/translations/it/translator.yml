@@ -1,6 +1,80 @@
 ---
+translator: Traduttore
+translator-autotranslate-from: 'Traduzione automatica di'
+translator-back-to-list: 'Torna all''elenco'
+translator-banner: Banner
+translator-bazar: Catalogo
+translator-cannot-delete-system: 'Questa traduzione non può essere cancellata perché è di sistema!'
 translator-category: Categorie
+translator-choose: 'Scegliere un''opzione'
+translator-copy-from: 'Copia contenuto di'
+translator-criteria: 'Criteri di valutazione'
+translator-delete: 'Cancella traduzione al %s'
+translator-delete-sure: 'Sicuro di voler cancellare la traduzione al %s? Ciò non si può annullare!'
+translator-deleted-ko: 'Errore nel cancellare la traduzione al %s!'
+translator-deleted-ok: 'Traduzione in %s cancellata correttamente'
+translator-faq: Faq
+translator-feed-translated-desc: '%LINK% tradotto per %USER% in %LANGS%'
+translator-feed-translated-target: 'Traduzione in %s'
+translator-field-blog: Blog
+translator-field-content: Contenuto
 translator-field-description: Descrizione
+translator-field-facebook_msg: 'Messaggio di facebook'
+translator-field-facebook_msg_owner: 'Autore di facebook'
 translator-field-legend: Legenda
+translator-field-media: Media
 translator-field-name: Nome
+translator-field-review: Revisiona
+translator-field-schedule: Programma
+translator-field-share_facebook: 'Condividi testo facebook'
+translator-field-share_twitter: 'Condividi testo twitter'
+translator-field-text: Testo
+translator-field-title: Titolo
+translator-field-subtitle: sottotitolo
+translator-field-twitter_msg: 'Messaggio di twitter'
+translator-field-twitter_msg_owner: 'Autore di twitter'
+translator-field-url: URL
+translator-glossary: 'Glossario dei termini'
+translator-home: Home Page
+translator-icon: 'Tipi di ritorno/ricompensa'
+translator-info: 'Idee su'
+translator-lang-no-perms: 'Non hai il permesso per amministrare questa lingua'
+translator-license: Licenze
+translator-milestone: Traguardi
+translator-more-langs: Altri
+translator-news: Notizie
+translator-no-langs: 'Non hai alcuna lingua, contatta l''amministratore'
+translator-not-saved: 'Nessun contenuto salvato! (ci sono campi vuoti?)'
+translator-not-translated: 'Nessuna voce nella tabella delle traduzioni'
+translator-only-pendings: 'Solo in attesa in:'
+translator-opentag: Raggruppamenti
+translator-original-text: 'Testo originale'
+translator-page: Pagine
+translator-patron: 'Progetti sponsorizzati'
+translator-pending: 'In attesa di traduzione'
+translator-pending-desc: 'Questo contenuto è "in attesa", il che significa che <strong>NON È PUBBLICO</strong> e resterà unabozza finchè si mantiene l''opzione "In attesa di traduzione"'
+translator-post: Blog
+translator-promote: 'Prodotti sponsorizzati'
+translator-save: 'Salva e pubblica'
+translator-save-original: 'Salva nella tabella originale'
+translator-save-draft: 'Salva come bozza'
+translator-saved-ko: 'Errore nel salvare la traduzione in %LANG% (%ERROR%)'
+translator-saved-ok: 'Traduzioni salvate correttamente per le lingue [%s]'
+translator-skipped-fields: "Alcuni campi non sono stati copiati perchè contenevano testo.\nAnnulla il testo originale per poter copiare in un'altra lingua."
+translator-sphere: 'Ambiti di chiamata'
+translator-social_commitment: 'Compromessi sociali'
+translator-sdg: 'ODS'
+translator-footprint: 'Impronte'
+translator-stories: 'Storie riuscite'
+translator-system: Sistema
+translator-tables: 'Tabelle generali'
+translator-tag: 'Tag del blog'
+translator-template: 'Template email automatici'
+translator-texts: 'Interfaccia testi'
+translator-translations: Traduzioni
 translator-workshop: Workshop
+translator-worthcracy: Meritocrazia
+translator-zone-not-found: 'Quest''area di traduzione non è valida'
+translator-lang-not-found: 'Questa lingua non è nella piattaforma!'
+translator-percent: '%d&#37; tradotto'
+translator-add-translation: 'Aggiungi una nuova traduzione'

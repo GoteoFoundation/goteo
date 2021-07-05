@@ -127,7 +127,7 @@ project-create-save-alert: '<strong>GROSSARTIG!!</strong><p>Nachdem wir nun eine
 project-create-modal-no-social-title: 'Soziales Engagement'
 project-create-modal-no-social-description: 'Es ist zwingend erforderlich, ein soziales Engagement zu haben, damit Ihr Projekt in Goteo akzeptiert wird. Wenn Sie sich nicht selbst festlegen, indem Sie eine davon auswählen, wird die Schaltfläche, mit der Sie fortfahren können, nicht aktiviert: - ('
 project-share-materials: 'Gemeinsame Materialien'
-project-create-no-social-commitment: 'Ich habe nicht'
+project-create-no-social-commitment: 'Keines'
 project-progress-title: Wie geht das Projekt voran
 project-edit: Projekt bearbeiten
 project-remove-cost-confirm: 'Sind Sie sicher, dass Sie diese Kosten löschen möchten?'
@@ -140,7 +140,7 @@ project-reviewing: 'Wir evaluieren und begutachten Ihr Projekt'
 project-validation-ok: 'Sie haben das Formular ausgefüllt. Das ist genial! Sie können die Schaltfläche Weiter klicken, so dass unsere Berater Ihr Projekt ansehen.'
 project-validation-errors: 'Das Projekt ist noch nicht fertiggestellt!'
 project-validation-error-profile: 'Es fehlen Felder, die Sie in Ihrem Benutzerprofil ausfüllen müssen'
-project-validation-error-profile_social: 'Sie müssen einige Felder von Web, Facebook oder Twitter ausfüllen'
+project-validation-error-profile_social: 'Sie müssen einige Felder von Web, Facebook Twitter oder Instagram ausfüllen'
 project-validation-error-personal: 'Felder, die in den Projektkonten ausgefüllt werden müssen, fehlen'
 project-validation-error-overview: 'Es fehlen Felder, die in der Projektbeschreibung ausgefüllt werden müssen'
 project-validation-error-images: 'Das Projekt muss mindestens ein Bild enthalten'

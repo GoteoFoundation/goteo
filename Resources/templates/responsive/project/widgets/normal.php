@@ -16,7 +16,7 @@ if ($this->admin && !$this->link) {
 if (!($label = $this->label)) {
     $tagmark = $this->project->getTagmark();
     $call = $this->project->getCall();
-    $matchers = $this->project->getMatchers('active');
+    $matchers = $this->project->getMatchers('active', ['has_channel' => true]);
 }
 
 ?><div class="project-widget flip-widget normal<?= $this->project->isApproved() ? '' : ' non-public' ?>" id="project-<?= $this->project->id ?>">
@@ -46,7 +46,7 @@ if (!($label = $this->label)) {
 
 
     <a class="img-link" href="<?= $link ?>" <?= $target ?>>
-        <img class="img-project" src="<?= $this->project->image->getLink(600, 416, true); ?>">
+        <img loading="lazy" class="img-project" src="<?= $this->project->image->getLink(600, 416, true); ?>">
         <h2><?= $this->text_truncate($this->ee($this->project->name), 80); ?></h2>
     </a>
 

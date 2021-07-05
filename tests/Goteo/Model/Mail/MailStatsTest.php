@@ -40,8 +40,8 @@ class MailStatsTest extends \PHPUnit_Framework_TestCase {
             $this->assertNotEmpty($e->getMessage());
         }
         //Create test mail
-        $tpl = Template::get(Template::NEWSLETTER);
-        $mail = Mail::createFromTemplate('test@goteo.org', 'Test', Template::NEWSLETTER);
+        // $tpl = Template::get(Template::NEWSLETTER);
+        $mail = Mail::createFromTemplate('test@goteo.org', 'Test', Template::MESSAGE_CONTACT);
         $mail->buildMessage();
         $errors = [];
         $this->assertTrue($mail->save($errors), print_r($errors, 1));

@@ -1,30 +1,31 @@
 ---
-contact-captcha-field: 'Test of humanity (sorry...)'
+contact-captcha-field: 'Test of humanity (sorry ...)'
 contact-captcha-refresh: 'Refresh Image'
 contact-email-field: Email address
-contact-form-dev-tag-description: 'I need help with tech questions'
-contact-form-dev-tag-name: desenvolupament
-contact-form-new-project-tag-description: 'I have a project'
-contact-form-new-project-tag-name: 'new promoter'
-contact-form-others-tag-description: 'I have another question'
-contact-form-others-tag-name: other
-contact-form-project-form-tag-description: 'I have a question on the project form'
-contact-form-project-form-tag-name: 'new promoter 2'
-contact-form-relief-tag-description: 'Relief queries'
-contact-form-relief-tag-name: 'relief'
-contact-form-service-tag-description: 'I''d like to contract your services'
-contact-form-service-tag-name: service
-contact-form-user-tag-description: 'I have a problem with my account'
-contact-form-user-tag-name: 'user'
+contact-form-dev-tag-description: 'I have doubts about technical issues'
+contact-form-dev-tag-name: Development
+contact-form-new-project-tag-description: 'I have a possible project'
+contact-form-new-project-tag-name: 'Possible project'
+contact-form-others-tag-description: 'It''s another type of query'
+contact-form-others-tag-name: Other
+contact-form-project-form-tag-description: 'I have doubts about the project form'
+contact-form-project-form-tag-name: 'Project form problems'
+contact-form-relief-tag-description: 'I want a receipt for my donation'
+contact-form-relief-tag-name: 'Donation receipt'
+contact-form-service-tag-description: 'I want to hire a service'
+contact-form-service-tag-name: Service
+contact-form-tags: "[user] I have problems with my account; [new driver] I have a possible project; [new driver 2] I have doubts about the project form; [development] I have doubts about technical issues; [justification] I want proof of my donation; [service] I want to hire a service; [others] It's another type of consultation; "
+contact-form-user-tag-description: 'I have problems with my account'
+contact-form-user-tag-name: 'Account problems'
 contact-message-field: Message
 contact-name-field: Name
 contact-send_message-button: Send
 contact-send_message-header: 'Send us a message'
 contact-subject-field: Subject
-contact-tag-field: 'Type of question'
-error-contact-captcha: 'The reCAPTCHA wasn''t entered correctly. Try again.'
-error-contact-email-empty: 'You didn''t add your email address'
-error-contact-message-empty: 'You haven''t written a message'
-error-contact-subject-empty: 'You didn''t enter a subject'
-meta-description-contact: 'Contact to Goteo.org'
-meta-title-contact: 'Contact :: Goteo.org'
+contact-tag-field: 'Type of query'
+error-contact-captcha: 'The reCAPTCHA wasn''t entered correctly. Try it again. '
+error-contact-email-empty: 'You have not added your email'
+error-contact-message-empty: 'You have not written any message'
+error-contact-subject-empty: 'You have not written the subject'
+meta-description-contact: 'Contact the aencoin.com team'
+meta-title-contact: 'Contact us :: support@aencoin.com'

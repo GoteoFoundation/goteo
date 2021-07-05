@@ -603,8 +603,12 @@ body.home {
                         color: $color-white;
                         opacity: 0.8;
                         padding:5%;
+                        height: 150px;
                         div.title{
                             font-size: $font-size*2;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
                         }
                     }
             }
@@ -669,6 +673,16 @@ body.home {
                 margin-top:50px;
                 margin-left: 15px;
                 margin-right: 15px;
+            }
+        }
+
+        .container {
+            .row {
+                div {
+                    margin-top:25px;
+                    text-align: center;
+                    padding-bottom: 25px;
+                }
             }
         }
 
@@ -803,6 +817,16 @@ body.home {
             margin-right: 5px;
             display: block;
             margin: 0 auto;
+        }
+
+        div.section.sponsors {
+            .container {
+                .row {
+                    div:nth-child(2n+1) {
+                        clear: both;
+                    }
+                }
+            }
         }
     }
 

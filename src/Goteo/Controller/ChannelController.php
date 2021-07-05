@@ -16,7 +16,9 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Session;
 use Goteo\Application\Message;
 use Goteo\Application\View;
+use Goteo\Application\Config;
 use Goteo\Model\Node;
+use Goteo\Model\Node\NodeProject;
 use Goteo\Model\Node\NodeFaq;
 use Goteo\Model\Node\NodeFaqQuestion;
 use Goteo\Model\Node\NodeFaqDownload;
@@ -70,7 +72,14 @@ class ChannelController extends \Goteo\Core\Controller {
             'outdate'
         ): [];
 
-        
+        $config = $channel->getConfig();
+
+        if($config['google_analytics']) {
+                Config::set('analytics.google', array_merge(Config::get('analytics.google'), [$config['google_analytics']]));
+            }
+
+        // get custom colors from config field
+        $colors=$config['colors'] ? $config['colors'] : [];
 
         //check if there are elements to show by type
         foreach($types as $key => $type)
@@ -86,7 +95,7 @@ class ChannelController extends \Goteo\Core\Controller {
 
         if (isset($side_order['sponsors'])) {
             // Patrocinadores del nodo
-            $sponsors = Sponsor::getList($id);
+            $sponsors = Sponsor::getList(['node' => $id]);
         }
 
         $this->contextVars([
@@ -97,6 +106,7 @@ class ChannelController extends \Goteo\Core\Controller {
             'sponsors' => $sponsors,
             'categories' => $categories,
             'types' => $types,
+            'colors' => $colors,
             'url_project_create' => '/channel/' . $id . '/create'
         ], 'channel/');
     }
@@ -114,8 +124,11 @@ class ChannelController extends \Goteo\Core\Controller {
         $limit = 999;
 
         $channel = Node::get($id);
+        $config = $channel->getConfig();
 
-        if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
+        if ($config['projects']) {
+            $list = Project::getList($config['projects'], $id, 0, $limit);
+        } else if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
             $total = count($list);
         }
         else {
@@ -269,11 +282,22 @@ class ChannelController extends \Goteo\Core\Controller {
         }
 
         $channel = Node::get($id);
-
         $project = Project::get($pid);
         if(!$project->inEdition()) {
             Message::error('Project must be in edition to assign to a call');
             return $this->redirect("/dashboard/project/$pid");
+        }
+
+        if (!NodeProject::getList(['node' => $id, 'project' => $pid])) {
+            $node_project = new NodeProject();
+            $node_project->node_id = $id;
+            $node_project->project_id = $pid;
+            $errors = array();
+            $node_project->save($errors);
+            if ($errors) {
+                Message::error(implode(',', $errors));
+                return $this->redirect($request->headers->get('referer'));
+            }
         }
 
         $questionnaire = Questionnaire::getByMatcher($id);
@@ -297,7 +321,7 @@ class ChannelController extends \Goteo\Core\Controller {
                     ]
                 );
 
-                $form = $processor->getForm();
+            $form = $processor->getForm();
             $form->handleRequest($request);
             if ($form->isSubmitted() && $request->isMethod('post')) {
                 // Check if we want to remove an entry

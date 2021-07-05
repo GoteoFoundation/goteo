@@ -83,12 +83,12 @@ class CommunicationAdminController extends AbstractAdminController
 
         if($request->isMethod('POST')) {
             // validate()
-            
+
             $errors = [];
 
             $all = $request->request->get('t');
             $form = $request->request->get('autoform');
-            $communication->type = $form['data-editor-type']; 
+            $communication->type = $form['data-editor-type'];
             $communication->lang = Config::get('lang');
             $communication->filter = $form['filter'];
             $communication->template = $form['template'];
@@ -97,17 +97,17 @@ class CommunicationAdminController extends AbstractAdminController
             $communication->header = $form['image'];
             $communication->projects = $request->request->get('communication_add');
             $communication->save($errors);
-            
+
 
             if ($errors) {
                 throw new FormModelException(Text::get('form-sent-error'));
                 return;
             }
-             
+
             $translator = new ModelTranslator();
             $fields = $translator::getFields('communication');
             $translator = $translator::get('communication', $communication->id);
-    
+
             foreach($all as $lang => $texts) {
 
                 if(trim($texts['subject']) === '') continue;
@@ -125,12 +125,12 @@ class CommunicationAdminController extends AbstractAdminController
                 }
             }
 
-            
-            
+
+
             // montamos el mailing
             // - se crea un registro de tabla mail
             $receivers = array();
-            
+
             if ($id) {
                 $mails = Mail::getFromCommunicationId($id);
                 foreach($mails as $mail) {
@@ -147,7 +147,7 @@ class CommunicationAdminController extends AbstractAdminController
                 $mailHandler->subject = $communication_lang->subject;
                 $mailHandler->template = $communication->template;
                 $mailHandler->communication_id = $communication->id;
-                
+
                 $mailHandler->content .= $communication_lang->content;
                 $mailHandler->massive = true;
                 // $mailHandler->content = $content;
@@ -169,7 +169,7 @@ class CommunicationAdminController extends AbstractAdminController
                 list($sqlFilter, $values) = $filter->getFilteredSQL($langs, $sender->id);
                 // add subscribers
                 $sender->addSubscribersFromSQLValues($sqlFilter, $values);
-        
+
                 // Evento Feed
                 $log = new Feed();
                 $log->populate(Text::sys('feed-admin-massive-subject'), '/admin/communication',
@@ -180,13 +180,13 @@ class CommunicationAdminController extends AbstractAdminController
                     ]))
                     ->doAdmin('admin');
             }
-            // return $this->redirect('/admin/communication/detail/' . $communication->id);    
+            // return $this->redirect('/admin/communication/detail/' . $communication->id);
         }
         return $communication;
     }
 
     public function getReceivers($filter, $offset = 0, $limit = 10, $count = false, $sender_id = null){
-        
+
         $receivers = $filter->getFiltered();
 
     }
@@ -207,9 +207,9 @@ class CommunicationAdminController extends AbstractAdminController
                 '_action' => '/communication',
                 'q' => Text::get('admin-communication-global-search')
                 ]
-            ] 
+            ]
         );
-        
+
     }
 
     public function addAction($id = null, Request $request)
@@ -225,17 +225,17 @@ class CommunicationAdminController extends AbstractAdminController
         }
         else {
             $filters = Filter ::getAll();
-    
+
             $template = [
-                Template::COMMUNICATION => Text::get('admin-communications-communication'), 
+                Template::COMMUNICATION => Text::get('admin-communications-communication'),
                 Template::NEWSLETTER => Text::get('admin-communications-newsletter')
             ];
 
             $translates = [Config::get('lang') => Lang::getName(Config::get('lang'))];
-            
+
             $langs = Lang::listAll('name', false);
             $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
-    
+
             if ($id){
                 try {
                     $communication = Communication::get($id);
@@ -249,9 +249,9 @@ class CommunicationAdminController extends AbstractAdminController
 
                 $translator = new ModelTranslator();
                 $translator = $translator::get('communication', $communication->id);
-        
+
             }
-    
+
             return $this->viewResponse('admin/communication/add',[
                 'filters' => $filters,
                 'templates' => $template,
@@ -271,36 +271,36 @@ class CommunicationAdminController extends AbstractAdminController
     public function copyAction($id, Request $request)
     {
 
-        
+
         try {
             $communication = Communication::get($id);
         } catch (ModelNotFoundException $e) {
             Message::error($e->getMessage());
             return $this->redirect('/admin/communication/');
-        }       
-         
+        }
+
         if ($request->isMethod('post') ) {
             $communication = $this->doSave(null, $request);
             return $this->redirect('/admin/communication/detail/'.$communication->id);
         }
-        
+
         $translator = new ModelTranslator();
         $translator = $translator::get('communication', $communication->id);
 
         $filters = Filter::getAll();
-    
+
         $template = [
-            Template::COMMUNICATION => Text::get('admin-communications-communication'), 
+            Template::COMMUNICATION => Text::get('admin-communications-communication'),
             Template::NEWSLETTER => Text::get('admin-communications-newsletter')
         ];
-        
+
         $translates = [];
 
         foreach($communication->getLangsAvailable() as $lang) {
             $translates[$lang] = Lang::getName($lang);
         }
         // $translates = [Config::get('lang') => Lang::getName(Config::get('lang'))];
-        
+
         $langs = Lang::listAll('name', false);
         $langs_available = $communication->getLangsAvailable();
         $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
@@ -368,7 +368,7 @@ class CommunicationAdminController extends AbstractAdminController
         $mails = Mail::getFromCommunicationId($id);
 
         foreach($mails as $mail) {
-            
+
             $mailing = Sender::getFromMailId($mail->id);
             // $mailing = Sender::get(22616);
             if($mailing->getStatus() == 'inactive' && $mailing->setActive(true)) {
@@ -416,5 +416,5 @@ class CommunicationAdminController extends AbstractAdminController
 
         return $this->redirect('/admin/communication/detail/' . $id);
     }
-    
+
 }

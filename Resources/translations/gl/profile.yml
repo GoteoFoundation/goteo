@@ -12,7 +12,7 @@ profile-field-entity-type-concerted: Concertado
 profile-field-entity-type-private: Privado
 profile-field-entity-type-public: Público
 profile-field-interests: 'Que tipo de proxecto motívate máis'
-profile-field-keywords: 'As miñas palabras clave'
+profile-field-keywords: 'Temas que che interesan'
 profile-field-legal-entity: 'Forma xurídica'
 profile-field-legal-entity-asociation: Asociación
 profile-field-legal-entity-choose: 'Selecciona unha forma xurídica'
@@ -28,7 +28,7 @@ profile-field-url: URL
 profile-field-websites: 'As miñas páxinas web'
 profile-fields-analytics-title: Analítica
 profile-fields-image-title: 'Imaxe de perfil'
-profile-fields-social-title: 'Perfiles sociais'
+profile-fields-social-title: 'Perfís sociais'
 profile-main-header: 'Datos do perfil'
 profile-suggest-projects-interest: 'Talvez desexes dar soporte a proxectos de categorías semellantes'
 step-1: Perfil
@@ -46,9 +46,9 @@ tooltip-user-interests: 'Indica o tipo de proxectos que poden conectar cos teus 
 tooltip-user-keywords: 'Segundo vaias introducindo texto o sistema suxerirache palabras clave que xa escribiran outros usuarios/as. Estas categorías axudan a ligar o teu perfil con outras persoas e con proxectos concretos.'
 tooltip-user-linkedin: 'Esta rede social pode axudar a que espalles proxectos de Goteo que che interesan entre contactos profesionais.'
 tooltip-user-location: 'Este dato é importante para poder vincularte cun grupo local de Goteo.'
-tooltip-user-name: 'O teu nome ou nickname dentro de Goteo. Pódelo cambiar sempre que queiras (ollo: non é o mesmo que o login de acceso, que xa non se pode modificar).'
+tooltip-user-name: 'O teu nome ou alcume dentro de Goteo. Pódelo mudar sempre que queiras (ollo: non é o mesmo que o login de acceso, que xa non se pode modificar).'
 tooltip-user-twitter: 'Esta rede social pode axudarche a que difundas proxectos de Goteo dun xeito áxil e viral.'
-tooltip-user-webs: 'Indica as direccións URL de páxinas persoais ou doutro tipo ligadas a ti.'
+tooltip-user-webs: 'Indica as ligazóns URL de páxinas persoais ou doutro tipo ligadas a ti.'
 validate-project-userProfile-any_error: 'Hai algún erro na dirección URL inserida'
 validate-project-userProfile-web: 'É aconsellable indicar algunha web'
 validate-user-field-about: 'Conta algo sobre ti, para mellorar a valoración do proxecto có fin de determinar a súa publicación en Goteo.'
@@ -61,7 +61,7 @@ validate-user-field-linkedin: 'O campo de Linkedin non é válido'
 validate-user-field-location: 'O lugar de residencia do usuario non é válido'
 validate-user-field-name: 'Pon o teu nome completo para mellorar a valoración do proxecto de cara a determinar se publicalo en Goteo.'
 validate-user-field-twitter: 'O usuario de Twitter non é válido'
-validate-user-field-web: 'Debes poñer a dirección (URL) da web'
+validate-user-field-web: 'Tes que poñer a ligazón (URL) da web'
 validate-user-field-webs: 'Pon a túa páxina web para mellorar a valoración do proxecto de cara a determinar se publicalo en Goteo.'
 help-user-analytics: 'Insire, no caso de dispoñer dun, o teu ID de seguimento do Google Analytics para activalo no teu proxecto.<br>O ID ten que estar neste formato: <strong>UA-000000-01</strong> (exemplo de ID)<br><a href="https://analytics.google.com" target="_blank">Ir a Google Analytics</a>'
 help-user-facebook-pixel: 'Insire o ID do teu Facebook Pixel se queres medir as conversións dunha campaña no Facebook.<br><a href="https://www.facebook.com/ads/manager/pixel/facebook_pixel" target="_blank">Ir a Píxel do Facebook</a>'

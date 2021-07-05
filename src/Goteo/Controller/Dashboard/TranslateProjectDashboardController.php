@@ -353,11 +353,16 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                     'required' => false,
                     'attr' => ['help' => $reward->reward]
                 ])
-                ->add("description$suffix", 'textarea', [
+                ->add("description$suffix", 'markdown', [
                     'label' => 'rewards-field-individual_reward-description',
                     'data' => $translated->description,
                     'required' => false,
-                    'attr' => ['help' => $reward->description]
+                    'attr' => [
+                        'help' => $reward->description,
+                        'data-image-upload' => '/api/projects/' . $project->id . '/images',
+                        'rows' => 4,
+                        'data-toolbar' => 'close,bold,italic,link,unordered-list,ordered-list,preview,fullscreen,guide'
+                    ]
                 ]);
         }
         foreach($project->social_rewards as $reward) {
@@ -371,11 +376,16 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                     'required' => false,
                     'attr' => ['help' => $reward->reward]
                 ])
-                ->add("description$suffix", 'textarea', [
+                ->add("description$suffix", 'markdown', [
                     'label' => 'rewards-field-social_reward-description',
                     'data' => $translated->description,
                     'required' => false,
-                    'attr' => ['help' => $reward->description]
+                    'attr' => [
+                        'help' => $reward->description,
+                        'data-image-upload' => '/api/projects/' . $project->id . '/images',
+                        'rows' => 4,
+                        'data-toolbar' => 'close,bold,italic,link,unordered-list,ordered-list,preview,fullscreen,guide'
+                    ]
                 ]);
         }
         $builder

@@ -41,6 +41,8 @@ admin-back-list: 'Tornar al llistat'
 admin-contents: 'Textos i traduccions'
 admin-empty-list: 'Sense resultats'
 admin-activity: Activitat
+admin-certificates: Certificats
+admin-certificates-management: Gestió de Certificats
 admin-communications: Comunicacions
 admin-communications-add: Crear nova comunicació
 admin-communications-userid-content: ' per l''id d''accés del destinatari'
@@ -105,6 +107,20 @@ admin-storys: Histories d'usuaris a Goteo
 admin-stories: Histories d'usuaris a Goteo
 admin-stories-add: Crea una nova història
 admin-stories-edit: Editant l'història %s
+admin-channelsection-section: 'Secció'
+admin-channelsection-map: 'Mapa'
+admin-channelsection-resource: 'Recursos'
+admin-channelsection-call_to_action: 'Call To Action'
+admin-channelsection-projects: 'Projectes'
+admin-channelsection-posts: 'Posts'
+admin-channelsection-program: 'Programes'
+admin-channelsection-stories: 'Stories'
+admin-channelsection-workshops: 'Tallers'
+admin-channelsection-team: 'Equip'
+admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-button: 'Botó'
+admin-channelsection-create: 'Crear'
+admin-channelsection-add: 'Afegir una secció'
 admin-channelstory-add: Afegir història al canal
 admin-channelstory-submit: Guardar història
 admin-channelstory-correct: "S'ha afegit la història al canal"
@@ -113,6 +129,8 @@ admin-channelpost-submit: Guardar Post
 admin-channelpost-correct: "S'ha afegit el post al canal"
 admin-channelcriteria-title: 'Questionari del canal'
 admin-channelcriteria-subtitle: "Estableix les preguntes amb les que evaluaràs un projecte que vulgui presentar-se al teu canal. Procura ser concís en el que esperes obtenir de les iniciatives que es vulguin presentar, ajudarà a facilitar-te l'evaluació final"
+admin-channelprogram-create: 'Crear'
+admin-channelprogram-add: 'Afegir programa'
 admin-categories: 'Categories i àmbits'
 admin-categories-if-empty-then-asset: 'Si es deixa buit es farà servir l''icona per defecte: %s'
 admin-category-add: Crea una nova categoria
@@ -173,6 +191,8 @@ admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aqu
 admin-users-global-search: 'Id, nom, email o projecte'
 admin-blog-global-search: 'Id, títol, subtítol o text'
 admin-communication-global-search: 'Assumpte'
+admin-donor-name-search: 'ID, nom, email'
+admin-donor-date-search: 'Processats per data'
 admin-no-project: 'Sense projecte'
 admin-title-name: Nom
 admin-title-active: Actiu
@@ -205,7 +225,7 @@ admin-title-social_commitments: 'Compromisos socials'
 admin-title-order: Ordena
 admin-title-status: Estat
 admin-title-users: Usuaris
-admin-title-date: Data  
+admin-title-date: Data
 admin-title-filter: Filtre
 admin-title-template: Plantilla
 admin-title-receivers: Destinataris
@@ -214,6 +234,9 @@ admin-title-failed: No enviats
 admin-title-pending: Pendents
 admin-title-success: Exitós
 admin-title-percent: Percentatge
+admin-title-year: Any
+admin-title-nif: NIF
+admin-title-country: País
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
 admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'
@@ -259,15 +282,15 @@ admin-filter-project-status: Estat del projecte
 admin-filter-invest-status: Estat de la donació
 admin-filter-project-location: Ubicació del projecte
 admin-filter-donor-location: Ubicació del donant
+admin-filter-donor-status: Estat del certificat
 admin-filter-location: Ubicació a fer servir al filtre
 admin-mail-body: 'Cos del missatge'
-
 mandatory-filter-name: Manca el nom
 mandatory-filter-description: Manca una descripció
 mandatory-filter-role: Manca un rol
-
 admin-node-iframe: Iframe
 
 admin-faqs: Faqs
 admin-faq-add: Afegir Faq
 admin-faq-pending: "Marcar com pendent de traduïr"
+

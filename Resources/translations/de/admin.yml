@@ -50,6 +50,26 @@ admin-contents: 'Texte und Übersetzungen'
 admin-empty-list: 'Es wurden keine registrierten Einträge gefunden'
 admin-activity: Aktivität
 admin-communications: Kommunikation
+admin-communications-add: Neue Unterhaltung erstellen
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: 'Fürdie ID des Empfängers'
+admin-communications-useremail-content: 'für die ID des Empfängers'
+admin-communications-username-content: 'für den Namen des Empfängers'
+admin-communications-siteurl-content: "\n30/5000\nfür die URL dieser Plattform (%SITEURL%)"
+admin-communications-subscribeurl-content: 'Persönlicher Link zur Anmeldung zum Newsletter'
+admin-communications-unsubscribeurl-content: 'Link zur Newsletter-Abmeldung'
+admin-communications-poolamount-content: 'verfügbarer Betrag in der Geldbörse'
+admin-communications-send: 'Kommunikation starten'
+admin-communications-cancel: 'Kommunikation abbrechen'
+admin-communications-newsletter: 'Newsletter'
+admin-communications-communication: 'Interne Kommunikation'
+admin-communications-id: 'Vor der Kommunikation'
 admin-home: Startseite
 admin-items: Eingänge
 admin-mailing-back-to-list: 'Zurück zu Kommunikation'
@@ -76,6 +96,8 @@ admin-projects: Projekte
 admin-consultants: 'Berater'
 admin-invests: Beiträge
 admin-filters: 'Filter'
+admin-filters-edit: 'Filter bearbeiten'
+admin-filters-create: 'Neuen Filter erstellen'
 admin-remove-filters: 'Filter entfernen'
 admin-remove-entry: 'Eintrag löschen'
 admin-remove-entry-confirm: 'Möchten Sie wirklich diesen Eintrag löschen? Dieser Vorgang kann nicht rückgängig gemacht werden!'
@@ -88,6 +110,7 @@ admin-text-type-plain: 'einfacher Text'
 admin-user: Benutzer
 admin-users: Benutzer
 admin-users-add: Neuen Benutzer anlegen
+admin-blog-add: Neuen Beitrag erstellen
 admin-yes: Ja
 admin-impersonate-user: Sich als %s ausgeben
 admin-project-express-discard: 'Express verwerfen'
@@ -106,3 +129,4 @@ admin-project-to-publish-sure: 'Das Projekt wird seine Kampagne starten, sollen 
 admin-project-derivation-discard: 'Ablehnung mit Aussonderung'
 admin-project-derivation-discard-desc: 'Übergibt das Projekt an den Status Verworfen und sendet eine E-Mail, die auf eine geeignetere Plattform verweist'
 admin-project-derivation-discard-sure: 'Es wird eine automatische E-Mail mit Verweis auf eine andere Plattform versendet und der Status "verworfen" gesetzt, okay?'
+

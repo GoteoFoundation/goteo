@@ -5,14 +5,23 @@ admin-YES: SI
 admin-account-amount: 'Cantidade aportada'
 admin-account-change-user: 'Trocar de usuario'
 admin-account-change-user-confirm: 'Tes a certeza de querer trocar o usuario da achega? O novo usuario será:'
+admin-account-convert-to-pool: 'Converter en portamoedas'
+admin-account-convert-to-pool-confirm: 'Eliminarase o proxecto asociado a esta achega e pasará a ser coma unha compra do portamoedas. PERDERANSE TÓDALAS RECOMPENSAS ASOCIADAS. Continuar?'
+admin-account-convert-to-pool-ko: 'Non foi posible converter a achega a portamoedas: %s'
+admin-account-convert-to-pool-ok: 'Convertido a achega de portamoedas con éxito'
 admin-account-detail: 'Detalles da transacción'
 admin-account-donation: Doazón
+admin-account-edit-reward: 'Xestionar recompensa/enderezo'
 admin-account-invalid-invest: 'Achega [%s] non atopada!'
 admin-account-invest-date: 'Data da achega'
+admin-account-invest-to-pool-ko: 'Erro ao devolver a achega ao portamoedas'
+admin-account-invest-user-refund-ko: 'Non foi posible devolver a achega: [%s]'
 admin-account-issue-solved: 'Fixéronnos a transferencia'
 admin-account-modify-status: 'Modificar o estado'
 admin-account-modify-status-confirm: "Tes a certeza de trocar manualmente o estado a esta achega? É delicado!\nNON SE REALIZARÁ NINGUNHA operación de retorno da achega.\n"
 admin-account-payment-method: 'Método de pagamento'
+admin-account-pool-on-fail: 'Pool (devolver ao portamoedas se falla)'
+admin-account-refund-to-pool: 'Reembolsar a achega ao portamoedas'
 admin-account-switch-donation: 'Conmutar doazón'
 admin-account-switch-donation-confirm: 'Tes a certeza de querer trocar o estado da doazón?'
 admin-account-switch-pool: 'Conmutar o pool'
@@ -29,13 +38,34 @@ admin-contents: 'Texto e traducións'
 admin-empty-list: 'Non se atoparon rexistros'
 admin-activity: Actividade
 admin-communications: Comunicacións
+admin-communications-add: Crear nova comunicación
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' para o id de acceso do destinatario'
+admin-communications-useremail-content: ' para o correo do destinatario'
+admin-communications-username-content: ' para o nome do destinatario'
+admin-communications-siteurl-content: ' para o url desta plataforma (%SITEURL%)'
+admin-communications-subscribeurl-content: ' ligazón directa de subscrición ao boletín do usuario'
+admin-communications-poolamount-content: ' cantidade de cartos dispoñible no portamoedas do usuario'
+admin-communications-send: 'Enviar comunicación'
+admin-communications-cancel: 'Cancelar comunicación'
+admin-communications-newsletter: 'Boletín'
+admin-communications-communication: 'Comunicación xeral'
+admin-communications-id: 'ID da comunicación'
 admin-home: Capa
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicacións'
 admin-mailing-created: 'Creado o'
 admin-mailing-status: 'Estado do envío automático'
 admin-mailing-subject: Asunto
+admin-mailing-view-in-sent: 'Ver no histórico de envíos (estatísticas)'
 admin-mailing-view-message: 'Ver a mensaxe'
+admin-newsletter-generated: 'Xerouse o boletín [%ID%]'
 admin-newsletter-langs-to-send: 'Idiomas: %LANGS%'
 admin-newsletter-mind-activate: 'Actívao para que se envíe'
 admin-prev-page: 'Páxina anterior'
@@ -49,9 +79,13 @@ admin-projects: Proxectos
 admin-consultants: 'Asesores'
 admin-invests: Achegas
 admin-filters: 'Filtros'
+admin-filters-edit: 'Editar filtro'
+admin-filters-create: 'Crear filtro'
 admin-remove-filters: 'Eliminar filtros'
+admin-remove-filters-forbidden: 'Os filtros empregados non poden eliminarse.'
 admin-remove-entry: 'Eliminar entrada'
 admin-remove-entry-confirm: 'Tes a certeza de querer eliminar esta entrada? Esta operación non se pode desfacer!'
+admin-remove-entry-forbidden: 'Non é posible borrar entradas publicadas no blog. Deixa de publicar a entrada primeiro.'
 admin-remove-entry-ok: 'Entrada eliminada correctamente'
 admin-add-entry-ok: 'Nova entrada creada correctamente'
 admin-edit-entry-ok: 'Entrada editada correctamente'
@@ -62,22 +96,41 @@ admin-others: Outros
 admin-summary: Resumo
 admin-origins: Análise de visitas
 admin-status: Estado
+admin-text-type: 'Procesar o texto como'
 admin-text-type-html: HTML
 admin-text-type-md: Markdown
 admin-text-type-plain: 'Texto simple'
 admin-user: Usuario
+admin-user-no-projects: 'Aínda non se creou ningún proxecto'
+admin-user-no-invests: 'Aínda non se fixo ningunha doazón'
 admin-users: Usuarios
 admin-users-add: Crear novo usuario
+admin-blog: Blogue xeral
+admin-blog-add: Crear nova publicación
+admin-blog-edit: Editando publicación %s
+admin-blog-slug-exists: 'O identificador [%s] está a se empregar noutra publicación!'
+admin-blog-slug-chars: 'O identificador [%s] contén caracteres non válidos!'
 admin-blog-not-public: 'Esta publicación aínda non é pública'
 admin-stories: Historias de usuarios no Goteo
 admin-stories-add: Crear unha nova historia
 admin-stories-edit: Editando a historia %s
+admin-categories: 'Categorías e ámbitos'
 admin-category-add: Crear unha nova categoría
 admin-category-edit: Editando a categoría %s
 admin-socialcommitment-add: Crear un novo compromiso social
+admin-footprint-edit: Editando a pegada %s
+admin-calls: Convocatorias
 admin-channels: Canles
 admin-yes: Si
+admin-project-express-discard: 'Rexeitamento no intre'
+admin-project-to-review: 'A revisión'
+admin-project-to-review-sure: 'O creador non poderá editalo máis, aceptar?'
+admin-project-view-in-admin: 'Ver no admin'
+admin-project-to-negotiation: 'A negociación'
 admin-project-to-publish: 'Publicar'
+admin-project-to-publish-desc: 'Pasa o proxecto ao estado "En campaña"'
+admin-project-to-publish-sure: 'O proxecto comezará a súa campaña, comezamos?'
+admin-project-derivation-discard: 'Rexeitamento con derivación'
 admin-home-title: Administrar Goteo
 admin-list: Listaxe
 admin-stats: Estatísticas
@@ -92,11 +145,14 @@ admin-view-user-projects: 'Tódolos proxectos'
 admin-view-user-invests: 'Tódalas achegas'
 admin-user-hidden: 'Privado (oculto)'
 admin-user-active: 'Conta activa'
+admin-user-wallet-amount: 'Crédito no portamoedas'
 admin-user-create-invest: 'Crear achega'
+admin-user-no-mailing: 'Aínda non se enviou ningún correo'
 admin-view-user-mailing: 'Tódolos envíos'
 admin-role-change-forbidden: 'Non tes permiso para xestionar o rol %ROLE% neste usuario'
 admin-users-global-search: 'Id, nome, correo electrónico ou proxecto'
 admin-blog-global-search: 'Id, título, subtítulo ou texto'
+admin-communication-global-search: 'Asunto'
 admin-blog-stories-search: 'Id, título, texto ou proxecto'
 admin-no-project: 'Sen proxecto'
 admin-title-id: Id
@@ -106,43 +162,83 @@ admin-title-active: Activo
 admin-title-location: Localización
 admin-title-fullname: Nome
 admin-title-email: Correo electrónico
+admin-title-header-image: Imaxe de cabeceira
 admin-title-password: Contrasinal
 admin-title-avatar: Avatar
 admin-title-roles: Roles
+admin-title-role: Rol
 admin-title-amount: Investido
 admin-title-icon: Icona
 admin-title-info: Info
 admin-title-image: Imaxe
 admin-title-title: Título
 admin-title-subtitle: Subtí­tulo
+admin-title-subject: Asunto
+admin-title-description: Descrición
 admin-title-section: Sección
 admin-title-text: Texto
+admin-title-slug: Slug
 admin-title-publish: Publicado
+admin-title-lang: Idioma
 admin-title-langs: Traducións
 admin-title-actions: Accións
 admin-title-tags: Etiquetas
 admin-title-deleted: Eliminado
+admin-title-sphere: Ámbito
 admin-title-social_commitment: Compromiso social
+admin-title-sdgs: 'Obxectivos de desenvolvemento sostible'
 admin-title-footprints: 'Pegadas'
 admin-title-categories: 'Categorías'
 admin-title-social_commitments: 'Compromisos sociais'
 admin-title-order: Ordenar
+admin-title-status: Estado
+admin-title-users: Usuarios
+admin-title-city: Cidade
+admin-title-date: Data
+admin-title-type: 'Tipo'
+admin-title-date-in: Data de inicio
+admin-title-date-out: Data fin
+admin-title-venue-address: Enderezo
+admin-title-how-to-get: Como chegar?
+admin-title-schedule-file: 'Url programa'
+admin-title-url-inscription: Ligazón a inscrición
+admin-title-filter: Filtro
+admin-title-template: Modelo
+admin-title-receivers: Destinatarios
+admin-title-sent: Enviados
+admin-title-failed: Sen enviar
+admin-title-pending: Pendentes
+admin-title-percent: Porcentaxe
+admin-blog-deactivated: 'Sentímolo, a xestión do blog está desactivada'
+admin-blog-edit-success: 'A entrada do blog editouse con éxito'
+admin-stories-not-active-yet: 'Esta historia de usuario aínda non está activa'
+admin-stories-type: 'Tipo de protagonista'
 admin-aggregate-timeline: 'Cronoloxía'
 admin-aggregate-invests: 'Total de achegas'
 admin-aggregate-invests-average: 'Media de achegas'
 admin-stats-invest-totals: 'Achegas e comisións'
 admin-stats-project-totals: 'Estado dos proxectos'
+admin-stats-raised: 'Ingresos brutos'
+admin-stats-active: 'Ingresos netos'
+admin-stats-refunded: 'Devolucións'
 admin-stats-fees: 'Comisión plataforma'
+admin-stats-commissions: 'Comisión banco'
 admin-stats-citizens-part: 'Parte Cidadá'
+admin-stats-invest-destination: 'Destino das achegas'
+admin-stats-invest-in_wallet: 'Total acumulado no portamoedas'
 admin-stats-to_projects: 'A proxectos'
 admin-stats-to_wallet: 'Ao portamoedas'
 admin-stats-to_fee: 'A comisións'
 admin-stats-to_fee-percent: 'Comisión efectiva'
 admin-stats-in_wallet: 'No portamoedas'
+admin-stats-in_users_wallet: 'No portamoedas de usuarios'
 admin-losts: Perdas
 admin-raised: Recadado
 admin-active: Cobrado
 admin-refunded: Devolto
+admin-refunded-to_users: Devolto a usuarios
+admin-refunded-to_users-invests: Nº devolucións a usuarios
+admin-refunded-to_wallet: Devolto ao portamoedas
 admin-commissions: Comisión
 admin-fees: Comisión plataforma
 admin-user-fee: Comisión cidadá
@@ -167,6 +263,9 @@ admin-last_year_month: O mesmo mes hai un ano
 admin-year: Este ano
 admin-last_year: O mesmo día do ano pasado
 admin-last_year_complete: Todo o ano pasado
+admin-promote-submit: 'Gardar'
+admin-promote-already-exists: 'Este proxecto xa está destacado'
+admin-promote-correct: 'O proxecto está destacado'
 admin-projects-created-today: 'Creados hoxe'
 admin-projects-created-yesterday: 'Creados onte'
 admin-projects-created-week: 'Creados esta semana'
@@ -180,6 +279,21 @@ admin-projects-negotiating-yesterday: 'En negociación onte'
 admin-projects-negotiating-week: 'En negociación esta semana'
 admin-projects-negotiating-last_week: 'En negociación a semana pasada'
 admin-projects-negotiating-month: 'En negociación este mes'
+admin-projects-negotiating-last_month: 'En negociación o mes pasado'
+admin-projects-negotiating-year: 'En negociación este año'
+admin-projects-negotiating-last_year: 'En negociación o ano pasado'
+admin-projects-published-today: 'Publicados hoxe'
+admin-projects-published-yesterday: 'Publicados onte'
+admin-projects-published-week: 'Publicados esta semana'
+admin-projects-published-last_week: 'Publicados a semana pasada'
+admin-projects-published-month: 'Publicados este mes'
+admin-projects-published-last_month: 'Publicados o mes pasado'
+admin-projects-published-year: 'Publicados este ano'
+admin-projects-published-last_year: 'Publicados o año pasado'
+admin-projects-rejected-today: 'Descartados hoxe'
+admin-projects-rejected-yesterday: 'Descartados onte'
+admin-projects-rejected-week: 'Descartados esta semana'
+admin-projects-rejected-last_week: 'Descartados a semana pasada'
 admin-projects-rejected-month: 'Descartados este mes'
 admin-projects-rejected-year: 'Descartados este ano'
 admin-projects-rejected-last_year: 'Descartados o ano pasado'
@@ -214,4 +328,92 @@ admin-invest-commissions-last_week: 'Comisión banco a semana pasada'
 admin-invest-commissions-month: 'Comisión banco este mes'
 admin-invest-commissions-last_month: 'Comisión banco o mes pasado'
 admin-invest-commissions-year: 'Comisión banco este ano'
+admin-invest-commissions-last_year: 'Comisión banco do pasado ano'
+admin-invest-commissions-lost-today: 'Perdas por achegas devoltas hoxe'
+admin-invest-commissions-lost-yesterday: 'Perdas por achegas devoltas onte'
+admin-invest-commissions-lost-week: 'Perdas por achegas devoltas esta semana'
+admin-invest-commissions-lost-month: 'Perdas por achegas devoltas este mes'
+admin-invest-commissions-lost-year: 'Perdas por achegas devoltas este ano'
+admin-invest-commissions-lost-last_year: 'Perdas por achegas devoltas o pasado ano'
+admin-invest-commissions-tpv-today: 'Comisión TPV hoxe'
+admin-invest-commissions-tpv-yesterday: 'Comisión TPV onte'
+admin-invest-commissions-tpv-week: 'Comisión TPV esta semana'
+admin-invest-commissions-tpv-last_week: 'Comisión TPV a pasada semana'
+admin-invest-commissions-tpv-month: 'Comisión TPV este mes'
+admin-invest-commissions-tpv-last_month: 'Comisión TPV o pasado mes'
+admin-invest-commissions-tpv-year: 'Comisión TPV este ano'
+admin-invest-commissions-tpv-last_year: 'Comisión TPV o pasado ano'
+admin-invest-commissions-paypal-today: 'Comisión Paypal hoxe'
+admin-invest-commissions-paypal-yesterday: 'Comisión Paypal onte'
+admin-invest-commissions-paypal-week: 'Comisión Paypal esta semana'
+admin-invest-commissions-paypal-last_week: 'Comisión Paypal a pasada semana'
+admin-invest-commissions-paypal-month: 'Comisión Paypal este mes'
+admin-invest-commissions-paypal-last_month: 'Comisión Paypal o pasado mes'
+admin-invest-commissions-paypal-year: 'Comisión Paypal este ano'
+admin-invest-commissions-paypal-last_year: 'Comisión Paypal o pasado ano'
+admin-invest-fees-today: 'Comisión Goteo hoxe'
+admin-invest-fees-yesterday: 'Comisión Goteo onte'
+admin-invest-fees-week: 'Comisión Goteo esta semana'
+admin-invest-fees-last_week: 'Comisión Goteo a pasada semana'
+admin-invest-fees-month: 'Comisión Goteo este mes'
+admin-invest-fees-last_month: 'Comisión Goteo o pasado mes'
+admin-invest-fees-year: 'Comisión Goteo este ano'
+admin-invest-fees-last_year: 'Comisión Goteo o pasado ano'
+admin-invest-diff-yesterday: 'Diferenza co día anterior'
+admin-invest-diff-last_week: 'Diferenza coa semana anterior'
+admin-invest-diff-last_month: 'Diferenza co mes anterior'
+admin-invest-diff-last_year: 'Diferenza co ano anterior'
+admin-stats-projects-channel-desc: 'Proxectos que pertencen á canle (ou nodo)'
+admin-stats-projects-call-desc: 'Proxectos que pertencen á convocatoria'
+admin-stats-projects-consultant-desc: 'Proxectos que teñen asignado este asesor'
 admin-stats-projects-project-desc: 'Achegas ao proxecto'
+admin-filter-add: 'Engadir filtro'
+admin-filter-last-week: 'Últimos 7 días'
+admin-filter-last-month: 'Últimos 30 días'
+admin-filter-last-year: 'Últimos 365 días'
+admin-filter-from-new-year: 'Dende o 1 de Xaneiro'
+admin-filter-previous-year: 'O pasado ano'
+admin-filter-two-years-ago: 'Hai dous anos'
+admin-filter-typeofuser: 'Tipo de usuario'
+admin-filter-typeofdonor: 'Tipo de doador'
+admin-filter-user: 'Usuario'
+admin-filter-donor: 'Doador'
+admin-filter-no-donor: 'Doador inactivo'
+admin-filter-promoter: 'Promotor/a'
+admin-filter-test: 'Proba'
+admin-filter-type-unique: 'Único'
+admin-filter-type-multidonor: 'Multidoador'
+admin-filter-type-foundation-donor: 'Doador á fundación'
+admin-filter-type-all: 'Todos'
+admin-filter-predefined-date: 'Data predefinida'
+admin-filter-predefined-date-choose: 'Podes escoller unha data predefinida'
+admin-filter-forced: 'Forzar filtro'
+admin-filter-forced-help: 'A seleccionar esta opción aplicaranse os filtros independentemente do escollido polo usuario coma preferencia para o envío de información por parte da plataforma.'
+admin-mail-body: 'Corpo da mensaxe'
+admin-stats-donations: 'Doazóns'
+admin-stats-donations-method: 'Doazóns segundo o método de pagamento'
+admin-stats-donations-tip: 'Doazóns durante achegas a proxectos (Adeallas ou "tips")'
+admin-stats-donations-direct: 'Doazóns directas (inclúe portamoedas expirados)'
+admin-stats-donations-generosity: 'Porcentaxes de xenerosidade'
+admin-stats-donations-expired: 'Doazóns directas por expiración de portamoedas'
+admin-stats-donations-refunded: 'Doazóns devoltas por proxectos sen éxito'
+admin-donations: Doazóns
+admin-donations-tip: Adeallas
+admin-donations-tip-invests: Achegas con adeallas
+admin-donations-tip-users: Usuarios con adeallas
+admin-donations-direct: Doazóns directas
+admin-donations-expired: Doazóns expiradas
+admin-donations-refunded: Doazóns devoltas
+admin-donations-amount-percent: '% diñeiro doado'
+admin-donations-users-percent: '% usuarios doadores'
+admin-donations-tip-percent: '% diñeiro en adeallas'
+admin-donations-direct-percent: '% diñeiro directo'
+admin-workshop: Obradoiros Goteo
+admin-workshop-add: Crear un novo obradoiro
+admin-workshop-edit: Editando o obradoiro %s
+admin-workshop-edit-success: A entrada do obradoiro editouse con éxito
+admin-online: En liña
+mandatory-filter-name: Falta o nome
+mandatory-filter-description: Falta a descrición
+mandatory-filter-role: Falta un rol
+

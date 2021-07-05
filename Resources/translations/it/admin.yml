@@ -6,6 +6,7 @@ admin-account-amount: 'Importo contribuito'
 admin-account-change-user: 'Cambia utente'
 admin-account-change-user-confirm: 'Sei sicuro/a di voler modificare l''utente del contributo? il/la nuovo/a utente sarà:'
 admin-account-convert-to-pool: 'Convertire in portafoglio'
+admin-account-convert-to-pool-confirm: 'Questo eliminerà il progetto associato a questo contributo e passerà ad essere come fosse un acquisto di portafoglio. TUTTE LE RICOMPENSE ASSOCIATE SARANNO PERSE. Continuare?'
 admin-account-convert-to-pool-ko: 'Il contributo non è stato convertito in portafoglio: %s'
 admin-account-convert-to-pool-ok: 'Convertito con successo a contributo di portafoglio'
 admin-account-detail: 'Dettagli della transazione'
@@ -25,6 +26,7 @@ admin-account-issue-solved: 'Ci hanno fatto il trasferimento'
 admin-account-modify-status: 'Modifica lo stato'
 admin-account-modify-status-confirm: "Sei sicuro/a di voler modificare manualmente lo stato di questo contributo? E' un'azione delicata! NON si eseguirà nessuna operazione di restituzione del contributo.\n"
 admin-account-payment-method: 'Metodo di pagamento'
+admin-account-pool-on-fail: 'Sondaggio (tornare al portafoglio se fallisce)'
 admin-account-refund-to-pool: 'Rimborsare il contributo al portafoglio'
 admin-account-refund-to-pool-confirm: "Questo indicherà il contributo come: \nRestituito se il progetto è fallito \nAnnullato se il progetto è attivo o di successo \nL'importo non sarà rimborsato all'utente, si genererà un ammontare nel portafoglio virtuale dell'utente. \nVuoi continuare?\n"
 admin-account-refund-to-user: 'Rimborsare il contributo all''utente'
@@ -40,12 +42,36 @@ admin-account-user-changed-error: 'Non è stato possibile cambiare l''utente del
 admin-account-user-changed-successfully: 'E'' stato cambiato l''utente del contributo da [%ID%] a [%NAME%]'
 admin-address: Indirizzo
 admin-all: Tutti
+admin-global: Globale
 admin-back: Indietro
 admin-back-detail: 'Torna ai dettagli'
 admin-back-list: 'Torna alla lista'
 admin-contents: 'Testi e traduzioni'
 admin-empty-list: 'Nessun risultato trovato'
+admin-activity: Attività
 admin-communications: Comunicazioni
+admin-communications-add: Creare nuova comunicazione
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' per l''id di accesso del proprietario'
+admin-communications-useremail-content: ' per l''email del destinatario'
+admin-communications-username-content: ' per il nome del destinatario'
+admin-communications-siteurl-content: ' per l''url di questa piattaforma (%SITEURL%)'
+admin-communications-subscribeurl-content: ' link diretto di sottoiscrizione alla newsletter dell''utente'
+admin-communications-unsubscribeurl-content: ' link diretto di disiscrizione alla newsletter dell''utente'
+admin-communications-poolamount-content: ' quantità di denaro disponibile nel portamonete dell''utente'
+admin-communications-send: 'Inviare comunicazione'
+admin-communications-cancel: 'Cancellare comunicazione'
+admin-communications-newsletter: 'Bollettino'
+admin-communications-communication: 'Comunicazione generale'
+admin-communications-id: 'ID della comunicazione'
+admin-home: Prima Pagina
+admin-items: voci
 admin-mailing-back-to-list: 'Tornare a comunicazioni'
 admin-mailing-communicating-with: 'Volevamo contattare %DESC%'
 admin-mailing-created: 'Creato il'
@@ -64,56 +90,425 @@ admin-next-page: 'Pagina successiva'
 admin-no: 'No'
 admin-percent: Percentuale
 admin-project: Progetto
+admin-main: Principale
+admin-legacy: Vecchi
 admin-projects: Progetti
+admin-consultants: 'Consiglieri'
+admin-invests: Contributi
 admin-filters: 'Filtri'
+admin-filters-edit: 'Editare filtro'
+admin-filters-create: 'Creare filtro'
 admin-remove-filters: 'Eliminare filtri'
+admin-remove-filters-forbidden: 'I filtri che sono stati utilizzati non si possono eliminare.'
+admin-remove-entry: 'Cancellare voce'
+admin-remove-entry-confirm: 'Sicuro di voler eliminare questa voce? Questa azione non può essere annullata!'
+admin-remove-entry-forbidden: 'Non si possono cancellare voci pubblicate di blog. Annulla la pubblicazione della voce prima.'
+admin-remove-entry-ok: 'Voce cancellata correttamente'
 admin-add-entry-ok: 'Nuova voce creata correttamente'
 admin-edit-entry-ok: 'Voce modificata correttamente'
 admin-services: Servizi
 admin-sponsors: Servizi
+admin-slug-seo-help: 'Questo campo è importante per SEO. Modificare solo per una buona ragione.'
 admin-others: Altri
+admin-summary: Sommario
+admin-origins: Analitica di visite
 admin-status: Stato
 admin-text-type: 'Elaborare il testo come'
+admin-text-type-html: HTML
+admin-text-type-md: Riduzione di prezzo
+admin-text-type-plain: 'Testo semplice'
+admin-user: Utente
 admin-user-no-projects: 'Non ha ancora creato nessun progetto'
 admin-user-no-invests: 'Non ha ancora fatto alcuna donazione'
 admin-users: Utenti
 admin-users-add: Creare nuovo utente
+admin-blog: Blog generale
 admin-blog-add: Crea nuovo post
 admin-blog-edit: Modificando il post %s
+admin-blog-slug-exists: 'L''identificatore [%s] sta usando un altro post!'
 admin-blog-slug-chars: 'Il campo [%s] contiene caratteri non validi!'
+admin-blog-not-public: 'Questo post non è ancora pubblicato'
+admin-stories: Cronologia degli utenti in Goteo
+admin-stories-add: Creare una nuova cronologia
+admin-stories-edit: Modificando la cronologia %s
 admin-categories: 'Categorie e aree'
+admin-categories-if-empty-then-asset: 'Se lasciato vuoto si userà l''icona predefinita: %s'
 admin-category-add: Crea una nuova categoria
 admin-category-edit: 'Modifica Categoria: %s'
+admin-socialcommitment-add: Creare un nuovo compromesso sociale
 admin-socialcommitment-edit: Modificando l'impegno sociale %s
+admin-sphere-add: Creare un nuovo ambito
+admin-sphere-edit: Modificare l'ambito %s
+admin-sdg-add: Creare un nuovo ODS
+admin-sdg-edit: Modificare l'ODS %s
+admin-footprint-add: Creare una nuova impronta
+admin-footprint-edit: Modificare l'impronta %s
+admin-calls: Chiamate
+admin-matchers: Matchers
 admin-channels: Canali
 admin-yes: Sì
+admin-impersonate: Impersona
+admin-impersonate-user: Impersonare un %s
+admin-project-express-discard: 'Rifiuto espresso'
+admin-project-express-discard-desc: 'Passa il progetto a stato Scartato e manda una mail'
+admin-project-express-discard-sure: 'Inviando una mail automaticamente e passerà anche allo stato scartato, ok?'
+admin-project-to-review: 'Da revisionare'
+admin-project-to-review-desc: 'Passa il progetto allo stato In Attesa di valutazione'
+admin-project-to-review-sure: 'Il creatore non potrà più modificarlo, ok?'
+admin-project-view-in-admin: 'Vedere nell''amministratore'
+admin-project-to-negotiation: 'Da negoziare'
+admin-project-to-negotiation-desc: 'Passa il progetto allo stato In Modifica'
+admin-project-to-negotiation-sure: 'ATTENZIONE!! Il progetto è in campagna! Così ne annulleremo la pubblicazione Ok?'
+admin-project-to-publish: 'Pubblicare'
+admin-project-to-publish-desc: 'Passa il progetto allo stato "In campagna"'
+admin-project-to-publish-sure: 'Il progetto comincerà sulla campagna, cominciamo?'
+admin-project-derivation-discard: 'Rifiuto con derivazione'
+admin-project-derivation-discard-desc: 'Passa il progetto allo stato Scartato e manda una mail derivando ad altra piattaforma più adeguata'
+admin-project-derivation-discard-sure: 'Si invierà una mail automaticamente derivando ad un''altra piattaforma e passerà allo stato scartato, ok?'
 admin-home-title: Gestire Goteo
 admin-list: Elenco
 admin-stats: Statistiche
 admin-list-total: 'Totale: <strong>%s</strong> risultati'
 admin-search-global: 'Progetto, canale, convocazione...'
+admin-already-impersonating: 'Stai già impersonando un utente, per favore chiudi prima la sessione!'
 admin-rebase-user: 'Cambiare ID utente'
 admin-edit-name: 'Cambiare il nome'
 admin-edit-roles: 'Modifica ruoli utente'
 admin-send-email: 'Inviare Email'
+admin-show-roles-info: 'Che può fare quel ruolo?'
+admin-user-roles: 'Lista di ruoli dell''utente'
 admin-view-user-projects: 'Tutti i progetti'
+admin-view-user-invests: 'Tutti i contributi'
 admin-user-hidden: 'Privato (nascosto)'
 admin-user-active: 'Account attivo'
+admin-user-warning: 'Attenzione: Queste operazioni si eseguono senza inviare alcun avviso all''utente'
 admin-user-wallet-amount: 'Credito nel portafogli'
+admin-user-create-invest: 'Creare contributo'
 admin-mailing: 'Newsletter'
+admin-user-no-mailing: 'Non è stata inviata alcuna mail ancora'
+admin-view-user-mailing: 'Tutti gli invii'
+admin-role-change-forbidden: 'Non hai il permesso per gestire il ruolo %ROLE% in questo utente'
+admin-users-global-search: 'Id, nome, email o progetto'
+admin-blog-global-search: 'Id, titolo, sottotitolo o testo'
+admin-communication-global-search: 'Assunto'
+admin-blog-stories-search: 'Id, titolo, testo o progetto'
 admin-no-project: 'Nessun progetto'
+admin-title-id: Id
 admin-title-name: Nome
 admin-title-about: Informazioni
 admin-title-active: Attivo
 admin-title-location: Localizzazione
 admin-title-fullname: Nome
 admin-title-email: Email
+admin-title-header-image: Immagine di intestazione
 admin-title-password: Password
 admin-title-avatar: Avatar
 admin-title-roles: Ruoli
+admin-title-role: Ruolo
+admin-title-amount: Invertito
 admin-title-icon: Icona
+admin-title-info: Info
+admin-title-image: Immagine
+admin-title-landing_match: Finanziamento di atterraggio
 admin-title-title: Titolo
 admin-title-subtitle: Sottotitolo
+admin-title-subject: Assunto
+admin-title-description: Descrizione
 admin-title-section: Sezione
+admin-title-text: Testo
+admin-title-slug: Slug
+admin-title-publish: Pubblicato
+admin-title-lang: Lingua
+admin-title-langs: Traduzioni
+admin-title-actions: Azioni
+admin-title-tags: Tag
+admin-title-deleted: Eliminato
+admin-title-sphere: Ambito
 admin-title-social_commitment: Impegno sociale
+admin-title-sdgs: 'Obbiettivi di sviluppo sostenibile'
+admin-title-footprints: 'Impronte'
 admin-title-categories: 'Categorie'
+admin-title-social_commitments: 'Compromessi sociali'
+admin-title-order: Ordinare
+admin-title-status: Stato
+admin-title-users: Utenti
+admin-title-city: Città
+admin-title-date: Data
+admin-title-blockquote: 'Appuntamento personalizzato'
+admin-title-type: 'Genere'
+admin-title-date-in: Data d'inizio
+admin-title-date-out: Data di fine
+admin-title-venue: Posto (visibile in chiamata all'azione)
+admin-title-venue-address: Direzione
+admin-title-how-to-get: '¿Come raggiungere?'
+admin-title-iframe: 'Iframe localizzazione'
+admin-title-schedule-file: 'Programma Url'
+admin-title-call: 'Annuncio di Matchfunding'
+admin-title-url-inscription: Collegamento a iscrizione
+admin-title-filter: Filtro
+admin-title-template: Modello
+admin-title-receivers: Destinatari
+admin-title-sent: Inviati
+admin-title-failed: Non inviati
+admin-title-pending: Orecchini
+admin-title-success: Uscite
+admin-title-percent: Percentuale
+admin-blog-not-published-yet: 'La voce del blog non è ancora pubblica'
+admin-blog-initialized: 'Ha inizializzato lo spazio del blog'
+admin-blog-deactivated: 'Spiacenti, la gestione del blog è disattivata'
+admin-blog-edit-success: 'La voce del blog è stata correttamente modificata'
+admin-stories-not-active-yet: 'Questa cronologia utente non è ancora attiva'
+admin-stories-edit-success: 'La cronologia utente è stata modificata correttamente'
+admin-stories-pool: 'Mostrare in portafoglio d''atterraggio'
+admin-stories-review: 'Riguarda Goteo: (Sottotitolo)'
+admin-stories-active: 'Attivo in home'
+admin-stories-landing_pitch: 'Mostra in Intonazione d''atterraggio'
+admin-stories-landing_match: 'Mostra in corrispondenza d''atterraggio'
+admin-stories-type: 'Tipo di protagonista'
+admin-all-project-referers: 'Origine delle visite nei progetti'
+admin-all-invests-referers: 'Origine delle visite nei contributi ai progetti'
+admin-all-call-referers: 'Origine di visita alle chiamate'
+admin-all-project-devices: 'Dispositivo usato nelle pagine dei progetti'
+admin-all-invests-devices: 'Dispositivo usato nei contributi ai progetti'
+admin-all-call-devices: 'Dispositivo usato nelle pagine delle chiamate'
+admin-aggregate-autoupdate: 'Auto-aggiornamento'
+admin-aggregate-timeline: 'Linea del tempo'
+admin-aggregate-invests: 'Contributi totali'
+admin-aggretate-invests-format: '%CURRENCY% %VALUE% (%TOTAL% investimenti)'
+admin-aggregate-invests-desc: 'Somma di contributi per unità di tempo'
+admin-aggregate-invests-average: 'Media dei contributi'
+admin-aggregate-invests-average-desc: 'Media di contributi per unità di tempo'
+admin-aggregate-projects: 'Totale ricavato nei progetti'
+admin-aggretate-projects-format: '%CURRENCY% %VALUE% - %TOTAL% progetti'
+admin-aggregate-projects-desc: 'Somma dei contributi per unità di tempo'
+admin-aggregate-projects-average: 'Ricavo medio nei progetti'
+admin-aggregate-projects-average-desc: 'Media dei ricavi per unità di tempo'
+admin-stats-invest-totals: 'Contributi e commissioni'
+admin-stats-project-totals: 'Stato dei progetti'
+admin-stats-raised: 'Ingressi lordi'
+admin-stats-active: 'Ingressi netti'
+admin-stats-refunded: 'Devoluzioni'
+admin-stats-fees: 'Commissione piattaforma'
+admin-stats-commissions: 'Commissione bancaria'
+admin-stats-matchfunding: 'Matchfunding'
+admin-stats-raised-method: 'Ingressi lordi per metodo di pagamento'
+admin-stats-raised-method-desc: 'Gli ingressi lordi includono tutto il denaro che si è incassato per la piattaforma in ogni momento (si includono i contributi a progetti falliti, così come i contributi diretti al portafoglio o provenienti da progetti falliti con ritorno al portafoglio).<br><em>Non si includono i contributi provenienti dal portafoglio</em> (a meno che non si scelga il suo metodo di pagamento)</b>'
+admin-stats-active-method: 'Ingressi netti per metodo di pagamento'
+admin-stats-active-method-desc: 'Gli ingressi netti includono tutto il denaro incassato per la piattaforma escludendo devoluzioni (si includono i contributi al portafoglio, diretti e provenienti da progetti falliti con ritorno al portafoglio).<br><em>Non si includono i contributi provenienti dal portafoglio</em> (a meno che non si scelga il suo metodo di pagamento).'
+admin-stats-refunded-method: 'Devoluzioni per metodo di pagamento'
+admin-stats-refunded-method-desc: 'Le devoluzioni includono tutti i metodi di pagamento (inclusi i contributi dal portafoglio)'
+admin-stats-commissions-method: 'Commissioni bancarie per metodo di pagamento'
+admin-stats-fees-method: 'Commissione della piattaforma per metodo di pagamento'
+admin-stats-from_matchfunding: 'Dettagli dei progetti con Matchfunding'
+admin-stats-matchfunding-part: 'Progetti con Matchfunding'
+admin-stats-users-part: 'Progetti senza Matchfunding'
+admin-stats-match-part: 'Parte Moltiplicatoria'
+admin-stats-citizens-part: 'Parte Cittadina'
+admin-stats-matcher-part: 'Parte Matcher'
+admin-stats-invest-destination: 'Destinazione dei contributi'
+admin-stats-invest-in_wallet: 'Totale accumulato nel portafoglio'
+admin-stats-to_projects: 'Da progettare'
+admin-stats-to_wallet: 'Al portafoglio'
+admin-stats-to_matcher_wallet: 'Al portafoglio di Matchers'
+admin-stats-to_fee: 'Alle commissioni'
+admin-stats-to_fee-percent: 'Commissione effettiva'
+admin-stats-in_wallet: 'Nel portafoglio'
+admin-stats-in_matcher_wallet: 'Nel portafoglio di Matchers'
+admin-stats-in_users_wallet: 'Nel portafoglio degli utenti'
+admin-stats-matchfunding-global: 'Influenza Matchfunding'
+admin-stats-refunded-parts: 'Ripartizione delle devoluzioni'
+admin-stats-fees-parts: 'Ripartizione delle commissioni'
+admin-stats-invest-active-parts: 'Destinazione del reddito netto'
+admin-stats-invest-in_wallet-parts: 'Ripartizione del portafoglio'
+admin-losts: Perdite
+admin-raised: Raccolto
+admin-active: Pagato
+admin-refunded: Restituito
+admin-refunded-to_users: Restituito ad utenti
+admin-refunded-to_users-invests: Numero devoluzioni a utenti
+admin-refunded-to_wallet: Devoluto al portafoglio
+admin-commissions: Commissione
+admin-fees: Commissione piattaforma
+admin-user-fee: Commissione cittadino
+admin-call-fee: Commissione Matchfunding (senza Matchers)
+admin-matcher-fee: Commissione Matchers
+admin-vat: IVA
+admin-diff: Differenza
+admin-the_day: Il giorno
+admin-the_week: La settimana
+admin-the_month: Il mese
+admin-the_year: L'anno
+admin-custom: Secondo filtro
+admin-total: Totale
+admin-today: Oggi
+admin-yesterday: Ieri
+admin-week: Questa settimana
+admin-last_week: Lo stesso giorno della prossima settimana
+admin-last_week_complete: Tutta la settimana passata
+admin-last_year_week: La stessa settimana un anno fa
+admin-month: Questo mese
+admin-last_month: Lo stesso giorno del mese passato
+admin-last_month_complete: Tutto il mese passato
+admin-last_year_month: Lo stesso mese un anno fa
+admin-year: Quest'anno
+admin-last_year: Lo stesso giorno dell'anno scorso
+admin-last_year_complete: Tutto l'anno scorso
+admin-promote-add: 'Nuova funzionalità'
+admin-promote-submit: 'Guardare'
+admin-promote-already-exists: 'Questo progetto è già funzionale'
+admin-promote-correct: 'Il progetto è funzionale'
+admin-projects-created-today: 'Creato oggi'
+admin-projects-created-yesterday: 'Creato ieri'
+admin-projects-created-week: 'Creato questa settimana'
+admin-projects-created-last_week: 'Creato la settimana scorsa'
+admin-projects-created-month: 'Creato questo mese'
+admin-projects-created-last_month: 'Creato il mese passato'
+admin-projects-created-year: 'Creato quest''anno'
+admin-projects-created-last_year: 'Creato l''anno passato'
+admin-projects-negotiating-today: 'In negoziazione oggi'
+admin-projects-negotiating-yesterday: 'In negoziazione ieri'
+admin-projects-negotiating-week: 'In negoziazione questa settimana'
+admin-projects-negotiating-last_week: 'In negoziazione la settimana passata'
+admin-projects-negotiating-month: 'In negoziazione questo mese'
+admin-projects-negotiating-last_month: 'In negoziazione il mese passato'
+admin-projects-negotiating-year: 'In negoziazione quest''anno'
+admin-projects-negotiating-last_year: 'In negoziazione l''anno passato'
+admin-projects-published-today: 'Pubblicati oggi'
+admin-projects-published-yesterday: 'Pubblicati ieri'
+admin-projects-published-week: 'Pubblicati questa settimana'
+admin-projects-published-last_week: 'Pubblicati la settimana passata'
+admin-projects-published-month: 'Pubblicati questo mese'
+admin-projects-published-last_month: 'Pubblicati il mese passato'
+admin-projects-published-year: 'Pubblicati quest''anno'
+admin-projects-published-last_year: 'Pubblicati l''anno passato'
+admin-projects-rejected-today: 'Scartati oggi'
+admin-projects-rejected-yesterday: 'Scartati ieri'
+admin-projects-rejected-week: 'Scartati questa settimana'
+admin-projects-rejected-last_week: 'Scartati la settimana passata'
+admin-projects-rejected-month: 'Scartati questo mese'
+admin-projects-rejected-year: 'Scartati quest''anno'
+admin-projects-rejected-last_year: 'Scartati l''anno passato'
+admin-projects-review-today: 'In revisione oggi'
+admin-projects-review-yesterday: 'In revisione ieri'
+admin-projects-review-week: 'In revisione questa settimana'
+admin-projects-review-last_week: 'In revisione la settimana passata'
+admin-projects-review-month: 'In revisione questo mese'
+admin-projects-review-last_month: 'In revisione il mese passato'
+admin-projects-review-year: 'In revisione quest''anno'
+admin-projects-review-last_year: 'In revisione l''anno passato'
+admin-invest-raised-amount-today: 'Ricavato oggi'
+admin-invest-raised-total-today: 'Donazioni oggi'
+admin-invest-raised-amount-yesterday: 'Ricavato ieri'
+admin-invest-raised-total-yesterday: 'Donazioni ieri'
+admin-invest-raised-amount-week: 'Ricavato questa settimana'
+admin-invest-raised-amount-last_week: 'Ricavato la settimana passata'
+admin-invest-raised-total-week: 'Donazioni questa settimana'
+admin-invest-raised-total-last_week: 'Donazioni la settimana passata'
+admin-invest-raised-amount-month: 'Ricavato questo mese'
+admin-invest-raised-amount-last_month: 'Ricavato il mese passato'
+admin-invest-raised-total-month: 'Donazioni questo mese'
+admin-invest-raised-total-last_month: 'Donazioni il mese passato'
+admin-invest-raised-amount-year: 'Ricavato quest''anno'
+admin-invest-raised-total-year: 'Donazioni quest''anno'
+admin-invest-raised-amount-last_year: 'Ricavato l''anno passato'
+admin-invest-raised-total-last_year: 'Donazioni l''anno passato'
+admin-invest-commissions-today: 'Commissione bancaria oggi'
+admin-invest-commissions-yesterday: 'Commissione bancaria ieri'
+admin-invest-commissions-week: 'Commissione bancaria questa settimana'
+admin-invest-commissions-last_week: 'Commissione bancaria la settimana passata'
+admin-invest-commissions-month: 'Commissione bancaria questo mese'
+admin-invest-commissions-last_month: 'Commissioni bancarie il mese passato'
+admin-invest-commissions-year: 'Commissioni bancarie quest''anno'
+admin-invest-commissions-last_year: 'Commissioni bancarie l''anno scorso'
+admin-invest-commissions-lost-today: 'Perdita di contributi devoluti oggi'
+admin-invest-commissions-lost-yesterday: 'Perdita di contributi devoluti ieri'
+admin-invest-commissions-lost-week: 'Perdita di contributi devoluti questa settimana'
+admin-invest-commissions-lost-month: 'Perdita di contributi devoluti questo mese'
+admin-invest-commissions-lost-year: 'Perdita di contributi devoluti quest''anno'
+admin-invest-commissions-lost-last_year: 'Perdita di contributi devoluti l''anno passato'
+admin-invest-commissions-tpv-today: 'Commissioni TPV oggi'
+admin-invest-commissions-tpv-yesterday: 'Commissioni TPV ieri'
+admin-invest-commissions-tpv-week: 'Commissioni TPV questa settimana'
+admin-invest-commissions-tpv-last_week: 'Commissioni TPV la settimana passata'
+admin-invest-commissions-tpv-month: 'Commissioni TPV questo mese'
+admin-invest-commissions-tpv-last_month: 'Commissioni TPV il mese passato'
+admin-invest-commissions-tpv-year: 'Commissioni TPV quest''anno'
+admin-invest-commissions-tpv-last_year: 'Commissioni TPV l''anno scorso'
+admin-invest-commissions-paypal-today: 'Commissioni Paypal oggi'
+admin-invest-commissions-paypal-yesterday: 'Commissioni Paypal ieri'
+admin-invest-commissions-paypal-week: 'Commissioni Paypal questa settimana'
+admin-invest-commissions-paypal-last_week: 'Commissioni Paypal la settimana passata'
+admin-invest-commissions-paypal-month: 'Commissioni Paypal questo mese'
+admin-invest-commissions-paypal-last_month: 'Commissioni Paypal il mese passato'
+admin-invest-commissions-paypal-year: 'Commissioni Paypal quest''anno'
+admin-invest-commissions-paypal-last_year: 'Commissioni Paypal l''anno passato'
+admin-invest-fees-today: 'Commissioni Goteo oggi'
+admin-invest-fees-yesterday: 'Commissioni Goteo ieri'
+admin-invest-fees-week: 'Commissioni Goteo questa settimana'
+admin-invest-fees-last_week: 'Commissioni Goteo la settimana passata'
+admin-invest-fees-month: 'Commissioni Goteo questo mese'
+admin-invest-fees-last_month: 'Commissioni Goteo il mese passato'
+admin-invest-fees-year: 'Commissioni Goteo quest''anno'
+admin-invest-fees-last_year: 'Commissioni Goteo l''anno passato'
+admin-invest-diff-yesterday: 'Differenza con il giorno precedente'
+admin-invest-diff-last_week: 'Differenza con la settimana precedente'
+admin-invest-diff-last_month: 'Differenza con il mese precedente'
+admin-invest-diff-last_year: 'Differenza con l''anno precedente'
+admin-stats-projects-channel-desc: 'Progetti che appartengono al canale (o nodo)'
+admin-stats-projects-call-desc: 'Progetti che appartengono alla convocatoria'
+admin-stats-projects-matcher-desc: 'Progetti attivi nel matcher'
+admin-stats-projects-consultant-desc: 'Progetti che hanno assegnato questo consigliere'
+admin-stats-projects-project-desc: 'Contributi al progetto'
+admin-filter-add: 'Inserire filtro'
+admin-filter-last-week: 'Ultimi 7 giorni'
+admin-filter-last-month: 'Ultimi 30 giorni'
+admin-filter-last-year: 'Ultimi 365 giorni'
+admin-filter-from-new-year: 'Dal 1 di Gennaio'
+admin-filter-previous-year: 'Lo scorso anno'
+admin-filter-two-years-ago: 'Da due anni'
+admin-filter-typeofuser: 'Genere di utente'
+admin-filter-typeofdonor: 'Genere di donatore'
+admin-filter-user: 'Utente'
+admin-filter-donor: 'Donante'
+admin-filter-no-donor: 'Donatore inattivo'
+admin-filter-promoter: 'Promotore'
+admin-filter-matcher: 'Matcher'
+admin-filter-test: 'Test'
+admin-filter-type-unique: 'Unico'
+admin-filter-type-multidonor: 'Multidonatore'
+admin-filter-type-foundation-donor: 'Donatore alla fondazione'
+admin-filter-type-all: 'Tutti'
+admin-filter-predefined-date: 'Data prestabilita'
+admin-filter-predefined-date-choose: 'Puoi selezionare una data predefinita'
+admin-filter-forced: 'Forzare filtro'
+admin-filter-forced-help: 'Se selezioni questa opzione si applicheranno i filtri indipendentemente da quello che ha scelto l''utente come preferenza per l''invio dell''informazione per parte della piattaforma.'
+admin-mail-body: 'Corpo del messaggio'
+admin-stats-donations: 'Donazioni'
+admin-stats-donations-method: 'Donazioni secondo metodo di pagamento'
+admin-stats-donations-method-desc: 'Le donazioni includono il denaro che l''utente invia volontariamente alla fondazione quando apporta ad un progetto, le donaziono dirette o anche quando l''importo nel portamonete scade.'
+admin-stats-donations-tip: 'Donazioni durante apporti a progetti (Suggerimenti o "tips")'
+admin-stats-donations-direct: 'Donazioni dirette ( includono portamonete scaduti)'
+admin-stats-donations-generosity: 'Percentuale di generosità'
+admin-stats-donations-generosity-desc: 'Quantità di utenti con donazioni verso quantità totali. Solo se tengono in conto i progetti con donazioni.'
+admin-stats-donations-expired: 'Donazioni dirette dovute a portamonete scaduti'
+admin-stats-donations-refunded: 'Donazioni que si sono restituite dovute a progetti falliti'
+admin-donations: Donazioni
+admin-donations-tip: Mance
+admin-donations-tip-invests: Apporti con mance
+admin-donations-tip-users: Utenti con mancia
+admin-donations-direct: Donazioni dirette
+admin-donations-expired: Donazioni scadute
+admin-donations-refunded: Donazioni restituite
+admin-donations-amount-percent: '% denaro donato'
+admin-donations-users-percent: '% utenti donanti'
+admin-donations-tip-percent: '% denaro in mance'
+admin-donations-direct-percent: '% denado diretto'
+admin-workshop: Laboratori di Goteo
+admin-workshop-add: Creare un nuovo laboratorio
+admin-workshop-edit: Modificando il laboratorio %s
+admin-workshop-edit-success: L'entrata del laboratorio si è modificata correttamente
+admin-online: Online
+mandatory-filter-name: Manca nome
+mandatory-filter-description: Manca descrizione
+mandatory-filter-role: Manca un ruolo
+

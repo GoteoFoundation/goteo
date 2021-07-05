@@ -89,6 +89,7 @@ class MailingMatcherListener extends AbstractMatcherListener {
                 // Send mail to owner and admin: added project to review
                 $tpl = Template::MATCHER_PROJECT_ADDED;
                 $mail = Mail::createFromTemplate($user->email, $user->name, $tpl, $vars, $lang);
+                break;
             case 'accepted':
                 // Send mail to admin: accepted project to review only if project in campaign
                 if($project->inCampaign() && $matcher_conf['filter_by_platform']) {

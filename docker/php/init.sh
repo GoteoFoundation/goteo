@@ -105,6 +105,10 @@ fi
 echo -e "\e[32m*************************************"
 echo -e "\e[32m System ready!"
 echo
+echo -e "\e[32m USER_ID: $USER_ID"
+echo -e "\e[32m DEBUG: $DEBUG"
+echo -e "\e[32m GOTEO_CONFIG_FILE: $GOTEO_CONFIG_FILE"
+echo
 echo -e "\e[32m You can point your browser now to:"
 echo -e
 echo -e "\e[32m $url__main"

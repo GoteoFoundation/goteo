@@ -70,6 +70,8 @@ admin-communications-cancel: 'Cancelar comunicación'
 admin-communications-newsletter: 'Boletín'
 admin-communications-communication: 'Comunicación general'
 admin-communications-id: 'ID de la Comunicación'
+admin-certificates: Certificados
+admin-certificates-management: Gestión de Certificados
 admin-home: Portada
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicaciones'
@@ -132,16 +134,30 @@ admin-blog-not-public: 'Este post no es público todavía'
 admin-stories: Historias de usuarios en Goteo
 admin-stories-add: Crear una nueva historia
 admin-stories-edit: Editando la historia %s
-
 admin-channelstory-add: Añadir historia al canal
 admin-channelstory-submit: Guardar historia
 admin-channelstory-correct: 'Se ha añadido la historia al canal'
+admin-channelsection-section: 'Sección'
+admin-channelsection-map: 'Mapa'
+admin-channelsection-resource: 'Recursos'
+admin-channelsection-call_to_action: 'Call To Action'
+admin-channelsection-projects: 'Proyectos'
+admin-channelsection-posts: 'Posts'
+admin-channelsection-program: 'Programas'
+admin-channelsection-stories: 'Stories'
+admin-channelsection-workshops: 'Talleres'
+admin-channelsection-team: 'Equipo'
+admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-button: 'Botón'
+admin-channelsection-create: 'Crear'
+admin-channelsection-add: 'Añadir una sección'
 admin-channelpost-add: Añadir Post al canal
 admin-channelpost-submit: Guardar Post
 admin-channelpost-correct: 'Se ha añadido el post al canal'
 admin-channelcriteria-title: 'Cuestionarios del canal'
 admin-channelcriteria-subtitle: 'Establece los criterios con los que evaluarás un proyecto que quiera presentarse a tu canal. Procura ser conciso en lo que esperas obtener de las iniciativas que quieran presentarse, ayudará a facilitarte la evaluación final.'
-
+admin-channelprogram-create: 'Crear'
+admin-channelprogram-add: 'Añadir programa'
 
 admin-categories: 'Categorías y ámbitos'
 admin-categories-if-empty-then-asset: 'Si se deja vacío se usará el icono por defecto: %s'
@@ -207,6 +223,8 @@ admin-users-global-search: 'Id, nombre, email o proyecto'
 admin-blog-global-search: 'Id, título, subtítulo o texto'
 admin-communication-global-search: 'Asunto'
 admin-blog-stories-search: 'Id, título, texto o proyecto'
+admin-donor-name-search: 'ID, nombre, email'
+admin-donor-date-search: 'Procesados por fecha'
 admin-no-project: 'Sin proyecto'
 admin-title-id: Id
 admin-title-name: Nombre
@@ -246,6 +264,7 @@ admin-title-categories: 'Categorías'
 admin-title-social_commitments: 'Compromisos sociales'
 admin-title-order: Ordenar
 admin-title-status: Estado
+admin-title-users: Usuarios
 admin-title-city: Ciudad
 admin-title-date: Fecha
 admin-title-blockquote: 'Cita personalizada'
@@ -271,7 +290,11 @@ admin-title-action-url: 'Texto botón de descarga'
 admin-title-download-url: 'Enlace a descarga'
 admin-title-channel: 'Canal'
 admin-title-resource-category: 'Categoría de recurso'
+
 admin-title-subsection: 'Subsección'
+admin-title-year: Año
+admin-title-nif: NIF
+admin-title-country: País
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
@@ -531,6 +554,7 @@ admin-filter-invest-status: Estado de la donación
 admin-filter-project-location: Ubicación del proyecto
 admin-filter-location: Ubicación a utilizar en el filtro
 admin-filter-donor-location: Ubicación del donante
+admin-filter-donor-status: Estado del certificado
 
 admin-mail-body: 'Cuerpo del mensaje'
 

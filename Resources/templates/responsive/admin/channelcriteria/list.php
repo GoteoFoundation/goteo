@@ -10,23 +10,27 @@ $this->section('admin-search-box-addons');
 
 <?php $this->section('admin-container-body') ?>
 
-<div>
-    <select id="nodes-filter" name="nodes-list" class="form-control" style="margin-bottom:1em;" onchange="goChannelCriteria()">
-        <?php if (!$this->current_node) : ?>
-        <option selected="selected" hidden></option>
-        <?php endif; ?>
-        <?php foreach ($this->nodes as $nodeId => $nodeName) : ?>
-        <option value="<?= $nodeId; ?>" <?= ($nodeId == $this->current_node)? 'selected="selected"' : ''; ?>><?= $nodeName; ?></option>
-        <?php endforeach; ?>
-    </select>
-</div>
-<?php if ($this->current_node) : ?>
+<div class="row">
+    <div class="col-md-8">
+        <select id="nodes-filter" name="nodes-list" class="form-control" style="margin-bottom:1em;" onchange="goChannelCriteria()">
+            <?php if (!$this->current_node) : ?>
+            <option selected="selected" hidden></option>
+            <?php endif; ?>
+            <?php foreach ($this->nodes as $nodeId => $nodeName) : ?>
+            <option value="<?= $nodeId; ?>" <?= ($nodeId == $this->current_node)? 'selected="selected"' : ''; ?>><?= $nodeName; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
-<?php endif; ?>
+    <div class="col-md-4">
+        <a class="btn btn-cyan" href="/admin/channelcriteria/<?= $this->current_node ?>/export"><i class="fa fa-plus"></i>Exportar respuestas a CSV</a>
+    </div>
+</div>
+
+
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h1><?php echo $this->text('admin-channelcriteria-title') ?></h1>
     <div class="inner">
         <?php echo $this->text('admin-channelcriteria-subtitle') ?>
     </div>

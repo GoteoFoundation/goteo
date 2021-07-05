@@ -17,8 +17,8 @@ use Goteo\Application\Session;
  * This class allows to get an object standarized for its use in views
  */
 class ModelNormalizer {
-    private $model;
-    private $keys;
+    protected $model;
+    protected $keys;
 
     public function __construct(CoreModel $model,array $keys = null) {
         $this->model = $model;
@@ -44,6 +44,12 @@ class ModelNormalizer {
         }
         elseif ($this->model instanceOf Model\Node\NodePost) {
             $ob = new Transformer\ChannelPostsTransformer($this->model, $this->keys);
+        }
+        elseif ($this->model instanceOf Model\Node\NodeProgram) {
+            $ob = new Transformer\ChannelProgramTransformer($this->model, $this->keys);
+        }
+        elseif ($this->model instanceOf Model\Node\NodeSections) {
+            $ob = new Transformer\ChannelSectionTransformer($this->model, $this->keys);
         }
         elseif(
             $this->model instanceOf Model\Category

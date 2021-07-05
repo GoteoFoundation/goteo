@@ -1,6 +1,7 @@
 ---
 bazar-spread-text: '%s - A Natale regala crowdfunding aperto per il bene comune con @goteofunding #openbazaar'
 bazar-thanks: 'Grazie della visita nel nostro bazar, ci puoi aiutare a diffonderlo. '
+currency-alert: "Per favore, tieni conto che la gestione è in EUR. Va a pagare approssimativamente <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Più info</a>"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Che sistemi di pagamento offre Goteo?Sono sicuri?</a>'
 imperative-register: Registrati 
 invest-address-address-field: 'Indirizzo:'
@@ -40,15 +41,18 @@ invest-called-rest: 'Restano solo <strong>%s €</strong> del <strong>Matchfundi
 invest-card-method: Carta
 invest-cash-method: 'Manuale (in contanti)'
 invest-donation-header: 'Indica i dati fiscali per la donazione'
+invest-drop-method: Irrigazione
 invest-fiscal-fail: 'Ci sono campi vuoti o con errori, controlla il modulo fiscale così da poter detrarre il tuo contributo!'
 invest-fiscal-skip: 'Ora non voglio compilare questi dati.'
 invest-fiscal-title: 'Assicurati di poter detrarre il tuo contributo (per i/le contribuenti in Spagna)'
 invest-login-alert: 'Devi registrarti o <a href="%s">iniciar sesión</a> per poter realizzare la donazione'
 invest-mail_info-address: 'Hai indicato il seguente indirizzo '
+invest-mail_info-drop: 'In più, %s ha donato %s di matchfunding con la campagna %s'
 invest-make-sure-save: Salvare
 invest-make-sure-title: Conferma
 invest-method: 'Metodo di pagamento'
 invest-method-title: 'Realizza la tua donazione'
+invest-modal-fiscal-description: 'Come già devi sapere, contribuire in Goteo non è solo rendere possibile molti progetti che non beneficiano a tutti, ma anche dedurre! Al realizzarsi di un contributo ad un progetto, e grazie all''aumento dei tipi di deduzione applicabili dal 2015 per le donazioni pure e semplici che si realizzano a favore della Fondazione Goteo, come entità benvenuta al regime fiscale speciale della Legge 49/2002 del 23 di dicembre, potrà dedurti le quantità che indichiamo nel nostro <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ 18 per co-patroni</a>.'
 invest-modal-fiscal-title: 'Informazioni fiscali'
 invest-modal-pool-description: 'Il portafoglio virtuale è un sistema di crediti della piattaforma Goteo che puoi riempire con i tuoi soldi e usarlo come metodo di pagamento ogni volta che vorrai contribuire ai progetti sulla nostra piattaforma, senza dover dare i dati della tua carta o di PayPal ogni volta.'
 invest-modal-pool-title: 'A riguardo del portafoglio virtuale di Goteo'
@@ -58,7 +62,9 @@ invest-payment-email: 'Indica il tuo account di PayPal'
 invest-payment-fail: 'Qualcosa non ha funzionato nel pagamento'
 invest-payment-success: 'Pagamento effettuato con successo'
 invest-payment_method-header: 'Scegli il metodo di pagamento'
+invest-payment-method: 'Metodo di pagamento'
 invest-paypal-method: PayPal
+invest-paypal_disabled: "Questo progetto tiene disattivata l'opzione di pagamento con PayPal. <a href=\"/faq/investors#q2\" target=\"_blank\">Più info</a>"
 invest-pool: 'Voglio la mia donazione, nel caso in cui il progetto non raggiunga il suo obiettivo, rimanga nel mio portafoglio virtuale Goteo.'
 invest-pool-available: disponibili
 invest-pool-error: 'Non hai abbastanza soldi nel tuo portafoglio virtuale'
@@ -66,6 +72,7 @@ invest-pool-method: 'Portafoglio virtuale'
 invest-process-completed: 'Questa donazione è stata già completata precedentemente. '
 invest-project: 'vedere progetto'
 invest-resign: 'Rinuncio a questa ricompensa individuale, voglio solo sostenere il progetto'
+invest-reward-first: 'Ricorda che la quantità da contribuire deve essere maggiore di 0'
 invest-reward-none: 'Non è più possibile scegliere '
 invest-reward-not-found: 'Questa ricompensa non è stata trovata!'
 invest-reward-used-up: 'Non ci sono più unità di questa ricompensa!'
@@ -80,6 +87,7 @@ invest-status-processing: Incompleto
 invest-status-relocated: Ricollocato
 invest-status-returned: 'Restituito (archived)'
 invest-status-to-pool: 'Al portafoglio'
+invest-status-donated: 'Donato alla Fondazione'
 invest-step-1: Ricompensa
 invest-step-2: Pagamento
 invest-step-3: Conferma
@@ -95,7 +103,18 @@ project-invest-ok: 'Il tuo contributo per finanziare questo progetto è stato in
 project-invest-pool-button: 'Utilizzare il mio portafoglio virtuale'
 project-invest-start: 'Stai per co-finanziare questo progetto...'
 project-return-button: 'Tornare al progetto'
+project-see-msg: 'Vedi tuo messaggio'
 spread-facebook: 'Diffondi su Facebook'
 spread-twitter: 'Diffondi su Twitter '
 user-login-required-login: 'Se sei già registrato <a href="%s">inizia la tua sessione</a>, sennò crea un nuovo account '
 warning_nojavascript: 'Attiva javascrip dalla configurazione di privacy del tuo navigatore per poter seguire i passaggi del processo di pagamento. '
+invest-no-register: 'Salta questo passo, voglio solo contribuire'
+invest-user-not-ghost: 'Questa mail appartiene ad un utente esistente!'
+invest-user-name-or-anonymous: 'Il nome è obbligatorio a meno che tu non voglia fare un contributo anonimo'
+invest-created-manually-ok: 'Contributo manuale creato correttamente, selezionare ricompensa e direzione ora.'
+invest-created-manually-ko: 'Errore nel creare il contributo manuale [%s]'
+invest-tip-part-1: 'Voglio sommare alla mia donazione: '
+invest-tip-part-2: 'per contribuire alla missione della <b>Fondazione Goteo</b><br> per una società più etica e collaboratica'
+invest-mail-donate-tip: 'Con la tua donazione hai deciso di collaborare con la <strong>Fondazione Goteo</strong> con %s € addizionali, grazie di cuore.'
+invest-update-total: 'Realizza una donazione totale di <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>   👉 <span class="break-down">%PROJECT_AMOUNT% al progetto + <span id="tip-amount">%DONATE_AMOUNT%</span> alla Fondazione Goteo'
+invest-extra-info: 'Informazione extra'

@@ -3,78 +3,29 @@
 namespace Goteo\Library\Tests;
 
 use Goteo\Library\Converter;
+use Goteo\Library\ConverterReader;
 
 class ConverterTest extends \PHPUnit_Framework_TestCase {
+    private $reader;
 
 	public function testInstance() {
 
 		$converter = new Converter();
+        $reader =  $this->createMock(ConverterReader::class);
+        $reader->method('get')
+             ->willReturn(file_get_contents(__DIR__ . "/eurofxref-daily.xml"));
 
+        $converter->setReader($reader);
 		$this->assertInstanceOf('\Goteo\Library\Converter', $converter);
 
 		return $converter;
 	}
 
 	/**
-	 * doRequest is a private method
-	 *
-	 * https://sebastian-bergmann.de/archives/881-Testing-Your-Privates.html
-	 *
-	 * @covers Foo::doSomethingPrivate
-	 * @depends testInstance
-	 *
-	 *
-	public function testDoRequest($converter) {
-
-	$method = new \ReflectionMethod(
-	'Converter', 'doRequest'
-	);
-
-	$method->setAccessible(TRUE);
-
-	$converter = new Converter;
-
-	// banco central europeo
-	$params = $method->invokeArgs($converter, array(Converter::ECB_URL));
-	$method->invoke($converter, $params);
-
-	// the money converter
-	$params = $method->invokeArgs($converter, array(Converter::TMC_URL));
-	$method->invoke($converter, $params);
-
-	return true;
-	}
-	 */
-
-	/**
-	 * [getData]
-	 * @depends testInstance
-	 *
-	 *
-	public function testGetData($converter) {
-
-	$method = new \ReflectionMethod(
-	'Converter', 'getData'
-	);
-
-	$method->setAccessible(TRUE);
-
-	$converter = new Converter;
-
-	$params = $method->invokeArgs($converter, array('EUR'));
-	$method->invoke($converter, $params);
-
-	$params = $method->invokeArgs($converter, array('USD'));
-	$method->invoke($converter, $params);
-
-	return true;
-	}
-	 */
-
-	/**
 	 * @depends testInstance
 	 */
 	public function testGetRates($converter) {
+        // Configure the stub for EUR.
 		$rates = $converter->getRates('EUR');
 		$this->assertArrayHasKey('USD', $rates);
 
@@ -90,9 +41,11 @@ class ConverterTest extends \PHPUnit_Framework_TestCase {
         $res1 = $converter->getRates('EUR');
         $this->assertArrayHasKey('USD', $res1);
 
-        usleep(100);
-
         //test de cache
+        $key = $converter->getCache()->getKey('EUR', 'rates');
+        $cache = $converter->getCache()->retrieve($key);
+        $this->assertEquals($res1, $cache);
+
         $res2 = $converter->getRates('EUR');
         $this->assertEquals($res1, $res2);
 
@@ -105,15 +58,24 @@ class ConverterTest extends \PHPUnit_Framework_TestCase {
      *
      * @depends testGetRates
      *
+    */
     public function testGetConverterUSD($converter) {
+        // Configure the stub for USD.
+        $reader =  $this->createMock(ConverterReader::class);
+        $reader->method('get')
+             ->willReturn(file_get_contents(__DIR__ . "/USD.xml"));
+        $converter->setReader($reader);
 
 		//test dollar
 		$res1 = $converter->getRates('USD');
 		$this->assertArrayHasKey('EUR', $res1);
 
-		usleep(100);
-
 		//test de cache
+
+        $key = $converter->getCache()->getKey('USD', 'rates');
+        $cache = $converter->getCache()->retrieve($key);
+        $this->assertEquals($res1, $cache);
+
 		$res2 = $converter->getRates('USD');
 		$this->assertEquals($res1, $res2);
 
@@ -122,5 +84,4 @@ class ConverterTest extends \PHPUnit_Framework_TestCase {
 
 		return $converter;
 	}
-    */
 }

@@ -38,7 +38,7 @@ class Matcher extends \Goteo\Core\Model {
     const STATUS_COMPLETED = 'completed';
     const STATUS_PITCH_CLOSED = 'pitch_closed';
     const STATUS_PITCH_OPEN = 'open';
-    const MINIMUM_WALLET_AMOUNT = 3000;
+    const MINIMUM_WALLET_AMOUNT = 1000;
 
     public $id,
            $name,
@@ -51,10 +51,10 @@ class Matcher extends \Goteo\Core\Model {
            $fee = 0,
            $processor = 'duplicateinvest',
            $vars = [
-               'max_donation_per_invest' => 100,
-               'max_donation_per_project' => 0,
+               'max_amount_per_invest' => 100,
+               'max_amount_per_project' => 0,
                'max_invests_per_user' => 1,
-               'filter_by_platform' => 0
+               'match_factor' => 1
            ],
            $crowd = 0, // Calculated field with the sum of all invests made by the peoplo
            $used = 0, // Calculated field with the sum of all invests made by the matching
@@ -64,7 +64,7 @@ class Matcher extends \Goteo\Core\Model {
            $created,
            $modified_at;
 
-    // status for projects assigned to matcher 
+    // status for projects assigned to matcher
     public static $statuses = ['pending', 'accepted', 'rejected', 'active', 'discarded', 'completed'];
 
     public function __construct() {
@@ -79,9 +79,13 @@ class Matcher extends \Goteo\Core\Model {
 
     /**
      * Get instance of matcher already in the table by action
-     * @return [type] [description]
+     * @return Matcher|null
      */
-    static public function get($id, $active_only = true, $lang = null) {
+    static public function get(
+        $id,
+        bool $active_only = true,
+        $lang = null
+    ) {
         $values = [':id' => $id];
         list($fields, $joins) = self::getLangsSQLJoins($lang);
 
@@ -105,11 +109,12 @@ class Matcher extends \Goteo\Core\Model {
             FROM `matcher`
             $joins
             WHERE matcher.id = :id";
-        if($active_only) {
+
+        if ($active_only) {
             $sql .= " AND matcher.active=:active";
             $values[':active'] = true;
         }
-        // print(\sqldbg($sql, $values));
+
         if ($query = static::query($sql, $values)) {
             if( $matcher = $query->fetchObject(__CLASS__) ) {
                 $matcher->viewLang = $lang;
@@ -117,6 +122,7 @@ class Matcher extends \Goteo\Core\Model {
                 return $matcher;
             }
         }
+
         return null;
     }
 
@@ -129,12 +135,18 @@ class Matcher extends \Goteo\Core\Model {
      *                  if 'array' search for all of that statuses in active matchers
      * @return array of Matchers available for the project
      */
-    static public function getFromProject($pid, $status = true) {
+    static public function getFromProject($pid, $status = true, $filters = array()) {
         if($pid instanceOf Project) $pid = $pid->id;
         $values = [':pid' => $pid];
         $sql = "SELECT a.* FROM `matcher` a
             RIGHT JOIN `matcher_project` b ON a.id = b.matcher_id
             WHERE b.project_id = :pid";
+
+        if($filters['has_channel']) {
+            $sql .= " AND EXISTS ( SELECT node.id
+                                    FROM node
+                                    WHERE node.id = a.id )";
+        }
 
         if((is_bool($status) && $status) || $status == 'all') {
             $sql .= " AND a.active=1 AND b.status = 'active'";
@@ -150,7 +162,6 @@ class Matcher extends \Goteo\Core\Model {
             $sql .= " AND a.active=1 AND b.status IN (" . implode(',', $keys) . ")";
         }
         $list = [];
-        // print(\sqldbg($sql, $values));die;
         if ($query = static::query($sql, $values)) {
             if( $matcher = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) ) {
                 return $matcher;
@@ -166,15 +177,13 @@ class Matcher extends \Goteo\Core\Model {
         return $this->imageInstance;
     }
 
-    /**
-     * Lists available matchers
-     * @param  array   $filters [description]
-     * @param  [type]  $offset  [description]
-     * @param  integer $limit   [description]
-     * @param  boolean $count   [description]
-     * @return array
-     */
-    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
+    static public function getList(
+        array $filters = [],
+        int $offset = 0,
+        int $limit = 10,
+        $count = false,
+        $lang = null
+    ) {
         $values = [];
         $filter = [];
         foreach(['owner', 'active', 'processor'] as $key) {
@@ -189,31 +198,29 @@ class Matcher extends \Goteo\Core\Model {
                 $values[":$key"] = '%'.$filters[$key].'%';
             }
         }
-        if($filters['global']) {
+
+        if ($filters['global']) {
             $filter[] = "(matcher.name LIKE :global OR matcher.matcher_location LIKE :global)";
             $values[':global'] = '%'.$filters['global'].'%';
         }
-        // print_r($filter);die;
-        if($filter) {
+
+        if ($filters['has_channel']) {
+            $filter[] = "EXISTS ( SELECT node.id
+                                    FROM node
+                                    WHERE node.id = matcher.id AND node.active )";
+        }
+
+        if ($filter) {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
 
-        if($count==='money')
-        {
-             // Return count
+        if ($count === 'money') {
             $sql = "SELECT SUM(amount) FROM matcher$sql";
-            // echo \sqldbg($sql, $values);
             return (int) self::query($sql, $values)->fetchColumn();
-        }
-        elseif($count) {
-            // Return count
+        } elseif ($count) {
             $sql = "SELECT COUNT(id) FROM matcher$sql";
-            // echo \sqldbg($sql, $values);
             return (int) self::query($sql, $values)->fetchColumn();
         }
-
-        $offset = (int) $offset;
-        $limit = (int) $limit;
 
         if(!$lang) $lang = Lang::current();
         $values['viewLang'] = $lang;
@@ -240,9 +247,7 @@ class Matcher extends \Goteo\Core\Model {
                 $joins
         $sql LIMIT $offset,$limit";
 
-        // print(\sqldbg($sql, $values));
-
-        if($query = self::query($sql, $values)) {
+        if ($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
         return [];
@@ -250,8 +255,8 @@ class Matcher extends \Goteo\Core\Model {
 
     /**
      * Save.
-     * @param   type array  $errors     Errores devueltos pasados por referencia.
-     * @return  type bool   true|false
+     * @param   array  $errors     Errores devueltos pasados por referencia.
+     * @return  bool   true|false
      */
     public function save(&$errors = []) {
 
@@ -282,7 +287,10 @@ class Matcher extends \Goteo\Core\Model {
                     unset($this->matcher_location);
                 }
             }
-            
+
+            if (is_array($this->vars))
+                $this->setVars($this->vars);
+
             if(empty($this->modified_at)) {
                 $this->modified_at = date('Y-m-d H:i:s');
                 $fields[] = 'id';
@@ -291,7 +299,6 @@ class Matcher extends \Goteo\Core\Model {
             else {
                 $this->dbUpdate($fields);
             }
-
 
             return true;
         }
@@ -303,11 +310,11 @@ class Matcher extends \Goteo\Core\Model {
     }
 
     /**
-     * Validation
-     * @param   type array  $errors     Errores devueltos pasados por referencia.
-     * @return  type bool   true|false
+     * @param array $errors Errors array returned by reference
+     * @return bool
      */
-    public function validate(&$errors = []) {
+    public function validate(&$errors = []): bool
+    {
         if(empty($this->id)) $errors[] = 'Empty Id for matcher';
         if(empty($this->name)) $errors[] = 'Empty name for matcher';
         return empty($errors);
@@ -395,7 +402,7 @@ class Matcher extends \Goteo\Core\Model {
         return (int) self::query($sql, $values)->fetchColumn();
     }
 
-    
+
     /**
      * Gets the total number of active projects available for the matching
      * @return int num of projects
@@ -445,7 +452,7 @@ class Matcher extends \Goteo\Core\Model {
     }
 
 
-    
+
      /**
      * Check if the matcher is editable by the user id
      * @param  Goteo\Model\User $user  the user to check
@@ -457,7 +464,7 @@ class Matcher extends \Goteo\Core\Model {
 
         // owns the matcher
         if($this->userIsOwner($user)) return true;
-    
+
         if($user->hasPerm('edit-any-matcher')) return true;
 
         // matcher admin or matcher consultant
@@ -526,9 +533,9 @@ class Matcher extends \Goteo\Core\Model {
 
     /**
      * Use to ensure a valid value of total amount
-     * @return [type] [description]
      */
-    public function getTotalAmount() {
+    public function getTotalAmount(): int
+    {
         if(empty($this->amount)) {
             // Pool reflects the amount still available, not the total
             $this->amount = $this->calculatePoolAmount() + $this->calculateUsedAmount();
@@ -538,9 +545,9 @@ class Matcher extends \Goteo\Core\Model {
 
     /**
      * Use to ensure a valid value of total used amount
-     * @return [type] [description]
      */
-    public function getUsedAmount() {
+    public function getUsedAmount(): int
+    {
         if(empty($this->used)) {
             $this->used = $this->calculateUsedAmount();
         }
@@ -549,17 +556,17 @@ class Matcher extends \Goteo\Core\Model {
 
     /**
      * Use to ensure a valid value of total available amount
-     * @return [type] [description]
      */
-    public function getAvailableAmount() {
+    public function getAvailableAmount(): int
+    {
         return $this->getTotalAmount() - $this->getUsedAmount();
     }
 
     /**
      * Use to ensure a valid value of total crowd amount
-     * @return [type] [description]
      */
-    public function getCrowdAmount() {
+    public function getCrowdAmount(): int
+    {
         if(empty($this->crowd)) {
             $this->crowd = $this->calculateCrowdAmount();
         }
@@ -568,21 +575,17 @@ class Matcher extends \Goteo\Core\Model {
 
     /**
      * Use to ensure a valid value of total projects
-     * @return [type] [description]
      */
-    public function getTotalProjects() {
+    public function getTotalProjects(): int
+    {
         if(empty($this->projects)) {
             $this->projects = $this->calculateProjects();
         }
         return $this->projects;
     }
 
-    /**
-     * All the money raised
-     * @return [type] [amount]
-     */
-    public static function getTotalRaised() {
-
+    public static function getTotalRaised(): int
+    {
         return self::getList([], 0, 10, 'money');
     }
 
@@ -894,7 +897,7 @@ class Matcher extends \Goteo\Core\Model {
             $answers_id[] = $answer->id;
         }
         $score = Score::getScoreByAnswers($answers_id);
-        
+
         $sql = "UPDATE matcher_project SET score = :score WHERE matcher_id = :matcher AND project_id = :project";
         $values = [':matcher' => $this->id, ':project' => $pid, ':score' => $score];
         try {
@@ -911,6 +914,9 @@ class Matcher extends \Goteo\Core\Model {
 
 
 
+    /*
+    *  Get the matchers that a given user administrates
+    */
     public static function getUserMatchersList($user) {
         $sql = "SELECT *
         FROM matcher
@@ -920,7 +926,7 @@ class Matcher extends \Goteo\Core\Model {
                 ->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Matcher');
 
     }
-    
+
     /*
      *   Get matchers available for a project
     */
@@ -953,6 +959,15 @@ class Matcher extends \Goteo\Core\Model {
         }
         // TODO Filter by location
         return $matchers;
+    }
+
+    public function hasQuestionnaire() {
+        $questionnaire = Questionnaire::getByMatcher($this->id);
+        return isset($questionnaire);
+    }
+
+    public function getQuestionnaire() {
+        return Questionnaire::getByMatcher($this->id);
     }
 
 }

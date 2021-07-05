@@ -1,1 +1,39 @@
 ---
+donate-header-description: 'Per una società più etica e collaborativa'
+donate-main-text-intro: 'La piattaforma Goteo è una parte fondamentale della Fondazione Goteo, che promuove strumenti di finanziamento civico per rendere possibile che moltissime iniziative vadano avanti. Abbiamo tre punti chiave molto importanti: l''ecologico, il sociale e il democratico, che danno senso a ciò che facciamo:'
+donate-main-text-line-1: '<strong>Non lasciamo nessuno indietro,</strong>dando supporto "caso per cado e passo dopo passo", con formazione, diffusione ed accompagnamento a più di 200 progetti l''anno.'
+donate-main-text-line-2: '<strong>Innoviamo civicamente di base,</strong> gestendo processi innovativi di finanziamento corresponsabile, unito ad istituzioni pubbliche e private.'
+donate-main-text-line-3: '<strong>Condividiamo ciò che abbiamo,</strong> appoggiando i software liberi, aprendo i nostri <a href="stats.goteo.org">dati</a> e liberando il nostro <a href="https://github.com/GoteoFoundation">codice</a>, per crescere in comunità, rafforzare la società della conoscenza e parteciparvi attivamente, senza complessi!'
+donate-select-amount-title: 'Dona alla Fondazione Goteo'
+donate-select-amount-description: 'Decidi con quale quantità vuoi aiutare affinché possiamo continuare ad approvate progetti'
+donate-foundation-accounts-title: 'Nostri costi'
+donate-foundation-accounts-data-1: '150.006 €'
+donate-foundation-accounts-data-label-1: 'Spese operazionali 2017'
+donate-foundation-accounts-data-2: '29%'
+donate-foundation-accounts-data-label-2: 'Spese coperte per il 4% commissione'
+donate-foundation-accounts-data-3: '79%'
+donate-foundation-accounts-data-label-3: 'Spese dedicate a salari'
+donate-foundation-accounts-text-1: 'Nel 2017, abbiamo ricavato oltre <strong>1.150.000€</strong> per finanziare progetti. La commissione ricavata dai progetti riusciti è del 4%, che dovrebbe coprire il <strong>29%</strong> dei nostri costi operazionali. E quali sono i nostri costi operazionali? Soprattutto, i salari delle persone che rendono possibile ogni giorno l''organizzazione. Consulta <a href="/blog/9050">qui</a> i nostri conti del 2017 ed aiutaci a continuare a lavorare. '
+donate-foundation-accounts-text-2: 'Tutte le donazioni alla Fondazione Goteo sono deducibili. Per esempio, se doni 100€, ti saranno devoluti 75€ per tasse. Usa la nostra <a href="/calculadora-fiscal">Calcolatrice Fiscale</a> per calcolare lo sgravo che ti si applica. Riceverai il certificato di donazione che ti corrisponde.'
+donate-foundation-accounts-text-3: 'Hai qualche domanda sulla tua donazione alla Fondazione Goteo? Scrivici a donate@goteo.org'
+donate-foundation-step-1: 'Donazione'
+donate-pay-method-title: 'Realizza la tua donazione alla Fondazione Goteo'
+donate-alert-recharging: 'Stai per donare '
+donate-invest-success-make-sure: 'La tua donazione alla Fondazione Goteo si è realizzata con successo! Molte grazie!'
+donate-invest-ok: 'La tua donazione è stata trasmessa alla Fondazione Goteo! Scarica il tuo certificato e diffondi la tua generosità!'
+donate-invest-spread-social: 'Hai donato alla Fondazione Goteo! Per l''appoggio alla creazione di uno spazio dove spingere più iniziative sociali e potenziare il #CivicCrowdfunding, aperto e trasparente. @goteofunding Qualcos''altro?'
+donate-invest-spread-header: 'Diffonsi e aiutaci affinché più gente appoggi il nostro lavoro con le loro donazioni'
+donate-button: 'Dona alla Fondazione'
+donate-select-amount-prologue: 'Più informazioni sullo sgravo fiscale del 75% della tua donazione'
+donate-modal-relief-title: 'Il tuo sgravo fiscale'
+donate-modal-relief-description: "<p>Fai la tua donazione alla Fondazione Goteo, e ne consegue il tuo sgravo fiscale.</p>
+<p>Le percentuali di sgravo dipendono da quanto contribuisci: così, per contributi di tutto un anno che non superano i 150€ hai delle percentuali e per quelli che superano i 150€ ne hai altre.</p>
+<ul>
+    <li>Per 150€                -\n75%</li>
+    <li>Da 150€          -\n30%</li>
+    <li>Persone giuridiche        -\n30%</li>
+</ul>
+<p>Se hai collaborato con la stessa entità negli ultimi tre anni, le percentuali di sgravo sono superiori. In questo modo la tua fedeltà verrà ricompensata con una devoluzione maggiore.
+</p>
+<p> * <strong>Importante</strong> Questo miglioramento fiscale non si applica fuori della Spagna, né tantomeno al Paese Basco né a Navarra, che mantengono una deduzione del 30% e del 25% rispettivamente del totale contribuito.</p>
+<p> (*) Il limite della deduziobe sulla base liquidabile si mantiene nel 10%. Articolo 19 (Deduzione della Quota dell'Imposta sul Reddito delle Persone Fisiche) della legge 49/2002, del 23 di dicembre, di regime fiscale delle entità senza scopi di lucro e degli incentivi fiscali al patrocinio.</p>"

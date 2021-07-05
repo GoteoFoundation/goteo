@@ -171,6 +171,26 @@ class NodeTest extends TestCase {
     /**
      * @depends testCreateNode
      */
+    public function testConfig($ob) {
+        $config = ['config1' => 'config 1', 'config2' => 'config 2'];
+        $this->assertTrue($ob->setConfig($config)->save());
+        $config = $ob->getConfig();
+        $this->assertCount(2, $config);
+        $this->assertEquals('config 1', $config['config1']);
+        $this->assertEquals('config 2', $config['config2']);
+        $ob2 = Node::get($ob->id);
+        $this->assertInstanceOf('\Goteo\Model\Node', $ob2);
+        $config = $ob2->getConfig();
+        $this->assertCount(2, $config);
+        $this->assertEquals('config 1', $config['config1']);
+        $this->assertEquals('config 2', $config['config2']);
+        // $ob2 = Matcher
+        return $ob;
+    }
+
+    /**
+     * @depends testCreateNode
+     */
     public function testDeleteNode($node) {
         try {
             $node->dbDelete();

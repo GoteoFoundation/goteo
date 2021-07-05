@@ -23,7 +23,6 @@ invest-called-rest: 'Soilik gelditzen dira <strong>%s</strong> eskuragarri ren <
 invest-card-method: Txartela
 invest-donation-header: 'Sar itzazu datu fiskalak dohaina egiteko'
 invest-fiscal-skip: 'Orain ez ditut datu horiek bete nahi'
-invest-fiscal-title: 'Ziurta ezazu zure zerga ekarpenak kenkaria izan dezakeela (Espainiako zergadunentzat)'
 invest-mail_info-address: 'Honako helbide hau aukeratu duzu:'
 invest-make-sure-save: Gorde
 invest-make-sure-title: Berretsi
@@ -39,6 +38,7 @@ invest-payment-fail: 'Zerbaitek huts egin du ordainketan'
 invest-payment-success: 'Ordainketa ongi egin da'
 invest-payment_method-header: 'Aukeratu ezazu ordainketa mota'
 invest-pool: 'Nire dohaintza, proiektuak bere helburua lortzen ez badu, Goteoko nire diru zorro birtualean gelditzea nahi dut.'
+invest-pool-available: erabilgarriak
 invest-pool-method: 'Txanpon txartel birtuala'
 invest-process-completed: 'Jarritako hau aurreko urrats batean dago egina'
 invest-project: 'proiektuari'
@@ -47,7 +47,7 @@ invest-reward-none: 'Ezin da aukeratu dagoeneko'
 invest-select-reward: 'Aukeratu zure saria'
 invest-share-title: Partekatu
 invest-social-header: 'Talde itzulerekin guztiok irabazten dugu'
-invest-step-1: Saria
+invest-step-1: Ordain saria
 invest-step-2: Ordainketa
 invest-step-3: Berretsi
 invest-step-4: Partekatu

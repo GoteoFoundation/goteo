@@ -1,10 +1,12 @@
+<?php $channel=$this->channel; ?>
+
 <footer id="footer" class="footer">
     <div class="container-fluid">
       <div class="container">
         <div class="row header">
           <div class="pull-left">
             <a href="<?= '/channel/'.$this->channel->id ?> ">
-              <img src="/assets/img/channel/call/logo_crowdcoop_blue.png">
+              <img src="<?= $channel->logo_footer ? $channel->logo_footer->getlink(0,50) : '' ?>" height="50">
             </a>
           </div>
           <div class="pull-right">

@@ -1,10 +1,16 @@
 <?php $channel=$this->channel; ?>
 
-<?php if($this->projects): ?>
+<?php 
+
+if($this->projects): 
+
+  $section = current($this->channel->getSections('projects'));
+
+?>
 
 <div class="section projects">
   <div class="container">
-    <h2 class="title"><span class="icon icon-desktop icon-3x"></span><?= $this->text('channel-call-projects-title') ?></h2>
+    <h2 class="title"><span class="icon icon-desktop icon-3x"></span><?=$section->main_title ? $section->main_title : $this->text('channel-call-projects-title') ?></h2>
     <?= $this->insert('channel/call/partials/filters_block') ?>
 
         <?php if ($this->type !== 'available') : ?>

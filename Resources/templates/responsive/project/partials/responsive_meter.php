@@ -168,26 +168,37 @@ use Goteo\Library\Check;
 
     <?php foreach ($matchers as $matcher): ?>
             <?php $matcher_amount=$matcher->calculateProjectAmount($project->id); ?>
-            <div class="call-info-container ">
-                <div class="row call-info">
-                    <div class="col-xs-3" >
-                        <img width="40" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
+            <?php $matcher_vars=$matcher->getVars(); ?>
+            <?php $max_project= $matcher_vars['max_amount_per_project'] ? $matcher_vars['max_amount_per_project'] : $matcher_vars['donation_per_project']; ?>
+            <?php $progress=round(($matcher_amount/$max_project)*100); ?>
+                <div class="matcher-info">
+                    <div>    
+                        <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo">
+                        <span class="matcher-label">
+                        <?= $this->text('matcher-label-project') ?>
+                        </span>
                     </div>
-                    <div class="col-xs-6">
-                        <img src="<?= $matcher->getLogo()->getLink(150, 150, true) ?>" class="img-responsive">
-                    </div>
-                </div>
-                <?php if($matcher_amount): ?>
-                    <div class="row">
-                        <div class="col-xs-12 matcher-amount">
-                            <?= $this->text('matcher-amount') ?>        
-                            <strong>
-                                <?= ' '.amount_format($matcher_amount) ?>
+                    <div class="matcher-description">
+                        <div class="logo-container">
+                            <img src="<?= $matcher->getLogo()->getLink(150, 150, true) ?>" class="logo">
+                        </div>
+                        <div class="info-container">
+                            <div class="matcher-name">
+                            <?= $matcher->name ?>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $progress ?>%">
+                                </div>
+                            </div>
+                            <div class="matcher-amount">
+
+                            <?= $this->text('matcher-amount-project', ['%AMOUNT%' => amount_format($matcher_amount), '%PROJECT_AMOUNT%' => amount_format($max_project)] ) ?>
+                            </div>
                             </strong>
                         </div>
                     </div>
-                <?php endif; ?>
-            </div>
+                            
+                        </div>
         
         <?php endforeach; ?>
 

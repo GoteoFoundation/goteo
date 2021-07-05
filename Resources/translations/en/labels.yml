@@ -1,16 +1,184 @@
 ---
+accounts-lb: Contributions
+accounts-lb-add: 'Manual input'
+accounts-lb-cancel: 'Canceling contribution'
+accounts-lb-cancel-pool: 'Canceling credit option'
+accounts-lb-details: 'Contribution details'
+accounts-lb-execute: 'Execution of the charge'
+accounts-lb-list: Listing
+accounts-lb-move: 'Relocating the contribution'
+accounts-lb-report: 'Project report'
+accounts-lb-update: 'Changing the status of the contribution'
+accounts-lb-viewer: 'Watching logs'
+banners-lb: Banner
+banners-lb-add: 'New Banner'
+banners-lb-cancel: 'Canceling contribution'
+banners-lb-details: 'Contribution details'
+banners-lb-edit: 'Editing Banner'
+banners-lb-execute: 'Execution of the charge'
+banners-lb-list: Listing
+banners-lb-move: 'Relocating the contribution'
+banners-lb-report: 'Project report'
+banners-lb-translate: 'Translating Banner'
+banners-lb-update: 'Changing the status of the contribution'
+banners-lb-viewer: 'Watching logs'
+blog-lb: Blog
+blog-lb-add: 'New Entry'
+blog-lb-edit: 'Editing Entry'
+blog-lb-footer: 'Sorting the entries in the Footer'
+blog-lb-list: Listing
+blog-lb-reorder: 'Sorting the entries in Cover page'
+blog-lb-translate: 'Translating Entry'
 categories-lb: Categories
+categories-lb-add: 'New Category'
+categories-lb-edit: 'Editing Category'
+categories-lb-keywords: 'Keywords'
+categories-lb-list: Listing
+categories-lb-translate: 'Translating Category'
+commons-lb: 'Collective returns'
+commons-lb-add: 'New return'
+commons-lb-edit: 'Editing return'
+commons-lb-info: 'Contact information'
+commons-lb-list: Listing
+commons-lb-report: 'Project report'
+commons-lb-view: 'Return Management'
 communication-lb: 'Communications'
+criteria-lb: 'Review criteria'
+criteria-lb-add: 'New Criteria'
+criteria-lb-edit: 'Editing Criteria'
+criteria-lb-list: Listing
+criteria-lb-translate: 'Translating Criteria'
+faq-lb: FAQ
+faq-lb-add: 'New Question'
+faq-lb-edit: 'Editing Question'
+faq-lb-list: Listing
+faq-lb-translate: 'Translating Question'
 filter-lb: 'Filters'
 glossary-lb: Glossary
+glossary-lb-edit: 'Editing Term'
+glossary-lb-list: Listing
+glossary-lb-translate: 'Translating Term'
+home-lb: 'Cover elements'
+home-lb-list: 'Cover elements'
+icons-lb: 'Types of Return'
+icons-lb-edit: 'Editing Type'
+icons-lb-list: Listing
+icons-lb-translate: 'Translating Type'
+info-lb: 'About ideas'
+info-lb-add: 'Creating Idea'
+info-lb-edit: 'Editing Idea'
+info-lb-list: Listing
+info-lb-translate: 'Translating Idea'
+licenses-lb: Licenses
+licenses-lb-add: 'Creating Idea'
+licenses-lb-edit: 'Editing License'
+licenses-lb-list: Listing
+licenses-lb-translate: 'Translating License'
+mailing-lb: Communications
+mailing-lb-edit: 'Writing content'
+mailing-lb-list: 'Selecting recipients'
+mailing-lb-send: 'Communication sent'
+milestones-lb: Milestones
+milestones-lb-add: 'New Milestone'
+milestones-lb-edit: 'Editing Milestone'
+milestones-lb-list: Listing
+milestones-lb-translate: 'Translating Milestone'
+news-lb: Micro News
+news-lb-add: 'New Micro News'
+news-lb-edit: 'Editing Micro News'
+news-lb-list: Listing
+news-lb-translate: 'Translating Micro News'
+newsletter-lb: Newsletter
+newsletter-lb-detail: 'Viewing recipients'
+newsletter-lb-init: 'Starting a new shipment'
+newsletter-lb-list: 'Automatic shipping status'
+node-lb: 'Channel Data'
+node-lb-admins: 'Viewing administrators'
+node-lb-edit: Editing
+node-lb-list: 'Current data'
 nodes-lb: Channels
+nodes-lb-add: 'New Channel'
+nodes-lb-admins: 'Assigning Channel Administrators'
+nodes-lb-edit: 'Managing Channel'
+nodes-lb-list: Listing
+pages-lb: Pages
+pages-lb-add: 'New Page'
+pages-lb-list: Listing
+pages-lb-translate: 'Translating Page'
+pages-lbedit: 'Editing Page'
+projects-lb: Projects
+projects-lb-accounts: 'Project accounts'
+projects-lb-assign: 'Assigning a Call to the project'
+projects-lb-cancel: 'Canceling contribution'
+projects-lb-conf: 'Project campaign settings'
+projects-lb-consultants: 'Changing project advisor'
+projects-lb-dates: 'Project dates'
+projects-lb-execute: 'Execution of the position'
+projects-lb-images: 'Project images'
+projects-lb-list: Listing
+projects-lb-move: 'Moving the project to another Node'
+projects-lb-open_tags: 'Assigning a grouping to the project'
+projects-lb-rebase: 'Changing project ID'
+projects-lb-report: 'Project Financial Report'
+promote-lb: 'Featured projects'
+promote-lb-add: 'New Featured'
+promote-lb-edit: 'Editing Featured'
+promote-lb-list: Listing
+promote-lb-translate: 'Translating Featured'
 recent-lb: 'Recent activity'
+recent-lb-list: Listing
+reviews-lb: Reviews
+reviews-lb-add: 'Starting briefing'
+reviews-lb-edit: 'Editing briefing'
+reviews-lb-list: Listing
+rewards-lb: Rewards
+rewards-lb-edit: 'Managing reward'
+rewards-lb-list: Listing
+sent-lb: 'Shipping history'
+sent-lb-list: 'Emails sent'
 sponsors-lb: 'Institutional support'
-stories-lb: 'User stories'
+sponsors-lb-add: 'New Sponsor'
+sponsors-lb-edit: 'Editing Sponsor'
+sponsors-lb-list: Listing
+tags-lb: 'Blog tags'
+tags-lb-add: 'New Tag'
+tags-lb-edit: 'Editing Tag'
+tags-lb-list: Listing
+tags-lb-translate: 'Translating Tag'
+templates-lb: 'Email templates'
+templates-lb-edit: 'Editing Template'
+templates-lb-list: Listing
+texts-lb: 'Texts interficie'
+texts-lb-edit: 'Editing Original'
+texts-lb-list: Listing
+translates-lb: 'Project translations'
+translates-lb-add: 'Enabling translation'
+translates-lb-edit: 'Assigning translation'
+translates-lb-list: Listing
+translates-lb-translate: 'Translating Text'
+transnodes-lb: 'Node translations'
+transnodes-lb-edit: 'Assigning translation'
+transnodes-lb-list: Listing
+users-lb: Users
+users-lb-add: 'Creating User'
+users-lb-edit: 'Editing User'
+users-lb-impersonate: 'Impersonating the User'
+users-lb-list: Listing
+users-lb-manage: 'Managing User'
+users-lb-move: 'Moving the user to another Node'
 workshop-lb: 'Workshops'
+word-lb: 'Word count'
+word-lb-list: Listing
+worth-lb: 'Meritocracy levels'
+worth-lb-edit: 'Editing Level'
+worth-lb-list: Listing
+stats-lb: Stats & data
+stories-lb: 'User stories'
 channelstory-lb: 'Stories in channels'
 channelresource-lb: 'Resources'
 channelposts-lb: 'Posts in channels'
 channelcriteria-lb: 'Questionnaires in channels'
+channelprogram-lb: 'Programs in channels'
+channelsection-lb: 'Sections in channels'
 certificate-lb: 'Certificates'
 certificatemanagement-lb: 'Certificates management'

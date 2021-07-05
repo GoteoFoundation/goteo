@@ -89,10 +89,15 @@ translator-node_faq_question: Preguntas del Faq del Canal
 translator-node_faq_download: Descargas del Faq del Canal
 translator-node_sponsor: Sponsors del Canal
 translator-node_team: Equipo del Canal
+translator-node_sections: Secciones del Canal
+translator-node_resource: Recursos del canal
+translator-node_resource_category: Categoría de los recursos
 translator-image_credits: Créditos de las imágenes
 translator-field-modal_description: Descripción de la modal
 translator-field-action: Acción
 translator-field-action_url: Url de la acción
+translator-field-action_2: Acción 2
+translator-field-action_url_2: Url de la acción 2
 translator-field-banner_title: Título del banner
 translator-field-banner_description: Descripción del banner
 translator-field-label: Etiqueta
@@ -105,3 +110,6 @@ translator-field-tip_msg:  Mensaje
 translator-field-banner_button_url: Url del botón del banner
 translator-field-terms_url: Url de las bases
 translator-field-credits: Creditos
+translator-question: Preguntas
+translator-question_options: Opciones de las preguntas
+translator-field-option: Opciones

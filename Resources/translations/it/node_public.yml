@@ -9,7 +9,7 @@ node-footer-title-creators: Promotori
 node-footer-title-help: 'Hai bisogno di aiuto?'
 node-footer-title-investors: Co-finanziatori 
 node-footer-title-social: Seguici
-node-header-sponsorby: 'Con il sostegno di:'
+node-header-sponsorby: 'Appoggiano questo spazio'
 node-home-calls-headers: Call 
 node-home-posts-header: Novità
 node-side-searcher-bycategory: 'Per categoria'
@@ -22,10 +22,14 @@ node-side-searcher-success: Finanziati
 node-side-sumcalls-budget: 'Totale (tutte le campagne)'
 node-side-sumcalls-calls: Aperto
 node-side-sumcalls-campaigns: Attivo 
+node-side-sumcalls-header: 'Matchfunding'
 node-side-sumcalls-rest: 'Resta da distribuire'
 node-side-summary-active: Attivi
 node-side-summary-amount: 'Quantità di denaro raccolto'
 node-side-summary-investors: Co-finanziatori 
 node-side-summary-success: Finanziati
 node-side-summary-supporters: Collaborazioni 
+node-stats-title: 'Dati di impatto'
 node-projects-title: 'Progetti'
+node-resources-title: 'Di cosa hai bisogno?'
+node-workshops-title: 'Non perderti nostre formazioni'

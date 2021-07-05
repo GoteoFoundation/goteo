@@ -18,5 +18,9 @@ profile-widget-user-header: Utente
 profile-worth-title: 'Dona qui:'
 profile-worthcracy-title: Posizione
 profile_patron-invest_on-header: 'In più co-finanziato '
+profile-stats-title: 'Attività in Goteo'
+profile-stats-projects: 'Campagne'
+profile-stats-invests: 'Donazioni'
+profile-stats-collaborations: 'Contributi'
 user-message-restricted: 'Si può solo ricevere messaggi dai co-finanziatori '
 user-message-send_personal-header: 'Manda un messaggio all''utente'

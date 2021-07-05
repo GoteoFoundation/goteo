@@ -11,10 +11,8 @@ dashboard-certificates-confirm: 'Verileri onayla'
 dashboard-certificates-confirm-checkbox: 'Bu vesileyle bunların benim gerçek yasal verilerim olduğunu onaylıyorum ve onayladığım zaman onları değiştiremeyeceğimin bilincindeyim.'
 dashboard-certificates-confirmed: Onaylı
 dashboard-certificates-processed: İşlenmiş
-dashboard-certificates-confirmed-ok: 'Mali verileriniz şu anda onaylandı. Eğer sertifikanız otomatik olarak indirilmzese, lütfen %HERE% tıklayınız'
 dashboard-certificates-data-alert: 'Onaylandığında verilerin değiştirilemeyeceğini aklınızda bulundurun'
 dashboard-certificates-data-desc: 'Lütfen formdaki verilerin doğru olduğundan emin olunuz ve formu onaylayın'
-dashboard-certificates-data-download-all: 'Lütfen indiriminizi aktif hale getirmek için sertifikalarınızı onaylayınız.Daha sonra onların bir kopyasını indirebilirsiniz.Goteo Kurumu, yılda bir kez onayladığınız tüm bağışları vergi dairesine bildirir.'
 dashboard-certificates-data-new-invests: 'Ve hey, endişelenmeyin! Goteo sayesinde yaptığınız başka bir bağışta yeni bir sertifika oluşturulur'
 dashboard-certificates-desc: 'Bu sertifikalar, sadece İspanya''da bir vergi mükellefi olduğunuz takdirde gelir vergi beyanında indirime imkan sağlayacaktır.'
 dashboard-certificates-details: 'Detayları göster'

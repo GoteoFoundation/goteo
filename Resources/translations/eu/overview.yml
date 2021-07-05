@@ -1,6 +1,6 @@
 ---
 images-main-header: 'Proiektuaren argazkiak'
-mandatory-project-field-about: 'Proiektuaren oinarrizko ezaugarriak azaltzea derrigorrekoa da'
+mandatory-project-field-about: 'Proiektuaren oinarrizko ezaugarriak azaltzea derrigorrezkoa da'
 mandatory-project-field-category: 'Proiektuarentzat kategoria bat aukeratzea gutxienez derrigorrekoa da.'
 mandatory-project-field-description: 'Proiektua laburbildu derrigorrekoa da'
 mandatory-project-field-goal: 'Proiektuaren helburuak deskribapenean azaltzea derrigorrekoa da'
@@ -31,15 +31,17 @@ overview-field-options-scope_local: Tokikoa
 overview-field-options-scope_nacional: Nazionala
 overview-field-options-scope_regional: Erregionala
 overview-field-project_location: Kokapena
-overview-field-related: 'Aurretiko esperientzia eta taldea'
-overview-field-reward: Sariak
+overview-field-related: 'Aldez aurreko esperientzia eta taldea'
+overview-field-reward: Ordain sariak
 overview-field-scope: 'Proiektuaren norainokoa'
 overview-field-subtitle: 'Laburpen esaldia'
 overview-field-usubs: 'Universal Subtitles bitartez azaldu'
-overview-field-video: 'Gainerako bideo motibazioaren inguruan'
+overview-field-video: 'Gainerako bideoa motibazioaren inguruan'
+overview-field-social-category: 'Giza konpromezua'
 overview-fields-images-title: 'Proiektuaren irudiak'
 overview-main-header: 'Proiektuaren deskribapena'
 step-3: Deskribapena
+step-main: Funtsezko datuak
 step-3b: Argazkiak
 step-images: 'Pausoa: Proiektuaren argazkiak'
 step-overview: 'urratsa: proiektuaren deskribapena'

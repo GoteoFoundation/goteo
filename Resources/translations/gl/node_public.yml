@@ -1,15 +1,15 @@
 ---
-node-footer-about: 'Rede social para cofinanciar e colaborar con proxectos creativos que fomentan o ben común <a href="/project/create">¿Tes un proxecto con adn aberto?</a>'
+node-footer-about: 'Rede social para cofinanciar e colaborar con proxectos creativos que fomentan o ben común <a href="/project/create">Tes un proxecto con adn aberto?</a>'
 node-footer-help-what: 'Que é o Crowdfunding'
 node-footer-help-why: 'Porqué Goteo é diferente'
 node-footer-investors-donate: 'Doazóns e desgravacións'
-node-footer-investors-invest: 'Cómo apoiar un proxecto'
+node-footer-investors-invest: 'Como apoiar un proxecto'
 node-footer-investors-payment: 'Como funcionan os pagos'
 node-footer-title-creators: Impulsores
 node-footer-title-help: 'Precisas axuda?'
 node-footer-title-investors: Cofinanceiros
-node-footer-title-social: Séguenos
-node-header-sponsorby: 'Co soporte de'
+node-footer-title-social: Síguenos
+node-header-sponsorby: 'Apoia este espazo'
 node-home-calls-headers: Convocatorias
 node-home-posts-header: Novidades
 node-side-searcher-bycategory: 'Por categoría'
@@ -25,9 +25,11 @@ node-side-sumcalls-campaigns: Activo
 node-side-sumcalls-header: 'Matchfunding'
 node-side-sumcalls-rest: 'Falta por partillar'
 node-side-summary-active: Activos
-node-side-summary-amount: 'Cartos recadados'
+node-side-summary-amount: 'Diñeiro recadado'
 node-side-summary-investors: Cofinanceiros
 node-side-summary-success: Éxitos
 node-side-summary-supporters: Colaboradores
 node-stats-title: 'Datos de impacto'
 node-projects-title: 'Proxectos'
+node-resources-title: 'Que che fai falla?'
+node-workshops-title: 'Non perdas as nosas formacións'
