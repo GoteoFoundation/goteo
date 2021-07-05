@@ -33,6 +33,7 @@
 /dist
 
 phpunit.xml
+.phpunit.result.cache
 /tests/build
 .couscous
 /docker-compose-local.yml
