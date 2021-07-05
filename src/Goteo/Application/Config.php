@@ -448,6 +448,11 @@ class Config {
 					$ret = null;
 				}
 			}
+
+			$pattern = "/^env\('(.*)'\)$/";
+			if (!is_array($ret) && preg_match($pattern, $ret, $env_regex)) {
+				$ret = getenv($env_regex[1]);
+			}
 			return $ret;
 		} elseif ($strict) {
 			throw new ConfigException("Config var [$name] not found!");
