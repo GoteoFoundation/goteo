@@ -325,11 +325,11 @@ class Contract extends \Goteo\Core\Model {
                 $errors['entity'][] = 'entity';
             }
 
-            $valid_nif = Check::nif($this->entity_cif, $nif_type);
+            /*$valid_nif = Check::nif($this->entity_cif, $nif_type);
             if(!$valid_nif || $nif_type != self::CIF ) {
                 $count++;
                 $errors['entity'][] = 'promoter_nif';
-            }
+            }*/
     
             $res->entity = round(100 * ($total - $count)/$total);
         } else {

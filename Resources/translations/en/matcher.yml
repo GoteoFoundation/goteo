@@ -30,4 +30,6 @@ matcher-project-discard: 'El project has been discarded from the call %s'
 matcher-project-activate: 'El project has been activated at the call %s'
 matcher-budget-amount: 'Total budget'
 matcher-label-project: 'Matchfunding Agents <br>match invests'
+matcher-label-pending: "Pending"
 matcher-amount-project: 'Invested: %AMOUNT% of %PROJECT_AMOUNT%'
+matcher-apply-answer-questionnaire: "Answer questionnaire"

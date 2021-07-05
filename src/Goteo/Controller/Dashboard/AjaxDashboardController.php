@@ -29,6 +29,7 @@ use Goteo\Model\User;
 use Goteo\Model\User\Interest as UserInterest;
 use Goteo\Model\Matcher;
 use Goteo\Library\Text;
+use Goteo\Model\Sdg;
 
 class AjaxDashboardController extends DashboardController {
 
@@ -213,6 +214,23 @@ class AjaxDashboardController extends DashboardController {
 
         return $this->jsonResponse($sdgs_suggestion);
 
+    }
+
+    /**
+     * SDG list based on footprint
+     */
+    public function sdgFootprintAction(Request $request)
+    {
+
+        $sdgs = [];
+
+        if ($request->isMethod('get') && $request->query->has('footprint')) {
+            $footprint = $request->query->get('footprint');
+            $total_sdgs = Sdg::getList(['footprint' => $footprint], 0, 0, true);
+            $sdgs = Sdg::getList(['footprint' => $footprint], 0, $total_sdgs);
+        }
+
+        return $this->jsonResponse($sdgs);
     }
 
 }

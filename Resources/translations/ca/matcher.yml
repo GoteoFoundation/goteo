@@ -29,5 +29,13 @@ matcher-project-reject: 'El teu projecte has sigut eliminat de la convocatòria 
 matcher-project-discard: 'El projecte ha sigut descartat de la convocatòria %s'
 matcher-project-activate: 'El projecte ha sigut activat en la convocatòria %s'
 matcher-budget-amount: 'Pressupost total'
+matcher-projects-received: 'Propostes rebudes'
+matcher-projects-received-subtitle: 'Aquí es mostren els projectes que has rebut segons els teus criteris i que han respost el formulari.'
+matcher-btn-active: 'Activar match'
+matcher-label-active: 'Match actiu'
+matcher-label-completed: 'Completat'
+matcher-label-rejected: 'Descartat'
+matcher-label-pending: "Pendent"
 matcher-label-project: 'Agents de Matchfunding<br>multiplicant aportacions'
 matcher-amount-project: 'Aportats: %AMOUNT% de %PROJECT_AMOUNT%'
+matcher-apply-answer-questionnaire: "Respondre qüestionari"
