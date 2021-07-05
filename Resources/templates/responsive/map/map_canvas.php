@@ -27,6 +27,7 @@
       <?php endif; ?>
       data-tile-layer='<?= $this->map->getTileLayer() ?>'
       data-channel='<?= $this->map->getChannel() ?>'
+      data-matcher='<?= $this->map->getMatcher() ?>'
       data-geojson='<?= $this->map->getGeoJSON() ?>'
       data-zoom='<?= $this->map->getZoom() ?>'
       data-center='<?= json_encode($this->map->getCenter()) ?>'
