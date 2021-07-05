@@ -41,6 +41,7 @@ $(function(){
   // }).addTo(map);
   
   var channel = $('#map').data('channel');
+  var matcher = $('#map').data('matcher');
   var geojson = $('#map').data('geojson');
   var zoom = $('#map').data('zoom');
   var center = $('#map').data('center');
@@ -128,6 +129,47 @@ $(function(){
       $('#button-workshops-hide').click(function() {
         map.removeLayer(workshop_markers);
         $('#button-workshops-activate').removeClass('hidden');
+        $(this).addClass('hidden');
+      });
+    });
+  }
+
+  if (matcher) {
+    $.ajax({
+      url: '/api/map/matcher/' + matcher,
+      type: 'GET'
+    }).done(function(data) {
+      var latlngs = [];
+      var projects = data.projects;
+      var project_markers = L.markerClusterGroup();
+      projects.forEach(function(project){
+
+        if (project.project_location.latitude && project.project_location.longitude) {
+          latlngs.push([project.project_location.latitude, project.project_location.longitude]);
+          project_markers.addLayer(L.marker([project.project_location.latitude, 
+            project.project_location.longitude], { icon: projectIcon }).bindPopup(project.popup, { width: 340 }));
+        }
+      });
+        
+      if (latlngs.length) {
+        var latLngBounds = L.latLngBounds(latlngs);
+        // map.fitBounds(latLngBounds);
+      }
+
+      if (projects.length) {
+        map.addLayer(project_markers);
+        $('#button-projects-hide').removeClass('hidden');
+      }
+
+      $('#button-projects-activate').click(function() {
+        map.addLayer(project_markers);
+        $('#button-projects-hide').removeClass('hidden');
+        $(this).addClass('hidden');
+      });
+
+      $('#button-projects-hide').click(function() {
+        map.removeLayer(project_markers);
+        $('#button-projects-activate').removeClass('hidden');
         $(this).addClass('hidden');
       });
     });

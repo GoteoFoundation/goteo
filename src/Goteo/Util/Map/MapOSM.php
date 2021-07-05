@@ -20,6 +20,7 @@
           $height,
           $width,
           $channel,
+          $matcher,
           $projects,
           $workshops,
           $donations,
@@ -50,6 +51,11 @@
     $this->channel = $channel;
   }
 
+  public function setMatcher($matcher) {
+    $this->matcher = $matcher;
+  }
+
+
   public function setProjects($projects) {
     $this->projects = $projects;
   }
@@ -76,6 +82,10 @@
   
   public function getChannel() {
     return $this->channel;
+  }
+
+  public function getMatcher() {
+    return $this->matcher;
   }
 
   public function getProjects() {

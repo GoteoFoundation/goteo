@@ -15,6 +15,7 @@ use Goteo\Application\View;
 use Goteo\Application\Exception;
 
 use Goteo\Model\Node;
+use Goteo\Model\Matcher;
 use Goteo\Model\Project;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Call;
@@ -34,6 +35,7 @@ class MapController extends \Goteo\Core\Controller {
 	public function mapAction(Request $request) {
 
     $cid = strip_tags($request->get('channel'));
+    $mid = strip_tags($request->get('matcher'));
     $geojson = strip_tags($request->get('geojson'));
 
     $map = new MapOSM('100%');
@@ -52,12 +54,22 @@ class MapController extends \Goteo\Core\Controller {
       $map->setChannel($cid);
     }
 
+    if ($mid) {
+      try {
+        $matcher = Matcher::get($mid);
+        $map->setMatcher($mid);
+      } catch( ModelNotFoundException $e) {
+        Message::error($e->getMessage());
+      }
+    }
+
     return $this->viewResponse('map/map_canvas', ['map'  => $map]);
   }
 
   public function exactMapAction($zoom, $latlng, Request $request) {
 
     $cid = strip_tags($request->get('channel'));
+    $mid = strip_tags($request->get('matcher'));
     $geojson = strip_tags($request->get('geojson'));
 
     $map = new MapOSM('100%');
@@ -76,6 +88,15 @@ class MapController extends \Goteo\Core\Controller {
         Message::error($e->getMessage());
       }
       $map->setChannel($cid);
+    }
+
+    if ($mid) {
+      try {
+        $matcher = Matcher::get($mid);
+        $map->setMatcher($mid);
+      } catch( ModelNotFoundException $e) {
+        Message::error($e->getMessage());
+      }
     }
 
     return $this->viewResponse('map/map_canvas', ['map'  => $map]);
