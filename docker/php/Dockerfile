@@ -4,7 +4,7 @@
 
 FROM ubuntu:bionic
 WORKDIR /application
-ARG PHP_VERSION=7.1
+ARG PHP_VERSION=7.4
 
 # Install basic packages
 RUN apt-get update

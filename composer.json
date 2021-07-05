@@ -1,8 +1,15 @@
 {
     "require": {
-        "php": "^7.1",
-        "ext-pdo": "*",
+        "php": "^7.4",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-gd": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-mcrypt": "*",
         "ext-openssl": "*",
+        "ext-pdo": "*",
+        "ext-xml": "*",
         "foil/foil": "~0.6",
         "tpyo/amazon-s3-php-class": "dev-master#81a35c61bf76be7c02c95a57771031d21277b1b5",
         "phpmailer/phpmailer": "^6.4",
