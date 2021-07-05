@@ -8,7 +8,7 @@ ARG PHP_VERSION=7.4
 
 # Install basic packages
 RUN apt-get update
-RUN apt-get -y install apt-utils software-properties-common wget apt-utils curl zip unzip mysql-client jq
+RUN apt-get -y install apt-utils software-properties-common wget curl zip unzip mysql-client jq
 
 # Add Ondrej APT repository to have install several PHP versions
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
