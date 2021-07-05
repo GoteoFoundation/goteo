@@ -47,9 +47,9 @@ class NodeProjectTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * @depends testRemoveNodeProject
-   * @expectedException Goteo\Application\Exception\ModelNotFoundException
    */
   public function testNonExisting($node_project) {
+      $this->expectException(ModelNotFoundException::class);
       $ob = NodeProject::get($node_project->node_id);
   }
 

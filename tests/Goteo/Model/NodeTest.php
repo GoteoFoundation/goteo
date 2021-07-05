@@ -92,7 +92,7 @@ class NodeTest extends TestCase {
         }
 
         $this->assertTrue($node->rebase('testnode3'));
-        $this->assertEquals($node->id, 'testnode3');
+        $this->assertEquals('testnode3', $node->id);
         return $node;
     }
 

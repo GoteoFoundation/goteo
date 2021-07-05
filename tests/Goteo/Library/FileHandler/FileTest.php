@@ -2,6 +2,7 @@
 
 namespace Tests\Goteo\Library\FileHandler;
 
+use Goteo\Library\FileHandler\BaseFile;
 use Goteo\Library\FileHandler\File;
 use Goteo\Library\FileHandler\S3File;
 use Goteo\Library\FileHandler\LocalFile;
@@ -32,7 +33,7 @@ class FileTest extends \PHPUnit\Framework\TestCase {
     /**
      * Ensures that the correct class handles the file management
      */
-    public function testFactory() {
+    public function testFactory(): BaseFile {
         $fp = File::factory();
         $fp->connect();
 
@@ -51,7 +52,8 @@ class FileTest extends \PHPUnit\Framework\TestCase {
      * Tests if a file does not exists in remote file system
      * @depends testFactory
      */
-    public function testDontExistFirst($fp) {
+    public function testDontExistFirst(BaseFile $fp): BaseFile
+    {
         $this->assertFalse($fp->exists(self::$test_img));
         return $fp;
     }
@@ -59,7 +61,8 @@ class FileTest extends \PHPUnit\Framework\TestCase {
    /**
     * @depends testDontExistFirst
     */
-    public function testUpload($fp) {
+    public function testUpload(BaseFile $fp): BaseFile
+    {
         $this->assertTrue($fp->upload(self::$test_img, "test/img.png"));
 
         $this->assertFalse($fp->upload("i-dont-exist.png", "i-wont-exist.png"));
@@ -69,7 +72,8 @@ class FileTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testUpload
      */
-    public function testPutGetContents($fp) {
+    public function testPutGetContents(BaseFile $fp): BaseFile
+    {
         $msg = "this is a phpunit test";
         $this->assertEquals($fp->put_contents("contents.txt", $msg), strlen($msg));
 
@@ -81,8 +85,8 @@ class FileTest extends \PHPUnit\Framework\TestCase {
      /**
      * @depends testPutGetContents
      */
-    public function testExists($fp) {
-
+    public function testExists(BaseFile $fp): BaseFile
+    {
         $this->assertTrue($fp->exists("test/img.png"));
 
         $this->assertTrue($fp->exists("contents.txt"));
@@ -95,9 +99,9 @@ class FileTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testExists
      */
-    public function testGetSaveName($fp) {
-
-        $this->assertEquals($fp->get_save_name("contents.txt"), "contents-1.txt");
+    public function testGetSaveName(BaseFile $fp): BaseFile
+    {
+        $this->assertEquals("contents-1.txt", $fp->get_save_name("contents.txt"));
 
         return $fp;
     }
@@ -105,12 +109,12 @@ class FileTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testGetSaveName
      */
-    public function testFileModificationTime($fp) {
-
+    public function testFileModificationTime(BaseFile $fp): BaseFile
+    {
         $this->assertGreaterThan(self::$start_time - 1, $fp->mtime("test/img.png"));
         $this->assertGreaterThan(self::$start_time - 1, $fp->mtime("contents.txt"));
 
-        $this->assertEquals($fp->mtime("i-dont-exist.png"), -1);
+        $this->assertEquals(-1, $fp->mtime("i-dont-exist.png"));
 
         return $fp;
     }
@@ -118,10 +122,9 @@ class FileTest extends \PHPUnit\Framework\TestCase {
     /**
      * @depends testFileModificationTime
      */
-    public function testDelete($fp) {
-
+    public function testDelete(BaseFile $fp): BaseFile
+    {
         $extra = array('auto_delete_dirs' => true);
-
 
         $this->assertTrue($fp->delete("contents.txt", $extra));
 
