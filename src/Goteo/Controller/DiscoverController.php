@@ -44,19 +44,22 @@ class DiscoverController extends \Goteo\Core\Controller {
             unset($filters['published_since']);
             $filters['status'] = [ Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
         }
-        elseif($vars['category']) {
+        
+        if($vars['category']) {
             $filters['category'] = $vars['category'];
             unset($filters['published_since']);
             $filters['status'] = [ Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
         }
-        elseif($vars['location'] || ($vars['latitude'] && $vars['longitude'])) {
+        
+        if($vars['location'] || ($vars['latitude'] && $vars['longitude'])) {
             // $filters['location'] = $vars['location'];
             unset($filters['published_since']);
             $filters['location'] = new ProjectLocation([ 'location' => $vars['location'], 'latitude' => $vars['latitude'], 'longitude' => $vars['longitude'], 'radius' => 300 ]);
             $filters['status'] = [ Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
             $filters['order'] = 'Distance ASC, project.status ASC, project.published DESC, project.name ASC';
         }
-        elseif($filter === 'near') {
+        
+        if($filter === 'near') {
             // Nearby defined as 300Km distance
             // Any LocationInterface will do (UserLocation, ProjectLocation, ...)
             $filters['location'] = new ProjectLocation([ 'latitude' => $vars['latitude'], 'longitude' => $vars['longitude'], 'radius' => 300 ]);
