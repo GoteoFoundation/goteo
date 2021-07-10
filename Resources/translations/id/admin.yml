@@ -58,5 +58,10 @@ admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
 admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
 admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
 admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' untuk ID penerima'
+admin-communications-useremail-content: ' untuk email penerima'
+admin-communications-username-content: ' untuk nama penerima'
+admin-communications-siteurl-content: ' untuk url ke platform ini (%SITEURL%)'
+admin-communications-subscribeurl-content: ' link langganan pengguna ke newsletter'
 admin-blog-add: Membuat posting baru
 
