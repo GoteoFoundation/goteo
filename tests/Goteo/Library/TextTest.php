@@ -20,7 +20,7 @@ class TextTest extends TestCase {
 		'test-lang-4' => 'This is a %STRING% and %OTHER%',
 	];
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->lang = Lang::current();
 		$this->translator = Lang::translator();
 		$this->translator->addLoader('array', new ArrayLoader());

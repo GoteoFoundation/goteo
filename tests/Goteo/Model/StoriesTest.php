@@ -57,7 +57,7 @@ class StoriesTest extends \PHPUnit\Framework\TestCase {
     /**
      * Clean up
      */
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass(): void {
         delete_test_project();
         delete_test_user();
         delete_test_node();

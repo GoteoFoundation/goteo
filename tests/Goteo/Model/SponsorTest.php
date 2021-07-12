@@ -66,7 +66,7 @@ class SponsorTest extends TestCase {
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         delete_test_node();
     }
 }

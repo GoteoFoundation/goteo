@@ -13,14 +13,10 @@ namespace Goteo\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Omnipay\Common\Message\ResponseInterface;
-
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-
 use Goteo\Application\App;
 use Goteo\Application\Session;
 use Goteo\Application\Message;
 use Goteo\Application\View;
-use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestInitEvent;
@@ -28,11 +24,9 @@ use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Application\Event\FilterInvestFinishEvent;
 use Goteo\Library\Text;
 use Goteo\Application\Currency;
-use Goteo\Library\Listing;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\User;
-use Goteo\Model\Relief;
 use Goteo\Payment\Payment;
 use Goteo\Payment\PaymentException;
 use Goteo\Model\User\Donor;
@@ -171,7 +165,7 @@ class PoolController extends \Goteo\Core\Controller {
     public function paymentFormAction($type='pool', Request $request) {
         $amount = $amount_original = $request->query->get('amount');
 
-       
+
 
         $amount_validated = $this->validate($amount);
         if($amount_return instanceOf Response) return $amount_validated;
@@ -256,7 +250,7 @@ class PoolController extends \Goteo\Core\Controller {
         $invest = Invest::get($invest_id);
 
         $amount = $this->validate(null, true, $type);
-        
+
         if($amount instanceOf Response) return $amount;
 
 
@@ -303,7 +297,7 @@ class PoolController extends \Goteo\Core\Controller {
 
     /**
      * step4: reward/user data
-     * Shown when comming back from the payment gateway
+     * Shown when coming back from the payment gateway
      */
     public function userDataAction($invest_id, $type='pool', Request $request)
     {
@@ -331,9 +325,19 @@ class PoolController extends \Goteo\Core\Controller {
             // Event invest failed
             return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
         }
-        // show form
-        return $this->viewResponse('pool/user_data', ['type' => $type, 'invest' => $invest, 'invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3, 'legal_entities' => Donor::getLegalEntities(), 'legal_documents' => Donor::getLegalDocumentTypes()]);
 
+        return $this->viewResponse(
+            'pool/user_data',
+            [
+                'type' => $type,
+                'invest' => $invest,
+                'invest_address' => $invest_address,
+                'invest_errors' => $errors,
+                'step' => 3,
+                'legal_entities' => Donor::getLegalEntities(),
+                'legal_documents' => Donor::getLegalDocumentTypes()
+            ]
+        );
     }
 
     /**

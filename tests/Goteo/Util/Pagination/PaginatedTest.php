@@ -9,7 +9,7 @@ class PaginatedTest extends \PHPUnit\Framework\TestCase {
     protected $page;
 
     //read config
-    public function setUp() {
+    public function setUp(): void {
 
         $this->page = new \stdClass();
 

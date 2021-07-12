@@ -77,7 +77,7 @@ class CommentTest extends \PHPUnit\Framework\TestCase {
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         Post::query('delete from `post` where id = ?', self::$data['post']);
         delete_test_user();
     }

@@ -12,7 +12,7 @@ $method = $filter['_method'] ? $filter['_method'] : 'get';
       <?php if($filter): ?>
         <div class="form-group col-md-6 col-xs-11">
             <?php foreach($filter as $key => $value):
-                if($key{0} === '_') continue;
+                if($key[0] === '_') continue;
             ?>
                 <input type="text" class="form-control" name="<?= $key ?>" placeholder="<?= $value ?>" value="<?= $this->ee($method === 'get' ? $this->get_query($key) : $this->get_post($key)) ?>">
             <?php endforeach ?>

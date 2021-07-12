@@ -74,7 +74,7 @@ class LogTest extends TestCase {
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         delete_test_user();
         delete_test_project();
         delete_test_node();

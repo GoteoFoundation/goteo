@@ -10,8 +10,8 @@ use Symfony\Component\Yaml\Exception\ParseException;
 
 class ConfigTest extends \PHPUnit\Framework\TestCase {
 
-    public function testInstance() {
-
+    public function testInstance(): Config
+    {
         $ob = new Config();
 
         $this->assertInstanceOf('\Goteo\Application\Config', $ob);
@@ -19,17 +19,14 @@ class ConfigTest extends \PHPUnit\Framework\TestCase {
         return $ob;
     }
 
-    /**
-     * Validate YAML lang files
-     */
-    public function testYamlLangFiles() {
+    public function testValidateYamlLangFiles() {
         try {
             foreach (Lang::listAll('name', false) as $lang => $name) {
                 foreach (Config::$trans_groups as $group) {
                     $file = GOTEO_PATH . 'Resources/translations/' . $lang . '/' . $group . '.yml';
                     if(is_file($file)) {
                         $yaml = Yaml::parse(file_get_contents($file));
-                        if($yaml) $this->assertInternalType('array', $yaml, $file);
+                        if($yaml) $this->assertIsArray($yaml, $file);
                     }
                 }
             }

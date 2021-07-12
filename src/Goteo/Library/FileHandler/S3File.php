@@ -401,7 +401,7 @@ class S3File extends BaseFile implements FileInterface {
      * Reimplementation to remove leading slash
      */
     public function setPath($path) {
-        while($path{0} == DIRECTORY_SEPARATOR) $path = substr($path, 1);
+        while($path[0] == DIRECTORY_SEPARATOR) $path = substr($path, 1);
 
         $this->path = $path;
     }

@@ -177,7 +177,7 @@ class SdgTest extends TestCase {
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         Category::query("DELETE FROM category WHERE `id` = ?", self::$category);
         Sphere::query("DELETE FROM sphere WHERE `id` = ?", self::$sphere);
         SocialCommitment::query("DELETE FROM social_commitment WHERE `id` = ?", self::$socialcommitment);

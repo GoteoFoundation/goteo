@@ -35,8 +35,8 @@ class Glossary extends \Goteo\Core\Model {
     /*
      *  Devuelve datos de una entrada
      */
-    public static function get ($id, $lang = null) {
-
+    public static function get ($id, $lang = null):Glossary
+    {
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 

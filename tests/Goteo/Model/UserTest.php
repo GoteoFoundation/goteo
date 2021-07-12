@@ -46,8 +46,8 @@ class UserTest extends TestCase {
             'email' => 'simulated-user-test2@goteo.org'
         );
 
-    public function testInstance() {
-
+    public function testInstance(): User
+    {
         $converter = new User();
 
         $this->assertInstanceOf('\Goteo\Model\User', $converter);
@@ -62,9 +62,9 @@ class UserTest extends TestCase {
         $nolocation = $total - User::dbCount(array('location' => ''), '!=');
         $mainnode = User::dbCount(array('node' => 'goteo'));
 
-        $this->assertInternalType('integer', $total);
-        $this->assertInternalType('integer', $active);
-        $this->assertInternalType('integer', $mainnode);
+        $this->assertIsInt($total);
+        $this->assertIsInt($active);
+        $this->assertIsInt($mainnode);
         $this->assertGreaterThanOrEqual($active, $total);
         $this->assertGreaterThanOrEqual($nolocation, $total);
         $this->assertGreaterThanOrEqual($mainnode, $total);
@@ -85,9 +85,9 @@ class UserTest extends TestCase {
     /**
      * @depends testCreateUser
      */
-    public function testSuggestUserId($user) {
+    public function testSuggestUserId() {
         $suggestions = User::suggestUserId("I hope this user does not exists");
-        $this->assertInternalType('array', $suggestions);
+        $this->assertIsArray($suggestions);
         $this->assertGreaterThanOrEqual(1, count($suggestions));
         $this->assertEquals('ihope', $suggestions[0]);
         $suggestions = User::suggestUserId("IHopeThisUserDoesNotexists:👑");

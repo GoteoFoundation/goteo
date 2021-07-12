@@ -13,13 +13,14 @@ class FaqTest extends TestCase {
     private static $data = array('section' => 'test-section', 'description' => 'test description', 'title' => 'Test title', 'order' => 1);
     private static $trans_data = array('description' => 'Descripció test', 'title' => 'Test títol');
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         Config::set('lang', 'es');
         Lang::setDefault('es');
         Lang::set('es');
     }
 
-    public function testInstance() {
+    public function testInstance(): Faq
+    {
         \Goteo\Core\DB::cache(false);
 
         $ob = new Faq();
@@ -32,7 +33,7 @@ class FaqTest extends TestCase {
     /**
      * @depends testInstance
      */
-    public function testValidate($ob) {
+    public function testValidate(Faq $ob) {
         $this->assertFalse($ob->validate());
         $this->assertFalse($ob->save());
     }
@@ -54,7 +55,7 @@ class FaqTest extends TestCase {
     /**
      * @depends testCreate
      */
-    public function testSaveLanguages($ob) {
+    public function testSaveLanguages(Faq $ob) {
         $errors = [];
         $this->assertTrue($ob->setLang('ca', self::$trans_data, $errors), print_r($errors, 1));
         return $ob;
@@ -63,7 +64,7 @@ class FaqTest extends TestCase {
     /**
      * @depends testSaveLanguages
      */
-    public function testCheckLanguages($ob) {
+    public function testCheckLanguages(Faq $ob) {
         $faq = Faq::get($ob->id);
         $this->assertInstanceOf('Goteo\Model\Faq', $faq);
         $this->assertEquals(self::$data['title'], $faq->title);
@@ -79,9 +80,9 @@ class FaqTest extends TestCase {
     /**
      * @depends testCreate
      */
-    public function testListing($ob) {
+    public function testListing() {
         $list = Faq::getAll('test-section');
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $faq = end($list);
         $this->assertInstanceOf('Goteo\Model\Faq', $faq);
         $this->assertEquals(self::$data['title'], $faq->title);
@@ -89,7 +90,7 @@ class FaqTest extends TestCase {
 
         Lang::set('ca');
         $list = Faq::getAll('test-section');
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $faq2 = end($list);
         $this->assertEquals(self::$trans_data['title'], $faq2->title);
         $this->assertEquals(self::$trans_data['description'], $faq2->description);
@@ -100,7 +101,8 @@ class FaqTest extends TestCase {
     /**
      * @depends testCreate
      */
-    public function testDelete($ob) {
+    public function testDelete(Faq $ob): Faq
+    {
         $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
@@ -115,7 +117,7 @@ class FaqTest extends TestCase {
     /**
      * @depends testDelete
      */
-    public function testNonExisting($ob) {
+    public function testNonExisting(Faq $ob) {
         $ob = Faq::get($ob->id);
         $this->assertFalse($ob);
         $this->assertFalse(Faq::remove($ob->id));
@@ -124,7 +126,7 @@ class FaqTest extends TestCase {
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         delete_test_node();
     }
 }

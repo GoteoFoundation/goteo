@@ -532,7 +532,7 @@ class Text {
 
         // Quitamos palabras vacías
         $ultima = self::ultima_palabra($texto,$separadores );
-        while ($texto != "" && (in_array($ultima,$palabras_vacias) || strlen($ultima)<=2) || ($html && $ultima{1} == "<" && substr($ultima,-1) == ">")) {
+        while ($texto != "" && (in_array($ultima,$palabras_vacias) || strlen($ultima)<=2) || ($html && $ultima[1] == "<" && substr($ultima,-1) == ">")) {
             $texto = substr($texto,0,strlen($texto)-strlen($ultima));
             while ($texto != "" && in_array(substr($texto,-1),$separadores)){
                 $texto = substr($texto, 0, -1);

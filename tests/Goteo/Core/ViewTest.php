@@ -9,7 +9,7 @@ class ViewTest extends \Goteo\TestCase {
 
     protected static $views = array();
 
-    static function setUpBeforeClass() {
+    static function setUpBeforeClass(): void {
         self::$views = array(
             'admin/blog/list.html.php',
             'admin/commons/list.html.php',
@@ -64,7 +64,7 @@ class ViewTest extends \Goteo\TestCase {
                 $v = new View($view, $vars);
                 $this->assertInstanceOf('\Goteo\Core\View', $v);
                 $out = $v->render();
-                $this->assertInternalType('string', $out);
+                $this->assertIsString($out);
             }
             catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
                 echo "\nLa vista [$view] lanza una exception de modelo!\nEsto no deberia hacerse aqui!\n";

@@ -12,14 +12,14 @@ namespace Goteo\Library {
 
     use Goteo\Application\Config;
 	use Goteo\Core\Model,
-        Goteo\Core\Exception,
-        Goteo\Model\Template,
         Goteo\Application\Lang,
         Goteo\Application\View;
-	/*
-	 * Clase para montar contenido de Boletín
-	 *
-	 */
+    use Goteo\Model\User\Donor;
+
+    /*
+     * Clase para montar contenido de Boletín
+     *
+     */
     class Newsletter {
         static public function getTestersSQL(array $languages = [], $prefix = '') {
             $langs = "('" .implode("','", $languages) . "')";
@@ -139,7 +139,7 @@ namespace Goteo\Library {
         static public function getDonorsSQL(array $languages = [], $prefix = '') {
 
             if(class_exists('\Goteo\Model\User\Donor')) {
-                $year = \Goteo\Model\User\Donor::currYear();
+                $year = Donor::currYear();
             } else {
                 $year = date('Y');
             }
@@ -170,7 +170,7 @@ namespace Goteo\Library {
 		static public function getDonors ($offset = 0, $limit = 25, $count = false) {
 
             if(class_exists('\Goteo\Model\User\Donor')) {
-                $year = \Goteo\Model\User\Donor::currYear();
+                $year = Donor::currYear();
             } else {
                 $year = date('Y');
             }
@@ -287,7 +287,7 @@ namespace Goteo\Library {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td align="left">' . $content . 
+                                            <td align="left">' . $content .
                         '</td>
                                         </tr>
                                     </tbody>

@@ -84,7 +84,7 @@ class PostTest extends \PHPUnit\Framework\TestCase {
         $errors = [];
         $this->assertTrue($ob2->save($errors), print_r($errors, 1));
 
-        $this->assertContains('test-post-', $ob2->getSlug());
+        $this->assertStringContainsString('test-post-', $ob2->getSlug());
 
         Post::delete($ob2->id);
 

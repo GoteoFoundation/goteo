@@ -112,7 +112,7 @@ class Config {
 			\Goteo\Controller\TranslateController::addTranslateModel('node_sections');
 			\Goteo\Controller\TranslateController::addTranslateModel('question');
 			\Goteo\Controller\TranslateController::addTranslateModel('question_options');
-			
+
 			// sets up the rest...
 			self::setDirConfiguration();
 
@@ -219,7 +219,7 @@ class Config {
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommunicationAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FilterAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
-		
+
         // TODO: to be replace by the new AdminController
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
@@ -309,7 +309,6 @@ class Config {
         // TODO: add a generic matcher processor that uses Symfony Expression Language
         // http://symfony.com/doc/current/components/expression_language/syntax.html
         //
-        // App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\ExpressionLanguageProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\CriteriaInvestMatcherProcessor');
 
