@@ -414,31 +414,31 @@ class Config {
 	    string $name,
         bool $strict = false
     ) {
-		$part = strtok($name, '.');
-		if (self::$config && array_key_exists($part, self::$config)) {
-			$paramValue = self::$config[$part];
-			while ($part = strtok('.')) {
-				if (is_array($paramValue) && array_key_exists($part, $paramValue)) {
-					$paramValue = $paramValue[$part];
-				} elseif ($strict) {
-					throw new ConfigException("Config var [$name] not found!");
-				} else {
-					$paramValue = null;
-				}
-			}
+        $part = strtok($name, '.');
+        if (self::$config && array_key_exists($part, self::$config)) {
+            $paramValue = self::$config[$part];
+            while ($part = strtok('.')) {
+                if (is_array($paramValue) && array_key_exists($part, $paramValue)) {
+                    $paramValue = $paramValue[$part];
+                } elseif ($strict) {
+                    throw new ConfigException("Config var [$name] not found!");
+                } else {
+                    $paramValue = null;
+                }
+            }
 
-			if (!is_array($paramValue) && preg_match(self::ENV_PARAMETER_REG_EX, $paramValue, $matches)) {
+            if (!is_array($paramValue) && preg_match(self::ENV_PARAMETER_REG_EX, $paramValue, $matches)) {
                 if (sizeof($matches) >= 1) {
                     $paramValue = getenv($matches[1]);
                 }
             }
 
-			return $paramValue;
-		} elseif ($strict) {
-			throw new ConfigException("Config var [$name] not found!");
-		}
+            return $paramValue;
+        } elseif ($strict) {
+            throw new ConfigException("Config var [$name] not found!");
+        }
 
-		return null;
+        return null;
 	}
 
 	static public function set($name, $value) {
