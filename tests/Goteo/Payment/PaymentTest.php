@@ -9,7 +9,7 @@ class MockPaymentMethod extends AbstractPaymentMethod {
 
 }
 
-class PaymentTest extends \PHPUnit_Framework_TestCase {
+class PaymentTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 
@@ -42,7 +42,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase {
         $this->assertContainsOnlyInstancesOf('Goteo\Payment\Method\PaymentMethodInterface', $methods);
         return $methods;
     }
-   
+
     public function testGetMethod() {
         $this->assertInstanceOf('Goteo\Payment\Method\PaymentMethodInterface', Payment::getMethod('mock'));
     }

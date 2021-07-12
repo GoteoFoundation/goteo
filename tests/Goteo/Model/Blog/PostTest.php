@@ -6,7 +6,7 @@ namespace Goteo\Model\Blog\Tests;
 use Goteo\Model\Blog\Post;
 use Goteo\Model\Image;
 
-class PostTest extends \PHPUnit_Framework_TestCase {
+class PostTest extends \PHPUnit\Framework\TestCase {
     private static $data = array('title' => 'Test post', 'text' => 'test text',
         'blog' => 1,
         'date' => '2015-01-01',

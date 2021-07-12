@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Model\Page;
 
-class PageTest extends \PHPUnit_Framework_TestCase {
+class PageTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Library\OAuth\SocialAuth;
 
-class SocialAuthTest extends \PHPUnit_Framework_TestCase {
+class SocialAuthTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

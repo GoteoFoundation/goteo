@@ -7,7 +7,7 @@ use Goteo\Model\Mail\MailStats;
 use Goteo\Model\Template;
 use Goteo\Model\Mail;
 
-class MailStatsTest extends \PHPUnit_Framework_TestCase {
+class MailStatsTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Library\SuperForm;
 
-class SuperFormTest extends \PHPUnit_Framework_TestCase {
+class SuperFormTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

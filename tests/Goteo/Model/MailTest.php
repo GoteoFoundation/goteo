@@ -5,8 +5,9 @@ namespace Goteo\Model\Tests;
 use Goteo\Model\Template;
 use Goteo\Model\Mail;
 use Goteo\Application\Config;
+use PHPMailer\PHPMailer\PHPMailer;
 
-class MailTest extends \PHPUnit_Framework_TestCase
+class MailTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Ensures has the correct instances
@@ -14,8 +15,8 @@ class MailTest extends \PHPUnit_Framework_TestCase
     public function testInstance(): Mail
     {
         $mail = new Mail();
-        $this->assertInstanceOf('\Goteo\Model\Mail', $mail);
-        $this->assertInstanceOf('\PHPMailer', $mail->mail);
+        $this->assertInstanceOf(Mail::class, $mail);
+        $this->assertInstanceOf(PHPMailer::class, $mail->mail);
         return $mail;
     }
 
@@ -43,7 +44,7 @@ class MailTest extends \PHPUnit_Framework_TestCase
     public function testMessage(Mail $mail)
     {
         $mailer = $mail->buildMessage();
-        $this->assertInstanceOf('\PHPMailer', $mailer);
+        $this->assertInstanceOf(PHPMailer::class, $mailer);
 
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
 
@@ -89,7 +90,7 @@ class MailTest extends \PHPUnit_Framework_TestCase
     {
         $mail = Mail::createFromText('test@goteo.org', 'Test', 'Subject', "Body\nsecond line");
         $mailer = $mail->buildMessage();
-        $this->assertInstanceOf('\PHPMailer', $mailer);
+        $this->assertInstanceOf(PHPMailer::class, $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
         $this->assertContains('Subject', $mailer->Subject);
@@ -103,7 +104,7 @@ class MailTest extends \PHPUnit_Framework_TestCase
         $mail = Mail::createFromHtml('test@goteo.org', 'Test', 'Subject', "Body<br>second line");
         $mailer = $mail->buildMessage();
 
-        $this->assertInstanceOf('\PHPMailer', $mailer);
+        $this->assertInstanceOf(PHPMailer::class, $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
         $this->assertContains('Subject', $mailer->Subject);
@@ -119,7 +120,7 @@ class MailTest extends \PHPUnit_Framework_TestCase
         $mail = Mail::createFromTemplate('test@goteo.org', 'Test', Template::NEWSLETTER);
         $mailer = $mail->buildMessage();
 
-        $this->assertInstanceOf('\PHPMailer', $mailer);
+        $this->assertInstanceOf(PHPMailer::class, $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
         $this->assertContains($tpl->title, $mailer->Subject);

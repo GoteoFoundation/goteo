@@ -5,7 +5,7 @@ namespace Goteo\Application\Tests;
 
 use Goteo\Application\Lang;
 
-class LangTest extends \PHPUnit_Framework_TestCase {
+class LangTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

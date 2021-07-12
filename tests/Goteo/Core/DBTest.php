@@ -5,7 +5,7 @@ namespace Goteo\Core\Tests;
 use Goteo\Core\DB,
     Goteo\Library\Cacher;
 
-class DBTest extends \PHPUnit_Framework_TestCase {
+class DBTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         DB::cache(false);

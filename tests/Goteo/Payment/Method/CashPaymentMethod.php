@@ -5,7 +5,7 @@ namespace Goteo\Payment\Tests;
 use Goteo\Payment\Method;
 use Goteo\Application\Config;
 
-class CashPaymentMethodTest extends \PHPUnit_Framework_TestCase {
+class CashPaymentMethodTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

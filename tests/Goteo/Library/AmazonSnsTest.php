@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Library\AmazonSns;
 
-class AmazonSnsTest extends \PHPUnit_Framework_TestCase {
+class AmazonSnsTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

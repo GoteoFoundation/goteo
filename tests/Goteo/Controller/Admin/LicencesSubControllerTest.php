@@ -7,7 +7,7 @@ use Goteo\Controller\Admin\LicensesSubController;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
-class LicensesSubControllerTest extends \PHPUnit_Framework_TestCase {
+class LicensesSubControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         $user = new User();

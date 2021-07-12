@@ -8,7 +8,7 @@ use Goteo\Model\User;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 
-class MessageTest extends \PHPUnit_Framework_TestCase {
+class MessageTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('message' => 'Test message content');
     private static $trans_data = array('message' => 'Test contingut del missatge');

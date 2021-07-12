@@ -5,7 +5,7 @@ namespace Goteo\Controller\Tests;
 
 use Goteo\Controller\WidgetController;
 
-class WidgetControllerTest extends \PHPUnit_Framework_TestCase {
+class WidgetControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

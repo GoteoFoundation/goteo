@@ -21,7 +21,7 @@ use Goteo\Model\Mail\StatsCollector;
 use Goteo\Model\Message as Comment;
 use Goteo\Util\Monolog\Processor\WebProcessor;
 use PDOException;
-use PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Mail extends Model {
     protected $Table = 'mail';

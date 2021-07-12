@@ -5,7 +5,7 @@ namespace Goteo\Model\Call\Tests;
 
 use Goteo\Model\Call\Post;
 
-class PostTest extends \PHPUnit_Framework_TestCase {
+class PostTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 
