@@ -25,6 +25,9 @@ use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\Routing\Route;
 
 class Config {
+
+    const ENV_PARAMETER_REG_EX = "/^%env\((.*)\)%$/";
+
     // Initial translation groups (grouped in yml files into Resources/translations/)
     static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate', 'questionnaire', 'poster', 'channel_call', 'map'];
 	static protected $loader;
@@ -407,28 +410,34 @@ class Config {
      * @return array|false|mixed|string|null
      * @throws ConfigException
      */
-	static public function get(string $name, bool $strict = false) {
+	static public function get(
+	    string $name,
+        bool $strict = false
+    ) {
 		$part = strtok($name, '.');
 		if (self::$config && array_key_exists($part, self::$config)) {
-			$ret = self::$config[$part];
+			$paramValue = self::$config[$part];
 			while ($part = strtok('.')) {
-				if (is_array($ret) && array_key_exists($part, $ret)) {
-					$ret = $ret[$part];
+				if (is_array($paramValue) && array_key_exists($part, $paramValue)) {
+					$paramValue = $paramValue[$part];
 				} elseif ($strict) {
 					throw new ConfigException("Config var [$name] not found!");
 				} else {
-					$ret = null;
+					$paramValue = null;
 				}
 			}
 
-			$pattern = "/^env\('(.*)'\)$/";
-			if (!is_array($ret) && preg_match($pattern, $ret, $env_regex)) {
-				$ret = getenv($env_regex[1]);
-			}
-			return $ret;
+			if (!is_array($paramValue) && preg_match(self::ENV_PARAMETER_REG_EX, $paramValue, $matches)) {
+                if (sizeof($matches) >= 1) {
+                    $paramValue = getenv($matches[1]);
+                }
+            }
+
+			return $paramValue;
 		} elseif ($strict) {
 			throw new ConfigException("Config var [$name] not found!");
 		}
+
 		return null;
 	}
 
