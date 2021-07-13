@@ -114,12 +114,19 @@ class DiscoverController extends \Goteo\Core\Controller {
         if(empty($type)) $type = 'promoted';
 
         $limit = 12;
-        $q = strip_tags($request->query->get('q'));
-        $location = strip_tags($request->query->get('location'));
-        $latitude = strip_tags($request->query->get('latitude'));
-        $longitude = strip_tags($request->query->get('longitude'));
-        $category = $request->query->get('category');
-        $vars = ['q' => $q, 'category' => $category, 'location' => $location, 'latitude' => $latitude, 'longitude' => $longitude];
+
+        if ($request->query->has('q'))
+            $vars['q'] = strip_tags($request->query->get('q'));
+
+        if ($request->query->has('location')) {
+            $vars['location'] = strip_tags($request->query->get('location'));
+            $vars['latitude'] = strip_tags($request->query->get('latitude'));
+            $vars['longitude'] = strip_tags($request->query->get('longitude'));
+        }
+
+        if ($request->query->has('category'))
+            $vars['category'] = $request->query->get('category');
+
         if(Session::isAdmin()) {
             $vars['review'] = $request->query->get('review') === '1' ? 1 : 0 ;
         }
