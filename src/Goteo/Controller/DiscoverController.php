@@ -115,10 +115,12 @@ class DiscoverController extends \Goteo\Core\Controller {
 
         $limit = 12;
 
+        $vars = [];
+
         if ($request->query->has('q'))
             $vars['q'] = strip_tags($request->query->get('q'));
 
-        if ($request->query->has('location')) {
+        if ($request->query->has('location') || ( $request->query->has('latitude') && $request->query->has('longitude') )) {
             $vars['location'] = strip_tags($request->query->get('location'));
             $vars['latitude'] = strip_tags($request->query->get('latitude'));
             $vars['longitude'] = strip_tags($request->query->get('longitude'));
@@ -156,17 +158,26 @@ class DiscoverController extends \Goteo\Core\Controller {
         $limit = max(1, min(25, abs($limit)));
         $pag = max(0, abs($pag));
         $filter = $request->get('filter');
-        $q = strip_tags($request->get('q'));
-        $location = strip_tags($request->get('location'));
-        $latitude = strip_tags($request->get('latitude'));
-        $longitude = strip_tags($request->get('longitude'));
-        $category = $request->get('category');
+
+        $vars = [];
+
+        if ($request->query->has('q'))
+            $vars['q'] = strip_tags($request->query->get('q'));
+
+        if ($request->query->has('location')) {
+            $vars['location'] = strip_tags($request->query->get('location'));
+            $vars['latitude'] = strip_tags($request->query->get('latitude'));
+            $vars['longitude'] = strip_tags($request->query->get('longitude'));
+        }
+
+        if ($request->query->has('category'))
+            $vars['category'] = $request->query->get('category');
 
         $ofilters = [
             'status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED],
             'published_since' => (new \DateTime('-6 month'))->format('Y-m-d')
         ];
-        $filters = $this->getProjectFilters($filter, ['q' => $q, 'category' => $category, 'location' => $location, 'latitude' => $latitude, 'longitude' => $longitude]);
+        $filters = $this->getProjectFilters($filter, $vars);
 
         $offset = $pag * $limit;
         $total_projects = 0;
