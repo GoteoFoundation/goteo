@@ -3193,7 +3193,7 @@ class Project extends \Goteo\Core\Model {
         if (!empty($filters['location']) && $filters['location'] instanceOf LocationInterface) {
             $loc = $filters['location'];
             $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
-            $innerJoin .= "INNER JOIN project_location ON project_location.id = project.id";
+            $innerJoin .= " INNER JOIN project_location ON project_location.id = project.id";
             $location_parts = ProjectLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'project_location');
             $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
             $values = array_merge($values, $location_parts['params']);
@@ -3264,7 +3264,7 @@ class Project extends \Goteo\Core\Model {
         if(!empty($filters['type'])) {
             if($filters['type'] === 'promoted') {
                 // en "promote"
-                $innerJoin = 'INNER JOIN promote ON promote.project = project.id';
+                $innerJoin .= ' INNER JOIN promote ON promote.project = project.id';
                 $sqlFilter .= ' AND promote.active = 1';
                 if($filters['promote_node']) {
                     $values[':promote_node'] = $filters['promote_node'];
@@ -3278,7 +3278,7 @@ class Project extends \Goteo\Core\Model {
                 }
             }
             elseif($filters['type'] === 'matchfunding') {
-                $innerJoin = "LEFT JOIN call_project ON call_project.project = project.id
+                $innerJoin .= " LEFT JOIN call_project ON call_project.project = project.id
                 LEFT JOIN matcher_project ON matcher_project.project_id = project.id AND matcher_project.status='active'";
                 $sqlFilter .= ' AND (!ISNULL(call_project.project) OR !ISNULL(matcher_project.project_id))';
             }
