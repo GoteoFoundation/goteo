@@ -533,17 +533,17 @@ body.home {
                     font-size:2rem;
 
                     &[data-footprint="eco"] {
-                        background:url('../img/home/footprint-bg-tab-eco.png');
+                        background:url('../img/footprint/1.svg');
                         background-size: cover;
                     }
 
                     &[data-footprint="soc"] {
-                        background:url('../img/home/footprint-bg-tab-soc.png');
+                        background:url('../img/footprint/2.svg');
                         background-size: cover;
                     }
 
                     &[data-footprint="dem"] {
-                        background:url('../img/home/footprint-bg-tab-dem.png');
+                        background:url('../img/footprint/3.svg');
                         background-size: cover;
                     }
                 }
@@ -553,6 +553,7 @@ body.home {
                 }
             }
         }
+
 
         div[id^="goteo-values-"] {
             display:grid;
@@ -722,7 +723,7 @@ body.home {
                 }
 
                 img.footprint {
-                    padding:2rem;
+                    margin: 2rem;
                 }
 
                 h2 {
