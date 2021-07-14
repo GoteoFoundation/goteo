@@ -10,18 +10,18 @@
         </div>
         <div class="row" id="goteo-values-eco">
             <div class="col footprint-briefing">
-                <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
+                <img src="assets/img/footprint/1.svg" heigh="70" width="70" alt="Huella ECO" class="footprint" />
                 <p><span class="footprint-label">Huella ecológica</span></p>
                 <h2>Cómo dejar una mejor huella en el planeta</h2>
                 <p>El impacto ambiental generado por la demanda humana hace de los recursos existentes en los ecosistemas del planeta se debiliten. Aquí apoyamos iniciativas de preservación de la capacidad ecológica de la Tierra de regenerar sus recursos</p>
                 <h3>Objetivos de desarrollo sostenible relacionados:</h3>
                 <p>Haz click para saber más:</p>
                 <ul>
-                    <li><a href=""><img src="assets/img/home/ods7.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods12.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods13.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods14.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods15.png" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods7.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods12.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods13.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods14.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods15.svg" width="75" height="75" alt="ODS"/></a></li>
                 </ul>
             </div>
             <div class="col footprint-info">
@@ -49,7 +49,7 @@
                     <div class="footprint-project">
                         <img src="http://data.goteo.org/7000x0/img-20201118-111420.jpg" class="bg-project eco">
                         <div class="project-footprint">
-                            <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
+                            <img src="assets/img/footprint/1.svg" heigh="70" width="70" alt="Huella ECO" class="footprint" />
                         </div>
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
@@ -57,7 +57,7 @@
                     <div class="footprint-project">
                         <img src="//data.goteo.org/7000x0/banner750x422-lazona.jpg" class="bg-project eco">
                         <div class="project-footprint">
-                            <img src="assets/img/home/footprint-eco.png" alt="Huella ECO" class="footprint" />
+                            <img src="assets/img/1.svg" heigh="70" width="70" alt="Huella ECO" class="footprint" />
                         </div>
                         <h2>La Zona, un mercat digital amb valors</h2>
                         <p>Por: La Zona</p>
@@ -70,18 +70,18 @@
         </div>
         <div class="row" id="goteo-values-soc">
             <div class="col footprint-briefing">
-                <img src="assets/img/home/footprint-eco.png" alt="Huella SOC" class="footprint" />
+                <img src="assets/img/footprint/1.svg" heigh="70" width="70" alt="Huella SOC" class="footprint" />
                 <p><span class="footprint-label">Huella social</span></p>
                 <h2>Cómo dejar una mejor huella en el planeta</h2>
                 <p>El impacto ambiental generado por la demanda humana hace de los recursos existentes en los ecosistemas del planeta se debiliten. Aquí apoyamos iniciativas de preservación de la capacidad ecológica de la Tierra de regenerar sus recursos</p>
                 <h3>Objetivos de desarrollo sostenible relacionados:</h3>
                 <p>Haz click para saber más:</p>
                 <ul>
-                    <li><a href=""><img src="assets/img/home/ods7.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods12.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods13.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods14.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods15.png" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods7.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods12.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods13.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods14.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods15.svg" width="75" height="75" alt="ODS"/></a></li>
                 </ul>
             </div>
             <div class="col footprint-info">
@@ -109,7 +109,7 @@
                     <div class="footprint-project">
                         <img src="http://data.goteo.org/7000x0/img-20201118-111420.jpg" class="bg-project soc">
                         <div class="project-footprint">
-                            <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
+                            <img src="assets/img/footprint/2.svg" heigh="70" width="70" alt="Huella SOC" class="footprint" />
                         </div>
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
@@ -117,7 +117,7 @@
                     <div class="footprint-project">
                         <img src="//data.goteo.org/7000x0/banner750x422-lazona.jpg" class="bg-project soc">
                         <div class="project-footprint">
-                            <img src="assets/img/home/footprint-soc.png" alt="Huella SOC" class="footprint" />
+                            <img src="assets/img/footprint/2.svg" heigh="70" width="70" alt="Huella SOC" class="footprint" />
                         </div>
                         <h2>La Zona, un mercat digital amb valors</h2>
                         <p>Por: La Zona</p>
@@ -130,18 +130,18 @@
         </div>
         <div class="row" id="goteo-values-dem">
             <div class="col footprint-briefing">
-                <img src="assets/img/home/footprint-eco.png" alt="Huella DEM" class="footprint" />
+                <img src="assets/img/footprint/1.svg" heigh="70" width="70" alt="Huella DEM" class="footprint" />
                 <p><span class="footprint-label">Huella dem</span></p>
                 <h2>Cómo dejar una mejor huella en el planeta</h2>
                 <p>El impacto ambiental generado por la demanda humana hace de los recursos existentes en los ecosistemas del planeta se debiliten. Aquí apoyamos iniciativas de preservación de la capacidad ecológica de la Tierra de regenerar sus recursos</p>
                 <h3>Objetivos de desarrollo sostenible relacionados:</h3>
                 <p>Haz click para saber más:</p>
                 <ul>
-                    <li><a href=""><img src="assets/img/home/ods7.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods12.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods13.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods14.png" alt="ODS"/></a></li>
-                    <li><a href=""><img src="assets/img/home/ods15.png" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods7.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods12.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods13.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods14.svg" width="75" height="75" alt="ODS"/></a></li>
+                    <li><a href=""><img src="assets/img/ods/ods15.svg" width="75" height="75" alt="ODS"/></a></li>
                 </ul>
             </div>
             <div class="col footprint-info">
@@ -169,7 +169,7 @@
                     <div class="footprint-project">
                         <img src="http://data.goteo.org/7000x0/img-20201118-111420.jpg" class="bg-project dem">
                         <div class="project-footprint">
-                            <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
+                            <img src="assets/img/footprint/3.svg" heigh="70" width="70" alt="Huella DEM" class="footprint" />
                         </div>
                         <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
                         <p>Por: L'Espora</p>
@@ -177,7 +177,7 @@
                     <div class="footprint-project">
                         <img src="//data.goteo.org/7000x0/banner750x422-lazona.jpg" class="bg-project dem">
                         <div class="project-footprint">
-                            <img src="assets/img/home/footprint-dem.png" alt="Huella DEM" class="footprint" />
+                            <img src="assets/img/footprint/3.svg" heigh="70" width="70" alt="Huella DEM" class="footprint" />
                         </div>
                         <h2>La Zona, un mercat digital amb valors</h2>
                         <p>Por: La Zona</p>
