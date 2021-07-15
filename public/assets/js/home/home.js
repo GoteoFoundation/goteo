@@ -118,7 +118,6 @@ $(function(){
 
   // init tabs on Goteo Values
   $(".goteo-values div.container > div.row:not(#goteo-values-eco)").hide();
-  $(".goteo-values .footprint-tabs a[data-footprint='eco']").addClass("active");
 
   // add navigation at tabs on Goteo Values
   $(".goteo-values .footprint-tabs").on("click","a",function(e){
