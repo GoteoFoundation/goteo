@@ -12,6 +12,7 @@ namespace Goteo\Controller;
 
 use Goteo\Application\View;
 use Goteo\Model\Banner;
+use Goteo\Model\Footprint;
 use Goteo\Model\Project;
 use Goteo\Model\Stories;
 use Goteo\Model\Node;
@@ -41,6 +42,7 @@ class IndexController extends DiscoverController
         $banners = Banner::getAll(true);
         $stats = Stats::create('home_stats');
         $sponsors = $this->getSponsors();
+        $footprints = Footprint::getList();
 
         return $this->viewResponse('home/index', [
             'banners'   => $banners,
@@ -51,7 +53,8 @@ class IndexController extends DiscoverController
             'stories'   => $stories,
             'channels'  => $channels,
             'stats'     => $stats,
-            'sponsors'  => $sponsors
+            'sponsors'  => $sponsors,
+            'footprints' => $footprints
         ]);
     }
 
