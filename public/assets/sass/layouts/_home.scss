@@ -527,22 +527,23 @@ body.home {
                     padding:7px 5px 7px 40px;
                     color:#FFFFFF;
                     filter: grayscale(100%);
-                    width:100px;
+                    width: 10rem;
+                    height: 4rem;
                     background-size: cover;
                     font-weight:bold;
                     font-size:2rem;
 
-                    &[data-footprint="eco"] {
+                    &[data-footprint="1"] {
                         background:url('../img/footprint/1.svg');
                         background-size: cover;
                     }
 
-                    &[data-footprint="soc"] {
+                    &[data-footprint="2"] {
                         background:url('../img/footprint/2.svg');
                         background-size: cover;
                     }
 
-                    &[data-footprint="dem"] {
+                    &[data-footprint="3"] {
                         background:url('../img/footprint/3.svg');
                         background-size: cover;
                     }
