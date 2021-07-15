@@ -117,11 +117,14 @@ $(function(){
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   // init tabs on Goteo Values
   $(".goteo-values div.container > div.row:not(#goteo-values-eco)").hide();
 
 >>>>>>> add dynamic footprints from database into home values and changes in footprint images
+=======
+>>>>>>> add dynamic projects based on footprints and minimum amount and random selection
   // add navigation at tabs on Goteo Values
   $(".goteo-values .footprint-tabs").on("click","a",function(e){
     e.preventDefault();
