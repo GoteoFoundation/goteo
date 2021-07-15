@@ -2578,11 +2578,24 @@ class Project extends \Goteo\Core\Model {
 
     }
 
-    public static function getByFootprint($footprints = array(), $offset, $limit = 10, $count = false)
+    public static function getByFootprint($filter = array(), $offset = 0, $limit = 10, $count = false)
     {
         $lang = Lang::current();
         $values = array();
         list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        $footprints = is_array($filter['footprints'])? $filter['footprints'] : [$filter['footprints']];
+
+        $order = "ORDER BY project.id ASC";
+
+        if ($filter['rand']) {
+            $order = "ORDER BY rand()";
+        }
+
+        if ($filter['amount_bigger_than']) {
+            $sqlWhere .= "AND project.amount > :amount_bigger_than";
+            $values[':amount_bigger_than'] = $filter['amount_bigger_than'];
+        }
 
         if($count) {
             $sql = "
@@ -2590,6 +2603,7 @@ class Project extends \Goteo\Core\Model {
             INNER JOIN sdg_project ON sdg_project.project_id = project.id
             INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
             WHERE sdg_footprint.footprint_id IN (" . implode(',', $footprints) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . ")
+            $sqlWhere
             ";
             return (int) self::query($sql)->fetchColumn();
         }
@@ -2636,8 +2650,9 @@ class Project extends \Goteo\Core\Model {
                 ON project_conf.project = project.id
             $joins
             WHERE sdg_footprint.footprint_id IN (" . implode(',', $footprints) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . ")
-            GROUP BY project.id
-            ORDER BY  project.id ASC
+            $sqlWhere
+            GROUP BY project
+            $order
             $sql_limit
             ";
             // die(\sqldbg($sql, $values));

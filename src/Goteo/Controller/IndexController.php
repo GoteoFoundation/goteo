@@ -44,6 +44,11 @@ class IndexController extends DiscoverController
         $sponsors = $this->getSponsors();
         $footprints = Footprint::getList();
 
+        $projects_by_footprint = [];
+        foreach($footprints as $footprint) {
+            $projects_by_footprint[$footprint->id] = Project::getByFootprint(['footprints' => $footprint->id, 'rand' => true, 'amount_bigger_than' => 10000]);
+        }
+
         return $this->viewResponse('home/index', [
             'banners'   => $banners,
             'projects'  => $projects,
@@ -54,7 +59,8 @@ class IndexController extends DiscoverController
             'channels'  => $channels,
             'stats'     => $stats,
             'sponsors'  => $sponsors,
-            'footprints' => $footprints
+            'footprints' => $footprints,
+            'projects_by_footprint' => $projects_by_footprint
         ]);
     }
 
