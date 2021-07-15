@@ -481,7 +481,7 @@ div.matcher-info {
         }
 
         .matcher-name{
-          font-size:14px
+          font-size:16px
         }
 
         .matcher-amount{
@@ -489,11 +489,14 @@ div.matcher-info {
           .completed{
             color: #70BB34;
             text-transform: uppercase;
-            font-size: $font-size;
+            font-size: 14px;
             .fa{
-              font-size: $font-size*1.35;
-              vertical-align: text-bottom;
+              font-size: 22px;
+              vertical-align: bottom;
             }
+          }
+          .figure{
+            font-size: 14px;
           }
         }
 

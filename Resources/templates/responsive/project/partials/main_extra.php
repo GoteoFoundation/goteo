@@ -227,7 +227,7 @@ $langs = $project->getLangs();
                                                  <i class="fa fa-check-circle"></i>
                                                 <?= $this->text('matcher-label-completed') ?>
                                             </span>
-                                        <span>
+                                        <span class="figure">
                                             <?= '('.amount_format($matcher_amount).')' ?>
                                         </span>
 
