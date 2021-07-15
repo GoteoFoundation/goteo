@@ -19,11 +19,9 @@
                     <h3>Objetivos de desarrollo sostenible relacionados:</h3>
                     <p>Haz click para saber más:</p>
                     <ul>
-                        <li><a href=""><img src="assets/img/ods/ods7.svg" width="75" height="75" alt="ODS"/></a></li>
-                        <li><a href=""><img src="assets/img/ods/ods12.svg" width="75" height="75" alt="ODS"/></a></li>
-                        <li><a href=""><img src="assets/img/ods/ods13.svg" width="75" height="75" alt="ODS"/></a></li>
-                        <li><a href=""><img src="assets/img/ods/ods14.svg" width="75" height="75" alt="ODS"/></a></li>
-                        <li><a href=""><img src="assets/img/ods/ods15.svg" width="75" height="75" alt="ODS"/></a></li>
+                        <?php foreach($this->sdg_by_footprint[$footprint->id] as $sdg): ?>
+                        <li><a href=""><img src="assets/img/ods/ods<?= $sdg->id ?>.svg" width="75" height="75" alt="<?= $sdg->name ?>"/></a></li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
                 <div class="col footprint-info">

@@ -14,6 +14,7 @@ use Goteo\Application\View;
 use Goteo\Model\Banner;
 use Goteo\Model\Footprint;
 use Goteo\Model\Project;
+use Goteo\Model\Sdg;
 use Goteo\Model\Stories;
 use Goteo\Model\Node;
 use Goteo\Model\Sponsor;
@@ -45,8 +46,10 @@ class IndexController extends DiscoverController
         $footprints = Footprint::getList();
 
         $projects_by_footprint = [];
+        $sdg_by_footprint = [];
         foreach($footprints as $footprint) {
             $projects_by_footprint[$footprint->id] = Project::getByFootprint(['footprints' => $footprint->id, 'rand' => true, 'amount_bigger_than' => 10000]);
+            $sdg_by_footprint[$footprint->id] = Sdg::getList(['footprint' => $footprint->id]);
         }
 
         return $this->viewResponse('home/index', [
@@ -60,7 +63,8 @@ class IndexController extends DiscoverController
             'stats'     => $stats,
             'sponsors'  => $sponsors,
             'footprints' => $footprints,
-            'projects_by_footprint' => $projects_by_footprint
+            'projects_by_footprint' => $projects_by_footprint,
+            'sdg_by_footprint' => $sdg_by_footprint
         ]);
     }
 
