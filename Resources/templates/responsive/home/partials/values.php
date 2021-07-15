@@ -9,10 +9,10 @@
                 <?php endforeach; ?>
             </ul>
         </div>
-        <?php foreach($this->footprints as $footprint): ?>
-            <div class="row" id="goteo-values-<?= $footprint->id ?>">
+        <?php foreach($this->footprints as $index => $footprint): ?>
+            <div class="row <?= ($index != 0)? "hidden" : '' ?>" id="goteo-values-<?= $footprint->id ?>">
                 <div class="col footprint-briefing">
-                    <img src="assets/img/footprint/1.svg" heigh="70" width="70" alt="Huella ECO" class="footprint" />
+                    <img src="assets/img/footprint/<?= $footprint->id ?>.svg" heigh="70" width="70" alt="<?= $footprint->name ?>" class="footprint" />
                     <p><span class="footprint-label">Huella ecológica</span></p>
                     <h2>Cómo dejar una mejor huella en el planeta</h2>
                     <p>El impacto ambiental generado por la demanda humana hace de los recursos existentes en los ecosistemas del planeta se debiliten. Aquí apoyamos iniciativas de preservación de la capacidad ecológica de la Tierra de regenerar sus recursos</p>
@@ -28,6 +28,7 @@
                 </div>
                 <div class="col footprint-info">
                     <div class="slider slider-footprint-data">
+
                         <div class="">
                             <img src="https://data.goteo.org/165x240c/cambio-climatico-1.jpg">
                             <h2>Datos huella ecológica</h2>
@@ -48,22 +49,16 @@
                         </div>
                     </div>
                     <div class="slider slider-footprint-projects">
-                        <div class="footprint-project">
-                            <img src="http://data.goteo.org/7000x0/img-20201118-111420.jpg" class="bg-project eco">
-                            <div class="project-footprint">
-                                <img src="assets/img/footprint/1.svg" heigh="70" width="70" alt="Huella ECO" class="footprint" />
+                        <?php foreach($this->projects_by_footprint[$footprint->id] as $index => $project): ?>
+                            <div class="footprint-project">
+                                <img src="<?= $project->image->getLink(600, 416, true); ?>" class="bg-project eco">
+                                <div class="project-footprint">
+                                    <img src="assets/img/footprint/<?= $footprint->id ?>.svg" height="70" width="70" alt="<?= $footprint->name ?>" class="footprint" />
+                                </div>
+                                <h2><a href="/project/<?= $project->id ?>"><?= $this->text_truncate($this->ee($project->name), 80); ?></a></h2>
+                                <p><a href="/user/profile/<?= $this->project->user->id ?>"><?= $this->text('regular-by') . ' ' . $this->project->user->name ?></a></p>
                             </div>
-                            <h2>Construïm l'Espora llibreria i espai cooperatiu a l'H</h2>
-                            <p>Por: L'Espora</p>
-                        </div>
-                        <div class="footprint-project">
-                            <img src="//data.goteo.org/7000x0/banner750x422-lazona.jpg" class="bg-project eco">
-                            <div class="project-footprint">
-                                <img src="assets/img/1.svg" heigh="70" width="70" alt="Huella ECO" class="footprint" />
-                            </div>
-                            <h2>La Zona, un mercat digital amb valors</h2>
-                            <p>Por: La Zona</p>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="footprint-action">

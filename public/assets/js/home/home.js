@@ -116,16 +116,13 @@ $(function(){
     console.log("test");
   });
 
-  // init tabs on Goteo Values
-  $(".goteo-values div.container > div.row:not(#goteo-values-eco)").hide();
-
   // add navigation at tabs on Goteo Values
   $(".goteo-values .footprint-tabs").on("click","a",function(e){
     e.preventDefault();
     var footprint =$(this).attr("data-footprint");
-    $(".goteo-values div.container > div.row").hide();
+    $(".goteo-values div.container > div.row").addClass('hidden');
     $(".goteo-values .footprint-tabs a").removeClass("active");
-    $(".goteo-values div.container > div#goteo-values-"+footprint).show();
+    $(".goteo-values div.container > div#goteo-values-"+footprint).removeClass('hidden');
     $(".goteo-values .footprint-tabs a[data-footprint='"+footprint+"']").addClass("active");
     //workaround to fix slick initiation on hiden elements
     $('.slider-footprint-data, .slider-footprint-projects').slick('setPosition');
