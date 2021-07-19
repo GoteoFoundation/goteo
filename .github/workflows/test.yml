@@ -70,4 +70,4 @@ jobs:
         run: grunt build:dist
 
       - name: Run tests
-        run: run-tests.sh -t config/github-settings.yml tests/
+        run: ./run-tests.sh -t config/github-settings.yml tests/
