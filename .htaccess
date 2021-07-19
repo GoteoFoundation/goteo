@@ -7,8 +7,5 @@ ServerSignature Off
     RewriteEngine On
     RewriteBase /dist
     RewriteCond %{REQUEST_FILENAME} !-f
-    # Use this for debugging
-    # RewriteRule .* index_dev.php?%{QUERY_STRING}
-    # For production
     RewriteRule .* index.php?%{QUERY_STRING}
 </IfModule>
