@@ -23,6 +23,8 @@ jobs:
     services:
       mysql:
         image: mysql:8.0
+        ports:
+          - 3306:3306
         env:
           MYSQL_DATABASE: goteo
           MYSQL_HOST: 127.0.0.1
