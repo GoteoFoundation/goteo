@@ -1,0 +1,67 @@
+name: "[CI] Test"
+
+on:
+  push:
+    branches:
+      - main
+      - live
+  pull_request:
+
+env:
+  GOTEO_CONFIG_FILE: config/github-settings.yml
+  DB_DATABASE: goteo
+  DB_USER: goteo
+  DB_PASSWORD: goteo
+
+jobs:
+  test-report:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '7.0', '7.1' ]
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: goteo
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_USER: goteo
+          MYSQL_PASSWORD: goteo
+          MYSQL_ROOT_PASSWORD: goteo
+
+    steps:
+      - name: Verify MySQL connection from host
+        run: |
+          sudo apt-get install -y mysql-client
+          mysql --host 127.0.0.1 -ugoteo -pgoteo -e "SHOW DATABASES"
+
+      - name: Install compile gems
+        run: |
+          gem install sass -v 3.4.23
+          gem install compass
+          npm install -g grunt-cli
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Install NPM packages
+        run: npm install
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: Run Composer Install
+        run: composer install --no-interaction
+
+      - name: Run migrations
+        run: bin/console migrate install
+
+      - name: Grunt compile assets
+        run: grunt build:dist
+
+      - name: Run tests
+        run: run-tests.sh -t config/github-settings.yml tests/
