@@ -69,7 +69,7 @@ class DatepickerType extends SymfonyDateType
         $resolver->setDefault('row_class', '');
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'datepicker';
     }

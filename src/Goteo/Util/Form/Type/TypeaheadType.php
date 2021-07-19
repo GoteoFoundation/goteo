@@ -16,9 +16,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- *
- * This class creates overides Date to show always as the single_text option is activated
- *
+ * This class creates overrides Date to show always as the single_text option is activated
  */
 class TypeaheadType extends TextType
 {
@@ -30,8 +28,6 @@ class TypeaheadType extends TextType
     {
         parent::configureOptions($resolver);
         $resolver->setDefault('sources', ''); // Sources: 'channel', 'call', 'matcher', 'project', 'user', 'consultant'
-        // $resolver->setDefault('engines', []); // Url for autocomplete
-        // $resolver->setDefault('defaults', []); // Url for autocomplete
         $resolver->setDefault('row_class', '');
         $resolver->setDefault('text', ''); // If exists, the text shown instead of the value
         $resolver->setDefault('fake_id', ''); // Created automatically, the id of the typeahead input field (real data is placed in a hidden field)
@@ -54,11 +50,6 @@ class TypeaheadType extends TextType
         $view->vars['row_class'] = $options['row_class'];
         $view->vars['value_field'] = $options['value_field'];
         $view->vars['type'] = $options['type'];
-    }
-
-    public function getName()
-    {
-        return 'typeahead';
     }
 
     /**

@@ -19,9 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\CallbackTransformer;
 
 /**
- *
- * This class creates overides Date to show always as the single_text option is activated
- *
+ * This class creates overrides Date to show always as the single_text option is activated
  */
 class LocationType extends TextType
 {
@@ -108,7 +106,6 @@ class LocationType extends TextType
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -126,15 +123,6 @@ class LocationType extends TextType
         }
         $view->children['location']->vars['pre_addon'] = $view->vars['pre_addon'];
         $view->children['location']->vars['post_addon'] = $view->vars['post_addon'];
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

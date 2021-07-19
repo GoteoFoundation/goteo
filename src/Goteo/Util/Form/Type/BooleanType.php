@@ -70,13 +70,6 @@ class BooleanType extends CheckboxType
         $view->vars['label_attr'] = $options['label_attr'];
         $view->vars['row_class'] = $options['row_class'];
     }
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
 
     /**
      * {@inheritdoc}

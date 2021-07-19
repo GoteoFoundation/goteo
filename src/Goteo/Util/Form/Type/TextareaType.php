@@ -17,9 +17,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- *
- * This class creates overides Date to show always as the single_text option is activated
- *
+ * This class creates overrides Date to show always as the single_text option is activated
  */
 class TextareaType extends SymfonyTextareaType
 {
@@ -33,9 +31,9 @@ class TextareaType extends SymfonyTextareaType
         $resolver->setDefault('html_editor', false);
     }
 
-    // /**
-    //  * {@inheritdoc}
-    //  */
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return __NAMESPACE__.'\TextType';

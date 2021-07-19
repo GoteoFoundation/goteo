@@ -16,9 +16,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- *
- * This class creates overides Date to show always as the single_text option is activated
- *
+ * This class creates overrides Date to show always as the single_text option is activated
  */
 class YearType extends TextType
 {
@@ -46,14 +44,6 @@ class YearType extends TextType
         $view->vars['max'] = $options['max'];
         $view->vars['pre_addon'] = $options['pre_addon'];
         $view->vars['post_addon'] = $options['post_addon'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

@@ -19,9 +19,7 @@ use Symfony\Component\Form\FormInterface;
 use League\HTMLToMarkdown\HtmlConverter;
 
 /**
- *
  * This class creates a Symfony Form Type for Markdown editing (needs assets/js/forms.js)
- *
  */
 class MarkdownType extends TextareaType
 {
