@@ -40,7 +40,7 @@ jobs:
         run: |
           sudo apt-get install -y mysql-client
           mysql --host 127.0.0.1 -ugoteo -pgoteo -e "SHOW DATABASES"
-          mysql --host 1270.0.01 -ugoteo -pgoteo -e "ALTER USER 'goteo' IDENTIFIED WITH mysql_native_password BY 'goteo';
+          mysql --host 1270.0.01 -ugoteo -pgoteo -e "ALTER USER 'goteo' IDENTIFIED WITH mysql_native_password BY 'goteo'";
 
       - name: Install compile gems
         run: |
