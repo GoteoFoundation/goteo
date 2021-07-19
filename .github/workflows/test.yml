@@ -38,9 +38,9 @@ jobs:
 
       - name: Install compile gems
         run: |
-          gem install sass -v 3.4.23
-          gem install compass
-          npm install -g grunt-cli
+          sudo gem install sass -v 3.4.23
+          sudo gem install compass
+          sudo npm install -g grunt-cli
 
       - uses: actions/checkout@v2
         with:
