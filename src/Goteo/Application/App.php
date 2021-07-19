@@ -10,13 +10,15 @@
 
 namespace Goteo\Application;
 
+use Goteo\Util\Foil\Extension\GoteoCore;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel;
 use Symfony\Component\Routing\RouteCollection;
 
-class App extends HttpKernel\HttpKernel {
+class App extends HttpKernel\HttpKernel
+{
     static protected $_app;
     static protected $_request;
     static protected $_routes;
@@ -81,8 +83,8 @@ class App extends HttpKernel\HttpKernel {
     }
 
     /**
-     * Dispatchs an event
-     * Events can be handled by any suscriber
+     * Dispatches an event
+     * Events can be handled by any subscriber
      * @param  string     $eventName event ID
      * @param  Event|null $event     Event object
      * @return Event                 the result object
@@ -104,7 +106,7 @@ class App extends HttpKernel\HttpKernel {
 
     /**
      * Sets the routes for the app
-     * Must be called befor App::get() in order to set a different sets of routes
+     * Must be called before App::get() in order to set a different sets of routes
      */
     static public function setRoutes(RouteCollection $routes) {
         self::$_routes = $routes;
@@ -116,10 +118,11 @@ class App extends HttpKernel\HttpKernel {
      *     ::setRequest()
      *     ::setRoutes()
      *     ::setServiceContainer()
-     * Next calls to this method will return the current instantatied App
+     * Next calls to this method will return the current instantiated App
      * @return App object
      */
-    static public function get() {
+    static public function get(): App
+    {
         if (!self::$_app) {
 
             // Getting the request either from global or simulated
@@ -140,9 +143,9 @@ class App extends HttpKernel\HttpKernel {
                 define('SITE_URL', 'http://'.$SITE_URL);
             }
             // Setup request for views
-            \Goteo\Util\Foil\Extension\GoteoCore::setRequest($request);
+            GoteoCore::setRequest($request);
 
-            $sc         = self::getServiceContainer();
+            $sc = self::getServiceContainer();
             self::$_app = $sc->get('app');
         }
         return self::$_app;
@@ -154,11 +157,12 @@ class App extends HttpKernel\HttpKernel {
      *     - A bottom html profiler tool will be displayed on the bottom of the page
      *     - SQL queries will be collected fo statistics
      *     - Html/php error will be shown
-     * @param  boolean $enable If must or no be enabled (do it before call App::get())
+     * @param boolean|null $enable If must or no be enabled (do it before call App::get())
      *                         A null value does nothing
      * @return boolean         Returns the current debug mode
      */
-    static public function debug($enable = null) {
+    static public function debug(bool $enable = null): bool
+    {
         if ($enable === true) {
             self::$_debug = true;
         }
@@ -182,21 +186,15 @@ class App extends HttpKernel\HttpKernel {
         self::$_app->terminate($request, $response);
     }
 
-    /**
-     * Resets the current app
-     * @return [type] [description]
-     */
     static public function clearApp() {
         self::$_app     = null;
         self::$_sc      = null;
         self::$_routes  = null;
         self::$_request = null;
     }
-    /**
-     * Retrieves current colletected errors
-     * @return array array of errors
-     */
-    static public function getErrors() {
+
+    static public function getErrors(): array
+    {
         return self::$_errors;
     }
 
@@ -204,39 +202,41 @@ class App extends HttpKernel\HttpKernel {
      * Error handler function to collect whatever error that can be collected
      * For use with the set_error_handler() function
      */
-    static public function errorHandler($errno, $errstr, $errfile, $errline, $errcontext) {
+    static public function errorHandler($errno, $errstr, $errfile, $errline) {
         if (!(error_reporting() & $errno)) {
             return;
         }
 
         switch ($errno) {
             case E_USER_DEPRECATED:
-                // some symfony deprecated errors...
                 $type = 'user deprecated';
-                // return;
+                break;
             case E_WARNING:
                 $type = 'warning';
+                break;
             case E_USER_WARNING:
                 $type = 'user warning';
+                break;
             case E_STRICT:
                 $type = 'strict standards';
+                break;
             case E_NOTICE:
                 $type = 'notice';
+                break;
             case E_USER_NOTICE:
                 $type  = 'user notice';
-                $fatal = false;
                 break;
             default:
                 $type  = 'fatal error';
-                $fatal = true;
                 break;
         }
+
         $trace = array_reverse(debug_backtrace());
         $info  = '';
         array_pop($trace);
         $txtinfo = strtoupper($type).': \''.$errstr.'\' at '.$errfile.' '.$errline.':'."\n";
         foreach ($trace as $item)
-        $txtinfo .= '  '.(isset($item['file'])?$item['file']:'<unknown file>').' '.(isset($item['line'])?$item['line']:'<unknown line>').' calling '.$item['function'].'()'."\n";
+        $txtinfo .= '  '.($item['file'] ?? '<unknown file>').' '.($item['line'] ?? '<unknown line>').' calling '.$item['function'].'()'."\n";
         if (php_sapi_name() == 'cli') {
             echo $txtinfo;
         } else {
@@ -244,27 +244,19 @@ class App extends HttpKernel\HttpKernel {
             $info .= '<span class="type '.$type.'">'.$type.'</span> \'<b>'.$errstr.'</b>\' at <b>'.$errfile.' '.$errline.'</b>:'."\n";
             $info .= '  <ol>'."\n";
             foreach ($trace as $item)
-                $info .= '    <li><b>'.(isset($item['file'])?$item['file']:'<unknown file>').' '.(isset($item['line'])?$item['line']:'<unknown line>').'</b> calling '.$item['function'].'()</li>'."\n";
+                $info .= '    <li><b>'.($item['file'] ?? '<unknown file>').' '.($item['line'] ?? '<unknown line>').'</b> calling '.$item['function'].'()</li>'."\n";
             $info .= '  </ol>'."\n";
             $info .= '</p>'."\n";
         }
         if (ini_get('log_errors')) {
             $items = array();
             foreach ($trace as $item)
-                $items[] = (isset($item['file'])?$item['file']:'<unknown file>').' '.(isset($item['line'])?$item['line']:'<unknown line>').' calling '.$item['function'].'()';
+                $items[] = ($item['file'] ?? '<unknown file>').' '.($item['line'] ?? '<unknown line>').' calling '.$item['function'].'()';
             $message = strtoupper($type).': \''.$errstr.'\' at '.$errfile.' '.$errline.': '.join(' | ', $items);
             error_log($message);
         }
 
         self::$_errors["$errfile:$errline"] = $info;
         self::getService('logger')->err($txtinfo);
-
-        if ($fatal) {
-            // $code = \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
-            // \Goteo\Application\View::addFolder(__DIR__ . '/../../../templates/default');
-            // // views function registering
-            // // TODO: custom template
-            // die(\Goteo\Application\View::render('errors/internal', ['msg' => $errstr, 'code' => $code, 'info' => $info], $code));
-        }
     }
 }
