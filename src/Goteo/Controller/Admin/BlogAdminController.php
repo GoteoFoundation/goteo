@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller\Admin;
 
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,7 +21,6 @@ use Goteo\Application\Event\FilterBlogPostEvent;
 use Goteo\Application\AppEvents;
 use Goteo\Library\Text;
 use Goteo\Model\Blog;
-use Goteo\Model\Post;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Library\Forms\FormModelException;
 
@@ -110,12 +110,12 @@ class BlogAdminController extends AbstractAdminController {
         $processor = $this->getModelForm('AdminPostEdit', $post, $defaults, [], $request);
         $processor->createForm();
         $processor->getBuilder()
-            ->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
+            ->add('submit', SubmitType::class, [
+                'label' => 'regular-submit'
             ]);
         if($post->id) {
             $processor->getBuilder()
-                ->add('remove', 'submit', [
+                ->add('remove', SubmitType::class, [
                     'label' => Text::get('admin-remove-entry'),
                     'icon_class' => 'fa fa-trash',
                     'span' => 'hidden-xs',
@@ -140,7 +140,6 @@ class BlogAdminController extends AbstractAdminController {
                 Message::info(Text::get('admin-remove-entry-ok'));
                 return $this->redirect('/admin/blog/');
             }
-
 
             try {
                 $processor->save($form); // Do not save the model if it has errors

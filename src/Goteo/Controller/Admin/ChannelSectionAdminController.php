@@ -10,6 +10,9 @@
 
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Library\Forms\FormModelException;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -69,7 +72,7 @@ class ChannelSectionAdminController extends AbstractAdminController
 
     $list = NodeSections::getList(['node' => $id], $page * $limit, $limit, false);
     $total = NodeSections::getList(['node' => $id], 0, 0, true);
-    
+
     return $this->viewResponse('admin/channelsection/list', [
       'current_node' => $id,
       'nodes' => $this->user->getNodeNames(),
@@ -95,15 +98,15 @@ class ChannelSectionAdminController extends AbstractAdminController
 
     $processor = $this->getModelForm('AdminSection', $section, [], [], $request);
     $processor->createForm()->getBuilder()
-      ->add('submit', 'submit', [
+      ->add('submit', SubmitType::class, [
         'label' => 'admin-channelsection-create',
         'attr' => ['class' => 'btn btn-cyan'],
         'icon_class' => 'fa fa-save'
     ]);
-  
+
     $form = $processor->getForm();
     $form->handleRequest($request);
-  
+
     if ($form->isSubmitted() && $request->isMethod('post')) {
       try {
         $processor->save($form);
@@ -114,7 +117,7 @@ class ChannelSectionAdminController extends AbstractAdminController
         Message::error(Text::get('form-has-errors'));
       }
     }
-  
+
 
     return $this->viewResponse('admin/channelsection/edit', [
       'current_node' => $node,
@@ -139,10 +142,10 @@ class ChannelSectionAdminController extends AbstractAdminController
         'attr' => ['class' => 'btn btn-cyan'],
         'icon_class' => 'fa fa-save'
     ]);
-  
+
     $form = $processor->getForm();
     $form->handleRequest($request);
-  
+
     if ($form->isSubmitted() && $request->isMethod('post')) {
       try {
         $processor->save($form);
@@ -153,7 +156,7 @@ class ChannelSectionAdminController extends AbstractAdminController
         Message::error(Text::get('form-has-errors'));
       }
     }
-    
+
     return $this->viewResponse('admin/channelsection/edit', [
       'current_node' => $node,
       'program' => $section,
@@ -163,7 +166,7 @@ class ChannelSectionAdminController extends AbstractAdminController
   }
 
   public function deleteAction($node, $section_id, Request $request) {
-        
+
     try {
         $section = NodeSections::get($section_id);
     } catch (ModelNotFoundException $exception) {
@@ -175,8 +178,8 @@ class ChannelSectionAdminController extends AbstractAdminController
       $section->dbDelete();
       Message::info(Text::get('admin-remove-entry-ok'));
     } catch (\PDOException $e) {
-      Message::error($e->getMessage());  
-    } 
+      Message::error($e->getMessage());
+    }
 
     return $this->redirect('/admin/channelsections/' . $node);
   }

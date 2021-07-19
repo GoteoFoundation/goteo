@@ -11,7 +11,10 @@
 
 namespace Goteo\Library\Forms\Admin;
 
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Goteo\Util\Form\Type\BooleanType;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
@@ -27,24 +30,20 @@ class AdminSphereEditForm extends AbstractFormProcessor {
 
     public function createForm() {
         $model = $this->getModel();
-
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
-        $defaults = $options['data'];
-
         $sdgs = [];
+
         foreach(Sdg::getList([],0,100) as $s) {
             $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
         }
 
-        // print_r($defaults);die;
         $builder
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('name'),
                 'label' => 'regular-name'
             ])
-            ->add('icon', 'dropfiles', array(
+            ->add('icon', DropfilesType::class, array(
                 'required' => false,
                 'limit' => 1,
                 'data' => [$model->icon ? $model->getIcon() : null],
@@ -58,12 +57,12 @@ class AdminSphereEditForm extends AbstractFormProcessor {
                     'help' => Text::get('admin-categories-if-empty-then-asset', '<img src="'.$model->getIcon(true)->getLink(64,64).'" class="icon">')
                 ]
             ))
-            ->add('landing_match', 'boolean', array(
+            ->add('landing_match', BooleanType::class, array(
                 'required' => false,
                 'label' => 'admin-title-landing_match', // Form has integrated translations
                 'color' => 'cyan', // bootstrap label-* (default, success, ...)
             ))
-            ->add('sdgs', 'choice', array(
+            ->add('sdgs', ChoiceType::class, array(
                 'label' => 'admin-title-sdgs',
                 'data' => array_column($model->getSdgs(), 'id'),
                 'expanded' => true,
@@ -91,7 +90,6 @@ class AdminSphereEditForm extends AbstractFormProcessor {
         } else {
             $data['icon'] = null;
         }
-        // print_r($data);die;
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
 

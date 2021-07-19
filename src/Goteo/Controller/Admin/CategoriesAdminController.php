@@ -20,12 +20,13 @@ use Goteo\Model\SocialCommitment;
 use Goteo\Model\Sphere;
 use Goteo\Model\Sdg;
 use Goteo\Model\Footprint;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
 /**
  * This module should admin Categories, Spheres, SocialCommitments, SDGs, Footprints
- * and its interelationships
+ * and its interrelationships
  */
 class CategoriesAdminController extends AbstractAdminController {
 	protected static $icon = '<i class="fa fa-2x fa-object-group"></i>';
@@ -107,12 +108,12 @@ class CategoriesAdminController extends AbstractAdminController {
         $processor = $this->getModelForm("Admin{$model}Edit", $instance, $defaults, [], $request);
         $processor->createForm();
         $processor->getBuilder()
-            ->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit',
+            ->add('submit', SubmitType::class, [
+                'label' => 'regular-submit',
             ]);
         if ($instance->id) {
             $processor->getBuilder()
-                ->add('remove', 'submit', [
+                ->add('remove', SubmitType::class, [
                     'label' => Text::get('admin-remove-entry'),
                     'icon_class' => 'fa fa-trash',
                     'span' => 'hidden-xs',

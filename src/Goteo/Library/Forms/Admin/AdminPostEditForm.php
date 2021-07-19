@@ -11,14 +11,19 @@
 
 namespace Goteo\Library\Forms\Admin;
 
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Form\FormInterface;
-use Goteo\Library\Forms\AbstractFormProcessor;
-use Symfony\Component\Validator\Constraints;
-use Goteo\Library\Text;
-use Goteo\Model\User;
 use Goteo\Library\Forms\Model\ProjectPostForm;
-use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Text;
+use Goteo\Util\Form\Type\BooleanType;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DatepickerType;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\MarkdownType;
+use Goteo\Util\Form\Type\MediaType;
+use Goteo\Util\Form\Type\TagsType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\TypeaheadType;
+use Symfony\Component\Validator\Constraints;
 
 class AdminPostEditForm extends ProjectPostForm {
 
@@ -29,22 +34,22 @@ class AdminPostEditForm extends ProjectPostForm {
         $data = $options['data'];
 
         $builder
-            ->add('title', 'text', array(
+            ->add('title', TextType::class, array(
                 'label' => 'regular-title',
                 'constraints' => array(
                     new Constraints\NotBlank(),
                     new Constraints\Length(array('min' => 4)),
                 ),
             ))
-            ->add('subtitle', 'text', array(
+            ->add('subtitle', TextType::class, array(
                 'required' => false,
                 'label' => 'admin-title-subtitle'
             ))
-            ->add('date', 'datepicker', array(
+            ->add('date', DatepickerType::class, array(
                 'label' => 'regular-date',
                 'constraints' => array(new Constraints\NotBlank()),
             ))
-            ->add('header_image', 'dropfiles', array(
+            ->add('header_image', DropfilesType::class, array(
                 'required' => false,
                 'limit' => 1,
                 'label' => 'admin-title-header-image',
@@ -54,7 +59,7 @@ class AdminPostEditForm extends ProjectPostForm {
                     new Constraints\Count(array('max' => 1))
                 )
             ))
-            ->add('author', 'typeahead', [
+            ->add('author', TypeaheadType::class, [
                 'label' => 'regular-author',
                 'row_class' => 'extra',
                 'disabled' => $this->getReadonly(),
@@ -65,7 +70,7 @@ class AdminPostEditForm extends ProjectPostForm {
 ;
 
         if($data['slug']) {
-            $builder->add('slug', 'text',[
+            $builder->add('slug', TextType::class,[
                 'label' => 'regular-slug',
                 'row_class' => 'extra',
                 'constraints' => [
@@ -90,7 +95,7 @@ class AdminPostEditForm extends ProjectPostForm {
             ]);
         }
         $builder
-            ->add('type', 'choice', array(
+            ->add('type', ChoiceType::class, array(
                 'label' => 'admin-text-type',
                 'row_class' => 'extra',
                 'choices' => ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')],
@@ -102,21 +107,19 @@ class AdminPostEditForm extends ProjectPostForm {
 
         // Replace markdown by html editor if type
         if($post->type === 'html') {
-            $builder->add('text', 'textarea', array(
+            $builder->add('text', TextareaType::class, array(
                 'label' => 'admin-title-text',
                 'required' => false,
                 'html_editor' => true,
-                // 'constraints' => array(new Constraints\NotBlank()),
                 'attr' => [
                     'data-image-upload' => '/api/blog/images',
                     'help' => Text::get('tooltip-drag-and-drop-images')
                 ]
             ));
         } else {
-            $builder->add('text', 'markdown', array(
+            $builder->add('text', MarkdownType::class, array(
                 'label' => 'regular-text',
                 'required' => false,
-                // 'constraints' => array(new Constraints\NotBlank()),
                 'attr' => [
                     'data-image-upload' => '/api/blog/images',
                     'help' => Text::get('tooltip-drag-and-drop-images')
@@ -134,7 +137,7 @@ class AdminPostEditForm extends ProjectPostForm {
             // saving images will add that images to the gallery
             // let's show the gallery in the field with nice options
             // for removing and reorder it
-            ->add('image', 'dropfiles', array(
+            ->add('image', DropfilesType::class, array(
                 'required' => false,
                 'data' => $data['gallery'],
                 'label' => 'regular-images',
@@ -145,7 +148,7 @@ class AdminPostEditForm extends ProjectPostForm {
                     new Constraints\Count(array('max' => 20))
                 )
             ))
-            ->add('tags', 'tags', [
+            ->add('tags', TagsType::class, [
                 'label' => 'admin-title-tags',
                 'data' => $tags,
                 'attr' => [
@@ -163,11 +166,11 @@ class AdminPostEditForm extends ProjectPostForm {
                 'required' => false,
                 'url' => '/api/blog/tags'
             ])
-            ->add('media', 'media', array(
+            ->add('media', MediaType::class, array(
                 'label' => 'regular-media',
                 'required' => false
             ))
-            ->add('section', 'choice', array(
+            ->add('section', ChoiceType::class, array(
                 'label' => 'admin-title-section',
                 'expanded' => true,
                 'wrap_class' => 'col-xs-6',
@@ -176,12 +179,12 @@ class AdminPostEditForm extends ProjectPostForm {
                     new Constraints\NotBlank()
                 ]
             ))
-            ->add('allow', 'boolean', array(
+            ->add('allow', BooleanType::class, array(
                 'required' => false,
                 'label' => 'blog-allow-comments', // Form has integrated translations
                 'color' => 'cyan', // bootstrap label-* (default, success, ...)
             ))
-            ->add('publish', 'boolean', array(
+            ->add('publish', BooleanType::class, array(
                 'required' => false,
                 'label' => 'blog-published', // Form has integrated translations
                 'color' => 'cyan', // bootstrap label-* (default, success, ...)

@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Form\FormFactory;
 
 use Goteo\Application\App;
 use Goteo\Application\View;
@@ -147,7 +148,7 @@ abstract class Controller {
 
     /**
      * Handy method to get a form builder
-     * @return Symfony\Component\Form\FormFactory
+     * @return FormFactory
      */
     public function createFormBuilder($defaults = null, $name = 'autoform', array $options = []) {
         $default_options = [
@@ -169,8 +170,6 @@ abstract class Controller {
             $validate = $request->query->has('validate');
             $mock_validation = $validate && $request->isMethod('get');
         }
-        // $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', $mock_validation ? ['csrf_protection' => false] : []));
-        // $finder->setBuilder($this->createFormBuilder($defaults));
         // TODO: a better way to create a csrf_protection without showing errors CSRF on mock_validation
         $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', ['csrf_protection' => false]));
         $processor = $finder->getInstance($form, $options);

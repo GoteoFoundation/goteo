@@ -36,7 +36,7 @@ class TextareaType extends SymfonyTextareaType
      */
     public function getParent()
     {
-        return __NAMESPACE__.'\TextType';
+        return SymfonyTextareaType::class;
     }
 
     /**

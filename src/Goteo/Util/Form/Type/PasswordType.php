@@ -37,7 +37,7 @@ class PasswordType extends SymfonyPasswordType
      */
     public function getParent()
     {
-        return __NAMESPACE__.'\TextType';
+        return SymfonyPasswordType::class;
     }
 
     /**

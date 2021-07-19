@@ -15,8 +15,8 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
-use Goteo\Model\Stories;
 use Goteo\Model\Workshop;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
@@ -72,12 +72,12 @@ class WorkshopAdminController extends AbstractAdminController {
 		$processor = $this->getModelForm('AdminWorkshopEdit', $workshop, $defaults, [], $request);
 		$processor->createForm();
 		$processor->getBuilder()
-			->add('submit', 'submit', [
-				'label' => $submit_label ? $submit_label : 'regular-submit',
+			->add('submit', SubmitType::class, [
+				'label' => 'regular-submit',
 			]);
 		if ($workshop->id) {
 			$processor->getBuilder()
-				->add('remove', 'submit', [
+				->add('remove', SubmitType::class, [
 					'label' => Text::get('admin-remove-entry'),
 					'icon_class' => 'fa fa-trash',
 					'span' => 'hidden-xs',

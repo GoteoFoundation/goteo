@@ -11,6 +11,16 @@
 
 namespace Goteo\Library\Forms\Model;
 
+use Goteo\Util\Form\Type\BooleanType;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\LocationType;
+use Goteo\Util\Form\Type\MarkdownType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\TitleType;
+use Goteo\Util\Form\Type\UrlType;
+use Goteo\Util\Form\Type\YearType;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
@@ -67,18 +77,15 @@ class UserProfileForm extends AbstractFormProcessor {
     public function createForm() {
         $non_public = '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field');
         $user = $this->getModel();
-
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
-        $defaults = $options['data'];
-        // print_r($defaults);die;
+
         $builder
-            ->add('name', 'text', [
+            ->add('name', TextareaType::class, [
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('name'),
                 'label' => 'regular-name'
             ])
-            ->add('location', 'location', [
+            ->add('location', LocationType::class, [
                 'label' => 'profile-field-location',
                 'constraints' => $this->getConstraints('location'),
                 'disabled' => $this->getReadonly(),
@@ -88,7 +95,7 @@ class UserProfileForm extends AbstractFormProcessor {
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>'
             ])
-            ->add('locable', 'boolean', [
+            ->add('locable', BooleanType::class, [
                 'label' => 'dashboard-user-location-locate',
                 'constraints' => $this->getConstraints('unlocable'),
                 'disabled' => $this->getReadonly(),
@@ -97,13 +104,7 @@ class UserProfileForm extends AbstractFormProcessor {
                 'required' => false,
                 'color' => 'cyan'
             ])
-            // ->add('avatar', 'dropfiles', [
-            //     'label' => 'profile-fields-image-title',
-            //     'constraints' => $this->getConstraints('avatar'),
-            //     'disabled' => $this->getReadonly(),
-            //     'required' => false
-            // ])
-            ->add('avatar', 'dropfiles', [
+            ->add('avatar', DropfilesType::class, [
                 'label' => 'profile-fields-image-title',
                 'constraints' => $this->getConstraints('avatar'),
                 'disabled' => $this->getReadonly(),
@@ -117,14 +118,14 @@ class UserProfileForm extends AbstractFormProcessor {
         }
 
         $builder
-            ->add('birthyear', 'year', [
+            ->add('birthyear', YearType::class, [
                 'label' => 'invest-address-birthyear-field',
                 'constraints' => $this->getConstraints('birthyear'),
                 'disabled' => $this->getReadonly(),
                 'attr' =>['info' => $non_public],
                 'required' => false
             ])
-            ->add('gender', 'choice', [
+            ->add('gender', ChoiceType::class, [
                 'label' => 'invest-address-gender-field',
                 'constraints' => $this->getConstraints('gender'),
                 'disabled' => $this->getReadonly(),
@@ -136,7 +137,7 @@ class UserProfileForm extends AbstractFormProcessor {
                 ],
                 'required' => false
             ])
-            ->add('legal_entity', 'choice', [
+            ->add('legal_entity', ChoiceType::class, [
                 'label' => 'profile-field-legal-entity',
                 'constraints' => $this->getConstraints('legal_entity'),
                 'disabled' => $this->getReadonly(),
@@ -151,20 +152,20 @@ class UserProfileForm extends AbstractFormProcessor {
                 ],
                 'required' => false
             ])
-            ->add('entity_type', 'boolean', [
+            ->add('entity_type', BooleanType::class, [
                 'label' => 'profile-field-entity-type-checkbox-public',
                 'constraints' => $this->getConstraints('entity_type'),
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'color' => 'cyan'
             ])
-            ->add('about', 'markdown', [
+            ->add('about', MarkdownType::class, [
                 'label' => 'profile-field-about',
                 'constraints' => $this->getConstraints('about'),
                 'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-about')]
             ])
-            ->add('interests', 'choice', [
+            ->add('interests', ChoiceType::class, [
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'profile-field-interests',
@@ -174,33 +175,18 @@ class UserProfileForm extends AbstractFormProcessor {
                 'choices' => Interest::getAll(),
                 'required' => false
             ])
-            // ->add('keywords', 'tags', [
-            //     'label' => 'profile-field-keywords',
-            //     'constraints' => $this->getConstraints('keywords'),
-            //     'disabled' => $this->getReadonly(),
-            //     'attr' => ['help' => Text::get('tooltip-user-keywords')],
-            //     'required' => false,
-            //     'url' => '/api/keywords?q=%QUERY'
-            // ])
-            // ->add('contribution', 'textarea', [
-            //     'label' => 'profile-field-contribution',
-            //     'constraints' => $this->getConstraints('contribution'),
-            //     'disabled' => $this->getReadonly(),
-            //     'attr' => ['help' => Text::get('tooltip-user-contribution')],
-            //     'required' => false
-            // ])
-            ->add('webs', 'textarea', [
+            ->add('webs', TextareaType::class, [
                 'label' => 'profile-field-websites',
                 'constraints' => $this->getConstraints('webs'),
                 'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-webs')],
                 'required' => false
             ])
-            ->add('social_title', 'title', [
+            ->add('social_title', TitleType::class, [
                 'label' => 'profile-fields-social-title',
                 'required' => false
             ])
-            ->add('facebook', 'url', [
+            ->add('facebook', UrlType::class, [
                 'label' => 'regular-facebook',
                 'constraints' => $this->getConstraints('facebook'),
                 'disabled' => $this->getReadonly(),
@@ -209,7 +195,7 @@ class UserProfileForm extends AbstractFormProcessor {
                            'placeholder' => Text::get('regular-facebook-url')],
                 'required' => false
             ])
-            ->add('twitter', 'text', [
+            ->add('twitter', TextType::class, [
                 'label' => 'regular-twitter',
                 'constraints' => $this->getConstraints('twitter'),
                 'disabled' => $this->getReadonly(),
@@ -218,7 +204,7 @@ class UserProfileForm extends AbstractFormProcessor {
                            'placeholder' => Text::get('regular-twitter-url')],
                 'required' => false
             ])
-            ->add('google', 'url', [
+            ->add('google', UrlType::class, [
                 'label' => 'regular-google',
                 'constraints' => $this->getConstraints('google'),
                 'disabled' => $this->getReadonly(),
@@ -227,7 +213,7 @@ class UserProfileForm extends AbstractFormProcessor {
                            'placeholder' => Text::get('regular-google-url')],
                 'required' => false
             ])
-            ->add('linkedin', 'url', [
+            ->add('linkedin', UrlType::class, [
                 'label' => 'regular-linkedin',
                 'constraints' => $this->getConstraints('linkedin'),
                 'disabled' => $this->getReadonly(),
@@ -236,16 +222,7 @@ class UserProfileForm extends AbstractFormProcessor {
                            'placeholder' => Text::get('regular-linkedin-url')],
                 'required' => false
             ])
-            // ->add('identica', 'url', [
-            //     'label' => 'regular-identica',
-            //     'constraints' => $this->getConstraints('identica'),
-            //     'disabled' => $this->getReadonly(),
-            //     'pre_addon' => '<i class="fa fa-comment-o"></i>',
-            //     'attr' => ['help' => Text::get('tooltip-user-identica'),
-            //                'placeholder' => Text::get('regular-identica-url')],
-            //     'required' => false
-            // ])
-            ->add('instagram', 'url', [
+            ->add('instagram', UrlType::class, [
                 'label' => 'regular-instagram',
                 'constraints' => $this->getConstraints('instagram'),
                 'disabled' => $this->getReadonly(),
@@ -264,7 +241,6 @@ class UserProfileForm extends AbstractFormProcessor {
         $errors = [];
         $data = $form->getData();
         $user = $this->getModel();
-        // var_dump($data);die;
         // Process main image
         if(is_array($data['avatar'])) {
             $data['avatar'] = reset($data['avatar']);
@@ -272,9 +248,7 @@ class UserProfileForm extends AbstractFormProcessor {
         $user->user_avatar = $data['avatar'];
         if($user->user_avatar && $err = $user->user_avatar->getUploadError()) {
             throw new FormModelException(Text::get('form-sent-error', $err));
-
         }
-        // $data['user_avatar'] = $data['avatar'];
         unset($data['avatar']); // do not rebuild data using this
 
         // Process interests

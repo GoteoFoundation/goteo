@@ -10,6 +10,9 @@
 
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Library\Forms\FormModelException;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -56,7 +59,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
 
   function saveQuestionnaire($request, $form, $model)
   {
-      if(!$form) { 
+      if(!$form) {
           $form = $this->getBuilder()->getForm();
       }
 
@@ -94,7 +97,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
 			Message::error($e->getMessage());
 			return $this->redirect('/admin');
     }
-    
+
     $questionnaire = Questionnaire::getByChannel($id);
 
     if (!$questionnaire) {
@@ -107,11 +110,13 @@ class ChannelCriteriaAdminController extends AbstractAdminController
   $processor = $this->getModelForm('QuestionnaireCreate', $questionnaire, (array) $questionnaire, [], $request);
   $processor->createForm()->getBuilder()
     ->add(
-    'add-question', 'submit', [
-    'label' => Text::get('questionnaire-add-question'),
-    'attr' => ['class' => 'btn btn-lg btn-cyan text-uppercase add-question'],
-    'icon_class' => 'fa fa-plus'
-    ]);
+        'add-question', SubmitType::class,
+        [
+            'label' => Text::get('questionnaire-add-question'),
+            'attr' => ['class' => 'btn btn-lg btn-cyan text-uppercase add-question'],
+            'icon_class' => 'fa fa-plus'
+        ]
+    );
 
   $form = $processor->getForm();
   $form->handleRequest($request);
@@ -139,14 +144,14 @@ class ChannelCriteriaAdminController extends AbstractAdminController
               try {
                   $question = Question::get(explode('_', $button)[0]);
                   $question->dbDelete();
-                  
+
                   return $this->rawResponse('deleted ' . $questionnaire->id);
               } catch(\PDOExpection $e) {
                   return $this->rawResponse(Text::get('form-sent-error', Text::get('question-save-error')), 'text/plain', 403);
               }
-          }        
+          }
       }
-          
+
       $this->saveQuestionnaire($request, $form, $questionnaire);
       Message::info(Text::get('admin-edit-entry-ok'));
     }
@@ -171,7 +176,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
     $questionnaire = Questionnaire::getByChannel($id);
     $questions = $questionnaire->questions;
     $questions = array_column($questions, null, 'id');
-    
+
     $total = Project::getList(['node' => $id], $cid, 0, 0, true);
     $projects = Project::getList(['node' => $id], $cid, 0, $total);
 
@@ -187,7 +192,6 @@ class ChannelCriteriaAdminController extends AbstractAdminController
       fputcsv($buffer, $header);
       flush();
       fclose($buffer);
-      $offset = 0;
 
       foreach ($projects as $project) {
         $answers = Answer::getList(['questionnaire' => $questionnaire->id, 'project' => $project->id]);
@@ -204,7 +208,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
             array_push($project_answers, $answer);
             continue;
           }
-            
+
           if ($question->vars->type == "dropfiles") {
             try {
               $document = BaseDocument::getByName($answer->answer);
@@ -216,7 +220,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
             if(substr($document_link,0,2) == '//') $document_link = (Config::get('ssl') ? 'https:' : 'http:') . $document_link;
             array_push($project_answers, $document_link);
           } else {
-            array_push($project_answers, $answer->answer); 
+            array_push($project_answers, $answer->answer);
           }
         }
 
@@ -237,6 +241,4 @@ class ChannelCriteriaAdminController extends AbstractAdminController
 
 		return $response;
   }
-
-
 }

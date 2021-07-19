@@ -12,10 +12,10 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
-use Symfony\Component\Validator\Constraints;
-use Goteo\Model\Project;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
 
@@ -25,17 +25,17 @@ class ProjectTranslateStoryForm extends AbstractFormProcessor implements FormPro
         $story = $this->getModel();
 
         $builder = $this->getBuilder()
-            ->add('title', 'text', [
+            ->add('title', TextType::class, [
                 'label' => 'story-field-author-organization',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $story->title]
             ])
-            ->add('description', 'textarea', [
+            ->add('description', TextareaType::class, [
                 'label' => 'story-field-description',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'attr' => ['help' => $story->description, 'rows'     => 4]
+                'attr' => ['help' => $story->description, 'rows' => 4]
             ]);
 
         return $this;

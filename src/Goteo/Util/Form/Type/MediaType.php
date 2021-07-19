@@ -55,7 +55,7 @@ class MediaType extends AbstractType
      */
     public function getParent()
     {
-        return 'Symfony\Component\Form\Extension\Core\Type\TextType';
+        return AbstractType::class;
     }
 
     /**

@@ -11,7 +11,9 @@
 
 namespace Goteo\Library\Forms\Admin;
 
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
@@ -23,35 +25,31 @@ use Goteo\Library\Forms\FormModelException;
 
 class AdminFootprintEditForm extends AbstractFormProcessor {
 
-    public function getConstraints($field) {
+    public function getConstraints() {
         return [new Constraints\NotBlank()];
     }
 
     public function createForm() {
         $model = $this->getModel();
-
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
-        $defaults = $options['data'];
-
         $sdgs = [];
+
         foreach(Sdg::getList([],0,100) as $s) {
             $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
         }
 
-        // print_r($defaults);die;
         $builder
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'disabled' => $this->getReadonly(),
-                'constraints' => $this->getConstraints('name'),
+                'constraints' => $this->getConstraints(),
                 'label' => 'regular-name'
             ])
-            ->add('description', 'text', [
+            ->add('description', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'label' => 'regular-description'
             ])
-            ->add('icon', 'dropfiles', array(
+            ->add('icon', DropfilesType::class, array(
                 'required' => false,
                 'limit' => 1,
                 'data' => [$model->icon ? $model->getIcon() : null],
@@ -65,7 +63,7 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
                     'help' => Text::get('admin-categories-if-empty-then-asset', '<img src="'.$model->getIcon(true)->getLink(64,64).'" class="icon">')
                 ]
             ))
-            ->add('sdgs', 'choice', array(
+            ->add('sdgs', ChoiceType::class, array(
                 'label' => 'admin-title-sdgs',
                 'data' => array_column($model->getSdgs(), 'id'),
                 'expanded' => true,
@@ -76,7 +74,7 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12'
             ))
-            ->add('categories', 'choice', array(
+            ->add('categories', ChoiceType::class, array(
                 'label' => 'admin-title-categories',
                 'data' => array_column($model->getCategories(), 'id'),
                 'expanded' => true,
@@ -87,7 +85,7 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12'
             ))
-            ->add('social_commitments', 'choice', array(
+            ->add('social_commitments', ChoiceType::class, array(
                 'label' => 'admin-title-social_commitments',
                 'data' => array_column($model->getSocialCommitments(), 'id'),
                 'expanded' => true,
@@ -115,7 +113,6 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
         } else {
             $data['icon'] = null;
         }
-        // print_r($data);die;
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
 

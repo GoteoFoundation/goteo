@@ -11,7 +11,9 @@
 
 namespace Goteo\Library\Forms\Admin;
 
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
@@ -28,12 +30,9 @@ class AdminSocialCommitmentEditForm extends AbstractFormProcessor {
 
     public function createForm() {
         $model = $this->getModel();
-
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
-        $defaults = $options['data'];
-
         $sdgs = [];
+
         foreach(Sdg::getList([],0,100) as $s) {
             $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
         }
@@ -42,19 +41,18 @@ class AdminSocialCommitmentEditForm extends AbstractFormProcessor {
             $footprints['<img src="'.$f->getIcon()->getLink().'" class="icon icon-3x"> '.$f->name] = $f->id;
         }
 
-        // print_r($defaults);die;
         $builder
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('name'),
                 'label' => 'regular-name'
             ])
-            ->add('description', 'text', [
+            ->add('description', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'label' => 'regular-description'
             ])
-            ->add('icon', 'dropfiles', array(
+            ->add('icon', DropfilesType::class, array(
                 'required' => false,
                 'limit' => 1,
                 'data' => [$model->icon ? $model->getIcon() : null],
@@ -68,7 +66,7 @@ class AdminSocialCommitmentEditForm extends AbstractFormProcessor {
                     'help' => Text::get('admin-categories-if-empty-then-asset', '<img src="'.$model->getIcon(true)->getLink(64,64).'" class="icon">')
                 ]
             ))
-            ->add('footprints', 'choice', array(
+            ->add('footprints', ChoiceType::class, array(
                 'label' => 'admin-title-footprints',
                 'data' => array_column($model->getFootprints(), 'id'),
                 'expanded' => true,
@@ -79,7 +77,7 @@ class AdminSocialCommitmentEditForm extends AbstractFormProcessor {
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12'
             ))
-            ->add('sdgs', 'choice', array(
+            ->add('sdgs', ChoiceType::class, array(
                 'label' => 'admin-title-sdgs',
                 'data' => array_column($model->getSdgs(), 'id'),
                 'expanded' => true,
@@ -95,7 +93,6 @@ class AdminSocialCommitmentEditForm extends AbstractFormProcessor {
         return $this;
     }
 
-
     public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
@@ -107,7 +104,6 @@ class AdminSocialCommitmentEditForm extends AbstractFormProcessor {
         } else {
             $data['icon'] = null;
         }
-        // print_r($data);die;
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
 

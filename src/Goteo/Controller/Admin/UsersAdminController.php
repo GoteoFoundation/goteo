@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller\Admin;
 
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -53,14 +54,6 @@ class UsersAdminController extends AbstractAdminController {
         ];
     }
 
-    // Only need to be defined if we want a custom group for this module
-    // public static function getSidebar() {
-    //     return [
-    //         '/users' => Text::get('admin-users'),
-    //     ];
-    // }
-
-
     public function listAction(Request $request) {
         $filters = ['superglobal' => $request->query->get('q')];
         $limit = 25;
@@ -97,8 +90,8 @@ class UsersAdminController extends AbstractAdminController {
         $processor = $this->getModelForm('AdminUserCreate', new User(), [], [], $request);
         $processor->createForm();
         $processor->getBuilder()
-            ->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
+            ->add('submit', SubmitType::class, [
+                'label' => 'regular-submit'
             ]);
         $form = $processor->getForm();
         $form->handleRequest($request);

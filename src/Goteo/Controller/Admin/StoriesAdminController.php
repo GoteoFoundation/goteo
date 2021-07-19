@@ -16,6 +16,7 @@ use Goteo\Application\Message;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Stories;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
@@ -76,12 +77,12 @@ class StoriesAdminController extends AbstractAdminController {
 		$processor = $this->getModelForm('AdminStoryEdit', $story, $defaults, [], $request);
 		$processor->createForm();
 		$processor->getBuilder()
-			->add('submit', 'submit', [
-				'label' => $submit_label ? $submit_label : 'regular-submit',
+			->add('submit', SubmitType::class, [
+				'label' => 'regular-submit',
 			]);
 		if ($story->id) {
 			$processor->getBuilder()
-				->add('remove', 'submit', [
+				->add('remove', SubmitType::class, [
 					'label' => Text::get('admin-remove-entry'),
 					'icon_class' => 'fa fa-trash',
 					'span' => 'hidden-xs',

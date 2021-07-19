@@ -11,6 +11,11 @@
 
 namespace Goteo\Library\Forms\Model;
 
+use Goteo\Util\Form\Type\BooleanType;
+use Goteo\Util\Form\Type\MarkdownType;
+use Goteo\Util\Form\Type\NumberType;
+use Goteo\Util\Form\Type\SubmitType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
@@ -61,7 +66,6 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             $options['data']["reward$suffix"] = $reward->reward;
             $options['data']["description$suffix"] = $reward->description;
         }
-        // print_r($options['data']);die;
         if($sanitize) return array_intersect_key($options['data'], $this->getBuilder()->all());
         return $options['data'];
     }
@@ -82,11 +86,10 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
     }
 
     public function addReward(Reward $reward) {
-        $project = $this->getModel();
         $this->rewards[$reward->id] = $reward;
         $project = $this->getModel();
         $suffix = "_{$reward->id}";
-        
+
         // readonly only if has no invests associated
         $units_readonly = $readonly = $this->getReadonly() && !$reward->isDraft() && $reward->getTaken();
         $remove_readonly = $this->getReadonly()&&$reward->getTaken();
@@ -96,18 +99,16 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
         }
 
         $this->getBuilder()
-            ->add("amount$suffix", 'number', [
+            ->add("amount$suffix", NumberType::class, [
                 'label' => 'rewards-field-individual_reward-amount',
                 'data' => $reward->amount,
                 'type' => 'text',
                 'disabled' => $readonly,
-                // 'pre_addon' => '<i class="fa fa-money"></i>',
                 'pre_addon' => Currency::get($project->currency, 'html'),
-                // 'post_addon' => Currency::get($project->currency, 'name'),
                 'constraints' => $this->getConstraints("amount$suffix"),
                 'required' => false,
             ])
-            ->add("units$suffix", 'number', [
+            ->add("units$suffix", NumberType::class, [
                 'label' => 'rewards-field-individual_reward-units',
                 'data' => (int)$reward->units,
                 'type' => 'text',
@@ -116,29 +117,21 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 'constraints' => $this->getConstraints("units$suffix"),
                 'required' => false,
             ])
-            ->add("unlimited$suffix", 'boolean', [
+            ->add("unlimited$suffix", BooleanType::class, [
                 'label' => false,
                 'data' => (int)$reward->units === 0,
                 'disabled' => $units_readonly,
                 'required' => false,
                 'color' => 'cyan'
             ])
-            // ->add("icon$suffix", 'choice', [
-            //     'label' => 'rewards-field-icon',
-            //     'data' => $reward->icon,
-            //     'choices' => Reward::icons('individual'),
-            //     'constraints' => array(new Constraints\NotBlank()),
-            //     'required' => true,
-            // ])
-            ->add("reward$suffix", 'text', [
-                // 'label' => 'rewards-field-individual_reward-reward',
+            ->add("reward$suffix", TextType::class, [
                 'label' => 'regular-title',
                 'data' => $reward->reward,
                 'disabled' => $readonly,
                 'constraints' => $this->getConstraints("reward$suffix"),
                 'required' => false,
             ])
-            ->add("description$suffix", 'markdown', [
+            ->add("description$suffix", MarkdownType::class, [
                 'label' => 'rewards-field-individual_reward-description',
                 'disabled' => $readonly,
                 'data' => $reward->description,
@@ -154,7 +147,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             ]);
         if(!$remove_readonly) {
             $this->getBuilder()
-                ->add("remove$suffix", 'submit', [
+                ->add("remove$suffix", SubmitType::class, [
                     'label' => Text::get('regular-delete'),
                     'icon_class' => 'fa fa-trash',
                     'span' => 'hidden-xs',
@@ -168,9 +161,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
 
     public function createForm() {
         $project = $this->getModel();
-        $builder = $this->getBuilder()
-            // ->add('title-rewards', 'title', ['label' => 'rewards-fields-individual_reward-title'])
-            ;
+        $builder = $this->getBuilder();
         foreach($project->individual_rewards as $reward) {
             $this->addReward($reward);
         }

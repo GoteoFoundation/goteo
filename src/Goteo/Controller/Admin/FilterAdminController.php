@@ -10,6 +10,8 @@
 
 namespace Goteo\Controller\Admin;
 
+use Goteo\Library\Forms\FormModelException;
+use PDOException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -54,7 +56,7 @@ class FilterAdminController extends AbstractAdminController
         $limit = 10;
         $list = Filter::getList(array(), $page * $limit, $limit, false);
         $total = Filter::getList(array(), 0, 0, true);
-        
+
         return $this->viewResponse('admin/filter/list',[
             'list' => $list,
             'total' => $total
@@ -62,9 +64,9 @@ class FilterAdminController extends AbstractAdminController
     }
 
     public function editAction($id = '', Request $request)
-    {        
+    {
         try  {
-            $filter = $id ? Filter::get($id) : new Filter(); 
+            $filter = $id ? Filter::get($id) : new Filter();
         } catch (ModelNotFoundException $e) {
             Message::error($e->getMessage());
             return $this->redirect('/admin/filter');
@@ -91,17 +93,15 @@ class FilterAdminController extends AbstractAdminController
         return $this->viewResponse('admin/filter/edit',[
             'form' => $form->createView()
         ]);
-
     }
 
     public function deleteAction($id, Request $request) {
-        
+
         try {
             $filter = Filter::get($id);
         } catch (ModelNotFoundException $exception) {
             Message::error($exception->getMessage());
         }
-
 
         try {
             if ($filter->isUsed()) {
@@ -111,9 +111,9 @@ class FilterAdminController extends AbstractAdminController
                 $filter->dbDelete();
                 Message::info(Text::get('admin-remove-entry-ok'));
             }
-        } catch (\PDOException $e) {
-          Message::error($e->getMessage());  
-        } 
+        } catch (PDOException $e) {
+          Message::error($e->getMessage());
+        }
 
         return $this->redirect('/admin/filter/');
 	}

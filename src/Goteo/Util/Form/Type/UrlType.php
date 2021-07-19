@@ -37,7 +37,7 @@ class UrlType extends SymfonyUrlType
      */
     public function getParent()
     {
-        return __NAMESPACE__.'\TextType';
+        return SymfonyUrlType::class;
     }
 
     /**

@@ -46,7 +46,7 @@ class MarkdownType extends TextareaType
      */
     public function getParent()
     {
-        return 'textarea';
+        return TextareaType::class;
     }
 
     /**

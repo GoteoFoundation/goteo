@@ -12,9 +12,10 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
-use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
 
@@ -24,13 +25,13 @@ class UserTranslateProfileForm extends AbstractFormProcessor implements FormProc
         $user = $this->getModel();
 
         $builder = $this->getBuilder()
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'label' => 'regular-name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $user->name]
             ])
-            ->add('about', 'textarea', [
+            ->add('about', TextareaType::class, [
                 'label' => 'profile-field-about',
                 'disabled' => $this->getReadonly(),
                 'required' => false,

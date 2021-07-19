@@ -16,6 +16,7 @@ use Goteo\Application\Message;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Node\NodeResource as Resource;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
@@ -71,12 +72,12 @@ class ChannelResourceAdminController extends AbstractAdminController {
 		$processor = $this->getModelForm('AdminChannelResourceEdit', $resource, $defaults, [], $request);
 		$processor->createForm();
 		$processor->getBuilder()
-			->add('submit', 'submit', [
-				'label' => $submit_label ? $submit_label : 'regular-submit',
+			->add('submit', SubmitType::class, [
+				'label' => 'regular-submit',
 			]);
 		if ($resource->id) {
 			$processor->getBuilder()
-				->add('remove', 'submit', [
+				->add('remove', SubmitType::class, [
 					'label' => Text::get('admin-remove-entry'),
 					'icon_class' => 'fa fa-trash',
 					'span' => 'hidden-xs',

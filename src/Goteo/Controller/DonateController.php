@@ -10,30 +10,11 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Omnipay\Common\Message\ResponseInterface;
-
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-
-use Goteo\Application\Session;
-use Goteo\Application\Message;
-use Goteo\Application\View;
-use Goteo\Application\Lang;
 use Goteo\Application\Config;
-use Goteo\Application\AppEvents;
-use Goteo\Application\Event\FilterInvestInitEvent;
-use Goteo\Application\Event\FilterInvestRequestEvent;
-use Goteo\Application\Event\FilterInvestFinishEvent;
-use Goteo\Library\Text;
-use Goteo\Application\Currency;
-use Goteo\Library\Listing;
-use Goteo\Model\Project;
-use Goteo\Model\Invest;
-use Goteo\Model\User;
+use Goteo\Application\View;
 use Goteo\Model\Relief;
-use Goteo\Payment\Payment;
 use Goteo\Payment\PaymentException;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class DonateController extends PoolController {
@@ -52,26 +33,21 @@ class DonateController extends PoolController {
 
     public function donateLandingAction(Request $request)
     {
-
         return $this->viewResponse('donate/donate',
                 [
                     'no_donor_button' => 1
                 ]
         );
-
     }
 
     public function selectAmountDonateAction($landing='yes', Request $request)
     {
-
         DashboardController::createSidebar('wallet', 'donate');
 
         return $this->selectAmountAction($landing, $this->type, $request);
-
     }
 
     public function selectPaymentMethodDonateAction(Request $request){
-
         DashboardController::createSidebar('wallet', 'donate');
 
         return $this->selectPaymentMethodAction($this->type, $request);
@@ -96,6 +72,4 @@ class DonateController extends PoolController {
         DashboardController::createSidebar('wallet', 'donate');
         return $this->shareAction($invest_id, $this->type, $request);
     }
-
-
 }

@@ -14,6 +14,10 @@ namespace Goteo\Library\Forms\Model;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\EmailType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
@@ -41,7 +45,7 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         $project = $this->getModel();
 
         $this->getBuilder()
-            ->add('one_round', 'choice', [
+            ->add('one_round', ChoiceType::class, [
                 'disabled' => $this->getReadonly(),
                 'label' => 'costs-field-select-rounds',
                 'constraints' => $this->getConstraints('one_round'),
@@ -54,21 +58,21 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 ],
                 'attr' => ['help' => '<span class="' . ($project->one_round ? '': 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden': '') . '">' . Text::get('tooltip-project-2rounds') . '</span>']
             ])
-            ->add('phone', 'text', [
+            ->add('phone', TextType::class, [
                 'label' => 'personal-field-phone',
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('phone'),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-phone')]
             ])
-            ->add('paypal', 'email', [
+            ->add('paypal', EmailType::class, [
                 'label' => 'contract-paypal_account',
                 'constraints' => $this->getConstraints('paypal'),
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-paypal')]
             ])
-            ->add('spread', 'textarea', [
+            ->add('spread', TextareaType::class, [
                 'label' => 'overview-field-spread',
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('spread'),

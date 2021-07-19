@@ -10,11 +10,15 @@
 
 namespace Goteo\Controller\Dashboard;
 
+use Goteo\Util\Form\Type\BooleanType;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\EmailType;
+use Goteo\Util\Form\Type\PasswordType;
+use Goteo\Util\Form\Type\SubmitType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 use Goteo\Application\Exception\ControllerAccessDeniedException;
-
 use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\View;
@@ -41,7 +45,6 @@ class SettingsDashboardController extends DashboardController {
         ]);
     }
 
-
     protected function createSettingsSidebar($zone = '') {
         // Create sidebar menu
         Session::addToSidebarMenu( '<i class="icon icon-2x icon-user"></i> ' . Text::get('dashboard-menu-profile-profile'), '/dashboard/settings', 'profile');
@@ -52,12 +55,10 @@ class SettingsDashboardController extends DashboardController {
         Session::addToSidebarMenu( '<i class="fa fa-2x fa-fw fa-key"></i> ' . Text::get('dashboard-menu-activity-apikey'), '/dashboard/settings/apikey', 'apikey');
         Session::addToSidebarMenu( '<i class="fa fa-2x fa-fw fa-vcard"></i> ' . Text::get('dashboard-menu-profile-public'), '/user/profile/' . $this->user->id, 'public');
 
-
         View::getEngine()->useData([
             'zone' => $zone,
             // 'sidebarBottom' => [ '/dashboard/settings' => '<i class="fa fa-reply" title="' . Text::get('dashboard-menu-profile-profile') . '"></i> ' . Text::get('dashboard-menu-profile-profile') ]
         ]);
-
     }
 
     /**
@@ -83,7 +84,6 @@ class SettingsDashboardController extends DashboardController {
                 $redirect = '/dashboard/project/' . $pid . '/overview';
                 $submit_label = 'form-next-button';
             }
-
         } else {
             $user = User::get($this->user->id, Config::get('lang')); // default system lang
             $redirect = '/dashboard/settings';
@@ -99,7 +99,7 @@ class SettingsDashboardController extends DashboardController {
         $processor = $this->getModelForm('UserProfile', $user, $defaults, [], $request);
         $processor->createForm();
         $processor->getBuilder()
-            ->add('submit', 'submit', [
+            ->add('submit', SubmitType::class, [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
             ]);
         $form = $processor->getForm();
@@ -139,32 +139,25 @@ class SettingsDashboardController extends DashboardController {
         if(empty($defaults['name'])) $defaults['name'] = $user->name;
 
         $builder = $this->createFormBuilder($defaults, 'autoform', ['attr' => ['class' => 'autoform hide-help']])
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'label' => 'regular-name',
                 'attr' => ['help' => $user->name]
             ])
-            ->add('about', 'textarea', [
+            ->add('about', TextareaType::class, [
                 'label' => 'profile-field-about',
                 'attr' => ['help' => $user->about]
             ])
-            // ->add('contribution', 'textarea', [
-            //     'label' => 'profile-field-contribution',
-            //     'attr' => ['help' => Text::get('tooltip-user-contribution')],
-            //     'required' => false
-            // ])
-            ->add('submit', 'submit')
-            ->add('remove', 'submit', [
+            ->add('submit', SubmitType::class)
+            ->add('remove', SubmitType::class, [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
                 'span' => 'hidden-xs',
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
-                    ]
-
+                ]
             ]);
 
-            ;
         $form = $builder->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -183,14 +176,12 @@ class SettingsDashboardController extends DashboardController {
 
                 $data = $form->getData();
                 $data['keywords'] = $user->keywords; // Do not translate keywords for the moment
-                // $user->contribution_lang = $data['contribution'];
                 if($user->setLang($lang, $data, $errors)) {
                     Message::info(Text::get('dashboard-translate-profile-ok', $languages[$lang]));
                     return $this->redirect('/dashboard/settings/profile');
                 } else {
                     Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
                 }
-
             }
         }
         return $this->viewResponse('dashboard/settings/translate', [
@@ -201,9 +192,6 @@ class SettingsDashboardController extends DashboardController {
         ]);
     }
 
-    /**
-     * Settings (preferences)
-     */
     public function preferencesAction(Request $request)
     {
         $this->createSettingsSidebar('preferences');
@@ -216,38 +204,35 @@ class SettingsDashboardController extends DashboardController {
 
         // Create the form
         $builder = $this->createFormBuilder($defaults)
-            ->add('comlang', 'choice', [
+            ->add('comlang', ChoiceType::class, [
                 'label' => 'user-preferences-comlang',
                 'choices' => Lang::listAll()
             ]);
 
         $currencies = Currency::listAll('name');
         if(count($currencies) > 1) {
-            $builder->add('currency', 'choice', [
+            $builder->add('currency', ChoiceType::class, [
                 'label' => 'user-preferences-currency',
                 'choices' => $currencies
             ]);
         }
 
-
         foreach($bools as $b) {
             $builder
-                ->add($b, 'boolean', [
+                ->add($b, BooleanType::class, [
                     'label' => 'user-preferences-' . $b,
                     'color' => 'cyan',
                     'required' => false
                 ]);
         }
 
-        $form = $builder->add('submit', 'submit', [
-                // 'icon_class' => 'fa fa-plus',
-            ])->getForm();
+        $form = $builder->add('submit', SubmitType::class, [])
+            ->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
                 $data = $form->getData();
-                // var_dump($data);die;
 
                 if (User::setPreferences($this->user, $data, $errors)) {
                     Session::store('currency', $data['currency']);
@@ -274,51 +259,45 @@ class SettingsDashboardController extends DashboardController {
 
         // Create the form
         $builder = $this->createFormBuilder($defaults)
-            ->add('contract_name', 'text', [
+            ->add('contract_name', TextType::class, [
                 'label' => 'personal-field-contract_name',
                 'attr' => ['help' => Text::get('tooltip-project-contract_name')]
             ])
-            ->add('contract_nif', 'text', [
+            ->add('contract_nif', TextType::class, [
                 'label' => 'personal-field-contract_nif',
                 'attr' => ['help' => Text::get('tooltip-project-contract_nif')]
             ])
-            ->add('contract_legal_document_type', 'choice', [
+            ->add('contract_legal_document_type', ChoiceType::class, [
                 'label' => 'personal-field-contract_legal_document_type',
                 'choices' => Contract::getNaturalPersonDocumentTypes(),
                 'attr' => ['help' => Text::get('tooltip-project-contract_nif')],
                 'required' => false
             ])
-            ->add('phone', 'text', [
+            ->add('phone', TextType::class, [
                 'label' => 'personal-field-phone',
                 'attr' => ['help' => Text::get('tooltip-project-phone')]
             ])
-            ->add('address', 'text', [
+            ->add('address', TextType::class, [
                 'label' => 'personal-field-address',
-                // 'attr' => ['help' => Text::get('tooltip-project-address')]
             ])
-            ->add('zipcode', 'text', [
+            ->add('zipcode', TextType::class, [
                 'label' => 'personal-field-zipcode',
-                // 'attr' => ['help' => Text::get('tooltip-project-zipcode')]
             ])
-            ->add('location', 'text', [
+            ->add('location', TextType::class, [
                 'label' => 'personal-field-location',
-                // 'attr' => ['help' => Text::get('tooltip-project-location')]
             ])
-            ->add('country', 'text', [
+            ->add('country', TextType::class, [
                 'label' => 'personal-field-country',
-                // 'attr' => ['help' => Text::get('tooltip-project-country')]
             ])
             ;
 
-        $form = $builder->add('submit', 'submit', [
-                // 'icon_class' => 'fa fa-plus',
-            ])->getForm();
+        $form = $builder->add('submit', SubmitType::class, [])
+            ->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
                 $data = $form->getData();
-                // var_dump($data);die;
 
                 if (User::setPersonal($this->user, $data, true, $errors)) {
                     Message::info(Text::get('user-personal-saved'));
@@ -342,38 +321,36 @@ class SettingsDashboardController extends DashboardController {
 
         // Create the form
         $form1 = $this->createFormBuilder()
-            ->add('password', 'password', [
+            ->add('password', PasswordType::class, [
                 'label' => 'user-changepass-old',
                 'attr' => ['help' => Text::get('tooltip-dashboard-user-user_password')]
             ])
-            ->add('nemail', 'email', [
+            ->add('nemail', EmailType::class, [
                 'label' => 'login-register-email-field',
                 'attr' => ['help' => Text::get('tooltip-dashboard-user-new_email')]
             ])
-            ->add('remail', 'email', [
+            ->add('remail', EmailType::class, [
                 'label' => 'login-register-confirm-field',
                 'attr' => ['help' => Text::get('tooltip-dashboard-user-confirm_email')]
             ])
-            ->add('submit', 'submit', [
-                // 'icon_class' => 'fa fa-plus',
-            ])->getForm();
+            ->add('submit', SubmitType::class, [])
+            ->getForm();
 
         $form2 = $this->createFormBuilder()
-            ->add('password', 'password', [
+            ->add('password', PasswordType::class, [
                 'label' => 'user-changepass-old',
                 'attr' => ['help' => Text::get('tooltip-dashboard-user-user_password')]
             ])
-            ->add('npassword', 'password', [
+            ->add('npassword', PasswordType::class, [
                 'label' => 'user-changepass-new',
                 'attr' => ['help' => Text::get('tooltip-dashboard-user-new_password')]
             ])
-            ->add('rpassword', 'password', [
+            ->add('rpassword', PasswordType::class, [
                 'label' => 'user-changepass-confirm',
                 'attr' => ['help' => Text::get('tooltip-dashboard-user-confirm_password')]
             ])
-            ->add('submit', 'submit', [
-                // 'icon_class' => 'fa fa-plus',
-            ])->getForm();
+            ->add('submit', SubmitType::class, [])
+            ->getForm();
 
         $change = $errors = [];
         $form1->handleRequest($request);
@@ -444,7 +421,6 @@ class SettingsDashboardController extends DashboardController {
         ]);
     }
 
-
     /**
      * API key
      */
@@ -458,7 +434,7 @@ class SettingsDashboardController extends DashboardController {
         ];
         // Create the form
         $form = $this->createFormBuilder($defaults)
-            ->add('submit', 'submit', [
+            ->add('submit', SubmitType::class, [
                 'icon_class' => 'fa fa-plus',
                 'label' => 'api-key-generate-new'
             ])

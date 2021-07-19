@@ -10,43 +10,43 @@
 
 namespace Goteo\Controller\Dashboard;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
-use Goteo\Application\Session;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
-use Goteo\Application\View;
-use Goteo\Application\Message;
+use Goteo\Application\Event\FilterMessageEvent;
+use Goteo\Application\Event\FilterProjectEvent;
+use Goteo\Application\Event\FilterProjectPostEvent;
+use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
+use Goteo\Application\Message;
+use Goteo\Application\Session;
+use Goteo\Application\View;
+use Goteo\Controller\DashboardController;
+use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Text;
+use Goteo\Model\Blog;
+use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Call;
 use Goteo\Model\Invest;
-use Goteo\Model\Project;
-use Goteo\Model\Project\Account;
-use Goteo\Model\Project\Cost;
-use Goteo\Model\Project\Reward;
-use Goteo\Model\Project\Image as ProjectImage;
-use Goteo\Model\Project\Support;
-use Goteo\Model\User;
-use Goteo\Model\Blog;
-use Goteo\Model\Stories;
-use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Matcher;
 use Goteo\Model\Message as Comment;
 use Goteo\Model\Node;
-use Goteo\Library\Text;
-use Goteo\Console\UsersSend;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Exception\ModelException;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Event\FilterMessageEvent;
-use Symfony\Component\Validator\Constraints;
-use Goteo\Library\Forms\FormModelException;
-use Goteo\Application\Event\FilterProjectEvent;
-use Goteo\Application\Event\FilterProjectPostEvent;
-use Goteo\Controller\DashboardController;
-use Goteo\Application\Config;
+use Goteo\Model\Project;
+use Goteo\Model\Project\Account;
+use Goteo\Model\Project\Cost;
+use Goteo\Model\Project\Image as ProjectImage;
+use Goteo\Model\Project\Reward;
+use Goteo\Model\Project\Support;
+use Goteo\Model\Stories;
+use Goteo\Model\User;
 use Goteo\Util\Bot\TelegramBot;
+use Goteo\Util\Form\Type\SubmitType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints;
 
 class ProjectDashboardController extends DashboardController {
     protected $user, $admin = false;
@@ -144,12 +144,11 @@ class ProjectDashboardController extends DashboardController {
             ]);
 
         $form = $builder
-            ->add('message', 'textarea', [
+            ->add('message', TextareaType::class, [
                 'label' => 'preview-send-comment',
                 'required' => false,
-                // 'attr' => ['help' => Text::get('tooltip-project-support-description')]
             ])
-            ->add('submit', 'submit', [
+            ->add('submit', SubmitType::class, [
                 'label' => 'project-send-review',
                 'attr' => ['class' => 'btn btn-fashion btn-lg'],
                 'icon_class' => 'fa fa-paper-plane'
@@ -198,8 +197,6 @@ class ProjectDashboardController extends DashboardController {
     }
 
     public function indexAction(Request $request) {
-
-        // mis proyectos
         $projects = Project::ofmine($this->user->id, false, 0, 3);
         $projects_total = Project::ofmine($this->user->id, false, 0, 0, true);
 
@@ -239,7 +236,6 @@ class ProjectDashboardController extends DashboardController {
                         array_slice($steps, 0, $pos)
                     );
             }
-            // print_r($steps);die;
             if($validation->global < 100) {
                 foreach($steps as $i => $step) {
                     if($validation->{$step} < 100) {
@@ -255,7 +251,7 @@ class ProjectDashboardController extends DashboardController {
 
     /**
      * Project edit (personal)
-     * NOTE: Step removed, maintaining the method just in case is comming back some day
+     * NOTE: Step removed, maintaining the method just in case is coming back some day
      */
     public function personalAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'personal');
@@ -278,10 +274,9 @@ class ProjectDashboardController extends DashboardController {
 
         // Create the form
         $processor = $this->getModelForm('ProjectPersonal', $project, $defaults, ['account' => $account], $request);
-        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $processor->getBuilder()
-            ->add('submit', 'submit', [
+            ->add('submit', SubmitType::class, [
                 'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
             ]);
 
@@ -316,7 +311,6 @@ class ProjectDashboardController extends DashboardController {
         // For everyone
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         // Just for the owner
-        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
 
         if(!$processor->getReadonly()) {
             $processor->getBuilder()->add('submit', 'submit', [
@@ -441,19 +435,13 @@ class ProjectDashboardController extends DashboardController {
             throw new ModelNotFoundException("Non matching update for project [{$project->id}]");
         }
 
-
         $defaults = (array)$post;
-        // print_r($_FILES);die;
         // Create the form
         $processor = $this->getModelForm('ProjectPost', $post, $defaults, ['project' => $project]);
-        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $form = $processor->getBuilder()
-            ->add('submit', 'submit', array(
-                // 'icon_class' => null
-            ))
+            ->add('submit', 'submit', [])
             ->getForm();
-
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
@@ -477,7 +465,6 @@ class ProjectDashboardController extends DashboardController {
             'translated' => $post->getLangsAvailable(),
             'skip' => $project->lang
             ]);
-
     }
 
     /**
@@ -490,15 +477,14 @@ class ProjectDashboardController extends DashboardController {
         $defaults = (array) $project;
         // Create the form
         $processor = $this->getModelForm('ProjectCosts', $project, $defaults, [], $request);
-        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $builder = $processor->getBuilder();
         if(!$processor->getReadonly()) {
             $builder
-                ->add('submit', 'submit', [
+                ->add('submit', SubmitType::class, [
                     'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
                 ])
-                ->add('add-cost', 'submit', [
+                ->add('add-cost', SubmitType::class, [
                     'label' => 'project-add-cost',
                     'icon_class' => 'fa fa-plus',
                     'attr' => ['class' => 'btn btn-orange btn-lg add-cost']
@@ -523,7 +509,6 @@ class ProjectDashboardController extends DashboardController {
                     $processor->addCost($cost);
                     return $this->viewResponse('dashboard/project/partials/cost_item', [
                         'form' => $processor->getBuilder()->getForm()->createView(),
-                        // 'types' => Cost::types(),
                         'cost' => $cost
                     ]);
                 }
@@ -555,7 +540,6 @@ class ProjectDashboardController extends DashboardController {
 
         return $this->viewResponse('dashboard/project/costs', [
             'costs' => $project->costs,
-            // 'types' => Cost::types(),
             'form' => $form->createView()
         ]);
     }
@@ -571,18 +555,17 @@ class ProjectDashboardController extends DashboardController {
         $defaults = (array) $project;
         // Create the form
         $processor = $this->getModelForm('ProjectRewards', $project, $defaults, [], $request);
-        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $processor->setReadonly(!($this->admin || $project->inEdition()));
-        // Rewards can be added durint campaign
+        // Rewards can be added during campaign
         if($project->inCampaign() || $project->inReview()) {
             $processor->setFullValidation(true);
         }
 
         $builder = $processor->createForm()->getBuilder()
-            ->add('submit', 'submit', [
+            ->add('submit', SubmitType::class, [
                 'label' => $project->inEdition() ? 'form-next-button' : 'regular-submit'
             ])
-            ->add('add-reward', 'submit', [
+            ->add('add-reward', SubmitType::class, [
                 'label' => 'project-add-reward',
                 'icon_class' => 'fa fa-plus',
                 'attr' => ['class' => 'btn btn-orange btn-lg add-reward']
@@ -729,7 +712,6 @@ class ProjectDashboardController extends DashboardController {
         // For everyone
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         // Just for the owner
-        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
 
         if(!$processor->getReadonly()) {
             $processor->getBuilder()->add('submit', 'submit', [
@@ -763,21 +745,19 @@ class ProjectDashboardController extends DashboardController {
         $supports = Support::getAll($project);
 
         $editForm = $this->createFormBuilder()
-            ->add('support', 'text', [
+            ->add('support', TextType::class, [
                 'label' => 'supports-field-support',
                 'attr' => ['help' => Text::get('tooltip-project-support-support')],
                 'constraints' => array(new Constraints\NotBlank()),
             ])
-            ->add('description', 'textarea', [
+            ->add('description', TextareaType::class, [
                 'label' => 'supports-field-description',
                 'attr' => ['help' => Text::get('tooltip-project-support-description')],
                 'constraints' => array(new Constraints\NotBlank()),
             ])
-            ->add('id', 'hidden', [
-                // 'constraints' => array(new Constraints\NotBlank())
-            ])
-            ->add('delete', 'hidden')
-            ->add('submit', 'submit')
+            ->add('id', HiddenType::class, [])
+            ->add('delete', HiddenType::class)
+            ->add('submit', SubmitType::class)
             ->getForm();
 
         $editForm->handleRequest($request);
@@ -789,7 +769,6 @@ class ProjectDashboardController extends DashboardController {
 
             $data = $editForm->getData();
 
-            // print_r($data);die;
             if($data['delete']) {
                 $support = Support::get($data['delete']);
                 if($support->totalThreadResponses($this->user)) {
@@ -854,24 +833,24 @@ class ProjectDashboardController extends DashboardController {
 
         // Translations
         $transForm = $this->createFormBuilder(null, 'transform', ['attr' => ['class' => 'autoform hide-help']])
-            ->add('support', 'text', [
+            ->add('support', TextType::class, [
                 'label' => 'supports-field-support',
                 'attr' => ['help' => Text::get('tooltip-project-support-support')],
                 'required' => false
             ])
-            ->add('description', 'textarea', [
+            ->add('description', TextareaType::class, [
                 'label' => 'supports-field-description',
                 'attr' => ['help' => Text::get('tooltip-project-support-description')],
                 'required' => false
             ])
-            ->add('id', 'hidden', [
+            ->add('id', HiddenType::class, [
                 'constraints' => array(new Constraints\NotBlank())
             ])
-            ->add('lang', 'hidden', [
+            ->add('lang', HiddenType::class, [
                 'constraints' => array(new Constraints\NotBlank())
             ])
-            ->add('submit', 'submit')
-            ->add('remove', 'submit', [
+            ->add('submit', SubmitType::class)
+            ->add('remove', SubmitType::class, [
                 'label' => Text::get('translator-delete'),
                 'icon_class' => 'fa fa-trash',
                 'span' => 'hidden-xs',
@@ -927,7 +906,6 @@ class ProjectDashboardController extends DashboardController {
             'editForm' => $editForm->createView(),
             'editFormSubmitted' => $editForm->isSubmitted(),
             'transForm' => $transForm->createView(),
-            // 'transFormSubmitted' => $transForm->isSubmitted(),
             'errors' => Message::getErrors(false),
             'languages' => $languages
         ]);
@@ -956,11 +934,13 @@ class ProjectDashboardController extends DashboardController {
             $filters['others']['drop'] = Text::Get('dashboard-project-filter-by-drop');
             $filters['others']['nondrop'] = Text::Get('dashboard-project-filter-by-nondrop');
         }
-        // $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID];
-        // if($project->isDead()) {
-        //     $status = [Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
-        // }
-        $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
+        $status = [
+            Invest::STATUS_CHARGED,
+            Invest::STATUS_PAID,
+            Invest::STATUS_RETURNED,
+            Invest::STATUS_RELOCATED,
+            Invest::STATUS_TO_POOL
+        ];
         $filter_by = ['projects' => $project->id, 'status' => $status];
         if(!is_array($filter)) $filter = [];
 
@@ -1012,7 +992,6 @@ class ProjectDashboardController extends DashboardController {
             $messages[$invest->user] = Comment::getUserMessages($invest->user, $invest->project, 0, 0, true);
         }
 
-        // print_r($messages);die;
         return $this->viewResponse('dashboard/project/invests', [
             'invests' => $invests,
             'total_invests' => $totals['invests'],
@@ -1036,19 +1015,17 @@ class ProjectDashboardController extends DashboardController {
 
         $defaults = (array) $project;
         $form = $this->createFormBuilder($defaults)
-            ->add('analytics_id', 'text', array(
+            ->add('analytics_id', TextType::class, array(
                 'label' => 'regular-analytics',
                 'required' => false,
                 'attr' => ['help' => Text::get('help-user-analytics')],
             ))
-            ->add('facebook_pixel', 'text', array(
+            ->add('facebook_pixel', TextType::class, array(
                 'label' => 'regular-facebook-pixel',
                 'required' => false,
                 'attr' => ['help' => Text::get('help-user-facebook-pixel')],
             ))
-            ->add('submit', 'submit', array(
-                // 'icon_class' => null
-            ))
+            ->add('submit', SubmitType::class, [])
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -1056,7 +1033,6 @@ class ProjectDashboardController extends DashboardController {
                 $data = $form->getData();
                 $project->rebuildData($data, array_keys($form->all()));
                 if($project->save($errors)) {
-                    // print_r($post);die;
                     Message::info(Text::get('dashboard-project-analytics-ok'));
                     return $this->redirect('/dashboard/project/' . $this->project->id .'/analytics');
                 } else {
@@ -1068,7 +1044,6 @@ class ProjectDashboardController extends DashboardController {
             }
         }
         return $this->viewResponse('dashboard/project/analytics', ['form' => $form->createView()]);
-
     }
 
     /**
@@ -1076,7 +1051,6 @@ class ProjectDashboardController extends DashboardController {
      */
     public function materialsAction($pid = null, Request $request)
     {
-
         $project = $this->validateProject($pid, 'materials');
         if($project instanceOf Response) return $project;
 
@@ -1088,7 +1062,6 @@ class ProjectDashboardController extends DashboardController {
             'icons' => $icons,
             'allowNewShare' => $project->isFunded()
             ]);
-
     }
 
     /**
@@ -1151,7 +1124,7 @@ class ProjectDashboardController extends DashboardController {
         $project = $this->validateProject($pid, 'pitch');
         if($project instanceOf Response) return $project;
 
-        $calls_available = $matchers_available = $channels_available = [];
+        $channels_available = [];
 
         $calls_available = Call::getCallsAvailable($project);
         $calls_available = array_column($calls_available, null, 'id');

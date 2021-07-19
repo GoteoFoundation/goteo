@@ -12,6 +12,13 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Library\Forms\AbstractFormProcessor;
+use Goteo\Util\Form\Type\BooleanType;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DatepickerType;
+use Goteo\Util\Form\Type\LocationType;
+use Goteo\Util\Form\Type\SubmitType;
+use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\TypeaheadType;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
@@ -30,9 +37,6 @@ class FilterForm extends AbstractFormProcessor {
 
         $model = $this->getModel();
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
-        $filter = $this->getModel();
-        $data = $options['data'];
 
         $antiquity = [
             '0' => Text::get('admin-filter-last-week'),
@@ -51,7 +55,7 @@ class FilterForm extends AbstractFormProcessor {
             'matcher' => Text::get('admin-filter-matcher'),
             'test' => Text::get('admin-filter-test')
         ];
-        
+
         $typeofdonor = [
             'unique' => Text::get('admin-filter-type-unique'),
             'multidonor' => Text::get('admin-filter-type-multidonor'),
@@ -76,62 +80,41 @@ class FilterForm extends AbstractFormProcessor {
             $footprints['<img src="'.$f->getIcon()->getLink().'" class="icon icon-3x"> '.$f->name] = $f->id;
         }
 
-        // if ($model->project_location) {
-        //     $project_location = new ProjectLocation();
-        //     $project_location->location = $model->project_location;
-        //     $project_location->latitude = $model->project_latitude;
-        //     $project_location->longitude = $model->project_longitude;
-        //     $model->project_location = $project_location;
-        // } else {
-        //     $model->project_location = new ProjectLocation();
-        // }
-
-        // if ($model->donor_location) {
-        //     $donor_location = new DonorLocation();
-        //     $donor_location->location = $model->donor_location;
-        //     $donor_location->latitude = $model->donor_latitude;
-        //     $donor_location->longitude = $model->donor_longitude;
-        //     $model->donor_location = $donor_location;
-        // } else {
-        //     $model->donor_location = new DonorLocation();
-        // }
-
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, array(
                 'label' => 'regular-title',
                 'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
             ))
-            ->add('description', 'text', array(
+            ->add('description', TextType::class, array(
                 'label' => '',
                 'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 )
             ))
-            // ->add() // interests
-            ->add('role', 'choice', array(
+            ->add('role', ChoiceType::class, array(
                 'label' => 'admin-filter-typeofuser',
                 'choices' => $roles,
                 'required' => true,
                 ))
-            ->add('predefineddata', 'choice', array(
+            ->add('predefineddata', ChoiceType::class, array(
                 'label' => 'admin-filter-predefined-date',
                 'required' => false,
                 'empty_value' => Text::get('admin-filter-predefined-date-choose'),
                 'choices' => $antiquity,
             ))
-            ->add('startdate', 'datepicker', array(
+            ->add('startdate', DatepickerType::class, array(
                 'label' => 'regular-date_in',
                 'required' => false,
-            )) 
-            ->add('enddate', 'datepicker', array(
+            ))
+            ->add('enddate', DatepickerType::class, array(
                 'label' => 'regular-date_out',
                 'required' => false,
             ))
-            ->add('projects', 'typeahead', [
+            ->add('projects', TypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-projects',
                 'value_field' => 'name',
@@ -139,7 +122,7 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'project'
             ])
-            ->add('calls', 'typeahead', [
+            ->add('calls', TypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-calls',
                 'value_field' => 'name',
@@ -147,7 +130,7 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'call'
             ])
-            ->add('channels', 'typeahead', [
+            ->add('channels', TypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-channels',
                 'value_field' => 'name',
@@ -155,7 +138,7 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'channel'
             ])
-            ->add('matchers', 'typeahead', [
+            ->add('matchers', TypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-matchers',
                 'value_field' => 'name',
@@ -163,42 +146,42 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'matcher'
             ])
-            ->add('project_status', 'choice', array(
+            ->add('project_status', ChoiceType::class, array(
                 'label' => 'admin-filter-project-status',
                 'required' => false,
                 'choices' => Project::status(),
             ))
-            ->add('invest_status', 'choice', array(
+            ->add('invest_status', ChoiceType::class, array(
                 'label' => 'admin-filter-invest-status',
                 'required' => false,
                 'choices' => Invest::status(),
             ))
-            ->add('donor_status', 'choice', array(
+            ->add('donor_status', ChoiceType::class, array(
                 'label' => 'admin-filter-donor-status',
                 'required' => false,
                 'choices' => $donor_status
             ))
-            ->add('typeofdonor', 'choice', array(
+            ->add('typeofdonor', ChoiceType::class, array(
                 'label' => 'admin-filter-typeofdonor',
                 'required' => false,
                 'choices' => $typeofdonor,
             ))
-            ->add('foundationdonor', 'choice', array(
+            ->add('foundationdonor', ChoiceType::class, array(
                 'required' => false,
                 'label' => 'admin-filter-type-foundation-donor',
                 'choices' => [Text::get('admin-no'), Text::get('admin-yes')]
             ))
-            ->add('wallet', 'choice', array(
+            ->add('wallet', ChoiceType::class, array(
                 'required' => false,
-                'label' => Text::get('admin-user-wallet-amount'), 
+                'label' => Text::get('admin-user-wallet-amount'),
                 'choices' => [Text::get('admin-no'), Text::get('admin-yes')]
             ))
-            ->add('cert', 'choice', array(
+            ->add('cert', ChoiceType::class, array(
                 'required' => false,
                 'label' => Text::get('home-advantages-certificates-title'),
                 'choices' => [Text::get('admin-no'), Text::get('admin-yes')]
             ))
-            ->add('filter_location', 'location', [
+            ->add('filter_location', LocationType::class, [
                 'label' => 'admin-filter-location',
                 'disabled' => $this->getReadonly(),
                 'location_object' => FilterLocation::get($model),
@@ -206,21 +189,20 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>'
             ])
-            ->add('forced', 'boolean', [
+            ->add('forced', BooleanType::class, [
                 'label' => 'admin-filter-forced',
                 'required' => false,
                 'attr' => [
                     'pre-help' => Text::get('admin-filter-forced-help')
                     ]
             ])
-            ->add('submit', 'submit', [
+            ->add('submit', SubmitType::class, [
                 'label' => 'regular-submit',
                 'attr' => ['class' => 'btn btn-cyan'],
                 'icon_class' => 'fa fa-save'
             ])
             ;
-        
-            
+
         return $this;
     }
 

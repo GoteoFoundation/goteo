@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller;
 
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
@@ -32,7 +33,6 @@ use Goteo\Library\Text;
 use Goteo\Model\Page;
 use Goteo\Model\SocialCommitment;
 use Goteo\Model\Project\ProjectLocation;
-use Goteo\Util\Map\MapOSM;
 use Goteo\Model\Questionnaire;
 
 
@@ -116,7 +116,6 @@ class ChannelController extends \Goteo\Core\Controller {
      */
     public function indexAction($id, Request $request)
     {
-
         $this->setChannelContext($id);
 
         // Proyectos destacados si hay
@@ -142,7 +141,7 @@ class ChannelController extends \Goteo\Core\Controller {
 
         return $this->viewResponse(
             $view,
-                [
+            [
                 'projects' => $list,
                 'category'=> $category,
                 'title_text' => Text::get('node-side-searcher-promote'),
@@ -150,7 +149,7 @@ class ChannelController extends \Goteo\Core\Controller {
                 'total' => $total,
                 'limit' => $limit,
                 'map' => $map
-                ]
+            ]
         );
     }
 
@@ -314,10 +313,10 @@ class ChannelController extends \Goteo\Core\Controller {
             $processor = $this->getModelForm('Questionnaire', $questionnaire, (array) $questionnaire, [], $request);
             $processor->createForm()->getBuilder()
                 ->add(
-                    'submit', 'submit', [
-                    'label' => 'regular-submit',
-                    'attr' => ['class' => 'btn btn-lg btn-cyan text-uppercase'],
-                    'icon_class' => 'fa fa-save'
+                    'submit', SubmitType::class, [
+                        'label' => 'regular-submit',
+                        'attr' => ['class' => 'btn btn-lg btn-cyan text-uppercase'],
+                        'icon_class' => 'fa fa-save'
                     ]
                 );
 
@@ -345,9 +344,7 @@ class ChannelController extends \Goteo\Core\Controller {
         }
 
         return $this->redirect('/dashboard/project/'. $project->id .'/profile');
-
     }
-
 
      /**
      * List of channels
@@ -435,11 +432,9 @@ class ChannelController extends \Goteo\Core\Controller {
         if($vars['review']) {
             $filters['status'] = [ Project::STATUS_EDITING, Project::STATUS_REVIEWING, Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
             $filters['is_draft'] = true;
-            // unset($filters['published_since']);
         }
         return $filters;
     }
-
 
     /*
     * Discover projects, general page
@@ -481,7 +476,6 @@ class ChannelController extends \Goteo\Core\Controller {
             'discover_module' => true,
             'limit' => $limit
         ]);
-
     }
 
     /**
