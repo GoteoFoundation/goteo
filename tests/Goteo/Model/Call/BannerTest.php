@@ -5,7 +5,7 @@ namespace Goteo\Model\Call\Tests;
 
 use Goteo\Model\Call\Banner;
 
-class BannerTest extends \PHPUnit_Framework_TestCase {
+class BannerTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('name' => 'test name', 'call' => 'test', 'order' => 0);
 

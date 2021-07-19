@@ -5,7 +5,7 @@ namespace Goteo\Util\Tests;
 use Goteo\Util\Origins\Parser;
 use Symfony\Component\HttpFoundation\Request;
 
-class ParserTest extends \PHPUnit_Framework_TestCase {
+class ParserTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

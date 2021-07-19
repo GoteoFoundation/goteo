@@ -5,7 +5,7 @@ namespace Goteo\Command\Tests;
 
 use Goteo\Console\Command\TranslationsCommand;
 
-class TranslationsCommandTest extends \PHPUnit_Framework_TestCase {
+class TranslationsCommandTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

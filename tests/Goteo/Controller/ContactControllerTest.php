@@ -5,7 +5,7 @@ namespace Goteo\Controller\Tests;
 
 use Goteo\Controller\ContactController;
 
-class ContactControllerTest extends \PHPUnit_Framework_TestCase {
+class ContactControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

@@ -5,7 +5,7 @@ namespace Goteo\Controller\Tests;
 
 use Goteo\Controller\IndexController;
 
-class IndexControllerTest extends \PHPUnit_Framework_TestCase {
+class IndexControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

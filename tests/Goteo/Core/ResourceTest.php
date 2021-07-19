@@ -13,7 +13,7 @@ class TestResourceMIME implements \Goteo\Core\Resource\MIME {
     }
 }
 
-class ResourceTest extends \PHPUnit_Framework_TestCase {
+class ResourceTest extends \PHPUnit\Framework\TestCase {
     public function testInstance() {
         $test = new TestResource();
         $this->assertInstanceOf('\Goteo\Core\Resource', $test);

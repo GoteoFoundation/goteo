@@ -4,7 +4,7 @@ namespace Goteo\Application\Tests;
 
 use Goteo\Application\Role;
 
-class RoleTest extends \PHPUnit_Framework_TestCase {
+class RoleTest extends \PHPUnit\Framework\TestCase {
 
 	public function testInstance() {
 

@@ -8,7 +8,7 @@ use Goteo\Model\Sdg;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 
-class CategoryTest extends \PHPUnit_Framework_TestCase {
+class CategoryTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = ['name' => 'Test category', 'description' => 'Test description'];
     private static $trans_data = ['name' => 'Categoria test', 'description' => 'Descripció test'];

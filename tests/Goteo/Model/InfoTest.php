@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 use Goteo\Model\Info;
 use Goteo\Model\Image;
 
-class InfoTest extends \PHPUnit_Framework_TestCase {
+class InfoTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('title' => 'test title', 'text' => 'test description', 'publish' => 0);
 

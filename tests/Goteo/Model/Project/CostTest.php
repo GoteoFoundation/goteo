@@ -5,7 +5,7 @@ namespace Goteo\Model\Project\Tests;
 
 use Goteo\Model\Project\Cost;
 
-class CostTest extends \PHPUnit_Framework_TestCase {
+class CostTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

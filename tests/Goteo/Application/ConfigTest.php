@@ -8,7 +8,7 @@ use Goteo\Application\Lang;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
-class ConfigTest extends \PHPUnit_Framework_TestCase {
+class ConfigTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 
@@ -36,6 +36,15 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
         } catch(ParseException $e) {
             $this->fail("YAML parse error in [$file]\n" . $e->getMessage());
         }
+    }
+
+    public function testYamlLangFilesWithEnvParameter() {
+        $expectedDatabasePortEnv = 33061;
+        putenv("DATABASE_PORT=$expectedDatabasePortEnv");
+
+        $readParameterValue = Config::get("db.port_env");
+
+        $this->assertEquals($expectedDatabasePortEnv, $readParameterValue);
     }
 
 }

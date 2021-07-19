@@ -5,7 +5,7 @@ namespace Goteo\Model\User\Tests;
 
 use Goteo\Model\User\Web;
 
-class WebTest extends \PHPUnit_Framework_TestCase {
+class WebTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

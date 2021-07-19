@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Library\Worth;
 
-class WorthTest extends \PHPUnit_Framework_TestCase {
+class WorthTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

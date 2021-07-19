@@ -5,7 +5,7 @@ namespace Goteo\Model\Call\Tests;
 
 use Goteo\Model\Call\Project;
 
-class ProjectTest extends \PHPUnit_Framework_TestCase {
+class ProjectTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 
