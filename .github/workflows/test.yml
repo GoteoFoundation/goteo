@@ -40,14 +40,15 @@ jobs:
         run: |
           sudo gem install sass -v 3.4.23
           sudo gem install compass
-          sudo npm install -g grunt-cli
 
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
 
       - name: Install NPM packages
-        run: npm install
+        run: |
+          sudo npm install grunt -g --prefix=/usr/local
+          npm install
 
       - name: Setup PHP
         uses: nanasess/setup-php@master
