@@ -9,9 +9,6 @@ on:
 
 env:
   GOTEO_CONFIG_FILE: config/github-settings.yml
-  DB_DATABASE: goteo
-  DB_USER: goteo
-  DB_PASSWORD: goteo
 
 jobs:
   test-report:
@@ -31,6 +28,7 @@ jobs:
           MYSQL_USER: goteo
           MYSQL_PASSWORD: goteo
           MYSQL_ROOT_PASSWORD: goteo
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Verify MySQL connection from host

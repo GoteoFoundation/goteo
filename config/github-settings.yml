@@ -45,7 +45,7 @@ payments:
 # Database stuff
 db:
     driver:   mysql     # Database driver (mysql)
-    host:     localhost # Database host
+    host:     127.0.0.1 # Database host
     port:     3306      # Database port
     charset:  utf8mb4     # Database charset
     database: goteo     # Database schema (database name)
