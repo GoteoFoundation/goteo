@@ -471,7 +471,7 @@ class Project extends \Goteo\Core\Model {
 
             $sql = "SELECT
                 project.id,
-                project.name,
+                -- project.name,
                 $fields,
                 project.lang,
                 project.currency,
@@ -1891,7 +1891,7 @@ class Project extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['subtitle', 'description', 'motivation', 'video', 'about', 'goal', 'related', 'reward', 'keywords', 'media', 'social_commitment_description'];
+        return ['name', 'subtitle', 'description', 'motivation', 'video', 'about', 'goal', 'related', 'reward', 'keywords', 'media', 'social_commitment_description'];
     }
 
     /*
@@ -2321,10 +2321,14 @@ class Project extends \Goteo\Core\Model {
         $values[':owner'] = $owner;
 
         if(self::default_lang($lang) === Config::get('lang')) {
-            $different_select=" IFNULL(project_lang.description, project.description) as description";
+            $different_select=" 
+            IFNULL(project_lang.name, project.name) as name,
+            IFNULL(project_lang.description, project.description) as description";
         }
         else {
-            $different_select=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
+            $different_select=" 
+            IFNULL(project_lang.name, project.name) as name,
+            IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
             $eng_join=" LEFT JOIN project_lang as eng
                             ON  eng.id = project.id
                             AND eng.lang = 'en'";
@@ -2366,7 +2370,6 @@ class Project extends \Goteo\Core\Model {
                 project.num_messengers as num_messengers,
                 project.num_posts as num_posts,
                 project.days as days,
-                project.name as name,
                 project.owner as owner,
                 user.id as user_id,
                 user.name as user_name,
@@ -2410,10 +2413,14 @@ class Project extends \Goteo\Core\Model {
         $values[':user'] = $user;
 
         if(self::default_lang($lang) === Lang::current()) {
-            $different_select=" IFNULL(project_lang.description, project.description) as description";
+            $different_select=" 
+            IFNULL(project_lang.name, project.name) as name,
+            IFNULL(project_lang.description, project.description) as description";
         }
         else {
-            $different_select=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
+            $different_select=" 
+            IFNULL(project_lang.name, project.name) as name,
+            IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
             $eng_join=" LEFT JOIN project_lang as eng
                             ON  eng.id = project.id
                             AND eng.lang = 'en'";
@@ -2463,7 +2470,7 @@ class Project extends \Goteo\Core\Model {
                 project.num_messengers as num_messengers,
                 project.num_posts as num_posts,
                 project.days as days,
-                project.name as name,
+                -- project.name as name,
                 project.project_location as project_location,
                 project.social_commitment AS social_commitment,
                 project.owner as owner,
@@ -2848,10 +2855,14 @@ class Project extends \Goteo\Core\Model {
         }
 
         if(self::default_lang($lang) === Config::get('lang')) {
-            $lang_select = ' IFNULL(project_lang.description, project.description) AS description';
+            $lang_select = ' 
+            IFNULL(project_lang.name, project.name) as name,
+            IFNULL(project_lang.description, project.description) AS description';
         }
         else {
-            $lang_select = ' IFNULL(project_lang.description, IFNULL(eng.description, project.description)) AS description';
+            $lang_select = ' 
+            IFNULL(project_lang.name, IFNULL(eng.name, project.name) AS name,
+            IFNULL(project_lang.description, IFNULL(eng.description, project.description)) AS description';
             $lang_join = " LEFT JOIN project_lang AS eng
                             ON  eng.id = project.id
                             AND eng.lang = 'en'";
@@ -2865,7 +2876,7 @@ class Project extends \Goteo\Core\Model {
         $sql ="
             SELECT
                 project.id AS project,
-                project.name AS name,
+                -- project.name AS name,
                 project.subtitle AS subtitle,
                 $lang_select,
                 project.status AS status,
