@@ -19,6 +19,7 @@ class ImpactData extends Model {
 	public
 		$id,
 		$title,
+		$subtitle,
 		$description,
 		$image,
 		$lang;
@@ -27,7 +28,7 @@ class ImpactData extends Model {
 	static protected $Table_static = 'impact_data';
 
     public static function getLangFields() {
-        return ['title', 'description'];
+        return ['title', 'subtitle', 'description'];
     }
 
     public function getList($filters = array(), int $offset = 0, int $limit = 0, int $count = 0) {
@@ -50,42 +51,6 @@ class ImpactData extends Model {
         $impact_data = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         return $impact_data;
     }
-
-	public function getId(): int {
-		return $this->id;
-	}
-
-	public function setId(int $id) {
-		$this->id = $id;
-	}
-
-
-	public function getTitle(): string {
-		return $this->title;
-	}
-
-	public function setTitle(string $title) {
-		$this->title = $title;
-	}
-
-
-	public function getDescription(): string {
-		return $this->description;
-	}
-
-	public function setDescription(string $description) {
-		$this->description = $description;
-	}
-
-
-	public function getLang(): string {
-		return $this->lang;
-	}
-
-	public function setLang(string $lang) {
-		$this->lang = $lang;
-	}
-
 
 	public function getImage(): Image {
 		return Image::get($this->image);
@@ -114,6 +79,7 @@ class ImpactData extends Model {
 		$fields = array(
             'id',
             'title',
+            'subtitle',
             'description',
             'lang'
         );

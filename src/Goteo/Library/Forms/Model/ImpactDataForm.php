@@ -38,6 +38,13 @@ class ImpactDataForm extends AbstractFormProcessor {
                     new Constraints\NotBlank(),
                 ),
             ))
+            ->add('subtitle', 'text', array(
+                'label' => 'regular-description',
+                'required' => true,
+                'constraints' => array(
+                    new Constraints\NotBlank(),
+                ),
+            ))
             ->add('description', 'markdown', array(
                 'label' => '',
                 'required' => true,
