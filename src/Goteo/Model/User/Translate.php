@@ -215,7 +215,7 @@ namespace Goteo\Model\User {
                     return false;
                 }
 			} catch(\PDOException $e) {
-				$errors[] = "HA FALLADO!!! " . $e->getMessage();
+				$errors[] = $e->getMessage();
 				return false;
 			}
 
@@ -243,7 +243,7 @@ namespace Goteo\Model\User {
                     return false;
                 }
 			} catch(\PDOException $e) {
-                $errors[] = 'HA FALLADO!!! ' . $e->getMessage();
+                $errors[] = $e->getMessage();
                 return false;
 			}
 		}

@@ -463,7 +463,7 @@ class Node extends \Goteo\Core\Model {
 
             return true;
         } catch(\PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
+            $errors[] = $e->getMessage();
             return false;
         }
      }
@@ -674,7 +674,7 @@ class Node extends \Goteo\Core\Model {
 
             return true;
         } catch(\PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
+            $errors[] = $e->getMessage();
             return false;
         }
      }

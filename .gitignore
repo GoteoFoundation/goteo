@@ -30,6 +30,7 @@
 !/config/vagrant-settings.yml
 !/config/docker-settings.yml
 !/config/travis-settings.yml
+!/config/github-settings.yml
 /dist
 
 phpunit.xml
