@@ -471,7 +471,6 @@ class Project extends \Goteo\Core\Model {
 
             $sql = "SELECT
                 project.id,
-                -- project.name,
                 $fields,
                 project.lang,
                 project.currency,
@@ -2470,7 +2469,6 @@ class Project extends \Goteo\Core\Model {
                 project.num_messengers as num_messengers,
                 project.num_posts as num_posts,
                 project.days as days,
-                -- project.name as name,
                 project.project_location as project_location,
                 project.social_commitment AS social_commitment,
                 project.owner as owner,
@@ -2861,7 +2859,7 @@ class Project extends \Goteo\Core\Model {
         }
         else {
             $lang_select = ' 
-            IFNULL(project_lang.name, IFNULL(eng.name, project.name) AS name,
+            IFNULL(project_lang.name, IFNULL(eng.name, project.name)) AS name,
             IFNULL(project_lang.description, IFNULL(eng.description, project.description)) AS description';
             $lang_join = " LEFT JOIN project_lang AS eng
                             ON  eng.id = project.id
@@ -2876,7 +2874,6 @@ class Project extends \Goteo\Core\Model {
         $sql ="
             SELECT
                 project.id AS project,
-                -- project.name AS name,
                 project.subtitle AS subtitle,
                 $lang_select,
                 project.status AS status,
@@ -2919,8 +2916,6 @@ class Project extends \Goteo\Core\Model {
             ";
 
         $values[':lang'] = $lang;
-
-        //print_r(sqldbg($sql, $values) ); die;
 
         // if($filter['type'] == 'recent') {sqldbg($sql, $values);die;}
         $projects = array();
