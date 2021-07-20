@@ -55,7 +55,7 @@ class ImpactDataForm extends AbstractFormProcessor {
             ->add('image', 'dropfiles', [
                 'label' => '',
                 'required' => false,
-                'url' => '/api/projects/' . $project->id . '/images',
+                'url' => '/api/impactdata/images',
                 'limit' => 1,
                 'constraints' => [
                     new Constraints\Count(['max' => 1, 'min' => 0]),
