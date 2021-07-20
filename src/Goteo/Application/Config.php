@@ -219,7 +219,8 @@ class Config {
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommunicationAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FilterAdminController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
-		
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ImpactDataAdminController');
+
         // TODO: to be replace by the new AdminController
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');

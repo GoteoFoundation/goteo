@@ -16,7 +16,7 @@ use Goteo\Library\Text;
 
 class ImpactData extends Model {
 
-	private
+	public
 		$id,
 		$title,
 		$description,
@@ -28,6 +28,27 @@ class ImpactData extends Model {
 
     public static function getLangFields() {
         return ['title', 'description'];
+    }
+
+    public function getList($filters = array(), int $offset = 0, int $limit = 0, int $count = 0) {
+    	$sqlWhere = "";
+
+        if ($count) {
+            $sql = "SELECT COUNT(impact_data.id)
+            FROM impact_data
+            $sqlWhere";
+            return (int) self::query($sql)->fetchColumn();
+        }
+
+        $sql = "SELECT *
+                FROM impact_data
+                $sqlWhere
+                LIMIT $offset, $limit
+            ";
+
+        $query = static::query($sql);
+        $impact_data = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        return $impact_data;
     }
 
 	public function getId(): int {
