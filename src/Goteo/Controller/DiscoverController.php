@@ -44,19 +44,22 @@ class DiscoverController extends \Goteo\Core\Controller {
             unset($filters['published_since']);
             $filters['status'] = [ Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
         }
-        elseif($vars['category']) {
+        
+        if($vars['category']) {
             $filters['category'] = $vars['category'];
             unset($filters['published_since']);
             $filters['status'] = [ Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
         }
-        elseif($vars['location'] || ($vars['latitude'] && $vars['longitude'])) {
+        
+        if($vars['location'] || ($vars['latitude'] && $vars['longitude'])) {
             // $filters['location'] = $vars['location'];
             unset($filters['published_since']);
             $filters['location'] = new ProjectLocation([ 'location' => $vars['location'], 'latitude' => $vars['latitude'], 'longitude' => $vars['longitude'], 'radius' => 300 ]);
             $filters['status'] = [ Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
             $filters['order'] = 'Distance ASC, project.status ASC, project.published DESC, project.name ASC';
         }
-        elseif($filter === 'near') {
+        
+        if($filter === 'near') {
             // Nearby defined as 300Km distance
             // Any LocationInterface will do (UserLocation, ProjectLocation, ...)
             $filters['location'] = new ProjectLocation([ 'latitude' => $vars['latitude'], 'longitude' => $vars['longitude'], 'radius' => 300 ]);
@@ -111,12 +114,21 @@ class DiscoverController extends \Goteo\Core\Controller {
         if(empty($type)) $type = 'promoted';
 
         $limit = 12;
-        $q = strip_tags($request->query->get('q'));
-        $location = strip_tags($request->query->get('location'));
-        $latitude = strip_tags($request->query->get('latitude'));
-        $longitude = strip_tags($request->query->get('longitude'));
-        $category = $request->query->get('category');
-        $vars = ['q' => $q, 'category' => $category, 'location' => $location, 'latitude' => $latitude, 'longitude' => $longitude];
+
+        $vars = [];
+
+        if ($request->query->has('q'))
+            $vars['q'] = strip_tags($request->query->get('q'));
+
+        if ($request->query->has('location') || ( $request->query->has('latitude') && $request->query->has('longitude') )) {
+            $vars['location'] = strip_tags($request->query->get('location'));
+            $vars['latitude'] = strip_tags($request->query->get('latitude'));
+            $vars['longitude'] = strip_tags($request->query->get('longitude'));
+        }
+
+        if ($request->query->has('category'))
+            $vars['category'] = $request->query->get('category');
+
         if(Session::isAdmin()) {
             $vars['review'] = $request->query->get('review') === '1' ? 1 : 0 ;
         }
@@ -146,17 +158,26 @@ class DiscoverController extends \Goteo\Core\Controller {
         $limit = max(1, min(25, abs($limit)));
         $pag = max(0, abs($pag));
         $filter = $request->get('filter');
-        $q = strip_tags($request->get('q'));
-        $location = strip_tags($request->get('location'));
-        $latitude = strip_tags($request->get('latitude'));
-        $longitude = strip_tags($request->get('longitude'));
-        $category = $request->get('category');
+
+        $vars = [];
+
+        if ($request->query->has('q'))
+            $vars['q'] = strip_tags($request->query->get('q'));
+
+        if ($request->query->has('location')) {
+            $vars['location'] = strip_tags($request->query->get('location'));
+            $vars['latitude'] = strip_tags($request->query->get('latitude'));
+            $vars['longitude'] = strip_tags($request->query->get('longitude'));
+        }
+
+        if ($request->query->has('category'))
+            $vars['category'] = $request->query->get('category');
 
         $ofilters = [
             'status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED],
             'published_since' => (new \DateTime('-6 month'))->format('Y-m-d')
         ];
-        $filters = $this->getProjectFilters($filter, ['q' => $q, 'category' => $category, 'location' => $location, 'latitude' => $latitude, 'longitude' => $longitude]);
+        $filters = $this->getProjectFilters($filter, $vars);
 
         $offset = $pag * $limit;
         $total_projects = 0;

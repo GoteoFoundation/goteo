@@ -433,6 +433,7 @@ class ProjectController extends \Goteo\Core\Controller {
             $response->headers->set('Content-Type', 'application/pdf');
             return $response;
         } catch(Html2PdfException $e) {
+            Message::error($e->getMessage());
             return new RedirectResponse('/project/' . $project->id );
         }
     }
