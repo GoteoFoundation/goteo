@@ -53,7 +53,7 @@ $(function(){
             $last.after('<div class="loading-container">' + goteo.texts['regular-loading'] + '</div>');
 
             // console.log('end reached, loading more. total', total, 'query', query);
-            $.getJSON(window.location.pathname + '/ajax', query, function(result) {
+            $.getJSON('/discover/ajax', query, function(result) {
                 total = result.total;
                 query.limit = result.limit;
                 result.items.forEach(function(html, index) {
@@ -78,7 +78,7 @@ $(function(){
     });
 
     // Auto submit select in search bar
-    $('#main').on('change', 'form.form-search select', function(e) {
+    $('input,select').on('change',  function(e) {
         e.preventDefault();
         $(this).closest('form').submit();
     });
