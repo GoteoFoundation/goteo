@@ -14,6 +14,8 @@ use Goteo\Core\Model;
 use Goteo\Model\Image;
 use Goteo\Library\Text;
 
+use Goteo\Application\Exception\ModelNotFoundException;
+
 class ImpactData extends Model {
 
 	public
@@ -31,7 +33,28 @@ class ImpactData extends Model {
         return ['title', 'subtitle', 'description'];
     }
 
-    public function getList($filters = array(), int $offset = 0, int $limit = 0, int $count = 0) {
+    public static function get($id) {
+
+        $sql = "SELECT
+                    id,
+                    title,
+                    subtitle,
+                    description,
+                    image,
+                    lang
+                FROM impact_data
+                WHERE id = :id";
+
+        $impact_data = static::query($sql, [':id' => $id])->fetchObject(__CLASS__);
+
+        if (!$impact_data instanceof ImpactData) {
+            throw new ModelNotFoundException("[$id] not found");
+        }
+
+        return $impact_data;
+    }
+
+    public static function getList($filters = array(), int $offset = 0, int $limit = 0, int $count = 0) {
     	$sqlWhere = "";
 
         if ($count) {
@@ -81,6 +104,7 @@ class ImpactData extends Model {
             'title',
             'subtitle',
             'description',
+            'image',
             'lang'
         );
 
