@@ -40,7 +40,7 @@ class GoteoImpactData
           `image` VARCHAR(255) NULL,
           `lang` VARCHAR(6) NULL,
           PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
         CREATE TABLE `impact_data_lang` (
           `id` BIGINT(20) UNSIGNED NOT NULL,
@@ -51,7 +51,7 @@ class GoteoImpactData
           `lang` VARCHAR(6) NULL,
           UNIQUE KEY (`id`,`lang`),
           CONSTRAINT `impact_data_lang_ibfk_1` FOREIGN KEY (`id`) REFERENCES `impact_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
      ";
   }
 

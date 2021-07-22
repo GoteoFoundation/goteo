@@ -17,7 +17,6 @@ class ImpactDataTest extends TestCase {
                         'size' => 0);
 
     private static $data = array(
-    	'id' => 12345,
     	'title' => 'Test post', 
     	'subtitle' => 'Test subtitle',
 	    'description' => 'Test description'
@@ -57,11 +56,13 @@ class ImpactDataTest extends TestCase {
     /**
      * @depends testCreate
      */
-    public function testGetImpactData(ImpactData $impact_data) {
+    public function testGetImpactData(ImpactData $impact_data): ImpactData {
 
     	$db_impact_data = ImpactData::get($impact_data->id);
 
     	$this->assertEquals($db_impact_data, $impact_data);
+
+        return $impact_data;
 
     }
 
@@ -71,13 +72,33 @@ class ImpactDataTest extends TestCase {
         ImpactData::get('');
     }
 
-     /**
-     * Some cleanup
+    /**
+     * @depends testGetImpactData
      */
+    public function testList() {
+        $impact_data_list = ImpactData::getList();
+
+        $this->assertCount(1, $impact_data_list);
+    }
+
+    /**
+     * @depends testGetImpactData
+     */
+    public function testRemove(ImpactData $impact_data) {
+
+        $count = ImpactData::getList([],0,0,true);
+        $this->assertTrue($impact_data->dbDelete());
+        $this->assertCount($count - 1, ImpactData::getList());
+    }
+
+
     static function tearDownAfterClass() {
        try {
-            $impact_data = ImpactData::get(self::$data['id']);
-            $impact_data->dbDelete();
+            $count = ImpactData::getList([],0,0,true);
+            $impact_data_list = ImpactData::getList([], 0, $count);
+            foreach ($impact_data_list as $impact_data) {
+                $impact_data->dbDelete();
+            }
         }
         catch(ModelNotFoundException $e) {
         }

@@ -54,7 +54,7 @@ class ImpactData extends Model {
         return $impact_data;
     }
 
-    public static function getList($filters = array(), int $offset = 0, int $limit = 0, int $count = 0) {
+    public static function getList($filters = array(), int $offset = 0, int $limit = 10, int $count = 0) {
     	$sqlWhere = "";
 
         if ($count) {
@@ -99,14 +99,7 @@ class ImpactData extends Model {
 
         if(!$this->validate($errors)) return false;
 
-		$fields = array(
-            'id',
-            'title',
-            'subtitle',
-            'description',
-            'image',
-            'lang'
-        );
+		$fields = ['title','subtitle','description','image','lang'];
 
 		try {
             $this->dbInsertUpdate($fields);
