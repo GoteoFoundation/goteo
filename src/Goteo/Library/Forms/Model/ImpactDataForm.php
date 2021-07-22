@@ -39,21 +39,21 @@ class ImpactDataForm extends AbstractFormProcessor {
                 ),
             ))
             ->add('subtitle', 'text', array(
-                'label' => 'regular-description',
+                'label' => 'regular-subtitle',
                 'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
             ))
-            ->add('description', 'markdown', array(
-                'label' => '',
+            ->add('description', 'textarea', array(
+                'label' => 'regular-description',
                 'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 )
             ))
             ->add('image', 'dropfiles', [
-                'label' => '',
+                'label' => 'regular-image',
                 'required' => false,
                 'url' => '/api/impactdata/images',
                 'limit' => 1,

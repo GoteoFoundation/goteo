@@ -52,8 +52,8 @@ class ImpactDataAdminController extends AbstractAdminController
     {
         $page = $request->query->get('pag') ?: 0;
         $limit = 10;
-        $list = ImpactData::getList(array(), $page * $limit, $limit, false);
-        $total = ImpactData::getList(array(), 0, 0, true);
+        $list = ImpactData::getList([], $page * $limit, $limit, false);
+        $total = ImpactData::getList([], 0, 0, true);
         
         return $this->viewResponse('admin/impact_data/list',[
             'list' => $list,
