@@ -31,7 +31,7 @@ $this->section('content');
             <div>
                 <h2><?= $this->text('login-access-header') ?></h2>
 
-                <form action="<?php echo SEC_URL ?>/user/login" method="post" id="login_frm">
+                <form action="<?php echo SITE_URL ?>/user/login" method="post" id="login_frm">
                     <input type="hidden" name="return" value="<?php echo $_GET['return']; ?>" />
                     <div class="username">
                         <label><?= $this->text('login-access-username-field') ?>
@@ -47,9 +47,9 @@ $this->section('content');
 
                 </form>
 
-                <p><a href="<?php echo SEC_URL; ?>/user/recover?email=<?= $this->username ?>"><?= $this->text('login-recover-link') ?></a></p>
+                <p><a href="<?php echo SITE_URL; ?>/user/recover?email=<?= $this->username ?>"><?= $this->text('login-recover-link') ?></a></p>
                 <br />
-                <p><a class="baja" href="<?php echo SEC_URL; ?>/user/leave"><?= $this->text('login-leave-button') ?></a></p>
+                <p><a class="baja" href="<?php echo SITE_URL; ?>/user/leave"><?= $this->text('login-leave-button') ?></a></p>
 
             </div>
         </div>
@@ -95,7 +95,7 @@ $this->section('content');
         <div class="register">
             <div>
                 <h2><?= $this->text('login-register-header') ?></h2>
-                <form action="<?php echo SEC_URL; ?>/user/register" method="post">
+                <form action="<?php echo SITE_URL; ?>/user/register" method="post">
 
                     <div class="userid">
                         <label for="RegisterUserid"><?= $this->text('login-register-userid-field') ?></label>

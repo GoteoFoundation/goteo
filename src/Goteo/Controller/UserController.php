@@ -80,7 +80,7 @@ class UserController extends \Goteo\Core\Controller {
             if ($show == 'message') {
                 Session::store('jumpto', '/user/profile/' . $user->id . '/message');
                 Message::error(Text::get('user-login-required-to_message'));
-                return $this->redirect(SEC_URL . '/user/login');
+                return $this->redirect(SITE_URL . '/user/login');
             }
 
 
@@ -88,7 +88,7 @@ class UserController extends \Goteo\Core\Controller {
             if (!isset($user->roles['vip'])) {
                 Session::store('jumpto', '/user/profile/' . $user->id . '/' . $show);
                 Message::error(Text::get('user-login-required-to_see'));
-                return $this->redirect(SEC_URL . '/user/login');
+                return $this->redirect(SITE_URL . '/user/login');
             }
         }
 
