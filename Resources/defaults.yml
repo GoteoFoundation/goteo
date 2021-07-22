@@ -42,6 +42,8 @@ ssl: false
 # List the trusted proxies for SSL connection here
 proxies:
     - 127.0.0.1
+    # Trust any proxy:
+    # - '%env(REMOTE_ADDR)%'
     # Cloudflare IP list:
     # - 103.21.244.0/22
     # - 103.22.200.0/22
