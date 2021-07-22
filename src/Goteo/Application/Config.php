@@ -428,9 +428,10 @@ class Config {
             }
 
             if(is_array($paramValue)) {
-                foreach($paramValue as $k => $v) {
-                    if (preg_match(self::ENV_PARAMETER_REG_EX, $v, $matches)) {
-                        $paramValue[$k] = getenv($matches[1]);
+                // TODO: iterative, to cover any level
+                foreach($paramValue as $key => $val) {
+                    if (!is_array($val) && preg_match(self::ENV_PARAMETER_REG_EX, $val, $matches)) {
+                        $paramValue[$key] = getenv($matches[1]);
                     }
                 }
             } elseif (preg_match(self::ENV_PARAMETER_REG_EX, $paramValue, $matches)) {
