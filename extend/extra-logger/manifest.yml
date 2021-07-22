@@ -1,0 +1,10 @@
+---
+
+name: ExtraLogger
+version: 0.1
+
+# Advanced/optional (don't write anything else in this file if you don't known what your are doing):
+# Next key/value array will be used by Grunt to copy this files under the "dist/" directory
+
+assets:
+    # Will be copied as dist/goteo-bot/assets
