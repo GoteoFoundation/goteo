@@ -20,6 +20,7 @@ class Footprint extends \Goteo\Core\Model {
     use Traits\SdgRelationsTrait;
     use Traits\CategoryRelationsTrait;
     use Traits\SocialCommitmentRelationsTrait;
+    use Traits\ImpactDataRelationsTrait;
 
     public $id,
            $name,
