@@ -52,6 +52,8 @@ db:
     username: goteo      # Database user for the goteo database
     password: goteo     # Password for the goteo database
     port_env: '%env(DATABASE_PORT)%' # for testing only
+    array_env:
+        - '%env(DATABASE_PORT)%' # for testing only
 
 # HTML Metas
 meta:
