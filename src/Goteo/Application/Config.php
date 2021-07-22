@@ -427,7 +427,13 @@ class Config {
                 }
             }
 
-            if (!is_array($paramValue) && preg_match(self::ENV_PARAMETER_REG_EX, $paramValue, $matches)) {
+            if(is_array($paramValue)) {
+                foreach($paramValue as $k => $v) {
+                    if (preg_match(self::ENV_PARAMETER_REG_EX, $v, $matches)) {
+                        $paramValue[$k] = getenv($matches[1]);
+                    }
+                }
+            } elseif (preg_match(self::ENV_PARAMETER_REG_EX, $paramValue, $matches)) {
                 if (sizeof($matches) >= 1) {
                     $paramValue = getenv($matches[1]);
                 }
