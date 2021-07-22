@@ -1778,7 +1778,7 @@ class User extends \Goteo\Core\Model {
             $errors = [];
             // En el contenido:
             $search = array('%USERNAME%', '%URL%');
-            $replace = array($row->name, SEC_URL . '/user/leave/' . \mybase64_encode($token));
+            $replace = array($row->name, SITE_URL . '/user/leave/' . \mybase64_encode($token));
             $content = \str_replace($search, $replace, $template->parseText());
             // Email de recuperacion
             $mail = new Mail();

@@ -129,10 +129,8 @@ class App extends HttpKernel\HttpKernel {
             // if ssl enabled
             $SITE_URL = $request->getHttpHost();
             if (Config::get('ssl') || $request->isSecure()) {
-                define('SEC_URL', 'https://'.$SITE_URL);
                 define('SITE_URL', 'https://'.$SITE_URL);
             } else {
-                define('SEC_URL', 'http://'.$SITE_URL);
                 define('SITE_URL', 'http://'.$SITE_URL);
             }
             // Setup request for views

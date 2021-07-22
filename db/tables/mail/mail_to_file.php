@@ -89,7 +89,7 @@ while(sizeof($mails) != 0) {
         if ($mail->email == "any") {
             $content = View::get('email/newsletter.html.php', array('content'=>$mail->html, 'baja' => ''));
         } else {
-            $baja = SEC_URL . '/user/leave/?email=' . $mail->email;
+            $baja = SITE_URL . '/user/leave/?email=' . $mail->email;
 
             if ($mail->node != null && $mail->node != \GOTEO_NODE && \file_exists('nodesys/'. $mail->node .'/view/email/default.html.php')) {
                 $content = View::get('nodesys/'. $mail->node .'/view/email/default.html.php', array('content'=>$mail->html, 'baja' => $baja));
