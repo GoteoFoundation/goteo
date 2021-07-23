@@ -21,3 +21,5 @@ plugins:
 ...
 
 ```
+
+In order to use the Gelf logger handler you are going to create a new GELF UDP input in your Graylog instance.
