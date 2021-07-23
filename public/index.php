@@ -16,12 +16,10 @@ use Goteo\Application\Config;
 //Public Web path
 define('GOTEO_WEB_PATH', __DIR__ . '/');
 
-
 require_once __DIR__ . '/../src/autoload.php';
 
 // Create first the request object (to avoid other classes reading from php://input specially)
 $request = Request::createFromGlobals();
-
 
 ini_set('display_errors', 0);
 error_reporting(E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED); // for symfony user deprecated errors
@@ -55,16 +53,6 @@ App::setRequest($request);
 
 // Get the app
 $app = App::get();
-
-if(getenv('LOG_TO_STDOUT')) {
-    $handler = new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::DEBUG);
-
-    // Add a log level debug to stderr
-    App::getService('logger')->pushHandler($handler);
-    App::getService('syslogger')->pushHandler($handler);
-    App::getService('paylogger')->pushHandler($handler);
-}
-
 
 // handle routes, flush buffer out
 $app->run();
