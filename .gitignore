@@ -9,6 +9,7 @@
 !/extend/plugin-responsive
 !/extend/custom-domains
 !/extend/invest-return
+!/extend/extra-logger
 
 /node_modules/
 /vendor/
