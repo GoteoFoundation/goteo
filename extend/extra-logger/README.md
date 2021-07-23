@@ -2,7 +2,8 @@
 
 ## This plugin provides extra loggin capabilities for Goteo
 
-Currently only the (Gelf)[https://github.com/bzikarsky/gelf-php] format is supported. This allows to send logs directly to (Graylog)[https://www.graylog.org/]
+- STDOUT log directly to the standard output
+- GELF format[https://github.com/bzikarsky/gelf-php] format is supported. This allows to send logs directly to (Graylog)[https://www.graylog.org/]
 
 ### Configuration:
 
@@ -17,7 +18,21 @@ plugins:
         gelf:
             host: your-graylog-host.tld #
             port: 12201
+        stdout: color # leave it empty if no stdout logging required, or set it to true if no color needed
+...
 
+```
+
+NOTE: 
+ENV vars are supported, such as:
+
+```yaml
+...
+
+plugins:
+    extra-logger:
+        active: true # activate plugin
+        stdout: '%env(LOG_TO_STDOUT)%'
 ...
 
 ```
