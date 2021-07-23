@@ -28,4 +28,5 @@ if($gelf && $gelf["host"]) {
     App::getService('logger')->pushHandler($handler);
     App::getService('syslogger')->pushHandler($handler);
     App::getService('paylogger')->pushHandler($handler);
+    App::getService('console_logger')->pushHandler($handler);
 }
