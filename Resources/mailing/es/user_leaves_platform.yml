@@ -1,0 +1,13 @@
+group: contact
+name: 'User leaves platform'
+purpose: 'Mail template to be sent to the platform when a user leaves'
+type: 'md'
+title: 'El usuario %USERNAME% se da de baja'
+text: >
+    Han solicitado la baja para el mail **%USEREMAIL%** que corresponde al usuario **%USERNAME%**
+    
+
+    y ha dejado el siguiente mensaje:
+
+
+    %MESSAGE%
