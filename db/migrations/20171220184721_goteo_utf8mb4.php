@@ -85,7 +85,6 @@ class GoteoUtf8mb4
         ALTER TABLE `invest_msg` CHARSET=utf8mb4, COLLATE=utf8mb4_unicode_ci;
         ALTER TABLE `invest_node` CHARSET=utf8mb4, COLLATE=utf8mb4_unicode_ci;
         ALTER TABLE `invest_reward` CHARSET=utf8mb4, COLLATE=utf8mb4_unicode_ci;
-        ALTER TABLE `lang` CHARSET=utf8mb4, COLLATE=utf8mb4_unicode_ci;
         ALTER TABLE `license` CHARSET=utf8mb4, COLLATE=utf8mb4_unicode_ci;
         ALTER TABLE `license_lang` CHARSET=utf8mb4, COLLATE=utf8mb4_unicode_ci;
         ALTER TABLE `log` CHARSET=utf8mb4, COLLATE=utf8mb4_unicode_ci;
