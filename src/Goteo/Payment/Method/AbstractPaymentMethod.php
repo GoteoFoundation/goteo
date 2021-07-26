@@ -24,6 +24,7 @@ use Goteo\Application\Currency;
 use Symfony\Component\HttpFoundation\Request;
 use Omnipay\Omnipay;
 use Omnipay\Common\Message\ResponseInterface;
+use Omnipay\Common\GatewayInterface;
 
 /**
  * Helper class with common of the interface methods implemented in a simple way
@@ -32,7 +33,8 @@ use Omnipay\Common\Message\ResponseInterface;
  * http://omnipay.thephpleague.com/
  */
 abstract class AbstractPaymentMethod implements PaymentMethodInterface {
-    protected $gateway;
+
+    protected GatewayInterface $gateway;
     protected $invest;
     protected $request;
     protected $user;
@@ -263,7 +265,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
 
         // Add to amount project the tip to the orgization
         $amount= $invest->amount+$invest->donate_amount;
-        
+
         return $amount;
     }
 
