@@ -13,19 +13,11 @@
             <div class="row <?= ($index != 0)? "hidden" : '' ?>" id="goteo-values-<?= $footprint->id ?>">
                 <div class="col footprint-briefing">
                     <img src="assets/img/footprint/<?= $footprint->id ?>.svg" heigh="70" width="70" alt="<?= $footprint->name ?>" class="footprint" />
-<<<<<<< HEAD
                     <p><span class="footprint-label"><?= $footprint->name ?></span></p>
                     <h2><?= $footprint->title ?></h2>
                     <p><?= $footprint->description ?></p>
                     <h3><?= $this->t('home-footprint-values-related-sdgs') ?>:</h3>
                     <p><?= $this->t('regular-click-more') ?></p>
-=======
-                    <p><span class="footprint-label"><?= $this->t('footprint-' . $foorptint->id) ?></span></p>
-                    <h2><?= $this->t('footprint-' . $footprint->id . '-title') ?></h2>
-                    <p><?= $this->t('footprint-' . $footprint->id . '-description') ?></p>
-                    <h3><?= $this->t('footprint-related-sdgs') ?>:</h3>
-                    <p><?= $this->t('click-know-more') ?></p>
->>>>>>> use of impact data in home values module
                     <ul>
                         <?php foreach($this->sdg_by_footprint[$footprint->id] as $sdg): ?>
                             <li><a href="<?= $sdg->link ?>"><img src="assets/img/ods/ods<?= $sdg->id ?>.svg" width="75" height="75" alt="<?= $sdg->name ?>"/></a></li>
@@ -40,7 +32,6 @@
                                     <img
                                         src="<?= $impact_data->getImage()->getLink(165,240,true) ?>" 
                                         alt="<?= $footprint->title ?>"
-<<<<<<< HEAD
                                         height="240"
                                         width="165"
                                         >
@@ -50,15 +41,6 @@
                                     <h3><span><?= $impact_data->data ?></span> <?= $impact_data->data_unit?></h3>
                                     <p><?= $impact_data->description ?></p>
                                 </div>
-=======
-                                        height="165"
-                                        width="240"
-                                        >
-                                <?php endif; ?>
-                                <h2><?= $impact_data->title ?></h2>
-                                <h3><span><?= $impact_data->subtitle?><span></h3>
-                                <p><?= $impact_data->description ?></p>
->>>>>>> use of impact data in home values module
                             </div>
                         <?php endforeach ?>
                     </div>
