@@ -21,8 +21,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y --no-install-recommends install php${PHP_VERSION}-fpm php${PHP_VERSION}-zip php${PHP_VERSION}-xdebug \
     && apt-get -y --no-install-recommends install php${PHP_VERSION}-mysql php${PHP_VERSION}-gd php${PHP_VERSION}-xml \
     && apt-get -y --no-install-recommends install php${PHP_VERSION}-curl php${PHP_VERSION}-dom php${PHP_VERSION}-json \
-    && apt-get -y --no-install-recommends install php${PHP_VERSION}-memcached php${PHP_VERSION}-mbstring \
-    && apt-get -y --no-install-recommends install php${PHP_VERSION}-mcrypt php${PHP_VERSION}-readline \
+    && apt-get -y --no-install-recommends install php${PHP_VERSION}-memcached php${PHP_VERSION}-mbstring php${PHP_VERSION}-readline \
     && apt-get -y --no-install-recommends install nodejs npm build-essential ruby-dev rubygems-integration gosu \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*

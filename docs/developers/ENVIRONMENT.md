@@ -17,95 +17,12 @@ We use the **grunt** tool in order to execute repetitive task such as:
 
 ## Setting up environment
 
-You can set-up a development environment in your local machine by installing all required tools. Or, you can use either a Vagrant or Docker virtual machine with all tools ready to go.
+You can set-up a development environment in your local machine by installing all required tools. Or, you can use a Docker virtual machine with all tools ready to go.
 
 To install `docker` and `docker-compose` follow the instructions:
 
 https://docs.docker.com/install/
 https://docs.docker.com/compose/install/
-
-To install vagrant refer to the official web site:
-
-http://www.vagrantup.com/downloads
-
-You may install virtualbox as well:
-
-https://www.virtualbox.org/wiki/Downloads
-
-Using Vagrant Virtual Machine
-=============================
-
-*NOTE:* We think that docker is a better way to quickly install Goteo as it uses much less resources, probably we will deprecate the Vagrant development aproach in the future.
-
-The Vagrant file provided automatically configures a virtual machine with all necessary tools.
-
-Just open a terminal where you have your copy of Goteo code and execute:
-
-Start the virtual machine (it will be a while first time you do that):
-
-```bash
-vagrant up
-```
-
-You need to log into the virtual machine to start the development server:
-
-```bash
-vagrant ssh
-```
-
-The first time, a vagrant local config file will be create a a `config/local-vagrant-settings.yml`. The env variable GOTEO_CONFIG_FILE will be append to the .bashrc file in vagrant poining to that file. Database will be autocreated and dependencies installed.
-
-You just need to log into vagrant and start the development server:
-
-```bash
-grunt serve
-```
-
-**Vagrant Apache dist testing**
-
-It is possible to build the distribution goteo package (for production sites) and test it in the same vagrant installation which is already configured to serve the content of the folder `/home/vagrant/goteo/dist`.
-
-Try it on by building the package (remember to log into vagrant first):
-
-```bash
-grunt build:dist
-```
-
-And, then pointing your browser to http://localhost:8080/
-You can tweak the Apache configuration in `/etc/apache2/sites-enabled/goteo.conf` (inside vagrant)
-
-
-**Code updates**
-
-To update composer or npm dependencies when code is updated, you just need to log into vagrant (`vagrant ssh`) and run these commands:
-
-Node and composer dependencies:
-
-```bash
-cd /home/vagrant/goteo
-npm install
-composer install
-```
-
-It's also safe to run the MySQL migration tool to ensure database version is up to date:
-
-```bash
-./bin/console migrate all
-```
-
-
-You can do the `grunt serve` command in your own machine, then vagrant will be used for mysql only.
-
-Now you can open your favorite browser on your machine and go to:
-
-`http://localhost:8081`
-
-Login with user "root" and password "root" (no quotes).
-Go `http://localhost:8081/admin/users/edit/root` to change the password and email
-
-A copy of PhpMyAdmin is also running on the virtual machine, just go to:
-
-`http://localhost:8080/phpmyadmin`
 
 Installing everything in your own machine
 =========================================
