@@ -11,12 +11,30 @@
 
 namespace Goteo\Library\Forms\Model;
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Form\FormInterface;
+=======
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraints;
+>>>>>>> Stashed changes
+=======
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraints;
+>>>>>>> Stashed changes
 
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+use Goteo\Model\Image;
+>>>>>>> Stashed changes
+=======
+use Goteo\Model\Image;
+>>>>>>> Stashed changes
 
 use Goteo\Model\Filter\ImpactData;
 
@@ -27,7 +45,6 @@ class ImpactDataForm extends AbstractFormProcessor {
         $model = $this->getModel();
         $builder = $this->getBuilder();
         $options = $builder->getOptions();
-        $filter = $this->getModel();
         $data = $options['data'];
 
         $builder
@@ -54,6 +71,7 @@ class ImpactDataForm extends AbstractFormProcessor {
             ))
             ->add('image', 'dropfiles', [
                 'label' => 'regular-image',
+                'data' => [ $model->image ? $model->getImage() : null],
                 'required' => false,
                 'url' => '/api/impactdata/images',
                 'limit' => 1,
@@ -78,6 +96,12 @@ class ImpactDataForm extends AbstractFormProcessor {
 
         $data = $form->getData();
         $model = $this->getModel();
+
+        if (current($data['image']) instanceOf Image) {
+            $model->setImage(current($data['image']));
+            unset($data['image']);
+        }
+
         $model->rebuildData($data, array_keys($form->all()));
 
         $errors = [];

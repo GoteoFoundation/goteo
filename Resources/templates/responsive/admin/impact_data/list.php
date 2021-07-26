@@ -1,6 +1,6 @@
 <?php
 
-$this->layout('admin/filter/layout');
+$this->layout('admin/impact_data/layout');
 
 $this->section('admin-search-box-addons');
 

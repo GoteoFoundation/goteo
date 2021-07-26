@@ -65,7 +65,7 @@ trait ImpactDataRelationsTrait {
         $values = [':id' => $this->id];
 
         if($query = self::query($sql, $values)) {
-            if( $impact_data = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\ImpactData') ) {
+            if( $impact_data = $query->fetchAll(\PDO::FETCH_CLASS, ImpactData::class) ) {
                 return $impact_data;
             }
         }
