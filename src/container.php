@@ -17,9 +17,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 $sc = new DependencyInjection\ContainerBuilder();
 
 // Context and matcher
-$sc->register('context', 'Symfony\Component\Routing\RequestContext')
+$sc->register('context', Symfony\Component\Routing\RequestContext::class)
    ->addMethodCall('fromRequest', array(App::getRequest()));
-$sc->register('matcher', 'Symfony\Component\Routing\Matcher\UrlMatcher')
+$sc->register('matcher', Symfony\Component\Routing\Matcher\UrlMatcher::class)
    ->setArguments(array('%routes%', new Reference('context')))
 ;
 
@@ -27,48 +27,48 @@ $sc->register('matcher', 'Symfony\Component\Routing\Matcher\UrlMatcher')
 $env = Config::get('env');
 
 // logger sub-references
-$sc->register('logger.processor.web', 'Goteo\Util\Monolog\Processor\WebProcessor')
+$sc->register('logger.processor.web', Goteo\Util\Monolog\Processor\WebProcessor::class)
    ->setArguments(array(App::getRequest()));
-$sc->register('logger.processor.uid', 'Monolog\Processor\UidProcessor');
-$sc->register('logger.processor.memory', 'Monolog\Processor\MemoryUsageProcessor');
-$sc->register('logger.processor.introspection', 'Monolog\Processor\IntrospectionProcessor')
+$sc->register('logger.processor.uid', Monolog\Processor\UidProcessor::class);
+$sc->register('logger.processor.memory', Monolog\Processor\MemoryUsageProcessor::class);
+$sc->register('logger.processor.introspection', Monolog\Processor\IntrospectionProcessor::class)
    ->setArguments(array(monolog_level('error')));
 
 //General main log
-$sc->register('logger.formatter', 'Goteo\Util\Monolog\Formatter\LogstashFormatter')
+$sc->register('logger.formatter', Goteo\Util\Monolog\Formatter\LogstashFormatter::class)
    ->setArguments(array("app_$env", gethostname(), null, 'ctxt_', Goteo\Util\Monolog\Formatter\LogstashFormatter::V1));
-$sc->register('logger.handler', 'Monolog\Handler\StreamHandler')
+$sc->register('logger.handler', Monolog\Handler\StreamHandler::class)
    ->setArguments(array(GOTEO_LOG_PATH."app_$env.log", monolog_level(Config::get('log.app'))))
    ->addMethodCall('setFormatter', array(new Reference('logger.formatter')))
 ;
-$logger = $sc->register('logger', 'Monolog\Logger')
+$logger = $sc->register('logger', Monolog\Logger::class)
               ->setArguments(array('main', array(new Reference('logger.handler'))))
               ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
               ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
 ;
 
 // Console log
-$sc->register('console_logger.formatter', 'Goteo\Util\Monolog\Formatter\LogstashFormatter')
+$sc->register('console_logger.formatter', Goteo\Util\Monolog\Formatter\LogstashFormatter::class)
    ->setArguments(array("console_$env", gethostname(), null, 'ctxt_', Goteo\Util\Monolog\Formatter\LogstashFormatter::V1));
 
-$sc->register('console_logger.handler', 'Monolog\Handler\StreamHandler')
+$sc->register('console_logger.handler', Monolog\Handler\StreamHandler::class)
    ->setArguments(array(GOTEO_LOG_PATH."console_$env.log", monolog_level(Config::get('log.console'))))
    ->addMethodCall('setFormatter', array(new Reference('console_logger.formatter')))
 ;
-$cliLogger = $sc->register('console_logger', 'Monolog\Logger')
+$cliLogger = $sc->register('console_logger', Monolog\Logger::class)
              ->setArguments(array('console', array(new Reference('console_logger.handler'))))
              ->addMethodCall('pushProcessor', array(new Reference('logger.processor.uid')))
              ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
              ->addMethodCall('pushProcessor', array(new Reference('logger.processor.introspection')))
 ;
 
-$sysLogger = $sc->register('syslogger', 'Monolog\Logger')
+$sysLogger = $sc->register('syslogger', Monolog\Logger::class)
                 ->setArguments(array('syslog', array(new Reference('logger.handler'))))
                 ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
                 ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
 ;
 
-$payLogger = $sc->register('paylogger', 'Monolog\Logger')
+$payLogger = $sc->register('paylogger', Monolog\Logger::class)
                 ->setArguments(array('payment', array(new Reference('logger.handler'))))
                 ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
                 ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
@@ -76,14 +76,14 @@ $payLogger = $sc->register('paylogger', 'Monolog\Logger')
 
 // error mail send if defined
 if (Config::get('log.mail')) {
-    $sc->register('logger.mail_handler.formatter', 'Monolog\Formatter\HtmlFormatter');
+    $sc->register('logger.mail_handler.formatter', Monolog\Formatter\HtmlFormatter::class);
     $mailer = Goteo\Model\Mail::createFromHtml(Config::getMail('fail'), '', "WebApp error in [".Config::get('url.main')."]");
-    $mail = $sc->register('logger.mail_handler', 'Goteo\Util\Monolog\Handler\MailHandler')
+    $mail = $sc->register('logger.mail_handler', Goteo\Util\Monolog\Handler\MailHandler::class)
          ->setArguments(array($mailer, '', Monolog\Logger::DEBUG, true))// delayed sending
          ->addMethodCall('setFormatter', array(new Reference('logger.mail_handler.formatter')))
     ;
 
-    $sc->register('logger.buffer_handler', 'Monolog\Handler\FingersCrossedHandler')
+    $sc->register('logger.buffer_handler', Monolog\Handler\FingersCrossedHandler::class)
         ->setArguments(array(new Reference('logger.mail_handler'), monolog_level(Config::get('log.mail'))));
     $payLogger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
     $cliLogger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
@@ -91,67 +91,67 @@ if (Config::get('log.mail')) {
 }
 
 // resolver for the HttpKernel handle()
-$sc->register('resolver', 'Symfony\Component\HttpKernel\Controller\ControllerResolver');
+$sc->register('resolver', Symfony\Component\HttpKernel\Controller\ControllerResolver::class);
 
 // Router for the dispatcher
-$sc->register('listener.router', 'Symfony\Component\HttpKernel\EventListener\RouterListener')
+$sc->register('listener.router', Symfony\Component\HttpKernel\EventListener\RouterListener::class)
    ->setArguments(array(new Reference('matcher'), new RequestStack(), null, new Reference('logger')))
 ;
 
 // always utf-8 output, just in case...
-$sc->register('listener.response', 'Symfony\Component\HttpKernel\EventListener\ResponseListener')
+$sc->register('listener.response', Symfony\Component\HttpKernel\EventListener\ResponseListener::class)
    ->setArguments(array('UTF-8'))
 ;
 
 // APP LISTENERS
 // Nice Maintenance message, Other (fatal) thrown exceptions configuration
-$sc->register('app.listener.exception', 'Goteo\Application\EventListener\ExceptionListener')
+$sc->register('app.listener.exception', Goteo\Application\EventListener\ExceptionListener::class)
    ->setArguments(array(new Reference('logger')));
 // Lang, cookies info, etc
-$sc->register('app.listener.session', 'Goteo\Application\EventListener\SessionListener')
+$sc->register('app.listener.session', Goteo\Application\EventListener\SessionListener::class)
    ->setArguments(array(new Reference('logger')));
-$sc->register('app.listener.auth', 'Goteo\Application\EventListener\AuthListener')
+$sc->register('app.listener.auth', Goteo\Application\EventListener\AuthListener::class)
    ->setArguments(array(new Reference('logger')));
-$sc->register('app.listener.origin', 'Goteo\Application\EventListener\OriginListener')
+$sc->register('app.listener.origin', Goteo\Application\EventListener\OriginListener::class)
    ->setArguments(array(new Reference('logger')));
-$sc->register('app.listener.project', 'Goteo\Application\EventListener\ProjectListener')
+$sc->register('app.listener.project', Goteo\Application\EventListener\ProjectListener::class)
     ->setArguments(array(new Reference('logger')));
-$sc->register('app.listener.invest', 'Goteo\Application\EventListener\InvestListener')
+$sc->register('app.listener.invest', Goteo\Application\EventListener\InvestListener::class)
   ->setArguments(array(new Reference('paylogger')));
 
-$sc->register('app.listener.blog_post', 'Goteo\Application\EventListener\BlogPostListener')
+$sc->register('app.listener.blog_post', Goteo\Application\EventListener\BlogPostListener::class)
   ->setArguments(array(new Reference('logger')));
 
-$sc->register('app.listener.stories', 'Goteo\Application\EventListener\StoriesListener')
+$sc->register('app.listener.stories', Goteo\Application\EventListener\StoriesListener::class)
   ->setArguments(array(new Reference('logger')));
 
 // Milestone listener
-$sc->register('app.listener.project_post', 'Goteo\Application\EventListener\ProjectPostListener')
+$sc->register('app.listener.project_post', Goteo\Application\EventListener\ProjectPostListener::class)
   ->setArguments(array(new Reference('logger')));
 
-$sc->register('app.listener.channel', 'Goteo\Application\EventListener\ProjectChannelListener')
+$sc->register('app.listener.channel', Goteo\Application\EventListener\ProjectChannelListener::class)
   ->setArguments(array(new Reference('logger')));
 
-$sc->register('app.listener.poolinvest', 'Goteo\Application\EventListener\PoolInvestListener')
+$sc->register('app.listener.poolinvest', Goteo\Application\EventListener\PoolInvestListener::class)
   ->setArguments(array(new Reference('paylogger')));
 
-$sc->register('app.listener.donateinvest', 'Goteo\Application\EventListener\DonateInvestListener')
+$sc->register('app.listener.donateinvest', Goteo\Application\EventListener\DonateInvestListener::class)
   ->setArguments(array(new Reference('paylogger')));
 
 // Legacy Security ACL
-$sc->register('app.listener.acl', 'Goteo\Application\EventListener\AclListener')
+$sc->register('app.listener.acl', Goteo\Application\EventListener\AclListener::class)
    ->setArguments(array(new Reference('logger')));
-$sc->register('app.listener.messages', 'Goteo\Application\EventListener\MessageListener')
+$sc->register('app.listener.messages', Goteo\Application\EventListener\MessageListener::class)
    ->setArguments(array(new Reference('logger')));
 
 // Form builder
-$sc->register('app.forms', 'Goteo\Util\Form\FormBuilder');
+$sc->register('app.forms', Goteo\Util\Form\FormBuilder::class);
 // Form Finder (create default forms)
-$sc->register('app.forms.finder', 'Goteo\Util\Form\FormFinder');
+$sc->register('app.forms.finder', Goteo\Util\Form\FormFinder::class);
 
 // Matcher processor Finder (handles custom matchfunding cases)
 // This finder may add listeners to the dispatcher
-$sc->register('app.matcher.finder', 'Goteo\Util\MatcherProcessor\MatcherFinder')
+$sc->register('app.matcher.finder', Goteo\Util\MatcherProcessor\MatcherFinder::class)
     ->setArguments(array($sc));
 
 // Markdown parser
@@ -159,10 +159,10 @@ $sc->register('app.md.parser', 'Parsedown')
    ->addMethodCall('setBreaksEnabled', [true])
    ->addMethodCall('setUrlsLinked', [true])
 ;
-$sc->register('app.currency.converter', 'Goteo\Library\Converter');
+$sc->register('app.currency.converter', Goteo\Library\Converter::class);
 
 // Event Dispatcher object
-$sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
+$sc->register('dispatcher', Symfony\Component\EventDispatcher\EventDispatcher::class)
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.exception')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.session')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.auth')))
@@ -184,34 +184,34 @@ $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
 ;
 
 // Goteo main app
-$sc->register('app', 'Goteo\Application\App')
+$sc->register('app', Goteo\Application\App::class)
    ->setArguments(array(new Reference('dispatcher'), new Reference('resolver')));
 
 // CONSOLE LISTENERS
-$sc->register('console.listener.milestone', 'Goteo\Console\EventListener\ConsoleMilestoneListener')
+$sc->register('console.listener.milestone', Goteo\Console\EventListener\ConsoleMilestoneListener::class)
   ->setArguments(array(new Reference('console_logger')));
 
 // Favourite listener
-$sc->register('console.listener.favourite', 'Goteo\Console\EventListener\ConsoleFavouriteListener')
+$sc->register('console.listener.favourite', Goteo\Console\EventListener\ConsoleFavouriteListener::class)
   ->setArguments(array(new Reference('console_logger')));
 
 // Options addons and exception processiongs
-$sc->register('console.listener.exception', 'Goteo\Console\EventListener\ConsoleExceptionListener')
+$sc->register('console.listener.exception', Goteo\Console\EventListener\ConsoleExceptionListener::class)
    ->setArguments(array(new Reference('console_logger')));
 // Project processing
-$sc->register('console.listener.project', 'Goteo\Console\EventListener\ConsoleProjectListener')
+$sc->register('console.listener.project', Goteo\Console\EventListener\ConsoleProjectListener::class)
    ->setArguments(array(new Reference('console_logger')));
 // Project watcher processing
-$sc->register('console.listener.watcher', 'Goteo\Console\EventListener\ConsoleWatcherListener')
+$sc->register('console.listener.watcher', Goteo\Console\EventListener\ConsoleWatcherListener::class)
    ->setArguments(array(new Reference('console_logger')));
 // Invest processing
-$sc->register('console.listener.invest', 'Goteo\Console\EventListener\ConsoleInvestListener')
+$sc->register('console.listener.invest', Goteo\Console\EventListener\ConsoleInvestListener::class)
    ->setArguments(array(new Reference('console_logger')));
 // Mailing processing
-$sc->register('console.listener.mailing', 'Goteo\Console\EventListener\ConsoleMailingListener')
+$sc->register('console.listener.mailing', Goteo\Console\EventListener\ConsoleMailingListener::class)
    ->setArguments(array(new Reference('console_logger')));
 // Event dispatcher for console
-$sc->register('console_dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
+$sc->register('console_dispatcher', Symfony\Component\EventDispatcher\EventDispatcher::class)
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.exception')))
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.project')))
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.watcher')))
@@ -222,7 +222,7 @@ $sc->register('console_dispatcher', 'Symfony\Component\EventDispatcher\EventDisp
 ;
 
 // Goteo Console
-$sc->register('console', 'Goteo\Console\Console')
+$sc->register('console', Goteo\Console\Console::class)
    ->setArguments(array(new Reference('console_dispatcher')))
 ;
 
