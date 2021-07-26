@@ -63,7 +63,7 @@
     },
     "autoload": {
         "psr-4": {
-            "": ["src/"]
+            "": ["src/", "extend/goteo-private/src"]
         }
     },
     "require-dev": {
