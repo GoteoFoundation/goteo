@@ -12,6 +12,7 @@ use Goteo\Application\Config;
 use Goteo\Application\App;
 use Symfony\Component\DependencyInjection;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 $sc = new DependencyInjection\ContainerBuilder();
 
@@ -94,7 +95,7 @@ $sc->register('resolver', 'Symfony\Component\HttpKernel\Controller\ControllerRes
 
 // Router for the dispatcher
 $sc->register('listener.router', 'Symfony\Component\HttpKernel\EventListener\RouterListener')
-   ->setArguments(array(new Reference('matcher'), null, null, new Reference('logger')))
+   ->setArguments(array(new Reference('matcher'), new RequestStack(), null, new Reference('logger')))
 ;
 
 // always utf-8 output, just in case...

@@ -22,7 +22,7 @@ class App extends HttpKernel\HttpKernel
     static protected $_app;
     static protected $_request;
     static protected $_routes;
-    static protected $_sc;
+    static protected $serviceContainer;
     static protected $_debug  = false;
     static protected $_errors = array();
 
@@ -43,42 +43,31 @@ class App extends HttpKernel\HttpKernel
      */
     static public function setRequest(Request $request) {
         self::$_request = $request;
-        // Session::factory($request);
     }
 
-    /**
-     * Gets the service container for the app
-     * @return RouteColletion object
-     */
-    static public function getServiceContainer() {
-        if (!self::$_sc) {
-            self::$_sc = include (__DIR__ .'/../../container.php');
+    static public function getServiceContainer(): ContainerBuilder
+    {
+        if (!self::$serviceContainer) {
+            self::$serviceContainer = include (__DIR__ .'/../../container.php');
         }
-        return self::$_sc;
+        return self::$serviceContainer;
     }
 
     /**
      * Sets the service container for the app
-     * Must be called befor App::get() in order to set a different service container
+     * Must be called before App::get() in order to set a different service container
      */
     static public function setServiceContainer(ContainerBuilder $sc) {
-        self::$_sc = $sc;
+        self::$serviceContainer = $sc;
     }
 
-    /**
-     * Shortcut to check if some service is available
-     * @param  string $service the id of the service
-     * @return Object          the instance of the service
-     */
-    static public function isService($service) {
+    static public function isService(string $service): bool
+    {
         return self::getServiceContainer()->has($service);
     }
-    /**
-     * Shortcut to obtain a particular service
-     * @param  string $service the id of the service
-     * @return Object          the instance of the service
-     */
-    static public function getService($service) {
+
+    static public function getService(string $service): object
+    {
         return self::getServiceContainer()->get($service);
     }
 
@@ -124,7 +113,6 @@ class App extends HttpKernel\HttpKernel
     static public function get(): App
     {
         if (!self::$_app) {
-
             // Getting the request either from global or simulated
             $request = self::getRequest();
 
@@ -145,9 +133,10 @@ class App extends HttpKernel\HttpKernel
             // Setup request for views
             GoteoCore::setRequest($request);
 
-            $sc = self::getServiceContainer();
-            self::$_app = $sc->get('app');
+            $serviceContainer = self::getServiceContainer();
+            self::$_app = $serviceContainer->get('app');
         }
+
         return self::$_app;
     }
 
@@ -188,7 +177,7 @@ class App extends HttpKernel\HttpKernel
 
     static public function clearApp() {
         self::$_app     = null;
-        self::$_sc      = null;
+        self::$serviceContainer      = null;
         self::$_routes  = null;
         self::$_request = null;
     }
