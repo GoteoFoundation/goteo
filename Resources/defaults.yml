@@ -42,6 +42,8 @@ ssl: false
 # List the trusted proxies for SSL connection here
 proxies:
     - 127.0.0.1
+    # Trust any proxy:
+    # - '%env(REMOTE_ADDR)%'
     # Cloudflare IP list:
     # - 103.21.244.0/22
     # - 103.22.200.0/22
@@ -228,6 +230,7 @@ tax-base-percentage: 50
 # Filesystem used by goteo
 filesystem:
     handler:    local      # 's3' to use AmazonS3 storage, 'local' to use local file system
+    source_url:  'https://static.example.com.s3.eu-west-1.amazonaws.com'  # if specified, will be used to obtain user images (not app assets) instead of the regular assets file
     # Only need to be defined credentials if file system is s3:
     # AWS credentials
     aws: &aws1

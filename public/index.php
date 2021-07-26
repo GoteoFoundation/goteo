@@ -16,7 +16,6 @@ use Goteo\Application\Config;
 //Public Web path
 define('GOTEO_WEB_PATH', __DIR__ . '/');
 
-
 require_once __DIR__ . '/../src/autoload.php';
 
 // Create first the request object (to avoid other classes reading from php://input specially)
@@ -39,22 +38,21 @@ if(Config::get('debug')) {
     App::debug(true);
 }
 
+// Due a symfony issue, disable FORWARDED header, it may cause some problems
+// if not exactly the same as the X_FORWARDED_FOR
+// See https://stackoverflow.com/questions/44543649/conflict-between-http-headers-in-symfony-3
+Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
+
+// Add trusted proxies
+if (is_array(Config::get('proxies'))) {
+    $request->setTrustedProxies(Config::get('proxies'));
+}
+
 //Get from globals defaults
 App::setRequest($request);
 
 // Get the app
 $app = App::get();
-
-if(getenv('LOG_TO_STDOUT')) {
-    $handler = new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::DEBUG);
-    $handler->setFormatter(new Bramus\Monolog\Formatter\ColoredLineFormatter());
-
-    // Add a log level debug to stderr
-    App::getService('logger')->pushHandler($handler);
-    App::getService('syslogger')->pushHandler($handler);
-    App::getService('paylogger')->pushHandler($handler);
-}
-
 
 // handle routes, flush buffer out
 $app->run();

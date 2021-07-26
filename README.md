@@ -4,7 +4,7 @@ currentMenu: home
 Goteo The Open Source Crowdfunding Platform
 ===========================================
 
-[![Build Status](https://travis-ci.org/GoteoFoundation/goteo.svg?branch=devel)](https://travis-ci.org/GoteoFoundation/goteo)
+[![[CI] Test](https://github.com/GoteoFoundation/goteo/actions/workflows/test.yml/badge.svg)](https://github.com/GoteoFoundation/goteo/actions/workflows/test.yml)
 
 This is the source code of the [Crowdfunding platform Goteo](http://goteo.org).
 

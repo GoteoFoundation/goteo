@@ -3,7 +3,7 @@
 $this->layout('blog/layout', [
 	'bodyClass' => 'blog',
     'title' => $this->post->title,
-    'meta_description' => $this->post->title
+    'meta_description' => $this->post->subtitle ? $this->post->subtitle : $this->post->title
     ]);
 
 $this->section('blog-content');

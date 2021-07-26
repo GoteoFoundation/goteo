@@ -58,7 +58,8 @@
         "sensiolabs/ansi-to-html": "^1.1",
         "unreal4u/telegram-api": "~3.4",
         "spipu/html2pdf": "^5.2",
-        "snowplow/referer-parser": "0.2.0"
+        "snowplow/referer-parser": "0.2.0",
+        "graylog2/gelf-php": "~1.5"
     },
     "autoload": {
         "psr-4": {

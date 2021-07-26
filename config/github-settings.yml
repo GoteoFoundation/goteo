@@ -14,16 +14,12 @@ lang: es
 
 # url
 url:
-    main: //localhost:8081
+    main: //0.0.0.0:8081
 
 plugins:
     goteo-dev:
         active: true # plugin should be active=true to be loaded
         #liveport: 35729 # Local development only livereload port (optional)
-
-    extra-logger:
-        active: true
-        stdout: '%env(LOG_TO_STDOUT)%' # set it to true or color via ENV var to view the log via stdout
 
 # Payment methods, must be registered as classes implementing Goteo\Payment\Method\PaymentMethodInterface
 payments:
@@ -36,6 +32,9 @@ payments:
         signature: PAYPAL-Signature
         appId: PAYPAL-APP-ID
 
+    pool:
+        active: true
+
     # A stupid payment method defined in the plugin goteo-dev
     # Useful for development and testing
     dummy:
@@ -46,26 +45,29 @@ payments:
 # Database stuff
 db:
     driver:   mysql     # Database driver (mysql)
-    host:     localhost # Database host
+    host:     127.0.0.1 # Database host
     port:     3306      # Database port
     charset:  utf8mb4     # Database charset
     database: goteo     # Database schema (database name)
-    username: goteo     # Database user for the goteo database
-    password: password  # Password for the goteo database
+    username: goteo      # Database user for the goteo database
+    password: goteo     # Password for the goteo database
+    # for testing only
+    port_env: '%env(DATABASE_PORT)%'
+    array_env:
+        - '%env(DATABASE_PORT)%'
+
+# HTML Metas
+meta:
+    title:       "Development Goteo"       # Html default <title>
 
 # Mail transport
 mail:
     # receiving emails
-    mail:         info@example.com     # Main
-    contact:      info@example.com     # consulting head
-    manager:      manager@example.com  # accounts manager
-    fail:         dev@example.com      # dev head
-    log:          sitelog@example.com  # Loggin mail
-
-    # Default users where to send project notifications by default
-    # Only used if no consultants are assigned
-    consultants:
-        root: 'Root'
+    mail:         info@localhost     # Main
+    contact:      info@localhost     # consulting head
+    manager:      manager@localhost  # accounts manager
+    fail:         dev@localhost      # dev head
+    log:          sitelog@localhost  # Loggin mail
 
 # This will be used for geolocating users, projects, and mail tracking
 geolocation:
@@ -105,7 +107,3 @@ oauth:
 # google: UA-0000000-01
 analytics:
     google:
-
-map:
-    open_street_maps:
-        tile_layer: https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png

@@ -1,0 +1,13 @@
+group: contact
+name: 'User leaves platform'
+purpose: 'Mail template to be sent to the platform when a user leaves'
+type: 'md'
+title: "L'%USERNAME% es dona de baixa"
+text: >
+    Han sol·licitat la baixa per l'email **%USEREMAIL%** que correspon al usuari %USERNAME%**
+
+
+    i ha deixat el següent missatge:
+
+
+    %MESSAGE%

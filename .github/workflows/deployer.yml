@@ -1,0 +1,28 @@
+name: "Deployer"
+
+on:
+  push:
+    branches:
+      - live
+      - staging
+      - beta
+
+jobs:
+  deployer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+
+      - name: Branch info
+        run: echo "Deploying branch ${{ steps.vars.outputs.short_ref }}"
+
+      - uses: convictional/trigger-workflow-and-wait@v1.3.0
+        with:
+          owner: GoteoFoundation
+          repo: goteo-deploy
+          github_token: ${{ secrets.GOTEO_PRIVATE_TOKEN }}
+          workflow_file_name: build.yml
+          inputs: '{"branch": "${{ steps.vars.outputs.short_ref }}"}'

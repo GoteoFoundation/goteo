@@ -62,16 +62,6 @@ class SessionListener extends AbstractListener {
         $request = $event->getRequest();
         $path = $request->getPathInfo();
 
-        // Due a symfony issue, disable FORWARDED header, it may cause some problems
-        // if not exactly the same as the X_FORWARDED_FOR
-        // See https://stackoverflow.com/questions/44543649/conflict-between-http-headers-in-symfony-3
-        Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
-
-        // Add trusted proxies
-        if (is_array(Config::get('proxies'))) {
-            $request->setTrustedProxies(Config::get('proxies'));
-        }
-
         //non cookies for notifyAction on investController
         $skip = Config::get('session.skip');
         if ($this->matchPrefix($path, $skip)) {
