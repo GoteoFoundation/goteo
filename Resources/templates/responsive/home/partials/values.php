@@ -13,14 +13,14 @@
             <div class="row <?= ($index != 0)? "hidden" : '' ?>" id="goteo-values-<?= $footprint->id ?>">
                 <div class="col footprint-briefing">
                     <img src="assets/img/footprint/<?= $footprint->id ?>.svg" heigh="70" width="70" alt="<?= $footprint->name ?>" class="footprint" />
-                    <p><span class="footprint-label"><?= $this->t('footprint-' . $foorptint->id) ?></span></p>
-                    <h2><?= $this->t('footprint-' . $footprint->id . '-title') ?></h2>
-                    <p><?= $this->t('footprint-' . $footprint->id . '-description') ?></p>
-                    <h3><?= $this->t('footprint-related-sdgs') ?>:</h3>
-                    <p><?= $this->t('click-know-more') ?></p>
+                    <p><span class="footprint-label"><?= $this->t('home-values-footprint-' . $foorptint->id) ?></span></p>
+                    <h2><?= $this->t('home-values-footprint-' . $footprint->id . '-title') ?></h2>
+                    <p><?= $this->t('home-values-footprint-' . $footprint->id . '-description') ?></p>
+                    <h3><?= $this->t('home-values-footprint-related-sdgs') ?>:</h3>
+                    <p><?= $this->t('regular-click-more') ?></p>
                     <ul>
                         <?php foreach($this->sdg_by_footprint[$footprint->id] as $sdg): ?>
-                        <li><a href=""><img src="assets/img/ods/ods<?= $sdg->id ?>.svg" width="75" height="75" alt="<?= $sdg->name ?>"/></a></li>
+                            <li><a href="<?= $sdg->link ?>"><img src="assets/img/ods/ods<?= $sdg->id ?>.svg" width="75" height="75" alt="<?= $sdg->name ?>"/></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
