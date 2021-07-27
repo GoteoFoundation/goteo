@@ -290,7 +290,6 @@ class Config {
         // TODO: add a generic matcher processor that uses Symfony Expression Language
         // http://symfony.com/doc/current/components/expression_language/syntax.html
         //
-        // App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\ExpressionLanguageProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\CriteriaInvestMatcherProcessor');
 
@@ -365,6 +364,7 @@ class Config {
 
 		if ($replica = self::get('db.replica.host')) {
 			self::set('dsn_replica', "$driver:host=$replica;dbname=$database;port=" . (self::get('db.replica.port') ? self::get('db.replica.port') : $port) . ";charset=$charset");
+
 		}
 
 		define('SQL_CACHE_DRIVER', self::get('db.cache.driver'));

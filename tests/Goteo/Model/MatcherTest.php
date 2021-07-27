@@ -30,7 +30,7 @@ class MatcherTest extends TestCase
     ];
     private static $project;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         Config::set('lang', 'es');
         Lang::setDefault('es');
@@ -289,7 +289,7 @@ class MatcherTest extends TestCase
     public function testListing()
     {
         $list = Matcher::getList();
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $new = end($list);
         $this->assertInstanceOf('Goteo\Model\Matcher', $new);
         $this->assertEquals(self::$data['name'], $new->name);
@@ -297,7 +297,7 @@ class MatcherTest extends TestCase
 
         Lang::set('ca');
         $list = Matcher::getList();
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $new2 = end($list);
         $this->assertEquals(self::$translatedData['name'], $new2->name);
         $this->assertEquals(self::$translatedData['terms'], $new2->terms);
@@ -341,7 +341,7 @@ class MatcherTest extends TestCase
         }
     }
 
-    static function tearDownAfterClass()
+    static function tearDownAfterClass(): void
     {
         Matcher::query("DELETE FROM matcher WHERE `id` = ?", self::$data['id']);
         delete_test_project();

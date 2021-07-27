@@ -2,7 +2,7 @@
 /**
  * Migration Task class.
  */
-class GoteoSharedMessages
+class GoteoProjectNameI18n
 {
   public function preUp()
   {
@@ -32,8 +32,7 @@ class GoteoSharedMessages
   public function getUpSQL()
   {
      return "
-      ALTER TABLE `message` ADD COLUMN `shared` TINYINT(1) DEFAULT 0 NOT NULL AFTER `private`;
-      ALTER TABLE `mail` CHANGE `template` `template` CHAR(100) NULL;
+      ALTER TABLE `project_lang` ADD COLUMN `name` TINYTEXT AFTER `lang`;
      ";
   }
 
@@ -45,9 +44,7 @@ class GoteoSharedMessages
   public function getDownSQL()
   {
      return "
-     ALTER TABLE `message` DROP COLUMN `shared`;
-     ALTER TABLE `mail` CHANGE `template` `template` BIGINT(20) UNSIGNED NULL;
-     ALTER TABLE `mail` ADD CONSTRAINT `mail_ibfk_2` FOREIGN KEY (`template`) REFERENCES `template`(`id`);
+      ALTER TABLE `project_lang` DROP COLUMN `name`;
      ";
   }
 
