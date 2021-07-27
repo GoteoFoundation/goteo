@@ -23,6 +23,10 @@ class ChannelProgramTransformer extends AbstractTransformer {
         return $this->model->description;
     }
 
+    public function getImage() {
+        return $this->model->getHeader()->getLink(64,64);
+    }
+
     public function getActions() {
         if(!$u = $this->getUser()) return [];
         $ret = ['edit' => '/admin/channelprogram/'. $this->model->node_id . '/edit/' . $this->model->id];
