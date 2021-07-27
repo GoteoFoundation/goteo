@@ -11,6 +11,8 @@
 
 namespace Goteo;
 
+use ReflectionClass;
+
 /**
  * Some useful methods to make testing with PHPUnit faster and more fun
  *
@@ -64,7 +66,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     public function invokeMethod(&$object, $methodName, array $parameters = array())
     {
-        $reflection = new \ReflectionClass(get_class($object));
+        $reflection = new ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 

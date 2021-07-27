@@ -108,7 +108,7 @@ class SocialCommitmentTest extends TestCase {
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         Sdg::query("DELETE FROM sdg WHERE `id` = ?", self::$sdg);
     }
 }

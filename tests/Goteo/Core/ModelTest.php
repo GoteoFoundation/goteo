@@ -73,7 +73,7 @@ class MockModelListener implements EventSubscriberInterface {
 class ModelTest extends \PHPUnit\Framework\TestCase {
     public static $listener;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         DB::cache(false);
         self::$listener = new MockModelListener;
     }
@@ -330,36 +330,36 @@ class ModelTest extends \PHPUnit\Framework\TestCase {
         Config::set('lang', 'es');
         list($fields, $joins) = $mock::getLangsSQLJoins('es');
         // echo "\n[$joins]\n";
-        $this->assertContains("IF(`mockmodel`.lang='es', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
-        $this->assertContains("IF(`mockmodel`.lang='es', `mockmodel`.`description`, IFNULL(IFNULL(b.`description`,c.`description`), `mockmodel`.`description`)) AS `description`", $fields);
-        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='es' AND b.lang!=`mockmodel`.lang", $joins);
-        $this->assertContains("LEFT JOIN `mockmodel_lang` c ON `mockmodel`.id=c.id AND c.lang='en' AND c.lang!=`mockmodel`.lang", $joins);
+        $this->assertStringContainsStringIgnoringCase("IF(`mockmodel`.lang='es', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertStringContainsStringIgnoringCase("IF(`mockmodel`.lang='es', `mockmodel`.`description`, IFNULL(IFNULL(b.`description`,c.`description`), `mockmodel`.`description`)) AS `description`", $fields);
+        $this->assertStringContainsStringIgnoringCase("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='es' AND b.lang!=`mockmodel`.lang", $joins);
+        $this->assertStringContainsStringIgnoringCase("LEFT JOIN `mockmodel_lang` c ON `mockmodel`.id=c.id AND c.lang='en' AND c.lang!=`mockmodel`.lang", $joins);
 
         Config::set('sql_lang', 'ca');
         list($fields, $joins) = $mock::getLangsSQLJoins('es');
-        $this->assertContains("IF(`mockmodel`.lang='es', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
-        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='es' AND b.lang!=`mockmodel`.lang", $joins);
+        $this->assertStringContainsStringIgnoringCase("IF(`mockmodel`.lang='es', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertStringContainsStringIgnoringCase("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='es' AND b.lang!=`mockmodel`.lang", $joins);
 
         list($fields, $joins) = $mock::getLangsSQLJoins('de');
-        $this->assertContains("IF(`mockmodel`.lang='de', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
-        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='de' AND b.lang!=`mockmodel`.lang", $joins);
-        $this->assertContains("LEFT JOIN `mockmodel_lang` c ON `mockmodel`.id=c.id AND c.lang='en' AND c.lang!=`mockmodel`.lang", $joins);
+        $this->assertStringContainsStringIgnoringCase("IF(`mockmodel`.lang='de', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertStringContainsStringIgnoringCase("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='de' AND b.lang!=`mockmodel`.lang", $joins);
+        $this->assertStringContainsStringIgnoringCase("LEFT JOIN `mockmodel_lang` c ON `mockmodel`.id=c.id AND c.lang='en' AND c.lang!=`mockmodel`.lang", $joins);
 
         list($fields, $joins) = $mock::getLangsSQLJoins('ca');
-        $this->assertContains("IF(`mockmodel`.lang='ca', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
-        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='ca' AND b.lang!=`mockmodel`.lang", $joins);
-        $this->assertContains("LEFT JOIN `mockmodel_lang` c ON `mockmodel`.id=c.id AND c.lang='en' AND c.lang!=`mockmodel`.lang", $joins);
+        $this->assertStringContainsStringIgnoringCase("IF(`mockmodel`.lang='ca', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertStringContainsStringIgnoringCase("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='ca' AND b.lang!=`mockmodel`.lang", $joins);
+        $this->assertStringContainsStringIgnoringCase("LEFT JOIN `mockmodel_lang` c ON `mockmodel`.id=c.id AND c.lang='en' AND c.lang!=`mockmodel`.lang", $joins);
 
         Config::set('sql_lang', 'ca');
         list($fields, $joins) = $mock::getLangsSQLJoins('es', Config::get('sql_lang'));
-        $this->assertContains("IF('ca'='es', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
-        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='es' AND b.lang!='ca'", $joins);
+        $this->assertStringContainsStringIgnoringCase("IF('ca'='es', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertStringContainsStringIgnoringCase("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='es' AND b.lang!='ca'", $joins);
 
         Config::set('sql_lang', 'es');
         Config::set('lang', 'ca');
         list($fields, $joins) = $mock::getLangsSQLJoins('de', Config::get('lang'));
-        $this->assertContains("IF('ca'='de', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
-        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='de' AND b.lang!='ca'", $joins);
+        $this->assertStringContainsStringIgnoringCase("IF('ca'='de', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertStringContainsStringIgnoringCase("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='de' AND b.lang!='ca'", $joins);
 
         Config::set('sql_lang', $old_sql_lang);
         Config::set('lang', $old_lang);
@@ -415,7 +415,7 @@ class ModelTest extends \PHPUnit\Framework\TestCase {
         App::getService('dispatcher')->removeSubscriber(self::$listener);
     }
 
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass(): void {
         DB::cache(false);
     }
 
