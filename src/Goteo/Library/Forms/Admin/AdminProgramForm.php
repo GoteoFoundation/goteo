@@ -56,7 +56,6 @@ class AdminProgramForm extends AbstractFormProcessor {
                 'data' => [$model->header ? $model->getHeader() : null],
                 'label' => 'admin-title-icon',
                 'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'url' => '/api/channels/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 1))
                 ),

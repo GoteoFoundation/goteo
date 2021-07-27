@@ -65,7 +65,6 @@ class AdminChannelResourceEditForm extends AbstractFormProcessor {
                 'data' => [$resource->image ? $resource->getImage() : null],
                 'label' => 'admin-title-image',
                 'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'url' => '/api/channel-resources/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 1))
                 )

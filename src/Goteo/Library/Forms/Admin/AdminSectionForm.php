@@ -58,10 +58,9 @@ class AdminSectionForm extends AbstractFormProcessor {
             ->add('main_image', 'dropfiles', array(
                 'required' => false,
                 'limit' => 1,
-                'data' => [$model->main_image ? $model->getMainImage() : null],
+                'data' => [$model->main_image ? $model->getImage() : null],
                 'label' => 'regular-image',
                 'accepted_files' => 'image/jpeg,image/png,image/svg+xml',
-                'url' => '/api/channels/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 1))
                 ),

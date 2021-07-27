@@ -107,7 +107,6 @@ class UserProfileForm extends AbstractFormProcessor {
                 'label' => 'profile-fields-image-title',
                 'constraints' => $this->getConstraints('avatar'),
                 'disabled' => $this->getReadonly(),
-                'url' => '/api/users/' . $user->id . '/avatar',
                 'required' => false
             ])
             ;

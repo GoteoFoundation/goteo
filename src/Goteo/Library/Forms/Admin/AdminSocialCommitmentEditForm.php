@@ -60,7 +60,6 @@ class AdminSocialCommitmentEditForm extends AbstractFormProcessor {
                 'data' => [$model->icon ? $model->getIcon() : null],
                 'label' => 'admin-title-icon',
                 'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'url' => '/api/categories/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 1))
                 ),

@@ -36,7 +36,6 @@ class AdminStoryEditForm extends ProjectStoryForm {
             ->add('image', 'dropfiles', [
                 'label' => 'story-field-image',
                 'disabled' => $this->getReadonly(),
-                'url' => '/api/stories/images',
                 'required' => true,
                 'data' => $story->getImage(),
                 'limit' => 1,
@@ -48,7 +47,6 @@ class AdminStoryEditForm extends ProjectStoryForm {
                 'label' => 'story-field-pool-image',
                 'disabled' => $this->getReadonly(),
                 'data' => $story->getPoolImage(),
-                'url' => '/api/stories/images',
                 'required' => false,
                 'limit' => 1,
                 'constraints' => [
@@ -60,7 +58,6 @@ class AdminStoryEditForm extends ProjectStoryForm {
                 'label' => 'story-field-background-image',
                 'disabled' => $this->getReadonly(),
                 'data' => $story->getBackgroundImage(),
-                'url' => '/api/stories/images',
                 'required' => false,
                 'limit' => 1,
                 'constraints' => [

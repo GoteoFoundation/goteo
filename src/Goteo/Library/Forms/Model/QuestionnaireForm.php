@@ -53,7 +53,7 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 $question->vars->attr = (array) $question->vars->attr;
 
             if ($type == "dropfiles") {
-                $question->vars->url = '/api/questionnaire/documents';
+                // $question->vars->url = '/api/questionnaire/documents';
                 $question->vars->accepted_files = 'image/jpeg,image/gif,image/png,application/pdf';
                 $question->vars->constraints = [
                     new Constraints\Count(['max' => 1]),

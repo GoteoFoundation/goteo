@@ -101,7 +101,6 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'data' => [$workshop->header_image ? $workshop->getHeaderImage() : null],
                 'label' => 'admin-title-header-image',
                 'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'url' => '/api/workshops/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 1))
                 )
