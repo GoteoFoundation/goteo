@@ -52,6 +52,11 @@ class Config {
                 self::$config = array_replace_recursive(self::$config , $config);
             }
 
+            // Error traces
+            if(self::get('debug')) {
+                ini_set('display_errors', 1);
+                App::debug(true);
+            }
 			//Timezone
 			if (self::get('timezone')) {
 				date_default_timezone_set(self::get('timezone'));
