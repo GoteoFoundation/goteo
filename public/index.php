@@ -32,12 +32,6 @@ if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
 Config::load($config);
 Config::autosave();
 
-// Error traces
-if(Config::get('debug')) {
-    ini_set('display_errors', 1);
-    App::debug(true);
-}
-
 // Due a symfony issue, disable FORWARDED header, it may cause some problems
 // if not exactly the same as the X_FORWARDED_FOR
 // See https://stackoverflow.com/questions/44543649/conflict-between-http-headers-in-symfony-3
