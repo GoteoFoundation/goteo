@@ -21,7 +21,8 @@ class ImpactData extends Model {
 	public
 		$id,
 		$title,
-		$subtitle,
+		$data,
+        $data_unit,
 		$description,
 		$image,
 		$lang;
@@ -30,19 +31,20 @@ class ImpactData extends Model {
 	static protected $Table_static = 'impact_data';
 
     public static function getLangFields() {
-        return ['title', 'subtitle', 'description'];
+        return ['title', 'data', 'data_unit', 'description'];
     }
 
     public static function get($id) {
 
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
         $sql = "SELECT
                     id,
-                    title,
-                    subtitle,
-                    description,
+                    $fields,
                     image,
                     lang
                 FROM impact_data
+                $joins
                 WHERE id = :id";
 
         $impact_data = static::query($sql, [':id' => $id])->fetchObject(__CLASS__);
@@ -57,6 +59,8 @@ class ImpactData extends Model {
     public static function getList($filters = array(), int $offset = 0, int $limit = 10, int $count = 0) {
     	$sqlWhere = "";
 
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
         if ($count) {
             $sql = "SELECT COUNT(impact_data.id)
             FROM impact_data
@@ -64,8 +68,13 @@ class ImpactData extends Model {
             return (int) self::query($sql)->fetchColumn();
         }
 
-        $sql = "SELECT *
+        $sql = "SELECT
+                    id,
+                    $fields
+                    image,
+                    lang
                 FROM impact_data
+                $joins
                 $sqlWhere
                 LIMIT $offset, $limit
             ";
@@ -84,13 +93,17 @@ class ImpactData extends Model {
 	}
 
 	public function validate(&$errors = array()) {
-		if (!$this->title) {
+		if (!$this->title)
 			$errors['title'] = Text::get('mandatory-title');
-		}
 
-		if (!$this->description) {
-			$errors['description'] = Text::get('mandatory-description');
-		}
+        if (!$this->data)
+            $errors['data'] = Text::get('mandatory-data');
+
+        if (!$this->data_unit)
+            $errors['data'] = Text::get('mandatory-data-unit');
+
+        if (!$this->description)
+            $errors['description'] = Text::get('mandatory-description');
 
 		return empty($errors);
 	}
@@ -99,7 +112,7 @@ class ImpactData extends Model {
 
         if(!$this->validate($errors)) return false;
 
-		$fields = ['title','subtitle','description','image','lang'];
+		$fields = ['title','data', 'data_unit', 'description','image','lang'];
 
 		try {
             $this->dbInsertUpdate($fields);

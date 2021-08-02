@@ -99,6 +99,8 @@ regular-content: Contenido
 regular-continue-question: '¿Continuar?'
 regular-continue: 'Continuar'
 regular-create: 'Crea un proyecto'
+regular-data: 'Dato'
+regular-data-unit: 'Unidad'
 regular-date: Fecha
 regular-date_in: Fecha entrada
 regular-date_out: Fecha salida

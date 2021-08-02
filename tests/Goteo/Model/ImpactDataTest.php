@@ -18,8 +18,9 @@ class ImpactDataTest extends TestCase {
 
     private static $data = array(
     	'title' => 'Test post', 
-    	'subtitle' => 'Test subtitle',
-	    'description' => 'Test description'
+	    'data' => 'Test data',
+        'data_unit' => 'Test unit',
+    	'description' => 'Test description'
     );
 
 

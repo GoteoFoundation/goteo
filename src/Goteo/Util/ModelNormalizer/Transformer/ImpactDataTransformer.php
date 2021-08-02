@@ -17,7 +17,7 @@ use Goteo\Library\Text;
  */
 class ImpactDataTransformer extends AbstractTransformer {
 
-    protected $keys = ['id', 'title', 'subtitle', 'description'];
+    protected $keys = ['id', 'title', 'description'];
 
     public function getActions() {
         if(!$u = $this->getUser()) return [];

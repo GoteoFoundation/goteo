@@ -11,30 +11,12 @@
 
 namespace Goteo\Library\Forms\Model;
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Form\FormInterface;
-=======
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Validator\Constraints;
->>>>>>> Stashed changes
-=======
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Validator\Constraints;
->>>>>>> Stashed changes
-
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
 use Goteo\Model\Image;
->>>>>>> Stashed changes
-=======
-use Goteo\Model\Image;
->>>>>>> Stashed changes
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraints;
 
 use Goteo\Model\Filter\ImpactData;
 
@@ -55,8 +37,14 @@ class ImpactDataForm extends AbstractFormProcessor {
                     new Constraints\NotBlank(),
                 ),
             ))
-            ->add('subtitle', 'text', array(
-                'label' => 'regular-subtitle',
+            ->add('data', 'text', array(
+                'label' => 'regular-data',
+                'required' => true,
+                'constraints' => array(
+                    new Constraints\NotBlank(),
+                ),
+            )) ->add('data_unit', 'text', array(
+                'label' => 'regular-data-unit',
                 'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),

@@ -35,7 +35,8 @@ class GoteoImpactData
         CREATE TABLE `impact_data` (
           `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
           `title` TEXT NULL,
-          `subtitle` TEXT NULL,
+          `data` VARCHAR(10) NOT NULL,
+          `data_unit` VARCHAR(10) NOT NULL,
           `description` TEXT  NULL,
           `image` VARCHAR(255) NULL,
           `lang` VARCHAR(6) NULL,
@@ -45,9 +46,9 @@ class GoteoImpactData
         CREATE TABLE `impact_data_lang` (
           `id` BIGINT(20) UNSIGNED NOT NULL,
           `title` TEXT NULL,
-          `subtitle` TEXT NULL,
+          `data` VARCHAR(10) NOT NULL,
+          `data_unit` VARCHAR(10) NOT NULL,
           `description` TEXT  NULL,
-          `image` VARCHAR(255) NULL,
           `lang` VARCHAR(6) NULL,
           UNIQUE KEY (`id`,`lang`),
           CONSTRAINT `impact_data_lang_ibfk_1` FOREIGN KEY (`id`) REFERENCES `impact_data` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

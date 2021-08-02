@@ -112,6 +112,7 @@ class Config {
 			\Goteo\Controller\TranslateController::addTranslateModel('node_sections');
 			\Goteo\Controller\TranslateController::addTranslateModel('question');
 			\Goteo\Controller\TranslateController::addTranslateModel('question_options');
+			\Goteo\Controller\TranslateController::addTranslateModel('impact_data');
 			
 			// sets up the rest...
 			self::setDirConfiguration();
