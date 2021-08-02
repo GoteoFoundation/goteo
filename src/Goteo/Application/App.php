@@ -14,10 +14,10 @@ use Goteo\Util\Foil\Extension\GoteoCore;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel;
+use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\Routing\RouteCollection;
 
-class App extends HttpKernel\HttpKernel
+class App extends HttpKernel
 {
     static protected $_app;
     static protected $_request;
