@@ -106,4 +106,8 @@ home-action-show-table: 'Veure totes'
 home-sponsor-type-network: 'Xarxes de les que formem part'
 home-sponsor-type-support: 'Amb el suport de'
 home-footprint-values-related-sdgs: "Objectius de desenvolupament sostenible relacionats"
+<<<<<<< HEAD
 home-footprint-values-see-projects: "Veure projectes"
+=======
+home-footprint-values-see-projects: "Veure projectes"
+>>>>>>> change home values footprint info to be from model not from copies
