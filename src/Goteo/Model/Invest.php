@@ -10,24 +10,20 @@
 
 namespace Goteo\Model;
 
-use Goteo\Core\Model;
-use Goteo\Application\Lang;
-use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Lang;
+use Goteo\Application\Session;
+use Goteo\Core\Model;
 use Goteo\Library\Text;
-use Goteo\Model\Image;
-use Goteo\Model\User;
-use Goteo\Model\User\Pool;
-use Goteo\Model\Project;
 use Goteo\Model\Invest\InvestLocation;
+use Goteo\Model\Project\Reward;
 use Goteo\Payment\Payment;
 
 /**
  * Invest Model
  */
-class Invest extends \Goteo\Core\Model {
+class Invest extends Model {
 
     // @deprecated
     const METHOD_PAYPAL = 'paypal';
@@ -706,7 +702,7 @@ class Invest extends \Goteo\Core\Model {
     }
 
     /**
-     * 
+     *
      */
     public static function calculateVats($filters = []) {
         $fee = (float) Config::get('fee'); // default platform fee
@@ -745,10 +741,6 @@ class Invest extends \Goteo\Core\Model {
         return ['user' => $users_vat, 'call' => $calls_vat, 'matcher' => $matchers_vat];
     }
 
-
-
-
-    // returns the current project
     public function getProject() {
         if(isset($this->projectObject)) return $this->projectObject;
         try {
@@ -869,8 +861,8 @@ class Invest extends \Goteo\Core\Model {
             $this->rewards = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Project\Reward');
         }
         foreach($this->rewards as $i => $reward) {
-            if(!$reward instanceOf \Goteo\Model\Project\Reward) {
-                $this->rewards[$i] = \Goteo\Model\Project\Reward::get($reward);
+            if(!$reward instanceOf Reward) {
+                $this->rewards[$i] = Reward::get($reward);
             }
         }
         return $this->rewards;
@@ -900,8 +892,8 @@ class Invest extends \Goteo\Core\Model {
      * Asignar a la aportación una recompensas
      */
     public function addReward ($reward) {
-        if(!$reward instanceOf \Goteo\Model\Project\Reward) {
-            $reward = \Goteo\Model\Project\Reward::get($reward);
+        if(!$reward instanceOf Reward) {
+            $reward = Reward::get($reward);
             if(!$reward) return false;
         }
         $values = array(
@@ -913,7 +905,7 @@ class Invest extends \Goteo\Core\Model {
         if (self::query($sql, $values)) {
             $exists = false;
             foreach ($this->rewards as $r) {
-                if($r instanceOf \Goteo\Model\Project\Reward) {
+                if($r instanceOf Reward) {
                     $r = $r->id;
                 }
                 if($r === $reward->id) {
@@ -1093,8 +1085,6 @@ class Invest extends \Goteo\Core\Model {
         }
     }
 
-
-
     /*
      * Lista de proyectos con aportes
      *
@@ -1235,8 +1225,6 @@ class Invest extends \Goteo\Core\Model {
                 break;
         }
 
-        // die(\sqldbg($sql, $values));
-
         $query = static::query($sql, $values);
         $got = $query->fetchObject();
 
@@ -1330,7 +1318,6 @@ class Invest extends \Goteo\Core\Model {
                 );
 
             } else {
-
                 $investors[] = (object) array(
                     'id' => $investor->id,
                     'user' => $investor->user,
@@ -1346,7 +1333,6 @@ class Invest extends \Goteo\Core\Model {
                     'matcher'   => $investor->matcher,
                     'msg' => $investor->msg
                 );
-
             }
 
         }
@@ -1388,12 +1374,8 @@ class Invest extends \Goteo\Core\Model {
 
         $values = array(':id'=>$owner, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL);
 
-        //die(\sqldbg($sql, $values));
-
-
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User') as $investor) {
-
             // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
             if ( $investor->hide == 1 || $investor->anonymous == 1 ) {
                 // mantenemos la fecha del anonimo mas reciente
@@ -1412,8 +1394,6 @@ class Invest extends \Goteo\Core\Model {
                 'amount' => $investor->amount,
                 'date' => $investor->date
             );
-
-
         }
 
         return $investors;
@@ -2392,7 +2372,7 @@ class Invest extends \Goteo\Core\Model {
         //     AND (invest.campaign IS NULL OR invest.campaign = 0)
         //     ", array($project_id));
 
-        $query = \Goteo\Core\Model::query("
+        $query = Model::query("
             SELECT  *
             FROM  invest
             WHERE   invest.project = ?

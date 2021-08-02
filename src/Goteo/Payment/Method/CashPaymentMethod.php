@@ -18,14 +18,16 @@ use Goteo\Application\Config;
 class CashPaymentMethod extends AbstractPaymentMethod {
 
     // Uses omnipay manual method, always successful
-    public function getGatewayName() {
+    public function getGatewayName(): String
+    {
         return 'Manual';
     }
 
     /**
      * This payment method is only for administrative purposes
      */
-    public function isPublic($amount = 0) {
+    public function isPublic($amount = 0): bool
+    {
         return false;
     }
 

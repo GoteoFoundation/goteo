@@ -27,21 +27,26 @@ use Goteo\Application\Event\FilterInvestEvent;
  * Does not use Omnipay
  */
 class DummyPaymentMethod extends AbstractPaymentMethod {
+
     private $simulating_gateway = false;
 
-    public function getGatewayName() {
+    public function getGatewayName(): string
+    {
         return 'Dummy';
     }
 
-    public function getName() {
+    public function getName(): string
+    {
         return 'Dummy Payment';
     }
 
-    public function getDesc() {
+    public function getDesc(): string
+    {
         return 'Not really a payment, just for testing';
     }
 
-    public function getIcon() {
+    public function getIcon(): string
+    {
         return SRC_URL . '/assets/img/pay/cash.png';
     }
 
@@ -92,28 +97,28 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
                 ));
     }
 
-    public function purchase() {
+    public function purchase(): ResponseInterface
+    {
         $this->simulating_gateway = true;
         return new EmptyFailedResponse();
     }
 
-    public function completePurchase() {
-
-        // Let's obtain the gateway and the
+    public function completePurchase(): ResponseInterface
+    {
         $gateway = $this->getGateway();
         $gateway->setCurrency(Currency::getDefault('id'));
         $request = $this->getRequest();
         $invest = $this->getInvest();
         $payment = $gateway->purchase([
-                    'amount' => (float) $this->getTotalAmount(),
-                    'card' => [
-                        'number' => $request->request->get('number'),
-                        'expiryMonth' => '12',
-                        'expiryYear' => date('Y'),
-                        ],
-                    'description' => $this->getInvestDescription(),
-                    'returnUrl' => $this->getCompleteUrl(),
-                    'cancelUrl' => $this->getCompleteUrl(),
+            'amount' => (float) $this->getTotalAmount(),
+            'card' => [
+                'number' => $request->request->get('number'),
+                'expiryMonth' => '12',
+                'expiryYear' => date('Y'),
+                ],
+            'description' => $this->getInvestDescription(),
+            'returnUrl' => $this->getCompleteUrl(),
+            'cancelUrl' => $this->getCompleteUrl(),
         ]);
         // set the dummy card as payment detail data
         $invest->setPayment($request->request->get('number'));
@@ -121,12 +126,13 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
         return $payment->send();
     }
 
-    public function refundable() {
+    public function refundable(): bool
+    {
         return true;
     }
 
-    public function refund() {
-
+    public function refund(): EmptySuccessfulResponse
+    {
         $invest=$this->getInvest();
         $invest->amount+=$this->getTotalAmount();
 
@@ -135,13 +141,13 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
 
         return new EmptySuccessfulResponse();
     }
-    
+
     /**
      * Internal payments does not increased raised amounts
      * (pool)
-     * @return boolean
      */
-    static public function isInternal() {
+    static public function isInternal(): bool
+    {
         return true;
     }
 }

@@ -10,21 +10,20 @@
 
 namespace Goteo\Payment\Method;
 
-use Goteo\Core\Model;
-use Goteo\Application\Config;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
+use Goteo\Application\Currency;
 use Goteo\Application\Event\FilterInvestEvent;
+use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Goteo\Model\User;
 use Goteo\Payment\PaymentException;
-use Goteo\Library\Text;
-use Goteo\Application\Currency;
-
-use Symfony\Component\HttpFoundation\Request;
-use Omnipay\Omnipay;
-use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\Common\GatewayInterface;
+use Omnipay\Common\Message\RedirectResponseInterface;
+use Omnipay\Common\Message\ResponseInterface;
+use Omnipay\Omnipay;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Helper class with common of the interface methods implemented in a simple way
@@ -32,9 +31,9 @@ use Omnipay\Common\GatewayInterface;
  * Payments using this implementation use the Omnipay library:
  * http://omnipay.thephpleague.com/
  */
-abstract class AbstractPaymentMethod implements PaymentMethodInterface {
-
-    protected GatewayInterface $gateway;
+abstract class AbstractPaymentMethod implements PaymentMethodInterface
+{
+    protected ?GatewayInterface $gateway = null;
     protected $invest;
     protected $request;
     protected $user;
@@ -45,54 +44,49 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
 
     /**
      * Returns the id of the method (max 20 chars long)
-     * @return string id of the method
+     * @throws PaymentException
      */
-    static public function getId() {
+    static public function getId(): string
+    {
         $parts = explode('\\', get_called_class());
         $c = end($parts);
         $c = strtolower(str_replace('PaymentMethod', '', $c));
+
         if(empty($c)) {
             throw new PaymentException('Method getId() must return a valid string');
         }
+
         return $c;
     }
 
-    /**
-     * Returns the name of the payment method (a sort description)
-     * @return string name of the method
-     */
-    public function getName() {
+    public function getName(): string
+    {
         return Text::get('invest-' . $this::getId() . '-method');
     }
 
-    /**
-     * Returns a short description of the method
-     * @return string description of the method
-     */
-    public function getDesc() {
+    public function getDesc(): string
+    {
         return $this->getName();
     }
 
-    /**
-     * Returns a icon for the method
-     * @return string URL of the icon
-     */
-    public function getIcon() {
-        // $this->getGateway()->getLogoImageUrl();
+    public function getIcon(): string
+    {
         return SRC_URL . '/assets/img/pay/' . $this::getId() . '.png';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isActive($amount = 0) {
+    public function isActive($amount = 0): bool
+    {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isPublic($amount = 0) {
+    public function isPublic($amount = 0): bool
+    {
         return true;
     }
 
@@ -105,17 +99,13 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         return $this;
     }
 
-    /**
-     * Gets the User object
-     * @return User $user User object
-     */
-    public function getUser() {
+    public function getUser(): ?User
+    {
         return $this->user;
     }
 
     /**
      * Sets the Invest in order to be able to create a proper gateway request
-     * @param Invest $invest Invest object
      */
     public function setInvest(Invest $invest) {
         $this->invest = $invest;
@@ -126,7 +116,8 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
      * Gets the Invest object
      * @return Invest $invest Invest object
      */
-    public function getInvest() {
+    public function getInvest(): Invest
+    {
         return $this->invest;
     }
 
@@ -143,7 +134,8 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
      * Gets the current Request
      * @return Request $request Symfony HttpFoundation Request object
      */
-    public function getRequest() {
+    public function getRequest(): Request
+    {
         return $this->request;
     }
 
@@ -155,13 +147,13 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
     public function getDefaultHttpResponse(ResponseInterface $response) {
         return null;
     }
+
     /**
      * Starts the purchase action
      * Called when user pushes the button "pay"
-     * @return Ommnipay\Common\Message\ResponseInterface Omnipay Response Object
      */
-    public function purchase() {
-        // Let's obtain the gateway and the
+    public function purchase(): ResponseInterface
+    {
         $gateway = $this->getGateway();
         $gateway->setCurrency(Currency::getDefault('id'));
         return $gateway->purchase([
@@ -173,40 +165,37 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
     }
 
     /**
-     * Ends the purchase action
      * Called when the user returns from the payment gateway or the gateway notifies via notifyUrl
-     * @return Ommnipay\Common\Message\ResponseInterface Omnipay Response Object
      */
-    public function completePurchase() {
-        // Let's obtain the gateway and the
+    public function completePurchase(): ResponseInterface
+    {
         $gateway = $this->getGateway();
         $gateway->setCurrency(Currency::getDefault('id'));
+
         return $gateway->completePurchase([
                     'amount' => (float) $this->getTotalAmount(),
                     'description' => $this->getInvestDescription(),
                     'clientIp' => $this->getRequest()->getClientIp(),
                     'returnUrl' => $this->getCompleteUrl(),
                     'cancelUrl' => $this->getCompleteUrl(),
-        ])
-        // save extra data (such as a payment or preapproval) here if needed
-            ->send();
-
+        ])->send();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function refundable() {
-        // Let's obtain the gateway
+    public function refundable(): bool
+    {
         $gateway = $this->getGateway();
+
         return $gateway->supportsRefund();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function refund() {
-        // Let's obtain the gateway
+    public function refund(): ResponseInterface
+    {
         $gateway = $this->getGateway();
         if(!$gateway->supportsRefund()) {
             throw new PaymentException("Refund not supported for method " . strtoupper(static::getId()));
@@ -219,11 +208,11 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         return $gateway->refund([
             'amount' => (float) $this->getTotalAmount(),
             'transactionReference' => $invest->transaction, // some gateway may require extra data saved
-            ])
-            ->send();
+        ])->send();
     }
 
-    public function getCompleteUrl() {
+    public function getCompleteUrl(): string
+    {
         $request = $this->getRequest();
         $invest = $this->getInvest();
 
@@ -236,7 +225,6 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         // Donate to the organization
         else
             return $request->getSchemeAndHttpHost() . '/donate/' . $invest->id . '/complete';
-
     }
 
     /**
@@ -257,37 +245,29 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
 
     /**
      * Calculates the total amount, taking into account additional amounts
-     * @param  Invest $invest [description]
-     * @return [type]         [int]
      */
     public function getTotalAmount() {
         $invest = $this->getInvest();
 
-        // Add to amount project the tip to the orgization
-        $amount= $invest->amount+$invest->donate_amount;
+        // Add to amount project the tip to the organization
+        $amount = $invest->amount + $invest->donate_amount;
 
         return $amount;
     }
 
-    /**
-     * This must provide a valid Omnipay Gateway name
-     * @return string The name of the Omnipay gateway
-     */
-    public function getGatewayName() {
+    public function getGatewayName(): string
+    {
         return ucfirst($this::getId());
     }
 
     /**
-     * The most important function here
-     *
-     * It must return the result of the Ommnipay::create() function
-     *
-     * @return Omnipay\Common\GatewayInterface a Omnipay valid object
+     * It must return the result of the Omnipay::create() function
      */
-    public function getGateway() {
+    public function getGateway(): GatewayInterface
+    {
         if(!$this->gateway) {
             $this->gateway = Omnipay::create($this->getGatewayName());
-            if(!in_array('Omnipay\Common\GatewayInterface', class_implements($this->gateway))) {
+            if(!in_array(GatewayInterface::class, class_implements($this->gateway))) {
                 throw new PaymentException("Error on retrieving Omnipay Gateway Class. It must implement Omnipay\Common\GatewayInterface!");
             }
 
@@ -334,9 +314,9 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
     /**
      * Internal payments does not increased raised amounts
      * (pool)
-     * @return boolean
      */
-    static public function isInternal() {
+    static public function isInternal(): bool
+    {
         return false;
     }
 }

@@ -10,63 +10,59 @@
 
 namespace Goteo\Payment\Method;
 
+use Goteo\Model\Invest;
+use Goteo\Model\User;
+use Omnipay\Common\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 /**
- * Payment methods in Goteo must implent this interface
- *
+ * Payment methods in Goteo must implement this interface
  */
 interface PaymentMethodInterface {
-    /**
-     * Contructor should have the Goteo user
-     * @param User $user [description]
-     */
-    public function __construct(\Goteo\Model\User $user);
+
+    public function __construct(User $user);
 
     /**
      * Returns the id of the method (max 20 chars long)
-     * @return string id of the method
      */
-    static public function getId();
+    static public function getId(): string;
 
     /**
      * Returns the name of the payment method (a sort description)
-     * @return string name of the method
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Returns a short description of the method
-     * @return string description of the method
      */
-    public function getDesc();
+    public function getDesc(): string;
 
     /**
      * Returns a icon for the method
-     * @return string URL of the icon
      */
-    public function getIcon();
+    public function getIcon(): string;
 
     /**
      * Should return if method must be registered but in a inactive state
      * so it can be shown on the payment page as a temporary non-available method
      * @param integer $amount The method can decide to be active depending on the amount
-     * @return boolean status
      */
-    public function isActive($amount = 0);
+    public function isActive($amount = 0): bool;
 
     /**
      * Returns if the payment method is public or not.
      * Non-public methods can be used for custom payments outside the user-scope
      * and will not be shown in the payment page
      * @param integer $amount The method can decide to be active depending on the amount
-     * @return boolean status
      */
-    public function isPublic($amount = 0);
+    public function isPublic($amount = 0): bool;
 
     /**
      * Sets the Invest in order to be able to create a proper gateway request
      * @param Invest $invest Invest object
      */
-    public function setInvest(\Goteo\Model\Invest $invest);
+    public function setInvest(Invest $invest);
 
     /**
      * Gets the Invest object
@@ -78,14 +74,14 @@ interface PaymentMethodInterface {
      * Sets the Request in order to be able to create a proper gateway request
      * @param Request $request Symfony HttpFoundation Request object
      */
-    public function setRequest(\Symfony\Component\HttpFoundation\Request $request);
+    public function setRequest(Request $request);
 
     /**
      * This method gives the change to change the Response where to redirect after a $method->completePurchase() situation
-     * @param  RedirectResponseInterface $response
+     * @param  ResponseInterface $response
      * @return Response|null             A valid Symfony Response or null
      */
-    public function getDefaultHttpResponse(\Omnipay\Common\Message\ResponseInterface $response);
+    public function getDefaultHttpResponse(ResponseInterface $response);
 
     /**
      * Gets the current Request
@@ -96,28 +92,26 @@ interface PaymentMethodInterface {
     /**
      * Starts the purchase action
      * Called when user pushes the button "pay"
-     * @return Ommnipay\Common\Message\ResponseInterface Omnipay Response Object
+     * @return ResponseInterface Omnipay Response Object
      */
     public function purchase();
 
     /**
      * Ends the purchase action
      * Called when the user returns from the payment gateway or the gateway notifies via notifyUrl
-     * @return Ommnipay\Common\Message\ResponseInterface Omnipay Response Object
+     * @return ResponseInterface Omnipay Response Object
      */
     public function completePurchase();
 
     /**
-     * Returns if the gateway can refund a investion
-     * @return Boolean true or false
+     * Returns if the gateway can refund an investment
      */
-    public function refundable();
+    public function refundable(): bool;
 
     /**
      * Processes a refund action on the gateway
-     * @return Ommnipay\Common\Message\ResponseInterface Omnipay Response Object
      */
-    public function refund();
+    public function refund(): ResponseInterface;
 
     /**
      * Calculates banks fee in a generic way, based on settings.yml config and following the Paypal fees rules (which suits many gateways)
@@ -128,7 +122,6 @@ interface PaymentMethodInterface {
     /**
      * Internal payments does not increased raised amounts
      * (pool)
-     * @return boolean
      */
-    static public function isInternal();
+    static public function isInternal(): bool;
 }
