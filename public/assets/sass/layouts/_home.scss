@@ -662,33 +662,38 @@ body.home {
     
             img {
                 float:left;
-                margin-right:1em;
+                margin-right: 1rem;
                 border-top-left-radius: 5px;
                 border-bottom-left-radius: 5px;
             }
 
-            h2, h3 {
-                font-size:1.6rem;
-                color:#74AA5F;
-            }
+            div.footprint-data-info {
+                margin-left:3rem;
 
-            h2 {
-                margin-top:5rem;
-            }
+                h2, h3 {
+                    font-size:1.6rem;
+                    color:#74AA5F;
+                }
 
-            h3 {
-                margin:1rem 0;
-                text-transform: uppercase;
+                h2 {
+                    margin-top:5rem;
+                }
 
-                span {
-                    font-size:4rem;
-                    font-weight:bold;
+                h3 {
+                    margin:1rem 0;
+                    text-transform: uppercase;
+
+                    span {
+                        font-size:4rem;
+                        font-weight:bold;
+                    }
+                }
+
+                p {
+                    margin:0 2rem 10px 0;
                 }
             }
 
-            p {
-                margin:0 2rem 10px 0;
-            }
         }
 
         .slider-footprint-projects {

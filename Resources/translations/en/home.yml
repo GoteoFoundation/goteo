@@ -98,13 +98,5 @@ home-channels-title: 'Goteo Channels'
 home-action-show-table: 'Show all'
 home-sponsor-type-network: 'Networks of which we are part'
 home-sponsor-type-support: 'With the support of'
-home-footprint-values-1: "Ecological footprint"
-home-footprint-values-1-title: 
-home-footprint-values-1-description: 
 home-footprint-values-related-sdgs: "Related Sustainable Development Goals"
-home-footprint-values-2: "Social Footprint"
-home-footprint-values-2-title:
-home-footprint-values-2-description:
-home-footprint-values-3: "Democratic footprint"
-home-footprint-values-3-title:
-home-footprint-values-3-description:
+home-footprint-values-see-projects: "See projects"
