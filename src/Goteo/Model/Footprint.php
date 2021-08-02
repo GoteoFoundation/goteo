@@ -25,13 +25,14 @@ class Footprint extends \Goteo\Core\Model {
     public $id,
            $name,
            $icon,
+           $title,
            $description = '',
            $modified;
 
     protected $iconImage;
 
     public static function getLangFields() {
-        return ['name', 'description'];
+        return ['name', 'title', 'description'];
     }
 
     /**
@@ -160,14 +161,14 @@ class Footprint extends \Goteo\Core\Model {
         $values = [];
         $filter = [];
 
-        foreach(['id', 'name', 'description'] as $key) {
+        foreach(['id', 'name', 'title', 'description'] as $key) {
             if (isset($filters[$key])) {
                 $filter[] = "footprint.$key LIKE :$key";
                 $values[":$key"] = '%'.$filters[$key].'%';
             }
         }
         if($filters['global']) {
-            $filter[] = "(footprint.name LIKE :global OR footprint.description LIKE :global)";
+            $filter[] = "(footprint.name LIKE :global OR footprint.title LIKE :global OR footprint.description LIKE :global)";
             $values[':global'] = '%'.$filters['global'].'%';
         }
         // print_r($filter);die;
@@ -237,7 +238,7 @@ class Footprint extends \Goteo\Core\Model {
         if($this->icon instanceOf Image) $this->icon = $this->icon->getName();
 
 
-        $fields = ['name', 'icon', 'description'];
+        $fields = ['name', 'icon', 'title', 'description'];
         try {
             $this->dbInsertUpdate($fields);
             return true;
