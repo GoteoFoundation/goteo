@@ -13,10 +13,10 @@
             <div class="row <?= ($index != 0)? "hidden" : '' ?>" id="goteo-values-<?= $footprint->id ?>">
                 <div class="col footprint-briefing">
                     <img src="assets/img/footprint/<?= $footprint->id ?>.svg" heigh="70" width="70" alt="<?= $footprint->name ?>" class="footprint" />
-                    <p><span class="footprint-label"><?= $this->t('home-values-footprint-' . $foorptint->id) ?></span></p>
-                    <h2><?= $this->t('home-values-footprint-' . $footprint->id . '-title') ?></h2>
-                    <p><?= $this->t('home-values-footprint-' . $footprint->id . '-description') ?></p>
-                    <h3><?= $this->t('home-values-footprint-related-sdgs') ?>:</h3>
+                    <p><span class="footprint-label"><?= $footprint->name ?></span></p>
+                    <h2><?= $footprint->title ?></h2>
+                    <p><?= $footprint->description ?></p>
+                    <h3><?= $this->t('home-footprint-values-related-sdgs') ?>:</h3>
                     <p><?= $this->t('regular-click-more') ?></p>
                     <ul>
                         <?php foreach($this->sdg_by_footprint[$footprint->id] as $sdg): ?>
@@ -32,13 +32,15 @@
                                     <img
                                         src="<?= $impact_data->getImage()->getLink(165,240,true) ?>" 
                                         alt="<?= $footprint->title ?>"
-                                        height="165"
-                                        width="240"
+                                        height="240"
+                                        width="165"
                                         >
                                 <?php endif; ?>
-                                <h2><?= $impact_data->title ?></h2>
-                                <h3><span><?= $impact_data->subtitle?><span></h3>
-                                <p><?= $impact_data->description ?></p>
+                                <div class="footprint-data-info">
+                                    <h2><?= $impact_data->title ?></h2>
+                                    <h3><span><?= $impact_data->data ?></span> <?= $impact_data->data_unit?></h3>
+                                    <p><?= $impact_data->description ?></p>
+                                </div>
                             </div>
                         <?php endforeach ?>
                     </div>
@@ -56,7 +58,7 @@
                     </div>
                 </div>
                 <div class="footprint-action">
-                    <a href="">Ver proyectos de huella ecológica <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+                    <a href="/impact-discover?footprint=<?= $footprint->id ?>"><?= $this->t('home-footprint-values-see-projects') ?> <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
                 </div>
             </div>
         <?php endforeach; ?>
