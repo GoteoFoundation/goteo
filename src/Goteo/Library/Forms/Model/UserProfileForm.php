@@ -256,14 +256,15 @@ class UserProfileForm extends AbstractFormProcessor {
         $user = $this->getModel();
         // var_dump($data);die;
         // Process main image
-        if(is_array($data['avatar'])) {
+        if(is_array($data['avatar']) && !empty($data['avatar'])) {
             $data['avatar'] = reset($data['avatar']);
-        }
-        $user->user_avatar = $data['avatar'];
-        if($user->user_avatar && $err = $user->user_avatar->getUploadError()) {
-            throw new FormModelException(Text::get('form-sent-error', $err));
+            $user->user_avatar = $data['avatar'];
 
+            if($user->user_avatar && $err = $user->user_avatar->getUploadError()) {
+                throw new FormModelException(Text::get('form-sent-error', $err));
+            }
         }
+
         // $data['user_avatar'] = $data['avatar'];
         unset($data['avatar']); // do not rebuild data using this
 
