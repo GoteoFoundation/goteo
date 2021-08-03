@@ -80,6 +80,7 @@ class Payment {
 
     /**
      * Returns all available payment methods
+     * @return PaymentMethodInterface[]
      */
     static public function getMethods(User $user = null): array
     {
@@ -97,7 +98,7 @@ class Payment {
         return isset(self::$methods[$method]);
     }
 
-    static public function getMethod($method, User $user = null) {
+    static public function getMethod($method, User $user = null): PaymentMethodInterface {
         if(!self::methodExists($method)) {
             throw new PaymentException("Error, payment method [$method] is not registered!");
         }

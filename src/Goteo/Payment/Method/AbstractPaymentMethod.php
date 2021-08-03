@@ -316,7 +316,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         $returned_invests = 0,
         $returned_amount = 0
     ) {
-        $commissions = Config::get('payments.' . static::getId() . '.commissions');
+        $commissions = Config::get('payments.' . $this->getIdNonStatic() . '.commissions');
         $fee = 0;
         if($commissions && is_array($commissions)) {
             // Non-refunded
@@ -342,7 +342,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
      * Internal payments does not increased raised amounts
      * (pool)
      */
-    static public function isInternal(): bool
+    public function isInternal(): bool
     {
         return false;
     }

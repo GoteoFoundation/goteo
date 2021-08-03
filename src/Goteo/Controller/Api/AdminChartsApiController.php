@@ -301,7 +301,7 @@ class AdminChartsApiController extends ChartsApiController {
                 $method = 'global';
                 $methods = Payment::getMethods();
                 $filter['methods'] = array_keys(array_filter($methods, function($val){
-                    return !$val::isInternal();
+                    return !$val->isInternal();
                 }));
             }
             // print_r($filter);die;

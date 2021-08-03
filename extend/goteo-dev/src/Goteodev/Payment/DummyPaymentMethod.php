@@ -146,7 +146,7 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
      * Internal payments does not increased raised amounts
      * (pool)
      */
-    static public function isInternal(): bool
+    public function isInternal(): bool
     {
         return true;
     }
