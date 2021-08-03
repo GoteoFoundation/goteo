@@ -55,7 +55,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         }
 
         foreach($this->gateway->getDefaultParameters() as $var => $val) {
-            $config = Config::get('payments.' . static::getId() . '.' . $var);
+            $config = Config::get('payments.' . $this->getIdNonStatic() . '.' . $var);
             $method = "set" . ucfirst($var);
             if($config && method_exists($this->gateway, $method)) {
                 $this->gateway->$method($config);
@@ -64,6 +64,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
     }
 
     /**
+     * @deprecated Use getIdNonStatic() instead
      * Returns the id of the method (max 20 chars long)
      * @throws PaymentException
      */
@@ -80,9 +81,26 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         return $c;
     }
 
+    /**
+     * Returns the id of the method (max 20 chars long)
+     * @throws PaymentException
+     */
+    public function getIdNonStatic(): string
+    {
+        $parts = explode('\\', get_called_class());
+        $c = end($parts);
+        $c = strtolower(str_replace('PaymentMethod', '', $c));
+
+        if (empty($c)) {
+            throw new PaymentException('Method getIdNonStatic() must return a valid string');
+        }
+
+        return $c;
+    }
+
     public function getName(): string
     {
-        return Text::get('invest-' . $this::getId() . '-method');
+        return Text::get('invest-' . $this->getIdNonStatic() . '-method');
     }
 
     public function getDesc(): string
@@ -92,7 +110,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
 
     public function getIcon(): string
     {
-        return SRC_URL . '/assets/img/pay/' . $this::getId() . '.png';
+        return SRC_URL . '/assets/img/pay/' . $this->getIdNonStatic() . '.png';
     }
 
     /**
@@ -218,7 +236,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
     {
         $gateway = $this->getGateway();
         if (!$gateway->supportsRefund()) {
-            throw new PaymentException("Refund not supported for method " . strtoupper(static::getId()));
+            throw new PaymentException("Refund not supported for method " . strtoupper($this->getIdNonStatic()));
         }
         $invest = $this->getInvest();
 
@@ -276,7 +294,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
 
     public function getGatewayName(): string
     {
-        return ucfirst($this::getId());
+        return ucfirst($this->getIdNonStatic());
     }
 
     public function getGateway(): GatewayInterface

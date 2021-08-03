@@ -2,8 +2,11 @@
 
 namespace Goteo\Payment\Tests;
 
+use Exception;
+use Goteo\Payment\Method\PaymentMethodInterface;
 use Goteo\Payment\Payment;
 use Goteo\Payment\Method\AbstractPaymentMethod;
+use Goteo\Payment\PaymentException;
 
 class MockPaymentMethod extends AbstractPaymentMethod {
 
@@ -23,13 +26,13 @@ class PaymentTest extends \PHPUnit\Framework\TestCase {
     public function testAddMethod() {
         try {
             Payment::addMethod('stdClass');
-        } catch(\Exception $e) {
-            $this->assertInstanceOf('Goteo\Payment\PaymentException', $e);
+        } catch(Exception $e) {
+            $this->assertInstanceOf(PaymentException::class, $e);
         }
         $this->assertEquals('mock', MockPaymentMethod::getId());
-        Payment::addMethod('Goteo\Payment\Tests\MockPaymentMethod');
+        Payment::addMethod(MockPaymentMethod::class);
         $this->assertFalse(Payment::methodExists('mock'));
-        Payment::addMethod('Goteo\Payment\Tests\MockPaymentMethod', true);
+        Payment::addMethod(MockPaymentMethod::class, true);
         $this->assertTrue(Payment::methodExists('mock'));
     }
 
@@ -39,12 +42,12 @@ class PaymentTest extends \PHPUnit\Framework\TestCase {
         $this->assertIsArray($methods);
         $this->assertArrayHasKey('mock', $methods);
         $methods = Payment::getMethods(get_test_user());
-        $this->assertContainsOnlyInstancesOf('Goteo\Payment\Method\PaymentMethodInterface', $methods);
+        $this->assertContainsOnlyInstancesOf(PaymentMethodInterface::class, $methods);
         return $methods;
     }
 
     public function testGetMethod() {
-        $this->assertInstanceOf('Goteo\Payment\Method\PaymentMethodInterface', Payment::getMethod('mock'));
+        $this->assertInstanceOf(PaymentMethodInterface::class, Payment::getMethod('mock'));
     }
 
     /**
@@ -58,9 +61,9 @@ class PaymentTest extends \PHPUnit\Framework\TestCase {
     public function testRemoveMethod() {
         $this->assertTrue(Payment::removeMethod('mock'));
         $this->assertArrayNotHasKey('mock', Payment::getMethods());
-        Payment::addMethod('Goteo\Payment\Tests\MockPaymentMethod', true);
+        Payment::addMethod(MockPaymentMethod::class, true);
         $this->assertTrue(Payment::methodExists('mock'));
-        $this->assertTrue(Payment::removeMethod('Goteo\Payment\Tests\MockPaymentMethod'));
+        $this->assertTrue(Payment::removeMethod(MockPaymentMethod::class));
         $this->assertArrayNotHasKey('mock', Payment::getMethods());
     }
 }

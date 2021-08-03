@@ -186,7 +186,7 @@ class PoolController extends Controller {
                 'currency_rate' => Currency::rate(),
                 'user' => Session::getUserId(),
                 'project' => NULL,
-                'method' => $method::getId(),
+                'method' => $method->getIdNonStatic(),
                 'status' => Invest::STATUS_PROCESSING,
                 'invested' => date('Y-m-d')
             ]);

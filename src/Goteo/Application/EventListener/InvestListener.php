@@ -149,14 +149,14 @@ class InvestListener extends AbstractListener {
         $user    = $invest->getUser();
         $log->setTarget($project->id)
             ->populate(
-            Text::sys('feed-invest-by', strtoupper($method::getId())),
+            Text::sys('feed-invest-by', strtoupper($method->getIdNonStatic())),
             '/admin/invests',
             new FeedBody(null, null, 'feed-user-invest-error', [
                     '%MESSAGE%' => $response->getMessage(),
                     '%USER%'    => Feed::item('user', $user->name, $user->id),
                     '%AMOUNT%'  => Feed::item('money', $invest->amount.' '.$coin, $invest->id),
                     '%PROJECT%' => Feed::item('project', strip_tags($project->name), $project->id),
-                    '%METHOD%'  => strtoupper($method::getId())
+                    '%METHOD%'  => strtoupper($method->getIdNonStatic())
                 ])
             )
             ->doAdmin('money');
@@ -282,36 +282,6 @@ class InvestListener extends AbstractListener {
             }
             unset($mailHandler);
 
-            //         // si es un regalo
-            // if ($invest->address->regalo && !empty($invest->address->emaildest)) {
-            //     // Notificación al destinatario de regalo
-            //     $template = Template::get(Template::BAZAAR_RECEIVER, $comlang);
-            //     // Sustituimos los datos
-            //     $subject = str_replace('%USERNAME%', $user->name, $template->title);
-
-            //     // En el contenido:
-            //     $search  = array('%DESTNAME%', '%USERNAME%', '%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%PROJAMOUNT%', '%PROJPER%', '%REWNAME%', '%ADDRESS%', '%DROPED%');
-            //     $replace = array($invest->address->namedest, $user->name, $invest->address->message, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $amount, $percent, $txt_rewards, $txt_destaddr, $txt_droped);
-            //     $content = \str_replace($search, $replace, $template->parseText());
-
-            // $mailHandler = new Mail();
-            // $mailHandler->lang = $comlang;lang
-            // $mailHandler->to = $invest->address->emaildest;
-            // $mailHandler->toName = $invest->address->namedest;
-            // $mailHandler->subject = $subject;
-            // $mailHandler->content = $content;
-            // $mailHandler->html = true;
-            // $mailHandler->template = $template->id;
-            // if ($mailHandler->send($errors)) {
-            //     Message::info(Text::get('project-invest-friend_mail-success'));
-            // } else {
-            //     Message::error(Text::get('project-invest-friend_mail-fail'));
-            //     Message::error(implode('<br />', $errors));
-            // }
-
-            //     unset($mailHandler);
-            // }
-
             // MAIL SENDING TO AUTHOR
             //  idioma de preferencia
             $original_lang = $lang = User::getPreferences($project->getOwner())->comlang;
@@ -340,7 +310,7 @@ class InvestListener extends AbstractListener {
             if($mailHandler->send($errors)) {
                 $this->notice('Invest owner mail sent', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), $mailHandler]);
             } else {
-                $this->warning('Invest owner mail error', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'method' => $method::getId(), $mailHandler, 'errors' => $errors]);
+                $this->warning('Invest owner mail error', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'method' => $method->getIdNonStatic(), $mailHandler, 'errors' => $errors]);
             }
         }
 
@@ -352,13 +322,13 @@ class InvestListener extends AbstractListener {
         $user = $invest->getUser();
         $log->setTarget($project->id)
             ->populate(
-                Text::sys('feed-invest-by', strtoupper($method::getId())),
+                Text::sys('feed-invest-by', strtoupper($method->getIdNonStatic())),
                 '/admin/invests',
                 new FeedBody(null, null, 'feed-user-invest', [
                         '%USER%' => Feed::item('user', $user->name, $user->id),
                         '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin, $invest->id),
                         '%PROJECT%' => Feed::item('project', strip_tags($project->name), $project->id),
-                        '%METHOD%' => strtoupper($method::getId())
+                        '%METHOD%' => strtoupper($method->getIdNonStatic())
                     ])
             )
             ->doAdmin('money');
@@ -402,12 +372,12 @@ class InvestListener extends AbstractListener {
         $errors = [];
         if ($invest->cancel(false, $errors)) {
             $this->notice(($invest->getProject() ? '' : 'Pool') .'Invest cancelled', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
-            Invest::setDetail($invest->id, $method::getId().'-cancel', 'Invest process manually cancelled successfully');
+            Invest::setDetail($invest->id, $method->getIdNonStatic().'-cancel', 'Invest process manually cancelled successfully');
             // update cached data
             $invest->keepUpdated();
         } else {
             $this->warning('Error cancelling invest', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'errors' >= $errors]);
-            Invest::setDetail($invest->id, $method::getId().'-cancel-fail', 'Error while cancelling invest');
+            Invest::setDetail($invest->id, $method->getIdNonStatic().'-cancel-fail', 'Error while cancelling invest');
         }
 
     }
@@ -422,12 +392,12 @@ class InvestListener extends AbstractListener {
         $this->notice(($invest->getProject() ? '' : 'Pool') .'Invest refund cancel', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         if ($invest->cancel(true)) {
             $this->notice(($invest->getProject() ? '' : 'Pool') .'Invest refund succeeded', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
-            Invest::setDetail($invest->id, $method::getId().'-cancel', 'Invest refunded successfully');
+            Invest::setDetail($invest->id, $method->getIdNonStatic().'-cancel', 'Invest refunded successfully');
             // update cached data
             $invest->keepUpdated();
         } else {
             $this->warning('Error refunding invest', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
-            Invest::setDetail($invest->id, $method::getId().'-cancel-fail', 'Error while refunding invest');
+            Invest::setDetail($invest->id, $method->getIdNonStatic().'-cancel-fail', 'Error while refunding invest');
         }
 
     }
@@ -440,7 +410,7 @@ class InvestListener extends AbstractListener {
         $invest   = $event->getInvest();
         $response = $event->getResponse();
         $this->warning(($invest->getProject() ? '' : 'Pool') .'Invest refund failed', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'messages' => $response->getMessage()]);
-        Invest::setDetail($invest->id, $method::getId().'-return-fail', 'Error while refunding invest: '.$response->getMessage());
+        Invest::setDetail($invest->id, $method->getIdNonStatic().'-return-fail', 'Error while refunding invest: '.$response->getMessage());
 
     }
 

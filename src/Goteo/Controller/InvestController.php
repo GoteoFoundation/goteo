@@ -300,7 +300,7 @@ class InvestController extends \Goteo\Core\Controller {
     {
         $amount = $request->query->get('amount');
         $donate_amount = $request->query->get('donate_amount');
-        
+
         $email = $request->query->has('email');
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
         if(!($this->skip_login && $email) && !Session::isLogged()) {
@@ -412,12 +412,12 @@ class InvestController extends \Goteo\Core\Controller {
                     'currency_rate' => Currency::rate(),
                     'user' => $user->id,
                     'project' => $project_id,
-                    'method' => $method::getId(),
-                    'status' => Invest::STATUS_PROCESSING,  // aporte en proceso
+                    'method' => $method->getIdNonStatic(),
+                    'status' => Invest::STATUS_PROCESSING,
                     'invested' => date('Y-m-d'),
-                    'anonymous' => $request->query->has('anonymous') ? true : false,
+                    'anonymous' => $request->query->has('anonymous'),
                     'resign' => $reward ? false : true,
-                    'pool' => $request->query->has('pool_on_fail') ? true : false
+                    'pool' => $request->query->has('pool_on_fail')
                 )
             );
 
@@ -621,7 +621,7 @@ class InvestController extends \Goteo\Core\Controller {
                 }
                 $invest->extra_info = $invest_address['extra_info'];
                 $invest->save();
-                
+
                 if($ok) {
                     if($invest->setAddress($invest_address)) {
                         // Event invest failed

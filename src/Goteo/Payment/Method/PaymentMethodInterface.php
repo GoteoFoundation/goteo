@@ -24,9 +24,12 @@ interface PaymentMethodInterface {
     public function __construct(User $user);
 
     /**
+     * @deprecated Use the non-static method getIdNonStatic()
      * Returns the id of the method (max 20 chars long)
      */
     static public function getId(): string;
+
+    public function getIdNonStatic(): string;
 
     /**
      * Returns the name of the payment method (a sort description)
