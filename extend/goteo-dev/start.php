@@ -8,16 +8,13 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\DependencyInjection\Reference;
-
 use Goteo\Application\App;
-use Goteo\Console\Console;
 use Goteo\Application\Config;
-use Goteodev\Console\Command\StatusInitCommand;
+use Goteo\Console\Console;
 use Goteodev\Console\Command\CrowdinCommand;
-
+use Goteodev\Console\Command\StatusInitCommand;
+use Goteodev\Payment\DummyPaymentMethod;
+use Symfony\Component\DependencyInjection\Reference;
 
 
 // Autoload additional Classes
@@ -49,7 +46,7 @@ $routes = App::getRoutes();
 
 
 // Adding payment method
-\Goteo\Payment\Payment::addMethod('Goteodev\Payment\DummyPaymentMethod');
+\Goteo\Payment\Payment::addMethod(DummyPaymentMethod::class);
 // add usefull testing commands
 Console::add(new StatusInitCommand());
 Console::add(new CrowdinCommand());

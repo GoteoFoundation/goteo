@@ -54,6 +54,8 @@
         "erusev/parsedown": "^1.6",
         "league/omnipay": "~3.0",
         "league/html-to-markdown": "^4.4",
+        "omnipay/dummy": "^3.0",
+        "omnipay/manual": "^3.0",
         "omnipay/paypal": "~3.0",
         "ua-parser/uap-php": "^3.4",
         "kohkimakimoto/lib-migration": "^1.2",

@@ -10,8 +10,6 @@
 
 namespace Goteo\Payment\Method;
 
-use Goteo\Application\Config;
-
 /**
  * Creates a Payment Method that uses Paypal provider
  */

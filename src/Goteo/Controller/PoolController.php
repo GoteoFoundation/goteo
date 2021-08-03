@@ -12,6 +12,7 @@ namespace Goteo\Controller;
 
 use Exception;
 use Goteo\Core\Controller;
+use Omnipay\Omnipay;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,9 +36,9 @@ use Goteo\Payment\PaymentException;
 
 class PoolController extends Controller {
 
-    private $page = '/pool';
-    private $query = '';
-    private $type= 'pool';
+    private string $page = '/pool';
+    private string $query = '';
+    private string $type= 'pool';
 
     public function __construct() {
         View::setTheme('responsive');
@@ -139,6 +140,7 @@ class PoolController extends Controller {
 
     /**
      * step2: Choose payment method
+     *
      * This method will show a Form on the view that redirects to the payment gateway
      */
     public function selectPaymentMethodAction(Request $request, $type = 'pool')
@@ -234,7 +236,7 @@ class PoolController extends Controller {
                 ]
             );
 
-            return $this->redirect('/$type/payment?' . $this->query);
+            return $this->redirect("/$type/payment?" . $this->query);
         }
 
         //NEVER REACHED...
@@ -252,8 +254,8 @@ class PoolController extends Controller {
      * Returning point
      * When payment is successful, then redirects to step4
      */
-    public function completePaymentAction(Request $request, $invest_id, $type = 'pool') {
-
+    public function completePaymentAction(Request $request, $invest_id, $type = 'pool')
+    {
         $invest = Invest::get($invest_id);
         $amount = $this->validate(null, true, $type);
 
@@ -266,31 +268,42 @@ class PoolController extends Controller {
 
         try {
             $method = $invest->getMethod();
-            $method = $this->dispatch(AppEvents::INVEST_COMPLETE, new FilterInvestInitEvent($invest, $method, $request))->getMethod();
+            $method = $this->dispatch(
+                AppEvents::INVEST_COMPLETE,
+                new FilterInvestInitEvent($invest, $method, $request)
+            )->getMethod();
+
             // Ending transaction
             $response = $method->completePurchase();
-            // New Invest Request Event
-            $response = $this->dispatch(AppEvents::INVEST_COMPLETE_REQUEST, new FilterInvestRequestEvent($method, $response))->getResponse();
+            $response = $this->dispatch(
+                AppEvents::INVEST_COMPLETE_REQUEST,
+                new FilterInvestRequestEvent($method, $response)
+            )->getResponse();
 
             // Checks and redirects
             if (!$response instanceof ResponseInterface) {
                 throw new RuntimeException('This response does not implements ResponseInterface.');
             }
+
             if ($response->isSuccessful()) {
                 // Goto User data fill
                 Message::info(Text::get('invest-payment-success'));
 
-                // Event invest success
-                return $this->dispatch(AppEvents::INVEST_SUCCEEDED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
+                return $this->dispatch(
+                    AppEvents::INVEST_SUCCEEDED,
+                    new FilterInvestRequestEvent($method, $response)
+                )->getHttpResponse();
             }
 
-            $msg_fail=Text::get('invest-payment-fail');
-            $msg_fail.= App::debug() ?  ' [ '.$response->getMessage().' ]' : '' ;
+            $msg_fail = Text::get('invest-payment-fail');
+            $msg_fail .= App::debug() ?  ' [ '.$response->getMessage().' ]' : '' ;
 
             Message::error($msg_fail);
 
-            // Event invest failed
-            return $this->dispatch(AppEvents::INVEST_FAILED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
+            return $this->dispatch(
+                AppEvents::INVEST_FAILED,
+                new FilterInvestRequestEvent($method, $response)
+            )->getHttpResponse();
         } catch(Exception $e) {
             Message::error($e->getMessage());
             $this->error('Ending Payment Exception', ['class' => get_class($e),  $invest, 'code' => $e->getCode(), 'message' => $e->getMessage()]);
@@ -301,6 +314,7 @@ class PoolController extends Controller {
 
     /**
      * step4: reward/user data
+     *
      * Shown when coming back from the payment gateway
      */
     public function userDataAction(Request $request, $invest_id, $type = 'pool')
@@ -316,8 +330,10 @@ class PoolController extends Controller {
 
         // if resign to reward, redirect to shareAction
         if($invest->resign) {
-            // Event invest failed
-            return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
+            return $this->dispatch(
+                AppEvents::INVEST_FINISHED,
+                new FilterInvestFinishEvent($invest, $request)
+            )->getHttpResponse();
         }
 
         // check post data
@@ -325,8 +341,10 @@ class PoolController extends Controller {
 
         $errors = [];
         if($request->isMethod('post')) {
-            // Event invest failed
-            return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
+            return $this->dispatch(
+                AppEvents::INVEST_FINISHED,
+                new FilterInvestFinishEvent($invest, $request)
+            )->getHttpResponse();
         }
 
         return $this->viewResponse('pool/user_data', [

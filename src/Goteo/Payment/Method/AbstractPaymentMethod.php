@@ -19,10 +19,9 @@ use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Goteo\Model\User;
 use Goteo\Payment\PaymentException;
+use Omnipay\Common\GatewayFactory;
 use Omnipay\Common\GatewayInterface;
-use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\ResponseInterface;
-use Omnipay\Omnipay;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -38,8 +37,30 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
     protected $request;
     protected $user;
 
+    /**
+     * @throws PaymentException
+     */
     public function __construct(User $user = null) {
         $this->user = $user;
+        $this->initGateway();
+    }
+
+    private function initGateway()
+    {
+        $factory = new GatewayFactory();
+        $this->gateway = $factory->create($this->getGatewayName());
+
+        if(!in_array(GatewayInterface::class, class_implements($this->gateway))) {
+            throw new PaymentException("Error on retrieving Omnipay Gateway Class. It must implement Omnipay\Common\GatewayInterface!");
+        }
+
+        foreach($this->gateway->getDefaultParameters() as $var => $val) {
+            $config = Config::get('payments.' . static::getId() . '.' . $var);
+            $method = "set" . ucfirst($var);
+            if($config && method_exists($this->gateway, $method)) {
+                $this->gateway->$method($config);
+            }
+        }
     }
 
     /**
@@ -52,7 +73,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         $c = end($parts);
         $c = strtolower(str_replace('PaymentMethod', '', $c));
 
-        if(empty($c)) {
+        if (empty($c)) {
             throw new PaymentException('Method getId() must return a valid string');
         }
 
@@ -123,7 +144,6 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
 
     /**
      * Sets the Request in order to be able to create a proper gateway request
-     * @param Request $request Symfony HttpFoundation Request object
      */
     public function setRequest(Request $request) {
         $this->request = $request;
@@ -141,7 +161,6 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
 
     /**
      * This method gives the change to change the Response where to redirect after a $method->completePurchase() situation
-     * @param  RedirectResponseInterface $response
      * @return Response|null             A valid Symfony Response or null
      */
     public function getDefaultHttpResponse(ResponseInterface $response) {
@@ -193,11 +212,12 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
 
     /**
      * {@inheritdoc}
+     * @throws PaymentException
      */
     public function refund(): ResponseInterface
     {
         $gateway = $this->getGateway();
-        if(!$gateway->supportsRefund()) {
+        if (!$gateway->supportsRefund()) {
             throw new PaymentException("Refund not supported for method " . strtoupper(static::getId()));
         }
         $invest = $this->getInvest();
@@ -229,10 +249,9 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
 
     /**
      * Returns a description for the invest
-     * @param  Invest $invest [description]
-     * @return [type]         [description]
      */
-    public function getInvestDescription() {
+    public function getInvestDescription(): string
+    {
         $invest = $this->getInvest();
         $project = $invest->getProject();
         $msg = ''; // TODO: from Text::get()
@@ -260,25 +279,8 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         return ucfirst($this::getId());
     }
 
-    /**
-     * It must return the result of the Omnipay::create() function
-     */
     public function getGateway(): GatewayInterface
     {
-        if(!$this->gateway) {
-            $this->gateway = Omnipay::create($this->getGatewayName());
-            if(!in_array(GatewayInterface::class, class_implements($this->gateway))) {
-                throw new PaymentException("Error on retrieving Omnipay Gateway Class. It must implement Omnipay\Common\GatewayInterface!");
-            }
-
-            foreach($this->gateway->getDefaultParameters() as $var => $val) {
-                $config = Config::get('payments.' . static::getId() . '.' . $var);
-                $method = "set" . ucfirst($var);
-                if($config && method_exists($this->gateway, $method)) {
-                    $this->gateway->$method($config);
-                }
-            }
-        }
         return $this->gateway;
     }
 
