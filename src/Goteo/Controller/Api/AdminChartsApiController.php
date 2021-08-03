@@ -375,7 +375,7 @@ class AdminChartsApiController extends ChartsApiController {
                 foreach($methods as $i => $m) {
                     $raised = $stats->investTotals(['methods' => $i, 'status' => Invest::$RAISED_STATUSES] + $filter );
                     $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$RETURNED_STATUSES] + $filter);
-                    $totals[$slot]['to_fee_amount'] += $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
+                    $totals[$slot]['to_fee_amount'] += $m->calculateCommission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
                 }
                 // To projects without commissions
                 $totals[$slot]['to_projects_amount'] = $projects['amount'] - $totals[$slot]['to_fee_amount'];
@@ -502,8 +502,8 @@ class AdminChartsApiController extends ChartsApiController {
                 foreach($methods as $i => $m) {
                     $raised = $stats->investTotals(['methods' => $i, 'status' => Invest::$RAISED_STATUSES] + $filter );
                     $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$RETURNED_STATUSES] + $filter);
-                    $totals[$slot]['charged'] += $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
-                    $totals[$slot]['lost'] -= $m::calculateComission($returned['invests'], $returned['amount'], $returned['invests'], $returned['amount']);
+                    $totals[$slot]['charged'] += $m->calculateCommission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
+                    $totals[$slot]['lost'] -= $m->calculateCommission($returned['invests'], $returned['amount'], $returned['invests'], $returned['amount']);
                 }
                 $totals[$slot]['charged'] = round($totals[$slot]['charged'], 2);
                 $totals[$slot]['lost'] = round($totals[$slot]['lost'], 2);
@@ -528,7 +528,7 @@ class AdminChartsApiController extends ChartsApiController {
                 //     foreach($methods as $i => $m) {
                 //         $raised = $stats->investTotals(['methods' => $i, 'status' => Invest::$RAISED_STATUSES] + $filter);
                 //         $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$FAILED_STATUSES] + $filter);
-                //         $invoice +=  $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
+                //         $invoice +=  $m->calculateCommission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
                 //     }
                 //     $totals['invoice'] = $invoice;
                 // }
