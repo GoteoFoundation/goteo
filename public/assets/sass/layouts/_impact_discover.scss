@@ -1,7 +1,17 @@
 @import "compass/css3";
 
-.impact-discover-filters {
+.section {
+    padding-bottom: 5rem;
 
+    display: none;
+
+    &.active {
+        display: block;
+    }
+
+}
+
+.impact-discover-filters {
     padding-top:2rem;
     padding-bottom:2rem;
     background-color: #FFF;
@@ -49,32 +59,21 @@
                     padding:4px 5px 2px 28px;
                     color:#FFFFFF;
                     filter: grayscale(100%);
-                    width:65px;
                     background-size: cover;
                     font-weight:bold;
                     font-size:1.5rem;
                     text-decoration:none;
     
                     &[data-footprint="all"] {
+                        width: 5em;
                         background-color:#91B3B8;
                         padding-left:0;
                         padding-right:0;
                         text-align:center;
                     }
-    
-                    &[data-footprint="eco"] {
-                        background:url('../img/home/footprint-bg-tab-eco.png');
-                        background-size: cover;
-                    }
-    
-                    &[data-footprint="soc"] {
-                        background:url('../img/home/footprint-bg-tab-soc.png');
-                        background-size: cover;
-                    }
-    
-                    &[data-footprint="dem"] {
-                        background:url('../img/home/footprint-bg-tab-dem.png');
-                        background-size: cover;
+
+                    img {
+                        width:5em;
                     }
                 }
     
@@ -144,6 +143,7 @@
     #filters-view-as {
 
         margin-bottom: 3rem;
+        cursor: pointer;
 
         a img {
             opacity: 0.4;
@@ -156,6 +156,7 @@
 }
 
 .impact-discover-projects {
+    display: none;
 
     padding-bottom: 5em;
 
@@ -288,6 +289,15 @@
         margin: 2em;
     }
 
+}
+
+.impact-discover-map {
+    #map {
+        min-height: 50rem;
+    }
+}
+
+.impact-discover-mosaic {
 }
 
 @media screen and (max-width : 720px) {

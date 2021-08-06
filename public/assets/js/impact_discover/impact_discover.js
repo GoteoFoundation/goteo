@@ -23,6 +23,37 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
+function activateMosaic() {
+    document.getElementById('impact-discover-mosaic').classList.add('active');
+    document.getElementById('impact-discover-projects').classList.remove('active');
+    document.getElementById('impact-discover-map').classList.remove('active');
+
+    document.getElementById('activate-mosaic').classList.add('active');
+    document.getElementById('activate-projects').classList.remove('active');
+    document.getElementById('activate-map').classList.remove('active');
+}
+
+function activateProjects() {
+    document.getElementById('impact-discover-mosaic').classList.remove('active');
+    document.getElementById('impact-discover-projects').classList.add('active');
+    document.getElementById('impact-discover-map').classList.remove('active');
+
+    document.getElementById('activate-mosaic').classList.remove('active');
+    document.getElementById('activate-projects').classList.add('active');
+    document.getElementById('activate-map').classList.remove('active');
+}
+
+function activateMap() {
+    document.getElementById('impact-discover-mosaic').classList.remove('active');
+    document.getElementById('impact-discover-projects').classList.remove('active');
+    document.getElementById('impact-discover-map').classList.add('active');
+
+    document.getElementById('activate-mosaic').classList.remove('active');
+    document.getElementById('activate-projects').classList.remove('active');
+    document.getElementById('activate-map').classList.add('active');
+}
+
+
 //reset ODS JSON
 function resetODS() {
     $.each(odsList.ods, function(key, value){
@@ -124,8 +155,9 @@ function resetProjects() {
 
 function loadProjects(ods) {
     $('.impact-discover-projects > div.container').after('<div class="loading-container">Loading</div>');
-    var url = "https://goteo-seven.vercel.app/ods.html?ods=";
-    var url = url+ods.join(",");
+    //var url = "https://goteo-seven.vercel.app/ods.html?ods=";
+    var url = "/api/projects_by_sdg";
+    var url = url + "?sdg=" + ods.join(",");
     $.get( url, function( data ) {
         $('.impact-discover-projects > div.container').append( data );
       })
