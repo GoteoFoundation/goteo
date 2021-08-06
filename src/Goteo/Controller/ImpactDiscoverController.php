@@ -15,8 +15,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\View;
 use Goteo\Application\Session;
 use Goteo\Model\Category;
+use Goteo\Model\Footprint;
 use Goteo\Model\Project;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Sdg;
+use Goteo\Util\Map\MapOSM;
 
 class ImpactDiscoverController extends \Goteo\Core\Controller {
 
@@ -35,8 +38,20 @@ class ImpactDiscoverController extends \Goteo\Core\Controller {
      */
     public function indexAction ($filter = '', Request $request) {
         
+        $footprints = Footprint::getList();
+        $sdgs_count = Sdg::getList([],0,0,true);
+        $sdgs = Sdg::getList([],0,$sdg_count);
 
-        return $this->viewResponse('impact_discover/index');
+        $projects = Project::getByFootprintOrSDGs([], 0, 12); // TODO: Define what projects should be listed here.
+
+
+        $map = new MapOSM('100%');
+        return $this->viewResponse('impact_discover/index', [
+            'footprints' => $footprints,
+            'sdgs' => $sdgs,
+            'map' => $map,
+            'projects' => $projects
+        ]);
 
     }
 
