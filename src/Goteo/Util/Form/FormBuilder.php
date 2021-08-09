@@ -12,23 +12,21 @@ namespace Goteo\Util\Form;
 
 use Goteo\Application\Lang;
 use Goteo\Application\Session;
-use Goteo\Util\Form\SimpleTemplateNameParser;
-
-use Symfony\Component\Validator\ValidatorBuilder;
-use Symfony\Component\Translation\Loader\XliffFileLoader;
-use Symfony\Component\Templating\PhpEngine;
-use Symfony\Component\Templating\Loader\FilesystemLoader;
-use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
-use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
-use Symfony\Component\Form\FormFactoryBuilder;
-use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
-use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Templating\TemplatingExtension;
+use Symfony\Bundle\FrameworkBundle\Templating\Helper\TranslatorHelper;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
-use Symfony\Bundle\FrameworkBundle\Templating\Helper\TranslatorHelper;;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
+use Symfony\Component\Form\Extension\Templating\TemplatingExtension;
+use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
+use Symfony\Component\Form\FormFactoryBuilder;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
+use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
+use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
+use Symfony\Component\Templating\Loader\FilesystemLoader;
+use Symfony\Component\Templating\PhpEngine;
+use Symfony\Component\Translation\Loader\XliffFileLoader;
+use Symfony\Component\Validator\ValidatorBuilder;
 
 class FormBuilder {
     protected $formBuilder;
@@ -43,7 +41,8 @@ class FormBuilder {
         // Set up the Translation component
         $translator = Lang::translator();
         $translator->addLoader('xlf', new XliffFileLoader());
-        array_walk(Lang::listAll('id'), function($lang, $key) use ($translator) {
+        $languages = Lang::listAll('id');
+        array_walk($languages, function($lang) use ($translator) {
             $file1 = GOTEO_PATH . "vendor/symfony/form/Resources/translations/validators.$lang.xlf";
             $file2 = GOTEO_PATH . "vendor/symfony/validator/Resources/translations/validators.$lang.xlf";
             if(file_exists($file1)) {

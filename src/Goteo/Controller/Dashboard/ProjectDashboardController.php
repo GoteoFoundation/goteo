@@ -39,7 +39,6 @@ use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Support;
 use Goteo\Model\Stories;
 use Goteo\Model\User;
-use Goteo\Util\Bot\TelegramBot;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;

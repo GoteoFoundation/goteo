@@ -89,7 +89,8 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
 
         return $this;
     }
-        public function save(FormInterface $form = null, $force_save = false) {
+
+    public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 

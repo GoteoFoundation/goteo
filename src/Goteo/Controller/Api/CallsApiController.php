@@ -44,7 +44,6 @@ class CallsApiController extends AbstractApiController {
 
         // General search
         if($request->query->has('q')) {
-            // $filters['global'] = $request->query->get('q');
             $filters['basic'] = $request->query->get('q');
         }
         if(!$this->is_admin) {
