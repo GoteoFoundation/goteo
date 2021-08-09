@@ -10,12 +10,16 @@
 
 namespace Goteo\Application;
 
+use Composer\Autoload\ClassLoader;
+use Exception;
 use Goteo\Application\Config\ConfigException;
 use Goteo\Application\Config\YamlSettingsLoader;
 use Goteo\Console\UsersSend;
+use Goteo\Controller\AdminController;
+use Goteo\Controller\TranslateController;
 use Goteo\Core\Model;
-use Goteo\Application\Currency;
-
+use Goteo\Library\Cacher;
+use Goteo\Payment\Payment;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
@@ -23,7 +27,14 @@ use Symfony\Component\Routing\Route;
 
 class Config {
     // Initial translation groups (groupped in yml files into Resources/translations/)
-    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate', 'questionnaire', 'poster', 'channel_call', 'map'];
+    static public $trans_groups = [
+        'home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs',
+        'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog',
+        'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate',
+        'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups',
+        'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate',
+        'questionnaire', 'poster', 'channel_call', 'map'
+    ];
 	static protected $loader;
     static protected $config;
 
@@ -33,9 +44,10 @@ class Config {
 	static protected $f_locales = __DIR__ . '/../../../Resources/locales.yml';
     static protected $f_currencies = __DIR__ . '/../../../Resources/currencies.yml';
 
-	/**
-	 * Loads all configurations
-	 */
+    /**
+     * Loads all configurations
+     * @throws ConfigException
+     */
 	static public function load($config_file) {
 		try {
             self::$config = self::loadFromYaml(static::$f_defaults);
@@ -68,7 +80,6 @@ class Config {
             Role::addPermsFromArray($permissions);
 
             // Load default roles from yaml
-
             $roles = self::loadFromYaml(static::$f_roles);
             Role::addRolesFromArray($roles);
 
@@ -95,42 +106,33 @@ class Config {
 			}
 
             // Add model zones for the translator
-            \Goteo\Controller\TranslateController::addTranslateModel('criteria');
-			\Goteo\Controller\TranslateController::addTranslateModel('sphere');
-			\Goteo\Controller\TranslateController::addTranslateModel('communication');
-			\Goteo\Controller\TranslateController::addTranslateModel('call_to_action');
-			\Goteo\Controller\TranslateController::addTranslateModel('node');
-			\Goteo\Controller\TranslateController::addTranslateModel('node_program');
-			\Goteo\Controller\TranslateController::addTranslateModel('node_faq');
-			\Goteo\Controller\TranslateController::addTranslateModel('node_faq_question');
-			\Goteo\Controller\TranslateController::addTranslateModel('node_faq_download');
-			\Goteo\Controller\TranslateController::addTranslateModel('node_sponsor');
-			\Goteo\Controller\TranslateController::addTranslateModel('node_team');
-			\Goteo\Controller\TranslateController::addTranslateModel('node_resource');
-			\Goteo\Controller\TranslateController::addTranslateModel('node_resource_category');
-			\Goteo\Controller\TranslateController::addTranslateModel('image_credits');
-			\Goteo\Controller\TranslateController::addTranslateModel('node_sections');
-			\Goteo\Controller\TranslateController::addTranslateModel('question');
-			\Goteo\Controller\TranslateController::addTranslateModel('question_options');
+            TranslateController::addTranslateModel('criteria');
+			TranslateController::addTranslateModel('sphere');
+			TranslateController::addTranslateModel('communication');
+			TranslateController::addTranslateModel('call_to_action');
+			TranslateController::addTranslateModel('node');
+			TranslateController::addTranslateModel('node_program');
+			TranslateController::addTranslateModel('node_faq');
+			TranslateController::addTranslateModel('node_faq_question');
+			TranslateController::addTranslateModel('node_faq_download');
+			TranslateController::addTranslateModel('node_sponsor');
+			TranslateController::addTranslateModel('node_team');
+			TranslateController::addTranslateModel('node_resource');
+			TranslateController::addTranslateModel('node_resource_category');
+			TranslateController::addTranslateModel('image_credits');
+			TranslateController::addTranslateModel('node_sections');
+			TranslateController::addTranslateModel('question');
+			TranslateController::addTranslateModel('question_options');
 
 			// sets up the rest...
 			self::setDirConfiguration();
-
-
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			if (PHP_SAPI === 'cli') {
 				throw $e;
 			}
-			\Goteo\Application\View::addFolder(__DIR__ . '/../../../Resources/templates/responsive');
-			// TODO: custom template
-			$info = '';
-			$trace = EventListener\ExceptionListener::jTraceEx($e);
-			if (App::debug()) {
-				$info = '<pre>' . $trace . '</pre>';
-			}
+			View::addFolder(__DIR__ . '/../../../Resources/templates/responsive');
+            View::setTheme('responsive');
 
-            \Goteo\Application\View::setTheme('responsive');
-			// die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
 			return;
 		}
 	}
@@ -138,7 +140,8 @@ class Config {
     /**
      * Performs some saving operations to database if required
      */
-    static public function autosave() {
+    static public function autosave(): bool
+    {
         if(!Config::get('autosave')) return false;
 
         $not_cached = !YamlSettingsLoader::getConfigCache(YamlSettingsLoader::getCacheFilename(static::$f_roles))->isFresh();
@@ -148,27 +151,14 @@ class Config {
         return true;
     }
 
-	/**
-	 * Loads a configuration from a file
-	 * @param  [type] $file [description]
-	 * @return [type]       [description]
-	 */
 	static public function loadFromYaml($file) {
-		//
-		//LOAD CONFIG
-		//
-
 		$locator = new FileLocator(array(dirname($file)));
-
 		$loaderResolver = new LoaderResolver(array(new YamlSettingsLoader($locator)));
 		$delegatingLoader = new DelegatingLoader($loaderResolver);
 
 		return $delegatingLoader->load($file);
 	}
 
-	/**
-	 * Purgues all cached setting files
-	 */
 	static public function clearCache() {
 		foreach (YamlSettingsLoader::$cached_files as $file) {
 			unlink($file);
@@ -177,9 +167,9 @@ class Config {
 
 	/**
 	 * Registers a Autoload ClassLoader for composer
-	 * @param \Composer\Autoload\ClassLoader $loader the include(...) of composer
+	 * @param ClassLoader $loader the include(...) of composer
 	 */
-	static public function setLoader(\Composer\Autoload\ClassLoader $loader) {
+	static public function setLoader(ClassLoader $loader) {
 		self::$loader = $loader;
 	}
 
@@ -189,93 +179,74 @@ class Config {
 
 	/**
 	 * Adds a directory to the composer autoload array
-	 * @param string $dir directory where to find classes
 	 */
-	static public function addAutoloadDir($dir) {
+	static public function addAutoloadDir(string $dir) {
 		self::$loader->add('', $dir);
 	}
 
     /**
-     * Adds an external autoload.php file (ie from a compoeser vendor plugin)
-     * @param [type] $autoload [description]
+     * Adds an external autoload.php file (ie from a composer vendor plugin)
      */
     static public function addComposerAutoload($autoload) {
         $loader = require ( $autoload );
         self::$loader->addClassMap($loader->getClassMap());
     }
 
-	/**
-	 * sets directory configuration
-	 */
 	static private function setDirConfiguration() {
 
 		//Admin subcontrollers added manually for legacy compatibility
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersAdminController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogAdminController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesAdminController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteAdminController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommunicationAdminController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FilterAdminController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
-
-        // TODO: to be replace by the new AdminController
-        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodeSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodesSubController');
-        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TransnodesSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BannersSubController');
-        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogSubController');
-        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesAdminController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommonsSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CriteriaSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\HomeSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\GlossarySubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\IconsSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\LicensesSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MailingSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NewsSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NewsletterSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PagesSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ProjectsSubController');
-        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RecentSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ReviewsSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RewardsSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SentSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SponsorsSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TagsSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TemplatesSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TextsSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TranslatesSubController');
-		// \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WordcountSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
-		//\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorkshopSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');
-        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesSubController');
-        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SocialCommitmentSubController');
-		// \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SphereSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelStoryAdminController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelResourceAdminController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelPostsAdminController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelCriteriaAdminController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelProgramAdminController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ChannelSectionAdminController');
-
-
+        AdminController::addSubController('Goteo\Controller\Admin\UsersAdminController');
+        AdminController::addSubController('Goteo\Controller\Admin\BlogAdminController');
+        AdminController::addSubController('Goteo\Controller\Admin\StoriesAdminController');
+        AdminController::addSubController('Goteo\Controller\Admin\PromoteAdminController');
+		AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
+		AdminController::addSubController('Goteo\Controller\Admin\CommunicationAdminController');
+		AdminController::addSubController('Goteo\Controller\Admin\FilterAdminController');
+		AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
+        AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\NodeSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\NodesSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\BannersSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\CategoriesAdminController');
+        AdminController::addSubController('Goteo\Controller\Admin\CommonsSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\CriteriaSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\HomeSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\GlossarySubController');
+        AdminController::addSubController('Goteo\Controller\Admin\IconsSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\LicensesSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\MailingSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\NewsSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\NewsletterSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\PagesSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\ProjectsSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\RecentSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\ReviewsSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\RewardsSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\SentSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\SponsorsSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\TagsSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\TemplatesSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\TextsSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\TranslatesSubController');
+		AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
+		AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
+        AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');
+		AdminController::addSubController('Goteo\Controller\Admin\ChannelStoryAdminController');
+		AdminController::addSubController('Goteo\Controller\Admin\ChannelResourceAdminController');
+		AdminController::addSubController('Goteo\Controller\Admin\ChannelPostsAdminController');
+		AdminController::addSubController('Goteo\Controller\Admin\ChannelCriteriaAdminController');
+		AdminController::addSubController('Goteo\Controller\Admin\ChannelProgramAdminController');
+		AdminController::addSubController('Goteo\Controller\Admin\ChannelSectionAdminController');
 
 		// Adding Pool (internal credit) payment method
-		\Goteo\Payment\Payment::addMethod('Goteo\Payment\Method\PoolPaymentMethod');
+		Payment::addMethod('Goteo\Payment\Method\PoolPaymentMethod');
 		// Adding Paypal payment method
-		\Goteo\Payment\Payment::addMethod('Goteo\Payment\Method\PaypalPaymentMethod');
+		Payment::addMethod('Goteo\Payment\Method\PaypalPaymentMethod');
 		// Adding Cash non-public payment method (manual admin investions)
-		\Goteo\Payment\Payment::addMethod('Goteo\Payment\Method\CashPaymentMethod', true);
+		Payment::addMethod('Goteo\Payment\Method\CashPaymentMethod', true);
 
-		// Plugins overwritting
+		// Plugins overwriting
 		foreach (self::getPlugins() as $plugin => $vars) {
 			// Calling start file from plugins
 			if (is_file(__DIR__ . "/../../../extend/$plugin/start.php")) {
@@ -286,8 +257,7 @@ class Config {
 
         // If calls_enabled is not defined, figure it out from the database
         if(self::get('calls_enabled') === null) {
-            // self::set('calls_enabled', (\Goteo\Model\Call::dbCount() > 0));
-            $e = \Goteo\Controller\AdminController::existsSubController('Goteo\Controller\Admin\CallsSubController');
+            $e = AdminController::existsSubController('Goteo\Controller\Admin\CallsSubController');
             self::set('calls_enabled', $e);
         }
 
@@ -307,22 +277,18 @@ class Config {
 
         // TODO: add a generic matcher processor that uses Symfony Expression Language
         // http://symfony.com/doc/current/components/expression_language/syntax.html
-        //
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\CriteriaInvestMatcherProcessor');
 
 		//Cache dir in libs
-		\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
+		Cacher::setCacheDir(GOTEO_CACHE_PATH);
 
-		/**********************************/
 		// LEGACY VIEWS
 		\Goteo\Core\View::addViewPath(GOTEO_PATH . 'Resources/templates/legacy');
-
 		//NormalForm views
 		\Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/NormalForm/view');
 		//SuperForm views
 		\Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/SuperForm/view');
-		/**********************************/
 
 		// Default consultants to UsersSend
 		if (is_array(Config::get('mail.consultants'))) {
@@ -346,13 +312,7 @@ class Config {
 		// TODO: fire event here
 	}
 
-	/**
-	 * Compatibility constants
-	 */
 	static public function setConstants() {
-		// foreach(self::$config as $name => $value) {
-		//     echo "$name => " . print_r($value, 1)."\n";
-		// };die;
 		define('GOTEO_MAINTENANCE', self::get('maintenance'));
 		define('GOTEO_SESSION_TIME', self::get('session.time', true));
 		define('GOTEO_MISC_SECRET', self::get('secret', true));
@@ -380,8 +340,6 @@ class Config {
 		}
 
 		$database = self::get('db.database', true);
-		$username = self::get('db.username', true);
-		$password = self::get('db.password', true);
 		self::set('dsn', "$driver:host=$host;dbname=$database;port=$port;charset=$charset");
 
 		if ($replica = self::get('db.replica.host')) {
@@ -421,25 +379,21 @@ class Config {
             $google = [];
         }
         self::set('analytics.google', $google);
-
 	}
 
-	/**
-	 * Return a value
-	 * @param  string $name ex: filesystem.handler
-	 *                          filesystem.bucket      => array
-	 *                          filesystem.bucket.mail => string
-	 * @param  string $strick throws a Exception on fail
-	 * @return [type]       [description]
-	 */
-	static public function get($name, $strict = false) {
+    /**
+     * @param string $name ex: filesystem.handler
+     *                          filesystem.bucket      => array
+     *                          filesystem.bucket.mail => string
+     * @throws ConfigException
+     */
+	static public function get(string $name, bool $strict = false) {
 		$part = strtok($name, '.');
 		if (self::$config && array_key_exists($part, self::$config)) {
 			$ret = self::$config[$part];
 			while ($part = strtok('.')) {
 				if (is_array($ret) && array_key_exists($part, $ret)) {
 					$ret = $ret[$part];
-					// echo "[$part]";
 				} elseif ($strict) {
 					throw new ConfigException("Config var [$name] not found!");
 				} else {
@@ -465,10 +419,11 @@ class Config {
 		return self::_set($config[substr($name, 0, $pos)], substr($name, $pos + 1), $value);
 	}
 
-	/**
-	 * Returns a mail (mail.mail, mail.contact, mail.manager) with fallback if not defined
-	 * See config/settings-example.yml (mail part) for values
-	 */
+    /**
+     * Returns a mail (mail.mail, mail.contact, mail.manager) with fallback if not defined
+     * See config/settings-example.yml (mail part) for values
+     * @throws ConfigException
+     */
 	static public function getMail($type = 'mail', $fallback = 'mail') {
 		if (self::get("mail.$type")) {
 			return self::get("mail.$type");
@@ -484,7 +439,6 @@ class Config {
 	/**
 	 * Gets a suitable http(s) link for use
 	 * @param  string $lang ca
-	 * @return [type]       [description]
 	 */
 	static public function getUrl($lang = null) {
 		$url = self::get('url.main');
@@ -509,9 +463,8 @@ class Config {
 
     /**
      * Get sanitized Main URL
-     * @return [type] [description]
      */
-    static public function getMainUrl($schema=true) {
+    static public function getMainUrl(bool $schema = true) {
         $url = self::get('url.main');
         if(strpos($url, '//') === 0) {
             $url = (self::get('ssl') ? 'https:' : 'http:') . $url;
@@ -522,7 +475,8 @@ class Config {
         return $url;
     }
 
-	static public function getPlugins() {
+	static public function getPlugins(): array
+    {
 		$all_plugins = self::get('plugins');
 		if (!is_array($all_plugins)) {
 			$all_plugins = [];
@@ -539,18 +493,14 @@ class Config {
 
 	/**
 	 * If a node is active
-	 * @param  [type]  $node [description]
-	 * @return boolean       [description]
 	 */
-	static public function isCurrentNode($node) {
+	static public function isCurrentNode($node): bool
+    {
 		return self::get('current_node') === $node;
 	}
 
-	/**
-	 * If is the main node
-	 * @return boolean [description]
-	 */
-	static public function isMasterNode($node = null) {
+	static public function isMasterNode($node = null): bool
+    {
 		if ($node) {
 			return self::get('node') === $node;
 		}
