@@ -17,6 +17,7 @@ use Goteo\Application\Message;
 use Goteo\Model\Image;
 use Goteo\Model\Category;
 use Goteo\Model\SocialCommitment;
+use Goteo\Model\User;
 
 class CategoriesSubController extends AbstractSubController {
 
@@ -28,14 +29,13 @@ class CategoriesSubController extends AbstractSubController {
       'keywords' => 'categories-lb-keywords',
     );
 
-
     static protected $label = 'categories-lb';
 
     /**
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node and superadmins allowed here
         if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);

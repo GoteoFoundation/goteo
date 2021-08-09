@@ -12,29 +12,25 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Paypal;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
+use Goteo\Application\Currency;
+use Goteo\Application\Event\FilterInvestInitEvent;
+use Goteo\Application\Event\FilterInvestModifyEvent;
+use Goteo\Application\Event\FilterInvestRefundEvent;
+use Goteo\Application\Event\FilterInvestRequestEvent;
+use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ModelNotFountException;
+use Goteo\Application\Message;
+use Goteo\Application\Session;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
-use Goteo\Application\Currency;
-use Goteo\Application\AppEvents;
-use Goteo\Application\Message;
-use Goteo\Application\Config;
-use Goteo\Application\Session;
-use Goteo\Application\Exception\ModelException;
-use Goteo\Application\Exception\ModelNotFountException;
-use Goteo\Application\Event\FilterInvestInitEvent;
-use Goteo\Application\Event\FilterInvestRefundEvent;
-use Goteo\Application\Event\FilterInvestRequestEvent;
-use Goteo\Application\Event\FilterInvestModifyEvent;
-use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
-use Goteo\Payment\Payment;
 use Goteo\Model\Invest;
 use Goteo\Model\Invest\InvestLocation;
-use Goteo\Model\User;
 use Goteo\Model\Project;
-use Goteo\Model;
-
+use Goteo\Model\User;
+use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 use Omnipay\Common\Message\ResponseInterface;
 
 class AccountsSubController extends AbstractSubController {
@@ -52,9 +48,7 @@ class AccountsSubController extends AbstractSubController {
       'cancel-pool' => 'accounts-lb-cancel-pool'
     );
 
-
     static protected $label = 'accounts-lb';
-
 
     protected $filters = array (
       'id' => '',
@@ -73,12 +67,11 @@ class AccountsSubController extends AbstractSubController {
       'maxamount' => '',
     );
 
-
     /**
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node allowed here
         if( ! Config::isMasterNode($node) ) return false;
         return parent::isAllowed($user, $node);
@@ -101,13 +94,12 @@ class AccountsSubController extends AbstractSubController {
         }
 
         return array(
-                'template' => 'admin/accounts/viewer',
-                'content' => $content,
-                'date' => $date,
-                'type' => $type
+            'template' => 'admin/accounts/viewer',
+            'content' => $content,
+            'date' => $date,
+            'type' => $type
         );
     }
-
 
     // Informe de la financiación de un proyecto
     public function reportAction($id) {
@@ -126,22 +118,19 @@ class AccountsSubController extends AbstractSubController {
         $account = Project\Account::get($project->id);
 
         return array(
-                'template' => 'admin/accounts/report',
-                'invests' => $invests,
-                'project' => $project,
-                'account' => $account,
-                'projectStatus' => $projectStatus,
-                'status' => $investStatus,
-                'Data' => $Data,
-                'methods' => Invest::methods()
+            'template' => 'admin/accounts/report',
+            'invests' => $invests,
+            'project' => $project,
+            'account' => $account,
+            'projectStatus' => $projectStatus,
+            'status' => $investStatus,
+            'Data' => $Data,
+            'methods' => Invest::methods()
         );
     }
 
     /**
      * Contacts to the payment gateway and do the refund process
-     * @param  Invest  $invest   [description]
-     * @param  boolean $returned [description]
-     * @return [type]            [description]
      */
     private function cancelInvest(Invest $invest) {
         $project = $invest->getProject();
@@ -202,10 +191,8 @@ class AccountsSubController extends AbstractSubController {
             Message::error($e->getMessage());
         }
 
-
         return $ok;
     }
-
 
     /**
      * Refunds to invest to the original user
@@ -586,7 +573,6 @@ class AccountsSubController extends AbstractSubController {
         }
 
         return $this->redirect('/admin/accounts/details/'.$id);
-
     }
 
     // detalles de una transaccion
@@ -616,7 +602,6 @@ class AccountsSubController extends AbstractSubController {
                 'methods' => $methods
         );
     }
-
 
     public function switchresignAction($id) {
         $invest = Invest::get($id);
@@ -706,8 +691,6 @@ class AccountsSubController extends AbstractSubController {
             );
 
         return $viewData;
-
     }
 
 }
-

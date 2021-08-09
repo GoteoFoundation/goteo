@@ -10,24 +10,21 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-
+use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Session;
-use Goteo\Application\Config;
 use Goteo\Application\View;
-use Goteo\Model\Project;
-use Goteo\Model\Invest;
-use Goteo\Model\Message as Comment;
-use Goteo\Model\User;
-use Goteo\Model\Mail;
+use Goteo\Core\Controller;
 use Goteo\Library\Text;
+use Goteo\Model\Invest;
+use Goteo\Model\Mail;
+use Goteo\Model\Message as Comment;
+use Goteo\Model\Project;
+use Goteo\Model\User;
 use Goteo\Model\User\Interest;
-use Goteo\Model\Page;
-use Goteo\Model\Matcher;
-use Goteo\Application\Message;
+use Symfony\Component\HttpFoundation\Request;
 
-class DashboardController extends \Goteo\Core\Controller {
+class DashboardController extends Controller {
 
     public function __construct() {
         // changing to a responsive theme here
@@ -36,7 +33,6 @@ class DashboardController extends \Goteo\Core\Controller {
         if(!$this->user) {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
-
     }
 
     public static function createSidebar($section, $zone = '') {
@@ -64,10 +60,9 @@ class DashboardController extends \Goteo\Core\Controller {
             'section' => $section,
             'total_messages' => $total_messages
         ]);
-
     }
 
-    public function activityAction(Request $request) {
+    public function activityAction() {
         $user = $this->user;
 
         self::createSidebar('activity', 'activity');
@@ -86,10 +81,8 @@ class DashboardController extends \Goteo\Core\Controller {
 
         $interests = Interest::getAll();
 
-        // $page = Page::get('dashboard');
         return $this->viewResponse('dashboard/activity', [
             'section' => 'activity',
-            // 'message' => str_replace('%USER_NAME%', $user->name, $page->parseContent()),
             'invested' => $invested,
             'invested_total' => $invested_total,
             'interests' => $interests,
@@ -163,10 +156,7 @@ class DashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
-    /**
-     * Virtual wallet
-     */
-    public function walletAction(Request $request)
+    public function walletAction()
     {
         if(!Config::get('payments.pool.active')) {
             throw new \RuntimeException("Pool payment is not active!");
@@ -199,7 +189,6 @@ class DashboardController extends \Goteo\Core\Controller {
             'limit' => 6
              ]
         );
-
     }
 
 }

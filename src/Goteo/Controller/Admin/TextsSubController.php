@@ -12,11 +12,11 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Text,
-    Goteo\Application\Message,
-    Goteo\Application\Config,
-    Goteo\Application\Lang,
-	Goteo\Library\Feed;
+use Goteo\Application\Config;
+use Goteo\Application\Lang;
+use Goteo\Application\Message;
+use Goteo\Library\Text;
+use Goteo\Model\User;
 
 class TextsSubController extends AbstractSubController {
 
@@ -25,21 +25,18 @@ class TextsSubController extends AbstractSubController {
       'edit' => 'texts-lb-edit',
     );
 
-
     static protected $label = 'texts-lb';
-
 
     protected $filters = array (
       'group' => '',
       'text' => '',
     );
 
-
     /**
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node allowed here
         if( ! Config::isMasterNode($node) ) return false;
         return parent::isAllowed($user, $node);

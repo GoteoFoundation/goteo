@@ -10,20 +10,19 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Gregwar\Captcha\CaptchaBuilder;
-
-use Goteo\Library;
-use Goteo\Library\Text;
-use Goteo\Model\Page;
+use Goteo\Application\Config;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
-use Goteo\Application\Config;
-use Goteo\Application\Lang;
-use Goteo\Model\Template;
+use Goteo\Core\Controller;
+use Goteo\Library;
+use Goteo\Library\Text;
 use Goteo\Model\Mail;
+use Goteo\Model\Page;
+use Goteo\Model\Template;
+use Gregwar\Captcha\CaptchaBuilder;
+use Symfony\Component\HttpFoundation\Request;
 
-class ContactController extends \Goteo\Core\Controller {
+class ContactController extends Controller {
 
     public function indexAction (Request $request) {
 
@@ -196,7 +195,6 @@ class ContactController extends \Goteo\Core\Controller {
                 'errors'  => $errors
             )
         );
-
     }
 
     // Creates a new image

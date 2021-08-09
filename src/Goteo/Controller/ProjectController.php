@@ -17,6 +17,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Application\Session;
 use Goteo\Application\View;
+use Goteo\Core\DB;
 use Goteo\Model\Page;
 use Goteo\Library\Text;
 use Goteo\Library\Worth;
@@ -44,15 +45,12 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 class ProjectController extends \Goteo\Core\Controller {
 
     public function __construct() {
-        // Cache & replica read activated in this controller
         $this->dbReplica(true);
         $this->dbCache(true);
-        //Set the responsive theme
         View::setTheme('responsive');
     }
 
 	public function indexAction($pid = null, $show = 'home', $post = null, Request $request) {
-
 		if ($pid !== null) {
 			return $this->view($pid, $show, $post, $request);
 		}
@@ -62,13 +60,7 @@ class ProjectController extends \Goteo\Core\Controller {
 		return new RedirectResponse('/discover');
 	}
 
-	/**
-	 * Initial create project action
-	 * @param  Request $request [description]
-	 * @return [type]           [description]
-	 */
 	public function createAction(Request $request) {
-
         if (!Session::isLogged()) {
             Message::info(Text::get('user-login-required-to_create'));
             return $this->redirect('/user/login?return='.urldecode('/project/create'));
@@ -79,18 +71,16 @@ class ProjectController extends \Goteo\Core\Controller {
         	$social_commitment= strip_tags($request->request->get('social'));
 
             $data=[
-                'name'         =>  strip_tags($request->request->get('name')),
-                'subtitle'   =>  strip_tags($request->request->get('subtitle')),
-                'social_commitment'   => $social_commitment,
-                'social_description' =>  strip_tags($request->request->get('social-description')),
-                'location'          =>  $request->request->get('location'),
-                'project_location'			=>  $request->request->get('project_location')
+                'name' => strip_tags($request->request->get('name')),
+                'subtitle' => strip_tags($request->request->get('subtitle')),
+                'social_commitment' => $social_commitment,
+                'social_description' => strip_tags($request->request->get('social-description')),
+                'location' => $request->request->get('location'),
+                'project_location' => $request->request->get('project_location')
             ];
 
             $project = Project::createNewProject($data);
-
-            // categories created depending on the social commitment
-        	$categories=SocialCommitment::getCategories($social_commitment);
+        	$categories = SocialCommitment::getCategories($social_commitment);
 
         	foreach ($categories as $item) {
         		$category=new Category();
@@ -98,8 +88,6 @@ class ProjectController extends \Goteo\Core\Controller {
         		$category->id=$item;
         		$category->save();
         	}
-
-        	// Save location
 
         	$loc = new ProjectLocation(
         			[
@@ -122,14 +110,12 @@ class ProjectController extends \Goteo\Core\Controller {
             $conf->publishing_estimation = $request->request->get('publishing_date');
             $conf->save();
 
-
             // Save default fee
             $accounts = new Account();
             $accounts->project = $project->id;
             $accounts->allowpp = false;
             $accounts->fee = Config::get('fee');
             $accounts->save();
-
 
             // CREATED EVENT
             $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();
@@ -142,18 +128,15 @@ class ProjectController extends \Goteo\Core\Controller {
            'social_commitments' => SocialCommitment::getAll(),
            'terms'      => Page::get('howto')
         ]);
-
 	}
 
 	protected function view($project, $show, $post = null, Request $request) {
-		//activamos la cache para esta llamada
-		\Goteo\Core\DB::cache(true);
+		DB::cache(true);
 
 		if( !$project instanceOf Project ) {
             $project = Project::get($project, Lang::current(false));
         }
-		$user    = Session::getUser();
-
+		$user = Session::getUser();
 		$show_allow=['home', 'updates', 'participate'];
 
 		if(!in_array($show, $show_allow))
@@ -162,13 +145,8 @@ class ProjectController extends \Goteo\Core\Controller {
 		$related_projects=Project::published(['categories' => $project->categories], null, 0, 3, false);
 
 		$lsuf = (LANG != 'es') ? '?lang='.LANG : '';
-
         $URL = '//'.$request->getHttpHost();
-
-        //Get widgets code
-
         $url = $URL . '/widget/project/' . $project->id;
-
         $widget_code = Text::widget($url . $lsuf);
 
         // mensaje cuando, sin estar en campaña, tiene fecha de publicación
@@ -187,9 +165,7 @@ class ProjectController extends \Goteo\Core\Controller {
             }
         }
 
-        // si lo puede ver
         if ($project->userCanView(Session::getUser())) {
-
             ProjectDashboardController::createProjectSidebar($project, 'preview');
 
             $project->cat_names = Project\Category::getNames($project->id);
@@ -199,7 +175,6 @@ class ProjectController extends \Goteo\Core\Controller {
                 $project->rewards = array_merge($project->social_rewards, $project->individual_rewards);
             }
 
-            // Add analytics to config
             // TODO: do the same with facebook pixel (not done yet because f.pixel is only used in the project page)
             if($project->analytics_id) {
                 Config::set('analytics.google', array_merge(Config::get('analytics.google'), [$project->analytics_id]));
@@ -207,8 +182,8 @@ class ProjectController extends \Goteo\Core\Controller {
 
             $viewData = array(
                 'project' => $project,
-                'show'    => $show,
-                'blog'    => null,
+                'show' => $show,
+                'blog' => null,
                 'related_projects' => $related_projects,
                 'widget_code' => $widget_code
             );
@@ -218,20 +193,15 @@ class ProjectController extends \Goteo\Core\Controller {
             // recompensas
             $viewData['individual_rewards'] = [];
             foreach ($project->getIndividualRewards(Lang::current(false)) as $reward) {
-
-                //check if show the exhausted rewards
-                if($reward->available()||!$project::hideExhaustedRewards($project->id)||!$project->inCampaign())
-                {
-
+                if ($reward->available() || !$project::hideExhaustedRewards($project->id) || !$project->inCampaign()) {
                     $reward->none  = false;
-                    $reward->taken = $reward->getTaken();// cofinanciadores quehan optado por esta recompensas
+                    $reward->taken = $reward->getTaken();// cofinanciadores que han optado por esta recompensa
                     // si controla unidades de esta recompensa, mirar si quedan
                     if ($reward->units > 0 && $reward->taken >= $reward->units) {
                         $reward->none = true;
                     }
                     $viewData['individual_rewards'][] = $reward;
                 }
-
             }
 
             // retornos adicionales (bonus)
@@ -249,11 +219,8 @@ class ProjectController extends \Goteo\Core\Controller {
             }
 
             // Custom view data
-
             if ($show == 'home') {
-
                 $viewData['types'] = Project\Cost::types();
-
                 // Costs by type
                 $costs = array();
 
@@ -277,7 +244,6 @@ class ProjectController extends \Goteo\Core\Controller {
                     $licenses[$l->id] = $l;
                 }
 
-
                 $viewData['licenses'] = $licenses;
             }
 
@@ -291,7 +257,7 @@ class ProjectController extends \Goteo\Core\Controller {
             if ($show == 'updates') {
 
                 //if is an individual post page
-                if($post) {
+                if ($post) {
                     $pob = BlogPost::getBySlug($post, Lang::current(), $project->lang);
                     if($pob->slug && $post != $pob->slug) {
                         return $this->redirect("/project/{$project->id}/updates/{$pob->slug}");
@@ -302,19 +268,10 @@ class ProjectController extends \Goteo\Core\Controller {
 
                 // sus entradas de novedades
                 $blog = Blog::get($project->id);
-
-                // Get milestones, included posts
-
                 $milestones = ProjectMilestone::getAll($project->id, Lang::current(), $project->lang);
-
                 $viewData['milestones']=$milestones;
-
                 $viewData['blog'] = $blog;
-
-
-
                 $viewData['owner'] = $project->owner;
-
 
                 if (empty($user)) {
                     Message::info(Text::html('user-login-required'));
@@ -329,13 +286,12 @@ class ProjectController extends \Goteo\Core\Controller {
                 $viewData['investors_total'] = Invest::investors($project->id, false, false, 0, 0, true);
                 $viewData['investors_limit'] = $limit;
 
-                //Colaborations
+                // Collaborations
                 $viewData['messages'] = SupportMessage::getAll($project->id, Lang::current());
 
                 if (empty($user)) {
                     Message::info(Text::html('user-login-required'));
                 }
-
             }
 
             if ($show == 'messages' && $project->status < 3) {
@@ -350,10 +306,8 @@ class ProjectController extends \Goteo\Core\Controller {
                 $response->headers->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
             }
             return $response;
-
         } else {
             Message::info('Project not public yet!');
-            // no lo puede ver
             return new RedirectResponse('/');
         }
     }
@@ -368,21 +322,16 @@ class ProjectController extends \Goteo\Core\Controller {
             return $this->redirect('/user/login?return='.urldecode('/project/favourite/'.$pid));
         }
 
-        $user=Session::getUser()->id;
+        $user = Session::getUser()->id;
 
         //Calculate the date to send mail
+        $project = Project::get($pid, Lang::current(false));
 
-        $project=Project::get($pid, Lang::current(false));
-
-        if( ($project->days>1) && ($project->round==1) && ($project->amount<$project->mincost) )
-        {
-            $interval_days_send=round(($project->days-1)*0.8);
-
-            $date_send=new \DateTime(date('Y-m-d'));
-
-            $date_send=$date_send->modify("+".$interval_days_send." days");
-
-            $date_send=$date_send->format('Y-m-d');
+        if ( ($project->days>1) && ($project->round==1) && ($project->amount<$project->mincost) ) {
+            $interval_days_send = round(($project->days-1)*0.8);
+            $date_send = new \DateTime(date('Y-m-d'));
+            $date_send = $date_send->modify("+".$interval_days_send." days");
+            $date_send = $date_send->format('Y-m-d');
         }
 
         $favourite=new Favourite(array(
@@ -402,22 +351,21 @@ class ProjectController extends \Goteo\Core\Controller {
      * TODO: to microAPI
      */
     public function deleteFavouriteAction(Request $request) {
-         if ($request->isMethod('post')) {
-                $project = $request->request->get('project');
-                $user= $request->request->get('user');
+        if ($request->isMethod('post')) {
+            $project = $request->request->get('project');
+            $user= $request->request->get('user');
 
-                $favourite=new Favourite(array(
-                    'project' => $project, 'user' => $user
-                ));
+            $favourite=new Favourite(array(
+                'project' => $project, 'user' => $user
+            ));
 
-                $favourite->remove($errors);
+            $favourite->remove($errors);
         }
 
         return $this->jsonResponse(['result' => true]);
     }
 
-    public function posterAction($pid, Request $request) {
-
+    public function posterAction($pid) {
         $project=Project::get($pid, Lang::current(false));
         try {
             $html2pdf = new Html2Pdf('P', 'A4', 'en', true, 'UTF-8', array(5,0,5,8));
@@ -425,9 +373,9 @@ class ProjectController extends \Goteo\Core\Controller {
             $html2pdf->writeHTML(View::render('poster/project.php', ["project" => $project]));
             $html2pdf->pdf->SetTitle('Poster');
             $pdf = $html2pdf->output();
-    
             $response = new Response($pdf);
             $response->headers->set('Content-Type', 'application/pdf');
+
             return $response;
         } catch(Html2PdfException $e) {
             return new RedirectResponse('/project/' . $project->id );

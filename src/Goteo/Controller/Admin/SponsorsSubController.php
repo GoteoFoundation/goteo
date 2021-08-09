@@ -12,14 +12,14 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Library\Text;
-use	Goteo\Library\Feed;
 use Goteo\Application\Message;
-use	Goteo\Application\Config;
-use Goteo\Model\Sponsor;
-use Goteo\Model\Node;
+use Goteo\Library\Text;
 use Goteo\Model\Image;
+use Goteo\Model\Node;
+use Goteo\Model\Sponsor;
+use Goteo\Model\User;
 
 class SponsorsSubController extends AbstractSubController {
 
@@ -36,7 +36,7 @@ class SponsorsSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         try{
             $nodeData = Node::get($node);
         } catch(\Exception $e){}

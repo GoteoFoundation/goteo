@@ -13,10 +13,10 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
-use Goteo\Application\Message,
-	Goteo\Library\Feed,
-	Goteo\Model\Template,
-    Goteo\Model;
+use Goteo\Application\Message;
+use Goteo\Library\Feed;
+use Goteo\Model;
+use Goteo\Model\User;
 
 class TransnodesSubController extends AbstractSubController {
 
@@ -25,21 +25,18 @@ class TransnodesSubController extends AbstractSubController {
       'edit' => 'Transnodes-lb-edit',
     );
 
-
     static protected $label = 'Transnodes-lb';
-
 
     protected $filters = array (
       'admin' => '',
       'translator' => '',
     );
 
-
     /**
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node and superadmins allowed here
         if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);
@@ -94,7 +91,7 @@ class TransnodesSubController extends AbstractSubController {
                 // la id del usuario llega por get
                 $user = $this->getGet('user');
                 if (!empty($user)) {
-                    $userData = Model\User::getMini($user);
+                    $userData = User::getMini($user);
 
                     $assignation = new Model\User\Translate(array(
                         'item' => $node->id,
@@ -135,7 +132,7 @@ class TransnodesSubController extends AbstractSubController {
                 // fin asignar o desasignar
 
                 $node->translators = Model\User\Translate::translators($id, 'node');
-                $translators = Model\User::getList(array('role'=>'translator'));
+                $translators = User::getList(array('role'=>'translator'));
 
 
                 return array(
@@ -152,7 +149,7 @@ class TransnodesSubController extends AbstractSubController {
 
         $nodes = Model\Node::getTranslates($filters);
         $admins = Model\Node::getAdmins();
-        $translators = Model\User::getList(array('role'=>'translator'));
+        $translators = User::getList(array('role'=>'translator'));
 
         return array(
                 'folder' => 'transnodes',

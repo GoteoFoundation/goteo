@@ -23,12 +23,13 @@ use Symfony\Component\Routing\Route;
 class StoriesAdminController extends AbstractAdminController {
 	protected static $icon = '<i class="fa fa-2x fa-id-card-o"></i>';
 
-	// this modules is part of a specific group
-	public static function getGroup() {
+	public static function getGroup(): string
+    {
 		return 'main';
 	}
 
-	public static function getRoutes() {
+	public static function getRoutes(): array
+    {
 		return [
 			new Route(
 				'/',

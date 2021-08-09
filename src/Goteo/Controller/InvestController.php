@@ -10,49 +10,43 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Omnipay\Common\Message\ResponseInterface;
-
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-
+use Exception;
 use Goteo\Application\App;
-use Goteo\Application\Config;
-use Goteo\Application\Session;
-use Goteo\Application\Message;
-use Goteo\Application\View;
-use Goteo\Application\Lang;
 use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
+use Goteo\Application\Currency;
+use Goteo\Application\Event\FilterInvestFinishEvent;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
-use Goteo\Application\Event\FilterInvestFinishEvent;
-use Goteo\Application\Event\FilterAuthEvent;
+use Goteo\Application\Lang;
+use Goteo\Application\Message;
+use Goteo\Application\Session;
+use Goteo\Application\View;
+use Goteo\Core\Controller;
 use Goteo\Library\Text;
-use Goteo\Application\Currency;
-use Goteo\Model\Project;
 use Goteo\Model\Invest;
+use Goteo\Model\Project;
+use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
 use Goteo\Payment\Payment;
-use Goteo\Payment\PaymentException;
 use Goteo\Util\Monolog\Processor\WebProcessor;
-use Goteo\Model\Project\Reward;
+use Omnipay\Common\Message\ResponseInterface;
+use RuntimeException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class InvestController extends \Goteo\Core\Controller {
+class InvestController extends Controller {
 
-    private $page = '/invest';
-    private $query = '';
+    private string $page = '/invest';
+    private string $query = '';
 
     public function __construct() {
-        // changing to a responsive theme here
         View::setTheme('responsive');
     }
 
     /**
      * Log here to channel payment
-     * @param  [type] $message [description]
-     * @param  array  $context [description]
      * @param  string $func    [description]
-     * @return [type]          [description]
      */
     public function log($message, array $context = [], $func = 'info') {
         $logger = App::getService('paylogger');
@@ -76,8 +70,9 @@ class InvestController extends \Goteo\Core\Controller {
      * if $login_required is 'auto', login will be required depending on
      * the skip_login variable from project configuration
      */
-    private function validate($project_id, $reward_id = null, &$custom_amount = null, $invest = null, $login_required = true) {
-
+    private function validate(
+        $project_id, $reward_id = null, &$custom_amount = null, $invest = null, $login_required = true
+    ) {
         $project = Project::get($project_id, Lang::current());
         // Add analytics to config
         // TODO: do the same with facebook pixel (not done yet because f.pixel is only used in the project page)
@@ -93,14 +88,12 @@ class InvestController extends \Goteo\Core\Controller {
         $currency = Currency::get($currency, 'id');
 
         $custom_amount = Currency::amountInverse($amount_original, $currency);
-        //Project categories
         $project_categories = Project\Category::getNames($project_id);
         $this->page = '/invest/' . $project_id;
         $this->query = http_build_query(['amount' => "$amount_original$currency", 'reward' => $reward_id]);
 
         // Some projects may have activated a non-registering investion
         $this->skip_login = Session::isLogged() ? false : $project->getAccount()->skip_login;
-
 
         // Security check
         if ($project->status != Project::STATUS_IN_CAMPAIGN) {
@@ -112,8 +105,6 @@ class InvestController extends \Goteo\Core\Controller {
             Message::error(Text::get('investing_closed'));
             return $this->redirect('/project/' . $project_id);
         }
-
-        // Available pay methods
 
         $pay_methods = Payment::getMethods(Session::isLogged() ? Session::getUser() : new User());
 
@@ -127,7 +118,6 @@ class InvestController extends \Goteo\Core\Controller {
         if(!Project\Account::getAllowpp($project_id)) {
             unset($pay_methods['paypal']);
         }
-
 
         // Find the correct reward/amount
         $reward = null;
@@ -149,8 +139,7 @@ class InvestController extends \Goteo\Core\Controller {
             return $this->redirect('/invest/' . $project_id);
         }
 
-        // echo "currency: $currency amount: $amount custom_amount: $custom_amount amount_original: $amount_original";
-        // only amount, choose appropiate reward
+        // only amount, choose appropriate reward
         if(empty($reward) && $reward_id != 0) {
             // Ordered by amount
             foreach($project->individual_rewards as $r) {
@@ -188,22 +177,8 @@ class InvestController extends \Goteo\Core\Controller {
             if($reward = $invest->getFirstReward()) {
                 $amount = $reward->amount;
             }
-            // if($invest->rewards && is_array($invest->rewards)) {
-            //     foreach($invest->rewards as $r) {
-            //         if($invest->amount >= $r->amount) {
-            //             $reward = $r;
-            //             $amount = $r->amount;
-            //         }
-            //         else {
-            //             break;
-            //         }
-            //     }
-            // }
         }
 
-
-        // print_r($project->individual_rewards);
-        // Set vars for all views
         $this->contextVars([
             'project' => $project,
             'skip_login' => $this->skip_login,
@@ -219,7 +194,7 @@ class InvestController extends \Goteo\Core\Controller {
             'query' => $this->query,
             'invest' => $invest
         ]);
-        // print_r($project);die;
+
         if($reward) {
             if(!$reward->available() && !$reward->inInvest($invest)) {
                 Message::error(Text::get('invest-reward-used-up'));
@@ -229,6 +204,7 @@ class InvestController extends \Goteo\Core\Controller {
             $this->query = http_build_query(['amount' => "$custom_amount$currency", 'reward' => $reward->id]);
             return $reward;
         }
+
         return false;
     }
 
@@ -244,10 +220,10 @@ class InvestController extends \Goteo\Core\Controller {
 
         // Aqui cambiar por escoger recompensa
 
-        $rewards_mosaic=Project::showRewardsMosaic($project_id);
-        $view=  $rewards_mosaic ? 'select_reward_mosaic' : 'select_reward';
-        return $this->viewResponse('invest/'.$view, ['step' => 1]);
+        $rewards_mosaic = Project::showRewardsMosaic($project_id);
+        $view= $rewards_mosaic ? 'select_reward_mosaic' : 'select_reward';
 
+        return $this->viewResponse('invest/'.$view, ['step' => 1]);
     }
 
     /**
@@ -268,12 +244,10 @@ class InvestController extends \Goteo\Core\Controller {
         if($result instanceOf Response) return $result;
 
         return $this->viewResponse('invest/login', ['step' => 2, 'return' => $this->page . '/payment?' . $this->query]);
-
     }
 
     /**
      * step1.5: signup page
-     *
      */
     public function signupAction($project_id, Request $request)
     {
@@ -288,8 +262,10 @@ class InvestController extends \Goteo\Core\Controller {
         $result = AuthController::checkSignup($request);
         if($result instanceOf Response) return $result;
 
-        return $this->viewResponse('invest/signup', $result + ['step' => 2, 'return' => $this->page . '/payment?' . $this->query]);
-
+        return $this->viewResponse(
+            'invest/signup',
+            $result + ['step' => 2, 'return' => $this->page . '/payment?' . $this->query]
+        );
     }
 
     /**
@@ -326,8 +302,8 @@ class InvestController extends \Goteo\Core\Controller {
             }
             $vars['errors'] = Session::getAndDel('user-create-errors');
         }
-        return $this->viewResponse('invest/payment_method', $vars);
 
+        return $this->viewResponse('invest/payment_method', $vars);
     }
 
     /**
@@ -336,15 +312,10 @@ class InvestController extends \Goteo\Core\Controller {
      * If called via AJAX, returns a JSON response with the payment gateway form vars
      */
     public function paymentFormAction($project_id, Request $request) {
-        $project_amount=$request->query->get('project_amount');
         $currency = Currency::current('id');
-
         $tip=$request->query->get('tip');
-
         $donate_amount =  $tip ? $request->query->get('donate_amount') : 0;
-
         $amount = $amount_original = $request->query->get('amount');
-
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
 
         if($reward instanceOf Response) return $reward;
@@ -373,7 +344,7 @@ class InvestController extends \Goteo\Core\Controller {
                 }
                 if($errors) {
                     Session::store('user-create-errors', $errors);
-                    throw new \RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
+                    throw new RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
                 }
                 if(!$name) $name = ucfirst(strtok($email, '@'));
                 $suggest = User::suggestUserId($email);
@@ -387,22 +358,20 @@ class InvestController extends \Goteo\Core\Controller {
                     ]);
                     if(!$user->save($errors, ['password', 'active'])) {
                         Session::store('user-create-errors', $errors);
-                        throw new \RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
+                        throw new RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
                     }
                     // Remove newsletter options
                     User::setPreferences($user->id, array('mailing' => 1));
-
                 }
                 if(!$user->isGhost()) {
                     Session::store('user-create-errors', ['email' => Text::get('invest-user-not-ghost')]);
-                    throw new \RuntimeException(Text::get('invest-user-not-ghost'));
+                    throw new RuntimeException(Text::get('invest-user-not-ghost'));
                 }
                 Session::store('fake-user', $user);
             }
 
             $method = Payment::getMethod($request->query->get('method'));
 
-            // Creating the invest entry
             $invest = new Invest(
                 array(
                     'amount' => $amount,
@@ -426,7 +395,7 @@ class InvestController extends \Goteo\Core\Controller {
 
             $errors = array();
             if (!$invest->save($errors)) {
-                throw new \RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
+                throw new RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
             }
 
             // New Invest Init Event
@@ -439,45 +408,41 @@ class InvestController extends \Goteo\Core\Controller {
 
             // Checks and redirects
             if (!$response instanceof ResponseInterface) {
-                throw new \RuntimeException('This response does not implements ResponseInterface.');
+                throw new RuntimeException('This response does not implements ResponseInterface.');
             }
 
-            // On-sites can return a succesful response here
+            // On-sites can return a successful response here
             if ($response->isSuccessful()) {
-                // Event invest success
                 return $this->dispatch(AppEvents::INVEST_SUCCEEDED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
             }
 
             // Redirect to payment platform
-            // Event invest redirect
             return $this->dispatch(AppEvents::INVEST_INIT_REDIRECT, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
 
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             Message::error($e->getMessage());
             $this->error('Init Payment Exception', ['class' => get_class($e), $invest, 'code' => $e->getCode(), 'message' => $e->getMessage()]);
 
             return $this->redirect('/invest/' . $project_id . '/payment?' . $this->query);
         }
 
-
         //NEVER REACHED...
         $vars = ['pay_method' => $method, 'response' => $response, 'step' => 2];
 
         if($request->isXmlHttpRequest()) {
-            // return JSON
             return $this->jsonResponse([/*TODO*/]);
         }
         return $this->viewResponse('invest/payment_form', $vars);
-
     }
 
     /**
      * For off-site payments with async communication
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function notifyPaymentAction($method, Request $request) {
-        $this->debug('Payment Notification Access', ['user_agent' => $request->server->get('HTTP_USER_AGENT'), 'get' => $request->query->all(), 'post' =>$request->request->all()]);
+        $this->debug(
+            'Payment Notification Access',
+            ['user_agent' => $request->server->get('HTTP_USER_AGENT'), 'get' => $request->query->all(), 'post' =>$request->request->all()]
+        );
         try {
             $method = Payment::getMethod($method);
             $method->setRequest($request);
@@ -486,11 +451,11 @@ class InvestController extends \Goteo\Core\Controller {
 
             // Invest valid check
             if (!$invest instanceof Invest) {
-                throw new \RuntimeException('The setRequest() should provide a valid Invest object in notifyPaymentAction');
+                throw new RuntimeException('The setRequest() should provide a valid Invest object in notifyPaymentAction');
             }
 
             // Some weird payment gateways may send you the same notification and then charge again
-            // Abort if the invest is not pending
+            // Abort if invest is not pending
             if($invest->isPending()) {
                 $response = $method->completePurchase();
             } else {
@@ -499,8 +464,7 @@ class InvestController extends \Goteo\Core\Controller {
                     return $this->redirect('/invest/' . $invest->getProject()->id . '/' . $invest->id);
                 }
                 // This case belongs to pool controller
-                // It's here because some Gateways does'nt allow to change
-                // the notify URL
+                // It's here because some Gateways doesn't allow to change the notify URL
                 return $this->redirect('/pool/' . $invest->id);
             }
 
@@ -509,18 +473,15 @@ class InvestController extends \Goteo\Core\Controller {
 
             // Checks
             if (!$response instanceof ResponseInterface) {
-                throw new \RuntimeException('This response does not implements ResponseInterface.');
+                throw new RuntimeException('This response does not implements ResponseInterface.');
             }
             if ($response->isSuccessful()) {
-                // Event invest success
                 return $this->dispatch(AppEvents::INVEST_SUCCEEDED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
             }
 
             // Event invest failed
             return $this->dispatch(AppEvents::INVEST_FAILED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
-
-
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             $this->error('Payment Notification Exception', ['class' => get_class($e), $invest, 'code' => $e->getCode(), 'message' => $e->getMessage()]);
         }
         return $this->redirect('/');
@@ -543,27 +504,22 @@ class InvestController extends \Goteo\Core\Controller {
             return $this->redirect('/invest/' . $project_id . '/' . $invest->id);
         }
 
-        // print_r($invest);die;
-
         try {
             $method = $invest->getMethod();
             $method = $this->dispatch(AppEvents::INVEST_COMPLETE, new FilterInvestInitEvent($invest, $method, $request))->getMethod();
             // Ending transaction
-        // var_dump($invest);die;
             $response = $method->completePurchase();
             // New Invest Request Event
             $response = $this->dispatch(AppEvents::INVEST_COMPLETE_REQUEST, new FilterInvestRequestEvent($method, $response))->getResponse();
 
             // Checks and redirects
             if (!$response instanceof ResponseInterface) {
-                throw new \RuntimeException('This response does not implements ResponseInterface.');
+                throw new RuntimeException('This response does not implements ResponseInterface.');
             }
             if ($response->isSuccessful()) {
-
                 // Goto User data fill
                 Message::info(Text::get('invest-payment-success'));
 
-                // Event invest success
                 return $this->dispatch(AppEvents::INVEST_SUCCEEDED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
             }
 
@@ -572,19 +528,18 @@ class InvestController extends \Goteo\Core\Controller {
 
             Message::error($msg_fail);
 
-            // Event invest failed
             return $this->dispatch(AppEvents::INVEST_FAILED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
-
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             Message::error($e->getMessage());
             $this->error('Ending Payment Exception', ['class' => get_class($e),  $invest, 'code' => $e->getCode(), 'message' => $e->getMessage()]);
         }
+
         return $this->redirect('/invest/' . $project_id . '/payment?' . $this->query);
     }
 
     /**
      * step4: reward/user data
-     * Shown when comming back from the payment gateway
+     * Shown when coming back from the payment gateway
      */
     public function userDataAction($project_id, $invest_id, Request $request)
     {
@@ -630,12 +585,12 @@ class InvestController extends \Goteo\Core\Controller {
                 }
             }
             Message::error(Text::get('invest-address-fail'));
-
         }
 
-        // show form
-        return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3, 'reward' => $reward]);
-
+        return $this->viewResponse(
+            'invest/user_data',
+            ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3, 'reward' => $reward]
+        );
     }
 
     /**
@@ -655,19 +610,9 @@ class InvestController extends \Goteo\Core\Controller {
         }
 
         $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
-
         $URL = $request->getSchemeAndHttpHost();
-
-        //Get widgets code
-
         $url = $URL . '/widget/project/' . $project_id;
-
         $widget_code = Text::widget($url . $lsuf);
-
-        $widget_code_investor = Text::widget($url.'/invested/'.$user->id.'/'.$lsuf);
-
-        //Get share Twitter and Facebook urls
-
         $author_twitter = str_replace(
                                 array(
                                     'https://',
@@ -681,7 +626,7 @@ class InvestController extends \Goteo\Core\Controller {
 
         $share_title = Text::get('project-spread-social', $project->name . $author);
 
-        if (!\Goteo\Application\Config::isMasterNode())
+        if (!Config::isMasterNode())
             $share_title = str_replace ('#goteo', '#'.strtolower (NODE_NAME), $share_title);
 
         $share_url = $URL . '/project/'.$project_id;
@@ -697,19 +642,17 @@ class InvestController extends \Goteo\Core\Controller {
                 'step' => 4
                 ];
         return $this->viewResponse('invest/share',$vars);
-
     }
 
     // Send a public support message
-
     public function supportMsgAction(Request $request) {
-         if ($request->isMethod('post')) {
-                $msg = $request->request->get('msg');
-                $invest= $request->request->get('invest');
-                if(empty($msg))
-                    $result=false;
-                else
-                    $result=Invest::newSupportMessage($invest, $msg);
+        if ($request->isMethod('post')) {
+            $msg = $request->request->get('msg');
+            $invest = $request->request->get('invest');
+            if(empty($msg))
+                $result=false;
+            else
+                $result=Invest::newSupportMessage($invest, $msg);
         }
 
         return $this->jsonResponse(['result' => $result]);

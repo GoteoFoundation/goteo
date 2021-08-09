@@ -10,30 +10,30 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-
-use Goteo\Application\View;
 use Goteo\Application\Session;
+use Goteo\Application\View;
+use Goteo\Core\Controller;
 use Goteo\Model\Category;
 use Goteo\Model\Project;
 use Goteo\Model\Project\ProjectLocation;
+use Symfony\Component\HttpFoundation\Request;
 
-class DiscoverController extends \Goteo\Core\Controller {
+class DiscoverController extends Controller {
 
     public function __construct() {
         // Cache & replica read activated in this controller
         $this->dbReplica(true);
         $this->dbCache(true);
 
-        // \Goteo\Core\DB::replica(true);
         View::setTheme('responsive');
     }
 
     /**
     * Returns an array suitable for Project::getList($filters)
      */
-    protected function getProjectFilters($filter, $vars = []) {
-        $filters = $ofilters = [
+    protected function getProjectFilters($filter, $vars = []): array
+    {
+        $filters = [
             'status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED],
             'published_since' => (new \DateTime('-6 month'))->format('Y-m-d')
         ];
@@ -43,20 +43,16 @@ class DiscoverController extends \Goteo\Core\Controller {
             $filters['global'] = $vars['q'];
             unset($filters['published_since']);
             $filters['status'] = [ Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
-        }
-        elseif($vars['category']) {
+        } elseif($vars['category']) {
             $filters['category'] = $vars['category'];
             unset($filters['published_since']);
             $filters['status'] = [ Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
-        }
-        elseif($vars['location'] || ($vars['latitude'] && $vars['longitude'])) {
-            // $filters['location'] = $vars['location'];
+        } elseif($vars['location'] || ($vars['latitude'] && $vars['longitude'])) {
             unset($filters['published_since']);
             $filters['location'] = new ProjectLocation([ 'location' => $vars['location'], 'latitude' => $vars['latitude'], 'longitude' => $vars['longitude'], 'radius' => 300 ]);
             $filters['status'] = [ Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
             $filters['order'] = 'Distance ASC, project.status ASC, project.published DESC, project.name ASC';
-        }
-        elseif($filter === 'near') {
+        } elseif($filter === 'near') {
             // Nearby defined as 300Km distance
             // Any LocationInterface will do (UserLocation, ProjectLocation, ...)
             $filters['location'] = new ProjectLocation([ 'latitude' => $vars['latitude'], 'longitude' => $vars['longitude'], 'radius' => 300 ]);
@@ -77,12 +73,10 @@ class DiscoverController extends \Goteo\Core\Controller {
             $filters['type'] = 'succeeded';
             $filters['status'] = [Project::STATUS_FUNDED, Project::STATUS_FULFILLED];
             $filters['order'] = 'project.published DESC, project.name ASC';
-            // $filters['published_since'] = (new \DateTime('-12 month'))->format('Y-m-d');
             unset($filters['published_since']);
         } elseif($filter === 'fulfilled') {
             $filters['status'] = [Project::STATUS_FULFILLED];
             $filters['order'] = 'project.published DESC, project.name ASC';
-            // $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
             unset($filters['published_since']);
         } elseif($filter === 'archived') {
             $filters['status'] = [Project::STATUS_UNFUNDED];
@@ -90,7 +84,6 @@ class DiscoverController extends \Goteo\Core\Controller {
             $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
         } elseif($filter === 'matchfunding') {
             $filters['type'] = 'matchfunding';
-            // $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
             unset($filters['published_since']);
         } elseif($filter === 'recent') {
             $filters['type'] = 'recent';
@@ -99,7 +92,6 @@ class DiscoverController extends \Goteo\Core\Controller {
         if($vars['review']) {
             $filters['status'] = [ Project::STATUS_EDITING, Project::STATUS_REVIEWING, Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
             $filters['is_draft'] = true;
-            // unset($filters['published_since']);
         }
         return $filters;
     }
@@ -133,15 +125,11 @@ class DiscoverController extends \Goteo\Core\Controller {
             'total' => $total,
             'limit' => $limit
         ]);
-
     }
 
-    /**
-     * Ajax projects search
-     */
     public function ajaxSearchAction(Request $request) {
 
-        $limit = $request->get('limit', 24); // extracts from GET, PATH or POST
+        $limit = $request->get('limit', 24);
         $pag = $request->get('pag', 0);
         $limit = max(1, min(25, abs($limit)));
         $pag = max(0, abs($pag));
@@ -183,4 +171,3 @@ class DiscoverController extends \Goteo\Core\Controller {
     }
 
 }
-

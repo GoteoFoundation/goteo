@@ -27,7 +27,8 @@ use Goteo\Library\Forms\FormModelException;
 class UsersAdminController extends AbstractAdminController {
     protected static $icon = '<i class="fa fa-2x fa-users"></i>';
 
-    public static function getRoutes() {
+    public static function getRoutes(): array
+    {
         return [
             new Route(
                 '/',
@@ -73,7 +74,7 @@ class UsersAdminController extends AbstractAdminController {
         ]);
     }
 
-    public function manageAction($uid, Request $request) {
+    public function manageAction($uid) {
         $user = User::get($uid);
         if( !$user instanceOf User ) throw new ModelNotFoundException("User [$uid] does not exists");
         return $this->viewResponse('admin/users/manage', [
@@ -111,7 +112,7 @@ class UsersAdminController extends AbstractAdminController {
         ]);
     }
 
-    public function rolesAction($uid = null, Request $request) {
+    public function rolesAction($uid = null) {
         $user = User::get($uid);
         $admin = Session::getUser();
         if( $user instanceOf User ) {

@@ -10,30 +10,27 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ControllerException;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
+use Goteo\Core\Controller;
 use Goteo\Library\Feed;
 use Goteo\Library\Text;
 use Goteo\Model\Node;
 use Goteo\Model\User;
-use Goteo\Model\Log;
-use Goteo\Controller\Admin\AdminControllerInterface;
-
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
 
-class AdminController extends \Goteo\Core\Controller {
+class AdminController extends Controller {
 
     private static $subcontrollers = [];
     private static $context_vars = [];
@@ -61,11 +58,8 @@ class AdminController extends \Goteo\Core\Controller {
         View::setTheme('responsive');
     }
 
-    /**
-     * Controller for route /admin
-     */
-    public function indexAction(Request $request) {
-        $user = self::getCurrentUser($request);
+    public function indexAction() {
+        $user = self::getCurrentUser();
         static::createAdminSidebar($user);
         $links = $legacy = [];
         foreach (static::$subcontrollers as $id => $class) {
@@ -77,13 +71,13 @@ class AdminController extends \Goteo\Core\Controller {
         }
         return $this->viewResponse('admin/index', ['links' => $links, 'legacy' => $legacy, 'sidebar' => Session::getSidebarMenu()]);
     }
+
     /**
      * Controller for any route under /admin/{route}
-
      */
     public function routingAction($id, $uri = '', Request $request) {
 
-        $user = self::getCurrentUser($request);
+        $user = self::getCurrentUser();
         $uri = "/$uri";
 
         if($module = self::getSubController($id)) {
@@ -92,7 +86,7 @@ class AdminController extends \Goteo\Core\Controller {
             // TODO: do it at the end for performance
             // Log::append(['scope' => 'admin', 'target_type' => 'admin_module', 'target_id' => $id]);
 
-            static::createAdminSidebar($user, $id, $request->getPathInfo());
+            static::createAdminSidebar($user, $request->getPathInfo());
             if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($module))) {
 
                 // Add the admin routes
@@ -147,27 +141,17 @@ class AdminController extends \Goteo\Core\Controller {
         throw new NotFoundHttpException("Admin module [$id] not found");
     }
 
-    /**
-     * Creates the sidebar in admin
-     * @param  User   $user [description]
-     * @param  string $zone [description]
-     */
-    public static function createAdminSidebar (User $user, $module_id = null, $uri = '') {
+    public static function createAdminSidebar (User $user, $uri = '') {
 
         $prefix = '/admin';
-        // $modules =
-        // $zone = preg_replace('|^/admin|', '', $uri);
-        // die("[$uri]");
 
         foreach (static::$subcontrollers as $id => $class) {
-
             if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($class))) {
                 if(!$class::isAllowed($user)) continue;
 
                 $label = $class::getLabel('html');
                 $cls = strpos($label, '<i') === false ? 'nopadding' : '';
                 if($sidebar = $class::getSidebar()) {
-                    // echo "[$class]\n";print_r($sidebar);
                     $paths = [];
                     // Submodules returning a custom menu will have its own group
                     foreach($sidebar as $link => $route) {
@@ -210,7 +194,6 @@ class AdminController extends \Goteo\Core\Controller {
         foreach($modules as $key => $paths) {
             $label = self::getGroupLabel($key, $position);
             $i = $position ? $position : $index;
-            // echo "[$key: $label $position|$index:$i]\n";
             $c = strpos($label, '<i') === false ? 'nopadding' : '';
             // if(count($paths) > 1) {
                 Session::addToSidebarMenu($label, $paths, $key, $i, "sidebar $c");
@@ -239,16 +222,12 @@ class AdminController extends \Goteo\Core\Controller {
             }
         }
 
-        // print_r($modules);
-        // echo "$module_id [zone $zone]\n";
-
         if($zone) {
             View::getEngine()->useData([
                 'zone' => $zone,
                 'sidebarBottom' => [ $prefix => '<i class="icon icon-2x icon-back"></i> ' . Text::get('admin-home') ]
             ]);
         }
-
     }
 
     public static function getGroupLabel($key, &$position = 0) {
@@ -264,7 +243,7 @@ class AdminController extends \Goteo\Core\Controller {
         return Text::get('admin-' . $key);
     }
 
-    private static function getCurrentUser(Request $request) {
+    private static function getCurrentUser() {
 
         //refresh permission status
         User::flush();
@@ -277,21 +256,12 @@ class AdminController extends \Goteo\Core\Controller {
         return $user;
     }
 
-
-    /**
-     * Registers a subcontroller in the admin
-     * @param [type] $classname [description]
-     */
     public static function addSubController($classname) {
         self::$subcontrollers[$classname::getId()] = $classname;
     }
 
-
-    /**
-     * Checks if a subcontroller is loaded
-     * @param [type] $classname [description]
-     */
-    public static function existsSubController($classname) {
+    public static function existsSubController($classname): bool
+    {
         foreach (static::$subcontrollers as $id => $class) {
           if($class === $classname) return true;
         }
@@ -304,7 +274,6 @@ class AdminController extends \Goteo\Core\Controller {
 
     /**
      * Removes a subcontroller
-     * @param  [type] $classname [description]
      */
     public static function delSubController($classname) {
         if (isset(self::$subcontrollers[$classname])) {
@@ -319,12 +288,8 @@ class AdminController extends \Goteo\Core\Controller {
         }
     }
 
-    /**
-     * Returns if a user is allowed to view the admin
-     * @param  User $user [description]
-     * @return boolean          [description]
-     */
-    public static function isAllowed(User $user = null) {
+    public static function isAllowed(User $user = null): bool
+    {
         if (!$user) {
             return false;
         }
@@ -345,13 +310,12 @@ class AdminController extends \Goteo\Core\Controller {
     ///////////////////////////////
     /// OLD code...
     /// ////////////////////////
-
     public function indexOldAction(Request $request) {
         $ret = array();
         $user = self::checkCurrentUser($request);
         $this->contextVars(self::$context_vars, 'admin/');
 
-        //feed by default for someones
+        //feed by default for someone
         $admin_node = Session::get('admin_node');
         if ($user->hasRoleInNode($admin_node, ['superadmin', 'root']) || ($user->hasRoleInNode($admin_node, ['admin']) && Config::isMasterNode($admin_node))) {
             //TODO: allow Feed to handle multiple nodes
@@ -362,14 +326,11 @@ class AdminController extends \Goteo\Core\Controller {
 
     }
 
-
     /**
      * Old Security method
      * Gets the current user
      * Gets the menu
      * Sets the current node to admin from the user or the get Request
-     * @param User $user    [description]
-     * @param Request    $request [description]
      */
     private static function checkCurrentUser(Request $request, $option = null, $action = null, $id = null) {
 
@@ -462,8 +423,6 @@ class AdminController extends \Goteo\Core\Controller {
         $ret = array();
         $SubC = static::$subcontrollers[$option];
 
-        // 'Goteo\Controller\Admin\\' . \strtoCamelCase($option) . 'SubController';
-
         try {
             $user = self::checkCurrentUser($request, $option, $action, $id);
 
@@ -517,7 +476,6 @@ class AdminController extends \Goteo\Core\Controller {
 
         //default admin dashboard (nothing!)
         return $this->viewResponse('admin/default', $ret);
-
     }
 
 }

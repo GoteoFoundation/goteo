@@ -10,25 +10,25 @@
 
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Forms\FormModelException;
-use PDOException;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-
-use Goteo\Model\Filter;
-use Goteo\Application\Message;
-use Goteo\Library\Text;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Message;
+use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Text;
+use Goteo\Model\Filter;
+use PDOException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 class FilterAdminController extends AbstractAdminController
 {
     protected static $icon = '<i class="fa fa-2x fa-filter"></i>';
 
-    public static function getGroup() {
+    public static function getGroup(): string
+    {
         return 'communications';
     }
 
-    public static function getRoutes()
+    public static function getRoutes(): array
     {
         return [
             new Route(
@@ -72,7 +72,6 @@ class FilterAdminController extends AbstractAdminController
             return $this->redirect('/admin/filter');
         }
 
-
         $defaults = (array) $filter;
         $processor = $this->getModelForm('Filter', $filter, $defaults, Array(), $request);
         $processor->createForm();
@@ -80,7 +79,6 @@ class FilterAdminController extends AbstractAdminController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
             // Check if we want to remove an entry
-
             try {
                 $processor->save($form); // Allow save event if does not validate
                 Message::info(Text::get('admin-' . ($id ? 'edit' : 'add') . '-entry-ok'));
@@ -95,7 +93,7 @@ class FilterAdminController extends AbstractAdminController
         ]);
     }
 
-    public function deleteAction($id, Request $request) {
+    public function deleteAction($id) {
 
         try {
             $filter = Filter::get($id);
@@ -117,6 +115,4 @@ class FilterAdminController extends AbstractAdminController
 
         return $this->redirect('/admin/filter/');
 	}
-
-
 }

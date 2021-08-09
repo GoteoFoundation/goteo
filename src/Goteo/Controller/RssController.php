@@ -10,21 +10,20 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Goteo\Application\Lang;
 use Goteo\Application\Config;
-use FeedWriter;
+use Goteo\Application\Lang;
+use Goteo\Core\Controller;
 use Goteo\Model;
+use Symfony\Component\HttpFoundation\Request;
 
-class RssController extends \Goteo\Core\Controller {
+class RssController extends Controller {
 
     public function __construct() {
-        // Cache & replica read activated in this controller
         $this->dbReplica(true);
         $this->dbCache(true);
     }
 
-    public function indexAction ($lang = '', Request $request) {
+    public function indexAction($lang = '', Request $request) {
         date_default_timezone_set('UTC');
 
         if(preg_match('/^[a-z]{2,2}+$/', $lang)) {
@@ -37,8 +36,6 @@ class RssController extends \Goteo\Core\Controller {
         $gformat = strtoupper($request->query->get('format'));
 
         // le preparamos los datos y se los pasamos
-
-        $formats = array('RSS1', 'RSS2', 'ATOM');
         if(!in_array($gformat, array('RSS1', 'RSS2', 'ATOM'))) $gformat = 'RSS2';
         $clas = "FeedWriter\\$gformat";
         $feed = new $clas();
@@ -49,21 +46,17 @@ class RssController extends \Goteo\Core\Controller {
         $feed->setImage('Goteo RSS', $url, $url . '/goteo_logo.png');
         $feed->setDate(date('Y-m-d\TH:i:s').'Z');
         $feed->setChannelElement('language', Lang::getLocale());
-        // $feed->setChannelElement('author', 'Goteo');
         $feed->setSelfLink($url . '/rss' . ($lang !== Config::get('lang') ? "/$lang" : ''));
 
         $tags = Model\Blog\Post\Tag::getAll();
-        foreach ($tags as $tagId => $tagName) {
+        foreach ($tags as $tagName) {
             $feed->setChannelElement('category', $tagName, null, true);
         }
-        // $feed->addCdataEncoding(array('category'));
 
-        // sacamos su blog
         $blog = Model\Blog::get(Config::get('node'), 'node');
 
-        foreach ($blog->posts as $postId => $post) {
+        foreach ($blog->posts as $post) {
             $link = $url . '/blog/' . $post->getSlug();
-            // print_r($post);die;
             $item = $feed->createNewItem();
             $text = $post->type === 'md' ? $this->getService('app.md.parser')->text($post->text) : $post->text;
             $item->addElementArray(array(
@@ -78,12 +71,9 @@ class RssController extends \Goteo\Core\Controller {
             }
 
             $item->setDate($post->date);
-            $item->addElement('guid', $link
-                // si acaso cuando tenga un slug como dios manda
-                //, array('isPermaLink'=>'true')
-                );
+            $item->addElement('guid', $link);
 
-            foreach ($post->tags as $tagId => $tagName) {
+            foreach ($post->tags as $tagName) {
                 $item->addElement('category', $tagName, null, false, true);
             }
 
@@ -91,9 +81,5 @@ class RssController extends \Goteo\Core\Controller {
         }
 
         return $this->rawResponse($feed->generateFeed(), $feed->getMimeType());
-
     }
-
 }
-
-

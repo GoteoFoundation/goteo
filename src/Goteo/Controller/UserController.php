@@ -10,39 +10,35 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
-use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Config;
-use Goteo\Application\View;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
-use Goteo\Application\Session;
 use Goteo\Application\Message;
-use Goteo\Model\User;
-use Goteo\Model\Invest;
-use Goteo\Model\Project;
-use Goteo\Model\Mail;
-use Goteo\Model\Stories;
+use Goteo\Application\Session;
+use Goteo\Application\View;
+use Goteo\Core\Controller;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
-use Goteo\Library\Listing;
+use Goteo\Library\Worth;
+use Goteo\Model\Invest;
+use Goteo\Model\Mail;
+use Goteo\Model\Project;
+use Goteo\Model\Stories;
+use Goteo\Model\User;
+use Symfony\Component\HttpFoundation\Request;
+use function mybase64_decode;
 
-class UserController extends \Goteo\Core\Controller {
+class UserController extends Controller {
 
     public function __construct() {
-        // changing to a responsive theme here
         View::setTheme('responsive');
     }
 
-
     /**
      * Atajo al perfil de usuario.
-     * @param string $id   Nombre de usuario
      */
     public function indexAction($id = '', $show = '') {
-        // die("['/user/profile/' . $id . '/' . $show]");
         return $this->redirect('/user/profile/' . $id . ($show ? '/' . $show : ''));
     }
 
@@ -83,7 +79,6 @@ class UserController extends \Goteo\Core\Controller {
                 return $this->redirect(SEC_URL . '/user/login');
             }
 
-
             // a menos que este perfil sea de un vip, no pueden verlo
             if (!isset($user->roles['vip'])) {
                 Session::store('jumpto', '/user/profile/' . $user->id . '/' . $show);
@@ -113,7 +108,6 @@ class UserController extends \Goteo\Core\Controller {
                 || User::isParticipant($uLoged, $uProfile)
             )
                 $user->messageable = true;
-
         }
 
         // si ya esta en la página de mensaje
@@ -125,13 +119,9 @@ class UserController extends \Goteo\Core\Controller {
             Session::store('message_autorized', true);
         }
 
-
-        $worthcracy = \Goteo\Library\Worth::getAll();
-
+        $worthcracy = Worth::getAll();
         $projects = Project::ofmine($user->id, true);
-
         $investors = Invest::myInvestors($user->id, 5);
-
         $stories = Stories::getall(false, false, ['project_owner' => $user->id]);
 
         // comparten intereses
@@ -140,8 +130,6 @@ class UserController extends \Goteo\Core\Controller {
         }
 
         if ($show == 'sharemates') {
-
-            $categories = User\Interest::getAll($user->id);
             $shares = array();
             $limit = $category ? 20 : 6;
             foreach ($viewData['categories'] as $catId => $catName) {
@@ -149,22 +137,9 @@ class UserController extends \Goteo\Core\Controller {
                 if (count($gente) == 0) continue;
                 $shares[$catId] = $gente;
             }
-
-            if ($show == 'sharemates' && empty($viewData['shares'])) {
-                $show = 'profile';
-            }
-
         }
 
-        if (!empty($category)) {
-            //$viewData['category'] = $category;
-        }
-
-        /* para sacar proyectos que cofinancio */
-        // proyectos que cofinancio
         $invest_on = User::invested($user->id, true, 0 , 20, false, 1);
-
-        //return $this->viewResponse('user/' . $show, $viewData);
 
         return $this->viewResponse(
             'user/profile',
@@ -182,8 +157,6 @@ class UserController extends \Goteo\Core\Controller {
 
     /**
      * Activación usuario.
-     *
-     * @param type string	$token
      */
     public function activateAction($token) {
         $errors = array();
@@ -233,7 +206,7 @@ class UserController extends \Goteo\Core\Controller {
      * @param type string	$token
      */
     public function changeemailAction($token) {
-        $token = \mybase64_decode($token);
+        $token = mybase64_decode($token);
         if (count(explode('¬', $token)) > 1) {
             $query = User::query('SELECT id FROM user WHERE token = ?', array($token));
             $errors = [];
@@ -275,7 +248,7 @@ class UserController extends \Goteo\Core\Controller {
 
         // si el token mola, lo doy de baja
         if ($token) {
-            $token = \mybase64_decode($token);
+            $token = mybase64_decode($token);
             $parts = explode('¬', $token);
             if (count($parts) > 1) {
                 $query = User::query('SELECT id FROM user WHERE email = ? AND token = ?', array($parts[1], $token));
@@ -318,9 +291,6 @@ class UserController extends \Goteo\Core\Controller {
 
     /*
      * Método para bloquear el envío de newsletter
-     *
-     * token es un
-     *
      */
     public function unsubscribeAction($token = '') {
 
@@ -366,7 +336,6 @@ class UserController extends \Goteo\Core\Controller {
 
     /*
      * Subscribe to newsletter by token
-     *
      */
     public function subscribeAction($token = '') {
                 $errors = array();

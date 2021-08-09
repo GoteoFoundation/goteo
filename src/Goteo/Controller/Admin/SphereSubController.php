@@ -12,14 +12,12 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Config;
 use Goteo\Application\Exception;
-use Goteo\Library\Feed;
 use Goteo\Application\Message;
-use Goteo\Application\Session;
 use Goteo\Model;
 use Goteo\Model\Sphere;
-use Goteo\Application\Config;
+use Goteo\Model\User;
 
 
 class SphereSubController extends AbstractSubController {
@@ -37,7 +35,7 @@ class SphereSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node and superadmins allowed here
         if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);

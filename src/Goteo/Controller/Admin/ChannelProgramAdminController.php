@@ -10,29 +10,29 @@
 
 namespace Goteo\Controller\Admin;
 
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Library\Forms\FormModelException;
-use Goteo\Util\Form\Type\SubmitType;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
-
 use Goteo\Model\Node;
 use Goteo\Model\Node\NodeProgram;
+use Goteo\Util\Form\Type\SubmitType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 class ChannelProgramAdminController extends AbstractAdminController
 {
-  protected static $icon = '<i class="fa fa-2x fa-calendar-check-o"></i>';
+    protected static $icon = '<i class="fa fa-2x fa-calendar-check-o"></i>';
 
-  public static function getGroup() {
-    return 'channels';
-  }
+    public static function getGroup(): string
+    {
+        return 'channels';
+    }
 
-  public static function getRoutes() {
+  public static function getRoutes(): array
+  {
     return [
       new Route(
         '/',
@@ -115,7 +115,6 @@ class ChannelProgramAdminController extends AbstractAdminController
       'current_node' => $node,
       'form' => $form->createView()
     ]);
-
   }
 
   public function editAction($node, $program_id, Request $request) {
@@ -155,6 +154,5 @@ class ChannelProgramAdminController extends AbstractAdminController
       'program' => $program,
       'form' => $form->createView()
     ]);
-
   }
 }

@@ -10,21 +10,18 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Library\Text;
-use Goteo\Application\Message;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
-use Goteo\Application\Config;
+use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Model;
+use Goteo\Core\Controller;
+use Goteo\Library\Text;
 use Goteo\Model\Blog\Post;
 use Goteo\Model\Blog\Post\Tag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class BlogController extends \Goteo\Core\Controller {
+class BlogController extends Controller {
 
     public function __construct() {
         // Cache & replica read activated in this controller
@@ -48,7 +45,7 @@ class BlogController extends \Goteo\Core\Controller {
                         'url'         => '/blog/'.$el->id
                     ]
                 );
-                
+
                 }, $slider_posts);
 
         $init = $request->query->get('pag') ? $request->query->get('pag')*$limit : 0;
@@ -57,7 +54,6 @@ class BlogController extends \Goteo\Core\Controller {
         $total = Post::getList(['section' => $section, 'tag' => $tag], true, 0, 0, true);
         $blog_sections = Post::getListSections();
         $tag = Tag::get($tag);
-
 
         return $this->viewResponse('blog/list', [
                     'banners' => $banners,
@@ -71,19 +67,18 @@ class BlogController extends \Goteo\Core\Controller {
         );
     }
 
-    public function postAction($slug, Request $request)
+    public function postAction($slug)
     {
         // Get related posts
         $post = Post::getBySlug($slug, Lang::current());
         $blog_sections = Post::getListSections();
 
-
-        if(!$post) {
+        if (!$post) {
             throw new ModelNotFoundException("Post [$slug] not found!");
         }
 
         $user = Session::getUser();
-        if(!(bool)$post->publish){
+        if (!$post->publish) {
             if($user && $user->hasPerm('admin-module-blog')) {
                 Message::error(Text::get('admin-blog-not-public'));
             } else {
@@ -113,9 +108,5 @@ class BlogController extends \Goteo\Core\Controller {
             'related_posts' => $related_posts,
             'author' => $author
         ]);
-
     }
-
 }
-
-

@@ -11,28 +11,27 @@
 namespace Goteo\Controller;
 
 use Exception;
-use Goteo\Core\Controller;
-use Omnipay\Omnipay;
-use RuntimeException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Omnipay\Common\Message\ResponseInterface;
 use Goteo\Application\App;
-use Goteo\Application\Session;
-use Goteo\Application\Message;
-use Goteo\Application\View;
-use Goteo\Application\Config;
 use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
+use Goteo\Application\Currency;
+use Goteo\Application\Event\FilterInvestFinishEvent;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
-use Goteo\Application\Event\FilterInvestFinishEvent;
+use Goteo\Application\Message;
+use Goteo\Application\Session;
+use Goteo\Application\View;
+use Goteo\Core\Controller;
 use Goteo\Library\Text;
-use Goteo\Application\Currency;
-use Goteo\Model\Project;
 use Goteo\Model\Invest;
+use Goteo\Model\Project;
 use Goteo\Model\User;
 use Goteo\Payment\Payment;
 use Goteo\Payment\PaymentException;
+use Omnipay\Common\Message\ResponseInterface;
+use RuntimeException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PoolController extends Controller {
 
@@ -60,12 +59,8 @@ class PoolController extends Controller {
         $currency = Currency::get($currency, 'id');
 
         $custom_amount = Currency::amountInverse($amount_original, $currency);
-
         $this->page = '/'.$type;
         $this->query = http_build_query(['amount' => "$amount_original$currency"]);
-
-        // Available pay methods
-
         $pay_methods = Payment::getMethods(Session::isLogged() ? Session::getUser() : new User());
 
         foreach($pay_methods as $i => $method) {
@@ -76,7 +71,7 @@ class PoolController extends Controller {
 
         // Pool disabled
 
-        if($type=='pool')
+        if($type == 'pool')
             unset($pay_methods['pool']);
 
         if($login_required) {
@@ -114,7 +109,7 @@ class PoolController extends Controller {
             'amount_original' => $amount_original,
             'amount_formated' => Currency::format($amount_original, $currency),
             'currency' => $currency,
-            'type'        => $this->type
+            'type' => $this->type
         ]);
 
         return $custom_amount;

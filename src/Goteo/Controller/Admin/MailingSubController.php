@@ -12,21 +12,21 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\HttpFoundation\Request;
-use Goteo\Application\Exception\ModelException;
 use Goteo\Application\App;
 use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Library\Feed;
 use Goteo\Library\Text;
-use Goteo\Model\Template;
+use Goteo\Model;
 use Goteo\Model\Mail;
 use Goteo\Model\Mail\Sender;
 use Goteo\Model\Mail\SenderRecipient;
-use Goteo\Library\Newsletter;
-use Goteo\Application\Lang;
-use Goteo\Model;
+use Goteo\Model\Template;
+use Goteo\Model\User;
+use Symfony\Component\HttpFoundation\Request;
 
 class MailingSubController extends AbstractSubController {
 
@@ -36,9 +36,7 @@ class MailingSubController extends AbstractSubController {
       'send' => 'mailing-lb-send',
     );
 
-
     static protected $label = 'mailing-lb';
-
 
     protected $filters = array (
       'project' => '',
@@ -60,13 +58,13 @@ class MailingSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
         return parent::isAllowed($user, $node);
     }
 
-    public function __construct($node, \Goteo\Model\User $user, Request $request) {
+    public function __construct($node, User $user, Request $request) {
         parent::__construct($node, $user, $request);
         $this->interests = Model\User\Interest::getAll();
         $this->status = Model\Project::status();
@@ -111,18 +109,12 @@ class MailingSubController extends AbstractSubController {
             $this->certs['confirmed'] = 'Confirmado';
             $this->certs['unconfirmed'] = 'Sin confirmar';
         }
-        // print_r($this->antiquity);die;
     }
 
     public function sendAction() {
 
         $filters_txt = $this->getReceiversText();
-
         $comlang = $this->hasPost('lang') ? $this->getPost('lang') : Lang::current();
-
-        // Enviando contenido recibido a destinatarios recibidos
-        $receivers = array();
-
         $subject = trim($this->getPost('subject'));
         $content = trim($this->getPost('content'));
         $template = $this->getPost('template');
@@ -133,7 +125,6 @@ class MailingSubController extends AbstractSubController {
         Session::store('mailing.type', $type);
 
         $templateId = !empty($this->getPost('template')) ? $template : 11;
-        // $content = \str_replace('%SITEURL%', \SITE_URL, $content);
 
         if(empty($subject) || empty($content)) {
             Message::error('El asunto o el contentido está vacio!');
@@ -144,8 +135,6 @@ class MailingSubController extends AbstractSubController {
             $content = App::getService('app.md.parser')->text($content);
         }
 
-        // montamos el mailing
-        // - se crea un registro de tabla mail
         $mailHandler = new Mail();
         $mailHandler->template = $templateId;
         $mailHandler->subject = $subject;
@@ -170,7 +159,6 @@ class MailingSubController extends AbstractSubController {
         // add subscribers
         Sender::addSubscribersFromSQL($sql);
 
-        // Evento Feed
         $log = new Feed();
         $log->populate(Text::sys('feed-admin-massive-subject'), '/admin/mailing',
             Text::sys('feed-admin-massive', [
@@ -217,25 +205,23 @@ class MailingSubController extends AbstractSubController {
 
         // si hay, mostramos el formulario de envio
         return array(
-                'template'    => 'admin/mailing/edit',
-                'templates'    => $this->templates,
-                'languages' => Lang::listAll('name', false),
-                'type' => Session::get('mailing.type', 'md'),
-                'receivers' => $receivers,
-                'removed_receivers' => Session::get('mailing.removed_receivers', []),
-                'subject' => Session::get('mailing.subject'),
-                'content' => Session::get('mailing.content'),
-                'templateId' => Session::get('mailing.template'),
-                'total' => $total,
-                'limit' => $limit,
-                'filters_txt' => $filters_txt
+            'template'    => 'admin/mailing/edit',
+            'templates'    => $this->templates,
+            'languages' => Lang::listAll('name', false),
+            'type' => Session::get('mailing.type', 'md'),
+            'receivers' => $receivers,
+            'removed_receivers' => Session::get('mailing.removed_receivers', []),
+            'subject' => Session::get('mailing.subject'),
+            'content' => Session::get('mailing.content'),
+            'templateId' => Session::get('mailing.template'),
+            'total' => $total,
+            'limit' => $limit,
+            'filters_txt' => $filters_txt
         );
     }
 
     /**
      * JSON action
-     * @param  [type] $id [description]
-     * @return [type]     [description]
      */
     public function receiverAction($id, $subaction) {
         $removed_receivers = Session::get('mailing.removed_receivers', []);
@@ -283,20 +269,18 @@ class MailingSubController extends AbstractSubController {
     }
 
     public function listAction() {
-
         return array(
-                'template'    => 'admin/mailing/list',
-                'interests' => $this->interests,
-                'status'    => $this->status,
-                'methods'   => $this->methods,
-                'types'     => $this->types,
-                'roles'     => $this->roles,
-                'langs'     => $this->langs,
-                'antiquity' => $this->antiquity,
-                'certs'     => $this->certs,
-                'filters'   => $this->getFilters()
+            'template'    => 'admin/mailing/list',
+            'interests' => $this->interests,
+            'status'    => $this->status,
+            'methods'   => $this->methods,
+            'types'     => $this->types,
+            'roles'     => $this->roles,
+            'langs'     => $this->langs,
+            'antiquity' => $this->antiquity,
+            'certs'     => $this->certs,
+            'filters'   => $this->getFilters()
         );
-
     }
 
 
@@ -489,7 +473,7 @@ class MailingSubController extends AbstractSubController {
             $sqlInner .= "LEFT JOIN user_location
                     ON user_location.id = user.id";
 
-            $sqlFilter .= " AND (user.location LIKE :location OR user_location.city LIKE :location OR user_location.region LIKE :location)  "; 
+            $sqlFilter .= " AND (user.location LIKE :location OR user_location.city LIKE :location OR user_location.region LIKE :location)  ";
             $values[':location'] = '%'.$filters['location'].'%';
         }
 
@@ -535,8 +519,7 @@ class MailingSubController extends AbstractSubController {
         // Return total count for pagination
         if($count) {
             $sql = "SELECT COUNT(DISTINCT(user.id)) FROM user $sqlInner WHERE user.active = 1 $sqlFilter";
-            //die( \sqldbg($sql, $values) );
-            return (int) Model\User::query($sql, $values)->fetchColumn();
+            return (int) User::query($sql, $values)->fetchColumn();
         }
 
         $sql = "SELECT
@@ -553,9 +536,7 @@ class MailingSubController extends AbstractSubController {
                 LIMIT $offset, $limit
                 ";
 
-         //die( \sqldbg($sql, $values) );
-
-        if ($query = Model\User::query($sql, $values)) {
+        if ($query = User::query($sql, $values)) {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
                 $receiver->id = $receiver->user;
                 $receivers[$receiver->id] = $receiver;

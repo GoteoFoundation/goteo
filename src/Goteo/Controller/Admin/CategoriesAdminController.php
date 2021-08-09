@@ -40,12 +40,13 @@ class CategoriesAdminController extends AbstractAdminController {
         'footprint' => [ 'text' => 'footprints', 'model' => 'Footprint' ]
     ];
 
-	// this modules is part of a specific group
-	public static function getGroup() {
+	public static function getGroup(): string
+    {
 		return 'contents';
 	}
 
-	public static function getRoutes() {
+	public static function getRoutes(): array
+    {
 		return [
 			new Route(
 				'/{tab}',
@@ -62,9 +63,8 @@ class CategoriesAdminController extends AbstractAdminController {
 		];
 	}
 
-	public function listAction($tab = 'category', Request $request) {
+	public function listAction($tab = 'category') {
         if(!isset($this->tabs[$tab])) throw new ModelNotFoundException("Not found type [$tab]");
-
 
         if($tab === 'socialcommitment') {
             $list = SocialCommitment::getAll(Config::get('lang'));

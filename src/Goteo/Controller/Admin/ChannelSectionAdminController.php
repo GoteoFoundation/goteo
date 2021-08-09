@@ -10,29 +10,29 @@
 
 namespace Goteo\Controller\Admin;
 
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Library\Forms\FormModelException;
-use Goteo\Util\Form\Type\SubmitType;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
-
 use Goteo\Model\Node;
 use Goteo\Model\Node\NodeSections;
+use Goteo\Util\Form\Type\SubmitType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 class ChannelSectionAdminController extends AbstractAdminController
 {
   protected static $icon = '<i class="fa fa-2x fa-tasks"></i>';
 
-  public static function getGroup() {
+  public static function getGroup(): string
+  {
     return 'channels';
   }
 
-  public static function getRoutes() {
+  public static function getRoutes(): array
+  {
     return [
       new Route(
         '/',
@@ -118,20 +118,18 @@ class ChannelSectionAdminController extends AbstractAdminController
       }
     }
 
-
     return $this->viewResponse('admin/channelsection/edit', [
       'current_node' => $node,
       'form' => $form->createView()
     ]);
-
   }
 
   public function editAction($node, $section_id, Request $request) {
     try {
-			$channel = Node::get($node);
-		} catch (ModelNotFoundException $e) {
-			Message::error($e->getMessage());
-			return $this->redirect('/admin/channelsection');
+        $channel = Node::get($node);
+    } catch (ModelNotFoundException $e) {
+        Message::error($e->getMessage());
+        return $this->redirect('/admin/channelsection');
     }
 
     $section = NodeSections::get($section_id);
@@ -162,17 +160,15 @@ class ChannelSectionAdminController extends AbstractAdminController
       'program' => $section,
       'form' => $form->createView()
     ]);
-
   }
 
-  public function deleteAction($node, $section_id, Request $request) {
+  public function deleteAction($node, $section_id) {
 
     try {
         $section = NodeSections::get($section_id);
     } catch (ModelNotFoundException $exception) {
         Message::error($exception->getMessage());
     }
-
 
     try {
       $section->dbDelete();

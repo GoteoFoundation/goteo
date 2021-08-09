@@ -28,7 +28,8 @@ class BlogAdminController extends AbstractAdminController {
     protected static $icon = '<i class="fa fa-2x fa-file-text-o"></i>';
 
     // this modules is part of a specific group
-    public static function getGroup() {
+    public static function getGroup(): string
+    {
         return 'communications';
     }
 
@@ -49,7 +50,6 @@ class BlogAdminController extends AbstractAdminController {
             )
         ];
     }
-
 
     public function listAction(Request $request) {
         $filters = ['superglobal' => $request->query->get('q')];

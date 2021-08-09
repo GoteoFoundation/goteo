@@ -23,16 +23,12 @@ class NodeSubController extends AbstractSubController {
       'admins' => 'node-lb-admins',
     );
 
-
     static protected $label = 'node-lb';
 
     /**
      * Overwrite some permissions
-     * @param  User    $user [description]
-     * @param  [type]  $node [description]
-     * @return boolean       [description]
      */
-    static public function isAllowed(Model\User $user, $node) {
+    static public function isAllowed(Model\User $user, $node): bool {
         // Central node not allowed here
         if(Config::isMasterNode($node)) return false;
         return parent::isAllowed($user, $node);
@@ -49,14 +45,13 @@ class NodeSubController extends AbstractSubController {
             ], '/admin/node');
     }
 
-    public function adminsAction($id = null, $subaction = null) {
+    public function adminsAction() {
         return array(
             'template' => 'admin/node/admins'
         );
     }
 
-
-    public function editAction($id = null, $subaction = null) {
+    public function editAction() {
         if ($this->isPost()) {
             $node = $this->full_node;
             $fields = array(
@@ -130,7 +125,6 @@ class NodeSubController extends AbstractSubController {
             } else {
                 Message::error('Falló al actualizar los datos del canal:<br />'.implode('<br />', $errors));
             }
-
         }
 
         return array(
@@ -138,13 +132,10 @@ class NodeSubController extends AbstractSubController {
         );
     }
 
-
-    public function listAction($id = null, $subaction = null) {
+    public function listAction() {
         return array(
             'template' => 'admin/node/view'
         );
     }
 
 }
-
-

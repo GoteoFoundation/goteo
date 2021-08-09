@@ -34,11 +34,13 @@ class ChannelCriteriaAdminController extends AbstractAdminController
 {
   protected static $icon = '<i class="fa fa-2x fa-question-circle-o"></i>';
 
-  public static function getGroup() {
+  public static function getGroup(): string
+  {
     return 'channels';
   }
 
-  public static function getRoutes() {
+  public static function getRoutes(): array
+  {
     return [
       new Route(
 				'/',
@@ -164,7 +166,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
     ]);
   }
 
-  public function exportAction($id, Request $request) {
+  public function exportAction($id) {
 
     try {
 			$channel = Node::get($id);

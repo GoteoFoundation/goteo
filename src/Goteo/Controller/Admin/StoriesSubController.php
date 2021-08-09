@@ -4,10 +4,11 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Config;
 use Goteo\Application\Message;
-use Goteo\Application\Config,
-	Goteo\Library\Feed,
-    Goteo\Model;
+use Goteo\Library\Feed;
+use Goteo\Model;
+use Goteo\Model\User;
 
 class StoriesSubController extends AbstractSubController {
 
@@ -25,7 +26,7 @@ class StoriesSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
         return parent::isAllowed($user, $node);
