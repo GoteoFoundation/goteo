@@ -321,8 +321,6 @@ class Session {
 
     /**
      * Returns user object if logged
-     *
-     * @return boolean
      */
     static public function getUser () {
         return (self::isLogged()) ? self::get('user') : null;
