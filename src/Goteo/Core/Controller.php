@@ -15,7 +15,7 @@ use Goteo\Application\View;
 use Goteo\Core\Traits\LoggerTrait;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -145,12 +145,13 @@ abstract class Controller {
         $defaults = null,
         $name = 'autoform',
         array $options = []
-    ): FormFactory {
+    ): FormBuilder {
         $default_options = [
             'action' => App::getRequest()->getRequestUri(),
             'attr' => ['class' => 'autoform']
         ];
-        return $this->getService('app.forms')->createBuilder($defaults, $name, $options + $default_options);
+        return $this->getService('app.forms')
+            ->createBuilder($defaults, $name, $options + $default_options);
     }
 
     public function getModelForm(

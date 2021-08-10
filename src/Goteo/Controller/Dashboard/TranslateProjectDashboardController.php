@@ -27,7 +27,7 @@ use Goteo\Util\Form\Type\MarkdownType;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\TextareaType;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -90,7 +90,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
         $defaults = null,
         $name = 'autoform',
         array $options = ['attr' => ['class' => 'autoform hide-help']]
-    ): FormFactory {
+    ): FormBuilder {
         return parent::createFormBuilder($defaults, $name, $options);
     }
 
