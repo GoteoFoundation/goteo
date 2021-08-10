@@ -25,20 +25,13 @@ class Console {
 	static protected $commands = [];
 	protected $dispatcher;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param EventDispatcherInterface    $dispatcher   An EventDispatcherInterface instance
-	 * @param ControllerResolverInterface $resolver     A ControllerResolverInterface instance
-	 * @param RequestStack                $requestStack A stack for master/sub requests
-	 */
 	public function __construct(EventDispatcherInterface $dispatcher) {
 		$this->dispatcher = $dispatcher;
 	}
 
 	/**
 	 * Creates a new instance of the App ready to run
-	 * Next calls to this method will return the current instantatied App
+	 * Next calls to this method will return the current instantiated App
 	 * @return App object
 	 */
 	static public function get() {
