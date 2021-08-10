@@ -46,10 +46,8 @@ class SettingsDashboardController extends DashboardController {
     }
 
     protected function createSettingsSidebar($zone = '') {
-        // Create sidebar menu
         Session::addToSidebarMenu( '<i class="icon icon-2x icon-user"></i> ' . Text::get('dashboard-menu-profile-profile'), '/dashboard/settings', 'profile');
         Session::addToSidebarMenu( '<i class="fa fa-2x fa-fw fa-legal"></i> ' . Text::get('dashboard-menu-profile-personal'), '/dashboard/settings/personal', 'personal');
-        // Session::addToSidebarMenu( '<i class="fa fa-2x fa-fw fa-location-arrow"></i> ' . Text::get('dashboard-menu-profile-location'), '/dashboard/profile/location', 'location');
         Session::addToSidebarMenu( '<i class="fa fa-2x fa-fw fa-user-secret"></i> ' . Text::get('dashboard-menu-profile-access'), '/dashboard/settings/access', 'access');
         Session::addToSidebarMenu( '<i class="fa fa-2x fa-fw fa-toggle-on"></i> ' . Text::get('dashboard-menu-profile-preferences'), '/dashboard/settings/preferences', 'preferences');
         Session::addToSidebarMenu( '<i class="fa fa-2x fa-fw fa-key"></i> ' . Text::get('dashboard-menu-activity-apikey'), '/dashboard/settings/apikey', 'apikey');
@@ -57,7 +55,6 @@ class SettingsDashboardController extends DashboardController {
 
         View::getEngine()->useData([
             'zone' => $zone,
-            // 'sidebarBottom' => [ '/dashboard/settings' => '<i class="fa fa-reply" title="' . Text::get('dashboard-menu-profile-profile') . '"></i> ' . Text::get('dashboard-menu-profile-profile') ]
         ]);
     }
 
@@ -130,7 +127,6 @@ class SettingsDashboardController extends DashboardController {
             Message::error(Text::get('translator-lang-not-found'));
             return $this->redirect('/dashboard/settings/profile');
         }
-        // $user = User::get($this->user->id);
         $user = $this->user;
         $translated = $user->getLangsAvailable();
         $this->createSettingsSidebar('profile');
@@ -421,9 +417,6 @@ class SettingsDashboardController extends DashboardController {
         ]);
     }
 
-    /**
-     * API key
-     */
     public function apikeyAction(Request $request)
     {
         $this->createSettingsSidebar('apikey');
@@ -447,7 +440,6 @@ class SettingsDashboardController extends DashboardController {
                 $apikey = new Apikey($defaults);
 
                 if($apikey->save($errors)) {
-                    // print_r($post);die;
                     Message::info(Text::get('form-sent-success'));
                     return $this->redirect();
                 } else {
