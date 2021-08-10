@@ -74,17 +74,16 @@ class App extends HttpKernel
     /**
      * Dispatches an event
      * Events can be handled by any subscriber
-     * @param  string     $eventName event ID
-     * @param  Event|null $event     Event object
      * @return Event                 the result object
      */
-    static public function dispatch($eventName, Event $event = null) {
-        return self::getService('dispatcher')->dispatch($eventName, $event);
+    static public function dispatch($eventName, Event $event) {
+        return self::getService('dispatcher')
+            ->dispatch($event, $eventName);
     }
 
     /**
      * Gets the routes for the app
-     * @return RouteColletion object
+     * @return RouteCollection object
      */
     static public function getRoutes() {
         if (!self::$_routes) {

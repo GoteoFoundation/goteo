@@ -14,8 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Application\Config\SqlTranslationLoader;
 use Goteo\Application\Config\YamlTranslationLoader;
+use Symfony\Component\Translation\Formatter\MessageFormatter;
 use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\MessageSelector;
 
 class Lang {
     static protected $default = '';
@@ -24,27 +24,28 @@ class Lang {
     static protected $translator = null;
     static protected $main_url = null;
 
-    // This is overwriten by Config using file Resources/locales.yml
-    static protected  $langs_available = array(
-        'en' => array(
-                    'name' => 'English',
-                    'short' => 'ENG',
-                    'public' => true,
-                    'locale' => 'en_GB',
-                    'fallback' => 'es',
-                    ),
-        'es' => array(
-                    'name' => 'Español',
-                    'short' => 'ES',
-                    'public' => true,
-                    'fallback' => 'en',
-                    'locale' => 'es_ES'),
-    );
+    // This is overwritten by Config using file Resources/locales.yml
+    static protected  $langs_available = [
+        'en' => [
+            'name' => 'English',
+            'short' => 'ENG',
+            'public' => true,
+            'locale' => 'en_GB',
+            'fallback' => 'es',
+        ],
+        'es' => [
+            'name' => 'Español',
+            'short' => 'ES',
+            'public' => true,
+            'fallback' => 'en',
+            'locale' => 'es_ES'
+        ],
+    ];
 
     static function factory($lang = null) {
         if(empty($lang)) $lang = Config::get('lang');
         if(!static::$translator) {
-            static::$translator = new Translator($lang, new MessageSelector());
+            static::$translator = new Translator($lang, new MessageFormatter());
             static::$translator->addLoader('sql', new SqlTranslationLoader()); // cached loader
             static::$translator->addLoader('yaml', new YamlTranslationLoader()); // cached loader
         }
@@ -80,7 +81,7 @@ class Lang {
     }
 
     /**
-     * Purgues all cached languages files
+     * Purges all cached languages files
      */
     static public function clearCache() {
         // force catalogue loading
@@ -235,7 +236,6 @@ class Lang {
 
     /**
      * Gets the current active language
-     * @return [type] [description]
      */
     static public function current($public_only = false) {
         $current = '';
@@ -252,8 +252,7 @@ class Lang {
     }
 
     /**
-     * Get the a language
-     * @return [type] [description]
+     * Get the language
      */
     static public function get($lang, $method = 'object') {
         if(static::exists($lang)) {
@@ -282,7 +281,6 @@ class Lang {
     }
     /**
      * Returns if the lang is currently selected
-     * @param  [type]  $lang [description]
      * @return boolean       [description]
      */
     static public function isActive($lang, $public_only = true) {
@@ -406,7 +404,6 @@ class Lang {
                 break;
             }
         }
-        // print_r($desired);die("$lang");
 
         //legacy constants
         if(!defined('LANG'))
@@ -415,16 +412,12 @@ class Lang {
         // cambiamos el locale
         setlocale(LC_TIME, static::getLocale($lang));
 
-        // print_r($desired);die("$lang [$save_lang] " . Session::get('lang'));
-
-
         return $lang;
     }
 
     /**
      * Retrieve the locale value for a lang
      * @param  string $lang Language ID (es, en, fr, etc.)
-     * @return [type]       [description]
      */
     static function getLocale($lang = null) {
         return static::get($lang ? $lang : static::current(), 'locale');
@@ -433,7 +426,6 @@ class Lang {
     /**
      * Retrieve the name value for a lang
      * @param  string $lang Language ID (es, en, fr, etc.)
-     * @return [type]       [description]
      */
     static function getName($lang = null) {
         return static::get($lang ? $lang : static::current(), 'name');
@@ -442,7 +434,6 @@ class Lang {
     /**
      * Retrieve the short name value for a lang
      * @param  string $lang Language ID (es, en, fr, etc.)
-     * @return [type]       [description]
      */
     static function getShort($lang = null) {
         return static::get($lang ? $lang : static::current(), 'short');
@@ -451,7 +442,6 @@ class Lang {
     /**
      * Retrieve the fallback language a lang
      * @param  string $lang Language ID (es, en, fr, etc.)
-     * @return [type]       [description]
      */
     static function getFallback($lang = null) {
         $lang = static::get($lang ? $lang : static::current(), 'object');
@@ -464,10 +454,8 @@ class Lang {
         return static::getDefault();
     }
 
-
     /**
      * Returns an array of langs => lang-name
-     * @return [type] [description]
      */
     static function listAll($method = 'name', $public_only = true) {
         $ret = array();
@@ -480,10 +468,6 @@ class Lang {
         return $ret;
     }
 
-    /**
-     * Return a list of countries
-     * @return [type] [description]
-     */
     static function listCountries($lang = null) {
         if(!$lang) $lang = static::current();
         if(is_file(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php')) {
@@ -499,8 +483,6 @@ class Lang {
 
     /**
      * Compatibility function to retrieve a 2-digit country code from and manually written country
-     * @param  [type] $country [description]
-     * @return [type]          [description]
      */
     static function getCountryCode($country) {
         // manual old style country name
@@ -519,8 +501,6 @@ class Lang {
 
     /**
      * Retrieves a full name country from a 2-digits country code
-     * @param  [type] $code [description]
-     * @return [type]          [description]
      */
     static function getCountryName($code, $lang = null) {
         // manual old style country name

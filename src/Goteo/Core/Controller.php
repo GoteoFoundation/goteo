@@ -134,9 +134,6 @@ abstract class Controller {
         return App::getService($service);
     }
 
-    /**
-     * Handy method to get the dispatch function
-     */
     public function dispatch($eventName, Event $event = null) {
         return App::dispatch($eventName, $event);
     }

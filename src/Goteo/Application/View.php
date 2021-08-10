@@ -13,6 +13,11 @@ namespace Goteo\Application;
 use Foil;
 use Goteo\Application\Event\FilterViewEvent;
 use Foil\Contracts\ExtensionInterface;
+use Goteo\Util\Foil\Extension\Forms;
+use Goteo\Util\Foil\Extension\GoteoCore;
+use Goteo\Util\Foil\Extension\LangUtils;
+use Goteo\Util\Foil\Extension\ModelsData;
+use Goteo\Util\Foil\Extension\TextUtils;
 
 class View {
     static protected $engine;
@@ -21,12 +26,11 @@ class View {
 
     static public function createEngine() {
         $engine = Foil\engine();
-        // Register default Goteo extensions
-        $engine->loadExtension(new \Goteo\Util\Foil\Extension\GoteoCore(), [], true);
-        $engine->loadExtension(new \Goteo\Util\Foil\Extension\TextUtils(), [], true);
-        $engine->loadExtension(new \Goteo\Util\Foil\Extension\ModelsData(), [], true);
-        $engine->loadExtension(new \Goteo\Util\Foil\Extension\LangUtils(), [], true);
-        $engine->loadExtension(new \Goteo\Util\Foil\Extension\Forms(), [], true);
+        $engine->loadExtension(new GoteoCore(), [], true);
+        $engine->loadExtension(new TextUtils(), [], true);
+        $engine->loadExtension(new ModelsData(), [], true);
+        $engine->loadExtension(new LangUtils(), [], true);
+        $engine->loadExtension(new Forms(), [], true);
         return $engine;
     }
 

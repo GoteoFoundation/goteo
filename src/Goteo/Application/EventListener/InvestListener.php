@@ -12,26 +12,26 @@ namespace Goteo\Application\EventListener;
 
 use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
+use Goteo\Application\Currency;
+use Goteo\Application\Event\FilterInvestFinishEvent;
 use Goteo\Application\Event\FilterInvestInitEvent;
+use Goteo\Application\Event\FilterInvestModifyEvent;
 use Goteo\Application\Event\FilterInvestRefundEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
-use Goteo\Application\Event\FilterInvestFinishEvent;
-use Goteo\Application\Event\FilterInvestModifyEvent;
-use Goteo\Application\Lang;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
-use Goteo\Application\Exception\ModelException;
-use Goteo\Application\Currency;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
+use Goteo\Model\Call;
 use Goteo\Model\Invest;
 use Goteo\Model\Invest\InvestLocation;
 use Goteo\Model\Mail;
 use Goteo\Model\Template;
 use Goteo\Model\User;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -135,7 +135,7 @@ class InvestListener extends AbstractListener {
         $errors = [];
         $invest->save($errors);
         if ($errors) {
-            throw new \RuntimeException('Error saving Invest details! '.implode("\n", $errors));
+            throw new RuntimeException('Error saving Invest details! '.implode("\n", $errors));
         }
 
         $this->warning('Invest finish failed', [$invest, $project, $invest->getFirstReward(), $invest->getUser(), 'message' => $response->getMessage()]);
@@ -196,9 +196,8 @@ class InvestListener extends AbstractListener {
         $errors = [];
         $invest->save($errors);
         if ($errors) {
-            throw new \RuntimeException('Error saving Invest details! '.implode("\n", $errors));
+            throw new RuntimeException('Error saving Invest details! '.implode("\n", $errors));
         }
-
 
         // MAIL SENDING TO DONOR
         // Thanks template
@@ -245,7 +244,7 @@ class InvestListener extends AbstractListener {
         // datos para el drop
         if (!empty($invest->droped) && Config::get('calls_enabled')) {
             $drop = Invest::get($invest->droped);
-            $call = \Goteo\Model\Call::getMini($drop->call);
+            $call = Call::getMini($drop->call);
             // texto de capital riego
             $txt_droped = Text::get('invest-mail_info-drop', $call->user->name, \amount_format($drop->amount), $call->name);
         }
@@ -364,7 +363,6 @@ class InvestListener extends AbstractListener {
 
     /**
      * Cancels and invest for other reasons than failed projects
-     * @param  FilterInvestRefundEvent $event
      */
     public function onInvestRefundCancel(FilterInvestRefundEvent $event) {
         $method = $event->getMethod();
@@ -379,12 +377,10 @@ class InvestListener extends AbstractListener {
             $this->warning('Error cancelling invest', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'errors' >= $errors]);
             Invest::setDetail($invest->id, $method->getIdNonStatic().'-cancel-fail', 'Error while cancelling invest');
         }
-
     }
 
     /**
      * Cancels and invest for failed projects
-     * @param  FilterInvestRefundEvent $event
      */
     public function onInvestRefundReturn(FilterInvestRefundEvent $event) {
         $method = $event->getMethod();
@@ -401,9 +397,9 @@ class InvestListener extends AbstractListener {
         }
 
     }
+
     /**
      * Handles failed refund process
-     * @param  FilterInvestRefundEvent $event
      */
     public function onInvestRefundFailed(FilterInvestRefundEvent $event) {
         $method   = $event->getMethod();
@@ -411,12 +407,10 @@ class InvestListener extends AbstractListener {
         $response = $event->getResponse();
         $this->warning(($invest->getProject() ? '' : 'Pool') .'Invest refund failed', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'messages' => $response->getMessage()]);
         Invest::setDetail($invest->id, $method->getIdNonStatic().'-return-fail', 'Error while refunding invest: '.$response->getMessage());
-
     }
 
     /**
      * Once user has entered data
-     * @param  FilterInvestRefundEvent $event
      */
     public function onInvestFinished(FilterInvestFinishEvent $event) {
         $request = $event->getRequest();
@@ -444,14 +438,10 @@ class InvestListener extends AbstractListener {
 
         $this->notice(($invest->getProject() ? '' : 'Pool') .'Invest finished', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, $invest->method.'-return-data', 'User has saved personal data for rewards');
-
     }
-
 
     /**
      * Saves a modified Invest
-     * @param  FilterInvestFinishEvent $event [description]
-     * @return [type]                         [description]
      */
     public function onInvestModify(FilterInvestModifyEvent $event) {
         $invest = $event->getNewInvest();
@@ -482,13 +472,10 @@ class InvestListener extends AbstractListener {
             $this->warning('Error modifying invest', [$invest, $invest->getOldInvest(), 'errors' => $errors]);
             throw new ModelException(implode(", ", $errors));
         }
-
     }
 
     /**
-     * Response should not be manipulated for controller Invest and method notifiy
-     * @param  FilterResponseEvent $event [description]
-     * @return [type]                     [description]
+     * Response should not be manipulated for controller Invest and method notify
      */
     public function onKernelResponse(FilterResponseEvent $event) {
 
@@ -497,10 +484,10 @@ class InvestListener extends AbstractListener {
         if ($request->attributes->get('_controller') == 'Goteo\Controller\InvestController::notifyPaymentAction') {
             $event->stopPropagation();
         }
-
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array
+    {
         return array(
             AppEvents::INVEST_INIT             => 'onInvestInit',
             AppEvents::INVEST_INIT_REQUEST     => 'onInvestInitRequest',

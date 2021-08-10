@@ -11,6 +11,7 @@
 use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Console\Console;
+use Goteo\Payment\Payment;
 use Goteodev\Console\Command\CrowdinCommand;
 use Goteodev\Console\Command\StatusInitCommand;
 use Goteodev\Payment\DummyPaymentMethod;
@@ -35,18 +36,9 @@ if(App::debug()) {
     $sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Reference('dev.listener.dev_mocks')));
 }
 
-// Adding Routes:
-
 $routes = App::getRoutes();
 
-// $routes->add('some-identifier', new Route(
-//     '/some/route',
-//     array('_controller' => 'Goteodev\Controller\SomeController::someAction')
-// ));
+Payment::addMethod(DummyPaymentMethod::class);
 
-
-// Adding payment method
-\Goteo\Payment\Payment::addMethod(DummyPaymentMethod::class);
-// add usefull testing commands
 Console::add(new StatusInitCommand());
 Console::add(new CrowdinCommand());

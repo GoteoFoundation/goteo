@@ -79,9 +79,9 @@ class Console {
 	 * Events can be handled by any subscriber
 	 * @return Event                 the result object
 	 */
-	static public function dispatch(string $eventName, Event $event = null):Event
+	static public function dispatch(string $eventName, Event $event = null): Event
     {
-		return self::$app->getDispatcher()->dispatch($eventName, $event);
+		return self::$app->getDispatcher()->dispatch($event, $eventName);
 	}
 
 	/**
