@@ -10,47 +10,44 @@
 
 namespace Goteo\Console\Command;
 
+use Goteo\Console\Console;
+use Goteo\Core\Traits\LoggerTrait;
+use Goteo\Util\Monolog\Processor\WebProcessor;
+use Monolog\Logger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\Event;
-
-use Monolog\Logger;
-
-use Goteo\Console\Console;
-use Goteo\Util\Monolog\Processor\WebProcessor;
-use Goteo\Core\Traits\LoggerTrait;
 
 abstract class AbstractCommand extends Command {
     use LoggerTrait;
 
-    protected $logs = [];
+    protected array $logs = [];
     protected $input;
     protected $output;
 
-    public function setInput(InputInterface $input) {
+    public function setInput(InputInterface $input): AbstractCommand
+    {
         $this->input = $input;
+
         return $this;
     }
 
-    public function setOutput(OutputInterface $output) {
+    public function setOutput(OutputInterface $output): AbstractCommand
+    {
         $this->output = $output;
+
         return $this;
     }
 
-    public function addLogger(Logger $logger, $name = null) {
-        if(!$name) $name = $this->getName(); // Name of the command
+    public function addLogger(Logger $logger, $name = null): AbstractCommand
+    {
+        if(!$name) $name = $this->getName();
         $this->logs["cli.$name"] = $logger;
+
         return $this;
     }
 
-    /**
-     * Retrieves a instance of a Logger
-     * @param  [type] $name [description]
-     * @return [type]       [description]
-     */
     public function getLogger($name = null) {
         if(!$name) $name = $this->getName(); // Name of the command
 
@@ -84,13 +81,11 @@ abstract class AbstractCommand extends Command {
     }
 
     /**
-     * Dispatchs an event
-     * Events can be handled by any suscriber
-     * @param  string     $eventName event ID
-     * @param  Event|null $event     Event object
-     * @return Event                 the result object
+     * Dispatches an event
+     * Events can be handled by any subscriber
      */
-    static public function dispatch($eventName, Event $event = null) {
+    static public function dispatch(string $eventName, Event $event = null): Event
+    {
         return Console::dispatch($eventName, $event);
     }
 

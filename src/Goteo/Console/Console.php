@@ -12,7 +12,6 @@ namespace Goteo\Console;
 
 use Goteo\Application\App;
 use Goteo\Application\Config;
-
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\EventDispatcher\Event;
@@ -22,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class Console {
     static protected $app;
 	static protected $console;
-	static protected $commands = [];
+	static protected array $commands = [];
 	protected $dispatcher;
 
 	public function __construct(EventDispatcherInterface $dispatcher) {
@@ -76,13 +75,12 @@ class Console {
 	}
 
 	/**
-	 * Dispatchs an event
-	 * Events can be handled by any suscriber
-	 * @param  string     $eventName event ID
-	 * @param  Event|null $event     Event object
+	 * Dispatches an event
+	 * Events can be handled by any subscriber
 	 * @return Event                 the result object
 	 */
-	static public function dispatch($eventName, Event $event = null) {
+	static public function dispatch(string $eventName, Event $event = null):Event
+    {
 		return self::$app->getDispatcher()->dispatch($eventName, $event);
 	}
 

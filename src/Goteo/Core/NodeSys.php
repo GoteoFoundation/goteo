@@ -11,18 +11,18 @@
 namespace Goteo\Core;
 
 use Goteo\Application\Config;
-use Goteo\Core\Model;
+use Goteo\Model\Image;
 
 class NodeSys {
 
 	/*
-		     * Comprueba si es un nodo válido
+     * Comprueba si es un nodo válido
 	*/
 	public static function isValid($id) {
 
 		//activamos la cache para este metodo
-		$current_cache = \Goteo\Core\DB::cache();
-		\Goteo\Core\DB::cache(true);
+		$current_cache = DB::cache();
+		DB::cache(true);
 
 		$query = Model::query("
             SELECT
@@ -37,18 +37,18 @@ class NodeSys {
 		);
 		$ret = (bool) $query->fetchColumn();
 		//dejamos la cache como estaba
-		\Goteo\Core\DB::cache($current_cache);
+		DB::cache($current_cache);
 		return $ret;
 	}
 
 	/*
-		     * Comprueba si es un nodo esta activo
+     * Comprueba si es un nodo esta activo
 	*/
 	public static function isActive($id) {
 
 		//activamos la cache para este metodo
-		$current_cache = \Goteo\Core\DB::cache();
-		\Goteo\Core\DB::cache(true);
+		$current_cache = DB::cache();
+		DB::cache(true);
 
 		$query = Model::query("
             SELECT
@@ -65,7 +65,7 @@ class NodeSys {
 		);
 		$ret = (bool) $query->fetchColumn();
 		//dejamos la cache como estaba
-		\Goteo\Core\DB::cache($current_cache);
+		DB::cache($current_cache);
 		return $ret;
 	}
 
@@ -73,7 +73,6 @@ class NodeSys {
 	 * Solo nodos activos con url propia apra el desplegable
 	 * tampoco sacamos el nodo en el que estamos
 	 * ni el de testeo
-	 * @return <type>
 	 */
 	public static function activeNodes($current = null) {
 		if (empty($current)) {
@@ -81,8 +80,8 @@ class NodeSys {
 		}
 
 		//activamos la cache para este metodo
-		$current_cache = \Goteo\Core\DB::cache();
-		\Goteo\Core\DB::cache(true);
+		$current_cache = DB::cache();
+		DB::cache(true);
 
 		$list = array();
 
@@ -103,13 +102,13 @@ class NodeSys {
 			$list[] = $item;
 		}
 		//dejamos la cache como estaba
-		\Goteo\Core\DB::cache($current_cache);
+		DB::cache($current_cache);
 
 		return $list;
 	}
 
 	/*
-		     * Saca los datos del nodo
+     * Saca los datos del nodo
 	*/
 	public static function setData($id) {
 
@@ -133,7 +132,7 @@ class NodeSys {
 
 		if (!empty($config)) {
 			if (!empty($config->logo)) {
-				$config->logo = \Goteo\Model\Image::get($config->logo);
+				$config->logo = Image::get($config->logo);
 			}
 			return $config;
 		}

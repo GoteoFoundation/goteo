@@ -10,25 +10,14 @@
 
 namespace Goteo\Console\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\PhpExecutableFinder;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-
-use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterSendmailEvent;
-use Goteo\Console\Event\FilterMailingEvent;
-
-use Goteo\Core\Model;
 use Goteo\Model\Mail\SenderRecipient;
-use Goteo\Model\Mail;
-use Goteo\Model\Mail\Sender;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class SendmailCommand extends AbstractCommand {
 
@@ -77,7 +66,6 @@ EOT
 
         try {
             if(!$force) {
-                // $this->debug("Locking recipient [$recipient->id]",  [$recipient, 'recipient_user' => $recipient->user]);
                 if($recipient->isLocked() || !$recipient->setLock(true)->blocked) {
                     throw new \LogicException("Error locking recipient [$recipient->id]");
                 }
@@ -87,20 +75,16 @@ EOT
 
             if($update) {
                 $recipient = $this->dispatch(ConsoleEvents::MAILING_SENDMAIL, new FilterSendmailEvent($recipient, $this->getLogger()))->getRecipient();
-                // sleep(1);
             }
-
         } catch(\LogicException $e) {
             $this->warning('Sendmail Exception', [$recipient, 'recipient_user' => $recipient->user, 'error' =>  $e->getMessage()]);
             return 13;
         }
 
         if(!$force) {
-            // $this->debug("Unlocking recipient [$recipient->id]",  [$recipient, 'recipient_user' => $recipient->user]);
             if($recipient->setLock(false)->blocked) {
                 throw new \RuntimeException("Error unlocking recipient [$recipient->id]");
             }
         }
-
     }
 }

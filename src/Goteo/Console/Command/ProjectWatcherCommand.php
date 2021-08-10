@@ -9,14 +9,13 @@
  */
 
 namespace Goteo\Console\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 
-use Goteo\Console\Event\FilterProjectEvent;
 use Goteo\Console\ConsoleEvents;
+use Goteo\Console\Event\FilterProjectEvent;
 use Goteo\Model\Project;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Proceso para enviar avisos a los autores segun
@@ -41,7 +40,6 @@ class ProjectWatcherCommand extends AbstractCommand {
                 new InputOption('update', 'u', InputOption::VALUE_NONE, 'Actually does the job. If not specified, nothing is done, readonly process.'),
                 new InputOption('project', 'p', InputOption::VALUE_OPTIONAL, 'Only processes the specified Project ID'),
             ))
-
              ->setHelp(<<<EOT
 This script throws events during the active live of a project
 

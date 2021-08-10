@@ -14,16 +14,12 @@ use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterMailingEvent;
-
 use Goteo\Model\Mail;
 use Goteo\Model\Mail\Sender;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -53,10 +49,7 @@ Sends the 12345 pending massive mailing from the mailer_content table:
 <info>./console mailing 12345</info>
 
 EOT
-		)
-
-		;
-
+		);
 	}
 
 	/**
@@ -117,7 +110,6 @@ EOT
                 throw new \RuntimeException("Error locking mailing [{$mailing->id}]");
             }
         }
-
 
 		$total_pending = $mailing->getPendingRecipients(0, 0, true);
 
@@ -218,6 +210,5 @@ EOT
 				throw new \RuntimeException("Error unlocking mailing [{$mailing->id}]");
 			}
 		}
-
 	}
 }
