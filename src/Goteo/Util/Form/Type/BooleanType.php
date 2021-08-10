@@ -19,9 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\CallbackTransformer;
 
 /**
- *
- * This class creates overides Date to show always as the single_text option is activated
- *
+ * This class creates overrides Boolean to show always as the single_text option is activated
  */
 class BooleanType extends CheckboxType
 {
@@ -62,8 +60,6 @@ class BooleanType extends CheckboxType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
-        // $view->vars['row_class'] = 'material-switch';
-        // $view->vars['label_position'] = 'none';
         $view->vars['color'] = $options['color'];
         $view->vars['no_input_wrap'] = $options['no_input_wrap'];
         $view->vars['label_position'] = $options['label_position'];
@@ -74,9 +70,9 @@ class BooleanType extends CheckboxType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
-        return 'boolean';
+        return 'custom_boolean';
     }
 
 }

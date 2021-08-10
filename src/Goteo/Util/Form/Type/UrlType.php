@@ -21,6 +21,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class UrlType extends SymfonyUrlType
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'custom_url';
+    }
+
     /**
      * {@inheritdoc}
      */

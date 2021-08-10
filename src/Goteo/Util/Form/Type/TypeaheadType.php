@@ -15,9 +15,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * This class creates overrides Date to show always as the single_text option is activated
- */
 class TypeaheadType extends TextType
 {
 
@@ -46,7 +43,7 @@ class TypeaheadType extends TextType
         $view->vars['attr']['class'] .= 'form-control typeahead';
         $view->vars['attr']['autocomplete'] = 'off';
         $view->vars['sources'] = $options['sources'];
-        $view->vars['text'] = $options['text'] ? $options['text'] : $view->vars['value'];
+        $view->vars['text'] = $options['text'] ?: $view->vars['value'];
         $view->vars['row_class'] = $options['row_class'];
         $view->vars['value_field'] = $options['value_field'];
         $view->vars['type'] = $options['type'];
@@ -55,7 +52,7 @@ class TypeaheadType extends TextType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'typeahead';
     }

@@ -15,9 +15,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * This class creates overrides Date to show always as the single_text option is activated
- */
 class TagsType extends TextType
 {
 
@@ -43,7 +40,7 @@ class TagsType extends TextType
         $view->vars['row_class'] = $options['row_class'];
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'tags';
     }

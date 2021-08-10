@@ -25,6 +25,14 @@ class TextType extends SymfonyTextType
     /**
      * {@inheritdoc}
      */
+    public function getBlockPrefix(): string
+    {
+        return 'custom_text_type';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);

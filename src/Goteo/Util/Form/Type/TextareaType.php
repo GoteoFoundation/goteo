@@ -42,6 +42,14 @@ class TextareaType extends SymfonyTextareaType
     /**
      * {@inheritdoc}
      */
+    public function getBlockPrefix(): string
+    {
+        return 'custom_textarea';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);

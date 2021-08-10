@@ -17,10 +17,18 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * This class creates overrides Date to show always as the single_text option is activated
+ * This class creates overrides Submit to show always as the single_text option is activated
  */
 class SubmitType extends SymfonySubmitType
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'custom_submit';
+    }
 
     /**
      * {@inheritdoc}

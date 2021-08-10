@@ -52,7 +52,7 @@ class MarkdownType extends TextareaType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'markdown';
     }
