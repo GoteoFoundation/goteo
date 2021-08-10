@@ -17,6 +17,7 @@ use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Core\Model;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Text;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Project;
@@ -26,6 +27,7 @@ use Goteo\Util\Form\Type\MarkdownType;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\TextareaType;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -84,22 +86,21 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
         return $project;
     }
 
-    /**
-     * Some handy defaults for the form
-     */
     public function createFormBuilder(
-        $defaults = null, $name = 'autoform', array $options = ['attr' => ['class' => 'autoform hide-help']]
-    ) {
+        $defaults = null,
+        $name = 'autoform',
+        array $options = ['attr' => ['class' => 'autoform hide-help']]
+    ): FormFactory {
         return parent::createFormBuilder($defaults, $name, $options);
     }
 
-    /**
-     * Handy method to get a form builder
-     * @return Goteo\Library\Forms\FormProcessorInterface
-     */
     public function getModelForm(
-        $form, Model $model, array $defaults = [], array $options = [], Request $request = null
-    ) {
+        $form,
+        Model $model,
+        array $defaults = [],
+        array $options = [],
+        Request $request = null
+    ): FormProcessorInterface {
         $finder = $this->getService('app.forms.finder');
         $finder->setModel($model);
         $validate = $mock_validation = false;

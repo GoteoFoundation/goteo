@@ -61,21 +61,15 @@ abstract class Controller {
      * **Experimental** method to send a response in json, vars only
      */
     public function jsonResponse($vars = []) {
-        $resp =  new JsonResponse($vars);
+        $resp = new JsonResponse($vars);
         if(App::debug()) $resp->setEncodingOptions(JSON_PRETTY_PRINT);
         return $resp;
     }
 
     /**
-     * Forwards the request to another controller.
-     *
-     * @param string $controller The controller name (a string like BlogBundle:Post:index)
-     * @param array  $path       An array of path parameters
-     * @param array  $query      An array of query parameters (defaults to current request query)
-     *
      * @return Response A Response instance
      */
-    public function forward($controller, array $path = [], array $query = null)
+    public function forward(string $controller, array $path = [], array $query = null)
     {
         $path['_controller'] = $controller;
         $subRequest = App::getRequest()->duplicate($query, null, $path);
@@ -147,11 +141,11 @@ abstract class Controller {
         return App::dispatch($eventName, $event);
     }
 
-    /**
-     * Handy method to get a form builder
-     * @return FormFactory
-     */
-    public function createFormBuilder($defaults = null, $name = 'autoform', array $options = []) {
+    public function createFormBuilder(
+        $defaults = null,
+        $name = 'autoform',
+        array $options = []
+    ): FormFactory {
         $default_options = [
             'action' => App::getRequest()->getRequestUri(),
             'attr' => ['class' => 'autoform']
@@ -159,10 +153,6 @@ abstract class Controller {
         return $this->getService('app.forms')->createBuilder($defaults, $name, $options + $default_options);
     }
 
-    /**
-     * Handy method to get a form builder
-     * @return FormProcessorInterface
-     */
     public function getModelForm(
         $form,
         Model $model,
