@@ -100,7 +100,7 @@ class SettingsDashboardController extends DashboardController {
         $processor->createForm();
         $processor->getBuilder()
             ->add('submit', SubmitType::class, [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
+                'label' => $submit_label ?: 'regular-submit'
             ]);
         $form = $processor->getForm();
         $form->handleRequest($request);

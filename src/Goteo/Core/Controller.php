@@ -10,19 +10,18 @@
 
 namespace Goteo\Core;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Form\FormFactory;
-
 use Goteo\Application\App;
 use Goteo\Application\View;
 use Goteo\Core\Traits\LoggerTrait;
-use Goteo\Core\Model;
+use Goteo\Library\Forms\FormProcessorInterface;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 
 abstract class Controller {
@@ -31,12 +30,14 @@ abstract class Controller {
     /**
      * Handy method to send a response from a view
      */
-    public function viewResponse($view, $vars = [], $status = 200, $contentType = 'text/html') {
+    public function viewResponse($view, $vars = [], $status = 200, $contentType = 'text/html'): Response
+    {
         $view = View::render($view, $vars);
         $request = App::getRequest();
         if($request->query->has('pronto') && (App::debug() || $request->isXmlHttpRequest())) {
             $contentType = 'application/json';
         }
+
         return new Response($view, $status, ['Content-Type' => $contentType]);
     }
 
@@ -97,14 +98,14 @@ abstract class Controller {
      * Handy method to enable/disable the SQL cache
      */
     public function dbCache($cache = null) {
-        return \Goteo\Core\DB::cache($cache);
+        return DB::cache($cache);
     }
 
     /**
      * Handy method to enable/disable the SQL replica
      */
     public function dbReplica($replica = null) {
-        return \Goteo\Core\DB::replica($replica);
+        return DB::replica($replica);
     }
 
     /**
@@ -160,13 +161,19 @@ abstract class Controller {
 
     /**
      * Handy method to get a form builder
-     * @return Goteo\Library\Forms\FormProcessorInterface
+     * @return FormProcessorInterface
      */
-    public function getModelForm($form, Model $model, array $defaults = [], array $options = [], Request $request = null) {
+    public function getModelForm(
+        $form,
+        Model $model,
+        array $defaults = [],
+        array $options = [],
+        Request $request = null
+    ): FormProcessorInterface {
         $finder = $this->getService('app.forms.finder');
         $finder->setModel($model);
         $validate = $mock_validation = false;
-        if($request) {
+        if ($request) {
             $validate = $request->query->has('validate');
             $mock_validation = $validate && $request->isMethod('get');
         }

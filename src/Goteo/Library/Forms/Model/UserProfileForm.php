@@ -34,7 +34,8 @@ use Goteo\Library\Forms\FormModelException;
 
 class UserProfileForm extends AbstractFormProcessor {
 
-    public function getConstraints($field) {
+    public function getConstraints($field): array
+    {
         $constraints = [];
         if($field === 'name') {
             $constraints[] = new Constraints\NotBlank();
@@ -65,7 +66,6 @@ class UserProfileForm extends AbstractFormProcessor {
             unset($data['interests'][$key]);
         }
         // Do not test images
-        // var_dump($data);die;
         unset($data['avatar']);
 
         if(empty($data['location'])) $data['location'] = null;
@@ -271,7 +271,7 @@ class UserProfileForm extends AbstractFormProcessor {
             UserLocation::setProperty($user->id, 'locable', (bool)$data['locable'], $errors);
         }
         $user->rebuildData($data, array_keys($form->all()));
-        $user->location = $data['location'] ? $data['location'] : '';
+        $user->location = $data['location'] ?: '';
 
         if (!$user->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));

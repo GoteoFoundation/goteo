@@ -4,10 +4,9 @@
 namespace Goteo\Application;
 
 use Goteo\TestCase;
-
-use Goteo\Application\App;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\DependencyInjection;
+use Symfony\Component\Routing\RouteCollection;
 
 class AppTest extends TestCase {
     public function testApp() {
@@ -15,9 +14,9 @@ class AppTest extends TestCase {
         $this->assertInstanceOf(App::class, $app);
         $this->assertInstanceOf(App::class, App::get());
         $this->assertInstanceOf(App::class, $this->getAttribute($app, '_app'));
-        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $this->getAttribute($app, '_routes'));
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\ContainerBuilder', $this->getAttribute($app, 'serviceContainer'));
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Request', $this->getAttribute($app, '_request'));
+        $this->assertInstanceOf(RouteCollection::class, $this->getAttribute($app, '_routes'));
+        $this->assertInstanceOf(ContainerBuilder::class, $this->getAttribute($app, 'serviceContainer'));
+        $this->assertInstanceOf(Request::class, $this->getAttribute($app, '_request'));
 
         App::clearApp();
         $this->assertNull($this->getAttribute($app, '_routes'));
@@ -25,14 +24,14 @@ class AppTest extends TestCase {
         $this->assertNull($this->getAttribute($app, '_request'));
         $this->assertNull($this->getAttribute($app, 'serviceContainer'));
 
-        App::setRoutes($this->createMock('Symfony\Component\Routing\RouteCollection'));
-        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', App::getRoutes());
+        App::setRoutes($this->createMock(RouteCollection::class));
+        $this->assertInstanceOf(RouteCollection::class, App::getRoutes());
 
-        App::setRequest($this->createMock('Symfony\Component\HttpFoundation\Request'));
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Request', App::getRequest());
+        App::setRequest($this->createMock(Request::class));
+        $this->assertInstanceOf(Request::class, App::getRequest());
 
-        App::setServiceContainer(new DependencyInjection\ContainerBuilder());
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\ContainerBuilder', App::getServiceContainer());
+        App::setServiceContainer(new ContainerBuilder());
+        $this->assertInstanceOf(ContainerBuilder::class, App::getServiceContainer());
     }
 
 /*    public function testNotFound() {
@@ -87,14 +86,13 @@ class AppTest extends TestCase {
     }
     */
 
-    protected function getFullApp()
+    protected function getFullApp(): App
     {
         App::clearApp();
         $routes = include( __DIR__ . '/../../../src/routes.php' );
         $container  = include( __DIR__ . '/../../../src/container.php' );
         App::setRoutes($routes);
         App::setServiceContainer($container);
-        // set routes parameter
         App::getServiceContainer()->setParameter('routes', App::getRoutes());
 
         return App::get();

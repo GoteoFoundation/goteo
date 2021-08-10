@@ -103,12 +103,11 @@ class App extends HttpKernel
 
     /**
      * Creates a new instance of the App ready to run
-     * This methods can be optionally called before this ::get() call:
+     * These methods can be optionally called before this ::get() call:
      *     ::setRequest()
      *     ::setRoutes()
      *     ::setServiceContainer()
      * Next calls to this method will return the current instantiated App
-     * @return App object
      */
     static public function get(): App
     {
