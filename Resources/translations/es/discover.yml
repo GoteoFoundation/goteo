@@ -24,3 +24,8 @@ discover-near-by: 'Cerca de:'
 discover-any-city: 'Ciudad, código postal, ...'
 meta-title-discover: 'Descubre proyectos :: Goteo.org'
 discover-include-review-projects: 'Incluir proyectos en revisión'
+
+impact-discover-filter-by-footprints: 'Filtra por Huellas'
+impact-discover-filter-by-sdg: 'Filtra por Objetivos de Desarrollo Sostenible'
+impact-discover-projects-by-sdg: 'Proyectos que cumplen con los siguientes ODS:'
+impact-discover-search-projects-sdgs: 'Busca un proyecto por Huellas o ODS'
