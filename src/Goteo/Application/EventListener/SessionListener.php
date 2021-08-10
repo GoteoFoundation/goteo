@@ -24,23 +24,20 @@ use Goteo\Application\Currency;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-//
-
 class SessionListener extends AbstractListener {
 
     /**
-     * Chechsk if any of the elements in array $prefixes starts with the same chars as $full_str
-     * @param  [type] $full_str  full string
+     * Checks if any of the elements in array $prefixes starts with the same chars as $full_str
+     *
      * @param  [type] $prefixes array of prexixes
-     * @return boolean          found or not
      */
-    protected function matchPrefix($full_str, $prefixes) {
+    protected function matchPrefix($full_str, $prefixes): bool
+    {
         if(!is_array($prefixes)) {
             $prefixes = [$prefixes];
         }
@@ -62,14 +59,11 @@ class SessionListener extends AbstractListener {
         $request = $event->getRequest();
         $path = $request->getPathInfo();
 
-        // Due a symfony issue, disable FORWARDED header, it may cause some problems
-        // if not exactly the same as the X_FORWARDED_FOR
-        // See https://stackoverflow.com/questions/44543649/conflict-between-http-headers-in-symfony-3
-        Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
-
-        // Add trusted proxies
         if (is_array(Config::get('proxies'))) {
-            $request->setTrustedProxies(Config::get('proxies'));
+            $request->setTrustedProxies(
+                Config::get('proxies'),
+                Request::HEADER_FORWARDED
+            );
         }
 
         //non cookies for notifyAction on investController
