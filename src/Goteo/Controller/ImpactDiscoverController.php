@@ -40,17 +40,19 @@ class ImpactDiscoverController extends \Goteo\Core\Controller {
         
         $footprints = Footprint::getList();
         $sdgs_count = Sdg::getList([],0,0,true);
-        $sdgs = Sdg::getList([],0,$sdg_count);
+        $sdgs = Sdg::getList([],0,$sdgs_count);
 
-        $projects = Project::getByFootprintOrSDGs([], 0, 12); // TODO: Define what projects should be listed here.
 
+        $total = Project::getByFootprintOrSDGs([], 0, 0, true);
+        $projects = Project::getByFootprintOrSDGs([], 0, 9); // TODO: Define what projects should be listed here.
 
         $map = new MapOSM('100%');
         return $this->viewResponse('impact_discover/index', [
             'footprints' => $footprints,
             'sdgs' => $sdgs,
             'map' => $map,
-            'projects' => $projects
+            'projects' => $projects,
+            'total' => $total
         ]);
 
     }

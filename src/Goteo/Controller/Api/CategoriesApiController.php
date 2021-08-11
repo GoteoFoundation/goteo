@@ -76,7 +76,7 @@ class CategoriesApiController extends AbstractApiController {
             $fields = ['id', 'icon', 'name', 'landing_match', /*'order',*/];
         } elseif($tab === 'sdg') {
             $list = Sdg::getList([],0,100, false, $lang);
-            $fields = ['id', 'icon', 'name', 'description', 'link'];
+            $fields = ['id', 'icon', 'name', 'description', 'link', 'footprints'];
         } elseif($tab === 'footprint') {
             $list = Footprint::getList([],0,100, false, $lang);
             $fields = ['id', /*'icon',*/ 'name', 'description'];
@@ -92,6 +92,7 @@ class CategoriesApiController extends AbstractApiController {
             foreach($fields as $f) {
                 $ret[$f] = $el->{$f};
                 if(in_array($f, ['id', 'social_commitment'])) $ret[$f] = (int) $ret[$f];
+                if ($f == 'footprints') $ret[$f] = $el->getFootprints();
                 if($f === 'icon') $ret[$f] = $el->getIcon()->getLink(0,0,false,true);
             }
             return $ret;

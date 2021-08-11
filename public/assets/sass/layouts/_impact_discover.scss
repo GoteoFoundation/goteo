@@ -11,6 +11,64 @@
 
 }
 
+.impact-discover-sdg-list {
+
+    h2 {
+        font-size:25px;
+        font-weight:bold;
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+
+    .row {
+        display:flex;
+        margin:0;
+
+    
+        &#sdg-icons .col {
+    
+            display:flex;
+            margin:2rem 0;
+            overflow-x: scroll;
+    
+            div.sdgicon {
+    
+                margin-right:5px;
+                padding-top:1rem;
+                display:flex;
+                align-items: flex-start;
+    
+                img {
+                    width:80px;
+                }
+    
+                a.close {
+                    float:none;
+                    margin-left:-12px;
+                    opacity:1;
+                    border:1px solid #999;
+                    border-radius:50%;
+                    padding:4px;
+                    vertical-align: top;
+                    background-color:#FFF;
+                    line-height:0;
+                    font-size:15px;
+                    margin-top:-10px;
+    
+                    i.icon.icon-close {
+                        background-color: #999;
+                        width:1rem;
+                        height:1rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .impact-discover-filters {
     padding-top:2rem;
     padding-bottom:2rem;
@@ -56,16 +114,17 @@
                 a {
                     display:block;
                     border-radius:10px;
-                    padding:4px 5px 2px 28px;
+                    padding:5px .5rem 5px .5rem;
                     color:#FFFFFF;
                     filter: grayscale(100%);
                     background-size: cover;
                     font-weight:bold;
                     font-size:1.5rem;
                     text-decoration:none;
+                    pointer:cursor;
     
                     &[data-footprint="all"] {
-                        width: 5em;
+                        width: 4em;
                         background-color:#91B3B8;
                         padding-left:0;
                         padding-right:0;
@@ -73,7 +132,7 @@
                     }
 
                     img {
-                        width:5em;
+                        width:4em;
                     }
                 }
     
@@ -85,7 +144,7 @@
 
     }
 
-    #filters-ods-list {
+    #filters-sdg-list {
 
         margin-bottom:2rem;
 
@@ -130,10 +189,11 @@
         }
     }
 
-    #filters-ods-select {
+    #filters-sdg-select {
         margin-bottom:2rem;
 
         select {
+            width: 100%;
             border: 1px solid #CAD5D6;
             padding: 1rem;
             border-radius: 5px;
@@ -160,54 +220,10 @@
 
     padding-bottom: 5em;
 
-    h1 {
-        font-size:25px;
-        font-weight:bold;
-    }
-
     .row {
 
         display:flex;
         margin:0;
-
-        &#ods-icons .col {
-
-            display:flex;
-            margin:2rem 0;
-            overflow-x: scroll;
-
-            div.odsicon {
-
-                margin-right:5px;
-                padding-top:1rem;
-                display:flex;
-                align-items: flex-start;
-
-                img {
-                    width:80px;
-                }
-
-                a.close {
-                    float:none;
-                    margin-left:-12px;
-                    opacity:1;
-                    border:1px solid #999;
-                    border-radius:50%;
-                    padding:4px;
-                    vertical-align: top;
-                    background-color:#FFF;
-                    line-height:0;
-                    font-size:15px;
-                    margin-top:-10px;
-    
-                    i.icon.icon-close {
-                        background-color: #999;
-                        width:1rem;
-                        height:1rem;
-                    }
-                }
-            }
-        }
         
         img.bg-project {
             position:absolute;
@@ -215,13 +231,13 @@
             width:100%;
             height:100%;
             filter: grayscale(0%);
-            &.eco {
+            &[data-footprint="1"] {
                 filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(80deg);
             }
-            &.soc {
+            &[data-footprint="2"] {
                 filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(160deg);
             }
-            &.dem {
+            &[data-footprint="3"] {
                 filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(300deg);
             }
         }
@@ -230,6 +246,7 @@
             padding:2rem;
             position:relative;
             z-index:10;
+            width: 10rem;
         }
 
         h2 {
@@ -275,7 +292,7 @@
             }
         }
 
-        &#ods-icons {
+        &#sdg-icons {
             .col {
                 flex-direction:row;
             }
@@ -311,7 +328,7 @@
             display:block;
         }
     
-        #filters-footprints, #filters-ods-list, #filters-ods-select {
+        #filters-footprints, #filters-sdg-list, #filters-sdg-select {
             display:none;
         }
     
@@ -331,28 +348,28 @@
             margin-top:2rem;
         }
     
-        #filters-ods-list {
+        #filters-sdg-list {
             order: 4;
         }
     
-        #filters-ods-select {
+        #filters-sdg-select {
             order: 5;
         }
     }
 
     .impact-discover-projects {
-        .row:not(#ods-icons) {
+        .row:not(#sdg-icons) {
             flex-direction: column;
         }
     }
 }
 
 @media screen and (min-width : 721px) {
-    #filters-mobile, #filters-ods-list {
+    #filters-mobile, #filters-sdg-list {
         display:none;
     }
 
-    #filters-footprints, #filters-ods-select {
+    #filters-footprints, #filters-sdg-select {
         display:block;
     }
 }

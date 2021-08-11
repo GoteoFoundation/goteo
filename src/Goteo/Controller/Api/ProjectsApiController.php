@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller\Api;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -18,6 +19,7 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ControllerException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Application\View;
 
 use Goteo\Application\Message;
 use Goteo\Application\Config;
@@ -28,6 +30,7 @@ use Goteo\Model\Invest\InvestMsg;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Reward;
+use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Image;
 use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
@@ -649,5 +652,85 @@ class ProjectsApiController extends AbstractApiController {
 
         return $this->jsonResponse(['invest' => $message->invest]);
     }
+
+    public function projectsFootprintsOrSDGs(Request $request)
+    {
+
+        if ($request->query->has('view'))
+            $view = $request->query->get('view');
+
+        $projects = [];
+        $filters = [];
+        
+        $page = 0;
+        $offset = 0;
+        $limit = 10;
+
+        if ($request->query->has('page'))
+            $page = $request->query->get('page');
+
+        if ($request->query->has('limit'))
+            $limit = $request->query->get('limit');
+
+        if ($request->query->has('sdg') && $request->query->get('sdg')) {
+            $sdgs = explode(',', $request->query->get('sdg'));
+            $filters['sdgs'] = $sdgs;
+        }
+        
+        $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
+        $projects = Project::getByFootprintOrSDGs($filters, $page * $limit, $limit);
+
+        View::setTheme('responsive');
+
+        if ($view == 'list_projects') {
+            $response = [
+                'total' => $total,
+                'page' => $page,
+                'limit' => $limit,
+                'result_total' => count($projects),
+                'html' => View::render( 
+                    'impact_discover/partials/list_project_rows', [
+                        'projects' => $projects
+                    ]
+                )
+            ];
+        }
+        else if ($view == 'mosaic') {
+            $response = [
+                'total' => $total,
+                'page' => $page,
+                'limit' => $limit,
+                'result_total' => count($projects),
+                'html' => View::render( 
+                    'dashboard/partials/projects_widgets_list', [
+                        'projects' => $projects
+                    ]
+                )
+            ];
+        }
+        else {
+            $list_projects = [];
+            foreach($projects as $project) {
+                $ob = ['id' => $project->id,
+                   'name' => $project->name,
+                   'amount' => $project->amount,
+                   'invested' => $project->invested,
+                   'num_investors' => $project->num_investors,
+                   'image' => Image::get($project->image)->getLink(120,120),
+                   'project_location' => ProjectLocation::get($project->id),
+                   'popup' => View::render('map/partials/project_popup.php', array('project' => $project))];
+                $list_projects[] = $ob;
+            }
+
+            $response = [
+                'total' => $total,
+                'result_total' => count($projects),
+                'projects' => $list_projects
+            ];
+        }
+
+        return $this->jsonResponse($response);
+    }
+
 
 }

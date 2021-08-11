@@ -4,8 +4,7 @@
 
 <div id="impact-discover-map" class="section impact-discover-map">
     <div class="container">
-      <h1>Mapa</h1>
-      
+
       <div id="map" class="osm-map"
         <?php if ($map->getHeight() && $map->getWidth()): ?>
           style="height:<?= $map->getHeight() ?>px; width:<?= $map->getWidth() ?>;"
