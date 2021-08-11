@@ -5,8 +5,8 @@
           <a href="" class="filter"><img src="./assets/img/icons/funnel.svg" /> FILTRAR</a>
           <a class="close flip" href="#"><i class="icon icon-close"></i></a>
         </div>
-        <div class="col-xs-12 col-sm-4" id="filters-footprints">
-          <p>Filtra por Huellas de Goteo</p>
+        <div class="col-xs-12 col-sm-6 col-md-6" id="filters-footprints">
+          <p><?= $this->t('impact-discover-filter-by-footprints') ?></p>
           <ul>
             <li><a href="" data-footprint="all" class="active">Todas</a></li>
             <?php foreach($this->footprints as $footprint): ?>
@@ -18,40 +18,35 @@
             <?php endforeach; ?>
           </ul>
         </div>
-        <div class="col-xs-12 col-sm-3" id="filters-ods-list">
-          <p>Filtra por Objetivos de Desarrollo Sostenible</p>
+        <div class="col-xs-12 col-sm-3" id="filters-sdg-list">
+          <p><?= $this->t('impact-discover-filter-by-sdg') ?></p>
           <ul>
             <?php foreach($this->sdgs as $sdg): ?>
-            <li>
-              <input type="checkbox" name="<?= $sdg->name ?>" />
-              <!-- <img src="./assets/img/ods/ods1.svg" /> -->
-              <img src="./assets/img/ods/ods<?= $sdg->id ?>.svg" alt="<?= $sdg->name ?>"/>
-              <?= $sdg->id . $sdg->name ?>
-            </li>
-          <?php endforeach; ?>
+              <li>
+                <input type="checkbox" name="<?= $sdg->name ?>" />
+                <img src="./assets/img/sdg/sdg<?= $sdg->id ?>.svg" alt="<?= $sdg->name ?>"/>
+                <?= $sdg->id . $sdg->name ?>
+              </li>
+            <?php endforeach; ?>
           </ul>
           <p>
-            <a href="" id="reset-ods">Borrar todo</a>
-            <button>Aplicar filtros</button>
+            <a href="" id="reset-sdg"><?= $this->t('regular-delete') ?></a>
+            <button><?= $this->t('regular-apply') ?></button>
           </p>
         </div>
-        <div class="col-xs-12 col-sm-5 text-center" id="filters-ods-select">
+        <div class="col-xs-12 col-sm-6 col-md-4 text-center" id="filters-sdg-select">
           <select>
-            <option>Filtra por Objetivos de Desarrollo sostenible</option>
-            <?= foreach($this->sdgs as $sdg?>
-            <option data-footprints="eco">ODS1</option>
-            <option data-footprints="soc">ODS2</option>
-            <option data-footprints="dem">ODS3</option>
-            <option data-footprints="eco,soc">ODS4</option>
-            <option data-footprints="soc,dem">ODS5</option>
-            <option data-footprints="eco,dem">ODS6</option>
-            <option data-footprints="eco,doc,dem">ODS7</option>
+            <option><?= $this->t('impact-discover-filter-by-sdg') ?></option>
+
+            <?php foreach($this->sdgs as $sdg): ?>
+              <option data-footprints="<?= implode(',',array_column($sdg->getFootprints(), 'id'))?>" value="<?= $sdg->id ?>"> <?= $sdg->name ?></option>
+            <?php endforeach; ?>
           </select>
         </div>
-        <div class="col-xs-12 col-sm-3 text-right" id="filters-view-as">
-          <a id="activate-mosaic" onclick="activateMosaic()"><img src="./assets/img/icons/mosaic.svg"></a>
-          <a id="activate-projects" onclick="activateProjects()" class="active"><img src="./assets/img/icons/lists.svg"></a>
-          <a id="activate-map" onclick="activateMap()"><img src="./assets/img/icons/map.svg"></a>
+        <div class="col-xs-12 col-sm-3 col-md-2 text-right" id="filters-view-as">
+          <a id="activate-mosaic"><img src="./assets/img/icons/mosaic.svg"></a>
+          <a id="activate-projects" class="active"><img src="./assets/img/icons/lists.svg"></a>
+          <a id="activate-map"><img src="./assets/img/icons/map.svg"></a>
         </div>
       </div>
   </div>

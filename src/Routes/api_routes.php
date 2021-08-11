@@ -194,6 +194,13 @@ $api->add('api-projects', new Route(
         )
 ));
 
+// Projects by sdg
+$api->add('api-projects', new Route(
+    '/projects_by_sdg',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectsFootprintsOrSDGs',
+        )
+));
+
 // One Project info
 $api->add('api-project', new Route(
     '/projects/{id}',
