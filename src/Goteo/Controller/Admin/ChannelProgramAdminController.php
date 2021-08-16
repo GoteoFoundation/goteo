@@ -13,6 +13,7 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\Admin\AdminProgramForm;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Node;
@@ -89,7 +90,7 @@ class ChannelProgramAdminController extends AbstractAdminController
     $program = new NodeProgram();
     $program->node_id = $node;
 
-    $processor = $this->getModelForm('AdminProgram', $program, [], [], $request);
+    $processor = $this->getModelForm(AdminProgramForm::class, $program, [], [], $request);
     $processor->createForm()->getBuilder()
       ->add('submit', SubmitType::class, [
         'label' => 'admin-channelprogram-create',
@@ -127,7 +128,7 @@ class ChannelProgramAdminController extends AbstractAdminController
 
     $program = NodeProgram::get($program_id);
 
-    $processor = $this->getModelForm('AdminProgram', $program, (array) $program, [], $request);
+    $processor = $this->getModelForm(AdminProgramForm::class, $program, (array) $program, [], $request);
     $processor->createForm()->getBuilder()
       ->add('submit', SubmitType::class, [
         'label' => 'regular-submit',

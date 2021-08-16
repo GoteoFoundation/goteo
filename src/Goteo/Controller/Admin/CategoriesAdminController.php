@@ -92,7 +92,7 @@ class CategoriesAdminController extends AbstractAdminController {
         ]);
     }
 
-    public function editAction($tab = 'category', $id = '', Request $request) {
+    public function editAction(Request $request, $tab = 'category', $id = '') {
 
         if(!isset($this->tabs[$tab])) throw new ModelNotFoundException("Not found type [$tab]");
         $model = $this->tabs[$tab]['model'];
@@ -105,7 +105,7 @@ class CategoriesAdminController extends AbstractAdminController {
         }
 
         $defaults = (array) $instance;
-        $processor = $this->getModelForm("Admin{$model}Edit", $instance, $defaults, [], $request);
+        $processor = $this->getModelFormGuessingClass("Admin{$model}Edit", $instance, $defaults, [], $request);
         $processor->createForm();
         $processor->getBuilder()
             ->add('submit', SubmitType::class, [

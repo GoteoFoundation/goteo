@@ -13,6 +13,7 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\Admin\AdminSectionForm;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Node;
@@ -96,7 +97,7 @@ class ChannelSectionAdminController extends AbstractAdminController
     if ($order)
       $section->order = NodeSections::next($node);
 
-    $processor = $this->getModelForm('AdminSection', $section, [], [], $request);
+    $processor = $this->getModelForm(AdminSectionForm::class, $section, [], [], $request);
     $processor->createForm()->getBuilder()
       ->add('submit', SubmitType::class, [
         'label' => 'admin-channelsection-create',
@@ -133,7 +134,7 @@ class ChannelSectionAdminController extends AbstractAdminController
     }
 
     $section = NodeSections::get($section_id);
-    $processor = $this->getModelForm('AdminSection', $section, (array) $section, [], $request);
+    $processor = $this->getModelForm(AdminSectionForm::class, $section, (array) $section, [], $request);
     $processor->createForm()->getBuilder()
       ->add('submit', 'submit', [
         'label' => 'regular-submit',

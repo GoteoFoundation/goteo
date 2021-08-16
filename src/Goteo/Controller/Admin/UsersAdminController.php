@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller\Admin;
 
+use Goteo\Library\Forms\Admin\AdminUserCreateForm;
 use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,7 +89,7 @@ class UsersAdminController extends AbstractAdminController {
     }
 
     public function addAction(Request $request) {
-        $processor = $this->getModelForm('AdminUserCreate', new User(), [], [], $request);
+        $processor = $this->getModelForm(AdminUserCreateForm::class, new User(), [], [], $request);
         $processor->createForm();
         $processor->getBuilder()
             ->add('submit', SubmitType::class, [

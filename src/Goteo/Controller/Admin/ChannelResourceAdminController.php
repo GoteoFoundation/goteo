@@ -13,6 +13,7 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\Admin\AdminChannelResourceEditForm;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Node\NodeResource as Resource;
@@ -61,7 +62,7 @@ class ChannelResourceAdminController extends AbstractAdminController {
 		]);
 	}
 
-	public function editAction($id = '', Request $request) {
+	public function editAction(Request $request, $id = '') {
 
 		$resource = $id ? Resource::get($id) : new Resource();
 
@@ -70,7 +71,7 @@ class ChannelResourceAdminController extends AbstractAdminController {
 		}
 
 		$defaults = (array) $resource;
-		$processor = $this->getModelForm('AdminChannelResourceEdit', $resource, $defaults, [], $request);
+		$processor = $this->getModelForm(AdminChannelResourceEditForm::class, $resource, $defaults, [], $request);
 		$processor->createForm();
 		$processor->getBuilder()
 			->add('submit', SubmitType::class, [

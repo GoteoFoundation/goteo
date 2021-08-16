@@ -14,6 +14,7 @@ use Goteo\Application\App;
 use Goteo\Application\View;
 use Goteo\Core\Traits\LoggerTrait;
 use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Util\Form\FormFinder;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -152,13 +153,40 @@ abstract class Controller {
     }
 
     public function getModelForm(
+        string $formClass,
+        Model $model,
+        array $defaults = [],
+        array $options = [],
+        Request $request = null,
+        array $formBuilderOptions = ['csrf_protection' => false]
+    ): FormProcessorInterface {
+        /** @var $finder FormFinder */
+        $finder = App::getService('app.forms.finder');
+        $finder->setModel($model);
+        $validate = $mock_validation = false;
+        if ($request) {
+            $validate = $request->query->has('validate');
+            $mock_validation = $validate && $request->isMethod('get');
+        }
+        // TODO: a better way to create a csrf_protection without showing errors CSRF on mock_validation
+        $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', $formBuilderOptions));
+        $processor = $finder->getInstanceOfClassForm($formClass, $options);
+        // Set full validation if required in Request
+        // Do a fake submit of the form on create to test errors (only on GET requests)
+        $processor->setFullValidation($validate, $mock_validation);
+
+        return $processor;
+    }
+
+    public function getModelFormGuessingClass(
         $form,
         Model $model,
         array $defaults = [],
         array $options = [],
         Request $request = null
     ): FormProcessorInterface {
-        $finder = $this->getService('app.forms.finder');
+        /** @var $finder FormFinder */
+        $finder = App::getService('app.forms.finder');
         $finder->setModel($model);
         $validate = $mock_validation = false;
         if ($request) {

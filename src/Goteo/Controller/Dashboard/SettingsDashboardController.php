@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller\Dashboard;
 
+use Goteo\Library\Forms\Model\UserProfileForm;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\EmailType;
@@ -93,7 +94,7 @@ class SettingsDashboardController extends DashboardController {
         $defaults['webs'] = implode("\n", $user->webs);
         $defaults['interests'] = array_map(function($i){ return $i->interest; }, $user->interests);
 
-        $processor = $this->getModelForm('UserProfile', $user, $defaults, [], $request);
+        $processor = $this->getModelForm(UserProfileForm::class, $user, $defaults, [], $request);
         $processor->createForm();
         $processor->getBuilder()
             ->add('submit', SubmitType::class, [

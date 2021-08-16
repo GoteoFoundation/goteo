@@ -13,6 +13,7 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\Admin\AdminStoryEditForm;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Stories;
@@ -66,7 +67,7 @@ class StoriesAdminController extends AbstractAdminController {
 		]);
 	}
 
-	public function editAction($id = '', Request $request) {
+	public function editAction(Request $request, $id = '') {
 
 		$story = $id ? Stories::get($id) : new Stories();
 
@@ -75,7 +76,7 @@ class StoriesAdminController extends AbstractAdminController {
 		}
 
 		$defaults = (array) $story;
-		$processor = $this->getModelForm('AdminStoryEdit', $story, $defaults, [], $request);
+		$processor = $this->getModelForm(AdminStoryEditForm::class, $story, $defaults, [], $request);
 		$processor->createForm();
 		$processor->getBuilder()
 			->add('submit', SubmitType::class, [

@@ -12,6 +12,7 @@ namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Forms\Model\QuestionnaireCreateForm;
 use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,7 +60,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
       ];
   }
 
-  function saveQuestionnaire($request, $form, $model)
+  function saveQuestionnaire($request, $form)
   {
       if(!$form) {
           $form = $this->getBuilder()->getForm();
@@ -109,7 +110,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
       $questionnaire->save();
    }
 
-  $processor = $this->getModelForm('QuestionnaireCreate', $questionnaire, (array) $questionnaire, [], $request);
+  $processor = $this->getModelForm(QuestionnaireCreateForm::class, $questionnaire, (array) $questionnaire, [], $request);
   $processor->createForm()->getBuilder()
     ->add(
         'add-question', SubmitType::class,
@@ -154,7 +155,7 @@ class ChannelCriteriaAdminController extends AbstractAdminController
           }
       }
 
-      $this->saveQuestionnaire($request, $form, $questionnaire);
+      $this->saveQuestionnaire($request, $form);
       Message::info(Text::get('admin-edit-entry-ok'));
     }
 
@@ -169,10 +170,10 @@ class ChannelCriteriaAdminController extends AbstractAdminController
   public function exportAction($id) {
 
     try {
-			$channel = Node::get($id);
-		} catch (ModelNotFoundException $e) {
-			Message::error($e->getMessage());
-			return $this->redirect('/admin/channelcriteria');
+        $channel = Node::get($id);
+    } catch (ModelNotFoundException $e) {
+        Message::error($e->getMessage());
+        return $this->redirect('/admin/channelcriteria');
     }
 
     $questionnaire = Questionnaire::getByChannel($id);

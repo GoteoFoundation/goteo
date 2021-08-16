@@ -15,9 +15,9 @@ use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
-use Goteo\Core\Model;
 use Goteo\Library\Forms\FormModelException;
-use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Library\Forms\Model\ProjectTranslateOverviewForm;
+use Goteo\Library\Forms\Model\ProjectTranslateStoryForm;
 use Goteo\Library\Text;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Project;
@@ -53,7 +53,6 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 'costs' => Text::get('step-4'),
                 'rewards' => Text::get('step-5'),
                 'supports' => Text::get('step-6'),
-
                 // 'updates' => Text::get('project-menu-updates')
             ],
             'languages' => $languages,
@@ -79,7 +78,6 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 $story = reset(Stories::getall(false, false, ['project' => $this->project->id]));
                 $data['percents']['story']= $story ? $story->getLangsGroupPercent($lang_check, ['id']) : 0;
             }
-
         }
 
         View::getEngine()->useData($data);
@@ -94,40 +92,10 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
         return parent::createFormBuilder($defaults, $name, $options);
     }
 
-    public function getModelForm(
-        $form,
-        Model $model,
-        array $defaults = [],
-        array $options = [],
-        Request $request = null
-    ): FormProcessorInterface {
-        $finder = $this->getService('app.forms.finder');
-        $finder->setModel($model);
-        $validate = $mock_validation = false;
-        if($request) {
-            $validate = $request->query->has('validate');
-            $mock_validation = $validate && $request->isMethod('get');
-        }
-        // TODO: a better way to create a csrf_protection without showing errors CSRF on mock_validation
-        $finder->setBuilder(
-            $this->createFormBuilder(
-                $defaults,
-                'autoform',
-                ['csrf_protection' => false, 'attr' => ['class' => 'autoform hide-help']]
-            )
-        );
-        $processor = $finder->getInstance($form, $options);
-        // Set full validation if required in Request
-        // Do a fake submit of the form on create to test errors (only on GET requests)
-        $processor->setFullValidation($validate, $mock_validation);
-
-        return $processor;
-    }
-
     /**
      * Index translator
      */
-    public function translateAction($pid, Request $request) {
+    public function translateAction($pid) {
         $project = $this->validateProject($pid, 'translate');
         if($project instanceOf Response) return $project;
 
@@ -165,7 +133,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
     /**
      * Project overview translator
      */
-    public function overviewTranslateAction($pid, $lang = null, Request $request) {
+    public function overviewTranslateAction(Request $request, $pid, $lang = null) {
 
         $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
@@ -173,8 +141,14 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
         $defaults = (array) $project->getLang($lang);
         $languages = Lang::listAll('name', false);
 
-        // Create the form
-        $processor = $this->getModelForm('ProjectTranslateOverview', $project, $defaults, ['lang' => $lang], $request);
+        $processor = $this->getModelForm(
+            ProjectTranslateOverviewForm::class,
+            $project,
+            $defaults,
+            ['lang' => $lang],
+            $request,
+            ['csrf_protection' => false, 'attr' => ['class' => 'autoform hide-help']]
+        );
         $processor->createForm();
         $processor->getBuilder()
             ->add('submit', SubmitType::class)
@@ -222,7 +196,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
     /**
      * Project costs translator
      */
-    public function costsTranslateAction($pid, $lang = null, Request $request) {
+    public function costsTranslateAction(Request $request, $pid, $lang = null) {
 
         $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
@@ -312,7 +286,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
     /**
      * Project rewards translator
      */
-    public function rewardsTranslateAction($pid, $lang = null, Request $request) {
+    public function rewardsTranslateAction(Request $request, $pid, $lang = null) {
 
         $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
@@ -420,7 +394,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
     /**
      * Project supports translator
      */
-    public function supportsTranslateAction($pid, $lang = null, Request $request) {
+    public function supportsTranslateAction(Request $request, $pid, $lang = null) {
 
         $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
@@ -604,7 +578,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
     /**
      * Project story translator
     */
-    public function storyTranslateAction($pid, $lang = null, Request $request) {
+    public function storyTranslateAction(Request $request, $pid, $lang = null) {
 
         $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
@@ -618,8 +592,14 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
 
         $defaults = (array) $story->getLang($lang);
 
-        // Create the form
-        $processor = $this->getModelForm('ProjectTranslateStory', $story, $defaults, ['lang' => $lang], $request);
+        $processor = $this->getModelForm(
+            ProjectTranslateStoryForm::class,
+            $story,
+            $defaults,
+            ['lang' => $lang],
+            $request,
+            ['csrf_protection' => false, 'attr' => ['class' => 'autoform hide-help']]
+        );
         $processor->createForm();
         $processor->getBuilder()
             ->add('submit', SubmitType::class)

@@ -24,6 +24,13 @@ use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Controller\DashboardController;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Forms\Model\ProjectCampaignForm;
+use Goteo\Library\Forms\Model\ProjectCostsForm;
+use Goteo\Library\Forms\Model\ProjectOverviewForm;
+use Goteo\Library\Forms\Model\ProjectPersonalForm;
+use Goteo\Library\Forms\Model\ProjectPostForm;
+use Goteo\Library\Forms\Model\ProjectRewardsForm;
+use Goteo\Library\Forms\Model\ProjectStoryForm;
 use Goteo\Library\Text;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
@@ -50,7 +57,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints;
 
 class ProjectDashboardController extends DashboardController {
-    protected $user, $admin = false;
+    protected $user;
+    protected $admin = false;
 
     public function __construct() {
         parent::__construct();
@@ -94,7 +102,6 @@ class ProjectDashboardController extends DashboardController {
                 ['text' => '<i class="fa fa-2x fa-gift"></i> ' . Text::get('step-5'), 'link' => $prefix . '/rewards', 'id' => 'rewards'],
                 ['text' => '<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), 'link' => $prefix . '/supports', 'id' => 'supports'],
             ];
-            // Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
             Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-manage-campaign'), $submenu, 'project', null, 'sidebar');
         }
 
@@ -264,8 +271,7 @@ class ProjectDashboardController extends DashboardController {
             }
         }
 
-        // Create the form
-        $processor = $this->getModelForm('ProjectPersonal', $project, $defaults, ['account' => $account], $request);
+        $processor = $this->getModelForm(ProjectPersonalForm::class, $project, $defaults, ['account' => $account], $request);
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $processor->getBuilder()
             ->add('submit', SubmitType::class, [
@@ -299,7 +305,7 @@ class ProjectDashboardController extends DashboardController {
 
         $defaults = (array)$project;
 
-        $processor = $this->getModelForm('ProjectOverview', $project, $defaults, [], $request);
+        $processor = $this->getModelForm(ProjectOverviewForm::class, $project, $defaults, [], $request);
         // For everyone
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         // Just for the owner
@@ -426,7 +432,7 @@ class ProjectDashboardController extends DashboardController {
         }
 
         $defaults = (array)$post;
-        $processor = $this->getModelForm('ProjectPost', $post, $defaults, ['project' => $project]);
+        $processor = $this->getModelForm(ProjectPostForm::class, $post, $defaults, ['project' => $project]);
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit', [])
@@ -461,7 +467,7 @@ class ProjectDashboardController extends DashboardController {
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project;
-        $processor = $this->getModelForm('ProjectCosts', $project, $defaults, [], $request);
+        $processor = $this->getModelForm(ProjectCostsForm::class, $project, $defaults, [], $request);
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $builder = $processor->getBuilder();
         if(!$processor->getReadonly()) {
@@ -535,7 +541,7 @@ class ProjectDashboardController extends DashboardController {
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project;
-        $processor = $this->getModelForm('ProjectRewards', $project, $defaults, [], $request);
+        $processor = $this->getModelForm(ProjectRewardsForm::class, $project, $defaults, [], $request);
         $processor->setReadonly(!($this->admin || $project->inEdition()));
         // Rewards can be added during campaign
         if($project->inCampaign() || $project->inReview()) {
@@ -689,7 +695,13 @@ class ProjectDashboardController extends DashboardController {
             }
         }
 
-        $processor = $this->getModelForm('ProjectCampaign', $project, $defaults, ['account' => $account, 'user' => $this->user], $request);
+        $processor = $this->getModelForm(
+            ProjectCampaignForm::class,
+            $project,
+            $defaults,
+            ['account' => $account, 'user' => $this->user],
+            $request
+        );
         // For everyone
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         // Just for the owner
@@ -1069,7 +1081,7 @@ class ProjectDashboardController extends DashboardController {
         $defaults['pool_image'] = $story->pool_image ? $story->getPoolImage() : '';
 
         // Create the form
-        $processor = $this->getModelForm('ProjectStory', $story, $defaults, ['project' => $project], $request);
+        $processor = $this->getModelForm(ProjectStoryForm::class, $story, $defaults, ['project' => $project], $request);
         // Set readonly if active? this is done by and admin
         $processor->setReadonly(!$this->admin && (bool)$story->active)->createForm();
 

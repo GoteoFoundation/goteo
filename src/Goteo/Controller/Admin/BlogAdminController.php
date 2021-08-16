@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller\Admin;
 
+use Goteo\Library\Forms\Admin\AdminPostEditForm;
 use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +71,7 @@ class BlogAdminController extends AbstractAdminController {
         ]);
     }
 
-    public function editAction($slug = '', Request $request) {
+    public function editAction(Request $request, $slug = '') {
         $node = Config::get('node');
         $blog = Blog::get($node, 'node');
         if (!$blog instanceof Blog) {
@@ -107,7 +108,7 @@ class BlogAdminController extends AbstractAdminController {
         if(!$post) throw new ModelNotFoundException("Not found post [$slug]");
 
         $defaults = (array)$post;
-        $processor = $this->getModelForm('AdminPostEdit', $post, $defaults, [], $request);
+        $processor = $this->getModelForm(AdminPostEditForm::class, $post, $defaults, [], $request);
         $processor->createForm();
         $processor->getBuilder()
             ->add('submit', SubmitType::class, [

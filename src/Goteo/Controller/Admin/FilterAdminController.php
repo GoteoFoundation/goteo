@@ -13,6 +13,7 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Forms\Model\FilterForm;
 use Goteo\Library\Text;
 use Goteo\Model\Filter;
 use PDOException;
@@ -63,7 +64,7 @@ class FilterAdminController extends AbstractAdminController
         ]);
     }
 
-    public function editAction($id = '', Request $request)
+    public function editAction(Request $request, $id = '')
     {
         try  {
             $filter = $id ? Filter::get($id) : new Filter();
@@ -73,7 +74,7 @@ class FilterAdminController extends AbstractAdminController
         }
 
         $defaults = (array) $filter;
-        $processor = $this->getModelForm('Filter', $filter, $defaults, Array(), $request);
+        $processor = $this->getModelForm(FilterForm::class, $filter, $defaults, Array(), $request);
         $processor->createForm();
         $form = $processor->getForm();
         $form->handleRequest($request);

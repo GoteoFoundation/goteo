@@ -11,7 +11,6 @@
 namespace Goteo\Util\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints;
 use Goteo\Core\Model;
 
 class FormFinder {
@@ -27,7 +26,8 @@ class FormFinder {
         return $this->builder;
     }
 
-    public function setModel(Model $model) {
+    public function setModel(Model $model): FormFinder
+    {
         $this->model = $model;
         return $this;
     }
@@ -51,5 +51,9 @@ class FormFinder {
     public function getInstance($form, array $options = []) {
         $class = $this->resolve($form);
         return new $class($this->builder, $this->model, $options);
+    }
+
+    public function getInstanceOfClassForm(string $formClass, array $options = []) {
+        return new $formClass($this->builder, $this->model, $options);
     }
 }

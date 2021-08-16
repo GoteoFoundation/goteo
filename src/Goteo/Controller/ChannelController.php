@@ -11,6 +11,8 @@
 namespace Goteo\Controller;
 
 use Goteo\Core\Controller;
+use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Forms\Model\QuestionnaireForm;
 use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
@@ -299,7 +301,7 @@ class ChannelController extends Controller {
 
         if ($questionnaire->questions) {
             $questionnaire->project_id = $pid;
-            $processor = $this->getModelForm('Questionnaire', $questionnaire, (array) $questionnaire, [], $request);
+            $processor = $this->getModelForm(QuestionnaireForm::class, $questionnaire, (array) $questionnaire, [], $request);
             $processor->createForm()->getBuilder()
                 ->add(
                     'submit', SubmitType::class, [

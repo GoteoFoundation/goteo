@@ -13,6 +13,7 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\Admin\AdminWorkshopEditForm;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Workshop;
@@ -61,7 +62,7 @@ class WorkshopAdminController extends AbstractAdminController {
 		]);
 	}
 
-	public function editAction($id = '', Request $request) {
+	public function editAction(Request $request, $id = '') {
 
 		$workshop = $id ? Workshop::get($id) : new workshop();
 
@@ -70,7 +71,7 @@ class WorkshopAdminController extends AbstractAdminController {
 		}
 
 		$defaults = (array) $workshop;
-		$processor = $this->getModelForm('AdminWorkshopEdit', $workshop, $defaults, [], $request);
+		$processor = $this->getModelForm(AdminWorkshopEditForm::class, $workshop, $defaults, [], $request);
 		$processor->createForm();
 		$processor->getBuilder()
 			->add('submit', SubmitType::class, [
