@@ -689,14 +689,13 @@ class ProjectDashboardController extends DashboardController {
             }
         }
 
-        // Create the form
         $processor = $this->getModelForm('ProjectCampaign', $project, $defaults, ['account' => $account, 'user' => $this->user], $request);
         // For everyone
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         // Just for the owner
 
         if(!$processor->getReadonly()) {
-            $processor->getBuilder()->add('submit', 'submit', [
+            $processor->getBuilder()->add('submit', SubmitType::class, [
                 'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
             ]);
         }

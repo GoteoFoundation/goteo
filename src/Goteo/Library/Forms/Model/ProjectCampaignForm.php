@@ -25,8 +25,10 @@ use Goteo\Model\User;
 
 class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessorInterface {
 
-    public function getConstraints($field) {
+    public function getConstraints($field): array
+    {
         $constraints = [];
+
         if($field === 'paypal') {
             $constraints[] = new Constraints\Email([
                 'checkMX' => true,
@@ -38,6 +40,7 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 $constraints[] = new Constraints\NotBlank();
             }
         }
+
         return $constraints;
     }
 
@@ -52,11 +55,10 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 'required' => true,
                 'expanded' => true,
                 'wrap_class' => 'col-xs-6',
-                'choices' => [
-                    '1' => Text::get('project-one-round'),
-                    '0' => Text::get('project-two-rounds')
-                ],
-                'attr' => ['help' => '<span class="' . ($project->one_round ? '': 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden': '') . '">' . Text::get('tooltip-project-2rounds') . '</span>']
+                'choices' => $this->getRoundsAsChoices(),
+                'attr' => [
+                    'help' => '<span class="' . ($project->one_round ? '': 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden': '') . '">' . Text::get('tooltip-project-2rounds') . '</span>'
+                ]
             ])
             ->add('phone', TextType::class, [
                 'label' => 'personal-field-phone',
@@ -77,10 +79,22 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('spread'),
                 'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-spread'), 'info' => '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field'), 'rows' => 8]
+                'attr' => [
+                    'help' => Text::get('tooltip-project-spread'),
+                    'info' => '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field'),
+                    'rows' => 8
+                ]
             ])
             ;
         return $this;
+    }
+
+    private function getRoundsAsChoices(): array
+    {
+        return [
+            Text::get('project-one-round') => 1,
+            Text::get('project-two-rounds') => 0
+        ];
     }
 
     public function save(FormInterface $form = null, $force_save = false) {
@@ -114,6 +128,5 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
 
         return $this;
     }
-
 
 }

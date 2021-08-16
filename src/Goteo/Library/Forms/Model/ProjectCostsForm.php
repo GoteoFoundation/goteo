@@ -18,6 +18,7 @@ use Goteo\Util\Form\Type\NumberType;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\TitleType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
@@ -28,14 +29,17 @@ use Goteo\Library\Forms\FormModelException;
 class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInterface {
     private $costs = [];
 
-    public function getConstraints($field) {
+    public function getConstraints($field): array
+    {
         $constraints = [];
+
         if($this->getFullValidation()) {
             $constraints[] = new Constraints\NotBlank();
         }
         elseif(strpos($field, 'description') !== 0) {
             $constraints[] = new Constraints\NotBlank();
         }
+
         return $constraints;
     }
 
@@ -70,6 +74,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
         $project = $this->getModel();
         $this->costs[$cost->id] = $cost;
         $suffix = "_{$cost->id}";
+
         $this->getBuilder()
             ->add("amount$suffix", NumberType::class, [
                 'label' => 'costs-field-amount',
@@ -83,7 +88,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                 'label' => 'costs-field-type',
                 'disabled' => $this->getReadonly(),
                 'data' => $cost->type,
-                'choices' => Cost::types(),
+                'choices' => $this->getCostsAsChoices(),
                 'constraints' => $this->getConstraints("type$suffix"),
                 'required' => true,
             ])
@@ -91,10 +96,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                 'label' => 'costs-field-required_cost',
                 'disabled' => $this->getReadonly(),
                 'data' => (int)$cost->required,
-                'choices' => [
-                    '1' => Text::get('costs-field-required_cost-yes'),
-                    '0' => Text::get('costs-field-required_cost-no')
-                ],
+                'choices' => $this->getRequiredCostChoices(),
                 'required' => true,
             ])
             ->add("cost$suffix", TextType::class, [
@@ -111,6 +113,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                 'data' => $cost->description,
                 'required' => false,
             ]);
+
         if(!$this->getReadonly()) {
             $this->getBuilder()
                 ->add("remove$suffix", SubmitType::class, [
@@ -120,16 +123,18 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                     'attr' => [
                         'class' => 'pull-right btn btn-default remove-cost',
                         'data-confirm' => Text::get('project-remove-cost-confirm')
-                        ]
+                    ]
                 ]);
         }
     }
 
     public function createForm() {
         $project = $this->getModel();
-        $builder = $this->getBuilder()
-            ->add('title-costs', 'title', ['label' => 'costs-fields-main-title'])
-            ;
+        $this->getBuilder()->add(
+            'title-costs',
+            TitleType::class,
+            ['label' => 'costs-fields-main-title']
+        );
         foreach($project->costs as $cost) {
             $this->addCost($cost);
         }
@@ -167,6 +172,26 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
         if($validate && !$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
+    }
+
+    private function getCostsAsChoices(): array
+    {
+        $choices = [];
+        $costs = Cost::types();
+
+        foreach ($costs as $key => $value) {
+            $choices[$value] = $key;
+        }
+
+        return $choices;
+    }
+
+    private function getRequiredCostChoices(): array
+    {
+        return [
+            Text::get('costs-field-required_cost-yes') => 1,
+            Text::get('costs-field-required_cost-no') => 0
+        ];
     }
 
 }
