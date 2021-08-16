@@ -15,18 +15,11 @@ use Goteo\Application\Config;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Console {
     static protected $app;
 	static protected $console;
 	static protected array $commands = [];
-	protected $dispatcher;
-
-	public function __construct(EventDispatcherInterface $dispatcher) {
-		$this->dispatcher = $dispatcher;
-	}
 
 	/**
 	 * Creates a new instance of the App ready to run
@@ -48,23 +41,9 @@ class Console {
 			foreach (self::$commands as $command) {
 				self::$console->add($command);
 			}
-
 		}
 
 		return self::$console;
-	}
-
-	public function getDispatcher() {
-		if (!$this->dispatcher) {
-			$this->setDispatcher(new EventDispatcher());
-		}
-
-		return $this->dispatcher;
-	}
-
-	public function setDispatcher(EventDispatcher $dispatcher) {
-		$this->dispatcher = $dispatcher;
-		self::get()->setDispatcher($dispatcher);
 	}
 
 	static public function add(Command $command) {

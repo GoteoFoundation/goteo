@@ -205,8 +205,6 @@ $sc->register('console_dispatcher', Symfony\Component\EventDispatcher\EventDispa
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.mailing')))
 ;
 
-$sc->register('console', Goteo\Console\Console::class)
-   ->setArguments(array(new Reference('console_dispatcher')))
-;
+$sc->register('console', Goteo\Console\Console::class);
 
 return $sc;
