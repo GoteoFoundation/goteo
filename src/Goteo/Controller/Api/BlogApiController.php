@@ -58,11 +58,11 @@ class BlogApiController extends AbstractApiController {
         }
 
         $filters['blog'] = 1;
-        
+
         $limit = 25;
         $offset = $page * $limit;
         $list = [];
-        
+
         foreach(Post::getFilteredList($filters, $offset, $limit) as $post) {
             $ob = ['id' => $post->id,
                    'title' => $post->title
@@ -197,7 +197,7 @@ class BlogApiController extends AbstractApiController {
             $post->dbUpdate([$prop]);
             $result['value'] = $post->{$prop};
             $this->dispatch(AppEvents::BLOG_POST, new FilterBlogPostEvent($post));
-            // if($errors = Message::getErrors()) throw new ControllerException(implode("\n",$errors));
+
             if($errors = Message::getErrors()) {
                 $result['error'] = true;
                 $result['message'] = implode("\n", $errors);
@@ -205,7 +205,6 @@ class BlogApiController extends AbstractApiController {
             if($messages = Message::getMessages()) {
                 $result['message'] = implode("\n", $messages);
             }
-
         }
         return $this->jsonResponse($result);
     }

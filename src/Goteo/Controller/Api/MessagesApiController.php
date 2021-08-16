@@ -32,10 +32,7 @@ class MessagesApiController extends AbstractApiController {
      * Simple listing of messages for a project
      * TODO: according to permissions, filter this users
      */
-    public function commentsAction($pid, Request $request) {
-        // if(!$this->user) {
-        //     throw new ControllerAccessDeniedException();
-        // }
+    public function commentsAction($pid) {
         $prj = Project::get($pid);
 
         // Security, first of all...
@@ -133,13 +130,11 @@ class MessagesApiController extends AbstractApiController {
             throw new ModelException(Text::get('dashboard-message-donors-error'));
         }
 
-        // Send and event to create the Feed and send emails
         $this->dispatch(AppEvents::MESSAGE_CREATED, $event);
 
         if($request->request->get('view') === 'dashboard') {
             $view = 'dashboard/project/partials/comments/item';
-        }
-        else {
+        } else {
             $view = 'project/partials/comment';
         }
         View::setTheme('responsive');
@@ -155,11 +150,10 @@ class MessagesApiController extends AbstractApiController {
         ]);
     }
 
-
     /**
      * Delete a comment
      */
-    public function deleteCommentAction($cid, Request $request) {
+    public function deleteCommentAction($cid) {
         if(!$this->user) {
             throw new ControllerAccessDeniedException();
         }
@@ -184,7 +178,7 @@ class MessagesApiController extends AbstractApiController {
      * Simple listing of messages for a project
      * TODO: according to permissions, filter this users
      */
-    public function messagesAction($pid, Request $request) {
+    public function messagesAction($pid) {
         $prj = Project::get($pid);
 
         // Security, first of all...
@@ -213,7 +207,7 @@ class MessagesApiController extends AbstractApiController {
     /**
      * List of user messages for a project
      */
-    public function userMessagesAction($pid, $uid, Request $request) {
+    public function userMessagesAction($pid, $uid) {
         $prj = Project::get($pid);
         $user = User::get($uid);
 
@@ -301,7 +295,7 @@ class MessagesApiController extends AbstractApiController {
         }
 
         if($recipients = $message->getRecipients()) {
-            // assign a thread if the user is already in the coversation
+            // assign a thread if the user is already in the conversation
             if(count($recipients) == 1) {
                 $message->setThread('auto');
                 if($message->thread) {

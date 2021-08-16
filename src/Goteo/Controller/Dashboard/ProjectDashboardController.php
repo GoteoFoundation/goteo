@@ -636,7 +636,6 @@ class ProjectDashboardController extends DashboardController {
                     throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
                 }
 
-                // READY EVENT
                 $old_id = $project->id;
                 $this->dispatch(AppEvents::PROJECT_READY, new FilterProjectEvent($project));
 

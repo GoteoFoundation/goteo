@@ -543,8 +543,7 @@ class ProjectsSubController extends AbstractSubController {
         // Project && permission check
         $project = $this->getProject($id, 'moderate');
 
-        // PUBLISH EVENT
-        $event = $this->dispatch(AppEvents::PROJECT_PUBLISH, new FilterProjectEvent($project));
+        $this->dispatch(AppEvents::PROJECT_PUBLISH, new FilterProjectEvent($project));
 
         return $this->redirect();
     }

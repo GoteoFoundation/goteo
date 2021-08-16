@@ -12,6 +12,7 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Exception;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
 use Goteo\Application\Currency;
@@ -32,6 +33,7 @@ use Goteo\Model\Project;
 use Goteo\Model\User;
 use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 use Omnipay\Common\Message\ResponseInterface;
+use RuntimeException;
 
 class AccountsSubController extends AbstractSubController {
 
@@ -142,26 +144,28 @@ class AccountsSubController extends AbstractSubController {
             // Omnipay refund()
 
             $method = $invest->getMethod();
-            // print_r($method);die;
             // process gateway refund
             // go to the gateway, gets the response
             $response = $method->refund();
 
             // Checks and redirects
             if (!$response instanceof ResponseInterface) {
-                throw new \RuntimeException('This response does not implements ResponseInterface');
+                throw new RuntimeException('This response does not implements ResponseInterface');
             }
 
             // On-sites can return a successful response here
             if ($response->isSuccessful()) {
                 // Event invest success event
-                $invest = $this->dispatch($returned ? AppEvents::INVEST_RETURNED : AppEvents::INVEST_CANCELLED, new FilterInvestRefundEvent($invest, $method, $response))->getInvest();
+                $invest = $this->dispatch(
+                    $returned ? AppEvents::INVEST_RETURNED : AppEvents::INVEST_CANCELLED,
+                    new FilterInvestRefundEvent($invest, $method, $response)
+                )->getInvest();
                 // New Invest Refund Event
                 if( ($invest->method == 'pool' && $invest->status === Invest::STATUS_TO_POOL)
                     || $invest->status === ($returned ? Invest::STATUS_RETURNED : Invest::STATUS_CANCELLED)
                   ) {
                     $ok = true;
-                    // Evento Feed
+                    // Event Feed
                     $coin = Currency::getDefault('html');
                     $log = new Feed();
                     $log->setTarget($project->id)
@@ -182,12 +186,14 @@ class AccountsSubController extends AbstractSubController {
                 } else {
                     Message::error('Error cancelling invest. INVEST:' . $invest->id . ' STATUS: ' . $invest->status);
                 }
-            }
-            else {
-                $invest = $this->dispatch($returned ? AppEvents::INVEST_RETURN_FAILED : AppEvents::INVEST_CANCEL_FAILED, new FilterInvestRefundEvent($invest, $method, $response))->getInvest();
+            } else {
+                $this->dispatch(
+                    $returned ? AppEvents::INVEST_RETURN_FAILED : AppEvents::INVEST_CANCEL_FAILED,
+                    new FilterInvestRefundEvent($invest, $method, $response)
+                )->getInvest();
                 Message::error('Error refunding invest: [' . $response->getMessage().']');
             }
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             Message::error($e->getMessage());
         }
 
@@ -441,7 +447,7 @@ class AccountsSubController extends AbstractSubController {
 
                 // Checks and redirects
                 if (!$response instanceof ResponseInterface) {
-                    throw new \RuntimeException('This response does not implements ResponseInterface.');
+                    throw new RuntimeException('This response does not implements ResponseInterface.');
                 }
 
                 // On-sites can return a succesful response here

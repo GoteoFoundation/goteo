@@ -80,10 +80,6 @@ abstract class AbstractCommand extends Command {
         }
     }
 
-    /**
-     * Dispatches an event
-     * Events can be handled by any subscriber
-     */
     static public function dispatch(string $eventName, Event $event = null): Event
     {
         return Console::dispatch($eventName, $event);

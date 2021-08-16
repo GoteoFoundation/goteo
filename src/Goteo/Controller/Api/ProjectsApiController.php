@@ -238,7 +238,7 @@ class ProjectsApiController extends AbstractApiController {
             $post->dbUpdate([$prop]);
             $result['value'] = $post->{$prop};
             $this->dispatch(AppEvents::PROJECT_POST, new FilterProjectPostEvent($post));
-            // if($errors = Message::getErrors()) throw new ControllerException(implode("\n",$errors));
+
             if($errors = Message::getErrors()) {
                 $result['error'] = true;
                 $result['message'] = implode("\n", $errors);

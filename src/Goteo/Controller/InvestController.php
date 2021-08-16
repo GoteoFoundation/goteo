@@ -398,12 +398,10 @@ class InvestController extends Controller {
                 throw new RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
             }
 
-            // New Invest Init Event
             $method = $this->dispatch(AppEvents::INVEST_INIT, new FilterInvestInitEvent($invest, $method, $request))->getMethod();
 
             // go to the gateway, gets the response
             $response = $method->purchase();
-            // New Invest Request Event
             $response = $this->dispatch(AppEvents::INVEST_INIT_REQUEST, new FilterInvestRequestEvent($method, $response))->getResponse();
 
             // Checks and redirects
@@ -411,12 +409,10 @@ class InvestController extends Controller {
                 throw new RuntimeException('This response does not implements ResponseInterface.');
             }
 
-            // On-sites can return a successful response here
             if ($response->isSuccessful()) {
                 return $this->dispatch(AppEvents::INVEST_SUCCEEDED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
             }
 
-            // Redirect to payment platform
             return $this->dispatch(AppEvents::INVEST_INIT_REDIRECT, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
 
         } catch(Exception $e) {
@@ -468,7 +464,6 @@ class InvestController extends Controller {
                 return $this->redirect('/pool/' . $invest->id);
             }
 
-            // New Invest Notify Event (a HttpResponse will be assigned here)
             $response = $this->dispatch(AppEvents::INVEST_NOTIFY, new FilterInvestRequestEvent($method, $response))->getResponse();
 
             // Checks
@@ -479,7 +474,6 @@ class InvestController extends Controller {
                 return $this->dispatch(AppEvents::INVEST_SUCCEEDED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
             }
 
-            // Event invest failed
             return $this->dispatch(AppEvents::INVEST_FAILED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
         } catch(Exception $e) {
             $this->error('Payment Notification Exception', ['class' => get_class($e), $invest, 'code' => $e->getCode(), 'message' => $e->getMessage()]);
@@ -509,7 +503,6 @@ class InvestController extends Controller {
             $method = $this->dispatch(AppEvents::INVEST_COMPLETE, new FilterInvestInitEvent($invest, $method, $request))->getMethod();
             // Ending transaction
             $response = $method->completePurchase();
-            // New Invest Request Event
             $response = $this->dispatch(AppEvents::INVEST_COMPLETE_REQUEST, new FilterInvestRequestEvent($method, $response))->getResponse();
 
             // Checks and redirects
@@ -556,7 +549,6 @@ class InvestController extends Controller {
 
         // if resign to reward, redirect to shareAction
         if($invest->resign) {
-            // Event invest failed
             return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
         }
 
@@ -577,11 +569,8 @@ class InvestController extends Controller {
                 $invest->extra_info = $invest_address['extra_info'];
                 $invest->save();
 
-                if($ok) {
-                    if($invest->setAddress($invest_address)) {
-                        // Event invest failed
-                        return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
-                    }
+                if($ok && $invest->setAddress($invest_address)) {
+                    return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
                 }
             }
             Message::error(Text::get('invest-address-fail'));

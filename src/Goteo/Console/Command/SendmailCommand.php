@@ -14,6 +14,7 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterSendmailEvent;
 use Goteo\Model\Mail\SenderRecipient;
+use LogicException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -67,16 +68,16 @@ EOT
         try {
             if(!$force) {
                 if($recipient->isLocked() || !$recipient->setLock(true)->blocked) {
-                    throw new \LogicException("Error locking recipient [$recipient->id]");
+                    throw new LogicException("Error locking recipient [$recipient->id]");
                 }
             }
 
             $this->info("Sending individual mail",  [$recipient, 'recipient_user' => $recipient->user]);
 
             if($update) {
-                $recipient = $this->dispatch(ConsoleEvents::MAILING_SENDMAIL, new FilterSendmailEvent($recipient, $this->getLogger()))->getRecipient();
+                $recipient = $this->dispatch(ConsoleEvents::MAILING_SENDMAIL, new FilterSendmailEvent($recipient))->getRecipient();
             }
-        } catch(\LogicException $e) {
+        } catch(LogicException $e) {
             $this->warning('Sendmail Exception', [$recipient, 'recipient_user' => $recipient->user, 'error' =>  $e->getMessage()]);
             return 13;
         }

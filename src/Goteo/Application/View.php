@@ -78,15 +78,13 @@ class View {
      * Renders a template view
      */
     static public function render($view, $vars = [], $fire_event = true) {
-        if($fire_event) {
+        if ($fire_event) {
             $event = App::dispatch(AppEvents::VIEW_RENDER, new FilterViewEvent($view, $vars));
             $view = $event->getView();
             $vars = $event->getVars();
         }
-        //por compatibilidad
         return self::getEngine()->render($view, $vars + array('vars' => $vars)); //por compatibilidad
     }
-
 
     /**
      * Gets the Foil engine
@@ -142,13 +140,9 @@ class View {
                 else        $prepend_dirs[$name] = $folder;
             }
         }
-        // print_r(array_merge($prepend_dirs, $folders, $append_dirs));die;
         self::$engine->setFolders(array_merge($prepend_dirs, $folders, $append_dirs));
     }
 
-    /**
-     * Returns the current used theme
-     */
     static public function getTheme() {
         return self::$theme;
     }

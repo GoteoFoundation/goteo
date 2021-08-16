@@ -19,6 +19,9 @@ use Goteo\Core\Event\CreateModelEvent;
 use Goteo\Core\Event\UpdateModelEvent;
 use Goteo\Core\Event\DeleteModelEvent;
 use Goteo\Model\Image;
+use PDOException;
+use PDOStatement;
+use function func_num_args;
 
 abstract class Model {
 
@@ -31,7 +34,7 @@ abstract class Model {
 	 * Constructor.
 	 */
 	public function __construct() {
-		if (\func_num_args() >= 1) {
+		if (func_num_args() >= 1) {
 			$data = \func_get_arg(0);
 			if (is_array($data) || is_object($data)) {
 				$this->rebuildData((array) $data);
@@ -63,7 +66,6 @@ abstract class Model {
         if(!$keys) $keys = array_keys($public_vars);
 		foreach ($public_vars as $k => $v) {
 			if(array_key_exists($k, $data) && in_array($k, $keys)) {
-                // print_r("\n<br>$k: " . $data[$k]);
                 $this->$k = $data[$k];
             }
 		}
@@ -94,6 +96,7 @@ abstract class Model {
         }
 		return static::$Table_static;
 	}
+
 	/**
 	 * Sets the table name
 	 * @param string $table Table name
@@ -113,13 +116,11 @@ abstract class Model {
 	}
 
 	/**
-	 * Obtener.
 	 * @param   type mixed  $id     Identificador
 	 * @return  type object         Objeto or false if not found
 	 */
 	static public function get($id) {
 		if (empty($id)) {
-			// throw new Exception("Delete error: ID not defined!");
 			return false;
 		}
 		$class = get_called_class();
@@ -144,8 +145,6 @@ abstract class Model {
 
     /**
      * Some data transformation for SQL field types
-     * @param  [type] $value [description]
-     * @return [type]        [description]
      */
     public function transformFieldValue($value) {
         if($value instanceOf \DateTime) {
@@ -160,10 +159,7 @@ abstract class Model {
         }
         return $value;
     }
-	/**
-	 * insert to sql
-	 * @return [type] [description]
-	 */
+
 	public function dbInsert(array $fields) {
 
         $fields = App::dispatch(ModelEvents::CREATE, new CreateModelEvent($this, $fields))->getFields();
@@ -177,14 +173,11 @@ abstract class Model {
             }
         }
 
-
         if (empty($values)) {
-            throw new \PDOException("No fields specified!", 1);
+            throw new PDOException("No fields specified!", 1);
         }
 
-
         $sql = 'INSERT INTO `' . $this->Table . '` (' . implode(',', $set) . ') VALUES (' . implode(',', $keys) . ')';
-        // echo \sqldbg($sql, $values);
         $res = self::query($sql, $values);
 
         App::dispatch(ModelEvents::CREATED, new CreateModelEvent($this, $values));
@@ -192,10 +185,6 @@ abstract class Model {
         return $res;
 	}
 
-	/**
-	 * update to sql
-	 * @return [type] [description]
-	 */
 	public function dbUpdate(array $fields, array $where = ['id']) {
 
         $event = App::dispatch(ModelEvents::UPDATE, new UpdateModelEvent($this, $fields, $where));
@@ -215,16 +204,14 @@ abstract class Model {
 				$clause[] = "`$field` = :$field";
 				$values[":$field"] = $this->transformFieldValue($this->$field);
 			} else {
-				throw new \PDOException("Property $field does not exists!", 1);
-
+				throw new PDOException("Property $field does not exists!", 1);
 			}
 		}
 		if (empty($values)) {
-			throw new \PDOException("No fields specified!", 1);
+			throw new PDOException("No fields specified!", 1);
 		}
 
 		$sql = 'UPDATE `' . $this->Table . '` SET ' . implode(',', $set) . ' WHERE ' . implode(' AND ', $clause);
-		// die(\sqldbg($sql, $values));
 		$res = self::query($sql, $values);
 
         App::dispatch(ModelEvents::UPDATED, new UpdateModelEvent($this, $fields, $where));
@@ -233,9 +220,8 @@ abstract class Model {
 	}
 
 	/**
-	 * Authomatic insert or update behaviour
-	 * Expects a id property
-	 * @return [type] [description]
+	 * Automatic insert or update behaviour
+	 * Expects an id property
 	 */
 	public function dbInsertUpdate(array $fields, array $where = ['id']) {
 		if ($this->id) {
@@ -247,10 +233,6 @@ abstract class Model {
 		return $ok;
 	}
 
-	/**
-	 * Delete
-	 * @return  type bool   true|false
-	 */
 	public function dbDelete(array $where = ['id']) {
         $where = App::dispatch(ModelEvents::DELETE, new DeleteModelEvent($this, $where))->getWhere();
 
@@ -260,15 +242,14 @@ abstract class Model {
 				$clause[] = "`$field` = :$field ";
 				$values[":$field"] = $this->$field;
 			} else {
-				throw new \PDOException("Property $field does not exists!", 1);
+				throw new PDOException("Property $field does not exists!", 1);
 			}
 		}
 		if (empty($values)) {
-			throw new \PDOException("No fields specified!", 1);
+			throw new PDOException("No fields specified!", 1);
 		}
 
 		$sql = 'DELETE FROM `' . $this->Table . '` WHERE ' . implode(' AND ', $clause);
-        // echo \sqldbg($sql, $values);
 		self::query($sql, $values);
 
         App::dispatch(ModelEvents::DELETED, new DeleteModelEvent($this, $where));
@@ -279,11 +260,9 @@ abstract class Model {
 	/**
 	 * Statically delete without exception.
 	 * TODO: remove this method...
-	 * @return  type bool   true|false
 	 */
 	public static function delete($id, &$errors = array()) {
 		if (empty($id)) {
-			// throw new Exception("Delete error: ID not defined!");
 			return false;
 		}
 		$class = get_called_class();
@@ -294,7 +273,7 @@ abstract class Model {
 				return true;
 			}
 			$errors[] = 'Unknow error. Empty id?';
-		} catch (\PDOException $e) {
+		} catch (PDOException $e) {
 			$errors[] = 'Delete error. ' . $e->getMessage();
 			return false;
 		}
@@ -303,13 +282,8 @@ abstract class Model {
 	}
 
 	/**
-	 * Consulta.
-	 * Devuelve un objeto de la clase PDOStatement
-	 * http://www.php.net/manual/es/class.pdostatement.php
-	 *
-	 * @param   type string $query      Consulta SQL
-	 * @param   type array  $params     Parámetros
-	 * $return  type object PDOStatement
+	 * @param array|null $params
+	 * @return  PDOStatement
 	 */
 	public static function query($query, $params = null, $select_from_replica = true) {
 
@@ -326,9 +300,8 @@ abstract class Model {
 
 	/**
 	 * Retorna el total de elementos de la tabla
-	 * @param $filters array of pair/values to filter the table
 	 */
-	public static function dbCount($filters = array(), $comparator = '=', $joiner = 'AND') {
+	public static function dbCount(array $filters = array(), $comparator = '=', $joiner = 'AND') {
 		$clas = get_called_class();
 		$instance = new $clas;
 		$sql = 'SELECT COUNT(*) FROM ' . $instance->getTable();
@@ -348,14 +321,13 @@ abstract class Model {
 		}
 		try {
 			return (int) self::query($sql, $values)->fetchColumn();
-		} catch (\PDOException $e) {
+		} catch (PDOException $e) {
 		}
 		return 0;
 	}
 
 	/**
 	 * Clears the sql cache
-	 * @return [type] [description]
 	 */
 	static function cleanCache() {
 		return (new Cacher('sql'))->clean();
@@ -381,7 +353,6 @@ abstract class Model {
 	}
 
 	/**
-	 * Formato.
 	 * Formatea una cadena para ser usada como id varchar(50)
 	 *
 	 * @param string $value
@@ -398,9 +369,9 @@ abstract class Model {
             'Õ' => 'O', 'Ö' => 'O', 'Ø' => 'O', 'Ù' => 'U', 'Ú' => 'U', 'Û' => 'U', 'Ü' => 'U', 'Ý' => 'Y', 'Þ' => 'B', 'ß' => 'Ss',
             'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'å' => 'a', 'æ' => 'a', 'ç' => 'c', 'è' => 'e', 'é' => 'e',
             'ê' => 'e', 'ë' => 'e', 'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i', 'ð' => 'o', 'ñ' => 'n', 'ò' => 'o', 'ó' => 'o',
-            'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ø' => 'o', 'ṓ' => 'o', 'ù' => 'u', 'ú' => 'u', 'û' => 'u', 'ü' => 'u', 'ý' => 'y', 'ý' => 'y',
-            'þ' => 'b', 'ÿ' => 'y', 'Ŕ' => 'R', 'ŕ' => 'r', 'ª' => 'a', 'º' => 'o', 'ẃ' => 'w', 'Ẃ' => 'Ẃ', 'ẁ' => 'w', 'Ẁ' => 'Ẃ', '€' => 'eur',
-            'ý' => 'y', 'Ý' => 'Y', 'ỳ' => 'y', 'Ỳ' => 'Y', 'ś' => 's', 'Ś' => 'S', 'ẅ' => 'w', 'Ẅ' => 'W',
+            'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ø' => 'o', 'ṓ' => 'o', 'ù' => 'u', 'ú' => 'u', 'û' => 'u', 'ü' => 'u',
+            'þ' => 'b', 'ÿ' => 'y', 'Ŕ' => 'R', 'ŕ' => 'r', 'ª' => 'a', 'º' => 'o', 'ẃ' => 'w', 'Ẃ' => 'Ẃ', 'ẁ' => 'w', 'Ẁ' => 'Ẃ',
+            '€' => 'eur', 'ý' => 'y', 'ỳ' => 'y', 'Ỳ' => 'Y', 'ś' => 's', 'Ś' => 'S', 'ẅ' => 'w', 'Ẅ' => 'W',
             '!' => '', '¡' => '', '?' => '', '¿' => '', '@' => '', '^' => '', '|' => '', '#' => '', '~' => '',
             '%' => '', '$' => '', '*' => '', '+' => '', '.' => '-', '`' => '', '´' => '', '’' => '', '”' => '-', '“' => '-',
         );
@@ -415,7 +386,6 @@ abstract class Model {
         }
 
         $id = strtr($id, $table);
-
         $id = strtolower($id);
 
         // Separadores
@@ -430,9 +400,7 @@ abstract class Model {
         }
 
         $id = trim($id, '-');
-
         $id = substr($id, 0, $max);
-
 
 		return $id;
 	}
@@ -496,12 +464,6 @@ abstract class Model {
 	}
 
 
-    /**
-     * Removes a lang entry
-     * @param  [type] $id    [description]
-     * @param  [type] $table [description]
-     * @return [type]        [description]
-     */
     public function removeLang($lang) {
         try {
             static::query("DELETE FROM `{$this->Table}_lang` WHERE id = :id AND lang = :lang", array(':id' => $this->id, ':lang' => $lang));
@@ -605,7 +567,6 @@ abstract class Model {
                     INNER JOIN `{$this->Table}` m ON m.id = l.id
                     WHERE l.lang = :lang AND m.id = :id";
             $values = [':lang' => $lang, ':id' => $this->id];
-            // die(\sqldbg($sql, $values));
             if($query = static::query($sql, $values)) {
                 $translated = 0;
                 $total = 0;
@@ -644,7 +605,6 @@ abstract class Model {
                 $sql .= " AND m.$key = :$key";
                 $values[":$key"] = $this->{$key};
             }
-            // die(\sqldbg($sql, $values));
             if($query = static::query($sql, $values)) {
                 $translated = 0;
                 $total = 0;
@@ -670,7 +630,6 @@ abstract class Model {
         try {
             $sql = "SELECT * FROM `{$this->Table}_lang` WHERE id = :id AND lang = :lang";
             $values = array(':id' => $this->id, ':lang' => $lang);
-            // die(\sqldbg($sql, $values));
             if($query = static::query($sql, $values)) {
                 return $query->fetchObject();
             }
@@ -685,7 +644,6 @@ abstract class Model {
         try {
             $sql = "SELECT * FROM `{$this->Table}_lang` WHERE id = :id";
             $values = array(':id' => $this->id);
-            // die(\sqldbg($sql, $values));
             if($query = static::query($sql, $values)) {
                 return $query->fetchAll(\PDO::FETCH_OBJ);
             }
@@ -725,7 +683,7 @@ abstract class Model {
             self::query($sql, $values);
 
             return true;
-        } catch(\PDOException $e) {
+        } catch(PDOException $e) {
             $errors[] = "Error saving language data for {$this->Table}. " . $e->getMessage();
             return false;
         }
@@ -733,7 +691,6 @@ abstract class Model {
 
 	/**
 	 * Cuenta el numero de items y lo divide en páginas
-	 * @param type $sql
 	 * @param int $page Numero de página que se muestra
 	 * @param int $items_per_page
 	 * @return array ($pages,$offset)
@@ -779,7 +736,7 @@ abstract class Model {
 
 		try {
 			return self::query($sql, $values)->fetchAll();
-		} catch (\PDOException $e) {
+		} catch (PDOException $e) {
 		}
 		return 0;
 	}

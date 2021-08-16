@@ -72,9 +72,7 @@ class App extends HttpKernel
     }
 
     /**
-     * Dispatches an event
-     * Events can be handled by any subscriber
-     * @return Event                 the result object
+     * @return Event the result object
      */
     static public function dispatch($eventName, Event $event) {
         return self::getService('dispatcher')

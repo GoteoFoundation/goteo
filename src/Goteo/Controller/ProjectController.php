@@ -117,7 +117,6 @@ class ProjectController extends \Goteo\Core\Controller {
             $accounts->fee = Config::get('fee');
             $accounts->save();
 
-            // CREATED EVENT
             $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();
             if($response instanceOf Response) return $response;
 

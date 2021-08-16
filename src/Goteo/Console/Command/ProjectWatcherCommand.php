@@ -89,7 +89,6 @@ EOT
             // a los 5, 3, 2, y 1 dia para finalizar ronda
             if ($prj->round > 0 && in_array((int) $prj->days, array(5, 3, 2, 1))) {
                 $output->writeln("Throwing round ending event due remaining {$prj->days} days until end of round {$prj->round} for <info>{$prj->id}</info>, published <comment>{$prj->published}</comment>");
-                $action_done = true;
                 if ($update) {
                     // dispatch ending event, will generate a feed entry if needed
                     $prj = $this->dispatch(ConsoleEvents::PROJECT_ENDING, new FilterProjectEvent($prj))->getProject();
@@ -104,7 +103,6 @@ EOT
                 $this->dispatch(ConsoleEvents::PROJECT_ACTIVE, $event);
                 $processed ++;
             }
-
         }
 
         $min_date = date("Y-m-d", mktime(0, 0, 0, date('m'), date('d'), date('Y') - 1));
@@ -122,7 +120,6 @@ EOT
                 $this->dispatch(ConsoleEvents::PROJECT_WATCH, $event);
                 $processed ++;
             }
-
         }
 
         $output->writeln("<info>$processed events thrown</info>");
@@ -131,6 +128,5 @@ EOT
             $this->warning('<error>Dummy execution. No events thrown</error>');
             $output->writeln('<comment>Please execute the command with the --update modifier to exectute the events</comment>');
         }
-
     }
 }
