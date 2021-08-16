@@ -72,7 +72,7 @@ class BooleanType extends CheckboxType
      */
     public function getBlockPrefix(): string
     {
-        return 'custom_boolean';
+        return 'boolean';
     }
 
 }

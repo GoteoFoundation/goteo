@@ -305,9 +305,6 @@ class SettingsDashboardController extends DashboardController {
         ]);
     }
 
-    /**
-     * Settings (access)
-     */
     public function accessAction(Request $request)
     {
         $this->createSettingsSidebar('access');
