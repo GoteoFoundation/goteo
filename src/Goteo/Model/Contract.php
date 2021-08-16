@@ -2,14 +2,14 @@
 
 namespace Goteo\Model;
 
+use Goteo\Core\Model;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
-use Goteo\Model\User;
-use Goteo\Model\Project;
-use Goteo\Model\License;
-use Goteo\Application\Config;
+use PDOException;
+use stdClass;
+use function array_empty;
 
-class Contract extends \Goteo\Core\Model {
+class Contract extends Model {
 
     const NATURAL_PERSON = 'natural_person';
     const LEGAL_PERSON = 'legal_person';
@@ -79,18 +79,14 @@ class Contract extends \Goteo\Core\Model {
 
         // seguimiento (es un objeto, cada atributo es un valor de seguimiento)
         $status,
-
-        // documentación
         $docs = array();
-
 
     /**
      * Sobrecarga de métodos 'getter'.
      *
-     * @param type string $name
-     * @return type mixed
+     * @param string $name
+     * @return mixed
      */
-
     public function __get($name) {
         switch ($name) {
             case "fullnum":
@@ -133,9 +129,7 @@ class Contract extends \Goteo\Core\Model {
                 return $contract->save($errors);
 
             } else {
-
                 return $contract;
-
             }
 
         } else {
@@ -150,13 +144,10 @@ class Contract extends \Goteo\Core\Model {
                 $contract->date = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
                 $contract->enddate = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)+1));
             }
-
         }
 
         $contract->type = 0; // inicialmente persona fisica
-
         $contract->electronic = 1; // electronic by default
-
 
         // @FIXME esto tendria que venir de lo rellenado en el paso 2 del formulario de proyecto
         $personalData = User::getPersonal($projData->owner);
@@ -170,7 +161,7 @@ class Contract extends \Goteo\Core\Model {
             if ($legal_document_type)
                 $contract->legal_document_type = $legal_document_type;
         }
-        
+
         $contract->address = $personalData->address;
         $contract->location = $personalData->location;
         $contract->region = '';
@@ -203,8 +194,6 @@ class Contract extends \Goteo\Core\Model {
         return $contract->save($errors);
     }
 
-
-
     /**
      * Datos de contrato del proyecto
      * si no hay, precargamos con los datos del proyecto
@@ -232,7 +221,7 @@ class Contract extends \Goteo\Core\Model {
 
             // cargamos los documentos
             $contract->docs = Contract\Document::getDocs($id);
-            
+
             return $contract;
         } else {
             // aun no tenemos datos de contrato
@@ -277,9 +266,8 @@ class Contract extends \Goteo\Core\Model {
      * @return stdClass Object with parts and globals percents
      */
     public function getValidation() {
-        $res = new \stdClass;
+        $res = new stdClass;
         $errors =  $fields = ['promoter' => [], 'entity' => [], 'accounts' => [], 'documents' => []];
-
 
         // 1. promoter
         $promoter = [ 'name', 'nif', 'address', 'location', 'region', 'zipcode', 'country' ];
@@ -305,14 +293,6 @@ class Contract extends \Goteo\Core\Model {
         if($this->type > 0) {
             $entity = ['entity_name', 'entity_cif', 'office', 'entity_address', 'entity_location', 'entity_region', 'entity_zipcode', 'entity_country'];
             $total = count($entity);
-            //$entity[] = 'reg_name';
-            //$entity[] = 'reg_number';
-            /*if($this->type == 2) {
-                $entity[] = 'reg_date';
-                $entity[] = 'reg_id';
-                $entity[] = 'reg_idname';
-                $entity[] = 'reg_idloc';
-            }*/
             $count = 0;
             foreach($entity as $field) {
                 if(!empty($this->{$field})) {
@@ -330,7 +310,7 @@ class Contract extends \Goteo\Core\Model {
                 $count++;
                 $errors['entity'][] = 'promoter_nif';
             }
-    
+
             $res->entity = round(100 * ($total - $count)/$total);
         } else {
             $res->entity = 100;
@@ -338,7 +318,7 @@ class Contract extends \Goteo\Core\Model {
 
         // 3. accounts
         $accounts = ['bank', 'bank_owner'];
-        
+
         $total = count($accounts);
         $count = 0;
         foreach($accounts as $field) {
@@ -374,16 +354,13 @@ class Contract extends \Goteo\Core\Model {
         return $res;
     }
 
-
     /*
-     * Segun sie s una grabación parcial de impulsor o una grabación completa de admin
-     *
+     * Segun si es una grabación parcial de impulsor o una grabación completa de admin
      */
 	public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
 
 		try {
-
             $fields = array(
                 'project',
                 'number',
@@ -427,15 +404,14 @@ class Contract extends \Goteo\Core\Model {
                 'project_invest',
                 'project_return'
             );
-            // print_r((array)$this);die;
             if(static::get($this->project)) {
                 $ok = $this->dbUpdate($fields, ['project']);
             } else {
                 $ok = $this->dbInsert($fields);
             }
-            return $ok;
 
-		} catch(\PDOException $e) {
+            return $ok;
+		} catch(PDOException $e) {
 			$errors[] = "Los datos de contrato no se han guardado correctamente. Por favor, revise los datos." . $e->getMessage();
             return false;
 		}
@@ -470,7 +446,6 @@ class Contract extends \Goteo\Core\Model {
         return $list;
     }
 
-
     /*
      * Lista de Proyectos que han rellenado algo del contrato
      */
@@ -494,7 +469,6 @@ class Contract extends \Goteo\Core\Model {
 
         return $list;
     }
-
 
     /*
      * Obtener numero y fecha de contrato
@@ -577,7 +551,7 @@ class Contract extends \Goteo\Core\Model {
         $sql .= " contract_status SET ";
         $sql .= implode(', ', $fields);
         $sql .= $sqlend;
-        // die(\sqldbg($sql, $values));
+
         return (static::query($sql, $values)) ? true : false;
     }
 
@@ -594,8 +568,6 @@ class Contract extends \Goteo\Core\Model {
 
         return (static::query($sql, $values)) ? true : false;
     }
-
-
 
     /*
      * comprueba los campos obligatorios
@@ -671,7 +643,7 @@ class Contract extends \Goteo\Core\Model {
                  $okeys['entity']['entity_name'] = 'ok';
             }
 
-            $cif_type = ''; 
+            $cif_type = '';
             $valid_cif = Check::nif($this->entity_cif, $cif_type);
             if (empty($this->entity_cif)) {
                 $errors['entity']['entity_cif'] = Text::get('mandatory-project-field-entity_cif');
@@ -788,7 +760,6 @@ class Contract extends \Goteo\Core\Model {
         }
         /***************** FIN Revisión del paso CUENTAS *****************/
 
-
         /***************** Revisión de campos del paso DOCUMENTACIÓN  *****************/
         if (empty($this->docs)) {
             $errors['documents']['docs'] = Text::get('mandatory-contract-docs');
@@ -797,23 +768,24 @@ class Contract extends \Goteo\Core\Model {
         }
         /***************** FIN Revisión del paso DOCUMENTACIÓN *****************/
 
-        $this->finishable = (\array_empty($errors));
+        $this->finishable = (array_empty($errors));
     }
 
     // para guardar los fallos en los datos
-    public static function blankErrors() {
-        return array(
-            'promoter'     => array(),
-            'entity'       => array(),
-            'account'      => array(),
-            'documents'    => array()
-        );
+    public static function blankErrors(): array
+    {
+        return [
+            'promoter' => [],
+            'entity' => [],
+            'account' => [],
+            'documents' => []
+        ];
     }
 
     // para montar el texto de objetivo de financiación
     public static function txtInvest($projData) {
-        $txt_invest_min = array();
-        $txt_invest_opt = array();
+        $txt_invest_min = [];
+        $txt_invest_opt = [];
         foreach ($projData->costs as $costData) {
             if ($costData->required)
                 $txt_invest_min[] = $costData->cost;
@@ -855,8 +827,9 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
     /*
      * Estados de proceso de contrato
      */
-    public static function procStatus () {
-        return array(
+    public static function procStatus(): array
+    {
+        return [
             'noreg' => 'Sin registro de contrato',
             'onform' => 'Editando datos',
             'owner' => 'Formulario cerrado',
@@ -866,14 +839,15 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
             'prepay' => 'Pago adelantado',
             'payed' => 'Pagos realizados',
             'closed' => 'Contrato cumplido'
-            );
+        ];
     }
 
     /*
      * Estados de proceso de contrato
      */
-    public static function procElectronicStatus () {
-        return array(
+    public static function procElectronicStatus(): array
+    {
+        return [
             'noreg' => 'Sin registro de contrato',
             'onform' => 'Editando datos',
             'owner' => 'Formulario cerrado',
@@ -882,14 +856,12 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
             'prepay' => 'Pago adelantado',
             'payed' => 'Pagos realizados',
             'closed' => 'Contrato cumplido'
-            );
+        ];
     }
 
-    /*
-     * Transition status
-     */
-    public static function procTransitionStatus () {
-        return array(
+    public static function procTransitionStatus(): array
+    {
+        return [
             'noreg' => 'Sin registro de contrato',
             'onform' => 'Editando datos',
             'owner' => 'Formulario cerrado',
@@ -899,53 +871,53 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
             'prepay' => 'Pago adelantado',
             'payed' => 'Pagos realizados',
             'closed' => 'Contrato cumplido'
-            );
+        ];
     }
 
     /*
      * Estados de proceso de contrato
      */
-    public static function nextStatus ($actual) {
-
-        // echo "actual: $actual<br />";
-
-        $nexts = array();
-
-        $estados = array( 'owner', 'admin', 'ready', 'pdf', 'received', 'payed', 'closed' );
-
+    public static function nextStatus($actual)
+    {
+        $nexts = [];
+        $status = [
+            'owner',
+            'admin',
+            'ready',
+            'pdf',
+            'received',
+            'payed',
+            'closed'
+        ];
         $ya = false;
 
-        foreach ($estados as $key=>$value) {
-
+        foreach ($status as $value) {
             if ($ya) {
                 $nexts[] = $value;
-                // echo "añadido $value<br />";
             }
 
             if ($value == $actual) {
                 $ya = true;
-                // echo "desde ya $key == $actual <br />";
             }
-
         }
 
         return $nexts;
-
     }
 
-    static public function getNaturalPersonDocumentTypes() {
-        return  [
-            self::NIF => Text::get('contract-legal-document-type-nif'),
-            self::NIE => Text::get('contract-legal-document-type-nie'),
-            self::PASSPORT => Text::get('contract-legal-document-type-passport'),
-          ];
+    static public function getNaturalPersonDocumentTypes(): array
+    {
+        return [
+            Text::get('contract-legal-document-type-nif') => self::NIF,
+            Text::get('contract-legal-document-type-nie') => self::NIE,
+            Text::get('contract-legal-document-type-passport') => self::PASSPORT,
+        ];
     }
 
-    static public function getLegalPersonDocumentTypes() {
-        return  [
-            self::CIF => Text::get('contract-legal-document-type-cif')
-          ];
+    static public function getLegalPersonDocumentTypes(): array
+    {
+        return [
+            Text::get('contract-legal-document-type-cif') => self::CIF
+        ];
     }
 
 }
-

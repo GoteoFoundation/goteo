@@ -244,9 +244,6 @@ class SettingsDashboardController extends DashboardController {
         ]);
     }
 
-    /**
-     * Settings (personal)
-     */
     public function personalAction(Request $request)
     {
         $this->createSettingsSidebar('personal');
