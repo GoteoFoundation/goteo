@@ -44,7 +44,7 @@ class AppTest extends TestCase {
     }
 
 */
-    public function testRedirections() {
+    public function testLegacyRedirections() {
         $routes = array(
             '/discover/',
             '/non-existing/'
