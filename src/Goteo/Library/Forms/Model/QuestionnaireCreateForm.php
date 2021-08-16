@@ -15,7 +15,6 @@ use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Text;
 use Goteo\Model\Questionnaire;
-use Goteo\Model\Questionnaire\Answers;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\NumberType;
@@ -26,18 +25,9 @@ use Goteo\Util\Form\Type\TextType;
 class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProcessorInterface
 {
 
-    public function getConstraints($field)
+    public function getConstraints(): array
     {
         return [];
-    }
-
-    public function delQuestion($id)
-    {
-        $this->getBuilder()
-            ->remove("{$id}_typeofquestion")
-            ->remove("{$id}_required")
-            ->remove("{$id}_question")
-            ->remove("{$id}_remove");
     }
 
     public function addQuestion($question)
@@ -48,7 +38,7 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
         }
         if ($config->type == "dropfiles") {
             $config->url = '/api/questionnaire/documents';
-            $config->constraints = $this->getConstraints('docs');
+            $config->constraints = $this->getConstraints();
         }
         $builder = $this->getBuilder();
         $builder
@@ -116,7 +106,6 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                     );
             }
         }
-
     }
 
     public function createForm()

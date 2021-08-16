@@ -11,8 +11,15 @@
 
 namespace Goteo\Library\Forms\Model;
 
-use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Application\Currency;
+use Goteo\Application\Lang;
 use Goteo\Library\Forms\AbstractFormProcessor;
+use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Library\Text;
+use Goteo\Model\Project;
+use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Sdg;
+use Goteo\Model\SocialCommitment;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\LocationType;
 use Goteo\Util\Form\Type\MarkdownType;
@@ -20,67 +27,38 @@ use Goteo\Util\Form\Type\MediaType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Form\FormInterface;
-use Goteo\Application\Lang;
-use Goteo\Model\Project;
-use Goteo\Model\SocialCommitment;
-use Goteo\Library\Text;
-use Goteo\Application\Currency;
-use Goteo\Library\Forms\FormModelException;
-use Goteo\Model\Project\ProjectLocation;
-use Goteo\Model\Sdg;
 
 
 class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
 
-    public function getConstraints($field) {
+    public function getConstraints($field): array
+    {
         $constraints = [];
-        if($field === 'name') {
+
+        if ($field === 'name') {
             $constraints[] = new Constraints\NotBlank();
-        }
-        if($field === 'subtitle') {
+        } elseif ($field === 'subtitle') {
             $constraints[] = new Constraints\Length(['max' => 140]);
-        }
-        if($field === 'description') {
+        } elseif ($field === 'description') {
             // Minimal 80 words
             $constraints[] = new Constraints\Regex([
                 'pattern' => '/^\s*\S+(?:\s+\S+){79,}\s*$/',
                 'message' => Text::get('validate-project-field-description')
             ]);
         }
-        if($this->getFullValidation()) {
+
+        if ($this->getFullValidation()) {
             if(!in_array($field, ['media', 'spread'])) {
-                // all fields
                 $constraints[] = new Constraints\NotBlank();
             }
         }
+
         return $constraints;
     }
 
     public function createForm() {
         $model = $this->getModel();
-        $currencies = Currency::listAll('name', false);
-        $langs = Lang::listAll('name', false);
-
-        $sdgs = [];
-        foreach(Sdg::getList([],0,100) as $s) {
-            $sdgs['<img style="display: block; margin: 0 auto;" src="'.$s->getIcon()->getLink().'" class="icon icon-5x"><span style="text-align: center; display: block;">'.$s->name.'</span>'] = $s->id;
-        }
-
         $project = $this->getModel();
-        $social_commitment=$project->getSocialCommitment();
-
-        if($social_commitment)
-        {
-            foreach($social_commitment->getSdgs() as $s) {
-                $sdgs_suggestion.='<img data-toggle="tooltip" title="'.$s->name .'" data-placement="bottom" data-value="'.$s->id.'" display="block;" src="'.$s->getIcon()->getLink().'" class="icon icon-6x clickable" style="margin-left: 5px;"> ';
-            }
-
-            $sdg_pre_help ='<span id="sdgs_suggestion_label" style="font-size: 14px;">'.Text::get('tooltip-project-sdg-suggestion'). '</span><span id="sdgs_suggestion" class="center-block">'.$sdgs_suggestion.'</span><hr style="margin-top: 30px; margin-bottom: 30px; border: 2px solid #FFF;">';
-        }
-
-        else
-            $sdg_pre_help ='<span id="sdgs_suggestion_label" style="display: none; font-size: 14px;">'.Text::get('tooltip-project-sdg-suggestion').'</span><span id="sdgs_suggestion" class="center-block"></span><hr style="margin-top: 30px; margin-bottom: 30px; border: 2px solid #FFF;">';
 
         $builder = $this->getBuilder();
         $builder
@@ -113,14 +91,14 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'label' => 'overview-field-lang',
                 'constraints' => $this->getConstraints('lang'),
                 'disabled' => $this->getReadonly(),
-                'choices' => $langs,
+                'choices' => $this->getLanguagesAsChoices(),
                 'attr' => ['help' => Text::get('tooltip-project-lang')]
             ])
             ->add('currency', ChoiceType::class, [
                 'label' => 'overview-field-currency',
                 'constraints' => $this->getConstraints('currency'),
                 'disabled' => $this->getReadonly(),
-                'choices' => $currencies,
+                'choices' => $this->getCurrenciesAsChoices(),
                 'attr' => ['help' => Text::get('tooltip-project-currency')]
             ])
             ->add('media', MediaType::class, array(
@@ -181,8 +159,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                     'rows' => 8,
                     'data-image-upload' => '/api/projects/' . $project->id . '/images'
                 ]
-            ])
-            ;
+            ]);
 
         if($project->goal) {
             $builder
@@ -194,6 +171,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                     'attr' => ['help' => Text::get('tooltip-project-goal'), 'rows' => 8]
                 ]);
         }
+
         $builder
             ->add('scope', ChoiceType::class, [
                 'label' => 'overview-field-scope',
@@ -201,7 +179,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'constraints' => $this->getConstraints('choice'),
                 'required' => false,
                 'wrap_class' => 'col-sm-3 col-xs-4',
-                'choices' => Project::scope(),
+                'choices' => $this->getProjectScopesAsChoices(),
                 'expanded' => true,
                 'attr' => ['help' => Text::get('tooltip-project-scope')]
             ])
@@ -210,30 +188,26 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('social_commitment'),
                 'required' => false,
-                'choices' => array_map(function($el){
-                        return [$el->id => $el->name];
-                    }, SocialCommitment::getAll()),
+                'choices' => $this->getSocialCommitmentsAsChoices(),
                 'expanded' => true,
                 'attr' => ['help' => Text::get('tooltip-project-social-category')]
             ])
-
             ->add('sdgs', ChoiceType::class, [
                 'label' => 'admin-title-sdgs',
                 'data' => array_column($model->getSdgs(), 'id'),
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
-                'choices' => $sdgs,
+                'choices' => $this->getSdgsChoices(),
                 'choices_as_values' => true,
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-md-2 col-sm-4 col-xs-4 col-xxs-6',
                 'attr' => [
-                    'pre-help' => $sdg_pre_help,
+                    'pre-help' => $this->getProjectGlobalSocialCommitments($project),
                     'help' => Text::get('tooltip-project-sdg'),
                     'label_class'=> 'center-block'
                 ]
             ])
-
             ->add('social_commitment_description', TextareaType::class, [
                 'disabled' => $this->getReadonly(),
                 'label' => 'overview-field-social-description',
@@ -244,6 +218,79 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
             ;
 
         return $this;
+    }
+
+    private function getLanguagesAsChoices(): array
+    {
+        $choices = [];
+        $languages = Lang::listAll('name', false);
+
+        foreach ($languages as $key => $value) {
+            $choices[$value] = $key;
+        }
+
+        return $choices;
+    }
+
+    private function getCurrenciesAsChoices(): array
+    {
+        $choices = [];
+        $currencies = Currency::listAll('name');
+
+        foreach ($currencies as $key => $value) {
+            $choices[$value] = $key;
+        }
+
+        return $choices;
+    }
+
+    private function getSocialCommitmentsAsChoices(): array
+    {
+        $socialCommitments = SocialCommitment::getAll();
+
+        return array_map(function($el) {
+            return [$el->name => $el->id];
+        }, $socialCommitments);
+    }
+
+    private function getProjectScopesAsChoices(): array
+    {
+        $choices = [];
+        $projectScopes = Project::scope();
+
+        foreach ($projectScopes as $key => $value) {
+            $choices[$value] = $key;
+        }
+
+        return $choices;
+    }
+
+    private function getSdgsChoices(): array
+    {
+        $sdgs = Sdg::getList([],0,100);
+        $choices = [];
+
+        foreach($sdgs as $s) {
+            $choices['<img style="display: block; margin: 0 auto;" src="'.$s->getIcon()->getLink().'" class="icon icon-5x"><span style="text-align: center; display: block;">'.$s->name.'</span>']
+                = $s->id;
+        }
+
+        return $choices;
+    }
+
+    private function getProjectGlobalSocialCommitments($project): string
+    {
+        $social_commitment = $project->getSocialCommitment();
+
+        if ($social_commitment) {
+            foreach($social_commitment->getSdgs() as $s) {
+                $sdgs_suggestion.='<img data-toggle="tooltip" title="'.$s->name .'" data-placement="bottom" data-value="'.$s->id.'" display="block;" src="'.$s->getIcon()->getLink().'" class="icon icon-6x clickable" style="margin-left: 5px;"> ';
+            }
+
+            return '<span id="sdgs_suggestion_label" style="font-size: 14px;">'.Text::get('tooltip-project-sdg-suggestion'). '</span><span id="sdgs_suggestion" class="center-block">'.$sdgs_suggestion.'</span><hr style="margin-top: 30px; margin-bottom: 30px; border: 2px solid #FFF;">';
+        } else {
+            return '<span id="sdgs_suggestion_label" style="display: none; font-size: 14px;">'.Text::get('tooltip-project-sdg-suggestion').'</span><span id="sdgs_suggestion" class="center-block"></span><hr style="margin-top: 30px; margin-bottom: 30px; border: 2px solid #FFF;">';
+        }
     }
 
 }

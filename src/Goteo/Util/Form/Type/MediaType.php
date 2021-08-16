@@ -53,14 +53,6 @@ class MediaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
-    {
-        return AbstractType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'media';

@@ -10,22 +10,22 @@
 
 namespace Goteo\Application;
 
-use Symfony\Component\HttpFoundation\Request;
-
 use Goteo\Application\Config\SqlTranslationLoader;
 use Goteo\Application\Config\YamlTranslationLoader;
+use Goteo\Core\Model;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\Formatter\MessageFormatter;
 use Symfony\Component\Translation\Translator;
 
 class Lang {
     static protected $default = '';
-    static protected $groups = array(); // Groups with translations
-    static protected $all_groups = array(); // All desired groups (even without translations)
+    static protected array $groups = array(); // Groups with translations
+    static protected array $all_groups = array(); // All desired groups (even without translations)
     static protected $translator = null;
     static protected $main_url = null;
 
     // This is overwritten by Config using file Resources/locales.yml
-    static protected  $langs_available = [
+    static protected array $langs_available = [
         'en' => [
             'name' => 'English',
             'short' => 'ENG',
@@ -63,7 +63,6 @@ class Lang {
     /**
      * Adds a YAML source text files for translations
      * @param string $lang      Language ID (es, en, fr, etc.)
-     * @param [type] $yaml_file [description]
      */
     static public function addYamlTranslation($lang, $yaml_file, $group = null) {
         static::factory($lang);
@@ -131,7 +130,6 @@ class Lang {
 
     static public function allGroups() {
         return static::$all_groups;
-
     }
 
     static public function getLangsAvailable() {
@@ -141,7 +139,6 @@ class Lang {
     static public function setLangsAvailable(array $langs) {
         static::$langs_available = $langs;
     }
-
 
     /**
      * Sets the default language
@@ -154,6 +151,7 @@ class Lang {
             static::$default = $lang;
         }
     }
+
     /**
      * Sets the default language
      * @param string $lang Language ID (es, en, fr, etc.)
@@ -170,8 +168,6 @@ class Lang {
 
     /**
      * Returns the default language  or retrieves the fallback language for a language
-     * @param  string $lang [description]
-     * @return [type]       [description]
      */
     static public function getDefault($lang = '', $only_public = true) {
         $default = static::isPublic(static::$default) ? static::$default : '';
@@ -197,10 +193,9 @@ class Lang {
 
     /**
      * returns the languages whose fallback language is the parameter language
-     * @param string $lang  [description]
-     * @return array       [description]
      */
-    static public function getDependantLanguages($fallbacklang = '') {
+    static public function getDependantLanguages($fallbacklang = ''): array
+    {
         return array_filter(self::$langs_available, function($lang) use($fallbacklang) {
             return (self::getFallback($lang) == $fallbacklang);
         });
@@ -222,9 +217,7 @@ class Lang {
         }
         static::$translator->setFallbackLocales($fallbacks);
 
-        // if(!static::isPublic($lang)) {
         if(!static::exists($lang)) {
-            // get the default
             $lang = static::getDefault($lang);
         }
 
@@ -314,7 +307,6 @@ class Lang {
                 $path .= '?' . http_build_query($get);
             }
         }
-        // echo "[$url][$url_lang] [$path]";die;
         if($url_lang) {
             $url = (Config::get('ssl') ? 'https://' : 'http://');
             $url .= ( Config::get('lang') == $lang ? 'www' : $lang) . '.';
@@ -327,7 +319,7 @@ class Lang {
         if(is_null($lang)) {
             $lang = self::current();
         }
-        $url = Lang::getLangUrl();
+        Lang::getLangUrl();
         $path = '';
         if($request) {
             $get = $request->query->all();
@@ -362,12 +354,6 @@ class Lang {
                 $save_lang = true;
             }
         }
-
-        // Las cookies para idiomas pueden ser problematicas, pues cambian el idioma sin enterarte.
-        // set lang by cookie if exists
-        // if(Cookie::exists('goteo_lang')) {
-        //     $desired[] = Cookie::get('goteo_lang');
-        // }
 
         // By session
         if(Session::exists('lang')) {
@@ -420,7 +406,7 @@ class Lang {
      * @param  string $lang Language ID (es, en, fr, etc.)
      */
     static function getLocale($lang = null) {
-        return static::get($lang ? $lang : static::current(), 'locale');
+        return static::get($lang ?: static::current(), 'locale');
     }
 
     /**
@@ -428,7 +414,7 @@ class Lang {
      * @param  string $lang Language ID (es, en, fr, etc.)
      */
     static function getName($lang = null) {
-        return static::get($lang ? $lang : static::current(), 'name');
+        return static::get($lang ?: static::current(), 'name');
     }
 
     /**
@@ -436,7 +422,7 @@ class Lang {
      * @param  string $lang Language ID (es, en, fr, etc.)
      */
     static function getShort($lang = null) {
-        return static::get($lang ? $lang : static::current(), 'short');
+        return static::get($lang ?: static::current(), 'short');
     }
 
     /**
@@ -444,7 +430,7 @@ class Lang {
      * @param  string $lang Language ID (es, en, fr, etc.)
      */
     static function getFallback($lang = null) {
-        $lang = static::get($lang ? $lang : static::current(), 'object');
+        $lang = static::get($lang ?: static::current());
         if(isset($lang->fallback) && $lang !== $lang->fallback) {
             if(!static::isPublic($lang->fallback)) {
                 return static::getFallback($lang->fallback);
@@ -458,14 +444,15 @@ class Lang {
      * Returns an array of langs => lang-name
      */
     static function listAll($method = 'name', $public_only = true) {
-        $ret = array();
-        foreach(static::$langs_available as $lang => $info) {
+        $languages = [];
 
+        foreach(static::$langs_available as $lang => $info) {
             if(empty($info['public']) && $public_only) continue;
 
-            $ret[$lang] = static::get($lang, $method);
+            $languages[$lang] = static::get($lang, $method);
         }
-        return $ret;
+
+        return $languages;
     }
 
     static function listCountries($lang = null) {
@@ -486,12 +473,12 @@ class Lang {
      */
     static function getCountryCode($country) {
         // manual old style country name
-        // for a old bug:
+        // for an old bug:
         if($country == 'EspaÃ±a') $country = 'Spain';
         foreach(static::listAll('id') as $lang) {
             $countries = Lang::listCountries($lang);
             foreach($countries as $code => $c) {
-                if(\Goteo\Core\Model::idealiza($country) == \Goteo\Core\Model::idealiza($c)) {
+                if(Model::idealiza($country) == Model::idealiza($c)) {
                     return $code;
                 }
             }
