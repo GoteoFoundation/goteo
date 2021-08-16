@@ -71,7 +71,7 @@ class MailController extends Controller {
                 if(empty($mail->template)) {
                     $mail->content = '<pre>' . $mail->content . '</pre>';
                 }
-                return new Response($mail->render(false, [], $track));
+                return new Response($mail->renderEmailTemplate(false, [], $track));
             }
 
             // TODO, check if exists as file-archived
