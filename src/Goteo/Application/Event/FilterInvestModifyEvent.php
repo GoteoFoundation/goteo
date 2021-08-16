@@ -34,5 +34,4 @@ class FilterInvestModifyEvent extends Event
         return $this->new_invest;
     }
 
-
 }
