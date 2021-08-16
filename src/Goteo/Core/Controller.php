@@ -170,7 +170,7 @@ abstract class Controller {
         }
         // TODO: a better way to create a csrf_protection without showing errors CSRF on mock_validation
         $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', $formBuilderOptions));
-        $processor = $finder->getInstanceOfClassForm($formClass, $options);
+        $processor = $finder->getInstance($formClass, $options);
         // Set full validation if required in Request
         // Do a fake submit of the form on create to test errors (only on GET requests)
         $processor->setFullValidation($validate, $mock_validation);
@@ -178,30 +178,6 @@ abstract class Controller {
         return $processor;
     }
 
-    public function getModelFormGuessingClass(
-        $form,
-        Model $model,
-        array $defaults = [],
-        array $options = [],
-        Request $request = null
-    ): FormProcessorInterface {
-        /** @var $finder FormFinder */
-        $finder = App::getService('app.forms.finder');
-        $finder->setModel($model);
-        $validate = $mock_validation = false;
-        if ($request) {
-            $validate = $request->query->has('validate');
-            $mock_validation = $validate && $request->isMethod('get');
-        }
-        // TODO: a better way to create a csrf_protection without showing errors CSRF on mock_validation
-        $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', ['csrf_protection' => false]));
-        $processor = $finder->getInstance($form, $options);
-        // Set full validation if required in Request
-        // Do a fake submit of the form on create to test errors (only on GET requests)
-        $processor->setFullValidation($validate, $mock_validation);
-
-        return $processor;
-    }
 }
 
 

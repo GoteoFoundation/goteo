@@ -17,7 +17,8 @@ class FormFinder {
     private $builder;
     private $model;
 
-    public function setBuilder(FormBuilderInterface $builder) {
+    public function setBuilder(FormBuilderInterface $builder): FormFinder
+    {
         $this->builder = $builder;
         return $this;
     }
@@ -36,24 +37,7 @@ class FormFinder {
         return $this->model;
     }
 
-    public function resolve($form) {
-        $class = '\Goteo\Library\Forms\Model\\' . $form . 'Form';
-        if(class_exists($class)) {
-            return $class;
-        }
-        $class = '\Goteo\Library\Forms\Admin\\' . $form . 'Form';
-        if(class_exists($class)) {
-            return $class;
-        }
-        throw new FormFinderException("$class not found");
-    }
-
-    public function getInstance($form, array $options = []) {
-        $class = $this->resolve($form);
-        return new $class($this->builder, $this->model, $options);
-    }
-
-    public function getInstanceOfClassForm(string $formClass, array $options = []) {
+    public function getInstance(string $formClass, array $options = []) {
         return new $formClass($this->builder, $this->model, $options);
     }
 }
