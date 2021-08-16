@@ -56,7 +56,7 @@ class UrlType extends SymfonyUrlType
     {
         parent::buildView($view, $form, $options);
         $view->vars['row_class'] = $options['row_class'];
-        $view->vars['pre_addon'] = $options['pre_addon'] ? $options['pre_addon'] : '<i class="fa fa-link"></i>';
+        $view->vars['pre_addon'] = $options['pre_addon'] ?: '<i class="fa fa-link"></i>';
         $view->vars['post_addon'] = $options['post_addon'];
     }
 }

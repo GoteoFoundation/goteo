@@ -27,7 +27,7 @@ class SubmitType extends SymfonySubmitType
      */
     public function getBlockPrefix(): string
     {
-        return 'custom_submit';
+        return 'submit';
     }
 
     /**

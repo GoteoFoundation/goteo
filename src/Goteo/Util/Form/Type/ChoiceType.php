@@ -27,7 +27,7 @@ class ChoiceType extends SymfonyChoiceType
      */
     public function getBlockPrefix(): string
     {
-        return 'custom_choice';
+        return 'choice';
     }
 
     /**
