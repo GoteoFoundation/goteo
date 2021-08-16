@@ -61,7 +61,7 @@ class SettingsDashboardController extends DashboardController {
     /**
      * Settings: profile edit
      */
-    public function profileAction($pid = null, Request $request)
+    public function profileAction(Request $request, $pid = null)
     {
         if($pid) {
             $project = Project::get( $pid );

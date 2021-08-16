@@ -73,6 +73,17 @@ class UserProfileForm extends AbstractFormProcessor {
         return $data;
     }
 
+    private function getInterestsChoices(): array
+    {
+        $interestsChoices = [];
+        $interests = Interest::getAll();
+
+        foreach ($interests as $key => $value) {
+            $interestsChoices[$value] = $key;
+        }
+
+        return $interestsChoices;
+    }
 
     public function createForm() {
         $non_public = '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field');
@@ -131,9 +142,9 @@ class UserProfileForm extends AbstractFormProcessor {
                 'disabled' => $this->getReadonly(),
                 'attr' =>['info' => $non_public],
                 'choices' => [
-                    'F' => Text::get('regular-female'),
-                    'M' => Text::get('regular-male'),
-                    'X' => Text::get('regular-others')
+                    Text::get('regular-female') => 'F',
+                    Text::get('regular-male') => 'M',
+                    Text::get('regular-others') => 'X'
                 ],
                 'required' => false
             ])
@@ -142,13 +153,13 @@ class UserProfileForm extends AbstractFormProcessor {
                 'constraints' => $this->getConstraints('legal_entity'),
                 'disabled' => $this->getReadonly(),
                 'choices' => [
-                    '0' => Text::get('profile-field-legal-entity-person'),
-                    '1' => Text::get('profile-field-legal-entity-self-employed'),
-                    '2' => Text::get('profile-field-legal-entity-ngo'),
-                    '3' => Text::get('profile-field-legal-entity-company'),
-                    '4' => Text::get('profile-field-legal-entity-cooperative'),
-                    '5' => Text::get('profile-field-legal-entity-asociation'),
-                    '6' => Text::get('profile-field-legal-entity-others')
+                    Text::get('profile-field-legal-entity-person') => 0,
+                    Text::get('profile-field-legal-entity-self-employed') => 1,
+                    Text::get('profile-field-legal-entity-ngo') => 2,
+                    Text::get('profile-field-legal-entity-company') => 3,
+                    Text::get('profile-field-legal-entity-cooperative') => 4,
+                    Text::get('profile-field-legal-entity-asociation') => 5,
+                    Text::get('profile-field-legal-entity-others') => 6
                 ],
                 'required' => false
             ])
@@ -172,7 +183,7 @@ class UserProfileForm extends AbstractFormProcessor {
                 'constraints' => $this->getConstraints('interests'),
                 'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-interests')],
-                'choices' => Interest::getAll(),
+                'choices' => $this->getInterestsChoices(),
                 'required' => false
             ])
             ->add('webs', TextareaType::class, [
