@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller\Dashboard;
 
+use Exception;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterMessageEvent;
@@ -42,6 +43,7 @@ use Goteo\Model\User;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;
+use PDOException;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,11 +68,8 @@ class ProjectDashboardController extends DashboardController {
         // Create sidebar menu
         Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), $prefix . '/summary', 'summary');
 
-        $validation = false;
-        $admin = false;
         $validation = $project->getValidation();
         $admin = $project->userCanModerate($user) && !$project->inEdition();
-
 
         if($project->inEdition() || $admin) {
             $steps = [
@@ -99,19 +98,17 @@ class ProjectDashboardController extends DashboardController {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-manage-campaign'), $submenu, 'project', null, 'sidebar');
         }
 
-
          $submenu = [
             ['text' => '<i class="fa fa-2x fa-globe"></i> ' . Text::get('regular-translations'), 'link' => $prefix . '/translate', 'id' => 'translate'],
             ['text' => '<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), 'link' => $prefix . '/analytics', 'id' => 'analytics'],
             ['text' => '<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), 'link' => $prefix . '/materials', 'id' => 'materials'],
         ];
 
-
         Session::addToSidebarMenu('<i class="icon icon-2x icon-settings"></i> ' . Text::get('footer-header-resources'), $submenu, 'resources', null, 'sidebar');
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get($project->isApproved() ? 'dashboard-menu-projects-preview' : 'regular-preview' ), '/project/' . $project->id, 'preview');
 
-        $calls_available = $matchers_available = $channels_available = [];
+        $channels_available = [];
         $calls_available = Call::getCallsAvailable($project);
         if($project->inEdition() || $project->inReview()) {
             $channels_available = Node::getAll(['status' => 'active', 'type' => 'channel', 'inscription_open' => true]);
@@ -122,15 +119,11 @@ class ProjectDashboardController extends DashboardController {
         }
 
         if($project->isFunded()) {
-
             Session::addToSidebarMenu('<i class="fa fa-2x fa fa-id-badge"></i> ' . Text::get('dashboard-menu-projects-story'), $prefix . '/story', 'story');
-
         }
 
         if($project->inEdition() && $validation->global == 100) {
-
             Session::addToSidebarMenu('<i class="fa fa-2x fa-paper-plane"></i> ' . Text::get('project-send-review'), '/dashboard/project/' . $project->id . '/apply', 'apply', null, 'flat', 'btn btn-fashion apply-project');
-
         }
 
         // Create a global form to send to review
@@ -195,7 +188,7 @@ class ProjectDashboardController extends DashboardController {
         return $this->project;
     }
 
-    public function indexAction(Request $request) {
+    public function indexAction() {
         $projects = Project::ofmine($this->user->id, false, 0, 3);
         $projects_total = Project::ofmine($this->user->id, false, 0, 0, true);
 
@@ -205,7 +198,7 @@ class ProjectDashboardController extends DashboardController {
         ]);
     }
 
-    public function summaryAction($pid = null, Request $request) {
+    public function summaryAction($pid = null) {
         $project = $this->validateProject($pid, 'summary');
         if($project instanceOf Response) return $project;
 
@@ -291,6 +284,7 @@ class ProjectDashboardController extends DashboardController {
                 Message::error($e->getMessage());
             }
         }
+
         return $this->viewResponse('dashboard/project/personal', [
             'form' => $form->createView()
         ]);
@@ -338,7 +332,7 @@ class ProjectDashboardController extends DashboardController {
     /**
      * Project edit (images)
      */
-    public function imagesAction($pid = null, Request $request) {
+    public function imagesAction(Request $request, $pid = null) {
         $project = $this->validateProject($pid, 'images');
         if($project instanceOf Response) return $project;
         $approved = $project->isApproved();
@@ -356,20 +350,18 @@ class ProjectDashboardController extends DashboardController {
             'images' => $images,
             'next' => $approved || !$editable ? '' : $this->getEditRedirect('images', $request)
             ]);
-
     }
 
     /**
      * Project edit (updates)
      */
-    public function updatesAction($pid = null, Request $request) {
+    public function updatesAction(Request $request, $pid = null) {
 
         $project = $this->validateProject($pid, 'updates');
         if($project instanceOf Response) return $project;
 
         $posts = [];
         $total = 0;
-        $msg = '';
         $limit = 10;
         $offset = $limit * (int)$request->query->get('pag');
 
@@ -434,7 +426,6 @@ class ProjectDashboardController extends DashboardController {
         }
 
         $defaults = (array)$post;
-        // Create the form
         $processor = $this->getModelForm('ProjectPost', $post, $defaults, ['project' => $project]);
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $form = $processor->getBuilder()
@@ -465,15 +456,11 @@ class ProjectDashboardController extends DashboardController {
             ]);
     }
 
-    /**
-    * Costs section
-    */
     public function costsAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'costs');
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project;
-        // Create the form
         $processor = $this->getModelForm('ProjectCosts', $project, $defaults, [], $request);
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $builder = $processor->getBuilder();
@@ -518,7 +505,7 @@ class ProjectDashboardController extends DashboardController {
                         $cost = Cost::get(substr($button, 7));
                         $cost->dbDelete();
                         return $this->rawResponse('deleted ' . $cost->id);
-                    } catch(\PDOExpection $e) {
+                    } catch(PDOException $e) {
                         return $this->rawResponse(Text::get('form-sent-error', 'Cost not deleted'), 'text/plain', 403);
                     }
                 }
@@ -542,16 +529,12 @@ class ProjectDashboardController extends DashboardController {
         ]);
     }
 
-    /**
-    * Rewards section
-    */
-    public function rewardsAction($pid = null, Request $request) {
+    public function rewardsAction(Request $request, $pid = null) {
 
         $project = $this->validateProject($pid, 'rewards');
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project;
-        // Create the form
         $processor = $this->getModelForm('ProjectRewards', $project, $defaults, [], $request);
         $processor->setReadonly(!($this->admin || $project->inEdition()));
         // Rewards can be added during campaign
@@ -559,7 +542,7 @@ class ProjectDashboardController extends DashboardController {
             $processor->setFullValidation(true);
         }
 
-        $builder = $processor->createForm()->getBuilder()
+        $processor->createForm()->getBuilder()
             ->add('submit', SubmitType::class, [
                 'label' => $project->inEdition() ? 'form-next-button' : 'regular-submit'
             ])
@@ -600,7 +583,7 @@ class ProjectDashboardController extends DashboardController {
                             return $this->rawResponse('Error: Reward has invests or cannot be deleted', 'text/plain', 403);
                         }
                         return $this->rawResponse('deleted ' . $reward->id);
-                    } catch(\PDOExpection $e) {
+                    } catch(PDOException $e) {
                         return $this->rawResponse(Text::get('form-sent-error', 'Reward not deleted'), 'text/plain', 403);
                     }
                 }
@@ -624,7 +607,9 @@ class ProjectDashboardController extends DashboardController {
         ]);
     }
 
-    /** Send the project to review */
+    /**
+     * Send the project to review
+     */
     public function applyAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'summary', null, $form);
         if($project instanceOf Response) return $project;
@@ -651,7 +636,7 @@ class ProjectDashboardController extends DashboardController {
 
                 if(strpos($referer, $old_id) !== false) $referer = '/dashboard/project/' . $project->id . '/summary';
 
-            } catch(\Exception $e) {
+            } catch(Exception $e) {
                 if($project->inReview()) Message::info(Text::get('project-review-request_mail-success'));
                 Message::error(Text::get('project-review-request_mail-fail') . "\n" . $e->getMessage());
             }
@@ -663,7 +648,6 @@ class ProjectDashboardController extends DashboardController {
         return $this->redirect($referer);
     }
 
-    /** Delete project */
     public function deleteAction($pid, Request $request = null) {
         $project = $this->validateProject($pid);
         if($project instanceOf Response) return $project;
@@ -682,6 +666,7 @@ class ProjectDashboardController extends DashboardController {
         } else {
             Message::error(Text::get('dashboard-project-delete-ko', '<strong>' . strip_tags($project->name) . '</strong>. ') . implode("\n", $errors));
         }
+
         return $this->redirect($referer);
     }
 
@@ -695,7 +680,6 @@ class ProjectDashboardController extends DashboardController {
         $defaults = (array)$project;
         if($account = Account::get($project->id)) {
             $defaults['paypal'] = $account->paypal;
-            // $defaults['bank'] = $account->bank;
         }
         if($personal = (array)User::getPersonal($user)) {
             foreach($personal as $k => $v) {
@@ -736,7 +720,7 @@ class ProjectDashboardController extends DashboardController {
     /**
     * Collaborations section
     */
-    public function supportsAction($pid = null, Request $request) {
+    public function supportsAction(Request $request, $pid = null) {
         $project = $this->validateProject($pid, 'supports');
         if($project instanceOf Response) return $project;
 
@@ -810,12 +794,12 @@ class ProjectDashboardController extends DashboardController {
                     }
                 }
                 if($ok) {
-                    // Send and event to create the Feed and send emails
                     if($is_update) {
-                        $this->dispatch(AppEvents::MESSAGE_UPDATED, new FilterMessageEvent($comment));
+                        $event = AppEvents::MESSAGE_UPDATED;
                     } else {
-                        $this->dispatch(AppEvents::MESSAGE_CREATED, new FilterMessageEvent($comment));
+                        $event = AppEvents::MESSAGE_CREATED;
                     }
+                    $this->dispatch($event, new FilterMessageEvent($comment));
                     Message::info(Text::get('form-sent-success'));
                     return $this->redirect('/dashboard/project/' . $this->project->id . '/supports');
                 } else {
@@ -855,7 +839,7 @@ class ProjectDashboardController extends DashboardController {
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure')
-                    ]
+                ]
             ])
             ->getForm();
 
@@ -912,18 +896,18 @@ class ProjectDashboardController extends DashboardController {
     /**
      * Reusable function to filter invests in the dashboard
      * TODO: move this to a custom class (maybe the dependency container) for wider reusing
-     * @param  filter
-     * @return array                [filters, filter_by]
      */
-    public static function getInvestFilters(Project $project, $filter = []) {
+    public static function getInvestFilters(Project $project, $filter = []): array
+    {
         $filters =  [
             'reward' => ['' => Text::get('regular-see_all')],
-            'others' => ['' => Text::get('regular-see_all'),
-                         'pending' => Text::get('dashboard-project-filter-by-pending'),
-                         'fulfilled' => Text::get('dashboard-project-filter-by-fulfilled'),
-                         'donative' => Text::get('dashboard-project-filter-by-donative'),
-                         'nondonative' => Text::get('dashboard-project-filter-by-nondonative')
-                        ]
+            'others' => [
+                '' => Text::get('regular-see_all'),
+                'pending' => Text::get('dashboard-project-filter-by-pending'),
+                'fulfilled' => Text::get('dashboard-project-filter-by-fulfilled'),
+                'donative' => Text::get('dashboard-project-filter-by-donative'),
+                'nondonative' => Text::get('dashboard-project-filter-by-nondonative')
+            ]
         ];
         foreach($project->getIndividualRewards() as $reward) {
             $filters['reward'][$reward->id] = $reward->getTitle();
@@ -958,7 +942,7 @@ class ProjectDashboardController extends DashboardController {
     /**
      * Rewards/invest section
      */
-    public function investsAction($pid = null, Request $request) {
+    public function investsAction(Request $request, $pid = null) {
         $project = $this->validateProject($pid, 'invests');
         if($project instanceOf Response) return $project;
 
@@ -1006,7 +990,7 @@ class ProjectDashboardController extends DashboardController {
     /**
     * Analytics section
     */
-    public function analyticsAction($pid = null, Request $request)
+    public function analyticsAction(Request $request, $pid = null)
     {
         $project = $this->validateProject($pid, 'analytics');
         if($project instanceOf Response) return $project;
@@ -1047,7 +1031,7 @@ class ProjectDashboardController extends DashboardController {
     /**
      * Social commitment
      */
-    public function materialsAction($pid = null, Request $request)
+    public function materialsAction($pid = null)
     {
         $project = $this->validateProject($pid, 'materials');
         if($project instanceOf Response) return $project;
@@ -1059,7 +1043,7 @@ class ProjectDashboardController extends DashboardController {
             'licenses_list' => $licenses_list,
             'icons' => $icons,
             'allowNewShare' => $project->isFunded()
-            ]);
+        ]);
     }
 
     /**
@@ -1117,7 +1101,7 @@ class ProjectDashboardController extends DashboardController {
     /**
      * Action to handle pitches that the project can answer
      */
-    public function pitchAction($pid, Request $request)
+    public function pitchAction($pid)
     {
         $project = $this->validateProject($pid, 'pitch');
         if($project instanceOf Response) return $project;
@@ -1138,8 +1122,9 @@ class ProjectDashboardController extends DashboardController {
         $pitches = array_merge($channels_available, $calls_available, $matchers_available);
 
         return $this->viewResponse(
-            'dashboard/project/pitch', [
-            'pitches' =>   $pitches,
+            'dashboard/project/pitch',
+            [
+                'pitches' =>   $pitches,
             ]
         );
     }
