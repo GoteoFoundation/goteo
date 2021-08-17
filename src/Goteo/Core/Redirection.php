@@ -8,28 +8,22 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Core {
+namespace Goteo\Core;
 
-    class Redirection extends Exception {
+class Redirection extends Exception {
 
-        const
-            TEMPORARY   = 302,
-            PERMANENT   = 301;
+    const TEMPORARY = 302;
+    const PERMANENT = 301;
 
-        private $url;
+    private $url;
 
-        public function __construct ($url, $code = self::TEMPORARY) {
-
-            $this->url = $url;
-            parent::__construct($url, $code);
-
-        }
-
-        public function getURL () {
-            return $this->url;
-        }
-
+    public function __construct ($url, $code = self::TEMPORARY) {
+        $this->url = $url;
+        parent::__construct($url, $code);
     }
 
+    public function getURL () {
+        return $this->url;
+    }
 
 }

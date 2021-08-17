@@ -10,6 +10,7 @@
 
 namespace Goteo\Core;
 
+use DateTime;
 use Goteo\Application\App;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Config;
@@ -116,7 +117,6 @@ abstract class Model {
 	}
 
 	/**
-	 * @param   type mixed  $id     Identificador
 	 * @return  type object         Objeto or false if not found
 	 */
 	static public function get($id) {
@@ -147,7 +147,7 @@ abstract class Model {
      * Some data transformation for SQL field types
      */
     public function transformFieldValue($value) {
-        if($value instanceOf \DateTime) {
+        if($value instanceOf DateTime) {
             return $value->format('Y-m-d\TH:i:s');
         }
         if($value instanceOf Image) {
@@ -438,13 +438,11 @@ abstract class Model {
 			$sql = "SELECT id FROM `{$table}` WHERE id = :id AND lang = :lang";
 			$values = array(':id' => $id, ':lang' => $lang);
 			$qaux = static::query($sql, $values);
-			// echo \sqldbg($sql, $values);
 			$ok = $qaux->fetchColumn();
-			// print("$ok = $id $lang");
+
 			if ($ok != $id) {
 				$lang = $fallback;
 			}
-
 		}
 
 		return $lang;
