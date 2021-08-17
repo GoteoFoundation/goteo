@@ -10,37 +10,32 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Exception\ControllerException;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Exception\ModelException;
-
-use Goteo\Application\Message;
-use Goteo\Application\Config;
 use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
 use Goteo\Application\Event\FilterProjectPostEvent;
+use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Message;
+use Goteo\Console\UsersSend;
+use Goteo\Library\Text;
+use Goteo\Model\Blog\Post as BlogPost;
+use Goteo\Model\Image;
 use Goteo\Model\Invest;
 use Goteo\Model\Invest\InvestMsg;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Reward;
-use Goteo\Model\Image;
-use Goteo\Library\Text;
-use Goteo\Console\UsersSend;
-use Goteo\Model\Blog;
-use Goteo\Model\Blog\Post as BlogPost;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ProjectsApiController extends AbstractApiController {
 
     /**
      * Simple listing of projects
      * TODO: according to permissions, filter this projects
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function projectsAction(Request $request) {
         if(!$this->user) {
@@ -56,7 +51,6 @@ class ProjectsApiController extends AbstractApiController {
             Project::STATUS_UNFUNDED,
         ];
 
-        // General search
         if($request->query->has('q')) {
             $filters['basic'] = $request->query->get('q');
         }
@@ -118,7 +112,6 @@ class ProjectsApiController extends AbstractApiController {
             $ob['image'] = $prj->image;
         }
 
-        //add costs
         $ob['costs'] = [];
         foreach(Project\Cost::getAll($prj->id) as $cost) {
             if(!is_array($ob['costs'][$cost->type])) $ob['costs'][$cost->type] = [];
@@ -131,16 +124,10 @@ class ProjectsApiController extends AbstractApiController {
      * Simple projects info data
      */
     public function projectAction($id) {
-        // $prj = Project::getMini($id);
-        // // if(!$this->is_admin && !in_array($prj->status, [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED])) {
-        // if(!$prj->userCanView($this->user)) {
-        //     throw new ControllerAccessDeniedException();
-        // }
         $properties = $this->getSafeProject($id);
 
         return $this->jsonResponse($properties);
     }
-
 
     /**
      * Individual project property checker/updater
@@ -169,12 +156,11 @@ class ProjectsApiController extends AbstractApiController {
             }
             $prj->{$prop} = $request->request->get('value');
 
-            // do the SQL update
             $prj->dbUpdate([$prop]);
             $result['value'] = $prj->{$prop};
         }
-        return $this->jsonResponse($result);
 
+        return $this->jsonResponse($result);
     }
 
     /**
@@ -234,7 +220,6 @@ class ProjectsApiController extends AbstractApiController {
                 $post->{$prop} = (bool) $post->{$prop};
             }
 
-            // do the SQL update
             $post->dbUpdate([$prop]);
             $result['value'] = $post->{$prop};
             $this->dispatch(AppEvents::PROJECT_POST, new FilterProjectPostEvent($post));
@@ -246,8 +231,8 @@ class ProjectsApiController extends AbstractApiController {
             if($messages = Message::getMessages()) {
                 $result['message'] = implode("\n", $messages);
             }
-
         }
+
         return $this->jsonResponse($result);
     }
 
@@ -285,7 +270,7 @@ class ProjectsApiController extends AbstractApiController {
             $section = '';
         }
 
-        $cover = $prj->image->id ? $prj->image->id : null;
+        $cover = $prj->image->id ?: null;
         $all_success = true;
         foreach($files as $file) {
             if(!$file instanceOf UploadedFile) continue;
@@ -299,11 +284,8 @@ class ProjectsApiController extends AbstractApiController {
                 $image = new Image($file);
                 $errors = [];
                 if ($image->save($errors)) {
-
                     if($add_to_gallery === 'project_image') {
-                        /**
-                         * Guarda la relación NM en la tabla 'project_image'.
-                         */
+                        /**  Guarda la relación NM en la tabla 'project_image' */
                         if($image->id) {
                             Project::query("REPLACE project_image (project, image, section) VALUES (:project, :image, :section)", array(':project' => $prj->id, ':image' => $image->id, ':section' => $section));
                             if(!$prj->image->id) {
@@ -315,10 +297,8 @@ class ProjectsApiController extends AbstractApiController {
                     }
 
                     $success = true;
-                }
-                else {
+                } else {
                     $msg = implode(', ',$errors['image']);
-                    // print_r($errors);
                 }
             }
 
@@ -341,21 +321,17 @@ class ProjectsApiController extends AbstractApiController {
         return $this->jsonResponse(['files' => $result, 'cover' => $cover,  'msg' => $global_msg, 'success' => $all_success]);
     }
 
-    public function projectDeleteImagesAction($id, $image, Request $request) {
+    public function projectDeleteImagesAction($id, $image) {
         $prj = $this->validateProject($id);
-
         $vars = array(':project' => $prj->id, ':image' => $image);
         Project::query("DELETE FROM project_image WHERE project = :project AND image = :image", $vars);
         $sql = "SELECT COUNT(*) FROM project_image WHERE project = :project AND image = :image";
         $success = (int) Project::query($sql, $vars)->fetchColumn() === 0;
-        // $sql = "SELECT image FROM project WHERE id = :project";
-        // if( Project::query($sql, ['project' => $prj->id])->fetchColumn() === $image) {
-        //     Project::query("UPDATE project SET image = '' WHERE id = :project", ['project' => $prj->id]);
-        // }
+
         return $this->jsonResponse(['image' => $image, 'result' => $success]);
     }
 
-    public function projectDefaultImagesAction($id, $image, Request $request) {
+    public function projectDefaultImagesAction($id, $image) {
         $prj = $this->validateProject($id);
 
         $success = false;
@@ -376,6 +352,7 @@ class ProjectsApiController extends AbstractApiController {
                 if($success) break;
             }
         }
+
         return $this->jsonResponse(['msg' => $msg, 'default' => $image, 'result' => $success]);
     }
 
@@ -396,7 +373,6 @@ class ProjectsApiController extends AbstractApiController {
                     $vars = array(':project' => $prj->id, ':image' => $img, ':section' => $s, ':order' => $index);
                     $sql = "UPDATE project_image SET `order` = :order, `section` = :section WHERE project = :project AND image = :image";
                     Project::query($sql, $vars);
-                    // $result[$section] = \sqldbg($sql, $vars);
                     $index++;
                 }
             }
@@ -405,7 +381,7 @@ class ProjectsApiController extends AbstractApiController {
         }
         if($prj->all_galleries) {
             $vars = array(':project' => $prj->id, ':image' => $image);
-            foreach($prj->all_galleries as $key => $gal) {
+            foreach($prj->all_galleries as $gal) {
                 foreach($gal as $img) {
                     if($img->imageData->name === $image) {
                         // break;
@@ -528,7 +504,7 @@ class ProjectsApiController extends AbstractApiController {
     }
 
     // CSV Extraction
-    public function projectInvestsCSVAction($pid, Request $request) {
+    public function projectInvestsCSVAction($pid) {
         $prj = Project::get($pid);
         // Security, first of all...
         if(!$prj->userCanEdit($this->user)) {
@@ -631,7 +607,7 @@ class ProjectsApiController extends AbstractApiController {
      /**
      * Delete a comment
      */
-    public function projectDeleteSupportMsgAction($mid, Request $request) {
+    public function projectDeleteSupportMsgAction($mid) {
         if(!$this->user) {
             throw new ControllerAccessDeniedException();
         }
@@ -646,7 +622,6 @@ class ProjectsApiController extends AbstractApiController {
         $message->dbDelete(['invest']);
 
         // Send and event to create the Feed and/or update number of collaborations
-
         return $this->jsonResponse(['invest' => $message->invest]);
     }
 

@@ -56,10 +56,8 @@ abstract class AbstractApiController extends Controller
                 $errors = [];
                 if ($image->save($errors)) {
                     $success = true;
-                }
-                else {
+                } else {
                     $msg = implode(', ',$errors['image']);
-                    // print_r($errors);
                 }
             }
 

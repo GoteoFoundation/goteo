@@ -10,39 +10,39 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Application\Message;
 use Goteo\Application\AppEvents;
-use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Config;
+use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Lang;
+use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
+use Goteo\Controller\Dashboard\ProjectDashboardController;
+use Goteo\Core\Controller;
 use Goteo\Core\DB;
-use Goteo\Model\Page;
 use Goteo\Library\Text;
 use Goteo\Library\Worth;
-use Goteo\Model\Message as SupportMessage;
-use Goteo\Model\Project;
-use Goteo\Model\Project\Account;
-use Goteo\Model\Project\ProjectLocation;
-use Goteo\Model\Invest;
-use Goteo\Model\Project\Favourite;
-use Goteo\Model\Project\Conf;
-use Goteo\Model\Project\ProjectMilestone;
-use Goteo\Model\Project\Category;
-use Goteo\Model\License;
-use Goteo\Model\SocialCommitment;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
+use Goteo\Model\Invest;
+use Goteo\Model\License;
+use Goteo\Model\Message as SupportMessage;
+use Goteo\Model\Page;
+use Goteo\Model\Project;
+use Goteo\Model\Project\Account;
+use Goteo\Model\Project\Category;
+use Goteo\Model\Project\Favourite;
+use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Project\ProjectMilestone;
+use Goteo\Model\SocialCommitment;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
+use Spipu\Html2Pdf\Html2Pdf;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Goteo\Controller\Dashboard\ProjectDashboardController;
-use Spipu\Html2Pdf\Html2Pdf;
-use Spipu\Html2Pdf\Exception\Html2PdfException;
 
 
-class ProjectController extends \Goteo\Core\Controller {
+class ProjectController extends Controller {
 
     public function __construct() {
         $this->dbReplica(true);
@@ -50,9 +50,9 @@ class ProjectController extends \Goteo\Core\Controller {
         View::setTheme('responsive');
     }
 
-	public function indexAction($pid = null, $show = 'home', $post = null, Request $request) {
+	public function indexAction(Request $request, $pid = null, $show = 'home', $post = null) {
 		if ($pid !== null) {
-			return $this->view($pid, $show, $post, $request);
+			return $this->view($request, $pid, $show, $post);
 		}
 		if ($request->query->has('create')) {
 			return new RedirectResponse('/project/create');
@@ -89,18 +89,16 @@ class ProjectController extends \Goteo\Core\Controller {
         		$category->save();
         	}
 
-        	$loc = new ProjectLocation(
-        			[
-                    'id'         => $project->id,
-                    'city'         => $request->request->get('city'),
-                    'region'       => $request->request->get('region'),
-                    'country'      => $request->request->get('country'),
-                    'country_code' => $request->request->get('country_code'),
-                    'longitude'    => $request->request->get('longitude'),
-                    'latitude'     => $request->request->get('latitude'),
-                    'method'       => 'manual'
-                ]
-            );
+        	$loc = new ProjectLocation([
+                'id'         => $project->id,
+                'city'         => $request->request->get('city'),
+                'region'       => $request->request->get('region'),
+                'country'      => $request->request->get('country'),
+                'country_code' => $request->request->get('country_code'),
+                'longitude'    => $request->request->get('longitude'),
+                'latitude'     => $request->request->get('latitude'),
+                'method'       => 'manual'
+            ]);
 
             $loc->save($errors);
 
@@ -129,7 +127,7 @@ class ProjectController extends \Goteo\Core\Controller {
         ]);
 	}
 
-	protected function view($project, $show, $post = null, Request $request) {
+	protected function view(Request $request, $project, $show, $post = null) {
 		DB::cache(true);
 
 		if( !$project instanceOf Project ) {
@@ -254,7 +252,6 @@ class ProjectController extends \Goteo\Core\Controller {
 
             // posts
             if ($show == 'updates') {
-
                 //if is an individual post page
                 if ($post) {
                     $pob = BlogPost::getBySlug($post, Lang::current(), $project->lang);
@@ -342,7 +339,7 @@ class ProjectController extends \Goteo\Core\Controller {
         if ($request->isMethod('post'))
             return $this->jsonResponse(['result' => $favourite]);
 
-        return $this->redirect('/project/' . $pid);;
+        return $this->redirect('/project/' . $pid);
     }
 
     /**

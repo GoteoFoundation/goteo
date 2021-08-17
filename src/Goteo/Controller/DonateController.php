@@ -35,7 +35,7 @@ class DonateController extends PoolController {
         );
     }
 
-    public function selectAmountDonateAction($landing='yes', Request $request)
+    public function selectAmountDonateAction(Request $request, $landing='yes')
     {
         DashboardController::createSidebar('wallet', 'donate');
 

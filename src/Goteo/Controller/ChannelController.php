@@ -44,7 +44,6 @@ class ChannelController extends Controller {
         $this->dbReplica(true);
         $this->dbCache(true);
 
-        // changing to a responsive theme here
         View::setTheme('responsive');
     }
 
@@ -154,12 +153,10 @@ class ChannelController extends Controller {
     /**
      * All channel projects
      */
-    public function listProjectsAction($id, $type = 'available', $category = null, Request $request)
+    public function listProjectsAction(Request $request, $id, $type = 'available', $category = null)
     {
         $this->setChannelContext($id);
-
         $channel = Node::get($id);
-
         $limit = 9;
         $status=[3,4,5];
         $filter = ['type' => $type, 'popularity' => 5, 'status' => $status ];
@@ -196,12 +193,9 @@ class ChannelController extends Controller {
     public function faqAction($id, $slug)
     {
         $this->setChannelContext($id);
-
-        $faq= NodeFaq::getBySlug($id, $slug);
-
-        $questions=NodeFaqQuestion::getList(['node_faq' => $faq->id]);
-
-        $downloads=NodeFaqDownload::getList(['node_faq' => $faq->id]);
+        $faq = NodeFaq::getBySlug($id, $slug);
+        $questions = NodeFaqQuestion::getList(['node_faq' => $faq->id]);
+        $downloads = NodeFaqDownload::getList(['node_faq' => $faq->id]);
 
         return $this->viewResponse('channel/call/faq',
             ['faq' => $faq,
@@ -219,21 +213,17 @@ class ChannelController extends Controller {
         $this->setChannelContext($id);
 
         if($slug)
-            $category_id=NodeResourceCategory::getIdBySlug($slug);
+            $category_id = NodeResourceCategory::getIdBySlug($slug);
 
-        $resources=NodeResource::getList(['node' => $id, 'category' => $category_id]);
+        $resources = NodeResource::getList(['node' => $id, 'category' => $category_id]);
+        $resources_categories = NodeResourceCategory::getlist();
 
-        $resources_categories=NodeResourceCategory::getlist();
-
-        return $this->viewResponse('channel/call/resources',
-            [
+        return $this->viewResponse('channel/call/resources', [
             'resources' => $resources,
             'category'  => $category_id,
             'resources_categories' => $resources_categories
-            ]
-        );
+        ]);
     }
-
 
     /**
      * Initial create project action
@@ -325,13 +315,10 @@ class ChannelController extends Controller {
                 }
             }
 
-            return $this->viewResponse(
-                'questionnaire/apply',
-                [
-                    'model' => $channel,
-                    'form' => $form->createView()
-                ]
-            );
+            return $this->viewResponse('questionnaire/apply', [
+                'model' => $channel,
+                'form' => $form->createView()
+            ]);
         }
 
         return $this->redirect('/dashboard/project/'. $project->id .'/profile');
@@ -349,7 +336,7 @@ class ChannelController extends Controller {
         return $this->viewResponse('channels/list', ['channels' => $channels]);
     }
 
-        /**
+    /**
     * Returns an array suitable for Project::getList($filters)
      */
     protected function getProjectFilters($filter, $vars = []) {
@@ -397,12 +384,10 @@ class ChannelController extends Controller {
             $filters['type'] = 'succeeded';
             $filters['status'] = [Project::STATUS_FUNDED, Project::STATUS_FULFILLED];
             $filters['order'] = 'project.published DESC, project.name ASC';
-            // $filters['published_since'] = (new \DateTime('-12 month'))->format('Y-m-d');
             unset($filters['published_since']);
         } elseif($filter === 'fulfilled') {
             $filters['status'] = [Project::STATUS_FULFILLED];
             $filters['order'] = 'project.published DESC, project.name ASC';
-            // $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
             unset($filters['published_since']);
         } elseif($filter === 'archived') {
             $filters['status'] = [Project::STATUS_UNFUNDED];
@@ -410,7 +395,6 @@ class ChannelController extends Controller {
             $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
         } elseif($filter === 'matchfunding') {
             $filters['type'] = 'matchfunding';
-            // $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
             unset($filters['published_since']);
         } elseif($filter === 'recent') {
             $filters['type'] = 'recent';
@@ -420,13 +404,14 @@ class ChannelController extends Controller {
             $filters['status'] = [ Project::STATUS_EDITING, Project::STATUS_REVIEWING, Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
             $filters['is_draft'] = true;
         }
+
         return $filters;
     }
 
     /*
     * Discover projects, general page
     */
-    public function discoverProjectsAction($id = null, $filter = '', Request $request)
+    public function discoverProjectsAction(Request $request, $id = null, $filter = '')
     {
         try {
             $this->setChannelContext($id);
@@ -468,7 +453,7 @@ class ChannelController extends Controller {
     /**
      * Ajax projects search
      */
-    public function ajaxSearchAction($id = null, Request $request) {
+    public function ajaxSearchAction(Request $request, $id = null) {
 
         try {
             Node::get($id);
@@ -498,7 +483,7 @@ class ChannelController extends Controller {
         $offset = $pag * $limit;
         $total_projects = 0;
         $projects = Project::getList($filters, null, $offset, $limit);
-        if($projects) {
+        if ($projects) {
             $total_projects = Project::getList($filters, null, 0, 0, true);
         } elseif(!$request->query->has('strict')) {
             // Home controller does not send 'strict' query string, we always want projects in home:

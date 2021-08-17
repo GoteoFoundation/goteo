@@ -24,13 +24,12 @@ use Symfony\Component\HttpFoundation\Request;
 class BlogController extends Controller {
 
     public function __construct() {
-        // Cache & replica read activated in this controller
         $this->dbReplica(true);
         $this->dbCache(true);
         View::setTheme('responsive');
     }
 
-    public function indexAction ($section='', $tag='', Request $request) {
+    public function indexAction(Request $request, $section='', $tag='') {
 
         $limit = 12;
         $slider_posts = Post::getList(['section' => $section, 'tag' => $tag], true, 0, 3);
@@ -56,15 +55,14 @@ class BlogController extends Controller {
         $tag = Tag::get($tag);
 
         return $this->viewResponse('blog/list', [
-                    'banners' => $banners,
-                    'list_posts'   => $list_posts,
-                    'blog_sections'     => $blog_sections,
-                    'section'           => $section,
-                    'tag'               => $tag,
-                    'limit'             => $limit,
-                    'total'             => $total
-                ]
-        );
+            'banners' => $banners,
+            'list_posts' => $list_posts,
+            'blog_sections' => $blog_sections,
+            'section' => $section,
+            'tag' => $tag,
+            'limit' => $limit,
+            'total' => $total
+        ]);
     }
 
     public function postAction($slug)
@@ -87,7 +85,7 @@ class BlogController extends Controller {
         }
 
         // Redirect to project's page if not the right type of post
-        if($post->owner_type === 'project') {
+        if ($post->owner_type === 'project') {
             return $this->redirect("/project/{$post->owner_id}/updates/{$post->id}");
         }
 

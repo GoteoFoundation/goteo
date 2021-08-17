@@ -23,7 +23,7 @@ class RssController extends Controller {
         $this->dbCache(true);
     }
 
-    public function indexAction($lang = '', Request $request) {
+    public function indexAction(Request $request, $lang = '') {
         date_default_timezone_set('UTC');
 
         if(preg_match('/^[a-z]{2,2}+$/', $lang)) {

@@ -21,11 +21,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MapController extends Controller {
 
-  public function __construct() {
-    $this->dbReplica(true);
-    $this->dbCache(true);
-    View::setTheme('responsive');
-  }
+    public function __construct() {
+        $this->dbReplica(true);
+        $this->dbCache(true);
+        View::setTheme('responsive');
+    }
 
 	public function mapAction(Request $request) {
         $cid = strip_tags($request->get('channel'));

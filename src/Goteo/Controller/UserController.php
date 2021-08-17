@@ -141,18 +141,15 @@ class UserController extends Controller {
 
         $invest_on = User::invested($user->id, true, 0 , 20, false, 1);
 
-        return $this->viewResponse(
-            'user/profile',
-            [
-                'user'          => $user,
-                'worthcracy'    => $worthcracy,
-                'projects'      => $projects,
-                'investors'     => $investors,
-                'invest_on'     => $invest_on,
-                'my_projects'   => $projects,
-                'stories'       => $stories
-            ]
-        );
+        return $this->viewResponse('user/profile', [
+            'user'          => $user,
+            'worthcracy'    => $worthcracy,
+            'projects'      => $projects,
+            'investors'     => $investors,
+            'invest_on'     => $invest_on,
+            'my_projects'   => $projects,
+            'stories'       => $stories
+        ]);
     }
 
     /**
@@ -200,12 +197,7 @@ class UserController extends Controller {
         return $this->redirect('/user/login');
     }
 
-    /**
-     * Cambiar dirección de correo.
-     *
-     * @param type string	$token
-     */
-    public function changeemailAction($token) {
+    public function changeEmailAction($token) {
         $token = mybase64_decode($token);
         if (count(explode('¬', $token)) > 1) {
             $query = User::query('SELECT id FROM user WHERE token = ?', array($token));
@@ -225,9 +217,9 @@ class UserController extends Controller {
         } else {
             Message::error(Text::get('user-changeemail-fail'));
         }
+
         return $this->redirect('/dashboard/settings/access');
     }
-
 
     /**
      * Darse de baja
@@ -240,7 +232,7 @@ class UserController extends Controller {
      *
      * @param string $token     Codigo
      */
-    public function leaveAction($token = '', Request $request) {
+    public function leaveAction(Request $request, $token = '') {
 
         View::setTheme('default');
 
@@ -282,7 +274,7 @@ class UserController extends Controller {
         }
         $vars['email'] = $email;
 
-        if($vars['error']) {
+        if ($vars['error']) {
             Message::error($vars['error']);
         }
 
@@ -333,7 +325,6 @@ class UserController extends Controller {
         );
     }
 
-
     /*
      * Subscribe to newsletter by token
      */
@@ -378,4 +369,3 @@ class UserController extends Controller {
         );
     }
 }
-

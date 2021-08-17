@@ -131,8 +131,7 @@ class ContactController extends Controller {
                         break;
                 }
 
-                if($user_template)
-                {
+                if($user_template) {
                     //Sent an automatic mail to the user depending on the tag
                     $to_user=$email;
                     $toName = Config::get('mail.contact_name');
@@ -146,7 +145,6 @@ class ContactController extends Controller {
                     if (!$mailHandler->send($errors))
                         Message::error('Ha fallado al enviar el mensaje.');
                 }
-
 
                 //Sent mail to manage the contact
                 $toName = Config::get('mail.contact_name');
@@ -206,4 +204,3 @@ class ContactController extends Controller {
     }
 
 }
-

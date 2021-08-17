@@ -27,10 +27,9 @@ use Symfony\Component\HttpFoundation\Request;
 class DashboardController extends Controller {
 
     public function __construct() {
-        // changing to a responsive theme here
         View::setTheme('responsive');
         $this->user = Session::getUser();
-        if(!$this->user) {
+        if (!$this->user) {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
     }
@@ -120,9 +119,7 @@ class DashboardController extends Controller {
 
         $limit = 10;
         $offset = $request->query->get('pag') * $limit;
-
         $messages = Comment::getUserThreads($this->user, [], $offset, $limit);
-        // print_r($messages[0]->getRecipients());
         $total = Comment::getUserThreads($this->user, [], 0, 0, true);
 
         self::createSidebar('activity', 'messages');
@@ -187,8 +184,7 @@ class DashboardController extends Controller {
             'popular_projects' => $popular_projects,
             'section' => 'wallet',
             'limit' => 6
-             ]
-        );
+        ]);
     }
 
 }

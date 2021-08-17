@@ -43,14 +43,11 @@ class BlogApiController extends AbstractApiController {
 
     /**
      * Simple listing of posts
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function postsAction(Request $request) {
         if(!$this->user) throw new ControllerAccessDeniedException();
 
         $filters = [];
-        $post = null;
         $page = max((int) $request->query->get('pag'), 0);
         // General search
         if($request->query->has('q')) {
@@ -58,7 +55,6 @@ class BlogApiController extends AbstractApiController {
         }
 
         $filters['blog'] = 1;
-
         $limit = 25;
         $offset = $page * $limit;
         $list = [];
@@ -75,24 +71,20 @@ class BlogApiController extends AbstractApiController {
             'total' => count($list),
             'page' => $page,
             'limit' => $limit
-            ]);
+        ]);
     }
-
 
     /**
      * Returns a list of tags for suggestions
      */
-    public function tagsAction(Request $request) {
-
+    public function tagsAction() {
         $tags = PostTag::getAll();
-        // uksort($tags, function() { return rand() > rand(); });
         $keywords = array_map(function($k, $v) {
             return ['tag' => $v, 'id' => $k];
         }, array_keys($tags), $tags);
 
         return $this->jsonResponse($keywords);
     }
-
 
     /**
      * AJAX upload image for the blog
@@ -105,7 +97,7 @@ class BlogApiController extends AbstractApiController {
         return $this->jsonResponse($result);
     }
 
-    public function deleteImagesAction($id, $image, Request $request) {
+    public function deleteImagesAction($id, $image) {
         $post = $this->validatePost($id);
 
         $vars = array(':post' => $post->id, ':image' => $image);
@@ -116,7 +108,7 @@ class BlogApiController extends AbstractApiController {
         return $this->jsonResponse(['image' => $image, 'result' => $success]);
     }
 
-    public function postDefaultImagesAction($id, $image, Request $request) {
+    public function postDefaultImagesAction($id, $image) {
         $post = $this->validatePost($id);
 
         $success = false;
@@ -149,7 +141,10 @@ class BlogApiController extends AbstractApiController {
 
         if(!$post) throw new ModelNotFoundException();
 
-        $read_fields = ['id', 'title', 'text', 'media', 'date', 'author', 'allow', 'publish', 'image', 'header_image', 'section', 'gallery', 'owner_type', 'owner_id', 'owner_name', 'user_name'];
+        $read_fields = [
+            'id', 'title', 'text', 'media', 'date', 'author', 'allow', 'publish', 'image', 'header_image', 'section',
+            'gallery', 'owner_type', 'owner_id', 'owner_name', 'user_name'
+        ];
         $write_fields = ['title', 'text', 'date', 'allow', 'publish'];
         $properties = [];
         foreach($read_fields as $f) {
@@ -176,13 +171,12 @@ class BlogApiController extends AbstractApiController {
         }
         $result = ['value' => $properties[$prop], 'error' => false];
 
-
         if($request->isMethod('put') && $request->request->has('value')) {
 
             if(!$this->user || !$this->user->hasPerm('admin-module-blog'))
                 throw new ControllerAccessDeniedException();
 
-            if(!in_array($prop, $write_fields)) {
+            if (!in_array($prop, $write_fields)) {
                 throw new ModelNotFoundException("Property [$prop] not writeable");
             }
             $post->{$prop} = $request->request->get('value');
@@ -193,7 +187,6 @@ class BlogApiController extends AbstractApiController {
                 $post->{$prop} = (bool) $post->{$prop};
             }
 
-            // do the SQL update
             $post->dbUpdate([$prop]);
             $result['value'] = $post->{$prop};
             $this->dispatch(AppEvents::BLOG_POST, new FilterBlogPostEvent($post));
@@ -210,4 +203,3 @@ class BlogApiController extends AbstractApiController {
     }
 
 }
-

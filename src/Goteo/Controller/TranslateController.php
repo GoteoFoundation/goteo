@@ -73,7 +73,6 @@ class TranslateController extends Controller {
             throw new ControllerAccessDeniedException(Text::get('translator-no-langs'));
         }
 
-        // Common vars for all views
         $this->contextVars([
             'zones' => self::$zones,
             'languages' => $this->langs
@@ -142,7 +141,7 @@ class TranslateController extends Controller {
             'limit' => $limit,
             'total' => $total,
             'fields' => $fields
-            ]);
+        ]);
     }
 
     protected function doEdit ($zone, $id, $translator, Request $request) {
@@ -150,7 +149,6 @@ class TranslateController extends Controller {
         $redirect = "/translate/$zone" . ($request->getQueryString() ? '?' . $request->getQueryString() : '');
 
         try {
-
             $translator = $translator::get($zone, $id);
             $fields = $translator::getFields($zone);
 

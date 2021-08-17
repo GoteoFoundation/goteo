@@ -53,7 +53,7 @@ class MessagesApiController extends AbstractApiController {
 
         return $this->jsonResponse([
             'list' => $list
-            ]);
+        ]);
     }
 
     /**
@@ -201,7 +201,7 @@ class MessagesApiController extends AbstractApiController {
 
         return $this->jsonResponse([
             'list' => $list
-            ]);
+        ]);
     }
 
     /**
@@ -223,27 +223,27 @@ class MessagesApiController extends AbstractApiController {
             $mail = $msg->getMail();
             $stats = $msg->getStats();
             $opened = (bool) $stats ? $stats->getEmailOpenedCollector()->getPercent() : false;
-            $ob = ['id' => $msg->id,
-                   'message' => $msg->getHtml(),
-                   'sent' => $mail ? true : false,
-                   'opened' => $opened,
-                   // 'date' => date_formater($msg->date, true),
-                   'date' => $msg->date,
-                   'project' => $msg->project,
-                   'timeago' => $msg->timeago,
-                   'recipient' => $msg->recipient,
-                   'recipient_name' => $msg->recipient_name,
-                   'user' => $msg->user,
-                   'name' => $msg->getUser()->name,
-                   'avatar' => $msg->getUser()->avatar->getLink(60,60,true),
-                   'thread' => $msg->thread
-               ];
+            $ob = [
+                'id' => $msg->id,
+                'message' => $msg->getHtml(),
+                'sent' => $mail ? true : false,
+                'opened' => $opened,
+                'date' => $msg->date,
+                'project' => $msg->project,
+                'timeago' => $msg->timeago,
+                'recipient' => $msg->recipient,
+                'recipient_name' => $msg->recipient_name,
+                'user' => $msg->user,
+                'name' => $msg->getUser()->name,
+                'avatar' => $msg->getUser()->avatar->getLink(60,60,true),
+                'thread' => $msg->thread
+           ];
             $list[] = $ob;
         }
 
         return $this->jsonResponse([
             'list' => $list
-            ]);
+        ]);
     }
 
     /**
@@ -317,7 +317,6 @@ class MessagesApiController extends AbstractApiController {
             'message' => $message->message
         ]);
     }
-
 
     /**
      * Project Mailing (generated from Messages to more than 2 users)

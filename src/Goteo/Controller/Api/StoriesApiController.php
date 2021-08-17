@@ -10,21 +10,18 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
+use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
-use Goteo\Application\AppEvents;
-use Goteo\Application\Config;
-
-use Goteo\Model\Stories;
-use Goteo\Library\Text;
 use Goteo\Library\Check;
+use Goteo\Library\Text;
+use Goteo\Model\Stories;
+use Symfony\Component\HttpFoundation\Request;
 
 class StoriesApiController extends AbstractApiController {
 
     protected function validateStory($id) {
-
         if(!$this->user)
             throw new ControllerAccessDeniedException();
 
@@ -104,10 +101,9 @@ class StoriesApiController extends AbstractApiController {
                 $story->{$prop} = (bool) $story->{$prop};
             }
 
-            // do the SQL update
             $story->dbUpdate([$prop]);
             $result['value'] = $story->{$prop};
-            // if($errors = Message::getErrors()) throw new ControllerException(implode("\n",$errors));
+
             if($errors = Message::getErrors()) {
                 $result['error'] = true;
                 $result['message'] = implode("\n", $errors);
@@ -115,8 +111,8 @@ class StoriesApiController extends AbstractApiController {
             if($messages = Message::getMessages()) {
                 $result['message'] = implode("\n", $messages);
             }
-
         }
+
         return $this->jsonResponse($result);
     }
 
@@ -147,29 +143,25 @@ class StoriesApiController extends AbstractApiController {
         }
 
         return $this->jsonResponse($result);
-
     }
 
     /**
      * Simple listing of stories
      * TODO: according to permissions, filter this stories
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function storiesAction(Request $request) {
         if(!$this->user) throw new ControllerAccessDeniedException();
 
         $filters = [];
-        $story = null;
         $page = max((int) $request->query->get('pag'), 0);
-        // General search
+
         if($request->query->has('q')) {
             $filters['title'] = $request->query->get('q');
         }
         $limit = 25;
         $offset = $page * $limit;
         $list = [];
-        
+
         foreach(Stories::getList($filters, $offset, $limit) as $story) {
             $ob = ['id' => $story->id,
                    'title' => $story->title,
@@ -184,8 +176,7 @@ class StoriesApiController extends AbstractApiController {
             'total' => count($list),
             'page' => $page,
             'limit' => $limit
-            ]);
+        ]);
     }
 
 }
-

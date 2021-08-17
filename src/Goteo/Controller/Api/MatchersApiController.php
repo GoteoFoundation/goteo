@@ -10,26 +10,18 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Exception\ModelException;
-
-use Goteo\Application\Config;
-use Goteo\Application\AppEvents;
-use Goteo\Model\Invest;
+use Goteo\Model\Image;
 use Goteo\Model\Matcher;
 use Goteo\Model\Project;
 use Goteo\Model\User;
-use Goteo\Model\Image;
-use Goteo\Library\Text;
+use Symfony\Component\HttpFoundation\Request;
 
 class MatchersApiController extends AbstractApiController {
 
     /**
      * Simple listing of matchers
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function matchersAction(Request $request) {
         if(!$this->user) {
@@ -67,7 +59,7 @@ class MatchersApiController extends AbstractApiController {
             'total' => $total,
             'page' => $page,
             'limit' => $limit
-            ]);
+        ]);
     }
 
     static protected function getSafeProject(Project $prj) {
@@ -116,9 +108,7 @@ class MatchersApiController extends AbstractApiController {
 
         $ob['terms'] = $this->getService('app.md.parser')->text($matcher->terms);
 
-        //add projects
         $ob['projects'] = array_map(['self', 'getSafeProject'], $matcher->getProjects('all'));
-        //add users
         $ob['users'] = array_map(['self', 'getSafeUser'], $matcher->getUsers(false));
 
         return $ob;
@@ -137,9 +127,8 @@ class MatchersApiController extends AbstractApiController {
         if(!$this->user)
             throw new ControllerAccessDeniedException();
 
-        $result = $this->genericFileUpload($request, 'file'); // 'file' is the expected form input name in the post object
+        $result = $this->genericFileUpload($request); // 'file' is the expected form input name in the post object
         return $this->jsonResponse($result);
     }
-
 
 }

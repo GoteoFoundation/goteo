@@ -10,29 +10,29 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Goteo\Core\Error;
+use Goteo\Core\Controller;
 use Goteo\Library\Cacher;
 use Goteo\Model;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
-class ImageController extends \Goteo\Core\Controller {
+class ImageController extends Controller {
     //some predefined sizes
     static private $sizes = array(
-            'icon' => '16x16',
-            'tiny' => '32x32',
-            'thumb' => '56x56',
-            'small' => '128x128',
-            'medium' => '192x192',
-            'large' => '512x512',
-            'big' => '1024x1024',
-            'iconc' => '16x16c',
-            'tinyc' => '32x32c',
-            'thumbc' => '56x56c',
-            'mediumc' => '192x192c',
-            'largec' => '512x512c',
-            'bigc' => '1024x1024c'
-        );
+        'icon' => '16x16',
+        'tiny' => '32x32',
+        'thumb' => '56x56',
+        'small' => '128x128',
+        'medium' => '192x192',
+        'large' => '512x512',
+        'big' => '1024x1024',
+        'iconc' => '16x16c',
+        'tinyc' => '32x32c',
+        'thumbc' => '56x56c',
+        'mediumc' => '192x192c',
+        'largec' => '512x512c',
+        'bigc' => '1024x1024c'
+    );
 
     public function indexAction($params = '', $filename = '') {
         //check if predefined size
@@ -41,17 +41,14 @@ class ImageController extends \Goteo\Core\Controller {
         }
         //  $width = 200, $height = 200, $crop = false
         if (preg_match('/(\d+)x(\d+)([c]?)/', $params, $matches)) {
-
             $width = $matches[1];
             $height = $matches[2];
             $crop = ($matches[3] == 'c');
-        }
-        else {
+        } else {
             $width = 192;
             $height = 20;
             $crop = false;
         }
-        // die("{$width}  {$height} {$crop} {$filename}");
 
         $image = new Model\Image;
         $image->setCache(new Cacher());
@@ -72,11 +69,9 @@ class ImageController extends \Goteo\Core\Controller {
         }
 
         return $response;
-
     }
 
     public function oldIndexAction($id, $width = 200, $height = 200, $crop = false) {
         return new RedirectResponse('/img/' . $width . 'x' . $height . ($crop ? 'c' : '') . '/' . $id);
     }
 }
-

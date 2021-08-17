@@ -10,41 +10,32 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Exception\ControllerException;
-use Goteo\Application\Config;
-use Goteo\Model\Image;
-use Goteo\Model\Project;
-use Goteo\Model\Call;
-use Goteo\Model\Node;
-use Goteo\Model\Project\ProjectLocation;
-
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\View;
+use Goteo\Model\Image;
+use Goteo\Model\Node;
+use Goteo\Model\Project;
+use Goteo\Model\Project\ProjectLocation;
+use Symfony\Component\HttpFoundation\Request;
 
 class MapsApiController extends AbstractApiController {
 
     public function __construct() {
         parent::__construct();
-        // Activate cache & replica read for this controller
         $this->dbReplica(true);
         $this->dbCache(true);
         View::setTheme('responsive');
-
     }
 
-    public function channelAction($cid = null, Request $request) {
-        
-        $projects = [];
-        $workshops = [];
-
+    public function channelAction($cid = null)
+    {
         if ($cid) {
             try {
               $channel = Node::get($cid);
             } catch (ModelNotFoundException $e) {
               Message::error($e->getMessage());
             }
-            
+
             $list_projects = [];
             $conf = $channel->getConfig();
 
@@ -55,7 +46,7 @@ class MapsApiController extends AbstractApiController {
               $total = Project::getList(['node' => $channel->id], $cid, 0, 0, true);
               $projects = Project::getList(['node' => $channel->id], $cid, 0, $total);
             }
-            
+
             foreach($projects as $project) {
                 $ob = ['id' => $project->id,
                    'name' => $project->name,
@@ -67,7 +58,7 @@ class MapsApiController extends AbstractApiController {
                    'popup' => View::render('map/partials/project_popup.php', array('project' => $project))];
                 $list_projects[] = $ob;
             }
-            
+
             $workshops = $channel->getAllWorkshops();
             $list_workshops = array_map(function($workshop) {
               $ob = [
@@ -80,13 +71,12 @@ class MapsApiController extends AbstractApiController {
               ];
               return $ob;
             }, $workshops);
-          }
+        }
 
         return $this->jsonResponse([
             'projects' => $list_projects,
             'workshops' => $list_workshops,
         ]);
-      
     }
 
 }

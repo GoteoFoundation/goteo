@@ -32,7 +32,6 @@ use function mybase64_decode;
 class AuthController extends Controller {
 
     public function __construct() {
-        // changing to a responsive theme here
         View::setTheme('responsive');
     }
 
@@ -346,8 +345,6 @@ class AuthController extends Controller {
             if ($tokens[$oauth->provider]['secret'])
                 $oauth->tokens[$oauth->provider]['secret'] = $tokens[$oauth->provider]['secret'];
 
-            // print_r($tokens);print_r($oauth->tokens[$oauth->provider]);die;
-
             $user = new User();
             $user->userid = $userid;
             $user->email = $email;
@@ -385,8 +382,7 @@ class AuthController extends Controller {
 
                         //Everything ok, redirecting
                         return $this->dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user, $provider))->getUserRedirect($request);
-                    }
-                    else {
+                    } else {
                         //si no: registrar errores
                         Message::error($oauth->last_error);
                         return $this->redirect('/login');
@@ -394,7 +390,7 @@ class AuthController extends Controller {
                 } else {
                     // si tiene contraseña permitir vincular la cuenta,
                     // si no mensaje de error
-                    if($u->password) {
+                    if( $u->password) {
                         if($request->isMethod('post') && !$request->request->has('userid')) {
                             // A subscriber will register a message
                             $this->dispatch(AppEvents::LOGIN_FAILED, new FilterAuthEvent($u, $provider));
@@ -405,8 +401,7 @@ class AuthController extends Controller {
                                             'user' => User::get($u->id)
                                         )
                         );
-                    }
-                    else {
+                    } else {
                         // no se puede vincular la cuenta por falta de contraseña
                         Message::error(Text::get('oauth-goteo-user-password-error'));
                         $this->dispatch(AppEvents::SIGNUP_FAILED, new FilterAuthEvent($u, $provider));
@@ -417,14 +412,10 @@ class AuthController extends Controller {
                 //si el usuario se ha creado correctamente, login en goteo e importacion de datos
                 //y fuerza que pueda logear en caso de que no tenga contraseña o email sin confirmar
                 if ($user = $oauth->goteoLogin(true)) {
-                    //login!
                     Session::setUser($user, true);
 
-                    //Everything ok, redirecting
                     return $this->dispatch(AppEvents::SIGNUP_SUCCEEDED, new FilterAuthEvent($user, $provider))->getUserRedirect($request);
-                }
-                else {
-                    //si no: registrar errores
+                } else {
                     Message::error($oauth->last_error);
                     $this->dispatch(AppEvents::SIGNUP_FAILED, new FilterAuthEvent($user, $provider));
                 }
@@ -434,19 +425,16 @@ class AuthController extends Controller {
                         Message::error($val);
                 }
             }
-        }
-        else {
+        } else {
             return $this->redirect('/login');
         }
 
-        return $this->viewResponse('auth/confirm',
-                        array(
-                            'errors' => $errors,
-                            'userid' => $userid,
-                            'email' => $email,
-                            'provider_email' => $provider_email,
-                            'oauth' => $oauth
-                        )
-        );
+        return $this->viewResponse('auth/confirm', [
+            'errors' => $errors,
+            'userid' => $userid,
+            'email' => $email,
+            'provider_email' => $provider_email,
+            'oauth' => $oauth
+        ]);
     }
 }

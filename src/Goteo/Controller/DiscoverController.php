@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller;
 
+use DateTime;
 use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Core\Controller;
@@ -21,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
 class DiscoverController extends Controller {
 
     public function __construct() {
-        // Cache & replica read activated in this controller
         $this->dbReplica(true);
         $this->dbCache(true);
 
@@ -35,7 +35,7 @@ class DiscoverController extends Controller {
     {
         $filters = [
             'status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED],
-            'published_since' => (new \DateTime('-6 month'))->format('Y-m-d')
+            'published_since' => (new DateTime('-6 month'))->format('Y-m-d')
         ];
 
         $filters['order'] = 'project.status ASC, project.published DESC, project.name ASC';
@@ -81,7 +81,7 @@ class DiscoverController extends Controller {
         } elseif($filter === 'archived') {
             $filters['status'] = [Project::STATUS_UNFUNDED];
             $filters['order'] = 'project.published DESC, project.name ASC';
-            $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
+            $filters['published_since'] = (new DateTime('-24 month'))->format('Y-m-d');
         } elseif($filter === 'matchfunding') {
             $filters['type'] = 'matchfunding';
             unset($filters['published_since']);
@@ -99,9 +99,7 @@ class DiscoverController extends Controller {
     /*
      * Discover projects, general page
      */
-    public function searchAction ($filter = '', Request $request) {
-        if(empty($type)) $type = 'promoted';
-
+    public function searchAction (Request $request, $filter = '') {
         $limit = 12;
         $q = strip_tags($request->query->get('q'));
         $location = strip_tags($request->query->get('location'));
@@ -142,7 +140,7 @@ class DiscoverController extends Controller {
 
         $ofilters = [
             'status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED],
-            'published_since' => (new \DateTime('-6 month'))->format('Y-m-d')
+            'published_since' => (new DateTime('-6 month'))->format('Y-m-d')
         ];
         $filters = $this->getProjectFilters($filter, ['q' => $q, 'category' => $category, 'location' => $location, 'latitude' => $latitude, 'longitude' => $longitude]);
 
@@ -167,6 +165,7 @@ class DiscoverController extends Controller {
         foreach($projects as $p) {
             $vars['items'][] = View::render('project/widgets/normal', ['project' => $p]);
         }
+
         return $this->jsonResponse($vars);
     }
 

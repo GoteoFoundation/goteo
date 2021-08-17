@@ -17,7 +17,6 @@ use Goteo\Core\Controller;
 use Goteo\Core\Model;
 use Goteo\Model\Template;
 use Goteo\Model\Communication;
-use Symfony\Component\HttpFoundation\Request;
 
 class NewsletterController extends Controller {
 

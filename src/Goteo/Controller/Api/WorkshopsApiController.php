@@ -10,19 +10,15 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
-
-use Goteo\Application\Lang;
-use Goteo\Model\Workshop;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class WorkshopsApiController extends AbstractApiController {
 
     public function __construct() {
         parent::__construct();
-        // Activate cache & replica read for this controller
         $this->dbReplica(true);
         $this->dbCache(true);
     }
@@ -47,7 +43,6 @@ class WorkshopsApiController extends AbstractApiController {
         throw new ControllerAccessDeniedException();
     }
 
-    
     /**
      * AJAX upload header image for the workshop
      */
@@ -55,7 +50,7 @@ class WorkshopsApiController extends AbstractApiController {
         if(!$this->user || !$this->user->hasPerm('admin-module-workshops'))
             throw new ControllerAccessDeniedException();
 
-        $result = $this->genericFileUpload($request, 'file'); // 'file' is the expected form input name in the story object
+        $result = $this->genericFileUpload($request); // 'file' is the expected form input name in the story object
         return $this->jsonResponse($result);
     }
 

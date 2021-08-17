@@ -228,7 +228,6 @@ class InvestController extends Controller {
 
     /**
      * step1.5: login page
-     *
      */
     public function loginAction($project_id, Request $request)
     {
@@ -478,6 +477,7 @@ class InvestController extends Controller {
         } catch(Exception $e) {
             $this->error('Payment Notification Exception', ['class' => get_class($e), $invest, 'code' => $e->getCode(), 'message' => $e->getMessage()]);
         }
+
         return $this->redirect('/');
     }
 

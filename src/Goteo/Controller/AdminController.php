@@ -75,13 +75,12 @@ class AdminController extends Controller {
     /**
      * Controller for any route under /admin/{route}
      */
-    public function routingAction($id, $uri = '', Request $request) {
+    public function routingAction(Request $request, $id, $uri = '') {
 
         $user = self::getCurrentUser();
         $uri = "/$uri";
 
         if($module = self::getSubController($id)) {
-
             // Log this entry
             // TODO: do it at the end for performance
             // Log::append(['scope' => 'admin', 'target_type' => 'admin_module', 'target_id' => $id]);
@@ -110,24 +109,21 @@ class AdminController extends Controller {
 
                     try {
                         $parameters = $matcher->match($uri);
-                        // print_r($parameters);die;
-                        // Check permissions for this route
+
                         if(!$module::isAllowed($user, $uri)) {
                             throw new ControllerAccessDeniedException("User [{$user->id}] has no privileges on URI [$uri] in module [$module]");
                         }
-                        // Add vars to the view
+
                         $this->contextVars([
                             'icon' => $module::getLabel('icon'),
                             'module_id' => $id,
                             'module_label' => $module::getLabel('text')
                         ]);
-                        // Forward the subcontroller
-                        return $this->forward($parameters['_controller'], $parameters);
 
+                        return $this->forward($parameters['_controller'], $parameters);
                     } catch(ResourceNotFoundException $e) {
                         throw new NotFoundHttpException("Route [$uri] is not defined in module [$module]");
                     }
-
                 } else {
                     throw new ControllerException("Error: [$module::getRoutes()] must return a valid instance of Symfony\Component\Routing\Route (or an array of several Routes) or Symfony\Component\Routing\RouteCollection");
                 }
@@ -135,7 +131,7 @@ class AdminController extends Controller {
                 // OLD admin modules
                 list($empty,$action, $sid, $subaction) = explode('/', $uri);
 
-                return $this->optionAction($id, $action ? $action : 'list', $sid, $subaction, $request);
+                return $this->optionAction($id, $action ?: 'list', $sid, $subaction, $request);
             }
         }
         throw new NotFoundHttpException("Admin module [$id] not found");
@@ -165,7 +161,7 @@ class AdminController extends Controller {
 
                         $paths[] = ['text' => $route['text'], 'link' => $prefix . $route['link'], 'id' => $route['id'], 'class' => $c];
                     }
-                    // echo "[$class|$id]\n";print_r($paths);
+
                     $modules[$id] = $paths;
                 } else {
                     $group = $class::getGroup();
@@ -216,7 +212,7 @@ class AdminController extends Controller {
                     if($n > $pos) {
                         $zone = $p['id'];
                         $pos = $n;
-                        // Do no break here just in case there's a more deep route
+                        // Do not break here just in case there's a more deep route
                     }
                 }
             }
@@ -243,8 +239,8 @@ class AdminController extends Controller {
         return Text::get('admin-' . $key);
     }
 
-    private static function getCurrentUser() {
-
+    private static function getCurrentUser()
+    {
         //refresh permission status
         User::flush();
         $user = Session::getUser();
@@ -272,9 +268,6 @@ class AdminController extends Controller {
         return isset(self::$subcontrollers[$id]) ? self::$subcontrollers[$id] : null;
     }
 
-    /**
-     * Removes a subcontroller
-     */
     public static function delSubController($classname) {
         if (isset(self::$subcontrollers[$classname])) {
             unset(self::$subcontrollers[$classname]);
@@ -321,6 +314,7 @@ class AdminController extends Controller {
             //TODO: allow Feed to handle multiple nodes
             $ret['feed'] = Feed::getAll('all', 'admin', 50, $admin_node);
         }
+
         //default admin dashboard (nothing!)
         return $this->viewResponse('admin/default', $ret);
 
@@ -417,7 +411,7 @@ class AdminController extends Controller {
     // Old dispatcher for submodules
     // preparado para index unificado
     //
-    public function optionAction($option, $action = 'list', $id = null, $subaction = null, Request $request) {
+    public function optionAction(Request $request, $option, $action = 'list', $id = null, $subaction = null) {
         View::setTheme('default');
 
         $ret = array();
