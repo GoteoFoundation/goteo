@@ -24,7 +24,7 @@ class UserTranslateProfileForm extends AbstractFormProcessor implements FormProc
     public function createForm() {
         $user = $this->getModel();
 
-        $builder = $this->getBuilder()
+        $this->getBuilder()
             ->add('name', TextType::class, [
                 'label' => 'regular-name',
                 'disabled' => $this->getReadonly(),
@@ -36,8 +36,8 @@ class UserTranslateProfileForm extends AbstractFormProcessor implements FormProc
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $user->about]
-            ])
-            ;
+            ]);
+
         return $this;
     }
 

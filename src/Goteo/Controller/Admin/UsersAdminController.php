@@ -84,7 +84,6 @@ class UsersAdminController extends AbstractAdminController {
                 '_action' => '/users',
                 'q' => Text::get('admin-users-global-search')
             ]
-
         ]);
     }
 

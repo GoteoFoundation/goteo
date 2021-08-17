@@ -18,8 +18,6 @@ use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
-use Symfony\Component\Validator\Constraints;
-use Goteo\Model\Project;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
 

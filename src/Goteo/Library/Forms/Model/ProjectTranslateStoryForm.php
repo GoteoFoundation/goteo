@@ -52,7 +52,6 @@ class ProjectTranslateStoryForm extends AbstractFormProcessor implements FormPro
         $errors = [];
         $story->lang = $lang;
         if(!$story->setLang($lang, $data, $errors)) {
-            // throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode', $errors))));
             throw new FormModelException(Text::get('form-sent-error', implode(',',$errors)));
         }
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));

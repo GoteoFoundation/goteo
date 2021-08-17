@@ -263,7 +263,7 @@ class UserProfileForm extends AbstractFormProcessor {
         unset($data['avatar']); // do not rebuild data using this
 
         // Process interests
-        // Add "test" interes to those who already have it
+        // Add "test" interests to those who already have it
         if (array_key_exists('15', $user->interests)) $data['interests'][] = '15';
         $data['interests'] = array_map(function($el) {
                 return new Interest(['interest' => $el]);

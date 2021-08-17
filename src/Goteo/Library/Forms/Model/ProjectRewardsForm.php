@@ -173,7 +173,6 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
         if(!$form) $form = $this->getBuilder()->getForm();
 
         $data = array_intersect_key($form->getData(), $form->all());
-        // print_r($data);die;
         $project = $this->getModel();
         $project->one_round = (bool) $data['one_round'];
 
@@ -200,27 +199,10 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
 
         // Check if we want to remove a reward
         $validate = true;
-        // foreach($ids as $id) {
-        //     if($form->get("remove_$id")->isClicked()) {
-        //         $this->delReward($id);
-        //         $validate = false;
-        //     }
-        // }
 
-        // Validate form here to avoid deleted elements
         if($validate && !$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
-        // Add reward
-        // if($form['add-reward']->isClicked() && (!$this->getReadonly() || $project->isAlive())) {
-        //     $reward = new Reward(['project' => $project->id, 'type' => 'individual']);
-        //     if(!$reward->save($errors)) {
-        //         throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
-        //     }
-        //     $this->addReward($reward);
-        // }
-
         $project->individual_rewards = $this->rewards;
-        // var_dump($project->rewards);die;
         if (!$project->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }

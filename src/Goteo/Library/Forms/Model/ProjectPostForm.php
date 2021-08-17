@@ -111,15 +111,12 @@ class ProjectPostForm extends AbstractFormProcessor {
         if(is_array($gallery)) {
             foreach($gallery as $img) {
                 if(!in_array($img->id, $current)) {
-                    // Delete from model if exists
                     Image::deleteModelImage('post', $post->id);
-                    // delete from gallery if exists
                     $img->delFromModelGallery('post', $post->id);
                 }
             }
         }
 
-        // Remove html tags if has no permission
         if(!Session::getUser()->hasPerm('full-html-edit')) {
             $post->text = Text::tags_filter($post->text);
             $post->text = $post::sanitizeText($post->text);

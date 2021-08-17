@@ -12,21 +12,13 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Text;
 
 class QuestionnaireCreateTranslateForm extends AbstractFormProcessor implements FormProcessorInterface
 {
-
-    public function getConstraints($field)
-    {
-        $constraints = [];
-        if($this->getFullValidation()) {
-            // $constraints[] = new Constraints\NotBlank();
-        }
-        return $constraints;
-    }
 
     public function addQuestion($question, $lang)
     {
@@ -54,9 +46,9 @@ class QuestionnaireCreateTranslateForm extends AbstractFormProcessor implements 
         }
 
         $builder->add(
-            'submit', 'submit', [
+            'submit', SubmitType::class, [
                 'label' => 'regular-submit'
-                ]
+            ]
         );
 
         return $this;

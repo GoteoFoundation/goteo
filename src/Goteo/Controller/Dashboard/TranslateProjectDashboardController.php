@@ -159,7 +159,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
-                    ]
+                ]
             ]);
         $form = $processor->getForm();
         $form->handleRequest($request);
@@ -232,7 +232,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
-                    ]
+                ]
             ]);
 
         $form = $builder->getForm();
@@ -340,7 +340,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
-                    ]
+                ]
             ]);
 
         $form = $builder->getForm();
@@ -503,7 +503,6 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
         }
 
         $defaults = (array) $post->getLang($lang);
-        // Create the form
         $form = $this->createFormBuilder($defaults)
             ->add('title', TextType::class, array(
                 'label' => 'regular-title',
@@ -523,7 +522,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
-                    ]
+                ]
             ])
             ->getForm();
 
@@ -642,7 +641,6 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             'step' => 'story',
             'lang' => $lang,
         ]);
-
     }
 
 }

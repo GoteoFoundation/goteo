@@ -25,22 +25,12 @@ use Symfony\Component\Validator\Constraints;
 class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorInterface
 {
 
-    public function getConstraints($field)
-    {
-        $constraints = [];
-        if($this->getFullValidation()) {
-            // $constraints[] = new Constraints\NotBlank();
-        }
-        return $constraints;
-    }
-
     public function createForm()
     {
         $questionnaire = $this->getModel();
-
         $builder = $this->getBuilder();
-        foreach((array) $questionnaire->questions as $question) {
 
+        foreach((array) $questionnaire->questions as $question) {
             if ($question->vars->hidden)
                 continue;
             else {
@@ -88,6 +78,7 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
         $questions = array_column($questions, NULL, 'id');
         $index = 0;
         $data = array_intersect_key($form->getData(), $form->all());
+
         foreach($data as $key => $value) {
             $question = $questions[$key];
             $answer = new Answer();

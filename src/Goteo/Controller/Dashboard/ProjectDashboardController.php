@@ -73,7 +73,6 @@ class ProjectDashboardController extends DashboardController {
         if(!$project->userCanEdit($user)) return false;
         $prefix = '/dashboard/project/' . $project->id ;
 
-        // Create sidebar menu
         Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), $prefix . '/summary', 'summary');
 
         $validation = $project->getValidation();
@@ -82,7 +81,6 @@ class ProjectDashboardController extends DashboardController {
         if($project->inEdition() || $admin) {
             $steps = [
                 ['text' => '<i class="icon icon-2x icon-user"></i> 1. ' . Text::get('profile-about-header'), 'link' => $prefix . '/profile', 'id' => 'profile', 'class' => $validation->profile == 100 ? 'ok' : 'ko'],
-                // ['text' => '<i class="fa fa-2x fa-id-card-o"></i> 2. ' . Text::get('step-2'), 'link' => $prefix . '/personal', 'id' => 'personal'],
                 ['text' => '<i class="icon icon-2x icon-edit"></i> 2. ' . Text::get('step-3'), 'link' => $prefix . '/overview', 'id' => 'overview', 'class' => $validation->overview == 100 ? 'ok' : 'ko'],
                 ['text' => '<i class="icon icon-2x icon-images"></i> 3. ' . Text::get('step-3b'), 'link' => $prefix . '/images', 'id' => 'images', 'class' => $validation->images == 100 ? 'ok' : 'ko'],
                 ['text' => '<i class="fa fa-2x fa-tasks"></i> 4. ' . Text::get('step-4'), 'link' => $prefix . '/costs', 'id' => 'costs', 'class' => $validation->costs == 100 ? 'ok' : 'ko'],
@@ -95,7 +93,6 @@ class ProjectDashboardController extends DashboardController {
 
         if($project->isApproved()) {
             $submenu = [
-                // ['text' => '<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), 'link' => $prefix . '/updates', 'id' => 'updates'],
                 ['text' => '<i class="icon icon-2x icon-updates"></i> ' . Text::get('regular-header-blog'), 'link' => $prefix . '/updates', 'id' => 'updates'],
                 ['text' => '<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), 'link' => $prefix . '/invests', 'id' => 'invests'],
                 ['text' => '<i class="icon icon-2x icon-images"></i> ' . Text::get('step-3b'), 'link' => $prefix . '/images', 'id' => 'images'],
@@ -435,7 +432,7 @@ class ProjectDashboardController extends DashboardController {
         $processor = $this->getModelForm(ProjectPostForm::class, $post, $defaults, ['project' => $project]);
         $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $form = $processor->getBuilder()
-            ->add('submit', 'submit', [])
+            ->add('submit', SubmitType::class, [])
             ->getForm();
 
         $form->handleRequest($request);
@@ -1079,7 +1076,6 @@ class ProjectDashboardController extends DashboardController {
         $defaults['image'] = $story->image ? $story->getImage() : '';
         $defaults['pool_image'] = $story->pool_image ? $story->getPoolImage() : '';
 
-        // Create the form
         $processor = $this->getModelForm(ProjectStoryForm::class, $story, $defaults, ['project' => $project], $request);
         // Set readonly if active? this is done by and admin
         $processor->setReadonly(!$this->admin && (bool)$story->active)->createForm();

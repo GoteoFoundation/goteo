@@ -70,16 +70,6 @@ class FilterForm extends AbstractFormProcessor {
             'rejected' => Text::get('donor-status-rejected')
         ];
 
-        $sdgs = [];
-        foreach(Sdg::getList([],0,100) as $s) {
-            $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
-        }
-
-        $footprints = [];
-        foreach(Footprint::getList([],0,100) as $f) {
-            $footprints['<img src="'.$f->getIcon()->getLink().'" class="icon icon-3x"> '.$f->name] = $f->id;
-        }
-
         $builder
             ->add('name', TextType::class, array(
                 'label' => 'regular-title',
@@ -194,14 +184,13 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'attr' => [
                     'pre-help' => Text::get('admin-filter-forced-help')
-                    ]
+                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'regular-submit',
                 'attr' => ['class' => 'btn btn-cyan'],
                 'icon_class' => 'fa fa-save'
-            ])
-            ;
+            ]);
 
         return $this;
     }
@@ -221,22 +210,22 @@ class FilterForm extends AbstractFormProcessor {
         $model->footprints = array();
         $model->sdgs = array();
 
-        foreach($data['projects'] as $key => $value) {
-            if (!empty($value)) array_push($model->projects,$value);
+        foreach($data['projects'] as $value) {
+            if (!empty($value)) array_push($model->projects, $value);
         }
-        foreach($data['calls'] as $key => $value) {
-            if (!empty($value)) array_push($model->calls,$value);
+        foreach($data['calls'] as $value) {
+            if (!empty($value)) array_push($model->calls, $value);
         }
-        foreach($data['channels'] as $key => $value) {
-            if (!empty($value)) array_push($model->channels,$value);
+        foreach($data['channels'] as $value) {
+            if (!empty($value)) array_push($model->channels, $value);
         }
-        foreach($data['matchers'] as $key => $value) {
-            if (!empty($value)) array_push($model->matchers,$value);
+        foreach($data['matchers'] as $value) {
+            if (!empty($value)) array_push($model->matchers, $value);
         }
-        foreach($data['sdgs'] as $key => $value) {
+        foreach($data['sdgs'] as $value) {
             if (!empty($value)) array_push($model->sdgs, $value);
         }
-        foreach($data['footprints'] as $key => $value) {
+        foreach($data['footprints'] as $value) {
             if (!empty($value)) array_push($model->footprints, $value);
         }
 

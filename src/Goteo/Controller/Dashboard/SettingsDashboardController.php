@@ -310,7 +310,6 @@ class SettingsDashboardController extends DashboardController {
     {
         $this->createSettingsSidebar('access');
 
-        // Create the form
         $form1 = $this->createFormBuilder()
             ->add('password', PasswordType::class, [
                 'label' => 'user-changepass-old',
@@ -420,7 +419,6 @@ class SettingsDashboardController extends DashboardController {
             'user_id' => $this->user->id,
             'key' => Apikey::get($this->user->id)
         ];
-        // Create the form
         $form = $this->createFormBuilder($defaults)
             ->add('submit', SubmitType::class, [
                 'icon_class' => 'fa fa-plus',

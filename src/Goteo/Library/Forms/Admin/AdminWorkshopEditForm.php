@@ -98,7 +98,6 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'required' => false,
                 'disabled' => $this->getReadonly()
             ])
-
             ->add('header_image', DropfilesType::class, array(
                 'required' => false,
                 'limit' => 1,
@@ -164,8 +163,7 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'disabled' => $this->getReadonly(),
                 'sources' => 'call',
                 'text' => ($workshop && $workshop->getCall()) ? $workshop->getCall()->name : null
-            ])
-            ;
+            ]);
 
         return $this;
     }
@@ -190,9 +188,7 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
 
         if($workshop_location instanceOf WorkshopLocation) {
             $workshop_location->id = $model->id;
-            if($workshop_location->save($errors)) {
-                //
-            }
+            $workshop_location->save($errors);
         }
 
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));

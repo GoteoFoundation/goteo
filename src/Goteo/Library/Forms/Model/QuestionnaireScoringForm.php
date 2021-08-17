@@ -11,6 +11,7 @@
 
 namespace Goteo\Library\Forms\Model;
 
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Util\Form\Type\DropfilesType;
 use Goteo\Util\Form\Type\NumberType;
@@ -26,15 +27,6 @@ use Goteo\Model\Questionnaire\Score;
 class QuestionnaireScoringForm extends AbstractFormProcessor implements FormProcessorInterface
 {
 
-    public function getConstraints($field)
-    {
-        $constraints = [];
-        if($this->getFullValidation()) {
-            // $constraints[] = new Constraints\NotBlank();
-        }
-        return $constraints;
-    }
-
     public function createForm()
     {
         $options = $this->getOptions();
@@ -46,6 +38,7 @@ class QuestionnaireScoringForm extends AbstractFormProcessor implements FormProc
         $this->setReadonly(true);
 
         $builder = $this->getBuilder();
+
         foreach($answers as $index => $answer) {
           $question = $questions[$index];
           $type = $question->vars->type;
@@ -61,13 +54,12 @@ class QuestionnaireScoringForm extends AbstractFormProcessor implements FormProc
                 'min' => 0,
                 'max' => $question->max_score,
             ]
-          ])
-          ;
+          ]);
 
           if ($type == "dropfiles") {
             try {
               $doc = Document::getByName($answer->answer);
-            } catch(\ModelNotFoundException $e){
+            } catch(ModelNotFoundException $e) {
               $doc = null;
             }
 
