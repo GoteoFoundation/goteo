@@ -19,9 +19,11 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  *
@@ -54,21 +56,56 @@ class DropfilesType extends FileType
         $builder->get('uploads')
             ->addModelTransformer(new $options['upload_transformer']);
 
+        $builder->add('removed', CollectionType::class, [
+            'entry_type' => TextType::class,
+            'allow_add' => true
+        ]);
+
+        $builder->get('removed')
+            ->addModelTransformer( new CallbackTransformer(
+                function($image) {
+                    return $image;
+                },
+                function($image) {
+                    $images = [];
+
+                    foreach($image as  $img) {
+                        if (!$img)
+                            continue;
+                        if ($img = Image::get($img))
+                            $images[] = $img;        
+                    }
+
+                    return $images;
+                }
+            ));
+
         // General processing
         $builder->addViewTransformer(new CallbackTransformer(
             function($image) {
+                if ($image instanceOf File)
+                    $image = new Image($image);
+                if (is_array($image)) {
+                    foreach($image as $i => $img) {
+                        if ($image instanceOf File)
+                            $image = new Image($image);
+                    }
+                }
+
                 return is_array($image) ? $image : [$image];
             },
             function ($image) {
-                // var_dump($image);die;
                 // Sum current + uploads
+                $img = [];
                 $img = isset($image['current']) && is_array($image['current']) ? $image['current'] : [];
                 if($image['uploads']) {
                     if(is_array($image['uploads'])) {
-                        $img = array_merge($img, $image['uploads']);
+                        $img = array_merge($img, ['uploads' => $image['uploads']]);
                     }
                 }
-                // var_dump($img);die;
+                if ($image['removed']) {
+                    $img = array_merge($img, ['removed' => $image['removed']]   );
+                }
                 return $img;
                 // return null;
             }));
