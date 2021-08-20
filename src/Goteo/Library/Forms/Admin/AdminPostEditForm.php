@@ -48,10 +48,7 @@ class AdminPostEditForm extends ProjectPostForm {
                 'required' => false,
                 'limit' => 1,
                 'label' => 'admin-title-header-image',
-                'accepted_files' => 'image/jpeg,image/gif,image/png',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
-                )
+                'accepted_files' => 'image/jpeg,image/gif,image/png'
             ))
             ->add('author', 'typeahead', [
                 'label' => 'regular-author',

@@ -376,7 +376,7 @@ class Stories extends \Goteo\Core\Model {
     }
 
     public function getImage() {
-        if(!$this->imageInstance instanceOf Image) {
+        if(!$this->imageInstance instanceOf Image && $this->image) {
             $this->imageInstance = new Image($this->image);
         }
         return $this->imageInstance;
@@ -393,14 +393,14 @@ class Stories extends \Goteo\Core\Model {
     }
 
     public function getPoolImage() {
-        if(!$this->PoolImageInstance instanceOf Image) {
+        if(!$this->PoolImageInstance instanceOf Image && $this->pool_image) {
             $this->PoolImageInstance = new Image($this->pool_image);
         }
         return $this->PoolImageInstance;
     }
 
     public function getBackgroundImage() {
-        if(!$this->BackgroundImageInstance instanceOf Image) {
+        if(!$this->BackgroundImageInstance instanceOf Image && $this->backgorund_image) {
             $this->BackgroundImageInstance = new Image($this->background_image);
         }
         return $this->BackgroundImageInstance;

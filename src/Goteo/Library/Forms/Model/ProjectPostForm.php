@@ -99,29 +99,43 @@ class ProjectPostForm extends AbstractFormProcessor {
         $data = $form->getData();
         if(array_key_exists('tags', $data)) $data['tags'] = explode(',', $data['tags']);
         $post = $this->getModel();
-        $post->rebuildData($data, array_keys($form->all()));
-        $post->image = $data['image'];
-        if(is_array($data['header_image'])) $post->header_image = $data['header_image'][0];
-
-
+        
         $gallery = Image::getModelGallery('post', $post->id);
-
-        $current = array_map(function($e) {
-                return is_object($e) ? $e->id : $e['id'];
-            }, $post->image);
-
-        // print_r($gallery);
-        if(is_array($gallery)) {
-            foreach($gallery as $img) {
-                if(!in_array($img->id, $current)) {
-                    // Delete from model if exists
-                    Image::deleteModelImage('post', $post->id);
-                    // delete from gallery if exists
-                    $img->delFromModelGallery('post', $post->id);
+        $post->image = $gallery;
+        
+        if ($data['image'] && is_array($data['image'])) {
+            if ($data['image']['removed']) {
+                $removed_ids = array_column($data['image']['removed'], null, 'id');
+                
+                if(is_array($post->image)) {
+                    foreach($post->image as $index => $img) {
+                        if(in_array($img->id, $removed_ids)) {
+                            // delete from gallery if exists
+                            $img->delFromModelGallery('post', $post->id);
+                            unset($post->image[$index]);
+                        }
+                    }
                 }
             }
+
+            if ($data['image']['uploads']) {
+                $post->image = array_merge($post->image, $data['image']['uploads']);
+            }
+        }
+
+        if ($data['header_image'] && is_array($data['header_image'])) {
+
+            if (current($data['header_image']['removed'])->id == $post->header_image)
+                $post->header_image = null;
+            
+            if ($data['header_image']['uploads'])
+                $post->header_image = $data['header_image']['uploads'][0];
         }
         // print_r($post);die;
+
+        unset($data['image']);
+        unset($data['header_image']);
+        $post->rebuildData($data, array_keys($form->all()));
 
         // Remove html tags if has no permission
         if(!Session::getUser()->hasPerm('full-html-edit')) {

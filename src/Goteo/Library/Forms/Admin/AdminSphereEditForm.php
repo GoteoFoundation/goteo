@@ -50,9 +50,6 @@ class AdminSphereEditForm extends AbstractFormProcessor {
                 'data' => [$model->icon ? $model->getIcon() : null],
                 'label' => 'admin-title-icon',
                 'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
-                ),
                 'attr' => [
                     'help' => Text::get('admin-categories-if-empty-then-asset', '<img src="'.$model->getIcon(true)->getLink(64,64).'" class="icon">')
                 ]
@@ -84,14 +81,17 @@ class AdminSphereEditForm extends AbstractFormProcessor {
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
-        // Dropfiles type always return an array, just get the first element if required
-        if($data['icon'] && is_array($data['icon'])) {
-            $data['icon'] = $data['icon'][0];
-        } else {
-            $data['icon'] = null;
-        }
-        // print_r($data);die;
         $model = $this->getModel();
+
+        if ($data['icon'] && is_array($data['icon'])) {
+            if ($data['icon']['removed'] && $model->icon == current($data['icon']['removed'])->id)
+                $model->icon = null;
+
+            if ($data['icon']['uploads'] && is_array($data['icon']['uploads']))
+                $model->icon = $data['icon']['uploads'][0];
+        }
+
+        unset($data['icon']);
         $model->rebuildData($data, array_keys($form->all()));
 
         $errors = [];

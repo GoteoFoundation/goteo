@@ -38,32 +38,21 @@ class AdminStoryEditForm extends ProjectStoryForm {
                 'disabled' => $this->getReadonly(),
                 'required' => true,
                 'data' => $story->getImage(),
-                'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1]),
-                    ]
+                'limit' => 1
             ])
             ->add('pool_image', 'dropfiles', [
                 'label' => 'story-field-pool-image',
                 'disabled' => $this->getReadonly(),
                 'data' => $story->getPoolImage(),
                 'required' => false,
-                'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1]),
-                    ]
-
+                'limit' => 1
             ])
             ->add('background_image', 'dropfiles', [
                 'label' => 'story-field-background-image',
                 'disabled' => $this->getReadonly(),
                 'data' => $story->getBackgroundImage(),
                 'required' => false,
-                'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1]),
-                    ]
-
+                'limit' => 1
             ])
             ->add('background_image_credits', 'text', array(
                 'label' => 'story-field-background-image-credits',
@@ -157,6 +146,31 @@ class AdminStoryEditForm extends ProjectStoryForm {
 
         $data = $form->getData();
         $model = $this->getModel();
+
+        if ($data['image'] && is_array($data['image'])) {
+            if ($data['image']['uploads'] && is_array($data['image']['uploads']))
+                $model->image = $data['image']['uploads'][0];
+        }
+
+        if ($data['background_image'] && is_array($data['background_image'])) {
+            if ($data['background_image']['removed'] && $model->background_image == current($data['background_image']['removed'])->id)
+                $model->background_image = null;
+
+            if ($data['background_image']['uploads'] && is_array($data['background_image']['uploads']))
+                $model->background_image = $data['background_image']['uploads'][0];
+        }
+
+        if ($data['pool_image'] && is_array($data['pool_image'])) {
+            if ($data['pool_image']['removed'] && $model->pool_image == current($data['pool_image']['removed'])->id)
+                $model->pool_image = null;
+
+            if ($data['pool_image']['uploads'] && is_array($data['pool_image']['uploads']))
+                $model->pool_image = $data['pool_image']['uploads'][0];
+        }
+
+        unset($data['image']);
+        unset($data['background_image']);
+        unset($data['pool_image']);
         $model->rebuildData($data, array_keys($form->all()));
 
         $errors = [];
@@ -164,7 +178,7 @@ class AdminStoryEditForm extends ProjectStoryForm {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
 
-        if ($model->background_image && $data['background_image_credits']) {
+        if ($model->background_image && $data['background_image_credits_credits']) {
             $model->background_image->setCredits($data['background_image_credits']);
         }
         

@@ -39,7 +39,6 @@ class ProjectStoryForm extends AbstractFormProcessor {
 
     public function createForm() {
         $builder = $this->getBuilder();
-
         $project = $this->getOption('project');
 
         $builder
@@ -61,25 +60,52 @@ class ProjectStoryForm extends AbstractFormProcessor {
                 'disabled' => $this->getReadonly(),
                 'url' => '/api/projects/' . $project->id . '/images',
                 'required' => true,
-                'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1, 'min' => 1]),
-                    ]
+                'limit' => 1
             ])
             ->add('pool_image', 'dropfiles', [
                 'label' => 'story-field-pool-image',
                 'disabled' => $this->getReadonly(),
                 'url' => '/api/projects/' . $project->id . '/images',
                 'required' => false,
-                'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1]),
-                    ]
-
+                'limit' => 1
             ]);
 
         return $this;
     }
 
+    public function save(FormInterface $form = null, $force_save = false) {
 
+        if(!$form) $form = $this->getBuilder()->getForm();
+        if(!$form->isValid() && !$force_save) {
+            throw new FormModelException(Text::get('form-has-errors'));
+        }
+
+        $data = $form->getData();
+        $model = $this->getModel();
+        
+        if ($data['image'] && is_array($data['image'])) {
+            if ($data['image']['removed'] && $model->image == current($data['image']['removed'])->id)
+                $model->image = null;
+
+            if ($data['image']['uploads'] && is_array($data['image']['uploads']))
+                $model->image = $data['image']['uploads'][0];
+        }
+
+        if ($data['pool_image'] && is_array($data['pool_image'])) {
+            if ($data['pool_image']['removed'] && $model->pool_image == current($data['pool_image']['removed'])->id)
+                $model->pool_image = null;
+
+            if ($data['pool_image']['uploads'] && is_array($data['pool_image']['uploads']))
+                $model->pool_image = $data['pool_image']['uploads'][0];
+        }
+
+        unset($data['image']);
+        unset($data['pool_image']);
+        $model->rebuildData($data, array_keys($form->all()));
+        $errors = [];
+        if (!$model->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
+        return $this;
+    }
 }
