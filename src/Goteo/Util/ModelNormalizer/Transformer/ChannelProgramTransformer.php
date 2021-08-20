@@ -24,7 +24,10 @@ class ChannelProgramTransformer extends AbstractTransformer {
     }
 
     public function getImage() {
-        return $this->model->getHeader()->getLink(64,64);
+        if ($this->model->header)
+            return $this->model->getHeader()->getLink(64,64);
+        
+        return null;
     }
 
     public function getActions() {
