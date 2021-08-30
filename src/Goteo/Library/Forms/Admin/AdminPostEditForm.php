@@ -66,8 +66,7 @@ class AdminPostEditForm extends ProjectPostForm {
                 'sources' => 'user',
                 'text' => ($post && $post->getAuthor()) ? $post->getAuthor()->name : null,
                 'constraints' => array(new Constraints\NotBlank())
-            ])
-;
+            ]);
 
         if($data['slug']) {
             $builder->add('slug', TextType::class,[
@@ -94,11 +93,15 @@ class AdminPostEditForm extends ProjectPostForm {
                 ]
             ]);
         }
+
         $builder
             ->add('type', ChoiceType::class, array(
                 'label' => 'admin-text-type',
                 'row_class' => 'extra',
-                'choices' => ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')],
+                'choices' => [
+                    Text::get('admin-text-type-md') => 'md',
+                    Text::get('admin-text-type-html') => 'html'
+                ],
                 'attr' => [
                     'data-editor-type' => 'text',
                     'help' => Text::get('tooltip-text-type-change')
@@ -158,7 +161,7 @@ class AdminPostEditForm extends ProjectPostForm {
                     'data-key-text' => 'tag', // text field for bloodhound via api
                     'data-limit' => 20, // total results in typeahead
                     'data-max-tags' => 3, // Max number of tags allowed
-                    'data-min' => 0, // Shows inmediatly on focus the list if 0
+                    'data-min' => 0, // Shows immediately on focus the list if 0
                     // TODO: pass the template to show a table instead of a list
                     'data-values' => json_encode($jtags),
                     'autocomplete' => false
@@ -188,8 +191,7 @@ class AdminPostEditForm extends ProjectPostForm {
                 'required' => false,
                 'label' => 'blog-published', // Form has integrated translations
                 'color' => 'cyan', // bootstrap label-* (default, success, ...)
-            ))
-            ;
+            ));
 
         return $this;
     }
