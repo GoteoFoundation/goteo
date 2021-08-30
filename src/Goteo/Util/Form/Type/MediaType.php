@@ -35,18 +35,22 @@ class MediaType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('row_class', '');
-        $resolver->setDefault('default_protocol', 'http');
+        $resolver->setDefaults([
+            'label_attr' => ['class' => ''],
+            'row_class' => '',
+            'default_protocol' => 'http'
+        ]);
 
-        $resolver->setAllowedTypes('default_protocol', array('null', 'string'));
+        $resolver->setAllowedTypes('default_protocol', ['null', 'string']);
     }
 
- /**
+    /**
      * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['attr']['class'] = 'form-control online-video';
+        $view->vars['label_attr'] = $options['label_attr'];
         $view->vars['row_class'] = $options['row_class'];
     }
 
@@ -56,5 +60,10 @@ class MediaType extends AbstractType
     public function getBlockPrefix(): string
     {
         return 'media';
+    }
+
+    public function getParent(): string
+    {
+        return TextType::class;
     }
 }

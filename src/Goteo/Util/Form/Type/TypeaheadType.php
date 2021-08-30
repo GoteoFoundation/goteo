@@ -24,12 +24,14 @@ class TypeaheadType extends TextType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-        $resolver->setDefault('sources', ''); // Sources: 'channel', 'call', 'matcher', 'project', 'user', 'consultant'
-        $resolver->setDefault('row_class', '');
-        $resolver->setDefault('text', ''); // If exists, the text shown instead of the value
-        $resolver->setDefault('fake_id', ''); // Created automatically, the id of the typeahead input field (real data is placed in a hidden field)
-        $resolver->setDefault('value_field', 'id'); // Field where to extract the Value from API calls, placed in the hidden field
-        $resolver->setDefault('type','simple'); // Field to change between typeahead with only one input or with multiple ['simple', 'multiple']
+        $resolver->setDefaults([
+            'sources' => '', // Sources: 'channel', 'call', 'matcher', 'project', 'user', 'consultant'
+            'row_class' => '',
+            'text' => '', // If exists, the text shown instead of the value
+            'fake_id' => '', // Created automatically, the id of the typeahead input field (real data is placed in a hidden field)
+            'value_field' => 'id', // Field where to extract the Value from API calls, placed in the hidden field
+            'type' => 'simple', // Field to change between typeahead with only one input or with multiple ['simple', 'multiple']
+        ]);
     }
 
     /**

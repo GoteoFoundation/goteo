@@ -132,9 +132,12 @@ class AdminPostEditForm extends ProjectPostForm {
 
         // Add tags input
         $tags = implode(',', array_keys($data['tags']));
-        $jtags = array_map(function($k, $v) {
-                return ['id' => $k,'tag' => $v];
-            }, array_keys($data['tags']), $data['tags']);
+        $jtags = array_map(
+            function($k, $v) {
+                return ['id' => $k, 'tag' => $v];
+            },
+            array_keys($data['tags']), $data['tags']
+        );
 
         $builder
             // saving images will add that images to the gallery

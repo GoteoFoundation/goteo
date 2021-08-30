@@ -80,7 +80,7 @@ class BlogAdminController extends AbstractAdminController {
             if ($blog->save($errors)) {
                 Message::info(Text::get('admin-blog-initialized'));
             } else {
-                Message::error("Error creating node-blog space for node [$node]", implode(',',$errors));
+                Message::error("Error creating node-blog space for node [$node]");
                 return $this->redirect('/admin/blog');
             }
         } elseif (!$blog->active) {
@@ -123,7 +123,7 @@ class BlogAdminController extends AbstractAdminController {
                     'attr' => [
                         'class' => 'pull-right-form btn btn-default btn-lg',
                         'data-confirm' => Text::get('admin-remove-entry-confirm')
-                        ]
+                    ]
                 ]);
         }
 
@@ -132,7 +132,7 @@ class BlogAdminController extends AbstractAdminController {
         if ($form->isSubmitted() && $request->isMethod('post')) {
             // Check if we want to remove an entry
             if($form->has('remove') && $form->get('remove')->isClicked()) {
-                if((bool)$post->publish) {
+                if($post->publish) {
                     Message::error(Text::get('admin-remove-entry-forbidden'));
                     return $this->redirect('/admin/blog/');
                 }

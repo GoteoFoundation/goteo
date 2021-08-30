@@ -130,16 +130,14 @@ abstract class Model {
 	}
 
 	/**
-	 * Guardar.
-	 * @param   type array  $errors     Errores devueltos pasados por referencia.
-	 * @return  type bool   true|false
+	 * @param array $errors
+	 * @return bool
 	 */
 	abstract public function save(&$errors = array());
 
 	/**
-	 * Validar.
-	 * @param   type array  $errors     Errores devueltos pasados por referencia.
-	 * @return  type bool   true|false
+	 * @param array  $errors
+	 * @return bool
 	 */
 	abstract public function validate(&$errors = array());
 

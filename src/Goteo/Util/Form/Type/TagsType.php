@@ -24,8 +24,12 @@ class TagsType extends TextType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-        $resolver->setDefault('url', null); // Url for autocomplete
-        $resolver->setDefault('row_class', '');
+
+        $resolver->setDefaults([
+            'label_attr' => ['class' => ''],
+            'row_class' => '',
+            'url' => null, // Url for autocomplete
+        ]);
     }
 
     /**
@@ -37,6 +41,7 @@ class TagsType extends TextType
         if(is_array($options['attr']['class'])) $view->vars['attr']['class'] = implode(' ', $view->vars['attr']['class']);
         $view->vars['attr']['class'] .= 'form-control tagsinput';
         $view->vars['attr']['data-url'] = $options['url'];
+        $view->vars['label_attr'] = $options['label_attr'];
         $view->vars['row_class'] = $options['row_class'];
     }
 

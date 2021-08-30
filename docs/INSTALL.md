@@ -36,7 +36,7 @@ Server requirements
 > npm install
 > ```
 >
-> Create and edit your confinguration:
+> Create and edit your configuration:
 >
 > ```bash
 > cp config/demo-settings.yml config/settings.yml
