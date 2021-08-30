@@ -32,9 +32,9 @@ use Symfony\Component\Routing\RouteCollection;
 
 class AdminController extends Controller {
 
-    private static $subcontrollers = [];
-    private static $context_vars = [];
-    private static $groups = [
+    private static array $subcontrollers = [];
+    private static array $context_vars = [];
+    private static array $groups = [
         'activity' => ['text' => 'admin-activity', 'icon' => '<i class="fa fa-2x fa-fax"></i>', 'position' => 10],
         'communications' => ['text' => 'admin-communications', 'icon' => '<i class="fa fa-2x fa-send"></i>', 'position' => 20],
         'contents' => ['text' => 'admin-contents', 'icon' => '<i class="fa fa-2x fa-font"></i>', 'position' => 30],
@@ -44,7 +44,7 @@ class AdminController extends Controller {
         'certificates' => ['text' => 'admin-certificates', 'icon' => '<i class="icon icon-2x icon-certificate"></i>', 'position' => 80],
         'others' => ['text' => 'admin-others', 'icon' => '<i class="fa fa-2x fa-folder"></i>', 'position' => 100]
     ];
-    private static $legacy_groups = [
+    private static array $legacy_groups = [
         'activity' => ['recent', 'projects', 'accounts', 'rewards'],
         'main' => ['home', 'promote', 'news', 'banners', 'footer', 'open_tags', 'stories'],
         'contents' => ['node', 'texts', 'faq', 'pages', 'categories', 'social_commitment', 'licenses', 'icons', 'tags', 'criteria', 'glossary', 'info', 'wordcount', 'milestones'],
@@ -54,7 +54,6 @@ class AdminController extends Controller {
     ];
 
     public function __construct() {
-        // changing to a responsive theme here
         View::setTheme('responsive');
     }
 
@@ -81,7 +80,6 @@ class AdminController extends Controller {
         $uri = "/$uri";
 
         if($module = self::getSubController($id)) {
-            // Log this entry
             // TODO: do it at the end for performance
             // Log::append(['scope' => 'admin', 'target_type' => 'admin_module', 'target_id' => $id]);
 
@@ -129,9 +127,9 @@ class AdminController extends Controller {
                 }
             } else {
                 // OLD admin modules
-                list($empty,$action, $sid, $subaction) = explode('/', $uri);
+                list($empty, $action, $sid, $subAction) = explode('/', $uri);
 
-                return $this->optionAction($id, $action ?: 'list', $sid, $subaction, $request);
+                return $this->optionAction($request, $id, $action ?: 'list', $sid, $subAction);
             }
         }
         throw new NotFoundHttpException("Admin module [$id] not found");
@@ -265,7 +263,7 @@ class AdminController extends Controller {
     }
 
     public static function getSubController($id) {
-        return isset(self::$subcontrollers[$id]) ? self::$subcontrollers[$id] : null;
+        return self::$subcontrollers[$id] ?? null;
     }
 
     public static function delSubController($classname) {
@@ -317,7 +315,6 @@ class AdminController extends Controller {
 
         //default admin dashboard (nothing!)
         return $this->viewResponse('admin/default', $ret);
-
     }
 
     /**
@@ -353,7 +350,7 @@ class AdminController extends Controller {
             $admin_node = key($admin_nodes);
         }
 
-        //if need to change the current node
+        // if need to change the current node
         if ($request->query->has('admin_node') && array_key_exists($request->query->get('admin_node'), $admin_nodes)) {
             $admin_node = $request->query->get('admin_node');
         }
@@ -394,7 +391,7 @@ class AdminController extends Controller {
 
         // If menu is not allowed, throw exception
         if (empty($menu) || ($option && !array_key_exists($option, $menu))) {
-            $zone = $menu[$option] ? $menu[$option] : $option;
+            $zone = $menu[$option] ?: $option;
             if ($zone) {
                 $msg = 'Access denied to <strong>' . $zone . '</strong>';
             } else {
@@ -408,13 +405,13 @@ class AdminController extends Controller {
         return $user;
     }
 
-    // Old dispatcher for submodules
-    // preparado para index unificado
-    //
-    public function optionAction(Request $request, $option, $action = 'list', $id = null, $subaction = null) {
+    /*
+     * Old dispatcher for submodules preparado para index unificado
+     */
+    public function optionAction(Request $request, $option, $action = 'list', $id = null, $subAction = null) {
         View::setTheme('default');
 
-        $ret = array();
+        $ret = [];
         $SubC = static::$subcontrollers[$option];
 
         try {
@@ -429,8 +426,7 @@ class AdminController extends Controller {
             if (!method_exists($controller, $method)) {
                 return $this->viewResponse('admin/denied', ['msg' => "Method [$method()] not found for class [$SubC]"], Response::HTTP_BAD_REQUEST);
             }
-            $ret = $controller->$method($id, $subaction);
-
+            $ret = $controller->$method($id, $subAction);
         } catch (ControllerAccessDeniedException $e) {
             // Instead of the default denied page, redirect to login
             Message::error($e->getMessage());
@@ -444,7 +440,7 @@ class AdminController extends Controller {
             return $this->redirect('/login?return=' . urlencode($url));
         }
 
-        //Return the response if the subcontroller is a handy guy
+        // Return the response if the subcontroller is a handy guy
         if ($ret instanceOf Response) {
             return $ret;
         }
