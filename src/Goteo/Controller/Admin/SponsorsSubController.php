@@ -12,6 +12,7 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Exception;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Message;
@@ -23,12 +24,11 @@ use Goteo\Model\User;
 
 class SponsorsSubController extends AbstractSubController {
 
-    static protected $labels = array (
-      'list' => 'sponsors-lb-list',
-      'add' => 'sponsors-lb-add',
-      'edit' => 'sponsors-lb-edit',
-      );
-
+    static protected $labels = [
+        'list' => 'sponsors-lb-list',
+        'add' => 'sponsors-lb-add',
+        'edit' => 'sponsors-lb-edit',
+    ];
 
     static protected $label = 'sponsors-lb';
 
@@ -39,12 +39,13 @@ class SponsorsSubController extends AbstractSubController {
     static public function isAllowed(User $user, $node): bool {
         try{
             $nodeData = Node::get($node);
-        } catch(\Exception $e){}
+        } catch(Exception $e){ }
+
         $limit = (int) $nodeData->sponsors_limit;
 
-        // Only central node allowed here and nodes where sponsors_limit>0
-
+        // Only central node allowed here and nodes where sponsors_limit > 0
         if( !Config::isMasterNode($node) && !$limit ) return false;
+
         return parent::isAllowed($user, $node);
     }
 
@@ -64,29 +65,26 @@ class SponsorsSubController extends AbstractSubController {
         }
     }
 
-    public function editAction($id = null, $subaction = null) {
+    public function editAction($id = null) {
         $this->checkItemPermission($id);
-        // gestionar post
+
         if ($this->isPost()) {
             $id = $this->getPost('id');
-            // instancia
-            $item = new Sponsor(array(
+            $item = new Sponsor([
                 'id' => $id,
                 'name' => $this->getPost('name'),
                 'node' => $this->getPost('node'),
                 'image' => $this->getPost('image'),
                 'url' => $this->getPost('url'),
                 'order' => $this->getPost('order')
-            ));
-            // tratar si quitan la imagen
+            ]);
+
             if ($this->hasPost('image-' . md5($item->image) .  '-remove')) {
                 $image = Image::get($item->image);
                 $image->remove($errors);
                 $item->image = null;
-                $removed = true;
             }
 
-            // tratar la imagen y ponerla en la propiedad image
             if(!empty($_FILES['image']['name'])) {
                 $item->image = $_FILES['image'];
             }
@@ -101,117 +99,78 @@ class SponsorsSubController extends AbstractSubController {
             $item = Sponsor::get($id);
         }
 
-        return array(
+        return [
             'template' => 'admin/generic_edit',
             'data' => $item,
             'translator' => $this->isTranslator(),
-            'form' => array(
-                'action' => static::getUrl('edit', $id),
-                'submit' => array(
-                    'name' => 'update',
-                    'label' => Text::get('regular-save')
-                ),
-                'fields' => array (
-                    'id' => array(
-                        'label' => '',
-                        'name' => 'id',
-                        'type' => 'hidden'
-
-                    ),
-                    'node' => array(
-                        'label' => '',
-                        'name' => 'node',
-                        'type' => 'hidden'
-
-                    ),
-                    'name' => array(
-                        'label' => 'Patrocinador',
-                        'name' => 'name',
-                        'type' => 'text'
-                    ),
-                    'url' => array(
-                        'label' => 'Enlace',
-                        'name' => 'url',
-                        'type' => 'text',
-                        'properties' => 'size=100'
-                    ),
-                    'image' => array(
-                        'label' => 'Logo',
-                        'name' => 'image',
-                        'type' => 'image'
-                    ),
-                    'order' => array(
-                        'label' => 'Posición',
-                        'name' => 'order',
-                        'type' => 'text'
-                    )
-                )
-            )
-        );
+            'form' => $this->getFormFields(Text::get('regular-save'))
+        ];
     }
 
+    private function getFormFields(string $submitBtnText, $id = null): array
+    {
+        return [
+            'action' => static::getUrl('edit', $id),
+            'submit' => [
+                'name' => 'update',
+                'label' => $submitBtnText
+            ],
+            'fields' => [
+                'id' => [
+                    'label' => '',
+                    'name' => 'id',
+                    'type' => 'hidden'
+                ],
+                'node' => [
+                    'label' => '',
+                    'name' => 'node',
+                    'type' => 'hidden'
+                ],
+                'name' => [
+                    'label' => 'Patrocinador',
+                    'name' => 'name',
+                    'type' => 'text'
+                ],
+                'url' => [
+                    'label' => 'Enlace',
+                    'name' => 'url',
+                    'type' => 'text',
+                    'properties' => 'size=100'
+                ],
+                'image' => [
+                    'label' => 'Logo',
+                    'name' => 'image',
+                    'type' => 'image'
+                ],
+                'order' => [
+                    'label' => 'Posición',
+                    'name' => 'order',
+                    'type' => 'text'
+                ]
+            ]
+        ];
+    }
 
     /**
     * Just the form
     */
     public function addAction() {
         $this->checkItemPermission();
-        return array(
+
+        return [
             'template' => 'admin/generic_edit',
-            'data' => (object) array('order' => Sponsor::next($this->node), 'node' => $this->node ),
-            'form' => array(
-                'action' => static::getUrl('edit'),
-                'submit' => array(
-                    'name' => 'update',
-                    'label' => 'Añadir'
-                ),
-                'fields' => array (
-                    'id' => array(
-                        'label' => '',
-                        'name' => 'id',
-                        'type' => 'hidden'
-
-                    ),
-                    'node' => array(
-                        'label' => '',
-                        'name' => 'node',
-                        'type' => 'hidden'
-
-                    ),
-                    'name' => array(
-                        'label' => 'Patrocinador',
-                        'name' => 'name',
-                        'type' => 'text'
-                    ),
-                    'url' => array(
-                        'label' => 'Enlace',
-                        'name' => 'url',
-                        'type' => 'text',
-                        'properties' => 'size=100'
-                    ),
-                    'image' => array(
-                        'label' => 'Logo',
-                        'name' => 'image',
-                        'type' => 'image'
-                    ),
-                    'order' => array(
-                        'label' => 'Posición',
-                        'name' => 'order',
-                        'type' => 'text'
-                    )
-                )
-            )
-        );
+            'data' => (object) ['order' => Sponsor::next($this->node), 'node' => $this->node],
+            'form' => $this->getFormFields('Añadir')
+        ];
     }
-
 
     public function listAction() {
         $data = Sponsor::getAll($this->node);
-        return array(
+        return [
             'template' => 'admin/generic_list',
             'addbutton' => 'Nuevo patrocinador',
             'data' => $data,
-            'columns' => array(
+            'columns' => [
                 'edit' => '',
                 'name' => 'Patrocinador',
                 'url' => 'Enlace',
@@ -220,25 +179,24 @@ class SponsorsSubController extends AbstractSubController {
                 'up' => '',
                 'down' => '',
                 'remove' => ''
-            ),
+            ],
             'url' => static::getUrl()
-        );
-
+        ];
     }
 
-    public function upAction($id = null, $subaction = null) {
+    public function upAction($id = null) {
         $this->checkItemPermission($id);
         Sponsor::up($id, $this->node);
         return $this->redirect(static::getUrl());
     }
 
-    public function downAction($id = null, $subaction = null) {
+    public function downAction($id = null) {
         $this->checkItemPermission($id);
         Sponsor::down($id, $this->node);
         return $this->redirect(static::getUrl());
     }
 
-    public function removeAction($id = null, $subaction = null) {
+    public function removeAction($id = null) {
         $this->checkItemPermission($id);
 
         if (Sponsor::delete($id)) {
@@ -246,6 +204,7 @@ class SponsorsSubController extends AbstractSubController {
         } else {
             Message::info('No se ha podido eliminar el registro');
         }
+
         return $this->redirect(static::getUrl());
     }
 
