@@ -71,7 +71,7 @@ class CallsApiController extends AbstractApiController {
             'total' => $total,
             'page' => $page,
             'limit' => $limit
-            ]);
+        ]);
     }
 
 }
