@@ -49,7 +49,7 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
             ->add('online', BooleanType::class, array(
                 'required' => false,
                 'disabled' => $this->getReadonly(),
-                'label' => 'admin-online', //
+                'label' => 'admin-online',
                 'color' => 'cyan'
             ))
             ->add('blockquote', TextareaType::class, [
@@ -60,14 +60,14 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                     'rows' => 2
                 ]
             ])
-           ->add('description', MarkdownType::class, [
+            ->add('description', MarkdownType::class, [
                 'label' => 'regular-description',
                 'required' => true,
                 'attr' => [
                     'rows' => 8
                 ]
             ])
-           ->add('workshop_location', LocationType::class, [
+            ->add('workshop_location', LocationType::class, [
                 'label' => 'overview-field-project_location',
                 'type' => 'workshop', // API geoloc
                 'item' => $this->getModel()->id,
@@ -78,19 +78,19 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'pre_addon' => '<i class="fa fa-globe"></i>',
                 'attr' => ['help' => Text::get('tooltip-project-project_location')]
             ])
-           ->add('date_in', DatepickerType::class, array(
+            ->add('date_in', DatepickerType::class, [
                 'label' => 'admin-title-date-in',
                 'required' => true,
-                'constraints' => array(new Constraints\NotBlank()),
-            ))
-           ->add('date_out', DatepickerType::class, array(
+                'constraints' => [new Constraints\NotBlank()],
+            ])
+            ->add('date_out', DatepickerType::class, [
                 'label' => 'admin-title-date-out',
                 'required' => false,
-                'constraints' => array(new Constraints\NotBlank()),
-            ))
+                'constraints' => [new Constraints\NotBlank()],
+               ])
             ->add('schedule', TextType::class, [
                 'label' => 'regular-schedule',
-                'required' => false,
+                'required' => true,
                 'disabled' => $this->getReadonly()
             ])
             ->add('url', TextType::class, [
@@ -98,17 +98,17 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'required' => false,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('header_image', DropfilesType::class, array(
+            ->add('header_image', DropfilesType::class, [
                 'required' => false,
                 'limit' => 1,
                 'data' => [$workshop->header_image ? $workshop->getHeaderImage() : null],
                 'label' => 'admin-title-header-image',
                 'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
                 'url' => '/api/workshops/images',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
-                )
-            ))
+                'constraints' => [
+                    new Constraints\Count(['max' => 1])
+                ]
+            ])
             ->add('venue', TextType::class, [
                 'label' => 'admin-title-venue',
                 'required' => false,
@@ -148,15 +148,15 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'required' => false,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('event_type', ChoiceType::class, array(
+            ->add('event_type', ChoiceType::class, [
                 'label' => 'admin-title-type',
                 'required' => false,
                 'expanded' => true,
                 'row_class' => 'extra',
                 'wrap_class' => 'col-xs-6',
-                'choices' => Workshop::getListEventTypes()
-            ))
-             ->add('call_id', TypeaheadType::class, [
+                'choices' => $this->getWorkshopsChoices()
+            ])
+            ->add('call_id', TypeaheadType::class, [
                 'label' => 'admin-title-call',
                 'row_class' => 'extra',
                 'required' => false,
@@ -168,16 +168,24 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
         return $this;
     }
 
+    private function getWorkshopsChoices(): array
+    {
+        $choices = [];
+
+        foreach (Workshop::getListEventTypes() as $k => $v) {
+            $choices[$v] = $k;
+        }
+
+        return $choices;
+    }
+
     public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
-
-        // Instance of workshop location
-        $workshop_location=$data['workshop_location'];
-        $data['workshop_location'] = $data['workshop_location']->location ? $data['workshop_location']->location : $data['workshop_location']->name;
-
+        $workshop_location = $data['workshop_location'];
+        $data['workshop_location'] = $data['workshop_location']->location ?: $data['workshop_location']->name;
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
 
