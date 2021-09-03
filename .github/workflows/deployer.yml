@@ -6,6 +6,8 @@ on:
       - live
       - staging
       - beta
+      - alpha
+      - edge
 
 jobs:
   deployer:
