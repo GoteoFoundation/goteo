@@ -25,23 +25,21 @@ use Goteo\Model\Node\NodeSections;
 
 class AdminSectionForm extends AbstractFormProcessor {
 
-    public function getConstraints() {
+    public function getConstraints(): array
+    {
         return [new Constraints\NotBlank()];
     }
 
     public function createForm() {
         $model = $this->getModel();
-
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
-        $defaults = $options['data'];
 
         $builder
             ->add('section', ChoiceType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => true,
                 'label' => 'admin-channelsection-section',
-                'choices' => NodeSections::getSectionNames(),
+                'choices' => $this->getChoices(NodeSections::getSectionNames()),
             ])
             ->add('main_title', TextType::class, [
                 'disabled' => $this->getReadonly(),
@@ -68,10 +66,20 @@ class AdminSectionForm extends AbstractFormProcessor {
                 'constraints' => array(
                     new Constraints\Count(array('max' => 1))
                 ),
-            ))
-            ;
+            ));
 
         return $this;
+    }
+
+    private function getChoices($items)
+    {
+        $choices = [];
+
+        foreach ($items as $k => $v) {
+            $choices[$v] = $k;
+        }
+
+        return $choices;
     }
 
     public function save(FormInterface $form = null, $force_save = false) {

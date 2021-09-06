@@ -44,50 +44,50 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
         $builder
             ->add(
                 $question->id . '_typeofquestion', ChoiceType::class, [
-                'label' => Text::get('questionnaire-type-of-question'),
-                'choices' => Questionnaire::getTypes(),
-                'data' => $config->type
+                    'label' => Text::get('questionnaire-type-of-question'),
+                    'choices' => $this->getChoices(Questionnaire::getTypes()),
+                    'data' => $config->type
                 ]
             )
             ->add(
                 $question->id . '_required', BooleanType::class, [
-                'label' => Text::get('questionnaire-required'),
-                'data' => $config->required ? true : false,
-                'required' => false
+                    'label' => Text::get('questionnaire-required'),
+                    'data' => $config->required ? true : false,
+                    'required' => false
                 ]
             )
             ->add(
                 $question->id . '_hidden', BooleanType::class, [
-                'label' => Text::get('questionnaire-hidden'),
-                'data' => $config->hidden ? true : false,
-                'required' => false
+                    'label' => Text::get('questionnaire-hidden'),
+                    'data' => $config->hidden ? true : false,
+                    'required' => false
                 ]
             )
             ->add(
                 $question->id . '_max_score', NumberType::class, [
-                'label' => Text::get('questionnaire-max-score'),
-                'data' => $question->max_score,
-                'required' => true,
-                'attr' => [
-                    'min' => 0,
-                    'help' => Text::get('questionnaire-max-score-help')
+                    'label' => Text::get('questionnaire-max-score'),
+                    'data' => $question->max_score,
+                    'required' => true,
+                    'attr' => [
+                        'min' => 0,
+                        'help' => Text::get('questionnaire-max-score-help')
                     ]
                 ]
             )
             ->add(
                 $question->id . '_question', TextareaType::class, [
-                'label' => Text::get('questionnaire-text'),
-                'data' => $question->title,
+                    'label' => Text::get('questionnaire-text'),
+                    'data' => $question->title,
                 ]
             )
             ->add(
                 $question->id . "_remove", SubmitType::class, [
-                'label' => Text::get('regular-delete'),
-                'icon_class' => 'fa fa-trash',
-                'span' => 'hidden-xs',
-                'attr' => [
-                    'class' => 'pull-right btn btn-default remove-question',
-                    'data-confirm' => Text::get('project-remove-reward-confirm')
+                    'label' => Text::get('regular-delete'),
+                    'icon_class' => 'fa fa-trash',
+                    'span' => 'hidden-xs',
+                    'attr' => [
+                        'class' => 'pull-right btn btn-default remove-question',
+                        'data-confirm' => Text::get('project-remove-reward-confirm')
                     ]
                 ]
             )->add(
@@ -106,6 +106,17 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                     );
             }
         }
+    }
+
+    private function getChoices($items)
+    {
+        $choices = [];
+
+        foreach ($items as $k => $v) {
+            $choices[$v] = $k;
+        }
+
+        return $choices;
     }
 
     public function createForm()
