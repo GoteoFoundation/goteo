@@ -26,6 +26,7 @@ class TypeaheadType extends TextType
         parent::configureOptions($resolver);
         $resolver->setDefaults([
             'sources' => '', // Sources: 'channel', 'call', 'matcher', 'project', 'user', 'consultant'
+            'label_attr' => ['class' => ''],
             'row_class' => '',
             'text' => '', // If exists, the text shown instead of the value
             'fake_id' => '', // Created automatically, the id of the typeahead input field (real data is placed in a hidden field)
@@ -43,6 +44,7 @@ class TypeaheadType extends TextType
         if(is_array($options['attr']['class'])) $view->vars['attr']['class'] = implode(' ', $view->vars['attr']['class']);
         if(empty($view->vars['fake_id'])) $view->vars['fake_id'] = 'typeahead_' . $view->vars['id'];
         $view->vars['attr']['class'] .= 'form-control typeahead';
+        $view->vars['label_attr'] = $options['label_attr'];
         $view->vars['attr']['autocomplete'] = 'off';
         $view->vars['sources'] = $options['sources'];
         $view->vars['text'] = $options['text'] ?: $view->vars['value'];
