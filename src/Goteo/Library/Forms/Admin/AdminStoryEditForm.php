@@ -68,11 +68,11 @@ class AdminStoryEditForm extends ProjectStoryForm {
                     new Constraints\Count(['max' => 1]),
                 ]
             ])
-            ->add('background_image_credits', TextType::class, array(
+            ->add('background_image_credits', TextType::class, [
                 'label' => 'story-field-background-image-credits',
                 'data' => Credits::get($story->background_image)->credits,
                 'required' => false,
-            ))
+            ])
             ->add('review', TextType::class, [
                 'label' => 'admin-stories-review',
                 'required' => false,
@@ -93,63 +93,72 @@ class AdminStoryEditForm extends ProjectStoryForm {
                 'sources' => 'project',
                 'text' => ($story && $story->getProject()) ? $story->getProject()->name : null
             ])
-            ->add('lang', ChoiceType::class, array(
+            ->add('lang', ChoiceType::class, [
                 'label' => 'regular-lang',
                 'row_class' => 'extra',
-                'choices' => Lang::listAll('name', false)
-            ))
-            ->add('pool', BooleanType::class, array(
+                'choices' => $this->getChoices(Lang::listAll('name', false))
+            ])
+            ->add('pool', BooleanType::class, [
                 'required' => false,
                 'row_class' => 'extra',
                 'disabled' => $this->getReadonly(),
                 'label' => 'admin-stories-pool', // Form has integrated translations
                 'color' => 'cyan', // bootstrap label-* (default, success, ...)
-            ))
-            ->add('landing_pitch', BooleanType::class, array(
+            ])
+            ->add('landing_pitch', BooleanType::class, [
                 'required' => false,
                 'row_class' => 'extra',
                 'disabled' => $this->getReadonly(),
                 'label' => 'admin-stories-landing_pitch', // Form has integrated translations
                 'color' => 'lilac', // bootstrap label-* (default, success, ...)
-            ))
-            ->add('landing_match', BooleanType::class, array(
+            ])
+            ->add('landing_match', BooleanType::class, [
                 'required' => false,
                 'row_class' => 'extra',
                 'disabled' => $this->getReadonly(),
                 'label' => 'admin-stories-landing_match', // Form has integrated translations
                 'color' => 'lilac', // bootstrap label-* (default, success, ...)
-            ))
-            ->add('type', ChoiceType::class, array(
+            ])
+            ->add('type', ChoiceType::class, [
                 'label' => 'admin-stories-type',
                 'required' => true,
                 'expanded' => true,
                 'row_class' => 'extra',
                 'wrap_class' => 'col-xs-6',
-                'choices' => Stories::getListTypes(),
+                'choices' => $this->getChoices(Stories::getListTypes()),
                 'constraints' => [
                     new Constraints\NotBlank()
                 ]
-            ))
-            ->add('sphere', ChoiceType::class, array(
+            ])
+            ->add('sphere', ChoiceType::class, [
                 'label' => 'admin-title-sphere',
                 'required' => true,
                 'row_class' => 'extra',
                 'wrap_class' => 'col-xs-6',
-                'choices' => array_column(Sphere::getAll(), 'name', 'id'),
+                'choices' => array_column(Sphere::getAll(), 'id', 'name'),
                 'constraints' => [
                     new Constraints\NotBlank()
                 ]
-            ))
-            ->add('active', BooleanType::class, array(
+            ])
+            ->add('active', BooleanType::class, [
                 'required' => false,
                 'row_class' => 'extra',
                 'disabled' => $this->getReadonly(),
                 'label' => 'admin-stories-active', // Form has integrated translations
                 'color' => 'cyan', // bootstrap label-* (default, success, ...)
-            ))
-            ;
+            ]);
 
         return $this;
+    }
+
+    private function getChoices(array $items) {
+        $choices = [];
+
+        foreach ($items as $k => $v) {
+            $choices[$v] = $k;
+        }
+
+        return $choices;
     }
 
     public function save(FormInterface $form = null, $force_save = false) {
