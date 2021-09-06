@@ -19,6 +19,7 @@ use Goteo\Core\Model;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Payment\Payment;
+use Goteo\Payment\PaymentException;
 use Goteo\Util\Stats\Stats;
 use PDO;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +28,13 @@ use function date_valid;
 
 
 class AdminChartsApiController extends ChartsApiController {
+
+    private $increments = [
+        'today' => 'yesterday',
+        'week'  => ['last_week', 'last_year_week'],
+        'month' => ['last_month', 'last_year_month'],
+        'year'  => 'last_year'
+    ];
 
     public function __construct() {
         parent::__construct();
@@ -267,9 +275,9 @@ class AdminChartsApiController extends ChartsApiController {
     }
 
     /**
-     * Gets totals for invests
-     * @param  string $target [raised, active, refunded, commissions, fees]
-     * @param  string $method raised[paypal, tpv, ..., global]  active[paypal,...], commissions[paypal, ...], fees]
+     * @param string $target [raised, active, refunded, commissions, fees]
+     * @param string $method raised[paypal, tpv, ..., global]  active[paypal,...], commissions[paypal, ...], fees]
+     * @throws PaymentException
      */
     public function totalInvestsAction(
         Request $request,
@@ -279,11 +287,12 @@ class AdminChartsApiController extends ChartsApiController {
     ) {
         // Use the Stats class to take advantage of the Caching component
         $stats = Stats::create('api_totals'. ($project_id ? "_$project_id" : ''), 30);
-
         $timeslots = self::timeSlots($slot, $request);
         $totals = [];
+
         foreach($timeslots as $slot => $dates) {
-            $filter = ['datetime_from' => $dates['from'],
+            $filter = [
+                'datetime_from' => $dates['from'],
                 'datetime_until' => $dates['to'],
                 'projects' => $request->query->get('project'),
                 'calls' => $request->query->get('call'),
@@ -291,14 +300,15 @@ class AdminChartsApiController extends ChartsApiController {
                 'users' => $request->query->get('user'),
                 'consultants' => $request->query->get('consultant'),
                 'node' => $request->query->has('channel') ? $request->query->get('channel') : $request->query->get('node'),
-                ];
+            ];
+
             if(Payment::methodExists($method)) {
                 $filter['methods'] = $method;
                 $methods = [$method => Payment::getMethod($method)];
             } else {
                 $method = 'global';
-                $methods = Payment::getMethods();
-                $filter['methods'] = array_keys(array_filter($methods, function($val){
+                $methods = Payment::getMethods($this->user);
+                $filter['methods'] = array_keys(array_filter($methods, function($val) {
                     return !$val->isInternal();
                 }));
             }
@@ -435,8 +445,7 @@ class AdminChartsApiController extends ChartsApiController {
                     list($type, $field) = explode("_", $part);
                     if($totals[$slot][$field]) {
                         $generosity["{$part}_percent"] = 100 * round($value / $totals[$slot][$field], 4);
-                    }
-                    else {
+                    } else {
                         $generosity["{$part}_percent"] = 0;
                     }
                 }
@@ -577,21 +586,17 @@ class AdminChartsApiController extends ChartsApiController {
                         $totals[$slot][$type.'_from_matchfunding_amount_percent'] = '--';
                         $totals[$slot][$type.'_from_users_amount_percent'] = '--';
                     }
-
                 }
 
             } elseif($target !== 'global') {
                 throw new ControllerException("[$target] not found, try one of [raised, active, raw, refunded, commissions, fees, donations, matchfunding]");
             }
         }
-        $increments = [ 'today' => 'yesterday',
-                        'week'  => ['last_week', 'last_year_week'],
-                        'month' => ['last_month', 'last_year_month'],
-                        'year'  => 'last_year' ];
+
         foreach($totals as $slot => $parts) {
             foreach($parts as $k => $v) {
                 // increments
-                if(($inc = $increments[$slot]) && is_numeric($v)) {
+                if(($inc = $this->increments[$slot]) && is_numeric($v)) {
                     if(!is_array($inc)) $inc = [$inc];
                     foreach($inc as $cmp) {
                         if(!is_numeric($totals[$cmp][$k])) continue;
