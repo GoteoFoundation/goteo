@@ -28,11 +28,12 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 abstract class Controller {
     use LoggerTrait;
 
-    /**
-     * Handy method to send a response from a view
-     */
-    public function viewResponse($view, $vars = [], $status = 200, $contentType = 'text/html'): Response
-    {
+    public function viewResponse(
+        $view,
+        $vars = [],
+        $status = 200,
+        $contentType = 'text/html'
+    ): Response {
         $view = View::render($view, $vars);
         $request = App::getRequest();
         if($request->query->has('pronto') && (App::debug() || $request->isXmlHttpRequest())) {
@@ -42,10 +43,12 @@ abstract class Controller {
         return new Response($view, $status, ['Content-Type' => $contentType]);
     }
 
-    /**
-     * Handy method to send a response any string
-     */
-    public function rawResponse($string, $contentType = 'text/plain' , $status = 200, $file_name = '') {
+    public function rawResponse(
+        $string,
+        $contentType = 'text/plain' ,
+        $status = 200,
+        $file_name = ''
+    ) {
         $response = new Response($string, $status, ['Content-Type' => $contentType]);
 
         if($file_name) {
@@ -55,22 +58,18 @@ abstract class Controller {
             );
             $response->headers->set('Content-Disposition', $d);
         }
+
         return $response;
     }
 
-    /**
-     * **Experimental** method to send a response in json, vars only
-     */
-    public function jsonResponse($vars = []) {
+    public function jsonResponse($vars = [])
+    {
         $resp = new JsonResponse($vars);
         if(App::debug()) $resp->setEncodingOptions(JSON_PRETTY_PRINT);
         return $resp;
     }
 
-    /**
-     * @return Response A Response instance
-     */
-    public function forward(string $controller, array $path = [], array $query = null)
+    public function forward($controller, array $path = [], array $query = null)
     {
         $path['_controller'] = $controller;
         $subRequest = App::getRequest()->duplicate($query, null, $path);
@@ -78,34 +77,22 @@ abstract class Controller {
         return $this->getService('app')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }
 
-    /**
-     * Handy method to return a redirect response
-     */
-    public function redirect($path = null, $status = 302) {
+    public function redirect($path = null, $status = 302)
+    {
         if($path === null) {
             $path = App::getRequest()->getRequestUri();
         }
         return new RedirectResponse($path, $status);
     }
 
-
-    /**
-     * Handy method to enable/disable the SQL cache
-     */
     public function dbCache($cache = null) {
         return DB::cache($cache);
     }
 
-    /**
-     * Handy method to enable/disable the SQL replica
-     */
     public function dbReplica($replica = null) {
         return DB::replica($replica);
     }
 
-    /**
-     * Handy method to obtain the view engine object
-     */
     public function getViewEngine() {
         return View::getEngine();
     }
@@ -121,16 +108,10 @@ abstract class Controller {
         }
     }
 
-    /**
-     * Handy method to get the service container object
-     */
     public function getContainer() {
         return App::getServiceContainer();
     }
 
-    /**
-     * Handy method to get the getService function
-     */
     public function getService($service) {
         return App::getService($service);
     }
@@ -179,5 +160,3 @@ abstract class Controller {
     }
 
 }
-
-
