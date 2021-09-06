@@ -212,6 +212,8 @@ $(function(){
     }
       
     if (latlngs.length) {
+      map.invalidateSize();
+
       var latLngBounds = L.latLngBounds(latlngs);
       map.fitBounds(latLngBounds);
     }
