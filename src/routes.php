@@ -275,4 +275,11 @@ $routes->add('impact-discover', new Route(
     )
 ));
 
+$routes->add('impact-discover-map', new Route(
+    '/impact-discover/map',
+    array(
+        '_controller' => 'Goteo\Controller\ImpactDiscoverController::mapAction'
+    )
+));
+
 return $routes;
