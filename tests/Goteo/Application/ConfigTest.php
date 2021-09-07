@@ -35,6 +35,32 @@ class ConfigTest extends \PHPUnit\Framework\TestCase {
         }
     }
 
+    public function testShallowEnvSubstitution() {
+        $expected = "a nice value";
+        Config::set("test.shallow_sub_env_var", "%env(SOME_NICE_ENV_VAR)%");
+        $this->assertEmpty($readParameterValue);
+        putenv("SOME_NICE_ENV_VAR=$expected");
+
+        $readParameterValue = Config::get("test.shallow_sub_env_var");
+        $this->assertEquals($expected, $readParameterValue);
+    }
+
+    public function testDeepEnvSubstitution() {
+        $expected = "a nice value";
+        Config::set("test.deep.sub.env.var", "%env(ANOTHER_NICE_ENV_VAR)%");
+        $this->assertEmpty($readParameterValue);
+        putenv("ANOTHER_NICE_ENV_VAR=$expected");
+
+        $readParameterValue = Config::get("test.deep.sub.env.var");
+        $this->assertEquals($expected, $readParameterValue);
+
+        $readParameterParent = Config::get("test.deep.sub.env");
+        $this->assertEquals($expected, $readParameterParent["var"]);
+
+        $readParameterAntecessor = Config::get("test");
+        $this->assertEquals($expected, $readParameterAntecessor["deep"]["sub"]["env"]["var"]);
+    }
+
     public function testYamlLangFilesWithEnvParameter() {
         $expectedDatabasePortEnv = 33061;
         putenv("DATABASE_PORT=$expectedDatabasePortEnv");
