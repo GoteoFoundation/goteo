@@ -63,6 +63,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase {
 
     public function testYamlLangFilesWithEnvParameter() {
         $expectedDatabasePortEnv = 33061;
+        Config::set("db.port_env", "%env(DATABASE_PORT)%");
         putenv("DATABASE_PORT=$expectedDatabasePortEnv");
 
         $readParameterValue = Config::get("db.port_env");
@@ -72,6 +73,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase {
 
     public function testYamlLangFilesWithEnvParameterInArrays() {
         $expectedDatabasePortEnv = 33061;
+        Config::set("db.array_env", ["%env(DATABASE_PORT)%"]);
         putenv("DATABASE_PORT=$expectedDatabasePortEnv");
 
         $readParameterValue = Config::get("db.array_env");
