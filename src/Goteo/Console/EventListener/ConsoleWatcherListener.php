@@ -240,22 +240,6 @@ class ConsoleWatcherListener extends AbstractListener {
                 }
                 break;
 
-            case 9:
-                // TODO: to extend/...
-                // Busca prescriptores e implícalos
-                // si no tiene padrinos
-                if(class_exists('\Goteo\Model\Patron')) {
-                    // número de recomendaciones de padrinos
-                    $patrons = \Goteo\Model\Patron::numRecos($project->id);
-
-                    if ($patrons > 0) {
-                        $this->warning("Not sending message to project as already has patrons", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
-                    } else {
-                        $this->send($project, "tip_9", ['owner']);
-                    }
-                }
-                break;
-
             case 10: // Luce tus recompensas y retornos
                 // que no se envie a los que solo tienen recompensas de agradecimiento
                 $thanksonly = true;

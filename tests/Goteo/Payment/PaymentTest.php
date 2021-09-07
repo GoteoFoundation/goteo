@@ -9,16 +9,15 @@ class MockPaymentMethod extends AbstractPaymentMethod {
 
 }
 
-class PaymentTest extends \PHPUnit_Framework_TestCase {
+class PaymentTest extends \PHPUnit\Framework\TestCase {
 
-    public function testInstance() {
-
+    public function testInstance(): Payment
+    {
         $ob = new Payment();
 
         $this->assertInstanceOf('Goteo\Payment\Payment', $ob);
 
         return $ob;
-
     }
 
     public function testAddMethod() {
@@ -34,15 +33,16 @@ class PaymentTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue(Payment::methodExists('mock'));
     }
 
-    public function testGetMethods() {
+    public function testGetMethods(): array
+    {
         $methods = Payment::getMethods();
-        $this->assertInternalType('array', $methods);
+        $this->assertIsArray($methods);
         $this->assertArrayHasKey('mock', $methods);
         $methods = Payment::getMethods(get_test_user());
         $this->assertContainsOnlyInstancesOf('Goteo\Payment\Method\PaymentMethodInterface', $methods);
         return $methods;
     }
-   
+
     public function testGetMethod() {
         $this->assertInstanceOf('Goteo\Payment\Method\PaymentMethodInterface', Payment::getMethod('mock'));
     }
@@ -50,7 +50,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testGetMethods
      */
-    public function testDefaultMethod($methods) {
+    public function testDefaultMethod() {
         Payment::defaultMethod('mock');
         $this->assertEquals('mock', Payment::defaultMethod());
     }

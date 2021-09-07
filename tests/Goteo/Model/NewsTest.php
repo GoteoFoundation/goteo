@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\News;
 
-class NewsTest extends \PHPUnit_Framework_TestCase {
+class NewsTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('title' => 'Test news', 'url' => 'http://goteo.org', 'order' => 1);
 

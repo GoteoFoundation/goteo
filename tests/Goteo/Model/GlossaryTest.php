@@ -2,12 +2,13 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\Core\DB;
 use Goteo\Model\Glossary;
 use Goteo\Model\Image;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 
-class GlossaryTest extends \PHPUnit_Framework_TestCase {
+class GlossaryTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('title' => 'Test title', 'text' => 'Test text');
     private static $trans_data = array('title' => 'Test títle', 'text' => 'Test text traduït');
@@ -24,7 +25,7 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
                         'size' => 0);
     private static $image2;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
 
         Config::set('lang', 'es');
         Lang::setDefault('es');
@@ -42,8 +43,9 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
         self::$image2['size'] = strlen($i);
     }
 
-    public function testInstance() {
-        \Goteo\Core\DB::cache(false);
+    public function testInstance(): Glossary
+    {
+        DB::cache(false);
 
         $ob = new Glossary();
 
@@ -55,7 +57,7 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testInstance
      */
-    public function testValidate($ob) {
+    public function testValidate(Glossary $ob) {
         $this->assertFalse($ob->validate());
         $this->assertFalse($ob->save());
     }
@@ -63,19 +65,20 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
      /**
      * @depends testInstance
      */
-    public function testCreateGlossary() {
+    public function testCreateGlossary(): Glossary
+    {
         $ob = new Glossary(self::$data);
         $this->assertTrue($ob->validate($errors));
-        $this->assertTrue($ob->save($errors), $errors);
+        $this->assertTrue($ob->save($errors));
         $this->assertNotEmpty($ob->id);
         return $ob;
-
     }
 
     /**
      * @depends testCreateGlossary
      */
-    public function testGetGlossary($ob) {
+    public function testGetGlossary(Glossary $ob): Glossary
+    {
         $ob = Glossary::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Glossary', $ob);
 
@@ -89,7 +92,8 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testGetGlossary
      */
-    public function testEditGlossary($ob) {
+    public function testEditGlossary(Glossary $ob): Glossary
+    {
         $ob->title = self::$data['title'] . " (edited)";
 
         //add image
@@ -104,22 +108,23 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
 
         $sob = Glossary::get($ob->id);
         $this->assertEquals($sob->title, $ob->title);
-        $this->assertInternalType('array', $ob->gallery);
-        $this->assertInternalType('array', $sob->gallery);
+        $this->assertIsArray($ob->gallery);
+        $this->assertIsArray($sob->gallery);
         $this->assertCount(2, $sob->gallery);
         $this->assertEquals($sob->gallery[0]->id, $ob->gallery[0]->id);
         $this->assertEquals($sob->image->id, $ob->gallery[0]->id);
         return $sob;
     }
+
     /**
      * @depends testEditGlossary
      */
-    public function testRemoveImageGlossary($ob) {
+    public function testRemoveImageGlossary(Glossary $ob) {
         $errors = array();
         $this->assertEquals($ob->image, Image::getModelImage('', $ob->gallery));
         $this->assertTrue($ob->gallery[0]->remove($errors, 'glossary'), print_r($errors, 1));
         $ob = Glossary::get($ob->id);
-        $this->assertInternalType('array', $ob->gallery);
+        $this->assertIsArray($ob->gallery);
         $this->assertCount(1, $ob->gallery);
         $this->assertEquals($ob->image, $ob->gallery[0]);
 
@@ -127,7 +132,7 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($ob->image, Image::getModelImage('', $ob->gallery));
         $this->assertTrue($ob->gallery[0]->remove($errors, 'glossary'), print_r($errors, 1));
         $ob = Glossary::get($ob->id);
-        $this->assertInternalType('array', $ob->gallery);
+        $this->assertIsArray($ob->gallery);
         $this->assertCount(0, $ob->gallery);
         $this->assertEmpty($ob->image);
 
@@ -137,16 +142,16 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($ob->validate($errors));
         $this->assertTrue($ob->save());
         $ob = Glossary::get($ob->id);
-        $this->assertInternalType('array', $ob->gallery);
+        $this->assertIsArray($ob->gallery);
         $this->assertCount(1, $ob->gallery);
         $this->assertEquals($ob->image, $ob->gallery[0]);
-
     }
 
     /**
      * @depends testGetGlossary
      */
-    public function testSaveLanguages($ob) {
+    public function testSaveLanguages(Glossary $ob): Glossary
+    {
         $errors = [];
         $this->assertTrue($ob->setLang('ca', self::$trans_data, $errors), print_r($errors, 1));
         return $ob;
@@ -155,10 +160,9 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testSaveLanguages
      */
-    public function testCheckLanguages($ob) {
+    public function testCheckLanguages(Glossary $ob) {
         $glo = Glossary::get($ob->id);
         $this->assertInstanceOf('Goteo\Model\Glossary', $glo);
-        // $this->assertEquals(self::$data['title'], $glo->title);
         $this->assertEquals(self::$data['description'], $glo->description);
         Lang::set('ca');
         $glo2 = Glossary::get($ob->id);
@@ -170,16 +174,16 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testGetGlossary
      */
-    public function testListing($ob) {
+    public function testListing(Glossary $ob) {
         $list = Glossary::getAll();
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $glo = $list[$ob->id];
         $this->assertInstanceOf('Goteo\Model\Glossary', $glo);
         $this->assertEquals(self::$data['description'], $glo->description);
 
         Lang::set('ca');
         $list = Glossary::getAll();
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $glo2 = $list[$ob->id];
         $this->assertEquals(self::$trans_data['title'], $glo2->title);
         $this->assertEquals(self::$trans_data['description'], $glo2->description);
@@ -190,22 +194,19 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testGetGlossary
      */
-    public function testDeleteGlossary($ob) {
-        //delete post
+    public function testDeleteGlossary(Glossary $ob)
+    {
         $this->assertTrue($ob->dbDelete());
-
-        return $ob;
     }
+
     public function testCleanProjectRelated() {
         foreach(self::$related_tables as $tb => $field) {
             Glossary::query("DELETE FROM $tb WHERE $field NOT IN (SELECT id FROM glossary)");
             $this->assertEquals(0, Glossary::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM glossary)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM glossary)");
         }
     }
-    /**
-     * Some cleanup
-     */
-    static function tearDownAfterClass() {
+
+    static function tearDownAfterClass(): void {
         // Remove temporal files on finish
         unlink(self::$image['tmp_name']);
         unlink(self::$image2['tmp_name']);

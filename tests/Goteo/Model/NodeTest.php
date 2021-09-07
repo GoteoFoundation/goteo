@@ -3,6 +3,7 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\Core\DB;
 use Goteo\TestCase;
 use Goteo\Model\Node;
 use Goteo\Model\User;
@@ -30,14 +31,15 @@ class NodeTest extends TestCase {
     private static $data = array('id' => 'testnode2', 'name' => 'Test node 2', 'subtitle' => 'Test subtitle', 'description' => 'Test description');
     private static $trans_data = array('subtitle' => 'Test de subtítol', 'description' => 'Test descripció');
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         Config::set('lang', 'es');
         Lang::setDefault('es');
         Lang::set('es');
     }
 
-    public function testInstance() {
-        \Goteo\Core\DB::cache(false);
+    public function testInstance(): Node
+    {
+        DB::cache(false);
         $ob = new Node();
 
         $this->assertInstanceOf('\Goteo\Model\Node', $ob);
@@ -47,7 +49,7 @@ class NodeTest extends TestCase {
     /**
      * @depends testInstance
      */
-    public function testValidate($ob) {
+    public function testValidate(Node $ob) {
         $this->assertFalse($ob->validate());
         $this->assertFalse($ob->save());
         //delete test node if exists
@@ -67,7 +69,7 @@ class NodeTest extends TestCase {
         $node = new Node(self::$data);
         $this->assertTrue($node->validate($errors), print_r($errors, 1));
         $this->assertNotFalse($node->create($errors), print_r($errors, 1));
-        // die($node->id);
+
         $ob = Node::get($node->id);
         $this->assertInstanceOf('\Goteo\Model\Node', $ob);
         $this->assertEquals($ob->id, self::$data['id']);
@@ -90,7 +92,7 @@ class NodeTest extends TestCase {
         }
 
         $this->assertTrue($node->rebase('testnode3'));
-        $this->assertEquals($node->id, 'testnode3');
+        $this->assertEquals('testnode3', $node->id);
         return $node;
     }
 
@@ -123,7 +125,7 @@ class NodeTest extends TestCase {
      */
     public function testListing($ob) {
         $list = Node::getAll(['id' => $ob->id]);
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $this->assertCount(1, $list);
         $this->assertInstanceOf('Goteo\Model\Node', $list[0]);
         $this->assertEquals(self::$data['subtitle'], $list[0]->subtitle);
@@ -131,7 +133,7 @@ class NodeTest extends TestCase {
 
         Lang::set('ca');
         $list = Node::getAll(['id' => $ob->id]);
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $this->assertCount(1, $list);
 
         $this->assertEquals(self::$trans_data['subtitle'], $list[0]->subtitle);
@@ -228,10 +230,7 @@ class NodeTest extends TestCase {
         }
     }
 
-    /**
-     * Some cleanup
-     */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         delete_test_project();
         delete_test_user();
         delete_test_node();

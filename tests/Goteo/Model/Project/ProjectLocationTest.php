@@ -3,12 +3,13 @@
 
 namespace Goteo\Model\Project\Tests;
 
+use Goteo\Core\DB;
 use Goteo\Model\Project;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\User;
 use Goteo\Model\User\UserLocation;
 
-class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
+class ProjectLocationTest extends \PHPUnit\Framework\TestCase {
     private static $data = array(
             'city' => 'Simulated City',
             'region' => 'Simulated Region',
@@ -18,8 +19,10 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
             'longitude' => -0.1234567890,
             'method' => 'ip',
         );
-    public function testInstance() {
-        \Goteo\Core\DB::cache(false);
+
+    public function testInstance(): ProjectLocation
+    {
+        DB::cache(false);
 
         $location = new ProjectLocation();
 
@@ -37,7 +40,8 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($location->save());
     }
 
-    public function testAddProjectLocation() {
+    public function testAddProjectLocation(): ProjectLocation
+    {
         self::$data['id'] = 'test-project-non-existing';
         $project_location = new ProjectLocation(self::$data);
         $this->assertInstanceOf('\Goteo\Model\Project\ProjectLocation', $project_location);
@@ -49,24 +53,26 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($project_location->country_code, self::$data['country_code']);
         $this->assertEquals($project_location->id, self::$data['id']);
 
-
         return $project_location;
     }
+
     /**
      * @depends testAddProjectLocation
      */
-    public function testSaveProjectLocationNonProject($project_location) {
+    public function testSaveProjectLocationNonProject(ProjectLocation $project_location): ProjectLocation
+    {
         delete_test_project();
         delete_test_user();
 
         $this->assertFalse($project_location->save());
         return $project_location;
     }
+
     /**
      * @depends testSaveProjectLocationNonProject
      */
-    public function testCreateProject($project_location) {
-
+    public function testCreateProject(ProjectLocation $project_location): ProjectLocation
+    {
         $user = get_test_user();
         $this->assertInstanceOf('\Goteo\Model\User', $user);
 
@@ -81,7 +87,7 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testCreateProject
      */
-    public function testSaveProjectLocation($project_location) {
+    public function testSaveProjectLocation(ProjectLocation $project_location) {
         $errors = array();
         $this->assertTrue($project_location->validate($errors), print_r($errors, 1));
         $this->assertTrue($project_location->save($errors), print_r($errors, 1));
@@ -108,7 +114,7 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends  testSaveProjectLocation
      */
-    public function testSetLocable($project_location) {
+    public function testSetLocable(ProjectLocation $project_location) {
         $errors = array();
         $this->assertTrue($project_location::setLocable($project_location->id, $errors), print_r($errors, 1));
         $project_location2 = ProjectLocation::get($project_location->id);
@@ -142,7 +148,8 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends  testSetLocable
      */
-    public function testSetProperty($project_location) {
+    public function testSetProperty(ProjectLocation $project_location): ProjectLocation
+    {
         $errors = array();
         $txt = "Test info for location";
         $this->assertTrue($project_location::setProperty($project_location->id, 'info', $txt, $error), print_r($errors, 1));
@@ -157,14 +164,13 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testSaveProjectLocation
      */
-    public function testNearbyEmpty($project_location) {
-        $errors = array();
+    public function testNearbyEmpty(ProjectLocation $project_location) {
         $project = new Project;
         $loc = new ProjectLocation($project);
         $this->assertInstanceOf('\Goteo\Model\Project\ProjectLocation', $loc);
-        $sibilings = $loc->getSibilingsNearby();
-        $this->assertInternalType('array', $sibilings);
-        $this->assertEmpty($sibilings);
+        $siblings = $loc->getSibilingsNearby();
+        $this->assertIsArray($siblings);
+        $this->assertEmpty($siblings);
 
         return $project_location;
     }
@@ -172,17 +178,16 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testNearbyEmpty
      */
-    public function testNearbyEmptyProjects($project_location) {
-
+    public function testNearbyEmptyProjects() {
         $projects_nearby = ProjectLocation::getNearby(new UserLocation, 1);
-        $this->assertInternalType('array', $projects_nearby);
+        $this->assertIsArray($projects_nearby);
         $this->assertEmpty($projects_nearby);
     }
 
     /**
      * @depends testNearbyEmpty
      */
-    public function testNearby($project_location) {
+    public function testNearby(ProjectLocation $project_location) {
         // create location for user
         $data = self::$data;
         $user = get_test_user();
@@ -194,33 +199,26 @@ class ProjectLocationTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($user_location->save($errors), print_r($errors, 1));
 
         $projects_nearby = ProjectLocation::getNearby($user_location, 100);
-        // print_r($projects_nearby);die;
-        $this->assertInternalType('array', $projects_nearby);
+        $this->assertIsArray($projects_nearby);
         $keys = array();
         foreach($projects_nearby as $ob) {
             $this->assertInstanceOf('\Goteo\Model\Project\Projectlocation', $ob);
             $keys[] = $ob->id;
         }
         $this->assertContains($project_location->id, $keys);
-
     }
 
     /**
      * @depends  testSetProperty
      */
-    public function testRemoveAddLocationEntry($project_location) {
-
+    public function testRemoveAddLocationEntry(ProjectLocation $project_location) {
         $this->assertTrue($project_location->dbDelete());
         $project_location2 = ProjectLocation::get($project_location->id);
 
         $this->assertFalse($project_location2);
-
     }
 
-    /**
-     * Some cleanup
-     */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         delete_test_project();
         delete_test_user();
     }

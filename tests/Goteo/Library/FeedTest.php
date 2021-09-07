@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Library\Feed;
 
-class FeedTest extends \PHPUnit_Framework_TestCase {
+class FeedTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

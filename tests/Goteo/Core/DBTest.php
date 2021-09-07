@@ -5,7 +5,7 @@ namespace Goteo\Core\Tests;
 use Goteo\Core\DB,
     Goteo\Library\Cacher;
 
-class DBTest extends \PHPUnit_Framework_TestCase {
+class DBTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         DB::cache(false);
@@ -71,15 +71,15 @@ class DBTest extends \PHPUnit_Framework_TestCase {
         DB::cache(true);
         $this->assertTrue(DB::cache());
         $query = $db->prepare('SELECT 1');
-        $this->assertEquals($query->cache_time, 2); //specified on constructor
+        $this->assertEquals(2, $query->cache_time); //specified on constructor
 
         $query->cacheTime(23);
 
-        $this->assertEquals($query->cache_time, 23);
+        $this->assertEquals(23, $query->cache_time);
 
         $query->cacheTime(6);
 
-        $this->assertEquals($query->cache_time, 6);
+        $this->assertEquals(6, $query->cache_time);
 
         return $db;
     }

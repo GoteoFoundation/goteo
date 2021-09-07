@@ -3,23 +3,25 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\Core\DB;
 use Goteo\Model\OpenTag;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 
-class OpenTagTest extends \PHPUnit_Framework_TestCase {
+class OpenTagTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('name' => 'test name', 'description' => 'test description', 'order' => 0);
     private static $trans_data = array('name' => 'nom de test', 'description' => 'descripció test');
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
         Config::set('lang', 'es');
         Lang::setDefault('es');
         Lang::set('es');
     }
 
-    public function testInstance() {
-        \Goteo\Core\DB::cache(false);
+    public function testInstance(): OpenTag
+    {
+        DB::cache(false);
 
         $ob = new OpenTag();
 
@@ -31,7 +33,7 @@ class OpenTagTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testInstance
      */
-    public function testValidate($ob) {
+    public function testValidate(OpenTag $ob) {
         $this->assertFalse($ob->validate(), print_r($errors, 1));
         $this->assertFalse($ob->save());
     }
@@ -53,7 +55,8 @@ class OpenTagTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testCreate
      */
-    public function testSaveLanguages($ob) {
+    public function testSaveLanguages(OpenTag $ob): OpenTag
+    {
         $errors = [];
         $this->assertTrue($ob->setLang('ca', self::$trans_data, $errors), print_r($errors, 1));
         return $ob;
@@ -62,7 +65,7 @@ class OpenTagTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testSaveLanguages
      */
-    public function testCheckLanguages($ob) {
+    public function testCheckLanguages(OpenTag $ob) {
         $new = OpenTag::get($ob->id);
         $this->assertInstanceOf('Goteo\Model\OpenTag', $new);
         $this->assertEquals(self::$data['name'], $new->name);
@@ -77,9 +80,9 @@ class OpenTagTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testCreate
      */
-    public function testListing($ob) {
+    public function testListing(OpenTag $ob) {
         $list = OpenTag::getAll();
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
         $new = $list[$ob->id];
         $this->assertInstanceOf('Goteo\Model\OpenTag', $new);
         $this->assertEquals(self::$data['name'], $new->name);
@@ -87,17 +90,19 @@ class OpenTagTest extends \PHPUnit_Framework_TestCase {
 
         Lang::set('ca');
         $list = OpenTag::getAll();
-        $this->assertInternalType('array', $list);
+        $this->assertIsArray($list);
 
         $new2 = $list[$ob->id];
         $this->assertEquals(self::$trans_data['name'], $new2->name);
         $this->assertEquals(self::$trans_data['description'], $new2->description);
         Lang::set('es');
     }
+
     /**
      * @depends testCreate
      */
-    public function testDelete($ob) {
+    public function testDelete(OpenTag $ob): OpenTag
+    {
         $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
@@ -106,10 +111,11 @@ class OpenTagTest extends \PHPUnit_Framework_TestCase {
 
         return $ob;
     }
+
     /**
      * @depends testDelete
      */
-    public function testNonExisting($ob) {
+    public function testNonExisting(OpenTag $ob) {
         $ob = OpenTag::get($ob->id);
         $this->assertFalse($ob);
         $this->assertFalse(OpenTag::delete($ob->id));

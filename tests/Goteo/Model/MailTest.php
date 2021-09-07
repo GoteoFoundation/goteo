@@ -5,8 +5,9 @@ namespace Goteo\Model\Tests;
 use Goteo\Model\Template;
 use Goteo\Model\Mail;
 use Goteo\Application\Config;
+use PHPMailer\PHPMailer\PHPMailer;
 
-class MailTest extends \PHPUnit_Framework_TestCase
+class MailTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Ensures has the correct instances
@@ -14,8 +15,8 @@ class MailTest extends \PHPUnit_Framework_TestCase
     public function testInstance(): Mail
     {
         $mail = new Mail();
-        $this->assertInstanceOf('\Goteo\Model\Mail', $mail);
-        $this->assertInstanceOf('\PHPMailer', $mail->mail);
+        $this->assertInstanceOf(Mail::class, $mail);
+        $this->assertInstanceOf(PHPMailer::class, $mail->mail);
         return $mail;
     }
 
@@ -43,12 +44,12 @@ class MailTest extends \PHPUnit_Framework_TestCase
     public function testMessage(Mail $mail)
     {
         $mailer = $mail->buildMessage();
-        $this->assertInstanceOf('\PHPMailer', $mailer);
+        $this->assertInstanceOf(PHPMailer::class, $mailer);
 
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
 
-        $this->assertContains('/logo-fg-white.png" alt="Fundación Goteo"', $mailer->Body);
-        $this->assertContains('<title>' . $mail->subject . '</title>', $mailer->Body);
+        $this->assertStringContainsString('/logo-fg-white.png" alt="Fundación Goteo"', $mailer->Body);
+        $this->assertStringContainsString('<title>' . $mail->subject . '</title>', $mailer->Body);
     }
 
     private function encode($mail, $url='')
@@ -67,9 +68,9 @@ class MailTest extends \PHPUnit_Framework_TestCase
         $mailer = $mail->buildMessage();
         $leave_url = Config::getMainUrl() . '/user/unsubscribe/' . $mail->getToken();
         $unsubscribe_url = Config::getMainUrl() . '/mail/url/' . $this->encode($mail, $leave_url);
-        $this->assertContains($unsubscribe_url, $mailer->Body);
-        $this->assertContains('/goteo-white.png"', $mailer->Body);
-        $this->assertContains($mail->content, $mailer->Body);
+        $this->assertStringContainsString($unsubscribe_url, $mailer->Body);
+        $this->assertStringContainsString('/goteo-white.png"', $mailer->Body);
+        $this->assertStringContainsString($mail->content, $mailer->Body);
     }
 
     public function testToken()
@@ -89,13 +90,12 @@ class MailTest extends \PHPUnit_Framework_TestCase
     {
         $mail = Mail::createFromText('test@goteo.org', 'Test', 'Subject', "Body\nsecond line");
         $mailer = $mail->buildMessage();
-        $this->assertInstanceOf('\PHPMailer', $mailer);
+        $this->assertInstanceOf(PHPMailer::class, $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
-        $this->assertContains('Subject', $mailer->Subject);
-        $this->assertEmpty($mailer->isHTML());
-        $this->assertContains("Body\nsecond line", $mailer->Body);
-        $this->assertContains($mail->getToken(), $mailer->Body);
+        $this->assertStringContainsString('Subject', $mailer->Subject);
+        $this->assertStringContainsString("Body\nsecond line", $mailer->Body);
+        $this->assertStringContainsString($mail->getToken(), $mailer->Body);
     }
 
     public function testCreateHtml()
@@ -103,14 +103,13 @@ class MailTest extends \PHPUnit_Framework_TestCase
         $mail = Mail::createFromHtml('test@goteo.org', 'Test', 'Subject', "Body<br>second line");
         $mailer = $mail->buildMessage();
 
-        $this->assertInstanceOf('\PHPMailer', $mailer);
+        $this->assertInstanceOf(PHPMailer::class, $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
-        $this->assertContains('Subject', $mailer->Subject);
-        $this->assertEmpty($mailer->isHTML());
-        $this->assertContains("Body<br>second line", $mailer->Body);
-        $this->assertContains("Body\nsecond line", $mailer->AltBody);
-        $this->assertContains($mail->getToken(), $mailer->Body);
+        $this->assertStringContainsString('Subject', $mailer->Subject);
+        $this->assertStringContainsString("Body<br>second line", $mailer->Body);
+        $this->assertStringContainsString("Body\nsecond line", $mailer->AltBody);
+        $this->assertStringContainsString($mail->getToken(), $mailer->Body);
     }
 
     public function testCreateTemplate(): Mail
@@ -119,12 +118,11 @@ class MailTest extends \PHPUnit_Framework_TestCase
         $mail = Mail::createFromTemplate('test@goteo.org', 'Test', Template::NEWSLETTER);
         $mailer = $mail->buildMessage();
 
-        $this->assertInstanceOf('\PHPMailer', $mailer);
+        $this->assertInstanceOf(PHPMailer::class, $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
-        $this->assertContains($tpl->title, $mailer->Subject);
-        $this->assertEmpty($mailer->isHTML());
-        $this->assertContains($mail->getToken(), $mailer->Body);
+        $this->assertStringContainsString($tpl->title, $mailer->Subject);
+        $this->assertStringContainsString($mail->getToken(), $mailer->Body);
 
         return $mail;
     }

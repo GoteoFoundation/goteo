@@ -6,7 +6,7 @@ namespace Goteo\Core\Tests;
 use Goteo\Core\ACL;
 
 
-class ACLTest extends \PHPUnit_Framework_TestCase {
+class ACLTest extends \PHPUnit\Framework\TestCase {
     public function testInstance() {
 
         $test = new ACL();

@@ -10,9 +10,10 @@
 
 namespace Goteo\Model\User {
 
-    use Goteo\Core\ACL,
-        Goteo\Application\Lang,
+    use Goteo\Application\Exception\ModelNotFoundException;
+    use Goteo\Application\Lang,
         Goteo\Model;
+    use Goteo\Core\Exception;
 
     class Translate extends \Goteo\Core\Model {
 
@@ -25,35 +26,6 @@ namespace Goteo\Model\User {
         // tipos de contenidos que se traducen
         public static
             $types = array('project', 'call', 'node');
-
-        /*
-         *  Para conseguir una instancia de traduccion
-         *
-        public static function get ($user, $type, $item) {
-
-            if (!in_array($type, self::$types)) {
-                return false;
-            }
-
-            $query = static::query("
-                SELECT *
-                FROM    user_translate
-                WHERE type = :type
-                AND item = :item
-                AND user = :user
-                ", array(':type' => $type, ':item'=>$item, ':user'=>$user));
-
-            $translate =  $query->fetchObject(__CLASS__);
-
-            if ($translate instanceof \Goteo\Model\User\Translate){
-                return $translate;
-            } else {
-                return false;
-            }
-        }
-         *
-         */
-
 
         /**
          * Lo usamos para conseguir el tipo de ese item
@@ -76,7 +48,7 @@ namespace Goteo\Model\User {
                 }
 
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+				throw new Exception($e->getMessage());
             }
         }
 
@@ -106,7 +78,7 @@ namespace Goteo\Model\User {
                         case 'project':
                             try {
                                 $array[] = Model\Project::getMini($item['item']);
-                            } catch(\Goteo\Application\Exception\ModelNotFoundException $e) {}
+                            } catch(ModelNotFoundException $e) {}
                             break;
                         case 'call':
                             $array[] = Model\Call::getMini($item['item']);
@@ -115,13 +87,12 @@ namespace Goteo\Model\User {
                             $array[] = Model\Node::getMini($item['item']);
                             break;
                         default:
-                            continue;
                     }
                 }
 
                 return $array;
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+				throw new Exception($e->getMessage());
             }
 		}
 
@@ -175,7 +146,7 @@ namespace Goteo\Model\User {
 
                 return $array;
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+				throw new Exception($e->getMessage());
             }
 		}
 
@@ -215,7 +186,7 @@ namespace Goteo\Model\User {
                     return false;
                 }
 			} catch(\PDOException $e) {
-				$errors[] = "HA FALLADO!!! " . $e->getMessage();
+				$errors[] = $e->getMessage();
 				return false;
 			}
 
@@ -243,7 +214,7 @@ namespace Goteo\Model\User {
                     return false;
                 }
 			} catch(\PDOException $e) {
-                $errors[] = 'HA FALLADO!!! ' . $e->getMessage();
+                $errors[] = $e->getMessage();
                 return false;
 			}
 		}
@@ -322,7 +293,7 @@ namespace Goteo\Model\User {
 
                 return $array;
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+				throw new Exception($e->getMessage());
             }
         }
 

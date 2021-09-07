@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\Call;
 
-class CallTest extends \PHPUnit_Framework_TestCase {
+class CallTest extends \PHPUnit\Framework\TestCase {
     private static $data = array('id' => 'test-project', 'owner' => 'test');
 
     public function testInstance() {

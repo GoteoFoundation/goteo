@@ -5,7 +5,7 @@ namespace Goteo\Controller\Tests;
 
 use Goteo\Controller\Faq;
 
-class FaqTest extends \PHPUnit_Framework_TestCase {
+class FaqTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

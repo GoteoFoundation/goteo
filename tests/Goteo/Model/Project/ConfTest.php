@@ -5,7 +5,7 @@ namespace Goteo\Model\Project\Tests;
 
 use Goteo\Model\Project\Conf;
 
-class ConfTest extends \PHPUnit_Framework_TestCase {
+class ConfTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 
