@@ -11,8 +11,10 @@
 namespace Goteo\Core\Traits;
 
 use Goteo\Application\App;
+use Goteo\Application\Config;
 use Goteo\Util\Monolog\Processor\WebProcessor;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 /**
  * Trait to add log common methods
@@ -35,7 +37,15 @@ trait LoggerTrait {
     public function log($message, array $context = [], $func = 'info') {
         $logger = $this->getLog();
         if (null !== $logger && method_exists($logger, $func)) {
-            return $logger->$func($message, WebProcessor::processObject($context));
+            if(Config::get('debug')) {
+                return $logger->$func($message, WebProcessor::processObject($context));
+            } else {
+                try {
+                    return $logger->$func($message, WebProcessor::processObject($context));
+                } catch(RuntimeException $e) {
+                    // nothing here, if not in debug mode, failure to process logs is ignored
+                }
+            }
         }
     }
 
