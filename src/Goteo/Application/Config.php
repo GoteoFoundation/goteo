@@ -303,6 +303,7 @@ class Config {
 
 		/**********************************/
 		// LEGACY VIEWS
+		// One day, this will be removed, and happiness will spread along the galaxy
 		\Goteo\Core\View::addViewPath(GOTEO_PATH . 'Resources/templates/legacy');
 		//NormalForm views
 		\Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/NormalForm/view');
@@ -415,10 +416,7 @@ class Config {
      * @return array|false|mixed|string|null
      * @throws ConfigException
      */
-	static public function get(
-	    string $name,
-        bool $strict = false
-    ) {
+	static public function get(string $name, bool $strict = false) {
         $part = strtok($name, '.');
         if (self::$config && array_key_exists($part, self::$config)) {
             $paramValue = self::$config[$part];
@@ -432,25 +430,25 @@ class Config {
                 }
             }
 
-            if(is_array($paramValue)) {
-                // TODO: iterative, to cover any level
-                foreach($paramValue as $key => $val) {
-                    if (!is_array($val) && preg_match(self::ENV_PARAMETER_REG_EX, $val, $matches)) {
-                        $paramValue[$key] = getenv($matches[1]);
-                    }
-                }
-            } elseif (preg_match(self::ENV_PARAMETER_REG_EX, $paramValue, $matches)) {
-                if (sizeof($matches) >= 1) {
-                    $paramValue = getenv($matches[1]);
-                }
-            }
-
-            return $paramValue;
+            return self::replaceEnvVars($paramValue);
         } elseif ($strict) {
             throw new ConfigException("Config var [$name] not found!");
         }
 
         return null;
+	}
+
+	static protected function replaceEnvVars($paramValue) {
+		 if(is_array($paramValue)) {
+		    foreach($paramValue as $key => $val) {
+		        $paramValue[$key] = self::replaceEnvVars($val);
+		    }
+		} elseif (preg_match(self::ENV_PARAMETER_REG_EX, $paramValue, $matches)) {
+		    if (sizeof($matches) >= 1) {
+		        $paramValue = getenv($matches[1]);
+		    }
+		}
+		return $paramValue;
 	}
 
 	static public function set($name, $value) {
