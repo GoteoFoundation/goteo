@@ -13,6 +13,7 @@ namespace Goteo\Core\Traits;
 use Goteo\Util\Monolog\Processor\WebProcessor;
 use Psr\Log\LoggerInterface;
 use Goteo\Application\Config;
+use RuntimeException;
 
 /**
  * Trait to use log on legacy classes
