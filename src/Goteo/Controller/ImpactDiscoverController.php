@@ -46,7 +46,6 @@ class ImpactDiscoverController extends \Goteo\Core\Controller {
         $total = Project::getByFootprintOrSDGs([], 0, 0, true);
         $projects = Project::getByFootprintOrSDGs([], 0, 9); // TODO: Define what projects should be listed here.
 
-        $map = new MapOSM('100%');
         return $this->viewResponse('impact_discover/index', [
             'footprints' => $footprints,
             'sdgs' => $sdgs,
@@ -57,5 +56,22 @@ class ImpactDiscoverController extends \Goteo\Core\Controller {
 
     }
 
+    public function mapAction($filter = '', Request $request) {
+        $map = new MapOSM('100%');
+        $footprints = Footprint::getList();
+        $sdgs_count = Sdg::getList([],0,0,true);
+        $sdgs = Sdg::getList([],0,$sdgs_count);
+
+        $total = Project::getByFootprintOrSDGs([], 0, 0, true);
+        $projects = Project::getByFootprintOrSDGs([], 0, 9); // TODO: Define what projects should be listed here.
+
+        return $this->viewResponse('impact_discover/map', [
+            'footprints' => $footprints,
+            'sdgs' => $sdgs,
+            'map' => $map,
+            'projects' => $projects,
+            'total' => $total
+        ]);
+    }
 }
 
