@@ -94,6 +94,7 @@ class Template extends \Goteo\Core\Model {
     const CONTACT_AUTO_REPLY_RELIEF = 71;    // Relief
     const COMMUNICATION = 72;    // Multi-purpose communication
     const PROJECT_CREATED = 73;    // Project created
+    const USER_LEAVES_PLATFORM = 'user_leaves_platform';
     const MATCHER_PROJECT_ADDED = 'matcher_project_added';    // inform to owner that a new project is added to a matcher
     const MATCHER_PROJECT_PITCH_ADDED = 'matcher_project_pitch_added';    // inform to owner that a new project is added to a matcher
     const MATCHER_PROJECT_ACTIVATED = 'matcher_project_activated';    // inform to owner that a new project is activated in a matcher
