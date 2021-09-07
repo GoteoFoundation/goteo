@@ -68,6 +68,9 @@ db:
     database: goteo     # Database schema (database name)
     username: goteo      # Database user for the goteo database
     password: goteo      # Password for the goteo database
+    port_env: '%env(DATABASE_PORT)%'
+    array_env:
+        - '%env(DATABASE_PORT)%'
 
 # HTML Metas
 meta:
