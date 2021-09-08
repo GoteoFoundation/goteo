@@ -7,7 +7,7 @@ use Goteo\Controller\Admin\SponsorsSubController;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
-class SponsorsSubControllerTest extends \PHPUnit_Framework_TestCase {
+class SponsorsSubControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         $user = new User();

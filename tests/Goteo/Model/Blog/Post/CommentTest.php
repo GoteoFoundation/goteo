@@ -6,7 +6,7 @@ namespace Goteo\Model\Blog\Post\Tests;
 use Goteo\Model\Blog\Post\Comment;
 use Goteo\Model\Blog\Post;
 
-class CommentTest extends \PHPUnit_Framework_TestCase {
+class CommentTest extends \PHPUnit\Framework\TestCase {
     private static $data = array('text' => 'Test comment');
     private static $post_data = array('title' => 'Test post', 'text' => 'test text',
         'blog' => 1,
@@ -77,7 +77,7 @@ class CommentTest extends \PHPUnit_Framework_TestCase {
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         Post::query('delete from `post` where id = ?', self::$data['post']);
         delete_test_user();
     }

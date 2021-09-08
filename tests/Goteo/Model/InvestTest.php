@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\Invest;
 
-class InvestTest extends \PHPUnit_Framework_TestCase {
+class InvestTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

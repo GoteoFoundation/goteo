@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Library\NormalForm;
 
-class NormalFormTest extends \PHPUnit_Framework_TestCase {
+class NormalFormTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

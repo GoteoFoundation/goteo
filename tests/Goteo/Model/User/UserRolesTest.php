@@ -3,10 +3,11 @@
 
 namespace Goteo\Model\User\Tests;
 
+use Exception;
 use Goteo\Model\User;
 use Goteo\Model\User\UserRoles;
 
-class UserRolesTest extends \PHPUnit_Framework_TestCase {
+class UserRolesTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 
@@ -48,7 +49,7 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
         try {
             // Role root cannot be added
             $roles->addRole('root');
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             $this->assertInstanceOf('Goteo\Application\Exception\RoleException', $e);
         }
         $this->assertFalse($roles->hasRole('root'));
@@ -59,7 +60,7 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
      * @depends testAddRoles
      */
     public function testRoleNames($roles) {
-        $this->assertInternalType('array', $roles->getRoleNames());
+        $this->assertIsArray($roles->getRoleNames());
         $this->assertArrayHasKey('user', $roles->getRoleNames(), print_r($roles->getRoleNames(), 1));
         $this->assertArrayHasKey('admin', $roles->getRoleNames());
     }
@@ -76,7 +77,7 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
         try {
             // Role user cannot be removed
             $roles->removeRole('user');
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             $this->assertInstanceOf('Goteo\Application\Exception\RoleException', $e);
         }
         $this->assertTrue($roles->hasRole('user'));
@@ -97,7 +98,7 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testPersistence
      */
-    public function testCheckPersistence($roles) {
+    public function testCheckPersistence() {
         $new = UserRoles::getRolesForUser(get_test_user());
         $this->assertInstanceOf('Goteo\Model\User\UserRoles', $new);
         $this->assertTrue($new->hasRole('user'));
@@ -186,7 +187,7 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         User::query('delete from `call` where id = ?', 'test-call');
         delete_test_project();
         delete_test_user();

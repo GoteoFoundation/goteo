@@ -2,10 +2,11 @@
 
 namespace Goteo\Model\User\Tests;
 
+use Goteo\Core\DB;
 use Goteo\Model\User;
 use Goteo\Model\User\UserLocation;
 
-class UserLocationTest extends \PHPUnit_Framework_TestCase {
+class UserLocationTest extends \PHPUnit\Framework\TestCase {
     private static $data = array(
             'city' => 'Simulated City',
             'region' => 'Simulated Region',
@@ -16,8 +17,9 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
             'method' => 'ip'
         );
 
-    public function testInstance() {
-        \Goteo\Core\DB::cache(false);
+    public function testInstance(): UserLocation
+    {
+        DB::cache(false);
 
         $location = new UserLocation();
 
@@ -30,13 +32,14 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
      *
      * @depends testInstance
      */
-    public function testDefaultValidation($location) {
+    public function testDefaultValidation(UserLocation $location) {
         $this->assertFalse($location->validate($errors));
         $this->assertFalse($location->save());
         delete_test_user();
     }
 
-    public function testAddUserLocation() {
+    public function testAddUserLocation(): UserLocation
+    {
         self::$data['id'] = 'test-user-non-existing';
         $user_location = new UserLocation(self::$data);
         $this->assertInstanceOf('\Goteo\Model\User\UserLocation', $user_location);
@@ -55,7 +58,8 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testAddUserLocation
      */
-    public function testSaveUserLocationNonUser($user_location) {
+    public function testSaveUserLocationNonUser(UserLocation $user_location): UserLocation
+    {
         $this->assertFalse($user_location->save());
         return $user_location;
     }
@@ -63,7 +67,8 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testSaveUserLocationNonUser
      */
-    public function testCreateUser($user_location) {
+    public function testCreateUser(UserLocation $user_location): UserLocation
+    {
         $user = get_test_user();
         $this->assertInstanceOf('\Goteo\Model\User', $user);
         self::$data['id'] = $user->id;
@@ -74,7 +79,7 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testCreateUser
      */
-    public function testSaveUserLocation($user_location) {
+    public function testSaveUserLocation(UserLocation $user_location) {
         $errors = array();
         $this->assertTrue($user_location->validate($errors), print_r($errors, 1));
         $this->assertTrue($user_location->save($errors), print_r($errors, 1));
@@ -101,7 +106,8 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends  testSaveUserLocation
      */
-    public function testSetLocable($user_location) {
+    public function testSetLocable(UserLocation $user_location): UserLocation
+    {
         $errors = array();
         $this->assertTrue($user_location::setLocable($user_location->id, $errors), print_r($errors, 1));
         $user_location2 = UserLocation::get($user_location->id);
@@ -133,7 +139,8 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends  testSetLocable
      */
-    public function testSetProperty($user_location) {
+    public function testSetProperty(UserLocation $user_location): UserLocation
+    {
         $errors = array();
         $txt = "Test info for location";
         $this->assertTrue($user_location::setProperty($user_location->id, 'info', $txt, $error), print_r($errors, 1));
@@ -147,20 +154,20 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testSaveUserLocation
      */
-    public function testNearbyEmpty($user_location) {
-        $errors = array();
+    public function testNearbyEmpty() {
         $user = new User;
         $loc = new UserLocation($user);
         $this->assertInstanceOf('\Goteo\Model\User\UserLocation', $loc);
-        $sibilings = $loc->getSibilingsNearby();
-        $this->assertInternalType('array', $sibilings);
-        $this->assertEmpty($sibilings);
+        $siblings = $loc->getSibilingsNearby();
+        $this->assertIsArray($siblings);
+        $this->assertEmpty($siblings);
     }
 
     /**
      * @depends testSaveUserLocation
      */
-    public function testAddSecondUser($user_location) {
+    public function testAddSecondUser(UserLocation $user_location): array
+    {
         $errors = array();
         $user = get_test_user();
         $usr['userid'] = '012-second-test-user-210';
@@ -188,13 +195,11 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
      * @depends testAddSecondUser
      */
     public function testNearby(array $users) {
-        $errors = array();
         list($user1, $user2) = $users;
-        $sibilings = $user1->getSibilingsNearby(100);
-        // print_r($sibilings);
-        $this->assertInternalType('array', $sibilings);
+        $siblings = $user1->getSibilingsNearby(100);
+        $this->assertIsArray($siblings);
         $keys = array();
-        foreach($sibilings as $ob) {
+        foreach($siblings as $ob) {
             $this->assertInstanceOf('\Goteo\Model\User\Userlocation', $ob);
             $keys[] = $ob->id;
         }
@@ -207,19 +212,14 @@ class UserLocationTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends  testSetProperty
      */
-    public function testRemoveLocationEntry($user_location) {
-        $errors = array();
+    public function testRemoveLocationEntry(UserLocation $user_location) {
         $this->assertTrue($user_location->dbDelete());
         $user_location2 = UserLocation::get($user_location->id);
 
         $this->assertFalse($user_location2);
-
     }
 
-    /**
-     * Some cleanup
-     */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
         if($user = User::get('012-second-test-user-210')) {
             $user->dbDelete();
         }

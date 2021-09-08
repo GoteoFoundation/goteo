@@ -5,7 +5,7 @@ namespace Goteo\Controller\Tests;
 
 use Goteo\Controller\NewsletterController;
 
-class NewsletterControllerTest extends \PHPUnit_Framework_TestCase {
+class NewsletterControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

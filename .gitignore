@@ -9,6 +9,7 @@
 !/extend/plugin-responsive
 !/extend/custom-domains
 !/extend/invest-return
+!/extend/extra-logger
 
 /node_modules/
 /vendor/
@@ -30,9 +31,11 @@
 !/config/vagrant-settings.yml
 !/config/docker-settings.yml
 !/config/travis-settings.yml
+!/config/github-settings.yml
 /dist
 
 phpunit.xml
+.phpunit.result.cache
 /tests/build
 .couscous
 /docker-compose-local.yml

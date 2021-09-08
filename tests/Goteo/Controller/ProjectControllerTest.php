@@ -5,7 +5,7 @@ namespace Goteo\Controller\Tests;
 
 use Goteo\Controller\ProjectController;
 
-class ProjectControllerTest extends \PHPUnit_Framework_TestCase {
+class ProjectControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

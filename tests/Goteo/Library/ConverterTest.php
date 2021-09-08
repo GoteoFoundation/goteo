@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 use Goteo\Library\Converter;
 use Goteo\Library\ConverterReader;
 
-class ConverterTest extends \PHPUnit_Framework_TestCase {
+class ConverterTest extends \PHPUnit\Framework\TestCase {
     private $reader;
 
 	public function testInstance() {

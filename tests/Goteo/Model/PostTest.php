@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\Post;
 
-class PostTest extends \PHPUnit_Framework_TestCase {
+class PostTest extends \PHPUnit\Framework\TestCase {
     private static $related_tables = array('post_node' => 'post',
                     'post_image' => 'post',
                     'post_lang' => 'id',
@@ -84,7 +84,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
         $errors = [];
         $this->assertTrue($ob2->save($errors), print_r($errors, 1));
 
-        $this->assertContains('test-post-', $ob2->getSlug());
+        $this->assertStringContainsString('test-post-', $ob2->getSlug());
 
         Post::delete($ob2->id);
 

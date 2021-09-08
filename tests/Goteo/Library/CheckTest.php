@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Library\Check;
 
-class CheckTest extends \PHPUnit_Framework_TestCase {
+class CheckTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

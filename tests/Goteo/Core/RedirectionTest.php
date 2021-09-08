@@ -4,7 +4,7 @@ namespace Goteo\Core\Tests;
 
 use Goteo\Core\Redirection;
 
-class RedirectionTest extends \PHPUnit_Framework_TestCase {
+class RedirectionTest extends \PHPUnit\Framework\TestCase {
     public function testInstance() {
         $test = new Redirection('http://www.google.com');
         $this->assertInstanceOf('\Goteo\Core\Redirection', $test);

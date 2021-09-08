@@ -3,10 +3,11 @@
 
 namespace Goteo\Model\Blog\Tests;
 
+use Goteo\Core\DB;
 use Goteo\Model\Blog\Post;
 use Goteo\Model\Image;
 
-class PostTest extends \PHPUnit_Framework_TestCase {
+class PostTest extends \PHPUnit\Framework\TestCase {
     private static $data = array('title' => 'Test post', 'text' => 'test text',
         'blog' => 1,
         'date' => '2015-01-01',
@@ -27,7 +28,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 
     private static $image2;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass(): void {
 
        //temp file
         $i = base64_decode('iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABkElEQVRYhe3Wv2qDQBgA8LxJH8BXcHLN4pCgBxIOddAlSILorFDaQRzFEHEXUWyXlo6BrkmeI32Hr1PTMyb1rtpIIQff6vdTvz83unt+giFjdAP8awCXZ8Dl2XCAcRjAOAyGA8iaDrKmDwMQ4ggQUgAhBYQ4uj5AMswjQDLM6wJE3zsm/wrR964D4NOkkbzLr2AC8GkC8gxfBMgzDHya/A2AyzOQNf1i8iNC05lmAxWAy7Na0bWFZJjUCCrAdLmoJbDmFlRFCe+bDVhz6yxiulz0AyD7HSEFHu8fgDyu7XQqylbAxP1O4NoOnB6M1YuAiet0B5CF9/by2gC0FWRnAPnAj8OBCYCQ0i+A9vQKIAfPfrtrTb7f7mqDqTOAbMF1vGoFrOMVUyu2AsZhUPukP30F8u0RUqguK1SDiJyCGKtQFWUjeVWUtZakXdFUgHNLCGMVXNsB13Yas4BlKVEvIz5NqJcRy0ZkWsdcnoHoe2dXsjzDIPoe8y3511cyPk1AiCMQ4oj5DtALoK+4AQYHfALaYBdH6m2UnQAAAABJRU5ErkJggg==');
@@ -41,8 +42,9 @@ class PostTest extends \PHPUnit_Framework_TestCase {
         self::$image2['size'] = strlen($i);
     }
 
-    public function testInstance() {
-        \Goteo\Core\DB::cache(false);
+    public function testInstance(): Post
+    {
+        DB::cache(false);
 
         $ob = new Post();
 
@@ -53,7 +55,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testInstance
      */
-    public function testValidatePost($ob) {
+    public function testValidatePost(Post $ob) {
         $this->assertFalse($ob->validate());
         $this->assertFalse($ob->save());
     }
@@ -61,19 +63,19 @@ class PostTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testInstance
      */
-    public function testCreatePost() {
+    public function testCreatePost(): Post
+    {
         $ob = new Post(self::$data);
         $this->assertTrue($ob->validate($errors));
         $this->assertTrue($ob->save());
 
         return $ob;
-
     }
 
     /**
      * @depends testCreatePost
      */
-    public function testGetPost($ob) {
+    public function testGetPost(Post $ob) {
         $ob = Post::getById($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Blog\Post', $ob);
 
@@ -87,7 +89,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testGetPost
      */
-    public function testSlugPost($ob) {
+    public function testSlugPost(Post $ob) {
         $this->assertEquals('test-post', $ob->getSlug());
         $this->assertEquals($ob->id, Post::getBySlug($ob->getSlug())->id);
         $this->assertEquals($ob->id, Post::getById($ob->id)->id);
@@ -96,16 +98,17 @@ class PostTest extends \PHPUnit_Framework_TestCase {
         $errors = [];
         $this->assertTrue($ob2->save($errors), print_r($errors, 1));
 
-        $this->assertContains('test-post-', $ob2->getSlug());
+        $this->assertStringContainsString('test-post-', $ob2->getSlug());
 
         Post::delete($ob2->id);
 
         return $ob;
     }
+
     /**
      * @depends testGetPost
      */
-    public function testEditPost($ob) {
+    public function testEditPost(Post $ob) {
         //add image
         $ob->title = self::$data['title'] . " (edited)";
 
@@ -120,25 +123,24 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 
         $sob = Post::getById($ob->id);
         $this->assertEquals($sob->title, $ob->title);
-        $this->assertInternalType('array', $ob->gallery);
-        $this->assertInternalType('array', $sob->gallery);
+        $this->assertIsArray($ob->gallery);
+        $this->assertIsArray($sob->gallery);
         $this->assertCount(2, $sob->gallery);
         $this->assertEquals($sob->gallery[0]->id, $ob->gallery[0]->id);
-        // $this->assertEquals($sob->image->id, $ob->gallery[1]->id, print_r($ob->gallery));
 
         return $sob;
     }
+
     /**
      * @depends testEditPost
      */
-    public function testRemoveImagePost($ob) {
+    public function testRemoveImagePost(Post $ob) {
         $errors = array();
 
-        // $this->assertEquals($ob->image->id, Image::getModelImage('', $ob->gallery)->id);
         $this->assertTrue($ob->image->remove($errors, 'post'), print_r($errors, 1));
         $ob->gallery = Image::getModelGallery('post', $ob->id);
         $ob->image = Image::getModelImage('', $ob->gallery);
-        $this->assertInternalType('array', $ob->gallery);
+        $this->assertIsArray($ob->gallery);
         $this->assertCount(1, $ob->gallery);
         $this->assertEquals($ob->image->id, $ob->gallery[0]->id);
 
@@ -146,7 +148,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($ob->image, Image::getModelImage('', $ob->gallery));
         $this->assertTrue($ob->gallery[0]->remove($errors, 'post'), print_r($errors, 1));
         $ob = Post::getById($ob->id);
-        $this->assertInternalType('array', $ob->gallery);
+        $this->assertIsArray($ob->gallery);
         $this->assertCount(0, $ob->gallery);
         $this->assertEmpty($ob->image);
 
@@ -156,15 +158,16 @@ class PostTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($ob->validate($errors));
         $this->assertTrue($ob->save());
         $ob = Post::getById($ob->id);
-        $this->assertInternalType('array', $ob->gallery);
+        $this->assertIsArray($ob->gallery);
         $this->assertCount(1, $ob->gallery);
         $this->assertEquals($ob->image, $ob->gallery[0]);
         return $ob;
     }
+
     /**
      * @depends testRemoveImagePost
      */
-    public function testDeletePost($ob) {
+    public function testDeletePost(Post $ob) {
         //delete post
         $this->assertTrue($ob->dbDelete());
 
@@ -174,7 +177,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testDeletePost
      */
-    public function testNonExisting($ob) {
+    public function testNonExisting(Post $ob) {
         $sob = Post::getById($ob->id);
         $this->assertFalse($sob);
     }
@@ -184,11 +187,8 @@ class PostTest extends \PHPUnit_Framework_TestCase {
             $this->assertEquals(0, Post::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM post)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM post)");
         }
     }
-    /**
-     * Some cleanup
-     */
-    static function tearDownAfterClass() {
-        // Remove temporal files on finish
+
+    static function tearDownAfterClass(): void {
         unlink(self::$image['tmp_name']);
         unlink(self::$image2['tmp_name']);
     }
