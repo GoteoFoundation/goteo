@@ -1,1 +1,37 @@
 ---
+channel-call-main-info-subtitle: 'New call'
+channel-call-projects-title: 'Some ongoing projects'
+channel-call-sponsors-title: 'Our promoters and collaborators'
+channel-call-sponsors-subtitle: 'A project carried out by the following entities:'
+channel-call-cta-create-project-title: I want to create a project
+channel-call-cta-create-project-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit etiam at convallis risu duis nibh ex, ullamcorper non posuere id
+channel-call-cta-join-program-title: I want to join the program
+channel-call-cta-join-program-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit etiam at convallis risu duis nibh ex, ullamcorper non posuere id
+channel-call-workshop-title: Next events
+channel-call-workshop-description: Events to help you grow your initiative.
+channel-call-footer-information: Information of interest
+channel-call-footer-about: About Goteo
+channel-call-footer-stats: Stats
+channel-call-footer-conditions: Conditions of use
+channel-call-footer-privacy: Privacy Policy
+channel-call-footer-licenses: Licenses
+channel-call-footer-contact: Contact
+channel-call-footer-social-networks: Social networks
+channel-call-posts-section-title: Last news
+channel-call-posts-section-description: 'Find out the latest news about '
+channel-call-program-title: 'The program'
+channel-call-program-terms: Read the terms
+channel-call-program-description: Find out what's going to happen
+channel-call-team-title: Our team
+channel-call-team-description: A whole team working for civic crowdfunding!
+channel-call-stories-title: They say about us
+channel-call-resources-title: Resources
+channel-call-resources-description: 'Download the open resources created: learn about crowdfunding, taxation or ideation.'
+channel-call-resources-button: See all the resources
+channel-call-map-section-title: Map of influence
+channel-call-impact-data-amount: Money collected
+channel-call-impact-data-projects: Projects
+channel-call-impact-data-investors: Backers
+channel-call-resources-banner-title: 'Open knowledge'
+channel-call-resources-banner-description: 'Resources'
+channel-call-resources-filter-title: 'Filter by category'
