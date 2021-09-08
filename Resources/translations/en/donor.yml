@@ -22,3 +22,23 @@ personal-field-donor_name: 'Name '
 personal-field-donor_surname: 'Surname'
 personal-field-donor_surname2: 'Second surname (if any)'
 validate-donor-mandatory: 'All fields are compulsory'
+donor-legal-entities-natural-person: Natural person
+donor-legal-entities-legal-person: Legal person
+validate-donor-legal_entity-empty: The field Legal entity is mandatory.
+validate-donor-legal_document_type-empty: 'The field legal document type is mandatory.'
+validate-donor-nif-document-type: 'The number of the document does not match the format of the type of document'
+validate-donor-legal-nif-entity-legal: "The legal entity does not match the type of document"
+donor-status-pending: 'Pending review'
+donor-status-unconfirmed: 'No confirmed'
+donor-status-data_filled: 'All data completed'
+donor-status-data_filled_no_country: 'All data completed without country'
+donor-status-confirmed: 'Confirmed'
+donor-status-expired: 'Expired'
+donor-status-emited: 'Certificate issued (confirmed + pdf)'
+donor-status-notemited: 'Confirmed but not issued'
+donor-status-processed: 'Processed'
+donor-status-nonprocessed: 'Certificate confirmed without processing'
+donor-status-completed: 'Completed'
+donor-status-validated: 'Validated'
+donor-status-declared: 'Declared'
+donor-status-rejected: 'Rejected'
