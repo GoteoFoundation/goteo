@@ -174,3 +174,11 @@ worth-lb-edit: 'Editing Level'
 worth-lb-list: Listing
 stats-lb: Stats & data
 stories-lb: 'User stories'
+channelstory-lb: 'Stories in channels'
+channelresource-lb: 'Resources'
+channelposts-lb: 'Posts in channels'
+channelcriteria-lb: 'Questionnaires in channels'
+channelprogram-lb: 'Programs in channels'
+channelsection-lb: 'Sections in channels'
+certificate-lb: 'Certificates'
+certificatemanagement-lb: 'Certificates management'
