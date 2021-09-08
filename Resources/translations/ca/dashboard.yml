@@ -14,7 +14,7 @@ dashboard-certificates-processed: Processat
 dashboard-certificates-confirmed-ok: 'Dades fiscals confirmades correctament'
 dashboard-certificates-data-alert: 'Tingues en compte que un cop confirmat no es poden modificar les dades!'
 dashboard-certificates-data-desc: 'Si us plau, comprova que les dades del formulari són correctes i confirma''l'
-dashboard-certificates-data-download-all: 'Confirma els teus certificats per activar la desgravació fiscal. Anualment la Fundació Goteo realitza la notificació a Hisenda de totes les donacions confirmades.'
+dashboard-certificates-data-download-all: 'Confirma els teus certificats per activar la desgravació fiscal. Anualment la Fundació Goteo realitza la notificació a l''Agència tributària de totes aquelles donacions confirmades.'
 dashboard-certificates-data-new-invests: 'Però no et preocupis , qualsevol nova aportació que facis a Goteo generarà un nou certificat'
 dashboard-certificates-desc: 'Aquests certificats et permetran desgravar en la declaració de la renda si ets contribuent a l''estat Espanyol.'
 dashboard-certificates-details: 'Veure detalls'
@@ -22,9 +22,9 @@ dashboard-certificates-details-desc: 'Llista d''aportacions per al certificat %C
 dashboard-certificates-download: 'Confirmar i descarregar'
 dashboard-certificates-empty: 'Has de fer alguna aportació a un projecte o recarregar el moneder virtual per veure els teus certificats'
 dashboard-certificates-expired: caducat
-dashboard-certificates-expired-description: 'Ha expirat el plaç per confirmar el teu certificat'
-dashboard-certificates-no-downloable: 'La descàrrega del certificat estarà disponible a partir de l''1 de març de %YEAR%'
-dashboard-certificates-legal-entities-no-downloable: 'La descàrrega del certificat estarà disponible a partir de l''1 de març de %YEAR%, fins llavors pots descarregar el justificant de donació.'
+dashboard-certificates-expired-description: 'Ha expirat el termini per a la confirmació del teu certificat'
+dashboard-certificates-no-downloable: 'La descàrrega de l''certificat estarà disponible a partir de l''1 de març de %YEAR%.'
+dashboard-certificates-legal-entities-no-downloable: 'La descàrrega de l''certificat estarà disponible a partir de l''1 de març de %YEAR%, mentrestant pots descarregar el justificant de donació.'
 dashboard-certificates-no-pending: 'No hi ha cap aportació pendent'
 dashboard-certificates-pending: Pendent
 dashboard-certificates-pending-desc: 'Aquestes són les aportacions que s''inclouran en certificats futurs.'
@@ -36,6 +36,10 @@ dashboard-certificates-unconfirmed: 'Per a descarregar aquest certificat has con
 dashboard-certificates-view-pending: 'No es mostren les aportacions a projectes que encara no hagin passat la primera ronda. Pots consultar aquestes aportacions %HERE%.<br>Les aportacions fetes amb el moneder virtual s''inclouen en el certificat generat en el moment del pagament físic.'
 dashboard-certificates-no-invests: 'No es pot confirmar el certificat ja que no té aportacions!'
 dashboard-certificates-download-proof: Descarregar justificant de donació
+dashboard-certificates-completed: Completat
+dashboard-certificates-validated: Validat
+dashboard-certificates-declared: Declarat
+dashboard-certificates-rejected: Rebutjat
 dashboard-chart-days: 'QUEDEN %s DIES'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
 dashboard-chart-investors: COFINANÇADORS
@@ -81,6 +85,7 @@ dashboard-menu-projects-supports: Col·laboracions
 dashboard-menu-projects-updates: Actualitzacions
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'La meva història'
+dashboard-menu-projects-pitch: "Aplicacions obertes"
 dashboard-menu-review_board: Revisió
 dashboard-menu-translate_board: Traducció
 dashboard-menu-translates: 'Traduccions'
@@ -294,3 +299,7 @@ dashboard-origin-invests-device: 'Dispositiu usat en les aportacions reeixides'
 dashboard-origin-disclaimer: '⚠ *Aquestes dades son orientatives i no inclouen la totalitat de les visites degut a limitacions tècniques.*  > Et recomanem que configuris Google Analytics o Facebook Pixel per obtenir dades més detallades'
 dashboard-project-integration-token: 'Token'
 dashboard-project-integration-link: 'Link'
+dashboard-project-pitch-title: 'Aplicacions obertes'
+dashboard-project-pitch-description: "Aquests són els diferentes espais als que pots aplicar, si t'interessa rebre finançament extra per la teva campanya o recolçament institucional, fes-li un cop d'ull i anima't a presentar-te!"
+dashboard-project-pitch-type: "Tipus"
+dashboard-project-pitch-already-applied: "Ja has aplicat"
