@@ -3,10 +3,25 @@ contract-paypal_account: 'Compte PayPal:'
 currency-switch: CONVERTIR
 overview-field-spread: Diffusion
 personal-field-accounts: 'Compte bancaire'
+project-about-title: 'À propos de ce projet'
+project-call-got: 'Le projet a déjà atteint <strong>%s</strong> de <strong>%s</strong>'
+project-chart-amount-end-round: 'Fin du tour'
+project-chart-amount-ideal: Idéal
+project-chart-amount-reached: Accumulé
+project-chart-costs-reset: 'Revenir'
+project-collaborations-available: 'collaborations disponibles'
+project-collaborations-number: 'collaborateurs'
 project-collaborations-supertitle: 'Besoin non monétaires'
 project-collaborations-title: 'On recherche'
+project-comment-start-sesion: 'Connexion'
+project-comment-start-sesion-2: 'laisser un commentaire'
+project-error-main-lang: 'Cette langue [%s] ne peut pas être définie comme langue principale car elle est déjà affectée à une traduction. Supprimez la traduction existante dans [%s], du panneau de traduction, pour pouvoir en saisir une nouvelle.'
+project-general-information: 'Informations générales'
+project-go-up: 'remonter'
 project-help-cost: 'J''ai besoin d''aide pour la section budget'
 project-help-license: 'J''ai besoin d''aide pour établir les retombées de mon projet et choisir une license'
+project-hide-donors: 'Masquer les cofinanciers'
+project-hide-needs: 'Masquer la liste des besoins'
 project-langs-header: 'Projet en'
 project-media-play_video: 'Voir la Video'
 project-menu-home: Projet
@@ -50,11 +65,13 @@ project-view-metter-day_created: 'Créé le'
 project-view-metter-day_success: 'Financié le'
 project-view-metter-day_updated: 'reçu le'
 project-view-metter-days: Il reste
+project-view-metter-favourite: 'Se souvenir de moi'
 project-view-metter-got: Accumulé
 project-view-metter-investment: Cofinancement
 project-view-metter-investors: Cofinanceurs
 project-view-metter-minimum: Minimal
 project-view-metter-optimum: Optimal
+project-view-preview: 'Aperçu du projet'
 project-willpublish: 'Ce projet sera publié le %s'
 regular-new_project: 'Nouveau projet'
 social_reward-access: Accèder
@@ -62,9 +79,25 @@ social_reward-access_title: 'Accedez a cette ressource'
 tooltip-project-bank: 'Si vous ne désirez pas indiquer le numéro, vous pouvez le faire plus tard, au moment de formaliser le contrat'
 tooltip-project-help-cost: 'Si vous avez des doutes pour la section budget, cochez cette case. Nous recevrons une demande d''aide seulement si vous compléter le formulaire.'
 tooltip-project-help-license: 'Si vous avez des doutes à propos des licenses et des retombées collectives, cochez cette case. Nous recevrons une demande d''aide seulement si vous compléter le formulaire.'
+tooltip-project-paypal: "<p> En plus d'utiliser notre passerelle de paiement bancaire, <strong> vous pouvez recevoir des contributions via PayPal </strong>. Pour ce faire, vous devez indiquer ici une adresse email associée à un compte PayPal validé. N'écrivez rien (pas de caractères) dans ce champ si vous ne souhaitez pas proposer l'option de paiement Paypal.\n</p> <p> Bien qu'il ne soit pas obligatoire d'avoir un compte Paypal pour recevoir la collection de votre projet, il est fortement recommandé. <strong> Si un compte PayPal validé et vérifié n'est pas fourni avant la publication de cette campagne, Il ne sera pas possible de recevoir des contributions de cette manière.\n</strong> </p> <p> Ce compte ne peut pas être modifié ultérieurement, vous devrez nous contacter si vous souhaitez le modifier. </p> <p> <strong> IMPORTANT: Vous ne pouvez pas utiliser ce même compte pour contribuez à votre propre projet car cela provoquerait une erreur système. </strong> </p>"
 tooltip-project-rounds: 'Si vous choisissez cette option, vôtre campagne durera 40 jours'
 tooltip-project-scope: 'Indiquez l''impact géographique que souhaite avoir ce projet (chaque catégorie comprend la categorie précédente).'
 tooltip-project-spread: 'Expliquez comment vous prévoyez de diffuser le projet au sein de votre communauté: canaux, tels messages, la diffusion, le calendrier minimum...'
 tooltip-updates-home: 'Texte tooltip-updates-home'
 tooltip-updates-tags: 'Texte tooltip-updates-tags'
 project-obtained: 'Accumulé'
+project-costs-total: 'Total'
+project-remove-translation: 'Supprimer la traduction'
+project-remove-translation-confirm: 'Voulez-vous vraiment supprimer cette traduction? Cette opération est irréversible!'
+project-removed-translation-ok: 'Traduction supprimée!'
+project-removed-translation-ko: 'Erreur lors de la tentative de suppression de la traduction!'
+project-social-commitment-title: 'Compromis social'
+project-create-title: 'Démarrez un projet'
+project-create-subtitle-alert: '<strong> WOOOOW! </strong> <p> Nous avançons !! Maintenant pour synthétiser votre projet en quelques mots !! </p>'
+project-create-minimum-field: 'Minimum (DH)'
+project-create-minimum-calculate-button: 'Calculer'
+project-create-minimum-alert: '<strong> BRAVOOO! </strong> <p> Nous continuons !! Pensez à l''argent dont vous avez besoin, appuyez sur calculer, et nous vous dirons combien de clients vous devrez obtenir, en utilisant nos dons moyens ;-) </p>'
+project-create-minimum-calculated-alert: '<strong> BIEN! </strong> <p> Vous voyez-vous capable d''obtenir environ ce nombre de clients? Si oui, allez-y! Sinon, pensez mieux à votre minimum et recalculez! </p>'
+project-create-publishing-date-field: 'Quand comptez-vous publier le projet?'
+project-create-social-select-field: 'Sélectionnez votre engagement social'
+project-create-social-select-alert: '<strong> GOTEO-TASTIC !! </strong> <p> Chez Goteo, nous avons besoin d''un engagement social, pensez au vôtre et sélectionnez-le! </p>'
