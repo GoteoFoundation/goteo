@@ -91,21 +91,19 @@ class UserController extends Controller {
         if ($show == 'message' || $show == 'profile') {
 
             // ver si el usuario logueado (A)
-            $uLoged = Session::getUserId();
-
+            $loggedUser = Session::getUserId();
             // puede enviar mensaje (mensajear)
             $user->messageable = false;  // por defecto no
-
             // al usuario del perfil (B)
-            $uProfile = $user->id;
+            $profileUser = $user->id;
 
             // solamente pueden comunicarse si:
             if (
-                ( User::isOwner($uLoged, true) && User::isOwner($uProfile, true) )
-                || User::isInvestor($uLoged, $uProfile)
-                || User::isInvestor($uProfile, $uLoged)
-                || User::isParticipant($uProfile, $uLoged)
-                || User::isParticipant($uLoged, $uProfile)
+                ( User::isOwner($loggedUser, true) && User::isOwner($profileUser, true) )
+                || User::isInvestor($loggedUser, $profileUser)
+                || User::isInvestor($profileUser, $loggedUser)
+                || User::isParticipant($profileUser, $loggedUser)
+                || User::isParticipant($loggedUser, $profileUser)
             )
                 $user->messageable = true;
         }
@@ -126,16 +124,16 @@ class UserController extends Controller {
 
         // comparten intereses
         if ($show == 'profile'){
-            $shares = User\Interest::share($user->id, null, 6);
+            $sharedInterests = User\Interest::share($user->id, null, 6);
         }
 
         if ($show == 'sharemates') {
-            $shares = array();
+            $sharedInterests = array();
             $limit = $category ? 20 : 6;
             foreach ($viewData['categories'] as $catId => $catName) {
                 $gente = User\Interest::share($user->id, $catId, $limit);
                 if (count($gente) == 0) continue;
-                $shares[$catId] = $gente;
+                $sharedInterests[$catId] = $gente;
             }
         }
 
@@ -206,7 +204,6 @@ class UserController extends Controller {
                 $user = User::get($id);
                 if($user->setEmail($user->getToken(true), $errors, true)) {
                     Message::info(Text::get('user-changeemail-success'));
-                    // Refresca la sesión.
                     User::flush();
                 } else {
                     Message::error($errors);
@@ -315,20 +312,18 @@ class UserController extends Controller {
         if($error) {
             Message::error($error);
         }
-        return $this->viewResponse('user/unsubscribe',
-            array(
-                'error' => $error,
-                'token' => Mail::encodeToken([$email]),
-                'message' => $message
-            )
-        );
+        return $this->viewResponse('user/unsubscribe', [
+            'error' => $error,
+            'token' => Mail::encodeToken([$email]),
+            'message' => $message
+        ]);
     }
 
     /*
      * Subscribe to newsletter by token
      */
     public function subscribeAction($token = '') {
-                $errors = array();
+        $errors = array();
         // si el token mola, lo doy de baja
         list($email, $mail_id) = Mail::decodeToken($token);
 
@@ -353,18 +348,16 @@ class UserController extends Controller {
             $error = Text::get('leave-request-fail', $email);
         }
 
-        if($message) {
+        if ($message) {
             Message::info($message);
         }
-        if($error) {
+        if ($error) {
             Message::error($error);
         }
-        return $this->viewResponse('user/subscribe',
-            array(
-                'error' => $error,
-                'token' => Mail::encodeToken([$email]),
-                'message' => $message
-            )
-        );
+        return $this->viewResponse('user/subscribe', [
+            'error' => $error,
+            'token' => Mail::encodeToken([$email]),
+            'message' => $message
+        ]);
     }
 }

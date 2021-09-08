@@ -192,7 +192,9 @@ class Message extends Controller {
         throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
     }
 
-    // DEPRECATED
+    /**
+     * @deprecated
+     */
     public function delete ($id, $project) {
 
         $msg = Model\Message::get($id);
@@ -256,7 +258,6 @@ class Message extends Controller {
             $mailHandler->html = true;
             $mailHandler->template = $template->id;
             if ($mailHandler->send($errors)) {
-                // ok
                 Application\Message::info(Text::get('regular-message_success'));
             } else {
                 Application\Message::info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
@@ -292,39 +293,28 @@ class Message extends Controller {
                 die('Temporalmente no disponible');
             }
 
-            // sacamos el mail del responsable del proyecto
             $user = Model\User::get($user);
 
             if (!$user instanceof Model\User) {
                 throw new Redirection('/', Redirection::TEMPORARY);
             }
 
-            $msg_content = \nl2br(\strip_tags($_POST['message']));
-
-            //  idioma de preferencia
+            $msg_content = nl2br(strip_tags($_POST['message']));
             $comlang = Model\User::getPreferences($user)->comlang;
-
-            // Obtenemos la plantilla para asunto y contenido
             $template = Template::get(Template::MESSAGE_USERS, $comlang);
 
-            // Sustituimos los datos
             if (isset($_POST['subject']) && !empty($_POST['subject'])) {
                 $subject = $_POST['subject'];
             } else {
-                // En el asunto por defecto: %USERNAME% por Session::getUser()->name
                 $subject = str_replace('%USERNAME%', Session::getUser()->name, $template->title);
             }
 
             $remite = Session::getUser()->name . ' ' . Text::get('regular-from') . ' ';
-            $remite .= \Goteo\Application\Config::isMasterNode() ? Config::get('mail.transport.name') : NODE_NAME;
+            $remite .= Config::isMasterNode() ? Config::get('mail.transport.name') : NODE_NAME;
 
             $response_url = SITE_URL . '/user/profile/' . Session::getUserId() . '/message';
             $profile_url = SITE_URL."/user/profile/{$user->id}";
-            // En el contenido:  nombre del destinatario -> %TONAME% por $user->name
-            // el mensaje que ha escrito el usuario -> %MESSAGE% por $msg_content
-            // nombre del usuario -> %USERNAME% por Session::getUser()->name
-            // url del perfil -> %PROFILEURL% por ".SITE_URL."/user/profile/{$user->id}"
-            $search  = array('%MESSAGE%','%TONAME%',  '%USERNAME%', '%PROFILEURL%', '%RESPONSEURL%');
+            $search  = array('%MESSAGE%','%TONAME%', '%USERNAME%', '%PROFILEURL%', '%RESPONSEURL%');
             $replace = array($msg_content, $user->name, Session::getUser()->name, $profile_url, $response_url);
             $content = str_replace($search, $replace, $template->parseText());
 
@@ -333,15 +323,13 @@ class Message extends Controller {
             $mailHandler->fromName = $remite;
             $mailHandler->to = $user->email;
             $mailHandler->toName = $user->name;
-            // blind copy a goteo desactivado durante las verificaciones
-//                $mailHandler->bcc = 'comunicaciones@goteo.org';
             $mailHandler->subject = $subject;
             $mailHandler->content = $content;
             $mailHandler->html = true;
             $mailHandler->template = $template->id;
             $errors = [];
+
             if ($mailHandler->send($errors)) {
-                // ok
                 Application\Message::info(Text::get('regular-message_success'));
             } else {
                 Application\Message::info(Text::get('regular-message_fail') . '<br />' . implode(', ', $errors));
@@ -370,16 +358,12 @@ class Message extends Controller {
                 'text' => $_POST['message']
             ));
             if ($comment->save($errors)) {
-                // a ver los datos del post
                 $postData = Model\Blog\Post::getBySlug($post);
-
 
                 // si es entrada de proyecto
                 if (!empty($project)) {
 
                     $projectData = Model\Project::getMini($project);
-
-                    // Evento Feed
                     $log = new Feed();
                     $log->setTarget($projectData->id);
                     $log_html = \vsprintf('%s ha escrito un %s en la entrada "%s" en las %s del proyecto %s', array(
@@ -403,14 +387,8 @@ class Message extends Controller {
                     unset($log);
 
                     //Notificación al autor del proyecto
-
-                    //  idioma de preferencia
                     $comlang = Model\User::getPreferences($projectData->user)->comlang;
-
-                    // Obtenemos la plantilla para asunto y contenido
                     $template = Template::get(Template::OWNER_NEW_COMMENT, $comlang);
-
-                    // Sustituimos los datos
                     $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
                     $response_url = SITE_URL . '/user/profile/' . Session::getUserId() . '/message';
@@ -439,7 +417,6 @@ class Message extends Controller {
                             'Ha fallado a enviar mail a autor '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Objeto '. \trace($mailHandler));
                     }
                 } else {
-                    // Evento Feed
                     $log = new Feed();
                     $log->setTarget('goteo', 'blog');
                     $log_html = \vsprintf('%s ha escrito un %s en la entrada "%s" del blog de %s', array(

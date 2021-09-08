@@ -113,11 +113,10 @@ class TranslateController extends Controller {
 
     protected function doList($zone, $translator, Request $request) {
         $this->createSidebar($zone);
-
-        // Get list texts
         $filters = [];
         $limit = 20;
         $offset = intval($request->query->get('pag')) * $limit;
+
         try {
             $fields = $translator::getFields($zone);
             if($request->query->has('q')) {
@@ -253,7 +252,7 @@ class TranslateController extends Controller {
             'id' => $id,
             'fields' => $fields,
             'translator' => $translator
-            ]);
+        ]);
     }
 
     public function listAction ($zone, Request $request) {

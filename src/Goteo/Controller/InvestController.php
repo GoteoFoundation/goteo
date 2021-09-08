@@ -242,7 +242,10 @@ class InvestController extends Controller {
         $result = AuthController::checkLogin($request);
         if($result instanceOf Response) return $result;
 
-        return $this->viewResponse('invest/login', ['step' => 2, 'return' => $this->page . '/payment?' . $this->query]);
+        return $this->viewResponse(
+            'invest/login',
+            ['step' => 2, 'return' => $this->page . '/payment?' . $this->query]
+        );
     }
 
     /**
@@ -275,9 +278,9 @@ class InvestController extends Controller {
     {
         $amount = $request->query->get('amount');
         $donate_amount = $request->query->get('donate_amount');
-
         $email = $request->query->has('email');
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+
         if(!($this->skip_login && $email) && !Session::isLogged()) {
             return $this->redirect('/invest/' . $this->project->id . '/signup?' . $this->query);
         }
@@ -389,10 +392,9 @@ class InvestController extends Controller {
                 )
             );
 
-            // Rewards
             $invest->rewards = $reward ? [$reward->id] : null;
+            $errors = [];
 
-            $errors = array();
             if (!$invest->save($errors)) {
                 throw new RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
             }
@@ -413,7 +415,6 @@ class InvestController extends Controller {
             }
 
             return $this->dispatch(AppEvents::INVEST_INIT_REDIRECT, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
-
         } catch(Exception $e) {
             Message::error($e->getMessage());
             $this->error('Init Payment Exception', ['class' => get_class($e), $invest, 'code' => $e->getCode(), 'message' => $e->getMessage()]);
@@ -493,7 +494,7 @@ class InvestController extends Controller {
 
         // If the payment has online communication the payment process has been processed by
         // the notifyAction therefore redirect the user to the final stage here
-        if(!$invest->isPending()) {
+        if (!$invest->isPending()) {
             Message::info(Text::get('invest-process-completed'));
             return $this->redirect('/invest/' . $project_id . '/' . $invest->id);
         }
@@ -619,18 +620,18 @@ class InvestController extends Controller {
             $share_title = str_replace ('#goteo', '#'.strtolower (NODE_NAME), $share_title);
 
         $share_url = $URL . '/project/'.$project_id;
-        $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
-        $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($share_title . ': ' . $share_url);
+        $facebook_url = 'https://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
+        $twitter_url = 'https://twitter.com/intent/tweet?text=' . urlencode($share_title . ': ' . $share_url);
 
-        if($reward instanceOf Response) return $reward;
+        if ($reward instanceOf Response) return $reward;
 
-        $vars=[ 'facebook_url' => $facebook_url,
-                'twitter_url' => $twitter_url,
-                'widget_code' => $widget_code,
-                'widget_code_investor' => $widget_code,
-                'step' => 4
-                ];
-        return $this->viewResponse('invest/share',$vars);
+        return $this->viewResponse('invest/share',[
+            'facebook_url' => $facebook_url,
+            'twitter_url' => $twitter_url,
+            'widget_code' => $widget_code,
+            'widget_code_investor' => $widget_code,
+            'step' => 4
+        ]);
     }
 
     // Send a public support message

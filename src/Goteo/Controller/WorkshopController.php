@@ -27,18 +27,18 @@ class WorkshopController extends Controller {
     public function indexAction($id) {
 
         $workshop= Workshop::get($id, Lang::Current());
-        $event_type= $workshop->event_type ? $workshop->event_type : 'other';
-        $related_workshops= Workshop::getAll(['event_type' => $event_type, 'excluded' => $id ]);
+        $event_type= $workshop->event_type ?: 'other';
+        $relatedWorkshops= Workshop::getAll(['event_type' => $event_type, 'excluded' => $id ]);
 
         if($event_type=='fundlab' ||$event_type=='fundlab-esil')
-            $related_workshops=array_merge(Workshop::getAll(['event_type' => 'fundlab-esil', 'excluded' => $id ]), Workshop::getAll(['event_type' => 'fundlab', 'excluded' => $id ]));
+            $relatedWorkshops = array_merge(
+                Workshop::getAll(['event_type' => 'fundlab-esil', 'excluded' => $id ]),
+                Workshop::getAll(['event_type' => 'fundlab', 'excluded' => $id ])
+            );
 
-        return $this->viewResponse(
-            'workshop/index',
-            [
-                'workshop' => $workshop,
-                'related_workshops' => $related_workshops
-            ]
-        );
+        return $this->viewResponse('workshop/index', [
+            'workshop' => $workshop,
+            'related_workshops' => $relatedWorkshops
+        ]);
     }
 }

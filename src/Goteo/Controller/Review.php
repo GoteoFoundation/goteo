@@ -28,30 +28,24 @@ class Review extends Controller {
     public function index () {
 
         $page = Page::get('review');
+        $user = Session::getUser();
+        $reviews = Model\Review::assigned($user->id);
 
-        //Always reviews page content is true before parseContent()
         if ($page) {
-            $message = \str_replace('%USER_NAME%', Session::getUser()->name, $page->parseContent());
+            $message = str_replace('%USER_NAME%', $user->name, $page->parseContent());
         }
 
-        $user = Session::getUser();
-
-        $reviews = Model\Review::assigned($user->id);
-        // si no hay proyectos asignados no tendria que estar aqui
         if (count($reviews) == 0) {
             $message = 'No tienes asignada ninguna revisión de proyectos';
         }
 
-        return new View (
-            'review/index.html.php',
-            array(
-                'message' => $message,
-                'menu'    => self::menu(),
-                'section' => 'activity',
-                'option'  => 'summary',
-                'reviews' => $reviews
-            )
-        );
+        return new View ('review/index.html.php', [
+            'message' => $message,
+            'menu'    => self::menu(),
+            'section' => 'activity',
+            'option'  => 'summary',
+            'reviews' => $reviews
+        ]);
     }
 
     /*
@@ -62,27 +56,22 @@ class Review extends Controller {
     public function activity ($option = 'summary', $action = 'list') {
 
         $user = Session::getUser();
-
         $reviews = Model\Review::assigned($user->id);
-        // si no hay proyectos asignados no tendria que estar aqui
+
         if (count($reviews) == 0) {
             $message = 'No tienes asignada ninguna revisión de proyectos';
         }
 
-        // resumen de los proyectos que tengo actualmente asignados
-        return new View (
-            'review/index.html.php',
-            array(
-                'menu'    => self::menu(),
-                'message' => $message,
-                'section' => __FUNCTION__,
-                'option'  => $option,
-                'action'  => $action,
-                'reviews' => $reviews,
-                'errors'  => $errors,
-                'success' => $success
-            )
-        );
+        return new View ('review/index.html.php', [
+            'menu'    => self::menu(),
+            'message' => $message,
+            'section' => __FUNCTION__,
+            'option'  => $option,
+            'action'  => $action,
+            'reviews' => $reviews,
+            'errors'  => $errors,
+            'success' => $success
+        ]);
     }
 
     /*
@@ -145,7 +134,6 @@ class Review extends Controller {
         $_SESSION['review'] = $review;
 
         if ($option == 'evaluate') {
-            //Text::get
             if ($review->ready == 1) {
                 Application\Message::info(Text::get('review-closed-alert'));
             } else {
@@ -153,7 +141,6 @@ class Review extends Controller {
             }
         }
 
-        // view data basico para esta seccion
         $viewData = array(
             'menu'    => self::menu(),
             'message' => $message,
@@ -184,9 +171,8 @@ class Review extends Controller {
         // sacamos las revisiones realizadas
 
         $user = Session::getUser();
-
         $reviews = Model\Review::history($user->id);
-        // si no hay proyectos asignados no tendria que estar aqui
+
         if (count($reviews) == 0) {
             $message = 'No hay revisiones anteriores';
         }
@@ -217,30 +203,30 @@ class Review extends Controller {
         );
     }
 
-    private static function menu() {
-        // todos los textos del menu review
-        return array(
-            'activity' => array(
+    private static function menu(): array
+    {
+        return [
+            'activity' => [
                 'label'   => 'Mi actividad',
-                'options' => array (
+                'options' => [
                     'summary' => 'Resumen'
-                )
-            ),
-            'reviews' => array(
+                ]
+            ],
+            'reviews' => [
                 'label' => 'Mis revisiones',
-                'options' => array (
+                'options' => [
                     'summary'  => 'Resumen',
                     'evaluate' => 'Evaluar',
                     'report'   => 'Informe'
-                )
-            ),
-            'history' => array(
+                ]
+            ],
+            'history' => [
                 'label'   => 'Mi historial',
-                'options' => array (
+                'options' => [
                     'summary'  => 'Listado'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
 }

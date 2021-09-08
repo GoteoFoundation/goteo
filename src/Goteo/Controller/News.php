@@ -23,25 +23,21 @@ class News extends Controller {
         DB::replica(true);
     }
 
-    public function index () {
-
+    public function index ()
+    {
         $page = Page::get('news');
         $news = Model\News::getAll();
 
-        //Parse Content ONLY if data found on db
         if ($page) {
            $content = $page->parseContent();
         }
 
-        return new View(
-            'news.html.php',
-            array(
-                'name' => $page->name,
-                'title' => $page->description,
-                'content' => $content,
-                'news' => $news
-            )
-         );
+        return new View('news.html.php', [
+            'name' => $page->name,
+            'title' => $page->description,
+            'content' => $content,
+            'news' => $news
+        ]);
     }
 
 }

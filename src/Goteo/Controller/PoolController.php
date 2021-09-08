@@ -369,24 +369,21 @@ class PoolController extends Controller {
         $URL = $request->getSchemeAndHttpHost();
         $share_url = $URL .'/'.$type;
         $share_title = Text::get($type.'-invest-spread-social');
-        $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
-        $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($share_title . ': ' . $share_url);
+        $facebook_url = 'https://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
+        $twitter_url = 'https://twitter.com/intent/tweet?text=' . urlencode($share_title . ': ' . $share_url);
 
-        $user=Session::getUserId();
+        $user = Session::getUserId();
         $suggestedProjectsToUser = Project::favouriteCategories($user);
 
         if($reward instanceOf Response) return $reward;
 
-        return $this->viewResponse(
-            'pool/share',
-            [
-                'facebook_url' => $facebook_url,
-                'twitter_url' => $twitter_url,
-                'projects_suggested' => $suggestedProjectsToUser,
-                'step' => 4,
-                'type' => $type
-            ]
-        );
+        return $this->viewResponse('pool/share', [
+            'facebook_url' => $facebook_url,
+            'twitter_url' => $twitter_url,
+            'projects_suggested' => $suggestedProjectsToUser,
+            'step' => 4,
+            'type' => $type
+        ]);
     }
 
 }

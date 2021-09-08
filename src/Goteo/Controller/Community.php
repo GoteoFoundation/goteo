@@ -28,18 +28,14 @@ class Community extends Controller {
 
         $page = Page::get('community');
 
-        $items = array();
-        $shares = array();
-
-        // Deshabilitamos el Compartiendo - 04/07/2013
         if ($show != 'activity') {
             throw new Redirection('/community');
         }
 
         $viewData = array(
-                'description' => $page->description,
-                'show' => $show
-            );
+            'description' => $page->description,
+            'show' => $show
+        );
 
         switch ($show) {
             /*

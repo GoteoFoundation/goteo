@@ -26,18 +26,19 @@ class ContactController extends Controller {
 
     public function indexAction (Request $request) {
 
-        $tags=[ 'contact-form-user-tag-name'         => Text::get('contact-form-user-tag-description'),
-                'contact-form-new-project-tag-name'  => Text::get('contact-form-new-project-tag-description'),
-                'contact-form-project-form-tag-name' => Text::get('contact-form-project-form-tag-description'),
-                'contact-form-dev-tag-name' => Text::get('contact-form-dev-tag-description'),
-                'contact-form-relief-tag-name' => Text::get('contact-form-relief-tag-description'),
-                'contact-form-service-tag-name' => Text::get('contact-form-service-tag-description'),
-                'contact-form-others-tag-name' => Text::get('contact-form-others-tag-description'),
-
+        $tags = [
+            'contact-form-user-tag-name' => Text::get('contact-form-user-tag-description'),
+            'contact-form-new-project-tag-name' => Text::get('contact-form-new-project-tag-description'),
+            'contact-form-project-form-tag-name' => Text::get('contact-form-project-form-tag-description'),
+            'contact-form-dev-tag-name' => Text::get('contact-form-dev-tag-description'),
+            'contact-form-relief-tag-name' => Text::get('contact-form-relief-tag-description'),
+            'contact-form-service-tag-name' => Text::get('contact-form-service-tag-description'),
+            'contact-form-others-tag-name' => Text::get('contact-form-others-tag-description'),
         ];
 
         $errors = array();
         $data = [];
+
         if($user = Session::getUser()) {
             $data['name'] = $user->name;
             $data['email'] = $user->email;
@@ -67,11 +68,9 @@ class ContactController extends Controller {
                 $msg_content = nl2br(strip_tags($message));
             }
 
-            // check captcha
             if(!$user && $phrase = Session::get('captcha-phrase')) {
                 Session::del('captcha-phrase');
                 $captcha = new CaptchaBuilder($phrase);
-                // captcha verification
                 if (!$captcha->testPhrase($request->request->get('captcha_response'))) {
                     $errors['recaptcha'] = Text::get('error-contact-captcha');
                 }
@@ -86,46 +85,39 @@ class ContactController extends Controller {
             }
 
             $data = array(
-                    'tag' => $tag,
-                    'subject' => $subject,
-                    'name'    => $name,
-                    'email'   => $email,
-                    'message' => $message
+                'tag' => $tag,
+                'subject' => $subject,
+                'name'    => $name,
+                'email'   => $email,
+                'message' => $message
             );
 
             if (empty($errors)) {
 
                 switch ($tag) {
-                    //Acount problems
                     case 'contact-form-user-tag-name':
                         $to_admin = Config::get('mail.contact');
                         $user_template=Template::CONTACT_AUTO_REPLY_ACCOUNT_PROBLEMS;
                         break;
-                    // New project chance
                     case 'contact-form-new-project-tag-name':
                         $to_admin = Config::get('mail.contact');
                         $user_template=Template::CONTACT_AUTO_REPLY_NEW_PROJECT;
                         break;
-                    // Queries about the project form
                     case 'contact-form-project-form-tag-name':
                          $to_admin = Config::get('mail.contact');
                          $user_template=Template::CONTACT_AUTO_REPLY_PROJECT_FORM;
                         break;
-                    // Dev
                     case 'contact-form-dev-tag-name':
                          $to_admin = Config::get('mail.fail');
                          $user_template=Template::CONTACT_AUTO_REPLY_DEV;
                         break;
-                    // Relief
                     case 'contact-form-relief-tag-name':
                         $to_admin = Config::get('mail.donor');
                         $user_template=Template::CONTACT_AUTO_REPLY_RELIEF;
                         break;
-                    // Service
                     case 'contact-form-service-tag-name':
                          $to_admin = Config::get('mail.management');
                         break;
-                    //Others
                     default:
                         $to_admin = Config::get('mail.contact');
                         break;
@@ -151,15 +143,14 @@ class ContactController extends Controller {
                 if(empty($toName)) $toName = 'Goteo';
                 // Obtenemos la plantilla para asunto y contenido
                 $mailHandler = Mail::createFromTemplate($to_admin, $toName, Template::MESSAGE_CONTACT, [
-                        '%TONAME%'     => $toName,
-                        '%MESSAGE%'    => $msg_content,
-                        '%USEREMAIL%'  => $name . ' ' . $email
-                    ]);
+                    '%TONAME%'     => $toName,
+                    '%MESSAGE%'    => $msg_content,
+                    '%USEREMAIL%'  => $name . ' ' . $email
+                ]);
                 // Custom subject
                 $subject = ($tag ? '[' . Text::get($tag) . '] ' : '') . $subject;
 
                 $mailHandler->subject = $subject;
-
                 $mailHandler->replyName = $name;
                 $mailHandler->reply = $email;
 

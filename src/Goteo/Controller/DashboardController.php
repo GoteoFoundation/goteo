@@ -71,7 +71,7 @@ class DashboardController extends Controller {
         $invested_total = User::invested($user->id, false, 0, 0, true);
         //proyectos que coinciden con mis intereses
         $favourite = Project::favouriteCategories($user->id, 0, 3);
-        if($favourite) {
+        if ($favourite) {
             $total_fav = Project::favouriteCategories($user->id, 0, 0, true);
         } else {
             $favourite = Project::published('popular', null, 0, 3);

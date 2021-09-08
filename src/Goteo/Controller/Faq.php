@@ -35,7 +35,6 @@ class Faq extends Controller {
         }
 
         $faqs = array();
-
         $sections = Model\Faq::sections();
         $colors   = Model\Faq::colors();
 

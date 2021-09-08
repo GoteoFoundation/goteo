@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller;
 
+use DateTime;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
 use Goteo\Application\Event\FilterProjectEvent;
@@ -89,18 +90,18 @@ class ProjectController extends Controller {
         		$category->save();
         	}
 
-        	$loc = new ProjectLocation([
-                'id'         => $project->id,
-                'city'         => $request->request->get('city'),
-                'region'       => $request->request->get('region'),
-                'country'      => $request->request->get('country'),
+        	$projectLocation = new ProjectLocation([
+                'id' => $project->id,
+                'city' => $request->request->get('city'),
+                'region' => $request->request->get('region'),
+                'country' => $request->request->get('country'),
                 'country_code' => $request->request->get('country_code'),
-                'longitude'    => $request->request->get('longitude'),
-                'latitude'     => $request->request->get('latitude'),
-                'method'       => 'manual'
+                'longitude' => $request->request->get('longitude'),
+                'latitude' => $request->request->get('latitude'),
+                'method' => 'manual'
             ]);
 
-            $loc->save($errors);
+            $projectLocation->save($errors);
 
             // Save publishing day and min required estimation
             $conf = Project\Conf::get($project->id);
@@ -123,7 +124,7 @@ class ProjectController extends Controller {
 
         return $this->viewResponse( 'project/create', [
            'social_commitments' => SocialCommitment::getAll(),
-           'terms'      => Page::get('howto')
+           'terms' => Page::get('howto')
         ]);
 	}
 
@@ -153,14 +154,11 @@ class ProjectController extends Controller {
         if (!$project->isApproved()) {
             if (!empty($project->published)) {
                 if ($project->published >= date('Y-m-d')) {
-                    // si la fecha es en el futuro, es que se publicará
                     Message::info(Text::get('project-willpublish', date('d/m/Y', strtotime($project->published))));
                 } else {
-                    // si la fecha es en el pasado, es que la campaña ha sido cancelada
                     Message::info(Text::get('project-unpublished'));
                 }
             } else {
-                // mensaje de no publicado siempre que no esté en campaña
                 Message::info(Text::get('project-not_published'));
             }
         }
@@ -189,9 +187,8 @@ class ProjectController extends Controller {
             );
 
             $viewData['matchers'] = $project->getMatchers('active');
-
-            // recompensas
             $viewData['individual_rewards'] = [];
+
             foreach ($project->getIndividualRewards(Lang::current(false)) as $reward) {
                 if ($reward->available() || !$project::hideExhaustedRewards($project->id) || !$project->inCampaign()) {
                     $reward->none  = false;
@@ -235,9 +232,6 @@ class ProjectController extends Controller {
                 }
 
                 $viewData['costs'] = $costs;
-
-                // Licenses for the social rewards
-
                 $licenses = array();
 
                 foreach (License::getAll() as $l) {
@@ -249,7 +243,7 @@ class ProjectController extends Controller {
 
             // tenemos que tocar esto un poquito para motrar las necesitades no economicas
             if ($show == 'needs-non') {
-                $viewData['show']         = 'needs';
+                $viewData['show'] = 'needs';
                 $viewData['non_economic'] = true;
             }
 
@@ -328,14 +322,16 @@ class ProjectController extends Controller {
 
         if ( ($project->days>1) && ($project->round==1) && ($project->amount<$project->mincost) ) {
             $interval_days_send = round(($project->days-1)*0.8);
-            $date_send = new \DateTime(date('Y-m-d'));
+            $date_send = new DateTime(date('Y-m-d'));
             $date_send = $date_send->modify("+".$interval_days_send." days");
             $date_send = $date_send->format('Y-m-d');
         }
 
-        $favourite=new Favourite(array(
-            'project' => $pid, 'user' => $user, 'date_send' => $date_send
-        ));
+        $favourite=new Favourite([
+            'project' => $pid,
+            'user' => $user,
+            'date_send' => $date_send
+        ]);
 
         $favourite->save($errors);
 
@@ -352,7 +348,7 @@ class ProjectController extends Controller {
     public function deleteFavouriteAction(Request $request) {
         if ($request->isMethod('post')) {
             $project = $request->request->get('project');
-            $user= $request->request->get('user');
+            $user = $request->request->get('user');
 
             $favourite=new Favourite(array(
                 'project' => $project, 'user' => $user

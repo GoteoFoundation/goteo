@@ -70,6 +70,10 @@ class ErrorController extends Controller {
             return $res;
         }
         View::setTheme('responsive');
-        return new Response(View::render('errors/not_found', ['msg' => 'Route not found', 'code' => Response::HTTP_NOT_FOUND]), Response::HTTP_NOT_FOUND);
+
+        return new Response(View::render('errors/not_found', [
+            'msg' => 'Route not found',
+            'code' => Response::HTTP_NOT_FOUND
+        ]), Response::HTTP_NOT_FOUND);
     }
 }

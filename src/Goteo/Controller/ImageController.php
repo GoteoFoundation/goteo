@@ -17,8 +17,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ImageController extends Controller {
-    //some predefined sizes
-    static private $sizes = array(
+
+    const CACHE_MAX_AGE_DAYS = 60 * 60 * 24 * 30; // 30 DAYS
+
+    static private $predefinedSizes = array(
         'icon' => '16x16',
         'tiny' => '32x32',
         'thumb' => '56x56',
@@ -35,11 +37,10 @@ class ImageController extends Controller {
     );
 
     public function indexAction($params = '', $filename = '') {
-        //check if predefined size
-        if(self::$sizes[$params]) {
-            $params = self::$sizes[$params];
+        if (self::$predefinedSizes[$params]) {
+            $params = self::$predefinedSizes[$params];
         }
-        //  $width = 200, $height = 200, $crop = false
+
         if (preg_match('/(\d+)x(\d+)([c]?)/', $params, $matches)) {
             $width = $matches[1];
             $height = $matches[2];
@@ -62,9 +63,7 @@ class ImageController extends Controller {
         if($image->error === 'not_found') {
             $response->setStatusCode(Response::HTTP_NOT_FOUND);
         } else {
-            // Cache-Control
-            // 30days (60sec * 60min * 24hours * 30days)
-            $response->setMaxAge(2592000);
+            $response->setMaxAge(self::CACHE_MAX_AGE_DAYS);
             $response->setPublic();
         }
 

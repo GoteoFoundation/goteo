@@ -37,8 +37,8 @@ class RssController extends Controller {
 
         // le preparamos los datos y se los pasamos
         if(!in_array($gformat, array('RSS1', 'RSS2', 'ATOM'))) $gformat = 'RSS2';
-        $clas = "FeedWriter\\$gformat";
-        $feed = new $clas();
+        $class = "FeedWriter\\$gformat";
+        $feed = new $class();
 
         $feed->setTitle('Goteo RSS');
         $feed->setLink($url);

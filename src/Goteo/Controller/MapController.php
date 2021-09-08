@@ -31,7 +31,6 @@ class MapController extends Controller {
 	public function mapAction(Request $request) {
         $cid = strip_tags($request->get('channel'));
         $geojson = strip_tags($request->get('geojson'));
-
         $map = new MapOSM('100%');
 
         try {
