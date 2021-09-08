@@ -89,12 +89,11 @@ dashboard-menu-projects-pitch: "Open applications"
 dashboard-menu-review_board: Review
 dashboard-menu-translate_board: Translation
 dashboard-menu-translates: 'My translations'
-dashboard-menu-matchers: "Matchers"
-dashboard-menu-admin-matchers: "Admin Matchers"
 dashboard-messegers-mail-sendto: 'Sent to %s the participants:'
 dashboard-my-wallet-available: 'You currently have <span class="pool-amount">%s</span> <span class="pool-desc">in your virtual wallet in Goteo</span>'
 dashboard-my-wallet-contribute-button: Donate
 dashboard-my-wallet-pool-info: 'More information on using your wallet'
+dashboard-no-projects: 'You still have no projects, create one <a href="/project/create">here</a>'
 dashboard-password-recover-advice: 'You are recovering your password. Remember to put your user name in the "current password" field to change it.'
 dashboard-project-analytics-fail: 'Error while saving analytics IDs'
 dashboard-project-analytics-ok: 'Your analytics IDs have been saved correctly'
@@ -295,8 +294,6 @@ dashboard-origin-invests-referer: 'Origin of visits in successful contributions'
 dashboard-origin-project-device: 'Device used on the project page'
 dashboard-origin-invests-device: 'Device used in successful contributions'
 dashboard-origin-disclaimer: '⚠ *These data are indicative and do not include all visits due to technical limitations.*  > We recommend you to configure Google Analytics or Facebook Pixel for a better detailed data'
-dashboard-project-integration-token: 'Token'
-dashboard-project-integration-link: 'Link'
 dashboard-project-pitch-title: 'Open applications'
 dashboard-project-pitch-description: "These are the different spaces to which you can apply, if you are interested in receiving extra funding for your campaign or institutional support, take a look and go ahead and introduce yourself!"
 dashboard-project-pitch-type: "Type"
