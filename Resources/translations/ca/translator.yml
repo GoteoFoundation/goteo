@@ -65,32 +65,24 @@ translator-zone-not-found: 'Aquesta zona de traducció no es vàlida'
 translator-lang-not-found: 'Aquest idioma no està configurat en la plataforma!'
 translator-percent: '%d&#37; traduït'
 translator-add-translation: 'Afegir una nova traducció'
-translator-call_to_action: Call To Action
-translator-node: Canal
 translator-node_program: Programes del Canal
-translator-node_faq: Faq del Canal
 translator-node_faq_question: Preguntes del Faq del Canal
 translator-node_faq_download: Descarregues del Faq del Canal
-translator-node_sponsor: Sponsors del Canal
 translator-node_team: Equip del Canal
 translator-node_sections: Seccions del canal
-translator-node_resource: Recursos del canal
 translator-node_resource_category: Categoria dels recursos
 translator-image_credits: Crèdits de les imatges
 translator-field-modal_description: Descripció de la modal
 translator-field-action: Acció
-translator-field-action_url: "Url de l'acció"
+translator-field-action_url: Url de l'acció
 translator-field-action_2: Acció 2
-translator-field-action_url_2: "Url de l'acció 2"
+translator-field-action_url_2: Url de l'acció 2
 translator-field-banner_title: Titol del banner
 translator-field-banner_description: Descripció del banner
-translator-field-label: Etiqueta
-translator-field-role: Rol
 translator-field-main_info_title: Titol de la informació principal
 translator-field-main_info_description: Descripció de la informació principal
 translator-field-call_to_action_description: Descripció del Call To Action
-translator-field-terms: Bases
-translator-field-tip_msg:  Missatge
+translator-field-tip_msg: Missatge
 translator-field-banner_button_url: Url del botó del banner
 translator-field-terms_url: Url de les bases
 translator-field-credits: Crèdits
