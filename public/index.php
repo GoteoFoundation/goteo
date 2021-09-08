@@ -36,10 +36,13 @@ if ($isDebugEnv) {
 set_error_handler('Goteo\Application\App::errorHandler');
 
 $config = getenv('GOTEO_CONFIG_FILE');
-if ($isDebugEnv) {
-    if (!is_file($config)) $config = __DIR__ . '/../config/dev-settings.yml';
+
+if ($isDebugEnv && !is_file($config)) {
+    $config = __DIR__ . '/../config/dev-settings.yml';
+} else if (!is_file($config)) {
+    $config = __DIR__ . '/../config/settings.yml';
 }
-if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
+
 Config::load($config);
 Config::autosave();
 
@@ -57,11 +60,9 @@ if ($isDebugEnv) {
     $handler = new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::DEBUG);
     $handler->setFormatter(new Bramus\Monolog\Formatter\ColoredLineFormatter());
 
-    // Add a log level debug to stderr
     App::getService('logger')->pushHandler($handler);
     App::getService('syslogger')->pushHandler($handler);
     App::getService('paylogger')->pushHandler($handler);
 }
 
-// Get the app
 App::get()->run();
