@@ -20,6 +20,8 @@ invest-address-namedest-field: 'Name of the recipient'
 invest-address-nif-field: 'VAT Number'
 invest-address-title: 'Make sure you receive your reward'
 invest-address-zipcode-field: 'ZIP code'
+invest-address-legal-entity-field: Legal entity
+invest-address-legal-document-type-field: Type of document
 invest-alert-investing: 'You''re about to contribute with '
 invest-alert-lackamount: 'The quantity must be superior to the reward selected'
 invest-alert-lackdrop: 'There is no Matchfunding left to multiply your contribution, left amount is'
@@ -41,6 +43,10 @@ invest-donation-header: 'Enter the fiscal information for this donation'
 invest-drop-method: Matching funds
 invest-fiscal-fail: 'There are faulty of empty fields. Please check the fiscal form to go forward and deduct your contribution!'
 invest-fiscal-skip: 'I don’t want to fill in this now'
+invest-fiscal-renounce: 'I do not wish to receive a Donation Certificate'
+invest-fiscal-title: 'Donation certificate request'
+#invest-fiscal-warning: 'A partir del 1 de Marzo de %s, podrás descargarte tu certificado de donación siempre que hayas facilitado tus datos completos anteriormente al 15 de enero.'
+invest-fiscal-warning: '<b>If you want us to issue your donation certificate in order to be entitled to the tax benefits</b> of your contribution, it is <b>necessary that you provide us with your personal data BEFORE January 15</b>, since by virtue of article <b>5 of Order EHA/3021/2007, of October 11, approving model 182 of the informative declaration of donations, donations and contributions received</b>, we are obliged to present this declaration in the month of January of each year, in relation to the donations, donations and contributions received or disposals made during the previous calendar year. <br><br> In case of not receiving your data in time, you renounce to the tax benefits of your contribution, since the noncompliance in the presentation period of the declaration form 182, of donations received, entails fines for the Goteo Foundation for noncompliance with the previous regulation.<br>'
 invest-login-alert: 'You must register or <a href="%s">log in</a> to make your contribution'
 invest-mail_info-address: 'You''ll receive the reward at the following address:'
 invest-make-sure-save: Save
@@ -107,3 +113,6 @@ invest-tip-part-1: 'I want to add to my donation: '
 invest-tip-part-2: 'to contribute to the mission of the <b>Goteo Foundation</b><br> for a more ethical and collaborative society'
 invest-mail-donate-tip: 'With your donation you have decided to collaborate with the <strong>Goteo Foundation</strong> with %s € extra, thank you very much!.'
 invest-update-total: 'You are going to make a total donation of <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% to the project + <span id="tip-amount">%DONATE_AMOUNT%</span> to Goteo Foundation'
+invest-extra-info: 'Extra info'
+donor-legal-entities-natural-person: Natural person
+donor-legal-entities-legal-person: Legal person
