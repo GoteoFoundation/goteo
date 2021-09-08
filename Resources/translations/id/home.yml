@@ -1,5 +1,5 @@
 ---
-home-channel-project: 'proyek'
+home-channel-project: '%s proyek'
 home-channels-header: Kanal
 home-news-header: 'Apa yang mereka katakan tentang kita'
 home-patrons-header: Direkomendasikan
