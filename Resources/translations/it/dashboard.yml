@@ -11,10 +11,10 @@ dashboard-certificates-confirm: 'Conferma i dati'
 dashboard-certificates-confirm-checkbox: 'Confermo che questi sono i miei dati giuridici reali e sono consapevole del fatto che non sarò in grado di modificare questi dati una volta confermati'
 dashboard-certificates-confirmed: Confermato
 dashboard-certificates-processed: Elaborato
-dashboard-certificates-confirmed-ok: '-> dashboard-certificates-confirmed-ok'
+dashboard-certificates-confirmed-ok: 'Dati fiscali confermati correttamente'
 dashboard-certificates-data-alert: 'Ricorda che una volta confermato, non è possibile modificare i dati!'
 dashboard-certificates-data-desc: 'Si prega di assicurarsi che i dati nel modulo siano corretti e, successivamente, confermare il modulo'
-dashboard-certificates-data-download-all: 'Confermate i vostri certificati per attivare la detrazione fiscale. Ogni anno la Fondazione Goteo notifica alle autorità fiscali tutte le donazioni confermate.'
+dashboard-certificates-data-download-all: 'Conferma i tuoi certificati per attivare lo sgravio fiscale. Una volta fatto ciò, sarà possibile scaricarne una copia. La Fondazione Goteo dichiara annualmente al fisco tutte le donazioni confermate.'
 dashboard-certificates-data-new-invests: 'Ma non preoccuparti, ogni nuovo contributo che tu inserisci nella piattaforma di Goteo genererà un nuovo certificato'
 dashboard-certificates-desc: 'Questi certificati consentono di dedurre la somma dalla tua dichiarazione dei redditi, se sei un/a contribuente residente in Spagna.'
 dashboard-certificates-details: 'Vedi dettagli'
