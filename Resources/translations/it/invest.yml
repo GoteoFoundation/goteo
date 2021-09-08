@@ -44,6 +44,7 @@ invest-donation-header: 'Indica i dati fiscali per la donazione'
 invest-drop-method: Irrigazione
 invest-fiscal-fail: 'Ci sono campi vuoti o con errori, controlla il modulo fiscale così da poter detrarre il tuo contributo!'
 invest-fiscal-skip: 'Ora non voglio compilare questi dati.'
+invest-fiscal-title: 'Assicurati di poter detrarre il tuo contributo (per i/le contribuenti in Spagna)'
 invest-login-alert: 'Devi registrarti o <a href="%s">iniciar sesión</a> per poter realizzare la donazione'
 invest-mail_info-address: 'Hai indicato il seguente indirizzo '
 invest-mail_info-drop: 'In più, %s ha donato %s di matchfunding con la campagna %s'
