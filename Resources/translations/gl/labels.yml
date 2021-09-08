@@ -165,3 +165,11 @@ worth-lb-edit: 'Editando nivel'
 worth-lb-list: A listar
 stats-lb: Estatísticas & datos
 stories-lb: 'Historias de usuario'
+channelstory-lb: 'Historias nas canles'
+channelresource-lb: 'Recursos'
+channelposts-lb: 'Publicacións nas canles'
+channelcriteria-lb: 'Enquisas nas canles'
+channelprogram-lb: 'Programas das canles'
+channelsection-lb: 'Seccións nas canles'
+certificate-lb: 'Certificados'
+certificatemanagement-lb: 'Administración de certificados'
