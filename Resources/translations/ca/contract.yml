@@ -48,6 +48,7 @@ mandatory-project-field-region: 'És obligatori indicar la província'
 personal-field-contract_entity: 'Promotor/a del projecte'
 personal-field-contract_name: 'Nom i cognoms'
 personal-field-contract_nif: 'Número de NIF / NIE / VAT'
+personal-field-contract_legal_document_type: Tipus de document
 personal-field-main_address: 'Domicili fiscal'
 personal-field-post_address: 'Domicili postal'
 personal-field-region: Província
@@ -102,5 +103,9 @@ contract-validation-error-promoter: 'Falten camps per omplir al promotor'
 contract-validation-error-promoter_nif: 'El NIF no és correcte'
 contract-validation-error-entity: 'Falten camps per omplir a l''entitat'
 contract-validation-error-accounts: 'Falten camps per omplir al comptes'
-contract-validation-error-documentos: 'Falta documentació'
+contract-validation-error-documents: 'Falta documentació'
 contract-already-processed: 'El contracte ja ha sigut processat.'
+contract-legal-document-type-passport: Passaport
+validate-contract-nif-document-type: 'El número del document no coincideix en format amb el tipus de document'
+validate-contract-cif-document-type: 'El número del document no coincideix en format CIF'
+validate-contract-legal-nif-entity-legal: "L'entitat legal no coincideix amb el tipus de document"
