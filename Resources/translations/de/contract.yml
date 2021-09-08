@@ -102,5 +102,5 @@ contract-validation-error-promoter: 'Fehlende Felder beim Ausfüllen des Projekt
 contract-validation-error-promoter_nif: 'Ihre Steuer-Identifikationsnummer (TIN) ist ungültig!'
 contract-validation-error-entity: 'Es sind noch Felder in dieser Instanz auszufüllen'
 contract-validation-error-accounts: 'Es fehlen noch auszufüllende Felder bei den Konten'
-contract-validation-error-documentos: 'Fehlende Dokumentation'
+contract-validation-error-documents: 'Fehlende Dokumentation'
 contract-already-processed: 'Der Vertrag wurde bereits bearbeitet.'
