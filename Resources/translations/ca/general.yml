@@ -113,7 +113,7 @@ regular-join: 'Uneix-te'
 regular-facebook: Facebook
 regular-faq: 'Preguntes freqüents '
 regular-female: Dona
-regular-other-gender: Altres
+regular-other-gender: Altre
 regular-first: Primera
 regular-from: des de
 regular-getit: Aconsegueix-ho
@@ -135,6 +135,7 @@ regular-instagram: Instagram
 regular-invest: Aporta
 regular-invest_it: 'Cofinança el projecte'
 regular-investing: Aportant
+regular-invests: Aportacions
 regular-lang: Idioma
 regular-last: Darrera
 regular-license: Llicència
@@ -257,4 +258,4 @@ newsletter-donate-description: 'Perquè puguem seguir ajudant a que més i més 
 regular-icon: Icona
 regular-action: Acció
 regular-action_url: Acció URL
-regular-modal-decription: Descripció en la modal
+regular-modal-decription: Decripció a la modal
