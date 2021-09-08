@@ -11,8 +11,10 @@ dashboard-certificates-confirm: 'Daten bestätigen'
 dashboard-certificates-confirm-checkbox: 'Hiermit bestätige ich, das dies meine richtigen Daten sind. Mir ist bewusst, dass ich diese Daten nicht mehr verändern kann, sobald sie bestätigt sind.'
 dashboard-certificates-confirmed: Bestätigt
 dashboard-certificates-processed: Bearbeitet
+dashboard-certificates-confirmed-ok: 'Steuerliche Daten korrekt bestätigt.'
 dashboard-certificates-data-alert: 'Beachte, dass die Daten nicht mehr geändert werden können, sobald sie bestätigt sind.'
 dashboard-certificates-data-desc: 'Bitte versichere Dich, dass die Formulardaten korrekt sind und bestätige das Formular.'
+dashboard-certificates-data-download-all: 'Zeige oder downloads alle Bescheinigungen des Finanzjahres für Deine Steuererklärung'
 dashboard-certificates-data-new-invests: 'Keine Sorge, jede neue Spende über Goteo generiert eine neue Spendenbescheinigung'
 dashboard-certificates-desc: 'Diese Bescheinigungen ermöglichen Dir eine Reduzierung Deiner Einkommenssteuer, wenn Du in Spanien veranlagt wirst.'
 dashboard-certificates-details: 'Details ansehen'
