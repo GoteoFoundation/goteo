@@ -70,6 +70,8 @@ admin-communications-cancel: 'Cancel·lar comunicació'
 admin-communications-newsletter: 'Butlletí'
 admin-communications-communication: 'Comunicació general'
 admin-communications-id: 'ID de la Comunicació'
+admin-certificates: Certificats
+admin-certificates-management: Gestió de Certificats
 admin-home: Portada
 admin-items: entrades
 admin-mailing-back-to-list: 'Tornar a comunicacions'
@@ -151,8 +153,8 @@ admin-channelsection-add: 'Afegir una secció'
 admin-channelpost-add: Afegir Post al canal
 admin-channelpost-submit: Guardar Post
 admin-channelpost-correct: 'S''ha afegit el post al canal'
-admin-channelcriteria-title: 'Qüestionaris del canal'
-admin-channelcriteria-subtitle: 'Estableix els criteris amb què avaluaràs un projecte que vulgui presentar-se al teu canal. Procura ser concís/a en el que esperes obtenir de les iniciatives que vulguin presentar-se, ajudarà a facilitar l''avaluació final.'
+admin-channelcriteria-title: 'Questionari del canal'
+admin-channelcriteria-subtitle: 'Estableix les preguntes amb les que evaluaràs un projecte que vulgui presentar-se al teu canal. Procura ser concís en el que esperes obtenir de les iniciatives que es vulguin presentar, ajudarà a facilitar-te l''evaluació final'
 admin-channelprogram-create: 'Crear'
 admin-channelprogram-add: 'Afegir programa'
 admin-categories: 'Categories i àmbits'
@@ -216,6 +218,8 @@ admin-users-global-search: 'Id, nom, email o projecte'
 admin-blog-global-search: 'Id, títol, subtítol o text'
 admin-communication-global-search: 'Assumpte'
 admin-blog-stories-search: 'Id, títol, text o projecte'
+admin-donor-name-search: 'ID, nom, email'
+admin-donor-date-search: 'Processats per data'
 admin-no-project: 'Sense projecte'
 admin-title-id: Id
 admin-title-name: Nom
@@ -281,6 +285,7 @@ admin-title-action-url: 'Text botó de descàrrega'
 admin-title-download-url: 'Enllaç de descàrrega'
 admin-title-channel: 'Canal'
 admin-title-resource-category: 'Categoria de recurs'
+admin-title-year: Any
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
 admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'
@@ -509,12 +514,13 @@ admin-filter-type-all: 'Tots'
 admin-filter-predefined-date: 'Dates predefinides'
 admin-filter-predefined-date-choose: 'Pots seleccionar una data predeterminada'
 admin-filter-forced: 'Forçar filtre'
-admin-filter-forced-help: 'Si selecciones aquesta opció s''aplicaran els filtres independentment del que hagi escollit l''usuari com a preferència per a l''enviament d''informació per part de la plataforma.'
+admin-filter-forced-help: 'Si esculls aquesta opció s''aplicaran els filtres independentment del que hagi escollit l''usuari com a preferència per l''enviament d''informació per part de la plataforma.'
 admin-filter-project-status: Estat del projecte
-admin-filter-invest-status: Estat del donatiu
+admin-filter-invest-status: Estat de la donació
 admin-filter-project-location: Ubicació del projecte
-admin-filter-location: Ubicació a l'utilitzar al filtre
+admin-filter-location: Ubicació a fer servir al filtre
 admin-filter-donor-location: Ubicació del donant
+admin-filter-donor-status: Estat del certificat
 admin-mail-body: 'Cos del missatge'
 admin-stats-donations: 'Donacions'
 admin-stats-donations-method: 'Donacions segons mètode de pagament'
