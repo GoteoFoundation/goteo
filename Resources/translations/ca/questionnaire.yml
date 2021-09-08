@@ -1,1 +1,23 @@
 ---
+questionnaire: Qüestionari
+questionnaire-type-of-question: 'Tipus de resposta'
+questionnaire-required: 'És obligatori respondre'
+questionnaire-text: 'Pregunta per respondre'
+questionnaire-max-score: 'Puntuació màxima'
+questionnaire-help-max-score: 'Puntuació màxima: %s'
+questionnaire-hidden: "Amagar pregunta"
+questionnaire-choice: Opcions
+questionnaire-textarea: 'Resposta llarga'
+questionnaire-boolean: 'Resposta única sí/no'
+questionnaire-dropfiles: 'Pujada d''arxiu'
+questionnaire-add-question: "Afegir pregunta"
+questionnaire-answer: "Resposta"
+questionnaire-scoring-mark: "Puntuació"
+questionnaire-scoring-save: "Puntuació guardada correctament"
+questionnaire-max-score-help: "Aquesta és la puntuació màxima per aquesta pregunta."
+question-save-error: "Pregunta no esborrada"
+question-choice-answer: "Resposta"
+questionnaire-apply-title: Sol·licitut de participació a %s
+questionnaire-answer-questions: Respon aquestes preguntes
+questionnaire-already-answered-by-project: Aquest qüestionari ja ha estat respost.
+questionnaire-question-answer-dropfile-not-found: "El document no s'ha trobat"
