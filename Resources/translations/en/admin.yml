@@ -70,6 +70,8 @@ admin-communications-cancel: 'Cancel communication'
 admin-communications-newsletter: 'Newsletter'
 admin-communications-communication: 'General communication'
 admin-communications-id: 'Communication ID'
+admin-certificates: Certificates
+admin-certificates-management: Certificates Management
 admin-home: Dashboard
 admin-items: entries
 admin-mailing-back-to-list: 'Back to messages'
@@ -131,6 +133,24 @@ admin-blog-not-public: 'This post is not public yet!'
 admin-stories: User histories in Goteo
 admin-stories-add: Create new user history
 admin-stories-edit: Editing user history %s
+admin-channelstory-add: Add story to the channel
+admin-channelstory-submit: Save story
+admin-channelstory-correct: 'The story has been added to the channel'
+admin-channelsection-section: 'Section'
+admin-channelsection-map: 'Map'
+admin-channelsection-resource: 'Resource'
+admin-channelsection-projects: 'Projects'
+admin-channelsection-program: 'Program'
+admin-channelsection-workshops: 'Workshops'
+admin-channelsection-team: 'Team'
+admin-channelsection-button: 'Button'
+admin-channelsection-create: 'Create'
+admin-channelsection-add: 'Add a Section'
+admin-channelpost-add: Add Post tot he channel
+admin-channelpost-submit: Save post
+admin-channelpost-correct: 'The post has been added to the channel'
+admin-channelprogram-create: 'Create'
+admin-channelprogram-add: 'Add program'
 admin-categories: 'Categories and scopes'
 admin-categories-if-empty-then-asset: 'If empty the default icon will be used: %s'
 admin-category-add: Create a new category
@@ -192,6 +212,8 @@ admin-users-global-search: 'Id, name, email or project'
 admin-blog-global-search: 'Id, title, subtitle or text'
 admin-communication-global-search: 'Subject'
 admin-blog-stories-search: 'ID, title, text, or project'
+admin-donor-name-search: 'ID, name, email'
+admin-donor-date-search: 'Processed by date'
 admin-no-project: 'No project'
 admin-title-id: Id
 admin-title-name: Name
@@ -254,6 +276,8 @@ admin-title-pending: Pending
 admin-title-success: Successful
 admin-title-percent: Percentage
 admin-title-year: Year
+admin-title-nif: ID
+admin-title-country: Country
 admin-blog-not-published-yet: 'This post is not public yet!'
 admin-blog-initialized: 'The blog space has been successfully initialized'
 admin-blog-deactivated: 'Sorry, blog feature has been disabled'
@@ -280,7 +304,7 @@ admin-aggregate-invests-desc: 'Sum of contributions per unit of time'
 admin-aggregate-invests-average: 'Average contributions'
 admin-aggregate-invests-average-desc: 'Average contributions per unit of time'
 admin-aggregate-projects: 'Total raised in projects'
-admin-aggretate-projects-format: '%CURRENCY%%VALUE%%TOTAL% projects'
+admin-aggretate-projects-format: '%CURRENCY%%VALUE% (%TOTAL% projects)'
 admin-aggregate-projects-desc: 'Sum of contributions per unit of time'
 admin-aggregate-projects-average: 'Average collection in projects'
 admin-aggregate-projects-average-desc: 'Average collection per unit of time'
@@ -483,6 +507,12 @@ admin-filter-predefined-date: 'Predefined dates'
 admin-filter-predefined-date-choose: 'You can choose a predefined date'
 admin-filter-forced: 'Force filter'
 admin-filter-forced-help: 'Selecting this option will apply filters regardless of what the user chooses as a preference for sending information by the platform.'
+admin-filter-project-status: Project status
+admin-filter-invest-status: Invest status
+admin-filter-project-location: Project's location
+admin-filter-location: Locaiton to be used by the filter
+admin-filter-donor-location: Donor's location
+admin-filter-donor-status: Certificate status
 admin-mail-body: 'Body of the message'
 admin-stats-donations: 'Donations'
 admin-stats-donations-method: 'Donations by payment method'
