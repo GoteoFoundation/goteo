@@ -37,15 +37,7 @@ trait LoggerTrait {
     public function log($message, array $context = [], $func = 'info') {
         $logger = $this->getLog();
         if (null !== $logger && method_exists($logger, $func)) {
-            if(Config::get('debug')) {
-                return $logger->$func($message, WebProcessor::processObject($context));
-            } else {
-                try {
-                    return $logger->$func($message, WebProcessor::processObject($context));
-                } catch(RuntimeException $e) {
-                    // nothing here, if not in debug mode, failure to process logs is ignored
-                }
-            }
+            return $logger->$func($message, WebProcessor::processObject($context));
         }
     }
 
