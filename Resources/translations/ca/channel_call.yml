@@ -1,75 +1,50 @@
+---
 channel-call-main-info-subtitle: 'Nova convocatòria'
 channel-call-projects-title: 'Alguns projectes en marxa'
 channel-call-sponsors-title: 'Els nostres impulsors i col·laboradors'
 channel-call-sponsors-subtitle: 'Un projecte dut a terme per les següents entitats:'
-
 channel-call-cta-create-project-title: Vull crear un projecte
 channel-call-cta-create-project-description: Crear el teu projecte de crowdfunding és molt senzill
-
 channel-call-cta-join-program-title: Formacions
 channel-call-cta-join-program-description: Formacions i recursos pràctics a l’abast de tothom
 channel-call-workshop-title: Propers esdeveniments
 channel-call-workshop-description: Esdeveniments que et faran creixer la teva iniciativa.
-channel-call-footer-information: "Informació d'interés"
-channel-call-footer-about: Sobre Goteo
+channel-call-footer-information: Informació d'interés
 channel-call-footer-stats: Estadístiques
 channel-call-footer-conditions: Condicions de ús
 channel-call-footer-privacy: Política de privacitat
 channel-call-footer-licenses: Llicències
-channel-call-footer-faq: FAQ
 channel-call-footer-contact: Contacte
-channel-call-footer-twitter: Twitter
-channel-call-footer-facebook: Facebook
-channel-call-footer-instagram: Instagram
-channel-call-footer-telegram: Telegram
-channel-call-footer-github: Github
-channel-call-footer-newsletter: Newsletter
 channel-call-footer-social-networks: Xarxes socials
 channel-call-posts-section-title: Últimes notícies
 channel-call-posts-section-description: 'Assabenta''t de les últimes noticies sobre '
-channel-call-program-title: 'El programa '
 channel-call-program-terms: Llegit les bases
-channel-call-program-description: "Assabenta't de tot el que passarà"
+channel-call-program-description: Assabenta't de tot el que passarà
 channel-call-team-title: El nostre equip
 channel-call-team-description: Tot un equip treballant per un crowdfunding cívic!
 channel-call-stories-title: Diuen de nosaltres
-channel-call-resources-title: Recursos
 channel-call-resources-description: 'Descarrega els recursos oberts generats: aprèn sobre crowdfunding, fiscalitat o ideació.'
 channel-call-resources-button: Veure tots els recursos
-channel-call-map-section-title: "Mapa d'influència"
+channel-call-map-section-title: Mapa d'influència
 channel-call-impact-data-amount: Diners recaptats
 channel-call-impact-data-projects: Projectes
 channel-call-impact-data-investors: Persones cofinançadores
 channel-call-resources-banner-title: 'Coneixement obert'
-channel-call-resources-banner-description: 'Recursos'
 channel-call-resources-filter-title: 'Filtra per categories'
-
-channel-call-intro-pitcher-title: 'Pitcher'
-channel-call-intro-matcher-title: 'Matcher'
-channel-call-intro-donor-title: 'Donor'
-channel-call-intro-factory-title: 'Goteo'
-
 channel-call-intro-pitcher-tab-title: 'Crea el teu projecte'
 channel-call-intro-pitcher-tab-description: 'Llança la teva idea i projecte al món mitjançant una plataforma de crowdfunding cívic, cooperatiu, social i sostenible. </br> Crea comunitat al voltant de la teva cooperativa.'
 channel-call-intro-pitcher-tab-action: 'Fes-te impulsor!'
-channel-call-intro-pitcher-tab-action-url: '/project/create'
 channel-call-intro-pitcher-tab-video: 'https://www.youtube.com/embed/HCYx6yft3ZU'
-
 channel-call-intro-matcher-tab-title: 'Cofinança projectes'
 channel-call-intro-matcher-tab-description: 'Ets una cooperativa, empresa responsable o fundació? <br> Vols col·laborar donant impuls al món cooperatiu?'
 channel-call-intro-matcher-tab-action: 'Fes-te matcher!'
 channel-call-intro-matcher-tab-action-url: 'https://fundacion.goteo.org/blog/como-funciona-el-matcher?lang=ca'
 channel-call-intro-matcher-tab-video: 'https://www.youtube.com/embed/AEwlYO5HBQg'
-
 channel-call-intro-donor-tab-title: 'Ciutadania compromesa'
 channel-call-intro-donor-tab-description: 'Amb la teva donació desgravable fas possible la creació i la sostenibilitat de projectes cooperatius compromesos amb el canvi social.'
 channel-call-intro-donor-tab-action: 'Dóna!'
-channel-call-intro-donor-tab-action-url: '/channel/crowdcoop/available'
 channel-call-intro-donor-tab-video: 'https://www.youtube.com/embed/AuQ_XxYoVXU'
-
 channel-call-intro-factory-tab-title: 'Fàbrica Crowdcoop'
 channel-call-intro-factory-tab-description: 'Uneix-te a la nostra fàbrica de projectes cooperatius per una democràcia econòmica. Posem els diners al servei del bé comú i la justícia social.'
 channel-call-intro-factory-tab-action: 'Fes-te impulsor!'
-channel-call-intro-factory-tab-action-url: '/project/create'
 channel-call-intro-factory-tab-video: 'https://www.youtube.com/embed/50DGGGTtiN4'
-
