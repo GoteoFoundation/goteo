@@ -11,9 +11,10 @@ dashboard-certificates-confirm: 'Confirm data'
 dashboard-certificates-confirm-checkbox: 'I hereby confirm that these are my real legal data and I''m conscious that I will not be able to modify them once confirmed'
 dashboard-certificates-confirmed: Confirmed
 dashboard-certificates-processed: Processed
-dashboard-certificates-confirmed-ok: 'Tax ID was successfully confirmed'
+dashboard-certificates-confirmed-ok: 'Your fiscal data are confirmed now.'
 dashboard-certificates-data-alert: 'Keep in mind that once confirmed, the data can not be modified!'
 dashboard-certificates-data-desc: 'Please make sure the data in the form is correct and confirm the form'
+dashboard-certificates-data-download-all: 'Please confirm your certificates in order to active your deduction. Once a year, Goteo Foundation notifies all your confirmed donations to the tax office.'
 dashboard-certificates-data-new-invests: 'And hey, don''t worry! Any further donation you make through Goteo will generate a new certificate'
 dashboard-certificates-desc: 'These certificates will allow a deduction in your income tax declaration only if you are a taxpayer in Spain.'
 dashboard-certificates-details: 'Show details'
@@ -21,7 +22,9 @@ dashboard-certificates-details-desc: 'List of donations for the certificate %CER
 dashboard-certificates-download: 'Confirm and download'
 dashboard-certificates-empty: 'You need to make at least a donation to any project or charge an amount to your virtual wallet to see your certificates'
 dashboard-certificates-expired: Expired
-dashboard-certificates-expired-description: 'Your certificate''s confirmation date has expired'
+dashboard-certificates-expired-description: 'The deadline to confirm the certificate expired'
+dashboard-certificates-no-downloable: 'The certificate download will be available from March 1, %YEAR%'
+dashboard-certificates-legal-entities-no-downloable: 'The certificate download will be available from March 1, %YEAR%. Meanwhile you can download the proof of donation.'
 dashboard-certificates-no-pending: 'There''s no pending donation'
 dashboard-certificates-pending: Pending
 dashboard-certificates-pending-desc: 'These donations will be included in future certificates.'
@@ -32,7 +35,11 @@ dashboard-certificates-totals: '%NUM% donations, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'For downloading this certificate, you need to confirm the data first!'
 dashboard-certificates-view-pending: 'Donations to projects which have still not passed its first round are not displayed. You can check them %HERE%.<br>Donations using the virtual wallet are included in the certificates generated when the physical payment was made.'
 dashboard-certificates-no-invests: 'Certificate cannot be confirmed without any donation!'
-dashboard-certificates-download-proof: Download donation receipt
+dashboard-certificates-download-proof: Download donation proof
+dashboard-certificates-completed: Completed
+dashboard-certificates-validated: Validated
+dashboard-certificates-declared: Declared
+dashboard-certificates-rejected: Rejected
 dashboard-chart-days: '%s DAYS LEFT'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
 dashboard-chart-investors: CO-FINANCIERS
@@ -78,6 +85,7 @@ dashboard-menu-projects-supports: Collaborations
 dashboard-menu-projects-updates: News
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'My history'
+dashboard-menu-projects-pitch: "Open applications"
 dashboard-menu-review_board: Review
 dashboard-menu-translate_board: Translation
 dashboard-menu-translates: 'My translations'
@@ -286,3 +294,7 @@ dashboard-origin-invests-referer: 'Origin of visits in successful contributions'
 dashboard-origin-project-device: 'Device used on the project page'
 dashboard-origin-invests-device: 'Device used in successful contributions'
 dashboard-origin-disclaimer: '⚠ *These data are indicative and do not include all visits due to technical limitations.*  > We recommend you to configure Google Analytics or Facebook Pixel for a better detailed data'
+dashboard-project-pitch-title: 'Open applications'
+dashboard-project-pitch-description: "These are the different spaces to which you can apply, if you are interested in receiving extra funding for your campaign or institutional support, take a look and go ahead and introduce yourself!"
+dashboard-project-pitch-type: "Type"
+dashboard-project-pitch-already-applied: "You have already applied"
