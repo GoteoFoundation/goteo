@@ -14,6 +14,7 @@ contact-form-relief-tag-description: 'Desitjo un justificant de la meva donació
 contact-form-relief-tag-name: 'justificant'
 contact-form-service-tag-description: 'Vull contractar un servei'
 contact-form-service-tag-name: servei
+contact-form-tags: "[usuario] Tinc problemes amb el meu compte; [nuevo impulsor] Tinc un possible projecte; [nuevo impulsor 2] Tinc dubtes sobre el formulari de projecte; [desarrollo] Tinc dubtes sobre qüestions tècniques; [justificante] Desitjo un justificant de la meva donació; [servicio] Vull contratar un servei; [otros] És un altre tipus de consulta;"
 contact-form-user-tag-description: 'Tinc problemes amb el meu compte'
 contact-form-user-tag-name: 'usuari'
 contact-message-field: Missatge
