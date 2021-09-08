@@ -108,6 +108,7 @@ regular-join: 'Join'
 regular-facebook: Facebook
 regular-faq: 'Frequently asked questions'
 regular-female: Female
+regular-other-gender: Other
 regular-first: First
 regular-from: from
 regular-getit: Get it
@@ -128,6 +129,7 @@ regular-instagram: Instagram
 regular-invest: Contribute
 regular-invest_it: 'Co-finance this project'
 regular-investing: Contributing
+regular-invests: Contributions
 regular-lang: Language
 regular-last: Last
 regular-license: License
@@ -153,6 +155,7 @@ regular-news: 'News'
 regular-no: 'No'
 regular-of: of
 regular-preview: Preview
+regular-evaluate: Evaluate
 regular-projects: projects
 regular-published_no: Draft
 regular-published_yes: Published
@@ -214,6 +217,8 @@ regular-copied: 'Copied to clipboard!'
 regular-remember-me: 'Remember me'
 regular-next: Next
 regular-previous: Previous
+regular-write-description: 'Write a descriptive text...'
+regular-choice-placeholder: 'Choose an option'
 session-about-to-expire: 'Your session will expire in 10 Minutes, do you want to reload?'
 session-expired: 'Your session has expired'
 stories-user-project: '%s, from the project: %s'
@@ -238,3 +243,7 @@ validate-project-social_rewards: 'You have to specify at least one collective be
 validate-project-total-costs: "The maximum cost cannot exceed more that 50% of the minimum cost. Either you raise the base costs or lower the additional costs."
 user-promoter: 'The promoter'
 newsletter-donate-description: 'In order for us to continue our work so that more civic initiatives take place'
+regular-icon: Icon
+regular-action: Action
+regular-action_url: Action URL
+regular-modal-decription: Modal's content
