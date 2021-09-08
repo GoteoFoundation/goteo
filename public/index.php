@@ -43,6 +43,13 @@ if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
 Config::load($config);
 Config::autosave();
 
+if (is_array(Config::get('proxies'))) {
+    $request->setTrustedProxies(
+        Config::get('proxies'),
+        Request::HEADER_FORWARDED
+    );
+}
+
 //Get from globals defaults
 App::setRequest($request);
 

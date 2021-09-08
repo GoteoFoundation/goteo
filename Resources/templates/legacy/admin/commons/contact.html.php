@@ -36,9 +36,6 @@ $deadline = mktime(0, 0, 0,
             if (!empty($contact->facebook)) {
                 echo '<a href="'.$contact->facebook.'" target="_blank">Facebook</a> ';
             }
-            if (!empty($contact->google)) {
-                echo '<a href="'.$contact->google.'" target="_blank">Google+</a> ';
-            }
             if (!empty($contact->identica)) {
                 echo '<a href="'.$contact->identica.'" target="_blank">Identica</a> ';
             }

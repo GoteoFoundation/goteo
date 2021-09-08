@@ -76,14 +76,14 @@ class UserController extends Controller {
             if ($show == 'message') {
                 Session::store('jumpto', '/user/profile/' . $user->id . '/message');
                 Message::error(Text::get('user-login-required-to_message'));
-                return $this->redirect(SEC_URL . '/user/login');
+                return $this->redirect(SITE_URL . '/user/login');
             }
 
             // a menos que este perfil sea de un vip, no pueden verlo
             if (!isset($user->roles['vip'])) {
                 Session::store('jumpto', '/user/profile/' . $user->id . '/' . $show);
                 Message::error(Text::get('user-login-required-to_see'));
-                return $this->redirect(SEC_URL . '/user/login');
+                return $this->redirect(SITE_URL . '/user/login');
             }
         }
 
@@ -234,8 +234,6 @@ class UserController extends Controller {
      */
     public function leaveAction(Request $request, $token = '') {
 
-        View::setTheme('default');
-
         $vars = array();
 
         // si el token mola, lo doy de baja
@@ -267,7 +265,7 @@ class UserController extends Controller {
             $reason = $request->request->get('reason');
             if (User::leaving($email, $reason)) {
                 $vars['message'] = Text::get('leave-email-sended');
-                Message::error($vars['message']);
+                Message::info($vars['message']);
             } else {
                 $vars['error'] = Text::get('leave-request-fail', $email);
             }
@@ -278,6 +276,7 @@ class UserController extends Controller {
             Message::error($vars['error']);
         }
 
+        View::setTheme('default');
         return $this->viewResponse('user/leave', $vars);
     }
 

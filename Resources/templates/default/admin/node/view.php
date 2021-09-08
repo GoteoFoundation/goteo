@@ -40,10 +40,6 @@
             <td><?= $this->node->facebook ?></td>
         </tr>
         <tr>
-            <td>Google +</td>
-            <td><?= $this->node->google ?></td>
-        </tr>
-        <tr>
             <td>LinkedIn</td>
             <td><?= $this->node->linkedin ?></td>
         </tr>

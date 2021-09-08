@@ -468,6 +468,9 @@ div.matcher-info {
           .progress-bar {
               background-color: #149290;
           }
+          .progress-completed{
+              background-color: #70BB34;
+          }
           margin-top: 5px;
           width: 100%;
           background-color: #D5D5D5;
@@ -476,12 +479,27 @@ div.matcher-info {
           border-radius: 5px;
           margin-bottom: 5px;
         }
+
         .matcher-name{
-          font-size:14px
+          font-size:16px
         }
+
         .matcher-amount{
           font-weight: normal !important;
+          .completed{
+            color: #70BB34;
+            text-transform: uppercase;
+            font-size: 14px;
+            .fa{
+              font-size: 22px;
+              vertical-align: bottom;
+            }
+          }
+          .figure{
+            font-size: 14px;
+          }
         }
+
       }
     }    
 }

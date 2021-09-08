@@ -15,7 +15,7 @@ Please referer to the "[extend section](http://goteofoundation.github.io/goteo/d
 Server requirements
 -------------------
 
-- PHP v7 (PHP 7.1 recommended) or later with extensions `gd`, `mcrypt`, `curl`, `mbstring`, `json`, `mysql` activated
+- PHP v7 (PHP 7.4 recommended) or later with extensions `gd`, `mcrypt`, `curl`, `mbstring`, `json`, `mysql` activated
 - Access to the terminal in the webserver and cron.
 - Apache, Nginx or any other server with ModRewrite activated
 - MySQL 5.7 (or MariaDB 10.2) or later

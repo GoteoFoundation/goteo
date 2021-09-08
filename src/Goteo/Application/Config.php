@@ -26,7 +26,6 @@ use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\Routing\Route;
 
 class Config {
-    // Initial translation groups (groupped in yml files into Resources/translations/)
     static public $trans_groups = [
         'home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs',
         'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog',
@@ -35,6 +34,9 @@ class Config {
         'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate',
         'questionnaire', 'poster', 'channel_call', 'map'
     ];
+
+    const ENV_PARAMETER_REG_EX = "/^%env\((.*)\)%$/";
+
 	static protected $loader;
     static protected $config;
 
@@ -58,6 +60,11 @@ class Config {
                 self::$config = array_replace_recursive(self::$config , $config);
             }
 
+            // Error traces
+            if(self::get('debug')) {
+                ini_set('display_errors', 1);
+                App::debug(true);
+            }
 			//Timezone
 			if (self::get('timezone')) {
 				date_default_timezone_set(self::get('timezone'));
@@ -382,29 +389,50 @@ class Config {
 	}
 
     /**
+     * Return a value
      * @param string $name ex: filesystem.handler
      *                          filesystem.bucket      => array
      *                          filesystem.bucket.mail => string
+     * @param bool $strict
+     * @return array|false|mixed|string|null
      * @throws ConfigException
      */
-	static public function get(string $name, bool $strict = false) {
-		$part = strtok($name, '.');
-		if (self::$config && array_key_exists($part, self::$config)) {
-			$ret = self::$config[$part];
-			while ($part = strtok('.')) {
-				if (is_array($ret) && array_key_exists($part, $ret)) {
-					$ret = $ret[$part];
-				} elseif ($strict) {
-					throw new ConfigException("Config var [$name] not found!");
-				} else {
-					$ret = null;
-				}
-			}
-			return $ret;
-		} elseif ($strict) {
-			throw new ConfigException("Config var [$name] not found!");
-		}
-		return null;
+	static public function get(
+	    string $name,
+        bool $strict = false
+    ) {
+        $part = strtok($name, '.');
+        if (self::$config && array_key_exists($part, self::$config)) {
+            $paramValue = self::$config[$part];
+            while ($part = strtok('.')) {
+                if (is_array($paramValue) && array_key_exists($part, $paramValue)) {
+                    $paramValue = $paramValue[$part];
+                } elseif ($strict) {
+                    throw new ConfigException("Config var [$name] not found!");
+                } else {
+                    $paramValue = null;
+                }
+            }
+
+            if(is_array($paramValue)) {
+                // TODO: iterative, to cover any level
+                foreach($paramValue as $key => $val) {
+                    if (!is_array($val) && preg_match(self::ENV_PARAMETER_REG_EX, $val, $matches)) {
+                        $paramValue[$key] = getenv($matches[1]);
+                    }
+                }
+            } elseif (preg_match(self::ENV_PARAMETER_REG_EX, $paramValue, $matches)) {
+                if (sizeof($matches) >= 1) {
+                    $paramValue = getenv($matches[1]);
+                }
+            }
+
+            return $paramValue;
+        } elseif ($strict) {
+            throw new ConfigException("Config var [$name] not found!");
+        }
+
+        return null;
 	}
 
 	static public function set($name, $value) {

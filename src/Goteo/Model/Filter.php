@@ -1745,10 +1745,6 @@ class Filter extends \Goteo\Core\Model {
             // $loc->longitude = $this->donor_longitude;
             $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
 
-
-            $sqlInner .= " INNER JOIN user
-            ON user.user = user.id ";
-
             $sqlInner .= " INNER JOIN user_location
                             ON user_location.id = user.id ";
             $location_parts = UserLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'user.location');

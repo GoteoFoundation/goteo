@@ -57,7 +57,7 @@ namespace Goteo\Library\FileHandler {
         }
 
         /**
-         *
+         * @throws Exception
          */
         protected function throwError($msg) {
             $this->last_error = "$msg";

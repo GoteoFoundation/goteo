@@ -11,8 +11,6 @@
 namespace Goteo\Util\Foil\Extension;
 
 use Foil\Contracts\ExtensionInterface;
-
-use Goteo\Library\Text;
 use Goteo\Application\App;
 use Goteo\Model\Image;
 
@@ -61,6 +59,7 @@ class TextUtils implements ExtensionInterface
         $percent = number_format( (float) $percent, $decimals, ',', '');
         return '<span class="' . $class . '" style="background-color:hsl(' . (120 * $percent/100) . ',45%,50%);">' . ($text ? $text : "$percent %") .'</span>';
     }
+
     // handy method to put a simplified percent badge
     public function percent_badge($percent, $text = '') {
         return self::percent_span($percent, 0, $text, 'badge');
@@ -125,14 +124,13 @@ class TextUtils implements ExtensionInterface
 
     /**
      * converts a #xxyyzz HEX color to rgba(xx,yy,zz,opacity)
-     * @param  string $color HEX color
+     * @param  string $hex HEX color
      * @param  float $opacity level of opacity
      */
     public function to_rgba($hex, $opacity = 1) {
         if($hex[0] === '#') $hex = substr($hex, 1);
-        if(strlen($hex) == 3) $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
+        if(strlen($hex) == 3) $hex = $hex[0] .$hex[0] .$hex[1] .$hex[1] .$hex[2] .$hex[2];
 
-        // return "#$hex" . dechex(256 * $opacity);
         $d1 = hexdec($hex[0] . $hex[1]);
         $d2 = hexdec($hex[2] . $hex[3]);
         $d3 = hexdec($hex[4] . $hex[5]);

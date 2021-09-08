@@ -411,7 +411,11 @@ class Image extends \Goteo\Core\Model {
         // TODO: more elegant solution, not mixed with assets bucket
         if($this->fp instanceOf \Goteo\Library\FileHandler\S3File) {
 
-            $file = SRC_URL . '/' . $file;
+            if(Config::get("filesystem.source_url")) {
+                $file = Config::get("filesystem.source_url") . '/' . $file;
+            } else {
+                $file = SRC_URL . '/' . $file;
+            }
             if(substr($file, 0, 2) === '//') {
                 $file = (Config::get('ssl') ? 'https:' : 'http:' ) . $file;
             }

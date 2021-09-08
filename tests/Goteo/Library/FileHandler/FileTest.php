@@ -1,9 +1,8 @@
 <?php
 
-namespace Goteo\Library\Tests;
+namespace Tests\Goteo\Library\FileHandler;
 
 use Goteo\Library\FileHandler\BaseFile;
-use Goteo\Model;
 use Goteo\Library\FileHandler\File;
 use Goteo\Library\FileHandler\S3File;
 use Goteo\Library\FileHandler\LocalFile;

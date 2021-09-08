@@ -90,7 +90,7 @@ class ProjectValidationEvent extends \Goteo\Console\Event\FilterProjectEvent
             $this->errors['profile'][] = 'profile';
         }
         $res = round(100 * ($total - $count)/$total);
-        if(empty($owner->webs) && empty($owner->facebook) && empty($owner->twitter)) {
+        if(empty($owner->webs) && empty($owner->facebook) && empty($owner->twitter)&& empty($owner->instagram)) {
             $this->errors['profile'][] = 'profile_social';
             $res = ($total - 1) * $res / $total;
         }

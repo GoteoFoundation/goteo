@@ -139,7 +139,10 @@ class ProjectController extends Controller {
 		if(!in_array($show, $show_allow))
 			return $this->redirect('/project/' . $project->id);
 
-		$related_projects=Project::published(['categories' => $project->categories], null, 0, 3, false);
+        if ($project->node != Config::get('node'))
+            $related_projects = Project::published([], $project->node, 0, 3);
+        else
+            $related_projects = Project::published(['categories' => $project->categories], null, 0, 3);
 
 		$lsuf = (LANG != 'es') ? '?lang='.LANG : '';
         $URL = '//'.$request->getHttpHost();
@@ -374,6 +377,7 @@ class ProjectController extends Controller {
 
             return $response;
         } catch(Html2PdfException $e) {
+            Message::error($e->getMessage());
             return new RedirectResponse('/project/' . $project->id );
         }
     }

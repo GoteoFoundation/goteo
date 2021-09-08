@@ -15,6 +15,7 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\View;
 use Goteo\Core\Controller;
 use Goteo\Model\Contract\BaseDocument;
+use Goteo\Model\Matcher;
 use Goteo\Model\Node;
 use Goteo\Util\Map\MapOSM;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,6 +71,15 @@ class MapController extends Controller {
                 Message::error($e->getMessage());
             }
             $map->setChannel($cid);
+        }
+
+        if ($mid) {
+            try {
+                $matcher = Matcher::get($mid);
+                $map->setMatcher($mid);
+            } catch( ModelNotFoundException $e) {
+                Message::error($e->getMessage());
+            }
         }
 
         return $this->viewResponse('map/map_canvas', ['map'  => $map]);

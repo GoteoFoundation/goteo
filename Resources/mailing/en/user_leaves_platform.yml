@@ -1,0 +1,13 @@
+group: contact
+name: 'User leaves platform'
+purpose: 'Mail template to be sent to the platform when a user leaves'
+type: 'md'
+title: 'The user %USERNAME% is leaving'
+text: >
+    They have requested the cancellation for the mail **%USEREMAIL%** that corresponds to the user **%USERNAME%**
+    
+
+    And they have left the following message:
+
+
+    %MESSAGE%

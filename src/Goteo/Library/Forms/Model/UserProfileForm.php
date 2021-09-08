@@ -44,10 +44,10 @@ class UserProfileForm extends AbstractFormProcessor {
             if(in_array($field, ['gender', 'about'])) {
                 $constraints[] = new Constraints\NotBlank();
             }
-            if(in_array($field, ['webs', 'facebook', 'twitter'] )) {
+            if(in_array($field, ['webs', 'facebook', 'twitter', 'instagram'] )) {
                 $constraints[] = new Constraints\Callback(function($object, ExecutionContextInterface $context) use ($field) {
                     $data = $context->getRoot()->getData();
-                    if(empty($data['webs']) && empty($data['facebook']) && empty($data['twitter'])) {
+                    if(empty($data['webs']) && empty($data['facebook']) && empty($data['twitter']) && empty($data['instagram'])) {
                         $context->buildViolation(Text::get('project-validation-error-profile_social'))
                         ->atPath($field)
                         ->addViolation();

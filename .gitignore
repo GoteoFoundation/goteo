@@ -9,6 +9,7 @@
 !/extend/plugin-responsive
 !/extend/custom-domains
 !/extend/invest-return
+!/extend/extra-logger
 
 /node_modules/
 /vendor/
@@ -23,7 +24,6 @@
 !/var/data
 !/var/php
 /var/php/sess_*
-composer.lock
 
 /config/*
 !/config/README.md
@@ -31,9 +31,11 @@ composer.lock
 !/config/vagrant-settings.yml
 !/config/docker-settings.yml
 !/config/travis-settings.yml
+!/config/github-settings.yml
 /dist
 
 phpunit.xml
+.phpunit.result.cache
 /tests/build
 .couscous
 /docker-compose-local.yml

@@ -309,7 +309,6 @@ class PoolController extends Controller {
 
     /**
      * step4: reward/user data
-     *
      * Shown when coming back from the payment gateway
      */
     public function userDataAction(Request $request, $invest_id, $type = 'pool')

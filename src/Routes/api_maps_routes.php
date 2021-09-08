@@ -13,11 +13,17 @@ use Symfony\Component\Routing\RouteCollection;
 
 $api = new RouteCollection();
 
-// One Project chart preprocessed data (costs)
 $api->add('api-map-channel', new Route(
     '/map/channel/{cid}',
     array('_controller' => 'Goteo\Controller\Api\MapsApiController::channelAction',
         )
 ));
+
+$api->add('api-map-matcher', new Route(
+    '/map/matcher/{mid}',
+    array('_controller' => 'Goteo\Controller\Api\MapsApiController::matcherAction',
+        )
+));
+
 
 return $api;

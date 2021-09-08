@@ -216,14 +216,33 @@ $langs = $project->getLangs();
                                     <?= $matcher->name ?>
                                     </div>
                                     <div class="progress">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $progress ?>%">
+                                        <div class="progress-bar <?= $progress==100 ? 'progress-completed' : '' ?> " role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $progress ?>%">
                                         </div>
                                     </div>
-                                    <div class="matcher-amount">
 
-                                    <?= $this->text('matcher-amount-project', ['%AMOUNT%' => amount_format($matcher_amount), '%PROJECT_AMOUNT%' => amount_format($max_project)] ) ?>
-                                    </div>
-                                    </strong>
+                                    <?php if($progress==100): ?>
+
+                                        <div class="matcher-amount">
+                                            <span class="completed">
+                                                 <i class="fa fa-check-circle"></i>
+                                                <?= $this->text('matcher-label-completed') ?>
+                                            </span>
+                                        <span class="figure">
+                                            <?= '('.amount_format($matcher_amount).')' ?>
+                                        </span>
+
+                                        </div>
+
+                                    <?php else: ?>
+
+                                        <div class="matcher-amount">
+
+                                        <?= $this->text('matcher-amount-project', ['%AMOUNT%' => amount_format($matcher_amount), '%PROJECT_AMOUNT%' => amount_format($max_project)] ) ?>
+                                        
+                                        </div>
+
+                                    <?php endif; ?>
+
                                 </div>
                             </div>
                             

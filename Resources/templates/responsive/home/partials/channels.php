@@ -18,7 +18,7 @@
                             <div class="img-container" style="background-color: <?= $background ?> ">
                                 <div class="img">
                                     <a class="a-unstyled" href="<?= '/channel/'.$channel->id ?>">
-                                        <img class="img-responsive" src="<?= $channel->logo ? $channel->logo->getlink(200,0) : '' ?>" alt="<?= $channel->name ?>"/>
+                                        <img loading="lazy" class="img-responsive" src="<?= $channel->logo ? $channel->logo->getlink(200,0) : '' ?>" alt="<?= $channel->name ?>"/>
                                     </a>
                                 </div>
                             </div>

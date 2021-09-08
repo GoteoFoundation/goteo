@@ -73,7 +73,6 @@ class CurrencyTest extends \PHPUnit\Framework\TestCase {
         $rate = Currency::rate();
 
         $this->assertNotNull($rate);
-
     }
 
 }

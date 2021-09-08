@@ -22,7 +22,6 @@ use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Questionnaire\Answer;
 use Goteo\Model\Questionnaire\Score;
 use Goteo\Payment\Method\PoolPaymentMethod;
-use Goteo\Payment\Payment;
 
 /**
  * Matcher Model
@@ -30,7 +29,6 @@ use Goteo\Payment\Payment;
 class Matcher extends Model
 {
     use Traits\SphereRelationsTrait;
-
 
     const STATUS_OPEN = 'open';
     const STATUS_COMPLETED = 'completed';
@@ -375,7 +373,6 @@ class Matcher extends Model
                 AND invest.campaign = 1
                 AND invest.status IN (" . implode(', ', Invest::$ACTIVE_STATUSES) . ") ";
         $values = [':match' => $this->id, ':method' => PoolPaymentMethod::getId()];
-        // echo \sqldbg($sql, $values);
         return (int) self::query($sql, $values)->fetchColumn();
     }
 
@@ -495,10 +492,6 @@ class Matcher extends Model
         }
         return false;
     }
-
-    /**
-     * Getters & setters
-     */
 
     // returns the current user
     public function getOwner() {
@@ -916,6 +909,15 @@ class Matcher extends Model
         }
         // TODO Filter by location
         return $matchers;
+    }
+
+    public function hasQuestionnaire() {
+        $questionnaire = Questionnaire::getByMatcher($this->id);
+        return isset($questionnaire);
+    }
+
+    public function getQuestionnaire() {
+        return Questionnaire::getByMatcher($this->id);
     }
 
 }

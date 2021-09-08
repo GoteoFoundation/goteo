@@ -60,6 +60,7 @@ if($this->projects || $section):
       </div>
 
       <iframe src="<?= $this->get_url() ?><?= $url ?>?<?= http_build_query($params) ?>"
+            loading="auto"
             width="100%"
             height="500"
             style="border:none;"

@@ -54,7 +54,6 @@ class User extends Model {
     $confirmed, // si no ha confirmado el email
     $hide, // si oculto no aparece su avatar en ninguna parte (pero sus aportes cuentan)
     $facebook,
-    $google,
     $twitter,
     $identica,
     $linkedin,
@@ -234,10 +233,6 @@ class User extends Model {
                     $data[':facebook'] = $this->facebook;
                 }
 
-                if (isset($this->google)) {
-                    $data[':google'] = $this->google;
-                }
-
                 if (isset($this->twitter)) {
                     $data[':twitter'] = $this->twitter;
                 }
@@ -314,7 +309,7 @@ class User extends Model {
                     }
                     $query = substr($query, 0, -2) . " WHERE id = :id";
                 }
-                // die(\sqldbg($query, $data));
+                 //die(\sqldbg($query, $data));
                 // Ejecuta SQL.
                 if (self::query($query, $data)) {
                     return true;
@@ -421,6 +416,10 @@ class User extends Model {
 
         if (str_replace(Text::get('regular-linkedin-url'), '', $this->linkedin) == '') {
             $this->linkedin = '';
+        }
+
+        if (str_replace(Text::get('regular-instagram-url'), '', $this->instagram) == '') {
+            $this->instagram = '';
         }
 
         return (empty($errors['email']) && empty($errors['password']));
@@ -674,7 +673,7 @@ class User extends Model {
 
             return true;
         } catch (PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
+            $errors[] = $e->getMessage();
             return false;
         }
     }
@@ -707,7 +706,6 @@ class User extends Model {
                     IFNULL(user_lang.contribution, user.contribution) as contribution,
                     IFNULL(user_lang.keywords, user.keywords) as keywords,
                     user.facebook as facebook,
-                    user.google as google,
                     user.twitter as twitter,
                     user.instagram as instagram,
                     user.identica as identica,
@@ -1731,7 +1729,7 @@ class User extends Model {
             $errors = [];
             // En el contenido:
             $search = array('%USERNAME%', '%URL%');
-            $replace = array($row->name, SEC_URL . '/user/leave/' . \mybase64_encode($token));
+            $replace = array($row->name, SITE_URL . '/user/leave/' . \mybase64_encode($token));
             $content = str_replace($search, $replace, $template->parseText());
             // Email de recuperacion
             $mail = new Mail();
@@ -1745,21 +1743,22 @@ class User extends Model {
             $mail->send($errors);
             unset($mail);
 
-            // email a los de goteo
+            // email to the platform
+            $template_user_leaves = Template::get(Template::USER_LEAVES_PLATFORM, Config::get('lang'));
+            $search = array('%USERNAME%','%USEREMAIL%', '%MESSAGE%');
+            $replace = array($row->name, $row->email, $message);
+            $content_user_leaves = str_replace($search, $replace, $template_user_leaves->text);
+
             $mail = new Mail();
             $mail->to = Config::getMail('mail');
+            $mail->lang = Config::get('lang');
             $mail->toName = 'Admin Goteo';
-            $mail->subject = 'El usuario ' . $row->id . ' se da de baja';
-            $mail->content = '<p>Han solicitado la baja para el mail <strong>' . $email . '</strong> que corresponde al usuario <strong>' . $row->name . '</strong>';
-            if (!empty($message)) {
-                $mail->content .= 'y ha dejado el siguiente mensaje:</p><p> ' . $message;
-            }
-
-            $mail->content .= '</p>';
+            $mail->subject = $template->title;
+            $mail->content = $content_user_leaves;
             $mail->fromName = "{$row->name}";
             $mail->from = $row->email;
             $mail->html = true;
-            $mail->template = 0;
+            $mail->template = $template_user_leaves->id;
             $mail->send($errors);
             unset($mail);
 

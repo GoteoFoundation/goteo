@@ -57,6 +57,7 @@ class MailController extends Controller {
             }
 
             // Content still in database?
+            /** @var Mail $mail */
             if ($mail = Mail::get($mail_id)) {
                 if ($mail->massive) {
                     if ($user = User::getByEmail($email)) {

@@ -8,8 +8,9 @@ use Goteo\Application\Session;
 use Goteo\Model\User;
 use Goteo\Controller\Dashboard\TranslateProjectDashboardController;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use PHPUnit\Framework\TestCase;
 
-class TranslateProjectDashboardControllerTest extends \PHPUnit\Framework\TestCase {
+class TranslateProjectDashboardControllerTest extends TestCase {
 
     public function testInstance(): TranslateProjectDashboardController
     {
