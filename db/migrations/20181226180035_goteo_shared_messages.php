@@ -33,7 +33,7 @@ class GoteoSharedMessages
   {
      return "
       ALTER TABLE `message` ADD COLUMN `shared` TINYINT(1) DEFAULT 0 NOT NULL AFTER `private`;
-      ALTER TABLE `mail` DROP FOREIGN KEY IF EXISTS `mail_ibfk_2`;
+      ALTER TABLE `mail` DROP FOREIGN KEY `mail_ibfk_2`;
       ALTER TABLE `mail` CHANGE `template` `template` CHAR(100) NULL;
      ";
   }
