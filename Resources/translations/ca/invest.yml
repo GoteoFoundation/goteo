@@ -1,6 +1,7 @@
 ---
 bazar-spread-text: '%s - Aquest Nadal, regala crowdfunding obert i per al bé comú amb @goteofunding #openbazaar'
 bazar-thanks: 'Gràcies per visitar el nostre bazaar, pots ajudar-nos a difondre''l.'
+currency-alert: "Si us plau, tingues en compte que la gestió és en EUR. Pagaràs aproximadament <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Más info</a>"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Quins sistemes de pagament ofereix Goteo? Són segurs?</a>'
 imperative-register: Registra't
 invest-address-address-field: Adreça
@@ -44,12 +45,14 @@ invest-cash-method: 'Manual (efectiu)'
 invest-donation-header: 'Introdueix les dades fiscals per al donatiu'
 invest-drop-method: Matchfunding
 invest-fiscal-fail: 'Hi ha camps buits o amb errors, comprova el formulari fiscal perquè puguis desgravar la teva aportació!'
-invest-fiscal-renounce: 'No desitjo rebre Certificat de Donació'
 invest-fiscal-skip: 'Prefereixo omplir aquestes dades en un altre moment'
+invest-fiscal-renounce: 'No desitjo rebre Certificat de Donació'
 invest-fiscal-title: 'Sol·licitud del certificat de donació'
-invest-fiscal-warning: "<b>Si desitges que t'emetem el teu certificat de donació per a ser titular dels beneficis fiscals</b> de la teva aportació, és <b>necessari que ens facilitis les teves dades personals assenyalades ABANS del 15 de gener</b>, ja que en virtut de l'article <b>5 d'Ordre EHA/3021/2007, d'11 d'octubre, per la qual s'aprova el model 182 de declaració informativa de donatius, donacions i aportacions rebudes</b>, tenim l'obligació de presentar aquesta declaració el mes de gener de cada any, en relació amb els donatius, donacions i aportacions rebudes o disposicions realitzades durant l'any natural anterior. <br><br> En cas de no rebre les teves dades en termini, renúncies als beneficis fiscals de la teva aportació, ja que l'incompliment en el termini de presentació de la declaració el model 182, de donatius rebuts, implica multes per a la Fundació Degoteig per incompliment de la normativa anterior.<br>"
+#invest-fiscal-warning: 'A partir del 1 de Marzo de %s, podrás descargarte tu certificado de donación siempre que hayas facilitado tus datos completos anteriormente al 15 de enero.'
+invest-fiscal-warning: '<b>Si desitges que t''emetem el teu certificat de donació per a ser titular dels beneficis fiscals</b> de la teva aportació, és <b>necessari que ens facilitis les teves dades personals assenyalades ABANS del 15 de gener</b>, ja que en virtut de l''article <b>5 d''Ordre EHA/3021/2007, d''11 d''octubre, per la qual s''aprova el model 182 de declaració informativa de donatius, donacions i aportacions rebudes</b>, tenim l''obligació de presentar aquesta declaració el mes de gener de cada any, en relació amb els donatius, donacions i aportacions rebudes o disposicions realitzades durant l''any natural anterior. <br><br> En cas de no rebre les teves dades en termini, renúncies als beneficis fiscals de la teva aportació, ja que l''incompliment en el termini de presentació de la declaració el model 182, de donatius rebuts, implica multes per a la Fundació Degoteig per incompliment de la normativa anterior.<br>'
 invest-login-alert: 'T''has de registrar o <a href="%s">iniciar sessió</a> per poder realitzar l''aportació'
 invest-mail_info-address: 'Has especificat la següent direcció:'
+invest-mail_info-drop: 'Ademés, %s ha aportat %s de matchfunding a través de la campanya %s'
 invest-make-sure-save: Desar
 invest-make-sure-title: Confirma
 invest-method: 'Mètode de pagament'
@@ -66,6 +69,7 @@ invest-payment-success: 'El pagament s''ha realitzat correctament'
 invest-payment_method-header: 'Escull el mètode de pagament'
 invest-payment-method: 'Mètode de pagament'
 invest-paypal-method: PayPal
+invest-paypal_disabled: "Aquest projecte té desactivada la opció de pagament a través de PayPal. <a href=\"/faq/investors#q2\" target=\"_blank\">Más info</a>"
 invest-pool: 'Vull que la meva donació, en el cas que el projecte no arribi al seu objectiu, romangui al meu moneder virtual Goteo. '
 invest-pool-available: disponibles
 invest-pool-error: 'No tens prou diners al teu moneder virtual'
@@ -88,6 +92,7 @@ invest-status-processing: Incomplet
 invest-status-relocated: Reubicat
 invest-status-returned: 'Retornat (arxivat)'
 invest-status-to-pool: 'Al moneder'
+invest-status-donated: 'Donat a Fundació'
 invest-step-1: Recompensa
 invest-step-2: Pagament
 invest-step-3: Confirma
