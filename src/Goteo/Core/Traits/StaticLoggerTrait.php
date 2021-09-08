@@ -32,15 +32,7 @@ trait StaticLoggerTrait {
 
     static public function log($message, array $context = [], $func = 'info') {
         if(static::$logger) {
-            if(Config::get('debug')) {
-                return static::$logger->$func($message, WebProcessor::processObject($context));
-            } else {
-                try {
-                    return static::$logger->$func($message, WebProcessor::processObject($context));
-                } catch(RuntimeException $e) {
-                    // nothing here, if not in debug mode, failure to process logs is ignored
-                }
-            }
+            return static::$logger->$func($message, WebProcessor::processObject($context));
         }
     }
 
