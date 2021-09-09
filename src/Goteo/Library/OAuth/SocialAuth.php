@@ -279,7 +279,7 @@ class SocialAuth {
 				$this->host . '/login/google'
 			);
 
-			// Instantiate the twitter service using the credentials, http client and storage mechanism for the token
+			// Instantiate the google service using the credentials, http client and storage mechanism for the token
             $googleService = $this->serviceFactory->createService('google', $credentials, $this->storage, array('userinfo_email', 'userinfo_profile'));
 
 
