@@ -1,8 +1,11 @@
 ---
 workshop-regular: 'Taller'
+workshop-register: 'Inscríbite'
 workshop-where-label: '¿Ónde vamos tar?'
+workshop-how-label: '¿Cómo llegar?'
 workshop-count-down: '¡Queden %s díes!'
 workshop-file-label: 'Programa'
 workshop-terms-label: 'Bases'
 workshop-partner-text: 'Esti proyeutu recibió fondos del programa d''innovación ya investigación Horizon 2020 de la Xunión Europea so l''alcuerdu de sovención  Nᵘ 727812'
 workshop-type-fundlab: 'Fundlab'
+workshsop-partner-finances: 'Col financiamientu de:'
