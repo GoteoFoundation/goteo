@@ -31,3 +31,5 @@ matcher-project-reject: 'Ihr Projekt wurde aus der Ausschreibung %s entfernt.'
 matcher-project-discard: 'Das Projekt wurde von der Ausschreibung %s ausgeschlossen'
 matcher-project-activate: 'Das Projekt wurde für die Ausschreibung %s aktiviert.'
 matcher-budget-amount: 'Gesamtbudget'
+matcher-label-pending: "Wartend"
+matcher-apply-answer-questionnaire: "Fragebogen beantworten"
