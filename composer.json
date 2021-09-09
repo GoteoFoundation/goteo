@@ -20,7 +20,7 @@
         "paypal/adaptivepayments-sdk-php": "*",
         "paypal/merchant-sdk-php": "*",
         "symfony/class-loader": "2.8.30",
-        "symfony/http-foundation": "2.8.30",
+        "symfony/http-foundation": "2.8.52",
         "symfony/routing": "2.8.30",
         "symfony/http-kernel": "2.8.30",
         "symfony/security": "2.8.30",
