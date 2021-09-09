@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "948d8a22d0a62fe04c7fdafbba7b959c",
+    "content-hash": "00cca74d32e54cdeee20196e8cabbb36",
     "packages": [
         {
             "name": "amphp/amp",
@@ -2691,12 +2691,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Lusitanian/PHPoAuthLib.git",
-                "reference": "ee5a83310c6014b6cc07ac0610ec9d67ba452664"
+                "reference": "c3b5e51fcf86ebe83023d34744d7da131a9744a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Lusitanian/PHPoAuthLib/zipball/ee5a83310c6014b6cc07ac0610ec9d67ba452664",
-                "reference": "ee5a83310c6014b6cc07ac0610ec9d67ba452664",
+                "url": "https://api.github.com/repos/Lusitanian/PHPoAuthLib/zipball/c3b5e51fcf86ebe83023d34744d7da131a9744a5",
+                "reference": "c3b5e51fcf86ebe83023d34744d7da131a9744a5",
                 "shasum": ""
             },
             "require": {
