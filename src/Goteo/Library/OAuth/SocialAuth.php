@@ -429,7 +429,7 @@ class SocialAuth {
 			);
 			// Instantiate the Linkedin service using the credentials, http client and storage mechanism for the token
 			/** @var $linkedinService Linkedin */
-			$linkedinService = $this->serviceFactory->createService('linkedin', $credentials, $this->storage, array('r_basicprofile', 'r_emailaddress'));
+			$linkedinService = $this->serviceFactory->createService('linkedin', $credentials, $this->storage, array('r_liteprofile', 'r_emailaddress'));
 
 			if (!empty($_GET['code'])) {
 			    // retrieve the CSRF state parameter
@@ -439,7 +439,7 @@ class SocialAuth {
 			    $token = $linkedinService->requestAccessToken($_GET['code'], $state);
 
 			    // Send a request with it. Please note that XML is the default format.
-			    $result = json_decode($linkedinService->request('/people/~:(id,first-name,last-name,email-address,summary,public-profile-url,picture-url,headline,interests,location:(name))?format=json'));
+			    $result = json_decode($linkedinService->request('/people/~:(id,first-name,last-name,email-address,picture-url)?format=json'));
 
 				$this->tokens['linkedin']['token'] = $result->id ? $result->id : $result->emailAddress;
 
@@ -453,8 +453,8 @@ class SocialAuth {
 					$this->user_data['username'] = basename($this->user_data['linkedin']);
 				}
 
-				if($result->headline) $this->user_data['about'] = $result->headline;
-				if($result->location->name) $this->user_data['location'] = $result->location->name;
+				// if($result->headline) $this->user_data['about'] = $result->headline;
+				// if($result->location->name) $this->user_data['location'] = $result->location->name;
 				if($result->pictureUrl) {
 					$this->user_data['avatar'] = $result->pictureUrl;
 					$this->user_data['avatar_name'] = $this->user_data['username'] . '.jpg';
