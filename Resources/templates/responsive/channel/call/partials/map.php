@@ -21,7 +21,7 @@ if($this->projects || $section):
   }
 
   if ($map_config['center']) {
-    $url .= '/' . implode($map_config['center'],',');
+    $url .= '/' . implode(',', $map_config['center']);
   }
 
 
