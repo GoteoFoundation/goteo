@@ -9,4 +9,5 @@ story-tooltip-description: 'Explica nunha frase como foi a túa experiencia en G
 story-field-image: 'Imaxe (dimensións recomendadas 600x400px)'
 story-field-pool-image: 'Imaxe opcional en formato Polaroid (dimensións recomendadas 360x355px)'
 story-field-background-image: 'Imaxe de fondo'
+story-field-background-image-credits: 'Créditos da imaxe de fondo'
 story-save-fail: 'Erro ao gardar a túa historia'
