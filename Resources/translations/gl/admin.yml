@@ -511,6 +511,9 @@ admin-filter-predefined-date: 'Data predefinida'
 admin-filter-predefined-date-choose: 'Podes escoller unha data predefinida'
 admin-filter-forced: 'Forzar filtro'
 admin-filter-forced-help: 'A seleccionar esta opción aplicaranse os filtros independentemente do escollido polo usuario coma preferencia para o envío de información por parte da plataforma.'
+admin-filter-project-status: Estado do proxecto
+admin-filter-invest-status: Estado da doazón
+admin-filter-project-location: Localización do proxecto
 admin-filter-donor-status: Estado do certificado
 admin-mail-body: 'Corpo da mensaxe'
 admin-stats-donations: 'Doazóns'
