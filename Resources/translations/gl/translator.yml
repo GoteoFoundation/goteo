@@ -82,7 +82,16 @@ translator-add-translation: 'Engadir unha nova tradución'
 translator-communication: Comunicación
 translator-node: Canle
 translator-node_program: Programas da canle
+translator-node_faq: Faq da canle
+translator-node_faq_download: Descargas a Faq da canle
+translator-node_sections: Seccións da canle
+translator-node_resource: Recursos da canle
+translator-node_resource_category: Categoría dos recursos
+translator-image_credits: Créditos das imaxes
+translator-field-modal_description: Descrición da modal
 translator-field-action: Acción
+translator-field-action_2: Acción 2
+translator-field-action_url_2: Url da acción 2
 translator-field-label: Etiqueta
 translator-field-role: Rol
 translator-field-terms: Bases
