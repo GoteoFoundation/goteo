@@ -32,4 +32,6 @@ matcher-project-reject: 'O teu proxecto foi eliminado da convocatoria %s'
 matcher-project-discard: 'O proxecto foi desbotado da convocatoria %s'
 matcher-project-activate: 'O proxecto foi activado na convocatoria %s'
 matcher-budget-amount: 'Orzamento total'
+matcher-label-pending: "Pendente"
 matcher-amount-project: 'Achegados: %AMOUNT% de %PROJECT_AMOUNT%'
+matcher-apply-answer-questionnaire: "Responder o cuestionario"
