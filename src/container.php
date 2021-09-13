@@ -40,11 +40,10 @@ $sc->register('logger.handler', Monolog\Handler\StreamHandler::class)
    ->setArguments(array(GOTEO_LOG_PATH."app_$env.log", monolog_level(Config::get('log.app'))))
    ->addMethodCall('setFormatter', array(new Reference('logger.formatter')))
 ;
-$logger = $sc->register('logger', Logger::class)
-              ->setArguments(array('main', array(new Reference('logger.handler'))))
-              ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
-              ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
-;
+$logger = $sc->register('logger', 'Goteo\Util\Monolog\Logger')
+    ->setArguments(array('main', array(new Reference('logger.handler'))))
+    ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
+    ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')));
 
 $sc->register('console_logger.formatter', LogstashFormatter::class)
    ->setArguments(array("console_$env", gethostname(), null, 'ctxt_', LogstashFormatter::V1));
@@ -53,33 +52,29 @@ $sc->register('console_logger.handler', Monolog\Handler\StreamHandler::class)
    ->setArguments(array(GOTEO_LOG_PATH."console_$env.log", monolog_level(Config::get('log.console'))))
    ->addMethodCall('setFormatter', array(new Reference('console_logger.formatter')))
 ;
-$cliLogger = $sc->register('console_logger', Logger::class)
-             ->setArguments(array('console', array(new Reference('console_logger.handler'))))
-             ->addMethodCall('pushProcessor', array(new Reference('logger.processor.uid')))
-             ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
-             ->addMethodCall('pushProcessor', array(new Reference('logger.processor.introspection')))
-;
+$cliLogger = $sc->register('console_logger', 'Goteo\Util\Monolog\Logger')
+    ->setArguments(array('console', array(new Reference('console_logger.handler'))))
+    ->addMethodCall('pushProcessor', array(new Reference('logger.processor.uid')))
+    ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
+    ->addMethodCall('pushProcessor', array(new Reference('logger.processor.introspection')));
 
-$sysLogger = $sc->register('syslogger', Logger::class)
-                ->setArguments(array('syslog', array(new Reference('logger.handler'))))
-                ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
-                ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
-;
+$syslogger = $sc->register('syslogger', 'Goteo\Util\Monolog\Logger')
+    ->setArguments(array('syslog', array(new Reference('logger.handler'))))
+    ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
+    ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')));
 
-$payLogger = $sc->register('paylogger', Logger::class)
-                ->setArguments(array('payment', array(new Reference('logger.handler'))))
-                ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
-                ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
-;
+$payLogger = $sc->register('paylogger', 'Goteo\Util\Monolog\Logger')
+    ->setArguments(array('payment', array(new Reference('logger.handler'))))
+    ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
+    ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')));
 
 if (Config::get('log.mail')) {
     $sc->register('logger.mail_handler.formatter', Monolog\Formatter\HtmlFormatter::class);
-    $mailer = Goteo\Model\Mail::createFromHtml(Config::getMail('fail'), '', "WebApp error in [".Config::get('url.main')."]");
+    $mailer = Goteo\Model\Mail::createFromHtml(Config::getMail('fail'), '', "WebApp error in [" . Config::get('url.main') . "]");
     $mail = $sc->register('logger.mail_handler', Goteo\Util\Monolog\Handler\MailHandler::class)
-         ->setArguments(array($mailer, '', Logger::DEBUG, true))// delayed sending
-         ->addMethodCall('setFormatter', array(new Reference('logger.mail_handler.formatter')))
-    ;
-
+        ->setArguments(array($mailer, '', Goteo\Util\Monolog\Logger::DEBUG, true))// delayed sending
+        ->addMethodCall('setFormatter', array(new Reference('logger.mail_handler.formatter')));
+  
     $sc->register('logger.buffer_handler', Monolog\Handler\FingersCrossedHandler::class)
         ->setArguments(array(new Reference('logger.mail_handler'), monolog_level(Config::get('log.mail'))));
     $payLogger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
