@@ -11,18 +11,12 @@
 
 namespace Goteo\Util\Form\Type;
 
-// use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\CallbackTransformer;
 
-/**
- *
- * This class creates overides Date to show always as the single_text option is activated
- *
- */
 class LocationType extends TextType
 {
 
@@ -49,7 +43,6 @@ class LocationType extends TextType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         if($options['location_object'] !== null) {
             $ob = $options['location_object'];
             foreach($options['populate_fields'] as $field) {
@@ -63,10 +56,9 @@ class LocationType extends TextType
                 }
                 $builder->add($field, TextType::class, ['data' => $val]);
             }
-            // print_r($ob->getFormatted());die;
             $builder->add('formatted_address', TextType::class, ['data' => $ob ? $ob->getFormatted() : '']);
         }
-        // var_dump($options);die;
+
         $builder->add('location', TextType::class);
 
         $builder->addViewTransformer(new CallbackTransformer(
@@ -103,11 +95,9 @@ class LocationType extends TextType
             $view->vars['location_object'] = $options['location_object'];
             if($options['location_radius']) {
                 $view->vars['location_radius'] = $options['location_radius'];
-                // $view->vars['populate_fields'][] = 'radius';
             }
         }
     }
-
 
     /**
      * {@inheritdoc}
@@ -128,19 +118,10 @@ class LocationType extends TextType
         $view->children['location']->vars['post_addon'] = $view->vars['post_addon'];
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'location';
     }

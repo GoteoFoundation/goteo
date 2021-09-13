@@ -10,24 +10,24 @@
 
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Goteo\Application\Config;
-use Goteo\Model\Node;
-use Goteo\Model\Node\NodePost;
-use Goteo\Model\Blog\Post as GeneralPost;
-
+use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Message;
 use Goteo\Library\Text;
+use Goteo\Model\Blog\Post as GeneralPost;
+use Goteo\Model\Node;
+use Goteo\Model\Node\NodePost;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 
 class ChannelPostsAdminController extends AbstractAdminController
 {
 	protected static $icon = '<i class="fa fa-2x fa-file-text-o"></i>';
 
-    public static function getGroup() {
+    public static function getGroup(): string
+    {
         return 'channels';
     }
 
@@ -53,8 +53,8 @@ class ChannelPostsAdminController extends AbstractAdminController
 			)
 		];
     }
-    
-	public function listAction($id, Request $request) {
+
+	public function listAction($id) {
 		try {
 			$channel = Node::get($id);
 		} catch (ModelNotFoundException $e) {
@@ -73,39 +73,33 @@ class ChannelPostsAdminController extends AbstractAdminController
 			'total' => $total,
 			'limit' => $limit,
 		]);
+    }
 
-		}
-		
-		public function addAction($id, Request $request) {
-				if(!$this->user && !$this->user->hasPerm('admin-module-channels') )
+    public function addAction($id, Request $request) {
+        if(!$this->user && !$this->user->hasPerm('admin-module-channels') )
             throw new ControllerAccessDeniedException();
 
-        $result = [];
-        
         if($request->isMethod('post') && $request->request->has('value')) {
-						$post = GeneralPost::get(intval($request->request->get('value')));
+            $post = GeneralPost::get(intval($request->request->get('value')));
             $channel = Node::get($id);
 
-						if ($channel->addPost($post->id, $errors)) {
-								Message::info(Text::get('admin-channelpost-correct'));
-						}
-						else {
-								Message::error(implode(', ', $errors));
-						}
+            if ($channel->addPost($post->id, $errors)) {
+                Message::info(Text::get('admin-channelpost-correct'));
+            } else {
+                Message::error(implode(', ', $errors));
+            }
+        }
 
-				}
         return $this->jsonResponse($post);
+    }
 
-		}
+    public function deleteAction($id, $post_id) {
+        if(!$this->user && !$this->user->hasPerm('admin-module-channels') )
+            throw new ControllerAccessDeniedException();
 
-		public function deleteAction($id, $post_id, Request $request) {
-			if(!$this->user && !$this->user->hasPerm('admin-module-channels') )
-				throw new ControllerAccessDeniedException();
+            $node_post = NodePost::getNodePost($id, $post_id);
+            $node_post->dbDelete();
 
-				$node_post = NodePost::getNodePost($id, $post_id);
-				$node_post->dbDelete();
-
-			return $this->redirect('/admin/channelposts/' . $id);
-		}
-
+        return $this->redirect('/admin/channelposts/' . $id);
+    }
 }

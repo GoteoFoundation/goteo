@@ -13,22 +13,24 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\Admin\AdminWorkshopEditForm;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
-use Goteo\Model\Stories;
 use Goteo\Model\Workshop;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
 class WorkshopAdminController extends AbstractAdminController {
 	protected static $icon = '<i class="fa fa-2x fa-graduation-cap"></i>';
 
-	// this modules is part of a specific group
-	public static function getGroup() {
+	public static function getGroup(): string
+    {
 		return 'services';
 	}
 
-	public static function getRoutes() {
+	public static function getRoutes(): array
+    {
 		return [
 			new Route(
 				'/',
@@ -60,7 +62,7 @@ class WorkshopAdminController extends AbstractAdminController {
 		]);
 	}
 
-	public function editAction($id = '', Request $request) {
+	public function editAction(Request $request, $id = '') {
 
 		$workshop = $id ? Workshop::get($id) : new workshop();
 
@@ -69,15 +71,15 @@ class WorkshopAdminController extends AbstractAdminController {
 		}
 
 		$defaults = (array) $workshop;
-		$processor = $this->getModelForm('AdminWorkshopEdit', $workshop, $defaults, [], $request);
+		$processor = $this->getModelForm(AdminWorkshopEditForm::class, $workshop, $defaults, [], $request);
 		$processor->createForm();
 		$processor->getBuilder()
-			->add('submit', 'submit', [
-				'label' => $submit_label ? $submit_label : 'regular-submit',
+			->add('submit', SubmitType::class, [
+				'label' => 'regular-submit',
 			]);
 		if ($workshop->id) {
 			$processor->getBuilder()
-				->add('remove', 'submit', [
+				->add('remove', SubmitType::class, [
 					'label' => Text::get('admin-remove-entry'),
 					'icon_class' => 'fa fa-trash',
 					'span' => 'hidden-xs',

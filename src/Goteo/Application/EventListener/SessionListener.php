@@ -25,13 +25,10 @@ use Goteo\Library\Text;
 use Goteo\Model\Image;
 use Goteo\Util\Parsers\UrlLang;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-//
 
 class SessionListener extends AbstractListener {
 
@@ -43,7 +40,6 @@ class SessionListener extends AbstractListener {
         }
 
         $request = $event->getRequest();
-
         $parser = new UrlLang($request);
 
         //non cookies for notifyAction on investController
@@ -51,15 +47,11 @@ class SessionListener extends AbstractListener {
             return;
         }
 
-
-        // clean all caches if requested
         // TODO: replace by some controller
         if ($request->query->has('cleancache')) {
             Model::cleanCache();
         }
 
-        // Init session
-        //
         // if url_lang is defined set a common cookie for all domains
         if (Config::get('url.url_lang')) {
             $host = $request->getHost();
@@ -75,10 +67,6 @@ class SessionListener extends AbstractListener {
             }
         }
         Session::start('goteo-' . Config::get('env'), Config::get('session.time'));
-
-        /**
-         * Session.
-         */
         Session::onSessionExpires(function () {
             Message::info(Text::get('session-expired'));
         });
@@ -86,37 +74,28 @@ class SessionListener extends AbstractListener {
             //Message::info('That\'s all folks!');
         });
 
-
-        // Set lang
         $lang = Lang::setFromGlobals($request);
         $host = $parser->getHost($lang);
         // Mantain user in secure enviroment if logged and ssl config on
         if (Config::get('ssl') && Session::isLogged() && !$request->isSecure()) {
-            // Force HTTPS redirection
             $host = 'https://' . $host;
         } else {
-            // Conserve the current scheme
             $host = $request->getScheme() . '://' . $host;
         }
 
         // Redirect if needed
         if ($host != $request->getScheme() . '://' . $request->getHttpHost()) {
             $query = http_build_query($request->query->all());
-            // die($host . $request->getPathInfo() . ($query ? "?$query" : ''));
             $event->setResponse(new RedirectResponse($host . $request->getPathInfo() . ($query ? "?$query" : '')));
             return;
         }
-        // die("[$host] - " .$request->getScheme() . '://' . $request->getHttpHost());
 
         // the stupid cookie EU law
         if (!Cookie::exists('goteo_cookies')) {
-            // print_r($_COOKIE);die('cooki');
             Cookie::store('goteo_cookies', 'ok');
-            // print_r($_COOKIE);die('cooki');
             Message::info(Text::get('message-cookies'));
         }
 
-        // set currency
         $currency = $request->query->get('currency');
         if ($amount = $request->query->get('amount')) {
             $currency = (string) substr($amount, strlen((int) $amount));
@@ -129,7 +108,6 @@ class SessionListener extends AbstractListener {
         $currency = Currency::get($currency, 'id');
         Session::store('currency', $currency); // depending on request
 
-        // Langs
         $langs = [];
         foreach (Lang::listAll('name', true) as $id => $lang) {
             if (Lang::isActive($id)) continue;
@@ -148,7 +126,6 @@ class SessionListener extends AbstractListener {
         Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), Lang::getUrl() . 'discover', 'discover', 30, null, 'global-search');
         Session::addToMainMenu('<i class="icon icon-drop"></i> ' . Text::get('regular-header-about'), Lang::getUrl() . 'blog', 'about', 40);
         Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), Lang::getUrl() . 'faq', 'faq', 100);
-
 
         // Currencies
         $currencies = [];
@@ -178,11 +155,11 @@ class SessionListener extends AbstractListener {
             }
 
             if ( isset($user->roles['checker']) ) {
-              Session::addToUserMenu(Text::get('regular-review_board'), Lang::getUrl() . 'review', 'review', 90);
+                Session::addToUserMenu(Text::get('regular-review_board'), Lang::getUrl() . 'review', 'review', 90);
             }
 
             if ( Session::isAdmin() ) {
-              Session::addToUserMenu(Text::get('regular-admin_board'), Lang::getUrl() . 'admin', 'admin', 90);
+                Session::addToUserMenu(Text::get('regular-admin_board'), Lang::getUrl() . 'admin', 'admin', 90);
             }
 
             // Add last 4 owned projects
@@ -199,18 +176,11 @@ class SessionListener extends AbstractListener {
 
         Session::addToUserMenu('<i class="fa fa-sign-out"></i> ' . Text::get('regular-logout'), Lang::getUrl() . 'user/logout', 'logout', 100);
 
-        // Controllers may use the Sidebar menu on specific activites
-        // Session::addToSidebarMenu('<i class="fa fa-heart"></i> Sidebar Item 1', '#');
-
-        // extend the life of the session
         Session::renew();
-
     }
 
     /**
      * Modifies the html to add some data
-     * @param  FilterResponseEvent $event [description]
-     * @return [type]                     [description]
      */
     public function onResponse(FilterResponseEvent $event) {
         $request = $event->getRequest();
@@ -223,14 +193,9 @@ class SessionListener extends AbstractListener {
 
         $vars = [
             'code' => $response->getStatusCode(),
-            // 'method' => $request->getMethod(),
-            // 'ip' => $request->getClientIp(),
             'agent' => $request->headers->get('User-Agent'),
             'referer' => $request->headers->get('referer'),
-            // 'http_user' => $request->getUser(),
-            // 'uri' => $request->getUri(),
             'path' => $request->getPathInfo(),
-            // 'query' => $request->query->all(),
             'query' => $request->getQueryString(),
             'user' => Session::getUserId(),
             'time' => microtime(true) - Session::getStartTime(),
@@ -246,15 +211,11 @@ class SessionListener extends AbstractListener {
         } else {
             $vars['controller'] = $controller;
         }
-        // if ($route_params = $request->attributes->get('_route_params')) {
-        //     $vars['route_params'] = $route_params;
-        // }
 
         $this->info('Request', $vars);
 
         //Are we shadowing some user? let's add a nice bar to return to the original user
         if ($shadowed_by = Session::get('shadowed_by')) {
-            // die(print_r(Session::get('shadowed_by')));
             $body = '<div class="user-shadowing-bar"><a href="/user/logout"><span class="badge"><i class="fa fa-user-md"></i> ' . Session::getUser()->name . '</span> &nbsp; <i class="fa fa-hand-o-right"></i> Back to ' . $shadowed_by[1] . '</a></div>';
             $content = $response->getContent();
             $search = '<div id="header"';
@@ -265,7 +226,6 @@ class SessionListener extends AbstractListener {
             $pos = strpos($content, $search);
             if ($pos !== false) {
                 $pos2 = $pos + strpos(substr($content, $pos), '>') + 1;
-                // die("$pos $pos2");
                 $content = substr($content, 0, $pos2) . $body . substr($content, $pos2);
                 $response->setContent($content);
                 $event->setResponse($response);

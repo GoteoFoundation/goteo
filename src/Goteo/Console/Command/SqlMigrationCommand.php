@@ -10,17 +10,13 @@
 
 namespace Goteo\Console\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Finder\Finder;
-
 use Goteo\Application\Config;
 use Goteo\Core\Model;
-
 use LibMigration\Migration;
-use LibMigration\Config as MigrationConfig;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * This class integrates LibMigration into the Goteo console/config system
@@ -67,29 +63,22 @@ EOT
 
     /**
      * Formats goteo config to LibMigration format
-     * @return array config
      */
-    protected function getConfig(InputInterface $input, OutputInterface $output) {
-        $config = [
+    protected function getConfig(InputInterface $input, OutputInterface $output): array
+    {
+        return [
             'debug' => $input->getOption('debug'),
             'colors' => $output->isDecorated(),
             'databases' => [
               Config::get('db.database') => [
-                  // PDO Connection settings.
                   'database_dsn'      => 'mysql:dbname=' . Config::get('db.database') . ';host=' . Config::get('db.host') . ';charset=UTF8',
                   'database_user'     => Config::get('db.username'),
                   'database_password' => Config::get('db.password'),
-
-                  // schema version table
                   'schema_version_table'    => 'schema_version',
-
-                  // directory contains migration task files.
                   'migration_dir'           => GOTEO_PATH . 'db/migrations'
               ]
           ]
         ];
-
-        return $config;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

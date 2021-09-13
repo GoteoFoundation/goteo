@@ -10,19 +10,17 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Model\Contract\BaseDocument;
 use Goteo\Library\Text;
+use Goteo\Model\Contract\BaseDocument;
 use Goteo\Model\Image;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 class QuestionnaireApiController extends AbstractApiController {
 
     /**
      * AJAX upload document to a questionnaire
      */
-    // public function uploadImagesAction(Request $request) {
     public function questionnaireUploadDocumentsAction(Request $request) {
         $files = $request->files->get('file');
         if(!is_array($files)) $files = [$files];
@@ -44,7 +42,6 @@ class QuestionnaireApiController extends AbstractApiController {
                     $success = true;
                 } else {
                     $msg = implode(', ',$errors['image']);
-                    // print_r($errors);
                 }
             }
 
@@ -68,6 +65,5 @@ class QuestionnaireApiController extends AbstractApiController {
 
         return $this->jsonResponse(['doc' => $doc, 'files' => $result, 'msg' => $global_msg, 'success' => $all_success]);
   }
-
 
 }

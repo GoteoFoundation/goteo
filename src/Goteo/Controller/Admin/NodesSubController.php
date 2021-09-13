@@ -12,16 +12,16 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\HttpFoundation\Request;
-use Goteo\Library\Feed,
-    Goteo\Application\Exception\ModelException,
-    Goteo\Application\Message,
-    Goteo\Application\Config,
-    Goteo\Model;
+use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Message;
+use Goteo\Library\Feed;
+use Goteo\Model;
+use Goteo\Model\User;
 
-    /**
-     * Gestion canales por administradores
-     */
+/**
+ * Gestion canales por administradores
+ */
 class NodesSubController extends AbstractSubController {
 
     static protected $labels = array (
@@ -31,9 +31,7 @@ class NodesSubController extends AbstractSubController {
       'admins' => 'nodes-lb-admins',
     );
 
-
     static protected $label = 'nodes-lb';
-
 
     protected $filters = array (
           'status' => '',
@@ -41,12 +39,11 @@ class NodesSubController extends AbstractSubController {
           'name' => '',
         );
 
-
     /**
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node and superadmins allowed here
         if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);
@@ -89,7 +86,6 @@ class NodesSubController extends AbstractSubController {
         );
     }
 
-
     public function editAction($id) {
         $node = $this->getNode($id);
         if($this->isPost()) {
@@ -97,7 +93,7 @@ class NodesSubController extends AbstractSubController {
             $node->email = $this->getPost('email');
             $node->default_consultant = $this->getPost('default_consultant');
             $node->iframe = $this->getPost('iframe');
-            
+
             if(!$node->isMasterNode()) {
                 if($this->hasPost('id')) {
                     try {
@@ -117,7 +113,6 @@ class NodesSubController extends AbstractSubController {
                 Message::info('Canal actualizado');
                 $txt_log = 'actualizado';
 
-                // Evento feed
                 $log = new Feed();
                 $log->setTarget($node->id, 'node');
                 $log->populate('Canal gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Canal %s', array(
@@ -134,29 +129,24 @@ class NodesSubController extends AbstractSubController {
         return array( 'template' => 'admin/nodes/edit', 'node_admins' => Model\Node::getAdmins() );
     }
 
-
     public function addAction($id = null) {
 
        if($this->isPost()) {
-
-            // objeto
             $node = new Model\Node(array(
-                        'id' => $this->getPost('id'),
-                        'name' => $this->getPost('name'),
-                        'email' => $this->getPost('email'),
-                        'url' => $this->getPost('url'),
-                        'active' => $this->getPost('active'),
-                        'default_consultant' => $this->getPost('default_consultant'),
-                        'sponsors_limit' => $this->getPost('sponsors_limit')
-                    ));
+                'id' => $this->getPost('id'),
+                'name' => $this->getPost('name'),
+                'email' => $this->getPost('email'),
+                'url' => $this->getPost('url'),
+                'active' => $this->getPost('active'),
+                'default_consultant' => $this->getPost('default_consultant'),
+                'sponsors_limit' => $this->getPost('sponsors_limit')
+            ));
 
             $errors = array();
             if ($node->create($errors)) {
-
                 Message::info('Canal creado');
                 $txt_log = 'creado';
 
-                // Evento feed
                 $log = new Feed();
                 $log->setTarget($node->id, 'node');
                 $log->populate('Canal gestionado desde admin', 'admin/nodes', \vsprintf('El admin %s ha %s el Canal %s', array(
@@ -168,14 +158,12 @@ class NodesSubController extends AbstractSubController {
 
                 Message::info('Puedes asignar ahora sus administradores');
                 return $this->redirect('/admin/nodes/admins/' . $node->id);
-
             } else {
                 Message::error('Fallo al crear, revisar los campos.' . implode('<br>', $errors));
             }
         }
         return array( 'template' => 'admin/nodes/add', 'node_admins' => Model\Node::getAdmins(), 'node' => $node );
     }
-
 
     public function listAction() {
         $filters = $this->getFilters();
@@ -196,4 +184,3 @@ class NodesSubController extends AbstractSubController {
     }
 
 }
-

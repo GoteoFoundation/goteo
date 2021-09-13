@@ -17,12 +17,19 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- *
- * This class creates overides Date to show always as the single_text option is activated
- *
+ * This class creates overrides Date to show always as the single_text option is activated
  */
 class UrlType extends SymfonyUrlType
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'custom_url';
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -34,12 +41,12 @@ class UrlType extends SymfonyUrlType
         $resolver->setDefault('row_class', '');
     }
 
-    // /**
-    //  * {@inheritdoc}
-    //  */
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
-        return __NAMESPACE__.'\TextType';
+        return SymfonyUrlType::class;
     }
 
     /**
@@ -49,7 +56,7 @@ class UrlType extends SymfonyUrlType
     {
         parent::buildView($view, $form, $options);
         $view->vars['row_class'] = $options['row_class'];
-        $view->vars['pre_addon'] = $options['pre_addon'] ? $options['pre_addon'] : '<i class="fa fa-link"></i>';
+        $view->vars['pre_addon'] = $options['pre_addon'] ?: '<i class="fa fa-link"></i>';
         $view->vars['post_addon'] = $options['post_addon'];
     }
 }

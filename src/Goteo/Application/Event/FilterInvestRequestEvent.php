@@ -60,5 +60,4 @@ class FilterInvestRequestEvent extends Event
         return $this->skip;
     }
 
-
 }

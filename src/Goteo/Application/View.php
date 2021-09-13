@@ -13,6 +13,11 @@ namespace Goteo\Application;
 use Foil;
 use Goteo\Application\Event\FilterViewEvent;
 use Foil\Contracts\ExtensionInterface;
+use Goteo\Util\Foil\Extension\Forms;
+use Goteo\Util\Foil\Extension\GoteoCore;
+use Goteo\Util\Foil\Extension\LangUtils;
+use Goteo\Util\Foil\Extension\ModelsData;
+use Goteo\Util\Foil\Extension\TextUtils;
 
 class View {
     static protected $engine;
@@ -21,12 +26,11 @@ class View {
 
     static public function createEngine() {
         $engine = Foil\engine();
-        // Register default Goteo extensions
-        $engine->loadExtension(new \Goteo\Util\Foil\Extension\GoteoCore(), [], true);
-        $engine->loadExtension(new \Goteo\Util\Foil\Extension\TextUtils(), [], true);
-        $engine->loadExtension(new \Goteo\Util\Foil\Extension\ModelsData(), [], true);
-        $engine->loadExtension(new \Goteo\Util\Foil\Extension\LangUtils(), [], true);
-        $engine->loadExtension(new \Goteo\Util\Foil\Extension\Forms(), [], true);
+        $engine->loadExtension(new GoteoCore(), [], true);
+        $engine->loadExtension(new TextUtils(), [], true);
+        $engine->loadExtension(new ModelsData(), [], true);
+        $engine->loadExtension(new LangUtils(), [], true);
+        $engine->loadExtension(new Forms(), [], true);
         return $engine;
     }
 
@@ -74,15 +78,13 @@ class View {
      * Renders a template view
      */
     static public function render($view, $vars = [], $fire_event = true) {
-        if($fire_event) {
+        if ($fire_event) {
             $event = App::dispatch(AppEvents::VIEW_RENDER, new FilterViewEvent($view, $vars));
             $view = $event->getView();
             $vars = $event->getVars();
         }
-        //por compatibilidad
         return self::getEngine()->render($view, $vars + array('vars' => $vars)); //por compatibilidad
     }
-
 
     /**
      * Gets the Foil engine
@@ -138,13 +140,9 @@ class View {
                 else        $prepend_dirs[$name] = $folder;
             }
         }
-        // print_r(array_merge($prepend_dirs, $folders, $append_dirs));die;
         self::$engine->setFolders(array_merge($prepend_dirs, $folders, $append_dirs));
     }
 
-    /**
-     * Returns the current used theme
-     */
     static public function getTheme() {
         return self::$theme;
     }

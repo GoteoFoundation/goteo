@@ -108,7 +108,6 @@ class ProjectTest extends TestCase {
         $this->assertFalse($ob->save());
     }
 
-
     public function testCreateUser() {
         delete_test_user();
         delete_test_node();

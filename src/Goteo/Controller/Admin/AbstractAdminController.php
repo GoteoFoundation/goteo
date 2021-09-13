@@ -10,24 +10,21 @@
 
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
-
-use Goteo\Application\View;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Model\User;
-use Goteo\Library\Text;
+use Goteo\Application\View;
+use Goteo\Core\Controller;
 use Goteo\Core\Traits\LoggerTrait;
+use Goteo\Library\Text;
+use Goteo\Model\User;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
-abstract class AbstractAdminController extends \Goteo\Core\Controller implements AdminControllerInterface {
+abstract class AbstractAdminController extends Controller implements AdminControllerInterface {
     use LoggerTrait;
     protected $user;
 
     public function __construct() {
-        // changing to a responsive theme here
         View::setTheme('responsive');
         View::getEngine()->useContext('admin', [
             'module' => static::getId(),
@@ -36,10 +33,6 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
         $this->user = Session::getUser();
     }
 
-    /**
-     * Returns the identificator for this controller
-     * @return MyControllerAdminController becames mycontroller
-     */
     public static function getId() {
         $class = get_called_class();
         $a = explode('\\', $class);
@@ -63,7 +56,8 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
     }
 
     // Only used if getSidebar is not defined
-    public static function getGroup() {
+    public static function getGroup(): string
+    {
         return 'activity';
     }
 
@@ -88,13 +82,12 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
     }
 
     /**
-     * Returns if this class can be administred by specified user
+     * Returns if this class can be administered by specified user
      * Overwrite this function for more specific permissions
      */
     public static function isAllowed(User $user, $uri = '') {
         if($user->hasPerm('admin-any-module')) return true;
         if($user->hasPerm('admin-module-' . static::getId())) return true;
-
     }
 
     /**
@@ -103,6 +96,7 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
     public function indexAction(Request $request) {
         $id = static::getId();
         Message::error("Submodule [$id] has no routes/controllers defined yet");
+
         return $this->viewResponse('admin/index', []);
     }
 

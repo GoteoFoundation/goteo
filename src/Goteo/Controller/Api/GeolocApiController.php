@@ -10,26 +10,21 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
+use GeoIp2\Database\Reader;
+use GeoIp2\Exception\AddressNotFoundException;
 use Goteo\Application\Config;
-
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ControllerException;
 use Goteo\Application\Exception\InvalidDataException;
-
 use Goteo\Model\Location\LocationItem;
-
-use GeoIp2\Database\Reader;
-use GeoIp2\Exception\AddressNotFoundException;
+use Symfony\Component\HttpFoundation\Request;
 
 class GeolocApiController extends AbstractApiController {
     public function __construct() {
         parent::__construct();
-        // Activate cache & replica read for this controller
         $this->dbReplica(true);
         $this->dbCache(true);
     }
-
 
     /**
      * returns geolocation data from an IP request
@@ -68,13 +63,12 @@ class GeolocApiController extends AbstractApiController {
             'postal_code'    => $record->postal->code,
             'ip_address'     => $record->traits->ipAddress,
         ]);
-
     }
 
     /**
      * returns geolocation data from an IP request
      */
-    public function geolocateAction($type, $id='', Request $request) {
+    public function geolocateAction(Request $request, $type, $id='') {
         if(!$this->user) {
             throw new ControllerAccessDeniedException();
         }
@@ -120,8 +114,7 @@ class GeolocApiController extends AbstractApiController {
                 } else {
                     throw new InvalidDataException('Localization saving errors: '. implode(',', $errors));
                 }
-            }
-            else {
+            } else {
                 //Just changes some properties (locable, info)
                 foreach($request->request->all() as $key => $value) {
                     if($key === 'locable' || $key === 'info') {
@@ -137,7 +130,6 @@ class GeolocApiController extends AbstractApiController {
         } else {
             $instance = $instance::get($instance->id);
         }
-
 
         $result['type'] = $type;
         $result['location'] = $instance;

@@ -13,6 +13,11 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\Admin\AdminCategoryEditForm;
+use Goteo\Library\Forms\Admin\AdminFootprintEditForm;
+use Goteo\Library\Forms\Admin\AdminSdgEditForm;
+use Goteo\Library\Forms\Admin\AdminSocialCommitmentEditForm;
+use Goteo\Library\Forms\Admin\AdminSphereEditForm;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Category;
@@ -20,31 +25,64 @@ use Goteo\Model\SocialCommitment;
 use Goteo\Model\Sphere;
 use Goteo\Model\Sdg;
 use Goteo\Model\Footprint;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
 /**
  * This module should admin Categories, Spheres, SocialCommitments, SDGs, Footprints
- * and its interelationships
+ * and its interrelationships
  */
-class CategoriesAdminController extends AbstractAdminController {
+class CategoriesAdminController extends AbstractAdminController
+{
+    const TAB_PROPERTY_TEXT = "text";
+    const TAB_PROPERTY_MODEL = "model";
+    const TAB_PROPERTY_MODEL_CLASS = "modelClass";
+    const TAB_PROPERTY_FORM_CLASS = "form";
+
 	protected static $icon = '<i class="fa fa-2x fa-object-group"></i>';
     protected static $label = 'admin-categories';
 
     protected $tabs = [
-        'category' => [ 'text' => 'categories', 'model' => 'Category' ],
-        'socialcommitment' => [ 'text' => 'social_commitments', 'model' => 'SocialCommitment' ],
-        'sphere' => [ 'text' => 'spheres', 'model' => 'Sphere' ],
-        'sdg' => ['text' => 'sdgs', 'model' => 'Sdg'],
-        'footprint' => [ 'text' => 'footprints', 'model' => 'Footprint' ]
+        'category' => [
+            self::TAB_PROPERTY_TEXT => 'categories',
+            self::TAB_PROPERTY_MODEL => 'Category',
+            self::TAB_PROPERTY_MODEL_CLASS => Category::class,
+            self::TAB_PROPERTY_FORM_CLASS => AdminCategoryEditForm::class
+        ],
+        'socialcommitment' => [
+            self::TAB_PROPERTY_TEXT => 'social_commitments',
+            self::TAB_PROPERTY_MODEL => 'SocialCommitment',
+            self::TAB_PROPERTY_MODEL_CLASS => SocialCommitment::class,
+            self::TAB_PROPERTY_FORM_CLASS => AdminSocialCommitmentEditForm::class
+        ],
+        'sphere' => [
+            self::TAB_PROPERTY_TEXT => 'spheres',
+            self::TAB_PROPERTY_MODEL => 'Sphere',
+            self::TAB_PROPERTY_MODEL_CLASS => Sphere::class,
+            self::TAB_PROPERTY_FORM_CLASS => AdminSphereEditForm::class
+        ],
+        'sdg' => [
+            self::TAB_PROPERTY_TEXT => 'sdgs',
+            self::TAB_PROPERTY_MODEL => 'Sdg',
+            self::TAB_PROPERTY_MODEL_CLASS => Sdg::class,
+            self::TAB_PROPERTY_FORM_CLASS => AdminSdgEditForm::class
+        ],
+        'footprint' => [
+            'text' => 'footprints',
+            self::TAB_PROPERTY_MODEL => 'Footprint',
+            self::TAB_PROPERTY_MODEL_CLASS => Footprint::class,
+            self::TAB_PROPERTY_FORM_CLASS => AdminFootprintEditForm::class
+        ]
     ];
 
-	// this modules is part of a specific group
-	public static function getGroup() {
+	public static function getGroup(): string
+    {
 		return 'contents';
 	}
 
-	public static function getRoutes() {
+	public static function getRoutes(): array
+    {
 		return [
 			new Route(
 				'/{tab}',
@@ -61,9 +99,8 @@ class CategoriesAdminController extends AbstractAdminController {
 		];
 	}
 
-	public function listAction($tab = 'category', Request $request) {
+	public function listAction($tab = 'category') {
         if(!isset($this->tabs[$tab])) throw new ModelNotFoundException("Not found type [$tab]");
-
 
         if($tab === 'socialcommitment') {
             $list = SocialCommitment::getAll(Config::get('lang'));
@@ -91,28 +128,29 @@ class CategoriesAdminController extends AbstractAdminController {
         ]);
     }
 
-    public function editAction($tab = 'category', $id = '', Request $request) {
+    public function editAction(Request $request, $tab = 'category', $id = '') {
 
         if(!isset($this->tabs[$tab])) throw new ModelNotFoundException("Not found type [$tab]");
-        $model = $this->tabs[$tab]['model'];
-        $fullModel = "\\Goteo\\Model\\$model";
+        $model = $this->tabs[$tab][self::TAB_PROPERTY_MODEL];
+        $modelClass = $this->tabs[$tab][self::TAB_PROPERTY_MODEL_CLASS];
+        $formClass = $this->tabs[$tab][self::TAB_PROPERTY_FORM_CLASS];
 
-        $instance = $id ? $fullModel::get($id, Config::get('sql_lang')) : new $fullModel();
+        $instance = $id ? $modelClass::get($id, Config::get('sql_lang')) : new $modelClass();
 
         if (!$instance) {
             throw new ModelNotFoundException("Not found $model [$id]");
         }
 
         $defaults = (array) $instance;
-        $processor = $this->getModelForm("Admin{$model}Edit", $instance, $defaults, [], $request);
+        $processor = $this->getModelForm($formClass, $instance, $defaults, [], $request);
         $processor->createForm();
         $processor->getBuilder()
-            ->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit',
+            ->add('submit', SubmitType::class, [
+                'label' => 'regular-submit',
             ]);
         if ($instance->id) {
             $processor->getBuilder()
-                ->add('remove', 'submit', [
+                ->add('remove', SubmitType::class, [
                     'label' => Text::get('admin-remove-entry'),
                     'icon_class' => 'fa fa-trash',
                     'span' => 'hidden-xs',

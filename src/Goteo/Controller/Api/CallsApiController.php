@@ -10,22 +10,15 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Exception\ControllerException;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Exception\ModelException;
-
 use Goteo\Model\Call;
-use Goteo\Library\Text;
+use Symfony\Component\HttpFoundation\Request;
 
 class CallsApiController extends AbstractApiController {
 
     /**
      * Simple listing of calls
      * TODO: according to permissions, filter this calls
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function callsAction(Request $request) {
         if(!$this->user) {
@@ -34,8 +27,6 @@ class CallsApiController extends AbstractApiController {
         $filters = ['order' => 'IFNULL(published, opened) DESC'];
         $page = max((int) $request->query->get('pag'), 0);
         $status = [
-            // Call::STATUS_EDITING,
-            // Call::STATUS_REVIEWING,
             Call::STATUS_OPEN,
             Call::STATUS_ACTIVE,
             Call::STATUS_COMPLETED,
@@ -44,7 +35,6 @@ class CallsApiController extends AbstractApiController {
 
         // General search
         if($request->query->has('q')) {
-            // $filters['global'] = $request->query->get('q');
             $filters['basic'] = $request->query->get('q');
         }
         if(!$this->is_admin) {
@@ -81,7 +71,7 @@ class CallsApiController extends AbstractApiController {
             'total' => $total,
             'page' => $page,
             'limit' => $limit
-            ]);
+        ]);
     }
 
 }

@@ -12,17 +12,15 @@ use Goteo\Application\Session;
 use Goteo\Core\Error;
 use Goteo\Core\Resource;
 use Goteo\Core\View;
+use Symfony\Component\HttpFoundation\Response;
 
 // Get URI without query string
 $uri = strtok($_SERVER['REQUEST_URI'], '?');
-
-// Get requested segments
 $segments = preg_split('!\s*/+\s*!', $uri, -1, PREG_SPLIT_NO_EMPTY);
 
 // Normalize URI
 $uri = '/' . implode('/', $segments);
 
-// Get controller name
 $controller = '';
 if (!empty($segments) && is_array($segments)) {
 	// Take first segment as controller
@@ -35,32 +33,23 @@ if (!empty($segments) && is_array($segments)) {
 if (empty($controller)) {
 	throw new Error(Error::NOT_FOUND);
 }
-// Continue
+
 try {
 	$class = new ReflectionClass("Goteo\\Controller\\{$controller}");
+
 	if (!empty($segments) && $class->hasMethod($segments[0])) {
 		$method = array_shift($segments);
 	} else {
-		// Try default method
 		$method = 'index';
 	}
-	// print_r($segments);print_r($method);print_r($class);die;
 
-	// ReflectionMethod
 	$method = $class->getMethod($method);
-
-	// Number of params defined in method
 	$numParams = $method->getNumberOfParameters();
-	// Number of required params
 	$reqParams = $method->getNumberOfRequiredParameters();
-	// Given params
 	$gvnParams = count($segments);
 
 	if ($gvnParams >= $reqParams && (!($gvnParams > $numParams && $numParams <= $reqParams))) {
-		// Try to instantiate
 		$instance = $class->newInstance();
-
-		// Invoke method
 		$result = $method->invokeArgs($instance, $segments);
 
 		if ($result === null) {
@@ -81,7 +70,7 @@ try {
 			echo $result->render();
 		}
 		//Provisional mientras la transicion
-		elseif ($result instanceOf \Symfony\Component\HttpFoundation\Response) {
+		elseif ($result instanceOf Response) {
 			return $result;
 		} else {
 			echo $result;
@@ -90,11 +79,11 @@ try {
 		if ($mime_type == "text/html") {
 			echo '<!-- legacy: ' . (microtime(true) - Session::getStartTime()) . 's -->';
 		}
-		//Farewell
+
 		return;
 	}
 
-} catch (\ReflectionException $e) {
+} catch (ReflectionException $e) {
 	// esto tendría que notificar a Config::getMail('fail')
 	throw new Error(Error::BAD_REQUEST, $e->getMessage());
 }

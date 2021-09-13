@@ -10,6 +10,8 @@
 
 namespace Goteo\Controller\Api;
 
+use Goteo\Core\Controller;
+use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Session;
@@ -17,9 +19,10 @@ use Goteo\Application\View;
 use Goteo\Model\Image;
 use Goteo\Library\Text;
 
-abstract class AbstractApiController extends \Goteo\Core\Controller {
+abstract class AbstractApiController extends Controller
+{
     protected $is_admin = false;
-    protected $user = null;
+    protected ?User $user = null;
 
     public function __construct() {
         // changing to a json theme here (not really a theme)
@@ -29,7 +32,6 @@ abstract class AbstractApiController extends \Goteo\Core\Controller {
         // cache active only on non-logged users
         if(!$this->user) $this->dbCache(true);
     }
-
 
     /**
      * Generic file uploader to be used by other api controllers
@@ -54,10 +56,8 @@ abstract class AbstractApiController extends \Goteo\Core\Controller {
                 $errors = [];
                 if ($image->save($errors)) {
                     $success = true;
-                }
-                else {
+                } else {
                     $msg = implode(', ',$errors['image']);
-                    // print_r($errors);
                 }
             }
 

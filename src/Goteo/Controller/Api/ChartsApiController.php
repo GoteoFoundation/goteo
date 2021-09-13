@@ -10,28 +10,20 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Exception\ControllerException;
-use Goteo\Application\Config;
-use Goteo\Library\Text;
 use Goteo\Application\Currency;
-use Goteo\Payment\Payment;
-use Goteo\Core\Model;
-use Goteo\Model\Project;
+use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Library\Text;
 use Goteo\Model\Call;
-use Goteo\Model\Invest;
-use Goteo\Model\Image;
-use Goteo\Model\Origin;
-use Goteo\Util\Stats\Stats;
 use Goteo\Model\Matcher;
+use Goteo\Model\Origin;
+use Goteo\Model\Project;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class ChartsApiController extends AbstractApiController {
 
     public function __construct() {
         parent::__construct();
-        // Activate cache & replica read for this controller
         $this->dbReplica(true);
         $this->dbCache(true);
     }
@@ -77,14 +69,11 @@ class ChartsApiController extends AbstractApiController {
         return $matcher;
     }
 
-
     /**
      * Simple projects info data specially formatted for D3 charts
      * COSTS
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
-    public function projectCostsAction($id, Request $request) {
+    public function projectCostsAction($id) {
         $prj = $this->getProject($id);
         $mincost = (int) Currency::amount($prj->mincost);
         $maxcost = (int) Currency::amount($prj->maxcost);
@@ -117,7 +106,7 @@ class ChartsApiController extends AbstractApiController {
             $costs[$arr][$cost->type]['size'] += (int)$cost->amount;
             $costs[$arr][$cost->type]['color'] = $color_first;
         }
-        // $ob['children'] = array_values($costs);
+
         $ob = ['size' => $mincost + $maxcost, 'name' => $prj->name, 'children' => [
             ['size' => $mincost, 'name' => Text::get('project-view-metter-minimum'), 'color' =>'hsla(303, 46%, 30%, 1)', 'children' => array_values($costs['mandatory'])],
             ['size' => $maxcost, 'name' => Text::get('project-view-metter-optimum'), 'color' =>'hsla(179, 76%, 20%, 1)', 'children' => array_values($costs['optional'])],
@@ -129,17 +118,12 @@ class ChartsApiController extends AbstractApiController {
     /**
      * Simple projects info data specially formatted for D3 charts
      * INVESTS
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
-    public function projectInvestsAction($id, Request $request) {
+    public function projectInvestsAction($id) {
         $prj = $this->getProject($id);
         $mincost = (int) Currency::amount($prj->mincost);
         $maxcost = (int) Currency::amount($prj->maxcost);
-        // die("[ $mincost $maxcost ]");
-        // print_r($prj);die;
         $empty = ['date' => null, 'amount' => 0, 'ideal' => 0, 'invests' => 0, 'desc' => 'Invest', 'cumulative' => 0, 'cumulative-invests' => 0, 'cumulative-amount-percent' => 0, 'cumulative-invests-percent' => 0];
-        // print_r($prj);die;
         $time = strtotime($prj->published);
         $time_round1 = mktime(0,0,0,date('m', $time), date('d', $time) + (int)$prj->days_round1, date('Y', $time));
         $time_round2 = mktime(0,0,0,date('m', $time), date('d', $time) + (int)$prj->days_round1 + (int)$prj->days_round2, date('Y', $time));
@@ -194,15 +178,15 @@ class ChartsApiController extends AbstractApiController {
             $ret[] = $v;
             $last = $v;
         }
+
         return $this->jsonResponse($ret);
     }
 
 
     /**
      * Simple projects origins data
-     * @param  Request $request [description]
      */
-    public function originStatsAction($id = null, $type = 'project', $group = 'referer', Request $request) {
+    public function originStatsAction(Request $request, $id = null, $type = 'project', $group = 'referer') {
 
         if($type === 'call')
             $model = $id ? $this->getCall($id, true) : new Call();
@@ -245,12 +229,10 @@ class ChartsApiController extends AbstractApiController {
         return $this->jsonResponse($ret);
     }
 
-
     /**
      * Gets amount for a Matcher
-     * @param  Matcher $mid 
-     * @param  string type amount, raised, projects
-     * @param  Request $request [description]
+     * @param  Matcher $mid
+     * @param  string $type amount, raised, projects
      */
     public function statsMatcherAction($mid = null, $type = 'amount') {
         $matcher = Matcher::get($mid);
@@ -265,25 +247,25 @@ class ChartsApiController extends AbstractApiController {
             $available = $matcher->getTotalAmount() - $used;
             $result[] = [
                 'label' => Text::get('dashboard-matcher-api-amount-used'),
-                'counter' => (int) $used
+                'counter' => $used
             ];
             $result[] = [
                 'label' => Text::get('dashboard-matcher-api-amount-available'),
-                'counter' => (int) $available
+                'counter' => $available
             ];
         } else if ($type == 'raised') {
             $raised = $matcher->getCrowdAmount();
             $used = $matcher->getUsedAmount();
             $result[] = [
                 'label' => Text::get('dashboard-matcher-api-raised-raised'),
-                'counter' => (int) $raised
+                'counter' => $raised
             ];
             $result[] = [
                 'label' => Text::get('dashboard-matcher-api-raised-used'),
                 'counter' => (int) $used
             ];
         } else if ($type == 'projects') {
-            foreach (Matcher::$statuses as $key => $value) {
+            foreach (Matcher::$statuses as $value) {
                 $result[] = [
                     'label' => Text::get('dashboard-matcher-api-projects-' . $value),
                     'counter' => (int) count($matcher->getProjects($value))
@@ -296,10 +278,9 @@ class ChartsApiController extends AbstractApiController {
 
     /**
      * Simple matcher's projects origins data
-     * @param  Request $request [description]
      */
-    public function originMatcherStatsAction($id = null, $type = 'project', $group = 'referer', Request $request) {
-        
+    public function originMatcherStatsAction(Request $request, $group = 'referer') {
+
         $model = new Project();
 
         $group_by = $request->query->get('group_by');
@@ -330,6 +311,5 @@ class ChartsApiController extends AbstractApiController {
 
         return $this->jsonResponse($ret);
     }
-
 
 }

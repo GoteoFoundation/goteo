@@ -10,21 +10,18 @@
 
 namespace Goteo\Console\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\BufferedOutput;
-
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
-
-use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
-use Goteo\Util\AnsiConverter\Theme\SolarizedLightTheme;
-
 use Goteo\Application\Config;
+use Goteo\Model\Mail;
 use Goteo\Model\Project;
 use Goteo\Model\Template;
-use Goteo\Model\Mail;
+use Goteo\Util\AnsiConverter\Theme\SolarizedLightTheme;
+use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  *  Several database checks
@@ -87,7 +84,6 @@ EOT
             throw new \Exception('Scope is not valid!');
         }
 
-
         $verbose = $output->isVerbose();
 
         if(in_array($scope, ['all', 'feed'])) {
@@ -139,6 +135,7 @@ EOT
                 $today = date('Y-m-d');
                 $datedif = strtotime($today) - $datepart;
                 $d = round($datedif / 86400);
+
                 if ($d > $days || !isset($parts[2])) {
                     $output->writeln("User: <info>{$row->id}</info> Token: <comment>{$row->token}</comment> Date: <comment>{$parts[2]}</comment> Days: <comment>$d</comment>");
 
@@ -150,7 +147,6 @@ EOT
                         }
                     }
                 }
-
             }
         }
 
@@ -180,13 +176,6 @@ EOT
                         $fixes ++;
                     }
                 }
-            }
-            if($update) {
-                // Project::query("DELETE FROM mail_stats_location WHERE id NOT IN (SELECT id FROM mail_stats)");
-                // Project::query("OPTIMIZE TABLE mail");
-                // Project::query("OPTIMIZE TABLE mail_content");
-                // Project::query("OPTIMIZE TABLE mail_stats");
-                // Project::query("OPTIMIZE TABLE mail_stats_location");
             }
             $query = Project::query("SELECT count(*) as total FROM mail");
             $total = $query->fetchColumn();
@@ -271,9 +260,7 @@ EOT
             $command = $this->getApplication()->find('endround');
             $out = new BufferedOutput(BufferedOutput::VERBOSITY_NORMAL, true);
             $args = new ArrayInput(['command' => 'endround', '--skip-invests' => true, '--predict' => 1]);
-            // $command->setOutput($out);
-            // $command->setInput($args);
-            // print_r($command->output);die;
+
             if($command->run($args, $out) !== 0) {
                 $output->writeln("<error>Errors found!</error>");
                 $res = $out->fetch();
@@ -303,8 +290,5 @@ EOT
                 $output->writeln("<info>Execute with --update option to delete the old records</info>");
             }
         }
-
-
-        return;
     }
 }

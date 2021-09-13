@@ -9,9 +9,11 @@
  * file that was distributed with this source code.
  */
 
-use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\App;
 use Goteo\Application\Config;
+use Symfony\Component\HttpFoundation\Request;
+
+$isDebugEnv = getenv("DEBUG");
 
 //Public Web path
 define('GOTEO_WEB_PATH', __DIR__ . '/');
@@ -21,33 +23,46 @@ require_once __DIR__ . '/../src/autoload.php';
 // Create first the request object (to avoid other classes reading from php://input specially)
 $request = Request::createFromGlobals();
 
-ini_set('display_errors', 0);
 error_reporting(E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED); // for symfony user deprecated errors
+
+ini_set('display_errors', $isDebugEnv);
+if ($isDebugEnv) {
+    App::debug(true);
+}
+
+// Bored? Try the hard way and fix some notices:
+//Symfony\Component\Debug\Debug::enable();
 // error handle needs to go after autoload
 set_error_handler('Goteo\Application\App::errorHandler');
 
-// Config file...
 $config = getenv('GOTEO_CONFIG_FILE');
-if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
+
+if ($isDebugEnv && !is_file($config)) {
+    $config = __DIR__ . '/../config/dev-settings.yml';
+} else if (!is_file($config)) {
+    $config = __DIR__ . '/../config/settings.yml';
+}
+
 Config::load($config);
 Config::autosave();
 
-// Due a symfony issue, disable FORWARDED header, it may cause some problems
-// if not exactly the same as the X_FORWARDED_FOR
-// See https://stackoverflow.com/questions/44543649/conflict-between-http-headers-in-symfony-3
-Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
-
-// Add trusted proxies
 if (is_array(Config::get('proxies'))) {
-    $request->setTrustedProxies(Config::get('proxies'));
+    $request->setTrustedProxies(
+        Config::get('proxies'),
+        Request::HEADER_FORWARDED
+    );
 }
 
 //Get from globals defaults
 App::setRequest($request);
 
-// Get the app
-$app = App::get();
+if ($isDebugEnv) {
+    $handler = new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::DEBUG);
+    $handler->setFormatter(new Bramus\Monolog\Formatter\ColoredLineFormatter());
 
-// handle routes, flush buffer out
-$app->run();
+    App::getService('logger')->pushHandler($handler);
+    App::getService('syslogger')->pushHandler($handler);
+    App::getService('paylogger')->pushHandler($handler);
+}
 
+App::get()->run();

@@ -11,7 +11,8 @@
 
 namespace Goteo\Library\Forms\Admin;
 
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
@@ -23,7 +24,7 @@ use Goteo\Library\Forms\FormModelException;
 
 class AdminCategoryEditForm extends AbstractFormProcessor {
 
-    public function getConstraints($field) {
+    public function getConstraints() {
         return [new Constraints\NotBlank()];
     }
 
@@ -31,8 +32,6 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
         $model = $this->getModel();
 
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
-        $defaults = $options['data'];
 
         $social_commitments = [];
         foreach(SocialCommitment::getAll() as $s) {
@@ -47,25 +46,24 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
             $footprints['<img src="'.$f->getIcon()->getLink().'" class="icon icon-3x"> '.$f->name] = $f->id;
         }
 
-        // print_r($defaults);die;
         $builder
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'disabled' => $this->getReadonly(),
-                'constraints' => $this->getConstraints('name'),
+                'constraints' => $this->getConstraints(),
                 'label' => 'regular-name'
             ])
-            ->add('description', 'text', [
+            ->add('description', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'label' => 'regular-description'
             ])
-            ->add('social_commitment', 'choice', array(
+            ->add('social_commitment', ChoiceType::class, array(
                 'label' => 'admin-title-social_commitment',
                 'required' => false,
                 'choices_as_values' => true,
                 'choices' => $social_commitments
             ))
-            ->add('footprints', 'choice', array(
+            ->add('footprints', ChoiceType::class, array(
                 'label' => 'admin-title-footprints',
                 'data' => array_column($model->getFootprints(), 'id'),
                 'expanded' => true,
@@ -76,7 +74,7 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12'
             ))
-            ->add('sdgs', 'choice', array(
+            ->add('sdgs', ChoiceType::class, array(
                 'label' => 'admin-title-sdgs',
                 'data' => array_column($model->getSdgs(), 'id'),
                 'expanded' => true,
@@ -91,12 +89,12 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
 
         return $this;
     }
-        public function save(FormInterface $form = null, $force_save = false) {
+
+    public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
-        // print_r($data);die;
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
 

@@ -12,11 +12,11 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Config;
 use Goteo\Application\Message;
-use Goteo\Application\Config,
-	Goteo\Application\Session,
-	Goteo\Library\Feed,
-    Goteo\Library\Worth as WorthLib;
+use Goteo\Library\Feed;
+use Goteo\Library\Worth as WorthLib;
+use Goteo\Model\User;
 
 class WorthSubController extends AbstractSubController {
 
@@ -33,7 +33,7 @@ class WorthSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node and superadmins allowed here
         if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);

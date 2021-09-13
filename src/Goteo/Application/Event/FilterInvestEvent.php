@@ -23,7 +23,6 @@ class FilterInvestEvent extends Event
     {
         $this->invest = $invest;
         $this->method = $method;
-        $this->request = $request;
     }
 
     public function getInvest()

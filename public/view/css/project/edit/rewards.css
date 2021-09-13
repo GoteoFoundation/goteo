@@ -2,7 +2,7 @@
 /**
  * Rewards
  */
- 
+
 body.project-edit div#main.rewards div.superform li.element.reward-new > .title {
     display: none;
 }
@@ -22,6 +22,9 @@ body.project-edit div#main.overview div.superform li.element.icon,
 body.project-edit div#main.rewards div.superform li.element.reward div.reward {
     background: none no-repeat right center;
     min-height: 32px;
+    display: inline-block;
+    width: 30%;
+    margin-right: 1%;
 }
 
 body.project-edit div#main.overview div.superform li.element.icon.file,

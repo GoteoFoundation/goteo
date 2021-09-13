@@ -10,50 +10,44 @@
 
 namespace Goteo\Payment\Method;
 
-use Goteo\Application\Config;
 use Goteo\Application\Currency;
+use Omnipay\Common\Message\ResponseInterface;
 
-/**
- * Creates a Payment Method that uses Paypal provider
- */
 class PaypalPaymentMethod extends AbstractPaymentMethod {
 
-    public function getGatewayName() {
+    public function getGatewayName(): string
+    {
         return 'PayPal_Express';
     }
 
-    public function purchase() {
-        // Let's obtain the gateway and the
+    public function purchase(): ResponseInterface
+    {
         $gateway = $this->getGateway();
 
         // You can specify your paypal gateway details in config/settings.yml
         if(!$gateway->getLogoImageUrl()) $gateway->setLogoImageUrl(SRC_URL . '/goteo_logo.png');
 
         return parent::purchase();
-
     }
 
-    public function completePurchase() {
-        // Let's obtain the gateway and the
+    public function completePurchase(): ResponseInterface
+    {
         $gateway = $this->getGateway();
         $invest = $this->getInvest();
         $gateway->setCurrency(Currency::getDefault('id'));
         $payment = $gateway->completePurchase([
-                    'amount' => (float) $this->getTotalAmount(),
-                    'description' => $this->getInvestDescription(),
-                    'clientIp' => $this->getRequest()->getClientIp(),
-                    'returnUrl' => $this->getCompleteUrl(),
-                    'cancelUrl' => $this->getCompleteUrl(),
+            'amount' => (float) $this->getTotalAmount(),
+            'description' => $this->getInvestDescription(),
+            'clientIp' => $this->getRequest()->getClientIp(),
+            'returnUrl' => $this->getCompleteUrl(),
+            'cancelUrl' => $this->getCompleteUrl(),
         ]);
-
 
         // Additional Invest details
         $invest->setAccount($payment->getPayerID() ? $payment->getPayerID() : $payment->getData()['PAYERID']);
         $invest->setPayment($payment->getToken() ? $payment->getToken() : $payment->getData()['TOKEN']);
 
-
         return $payment->send();
-
     }
 
 }
