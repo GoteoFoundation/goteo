@@ -12,8 +12,6 @@ namespace Goteo\Core\Traits;
 
 use Goteo\Util\Monolog\Processor\WebProcessor;
 use Psr\Log\LoggerInterface;
-use Goteo\Application\Config;
-use RuntimeException;
 
 /**
  * Trait to use log on legacy classes
@@ -32,15 +30,7 @@ trait StaticLoggerTrait {
 
     static public function log($message, array $context = [], $func = 'info') {
         if(static::$logger) {
-            if(Config::get('debug')) {
-                return static::$logger->$func($message, WebProcessor::processObject($context));
-            } else {
-                try {
-                    return static::$logger->$func($message, WebProcessor::processObject($context));
-                } catch(RuntimeException $e) {
-                    // nothing here, if not in debug mode, failure to process logs is ignored
-                }
-            }
+            return static::$logger->$func($message, WebProcessor::processObject($context));
         }
     }
 
