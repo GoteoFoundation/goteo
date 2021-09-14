@@ -77,13 +77,7 @@ class AdminSectionForm extends AbstractFormProcessor {
         $data = $form->getData();
         $model = $this->getModel();
 
-        if ($data['main_image'] && is_array($data['main_image'])) {
-            if ($data['main_image']['removed'] && $model->main_image == current($data['main_image']['removed'])->id)
-                $model->main_image = null;
-
-            if ($data['main_image']['uploads'] && is_array($data['main_image']['uploads']))
-                $model->main_image = $data['main_image']['uploads'][0];
-        }
+        $this->getProcessedImage($data['main_image'], $model->main_image, false);
 
         unset($data['main_image']);
         $model->rebuildData($data, array_keys($form->all()));

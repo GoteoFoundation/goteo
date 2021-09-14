@@ -147,9 +147,9 @@ class AdminStoryEditForm extends ProjectStoryForm {
         $data = $form->getData();
         $model = $this->getModel();
 
-        $model->image = $this->getProcessedImage($data['image'], $model->image);
-        $model->background_image = $this->getProcessedImage($data['background_image'], $model->background_image);
-        $model->pool_image = $this->getProcessedImage($data['pool_image'], $model->pool_image);
+        $this->getProcessedImage($data['image'], $model->image);
+        $this->getProcessedImage($data['background_image'], $model->background_image, false);
+        $this->getProcessedImage($data['pool_image'], $model->pool_image, false);
 
         unset($data['image']);
         unset($data['background_image']);
@@ -168,19 +168,5 @@ class AdminStoryEditForm extends ProjectStoryForm {
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
-    }
-
-    private function getProcessedImage($imageData, $modelImage)
-    {
-        if ($imageData && is_array($imageData)) {
-            if ($imageData['removed'] && $modelImage == current($imageData['removed'])->id) {
-                return null;
-            }
-            if ($imageData['uploads'] && is_array($imageData['uploads'])) {
-                return $imageData['uploads'][0];
-            }
-        }
-
-        return $modelImage;
     }
 }
