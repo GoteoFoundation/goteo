@@ -69,7 +69,7 @@ class CategoriesAdminController extends AbstractAdminController
             self::TAB_PROPERTY_FORM_CLASS => AdminSdgEditForm::class
         ],
         'footprint' => [
-            'text' => 'footprints',
+            self::TAB_PROPERTY_TEXT => 'footprints',
             self::TAB_PROPERTY_MODEL => 'Footprint',
             self::TAB_PROPERTY_MODEL_CLASS => Footprint::class,
             self::TAB_PROPERTY_FORM_CLASS => AdminFootprintEditForm::class
