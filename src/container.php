@@ -74,7 +74,7 @@ if (Config::get('log.mail')) {
     $mail = $sc->register('logger.mail_handler', Goteo\Util\Monolog\Handler\MailHandler::class)
         ->setArguments(array($mailer, '', Goteo\Util\Monolog\Logger::DEBUG, true))// delayed sending
         ->addMethodCall('setFormatter', array(new Reference('logger.mail_handler.formatter')));
-
+  
     $sc->register('logger.buffer_handler', Monolog\Handler\FingersCrossedHandler::class)
         ->setArguments(array(new Reference('logger.mail_handler'), monolog_level(Config::get('log.mail'))));
     $payLogger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
