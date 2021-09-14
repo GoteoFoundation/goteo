@@ -28,9 +28,6 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
     public function getConstraints($field)
     {
         $constraints = [];
-        if($this->getFullValidation()) {
-            // $constraints[] = new Constraints\NotBlank();
-        }
         return $constraints;
     }
 
@@ -53,7 +50,6 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 $question->vars->attr = (array) $question->vars->attr;
 
             if ($type == "dropfiles") {
-                // $question->vars->url = '/api/questionnaire/documents';
                 $question->vars->accepted_files = 'image/jpeg,image/gif,image/png,application/pdf';
                 $question->vars->constraints = [
                     new Constraints\Count(['max' => 1]),
@@ -86,7 +82,6 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
         $questionnaire = $this->getModel();
         $questions = Question::getByQuestionnaire($questionnaire->id);
         $questions = array_column($questions, NULL, 'id');
-        // $data = $form->getData();]
         $index = 0;
 
         if ($answers = Answer::getList(['project' => $this->model->project_id, 'questionnaire' => $questionnaire->id]))

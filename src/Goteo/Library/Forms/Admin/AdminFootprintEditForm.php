@@ -105,14 +105,7 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
-        // Dropfiles type always return an array, just get the first element if required
-        // if($data['icon'] && is_array($data['icon'])) {
-        //     $data['icon'] = $data['icon'][0];
-        // } else {
-        //     $data['icon'] = null;
-        // }
 
-        // print_r($data);die;
         $model = $this->getModel();
         if ($data['icon'] && is_array($data['icon'])) {
             if ($data['icon']['removed'] && $model->icon == current($data['icon']['removed'])->id)
