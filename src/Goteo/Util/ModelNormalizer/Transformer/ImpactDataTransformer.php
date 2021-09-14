@@ -12,9 +12,6 @@ namespace Goteo\Util\ModelNormalizer\Transformer;
 use Goteo\Core\Model;
 use Goteo\Library\Text;
 
-/**
- * Transform a Model
- */
 class ImpactDataTransformer extends AbstractTransformer {
 
     protected $keys = ['id', 'title', 'description'];
@@ -24,6 +21,7 @@ class ImpactDataTransformer extends AbstractTransformer {
 
         $ret = [
             'edit' => '/admin/impactdata/edit/' . $this->model->id,
+            'translate' => '/translate/impact_data/' . $this->model->id,
             'delete' => '/admin/impactdata/delete/' . $this->model->id
         ];
 
