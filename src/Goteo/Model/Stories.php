@@ -400,7 +400,7 @@ class Stories extends \Goteo\Core\Model {
     }
 
     public function getBackgroundImage() {
-        if(!$this->BackgroundImageInstance instanceOf Image && $this->backgorund_image) {
+        if(!$this->BackgroundImageInstance instanceOf Image && $this->background_image) {
             $this->BackgroundImageInstance = new Image($this->background_image);
         }
         return $this->BackgroundImageInstance;

@@ -28,7 +28,7 @@ class AdminStoryEditForm extends ProjectStoryForm {
 
     public function createForm() {
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
+        /** @var Stories $story */
         $story = $this->getModel();
         $data = $options['data'];
         parent::createForm();
@@ -147,26 +147,9 @@ class AdminStoryEditForm extends ProjectStoryForm {
         $data = $form->getData();
         $model = $this->getModel();
 
-        if ($data['image'] && is_array($data['image'])) {
-            if ($data['image']['uploads'] && is_array($data['image']['uploads']))
-                $model->image = $data['image']['uploads'][0];
-        }
-
-        if ($data['background_image'] && is_array($data['background_image'])) {
-            if ($data['background_image']['removed'] && $model->background_image == current($data['background_image']['removed'])->id)
-                $model->background_image = null;
-
-            if ($data['background_image']['uploads'] && is_array($data['background_image']['uploads']))
-                $model->background_image = $data['background_image']['uploads'][0];
-        }
-
-        if ($data['pool_image'] && is_array($data['pool_image'])) {
-            if ($data['pool_image']['removed'] && $model->pool_image == current($data['pool_image']['removed'])->id)
-                $model->pool_image = null;
-
-            if ($data['pool_image']['uploads'] && is_array($data['pool_image']['uploads']))
-                $model->pool_image = $data['pool_image']['uploads'][0];
-        }
+        $model->image = $this->getProcessedImage($data['image'], $model->image);
+        $model->background_image = $this->getProcessedImage($data['background_image'], $model->background_image);
+        $model->pool_image = $this->getProcessedImage($data['pool_image'], $model->pool_image);
 
         unset($data['image']);
         unset($data['background_image']);
@@ -181,10 +164,23 @@ class AdminStoryEditForm extends ProjectStoryForm {
         if ($model->background_image && $data['background_image_credits_credits']) {
             $model->background_image->setCredits($data['background_image_credits']);
         }
-        
+
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }
 
+    private function getProcessedImage($imageData, $modelImage)
+    {
+        if ($imageData && is_array($imageData)) {
+            if ($imageData['removed'] && $modelImage == current($imageData['removed'])->id) {
+                return null;
+            }
+            if ($imageData['uploads'] && is_array($imageData['uploads'])) {
+                return $imageData['uploads'][0];
+            }
+        }
+
+        return $modelImage;
+    }
 }
