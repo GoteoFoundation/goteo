@@ -15,6 +15,10 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 
@@ -30,34 +34,34 @@ class ImpactDataForm extends AbstractFormProcessor {
         $data = $options['data'];
 
         $builder
-            ->add('title', 'text', array(
+            ->add('title', TextType::class, array(
                 'label' => 'regular-title',
                 'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
             ))
-            ->add('data', 'text', array(
+            ->add('data', TextType::class, array(
                 'label' => 'regular-data',
                 'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
-            )) ->add('data_unit', 'text', array(
+            )) ->add('data_unit', TextType::class, array(
                 'label' => 'regular-data-unit',
                 'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
             ))
-            ->add('description', 'textarea', array(
+            ->add('description', TextareaType::Class, array(
                 'label' => 'regular-description',
                 'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 )
             ))
-            ->add('image', 'dropfiles', [
+            ->add('image', DropfilesType::class, [
                 'label' => 'regular-image',
                 'data' => [ $model->image ? $model->getImage() : null],
                 'required' => false,
@@ -67,7 +71,7 @@ class ImpactDataForm extends AbstractFormProcessor {
                     new Constraints\Count(['max' => 1, 'min' => 0]),
                 ]
             ])
-            ->add('submit', 'submit', [
+            ->add('submit', SubmitType::class, [
                 'label' => 'regular-submit',
                 'attr' => ['class' => 'btn btn-cyan'],
                 'icon_class' => 'fa fa-save'
