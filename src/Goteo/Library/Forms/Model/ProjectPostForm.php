@@ -50,7 +50,6 @@ class ProjectPostForm extends AbstractFormProcessor {
                 'label' => 'regular-images',
                 'markdown_link' => 'text',
                 'accepted_files' => 'image/jpeg,image/gif,image/png',
-                'url' => '/api/projects/' . $this->getOption('project')->id . '/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 10)),
                     new Constraints\All(array(
@@ -99,14 +98,14 @@ class ProjectPostForm extends AbstractFormProcessor {
         $data = $form->getData();
         if(array_key_exists('tags', $data)) $data['tags'] = explode(',', $data['tags']);
         $post = $this->getModel();
-        
+
         $gallery = Image::getModelGallery('post', $post->id);
         $post->image = $gallery;
-        
+
         if ($data['image'] && is_array($data['image'])) {
             if ($data['image']['removed']) {
                 $removed_ids = array_column($data['image']['removed'], null, 'id');
-                
+
                 if(is_array($post->image)) {
                     foreach($post->image as $index => $img) {
                         if(in_array($img->id, $removed_ids)) {
@@ -123,15 +122,7 @@ class ProjectPostForm extends AbstractFormProcessor {
             }
         }
 
-        if ($data['header_image'] && is_array($data['header_image'])) {
-
-            if (current($data['header_image']['removed'])->id == $post->header_image)
-                $post->header_image = null;
-            
-            if ($data['header_image']['uploads'])
-                $post->header_image = $data['header_image']['uploads'][0];
-        }
-        // print_r($post);die;
+        $this->getProcessedImage($data['header_image'], $post->header_image, false);
 
         unset($data['image']);
         unset($data['header_image']);
