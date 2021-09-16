@@ -129,6 +129,9 @@
     color: $color-white;
     padding: 15px 1px;
     border-radius: 10px;
+    &:hover {
+        color: $color-white !important;
+    }
 }
 
 .btn-fashion {
