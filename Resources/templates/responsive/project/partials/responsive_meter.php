@@ -190,7 +190,6 @@ use Goteo\Library\Check;
                                 <div class="progress-bar <?= $progress==100 ? 'progress-completed' : '' ?>" role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $progress ?>%">
                                 </div>
                             </div>
-                            <div class="matcher-amount">
 
                             <?php if($progress==100): ?>
 
@@ -215,15 +214,23 @@ use Goteo\Library\Check;
 
                             <?php endif; ?>
 
-                            </div>
                         </div>
                     </div>
+                </div>
                             
-                        </div>
-        
-        <?php endforeach; ?>
+    <?php endforeach; ?>
 
     </div>
+
+<?php endif; ?>
+
+<?php if ($project->sign_url): ?>
+
+        <div class="visible-xs sign" >
+            <a href="<?= $project->sign_url ?>" target="_blank" class="btn btn-block btn-sign col-sm-10 text-uppercase">
+                <?= $project->sign_url_action ?>
+            </a>
+        </div>
 
 <?php endif; ?>
 

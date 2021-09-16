@@ -97,17 +97,22 @@ class ExceptionListener extends AbstractListener {
     protected function logException(\Exception $exception, $message) {
         if (null !== $this->logger) {
             $message = str_replace(["\n", "\r"],[" ", ""], $message);
-            if ($exception instanceof LegacyError) {
-                $this->logger->warning('Kernel Exception', ['etype' => 'LegacyError', 'trace' => self::jTraceEx($exception, false), 'exception' => $exception, 'message' => $message]);
-            } elseif (!$exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500) {
-                $this->logger->critical('Kernel Exception', ['etype' => 'HttpException', 'trace' => self::jTraceEx($exception, false), 'exception' => $exception, 'message' => $message]);
-            } elseif ($exception instanceof ModelNotFoundException) {
-                $this->logger->warning('Kernel Exception', ['etype' => 'NotFound', 'trace' => self::jTraceEx($exception, false), 'exception' => $exception, 'message' => $message]);
-            } elseif ($exception instanceof ControllerAccessDeniedException) {
-                $this->logger->warning('Kernel Exception', ['etype' => 'AccessDenied', 'trace' => self::jTraceEx($exception, false), 'exception' => $exception, 'message' => $message]);
-            } else {
-                $this->logger->error('Kernel Exception', ['etype' => 'Exception', 'trace' => self::jTraceEx($exception, false), 'exception' => $exception, 'message' => $message]);
+            try {
+                if ($exception instanceof LegacyError) {
+                    $this->logger->warning('Kernel Exception', ['etype' => 'LegacyError', 'trace' => self::jTraceEx($exception, false), 'exception' => $exception, 'message' => $message]);
+                } elseif (!$exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500) {
+                    $this->logger->critical('Kernel Exception', ['etype' => 'HttpException', 'trace' => self::jTraceEx($exception, false), 'exception' => $exception, 'message' => $message]);
+                } elseif ($exception instanceof ModelNotFoundException) {
+                    $this->logger->warning('Kernel Exception', ['etype' => 'NotFound', 'trace' => self::jTraceEx($exception, false), 'exception' => $exception, 'message' => $message]);
+                } elseif ($exception instanceof ControllerAccessDeniedException) {
+                    $this->logger->warning('Kernel Exception', ['etype' => 'AccessDenied', 'trace' => self::jTraceEx($exception, false), 'exception' => $exception, 'message' => $message]);
+                } else {
+                    $this->logger->error('Kernel Exception', ['etype' => 'Exception', 'trace' => self::jTraceEx($exception, false), 'exception' => $exception, 'message' => $message]);
+                }
+            } catch(\RuntimeException $e) {
+                // Ignore error logging here, it should be cached by the app
             }
+
         }
     }
 

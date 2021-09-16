@@ -15,7 +15,7 @@
         "jdorn/file-system-cache": "dev-master",
         "intervention/image": "~2.0",
         "mibe/feedwriter": "~1.0",
-        "lusitanian/oauth": "^0.8.9",
+        "lusitanian/oauth": "dev-master#c3b5e51fcf86ebe83023d34744d7da131a9744a5",
         "iignatov/lightopenid": "~1.0",
         "paypal/adaptivepayments-sdk-php": "*",
         "paypal/merchant-sdk-php": "*",
