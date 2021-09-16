@@ -129,7 +129,7 @@
     color: $color-white;
     padding: 15px 1px;
     border-radius: 10px;
-    &:hover {
+    &:hover, &:focus {
         color: $color-white !important;
     }
 }
