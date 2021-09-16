@@ -219,11 +219,20 @@ use Goteo\Library\Check;
                         </div>
                     </div>
                             
-                        </div>
-        
+                        </div
         <?php endforeach; ?>
 
     </div>
+
+<?php endif; ?>
+
+<?php if ($project->sign_url): ?>
+
+        <div class="visible-xs sign" style="margin-bottom: 25px;">
+            <button class="btn btn-block btn-sign col-sm-10 text-uppercase">
+                <?= $project->sign_url_action ?>
+            </button>
+        </div>
 
 <?php endif; ?>
 

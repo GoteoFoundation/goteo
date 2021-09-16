@@ -182,11 +182,12 @@ EOT
                 }
             }
             if($update) {
-                // Project::query("DELETE FROM mail_stats_location WHERE id NOT IN (SELECT id FROM mail_stats)");
+                Project::query("DELETE FROM mail_stats_location WHERE id NOT IN (SELECT id FROM mail_stats)");
                 // Project::query("OPTIMIZE TABLE mail");
                 // Project::query("OPTIMIZE TABLE mail_content");
                 // Project::query("OPTIMIZE TABLE mail_stats");
                 // Project::query("OPTIMIZE TABLE mail_stats_location");
+
             }
             $query = Project::query("SELECT count(*) as total FROM mail");
             $total = $query->fetchColumn();

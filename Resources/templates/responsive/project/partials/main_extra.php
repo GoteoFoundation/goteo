@@ -254,6 +254,16 @@ $langs = $project->getLangs();
 
             <?php endif; ?>
 
+            <?php if ($project->sign_url): ?>
+
+                    <div class="col-sm-4 hidden-sm hidden-xs sign" style="<?= !$project->called ? 'margin-top: 55px;' : '' ?>">
+                        <button class="btn btn-sign col-sm-10 text-uppercase">
+                            <?= $project->sign_url_action ?>
+                        </button>
+                    </div>
+
+            <?php endif; ?>
+
             <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
 
                     <div class="col-sm-4 hidden-sm hidden-xs channel" style="<?= !$project->called ? 'margin-top: 55px;' : '' ?>">
