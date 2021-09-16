@@ -257,9 +257,9 @@ $langs = $project->getLangs();
             <?php if ($project->sign_url): ?>
 
                     <div class="col-sm-4 hidden-sm hidden-xs sign" style="<?= !$project->called ? 'margin-top: 55px;' : '' ?>">
-                        <button class="btn btn-sign col-sm-10 text-uppercase">
+                        <a href="<?= $project->sign_url ?>" target="_blank" class="btn btn-sign col-sm-10 text-uppercase">
                             <?= $project->sign_url_action ?>
-                        </button>
+                        </a>
                     </div>
 
             <?php endif; ?>
