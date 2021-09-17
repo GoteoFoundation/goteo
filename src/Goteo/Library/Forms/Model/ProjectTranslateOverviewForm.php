@@ -102,13 +102,15 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
             ])
             ->add('sign_url', UrlType::Class, [
                 'label' => 'overview-field-sign-url',
+                'required' => false,
                 'attr' => [
                     'pre-help' => Text::get('overview-field-sign-url-help')
                 ]
             ])
 
             ->add('sign_url_action', TextType::class, [
-                'label' => 'overview-field-sign-url-action'
+                'label' => 'overview-field-sign-url-action',
+                'required' => false
             ])
             ;
         return $this;
