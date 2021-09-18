@@ -1,4 +1,10 @@
 ---
+channel-call-main-info-subtitle: 'Nouvel appel'
+channel-call-cta-create-project-description: Créer votre projet de financement participatif est très simple
+channel-call-cta-join-program-title: Formations
+channel-call-workshop-title: Événements à venir
+channel-call-footer-information: Informations d’intérêt
+channel-call-footer-about: À propos de Goteo
 channel-call-footer-faq: FAQ
 channel-call-footer-contact: Contact
 channel-call-footer-twitter: Twitter
@@ -13,3 +19,10 @@ channel-call-posts-section-description: 'Découvrez les dernières nouvelles sur
 channel-call-program-title: 'Le programme'
 channel-call-team-title: Notre équipe
 channel-call-team-description: Toute une équipe travaillant pour un crowdfunding civique!
+channel-call-stories-title: À notre sujet
+channel-call-resources-title: Ressources
+channel-call-resources-description: Téléchargez les ressources ouvertes générées, apprenez le financement participatif, la fiscalité ou l’idée.
+channel-call-resources-button: Voir toutes les ressources
+channel-call-map-section-title: Zone d’influence
+channel-call-impact-data-amount: Argent collecté
+channel-call-impact-data-projects: Projets
