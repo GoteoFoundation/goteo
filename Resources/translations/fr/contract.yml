@@ -2,6 +2,7 @@
 contract-accounts_title: 'Comptes bancaires du projet'
 contract-bank_account: 'Compte bancaire (code IBAN, format AAxx xxxx xxxx xxxx xxxx xxxx):'
 contract-bank_owner: 'Titulaire du compte bancaire'
+contract-entity-option_0: 'En votre nom et droit'
 contract-entity-option_1: 'Comme representant d''une associatión'
 contract-entity-option_2: 'Comme un commercant'
 contract-field-location: 'Localisation:'
@@ -18,6 +19,7 @@ contract-paypal_owner: 'Titulaire du compte paypal'
 contract-step-accounts: Comptes
 contract-step-documents: Documentatió
 contract-step-entity: 'Entité juridique'
+contract-step-final: Vérification
 contract-step-promoter: Representant
 mandatory-project-field-contract_birthdate: 'Il est obligatoire de mettre la date de naissance du responsable du projet.'
 mandatory-project-field-contract_name: 'Il est obligatoire de mettre le nom du responsable du projet.'
