@@ -25,6 +25,21 @@ dashboard-certificates-expired: Expiré
 dashboard-certificates-expired-description: 'Le délai de confirmation de votre certificat a expiré'
 dashboard-certificates-no-downloable: 'Le téléchargement du certificat sera disponible à partir du 1er mars de %YEAR%'
 dashboard-certificates-legal-entities-no-downloable: 'Le téléchargement du certificat sera disponible à partir du 1er mars de %YEAR%, jusque-là vous pourrez télécharger la preuve de don.'
+dashboard-certificates-no-pending: 'Aucune contribution en attente'
+dashboard-certificates-pending: En attente
+dashboard-certificates-pending-desc: 'Telles sont les contributions qui seront incluses dans les futurs certificats.'
+dashboard-certificates-please-confirm: 'Vous devez cocher la case pour continuer'
+dashboard-certificates-summary: 'Certificat %ID%, Année %YEAR%'
+dashboard-certificates-too-old: 'Ce certificat est trop ancien et ne peut être modifié. En cas de doute, contactez-nous'
+dashboard-certificates-totals: '%NUM% contributions, %AMOUNT%'
+dashboard-certificates-unconfirmed: 'Pour télécharger ce certificat, vous devez d’abord confirmer les données!'
+dashboard-certificates-view-pending: 'Vos contributions directes à des projets qui n’ont pas encore terminé le premier tour ne sont pas affichées. Vous pouvez les consulter %HERE%. <br>Les contributions apportées avec le portefeuille virtuel sont incluses dans le certificat généré au moment du paiement physique.'
+dashboard-certificates-no-invests: 'Le certificat ne peut être confirmé s’il n’a pas de contribution!'
+dashboard-certificates-download-proof: Télécharger la preuve de don
+dashboard-certificates-completed: Complet
+dashboard-certificates-validated: Validé
+dashboard-certificates-declared: Déclaré
+dashboard-certificates-rejected: Rejeté
 dashboard-chart-days: '%s jours restants'
 dashboard-chart-invested: 'FINANCEMENT OBTENU'
 dashboard-chart-investors: COFINANCEURS
@@ -38,6 +53,7 @@ dashboard-investors-mail-nowho: 'Il n''y pas de destinataires'
 dashboard-investors-mail-sendto: 'Envoyé à %s de vos cofinanceurs:'
 dashboard-investors-mail-sent: 'Messages envoyés correctement'
 dashboard-investors-mail-text-required: 'Ecrivez le message'
+dashboard-investors_table-disclaimer: "Il est rappelé au promoteur que, comme le prévoit son contrat, les données des personnes en visite incluses dans le fichier téléchargé sont fournies aux seuls et uniques effets de satisfaire les personnes en tant que personnes les récompenses ou les retours engagés dans le projet, ainsi que pour informer celles-ci des nouveautés, des progrès et des activités liés au projet,  l’utilisation de ceux-ci à toute autre fin est absolument interdite.\n Le non-respect de cette obligation habilite la Fondation Goteo à engager les actions en justice correspondantes et à retirer le projet de la plate-forme."
 dashboard-menu-activity: 'Mon activité'
 dashboard-menu-activity-apikey: 'API key'
 dashboard-menu-activity-spread: Diffusion
@@ -45,6 +61,9 @@ dashboard-menu-activity-summary: Résumé
 dashboard-menu-activity-wall: 'Mon mur'
 dashboard-menu-admin_board: Administration
 dashboard-menu-calls-sponsors: Sponsors
+dashboard-menu-pool: 'Mon portefeuille'
+dashboard-menu-pool-available: Solde
+dashboard-menu-pool-conditions: Conditions
 dashboard-menu-profile: 'Mon profil'
 dashboard-menu-profile-access: 'Données d''accès'
 dashboard-menu-profile-location: Géolocalisation
@@ -53,17 +72,24 @@ dashboard-menu-profile-preferences: 'Préférences'
 dashboard-menu-profile-profile: 'Editer le profil'
 dashboard-menu-profile-public: 'Profil public'
 dashboard-menu-projects: 'Mes projets'
+dashboard-menu-projects-analytics: Analyse
 dashboard-menu-projects-commons: Récompenses
 dashboard-menu-projects-contract: Compte bancaire
+dashboard-menu-projects-social-commitment: 'Engagement social'
 dashboard-menu-projects-messegers: Participants
+dashboard-menu-projects-recipients: destinataires
 dashboard-menu-projects-preview: 'Page publique'
 dashboard-menu-projects-rewards: Cofinanceurs
 dashboard-menu-projects-summary: Résumé
 dashboard-menu-projects-supports: Contributions
 dashboard-menu-projects-updates: Nouvelles
+dashboard-menu-projects-widgets: Widget
+dashboard-menu-projects-story: 'Mon historique'
+dashboard-menu-projects-pitch: "Applications ouvertes"
 dashboard-menu-review_board: Vérification
 dashboard-menu-translate_board: Traduction
 dashboard-menu-translates: 'Mes traductions'
+dashboard-menu-matchers: "Matchers"
 dashboard-messegers-mail-sendto: 'Envoyé à %s  de vos cofinanceurs'
 dashboard-password-recover-advice: 'Vérifiez que votre "mot de passe" est bien réinitialisée.'
 dashboard-project-blog-fail: 'Contactez-nous'
