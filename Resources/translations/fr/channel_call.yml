@@ -1,10 +1,20 @@
 ---
 channel-call-main-info-subtitle: 'Nouvel appel'
+channel-call-projects-title: 'Certains projets en cours'
+channel-call-sponsors-title: 'Nos porteurs de projets et collaborateurs'
+channel-call-sponsors-subtitle: 'Un projet réalisé par les entités suivantes:'
+channel-call-cta-create-project-title: Je veux créer un projet
 channel-call-cta-create-project-description: Créer votre projet de financement participatif est très simple
 channel-call-cta-join-program-title: Formations
+channel-call-cta-join-program-description: Formations et ressources pratiques accessibles dans le monde entier
 channel-call-workshop-title: Événements à venir
+channel-call-workshop-description: Événements pour vous aider à développer votre initiative.
 channel-call-footer-information: Informations d’intérêt
 channel-call-footer-about: À propos de Goteo
+channel-call-footer-stats: Statistiques
+channel-call-footer-conditions: Conditions d'utilisation
+channel-call-footer-privacy: Politique de confidentialité
+channel-call-footer-licenses: Licenses
 channel-call-footer-faq: FAQ
 channel-call-footer-contact: Contact
 channel-call-footer-twitter: Twitter
@@ -17,6 +27,8 @@ channel-call-footer-social-networks: Réseaux sociaux
 channel-call-posts-section-title: Actualités
 channel-call-posts-section-description: 'Découvrez les dernières nouvelles sur'
 channel-call-program-title: 'Le programme'
+channel-call-program-terms: Lire les bases
+channel-call-program-description: Découvrez tout ce qui va se passer.
 channel-call-team-title: Notre équipe
 channel-call-team-description: Toute une équipe travaillant pour un crowdfunding civique!
 channel-call-stories-title: À notre sujet
@@ -26,3 +38,17 @@ channel-call-resources-button: Voir toutes les ressources
 channel-call-map-section-title: Zone d’influence
 channel-call-impact-data-amount: Argent collecté
 channel-call-impact-data-projects: Projets
+channel-call-impact-data-investors: Cofinanceurs
+channel-call-resources-banner-title: 'Connaissances ouvertes'
+channel-call-resources-banner-description: 'Ressources'
+channel-call-resources-filter-title: 'Filtrer par catégorie'
+channel-call-intro-pitcher-title: "Pitcher\n"
+channel-call-intro-donor-title: 'Donateur'
+channel-call-intro-factory-title: 'Goteo'
+channel-call-intro-pitcher-tab-title: 'Créer un projet'
+channel-call-intro-pitcher-tab-description: 'Lancez votre idée et votre projet dans le monde entier grâce à une plateforme de financement participatif civique, coopératif, social et durable.</br> Créez une communauté autour de votre coopérative.'
+channel-call-intro-pitcher-tab-action-url: '/project/create'
+channel-call-intro-pitcher-tab-video: 'https://www.youtube.com/embed/5bzfj2IkznQ'
+channel-call-intro-matcher-tab-title: 'Cofinancez des projets'
+channel-call-intro-matcher-tab-description: 'Etes-vous une coopérative, une entreprise responsable ou une fondation? <br>Voulez-vous collaborer en donnant un élan au monde coopératif?'
+channel-call-intro-matcher-tab-action: 'Devenez un cofinanceur!'
