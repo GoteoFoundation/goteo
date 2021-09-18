@@ -1,2 +1,4 @@
 ---
+invest-template-resign: '<p> Nous vous rappelons que vous avez renoncé à la récompense qui vous reviendrait pour cette contribution</p><p> Merci beaucoup pour votre générosité!</p>'
+invest-template-reward: '<p> Nous vous rappelons que vous avez sélectionné la récompense suivante, telle que décrite dans la section de la page sous le concept: <br>%REWARDS%</p><p>Important: Ce retour sera effectif compte tenu de votre temps de production, et uniquement si vous obtenez le financement minimum requis.</p>'
 invest-template-with-pool: 'Vous avez choisi de contribuer à ce projet en utilisant votre porte-monnaie virtuel, nous avons déduit %AMOUNT%. '
