@@ -1,5 +1,10 @@
 ---
 api-key-no-generated: 'Vous n''avez pas encore de clé d''accès'
+api-key-tool-tip: 'Avec votre utilisateur et Api Key, vous pouvez consulter notre API'
+api-key-documentation: 'Voir la documentation de l’API'
+api-key-user: 'Utilisateur'
+api-key-key: 'Clé'
+api-key-generate-new: 'Générer une nouvelle clé'
 contract-data_title: 'Données du contrat'
 dashboard-chart-days: '%s jours restants'
 dashboard-chart-invested: 'FINANCEMENT OBTENU'
