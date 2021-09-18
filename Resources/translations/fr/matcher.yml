@@ -1,1 +1,4 @@
 ---
+channel-join: 'Rejoins-nous'
+channel-join-reviewing: 'En cours d’évaluation'
+channel-no-match: 'Distribution terminée'
