@@ -18,5 +18,9 @@ profile-widget-user-header: Utilisateur
 profile-worth-title: 'Apportent ici:'
 profile-worthcracy-title: Position
 profile_patron-invest_on-header: 'En plus je cofinance'
+profile-stats-title: 'Activité avec Goteo'
+profile-stats-projects: 'Campagnes'
+profile-stats-invests: 'Dons'
+profile-stats-collaborations: 'Contributions'
 user-message-restricted: 'Peut seulement recevoir les messages de ses cofinanceurs'
 user-message-send_personal-header: 'Envoyer un message à l''utilisateur'
