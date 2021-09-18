@@ -14,3 +14,13 @@ matcher-apply-reject-sure: 'Cet appel de fonds de cofinancement peut vous fourni
 matcher-apply-discard: 'Rejeter le projet'
 matcher-apply-discard-sure: 'Ce projet ne participera plus à l’appel. Voulez-vous continuer?'
 matcher-duplicateinvest-max_amount_per_project: 'Montant maximal à donner pour le projet'
+matcher-duplicateinvest-max_amount_per_invest: 'Montant maximal par contribution'
+matcher-project-reject: 'Votre projet a été retiré de l’appel'
+matcher-project-discard: 'Le projet a été exclu de l’appel %s'
+matcher-project-activate: 'Le projet a été activé dans l’appel %s'
+matcher-budget-amount: 'Budget total'
+matcher-projects-received: 'Propositions reçues'
+matcher-btn-active: 'Activer le financement'
+matcher-label-active: "Financement actif\n"
+matcher-label-completed: 'Complet'
+matcher-label-rejected: 'Rejeté'
