@@ -112,6 +112,7 @@ dashboard-project-updates-add: 'Nouvelle publication'
 dashboard-project-updates-translating: 'Traduire post'
 dashboard-project-updates-sent-to-investors: 'Un e-mail a été envoyé à tous les cofinanceurs avec le contenu de ce post.'
 dashboard-project-updates-sent-reason-no-investors: 'Pas encore de cofinanceurs!'
+dashboard-project-updates-sent-reason-no-unique: 'Un e-mail a déjà été envoyé précédemment avec ce post!'
 dashboard-rewards-address: 'Adresse de livraison:'
 dashboard-rewards-all_filter: Toutes
 dashboard-rewards-amount_group: 'Apports de'
