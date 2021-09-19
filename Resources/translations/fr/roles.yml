@@ -1,1 +1,5 @@
 ---
+role-name-user: 'Utilisateur sans privilèges'
+role-name-vip: 'Utilisateur VIP (parrain)'
+role-name-translator: 'Traducteur de contenu'
+role-name-checker: 'Examinateur de projet'
