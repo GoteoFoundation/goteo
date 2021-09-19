@@ -21,6 +21,13 @@ contract-step-documents: Documentatió
 contract-step-entity: 'Entité juridique'
 contract-step-final: Vérification
 contract-step-promoter: Representant
+guide-contract-entity: 'Dans cette étape, vous devez remplir les données de l’entité que vous représentez. Si vous signez le contrat en votre propre nom, vous devez revenir à la première étape (« Représentant ») et l’indiquer correctement.'
+guide-contract-final: "Vérifier les données saisies.\n S’il n’y a pas d’erreurs, il peut être fermé pour examen. \nS’il y a des erreurs, elles doivent être corrigées."
+guide-contract-no_entity: 'En tant que promoteur en votre nom et droit, vous n’avez rien à remplir dans cette étape.'
+guide-contract-promoter: 'Dans cette étape, vous devez remplir les données du représentant légal de l’entité, ou du booster si vous vous représentez vous-même. Dans tous les cas, il doit être la même personne qui signera le contrat.'
+mandatory-contract-bank: 'Il est obligatoire d’indiquer un compte bancaire pour le projet'
+mandatory-contract-bank_owner: 'Il est obligatoire de mettre le nom du titulaire du compte bancaire'
+mandatory-contract-paypal_owner: 'Il est obligatoire de mettre le nom du titulaire du compte PayPal du projet'
 mandatory-project-field-contract_birthdate: 'Il est obligatoire de mettre la date de naissance du responsable du projet.'
 mandatory-project-field-contract_name: 'Il est obligatoire de mettre le nom du responsable du projet.'
 mandatory-project-field-contract_nif: 'Il est obligatoire de mettre le justificatif d''identité du responsable de projet.'
