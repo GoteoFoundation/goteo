@@ -12,6 +12,8 @@ invest-paypal-error_fatal: 'Il y a eu une erreur critique lors de la connection 
 invest-tpv-error_fatal: 'Il y a eu une erreur critique lors de la vérification. Cet incident a été notifié, désolé pour le dérangement.'
 message-cookies: 'Nous utilisons nos propres cookies et ceux de tiers pour améliorer votre expérience et nos services en analysant la navigation sur notre site Web. Si vous continuez à naviguer, vous êtes réputé donner votre consentement à son utilisation. Vous pouvez obtenir plus d’informations sur notre <a href="/legal/cookies">Politique des cookies</a>'
 project-invest-closed: 'La campagne de cofinancement de ce projet est terminée.'
+project-invest-friend_mail-fail: 'Il y a eu une erreur dans l’envoi du message de remerciement au destinataire'
+project-invest-friend_mail-success: 'Message de remerciement envoyé correctement au destinataire'
 project-invest-thanks_mail-fail: 'Erreur d''envoi du message de remerciement'
 project-invest-thanks_mail-success: 'Message de remerciements envoyé correctement'
 project-review-confirm_mail-fail: 'Erreur d''envoi du message de confirmation de la réception'
