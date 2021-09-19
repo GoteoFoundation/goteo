@@ -21,6 +21,10 @@ plugins:
         active: true # plugin should be active=true to be loaded
         #liveport: 35729 # Local development only livereload port (optional)
 
+    extra-logger:
+        active: true
+        stdout: '%env(LOG_TO_STDOUT)%' # set it to true or color via ENV var to view the log via stdout
+
 # Payment methods, must be registered as classes implementing Goteo\Payment\Method\PaymentMethodInterface
 payments:
     # Paypal

@@ -5,7 +5,7 @@ namespace Goteo\Model\Project\Tests;
 
 use Goteo\Model\Project\Account;
 
-class AccountTest extends \PHPUnit_Framework_TestCase {
+class AccountTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

@@ -3,18 +3,13 @@
 namespace Goteo\Core\Tests;
 
 use Goteo\Core\View,
-    Goteo\Core\Redirection,
-    Goteo\Core\View\Exception,
-    Goteo\Application\Session,
-    Goteo\Model\Project,
-    Goteo\Model\Image,
-    Goteo\Model\User;
+    Goteo\Core\View\Exception;
 
 class ViewTest extends \Goteo\TestCase {
 
     protected static $views = array();
 
-    static function setUpBeforeClass() {
+    static function setUpBeforeClass(): void {
         self::$views = array(
             'admin/blog/list.html.php',
             'admin/commons/list.html.php',
@@ -38,16 +33,10 @@ class ViewTest extends \Goteo\TestCase {
         $test = new Exception();
         $this->assertInstanceOf('\Goteo\Core\View\Exception', $test);
         try {
-            $test = new View('i-dont-exists.php');
-        }
-        catch(Exception $e) {
+            new View('i-dont-exists.php');
+        } catch(Exception $e) {
             $this->assertInstanceOf('\Goteo\Core\View\Exception', $e);
         }
-
-    }
-
-    public function testView() {
-
     }
 
     /**
@@ -75,7 +64,7 @@ class ViewTest extends \Goteo\TestCase {
                 $v = new View($view, $vars);
                 $this->assertInstanceOf('\Goteo\Core\View', $v);
                 $out = $v->render();
-                $this->assertInternalType('string', $out);
+                $this->assertIsString($out);
             }
             catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
                 echo "\nLa vista [$view] lanza una exception de modelo!\nEsto no deberia hacerse aqui!\n";

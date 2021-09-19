@@ -51,7 +51,7 @@ services:
     working_dir: /application
     volumes:
       - .:/application
-      - ./docker/php/php-ini-overrides.ini:/etc/php/7.1/fpm/conf.d/99-overrides.ini
+      - ./docker/php/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
       - goteo-geoip:/usr/share/GeoIP
     environment:
       - GOTEO_CONFIG_FILE

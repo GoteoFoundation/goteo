@@ -5,7 +5,7 @@ namespace Goteo\Model\Project\Tests;
 
 use Goteo\Model\Project\OpenTag;
 
-class OpenTagTest extends \PHPUnit_Framework_TestCase {
+class OpenTagTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

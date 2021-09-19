@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Library\Buzz;
 
-class BuzzTest extends \PHPUnit_Framework_TestCase {
+class BuzzTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

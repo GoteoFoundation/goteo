@@ -5,7 +5,7 @@ namespace Goteo\Application\Tests;
 
 use Goteo\Application\Cookie;
 
-class CookieTest extends \PHPUnit_Framework_TestCase {
+class CookieTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 
@@ -17,12 +17,12 @@ class CookieTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testStore() {
-        $this->assertEquals(Cookie::store('test-key', 'test-value'), 'test-value');
+        $this->assertEquals('test-value', Cookie::store('test-key', 'test-value'));
         $this->assertTrue(Cookie::exists('test-key'));
     }
 
     public function testRetrieve() {
-        $this->assertEquals(Cookie::get('test-key'), 'test-value');
+        $this->assertEquals('test-value', Cookie::get('test-key'));
     }
 
     public function testDelete() {

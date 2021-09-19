@@ -5,7 +5,7 @@ namespace Goteo\Model\Call\Tests;
 
 use Goteo\Model\Call\Sponsor;
 
-class SponsorTest extends \PHPUnit_Framework_TestCase {
+class SponsorTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('name' => 'test name', 'call' => 'test', 'order' => 0);
 

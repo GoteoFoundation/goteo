@@ -5,10 +5,10 @@ namespace Goteo\Application\Tests;
 
 use Goteo\Application\Lang;
 
-class LangTest extends \PHPUnit_Framework_TestCase {
+class LangTest extends \PHPUnit\Framework\TestCase {
 
-    public function testInstance() {
-
+    public function testInstance(): Lang
+    {
         $ob = new Lang();
 
         $this->assertInstanceOf('\Goteo\Application\Lang', $ob);
@@ -16,16 +16,16 @@ class LangTest extends \PHPUnit_Framework_TestCase {
         return $ob;
     }
 
-    public function testList() {
-        $this->assertInternalType('array', Lang::listAll());
+    public function testList(): array
+    {
+        $this->assertIsArray(Lang::listAll());
         $all = Lang::listAll('array', false);
-        $this->assertInternalType('array', $all);
+        $this->assertIsArray($all);
         return $all;
     }
 
     /**
      * @depends testList
-     * @return [type] [description]
      */
     public function testShortFunctions($all) {
         Lang::setDefault('es');
@@ -49,23 +49,22 @@ class LangTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @depends testList
-     * @return [type] [description]
      */
-    public function testSetters($all) {
-        foreach(Lang::listAll('short') as $lang => $info) {
-            $this->assertInternalType('string', $info);
+    public function testSetters() {
+        foreach(Lang::listAll('short') as $info) {
+            $this->assertIsString($info);
         }
-        foreach(Lang::listAll('locale') as $lang => $info) {
-            $this->assertInternalType('string', $info);
+        foreach(Lang::listAll('locale') as $info) {
+            $this->assertIsString($info);
         }
-        foreach(Lang::listAll('name') as $lang => $info) {
-            $this->assertInternalType('string', $info);
+        foreach(Lang::listAll('name') as $info) {
+            $this->assertIsString($info);
         }
-        foreach(Lang::listAll('object') as $lang => $info) {
-            $this->assertInternalType('object', $info);
+        foreach(Lang::listAll('object') as $info) {
+            $this->assertIsObject($info);
         }
         foreach(Lang::listAll('array') as $lang => $info) {
-            $this->assertInternalType('array', $info);
+            $this->assertIsArray($info);
             Lang::set($lang);
             $this->assertEquals($lang, Lang::current());
             $this->assertTrue(Lang::isActive($lang, false));

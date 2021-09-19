@@ -685,7 +685,7 @@ class User extends \Goteo\Core\Model {
 
             return true;
         } catch (\PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
+            $errors[] = $e->getMessage();
             return false;
         }
 
@@ -1778,7 +1778,7 @@ class User extends \Goteo\Core\Model {
             $errors = [];
             // En el contenido:
             $search = array('%USERNAME%', '%URL%');
-            $replace = array($row->name, SEC_URL . '/user/leave/' . \mybase64_encode($token));
+            $replace = array($row->name, SITE_URL . '/user/leave/' . \mybase64_encode($token));
             $content = \str_replace($search, $replace, $template->parseText());
             // Email de recuperacion
             $mail = new Mail();
@@ -1792,23 +1792,25 @@ class User extends \Goteo\Core\Model {
             $mail->send($errors);
             unset($mail);
 
-            // email a los de goteo
+            // email to the platform
+            $template_user_leaves = Template::get(Template::USER_LEAVES_PLATFORM, Config::get('lang'));
+            $search = array('%USERNAME%','%USEREMAIL%', '%MESSAGE%');
+            $replace = array($row->name, $row->email, $message);
+            $content_user_leaves = \str_replace($search, $replace, $template_user_leaves->text);
+
             $mail = new Mail();
             $mail->to = Config::getMail('mail');
+            $mail->lang = Config::get('lang');
             $mail->toName = 'Admin Goteo';
-            $mail->subject = 'El usuario ' . $row->id . ' se da de baja';
-            $mail->content = '<p>Han solicitado la baja para el mail <strong>' . $email . '</strong> que corresponde al usuario <strong>' . $row->name . '</strong>';
-            if (!empty($message)) {
-                $mail->content .= 'y ha dejado el siguiente mensaje:</p><p> ' . $message;
-            }
-
-            $mail->content .= '</p>';
+            $mail->subject = $template->title;
+            $mail->content = $content_user_leaves;
             $mail->fromName = "{$row->name}";
             $mail->from = $row->email;
             $mail->html = true;
-            $mail->template = 0;
+            $mail->template = $template_user_leaves->id;
             $mail->send($errors);
             unset($mail);
+
 
             return true;
         }

@@ -8,7 +8,7 @@ use Goteo\Model\User;
 use Goteo\Controller\Dashboard\TranslateProjectDashboardController;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
-class TranslateProjectDashboardControllerTest extends \PHPUnit_Framework_TestCase {
+class TranslateProjectDashboardControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

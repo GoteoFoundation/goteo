@@ -5,7 +5,7 @@ namespace Goteo\Controller\Tests;
 
 use Goteo\Controller\Ws;
 
-class WsTest extends \PHPUnit_Framework_TestCase {
+class WsTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

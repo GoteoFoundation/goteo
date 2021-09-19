@@ -7,10 +7,10 @@ use Goteo\Application\View;
 use Goteo\Model\Project;
 use Goteo\Model\User;
 
-class ViewTest extends \PHPUnit_Framework_TestCase {
+class ViewTest extends \PHPUnit\Framework\TestCase {
     private static $views;
 
-    static function setUpBeforeClass() {
+    static function setUpBeforeClass(): void {
         $folders = View::getFolders();
         foreach($folders as $key => $path) {
             $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::SELF_FIRST);

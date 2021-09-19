@@ -277,7 +277,7 @@ class Sender extends \Goteo\Core\Model
             return true;
 
         } catch(\PDOException $e) {
-            echo "HA FALLADO!!" . $e->getMessage();
+            echo "INITIATE SENDING FAILURE - " . $e->getMessage();
             die;
             return false;
         }
