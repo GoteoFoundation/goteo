@@ -14,6 +14,7 @@ contact-form-relief-tag-description: 'Je souhaiterais un justificatif de ma dona
 contact-form-relief-tag-name: 'Justificatif donation'
 contact-form-service-tag-description: 'Je voudrais engager un service'
 contact-form-service-tag-name: Service
+contact-form-tags: "[utilisateur] J’ai des problèmes avec mon compte; [nouveau moteur] J’ai un projet possible; [nouveau propulseur 2] J’ai des doutes sur le formulaire de projet; [développement] J’ai des doutes sur des questions techniques; [justification] Je souhaite une justification de mon don; [service] Je veux engager un service; [autres] C’est un autre type de consultation;"
 contact-form-user-tag-description: 'J''ai des problèmes avec mon accueil'
 contact-form-user-tag-name: 'Problèmes accueil'
 contact-message-field: Message
