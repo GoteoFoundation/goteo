@@ -2,3 +2,7 @@
 role-name-user: 'Utilisateur sans privilèges'
 role-name-vip: 'Utilisateur VIP (parrain)'
 role-name-translator: 'Traducteur de contenu'
+role-name-checker: 'Examinateur de projet'
+role-name-stats: 'Acceso a stats'
+role-name-manager: "Gestionnaire de contrats\n"
+role-name-blogger: 'Rédacteur en chef du blog'
