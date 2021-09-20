@@ -2,3 +2,5 @@
 fatal-error-project: 'Le projet que vous recherchez, <span class="red">n''existe pas :(</span>'
 fatal-error-teapot: '<span class="greenblue">Oups...</span> unexpected Error occurred'
 fatal-error-user: 'L''utilisateur que vous recherchez... <span class="red">n''existe pas :(</span>'
+fatal-error-channel: 'Le canal que vous recherchez <span class="red">il n’existe pas de :(</span>'
+ajax-load-error: 'La page n’a pas pu être chargée en raison de l’erreur [<strong>%ERROR%</strong>]. Peut-être que la session de votre utilisateur a expiré ?'
