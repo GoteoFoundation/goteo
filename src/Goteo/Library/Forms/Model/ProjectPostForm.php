@@ -122,7 +122,7 @@ class ProjectPostForm extends AbstractFormProcessor {
             }
         }
 
-        $this->getProcessedImage($data['header_image'], $post->header_image, false);
+        $this->processImageChange($data['header_image'], $post->header_image, false);
 
         unset($data['image']);
         unset($data['header_image']);

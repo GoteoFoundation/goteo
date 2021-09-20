@@ -133,7 +133,7 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         return $this;
     }
 
-    protected function getProcessedImage($imageData, &$modelImage, bool $isImageRequired = true)
+    protected function processImageChange($imageData, &$modelImage, bool $isImageRequired = true)
     {
         if ($imageData && is_array($imageData)) {
             if ($imageData['removed'] && $modelImage == current($imageData['removed'])->id && !$isImageRequired) {

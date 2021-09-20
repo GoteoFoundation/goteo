@@ -147,9 +147,9 @@ class AdminStoryEditForm extends ProjectStoryForm {
         $data = $form->getData();
         $model = $this->getModel();
 
-        $this->getProcessedImage($data['image'], $model->image);
-        $this->getProcessedImage($data['background_image'], $model->background_image, false);
-        $this->getProcessedImage($data['pool_image'], $model->pool_image, false);
+        $this->processImageChange($data['image'], $model->image);
+        $this->processImageChange($data['background_image'], $model->background_image, false);
+        $this->processImageChange($data['pool_image'], $model->pool_image, false);
 
         unset($data['image']);
         unset($data['background_image']);

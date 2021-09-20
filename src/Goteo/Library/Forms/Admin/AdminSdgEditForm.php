@@ -74,7 +74,6 @@ class AdminSdgEditForm extends AbstractFormProcessor {
         return $this;
     }
 
-
     public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
@@ -82,13 +81,7 @@ class AdminSdgEditForm extends AbstractFormProcessor {
         $data = $form->getData();
         $model = $this->getModel();
 
-        if ($data['icon'] && is_array($data['icon'])) {
-            if ($data['icon']['removed'] && $model->icon->id == current($data['icon']['removed'])->id)
-                $model->icon = null;
-
-            if ($data['icon']['uploads'] && is_array($data['icon']['uploads']))
-                $model->icon = $data['icon']['uploads'][0];
-        }
+        $this->processImageChange($data['icon'], $model->icon, false);
 
         unset($data['icon']);
         $model->rebuildData($data, array_keys($form->all()));

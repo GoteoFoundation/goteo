@@ -77,7 +77,7 @@ class AdminSectionForm extends AbstractFormProcessor {
         $data = $form->getData();
         $model = $this->getModel();
 
-        $this->getProcessedImage($data['main_image'], $model->main_image, false);
+        $this->processImageChange($data['main_image'], $model->main_image, false);
 
         unset($data['main_image']);
         $model->rebuildData($data, array_keys($form->all()));
