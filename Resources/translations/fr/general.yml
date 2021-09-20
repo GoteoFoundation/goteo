@@ -1,4 +1,5 @@
 ---
+bazar-title-seo: 'Récompenses solidaires : Goteo.org'
 blog-comments: Commentaires
 blog-main-header: 'Blog'
 calendar-calls-category: Appels à projets
@@ -26,11 +27,14 @@ error-user-email-token-invalid: 'Le code est erroné.'
 error-user-password-confirm: 'La confirmation du mot de passe ne concorde pas.'
 error-user-password-empty: 'Vous n''avez pas inscis de mot de passe.'
 error-user-password-invalid: 'Le mot de passe est trop court. Il doit avoir au moins 6 caractères'
+error-user-id-invalid: 'L’ID utilisateur n’est pas valide. Utiliser uniquement des caractères a-z 0-9'
+error-user-id-exists: 'Il y a déjà un utilisateur enregistré avec cet identifiant'
 error-user-wrong-password: 'Le mot de passe est erroné.'
 explain-project-progress: 'Ce diagramme représente la quantité et la pertinence des données renseignées. Vous devez atteindre les 80% pour pouvoir envoyer le projet à l''évaluation. Lisez attentivement les conseils que nous vous donnons sur la colonne de droite, qui vous servirons de guide. C''est parti!'
 fancybox: 'Texte fancybox'
 goteo-return-button: 'Retour vers Goteo'
 guide-dashboard-user-access: 'Vous pouvez changer les informations avec lesquelles vous vous connectez via Goteo accompte.'
+guide-dashboard-user-personal: "Vous ne devez remplir ces données que si vous avez créé un projet et que vous souhaitez qu’il soit cofinancé et soutenu par Goteo. Les informations contenues dans cette section sont nécessaires pour vous contacter si vous obtenez le financement requis et si le financement peut être effectué."
 guide-project-comment: guide-projet-commentaire
 guide-project-contract-information: 'Les informations de cette section sont nécessaires pour vous contacter si vous obtenez le financement nécessaire, et ainsi permettre le versement. Dans le cas d''une structure, nous vous recommandons que la personne qui représente l''organisation puisse plus tard être accrédité formellement. (Par exemple au travers les statuts ou via un certificat du secrétaire avec agrément du président, dans le cas d''associations )'
 guide-project-images: 'Les images du projet peuvent être des plans, screenshots, photographies, illustrations, storyboards, etc. (la licence associée doit être compatible avec les licences sélecionnées dans la section 5. Vous pouvez en charger autant que souhaité!'
