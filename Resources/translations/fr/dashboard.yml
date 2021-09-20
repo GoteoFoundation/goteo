@@ -228,3 +228,5 @@ dashboard-project-support-responses: Les réponses
 dashboard-project-support-no-responses: 'Pas encore de réponses.'
 dashboard-project-support-add: 'Ajouter une nouvelle demande de collaboration'
 dashboard-search-invests-msg: 'Envoyer un message aux cofinanceurs de cette recherche'
+dashboard-project-filter-by-reward: 'Filtrer par récompense'
+dashboard-project-filter-by-others: 'Autres filtres'
