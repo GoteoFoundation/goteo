@@ -42,7 +42,7 @@ $sc->register('logger.handler', 'Monolog\Handler\StreamHandler')
    ->setArguments(array(GOTEO_LOG_PATH."app_$env.log", monolog_level(Config::get('log.app'))))
    ->addMethodCall('setFormatter', array(new Reference('logger.formatter')))
 ;
-$logger = $sc->register('logger', 'Monolog\Logger')
+$logger = $sc->register('logger', 'Goteo\Util\Monolog\Logger')
               ->setArguments(array('main', array(new Reference('logger.handler'))))
               ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
               ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
@@ -56,7 +56,7 @@ $sc->register('console_logger.handler', 'Monolog\Handler\StreamHandler')
    ->setArguments(array(GOTEO_LOG_PATH."console_$env.log", monolog_level(Config::get('log.console'))))
    ->addMethodCall('setFormatter', array(new Reference('console_logger.formatter')))
 ;
-$clilogger = $sc->register('console_logger', 'Monolog\Logger')
+$clilogger = $sc->register('console_logger', 'Goteo\Util\Monolog\Logger')
              ->setArguments(array('console', array(new Reference('console_logger.handler'))))
              ->addMethodCall('pushProcessor', array(new Reference('logger.processor.uid')))
              ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
@@ -64,14 +64,14 @@ $clilogger = $sc->register('console_logger', 'Monolog\Logger')
 ;
 
 // Syslog
-$syslogger = $sc->register('syslogger', 'Monolog\Logger')
+$syslogger = $sc->register('syslogger', 'Goteo\Util\Monolog\Logger')
                 ->setArguments(array('syslog', array(new Reference('logger.handler'))))
                 ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
                 ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
 ;
 
 // payments log
-$paylogger = $sc->register('paylogger', 'Monolog\Logger')
+$paylogger = $sc->register('paylogger', 'Goteo\Util\Monolog\Logger')
                 ->setArguments(array('payment', array(new Reference('logger.handler'))))
                 ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
                 ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
@@ -82,7 +82,7 @@ if (Config::get('log.mail')) {
   $sc->register('logger.mail_handler.formatter', 'Monolog\Formatter\HtmlFormatter');
   $mailer = Goteo\Model\Mail::createFromHtml(Config::getMail('fail'), '', "WebApp error in [".Config::get('url.main')."]");
   $mail   = $sc->register('logger.mail_handler', 'Goteo\Util\Monolog\Handler\MailHandler')
-             ->setArguments(array($mailer, '', Monolog\Logger::DEBUG, true))// delayed sending
+             ->setArguments(array($mailer, '', Goteo\Util\Monolog\Logger::DEBUG, true))// delayed sending
              ->addMethodCall('setFormatter', array(new Reference('logger.mail_handler.formatter')))
   ;
 

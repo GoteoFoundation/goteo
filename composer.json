@@ -1,15 +1,21 @@
 {
     "require": {
-        "php": "^7.0",
-        "ext-pdo": "*",
+        "php": "^7.4",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-gd": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
         "ext-openssl": "*",
+        "ext-pdo": "*",
+        "ext-xml": "*",
         "foil/foil": "~0.6",
         "tpyo/amazon-s3-php-class": "dev-master#81a35c61bf76be7c02c95a57771031d21277b1b5",
         "phpmailer/phpmailer": "^6.4",
         "jdorn/file-system-cache": "dev-master",
         "intervention/image": "~2.0",
         "mibe/feedwriter": "~1.0",
-        "lusitanian/oauth": "^0.8.9",
+        "lusitanian/oauth": "dev-master#c3b5e51fcf86ebe83023d34744d7da131a9744a5",
         "iignatov/lightopenid": "~1.0",
         "paypal/adaptivepayments-sdk-php": "*",
         "paypal/merchant-sdk-php": "*",
@@ -60,7 +66,7 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0",
+        "phpunit/phpunit": "^8.0",
         "guzzle/plugin-mock": "~3.1"
     }
 }

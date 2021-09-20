@@ -52,6 +52,11 @@ class Config {
                 self::$config = array_replace_recursive(self::$config , $config);
             }
 
+            // Error traces
+            if(self::get('debug')) {
+                ini_set('display_errors', 1);
+                App::debug(true);
+            }
 			//Timezone
 			if (self::get('timezone')) {
 				date_default_timezone_set(self::get('timezone'));
@@ -290,7 +295,6 @@ class Config {
         // TODO: add a generic matcher processor that uses Symfony Expression Language
         // http://symfony.com/doc/current/components/expression_language/syntax.html
         //
-        // App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\ExpressionLanguageProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\CriteriaInvestMatcherProcessor');
 
@@ -299,6 +303,7 @@ class Config {
 
 		/**********************************/
 		// LEGACY VIEWS
+		// One day, this will be removed, and happiness will spread along the galaxy
 		\Goteo\Core\View::addViewPath(GOTEO_PATH . 'Resources/templates/legacy');
 		//NormalForm views
 		\Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/NormalForm/view');
@@ -365,6 +370,7 @@ class Config {
 
 		if ($replica = self::get('db.replica.host')) {
 			self::set('dsn_replica', "$driver:host=$replica;dbname=$database;port=" . (self::get('db.replica.port') ? self::get('db.replica.port') : $port) . ";charset=$charset");
+
 		}
 
 		define('SQL_CACHE_DRIVER', self::get('db.cache.driver'));
@@ -410,10 +416,7 @@ class Config {
      * @return array|false|mixed|string|null
      * @throws ConfigException
      */
-	static public function get(
-	    string $name,
-        bool $strict = false
-    ) {
+	static public function get(string $name, bool $strict = false) {
         $part = strtok($name, '.');
         if (self::$config && array_key_exists($part, self::$config)) {
             $paramValue = self::$config[$part];
@@ -427,25 +430,25 @@ class Config {
                 }
             }
 
-            if(is_array($paramValue)) {
-                // TODO: iterative, to cover any level
-                foreach($paramValue as $key => $val) {
-                    if (!is_array($val) && preg_match(self::ENV_PARAMETER_REG_EX, $val, $matches)) {
-                        $paramValue[$key] = getenv($matches[1]);
-                    }
-                }
-            } elseif (preg_match(self::ENV_PARAMETER_REG_EX, $paramValue, $matches)) {
-                if (sizeof($matches) >= 1) {
-                    $paramValue = getenv($matches[1]);
-                }
-            }
-
-            return $paramValue;
+            return self::replaceEnvVars($paramValue);
         } elseif ($strict) {
             throw new ConfigException("Config var [$name] not found!");
         }
 
         return null;
+	}
+
+	static protected function replaceEnvVars($paramValue) {
+		 if(is_array($paramValue)) {
+		    foreach($paramValue as $key => $val) {
+		        $paramValue[$key] = self::replaceEnvVars($val);
+		    }
+		} elseif (preg_match(self::ENV_PARAMETER_REG_EX, $paramValue, $matches)) {
+		    if (sizeof($matches) >= 1) {
+		        $paramValue = getenv($matches[1]);
+		    }
+		}
+		return $paramValue;
 	}
 
 	static public function set($name, $value) {

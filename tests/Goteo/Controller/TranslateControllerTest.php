@@ -1,8 +1,8 @@
 <?php
 
+namespace Tests\Goteo\Controller;
 
-namespace Goteo\Controller\Dashboard\Tests;
-
+use Exception;
 use Goteo\Application\Session;
 use Goteo\Model\User;
 use Goteo\Controller\TranslateController;
@@ -10,13 +10,12 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 class TranslateControllerTest extends \PHPUnit\Framework\TestCase {
 
-    public function testInstance() {
-
-        // This controller is for logged users only
+    public function testInstance(): TranslateController
+    {
         try {
-            $controller = new TranslateController();
-        } catch(\Exception $e) {
-            $this->assertInstanceOf('Goteo\Application\Exception\ControllerAccessDeniedException', $e);
+            new TranslateController();
+        } catch(Exception $e) {
+            $this->assertInstanceOf(ControllerAccessDeniedException::class, $e);
         }
 
         $user = new User();
