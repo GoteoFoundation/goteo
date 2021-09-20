@@ -78,7 +78,7 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
         }
         if(!$form->isValid() && !$force_save) { throw new FormModelException(Text::get('form-has-errors'));
         }
-        
+
         $questionnaire = $this->getModel();
         $questions = Question::getByQuestionnaire($questionnaire->id);
         $questions = array_column($questions, NULL, 'id');
@@ -101,13 +101,12 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
             $type = $question->vars->type;
             if ($type != "choice")
                 $answer->answer = $value;
-            
-            if ($type == "dropfiles") { 
+
+            if ($type == "dropfiles") {
                 if($value[0] && $err = $value[0]->getUploadError()) {
                     throw new FormModelException(Text::get('form-sent-error', $err));
                 }
-                $error = [];
-                $answer->answer = $value[0]->id; 
+                $answer->answer = $value['uploads'][0]->id;
             }
             $answer->save();
 
