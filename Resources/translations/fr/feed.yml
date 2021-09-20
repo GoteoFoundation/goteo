@@ -1,4 +1,11 @@
 ---
+feed-admin-action: 'L''administrateur %USER% a %ACTION%'
+feed-admin-invest-cancelled: 'L’administrateur %ADMIN% a annulé l’apport de %USER% de %AMOUNT% via %METHOD% (ID: %INVEST%) au projet « %PROJECT% » du jour %DATE%'
+feed-admin-invest-cancelled-pool: 'L’administrateur %ADMIN% a annulé et renvoyé dans le portefeuille l’apport de %USER% de %AMOUNT% par %METHOD% (ID: %INVEST%) au projet « %PROJECT% » du jour %DATE%'
+feed-admin-invest-cancelled-pool-subject: 'Frais annulés au portefeuille manuellement (administrateur)'
+feed-admin-invest-cancelled-subject: 'Frais annulés manuellement (administrateur)'
+feed-admin-invest-returned-pool-subject: 'Chargement retourné manuellement au portefeuille (administrateur)'
+feed-admin-invest-returned-subject: 'Publication renvoyée manuellement (administrateur)'
 feed-blog-comment: 'A écrit un <span class="green">commentaire</span> sur le sujet "%s" du blog de %s'
 feed-invest: 'A donné %AMOUNT% au projet %PROJECT%'
 feed-messages-new_thread: 'A ouvert un thème sur %s du projet %s'
