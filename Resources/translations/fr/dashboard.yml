@@ -91,7 +91,9 @@ dashboard-menu-translate_board: Traduction
 dashboard-menu-translates: 'Mes traductions'
 dashboard-menu-matchers: "Matchers"
 dashboard-messegers-mail-sendto: 'Envoyé à %s  de vos cofinanceurs'
+dashboard-my-wallet-available: 'Vous avez actuellement <span class="pool-amount">%s</span> <span class="pool-desc"> dans votre portefeuille Goteo</span>'
 dashboard-my-wallet-contribute-button: Faire un don
+dashboard-my-wallet-modal-pool-info: "Le portefeuille Goteo est une fonctionnalité de notre plateforme qui vous permet d’effectuer votre don et de décider ensuite à quel projet l’apporter. <br> <p>Les dons que vous faites par le biais de notre plateforme sont fiscalement déductibles, conformément à la loi 49/2002 du 23 décembre sur le régime fiscal des entités sans but lucratif et les incitations fiscales au mécénat.</p> \n<p> Lorsque vous effectuez votre don, vous pouvez télécharger un certificat de don qui justifie auprès du Trésor votre contribution à une entité sans but lucratif. Vous pouvez accéder à un historique des certificats disponibles associés à vos dons à Goteo dans votre tableau de bord, en particulier dans la section <a href=\"/dashboard/wallet/certificate » target=\"_blank\">Certificat de donation</a>.</p> <p>NOTE IMPORTANTE: Nous vous rappelons que toutes les contributions pour lesquelles vous avez obtenu un certificat de don de notre Fondation ne sont pas remboursées. Cela signifie que si vous avez fait un don lié à un projet spécifique au sein de notre plateforme et que celui-ci n’atteint pas son objectif de financement minimum pendant sa campagne, votre contribution ira à votre portefeuille mais ne reviendra pas sur votre compte courant.Toutefois, vous pouvez affecter ce montant à partir de votre portefeuille virtuel en Goteo.org à tout autre projet actif que vous souhaitez au moment de votre choix, sans avoir à saisir à nouveau vos coordonnées bancaires ou de PayPal.</p>"
 dashboard-my-wallet-pool-info: 'En savoir plus sur l’utilisation de votre portefeuille'
 dashboard-no-projects: 'Vous n’avez pas de projet, vous pouvez en créer un <a href="/project/create">ici</a>'
 dashboard-password-recover-advice: 'Vérifiez que votre "mot de passe" est bien réinitialisée.'
@@ -121,6 +123,7 @@ dashboard-project-updates-sent-to-investors: 'Un e-mail a été envoyé à tous 
 dashboard-project-updates-sent-to-investors-error: 'Aucun e-mail n’a été envoyé aux cofinanceurs: %s'
 dashboard-project-updates-sent-reason-no-investors: 'Pas encore de cofinanceurs!'
 dashboard-project-updates-sent-reason-no-unique: 'Un e-mail a déjà été envoyé précédemment avec ce post!'
+dashboard-project-updates-sent-reason-too-old: 'La date du post est trop ancienne!'
 dashboard-rewards-address: 'Adresse de livraison:'
 dashboard-rewards-all_filter: Toutes
 dashboard-rewards-amount_group: 'Apports de'
@@ -187,5 +190,20 @@ user-preferences-tips: 'Bloquer les notifications contenant des conseils pour la
 user-preferences-updates: 'Bloquer les notifications de nouveautés des projets que je soutiens'
 user-profile-saved: 'Information de profil actualisé'
 user-save-fail: 'Problème lors de la sauvegarde des données.'
+dashboard-modal-url-success-msg: 'L’URL a été correctement mise à jour'
+dashboard-add-new-share-material: 'Nouveau matériel'
+dashboard-edit-share-material-url: 'Modifier l’URL'
+dashboard-modal-edit-url: 'Url où se trouve le matériel partagé'
+dashboard-modal-placeholder-edit-url: 'Url'
+dashboard-new-material-form-success: 'Le nouveau matériel partagé a été correctement ajouté.'
 dashboard-new-material-form-material: 'Matériel'
 dashboard-new-material-form-description: 'Description'
+dashboard-new-material-form-url: 'URL'
+dashboard-new-material-form-type: 'Type de matériel'
+dashboard-menu-projects-shared-materials: 'Matériels'
+project-no-share-material: 'Aucun matériel partagé par le projet'
+dashboard-project-images-desc: 'Organisez les images comme vous le souhaitez en faisant glisser et en déversant entre les zones.'
+dashboard-project-default-image: 'Image par défaut'
+dashboard-project-delete-image: 'Supprimer le fichier'
+dashboard-project-delete-image-confirm: 'Voulez-vous vraiment supprimer ce fichier?'
+dashboard-project-delete-default-image: "L’image par défaut ne peut pas être effacée.\nChoisissez une autre image par défaut avant de la supprimer."
