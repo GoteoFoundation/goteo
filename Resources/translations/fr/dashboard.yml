@@ -91,9 +91,16 @@ dashboard-menu-translate_board: Traduction
 dashboard-menu-translates: 'Mes traductions'
 dashboard-menu-matchers: "Matchers"
 dashboard-messegers-mail-sendto: 'Envoyé à %s  de vos cofinanceurs'
+dashboard-my-wallet-contribute-button: Faire un don
+dashboard-my-wallet-modal-pool-info: "Le portefeuille Goteo est une fonctionnalité de notre plateforme qui vous permet d’effectuer votre don et de décider ensuite à quel projet l’apporter. <br> <p>Les dons que vous faites par le biais de notre plateforme sont fiscalement déductibles, conformément à la loi 49/2002 du 23 décembre sur le régime fiscal des entités sans but lucratif et les incitations fiscales au mécénat.</p> \n<p> Lorsque vous effectuez votre don, vous pouvez télécharger un certificat de don qui justifie auprès du Trésor votre contribution à une entité sans but lucratif. Vous pouvez accéder à un historique des certificats disponibles associés à vos dons à Goteo dans votre tableau de bord, en particulier dans la section <a href=\"/dashboard/wallet/certificate » target=\"_blank\">Certificat de donation</a>.</p> <p>NOTE IMPORTANTE: Nous vous rappelons que toutes les contributions pour lesquelles vous avez obtenu un certificat de don de notre Fondation ne sont pas remboursées. Cela signifie que si vous avez fait un don lié à un projet spécifique au sein de notre plateforme et que celui-ci n’atteint pas son objectif de financement minimum pendant sa campagne, votre contribution ira à votre portefeuille mais ne reviendra pas sur votre compte courant.Toutefois, vous pouvez affecter ce montant à partir de votre portefeuille virtuel en Goteo.org à tout autre projet actif que vous souhaitez au moment de votre choix, sans avoir à saisir à nouveau vos coordonnées bancaires ou de PayPal.</p>"
+dashboard-my-wallet-pool-info: 'En savoir plus sur l’utilisation de votre portefeuille'
+dashboard-no-projects: 'Vous n’avez pas de projet, vous pouvez en créer un <a href="/project/create">ici</a>'
 dashboard-password-recover-advice: 'Vérifiez que votre "mot de passe" est bien réinitialisée.'
+dashboard-project-analytics-fail: 'Erreur lors de l’enregistrement de vos identifiants pour l’analyse'
+dashboard-project-analytics-ok: 'Vos identifiants pour analyse ont été enregistrés correctement'
 dashboard-project-blog-fail: 'Contactez-nous'
 dashboard-project-blog-inactive: 'Désolé, la publication de nouvelle sur ce projet a été désactivée.'
+dashboard-project-blog-empty: 'Pas encore de publications.'
 dashboard-project-blog-wrongstatus: 'Désolé, il n''est pas possible de publier de nouvelles à propos de ce projet...'
 dashboard-project-delete: Supprimer le projet
 dashboard-project-delete_alert: 'Voulez-vous vraiment supprimer définitivement ce projet?'
@@ -109,8 +116,10 @@ dashboard-project-updates-nopost: 'Aucun sujet trouvée'
 dashboard-project-updates-postcorrupt: 'Problème avec le sujet, contactez-nous.'
 dashboard-project-updates-saved: 'Le sujet a été actualisée correctement.'
 dashboard-project-updates-add: 'Nouvelle publication'
+dashboard-project-updates-editing: 'Montage du post'
 dashboard-project-updates-translating: 'Traduire post'
 dashboard-project-updates-sent-to-investors: 'Un e-mail a été envoyé à tous les cofinanceurs avec le contenu de ce post.'
+dashboard-project-updates-sent-to-investors-error: 'Aucun e-mail n’a été envoyé aux cofinanceurs: %s'
 dashboard-project-updates-sent-reason-no-investors: 'Pas encore de cofinanceurs!'
 dashboard-project-updates-sent-reason-no-unique: 'Un e-mail a déjà été envoyé précédemment avec ce post!'
 dashboard-rewards-address: 'Adresse de livraison:'
