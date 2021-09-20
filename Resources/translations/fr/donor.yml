@@ -20,5 +20,23 @@ donor-field-amount-relief: L’allégement
 donor-field-lot-relief: Étape
 donor-field-numproj: 'Contributions effectuées le %s'
 personal-field-donor_name: 'Nom de la personne physique ou dénomination fiscale de l’entité juridique'
+personal-field-donor_surname: 'Premier nom (non complété pour les entités juridiques)'
+personal-field-donor_surname2: 'Deuxième nom (non complété pour les entités juridiques)'
+validate-donor-mandatory: 'Tous les champs sont obligatoires'
+donor-legal-entities-natural-person: Personne physique
 donor-legal-entities-legal-person: Personne morale
 donor-legal-document-type-cif: Numéro TVA
+donor-legal-document-type-nif: NIF (numéro d'identification fiscale)
+donor-legal-document-type-nie: NIE
+donor-legal-document-type-vat: TVA
+validate-donor-legal_entity-empty: Le champ Entité légale est obligatoire.
+validate-donor-legal_document_type-empty: 'Le champ type de document est obligatoire.'
+validate-donor-nif-document-type: 'Le numéro du document ne correspond pas au format du type de document'
+validate-donor-legal-nif-entity-legal: "L’entité juridique ne correspond pas au type de document"
+donor-status-unconfirmed: 'Non confirmés :'
+donor-status-data_filled: 'Toutes les données complétées'
+donor-status-data_filled_no_country: 'Toutes les données complétées sans pays'
+donor-status-confirmed: 'Confirmés'
+donor-status-expired: 'Expirés'
+donor-status-emited: 'Certificat délivré (confirmé + pdf)'
+donor-status-notemited: 'Confirmé mais non émis'
