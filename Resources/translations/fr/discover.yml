@@ -19,4 +19,8 @@ discover-searcher-bylocation-header: 'Par lieu:'
 discover-searcher-byreward-all: TOUS
 discover-searcher-byreward-header: 'Par type de récompense:'
 discover-searcher-header: 'Chercher un projet'
+discover-by-keyword: 'Par mot clé:'
+discover-near-by: 'À proximité de:'
+discover-any-city: 'Ville, code postal, ...'
 meta-title-discover: 'Découvrir :: Goteo.org'
+discover-include-review-projects: 'Inclure les projets en cours de révision'
