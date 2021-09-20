@@ -265,6 +265,7 @@ dashboard-translate-project-currents: 'La langue originale de ce projet est %LAN
 dashboard-translate-project-translating: 'Vous traduisez ce projet en %LANG%. La langue d’origine est %ORIGINAL%.'
 dashboard-translate-project-ok: '%ZONE% traduit correctement en %LANG%'
 dashboard-project-updates-translate-ok: 'Post %TITLE% traduit avec succès à %LANG%'
+dashboard-project-updates-translating-post: 'Vous traduisez ce post en %LANG%. La langue d’origine est %ORIGINAL%.'
 dashboard-translate-story: 'Traduire mon historique dans Goteo '
 dashboard-project-saved: 'Projet mis à jour avec succès'
 dashboard-project-is-dead: 'Le projet est archivé et ne peut pas être modifié'
@@ -272,3 +273,15 @@ dashboard-project-mailing-view: 'Messages envoyés'
 dashboard-project-mailing-ago: 'Envoyé à %s'
 dashboard-project-mailing-sending: 'Envoyer un message %s'
 dashboard-project-mailing-percent_success: 'Pourcentage de messages déjà envoyés'
+dashboard-project-mailing-write_again: 'Écrire à tout le monde'
+dashboard-project-not-funded-yet: 'Cette section sera disponible lorsque votre projet aura terminé la campagne avec succès.'
+dashboard-project-reward-cannot: 'De nouvelles récompenses ne peuvent plus être introduites. Pendant la campagne, il est possible d’introduire de nouvelles récompenses (mais pas d’effacer celles qui existent déjà)'
+dashboard-origin-invests-referer: 'Origine des visites dans les contributions réussies'
+dashboard-origin-project-device: 'Dispositif utilisé sur la page du projet'
+dashboard-origin-invests-device: 'Dispositif utilisé dans les contributions réussies'
+dashboard-project-integration-token: 'Token'
+dashboard-project-integration-link: 'Lien'
+dashboard-project-pitch-title: 'Applications ouvertes'
+dashboard-project-pitch-description: "Ce sont les différents espaces auxquels vous pouvez postuler, si vous êtes intéressé à recevoir un financement supplémentaire pour votre campagne ou votre soutien institutionnel, jetez un coup d’œil et encouragez-vous à vous présenter!"
+dashboard-project-pitch-type: "Type"
+dashboard-project-pitch-already-applied: "Vous avez déjà appliqué"
