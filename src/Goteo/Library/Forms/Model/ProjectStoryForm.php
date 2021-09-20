@@ -58,14 +58,12 @@ class ProjectStoryForm extends AbstractFormProcessor {
             ->add('image', 'dropfiles', [
                 'label' => 'story-field-image',
                 'disabled' => $this->getReadonly(),
-                'url' => '/api/projects/' . $project->id . '/images',
                 'required' => true,
                 'limit' => 1
             ])
             ->add('pool_image', 'dropfiles', [
                 'label' => 'story-field-pool-image',
                 'disabled' => $this->getReadonly(),
-                'url' => '/api/projects/' . $project->id . '/images',
                 'required' => false,
                 'limit' => 1
             ]);
@@ -82,22 +80,9 @@ class ProjectStoryForm extends AbstractFormProcessor {
 
         $data = $form->getData();
         $model = $this->getModel();
-        
-        if ($data['image'] && is_array($data['image'])) {
-            if ($data['image']['removed'] && $model->image == current($data['image']['removed'])->id)
-                $model->image = null;
 
-            if ($data['image']['uploads'] && is_array($data['image']['uploads']))
-                $model->image = $data['image']['uploads'][0];
-        }
-
-        if ($data['pool_image'] && is_array($data['pool_image'])) {
-            if ($data['pool_image']['removed'] && $model->pool_image == current($data['pool_image']['removed'])->id)
-                $model->pool_image = null;
-
-            if ($data['pool_image']['uploads'] && is_array($data['pool_image']['uploads']))
-                $model->pool_image = $data['pool_image']['uploads'][0];
-        }
+        $this->processImageChange($data['image'], $model->image, true);
+        $this->processImageChange($data['pool_image'], $model->pool_image, false);
 
         unset($data['image']);
         unset($data['pool_image']);
