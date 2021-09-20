@@ -93,7 +93,7 @@ class ImpactDataTest extends TestCase {
     }
 
 
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
        try {
             $count = ImpactData::getList([],0,0,true);
             $impact_data_list = ImpactData::getList([], 0, $count);
@@ -101,13 +101,9 @@ class ImpactDataTest extends TestCase {
                 $impact_data->dbDelete();
             }
         }
-        catch(ModelNotFoundException $e) {
-        }
         catch(\PDOException $e) {
             error_log('PDOException on deleting test impact data! ' . $e->getMessage());
         }
-
-        return false;
     }
 
 }
