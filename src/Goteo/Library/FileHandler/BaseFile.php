@@ -9,6 +9,9 @@
  */
 
 namespace Goteo\Library\FileHandler {
+
+    use Exception;
+
     abstract class BaseFile {
 
         protected $path, $link;
@@ -23,7 +26,7 @@ namespace Goteo\Library\FileHandler {
          * @return [type]         [description]
          */
          public function get_path($remote='') {
-            while($remote{0} == '/') $remote = substr($remote,1);
+            while($remote[0] == '/') $remote = substr($remote,1);
             $path = $this->path;
 
             if (!empty($path)) {
@@ -41,7 +44,7 @@ namespace Goteo\Library\FileHandler {
          * @return [type]         [description]
          */
         protected function formatPath($path) {
-            while($path{0} == DIRECTORY_SEPARATOR) $path = substr($path, 1);
+            while($path[0] == DIRECTORY_SEPARATOR) $path = substr($path, 1);
             if(substr($path, -1, 1) != DIRECTORY_SEPARATOR) $path .= DIRECTORY_SEPARATOR;
             return $path;
         }
@@ -54,7 +57,7 @@ namespace Goteo\Library\FileHandler {
         }
 
         /**
-         *
+         * @throws Exception
          */
         protected function throwError($msg) {
             $this->last_error = "$msg";

@@ -123,14 +123,17 @@
         color: $color-white;
     }
 }
+
 .btn-sign {
-    background-color: $background-light-red;
+    background-color: $background-dark-red;
     color: $color-white;
-    &:hover {
-        background-color:$background-dark-red;
-        color: $color-white;
+    padding: 15px 1px;
+    border-radius: 10px;
+    &:hover, &:focus {
+        color: $color-white !important;
     }
 }
+
 .btn-fashion {
     background: $color-pink;
     @include background(linear-gradient(to right, $color-pink 28%,$color-red 100%));

@@ -33,7 +33,7 @@ class GoteoCategoryFix
   {
      return "
       ALTER TABLE call_category DROP FOREIGN KEY call_category_ibfk_1;
-      ALTER TABLE call_category ADD CONSTRAINT call_category_ibfk_1 FOREIGN KEY (call) REFERENCES call(id) ON UPDATE CASCADE;
+      ALTER TABLE call_category ADD CONSTRAINT call_category_ibfk_1 FOREIGN KEY (`call`) REFERENCES `call`(id) ON UPDATE CASCADE;
       ALTER TABLE call_category DROP FOREIGN KEY call_category_ibfk_2;
       ALTER TABLE call_category ADD CONSTRAINT call_category_ibfk_2 FOREIGN KEY (category) REFERENCES category(id) ON UPDATE CASCADE;
       ALTER TABLE project_category DROP FOREIGN KEY project_category_ibfk_1;
@@ -52,7 +52,7 @@ class GoteoCategoryFix
   {
      return "
       ALTER TABLE call_category DROP FOREIGN KEY call_category_ibfk_1;
-      ALTER TABLE call_category ADD CONSTRAINT call_category_ibfk_1 FOREIGN KEY (call) REFERENCES call(id) ON UPDATE CASCADE ON DELETE CASCADE;
+      ALTER TABLE call_category ADD CONSTRAINT call_category_ibfk_1 FOREIGN KEY (`call`) REFERENCES `call`(id) ON UPDATE CASCADE ON DELETE CASCADE;
       ALTER TABLE call_category DROP FOREIGN KEY call_category_ibfk_2;
       ALTER TABLE call_category ADD CONSTRAINT call_category_ibfk_2 FOREIGN KEY (category) REFERENCES category(id) ON UPDATE CASCADE ON DELETE CASCADE;
       ALTER TABLE project_category DROP FOREIGN KEY project_category_ibfk_1;

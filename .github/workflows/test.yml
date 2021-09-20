@@ -14,8 +14,9 @@ jobs:
   test-report:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        php: [ '7.1' ]
+        php: [ '7.4' ]
 
     services:
       mysql:

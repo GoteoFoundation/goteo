@@ -23,6 +23,7 @@ use Goteo\Model\Matcher;
 use Goteo\Application\Currency;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
+use Goteo\Util\Parsers\UrlLang;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,24 +35,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class SessionListener extends AbstractListener {
 
-    /**
-     * Chechsk if any of the elements in array $prefixes starts with the same chars as $full_str
-     * @param  [type] $full_str  full string
-     * @param  [type] $prefixes array of prexixes
-     * @return boolean          found or not
-     */
-    protected function matchPrefix($full_str, $prefixes) {
-        if(!is_array($prefixes)) {
-            $prefixes = [$prefixes];
-        }
-        foreach($prefixes as $str) {
-            if(strpos($full_str, $str) === 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public function onRequest(GetResponseEvent $event) {
 
         //not need to do anything on sub-requests
@@ -60,13 +43,14 @@ class SessionListener extends AbstractListener {
         }
 
         $request = $event->getRequest();
-        $path = $request->getPathInfo();
+
+        $parser = new UrlLang($request);
 
         //non cookies for notifyAction on investController
-        $skip = Config::get('session.skip');
-        if ($this->matchPrefix($path, $skip)) {
+        if($parser->skipSessionManagement()) {
             return;
         }
+
 
         // clean all caches if requested
         // TODO: replace by some controller
@@ -105,7 +89,25 @@ class SessionListener extends AbstractListener {
 
         // Set lang
         $lang = Lang::setFromGlobals($request);
-        // Cookie
+        $host = $parser->getHost($lang);
+        // Mantain user in secure enviroment if logged and ssl config on
+        if (Config::get('ssl') && Session::isLogged() && !$request->isSecure()) {
+            // Force HTTPS redirection
+            $host = 'https://' . $host;
+        } else {
+            // Conserve the current scheme
+            $host = $request->getScheme() . '://' . $host;
+        }
+
+        // Redirect if needed
+        if ($host != $request->getScheme() . '://' . $request->getHttpHost()) {
+            $query = http_build_query($request->query->all());
+            // die($host . $request->getPathInfo() . ($query ? "?$query" : ''));
+            $event->setResponse(new RedirectResponse($host . $request->getPathInfo() . ($query ? "?$query" : '')));
+            return;
+        }
+        // die("[$host] - " .$request->getScheme() . '://' . $request->getHttpHost());
+
         // the stupid cookie EU law
         if (!Cookie::exists('goteo_cookies')) {
             // print_r($_COOKIE);die('cooki');
@@ -113,58 +115,6 @@ class SessionListener extends AbstractListener {
             // print_r($_COOKIE);die('cooki');
             Message::info(Text::get('message-cookies'));
         }
-
-
-        $url = $request->getHttpHost();
-        // Routes to leave as they are
-        $skip = Config::get('url.redirect.skip');
-        // Routes to alway reditect to the main url
-        $fixed = Config::get('url.redirect.fixed');
-        // Redirect to proper URL if url_lang is defined
-        if (Config::get('url.url_lang') && !$this->matchPrefix($path, $skip)) {
-            $parts = explode('.', $url);
-            $sub_lang = $parts[0];
-            if($sub_lang == 'www') $sub_lang = Config::get('lang');
-            if (Lang::exists($sub_lang)) {
-                // reduce url: ca.goteo.org => goteo.org
-                array_shift($parts);
-                $url = implode('.', $parts);
-            }
-            // if reduced URL is the main domain, redirect to sub-level lang
-            if(count($parts) == 2) {
-                if($request->query->has('lang')) {
-                    $request->query->remove('lang');
-                }
-                // Login controller should mantaing always the same URL to help browser
-                if($this->matchPrefix($path, $fixed)) {
-                    // $url = "$url";
-                    $request->query->set('lang', $lang);
-                }
-                else {
-                    $url = preg_replace('!https?://|/$!i', '', Lang::getUrl($lang));
-                }
-
-            }
-            // print_r($parts);echo "$url [$sub_lang=>$lang] ";die;
-        }
-
-        // Mantain user in secure enviroment if logged and ssl config on
-        if (Config::get('ssl') && Session::isLogged() && !$request->isSecure()) {
-            // Force HTTPS redirection
-            $url = 'https://' . $url;
-        } else {
-            // Conserve the current scheme
-            $url = $request->getScheme() . '://' . $url;
-        }
-
-        // Redirect if needed
-        if ($url != $request->getScheme() . '://' . $request->getHttpHost()) {
-            $query = http_build_query($request->query->all());
-            // die($url . $request->getPathInfo() . ($query ? "?$query" : ''));
-            $event->setResponse(new RedirectResponse($url . $request->getPathInfo() . ($query ? "?$query" : '')));
-            return;
-        }
-        // die("[$url] - " .$request->getScheme() . '://' . $request->getHttpHost());
 
         // set currency
         $currency = $request->query->get('currency');

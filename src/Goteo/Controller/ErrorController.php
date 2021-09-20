@@ -11,15 +11,11 @@
 namespace Goteo\Controller;
 
 use Goteo\Application\App;
-use Goteo\Application\Session;
-use Goteo\Application\View;
 use Goteo\Application\Message;
-use Goteo\Library\Text;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\View;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\FlattenException;
 
 class ErrorController extends \Goteo\Core\Controller {
 
