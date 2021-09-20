@@ -207,3 +207,24 @@ dashboard-project-default-image: 'Image par défaut'
 dashboard-project-delete-image: 'Supprimer le fichier'
 dashboard-project-delete-image-confirm: 'Voulez-vous vraiment supprimer ce fichier?'
 dashboard-project-delete-default-image: "L’image par défaut ne peut pas être effacée.\nChoisissez une autre image par défaut avant de la supprimer."
+dashboard-project-dnd-image: 'Faites glisser et déposez une ou plusieurs images ici'
+dashboard-project-dnd-file: 'Faites glisser et déposez un ou plusieurs fichiers ici'
+dashboard-project-image-delete-ko: 'L’image n’a pas pu être effacée!'
+project-upload-images-some-ko: 'Certaines images n’ont pas été téléchargées!'
+dashboard-project-default-image-confirm: 'Vous voulez mettre cette image par défaut du projet?'
+dashboard-project-image-default-ko: 'Impossible de mettre l’image par défaut!'
+dashboard-project-image-reorder-ko: 'Les images n’ont pas pu être triées!'
+dashboard-project-send-to-markdown: "Entrez cette image dans le texte"
+dashboard-max-files-reached: "Vous avez atteint le nombre maximum de fichiers!"
+dashboard-file-type-error: "Ce type de fichier n'est pas autorisé!"
+all-files-uploaded: "Tous les fichiers ont été téléchargés correctement"
+uploaded-ok: "Téléchargement réussi"
+publish-confirm-yes: "Vous voulez publier cet article?"
+publish-confirm-no: "Vous voulez dépublier cet article?"
+active-confirm-yes: "Vous voulez publier cet article?"
+active-confirm-no: "Vous voulez désactiver cet article?"
+dashboard-project-support-empty: 'Il n’y a pas encore de demande de collaboration.'
+dashboard-project-support-responses: Les réponses
+dashboard-project-support-no-responses: 'Pas encore de réponses.'
+dashboard-project-support-add: 'Ajouter une nouvelle demande de collaboration'
+dashboard-search-invests-msg: 'Envoyer un message aux cofinanceurs de cette recherche'
