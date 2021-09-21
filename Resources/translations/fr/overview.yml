@@ -65,3 +65,6 @@ validate-project-field-about: 'L''explication du projet est trop courte'
 validate-project-field-currently: 'Indiquez l''état du projet pour faciliter l''évaluation et la possible publication du projet sur Goteo.'
 validate-project-field-description: 'La description du projet est trop courte'
 validate-project-value-keywords: 'Indiquez un minimum de 5 mots clés pour faciliter l''évaluation et la possible publication du projet sur Goteo.'
+overview-field-sign-url: "Url de l’entreprise"
+overview-field-sign-url-action: "Texte à appeler à signer"
+overview-field-sign-url-help: "Ce champ vous permet d’ajouter un saut dans la campagne pour votre page de signature de projet"
