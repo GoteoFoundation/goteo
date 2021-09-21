@@ -5,21 +5,36 @@ profile-field-about: 'Racontez nous quelque chose sur vous'
 profile-field-avatar_current: 'Votre avatar'
 profile-field-avatar_upload: 'Importer une image pour votre avatar'
 profile-field-contribution: 'Que pouvez vous offrir?'
+profile-field-entity-type: 'Type d''entité'
+profile-field-entity-type-checkbox-public: 'Je suis une entité publique'
+profile-field-entity-type-choose: 'Sélectionnez un type d’entité'
+profile-field-entity-type-private: Privé
 profile-field-interests: 'Quelles sortes de projet vous motive le plus?'
 profile-field-keywords: 'Sujets vous intéressant'
+profile-field-legal-entity: 'Forme légale'
+profile-field-legal-entity-asociation: Association
+profile-field-legal-entity-choose: 'Sélectionnez une forme juridique'
+profile-field-legal-entity-company: Entreprise
+profile-field-legal-entity-cooperative: Coopérative
+profile-field-legal-entity-ngo: ONG
+profile-field-legal-entity-others: Autres
 profile-field-legal-entity-person: 'Personne physique'
 profile-field-location: 'Lieu d''habitation'
 profile-field-name: 'Nom d''utilisateur'
+profile-field-url: URL
 profile-field-websites: 'Ma page web'
+profile-fields-analytics-title: Analyse
 profile-fields-image-title: 'Image du profil'
 profile-fields-social-title: 'Profil'
 profile-main-header: 'Mon profil'
 profile-suggest-projects-interest: 'Vous devriez aimez et donnez votre soutien a ces projets:'
 step-1: Profil
 step-userProfile: 'Etape 1: Utilisateur / Profil'
+tooltip-user-about: "En tant que réseau social, Goteo vise à aider à diffuser et à financer des projets intéressants parmi le plus grand nombre possible de personnes. Pour cela, il est important de partager des informations sur vos compétences ou votre expérience (professionnelle, académique, passe-temps, etc.)."
 tooltip-user-avatar_upload: 'Importer l''image de votre avantar pour que les cofincanceur puissent vous identifier plus facilement.'
 tooltip-user-contribution: 'Décrivez brièvement vos compétences ou les domaines dans lesquels vous pouvez être utile à un projet (traduction, diffusion, tests, programmation, enseignement, etc.)'
 tooltip-user-facebook: 'Ce réseau social peut contribuer à la diffusion des projets publiés sur Goteo qui vous intéresse parmis vos amis ou votre famille.'
+tooltip-user-facebook-pixel: 'Entrez votre identifiant Facebook Pixel si vous souhaitez mesurer les conversions d’une campagne Facebook.'
 tooltip-user-google: 'Indiquez votre nom d''utilisateur Google+.'
 tooltip-user-identica: 'Ce réseau aide àla diffusion des projets publiés sur Goteo parmi les communautés liés aux logiciels libres.'
 tooltip-user-interests: 'Indiquez le type de projet qui pourrait vous intéresser en tant que cofinanceur potentiel ou en tant que contributeur. Ces catégories sont transversales, vous pouvez en sélectionner plusieurs.'
