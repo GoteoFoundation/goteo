@@ -1,7 +1,14 @@
 ---
+landing-calculate-button: Calculer
+landing-donor-button: Faire un don
+landing-error-zero: 'Le montant à apporter doit être supérieur à 0'
+landing-main-slogan: 'Calculez vos économies d’impôt grâce à l’amélioration de l’impôt à partir de 2015'
 landing-more-info: 'Plus d''infos'
+landing-real-amount: 'Vos dépenses réelles seront'
+landing-regular-invest: Contribution
 landing-spread: 'Calculez votre allégement fiscal dans Goteo! #mojarsedesgrava'
 landing-spread-title: 'Diffusez les avantages fiscaux de Goteo!'
+landing-stories-title: 'Grâce à votre contribution, des initiatives telles que pourront être réalisées :'
 landing-taxes-explain: 'Apportez votre contribution dès maintenant avec le <strong>portefeuille Goteo</strong>: une nouvelle fonctionnalité qui vous permet de faire votre don à l’heure actuelle et de décider ensuite à quel projet l’affecter. Vous recevrez instantanément un certificat justifiant auprès du Trésor votre contribution à la Fondation Goteo, organisme sans but lucratif.'
 landing-taxes-regional: '<strong> important</strong> Cet allègement fiscal ne s’applique pas en dehors de l’Espagne, ni au Pays basque ni à la Navarre, qui maintiennent une déduction de 20% et 25% respectivement du total apporté.'
 landing-type-person: 'Personne physique'
