@@ -9,4 +9,8 @@ preview-send-comment: 'Notes complémentaires pour l''administrateur'
 step-7: Prévisualisation
 step-preview: 'Projet / Prévisualisation'
 tooltip-project-comment: 'Ici c''est l''endroit pour exposez vos doutes et commentaires à l administrateurs de Goteo et aussi où vous pouvez suggérer des améliorations, etc.'
+project-send-review-desc: >
+  Une fois envoyé, aucune modification ne pourra être apportée tant que nous n’aurons pas ouvert à nouveau son édition.
+  Nous vous contacterons sous peu pour discuter de la proposition de campagne et poursuivre son processus d’optimisation et de publication.
+  **N’oubliez pas de vérifier votre dossier spam**, parfois la technologie n’est pas capable d’apprécier l’affection que nous accordons à nos projets.
 
