@@ -24,3 +24,5 @@ matcher-btn-active: 'Activer le financement'
 matcher-label-active: "Financement actif\n"
 matcher-label-completed: 'Complet'
 matcher-label-rejected: 'Rejeté'
+matcher-label-pending: "En attente"
+matcher-apply-answer-questionnaire: "Répondre au questionnaire"
