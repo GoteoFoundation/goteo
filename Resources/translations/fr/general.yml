@@ -1,4 +1,6 @@
 ---
+admin_no_permission: 'Vous n’êtes pas autorisé à accéder à <strong>%s</strong>'
+bazar-description-seo: 'Cadeaux de financement participatif solidaires à Goteo.org.'
 bazar-title-seo: 'Récompenses solidaires : Goteo.org'
 blog-comments: Commentaires
 blog-main-header: 'Blog'
@@ -41,16 +43,19 @@ guide-project-images: 'Les images du projet peuvent être des plans, screenshots
 guide-project-rewards: "<strong>Dans cette partie, vous devez définir ce que vous proposez en échange à vos cofinanceurs.</strong>"
 guide-project-support: guide-projet-support
 guide-project-supports: '<strong> Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. </strong><br><br>Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. Ces besoins peuvent prendre la forme de tches ou d''actions réalisables par d''autres personnes (traduction, gestion, diffiusion, etc.), ou de prêts (de matériel informatique, pour le transport, etc.)'
+guide-project-invests: 'À partir de cette section, vous pourrez gérer vos co-financeurs, les récompenses qu’ils ont choisies et les contacter si vous le jugez nécessaire.'
 header-about-side: 'Ce qui nous inspire'
 home-posts-header: Nouveautés
 horizontal-project-investors: 'cofinanceurs'
 horizontal-project-percent: 'financé'
 horizontal-project-reached: 'Obtenu'
 invest-individual-header: 'Vous pouvez refuser de recevoir votre récompense, ou sélectionner une récompense d''un montant égal ou inférieur àvotre contribution.'
+login-register-accept-newsletter: 'Je souhaite m''abonner à la newsletter'
 mandatory-cost-field-type: 'Vous devez sélectionner le type de coût'
 mandatory-individual_reward-field-amount: 'Vous devez spécifier le montant pour cette récompense'
 mandatory-project-costs: 'These should be broken down into at least two groups.'
 mandatory-register-field-email: 'Vous devez renseigner une addresse email'
+mark-pending: 'Marquer comme en attente de traduction'
 node-menu-home: Noeud
 overview-field-about: 'Caractéristiques principales'
 overview-field-motivation: 'Pourquoi est-ce important'
@@ -58,34 +63,70 @@ profile-about-header: 'A propos'
 project-invest-total: 'Total des contributions monétaires'
 project-messages-send_message-your_answer: 'Ecrivez votre réponse ici.'
 project-messages-send_message_support-your_answer: 'Ecrivez ici votre message de collaboration pour %s'
+regular-add: Nouvel enregistrement
+regular-all: Tous
 regular-admin_board: 'Tableau de bord admin'
+regular-author: 'Auteur'
 regular-allsome: 'Tous/certains de'
 regular-anonymous: Anonyme
 regular-ask: Demander
 regular-submit: Envoyez.
+regular-slug: Identifiant unique
 regular-by: 'Par:'
 regular-calendar: Calendrier
+regular-cancel: Annuler
+regular-cancel-back: 'Annuler et revenir en arrière'
+regular-categories: 'Catégories'
+regular-social_commitments: 'Engagement social'
+regular-spheres: 'Champs d''application'
+regular-sdgs: 'ODD'
+regular-footprints: 'Empreintes'
+regular-back: 'Retour'
+regular-channel: Canal
 regular-collaborate: Collaborer
+regular-content: Contenu
+regular-continue-question: 'Continuer ?'
+regular-continue: 'Continuer'
 regular-create: 'Créer un projet'
+regular-date: Date
+regular-date_in: Date d'entrée
+regular-date_out: Date de départ
 regular-days: jours
 regular-delete: Effacer
 regular-description: Description
 regular-discover: 'Voir les projets'
+regular-discard: 'Rejeter'
+regular-download-pdf: 'Télécharger en PDF'
+regular-download: Téléchargez
+regular-actions: Actions
 regular-edit: Modifier
 regular-email: Adresse mail
+regular-join: 'Rejoins-nous'
+regular-facebook: Facebook
 regular-faq: 'Questions fréquentes'
+regular-female: Femme
+regular-other-gender: Autre
 regular-first: Première
 regular-from: Depuis
 regular-getit: Obtiens-le!
 regular-go_up: Importer.
+regular-google: Google+
+regular-header: Tête
 regular-header-about: 'A propos'
+regular-header-blog: Blog
+regular-header-faq: FAQ
 regular-header-glossary: 'Glossaire de Goteo'
 regular-hello: Bonjour
+regular-here: ici
+regular-help: Aide
 regular-home: Commencer
+regular-id: Identifiant ({})
 regular-im: Je suis
+regular-instagram: Instagram
 regular-invest: Apporter
 regular-invest_it: 'Cofinancer ce projet'
 regular-investing: Pour
+regular-invests: Contributions
 regular-lang: Langue
 regular-last: Dernière
 regular-license: Licence
