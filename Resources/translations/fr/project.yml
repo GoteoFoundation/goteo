@@ -22,11 +22,15 @@ project-help-cost: 'J''ai besoin d''aide pour la section budget'
 project-help-license: 'J''ai besoin d''aide pour établir les retombées de mon projet et choisir une license'
 project-hide-donors: 'Masquer les cofinanciers'
 project-hide-needs: 'Masquer la liste des besoins'
+project-invest: Contribution
+project-invest-msg: 'Message de soutien:'
 project-langs-header: 'Projet en'
 project-media-play_video: 'Voir la Video'
 project-menu-home: Projet
 project-menu-messages: Messages
 project-menu-needs: Budget
+project-menu-news: 'Actualités'
+project-menu-participate: 'Participer'
 project-menu-supporters: Cofinanceurs
 project-menu-updates: Nouveautés
 project-menu_title-home: 'Impact social: ce projet ouvre son code, partage ses connaissances, ses données et ses fichiers numériques en échange de votre soutien.'
@@ -40,15 +44,21 @@ project-messages-send_direct-header: 'Envoyer un message au porteur du projet'
 project-messages-send_message-button: Envoyer
 project-messages-send_message-header: 'Ecrivez votre message'
 project-not_published: 'Ce projet n''est pas encore public.'
+project-regular-support: Cofinancement
+project-related: 'Projets liés'
+project-rewards-bonus_reward-title: Bonus
 project-rewards-header: Récompense
 project-rewards-individual_reward-limited: 'Récompense limitée'
 project-rewards-individual_reward-title: 'Récompenses individuelles'
 project-rewards-individual_reward-units_left: 'Il reste <span class="left">%s</span> unités'
+project-rewards-side-title: 'Récompenses'
 project-rewards-social_reward-title: 'Retombées collectives'
 project-rewards-supertitle: 'Qu''offrons nous en échange'
 project-rounds: 'Un seul round'
 project-share-header: 'Partagez ce projet'
 project-share-pre_header: 'Faites connaâtre a votre réseau que'
+project-show-donors: 'Afficher les cofinanceurs'
+project-show-needs: 'Afficher la liste des besoins'
 project-side-investors-header: 'Ont deja cofinancé'
 project-spread-embed_code: 'Code Embed'
 project-spread-header: 'Promouvoir ce projet'
@@ -80,6 +90,7 @@ tooltip-project-bank: 'Si vous ne désirez pas indiquer le numéro, vous pouvez 
 tooltip-project-help-cost: 'Si vous avez des doutes pour la section budget, cochez cette case. Nous recevrons une demande d''aide seulement si vous compléter le formulaire.'
 tooltip-project-help-license: 'Si vous avez des doutes à propos des licenses et des retombées collectives, cochez cette case. Nous recevrons une demande d''aide seulement si vous compléter le formulaire.'
 tooltip-project-paypal: "<p> En plus d'utiliser notre passerelle de paiement bancaire, <strong> vous pouvez recevoir des contributions via PayPal </strong>. Pour ce faire, vous devez indiquer ici une adresse email associée à un compte PayPal validé. N'écrivez rien (pas de caractères) dans ce champ si vous ne souhaitez pas proposer l'option de paiement Paypal.\n</p> <p> Bien qu'il ne soit pas obligatoire d'avoir un compte Paypal pour recevoir la collection de votre projet, il est fortement recommandé. <strong> Si un compte PayPal validé et vérifié n'est pas fourni avant la publication de cette campagne, Il ne sera pas possible de recevoir des contributions de cette manière.\n</strong> </p> <p> Ce compte ne peut pas être modifié ultérieurement, vous devrez nous contacter si vous souhaitez le modifier. </p> <p> <strong> IMPORTANT: Vous ne pouvez pas utiliser ce même compte pour contribuez à votre propre projet car cela provoquerait une erreur système. </strong> </p>"
+tooltip-project-2rounds: 'Si vous choisissez cette option, votre projet disposera de 2 tours de financement de 40 jours. L’une pour obtenir le minimum et l’autre pour l’optimum.'
 tooltip-project-rounds: 'Si vous choisissez cette option, vôtre campagne durera 40 jours'
 tooltip-project-scope: 'Indiquez l''impact géographique que souhaite avoir ce projet (chaque catégorie comprend la categorie précédente).'
 tooltip-project-spread: 'Expliquez comment vous prévoyez de diffuser le projet au sein de votre communauté: canaux, tels messages, la diffusion, le calendrier minimum...'
@@ -101,3 +112,4 @@ project-create-minimum-calculated-alert: '<strong> BIEN! </strong> <p> Vous voye
 project-create-publishing-date-field: 'Quand comptez-vous publier le projet?'
 project-create-social-select-field: 'Sélectionnez votre engagement social'
 project-create-social-select-alert: '<strong> GOTEO-TASTIC !! </strong> <p> Chez Goteo, nous avons besoin d''un engagement social, pensez au vôtre et sélectionnez-le! </p>'
+project-validation-error-profile_social: 'Vous devez remplir l’un des champs Web, Facebook, Twitter ou Instagram'
