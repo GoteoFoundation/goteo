@@ -5,6 +5,7 @@ form-add-button: Ajouter
 form-ajax-info: 'Le formulaire est sauvegardé automatiquement au fur et àmesure'
 form-apply-button: Valider
 form-edit-button: Editer
+form-has-errors: 'Le formulaire contient des erreurs. Merci de bien vouloir les vérifier avant de continuer!'
 form-errors-info: 'Total: %s | Dans cette section: %s'
 form-errors-total: '%s erreurs au total'
 form-footer-errors_title: Erreurs
@@ -35,3 +36,14 @@ project-one-round: 'Un seul round de 40 jours'
 project-personal-field-entity_name: 'The party on behalf of which you are acting (if applicable) '
 project-two-rounds: '2 rounds de 40 jours'
 tooltip-project-personal-entity_name: 'Si vous representez une organisation, veuillez nous l''indiquer ici'
+tooltip-text-type-change: 'Cela modifiera le type d’éditeur de texte. <br><b>Remarque:</b> Lorsque vous passez du markdown au html, certains styles peuvent être perdus.'
+tooltip-drag-and-drop-images: 'Pour incorporer des images, vous pouvez faire glisser et déposer les fichiers directement dans l’éditeur'
+form-sent-success: 'Les données ont été enregistrées correctement!'
+form-sent-error: 'Une erreur s’est produite lors de l’enregistrement des données : [%s]'
+form-confirm-exit: "Les données que vous n’avez pas enregistrées seront perdues.\nVoulez-vous quitter la page?"
+overview-extra-call: 'Champs complémentaires pour l’appel %s'
+form-editor-bold: 'Mettre le texte en gras'
+form-editor-italic: 'Italique'
+form-editor-strikethrough: 'Barré'
+form-editor-heading: 'En-tête de page'
+form-editor-smaller_heading: 'Diminuer l’en-tête'
