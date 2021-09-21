@@ -26,7 +26,12 @@ admin-account-issue-solved: 'Nous avons fait le transfert'
 admin-account-modify-status: 'Modifier le statut'
 admin-account-modify-status-confirm: "Êtes-vous sûr de vouloir modifier manuellement le statut sur cette contribution? C'est délicat!\nAUCUNE opération de retour de contribution ne sera effectuée."
 admin-account-payment-method: 'Mode de paiement'
+admin-account-refund-to-pool: 'Rembourser la contribution sur le portefeuille'
+admin-account-rewards: 'Récompenses choisies'
+admin-account-switch-donation: 'Echange des dons'
 admin-account-switch-donation-confirm: 'Voulez-vous modifier le statut de votre don?'
+admin-account-switch-pool-confirm: 'Cela n’affecte que lorsque le projet échoue, ne génère ni n’enlève d’argent du portefeuille. Voulez-vous continuer ?'
+admin-account-transaction: 'Code de suivi'
 admin-address: Adresse
 admin-all: Tout
 admin-global: Global
