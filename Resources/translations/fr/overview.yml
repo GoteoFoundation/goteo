@@ -78,6 +78,10 @@ validate-project-value-keywords: 'Indiquez un minimum de 5 mots clés pour facil
 overview-field-execution-plan: 'Plan d’exécution'
 tooltip-project-execution-plan: 'Expliquez votre plan d’exécution'
 tooltip-project-execution-plan-url: 'Url avec votre plan d’exécution'
+overview-field-sustainability-model: 'Modèle de durabilité'
+tooltip-project-sustainability-model: 'Expliquez le modèle de durabilité de votre projet'
+tooltip-project-sdg: 'Choisissez les objectifs auxquels votre projet répond, en essayant de sélectionner un maximum de trois.'
+tooltip-project-sdg-suggestion: 'Voici quelques ODS qui pourraient s’intégrer en fonction de l’engagement social sélectionné pour votre projet, nous vous recommandons de consulter <a href="https://www.un.org/sustainabledevelopment/es/objetivos-de-desarrollo-sostenible/ » target="_blank">ici</a> son contenu spécifique. <br><br>'
 overview-field-sign-url: "Url de l’entreprise"
 overview-field-sign-url-action: "Texte à appeler à signer"
 overview-field-sign-url-help: "Ce champ vous permet d’ajouter un saut dans la campagne pour votre page de signature de projet"
