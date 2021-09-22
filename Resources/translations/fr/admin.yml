@@ -26,7 +26,10 @@ admin-account-issue-solved: 'Nous avons fait le transfert'
 admin-account-modify-status: 'Modifier le statut'
 admin-account-modify-status-confirm: "Êtes-vous sûr de vouloir modifier manuellement le statut sur cette contribution? C'est délicat!\nAUCUNE opération de retour de contribution ne sera effectuée."
 admin-account-payment-method: 'Mode de paiement'
+admin-account-pool-on-fail: 'Pool (retour au portefeuille en cas de défaillance)'
 admin-account-refund-to-pool: 'Rembourser la contribution sur le portefeuille'
+admin-account-refund-to-pool-confirm: "Cela marquera l’apport comme:\nRetourné si le projet est échoué\nAnnulé si le projet est actif ou réussi\nL’utilisateur ne sera pas remboursé, l’argent sera généré dans le portefeuille de l’utilisateur.\nVoulez-vous continuer ?"
+admin-account-refund-to-user: 'Rembourser la contribution à l’utilisateur'
 admin-account-rewards: 'Récompenses choisies'
 admin-account-switch-donation: 'Echange des dons'
 admin-account-switch-donation-confirm: 'Voulez-vous modifier le statut de votre don?'
@@ -96,7 +99,9 @@ admin-filters-edit: 'Modifier le filtre'
 admin-filters-create: 'Créer un filtre'
 admin-remove-filters: 'Supprimer les filtres'
 admin-remove-filters-forbidden: 'Les filtres utilisés ne peuvent pas être supprimés.'
+admin-remove-entry: 'Effacer la saisie'
 admin-remove-entry-confirm: 'Voulez-vous supprimer cette entrée? Cette action sera définitive!'
+admin-remove-entry-forbidden: 'Impossible de supprimer l''article publié dans le blog. Dépubliez d’abord l’article.'
 admin-remove-entry-ok: 'Donnée supprimée correctement'
 admin-add-entry-ok: 'Nouvel enregistrement créé correctement'
 admin-edit-entry-ok: 'Enregistrement correctement modifié'
@@ -106,11 +111,13 @@ admin-others: Autres
 admin-summary: Sommaire
 admin-origins: Statistiques de visites
 admin-text-type: 'Traiter le texte comme'
+admin-text-type-html: HTML
 admin-user: Utilisateur
 admin-user-no-projects: 'Il n’a pas encore créé de projet'
 admin-user-no-invests: 'Il n’a pas encore fait de dons'
 admin-users: Utilisateurs
 admin-users-add: Créer un nouveau compte utilisateur
+admin-stories: Historiques d’utilisateurs dans Goteo
 admin-socialcommitment-add: Créer un nouvel engagement social
 admin-channels: Canaux
 admin-yes: Oui
