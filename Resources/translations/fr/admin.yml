@@ -118,6 +118,22 @@ admin-user-no-invests: 'Il n’a pas encore fait de dons'
 admin-users: Utilisateurs
 admin-users-add: Créer un nouveau compte utilisateur
 admin-stories: Historiques d’utilisateurs dans Goteo
+admin-stories-add: Créer une nouvelle histoire
+admin-stories-edit: Modifier l’histoire %s
+admin-channelstory-add: Ajouter le témoignage à la chaîne
+admin-channelstory-submit: Sauvegarder l'historique
+admin-channelstory-correct: 'Le témoignage a été ajouté à la chaîne'
+admin-channelsection-section: 'Section'
+admin-channelsection-map: 'Carte'
+admin-channelsection-resource: 'Ressources'
+admin-channelsection-projects: 'Projets'
+admin-channelsection-posts: 'Publications'
+admin-channelsection-program: 'Programmes'
+admin-channelsection-stories: 'Stories'
+admin-channelsection-workshops: 'Ateliers'
+admin-channelsection-team: 'Equipe'
+admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-button: 'Bouton'
 admin-socialcommitment-add: Créer un nouvel engagement social
 admin-channels: Canaux
 admin-yes: Oui
