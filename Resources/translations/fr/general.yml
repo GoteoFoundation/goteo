@@ -58,6 +58,7 @@ mandatory-individual_reward-field-amount: 'Vous devez spécifier le montant pour
 mandatory-project-costs: 'These should be broken down into at least two groups.'
 mandatory-register-field-email: 'Vous devez renseigner une addresse email'
 mark-pending: 'Marquer comme en attente de traduction'
+meta-description-index: 'Goteo est le réseau ouvert de financement participatif, de collaboration et de formation, leader des projets d’innovation sociale. Avec 2 tours et avantages fiscaux pour les donateurs!'
 node-menu-home: Noeud
 overview-field-about: 'Caractéristiques principales'
 overview-field-motivation: 'Pourquoi est-ce important'
@@ -137,8 +138,11 @@ regular-login: Login
 regular-logout: 'Fermez la session.'
 regular-looks_for: 'Rechercher:'
 regular-main-header: Goteo.fr
+regular-male: Homme
+regular-others: Autres
 regular-manage_board: 'Espace Administration'
 regular-mandatory: 'Champ obligatoire!'
+regular-matchfunding: 'Co-financements'
 regular-media_legend: Légende
 regular-menu: Menu
 regular-message_fail: 'Une erreur s''est produite lors de l''envoi du message.'
@@ -148,6 +152,7 @@ regular-more_info: '+ d''infos'
 regular-news: 'News'
 regular-no: 'Non'
 regular-preview: Prévisualisation
+regular-evaluate: Évaluer
 regular-projects: Projets
 regular-published_no: Brouillon
 regular-published_yes: Publié
@@ -157,21 +162,46 @@ regular-recomended_by: 'Projet recommandé par'
 regular-review_board: 'Mes évaluations'
 regular-round: 'ª tour'
 regular-save: Sauvegarder
+regular-schedule: Horaire
 regular-search: Rechercher
+regular-search-user: Rechercher un utilisateur
+regular-search-desc: 'Écrivez votre recherche ici'
+regular-search-tooltip: 'Saisir votre recherche et appuyez sur enter'
 regular-see_all: 'Tout voir'
+regular-see_blog: Blog
 regular-see_details: 'Voir les détails'
 regular-see_more: 'En voir plus'
 regular-send_message: 'Envoyez le message.'
 regular-share-facebook: 'Goteo sur Facebook'
+regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Suivez-nous sur Twitter.'
 regular-share_this: 'Partager sur'
 regular-sorry: 'Désolé'
 regular-thanks: Merci
+regular-total: Total des contributions 
+regular-donations: Dons (non inclus dans les contributions)
+regular-translate: Traduire
+regular-translations: 'Traductions'
 regular-translate_board: 'Traduction'
+regular-twitter: Twitter
+regular-url: Lien
+regular-view: Visualiser
 regular-view_project: 'Voir le projet'
+regular-web: Web
 regular-weeks: Semaines
+regular-year: Année
 regular-yes: Oui
 regular-name: Nom
+regular-image: Image
+regular-images: Images
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
+regular-call: Co-financements
+regular-num-comments: '%s commentaires'
+regular-manage: 'Gérer'
+regular-no-edit-permissions: Vous n’êtes pas autorisé à modifier cet enregistrement!
+regular-messages: Messages
+regular-unknown: Inconnu
 session-about-to-expire: 'La session se fermera dans 10 minutes. Desirez vous reloader la page pour renouveler la session?'
 session-expired: 'La session est terminée'
 tooltip-dashboard-user-access_data: 'Voici vos données d''accès actuelles. Attention, vous ne pouvez modifier votre LOGIN !'
