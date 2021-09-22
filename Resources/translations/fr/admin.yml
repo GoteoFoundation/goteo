@@ -110,13 +110,21 @@ admin-sponsors: Sponsors
 admin-others: Autres
 admin-summary: Sommaire
 admin-origins: Statistiques de visites
+admin-status: Etat
 admin-text-type: 'Traiter le texte comme'
 admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Texte Simple'
 admin-user: Utilisateur
 admin-user-no-projects: 'Il n’a pas encore créé de projet'
 admin-user-no-invests: 'Il n’a pas encore fait de dons'
 admin-users: Utilisateurs
 admin-users-add: Créer un nouveau compte utilisateur
+admin-blog: Généralités du blog
+admin-blog-add: Créer un nouveau post
+admin-blog-slug-exists: 'L’identifiant [%s] est utilisé dans un autre post!'
+admin-blog-slug-chars: 'L’identificateur [%s] contient des caractères invalides!'
+admin-blog-not-public: 'Ce message n’est pas encore public'
 admin-stories: Historiques d’utilisateurs dans Goteo
 admin-stories-add: Créer une nouvelle histoire
 admin-stories-edit: Modifier l’histoire %s
@@ -134,8 +142,25 @@ admin-channelsection-workshops: 'Ateliers'
 admin-channelsection-team: 'Equipe'
 admin-channelsection-sponsors: 'Sponsors'
 admin-channelsection-button: 'Bouton'
+admin-channelsection-create: 'Créer'
+admin-channelsection-add: 'Ajouter une section'
+admin-channelpost-add: Ajouter un témoignage à la chaîne
+admin-channelcriteria-title: 'Quiz de la chaine'
+admin-channelcriteria-subtitle: 'Définissez les critères avec lesquels vous évaluerez un projet qui souhaite se présenter à votre chaîne. Essayez d’être concis dans ce que vous espérez tirer des initiatives que vous voulez présenter, aidera à vous faciliter l’évaluation finale.'
+admin-channelprogram-create: 'Créer'
+admin-channelprogram-add: 'Ajouter un programme'
+admin-categories: 'Catégories et domaines'
+admin-categories-if-empty-then-asset: 'Si elle est laissée vide, l’icône par défaut sera utilisée : %s'
+admin-category-add: Créer une nouvelle catégorie
 admin-socialcommitment-add: Créer un nouvel engagement social
+admin-sdg-add: Créer un nouvel ODS
 admin-channels: Canaux
 admin-yes: Oui
 admin-impersonate: Se faire passer pour
+admin-project-to-publish-desc: 'Passer le projet à l’état « En campagne »'
+admin-project-to-publish-sure: 'Le projet va commencer sa campagne, Voulez-vous continuer?'
+admin-home-title: Administrer Goteo
+admin-list: Inscription
+admin-send-email: 'Envoyer un e-mail'
+admin-show-roles-info: 'Quel rôle peut-il jouer?'
 
