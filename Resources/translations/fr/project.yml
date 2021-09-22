@@ -94,8 +94,15 @@ tooltip-project-2rounds: 'Si vous choisissez cette option, votre projet disposer
 tooltip-project-rounds: 'Si vous choisissez cette option, vôtre campagne durera 40 jours'
 tooltip-project-scope: 'Indiquez l''impact géographique que souhaite avoir ce projet (chaque catégorie comprend la categorie précédente).'
 tooltip-project-spread: 'Expliquez comment vous prévoyez de diffuser le projet au sein de votre communauté: canaux, tels messages, la diffusion, le calendrier minimum...'
+tooltip-updates-allow_comments: tooltip-updates-allow_comments
+tooltip-updates-date: tooltip-updates-date
 tooltip-updates-home: 'Texte tooltip-updates-home'
+tooltip-updates-image: tooltip-updates-image
+tooltip-updates-image_upload: tooltip-updates-image_upload
+tooltip-updates-media: tooltip-updates-media
 tooltip-updates-tags: 'Texte tooltip-updates-tags'
+tooltip-updates-text: tooltip-updates-text
+tooltip-updates-title: info-bulle-updates-titre
 project-obtained: 'Accumulé'
 project-costs-total: 'Total'
 project-remove-translation: 'Supprimer la traduction'
@@ -130,8 +137,26 @@ project-add-reward: 'Ajouter une récompense'
 project-remove-reward-confirm: 'Voulez vous supprimer cette récompense?'
 project-reward-unlimited: 'Illimité'
 project-send-review: 'Envoyer à l’examen'
+project-reviewing: 'Nous valorisons et examinons votre projet'
+project-validation-ok: 'Vous avez rempli le formulaire. C’est super ! Vous pouvez cliquer sur le bouton suivant pour que nos conseillers examinent votre projet.'
+project-validation-errors: 'Le projet n’est pas encore terminé!'
+project-validation-error-profile: 'Champs manquants à remplir dans votre profil utilisateur'
 project-validation-error-profile_social: 'Vous devez remplir l’un des champs Web, Facebook, Twitter ou Instagram'
+project-validation-error-personal: 'Champs manquants à remplir dans les comptes du projet'
+project-validation-error-overview: 'Champs manquants à remplir dans la description du projet'
+project-validation-error-images: 'Le projet doit avoir au moins une image'
+project-validation-error-costs: 'Ajouter ou compléter les coûts'
+project-validation-error-costs_required: 'Vous devez avoir au moins un coût de chaque type, indispensable et facultatif'
 project-validation-error-rewards: 'Ajouter ou compléter les récompenses manquantes'
 project-validation-error-rewards_required: 'Vous devez avoir au moins 3 récompenses'
 project-validation-error-rewards_units: 'La récompense doit avoir au moins %s unités'
 project-validation-error-rewards_empty_amount: 'Impossible de définir des récompenses de valeur 0'
+project-validation-error-campaign: 'Champs manquants à remplir dans les paramètres de campagne'
+project-non-public-field: 'Ce domaine n’est pas public'
+project-campaign: 'Paramètres'
+project-campaign-configuration: 'Paramètres de la campagne'
+project-campaign-use-paypal: 'Je veux permettre aux utilisateurs de payer avec PayPal'
+project-manage: 'Gérer'
+project-manage-campaign: 'Gérer la campagne'
+project-widget-not-visible: 'Ce widget ne sera pas visible tant que le projet ne sera pas public'
+project-donors-with-reward: '%s cofinanceurs ont choisi cette récompense'
