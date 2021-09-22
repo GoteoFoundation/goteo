@@ -82,11 +82,36 @@ admin-mailing-view-message: 'Voir le message'
 admin-newsletter-generated: 'La newsletter [%ID%] a été générée'
 admin-newsletter-mind-activate: 'Activez-le pour qu’il soit envoyé'
 admin-prev-page: 'Page précédente'
+admin-next-page: 'Page suivante'
+admin-no: 'Non'
+admin-percent: Pourcentage
+admin-project: Projet
+admin-main: Principal
+admin-legacy: Anciens
+admin-projects: Projets
+admin-consultants: 'Conseillers'
+admin-invests: Contributions
+admin-filters: 'Filtres'
+admin-filters-edit: 'Modifier le filtre'
+admin-filters-create: 'Créer un filtre'
+admin-remove-filters: 'Supprimer les filtres'
+admin-remove-filters-forbidden: 'Les filtres utilisés ne peuvent pas être supprimés.'
+admin-remove-entry-confirm: 'Voulez-vous supprimer cette entrée? Cette action sera définitive!'
+admin-remove-entry-ok: 'Donnée supprimée correctement'
+admin-add-entry-ok: 'Nouvel enregistrement créé correctement'
+admin-edit-entry-ok: 'Enregistrement correctement modifié'
+admin-services: Services
+admin-sponsors: Sponsors
+admin-others: Autres
+admin-summary: Sommaire
+admin-origins: Statistiques de visites
+admin-text-type: 'Traiter le texte comme'
 admin-user: Utilisateur
 admin-user-no-projects: 'Il n’a pas encore créé de projet'
 admin-user-no-invests: 'Il n’a pas encore fait de dons'
 admin-users: Utilisateurs
 admin-users-add: Créer un nouveau compte utilisateur
+admin-socialcommitment-add: Créer un nouvel engagement social
 admin-channels: Canaux
 admin-yes: Oui
 admin-impersonate: Se faire passer pour
