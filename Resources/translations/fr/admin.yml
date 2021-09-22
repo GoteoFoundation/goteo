@@ -192,6 +192,23 @@ admin-title-active: Actif
 admin-title-location: Localisation
 admin-title-fullname: Nom
 admin-title-email: Adresse mail
+admin-title-image: Image
+admin-title-subtitle: Sous-titre
+admin-title-subject: Sujet
+admin-title-description: Description
+admin-title-langs: Traductions
+admin-title-actions: Actions
+admin-title-tags: Tags
+admin-title-social_commitment: Engagement social
+admin-title-sdgs: 'Objectifs de développement durable'
+admin-title-footprints: 'Empreintes'
+admin-title-categories: 'Catégories'
+admin-title-social_commitments: 'Engagements sociaux'
+admin-title-order: Trier
+admin-title-status: Etat
+admin-title-users: Utilisateurs
+admin-title-city: Ville
+admin-title-date: Date
 admin-stats-to_fee-percent: 'Commission effective'
 admin-stats-in_wallet: 'Dans le portefeuille virtuel'
 admin-stats-in_matcher_wallet: 'Dans le portefeuille virtuel des co-financeurs'
