@@ -1,6 +1,17 @@
 ---
+translator: Traducteur
+translator-banner: Bannières
+translator-bazar: 'Catalogue :'
 translator-category: Catégories
 translator-field-description: Description
 translator-field-legend: Légende
 translator-field-name: Nom
 translator-workshop: Ateliers
+translator-field-terms: Bases
+translator-field-tip_msg: Message
+translator-field-banner_button_url: Url du bouton de la bannière
+translator-field-terms_url: Url de base
+translator-field-credits: Crédits
+translator-question: Questions
+translator-question_options: Options de questions
+translator-field-option: Options
