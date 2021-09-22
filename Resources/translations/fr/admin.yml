@@ -145,6 +145,7 @@ admin-channelsection-button: 'Bouton'
 admin-channelsection-create: 'Créer'
 admin-channelsection-add: 'Ajouter une section'
 admin-channelpost-add: Ajouter un témoignage à la chaîne
+admin-channelpost-correct: 'Le témoignage a été ajouté à la chaîne'
 admin-channelcriteria-title: 'Quiz de la chaine'
 admin-channelcriteria-subtitle: 'Définissez les critères avec lesquels vous évaluerez un projet qui souhaite se présenter à votre chaîne. Essayez d’être concis dans ce que vous espérez tirer des initiatives que vous voulez présenter, aidera à vous faciliter l’évaluation finale.'
 admin-channelprogram-create: 'Créer'
@@ -153,6 +154,7 @@ admin-categories: 'Catégories et domaines'
 admin-categories-if-empty-then-asset: 'Si elle est laissée vide, l’icône par défaut sera utilisée : %s'
 admin-category-add: Créer une nouvelle catégorie
 admin-socialcommitment-add: Créer un nouvel engagement social
+admin-sphere-add: Créer un nouveau domaine
 admin-sdg-add: Créer un nouvel ODS
 admin-channels: Canaux
 admin-yes: Oui
@@ -162,4 +164,11 @@ admin-project-to-publish-sure: 'Le projet va commencer sa campagne, Voulez-vous 
 admin-home-title: Administrer Goteo
 admin-list: Inscription
 admin-send-email: 'Envoyer un e-mail'
+admin-show-roles-info: 'Quel rôle peut-il jouer?'
+admin-user-roles: 'Liste des rôles des utilisateurs'
+admin-donor-date-search: 'Traités par date'
+admin-no-project: 'Pas de projet'
+admin-title-id: Id
+admin-title-name: Nom
+admin-title-about: Info
 
