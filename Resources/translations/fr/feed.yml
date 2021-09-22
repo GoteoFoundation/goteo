@@ -44,3 +44,5 @@ feed-timeago-justnow: rien
 feed-timeago-periods: seconde-secondes_minute-minutes_heure-heures_jour-jours_semaine-semaines_mois-mois_an-années_décennie-décennies
 feed-timeago-published: 'Publié il y a %s'
 feed-updates-comment: 'A écrit un <span class="green">commentaire</span> sur le sujet "%s" en %s du projet %s'
+feed-project-ready-sent: 'Projet soumis à révision'
+feed-project-ready-ko: '%USER% a échoué lors de l’envoi du projet %PROJECT% à <span class="red">révision</span>'
