@@ -6,6 +6,7 @@ blog-comments: Commentaires
 blog-main-header: 'Blog'
 calendar-calls-category: Appels à projets
 calendar-events-category: événements
+calendar-home-hour: a
 calendar-home-title: 'Prochain événement'
 calendar-net-category: 'Politiques & Networks'
 calendar-projects-category: Projets
@@ -181,6 +182,7 @@ regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Suivez-nous sur Twitter.'
 regular-share_this: 'Partager sur'
 regular-sorry: 'Désolé'
+regular-status: Etat
 regular-template: Modèle
 regular-thanks: Merci
 regular-title: Titre
@@ -202,6 +204,7 @@ regular-yes: Oui
 regular-name: Nom
 regular-image: Image
 regular-images: Images
+regular-load-more: 'Charger plus'
 regular-analytics: 'Google Analytics'
 regular-facebook-pixel: 'Facebook Pixel'
 regular-call: Co-financements
@@ -210,14 +213,20 @@ regular-manage: 'Gérer'
 regular-no-edit-permissions: Vous n’êtes pas autorisé à modifier cet enregistrement!
 regular-messages: Messages
 regular-unknown: Inconnu
+regular-input: Contribution
+regular-amount: Importe
+regular-copied: 'Copié dans le presse-papiers!'
 regular-remember-me: 'Rappelez-vous de mes données'
 regular-next: Suivant
 regular-previous: Précédent
+regular-next-workshops: 'Agenda de Fundlabs'
 regular-write-description: 'Écrivez un texte descriptif...'
 regular-choice-placeholder: 'Sélectionner une option'
 session-about-to-expire: 'La session se fermera dans 10 minutes. Desirez vous reloader la page pour renouveler la session?'
 session-expired: 'La session est terminée'
+stories-user-project: '%s, du projet : %s'
 support-our-mission: 'DON À LA FONDATION GOTEO'
+tooltip: 'Texte info-bulle'
 tooltip-dashboard-user-access_data: 'Voici vos données d''accès actuelles. Attention, vous ne pouvez modifier votre LOGIN !'
 tooltip-dashboard-user-change_email: 'Cet espace vous permet de modifier l''adresse email sur laquelle vous désirez recevoir les messages de Goteo.'
 tooltip-dashboard-user-change_password: 'Cet espace vous permet de modifier votre mot de passe.'
@@ -241,3 +250,4 @@ stories-type-matcher: 'Co-financeur'
 newsletter-donate-description: 'Pour que nous puissions continuer à aider de plus en plus d’initiatives civiques à aller de l’avant'
 regular-icon: Icône
 regular-action: Action
+regular-action_url: Action URL
