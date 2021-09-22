@@ -50,7 +50,9 @@ horizontal-project-investors: 'cofinanceurs'
 horizontal-project-percent: 'financé'
 horizontal-project-reached: 'Obtenu'
 invest-individual-header: 'Vous pouvez refuser de recevoir votre récompense, ou sélectionner une récompense d''un montant égal ou inférieur àvotre contribution.'
+login-register-conditions: 'En vous inscrivant, vous confirmez votre acceptation de nos <a href="/legal/terms">conditions d’utilisation</a>, <a href="/legal/privacy">notre politique de confidentialité</a> et <a href="/legal/cookies">notre politique des cookies</a>.'
 login-register-accept-newsletter: 'Je souhaite m''abonner à la newsletter'
+login-accept-conditions: 'J’accepte les <a href="/legal/terms">tér les conditions d’utilisation</a>, <a href="/legal/privacy">la politique de confidentialité</a> et <a href="/legal/cookies">la politique des cookies</a>.'
 mandatory-cost-field-type: 'Vous devez sélectionner le type de coût'
 mandatory-individual_reward-field-amount: 'Vous devez spécifier le montant pour cette récompense'
 mandatory-project-costs: 'These should be broken down into at least two groups.'
@@ -130,6 +132,7 @@ regular-invests: Contributions
 regular-lang: Langue
 regular-last: Dernière
 regular-license: Licence
+regular-linkedin: LinkedIn
 regular-login: Login
 regular-logout: 'Fermez la session.'
 regular-looks_for: 'Rechercher:'
