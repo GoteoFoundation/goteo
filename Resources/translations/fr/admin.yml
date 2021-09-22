@@ -154,13 +154,30 @@ admin-categories: 'Catégories et domaines'
 admin-categories-if-empty-then-asset: 'Si elle est laissée vide, l’icône par défaut sera utilisée : %s'
 admin-category-add: Créer une nouvelle catégorie
 admin-socialcommitment-add: Créer un nouvel engagement social
+admin-socialcommitment-edit: Modifier l’engagement social %s
 admin-sphere-add: Créer un nouveau domaine
+admin-sphere-edit: Modification de l'objectif %s
 admin-sdg-add: Créer un nouvel ODS
+admin-sdg-edit: Modification de l’ODS %s
+admin-footprint-add: Créer une nouvelle empreinte
+admin-footprint-edit: Modification de l’empreinte %s
+admin-calls: Appels à projets
 admin-channels: Canaux
 admin-yes: Oui
 admin-impersonate: Se faire passer pour
+admin-project-express-discard: 'Rejet express'
+admin-project-express-discard-desc: 'Passez le projet à l’état Rejeté et envoyez un mail'
+admin-project-express-discard-sure: 'Vous allez envoyer un mail automatique et passer à l’état rejeté, Voulez-vous continuer?'
+admin-project-to-review: 'À l’examen'
+admin-project-to-review-sure: 'Le créateur ne pourra plus le modifier, Voulez-vous continuer ?'
+admin-project-view-in-admin: 'Voir dans l’admin'
+admin-project-to-negotiation: 'À négocier'
+admin-project-to-negotiation-desc: 'Passe le projet à l’état "Edité"'
+admin-project-to-negotiation-sure: 'ALERTE!! Le projet est en campagne! Avec ça, on va le dépublier OK ?'
+admin-project-to-publish: 'Publier'
 admin-project-to-publish-desc: 'Passer le projet à l’état « En campagne »'
 admin-project-to-publish-sure: 'Le projet va commencer sa campagne, Voulez-vous continuer?'
+admin-project-derivation-discard-sure: 'Un mail sera envoyé automatiquement à une autre plate-forme et passera à l’état exclu, d’accord?'
 admin-home-title: Administrer Goteo
 admin-list: Inscription
 admin-send-email: 'Envoyer un e-mail'
