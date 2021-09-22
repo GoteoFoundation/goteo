@@ -84,6 +84,7 @@ tooltip-project-sustainability-model: 'Explica el modelo de sostenibilidad de tu
 tooltip-project-sustainability-model-url: 'Agrega una url con tu <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">business canvas</a>'
 tooltip-project-sdg: 'Elige los objetivos con los que cumple tu proyecto, intentando seleccionar un máximo de tres.'
 tooltip-project-sdg-suggestion: 'A continuación te sugerimos algunos ODS que podrían encajar según el compromiso social seleccionado para tu proyecto, te recomendamos que consultes <a href="https://www.un.org/sustainabledevelopment/es/objetivos-de-desarrollo-sostenible/" target="_blank">aquí</a> su contenido especifico.<br><br>'
+overview-field-sign-check: 'Tengo una campaña de firmas online'
 overview-field-sign-url: "Url de firma"
 overview-field-sign-url-action: "Texto para llamar a firmar"
 overview-field-sign-url-help: "Este campo permite añadir un salto en la campaña para tu página de firmas del proyecto"
