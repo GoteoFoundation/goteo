@@ -171,4 +171,8 @@ admin-no-project: 'Pas de projet'
 admin-title-id: Id
 admin-title-name: Nom
 admin-title-about: Info
+admin-title-active: Actif
+admin-title-location: Localisation
+admin-title-fullname: Nom
+admin-title-email: Adresse mail
 
