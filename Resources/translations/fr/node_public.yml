@@ -9,6 +9,7 @@ node-footer-title-creators: Porteurs de projets
 node-footer-title-help: 'Besoin d''aide ?'
 node-footer-title-investors: Cofinanceurs
 node-footer-title-social: Suivez-nous
+node-header-sponsorby: 'Ils soutiennent cet espace'
 node-home-calls-headers: Convocations
 node-home-posts-header: Nouveautés
 node-side-searcher-bycategory: 'Par catégorie'
@@ -21,9 +22,15 @@ node-side-searcher-success: Réussis
 node-side-sumcalls-budget: 'Total ( toutes les campagnes )'
 node-side-sumcalls-calls: Ouvert
 node-side-sumcalls-campaigns: Actif
+node-side-sumcalls-header: 'Co-financements'
 node-side-sumcalls-rest: 'Reste à répartir'
 node-side-summary-active: Actifs
 node-side-summary-amount: 'Argent collecté'
 node-side-summary-investors: Cofinanceurs
 node-side-summary-success: Réussis
 node-side-summary-supporters: Collaborateurs
+node-stats-title: 'Données d’impact'
+node-projects-title: 'Projets'
+node-resources-title: 'De quoi avez-vous besoin ?'
+node-workshops-title: 'Ne manquez pas nos formations'
+node-iframe-title: 'Carte d’influence du canal'
