@@ -17,6 +17,7 @@ matcher-duplicateinvest-max_amount_per_project: 'Montant maximal à donner pour 
 matcher-duplicateinvest-max_amount_per_invest: 'Montant maximal par contribution'
 matcher-duplicateinvest-rules: >
   Ce processus multiplie x2 toute contribution de tout utilisateur, le total maximal par projet, le montant maximal par contribution et le nombre maximal d’apports par utilisateur, peuvent être configurés
+matcher-feed-invest: 'Vous avez contribué %AMOUNT% de %DROP% au projet %PROJECT% via l’appel « match » %MATCHER%'
 matcher-feed-standalone-invest: 'L’appel « match » %MATCHER% a contribué à hauteur de %AMOUNT% au projet %PROJECT% sans contribution de référence'
 matcher-project-accept: 'Félicitations! Votre projet a été ajouté à l’appel %s. Il est maintenant en attente d’approbation par les promoteurs.'
 matcher-project-reject: 'Votre projet a été retiré de l’appel'
