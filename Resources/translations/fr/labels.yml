@@ -1,4 +1,7 @@
 ---
+accounts-lb: Contributions
+accounts-lb-details: 'Détails de l’apport'
+accounts-lb-execute: 'Exécution du coût'
 categories-lb: Catégories
 glossary-lb: Glossaire
 recent-lb: 'Activité récente'
