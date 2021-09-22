@@ -2,7 +2,15 @@
 translator: Traducteur
 translator-banner: Bannières
 translator-bazar: 'Catalogue :'
+translator-cannot-delete-system: 'On ne peut pas supprimer cette traduction car elle est intégrée au système!'
 translator-category: Catégories
+translator-choose: 'Choisir une option'
+translator-copy-from: 'Copier le contenu de'
+translator-criteria: 'critères d''évaluation'
+translator-delete: 'Supprimer la traduction vers %s'
+translator-delete-sure: 'Vous voulez supprimer la traduction de %s ? Celle-ci ne peut pas être annulée!'
+translator-deleted-ko: 'Erreur lors de la suppression de la traduction vers %s!'
+translator-faq: Faq
 translator-field-description: Description
 translator-field-legend: Légende
 translator-field-name: Nom
