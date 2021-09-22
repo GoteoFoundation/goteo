@@ -97,13 +97,23 @@ project-invest-guest: 'Fantastique!'
 project-invest-ok: 'Votre apport au projet a été transmis.'
 project-invest-pool-button: 'Utiliser mon porte-monnaie virtuel'
 project-invest-start: 'Vous êtes sur le point de cofinancer ce projet...'
+project-return-button: 'Retournez au projet'
 project-see-msg: 'Voir votre message'
 spread-facebook: 'Partagez sur Facebook.'
 spread-twitter: 'Partagez sur Twitter.'
 user-login-required-login: 'Si vous êtes membre de Goteo, <a href="%s">connectez-vous</a> normalement. Si vous n''êtes pas encore utilisateur de Goteo inscrivez-vous ci-dessous'
 warning_nojavascript: 'Activez l''usage de javascript dans les préférences de votre navigateur pour continuer le processus de paiement'
 invest-no-register: 'Sauter cette étape, je veux juste contribuer'
+invest-user-not-ghost: 'Cet e-mail appartient déjà à un utilisateur existant!'
+invest-user-name-or-anonymous: 'Le nom est obligatoire si vous ne voulez pas faire une contribution anonyme'
 invest-created-manually-ok: 'Contribution manuelle correctement créée, sélectionner la récompense et l''adresse de livraison.'
 invest-created-manually-ko: 'Erreur lors de la création de la contribution manuelle [%s]'
 invest-tip-part-1: 'Je veux ajouter à mon don:'
 invest-tip-part-2: 'pour contribuer à la mission de la <b>Fondation Goteo</b><br> pour une société plus éthique et collaborative'
+invest-mail-donate-tip: 'Avec votre don, vous avez décidé de collaborer avec la <strong>Fondation Goteo</strong> avec %s € supplémentaires, merci de tout cœur.'
+invest-extra-info: 'Infos supplémentaires '
+donor-legal-entities-natural-person: Personne physique
+donor-legal-entities-legal-person: Personne morale
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-vat: TVA
