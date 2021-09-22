@@ -11,9 +11,11 @@ banners-lb-add: 'Nouvelle bannière'
 banners-lb-cancel: 'Annulation de la contribution'
 banners-lb-details: 'Détails de l’apport'
 banners-lb-edit: 'Modification de la bannière'
+blog-lb: Blog
 categories-lb: Catégories
 glossary-lb: Glossaire
 recent-lb: 'Activité récente'
 sponsors-lb: 'Soutien institutionnel'
 translates-lb-edit: 'Attribuer la traduction'
 translates-lb-list: Liste
+certificatemanagement-lb: '  Gestion des certificats'
