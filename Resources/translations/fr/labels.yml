@@ -2,6 +2,15 @@
 accounts-lb: Contributions
 accounts-lb-details: 'Détails de l’apport'
 accounts-lb-execute: 'Exécution du coût'
+accounts-lb-list: Faire la liste
+accounts-lb-move: 'Relocalisation de l’apport'
+accounts-lb-report: 'Rapport de projet'
+accounts-lb-update: 'Changer l’état de l’apport'
+banners-lb: Bannière
+banners-lb-add: 'Nouvelle bannière'
+banners-lb-cancel: 'Annulation de la contribution'
+banners-lb-details: 'Détails de l’apport'
+banners-lb-edit: 'Modification de la bannière'
 categories-lb: Catégories
 glossary-lb: Glossaire
 recent-lb: 'Activité récente'
