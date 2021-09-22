@@ -11,9 +11,32 @@ banners-lb-add: 'Nouvelle bannière'
 banners-lb-cancel: 'Annulation de la contribution'
 banners-lb-details: 'Détails de l’apport'
 banners-lb-edit: 'Modification de la bannière'
+banners-lb-report: 'Rapport de projet'
+banners-lb-translate: 'Traduire la Bannière'
+banners-lb-update: 'Changer l’état de l’apport'
 blog-lb: Blog
+blog-lb-translate: 'Traduire l’enregistrement'
 categories-lb: Catégories
+categories-lb-add: 'Nouvelle Catégorie'
 glossary-lb: Glossaire
+licenses-lb: Licenses
+licenses-lb-edit: 'Editer la Licence'
+licenses-lb-list: Faire la liste
+licenses-lb-translate: 'Traduction de la licence'
+mailing-lb: Communications
+mailing-lb-edit: 'Écrire du contenu'
+mailing-lb-list: 'Sélectionner les destinataires'
+mailing-lb-send: 'Communication envoyée'
+milestones-lb: Étapes importantes
+milestones-lb-add: 'Nouvel objectif'
+newsletter-lb-init: 'Lancement d’un nouvel envoi'
+newsletter-lb-list: 'État de l’expédition automatique'
+node-lb: 'Données de la chaine'
+node-lb-admins: 'Voir les administrateurs'
+node-lb-edit: Montage
+node-lb-list: 'Données actuelles'
+nodes-lb: Canaux
+nodes-lb-add: 'Nouveau Canal'
 recent-lb: 'Activité récente'
 sponsors-lb: 'Soutien institutionnel'
 translates-lb-edit: 'Attribuer la traduction'
