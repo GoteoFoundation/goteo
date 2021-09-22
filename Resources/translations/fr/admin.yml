@@ -32,6 +32,7 @@ admin-account-switch-donation: 'Echange des dons'
 admin-account-switch-donation-confirm: 'Voulez-vous modifier le statut de votre don?'
 admin-account-switch-pool-confirm: 'Cela n’affecte que lorsque le projet échoue, ne génère ni n’enlève d’argent du portefeuille. Voulez-vous continuer ?'
 admin-account-transaction: 'Code de suivi'
+admin-account-user-changed-successfully: 'L’utilisateur de l’apport [%ID%] a été remplacé par [%NAME%]'
 admin-address: Adresse
 admin-all: Tout
 admin-global: Global
@@ -42,8 +43,35 @@ admin-contents: 'Textes et traductions'
 admin-empty-list: 'Aucun enregistrement trouvé'
 admin-activity: Activité
 admin-communications: Communications
+admin-communications-add: Créer une nouvelle communication
+admin-communications-userid-label: 'strong>%USERID%</strong>'
+admin-communications-useremail-label: 'strong>%USEREMAIL%</strong>'
+admin-communications-username-label: 'strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: 'strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: 'strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: 'strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: 'strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' pour l’ID d’accès du destinataire'
+admin-communications-useremail-content: '  pour l’email du destinataire'
+admin-communications-username-content: ' pour le nom du destinataire'
+admin-communications-siteurl-content: ' pour l’url de cette plate-forme (%SITEURL%)'
+admin-communications-poolamount-content: 'montant d’argent disponible dans le portefeuille de l’utilisateur'
+admin-communications-send: 'Envoyer une communication'
+admin-communications-cancel: 'Annuler la communication'
+admin-communications-newsletter: 'Bulletin'
+admin-communications-communication: 'Communication générale'
+admin-communications-id: 'ID de la communication'
+admin-certificates: Certificats
 admin-home: FrontPage
 admin-items: articles
 admin-mailing-back-to-list: 'Aller à ''Message & Forums'''
 admin-mailing-communicating-with: 'Communiquer avec %DESC%'
+admin-user: Utilisateur
+admin-user-no-projects: 'Il n’a pas encore créé de projet'
+admin-user-no-invests: 'Il n’a pas encore fait de dons'
+admin-users: Utilisateurs
+admin-users-add: Créer un nouveau compte utilisateur
+admin-channels: Canaux
+admin-yes: Oui
+admin-impersonate: Se faire passer pour
 
