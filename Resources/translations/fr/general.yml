@@ -43,6 +43,7 @@ guide-project-images: 'Les images du projet peuvent être des plans, screenshots
 guide-project-rewards: "<strong>Dans cette partie, vous devez définir ce que vous proposez en échange à vos cofinanceurs.</strong>"
 guide-project-support: guide-projet-support
 guide-project-supports: '<strong> Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. </strong><br><br>Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. Ces besoins peuvent prendre la forme de tches ou d''actions réalisables par d''autres personnes (traduction, gestion, diffiusion, etc.), ou de prêts (de matériel informatique, pour le transport, etc.)'
+guide-project-updates: "<b> Il est très important que les projets tiennent leurs cofinanciers et les autres personnes potentiellement intéressées informées de la manière dont leur campagne progresse.À partir de cette section, vous pouvez publier des messages de mise à jour sur le projet, comme une sorte de blog public.</b>En outre, une fois les fonds minimaux atteints, il est essentiel pour le deuxième cycle de cofinancement d’expliquer régulièrement comment la production a démarré, les progrès, les problèmes, etc., permettant la plus grande transparence possible et de savoir comment évolue le démarrage du projet, afin d’essayer de susciter plus d’intérêt et de communauté autour de celui-ci."
 guide-project-invests: 'À partir de cette section, vous pourrez gérer vos co-financeurs, les récompenses qu’ils ont choisies et les contacter si vous le jugez nécessaire.'
 header-about-side: 'Ce qui nous inspire'
 home-posts-header: Nouveautés
@@ -153,6 +154,7 @@ regular-months: Mois
 regular-more_info: '+ d''infos'
 regular-news: 'News'
 regular-no: 'Non'
+regular-of: de
 regular-preview: Prévisualisation
 regular-evaluate: Évaluer
 regular-projects: Projets
@@ -179,7 +181,11 @@ regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Suivez-nous sur Twitter.'
 regular-share_this: 'Partager sur'
 regular-sorry: 'Désolé'
+regular-template: Modèle
 regular-thanks: Merci
+regular-title: Titre
+regular-text: Texte
+regular-media: Vídeo (Youtube, Vimeo)
 regular-total: Total des contributions 
 regular-donations: Dons (non inclus dans les contributions)
 regular-translate: Traduire
@@ -204,8 +210,14 @@ regular-manage: 'Gérer'
 regular-no-edit-permissions: Vous n’êtes pas autorisé à modifier cet enregistrement!
 regular-messages: Messages
 regular-unknown: Inconnu
+regular-remember-me: 'Rappelez-vous de mes données'
+regular-next: Suivant
+regular-previous: Précédent
+regular-write-description: 'Écrivez un texte descriptif...'
+regular-choice-placeholder: 'Sélectionner une option'
 session-about-to-expire: 'La session se fermera dans 10 minutes. Desirez vous reloader la page pour renouveler la session?'
 session-expired: 'La session est terminée'
+support-our-mission: 'DON À LA FONDATION GOTEO'
 tooltip-dashboard-user-access_data: 'Voici vos données d''accès actuelles. Attention, vous ne pouvez modifier votre LOGIN !'
 tooltip-dashboard-user-change_email: 'Cet espace vous permet de modifier l''adresse email sur laquelle vous désirez recevoir les messages de Goteo.'
 tooltip-dashboard-user-change_password: 'Cet espace vous permet de modifier votre mot de passe.'
@@ -218,6 +230,14 @@ tooltip-project-schedule: 'Prévisualisation de l''agenda de production du proje
 translate-home-guide: 'Message pour le traducteur'
 user-account-inactive: 'Ce compte est désactivé. Vous devez récupérer le mot de passe pour l''activer à nouveau.'
 user-activate-fail: 'Une erreur est apparue. Le compte n''a pu être créé.'
+user-changeemail-invalid-token: 'Cette action a expiré ou a déjà été exécutée précédemment'
 user-changeemail-fail: 'Erreur. L''adresse email n''a pu être modifiée.'
 user-register-success: 'Votre compte a été créé correctement. Vous allez recevoir un email d''activation.'
 validate-project-social_rewards: 'Indiquez obligatoirement au moins une retombée collective.'
+validate-project-total-costs: "Le coût optimal ne peut dépasser de plus de 50% le coût minimal. Soit vous augmentez les coûts indispensables, soit vous baissez les coûts supplémentaires."
+user-promoter: 'L’utilisateur initiateur'
+stories-type-pitcher: "Pitcher\n"
+stories-type-matcher: 'Co-financeur'
+newsletter-donate-description: 'Pour que nous puissions continuer à aider de plus en plus d’initiatives civiques à aller de l’avant'
+regular-icon: Icône
+regular-action: Action
