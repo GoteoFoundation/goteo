@@ -1,8 +1,10 @@
 ---
 bazar-spread-text: '%s - Ce Noël, offre un financement participatif ouvert et pour le bien commun avec @goteofunding #openbazaar'
 bazar-thanks: 'Merci de visiter notre bazar, vous pouvez nous aider à le diffuser.'
+currency-alert: "Veuillez noter que la gestion est en EUR. Vous allez payer environ <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115 » target=\"_blank\">Plus d’infos</a>"
 imperative-register: Inscrivez-vous
 invest-address-address-field: 'Addresse:'
+invest-address-birthyear-field: 'Année de naissance'
 invest-address-country-field: 'Pays:'
 invest-address-fail: 'Il y a des champs vides ou défaillants, vérifiez le formulaire pour recevoir votre récompense!'
 invest-address-friend-field: 'Cochez cette case si c’est le cadeau de quelqu’un d’autre'
@@ -37,6 +39,7 @@ invest-called-maxdrop: 'Jusqu''à maximum <strong>%s &euro;</strong>'
 invest-called-maxproj: 'Le maximum de <strong>Capital Riego</strong> possible dans cette campagne <span class="call">%s</span> a été atteint.'
 invest-called-nodrop: 'Il n''y a pas actuellement de <strong>Matchfunding</strong> disponible dans la campagne %s'
 invest-called-rest: 'Il ne reste que <strong>%s €</strong> de <strong>Matchfunding</strong> dans la campagne <span class="call">%s</span>'
+invest-card-method: Carte de crédit
 invest-donation-header: 'Entrer les informations fiscal pour cette donation'
 invest-fiscal-fail: 'Il y a des champs vides ou avec des erreurs, vérifiez le formulaire fiscal pour que vous puissiez déduire votre contribution!'
 invest-fiscal-skip: 'Fournir les détails plus tard'
@@ -44,6 +47,7 @@ invest-fiscal-renounce: 'Je ne souhaite pas recevoir de certificat de don'
 invest-fiscal-title: 'Demande de certificat de don'
 invest-login-alert: 'Vous devez vous inscrire ou <a href="%s">démarrer</a> pour pouvoir apporter votre contribution'
 invest-mail_info-address: 'A précisé l''addresse suivante:'
+invest-mail_info-drop: 'En outre, %s a fourni  %s pour le cofinancement de la campagne %s'
 invest-make-sure-save: Valider
 invest-make-sure-title: Confirmation
 invest-method: 'Mode de paiement'
@@ -75,6 +79,10 @@ invest-reward-used-up: 'Il ne reste plus d’unités de cette récompense!'
 invest-select-reward: 'Choisir une récompense'
 invest-share-title: Partager
 invest-social-header: 'Avec ces avantages, nous progressons tous'
+invest-status-cancelled: Annulé
+invest-status-charged: Encaissé
+invest-status-paid: 'Versé au projet'
+invest-status-processing: Incomplet
 invest-step-1: Récompense
 invest-step-2: Paiement
 invest-step-3: Confirmation
