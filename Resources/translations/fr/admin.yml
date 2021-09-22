@@ -209,6 +209,31 @@ admin-title-status: Etat
 admin-title-users: Utilisateurs
 admin-title-city: Ville
 admin-title-date: Date
+admin-title-blockquote: 'Citation personnalisée'
+admin-title-type: 'Type'
+admin-title-date-in: Date de début
+admin-title-date-out: Date de fin
+admin-title-how-to-get: Comment y arriver ?
+admin-title-schedule-file: 'URL du programme'
+admin-title-call: 'Appels pour Co-financement'
+admin-title-url-inscription: Lien vers l’inscription
+admin-title-filter: Filtre
+admin-title-template: Modèle
+admin-title-receivers: Destinataires
+admin-title-sent: Envoyés
+admin-title-failed: Non envoyés
+admin-title-pending: En Attente
+admin-title-success: Réussis
+admin-title-percent: Pourcentage
+admin-title-action-url: 'Texte bouton de téléchargement'
+admin-title-download-url: 'Lien de téléchargement'
+admin-title-channel: 'Canal'
+admin-title-resource-category: 'Catégories de ressources'
+admin-title-year: Année
+admin-title-nif: NIF
+admin-title-country: 'Pays:'
+admin-blog-initialized: 'Espace de blog initialisé'
+admin-blog-deactivated: 'Désolé, la gestion du blog est désactivée'
 admin-stats-to_fee-percent: 'Commission effective'
 admin-stats-in_wallet: 'Dans le portefeuille virtuel'
 admin-stats-in_matcher_wallet: 'Dans le portefeuille virtuel des co-financeurs'
