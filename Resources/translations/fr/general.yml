@@ -145,6 +145,8 @@ regular-mandatory: 'Champ obligatoire!'
 regular-matchfunding: 'Co-financements'
 regular-media_legend: Légende
 regular-menu: Menu
+regular-menu-personal: Menu personnel
+regular-message-clipboard-fail: 'Sélectionnez et copiez ce lien'
 regular-message_fail: 'Une erreur s''est produite lors de l''envoi du message.'
 regular-message_success: 'Message envoyé'
 regular-months: Mois
