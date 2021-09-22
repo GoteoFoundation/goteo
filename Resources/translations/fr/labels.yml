@@ -37,6 +37,26 @@ node-lb-edit: Montage
 node-lb-list: 'Données actuelles'
 nodes-lb: Canaux
 nodes-lb-add: 'Nouveau Canal'
+nodes-lb-admins: 'Attribuer des administrateurs à la chanie'
+nodes-lb-edit: 'Gestion de la Chaine'
+nodes-lb-list: Faire la liste
+pages-lb: Pages
+pages-lb-add: 'Nouvelle page'
+pages-lb-list: Faire la liste
+pages-lb-translate: 'Traduire la page'
+projects-lb: Projets
+projects-lb-accounts: 'Coûts du projet'
+projects-lb-assign: 'Attribuer le projet à un appel'
+projects-lb-cancel: 'Annulation de la contribution'
+projects-lb-conf: 'Paramètres de campagne du projet'
+projects-lb-consultants: 'Changer le conseiller du projet'
+projects-lb-dates: 'Dates du projet'
+projects-lb-execute: 'Exécution du poste'
+projects-lb-images: 'Images du projet'
+projects-lb-list: Faire la liste
+projects-lb-move: 'Déplacer le projet vers un autre nœud'
+projects-lb-open_tags: 'Attribuer un groupement au projet'
+projects-lb-rebase: 'Changer l’ID du projet'
 recent-lb: 'Activité récente'
 sponsors-lb: 'Soutien institutionnel'
 translates-lb-edit: 'Attribuer la traduction'
