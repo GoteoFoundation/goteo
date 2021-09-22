@@ -11,6 +11,7 @@
 
 namespace Goteo\Util\Form\Type;
 
+use Goteo\Model\Contract\BaseDocument;
 use Goteo\Model\Image;
 use Goteo\Library\Text;
 
@@ -53,8 +54,31 @@ class DropfilesType extends FileType
             'multiple' => true
         ]);
 
-        $builder->get('uploads')
-            ->addModelTransformer(new $options['upload_transformer']);
+        if ($options['type'] == 'document') {
+            $builder->get('uploads')
+            ->addModelTransformer(new CallbackTransformer(
+                function($image) {
+                    return null;
+                },
+                function($image) {
+                    if(is_array($image)) {
+                        foreach($image as $i => $img) {
+                            if(!$img) continue;
+
+                            // Convert File to Image
+                            if(!$img instanceOf BaseDocument) {
+                                $image[$i] = new BaseDocument($img);
+                                $image[$i]->save();
+                            }
+                        }
+                    }
+                    return $image;
+                }
+            ));
+        } else {
+            $builder->get('uploads')
+                ->addModelTransformer(new $options['upload_transformer']);
+        }
 
         $builder->add('removed', CollectionType::class, [
             'entry_type' => TextType::class,
@@ -73,7 +97,9 @@ class DropfilesType extends FileType
                         if (!$img)
                             continue;
                         if ($img = Image::get($img))
-                            $images[] = $img;        
+                            $images[] = $img;
+                        else if ($img = BaseDocument::get($img))
+                            $images[] = $img;
                     }
 
                     return $images;
@@ -82,13 +108,19 @@ class DropfilesType extends FileType
 
         // General processing
         $builder->addViewTransformer(new CallbackTransformer(
-            function($image) {
+            function($image) use ($options) {
                 if ($image instanceOf File)
-                    $image = new Image($image);
+                    if ($options['type'] == 'document')
+                        $image = new BaseDocument($image);
+                    else
+                        $image = new Image($image);
                 if (is_array($image)) {
                     foreach($image as $i => $img) {
                         if ($image instanceOf File)
-                            $image = new Image($image);
+                            if ($options['type'] == 'document')
+                                $image = new BaseDocument($image);
+                            else
+                                $image = new Image($image);
                     }
                 }
 

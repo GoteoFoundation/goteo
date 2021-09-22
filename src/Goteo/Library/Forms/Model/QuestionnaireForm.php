@@ -54,6 +54,7 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 $question->vars->constraints = [
                     new Constraints\Count(['max' => 1]),
                 ];
+                $question->vars->type = 'document';
             }
             if ($type == "choice")
                 $question->vars->choices = array_column($question->getChoices(), 'option', 'id');
@@ -106,7 +107,7 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 if($value[0] && $err = $value[0]->getUploadError()) {
                     throw new FormModelException(Text::get('form-sent-error', $err));
                 }
-                $answer->answer = $value['uploads'][0]->id;
+                $answer->answer = $value['uploads'][0]->name;
             }
             $answer->save();
 
