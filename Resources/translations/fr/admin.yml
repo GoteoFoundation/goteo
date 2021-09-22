@@ -192,4 +192,9 @@ admin-title-active: Actif
 admin-title-location: Localisation
 admin-title-fullname: Nom
 admin-title-email: Adresse mail
+admin-stats-to_fee-percent: 'Commission effective'
+admin-stats-in_wallet: 'Dans le portefeuille virtuel'
+admin-stats-in_matcher_wallet: 'Dans le portefeuille virtuel des co-financeurs'
+admin-stats-in_users_wallet: 'Dans le portefeuille des utilisateurs'
+admin-stats-refunded-parts: 'Répartition des retours'
 
