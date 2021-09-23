@@ -41,6 +41,7 @@ invest-called-nodrop: 'Il n''y a pas actuellement de <strong>Matchfunding</stron
 invest-called-rest: 'Il ne reste que <strong>%s €</strong> de <strong>Matchfunding</strong> dans la campagne <span class="call">%s</span>'
 invest-card-method: Carte de crédit
 invest-donation-header: 'Entrer les informations fiscal pour cette donation'
+invest-drop-method: Irrigation
 invest-fiscal-fail: 'Il y a des champs vides ou avec des erreurs, vérifiez le formulaire fiscal pour que vous puissiez déduire votre contribution!'
 invest-fiscal-skip: 'Fournir les détails plus tard'
 invest-fiscal-renounce: 'Je ne souhaite pas recevoir de certificat de don'
@@ -83,6 +84,10 @@ invest-status-cancelled: Annulé
 invest-status-charged: Encaissé
 invest-status-paid: 'Versé au projet'
 invest-status-processing: Incomplet
+invest-status-relocated: Relocalisé
+invest-status-returned: 'Retourné (archivé)'
+invest-status-to-pool: 'Vers le portefeuille'
+invest-status-donated: 'Faire un don à la Fondation'
 invest-step-1: Récompense
 invest-step-2: Paiement
 invest-step-3: Confirmation
