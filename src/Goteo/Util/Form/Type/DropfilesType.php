@@ -34,12 +34,25 @@ use Symfony\Component\HttpFoundation\File\File;
 class DropfilesType extends FileType
 {
 
+    const TYPE_DOCUMENT = 'document';
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // Current files
+        $this->addCurrentViewAndModelTransformer($options, $builder);
+        $this->addUploadsViewFileType($builder);
+        $this->addUploadsFieldModelTransformer($options, $builder);
+        $this->addRemovedViewCollectionType($builder);
+        $this->addRemovedFieldModelTransformer($builder);
+        $this->addViewTransformer($options, $builder);
+    }
+
+    private function addCurrentViewAndModelTransformer(
+        array $options,
+        FormBuilderInterface $builder
+    ) {
         $builder->add('current', FileType::class, [
             'multiple' => true,
             'data' => is_array($options['data']) ? $options['data'] : [$options['data']],
@@ -48,14 +61,30 @@ class DropfilesType extends FileType
 
         $builder->get('current')
             ->addModelTransformer(new $options['model_transformer']);
+    }
 
-        // New added files
+    private function addUploadsViewFileType(FormBuilderInterface $builder)
+    {
         $builder->add('uploads', FileType::class, [
             'multiple' => true
         ]);
+    }
 
-        if ($options['type'] == 'document') {
+    private function addUploadsFieldModelTransformer(
+        array $options,
+        FormBuilderInterface $builder
+    ) {
+        if ($options['type'] == DropfilesType::TYPE_DOCUMENT) {
+            $this->addUploadsTransformerAsDocument($builder);
+        } else {
             $builder->get('uploads')
+                ->addModelTransformer(new $options['upload_transformer']);
+        }
+    }
+
+    private function addUploadsTransformerAsDocument(FormBuilderInterface $builder)
+    {
+        $builder->get('uploads')
             ->addModelTransformer(new CallbackTransformer(
                 function($image) {
                     return null;
@@ -65,7 +94,6 @@ class DropfilesType extends FileType
                         foreach($image as $i => $img) {
                             if(!$img) continue;
 
-                            // Convert File to Image
                             if(!$img instanceOf BaseDocument) {
                                 $image[$i] = new BaseDocument($img);
                                 $image[$i]->save();
@@ -75,16 +103,18 @@ class DropfilesType extends FileType
                     return $image;
                 }
             ));
-        } else {
-            $builder->get('uploads')
-                ->addModelTransformer(new $options['upload_transformer']);
-        }
+    }
 
+    private function addRemovedViewCollectionType(FormBuilderInterface $builder)
+    {
         $builder->add('removed', CollectionType::class, [
             'entry_type' => TextType::class,
             'allow_add' => true
         ]);
+    }
 
+    private function addRemovedFieldModelTransformer(FormBuilderInterface $builder)
+    {
         $builder->get('removed')
             ->addModelTransformer( new CallbackTransformer(
                 function($image) {
@@ -105,8 +135,12 @@ class DropfilesType extends FileType
                     return $images;
                 }
             ));
+    }
 
-        // General processing
+    private function addViewTransformer(
+        array $options,
+        FormBuilderInterface $builder
+    ) {
         $builder->addViewTransformer(new CallbackTransformer(
             function($image) use ($options) {
                 if ($image instanceOf File)
@@ -127,8 +161,6 @@ class DropfilesType extends FileType
                 return is_array($image) ? $image : [$image];
             },
             function ($image) {
-                // Sum current + uploads
-                $img = [];
                 $img = isset($image['current']) && is_array($image['current']) ? $image['current'] : [];
                 if($image['uploads']) {
                     if(is_array($image['uploads'])) {
@@ -139,8 +171,8 @@ class DropfilesType extends FileType
                     $img = array_merge($img, ['removed' => $image['removed']]   );
                 }
                 return $img;
-                // return null;
-            }));
+            })
+        );
     }
 
     /**

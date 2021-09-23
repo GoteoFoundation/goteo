@@ -12,6 +12,7 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Util\Form\Type\DropfilesType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Text;
@@ -54,7 +55,7 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 $question->vars->constraints = [
                     new Constraints\Count(['max' => 1]),
                 ];
-                $question->vars->type = 'document';
+                $question->vars->type = DropfilesType::TYPE_DOCUMENT;
             }
             if ($type == "choice")
                 $question->vars->choices = array_column($question->getChoices(), 'option', 'id');
