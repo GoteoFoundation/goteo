@@ -29,13 +29,17 @@ translator-field-twitter_msg_owner: 'Auteur sur Twitter'
 translator-field-url: URL
 translator-glossary: 'Glossaire des termes'
 translator-icon: 'Types de retour/récompense'
+translator-lang-no-perms: 'Vous n’êtes pas autorisé à gérer cette langue'
 translator-license: Licenses
 translator-milestone: Étapes importantes
 translator-more-langs: Autres
+translator-news: Actualités
+translator-not-saved: 'Aucun contenu n’a été enregistré! (peut-être avez-vous des champs vides?)'
 translator-opentag: Catégories
 translator-original-text: 'Texte original'
 translator-page: Pages
 translator-patron: 'Projets parrainés'
+translator-pending-desc: 'Ce contenu est « en attente », ce qui signifie que <strong> N’est PAS PUBLIC</strong> et il reste comment brouillon jusqu’à ce que l’option « En attente de traduction » soit supprimée.'
 translator-post: Blog
 translator-promote: 'Projets favoris'
 translator-channelstory: 'Histoires favorites d’utilisateurs'
@@ -44,7 +48,15 @@ translator-save: 'Enregistrer & Publier'
 translator-save-original: 'Enregistrer dans le tableau d’origine'
 translator-save-draft: 'Enregistrer sous forme de brouillon'
 translator-saved-ko: 'Échec de l’enregistrement de la traduction vers %LANG% (%ERROR%)'
+translator-saved-ok: 'Traductions enregistrées correctement pour les langues [%s]'
+translator-skipped-fields: "Certains champs n’ont pas été copiés parce qu’ils contenaient déjà du texte.\nEfface le texte original pour pouvoir le copier à partir d’une autre langue."
+translator-social_commitment: 'Engagements sociaux'
+translator-sdg: 'ODD'
+translator-footprint: 'Empreintes'
+translator-system: Système
+translator-translations: Traductions
 translator-workshop: Ateliers
+translator-zone-not-found: 'Cette zone de traduction n’est pas valide'
 translator-field-terms: Bases
 translator-field-tip_msg: Message
 translator-field-banner_button_url: Url du bouton de la bannière
