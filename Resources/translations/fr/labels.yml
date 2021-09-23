@@ -1,5 +1,6 @@
 ---
 accounts-lb: Contributions
+accounts-lb-cancel: 'Annulation de la contribution'
 accounts-lb-details: 'Détails de l’apport'
 accounts-lb-execute: 'Exécution du coût'
 accounts-lb-list: Faire la liste
@@ -11,10 +12,12 @@ banners-lb-add: 'Nouvelle bannière'
 banners-lb-cancel: 'Annulation de la contribution'
 banners-lb-details: 'Détails de l’apport'
 banners-lb-edit: 'Modification de la bannière'
+banners-lb-list: Faire la liste
 banners-lb-report: 'Rapport de projet'
 banners-lb-translate: 'Traduire la Bannière'
 banners-lb-update: 'Changer l’état de l’apport'
 blog-lb: Blog
+blog-lb-list: Faire la liste
 blog-lb-translate: 'Traduire l’enregistrement'
 categories-lb: Catégories
 categories-lb-add: 'Nouvelle Catégorie'
@@ -29,6 +32,8 @@ mailing-lb-list: 'Sélectionner les destinataires'
 mailing-lb-send: 'Communication envoyée'
 milestones-lb: Étapes importantes
 milestones-lb-add: 'Nouvel objectif'
+news-lb-list: Faire la liste
+newsletter-lb: Bulletin
 newsletter-lb-init: 'Lancement d’un nouvel envoi'
 newsletter-lb-list: 'État de l’expédition automatique'
 node-lb: 'Données de la chaine'
@@ -44,6 +49,7 @@ pages-lb: Pages
 pages-lb-add: 'Nouvelle page'
 pages-lb-list: Faire la liste
 pages-lb-translate: 'Traduire la page'
+pages-lbedit: 'Modification de la page'
 projects-lb: Projets
 projects-lb-accounts: 'Coûts du projet'
 projects-lb-assign: 'Attribuer le projet à un appel'
@@ -57,7 +63,15 @@ projects-lb-list: Faire la liste
 projects-lb-move: 'Déplacer le projet vers un autre nœud'
 projects-lb-open_tags: 'Attribuer un groupement au projet'
 projects-lb-rebase: 'Changer l’ID du projet'
+projects-lb-report: 'Rapport financier du projet'
+promote-lb: 'Projets favoris'
+promote-lb-list: Faire la liste
 recent-lb: 'Activité récente'
+recent-lb-list: Faire la liste
+reviews-lb-list: Faire la liste
+rewards-lb: Récompenses
+rewards-lb-edit: 'Gestion de la récompense'
+rewards-lb-list: Faire la liste
 sponsors-lb: 'Soutien institutionnel'
 translates-lb-edit: 'Attribuer la traduction'
 translates-lb-list: Liste
