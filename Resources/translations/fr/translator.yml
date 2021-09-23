@@ -11,9 +11,39 @@ translator-delete: 'Supprimer la traduction vers %s'
 translator-delete-sure: 'Vous voulez supprimer la traduction de %s ? Celle-ci ne peut pas être annulée!'
 translator-deleted-ko: 'Erreur lors de la suppression de la traduction vers %s!'
 translator-faq: Faq
+translator-feed-translated-target: 'Traduction en %s'
+translator-field-blog: Blog
+translator-field-content: Contenu
 translator-field-description: Description
+translator-field-facebook_msg: 'Messages Facebook'
 translator-field-legend: Légende
 translator-field-name: Nom
+translator-field-schedule: Horaire
+translator-field-share_facebook: 'Partager le texte sur facebook'
+translator-field-share_twitter: 'Partager le texte sur twitter'
+translator-field-text: Texte
+translator-field-title: Titre
+translator-field-subtitle: sous-titre
+translator-field-twitter_msg: 'Message Twitter'
+translator-field-twitter_msg_owner: 'Auteur sur Twitter'
+translator-field-url: URL
+translator-glossary: 'Glossaire des termes'
+translator-icon: 'Types de retour/récompense'
+translator-license: Licenses
+translator-milestone: Étapes importantes
+translator-more-langs: Autres
+translator-opentag: Catégories
+translator-original-text: 'Texte original'
+translator-page: Pages
+translator-patron: 'Projets parrainés'
+translator-post: Blog
+translator-promote: 'Projets favoris'
+translator-channelstory: 'Histoires favorites d’utilisateurs'
+translator-channelpost: 'Publier vers le canal'
+translator-save: 'Enregistrer & Publier'
+translator-save-original: 'Enregistrer dans le tableau d’origine'
+translator-save-draft: 'Enregistrer sous forme de brouillon'
+translator-saved-ko: 'Échec de l’enregistrement de la traduction vers %LANG% (%ERROR%)'
 translator-workshop: Ateliers
 translator-field-terms: Bases
 translator-field-tip_msg: Message
