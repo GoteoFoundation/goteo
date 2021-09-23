@@ -57,6 +57,15 @@ translator-system: Système
 translator-translations: Traductions
 translator-workshop: Ateliers
 translator-zone-not-found: 'Cette zone de traduction n’est pas valide'
+translator-lang-not-found: 'Cette langue n’est pas présente sur la plate-forme!'
+translator-percent: '%d&#37; traduit'
+translator-add-translation: 'Ajouter une nouvelle traduction'
+translator-communication: Communication
+translator-node: Canal
+translator-node_program: Les programmes de la chaîne
+translator-node_faq: FAQ de la chaine
+translator-node_sponsor: Sponsors de la chaine
+translator-node_team: L'équipe de la chaine
 translator-field-terms: Bases
 translator-field-tip_msg: Message
 translator-field-banner_button_url: Url du bouton de la bannière
