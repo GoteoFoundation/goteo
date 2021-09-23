@@ -186,6 +186,17 @@ admin-send-email: 'Envoyer un e-mail'
 admin-show-roles-info: 'Quel rôle peut-il jouer?'
 admin-user-roles: 'Liste des rôles des utilisateurs'
 admin-user-active: 'Compte actif'
+admin-user-wallet-amount: 'Créditer dans le portefeuille'
+admin-user-create-invest: 'Créer une contribution'
+admin-mailing: 'Emailing'
+admin-user-no-mailing: 'Aucun e-mail ne vous a encore été envoyé'
+admin-view-user-mailing: 'Toutes les expéditions'
+admin-role-change-forbidden: 'Vous n’êtes pas autorisé à gérer le rôle %ROLE% sur cet utilisateur'
+admin-users-global-search: 'Id, nom, email ou projet'
+admin-blog-global-search: 'Id, titre, texte du sous-titre'
+admin-communication-global-search: 'Sujet'
+admin-blog-stories-search: 'Id, titre, texte ou projet'
+admin-donor-name-search: 'ID, nom, email'
 admin-donor-date-search: 'Traités par date'
 admin-no-project: 'Pas de projet'
 admin-title-id: Id
@@ -195,10 +206,17 @@ admin-title-active: Actif
 admin-title-location: Localisation
 admin-title-fullname: Nom
 admin-title-email: Adresse mail
+admin-title-header-image: Image d'en-tête
+admin-title-password: Mot de passe
+admin-title-avatar: Avatar
+admin-title-icon: Icône
 admin-title-image: Image
 admin-title-subtitle: Sous-titre
 admin-title-subject: Sujet
 admin-title-description: Description
+admin-title-text: Texte
+admin-title-slug: Slug
+admin-title-publish: Publié
 admin-title-langs: Traductions
 admin-title-actions: Actions
 admin-title-tags: Tags
@@ -237,6 +255,9 @@ admin-title-nif: NIF
 admin-title-country: 'Pays:'
 admin-blog-initialized: 'Espace de blog initialisé'
 admin-blog-deactivated: 'Désolé, la gestion du blog est désactivée'
+admin-aggregate-invests-desc: 'Somme des contributions par unité de temps'
+admin-aggregate-projects: 'Total des recettes dans les projets'
+admin-stats-matchfunding-part: 'Projets avec Cofinancement'
 admin-stats-to_fee-percent: 'Commission effective'
 admin-stats-in_wallet: 'Dans le portefeuille virtuel'
 admin-stats-in_matcher_wallet: 'Dans le portefeuille virtuel des co-financeurs'
