@@ -71,6 +71,7 @@ class UserProfileForm extends AbstractFormProcessor {
         $builder = $this->getBuilder();
         $options = $builder->getOptions();
         $defaults = $options['data'];
+
         // print_r($defaults);die;
         $builder
             ->add('name', 'text', [
@@ -107,7 +108,6 @@ class UserProfileForm extends AbstractFormProcessor {
                 'label' => 'profile-fields-image-title',
                 'constraints' => $this->getConstraints('avatar'),
                 'disabled' => $this->getReadonly(),
-                'url' => '/api/users/' . $user->id . '/avatar',
                 'required' => false
             ])
             ;
@@ -257,15 +257,23 @@ class UserProfileForm extends AbstractFormProcessor {
         $user = $this->getModel();
         // var_dump($data);die;
         // Process main image
-        if(is_array($data['avatar'])) {
-            $data['avatar'] = reset($data['avatar']);
-        }
-        $user->user_avatar = $data['avatar'];
-        if($user->user_avatar && $err = $user->user_avatar->getUploadError()) {
-            throw new FormModelException(Text::get('form-sent-error', $err));
+        if(is_array($data['avatar']) && !empty($data['avatar'])) {
+            if (!empty($data['avatar']['removed'])) {
+                if ($user->avatar->id == current($data['avatar']['removed'])->id) {
+                    $user->user_avatar = [];
+                }
+            }
 
+            if (!empty($data['avatar']['uploads'])) {
+                $uploaded_avatar = $data['avatar']['uploads'][0];
+                $user->user_avatar = $uploaded_avatar;
+
+                if($user->user_avatar && $err = $user->user_avatar->getUploadError()) {
+                    throw new FormModelException(Text::get('form-sent-error', $err));
+                }
+            }
         }
-        // $data['user_avatar'] = $data['avatar'];
+
         unset($data['avatar']); // do not rebuild data using this
 
         // Process interests
