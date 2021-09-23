@@ -179,6 +179,7 @@ admin-project-to-negotiation-sure: 'ALERTE!! Le projet est en campagne! Avec ça
 admin-project-to-publish: 'Publier'
 admin-project-to-publish-desc: 'Passer le projet à l’état « En campagne »'
 admin-project-to-publish-sure: 'Le projet va commencer sa campagne, Voulez-vous continuer?'
+admin-project-derivation-discard-desc: 'Passe le projet à l’état Rejeté et envoie un mail l''orientant vers une autre plate-forme plus appropriée'
 admin-project-derivation-discard-sure: 'Un mail sera envoyé automatiquement à une autre plate-forme et passera à l’état exclu, d’accord?'
 admin-home-title: Administrer Goteo
 admin-list: Inscription
