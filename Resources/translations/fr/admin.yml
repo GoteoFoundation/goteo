@@ -153,6 +153,7 @@ admin-channelprogram-add: 'Ajouter un programme'
 admin-categories: 'Catégories et domaines'
 admin-categories-if-empty-then-asset: 'Si elle est laissée vide, l’icône par défaut sera utilisée : %s'
 admin-category-add: Créer une nouvelle catégorie
+admin-category-edit: Modification de la catégorie %s
 admin-socialcommitment-add: Créer un nouvel engagement social
 admin-socialcommitment-edit: Modifier l’engagement social %s
 admin-sphere-add: Créer un nouveau domaine
@@ -169,6 +170,7 @@ admin-project-express-discard: 'Rejet express'
 admin-project-express-discard-desc: 'Passez le projet à l’état Rejeté et envoyez un mail'
 admin-project-express-discard-sure: 'Vous allez envoyer un mail automatique et passer à l’état rejeté, Voulez-vous continuer?'
 admin-project-to-review: 'À l’examen'
+admin-project-to-review-desc: 'Passer le projet à l’état En attente d’évaluation'
 admin-project-to-review-sure: 'Le créateur ne pourra plus le modifier, Voulez-vous continuer ?'
 admin-project-view-in-admin: 'Voir dans l’admin'
 admin-project-to-negotiation: 'À négocier'
@@ -183,6 +185,7 @@ admin-list: Inscription
 admin-send-email: 'Envoyer un e-mail'
 admin-show-roles-info: 'Quel rôle peut-il jouer?'
 admin-user-roles: 'Liste des rôles des utilisateurs'
+admin-user-active: 'Compte actif'
 admin-donor-date-search: 'Traités par date'
 admin-no-project: 'Pas de projet'
 admin-title-id: Id
