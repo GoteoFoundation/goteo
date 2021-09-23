@@ -1,4 +1,5 @@
 ---
+ID_DEL_TEXTO: 'Texte ID_DEL_TEXTO'
 admin_no_permission: 'Vous n’êtes pas autorisé à accéder à <strong>%s</strong>'
 bazar-description-seo: 'Cadeaux de financement participatif solidaires à Goteo.org.'
 bazar-title-seo: 'Récompenses solidaires : Goteo.org'
@@ -40,6 +41,7 @@ guide-dashboard-user-access: 'Vous pouvez changer les informations avec lesquell
 guide-dashboard-user-personal: "Vous ne devez remplir ces données que si vous avez créé un projet et que vous souhaitez qu’il soit cofinancé et soutenu par Goteo. Les informations contenues dans cette section sont nécessaires pour vous contacter si vous obtenez le financement requis et si le financement peut être effectué."
 guide-project-comment: guide-projet-commentaire
 guide-project-contract-information: 'Les informations de cette section sont nécessaires pour vous contacter si vous obtenez le financement nécessaire, et ainsi permettre le versement. Dans le cas d''une structure, nous vous recommandons que la personne qui représente l''organisation puisse plus tard être accrédité formellement. (Par exemple au travers les statuts ou via un certificat du secrétaire avec agrément du président, dans le cas d''associations )'
+guide-project-description: "<strong> C’est la section où vous devez expliquer en détail les aspects conceptuels du projet.</strong> <br><br> C’est la première chose que tout utilisateur du réseau verra, alors prenez soin de la rédaction et évitez les fautes d’orthographe. Vous verrez qu’il existe des champs obligatoires tels que l’inclusion d’une vidéo ou le téléchargement d’images. C’est parce que nous les considérons comme indispensables pour lancer avec succès une campagne de collecte de fonds par Goteo. <br><br>Gardez à l’esprit que la chose la plus appréciée dans Goteo est: l’information ou la connaissance libre d’intérêt général que votre projet apportera à la communauté, l’originalité, l’aspiration à résoudre une demande sociale, le potentiel d’attirer une large communauté de personnes intéressées, de préciser que l’équipe de promotion possède les capacités et l’expérience nécessaires pour y parvenir. Alors gardez un œil sur ces aspects."
 guide-project-images: 'Les images du projet peuvent être des plans, screenshots, photographies, illustrations, storyboards, etc. (la licence associée doit être compatible avec les licences sélecionnées dans la section 5. Vous pouvez en charger autant que souhaité!'
 guide-project-rewards: "<strong>Dans cette partie, vous devez définir ce que vous proposez en échange à vos cofinanceurs.</strong>"
 guide-project-support: guide-projet-support
@@ -126,6 +128,7 @@ regular-here: ici
 regular-help: Aide
 regular-home: Commencer
 regular-id: Identifiant ({})
+regular-identica: Identi.ca
 regular-im: Je suis
 regular-instagram: Instagram
 regular-invest: Apporter
@@ -136,6 +139,7 @@ regular-lang: Langue
 regular-last: Dernière
 regular-license: Licence
 regular-linkedin: LinkedIn
+regular-loading: Chargement…
 regular-login: Login
 regular-logout: 'Fermez la session.'
 regular-looks_for: 'Rechercher:'
@@ -182,6 +186,7 @@ regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Suivez-nous sur Twitter.'
 regular-share_this: 'Partager sur'
 regular-sorry: 'Désolé'
+regular-spread: DIFFUSION
 regular-status: Etat
 regular-template: Modèle
 regular-thanks: Merci
@@ -224,6 +229,7 @@ regular-write-description: 'Écrivez un texte descriptif...'
 regular-choice-placeholder: 'Sélectionner une option'
 session-about-to-expire: 'La session se fermera dans 10 minutes. Desirez vous reloader la page pour renouveler la session?'
 session-expired: 'La session est terminée'
+spread-about: 'Diffusion du texte'
 stories-user-project: '%s, du projet : %s'
 support-our-mission: 'DON À LA FONDATION GOTEO'
 tooltip: 'Texte info-bulle'
