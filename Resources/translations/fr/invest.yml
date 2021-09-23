@@ -2,6 +2,7 @@
 bazar-spread-text: '%s - Ce Noël, offre un financement participatif ouvert et pour le bien commun avec @goteofunding #openbazaar'
 bazar-thanks: 'Merci de visiter notre bazar, vous pouvez nous aider à le diffuser.'
 currency-alert: "Veuillez noter que la gestion est en EUR. Vous allez payer environ <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115 » target=\"_blank\">Plus d’infos</a>"
+faq-payment-method: '<a href="/faq/investors#q2 » target="_blank"> Quels systèmes de paiement goteo offre-t-il? Sont-ils sûrs?</a>'
 imperative-register: Inscrivez-vous
 invest-address-address-field: 'Addresse:'
 invest-address-birthyear-field: 'Année de naissance'
@@ -40,12 +41,15 @@ invest-called-maxproj: 'Le maximum de <strong>Capital Riego</strong> possible da
 invest-called-nodrop: 'Il n''y a pas actuellement de <strong>Matchfunding</strong> disponible dans la campagne %s'
 invest-called-rest: 'Il ne reste que <strong>%s €</strong> de <strong>Matchfunding</strong> dans la campagne <span class="call">%s</span>'
 invest-card-method: Carte de crédit
+invest-cash-method: 'Manuel (espèces)'
 invest-donation-header: 'Entrer les informations fiscal pour cette donation'
 invest-drop-method: Irrigation
 invest-fiscal-fail: 'Il y a des champs vides ou avec des erreurs, vérifiez le formulaire fiscal pour que vous puissiez déduire votre contribution!'
 invest-fiscal-skip: 'Fournir les détails plus tard'
 invest-fiscal-renounce: 'Je ne souhaite pas recevoir de certificat de don'
 invest-fiscal-title: 'Demande de certificat de don'
+#invest-fiscal-warning: 'A partir del 1 de Marzo de %s, podrás descargarte tu certificado de donación siempre que hayas facilitado tus datos completos anteriormente al 15 de enero.'
+invest-fiscal-warning: '<b> Si vous souhaitez que nous vous fournissions votre certificat de don pour bénéficier des avantages fiscaux</b> de votre contribution, est <b>nécessaire que vous nous fournissiez vos données personnelles indiquées AVANT le 15 janvier</b>, puisque, en vertu de l’article <b>5 de l’ordonnance EHA/3021/2007 du 11 octobre, approuvant le modèle 182 de déclaration d’information sur les dons,  dons et contributions reçus</b>, nous avons l’obligation de présenter cette déclaration au mois de janvier de chaque année, en ce qui concerne les dons, dons et contributions reçus ou les dispositions effectuées au cours de l’année civile précédente. <br><br>Si vous n''envoyez pas vos données dans les délais, vous renoncez aux avantages fiscaux de votre contribution, car le non-respect dans le délai de dépôt de la déclaration du modèle 182, de dons reçus, entraîne des amendes pour la Fondation Goteo pour non-respect de la réglementation ci-dessus. <br>'
 invest-login-alert: 'Vous devez vous inscrire ou <a href="%s">démarrer</a> pour pouvoir apporter votre contribution'
 invest-mail_info-address: 'A précisé l''addresse suivante:'
 invest-mail_info-drop: 'En outre, %s a fourni  %s pour le cofinancement de la campagne %s'
@@ -116,6 +120,7 @@ invest-created-manually-ko: 'Erreur lors de la création de la contribution manu
 invest-tip-part-1: 'Je veux ajouter à mon don:'
 invest-tip-part-2: 'pour contribuer à la mission de la <b>Fondation Goteo</b><br> pour une société plus éthique et collaborative'
 invest-mail-donate-tip: 'Avec votre don, vous avez décidé de collaborer avec la <strong>Fondation Goteo</strong> avec %s € supplémentaires, merci de tout cœur.'
+invest-update-total: 'Vous allez faire un don total de<span class="amount-reminder » id="total-amount">%TOTAL_AMOUNT%</span> 👉 <span class="break-down">%PROJECT_AMOUNT% au projet + <span id="tip-amount">%DONATE_AMOUNT%</span> à la Fondation Goteo'
 invest-extra-info: 'Infos supplémentaires '
 donor-legal-entities-natural-person: Personne physique
 donor-legal-entities-legal-person: Personne morale
