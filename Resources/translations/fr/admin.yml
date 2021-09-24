@@ -390,4 +390,5 @@ admin-invest-raised-total-week: 'Dons de cette semaine'
 admin-invest-raised-total-last_week: 'Dons de la semaine dernière'
 admin-invest-raised-amount-month: 'Reçu ce mois-ci'
 admin-stats-projects-channel-desc: 'Projets appartenant au canal (ou nœud)'
+admin-donations-amount-percent: '% d’argent donné'
 
