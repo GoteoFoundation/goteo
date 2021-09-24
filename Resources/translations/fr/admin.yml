@@ -319,12 +319,17 @@ admin-stats-in_wallet: 'Dans le portefeuille virtuel'
 admin-stats-in_matcher_wallet: 'Dans le portefeuille virtuel des co-financeurs'
 admin-stats-in_users_wallet: 'Dans le portefeuille des utilisateurs'
 admin-stats-refunded-parts: 'Répartition des retours'
+admin-stats-fees-parts: 'Répartition des commissions'
+admin-stats-invest-active-parts: 'Répartition du bénéfice net'
+admin-stats-invest-in_wallet-parts: 'Répartition du portefeuille'
+admin-losts: Perdues
 admin-active: Encaissé
 admin-refunded-to_users: Retour aux utilisateurs
 admin-commissions: Commission
 admin-fees: Commission de la plate-forme
 admin-user-fee: Commission citoyenne
 admin-call-fee: Commission Cofinancement (sans Matchers)
+admin-diff: Différence
 admin-the_day: Le jour
 admin-the_week: La semaine
 admin-the_month: Le mois
@@ -332,4 +337,7 @@ admin-the_year: L’année
 admin-custom: Selon le filtre
 admin-total: Total
 admin-today: Aujourd'hui
+admin-yesterday: Hier
+admin-week: Cette semaine
+admin-last_week_complete: Toute la semaine dernière
 
