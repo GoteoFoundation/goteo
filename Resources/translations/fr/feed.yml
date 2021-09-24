@@ -5,6 +5,7 @@ feed-admin-invest-cancelled-pool: 'L’administrateur %ADMIN% a annulé et renvo
 feed-admin-invest-cancelled-pool-subject: 'Frais annulés au portefeuille manuellement (administrateur)'
 feed-admin-invest-cancelled-subject: 'Frais annulés manuellement (administrateur)'
 feed-admin-invest-returned: 'L’administrateur %ADMIN% a renvoyé l’apport de %USER% de %AMOUNT% via %METHOD% (ID: %INVEST%) au projet « %PROJECT% » du jour %DATE%'
+feed-admin-invest-returned-pool: 'L’administrateur %ADMIN% a restitué dans le portefeuille l’apport de %USER% d''un montant de %AMOUNT% par %METHOD% (ID: %INVEST%) concernant le projet « %PROJECT% » en date du %DATE%'
 feed-admin-invest-returned-pool-subject: 'Chargement retourné manuellement au portefeuille (administrateur)'
 feed-admin-invest-returned-subject: 'Publication renvoyée manuellement (administrateur)'
 feed-admin-invest-manual-subject: 'Contribution manuelle (administrateur)'
