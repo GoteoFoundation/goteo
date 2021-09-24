@@ -42,6 +42,7 @@ feed-new_support: 'A publié une nouvelle <span class="green">Collaboration</spa
 feed-new-support: 'Vous avez publié une nouvelle <span class="green">Collaboration</span> dans le projet %PROJECT%, intitulée « %TITLE% »'
 feed-new_update: '%USER% a publié un nouveau sujet %BLOG% sur le projet %PROJECT%'
 feed-new_user: 'Nouvel utilisateur %s'
+feed-deleted-story: 'Histoire réussie et effacée'
 feed-story-deleted: 'Effacer une histoire réussie'
 feed-project-archived: 'projet archivé (auto)'
 feed-project-ending: 'projet proche de la fin du cycle (auto)'
@@ -66,6 +67,8 @@ feed-timeago-justnow: rien
 feed-timeago-periods: seconde-secondes_minute-minutes_heure-heures_jour-jours_semaine-semaines_mois-mois_an-années_décennie-décennies
 feed-timeago-published: 'Publié il y a %s'
 feed-updates-comment: 'A écrit un <span class="green">commentaire</span> sur le sujet "%s" en %s du projet %s'
+feed-user-invest: '%USER% a contribué à hauteur de %AMOUNT% au projet %PROJECT% via %METHOD%'
+feed-message-new-support: 'l’utilisateur met une nouvelle collaboration dans son projet (dashboard)'
 feed-message-support-response-published: 'Nouvelle collaboration de %USER% avec %TITLE% dans le projet %PROJECT%'
 feed-message-response-published: '%USER% a répondu dans %TYPE% du projet %PROJECT%'
 feed-message-thread-published: '%USER% a créé un thème dans %TYPE% du projet %PROJECT%'
