@@ -340,4 +340,23 @@ admin-today: Aujourd'hui
 admin-yesterday: Hier
 admin-week: Cette semaine
 admin-last_week_complete: Toute la semaine dernière
+admin-promote-already-exists: 'Ce projet est déjà mis en évidence'
+admin-promote-correct: 'Le projet est mis en évidence'
+admin-projects-created-today: 'Créé aujourd''hui'
+admin-projects-created-yesterday: 'Créé hier'
+admin-projects-created-week: 'Créé cette semaine'
+admin-projects-created-last_week: 'Créé la semaine dernière'
+admin-projects-created-month: 'Créé ce mois-ci'
+admin-projects-created-last_month: 'Créé le mois dernier'
+admin-projects-created-year: 'Créé cette année'
+admin-projects-created-last_year: 'Créé l’année dernière'
+admin-projects-negotiating-today: 'En négociation aujourd’hui'
+admin-projects-negotiating-yesterday: 'En négociation hier'
+admin-projects-negotiating-week: 'En négociation cette semaine'
+admin-projects-negotiating-last_week: 'En négociation la semaine dernière'
+admin-projects-negotiating-month: 'En négociation ce mois-ci'
+admin-projects-negotiating-last_month: 'En négociation le mois dernier'
+admin-projects-negotiating-year: 'En négociation cette année'
+admin-projects-negotiating-last_year: 'En négociation l’année dernière'
+admin-projects-published-today: 'Publié aujourd’hui'
 
