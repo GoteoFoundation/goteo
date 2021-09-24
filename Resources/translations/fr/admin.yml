@@ -198,6 +198,7 @@ admin-show-roles-info: 'Quel rôle peut-il jouer?'
 admin-user-roles: 'Liste des rôles des utilisateurs'
 admin-view-user-projects: 'Tous les projets'
 admin-user-active: 'Compte actif'
+admin-user-warning: 'Attention: ces opérations sont exécutées sans envoyer d’avertissement à l’utilisateur'
 admin-user-wallet-amount: 'Créditer dans le portefeuille'
 admin-user-create-invest: 'Créer une contribution'
 admin-mailing: 'Emailing'
@@ -223,7 +224,9 @@ admin-title-password: Mot de passe
 admin-title-avatar: Avatar
 admin-title-roles: Rôles
 admin-title-role: Rôle
+admin-title-amount: Investi
 admin-title-icon: Icône
+admin-title-info: Info
 admin-title-image: Image
 admin-title-title: Titre
 admin-title-subtitle: Sous-titre
@@ -238,6 +241,7 @@ admin-title-langs: Traductions
 admin-title-actions: Actions
 admin-title-tags: Tags
 admin-title-deleted: Éliminé
+admin-title-sphere: Portée
 admin-title-social_commitment: Engagement social
 admin-title-sdgs: 'Objectifs de développement durable'
 admin-title-footprints: 'Empreintes'
@@ -252,7 +256,9 @@ admin-title-blockquote: 'Citation personnalisée'
 admin-title-type: 'Type'
 admin-title-date-in: Date de début
 admin-title-date-out: Date de fin
+admin-title-venue-address: Adresse
 admin-title-how-to-get: Comment y arriver ?
+admin-title-iframe: 'Localisation de l''iframe'
 admin-title-schedule-file: 'URL du programme'
 admin-title-call: 'Appels pour Co-financement'
 admin-title-url-inscription: Lien vers l’inscription
@@ -273,8 +279,26 @@ admin-title-nif: NIF
 admin-title-country: 'Pays:'
 admin-blog-initialized: 'Espace de blog initialisé'
 admin-blog-deactivated: 'Désolé, la gestion du blog est désactivée'
+admin-stories-review: 'Examen de Goteo: (Sous-titre)'
+admin-stories-landing_pitch: 'Afficher sur Landing Pitch'
+admin-stories-landing_match: 'Afficher sur Landing Pitch'
+admin-stories-type: 'Type de protagoniste'
+admin-all-project-referers: 'Origine des visites dans les projets'
+admin-aggregate-autoupdate: 'Mise à jour automatique'
+admin-aggregate-timeline: 'Chronologie'
+admin-aggregate-invests: 'Total des contributions '
 admin-aggregate-invests-desc: 'Somme des contributions par unité de temps'
 admin-aggregate-projects: 'Total des recettes dans les projets'
+admin-stats-invest-totals: 'Contributions et commissions'
+admin-stats-project-totals: 'État des projets'
+admin-stats-raised: 'Chiffre d’affaires brut'
+admin-stats-active: 'Revenu net'
+admin-stats-refunded: 'Résultats'
+admin-stats-fees: 'Commission de la plate-forme'
+admin-stats-commissions: 'Commission bancaire'
+admin-stats-matchfunding: 'Co-financements'
+admin-stats-raised-method: 'Revenus bruts selon le mode de paiement'
+admin-stats-active-method: 'Revenu net selon la méthode de paiement'
 admin-stats-matchfunding-part: 'Projets avec Cofinancement'
 admin-stats-users-part: 'Projets sans cofinancement'
 admin-stats-match-part: 'Coefficient multiplicateur'
