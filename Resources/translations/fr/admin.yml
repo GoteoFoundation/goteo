@@ -390,5 +390,25 @@ admin-invest-raised-total-week: 'Dons de cette semaine'
 admin-invest-raised-total-last_week: 'Dons de la semaine dernière'
 admin-invest-raised-amount-month: 'Reçu ce mois-ci'
 admin-stats-projects-channel-desc: 'Projets appartenant au canal (ou nœud)'
+admin-filter-from-new-year: 'Depuis le 1er janvier'
+admin-filter-previous-year: 'L''année dernière'
+admin-filter-two-years-ago: 'Il y a deux ans'
+admin-filter-typeofuser: 'Type d''utilisateur'
+admin-filter-typeofdonor: 'Type de donateur'
+admin-filter-user: 'Utilisateur'
+admin-filter-donor: 'Donateur'
 admin-donations-amount-percent: '% d’argent donné'
+admin-donations-users-percent: '% des utilisateurs donateurs'
+admin-donations-tip-percent: '% d’argent en pourboires'
+admin-donations-direct-percent: '% argent direct'
+admin-workshop: Ateliers Goteo
+admin-workshop-add: Créer un nouvel atelier
+admin-workshop-edit-success: L’ouverture de l’atelier a été réalisée correctement
+admin-online: En ligne
+mandatory-filter-name: Nom manquant
+mandatory-filter-description: Description manquante
+admin-node-iframe: Iframe
+admin-channel-resource: 'Ressources du Canal'
+admin-channel-resource-add: 'Créer une ressource'
+admin-posts: 'Publications'
 
