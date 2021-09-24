@@ -30,6 +30,7 @@ admin-account-pool-on-fail: 'Pool (retour au portefeuille en cas de défaillance
 admin-account-refund-to-pool: 'Rembourser la contribution sur le portefeuille'
 admin-account-refund-to-pool-confirm: "Cela marquera l’apport comme:\nRetourné si le projet est échoué\nAnnulé si le projet est actif ou réussi\nL’utilisateur ne sera pas remboursé, l’argent sera généré dans le portefeuille de l’utilisateur.\nVoulez-vous continuer ?"
 admin-account-refund-to-user: 'Rembourser la contribution à l’utilisateur'
+admin-account-refund-to-user-confirm: "Cela marquera l’apport comme:\nRetourné si le projet est échoué\nAnnulé si le projet est actif ou réussi\nL’argent sera remboursé à l’utilisateur.\nCela peut ne pas fonctionner si l’apport est très ancien ou si le mode de paiement ne le supporte pas.\nVoulez-vous continuer ?"
 admin-account-rewards: 'Récompenses choisies'
 admin-account-switch-donation: 'Echange des dons'
 admin-account-switch-donation-confirm: 'Voulez-vous modifier le statut de votre don?'
@@ -83,6 +84,7 @@ admin-mailing-view-in-newsletter: 'Voir dans l’administrateur du bulletin'
 admin-mailing-view-in-sent: 'Afficher dans l’historique des envois (statistiques)'
 admin-mailing-view-message: 'Voir le message'
 admin-newsletter-generated: 'La newsletter [%ID%] a été générée'
+admin-newsletter-langs-to-send: 'Langues: %LANGS%'
 admin-newsletter-mind-activate: 'Activez-le pour qu’il soit envoyé'
 admin-prev-page: 'Page précédente'
 admin-next-page: 'Page suivante'
@@ -163,9 +165,11 @@ admin-sdg-edit: Modification de l’ODS %s
 admin-footprint-add: Créer une nouvelle empreinte
 admin-footprint-edit: Modification de l’empreinte %s
 admin-calls: Appels à projets
+admin-matchers: Cofinanceurs
 admin-channels: Canaux
 admin-yes: Oui
 admin-impersonate: Se faire passer pour
+admin-impersonate-user: Emprunter l’identité de %s
 admin-project-express-discard: 'Rejet express'
 admin-project-express-discard-desc: 'Passez le projet à l’état Rejeté et envoyez un mail'
 admin-project-express-discard-sure: 'Vous allez envoyer un mail automatique et passer à l’état rejeté, Voulez-vous continuer?'
@@ -185,6 +189,7 @@ admin-home-title: Administrer Goteo
 admin-list: Inscription
 admin-stats: Statistiques
 admin-search-global: 'Projet, canal, appel...'
+admin-already-impersonating: 'Vous usurper le profil d''un autre utilisateur, merci de vous déconnecter!'
 admin-rebase-user: 'Modifier l’ID de l''utilisateur'
 admin-edit-name: 'Renommer'
 admin-edit-roles: 'Modifier les rôles des utilisateurs'
@@ -216,6 +221,8 @@ admin-title-email: Adresse mail
 admin-title-header-image: Image d'en-tête
 admin-title-password: Mot de passe
 admin-title-avatar: Avatar
+admin-title-roles: Rôles
+admin-title-role: Rôle
 admin-title-icon: Icône
 admin-title-image: Image
 admin-title-title: Titre
