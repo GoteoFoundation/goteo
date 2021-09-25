@@ -21,10 +21,23 @@ blog-lb-list: Faire la liste
 blog-lb-translate: 'Traduire l’enregistrement'
 categories-lb: Catégories
 categories-lb-add: 'Nouvelle Catégorie'
+criteria-lb: 'Critères d''évaluation'
+criteria-lb-add: 'Nouveau critère'
+criteria-lb-list: Faire la liste
+faq-lb: FAQ
+faq-lb-add: 'Nouvelle question'
 faq-lb-list: Faire la liste
+filter-lb: 'Filtres'
 glossary-lb: Glossaire
 glossary-lb-list: Faire la liste
+glossary-lb-translate: 'Traduire le terme'
+icons-lb: 'Type de retour'
+icons-lb-list: Faire la liste
+info-lb-add: 'Créer une idée'
+info-lb-list: Faire la liste
+info-lb-translate: 'Traduire l’idée'
 licenses-lb: Licenses
+licenses-lb-add: 'Créer une idée'
 licenses-lb-edit: 'Editer la Licence'
 licenses-lb-list: Faire la liste
 licenses-lb-translate: 'Traduction de la licence'
@@ -34,6 +47,7 @@ mailing-lb-list: 'Sélectionner les destinataires'
 mailing-lb-send: 'Communication envoyée'
 milestones-lb: Étapes importantes
 milestones-lb-add: 'Nouvel objectif'
+milestones-lb-list: Faire la liste
 news-lb-list: Faire la liste
 newsletter-lb: Bulletin
 newsletter-lb-init: 'Lancement d’un nouvel envoi'
@@ -75,6 +89,29 @@ rewards-lb: Récompenses
 rewards-lb-edit: 'Gestion de la récompense'
 rewards-lb-list: Faire la liste
 sponsors-lb: 'Soutien institutionnel'
+sponsors-lb-list: Faire la liste
+tags-lb: 'Tags de blog'
+tags-lb-list: Faire la liste
+templates-lb-list: Faire la liste
+texts-lb-list: Faire la liste
 translates-lb-edit: 'Attribuer la traduction'
 translates-lb-list: Liste
+transnodes-lb-list: Faire la liste
+users-lb: Utilisateurs
+users-lb-add: 'Création d’un utilisateur'
+users-lb-list: Faire la liste
+users-lb-manage: 'Gestion des utilisateurs'
+users-lb-move: 'Déplacer dans un autre nœud de l’utilisateur'
+workshop-lb: 'Ateliers'
+word-lb-list: Faire la liste
+worth-lb-list: Faire la liste
+stats-lb: Stats & data
+stories-lb: 'Récit utilisateur'
+channelstory-lb: 'Histoires sur les canaux'
+channelresource-lb: 'Ressources'
+channelposts-lb: 'Publier vers le canal'
+channelcriteria-lb: 'Quiz de la chaine'
+channelprogram-lb: 'Les programmes de la chaîne'
+channelsection-lb: 'Sections des canaux'
+certificate-lb: 'Certificats'
 certificatemanagement-lb: '  Gestion des certificats'
