@@ -21,8 +21,12 @@ blog-lb-list: Faire la liste
 blog-lb-translate: 'Traduire l’enregistrement'
 categories-lb: Catégories
 categories-lb-add: 'Nouvelle Catégorie'
+categories-lb-edit: 'Modification de la catégorie'
+categories-lb-keywords: 'Mots-clé'
 categories-lb-list: Faire la liste
 categories-lb-translate: 'Catégorie de traduction'
+commons-lb: 'Retours collectifs'
+commons-lb-add: 'Nouveau retour'
 commons-lb-list: Faire la liste
 commons-lb-report: 'Rapport de projet'
 criteria-lb: 'Critères d''évaluation'
