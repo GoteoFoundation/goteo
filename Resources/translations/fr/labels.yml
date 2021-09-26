@@ -27,8 +27,11 @@ categories-lb-list: Faire la liste
 categories-lb-translate: 'Catégorie de traduction'
 commons-lb: 'Retours collectifs'
 commons-lb-add: 'Nouveau retour'
+commons-lb-info: 'Informations sur le contact'
 commons-lb-list: Faire la liste
 commons-lb-report: 'Rapport de projet'
+commons-lb-view: 'Gestion des retours'
+communication-lb: 'Communications'
 criteria-lb: 'Critères d''évaluation'
 criteria-lb-add: 'Nouveau critère'
 criteria-lb-list: Faire la liste
@@ -91,6 +94,7 @@ projects-lb-open_tags: 'Attribuer un groupement au projet'
 projects-lb-rebase: 'Changer l’ID du projet'
 projects-lb-report: 'Rapport financier du projet'
 promote-lb: 'Projets favoris'
+promote-lb-edit: 'Montage en vedette'
 promote-lb-list: Faire la liste
 recent-lb: 'Activité récente'
 recent-lb-list: Faire la liste
