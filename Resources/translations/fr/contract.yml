@@ -71,4 +71,20 @@ contract-final-office: 'Rôle dans l’association ou l’entité commerciale (u
 contract-final-address: 'Domicile (propriétaire ou représentant)'
 contract-final-location: 'Municipalité (propriétaire ou représentant)'
 contract-final-zipcode: 'Code postal (propriétaire ou représentant)'
+contract-final-country: 'Pays (propriétaire ou représentant)'
+contract-final-entity_name: 'Nom ou raison sociale (de l’association ou de la personne morale)'
+contract-final-entity_address: 'Siège social (de l’association ou de la personne morale)'
+contract-final-entity_location: 'Ville (de l’association ou de la personne morale)'
+contract-final-paypal: 'Compte PayPal du projet'
+contract-final-paypal_owner: 'Titulaire du compte paypal'
+contract-final-bank: 'Comptes bancaires du projet'
+contract-final-bank_owner: 'Titulaire du compte bancaire'
+contract-validation-errors: Le contrat n’est pas encore terminé!
 contract-validation-error-promoter_nif: 'Le numéro fiscal n''est pas correct'
+contract-legal-document-type-cif: CIF
+contract-legal-document-type-nif: NIF
+contract-legal-document-type-nie: NIE
+contract-legal-document-type-vat: TVA
+validate-contract-nif-document-type: 'Le numéro du document ne correspond pas au format de  ce type de document'
+validate-contract-cif-document-type: 'Le numéro du CIF ne correspond pas au format'
+validate-contract-legal-nif-entity-legal: "L’entité juridique ne correspond pas pour ce type de document"
