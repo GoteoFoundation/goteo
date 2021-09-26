@@ -311,9 +311,12 @@ admin-stats-raised-method: 'Revenus bruts selon le mode de paiement'
 admin-stats-active-method: 'Revenu net selon la méthode de paiement'
 admin-stats-active-method-desc: 'Le produit net comprend la totalité de l’argent perçu par la plate-forme à l’exclusion des retours (y compris les contributions au portefeuille, directes et provenant de projets ratés avec au portefeuille).. <br><em> Les contributions provenant du portefeuille ne sont pas incluses</em> (sauf si ce moyen de paiement est pris en compte).'
 admin-stats-refunded-method: 'Retours selon le mode de paiement'
+admin-stats-fees-method: 'Commission de la plate-forme en fonction du mode de paiement'
+admin-stats-from_matchfunding: 'Détail des projets avec Cofinanceurs'
 admin-stats-matchfunding-part: 'Projets avec Cofinancement'
 admin-stats-users-part: 'Projets sans cofinancement'
 admin-stats-match-part: 'Coefficient multiplicateur'
+admin-stats-citizens-part: 'Partie citoyenne'
 admin-stats-to_fee-percent: 'Commission effective'
 admin-stats-in_wallet: 'Dans le portefeuille virtuel'
 admin-stats-in_matcher_wallet: 'Dans le portefeuille virtuel des co-financeurs'
@@ -339,7 +342,12 @@ admin-total: Total
 admin-today: Aujourd'hui
 admin-yesterday: Hier
 admin-week: Cette semaine
+admin-last_week: Le même jour la semaine dernière
 admin-last_week_complete: Toute la semaine dernière
+admin-last_year_week: La même semaine il y a un an
+admin-month: Ce Mois-Ci
+admin-last_month: Le même jour le mois dernier
+admin-last_month_complete: Tout le mois dernier
 admin-last_year_month: Le même mois il y a un an
 admin-year: Cette année
 admin-last_year: Le même jour l’année dernière
@@ -387,6 +395,7 @@ admin-projects-review-month: 'En cours d’examen ce mois-ci'
 admin-projects-review-last_month: 'En cours d'' examen le mois dernier'
 admin-projects-review-year: 'En cours d’examen cette année'
 admin-projects-review-last_year: 'En cours d''examen l’an dernier'
+admin-invest-raised-amount-today: 'Collecté aujourd’hui'
 admin-invest-raised-total-today: 'Dons effectués aujourd’hui'
 admin-invest-raised-amount-yesterday: 'Collecté hier'
 admin-invest-raised-total-yesterday: 'Dons effectués hier'
@@ -406,6 +415,11 @@ admin-invest-commissions-last_month: 'Commission bancaire du mois dernier'
 admin-invest-commissions-year: 'Commission bancaire de cette année'
 admin-invest-commissions-last_year: 'Commission bancaire de l’année dernière'
 admin-invest-commissions-lost-today: 'Perte sur les contributions retournées aujourd’hui'
+admin-invest-commissions-tpv-month: 'Commission TPV ce mois-ci'
+admin-invest-commissions-tpv-last_month: 'Commission TPV le mois dernier'
+admin-invest-commissions-tpv-year: 'Commission TPV cette année'
+admin-invest-commissions-tpv-last_year: 'Commission TPV l’année dernière'
+admin-invest-commissions-paypal-today: 'Commission PayPal aujourd’hui'
 admin-stats-projects-channel-desc: 'Projets appartenant au canal (ou nœud)'
 admin-filter-from-new-year: 'Depuis le 1er janvier'
 admin-filter-previous-year: 'L''année dernière'
