@@ -340,6 +340,12 @@ admin-today: Aujourd'hui
 admin-yesterday: Hier
 admin-week: Cette semaine
 admin-last_week_complete: Toute la semaine dernière
+admin-last_year_month: Le même mois il y a un an
+admin-year: Cette année
+admin-last_year: Le même jour l’année dernière
+admin-last_year_complete: Toute l’année dernière
+admin-promote-add: 'Nouveau projet en vedette'
+admin-promote-submit: 'Valider'
 admin-promote-already-exists: 'Ce projet est déjà mis en évidence'
 admin-promote-correct: 'Le projet est mis en évidence'
 admin-projects-created-today: 'Créé aujourd''hui'
@@ -390,6 +396,16 @@ admin-invest-raised-total-week: 'Dons de cette semaine'
 admin-invest-raised-total-last_week: 'Dons de la semaine dernière'
 admin-invest-raised-amount-month: 'Reçu ce mois-ci'
 admin-invest-raised-total-month: 'Dons ce mois-ci'
+admin-invest-raised-total-last_year: 'Les dons de l’année dernière'
+admin-invest-commissions-today: 'Commission bancaire d''aujourd’hui'
+admin-invest-commissions-yesterday: 'Commission bancaire d''hier'
+admin-invest-commissions-week: 'Commission bancaire de cette semaine'
+admin-invest-commissions-last_week: 'Commission bancaire de la semaine dernière'
+admin-invest-commissions-month: 'Commission bancaire ce mois-ci'
+admin-invest-commissions-last_month: 'Commission bancaire du mois dernier'
+admin-invest-commissions-year: 'Commission bancaire de cette année'
+admin-invest-commissions-last_year: 'Commission bancaire de l’année dernière'
+admin-invest-commissions-lost-today: 'Perte sur les contributions retournées aujourd’hui'
 admin-stats-projects-channel-desc: 'Projets appartenant au canal (ou nœud)'
 admin-filter-from-new-year: 'Depuis le 1er janvier'
 admin-filter-previous-year: 'L''année dernière'
