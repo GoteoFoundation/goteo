@@ -21,12 +21,18 @@ blog-lb-list: Faire la liste
 blog-lb-translate: 'Traduire l’enregistrement'
 categories-lb: Catégories
 categories-lb-add: 'Nouvelle Catégorie'
+categories-lb-list: Faire la liste
+categories-lb-translate: 'Catégorie de traduction'
+commons-lb-list: Faire la liste
+commons-lb-report: 'Rapport de projet'
 criteria-lb: 'Critères d''évaluation'
 criteria-lb-add: 'Nouveau critère'
 criteria-lb-list: Faire la liste
+criteria-lb-translate: 'Traduire le critère'
 faq-lb: FAQ
 faq-lb-add: 'Nouvelle question'
 faq-lb-list: Faire la liste
+faq-lb-translate: 'Traduire la question'
 filter-lb: 'Filtres'
 glossary-lb: Glossaire
 glossary-lb-list: Faire la liste
@@ -94,6 +100,7 @@ tags-lb: 'Tags de blog'
 tags-lb-list: Faire la liste
 templates-lb-list: Faire la liste
 texts-lb-list: Faire la liste
+translates-lb: 'Traductions des projets'
 translates-lb-edit: 'Attribuer la traduction'
 translates-lb-list: Liste
 transnodes-lb-list: Faire la liste
