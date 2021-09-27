@@ -70,12 +70,11 @@ class Answer extends \Goteo\Core\Model
      */
     static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
         $values = [];
-        $filter = [];
         $sqlInner = "";
+        $sqlWhere = [];
 
         if ($filters['questionnaire']) {
-            $sqlInner .= "LEFT JOIN question
-            ON question.questionnaire = :questionnaire AND question_answer.question = question.id
+            $sqlWhere[] = "question.questionnaire = :questionnaire AND question_answer.question = question.id
             ";
             $values[":questionnaire"] = $filters['questionnaire'];
         }
@@ -85,6 +84,9 @@ class Answer extends \Goteo\Core\Model
             $values[":project"] = $filters["project"];
         }
         
+        if (!empty($sqlWhere))
+            $where = "WHERE " . implode(' AND ', $sqlWhere);
+
         if ($count) {
             $sql = "SELECT count(id)
                     FROM question_answer
@@ -93,10 +95,12 @@ class Answer extends \Goteo\Core\Model
             return (int) self::query($sql, $values)->fetchColumn();
         }
 
+
         $sql = "SELECT question_answer.*
                 FROM question_answer
                 INNER JOIN question ON question_answer.question = question.id
                 $sqlInner
+                $where
                 ORDER BY question.order";
 
         // die(\sqldbg($sql, $values));

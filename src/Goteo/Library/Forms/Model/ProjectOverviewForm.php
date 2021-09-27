@@ -30,7 +30,6 @@ use Goteo\Util\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 
-
 class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
 
     public function getConstraints($field) {

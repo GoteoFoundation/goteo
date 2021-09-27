@@ -53,7 +53,8 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
                 'label' => 'overview-field-media',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'attr' => ['help' => $project->media]
+
+              'attr' => ['help' => $project->media]
             ])
             ->add('motivation', 'markdown', [
                 'label' => 'overview-field-motivation',
