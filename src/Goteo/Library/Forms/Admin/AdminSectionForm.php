@@ -58,13 +58,9 @@ class AdminSectionForm extends AbstractFormProcessor {
             ->add('main_image', 'dropfiles', array(
                 'required' => false,
                 'limit' => 1,
-                'data' => [$model->main_image ? $model->getMainImage() : null],
+                'data' => [$model->main_image ? $model->getImage() : null],
                 'label' => 'regular-image',
-                'accepted_files' => 'image/jpeg,image/png,image/svg+xml',
-                'url' => '/api/channels/images',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
-                ),
+                'accepted_files' => 'image/jpeg,image/png,image/svg+xml'
             ))
             ;
 
@@ -79,15 +75,11 @@ class AdminSectionForm extends AbstractFormProcessor {
         }
 
         $data = $form->getData();
-        // Dropfiles type always return an array, just get the first element if required
-        if($data['main_image'] && is_array($data['main_image'])) {
-            $data['main_image'] = $data['main_image'][0];
-        } else {
-            $data['main_image'] = null;
-        }
-
         $model = $this->getModel();
-        
+
+        $this->processImageChange($data['main_image'], $model->main_image, false);
+
+        unset($data['main_image']);
         $model->rebuildData($data, array_keys($form->all()));
         $errors = [];
         if (!$model->save($errors)) {

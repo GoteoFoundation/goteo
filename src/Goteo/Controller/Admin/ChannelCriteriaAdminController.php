@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use Goteo\Application\Config;
 use Goteo\Application\Message;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Library\Text;
 
 use Goteo\Model\Node;
