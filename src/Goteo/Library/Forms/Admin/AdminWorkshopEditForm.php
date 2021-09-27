@@ -103,11 +103,7 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'limit' => 1,
                 'data' => [$workshop->header_image ? $workshop->getHeaderImage() : null],
                 'label' => 'admin-title-header-image',
-                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'url' => '/api/workshops/images',
-                'constraints' => [
-                    new Constraints\Count(['max' => 1])
-                ]
+                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml'
             ])
             ->add('venue', TextType::class, [
                 'label' => 'admin-title-venue',
@@ -186,7 +182,18 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
         $data = $form->getData();
         $workshop_location = $data['workshop_location'];
         $data['workshop_location'] = $data['workshop_location']->location ?: $data['workshop_location']->name;
+
         $model = $this->getModel();
+
+        if ($data['header_image'] && is_array($data['header_image'])) {
+            if (current($data['header_image']['removed'])->id == $model->header_image)
+                $model->header_image = null;
+
+            if ($data['header_image']['uploads'])
+                $model->header_image = $data['header_image']['uploads'][0];
+        }
+
+        unset($data['header_image']);
         $model->rebuildData($data, array_keys($form->all()));
 
         $errors = [];

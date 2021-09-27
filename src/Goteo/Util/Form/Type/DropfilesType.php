@@ -11,6 +11,7 @@
 
 namespace Goteo\Util\Form\Type;
 
+use Goteo\Model\Contract\BaseDocument;
 use Goteo\Model\Image;
 use Goteo\Library\Text;
 
@@ -19,9 +20,11 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  *
@@ -31,12 +34,25 @@ use Symfony\Component\Form\FormBuilderInterface;
 class DropfilesType extends FileType
 {
 
+    const TYPE_DOCUMENT = 'document';
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // Current files
+        $this->addCurrentViewAndModelTransformer($options, $builder);
+        $this->addUploadsViewFileType($builder);
+        $this->addUploadsFieldModelTransformer($options, $builder);
+        $this->addRemovedViewCollectionType($builder);
+        $this->addRemovedFieldModelTransformer($builder);
+        $this->addViewTransformer($options, $builder);
+    }
+
+    private function addCurrentViewAndModelTransformer(
+        array $options,
+        FormBuilderInterface $builder
+    ) {
         $builder->add('current', FileType::class, [
             'multiple' => true,
             'data' => is_array($options['data']) ? $options['data'] : [$options['data']],
@@ -45,33 +61,118 @@ class DropfilesType extends FileType
 
         $builder->get('current')
             ->addModelTransformer(new $options['model_transformer']);
+    }
 
-        // New added files
+    private function addUploadsViewFileType(FormBuilderInterface $builder)
+    {
         $builder->add('uploads', FileType::class, [
             'multiple' => true
         ]);
+    }
 
+    private function addUploadsFieldModelTransformer(
+        array $options,
+        FormBuilderInterface $builder
+    ) {
+        if ($options['type'] == DropfilesType::TYPE_DOCUMENT) {
+            $this->addUploadsTransformerAsDocument($builder);
+        } else {
+            $builder->get('uploads')
+                ->addModelTransformer(new $options['upload_transformer']);
+        }
+    }
+
+    private function addUploadsTransformerAsDocument(FormBuilderInterface $builder)
+    {
         $builder->get('uploads')
-            ->addModelTransformer(new $options['upload_transformer']);
+            ->addModelTransformer(new CallbackTransformer(
+                function($image) {
+                    return null;
+                },
+                function($image) {
+                    if(is_array($image)) {
+                        foreach($image as $i => $img) {
+                            if(!$img) continue;
 
-        // General processing
+                            if(!$img instanceOf BaseDocument) {
+                                $image[$i] = new BaseDocument($img);
+                                $image[$i]->save();
+                            }
+                        }
+                    }
+                    return $image;
+                }
+            ));
+    }
+
+    private function addRemovedViewCollectionType(FormBuilderInterface $builder)
+    {
+        $builder->add('removed', CollectionType::class, [
+            'entry_type' => TextType::class,
+            'allow_add' => true
+        ]);
+    }
+
+    private function addRemovedFieldModelTransformer(FormBuilderInterface $builder)
+    {
+        $builder->get('removed')
+            ->addModelTransformer( new CallbackTransformer(
+                function($image) {
+                    return $image;
+                },
+                function($image) {
+                    $images = [];
+
+                    foreach($image as  $img) {
+                        if (!$img)
+                            continue;
+                        if ($img = Image::get($img))
+                            $images[] = $img;
+                        else if ($img = BaseDocument::get($img))
+                            $images[] = $img;
+                    }
+
+                    return $images;
+                }
+            ));
+    }
+
+    private function addViewTransformer(
+        array $options,
+        FormBuilderInterface $builder
+    ) {
         $builder->addViewTransformer(new CallbackTransformer(
-            function($image) {
+            function($image) use ($options) {
+                if ($image instanceOf File)
+                    if ($options['type'] == 'document')
+                        $image = new BaseDocument($image);
+                    else
+                        $image = new Image($image);
+                if (is_array($image)) {
+                    foreach($image as $i => $img) {
+                        if ($image instanceOf File)
+                            if ($options['type'] == 'document')
+                                $image = new BaseDocument($image);
+                            else
+                                $image = new Image($image);
+                    }
+                }
+
                 return is_array($image) ? $image : [$image];
             },
             function ($image) {
-                // var_dump($image);die;
-                // Sum current + uploads
                 $img = isset($image['current']) && is_array($image['current']) ? $image['current'] : [];
                 if($image['uploads']) {
                     if(is_array($image['uploads'])) {
-                        $img = array_merge($img, $image['uploads']);
+                        $img = array_merge($img, ['uploads' => $image['uploads']]);
                     }
                 }
-                // var_dump($img);die;
+                if ($image['removed']) {
+                    $img = array_merge($img, ['removed' => $image['removed']]   );
+                }
                 return $img;
-                // return null;
-            }));
+            })
+        );
     }
 
     /**

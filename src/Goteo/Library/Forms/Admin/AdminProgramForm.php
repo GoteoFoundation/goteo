@@ -54,12 +54,8 @@ class AdminProgramForm extends AbstractFormProcessor {
                 'required' => false,
                 'limit' => 1,
                 'data' => [$model->header ? $model->getHeader() : null],
-                'label' => 'admin-title-icon',
-                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'url' => '/api/channels/images',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
-                ),
+                'label' => 'admin-title-header-image',
+                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml'
             ))
             ->add('icon', TextType::class, [
               'disabled' => $this->getReadonly(),
@@ -95,15 +91,21 @@ class AdminProgramForm extends AbstractFormProcessor {
 
         $data = $form->getData();
         $model = $this->getModel();
-        $model->rebuildData($data, array_keys($form->all()));
-
-        // Dropfiles type always return an array, just get the first element if required
+        
         if($data['header'] && is_array($data['header'])) {
-            $data['header'] = $data['header'][0]->name;
-        } else {
-            $data['header'] = null;
+            if ($data['header']['removed']) {
+                if ($model->header == $data['header']['removed'][0]->id)
+                    $model->header = null;
+            } 
+            
+            if ($data['header']['uploads']) {
+                $model->header = $data['header']['uploads'][0];
+            }
         }
 
+        unset($data['header']);
+        
+        $model->rebuildData($data, array_keys($form->all()));
         $errors = [];
         if (!$model->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));

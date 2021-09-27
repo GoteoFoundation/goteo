@@ -178,7 +178,10 @@ class Project extends Model {
         $one_round = 0,
         $help_cost = 0,
         $help_license= 0,
-        $callInstance = null // si está en una convocatoria
+        $callInstance = null, // si está en una convocatoria
+        // Data about political participation outside Goteo
+        $sign_url = '',
+        $sign_url_action = ''
     ;
 
     public function __construct() {
@@ -1656,7 +1659,9 @@ class Project extends Model {
                 'analytics_id',
                 'facebook_pixel',
                 'social_commitment',
-                'social_commitment_description'
+                'social_commitment_description',
+                'sign_url',
+                'sign_url_action'
                 );
 
             try {
@@ -1834,7 +1839,7 @@ class Project extends Model {
     }
 
     public static function getLangFields() {
-        return ['name', 'subtitle', 'description', 'motivation', 'video', 'about', 'goal', 'related', 'reward', 'keywords', 'media', 'social_commitment_description'];
+        return ['name', 'subtitle', 'description', 'motivation', 'video', 'about', 'goal', 'related', 'reward', 'keywords', 'media', 'social_commitment_description', 'sign_url', 'sign_url_action'];
     }
 
     /*

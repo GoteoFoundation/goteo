@@ -201,7 +201,11 @@ class User extends Model {
                     } else {
                         unset($data[':avatar']);
                     }
+                } else if ($this->user_avatar instanceOf Image) {
+                    $data[':avatar'] = $this->user_avatar->id;
+                    $this->avatar = $this->user_avatar;
                 }
+
                 if (empty($this->user_avatar)) {
                     $data[':avatar'] = '';
                     $this->avatar->remove();

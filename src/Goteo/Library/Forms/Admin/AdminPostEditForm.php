@@ -53,11 +53,7 @@ class AdminPostEditForm extends ProjectPostForm {
                 'required' => false,
                 'limit' => 1,
                 'label' => 'admin-title-header-image',
-                'accepted_files' => 'image/jpeg,image/gif,image/png',
-                'url' => '/api/blog/images',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
-                )
+                'accepted_files' => 'image/jpeg,image/gif,image/png'
             ))
             ->add('author', TypeaheadType::class, [
                 'label' => 'regular-author',
@@ -149,7 +145,6 @@ class AdminPostEditForm extends ProjectPostForm {
                 'label' => 'regular-images',
                 'markdown_link' => 'text',
                 'accepted_files' => 'image/jpeg,image/gif,image/png',
-                'url' => '/api/blog/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 20))
                 )

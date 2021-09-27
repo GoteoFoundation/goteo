@@ -12,6 +12,7 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Util\Form\Type\DropfilesType;
 use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
@@ -43,11 +44,11 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 $question->vars->attr = (array) $question->vars->attr;
 
             if ($type == "dropfiles") {
-                $question->vars->url = '/api/questionnaire/documents';
                 $question->vars->accepted_files = 'image/jpeg,image/gif,image/png,application/pdf';
                 $question->vars->constraints = [
                     new Constraints\Count(['max' => 1]),
                 ];
+                $question->vars->type = DropfilesType::TYPE_DOCUMENT;
             }
             if ($type == "choice")
                 $question->vars->choices = array_column($question->getChoices(), 'option', 'id');
@@ -101,7 +102,7 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 if($value[0] && $err = $value[0]->getUploadError()) {
                     throw new FormModelException(Text::get('form-sent-error', $err));
                 }
-                $answer->answer = $value[0]->id;
+                $answer->answer = $value['uploads'][0]->name;
             }
             $answer->save();
 
