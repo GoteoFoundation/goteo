@@ -84,4 +84,3 @@ tooltip-project-sdg: 'Choisissez les objectifs auxquels votre projet répond, en
 tooltip-project-sdg-suggestion: 'Voici quelques ODS qui pourraient s’intégrer en fonction de l’engagement social sélectionné pour votre projet, nous vous recommandons de consulter <a href="https://www.un.org/sustainabledevelopment/es/objetivos-de-desarrollo-sostenible/ » target="_blank">ici</a> son contenu spécifique. <br><br>'
 overview-field-sign-url: "Url de l’entreprise"
 overview-field-sign-url-action: "Texte à appeler à signer"
-overview-field-sign-url-help: "Ce champ vous permet d’ajouter un saut dans la campagne pour votre page de signature de projet"
