@@ -381,13 +381,6 @@ class Workshop extends Model {
         if (!$this->validate($errors))
             return false;
 
-        // Dropfiles type always return an array, just get the first element if required
-        if($this->header_image && is_array($this->header_image)) {
-            $this->header_image = $this->header_image[0];
-        } else {
-            $this->header_image = null;
-        }
-
         // TODO: handle uploaded files here?
         // If instanceOf Image, means already uploaded (via API probably), just get the name
         if($this->header_image instanceOf Image)

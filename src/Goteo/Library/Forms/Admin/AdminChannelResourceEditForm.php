@@ -17,12 +17,10 @@ use Goteo\Util\Form\Type\MarkdownType;
 use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
-use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Model\Node;
 use Goteo\Model\Node\NodeResourceCategory;
 use Goteo\Library\Forms\FormModelException;
-
 
 class AdminChannelResourceEditForm extends AbstractFormProcessor {
 
@@ -59,34 +57,30 @@ class AdminChannelResourceEditForm extends AbstractFormProcessor {
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('image', DropfilesType::class, array(
+            ->add('image', DropfilesType::class, [
                 'required' => true,
                 'limit' => 1,
                 'data' => [$resource->image ? $resource->getImage() : null],
                 'label' => 'admin-title-image',
-                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'url' => '/api/channel-resources/images',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
-                )
-            ))
-            ->add('node_id', ChoiceType::class, array(
+                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml'
+            ])
+            ->add('node_id', ChoiceType::class, [
                 'label' => 'admin-title-channel',
                 'required' => true,
                 'expanded' => true,
                 'row_class' => 'extra',
                 'wrap_class' => 'col-xs-6',
                 'choices' => Node::getList()
-            ))
-            ->add('category', ChoiceType::class, array(
+            ])
+            ->add('category', ChoiceType::class, [
                 'label' => 'admin-title-resource-category',
                 'required' => true,
                 'expanded' => true,
                 'row_class' => 'extra',
                 'wrap_class' => 'col-xs-6',
                 'choices' => $categories
-            ))
-            ;
+            ]);
+
 
         return $this;
     }
@@ -96,8 +90,17 @@ class AdminChannelResourceEditForm extends AbstractFormProcessor {
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
-
         $model = $this->getModel();
+
+        if ($data['image']['removed'])
+            if ($model->image->id == current($data['image']['removed'])->id)
+                $model->image = null;
+
+        if ($data['image']['uploads'])
+            $model->image = $data['image']['uploads'];
+
+        unset($data['image']);
+
         $model->rebuildData($data, array_keys($form->all()));
 
         $errors = [];

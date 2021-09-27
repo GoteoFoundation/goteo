@@ -133,15 +133,6 @@ class NodeProgram extends \Goteo\Core\Model {
         if (!$this->validate($errors))
             return false;
 
-        // Dropfiles type always return an array, just get the first element if required
-        if($this->header && is_array($this->header)) {
-            $this->header = $this->header[0];
-        } else {
-            $this->header = null;
-        }
-
-        // TODO: handle uploaded files here?
-        // If instanceOf Image, means already uploaded (via API probably), just get the name
         if($this->header instanceOf Image) 
             $this->header = $this->header->getName();
 

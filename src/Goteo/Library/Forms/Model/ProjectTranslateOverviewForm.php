@@ -21,6 +21,9 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
 
+use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\UrlType;
+
 class ProjectTranslateOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
 
     public function createForm() {
@@ -52,7 +55,8 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
                 'label' => 'overview-field-media',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'attr' => ['help' => $project->media]
+
+              'attr' => ['help' => $project->media]
             ])
             ->add('motivation', MarkdownType::class, [
                 'label' => 'overview-field-motivation',
@@ -88,6 +92,18 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->social_commitment_description, 'rows' => 8]
+            ])
+            ->add('sign_url', UrlType::Class, [
+                'label' => 'overview-field-sign-url',
+                'required' => false,
+                'attr' => [
+                    'pre-help' => Text::get('overview-field-sign-url-help')
+                ]
+            ])
+
+            ->add('sign_url_action', TextType::class, [
+                'label' => 'overview-field-sign-url-action',
+                'required' => false
             ])
             ;
         return $this;

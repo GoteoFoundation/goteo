@@ -53,7 +53,6 @@ class ProjectPostForm extends AbstractFormProcessor {
                 'label' => 'regular-images',
                 'markdown_link' => 'text',
                 'accepted_files' => 'image/jpeg,image/gif,image/png',
-                'url' => '/api/projects/' . $this->getOption('project')->id . '/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 10)),
                     new Constraints\All(array(
@@ -97,25 +96,34 @@ class ProjectPostForm extends AbstractFormProcessor {
         $data = $form->getData();
         if(array_key_exists('tags', $data)) $data['tags'] = explode(',', $data['tags']);
         $post = $this->getModel();
-        $post->rebuildData($data, array_keys($form->all()));
-        $post->image = $data['image'];
-        if(is_array($data['header_image'])) $post->header_image = $data['header_image'][0];
-
 
         $gallery = Image::getModelGallery('post', $post->id);
+        $post->image = $gallery;
 
-        $current = array_map(function($e) {
-                return is_object($e) ? $e->id : $e['id'];
-            }, $post->image);
+        if ($data['image'] && is_array($data['image'])) {
+            if ($data['image']['removed']) {
+                $removed_ids = array_column($data['image']['removed'], null, 'id');
 
-        if(is_array($gallery)) {
-            foreach($gallery as $img) {
-                if(!in_array($img->id, $current)) {
-                    Image::deleteModelImage('post', $post->id);
-                    $img->delFromModelGallery('post', $post->id);
+                if(is_array($post->image)) {
+                    foreach($post->image as $index => $img) {
+                        if(in_array($img->id, $removed_ids)) {
+                            $img->delFromModelGallery('post', $post->id);
+                            unset($post->image[$index]);
+                        }
+                    }
                 }
             }
+
+            if ($data['image']['uploads']) {
+                $post->image = array_merge($post->image, $data['image']['uploads']);
+            }
         }
+
+        $this->processImageChange($data['header_image'], $post->header_image, false);
+
+        unset($data['image']);
+        unset($data['header_image']);
+        $post->rebuildData($data, array_keys($form->all()));
 
         if(!Session::getUser()->hasPerm('full-html-edit')) {
             $post->text = Text::tags_filter($post->text);

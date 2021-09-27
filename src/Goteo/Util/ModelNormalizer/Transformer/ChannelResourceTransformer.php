@@ -19,10 +19,17 @@ class ChannelResourceTransformer extends AbstractTransformer {
 
     protected $keys = ['id', 'image', 'title'];
 
+    
     public function getInfo() {
         return '<strong>'.$this->getTitle().'</strong>';
     }
-
+    
+    public function getImage() {
+        if ($this->model->image)
+            return $this->model->getImage()->getLink(64,64,true);
+        
+        return $this->model->image;
+    }
 
     public function getActions() {
         if(!$u = $this->getUser()) return [];

@@ -28,6 +28,9 @@ use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Validator\Constraints;
 
+use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\UrlType;
+
 
 class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
 
@@ -214,6 +217,19 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'constraints' => $this->getConstraints('social_commitment_description'),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-social-description'), 'rows' => 8]
+            ])
+
+            ->add('sign_url', UrlType::Class, [
+                'label' => 'overview-field-sign-url',
+                'required' => false,
+                'attr' => [
+                    'pre-help' => Text::get('overview-field-sign-url-help')
+                ]
+            ])
+
+            ->add('sign_url_action', TextType::class, [
+                'label' => 'overview-field-sign-url-action',
+                'required' => false
             ])
             ;
 

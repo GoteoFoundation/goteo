@@ -37,7 +37,6 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
         if ($config->attr) { $config->attr = (array) $config->attr;
         }
         if ($config->type == "dropfiles") {
-            $config->url = '/api/questionnaire/documents';
             $config->constraints = $this->getConstraints();
         }
         $builder = $this->getBuilder();
