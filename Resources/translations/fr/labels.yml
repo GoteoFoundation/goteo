@@ -1,5 +1,6 @@
 ---
 accounts-lb: Contributions
+accounts-lb-add: 'Contribution manuelle'
 accounts-lb-cancel: 'Annulation de la contribution'
 accounts-lb-details: 'Détails de l’apport'
 accounts-lb-execute: 'Exécution du coût'
