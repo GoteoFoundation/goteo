@@ -78,7 +78,7 @@ overview-field-sustainability-model: 'Sustainability plan'
 overview-field-sustainability-model-url: 'URL of your business canvas'
 tooltip-project-sustainability-model: 'Present a basic business plan to show how you will ensure project''s sustainability. The business plan should cover the key elements of the business canvas template and be no longer than two pages.'
 tooltip-project-sustainability-model-url: 'Add the URL of your <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">business canvas</a>'
-overview-field-sign-check: 'I have an online signature campaign'
+overview-field-sign-check: 'Do you have an open signature collection related to the project?'
 overview-field-sign-url: "Singature Url"
 overview-field-sign-url-action: "Text to call for signature"
-overview-field-sign-url-help: "This field allows you to add a redirection to your project signature page"
+overview-field-sign-url-help: "If in parallel to the campaign on Goteo you have a signature campaign on another platform, you can add a button with a link here"

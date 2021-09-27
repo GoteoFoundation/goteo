@@ -273,7 +273,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'data' => $model->sign_url,
                 'row_class' => $model->sign_url && $model->sign_url_action ? '' : 'hidden',
                 'attr' => [
-                    'pre-help' => Text::get('overview-field-sign-url-help')
+                    'help' => Text::get('overview-field-sign-url-help')
                 ]
             ])
 
