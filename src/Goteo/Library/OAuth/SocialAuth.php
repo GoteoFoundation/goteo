@@ -10,6 +10,7 @@
 
 namespace Goteo\Library\OAuth;
 
+use Exception;
 use Goteo\Application\Config;
 use Goteo\Model\User;
 use Goteo\Model\Image;
@@ -18,13 +19,14 @@ use Goteo\Core\Model;
 use OAuth\OAuth2\Service\Facebook;
 use OAuth\Common\Storage\Session as Storage;
 use OAuth\Common\Consumer\Credentials;
+use OAuth\OAuth2\Service\Linkedin;
 use OAuth\ServiceFactory;
 use Goteo\Library\Text;
 
 /**
- * Suportat:
- * 				OAuth o similar: twitter, facebook, linkedin, google
- * 				OpenId: generic
+ * Supported:
+ * - OAuth or similar: Twitter, Facebook, LinkedIn, Google
+ * - OpenId: generic
  *
  * identities:
 	 *    Google profile : http://www.google.com/profiles/~YOURUSERNAME
@@ -183,7 +185,7 @@ class SocialAuth {
 				exit;
 			}
 		}
-		catch(\Exception $e){
+		catch(Exception $e){
 			$this->last_error = $e->getMessage().' 1/ '.get_class($e);
 			$this->error_type = 'provider-exception';
 			return false;
@@ -259,7 +261,7 @@ class SocialAuth {
             }
 
         }
-        catch(\Exception $e){
+        catch(Exception $e){
             $this->last_error = $e->getMessage().' 1/ '.get_class($e);
             $this->error_type = 'provider-exception';
             return false;
@@ -279,9 +281,12 @@ class SocialAuth {
 				$this->host . '/login/google'
 			);
 
-			// Instantiate the twitter service using the credentials, http client and storage mechanism for the token
-            $googleService = $this->serviceFactory->createService('google', $credentials, $this->storage, array('userinfo_email', 'userinfo_profile'));
-
+            $googleService = $this->serviceFactory->createService(
+                'google',
+                $credentials,
+                $this->storage,
+                ['userinfo_email', 'userinfo_profile']
+            );
 
 			if (!empty($_GET['code'])) {
                 // This was a callback request from google, get the token
@@ -320,7 +325,7 @@ class SocialAuth {
             return true;
 
 		}
-		catch(\Exception $e){
+		catch(Exception $e){
 			$this->last_error = $e->getMessage().' 1/ '.get_class($e);
 			$this->error_type = 'provider-exception';
 			return false;
@@ -395,7 +400,7 @@ class SocialAuth {
 					return true;
 
 				}
-				catch(\Exception $e){
+				catch(Exception $e){
 					$this->last_error =  $e->getMessage().' 1/ '.get_class($e);
 					$this->error_type = 'provider-exception';
 					return false;
@@ -409,7 +414,7 @@ class SocialAuth {
 			}
 			return true;
 		}
-		catch(\Exception $e){
+		catch(Exception $e){
 			$this->last_error = $e->getMessage().' 1/ '.get_class($e);
 			$this->error_type = 'provider-exception';
 			return false;
@@ -427,58 +432,37 @@ class SocialAuth {
 				$this->credentials['linkedin']['secret'],
 				$this->host . '/login/linkedin'
 			);
-			// Instantiate the Linkedin service using the credentials, http client and storage mechanism for the token
 			/** @var $linkedinService Linkedin */
-			$linkedinService = $this->serviceFactory->createService('linkedin', $credentials, $this->storage, array('r_basicprofile', 'r_emailaddress'));
+			$linkedinService = $this->serviceFactory->createService(
+                'linkedin',
+                $credentials,
+                $this->storage,
+                ['r_liteprofile', 'r_emailaddress']
+            );
 
 			if (!empty($_GET['code'])) {
 			    // retrieve the CSRF state parameter
-			    $state = isset($_GET['state']) ? $_GET['state'] : null;
+			    $state = $_GET['state'] ?? null;
 
 			    // This was a callback request from linkedin, get the token
 			    $token = $linkedinService->requestAccessToken($_GET['code'], $state);
 
 			    // Send a request with it. Please note that XML is the default format.
-			    $result = json_decode($linkedinService->request('/people/~:(id,first-name,last-name,email-address,summary,public-profile-url,picture-url,headline,interests,location:(name))?format=json'));
+			    $result = json_decode($linkedinService->request('me?projection=(id,localizedLastName,localizedFirstName,profilePicture(displayImage~digitalmediaAsset:playableStreams))'), true);
+				$this->tokens['linkedin']['token'] = $result["id"];
 
-				$this->tokens['linkedin']['token'] = $result->id ? $result->id : $result->emailAddress;
+				$this->user_data['name'] = trim($result["localizedFirstName"] . ' ' . $result["localizedLastName"]);
 
-				$this->user_data['name'] = trim($result->firstName . ' ' . $result->lastName);
-				if($result->emailAddress) $this->user_data['email'] = $result->emailAddress;
-
-				if($result->publicProfileUrl) {
-					//linkedin link
-					$this->user_data['linkedin'] = $result->publicProfileUrl;
-					//username from url
-					$this->user_data['username'] = basename($this->user_data['linkedin']);
+				if($result["profilePicture"]["displayImage~"]["elements"][0]["identifiers"][0]["identifier"]) {
+					$this->user_data['avatar'] = $result["profilePicture"]["displayImage~"]["elements"][0]["identifiers"][0]["identifier"];
+					$this->user_data['avatar_name'] = $result['id'] . '.jpg';
 				}
-
-				if($result->headline) $this->user_data['about'] = $result->headline;
-				if($result->location->name) $this->user_data['location'] = $result->location->name;
-				if($result->pictureUrl) {
-					$this->user_data['avatar'] = $result->pictureUrl;
-					$this->user_data['avatar_name'] = $this->user_data['username'] . '.jpg';
-				}
-				if($result->summary) $this->user_data['website'] = $result->summary;
-				// if($result->memberUrlResources->memberUrl) {
-				// 	foreach($result->memberUrlResources->memberUrl as $url) {
-				// 		$this->user_data['website'] .= $url->url . "\n";
-				// 	}
-				// }
-				//si el usuario tiene especificada su cuenta twitter
-				// if($result->twitterAccounts->twitterAccount) $this->user_data['twitter'] = 'http://twitter.com/' . current($result->twitterAccounts->twitterAccount->providerAccountName);
-
-			    // Show some of the resultant data
-			    // echo '<pre>' . print_r($this->user_data, 1) . print_r($result, 1) . '</pre>';die;
-
 			} else {
 			    $url = $linkedinService->getAuthorizationUri();
 			    header('Location: ' . $url);
 			    exit;
 			}
-
-		}
-		catch(\Exception $e){
+		} catch(Exception $e) {
 			$this->last_error = $e->getMessage().' 1/ '.get_class($e);
 			$this->error_type = 'provider-exception';
 			return false;

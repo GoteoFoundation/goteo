@@ -11,7 +11,10 @@
 
 namespace Goteo\Library\Forms\Admin;
 
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Goteo\Util\Form\Type\DatepickerType;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
@@ -22,61 +25,54 @@ use Goteo\Model\Node\NodeProgram;
 
 class AdminProgramForm extends AbstractFormProcessor {
 
-    public function getConstraints($field) {
+    public function getConstraints() {
         return [new Constraints\NotBlank()];
     }
 
     public function createForm() {
         $model = $this->getModel();
-
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
-        $defaults = $options['data'];
 
         $builder
-            ->add('title', 'text', [
+            ->add('title', TextType::class, [
                 'disabled' => $this->getReadonly(),
-                'constraints' => $this->getConstraints('title'),
+                'constraints' => $this->getConstraints(),
                 'required' => true,
                 'label' => 'regular-title'
             ])
-            ->add('description', 'text', [
+            ->add('description', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'label' => 'regular-description'
             ])
-            ->add('modal_description', 'textarea', [
+            ->add('modal_description', TextareaType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'label' => 'regular-modal-decription'
             ])
-            ->add('header', 'dropfiles', array(
+            ->add('header', DropfilesType::class, array(
                 'required' => false,
                 'limit' => 1,
                 'data' => [$model->header ? $model->getHeader() : null],
-                'label' => 'admin-title-icon',
-                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'url' => '/api/channels/images',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
-                ),
+                'label' => 'admin-title-header-image',
+                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml'
             ))
-            ->add('icon', 'text', [
+            ->add('icon', TextType::class, [
               'disabled' => $this->getReadonly(),
               'required' => false,
               'label' => 'regular-icon'
             ])
-            ->add('action', 'text', [
+            ->add('action', TextType::class, [
               'disabled' => $this->getReadonly(),
               'required' => false,
               'label' => 'regular-action'
             ])
-            ->add('action_url', 'text', [
+            ->add('action_url', TextType::class, [
               'disabled' => $this->getReadonly(),
               'required' => false,
               'label' => 'regular-action_url'
             ])
-            ->add('date', 'datepicker', [
+            ->add('date', DatepickerType::class, [
               'disabled' => $this->getReadonly(),
               'required' => true,
               'label' => 'regular-date'
@@ -95,15 +91,21 @@ class AdminProgramForm extends AbstractFormProcessor {
 
         $data = $form->getData();
         $model = $this->getModel();
-        $model->rebuildData($data, array_keys($form->all()));
-
-        // Dropfiles type always return an array, just get the first element if required
+        
         if($data['header'] && is_array($data['header'])) {
-            $data['header'] = $data['header'][0]->name;
-        } else {
-            $data['header'] = null;
+            if ($data['header']['removed']) {
+                if ($model->header == $data['header']['removed'][0]->id)
+                    $model->header = null;
+            } 
+            
+            if ($data['header']['uploads']) {
+                $model->header = $data['header']['uploads'][0];
+            }
         }
 
+        unset($data['header']);
+        
+        $model->rebuildData($data, array_keys($form->all()));
         $errors = [];
         if (!$model->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));

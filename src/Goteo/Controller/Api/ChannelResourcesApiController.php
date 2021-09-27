@@ -10,19 +10,14 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
-
-use Goteo\Application\Lang;
-use Goteo\Model\Node\NodeResource;
-
+use Symfony\Component\HttpFoundation\Request;
 
 class ChannelResourcesApiController extends AbstractApiController {
 
     public function __construct() {
         parent::__construct();
-        // Activate cache & replica read for this controller
         $this->dbReplica(true);
         $this->dbCache(true);
     }
@@ -47,7 +42,6 @@ class ChannelResourcesApiController extends AbstractApiController {
         throw new ControllerAccessDeniedException();
     }
 
-    
     /**
      * AJAX upload header image for the resource
      */
@@ -55,7 +49,7 @@ class ChannelResourcesApiController extends AbstractApiController {
         if(!$this->user || !$this->user->hasPerm('admin-module-channel-resource'))
             throw new ControllerAccessDeniedException();
 
-        $result = $this->genericFileUpload($request, 'file'); // 'file' is the expected form input name in the story object
+        $result = $this->genericFileUpload($request); // 'file' is the expected form input name in the story object
         return $this->jsonResponse($result);
     }
 

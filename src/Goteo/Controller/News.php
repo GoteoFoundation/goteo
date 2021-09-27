@@ -8,42 +8,36 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Controller {
+namespace Goteo\Controller;
 
-    use Goteo\Model\Page,
-        Goteo\Core\View,
-        Goteo\Model;
+use Goteo\Core\Controller;
+use Goteo\Core\DB;
+use Goteo\Core\View;
+use Goteo\Model;
+use Goteo\Model\Page;
 
-    class News extends \Goteo\Core\Controller {
+class News extends Controller {
 
-        public function __construct() {
-        // Cache & replica read activated in this controller
-        \Goteo\Core\DB::cache(true);
-        \Goteo\Core\DB::replica(true);
+    public function __construct() {
+        DB::cache(true);
+        DB::replica(true);
+    }
+
+    public function index ()
+    {
+        $page = Page::get('news');
+        $news = Model\News::getAll();
+
+        if ($page) {
+           $content = $page->parseContent();
         }
 
-        public function index () {
-
-            $page = Page::get('news');
-            $news = Model\News::getAll();
-
-            //Parse Content ONLY if data found on db
-            if ($page) {
-               $content = $page->parseContent();
-            }
-
-            return new View(
-                'news.html.php',
-                array(
-                    'name' => $page->name,
-                    'title' => $page->description,
-                    'content' => $content,
-                    'news' => $news
-                )
-             );
-
-        }
-
+        return new View('news.html.php', [
+            'name' => $page->name,
+            'title' => $page->description,
+            'content' => $content,
+            'news' => $news
+        ]);
     }
 
 }

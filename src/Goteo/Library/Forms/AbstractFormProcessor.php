@@ -11,11 +11,10 @@
 
 namespace Goteo\Library\Forms;
 
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Validator\Constraints;
 use Goteo\Core\Model;
 use Goteo\Library\Text;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 
 
 abstract class AbstractFormProcessor implements FormProcessorInterface {
@@ -53,8 +52,6 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         $options = $this->builder->getOptions();
         $data = $options['data'];
         if($sanitize) $data = array_intersect_key($data, $this->builder->all());
-        // var_dump($data);die;
-        // print_r(array_keys($data));
         return $data;
     }
 
@@ -62,8 +59,6 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         if($this->form) return $this->form;
         $this->form = $this->builder->getForm();
         if($this->showErrors()) {
-            // var_dump($this->getDefaults(true));die;
-            // print_r(array_keys($this->form->all()));
             $this->form->submit($this->getDefaults(true), false);
         }
         return $this->form;
@@ -119,7 +114,6 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
-        // print_r($data);die;
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
 
@@ -131,5 +125,17 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
+    }
+
+    protected function processImageChange($imageData, &$modelImage, bool $isImageRequired = true)
+    {
+        if ($imageData && is_array($imageData)) {
+            if ($imageData['removed'] && $modelImage == current($imageData['removed'])->id && !$isImageRequired) {
+                $modelImage = null;
+            }
+            if ($imageData['uploads'] && is_array($imageData['uploads'])) {
+                $modelImage = $imageData['uploads'][0];
+            }
+        }
     }
 }

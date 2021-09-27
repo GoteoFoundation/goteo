@@ -12,13 +12,14 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Message;
+use Goteo\Library\Text;
+use Goteo\Model\Call;
+use Goteo\Model\User;
 use Goteo\Model\Workshop;
 use Goteo\Model\Workshop\WorkshopLocation;
-use Goteo\Model\Call;
-use Goteo\Library\Text;
-use Goteo\Application\Config;
 
 
 class WorkshopSubController extends AbstractSubController {
@@ -36,7 +37,7 @@ class WorkshopSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node and superadmins allowed here
         if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);
@@ -96,7 +97,7 @@ class WorkshopSubController extends AbstractSubController {
             }
         }
 
-        $calls = [null => '---------------']; 
+        $calls = [null => '---------------'];
         foreach(Call::getList(array(), 0, 100) as $call) {
             $calls[$call->id] = $call->name;
         }

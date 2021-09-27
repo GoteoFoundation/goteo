@@ -10,21 +10,19 @@
 
 namespace Goteo\Console\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Process\PhpExecutableFinder;
 use Cron\Cron;
+use Cron\Executor\Executor;
 use Cron\Job\JobInterface;
 use Cron\Job\ShellJob;
-use Cron\Schedule\CrontabSchedule;
-use Cron\Executor\Executor;
-use Cron\Resolver\ResolverInterface;
 use Cron\Resolver\ArrayResolver;
-use Symfony\Component\Yaml\Yaml;
-
+use Cron\Resolver\ResolverInterface;
+use Cron\Schedule\CrontabSchedule;
 use Goteo\Application\Config;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Yaml\Yaml;
 
 class CronCommand extends AbstractCommand {
     protected static $resolver = null;

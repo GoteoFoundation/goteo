@@ -10,6 +10,10 @@
 
 namespace Goteo\Controller;
 
+use Goteo\Core\Controller;
+use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Forms\Model\QuestionnaireForm;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
@@ -32,23 +36,20 @@ use Goteo\Library\Text;
 use Goteo\Model\Page;
 use Goteo\Model\SocialCommitment;
 use Goteo\Model\Project\ProjectLocation;
-use Goteo\Util\Map\MapOSM;
 use Goteo\Model\Questionnaire;
 
 
-class ChannelController extends \Goteo\Core\Controller {
+class ChannelController extends Controller {
     public function __construct() {
         $this->dbReplica(true);
         $this->dbCache(true);
 
-        // changing to a responsive theme here
         View::setTheme('responsive');
     }
 
     // Set the global vars to all the channel views
     private function setChannelContext($id)
     {
-
         try {
             $channel = Node::get($id);
         } catch (ModelNotFoundException $e) {
@@ -111,12 +112,8 @@ class ChannelController extends \Goteo\Core\Controller {
         ], 'channel/');
     }
 
-    /**
-     * @param  [type] $id   Channel id
-     */
-    public function indexAction($id, Request $request)
+    public function indexAction($id)
     {
-
         $this->setChannelContext($id);
 
         // Proyectos destacados si hay
@@ -130,8 +127,7 @@ class ChannelController extends \Goteo\Core\Controller {
             $list = Project::getList($config['projects'], $id, 0, $limit);
         } else if($list = Project::published(['type' => 'promoted'], $id, 0, $limit)) {
             $total = count($list);
-        }
-        else {
+        } else {
             // if no promotes let's show some random projects...
             $limit = 9;
             $total = $limit;
@@ -142,7 +138,7 @@ class ChannelController extends \Goteo\Core\Controller {
 
         return $this->viewResponse(
             $view,
-                [
+            [
                 'projects' => $list,
                 'category'=> $category,
                 'title_text' => Text::get('node-side-searcher-promote'),
@@ -150,21 +146,17 @@ class ChannelController extends \Goteo\Core\Controller {
                 'total' => $total,
                 'limit' => $limit,
                 'map' => $map
-                ]
+            ]
         );
     }
 
     /**
      * All channel projects
-     * @param  [type] $id   Channel id
-     * @param  Request $request [description]
      */
-    public function listProjectsAction($id, $type = 'available', $category = null, Request $request)
+    public function listProjectsAction(Request $request, $id, $type = 'available', $category = null)
     {
         $this->setChannelContext($id);
-
         $channel = Node::get($id);
-
         $limit = 9;
         $status=[3,4,5];
         $filter = ['type' => $type, 'popularity' => 5, 'status' => $status ];
@@ -184,30 +176,26 @@ class ChannelController extends \Goteo\Core\Controller {
 
         return $this->viewResponse(
             $view,
-                [
+            [
                 'projects' => $list,
                 'category'=> $category,
                 'title_text' => $title_text,
                 'type' => $type,
                 'total' => $total,
                 'limit' => $limit
-                ]
+            ]
         );
     }
 
     /**
      * Channel terms
-     * @param  Request $request [description]
      */
-    public function faqAction ($id, $slug, Request $request)
+    public function faqAction($id, $slug)
     {
         $this->setChannelContext($id);
-
-        $faq= NodeFaq::getBySlug($id, $slug);
-
-        $questions=NodeFaqQuestion::getList(['node_faq' => $faq->id]);
-
-        $downloads=NodeFaqDownload::getList(['node_faq' => $faq->id]);
+        $faq = NodeFaq::getBySlug($id, $slug);
+        $questions = NodeFaqQuestion::getList(['node_faq' => $faq->id]);
+        $downloads = NodeFaqDownload::getList(['node_faq' => $faq->id]);
 
         return $this->viewResponse('channel/call/faq',
             ['faq' => $faq,
@@ -218,35 +206,29 @@ class ChannelController extends \Goteo\Core\Controller {
     }
 
      /**
-     * Channel resorces pagee
-     * @param  Request $request [description]
-     */
-    public function resourcesAction ($id, $slug='', Request $request)
+     * Channel resources page
+      */
+    public function resourcesAction($id, $slug='')
     {
         $this->setChannelContext($id);
 
         if($slug)
-            $category_id=NodeResourceCategory::getIdBySlug($slug);
+            $category_id = NodeResourceCategory::getIdBySlug($slug);
 
-        $resources=NodeResource::getList(['node' => $id, 'category' => $category_id]);
+        $resources = NodeResource::getList(['node' => $id, 'category' => $category_id]);
+        $resources_categories = NodeResourceCategory::getlist();
 
-        $resources_categories=NodeResourceCategory::getlist();
-
-        return $this->viewResponse('channel/call/resources',
-            [
+        return $this->viewResponse('channel/call/resources', [
             'resources' => $resources,
             'category'  => $category_id,
             'resources_categories' => $resources_categories
-            ]
-        );
+        ]);
     }
-
 
     /**
      * Initial create project action
-     * @param  Request $request [description]
      */
-    public function createAction ($id, Request $request)
+    public function createAction($id, Request $request)
     {
         // Some context vars for compatibility (to be removed)
         $this->contextVars(['url_project_create' => '/channel/' . $id . '/create']);
@@ -271,9 +253,7 @@ class ChannelController extends \Goteo\Core\Controller {
 
     /**
      * Initial apply project action
-     * @param  Request $request [description]
      */
-
     public function applyAction ($id, $pid, Request $request)
     {
         if (!Session::isLogged()) {
@@ -311,13 +291,13 @@ class ChannelController extends \Goteo\Core\Controller {
 
         if ($questionnaire->questions) {
             $questionnaire->project_id = $pid;
-            $processor = $this->getModelForm('Questionnaire', $questionnaire, (array) $questionnaire, [], $request);
+            $processor = $this->getModelForm(QuestionnaireForm::class, $questionnaire, (array) $questionnaire, [], $request);
             $processor->createForm()->getBuilder()
                 ->add(
-                    'submit', 'submit', [
-                    'label' => 'regular-submit',
-                    'attr' => ['class' => 'btn btn-lg btn-cyan text-uppercase'],
-                    'icon_class' => 'fa fa-save'
+                    'submit', SubmitType::class, [
+                        'label' => 'regular-submit',
+                        'attr' => ['class' => 'btn btn-lg btn-cyan text-uppercase'],
+                        'icon_class' => 'fa fa-save'
                     ]
                 );
 
@@ -335,37 +315,28 @@ class ChannelController extends \Goteo\Core\Controller {
                 }
             }
 
-            return $this->viewResponse(
-                'questionnaire/apply',
-                [
-                    'model' => $channel,
-                    'form' => $form->createView()
-                ]
-            );
+            return $this->viewResponse('questionnaire/apply', [
+                'model' => $channel,
+                'form' => $form->createView()
+            ]);
         }
 
         return $this->redirect('/dashboard/project/'. $project->id .'/profile');
-
     }
 
-
-     /**
-     * List of channels
-     * @param  Request $request [description]
-     */
-    public function listChannelsAction (Request $request)
+    public function listChannelsAction()
     {
         $channels=Node::getAll(['status' => 'active', 'type' => 'channel']);
 
-        foreach ($channels as $chanelId => $channel) {
+        foreach ($channels as $channelId => $channel) {
             if(!$channel->home_img)
-                unset($channels[$chanelId]);
+                unset($channels[$channelId]);
         }
 
         return $this->viewResponse('channels/list', ['channels' => $channels]);
     }
 
-        /**
+    /**
     * Returns an array suitable for Project::getList($filters)
      */
     protected function getProjectFilters($filter, $vars = []) {
@@ -413,12 +384,10 @@ class ChannelController extends \Goteo\Core\Controller {
             $filters['type'] = 'succeeded';
             $filters['status'] = [Project::STATUS_FUNDED, Project::STATUS_FULFILLED];
             $filters['order'] = 'project.published DESC, project.name ASC';
-            // $filters['published_since'] = (new \DateTime('-12 month'))->format('Y-m-d');
             unset($filters['published_since']);
         } elseif($filter === 'fulfilled') {
             $filters['status'] = [Project::STATUS_FULFILLED];
             $filters['order'] = 'project.published DESC, project.name ASC';
-            // $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
             unset($filters['published_since']);
         } elseif($filter === 'archived') {
             $filters['status'] = [Project::STATUS_UNFUNDED];
@@ -426,7 +395,6 @@ class ChannelController extends \Goteo\Core\Controller {
             $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
         } elseif($filter === 'matchfunding') {
             $filters['type'] = 'matchfunding';
-            // $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
             unset($filters['published_since']);
         } elseif($filter === 'recent') {
             $filters['type'] = 'recent';
@@ -435,16 +403,15 @@ class ChannelController extends \Goteo\Core\Controller {
         if($vars['review']) {
             $filters['status'] = [ Project::STATUS_EDITING, Project::STATUS_REVIEWING, Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
             $filters['is_draft'] = true;
-            // unset($filters['published_since']);
         }
+
         return $filters;
     }
-
 
     /*
     * Discover projects, general page
     */
-    public function discoverProjectsAction($id = null, $filter = '', Request $request)
+    public function discoverProjectsAction(Request $request, $id = null, $filter = '')
     {
         try {
             $this->setChannelContext($id);
@@ -481,13 +448,12 @@ class ChannelController extends \Goteo\Core\Controller {
             'discover_module' => true,
             'limit' => $limit
         ]);
-
     }
 
     /**
      * Ajax projects search
      */
-    public function ajaxSearchAction($id = null, Request $request) {
+    public function ajaxSearchAction(Request $request, $id = null) {
 
         try {
             Node::get($id);
@@ -517,7 +483,7 @@ class ChannelController extends \Goteo\Core\Controller {
         $offset = $pag * $limit;
         $total_projects = 0;
         $projects = Project::getList($filters, null, $offset, $limit);
-        if($projects) {
+        if ($projects) {
             $total_projects = Project::getList($filters, null, 0, 0, true);
         } elseif(!$request->query->has('strict')) {
             // Home controller does not send 'strict' query string, we always want projects in home:
@@ -537,6 +503,5 @@ class ChannelController extends \Goteo\Core\Controller {
         }
         return $this->jsonResponse($vars);
     }
-
 
 }

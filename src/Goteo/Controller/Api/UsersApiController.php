@@ -10,25 +10,22 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Session;
-
-use Goteo\Model\User;
-use Goteo\Model\Category;
-use Goteo\Model\Image;
-use Goteo\Library\Text;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
+use Goteo\Library\Text;
+use Goteo\Model\Image;
+use Goteo\Model\User;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 class UsersApiController extends AbstractApiController {
 
     public function __construct() {
         parent::__construct();
-        // De-Activate cache & replica read for this controller by default
         $this->dbReplica(false);
         $this->dbCache(false);
     }
@@ -36,8 +33,6 @@ class UsersApiController extends AbstractApiController {
     /**
      * Simple listing of users
      * TODO: according to permissions, filter this users
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function usersAction(Request $request) {
         if(!$this->user instanceOf User) throw new ControllerAccessDeniedException();
@@ -47,7 +42,7 @@ class UsersApiController extends AbstractApiController {
         $filters = [];
         $node = null;
         $page = max((int) $request->query->get('pag'), 0);
-        // General search
+
         if($request->query->has('q')) {
             $filters[$this->is_admin ? 'global' : 'name'] = $request->query->get('q');
         }
@@ -80,7 +75,7 @@ class UsersApiController extends AbstractApiController {
             'total' => $total,
             'page' => $page,
             'limit' => $limit
-            ]);
+        ]);
     }
 
     protected function getSafeUser($user) {
@@ -128,18 +123,15 @@ class UsersApiController extends AbstractApiController {
         $name = $request->query->get('name');
         $available = false;
 
-        $suggest = [];
         if($email) {
             if(!User::getByEmail($email)) {
                 $available = true;
             }
-        }
-        elseif($userid) {
+        } elseif($userid) {
             if(!User::get($userid)) {
                 $available = true;
             }
-        }
-        elseif($name) {
+        } elseif($name) {
             $available = true; // names can be repeated
         }
 
@@ -189,7 +181,6 @@ class UsersApiController extends AbstractApiController {
                     $success = true;
                 } else {
                     $msg = implode(', ',$errors['image']);
-                    // print_r($errors);
                 }
             }
 
@@ -211,7 +202,6 @@ class UsersApiController extends AbstractApiController {
 
         return $this->jsonResponse(['files' => $result, 'avatar' => $avatar,  'msg' => $global_msg, 'success' => $all_success]);
     }
-
 
     /**
      * Individual user property checker/updater
@@ -280,12 +270,10 @@ class UsersApiController extends AbstractApiController {
                     $value = (bool) $value;
                 }
 
-
                 if(in_array($prop, ['id', 'email', 'password'])) {
                     $errors = [];
                     $user->rebase($value, $prop);
                 } else {
-                    // do the SQL update
                     $user->{$prop} = $value;
                     $user->dbUpdate([$prop]);
                 }
@@ -309,15 +297,14 @@ class UsersApiController extends AbstractApiController {
                 $result['value'] = $user->{$prop};
             }
         }
-        return $this->jsonResponse($result);
 
+        return $this->jsonResponse($result);
     }
 
     /**
      * Old views (non-responsive) compatibility service for keeping alive session
-     * @return [type] [description]
      */
-    public function keepAliveAction(Request $request) {
+    public function keepAliveAction() {
 
         $result = array(
             'logged'  => false,
@@ -332,6 +319,5 @@ class UsersApiController extends AbstractApiController {
         }
 
         return $this->jsonResponse($result);
-
     }
 }

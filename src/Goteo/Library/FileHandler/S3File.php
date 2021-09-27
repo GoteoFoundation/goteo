@@ -40,8 +40,9 @@ class S3File extends BaseFile implements FileInterface {
         if($this->link instanceOf S3) {
             $connected = true;
         } else {
-
+            // TODO: define user password from config here directly
             $this->link = new S3($this->user, $this->pass);
+            $this->link->setRegion(Config::get("filesystem.aws.region"));
 
             if ($this->link->getBucketLocation($this->bucket) !== false) {
                 $connected = true;

@@ -11,7 +11,9 @@
 
 namespace Goteo\Library\Forms\Admin;
 
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
@@ -21,49 +23,41 @@ use Goteo\Library\Forms\FormModelException;
 
 class AdminSdgEditForm extends AbstractFormProcessor {
 
-    public function getConstraints($field) {
+    public function getConstraints() {
         return [new Constraints\NotBlank()];
     }
 
     public function createForm() {
         $model = $this->getModel();
-
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
-        $defaults = $options['data'];
-
         $sdgs = [];
+
         foreach(Footprint::getList([],0,100) as $s) {
             $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
         }
 
-        // print_r($defaults);die;
         $builder
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'disabled' => $this->getReadonly(),
-                'constraints' => $this->getConstraints('name'),
+                'constraints' => $this->getConstraints(),
                 'label' => 'regular-name'
             ])
-            ->add('description', 'text', [
+            ->add('description', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'label' => 'regular-description'
             ])
-            ->add('icon', 'dropfiles', array(
+            ->add('icon', DropfilesType::class, array(
                 'required' => false,
                 'limit' => 1,
                 'data' => [$model->icon ? $model->getIcon() : null],
                 'label' => 'admin-title-icon',
                 'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'url' => '/api/categories/images',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
-                ),
                 'attr' => [
                     'help' => Text::get('admin-categories-if-empty-then-asset', '<img src="'.$model->getIcon(true)->getLink(64,64).'" class="icon">')
                 ]
             ))
-            ->add('footprints', 'choice', array(
+            ->add('footprints', ChoiceType::class, array(
                 'label' => 'admin-title-footprints',
                 'data' => array_column($model->getFootprints(), 'id'),
                 'expanded' => true,
@@ -79,20 +73,16 @@ class AdminSdgEditForm extends AbstractFormProcessor {
         return $this;
     }
 
-
     public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
-        // Dropfiles type always return an array, just get the first element if required
-        if($data['icon'] && is_array($data['icon'])) {
-            $data['icon'] = $data['icon'][0];
-        } else {
-            $data['icon'] = null;
-        }
-        // print_r($data);die;
         $model = $this->getModel();
+
+        $this->processImageChange($data['icon'], $model->icon, false);
+
+        unset($data['icon']);
         $model->rebuildData($data, array_keys($form->all()));
 
         $errors = [];

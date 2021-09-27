@@ -19,9 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\CallbackTransformer;
 
 /**
- *
- * This class creates overides Date to show always as the single_text option is activated
- *
+ * This class creates overrides Date to show always as the single_text option is activated
  */
 class DatepickerType extends SymfonyDateType
 {
@@ -69,9 +67,9 @@ class DatepickerType extends SymfonyDateType
         $resolver->setDefault('row_class', '');
     }
 
-    public function getName()
+    public function getBlockPrefix(): string
     {
-        return 'datepicker';
+        return 'date';
     }
 
 

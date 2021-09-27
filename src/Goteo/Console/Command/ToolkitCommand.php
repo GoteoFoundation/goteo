@@ -9,15 +9,15 @@
  */
 
 namespace Goteo\Console\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 
+use Goteo\Model\Blog\Post;
+use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\User\Pool;
-use Goteo\Model\Invest;
-use Goteo\Model\Blog\Post;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Userful tools for check & repair several database potential issues
@@ -126,7 +126,6 @@ EOT
                 }
 
                 $index++;
-
             }
 
             $output->writeln("Checking project invested amounts");

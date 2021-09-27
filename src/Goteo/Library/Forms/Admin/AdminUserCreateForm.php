@@ -11,6 +11,8 @@
 
 namespace Goteo\Library\Forms\Admin;
 
+use Goteo\Util\Form\Type\EmailType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
@@ -26,30 +28,26 @@ class AdminUserCreateForm extends AbstractFormProcessor {
     }
 
     public function createForm() {
-        $user = $this->getModel();
-
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
-        $defaults = $options['data'];
-        // print_r($defaults);die;
+
         $builder
-            ->add('email', 'email', [
+            ->add('email', EmailType::class, [
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('email'),
                 'label' => 'regular-email',
                 'pre_addon' => '<i class="fa fa-envelope"></i>',
             ])
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('name'),
                 'label' => 'regular-name'
             ])
-            ->add('userid', 'text', [
+            ->add('userid', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('id'),
                 'label' => 'regular-id'
             ])
-            ->add('password', 'text', [
+            ->add('password', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('password'),
                 'label' => 'admin-title-password',

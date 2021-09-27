@@ -5,8 +5,9 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
-use Goteo\Application\Message,
-    Goteo\Model;
+use Goteo\Application\Message;
+use Goteo\Model;
+use Goteo\Model\User;
 
 class OpenTagsSubController extends AbstractSubController {
 
@@ -46,7 +47,7 @@ class OpenTagsSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node allowed here
         if( ! Config::isMasterNode($node) ) return false;
         return parent::isAllowed($user, $node);

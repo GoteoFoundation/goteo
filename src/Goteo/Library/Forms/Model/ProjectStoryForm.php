@@ -10,12 +10,13 @@
 
 namespace Goteo\Library\Forms\Model;
 
-use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
-use Symfony\Component\Validator\Constraints;
-use Goteo\Model\Image;
-use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Text;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
+use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Form\FormInterface;
 
 
@@ -39,47 +40,58 @@ class ProjectStoryForm extends AbstractFormProcessor {
 
     public function createForm() {
         $builder = $this->getBuilder();
-
         $project = $this->getOption('project');
 
         $builder
-            ->add('title', 'text', [
+            ->add('title', TextType::class, [
                 'label' => 'story-field-author-organization',
                 'constraints' => $this->getConstraints('name'),
                 'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('story-tooltip-author-organization')]
             ])
-            ->add('description', 'textarea', [
+            ->add('description', TextareaType::class, [
                 'label' => 'story-field-description',
                 'constraints' => $this->getConstraints('description'),
                 'disabled' => $this->getReadonly(),
                 'required' => true,
                 'attr' => ['help' => Text::get('story-tooltip-description'), 'rows' => 3]
             ])
-            ->add('image', 'dropfiles', [
+            ->add('image', DropfilesType::class, [
                 'label' => 'story-field-image',
                 'disabled' => $this->getReadonly(),
-                'url' => '/api/projects/' . $project->id . '/images',
                 'required' => true,
-                'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1, 'min' => 1]),
-                    ]
+                'limit' => 1
             ])
-            ->add('pool_image', 'dropfiles', [
+            ->add('pool_image', DropfilesType::class, [
                 'label' => 'story-field-pool-image',
                 'disabled' => $this->getReadonly(),
-                'url' => '/api/projects/' . $project->id . '/images',
                 'required' => false,
-                'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1]),
-                    ]
-
+                'limit' => 1
             ]);
 
         return $this;
     }
 
+    public function save(FormInterface $form = null, $force_save = false) {
 
+        if(!$form) $form = $this->getBuilder()->getForm();
+        if(!$form->isValid() && !$force_save) {
+            throw new FormModelException(Text::get('form-has-errors'));
+        }
+
+        $data = $form->getData();
+        $model = $this->getModel();
+
+        $this->processImageChange($data['image'], $model->image, true);
+        $this->processImageChange($data['pool_image'], $model->pool_image, false);
+
+        unset($data['image']);
+        unset($data['pool_image']);
+        $model->rebuildData($data, array_keys($form->all()));
+        $errors = [];
+        if (!$model->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
+        return $this;
+    }
 }

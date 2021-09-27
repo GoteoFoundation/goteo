@@ -4,20 +4,21 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Config;
 use Goteo\Application\Message;
-use Goteo\Application\Config,
-	Goteo\Library\Feed,
-    Goteo\Model;
+use Goteo\Library\Feed;
+use Goteo\Model;
+use Goteo\Model\User;
 
 class StoriesSubController extends AbstractSubController {
 
-    static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nueva Historia',
-      'edit' => 'Editando Historia',
-      'translate' => 'Traduciendo Historia',
-      'preview' => 'Previsualizando Historia',
-    );
+    static protected $labels = [
+        'list' => 'Listando',
+        'add' => 'Nueva Historia',
+        'edit' => 'Editando Historia',
+        'translate' => 'Traduciendo Historia',
+        'preview' => 'Previsualizando Historia',
+    ];
 
     static protected $label = 'Historias exitosas';
 
@@ -25,7 +26,7 @@ class StoriesSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
         return parent::isAllowed($user, $node);
@@ -35,7 +36,6 @@ class StoriesSubController extends AbstractSubController {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('preview', $id, $this->getFilters(), $subaction));
     }
-
 
     public function translateAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -57,7 +57,6 @@ class StoriesSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('down', $id, $this->getFilters(), $subaction));
     }
 
-
     public function removeAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('remove', $id, $this->getFilters(), $subaction));
@@ -68,23 +67,19 @@ class StoriesSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('edit', $id, $this->getFilters(), $subaction));
     }
 
-
     public function addAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('add', $id, $this->getFilters(), $subaction));
     }
-
 
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
 
-
     public function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
 
         $errors = array();
-
         $node = $this->node;
 
         //Text position for text in general banners
@@ -162,9 +157,7 @@ class StoriesSubController extends AbstractSubController {
                 Message::info('Datos guardados');
 
                 if ($this->getPost('action') == 'add') {
-
-                    if($project)
-                    {
+                    if($project) {
                         // Evento Feed
                         $log = new Feed();
                         $log->setTarget($project->id);
@@ -184,8 +177,7 @@ class StoriesSubController extends AbstractSubController {
                 }
 
                 return $this->redirect('/admin/stories');
-			}
-			else {
+			} else {
                 Message::error(implode('<br />', $errors));
 
                 // otros elementos disponibles
@@ -223,7 +215,7 @@ class StoriesSubController extends AbstractSubController {
 
         switch ($action) {
             case 'active':
-                $set = $flag == 'on' ? true : false;
+                $set = $flag == 'on';
                 Model\Stories::setActive($id, $set);
                 return $this->redirect('/admin/stories');
                 break;
@@ -250,21 +242,20 @@ class StoriesSubController extends AbstractSubController {
                 $items = Model\Post::getAutocomplete();
 
                 $story= new Model\Stories([
-                        'order' => $next
-                    ]);
+                    'order' => $next
+                ]);
 
-
-                return array(
-                        'folder' => 'stories',
-                        'file' => 'edit',
-                        'action' => 'add',
-                        'story' => $story,
-                        'status' => $status,
-                        'items' => $items,
-                        'text_positions' => $text_positions,
-                        'spheres'        => $spheres,
-                        'autocomplete' => true
-                );
+                return [
+                    'folder' => 'stories',
+                    'file' => 'edit',
+                    'action' => 'add',
+                    'story' => $story,
+                    'status' => $status,
+                    'items' => $items,
+                    'text_positions' => $text_positions,
+                    'spheres'        => $spheres,
+                    'autocomplete' => true
+                ];
 
             case 'edit':
                 // datos del elemento
@@ -272,32 +263,30 @@ class StoriesSubController extends AbstractSubController {
                 // elementos disponibles
                 $items = Model\Post::getAutocomplete();
 
-                return array(
-                        'folder' => 'stories',
-                        'file' => 'edit',
-                        'action' => 'edit',
-                        'story' => $story,
-                        'items' => $items,
-                        'text_positions' => $text_positions,
-                        'spheres'        => $spheres,
-                        'autocomplete' => true
-                );
+                return [
+                    'folder' => 'stories',
+                    'file' => 'edit',
+                    'action' => 'edit',
+                    'story' => $story,
+                    'items' => $items,
+                    'text_positions' => $text_positions,
+                    'spheres' => $spheres,
+                    'autocomplete' => true
+                ];
 
-                case 'preview':
-                        // datos del elemento
-                        $story = Model\Stories::get($id, Config::get('lang'));
+            case 'preview':
+                // datos del elemento
+                $story = Model\Stories::get($id, Config::get('lang'));
 
-                        return $this->response('admin/stories/preview', ['story' =>$story]);
+                return $this->response('admin/stories/preview', ['story' =>$story]);
         }
 
-        return array(
-                'folder' => 'stories',
-                'file' => 'list',
-                'storyed' => Model\Stories::getList([], 0, 1000, false, Config::get('lang')),
-                'node' => $node
-        );
-
+        return [
+            'folder' => 'stories',
+            'file' => 'list',
+            'storyed' => Model\Stories::getList([], 0, 1000, false, Config::get('lang')),
+            'node' => $node
+        ];
     }
 
 }
-

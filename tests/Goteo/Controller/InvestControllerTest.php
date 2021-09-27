@@ -4,8 +4,9 @@
 namespace Goteo\Controller\Tests;
 
 use Goteo\Controller\InvestController;
+use PHPUnit\Framework\TestCase;
 
-class InvestControllerTest extends \PHPUnit\Framework\TestCase {
+class InvestControllerTest extends TestCase {
 
     public function testInstance() {
 

@@ -12,6 +12,8 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Text;
@@ -20,27 +22,16 @@ use Goteo\Model\Questionnaire\Answer;
 use Goteo\Model\Questionnaire\Answer\AnswerOptions;
 use Goteo\Model\Questionnaire\Question;
 use Symfony\Component\Validator\Constraints;
-use Goteo\Model\Contract\BaseDocument;
 
 class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorInterface
 {
 
-    public function getConstraints($field)
-    {
-        $constraints = [];
-        if($this->getFullValidation()) {
-            // $constraints[] = new Constraints\NotBlank();
-        }
-        return $constraints;
-    }
-
     public function createForm()
     {
         $questionnaire = $this->getModel();
-
         $builder = $this->getBuilder();
-        foreach((array) $questionnaire->questions as $question) {
 
+        foreach((array) $questionnaire->questions as $question) {
             if ($question->vars->hidden)
                 continue;
             else {
@@ -53,11 +44,11 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
                 $question->vars->attr = (array) $question->vars->attr;
 
             if ($type == "dropfiles") {
-                $question->vars->url = '/api/questionnaire/documents';
                 $question->vars->accepted_files = 'image/jpeg,image/gif,image/png,application/pdf';
                 $question->vars->constraints = [
                     new Constraints\Count(['max' => 1]),
                 ];
+                $question->vars->type = DropfilesType::TYPE_DOCUMENT;
             }
             if ($type == "choice")
                 $question->vars->choices = array_column($question->getChoices(), 'option', 'id');
@@ -66,10 +57,10 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
             $builder->add($question->id, $type, (array) $question->vars);
         }
         $builder->add(
-            'submit', 'submit', [
-            'label' => 'regular-submit',
-            'attr' => ['class' => 'btn btn-lg btn-lilac text-uppercase'],
-            'icon_class' => 'icon icon-match-blog '
+            'submit', SubmitType::class, [
+                'label' => 'regular-submit',
+                'attr' => ['class' => 'btn btn-lg btn-lilac text-uppercase'],
+                'icon_class' => 'icon icon-match-blog '
             ]
         );
 
@@ -82,37 +73,36 @@ class QuestionnaireForm extends AbstractFormProcessor implements FormProcessorIn
         }
         if(!$form->isValid() && !$force_save) { throw new FormModelException(Text::get('form-has-errors'));
         }
-        
+
         $questionnaire = $this->getModel();
         $questions = Question::getByQuestionnaire($questionnaire->id);
         $questions = array_column($questions, NULL, 'id');
-        // $data = $form->getData();]
         $index = 0;
 
         if ($answers = Answer::getList(['project' => $this->model->project_id, 'questionnaire' => $questionnaire->id]))
             $answers = array_column($answers, NULL, 'question');
 
         $data = array_intersect_key($form->getData(), $form->all());
+
         foreach($data as $key => $value) {
             $question = $questions[$key];
 
             if ($question->vars->hidden)
                 continue;
 
-            $answer = ($answers[$question->id])? $answers[$question->id] : new Answer();
+            $answer = ($answers[$question->id])?: new Answer();
             $answer->project  = $this->model->project_id;
             $answer->question = $key;
 
             $type = $question->vars->type;
             if ($type != "choice")
                 $answer->answer = $value;
-            
-            if ($type == "dropfiles") { 
+
+            if ($type == "dropfiles") {
                 if($value[0] && $err = $value[0]->getUploadError()) {
                     throw new FormModelException(Text::get('form-sent-error', $err));
                 }
-                $error = [];
-                $answer->answer = $value[0]->id; 
+                $answer->answer = $value['uploads'][0]->name;
             }
             $answer->save();
 

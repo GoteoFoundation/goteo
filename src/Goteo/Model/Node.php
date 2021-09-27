@@ -293,10 +293,11 @@ class Node extends \Goteo\Core\Model {
         $joins
         $sqlFilter
         ORDER BY node.name ASC";
-        // die(\sqldbg($sql, $values));
+
         if($query = static::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
+
         return [];
     }
 
@@ -315,7 +316,7 @@ class Node extends \Goteo\Core\Model {
             FROM node
             ORDER BY id=:config DESC, name ASC
             ", [':config' => Config::get('node')]);
-            
+
         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
             $list[$item->id] = $item->name;
         }
@@ -444,18 +445,18 @@ class Node extends \Goteo\Core\Model {
         $set = '';
         $values = array(':id' => $this->id);
 
-        
+
         foreach ($fields as $field) {
             if ($set != '') $set .= ", ";
             if($field === 'default_consultant' && empty($this->default_consultant)) {
                 $set .= "`$field` = NULL ";
                 continue;
             }
-            
+
             $set .= "`$field` = :$field ";
             $values[":$field"] = (string)$this->$field;
         }
-        
+
         try {
             $sql = "UPDATE node SET " . $set . " WHERE id = :id";
 
@@ -805,7 +806,7 @@ class Node extends \Goteo\Core\Model {
                     return $newdata;
                 }
             }*/
-            
+
             return $data;
         } catch(\PDOException $e) {
 
@@ -965,7 +966,7 @@ class Node extends \Goteo\Core\Model {
             FROM    `call`
             INNER JOIN campaign
                 ON call.id = campaign.call
-                AND node = :node 
+                AND node = :node
             ", $values);
         $data['budget'] = $query->fetchColumn();
 
@@ -1044,7 +1045,7 @@ class Node extends \Goteo\Core\Model {
      */
     public function getPosts ($limit = 3) {
        if($this->postsList) return $this->postsList;
-        
+
         $this->postsList = GeneralPost::getList(['node' => $this->id ], true, 0, $limit, false);
 
         return $this->postsList;
@@ -1192,32 +1193,32 @@ class Node extends \Goteo\Core\Model {
 
     public function getTeam() {
         if($this->teamList) return $this->teamList;
-        
+
         $this->teamList = NodeTeam::getList(['node' => $this->id], 0, 999);
         return $this->teamList;
     }
 
     public function getFaqType($type) {
         if($this->faqType) return $this->faqType;
-        
+
         $this->faqType = NodeTeam::get($this->id, $type);
         return $this->faqType;
     }
 
      public function getFaqDownloads($type) {
         if($this->faqDownloads) return $this->faqDownloads;
-        
+
         $this->faqDownloads = NodeTeam::get($this->id, $type);
         return $this->faqDownloads;
     }
 
     public function getCallToActions() {
         if($this->callToActionList) return $this->callToActionList;
-    
+
         $this->callToActionList = NodeCallToAction::getList(['node' => $this->id, 'active' => true], 0, 2);
         return $this->callToActionList;
     }
-    
+
     public function setConfig(array $config) {
         $this->config = $config ? json_encode($config) : '';
         return $this;

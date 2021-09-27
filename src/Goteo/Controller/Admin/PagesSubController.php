@@ -10,12 +10,12 @@
 
 namespace Goteo\Controller\Admin;
 
-use Goteo\Application\Message;
 use Goteo\Application\Config;
-use Goteo\Application\Session;
 use Goteo\Application\Lang;
+use Goteo\Application\Message;
 use Goteo\Library\Feed;
 use Goteo\Model\Page;
+use Goteo\Model\User;
 
 class PagesSubController extends AbstractSubController {
 
@@ -26,15 +26,13 @@ class PagesSubController extends AbstractSubController {
       'translate' => 'pages-lb-translate',
     );
 
-
     static protected $label = 'pages-lb';
-
 
     /**
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         if( ! Config::isMasterNode($node) ) return false;
         return parent::isAllowed($user, $node);
     }

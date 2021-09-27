@@ -11,44 +11,48 @@
 
 namespace Goteo\Library\Forms\Admin;
 
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
-use Symfony\Component\Validator\Constraints;
+use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
-use Goteo\Model\Stories;
-use Goteo\Model\Sphere;
 use Goteo\Model\Workshop;
 use Goteo\Model\Workshop\WorkshopLocation;
-use Goteo\Library\Forms\FormModelException;
-use Goteo\Application\Lang;
+use Goteo\Util\Form\Type\BooleanType;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DatepickerType;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\LocationType;
+use Goteo\Util\Form\Type\MarkdownType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\TypeaheadType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraints;
 
 class AdminWorkshopEditForm extends AbstractFormProcessor {
 
     public function createForm() {
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
         $workshop = $this->getModel();
-        $data = $options['data'];
         parent::createForm();
+
         $builder
-            ->add('title', 'text', [
+            ->add('title', TextType::class, [
                 'label' => 'regular-title',
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('subtitle', 'text', [
+            ->add('subtitle', TextType::class, [
                 'label' => 'admin-title-subtitle',
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('online', 'boolean', array(
+            ->add('online', BooleanType::class, array(
                 'required' => false,
                 'disabled' => $this->getReadonly(),
-                'label' => 'admin-online', //
+                'label' => 'admin-online',
                 'color' => 'cyan'
             ))
-            ->add('blockquote', 'textarea', [
+            ->add('blockquote', TextareaType::class, [
                 'label' => 'admin-title-blockquote',
                 'required' => false,
                 'disabled' => $this->getReadonly(),
@@ -56,14 +60,14 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                     'rows' => 2
                 ]
             ])
-           ->add('description', 'markdown', [
+            ->add('description', MarkdownType::class, [
                 'label' => 'regular-description',
                 'required' => true,
                 'attr' => [
                     'rows' => 8
                 ]
             ])
-           ->add('workshop_location', 'location', [
+            ->add('workshop_location', LocationType::class, [
                 'label' => 'overview-field-project_location',
                 'type' => 'workshop', // API geoloc
                 'item' => $this->getModel()->id,
@@ -74,44 +78,39 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                 'pre_addon' => '<i class="fa fa-globe"></i>',
                 'attr' => ['help' => Text::get('tooltip-project-project_location')]
             ])
-           ->add('date_in', 'datepicker', array(
+            ->add('date_in', DatepickerType::class, [
                 'label' => 'admin-title-date-in',
                 'required' => true,
-                'constraints' => array(new Constraints\NotBlank()),
-            ))
-           ->add('date_out', 'datepicker', array(
+                'constraints' => [new Constraints\NotBlank()],
+            ])
+            ->add('date_out', DatepickerType::class, [
                 'label' => 'admin-title-date-out',
                 'required' => false,
-                'constraints' => array(new Constraints\NotBlank()),
-            ))
-            ->add('schedule', 'text', [
+                'constraints' => [new Constraints\NotBlank()],
+               ])
+            ->add('schedule', TextType::class, [
                 'label' => 'regular-schedule',
-                'required' => false,
+                'required' => true,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('url', 'text', [
+            ->add('url', TextType::class, [
                 'label' => 'admin-title-url-inscription',
                 'required' => false,
                 'disabled' => $this->getReadonly()
             ])
-           
-            ->add('header_image', 'dropfiles', array(
+            ->add('header_image', DropfilesType::class, [
                 'required' => false,
                 'limit' => 1,
                 'data' => [$workshop->header_image ? $workshop->getHeaderImage() : null],
                 'label' => 'admin-title-header-image',
-                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'url' => '/api/workshops/images',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
-                )
-            ))
-            ->add('venue', 'text', [
+                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml'
+            ])
+            ->add('venue', TextType::class, [
                 'label' => 'admin-title-venue',
                 'required' => false,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('venue_address', 'textarea', [
+            ->add('venue_address', TextareaType::class, [
                 'label' => 'admin-title-venue-address',
                 'required' => false,
                 'disabled' => $this->getReadonly(),
@@ -119,12 +118,12 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                     'rows' => 4
                 ]
             ])
-            ->add('city', 'text', [
+            ->add('city', TextType::class, [
                 'label' => 'admin-title-city',
                 'required' => false,
                 'disabled' => $this->getReadonly()
-            ])    
-            ->add('how_to_get', 'markdown', [
+            ])
+            ->add('how_to_get', MarkdownType::class, [
                 'label' => 'admin-title-how-to-get',
                 'required' => false,
                 'disabled' => $this->getReadonly(),
@@ -132,7 +131,7 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                     'rows' => 4
                 ]
             ])
-            ->add('map_iframe', 'textarea', [
+            ->add('map_iframe', TextareaType::class, [
                 'label' => 'admin-title-iframe',
                 'required' => false,
                 'disabled' => $this->getReadonly(),
@@ -140,33 +139,40 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
                     'rows' => 4
                 ]
             ])
-            ->add('schedule_file_url', 'text', [
+            ->add('schedule_file_url', TextType::class, [
                 'label' => 'admin-title-schedule-file',
                 'required' => false,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('event_type', 'choice', array(
+            ->add('event_type', ChoiceType::class, [
                 'label' => 'admin-title-type',
                 'required' => false,
                 'expanded' => true,
                 'row_class' => 'extra',
                 'wrap_class' => 'col-xs-6',
-                'choices' => Workshop::getListEventTypes()
-            ))
-             ->add('call_id', 'typeahead', [
+                'choices' => $this->getWorkshopsChoices()
+            ])
+            ->add('call_id', TypeaheadType::class, [
                 'label' => 'admin-title-call',
                 'row_class' => 'extra',
                 'required' => false,
                 'disabled' => $this->getReadonly(),
                 'sources' => 'call',
                 'text' => ($workshop && $workshop->getCall()) ? $workshop->getCall()->name : null
-            ])
-
-            
-            ;
-
+            ]);
 
         return $this;
+    }
+
+    private function getWorkshopsChoices(): array
+    {
+        $choices = [];
+
+        foreach (Workshop::getListEventTypes() as $k => $v) {
+            $choices[$v] = $k;
+        }
+
+        return $choices;
     }
 
     public function save(FormInterface $form = null, $force_save = false) {
@@ -174,12 +180,20 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
+        $workshop_location = $data['workshop_location'];
+        $data['workshop_location'] = $data['workshop_location']->location ?: $data['workshop_location']->name;
 
-        // Instance of workshop location
-        $workshop_location=$data['workshop_location'];
-        $data['workshop_location'] = $data['workshop_location']->location ? $data['workshop_location']->location : $data['workshop_location']->name;
-       
         $model = $this->getModel();
+
+        if ($data['header_image'] && is_array($data['header_image'])) {
+            if (current($data['header_image']['removed'])->id == $model->header_image)
+                $model->header_image = null;
+
+            if ($data['header_image']['uploads'])
+                $model->header_image = $data['header_image']['uploads'][0];
+        }
+
+        unset($data['header_image']);
         $model->rebuildData($data, array_keys($form->all()));
 
         $errors = [];
@@ -189,12 +203,7 @@ class AdminWorkshopEditForm extends AbstractFormProcessor {
 
         if($workshop_location instanceOf WorkshopLocation) {
             $workshop_location->id = $model->id;
-            if($workshop_location->save($errors)) {
-                //
-            } else {
-                $fail = true;
-            }
-
+            $workshop_location->save($errors);
         }
 
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));

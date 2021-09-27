@@ -12,11 +12,11 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Application\Message,
-    Goteo\Application\Session,
-	Goteo\Application\Config,
-	Goteo\Library\Feed,
-    Goteo\Model;
+use Goteo\Application\Config;
+use Goteo\Application\Message;
+use Goteo\Library\Feed;
+use Goteo\Model;
+use Goteo\Model\User;
 
 class LicensesSubController extends AbstractSubController {
 
@@ -27,9 +27,7 @@ class LicensesSubController extends AbstractSubController {
       'translate' => 'licenses-lb-translate',
     );
 
-
     static protected $label = 'licenses-lb';
-
 
     protected $filters = array (
       'group' => '',
@@ -40,7 +38,7 @@ class LicensesSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node and superadmins allowed here
         if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);
@@ -50,7 +48,6 @@ class LicensesSubController extends AbstractSubController {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('translate', $id, $this->getFilters(), $subaction));
     }
-
 
     public function editAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -77,22 +74,17 @@ class LicensesSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('remove', $id, $this->getFilters(), $subaction));
     }
 
-
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
 
-
     public function process ($action = 'list', $id = null, $filters = array()) {
 
         // agrupaciones de mas a menos abertas
         $groups = Model\License::groups();
-
         // tipos de retorno para asociar
         $icons = Model\Icon::getAll('social');
-
-
         $errors = array();
 
         if ($this->isPost()) {
@@ -134,7 +126,6 @@ class LicensesSubController extends AbstractSubController {
                 if ($this->getPost('pending') == 1 && !Model\License::setPending($license->id, 'post')) {
                     Message::error('NO se ha marcado como pendiente de traducir!');
                 }
-
             }
 			else {
                 Message::error(implode('<br />', $errors));
@@ -182,22 +173,18 @@ class LicensesSubController extends AbstractSubController {
                 );
                 break;
             case 'remove':
-//                Model\License::delete($id);
                 break;
         }
 
         $licenses = Model\License::getAll($filters['icon'], $filters['group']);
 
         return array(
-                'folder' => 'licenses',
-                'file' => 'list',
-                'licenses' => $licenses,
-                'filters'  => $filters,
-                'groups' => $groups,
-                'icons'    => $icons
+            'folder' => 'licenses',
+            'file' => 'list',
+            'licenses' => $licenses,
+            'filters'  => $filters,
+            'groups' => $groups,
+            'icons'    => $icons
         );
-
     }
-
 }
-

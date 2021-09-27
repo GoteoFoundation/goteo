@@ -12,99 +12,85 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Library\Forms\FormProcessorInterface;
-use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Text;
-use Goteo\Library\Forms\FormModelException;
 use Goteo\Model\Questionnaire;
-use Goteo\Model\Questionnaire\Answers;
-use Symfony\Component\Validator\Constraints;
-use Goteo\Model\Contract\Document;
+use Goteo\Util\Form\Type\BooleanType;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\NumberType;
+use Goteo\Util\Form\Type\SubmitType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
 
 class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProcessorInterface
 {
 
-    public function getConstraints($field)
+    public function getConstraints(): array
     {
-        $constraints = [];
-        if($this->getFullValidation()) {
-            // $constraints[] = new Constraints\NotBlank();
-        }
-        return $constraints;
-    }
-
-    public function delQuestion($id)
-    {
-
-        $this->getBuilder()
-            ->remove("{$id}_typeofquestion")
-            ->remove("{$id}_required")
-            ->remove("{$id}_question")
-            ->remove("{$id}_remove");
+        return [];
     }
 
     public function addQuestion($question)
     {
         $config = $question->vars;
-        
+
         if ($config->attr) { $config->attr = (array) $config->attr;
         }
         if ($config->type == "dropfiles") {
-            $config->url = '/api/questionnaire/documents';
-            $config->constraints = $this->getConstraints('docs');
+            $config->constraints = $this->getConstraints();
         }
         $builder = $this->getBuilder();
         $builder
             ->add(
-                $question->id . '_typeofquestion', 'choice', [
-                'label' => Text::get('questionnaire-type-of-question'),
-                'choices' => Questionnaire::getTypes(),
-                'data' => $config->type
+                $question->id . '_typeofquestion', ChoiceType::class, [
+                    'label' => Text::get('questionnaire-type-of-question'),
+                    'choices' => $this->getChoices(Questionnaire::getTypes()),
+                    'data' => $config->type
                 ]
             )
             ->add(
-                $question->id . '_required', 'boolean', [
-                'label' => Text::get('questionnaire-required'),
-                'data' => $config->required ? true : false,
-                'required' => false
+                $question->id . '_required', BooleanType::class, [
+                    'label' => Text::get('questionnaire-required'),
+                    'data' => $config->required ? true : false,
+                    'required' => false
                 ]
             )
             ->add(
-                $question->id . '_hidden', 'boolean', [
-                'label' => Text::get('questionnaire-hidden'),
-                'data' => $config->hidden ? true : false,
-                'required' => false
+                $question->id . '_hidden', BooleanType::class, [
+                    'label' => Text::get('questionnaire-hidden'),
+                    'data' => $config->hidden ? true : false,
+                    'required' => false
                 ]
             )
             ->add(
-                $question->id . '_max_score', 'number', [
-                'label' => Text::get('questionnaire-max-score'),
-                'data' => $question->max_score,
-                'required' => true,
-                'attr' => [
-                    'min' => 0,
-                    'help' => Text::get('questionnaire-max-score-help')
+                $question->id . '_max_score', NumberType::class, [
+                    'label' => Text::get('questionnaire-max-score'),
+                    'data' => $question->max_score,
+                    'required' => true,
+                    'attr' => [
+                        'min' => 0,
+                        'help' => Text::get('questionnaire-max-score-help')
                     ]
                 ]
             )
             ->add(
-                $question->id . '_question', 'textarea', [
-                'label' => Text::get('questionnaire-text'),
-                'data' => $question->title,
+                $question->id . '_question', TextareaType::class, [
+                    'label' => Text::get('questionnaire-text'),
+                    'data' => $question->title,
                 ]
             )
             ->add(
-                $question->id . "_remove", 'submit', [
-                'label' => Text::get('regular-delete'),
-                'icon_class' => 'fa fa-trash',
-                'span' => 'hidden-xs',
-                'attr' => [
-                    'class' => 'pull-right btn btn-default remove-question',
-                    'data-confirm' => Text::get('project-remove-reward-confirm')
+                $question->id . "_remove", SubmitType::class, [
+                    'label' => Text::get('regular-delete'),
+                    'icon_class' => 'fa fa-trash',
+                    'span' => 'hidden-xs',
+                    'attr' => [
+                        'class' => 'pull-right btn btn-default remove-question',
+                        'data-confirm' => Text::get('project-remove-reward-confirm')
                     ]
                 ]
             )->add(
-                $question->id . "_choice_answer", 'text', [
+                $question->id . "_choice_answer", TextType::class, [
                     'label' => 'question-choice-answer'
             ]);
 
@@ -112,16 +98,26 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
             foreach ($config->vars->choices as $key => $value) {
                 $builder
                     ->add(
-                        $question->id . "_choice_" . $key, 'text', [
+                        $question->id . "_choice_" . $key, TextType::class, [
                             'label' => 'question-choice-answer',
                             'data' => $value
                         ]
                     );
             }
         }
-
     }
-    
+
+    private function getChoices($items)
+    {
+        $choices = [];
+
+        foreach ($items as $k => $v) {
+            $choices[$v] = $k;
+        }
+
+        return $choices;
+    }
+
     public function createForm()
     {
         $questionnaire = $this->getModel();
@@ -132,17 +128,15 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                 $this->addQuestion($question);
             }
         }
-        
-        $builder->add(
-            'add-question', 'submit', [
-            'label' => Text::get('questionnaire-add-question'),
-            'attr' => ['class' => 'btn btn-lg btn-lilac text-uppercase add-question'],
-            'icon_class' => 'icon icon-match-blog '
+
+        $builder->add('add-question', SubmitType::class, [
+                'label' => Text::get('questionnaire-add-question'),
+                'attr' => ['class' => 'btn btn-lg btn-lilac text-uppercase add-question'],
+                'icon_class' => 'icon icon-match-blog '
             ]
-        )->add(
-            'submit', 'submit', [
+        )->add('submit', SubmitType::class, [
                 'label' => 'regular-submit'
-                ]
+            ]
         );
 
         return $this;

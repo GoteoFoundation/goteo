@@ -12,6 +12,7 @@ namespace Goteo\Model\Mail;
 
 use Goteo\Model\Mail\Metric;
 use Goteo\Application\Exception\ModelException;
+use PDOException;
 
 class MailStats extends \Goteo\Core\Model
 {
@@ -100,10 +101,7 @@ class MailStats extends \Goteo\Core\Model
 
     /**
      * Increments a metric
-     * @param  [type] $mail_id    [description]
-     * @param  [type] $email      [description]
      * @param  string $metric_val [description]
-     * @return [type]          [description]
      */
     static public function incMetric($mail_id, $email, $metric_val = 'EMAIL_OPENED', $only_if_empty = false)
     {
@@ -125,36 +123,31 @@ class MailStats extends \Goteo\Core\Model
         return $stat;
     }
 
-
     /**
      * Guardar.
      * @param   type array $errors Errores devueltos pasados por referencia.
-     * @return  type bool   true|false
      */
-     public function save(&$errors = array())
+     public function save(&$errors = array()): bool
      {
-
-        if(!$this->validate($errors) ) { return false;
+        if(!$this->validate($errors) ) {
+            return false;
         }
 
         try {
             $this->dbInsertUpdate(['mail_id', 'email', 'metric_id', 'counter'], ['mail_id', 'email', 'metric_id']);
             return true;
-        }
-        catch(\PDOException $e) {
+        } catch(PDOException $e) {
             $errors[] = 'MailStats saving error: ' . $e->getMessage();
         }
 
         return false;
-
      }
 
         /**
-     * Validar.
-     * @param   type array $errors Errores devueltos pasados por referencia.
-     * @return  type bool   true|false
-     */
-        public function validate(&$errors = array())
+         * Validar.
+         * @param   type array $errors Errores devueltos pasados por referencia.
+         */
+        public function validate(&$errors = array()): bool
         {
             if(empty($this->metric_id)) {
                 $errors[] = 'Empty Metric ID';

@@ -6,15 +6,17 @@
 
 namespace Goteo\Model;
 
+use Datetime;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
-use Goteo\Model\Workshop\WorkshopSponsor;
+use Goteo\Core\Model;
 use Goteo\Model\Workshop\WorkshopLocation;
 use Goteo\Model\Blog\Post as GeneralPost;
+use PDO;
 
 
-class Workshop extends \Goteo\Core\Model {
+class Workshop extends Model {
 
     public
     $id,
@@ -83,7 +85,7 @@ class Workshop extends \Goteo\Core\Model {
               FROM workshop
               $joins
               WHERE workshop.id = ?";
-              
+
         $query = static::query($sql, array($id));
         $item = $query->fetchObject(__CLASS__);
 
@@ -95,19 +97,14 @@ class Workshop extends \Goteo\Core\Model {
     }
 
     /**
-     * Workshop list
-     *
      * @param  array  $filters
      * @return mixed            Array of workshops
      */
     public static function getAll($filters = array()) {
 
         $lang = Lang::current();
-
         $values = array();
-
         $list = array();
-
         $sqlJoin = "";
 
         if ($filters['call']) {
@@ -138,8 +135,6 @@ class Workshop extends \Goteo\Core\Model {
             $sqlFilter .=' AND workshop.id != :excluded';
             $values[':excluded'] = $filters['excluded'];
         }
-
-
 
         if($sqlFilter) {
             $sqlFilter = 'WHERE ' . $sqlFilter;
@@ -189,13 +184,12 @@ class Workshop extends \Goteo\Core\Model {
                 $order
                 ";
 
-        //die(\sqldbg($sql, $values));
-
         $query = self::query($sql, $values);
 
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+        foreach ($query->fetchAll(PDO::FETCH_CLASS, __CLASS__) as $item) {
             $list[] = $item;
         }
+
         return $list;
     }
 
@@ -212,7 +206,6 @@ class Workshop extends \Goteo\Core\Model {
     static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
 
         $values = [];
-        $sqlFilters = [];
         $sql = '';
         $sqlJoin = '';
         $other_fields = [];
@@ -222,11 +215,8 @@ class Workshop extends \Goteo\Core\Model {
             $values[":node"] = $filters['node'];
         }
 
-
         if($count) {
-            // Return count
             $sql = "SELECT COUNT(id) FROM workshop$sql";
-            // echo \sqldbg($sql, $values);
             return (int) self::query($sql, $values)->fetchColumn();
         }
 
@@ -267,17 +257,13 @@ class Workshop extends \Goteo\Core\Model {
             ORDER BY `id` DESC
             LIMIT $offset,$limit";
 
-        // print_r($values);die(\sqldbg($sql, $values));
         if($query = self::query($sql, $values)) {
-            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+            return $query->fetchAll(PDO::FETCH_CLASS, __CLASS__);
         }
+
         return [];
     }
 
-
-    /**
-     *  Spheres of this workshop
-     */
     public function getSpheres () {
         if($this->spheresList) return $this->spheresList;
         $values = [':workshop' => $this->id];
@@ -293,16 +279,12 @@ class Workshop extends \Goteo\Core\Model {
             $joins
             WHERE workshop_sphere.workshop_id = :workshop
             ORDER BY workshop_sphere.order ASC";
-        // die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
-        $this->spheresList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Sphere');
-        return $this->spheresList;
+        $this->spheresList = $query->fetchAll(PDO::FETCH_CLASS, 'Goteo\Model\Sphere');
 
+        return $this->spheresList;
     }
 
-    /**
-     *  Stories of this workshop
-     */
     public function getStories () {
        if($this->storiesList) return $this->storiesList;
         $values = [':workshop' => $this->id];
@@ -320,11 +302,10 @@ class Workshop extends \Goteo\Core\Model {
             $joins
             WHERE workshop_stories.workshop_id = :workshop
             ORDER BY workshop_stories.order ASC";
-        // die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
-        $this->storiesList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Stories');
-        return $this->storiesList;
+        $this->storiesList = $query->fetchAll(PDO::FETCH_CLASS, 'Goteo\Model\Stories');
 
+        return $this->storiesList;
     }
 
     /**
@@ -332,17 +313,13 @@ class Workshop extends \Goteo\Core\Model {
      */
     public function getPosts () {
        if($this->postsList) return $this->postsList;
-        
+
         $this->postsList = GeneralPost::getList(['workshop' => $this->id ], true, 0, $limit = 3, false);
 
         return $this->postsList;
-
     }
 
-    /**
-     *  Sponsors of this workshop
-     */
-    public function getSponsors () {
+    public function getSponsors() {
         if($this->spheresList) return $this->spheresList;
         $values = [':workshop' => $this->id];
 
@@ -352,16 +329,12 @@ class Workshop extends \Goteo\Core\Model {
 
             WHERE workshop_sponsor.workshop = :workshop
             ORDER BY workshop_sponsor.order ASC";
-         //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
-        $this->sponsorsList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Workshop\WorkshopSponsor');
-        return $this->sponsorsList;
+        $this->sponsorsList = $query->fetchAll(PDO::FETCH_CLASS, 'Goteo\Model\Workshop\WorkshopSponsor');
 
+        return $this->sponsorsList;
     }
 
-    /*
-     *  List of types
-     */
     public static function getListEventTypes(){
         return Config::get('workshop.event_types');
     }
@@ -385,8 +358,8 @@ class Workshop extends \Goteo\Core\Model {
     }
 
     public function expired() {
-        $date=new \Datetime($this->date_in);
-        $date_now=new \DateTime("now"); 
+        $date=new Datetime($this->date_in);
+        $date_now=new DateTime("now");
 
         return $date<=$date_now;
     }
@@ -397,29 +370,20 @@ class Workshop extends \Goteo\Core\Model {
         $this->locationObject = WorkshopLocation::get($this);
         return $this->locationObject;
     }
-    
+
 
     /**
-     * Save.
-     *
-     * @param   type array  $errors
-     * @return  type bool   true|false
+     * @param array $errors
+     * @return bool
      */
     public function save(&$errors = array()) {
 
         if (!$this->validate($errors))
             return false;
 
-        // Dropfiles type always return an array, just get the first element if required
-        if($this->header_image && is_array($this->header_image)) {
-            $this->header_image = $this->header_image[0];
-        } else {
-            $this->header_image = null;
-        }
-
         // TODO: handle uploaded files here?
         // If instanceOf Image, means already uploaded (via API probably), just get the name
-        if($this->header_image instanceOf Image) 
+        if($this->header_image instanceOf Image)
             $this->header_image = $this->header_image->getName();
 
         $fields = array(
@@ -460,10 +424,8 @@ class Workshop extends \Goteo\Core\Model {
     }
 
     /**
-     * Validate.
-     *
-     * @param   type array  $errors     Errores devueltos pasados por referencia.
-     * @return  type bool   true|false
+     * @param array $errors
+     * @return bool
      */
     public function validate(&$errors = array()) {
         if(empty($this->title)) {
@@ -471,8 +433,4 @@ class Workshop extends \Goteo\Core\Model {
         }
         return empty($errors);
     }
-
-
 }
-
-

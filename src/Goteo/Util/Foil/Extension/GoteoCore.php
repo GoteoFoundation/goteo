@@ -17,7 +17,6 @@ use Goteo\Application\Cookie;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Application\App;
-use Goteo\Application\Lang;
 use Goteo\Model\User;
 use Goteo\Model\User\UserLocation;
 use Goteo\Application\Currency;

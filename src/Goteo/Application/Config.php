@@ -11,6 +11,7 @@
 namespace Goteo\Application;
 
 use Composer\Autoload\ClassLoader;
+use Exception;
 use Goteo\Application\Config\ConfigException;
 use Goteo\Application\Config\YamlSettingsLoader;
 use Goteo\Console\UsersSend;
@@ -25,11 +26,17 @@ use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\Routing\Route;
 
 class Config {
+    static public $trans_groups = [
+        'home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs',
+        'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog',
+        'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate',
+        'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups',
+        'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate',
+        'questionnaire', 'poster', 'channel_call', 'map'
+    ];
 
     const ENV_PARAMETER_REG_EX = "/^%env\((.*)\)%$/";
 
-    // Initial translation groups (grouped in yml files into Resources/translations/)
-    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate', 'questionnaire', 'poster', 'channel_call', 'map'];
 	static protected $loader;
     static protected $config;
 
@@ -39,9 +46,10 @@ class Config {
 	static protected $f_locales = __DIR__ . '/../../../Resources/locales.yml';
     static protected $f_currencies = __DIR__ . '/../../../Resources/currencies.yml';
 
-	/**
-	 * Loads all configurations
-	 */
+    /**
+     * Loads all configurations
+     * @throws ConfigException
+     */
 	static public function load($config_file) {
 		try {
             self::$config = self::loadFromYaml(static::$f_defaults);
@@ -106,40 +114,32 @@ class Config {
 
             // Add model zones for the translator
             TranslateController::addTranslateModel('criteria');
-            TranslateController::addTranslateModel('sphere');
-            TranslateController::addTranslateModel('communication');
-            TranslateController::addTranslateModel('call_to_action');
-            TranslateController::addTranslateModel('node');
-            TranslateController::addTranslateModel('node_program');
-            TranslateController::addTranslateModel('node_faq');
-            TranslateController::addTranslateModel('node_faq_question');
-            TranslateController::addTranslateModel('node_faq_download');
-            TranslateController::addTranslateModel('node_sponsor');
-            TranslateController::addTranslateModel('node_team');
-            TranslateController::addTranslateModel('node_resource');
-            TranslateController::addTranslateModel('node_resource_category');
-            TranslateController::addTranslateModel('image_credits');
-            TranslateController::addTranslateModel('node_sections');
-            TranslateController::addTranslateModel('question');
-            TranslateController::addTranslateModel('question_options');
+			TranslateController::addTranslateModel('sphere');
+			TranslateController::addTranslateModel('communication');
+			TranslateController::addTranslateModel('call_to_action');
+			TranslateController::addTranslateModel('node');
+			TranslateController::addTranslateModel('node_program');
+			TranslateController::addTranslateModel('node_faq');
+			TranslateController::addTranslateModel('node_faq_question');
+			TranslateController::addTranslateModel('node_faq_download');
+			TranslateController::addTranslateModel('node_sponsor');
+			TranslateController::addTranslateModel('node_team');
+			TranslateController::addTranslateModel('node_resource');
+			TranslateController::addTranslateModel('node_resource_category');
+			TranslateController::addTranslateModel('image_credits');
+			TranslateController::addTranslateModel('node_sections');
+			TranslateController::addTranslateModel('question');
+			TranslateController::addTranslateModel('question_options');
 
 			// sets up the rest...
 			self::setDirConfiguration();
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			if (PHP_SAPI === 'cli') {
 				throw $e;
 			}
 			View::addFolder(__DIR__ . '/../../../Resources/templates/responsive');
-			// TODO: custom template
-			$info = '';
-			$trace = EventListener\ExceptionListener::jTraceEx($e);
-			if (App::debug()) {
-				$info = '<pre>' . $trace . '</pre>';
-			}
-
             View::setTheme('responsive');
-            // we die here and show a formatted error, most likely reason is a database misconfiguration
-			die(View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => 500], false));
+
 			return;
 		}
 	}
@@ -147,7 +147,8 @@ class Config {
     /**
      * Performs some saving operations to database if required
      */
-    static public function autosave() {
+    static public function autosave(): bool
+    {
         if(!Config::get('autosave')) return false;
 
         $not_cached = !YamlSettingsLoader::getConfigCache(YamlSettingsLoader::getCacheFilename(static::$f_roles))->isFresh();
@@ -157,23 +158,14 @@ class Config {
         return true;
     }
 
-	/**
-	 * Loads a configuration from a file
-	 * @param  [type] $file [description]
-	 * @return [type]       [description]
-	 */
 	static public function loadFromYaml($file) {
 		$locator = new FileLocator(array(dirname($file)));
-
 		$loaderResolver = new LoaderResolver(array(new YamlSettingsLoader($locator)));
 		$delegatingLoader = new DelegatingLoader($loaderResolver);
 
 		return $delegatingLoader->load($file);
 	}
 
-	/**
-	 * Purges all cached setting files
-	 */
 	static public function clearCache() {
 		foreach (YamlSettingsLoader::$cached_files as $file) {
 			unlink($file);
@@ -218,8 +210,6 @@ class Config {
 		AdminController::addSubController('Goteo\Controller\Admin\CommunicationAdminController');
 		AdminController::addSubController('Goteo\Controller\Admin\FilterAdminController');
 		AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
-
-        // TODO: to be replace by the new AdminController
         AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
         AdminController::addSubController('Goteo\Controller\Admin\NodeSubController');
         AdminController::addSubController('Goteo\Controller\Admin\NodesSubController');
@@ -294,14 +284,12 @@ class Config {
 
         // TODO: add a generic matcher processor that uses Symfony Expression Language
         // http://symfony.com/doc/current/components/expression_language/syntax.html
-        //
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor');
         App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\CriteriaInvestMatcherProcessor');
 
 		//Cache dir in libs
 		Cacher::setCacheDir(GOTEO_CACHE_PATH);
 
-		/**********************************/
 		// LEGACY VIEWS
 		// One day, this will be removed, and happiness will spread along the galaxy
 		\Goteo\Core\View::addViewPath(GOTEO_PATH . 'Resources/templates/legacy');
@@ -309,7 +297,6 @@ class Config {
 		\Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/NormalForm/view');
 		//SuperForm views
 		\Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/SuperForm/view');
-		/**********************************/
 
 		// Default consultants to UsersSend
 		if (is_array(Config::get('mail.consultants'))) {
@@ -333,9 +320,6 @@ class Config {
 		// TODO: fire event here
 	}
 
-	/**
-	 * Compatibility constants
-	 */
 	static public function setConstants() {
 		define('GOTEO_MAINTENANCE', self::get('maintenance'));
 		define('GOTEO_SESSION_TIME', self::get('session.time', true));
@@ -364,8 +348,6 @@ class Config {
 		}
 
 		$database = self::get('db.database', true);
-		$username = self::get('db.username', true);
-		$password = self::get('db.password', true);
 		self::set('dsn', "$driver:host=$host;dbname=$database;port=$port;charset=$charset");
 
 		if ($replica = self::get('db.replica.host')) {
@@ -463,10 +445,11 @@ class Config {
 		return self::_set($config[substr($name, 0, $pos)], substr($name, $pos + 1), $value);
 	}
 
-	/**
-	 * Returns a mail (mail.mail, mail.contact, mail.manager) with fallback if not defined
-	 * See config/settings-example.yml (mail part) for values
-	 */
+    /**
+     * Returns a mail (mail.mail, mail.contact, mail.manager) with fallback if not defined
+     * See config/settings-example.yml (mail part) for values
+     * @throws ConfigException
+     */
 	static public function getMail($type = 'mail', $fallback = 'mail') {
 		if (self::get("mail.$type")) {
 			return self::get("mail.$type");
@@ -482,7 +465,6 @@ class Config {
 	/**
 	 * Gets a suitable http(s) link for use
 	 * @param  string $lang ca
-	 * @return [type]       [description]
 	 */
 	static public function getUrl($lang = null) {
 		$url = self::get('url.main');
@@ -507,9 +489,8 @@ class Config {
 
     /**
      * Get sanitized Main URL
-     * @return [type] [description]
      */
-    static public function getMainUrl($schema = true) {
+    static public function getMainUrl(bool $schema = true) {
         $url = self::get('url.main');
         if(strpos($url, '//') === 0) {
             $url = (self::get('ssl') ? 'https:' : 'http:') . $url;

@@ -16,18 +16,18 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\HttpFoundation\Request;
-use Goteo\Library\Text;
-use Goteo\Library\Feed;
-use Goteo\Model\Template;
-use Goteo\Application\Message;
-use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
-use Goteo\Model\User\UserLocation;
-use Goteo\Model\User;
+use Goteo\Application\Message;
+use Goteo\Application\Session;
+use Goteo\Library\Feed;
+use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Goteo\Model\Node;
+use Goteo\Model\User;
+use Goteo\Model\User\UserLocation;
+use PDOException;
+use Symfony\Component\HttpFoundation\Request;
 
 class UsersSubController extends AbstractSubController {
 
@@ -40,9 +40,7 @@ class UsersSubController extends AbstractSubController {
       'impersonate' => 'users-lb-impersonate',
     );
 
-
     static protected $label = 'users-lb';
-
 
     protected $filters = array (
       'interest' => '',
@@ -55,13 +53,8 @@ class UsersSubController extends AbstractSubController {
       'type' => '',
     );
 
-    /**
-     * Some defaults
-     */
     public function __construct($node, User $user, Request $request) {
         parent::__construct($node, $user, $request);
-        // $this->admins = User::getAdmins();
-        // simple list of administrable nodes
         $this->all_nodes = Node::getList();
         $this->nodes = array();
         foreach($user->getAdminNodes() as $node_id => $role) {
@@ -73,13 +66,13 @@ class UsersSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
         return parent::isAllowed($user, $node);
     }
 
-    public function moveAction($id = null, $subaction = null) {
+    public function moveAction($id = null) {
         $user = User::get($id);
         $post_node = $this->getPost('node');
         if(!array_key_exists($user->node, $this->nodes)) {
@@ -114,20 +107,20 @@ class UsersSubController extends AbstractSubController {
 
                 return $this->redirect();
 
-            } catch(\PDOException $e) {
+            } catch(PDOException $e) {
                 Message::error("Ha fallado! " . $e->getMessage());
             }
         }
 
         // vista de acceso a suplantación de usuario
         return array(
-                'template' => 'admin/users/move',
-                'user'   => $user
+            'template' => 'admin/users/move',
+            'user'   => $user
         );
     }
 
 
-    public function impersonateAction($id = null, $subaction = null) {
+    public function impersonateAction($id = null) {
 
         $user = User::get($id);
 
@@ -147,9 +140,7 @@ class UsersSubController extends AbstractSubController {
             });
             Session::destroy();
             Session::setUser($user);
-            // Session::store('shadowed_by', [$this->user->id, $this->user->name, self::getUrl('impersonate', $id)]);
             Session::store('shadowed_by', [$this->user->id, $this->user->name, $this->getReferer() ? $this->getReferer() : self::getUrl('impersonate', $id)]);
-            // Evento Feed
             $log = new Feed();
             $log->setTarget(Session::getUserId(), 'user');
             $log->populate('Suplantación usuario (admin)', self::getUrl(), \vsprintf('El admin %s ha %s al usuario %s', array(
@@ -293,8 +284,7 @@ class UsersSubController extends AbstractSubController {
         return $viewData;
     }
 
-
-    public function editAction($id = null, $subaction = null) {
+    public function editAction($id = null) {
         $user = User::get($id);
 
         if(!array_key_exists($user->node, $this->nodes)) {
@@ -341,15 +331,13 @@ class UsersSubController extends AbstractSubController {
 
         // vista de editar usuario
         return array(
-                'template' => 'admin/users/edit',
-                'user'=>$user,
-                'data'=>$data
+            'template' => 'admin/users/edit',
+            'user'=>$user,
+            'data'=>$data
         );
     }
 
-
-    public function addAction($id = null, $subaction = null) {
-
+    public function addAction() {
         // si llega post: creamos
         if ($this->isPost()) {
 
@@ -376,22 +364,22 @@ class UsersSubController extends AbstractSubController {
 
         // vista de crear usuario
         return array(
-                'template' => 'admin/users/add',
-                'data' => $data
+            'template' => 'admin/users/add',
+            'data' => $data
         );
     }
 
 
-    public function listAction($id = null, $subaction = null) {
+    public function listAction() {
         $filters = $this->getFilters();
         $limit = 20;
         $users = User::getList($filters, array_keys($this->nodes), $this->getGet('pag') * $limit, $limit);
         $total = User::getList($filters, array_keys($this->nodes), 0, 0 , true);
 
         $status = array(
-                    'active' => 'Activo',
-                    'inactive' => 'Inactivo'
-                );
+            'active' => 'Activo',
+            'inactive' => 'Inactivo'
+        );
         $interests = User\Interest::getAll();
         $roles = User::getRolesList();
         $roles['user'] = 'Solo usuario';
@@ -412,7 +400,6 @@ class UsersSubController extends AbstractSubController {
         // proyectos con aportes válidos
         $projects = Invest::projects(true, $this->node);
 
-        // print_r($users);die;
         return array(
                 'template' => 'admin/users/list',
                 'users' => $users,
@@ -427,5 +414,4 @@ class UsersSubController extends AbstractSubController {
                 'limit' => $limit
         );
     }
-
 }
