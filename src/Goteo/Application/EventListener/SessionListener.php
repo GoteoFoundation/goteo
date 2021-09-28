@@ -230,10 +230,11 @@ class SessionListener extends AbstractListener {
         }
     }
 
-    public static function getSubscribedEvents() {
-        return array(
-            KernelEvents::REQUEST => array('onRequest', 50), // High priority
-            KernelEvents::RESPONSE => array('onResponse', -50), // low priority: after headers are processed by symfony
-        );
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            KernelEvents::REQUEST => ['onRequest', 50], // High priority
+            KernelEvents::RESPONSE => ['onResponse', -50], // low priority: after headers are processed by symfony
+        ];
     }
 }
