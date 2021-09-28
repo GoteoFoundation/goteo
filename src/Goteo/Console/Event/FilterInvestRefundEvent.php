@@ -12,9 +12,8 @@ namespace Goteo\Console\Event;
 
 use Goteo\Model\Invest;
 use Goteo\Payment\Method\PaymentMethodInterface;
-
 use Omnipay\Common\Message\ResponseInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class FilterInvestRefundEvent extends Event {
 	protected $invest;

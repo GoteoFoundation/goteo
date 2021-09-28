@@ -10,7 +10,7 @@
 
 namespace Goteo\Application\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Response;
 use Omnipay\Common\Message\ResponseInterface;
 use Goteo\Payment\Method\PaymentMethodInterface;
@@ -21,7 +21,7 @@ class FilterInvestRequestEvent extends Event
     protected $method;
     protected $response;
     protected $http_response;
-    protected $skipMail = false;
+    protected $skip = false;
 
     public function __construct(PaymentMethodInterface $method, ResponseInterface $response)
     {
