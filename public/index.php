@@ -13,8 +13,6 @@ use Goteo\Application\App;
 use Goteo\Application\Config;
 use Symfony\Component\HttpFoundation\Request;
 
-$isDebugEnv = getenv("DEBUG");
-
 //Public Web path
 define('GOTEO_WEB_PATH', __DIR__ . '/');
 
@@ -23,28 +21,21 @@ require_once __DIR__ . '/../src/autoload.php';
 // Create first the request object (to avoid other classes reading from php://input specially)
 $request = Request::createFromGlobals();
 
+ini_set('display_errors', 0);
 error_reporting(E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED); // for symfony user deprecated errors
-
-ini_set('display_errors', $isDebugEnv);
-if ($isDebugEnv) {
-    App::debug(true);
-}
-
-// Bored? Try the hard way and fix some notices:
-//Symfony\Component\Debug\Debug::enable();
 // error handle needs to go after autoload
 set_error_handler('Goteo\Application\App::errorHandler');
 
 $config = getenv('GOTEO_CONFIG_FILE');
-
-if ($isDebugEnv && !is_file($config)) {
-    $config = __DIR__ . '/../config/dev-settings.yml';
-} else if (!is_file($config)) {
-    $config = __DIR__ . '/../config/settings.yml';
-}
+if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
 
 Config::load($config);
 Config::autosave();
+
+if (Config::get('debug')) {
+    ini_set('display_errors', 1);
+    App::debug(true);
+}
 
 if (is_array(Config::get('proxies'))) {
     $request->setTrustedProxies(
@@ -56,7 +47,7 @@ if (is_array(Config::get('proxies'))) {
 //Get from globals defaults
 App::setRequest($request);
 
-if ($isDebugEnv) {
+if (Config::get('debug')) {
     $handler = new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::DEBUG);
     $handler->setFormatter(new Bramus\Monolog\Formatter\ColoredLineFormatter());
 
