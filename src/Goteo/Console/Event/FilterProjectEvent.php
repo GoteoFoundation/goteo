@@ -12,10 +12,8 @@ namespace Goteo\Console\Event;
 
 use DateTime;
 use Goteo\Model\Project;
-
 use Goteo\Model\Contract;
-
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class FilterProjectEvent extends Event {
 	protected $project;

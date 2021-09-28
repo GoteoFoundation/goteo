@@ -15,7 +15,7 @@ use Goteo\Application\View;
 use Goteo\Core\Traits\LoggerTrait;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Util\Form\FormFinder;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

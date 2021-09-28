@@ -11,7 +11,7 @@
 namespace Goteo\Application\Event;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Goteo\Model\Invest;
 use Goteo\Payment\Method\PaymentMethodInterface;
 

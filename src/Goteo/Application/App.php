@@ -12,10 +12,10 @@ namespace Goteo\Application;
 
 use Goteo\Util\Foil\Extension\GoteoCore;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class App extends HttpKernel
 {
