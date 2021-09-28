@@ -84,11 +84,11 @@ class SessionListener extends AbstractListener {
         }
 
         // Redirect if needed
-        if ($host != $request->getScheme() . '://' . $request->getHttpHost()) {
-            $query = http_build_query($request->query->all());
-            $event->setResponse(new RedirectResponse($host . $request->getPathInfo() . ($query ? "?$query" : '')));
-            return;
-        }
+//        if ($host != $request->getScheme() . '://' . $request->getHttpHost()) {
+//            $query = http_build_query($request->query->all());
+//            $event->setResponse(new RedirectResponse($host . $request->getPathInfo() . ($query ? "?$query" : '')));
+//            return;
+//        }
 
         // the stupid cookie EU law
         if (!Cookie::exists('goteo_cookies')) {
