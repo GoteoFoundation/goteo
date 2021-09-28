@@ -72,7 +72,7 @@ class SessionListener extends AbstractListener {
         });
 
         $lang = Lang::setFromGlobals($request);
-//        $host = $parser->getHost($lang);
+        $host = $parser->getHost($lang);
         // Maintain user in secure environment if logged and ssl config on
         if (Config::get('ssl') && Session::isLogged() && !$request->isSecure()) {
             $host = 'https://' . $host;
@@ -81,11 +81,11 @@ class SessionListener extends AbstractListener {
         }
 
         // Redirect if needed
-//        if ($host != $request->getScheme() . '://' . $request->getHttpHost()) {
-//            $query = http_build_query($request->query->all());
-//            $event->setResponse(new RedirectResponse($host . $request->getPathInfo() . ($query ? "?$query" : '')));
-//            return;
-//        }
+        if ($host != $request->getScheme() . '://' . $request->getHttpHost()) {
+            $query = http_build_query($request->query->all());
+            $event->setResponse(new RedirectResponse($host . $request->getPathInfo() . ($query ? "?$query" : '')));
+            return;
+        }
 
         // the stupid cookie EU law
         if (!Cookie::exists('goteo_cookies')) {
