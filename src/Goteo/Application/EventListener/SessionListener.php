@@ -70,13 +70,10 @@ class SessionListener extends AbstractListener {
         Session::onSessionExpires(function () {
             Message::info(Text::get('session-expired'));
         });
-        Session::onSessionDestroyed(function () {
-            //Message::info('That\'s all folks!');
-        });
 
         $lang = Lang::setFromGlobals($request);
-        $host = $parser->getHost($lang);
-        // Mantain user in secure enviroment if logged and ssl config on
+//        $host = $parser->getHost($lang);
+        // Maintain user in secure environment if logged and ssl config on
         if (Config::get('ssl') && Session::isLogged() && !$request->isSecure()) {
             $host = 'https://' . $host;
         } else {
