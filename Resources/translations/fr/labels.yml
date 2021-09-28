@@ -18,6 +18,7 @@ banners-lb-report: 'Rapport de projet'
 banners-lb-translate: 'Traduire la Bannière'
 banners-lb-update: 'Changer l’état de l’apport'
 blog-lb: Blog
+blog-lb-add: 'Nouvelle entrée'
 blog-lb-list: Faire la liste
 blog-lb-translate: 'Traduire l’enregistrement'
 categories-lb: Catégories
@@ -35,10 +36,12 @@ commons-lb-view: 'Gestion des retours'
 communication-lb: 'Communications'
 criteria-lb: 'Critères d''évaluation'
 criteria-lb-add: 'Nouveau critère'
+criteria-lb-edit: 'Modifier le critère'
 criteria-lb-list: Faire la liste
 criteria-lb-translate: 'Traduire le critère'
 faq-lb: FAQ
 faq-lb-add: 'Nouvelle question'
+faq-lb-edit: 'Modifier la question'
 faq-lb-list: Faire la liste
 faq-lb-translate: 'Traduire la question'
 filter-lb: 'Filtres'
@@ -106,6 +109,8 @@ rewards-lb-list: Faire la liste
 sponsors-lb: 'Soutien institutionnel'
 sponsors-lb-list: Faire la liste
 tags-lb: 'Tags de blog'
+tags-lb-add: 'Nouveau tag'
+tags-lb-edit: 'Modification des Tag'
 tags-lb-list: Faire la liste
 templates-lb-list: Faire la liste
 texts-lb-list: Faire la liste
