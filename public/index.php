@@ -23,11 +23,6 @@ $request = Request::createFromGlobals();
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED); // for symfony user deprecated errors
 
-ini_set('display_errors', $isDebugEnv);
-if ($isDebugEnv) {
-    App::debug(true);
-}
-
 // Bored? Try the hard way and fix some notices:
 //Symfony\Component\Debug\Debug::enable();
 // error handle needs to go after autoload
