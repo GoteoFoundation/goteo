@@ -28,7 +28,8 @@ class UrlLang {
     /**
      * Returns false if the requests is configured to skip any cookie setting
      */
-    public function skipSessionManagement() {
+    public function skipSessionManagement(): bool
+    {
         $skip = Config::get('session.skip');
         if ($this->matchPrefix($this->path, $skip)) {
             return true;
@@ -52,7 +53,7 @@ class UrlLang {
             return $host;
         }
 
-        // Routes to alway reditect to the main url
+        // Routes to always redirect to the main url
         $fixed = Config::get('url.redirect.fixed');
         $parts = explode('.', $host);
         $sub_lang = $parts[0];
@@ -67,7 +68,7 @@ class UrlLang {
             if($this->request->query->has('lang')) {
                 $this->request->query->remove('lang');
             }
-            // Login controller should mantaing always the same URL to help browser password management
+            // Login controller should always maintain the same URL to help browser password management
             if($this->matchPrefix($this->path, $fixed)) {
                 // $host = "$host";
                 $this->request->query->set('lang', $lang);
