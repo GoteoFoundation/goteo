@@ -21,6 +21,7 @@ contract-step-documents: Documentatió
 contract-step-entity: 'Entité juridique'
 contract-step-final: Vérification
 contract-step-promoter: Representant
+guide-contract-documents: "Il est obligatoire de télécharger les documents attestant les données saisies et que nous vous détaillons ci-après:- DANS TOUS LES CAS, copie du DNI/NIE de la personne signataire (que ce soit en votre propre nom ou au nom d’une entité)- DANS TOUS LES CAS, copie d’un document sur lequel apparaît (complet) le numéro de compte courant (carnet bancaire, reçus...) - uniquement dans le cas où le contrat est conclu avec une ENTREPRISE, une FONDATION ou une ASSOCIATION:PLUS, copie du CIF et copie du document d’attestation de procuration (procès-verbal de réunion de l’association indiquant clairement le nom et la charge de la personne qui signe le contrat, ou feuille des actes de l’entreprise, ou lettre de pouvoirs indiquant que la personne signataire peut le faire en représentant l’entité)"
 guide-contract-entity: 'Dans cette étape, vous devez remplir les données de l’entité que vous représentez. Si vous signez le contrat en votre propre nom, vous devez revenir à la première étape (« Représentant ») et l’indiquer correctement.'
 guide-contract-final: "Vérifier les données saisies.\n S’il n’y a pas d’erreurs, il peut être fermé pour examen. \nS’il y a des erreurs, elles doivent être corrigées."
 guide-contract-no_entity: 'En tant que promoteur en votre nom et droit, vous n’avez rien à remplir dans cette étape.'
@@ -67,6 +68,7 @@ contract-admin-fields: 'Champs administratifs (à remplir par l''équipe de Gote
 contract-funding-goal: 'Objectifs de financement'
 contract-committed-return: 'Récompenses engagées'
 contract-final-name: 'Nom et prénom (propriétaire ou représentant)'
+contract-final-nif: 'NIF (propriétaire ou représentant)'
 contract-final-office: 'Rôle dans l’association ou l’entité commerciale (uniquement si elle représente une association ou une entité commerciale)'
 contract-final-address: 'Domicile (propriétaire ou représentant)'
 contract-final-location: 'Municipalité (propriétaire ou représentant)'
@@ -74,6 +76,7 @@ contract-final-region: 'Province (propiétaire ou représentant)'
 contract-final-zipcode: 'Code postal (propriétaire ou représentant)'
 contract-final-country: 'Pays (propriétaire ou représentant)'
 contract-final-entity_name: 'Nom ou raison sociale (de l’association ou de la personne morale)'
+contract-final-entity_cif: 'CIF (de l’association ou de la personne morale)'
 contract-final-entity_address: 'Siège social (de l’association ou de la personne morale)'
 contract-final-entity_location: 'Ville (de l’association ou de la personne morale)'
 contract-final-entity_region: 'Province (de l’association ou de la personne morale)'
@@ -81,6 +84,8 @@ contract-final-entity_zipcode: 'Code postal (de l’association ou de la personn
 contract-final-entity_country: 'Pays (de l’association ou de la personne morale)'
 contract-final-reg_name: ' Registre dans lequel l’entité/association a été inscrite'
 contract-final-reg_date: 'Date d’immatriculation de l’entreprise (uniquement si entité commerciale)'
+contract-final-reg_number: 'Numéro d''immatriculation (si association ou entité commerciale)'
+contract-final-reg_idloc: 'Ville d’action du notaire (uniquement si entité commerciale)'
 contract-final-paypal: 'Compte PayPal du projet'
 contract-final-paypal_owner: 'Titulaire du compte paypal'
 contract-final-bank: 'Comptes bancaires du projet'
@@ -90,11 +95,16 @@ contract-validation-ok: Le contrat semble correct. Veuillez vérifier les donné
 contract-non-available: 'Le contrat n’est pas encore disponible'
 contract-validation-errors: Le contrat n’est pas encore terminé!
 contract-validation-error-promoter_nif: 'Le numéro fiscal n''est pas correct'
+contract-validation-error-accounts: 'Champs manquants à remplir dans les comptes'
 contract-validation-error-documents: 'Documentation manquante'
+contract-already-processed: 'Le contrat a déjà été validé.'
+contract-legal-entities-natural-person: Personne physique
+contract-legal-entities-legal-person: Personne morale
 contract-legal-document-type-cif: CIF
 contract-legal-document-type-nif: NIF
 contract-legal-document-type-nie: NIE
 contract-legal-document-type-vat: TVA
+contract-legal-document-type-passport: Passeport
 validate-contract-nif-document-type: 'Le numéro du document ne correspond pas au format de  ce type de document'
 validate-contract-cif-document-type: 'Le numéro du CIF ne correspond pas au format'
 validate-contract-legal-nif-entity-legal: "L’entité juridique ne correspond pas pour ce type de document"
