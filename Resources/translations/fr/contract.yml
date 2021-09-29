@@ -85,6 +85,7 @@ contract-final-entity_country: 'Pays (de l’association ou de la personne moral
 contract-final-reg_name: ' Registre dans lequel l’entité/association a été inscrite'
 contract-final-reg_date: 'Date d’immatriculation de l’entreprise (uniquement si entité commerciale)'
 contract-final-reg_number: 'Numéro d''immatriculation (si association ou entité commerciale)'
+contract-final-reg_id: 'Numéro d''enregistrement du notaire (uniquement si entité commerciale)'
 contract-final-reg_idloc: 'Ville d’action du notaire (uniquement si entité commerciale)'
 contract-final-paypal: 'Compte PayPal du projet'
 contract-final-paypal_owner: 'Titulaire du compte paypal'
