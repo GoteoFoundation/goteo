@@ -85,8 +85,12 @@ contract-final-paypal: 'Compte PayPal du projet'
 contract-final-paypal_owner: 'Titulaire du compte paypal'
 contract-final-bank: 'Comptes bancaires du projet'
 contract-final-bank_owner: 'Titulaire du compte bancaire'
+contract-final-close: 'Valider les données et traiter le contrat'
+contract-validation-ok: Le contrat semble correct. Veuillez vérifier les données et terminer le processus en validant les données.
+contract-non-available: 'Le contrat n’est pas encore disponible'
 contract-validation-errors: Le contrat n’est pas encore terminé!
 contract-validation-error-promoter_nif: 'Le numéro fiscal n''est pas correct'
+contract-validation-error-documents: 'Documentation manquante'
 contract-legal-document-type-cif: CIF
 contract-legal-document-type-nif: NIF
 contract-legal-document-type-nie: NIE
