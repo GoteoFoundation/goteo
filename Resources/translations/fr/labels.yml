@@ -65,6 +65,7 @@ mailing-lb-send: 'Communication envoyée'
 milestones-lb: Étapes importantes
 milestones-lb-add: 'Nouvel objectif'
 milestones-lb-list: Faire la liste
+milestones-lb-translate: 'Traduire étape importante'
 news-lb-list: Faire la liste
 newsletter-lb: Bulletin
 newsletter-lb-init: 'Lancement d’un nouvel envoi'
