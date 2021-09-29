@@ -5,7 +5,7 @@ namespace Goteo\Model\User\Tests;
 
 use Goteo\Model\User\Vip;
 
-class VipTest extends \PHPUnit_Framework_TestCase {
+class VipTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

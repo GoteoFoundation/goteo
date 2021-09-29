@@ -6,7 +6,7 @@ namespace Goteo\Model\Node\Tests;
 use Goteo\Model\Node\NodeProject;
 use Goteo\Application\Exception\ModelNotFoundException;
 
-class NodeProjectTest extends \PHPUnit_Framework_TestCase {
+class NodeProjectTest extends \PHPUnit\Framework\TestCase {
 
   public function testInstance() {
 
@@ -16,7 +16,7 @@ class NodeProjectTest extends \PHPUnit_Framework_TestCase {
 
       return $ob;
   }
-    
+
   /**
    * @depends testInstance
    */
@@ -47,16 +47,16 @@ class NodeProjectTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * @depends testRemoveNodeProject
-   * @expectedException Goteo\Application\Exception\ModelNotFoundException
    */
   public function testNonExisting($node_project) {
+      $this->expectException(ModelNotFoundException::class);
       $ob = NodeProject::get($node_project->node_id);
   }
 
     /**
      * Some cleanup
      */
-    static function tearDownAfterClass() {
+    static function tearDownAfterClass(): void {
       delete_test_project();
       delete_test_node();
   }

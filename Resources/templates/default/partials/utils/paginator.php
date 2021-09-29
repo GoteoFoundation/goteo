@@ -22,7 +22,7 @@ $baselink =  (string) $this->baselink;
 if(empty($baselink)) {
     $baselink = $this->get_pathinfo();
 
-    if($gets = parse_str($this->get_querystring())) {
+    if(parse_str($this->get_querystring(), $gets)) {
         $query_removal =  $this->query_removal;
         if (empty($query_removal) || !is_array($query_removal)) {
             $query_removal = ['pronto'];

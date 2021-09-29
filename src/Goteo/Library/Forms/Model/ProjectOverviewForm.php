@@ -24,6 +24,12 @@ use Goteo\Library\Forms\FormModelException;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Sdg;
 
+use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\UrlType;
+use Goteo\Util\Form\Type\BooleanType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+
+
 
 class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
 
@@ -252,6 +258,30 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'constraints' => $this->getConstraints('social_commitment_description'),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-social-description'), 'rows' => 8]
+            ])
+
+            ->add('sign_check', BooleanType::class, [
+                'label' => 'overview-field-sign-check', // 'overview-field-sign-check',
+                'required' => false,
+                'data' => $model->sign_url && $model->sign_url_action ? true : false,
+                'mapped' => false
+            ])
+
+            ->add('sign_url', UrlType::Class, [
+                'label' => 'overview-field-sign-url',
+                'required' => false,
+                'data' => $model->sign_url,
+                'row_class' => $model->sign_url && $model->sign_url_action ? '' : 'hidden',
+                'attr' => [
+                    'help' => Text::get('overview-field-sign-url-help')
+                ]
+            ])
+
+            ->add('sign_url_action', TextType::class, [
+                'label' => 'overview-field-sign-url-action',
+                'required' => false,
+                'data' => $model->sign_url_action,
+                'row_class' => $model->sign_url && $model->sign_url_action ? '' : 'hidden'
             ])
             ;
 

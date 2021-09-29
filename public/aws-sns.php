@@ -22,12 +22,13 @@ use Goteo\Application\Config;
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 ini_set("display_errors",1);
 
-require_once __DIR__ . '/../src/autoload.php';
+define('GOTEO_WEB_PATH', __DIR__ . '/');
 
+require_once __DIR__ . '/../src/autoload.php';
 
 // Config file...
 $config = getenv('GOTEO_CONFIG_FILE');
-if(!is_file($config)) $config = __DIR__ . '/config/settings.yml';
+if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
 Config::load($config);
 
 try {
@@ -36,15 +37,15 @@ try {
     file_put_contents(GOTEO_LOG_PATH . 'aws-sns-input.log', $contents);
 
     if (!$contents)
-        throw new Exception('No se ha recibido información');
+        throw new Exception('No information received');
 
     $contentsJson = json_decode($contents);
 
     if (!$contentsJson)
-        throw new Exception('La entrada no tiene un código JSON válido');
+        throw new Exception('JSON entry invalid');
 
     if (!AmazonSns::verify($contentsJson, Config::get('mail.sns.client_id'), Config::get('mail.sns.region'), array(Config::get('mail.sns.bounces_topic'), Config::get('mail.sns.complaints_topic'))))
-        throw new Exception('Petición incorrecta');
+        throw new Exception('Invalid petition');
 
     if ($contentsJson->Type == 'SubscriptionConfirmation') {
         //suscribimos (esto solo debe pasar cuando se configura una nueva URL de notificacion)
@@ -69,5 +70,5 @@ try {
     }
 }
 catch (Exception $e) {
-    file_put_contents(GOTEO_LOG_PATH . 'aws-sns-errors.log',$e->getMessage());
+    file_put_contents(GOTEO_LOG_PATH . 'aws-sns-errors.log',date("Y-m-dTH:i:s")." ". $e->getMessage()."\n");
 }

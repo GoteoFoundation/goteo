@@ -5,7 +5,7 @@ namespace Goteo\Library\Tests;
 
 use Goteo\Library\Listing;
 
-class ListingTest extends \PHPUnit_Framework_TestCase {
+class ListingTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

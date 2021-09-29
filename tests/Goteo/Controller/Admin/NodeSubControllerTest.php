@@ -7,7 +7,7 @@ use Goteo\Controller\Admin\NodeSubController;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
-class NodeSubControllerTest extends \PHPUnit_Framework_TestCase {
+class NodeSubControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         $user = new User();
@@ -24,7 +24,7 @@ class NodeSubControllerTest extends \PHPUnit_Framework_TestCase {
     /**
      * Remove temporal files on finish
      */
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass(): void {
          delete_test_node();
     }
 

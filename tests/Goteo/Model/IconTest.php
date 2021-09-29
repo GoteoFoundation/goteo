@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\Icon;
 
-class IconTest extends \PHPUnit_Framework_TestCase {
+class IconTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('id' => 'test', 'name' => 'Test category', 'description' => 'Test description', 'order' => 0);
 

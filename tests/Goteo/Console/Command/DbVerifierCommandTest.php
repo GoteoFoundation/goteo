@@ -5,7 +5,7 @@ namespace Goteo\Command\Tests;
 
 use Goteo\Console\Command\DBVerifierCommand;
 
-class DbVerifierCommandTest extends \PHPUnit_Framework_TestCase {
+class DbVerifierCommandTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

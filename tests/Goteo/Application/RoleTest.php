@@ -4,7 +4,7 @@ namespace Goteo\Application\Tests;
 
 use Goteo\Application\Role;
 
-class RoleTest extends \PHPUnit_Framework_TestCase {
+class RoleTest extends \PHPUnit\Framework\TestCase {
 
 	public function testInstance() {
 
@@ -14,7 +14,7 @@ class RoleTest extends \PHPUnit_Framework_TestCase {
 
 	}
 	public function testDefaults() {
-		$this->assertInternalType('array', Role::getRolePerms('non-existing-role'));
+		$this->assertIsArray(Role::getRolePerms('non-existing-role'));
 		try {
 			Role::addRolePerms('non-existing-role', 'test');
 		} catch (\Exception $e) {
@@ -35,12 +35,12 @@ class RoleTest extends \PHPUnit_Framework_TestCase {
 		Role::addRolesFromArray($roles);
 		$roles = Role::getRoles();
 
-		$this->assertInternalType('array', $roles);
+		$this->assertIsArray($roles);
 		$this->assertArrayHasKey('user1', $roles);
 		$this->assertArrayHasKey('admin1', $roles);
 
-		$this->assertInternalType('array', $roles['user1']);
-		$this->assertInternalType('array', $roles['admin1']);
+		$this->assertIsArray($roles['user1']);
+		$this->assertIsArray($roles['admin1']);
 
 		$this->assertContains('perm1', $roles['user1']);
 		$this->assertContains('perm2', $roles['user1']);
@@ -49,11 +49,9 @@ class RoleTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExtendedRoles() {
-
 		$roles = Role::getRoles();
 		$this->assertContains('perm1', $roles['admin1']);
 		$this->assertContains('perm2', $roles['admin1']);
-
 	}
 
 	public function testRoleExists() {
@@ -95,7 +93,7 @@ class RoleTest extends \PHPUnit_Framework_TestCase {
 
         $permissions = Role::getPerms();
 
-        $this->assertInternalType('array', $permissions);
+        $this->assertIsArray($permissions);
         $this->assertArrayHasKey('perm-test1', $permissions);
         $this->assertArrayHasKey('perm-test2', $permissions);
         $this->assertContains('user_testmodel', $permissions['perm-test2']['relational'], print_r($permissions['perm-test2'], 1));

@@ -4,12 +4,12 @@ namespace Goteo\Util\Tests;
 
 use Goteo\Util\Pagination\Paginated;
 
-class PaginatedTest extends \PHPUnit_Framework_TestCase {
+class PaginatedTest extends \PHPUnit\Framework\TestCase {
 
     protected $page;
 
     //read config
-    public function setUp() {
+    public function setUp(): void {
 
         $this->page = new \stdClass();
 

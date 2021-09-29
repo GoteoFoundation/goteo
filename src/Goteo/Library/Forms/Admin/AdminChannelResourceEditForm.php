@@ -64,11 +64,7 @@ class AdminChannelResourceEditForm extends AbstractFormProcessor {
                 'limit' => 1,
                 'data' => [$resource->image ? $resource->getImage() : null],
                 'label' => 'admin-title-image',
-                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml',
-                'url' => '/api/channel-resources/images',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 1))
-                )
+                'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml'
             ))
             ->add('node_id', 'choice', array(
                 'label' => 'admin-title-channel',
@@ -98,8 +94,16 @@ class AdminChannelResourceEditForm extends AbstractFormProcessor {
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
-       
         $model = $this->getModel();
+
+        if ($data['image']['removed'])
+            if ($model->image->id == current($data['image']['removed'])->id)
+                $model->image = null;
+
+        if ($data['image']['uploads'])
+            $model->image = $data['image']['uploads'];
+
+        unset($data['image']);
         $model->rebuildData($data, array_keys($form->all()));
 
         $errors = [];

@@ -900,7 +900,7 @@ $(function(){
               // console.log('extension',ext,$img.attr('class'));
 
               if(response) {
-                $li.append('<input type="hidden" name="' + $dz.data('current') + '" value="' + name + '">');
+                $li.append('<input type="file" display:"none" name="' + $dz.data('current') + '" value="' + name + '">');
                 if($dz.data('markdown-link')) {
                   $li.find('.add-to-markdown').data('target', $dz.data('markdown-link'));
                   $li.find('.add-to-markdown').removeClass('hidden');
@@ -965,12 +965,19 @@ $(function(){
             var $list = $(this).closest('.image-list-sortable');
             var $form = $(this).closest('form');
             var $error = $zone.next();
+            var image = $li[0].getAttribute('data-name');
             $li.remove();
             $error.addClass('hidden');
             var limit = parseInt($drop.data('limit'));
             var total = $list.find('li').length;
             if(total < limit) {
                 $zone.find('.dragndrop').show();
+            }
+            if ($(this).parent().siblings('input').attr('name').includes("current")) {
+              $removed_input = $("input[name='" + $drop.data('removed') + "[]']");
+              $cloned_input = $removed_input.get(0).cloneNode();
+              $cloned_input.setAttribute('value', image);
+              $removed_input.after($cloned_input);
             }
         });
 

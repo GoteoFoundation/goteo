@@ -179,17 +179,18 @@ namespace Goteo\Model\Blog\Post {
 
         public function validate (&$errors = array()) {
             if (empty($this->text))
-                $errors[] = 'Falta texto';
+                $errors[] = 'Text is missing';
                 //Text::get('mandatory-comment-text');
 
-            if (empty($errors))
-                return true;
-            else
-                return false;
+            return empty($errors);
         }
 
         public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
+
+            if(!$this->date) $this->date = date('Y-m-dTH:i:s');
+            // clean text before saving
+            $this->text = Text::tags_filter($this->text);
 
             $fields = array(
                 'id',
@@ -199,29 +200,17 @@ namespace Goteo\Model\Blog\Post {
                 'user'
                 );
 
-            $set = '';
-            $values = array();
 
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-
-            //eliminamos etiquetas script,iframe..
-            $values[':text']=Text::tags_filter($values[':text']);
 
             try {
-                $sql = "REPLACE INTO comment SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
+                //automatic $this->id assignation
+                $this->dbInsertUpdate($fields);
 
-                // actualizar campo calculado
+                // update counters
                 self::getCount($this->post);
-
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                $errors[] = "Error saving Comment " . $e->getMessage();
                 return false;
             }
         }

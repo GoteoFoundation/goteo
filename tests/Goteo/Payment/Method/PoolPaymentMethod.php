@@ -4,7 +4,7 @@ namespace Goteo\Payment\Tests;
 
 use Goteo\Payment\Method;
 
-class PoolPaymentMethodTest extends \PHPUnit_Framework_TestCase {
+class PoolPaymentMethodTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

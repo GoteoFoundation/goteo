@@ -5,7 +5,7 @@ namespace Goteo\Model\Mail\Tests;
 
 use Goteo\Model\Mail\Metric;
 
-class MetricTest extends \PHPUnit_Framework_TestCase {
+class MetricTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

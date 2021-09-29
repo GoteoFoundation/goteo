@@ -5,7 +5,7 @@ namespace Goteo\Command\Tests;
 
 use Goteo\Console\Command\ProjectWatcherCommand;
 
-class ProjectWatcherCommandTest extends \PHPUnit_Framework_TestCase {
+class ProjectWatcherCommandTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

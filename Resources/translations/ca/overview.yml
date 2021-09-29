@@ -81,3 +81,7 @@ overview-field-sustainability-model: 'Model de sostenibilitat'
 overview-field-sustainability-model-url: 'URL del teu business canvas'
 tooltip-project-sustainability-model: 'Explica el model de sostenibilitat del teu projecte'
 tooltip-project-sustainability-model-url: 'Afegeix una url amb teu <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">business canvas</a>'
+overview-field-sign-check: 'Tens una recollida de signatures oberta relacionada amb el projecte?'
+overview-field-sign-url: "Url per signar"
+overview-field-sign-url-action: "Text per fer una crida a signar"
+overview-field-sign-url-help: "Si paral·lelament a la campanya a Goteo tens una campanya de recollida de signatures en una altra plataforma, pots afegir aquí un botó amb enllaç"

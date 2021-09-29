@@ -209,7 +209,11 @@ class User extends \Goteo\Core\Model {
                     } else {
                         unset($data[':avatar']);
                     }
+                } else if ($this->user_avatar instanceOf Image) {
+                    $data[':avatar'] = $this->user_avatar->id;
+                    $this->avatar = $this->user_avatar;
                 }
+
                 if (empty($this->user_avatar)) {
                     $data[':avatar'] = '';
                     $this->avatar->remove();
@@ -685,7 +689,7 @@ class User extends \Goteo\Core\Model {
 
             return true;
         } catch (\PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
+            $errors[] = $e->getMessage();
             return false;
         }
 
@@ -1778,7 +1782,7 @@ class User extends \Goteo\Core\Model {
             $errors = [];
             // En el contenido:
             $search = array('%USERNAME%', '%URL%');
-            $replace = array($row->name, SEC_URL . '/user/leave/' . \mybase64_encode($token));
+            $replace = array($row->name, SITE_URL . '/user/leave/' . \mybase64_encode($token));
             $content = \str_replace($search, $replace, $template->parseText());
             // Email de recuperacion
             $mail = new Mail();

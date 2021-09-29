@@ -6,7 +6,7 @@ namespace Goteo\Application\Tests;
 use Goteo\Application\Currency;
 use Goteo\Application\Session;
 
-class CurrencyTest extends \PHPUnit_Framework_TestCase {
+class CurrencyTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 
@@ -47,29 +47,23 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
 
         $amount = 100000;
 
-        // to euro
         Session::store('currency', 'EUR');
         $format = Currency::amountFormat($amount);
-        print("[$amount/$format]\n");
         // format must have . for miliar
         $this->assertRegExp('/\d?\.{1}\d?/', $format, $format);
-        $this->assertContains('€', $format);
+        $this->assertStringContainsString('€', $format);
 
-        // to dollar
         Session::store('currency', 'USD');
         $format = Currency::amountFormat($amount);
-        // echo $format."\n";
         // format must have , for miliar
         $this->assertRegExp('/\d?\,{1}\d?/', $format, $format);
-        $this->assertContains('$', $format);
+        $this->assertStringContainsString('$', $format);
 
-        // to pound
         Session::store('currency', 'GBP');
         $format = Currency::amountFormat($amount);
-        // echo $format."\n";
         // format must have , for miliar
         $this->assertRegExp('/\d?\,{1}\d?/', $format, $format);
-        $this->assertContains('£', $format);
+        $this->assertStringContainsString('£', $format);
 
         return true;
     }
@@ -79,7 +73,6 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
         $rate = Currency::rate();
 
         $this->assertNotNull($rate);
-
     }
 
 }

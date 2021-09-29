@@ -4,7 +4,7 @@ namespace Goteo\Payment\Tests;
 
 use Goteo\Payment\Method;
 
-class PaypalPaymentMethodTest extends \PHPUnit_Framework_TestCase {
+class PaypalPaymentMethodTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

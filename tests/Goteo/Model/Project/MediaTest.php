@@ -5,7 +5,7 @@ namespace Goteo\Model\Project\Tests;
 
 use Goteo\Model\Project\Media;
 
-class MediaTest extends \PHPUnit_Framework_TestCase {
+class MediaTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
 

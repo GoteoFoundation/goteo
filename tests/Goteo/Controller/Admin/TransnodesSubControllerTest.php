@@ -7,7 +7,7 @@ use Goteo\Controller\Admin\TransnodesSubController;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 
-class TransnodesSubControllerTest extends \PHPUnit_Framework_TestCase {
+class TransnodesSubControllerTest extends \PHPUnit\Framework\TestCase {
 
     public function testInstance() {
         $user = new User();

@@ -5,7 +5,7 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\Criteria;
 
-class CriteriaTest extends \PHPUnit_Framework_TestCase {
+class CriteriaTest extends \PHPUnit\Framework\TestCase {
 
     private static $data = array('section' => 'test', 'title' => 'Test title', 'order' => 1);
 

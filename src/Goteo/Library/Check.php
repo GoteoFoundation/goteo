@@ -123,7 +123,7 @@ namespace Goteo\Library {
             $vats[] = '(ES)?([0-9A-Z][0-9]{7}[A-Z])|([A-Z][0-9]{7}[0-9A-Z])';
             $vats[] = '(GB)?([1-9][0-9]{2}[0-9]{4}[0-9]{2})|([1-9][0-9]{2}[0-9]{4}[0-9]{2}[0-9]{3})|((GD|HA)[0-9]{3})';
 
-            $expr = '/^('.implode($vats, '|').')$/';
+            $expr = '/^('.implode('|', $vats).')$/';
 
             if (preg_match($expr, $value)) {
                 $type = 'vat';

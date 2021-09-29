@@ -11,8 +11,10 @@
 namespace Goteo\Core\Traits;
 
 use Goteo\Application\App;
+use Goteo\Application\Config;
 use Goteo\Util\Monolog\Processor\WebProcessor;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 /**
  * Trait to add log common methods
