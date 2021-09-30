@@ -20,6 +20,7 @@ banners-lb-update: 'Changer l’état de l’apport'
 blog-lb: Blog
 blog-lb-add: 'Nouvelle entrée'
 blog-lb-list: Faire la liste
+blog-lb-reorder: 'Trier les articles en couverture'
 blog-lb-translate: 'Traduire l’enregistrement'
 categories-lb: Catégories
 categories-lb-add: 'Nouvelle Catégorie'
@@ -29,6 +30,7 @@ categories-lb-list: Faire la liste
 categories-lb-translate: 'Catégorie de traduction'
 commons-lb: 'Retours collectifs'
 commons-lb-add: 'Nouveau retour'
+commons-lb-edit: 'Montage du retour'
 commons-lb-info: 'Informations sur le contact'
 commons-lb-list: Faire la liste
 commons-lb-report: 'Rapport de projet'
@@ -46,10 +48,14 @@ faq-lb-list: Faire la liste
 faq-lb-translate: 'Traduire la question'
 filter-lb: 'Filtres'
 glossary-lb: Glossaire
+glossary-lb-edit: 'Modifier le terme'
 glossary-lb-list: Faire la liste
 glossary-lb-translate: 'Traduire le terme'
+home-lb: 'Éléments en couverture'
+home-lb-list: 'Éléments en couverture'
 icons-lb: 'Type de retour'
 icons-lb-list: Faire la liste
+icons-lb-translate: 'Traduire le Type'
 info-lb-add: 'Créer une idée'
 info-lb-list: Faire la liste
 info-lb-translate: 'Traduire l’idée'
