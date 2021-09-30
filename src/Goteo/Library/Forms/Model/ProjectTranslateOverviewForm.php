@@ -53,7 +53,8 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
                 'label' => 'overview-field-media',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'attr' => ['help' => $project->media]
+
+              'attr' => ['help' => $project->media]
             ])
             ->add('motivation', 'markdown', [
                 'label' => 'overview-field-motivation',
@@ -102,13 +103,15 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
             ])
             ->add('sign_url', UrlType::Class, [
                 'label' => 'overview-field-sign-url',
+                'required' => false,
                 'attr' => [
                     'pre-help' => Text::get('overview-field-sign-url-help')
                 ]
             ])
 
             ->add('sign_url_action', TextType::class, [
-                'label' => 'overview-field-sign-url-action'
+                'label' => 'overview-field-sign-url-action',
+                'required' => false
             ])
             ;
         return $this;

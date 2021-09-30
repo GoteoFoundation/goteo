@@ -127,15 +127,10 @@ class NodeResource extends \Goteo\Core\Model {
         if (!$this->validate($errors))
             return false;
 
-        // Dropfiles type always return an array, just get the first element if required
         if($this->image && is_array($this->image)) {
             $this->image = $this->image[0];
-        } else {
-            $this->image = null;
         }
 
-        // TODO: handle uploaded files here?
-        // If instanceOf Image, means already uploaded (via API probably), just get the name
         if($this->image instanceOf Image) 
             $this->image = $this->image->getName();
 
@@ -155,7 +150,6 @@ class NodeResource extends \Goteo\Core\Model {
         );
 
         try {
-            //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
 
             return true;
