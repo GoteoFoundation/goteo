@@ -306,6 +306,8 @@ admin-aggregate-invests-average: 'Moyenne des contributions'
 admin-aggregate-invests-average-desc: 'Moyenne des apports par unité de temps'
 admin-aggregate-projects: 'Total des recettes dans les projets'
 admin-aggregate-projects-desc: 'Somme des contributions par unité de temps'
+admin-aggregate-projects-average: 'Moyenne des collectes sur les projets'
+admin-aggregate-projects-average-desc: 'Moyenne de collecte par unité de temps'
 admin-stats-invest-totals: 'Contributions et commissions'
 admin-stats-project-totals: 'État des projets'
 admin-stats-raised: 'Chiffre d’affaires brut'
@@ -342,14 +344,17 @@ admin-stats-fees-parts: 'Répartition des commissions'
 admin-stats-invest-active-parts: 'Répartition du bénéfice net'
 admin-stats-invest-in_wallet-parts: 'Répartition du portefeuille'
 admin-losts: Perdues
+admin-raised: collecté
 admin-active: Encaissé
 admin-refunded: Retourné
 admin-refunded-to_users: Retour aux utilisateurs
+admin-refunded-to_users-invests: Nº retours aux utilisateurs
 admin-refunded-to_wallet: Retour au portefeuille
 admin-commissions: Commission
 admin-fees: Commission de la plate-forme
 admin-user-fee: Commission citoyenne
 admin-call-fee: Commission Cofinancement (sans Matchers)
+admin-matcher-fee: Commission des cofinanceurs
 admin-vat: TVA
 admin-diff: Différence
 admin-the_day: Le jour
