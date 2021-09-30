@@ -115,11 +115,13 @@ rewards-lb-edit: 'Gestion de la récompense'
 rewards-lb-list: Faire la liste
 sent-lb-list: 'Emails envoyés'
 sponsors-lb: 'Soutien institutionnel'
+sponsors-lb-add: 'Nouveau commanditaire'
 sponsors-lb-list: Faire la liste
 tags-lb: 'Tags de blog'
 tags-lb-add: 'Nouveau tag'
 tags-lb-edit: 'Modification des Tag'
 tags-lb-list: Faire la liste
+tags-lb-translate: 'Traduire le Tag'
 templates-lb: 'Modèles d''e-mail'
 templates-lb-edit: 'Modifier le modèle'
 templates-lb-list: Faire la liste
