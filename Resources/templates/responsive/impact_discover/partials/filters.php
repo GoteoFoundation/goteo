@@ -24,7 +24,7 @@
             <?php foreach($this->sdgs as $sdg): ?>
               <li>
                 <input type="checkbox" name="<?= $sdg->name ?>" />
-                <img src="./assets/img/sdg/sdg<?= $sdg->id ?>.svg" alt="<?= $sdg->name ?>"/>
+                <img src="/assets/img/sdg/sdg<?= $sdg->id ?>.svg" alt="<?= $sdg->name ?>"/>
                 <?= $sdg->id . $sdg->name ?>
               </li>
             <?php endforeach; ?>
@@ -44,9 +44,9 @@
           </select>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-2 text-right" id="filters-view-as">
-          <a id="activate-mosaic"><img src="./assets/img/icons/mosaic.svg"></a>
-          <a id="activate-projects" class="active"><img src="./assets/img/icons/lists.svg"></a>
-          <a id="activate-map"><img src="./assets/img/icons/map.svg"></a>
+          <a id="activate-mosaic" class="<?= ($this->view == 'mosaic') ? 'active' : '' ?>" href="/impact-discover/mosaic"> <img src="/assets/img/icons/mosaic.svg"> </a>
+          <a id="activate-projects" class="<?= ($this->view == 'list_projects')? 'active' : '' ?>" href="/impact-discover"><img src="/assets/img/icons/lists.svg"></a>
+          <a id="activate-map" class="<?= ($this->view == 'map')? 'active' : '' ?>" href="/impact-discover/map"><img src="/assets/img/icons/map.svg"></a>
         </div>
       </div>
   </div>

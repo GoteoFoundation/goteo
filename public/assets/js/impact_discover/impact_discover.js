@@ -25,8 +25,10 @@ for the JavaScript code in this page.
 
 $(function(){
 
+    const view = document.querySelector('.section[id^=impact-discover]').dataset.view;
+
     var query = {
-        view: 'list_projects',
+        view: view,
         page: 0,
         limit: 9,
         sdg: ''
@@ -50,7 +52,7 @@ $(function(){
     }
     
     let sdgList = [];
-    let view = 'list_projects';
+    const sdgsicons = Array.from(document.querySelectorAll('.sdgicon')).map( (icon) => { return parseInt(icon.dataset.sdg) });
 
     fetch('/api/categories/sdg')
         .then((response) => {
@@ -59,62 +61,79 @@ $(function(){
             else
                 return [];  
         })
-        .then(data => sdgList = data);
+        .then(data => {
 
-    function activateMosaic(event) {
-        if (view != 'mosaic') {
-            view = 'mosaic';
+            sdgList = data;
 
-            document.getElementById('impact-discover-mosaic').classList.add('active');
-            document.getElementById('impact-discover-projects').classList.remove('active');
-            document.getElementById('impact-discover-map').classList.remove('active');
+            const sdgsToActivate = sdgList.filter( (sdg) => {
+                return sdgsicons.includes(sdg.id.toString())
+            })
+        
+            sdgsToActivate.forEach((sdg) => {
+                activateSDG(sdg);
+            })
+        });
 
-            document.getElementById('activate-mosaic').classList.add('active');
-            document.getElementById('activate-projects').classList.remove('active');
-            document.getElementById('activate-map').classList.remove('active');
+    // function activateMosaic(event) {
+    //     if (view != 'mosaic') {
+    //         view = 'mosaic';
 
-            refreshSDG()
-        }
+    //         document.getElementById('impact-discover-mosaic').classList.add('active');
+    //         document.getElementById('impact-discover-projects').classList.remove('active');
+    //         document.getElementById('impact-discover-map').classList.remove('active');
+
+    //         document.getElementById('activate-mosaic').classList.add('active');
+    //         document.getElementById('activate-projects').classList.remove('active');
+    //         document.getElementById('activate-map').classList.remove('active');
+
+    //         refreshSDG()
+    //     }
+    // }
+
+    // function activateProjects(event) {
+
+    //     if (view != 'list_projects') {
+    //         view = 'list_projects';
+
+    //         document.getElementById('impact-discover-mosaic').classList.remove('active');
+    //         document.getElementById('impact-discover-projects').classList.add('active');
+    //         document.getElementById('impact-discover-map').classList.remove('active');
+
+    //         document.getElementById('activate-mosaic').classList.remove('active');
+    //         document.getElementById('activate-projects').classList.add('active');
+    //         document.getElementById('activate-map').classList.remove('active');
+
+    //         refreshSDG() 
+    //     }
+    // }
+
+    // function activateMap(event) {
+
+    //     if (view != 'map') {
+    //         view = 'map';
+
+    //         document.getElementById('impact-discover-mosaic').classList.remove('active');
+    //         document.getElementById('impact-discover-projects').classList.remove('active');
+    //         document.getElementById('impact-discover-map').classList.add('active');
+
+    //         document.getElementById('activate-mosaic').classList.remove('active');
+    //         document.getElementById('activate-projects').classList.remove('active');
+    //         document.getElementById('activate-map').classList.add('active');
+
+    //         $(".more-projects-button").addClass('hidden');
+    //         refreshSDG()
+    //     }
+    // }
+
+    function redirectView(event) {
+        event.preventDefault();
+
+        window.document.location.href = event.target.parentElement.href + '?sdgs=' + getActiveSDG().map((sdg) => sdg.id).join(',');
     }
 
-    function activateProjects(event) {
-
-        if (view != 'list_projects') {
-            view = 'list_projects';
-
-            document.getElementById('impact-discover-mosaic').classList.remove('active');
-            document.getElementById('impact-discover-projects').classList.add('active');
-            document.getElementById('impact-discover-map').classList.remove('active');
-
-            document.getElementById('activate-mosaic').classList.remove('active');
-            document.getElementById('activate-projects').classList.add('active');
-            document.getElementById('activate-map').classList.remove('active');
-
-            refreshSDG() 
-        }
-    }
-
-    function activateMap(event) {
-
-        if (view != 'map') {
-            view = 'map';
-
-            document.getElementById('impact-discover-mosaic').classList.remove('active');
-            document.getElementById('impact-discover-projects').classList.remove('active');
-            document.getElementById('impact-discover-map').classList.add('active');
-
-            document.getElementById('activate-mosaic').classList.remove('active');
-            document.getElementById('activate-projects').classList.remove('active');
-            document.getElementById('activate-map').classList.add('active');
-
-            $(".more-projects-button").addClass('hidden');
-            refreshSDG()
-        }
-    }
-
-    document.getElementById('activate-mosaic').onclick = activateMosaic;
-    document.getElementById('activate-projects').onclick = activateProjects;
-    document.getElementById('activate-map').onclick = activateMap;
+    document.getElementById('activate-mosaic').onclick = redirectView;
+    document.getElementById('activate-projects').onclick = redirectView;
+    document.getElementById('activate-map').onclick = redirectView;
 
     //reset SDG JSON
     function resetSDG() {
@@ -216,13 +235,13 @@ $(function(){
     }
 
     function resetListProjects() {
-        $('.impact-discover-projects > div.container > div').remove();
+        $('#impact-discover-projects > div.container > div').remove();
 
         $(".more-projects-button").removeClass('hidden');
     }
 
     function resetMosaic() {
-        $('.impact-discover-projects > div.container > div').remove();
+        $('#impact-discover-mosaic > div.container > div').remove();
 
         $(".more-projects-button").removeClass('hidden');
     }
@@ -286,6 +305,8 @@ $(function(){
         });
     }
 
+    if (view == 'map')
+        loadMapProjects(sdgList);
 
     function loadListProjects(sdg) {
         $('.impact-discover-projects > div.container').after('<div class="loading-container"></div>');

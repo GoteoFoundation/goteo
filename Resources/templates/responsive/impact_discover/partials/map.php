@@ -2,7 +2,7 @@
   $map = $this->map;
 ?>
 
-<div id="impact-discover-map" class="section impact-discover-map">
+<div id="impact-discover-map" class="section impact-discover-map" data-view=<?= $this->view ?>>
     <div class="container">
 
       <div id="map" class="osm-map"

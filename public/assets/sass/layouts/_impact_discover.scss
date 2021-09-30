@@ -2,13 +2,6 @@
 
 .section {
     padding-bottom: 5rem;
-
-    display: none;
-
-    &.active {
-        display: block;
-    }
-
 }
 
 .impact-discover-sdg-list {
@@ -216,8 +209,6 @@
 }
 
 .impact-discover-projects {
-    display: none;
-
     padding-bottom: 5em;
 
     .row {
