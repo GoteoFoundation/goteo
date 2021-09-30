@@ -122,6 +122,7 @@ class Config {
             TranslateController::addTranslateModel('node_sections');
             TranslateController::addTranslateModel('question');
             TranslateController::addTranslateModel('question_options');
+			TranslateController::addTranslateModel('impact_data');
 
 			// sets up the rest...
 			self::setDirConfiguration();
@@ -218,6 +219,7 @@ class Config {
 		AdminController::addSubController('Goteo\Controller\Admin\CommunicationAdminController');
 		AdminController::addSubController('Goteo\Controller\Admin\FilterAdminController');
 		AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
+		AdminController::addSubController('Goteo\Controller\Admin\ImpactDataAdminController');
 
         // TODO: to be replace by the new AdminController
         AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
