@@ -149,6 +149,7 @@ admin-channelsection-button: 'Bouton'
 admin-channelsection-create: 'Créer'
 admin-channelsection-add: 'Ajouter une section'
 admin-channelpost-add: Ajouter un témoignage à la chaîne
+admin-channelpost-submit: Enregistrer la publication
 admin-channelpost-correct: 'Le témoignage a été ajouté à la chaîne'
 admin-channelcriteria-title: 'Quiz de la chaine'
 admin-channelcriteria-subtitle: 'Définissez les critères avec lesquels vous évaluerez un projet qui souhaite se présenter à votre chaîne. Essayez d’être concis dans ce que vous espérez tirer des initiatives que vous voulez présenter, aidera à vous faciliter l’évaluation finale.'
@@ -343,6 +344,7 @@ admin-stats-invest-in_wallet-parts: 'Répartition du portefeuille'
 admin-losts: Perdues
 admin-active: Encaissé
 admin-refunded-to_users: Retour aux utilisateurs
+admin-refunded-to_wallet: Retour au portefeuille
 admin-commissions: Commission
 admin-fees: Commission de la plate-forme
 admin-user-fee: Commission citoyenne
@@ -484,6 +486,29 @@ admin-filter-typeofuser: 'Type d''utilisateur'
 admin-filter-typeofdonor: 'Type de donateur'
 admin-filter-user: 'Utilisateur'
 admin-filter-donor: 'Donateur'
+admin-filter-no-donor: 'Donateur inactif'
+admin-filter-promoter: 'Promoteur'
+admin-filter-matcher: 'Co-financeur'
+admin-filter-test: 'Test'
+admin-filter-type-unique: 'Unique'
+admin-filter-type-multidonor: 'Multidonateur'
+admin-filter-type-foundation-donor: 'Donateur à la fondation'
+admin-filter-type-all: 'Tous'
+admin-filter-predefined-date: 'Date par défaut'
+admin-filter-predefined-date-choose: 'Vous pouvez sélectionner une date par défaut'
+admin-filter-forced: 'Forcer le filtre'
+admin-filter-forced-help: 'Si vous sélectionnez cette option, les filtres s’appliqueront indépendamment de ce que l’utilisateur a choisi comme préférence pour l’envoi d’informations par la plate-forme.'
+admin-filter-project-status: État du projet
+admin-filter-invest-status: État du don
+admin-filter-project-location: Emplacement du projet
+admin-filter-location: Emplacement à utiliser dans le filtre
+admin-filter-donor-location: Emplacement du donateur
+admin-filter-donor-status: Etat du certificat
+admin-mail-body: 'Corps du message'
+admin-stats-donations: 'Dons'
+admin-stats-donations-method: 'Dons selon le mode de paiement'
+admin-stats-donations-method-desc: 'Les dons comprennent l’argent que l’utilisateur donne volontairement à la fondation lorsqu’il apporte à un projet, des dons directs ou lorsque le montant dans le portefeuille expire.'
+admin-stats-donations-tip: 'Dons lors de contributions à des projets (Conseils ou « tips »)'
 admin-donations-amount-percent: '% d’argent donné'
 admin-donations-users-percent: '% des utilisateurs donateurs'
 admin-donations-tip-percent: '% d’argent en pourboires'
