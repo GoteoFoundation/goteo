@@ -113,6 +113,7 @@ reviews-lb-list: Faire la liste
 rewards-lb: Récompenses
 rewards-lb-edit: 'Gestion de la récompense'
 rewards-lb-list: Faire la liste
+sent-lb-list: 'Emails envoyés'
 sponsors-lb: 'Soutien institutionnel'
 sponsors-lb-list: Faire la liste
 tags-lb: 'Tags de blog'
