@@ -113,19 +113,32 @@ tags-lb: 'Tags de blog'
 tags-lb-add: 'Nouveau tag'
 tags-lb-edit: 'Modification des Tag'
 tags-lb-list: Faire la liste
+templates-lb: 'Modèles d''e-mail'
+templates-lb-edit: 'Modifier le modèle'
 templates-lb-list: Faire la liste
+texts-lb: 'Textes interférés'
+texts-lb-edit: 'Montage original'
 texts-lb-list: Faire la liste
 translates-lb: 'Traductions des projets'
+translates-lb-add: 'Permettre la traduction'
 translates-lb-edit: 'Attribuer la traduction'
 translates-lb-list: Liste
+translates-lb-translate: 'Traduire le texte'
+transnodes-lb: 'Traductions de nœuds'
+transnodes-lb-edit: 'Attribuer la traduction'
 transnodes-lb-list: Faire la liste
 users-lb: Utilisateurs
 users-lb-add: 'Création d’un utilisateur'
+users-lb-edit: 'Modifier l''utilisateur'
+users-lb-impersonate: 'Se faire passer pour l’utilisateur'
 users-lb-list: Faire la liste
 users-lb-manage: 'Gestion des utilisateurs'
 users-lb-move: 'Déplacer dans un autre nœud de l’utilisateur'
 workshop-lb: 'Ateliers'
+word-lb: 'Nombre de mots'
 word-lb-list: Faire la liste
+worth-lb: 'Niveaux de méritocratie'
+worth-lb-edit: 'Elaboration du niveau'
 worth-lb-list: Faire la liste
 stats-lb: Stats & data
 stories-lb: 'Récit utilisateur'
