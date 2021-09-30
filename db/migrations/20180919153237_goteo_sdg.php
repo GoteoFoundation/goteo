@@ -119,7 +119,15 @@ class GoteoSdg
     foreach($footprints[$sql_lang] as $id => $line) {
       $foot = new Footprint(['name' => $line[0]]);
       $errors = [];
-      if(!$foot->save($errors)) {
+      $fields = ['name', 'icon', 'description'];
+
+      try {
+          $foot->dbInsertUpdate($fields);
+      }
+      catch(\PDOException $e) {
+          $errors[] = 'Error saving footprint: ' . $e->getMessage();
+      }
+      if(!empty($errors)) {
         throw new \RuntimeException("Error saving main Footprint object [$id] " . implode("\n", $errors));
       }
       if($line[1]) $foot->addSdgs($line[1]);
