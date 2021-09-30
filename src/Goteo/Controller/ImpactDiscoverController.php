@@ -36,42 +36,86 @@ class ImpactDiscoverController extends \Goteo\Core\Controller {
     /*
      * Discover projects, general page
      */
-    public function indexAction ($filter = '', Request $request) {
+    public function indexAction (Request $request) {
         
+        $filters = [];
+        $sdgSelected = [];
+
+        if ($request->query->has('sdgs') && !empty($request->query->get('sdgs'))) {
+            $sdgSelected = explode(',', $request->query->get('sdgs'));
+            $filters['sdgs'] = $sdgSelected;
+        }
+
         $footprints = Footprint::getList();
         $sdgs_count = Sdg::getList([],0,0,true);
         $sdgs = Sdg::getList([],0,$sdgs_count);
 
-
-        $total = Project::getByFootprintOrSDGs([], 0, 0, true);
-        $projects = Project::getByFootprintOrSDGs([], 0, 9); // TODO: Define what projects should be listed here.
+        $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
+        $projects = Project::getByFootprintOrSDGs($filters, 0, 9);
 
         return $this->viewResponse('impact_discover/index', [
             'footprints' => $footprints,
             'sdgs' => $sdgs,
-            'map' => $map,
+            'sdgSelected' => $sdgSelected,
             'projects' => $projects,
-            'total' => $total
+            'total' => $total,
+            'view' => 'list_projects'
         ]);
 
     }
 
-    public function mapAction($filter = '', Request $request) {
+    public function mapAction(Request $request) {
+
+        $sdgSelected = [];
+        if ($request->query->has('sdgs') && !empty($request->query->get('sdgs'))) {
+            $sdgSelected = explode(',', $request->query->get('sdgs'));
+            $filters['sdgs'] = $sdgSelected;
+        }
+
         $map = new MapOSM('100%');
         $footprints = Footprint::getList();
         $sdgs_count = Sdg::getList([],0,0,true);
         $sdgs = Sdg::getList([],0,$sdgs_count);
 
         $total = Project::getByFootprintOrSDGs([], 0, 0, true);
-        $projects = Project::getByFootprintOrSDGs([], 0, 9); // TODO: Define what projects should be listed here.
+        $projects = Project::getByFootprintOrSDGs([], 0, 9);
 
         return $this->viewResponse('impact_discover/map', [
             'footprints' => $footprints,
             'sdgs' => $sdgs,
+            'sdgSelected' => $sdgSelected,
             'map' => $map,
             'projects' => $projects,
-            'total' => $total
+            'total' => $total,
+            'view' => 'map'
         ]);
     }
+
+    public function mosaicAction(Request $request) {
+        $filters = [];
+        $sdgSelected = [];
+
+        if ($request->query->has('sdgs') && !empty($request->query->get('sdgs'))) {
+            $sdgSelected = explode(',', $request->query->get('sdgs'));
+            $filters['sdgs'] = $sdgSelected;
+        }
+
+        $footprints = Footprint::getList();
+        $sdgs_count = Sdg::getList([],0,0,true);
+        $sdgs = Sdg::getList([],0,$sdgs_count);
+
+        $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
+        $projects = Project::getByFootprintOrSDGs($filters, 0, 9);
+
+        return $this->viewResponse('impact_discover/mosaic', [
+            'footprints' => $footprints,
+            'sdgs' => $sdgs,
+            'sdgSelected' => $sdgSelected,
+            'projects' => $projects,
+            'total' => $total,
+            'view' => 'mosaic'
+        ]);
+    }
+
 }
 

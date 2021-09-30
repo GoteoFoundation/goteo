@@ -5,6 +5,14 @@
 
         <div class="row" id="sdg-icons">
             <div class="col col-xs-12 col-sm12">
+                <?php foreach($this->sdgSelected as $sdg): ?>
+                    <div class="sdgicon" data-sdg="<?= $sdg ?>">
+                        <img src="/assets/img/sdg/sdg<?= $sdg ?>.svg">
+                        <a class="close flip" href="#">
+                            <i class="icon icon-close"></i>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
