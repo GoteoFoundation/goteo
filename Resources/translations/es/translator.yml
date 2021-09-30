@@ -18,6 +18,8 @@ translator-feed-translated-desc: '%LINK% traducido por %USER% a %LANGS%'
 translator-feed-translated-target: 'Traducción en %s'
 translator-field-blog: Blog
 translator-field-content: Contenido
+translator-field-data: 'Dato'
+translator-field-data_unit: 'Unidad'
 translator-field-description: Descripción
 translator-field-facebook_msg: 'Mensaje de facebook'
 translator-field-facebook_msg_owner: 'Autor de facebook'

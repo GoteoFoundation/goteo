@@ -506,4 +506,15 @@ $api->add('api-sdg-footprint-list', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::sdgFootprintAction')
 ));
 
+// ImpactData images upload (POST method only)
+$api->add('api-impact-data-images-upload', new Route(
+    '/impactdata/images',
+    array('_controller' => 'Goteo\Controller\Api\ImpactDataApiController::uploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 return $api;

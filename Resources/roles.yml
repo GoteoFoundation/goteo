@@ -98,6 +98,7 @@ consultant:
         - admin-module-promote # Can access to promote admin module
         - admin-module-workshops # Can access to workshops admin module
         - admin-module-channel-resource # Can access to channel resource admin module
+        - admin-module-impact_data # Can access to Impact Data
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 60
 
