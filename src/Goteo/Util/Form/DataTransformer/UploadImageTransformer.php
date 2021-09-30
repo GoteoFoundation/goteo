@@ -20,6 +20,7 @@ class UploadImageTransformer implements DataTransformerInterface {
                 // Convert File to Image
                 if(!$img instanceOf Image) {
                     $image[$i] = new Image($img);
+                    $image[$i]->save();
                 }
             }
         }

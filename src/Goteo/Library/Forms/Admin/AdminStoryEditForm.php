@@ -28,7 +28,7 @@ class AdminStoryEditForm extends ProjectStoryForm {
 
     public function createForm() {
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
+        /** @var Stories $story */
         $story = $this->getModel();
         $data = $options['data'];
         parent::createForm();
@@ -36,37 +36,23 @@ class AdminStoryEditForm extends ProjectStoryForm {
             ->add('image', 'dropfiles', [
                 'label' => 'story-field-image',
                 'disabled' => $this->getReadonly(),
-                'url' => '/api/stories/images',
                 'required' => true,
                 'data' => $story->getImage(),
-                'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1]),
-                    ]
+                'limit' => 1
             ])
             ->add('pool_image', 'dropfiles', [
                 'label' => 'story-field-pool-image',
                 'disabled' => $this->getReadonly(),
                 'data' => $story->getPoolImage(),
-                'url' => '/api/stories/images',
                 'required' => false,
-                'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1]),
-                    ]
-
+                'limit' => 1
             ])
             ->add('background_image', 'dropfiles', [
                 'label' => 'story-field-background-image',
                 'disabled' => $this->getReadonly(),
                 'data' => $story->getBackgroundImage(),
-                'url' => '/api/stories/images',
                 'required' => false,
-                'limit' => 1,
-                'constraints' => [
-                        new Constraints\Count(['max' => 1]),
-                    ]
-
+                'limit' => 1
             ])
             ->add('background_image_credits', 'text', array(
                 'label' => 'story-field-background-image-credits',
@@ -160,6 +146,14 @@ class AdminStoryEditForm extends ProjectStoryForm {
 
         $data = $form->getData();
         $model = $this->getModel();
+
+        $this->processImageChange($data['image'], $model->image);
+        $this->processImageChange($data['background_image'], $model->background_image, false);
+        $this->processImageChange($data['pool_image'], $model->pool_image, false);
+
+        unset($data['image']);
+        unset($data['background_image']);
+        unset($data['pool_image']);
         $model->rebuildData($data, array_keys($form->all()));
 
         $errors = [];
@@ -167,13 +161,12 @@ class AdminStoryEditForm extends ProjectStoryForm {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
 
-        if ($model->background_image && $data['background_image_credits']) {
+        if ($model->background_image && $data['background_image_credits_credits']) {
             $model->background_image->setCredits($data['background_image_credits']);
         }
-        
+
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }
-
 }

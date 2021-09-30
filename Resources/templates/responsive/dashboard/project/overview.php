@@ -22,3 +22,26 @@
 </div>
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+<script>
+
+$(function(){
+  $('#autoform_sign_check').change(function() {
+    $('#form-sign_url').toggleClass('hidden');
+    $('#form-sign_url_action').toggleClass('hidden');
+
+    if (! $(this).is(':checked') ) {
+      $('#autoform_sign_url').val('');
+      $('#autoform_sign_url').prop('required', false);
+      $('#autoform_sign_url_action').val('');
+      $('#autoform_sign_url_action').prop('required', false);
+    } else {
+      $('#autoform_sign_url').prop('required', true);
+      $('#autoform_sign_url_action').prop('required', true);
+    }
+  })
+});
+
+</script>
+<?php $this->append() ?>
