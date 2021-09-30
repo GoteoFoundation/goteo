@@ -34,6 +34,7 @@ role-perm-name-publish-calls: 'Vous pouvez publier/dépublier des appels d’off
 role-perm-name-edit-calls: 'Vous pouvez modifier les appels attribués en tant que conseiller'
 role-perm-name-remove-calls: 'Vous pouvez supprimer les appels attribués en tant que conseiller'
 role-perm-name-publish-any-call: 'Vous pouvez publier/dépublier n’importe quel appel'
+role-perm-name-impersonate-owners: 'On peut dépersonnaliser les porteurs des projets assignés en tant que conseiller'
 role-perm-name-assign-checker: 'Vous pouvez affecter des utilisateurs comme réviseurs'
 role-perm-name-publish-any-project: 'Vous pouvez publier/dépublier n’importe quel projet'
 role-perm-name-assign-consultant: 'Vous pouvez affecter des conseillers à n’importe quel projet ou appel'
