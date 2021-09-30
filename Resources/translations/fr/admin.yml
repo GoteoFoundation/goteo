@@ -343,12 +343,14 @@ admin-stats-invest-active-parts: 'Répartition du bénéfice net'
 admin-stats-invest-in_wallet-parts: 'Répartition du portefeuille'
 admin-losts: Perdues
 admin-active: Encaissé
+admin-refunded: Retourné
 admin-refunded-to_users: Retour aux utilisateurs
 admin-refunded-to_wallet: Retour au portefeuille
 admin-commissions: Commission
 admin-fees: Commission de la plate-forme
 admin-user-fee: Commission citoyenne
 admin-call-fee: Commission Cofinancement (sans Matchers)
+admin-vat: TVA
 admin-diff: Différence
 admin-the_day: Le jour
 admin-the_week: La semaine
@@ -510,16 +512,29 @@ admin-stats-donations-method: 'Dons selon le mode de paiement'
 admin-stats-donations-method-desc: 'Les dons comprennent l’argent que l’utilisateur donne volontairement à la fondation lorsqu’il apporte à un projet, des dons directs ou lorsque le montant dans le portefeuille expire.'
 admin-stats-donations-tip: 'Dons lors de contributions à des projets (Conseils ou « tips »)'
 admin-stats-donations-direct: 'Dons directs (y compris les portefeuilles expirés)'
+admin-stats-donations-generosity: 'Pourcentages de générosité'
+admin-stats-donations-generosity-desc: 'Quantités d’utilisateurs avec dons par rapport aux quantités totales. Seuls les projets bénéficiant de dons sont pris en compte.'
+admin-stats-donations-expired: 'Dons directs en raison des portefeuilles expirés'
+admin-stats-donations-refunded: 'Dons qui ont été retournés en raison de projets ratés'
+admin-donations: Dons
+admin-donations-tip: Pourboires
+admin-donations-tip-invests: Contributions avec pourboires
+admin-donations-tip-users: Utilisateurs avec pourboire
+admin-donations-direct: Dons Directs
+admin-donations-expired: Dons expirés
+admin-donations-refunded: Dons retournés
 admin-donations-amount-percent: '% d’argent donné'
 admin-donations-users-percent: '% des utilisateurs donateurs'
 admin-donations-tip-percent: '% d’argent en pourboires'
 admin-donations-direct-percent: '% argent direct'
 admin-workshop: Ateliers Goteo
 admin-workshop-add: Créer un nouvel atelier
+admin-workshop-edit: Modification de l’atelier %s
 admin-workshop-edit-success: L’ouverture de l’atelier a été réalisée correctement
 admin-online: En ligne
 mandatory-filter-name: Nom manquant
 mandatory-filter-description: Description manquante
+mandatory-filter-role: Il manque un rôle
 admin-node-iframe: Iframe
 admin-channel-resource: 'Ressources du Canal'
 admin-channel-resource-add: 'Créer une ressource'
