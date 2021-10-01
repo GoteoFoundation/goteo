@@ -74,7 +74,11 @@ milestones-lb: Étapes importantes
 milestones-lb-add: 'Nouvel objectif'
 milestones-lb-list: Faire la liste
 milestones-lb-translate: 'Traduire étape importante'
+news-lb: Flash d'informations
+news-lb-add: 'Nouveau flash d''information'
+news-lb-edit: 'Montage de Micronews'
 news-lb-list: Faire la liste
+news-lb-translate: 'Traduire Micronews'
 newsletter-lb: Bulletin
 newsletter-lb-init: 'Lancement d’un nouvel envoi'
 newsletter-lb-list: 'État de l’expédition automatique'
