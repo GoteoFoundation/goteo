@@ -12,6 +12,7 @@
 namespace Goteo\Util\Form\Type;
 
 use Goteo\Model\Contract\BaseDocument;
+use Goteo\Model\Contract\Document;
 use Goteo\Model\Image;
 use Goteo\Library\Text;
 
@@ -26,6 +27,8 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
+use Goteo\Application\Exception\ModelNotFoundException;
+
 /**
  *
  * This class creates a Symfony Form Type uploading files using Dropzone (needs assets/js/forms.js)
@@ -35,6 +38,7 @@ class DropfilesType extends FileType
 {
 
     const TYPE_DOCUMENT = 'document';
+    const TYPE_CONTRACT = 'contract';
 
     /**
      * {@inheritdoc}
@@ -45,7 +49,7 @@ class DropfilesType extends FileType
         $this->addUploadsViewFileType($builder);
         $this->addUploadsFieldModelTransformer($options, $builder);
         $this->addRemovedViewCollectionType($builder);
-        $this->addRemovedFieldModelTransformer($builder);
+        $this->addRemovedFieldModelTransformer($options, $builder);
         $this->addViewTransformer($options, $builder);
     }
 
@@ -76,6 +80,8 @@ class DropfilesType extends FileType
     ) {
         if ($options['type'] == DropfilesType::TYPE_DOCUMENT) {
             $this->addUploadsTransformerAsDocument($builder);
+        } else if ($options['type'] == DropfilesType::TYPE_CONTRACT) {
+            $this->addUploadsTransformerAsContractDocument($builder);
         } else {
             $builder->get('uploads')
                 ->addModelTransformer(new $options['upload_transformer']);
@@ -105,6 +111,30 @@ class DropfilesType extends FileType
             ));
     }
 
+    private function addUploadsTransformerAsContractDocument(FormBuilderInterface $builder)
+    {
+        $builder->get('uploads')
+            ->addModelTransformer(new CallbackTransformer(
+                function($image) {
+                    return null;
+                },
+                function($image) {
+                    if(is_array($image)) {
+                        foreach($image as $i => $img) {
+                            if(!$img) continue;
+
+                            if(!$img instanceOf Document) {
+                                $image[$i] = new Document($img);
+                                $image[$i]->save();
+                            }
+                        }
+                    }
+                    return $image;
+                }
+            ));
+    }
+
+
     private function addRemovedViewCollectionType(FormBuilderInterface $builder)
     {
         $builder->add('removed', CollectionType::class, [
@@ -113,22 +143,25 @@ class DropfilesType extends FileType
         ]);
     }
 
-    private function addRemovedFieldModelTransformer(FormBuilderInterface $builder)
-    {
+    private function addRemovedFieldModelTransformer(
+        array $options,
+        FormBuilderInterface $builder
+    ) {
         $builder->get('removed')
             ->addModelTransformer( new CallbackTransformer(
                 function($image) {
                     return $image;
                 },
-                function($image) {
+                function($image) use($options) {
                     $images = [];
-
                     foreach($image as  $img) {
                         if (!$img)
                             continue;
-                        if ($img = Image::get($img))
+                        if ($options['type'] == DropfilesType::TYPE_DOCUMENT && $img = BaseDocument::getByName($img))
                             $images[] = $img;
-                        else if ($img = BaseDocument::get($img))
+                        else if ($options['type'] == DropfilesType::TYPE_CONTRACT && $img = Document::getByName($img))
+                            $images[] = $img;
+                        else if ($img = Image::get($img))
                             $images[] = $img;
                     }
 
