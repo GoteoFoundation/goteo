@@ -2,6 +2,7 @@
 accounts-lb: Contributions
 accounts-lb-add: 'Contribution manuelle'
 accounts-lb-cancel: 'Annulation de la contribution'
+accounts-lb-cancel-pool: 'Annulation de l’option de crédit'
 accounts-lb-details: 'Détails de l’apport'
 accounts-lb-execute: 'Exécution du coût'
 accounts-lb-list: Faire la liste
@@ -14,6 +15,7 @@ banners-lb-cancel: 'Annulation de la contribution'
 banners-lb-details: 'Détails de l’apport'
 banners-lb-edit: 'Modification de la bannière'
 banners-lb-list: Faire la liste
+banners-lb-move: 'Relocalisation de l’apport'
 banners-lb-report: 'Rapport de projet'
 banners-lb-translate: 'Traduire la Bannière'
 banners-lb-update: 'Changer l’état de l’apport'
@@ -109,10 +111,13 @@ promote-lb-edit: 'Montage en vedette'
 promote-lb-list: Faire la liste
 recent-lb: 'Activité récente'
 recent-lb-list: Faire la liste
+reviews-lb-add: 'Briefing de départ'
+reviews-lb-edit: 'Briefing d’émission'
 reviews-lb-list: Faire la liste
 rewards-lb: Récompenses
 rewards-lb-edit: 'Gestion de la récompense'
 rewards-lb-list: Faire la liste
+sent-lb: 'Historique d''Envoi'
 sent-lb-list: 'Emails envoyés'
 sponsors-lb: 'Soutien institutionnel'
 sponsors-lb-add: 'Nouveau commanditaire'
