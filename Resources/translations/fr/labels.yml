@@ -19,6 +19,7 @@ banners-lb-move: 'Relocalisation de l’apport'
 banners-lb-report: 'Rapport de projet'
 banners-lb-translate: 'Traduire la Bannière'
 banners-lb-update: 'Changer l’état de l’apport'
+banners-lb-viewer: "Visualisation des logs\n"
 blog-lb: Blog
 blog-lb-add: 'Nouvelle entrée'
 blog-lb-list: Faire la liste
@@ -80,6 +81,7 @@ news-lb-edit: 'Montage de Micronews'
 news-lb-list: Faire la liste
 news-lb-translate: 'Traduire Micronews'
 newsletter-lb: Bulletin
+newsletter-lb-detail: 'Voir les destinataires'
 newsletter-lb-init: 'Lancement d’un nouvel envoi'
 newsletter-lb-list: 'État de l’expédition automatique'
 node-lb: 'Données de la chaine'
@@ -111,10 +113,13 @@ projects-lb-open_tags: 'Attribuer un groupement au projet'
 projects-lb-rebase: 'Changer l’ID du projet'
 projects-lb-report: 'Rapport financier du projet'
 promote-lb: 'Projets favoris'
+promote-lb-add: 'Nouveau projet remarquable'
 promote-lb-edit: 'Montage en vedette'
 promote-lb-list: Faire la liste
+promote-lb-translate: 'Traduire projet en vedette'
 recent-lb: 'Activité récente'
 recent-lb-list: Faire la liste
+reviews-lb: Révisions
 reviews-lb-add: 'Briefing de départ'
 reviews-lb-edit: 'Briefing d’émission'
 reviews-lb-list: Faire la liste
