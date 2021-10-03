@@ -186,6 +186,7 @@ admin-project-to-negotiation-sure: 'ALERTE!! Le projet est en campagne! Avec ça
 admin-project-to-publish: 'Publier'
 admin-project-to-publish-desc: 'Passer le projet à l’état « En campagne »'
 admin-project-to-publish-sure: 'Le projet va commencer sa campagne, Voulez-vous continuer?'
+admin-project-derivation-discard: 'Rejet mais avec une redirection '
 admin-project-derivation-discard-desc: 'Passe le projet à l’état Rejeté et envoie un mail l''orientant vers une autre plate-forme plus appropriée'
 admin-project-derivation-discard-sure: 'Un mail sera envoyé automatiquement à une autre plate-forme et passera à l’état exclu, d’accord?'
 admin-home-title: Administrer Goteo
@@ -261,6 +262,7 @@ admin-title-blockquote: 'Citation personnalisée'
 admin-title-type: 'Type'
 admin-title-date-in: Date de début
 admin-title-date-out: Date de fin
+admin-title-venue: Lieu (Visible en appel à l’action)
 admin-title-venue-address: Adresse
 admin-title-how-to-get: Comment y arriver ?
 admin-title-iframe: 'Localisation de l''iframe'
@@ -288,7 +290,9 @@ admin-blog-deactivated: 'Désolé, la gestion du blog est désactivée'
 admin-blog-edit-success: 'L''article du blog a été modifié correctement'
 admin-stories-not-active-yet: 'Cette histoire d’utilisateur n’est pas encore active'
 admin-stories-edit-success: 'L’historique des utilisateurs a été modifié correctement'
+admin-stories-pool: 'Afficher sur landing portefeuille'
 admin-stories-review: 'Examen de Goteo: (Sous-titre)'
+admin-stories-active: 'Actif en première page'
 admin-stories-landing_pitch: 'Afficher sur Landing Pitch'
 admin-stories-landing_match: 'Afficher sur Landing Pitch'
 admin-stories-type: 'Type de protagoniste'
