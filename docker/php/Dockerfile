@@ -37,7 +37,7 @@ RUN mv composer.phar /usr/local/bin/composer
 
 RUN gem install sass -v 3.4.23
 RUN gem install compass
-RUN npm install -g grunt-cli@1.3.2
+RUN npm install -g grunt-cli@1.4.0
 
 # PHP-FPM packages need a nudge to make them docker-friendly
 COPY overrides.conf /etc/php/${PHP_VERSION}/fpm/pool.d/z-overrides.conf

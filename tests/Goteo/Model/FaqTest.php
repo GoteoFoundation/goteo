@@ -40,8 +40,9 @@ class FaqTest extends TestCase {
 
     public function testCreate() {
         self::$data['node'] = get_test_node()->id;
+        $errors = [];
         $ob = new Faq(self::$data);
-        $this->assertTrue($ob->validate($errors));
+        $this->assertTrue($ob->validate($errors), implode(',',$errors));
         $this->assertTrue($ob->save());
         $ob = Faq::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Faq', $ob);
