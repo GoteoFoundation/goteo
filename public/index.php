@@ -42,7 +42,7 @@ if (Config::get('debug')) {
 if (is_array(Config::get('proxies'))) {
     $request->setTrustedProxies(
         Config::get('proxies'),
-        Request::HEADER_FORWARDED
+        Request::HEADER_X_FORWARDED_ALL
     );
 }
 
