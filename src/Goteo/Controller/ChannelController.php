@@ -450,6 +450,16 @@ class ChannelController extends Controller {
         ]);
     }
 
+    public function impactDiscoverAction($id, $view = 'index', Request $request) {
+
+        if ($view == 'map') {
+            return $this->forward('Goteo\Controller\ImpactDiscoverController::mapAction', [], ['channel' => $id]);
+        }
+
+        return $this->forward('Goteo\Controller\ImpactDiscoverController::indexAction', [], ['channel' => $id]);
+
+    }
+
     /**
      * Ajax projects search
      */

@@ -26,19 +26,22 @@ for the JavaScript code in this page.
 $(function(){
 
     const view = document.querySelector('.section[id^=impact-discover]').dataset.view;
+    let $channel = document.querySelector('select[name=channel]');
 
     var query = {
         view: view,
         page: 0,
         limit: 9,
-        sdg: ''
+        sdg: '',
+        channel: ''
     };
 
     function resetQuery() {
         query = {
             page: 0,
             limit: 9,
-            sdg: ''
+            sdg: '',
+            channel: ''
         };
     }
 
@@ -47,7 +50,8 @@ $(function(){
             view: "view" in new_query? new_query.view: query.view,
             page: "page" in new_query? new_query.page : query.page,
             limit: "limit" in new_query? new_query.limit : query.limit,
-            sdg: "sdg" in new_query? new_query.sdg : query.sdg
+            sdg: "sdg" in new_query? new_query.sdg : query.sdg,
+            channel: "channel" in new_query? new_query.channel : query.channel
         }
     }
     
@@ -74,57 +78,6 @@ $(function(){
             })
         });
 
-    // function activateMosaic(event) {
-    //     if (view != 'mosaic') {
-    //         view = 'mosaic';
-
-    //         document.getElementById('impact-discover-mosaic').classList.add('active');
-    //         document.getElementById('impact-discover-projects').classList.remove('active');
-    //         document.getElementById('impact-discover-map').classList.remove('active');
-
-    //         document.getElementById('activate-mosaic').classList.add('active');
-    //         document.getElementById('activate-projects').classList.remove('active');
-    //         document.getElementById('activate-map').classList.remove('active');
-
-    //         refreshSDG()
-    //     }
-    // }
-
-    // function activateProjects(event) {
-
-    //     if (view != 'list_projects') {
-    //         view = 'list_projects';
-
-    //         document.getElementById('impact-discover-mosaic').classList.remove('active');
-    //         document.getElementById('impact-discover-projects').classList.add('active');
-    //         document.getElementById('impact-discover-map').classList.remove('active');
-
-    //         document.getElementById('activate-mosaic').classList.remove('active');
-    //         document.getElementById('activate-projects').classList.add('active');
-    //         document.getElementById('activate-map').classList.remove('active');
-
-    //         refreshSDG() 
-    //     }
-    // }
-
-    // function activateMap(event) {
-
-    //     if (view != 'map') {
-    //         view = 'map';
-
-    //         document.getElementById('impact-discover-mosaic').classList.remove('active');
-    //         document.getElementById('impact-discover-projects').classList.remove('active');
-    //         document.getElementById('impact-discover-map').classList.add('active');
-
-    //         document.getElementById('activate-mosaic').classList.remove('active');
-    //         document.getElementById('activate-projects').classList.remove('active');
-    //         document.getElementById('activate-map').classList.add('active');
-
-    //         $(".more-projects-button").addClass('hidden');
-    //         refreshSDG()
-    //     }
-    // }
-
     function redirectView(event) {
         event.preventDefault();
 
@@ -134,6 +87,25 @@ $(function(){
     document.getElementById('activate-mosaic').onclick = redirectView;
     document.getElementById('activate-projects').onclick = redirectView;
     document.getElementById('activate-map').onclick = redirectView;
+
+
+    function changeChannel(event) {
+        channel = $channel.value;
+
+        var sdgActive = getActiveSDG();
+        var sdgArray = [];
+        $.each(sdgActive, function(key,sdg){
+            sdgArray.push(sdg.id);
+        });
+
+        resetQuery();
+        setQuery({
+            channel: channel
+        })
+        loadProjects(sdgArray);
+    }
+
+    $channel.onchange = changeChannel;
 
     //reset SDG JSON
     function resetSDG() {
@@ -423,7 +395,7 @@ $(function(){
     });
 
     // bind Footprints select change
-    $(".impact-discover-filters").on("change","select", function(e){
+    $(".select[name=footprints]").on("change", function(e){
         footprints = $(this).find("option:selected").attr("data-footprints").split(",");
         filterFootprintBySDG(footprints);
     });

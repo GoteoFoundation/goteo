@@ -648,7 +648,11 @@ class ProjectsApiController extends AbstractApiController {
             $sdgs = explode(',', $request->query->get('sdg'));
             $filters['sdgs'] = $sdgs;
         }
-        
+
+        if ($request->query->has('channel')) {
+            $filters['channel'] = $request->query->get('channel');
+        }
+
         $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
         $projects = Project::getByFootprintOrSDGs($filters, $page * $limit, $limit);
 

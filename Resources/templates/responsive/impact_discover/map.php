@@ -6,6 +6,6 @@
 
 <?= $this->insert('impact_discover/partials/sdg_list') ?>
 
-<?= $this->insert('impact_discover/partials/map', ['map' => $this->map]); ?>
+<?= $this->insert('impact_discover/partials/map'); ?>
 
 <?php $this->replace() ?>
