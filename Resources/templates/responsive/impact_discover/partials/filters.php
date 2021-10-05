@@ -34,8 +34,23 @@
             <button><?= $this->t('regular-apply') ?></button>
           </p>
         </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 text-center" id="filters-channel">
+          <?php if ($this->selectedChannel) : ?>
+            <select class="form-control" name="channel" disabled>
+              <option value="<?= $this->selectedChannel ?>" selected> <?= $this->channels[$this->selectedChannel] ?> </option>
+            </select>
+          <?php else: ?>
+            <select class="form-control" name="channel" >
+              <option value="" selected disabled hidden><?= $this->t('regular-channel') ?></option>
+
+              <?php foreach($this->channels as $cid => $cname): ?>
+                <option value="<?= $cid ?>"> <?= $cname ?></option>
+              <?php endforeach; ?>
+            </select>
+          <?php endif; ?>
+        </div>
         <div class="col-xs-12 col-sm-6 col-md-4 text-center" id="filters-sdg-select">
-          <select>
+          <select class="form-control" name="footprints">
             <option><?= $this->t('impact-discover-filter-by-sdg') ?></option>
 
             <?php foreach($this->sdgs as $sdg): ?>

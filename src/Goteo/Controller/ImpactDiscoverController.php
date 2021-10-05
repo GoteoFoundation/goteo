@@ -17,6 +17,7 @@ use Goteo\Application\Session;
 use Goteo\Model\Category;
 use Goteo\Model\Footprint;
 use Goteo\Model\Project;
+use Goteo\Model\Node;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Sdg;
 use Goteo\Util\Map\MapOSM;
@@ -40,6 +41,11 @@ class ImpactDiscoverController extends \Goteo\Core\Controller {
         
         $filters = [];
         $sdgSelected = [];
+
+        if ($request->query->has('channel')) {
+            $selectedChannel = $request->query->get('channel');
+            $filters['channel'] = $selectedChannel;
+        }
 
         if ($request->query->has('sdgs') && !empty($request->query->get('sdgs'))) {
             $sdgSelected = explode(',', $request->query->get('sdgs'));
@@ -72,13 +78,19 @@ class ImpactDiscoverController extends \Goteo\Core\Controller {
             $filters['sdgs'] = $sdgSelected;
         }
 
+        if ($request->query->has('channel')) {
+            $selectedChannel = $request->query->get('channel');
+            $filters['channel'] = $selectedChannel;
+        }
+
         $map = new MapOSM('100%');
         $footprints = Footprint::getList();
         $sdgs_count = Sdg::getList([],0,0,true);
         $sdgs = Sdg::getList([],0,$sdgs_count);
+        $channels = Node::getList();
 
-        $total = Project::getByFootprintOrSDGs([], 0, 0, true);
-        $projects = Project::getByFootprintOrSDGs([], 0, 9);
+        $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
+        $projects = Project::getByFootprintOrSDGs($filters, 0, 9);
 
         return $this->viewResponse('impact_discover/map', [
             'footprints' => $footprints,
@@ -87,6 +99,8 @@ class ImpactDiscoverController extends \Goteo\Core\Controller {
             'map' => $map,
             'projects' => $projects,
             'total' => $total,
+            'selectedChannel' => $selectedChannel,
+            'channels' => $channels,
             'view' => 'map'
         ]);
     }
@@ -98,6 +112,11 @@ class ImpactDiscoverController extends \Goteo\Core\Controller {
         if ($request->query->has('sdgs') && !empty($request->query->get('sdgs'))) {
             $sdgSelected = explode(',', $request->query->get('sdgs'));
             $filters['sdgs'] = $sdgSelected;
+        }
+
+        if ($request->query->has('channel')) {
+            $selectedChannel = $request->query->get('channel');
+            $filters['channel'] = $selectedChannel;
         }
 
         $footprints = Footprint::getList();

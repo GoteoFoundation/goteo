@@ -2662,17 +2662,24 @@ class Project extends \Goteo\Core\Model {
         $values = array();
         list($fields, $joins) = self::getLangsSQLJoins($lang);
 
+        $sqlJoins = "";
 
-        if ($filters['sdgs']) {
+        if ($filters['channel']) {
+            $sqlWhere[] = "( project.node = :channel OR node_project.node_id = :channel )";
+            $sqlJoins .= "INNER JOIN node_project on node_project.project_id = project.id ";
+            $values[':channel'] = $filters['channel'];
+        }
+
+        if ($filters['sdgs'] && is_array($filters['sdgs']) && !empty($filters['sdgs'])) {
             $sqlWhere[]= "sdg_project.sdg_id IN (" . implode(',', $filters['sdgs']). ")";
         }
 
-        if ($filters['footprints']) {
+        if ($filters['footprints'] && is_array($filters['footprints']) && !empty($filters['footprints'])) {
             $sqlWhere[]= "sdg_footprint.footprint_id IN (" . implode(',', $filters['footprints']). ")";
         }
 
         if ($sqlWhere) {
-            $sqlWhere = " AND ( " . implode(' OR ', $sqlWhere) . " )";
+            $sqlWhere = " AND ( " . implode(' AND ', $sqlWhere) . " )";
         }
 
         if($count) {
@@ -2680,9 +2687,10 @@ class Project extends \Goteo\Core\Model {
             SELECT COUNT(distinct(project.id)) FROM project
             INNER JOIN sdg_project on sdg_project.project_id = project.id
             INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
+            $sqlJoins
             WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
             ";
-            return (int) self::query($sql)->fetchColumn();
+            return (int) self::query($sql, $values)->fetchColumn();
         }
 
         if($limit)
@@ -2725,13 +2733,13 @@ class Project extends \Goteo\Core\Model {
             INNER JOIN user ON user.id = project.owner
             LEFT JOIN project_conf
                 ON project_conf.project = project.id
+            $sqlJoins
             $joins
             WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
             GROUP BY project.id
             ORDER BY project.published DESC
             $sql_limit
             ";
-            // die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
             $projects[] = self::getWidget($proj);

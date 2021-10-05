@@ -35,7 +35,6 @@ use Goteo\Model\Project\ProjectLocation;
 use Goteo\Util\Map\MapOSM;
 use Goteo\Model\Questionnaire;
 
-
 class ChannelController extends \Goteo\Core\Controller {
     public function __construct() {
         $this->dbReplica(true);
@@ -481,6 +480,16 @@ class ChannelController extends \Goteo\Core\Controller {
             'discover_module' => true,
             'limit' => $limit
         ]);
+
+    }
+
+    public function impactDiscoverAction($id, $view = 'index', Request $request) {
+
+        if ($view == 'map') {
+            return $this->forward('Goteo\Controller\ImpactDiscoverController::mapAction', [], ['channel' => $id]);
+        }
+
+        return $this->forward('Goteo\Controller\ImpactDiscoverController::indexAction', [], ['channel' => $id]);
 
     }
 
