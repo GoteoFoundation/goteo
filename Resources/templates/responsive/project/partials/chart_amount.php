@@ -199,7 +199,11 @@ function printAmount() {
         };
       });
 
-      var markers = [{date:parseDate('<?= $this->project->willpass ?>'),type:"<?= $this->text('project-chart-amount-end-round') ?>" , version: "1"}];
+      var markers = [];
+
+      <?php if (!$this->project->one_round): ?>
+        markers = [{date:parseDate('<?= $this->project->willpass ?>'),type:"<?= $this->text('project-chart-amount-end-round') ?>" , version: "1"}];
+      <?php endif; ?>
 
       makeChart(data, markers);
 
