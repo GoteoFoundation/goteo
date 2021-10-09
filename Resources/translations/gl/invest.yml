@@ -21,6 +21,8 @@ invest-address-namedest-field: 'Nome do destinatario'
 invest-address-nif-field: 'Número de NIF / NIE / CIF / VAT'
 invest-address-title: 'Asegúrate de recibir a túa recompensa'
 invest-address-zipcode-field: 'Código postal:'
+invest-address-legal-entity-field: Entidade legal
+invest-address-legal-document-type-field: Tipo de documento
 invest-alert-investing: 'Vas aportar'
 invest-alert-lackamount: 'A achega debe ser maior cá recompensa elixida'
 invest-alert-lackdrop: 'Non queda suficiente Matchfunding para cubrir a túa achega, soamente quedan'
@@ -44,6 +46,7 @@ invest-donation-header: 'Inserir os datos fiscais para a doazón'
 invest-drop-method: Rego
 invest-fiscal-fail: 'Hai campos baleiros ou con erros, verifica o formulario fiscal para poder desgravar a túa achega!'
 invest-fiscal-skip: 'Non quero encher estes datos neste momento.'
+invest-fiscal-title: 'Solicitude do certificado de doazón'
 invest-login-alert: 'Tes de estar rexistrado ou <a href="%s">Iniciar sesión</a> para poder face-la achega'
 invest-mail_info-address: 'Especificaches a seguinte dirección:'
 invest-make-sure-save: Gardar
@@ -111,3 +114,8 @@ invest-tip-part-2: 'para contribuír na misión da <b>Fundación Goteo</b><br> p
 invest-mail-donate-tip: 'Coa túa doazón decidiches colaborar na <strong>Fundación Goteo</strong> con %s€ adicionais. Grazas de corazón.'
 invest-update-total: 'Realizarás unha doazón total de <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% ao proxecto + <span id="tip-amount">%DONATE_AMOUNT%</span> á Fundación Goteo'
 invest-extra-info: 'Información adicional'
+donor-legal-entities-natural-person: Persoa física
+donor-legal-entities-legal-person: Persoa xurídica
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-vat: VAT
