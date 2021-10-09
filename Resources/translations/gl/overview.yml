@@ -84,3 +84,5 @@ tooltip-project-sustainability-model: 'Explica o modelo de sostibilidade do teu 
 tooltip-project-sustainability-model-url: 'Engade un Url co teu <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">business canvas</a>'
 tooltip-project-sdg: 'Escolle os obxectivos do teu proxecto, tentando seleccionar un máximo de tres.'
 tooltip-project-sdg-suggestion: 'A seguir, suxerímosche algúns ODS que poderían ir ben segundo o compromiso social escollido para o teu proxecto, recomendámosche que consultes <a href="https://www.un.org/sustainabledevelopment/es/objetivos-de-desarrollo-sostenible/" target="_blank">aquí</a> o seu contido.<br><br>'
+overview-field-sign-check: 'Tes unha recollida de sinaturas aberta ligada ao proxecto?'
+overview-field-sign-url-help: "Se, xunto coa campaña no Goteo tes unha campaña de recollida de sinaturas noutra plataforma, podes engadir aquí un botón coa ligazón"
