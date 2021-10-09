@@ -47,6 +47,7 @@ mandatory-project-field-region: 'É obrigado poñer a provincia'
 personal-field-contract_entity: 'Representante do proxecto'
 personal-field-contract_name: 'Nome e apelidos'
 personal-field-contract_nif: 'Número de NIF / NIE / VAT'
+personal-field-contract_legal_document_type: Tipo de documento
 personal-field-main_address: 'Dirección fiscal'
 personal-field-post_address: 'Enderezo social'
 personal-field-region: 'Provincia:'
@@ -100,4 +101,15 @@ contract-validation-error-promoter: 'Faltan campos a encher no promotor'
 contract-validation-error-promoter_nif: 'O NIF non é correcto'
 contract-validation-error-entity: 'Faltan campos por encher na entidade'
 contract-validation-error-accounts: 'Faltan campos por encher nas contas'
+contract-validation-error-documents: 'Falta documentación'
 contract-already-processed: 'O contrato foi procesado.'
+contract-legal-entities-natural-person: Persoa física
+contract-legal-entities-legal-person: Persoa xurídica
+contract-legal-document-type-cif: CIF
+contract-legal-document-type-nif: NIF
+contract-legal-document-type-nie: NIE
+contract-legal-document-type-vat: VAT
+contract-legal-document-type-passport: Pasaporte
+validate-contract-nif-document-type: 'O formato do número de documento non coincide co tipo de documento'
+validate-contract-cif-document-type: 'O formato e o número do CIF non coinciden'
+validate-contract-legal-nif-entity-legal: "A entidade legal non coincide co tipo de documento"
