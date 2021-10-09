@@ -1,5 +1,5 @@
 ---
-api-key-no-generated: 'Non hai ancora creato una key'
+api-key-no-generated: 'Non hai ancora creato una chiave'
 api-key-tool-tip: 'Con il tuo nome utente e la chiave Api è possibile consultare il nostro API'
 api-key-documentation: 'Visualizza la documentazione della API'
 api-key-user: 'Nome utente'
@@ -7,22 +7,24 @@ api-key-key: 'Password'
 api-key-generate-new: 'Genera una nuova chiave'
 api-key-generate-new-confirm: 'Questa azione eliminerà la password corrente e creerà una nuova chiave. Vuoi continuare?'
 contract-data_title: 'Dati del contratto'
-dashboard-certificates-confirm: 'Confermare i dati'
-dashboard-certificates-confirm-checkbox: 'Posso confermare che questi sono mio dati giuridici reali e sono consapevole del fatto che non sarò in grado di modificare questi dati una volta confermati'
+dashboard-certificates-confirm: 'Conferma i dati'
+dashboard-certificates-confirm-checkbox: 'Confermo che questi sono i miei dati giuridici reali e sono consapevole del fatto che non sarò in grado di modificare questi dati una volta confermati'
 dashboard-certificates-confirmed: Confermato
 dashboard-certificates-processed: Elaborato
 dashboard-certificates-confirmed-ok: 'Dati fiscali confermati correttamente'
 dashboard-certificates-data-alert: 'Ricorda che una volta confermato, non è possibile modificare i dati!'
 dashboard-certificates-data-desc: 'Si prega di assicurarsi che i dati nel modulo siano corretti e, successivamente, confermare il modulo'
 dashboard-certificates-data-download-all: 'Conferma i tuoi certificati per attivare lo sgravio fiscale. Una volta fatto ciò, sarà possibile scaricarne una copia. La Fondazione Goteo dichiara annualmente al fisco tutte le donazioni confermate.'
-dashboard-certificates-data-new-invests: 'Ma non preoccuparti, ogni nuovo contributo che tu dia dentro Goteo genererà un nuovo certificato'
-dashboard-certificates-desc: 'Questi certificati consentono di dedurre dalla tua dichiarazione dei redditi, se sei un/a contribuente nello stato spagnolo.'
+dashboard-certificates-data-new-invests: 'Ma non preoccuparti, ogni nuovo contributo che tu inserisci nella piattaforma di Goteo genererà un nuovo certificato'
+dashboard-certificates-desc: 'Questi certificati consentono di dedurre la somma dalla tua dichiarazione dei redditi, se sei un/a contribuente residente in Spagna.'
 dashboard-certificates-details: 'Vedi dettagli'
 dashboard-certificates-details-desc: 'Elenco di contributi per il certificato %CERT%'
 dashboard-certificates-download: 'Conferma e scarica'
 dashboard-certificates-empty: 'È necessario dare un contributo a un progetto o ricaricare il portafoglio virtuale per la visualizzazione dei certificati'
 dashboard-certificates-expired: Scaduto
-dashboard-certificates-expired-description: 'Ha ispirato il termine per confermare il tuo certificato'
+dashboard-certificates-expired-description: 'E'' scaduto il termine per confermare il tuo certificato'
+dashboard-certificates-no-downloable: 'Sarà possibile scaricare il certificato dal 1 marzo %YEAR%'
+dashboard-certificates-legal-entities-no-downloable: 'Sarà possibile scaricare il certificato dal 1 marzo  %YEAR%, fino ad allora puoi scaricare la ricevuta della donazione.'
 dashboard-certificates-no-pending: 'Non c''è nessun contributo in attesa'
 dashboard-certificates-pending: In attesa
 dashboard-certificates-pending-desc: 'Questi sono i contributi che verranno inclusi nei certificati futuri.'
@@ -33,6 +35,7 @@ dashboard-certificates-totals: '%NUM% contributi, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'Per scaricare questo certificato devi prima confermare i dati!'
 dashboard-certificates-view-pending: 'Non è possibile visualizzare i tuoi contributi diretti a progetti che ancora non abbiano raggiunto il loro obiettivo minimo. Puoi verificarlo %HERE%.<br>I contributi realizzati attraverso il portafoglio virtuale sono inclusi nel certificato creato nel momento stesso del pagamento.'
 dashboard-certificates-no-invests: 'Non è possibile confermare il certificato se non hai realizzato contributi!'
+dashboard-certificates-download-proof: Scarica la ricevuta della donazione.
 dashboard-chart-days: 'RIMANGONO %s GIORNI'
 dashboard-chart-invested: 'FINANZIAMENTO OTTENUTO'
 dashboard-chart-investors: CO-FINANZIATORI
@@ -40,16 +43,16 @@ dashboard-chart-no-invested: 'Nessun apporto'
 dashboard-chart-optimum: ottimo
 dashboard-embed_code: 'CODICE DIFFUSIONE SEMPLICE'
 dashboard-embed_code_investor: 'CODICE CON IMMAGINE DEL CO-FINANZIATORE'
-dashboard-header-main: 'Il mio panel'
-dashboard-investors-mail-fail: 'Errore nell''invio del messaggio a a %s'
-dashboard-investors-mail-nowho: 'Non si sono trovati destinatari '
+dashboard-header-main: 'Il mio panello'
+dashboard-investors-mail-fail: 'Errore nell''invio del messaggio a %s'
+dashboard-investors-mail-nowho: 'Non sono stati trovati destinatari '
 dashboard-investors-mail-sendto: 'Inviato a %s dei tuoi co-finanziatori:'
 dashboard-investors-mail-sent: 'Messaggi inviati correttamente'
 dashboard-investors-mail-text-required: 'Scrivi il messaggio'
-dashboard-investors_table-disclaimer: 'Si ricorda al promotore che, come da contratto, si offrono i dati dei finanziatori nell''archivio scaricabile con l''unico scopo di far avere ai finanziatori le ricompense e i benefici del progetto e per informargli sulle novità, progressi e attività relative al progetto e che è assolutamente vietato usarli con altre finalità. L''inadempienza di questa norma autorizza la Fondazione le corrispettive intraprendere azioni legali e ritirare il progetto dalla piattaforma'
+dashboard-investors_table-disclaimer: 'Si ricorda al promotore che, come da contratto, si offrono i dati dei finanziatori nell''archivio scaricabile con l''unico scopo di far avere ai finanziatori le ricompense e i benefici del progetto e per informarli sulle novità, progressi e attività relative al progetto e che è assolutamente vietato usarli con altre finalità. L''inadempienza di questa norma autorizza la Fondazione Goteo ad intraprendere azioni legali e ritirare il progetto dalla piattaforma'
 dashboard-menu-activity: 'La mia attività'
 dashboard-menu-activity-apikey: 'Chiave API'
-dashboard-menu-activity-spread: Diffusione
+dashboard-menu-activity-spread: Trasmissione
 dashboard-menu-activity-summary: Riassunto
 dashboard-menu-activity-wall: 'La mia bacheca'
 dashboard-menu-admin_board: Amministrazione
@@ -65,7 +68,7 @@ dashboard-menu-profile-preferences: 'I miei preferiti '
 dashboard-menu-profile-profile: 'Modificare il profilo '
 dashboard-menu-profile-public: 'Profilo pubblico'
 dashboard-menu-projects: 'I miei progetti '
-dashboard-menu-projects-analytics: Analitici
+dashboard-menu-projects-analytics: Dati Analitici
 dashboard-menu-projects-commons: Benefici
 dashboard-menu-projects-contract: Contratto
 dashboard-menu-projects-social-commitment: 'Impegno sociale'
@@ -81,15 +84,17 @@ dashboard-menu-projects-story: 'La mia storia'
 dashboard-menu-review_board: Correzione 
 dashboard-menu-translate_board: Traduzione
 dashboard-menu-translates: 'Le mie Traduzioni '
-dashboard-messegers-mail-sendto: 'Inviato a %s dei partecipanti:'
+dashboard-menu-matchers: "Cofinanziatori"
+dashboard-menu-admin-matchers: "Amministratori Cofinanziatori"
+dashboard-messegers-mail-sendto: 'Inviato a %s partecipanti:'
 dashboard-my-wallet-available: 'Attualmente disponi di <span class="pool-amount">%s</span> <span class="pool-desc"> nel tuo portafoglio virtuale Goteo</span>'
 dashboard-my-wallet-contribute-button: Dona
-dashboard-my-wallet-modal-pool-info: "Il portafoglio virtuale Goteo è una funzionalità della nostra piattaforma che ti permette di fare la tua donazione e decidere in seguito a quale progetto destinare l'importo.<br> <p> Le donazioni effettuate attraverso la nostra piattaforma sono deducibili dalle tasse, secondo la legge 49/2002, del 23 dicembre, il regime fiscale di enti non profit e incentivi fiscali per le sponsorizzazioni.</p> <p>Quando tu fai la tua donazione, è possibile scaricare un certificato di donazione che giustifica con il fisco il tuo contributo a un'entità senza scopo di lucro. È possibile accedere al registro dei certificati disponibili associati con le vostre donazioni dentro Goteo attraverso il tuo pannello dell'utente, nella specifico nella la sezione <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Certificado de donación</a>.</p><p> Nota importante: vi ricordiamo che tutti i contributi che hanno ottenuto un certificato di donazione da parte della nostra Fondazione non verranno restituiti. Ciò significa che se avete fatto una donazione collegata a un progetto concreto all'interno della nostra piattaforma e questo non raggiunge l'obiettivo minimo del finanziamento durante la sua campagna, il vostro contributo andrà al tuo portafoglio virtuale ma non tornerà al tuo conto corrente bancario. Tuttavia, è possibile destinare tale importo dal tuo portafoglio virtuale in Goteo.org a qualsiasi altro progetto desiderato e che sia attivo nel momento in cui si esegue la donazione, senza dover inserire nuovamente i tuoi dati bancari o PayPal.</p>"
+dashboard-my-wallet-modal-pool-info: "Il portafoglio virtuale Goteo è una funzionalità della nostra piattaforma che ti permette di fare la tua donazione e decidere in seguito a quale progetto destinare l'importo.<br> <p> Le donazioni effettuate attraverso la nostra piattaforma sono deducibili dalle tasse, secondo la legge spagnola n. 49 del 23 dicembre 2002, sul regime fiscale di enti non profit e incentivi fiscali per le sponsorizzazioni.</p> <p>Quando fai la tua donazione, è possibile scaricare un certificato di donazione che giustifica con il fisco il tuo contributo a un'entità senza scopo di lucro. È possibile accedere al registro dei certificati disponibili associati con le vostre donazioni dentro Goteo attraverso il tuo pannello dell'utente, nella specifico nella la sezione <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Certificato di donazione</a>.</p><p> Nota importante: vi ricordiamo che tutti i contributi che hanno ottenuto un certificato di donazione da parte della nostra Fondazione non verranno restituiti. Ciò significa che se avete fatto una donazione collegata a un progetto concreto all'interno della nostra piattaforma e questo non raggiunge l'obiettivo minimo del finanziamento durante la sua campagna, il vostro contributo andrà al tuo portafoglio virtuale ma non tornerà al tuo conto corrente bancario. Tuttavia, è possibile destinare tale importo dal tuo portafoglio virtuale in Goteo.org a qualsiasi altro progetto desiderato e che sia attivo nel momento in cui si esegue la donazione, senza dover inserire nuovamente i tuoi dati bancari o PayPal.</p>"
 dashboard-my-wallet-pool-info: 'Ulteriori informazioni sull''utilizzo del tuo portafoglio virtuale'
-dashboard-no-projects: 'Non si dispone di nessun progetto, è possibile crearne uno <a href="/project/create">aquí</a>'
+dashboard-no-projects: 'Non si dispone di nessun progetto, è possibile crearne uno <a href="/project/create">quí</a>'
 dashboard-password-recover-advice: 'Assicurati di aggiornare la tua password'
-dashboard-project-analytics-fail: 'Si è verificato un errore durante il salvataggio dei tuoi dati identificativi per gli analitici'
-dashboard-project-analytics-ok: 'I tuoi dati identificativi per gli analitici sono stati salvati correttamente'
+dashboard-project-analytics-fail: 'Si è verificato un errore durante il salvataggio dei tuoi dati identificativi per i dati analitici'
+dashboard-project-analytics-ok: 'I tuoi dati identificativi per i dati analitici sono stati salvati correttamente'
 dashboard-project-blog-fail: 'Mettiti in contatto con noi'
 dashboard-project-blog-inactive: 'Ci dispiace, la pubblicazione degli aggiornamenti è disattivata per questo progetto '
 dashboard-project-blog-empty: 'Ancora non ci sono pubblicazioni.'
@@ -99,10 +104,10 @@ dashboard-project-delete_alert: 'Sei sicuro di voler eliminare definitivamente q
 dashboard-project-delete-no-perms: 'Non hai l''autorizzazione per eliminare questo progetto'
 dashboard-project-delete-ko: 'Non è stato possibile eliminare il progetto %s!'
 dashboard-project-delete-ok: 'Il progetto %s è stato completamente rimosso'
-dashboard-project-updates-delete_fail: 'Errore nell''eliminazione del post'
-dashboard-project-updates-deleted: 'Post eliminato'
-dashboard-project-updates-fail: 'Si è verificato un errore nel salvataggio dei dato'
-dashboard-project-updates-inserted: 'È stato aggiunto un nuovo post'
+dashboard-project-updates-delete_fail: 'Errore nell''eliminazione della voce'
+dashboard-project-updates-deleted: 'Voce eliminata'
+dashboard-project-updates-fail: 'Si è verificato un errore nel salvataggio dei dati'
+dashboard-project-updates-inserted: 'È stato aggiunto una nuova voce'
 dashboard-project-updates-noblog: 'Non si è trovato nessun blog per questo progetto'
 dashboard-project-updates-nopost: 'Accesso non trovato '
 dashboard-project-updates-postcorrupt: 'L''entrata è erronea, mettiti in contatto con noi'
@@ -134,7 +139,7 @@ dashboard-rewards-num_taken: 'Impegnate'
 dashboard-rewards-pending_filter: In attesa
 dashboard-rewards-pending_status: In attesa
 dashboard-rewards-process: 'Applicare selezione'
-dashboard-rewards-process_alert: 'Occhio! Se indichi che è compiuta non si potrà deselezionare Continuano? '
+dashboard-rewards-process_alert: 'Occhio! Se indichi che è compiuta non si potrà deselezionare Continuare? '
 dashboard-rewards-resign_filter: Donazione
 dashboard-rewards-resigns: 'Rinuncia alla ricompensa'
 dashboard-rewards-reward_order: 'Per beneficio '
@@ -144,7 +149,7 @@ dashboard-rewards-user_order: 'Per utente '
 dashboard-translate-doing_call: 'Stai traducendo la call <strong>%s</strong>. La lingua originale è <strong>%s</strong>'
 dashboard-translate-doing_node: 'Stai traducendo il nodo <strong>%s</strong>. La lingua originale è <strong>Spagnolo</strong>'
 dashboard-translate-doing_profile: 'Stai traducendo il tuo profilo personale.'
-dashboard-translate-doing_project: 'Sati traducendo il progetto <strong>%s</strong>. La lingua originale è <strong>%s</strong>'
+dashboard-translate-doing_project: 'Stai traducendo il progetto <strong>%s</strong>. La lingua originale è <strong>%s</strong>'
 dashboard-translate-select_call: 'Seleziona call da tradurre'
 dashboard-translate-select_node: 'Seleziona il nodo da tradurre'
 dashboard-translate-select_profile: 'Vai alla traduzione del tuo profilo utente'

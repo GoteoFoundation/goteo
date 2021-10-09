@@ -1,1 +1,13 @@
 ---
+dashboard-story-form-title: 'Mon historique dans GOTEO'
+dashboard-story-guide-description: 'Dites-nous comment a été votre expérience avec Goteo, vous pouvez inspirer d’autres contributeurs. <br><br>Votre histoire apparaîtra sur votre profil utilisateur et pourra être affichée dans diverses sections de Goteo, y compris la maison, par notre équipe.<br>Nous vous recommandons de visiter quelques-unes des histoires que nous avons publiées jusqu’à présent dans <a href="/matchfunding-match" target="_blank">format polaroïd</a> et<a href="/#foundation" target="_blank">format élargi</a>.'
+dashboard-story-translate-title: 'Mon historique'
+story-field-author-organization: 'Auteur / Organisation'
+story-tooltip-author-organization: 'Inscrivez votre nom et l’organisation ou le projet auquel vous appartenez séparé par « / ». Exemple: Luis / Fondation Goteo'
+story-field-description: 'Votre témoignage'
+story-tooltip-description: 'Expliquez en une phrase comment s’est faite votre expérience avec GOTEO avec un minimum de 20 mots (avec moins il s''affichera une erreur).'
+story-field-image: 'Image (dimensions recommandées 600x400px)'
+story-field-pool-image: 'Image optionnelle en format polaroïd (dimensions recommandées 360x355px)'
+story-field-background-image: 'Image de fond'
+story-field-background-image-credits: 'Crédits de l''image de fond'
+story-save-fail: 'Erreur lors de l’enregistrement de votre histoire'

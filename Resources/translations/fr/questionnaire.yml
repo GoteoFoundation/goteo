@@ -1,1 +1,23 @@
 ---
+questionnaire: Questionnaire
+questionnaire-type-of-question: 'Type de réponse'
+questionnaire-required: 'Il est obligatoire d’y répondre'
+questionnaire-text: 'Question à répondre'
+questionnaire-max-score: 'Score maximum'
+questionnaire-help-max-score: 'Score maximum: %s'
+questionnaire-hidden: "Masquer la question"
+questionnaire-choice: Options
+questionnaire-textarea: 'Réponse longue'
+questionnaire-boolean: 'Répondre uniquement par oui ou non'
+questionnaire-dropfiles: 'Téléchargement de fichiers'
+questionnaire-add-question: "Ajouter un Question"
+questionnaire-answer: "Réponse"
+questionnaire-scoring-mark: "Le score"
+questionnaire-scoring-save: "Score enregistré correctement"
+questionnaire-max-score-help: "C’est le score maximum pour cette question."
+question-save-error: "Question non supprimée"
+question-choice-answer: "Réponse"
+questionnaire-apply-title: Demande de participation à %s
+questionnaire-answer-questions: Répondez à cette question
+questionnaire-already-answered-by-project: Ce questionnaire a déjà reçu une réponse.
+questionnaire-question-answer-dropfile-not-found: "Le document introuvable"

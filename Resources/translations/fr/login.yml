@@ -13,6 +13,7 @@ login-new-user-label: 'Pas encore de compte utilisateur sur Goteo?'
 login-oneclick-header: 'Accès en un clic'
 login-recover-button: Récupérer
 login-recover-email-field: 'Email du compte ou nom d''utilisateur'
+login-recover-header: "Remplissez le champ avec l’email que vous avez utilisé pour vous connecter sur la plate-forme. Souvent, il correspond au même courrier lié à vos réseaux sociaux. Attention: vous recevrez un e-mail avec un lien direct pour changer le mot de passe.\nSi vous ne recevez pas d’e-mail, vérifiez qu’il ne se trouve pas dans le dossier de spam. Si vous avez demandé plusieurs fois un nouveau mot de passe, un e-mail avec un nouveau lien autogénéré aura été envoyé à chaque fois. Utilisez le lien du dernier e-mail que vous avez reçu.\n Si vous ne vous souvenez pas de l’e-mail, vous pouvez nous contacter, n’oubliez pas de mentionner quelques données pour nous faciliter la recherche de votre utilisateur (nom complet, pseudo que vous utilisez habituellement, date de sortie ou si vous avez contribué à un projet particulier)."
 login-recover-label: 'Mot de passe oublié?'
 login-recover-link: 'Récupérer le mot de passe'
 login-recover-modal-button: Envoyer
@@ -43,7 +44,9 @@ oauth-confirm-user: 'Utilisateur existant'
 oauth-facebook-access-denied: 'Accès depuis facebook refusé'
 oauth-goteo-openid-sync-password: 'Vous êtes en train de lier un compte déjà existante sur goteo avec un fournisseur extérieur. Ceci te permettra d''entrer sur goteo en un seul clic <br> Pour la première fois vous devrez confirmer le mot de passe de votre compte sur goteo pour valider votre compte.'
 oauth-goteo-user-not-exists: 'Cet utilisateur n''existe pas'
+oauth-goteo-user-password-error: 'Ce compte utilise déjà un autre fournisseur de connexion sans mot de passe. Si vous souhaitez utiliser plusieurs fournisseurs de connexion, vous devez d’abord définir un mot de passe.'
 oauth-goteo-user-password-exists: 'Cet utilisateur existe déjà !'
+oauth-goteo-user-provider-error: 'Vous devez utiliser <strong>%s</strong> pour accéder à cet utilisateur. <br> Si vous souhaitez utiliser plusieurs fournisseurs de connexion pour ce compte, vous devez d’abord définir un mot de passe.'
 oauth-import-about: 'A propos'
 oauth-import-facebook: 'Lien vers votre compte facebook'
 oauth-import-linkedin: 'Lien vers vôtre compte LinkedIn'
@@ -64,3 +67,4 @@ reset-password-new-password: 'Confirmer nouveau mot de passe'
 reset-password-old-password: 'Nouveau mot de passe'
 reset-password-save: Sauvegarder
 reset-password-title: 'Etablir un nouveau mot de passe'
+login-alternate-ids: Autres Options

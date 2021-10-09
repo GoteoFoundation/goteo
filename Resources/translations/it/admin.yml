@@ -131,6 +131,30 @@ admin-blog-not-public: 'Questo post non è ancora pubblicato'
 admin-stories: Cronologia degli utenti in Goteo
 admin-stories-add: Creare una nuova cronologia
 admin-stories-edit: Modificando la cronologia %s
+admin-channelstory-add: '-> admin-channelstory-add'
+admin-channelstory-submit: '-> admin-channelstory-submit'
+admin-channelstory-correct: '-> admin-channelstory-correct'
+admin-channelsection-section: '-> admin-channelsection-section'
+admin-channelsection-map: '-> admin-channelsection-map'
+admin-channelsection-resource: '-> admin-channelsection-resource'
+admin-channelsection-call_to_action: '-> admin-channelsection-call_to_action'
+admin-channelsection-projects: '-> admin-channelsection-projects'
+admin-channelsection-posts: '> admin-channelsection-posts'
+admin-channelsection-program: '-> admin-channelsection-program'
+admin-channelsection-stories: '-> admin-channelsection-stories'
+admin-channelsection-workshops: '-> admin-channelsection-workshops'
+admin-channelsection-team: '> admin-channelsection-team'
+admin-channelsection-sponsors: '-> admin-channelsection-sponsors'
+admin-channelsection-button: '-> admin-channelsection-button'
+admin-channelsection-create: '> admin-channelsection-create'
+admin-channelsection-add: '-> admin-channelsection-add'
+admin-channelpost-add: '> admin-channelpost-add'
+admin-channelpost-submit: '-> admin-channelpost-submit'
+admin-channelpost-correct: '-> admin-channelpost-correct'
+admin-channelcriteria-title: '-> admin-channelcriteria-title'
+admin-channelcriteria-subtitle: '-> admin-channelcriteria-subtitle'
+admin-channelprogram-create: '> admin-channelprogram-create'
+admin-channelprogram-add: '-> admin-channelprogram-add'
 admin-categories: 'Categorie e aree'
 admin-categories-if-empty-then-asset: 'Se lasciato vuoto si userà l''icona predefinita: %s'
 admin-category-add: Crea una nuova categoria
@@ -253,6 +277,10 @@ admin-title-failed: Non inviati
 admin-title-pending: Orecchini
 admin-title-success: Uscite
 admin-title-percent: Percentuale
+admin-title-action-url: '-> admin-title-action-url'
+admin-title-download-url: '> admin-title-download-url'
+admin-title-channel: '-> admin-title-channel'
+admin-title-resource-category: '-> admin-title-resource-category'
 admin-blog-not-published-yet: 'La voce del blog non è ancora pubblica'
 admin-blog-initialized: 'Ha inizializzato lo spazio del blog'
 admin-blog-deactivated: 'Spiacenti, la gestione del blog è disattivata'
@@ -482,6 +510,11 @@ admin-filter-predefined-date: 'Data prestabilita'
 admin-filter-predefined-date-choose: 'Puoi selezionare una data predefinita'
 admin-filter-forced: 'Forzare filtro'
 admin-filter-forced-help: 'Se selezioni questa opzione si applicheranno i filtri indipendentemente da quello che ha scelto l''utente come preferenza per l''invio dell''informazione per parte della piattaforma.'
+admin-filter-project-status: '-> admin-filter-project-status'
+admin-filter-invest-status: '-> admin-filter-invest-status'
+admin-filter-project-location: '-> admin-filter-project-location'
+admin-filter-location: '-> admin-filter-location'
+admin-filter-donor-location: '-> admin-filter-donor-location'
 admin-mail-body: 'Corpo del messaggio'
 admin-stats-donations: 'Donazioni'
 admin-stats-donations-method: 'Donazioni secondo metodo di pagamento'
@@ -511,4 +544,8 @@ admin-online: Online
 mandatory-filter-name: Manca nome
 mandatory-filter-description: Manca descrizione
 mandatory-filter-role: Manca un ruolo
+admin-node-iframe: '> admin-node-iframe'
+admin-channel-resource: '> admin-channel-resource'
+admin-channel-resource-add: '-> admin-channel-resource-add'
+admin-posts: '-> admin-posts'
 

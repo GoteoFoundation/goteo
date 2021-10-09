@@ -1,1 +1,12 @@
 ---
+questionnaire-type-of-question: 'Tipo di risposta'
+questionnaire-required: 'obbligatorio'
+questionnaire-text: 'Preparati a rispondere'
+questionnaire-max-score: 'Punteggio massimo'
+questionnaire-help-max-score: 'Punteggio massimo: %s'
+questionnaire-textarea: 'Risposta lunga'
+questionnaire-boolean: 'Risposta unica sí/no'
+questionnaire-dropfiles: 'Caricamento file'
+questionnaire-add-question: "Aggiungi domanda"
+questionnaire-answer: "Risposta"
+questionnaire-scoring-mark: "Punteggio"

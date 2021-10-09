@@ -1,5 +1,175 @@
 ---
+accounts-lb: Contributions
+accounts-lb-add: 'Contribution manuelle'
+accounts-lb-cancel: 'Annulation de la contribution'
+accounts-lb-cancel-pool: 'Annulation de l’option de crédit'
+accounts-lb-details: 'Détails de l’apport'
+accounts-lb-execute: 'Exécution du coût'
+accounts-lb-list: Faire la liste
+accounts-lb-move: 'Relocalisation de l’apport'
+accounts-lb-report: 'Rapport de projet'
+accounts-lb-update: 'Changer l’état de l’apport'
+banners-lb: Bannière
+banners-lb-add: 'Nouvelle bannière'
+banners-lb-cancel: 'Annulation de la contribution'
+banners-lb-details: 'Détails de l’apport'
+banners-lb-edit: 'Modification de la bannière'
+banners-lb-list: Faire la liste
+banners-lb-move: 'Relocalisation de l’apport'
+banners-lb-report: 'Rapport de projet'
+banners-lb-translate: 'Traduire la Bannière'
+banners-lb-update: 'Changer l’état de l’apport'
+banners-lb-viewer: "Visualisation des logs\n"
+blog-lb: Blog
+blog-lb-add: 'Nouvelle entrée'
+blog-lb-list: Faire la liste
+blog-lb-reorder: 'Trier les articles en couverture'
+blog-lb-translate: 'Traduire l’enregistrement'
 categories-lb: Catégories
+categories-lb-add: 'Nouvelle Catégorie'
+categories-lb-edit: 'Modification de la catégorie'
+categories-lb-keywords: 'Mots-clé'
+categories-lb-list: Faire la liste
+categories-lb-translate: 'Catégorie de traduction'
+commons-lb: 'Retours collectifs'
+commons-lb-add: 'Nouveau retour'
+commons-lb-edit: 'Montage du retour'
+commons-lb-info: 'Informations sur le contact'
+commons-lb-list: Faire la liste
+commons-lb-report: 'Rapport de projet'
+commons-lb-view: 'Gestion des retours'
+communication-lb: 'Communications'
+criteria-lb: 'Critères d''évaluation'
+criteria-lb-add: 'Nouveau critère'
+criteria-lb-edit: 'Modifier le critère'
+criteria-lb-list: Faire la liste
+criteria-lb-translate: 'Traduire le critère'
+faq-lb: FAQ
+faq-lb-add: 'Nouvelle question'
+faq-lb-edit: 'Modifier la question'
+faq-lb-list: Faire la liste
+faq-lb-translate: 'Traduire la question'
+filter-lb: 'Filtres'
 glossary-lb: Glossaire
+glossary-lb-edit: 'Modifier le terme'
+glossary-lb-list: Faire la liste
+glossary-lb-translate: 'Traduire le terme'
+home-lb: 'Éléments en couverture'
+home-lb-list: 'Éléments en couverture'
+icons-lb: 'Type de retour'
+icons-lb-list: Faire la liste
+icons-lb-translate: 'Traduire le Type'
+info-lb-add: 'Créer une idée'
+info-lb-list: Faire la liste
+info-lb-translate: 'Traduire l’idée'
+licenses-lb: Licenses
+licenses-lb-add: 'Créer une idée'
+licenses-lb-edit: 'Editer la Licence'
+licenses-lb-list: Faire la liste
+licenses-lb-translate: 'Traduction de la licence'
+mailing-lb: Communications
+mailing-lb-edit: 'Écrire du contenu'
+mailing-lb-list: 'Sélectionner les destinataires'
+mailing-lb-send: 'Communication envoyée'
+milestones-lb: Étapes importantes
+milestones-lb-add: 'Nouvel objectif'
+milestones-lb-list: Faire la liste
+milestones-lb-translate: 'Traduire étape importante'
+news-lb: Flash d'informations
+news-lb-add: 'Nouveau flash d''information'
+news-lb-edit: 'Montage de Micronews'
+news-lb-list: Faire la liste
+news-lb-translate: 'Traduire Micronews'
+newsletter-lb: Bulletin
+newsletter-lb-detail: 'Voir les destinataires'
+newsletter-lb-init: 'Lancement d’un nouvel envoi'
+newsletter-lb-list: 'État de l’expédition automatique'
+node-lb: 'Données de la chaine'
+node-lb-admins: 'Voir les administrateurs'
+node-lb-edit: Montage
+node-lb-list: 'Données actuelles'
+nodes-lb: Canaux
+nodes-lb-add: 'Nouveau Canal'
+nodes-lb-admins: 'Attribuer des administrateurs à la chanie'
+nodes-lb-edit: 'Gestion de la Chaine'
+nodes-lb-list: Faire la liste
+pages-lb: Pages
+pages-lb-add: 'Nouvelle page'
+pages-lb-list: Faire la liste
+pages-lb-translate: 'Traduire la page'
+pages-lbedit: 'Modification de la page'
+projects-lb: Projets
+projects-lb-accounts: 'Coûts du projet'
+projects-lb-assign: 'Attribuer le projet à un appel'
+projects-lb-cancel: 'Annulation de la contribution'
+projects-lb-conf: 'Paramètres de campagne du projet'
+projects-lb-consultants: 'Changer le conseiller du projet'
+projects-lb-dates: 'Dates du projet'
+projects-lb-execute: 'Exécution du poste'
+projects-lb-images: 'Images du projet'
+projects-lb-list: Faire la liste
+projects-lb-move: 'Déplacer le projet vers un autre nœud'
+projects-lb-open_tags: 'Attribuer un groupement au projet'
+projects-lb-rebase: 'Changer l’ID du projet'
+projects-lb-report: 'Rapport financier du projet'
+promote-lb: 'Projets favoris'
+promote-lb-add: 'Nouveau projet remarquable'
+promote-lb-edit: 'Montage en vedette'
+promote-lb-list: Faire la liste
+promote-lb-translate: 'Traduire projet en vedette'
 recent-lb: 'Activité récente'
+recent-lb-list: Faire la liste
+reviews-lb: Révisions
+reviews-lb-add: 'Briefing de départ'
+reviews-lb-edit: 'Briefing d’émission'
+reviews-lb-list: Faire la liste
+rewards-lb: Récompenses
+rewards-lb-edit: 'Gestion de la récompense'
+rewards-lb-list: Faire la liste
+sent-lb: 'Historique d''Envoi'
+sent-lb-list: 'Emails envoyés'
 sponsors-lb: 'Soutien institutionnel'
+sponsors-lb-add: 'Nouveau commanditaire'
+sponsors-lb-list: Faire la liste
+tags-lb: 'Tags de blog'
+tags-lb-add: 'Nouveau tag'
+tags-lb-edit: 'Modification des Tag'
+tags-lb-list: Faire la liste
+tags-lb-translate: 'Traduire le Tag'
+templates-lb: 'Modèles d''e-mail'
+templates-lb-edit: 'Modifier le modèle'
+templates-lb-list: Faire la liste
+texts-lb: 'Textes interférés'
+texts-lb-edit: 'Montage original'
+texts-lb-list: Faire la liste
+translates-lb: 'Traductions des projets'
+translates-lb-add: 'Permettre la traduction'
+translates-lb-edit: 'Attribuer la traduction'
+translates-lb-list: Liste
+translates-lb-translate: 'Traduire le texte'
+transnodes-lb: 'Traductions de nœuds'
+transnodes-lb-edit: 'Attribuer la traduction'
+transnodes-lb-list: Faire la liste
+users-lb: Utilisateurs
+users-lb-add: 'Création d’un utilisateur'
+users-lb-edit: 'Modifier l''utilisateur'
+users-lb-impersonate: 'Se faire passer pour l’utilisateur'
+users-lb-list: Faire la liste
+users-lb-manage: 'Gestion des utilisateurs'
+users-lb-move: 'Déplacer dans un autre nœud de l’utilisateur'
+workshop-lb: 'Ateliers'
+word-lb: 'Nombre de mots'
+word-lb-list: Faire la liste
+worth-lb: 'Niveaux de méritocratie'
+worth-lb-edit: 'Elaboration du niveau'
+worth-lb-list: Faire la liste
+stats-lb: Stats & data
+stories-lb: 'Récit utilisateur'
+channelstory-lb: 'Histoires sur les canaux'
+channelresource-lb: 'Ressources'
+channelposts-lb: 'Publier vers le canal'
+channelcriteria-lb: 'Quiz de la chaine'
+channelprogram-lb: 'Les programmes de la chaîne'
+channelsection-lb: 'Sections des canaux'
+certificate-lb: 'Certificats'
+certificatemanagement-lb: '  Gestion des certificats'

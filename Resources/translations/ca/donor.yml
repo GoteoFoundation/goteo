@@ -25,13 +25,7 @@ personal-field-donor_name: 'Nom de la persona física o denominació fiscal de l
 personal-field-donor_surname: 'Primer cognom (no omplir en cas d''entitats jurídiques)'
 personal-field-donor_surname2: 'Segon cognom (no omplir en cas d''entitats jurídiques)'
 validate-donor-mandatory: 'Tots els camps són obligatoris'
-donor-legal-entities-natural-person: Persona física
-donor-legal-entities-legal-person: Persona jurídica
-donor-legal-document-type-cif: CIF
-donor-legal-document-type-nif: NIF
-donor-legal-document-type-nie: NIE
-donor-legal-document-type-vat: VAT
-validate-donor-legal_entity-empty: 'El camp Entitat legal és obligatòri.'
+validate-donor-legal_entity-empty: El camp Entitat legal és obligatòri.
 validate-donor-legal_document_type-empty: 'El camp tipus de document és obligatòri.'
 validate-donor-nif-document-type: 'El número del document no coincideix en format amb el tipus de document'
 validate-donor-legal-nif-entity-legal: "L'entitat legal no coincideix amb el tipus de document"

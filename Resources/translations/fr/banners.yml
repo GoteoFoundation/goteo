@@ -1,5 +1,6 @@
 ---
 discover-banner-header: 'Par catégorie, lieu ou type de récompenses et retombées, <br><span class="red">localisez le projet</span> qui vous motive le plus'
 login-banner-header: 'Accédez à la communauté<br><span class="greenblue">100% ouverte</span>'
+main-banner-header: '<h2 class="message">Red social pour <span class="greenblue">cofinancer et collaborer avec</span><br> des projets innovants qui encouragent le bien commun<br> Avez-vous un projet avec <span class="greenblue">adn ouvert</span>?</h2> <a href="/contact » class="button banner-button"> Contactez-nous</a>'
 open-banner-header: '<div class="modpo-open">OPEN</div><div class="modpo-percent">100&#37; OUVERT</div><div class="modpo-whyopen">%s</div>'
 regular-banner-metter: Obtenu sur ce qu'il reste

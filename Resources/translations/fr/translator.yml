@@ -1,6 +1,80 @@
 ---
+translator: Traducteur
+translator-banner: Bannières
+translator-bazar: 'Catalogue :'
+translator-cannot-delete-system: 'On ne peut pas supprimer cette traduction car elle est intégrée au système!'
 translator-category: Catégories
+translator-choose: 'Choisir une option'
+translator-copy-from: 'Copier le contenu de'
+translator-criteria: 'critères d''évaluation'
+translator-delete: 'Supprimer la traduction vers %s'
+translator-delete-sure: 'Vous voulez supprimer la traduction de %s ? Celle-ci ne peut pas être annulée!'
+translator-deleted-ko: 'Erreur lors de la suppression de la traduction vers %s!'
+translator-faq: Faq
+translator-feed-translated-target: 'Traduction en %s'
+translator-field-blog: Blog
+translator-field-content: Contenu
 translator-field-description: Description
+translator-field-facebook_msg: 'Messages Facebook'
 translator-field-legend: Légende
 translator-field-name: Nom
+translator-field-schedule: Horaire
+translator-field-share_facebook: 'Partager le texte sur facebook'
+translator-field-share_twitter: 'Partager le texte sur twitter'
+translator-field-text: Texte
+translator-field-title: Titre
+translator-field-subtitle: sous-titre
+translator-field-twitter_msg: 'Message Twitter'
+translator-field-twitter_msg_owner: 'Auteur sur Twitter'
+translator-field-url: URL
+translator-glossary: 'Glossaire des termes'
+translator-icon: 'Types de retour/récompense'
+translator-lang-no-perms: 'Vous n’êtes pas autorisé à gérer cette langue'
+translator-license: Licenses
+translator-milestone: Étapes importantes
+translator-more-langs: Autres
+translator-news: Actualités
+translator-not-saved: 'Aucun contenu n’a été enregistré! (peut-être avez-vous des champs vides?)'
+translator-opentag: Catégories
+translator-original-text: 'Texte original'
+translator-page: Pages
+translator-patron: 'Projets parrainés'
+translator-pending-desc: 'Ce contenu est « en attente », ce qui signifie que <strong> N’est PAS PUBLIC</strong> et il reste comment brouillon jusqu’à ce que l’option « En attente de traduction » soit supprimée.'
+translator-post: Blog
+translator-promote: 'Projets favoris'
+translator-channelstory: 'Histoires favorites d’utilisateurs'
+translator-channelpost: 'Publier vers le canal'
+translator-save: 'Enregistrer & Publier'
+translator-save-original: 'Enregistrer dans le tableau d’origine'
+translator-save-draft: 'Enregistrer sous forme de brouillon'
+translator-saved-ko: 'Échec de l’enregistrement de la traduction vers %LANG% (%ERROR%)'
+translator-saved-ok: 'Traductions enregistrées correctement pour les langues [%s]'
+translator-skipped-fields: "Certains champs n’ont pas été copiés parce qu’ils contenaient déjà du texte.\nEfface le texte original pour pouvoir le copier à partir d’une autre langue."
+translator-social_commitment: 'Engagements sociaux'
+translator-sdg: 'ODD'
+translator-footprint: 'Empreintes'
+translator-system: Système
+translator-translations: Traductions
 translator-workshop: Ateliers
+translator-zone-not-found: 'Cette zone de traduction n’est pas valide'
+translator-lang-not-found: 'Cette langue n’est pas présente sur la plate-forme!'
+translator-percent: '%d&#37; traduit'
+translator-add-translation: 'Ajouter une nouvelle traduction'
+translator-communication: Communication
+translator-node: Canal
+translator-node_program: Les programmes de la chaîne
+translator-node_faq: FAQ de la chaine
+translator-node_sponsor: Sponsors de la chaine
+translator-node_team: L'équipe de la chaine
+translator-node_resource_category: Catégorie des ressources
+translator-image_credits: Source de l'image
+translator-field-action: Action
+translator-field-action_url: Url de l’action
+translator-field-terms: Bases
+translator-field-tip_msg: Message
+translator-field-banner_button_url: Url du bouton de la bannière
+translator-field-terms_url: Url de base
+translator-field-credits: Crédits
+translator-question: Questions
+translator-question_options: Options de questions
+translator-field-option: Options

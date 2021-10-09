@@ -8,3 +8,5 @@ matcher-apply-accept: 'Sí, apúntome'
 matcher-apply-reject: 'Non gracies, renuncio a la convocatoria'
 matcher-apply-discard: 'Escartar proyeutu'
 matcher-budget-amount: 'Presupuestu total'
+matcher-label-pending: "Pendiente"
+matcher-apply-answer-questionnaire: "Responder el cuestionariu"

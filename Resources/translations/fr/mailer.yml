@@ -3,4 +3,12 @@ mailer-baja: 'Si vous ne voulez pas recevoir plus de mise àjour, vous pouvez vo
 mailer-disclaimer: 'Goteo est une plateforme digitale pour le financement participatif, pour la collaboration et la distribution des récompenses pour le dévellopement de projet social, culturel, artistique et technique.'
 mailer-sinoves: 'Si vous ne pouvez voir ce message utiliser ce <a href="%s">lien</a>'
 newsletter-block: 'Ne plus recevoir de nouvelle de Goteo?<br>Vous pouvez bloquez nos newsletter <a href="%s">ici</a>.'
+newsletter-subscribe: 'S''abonner à la newsletter'
+newsletter-unsubscribe: 'Se désabonner de la newsletter'
+newsletter-unsubscribe-cancel: 'Tu t’es trompé ? <a href="%s">S''abonnez à nouveau</a>'
+newsletter-subscribe-cancel: 'Vous ne vouliez pas vous abonner? <a href="%s">Supprimer votre abonnement</a>'
+subscribe-request-success: 'Félicitations! Vous vous êtes abonné à notre newsletter (%s).'
 unsubscribe-request-success: 'Vous avez annuler votre souscription à notre Bulletin d''information (%s).'
+mailer-more-projects-button: 'VOIR PLUS DE PROJETS'
+mailer-from: De
+mailer-to: Pour

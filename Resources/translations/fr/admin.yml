@@ -26,6 +26,19 @@ admin-account-issue-solved: 'Nous avons fait le transfert'
 admin-account-modify-status: 'Modifier le statut'
 admin-account-modify-status-confirm: "Êtes-vous sûr de vouloir modifier manuellement le statut sur cette contribution? C'est délicat!\nAUCUNE opération de retour de contribution ne sera effectuée."
 admin-account-payment-method: 'Mode de paiement'
+admin-account-pool-on-fail: 'Pool (retour au portefeuille en cas de défaillance)'
+admin-account-refund-to-pool: 'Rembourser la contribution sur le portefeuille'
+admin-account-refund-to-pool-confirm: "Cela marquera l’apport comme:\nRetourné si le projet est échoué\nAnnulé si le projet est actif ou réussi\nL’utilisateur ne sera pas remboursé, l’argent sera généré dans le portefeuille de l’utilisateur.\nVoulez-vous continuer ?"
+admin-account-refund-to-user: 'Rembourser la contribution à l’utilisateur'
+admin-account-refund-to-user-confirm: "Cela marquera l’apport comme:\nRetourné si le projet est échoué\nAnnulé si le projet est actif ou réussi\nL’argent sera remboursé à l’utilisateur.\nCela peut ne pas fonctionner si l’apport est très ancien ou si le mode de paiement ne le supporte pas.\nVoulez-vous continuer ?"
+admin-account-rewards: 'Récompenses choisies'
+admin-account-switch-donation: 'Echange des dons'
+admin-account-switch-donation-confirm: 'Voulez-vous modifier le statut de votre don?'
+admin-account-switch-pool-confirm: 'Cela n’affecte que lorsque le projet échoue, ne génère ni n’enlève d’argent du portefeuille. Voulez-vous continuer ?'
+admin-account-switch-pool-fail: 'Impossible de modifier l’état du pool de cette contribution'
+admin-account-transaction: 'Code de suivi'
+admin-account-user-changed-error: 'Impossible de changer l’utilisateur de l’apport [%ID%] en [%NAME%]!'
+admin-account-user-changed-successfully: 'L’utilisateur de l’apport [%ID%] a été remplacé par [%NAME%]'
 admin-address: Adresse
 admin-all: Tout
 admin-global: Global
@@ -36,7 +49,503 @@ admin-contents: 'Textes et traductions'
 admin-empty-list: 'Aucun enregistrement trouvé'
 admin-activity: Activité
 admin-communications: Communications
+admin-communications-add: Créer une nouvelle communication
+admin-communications-userid-label: 'strong>%USERID%</strong>'
+admin-communications-useremail-label: 'strong>%USEREMAIL%</strong>'
+admin-communications-username-label: 'strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: 'strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: 'strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: 'strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: 'strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' pour l’ID d’accès du destinataire'
+admin-communications-useremail-content: '  pour l’email du destinataire'
+admin-communications-username-content: ' pour le nom du destinataire'
+admin-communications-siteurl-content: ' pour l’url de cette plate-forme (%SITEURL%)'
+admin-communications-subscribeurl-content: ' lien direct d’abonnement à la newsletter de l’utilisateur'
+admin-communications-unsubscribeurl-content: '  lien direct de désabonnation vers la newsletter de l’utilisateur'
+admin-communications-poolamount-content: 'montant d’argent disponible dans le portefeuille de l’utilisateur'
+admin-communications-send: 'Envoyer une communication'
+admin-communications-cancel: 'Annuler la communication'
+admin-communications-newsletter: 'Bulletin'
+admin-communications-communication: 'Communication générale'
+admin-communications-id: 'ID de la communication'
+admin-certificates: Certificats
+admin-certificates-management: '  Gestion des certificats'
 admin-home: FrontPage
 admin-items: articles
 admin-mailing-back-to-list: 'Aller à ''Message & Forums'''
 admin-mailing-communicating-with: 'Communiquer avec %DESC%'
+admin-mailing-created: 'Créé le'
+admin-mailing-new-massive: 'Un nouveau mailing a été créé à %TOTAL% utilisateurs'
+admin-mailing-status: 'État de l’expédition automatique'
+admin-mailing-subject: Sujet
+admin-mailing-view-and-activate: 'Afficher dans l’administrateur du bulletin pour activer l’envoi'
+admin-mailing-view-in-newsletter: 'Voir dans l’administrateur du bulletin'
+admin-mailing-view-in-sent: 'Afficher dans l’historique des envois (statistiques)'
+admin-mailing-view-message: 'Voir le message'
+admin-newsletter-generated: 'La newsletter [%ID%] a été générée'
+admin-newsletter-langs-to-send: 'Langues: %LANGS%'
+admin-newsletter-mind-activate: 'Activez-le pour qu’il soit envoyé'
+admin-prev-page: 'Page précédente'
+admin-next-page: 'Page suivante'
+admin-no: 'Non'
+admin-percent: Pourcentage
+admin-project: Projet
+admin-main: Principal
+admin-legacy: Anciens
+admin-projects: Projets
+admin-consultants: 'Conseillers'
+admin-invests: Contributions
+admin-filters: 'Filtres'
+admin-filters-edit: 'Modifier le filtre'
+admin-filters-create: 'Créer un filtre'
+admin-remove-filters: 'Supprimer les filtres'
+admin-remove-filters-forbidden: 'Les filtres utilisés ne peuvent pas être supprimés.'
+admin-remove-entry: 'Effacer la saisie'
+admin-remove-entry-confirm: 'Voulez-vous supprimer cette entrée? Cette action sera définitive!'
+admin-remove-entry-forbidden: 'Impossible de supprimer l''article publié dans le blog. Dépubliez d’abord l’article.'
+admin-remove-entry-ok: 'Donnée supprimée correctement'
+admin-add-entry-ok: 'Nouvel enregistrement créé correctement'
+admin-edit-entry-ok: 'Enregistrement correctement modifié'
+admin-services: Services
+admin-sponsors: Sponsors
+admin-slug-seo-help: 'Ce domaine est important pour le SEO. Modifier uniquement pour une bonne raison.'
+admin-others: Autres
+admin-summary: Sommaire
+admin-origins: Statistiques de visites
+admin-status: Etat
+admin-text-type: 'Traiter le texte comme'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Texte Simple'
+admin-user: Utilisateur
+admin-user-no-projects: 'Il n’a pas encore créé de projet'
+admin-user-no-invests: 'Il n’a pas encore fait de dons'
+admin-users: Utilisateurs
+admin-users-add: Créer un nouveau compte utilisateur
+admin-blog: Généralités du blog
+admin-blog-add: Créer un nouveau post
+admin-blog-slug-exists: 'L’identifiant [%s] est utilisé dans un autre post!'
+admin-blog-slug-chars: 'L’identificateur [%s] contient des caractères invalides!'
+admin-blog-not-public: 'Ce message n’est pas encore public'
+admin-stories: Historiques d’utilisateurs dans Goteo
+admin-stories-add: Créer une nouvelle histoire
+admin-stories-edit: Modifier l’histoire %s
+admin-channelstory-add: Ajouter le témoignage à la chaîne
+admin-channelstory-submit: Sauvegarder l'historique
+admin-channelstory-correct: 'Le témoignage a été ajouté à la chaîne'
+admin-channelsection-section: 'Section'
+admin-channelsection-map: 'Carte'
+admin-channelsection-resource: 'Ressources'
+admin-channelsection-call_to_action: 'Appel à l’action'
+admin-channelsection-projects: 'Projets'
+admin-channelsection-posts: 'Publications'
+admin-channelsection-program: 'Programmes'
+admin-channelsection-stories: 'Stories'
+admin-channelsection-workshops: 'Ateliers'
+admin-channelsection-team: 'Equipe'
+admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-button: 'Bouton'
+admin-channelsection-create: 'Créer'
+admin-channelsection-add: 'Ajouter une section'
+admin-channelpost-add: Ajouter un témoignage à la chaîne
+admin-channelpost-submit: Enregistrer la publication
+admin-channelpost-correct: 'Le témoignage a été ajouté à la chaîne'
+admin-channelcriteria-title: 'Quiz de la chaine'
+admin-channelcriteria-subtitle: 'Définissez les critères avec lesquels vous évaluerez un projet qui souhaite se présenter à votre chaîne. Essayez d’être concis dans ce que vous espérez tirer des initiatives que vous voulez présenter, aidera à vous faciliter l’évaluation finale.'
+admin-channelprogram-create: 'Créer'
+admin-channelprogram-add: 'Ajouter un programme'
+admin-categories: 'Catégories et domaines'
+admin-categories-if-empty-then-asset: 'Si elle est laissée vide, l’icône par défaut sera utilisée : %s'
+admin-category-add: Créer une nouvelle catégorie
+admin-category-edit: Modification de la catégorie %s
+admin-socialcommitment-add: Créer un nouvel engagement social
+admin-socialcommitment-edit: Modifier l’engagement social %s
+admin-sphere-add: Créer un nouveau domaine
+admin-sphere-edit: Modification de l'objectif %s
+admin-sdg-add: Créer un nouvel ODS
+admin-sdg-edit: Modification de l’ODS %s
+admin-footprint-add: Créer une nouvelle empreinte
+admin-footprint-edit: Modification de l’empreinte %s
+admin-calls: Appels à projets
+admin-matchers: Cofinanceurs
+admin-channels: Canaux
+admin-yes: Oui
+admin-impersonate: Se faire passer pour
+admin-impersonate-user: Emprunter l’identité de %s
+admin-project-express-discard: 'Rejet express'
+admin-project-express-discard-desc: 'Passez le projet à l’état Rejeté et envoyez un mail'
+admin-project-express-discard-sure: 'Vous allez envoyer un mail automatique et passer à l’état rejeté, Voulez-vous continuer?'
+admin-project-to-review: 'À l’examen'
+admin-project-to-review-desc: 'Passer le projet à l’état En attente d’évaluation'
+admin-project-to-review-sure: 'Le créateur ne pourra plus le modifier, Voulez-vous continuer ?'
+admin-project-view-in-admin: 'Voir dans l’admin'
+admin-project-to-negotiation: 'À négocier'
+admin-project-to-negotiation-desc: 'Passe le projet à l’état "Edité"'
+admin-project-to-negotiation-sure: 'ALERTE!! Le projet est en campagne! Avec ça, on va le dépublier OK ?'
+admin-project-to-publish: 'Publier'
+admin-project-to-publish-desc: 'Passer le projet à l’état « En campagne »'
+admin-project-to-publish-sure: 'Le projet va commencer sa campagne, Voulez-vous continuer?'
+admin-project-derivation-discard: 'Rejet mais avec une redirection '
+admin-project-derivation-discard-desc: 'Passe le projet à l’état Rejeté et envoie un mail l''orientant vers une autre plate-forme plus appropriée'
+admin-project-derivation-discard-sure: 'Un mail sera envoyé automatiquement à une autre plate-forme et passera à l’état exclu, d’accord?'
+admin-home-title: Administrer Goteo
+admin-list: Inscription
+admin-stats: Statistiques
+admin-search-global: 'Projet, canal, appel...'
+admin-already-impersonating: 'Vous usurper le profil d''un autre utilisateur, merci de vous déconnecter!'
+admin-rebase-user: 'Modifier l’ID de l''utilisateur'
+admin-edit-name: 'Renommer'
+admin-edit-roles: 'Modifier les rôles des utilisateurs'
+admin-send-email: 'Envoyer un e-mail'
+admin-show-roles-info: 'Quel rôle peut-il jouer?'
+admin-user-roles: 'Liste des rôles des utilisateurs'
+admin-view-user-projects: 'Tous les projets'
+admin-view-user-invests: 'Toutes les contributions'
+admin-user-hidden: 'Privé (caché)'
+admin-user-active: 'Compte actif'
+admin-user-warning: 'Attention: ces opérations sont exécutées sans envoyer d’avertissement à l’utilisateur'
+admin-user-wallet-amount: 'Créditer dans le portefeuille'
+admin-user-create-invest: 'Créer une contribution'
+admin-mailing: 'Emailing'
+admin-user-no-mailing: 'Aucun e-mail ne vous a encore été envoyé'
+admin-view-user-mailing: 'Toutes les expéditions'
+admin-role-change-forbidden: 'Vous n’êtes pas autorisé à gérer le rôle %ROLE% sur cet utilisateur'
+admin-users-global-search: 'Id, nom, email ou projet'
+admin-blog-global-search: 'Id, titre, texte du sous-titre'
+admin-communication-global-search: 'Sujet'
+admin-blog-stories-search: 'Id, titre, texte ou projet'
+admin-donor-name-search: 'ID, nom, email'
+admin-donor-date-search: 'Traités par date'
+admin-no-project: 'Pas de projet'
+admin-title-id: Id
+admin-title-name: Nom
+admin-title-about: Info
+admin-title-active: Actif
+admin-title-location: Localisation
+admin-title-fullname: Nom
+admin-title-email: Adresse mail
+admin-title-header-image: Image d'en-tête
+admin-title-password: Mot de passe
+admin-title-avatar: Avatar
+admin-title-roles: Rôles
+admin-title-role: Rôle
+admin-title-amount: Investi
+admin-title-icon: Icône
+admin-title-info: Info
+admin-title-image: Image
+admin-title-title: Titre
+admin-title-subtitle: Sous-titre
+admin-title-subject: Sujet
+admin-title-description: Description
+admin-title-section: Section
+admin-title-text: Texte
+admin-title-slug: Slug
+admin-title-publish: Publié
+admin-title-lang: Langue
+admin-title-langs: Traductions
+admin-title-actions: Actions
+admin-title-tags: Tags
+admin-title-deleted: Éliminé
+admin-title-sphere: Portée
+admin-title-social_commitment: Engagement social
+admin-title-sdgs: 'Objectifs de développement durable'
+admin-title-footprints: 'Empreintes'
+admin-title-categories: 'Catégories'
+admin-title-social_commitments: 'Engagements sociaux'
+admin-title-order: Trier
+admin-title-status: Etat
+admin-title-users: Utilisateurs
+admin-title-city: Ville
+admin-title-date: Date
+admin-title-blockquote: 'Citation personnalisée'
+admin-title-type: 'Type'
+admin-title-date-in: Date de début
+admin-title-date-out: Date de fin
+admin-title-venue: Lieu (Visible en appel à l’action)
+admin-title-venue-address: Adresse
+admin-title-how-to-get: Comment y arriver ?
+admin-title-iframe: 'Localisation de l''iframe'
+admin-title-schedule-file: 'URL du programme'
+admin-title-call: 'Appels pour Co-financement'
+admin-title-url-inscription: Lien vers l’inscription
+admin-title-filter: Filtre
+admin-title-template: Modèle
+admin-title-receivers: Destinataires
+admin-title-sent: Envoyés
+admin-title-failed: Non envoyés
+admin-title-pending: En Attente
+admin-title-success: Réussis
+admin-title-percent: Pourcentage
+admin-title-action-url: 'Texte bouton de téléchargement'
+admin-title-download-url: 'Lien de téléchargement'
+admin-title-channel: 'Canal'
+admin-title-resource-category: 'Catégories de ressources'
+admin-title-year: Année
+admin-title-nif: NIF
+admin-title-country: 'Pays:'
+admin-blog-not-published-yet: 'L''article n’est pas encore public sur le blog'
+admin-blog-initialized: 'Espace de blog initialisé'
+admin-blog-deactivated: 'Désolé, la gestion du blog est désactivée'
+admin-blog-edit-success: 'L''article du blog a été modifié correctement'
+admin-stories-not-active-yet: 'Cette histoire d’utilisateur n’est pas encore active'
+admin-stories-edit-success: 'L’historique des utilisateurs a été modifié correctement'
+admin-stories-pool: 'Afficher sur landing portefeuille'
+admin-stories-review: 'Examen de Goteo: (Sous-titre)'
+admin-stories-active: 'Actif en première page'
+admin-stories-landing_pitch: 'Afficher sur Landing Pitch'
+admin-stories-landing_match: 'Afficher sur Landing Pitch'
+admin-stories-type: 'Type de protagoniste'
+admin-all-project-referers: 'Origine des visites dans les projets'
+admin-all-invests-referers: 'Origine des visites dans les contributions aux projets'
+admin-all-call-referers: 'Origine des visites aux appels'
+admin-all-project-devices: 'Dispositif utilisé dans les pages de projet'
+admin-all-invests-devices: 'Dispositif utilisé dans les contributions aux projets'
+admin-all-call-devices: 'Dispositif utilisé dans les pages d’appels'
+admin-aggregate-autoupdate: 'Mise à jour automatique'
+admin-aggregate-timeline: 'Chronologie'
+admin-aggregate-invests: 'Total des contributions '
+admin-aggregate-invests-desc: 'Somme des contributions par unité de temps'
+admin-aggregate-invests-average: 'Moyenne des contributions'
+admin-aggregate-invests-average-desc: 'Moyenne des apports par unité de temps'
+admin-aggregate-projects: 'Total des recettes dans les projets'
+admin-aggregate-projects-desc: 'Somme des contributions par unité de temps'
+admin-aggregate-projects-average: 'Moyenne des collectes sur les projets'
+admin-aggregate-projects-average-desc: 'Moyenne de collecte par unité de temps'
+admin-stats-invest-totals: 'Contributions et commissions'
+admin-stats-project-totals: 'État des projets'
+admin-stats-raised: 'Chiffre d’affaires brut'
+admin-stats-active: 'Revenu net'
+admin-stats-refunded: 'Résultats'
+admin-stats-fees: 'Commission de la plate-forme'
+admin-stats-commissions: 'Commission bancaire'
+admin-stats-matchfunding: 'Co-financements'
+admin-stats-raised-method: 'Revenus bruts selon le mode de paiement'
+admin-stats-raised-method-desc: 'Les recettes brutes comprennent la totalité de l’argent qui a été perçu par la plate-forme à un moment donné (y compris les contributions à des projets ratés, en plus des contributions directes au portefeuille ou provenant de projets ratés avec retour au portefeuille).<br><em> Les contributions provenant du portefeuille ne sont pas incluses</em> (sauf si ce moyen de paiement est pris)</b>'
+admin-stats-active-method: 'Revenu net selon la méthode de paiement'
+admin-stats-active-method-desc: 'Le produit net comprend la totalité de l’argent perçu par la plate-forme à l’exclusion des retours (y compris les contributions au portefeuille, directes et provenant de projets ratés avec au portefeuille).. <br><em> Les contributions provenant du portefeuille ne sont pas incluses</em> (sauf si ce moyen de paiement est pris en compte).'
+admin-stats-refunded-method: 'Retours selon le mode de paiement'
+admin-stats-refunded-method-desc: 'Les retours comprennent toutes les méthodes de paiement (y compris les contributions à partir du portefeuille)'
+admin-stats-commissions-method: 'Commissions bancaires selon le mode de paiement'
+admin-stats-fees-method: 'Commission de la plate-forme en fonction du mode de paiement'
+admin-stats-from_matchfunding: 'Détail des projets avec Cofinanceurs'
+admin-stats-matchfunding-part: 'Projets avec Cofinancement'
+admin-stats-users-part: 'Projets sans cofinancement'
+admin-stats-match-part: 'Coefficient multiplicateur'
+admin-stats-citizens-part: 'Partie citoyenne'
+admin-stats-invest-destination: 'Destination des contributions'
+admin-stats-invest-in_wallet: 'Total cumulé dans le portefeuille'
+admin-stats-to_projects: 'Aux projets'
+admin-stats-to_wallet: 'Vers le portefeuille'
+admin-stats-to_matcher_wallet: 'Dans le portefeuille virtuel des co-financeurs'
+admin-stats-to_fee: 'commissions'
+admin-stats-to_fee-percent: 'Commission effective'
+admin-stats-in_wallet: 'Dans le portefeuille virtuel'
+admin-stats-in_matcher_wallet: 'Dans le portefeuille virtuel des co-financeurs'
+admin-stats-in_users_wallet: 'Dans le portefeuille des utilisateurs'
+admin-stats-refunded-parts: 'Répartition des retours'
+admin-stats-fees-parts: 'Répartition des commissions'
+admin-stats-invest-active-parts: 'Répartition du bénéfice net'
+admin-stats-invest-in_wallet-parts: 'Répartition du portefeuille'
+admin-losts: Perdues
+admin-raised: collecté
+admin-active: Encaissé
+admin-refunded: Retourné
+admin-refunded-to_users: Retour aux utilisateurs
+admin-refunded-to_users-invests: Nº retours aux utilisateurs
+admin-refunded-to_wallet: Retour au portefeuille
+admin-commissions: Commission
+admin-fees: Commission de la plate-forme
+admin-user-fee: Commission citoyenne
+admin-call-fee: Commission Cofinancement (sans Matchers)
+admin-matcher-fee: Commission des cofinanceurs
+admin-vat: TVA
+admin-diff: Différence
+admin-the_day: Le jour
+admin-the_week: La semaine
+admin-the_month: Le mois
+admin-the_year: L’année
+admin-custom: Selon le filtre
+admin-total: Total
+admin-today: Aujourd'hui
+admin-yesterday: Hier
+admin-week: Cette semaine
+admin-last_week: Le même jour la semaine dernière
+admin-last_week_complete: Toute la semaine dernière
+admin-last_year_week: La même semaine il y a un an
+admin-month: Ce Mois-Ci
+admin-last_month: Le même jour le mois dernier
+admin-last_month_complete: Tout le mois dernier
+admin-last_year_month: Le même mois il y a un an
+admin-year: Cette année
+admin-last_year: Le même jour l’année dernière
+admin-last_year_complete: Toute l’année dernière
+admin-promote-add: 'Nouveau projet en vedette'
+admin-promote-submit: 'Valider'
+admin-promote-already-exists: 'Ce projet est déjà mis en évidence'
+admin-promote-correct: 'Le projet est mis en évidence'
+admin-projects-created-today: 'Créé aujourd''hui'
+admin-projects-created-yesterday: 'Créé hier'
+admin-projects-created-week: 'Créé cette semaine'
+admin-projects-created-last_week: 'Créé la semaine dernière'
+admin-projects-created-month: 'Créé ce mois-ci'
+admin-projects-created-last_month: 'Créé le mois dernier'
+admin-projects-created-year: 'Créé cette année'
+admin-projects-created-last_year: 'Créé l’année dernière'
+admin-projects-negotiating-today: 'En négociation aujourd’hui'
+admin-projects-negotiating-yesterday: 'En négociation hier'
+admin-projects-negotiating-week: 'En négociation cette semaine'
+admin-projects-negotiating-last_week: 'En négociation la semaine dernière'
+admin-projects-negotiating-month: 'En négociation ce mois-ci'
+admin-projects-negotiating-last_month: 'En négociation le mois dernier'
+admin-projects-negotiating-year: 'En négociation cette année'
+admin-projects-negotiating-last_year: 'En négociation l’année dernière'
+admin-projects-published-today: 'Publié aujourd’hui'
+admin-projects-published-yesterday: 'Publié hier'
+admin-projects-published-week: 'Publié cette semaine'
+admin-projects-published-last_week: 'Publié la semaine dernière'
+admin-projects-published-month: 'Publié ce mois-ci'
+admin-projects-published-last_month: 'Publié le mois dernier'
+admin-projects-published-year: 'Publié cette année'
+admin-projects-published-last_year: 'Publié l’année dernière'
+admin-projects-rejected-today: 'Rejeté aujourd’hui'
+admin-projects-rejected-yesterday: 'Rejeté hier'
+admin-projects-rejected-week: 'Rejeté cette semaine'
+admin-projects-rejected-last_week: 'Rejeté la semaine dernière'
+admin-projects-rejected-month: 'Rejeté ce mois-ci'
+admin-projects-rejected-year: 'Rejeté cette année'
+admin-projects-rejected-last_year: 'Rejeté l’année dernière'
+admin-projects-review-today: 'A l''examen aujourd’hui'
+admin-projects-review-yesterday: 'En cours d’examen hier'
+admin-projects-review-week: 'En cours d’examen cette semaine'
+admin-projects-review-last_week: 'En cours d''examen la semaine dernière'
+admin-projects-review-month: 'En cours d’examen ce mois-ci'
+admin-projects-review-last_month: 'En cours d'' examen le mois dernier'
+admin-projects-review-year: 'En cours d’examen cette année'
+admin-projects-review-last_year: 'En cours d''examen l’an dernier'
+admin-invest-raised-amount-today: 'Collecté aujourd’hui'
+admin-invest-raised-total-today: 'Dons effectués aujourd’hui'
+admin-invest-raised-amount-yesterday: 'Collecté hier'
+admin-invest-raised-total-yesterday: 'Dons effectués hier'
+admin-invest-raised-amount-week: 'Reçu cette semaine'
+admin-invest-raised-amount-last_week: 'Collecté la semaine dernière'
+admin-invest-raised-total-week: 'Dons de cette semaine'
+admin-invest-raised-total-last_week: 'Dons de la semaine dernière'
+admin-invest-raised-amount-month: 'Reçu ce mois-ci'
+admin-invest-raised-amount-last_month: 'Collecté le mois dernier'
+admin-invest-raised-total-month: 'Dons ce mois-ci'
+admin-invest-raised-total-last_month: 'Dons du mois dernier'
+admin-invest-raised-amount-year: 'Collecté cette année'
+admin-invest-raised-total-year: 'Dons de cette année'
+admin-invest-raised-amount-last_year: 'Collecté l’an dernier'
+admin-invest-raised-total-last_year: 'Les dons de l’année dernière'
+admin-invest-commissions-today: 'Commission bancaire d''aujourd’hui'
+admin-invest-commissions-yesterday: 'Commission bancaire d''hier'
+admin-invest-commissions-week: 'Commission bancaire de cette semaine'
+admin-invest-commissions-last_week: 'Commission bancaire de la semaine dernière'
+admin-invest-commissions-month: 'Commission bancaire ce mois-ci'
+admin-invest-commissions-last_month: 'Commission bancaire du mois dernier'
+admin-invest-commissions-year: 'Commission bancaire de cette année'
+admin-invest-commissions-last_year: 'Commission bancaire de l’année dernière'
+admin-invest-commissions-lost-today: 'Perte sur les contributions retournées aujourd’hui'
+admin-invest-commissions-lost-yesterday: 'Perte sur les contributions retournées hier'
+admin-invest-commissions-lost-week: 'Perte sur les contributions retournées cette semaine'
+admin-invest-commissions-lost-month: 'Perte sur les contributions retournées ce mois-ci'
+admin-invest-commissions-lost-year: 'Perte sur les contributions retournées cette année'
+admin-invest-commissions-lost-last_year: 'Perte sur les contributions retournées l’an dernier'
+admin-invest-commissions-tpv-today: 'Commission TPV aujourd’hui'
+admin-invest-commissions-tpv-yesterday: 'Commission TPV d''hier'
+admin-invest-commissions-tpv-week: 'Commission TPV de cette semaine'
+admin-invest-commissions-tpv-last_week: 'Commission TPV de la semaine dernière'
+admin-invest-commissions-tpv-month: 'Commission TPV ce mois-ci'
+admin-invest-commissions-tpv-last_month: 'Commission TPV le mois dernier'
+admin-invest-commissions-tpv-year: 'Commission TPV cette année'
+admin-invest-commissions-tpv-last_year: 'Commission TPV l’année dernière'
+admin-invest-commissions-paypal-today: 'Commission PayPal aujourd’hui'
+admin-invest-commissions-paypal-yesterday: 'Commission PayPal d''hier'
+admin-invest-commissions-paypal-week: 'Commission PayPal de cette semaine'
+admin-invest-commissions-paypal-last_week: 'Commission PayPal de la semaine dernière'
+admin-invest-commissions-paypal-month: 'Commission PayPal ce mois-ci'
+admin-invest-commissions-paypal-last_month: 'Commission PayPal du mois dernier'
+admin-invest-commissions-paypal-year: 'Commission PayPal de cette année'
+admin-invest-commissions-paypal-last_year: 'Commission PayPal de l’année dernière'
+admin-invest-fees-today: 'Commission Goteo d''aujourd’hui'
+admin-invest-fees-yesterday: 'Commission Goteo d''hier'
+admin-invest-fees-week: 'Commission Goteo de cette semaine'
+admin-invest-fees-last_week: 'Commission de Goteo de la semaine dernière'
+admin-invest-fees-month: 'Commission de Goteo ce mois-ci'
+admin-invest-fees-last_month: 'Commission de Goteo du mois dernier'
+admin-invest-fees-year: 'Commission de Goteo de cette année'
+admin-invest-fees-last_year: 'Commission de Goteo de l’année dernière'
+admin-invest-diff-yesterday: 'Différence par rapport à la veille'
+admin-invest-diff-last_week: 'Différence par rapport à la semaine précédente'
+admin-invest-diff-last_month: 'Différence par rapport au mois précédent'
+admin-invest-diff-last_year: 'Différence par rapport à l’année précédente'
+admin-stats-projects-channel-desc: 'Projets appartenant au canal (ou nœud)'
+admin-stats-projects-call-desc: 'Projets relevant de l’appel'
+admin-stats-projects-matcher-desc: 'Projets actifs dans le cofinancement'
+admin-stats-projects-consultant-desc: 'Projets affectés à ce conseiller'
+admin-stats-projects-project-desc: 'Contributions au projet'
+admin-filter-add: 'Ajouter un filtre'
+admin-filter-last-week: 'Au cours des 7 derniers jours'
+admin-filter-last-month: 'Au cours des 30 derniers jours'
+admin-filter-last-year: 'Au cours des 365 derniers jours'
+admin-filter-from-new-year: 'Depuis le 1er janvier'
+admin-filter-previous-year: 'L''année dernière'
+admin-filter-two-years-ago: 'Il y a deux ans'
+admin-filter-typeofuser: 'Type d''utilisateur'
+admin-filter-typeofdonor: 'Type de donateur'
+admin-filter-user: 'Utilisateur'
+admin-filter-donor: 'Donateur'
+admin-filter-no-donor: 'Donateur inactif'
+admin-filter-promoter: 'Promoteur'
+admin-filter-matcher: 'Co-financeur'
+admin-filter-test: 'Test'
+admin-filter-type-unique: 'Unique'
+admin-filter-type-multidonor: 'Multidonateur'
+admin-filter-type-foundation-donor: 'Donateur à la fondation'
+admin-filter-type-all: 'Tous'
+admin-filter-predefined-date: 'Date par défaut'
+admin-filter-predefined-date-choose: 'Vous pouvez sélectionner une date par défaut'
+admin-filter-forced: 'Forcer le filtre'
+admin-filter-forced-help: 'Si vous sélectionnez cette option, les filtres s’appliqueront indépendamment de ce que l’utilisateur a choisi comme préférence pour l’envoi d’informations par la plate-forme.'
+admin-filter-project-status: État du projet
+admin-filter-invest-status: État du don
+admin-filter-project-location: Emplacement du projet
+admin-filter-location: Emplacement à utiliser dans le filtre
+admin-filter-donor-location: Emplacement du donateur
+admin-filter-donor-status: Etat du certificat
+admin-mail-body: 'Corps du message'
+admin-stats-donations: 'Dons'
+admin-stats-donations-method: 'Dons selon le mode de paiement'
+admin-stats-donations-method-desc: 'Les dons comprennent l’argent que l’utilisateur donne volontairement à la fondation lorsqu’il apporte à un projet, des dons directs ou lorsque le montant dans le portefeuille expire.'
+admin-stats-donations-tip: 'Dons lors de contributions à des projets (Conseils ou « tips »)'
+admin-stats-donations-direct: 'Dons directs (y compris les portefeuilles expirés)'
+admin-stats-donations-generosity: 'Pourcentages de générosité'
+admin-stats-donations-generosity-desc: 'Quantités d’utilisateurs avec dons par rapport aux quantités totales. Seuls les projets bénéficiant de dons sont pris en compte.'
+admin-stats-donations-expired: 'Dons directs en raison des portefeuilles expirés'
+admin-stats-donations-refunded: 'Dons qui ont été retournés en raison de projets ratés'
+admin-donations: Dons
+admin-donations-tip: Pourboires
+admin-donations-tip-invests: Contributions avec pourboires
+admin-donations-tip-users: Utilisateurs avec pourboire
+admin-donations-direct: Dons Directs
+admin-donations-expired: Dons expirés
+admin-donations-refunded: Dons retournés
+admin-donations-amount-percent: '% d’argent donné'
+admin-donations-users-percent: '% des utilisateurs donateurs'
+admin-donations-tip-percent: '% d’argent en pourboires'
+admin-donations-direct-percent: '% argent direct'
+admin-workshop: Ateliers Goteo
+admin-workshop-add: Créer un nouvel atelier
+admin-workshop-edit: Modification de l’atelier %s
+admin-workshop-edit-success: L’ouverture de l’atelier a été réalisée correctement
+admin-online: En ligne
+mandatory-filter-name: Nom manquant
+mandatory-filter-description: Description manquante
+mandatory-filter-role: Il manque un rôle
+admin-node-iframe: Iframe
+admin-channel-resource: 'Ressources du Canal'
+admin-channel-resource-add: 'Créer une ressource'
+admin-posts: 'Publications'
+

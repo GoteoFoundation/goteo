@@ -1,8 +1,13 @@
 ---
+ID_DEL_TEXTO: 'Texte ID_DEL_TEXTO'
+admin_no_permission: 'Vous n’êtes pas autorisé à accéder à <strong>%s</strong>'
+bazar-description-seo: 'Cadeaux de financement participatif solidaires à Goteo.org.'
+bazar-title-seo: 'Récompenses solidaires : Goteo.org'
 blog-comments: Commentaires
 blog-main-header: 'Blog'
 calendar-calls-category: Appels à projets
 calendar-events-category: événements
+calendar-home-hour: a
 calendar-home-title: 'Prochain événement'
 calendar-net-category: 'Politiques & Networks'
 calendar-projects-category: Projets
@@ -26,27 +31,39 @@ error-user-email-token-invalid: 'Le code est erroné.'
 error-user-password-confirm: 'La confirmation du mot de passe ne concorde pas.'
 error-user-password-empty: 'Vous n''avez pas inscis de mot de passe.'
 error-user-password-invalid: 'Le mot de passe est trop court. Il doit avoir au moins 6 caractères'
+error-user-id-invalid: 'L’ID utilisateur n’est pas valide. Utiliser uniquement des caractères a-z 0-9'
+error-user-id-exists: 'Il y a déjà un utilisateur enregistré avec cet identifiant'
 error-user-wrong-password: 'Le mot de passe est erroné.'
 explain-project-progress: 'Ce diagramme représente la quantité et la pertinence des données renseignées. Vous devez atteindre les 80% pour pouvoir envoyer le projet à l''évaluation. Lisez attentivement les conseils que nous vous donnons sur la colonne de droite, qui vous servirons de guide. C''est parti!'
 fancybox: 'Texte fancybox'
 goteo-return-button: 'Retour vers Goteo'
 guide-dashboard-user-access: 'Vous pouvez changer les informations avec lesquelles vous vous connectez via Goteo accompte.'
+guide-dashboard-user-personal: "Vous ne devez remplir ces données que si vous avez créé un projet et que vous souhaitez qu’il soit cofinancé et soutenu par Goteo. Les informations contenues dans cette section sont nécessaires pour vous contacter si vous obtenez le financement requis et si le financement peut être effectué."
 guide-project-comment: guide-projet-commentaire
 guide-project-contract-information: 'Les informations de cette section sont nécessaires pour vous contacter si vous obtenez le financement nécessaire, et ainsi permettre le versement. Dans le cas d''une structure, nous vous recommandons que la personne qui représente l''organisation puisse plus tard être accrédité formellement. (Par exemple au travers les statuts ou via un certificat du secrétaire avec agrément du président, dans le cas d''associations )'
+guide-project-costs: "<strong> Dans cette section, vous devez établir un budget basé sur les coûts que vous engagerez pour la réalisation du projet.</strong><br><br>Vous devez spécifier selon les tâches, l’infrastructure ou les matériaux. Essayez d’être réaliste sur les coûts et d’expliquer brièvement pourquoi vous devez couvrir chacun d’eux.  N’oubliez pas que, en règle générale, la majeure partie du projet doit être réalisée directement par la personne ou l’équipe qui promeut le projet et non sous-traitée à des tiers. Dans le calcul, vous devez également tenir compte des commissions de prestation de services de Goteo et de transaction, qui s’ajoutent entre 4,8% et environ 6%, selon que vous activez l’option de paiement via PayPal ou non (<a href=\"/faq/sponsor#q98 » target=\"new\">+ info dans nos FAQ</a>)Très important</strong>: Dans Goteo, nous faisons la distinction entre coûts indispensables et coûts supplémentaires.Les premiers doivent être réalisés dans leur intégralité pour pouvoir obtenir le financement, tandis que les seconds sont demandés et obtenus directement lors d’un cycle ultérieur, une fois le projet lancé, afin de pouvoir couvrir les coûts d’optimisation de celui-ci (diffusion, conception, portée, plus d’unités, etc.).Il est recommandé que ces coûts supplémentaires ne dépassent pas la moitié des coûts totaux du projet.<br> Si vous souhaitez que votre campagne soit plus courte, d’un tour à « tout ou rien », vous pouvez l’indiquer en cochant la case correspondante, bien que le calcul des coûts doive être le même."
+guide-project-description: "<strong> C’est la section où vous devez expliquer en détail les aspects conceptuels du projet.</strong> <br><br> C’est la première chose que tout utilisateur du réseau verra, alors prenez soin de la rédaction et évitez les fautes d’orthographe. Vous verrez qu’il existe des champs obligatoires tels que l’inclusion d’une vidéo ou le téléchargement d’images. C’est parce que nous les considérons comme indispensables pour lancer avec succès une campagne de collecte de fonds par Goteo. <br><br>Gardez à l’esprit que la chose la plus appréciée dans Goteo est: l’information ou la connaissance libre d’intérêt général que votre projet apportera à la communauté, l’originalité, l’aspiration à résoudre une demande sociale, le potentiel d’attirer une large communauté de personnes intéressées, de préciser que l’équipe de promotion possède les capacités et l’expérience nécessaires pour y parvenir. Alors gardez un œil sur ces aspects."
 guide-project-images: 'Les images du projet peuvent être des plans, screenshots, photographies, illustrations, storyboards, etc. (la licence associée doit être compatible avec les licences sélecionnées dans la section 5. Vous pouvez en charger autant que souhaité!'
 guide-project-rewards: "<strong>Dans cette partie, vous devez définir ce que vous proposez en échange à vos cofinanceurs.</strong>"
 guide-project-support: guide-projet-support
 guide-project-supports: '<strong> Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. </strong><br><br>Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. Ces besoins peuvent prendre la forme de tches ou d''actions réalisables par d''autres personnes (traduction, gestion, diffiusion, etc.), ou de prêts (de matériel informatique, pour le transport, etc.)'
+guide-project-updates: "<b> Il est très important que les projets tiennent leurs cofinanciers et les autres personnes potentiellement intéressées informées de la manière dont leur campagne progresse.À partir de cette section, vous pouvez publier des messages de mise à jour sur le projet, comme une sorte de blog public.</b>En outre, une fois les fonds minimaux atteints, il est essentiel pour le deuxième cycle de cofinancement d’expliquer régulièrement comment la production a démarré, les progrès, les problèmes, etc., permettant la plus grande transparence possible et de savoir comment évolue le démarrage du projet, afin d’essayer de susciter plus d’intérêt et de communauté autour de celui-ci."
+guide-project-invests: 'À partir de cette section, vous pourrez gérer vos co-financeurs, les récompenses qu’ils ont choisies et les contacter si vous le jugez nécessaire.'
 header-about-side: 'Ce qui nous inspire'
 home-posts-header: Nouveautés
 horizontal-project-investors: 'cofinanceurs'
 horizontal-project-percent: 'financé'
 horizontal-project-reached: 'Obtenu'
 invest-individual-header: 'Vous pouvez refuser de recevoir votre récompense, ou sélectionner une récompense d''un montant égal ou inférieur àvotre contribution.'
+login-register-conditions: 'En vous inscrivant, vous confirmez votre acceptation de nos <a href="/legal/terms">conditions d’utilisation</a>, <a href="/legal/privacy">notre politique de confidentialité</a> et <a href="/legal/cookies">notre politique des cookies</a>.'
+login-register-accept-newsletter: 'Je souhaite m''abonner à la newsletter'
+login-accept-conditions: 'J’accepte les <a href="/legal/terms">tér les conditions d’utilisation</a>, <a href="/legal/privacy">la politique de confidentialité</a> et <a href="/legal/cookies">la politique des cookies</a>.'
 mandatory-cost-field-type: 'Vous devez sélectionner le type de coût'
 mandatory-individual_reward-field-amount: 'Vous devez spécifier le montant pour cette récompense'
 mandatory-project-costs: 'These should be broken down into at least two groups.'
 mandatory-register-field-email: 'Vous devez renseigner une addresse email'
+mark-pending: 'Marquer comme en attente de traduction'
+meta-description-index: 'Goteo est le réseau ouvert de financement participatif, de collaboration et de formation, leader des projets d’innovation sociale. Avec 2 tours et avantages fiscaux pour les donateurs!'
 node-menu-home: Noeud
 overview-field-about: 'Caractéristiques principales'
 overview-field-motivation: 'Pourquoi est-ce important'
@@ -54,52 +71,98 @@ profile-about-header: 'A propos'
 project-invest-total: 'Total des contributions monétaires'
 project-messages-send_message-your_answer: 'Ecrivez votre réponse ici.'
 project-messages-send_message_support-your_answer: 'Ecrivez ici votre message de collaboration pour %s'
+regular-add: Nouvel enregistrement
+regular-all: Tous
 regular-admin_board: 'Tableau de bord admin'
+regular-author: 'Auteur'
 regular-allsome: 'Tous/certains de'
 regular-anonymous: Anonyme
 regular-ask: Demander
 regular-submit: Envoyez.
+regular-slug: Identifiant unique
 regular-by: 'Par:'
 regular-calendar: Calendrier
+regular-cancel: Annuler
+regular-cancel-back: 'Annuler et revenir en arrière'
+regular-categories: 'Catégories'
+regular-social_commitments: 'Engagement social'
+regular-spheres: 'Champs d''application'
+regular-sdgs: 'ODD'
+regular-footprints: 'Empreintes'
+regular-back: 'Retour'
+regular-channel: Canal
 regular-collaborate: Collaborer
+regular-content: Contenu
+regular-continue-question: 'Continuer ?'
+regular-continue: 'Continuer'
 regular-create: 'Créer un projet'
+regular-date: Date
+regular-date_in: Date d'entrée
+regular-date_out: Date de départ
 regular-days: jours
 regular-delete: Effacer
 regular-description: Description
 regular-discover: 'Voir les projets'
+regular-discard: 'Rejeter'
+regular-download-pdf: 'Télécharger en PDF'
+regular-download: Téléchargez
+regular-actions: Actions
 regular-edit: Modifier
 regular-email: Adresse mail
+regular-join: 'Rejoins-nous'
+regular-facebook: Facebook
 regular-faq: 'Questions fréquentes'
+regular-female: Femme
+regular-other-gender: Autre
 regular-first: Première
 regular-from: Depuis
 regular-getit: Obtiens-le!
 regular-go_up: Importer.
+regular-google: Google+
+regular-header: Tête
 regular-header-about: 'A propos'
+regular-header-blog: Blog
+regular-header-faq: FAQ
 regular-header-glossary: 'Glossaire de Goteo'
 regular-hello: Bonjour
+regular-here: ici
+regular-help: Aide
 regular-home: Commencer
+regular-id: Identifiant ({})
+regular-identica: Identi.ca
 regular-im: Je suis
+regular-instagram: Instagram
 regular-invest: Apporter
 regular-invest_it: 'Cofinancer ce projet'
 regular-investing: Pour
+regular-invests: Contributions
 regular-lang: Langue
 regular-last: Dernière
 regular-license: Licence
+regular-linkedin: LinkedIn
+regular-loading: Chargement…
 regular-login: Login
 regular-logout: 'Fermez la session.'
 regular-looks_for: 'Rechercher:'
 regular-main-header: Goteo.fr
+regular-male: Homme
+regular-others: Autres
 regular-manage_board: 'Espace Administration'
 regular-mandatory: 'Champ obligatoire!'
+regular-matchfunding: 'Co-financements'
 regular-media_legend: Légende
 regular-menu: Menu
+regular-menu-personal: Menu personnel
+regular-message-clipboard-fail: 'Sélectionnez et copiez ce lien'
 regular-message_fail: 'Une erreur s''est produite lors de l''envoi du message.'
 regular-message_success: 'Message envoyé'
 regular-months: Mois
 regular-more_info: '+ d''infos'
 regular-news: 'News'
 regular-no: 'Non'
+regular-of: de
 regular-preview: Prévisualisation
+regular-evaluate: Évaluer
 regular-projects: Projets
 regular-published_no: Brouillon
 regular-published_yes: Publié
@@ -109,23 +172,68 @@ regular-recomended_by: 'Projet recommandé par'
 regular-review_board: 'Mes évaluations'
 regular-round: 'ª tour'
 regular-save: Sauvegarder
+regular-schedule: Horaire
 regular-search: Rechercher
+regular-search-user: Rechercher un utilisateur
+regular-search-desc: 'Écrivez votre recherche ici'
+regular-search-tooltip: 'Saisir votre recherche et appuyez sur enter'
 regular-see_all: 'Tout voir'
+regular-see_blog: Blog
 regular-see_details: 'Voir les détails'
 regular-see_more: 'En voir plus'
 regular-send_message: 'Envoyez le message.'
 regular-share-facebook: 'Goteo sur Facebook'
+regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Suivez-nous sur Twitter.'
 regular-share_this: 'Partager sur'
 regular-sorry: 'Désolé'
+regular-spread: DIFFUSION
+regular-status: Etat
+regular-template: Modèle
 regular-thanks: Merci
+regular-title: Titre
+regular-text: Texte
+regular-media: Vídeo (Youtube, Vimeo)
+regular-total: Total des contributions 
+regular-donations: Dons (non inclus dans les contributions)
+regular-translate: Traduire
+regular-translations: 'Traductions'
 regular-translate_board: 'Traduction'
+regular-twitter: Twitter
+regular-url: Lien
+regular-view: Visualiser
 regular-view_project: 'Voir le projet'
+regular-web: Web
 regular-weeks: Semaines
+regular-year: Année
 regular-yes: Oui
 regular-name: Nom
+regular-image: Image
+regular-images: Images
+regular-load-more: 'Charger plus'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
+regular-call: Co-financements
+regular-num-comments: '%s commentaires'
+regular-manage: 'Gérer'
+regular-no-edit-permissions: Vous n’êtes pas autorisé à modifier cet enregistrement!
+regular-messages: Messages
+regular-unknown: Inconnu
+regular-input: Contribution
+regular-amount: Importe
+regular-copied: 'Copié dans le presse-papiers!'
+regular-remember-me: 'Rappelez-vous de mes données'
+regular-next: Suivant
+regular-previous: Précédent
+regular-next-workshops: 'Agenda de Fundlabs'
+regular-write-description: 'Écrivez un texte descriptif...'
+regular-choice-placeholder: 'Sélectionner une option'
 session-about-to-expire: 'La session se fermera dans 10 minutes. Desirez vous reloader la page pour renouveler la session?'
 session-expired: 'La session est terminée'
+spread-about: 'Diffusion du texte'
+stories-user-project: '%s, du projet : %s'
+support-our-mission: 'DON À LA FONDATION GOTEO'
+tooltip: 'Texte info-bulle'
 tooltip-dashboard-user-access_data: 'Voici vos données d''accès actuelles. Attention, vous ne pouvez modifier votre LOGIN !'
 tooltip-dashboard-user-change_email: 'Cet espace vous permet de modifier l''adresse email sur laquelle vous désirez recevoir les messages de Goteo.'
 tooltip-dashboard-user-change_password: 'Cet espace vous permet de modifier votre mot de passe.'
@@ -138,6 +246,15 @@ tooltip-project-schedule: 'Prévisualisation de l''agenda de production du proje
 translate-home-guide: 'Message pour le traducteur'
 user-account-inactive: 'Ce compte est désactivé. Vous devez récupérer le mot de passe pour l''activer à nouveau.'
 user-activate-fail: 'Une erreur est apparue. Le compte n''a pu être créé.'
+user-changeemail-invalid-token: 'Cette action a expiré ou a déjà été exécutée précédemment'
 user-changeemail-fail: 'Erreur. L''adresse email n''a pu être modifiée.'
 user-register-success: 'Votre compte a été créé correctement. Vous allez recevoir un email d''activation.'
 validate-project-social_rewards: 'Indiquez obligatoirement au moins une retombée collective.'
+validate-project-total-costs: "Le coût optimal ne peut dépasser de plus de 50% le coût minimal. Soit vous augmentez les coûts indispensables, soit vous baissez les coûts supplémentaires."
+user-promoter: 'L’utilisateur initiateur'
+stories-type-pitcher: "Pitcher\n"
+stories-type-matcher: 'Co-financeur'
+newsletter-donate-description: 'Pour que nous puissions continuer à aider de plus en plus d’initiatives civiques à aller de l’avant'
+regular-icon: Icône
+regular-action: Action
+regular-action_url: Action URL

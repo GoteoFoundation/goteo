@@ -24,11 +24,7 @@ personal-field-donor_surname2: 'Second surname (if any)'
 validate-donor-mandatory: 'All fields are compulsory'
 donor-legal-entities-natural-person: Natural person
 donor-legal-entities-legal-person: Legal person
-donor-legal-document-type-cif: CIF
-donor-legal-document-type-nif: NIF
-donor-legal-document-type-nie: NIE
-donor-legal-document-type-vat: VAT
-validate-donor-legal_entity-empty: 'The field Legal entity is mandatory.'
+validate-donor-legal_entity-empty: The field Legal entity is mandatory.
 validate-donor-legal_document_type-empty: 'The field legal document type is mandatory.'
 validate-donor-nif-document-type: 'The number of the document does not match the format of the type of document'
 validate-donor-legal-nif-entity-legal: "The legal entity does not match the type of document"

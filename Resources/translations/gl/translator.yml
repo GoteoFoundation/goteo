@@ -4,48 +4,48 @@ translator-autotranslate-from: 'Tradución automática de'
 translator-back-to-list: 'Volver á listaxe'
 translator-banner: Pancartas
 translator-bazar: Catálogo
-translator-cannot-delete-system: 'Non é posible eliminar esta tradución xa que é de sistema!'
+translator-cannot-delete-system: 'Non se pode eliminar esta tradución porque é de sistema!'
 translator-category: Categorías
 translator-choose: 'Escolle unha opción'
 translator-copy-from: 'Copiar contido de'
 translator-criteria: 'Criterios de avaliación'
-translator-delete: 'Eliminar tradución ao %s'
+translator-delete: 'Borrar tradución ao %s'
 translator-delete-sure: 'Tes a certeza de querer eliminar a tradución ao %s? Isto non se pode desfacer!'
-translator-deleted-ko: 'Error ao eliminar a tradución ao %s!'
-translator-deleted-ok: 'Tradución ao %s eliminada con éxito'
-translator-faq: Faq
+translator-deleted-ko: 'Erro ao eliminar a tradución ao %s!'
+translator-deleted-ok: 'Tradución ao %s eliminada correctamente'
+translator-faq: Preguntas frecuentes
 translator-feed-translated-desc: '%LINK% traducido por %USER% a %LANGS%'
 translator-feed-translated-target: 'Tradución en %s'
-translator-field-blog: Blogue
+translator-field-blog: Blog
 translator-field-content: Contido
 translator-field-description: Descrición
-translator-field-facebook_msg: 'Mensaxe de facebook'
-translator-field-facebook_msg_owner: 'Autor de facebook'
-translator-field-legend: Lenda
-translator-field-media: Media
+translator-field-facebook_msg: 'Mensaxe de Facebook'
+translator-field-facebook_msg_owner: 'Autor/a de Facebook'
+translator-field-legend: Lexenda
+translator-field-media: Medios
 translator-field-name: Nome
 translator-field-review: Revisión
 translator-field-schedule: Horario
-translator-field-share_facebook: 'Texto compartir facebook'
-translator-field-share_twitter: 'Texto compartir twitter'
+translator-field-share_facebook: 'Texto compartir Facebook'
+translator-field-share_twitter: 'Texto compartir Twitter'
 translator-field-text: Texto
 translator-field-title: Título
 translator-field-subtitle: subtí­tulo
-translator-field-twitter_msg: 'Mensaxe de twitter'
-translator-field-twitter_msg_owner: 'Autor de twitter'
+translator-field-twitter_msg: 'Mensaxe de Twitter'
+translator-field-twitter_msg_owner: 'Autor/a de Twitter'
 translator-field-url: URL
 translator-glossary: 'Glosario de termos'
-translator-home: Capa
+translator-home: Portada
 translator-icon: 'Tipos de retorno/recompensa'
 translator-info: 'Ideas de about'
-translator-lang-no-perms: 'Non ten permiso para administrar este idioma'
+translator-lang-no-perms: 'Non tes permiso para administrar este idioma'
 translator-license: Licenzas
 translator-milestone: Fitos
 translator-more-langs: Outros
-translator-news: Novas
-translator-no-langs: 'Sen idioma definido, contacta co administrador'
-translator-not-saved: 'Non foi posible gardar ningún contido! (é posible que haxa campos baleiros?)'
-translator-not-translated: 'Sen entradas na táboa de traducións'
+translator-news: Noticias
+translator-no-langs: 'Non tes ningún idioma, contacta co administrador'
+translator-not-saved: 'Non se gardou ningún contido! (Quizais teñas campos baleiros?)'
+translator-not-translated: 'Sen entrada na táboa de traducións'
 translator-only-pendings: 'Só pendentes en:'
 translator-opentag: Agrupacións
 translator-original-text: 'Texto orixinal'
@@ -53,22 +53,23 @@ translator-page: Páxinas
 translator-patron: 'Proxectos apadriñados'
 translator-pending: 'Pendente de tradución'
 translator-pending-desc: 'Este contido está "pendente", o que significa que <strong>NON É PÚBLICO</strong> e queda como borrador até que se elimine a opción "Pendente de tradución"'
-translator-post: Blogue
-translator-promote: 'Proxectos populares'
+translator-post: Blog
+translator-promote: 'Proxectos destacados'
+translator-channelpost: 'Publicacións na canle'
 translator-save: 'Gardar e publicar'
 translator-save-original: 'Gardar na táboa orixinal'
-translator-save-draft: 'Gardar coma borrador'
+translator-save-draft: 'Gardar como borrador'
 translator-saved-ko: 'Erro ao gardar a tradución ao %LANG% (%ERROR%)'
-translator-saved-ok: 'Traducións gardadas con éxito para os idiomas [%s]'
-translator-skipped-fields: "Algúns campos non se copiaron xa que contiñan texto.\nBorra o texto orixinal para poder copiar dende outro idioma."
-translator-sphere: 'Ámbitos da convocatoria'
+translator-saved-ok: 'Traducións gardadas correctamente para os idiomas [%s]'
+translator-skipped-fields: "Algúns campos non se copiaron xa que contiñan texto.\nElimina o texto orixinal para poder copiar dede outro idioma."
+translator-sphere: 'Ámbitos de convocatoria'
 translator-social_commitment: 'Compromisos sociais'
 translator-sdg: 'ODS'
 translator-footprint: 'Pegadas'
-translator-stories: 'Casos de éxito'
+translator-stories: 'Historias exitosas'
 translator-system: Sistema
 translator-tables: 'Táboas xerais'
-translator-tag: 'Etiquetas do blogue'
+translator-tag: 'Etiquetas de blog'
 translator-template: 'Patróns correos automáticos'
 translator-texts: 'Textos da interface'
 translator-translations: Traducións
@@ -78,3 +79,26 @@ translator-zone-not-found: 'Esta área de tradución non é válida'
 translator-lang-not-found: 'Este idioma non está na plataforma!'
 translator-percent: '%d&#37; traducido'
 translator-add-translation: 'Engadir unha nova tradución'
+translator-communication: Comunicación
+translator-node: Canle
+translator-node_program: Programas da canle
+translator-node_faq: Faq da canle
+translator-node_faq_download: Descargas a Faq da canle
+translator-node_sections: Seccións da canle
+translator-node_resource: Recursos da canle
+translator-node_resource_category: Categoría dos recursos
+translator-image_credits: Créditos das imaxes
+translator-field-modal_description: Descrición da modal
+translator-field-action: Acción
+translator-field-action_2: Acción 2
+translator-field-action_url_2: Url da acción 2
+translator-field-label: Etiqueta
+translator-field-role: Rol
+translator-field-terms: Bases
+translator-field-tip_msg: Mensaxe
+translator-field-banner_button_url: Url do botón do cartaz
+translator-field-terms_url: Url das bases
+translator-field-credits: Créditos
+translator-question: Preguntas
+translator-question_options: Opcións das preguntas
+translator-field-option: Opcións

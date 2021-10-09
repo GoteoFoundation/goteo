@@ -14,17 +14,29 @@ admin-account-donation: Doazón
 admin-account-edit-reward: 'Xestionar recompensa/enderezo'
 admin-account-invalid-invest: 'Achega [%s] non atopada!'
 admin-account-invest-date: 'Data da achega'
+admin-account-invest-non-pool-refundable: 'Este porte non se pode reembolsar ao moedeiro virtual. Só se poden reembolsar os portes en estado "Cobrado"'
+admin-account-invest-non-user-refundable: "Este porte non se pode reembolsar. Poden reembolsarse os portes en estados: \"Pendente\", \"Cobrado\" e \"Ao moedeiro\" se houber suficiente diñeiro no moedeiro para descontar\n"
 admin-account-invest-to-pool-ko: 'Erro ao devolver a achega ao portamoedas'
+admin-account-invest-to-pool-ok: 'Porte reembolsado ao moedeiro. Incrementado o moedeiro por valor de (%s)'
+admin-account-invest-user-refund-fail-pool-amount: 'Este porte non se pode devolver porque o usuario non ten suficiente diñeiro no moedeiro (%s)'
 admin-account-invest-user-refund-ko: 'Non foi posible devolver a achega: [%s]'
+admin-account-invest-user-refund-ok: 'Porte reembolsado correctamente'
+admin-account-invest-user-refund-ok-pool: 'Porte reembolsado correctamente. O moedeiro reduciuse en %s'
 admin-account-issue-solved: 'Fixéronnos a transferencia'
 admin-account-modify-status: 'Modificar o estado'
 admin-account-modify-status-confirm: "Tes a certeza de trocar manualmente o estado a esta achega? É delicado!\nNON SE REALIZARÁ NINGUNHA operación de retorno da achega.\n"
 admin-account-payment-method: 'Método de pagamento'
 admin-account-pool-on-fail: 'Pool (devolver ao portamoedas se falla)'
 admin-account-refund-to-pool: 'Reembolsar a achega ao portamoedas'
+admin-account-refund-to-pool-confirm: "Isto marcará o porte como:\nRetornado se o proxecto falla\nCancelado se o proxecto está activo ou é exitoso\nNon se reembolsará ao usuario, xerarase diñeiro no moedeiro do usuario.\nContinuar?\n"
+admin-account-refund-to-user: 'Reembolsar o porte ao usuario'
+admin-account-refund-to-user-confirm: "Isto marcará o porte como:\nRetornado se o proxecto fallou\nCancelado se o proxecto está activo ou se é exitoso\nReembolsarase o diñeiro ao usuario.\nIsto pode NON funcionar se o porte é moi antigo ou se o método de pagamento non o soporta.\nContinuar?\n"
+admin-account-rewards: 'Recompensas elixidas'
 admin-account-switch-donation: 'Conmutar doazón'
 admin-account-switch-donation-confirm: 'Tes a certeza de querer trocar o estado da doazón?'
 admin-account-switch-pool: 'Conmutar o pool'
+admin-account-switch-pool-confirm: 'Isto só afecta para cando falla o proxecto, non xera nin quita diñeiro do moedeiro. Continuar?'
+admin-account-switch-pool-fail: 'Non se pode cambiar o estado do "pool" deste porte'
 admin-account-transaction: 'Códigos de seguimento'
 admin-account-user-changed-error: 'Non se puido trocar o usuario da achega [%ID%] a [%NAME%]!'
 admin-account-user-changed-successfully: 'Trocouse o usuario da achega [%ID%] a [%NAME%]'
@@ -51,18 +63,25 @@ admin-communications-useremail-content: ' para o correo do destinatario'
 admin-communications-username-content: ' para o nome do destinatario'
 admin-communications-siteurl-content: ' para o url desta plataforma (%SITEURL%)'
 admin-communications-subscribeurl-content: ' ligazón directa de subscrición ao boletín do usuario'
+admin-communications-unsubscribeurl-content: ' ligazón directa de fin de subscrición ao boletín informativo do usuario'
 admin-communications-poolamount-content: ' cantidade de cartos dispoñible no portamoedas do usuario'
 admin-communications-send: 'Enviar comunicación'
 admin-communications-cancel: 'Cancelar comunicación'
 admin-communications-newsletter: 'Boletín'
 admin-communications-communication: 'Comunicación xeral'
 admin-communications-id: 'ID da comunicación'
+admin-certificates: Certificados
+admin-certificates-management: Administración de certificados
 admin-home: Capa
 admin-items: entradas
 admin-mailing-back-to-list: 'Volver a comunicacións'
+admin-mailing-communicating-with: 'Buscabamos comunicarnos con %DESC%'
 admin-mailing-created: 'Creado o'
+admin-mailing-new-massive: 'Creouse un novo correo colectivo a %TOTAL% usuarios'
 admin-mailing-status: 'Estado do envío automático'
 admin-mailing-subject: Asunto
+admin-mailing-view-and-activate: 'Ver no administrador do boletín para activar o envío'
+admin-mailing-view-in-newsletter: 'Ver no administrador do boletín'
 admin-mailing-view-in-sent: 'Ver no histórico de envíos (estatísticas)'
 admin-mailing-view-message: 'Ver a mensaxe'
 admin-newsletter-generated: 'Xerouse o boletín [%ID%]'
@@ -114,39 +133,84 @@ admin-blog-not-public: 'Esta publicación aínda non é pública'
 admin-stories: Historias de usuarios no Goteo
 admin-stories-add: Crear unha nova historia
 admin-stories-edit: Editando a historia %s
+admin-channelstory-add: Engadir historia á canle
+admin-channelstory-submit: Gardar historia
+admin-channelstory-correct: 'Engadiuse a historia á canle'
+admin-channelsection-section: 'Sección'
+admin-channelsection-map: 'Mapa'
+admin-channelsection-resource: 'Recursos'
+admin-channelsection-call_to_action: 'Chamada á acción'
+admin-channelsection-projects: 'Proxectos'
+admin-channelsection-posts: 'Publicacións'
+admin-channelsection-program: 'Programas'
+admin-channelsection-stories: 'Historias'
+admin-channelsection-workshops: 'Talleres'
+admin-channelsection-team: 'Equipo'
+admin-channelsection-sponsors: 'Patrocinadores'
+admin-channelsection-button: 'Botón'
+admin-channelsection-create: 'Crear'
+admin-channelsection-add: 'Engadir unha sección'
+admin-channelpost-add: Engadir publicación á canle
+admin-channelpost-submit: Gardar publicación
+admin-channelpost-correct: 'Engadiuse a publicación á canle'
+admin-channelcriteria-title: 'Cuestionarios da canle'
+admin-channelcriteria-subtitle: 'Establece os criterios cos cales avaliarás un proxecto que queira presentarse á túa canle. Procura ser conciso no que esperas obter das iniciativas que queiran presentarse, axudará a facilitarche a avaliación final.'
+admin-channelprogram-create: 'Crear'
+admin-channelprogram-add: 'Engadir programa'
 admin-categories: 'Categorías e ámbitos'
+admin-categories-if-empty-then-asset: 'Se se deixa baleiro usarase a icona por defecto: %s'
 admin-category-add: Crear unha nova categoría
 admin-category-edit: Editando a categoría %s
 admin-socialcommitment-add: Crear un novo compromiso social
+admin-socialcommitment-edit: Editando o compromiso social %s
+admin-sphere-add: Crear un novo ámbito
+admin-sphere-edit: Editando o ámbito %s
+admin-sdg-add: Crear un novo ODS
+admin-sdg-edit: Editando o ODS %s
+admin-footprint-add: Crear unha nova pegada
 admin-footprint-edit: Editando a pegada %s
 admin-calls: Convocatorias
+admin-matchers: Emparelladores
 admin-channels: Canles
 admin-yes: Si
+admin-impersonate: Suplantar
+admin-impersonate-user: Suplantar a %s
 admin-project-express-discard: 'Rexeitamento no intre'
+admin-project-express-discard-desc: 'Pasa o proxecto a estado "Descartado" e manda un correo'
+admin-project-express-discard-sure: 'Vai enviarse un correo automaticamente e pasará a estado "Descartado", de acordo?'
 admin-project-to-review: 'A revisión'
+admin-project-to-review-desc: 'Pasa o proxecto ao estado "Pendente de valoración"'
 admin-project-to-review-sure: 'O creador non poderá editalo máis, aceptar?'
 admin-project-view-in-admin: 'Ver no admin'
 admin-project-to-negotiation: 'A negociación'
+admin-project-to-negotiation-desc: 'Pasa o proxecto ao estado "Editándose"'
+admin-project-to-negotiation-sure: 'ALERTA! O proxecto está en campaña! Con isto imos anular a súa publicación, de acordo?'
 admin-project-to-publish: 'Publicar'
 admin-project-to-publish-desc: 'Pasa o proxecto ao estado "En campaña"'
 admin-project-to-publish-sure: 'O proxecto comezará a súa campaña, comezamos?'
 admin-project-derivation-discard: 'Rexeitamento con derivación'
+admin-project-derivation-discard-desc: 'Pasa o proxecto a estado "Descartado" e manda un correo derivando a outra plataforma máis adecuada'
+admin-project-derivation-discard-sure: 'Vai enviarse un correo automaticamente e derivar a outra plataforma e pasará a estado "Descartado", de acordo?'
 admin-home-title: Administrar Goteo
 admin-list: Listaxe
 admin-stats: Estatísticas
 admin-list-total: 'Total: <strong>%s</strong> resultados'
 admin-search-global: 'Proxecto, canle, convocatoria...'
+admin-already-impersonating: 'Xa estás suplantando un usuario, por favor, cerra primeiro a sesión!'
 admin-rebase-user: 'Mudar o ID de usuario'
 admin-edit-name: 'Mudar o nome'
 admin-edit-roles: 'Mudar os roles do usuario'
 admin-send-email: 'Enviar correo electrónico'
 admin-show-roles-info: 'Que pode facer cada rol?'
+admin-user-roles: 'Listaxe de roles de usuario'
 admin-view-user-projects: 'Tódolos proxectos'
 admin-view-user-invests: 'Tódalas achegas'
 admin-user-hidden: 'Privado (oculto)'
 admin-user-active: 'Conta activa'
+admin-user-warning: 'Atención: estas operacións execútanse sen enviar ningún aviso ao usuario'
 admin-user-wallet-amount: 'Crédito no portamoedas'
 admin-user-create-invest: 'Crear achega'
+admin-mailing: 'Envío'
 admin-user-no-mailing: 'Aínda non se enviou ningún correo'
 admin-view-user-mailing: 'Tódolos envíos'
 admin-role-change-forbidden: 'Non tes permiso para xestionar o rol %ROLE% neste usuario'
@@ -154,6 +218,7 @@ admin-users-global-search: 'Id, nome, correo electrónico ou proxecto'
 admin-blog-global-search: 'Id, título, subtítulo ou texto'
 admin-communication-global-search: 'Asunto'
 admin-blog-stories-search: 'Id, título, texto ou proxecto'
+admin-donor-name-search: 'ID, nome, correo'
 admin-no-project: 'Sen proxecto'
 admin-title-id: Id
 admin-title-name: Nome
@@ -171,6 +236,7 @@ admin-title-amount: Investido
 admin-title-icon: Icona
 admin-title-info: Info
 admin-title-image: Imaxe
+admin-title-landing_match: Financiamento de chegada
 admin-title-title: Título
 admin-title-subtitle: Subtí­tulo
 admin-title-subject: Asunto
@@ -195,12 +261,16 @@ admin-title-status: Estado
 admin-title-users: Usuarios
 admin-title-city: Cidade
 admin-title-date: Data
+admin-title-blockquote: 'Cita personalizada'
 admin-title-type: 'Tipo'
 admin-title-date-in: Data de inicio
 admin-title-date-out: Data fin
+admin-title-venue: Lugar (visible en chamada á acción)
 admin-title-venue-address: Enderezo
 admin-title-how-to-get: Como chegar?
+admin-title-iframe: 'Mostra a localización'
 admin-title-schedule-file: 'Url programa'
+admin-title-call: 'Convocatoria de financiamento'
 admin-title-url-inscription: Ligazón a inscrición
 admin-title-filter: Filtro
 admin-title-template: Modelo
@@ -208,14 +278,45 @@ admin-title-receivers: Destinatarios
 admin-title-sent: Enviados
 admin-title-failed: Sen enviar
 admin-title-pending: Pendentes
+admin-title-success: Exitosos
 admin-title-percent: Porcentaxe
+admin-title-action-url: 'Texto botón de descarga'
+admin-title-download-url: 'Ligazón a descarga'
+admin-title-channel: 'Canle'
+admin-title-resource-category: 'Categoría de recurso'
+admin-title-year: Ano
+admin-title-nif: NIF
+admin-title-country: País
+admin-blog-not-published-yet: 'A entrada de blog non é pública aínda'
+admin-blog-initialized: 'Iniciouse o espazo de blog'
 admin-blog-deactivated: 'Sentímolo, a xestión do blog está desactivada'
 admin-blog-edit-success: 'A entrada do blog editouse con éxito'
 admin-stories-not-active-yet: 'Esta historia de usuario aínda non está activa'
+admin-stories-edit-success: 'A historia de usuario editouse correctamente'
+admin-stories-pool: 'Mostrar en chegada moedeiro'
+admin-stories-review: 'Recensión de Goteo: (subtítulo)'
+admin-stories-active: 'Activo en páxina principal'
+admin-stories-landing_pitch: 'Mostrar en área de chegada'
+admin-stories-landing_match: 'Mostrar en correspondencia de chegada'
 admin-stories-type: 'Tipo de protagonista'
+admin-all-project-referers: 'Orixe de visitas nos proxectos'
+admin-all-invests-referers: 'Orixe de visitas nos portes a proxectos'
+admin-all-call-referers: 'Orixe de visitas ás convocatorias'
+admin-all-project-devices: 'Dispositivo usado nas páxinas de proxectos'
+admin-all-invests-devices: 'Dispositivo usado nos portes a proxectos'
+admin-all-call-devices: 'Dispositivo usado nas páxinas de convocatorias'
+admin-aggregate-autoupdate: 'Actualización automática'
 admin-aggregate-timeline: 'Cronoloxía'
 admin-aggregate-invests: 'Total de achegas'
+admin-aggretate-invests-format: '%CURRENCY% %VALUE% (%TOTAL% invests)'
+admin-aggregate-invests-desc: 'Suma de portes por unidade de tempo'
 admin-aggregate-invests-average: 'Media de achegas'
+admin-aggregate-invests-average-desc: 'Media de portes por unidade de tempo'
+admin-aggregate-projects: 'Total recadado en proxectos'
+admin-aggretate-projects-format: '%CURRENCY% %VALUE% - %TOTAL% proxectos'
+admin-aggregate-projects-desc: 'Suma de achegas por unidade de tempo'
+admin-aggregate-projects-average: 'Recadación media en proxectos'
+admin-aggregate-projects-average-desc: 'Media de recadación por unidade de tempo'
 admin-stats-invest-totals: 'Achegas e comisións'
 admin-stats-project-totals: 'Estado dos proxectos'
 admin-stats-raised: 'Ingresos brutos'
@@ -223,15 +324,36 @@ admin-stats-active: 'Ingresos netos'
 admin-stats-refunded: 'Devolucións'
 admin-stats-fees: 'Comisión plataforma'
 admin-stats-commissions: 'Comisión banco'
+admin-stats-matchfunding: 'Inversión colectiva'
+admin-stats-raised-method: 'Ingresos Brutos segundo o método de pagamento'
+admin-stats-raised-method-desc: 'Os ingresos Brutos inclúen todo o diñeiro que se cobrou pola plataforma nalgún momento (inclúense as achegas a proxectos errados, ademais das achegas directas ao moedeiro ou provintes de proxectos errados con retorno ao moedeiro).<br><em>Non se inclúen as achegas provintes do moedeiro</em>(a menos que se escolla ese medio de pagamento)</b>'
+admin-stats-active-method: 'Ingresos netos segundo o método de pagamento'
+admin-stats-active-method-desc: 'Os ingresos netos inclúen todo o diñeiro cobrado pola plataforma excluíndo devolucións (inclúense as achegas ao moedeiro, directas ou provintes de proxectos errados con retorno ao moedeiro).<br><em>Non se inclúen as achegas provintes do moedeiro</em>(a menos que se escolla ese medio de pagamento).'
+admin-stats-refunded-method: 'Devolucións segundo o método de pagamento'
+admin-stats-refunded-method-desc: 'As devolucións inclúen todos os métodos de pagamento (inclúen as achegas desde o moedeiro)'
+admin-stats-commissions-method: 'Comisións bancarias segundo o método de pagamento'
+admin-stats-fees-method: 'Comisión da plataforma segundo o método de pagamento'
+admin-stats-from_matchfunding: 'Detalle de proxectos con inversión conxunta'
+admin-stats-matchfunding-part: 'Proxectos con inversión conxunta'
+admin-stats-users-part: 'Proxectos sen inversión conxunta'
+admin-stats-match-part: 'Parte multiplicadora'
 admin-stats-citizens-part: 'Parte Cidadá'
+admin-stats-matcher-part: 'Parte concordante'
 admin-stats-invest-destination: 'Destino das achegas'
 admin-stats-invest-in_wallet: 'Total acumulado no portamoedas'
 admin-stats-to_projects: 'A proxectos'
 admin-stats-to_wallet: 'Ao portamoedas'
+admin-stats-to_matcher_wallet: 'Ao moedeiro de concordantes'
 admin-stats-to_fee: 'A comisións'
 admin-stats-to_fee-percent: 'Comisión efectiva'
 admin-stats-in_wallet: 'No portamoedas'
+admin-stats-in_matcher_wallet: 'No moedeiro de concordantes'
 admin-stats-in_users_wallet: 'No portamoedas de usuarios'
+admin-stats-matchfunding-global: 'Influencia de inversión conxunta'
+admin-stats-refunded-parts: 'Desagregación de devolucións'
+admin-stats-fees-parts: 'Desagregación de comisións'
+admin-stats-invest-active-parts: 'Destino de ingresos netos'
+admin-stats-invest-in_wallet-parts: 'Desagregación do moedeiro'
 admin-losts: Perdas
 admin-raised: Recadado
 admin-active: Cobrado
@@ -389,6 +511,10 @@ admin-filter-predefined-date: 'Data predefinida'
 admin-filter-predefined-date-choose: 'Podes escoller unha data predefinida'
 admin-filter-forced: 'Forzar filtro'
 admin-filter-forced-help: 'A seleccionar esta opción aplicaranse os filtros independentemente do escollido polo usuario coma preferencia para o envío de información por parte da plataforma.'
+admin-filter-project-status: Estado do proxecto
+admin-filter-invest-status: Estado da doazón
+admin-filter-project-location: Localización do proxecto
+admin-filter-donor-status: Estado do certificado
 admin-mail-body: 'Corpo da mensaxe'
 admin-stats-donations: 'Doazóns'
 admin-stats-donations-method: 'Doazóns segundo o método de pagamento'

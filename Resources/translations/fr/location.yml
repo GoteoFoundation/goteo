@@ -1,1 +1,9 @@
 ---
+dashboard-user-location-change: 'Vous pouvez modifier votre position dans votre profil utilisateur.'
+dashboard-user-location-locate: 'Partager ma localisation géographique'
+dashboard-user-location-located-text: "Si vous ne souhaitez pas partager votre localisation avec nous, il vous suffit de\ncliquez sur le bouton suivant:"
+dashboard-user-location-located-title: 'Vous êtes correctement géolocalisé'
+dashboard-user-location-unlocate: 'Ne pas partager mon emplacement'
+dashboard-user-location-unlocated-text: "Cela peut être dû au fait que vous avez placé un lieu de résidence étrange ou parce que vous avez refusé à un moment donné la demande du navigateur de localiser votre position géographique.\n\nPour Goteo c\"est une donnée importante, car elle nous permet de générer des informations (anonymes, sans jamais divulguer vos données personnelles à des tiers) ainsi que des indicateurs d’impact qui rendent plus efficace\nnotre travail et notre soutien aux projets."
+dashboard-user-location-unlocated-title: 'Le système n’a pas localisé votre emplacement'
+dashboard-user-location-help: 'Partager votre position avec l’équipe d’Goteo servira à générer des informations (anonymes, sans jamais divulguer vos données personnelles à des tiers) ainsi que des indicateurs d’impact qui rendent notre travail et notre soutien aux projets plus efficaces.'

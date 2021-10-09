@@ -17,7 +17,7 @@ questionnaire-scoring-save: "Score saved successfully"
 questionnaire-max-score-help: "This is the maximum score for this question."
 question-save-error: "Question not deleted"
 question-choice-answer: "Answer"
-questionnaire-apply-title: 'Application to participate in %s'
+questionnaire-apply-title: Application to participate in %s
 questionnaire-answer-questions: Answer this questions
 questionnaire-already-answered-by-project: This questionnaire has already been asnwered.
 questionnaire-question-answer-dropfile-not-found: "The document could not be found"

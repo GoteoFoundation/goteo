@@ -10,7 +10,5 @@ step-7: Previsualizzazione
 step-preview: 'Progetto/Previsualizzazione'
 tooltip-project-comment: 'Hai dubbi o commenti che vuoi far leggere all''amministratore di Goteo? Questo è il luogo per spiegare parti di ciò che hai scritto di cui non sei sicuro, per proporre miglioramenti, ecc.'
 project-send-review-desc: >
-  Una volta inviato, non è più possibile apportare modifiche fino a quando non riapriremo la sua edizione.
-  Ti contatteremo a breve per commentare la proposta di campagna e continuare con il suo processo di ottimizzazione e pubblicazione.
-  **Non dimenticare di controllare la tua cartella dello SPAM**, a volte la tecnologia non è capace di apprezzare l'amore che diamo ai nostri progetti.
+  Una volta inviato, non è più possibile apportare modifiche fino a quando non riapriremo la sua edizione. Ti contatteremo a breve per commentare la proposta di campagna e continuare con il suo processo di ottimizzazione e pubblicazione. **Non dimenticare di controllare la tua cartella dello SPAM**, a volte la tecnologia non è capace di apprezzare l'amore che diamo ai nostri progetti.
 

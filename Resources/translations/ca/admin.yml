@@ -4,7 +4,11 @@ admin-NO: 'NO'
 admin-YES: SI
 admin-account-amount: 'Quantitat aportada'
 admin-account-change-user: 'Canvia d''usuari'
+admin-account-change-user-confirm: 'Segur que vols canviar l''usuària de l''aportació? La nova usuària serà:'
 admin-account-convert-to-pool: 'Converteix a moneder virtual'
+admin-account-convert-to-pool-confirm: 'Això eliminarà el projecte associat a aquesta aportació i passarà a ser como si fos una compra de moneder. TOTES LES RECOMPENSES ASSOCIADES ES PERDRAN. Continuar?'
+admin-account-convert-to-pool-ko: 'No s''ha pogut convertir l''aportació a moneder: %s'
+admin-account-convert-to-pool-ok: 'Convertit a aportació de moneder correctament'
 admin-account-detail: 'Detalls de la transacció'
 admin-account-donation: Donatiu
 admin-account-edit-reward: 'Gestionar recompensa/direcció'
@@ -34,17 +38,26 @@ admin-account-switch-pool: 'Commutar el pool'
 admin-account-switch-pool-confirm: 'Això només afecta quan falla el projecte, no genera ni treu diners del moneder. Continuar?'
 admin-account-switch-pool-fail: 'No es pot canviar l''estat del pool d''aquesta aportació'
 admin-account-transaction: 'Codis de seguiment'
+admin-account-user-changed-error: 'No s''ha pogut canviar l''usuari de l''aportació [%ID%] a [%NAME%]!'
+admin-account-user-changed-successfully: 'S''ha canviat l''usuari de l''aportació [%ID%] a [%NAME%]'
 admin-address: Adreça
+admin-all: Tots
+admin-global: Global
 admin-back: Tornar
 admin-back-detail: 'Tornar al detall'
 admin-back-list: 'Tornar al llistat'
 admin-contents: 'Textos i traduccions'
 admin-empty-list: 'Sense resultats'
 admin-activity: Activitat
-admin-certificates: Certificats
-admin-certificates-management: Gestió de Certificats
 admin-communications: Comunicacions
 admin-communications-add: Crear nova comunicació
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
 admin-communications-userid-content: ' per l''id d''accés del destinatari'
 admin-communications-useremail-content: ' per l''email del destinatari'
 admin-communications-username-content: ' per al nom del destinatari'
@@ -56,7 +69,11 @@ admin-communications-send: 'Enviar comunicació'
 admin-communications-cancel: 'Cancel·lar comunicació'
 admin-communications-newsletter: 'Butlletí'
 admin-communications-communication: 'Comunicació general'
-admin-communication-id: 'ID de la Comunicació'
+admin-communications-id: 'ID de la Comunicació'
+admin-certificates: Certificats
+admin-certificates-management: Gestió de Certificats
+admin-home: Portada
+admin-items: entrades
 admin-mailing-back-to-list: 'Tornar a comunicacions'
 admin-mailing-communicating-with: 'Cercàvem comunicar-nos amb %DESC%'
 admin-mailing-created: 'Creat el'
@@ -72,7 +89,10 @@ admin-newsletter-langs-to-send: 'Idiomes: %LANGS%'
 admin-newsletter-mind-activate: 'Activa''l per que s''envii'
 admin-prev-page: 'Pàgina anterior'
 admin-next-page: 'Pàgina següent'
+admin-no: 'No'
+admin-percent: Percentatge
 admin-project: Projecte
+admin-main: Principal
 admin-legacy: Antics
 admin-projects: Projectes
 admin-consultants: 'Assessors'
@@ -92,21 +112,30 @@ admin-services: Serveis
 admin-sponsors: Serveis
 admin-slug-seo-help: 'Aquest camp és important per SEO. Editeu-lo només per una bona raó.'
 admin-others: Altres
+admin-summary: Resum
+admin-origins: Analítica de visites
 admin-status: Estat
 admin-text-type: 'Processa el text com a'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
 admin-text-type-plain: 'Text simple'
 admin-user: Usuari
+admin-user-no-projects: 'No s''ha creat cap projecte encara'
+admin-user-no-invests: 'No s''ha fet cap donació encara'
 admin-users: Usuaris
 admin-users-add: Crea un nou usuari
+admin-blog: Blog general
 admin-blog-add: Crea un nou post
 admin-blog-edit: Editant post %s
 admin-blog-slug-exists: 'L''identificador [%s] s''està fent servir en un altre post!'
 admin-blog-slug-chars: 'L''identificador [%s] conté caràcters invàlids!'
 admin-blog-not-public: 'Aquest post no és públic encara'
-admin-storys: Histories d'usuaris a Goteo
 admin-stories: Histories d'usuaris a Goteo
 admin-stories-add: Crea una nova història
 admin-stories-edit: Editant l'història %s
+admin-channelstory-add: Afegir història al canal
+admin-channelstory-submit: Guardar història
+admin-channelstory-correct: 'S''ha afegit la història al canal'
 admin-channelsection-section: 'Secció'
 admin-channelsection-map: 'Mapa'
 admin-channelsection-resource: 'Recursos'
@@ -121,14 +150,11 @@ admin-channelsection-sponsors: 'Sponsors'
 admin-channelsection-button: 'Botó'
 admin-channelsection-create: 'Crear'
 admin-channelsection-add: 'Afegir una secció'
-admin-channelstory-add: Afegir història al canal
-admin-channelstory-submit: Guardar història
-admin-channelstory-correct: "S'ha afegit la història al canal"
 admin-channelpost-add: Afegir Post al canal
 admin-channelpost-submit: Guardar Post
-admin-channelpost-correct: "S'ha afegit el post al canal"
+admin-channelpost-correct: 'S''ha afegit el post al canal'
 admin-channelcriteria-title: 'Questionari del canal'
-admin-channelcriteria-subtitle: "Estableix les preguntes amb les que evaluaràs un projecte que vulgui presentar-se al teu canal. Procura ser concís en el que esperes obtenir de les iniciatives que es vulguin presentar, ajudarà a facilitar-te l'evaluació final"
+admin-channelcriteria-subtitle: 'Estableix les preguntes amb les que evaluaràs un projecte que vulgui presentar-se al teu canal. Procura ser concís en el que esperes obtenir de les iniciatives que es vulguin presentar, ajudarà a facilitar-te l''evaluació final'
 admin-channelprogram-create: 'Crear'
 admin-channelprogram-add: 'Afegir programa'
 admin-categories: 'Categories i àmbits'
@@ -143,13 +169,12 @@ admin-sdg-add: Crea un nou ODS
 admin-sdg-edit: Editant l'ODS %s
 admin-footprint-add: Crea un nova petjada
 admin-footprint-edit: Editant la petjada %s
+admin-calls: Convocatòries
+admin-matchers: Matchers
+admin-channels: Canals
+admin-yes: Si
 admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
-admin-posts: 'Posts'
-admin-promote-add: Nou destacat
-admin-promote-submit: Guardar
-admin-promote-already-exists: Aquest projecte ja està destacat
-admin-promote-correct: El projecte està destacat
 admin-project-express-discard: 'Rebuig expres'
 admin-project-express-discard-desc: 'Passa el projecte a estat Descartat i envia un email'
 admin-project-express-discard-sure: 'S''enviarà un email automàtic i es passarà a estat descartat,Ok?'
@@ -185,36 +210,46 @@ admin-user-active: 'Compte actiu'
 admin-user-warning: 'Atenció: Aquestes operacions s''executen sense enviar cap avís a l''usuari'
 admin-user-wallet-amount: 'Crèdit al moneder'
 admin-user-create-invest: 'Crea una aportació'
+admin-mailing: 'Mailing'
 admin-user-no-mailing: 'No se l''hi ha enviat cap email encara'
 admin-view-user-mailing: 'Tots els enviaments'
 admin-role-change-forbidden: 'No tens permís per gestionar el rol %ROLE% d''aquest usuari'
 admin-users-global-search: 'Id, nom, email o projecte'
 admin-blog-global-search: 'Id, títol, subtítol o text'
 admin-communication-global-search: 'Assumpte'
+admin-blog-stories-search: 'Id, títol, text o projecte'
 admin-donor-name-search: 'ID, nom, email'
 admin-donor-date-search: 'Processats per data'
 admin-no-project: 'Sense projecte'
+admin-title-id: Id
 admin-title-name: Nom
+admin-title-about: Info
 admin-title-active: Actiu
 admin-title-location: Localització
 admin-title-fullname: Nom
+admin-title-email: Email
 admin-title-header-image: Imatge de capçalera
 admin-title-password: Contrasenya
+admin-title-avatar: Avatar
 admin-title-roles: Rols
 admin-title-role: Rol
 admin-title-amount: Invertit
 admin-title-icon: Icona
+admin-title-info: Info
 admin-title-image: Imatge
+admin-title-landing_match: Landing matchfunding
 admin-title-title: Títol
 admin-title-subtitle: Subtítol
 admin-title-subject: Assumpte
 admin-title-description: Descripció
 admin-title-section: Secció
 admin-title-text: Text
+admin-title-slug: Slug
 admin-title-publish: Publicat
 admin-title-lang: Idioma
 admin-title-langs: Traduccions
 admin-title-actions: Accions
+admin-title-tags: Tags
 admin-title-deleted: Eliminat
 admin-title-sphere: Àmbit
 admin-title-social_commitment: Compromís social
@@ -225,7 +260,19 @@ admin-title-social_commitments: 'Compromisos socials'
 admin-title-order: Ordena
 admin-title-status: Estat
 admin-title-users: Usuaris
+admin-title-city: Població
 admin-title-date: Data
+admin-title-blockquote: 'Cita personalitzada'
+admin-title-type: 'Tipus'
+admin-title-date-in: Data d'inici
+admin-title-date-out: Data final
+admin-title-venue: Lloc (Visible a call to action)
+admin-title-venue-address: Adreça
+admin-title-how-to-get: Com arribar?
+admin-title-iframe: 'Mostra la ubicació'
+admin-title-schedule-file: 'Url programa'
+admin-title-call: 'Convocatòria de Matchfunding'
+admin-title-url-inscription: Enllaç a inscripció
 admin-title-filter: Filtre
 admin-title-template: Plantilla
 admin-title-receivers: Destinataris
@@ -234,9 +281,11 @@ admin-title-failed: No enviats
 admin-title-pending: Pendents
 admin-title-success: Exitós
 admin-title-percent: Percentatge
+admin-title-action-url: 'Text botó de descàrrega'
+admin-title-download-url: 'Enllaç de descàrrega'
+admin-title-channel: 'Canal'
+admin-title-resource-category: 'Categoria de recurs'
 admin-title-year: Any
-admin-title-nif: NIF
-admin-title-country: País
 admin-blog-not-published-yet: 'L''entrada de blog no és pública encara'
 admin-blog-initialized: 'S''ha inicialitzat l''espai de blog'
 admin-blog-deactivated: 'Ho sentim, la gestió de blog està desactivada'
@@ -255,6 +304,194 @@ admin-all-call-referers: 'Origen de visites a les convocatòries'
 admin-all-project-devices: 'Dispositiu usat en les pàgines de projectes'
 admin-all-invests-devices: 'Dispositiu usat en les aportacions a projectes'
 admin-all-call-devices: 'Dispositiu usat en las pàgines de convocatòries'
+admin-aggregate-autoupdate: 'Auto-update'
+admin-aggregate-timeline: 'Línia de temps'
+admin-aggregate-invests: 'Total d''aportacions'
+admin-aggretate-invests-format: '%CURRENCY% %VALUE% (%TOTAL% invests)'
+admin-aggregate-invests-desc: 'Suma d''aportacions per unitat de temps'
+admin-aggregate-invests-average: 'Mitjana d''aportacions'
+admin-aggregate-invests-average-desc: 'Mitjana d''aportacions per unitat de temps'
+admin-aggregate-projects: 'Total recaptat en projectes'
+admin-aggretate-projects-format: '%CURRENCY% %VALUE% - %TOTAL% projects'
+admin-aggregate-projects-desc: 'Suma d''aportacions per unitat de temps'
+admin-aggregate-projects-average: 'Mitjana de recaptació en projectes'
+admin-aggregate-projects-average-desc: 'Mitjana de recaptació per unitat de temps'
+admin-stats-invest-totals: 'Aportacions i comissions'
+admin-stats-project-totals: 'Estat del projectes'
+admin-stats-raised: 'Ingressos bruts'
+admin-stats-active: 'Ingressos nets'
+admin-stats-refunded: 'Devolucions'
+admin-stats-fees: 'Comissió plataforma'
+admin-stats-commissions: 'Comisió banco'
+admin-stats-matchfunding: 'Matchfunding'
+admin-stats-raised-method: 'Ingressos bruts segons mètode de pagament'
+admin-stats-raised-method-desc: 'Els ingressos bruts inclouen tots els diners que s''ha cobrat per la plataforma en algun moment (s''inclouen les aportacions a projectes fallits, a més de les aportacions directes al moneder o provinents de projectes fallits amb retorn al moneder). <br> <em> no s''inclouen les aportacions provinents del moneder </em> (a menys que s''esculli aquest mitjà de pagament) </b>'
+admin-stats-active-method: 'Ingressos nets segons mètode de pagament'
+admin-stats-active-method-desc: 'Els ingressos nets inclouen tots els diners cobrat per la plataforma excloent devolucions (s''inclouen les aportacions al moneder, directes i provinents de projectes fallits amb retorn al moneder). <br> <em> No s''inclouen les aportacions provinents del moneder </em> (a menys que s''esculli aquest mitjà de pagament).'
+admin-stats-refunded-method: 'Devolucions segons mètode de pagament'
+admin-stats-refunded-method-desc: 'Les devolucions inclouen tots els mètodes de pagament (inclouen les aportacions des del moneder)'
+admin-stats-commissions-method: 'Comissions bancàries segons mètode de pagament'
+admin-stats-fees-method: 'Comissió de la plataforma segons mètode de pagament'
+admin-stats-from_matchfunding: 'Detall de projectes amb Matchfunding'
+admin-stats-matchfunding-part: 'Projectes amb Matchfunding'
+admin-stats-users-part: 'Projectes sense Matchfunding'
+admin-stats-match-part: 'Part Multiplicadora'
+admin-stats-citizens-part: 'Part Ciutadana'
+admin-stats-matcher-part: 'Part Matcher'
+admin-stats-invest-destination: 'Destí de les aportacions'
+admin-stats-invest-in_wallet: 'Total acumulat al moneder'
+admin-stats-to_projects: 'A projectes'
+admin-stats-to_wallet: 'Al moneder'
+admin-stats-to_matcher_wallet: 'Al moneder de Matchers'
+admin-stats-to_fee: 'A comissions'
+admin-stats-to_fee-percent: 'Comissió efectiva'
+admin-stats-in_wallet: 'Al moneder'
+admin-stats-in_matcher_wallet: 'Al moneder de Matchers'
+admin-stats-in_users_wallet: 'Al moneder de Matchers'
+admin-stats-matchfunding-global: 'Influència Matchfunding'
+admin-stats-refunded-parts: 'Desglossament de devolucions'
+admin-stats-fees-parts: 'Desglossament de comissions'
+admin-stats-invest-active-parts: 'Destí ingressos nets'
+admin-stats-invest-in_wallet-parts: 'Desglossament del moneder'
+admin-losts: Pèrdues
+admin-raised: Recaptat
+admin-active: Cobrat
+admin-refunded: Retornat
+admin-refunded-to_users: Retornat a usuàries
+admin-refunded-to_users-invests: Nº devolucions a usuàries
+admin-refunded-to_wallet: Retornat al moneder
+admin-commissions: Comissió
+admin-fees: Comissió plataforma
+admin-user-fee: Comissió ciutadana
+admin-call-fee: Comissió Matchfunding (sense Matchers)
+admin-matcher-fee: Comissió Matchers
+admin-vat: IVA
+admin-diff: Diferència
+admin-the_day: El dia
+admin-the_week: La setmana
+admin-the_month: El mes
+admin-the_year: L' any
+admin-custom: Segons filtre
+admin-total: Total
+admin-today: Avui
+admin-yesterday: Ahir
+admin-week: Aquesta setmana
+admin-last_week: El mateix dia de la setmana passada
+admin-last_week_complete: Tota la setmana passada
+admin-last_year_week: La mateixa setmana farà un any
+admin-month: Aquest Mes
+admin-last_month: El mateix dia del mes passat
+admin-last_month_complete: Tot el mes passat
+admin-last_year_month: El mateix mes farà un any
+admin-year: Aquest any
+admin-last_year: El mateix dia de l'any passat
+admin-last_year_complete: Tot l'any passat
+admin-promote-add: 'Nou destacat'
+admin-promote-submit: 'Desar'
+admin-promote-already-exists: 'Aquest projecte ja està destacat'
+admin-promote-correct: 'El projecte està destacat'
+admin-projects-created-today: 'Creats avui'
+admin-projects-created-yesterday: 'Creats ahir'
+admin-projects-created-week: 'Creats aquesta setmana'
+admin-projects-created-last_week: 'Creats la setmana passada'
+admin-projects-created-month: 'Creats aquest mes'
+admin-projects-created-last_month: 'Creats el mes passat'
+admin-projects-created-year: 'Creats aquest any'
+admin-projects-created-last_year: 'Creats l''any passat'
+admin-projects-negotiating-today: 'En negociació avui'
+admin-projects-negotiating-yesterday: 'En negociació ahir'
+admin-projects-negotiating-week: 'En negociació aquesta setmana'
+admin-projects-negotiating-last_week: 'En negociació la setmana passada'
+admin-projects-negotiating-month: 'En negociació aquest mes'
+admin-projects-negotiating-last_month: 'En negociació el mes passat'
+admin-projects-negotiating-year: 'En negociació aquest any'
+admin-projects-negotiating-last_year: 'En negociació l''any passat'
+admin-projects-published-today: 'Publicats avui'
+admin-projects-published-yesterday: 'Publicats ahir'
+admin-projects-published-week: 'Publicats aquesta setmana'
+admin-projects-published-last_week: 'Publicats la setmana passada'
+admin-projects-published-month: 'Publicats aquest mes'
+admin-projects-published-last_month: 'Publicats el mes passat'
+admin-projects-published-year: 'Publicats aquest any'
+admin-projects-published-last_year: 'Publicats l''any passat'
+admin-projects-rejected-today: 'Descartats avui'
+admin-projects-rejected-yesterday: 'Descartats ahir'
+admin-projects-rejected-week: 'Descartats aquesta setmana'
+admin-projects-rejected-last_week: 'Descartats la setmana passada'
+admin-projects-rejected-month: 'Descartats aquest mes'
+admin-projects-rejected-year: 'Descartats aquest any'
+admin-projects-rejected-last_year: 'Descartats l''any passat'
+admin-projects-review-today: 'En revisió avui'
+admin-projects-review-yesterday: 'En revisió ahir'
+admin-projects-review-week: 'En revisió aquesta setmana'
+admin-projects-review-last_week: 'En revisió la setmana passada'
+admin-projects-review-month: 'En revisió aquest mes'
+admin-projects-review-last_month: 'En revisió el mes passat'
+admin-projects-review-year: 'En revisió aquest any'
+admin-projects-review-last_year: 'En revisió l''any passat'
+admin-invest-raised-amount-today: 'Recaptat avui'
+admin-invest-raised-total-today: 'Donacions avui'
+admin-invest-raised-amount-yesterday: 'Recaptat ahir'
+admin-invest-raised-total-yesterday: 'Donacions ahir'
+admin-invest-raised-amount-week: 'Recaptat aquesta setmana'
+admin-invest-raised-amount-last_week: 'Recaptat la setmana passada'
+admin-invest-raised-total-week: 'Donacions aquesta setmana'
+admin-invest-raised-total-last_week: 'Donacions la setmana passada'
+admin-invest-raised-amount-month: 'Recaptat aquest mes'
+admin-invest-raised-amount-last_month: 'Recaptat el mes passat'
+admin-invest-raised-total-month: 'Donacions aquest mes'
+admin-invest-raised-total-last_month: 'Donacions el mes passat'
+admin-invest-raised-amount-year: 'Recaptat aquest any'
+admin-invest-raised-total-year: 'Donacions aquest any'
+admin-invest-raised-amount-last_year: 'Recaptat l''any passat'
+admin-invest-raised-total-last_year: 'Donacions de l''any passat'
+admin-invest-commissions-today: 'Comissió banc avui'
+admin-invest-commissions-yesterday: 'Comissió banc ahir'
+admin-invest-commissions-week: 'Comissió banc aquesta setmana'
+admin-invest-commissions-last_week: 'Comissió banc la setmana passada'
+admin-invest-commissions-month: 'Comissió banc aquest mes'
+admin-invest-commissions-last_month: 'Comissió banc el mes passat'
+admin-invest-commissions-year: 'Comissió banc aquest any'
+admin-invest-commissions-last_year: 'Comissió banc l''any passat'
+admin-invest-commissions-lost-today: 'Pèrdues per aportacions retornades avui'
+admin-invest-commissions-lost-yesterday: 'Pèrdues per aportacions retornades ahir'
+admin-invest-commissions-lost-week: 'Pèrdues per aportacions retornades aquesta setmana'
+admin-invest-commissions-lost-month: 'Pèrdues per aportacions retornades aquest mes'
+admin-invest-commissions-lost-year: 'Pèrdues per aportacions retornades aquest any'
+admin-invest-commissions-lost-last_year: 'Pèrdues per aportacions retornades l''any passat'
+admin-invest-commissions-tpv-today: 'Comissió TPV avui'
+admin-invest-commissions-tpv-yesterday: 'Comissió TPV ahir'
+admin-invest-commissions-tpv-week: 'Comissió TPV aquesta setmana'
+admin-invest-commissions-tpv-last_week: 'Comissió TPV la setmana passada'
+admin-invest-commissions-tpv-month: 'Comissió TPV aquest mes'
+admin-invest-commissions-tpv-last_month: 'Comissió TPV el mes passat'
+admin-invest-commissions-tpv-year: 'Comissió TPV aquest any'
+admin-invest-commissions-tpv-last_year: 'Comissió TPV l''any passat'
+admin-invest-commissions-paypal-today: 'Comissió Paypal avui'
+admin-invest-commissions-paypal-yesterday: 'Comissió Paypal ahir'
+admin-invest-commissions-paypal-week: 'Comissió Paypal aquesta setmana'
+admin-invest-commissions-paypal-last_week: 'Comissió Paypal la setmana passada'
+admin-invest-commissions-paypal-month: 'Comissió Paypal aquest mes'
+admin-invest-commissions-paypal-last_month: 'Comissió Paypal el mes passat'
+admin-invest-commissions-paypal-year: 'Comissió Paypal aquest any'
+admin-invest-commissions-paypal-last_year: 'Comissió Paypal l''any passat'
+admin-invest-fees-today: 'Comissió Goteo avui'
+admin-invest-fees-yesterday: 'Comissió Goteo ahir'
+admin-invest-fees-week: 'Comissió Goteo aquesta setmana'
+admin-invest-fees-last_week: 'Comissió Goteo la setmana passada'
+admin-invest-fees-month: 'Comissió Goteo aquest mes'
+admin-invest-fees-last_month: 'Comissió Goteo el mes passat'
+admin-invest-fees-year: 'Comissió Goteo aquest any'
+admin-invest-fees-last_year: 'Comissió Goteo l''any passat'
+admin-invest-diff-yesterday: 'Diferència amb el dia anterior'
+admin-invest-diff-last_week: 'Diferència amb la setmana anterior'
+admin-invest-diff-last_month: 'Diferència amb el mes anterior'
+admin-invest-diff-last_year: 'Diferència amb l''any anterior'
+admin-stats-projects-channel-desc: 'Projectes que pertanyen al canal (o node)'
+admin-stats-projects-call-desc: 'Projectes que pertanyen a la convocatòria'
+admin-stats-projects-matcher-desc: 'Projectes que estan actius al matcher'
+admin-stats-projects-consultant-desc: 'Projectes que tenen assignats aquest/a assessor/a'
+admin-stats-projects-project-desc: 'Aportacions al projecte'
 admin-filter-add: 'Afegir filtre'
 admin-filter-last-week: 'Últims 7 dies'
 admin-filter-last-month: 'Últims 30 dies'
@@ -281,11 +518,40 @@ admin-filter-forced-help: 'Si esculls aquesta opció s''aplicaran els filtres in
 admin-filter-project-status: Estat del projecte
 admin-filter-invest-status: Estat de la donació
 admin-filter-project-location: Ubicació del projecte
+admin-filter-location: Ubicació a fer servir al filtre
 admin-filter-donor-location: Ubicació del donant
 admin-filter-donor-status: Estat del certificat
-admin-filter-location: Ubicació a fer servir al filtre
 admin-mail-body: 'Cos del missatge'
+admin-stats-donations: 'Donacions'
+admin-stats-donations-method: 'Donacions segons mètode de pagament'
+admin-stats-donations-method-desc: 'Donacions inclouen els diners que l''usuari dóna voluntàriament a la fundació quan aporta a un projecte, donacions directes o bé quan la quantitat en el moneder expira.'
+admin-stats-donations-tip: 'Donacions durant aportacions a projectes (Propines o "tips")'
+admin-stats-donations-direct: 'Donacions directes (inclou moneders expirats)'
+admin-stats-donations-generosity: 'Percentatges de generositat'
+admin-stats-donations-generosity-desc: 'Quantitats d''usuaris amb donacions versus quantitats totals. Només es tenen en compte els projectes amb donacions.'
+admin-stats-donations-expired: 'Donacions directes degudes a moneders expirats'
+admin-stats-donations-refunded: 'Donacions que s''han retornat a causa de projectes fallits'
+admin-donations: Donacions
+admin-donations-tip: Propines
+admin-donations-tip-invests: Aportacions amb propines
+admin-donations-tip-users: Usuàries amb propina
+admin-donations-direct: Donacions directes
+admin-donations-expired: Donacions expirades
+admin-donations-refunded: Donacions retornades
+admin-donations-amount-percent: '% diners donats'
+admin-donations-users-percent: '% usuàries donants'
+admin-donations-tip-percent: '% diners en propines'
+admin-donations-direct-percent: '% diners directes'
+admin-workshop: Tallers Goteo
+admin-workshop-add: Crear un nou taller
+admin-workshop-edit: Editant el taller %s
+admin-workshop-edit-success: L'entrada de taller s'ha editat correctament
+admin-online: En línia
 mandatory-filter-name: Manca el nom
 mandatory-filter-description: Manca una descripció
 mandatory-filter-role: Manca un rol
 admin-node-iframe: Iframe
+admin-channel-resource: 'Recursos Canal'
+admin-channel-resource-add: 'Crear recurs'
+admin-posts: 'Posts'
+

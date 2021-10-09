@@ -25,3 +25,25 @@ personal-field-donor_name: 'Nome '
 personal-field-donor_surname: 'Primeiro apelido'
 personal-field-donor_surname2: 'Segundo apelido'
 validate-donor-mandatory: 'Tódolos campos son obrigatorios'
+donor-legal-entities-natural-person: Persoa física
+donor-legal-entities-legal-person: Persoa xurídica
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-nie: NIE
+donor-legal-document-type-vat: VAT
+validate-donor-legal_entity-empty: O campo Entidade legal é obrigatorio.
+validate-donor-legal_document_type-empty: 'O campo Tipo de documento é obrigatorio.'
+validate-donor-nif-document-type: 'O formato do número de documento non coincide co tipo de documento'
+validate-donor-legal-nif-entity-legal: "A entidade legal non coincide co tipo de documento"
+donor-status-pending: 'Pendentes de revisión'
+donor-status-unconfirmed: 'Sen confirmar'
+donor-status-confirmed: 'Confirmados'
+donor-status-expired: 'Caducados'
+donor-status-emited: 'Certificado emitido (confirmado + pdf)'
+donor-status-notemited: 'Confirmado pero sen emitir'
+donor-status-processed: 'Procesado'
+donor-status-nonprocessed: 'Certificado confirmado sen procesar'
+donor-status-completed: 'Completado'
+donor-status-validated: 'Validado'
+donor-status-declared: 'Declarado'
+donor-status-rejected: 'Rexeitado'

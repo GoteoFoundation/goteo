@@ -1,13 +1,28 @@
 ---
+bazar-spread-text: '%s - Ce Noël, offre un financement participatif ouvert et pour le bien commun avec @goteofunding #openbazaar'
+bazar-thanks: 'Merci de visiter notre bazar, vous pouvez nous aider à le diffuser.'
+currency-alert: "Veuillez noter que la gestion est en EUR. Vous allez payer environ <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115 » target=\"_blank\">Plus d’infos</a>"
+faq-payment-method: '<a href="/faq/investors#q2 » target="_blank"> Quels systèmes de paiement goteo offre-t-il? Sont-ils sûrs?</a>'
 imperative-register: Inscrivez-vous
 invest-address-address-field: 'Addresse:'
+invest-address-birthyear-field: 'Année de naissance'
 invest-address-country-field: 'Pays:'
+invest-address-fail: 'Il y a des champs vides ou défaillants, vérifiez le formulaire pour recevoir votre récompense!'
+invest-address-friend-field: 'Cochez cette case si c’est le cadeau de quelqu’un d’autre'
+invest-address-gender-field: Sexe
 invest-address-header: 'Oû voulez vous recevoir votre récompence (seulement si c''est envoyé par  voie postale)'
 invest-address-location-field: Ville
+invest-address-maildest-field: 'E-mail du destinataire'
+invest-address-msgdest-field: 'Message au destinataire'
+invest-address-myemail-field: 'Votre E-mail'
+invest-address-myname-field: 'Votre nom'
 invest-address-name-field: 'Nom et prénom'
+invest-address-namedest-field: 'Nom du destinataire'
 invest-address-nif-field: 'Numéro de NIF / NIE / TVA'
 invest-address-title: 'Assurez-vous de recevoir votre récompense'
 invest-address-zipcode-field: 'Code Postal'
+invest-address-legal-entity-field: Entité juridique
+invest-address-legal-document-type-field: Type de Document
 invest-alert-investing: 'Vous allez apporter'
 invest-alert-lackamount: 'Votre contribution doit être au moins égale au montant de la récompense choisie'
 invest-alert-lackdrop: 'Il ne reste plus suffisamment de Matchfunding pour compléter ton soutien, il reste seulement'
@@ -16,6 +31,7 @@ invest-alert-noreward_renounce: 'Vous désirez abandonner votre récompense et n
 invest-alert-renounce: 'Afin de déduire votre donation de vos impôts, vous devez entrer votre numéro de contribuable, Voulez vous cela ?'
 invest-alert-rewards: 'Vous avez choisis cette récompense:'
 invest-amount: Quantité
+invest-amount-in-pool: 'Vous avez %s dans votre portefeuille virtuel'
 invest-amount-tooltip: 'Entrer la quantité avec laquelle vous voulez soutenir ce project'
 invest-anonymous: 'Faire une donation anonyme'
 invest-button: Contribuer
@@ -24,11 +40,22 @@ invest-called-maxdrop: 'Jusqu''à maximum <strong>%s &euro;</strong>'
 invest-called-maxproj: 'Le maximum de <strong>Capital Riego</strong> possible dans cette campagne <span class="call">%s</span> a été atteint.'
 invest-called-nodrop: 'Il n''y a pas actuellement de <strong>Matchfunding</strong> disponible dans la campagne %s'
 invest-called-rest: 'Il ne reste que <strong>%s €</strong> de <strong>Matchfunding</strong> dans la campagne <span class="call">%s</span>'
+invest-card-method: Carte de crédit
+invest-cash-method: 'Manuel (espèces)'
 invest-donation-header: 'Entrer les informations fiscal pour cette donation'
+invest-drop-method: Irrigation
+invest-fiscal-fail: 'Il y a des champs vides ou avec des erreurs, vérifiez le formulaire fiscal pour que vous puissiez déduire votre contribution!'
 invest-fiscal-skip: 'Fournir les détails plus tard'
+invest-fiscal-renounce: 'Je ne souhaite pas recevoir de certificat de don'
+invest-fiscal-title: 'Demande de certificat de don'
+#invest-fiscal-warning: 'A partir del 1 de Marzo de %s, podrás descargarte tu certificado de donación siempre que hayas facilitado tus datos completos anteriormente al 15 de enero.'
+invest-fiscal-warning: '<b> Si vous souhaitez que nous vous fournissions votre certificat de don pour bénéficier des avantages fiscaux</b> de votre contribution, est <b>nécessaire que vous nous fournissiez vos données personnelles indiquées AVANT le 15 janvier</b>, puisque, en vertu de l’article <b>5 de l’ordonnance EHA/3021/2007 du 11 octobre, approuvant le modèle 182 de déclaration d’information sur les dons,  dons et contributions reçus</b>, nous avons l’obligation de présenter cette déclaration au mois de janvier de chaque année, en ce qui concerne les dons, dons et contributions reçus ou les dispositions effectuées au cours de l’année civile précédente. <br><br>Si vous n''envoyez pas vos données dans les délais, vous renoncez aux avantages fiscaux de votre contribution, car le non-respect dans le délai de dépôt de la déclaration du modèle 182, de dons reçus, entraîne des amendes pour la Fondation Goteo pour non-respect de la réglementation ci-dessus. <br>'
+invest-login-alert: 'Vous devez vous inscrire ou <a href="%s">démarrer</a> pour pouvoir apporter votre contribution'
 invest-mail_info-address: 'A précisé l''addresse suivante:'
+invest-mail_info-drop: 'En outre, %s a fourni  %s pour le cofinancement de la campagne %s'
 invest-make-sure-save: Valider
 invest-make-sure-title: Confirmation
+invest-method: 'Mode de paiement'
 invest-method-title: 'Choisissez votre moyen de paiement '
 invest-modal-fiscal-description: 'Comme vous le savez, contribuer à des projets sur Goteo vous donne droit a obtenir un certificat de donation et vous autorise à bénéficier d''avantages fiscaux! Pour en savoir plus sur le sujet, lisez nôtre <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ nr. 18 pour donateurs</a>.'
 invest-modal-fiscal-title: 'Information fiscale'
@@ -40,6 +67,9 @@ invest-payment-email: 'Entrer votre nom utilisateur de compte PayPal'
 invest-payment-fail: 'Une erreur de paiement s''est produite'
 invest-payment-success: 'Paiement realisé correctement'
 invest-payment_method-header: ' Merci de choisir une méthode de paiement'
+invest-payment-method: 'Mode de paiement'
+invest-paypal-method: Pay Pal
+invest-paypal_disabled: "Ce projet a désactivé l’option de paiement via PayPal. <a href=\"/faq/investors#q2 » target=\"_blank\">Plus d’infos</a>"
 invest-pool: 'Si ce projet n''atteint pas l''objectif de financement, je désire que le montant de ma donation soit gardé dans mon porte-monnaie virtuel et le déstiner a un autre projet de mon choix'
 invest-pool-available: Disponible
 invest-pool-error: 'Vous n''avez pas assez d''argent dans votre porte-monnaie virtuel'
@@ -47,11 +77,21 @@ invest-pool-method: 'Porte-monnaie virtuel'
 invest-process-completed: 'Cette contribution a déjà été completée'
 invest-project: 'au projet'
 invest-resign: 'Je ne souhaite pas de récompense, je désire juste aider au projet.'
+invest-reward-first: 'Rappelez-vous que le montant à apporter doit être supérieur à 0'
 invest-reward-none: 'Cette récompense ne peut plus être choisie'
 invest-reward-not-found: 'Récompense introuvable!'
+invest-reward-used-up: 'Il ne reste plus d’unités de cette récompense!'
 invest-select-reward: 'Choisir une récompense'
 invest-share-title: Partager
 invest-social-header: 'Avec ces avantages, nous progressons tous'
+invest-status-cancelled: Annulé
+invest-status-charged: Encaissé
+invest-status-paid: 'Versé au projet'
+invest-status-processing: Incomplet
+invest-status-relocated: Relocalisé
+invest-status-returned: 'Retourné (archivé)'
+invest-status-to-pool: 'Vers le portefeuille'
+invest-status-donated: 'Faire un don à la Fondation'
 invest-step-1: Récompense
 invest-step-2: Paiement
 invest-step-3: Confirmation
@@ -66,7 +106,24 @@ project-invest-guest: 'Fantastique!'
 project-invest-ok: 'Votre apport au projet a été transmis.'
 project-invest-pool-button: 'Utiliser mon porte-monnaie virtuel'
 project-invest-start: 'Vous êtes sur le point de cofinancer ce projet...'
+project-return-button: 'Retournez au projet'
+project-see-msg: 'Voir votre message'
 spread-facebook: 'Partagez sur Facebook.'
 spread-twitter: 'Partagez sur Twitter.'
 user-login-required-login: 'Si vous êtes membre de Goteo, <a href="%s">connectez-vous</a> normalement. Si vous n''êtes pas encore utilisateur de Goteo inscrivez-vous ci-dessous'
 warning_nojavascript: 'Activez l''usage de javascript dans les préférences de votre navigateur pour continuer le processus de paiement'
+invest-no-register: 'Sauter cette étape, je veux juste contribuer'
+invest-user-not-ghost: 'Cet e-mail appartient déjà à un utilisateur existant!'
+invest-user-name-or-anonymous: 'Le nom est obligatoire si vous ne voulez pas faire une contribution anonyme'
+invest-created-manually-ok: 'Contribution manuelle correctement créée, sélectionner la récompense et l''adresse de livraison.'
+invest-created-manually-ko: 'Erreur lors de la création de la contribution manuelle [%s]'
+invest-tip-part-1: 'Je veux ajouter à mon don:'
+invest-tip-part-2: 'pour contribuer à la mission de la <b>Fondation Goteo</b><br> pour une société plus éthique et collaborative'
+invest-mail-donate-tip: 'Avec votre don, vous avez décidé de collaborer avec la <strong>Fondation Goteo</strong> avec %s € supplémentaires, merci de tout cœur.'
+invest-update-total: 'Vous allez faire un don total de<span class="amount-reminder » id="total-amount">%TOTAL_AMOUNT%</span> 👉 <span class="break-down">%PROJECT_AMOUNT% au projet + <span id="tip-amount">%DONATE_AMOUNT%</span> à la Fondation Goteo'
+invest-extra-info: 'Infos supplémentaires '
+donor-legal-entities-natural-person: Personne physique
+donor-legal-entities-legal-person: Personne morale
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: NIF
+donor-legal-document-type-vat: TVA
