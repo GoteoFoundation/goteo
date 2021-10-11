@@ -21,6 +21,7 @@ require_once __DIR__ . '/../src/autoload.php';
 // Create first the request object (to avoid other classes reading from php://input specially)
 $request = Request::createFromGlobals();
 
+ini_set('display_errors', 0);
 error_reporting(E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED); // for symfony user deprecated errors
 
 // Bored? Try the hard way and fix some notices:
