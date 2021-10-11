@@ -15,6 +15,49 @@ use Exception;
 use Goteo\Application\Config\ConfigException;
 use Goteo\Application\Config\YamlSettingsLoader;
 use Goteo\Console\UsersSend;
+use Goteo\Controller\Admin\AccountsSubController;
+use Goteo\Controller\Admin\BannersSubController;
+use Goteo\Controller\Admin\BlogAdminController;
+use Goteo\Controller\Admin\CategoriesAdminController;
+use Goteo\Controller\Admin\ChannelCriteriaAdminController;
+use Goteo\Controller\Admin\ChannelPostsAdminController;
+use Goteo\Controller\Admin\ChannelProgramAdminController;
+use Goteo\Controller\Admin\ChannelResourceAdminController;
+use Goteo\Controller\Admin\ChannelSectionAdminController;
+use Goteo\Controller\Admin\ChannelStoryAdminController;
+use Goteo\Controller\Admin\CommonsSubController;
+use Goteo\Controller\Admin\CommunicationAdminController;
+use Goteo\Controller\Admin\CriteriaSubController;
+use Goteo\Controller\Admin\FaqSubController;
+use Goteo\Controller\Admin\FilterAdminController;
+use Goteo\Controller\Admin\GlossarySubController;
+use Goteo\Controller\Admin\HomeSubController;
+use Goteo\Controller\Admin\IconsSubController;
+use Goteo\Controller\Admin\LicensesSubController;
+use Goteo\Controller\Admin\MailingSubController;
+use Goteo\Controller\Admin\MilestonesSubController;
+use Goteo\Controller\Admin\NewsletterSubController;
+use Goteo\Controller\Admin\NewsSubController;
+use Goteo\Controller\Admin\NodesSubController;
+use Goteo\Controller\Admin\NodeSubController;
+use Goteo\Controller\Admin\OpenTagsSubController;
+use Goteo\Controller\Admin\PagesSubController;
+use Goteo\Controller\Admin\ProjectsSubController;
+use Goteo\Controller\Admin\PromoteAdminController;
+use Goteo\Controller\Admin\RecentSubController;
+use Goteo\Controller\Admin\ReviewsSubController;
+use Goteo\Controller\Admin\RewardsSubController;
+use Goteo\Controller\Admin\SentSubController;
+use Goteo\Controller\Admin\SponsorsSubController;
+use Goteo\Controller\Admin\StatsAdminController;
+use Goteo\Controller\Admin\StoriesAdminController;
+use Goteo\Controller\Admin\TagsSubController;
+use Goteo\Controller\Admin\TemplatesSubController;
+use Goteo\Controller\Admin\TextsSubController;
+use Goteo\Controller\Admin\TranslatesSubController;
+use Goteo\Controller\Admin\UsersAdminController;
+use Goteo\Controller\Admin\WorkshopAdminController;
+use Goteo\Controller\Admin\WorthSubController;
 use Goteo\Controller\AdminController;
 use Goteo\Controller\TranslateController;
 use Goteo\Core\Model;
@@ -200,55 +243,11 @@ class Config {
     }
 
 	static private function setDirConfiguration() {
-
-		//Admin subcontrollers added manually for legacy compatibility
-        AdminController::addSubController('Goteo\Controller\Admin\UsersAdminController');
-        AdminController::addSubController('Goteo\Controller\Admin\BlogAdminController');
-        AdminController::addSubController('Goteo\Controller\Admin\StoriesAdminController');
-        AdminController::addSubController('Goteo\Controller\Admin\PromoteAdminController');
-		AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
-		AdminController::addSubController('Goteo\Controller\Admin\CommunicationAdminController');
-		AdminController::addSubController('Goteo\Controller\Admin\FilterAdminController');
-		AdminController::addSubController('Goteo\Controller\Admin\WorkshopAdminController');
-        AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\NodeSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\NodesSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\BannersSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\CategoriesAdminController');
-        AdminController::addSubController('Goteo\Controller\Admin\CommonsSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\CriteriaSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\HomeSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\GlossarySubController');
-        AdminController::addSubController('Goteo\Controller\Admin\IconsSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\LicensesSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\MailingSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\NewsSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\NewsletterSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\PagesSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\ProjectsSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\RecentSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\ReviewsSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\RewardsSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\SentSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\SponsorsSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\TagsSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\TemplatesSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\TextsSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\TranslatesSubController');
-		AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
-		AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
-        AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');
-		AdminController::addSubController('Goteo\Controller\Admin\ChannelStoryAdminController');
-		AdminController::addSubController('Goteo\Controller\Admin\ChannelResourceAdminController');
-		AdminController::addSubController('Goteo\Controller\Admin\ChannelPostsAdminController');
-		AdminController::addSubController('Goteo\Controller\Admin\ChannelCriteriaAdminController');
-		AdminController::addSubController('Goteo\Controller\Admin\ChannelProgramAdminController');
-		AdminController::addSubController('Goteo\Controller\Admin\ChannelSectionAdminController');
+        self::addOldAdminControllers();
+        self::addNewAdminControllers();
 
 		// Adding Pool (internal credit) payment method
 		Payment::addMethod('Goteo\Payment\Method\PoolPaymentMethod');
-		// Adding Paypal payment method
 		Payment::addMethod('Goteo\Payment\Method\PaypalPaymentMethod');
 		// Adding Cash non-public payment method (manual admin investions)
 		Payment::addMethod('Goteo\Payment\Method\CashPaymentMethod', true);
@@ -319,6 +318,57 @@ class Config {
 
 		// TODO: fire event here
 	}
+
+    static public function addOldAdminControllers()
+    {
+        AdminController::addSubController(BlogAdminController::class);
+        AdminController::addSubController(CategoriesAdminController::class);
+        AdminController::addSubController(CommunicationAdminController::class);
+        AdminController::addSubController(FilterAdminController::class);
+        AdminController::addSubController(PromoteAdminController::class);
+        AdminController::addSubController(StatsAdminController::class);
+        AdminController::addSubController(StoriesAdminController::class);
+        AdminController::addSubController(UsersAdminController::class);
+        AdminController::addSubController(WorkshopAdminController::class);
+        AdminController::addSubController(ChannelCriteriaAdminController::class);
+        AdminController::addSubController(ChannelResourceAdminController::class);
+        AdminController::addSubController(ChannelProgramAdminController::class);
+        AdminController::addSubController(ChannelPostsAdminController::class);
+        AdminController::addSubController(ChannelSectionAdminController::class);
+        AdminController::addSubController(ChannelStoryAdminController::class);
+    }
+
+    static public function addNewAdminControllers()
+    {
+        AdminController::addSubController(AccountsSubController::class);
+        AdminController::addSubController(NodeSubController::class);
+        AdminController::addSubController(NodesSubController::class);
+        AdminController::addSubController(BannersSubController::class);
+        AdminController::addSubController(CommonsSubController::class);
+        AdminController::addSubController(CriteriaSubController::class);
+        AdminController::addSubController(FaqSubController::class);
+        AdminController::addSubController(HomeSubController::class);
+        AdminController::addSubController(GlossarySubController::class);
+        AdminController::addSubController(IconsSubController::class);
+        AdminController::addSubController(LicensesSubController::class);
+        AdminController::addSubController(MailingSubController::class);
+        AdminController::addSubController(NewsSubController::class);
+        AdminController::addSubController(NewsletterSubController::class);
+        AdminController::addSubController(PagesSubController::class);
+        AdminController::addSubController(ProjectsSubController::class);
+        AdminController::addSubController(RecentSubController::class);
+        AdminController::addSubController(ReviewsSubController::class);
+        AdminController::addSubController(RewardsSubController::class);
+        AdminController::addSubController(SentSubController::class);
+        AdminController::addSubController(SponsorsSubController::class);
+        AdminController::addSubController(TagsSubController::class);
+        AdminController::addSubController(TemplatesSubController::class);
+        AdminController::addSubController(TextsSubController::class);
+        AdminController::addSubController(TranslatesSubController::class);
+        AdminController::addSubController(WorthSubController::class);
+        AdminController::addSubController(MilestonesSubController::class);
+        AdminController::addSubController(OpenTagsSubController::class);
+    }
 
 	static public function setConstants() {
 		define('GOTEO_MAINTENANCE', self::get('maintenance'));
