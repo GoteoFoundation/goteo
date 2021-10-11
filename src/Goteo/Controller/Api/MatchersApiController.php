@@ -127,7 +127,7 @@ class MatchersApiController extends AbstractApiController {
         if(!$this->user)
             throw new ControllerAccessDeniedException();
 
-        $result = $this->genericFileUpload($request); // 'file' is the expected form input name in the post object
+        $result = $this->genericFileUpload($request);
         return $this->jsonResponse($result);
     }
 
