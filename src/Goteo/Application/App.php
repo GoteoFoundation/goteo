@@ -79,11 +79,8 @@ class App extends HttpKernel
             ->dispatch($event, $eventName);
     }
 
-    /**
-     * Gets the routes for the app
-     * @return RouteCollection object
-     */
-    static public function getRoutes() {
+    static public function getRoutes(): RouteCollection
+    {
         if (!self::$_routes) {
             self::$_routes = include (__DIR__ .'/../../routes.php');
         }
@@ -91,7 +88,6 @@ class App extends HttpKernel
     }
 
     /**
-     * Sets the routes for the app
      * Must be called before App::get() in order to set a different sets of routes
      */
     static public function setRoutes(RouteCollection $routes) {
