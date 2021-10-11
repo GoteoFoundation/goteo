@@ -17,6 +17,7 @@ use Goteo\Library\Text;
 use Goteo\Model\Questionnaire;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DropfilesType;
 use Goteo\Util\Form\Type\NumberType;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextareaType;
@@ -36,7 +37,7 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
 
         if ($config->attr) { $config->attr = (array) $config->attr;
         }
-        if ($config->type == "dropfiles") {
+        if ($config->type == DropfilesType::class) {
             $config->constraints = $this->getConstraints();
         }
         $builder = $this->getBuilder();
@@ -44,21 +45,21 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
             ->add(
                 $question->id . '_typeofquestion', ChoiceType::class, [
                     'label' => Text::get('questionnaire-type-of-question'),
-                    'choices' => $this->getChoices(Questionnaire::getTypes()),
-                    'data' => $config->type
+                    'choices' => Questionnaire::getTypes(),
+                    'data' => Questionnaire::getQuestionTypeClass($config->type)
                 ]
             )
             ->add(
                 $question->id . '_required', BooleanType::class, [
                     'label' => Text::get('questionnaire-required'),
-                    'data' => $config->required ? true : false,
+                    'data' => (bool)$config->required,
                     'required' => false
                 ]
             )
             ->add(
                 $question->id . '_hidden', BooleanType::class, [
                     'label' => Text::get('questionnaire-hidden'),
-                    'data' => $config->hidden ? true : false,
+                    'data' => (bool)$config->hidden,
                     'required' => false
                 ]
             )
@@ -94,7 +95,7 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                     'label' => 'question-choice-answer'
             ]);
 
-        if ($config->type == "choice") {
+        if ($config->type == ChoiceType::class) {
             foreach ($config->vars->choices as $key => $value) {
                 $builder
                     ->add(
@@ -105,17 +106,6 @@ class QuestionnaireCreateForm extends AbstractFormProcessor implements FormProce
                     );
             }
         }
-    }
-
-    private function getChoices($items)
-    {
-        $choices = [];
-
-        foreach ($items as $k => $v) {
-            $choices[$v] = $k;
-        }
-
-        return $choices;
     }
 
     public function createForm()
