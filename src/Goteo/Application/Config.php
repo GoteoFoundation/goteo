@@ -243,8 +243,8 @@ class Config {
     }
 
 	static private function setDirConfiguration() {
-        self::addOldAdminControllers();
-        self::addNewAdminControllers();
+        self::addAdminControllers();
+        self::addLegacyAdminControllers();
 
 		// Adding Pool (internal credit) payment method
 		Payment::addMethod('Goteo\Payment\Method\PoolPaymentMethod');
@@ -319,7 +319,7 @@ class Config {
 		// TODO: fire event here
 	}
 
-    static public function addOldAdminControllers()
+    static public function addAdminControllers()
     {
         AdminController::addSubController(BlogAdminController::class);
         AdminController::addSubController(CategoriesAdminController::class);
@@ -338,7 +338,7 @@ class Config {
         AdminController::addSubController(ChannelStoryAdminController::class);
     }
 
-    static public function addNewAdminControllers()
+    static public function addLegacyAdminControllers()
     {
         AdminController::addSubController(AccountsSubController::class);
         AdminController::addSubController(NodeSubController::class);
