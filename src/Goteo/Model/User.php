@@ -452,7 +452,7 @@ class User extends Model {
      * Changes, email (with database duplicate checks), password (Will be encoded) or Id (changing relationships between tables)
      * Throws ModelException on errors
      * @param  string $field [description]
-     * @return this user (fluent)
+     * @return User user (fluent)
      */
     public function rebase($value, $field = 'id') {
         $values = [':id' => $this->id];
@@ -587,7 +587,6 @@ class User extends Model {
         try{
             $values = [':id' => $this->id, ':email' => $email];
             $sql = "UPDATE user SET `email` = :email, `token` = '' WHERE id = :id";
-            // die(\sqldbg($sql, $values));
             if(self::query($sql, $values)) {
                 $this->email = $email;
                 return true;
@@ -803,9 +802,6 @@ class User extends Model {
     }
 
     /**
-     * Lista de usuarios.
-     *
-     * @param  array $filters  Filtros
      * @param  string|array $subnodes Filtra además por nodo o nodos (si es un array),
      *                                también si el usuario ha invertido en un proyecto de ese nodo
      * @return mixed            Array de objetos de usuario activos|todos.
@@ -1167,10 +1163,6 @@ class User extends Model {
     }
 
     /**
-     * Get a user by mail
-     *
-     * @param string $username Nombre de usuario
-     * @param string $password Contraseña
      * @return obj|false Objeto del usuario, en caso contrario devolverá 'false'.
      */
     public static function getByEmail($email, $lang = null, $with_password = false) {
@@ -1188,11 +1180,9 @@ class User extends Model {
     /**
      * Validación de usuario.
      *
-     * @param string $username Nombre de usuario
-     * @param string $password Contraseña
      * @return obj|false Objeto del usuario, en caso contrario devolverá 'false'.
      */
-    public static function login($username, $password, $allow_login_by_mail = true) {
+    public static function login(string $username, string $password, $allow_login_by_mail = true) {
 
         if ($allow_login_by_mail && strpos($username, '@') !== false) {
             $user = self::getByEmail($username, null, false);
@@ -1465,7 +1455,7 @@ class User extends Model {
                 });
             }
         }
-        // print_r($this->all_roles_nodes);die;
+
         return $this->all_roles_nodes;
     }
 
@@ -1541,7 +1531,6 @@ class User extends Model {
 
     /**
      * Checks if this user can edit sensitive data from another user
-     * @param  User   $user [description]
      */
     public function canRebase(User $user) {
         // Admins cannot impersonate other admins
@@ -1555,7 +1544,6 @@ class User extends Model {
 
         return false;
     }
-
 
     /**
      * Checks if this user can change the role of another user
@@ -1642,10 +1630,7 @@ class User extends Model {
     }
 
     /**
-     * Refresca la sesión.
-     * (Utilizar después de un save)
-     *
-     * @return type object  User
+     * Refresca la sesión. (Utilizar después de un save)
      */
     public static function flush() {
         if ($id = Session::getUserId()) {
@@ -1656,7 +1641,6 @@ class User extends Model {
     /**
      * Verificacion de recuperacion de contraseña
      *
-     * @param string $username Nombre de usuario
      * @param string $email    Email de la cuenta
      * @return boolean true|false  Correctos y mail enviado
      */
@@ -1702,7 +1686,6 @@ class User extends Model {
     /**
      * Verificacion de darse de baja
      *
-     * @param string $email    Email de la cuenta
      * @return boolean true|false  Correctos y mail enviado
      */
     public static function leaving($email, $message = null) {
@@ -1773,13 +1756,12 @@ class User extends Model {
 
     /**
      * Guarda el Token y envía un correo de confirmación.
-     *
      * Usa el separador: ¬
      *
-     * @param type string   $token  Formato: '<md5>¬<email>'
-     * @return type bool
+     * @param string $token  Formato: '<md5>¬<email>'
      */
-    private function setToken($token, &$errors = []) {
+    private function setToken($token, &$errors = []): bool
+    {
         $URL = \SITE_URL;
         if (count($tmp = explode('¬', $token)) > 1) {
             $email = $tmp[1];
@@ -2057,15 +2039,12 @@ class User extends Model {
         if (!empty($values)) {
             $insert['`user`'] = ':user';
             $values[':user'] = $user;
-            // $sql = "REPLACE INTO user_prefer SET user = :user, " . $set;
             $sql = "INSERT INTO user_prefer (" . implode(',', array_keys($insert)) .
                    ") VALUES (" . implode(',', $insert) .
                    ") ON DUPLICATE KEY UPDATE " . implode(',', $update);
             try {
-                // die(\sqldbg($sql, $values));
                 self::query($sql, $values);
                 return true;
-
             } catch (PDOException $e) {
                 $errors[] = "FALLO al gestionar las preferencias de notificación " . $e->getMessage();
                 return false;
@@ -2162,13 +2141,13 @@ class User extends Model {
     }
 
     /**
-     * Metodo para cancelar la cuenta de usuario
-     * Nos e borra nada, se desactiva y se oculta.
+     * Metodo para cancelar la cuenta de usuario.
+     * No se borra nada, se desactiva y se oculta.
      *
      * @param string $userId
      * @return bool
      */
-    public static function cancel($userId, $param = null) {
+    public static function cancel($userId) {
         if (self::query('UPDATE user SET active = 0, hide = 1 WHERE id = :id', array(':id' => $userId))) {
             return true;
         }
@@ -2194,11 +2173,10 @@ class User extends Model {
     public static function mailBlock($userId, $mailingCode = 'mailing') {
 
         $values = array(':user' => $userId);
-
         $sql = "SELECT user_prefer.{$mailingCode} as blocked FROM user_prefer WHERE user_prefer.user = :user";
-
         $query = self::query($sql, $values);
         $block = $query->fetchColumn();
+
         if ($block == 1) {
             return true;
         } else {
