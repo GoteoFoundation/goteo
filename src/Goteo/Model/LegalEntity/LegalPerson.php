@@ -11,4 +11,9 @@ class LegalPerson extends LegalEntity {
         $this->legal_entity = self::LEGAL_PERSON;
     }
 
+    public static function getLegalDocumentTypes(): array {
+        return  [
+            self::CIF => Text::get('contract-legal-document-type-cif')
+          ];
+    }
 }

@@ -284,7 +284,7 @@ class SettingsDashboardController extends DashboardController {
             ])
             ->add('contract_legal_document_type', 'choice', [
                 'label' => 'personal-field-contract_legal_document_type',
-                'choices' => Contract::getNaturalPersonDocumentTypes(),
+                'choices' => NaturalPerson::getLegalDocumentTypes(),
                 'attr' => ['help' => Text::get('tooltip-project-contract_nif')],
                 'required' => false
             ])

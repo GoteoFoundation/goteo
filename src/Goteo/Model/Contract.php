@@ -932,20 +932,5 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
         return $nexts;
 
     }
-
-    static public function getNaturalPersonDocumentTypes() {
-        return  [
-            self::NIF => Text::get('contract-legal-document-type-nif'),
-            self::NIE => Text::get('contract-legal-document-type-nie'),
-            self::PASSPORT => Text::get('contract-legal-document-type-passport'),
-          ];
-    }
-
-    static public function getLegalPersonDocumentTypes() {
-        return  [
-            self::CIF => Text::get('contract-legal-document-type-cif')
-          ];
-    }
-
 }
 
