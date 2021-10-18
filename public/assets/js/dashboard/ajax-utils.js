@@ -85,33 +85,39 @@ $(function(){
                 recipients.push($(this).data('user'));
             });
         }
-        // console.log('send comment, recipients:', recipients, 'checkbox', $checkbox.prop('checked'), $checkbox);
-        var data = {
-            message: $textarea.val(),
-            recipients: recipients,
-            thread: $parent.data('thread'),
-            shared: $parent.data('shared'),
-            project: $parent.data('project'),
-            admin: $parent.data('admin'),
-            view: 'dashboard'
-        }
-        // console.log('sending comment', data);
-        $error.addClass('hidden').html('');
-        $.post(url, data, function(data) {
-            // console.log('ok!', data);
-            $list.append(data.html);
-            $textarea.val('');
-            $recipients.find('.text').html($recipients.data('public'));
-          }).fail(function(xhr) {
-            // console.log('error', xhr);
-            var error;
-            try {
-                error = JSON.parse(xhr.responseText).error;
-            } catch(e) {
-                error = xhr.statusText;
+
+        const messageIsValid = $textarea[0].checkValidity();
+        if(!messageIsValid) {
+            $textarea[0].reportValidity();
+        } else {
+            // console.log('send comment, recipients:', recipients, 'checkbox', $checkbox.prop('checked'), $checkbox);
+            var data = {
+                message: $textarea.val(),
+                recipients: recipients,
+                thread: $parent.data('thread'),
+                shared: $parent.data('shared'),
+                project: $parent.data('project'),
+                admin: $parent.data('admin'),
+                view: 'dashboard'
             }
-            $error.removeClass('hidden').html(error);
-          });
+            // console.log('sending comment', data);
+            $error.addClass('hidden').html('');
+            $.post(url, data, function(data) {
+                // console.log('ok!', data);
+                $list.append(data.html);
+                $textarea.val('');
+                $recipients.find('.text').html($recipients.data('public'));
+            }).fail(function(xhr) {
+                // console.log('error', xhr);
+                var error;
+                try {
+                    error = JSON.parse(xhr.responseText).error;
+                } catch(e) {
+                    error = xhr.statusText;
+                }
+                $error.removeClass('hidden').html(error);
+            });
+        }
     });
 
     // Delete comments
@@ -192,33 +198,42 @@ $(function(){
         var $query = $parent.find('[name="query"]');
         var $users = $parent.find('[name="users"]');
 
-        var data = {
-            subject: $subject.val(),
-            body: $body.val(),
-            thread: $parent.data('thread'),
-            filter: {
-                others: $others.val(),
-                reward: $reward.val(),
-                query: $query.val()
-            },
-            users: $users.val().split(','),
-            project: $parent.data('project'),
-            // view: 'dashboard'
-        }
-        $error.addClass('hidden').html('');
-        $.post(url, data, function(response) {
-            // console.log('ok!', response);
-            // $list.append(response.html);
-            $(document).trigger('message-sent', [data, response]);
-          }).fail(function(xhr) {
-            // console.log('error', xhr);
-            var error;
-            try {
-                error = JSON.parse(xhr.responseText).error;
-            } catch(e) {
-                error = xhr.statusText;
+        var formIsValid = ( $body[0].checkValidity() && $subject[0].checkValidity())
+
+        if (!formIsValid) {
+            $body[0].reportValidity()
+            $subject[0].reportValidity()
+        } else {
+
+            var data = {
+                subject: $subject.val(),
+                body: $body.val(),
+                thread: $parent.data('thread'),
+                filter: {
+                    others: $others.val(),
+                    reward: $reward.val(),
+                    query: $query.val()
+                },
+                users: $users.val().split(','),
+                project: $parent.data('project'),
+                // view: 'dashboard'
             }
-            $error.removeClass('hidden').html(error);
-          });
+            $error.addClass('hidden').html('');
+            $.post(url, data, function(response) {
+                // console.log('ok!', response);
+                // $list.append(response.html);
+                $(document).trigger('message-sent', [data, response]);
+              }).fail(function(xhr) {
+                // console.log('error', xhr);
+                var error;
+                try {
+                    error = JSON.parse(xhr.responseText).error;
+                } catch(e) {
+                    error = xhr.statusText;
+                }
+                $error.removeClass('hidden').html(error);
+              }
+            );
+        }
     });
 });
