@@ -535,7 +535,7 @@ class Message extends \Goteo\Core\Model {
 
             $query = self::query($sql, [':id' => $this->id]);
             $this->participants = $this->getRecipients();
-            if($resp = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User')) {
+            if($resp = $query->fetchAll(\PDO::FETCH_CLASS, User::class)) {
                 foreach($resp as $user) {
                     $this->participants[$user->id] = $user;
                 }
