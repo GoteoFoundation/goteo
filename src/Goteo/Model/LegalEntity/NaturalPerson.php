@@ -4,6 +4,7 @@ namespace Goteo\Model\LegalEntity;
 
 use Goteo\Library\Text;
 use Goteo\Model\LegalEntity;
+use Goteo\Model\LegalDocumentType;
 
 class NaturalPerson extends LegalEntity {
 
@@ -13,9 +14,9 @@ class NaturalPerson extends LegalEntity {
 
     public function getLegalDocumentTypes(): array {
         return  [
-            self::NIF => Text::get('contract-legal-document-type-nif'),
-            self::NIE => Text::get('contract-legal-document-type-nie'),
-            self::PASSPORT => Text::get('contract-legal-document-type-passport'),
+            LegalDocumentType::NIF => Text::get('contract-legal-document-type-nif'),
+            LegalDocumentType::NIE => Text::get('contract-legal-document-type-nie'),
+            LegalDocumentType::PASSPORT => Text::get('contract-legal-document-type-passport'),
           ];
     }
 }

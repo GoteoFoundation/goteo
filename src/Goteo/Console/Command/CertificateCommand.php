@@ -24,6 +24,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
+use Goteo\Model\LegalDocumentType;
 use Goteo\Model\User\Donor;
 use Goteo\Model\Invest;
 use FileSystemCache;
@@ -114,17 +115,17 @@ EOT
                     if (isset($errors['legal_entity'])) {
                         $output->writeln("<info>The donor has not specified the legal entity</info>");
                         $output->writeln("<info>Check proves the nif to be from a " . $nif_type);
-                        if ($nif_type == Donor::CIF) {
-                            $output->writeln("<info>The donor legal entity will be changed to " . Donor::LEGAL_PERSON);
-                            $donor->legal_entity = Donor::LEGAL_PERSON;
+                        if ($nif_type == LegalDocumentType::CIF) {
+                            $output->writeln("<info>The donor legal entity will be changed to " . LegalEntity::LEGAL_PERSON);
+                            $donor->legal_entity = LegalEntity::LEGAL_PERSON;
                         } else {
-                            $output->writeln("<info>The donor legal entity will be changed to " . Donor::NATURAL_PERSON);
-                            $donor->legal_entity = Donor::NATURAL_PERSON;
+                            $output->writeln("<info>The donor legal entity will be changed to " . LegalEntity::NATURAL_PERSON);
+                            $donor->legal_entity = LegalEntity::NATURAL_PERSON;
                         }
                     }
 
                     if(isset($errors['nif'])) {
-                        if ($valid_nif && $nif_type != Donor::VAT) {
+                        if ($valid_nif && $nif_type != LegalDocumentType::VAT) {
                             $donor->legal_document_type = $nif_type;
                             $error_save = array();
                             if ($update) {
@@ -192,12 +193,12 @@ EOT
 
                         if(isset($errors['nif'])) {
                             
-                            if ($valid_nif && $nif_type != Donor::VAT) {
+                            if ($valid_nif && $nif_type != LegalDocumentType::VAT) {
                                 $donor->legal_document_type = $nif_type;
-                                 if ($nif_type == Donor::CIF) {
-                                    $donor->legal_entity = Donor::LEGAL_PERSON;
+                                 if ($nif_type == LegalDocumentType::CIF) {
+                                    $donor->legal_entity = LegalEntity::LEGAL_PERSON;
                                 } else {
-                                    $donor->legal_entity = Donor::NATURAL_PERSON;
+                                    $donor->legal_entity = LegalEntity::NATURAL_PERSON;
                                 }
                                 $can_be_updated = true;
 
@@ -220,23 +221,23 @@ EOT
                             }
 
                             if ($valid_nif) {
-                                if ($nif_type == Donor::CIF) {
+                                if ($nif_type == LegalDocumentType::CIF) {
                                     if ($verbose) {
                                         $progress_bar->clear();        
-                                        $output->writeln("<info>The donor legal entity will be changed to " . Donor::LEGAL_PERSON . "</info>");
+                                        $output->writeln("<info>The donor legal entity will be changed to " . LegalEntity::LEGAL_PERSON . "</info>");
                                         $progress_bar->display();
                                     }
 
-                                    $donor->legal_entity = Donor::LEGAL_PERSON;
+                                    $donor->legal_entity = LegalEntity::LEGAL_PERSON;
                                     $can_be_updated = true;
                                 } else {
                                     if ($verbose) {
                                         $progress_bar->clear();
-                                        $output->writeln("<info>The donor legal entity will be changed to " . Donor::NATURAL_PERSON . "</info>");
+                                        $output->writeln("<info>The donor legal entity will be changed to " . LegalEntity::NATURAL_PERSON . "</info>");
                                         $progress_bar->display();
                                     }
 
-                                    $donor->legal_entity = Donor::NATURAL_PERSON;
+                                    $donor->legal_entity = LegalEntity::NATURAL_PERSON;
                                     $can_be_updated = true;
                                 }
                             }
@@ -251,7 +252,7 @@ EOT
                                 $progress_bar->display();
                             }
 
-                            if ($valid_nif && $nif_type != Donor::VAT) {
+                            if ($valid_nif && $nif_type != LegalDocumentType::VAT) {
                                 $donor->legal_document_type = $nif_type;
                                 $can_be_updated = true;
 

@@ -46,7 +46,7 @@ abstract class LegalDocumentType {
     public function getDocumentType(): string {
         return $this->document_type;
     }
-    
+
     static public function getLegalDocumentTypes() {
         return  [
             self::CIF => Text::get('donor-legal-document-type-cif'),

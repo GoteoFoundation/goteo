@@ -209,7 +209,7 @@ class ProjectDashboardController extends DashboardController {
         ]);
     }
 
-    public function summaryAction($pid = null, Request $request) {
+    public function summaryAction($pid = null) {
         $project = $this->validateProject($pid, 'summary');
         if($project instanceOf Response) return $project;
 

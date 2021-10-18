@@ -12,6 +12,7 @@ abstract class LegalEntity {
 
     const NATURAL_PERSON = 'natural_person';
     const LEGAL_PERSON = 'legal_person';
+    const LEGAL_ENTITIES = [self::NATURAL_PERSON, self::LEGAL_PERSON];
 
     private string $legal_entity;
 
@@ -33,7 +34,7 @@ abstract class LegalEntity {
     public function getEntity(): string {
         return $this->legal_entity;
     }
-    
+
     public static function getNaturalPerson(): string {
         return self::NATURAL_PERSON;
     }

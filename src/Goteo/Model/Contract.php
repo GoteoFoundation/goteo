@@ -4,23 +4,14 @@ namespace Goteo\Model;
 
 use Goteo\Library\Check;
 use Goteo\Library\Text;
+use Goteo\Model\LegalEntity;
+use Goteo\Model\LegalDocumentType;
 use Goteo\Model\User;
 use Goteo\Model\Project;
 use Goteo\Model\License;
 use Goteo\Application\Config;
 
 class Contract extends \Goteo\Core\Model {
-
-    const NATURAL_PERSON = 'natural_person';
-    const LEGAL_PERSON = 'legal_person';
-    const LEGAL_ENTITIES = [self::NATURAL_PERSON, self::LEGAL_PERSON];
-
-    const CIF = 'cif';
-    const NIF = 'nif';
-    const NIE = 'nie';
-    const VAT = 'vat';
-    const PASSPORT = 'passport';
-    const LEGAL_DOCUMENTS = [self::NIF, self::NIE, self::PASSPORT];
 
     public
         $project,
@@ -250,9 +241,9 @@ class Contract extends \Goteo\Core\Model {
         if (isset($this->nif)) {
             $nif_type = '';
             $valid_nif = Check::nif($this->nif, $nif_type);
-            if ($this->legal_document_type != self::PASSPORT) {
+            if ($this->legal_document_type != LegalDocumentType::PASSPORT) {
                 if(!$valid_nif || $nif_type != $this->legal_document_type ) {
-                    if ($this->legal_document_type == self::NIF)  {
+                    if ($this->legal_document_type == LegalDocumentType::NIF)  {
                         $errors['nif'] = Text::get('validate-contract-nif-document-type');
                     } else {
                         $errors['nif'] = Text::get('validate-contract-cif-document-type');
@@ -264,7 +255,7 @@ class Contract extends \Goteo\Core\Model {
         if(isset($this->entity_cif)) {
             $cif_type = '';
             $valid_cif = Check::nif($this->entity_cif, $cif_type);
-            if(!$valid_cif || $cif_type != self::CIF ) {
+            if(!$valid_cif || $cif_type != LegalDocumentType::CIF ) {
                 $errors['entity_cif'] = Text::get('validate-contract-cif-document-type');
             }
         }
@@ -295,24 +286,12 @@ class Contract extends \Goteo\Core\Model {
         if($count > 0) {
             $errors['promoter'][] = 'promoter';
         }
-        // if(!Check::nif($this->nif)) {
-        //     $count++;
-        //     $errors['promoter'][] = 'promoter_nif';
-        // }
         $res->promoter = round(100 * ($total - $count)/$total);
 
         // 2. entity
         if($this->type > 0) {
             $entity = ['entity_name', 'entity_cif', 'office', 'entity_address', 'entity_location', 'entity_region', 'entity_zipcode', 'entity_country'];
             $total = count($entity);
-            //$entity[] = 'reg_name';
-            //$entity[] = 'reg_number';
-            /*if($this->type == 2) {
-                $entity[] = 'reg_date';
-                $entity[] = 'reg_id';
-                $entity[] = 'reg_idname';
-                $entity[] = 'reg_idloc';
-            }*/
             $count = 0;
             foreach($entity as $field) {
                 if(!empty($this->{$field})) {
@@ -325,12 +304,6 @@ class Contract extends \Goteo\Core\Model {
                 $errors['entity'][] = 'entity';
             }
 
-            /*$valid_nif = Check::nif($this->entity_cif, $nif_type);
-            if(!$valid_nif || $nif_type != self::CIF ) {
-                $count++;
-                $errors['entity'][] = 'promoter_nif';
-            }*/
-    
             $res->entity = round(100 * ($total - $count)/$total);
         } else {
             $res->entity = 100;
@@ -675,7 +648,7 @@ class Contract extends \Goteo\Core\Model {
             $valid_cif = Check::nif($this->entity_cif, $cif_type);
             if (empty($this->entity_cif)) {
                 $errors['entity']['entity_cif'] = Text::get('mandatory-project-field-entity_cif');
-            } elseif (!valid_cif || $cif_type != self::CIF) {
+            } elseif (!valid_cif || $cif_type != LegalDocumentType::CIF) {
                 $errors['entity']['entity_cif'] = Text::get('validate-project-value-entity_cif');
             } else {
                  $okeys['entity']['entity_cif'] = 'ok';
