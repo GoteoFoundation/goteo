@@ -2,10 +2,9 @@
 
 namespace Goteo\Model\Call {
 
-    use \Goteo\Model,
-        Goteo\Application\Lang,
-        Goteo\Application\Config;
-
+    use Goteo\Model;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class Project extends \Goteo\Core\Model {
 
@@ -392,7 +391,7 @@ namespace Goteo\Model\Call {
          * @param varchar50 $project proyecto
          * @return object $call convocatoria
          */
-        public static function calledMini ($project) {
+        public static function calledMini (string $project) {
             try {
 
                 $sql = "
@@ -412,8 +411,10 @@ namespace Goteo\Model\Call {
                   LIMIT 1
                   ";
 
+                  $values = [':project' => $project];
+
                 // metemos los datos del convocatoria en la instancia
-                $query = self::query($sql, array(':project'=>$project));
+                $query = self::query($sql, $values);
                 if ($call = $query->fetchObject('\Goteo\Model\Call')) {
 
                     // owner
