@@ -415,7 +415,7 @@ namespace Goteo\Model\Call {
 
                 // metemos los datos del convocatoria en la instancia
                 $query = self::query($sql, $values);
-                if ($call = $query->fetchObject(Call::class)) {
+                if ($call = $query->fetchObject('\Goteo\Model\Call')) {
 
                     // owner
                     $user = new Model\User;
