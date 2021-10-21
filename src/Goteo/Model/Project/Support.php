@@ -15,6 +15,8 @@ use Goteo\Model\Project;
 use Goteo\Model\User;
 use Goteo\Model\Message as Comment;
 
+use Goteo\Core\Exception;
+
 class Support extends \Goteo\Core\Model {
 
     public
@@ -36,11 +38,29 @@ class Support extends \Goteo\Core\Model {
     }
 
  	public static function get ($id) {
+
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+        $sql = "SELECT
+                    support.id,
+                    support.project,
+                    support.type,
+                    support.thread,
+                    $fields
+                FROM support
+                $joins
+                WHERE id = :id";
+
+        $values = [
+            ':id' => $id
+        ];
+
         try {
-            $query = static::query("SELECT * FROM support WHERE id = :id", array(':id' => $id));
+            $query = static::query($sql, $values);
             return $query->fetchObject(__CLASS__);
         } catch(\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+            throw new Exception($e->getMessage());
         }
 	}
 

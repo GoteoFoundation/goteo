@@ -518,6 +518,16 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                         }
                     } else {
                         $support->setLang($lang, [$field => $val], $errors);
+
+                        $comment = new Comment([
+                            'id' => $support->thread ?? null,
+                            'user' => $this->project->owner,
+                            'project' => $this->project->id,
+                            'blocked' => false,
+                            'message' => "{$support->support}: {$support->description}",
+                            'date' => date('Y-m-d H:i:s')
+                        ]);
+                        $comment->setLang($lang, ['message']);
                     }
                 }
                 if($errors) {
