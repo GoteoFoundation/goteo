@@ -531,7 +531,8 @@ class Message extends \Goteo\Core\Model {
         if(!$this->participants) {
             $sql = "SELECT DISTINCT user.* FROM `user`
                 RIGHT JOIN message a ON a.user = user.id
-                WHERE a.thread IN ( SELECT id FROM message b WHERE b.id = :id )";
+                WHERE a.thread IN ( SELECT id FROM message b WHERE b.id = :id )
+                    OR a.id = :id";
 
             $query = self::query($sql, [':id' => $this->id]);
             $this->participants = $this->getRecipients();
