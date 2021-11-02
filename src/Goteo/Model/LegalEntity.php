@@ -14,9 +14,9 @@ abstract class LegalEntity {
     const LEGAL_PERSON = 'legal_person';
     const LEGAL_ENTITIES = [self::NATURAL_PERSON, self::LEGAL_PERSON];
 
-    private string $legal_entity;
+    protected string $legal_entity;
 
-    public static function create(string $legal_entity): LegalEntity {
+    public static function create(string $legal_entity = ''): LegalEntity {
         switch ($legal_entity) {
             case self::LEGAL_PERSON:
                 return new LegalPerson();

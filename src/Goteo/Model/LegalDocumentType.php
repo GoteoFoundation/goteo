@@ -9,7 +9,7 @@ use Goteo\Model\LegalDocumentType\NIE;
 use Goteo\Model\LegalDocumentType\CIF;
 use Goteo\Model\LegalDocumentType\NIF;
 use Goteo\Model\LegalDocumentType\VAT;
-use Goteo\Model\LegalDocumentType\PASSPORT;
+use Goteo\Model\LegalDocumentType\Passport;
 
 abstract class LegalDocumentType {
 
@@ -20,9 +20,9 @@ abstract class LegalDocumentType {
     const PASSPORT = 'passport';
     const LEGAL_DOCUMENTS = [self::CIF, self::NIF, self::NIE];
 
-    private string $document_type;
+    protected string $document_type;
 
-    public static function create(string $document_type): LegalDocumentType {
+    public static function create(string $document_type = ''): LegalDocumentType {
 
         switch ($document_type) {
             case self::NIE:
@@ -34,7 +34,7 @@ abstract class LegalDocumentType {
             case self::VAT:
                 return new VAT();
             case self::PASSPORT:
-                return new PASSPORT();
+                return new Passport();
             default:
                 return new NIF();
         }
