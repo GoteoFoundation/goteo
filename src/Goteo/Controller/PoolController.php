@@ -26,6 +26,7 @@ use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\User;
+use Goteo\Model\User\Donor;
 use Goteo\Payment\Payment;
 use Goteo\Payment\PaymentException;
 use Omnipay\Common\Message\ResponseInterface;
@@ -347,8 +348,8 @@ class PoolController extends Controller {
             'invest_address' => $invest_address,
             'invest_errors' => $errors,
             'step' => 3,
-            'legal_entities' => [],
-            'legal_documents' => []
+            'legal_entities' => Donor::getLegalEntities(),
+            'legal_documents' => Donor::getLegalDocumentTypes()
         ]);
     }
 
