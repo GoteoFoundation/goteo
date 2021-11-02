@@ -25,14 +25,6 @@ class LegalEntityTest extends TestCase {
         $this->assertEquals(LegalEntity::NATURAL_PERSON, $legalEntity->getEntity());
     }
 
-    public function testGetNaturalPerson() {
-        $this->assertEquals(LegalEntity::NATURAL_PERSON, LegalEntity::getNaturalPerson());
-    }
-
-    public function testGetLegalPerson() {
-        $this->assertEquals(LegalEntity::LEGAL_PERSON, LegalEntity::getLegalPerson());
-    }
-
     public function testLegalEntities() {
         $this->assertIsArray(LegalEntity::getLegalEntities());
     }

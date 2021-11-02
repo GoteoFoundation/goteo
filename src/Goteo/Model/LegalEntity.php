@@ -29,19 +29,10 @@ abstract class LegalEntity {
         return $this->legal_entity;
     }
 
-    public static function getNaturalPerson(): string {
-        return self::NATURAL_PERSON;
-    }
-
-    public static function getLegalPerson(): string {
-        return self::LEGAL_PERSON;
-    }
-
     public static function getLegalEntities(): array {
         return  [
               self::NATURAL_PERSON => Text::get('donor-legal-entities-natural-person'),
               self::LEGAL_PERSON => Text::get('donor-legal-entities-legal-person')
             ];
     }
-
 }
