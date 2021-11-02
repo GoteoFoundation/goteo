@@ -506,28 +506,37 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             if($form->isValid()) {
                 $errors = [];
                 $data = $form->getData();
-                // print_r($data);die($form->getClickedButton()->getName());
-                $errors = [];
-                foreach($data as $key => $val) {
-                    list($field, $id) = explode('_', $key);
-                    $support = $supports[$id];
-                    // Check if we want to remove a translation
-                    if($form->get('remove')->isClicked()) {
+                $removeTranslation = $form->get('remove')->isClicked();
+
+                foreach($supports as $support) {
+                    if ($removeTranslation) {
                         if(!$support->removeLang($lang)) {
                             $errors[] = "Reward #$support->id not deleted";
+                        } else {
+                            $msg = Comment::get($support->thread);
+                            if (!$msg->removeLang($lang))
+                                $errors[] = "Comment #$msg->id not deleted";
                         }
                     } else {
-                        $support->setLang($lang, [$field => $val], $errors);
+                        $translatedSupport = $data["support_{$support->id}"];
+                        $translatedDescription = $data["description_{$support->id}"];
+
+                        $support->setLang($lang, ["support" => $translatedSupport, "description" => $translatedDescription], $errors);
+
+                        $msg = Comment::get($support->thread);
+                        $translatedMessage = "{$translatedSupport}: {$translatedDescription}";
+                        $msg->setLang($lang, ['message' => $translatedMessage], $errors);
                     }
                 }
+
                 if($errors) {
-                    if($form->get('remove')->isClicked()) {
-                        Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
+                    if($removeTranslation) {
+                        Message::error(Text::get('translator-deleted-ko', $languages[$lang]));
                     } else {
                         Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
                     }
                 } else {
-                    if($form->get('remove')->isClicked()) {
+                    if($removeTranslation) {
                         Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
                     } else {
                         Message::info(Text::get('dashboard-translate-project-ok', [
