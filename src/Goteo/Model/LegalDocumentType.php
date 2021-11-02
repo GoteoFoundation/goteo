@@ -22,7 +22,7 @@ abstract class LegalDocumentType {
 
     private string $document_type;
 
-    public static function create(string $document_type): LegalDocument {
+    public static function create(string $document_type): LegalDocumentType {
 
         switch ($document_type) {
             case self::NIE:
@@ -44,7 +44,7 @@ abstract class LegalDocumentType {
         return $this->document_type;
     }
 
-    static public function getLegalDocumentTypes() {
+    static public function getLegalDocumentTypes(): array {
         return  [
             self::CIF => Text::get('donor-legal-document-type-cif'),
             self::NIF => Text::get('donor-legal-document-type-nif'),
