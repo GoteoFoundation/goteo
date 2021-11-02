@@ -2,6 +2,7 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\Model\LegalDocumentType;
 use Goteo\Model\LegalDocumentType\VAT;
 use Goteo\TestCase;
 
@@ -20,6 +21,6 @@ class VATTest extends TestCase {
      * @depends testInstance
      */
     public function testGetDocumentType(VAT $vat) {
-        $this->assertEquals(VAT::VAT, $vat->getDocumentType());
+        $this->assertEquals(LegalDocumentType::VAT, $vat->getDocumentType());
     }
 }

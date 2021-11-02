@@ -2,6 +2,7 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\Model\LegalDocumentType;
 use Goteo\Model\LegalDocumentType\NIF;
 use Goteo\TestCase;
 
@@ -20,6 +21,6 @@ class NIFTest extends TestCase {
      * @depends testInstance
      */
     public function testGetDocumentType(NIF $nif) {
-        $this->assertEquals(NIF::NIF, $nif->getDocumentType());
+        $this->assertEquals(LegalDocumentType::NIF, $nif->getDocumentType());
     }
 }
