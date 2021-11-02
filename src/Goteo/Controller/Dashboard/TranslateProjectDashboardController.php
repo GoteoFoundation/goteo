@@ -19,6 +19,7 @@ use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Forms\Model\ProjectTranslateOverviewForm;
 use Goteo\Library\Forms\Model\ProjectTranslateStoryForm;
 use Goteo\Library\Text;
+use Goteo\Model\Message as Comment;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Cost;
