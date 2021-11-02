@@ -901,6 +901,8 @@ class ProjectDashboardController extends DashboardController {
                 if($transForm->get('remove')->isClicked()) {
                     if($support->removeLang($lang)) {
                         Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
+                        $msg = Comment::get($support->thread);
+                        $msg->removeLang($lang);
                     } else {
                         Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
                     }
@@ -913,6 +915,14 @@ class ProjectDashboardController extends DashboardController {
                             '%ZONE%' => '<strong>' . Text::get('step-main') . '</strong>',
                             '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
                         ]));
+
+                        $msg = Comment::get($support->thread);
+                        $translated_message = "{$data['support']}: {$data['description']}";
+                        $message_errors = [];
+                        if (!$msg->setLang($lang, ['message' => $translated_message], $message_errors)) {
+                            Message::error('form-sent-error', implode(',', $message_errors));
+                        }
+
                         return $this->redirect('/dashboard/project/' . $project->id . '/supports');
                     } else {
                         Message::error(Text::get('form-sent-error', implode(',',$errors)));
