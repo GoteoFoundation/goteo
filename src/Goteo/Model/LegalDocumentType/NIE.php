@@ -2,6 +2,8 @@
 
 namespace Goteo\Model\LegalDocumentType;
 
+use Goteo\Model\LegalDocumentType;
+
 class NIE extends LegalDocumentType {
 
     public function __construct() {
