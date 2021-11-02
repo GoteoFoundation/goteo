@@ -22,6 +22,7 @@ use Goteo\Model\Message as Comment;
 use Goteo\Util\Monolog\Processor\WebProcessor;
 use PDOException;
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 class Mail extends Model {
     protected $Table = 'mail';
@@ -334,7 +335,7 @@ class Mail extends Model {
         if($this->validate($errors)) {
             try {
                 if (self::checkBlocked($this->to, $reason)) {
-                    throw new \phpmailerException("The recipient is blocked due too many bounces or complaints [$reason]");
+                    throw new PHPMailerException("The recipient is blocked due too many bounces or complaints [$reason]");
                 }
 
                 $allowed = false;
@@ -376,7 +377,7 @@ class Mail extends Model {
 
             } catch(PDOException $e) {
                 $errors[] = "Error sending message: " . $e->getMessage();
-            } catch(\phpmailerException $e) {
+            } catch(PHPMailerException $e) {
                 $errors[] = $e->getMessage();
             }
         }
