@@ -60,45 +60,47 @@
         </div>
     <?php endif; ?>
 
-    <h3><?= $this->text('blog-coments-header') ?></h3>
+    <?php if ($this->post->allow || !empty($this->post->comments)): ?>
+        <h3><?= $this->text('blog-coments-header') ?></h3>
 
-    <?php if (!empty($this->post->comments)): ?>
-        <?php foreach ($this->post->comments as $child) : ?>
-        <div id="child-msg-<?= $child->id ?>" class="row no-margin normalize-padding message child<?= ($child->user->id == $project->owner) ? ' owner' : ' no-owner' ?> no-margin normalize-padding">
-            <?php if($child->user->id != $project->owner): ?>
-            <div class="pull-left anchor-mark" id="comment<?= $child->id ?>">
-                <img class="avatar" src="<?= $child->user->avatar->getLink(45, 45, true); ?>">
+        <?php if (!empty($this->post->comments)): ?>
+            <?php foreach ($this->post->comments as $child) : ?>
+            <div id="child-msg-<?= $child->id ?>" class="row no-margin normalize-padding message child<?= ($child->user->id == $project->owner) ? ' owner' : ' no-owner' ?> no-margin normalize-padding">
+                <?php if($child->user->id != $project->owner): ?>
+                <div class="pull-left anchor-mark" id="comment<?= $child->id ?>">
+                    <img class="avatar" src="<?= $child->user->avatar->getLink(45, 45, true); ?>">
+                </div>
+                <?php endif; ?>
+                <div class="pull-left user-name" ><?= ucfirst($child->user->name) ?></div>
+                <div class="pull-right time-ago">
+                    Hace <?= $child->timeago ?>
+                </div>
+                <div class="msg-content">
+                    <?= $child->text?>
+                </div>
             </div>
+            <?php endforeach ?>
+        <?php endif; ?>
+
+        <span id="add-comment" class="anchor-mark" ></span>
+
+        <?php if(!empty($_SESSION['user'])): ?>
+
+            <?php if ($this->post->allow): ?>
+                <div class="row standard-margin-top">
+                    <form class="col-xs-12" method="post" action="/message/post/<?= $this->post->id ?>/<?= $this->project->id ?>">
+                        <div class="alert alert-danger" role="alert" id="error" style="display:none;">
+                        </div>
+                        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                        <div class="col-sm-4 no-padding margin-2 standard-margin-top">
+                            <button type="submit" class="btn btn-block btn-success" id="send-msg" value=""><?= $this->text('blog-send_comment-button') ?></button>
+                        </div>
+                    </form>
+                </div>
             <?php endif; ?>
-            <div class="pull-left user-name" ><?= ucfirst($child->user->name) ?></div>
-            <div class="pull-right time-ago">
-                Hace <?= $child->timeago ?>
-             </div>
-            <div class="msg-content">
-                 <?= $child->text?>
-            </div>
-        </div>
-
-        <?php endforeach ?>
-    <?php endif; ?>
-
-    <span id="add-comment" class="anchor-mark" ></span>
-
-    <?php if(!empty($_SESSION['user'])): ?>
-
-    <div class="row standard-margin-top">
-        <form class="col-xs-12" method="post" action="/message/post/<?= $this->post->id ?>/<?= $this->project->id ?>">
-            <div class="alert alert-danger" role="alert" id="error" style="display:none;">
-            </div>
-            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-            <div class="col-sm-4 no-padding margin-2 standard-margin-top">
-                <button type="submit" class="btn btn-block btn-success" id="send-msg" value=""><?= $this->text('blog-send_comment-button') ?></button>
-            </div>
-        </form>
-    </div>
-
-    <?php else: ?>
-        <p><a href="/login?return=<?= urlencode($this->get_uri().'#add-comment') ?>"><?= $this->text('project-comment-start-sesion') ?></a> <?= $this->text('project-comment-start-sesion-2') ?></p>
+        <?php else: ?>
+            <p><a href="/login?return=<?= urlencode($this->get_uri().'#add-comment') ?>"><?= $this->text('project-comment-start-sesion') ?></a> <?= $this->text('project-comment-start-sesion-2') ?></p>
+        <?php endif; ?>
     <?php endif; ?>
 
 </div>
