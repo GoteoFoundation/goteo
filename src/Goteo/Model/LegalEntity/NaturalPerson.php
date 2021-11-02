@@ -12,7 +12,7 @@ class NaturalPerson extends LegalEntity {
         $this->legal_entity = self::NATURAL_PERSON;
     }
 
-    public function getLegalDocumentTypes(): array {
+    public static function getLegalDocumentTypes(): array {
         return  [
             LegalDocumentType::NIF => Text::get('contract-legal-document-type-nif'),
             LegalDocumentType::NIE => Text::get('contract-legal-document-type-nie'),
