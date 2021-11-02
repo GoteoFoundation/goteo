@@ -2,7 +2,7 @@
 
 namespace Goteo\Model\LegalDocumenType;
 
-class NIF {
+class NIF extends LegalDocumentType {
 
     public function __construct() {
         $this->document_type = self::NIF;
