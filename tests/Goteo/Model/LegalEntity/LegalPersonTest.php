@@ -2,6 +2,7 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\Model\LegalEntity;
 use Goteo\Model\LegalEntity\LegalPerson;
 use Goteo\TestCase;
 
@@ -20,6 +21,6 @@ class LegalPersonTest extends TestCase {
      * @depends testInstance
      */
     public function testGetEntity(LegalPerson $legalPerson) {
-        $this->assertEquals(LegalPerson::LEGAL_PERSON, $legalPerson->getEntity());
+        $this->assertEquals(LegalEntity::LEGAL_PERSON, $legalPerson->getEntity());
     }
 }
