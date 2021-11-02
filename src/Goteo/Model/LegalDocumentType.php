@@ -5,11 +5,11 @@ namespace Goteo\Model;
 use Goteo\Library\Text;
 
 use Goteo\Core\Model;
-use Goteo\Model\LegalDocument\NIE;
-use Goteo\Model\LegalDocument\CIF;
-use Goteo\Model\LegalDocument\NIF;
-use Goteo\Model\LegalDocument\VAT;
-use Goteo\Model\LegalDocument\PASSPORT;
+use Goteo\Model\LegalDocumentType\NIE;
+use Goteo\Model\LegalDocumentType\CIF;
+use Goteo\Model\LegalDocumentType\NIF;
+use Goteo\Model\LegalDocumentType\VAT;
+use Goteo\Model\LegalDocumentType\PASSPORT;
 
 abstract class LegalDocumentType {
 
@@ -23,24 +23,21 @@ abstract class LegalDocumentType {
     private string $document_type;
 
     public static function create(string $document_type): LegalDocument {
-        $legal_document_type;
 
         switch ($document_type) {
             case self::NIE:
-                $legal_document_type = new NIE();
+                return new NIE();
             case self::CIF:
-                $legal_document_type = new CIF();
+                return new CIF();
             case self::NIF:
-                $legal_document_type = new NIF();
+                return new NIF();
             case self::VAT:
-                $legal_document_type = new VAT();
+                return new VAT();
             case self::PASSPORT:
-                $legal_document_type = new PASSPORT();
+                return new PASSPORT();
             default:
-                $legal_document_type = new NIF();
+                return new NIF();
         }
-
-        return $legal_document_type;
     }
 
     public function getDocumentType(): string {

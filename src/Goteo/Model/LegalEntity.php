@@ -17,18 +17,12 @@ abstract class LegalEntity {
     private string $legal_entity;
 
     public static function create(string $legal_entity): LegalEntity {
-        $legal_entity_type;
-
         switch ($legal_entity) {
             case self::LEGAL_PERSON:
-                $legal_entity_type = new LegalPerson();
-            case self::NATURAL_PERSON:
-                $legal_entity_type = new NaturalPerson();
+                return new LegalPerson();
             default:
-                $legal_entity_type = new NaturalPerson();
+                return new NaturalPerson();
         }
-
-        return $legal_entity_type;
     }
 
     public function getEntity(): string {

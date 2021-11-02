@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Model\LegalDocumenType;
+namespace Goteo\Model\LegalDocumentType;
 
 class CIF extends LegalDocumentType {
 
