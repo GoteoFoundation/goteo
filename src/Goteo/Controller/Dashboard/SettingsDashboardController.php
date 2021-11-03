@@ -38,6 +38,8 @@ use Goteo\Model\Contract;
 
 class SettingsDashboardController extends DashboardController
 {
+    protected $user;
+
     public function __construct() {
         parent::__construct();
         $this->contextVars([
@@ -190,40 +192,48 @@ class SettingsDashboardController extends DashboardController
         ]);
     }
 
+    private function getLanguagesChoices(): array
+    {
+        return array_flip(Lang::listAll());
+    }
+
+    private function getCurrenciesChoices(): array
+    {
+        return array_flip(Currency::listAll('name'));
+    }
+
     public function preferencesAction(Request $request)
     {
         $this->createSettingsSidebar('preferences');
 
         $userPreferences = (array)User::getPreferences($this->user);
-        $preferredComLanguage = $this->user->lang ?: "ca";
-        $preferredCurrency = "EUR";
-        $bools = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips'];
+        $preferredComLanguage = $userPreferences[User::PREFERENCE_COMMUNICATION_LANGUAGE];
+        $preferredCurrency = $userPreferences[User::PREFERENCE_CURRENCY];
 
-        foreach($bools as $b) {
-            $userPreferences[$b] = (bool) $userPreferences[$b];
+        foreach(User::BOOLEAN_PREFERENCES as $booleanPreference) {
+            $userPreferences[$booleanPreference] = (bool) $userPreferences[$booleanPreference];
         }
 
-        $languages = Lang::listAll();
         $builder = $this->createFormBuilder($userPreferences)
-            ->add('comlang', ChoiceType::class, [
+            ->add(User::PREFERENCE_COMMUNICATION_LANGUAGE, ChoiceType::class, [
                 'label' => 'user-preferences-comlang',
-                'choices' => Lang::listAll(),
-                'data' => $languages[$preferredComLanguage]
+                'choices' => $this->getLanguagesChoices(),
+                'data' => $preferredComLanguage
             ]);
 
-        $currencies = Currency::listAll('name');
+        $currencies = $this->getCurrenciesChoices();
         if(count($currencies) > 1) {
-            $builder->add('currency', ChoiceType::class, [
+            $builder->add(User::PREFERENCE_CURRENCY, ChoiceType::class, [
                 'label' => 'user-preferences-currency',
                 'choices' => $currencies,
-                'data' => $currencies[$preferredCurrency]
+                'data' => $preferredCurrency
             ]);
         }
 
-        foreach($bools as $b) {
+        foreach(User::BOOLEAN_PREFERENCES as $booleanPreference) {
             $builder
-                ->add($b, BooleanType::class, [
-                    'label' => 'user-preferences-' . $b,
+                ->add($booleanPreference, BooleanType::class, [
+                    'label' => 'user-preferences-' . $booleanPreference,
                     'color' => 'cyan',
                     'required' => false
                 ]);

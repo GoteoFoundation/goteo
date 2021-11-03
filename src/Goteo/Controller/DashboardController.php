@@ -26,8 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends Controller
 {
-    protected User $user;
-
     public function __construct() {
         View::setTheme('responsive');
         $this->user = Session::getUser();
