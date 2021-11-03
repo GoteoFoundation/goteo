@@ -10,34 +10,27 @@
 
 namespace Goteo\Controller\Dashboard;
 
+use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Lang;
+use Goteo\Application\Message;
+use Goteo\Application\Session;
+use Goteo\Application\View;
+use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Forms\Model\ProjectTranslateOverviewForm;
+use Goteo\Library\Forms\Model\ProjectTranslateStoryForm;
+use Goteo\Library\Text;
+use Goteo\Model\Message as Comment;
+use Goteo\Model\Blog\Post as BlogPost;
+use Goteo\Model\Project;
+use Goteo\Model\Project\Cost;
+use Goteo\Model\Stories;
+use Goteo\Util\Form\Type\MarkdownType;
+use Goteo\Util\Form\Type\SubmitType;
+use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\TextareaType;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
-use Goteo\Application\Session;
-use Goteo\Application\AppEvents;
-use Goteo\Application\View;
-use Goteo\Application\Message;
-use Goteo\Application\Lang;
-use Goteo\Core\Model;
-use Goteo\Model\Invest;
-use Goteo\Model\Project;
-use Goteo\Model\Project\Image as ProjectImage;
-use Goteo\Model\Project\Support;
-use Goteo\Model\Project\Cost;
-use Goteo\Model\Project\Reward;
-use Goteo\Model\Blog;
-use Goteo\Model\Stories;
-use Goteo\Model\Blog\Post as BlogPost;
-use Goteo\Model\Message as Comment;
-use Goteo\Library\Text;
-use Goteo\Console\UsersSend;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Exception\ModelException;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Event\FilterMessageEvent;
-use Symfony\Component\Validator\Constraints;
-use Goteo\Library\Forms\FormModelException;
-use Goteo\Controller\Dashboard\ProjectDashboardController;
 
 class TranslateProjectDashboardController extends ProjectDashboardController {
 
@@ -61,7 +54,6 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 'costs' => Text::get('step-4'),
                 'rewards' => Text::get('step-5'),
                 'supports' => Text::get('step-6'),
-                
                 // 'updates' => Text::get('project-menu-updates')
             ],
             'languages' => $languages,
@@ -87,48 +79,24 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 $story = reset(Stories::getall(false, false, ['project' => $this->project->id]));
                 $data['percents']['story']= $story ? $story->getLangsGroupPercent($lang_check, ['id']) : 0;
             }
-
         }
 
         View::getEngine()->useData($data);
         return $project;
     }
 
-    /**
-     * Some handy defaults for the form
-     */
-    public function createFormBuilder($defaults = null, $name = 'autoform', array $options = ['attr' => ['class' => 'autoform hide-help']]) {
+    public function createFormBuilder(
+        $defaults = null,
+        $name = 'autoform',
+        array $options = ['attr' => ['class' => 'autoform hide-help']]
+    ): FormBuilder {
         return parent::createFormBuilder($defaults, $name, $options);
-    }
-
-    /**
-     * Handy method to get a form builder
-     * @return Goteo\Library\Forms\FormProcessorInterface
-     */
-    public function getModelForm($form, Model $model, array $defaults = [], array $options = [], Request $request = null) {
-        $finder = $this->getService('app.forms.finder');
-        $finder->setModel($model);
-        $validate = $mock_validation = false;
-        if($request) {
-            $validate = $request->query->has('validate');
-            $mock_validation = $validate && $request->isMethod('get');
-        }
-        // $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', $mock_validation ? ['csrf_protection' => false] : []));
-        // $finder->setBuilder($this->createFormBuilder($defaults));
-        // TODO: a better way to create a csrf_protection without showing errors CSRF on mock_validation
-        $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', ['csrf_protection' => false, 'attr' => ['class' => 'autoform hide-help']]));
-        $processor = $finder->getInstance($form, $options);
-        // Set full validation if required in Request
-        // Do a fake submit of the form on create to test errors (only on GET requests)
-        $processor->setFullValidation($validate, $mock_validation);
-
-        return $processor;
     }
 
     /**
      * Index translator
      */
-    public function translateAction($pid, Request $request) {
+    public function translateAction($pid) {
         $project = $this->validateProject($pid, 'translate');
         if($project instanceOf Response) return $project;
 
@@ -161,13 +129,12 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             'translated' => $translated,
             'percents' => $percents
         ]);
-
     }
 
     /**
      * Project overview translator
      */
-    public function overviewTranslateAction($pid, $lang = null, Request $request) {
+    public function overviewTranslateAction(Request $request, $pid, $lang = null) {
 
         $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
@@ -175,19 +142,25 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
         $defaults = (array) $project->getLang($lang);
         $languages = Lang::listAll('name', false);
 
-        // Create the form
-        $processor = $this->getModelForm('ProjectTranslateOverview', $project, $defaults, ['lang' => $lang], $request);
+        $processor = $this->getModelForm(
+            ProjectTranslateOverviewForm::class,
+            $project,
+            $defaults,
+            ['lang' => $lang],
+            $request,
+            ['csrf_protection' => false, 'attr' => ['class' => 'autoform hide-help']]
+        );
         $processor->createForm();
         $processor->getBuilder()
-            ->add('submit', 'submit')
-            ->add('remove', 'submit', [
+            ->add('submit', SubmitType::class)
+            ->add('remove', SubmitType::class, [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
                 'span' => 'hidden-xs',
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
-                    ]
+                ]
             ]);
         $form = $processor->getForm();
         $form->handleRequest($request);
@@ -214,7 +187,6 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             }
         }
 
-
         return $this->viewResponse('dashboard/project/translate/overview', [
             'form' => $form->createView(),
             'step' => 'overview',
@@ -225,17 +197,10 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
     /**
      * Project costs translator
      */
-    public function costsTranslateAction($pid, $lang = null, Request $request) {
+    public function costsTranslateAction(Request $request, $pid, $lang = null) {
 
         $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
-
-        // $langs = Lang::listAll('name', false);
-        // $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
-        // if(!isset($languages[$lang])) {
-        //     Message::error(Text::get('translator-lang-not-found'));
-        //     return $this->redirect('/dashboard/project/' . $project->id . '/translate');
-        // }
 
         $languages = Lang::listAll('name', false);
 
@@ -246,13 +211,13 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             $costs[$cost->id] = $cost;
             $translated = $cost->getLang($lang);
             $builder
-                ->add("cost$suffix", 'text', [
+                ->add("cost$suffix", TextType::class, [
                     'label' => 'costs-field-cost',
                     'data' => $translated->cost,
                     'required' => false,
                     'attr' => ['help' => $cost->cost]
                 ])
-                ->add("description$suffix", 'textarea', [
+                ->add("description$suffix", TextareaType::class, [
                     'label' => 'costs-field-description',
                     'data' => $translated->description,
                     'required' => false,
@@ -260,24 +225,22 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 ]);
         }
         $builder
-            ->add('submit', 'submit')
-            ->add('remove', 'submit', [
+            ->add('submit', SubmitType::class)
+            ->add('remove', SubmitType::class, [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
                 'span' => 'hidden-xs',
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
-                    ]
+                ]
             ]);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
-                $errors = [];
                 $data = $form->getData();
-                // print_r($data);die($form->getClickedButton()->getName());
                 $errors = [];
                 foreach($data as $key => $val) {
                     list($field, $id) = explode('_', $key);
@@ -292,7 +255,6 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                     }
                 }
                 if($errors) {
-                    // print_r($errors);die;
                     if($form->get('remove')->isClicked()) {
                         Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
                     } else {
@@ -320,23 +282,15 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             'types' => Cost::types(),
             'languages' => $languages,
         ]);
-
     }
 
     /**
      * Project rewards translator
      */
-    public function rewardsTranslateAction($pid, $lang = null, Request $request) {
+    public function rewardsTranslateAction(Request $request, $pid, $lang = null) {
 
         $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
-
-        // $langs = Lang::listAll('name', false);
-        // $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
-        // if(!isset($languages[$lang])) {
-        //     Message::error(Text::get('translator-lang-not-found'));
-        //     return $this->redirect('/dashboard/project/' . $project->id . '/translate');
-        // }
 
         $languages = Lang::listAll('name', false);
 
@@ -347,13 +301,13 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             $rewards[$reward->id] = $reward;
             $translated = $reward->getLang($lang);
             $builder
-                ->add("reward$suffix", 'text', [
+                ->add("reward$suffix", TextType::class, [
                     'label' => 'rewards-field-individual_reward-reward',
                     'data' => $translated->reward,
                     'required' => false,
                     'attr' => ['help' => $reward->reward]
                 ])
-                ->add("description$suffix", 'markdown', [
+                ->add("description$suffix", MarkdownType::class, [
                     'label' => 'rewards-field-individual_reward-description',
                     'data' => $translated->description,
                     'required' => false,
@@ -370,13 +324,13 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             $rewards[$reward->id] = $reward;
             $translated = $reward->getLang($lang);
             $builder
-                ->add("reward$suffix", 'text', [
+                ->add("reward$suffix", TextType::class, [
                     'label' => 'rewards-field-social_reward-reward',
                     'data' => $translated->reward,
                     'required' => false,
                     'attr' => ['help' => $reward->reward]
                 ])
-                ->add("description$suffix", 'markdown', [
+                ->add("description$suffix", MarkdownType::class, [
                     'label' => 'rewards-field-social_reward-description',
                     'data' => $translated->description,
                     'required' => false,
@@ -389,24 +343,22 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 ]);
         }
         $builder
-            ->add('submit', 'submit')
-            ->add('remove', 'submit', [
+            ->add('submit', SubmitType::class)
+            ->add('remove', SubmitType::class, [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
                 'span' => 'hidden-xs',
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
-                    ]
+                ]
             ]);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
-                $errors = [];
                 $data = $form->getData();
-                // print_r($data);die($form->getClickedButton()->getName());
                 $errors = [];
                 foreach($data as $key => $val) {
                     list($field, $id) = explode('_', $key);
@@ -448,23 +400,15 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             'lang' => $lang,
             'languages' => $languages,
         ]);
-
     }
 
     /**
      * Project supports translator
      */
-    public function supportsTranslateAction($pid, $lang = null, Request $request) {
+    public function supportsTranslateAction(Request $request, $pid, $lang = null) {
 
         $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
-
-        // $langs = Lang::listAll('name', false);
-        // $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
-        // if(!isset($languages[$lang])) {
-        //     Message::error(Text::get('translator-lang-not-found'));
-        //     return $this->redirect('/dashboard/project/' . $project->id . '/translate');
-        // }
 
         $languages = Lang::listAll('name', false);
 
@@ -475,13 +419,13 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             $supports[$support->id] = $support;
             $translated = $support->getLang($lang);
             $builder
-                ->add("support$suffix", 'text', [
+                ->add("support$suffix", TextType::class, [
                     'label' => 'supports-field-support',
                     'data' => $translated->support,
                     'required' => false,
                     'attr' => ['help' => $support->support]
                 ])
-                ->add("description$suffix", 'textarea', [
+                ->add("description$suffix", TextareaType::class, [
                     'label' => 'supports-field-description',
                     'data' => $translated->description,
                     'required' => false,
@@ -489,22 +433,21 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 ]);
         }
         $builder
-            ->add('submit', 'submit')
-            ->add('remove', 'submit', [
+            ->add('submit', SubmitType::class)
+            ->add('remove', SubmitType::class, [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
                 'span' => 'hidden-xs',
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
-                    ]
+                ]
             ]);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
-                $errors = [];
                 $data = $form->getData();
                 $removeTranslation = $form->get('remove')->isClicked();
 
@@ -556,7 +499,6 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             'lang' => $lang,
             'languages' => $languages,
         ]);
-
     }
 
     /**
@@ -568,7 +510,9 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
         if($project instanceOf Response) return $project;
 
         $post = BlogPost::getBySlug($uid);
-        if(!$post instanceOf BlogPost) throw new ModelException("Post [$uid] not found for project [{$project->id}]");
+        if(!$post instanceOf BlogPost) {
+            throw new ModelException("Post [$uid] not found for project [{$project->id}]");
+        }
 
         $langs = Lang::listAll('name', false);
         $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
@@ -580,32 +524,28 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
         }
 
         $defaults = (array) $post->getLang($lang);
-        // Create the form
         $form = $this->createFormBuilder($defaults)
-            ->add('title', 'text', array(
+            ->add('title', TextType::class, array(
                 'label' => 'regular-title',
                 'required' => false,
                 'attr' => ['help' => $post->title],
             ))
-            ->add('text', 'markdown', array(
+            ->add('text', MarkdownType::class, array(
                 'label' => 'regular-text',
                 'required' => false,
                 'attr' => ['help' => $post->text, 'rows' => 10]
             ))
-            ->add('submit', 'submit', array(
-                // 'icon_class' => null
-            ))
-            ->add('remove', 'submit', [
+            ->add('submit', SubmitType::class, [])
+            ->add('remove', SubmitType::class, [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
                 'span' => 'hidden-xs',
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
-                    ]
+                ]
             ])
             ->getForm();
-
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -651,18 +591,17 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             'translated' => $post->getLangsAvailable(),
             'skip' => $project->lang,
             'exit_link' => '/dashboard/project/' . $project->id . '/updates/' . $uid
-            ]);
-
+            ]
+        );
     }
 
     /**
      * Project story translator
     */
-    public function storyTranslateAction($pid, $lang = null, Request $request) {
+    public function storyTranslateAction(Request $request, $pid, $lang = null) {
 
         $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
-
 
         $languages = Lang::listAll('name', false);
 
@@ -673,19 +612,25 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
 
         $defaults = (array) $story->getLang($lang);
 
-        // Create the form
-        $processor = $this->getModelForm('ProjectTranslateStory', $story, $defaults, ['lang' => $lang], $request);
+        $processor = $this->getModelForm(
+            ProjectTranslateStoryForm::class,
+            $story,
+            $defaults,
+            ['lang' => $lang],
+            $request,
+            ['csrf_protection' => false, 'attr' => ['class' => 'autoform hide-help']]
+        );
         $processor->createForm();
         $processor->getBuilder()
-            ->add('submit', 'submit')
-            ->add('remove', 'submit', [
+            ->add('submit', SubmitType::class)
+            ->add('remove', SubmitType::class, [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
                 'span' => 'hidden-xs',
                 'attr' => [
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
-                    ]
+                ]
             ]);
         $form = $processor->getForm();
         $form->handleRequest($request);
@@ -717,7 +662,6 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
             'step' => 'story',
             'lang' => $lang,
         ]);
-
     }
 
 }

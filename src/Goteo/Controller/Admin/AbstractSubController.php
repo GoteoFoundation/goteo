@@ -14,6 +14,7 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Core\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
@@ -21,7 +22,7 @@ use Goteo\Library\Text;
 use Goteo\Model\User;
 use Goteo\Core\Traits\LoggerTrait;
 
-abstract class AbstractSubController extends \Goteo\Core\Controller {
+abstract class AbstractSubController extends Controller {
     use LoggerTrait;
 
     protected $request;
@@ -39,7 +40,7 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
     * Overwrite on extended classes
     ***/
     // Roles users allowed to admin this module
-    static protected $allowed_roles = array('superadmin', 'admin', 'root');
+    static protected array $allowed_roles = array('superadmin', 'admin', 'root');
 
     /**
      * Some defaults
@@ -49,7 +50,6 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
         $this->node = $node;
         $this->user = $user;
     }
-
 
     public function setFilters(array $filters) {
         $this->filters = $filters;
@@ -106,15 +106,12 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
         return $filters;
     }
 
-    /**
-     * Returns the identificator for this controller
-     * @return MyControllerSubController becames mycontroller
-     */
     public static function getId() {
         $class = get_called_class();
         $a = explode('\\', $class);
         return strtolower(str_replace('SubController', '', end($a)));
     }
+
     /**
      * Returns the label for this controller
      * TODO: Text:: translation
@@ -124,6 +121,7 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
         if($action) return Text::get(static::$labels[$action]);
         return Text::get(static::$label);
     }
+
     /**
      * Returns the url for this controller
      * @param  string $action if label is specified returns the url for the action instead of the general one
@@ -136,7 +134,7 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
     }
 
     /**
-     * Returns if this class can be administred by the user in the node
+     * Returns if this class can be administered by the user in the node
      * Overwrite this function to more specific control
      */
     public static function isAllowed(User $user, $node) {
@@ -154,43 +152,31 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
         return false;
     }
 
-    /**
-     * Returns true if current node/channel is the master
-     * @return boolean [description]
-     */
-    public function isMasterNode() {
+    public function isMasterNode(): bool
+    {
         return Config::isMasterNode($this->node);
     }
 
     /**
      * Returns true if the user is a translator
-     * @return boolean [description]
      */
-    public function isTranslator() {
+    public function isTranslator(): bool
+    {
         return $this->user->hasRoleInNode($this->node, ['translator']);
     }
 
-    /**
-     * Returns true if the user is at least admin
-     * @return boolean [description]
-     */
-    public function isAdmin() {
+    public function isAdmin(): bool
+    {
         return $this->user->hasRoleInNode($this->node, ['admin', 'superadmin', 'root']);
     }
 
-    /**
-     * Returns true if the user is at least superadmin
-     * @return boolean [description]
-     */
-    public function isSuperAdmin() {
+    public function isSuperAdmin(): bool
+    {
         return $this->user->hasRoleInNode($this->node, ['superadmin', 'root']);
     }
 
-    /**
-     * Returns true if the user is at least root
-     * @return boolean [description]
-     */
-    public function isRoot() {
+    public function isRoot(): bool
+    {
         return $this->user->hasRoleInNode($this->node, ['root']);
     }
 
@@ -230,6 +216,7 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
         //return object
         return $this->request->request;
     }
+
     /**
      * Checks if a var exists in _POST global
      * @param  string  $var var to be checked
@@ -238,6 +225,7 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
     public function hasPost($var) {
         return $this->request->request->has($var);
     }
+
     /**
      * Get a var from the _SERVER global
      * if no var specified returns a Requests->server object
@@ -254,16 +242,13 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
 
     /**
      * Returns POST or the method used in the Request
-     * @return [type] [description]
      */
     public function getMethod() {
         return $this->request->getMethod();
     }
-    /**
-     * True if the method is POST
-     * @return boolean [description]
-     */
-    public function isPost() {
+
+    public function isPost(): bool
+    {
         return $this->request->getMethod() === 'POST';
     }
 
@@ -292,11 +277,8 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
 
     /**
      * Returns a response for a view with passed data
-     * @param  [type] $view [description]
-     * @param  array  $data [description]
-     * @return [type]       [description]
      */
-    public function response($view, $data = []) {
+    public function response($view, array $data = []) {
         return $this->viewResponse($view, $data);
     }
 }

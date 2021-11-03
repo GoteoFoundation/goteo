@@ -12,10 +12,10 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Application\Message;
 use Goteo\Application\Config;
-use Goteo\Library\Feed;
+use Goteo\Application\Message;
 use Goteo\Model\Template;
+use Goteo\Model\User;
 
 class TemplatesSubController extends AbstractSubController {
 
@@ -24,9 +24,7 @@ class TemplatesSubController extends AbstractSubController {
       'edit' => 'templates-lb-edit',
     );
 
-
     static protected $label = 'templates-lb';
-
 
     protected $filters = array (
       'id' => '',
@@ -34,17 +32,15 @@ class TemplatesSubController extends AbstractSubController {
       'name' => '',
     );
 
-
     /**
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node allowed here
         if( ! Config::isMasterNode($node) ) return false;
         return parent::isAllowed($user, $node);
     }
-
 
     public function editAction($id = null, $subaction = null, $filters=array()) {
         // si estamos editando una plantilla

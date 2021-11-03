@@ -13,14 +13,10 @@ namespace Goteo\Console\Command;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterInvestRefundEvent;
 use Goteo\Model\Invest;
-
 use Goteo\Model\Project;
-
 use Goteo\Payment\Payment;
-
 use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 use Omnipay\Common\Message\ResponseInterface;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -61,9 +57,7 @@ Processes refunds for Invest 12345
 
 
 EOT
-		)
-		;
-
+		);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
@@ -87,9 +81,6 @@ EOT
                     'projectStatus'                     => $any_project ? null : Project::STATUS_UNFUNDED,
                     'projects'                          => $project_id
                 ], null, 0, 10000);
-
-            // $output->writeln("update [$update] project[$project_id] invest[$invest_id] force[$force] any-project[$any_project]");
-
         }
 
         if (!$invests) {
@@ -171,6 +162,5 @@ EOT
 			$this->warning('Dummy execution. No write operations done');
 			$output->writeln('<comment>No write operations done. Please execute the command with the --update modifier to perform write operations</comment>');
 		}
-
 	}
 }

@@ -10,7 +10,7 @@
 
 namespace Goteo\Application\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Goteo\Model\Invest;
 
 class FilterInvestModifyEvent extends Event
@@ -33,6 +33,5 @@ class FilterInvestModifyEvent extends Event
     {
         return $this->new_invest;
     }
-
 
 }

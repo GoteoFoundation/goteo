@@ -10,32 +10,28 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-
 use Goteo\Application\App;
-use Goteo\Application\Session;
-use Goteo\Application\Cookie;
-use Goteo\Application\Config;
 use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
 use Goteo\Application\Event\FilterAuthEvent;
 use Goteo\Application\Message;
+use Goteo\Application\Session;
 use Goteo\Application\View;
-use Goteo\Model\Template;
-use Goteo\Model\Mail;
-
+use Goteo\Core\Controller;
 use Goteo\Library\OAuth\SocialAuth;
 use Goteo\Library\Text;
-
+use Goteo\Model\Mail;
+use Goteo\Model\Template;
 use Goteo\Model\User;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use function mybase64_decode;
 
 
-class AuthController extends \Goteo\Core\Controller {
+class AuthController extends Controller {
 
     public function __construct() {
-        // changing to a responsive theme here
         View::setTheme('responsive');
     }
 
@@ -45,7 +41,6 @@ class AuthController extends \Goteo\Core\Controller {
 
     /**
      * Checks if the user is logged or needs to redirect to SSL
-     * @return [type] [description]
      */
     protected static function checkSession(Request $request) {
 
@@ -62,8 +57,6 @@ class AuthController extends \Goteo\Core\Controller {
 
             return new RedirectResponse('https://' . $request->getHttpHost().$request->getBaseUrl().$request->getPathInfo().$qs);
         }
-
-        // Nothing to return if everything is ok
     }
 
     /**
@@ -102,11 +95,9 @@ class AuthController extends \Goteo\Core\Controller {
         if($result instanceOf Response) return $result;
 
         return $this->viewResponse('auth/login', ['return' => $request->query->get('return')]);
-
     }
 
     /**
-     * Cerrar sesión.
      * TODO: change to a event dispatcher
      */
     public function logoutAction(Request $request) {
@@ -114,8 +105,6 @@ class AuthController extends \Goteo\Core\Controller {
         if(empty($url) || strpos($url, '/logout') !== false) {
             $url = '/?lang=' . Session::get('lang');
         }
-        // $url = $request->getUri();
-        // Shadowing?
         $user = Session::getUser();
         if($shadowed_by = Session::get('shadowed_by')) {
             if($old_user = User::get($shadowed_by[0])) {
@@ -132,7 +121,6 @@ class AuthController extends \Goteo\Core\Controller {
         }
         return $this->redirect($url);
     }
-
 
     /**
      * Reusable static signup checker
@@ -157,7 +145,6 @@ class AuthController extends \Goteo\Core\Controller {
             if(!isset($vars['register_accept'])) {
                 $errors['register_accept'] = Text::get('error-register-accept');
             }
-            // print_r($vars);die;
 
             $user = new User();
             $user->userid = $vars['userid'];
@@ -169,13 +156,12 @@ class AuthController extends \Goteo\Core\Controller {
 
             $user->save($errors);
 
-            // Set user newsletter notifications preferences 
+            // Set user newsletter notifications preferences
             $newsletter_no_active=isset($vars['newsletter_accept']) ? 0 : 1;
 
             User::setPreferences($user, ['mailing' => $newsletter_no_active], $errors);
 
             if (empty($errors)) {
-
                 Message::info(Text::get('user-register-success'));
                 // no confirmation..., direct login
                 $user = User::get($user->id);
@@ -183,7 +169,6 @@ class AuthController extends \Goteo\Core\Controller {
                 //Redirect
                  //Everything ok, redirecting
                 return App::dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user))->getUserRedirect($request);
-
             }
             foreach ($errors as $field => $text) {
                 Message::error($text);
@@ -204,17 +189,13 @@ class AuthController extends \Goteo\Core\Controller {
         if($result instanceOf Response) return $result;
 
         return $this->viewResponse('auth/signup', $result);
-
     }
 
     public function passwordRecoveryAction($token = '', Request $request) {
-
-        $vars = array();
-
         // If the token is ok, login and redirect change password view
 
         if ($token) {
-            $token = \mybase64_decode($token);
+            $token = mybase64_decode($token);
             $parts = explode('¬', $token);
             if (count($parts) > 1) {
                 $query = User::query('SELECT id FROM user WHERE email = ? AND token = ?', array($parts[1], $token));
@@ -226,14 +207,9 @@ class AuthController extends \Goteo\Core\Controller {
                     Session::setUser($user, true);
                     return $this->redirect('/password-reset?' . $request->getQueryString());
                 }
-            }
-
-            else {
-
-                //$vars['error'] = Text::get('recover-token-incorrect');
+            } else {
                 Message::error(Text::get('recover-token-incorrect'));
                 return $this->redirect('/login?' . $request->getQueryString());
-
             }
         }
 
@@ -260,19 +236,15 @@ class AuthController extends \Goteo\Core\Controller {
                                     'email' => $email
                                 )
                             );
-                    }
-                    else {
+                    } else {
                         $vars['error'] .= implode("\n", $errors);
                     }
                 }
             }
 
-            //Application\Message::error($vars['error']);
             return $this->viewResponse(
                 'auth/partials/recover_modal_error',
-                array(
-                    'error' => $vars['error']
-                )
+                ['error' => $vars['error']]
             );
         }
         return $this->redirect('/login?' . $request->getQueryString());
@@ -288,8 +260,7 @@ class AuthController extends \Goteo\Core\Controller {
             } else {
                 $user = new User();
                 $user->id = Session::getUserId();
-                if($user->setPassword($password))
-                {    // Refresca la sesión.
+                if($user->setPassword($password)) {
                     $user = User::flush();
                     return $this->dispatch(AppEvents::RESET_PASSWORD, new FilterAuthEvent($user))->getUserRedirect($request);
                 }
@@ -309,7 +280,6 @@ class AuthController extends \Goteo\Core\Controller {
      */
     public function oauthAction($provider, Request $request) {
 
-        $errors = array();
         if ($provider) {
             if($request->query->has('return')) {
                 Session::store('jumpto', $request->query->get('return'));
@@ -375,8 +345,6 @@ class AuthController extends \Goteo\Core\Controller {
             if ($tokens[$oauth->provider]['secret'])
                 $oauth->tokens[$oauth->provider]['secret'] = $tokens[$oauth->provider]['secret'];
 
-            // print_r($tokens);print_r($oauth->tokens[$oauth->provider]);die;
-
             $user = new User();
             $user->userid = $userid;
             $user->email = $email;
@@ -414,8 +382,7 @@ class AuthController extends \Goteo\Core\Controller {
 
                         //Everything ok, redirecting
                         return $this->dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user, $provider))->getUserRedirect($request);
-                    }
-                    else {
+                    } else {
                         //si no: registrar errores
                         Message::error($oauth->last_error);
                         return $this->redirect('/login');
@@ -423,7 +390,7 @@ class AuthController extends \Goteo\Core\Controller {
                 } else {
                     // si tiene contraseña permitir vincular la cuenta,
                     // si no mensaje de error
-                    if($u->password) {
+                    if( $u->password) {
                         if($request->isMethod('post') && !$request->request->has('userid')) {
                             // A subscriber will register a message
                             $this->dispatch(AppEvents::LOGIN_FAILED, new FilterAuthEvent($u, $provider));
@@ -434,8 +401,7 @@ class AuthController extends \Goteo\Core\Controller {
                                             'user' => User::get($u->id)
                                         )
                         );
-                    }
-                    else {
+                    } else {
                         // no se puede vincular la cuenta por falta de contraseña
                         Message::error(Text::get('oauth-goteo-user-password-error'));
                         $this->dispatch(AppEvents::SIGNUP_FAILED, new FilterAuthEvent($u, $provider));
@@ -446,14 +412,10 @@ class AuthController extends \Goteo\Core\Controller {
                 //si el usuario se ha creado correctamente, login en goteo e importacion de datos
                 //y fuerza que pueda logear en caso de que no tenga contraseña o email sin confirmar
                 if ($user = $oauth->goteoLogin(true)) {
-                    //login!
                     Session::setUser($user, true);
 
-                    //Everything ok, redirecting
                     return $this->dispatch(AppEvents::SIGNUP_SUCCEEDED, new FilterAuthEvent($user, $provider))->getUserRedirect($request);
-                }
-                else {
-                    //si no: registrar errores
+                } else {
                     Message::error($oauth->last_error);
                     $this->dispatch(AppEvents::SIGNUP_FAILED, new FilterAuthEvent($user, $provider));
                 }
@@ -463,19 +425,16 @@ class AuthController extends \Goteo\Core\Controller {
                         Message::error($val);
                 }
             }
-        }
-        else {
+        } else {
             return $this->redirect('/login');
         }
 
-        return $this->viewResponse('auth/confirm',
-                        array(
-                            'errors' => $errors,
-                            'userid' => $userid,
-                            'email' => $email,
-                            'provider_email' => $provider_email,
-                            'oauth' => $oauth
-                        )
-        );
+        return $this->viewResponse('auth/confirm', [
+            'errors' => $errors,
+            'userid' => $userid,
+            'email' => $email,
+            'provider_email' => $provider_email,
+            'oauth' => $oauth
+        ]);
     }
 }

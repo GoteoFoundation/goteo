@@ -10,33 +10,28 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-
+use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Session;
-use Goteo\Application\Config;
 use Goteo\Application\View;
-use Goteo\Model\Project;
-use Goteo\Model\Invest;
-use Goteo\Model\Message as Comment;
-use Goteo\Model\User;
-use Goteo\Model\Mail;
+use Goteo\Core\Controller;
 use Goteo\Library\Text;
+use Goteo\Model\Invest;
+use Goteo\Model\Mail;
+use Goteo\Model\Message as Comment;
+use Goteo\Model\Project;
+use Goteo\Model\User;
 use Goteo\Model\User\Interest;
-use Goteo\Model\Page;
-use Goteo\Model\Matcher;
-use Goteo\Application\Message;
+use Symfony\Component\HttpFoundation\Request;
 
-class DashboardController extends \Goteo\Core\Controller {
+class DashboardController extends Controller {
 
     public function __construct() {
-        // changing to a responsive theme here
         View::setTheme('responsive');
         $this->user = Session::getUser();
-        if(!$this->user) {
+        if (!$this->user) {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
-
     }
 
     public static function createSidebar($section, $zone = '') {
@@ -64,10 +59,9 @@ class DashboardController extends \Goteo\Core\Controller {
             'section' => $section,
             'total_messages' => $total_messages
         ]);
-
     }
 
-    public function activityAction(Request $request) {
+    public function activityAction() {
         $user = $this->user;
 
         self::createSidebar('activity', 'activity');
@@ -77,7 +71,7 @@ class DashboardController extends \Goteo\Core\Controller {
         $invested_total = User::invested($user->id, false, 0, 0, true);
         //proyectos que coinciden con mis intereses
         $favourite = Project::favouriteCategories($user->id, 0, 3);
-        if($favourite) {
+        if ($favourite) {
             $total_fav = Project::favouriteCategories($user->id, 0, 0, true);
         } else {
             $favourite = Project::published('popular', null, 0, 3);
@@ -86,10 +80,8 @@ class DashboardController extends \Goteo\Core\Controller {
 
         $interests = Interest::getAll();
 
-        // $page = Page::get('dashboard');
         return $this->viewResponse('dashboard/activity', [
             'section' => 'activity',
-            // 'message' => str_replace('%USER_NAME%', $user->name, $page->parseContent()),
             'invested' => $invested,
             'invested_total' => $invested_total,
             'interests' => $interests,
@@ -127,9 +119,7 @@ class DashboardController extends \Goteo\Core\Controller {
 
         $limit = 10;
         $offset = $request->query->get('pag') * $limit;
-
         $messages = Comment::getUserThreads($this->user, [], $offset, $limit);
-        // print_r($messages[0]->getRecipients());
         $total = Comment::getUserThreads($this->user, [], 0, 0, true);
 
         self::createSidebar('activity', 'messages');
@@ -163,10 +153,7 @@ class DashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
-    /**
-     * Virtual wallet
-     */
-    public function walletAction(Request $request)
+    public function walletAction()
     {
         if(!Config::get('payments.pool.active')) {
             throw new \RuntimeException("Pool payment is not active!");
@@ -197,9 +184,7 @@ class DashboardController extends \Goteo\Core\Controller {
             'popular_projects' => $popular_projects,
             'section' => 'wallet',
             'limit' => 6
-             ]
-        );
-
+        ]);
     }
 
 }

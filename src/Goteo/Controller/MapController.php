@@ -10,96 +10,78 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Util\Map\MapOSM;
+use Exception;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\View;
-use Goteo\Application\Exception;
-
-use Goteo\Model\Node;
-use Goteo\Model\Matcher;
-use Goteo\Model\Project;
-use Goteo\Model\Project\ProjectLocation;
-use Goteo\Model\Call;
-use Goteo\Model\Workshop;
+use Goteo\Core\Controller;
 use Goteo\Model\Contract\BaseDocument;
-
+use Goteo\Model\Matcher;
+use Goteo\Model\Node;
+use Goteo\Util\Map\MapOSM;
 use Symfony\Component\HttpFoundation\Request;
 
-class MapController extends \Goteo\Core\Controller {
+class MapController extends Controller {
 
-  public function __construct() {
-    $this->dbReplica(true);
-    $this->dbCache(true);
-    View::setTheme('responsive');
-  }
+    public function __construct() {
+        $this->dbReplica(true);
+        $this->dbCache(true);
+        View::setTheme('responsive');
+    }
 
 	public function mapAction(Request $request) {
+        $cid = strip_tags($request->get('channel'));
+        $geojson = strip_tags($request->get('geojson'));
+        $map = new MapOSM('100%');
 
-    $cid = strip_tags($request->get('channel'));
-    $mid = strip_tags($request->get('matcher'));
-    $geojson = strip_tags($request->get('geojson'));
+        try {
+            $geojson_document = BaseDocument::getByName($geojson);
+            $map->setGeoJSON($geojson_document->getLink());
+        } catch(Exception $e) {}
 
-    $map = new MapOSM('100%');
+        if ($cid) {
+            try {
+                $channel = Node::get($cid);
+            } catch (ModelNotFoundException $e) {
+                Message::error($e->getMessage());
+            }
+            $map->setChannel($cid);
+        }
 
-    try {
-      $geojson_document = BaseDocument::getByName($geojson);
-      $map->setGeoJSON($geojson_document->getLink());
-    } catch(\Exception $e) {}
-
-    if ($cid) {
-      try {
-        $channel = Node::get($cid);
-      } catch (ModelNotFoundException $e) {
-        Message::error($e->getMessage());
-      }
-      $map->setChannel($cid);
-    }
-
-    if ($mid) {
-      try {
-        $matcher = Matcher::get($mid);
-        $map->setMatcher($mid);
-      } catch( ModelNotFoundException $e) {
-        Message::error($e->getMessage());
-      }
-    }
-
-    return $this->viewResponse('map/map_canvas', ['map'  => $map]);
+        return $this->viewResponse('map/map_canvas', ['map'  => $map]);
   }
 
-  public function exactMapAction($zoom, $latlng, Request $request) {
+    public function exactMapAction($zoom, $latlng, Request $request) {
 
-    $cid = strip_tags($request->get('channel'));
-    $mid = strip_tags($request->get('matcher'));
-    $geojson = strip_tags($request->get('geojson'));
+        $cid = strip_tags($request->get('channel'));
+        $geojson = strip_tags($request->get('geojson'));
+        $map = new MapOSM('100%');
+        $map->setZoom($zoom);
+        $map->setCenter(explode(',',$latlng));
 
-    $map = new MapOSM('100%');
-    $map->setZoom($zoom);
-    $map->setCenter(explode(',',$latlng));
+        try {
+            $geojson_document = BaseDocument::getByName($geojson);
+            $map->setGeoJSON($geojson_document->getLink());
+        } catch(Exception $e) {}
 
-    try {
-      $geojson_document = BaseDocument::getByName($geojson);
-      $map->setGeoJSON($geojson_document->getLink());
-    } catch(\Exception $e) {}
+        if ($cid) {
+            try {
+                $channel = Node::get($cid);
+            } catch (ModelNotFoundException $e) {
+                Message::error($e->getMessage());
+            }
+            $map->setChannel($cid);
+        }
 
-    if ($cid) {
-      try {
-        $channel = Node::get($cid);
-      } catch (ModelNotFoundException $e) {
-        Message::error($e->getMessage());
-      }
-      $map->setChannel($cid);
-    }
+        if ($mid) {
+            try {
+                $matcher = Matcher::get($mid);
+                $map->setMatcher($mid);
+            } catch( ModelNotFoundException $e) {
+                Message::error($e->getMessage());
+            }
+        }
 
-    if ($mid) {
-      try {
-        $matcher = Matcher::get($mid);
-        $map->setMatcher($mid);
-      } catch( ModelNotFoundException $e) {
-        Message::error($e->getMessage());
-      }
-    }
-
-    return $this->viewResponse('map/map_canvas', ['map'  => $map]);
+        return $this->viewResponse('map/map_canvas', ['map'  => $map]);
   }
 
 }

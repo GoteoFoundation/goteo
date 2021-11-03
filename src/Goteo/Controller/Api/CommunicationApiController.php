@@ -20,7 +20,6 @@ use Goteo\Model\Mail;
 class CommunicationApiController extends AbstractApiController {
 
     protected function validateCommunication() {
-
         if(!$this->user)
             throw new ControllerAccessDeniedException();
 
@@ -36,16 +35,16 @@ class CommunicationApiController extends AbstractApiController {
         // if(!$this->user || !$this->user->hasPerm('admin-module-communication'))
         //     throw new ControllerAccessDeniedException();
 
-        $result = $this->genericFileUpload($request, 'file'); // 'file' is the expected form input name in the post object
+        $result = $this->genericFileUpload($request); // 'file' is the expected form input name in the post object
         return $this->jsonResponse($result);
     }
 
-    public function successAction($id, Request $request) {
+    public function successAction($id) {
         $communication = Communication::get($id);
         return $this->jsonResponse([ 'id' => $id , 'success' => $communication->getStatus()]);
     }
 
-    public function mailStatusAction($id, $mail, Request $request) {
+    public function mailStatusAction($mail) {
         $sender = Mail::get($mail);
 
         $result = [
@@ -57,8 +56,8 @@ class CommunicationApiController extends AbstractApiController {
             'status' => $sender->getStatus(),
             'percent' => (int) $sender->getStatusObject()->percent
         ];
+
         return $this->jsonResponse($result);
     }
 
 }
-

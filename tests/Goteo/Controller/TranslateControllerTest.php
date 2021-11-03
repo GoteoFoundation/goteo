@@ -7,8 +7,9 @@ use Goteo\Application\Session;
 use Goteo\Model\User;
 use Goteo\Controller\TranslateController;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use PHPUnit\Framework\TestCase;
 
-class TranslateControllerTest extends \PHPUnit\Framework\TestCase {
+class TranslateControllerTest extends TestCase {
 
     public function testInstance(): TranslateController
     {

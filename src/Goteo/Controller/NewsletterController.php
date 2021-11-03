@@ -13,33 +13,22 @@ namespace Goteo\Controller;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\View;
+use Goteo\Core\Controller;
 use Goteo\Core\Model;
 use Goteo\Model\Template;
 use Goteo\Model\Communication;
-use Symfony\Component\HttpFoundation\Request;
 
-class NewsletterController extends \Goteo\Core\Controller {
+class NewsletterController extends Controller {
 
 	public function __construct() {
-        // Cache & replica read activated in this controller
         $this->dbReplica(true);
         $this->dbCache(true);
         View::setTheme('responsive');
 	}
 
 	// last newsletter public view
-	public function indexAction($id = null, Request $request) {
+	public function indexAction($id = null) {
 		$lang = Lang::current('id');
-
-
-		// $sql = "SELECT content FROM mail WHERE
-        //             " . ($id ? ' id=' . (int) $id . ' AND' : '') . "
-        //             email = 'any'
-        //             AND template = " . Template::NEWSLETTER . "
-        //         ORDER BY
-        //             lang = '$lang' DESC,
-        //             date DESC
-        //         LIMIT 1";
 		$sql = "SELECT * FROM mail WHERE
                     " . ($id ? ' id=' . (int) $id . ' AND' : '') . "
                     email = 'any'
@@ -48,20 +37,19 @@ class NewsletterController extends \Goteo\Core\Controller {
                     lang = '$lang' DESC,
                     date DESC
 				LIMIT 1";
-				
+
 		if (!($query = Model::query($sql)) || $query->rowCount() == 0) {
 			$sql = "SELECT * FROM mail WHERE email = 'any' AND template = " . Template::NEWSLETTER . " ORDER BY date DESC LIMIT 1";
 		}
 		if (($query = Model::query($sql)) && $query->rowCount() > 0) {
-
 			if ($mail = $query->fetch()) {
 				$extra_vars['content'] = $mail['content'];
 				$extra_vars['subject'] = $mail['subject'];
 				$extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $mail['to'];
 				$extra_vars['lang'] = $lang;
-				
+
 				if (isset($mail['communication_id'])) {
-					$communication = Communication::get($mail['communication_id']); 
+					$communication = Communication::get($mail['communication_id']);
 					$extra_vars['type'] = $communication->type;
 					if ($communication->header) $extra_vars['image'] = $communication->getImage()->getLink(1920,335,true, true);
 					$extra_vars['promotes'] = $communication->getCommunicationProjects($communication->id);
@@ -71,7 +59,6 @@ class NewsletterController extends \Goteo\Core\Controller {
 			}
 		}
 		throw new ModelNotFoundException('Newsletter not found!');
-
 	}
 
 }

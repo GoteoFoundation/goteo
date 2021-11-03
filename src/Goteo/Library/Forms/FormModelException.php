@@ -10,11 +10,9 @@
 
 namespace Goteo\Library\Forms;
 
-/**
- * ModelException.
- *
- */
-class FormModelException extends \RuntimeException
+use RuntimeException;
+
+class FormModelException extends RuntimeException
 {
 
 }

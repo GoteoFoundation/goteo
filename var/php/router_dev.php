@@ -1,7 +1,7 @@
 <?php
 //router.php
 // Default index file
-if(!defined('DIRECTORY_INDEX')) define('DIRECTORY_INDEX', 'index_dev.php');
+if(!defined('DIRECTORY_INDEX')) define('DIRECTORY_INDEX', 'index.php');
 
 if (call_user_func(function() {
     $f = $_SERVER['SCRIPT_FILENAME'];
