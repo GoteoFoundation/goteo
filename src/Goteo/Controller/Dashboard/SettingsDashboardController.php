@@ -36,9 +36,8 @@ use Goteo\Library\Forms\FormModelException;
 use Goteo\Controller\DashboardController;
 use Goteo\Model\Contract;
 
-class SettingsDashboardController extends DashboardController {
-    protected $user;
-
+class SettingsDashboardController extends DashboardController
+{
     public function __construct() {
         parent::__construct();
         $this->contextVars([
@@ -111,6 +110,7 @@ class SettingsDashboardController extends DashboardController {
                 Message::error($e->getMessage());
             }
         }
+
         return $this->viewResponse('dashboard/settings/profile', [
             'form' => $form->createView(),
             'languages' => Lang::listAll('name', false),
@@ -181,6 +181,7 @@ class SettingsDashboardController extends DashboardController {
                 }
             }
         }
+
         return $this->viewResponse('dashboard/settings/translate', [
             'form' => $form->createView(),
             'languages' => $languages,
@@ -193,24 +194,29 @@ class SettingsDashboardController extends DashboardController {
     {
         $this->createSettingsSidebar('preferences');
 
-        $defaults = (array)User::getPreferences($this->user);
+        $userPreferences = (array)User::getPreferences($this->user);
+        $preferredComLanguage = $this->user->lang ?: "ca";
+        $preferredCurrency = "EUR";
         $bools = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips'];
+
         foreach($bools as $b) {
-            $defaults[$b] = (bool) $defaults[$b];
+            $userPreferences[$b] = (bool) $userPreferences[$b];
         }
 
-        // Create the form
-        $builder = $this->createFormBuilder($defaults)
+        $languages = Lang::listAll();
+        $builder = $this->createFormBuilder($userPreferences)
             ->add('comlang', ChoiceType::class, [
                 'label' => 'user-preferences-comlang',
-                'choices' => Lang::listAll()
+                'choices' => Lang::listAll(),
+                'data' => $languages[$preferredComLanguage]
             ]);
 
         $currencies = Currency::listAll('name');
         if(count($currencies) > 1) {
             $builder->add('currency', ChoiceType::class, [
                 'label' => 'user-preferences-currency',
-                'choices' => $currencies
+                'choices' => $currencies,
+                'data' => $currencies[$preferredCurrency]
             ]);
         }
 
@@ -240,6 +246,7 @@ class SettingsDashboardController extends DashboardController {
                 }
             }
         }
+
         return $this->viewResponse('dashboard/settings/preferences', [
             'form' => $form->createView()
         ]);
