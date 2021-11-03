@@ -52,6 +52,15 @@ Server requirements
 >
 > Alternatively, use  `grunt build:devel` for javascript/css debugging and point the webserver to `goteo/dist/index_dev.php`
 
+Pre-commit checks
+-------------
+
+1. Ensure the pre-commit app is installed: `pip install pre-commit`
+2. Install the pre-commit checks: `pre-commit install`
+
+* When adding new pre-commit checks. Run all checks for all files: `pre-commit run --all-files`.
+* To run manually phpcbf on one file, run: `phpcbf --standard=PSR12 /path/to/file`
+
 Goteo configuration
 -------------
 

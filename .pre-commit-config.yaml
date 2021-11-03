@@ -1,0 +1,12 @@
+repos:
+  - repo: https://github.com/digitalpulp/pre-commit-php.git
+    rev: 1.4.0
+    hooks:
+      - id: php-lint-all
+      - id: php-unit
+      - id: php-cs
+        files: \.(php)$
+        args: [ --config-set show_warnings 0 --standard=PSR12 -p ]
+      - id: php-cbf
+        files: \.(php)$
+        args: [ "--standard=PSR12" ]
