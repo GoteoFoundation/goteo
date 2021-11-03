@@ -11,6 +11,7 @@
 namespace Goteo\Controller\Dashboard;
 
 use Goteo\Library\Forms\Model\UserProfileForm;
+use Goteo\Library\Forms\Model\UserPreferencesForm;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\EmailType;
@@ -192,68 +193,23 @@ class SettingsDashboardController extends DashboardController
         ]);
     }
 
-    private function getLanguagesChoices(): array
-    {
-        return array_flip(Lang::listAll());
-    }
-
-    private function getCurrenciesChoices(): array
-    {
-        return array_flip(Currency::listAll('name'));
-    }
 
     public function preferencesAction(Request $request)
     {
         $this->createSettingsSidebar('preferences');
 
         $userPreferences = (array)User::getPreferences($this->user);
-        $preferredComLanguage = $userPreferences[User::PREFERENCE_COMMUNICATION_LANGUAGE];
-        $preferredCurrency = $userPreferences[User::PREFERENCE_CURRENCY];
-
-        foreach(User::BOOLEAN_PREFERENCES as $booleanPreference) {
-            $userPreferences[$booleanPreference] = (bool) $userPreferences[$booleanPreference];
-        }
-
-        $builder = $this->createFormBuilder($userPreferences)
-            ->add(User::PREFERENCE_COMMUNICATION_LANGUAGE, ChoiceType::class, [
-                'label' => 'user-preferences-comlang',
-                'choices' => $this->getLanguagesChoices(),
-                'data' => $preferredComLanguage
-            ]);
-
-        $currencies = $this->getCurrenciesChoices();
-        if(count($currencies) > 1) {
-            $builder->add(User::PREFERENCE_CURRENCY, ChoiceType::class, [
-                'label' => 'user-preferences-currency',
-                'choices' => $currencies,
-                'data' => $preferredCurrency
-            ]);
-        }
-
-        foreach(User::BOOLEAN_PREFERENCES as $booleanPreference) {
-            $builder
-                ->add($booleanPreference, BooleanType::class, [
-                    'label' => 'user-preferences-' . $booleanPreference,
-                    'color' => 'cyan',
-                    'required' => false
-                ]);
-        }
-
-        $form = $builder->add('submit', SubmitType::class, [])
-            ->getForm();
+        $processor = $this->getModelForm(UserPreferencesForm::class, $this->user, $userPreferences, [], $request);
+        $processor->createForm();
+        $form = $processor->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            if($form->isValid()) {
-                $data = $form->getData();
-
-                if (User::setPreferences($this->user, $data, $errors)) {
-                    Session::store('currency', $data['currency']);
-                    Message::info(Text::get('user-prefer-saved'));
-                    return $this->redirect('/dashboard/settings/preferences');
-                } else {
-                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
-                }
+            try {
+                $processor->save($form, true);
+                return $this->redirect('/dashboard/settings/preferences');
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
             }
         }
 
