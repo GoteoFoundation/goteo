@@ -45,7 +45,6 @@ EOT
         if ($input->getOption('fail')) {
            $output->writeln('<comment>Throwing some errors intentionally...</comment>');
            $this->error('Simulated error log line');
-
            throw new Exception('This is a simulated failed execution!');
         } else {
             $output->writeln("<comment>Please run this command with options. Use --help for more info</comment>");

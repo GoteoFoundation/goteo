@@ -1749,7 +1749,6 @@ class User extends Model {
             $mail->send($errors);
             unset($mail);
 
-
             return true;
         }
         return false;

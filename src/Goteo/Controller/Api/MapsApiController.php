@@ -80,7 +80,8 @@ class MapsApiController extends AbstractApiController {
         ]);
     }
 
-    public function matcherAction($mid = null, Request $request) {       
+    public function matcherAction($mid = null) {
+
         $list_projects = [];
 
         if ($mid) {
@@ -120,8 +121,6 @@ class MapsApiController extends AbstractApiController {
         return $this->jsonResponse([
             'projects' => $list_projects
         ]);
-
-                  
     }
 
 }
