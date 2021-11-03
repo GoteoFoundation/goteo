@@ -10,15 +10,12 @@
 
 namespace Goteo\Console\Command;
 
+use Goteo\Application\Config;
+use Goteo\Application\Currency;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterProjectEvent;
-use Goteo\Application\Currency;
-use Goteo\Application\Config;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
-
-use Symfony\Component\Console\Input\ArrayInput;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -61,9 +58,7 @@ Says if a project will change status 1 day before real end
 <info>./console endround --predict 1 --update</info>
 
 EOT
-		)
-		;
-
+		);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
@@ -99,8 +94,6 @@ EOT
                 }
             }
         }
-
-        // print_r($projects->days_active);die(date("Y-m-d H:i\n"));
 
 		if (!$projects) {
 			$this->info("No projects found");
@@ -175,35 +168,6 @@ EOT
                         } else {
                             $this->error('Subcommand failed', ['command' => $process->getCommandLine()]);
                         }
-
-                        //
-                        // NOT USING SUB-COMMAND CALLING BECAUSE EVENTS ARE NOT FIRED
-                        //
-                        // $command = $this->getApplication()->find('refund');
-
-                        // // Changes the name of the logger:
-                        // // $command->addLogger(new \Monolog\Logger('refund', $this->getLogger()->getHandlers(), $this->getLogger()->getProcessors()), 'refund');
-                        // // lOG UNDER THE SAME NAME
-                        // $command->addLogger($this->getLogger(), 'refund');
-
-                        // $arguments = array(
-                        //     'command'   => 'refund',
-                        //     '--project' => $project->id,
-                        // );
-                        // if($update) {
-                        //     $arguments['--update']  = true;
-                        // }
-                        // if($output->isVerbose()) {
-                        //     $arguments['--verbose'] = true;
-                        // }
-
-                        // $returnCode = $command->run(new ArrayInput($arguments), $output);
-                        // if($returnCode == 0) {
-                        //     $this->notice('Subcommand processed successfully', $arguments);
-                        // }
-                        // else {
-                        //     $this->error('Subcommand failed', $arguments);
-                        // }
                     }
                     $return_code = 2;
                 } else {
@@ -234,12 +198,10 @@ EOT
 							// dispatch passing event, will generate a feed entry if needed
 							$project = $this->dispatch(ConsoleEvents::PROJECT_ROUND1, new FilterProjectEvent($project))->getProject();
 						}
-
 					} else {
 						// este caso es lo normal estando en segunda ronda
 						$this->debug('Project in second round, still active', [$project, 'project_days_round1' => $project->days_round1, 'project_days_round2' => $project->days_round2, 'project_percent' => $percent]);
 					}
-
 				}
 			}
 

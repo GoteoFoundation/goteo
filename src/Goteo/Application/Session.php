@@ -10,9 +10,9 @@
 
 namespace Goteo\Application;
 
-use Goteo\Application\App;
+use Goteo\Controller\AdminController;
 use Goteo\Model\User;
-use Goteo\Library\Text;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
@@ -31,9 +31,8 @@ class Session {
     static protected $sidebar_menu = [];
 
     /**
-     * Initializes session managem with Symfony Request object
+     * Initializes session management with Symfony Request object
      * TODO: remove request as is not needed
-     * @return [type] [description]
      */
     static public function factory(Request $request = null) {
         if($request) {
@@ -46,17 +45,13 @@ class Session {
         }
     }
 
-    /**
-     * Returns session object
-     */
     static public function getSession() {
         self::factory();
         return self::$session;
     }
 
     /**
-     * Set the session time expirity time
-     * @param [type] $time seconds
+     * Set the session expiry time
      */
     static public function setSessionExpires($time) {
         self::$session_expire_time = (int) $time;
@@ -69,46 +64,30 @@ class Session {
     static public function setStartTime($start_time) {
         self::$start_time = (int) $start_time;
     }
-    /**
-     * Get the session expirity time
-     * @return [type] [description]
-     */
+
     static public function getSessionExpires() {
         return self::$session_expire_time;
     }
-    /**
-     * Gets the start time (when start function has been called)
-     * @return [type] [description]
-     */
+
     static public function getStartTime() {
         return self::$start_time ? self::$start_time : microtime(true);
     }
-    /**
-     * Gets the time when the session will expire
-     * @return [type] [description]
-     */
+
     static public function expiresIn() {
         return self::getStartTime() + self::getSessionExpires() - (int)self::get('init_time');
     }
+
     /**
-     * Renew the init_time to extend the expire time of the current session
-     * @return [type] [description]
+     * Renew the init_time to extend the expiry time of the current session
      */
     static public function renew() {
         self::store('init_time', self::getStartTime());
     }
 
     /**
-     * Starts session
      * @param  string $name [description]
-     * @return [type]       [description]
      */
     static public function start($name = 'Goteo', $session_time = null) {
-     /*   global $_SESSION;
-        // Cli compatibility
-        if (PHP_SAPI === 'cli') {
-            $_SESSION = array();
-        }*/
         if($session_time) {
             self::setSessionExpires($session_time);
         }
@@ -120,10 +99,9 @@ class Session {
             // Fixes session cookie time life
             // TODO: To be removed? only make it in user personal changes(password)
             // self::getSession()->migrate(false, self::getSessionExpires());
-        } catch(\RuntimeException $e) {
+        } catch(RuntimeException $e) {
             throw new Config\ConfigException($e->getMessage());
         }
-        // print_r($_SESSION);die;
         self::setStartTime(microtime(true));
 
         if(!self::exists('init_time')) {
@@ -153,20 +131,7 @@ class Session {
         return $id;
     }
 
-    /**
-     * Expires session
-     * @return [type] [description]
-     */
     static public function destroy($throw_callback = true) {
-    /*    global $_SESSION;
-        if (PHP_SAPI === 'cli') {
-            $_SESSION = array();
-            unset($_SESSION);
-        }
-        else {
-            self::getSession()->invalidate();
-        }
-    */
         self::getSession()->invalidate();
         $callback = self::$triggers['session_destroyed'];
         if($throw_callback && is_callable($callback)) {
@@ -176,9 +141,6 @@ class Session {
 
     /**
      * Stores some value in session
-     * @param  [type] $key   [description]
-     * @param  [type] $value [description]
-     * @return [type]        [description]
      */
     static public function store($key, $value) {
         // Compatibilize with legacy sessions
@@ -190,8 +152,6 @@ class Session {
 
     /**
      * Retrieve some value in session
-     * @param  [type] $key [description]
-     * @return [type]      [description]
      */
     static public function get($key, $default = null) {
         return self::getSession()->get($key, $default);
@@ -199,8 +159,6 @@ class Session {
 
     /**
      * Retrieve all values in session
-     * @param  [type] $key [description]
-     * @return [type]      [description]
      */
     static public function getAll() {
         return self::getSession()->all();
@@ -208,8 +166,6 @@ class Session {
 
     /**
      * Retrieve some value in session and deletes it afterwards
-     * @param  [type] $key [description]
-     * @return [type]      [description]
      */
     static public function getAndDel($key) {
         return self::getSession()->remove($key);
@@ -217,8 +173,6 @@ class Session {
 
     /**
      * Delete some value in session
-     * @param  [type] $key [description]
-     * @return [type]      [description]
      */
     static public function del($key) {
         self::getSession()->remove($key);
@@ -227,8 +181,6 @@ class Session {
 
     /**
      * Check if a value exists in session
-     * @param  [type] $key [description]
-     * @return [type]      [description]
      */
     static public function exists($key) {
         return self::getSession()->has($key);
@@ -236,18 +188,15 @@ class Session {
 
     /**
      * Callback to execute when session expires automatically
-     * @param  [type] $callback [description]
-     * @return [type]           [description]
      */
     static public function onSessionExpires($callback) {
         if(is_callable($callback)) {
             self::$triggers['session_expires'] = $callback;
         }
     }
+
     /**
      * Callback to execute when the session is destroyed manually
-     * @param  [type] $callback [description]
-     * @return [type]           [description]
      */
     static public function onSessionDestroyed($callback) {
         if(is_callable($callback)) {
@@ -260,37 +209,25 @@ class Session {
      * @param User $user Object user to store in session
      * @param boolean $full_storage sets a cookie to remember user and other sessions vars
      */
-    static public function setUser(User $user, $full_storage = false) {
-        if(self::store('user', $user)) {
-            if($full_storage) {
-                // Username remembering cookie
+    static public function setUser(User $user, bool $full_storage = false) {
+        if (self::store('user', $user)) {
+            if ($full_storage) {
                 Cookie::store('goteo_user', $user->id);
-                // if (!empty($user->lang)) {
-                //     self::store('lang', $user->lang);
-                // }
             }
             return $user;
         }
         return false;
     }
 
-    /**
-     * Checks if the user is logged
-     *
-     * @return boolean
-     */
-    static public function isLogged () {
+    static public function isLogged (): bool
+    {
         return (self::get('user') instanceof User);
     }
 
-    /**
-     * Checks if the user is an admin
-     *
-     * @return boolean
-     */
-    static public function isAdmin () {
+    static public function isAdmin (): bool
+    {
         if(static::isLogged()) {
-            return \Goteo\Controller\AdminController::isAllowed(static::getUser());
+            return AdminController::isAllowed(static::getUser());
         }
         return false;
     }
@@ -300,7 +237,7 @@ class Session {
         if(empty($node)) $node = Config::get('current_node');
         if(empty($user)) $user = static::getUser();
         if(static::isLogged()) {
-            if($class = \Goteo\Controller\AdminController::getSubController($subcontroller)) {
+            if($class = AdminController::getSubController($subcontroller)) {
                 if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($class))) {
                     return $class::isAllowed($user);
                 }
@@ -321,8 +258,6 @@ class Session {
 
     /**
      * Returns user object if logged
-     *
-     * @return boolean
      */
     static public function getUser () {
         return (self::isLogged()) ? self::get('user') : null;

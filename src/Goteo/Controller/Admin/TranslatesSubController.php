@@ -12,13 +12,12 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Feed,
-    Goteo\Model\Mail,
-	Goteo\Model\Template,
-    Goteo\Application\Message,
-    Goteo\Application\Session,
-	Goteo\Application\Config,
-    Goteo\Model;
+use Goteo\Application\Message;
+use Goteo\Library\Feed;
+use Goteo\Model;
+use Goteo\Model\Mail;
+use Goteo\Model\Template;
+use Goteo\Model\User;
 
 class TranslatesSubController extends AbstractSubController {
 
@@ -29,9 +28,7 @@ class TranslatesSubController extends AbstractSubController {
       'translate' => 'translates-lb-translate',
     );
 
-
     static protected $label = 'translates-lb';
-
 
     protected $filters = array (
       'owner' => '',
@@ -42,7 +39,7 @@ class TranslatesSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node and superadmins allowed here
         if( !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);
@@ -122,7 +119,7 @@ class TranslatesSubController extends AbstractSubController {
                 // la id del usuario llega por get
                 $user = $this->getGet('user');
                 if (!empty($user)) {
-                    $userData = Model\User::get($user);
+                    $userData = User::get($user);
 
                     $assignation = new Model\User\Translate(array(
                         'item' => $project->id,
@@ -227,7 +224,7 @@ class TranslatesSubController extends AbstractSubController {
                     // Informar al autor de que la traduccion está habilitada
 
                     //  idioma de preferencia
-                    $comlang = Model\User::getPreferences($project->user)->comlang;
+                    $comlang = User::getPreferences($project->user)->comlang;
 
                     // Obtenemos la plantilla para asunto y contenido
                     $template = Template::get(Template::READY_FOR_TRANSLATING, $comlang);
@@ -257,7 +254,7 @@ class TranslatesSubController extends AbstractSubController {
 
 
                 $project->translators = Model\User\Translate::translators($id);
-                $translators = Model\User::getList(array('role'=>'translator'));
+                $translators = User::getList(array('role'=>'translator'));
                 // añadimos al dueño del proyecto en el array de traductores
                 array_unshift($translators, $project->user);
 
@@ -300,8 +297,8 @@ class TranslatesSubController extends AbstractSubController {
         }
 
         $projects = Model\Project::getTranslates($filters, $node);
-        $owners = Model\User::getOwners();
-        $translators = Model\User::getList(array('role'=>'translator'));
+        $owners = User::getOwners();
+        $translators = User::getList(array('role'=>'translator'));
 
         return array(
                 'folder' => 'translates',

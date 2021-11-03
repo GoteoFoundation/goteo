@@ -55,7 +55,6 @@ $routes->addCollection($pool_routes);
 
 
 if(Config::get('donate.landing')) {
-    // Donate landing
     $routes->add('donate-landing', new Route(
         '/donate',
         array('_controller' => 'Goteo\Controller\DonateController::donateLandingAction')
@@ -63,13 +62,11 @@ if(Config::get('donate.landing')) {
 }
 
 if(Config::get('donate.dashboard')) {
-    // Donate
     $donate_routes = include __DIR__ . '/Routes/donate_routes.php';
     $donate_routes->addPrefix('/donate');
     $routes->addCollection($donate_routes);
 }
 
-// New dashboard
 $dash_routes = include __DIR__ . '/Routes/dashboard_routes.php';
 $dash_routes->addPrefix('/dashboard');
 $routes->addCollection($dash_routes);
@@ -81,18 +78,15 @@ $routes->add('dashboard-activity-empty', new Route(
     })
 ));
 
-// Project view
 $project_routes = include __DIR__ . '/Routes/project_routes.php';
 $project_routes->addPrefix('/project');
 $routes->addCollection($project_routes);
-// default widget compatibility
 $routes->add('widget-project-empty', new Route(
     '/widget/{id}',
     array('_controller' => function($id) {
         return new RedirectResponse("/widget/project/$id");
     })
 ));
-// old wof compatibility
 $routes->add('widget-wof-empty', new Route(
     '/wof/{id}',
     array('_controller' => function($id) {
@@ -100,52 +94,45 @@ $routes->add('widget-wof-empty', new Route(
     })
 ));
 
-// Widgets
 $project_routes = include __DIR__ . '/Routes/widget_routes.php';
 $project_routes->addPrefix('/widget');
 $routes->addCollection($project_routes);
 
-// Auth routes (no prefix)
 $auth_routes = include __DIR__ . '/Routes/auth_routes.php';
 $routes->addCollection($auth_routes);
 
-// Contact
-//contact form
 $routes->add('contact-form', new Route(
     '/contact',
     array(
         '_controller' => 'Goteo\Controller\ContactController::indexAction'
-        )
+    )
 ));
 $contact_routes = include __DIR__ . '/Routes/contact_routes.php';
 $contact_routes->addPrefix('/contact');
 $routes->addCollection($contact_routes);
 
-
-// Misc routes (pages mostly, no prefix)
 $misc_routes = include __DIR__ . '/Routes/misc_routes.php';
 $routes->addCollection($misc_routes);
 
-///// BLOG //////
-
 $routes->add('blog', new Route(
     '/blog',
-    array('_controller' => 'Goteo\Controller\BlogController::indexAction'
-        )
+    array('_controller' => 'Goteo\Controller\BlogController::indexAction')
 ));
 
 $routes->add('blog-section', new Route(
     '/blog-section/{section}',
-    array(  '_controller' => 'Goteo\Controller\BlogController::indexAction',
-            'tag' => '' //optional parameter
-        )
+    array(
+        '_controller' => 'Goteo\Controller\BlogController::indexAction',
+        'tag' => '' //optional parameter
+    )
 ));
 
 $routes->add('blog-tag', new Route(
     '/blog-tag/{tag}',
-    array(  '_controller' => 'Goteo\Controller\BlogController::indexAction',
-            'section' => '' //optional parameter
-        )
+    array(
+        '_controller' => 'Goteo\Controller\BlogController::indexAction',
+        'section' => '' //optional parameter
+    )
 ));
 
 $routes->add('blog-post', new Route(
@@ -153,37 +140,30 @@ $routes->add('blog-post', new Route(
     array('_controller' => 'Goteo\Controller\BlogController::postAction')
 ));
 
-
-
-///// RSS //////
-
 $routes->add('rss', new Route(
     '/rss/{lang}',
-    array('_controller' => 'Goteo\Controller\RssController::indexAction',
+    array(
+        '_controller' => 'Goteo\Controller\RssController::indexAction',
         'lang' => '' //optional parameter
-        )
+    )
 ));
 
-/// Last newsletter
 $routes->add('newsletter', new Route(
     '/newsletter/{id}',
-    array('_controller' => 'Goteo\Controller\NewsletterController::indexAction',
+    array(
+        '_controller' => 'Goteo\Controller\NewsletterController::indexAction',
         'id' => null //optional parameter
-        )
+    )
 ));
 
-
-// Mailing routes
 $mail_routes = include __DIR__ . '/Routes/mail_routes.php';
 $mail_routes->addPrefix('/mail');
 $routes->addCollection($mail_routes);
 
-// User stuff routes
 $user_routes = include __DIR__ . '/Routes/user_routes.php';
 $user_routes->addPrefix('/user');
 $routes->addCollection($user_routes);
 
-// Channel routes
 $routes->add('channel-list', new Route(
     '/channels',
     array('_controller' => 'Goteo\Controller\ChannelController::listChannelsAction')
@@ -193,7 +173,6 @@ $channel_routes = include __DIR__ . '/Routes/channel_routes.php';
 $channel_routes->addPrefix('/channel');
 $routes->addCollection($channel_routes);
 
-///// MATCHERS /////
 $routes->add('matcher', new Route(
     '/matcher/{id}',
     array('_controller' => function($id) {
@@ -207,8 +186,6 @@ $routes->add('matcher', new Route(
     })
 ));
 
-// Workshops
-
 $routes->add('workshop-view', new Route(
     '/workshop/{id}',
     array('_controller' => 'Goteo\Controller\WorkshopController::indexAction',
@@ -216,32 +193,25 @@ $routes->add('workshop-view', new Route(
         )
 ));
 
-
-// Images processing (no prefix)
 $images_routes = include __DIR__ . '/Routes/images_routes.php';
 $routes->addCollection($images_routes);
 
-// Admin routes
 $routes->add('admin', new Route(
     '/admin',
-    array('_controller' => 'Goteo\Controller\AdminController::indexAction',
-        )
+    array('_controller' => 'Goteo\Controller\AdminController::indexAction',)
 ));
 $admin_routes = include __DIR__ . '/Routes/admin_routes.php';
 $admin_routes->addPrefix('/admin');
 $routes->addCollection($admin_routes);
 
-// Translator routes
 $routes->add('translate', new Route(
     '/translate',
-    array('_controller' => 'Goteo\Controller\TranslateController::indexAction',
-        )
+    array('_controller' => 'Goteo\Controller\TranslateController::indexAction',)
 ));
 $translate_routes = include __DIR__ . '/Routes/translate_routes.php';
 $translate_routes->addPrefix('/translate');
 $routes->addCollection($translate_routes);
 
-////// MINI-API: Json controllers for ajax searching /////
 $api_routes = include __DIR__ . '/Routes/api_routes.php';
 $api_routes->addPrefix('/api');
 $routes->addCollection($api_routes);
@@ -261,11 +231,8 @@ $routes->add('api-any-route', new Route(
                 throw new ControllerException("Route [$url] not found");
             }
         ),
-        array(
-            'url' => '.*'
-        )
+        array('url' => '.*')
 ));
-
 
 ///////// REDIRECT "/" ENDING ROUTES ///////////////
 
@@ -274,9 +241,7 @@ $routes->add('remove-trailing-slash', new Route(
         array(
             '_controller' => 'Goteo\Controller\ErrorController::removeTrailingSlashAction',
         ),
-        array(
-            'url' => '.*/$',
-        )
+        array('url' => '.*/$',)
 ));
 
 ////// REDIRECT "//" STARTING ROUTES
@@ -285,12 +250,8 @@ $routes->add('remove-starting-slash', new Route(
         array(
             '_controller' => 'Goteo\Controller\ErrorController::removeStartingSlashAction',
         ),
-        array(
-            'url' => '[/]+.*',
-        )
+        array('url' => '[/]+.*',)
 ));
-
-// User stuff routes
 
 $routes->add('map', new Route(
     '/map',

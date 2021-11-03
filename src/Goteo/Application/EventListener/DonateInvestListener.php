@@ -58,14 +58,14 @@ class DonateInvestListener extends AbstractListener {
 
         $user = $invest->getUser();
         $log->populate(
-                Text::sys('feed-invest-by', strtoupper($method::getId())),
+                Text::sys('feed-invest-by', strtoupper($method->getIdNonStatic())),
                 '/admin/invests',
                     new FeedBody (null, null, 'feed-user-invest-error', [
                        '%MESSAGE%' => $response->getMessage(),
                        '%USER%' => Feed::item('user', $user->name, $user->id),
                        '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin),
                        '%PROJECT%' => Feed::item('project', 'DONATE'),
-                       '%METHOD%' => strtoupper($method::getId())
+                       '%METHOD%' => strtoupper($method->getIdNonStatic())
                     ])
             )
             ->doAdmin('money');
@@ -131,13 +131,13 @@ class DonateInvestListener extends AbstractListener {
         $log = new Feed();
         $user = $invest->getUser();
         $log->populate(
-                Text::sys('feed-invest-by', strtoupper($method::getId())),
+                Text::sys('feed-invest-by', strtoupper($method->getIdNonStatic())),
                 '/admin/invests',
                 new FeedBody(null, null, 'feed-user-invest', [
                         '%USER%' => Feed::item('user', $user->name, $user->id),
                         '%AMOUNT%' => Feed::item('money', $invest->donate_amount . ' ' . $coin),
                         '%PROJECT%' => Feed::item('project', 'DONATE FOUNDATION'),
-                        '%METHOD%' => strtoupper($method::getId())
+                        '%METHOD%' => strtoupper($method->getIdNonStatic())
                     ])
             )
             ->doAdmin('money');

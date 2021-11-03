@@ -10,20 +10,18 @@
 
 namespace Goteo\Console\Command;
 
+use Exception;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterMailingEvent;
-
 use Goteo\Model\Mail;
 use Goteo\Model\Mail\Sender;
-
+use RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -53,10 +51,7 @@ Sends the 12345 pending massive mailing from the mailer_content table:
 <info>./console mailing 12345</info>
 
 EOT
-		)
-
-		;
-
+		);
 	}
 
 	/**
@@ -78,10 +73,11 @@ EOT
         $SEND_RATE = Config::get('mail.quota.send_rate', true);
 		$CONCURRENCY = Config::get('mail.quota.concurrency', true);
 
-		// check the limit
 		if ($LIMIT && !Mail::checkLimit(null, false, $LIMIT)) {
-			// throw new \RuntimeException("Quota exceeded for today", [$mailing, 'quota' => $LIMIT]);
-			$mailing = $this->dispatch(ConsoleEvents::MAILING_ABORTED, new FilterMailingEvent($mailing, "Quota exceeded for today"))->getSender();
+			$mailing = $this->dispatch(
+			    ConsoleEvents::MAILING_ABORTED,
+                new FilterMailingEvent($mailing, "Quota exceeded for today")
+            )->getSender();
 		}
 
 		if (!$mailing->active) {
@@ -114,10 +110,9 @@ EOT
         if (!$force) {
             $this->info("Locking massive mailing", [$mailing, 'quota' => $LIMIT]);
             if (!$mailing->setLock(true)->blocked) {
-                throw new \RuntimeException("Error locking mailing [{$mailing->id}]");
+                throw new RuntimeException("Error locking mailing [{$mailing->id}]");
             }
         }
-
 
 		$total_pending = $mailing->getPendingRecipients(0, 0, true);
 
@@ -137,17 +132,15 @@ EOT
 				// Load recipients in blocks
 				// Lock temporary
 				while ($users = $mailing->getPendingRecipients(0, $current_concurrency, false, true)) {
-					// check the limit
 					if ($LIMIT && !Mail::checkLimit(null, false, $LIMIT)) {
-						throw new \RuntimeException("Quota exceeded for today");
+						throw new RuntimeException("Quota exceeded for today");
 					}
 
 					$processes = [];
-					$stime     = microtime(true);
+					$stime = microtime(true);
 					foreach ($users as $recipient) {
 						$recipient->setLock(false);
 						$line = $php.' '.GOTEO_PATH."bin/console sendmail {$recipient->id} --lock --lock-name sendmail.{$recipient->id}" .($update?' --update':'');
-						//. ' --verbose  2>/dev/null';
 						$process = new Process($line);
                         $process->setTimeout(null); // no time limit
 						$process->start();
@@ -158,13 +151,9 @@ EOT
 					$this->debug('Waiting for processes to end', ['pids' => array_keys($processes)]);
 
 					// wait for processes to end
-					$that = $this;
 					foreach ($processes as $pid => $process) {
 						$code = $process->wait(function ($type, $buffer) use ($output, $pid) {
 								$output->write("[PID $pid] " .$buffer);
-								// if (Process::ERR === $type) {
-								//     $output->write($buffer);
-								// }
 							});
 						// collision returns code 13
 						if ($code == 0) {
@@ -173,7 +162,7 @@ EOT
 					}
 
 					if ($iterations > $total_users) {
-						throw new \RuntimeException("Iterations [$iterations] over maximum total users [$total_users]");
+						throw new RuntimeException("Iterations [$iterations] over maximum total users [$total_users]");
 					}
 
 					$process_time = microtime(true)-$stime;
@@ -196,7 +185,6 @@ EOT
 					}
 
 					$total_pending = $mailing->getPendingRecipients(0, 0, true);
-					// echo "NEW PENDING $total_pending\n";
 					if ($total_pending == 0) {
 						$this->notice("END. Total execution time [".round(microtime(true)-$itime, 2)."] seconds $total_users emails, Medium rate [" .round($total_users/(microtime(true)-$itime), 2)."] emails/second");
 						if ($update) {
@@ -206,8 +194,8 @@ EOT
 					}
 				}
 
-			} catch (\Exception $e) {
-				$mailing = $this->dispatch(ConsoleEvents::MAILING_ABORTED, new FilterMailingEvent($mailing, $e->getMessage()))->getSender();
+			} catch (Exception $e) {
+				$this->dispatch(ConsoleEvents::MAILING_ABORTED, new FilterMailingEvent($mailing, $e->getMessage()))->getSender();
 				throw $e;
 			}
 		}
@@ -215,9 +203,8 @@ EOT
 		if (!$force) {
 			$this->info("Unlocking massive mailing", [$mailing, 'quota' => $LIMIT]);
 			if ($mailing->setLock(false)->blocked) {
-				throw new \RuntimeException("Error unlocking mailing [{$mailing->id}]");
+				throw new RuntimeException("Error unlocking mailing [{$mailing->id}]");
 			}
 		}
-
 	}
 }

@@ -13,7 +13,6 @@ namespace Goteodev\Application\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpFoundation\Response;
 use Goteo\Application\Config;
 use Goteo\Application\App;
 
@@ -33,7 +32,6 @@ class LiveReloadListener implements EventSubscriberInterface
         if(!App::debug()) return;
 
         $port = Config::get('plugins.goteo-dev.liveport');
-        // if(empty($port)) $port = 35729;
 
         if(empty($port)) return;
 

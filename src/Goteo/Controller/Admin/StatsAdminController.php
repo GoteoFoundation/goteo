@@ -10,24 +10,18 @@
 
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-
-use Goteo\Application\Session;
-use Goteo\Application\Message;
 use Goteo\Application\Exception\ControllerException;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Library\Feed;
-use Goteo\Library\FeedBody;
+use Goteo\Application\Session;
 use Goteo\Library\Text;
-use Goteo\Model\User;
 use Goteo\Payment\Payment;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 class StatsAdminController extends AbstractAdminController {
     protected static $icon = '<i class="fa fa-2x fa-bar-chart"></i>';
 
-    public static function getRoutes() {
+    public static function getRoutes(): array
+    {
         return [
             new Route(
                 '/',
@@ -42,11 +36,8 @@ class StatsAdminController extends AbstractAdminController {
         ];
     }
 
-    // public static function getGroup() {
-    //     return 'stats';
-    // }
-
-    public static function getSidebar() {
+    public static function getSidebar(): array
+    {
         return [
             '/stats' => Text::get('admin-summary'),
             '/stats/totals/projects' => Text::get('admin-stats-project-totals'),
@@ -64,7 +55,6 @@ class StatsAdminController extends AbstractAdminController {
         $template = "admin/stats/$sub";
         if($part) $template .= "/$part";
         elseif($sub === 'totals') {
-            // Redirect to project totals
             return $this->redirect('/admin/stats/totals/projects');
         }
         if(!$this->getViewEngine()->find($template)) {
@@ -102,6 +92,4 @@ class StatsAdminController extends AbstractAdminController {
             'intervals' => ['today' => 'the_day', 'week' => 'the_week', 'month' => 'the_month', 'year' => 'the_year']
         ]);
     }
-
-
 }

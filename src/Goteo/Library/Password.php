@@ -14,15 +14,11 @@ namespace Goteo\Library;
 use PHPassLib\Application\Context;
 
 class Password {
-    // This is logarithmic!
-    // This value may be incremented as computer power increments
-    static private $cost = 12;
-
-    private $hashed_password = '';
-    private $defaultEncoder;
-    private $sha1_encoding = false;
-    private $bcrypt_encoding = false;
-    private $salt = null;
+    // This is logarithmic! May be incremented as computer power increments.
+    private const ENCRYPTION_ROUNDS = 12;
+    private string $hashed_password = '';
+    private bool $sha1_encoding = false;
+    private bool $bcrypt_encoding = false;
 
     function __construct($hashed_password) {
         // Old database passwords are encoded in plain SHA-1
@@ -36,13 +32,15 @@ class Password {
         $this->hashed_password = $hashed_password;
     }
 
-    static private function getContext() {
+    static private function getContext(): Context
+    {
         $context = new Context;
-        $context->addConfig('bcrypt', array ('rounds' => self::$cost));
+        $context->addConfig('bcrypt', array ('rounds' => self::ENCRYPTION_ROUNDS));
         return $context;
     }
 
-    public function isPasswordValid($check_password) {
+    public function isPasswordValid($check_password): bool
+    {
         if(!self::isSHA1($check_password)) {
             // For compatibility, all passwords will be pre-encoded with a SHA-1 algorithm
             $compare_password = sha1($check_password);
@@ -63,7 +61,8 @@ class Password {
      * Simple verification if a password hash is secure enough
      * @return boolean false if is SHA-1 or plain
      */
-    public function isSecure() {
+    public function isSecure(): bool
+    {
         if(!$this->sha1_encoding) {
             // Configure a context to use bcrypt with a specific number of rounds
             $outdated = static::getContext()->needsUpdate($this->hashed_password);
@@ -73,37 +72,29 @@ class Password {
     }
 
     /**
-     * Encodes the password according to some security rules
-     * @param  string $pass Plain password or SHA-1 encoded password
-     * @return string       Encoded password
+     * @param  string $raw Plain password or SHA-1 encoded password
      */
-    static public function encode($raw) {
-         // $raw will be preencode with SHA1
-         // This ensures sometimes compatibility with already encoded $raw password
+    static public function encode(string $raw): string
+    {
+         // $raw will be already be encoded with SHA1
+         // This sometimes ensures compatibility with already encoded $raw password
         if(!self::isSHA1($raw)) $raw = sha1($raw);
 
-        // $encoded = password_hash($raw, PASSWORD_DEFAULT, ['cost' => self::$cost]);
-        $encoded = static::getContext()->hash($raw);
-        // die("[$raw] [$encoded]");
-        return $encoded;
+        return static::getContext()->hash($raw);
     }
 
-    /**
-     * Verifies a password is using Blowfish algorithm
-     */
-    static function isBlowfish($str) {
+    static function isBlowfish(string $str): bool
+    {
         return strpos($str, '$2a$') === 0;
     }
-    /*
-     * Verifies if a string is a SHA-1
-     */
-    static function isSHA1($str) {
+
+    static function isSHA1(string $str): bool
+    {
         return (bool) preg_match('/^[0-9a-f]{40}$/i', $str);
     }
 
-    static function isOldBcrypt($str) {
-        // $hashed = (version_compare(phpversion(), '5.5.0', '>=')) ? password_hash($this->password, PASSWORD_BCRYPT) : crypt($this->password);
-
+    static function isOldBcrypt(string $str): bool
+    {
         return strpos($str, '$1$') === 0;
     }
 

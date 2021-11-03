@@ -13,8 +13,7 @@ namespace Goteo\Application\Event;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Model\Post;
 use Goteo\Model\Blog\Post as BlogPost;
-
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class FilterBlogPostEvent extends Event {
     protected $post;

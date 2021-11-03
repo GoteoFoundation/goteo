@@ -10,22 +10,22 @@
 
 namespace Goteo\Payment\Method;
 
-use Goteo\Application\Config;
-
 /**
  * Creates a Payment Method that uses Paypal provider
  */
 class CashPaymentMethod extends AbstractPaymentMethod {
 
     // Uses omnipay manual method, always successful
-    public function getGatewayName() {
+    public function getGatewayName(): String
+    {
         return 'Manual';
     }
 
     /**
      * This payment method is only for administrative purposes
      */
-    public function isPublic($amount = 0) {
+    public function isPublic($amount = 0): bool
+    {
         return false;
     }
 

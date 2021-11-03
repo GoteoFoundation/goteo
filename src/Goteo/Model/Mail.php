@@ -298,10 +298,6 @@ class Mail extends Model {
         return $mail;
     }
 
-    /**
-     * Validar mensaje.
-     * @param type array	$errors
-     */
 	public function validate(&$errors = array()) {
 	    if(empty($this->to)) {
             $errors['email'] = 'El mensaje no tiene destinatario.';
@@ -319,10 +315,6 @@ class Mail extends Model {
         return empty($errors);
 	}
 
-	/**
-	 * Enviar mensaje.
-	 * @param type array	$errors
-	 */
     public function send(&$errors = array()) {
         if (!self::checkLimit(1)) {
             $errors[] = 'Daily limit reached!';

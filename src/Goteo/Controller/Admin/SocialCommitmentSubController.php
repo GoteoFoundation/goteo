@@ -18,6 +18,7 @@ use Goteo\Application\Config;
 use Goteo\Model\SocialCommitment;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
+use Goteo\Model\User;
 
 class SocialCommitmentSubController extends AbstractSubController {
 
@@ -34,7 +35,7 @@ class SocialCommitmentSubController extends AbstractSubController {
         return 'social_commitment';
     }
 
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         if( ! Config::isMasterNode($node) ) return false;
         return parent::isAllowed($user, $node);
     }

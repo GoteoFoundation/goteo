@@ -53,7 +53,7 @@ class GoteoCallchecks
          FOREIGN KEY (`id`) REFERENCES `call_check`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
         ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-      CREATE TABLE `call_check_project`( `id` INT(10) NOT NULL AUTO_INCREMENT, `call_check` INT(10) UNSIGNED NOT NULL, `project` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, `response` TEXT, PRIMARY KEY (`id`), CONSTRAINT `call_check` FOREIGN KEY (`call_check`) REFERENCES `goteo`.`call_check`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, CONSTRAINT `project` FOREIGN KEY (`project`) REFERENCES `goteo`.`project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE );
+      CREATE TABLE `call_check_project`( `id` INT(10) NOT NULL AUTO_INCREMENT, `call_check` INT(10) UNSIGNED NOT NULL, `project` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, `response` TEXT, PRIMARY KEY (`id`), CONSTRAINT `call_check` FOREIGN KEY (`call_check`) REFERENCES `call_check`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, CONSTRAINT `project` FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE );
 
       ALTER TABLE `call` ADD `intro_checks` TEXT NULL DEFAULT NULL COMMENT 'Intro checks in apply page';
 

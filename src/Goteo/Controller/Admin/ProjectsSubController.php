@@ -12,19 +12,21 @@
  */
 namespace Goteo\Controller\Admin;
 
+use DateTime;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
-use Goteo\Library\Text;
-use Goteo\Library\Feed;
 use Goteo\Application\Message;
-use Goteo\Model\Mail;
-use Goteo\Model\Template;
-use Goteo\Model\Project\ProjectLocation;
+use Goteo\Library\Feed;
+use Goteo\Library\Text;
 use Goteo\Model;
-use Goteo\Console\UsersSend;
-use Goteo\Application\Event\FilterProjectEvent;
-use Goteo\Application\AppEvents;
+use Goteo\Model\Mail;
+use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Template;
+use Goteo\Model\User;
+use PDOException;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProjectsSubController extends AbstractSubController {
 
@@ -44,9 +46,7 @@ class ProjectsSubController extends AbstractSubController {
       'consultants' => 'projects-lb-consultants',
     );
 
-
     static protected $label = 'projects-lb';
-
 
     protected $filters = array (
       'status' => -1,
@@ -60,13 +60,12 @@ class ProjectsSubController extends AbstractSubController {
       'proj_id' => '',
     );
 
-
     /**
      * Some defaults
      */
-    public function __construct($node, \Goteo\Model\User $user, Request $request) {
+    public function __construct($node, User $user, Request $request) {
         parent::__construct($node, $user, $request);
-        $this->admins = Model\User::getAdmins();
+        $this->admins = User::getAdmins();
         // simple list of administrable nodes
         $this->all_nodes = Model\Node::getList();
         $this->nodes = array();
@@ -88,11 +87,6 @@ class ProjectsSubController extends AbstractSubController {
             ], '/admin/projects');
     }
 
-    /**
-     * Get or exception to handle project
-     * @param  [type] $id [description]
-     * @return [type]     [description]
-     */
     private function getProject($id, $level = 'view') {
         $project = Model\Project::get($id);
         if($level === 'admin' && !$project->userCanAdmin($this->user)) {
@@ -122,7 +116,6 @@ class ProjectsSubController extends AbstractSubController {
         $project = $this->getProject($id, 'edit');
         $conf = Model\Project\Conf::get($project->id);
 
-
         if ($this->isPost()) {
             $conf->days_round1 = (!empty($this->getPost('round1'))) ? $this->getPost('round1') : 40;
             $conf->days_round2 = (!empty($this->getPost('round2'))) ? $this->getPost('round2') : 40;
@@ -140,9 +133,9 @@ class ProjectsSubController extends AbstractSubController {
 
         // cambiar fechas
         return array(
-                'template' => 'admin/projects/conf',
-                'project' => $project,
-                'conf' => $conf
+            'template' => 'admin/projects/conf',
+            'project' => $project,
+            'conf' => $conf
         );
     }
 
@@ -151,7 +144,7 @@ class ProjectsSubController extends AbstractSubController {
         $project = $this->getProject($id, 'admin');
         // cambiar el asesor
         $op = $this->getGet('op');
-        $user = Model\User::get($this->getGet('user'));
+        $user = User::get($this->getGet('user'));
         if (($user && $op === 'assignConsultant' && $user->hasRoleInNode($this->node, ['consultant', 'admin', 'superadmin'])) || $op === 'unassignConsultant') {
             if ($project->$op($user->id)) {
                 // ok
@@ -161,15 +154,14 @@ class ProjectsSubController extends AbstractSubController {
         }
 
         return  array(
-                'template' => 'admin/projects/consultants',
-                'project' => $project,
-                'admins' => $this->admins
-            );
-
+            'template' => 'admin/projects/consultants',
+            'project' => $project,
+            'admins' => $this->admins
+        );
     }
 
 
-    public function rebaseAction($id = null, $subaction = null) {
+    public function rebaseAction($id = null) {
         // Project && permission check
         $project = $this->getProject($id, 'moderate');
 
@@ -202,8 +194,8 @@ class ProjectsSubController extends AbstractSubController {
 
         // cambiar la id
         return array(
-                'template' => 'admin/projects/rebase',
-                'project' => $project
+            'template' => 'admin/projects/rebase',
+            'project' => $project
         );
     }
 
@@ -222,7 +214,6 @@ class ProjectsSubController extends AbstractSubController {
                 'data' => $data
         );
     }
-
 
     public function open_tagsAction($id) {
         // Project && permission check
@@ -248,7 +239,6 @@ class ProjectsSubController extends AbstractSubController {
                 'open_tags' => $open_all_tags
         );
     }
-
 
     public function assignAction($id) {
         // Project && permission check
@@ -277,7 +267,7 @@ class ProjectsSubController extends AbstractSubController {
                 // feed
                 $this->doFeed($project, $log_text);
 
-            } catch(\PDOException $e) {
+            } catch(PDOException $e) {
                 Message::error("Ha fallado! " . $e->getMessage());
             }
             return $this->redirect();
@@ -292,7 +282,6 @@ class ProjectsSubController extends AbstractSubController {
                 'available' => $available
         );
     }
-
 
     public function moveAction($id) {
         // Project && permission check
@@ -311,7 +300,7 @@ class ProjectsSubController extends AbstractSubController {
                     $sql2 = "UPDATE user SET node = :node WHERE id = :id";
                     if (Model\Project::query($sql, $values)) {
                         $log_text = 'El admin %s ha <span class="red">movido al nodo '.$nodes[$this->getPost('node')].'</span> el proyecto '.$project->name.' %s';
-                        if (Model\User::query($sql2, $values2)) {
+                        if (User::query($sql2, $values2)) {
                             $log_text .= ', tambien se ha movido al impulsor';
                         } else {
                             $log_text .= ', pero no se ha movido al impulsor';
@@ -319,21 +308,21 @@ class ProjectsSubController extends AbstractSubController {
                     } else {
                         $log_text = 'Al admin %s le ha <span class="red">fallado al mover al nodo '.$nodes[$this->getPost('node')].'</span> el proyecto '.$project->name.' %s';
                     }
-                } catch(\PDOException $e) {
+                } catch(PDOException $e) {
                     Message::error("Ha fallado! " . $e->getMessage());
                 }
                 //feed this action
                 $this->doFeed($project, $log_text);
             }
-            return $this->redirect();
 
+            return $this->redirect();
         }
+
         // cambiar el nodo
         return array(
-                'template' => 'admin/projects/move',
-                'project' => $project,
+            'template' => 'admin/projects/move',
+            'project' => $project,
         );
-
     }
 
 
@@ -373,7 +362,6 @@ class ProjectsSubController extends AbstractSubController {
             }
 
             return $this->redirect(self::getUrl('images', $id));
-
         }
 
         // imagenes
@@ -389,10 +377,10 @@ class ProjectsSubController extends AbstractSubController {
         }
 
         return array(
-                'template' => 'admin/projects/images',
-                'project' => $project,
-                'images' => $images,
-                'image_sections' => $sections
+            'template' => 'admin/projects/images',
+            'project' => $project,
+            'images' => $images,
+            'image_sections' => $sections
         );
     }
 
@@ -412,19 +400,18 @@ class ProjectsSubController extends AbstractSubController {
             } else {
                 Message::error(implode('<br />', $errors));
             }
-            return $this->redirect();
 
+            return $this->redirect();
         }
 
         $accounts = Model\Project\Account::get($project->id);
 
         // cambiar fechas
         return array(
-                'template' => 'admin/projects/accounts',
-                'project' => $project,
-                'accounts' => $accounts
+            'template' => 'admin/projects/accounts',
+            'project' => $project,
+            'accounts' => $accounts
         );
-
     }
 
     public function locationAction($id) {
@@ -463,17 +450,16 @@ class ProjectsSubController extends AbstractSubController {
             $location->city = $project->location;
         }
         return array(
-                'template' => 'admin/projects/location',
-                'project' => $project,
-                'location' => $location,
-                'with_radius' => true,
-                'radius' => $location->radius
+            'template' => 'admin/projects/location',
+            'project' => $project,
+            'location' => $location,
+            'with_radius' => true,
+            'radius' => $location->radius
         );
-
     }
 
 
-    public function datesAction($id = null, $subaction = null) {
+    public function datesAction($id = null) {
 
         $project = $this->getProject($id, 'edit');
 
@@ -498,16 +484,15 @@ class ProjectsSubController extends AbstractSubController {
                     if ($set != '') $set .= ", ";
                     $set .= "`$field` = :$field ";
                 }
-                if(!is_null($val))
-                {
+
+                if(!is_null($val)) {
                     //validate date
-                    $d = \DateTime::createFromFormat('Y-m-d', $val);
+                    $d = DateTime::createFromFormat('Y-m-d', $val);
                     if($d && $d->format('Y-m-d') == $val) {
                         $values[":$field"] = $val;
                         if ($set != '') $set .= ", ";
                         $set .= "`$field` = :$field ";
-                    }
-                    else {
+                    } else {
                         Message::error("Error en formato de fecha [$val]");
 
                     }
@@ -527,16 +512,16 @@ class ProjectsSubController extends AbstractSubController {
                 // feed this action
                 $this->doFeed($project, $log_text);
 
-            } catch(\PDOException $e) {
+            } catch(PDOException $e) {
                 Message::error("Ha fallado! " . $e->getMessage());
             }
         }
+
         // cambiar fechas
         return array(
-                'template' => 'admin/projects/dates',
-                'project' => $project
+            'template' => 'admin/projects/dates',
+            'project' => $project
         );
-
     }
 
 
@@ -558,8 +543,7 @@ class ProjectsSubController extends AbstractSubController {
         // Project && permission check
         $project = $this->getProject($id, 'moderate');
 
-        // PUBLISH EVENT
-        $event = $this->dispatch(AppEvents::PROJECT_PUBLISH, new FilterProjectEvent($project));
+        $this->dispatch(AppEvents::PROJECT_PUBLISH, new FilterProjectEvent($project));
 
         return $this->redirect();
     }
@@ -644,7 +628,7 @@ class ProjectsSubController extends AbstractSubController {
         $consultants = $project->getConsultants();
 
         //  idioma de preferencia
-        $comlang = Model\User::getPreferences($project->user)->comlang;
+        $comlang = User::getPreferences($project->user)->comlang;
 
         // Obtenemos la plantilla para asunto y contenido
         $template = Template::get(Template::PROJECT_EXPRESS_DISCARD, $comlang);
@@ -689,7 +673,7 @@ class ProjectsSubController extends AbstractSubController {
         $consultants = $project->getConsultants();
 
         //  idioma de preferencia
-        $comlang = Model\User::getPreferences($project->user)->comlang;
+        $comlang = User::getPreferences($project->user)->comlang;
         $dest= 'owner';
 
         $vars=[ '%PROJECTNAME%' => $project->name,
@@ -794,38 +778,36 @@ class ProjectsSubController extends AbstractSubController {
         return $this->redirect();
     }
 
-    public function listAction($id = null, $subaction = null) {
+    public function listAction() {
         $filters = $this->getFilters();
         $limit = 10;
         $projects = Model\Project::getList($filters, $this->node, $this->getGet('pag') * $limit, $limit);
         $total = Model\Project::getList($filters, $this->node, 0, 0 , true);
-
-
         $status = Model\Project::status();
         $categories = Model\Project\Category::getAll();
         $contracts = Model\Contract::getProjects();
         $open_tags = Model\Project\OpenTag::getAll();
+
         $orders = array(
             'name' => 'Nombre',
             'updated' => 'Enviado a revision',
             'publishing_estimation' => 'Fecha publicación estimada'
         );
 
-        return  array(
-                'template' => 'admin/projects/list',
-                'projects' => $projects,
-                'filters' => $filters,
-                'status' => $status,
-                'categories' => $categories,
-                'contracts' => $contracts,
-                'admins' => $this->admins,
-                'open_tags' => $open_tags,
-                'orders' => $orders,
-                'limit' => $limit,
-                'total' => $total
+        return array(
+            'template' => 'admin/projects/list',
+            'projects' => $projects,
+            'filters' => $filters,
+            'status' => $status,
+            'categories' => $categories,
+            'contracts' => $contracts,
+            'admins' => $this->admins,
+            'open_tags' => $open_tags,
+            'orders' => $orders,
+            'limit' => $limit,
+            'total' => $total
         );
     }
-
 
     private function doFeed($project, $log_text) {
         // Feed
@@ -851,6 +833,5 @@ class ProjectsSubController extends AbstractSubController {
                 $log->doPublic('projects');
             }
         }
-
     }
 }

@@ -13,6 +13,7 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
+use Goteo\Model\User;
 
 class WordcountSubController extends AbstractSubController {
 
@@ -28,7 +29,7 @@ class WordcountSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node and superadmins allowed here
         if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);

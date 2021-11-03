@@ -13,21 +13,24 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\Admin\AdminChannelResourceEditForm;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Node\NodeResource as Resource;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
 class ChannelResourceAdminController extends AbstractAdminController {
 	protected static $icon = '<i class="fa fa-2x fa-download"></i>';
 
-	// this modules is part of a specific group
-	public static function getGroup() {
+	public static function getGroup(): string
+    {
 		return 'channels';
 	}
 
-	public static function getRoutes() {
+	public static function getRoutes(): array
+    {
 		return [
 			new Route(
 				'/',
@@ -59,7 +62,7 @@ class ChannelResourceAdminController extends AbstractAdminController {
 		]);
 	}
 
-	public function editAction($id = '', Request $request) {
+	public function editAction(Request $request, $id = '') {
 
 		$resource = $id ? Resource::get($id) : new Resource();
 
@@ -68,15 +71,15 @@ class ChannelResourceAdminController extends AbstractAdminController {
 		}
 
 		$defaults = (array) $resource;
-		$processor = $this->getModelForm('AdminChannelResourceEdit', $resource, $defaults, [], $request);
+		$processor = $this->getModelForm(AdminChannelResourceEditForm::class, $resource, $defaults, [], $request);
 		$processor->createForm();
 		$processor->getBuilder()
-			->add('submit', 'submit', [
-				'label' => $submit_label ? $submit_label : 'regular-submit',
+			->add('submit', SubmitType::class, [
+				'label' => 'regular-submit',
 			]);
 		if ($resource->id) {
 			$processor->getBuilder()
-				->add('remove', 'submit', [
+				->add('remove', SubmitType::class, [
 					'label' => Text::get('admin-remove-entry'),
 					'icon_class' => 'fa fa-trash',
 					'span' => 'hidden-xs',

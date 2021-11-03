@@ -10,26 +10,12 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-
-use Goteo\Library\Text;
-use Goteo\Application\Message;
-use Goteo\Application\Session;
 use Goteo\Application\Lang;
 use Goteo\Application\View;
-use Goteo\Application\EventListener\ProjectCallListener;
-use Goteo\Library\Buzz;
-use Goteo\Model\Project;
-use Goteo\Model\Image;
-use Goteo\Model\Call;
-use Goteo\Model\Matcher;
+use Goteo\Core\Controller;
 use Goteo\Model\Workshop;
-use Goteo\Model\Sphere;
-use Goteo\Model\Stories;
-use Goteo\Model\Page;
-use Goteo\Model\SocialCommitment;
 
-class WorkshopController extends \Goteo\Core\Controller {
+class WorkshopController extends Controller {
 
     public function __construct() {
         View::setTheme('responsive');
@@ -37,27 +23,22 @@ class WorkshopController extends \Goteo\Core\Controller {
 
     /**
      * Show workshop landing
-     * @param  [type] $id   Channel id
      */
-    public function indexAction($id, Request $request) {
+    public function indexAction($id) {
 
         $workshop= Workshop::get($id, Lang::Current());
-        $event_type= $workshop->event_type ? $workshop->event_type : 'other';
-        $related_workshops= Workshop::getAll(['event_type' => $event_type, 'excluded' => $id ]);
+        $event_type= $workshop->event_type ?: 'other';
+        $relatedWorkshops= Workshop::getAll(['event_type' => $event_type, 'excluded' => $id ]);
 
         if($event_type=='fundlab' ||$event_type=='fundlab-esil')
-            $related_workshops=array_merge(Workshop::getAll(['event_type' => 'fundlab-esil', 'excluded' => $id ]), Workshop::getAll(['event_type' => 'fundlab', 'excluded' => $id ]));
+            $relatedWorkshops = array_merge(
+                Workshop::getAll(['event_type' => 'fundlab-esil', 'excluded' => $id ]),
+                Workshop::getAll(['event_type' => 'fundlab', 'excluded' => $id ])
+            );
 
-
-
-        return $this->viewResponse(
-            'workshop/index',
-            [
-                'workshop'              => $workshop,
-                'related_workshops'     => $related_workshops
-
-            ]
-        );
+        return $this->viewResponse('workshop/index', [
+            'workshop' => $workshop,
+            'related_workshops' => $relatedWorkshops
+        ]);
     }
 }
-

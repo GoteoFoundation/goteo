@@ -66,14 +66,14 @@ class InvestMatcherListener extends AbstractMatcherListener {
                         $user = $invest->getUser();
                         $method = $invest->getMethod();
                         $log->populate(
-                            Text::sys('matcher-feed-invest-by', strtoupper($method::getId())),
+                            Text::sys('matcher-feed-invest-by', strtoupper($method->getIdNonStatic())),
                             '/admin/invests',
                             new FeedBody(null, null, 'matcher-feed-user-invest', [
                                 '%USER%'    => Feed::item('user', $user->name, $user->id),
                                 '%MATCHER%' => Feed::item('matcher', $matcher->name, $matcher->id),
                                 '%AMOUNT%'  => Feed::item('money', $drop->amount.' '.$coin),
                                 '%PROJECT%' => Feed::item('project', $project->name, $project->id),
-                                '%METHOD%'  => strtoupper($method::getId())
+                                '%METHOD%'  => strtoupper($method->getIdNonStatic())
                            ])
                         );
                     } else {
@@ -109,7 +109,7 @@ class InvestMatcherListener extends AbstractMatcherListener {
                         $user = $invest->getUser();
                         $method = $invest->getMethod();
                         $log->populate(
-                            Text::sys('matcher-feed-invest-by', strtoupper($method::getId())),
+                            Text::sys('matcher-feed-invest-by', strtoupper($method->getIdNonStatic())),
                             '/admin/invests',
                             new FeedBody(null, null, 'matcher-feed-user-invest-error', [
                                 '%MESSAGE%' => implode(', ', $errors),
@@ -117,7 +117,7 @@ class InvestMatcherListener extends AbstractMatcherListener {
                                 '%MATCHER%' => Feed::item('matcher', $matcher->name, $matcher->id),
                                 '%AMOUNT%'  => Feed::item('money', $drop->amount.' '.$coin),
                                 '%PROJECT%' => Feed::item('project', $project->name, $project->id),
-                                '%METHOD%'  => strtoupper($method::getId())
+                                '%METHOD%'  => strtoupper($method->getIdNonStatic())
                            ])
                         );
                     } else {

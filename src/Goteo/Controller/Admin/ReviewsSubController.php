@@ -10,11 +10,10 @@
 
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Feed,
-    Goteo\Application\Config,
-    Goteo\Application\Message,
-	Goteo\Application\Session,
-    Goteo\Model;
+use Goteo\Application\Config;
+use Goteo\Application\Message;
+use Goteo\Library\Feed;
+use Goteo\Model;
 
 class ReviewsSubController extends AbstractSubController {
 
@@ -24,9 +23,7 @@ class ReviewsSubController extends AbstractSubController {
       'edit' => 'reviews-lb-edit',
     );
 
-
     static protected $label = 'reviews-lb';
-
 
     protected $filters = array (
       'project' => '',
@@ -34,12 +31,11 @@ class ReviewsSubController extends AbstractSubController {
       'checker' => '',
     );
 
-
     /**
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(Model\User $user, $node) {
+    static public function isAllowed(Model\User $user, $node): bool {
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
         return parent::isAllowed($user, $node);

@@ -17,6 +17,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Library\Feed;
 use Goteo\Model;
+use Goteo\Model\User;
 
 class BannersSubController extends AbstractSubController {
 
@@ -34,14 +35,13 @@ class BannersSubController extends AbstractSubController {
       'translate' => 'banners-lb-translate',
     );
 
-
     static protected $label = 'banners-lb';
 
     /**
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
         return parent::isAllowed($user, $node);
@@ -52,12 +52,10 @@ class BannersSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('translate', $id, $this->getFilters(), $subaction));
     }
 
-
     public function editAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('edit', $id, $this->getFilters(), $subaction));
     }
-
 
     public function addAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -84,15 +82,12 @@ class BannersSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('remove', $id, $this->getFilters(), $subaction));
     }
 
-
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
 
-
-    public function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
-
+    public function process ($action = 'list', $id = null, $flag = null) {
         $errors = array();
 
         $node = $this->node;
@@ -119,8 +114,6 @@ class BannersSubController extends AbstractSubController {
             if(!empty($_FILES['image']['name'])) {
                 if ($banner->image instanceof Model\Image) $banner->image->remove($errors);
                 $banner->image = $_FILES['image'];
-            } else {
-                // $banner->image = $banner->image->id;
             }
 
 			if ($banner->save($errors)) {
@@ -151,8 +144,7 @@ class BannersSubController extends AbstractSubController {
                 }
 
                 return $this->redirect('/admin/banners');
-			}
-			else {
+			} else {
                 Message::error(implode('<br />', $errors));
 
                 switch ($this->getPost('action')) {
@@ -225,12 +217,9 @@ class BannersSubController extends AbstractSubController {
         $bannered = Model\Banner::getAll(false, $node);
 
         return array(
-                'template' => 'admin/banners/list',
-                'bannered' => $bannered,
-                'node' => $node
+            'template' => 'admin/banners/list',
+            'bannered' => $bannered,
+            'node' => $node
         );
-
     }
-
 }
-

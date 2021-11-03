@@ -12,126 +12,63 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Library\Forms\AbstractFormProcessor;
-use Symfony\Component\Validator\Constraints;
-use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
-use Symfony\Component\Form\FormInterface;
-use Goteo\Model\Project;
-use Goteo\Model\Sdg;
-use Goteo\Model\Footprint;
-use Goteo\Model\Invest;
-// use Goteo\Model\User\DonorLocation;
-// use Goteo\Model\Project\ProjectLocation;
+use Goteo\Library\Text;
 use Goteo\Model\Filter\FilterLocation;
+use Goteo\Model\Invest;
+use Goteo\Model\Project;
+use Goteo\Util\Form\Type\BooleanType;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DatepickerType;
+use Goteo\Util\Form\Type\LocationType;
+use Goteo\Util\Form\Type\SubmitType;
+use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\TypeaheadType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraints;
+
 
 class FilterForm extends AbstractFormProcessor {
 
     public function createForm() {
-
         $model = $this->getModel();
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
-        $filter = $this->getModel();
-        $data = $options['data'];
-
-        $antiquity = [
-            '0' => Text::get('admin-filter-last-week'),
-            '1' => Text::get('admin-filter-last-month'),
-            '2' => Text::get('admin-filter-last-year'),
-            '3' => Text::get('admin-filter-from-new-year'),
-            '4' => Text::get('admin-filter-previous-year'),
-            '5' => Text::get('admin-filter-two-years-ago')
-        ];
-
-        $roles = [
-            'user' => Text::get('admin-filter-user'),
-            'donor' => Text::get('admin-filter-donor'),
-            'no-donor' => Text::get('admin-filter-no-donor'),
-            'promoter' => Text::get('admin-filter-promoter') ,
-            'matcher' => Text::get('admin-filter-matcher'),
-            'test' => Text::get('admin-filter-test')
-        ];
-        
-        $typeofdonor = [
-            'unique' => Text::get('admin-filter-type-unique'),
-            'multidonor' => Text::get('admin-filter-type-multidonor'),
-        ];
-
-        $donor_status = [
-            'pending' => Text::get('donor-status-pending'),
-            'completed' => Text::get('donor-status-completed'),
-            'processed' => Text::get('donor-status-processed'),
-            'validated' => Text::get('donor-status-validated'),
-            'declared' => Text::get('donor-status-declared'),
-            'rejected' => Text::get('donor-status-rejected')
-        ];
-
-        $sdgs = [];
-        foreach(Sdg::getList([],0,100) as $s) {
-            $sdgs['<img src="'.$s->getIcon()->getLink().'" class="icon"> '.$s->name] = $s->id;
-        }
-
-        $footprints = [];
-        foreach(Footprint::getList([],0,100) as $f) {
-            $footprints['<img src="'.$f->getIcon()->getLink().'" class="icon icon-3x"> '.$f->name] = $f->id;
-        }
-
-        // if ($model->project_location) {
-        //     $project_location = new ProjectLocation();
-        //     $project_location->location = $model->project_location;
-        //     $project_location->latitude = $model->project_latitude;
-        //     $project_location->longitude = $model->project_longitude;
-        //     $model->project_location = $project_location;
-        // } else {
-        //     $model->project_location = new ProjectLocation();
-        // }
-
-        // if ($model->donor_location) {
-        //     $donor_location = new DonorLocation();
-        //     $donor_location->location = $model->donor_location;
-        //     $donor_location->latitude = $model->donor_latitude;
-        //     $donor_location->longitude = $model->donor_longitude;
-        //     $model->donor_location = $donor_location;
-        // } else {
-        //     $model->donor_location = new DonorLocation();
-        // }
 
         $builder
-            ->add('name', 'text', array(
+            ->add('name', TextType::class, [
                 'label' => 'regular-title',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Constraints\NotBlank(),
-                ),
-            ))
-            ->add('description', 'text', array(
+                ],
+            ])
+            ->add('description', TextType::class, [
                 'label' => '',
                 'required' => true,
-                'constraints' => array(
+                'constraints' => [
                     new Constraints\NotBlank(),
-                )
-            ))
-            // ->add() // interests
-            ->add('role', 'choice', array(
+                ]
+            ])
+            ->add('role', ChoiceType::class, [
                 'label' => 'admin-filter-typeofuser',
-                'choices' => $roles,
+                'choices' => $this->getRolesChoices(),
                 'required' => true,
-                ))
-            ->add('predefineddata', 'choice', array(
+            ])
+            ->add('predefineddata', ChoiceType::class, [
                 'label' => 'admin-filter-predefined-date',
                 'required' => false,
-                'empty_value' => Text::get('admin-filter-predefined-date-choose'),
-                'choices' => $antiquity,
-            ))
-            ->add('startdate', 'datepicker', array(
+                'empty_data' => Text::get('admin-filter-predefined-date-choose'),
+                'choices' => $this->getAntiquityChoices(),
+            ])
+            ->add('startdate', DatepickerType::class, [
                 'label' => 'regular-date_in',
                 'required' => false,
-            )) 
-            ->add('enddate', 'datepicker', array(
+            ])
+            ->add('enddate', DatepickerType::class, [
                 'label' => 'regular-date_out',
                 'required' => false,
-            ))
-            ->add('projects', 'typeahead', [
+            ])
+            ->add('projects', TypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-projects',
                 'value_field' => 'name',
@@ -139,7 +76,7 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'project'
             ])
-            ->add('calls', 'typeahead', [
+            ->add('calls', TypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-calls',
                 'value_field' => 'name',
@@ -147,7 +84,7 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'call'
             ])
-            ->add('channels', 'typeahead', [
+            ->add('channels', TypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-channels',
                 'value_field' => 'name',
@@ -155,7 +92,7 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'channel'
             ])
-            ->add('matchers', 'typeahead', [
+            ->add('matchers', TypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-matchers',
                 'value_field' => 'name',
@@ -163,42 +100,42 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'sources' => 'matcher'
             ])
-            ->add('project_status', 'choice', array(
+            ->add('project_status', ChoiceType::class, [
                 'label' => 'admin-filter-project-status',
                 'required' => false,
-                'choices' => Project::status(),
-            ))
-            ->add('invest_status', 'choice', array(
+                'choices' => $this->getAssociativeArrayChoices(Project::status()),
+            ])
+            ->add('invest_status', ChoiceType::class, [
                 'label' => 'admin-filter-invest-status',
                 'required' => false,
-                'choices' => Invest::status(),
-            ))
-            ->add('donor_status', 'choice', array(
+                'choices' => $this->getAssociativeArrayChoices(Invest::status()),
+            ])
+            ->add('donor_status', ChoiceType::class, [
                 'label' => 'admin-filter-donor-status',
                 'required' => false,
-                'choices' => $donor_status
-            ))
-            ->add('typeofdonor', 'choice', array(
+                'choices' => $this->getDonorStatusChoices()
+            ])
+            ->add('typeofdonor', ChoiceType::class, [
                 'label' => 'admin-filter-typeofdonor',
                 'required' => false,
-                'choices' => $typeofdonor,
-            ))
-            ->add('foundationdonor', 'choice', array(
+                'choices' => $this->getTypeOfDonorChoices(),
+            ])
+            ->add('foundationdonor', ChoiceType::class, [
                 'required' => false,
                 'label' => 'admin-filter-type-foundation-donor',
-                'choices' => [Text::get('admin-no'), Text::get('admin-yes')]
-            ))
-            ->add('wallet', 'choice', array(
+                'choices' => $this->getNoYesChoices()
+            ])
+            ->add('wallet', ChoiceType::class, [
                 'required' => false,
-                'label' => Text::get('admin-user-wallet-amount'), 
-                'choices' => [Text::get('admin-no'), Text::get('admin-yes')]
-            ))
-            ->add('cert', 'choice', array(
+                'label' => Text::get('admin-user-wallet-amount'),
+                'choices' => $this->getNoYesChoices()
+            ])
+            ->add('cert', ChoiceType::class, [
                 'required' => false,
                 'label' => Text::get('home-advantages-certificates-title'),
-                'choices' => [Text::get('admin-no'), Text::get('admin-yes')]
-            ))
-            ->add('filter_location', 'location', [
+                'choices' => $this->getNoYesChoices()
+            ])
+            ->add('filter_location', LocationType::class, [
                 'label' => 'admin-filter-location',
                 'disabled' => $this->getReadonly(),
                 'location_object' => FilterLocation::get($model),
@@ -206,22 +143,83 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>'
             ])
-            ->add('forced', 'boolean', [
+            ->add('forced', BooleanType::class, [
                 'label' => 'admin-filter-forced',
                 'required' => false,
                 'attr' => [
                     'pre-help' => Text::get('admin-filter-forced-help')
-                    ]
+                ]
             ])
-            ->add('submit', 'submit', [
+            ->add('submit', SubmitType::class, [
                 'label' => 'regular-submit',
                 'attr' => ['class' => 'btn btn-cyan'],
                 'icon_class' => 'fa fa-save'
-            ])
-            ;
-        
-            
+            ]);
+
         return $this;
+    }
+
+    private function getAssociativeArrayChoices($associativeArray): array
+    {
+        $choices = [];
+
+        foreach ($associativeArray as $k => $v) {
+            $choices[$v] = $k;
+        }
+
+        return $choices;
+    }
+
+    private function getAntiquityChoices(): array
+    {
+        return [
+            Text::get('admin-filter-last-week') => 0,
+            Text::get('admin-filter-last-month') => 1,
+            Text::get('admin-filter-last-year') => 2,
+            Text::get('admin-filter-from-new-year') => 3,
+            Text::get('admin-filter-previous-year') => 4,
+            Text::get('admin-filter-two-years-ago') => 5
+        ];
+    }
+
+    private function getRolesChoices(): array
+    {
+        return [
+            Text::get('admin-filter-user') => 'user',
+            Text::get('admin-filter-donor') => 'donor',
+            Text::get('admin-filter-no-donor') => 'no-donor',
+            Text::get('admin-filter-promoter') => 'promoter',
+            Text::get('admin-filter-matcher') => 'matcher',
+            Text::get('admin-filter-test') => 'test'
+        ];
+    }
+
+    private function getDonorStatusChoices(): array
+    {
+        return [
+            Text::get('donor-status-pending') => 'pending',
+            Text::get('donor-status-completed') => 'completed',
+            Text::get('donor-status-processed') => 'processed',
+            Text::get('donor-status-validated') => 'validated',
+            Text::get('donor-status-declared') => 'declared',
+            Text::get('donor-status-rejected') => 'rejected'
+        ];
+    }
+
+    private function getTypeOfDonorChoices(): array
+    {
+        return [
+            Text::get('admin-filter-type-unique') => 'unique',
+            Text::get('admin-filter-type-multidonor') => 'multidonor',
+        ];
+    }
+
+    private function getNoYesChoices(): array
+    {
+        return [
+            Text::get('admin-no') => 0,
+            Text::get('admin-yes') => 1
+        ];
     }
 
     public function save(FormInterface $form = null, $force_save = false) {
@@ -232,29 +230,29 @@ class FilterForm extends AbstractFormProcessor {
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
 
-        $model->projects = array();
-        $model->calls = array();
-        $model->channels = array();
-        $model->matchers = array();
-        $model->footprints = array();
-        $model->sdgs = array();
+        $model->projects = [];
+        $model->calls = [];
+        $model->channels = [];
+        $model->matchers = [];
+        $model->footprints = [];
+        $model->sdgs = [];
 
-        foreach($data['projects'] as $key => $value) {
-            if (!empty($value)) array_push($model->projects,$value);
+        foreach($data['projects'] as $value) {
+            if (!empty($value)) array_push($model->projects, $value);
         }
-        foreach($data['calls'] as $key => $value) {
-            if (!empty($value)) array_push($model->calls,$value);
+        foreach($data['calls'] as $value) {
+            if (!empty($value)) array_push($model->calls, $value);
         }
-        foreach($data['channels'] as $key => $value) {
-            if (!empty($value)) array_push($model->channels,$value);
+        foreach($data['channels'] as $value) {
+            if (!empty($value)) array_push($model->channels, $value);
         }
-        foreach($data['matchers'] as $key => $value) {
-            if (!empty($value)) array_push($model->matchers,$value);
+        foreach($data['matchers'] as $value) {
+            if (!empty($value)) array_push($model->matchers, $value);
         }
-        foreach($data['sdgs'] as $key => $value) {
+        foreach($data['sdgs'] as $value) {
             if (!empty($value)) array_push($model->sdgs, $value);
         }
-        foreach($data['footprints'] as $key => $value) {
+        foreach($data['footprints'] as $value) {
             if (!empty($value)) array_push($model->footprints, $value);
         }
 

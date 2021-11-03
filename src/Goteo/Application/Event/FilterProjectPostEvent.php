@@ -12,7 +12,7 @@ namespace Goteo\Application\Event;
 
 use Goteo\Model\Blog\Post;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class FilterProjectPostEvent extends Event {
     protected $post;

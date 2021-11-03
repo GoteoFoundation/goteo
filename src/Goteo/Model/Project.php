@@ -11,26 +11,26 @@
 namespace Goteo\Model;
 
 use Goteo\Application\App;
-use Goteo\Application\Exception;
-use Goteo\Application\Config;
-use Goteo\Application\Session;
 use Goteo\Application\AppEvents;
-use Goteo\Application\Event\ProjectValidationEvent;
+use Goteo\Application\Config;
 use Goteo\Application\Currency;
+use Goteo\Application\Event\ProjectValidationEvent;
+use Goteo\Application\Exception;
 use Goteo\Application\Lang;
-use Goteo\Model\SocialCommitment;
-use Goteo\Model\Message;
+use Goteo\Application\Session;
+use Goteo\Core\Model;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
+use Goteo\Model\Location\LocationInterface;
 use Goteo\Model\Project\Account;
 use Goteo\Model\Project\Conf as ProjectConf;
 use Goteo\Model\Project\ProjectLocation;
-use Goteo\Model\Location\LocationInterface;
+use PDOException;
+use function array_empty;
 
-class Project extends \Goteo\Core\Model {
+class Project extends Model {
 
     use Traits\SdgRelationsTrait;
-
 
     // PROJECT STATUS IDs
     const STATUS_DRAFT       = -1; // is this really necessary?
@@ -52,7 +52,6 @@ class Project extends \Goteo\Core\Model {
         $status,   // Project status
         $progress, // puntuation %
         $amount, // Current donated amount
-
         $user, // owner's user information
 
         // Register contract data
@@ -84,7 +83,6 @@ class Project extends \Goteo\Core\Model {
         $post_zipcode = null,
         $post_location = null,
         $post_country = null,
-
 
         // Edit project description
         $name,
@@ -173,7 +171,6 @@ class Project extends \Goteo\Core\Model {
 
         $tagmark = null,  // banderolo a mostrar
 
-
         $noinvest = 0,
         $watch = 0,
         $days_round1 = 40,
@@ -182,13 +179,10 @@ class Project extends \Goteo\Core\Model {
         $help_cost = 0,
         $help_license= 0,
         $callInstance = null, // si está en una convocatoria
-
         // Data about political participation outside Goteo
         $sign_url = '',
         $sign_url_action = ''
-
     ;
-
 
     public function __construct() {
         $args = func_get_args();
@@ -198,11 +192,8 @@ class Project extends \Goteo\Core\Model {
 
     /**
      * Sobrecarga de métodos 'getter'.
-     *
-     * @param type string $name
-     * @return type mixed
      */
-    public function __get ($name) {
+    public function __get (string $name) {
         if($name == "call" || $name == "called") { // si está en una convocatoria
             return $this->getCall();
         }
@@ -219,14 +210,12 @@ class Project extends \Goteo\Core\Model {
             }
             return $cost;
         }
+
         return $this->$name;
     }
 
-
     /**
      * Returns an array of project languages
-     * @param  [type] $project_id [description]
-     * @return [type]             [description]
      */
     public function getLangs() {
         $sql = 'SELECT lang FROM project WHERE id = :id
@@ -239,6 +228,7 @@ class Project extends \Goteo\Core\Model {
         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $lang) {
             $langs[$lang->lang] = Lang::getName($lang->lang);
         }
+
         return $langs;
     }
 
@@ -449,13 +439,13 @@ class Project extends \Goteo\Core\Model {
         $this->phone = $userPersonal->phone;
         $this->address = $userPersonal->address;
         $this->zipcode = $userPersonal->zipcode;
-        $this->location = $userPersonal->location ? $userPersonal->location : $userProfile->location;
-        $this->country = $userPersonal->country ? $userPersonal->country : Check::country();
-        $this->project_location = $userPersonal->location ? $userPersonal->location : $userProfile->location;
+        $this->location = $userPersonal->location ?: $userProfile->location;
+        $this->country = $userPersonal->country ?: Check::country();
+        $this->project_location = $userPersonal->location ?: $userProfile->location;
 
         try {
             $this->dbInsert(['id','name','subtitle','social_commitment','social_commitment_description','lang','currency','currency_rate','status','progress','owner','node','amount','days','created','contract_name','contract_nif','phone','address','zipcode','location','country','project_location']);
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = "ERROR creating new project [{$this->id}]!\n" . $e->getMessage();
             return false;
         }
@@ -570,16 +560,14 @@ class Project extends \Goteo\Core\Model {
             ";
 
             $values = array(':id' => $id,':lang' => $lang);
-            // if($lang) die(\sqldbg($sql, $values));
 
             $query = self::query($sql, $values);
             $project = $query->fetchObject(__CLASS__);
 
-            if (!$project instanceof \Goteo\Model\Project) {
+            if (!$project instanceof Project) {
                 throw new Exception\ModelNotFoundException(Text::get('fatal-error-project'));
             }
 
-            // datos del nodo
             $project->nodeData = new Node;
             $project->nodeData->id = $project->node;
             $project->nodeData->name = $project->node_name;
@@ -587,8 +575,6 @@ class Project extends \Goteo\Core\Model {
             $project->nodeData->owner_background = $project->node_owner_background;
             if($project->node_url) $project->nodeData->url = $project->node_url;
             $project->nodeData->active = $project->node_active;
-
-            // label
             $project->nodeData->label = Image::get($project->node_label);
 
              //para diferenciar el único nodo de los canales
@@ -600,41 +586,30 @@ class Project extends \Goteo\Core\Model {
                 $project->video = new Project\Media($project->video);
             }
 
-            // owner
             $project->user = $project->getOwner();
-
-            //all galleries
             $project->all_galleries = Project\Image::getGalleries($project->id);
-            //Main gallery
             $project->gallery = $project->all_galleries[''];
             $project->secGallery = $project->all_galleries;
 
             // image from main gallery
             if (empty($project->image)) {
                 $project->image = Project\Image::setImage($project->id, $project->gallery);
-            }
-            else {
+            } else {
                 $project->image = Image::get($project->image);
             }
 
-            // categorias
             $project->categories = Project\Category::get($id);
-
-            // costes y los sumammos
             $project->costs = Project\Cost::getAll($id, $lang);
             $project->minmax();
 
             // compatibility initialization
-            // retornos colectivos
             $project->getSocialRewards($lang);
-            // retornos individuales
             $project->getIndividualRewards($lang);
 
             // colaboraciones
             $project->supports = Project\Support::getAll($id, $lang);
 
             // Fin contenidos adicionales
-
 
             // extra conf
             if (empty($project->days_round1)) $project->days_round1 = 40;
@@ -652,7 +627,6 @@ class Project extends \Goteo\Core\Model {
                 $project->amount = Invest::invested($id);
             }
             $project->invested = $project->amount; // compatibilidad, ->invested no debe usarse
-
 
             // campos calculados para los números del menu
 
@@ -673,14 +647,10 @@ class Project extends \Goteo\Core\Model {
                 $project->num_posts =  Blog\Post::numPosts($id);
             }
 
-
-            // calculos de días y banderolos
             $project->setDays();
             $project->setTagmark();
 
-            // Percent
-
-            $project->percent=$project->getAmountPercent();
+            $project->percent = $project->getAmountPercent();
 
             // fecha final primera ronda (fecha campaña + PRIMERA_RONDA)
             if (!empty($project->published)) {
@@ -695,14 +665,13 @@ class Project extends \Goteo\Core\Model {
 
             return $project;
 
-        } catch(\PDOException $e) {
+        } catch(PDOException $e) {
             throw new Exception\ModelException($e->getMessage());
         }
     }
 
     /**
      * Gets the call instance if exists
-     * @return [type] [description]
      */
     public function getCall() {
         if($this->callInstance) return $this->callInstance;
@@ -710,9 +679,7 @@ class Project extends \Goteo\Core\Model {
             // podría estar asignado a alguna convocatoria
             $call = Call\Project::calledMini($this->id);
             if ( $call instanceof Call ) {
-
-                // cuanto han recaudado
-                // de los usuarios
+                // cuanto han recaudado de los usuarios
                 if (!isset($this->amount_users)) {
                     $this->amount_users = Invest::invested($this->id, 'users', $call->id);
                 }
@@ -731,7 +698,6 @@ class Project extends \Goteo\Core\Model {
     /**
      * Gets an array of Matcher instances if exists in any of them
      * @param $status to boolean false to return all status
-     * @return [type] [description]
      */
     public function getMatchers($status = false, $filters = []) {
         if(!$this->matcherInstances) $this->matcherInstances = [];
@@ -740,7 +706,6 @@ class Project extends \Goteo\Core\Model {
         $this->matcherInstances[$key] = Matcher::getFromProject($this->id, $status, $filters);
         return $this->matcherInstances[$key];
     }
-
 
     // returns the current user
     public function getOwner() {
@@ -857,7 +822,6 @@ class Project extends \Goteo\Core\Model {
         }
 
         return date('d/m/Y', strtotime($date));
-
     }
 
     /**
@@ -928,7 +892,6 @@ class Project extends \Goteo\Core\Model {
         return $this->imageInstance;
     }
 
-
     /**
      * Handy method to know if project can be edited (not in campaing or finished)
      */
@@ -952,9 +915,9 @@ class Project extends \Goteo\Core\Model {
 
     /**
      * Checks if project is a draft (must be in a EDIT/REVIEW status)
-     * @return boolean [description]
      */
-    function isDraft() {
+    function isDraft(): bool
+    {
         if($this->status > self::STATUS_REVIEWING) return false;
         $md5 = $this->id;
         // alternative: preg_match('/^[a-f0-9]{32}$/', $md5);
@@ -964,38 +927,42 @@ class Project extends \Goteo\Core\Model {
     /**
      * Handy method to know if project is in approved for campaing
      */
-    public function isApproved() {
+    public function isApproved(): bool
+    {
         return $this->status > self::STATUS_REVIEWING;
     }
 
     /**
      * Handy method to know if project is approved and not failed
      */
-    public function isAlive() {
+    public function isAlive(): bool
+    {
         return in_array($this->status, [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED]);
     }
 
     /**
      * Handy method to know if project is unfunded (ie: archived, failed)
      */
-    public function isDead() {
+    public function isDead(): bool
+    {
         return $this->status == self::STATUS_UNFUNDED;
     }
 
     /**
      * Handy method to know if project is funded
      */
-    public function isFunded() {
+    public function isFunded(): bool
+    {
         return in_array($this->status, [self::STATUS_FUNDED, self::STATUS_FULFILLED]);
     }
 
     /**
      * Handy method to know if project is funded and fulfilled the social return
      */
-    public function isFulfilled() {
+    public function isFulfilled(): bool
+    {
         return $this->status == self::STATUS_FULFILLED;
     }
-
 
     /*
      * Checks if the project has reached the minimum amount (without status checking)
@@ -1025,7 +992,6 @@ class Project extends \Goteo\Core\Model {
         return ($query->fetchColumn() == $this->id);
     }
 
-
     /*
      *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
      */
@@ -1047,21 +1013,17 @@ class Project extends \Goteo\Core\Model {
                                   WHERE project.id = ?", array($id));
             $project = $query->fetchObject(__CLASS__);
 
-            if (!$project instanceof \Goteo\Model\Project) {
+            if (!$project instanceof Project) {
                 throw new Exception\ModelNotFoundException(Text::get('fatal-error-project'));
             }
 
             // primero, que no lo grabe
             $project->dontsave = true;
-
-            // owner
             $project->user = $project->getOwner();
-
             $project->image = Image::get($project->image);
 
             return $project;
-
-        } catch(\PDOException $e) {
+        } catch(PDOException $e) {
             throw new Exception\ModelException($e->getMessage());
         }
     }
@@ -1071,8 +1033,8 @@ class Project extends \Goteo\Core\Model {
      */
     public static function getMedium($id, $lang = null) {
         if(empty($lang)) $lang = Lang::current();
-        try {
 
+        try {
             $sql ="
             SELECT
                 project.*,
@@ -1097,7 +1059,7 @@ class Project extends \Goteo\Core\Model {
             $query = self::query($sql, $values);
             $project = $query->fetchObject(__CLASS__);
 
-            if (!$project instanceof \Goteo\Model\Project) {
+            if (!$project instanceof Project) {
                 throw new Exception\ModelNotFoundException(Text::get('fatal-error-project'));
             }
             $project->project = $project->id;
@@ -1127,7 +1089,6 @@ class Project extends \Goteo\Core\Model {
                 }
             }
 
-
             // aquí usará getWidget para sacar todo esto
             $project = self::getWidget($project);
 
@@ -1140,7 +1101,7 @@ class Project extends \Goteo\Core\Model {
 
             return $project;
 
-        } catch(\PDOException $e) {
+        } catch(PDOException $e) {
             throw new Exception\ModelException($e->getMessage());
         }
     }
@@ -1209,7 +1170,6 @@ class Project extends \Goteo\Core\Model {
         $Widget->setTagmark(); // esto no hace consulta
 
         return $Widget;
-
     }
 
     /*
@@ -1295,9 +1255,9 @@ class Project extends \Goteo\Core\Model {
     public static function getConsultantsForProject (Project $project) {
 
         $list = array();
-
         $sqlFilter = '';
         $values = array();
+
         if ($project) {
             $sqlFilter .= ' WHERE user_project.project = :project';
             $values[':project'] = $project->id;
@@ -1336,7 +1296,6 @@ class Project extends \Goteo\Core\Model {
         return $list;
     }
 
-
     /*
      * Asignar a un usuario como asesor de un proyecto
      * @return: boolean
@@ -1353,11 +1312,10 @@ class Project extends \Goteo\Core\Model {
                 $errors[] = 'No se ha creado el registro `user_project`';
                 return false;
             }
-        } catch(\PDOException $e) {
+        } catch(PDOException $e) {
             $errors[] = 'No se ha podido asignar al usuario {$user} como asesor del proyecto {$this->id}.' . $e->getMessage();
             return false;
         }
-
     }
 
     /*
@@ -1376,7 +1334,7 @@ class Project extends \Goteo\Core\Model {
             } else {
                 return false;
             }
-        } catch(\PDOException $e) {
+        } catch(PDOException $e) {
             $errors[] = 'No se ha podido quitar al usuario {$user} del asesoramiento del proyecto {$this->id}. ' . $e->getMessage();
             return false;
         }
@@ -1387,21 +1345,15 @@ class Project extends \Goteo\Core\Model {
      *  Este método se llama en save()
      *
      *  Solo tiene sentido si han seleccionado una divisa diferente a la de por defecto
-     *
      */
     public function setCurrency() {
 
         if ($this->currency == Currency::getDefault('id')) {
-
             $this->currency_rate = 1;
-
         } elseif (empty($this->currency_rate) || $this->currency_rate == 1) {
-
             // solo grabamos ratio la primera vez
             $this->currency_rate = Currency::rate($this->currency);
-
         }
-
     }
 
     /*
@@ -1497,17 +1449,15 @@ class Project extends \Goteo\Core\Model {
         try {
             $sql = "REPLACE INTO project_open_tag (`project`, `open_tag`) VALUES(:project, :open_tag)";
             if (self::query($sql, $values)) {
-
                 return true;
             } else {
                 $errors[] = 'No se ha creado el registro `project_open_tag`';
                 return false;
             }
-        } catch(\PDOException $e) {
+        } catch(PDOException $e) {
             $errors[] = 'No se ha podido asignar la agrupacion {$open_tag} al proyecto {$this->id}.' . $e->getMessage();
             return false;
         }
-
     }
 
     /*
@@ -1526,15 +1476,14 @@ class Project extends \Goteo\Core\Model {
             } else {
                 return false;
             }
-        } catch(\PDOException $e) {
+        } catch(PDOException $e) {
             $errors[] = 'No se ha podido quitar la agrupación {$open_tag} al proyecto {$this->id}. ' . $e->getMessage();
             return false;
         }
     }
 
     /*
-     *  Para ver que tagmark le toca
-     *  compatibility function
+     *  Para ver que tagmark le toca compatibility function
      */
     public function setTagmark() {
         $this->getTagmark();
@@ -1642,10 +1591,7 @@ class Project extends \Goteo\Core\Model {
                     // getGallery en Project\Image  procesa todas las secciones
                     $galleries = Project\Image::getGalleries($this->id);
                     Project\Image::setImage($this->id, $galleries['']);
-
-                }
-                else {
-                    // print_r($errors);
+                } else {
                     // Si hay errores al colgar una imagen, mostrar error correspondiente
                     $fail = true;
                 }
@@ -1662,7 +1608,6 @@ class Project extends \Goteo\Core\Model {
                     $fail = true;
                     unset($this->project_location);
                 }
-
             }
 
             $fields = array(
@@ -1722,8 +1667,7 @@ class Project extends \Goteo\Core\Model {
             try {
                 //automatic $this->id assignation
                 $this->dbUpdate($fields);
-
-            } catch(\PDOException $e) {
+            } catch(PDOException $e) {
                 $errors[] = "Error updating Project " . $e->getMessage();
                 $fail = true;
             }
@@ -1887,7 +1831,7 @@ class Project extends \Goteo\Core\Model {
             //listo
             return !$fail;
 
-        } catch(\PDOException $e) {
+        } catch(PDOException $e) {
             $errors[] = 'Error sql al grabar el proyecto.' . $e->getMessage();
             //Text::get('save-project-fail');
             return false;
@@ -1926,7 +1870,7 @@ class Project extends \Goteo\Core\Model {
 
         if ($this->status == 1 &&
             $progress >= 80 &&
-            \array_empty($this->errors)
+            array_empty($this->errors)
             ) {
             $this->finishable = true;
         }
@@ -1943,7 +1887,6 @@ class Project extends \Goteo\Core\Model {
     public function getValidation() {
 
         $event = App::dispatch(AppEvents::PROJECT_VALIDATION, new ProjectValidationEvent($this));
-
         $scores = $event->calculate()->getScores();
         $scores->errors = $event->getErrors();
         $scores->fields = $event->getFields();
@@ -1972,7 +1915,7 @@ class Project extends \Goteo\Core\Model {
                 $errors[] = 'SQL error while setting reviewing status';
             }
 
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = 'Error on setting project to review. ' . $e->getMessage();
         }
         return false;
@@ -1987,7 +1930,7 @@ class Project extends \Goteo\Core\Model {
             $sql = "UPDATE project SET status = :status WHERE id = :id";
             self::query($sql, array(':status' => self::STATUS_EDITING, ':id' => $this->id));
             return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = 'Fallo al habilitar para edición. ' . $e->getMessage();
             return false;
         }
@@ -2006,7 +1949,7 @@ class Project extends \Goteo\Core\Model {
             $this->status = $status;
             $this->published = $date;
             // update fee in bank account if exists
-            
+
             /*$query = static::query("SELECT fee FROM project_account WHERE project = ?", array($this->id));
             $fee = $query->fetchObject();
             if($fee && $fee->fee != Config::get('fee')) {
@@ -2021,9 +1964,8 @@ class Project extends \Goteo\Core\Model {
                 Call\Project::numRunningProjects($this->called->id);
             }
 
-
             return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = 'Fallo al publicar el proyecto. ' . $e->getMessage();
             return false;
         }
@@ -2038,7 +1980,7 @@ class Project extends \Goteo\Core\Model {
             $sql = "UPDATE project SET status = :status, closed = :closed WHERE id = :id";
             self::query($sql, array(':status'=>0, ':closed'=>date('Y-m-d'), ':id' => $this->id));
             return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
             return false;
         }
@@ -2053,7 +1995,7 @@ class Project extends \Goteo\Core\Model {
             $sql = "UPDATE project SET status = :status, closed = :closed WHERE id = :id";
             self::query($sql, array(':status'=>6, ':closed'=>date('Y-m-d'), ':id' => $this->id));
             return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
             return false;
         }
@@ -2073,7 +2015,7 @@ class Project extends \Goteo\Core\Model {
             }
 
             return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = 'Fallo al dar por financiado el proyecto. ' . $e->getMessage();
             return false;
         }
@@ -2092,7 +2034,7 @@ class Project extends \Goteo\Core\Model {
             }
 
             return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = 'Fallo SQL al marcar fecha de paso de ronda. ' . $e->getMessage();
             return false;
         }
@@ -2113,7 +2055,7 @@ class Project extends \Goteo\Core\Model {
             }
 
             return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = 'Fallo al dar el retorno por cunplido para el proyecto. ' . $e->getMessage();
             return false;
         }
@@ -2128,7 +2070,7 @@ class Project extends \Goteo\Core\Model {
             $sql = "UPDATE project SET status = :status WHERE id = :id";
             self::query($sql, array(':status'=>self::STATUS_FUNDED, ':id' => $this->id));
             return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = 'Fallo al dar el retorno pendiente para el proyecto. ' . $e->getMessage();
             return false;
         }
@@ -2159,7 +2101,7 @@ class Project extends \Goteo\Core\Model {
             // si todo va bien, commit y cambio el id de la instancia
             self::query("COMMIT");
             return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             self::query("ROLLBACK");
             $sql = "UPDATE project SET status = :status WHERE id = :id";
             self::query($sql, array(':status'=>self::STATUS_REJECTED, ':id' => $this->id));
@@ -2183,7 +2125,6 @@ class Project extends \Goteo\Core\Model {
         return false;
     }
 
-
     /**
      * Creates a new project for a user and node/channel
      */
@@ -2193,8 +2134,8 @@ class Project extends \Goteo\Core\Model {
         if(empty($node_id)) $node_id = Config::get('current_node');
 
         $project = new self(array('owner' => $user->id));
-
         $errors = array();
+
         if ($project->create($data, $node_id, $errors)) {
             return $project;
         }
@@ -2226,20 +2167,16 @@ class Project extends \Goteo\Core\Model {
                 // project_conf, project_image, project_category,
                 // costs, reward, support, message, invest, review, project_lang
 
-                // feed
                 $feeds = self::query("SELECT * FROM feed WHERE url like :id", array(':id'=>"%{$this->id}%"));
                 foreach ($feeds->fetchAll(\PDO::FETCH_OBJ) as $feed) {
                     $title = str_replace($this->id, $newid, $feed->title);
                     $html = str_replace($this->id, $newid, $feed->html);
                    self::query("UPDATE `feed` SET `title` = :title, `html` = :html  WHERE id = :id", array(':title' => $title, ':html' => $html, ':id' => $feed->id));
-
                 }
 
-                // feed
                 $feeds2 = self::query("SELECT * FROM feed WHERE target_type = 'project' AND target_id = :id", array(':id' => $this->id));
                 foreach ($feeds2->fetchAll(\PDO::FETCH_OBJ) as $feed2) {
                     self::query("UPDATE `feed` SET `target_id` = :newid  WHERE id = :id;", [':newid' => $newid, ':id' => $feed2->id]);
-
                 }
 
                 self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid' => $newid, ':id'=> $this->id));
@@ -2251,12 +2188,12 @@ class Project extends \Goteo\Core\Model {
                 self::query("COMMIT");
                 $this->id = $newid;
                 return true;
-            } catch (\PDOException $e) {
+            } catch (PDOException $e) {
                 self::query("ROLLBACK");
                 throw $e;
             }
 
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             throw new Exception\ModelException("Rebase project [{$this->id}] to [$newid] failed: " . $e->getMessage());
         }
 
@@ -2267,8 +2204,7 @@ class Project extends \Goteo\Core\Model {
      *  Para verificar id única
      */
     public static function checkId($id, $num = 1) {
-        try
-        {
+        try {
             $query = self::query("SELECT id FROM project WHERE id = :id", array(':id' => $id));
             $exist = $query->fetchObject();
             // si  ya existe, cambiar las últimas letras por un número
@@ -2282,12 +2218,10 @@ class Project extends \Goteo\Core\Model {
                 $id = self::checkId($id, $num);
             }
             return $id;
-        }
-        catch (\PDOException $e) {
+        } catch (PDOException $e) {
             throw new Exception\ModelException("Failed auto-id for project [$id]. " . $e->getMessage());
         }
     }
-
 
     /*
      *  Para actualizar el minimo/optimo de costes
@@ -2300,8 +2234,7 @@ class Project extends \Goteo\Core\Model {
             if ($item->required == 1) {
                 $this->mincost += $item->amount;
                 $this->maxcost += $item->amount;
-            }
-            else {
+            } else {
                 $this->maxcost += $item->amount;
             }
         }
@@ -2325,12 +2258,12 @@ class Project extends \Goteo\Core\Model {
         $values[':owner'] = $owner;
 
         if(self::default_lang($lang) === Config::get('lang')) {
-            $different_select=" 
+            $different_select="
             IFNULL(project_lang.name, project.name) as name,
             IFNULL(project_lang.description, project.description) as description";
         }
         else {
-            $different_select=" 
+            $different_select="
             IFNULL(project_lang.name, project.name) as name,
             IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
             $eng_join=" LEFT JOIN project_lang as eng
@@ -2417,12 +2350,12 @@ class Project extends \Goteo\Core\Model {
         $values[':user'] = $user;
 
         if(self::default_lang($lang) === Lang::current()) {
-            $different_select=" 
+            $different_select="
             IFNULL(project_lang.name, project.name) as name,
             IFNULL(project_lang.description, project.description) as description";
         }
         else {
-            $different_select=" 
+            $different_select="
             IFNULL(project_lang.name, project.name) as name,
             IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
             $eng_join=" LEFT JOIN project_lang as eng
@@ -2450,11 +2383,9 @@ class Project extends \Goteo\Core\Model {
             return (int) self::query($sql, [':user' => $user])->fetchColumn();
         }
 
-        if($limit)
-        {
+        if ($limit) {
             $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
         }
-
 
         $sql ="
             SELECT
@@ -2513,7 +2444,6 @@ class Project extends \Goteo\Core\Model {
         return $projects;
     }
 
-
     public static function getBySDGs($sdgs = array(), $offset, $limit = 10, $count = false)
     {
         $lang = Lang::current();
@@ -2529,8 +2459,7 @@ class Project extends \Goteo\Core\Model {
             return (int) self::query($sql)->fetchColumn();
         }
 
-        if($limit)
-        {
+        if ($limit) {
             $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
         }
 
@@ -2573,14 +2502,12 @@ class Project extends \Goteo\Core\Model {
             ORDER BY  project.id ASC
             $sql_limit
             ";
-            // die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
             $projects[] = self::getWidget($proj);
         }
 
         return $projects;
-
     }
 
     public static function getByFootprint($filter = array(), $offset = 0, $limit = 10, $count = false)
@@ -2613,11 +2540,9 @@ class Project extends \Goteo\Core\Model {
             return (int) self::query($sql)->fetchColumn();
         }
 
-        if($limit)
-        {
+        if ($limit) {
             $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
         }
-
 
         $sql ="
             SELECT
@@ -2660,14 +2585,12 @@ class Project extends \Goteo\Core\Model {
             $order
             $sql_limit
             ";
-            // die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
             $projects[] = self::getWidget($proj);
         }
 
         return $projects;
-
     }
 
 
@@ -2700,11 +2623,9 @@ class Project extends \Goteo\Core\Model {
             return (int) self::query($sql)->fetchColumn();
         }
 
-        if($limit)
-        {
+        if ($limit) {
             $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
         }
-
 
         $sql ="
             SELECT
@@ -2746,7 +2667,6 @@ class Project extends \Goteo\Core\Model {
             ORDER BY project.published DESC
             $sql_limit
             ";
-            // die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
             $projects[] = self::getWidget($proj);
@@ -2755,13 +2675,10 @@ class Project extends \Goteo\Core\Model {
         return $projects;
     }
 
-
     /**
-     * Lista de proyectos publicados
      * @param $type string
      * @param $node string
      * @param $count returns a integer with the number of elements instead the list
-     * @return: array of Project
      */
     public static function published($filter = array(), $node = null, $offset = 0, $limit = 10, $count = false)
     {
@@ -2856,7 +2773,6 @@ class Project extends \Goteo\Core\Model {
             $order = 'RAND()';
         }
 
-
         // filter by category?
         if(array_key_exists('category', $filter)) {
             if(!is_array($filter['category'])) $filter['category'] = array($filter['category']);
@@ -2873,12 +2789,12 @@ class Project extends \Goteo\Core\Model {
         }
 
         if(self::default_lang($lang) === Config::get('lang')) {
-            $lang_select = ' 
+            $lang_select = '
             IFNULL(project_lang.name, project.name) as name,
             IFNULL(project_lang.description, project.description) AS description';
         }
         else {
-            $lang_select = ' 
+            $lang_select = '
             IFNULL(project_lang.name, IFNULL(eng.name, project.name)) AS name,
             IFNULL(project_lang.description, IFNULL(eng.description, project.description)) AS description';
             $lang_join = " LEFT JOIN project_lang AS eng
@@ -2988,7 +2904,6 @@ class Project extends \Goteo\Core\Model {
                 continue;
             */
 
-
             $the_proj = self::get($proj->id); // ya coge la configuración de rondas
             // porcentaje conseguido
             $the_proj->percent = 0;
@@ -3006,31 +2921,24 @@ class Project extends \Goteo\Core\Model {
      * Obtiene los proyectos que llevan $months meses con status=4 (proyecto financiado) y
      *
      * @param int $months
-     * @return $projects
      */
     public static function getFunded($months = 10) {
         $success_date = date('Y-m-d', strtotime("-$months month"));
 
         $filter = ['status' => self::STATUS_FUNDED, 'success' => $success_date];
         $total = self::getList($filter, null, 0, 0, true);
-        $projects = self::getList($filter, null, 0, $total);
 
-        return $projects;
+        return self::getList($filter, null, 0, $total);
     }
-
 
     /**
      * Busca proyectos en estado revisión (2) que tengan fecha de publicación ese día.
-     *
-     * @param type $date
-     * @return $projects
      */
     public static function getPublishToday() {
         $filter = ['status' => self::STATUS_REVIEWING, 'published' => date('Y-m-d')];
         $total = self::getList($filter, null, 0, 0, true);
-        $projects = self::getList($filter, null, 0, $total);
 
-        return $projects;
+        return self::getList($filter, null, 0, $total);
     }
 
     /**
@@ -3046,15 +2954,9 @@ class Project extends \Goteo\Core\Model {
     public static function getList($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false) {
 
         $projects = array();
-
         $values = array();
         $owners = array();
-
-        $sqlOrder = '';
-
         $not_null_date_publishing='';
-
-        // los filtros
 
         // pre-filtro de nombre|email de usuario
         if (!empty($filters['name'])) {
@@ -3185,7 +3087,6 @@ class Project extends \Goteo\Core\Model {
         }
         if (!empty($filters['name'])) {
             $sqlFilter .= " AND project.owner IN ('".implode("','", $owners)."')";
-           // $values[':user'] = "%{$filters['name']}%";
         }
         if (!empty($filters['proj_name'])) {
             $sqlFilter .= " AND project.name LIKE :name";
@@ -3226,26 +3127,20 @@ class Project extends \Goteo\Core\Model {
             if(empty($filters['order'])) {
                 $order = 'ORDER BY Distance ASC';
             }
-            // print_r($loc);die;
         }
 
         if (!empty($filters['called'])) {
-
             switch ($filters['called']) {
-
-                //en cualquier convocatoria
                 case 'all':
                     $sqlFilter .= " AND project.id IN (
                     SELECT project
                     FROM call_project)";
                     break;
-                //en ninguna convocatoria
                 case 'none':
                     $sqlFilter .= " AND project.id NOT IN (
                     SELECT project
                     FROM call_project)";
                     break;
-                //filtro en esta convocatoria
                 default:
                     $sqlFilter .= " AND project.id IN (
                     SELECT project
@@ -3254,28 +3149,21 @@ class Project extends \Goteo\Core\Model {
                     )";
                     $values[':called'] = $filters['called'];
                     break;
-
             }
-
         }
 
         if (!empty($filters['matcher'])) {
-
             switch ($filters['matcher']) {
-
-                //en cualquier convocatoria
                 case 'all':
                     $sqlFilter .= " AND project.id IN (
                     SELECT project_id
                     FROM matcher_project WHERE status='active')";
                     break;
-                //en ninguna convocatoria
                 case 'none':
                     $sqlFilter .= " AND project.id NOT IN (
                     SELECT project_id
                     FROM matcher_project WHERE status='active')";
                     break;
-                //filtro en esta convocatoria
                 default:
                     $sqlFilter .= " AND project.id IN (
                     SELECT project_id
@@ -3284,7 +3172,6 @@ class Project extends \Goteo\Core\Model {
                     $values[':matcher'] = $filters['matcher'];
                     break;
             }
-
         }
 
         if(!empty($filters['type'])) {
@@ -3356,15 +3243,13 @@ class Project extends \Goteo\Core\Model {
             $sqlFilter .= " AND project.id NOT IN (SELECT id FROM project_location)";
         }
 
-        if(!empty($filters['gender']))
-        {
+        if(!empty($filters['gender'])) {
             $sqlFilter .= " AND user.gender = :gender";
             $values[':gender'] = $filters['gender'];
         }
 
         // order
-        if (in_array($filters['order'], ['updated', 'name']))
-        {
+        if (in_array($filters['order'], ['updated', 'name'])) {
             $sqlOrder = " ORDER BY project.{$filters['order']} DESC";
         }
 
@@ -3415,16 +3300,13 @@ class Project extends \Goteo\Core\Model {
                 FROM (SELECT $fields $from $innerJoin WHERE $where) as FirstCut
                 WHERE
                 {$location_parts['where']}";
-                // print_r($values);die($sql);
             } else {
-                // Return count
                 $sql = "SELECT $what
                     $from
                     $innerJoin
                     WHERE
                     $where";
             }
-            // die(\sqldbg($sql, $values));
             if($count === 'all') {
                 $ob = self::query($sql, $values)->fetchObject();
                 return ['amount' => (float) $ob->total_amount, 'projects' => (int) $ob->total_projects, 'fee' => (float) $ob->total_fee];
@@ -3438,7 +3320,6 @@ class Project extends \Goteo\Core\Model {
 
         $offset = (int) $offset;
         $limit = (int) $limit;
-        // la select
 
         $sql_fields = ['id', 'status', 'image', 'contract_name', 'contract_nif', 'contract_email', 'contract_entity', 'contract_birthdate', 'entity_office', 'entity_name', 'entity_cif', 'phone', 'address', 'zipcode', 'location', 'country', 'secondary_address', 'post_address', 'post_zipcode', 'post_location', 'post_country', 'name', 'subtitle', 'lang', 'currency', 'currency_rate', 'description', 'motivation', 'video', 'video_usubs', 'about', 'goal', 'related', 'spread', 'execution_plan', 'execution_plan_url', 'sustainability_model', 'sustainability_model_url', 'reward', 'keywords', 'media', 'media_usubs', 'currently', 'project_location', 'scope', 'resource', 'comment', 'analytics_id', 'facebook_pixel', 'social_commitment', 'social_commitment_description', 'days', 'num_investors', 'created', 'updated', 'published', 'passed', 'success', 'closed', 'amount', 'mincost', 'maxcost',
             // extra
@@ -3461,7 +3342,6 @@ class Project extends \Goteo\Core\Model {
             WHERE
             {$location_parts['where']}
             LIMIT $offset, $limit";
-            // print_r($values);die($sql);
         } else {
             $sql = "SELECT
                     $fields
@@ -3473,41 +3353,31 @@ class Project extends \Goteo\Core\Model {
                     LIMIT $offset, $limit";
         }
 
-        // echo "\n".\sqldbg($sql, $values)."\n";print_r($filters);die;
-
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-            // print_r($proj);die;
             $proj->user = new User;
             $proj->user->id = $proj->user_id;
             $proj->user->name = $proj->user_name;
             $proj->user->email = $proj->user_email;
             $proj->user->lang = $proj->user_lang;
-
             $proj->image = Image::get($proj->image);
-
-            // extra conf
             $proj->days_total = ($proj->one_round) ? $proj->days_round1 : ( $proj->days_round1 + $proj->days_round2 );
-
             $proj->setDays();
 
             //calculo de maxcost, min_cost sólo si hace falta
-            if(!isset($proj->mincost)) {
+            if (!isset($proj->mincost)) {
                 $costs = self::calcCosts($proj->id);
                 $proj->mincost = $costs->mincost;
                 $proj->maxcost = $costs->maxcost;
             }
 
-            //cálculo de mensajeros
             if (!isset($proj->num_messengers)) {
                 $proj->num_messengers = Message::numMessengers($proj->id);
             }
 
-            //cálculo de número de cofinanciadores
-            if(!isset($proj->num_investors)) {
+            if( !isset($proj->num_investors)) {
                 $proj->num_investors = Invest::numInvestors($proj->id);
-           }
-
+            }
 
             $projects[] = $proj;
         }
@@ -3569,7 +3439,6 @@ class Project extends \Goteo\Core\Model {
     public static function getProjLocs () {
 
         $results = array();
-
         $sql = "SELECT distinct(project_location) as location
                 FROM project
                 WHERE status > 2
@@ -3581,10 +3450,11 @@ class Project extends \Goteo\Core\Model {
                 $results[md5($item->location)] = $item->location;
             }
             return $results;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             throw new Exception\ModelException('Fallo la lista de localizaciones');
         }
     }
+
     /**
      *  Saca las vias de contacto para un proyecto
      * @return: Project
@@ -3707,8 +3577,6 @@ class Project extends \Goteo\Core\Model {
         return ProjectConf::hideExhaustedRewards($id);
     }
 
-
-
     /*
      * Para saber si un proyecto tiene traducción en cierto idioma
      * @return: boolean
@@ -3753,7 +3621,8 @@ class Project extends \Goteo\Core\Model {
     /*
      * Estados de publicación de un proyecto
      */
-    public static function status () {
+    public static function status (): array
+    {
         return array(
             self::STATUS_REJECTED => Text::get('form-project_status-cancelled'),
             self::STATUS_EDITING => Text::get('form-project_status-edit'),
@@ -3768,19 +3637,21 @@ class Project extends \Goteo\Core\Model {
     /*
      * Estados de proceso de campaña
      */
-    public static function procStatus () {
+    public static function procStatus (): array
+    {
         return array(
             'first' => 'En primera ronda',
             'second' => 'En segunda ronda',
             'completed' => 'Campaña completada',
             'archived' => 'Archivados'
-            );
+        );
     }
 
     /*
      * Siguiente etapa en la vida del proyeto
      */
-    public static function waitfor () {
+    public static function waitfor (): array
+    {
         return array(
             self::STATUS_REJECTED => Text::get('form-project_waitfor-cancel'),
             self::STATUS_EDITING => Text::get('form-project_waitfor-edit'),
@@ -3795,45 +3666,42 @@ class Project extends \Goteo\Core\Model {
     /*
      * @return: empty errors structure
      */
-    public static function blankErrors() {
+    public static function blankErrors(): array
+    {
         // para guardar los fallos en los datos
         $errors = array(
-            'userProfile'  => array(),  // Errores en el paso 1
-            'userPersonal' => array(),  // Errores en el paso 2
-            'overview'     => array(),  // Errores en el paso 3
-            'images'       => array(),  // Errores en el paso 3b
-            'costs'        => array(),  // Errores en el paso 4
-            'rewards'      => array(),  // Errores en el paso 5
-            'supports'     => array()   // Errores en el paso 6
+            'userProfile'  => [],  // Errores en el paso 1
+            'userPersonal' => [],  // Errores en el paso 2
+            'overview'     => [],  // Errores en el paso 3
+            'images'       => [],  // Errores en el paso 3b
+            'costs'        => [],  // Errores en el paso 4
+            'rewards'      => [],  // Errores en el paso 5
+            'supports'     => []   // Errores en el paso 6
         );
 
         return $errors;
     }
 
-
     /*
     * Return the success projects porcentage
     */
 
-    static public function getSucessfulPercentage($matchfunding=false, $matcher= false) {
+    static public function getSucessfulPercentage($matchfunding = false, $matcher = false) {
 
-        $status_published=[self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED];
+        $status_published = [self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED];
+        $status_succesful = [self::STATUS_FUNDED, self::STATUS_FULFILLED];
 
-        $status_succesful=[self::STATUS_FUNDED, self::STATUS_FULFILLED];
+        $filters_published = ['status' => $status_published];
+        $filters_succesful = ['status' => $status_succesful];
 
-        $filters_published=['status' => $status_published];
-        $filters_succesful=['status' => $status_succesful];
-
-        if($matchfunding)
-        {
-            $filters_published['called']=$matchfunding;
-            $filters_succesful['called']=$matchfunding;
+        if($matchfunding) {
+            $filters_published['called'] = $matchfunding;
+            $filters_succesful['called'] = $matchfunding;
         }
 
-        if($matcher)
-        {
-            $filters_published['matcher']=$matcher;
-            $filters_succesful['matcher']=$matcher;
+        if($matcher) {
+            $filters_published['matcher'] = $matcher;
+            $filters_succesful['matcher'] = $matcher;
         }
 
         $num_published_projects=self::getList($filters_published, null, 0, 0, true);
@@ -3841,89 +3709,65 @@ class Project extends \Goteo\Core\Model {
         if ($num_published_projects == 0)
             return 0;
 
-        $num_successful_projects=self::getList($filters_succesful, null, 0, 0, true);
-
-        $succesful_percentage=round(($num_successful_projects/$num_published_projects)*100,2);
+        $num_successful_projects = self::getList($filters_succesful, null, 0, 0, true);
+        $succesful_percentage = round(($num_successful_projects/$num_published_projects)*100,2);
 
         return $succesful_percentage;
-
     }
-
-    /*
-    * Return the number of active users in Goteo
-    */
 
     static public function getAdvisedProjects() {
+        $filters = [
+            'status' => [
+                self::STATUS_EDITING,
+                self::STATUS_REVIEWING,
+                self::STATUS_IN_CAMPAIGN,
+                self::STATUS_FUNDED,
+                self::STATUS_FULFILLED,
+                self::STATUS_UNFUNDED
+            ],
+            'is_draft' => true
+        ];
 
-        $filters=[  'status' => [self::STATUS_EDITING, self::STATUS_REVIEWING, self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED],
-                    'is_draft' => true ];
-
-        $num_advised_projects=self::getList($filters, null, 0, 0, true);
-
-        return $num_advised_projects;
-
+        return self::getList($filters, null, 0, 0, true);
     }
-
-    /*
-    * Return the number of active users in Goteo
-    */
 
     static public function getFundedProjects() {
-
         $filters=['status' => [self::STATUS_FUNDED, self::STATUS_FULFILLED]];
 
-        $num_projects=self::getList($filters, null, 0, 0, true);
-
-        return $num_projects;
-
+        return self::getList($filters, null, 0, 0, true);
     }
 
-     /*
-    * Return the number of projects published in Goteo
-    */
-
-    static public function getPublishedProjects($matchfunding= false) {
+    static public function getPublishedProjects($matchfunding = false) {
 
         $filters=['status' => [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED]];
 
-        if($matchfunding)
-        {
+        if($matchfunding) {
             $filters['called']=$matchfunding;
         }
 
-        $num_projects=self::getList($filters, null, 0, 0, true);
-
-        return $num_projects;
-
+        return self::getList($filters, null, 0, 0, true);
     }
 
     /*
     * Return the owners gender in matchfunding calls
     */
-
     static public function getMatchfundingOwnersGender() {
 
+        $percent_male=0;
+        $percent_female=0;
+        $tot_female = self::getList(['called' => 'all', 'gender' => 'F'], null, 0, 0, true);
+        $tot_male = self::getList(['called' => 'all', 'gender' => 'M'], null, 0, 0, true);
+        $tot_gender = $tot_male+$tot_female;
 
-        $tot_female=self::getList(['called' => 'all', 'gender' => 'F'], null, 0, 0, true);
-        $tot_male=self::getList(['called' => 'all', 'gender' => 'M'], null, 0, 0, true);
-
-        $tot_gender=$tot_male+$tot_female;
-
-        if($tot_gender)
-        {
-            $percent_male=round(($tot_male/$tot_gender)*100);
-            $percent_female=round(($tot_female/$tot_gender)*100);
+        if($tot_gender) {
+            $percent_male = round(($tot_male / $tot_gender) * 100);
+            $percent_female = round(($tot_female / $tot_gender) * 100);
         }
 
-        else
-        {
-            $percent_male=0;
-            $percent_female=0;
-        }
-
-        return ['percent_male' => $percent_male, 'percent_female' => $percent_female ];
-
+        return [
+            'percent_male' => $percent_male,
+            'percent_female' => $percent_female
+        ];
     }
 
 }
-

@@ -10,7 +10,7 @@
 
 namespace Goteo\Core\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Goteo\Core\Model;
 
 abstract class AbstractModelEvent extends Event

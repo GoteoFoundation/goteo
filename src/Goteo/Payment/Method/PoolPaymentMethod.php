@@ -11,7 +11,6 @@
 namespace Goteo\Payment\Method;
 
 use Goteo\Payment\PaymentException;
-use Goteo\Model\User\Pool;
 use Goteo\Model\Invest;
 use Goteo\Library\Text;
 use Goteo\Util\Omnipay\Message\EmptyFailedResponse;
@@ -19,16 +18,19 @@ use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestEvent;
+use Omnipay\Common\Message\ResponseInterface;
 
 /**
- * Creates a Payment Method that uses internal virtuall wallet
- * This method does uses Omnipay Manual method
+ * Creates a Payment Method that uses internal virtual wallet
+ * This method uses Omnipay Manual method
  */
 class PoolPaymentMethod extends AbstractPaymentMethod {
+
     protected $pool;
 
     // Uses omnipay manual method, always successful
-    public function getGatewayName() {
+    public function getGatewayName(): string
+    {
         return 'Manual';
     }
 
@@ -40,12 +42,11 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
     }
 
     /**
-     * Should return if method must be registered but in a inactive state
+     * Should return if method must be registered but in an inactive state,
      * so it can be shown on the payment page as a temporary non-available method
-     * @return boolean status
      */
-    public function isActive($amount = 0) {
-
+    public function isActive($amount = 0): bool
+    {
         // Checking pool status
         if($this->getPool() && $this->getPool()->getAmount() >= $amount) {
             return true;
@@ -53,14 +54,15 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
         return false;
     }
 
-    public function getDesc() {
+    public function getDesc(): string
+    {
         $amount = $this->getPool()->getAmount();
         return Text::get('invest-amount-in-pool', amount_format($amount));
     }
 
-
     // Completes purchase if enough amount available
-    public function purchase() {
+    public function purchase(): ResponseInterface
+    {
         $invest = $this->getInvest();
 
         $total_amount=$this->getTotalAmount();
@@ -89,13 +91,16 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
 
     }
 
-    public function refundable() {
+    public function refundable(): bool
+    {
         $invest = $this->getInvest();
         if($invest->status == Invest::STATUS_CHARGED) return true;
+
         return false;
     }
 
-    public function refund() {
+    public function refund(): ResponseInterface
+    {
         $invest = $this->getInvest();
 
         // Any plugin can throw a PaymentException here in order to abort the refund process
@@ -104,10 +109,10 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
         // Mark this invest as return-to-pool (this should be redundant)
         $invest->setPoolOnFail(true);
         $errors = [];
+
         if($this->refundable()) {
             return new EmptySuccessfulResponse();
-        }
-        else {
+        } else {
             return new EmptyFailedResponse(implode(', ', $errors));
         }
     }
@@ -115,9 +120,9 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
     /**
      * Internal payments does not increased raised amounts
      * (pool)
-     * @return boolean
      */
-    static public function isInternal() {
+    public function isInternal(): bool
+    {
         return true;
     }
 }

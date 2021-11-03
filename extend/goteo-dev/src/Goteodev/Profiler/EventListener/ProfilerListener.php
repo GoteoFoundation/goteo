@@ -13,7 +13,6 @@ namespace Goteodev\Profiler\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use Goteodev\Profiler\DebugProfiler;
@@ -28,10 +27,6 @@ class ProfilerListener implements EventSubscriberInterface
     public function onKernelController(Event\FilterControllerEvent $event) {
         DebugProfiler::addEvent($event);
     }
-
-    // public function onKernelView(Event\GetResponseForControllerResultEvent $event) {
-    //     DebugProfiler::addEvent($event);
-    // }
 
     public function onKernelResponse(Event\FilterResponseEvent $event) {
         DebugProfiler::addEvent($event);
@@ -86,7 +81,7 @@ class ProfilerListener implements EventSubscriberInterface
 
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             // kernel.request must be registered as early as possible to not break
@@ -95,8 +90,6 @@ class ProfilerListener implements EventSubscriberInterface
             // Others events with low priority
             KernelEvents::CONTROLLER => array('onKernelController', -100),
             KernelEvents::RESPONSE => array('onKernelResponse', -512),
-            // KernelEvents::EXCEPTION => array('onKernelException', 512),
-            // KernelEvents::TERMINATE => array('onKernelTerminate', -512),
         );
     }
 }
