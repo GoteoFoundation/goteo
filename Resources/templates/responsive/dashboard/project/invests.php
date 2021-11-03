@@ -149,7 +149,7 @@ $filter = $this->a('filter');
           <td><?= $address ?></td>
           <td><?= $extra_info ?></td>
           <td>
-            <?php if(!$this->project->userIsOwner($invest->getUser())): ?>
+            <?php if(!$this->project->userIsOwner($invest->getUser())&&!$invest->anonymous): ?>
             <a data-toggle="modal" href="#messageModal" data-user="<?= $invest->getUser()->id ?>" data-name="<?= $invest->getUser()->name ?>" class="send-private" title="<?= $this->text('support-send-private-message') ?>"><span><?= (int)$this->messages[$invest->getUser()->id] ?></span> <i class="icon-1x icon icon-partners"></i></a>
             <?php endif ?>
           </td>
