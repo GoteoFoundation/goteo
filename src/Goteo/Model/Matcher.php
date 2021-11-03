@@ -10,29 +10,25 @@
 
 namespace Goteo\Model;
 
-use Goteo\Application\Config;
-use Goteo\Application\Lang;
-use Goteo\Core\Model;
-use Goteo\Model\User;
-use Goteo\Model\Project;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Exception\ModelException;
-use Goteo\Payment\Method\PoolPaymentMethod;
-use Goteo\Model\Matcher\MatcherLocation;
-use Goteo\Model\Project\ProjectLocation;
-use Goteo\Model\Questionnaire;
-use Goteo\Model\Questionnaire\Answer;
-use Goteo\Model\Questionnaire\Score;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
 use Goteo\Application\Event\MatcherValidationEvent;
+use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Lang;
+use Goteo\Core\Model;
+use Goteo\Model\Matcher\MatcherLocation;
+use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Questionnaire\Answer;
+use Goteo\Model\Questionnaire\Score;
+use Goteo\Payment\Method\PoolPaymentMethod;
 
 /**
  * Matcher Model
  */
-class Matcher extends \Goteo\Core\Model {
+class Matcher extends Model
+{
     use Traits\SphereRelationsTrait;
-
 
     const STATUS_OPEN = 'open';
     const STATUS_COMPLETED = 'completed';
@@ -336,11 +332,8 @@ class Matcher extends \Goteo\Core\Model {
         return $scores;
     }
 
-
-
     /**
      * Obtains matcher donating user pools
-     * @return [type] [description]
      */
     public function getUserPools() {
         $sql = "SELECT
@@ -362,7 +355,6 @@ class Matcher extends \Goteo\Core\Model {
                 FROM user_pool
                 RIGHT JOIN matcher_user ON matcher_user.user_id = user_pool.user
                 WHERE matcher_user.matcher_id = :match AND matcher_user.pool = 1";
-        // echo \sqldbg($sql, [':match' => $this->id]);
         return (int) self::query($sql, [':match' => $this->id])->fetchColumn();
     }
 
@@ -381,7 +373,6 @@ class Matcher extends \Goteo\Core\Model {
                 AND invest.campaign = 1
                 AND invest.status IN (" . implode(', ', Invest::$ACTIVE_STATUSES) . ") ";
         $values = [':match' => $this->id, ':method' => PoolPaymentMethod::getId()];
-        // echo \sqldbg($sql, $values);
         return (int) self::query($sql, $values)->fetchColumn();
     }
 
@@ -398,10 +389,8 @@ class Matcher extends \Goteo\Core\Model {
                 AND invest.campaign = 0
                 AND invest.status IN (" . implode(', ', Invest::$ACTIVE_STATUSES) . ") ";
         $values = [':match' => $this->id];
-        // echo \sqldbg($sql, $values);
         return (int) self::query($sql, $values)->fetchColumn();
     }
-
 
     /**
      * Gets the total number of active projects available for the matching
@@ -412,7 +401,6 @@ class Matcher extends \Goteo\Core\Model {
                 COUNT(*) AS total
                 FROM matcher_project
                 WHERE matcher_project.matcher_id = :match AND matcher_project.status = 'active'";
-        // echo \sqldbg($sql, [':match' => $this->id]);
         return (int) self::query($sql, [':match' => $this->id])->fetchColumn();
     }
 
@@ -432,13 +420,12 @@ class Matcher extends \Goteo\Core\Model {
                 AND invest.campaign = 1
                 AND invest.status IN (" . implode(', ', Invest::$ACTIVE_STATUSES) . ") ";
         $values = [':match' => $this->id, ':method' => PoolPaymentMethod::getId(), ':project' => $project];
-        // echo \sqldbg($sql, $values);
         return (int) self::query($sql, $values)->fetchColumn();
     }
 
      /**
      * Check if the matcher is owned (or co-owned) by the user id
-     * @param  Goteo\Model\User $user  the user to check
+     * @param  User $user  the user to check
      * @return boolean          true if success, false otherwise
      */
     public function userIsOwner($user = null) {
@@ -451,11 +438,9 @@ class Matcher extends \Goteo\Core\Model {
         return false;
     }
 
-
-
      /**
      * Check if the matcher is editable by the user id
-     * @param  Goteo\Model\User $user  the user to check
+     * @param  User $user  the user to check
      */
     public function userCanEdit($user = null) {
 
@@ -475,7 +460,7 @@ class Matcher extends \Goteo\Core\Model {
 
     /**
      * Check if the project is removable by the user id
-     * @param  Goteo\Model\User $user  the user to check
+     * @param  User $user  the user to check
      * @return boolean          true if success, false otherwise
      */
     public function userCanDelete($user = null) {
@@ -495,7 +480,7 @@ class Matcher extends \Goteo\Core\Model {
 
     /**
      * Check if the matcher can be created by the user id
-     * @param  Goteo\Model\User $user  the user to check
+     * @param  User $user  the user to check
      * @return boolean          true if success, false otherwise
      */
     public static function userCanCreate($user = null) {
@@ -507,12 +492,6 @@ class Matcher extends \Goteo\Core\Model {
         }
         return false;
     }
-
-
-
-    /**
-     * Getters & setters
-     */
 
     // returns the current user
     public function getOwner() {
@@ -624,7 +603,6 @@ class Matcher extends \Goteo\Core\Model {
 
     /**
      * Return users
-     * @return [type] [description]
      */
     public function getUsers($with_pool = true) {
         $sql = "SELECT a.*,b.pool as use_pool FROM user a
@@ -708,7 +686,6 @@ class Matcher extends \Goteo\Core\Model {
 
     /**
      * Return projects
-     * @return [type] [description]
      */
     public function getProjects($status = 'active') {
         $sql = "SELECT a.*,b.status AS matcher_status, b.score FROM project a
@@ -735,7 +712,6 @@ class Matcher extends \Goteo\Core\Model {
 
     /**
      * Return projects
-     * @return [type] [description]
      */
     public function getListProjects($status = 'active') {
         $sql = "SELECT a.*,b.status AS matcher_status FROM project a
@@ -750,7 +726,6 @@ class Matcher extends \Goteo\Core\Model {
             $values[':status'] = $status;
         }
 
-        // die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
 
         $projects = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project');
@@ -762,16 +737,12 @@ class Matcher extends \Goteo\Core\Model {
     }
 
     /*
-     *   Porcentage of sucess projects
+     *   Percentage of success projects
     */
     public function getSuccessPorcentage(){
         return Project::getSucessfulPercentage(false, $this->id);
     }
 
-    /**
-     * [findProject description]
-     * @return [type] [description]
-     */
     public function findProject($pid, $status = 'active') {
         if($pid instanceOf Project) $pid = $pid->id;
         $sql = "SELECT a.*,b.status AS matcher_status FROM project a
@@ -785,7 +756,6 @@ class Matcher extends \Goteo\Core\Model {
             $sql .= ' AND b.status = :status';
             $values[':status'] = $status;
         }
-        // die(\sqldbg($sql, $values));
         if($query = self::query($sql, $values)) {
             return $query->fetchObject('Goteo\Model\Project');
         }
@@ -802,10 +772,6 @@ class Matcher extends \Goteo\Core\Model {
         throw new ModelException('This project has no matcher assigned');
     }
 
-    /**
-     * Delete projects
-     * @param [type]  $projects  project or array of projects
-     */
     public function removeProjects($projects) {
         if(!is_array($projects)) $projects = [$projects];
         $deletes = [];
@@ -834,11 +800,6 @@ class Matcher extends \Goteo\Core\Model {
         return $this;
     }
 
-    /**
-     * [useUserPool description]
-     * @param [type] $user [description]
-     * @param [type] $bool [description]
-     */
     public function useUserPool($user, $bool) {
         if($user instanceOf User) $user = $user->id;
         $sql = "UPDATE matcher_user SET pool = :pool WHERE matcher_id = :matcher AND user_id = :user";
@@ -855,11 +816,6 @@ class Matcher extends \Goteo\Core\Model {
         return $this;
     }
 
-    /**
-     * [setProjectStatus description]
-     * @param [type] $project [description]
-     * @param [type] $bool [description]
-     */
     public function setProjectStatus($pid, $status = 'pending') {
         if($pid instanceOf Project) $pid = $pid->id;
         if(!in_array($status, self::$statuses)) {
@@ -883,11 +839,6 @@ class Matcher extends \Goteo\Core\Model {
         return $this;
     }
 
-    /**
-     * [updateProjectScore description]
-     * @param [type] $project [description]
-     * @param [type] $bool [description]
-     */
     public function updateProjectScore($pid) {
         if($pid instanceOf Project) $pid = $pid->id;
         $questionnaire = Questionnaire::getByMatcher($this->id);
@@ -912,8 +863,6 @@ class Matcher extends \Goteo\Core\Model {
         return $this;
     }
 
-
-
     /*
     *  Get the matchers that a given user administrates
     */
@@ -930,8 +879,9 @@ class Matcher extends \Goteo\Core\Model {
     /*
      *   Get matchers available for a project
     */
-    static public function getMatchersAvailable(Project $project, $max_distance = null, $filters = ['status' => self::STATUS_OPEN, 'active' => true]){
-
+    static public function getMatchersAvailable(
+        Project $project, $max_distance = null, $filters = ['status' => self::STATUS_OPEN, 'active' => true]
+    ){
         $matchers = [];
         foreach(self::getList($filters) as $matcher) {
             if($matcher_config = $matcher->getVars()) {

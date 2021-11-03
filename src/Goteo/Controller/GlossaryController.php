@@ -8,71 +8,55 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Controller {
+namespace Goteo\Controller;
 
-    use Goteo\Model;
-    use Goteo\Application\View;
+use Goteo\Application\View;
+use Goteo\Core\Controller;
+use Goteo\Core\DB;
+use Goteo\Model;
+use Symfony\Component\HttpFoundation\Response;
 
-    use Symfony\Component\HttpFoundation\Response;
+class GlossaryController extends Controller {
 
+    public function __construct() {
+        DB::cache(true);
+        DB::replica(true);
+    }
 
+    public function indexAction () {
 
+        $termsPerPage = 5;
+        // indice de letras
+        $index = array();
+        $glossaries = Model\Glossary::getAll();
 
-    class GlossaryController extends \Goteo\Core\Controller {
+        //recolocamos los post para la paginacion
+        $p = 1;
+        $page = 1;
+        $posts = array();
+        foreach ($glossaries as $post) {
+            // tratar el texto para las entradas
+            $post->text = str_replace(array('%SITE_URL%'), array(SITE_URL), $post->text);
+            $posts[] = $post;
 
-        public function __construct() {
-            // Cache & replica read activated in this controller
-            \Goteo\Core\DB::cache(true);
-            \Goteo\Core\DB::replica(true);
-        }
+            $firstLetter = strtolower($post->title[0]);
+            $index[$firstLetter][] = (object) array(
+                'title' => $post->title,
+                'url'   => '/glossary?page='.$page.'#term' . $post->id
+            );
 
-        public function indexAction () {
-
-            // Términos por página
-            $tpp = 5;
-
-            // indice de letras
-            $index = array();
-
-            // sacamos todo el glosario
-            $glossary = Model\Glossary::getAll();
-
-            //recolocamos los post para la paginacion
-            $p = 1;
-            $page = 1;
-            $posts = array();
-            foreach ($glossary as $id=>$post) {
-
-                // tratar el texto para las entradas
-                $post->text = str_replace(array('%SITE_URL%'), array(SITE_URL), $post->text);
-
-                $posts[] = $post;
-
-                // y la inicial en el indice
-                $letra = \strtolower($post->title[0]);
-                $index[$letra][] = (object) array(
-                    'title' => $post->title,
-                    'url'   => '/glossary?page='.$page.'#term' . $post->id
-                );
-
-                $p++;
-                if ($p > $tpp) {
-                    $p = 1;
-                    $page++;
-                }
+            $p++;
+            if ($p > $termsPerPage) {
+                $p = 1;
+                $page++;
             }
-
-            return new Response(View::render(
-            'glossary/index',
-            array(
-                    'tpp'   => $tpp,
-                    'index' => $index,
-                    'posts' => $posts
-                )
-         ));
-
         }
 
+        return new Response(View::render('glossary/index', array(
+            'tpp'   => $termsPerPage,
+            'index' => $index,
+            'posts' => $posts
+        )));
     }
 
 }

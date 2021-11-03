@@ -10,9 +10,11 @@
 
 namespace Goteo\Model\User;
 
+use Goteo\Core\Exception;
 use Goteo\Model\Image;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
+use PDOException;
 
 class Interest extends \Goteo\Model\Category
 {
@@ -37,8 +39,8 @@ class Interest extends \Goteo\Model\Category
             }
 
             return $array;
-        } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+        } catch (PDOException $e) {
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -49,11 +51,9 @@ class Interest extends \Goteo\Model\Category
     /**
      * Get all categories available
      *
-     *
      * @param user isset get all categories of a user
-     * @return array
      */
-    public static function getAll($user = null)
+    public static function getAll($user = null): array
     {
         $lang = Lang::current();
         $array = array();
@@ -97,8 +97,8 @@ class Interest extends \Goteo\Model\Category
             }
 
             return $array;
-        } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+        } catch (PDOException $e) {
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -110,7 +110,7 @@ class Interest extends \Goteo\Model\Category
             $sql = "REPLACE INTO user_interest (user, interest) VALUES(:user, :interest)";
             self::query($sql, $values);
             return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = "El interés {$this->interest} no se ha asignado correctamente. Por favor, revise los datos." . $e->getMessage();
             return false;
         }
@@ -135,7 +135,7 @@ class Interest extends \Goteo\Model\Category
         try {
             self::query("DELETE FROM user_interest WHERE interest = :interest AND user = :user", $values);
             return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $errors[] = 'No se ha podido quitar el interes ' . $this->interest . ' del usuario ' . $this->user . ' ' . $e->getMessage();
             //Text::get('remove-interest-fail');
             return false;
@@ -201,8 +201,8 @@ class Interest extends \Goteo\Model\Category
             shuffle($array);
 
             return $array;
-        } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+        } catch (PDOException $e) {
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -240,8 +240,8 @@ class Interest extends \Goteo\Model\Category
             }
 
             return $array;
-        } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+        } catch (PDOException $e) {
+            throw new Exception($e->getMessage());
         }
     }
 

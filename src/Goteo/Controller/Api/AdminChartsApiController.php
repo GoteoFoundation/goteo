@@ -10,23 +10,31 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
+use DateTime;
+use Goteo\Application\Config;
+use Goteo\Application\Currency;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ControllerException;
-use Goteo\Application\Config;
-use Goteo\Library\Text;
-use Goteo\Application\Currency;
-use Goteo\Payment\Payment;
 use Goteo\Core\Model;
-use Goteo\Model\Project;
-use Goteo\Model\Call;
 use Goteo\Model\Invest;
-use Goteo\Model\Image;
-use Goteo\Model\Origin;
+use Goteo\Model\Project;
+use Goteo\Payment\Payment;
+use Goteo\Payment\PaymentException;
 use Goteo\Util\Stats\Stats;
+use PDO;
+use Symfony\Component\HttpFoundation\Request;
+use function amount_format;
+use function date_valid;
 
 
 class AdminChartsApiController extends ChartsApiController {
+
+    private $increments = [
+        'today' => 'yesterday',
+        'week'  => ['last_week', 'last_year_week'],
+        'month' => ['last_month', 'last_year_month'],
+        'year'  => 'last_year'
+    ];
 
     public function __construct() {
         parent::__construct();
@@ -35,8 +43,8 @@ class AdminChartsApiController extends ChartsApiController {
         }
     }
 
-
-    protected function getAggregatesSQLFilter($type, Request $request) {
+    protected function getAggregatesSQLFilter($type, Request $request): array
+    {
         $values = $filter = [];
         $project_key = $type === 'invests' ? 'invest.project' : 'project.id';
         $user_key = $type === 'invests' ? 'invest.user' : 'project.owner';
@@ -72,9 +80,8 @@ class AdminChartsApiController extends ChartsApiController {
 
     /**
      * Groups data in time units (5min, 1 hour, 1 day, etc)
-     * @param  Request $request [description]
      */
-    public function aggregatesAction($type = 'invests', Request $request) {
+    public function aggregatesAction(Request $request, $type = 'invests') {
         $limit = 100;
 
         // Get the minimum,max and total items
@@ -83,11 +90,9 @@ class AdminChartsApiController extends ChartsApiController {
                 MIN(`datetime`) AS min_date,
                 MAX(`datetime`) AS max_date
                 FROM `invest`" . ($prefilter ? ' WHERE '.implode(' AND ', $prefilter) : '');
-        // die(\sqldbg($sql, $prevalues));
         $ob = Model::query($sql, $prevalues)->fetchObject();
         $total_items = (int) $ob->total;
         $min_date = $ob->min_date;
-        // $max_date = null;
         $max_date = $ob->max_date;
 
         if($type === 'invests') {
@@ -104,21 +109,20 @@ class AdminChartsApiController extends ChartsApiController {
         list($filter, $values) = self::getAggregatesSQLFilter($type, $request);
         if($filter) $where .= " AND " . implode(' AND ', $filter);
 
-
         if($from = $request->query->get('from')) {
-            if(!\date_valid($from)) throw new ControllerException("Date 'from' [$from] is invalid");
+            if(!date_valid($from)) throw new ControllerException("Date 'from' [$from] is invalid");
             $where .= " AND $datetime >= :from";
             $values[':from'] = $from;
             $min_date = $from;
         }
         if($to = $request->query->get('to')) {
-            if(!\date_valid($to)) throw new ControllerException("Date 'to' [$to] is invalid");
+            if(!date_valid($to)) throw new ControllerException("Date 'to' [$to] is invalid");
             $where .= " AND $datetime <= :to";
             $values[':to'] = $to;
             $max_date = $to;
         }
 
-        $diff = (new \DateTime($min_date))->diff(new \DateTime($max_date));
+        $diff = (new DateTime($min_date))->diff(new DateTime($max_date));
         $diff_years = $diff->y;
         $diff_months = $diff_years*12 + $diff->m;
         $diff_hours = $diff->days*24 + $diff->h;
@@ -126,7 +130,6 @@ class AdminChartsApiController extends ChartsApiController {
         $diff_seconds = $diff_minutes*60 + $diff->s;
 
         $granularity =  max(60, 60 * floor($diff_minutes / $limit)); // minimun granularity is 1 minute
-        // print_r($diff);die("$diff_minutes|$granularity");
         $div = "UNIX_TIMESTAMP($datetime) DIV $granularity";
 
         $total = (int)Model::query("SELECT count(*) FROM (SELECT COUNT(*) FROM `$table` $where GROUP BY $div) AS sub", $values)->fetchColumn();
@@ -142,11 +145,10 @@ class AdminChartsApiController extends ChartsApiController {
         ORDER BY `date` DESC
         LIMIT $limit";
 
-        // die(\sqldbg($sql, $values));
         $items = [];
         if($query = Model::query($sql, $values)) {
-            foreach($query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
-                $ob->total = \amount_format($ob->total, 0, true, false, false);
+            foreach($query->fetchAll(PDO::FETCH_OBJ) as $ob) {
+                $ob->total = amount_format($ob->total, 0, true, false, false);
                 $ob->count = (int) $ob->count;
                 $ob->average = round($ob->average, 2);
                 $items[] = $ob;
@@ -172,66 +174,65 @@ class AdminChartsApiController extends ChartsApiController {
         ]);
     }
 
-
     private function timeSlots($slot = '', Request $request = null) {
         $f = 'Y-m-d H:i:s';
         $slots = [
             'today' => [
-                'from' => (new \DateTime('today'))->format($f),
-                'to' => (new \DateTime('now'))->format($f)
+                'from' => (new DateTime('today'))->format($f),
+                'to' => (new DateTime('now'))->format($f)
             ],
             'yesterday' => [
-                'from' => (new \DateTime('yesterday'))->format($f),
-                'to' => (new \DateTime('today -1 second'))->format($f)
+                'from' => (new DateTime('yesterday'))->format($f),
+                'to' => (new DateTime('today -1 second'))->format($f)
             ],
             'week' => [
-                'from' => (new \DateTime('monday this week 00:00'))->format($f),
-                'to' => (new \DateTime('now'))->format($f)
+                'from' => (new DateTime('monday this week 00:00'))->format($f),
+                'to' => (new DateTime('now'))->format($f)
             ],
             'last_week' => [
-                'from' => (new \DateTime('monday -2 weeks'))->format($f),
-                'to' => (new \DateTime('now -1 weeks'))->format($f)
+                'from' => (new DateTime('monday -2 weeks'))->format($f),
+                'to' => (new DateTime('now -1 weeks'))->format($f)
             ],
             'last_week_complete' => [
-                'from' => (new \DateTime('monday -2 weeks'))->format($f),
-                'to' => (new \DateTime('monday -1 weeks -1 second'))->format($f)
+                'from' => (new DateTime('monday -2 weeks'))->format($f),
+                'to' => (new DateTime('monday -1 weeks -1 second'))->format($f)
             ],
             'last_year_week' => [
-                'from' => (new \DateTime('monday this week 00:00 +1 day last year'))->format($f),
-                'to' => (new \DateTime('now +1 day last year'))->format($f)
+                'from' => (new DateTime('monday this week 00:00 +1 day last year'))->format($f),
+                'to' => (new DateTime('now +1 day last year'))->format($f)
             ],
             'month' => [
-                'from' => (new \DateTime('first day of this month 00:00'))->format($f),
-                'to' => (new \DateTime('now'))->format($f)
+                'from' => (new DateTime('first day of this month 00:00'))->format($f),
+                'to' => (new DateTime('now'))->format($f)
             ],
             'last_month' => [
-                'from' => (new \DateTime('first day of last month 00:00'))->format($f),
-                'to' => (new \DateTime('now -1 month'))->format($f)
+                'from' => (new DateTime('first day of last month 00:00'))->format($f),
+                'to' => (new DateTime('now -1 month'))->format($f)
             ],
             'last_month_complete' => [
-                'from' => (new \DateTime('first day of last month 00:00'))->format($f),
-                'to' => (new \DateTime('first day of this month -1 second 00:00'))->format($f)
+                'from' => (new DateTime('first day of last month 00:00'))->format($f),
+                'to' => (new DateTime('first day of this month -1 second 00:00'))->format($f)
             ],
             'last_year_month' => [
-                'from' => (new \DateTime('first day of this month 00:00 +1 day last year'))->format($f),
-                'to' => (new \DateTime('now +1 day last year'))->format($f)
+                'from' => (new DateTime('first day of this month 00:00 +1 day last year'))->format($f),
+                'to' => (new DateTime('now +1 day last year'))->format($f)
             ],
             'year' => [
-                'from' => (new \DateTime('first day of january this year'))->format($f),
-                'to' => (new \DateTime('now'))->format($f)
+                'from' => (new DateTime('first day of january this year'))->format($f),
+                'to' => (new DateTime('now'))->format($f)
             ],
             'last_year' => [
-                'from' => (new \DateTime('first day of january last year'))->format($f),
+                'from' => (new DateTime('first day of january last year'))->format($f),
                 // 'to' => (new \DateTime('first day of january this year -1 second'))->format($f)
                 // Last year so far
-                'to' => (new \DateTime('now -1 year'))->format($f)
+                'to' => (new DateTime('now -1 year'))->format($f)
             ],
             'last_year_complete' => [
-                'from' => (new \DateTime('first day of january last year'))->format($f),
-                'to' => (new \DateTime('first day of january this year -1 second'))->format($f)
+                'from' => (new DateTime('first day of january last year'))->format($f),
+                'to' => (new DateTime('first day of january this year -1 second'))->format($f)
                 ]
             ];
-        // print_r($slots);die;
+
         if($slot) {
             $varis = explode(',', $slot);
             if(array_diff($varis, $slots)) {
@@ -247,6 +248,7 @@ class AdminChartsApiController extends ChartsApiController {
                 throw new ControllerException("Slot [$slot] not found, try one of [today, yesterday, week, month, year]");
             }
         }
+
         // Add custom slot if searching
         if($request) {
             $to = $request->query->get('to');
@@ -257,9 +259,9 @@ class AdminChartsApiController extends ChartsApiController {
             $user_id = $request->query->get('user');
 
             if($from) {
-                $slots['custom'] = ['from' => (new \DateTime($from))->format($f)];
-                if($to) $slots['custom']['to'] = (new \DateTime($to))->format($f);
-                else  $slots['custom']['to'] = (new \DateTime('now'))->format($f);
+                $slots['custom'] = ['from' => (new DateTime($from))->format($f)];
+                if($to) $slots['custom']['to'] = (new DateTime($to))->format($f);
+                else  $slots['custom']['to'] = (new DateTime('now'))->format($f);
             } elseif($project_id || $call_id || $matcher_id || $user_id) {
                 $slots['custom'] = ['from' => null, 'to' => null];
             }
@@ -268,24 +270,29 @@ class AdminChartsApiController extends ChartsApiController {
                 return ['custom' => $slots['custom']];
             }
         }
-        // print_r($slots);die;
+
         return $slots;
     }
 
     /**
-     * Gets totals for invests
-     * @param  string $target [raised, active, refunded, comissions, fees]
-     * @param  string $method raised[paypal, tpv, ..., global]  active[paypal,...], comissions[paypal, ...], fees]
-     * @param  Request $request [description]
+     * @param string $target [raised, active, refunded, commissions, fees]
+     * @param string $method raised[paypal, tpv, ..., global]  active[paypal,...], commissions[paypal, ...], fees]
+     * @throws PaymentException
      */
-    public function totalInvestsAction($target, $method = 'global', $slot = '', Request $request) {
+    public function totalInvestsAction(
+        Request $request,
+        string $target,
+        string $method = 'global',
+        $slot = ''
+    ) {
         // Use the Stats class to take advantage of the Caching component
         $stats = Stats::create('api_totals'. ($project_id ? "_$project_id" : ''), 30);
-
         $timeslots = self::timeSlots($slot, $request);
         $totals = [];
+
         foreach($timeslots as $slot => $dates) {
-            $filter = ['datetime_from' => $dates['from'],
+            $filter = [
+                'datetime_from' => $dates['from'],
                 'datetime_until' => $dates['to'],
                 'projects' => $request->query->get('project'),
                 'calls' => $request->query->get('call'),
@@ -293,18 +300,18 @@ class AdminChartsApiController extends ChartsApiController {
                 'users' => $request->query->get('user'),
                 'consultants' => $request->query->get('consultant'),
                 'node' => $request->query->has('channel') ? $request->query->get('channel') : $request->query->get('node'),
-                ];
+            ];
+
             if(Payment::methodExists($method)) {
                 $filter['methods'] = $method;
                 $methods = [$method => Payment::getMethod($method)];
             } else {
                 $method = 'global';
-                $methods = Payment::getMethods();
-                $filter['methods'] = array_keys(array_filter($methods, function($val){
-                    return !$val::isInternal();
+                $methods = Payment::getMethods($this->user);
+                $filter['methods'] = array_keys(array_filter($methods, function($val) {
+                    return !$val->isInternal();
                 }));
             }
-            // print_r($filter);die;
 
             if($target === 'raised') {
 
@@ -329,14 +336,12 @@ class AdminChartsApiController extends ChartsApiController {
                 // Add accumulated in-wallet calc
                 $to_wallet = $stats->investTotals(['types' => 'to_wallet', 'status' => Invest::$RAW_STATUSES, 'datetime_from' => null, 'methods' => null] + $filter);
                 $from_wallet = $stats->investTotals(['types' => 'from_wallet', 'datetime_from' => null, 'methods' => null] + $filter);
-                // print_r($to_wallet);print_r($from_wallet);die;
                 $totals[$slot]['in_wallet_amount'] = $to_wallet['amount'] - $from_wallet['amount'];
                 $totals[$slot]['in_wallet_invests'] = $to_wallet['invests'] - $from_wallet['invests'];
                 $totals[$slot]['in_wallet_users'] = $to_wallet['users'] - $from_wallet['users'];
 
                 $to_matcher_wallet = $stats->investTotals(['types' => 'to_matcher_wallet', 'datetime_from' => null, 'methods' => null] + $filter);
                 $from_matcher_wallet = $stats->investTotals(['types' => 'from_matcher_wallet', 'datetime_from' => null, 'methods' => null] + $filter);
-                // print_r($to_matcher_wallet);print_r($from_matcher_wallet);die;
                 $totals[$slot]['in_matcher_wallet_amount'] = $to_matcher_wallet['amount'] - $from_matcher_wallet['amount'];
                 $totals[$slot]['in_matcher_wallet_invests'] = $to_matcher_wallet['invests'] - $from_matcher_wallet['invests'];
                 $totals[$slot]['in_matcher_wallet_users'] = $to_matcher_wallet['users'] - $from_matcher_wallet['users'];
@@ -371,11 +376,11 @@ class AdminChartsApiController extends ChartsApiController {
                 // Platform fees
                 $fees = $stats->investFees($filter);
                 $totals[$slot]['to_fee_amount'] = $fees['total'];
-                // Bank Comissions
+                // Bank Commissions
                 foreach($methods as $i => $m) {
                     $raised = $stats->investTotals(['methods' => $i, 'status' => Invest::$RAISED_STATUSES] + $filter );
                     $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$RETURNED_STATUSES] + $filter);
-                    $totals[$slot]['to_fee_amount'] += $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
+                    $totals[$slot]['to_fee_amount'] += $m->calculateCommission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
                 }
                 // To projects without commissions
                 $totals[$slot]['to_projects_amount'] = $projects['amount'] - $totals[$slot]['to_fee_amount'];
@@ -440,8 +445,7 @@ class AdminChartsApiController extends ChartsApiController {
                     list($type, $field) = explode("_", $part);
                     if($totals[$slot][$field]) {
                         $generosity["{$part}_percent"] = 100 * round($value / $totals[$slot][$field], 4);
-                    }
-                    else {
+                    } else {
                         $generosity["{$part}_percent"] = 0;
                     }
                 }
@@ -497,13 +501,13 @@ class AdminChartsApiController extends ChartsApiController {
                 }
             } elseif($target === 'commissions') {
 
-                // Bank Comissions
+                // Bank Commissions
                 $totals[$slot] = ['charged' => 0, 'lost' => 0 ];
                 foreach($methods as $i => $m) {
                     $raised = $stats->investTotals(['methods' => $i, 'status' => Invest::$RAISED_STATUSES] + $filter );
                     $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$RETURNED_STATUSES] + $filter);
-                    $totals[$slot]['charged'] += $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
-                    $totals[$slot]['lost'] -= $m::calculateComission($returned['invests'], $returned['amount'], $returned['invests'], $returned['amount']);
+                    $totals[$slot]['charged'] += $m->calculateCommission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
+                    $totals[$slot]['lost'] -= $m->calculateCommission($returned['invests'], $returned['amount'], $returned['invests'], $returned['amount']);
                 }
                 $totals[$slot]['charged'] = round($totals[$slot]['charged'], 2);
                 $totals[$slot]['lost'] = round($totals[$slot]['lost'], 2);
@@ -528,7 +532,7 @@ class AdminChartsApiController extends ChartsApiController {
                 //     foreach($methods as $i => $m) {
                 //         $raised = $stats->investTotals(['methods' => $i, 'status' => Invest::$RAISED_STATUSES] + $filter);
                 //         $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$FAILED_STATUSES] + $filter);
-                //         $invoice +=  $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
+                //         $invoice +=  $m->calculateCommission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
                 //     }
                 //     $totals['invoice'] = $invoice;
                 // }
@@ -553,7 +557,6 @@ class AdminChartsApiController extends ChartsApiController {
                     $totals[$slot][$type.'_users_amount'] = $global['amount'] - $matchfunding['amount'];
                     $totals[$slot][$type.'_users_invests'] = $global['invests'] - $matchfunding['invests'];
                     $totals[$slot][$type.'_users_users'] = $global['users'] - $matchfunding['users'];
-
 
                     // matchfunding alone
                     $match = $stats->investTotals(['types' => 'drop'] + $filter);
@@ -583,21 +586,17 @@ class AdminChartsApiController extends ChartsApiController {
                         $totals[$slot][$type.'_from_matchfunding_amount_percent'] = '--';
                         $totals[$slot][$type.'_from_users_amount_percent'] = '--';
                     }
-
                 }
 
             } elseif($target !== 'global') {
                 throw new ControllerException("[$target] not found, try one of [raised, active, raw, refunded, commissions, fees, donations, matchfunding]");
             }
         }
-        $increments = [ 'today' => 'yesterday',
-                        'week'  => ['last_week', 'last_year_week'],
-                        'month' => ['last_month', 'last_year_month'],
-                        'year'  => 'last_year' ];
+
         foreach($totals as $slot => $parts) {
             foreach($parts as $k => $v) {
                 // increments
-                if(($inc = $increments[$slot]) && is_numeric($v)) {
+                if(($inc = $this->increments[$slot]) && is_numeric($v)) {
                     if(!is_array($inc)) $inc = [$inc];
                     foreach($inc as $cmp) {
                         if(!is_numeric($totals[$cmp][$k])) continue;
@@ -623,19 +622,17 @@ class AdminChartsApiController extends ChartsApiController {
                     $totals[$slot][$k . '_formatted'] = number_format($v, 2, Currency::get('', 'decimal'), Currency::get('', 'thousands')) . '%';
                 }
                 elseif(strpos($k, 'amount') !== false || in_array($target, ['fees', 'commissions']))
-                    $totals[$slot][$k . '_formatted'] = \amount_format($v);
+                    $totals[$slot][$k . '_formatted'] = amount_format($v);
             }
         }
-        // print_r($totals);die;
+
         return $this->jsonResponse([$target => [$method => $totals], 'slots' => $timeslots]);
     }
 
-
-        /**
+    /**
      * Gets totals for invests
-     * @param  Request $request [description]
      */
-    public function totalProjectsAction($part = null, Request $request) {
+    public function totalProjectsAction(Request $request, $part = null) {
         // Use the Stats class to take advantage of the Caching component
         $stats = Stats::create('api_totals', Config::get('db.cache.long_time'));
         $projects= [];
@@ -670,7 +667,6 @@ class AdminChartsApiController extends ChartsApiController {
             }
             elseif($when === 'rejected') {
                 // Rejected project have updated date defined
-                // $filter['status'] = [Project::STATUS_REJECTED, Project::STATUS_EDITING];
                 $filter['status'] = Project::STATUS_REJECTED;
                 $date_from = 'updated_from';
                 $date_until = 'updated_until';
@@ -680,14 +676,13 @@ class AdminChartsApiController extends ChartsApiController {
                 $filter[$date_from] = $dates['from'];
                 $filter[$date_until] = $dates['to'];
                 $projects[$when][$slot] = $stats->projectTotals($filter, 'total');
-                // $projects[$when][$slot] = rand(1,100);
             }
             if($part) return $this->jsonResponse($projects[$part]);
         }
 
         $pending = [];
         $filter = $ofilter;
-        $filter['published_from'] = (new \DateTime('today'))->format('Y-m-d');
+        $filter['published_from'] = (new DateTime('today'))->format('Y-m-d');
         $filter['status'] = Project::STATUS_REVIEWING;
 
         foreach(Project::getList($filter, null, 0, 100) as $prj) {

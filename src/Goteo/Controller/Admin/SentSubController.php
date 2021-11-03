@@ -14,14 +14,13 @@ namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
 use Goteo\Application\Message;
-use Goteo\Model\Node;
-use Goteo\Library\Feed;
-use Goteo\Model\Template;
-use Goteo\Model\User;
 use Goteo\Model\Mail;
-use Goteo\Model\Mail\StatsCollector;
 use Goteo\Model\Mail\Sender;
 use Goteo\Model\Mail\SenderRecipient;
+use Goteo\Model\Mail\StatsCollector;
+use Goteo\Model\Node;
+use Goteo\Model\Template;
+use Goteo\Model\User;
 
 class SentSubController extends AbstractSubController {
 
@@ -29,9 +28,7 @@ class SentSubController extends AbstractSubController {
       'list' => 'sent-lb-list',
     );
 
-
     static protected $label = 'sent-lb';
-
 
     protected $filters = array (
       'user' => '',
@@ -47,7 +44,7 @@ class SentSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
         return parent::isAllowed($user, $node);

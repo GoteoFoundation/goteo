@@ -14,10 +14,9 @@ namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
 use Goteo\Application\Message;
-use Goteo\Library\Feed;
+use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
-use Goteo\Model\Invest;
 use Goteo\Model\User;
 
 class RewardsSubController extends AbstractSubController {
@@ -27,9 +26,7 @@ class RewardsSubController extends AbstractSubController {
       'edit' => 'rewards-lb-edit',
     );
 
-
     static protected $label = 'rewards-lb';
-
 
     protected $filters = array (
       'project' => '',
@@ -38,12 +35,11 @@ class RewardsSubController extends AbstractSubController {
       'friend' => '',
     );
 
-
     /**
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node allowed here
         if( ! Config::isMasterNode($node) ) return false;
         return parent::isAllowed($user, $node);

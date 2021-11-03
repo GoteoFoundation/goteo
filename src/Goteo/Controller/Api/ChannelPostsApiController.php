@@ -10,16 +10,12 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Message;
-use Goteo\Application\AppEvents;
-use Goteo\Application\Config;
-
-use Goteo\Model\Node\NodePost;
-use Goteo\Library\Text;
 use Goteo\Library\Check;
+use Goteo\Library\Text;
+use Goteo\Model\Node\NodePost;
+use Symfony\Component\HttpFoundation\Request;
 
 class ChannelPostsApiController extends AbstractApiController {
 
@@ -66,7 +62,5 @@ class ChannelPostsApiController extends AbstractApiController {
         }
 
         return $this->jsonResponse($result);
-
     }
 }
-

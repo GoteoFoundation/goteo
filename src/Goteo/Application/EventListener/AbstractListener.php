@@ -10,12 +10,10 @@
 
 namespace Goteo\Application\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Psr\Log\LoggerInterface;
-
 use Goteo\Application\App;
-use Goteo\Util\Monolog\Processor\WebProcessor;
 use Goteo\Core\Traits\LoggerTrait;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 abstract class AbstractListener implements EventSubscriberInterface {
     use LoggerTrait;

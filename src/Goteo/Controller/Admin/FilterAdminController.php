@@ -10,23 +10,26 @@
 
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-
-use Goteo\Model\Filter;
-use Goteo\Application\Message;
-use Goteo\Library\Text;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Message;
+use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Forms\Model\FilterForm;
+use Goteo\Library\Text;
+use Goteo\Model\Filter;
+use PDOException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 class FilterAdminController extends AbstractAdminController
 {
     protected static $icon = '<i class="fa fa-2x fa-filter"></i>';
 
-    public static function getGroup() {
+    public static function getGroup(): string
+    {
         return 'communications';
     }
 
-    public static function getRoutes()
+    public static function getRoutes(): array
     {
         return [
             new Route(
@@ -54,31 +57,29 @@ class FilterAdminController extends AbstractAdminController
         $limit = 10;
         $list = Filter::getList(array(), $page * $limit, $limit, false);
         $total = Filter::getList(array(), 0, 0, true);
-        
+
         return $this->viewResponse('admin/filter/list',[
             'list' => $list,
             'total' => $total
         ]);
     }
 
-    public function editAction($id = '', Request $request)
-    {        
+    public function editAction(Request $request, $id = '')
+    {
         try  {
-            $filter = $id ? Filter::get($id) : new Filter(); 
+            $filter = $id ? Filter::get($id) : new Filter();
         } catch (ModelNotFoundException $e) {
             Message::error($e->getMessage());
             return $this->redirect('/admin/filter');
         }
 
-
         $defaults = (array) $filter;
-        $processor = $this->getModelForm('Filter', $filter, $defaults, Array(), $request);
+        $processor = $this->getModelForm(FilterForm::class, $filter, $defaults, Array(), $request);
         $processor->createForm();
         $form = $processor->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
             // Check if we want to remove an entry
-
             try {
                 $processor->save($form); // Allow save event if does not validate
                 Message::info(Text::get('admin-' . ($id ? 'edit' : 'add') . '-entry-ok'));
@@ -91,17 +92,15 @@ class FilterAdminController extends AbstractAdminController
         return $this->viewResponse('admin/filter/edit',[
             'form' => $form->createView()
         ]);
-
     }
 
-    public function deleteAction($id, Request $request) {
-        
+    public function deleteAction($id) {
+
         try {
             $filter = Filter::get($id);
         } catch (ModelNotFoundException $exception) {
             Message::error($exception->getMessage());
         }
-
 
         try {
             if ($filter->isUsed()) {
@@ -111,12 +110,10 @@ class FilterAdminController extends AbstractAdminController
                 $filter->dbDelete();
                 Message::info(Text::get('admin-remove-entry-ok'));
             }
-        } catch (\PDOException $e) {
-          Message::error($e->getMessage());  
-        } 
+        } catch (PDOException $e) {
+          Message::error($e->getMessage());
+        }
 
         return $this->redirect('/admin/filter/');
 	}
-
-
 }

@@ -19,28 +19,26 @@ use Goteo\Payment\Method\PaymentMethodInterface;
 /**
  * A statically defined class to manage payments
  *
- * Payments uses methods must implement
+ * Payments use methods must implement
  * Goteo\Payment\Method\PaymentMethodInterface
  */
 class Payment {
-    static protected $methods = [];
-    static protected $default_method = '';
+
+    static protected array $methods = [];
+    static protected string $default_method = '';
 
     /**
-     *
      * Adds a payment method suitable for its use in goteo.
-     * @param Goteo\Payment\Method\PaymentMethodInterface $clas  The payment class
-     * @param boolean $force whether to check config or not
      */
-    static public function addMethod($clas, $force = false) {
-        if(!in_array('Goteo\Payment\Method\PaymentMethodInterface', class_implements($clas))) {
-            throw new PaymentException("Error registering class [$clas]. It must implement PaymentMethodInferface!");
+    static public function addMethod(string $class, bool $force = false) {
+        if(!in_array(PaymentMethodInterface::class, class_implements($class))) {
+            throw new PaymentException("Error registering class [$class]. It must implement PaymentMethodInterface!");
         }
 
         $config = Config::get("payments");
         // adding method
-        if($force || $config[$clas::getId()]['active']) {
-            self::$methods[$clas::getId()] = $clas;
+        if($force || $config[$class::getId()]['active']) {
+            self::$methods[$class::getId()] = $class;
         }
 
         $methods = [];
@@ -60,60 +58,53 @@ class Payment {
         self::$methods = $methods;
     }
 
-    /**
-     * Removes method
-     */
-    static public function removeMethod($id) {
+    static public function removeMethod($id): bool
+    {
         if(array_key_exists($id, self::$methods)) {
             unset(self::$methods[$id]);
             return true;
         }
-        foreach(self::$methods as $i => $clas) {
-            $cmp = $clas;
-            if($clas instanceOf PaymentMethodInterface) {
-                $cmp = get_class($clas);
+        foreach(self::$methods as $i => $class) {
+            $cmp = $class;
+            if($class instanceOf PaymentMethodInterface) {
+                $cmp = get_class($class);
             }
-            if($clas === $cmp) {
+            if($class === $cmp) {
                 unset(self::$methods[$i]);
                 return true;
             }
         }
+
         throw new PaymentException("Error de-registering method [$id]");
     }
+
     /**
      * Returns all available payment methods
+     * @return PaymentMethodInterface[]
      */
-    static public function getMethods(User $user = null) {
+    static public function getMethods(User $user = null): array
+    {
         // instantiate methods if valid user passed
         if($user) {
-            foreach(self::$methods as $id => $clas) {
-                self::$methods[$id] = new $clas($user);
+            foreach(self::$methods as $id => $class) {
+                self::$methods[$id] = new $class($user);
             }
         }
         return self::$methods;
     }
 
-    /**
-     * [methodExists description]
-     * @param  [type] $method [description]
-     * @return [type]         [description]
-     */
-    static public function methodExists($method) {
+    static public function methodExists($method): bool
+    {
         return isset(self::$methods[$method]);
     }
 
-    /**
-     * Returns a instance of the method
-     * @param  [type] $method [description]
-     * @return [type]         [description]
-     */
-    static public function getMethod($method, User $user = null) {
+    static public function getMethod($method, User $user = null): PaymentMethodInterface {
         if(!self::methodExists($method)) {
             throw new PaymentException("Error, payment method [$method] is not registered!");
         }
         if(!self::$methods[$method] instanceOf PaymentMethodInterface) {
-            $clas = self::$methods[$method];
-            self::$methods[$method] = new $clas($user ? $user : Session::getUser());
+            $class = self::$methods[$method];
+            self::$methods[$method] = new $class($user ?: Session::getUser());
         }
         return self::$methods[$method];
     }

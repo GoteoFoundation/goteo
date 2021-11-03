@@ -10,20 +10,22 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
+use Exception;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelException;
-use Goteo\Application\View;
-use Goteo\Application\Session;
 use Goteo\Application\Lang;
 use Goteo\Application\Message;
-use Goteo\Model\User\Translate;
-use Goteo\Library\Text;
+use Goteo\Application\Session;
+use Goteo\Application\View;
+use Goteo\Core\Controller;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
+use Goteo\Library\Text;
+use Goteo\Model\User\Translate;
+use Symfony\Component\HttpFoundation\Request;
 
 
-class TranslateController extends \Goteo\Core\Controller {
+class TranslateController extends Controller {
 
     protected static $zones = [
         'home' => [
@@ -56,35 +58,31 @@ class TranslateController extends \Goteo\Core\Controller {
         ]
     ];
 
-    protected $langs = [];
+    protected array $langs = [];
 
     public function __construct() {
-        //Set the responsive theme
         View::setTheme('responsive');
 
-        // all languages for admins
         if (Session::getUser()->roles['admin']) {
             $this->langs = Lang::listAll('name', false);
         } else {
             $this->langs = Translate::getLangs(Session::getUserId());
         }
+
         if ( !$this->langs ) {
             throw new ControllerAccessDeniedException(Text::get('translator-no-langs'));
         }
 
-        // Common vars for all views
         $this->contextVars([
             'zones' => self::$zones,
             'languages' => $this->langs
-            ]);
+        ]);
     }
 
     /**
      * Adds a model to the translator
-     * @param [type] $table  [description]
-     * @param string $parent [description]
      */
-    public static function addTranslateModel($table, $parent = 'tables') {
+    public static function addTranslateModel($table, string $parent = 'tables') {
         if(!is_array(self::$zones[$parent])) self::$zones[$parent] = [];
         self::$zones[$parent][] = $table;
     }
@@ -105,7 +103,7 @@ class TranslateController extends \Goteo\Core\Controller {
         ]);
     }
 
-    public function indexAction (Request $request) {
+    public function indexAction() {
         $this->createSidebar('activity');
 
         return $this->viewResponse('translate/index', [
@@ -115,11 +113,10 @@ class TranslateController extends \Goteo\Core\Controller {
 
     protected function doList($zone, $translator, Request $request) {
         $this->createSidebar($zone);
-
-        // Get list texts
         $filters = [];
         $limit = 20;
         $offset = intval($request->query->get('pag')) * $limit;
+
         try {
             $fields = $translator::getFields($zone);
             if($request->query->has('q')) {
@@ -133,7 +130,6 @@ class TranslateController extends \Goteo\Core\Controller {
             }
             $total = $translator::getList($zone, $filters, 0, 0, true);
             $list = $translator::getList($zone, $filters, $offset, $limit);
-            // print_r($list);die;
         } catch(ModelException $e) {
             Message::error($e->getMessage());
             return $this->redirect('/translate');
@@ -144,8 +140,7 @@ class TranslateController extends \Goteo\Core\Controller {
             'limit' => $limit,
             'total' => $total,
             'fields' => $fields
-            ]);
-
+        ]);
     }
 
     protected function doEdit ($zone, $id, $translator, Request $request) {
@@ -153,7 +148,6 @@ class TranslateController extends \Goteo\Core\Controller {
         $redirect = "/translate/$zone" . ($request->getQueryString() ? '?' . $request->getQueryString() : '');
 
         try {
-
             $translator = $translator::get($zone, $id);
             $fields = $translator::getFields($zone);
 
@@ -166,7 +160,6 @@ class TranslateController extends \Goteo\Core\Controller {
                 }
 
                 $previous_values = Session::get("previous_values", []);
-                // print_R($previous_values);die;
                 $langs_ok = [];
                 $all = $request->request->get('t');
                 foreach($all as $lang => $texts) {
@@ -174,7 +167,6 @@ class TranslateController extends \Goteo\Core\Controller {
                     // if($lang === $translator->original) continue;
                     $all_empty = true;
                     $values = [];
-                    // $values = [];
                     foreach($texts as $key => $text) {
                         // Skip keys not in fields
                         if(!array_key_exists($key, $fields)) continue;
@@ -187,15 +179,13 @@ class TranslateController extends \Goteo\Core\Controller {
                         } else {
                             $previous = $translator->getTranslation($lang, $key);
                         }
-                        // if($lang == 'ca' && $key == 'pending') {print_r($texts);die("$lang.$previous");}
+
                         if($previous != $text) {
                             if($key === 'pending') {
                                 if($translator->isTranslated($lang)) {
                                     $values[$key] = $text;
                                     $all_empty = false;
                                 }
-                                // print_R($previous);die("$lang.$key");
-
                             } else {
                                 $all_empty = false;
                                 $values[$key] = $text;
@@ -210,10 +200,9 @@ class TranslateController extends \Goteo\Core\Controller {
                     // Update if exists
                     // Exception on failure
                     try {
-                        // if($lang != 'ca') {print_r($values);print_r($lang);die;}
                         $translator->save($lang, $values);
                         $langs_ok[$lang] = $this->langs[$lang];
-                    } catch(\Exception $e) {
+                    } catch(Exception $e) {
                         Message::error(Text::get('translator-saved-ko', ['%LANG%' => $lang, '%ERROR%' => $e->getMessage()]));
                     }
                 }
@@ -239,7 +228,6 @@ class TranslateController extends \Goteo\Core\Controller {
 
                 Session::del("previous_values");
                 return $this->redirect($redirect);
-
             }
         } catch(ModelException $e) {
             Message::error($e->getMessage());
@@ -256,7 +244,7 @@ class TranslateController extends \Goteo\Core\Controller {
                 }
             }
         }
-        // print_R($previous_values);die;
+
         Session::store("previous_values", $previous_values);
         $this->createSidebar($zone);
 
@@ -264,7 +252,7 @@ class TranslateController extends \Goteo\Core\Controller {
             'id' => $id,
             'fields' => $fields,
             'translator' => $translator
-            ]);
+        ]);
     }
 
     public function listAction ($zone, Request $request) {

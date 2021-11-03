@@ -12,14 +12,14 @@ namespace Goteo\Controller;
 
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\View;
+use Goteo\Core\Controller;
 use Goteo\Model\Project;
 use Goteo\Library\WallFriends;
 use Symfony\Component\HttpFoundation\Response;
 
-class WidgetController extends \Goteo\Core\Controller {
+class WidgetController extends Controller {
 
     public function __construct() {
-        // Cache & replica read activated in this controller
         $this->dbReplica(true);
         $this->dbCache(true);
         View::setTheme('responsive');
@@ -45,6 +45,5 @@ class WidgetController extends \Goteo\Core\Controller {
 			throw new ModelNotFoundException();
 		}
     }
-
 
 }

@@ -108,7 +108,6 @@ class ProjectTest extends TestCase {
         $this->assertFalse($ob->save());
     }
 
-
     public function testCreateUser() {
         delete_test_user();
         delete_test_node();
@@ -177,9 +176,9 @@ class ProjectTest extends TestCase {
     {
         $errors = array();
 
-        $this->assertRegExp('/^[A-Fa-f0-9]{32}$/', $project->id, $project->id);
+        $this->assertMatchesRegularExpression('/^[A-Fa-f0-9]{32}$/', $project->id, $project->id);
         $this->assertTrue($project->rebase(null, $errors), print_r($errors, 1));
-        $this->assertNotRegExp('/^[A-Fa-f0-9]{32}$/', $project->id, $project->id);
+        $this->assertDoesNotMatchRegularExpression('/^[A-Fa-f0-9]{32}$/', $project->id, $project->id);
         $this->assertEquals($project->id, self::$data['id']);
 
         $project = Project::get(self::$data['id']);

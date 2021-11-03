@@ -11,8 +11,7 @@
 namespace Goteo\Console\Event;
 
 use Goteo\Model\Mail\Sender;
-
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class FilterMailingEvent extends Event {
 	protected $mailing;

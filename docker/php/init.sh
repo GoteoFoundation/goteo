@@ -90,7 +90,7 @@ if [ "$DEBUG" = false ] || [ "$DEBUG" = 0 ]; then
     fi
     # Mock .tmp as dist minimized folder
     gosu goteo rsync -a --delete ./dist/ ./.tmp/
-    gosu goteo cp -af ./dist/index.php ./.tmp/index_dev.php
+    gosu goteo cp -af ./dist/index.php ./.tmp/index.php
     echo -e "\e[33m Pointing nginx server as PRODUCTION (index.php)"
 else
     gosu goteo grunt build:tmp

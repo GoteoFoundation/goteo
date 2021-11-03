@@ -10,12 +10,13 @@
 
 namespace Goteo\Library\Forms\Model;
 
-use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
-use Symfony\Component\Validator\Constraints;
-use Goteo\Model\Image;
-use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Text;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
+use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Form\FormInterface;
 
 
@@ -42,26 +43,26 @@ class ProjectStoryForm extends AbstractFormProcessor {
         $project = $this->getOption('project');
 
         $builder
-            ->add('title', 'text', [
+            ->add('title', TextType::class, [
                 'label' => 'story-field-author-organization',
                 'constraints' => $this->getConstraints('name'),
                 'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('story-tooltip-author-organization')]
             ])
-            ->add('description', 'textarea', [
+            ->add('description', TextareaType::class, [
                 'label' => 'story-field-description',
                 'constraints' => $this->getConstraints('description'),
                 'disabled' => $this->getReadonly(),
                 'required' => true,
                 'attr' => ['help' => Text::get('story-tooltip-description'), 'rows' => 3]
             ])
-            ->add('image', 'dropfiles', [
+            ->add('image', DropfilesType::class, [
                 'label' => 'story-field-image',
                 'disabled' => $this->getReadonly(),
                 'required' => true,
                 'limit' => 1
             ])
-            ->add('pool_image', 'dropfiles', [
+            ->add('pool_image', DropfilesType::class, [
                 'label' => 'story-field-pool-image',
                 'disabled' => $this->getReadonly(),
                 'required' => false,

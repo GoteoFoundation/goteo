@@ -31,11 +31,11 @@ class ConsoleInvestListener extends AbstractListener {
 		$this->info('Invest refund cancel', [$invest, 'pool' => $invest->pool, 'project' => $invest->project, 'user' => $invest->user]);
 
 		if ($invest->cancel(false)) {
-			Invest::setDetail($invest->id, $method::getId().'-cancel', 'Invest manually cancelled successfully');
+			Invest::setDetail($invest->id, $method->getIdNonStatic().'-cancel', 'Invest manually cancelled successfully');
 			// update cached data
 			$invest->keepUpdated();
 		} else {
-			Invest::setDetail($invest->id, $method::getId().'-cancel-fail', 'Error while cancelling invest');
+			Invest::setDetail($invest->id, $method->getIdNonStatic().'-cancel-fail', 'Error while cancelling invest');
 		}
 
 	}
@@ -50,11 +50,11 @@ class ConsoleInvestListener extends AbstractListener {
 
 		$this->info('Invest refund return', [$invest, 'pool' => $invest->pool, 'project' => $invest->project, 'user' => $invest->user]);
 		if ($invest->cancel(true)) {
-			Invest::setDetail($invest->id, $method::getId().'-cancel', 'Invest automatically refunded successfully');
+			Invest::setDetail($invest->id, $method->getIdNonStatic().'-cancel', 'Invest automatically refunded successfully');
 			// update cached data
 			$invest->keepUpdated();
 		} else {
-			Invest::setDetail($invest->id, $method::getId().'-cancel-fail', 'Error while cancelling invest');
+			Invest::setDetail($invest->id, $method->getIdNonStatic().'-cancel-fail', 'Error while cancelling invest');
 		}
 
 	}
@@ -68,7 +68,7 @@ class ConsoleInvestListener extends AbstractListener {
 
 		$response = $event->getResponse();
 		$this->info('Invest refund failed', [$invest, 'pool' => $invest->pool, 'project' => $invest->project, 'user' => $invest->user, 'message' => $response->getMessage()]);
-		Invest::setDetail($invest->id, $method::getId().'-return-fail', 'Error while refunding invest: '.$response->getMessage());
+		Invest::setDetail($invest->id, $method->getIdNonStatic().'-return-fail', 'Error while refunding invest: '.$response->getMessage());
 
 	}
 

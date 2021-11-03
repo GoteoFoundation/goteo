@@ -10,27 +10,16 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Exception\ModelException;
-
-use Goteo\Model\User;
 use Goteo\Model\Node;
-use Goteo\Model\Category;
-use Goteo\Model\Image;
-use Goteo\Library\Text;
-use Goteo\Library\Feed;
-use Goteo\Library\FeedBody;
+use Goteo\Model\User;
+use Symfony\Component\HttpFoundation\Request;
 
 class ChannelsApiController extends AbstractApiController {
 
     /**
      * Simple listing of channels
      * TODO: according to permissions, filter this channels
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function channelsAction(Request $request) {
         if(!$this->user instanceOf User) throw new ControllerAccessDeniedException();
@@ -38,7 +27,7 @@ class ChannelsApiController extends AbstractApiController {
         $filters = [];
         $node = null;
         $page = max((int) $request->query->get('pag'), 0);
-        // General search
+
         if($request->query->has('q')) {
             $filters[$this->is_admin ? 'global' : 'name'] = $request->query->get('q');
         } else {
@@ -68,7 +57,7 @@ class ChannelsApiController extends AbstractApiController {
             'total' => count($list),
             'page' => $page,
             'limit' => $limit
-            ]);
+        ]);
     }
 
     /**

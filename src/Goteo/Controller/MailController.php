@@ -10,40 +10,35 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
+use Exception;
 use Goteo\Application\App;
 use Goteo\Application\Config;
-use Goteo\Application\Session;
-use Goteo\Application\Message;
 use Goteo\Application\Exception\ControllerException;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Message;
+use Goteo\Core\Controller;
+use Goteo\Model\Mail;
 use Goteo\Model\Mail\MailStats;
 use Goteo\Model\Mail\MailStatsLocation;
-use Goteo\Model\Mail\Metric;
-use Goteo\Model\Mail;
 use Goteo\Model\User;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class MailController extends \Goteo\Core\Controller {
+class MailController extends Controller {
 
     /**
      * Expects a token and returns the email content
      */
-    public function indexAction ($token, Request $request) {
+    public function indexAction($token, Request $request) {
 
         if (list($email, $mail_id, $tracker) = Mail::decodeToken($token)) {
-
-            // die("$email | $mail_id | [$tracker]");
             $track = ($tracker == '1');
             // track this opening
             if ($track) {
                 try {
                     // try to geolocate
                     try {
-                        // email tracker
                         $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
-                        // print_r($stat);die;
-                        // geolocation if exists database
                         if (Config::get('geolocation.maxmind.cities')) {
                             $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                             if($loc) $loc->save();
@@ -53,15 +48,14 @@ class MailController extends \Goteo\Core\Controller {
                             throw $e;
                         }
                     }
-
-                } catch(\Exception $e) {
+                } catch(Exception $e) {
                     // TODO: log this
                     if (App::debug()) {
                         throw $e;
                     }
                 }
-
             }
+
             // Content still in database?
             /** @var Mail $mail */
             if ($mail = Mail::get($mail_id)) {
@@ -88,22 +82,17 @@ class MailController extends \Goteo\Core\Controller {
     }
 
     /**
-     * Redirects to the apropiate link
+     * Redirects to the appropriate link
      * Using this method as default to avoid creating empty metrics in database
      */
-    public function urlAction ($token, Request $request) {
+    public function urlAction($token, Request $request) {
 
         if (list($email, $mail_id, $url) = Mail::decodeToken($token)) {
-            // die("$email $mail_id $url");
             // track this opening
             try {
                 $stat = MailStats::incMetric($mail_id, $email, $url);
-                // var_dump($stat);die;
-                // try to geolocate
                 try {
-                    // set email opened metric if empty
                     $e = MailStats::incMetric($stat->mail_id, $stat->email, 'EMAIL_OPENED', true);
-                    // geolocation if exists database
                     if (Config::get('geolocation.maxmind.cities')) {
                         $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                         if($loc) {
@@ -117,7 +106,7 @@ class MailController extends \Goteo\Core\Controller {
                         throw $e;
                     }
                 }
-            } catch(\Exception $e) {
+            } catch(Exception $e) {
                 //TODO: log this
             }
 
@@ -128,18 +117,14 @@ class MailController extends \Goteo\Core\Controller {
     }
 
     /**
-     * Redirects to the apropiate from a mailStats id
+     * Redirects to the appropriate from a mailStats id
      */
-    public function linkAction ($id, Request $request) {
+    public function linkAction($id, Request $request) {
 
         if ($stat = MailStats::get($id)) {
-            // print_r($stat);die("$id");
-            // track this opening
             try {
                 try {
-                    // set email opened metric if empty
                     $e = MailStats::incMetric($stat->mail_id, $stat->email, 'EMAIL_OPENED', true);
-                    // try to geolocate
                     if (Config::get('geolocation.maxmind.cities')) {
                         // $loc = MailStatsLocation::createByIp($stat->id, $stat->id, '128.101.101.101');
                         $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
@@ -154,17 +139,15 @@ class MailController extends \Goteo\Core\Controller {
                 }
                 $stat->inc();
                 $stat->save();
-                // Mark as readed if mail exists
+                // Mark as read if mail exists
                 $url = $stat->getMetric()->metric;
-                // print_r($url);die;
                 if ($url) {
                     return $this->redirect($url);
                 }
-            } catch(\Exception $e) {
+            } catch(Exception $e) {
                 $this->warning($e->getMessage(), [$stat, 'link_id' => $id, 'url' => $url]);
                 Message::error($e->getMessage());
             }
-
         }
 
         throw new ControllerException('Link not available!');
@@ -176,23 +159,16 @@ class MailController extends \Goteo\Core\Controller {
     public function trackAction($token, Request $request) {
         //decode token
         if (list($email, $mail_id) = Mail::decodeToken($token)) {
-            // try to geolocate
             try {
-                // email metric
                 $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
-                // Geolocation if exists
                 if (Config::get('geolocation.maxmind.cities')) {
                     $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                     if($loc) $loc->save();
                 }
-            } catch (ModelException $e) {
-                // die($e->getMessage());
-            }
-
+            } catch (ModelException $e) { }
         }
         // Return a transparent GIF
         return new Response(base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw=='), Response::HTTP_OK, ['Content-Type' => 'image/gif']);
     }
 
 }
-

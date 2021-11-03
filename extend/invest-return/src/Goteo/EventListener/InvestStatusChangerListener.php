@@ -2,33 +2,20 @@
 
 namespace Goteo\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
-use Goteo\Model\Invest;
-
-use Goteo\Application\AppEvents;
-use Goteo\Application\Session;
-use Goteo\Application\Exception\ModelException;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Event\FilterInvestFinishEvent;
-use Goteo\Application\Event\FilterInvestRequestEvent;
-use Goteo\Application\Event\FilterInvestEvent;
-use Goteo\Application\Event\FilterInvestModifyEvent;
-use Goteo\Application\View;
+use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\Message;
-use Goteo\Application\Config;
+use Goteo\Application\Session;
+use Goteo\Controller\InvestController;
+use Goteo\Controller\InvestRecoverController;
 use Goteo\Library\Text;
-use Goteo\Payment\PaymentException;
+use Goteo\Model\Invest;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 //
-class InvestStatusChangerListener extends \Goteo\Application\EventListener\AbstractListener {
+class InvestStatusChangerListener extends AbstractListener {
     private $ok = false;
-
 
     // añadiendo custom variables
     public function onController(FilterControllerEvent $event) {
@@ -39,13 +26,10 @@ class InvestStatusChangerListener extends \Goteo\Application\EventListener\Abstr
 
         $controller = $event->getController();
         $invest = Session::get('recover-invest');
-        // if(!$invest) return;
-        // if($invest->isReturned()) {
-        //     return;
-        // }
+
         if( !is_array($controller) ) return;
 
-        if( $controller[0] instanceOf \Goteo\Controller\InvestController){
+        if( $controller[0] instanceOf InvestController){
             if(!$invest) return;
             $user = $invest->getUser();
 
@@ -85,7 +69,6 @@ class InvestStatusChangerListener extends \Goteo\Application\EventListener\Abstr
                 return;
 
             } elseif($controller[1] === 'selectPaymentMethodAction') {
-                // print_r($controller);die;
                 if(Session::getUserId() !== $user->id) {
                     if(Session::isLogged()) {
                         Session::store('recover-old-user', Session::getUser());
@@ -99,10 +82,7 @@ class InvestStatusChangerListener extends \Goteo\Application\EventListener\Abstr
             if($reward = $invest->getFirstReward()) {
                 Message::info(Text::get('invest-return-reward', $reward->reward));
             }
-            // print_r($invest);
-            // print_r($controller);die;
-        } elseif( ! $controller[0] instanceOf \Goteo\Controller\InvestRecoverController) {
-            // print_r($controller);die("out of {$invest->id}");
+        } elseif( ! $controller[0] instanceOf InvestRecoverController) {
             // Out of invest scope remove the session
             if($old = Session::get('recover-old-user')) {
                 Session::setUser($old);
@@ -111,10 +91,9 @@ class InvestStatusChangerListener extends \Goteo\Application\EventListener\Abstr
             }
             Session::del('recover-old-user');
         }
-
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             KernelEvents::CONTROLLER   => 'onController'

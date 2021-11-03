@@ -10,11 +10,10 @@
 
 namespace Goteo\Console\Event;
 
+use DateTime;
 use Goteo\Model\Project;
-
 use Goteo\Model\Contract;
-
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class FilterProjectEvent extends Event {
 	protected $project;
@@ -31,8 +30,8 @@ class FilterProjectEvent extends Event {
      * Get days since published date
      */
     public function getDays() {
-        $date1 = new \DateTime($this->project->published);
-        $date2 = new \DateTime();
+        $date1 = new DateTime($this->project->published);
+        $date2 = new DateTime();
 
         return $date2->diff($date1)->format("%a");
     }
@@ -42,19 +41,19 @@ class FilterProjectEvent extends Event {
      */
     public function getDaysSucceeded() {
         $date = $this->project->success;
-        $date1 = new \DateTime($date);
-        $date2 = new \DateTime();
+        $date1 = new DateTime($date);
+        $date2 = new DateTime();
 
         return $date2->diff($date1)->format("%a");
     }
+
     /**
      * Get days since project is funded
-     * @return [type] [description]
      */
     public function getDaysFunded() {
         $date = $this->project->one_round ? $this->project->success : $this->project->passed;
-        $date1 = new \DateTime($date);
-        $date2 = new \DateTime();
+        $date1 = new DateTime($date);
+        $date2 = new DateTime();
 
         return $date2->diff($date1)->format("%a");
     }
