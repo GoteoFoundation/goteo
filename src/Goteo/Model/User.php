@@ -31,16 +31,16 @@ use function str_replace;
 
 class User extends Model {
 
-    const PREFERENCE_UPDATES = 'updates';
-    const PREFERENCE_THREADS = 'threads';
-    const PREFERENCE_ROUNDS = 'rounds';
-    const PREFERENCE_MAILING = 'mailing';
-    const PREFERENCE_EMAIL = 'email';
-    const PREFERENCE_TIPS = 'tips';
-    const PREFERENCE_COMMUNICATION_LANGUAGE = 'comlang';
-    const PREFERENCE_CURRENCY = 'currency';
+    public const PREFERENCE_UPDATES = 'updates';
+    public const PREFERENCE_THREADS = 'threads';
+    public const PREFERENCE_ROUNDS = 'rounds';
+    public const PREFERENCE_MAILING = 'mailing';
+    public const PREFERENCE_EMAIL = 'email';
+    public const PREFERENCE_TIPS = 'tips';
+    public const PREFERENCE_COMMUNICATION_LANGUAGE = 'comlang';
+    public const PREFERENCE_CURRENCY = 'currency';
 
-    const BOOLEAN_PREFERENCES = [
+    public const BOOLEAN_PREFERENCES = [
         self::PREFERENCE_UPDATES,
         self::PREFERENCE_THREADS,
         self::PREFERENCE_ROUNDS,
@@ -48,7 +48,7 @@ class User extends Model {
         self::PREFERENCE_EMAIL,
         self::PREFERENCE_TIPS,
     ];
-    const ALL_PREFERENCES = [
+    public const ALL_PREFERENCES = [
         self::PREFERENCE_UPDATES,
         self::PREFERENCE_THREADS,
         self::PREFERENCE_ROUNDS,
