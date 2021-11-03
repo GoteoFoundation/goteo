@@ -27,8 +27,6 @@ use Goteo\Util\Form\Type\MediaType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Validator\Constraints;
-
-use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\UrlType;
 use Goteo\Util\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
