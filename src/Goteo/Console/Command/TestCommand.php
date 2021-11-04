@@ -23,7 +23,7 @@ class TestCommand extends AbstractCommand {
         $this->setName("test")
              ->setDescription("A mail testing command")
              ->setDefinition([
-                 new InputOption('fail', 'f', InputOption::VALUE_NONE, 'Do a fail test and send a failure mail')
+                 new InputOption('fail', 'f', InputOption::VALUE_NONE, 'Do a fail test and send a failure mail (if --logmail option is used)')
              ])
              ->setHelp(<<<EOT
 This script throws an exception in order to check Mail sending behaviour
