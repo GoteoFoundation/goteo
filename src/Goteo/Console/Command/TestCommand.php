@@ -22,9 +22,9 @@ class TestCommand extends AbstractCommand {
     {
         $this->setName("test")
              ->setDescription("A mail testing command")
-             ->setDefinition(array(
-                      new InputOption('fail', 'f', InputOption::VALUE_NONE, 'Do a fail test and send a failure mail'),
-                ))
+             ->setDefinition([
+                 new InputOption('fail', 'f', InputOption::VALUE_NONE, 'Do a fail test and send a failure mail (if --logmail option is used)')
+             ])
              ->setHelp(<<<EOT
 This script throws an exception in order to check Mail sending behaviour
 
@@ -42,9 +42,10 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ( $input->getOption('fail') ) {
-           $output->writeln('<comment>Throwing some errors intentionally to test email sending</comment>');
+        if ($input->getOption('fail')) {
+           $output->writeln('<comment>Throwing some errors intentionally...</comment>');
            $this->error('Simulated error log line');
+
            throw new Exception('This is a simulated failed execution!');
         } else {
             $output->writeln("<comment>Please run this command with options. Use --help for more info</comment>");

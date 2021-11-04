@@ -21,7 +21,7 @@ use Goteo\Model\Invest;
 use Goteo\Model\Project;
 
 class StatusInitCommand extends AbstractCommand {
-    protected $output;
+    protected OutputInterface $output;
 
     protected function configure()
     {
