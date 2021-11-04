@@ -43,7 +43,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('fail')) {
-           $output->writeln('<comment>Throwing some errors intentionally to test email sending</comment>');
+           $output->writeln('<comment>Throwing some errors intentionally...</comment>');
            $this->error('Simulated error log line');
 
            throw new Exception('This is a simulated failed execution!');
