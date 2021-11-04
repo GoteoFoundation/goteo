@@ -10,24 +10,14 @@
 
 namespace Goteo\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Finder\Finder;
-
-
-use Goteo\Application\Config;
-use Goteo\Application\Lang;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
 use Goteo\Model\LegalDocumentType;
 use Goteo\Model\User\Donor;
-use Goteo\Model\Invest;
-use FileSystemCache;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 
 class CertificateCommand extends AbstractCommand {
@@ -160,7 +150,7 @@ EOT
 
                 $progress_bar = new ProgressBar($output, $count_donors);
                 $progress_bar->start();
-                
+
                 $valid_donors = 0;
                 $invalid_donors = 0;
                 $updated_donors = 0;
@@ -192,7 +182,6 @@ EOT
                         $valid_nif = Check::nif($donor->nif, $nif_type);
 
                         if(isset($errors['nif'])) {
-                            
                             if ($valid_nif && $nif_type != LegalDocumentType::VAT) {
                                 $donor->legal_document_type = $nif_type;
                                  if ($nif_type == LegalDocumentType::CIF) {
@@ -203,10 +192,10 @@ EOT
                                 $can_be_updated = true;
 
                                 if ($verbose) {
-                                    $progress_bar->clear();        
+                                    $progress_bar->clear();
                                     $output->writeln("<info>The donor legal document type can be changed to {$nif_type} and the legal entity to {$donor->legal_entity} if used --update </info>");
                                     $progress_bar->display();
-                                }        
+                                }
                             } else {
                                 $invalid_nif++;
                             }
@@ -257,7 +246,7 @@ EOT
                                 $can_be_updated = true;
 
                                 if ($verbose) {
-                                    $progress_bar->clear();        
+                                    $progress_bar->clear();
                                     $output->writeln("<info>The donor legal document type can be changed to {$nif_type} and the legal entity to {$donor->legal_entity} if used --update </info>");
                                     $progress_bar->display();
                                 }
@@ -280,13 +269,13 @@ EOT
                             if ($donor->save($error_save)) {
                                 $updated++;
                                 if ($verbose) {
-                                    $progress_bar->clear();        
+                                    $progress_bar->clear();
                                     $output->writeln("<info>The donor legal document has been updated</info>");
                                     $progress_bar->display();
                                 }
                             } else {
                                 if ($verbose) {
-                                    $progress_bar->clear();        
+                                    $progress_bar->clear();
                                     $this->warning("This donor still has invalid data " . implode(',', $error_save));
                                     $progress_bar->display();
                                 }
@@ -391,7 +380,7 @@ EOT
             }
 
         } else if ($update_status) {
-            
+
             $filter = [
                 'year' => $year,
                 'report' => true,
@@ -427,16 +416,16 @@ EOT
                 $progress_bar->start();
 
                 while ($donors = Donor::getList($filter, $offset, $limit)) {
-                    
+
                     foreach($donors as $donor) {
                         ++$donors_treated;
 
                         if ($donor->status != Donor::PENDING)
                             continue;
-                            
+
                         $errors = [];
                         $is_valid = $donor->validateData($errors);
-                        
+
                         if ($is_valid) {
                             $can_be_updated++;
                             if ($verbose || $verbose_debug) {
@@ -444,7 +433,7 @@ EOT
                                 $output->writeln("<info>Update {$donor->id} - {$donor->name} - {$donor->nif} can change it's status .</info>");
                                 $progress_bar->display();
                             }
-                            
+
                         } else {
                             $donors_with_errors++;
                             if ($verbose_debug) {
@@ -462,7 +451,7 @@ EOT
                                     $errors = [];
                                     $donor->status = Donor::COMPLETED;
                                     $donor->completed = date('Y-m-d H:i:s');
-                                    if ($donor->save($errors)) {   
+                                    if ($donor->save($errors)) {
                                         $updated_donors++;
                                         if ($verbose_debug) {
                                             $progress_bar->clear();

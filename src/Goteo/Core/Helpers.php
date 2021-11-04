@@ -10,6 +10,10 @@
 
 namespace {
 
+    use Goteo\Application\Currency;
+    use Goteo\Application\Lang;
+    use Monolog\Logger;
+
     function global_formatter ($record) {
         if( !empty( $_SERVER ) ){
             $record['extra']['_SERVER'] = $_SERVER;
@@ -30,17 +34,16 @@ namespace {
     }
 
     function monolog_level($log_level) {
-        if($log_level == 'debug')       return \Monolog\Logger::DEBUG;
-        elseif($log_level == 'notice')  return \Monolog\Logger::NOTICE;
-        elseif($log_level == 'info')    return \Monolog\Logger::INFO;
-        elseif($log_level == 'warning') return \Monolog\Logger::WARNING;
-        elseif($log_level == 'error')   return \Monolog\Logger::ERROR;
-        else                            return \Monolog\Logger::CRITICAL;;
+        if($log_level == 'debug')       return Logger::DEBUG;
+        elseif($log_level == 'notice')  return Logger::NOTICE;
+        elseif($log_level == 'info')    return Logger::INFO;
+        elseif($log_level == 'warning') return Logger::WARNING;
+        elseif($log_level == 'error')   return Logger::ERROR;
+        else                            return Logger::CRITICAL;
     }
 
     /**
      * Obtiene dirección ip del cliente
-     * @return ip address
      */
     function myip() {
 		if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -69,8 +72,6 @@ namespace {
 
     /**
      * Traza información sobre el recurso especificado de forma legible.
-     *
-    * @param    type mixed  $resource   Recurso
      */
     function trace ($resource = null) {
         echo '<pre>' . print_r($resource, true) . '</pre>';
@@ -78,8 +79,6 @@ namespace {
 
     /**
      * Vuelca información sobre el recurso especificado de forma detallada.
-     *
-     * @param   type mixed  $resource   Recurso
      */
     function dump ($resource = null) {
         echo '<pre>' . var_dump($resource) . '</pre>';
@@ -106,15 +105,13 @@ namespace {
             }
             $params[$key] = "'" . str_replace("'", "\'", $value) . "'";
         }
-        // print_r($keys);print_r($params);
-        $query = preg_replace($keys, $params, $query, -1, $count);
 
-        // trigger_error('replaced '.$count.' keys');
+        $query = preg_replace($keys, $params, $query, -1, $count);
 
         return $query;
     }
 
-    /** Check if a array is associative */
+    /** Check if an array is associative */
     function is_assoc(array $array) {
       return (bool)count(array_filter(array_keys($array), 'is_string'));
     }
@@ -128,7 +125,6 @@ namespace {
 
     /**
      * Genera un mktime (UNIX_TIMESTAMP) a partir de una fecha (DATE/DATETIME/TIMESTAMP)
-     * @param $str
      */
     function date2time ($str) {
     	list($date, $time) = explode(' ', $str);
@@ -141,7 +137,7 @@ namespace {
     function date_valid($date) {
         try {
             $d = new DateTime($date);
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             return false;
         }
         return $d && checkdate($d->format('m'), $d->format('d'), $d->format('Y'));
@@ -166,14 +162,11 @@ namespace {
         return true;
     }
 
-
     /**
      * Converts a YYYY-MM-DD date to a language depending format
-     * @param  [type] $date [description]
-     * @return [type]       [description]
      */
     function date_formater($date, $fulltime = false) {
-        $lang = \Goteo\Application\Lang::current();
+        $lang = Lang::current();
         $format = 'd/m/Y';
         if(in_array($lang, ['en', 'de'])) $format = 'Y/m/d';
         if($fulltime) $format = "$format H:i";
@@ -186,7 +179,7 @@ namespace {
      */
     function amount_format($amount, $decs = 0, $nosymbol = false, $revert = false, $format = true) {
 
-        return \Goteo\Application\Currency::amountFormat($amount, $decs, $nosymbol, $revert, $format);
+        return Currency::amountFormat($amount, $decs, $nosymbol, $revert, $format);
     }
 
     /**
@@ -213,7 +206,6 @@ namespace {
     function mybase64_decode($s) {
         return base64_decode(str_replace(array('_', '-'), array('+', '/'), $s));
     }
-
 
     /* para convertir código de controlador (con undescore) 'dos_palabras' a nombre de clase (CamelCase) 'DosPalabras'*/
     // /admin/open_tags sería \Goteo\Controller\Admin\OpenTags (para cumplir con el standard del framework)

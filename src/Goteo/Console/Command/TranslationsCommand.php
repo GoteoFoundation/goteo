@@ -10,18 +10,13 @@
 
 namespace Goteo\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-
-use Symfony\Component\Yaml\Yaml;
-
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Library\Text;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
 
 
 class TranslationsCommand extends AbstractCommand {
@@ -76,7 +71,6 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         if($input->getOption('langs')) {
           $output->writeln(Yaml::dump(Lang::listAll('array', false)));
           return;

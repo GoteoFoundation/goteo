@@ -10,6 +10,8 @@
 
 namespace Goteo\Controller\Admin;
 
+use Goteo\Library\Forms\Admin\AdminPostEditForm;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,19 +22,19 @@ use Goteo\Application\Event\FilterBlogPostEvent;
 use Goteo\Application\AppEvents;
 use Goteo\Library\Text;
 use Goteo\Model\Blog;
-use Goteo\Model\Post;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Library\Forms\FormModelException;
 
 class BlogAdminController extends AbstractAdminController {
     protected static $icon = '<i class="fa fa-2x fa-file-text-o"></i>';
 
-    // this modules is part of a specific group
-    public static function getGroup() {
+    public static function getGroup(): string
+    {
         return 'communications';
     }
 
-    public static function getRoutes() {
+    public static function getRoutes(): array
+    {
         return [
             new Route(
                 '/',
@@ -49,7 +51,6 @@ class BlogAdminController extends AbstractAdminController {
             )
         ];
     }
-
 
     public function listAction(Request $request) {
         $filters = ['superglobal' => $request->query->get('q')];
@@ -70,7 +71,7 @@ class BlogAdminController extends AbstractAdminController {
         ]);
     }
 
-    public function editAction($slug = '', Request $request) {
+    public function editAction(Request $request, $slug = '') {
         $node = Config::get('node');
         $blog = Blog::get($node, 'node');
         if (!$blog instanceof Blog) {
@@ -79,7 +80,7 @@ class BlogAdminController extends AbstractAdminController {
             if ($blog->save($errors)) {
                 Message::info(Text::get('admin-blog-initialized'));
             } else {
-                Message::error("Error creating node-blog space for node [$node]", implode(',',$errors));
+                Message::error("Error creating node-blog space for node [$node]");
                 return $this->redirect('/admin/blog');
             }
         } elseif (!$blog->active) {
@@ -107,22 +108,22 @@ class BlogAdminController extends AbstractAdminController {
         if(!$post) throw new ModelNotFoundException("Not found post [$slug]");
 
         $defaults = (array)$post;
-        $processor = $this->getModelForm('AdminPostEdit', $post, $defaults, [], $request);
+        $processor = $this->getModelForm(AdminPostEditForm::class, $post, $defaults, [], $request);
         $processor->createForm();
         $processor->getBuilder()
-            ->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
+            ->add('submit', SubmitType::class, [
+                'label' => 'regular-submit'
             ]);
         if($post->id) {
             $processor->getBuilder()
-                ->add('remove', 'submit', [
+                ->add('remove', SubmitType::class, [
                     'label' => Text::get('admin-remove-entry'),
                     'icon_class' => 'fa fa-trash',
                     'span' => 'hidden-xs',
                     'attr' => [
                         'class' => 'pull-right-form btn btn-default btn-lg',
                         'data-confirm' => Text::get('admin-remove-entry-confirm')
-                        ]
+                    ]
                 ]);
         }
 
@@ -131,7 +132,7 @@ class BlogAdminController extends AbstractAdminController {
         if ($form->isSubmitted() && $request->isMethod('post')) {
             // Check if we want to remove an entry
             if($form->has('remove') && $form->get('remove')->isClicked()) {
-                if((bool)$post->publish) {
+                if($post->publish) {
                     Message::error(Text::get('admin-remove-entry-forbidden'));
                     return $this->redirect('/admin/blog/');
                 }
@@ -140,7 +141,6 @@ class BlogAdminController extends AbstractAdminController {
                 Message::info(Text::get('admin-remove-entry-ok'));
                 return $this->redirect('/admin/blog/');
             }
-
 
             try {
                 $processor->save($form); // Do not save the model if it has errors

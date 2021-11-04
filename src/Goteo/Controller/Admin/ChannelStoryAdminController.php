@@ -10,28 +10,29 @@
 
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Goteo\Application\Config;
-use Goteo\Model\Node;
-use Goteo\Model\Stories;
-use Goteo\Model\Node\NodeStories;
-
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
 use Goteo\Library\Text;
+use Goteo\Model\Node;
+use Goteo\Model\Node\NodeStories;
+use Goteo\Model\Stories;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 
 class ChannelStoryAdminController extends AbstractAdminController
 {
 	protected static $icon = '<i class="fa fa-2x fa-id-card-o"></i>';
 
-    public static function getGroup() {
+    public static function getGroup(): string
+    {
         return 'channels';
     }
 
-    public static function getRoutes() {
+    public static function getRoutes(): array
+    {
 		return [
 			new Route(
 				'/',
@@ -53,8 +54,8 @@ class ChannelStoryAdminController extends AbstractAdminController
 			)
 		];
     }
-    
-	public function listAction($id, Request $request) {
+
+	public function listAction($id) {
 		try {
 			$channel = Node::get($id);
 		} catch (ModelNotFoundException $e) {
@@ -73,39 +74,34 @@ class ChannelStoryAdminController extends AbstractAdminController
 			'total' => $total,
 			'limit' => $limit,
 		]);
+    }
 
-		}
-		
-		public function addAction($id, Request $request) {
-				if(!$this->user && !$this->user->hasPerm('admin-module-channels') )
+    public function addAction($id, Request $request) {
+        if(!$this->user && !$this->user->hasPerm('admin-module-channels') )
             throw new ControllerAccessDeniedException();
 
-        $result = [];
-        
         if($request->isMethod('post') && $request->request->has('value')) {
             $story = Stories::get($request->request->get('value'));
             $channel = Node::get($id);
 
-						if ($channel->addStory($story)) {
-								Message::info(Text::get('admin-channelstory-correct'));
-						}
-						else {
-								Message::error(implode(', ', $errors));
-						}
-
+            if ($channel->addStory($story)) {
+                Message::info(Text::get('admin-channelstory-correct'));
+            } else {
+                Message::error(implode(', ', $errors));
+            }
         }
+
         return $this->jsonResponse($story);
+    }
 
-		}
+    public function deleteAction($id, $stories_id) {
+        if(!$this->user && !$this->user->hasPerm('admin-module-channels') )
+            throw new ControllerAccessDeniedException();
 
-		public function deleteAction($id, $stories_id, Request $request) {
-			if(!$this->user && !$this->user->hasPerm('admin-module-channels') )
-				throw new ControllerAccessDeniedException();
+        $node_story = NodeStories::getNodeStory($id, $stories_id);
+        $node_story->dbDelete();
 
-				$node_story = NodeStories::getNodeStory($id, $stories_id);
-				$node_story->dbDelete();
-
-			return $this->redirect('/admin/channelstory/' . $id);
-		}
+        return $this->redirect('/admin/channelstory/' . $id);
+    }
 
 }

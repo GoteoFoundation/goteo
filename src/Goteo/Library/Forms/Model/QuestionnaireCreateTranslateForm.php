@@ -12,26 +12,13 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Library\Forms\FormProcessorInterface;
-use Symfony\Component\Form\FormInterface;
+use Goteo\Util\Form\Type\SubmitType;
+use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Text;
-use Goteo\Library\Forms\FormModelException;
-use Goteo\Model\Questionnaire;
-use Goteo\Model\Questionnaire\Answers;
-use Symfony\Component\Validator\Constraints;
-use Goteo\Model\Contract\Document;
 
 class QuestionnaireCreateTranslateForm extends AbstractFormProcessor implements FormProcessorInterface
 {
-
-    public function getConstraints($field)
-    {
-        $constraints = [];
-        if($this->getFullValidation()) {
-            // $constraints[] = new Constraints\NotBlank();
-        }
-        return $constraints;
-    }
 
     public function addQuestion($question, $lang)
     {
@@ -39,13 +26,13 @@ class QuestionnaireCreateTranslateForm extends AbstractFormProcessor implements 
         $questionLang = $question->getLang($lang);
         $builder
             ->add(
-                $question->id . '_title', 'textarea', [
+                $question->id . '_title', TextareaType::class, [
                 'label' => Text::get('questionnaire-text'),
                 'required' => false,
                 'data' => $questionLang ? $questionLang->title : '',
             ]);
     }
-    
+
     public function createForm()
     {
         $questionnaire = $this->getModel();
@@ -57,11 +44,11 @@ class QuestionnaireCreateTranslateForm extends AbstractFormProcessor implements 
                 $this->addQuestion($question, $lang);
             }
         }
-        
+
         $builder->add(
-            'submit', 'submit', [
+            'submit', SubmitType::class, [
                 'label' => 'regular-submit'
-                ]
+            ]
         );
 
         return $this;

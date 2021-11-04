@@ -12,12 +12,12 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Application\Lang,
-    Goteo\Application\Message,
-    Goteo\Application\Session,
-	Goteo\Application\Config,
-	Goteo\Library\Feed,
-    Goteo\Model;
+use Goteo\Application\Config;
+use Goteo\Application\Lang;
+use Goteo\Application\Message;
+use Goteo\Library\Feed;
+use Goteo\Model;
+use Goteo\Model\User;
 
 class CommonsSubController extends AbstractSubController {
 
@@ -30,9 +30,7 @@ class CommonsSubController extends AbstractSubController {
       'info' => 'commons-lb-info',
     );
 
-
     static protected $label = 'commons-lb';
-
 
     protected $filters = array (
       'project' => '',
@@ -45,7 +43,7 @@ class CommonsSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // TODO: permission granularity
         // HARDCODED user 'contratos'
         if($user->id === 'contratos') return true;
@@ -71,7 +69,6 @@ class CommonsSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('delete', $id, $this->getFilters(), $subaction));
     }
 
-
     public function infoAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('info', $id, $this->getFilters(), $subaction));
@@ -82,18 +79,15 @@ class CommonsSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('fulfill', $id, $this->getFilters(), $subaction));
     }
 
-
     public function viewAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('view', $id, $this->getFilters(), $subaction));
     }
 
-
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
-
 
     /*
      * Usa 'ultra-secret-ws' para procesar las operaciones de cumplir/descumplir y cambiar url
@@ -243,9 +237,7 @@ class CommonsSubController extends AbstractSubController {
                     return $this->redirect('/admin/commons/view/'.$id);
                     break;
             }
-
         }
-
 
         if (!empty($filters['projStatus'])) {
             $f = array('status'=>$filters['projStatus'], 'proj_id'=>$filters['project'], 'order'=>'success');
@@ -269,18 +261,16 @@ class CommonsSubController extends AbstractSubController {
             $project->cumplidos = $cumplidos;
         }
 
-
         return array(
-                'template' => 'admin/commons/list',
-                'projects'=>$projects,
-                'filters' => $filters,
-                'statuses' => $statuses,
-                'projStatus' => $projStatus,
-                'status' => $status,
-                'icons' => $icons,
-                'autocomplete' => true
+            'template' => 'admin/commons/list',
+            'projects'=>$projects,
+            'filters' => $filters,
+            'statuses' => $statuses,
+            'projStatus' => $projStatus,
+            'status' => $status,
+            'icons' => $icons,
+            'autocomplete' => true
         );
-
     }
 
 }

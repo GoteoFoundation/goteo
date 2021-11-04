@@ -17,12 +17,18 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- *
- * This class creates overides Date to show always as the single_text option is activated
- *
+ * This class creates overrides Date to show always as the single_text option is activated
  */
 class TextType extends SymfonyTextType
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'custom_text_type';
+    }
 
     /**
      * {@inheritdoc}
@@ -45,13 +51,4 @@ class TextType extends SymfonyTextType
         $view->vars['pre_addon'] = $options['pre_addon'];
         $view->vars['post_addon'] = $options['post_addon'];
     }
-
-    // /**
-    //  * {@inheritdoc}
-    //  */
-    // public function getParent()
-    // {
-    //     return __NAMESPACE__.'\TextType';
-    // }
-
 }

@@ -24,9 +24,7 @@ class IconsSubController extends AbstractSubController {
       'translate' => 'icons-lb-translate',
     );
 
-
     static protected $label = 'icons-lb';
-
 
     protected $filters = array (
       'group' => '',
@@ -36,7 +34,7 @@ class IconsSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(Model\User $user, $node) {
+    static public function isAllowed(Model\User $user, $node): bool {
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
         return parent::isAllowed($user, $node);
@@ -47,23 +45,19 @@ class IconsSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('translate', $id, $this->getFilters(), $subaction));
     }
 
-
     public function editAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('edit', $id, $this->getFilters(), $subaction));
     }
-
 
     public function listAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
 
-
     public function process ($action = 'list', $id = null, $filters = array()) {
 
         $groups = Model\Icon::groups();
-
         $errors = array();
 
         if ($this->isPost()) {
@@ -104,8 +98,7 @@ class IconsSubController extends AbstractSubController {
                     Message::error('NO se ha marcado como pendiente de traducir!');
                 }
 
-            }
-			else {
+            } else {
                 Message::error(implode('<br />', $errors));
 
                 return array(

@@ -8,16 +8,14 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\DependencyInjection\Reference;
-
 use Goteo\Application\App;
-use Goteo\Console\Console;
 use Goteo\Application\Config;
-use Goteodev\Console\Command\StatusInitCommand;
+use Goteo\Console\Console;
+use Goteo\Payment\Payment;
 use Goteodev\Console\Command\CrowdinCommand;
-
+use Goteodev\Console\Command\StatusInitCommand;
+use Goteodev\Payment\DummyPaymentMethod;
+use Symfony\Component\DependencyInjection\Reference;
 
 
 // Autoload additional Classes
@@ -38,18 +36,9 @@ if(App::debug()) {
     $sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Reference('dev.listener.dev_mocks')));
 }
 
-// Adding Routes:
-
 $routes = App::getRoutes();
 
-// $routes->add('some-identifier', new Route(
-//     '/some/route',
-//     array('_controller' => 'Goteodev\Controller\SomeController::someAction')
-// ));
+Payment::addMethod(DummyPaymentMethod::class);
 
-
-// Adding payment method
-\Goteo\Payment\Payment::addMethod('Goteodev\Payment\DummyPaymentMethod');
-// add usefull testing commands
 Console::add(new StatusInitCommand());
 Console::add(new CrowdinCommand());

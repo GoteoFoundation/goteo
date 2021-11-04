@@ -17,9 +17,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- *
- * This class creates overides Date to show always as the single_text option is activated
- *
+ * This class creates overrides Email to show always as the single_text option is activated
  */
 class EmailType extends SymfonyEmailType
 {
@@ -34,12 +32,20 @@ class EmailType extends SymfonyEmailType
         $resolver->setDefault('row_class', '');
     }
 
-    // /**
-    //  * {@inheritdoc}
-    //  */
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
-        return __NAMESPACE__.'\TextType';
+        return SymfonyEmailType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
+    {
+        return 'custom_email';
     }
 
     /**

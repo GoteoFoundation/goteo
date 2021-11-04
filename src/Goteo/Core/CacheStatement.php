@@ -10,23 +10,32 @@
 
 namespace Goteo\Core;
 
-use Goteo\Application\Config\ConfigException;
+use PDOException;
+use PDOStatement;
 
 /**
- * Despues de DB->prepare() se devuelve una instancia de este objecto
+ * After DB->prepare() an instance of this object will be returned
  */
-class CacheStatement extends \PDOStatement {
+class CacheStatement extends PDOStatement
+{
+
     public $dbh;
     public $cache = null;
     public $cache_time = 0;
-    private $cache_active = true;
+    private $cache_active;
     public $is_select = false;
     public $cache_key = '';
     public $skip_cache = false;
     public $input_parameters = null;
     public $execute = null;
-    static $query_stats = array('replica' => array(0, 0, 0), 'master' => array(0, 0, 0)); // array(num-non-cached, num-cached, total-time-non-cached )
-    static $queries = array('replica' => array(array(), array()), 'master' => array(array(), array()));
+    static $query_stats = [
+        'replica' => [0, 0, 0],
+        'master' => [0, 0, 0]
+    ];
+    static $queries = [
+        'replica' => [[], []],
+        'master' => [[], []]
+    ];
     static $queries_time = 0;
     static $in_memory_cache = [];
     public $debug = false; //si debug es 1, se recojeran en el array las queries no cacheadas
@@ -36,7 +45,7 @@ class CacheStatement extends \PDOStatement {
         $this->dbh = $dbh;
         $this->cache = $cache;
         $this->is_select = $dbh->is_select;
-        $this->cache_active = \Goteo\Core\DB::$cache_active;
+        $this->cache_active = DB::$cache_active;
         if($cache) $this->cache_time = $cache->getCacheTime();
         $this->debug = $debug;
     }
@@ -47,7 +56,6 @@ class CacheStatement extends \PDOStatement {
     public function execute($input_parameters = null) {
         $query = $this->queryString;
 
-        // echo '['.$this->dbh->type.':'.intval($this->is_select).']';
         // Apply cache in SELECT sql
         if($this->is_select) {
             $this->cache_key        = $query . serialize($input_parameters);
@@ -77,14 +85,13 @@ class CacheStatement extends \PDOStatement {
                 self::$query_stats[$this->dbh->type][0]++;
 
                 $t = microtime(true);
-                $this->execute =  parent::execute($params);
+                $this->execute = parent::execute($params);
                 $query_time = round(microtime(true) - $t, 4);
                 self::$query_stats[$this->dbh->type][2] += $query_time;
                 if($this->debug) self::$queries[$this->dbh->type][0][] = array(self::$query_stats[$this->dbh->type][0], $this->queryString, $params, $query_time);
             }
             return $this->execute;
-        } catch (\PDOException $e) {
-            // throw new ConfigException('Error PDO: ' . $e->getMessage());
+        } catch (PDOException $e) {
             throw $e;
         }
     }
@@ -101,7 +108,6 @@ class CacheStatement extends \PDOStatement {
 
     /**
      * Skips any kind of cache for the next execution
-     * @return [type] [description]
      */
     public function skipCache() {
         $this->skip_cache = true;
@@ -145,10 +151,8 @@ class CacheStatement extends \PDOStatement {
 
         if($this->is_select && !$this->skip_cache && $this->cache_active) {
             if($this->cache && $this->cache_time) {
-                //guardar en cache
                 $this->cache->store($key, $value, $this->cache_time);
             } else {
-                // In-memory cache
                 self::$in_memory_cache[$key] = $value;
             }
         }

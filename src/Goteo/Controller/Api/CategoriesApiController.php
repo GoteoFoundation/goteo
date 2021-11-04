@@ -25,7 +25,6 @@ class CategoriesApiController extends AbstractApiController {
 
     public function __construct() {
         parent::__construct();
-        // Activate cache & replica read for this controller
         $this->dbReplica(true);
         $this->dbCache(true);
     }
@@ -63,17 +62,15 @@ class CategoriesApiController extends AbstractApiController {
 
     /**
      * Return a list of categories where:
-     * @param  string $tab which kind of category to be returned
-     * @param  Request $request [description]
      */
-    public function categoriesAction($tab = 'category', Request $request) {
+    public function categoriesAction(string $tab = 'category') {
         $lang = Lang::current();
         if($tab === 'socialcommitment') {
             $list = SocialCommitment::getAll($lang);
-            $fields = ['id', 'icon', 'name', 'description', /*'order',*/];
+            $fields = ['id', 'icon', 'name', 'description'];
         } elseif($tab === 'sphere') {
             $list = Sphere::getAll([], $lang);
-            $fields = ['id', 'icon', 'name', 'landing_match', /*'order',*/];
+            $fields = ['id', 'icon', 'name', 'landing_match'];
         } elseif($tab === 'sdg') {
             $list = Sdg::getList([],0,100, false, $lang);
             $fields = ['id', 'icon', 'name', 'description', 'link'];
@@ -82,7 +79,7 @@ class CategoriesApiController extends AbstractApiController {
             $fields = ['id', /*'icon',*/ 'name', 'description'];
         } elseif($tab === 'category') {
             $list = Category::getAll($lang);
-            $fields = ['id', 'name', 'description', 'social_commitment', /*'order',*/];
+            $fields = ['id', 'name', 'description', 'social_commitment'];
         } else {
             throw new ModelNotFoundException("Not found type [$tab]");
         }
@@ -96,7 +93,6 @@ class CategoriesApiController extends AbstractApiController {
             }
             return $ret;
         }, $list));
-
     }
 
     /**
@@ -160,10 +156,9 @@ class CategoriesApiController extends AbstractApiController {
                 $model->{$prop} = (bool) $model->{$prop};
             }
 
-            // do the SQL update
             $model->dbUpdate([$prop]);
             $result['value'] = $model->{$prop};
-            // if($errors = Message::getErrors()) throw new ControllerException(implode("\n",$errors));
+
             if($errors = Message::getErrors()) {
                 $result['error'] = true;
                 $result['message'] = implode("\n", $errors);
@@ -171,7 +166,6 @@ class CategoriesApiController extends AbstractApiController {
             if($messages = Message::getMessages()) {
                 $result['message'] = implode("\n", $messages);
             }
-
         }
         return $this->jsonResponse($result);
     }

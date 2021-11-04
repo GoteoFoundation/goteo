@@ -10,32 +10,33 @@
 
 namespace GoteoBot\Model\Bot;
 
-use \React\EventLoop\Factory;
-use \unreal4u\TelegramAPI\HttpClientRequestHandler;
-use \unreal4u\TelegramAPI\TgLog;
-use \unreal4u\TelegramAPI\Telegram\Methods\SendMessage;
-use \unreal4u\TelegramAPI\Telegram\Methods\SendPhoto;
-use \unreal4u\TelegramAPI\Telegram\Methods\SetWebhook;
+use Exception;
+use Goteo\Application\Config;
+use Goteo\Application\Config\ConfigException;
+use Goteo\Application\Message;
+use GoteoBot\Model\Bot;
+use React\EventLoop\Loop;
+use React\EventLoop\LoopInterface;
+use unreal4u\TelegramAPI\HttpClientRequestHandler;
+use unreal4u\TelegramAPI\RequestHandlerInterface;
 use unreal4u\TelegramAPI\Telegram\Methods\SendAnimation;
 use unreal4u\TelegramAPI\Telegram\Methods\SendDocument;
+use unreal4u\TelegramAPI\Telegram\Methods\SendMessage;
+use unreal4u\TelegramAPI\Telegram\Methods\SendPhoto;
+use unreal4u\TelegramAPI\Telegram\Methods\SetWebhook;
+use unreal4u\TelegramAPI\TgLog;
 
-use Goteo\Application\Config;
-use Goteo\Model\Image;
-use Goteo\Application\Message;
-use Goteo\Model\Contract\Document;
-
-Class TelegramBot implements \GoteoBot\Model\Bot {
+Class TelegramBot implements Bot {
 
     const PLATFORM = "telegram";
     const URL = "t.me";
 
-    private
-        $loop,
-        $handler,
-        $tgLog;
+    private LoopInterface $loop;
+    private RequestHandlerInterface $handler;
+    private TgLog $tgLog;
 
     public function createBot() {
-        $this->loop = Factory::create();
+        $this->loop = Loop::get();
         $this->handler = new HttpClientRequestHandler($this->loop);
         try {
             $this->tgLog = new TgLog(Config::get('bot.telegram.token'), $this->handler);
@@ -71,7 +72,7 @@ Class TelegramBot implements \GoteoBot\Model\Bot {
         $result->then(
             function ($response) {
             },
-            function (\Exception $exception) use ($sendAnimation) {
+            function (Exception $exception) use ($sendAnimation) {
                 Message::error('Exception ' . get_class($exception) . ' caught, message: ' . $exception->getMessage().PHP_EOL . " - " . $sendAnimation->animation);
             }
         );
@@ -88,7 +89,7 @@ Class TelegramBot implements \GoteoBot\Model\Bot {
         $result->then(
             function ($response) {
             },
-            function (\Exception $exception) use ($sendDocument) {
+            function (Exception $exception) use ($sendDocument) {
                 Message::error('Exception ' . get_class($exception) . ' caught, message: ' . $exception->getMessage().PHP_EOL . " - " . $sendDocument->document);
             }
         );

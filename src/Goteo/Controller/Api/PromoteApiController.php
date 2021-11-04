@@ -10,17 +10,14 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
-use Goteo\Application\AppEvents;
-use Goteo\Application\Config;
-
-use Goteo\Model\Promote;
-use Goteo\Model\Project;
-use Goteo\Library\Text;
 use Goteo\Library\Check;
+use Goteo\Library\Text;
+use Goteo\Model\Project;
+use Goteo\Model\Promote;
+use Symfony\Component\HttpFoundation\Request;
 
 class PromoteApiController extends AbstractApiController {
 
@@ -30,14 +27,14 @@ class PromoteApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException();
 
         $promote = $id ? Promote::get($id) : new Promote();
-        
+
         if($this->user->hasPerm('admin-module-promote') ) {
             return $promote;
         }
 
         throw new ControllerAccessDeniedException(Text::get('admin-promote-not-active-yet'));
     }
-    
+
     public function promoteSortAction($id, Request $request) {
         $promote = $this->validatePromote($id);
 
@@ -63,8 +60,6 @@ class PromoteApiController extends AbstractApiController {
         if(!$this->user && !$this->user->hasPerm('admin-module-promote') )
             throw new ControllerAccessDeniedException();
 
-        $result = [];
-        
         if($request->isMethod('post') && $request->request->has('value')
             && $request->request->has('channel')) {
             $project = Project::get($request->request->get('value'));
@@ -73,8 +68,8 @@ class PromoteApiController extends AbstractApiController {
             $data = array(
                 'node' => $channel,
                 'project' => $project->id,
-                'order' => 0,  
-                'active' => 1 
+                'order' => 0,
+                'active' => 1
             );
 
             $promote = Promote::getByProjectIdAndChannel($project->id, $channel);
@@ -87,8 +82,7 @@ class PromoteApiController extends AbstractApiController {
                 if ($promote->save($errors)) {
                     Message::info(Text::get('admin-promote-correct'));
                     Check::reorder($promote->id, -1, 'promote', 'id', 'order', ['node' => $channel]);
-                }
-                else {
+                } else {
                     Message::error(implode(', ', $errors));
                 }
             }
@@ -96,7 +90,7 @@ class PromoteApiController extends AbstractApiController {
         }
         return $this->jsonResponse($promo);
     }
-    
+
     public function promotePropertyAction($id, $prop, Request $request) {
         $promote = $this->validatePromote($id);
 

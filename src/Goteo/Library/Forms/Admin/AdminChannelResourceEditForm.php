@@ -11,79 +11,75 @@
 
 namespace Goteo\Library\Forms\Admin;
 
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\MarkdownType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
-use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Model\Node;
-use Goteo\Model\Node\NodeResource;
 use Goteo\Model\Node\NodeResourceCategory;
 use Goteo\Library\Forms\FormModelException;
-use Goteo\Application\Lang;
 
 class AdminChannelResourceEditForm extends AbstractFormProcessor {
 
     public function createForm() {
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
         $resource = $this->getModel();
-        $data = $options['data'];
-
         $categories = [];
+
         foreach(NodeResourceCategory::getList() as $c) {
             $categories[$c->id] = $c->name;
         }
 
         parent::createForm();
         $builder
-            ->add('title', 'text', [
+            ->add('title', TextType::class, [
                 'label' => 'regular-title',
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
-           ->add('description', 'markdown', [
+           ->add('description', MarkdownType::class, [
                 'label' => 'regular-description',
                 'required' => true,
                 'attr' => [
                     'rows' => 8
                 ]
             ])
-           ->add('action', 'text', [
+           ->add('action', TextType::class, [
                 'label' => 'admin-title-action-url',
                 'required' => true,
                 'disabled' => $this->getReadonly()
             ])
-            ->add('action_url', 'text', [
+            ->add('action_url', TextType::class, [
                 'label' => 'admin-title-download-url',
                 'required' => true,
                 'disabled' => $this->getReadonly()
-            ]) 
-            ->add('image', 'dropfiles', array(
+            ])
+            ->add('image', DropfilesType::class, [
                 'required' => true,
                 'limit' => 1,
                 'data' => [$resource->image ? $resource->getImage() : null],
                 'label' => 'admin-title-image',
                 'accepted_files' => 'image/jpeg,image/gif,image/png,image/svg+xml'
-            ))
-            ->add('node_id', 'choice', array(
+            ])
+            ->add('node_id', ChoiceType::class, [
                 'label' => 'admin-title-channel',
                 'required' => true,
                 'expanded' => true,
                 'row_class' => 'extra',
                 'wrap_class' => 'col-xs-6',
                 'choices' => Node::getList()
-            ))
-            ->add('category', 'choice', array(
+            ])
+            ->add('category', ChoiceType::class, [
                 'label' => 'admin-title-resource-category',
                 'required' => true,
                 'expanded' => true,
                 'row_class' => 'extra',
                 'wrap_class' => 'col-xs-6',
                 'choices' => $categories
-            ))
-            
-            ;
+            ]);
 
 
         return $this;
@@ -104,6 +100,7 @@ class AdminChannelResourceEditForm extends AbstractFormProcessor {
             $model->image = $data['image']['uploads'];
 
         unset($data['image']);
+
         $model->rebuildData($data, array_keys($form->all()));
 
         $errors = [];

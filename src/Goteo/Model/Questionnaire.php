@@ -4,27 +4,44 @@ namespace Goteo\Model;
 
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
+use Goteo\Core\Model;
 use Goteo\Library\Text;
 use Goteo\Model\Questionnaire\Question;
+use Goteo\Util\Form\Type\BooleanType;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\DropfilesType;
+use Goteo\Util\Form\Type\TextareaType;
 
-class Questionnaire extends \Goteo\Core\Model
+class Questionnaire extends Model
 {
+    public $id;
+    public $lang;
+    public $questions;
 
-    public
-    $id,
-    $lang,
-    $questions;
-
-    static public function getTypes()
+    static public function getTypes(): array
     {
         return [
-            'textarea' => Text::get('questionnaire-textarea'), 
-            'boolean' => Text::get('questionnaire-boolean'),
-            'dropfiles' => Text::get('questionnaire-dropfiles'),
-            'choice' => Text::get('questionnaire-choice')
+            Text::get('questionnaire-textarea') => TextareaType::class,
+            Text::get('questionnaire-boolean') => BooleanType::class,
+            Text::get('questionnaire-dropfiles') => DropfilesType::class,
+            Text::get('questionnaire-choice') => ChoiceType::class
         ];
     }
 
+    static public function getQuestionTypeClass(?string $type): ?string
+    {
+        if (self::hasOldTypeNamespace($type)) {
+            $questionnaireTypeIndex = Text::get('questionnaire-' . $type);
+            return self::getTypes()[$questionnaireTypeIndex];
+        }
+
+        return $type;
+    }
+
+    static private function hasOldTypeNamespace(?string $type): bool
+    {
+        return !in_array($type, self::getTypes());
+    }
 
     /**
      * Get data about a questionnaire
@@ -34,10 +51,7 @@ class Questionnaire extends \Goteo\Core\Model
      */
     static public function get($id)
     {
-        
         $lang = Lang::current();
-        // list($fields, $joins) = self::getLangsSQLJoins($lang);
-
         $query = static::query('SELECT * FROM questionnaire WHERE id = :id', array(':id' => $id));
         $questionnaire = $query->fetchObject(__CLASS__);
 
@@ -47,11 +61,9 @@ class Questionnaire extends \Goteo\Core\Model
 
         $questionnaire->questions = Question::getByQuestionnaire($id);
 
-        // $questionnaire->vars = json_decode($questionnaire->vars);
         return $questionnaire;
-
     }
-    
+
     /**
      * Get data about questionnaire by matcher id
      *
@@ -60,12 +72,9 @@ class Questionnaire extends \Goteo\Core\Model
      */
     static public function getByMatcher($mid)
     {
-        
         $lang = Lang::current();
-        // list($fields, $joins) = self::getLangsSQLJoins($lang);
-
-        $query = static::query('SELECT questionnaire.* 
-                                FROM questionnaire 
+        $query = static::query('SELECT questionnaire.*
+                                FROM questionnaire
                                 INNER JOIN questionnaire_matcher
                                 ON questionnaire.id = questionnaire_matcher.questionnaire AND questionnaire_matcher.matcher = :matcher', array(':matcher' => $mid));
         $questionnaire = $query->fetchObject(__CLASS__);
@@ -73,10 +82,9 @@ class Questionnaire extends \Goteo\Core\Model
             $questionnaire->questions = Question::getByQuestionnaire($questionnaire->id);
 
         return $questionnaire;
-
     }
 
-        /**
+    /**
      * Get data about questionnaire by matcher id
      *
      * @param  int $id matcher id.
@@ -84,12 +92,9 @@ class Questionnaire extends \Goteo\Core\Model
      */
     static public function getByChannel($cid)
     {
-        
         $lang = Lang::current();
-        // list($fields, $joins) = self::getLangsSQLJoins($lang);
-
-        $query = static::query('SELECT questionnaire.* 
-                                FROM questionnaire 
+        $query = static::query('SELECT questionnaire.*
+                                FROM questionnaire
                                 INNER JOIN questionnaire_channel
                                 ON questionnaire.id = questionnaire_channel.questionnaire AND questionnaire_channel.channel = :channel', array(':channel' => $cid));
         $questionnaire = $query->fetchObject(__CLASS__);
@@ -97,33 +102,33 @@ class Questionnaire extends \Goteo\Core\Model
             $questionnaire->questions = Question::getByQuestionnaire($questionnaire->id);
 
         return $questionnaire;
-
     }
 
     public function getMaxScore() {
         $query = static::query('SELECT sum(question.max_score)
-                                FROM question 
+                                FROM question
                                 WHERE question.questionnaire = :questionnaire
                                 ', [':questionnaire' => $this->id]);
-        
+
         return $query->fetchColumn();
     }
 
     /**
      * Save.
      *
-     * @param  type array $errors
-     * @return type bool   true|false
+     * @param  array $errors
+     * @return bool   true|false
      */
     public function save(&$errors = array())
     {
-        if (!$this->validate($errors)) { return false;
+        if (!$this->validate($errors)) {
+            return false;
         }
 
         $fields = array(
             'id',
             'lang'
-            );
+        );
 
         try {
             //automatic $this->id assignation
@@ -133,7 +138,6 @@ class Questionnaire extends \Goteo\Core\Model
                 $sql = "REPLACE INTO questionnaire_matcher VALUES(:questionnaire, :matcher)";
                 $values = [":questionnaire" => $this->id, ":matcher" => $this->matcher];
 
-                // die(\sqldbg($sql, $values));
                 static::query($sql, $values);
             }
 
@@ -141,10 +145,9 @@ class Questionnaire extends \Goteo\Core\Model
                 $sql = "REPLACE INTO questionnaire_channel VALUES(:questionnaire, :channel)";
                 $values = [":questionnaire" => $this->id, ":channel" => $this->channel];
 
-                // die(\sqldbg($sql, $values));
                 static::query($sql, $values);
             }
-            
+
             return true;
         } catch(\PDOException $e) {
             $errors[] = "Save error " . $e->getMessage();
@@ -174,7 +177,7 @@ class Questionnaire extends \Goteo\Core\Model
         }
     }
 
-        /**
+    /**
      * Returns percent (from 0 to 100) translations
      * by grouping all items sharing some common keys
      */
@@ -190,12 +193,11 @@ class Questionnaire extends \Goteo\Core\Model
         return $percent;
     }
 
-
     /**
      * Validate.
      *
-     * @param  type array $errors Errores devueltos pasados por referencia.
-     * @return type bool   true|false
+     * @param  array $errors Errores devueltos pasados por referencia.
+     * @return bool   true|false
      */
     public function validate(&$errors = array())
     {
@@ -204,7 +206,7 @@ class Questionnaire extends \Goteo\Core\Model
 
     /**
      * Returns if the questionnaire has questions to show
-     * @return type bool true|false
+     * @return bool true|false
      */
     public function hasQuestionsToShow() {
         $questions = $this->questions;
@@ -219,7 +221,4 @@ class Questionnaire extends \Goteo\Core\Model
         return $questionsToShow;
     }
 
-
 }
-
-

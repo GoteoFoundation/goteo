@@ -10,21 +10,21 @@
 
 namespace Goteo\Console\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\BufferedOutput;
-
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
-
-use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
-use Goteo\Util\AnsiConverter\Theme\SolarizedLightTheme;
-
+use Exception;
 use Goteo\Application\Config;
+use Goteo\Model\Mail;
 use Goteo\Model\Project;
 use Goteo\Model\Template;
-use Goteo\Model\Mail;
+use Goteo\Util\AnsiConverter\Theme\SolarizedLightTheme;
+use PDO;
+use RuntimeException;
+use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  *  Several database checks
@@ -84,9 +84,8 @@ EOT
         $update = $input->getOption('update');
         $scope = $input->getArgument('scope');
         if(!in_array($scope, ['all', 'feed', 'mailing', 'token', 'blocked', 'toolkit', 'predict'])) {
-            throw new \Exception('Scope is not valid!');
+            throw new Exception('Scope is not valid!');
         }
-
 
         $verbose = $output->isVerbose();
 
@@ -94,7 +93,7 @@ EOT
             $days = (int) $input->getOption('days');
             if($days == -1) $days = 120;
             if($days < 30) {
-                throw new \Exception('Number of days must be greater than 30!');
+                throw new Exception('Number of days must be greater than 30!');
             }
             $index = $fixes = 0;
             $output->writeln("Checking old feed data...");
@@ -105,7 +104,7 @@ EOT
             if($verbose) {
                 $query = Project::query("SELECT * FROM feed $where");
 
-                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $feed) {
+                foreach ($query->fetchAll(PDO::FETCH_CLASS) as $feed) {
                     $output->writeln("Found old feed <info>{$feed->title}</info> with ID <comment>{$feed->id}</comment> and date <comment>{$feed->datetime}</comment>");
                 }
             }
@@ -126,19 +125,20 @@ EOT
             $days = (int) $input->getOption('days');
             if($days == -1) $days = 4;
             if($days < 1) {
-                throw new \Exception('Number of days must be greater than 2!');
+                throw new Exception('Number of days must be greater than 2!');
             }
 
             $output->writeln("Checking token older thant $days days...");
             // eliminamos los tokens que tengan más de $days días
             $sql = "SELECT id, token FROM user WHERE token IS NOT NULL AND token != '' AND token LIKE '%¬%'";
             $query = Project::query($sql);
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $row) {
+            foreach ($query->fetchAll(PDO::FETCH_OBJ) as $row) {
                 $parts = explode('¬', $row->token);
                 $datepart = strtotime($parts[2]);
                 $today = date('Y-m-d');
                 $datedif = strtotime($today) - $datepart;
                 $d = round($datedif / 86400);
+
                 if ($d > $days || !isset($parts[2])) {
                     $output->writeln("User: <info>{$row->id}</info> Token: <comment>{$row->token}</comment> Date: <comment>{$parts[2]}</comment> Days: <comment>$d</comment>");
 
@@ -150,7 +150,6 @@ EOT
                         }
                     }
                 }
-
             }
         }
 
@@ -158,7 +157,7 @@ EOT
             $days = (int) $input->getOption('days');
             if($days == -1) $days = 365;
             if($days < 30) {
-                throw new \Exception('Number of days must be greater than 30!');
+                throw new Exception('Number of days must be greater than 30!');
             }
 
             $output->writeln("Checking old mail data...");
@@ -168,7 +167,7 @@ EOT
             $query = Project::query("SELECT * FROM mail $where", [':template1' => Template::NEWSLETTER, ':template2' => Template::MESSAGE_DONORS]);
 
             $found = 0;
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $mail) {
+            foreach ($query->fetchAll(PDO::FETCH_CLASS) as $mail) {
                 if($verbose) {
                     $output->writeln("Found old mail <info>{$mail->email}</info>, Template <comment>{$mail->template}</comment> Subject <info>[{$mail->subject}]</info> with ID <comment>{$mail->id}</comment> and date <comment>{$mail->date}</comment>");
                 }
@@ -183,11 +182,6 @@ EOT
             }
             if($update) {
                 Project::query("DELETE FROM mail_stats_location WHERE id NOT IN (SELECT id FROM mail_stats)");
-                // Project::query("OPTIMIZE TABLE mail");
-                // Project::query("OPTIMIZE TABLE mail_content");
-                // Project::query("OPTIMIZE TABLE mail_stats");
-                // Project::query("OPTIMIZE TABLE mail_stats_location");
-
             }
             $query = Project::query("SELECT count(*) as total FROM mail");
             $total = $query->fetchColumn();
@@ -199,7 +193,7 @@ EOT
             $days = (int) $input->getOption('days');
             if($days == -1) $days = 120;
             if($days < 30) {
-                throw new \Exception('Number of days must be greater than 120!');
+                throw new Exception('Number of days must be greater than 120!');
             }
 
             $output->writeln("Checking old blocked users for mailing...");
@@ -208,7 +202,7 @@ EOT
             $query = Project::query("SELECT * FROM mailer_control $where");
 
             $found = 0;
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $usr) {
+            foreach ($query->fetchAll(PDO::FETCH_CLASS) as $usr) {
                 if($verbose) {
                     $output->writeln("Found blocked subscriber <info>{$usr->email}</info>, Template <comment>{$usr->bounces}</comment> Reason <info>[{$usr->last_reason}]</info> and date <comment>{$usr->modified}</comment>");
                 }
@@ -258,7 +252,7 @@ EOT
                 $mailer = Mail::createFromHtml(Config::getMail('fail'), '', "DATABASE INCONSISTENCY in [" .Config::get('url.main')."]", $html);
                 $errors = [];
                 if(!$mailer->send($errors)) {
-                    throw new \RuntimeException('Error sending email: ' . implode("\n", $errors));
+                    throw new RuntimeException('Error sending email: ' . implode("\n", $errors));
                 }
             } else {
                 $output->writeln("<info>Everything ok</info>");
@@ -272,9 +266,7 @@ EOT
             $command = $this->getApplication()->find('endround');
             $out = new BufferedOutput(BufferedOutput::VERBOSITY_NORMAL, true);
             $args = new ArrayInput(['command' => 'endround', '--skip-invests' => true, '--predict' => 1]);
-            // $command->setOutput($out);
-            // $command->setInput($args);
-            // print_r($command->output);die;
+
             if($command->run($args, $out) !== 0) {
                 $output->writeln("<error>Errors found!</error>");
                 $res = $out->fetch();
@@ -286,7 +278,7 @@ EOT
                 $mailer = Mail::createFromHtml(Config::getMail('fail'), '', "FAILING PROJECTS PREDICTION in [" .Config::get('url.main')."]", $html);
                 $errors = [];
                 if(!$mailer->send($errors)) {
-                    throw new \RuntimeException('Error sending email: ' . implode("\n", $errors));
+                    throw new RuntimeException('Error sending email: ' . implode("\n", $errors));
                 }
             } else {
                 $output->writeln("<info>Everything ok</info>");
@@ -304,8 +296,5 @@ EOT
                 $output->writeln("<info>Execute with --update option to delete the old records</info>");
             }
         }
-
-
-        return;
     }
 }

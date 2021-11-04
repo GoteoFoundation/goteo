@@ -10,7 +10,7 @@
 
 namespace Goteo\Application\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Goteo\Model\Invest;
 use Goteo\Payment\Method\PaymentMethodInterface;
 
@@ -23,7 +23,6 @@ class FilterInvestEvent extends Event
     {
         $this->invest = $invest;
         $this->method = $method;
-        $this->request = $request;
     }
 
     public function getInvest()
