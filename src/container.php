@@ -74,7 +74,7 @@ if (Config::get('log.mail')) {
     $mail = $sc->register('logger.mail_handler', Goteo\Util\Monolog\Handler\MailHandler::class)
         ->setArguments(array($mailer, '', Goteo\Util\Monolog\Logger::DEBUG, true))// delayed sending
         ->addMethodCall('setFormatter', array(new Reference('logger.mail_handler.formatter')));
-  
+
     $sc->register('logger.buffer_handler', Monolog\Handler\FingersCrossedHandler::class)
         ->setArguments(array(new Reference('logger.mail_handler'), monolog_level(Config::get('log.mail'))));
     $payLogger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
@@ -146,24 +146,24 @@ $sc->register('app.md.parser', 'Parsedown')
 $sc->register('app.currency.converter', Goteo\Library\Converter::class);
 
 $sc->register('dispatcher', Symfony\Component\EventDispatcher\EventDispatcher::class)
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.exception')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.session')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.auth')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.origin')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.project')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.donateinvest')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.messages')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.project_post')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.blog_post')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.stories')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.channel')))
-  ->addMethodCall('addSubscriber', array(new Reference('console.listener.milestone')))
-  ->addMethodCall('addSubscriber', array(new Reference('console.listener.favourite')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.acl')))
-  ->addMethodCall('addSubscriber', array(new Reference('listener.router')))
-  ->addMethodCall('addSubscriber', array(new Reference('listener.response')))
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.exception')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.session')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.auth')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.origin')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.project')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.invest')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.poolinvest')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.donateinvest')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.messages')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.project_post')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.blog_post')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.stories')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.channel')])
+    ->addMethodCall('addSubscriber', [new Reference('app.listener.acl')])
+    ->addMethodCall('addSubscriber', [new Reference('listener.router')])
+    ->addMethodCall('addSubscriber', [new Reference('listener.response')])
+    ->addMethodCall('addSubscriber', [new Reference('console.listener.milestone')])
+    ->addMethodCall('addSubscriber', [new Reference('console.listener.favourite')])
 ;
 
 $sc->register('app', Goteo\Application\App::class)
@@ -176,10 +176,8 @@ $sc->register('app', Goteo\Application\App::class)
 
 $sc->register('console.listener.milestone', Goteo\Console\EventListener\ConsoleMilestoneListener::class)
   ->setArguments(array(new Reference('console_logger')));
-
 $sc->register('console.listener.favourite', Goteo\Console\EventListener\ConsoleFavouriteListener::class)
   ->setArguments(array(new Reference('console_logger')));
-
 $sc->register('console.listener.exception', Goteo\Console\EventListener\ConsoleExceptionListener::class)
    ->setArguments(array(new Reference('console_logger')));
 $sc->register('console.listener.project', Goteo\Console\EventListener\ConsoleProjectListener::class)
@@ -190,16 +188,18 @@ $sc->register('console.listener.invest', Goteo\Console\EventListener\ConsoleInve
    ->setArguments(array(new Reference('console_logger')));
 $sc->register('console.listener.mailing', Goteo\Console\EventListener\ConsoleMailingListener::class)
    ->setArguments(array(new Reference('console_logger')));
+
 $sc->register('console_dispatcher', Symfony\Component\EventDispatcher\EventDispatcher::class)
-   ->addMethodCall('addSubscriber', array(new Reference('console.listener.exception')))
-   ->addMethodCall('addSubscriber', array(new Reference('console.listener.project')))
-   ->addMethodCall('addSubscriber', array(new Reference('console.listener.watcher')))
-   ->addMethodCall('addSubscriber', array(new Reference('console.listener.invest')))
-   ->addMethodCall('addSubscriber', array(new Reference('console.listener.milestone')))
-   ->addMethodCall('addSubscriber', array(new Reference('console.listener.favourite')))
-   ->addMethodCall('addSubscriber', array(new Reference('console.listener.mailing')))
+    ->addMethodCall('addSubscriber', [new Reference('console.listener.exception')])
+    ->addMethodCall('addSubscriber', [new Reference('console.listener.project')])
+    ->addMethodCall('addSubscriber', [new Reference('console.listener.watcher')])
+    ->addMethodCall('addSubscriber', [new Reference('console.listener.invest')])
+    ->addMethodCall('addSubscriber', [new Reference('console.listener.milestone')])
+    ->addMethodCall('addSubscriber', [new Reference('console.listener.favourite')])
+    ->addMethodCall('addSubscriber', [new Reference('console.listener.mailing')])
 ;
 
-$sc->register('console', Goteo\Console\Console::class);
+$sc->register('console', Goteo\Console\Console::class)
+    ->setArguments([new Reference('console_dispatcher')]);
 
 return $sc;

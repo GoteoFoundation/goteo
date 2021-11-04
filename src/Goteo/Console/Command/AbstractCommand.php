@@ -23,8 +23,8 @@ abstract class AbstractCommand extends Command {
     use LoggerTrait;
 
     protected array $logs = [];
-    protected $input;
-    protected $output;
+    protected InputInterface $input;
+    protected OutputInterface $output;
 
     public function setInput(InputInterface $input): AbstractCommand
     {
@@ -54,14 +54,11 @@ abstract class AbstractCommand extends Command {
         return $this->logs["cli.$name"]; // cached instance
     }
 
-    /**
-     * Logs info to the default log
-     */
     public function log($message, array $context = [], $func = 'info') {
         $logger = $this->getLogger();
         $processed = WebProcessor::processObject($context);
         $context = array_merge(['command' => $this->getName()], $context);
-        if($this->output && $this->input) {
+        if(isset($this->output) && isset($this->input)) {
             if(!$this->output->isVerbose()) {
                 if($func == 'info') $color = 'green';
                 elseif($func == 'notice') $color = 'cyan';
@@ -70,7 +67,20 @@ abstract class AbstractCommand extends Command {
                 elseif($func == 'warning') $color = 'yellow';
                 if($func != 'debug') {
                     $this->output->writeln($color ? "<fg=$color>$message</>" : $message);
-                    if($processed) $this->output->writeln(implode("\n", array_map(function ($v, $k) { return sprintf("\t<fg=blue>%s:</> %s", $k, $v); }, $processed, array_keys($processed))));
+                    if($processed) {
+                        $this->output->writeln(
+                            implode(
+                                "\n",
+                                array_map(
+                                    function ($v, $k) {
+                                        return sprintf("\t<fg=blue>%s:</> %s", $k, $v);
+                                    },
+                                    $processed,
+                                    array_keys($processed)
+                                )
+                            )
+                        );
+                    }
                 }
             }
         }
