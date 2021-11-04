@@ -162,6 +162,8 @@ $sc->register('dispatcher', Symfony\Component\EventDispatcher\EventDispatcher::c
     ->addMethodCall('addSubscriber', [new Reference('app.listener.acl')])
     ->addMethodCall('addSubscriber', [new Reference('listener.router')])
     ->addMethodCall('addSubscriber', [new Reference('listener.response')])
+    ->addMethodCall('addSubscriber', [new Reference('console.listener.milestone')])
+    ->addMethodCall('addSubscriber', [new Reference('console.listener.favourite')])
 ;
 
 $sc->register('app', Goteo\Application\App::class)
