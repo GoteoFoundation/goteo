@@ -35,9 +35,9 @@ class Console {
 
 			self::$app = App::getService('console');
             self::$console = new Application();
-            /** @var EventDispatcherInterface $dispatcher */
-            $dispatcher = App::getService('dispatcher');
-            self::$console->setDispatcher($dispatcher);
+            /** @var EventDispatcherInterface $consoleDispatcher */
+            $consoleDispatcher = App::getService('console_dispatcher');
+            self::$console->setDispatcher($consoleDispatcher);
 
 			foreach (self::$commands as $command) {
 				self::$console->add($command);
