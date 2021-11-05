@@ -20,8 +20,6 @@ use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
-
-use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\UrlType;
 
 class ProjectTranslateOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
