@@ -266,6 +266,7 @@ class Project extends Model {
 
         if($user->hasPerm('view-any-project')) return true;
         if($user->hasPerm('review-project', $this->id)) return true;
+        if($user->hasPerm('preview-projects', $this->id)) return true;
         if(($call = $this->getCall()) && $user->hasPerm('edit-calls', $call->id)) return true;
 
         // Legacy roles
