@@ -123,6 +123,15 @@ edit-published-projects: # Edit published projects
     model: null
     relational: null
 
+preview-projects: # Publish//unpublish assigned projects as a consultant
+    model:
+        table: project
+        table_id: id # field in table project to join to table user_project
+    relational:
+        table: user_project
+        user_id: user
+        table_id: project # relational project.id in user_project table
+
 publish-projects: # Publish//unpublish assigned projects as a consultant
     model:
         table: project
