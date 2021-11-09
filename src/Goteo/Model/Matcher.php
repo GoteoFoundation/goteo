@@ -19,6 +19,7 @@ use Goteo\Application\Lang;
 use Goteo\Core\Model;
 use Goteo\Model\Matcher\MatcherLocation;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Questionnaire;
 use Goteo\Model\Questionnaire\Answer;
 use Goteo\Model\Questionnaire\Score;
 use Goteo\Payment\Method\PoolPaymentMethod;
