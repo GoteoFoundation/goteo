@@ -23,7 +23,6 @@ use Goteo\Payment\PaymentException;
 use Omnipay\Common\GatewayFactory;
 use Omnipay\Common\GatewayInterface;
 use Omnipay\Common\Message\ResponseInterface;
-use Omnipay\GuzzleClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -140,11 +139,8 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         return true;
     }
 
-    /**
-     * Sets the User
-     * @param User $user User object
-     */
-    public function setUser(User $user) {
+    public function setUser(User $user): AbstractPaymentMethod
+    {
         $this->user = $user;
         return $this;
     }
@@ -168,15 +164,12 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
     /**
      * Sets the Request in order to be able to create a proper gateway request
      */
-    public function setRequest(Request $request) {
+    public function setRequest(Request $request): AbstractPaymentMethod
+    {
         $this->request = $request;
         return $this;
     }
 
-    /**
-     * Gets the current Request
-     * @return Request $request Symfony HttpFoundation Request object
-     */
     public function getRequest(): Request
     {
         return $this->request;
