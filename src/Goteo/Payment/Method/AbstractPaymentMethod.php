@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Goteo Package.
  *
@@ -22,10 +23,12 @@ use Goteo\Payment\PaymentException;
 use Omnipay\Common\GatewayFactory;
 use Omnipay\Common\GatewayInterface;
 use Omnipay\Common\Message\ResponseInterface;
+use Omnipay\GuzzleClient;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Helper class with common of the interface methods implemented in a simple way
+ * Helper class with some common interface methods
  *
  * Payments using this implementation use the Omnipay library:
  * http://omnipay.thephpleague.com/
@@ -33,28 +36,36 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class AbstractPaymentMethod implements PaymentMethodInterface
 {
     protected ?GatewayInterface $gateway = null;
-    protected $invest;
-    protected $request;
-    protected $user;
+    protected ?Invest $invest;
+    protected ?Request $request;
+    protected ?User $user;
 
     /**
      * @throws PaymentException
+     * @throws Config\ConfigException
      */
     public function __construct(User $user = null) {
         $this->user = $user;
         $this->initGateway();
     }
 
+    /**
+     * @throws PaymentException
+     * @throws Config\ConfigException
+     */
     private function initGateway()
     {
         $factory = new GatewayFactory();
-        $this->gateway = $factory->create($this->getGatewayName());
+        $this->gateway = $factory->create(
+            $this->getGatewayName(),
+            new GuzzleClient()
+        );
 
-        if(!in_array(GatewayInterface::class, class_implements($this->gateway))) {
+        if (!in_array(GatewayInterface::class, class_implements($this->gateway))) {
             throw new PaymentException("Error on retrieving Omnipay Gateway Class. It must implement Omnipay\Common\GatewayInterface!");
         }
 
-        foreach($this->gateway->getDefaultParameters() as $var => $val) {
+        foreach ($this->gateway->getDefaultParameters() as $var => $val) {
             $config = Config::get('payments.' . $this->getIdNonStatic() . '.' . $var);
             $method = "set" . ucfirst($var);
             if($config && method_exists($this->gateway, $method)) {
@@ -143,18 +154,12 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         return $this->user;
     }
 
-    /**
-     * Sets the Invest in order to be able to create a proper gateway request
-     */
-    public function setInvest(Invest $invest) {
+    public function setInvest(Invest $invest): AbstractPaymentMethod
+    {
         $this->invest = $invest;
         return $this;
     }
 
-    /**
-     * Gets the Invest object
-     * @return Invest $invest Invest object
-     */
     public function getInvest(): Invest
     {
         return $this->invest;
@@ -178,15 +183,14 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
     }
 
     /**
-     * This method gives the change to change the Response where to redirect after a $method->completePurchase() situation
-     * @return Response|null             A valid Symfony Response or null
+     * Gives a chance to change the Response where to redirect after a $method->completePurchase() situation
      */
-    public function getDefaultHttpResponse(ResponseInterface $response) {
+    public function getDefaultHttpResponse(ResponseInterface $response): ?Response
+    {
         return null;
     }
 
     /**
-     * Starts the purchase action
      * Called when user pushes the button "pay"
      */
     public function purchase(): ResponseInterface
@@ -194,10 +198,10 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         $gateway = $this->getGateway();
         $gateway->setCurrency(Currency::getDefault('id'));
         return $gateway->purchase([
-                    'amount' => (float) $this->getTotalAmount(),
-                    'description' => $this->getInvestDescription(),
-                    'returnUrl' => $this->getCompleteUrl(),
-                    'cancelUrl' => $this->getCompleteUrl(),
+            'amount' => (float) $this->getTotalAmount(),
+            'description' => $this->getInvestDescription(),
+            'returnUrl' => $this->getCompleteUrl(),
+            'cancelUrl' => $this->getCompleteUrl(),
         ])->send();
     }
 
@@ -210,11 +214,11 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         $gateway->setCurrency(Currency::getDefault('id'));
 
         return $gateway->completePurchase([
-                    'amount' => (float) $this->getTotalAmount(),
-                    'description' => $this->getInvestDescription(),
-                    'clientIp' => $this->getRequest()->getClientIp(),
-                    'returnUrl' => $this->getCompleteUrl(),
-                    'cancelUrl' => $this->getCompleteUrl(),
+            'amount' => (float) $this->getTotalAmount(),
+            'description' => $this->getInvestDescription(),
+            'clientIp' => $this->getRequest()->getClientIp(),
+            'returnUrl' => $this->getCompleteUrl(),
+            'cancelUrl' => $this->getCompleteUrl(),
         ])->send();
     }
 
@@ -265,9 +269,6 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
             return $request->getSchemeAndHttpHost() . '/donate/' . $invest->id . '/complete';
     }
 
-    /**
-     * Returns a description for the invest
-     */
     public function getInvestDescription(): string
     {
         $invest = $this->getInvest();
@@ -287,9 +288,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         $invest = $this->getInvest();
 
         // Add to amount project the tip to the organization
-        $amount = $invest->amount + $invest->donate_amount;
-
-        return $amount;
+        return $invest->amount + $invest->donate_amount;
     }
 
     public function getGatewayName(): string
@@ -339,8 +338,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
     }
 
     /**
-     * Internal payments does not increased raised amounts
-     * (pool)
+     * Internal payments don't increase raised amounts (pool)
      */
     public function isInternal(): bool
     {
