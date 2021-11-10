@@ -58,7 +58,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         $factory = new GatewayFactory();
         $this->gateway = $factory->create(
             $this->getGatewayName(),
-            new GuzzleClient()
+//            new GuzzleClient() // @TODO Move GuzzleClient from goteo-private into goteo
         );
 
         if (!in_array(GatewayInterface::class, class_implements($this->gateway))) {
