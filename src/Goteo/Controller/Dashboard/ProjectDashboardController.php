@@ -733,6 +733,7 @@ class ProjectDashboardController extends DashboardController {
 
         $supports = Support::getAll($project);
 
+        // TODO: create ProjectSupportForm
         $editForm = $this->createFormBuilder()
             ->add('support', TextType::class, [
                 'label' => 'supports-field-support',
@@ -825,6 +826,7 @@ class ProjectDashboardController extends DashboardController {
         }
 
         // Translations
+        // TODO: Create ProjectSupportTranslateForm
         $transForm = $this->createFormBuilder(null, 'transform', ['attr' => ['class' => 'autoform hide-help']])
             ->add('support', TextType::class, [
                 'label' => 'supports-field-support',
@@ -1017,6 +1019,7 @@ class ProjectDashboardController extends DashboardController {
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project;
+        // TODO: Create ProjectAnalyticsForm
         $form = $this->createFormBuilder($defaults)
             ->add('analytics_id', TextType::class, array(
                 'label' => 'regular-analytics',
@@ -1090,16 +1093,16 @@ class ProjectDashboardController extends DashboardController {
         $defaults['image'] = $story->image ? $story->getImage() : '';
         $defaults['pool_image'] = $story->pool_image ? $story->getPoolImage() : '';
 
-        $processor = $this->getModelForm(ProjectStoryForm::class, $story, $defaults, ['project' => $project], $request);
-        // Set readonly if active? this is done by and admin
-        $processor->setReadonly(!$this->admin && (bool)$story->active)->createForm();
-
-        if(!$processor->getReadonly()) {
-            $processor->getBuilder()->add('submit', 'submit', [
-                'label' => 'regular-save'
-            ]);
-        }
-        $form = $processor->getForm();
+        $readonly = !$this->admin && (bool)$story->active;
+        $processor = $this->getModelForm(
+            ProjectStoryForm::class,
+            $story,
+            $defaults,
+            ['project' => $project],
+            $request,
+            ['disabled' => $readonly]
+        );
+        $form = $processor->createForm()->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
