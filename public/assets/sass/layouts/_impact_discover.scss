@@ -316,7 +316,7 @@
             display:block;
         }
     
-        #filters-footprints, #filters-sdg-list, #filters-sdg-select {
+        #filters-footprints, #filters-sdg-list, #filters-sdg-select, #filters-channel {
             display:none;
         }
     
@@ -339,9 +339,13 @@
         #filters-sdg-list {
             order: 4;
         }
+
+        #filters-channel {
+            order: 5;
+        }
     
         #filters-sdg-select {
-            order: 5;
+            order: 6;
         }
     }
 
@@ -357,7 +361,7 @@
         display:none;
     }
 
-    #filters-footprints, #filters-sdg-select {
+    #filters-footprints, #filters-sdg-select, #filters-channel {
         display:block;
     }
 }

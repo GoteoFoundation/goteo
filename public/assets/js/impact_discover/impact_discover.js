@@ -338,6 +338,7 @@ $(function(){
     function expandMobileFilter() {
         $("#filters-footprints").slideDown();
         $("#filters-sdg-list").slideDown();
+        $('#filters-channel').slideDown();
         $("#filters-mobile").css({"width":"100%"});
         $("#filters-mobile .close").show();
     }
@@ -345,6 +346,7 @@ $(function(){
     function contractMobileFilter() {
         $("#filters-footprints").slideUp();
         $("#filters-sdg-list").slideUp();
+        $('#filters-channel').slideUp();
         $("#filters-mobile .close").hide();
         $("#filters-mobile").css({"width":"50%"});
     }
