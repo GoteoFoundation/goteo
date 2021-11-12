@@ -25,6 +25,7 @@ use Goteo\Model\Image;
 use Goteo\Model\Invest;
 use Goteo\Model\Invest\InvestMsg;
 use Goteo\Model\Project;
+use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Reward;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
