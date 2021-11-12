@@ -55,6 +55,7 @@ class ImpactDiscoverController extends \Goteo\Core\Controller {
         $footprints = Footprint::getList();
         $sdgs_count = Sdg::getList([],0,0,true);
         $sdgs = Sdg::getList([],0,$sdgs_count);
+        $channels = Node::getList();
 
         $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
         $projects = Project::getByFootprintOrSDGs($filters, 0, 9);
@@ -65,6 +66,7 @@ class ImpactDiscoverController extends \Goteo\Core\Controller {
             'sdgSelected' => $sdgSelected,
             'projects' => $projects,
             'total' => $total,
+            'channels' => $channels,
             'view' => 'list_projects'
         ]);
 

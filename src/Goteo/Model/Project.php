@@ -2590,7 +2590,7 @@ class Project extends Model {
 
         if ($filters['channel']) {
             $sqlWhere[] = "( project.node = :channel OR node_project.node_id = :channel )";
-            $sqlJoins .= "INNER JOIN node_project on node_project.project_id = project.id ";
+            $sqlJoins .= "LEFT JOIN node_project on node_project.project_id = project.id ";
             $values[':channel'] = $filters['channel'];
         }
 

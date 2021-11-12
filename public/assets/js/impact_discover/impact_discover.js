@@ -90,7 +90,7 @@ $(function(){
 
 
     function changeChannel(event) {
-        channel = $channel.value;
+        const channel = $channel.value;
 
         var sdgActive = getActiveSDG();
         var sdgArray = [];
@@ -102,6 +102,7 @@ $(function(){
         setQuery({
             channel: channel
         })
+        resetProjects();
         loadProjects(sdgArray);
     }
 
@@ -116,8 +117,8 @@ $(function(){
 
     // reset SDG select
     function resetSDGSelect() {
-        $(".impact-discover-filters select option").remove();
-        $(".impact-discover-filters select").append("<option>Filtra por Objetivos de Desarrollo sostenible</option");
+        $(".impact-discover-filters select[name=footprints] option").remove();
+        $(".impact-discover-filters select[name=footprints]").append("<option>Filtra por Objetivos de Desarrollo sostenible</option");
     }
 
     // check if SDG option has selected footprint
@@ -128,7 +129,7 @@ $(function(){
 
     // add SDG to SDG select
     function addSDGToSelect(sdg) {
-        $(".impact-discover-filters select").append('<option data-footprints="'+sdg.footprints.map(footprint => footprint.id).join(',')+'" value="' + sdg.id + '">'+sdg.name+'</option>');
+        $(".impact-discover-filters select[name=footprints]").append('<option data-footprints="'+sdg.footprints.map(footprint => footprint.id).join(',')+'" value="' + sdg.id + '">'+sdg.name+'</option>');
     }
 
     // reset SDG icons
@@ -395,7 +396,7 @@ $(function(){
     });
 
     // bind Footprints select change
-    $(".select[name=footprints]").on("change", function(e){
+    $("select[name=footprints]").on("change", function(e){
         footprints = $(this).find("option:selected").attr("data-footprints").split(",");
         filterFootprintBySDG(footprints);
     });
