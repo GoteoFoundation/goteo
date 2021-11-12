@@ -17,6 +17,7 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Application\View;
 use Goteo\Console\UsersSend;
 use Goteo\Library\Text;
 use Goteo\Model\Blog\Post as BlogPost;
