@@ -16,6 +16,7 @@ use Goteo\Library\Text;
 use Goteo\Util\Form\Type\DropfilesType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Form\FormInterface;
 
@@ -68,6 +69,12 @@ class ProjectStoryForm extends AbstractFormProcessor {
                 'required' => false,
                 'limit' => 1
             ]);
+
+            if (!$this->getReadOnly()) {
+                $builder->add('submit', SubmitType::class, [
+                    'label' => 'regular-save'
+                ]);
+            }
 
         return $this;
     }
