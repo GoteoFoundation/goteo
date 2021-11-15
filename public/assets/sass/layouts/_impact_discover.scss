@@ -114,7 +114,7 @@
                     font-weight:bold;
                     font-size:1.5rem;
                     text-decoration:none;
-                    pointer:cursor;
+                    cursor:pointer;
     
                     &[data-footprint="all"] {
                         width: 4em;
@@ -212,21 +212,25 @@
 
         display:flex;
         margin:0;
-        
-        img.bg-project {
-            position:absolute;
-            z-index:1;
-            width:100%;
-            height:100%;
-            filter: grayscale(0%);
-            &[data-footprint="1"] {
-                filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(80deg);
-            }
-            &[data-footprint="2"] {
-                filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(160deg);
-            }
-            &[data-footprint="3"] {
-                filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(300deg);
+
+        a {
+            cursor: pointer;
+
+            img.bg-project {
+                position:absolute;
+                z-index:1;
+                width:100%;
+                min-height:100%;
+                filter: grayscale(0%);
+                &[data-footprint="1"] {
+                    filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(80deg);
+                }
+                &[data-footprint="2"] {
+                    filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(300deg);
+                }
+                &[data-footprint="3"] {
+                    filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(160deg);
+                }
             }
         }
 
@@ -237,36 +241,29 @@
             width: 10rem;
         }
 
-        h2 {
-            color:#FFFFFF;
-            width: 250px;
-            padding-left:2rem;
-            font-size: 2.4rem;
-            line-height:1.2;
-            position:relative;
-            z-index:10;
+        .project-description {
+
+            h2 {
+                color:#FFFFFF;
+                width: 250px;
+                padding-left:2rem;
+                font-size: 2.4rem;
+                line-height:1.2;
+                position:relative;
+                z-index:10;
+            }
+
+            p {
+                font-size: 1.4rem;
+                color:#FFFFFF;
+                padding-left:2rem;
+                position:relative;
+                z-index:10;
+            }
         }
 
         .col.sm-8 h2 {
             font-size: 4.5rem;
-        }
-
-        h3 {
-            color:#FFFFFF;
-            width: 250px;
-            padding-left:2rem;
-            font-size: 2.4rem;
-            line-height:1.2;
-            position:relative;
-            z-index:10;
-        }
-
-        p {
-            font-size: 1.4rem;
-            color:#FFFFFF;
-            padding-left:2rem;
-            position:relative;
-            z-index:10;
         }
 
         .col {
@@ -274,6 +271,7 @@
             padding:0;
             display:flex;
             flex-direction:column;
+            overflow-y: hidden;
     
             .project-footprint {
                 flex-grow:1;

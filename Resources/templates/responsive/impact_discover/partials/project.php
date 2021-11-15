@@ -7,13 +7,19 @@
     foreach($sdgs as $sdg) {
         $footprints = array_merge($footprints, array_column($sdg->getFootprints(), null, 'id'));
     }
+
+    $footprints = array_unique($footprints, SORT_REGULAR);
 ?>
 
-<img src="<?= ($project->image)? $project->image->getLink(700,0,true) : '' ?>" class="bg-project" data-footprint="<?= (current($footprints))? current($footprints)->id : '' ?>">
+<a href="/project/<?= $project->id ?>">
+    <img src="<?= ($project->image)? $project->image->getLink(700,0,true) : '' ?>" class="bg-project" data-footprint="<?= (current($footprints))? current($footprints)->id : '' ?>">
+</a>
 
 <?php if (!empty($footprints)): ?>
     <div class="project-footprint">
-        <img src="assets/img/footprint/<?= current($footprints)->id ?>.svg" alt="<?= current($footprints)->name ?>" class="footprint" />
+        <?php foreach($footprints as $footprint): ?>
+            <img src="assets/img/footprint/<?= $footprint->id ?>.svg" alt="<?= $footprint->name ?>" class="footprint" />
+        <?php endforeach; ?>
     </div>
 <?php endif; ?>
 <div class="project-description">

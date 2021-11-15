@@ -362,7 +362,6 @@ $(function(){
         return $(window).scrollTop() >= $last.offset().top - $last.height()
     }
 
-    /*
     $(window).on('resize scroll', function() {
         if(needsScroll() && !$('.loading-container').length) {
             sdg = [];
@@ -381,7 +380,7 @@ $(function(){
         
             loadProjects(sdgArray);
         };
-    }); */
+    });
 
     // bind click on footprint
     $("#filters-footprints").on("click","a", function(e){

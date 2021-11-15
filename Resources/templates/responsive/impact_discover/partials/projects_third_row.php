@@ -5,20 +5,20 @@
     <div class="col col-xs-12 col-sm-4">
         <div class="row">
             <?php if(current($projects)): ?>
-                <div class="col col-xs-12 col-sm-12">
+                <div href="/project/<?= current($projects)->id ?>" class="col col-xs-12 col-sm-12">
                     <?= $this->insert('impact_discover/partials/project.php', ['project' => current($projects)]) ?>
-                </div>
+            </div>
             <?php endif; ?>
         </div>
         <div class="row">
             <?php if(next($projects)): ?>
-                <div class="col col-xs-12 col-sm-12">
+                <div href="/project/<?= current($projects)->id ?>" class="col col-xs-12 col-sm-12">
                     <?= $this->insert('impact_discover/partials/project.php', ['project' => current($projects)]) ?>
                 </div>
             <?php endif; ?>
         </div>
     </div>
-    <div class="col col-xs-12 col-sm-8">
+    <div href="/project/<?= current($projects)->id ?>" class="col col-xs-12 col-sm-8">
         <?php if(next($projects)): ?>
             <?= $this->insert('impact_discover/partials/project.php', ['project' => current($projects)]) ?>
         <?php endif; ?>
