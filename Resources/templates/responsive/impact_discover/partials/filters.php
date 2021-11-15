@@ -23,9 +23,11 @@
           <ul>
             <?php foreach($this->sdgs as $sdg): ?>
               <li>
-                <input type="checkbox" name="<?= $sdg->id ?>" />
-                <img src="/assets/img/sdg/sdg<?= $sdg->id ?>.svg" alt="<?= $sdg->name ?>"/>
-                <?= $sdg->id . $sdg->name ?>
+                <label>
+                  <input type="checkbox" name="<?= $sdg->id ?>" />
+                  <img src="/assets/img/sdg/sdg<?= $sdg->id ?>.svg" alt="<?= $sdg->name ?>"/>
+                  <?= $sdg->name ?>
+                </label>
               </li>
             <?php endforeach; ?>
           </ul>

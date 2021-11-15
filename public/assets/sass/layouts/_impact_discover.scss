@@ -147,12 +147,16 @@
                 display:flex;
                 align-items:center;
                 
-                input {
-                    transform:scale(2);
-                }
+                label {
+                    cursor: pointer;
 
-                img {
-                    margin:0 2rem;
+                    input {
+                        transform:scale(2);
+                    }
+
+                    img {
+                        margin:0 2rem;
+                    }
                 }
             }
         }
