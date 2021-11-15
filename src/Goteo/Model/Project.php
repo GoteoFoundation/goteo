@@ -2612,7 +2612,8 @@ class Project extends Model {
             INNER JOIN sdg_project on sdg_project.project_id = project.id
             INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
             $sqlJoins
-            WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
+            WHERE project.status IN (" . implode(',', [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED]) . ")
+            $sqlWhere
             ";
             return (int) self::query($sql, $values)->fetchColumn();
         }
@@ -2657,7 +2658,7 @@ class Project extends Model {
                 ON project_conf.project = project.id
             $sqlJoins
             $joins
-            WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
+            WHERE project.status IN (" . implode(',', [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED]) . ")
             GROUP BY project.id
             ORDER BY project.published DESC
             $sql_limit
