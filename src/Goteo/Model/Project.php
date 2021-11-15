@@ -2659,6 +2659,7 @@ class Project extends Model {
             $sqlJoins
             $joins
             WHERE project.status IN (" . implode(',', [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED]) . ")
+            $sqlWhere
             GROUP BY project.id
             ORDER BY project.published DESC
             $sql_limit
