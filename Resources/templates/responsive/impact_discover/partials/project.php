@@ -24,5 +24,5 @@
 <?php endif; ?>
 <div class="project-description">
     <h2><?= $project->title ?></h2>
-    <p><?= $this->text('regular-by') ?> <a href="/user/profile/<?= $project->user->id ?>"> <?= $project->user->name ?></a></p>
+    <p><?= $this->text('regular-by') ?> <a href="/user/profile/<?= $project->user->id ?>" target="_blank"> <?= $project->user->name ?></a></p>
 </div>
