@@ -11,7 +11,7 @@
     $footprints = array_unique($footprints, SORT_REGULAR);
 ?>
 
-<a href="/project/<?= $project->id ?>">
+<a href="/project/<?= $project->id ?>" target="_blank">
     <img src="<?= ($project->image)? $project->image->getLink(700,0,true) : '' ?>" class="bg-project" data-footprint="<?= (current($footprints))? current($footprints)->id : '' ?>">
 </a>
 

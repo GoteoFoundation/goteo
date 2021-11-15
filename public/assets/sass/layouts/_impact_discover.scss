@@ -73,11 +73,7 @@
     }
 
     #filters-mobile {
-        width: 50%;
-        position:absolute;
-        left: 1rem;
         padding: 1rem;
-        margin-top:-1rem;
         background-color: #FFF;
 
         a {
@@ -101,7 +97,6 @@
             margin:0;
     
             li {
-                margin:5px;
                 list-style: none;
     
                 a {
@@ -191,16 +186,30 @@
     }
 
     #filters-view-as {
-
         margin-bottom: 3rem;
-        cursor: pointer;
 
-        a img {
-            opacity: 0.4;
-            margin-left:20px;
-        }
-        a.active img {
-            opacity: 1;
+        ul {
+            display:flex;
+            justify-content: space-around;
+            padding:0;
+            margin:0;
+
+            li {
+                margin:5px;
+                list-style: none;
+
+                a {
+                    cursor: pointer;
+
+                    img {
+                        opacity: 0.4;
+                    }
+
+                    &.active img {
+                        opacity: 1;
+                    }
+                }
+            }
         }
     }
 }
@@ -300,27 +309,22 @@
     }
 }
 
-.impact-discover-mosaic {
-}
-
 @media screen and (max-width : 720px) {
 
     .impact-discover-filters .row {
         flex-direction: column;
+        align-items: flex-start;
     }
 
     .impact-discover-filters {
-        #filters-mobile {
-            display:block;
-        }
-    
-        #filters-footprints, #filters-sdg-list, #filters-sdg-select, #filters-channel {
+        #filters-footprints, #filters-sdg-list, #filters-sdg-select, #filters-channel, #filters-view-as {
             display:none;
         }
     
         #filters-mobile {
             order:1;
             z-index:2;
+            display:block;
         }
         
         #filters-view-as {
@@ -334,16 +338,12 @@
             margin-top:2rem;
         }
     
-        #filters-sdg-list {
+        #filters-channel {
             order: 4;
         }
 
-        #filters-channel {
+        #filters-sdg-list {
             order: 5;
-        }
-    
-        #filters-sdg-select {
-            order: 6;
         }
     }
 

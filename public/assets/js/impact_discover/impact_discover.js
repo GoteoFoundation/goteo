@@ -339,7 +339,7 @@ $(function(){
         $("#filters-footprints").slideDown();
         $("#filters-sdg-list").slideDown();
         $('#filters-channel').slideDown();
-        $("#filters-mobile").css({"width":"100%"});
+        $('#filters-view-as').slideDown();
         $("#filters-mobile .close").show();
     }
 
@@ -347,8 +347,8 @@ $(function(){
         $("#filters-footprints").slideUp();
         $("#filters-sdg-list").slideUp();
         $('#filters-channel').slideUp();
+        $('#filters-view-as').slideUp();
         $("#filters-mobile .close").hide();
-        $("#filters-mobile").css({"width":"50%"});
     }
 
     function needsScroll() {

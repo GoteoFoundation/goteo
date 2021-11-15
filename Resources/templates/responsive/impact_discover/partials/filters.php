@@ -34,7 +34,7 @@
             <button><?= $this->t('regular-apply') ?></button>
           </p>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-4 text-center" id="filters-channel">
+        <div class="col-xs-12 col-sm-3 col-md-4 text-center" id="filters-channel">
           <?php if ($this->selectedChannel) : ?>
             <select class="form-control" name="channel" disabled>
               <option value="<?= $this->selectedChannel ?>" selected> <?= $this->channels[$this->selectedChannel] ?> </option>
@@ -49,7 +49,7 @@
             </select>
           <?php endif; ?>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-4 text-center" id="filters-sdg-select">
+        <div class="col-xs-12 col-sm-3 col-md-4 text-center" id="filters-sdg-select">
           <select class="form-control" name="footprints">
             <option><?= $this->t('impact-discover-filter-by-sdg') ?></option>
 
@@ -59,9 +59,17 @@
           </select>
         </div>
         <div class="col-xs-12 col-sm-3 col-md-2 text-right" id="filters-view-as">
-          <a id="activate-mosaic" class="<?= ($this->view == 'mosaic') ? 'active' : '' ?>" href="/impact-discover/mosaic"> <img src="/assets/img/icons/mosaic.svg"> </a>
-          <a id="activate-projects" class="<?= ($this->view == 'list_projects')? 'active' : '' ?>" href="/impact-discover"><img src="/assets/img/icons/lists.svg"></a>
-          <a id="activate-map" class="<?= ($this->view == 'map')? 'active' : '' ?>" href="/impact-discover/map"><img src="/assets/img/icons/map.svg"></a>
+          <ul>
+          <li>
+            <a id="activate-mosaic" class="<?= ($this->view == 'mosaic') ? 'active' : '' ?>" href="/impact-discover/mosaic"> <img src="/assets/img/icons/mosaic.svg"> </a>
+          </li>
+          <li>
+            <a id="activate-projects" class="<?= ($this->view == 'list_projects')? 'active' : '' ?>" href="/impact-discover"><img src="/assets/img/icons/lists.svg"></a>
+          </li>
+          <li>
+            <a id="activate-map" class="<?= ($this->view == 'map')? 'active' : '' ?>" href="/impact-discover/map"><img src="/assets/img/icons/map.svg"></a>
+          </li>
+          </ul>
         </div>
       </div>
   </div>
