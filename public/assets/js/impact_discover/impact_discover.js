@@ -70,7 +70,7 @@ $(function(){
             sdgList = data;
 
             const sdgsToActivate = sdgList.filter( (sdg) => {
-                return sdgsicons.includes(sdg.id.toString())
+                return sdgsicons.includes(sdg.id)
             })
         
             sdgsToActivate.forEach((sdg) => {
@@ -81,7 +81,11 @@ $(function(){
     function redirectView(event) {
         event.preventDefault();
 
-        window.document.location.href = event.target.parentElement.href + '?sdgs=' + getActiveSDG().map((sdg) => sdg.id).join(',');
+        const sdgs = getActiveSDG().map((sdg) => sdg.id).join(',');
+        const footprints = getActiveFootprints().join(',');
+        const channel = getActiveChannel();
+
+        window.document.location.href = event.target.parentElement.href + '?sdgs=' + sdgs + '&footprints=' + footprints + '&channel=' + channel ;
     }
 
     document.getElementById('activate-mosaic').onclick = redirectView;
@@ -311,6 +315,17 @@ $(function(){
         $.each(footprints, function(key, footprint){
             $('a[data-footprint="'+footprint+'"]').addClass("active");
         })
+    }
+
+    function getActiveFootprints() {
+        return Array.from($('#filters-footprints ul li a.active'))
+            .map( (footprint) => { 
+                return $(footprint).data('footprint');
+            });
+    }
+
+    function getActiveChannel() {
+        return $('select[name=channel]').val();
     }
 
     // filter SDG select options by footprint

@@ -8,7 +8,11 @@
 
 <?= $this->insert('impact_discover/partials/list_projects') ?>
 
-<div class="spacer-20 spacer-bottom text-center more-projects-button <?= $this->total > count($this->projects) ? '' : ' hidden' ?>">
+<?php
+    $projects = is_array($this->projects)? $this->projects : [];
+?>
+
+<div class="spacer-20 spacer-bottom text-center more-projects-button <?= $this->total > count($projects) ? '' : ' hidden' ?>">
     <button class="btn btn-link"><?= $this->text('regular-load-more') ?> &nbsp; &nbsp; <i class="fa fa-chevron-right"></i></button>
 </div>
 
