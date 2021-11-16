@@ -55,10 +55,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
     private function initGateway()
     {
         $factory = new GatewayFactory();
-        $this->gateway = $factory->create(
-            $this->getGatewayName(),
-//            new GuzzleClient() // @TODO Move GuzzleClient from goteo-private into goteo
-        );
+        $this->gateway = $factory->create($this->getGatewayName());
 
         if (!in_array(GatewayInterface::class, class_implements($this->gateway))) {
             throw new PaymentException("Error on retrieving Omnipay Gateway Class. It must implement Omnipay\Common\GatewayInterface!");
