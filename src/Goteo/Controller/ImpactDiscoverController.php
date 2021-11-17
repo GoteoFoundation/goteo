@@ -34,6 +34,19 @@ class ImpactDiscoverController extends Controller {
         View::setTheme('responsive');
     }
 
+    private function setImpactDiscoverContext() {
+        $footprints = Footprint::getList();
+        $sdgs_count = Sdg::getList([],0,0,true);
+        $sdgs = Sdg::getList([],0,$sdgs_count);
+        $channels = Node::getAll(['status' => 'active']);
+
+        $this->contextVars([
+            'footprints' => $footprints,
+            'sdgs' => $sdgs,
+            'channels' => $channels,
+        ]);
+    }
+
     private function getQueryParameters(Request $request):array {
 
         $filters = [];
@@ -57,29 +70,22 @@ class ImpactDiscoverController extends Controller {
      */
     public function indexAction (Request $request) {
         
+        $this->setImpactDiscoverContext();
         $filters = $this->getQueryParameters($request);
 
         $sdgSelected = $filters['sdgs'] ?? [];
         $channelSelected = $filters['channel'] ?? '';
         $footprintsSelected = $filters['footprints'] ?? [];
 
-        $footprints = Footprint::getList();
-        $sdgs_count = Sdg::getList([],0,0,true);
-        $sdgs = Sdg::getList([],0,$sdgs_count);
-        $channels = Node::getList();
-
         $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
         $projects = Project::getByFootprintOrSDGs($filters, 0, 9);
 
         return $this->viewResponse('impact_discover/index', [
-            'footprints' => $footprints,
-            'sdgs' => $sdgs,
             'sdgSelected' => $sdgSelected,
             'footprintsSelected' => $footprintsSelected,
             'channelSelected' => $channelSelected,
             'projects' => $projects,
             'total' => $total,
-            'channels' => $channels,
             'view' => 'list_projects'
         ]);
 
@@ -87,6 +93,7 @@ class ImpactDiscoverController extends Controller {
 
     public function mapAction(Request $request) {
 
+        $this->setImpactDiscoverContext();
         $filters = $this->getQueryParameters($request);
 
         $sdgSelected = $filters['sdgs'] ?? [];
@@ -94,52 +101,37 @@ class ImpactDiscoverController extends Controller {
         $footprintsSelected = $filters['footprints'] ?? [];
 
         $map = new MapOSM('100%');
-        $footprints = Footprint::getList();
-        $sdgs_count = Sdg::getList([],0,0,true);
-        $sdgs = Sdg::getList([],0,$sdgs_count);
-        $channels = Node::getList();
-
         $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
         $projects = Project::getByFootprintOrSDGs($filters, 0, 9);
 
         return $this->viewResponse('impact_discover/map', [
-            'footprints' => $footprints,
-            'sdgs' => $sdgs,
             'sdgSelected' => $sdgSelected,
             'footprintsSelected' => $footprintsSelected,
             'channelSelected' => $channelSelected,
             'map' => $map,
             'projects' => $projects,
             'total' => $total,
-            'channels' => $channels,
             'view' => 'map'
         ]);
     }
 
     public function mosaicAction(Request $request) {
+        $this->setImpactDiscoverContext();
         $filters = $this->getQueryParameters($request);
 
         $sdgSelected = $filters['sdgs'] ?? [];
         $channelSelected = $filters['channel'] ?? '';
         $footprintsSelected = $filters['footprints'] ?? '';
 
-        $footprints = Footprint::getList();
-        $sdgs_count = Sdg::getList([],0,0,true);
-        $sdgs = Sdg::getList([],0,$sdgs_count);
-        $channels = Node::getList();
-
         $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
         $projects = Project::getByFootprintOrSDGs($filters, 0, 9);
 
         return $this->viewResponse('impact_discover/mosaic', [
-            'footprints' => $footprints,
-            'sdgs' => $sdgs,
             'sdgSelected' => $sdgSelected,
             'footprintsSelected' => $footprintsSelected,
             'channelSelected' => $channelSelected,
             'projects' => $projects,
             'total' => $total,
-            'channels' => $channels,
             'view' => 'mosaic'
         ]);
     }

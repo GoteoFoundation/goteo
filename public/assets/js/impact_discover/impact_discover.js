@@ -313,7 +313,7 @@ $(function(){
     // activate footprints by sdg selected
     function activateFootprints(footprints) {
         $.each(footprints, function(key, footprint){
-            $('a[data-footprint="'+footprint+'"]').addClass("active");
+            $('a[data-footprint="'+footprint+'"]').trigger('click');
         })
     }
 
@@ -348,6 +348,7 @@ $(function(){
         resetFootprints();
         resetSDGIcons();
         activateFootprints(footprint);
+
     }
 
     function expandMobileFilter() {
