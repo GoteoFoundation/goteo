@@ -8,7 +8,7 @@
         <div class="col-xs-12 col-sm-6 col-md-6" id="filters-footprints">
           <p><?= $this->t('impact-discover-filter-by-footprints') ?></p>
           <ul>
-            <li><a href="" data-footprint="all" class="<?  ('all' == $this->footprintSelected)? 'active' : '' ?>">Todas</a></li>
+            <li><a href="" data-footprint="all" class="<?= ('all' == $this->footprintSelected)? 'active' : '' ?>">Todas</a></li>
             <?php foreach($this->footprints as $footprint): ?>
               <li>
                 <a href="" data-footprint="<?= $footprint->id ?>" class="<?= in_array($footprint->id, $this->footprintsSelected)? 'active' : '' ?>">

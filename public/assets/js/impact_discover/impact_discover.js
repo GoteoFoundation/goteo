@@ -26,14 +26,14 @@ for the JavaScript code in this page.
 $(function(){
 
     const view = document.querySelector('.section[id^=impact-discover]').dataset.view;
-    let $channel = document.querySelector('select[name=channel]');
+    const $channel = document.querySelector('select[name=channel]');
 
     var query = {
         view: view,
         page: 0,
         limit: 9,
         sdg: '',
-        channel: ''
+        channel: $channel.value ?? ''
     };
 
     function resetQuery() {
@@ -41,7 +41,7 @@ $(function(){
             page: 0,
             limit: 9,
             sdg: '',
-            channel: ''
+            channel: $channel.value ?? ''
         };
     }
 
