@@ -28,7 +28,7 @@ use Goteo\Application\Event\FilterInvestEvent;
  */
 class DummyPaymentMethod extends AbstractPaymentMethod {
 
-    private $simulating_gateway = false;
+    private bool $simulating_gateway = false;
 
     public function getGatewayName(): string
     {
@@ -50,7 +50,8 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
         return SRC_URL . '/assets/img/pay/cash.png';
     }
 
-    public function getDefaultHttpResponse(ResponseInterface $response) {
+    public function getDefaultHttpResponse(ResponseInterface $response): ?Response
+    {
         if(!$this->simulating_gateway) return null;
 
         // Let's obtain the gateway and the
@@ -89,12 +90,15 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
         </div>
     </body>
 </html>';
-        return new Response(sprintf(
-                    $output,
-                    htmlentities($this->getCompleteUrl(), ENT_QUOTES, 'UTF-8', false),
-                    htmlentities($this->getCompleteUrl(), ENT_QUOTES, 'UTF-8', false),
-                    $this->getTotalAmount() . ' ' .Currency::getDefault('html')
-                ));
+
+        return new Response(
+            sprintf(
+                $output,
+                htmlentities($this->getCompleteUrl(), ENT_QUOTES, 'UTF-8', false),
+                htmlentities($this->getCompleteUrl(), ENT_QUOTES, 'UTF-8', false),
+                $this->getTotalAmount() . ' ' .Currency::getDefault('html')
+            )
+        );
     }
 
     public function purchase(): ResponseInterface

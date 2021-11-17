@@ -11,7 +11,7 @@
 namespace Goteo\Payment\Method;
 
 /**
- * Creates a Payment Method that uses Paypal provider
+ * Creates a Payment Method that uses Cash provider
  */
 class CashPaymentMethod extends AbstractPaymentMethod {
 
