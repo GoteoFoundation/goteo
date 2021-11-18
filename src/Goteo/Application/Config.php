@@ -33,6 +33,7 @@ use Goteo\Controller\Admin\FilterAdminController;
 use Goteo\Controller\Admin\GlossarySubController;
 use Goteo\Controller\Admin\HomeSubController;
 use Goteo\Controller\Admin\IconsSubController;
+use Goteo\Controller\Admin\ImpactDataAdminController;
 use Goteo\Controller\Admin\LicensesSubController;
 use Goteo\Controller\Admin\MailingSubController;
 use Goteo\Controller\Admin\MilestonesSubController;
@@ -157,22 +158,23 @@ class Config {
 
             // Add model zones for the translator
             TranslateController::addTranslateModel('criteria');
-			TranslateController::addTranslateModel('sphere');
-			TranslateController::addTranslateModel('communication');
-			TranslateController::addTranslateModel('call_to_action');
-			TranslateController::addTranslateModel('node');
-			TranslateController::addTranslateModel('node_program');
-			TranslateController::addTranslateModel('node_faq');
-			TranslateController::addTranslateModel('node_faq_question');
-			TranslateController::addTranslateModel('node_faq_download');
-			TranslateController::addTranslateModel('node_sponsor');
-			TranslateController::addTranslateModel('node_team');
-			TranslateController::addTranslateModel('node_resource');
-			TranslateController::addTranslateModel('node_resource_category');
-			TranslateController::addTranslateModel('image_credits');
-			TranslateController::addTranslateModel('node_sections');
-			TranslateController::addTranslateModel('question');
-			TranslateController::addTranslateModel('question_options');
+            TranslateController::addTranslateModel('sphere');
+            TranslateController::addTranslateModel('communication');
+            TranslateController::addTranslateModel('call_to_action');
+            TranslateController::addTranslateModel('node');
+            TranslateController::addTranslateModel('node_program');
+            TranslateController::addTranslateModel('node_faq');
+            TranslateController::addTranslateModel('node_faq_question');
+            TranslateController::addTranslateModel('node_faq_download');
+            TranslateController::addTranslateModel('node_sponsor');
+            TranslateController::addTranslateModel('node_team');
+            TranslateController::addTranslateModel('node_resource');
+            TranslateController::addTranslateModel('node_resource_category');
+            TranslateController::addTranslateModel('image_credits');
+            TranslateController::addTranslateModel('node_sections');
+            TranslateController::addTranslateModel('question');
+            TranslateController::addTranslateModel('question_options');
+			TranslateController::addTranslateModel('impact_data');
 
 			// sets up the rest...
 			self::setDirConfiguration();
@@ -339,6 +341,7 @@ class Config {
         AdminController::addSubController(ChannelPostsAdminController::class);
         AdminController::addSubController(ChannelSectionAdminController::class);
         AdminController::addSubController(ChannelStoryAdminController::class);
+		AdminController::addSubController(ImpactDataAdminController::class);
     }
 
     static public function addLegacyAdminControllers()

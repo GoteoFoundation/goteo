@@ -15,6 +15,8 @@ translator-deleted-ok: '%s translation deleted successfully'
 translator-feed-translated-desc: '%LINK% translated by %USER% to %LANGS%'
 translator-feed-translated-target: 'Translation in %s'
 translator-field-content: Content
+translator-field-data: 'Data'
+translator-field-data_unit: 'Unit'
 translator-field-description: Description
 translator-field-facebook_msg: 'Facebook message'
 translator-field-facebook_msg_owner: 'Facebook author'

@@ -91,6 +91,8 @@ regular-content: Content
 regular-continue-question: 'Continue?'
 regular-continue: 'Continue'
 regular-create: 'Create a project'
+regular-data: 'Data'
+regular-data-unit: 'Unit'
 regular-date: Date
 regular-date_in: Entry Date
 regular-date_out: Release Date
@@ -185,6 +187,7 @@ regular-status: Status
 regular-template: Template
 regular-thanks: Thank you
 regular-title: Title
+regular-subtitle: Subtitle
 regular-text: Text
 regular-media: Video (Youtube, Vimeo)
 regular-total: Total
