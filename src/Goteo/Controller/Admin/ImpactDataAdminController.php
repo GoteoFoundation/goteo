@@ -22,7 +22,7 @@ class ImpactDataAdminController extends AbstractAdminController
 {
     protected static $icon = '<i class="fa fa-2x fa-table"></i>';
 
-    public static function getGroup() {
+    public static function getGroup(): string {
         return 'communications';
     }
 

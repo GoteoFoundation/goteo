@@ -33,6 +33,7 @@ use Goteo\Controller\Admin\FilterAdminController;
 use Goteo\Controller\Admin\GlossarySubController;
 use Goteo\Controller\Admin\HomeSubController;
 use Goteo\Controller\Admin\IconsSubController;
+use Goteo\Controller\Admin\ImpactDataAdminController;
 use Goteo\Controller\Admin\LicensesSubController;
 use Goteo\Controller\Admin\MailingSubController;
 use Goteo\Controller\Admin\MilestonesSubController;
@@ -337,6 +338,7 @@ class Config {
         AdminController::addSubController(ChannelPostsAdminController::class);
         AdminController::addSubController(ChannelSectionAdminController::class);
         AdminController::addSubController(ChannelStoryAdminController::class);
+		AdminController::addSubController(ImpactDataAdminController::class);
     }
 
     static public function addLegacyAdminControllers()
