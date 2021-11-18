@@ -24,3 +24,8 @@ discover-near-by: 'A prop de:'
 discover-any-city: 'Ciutat, codi postal, ...'
 meta-title-discover: 'Descobreix projectes :: Goteo.org'
 discover-include-review-projects: 'Inclou projectes en revisió'
+
+impact-discover-filter-by-footprints: 'Filtra per Petjades'
+impact-discover-filter-by-sdg: 'Filtra per Objectius de Desenvolupament Sostenible'
+impact-discover-projects-by-sdg: 'Projectes que compleixen amb els següents ODS:'
+impact-discover-search-projects-sdgs: 'Busca un projecte per Petjades o ODS'

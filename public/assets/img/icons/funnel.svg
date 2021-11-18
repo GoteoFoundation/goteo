@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 319</title>
+    <defs>
+        <path d="M15.66694,0 C15.79561,0 15.91361,0.075 15.96827,0.191 C16.02294,0.308 16.00627,0.446 15.92361,0.545 L15.92361,0.545 L9.33358,8.513 L9.33358,15.667 C9.33358,15.851 9.18425,16 9.00025,16 L9.00025,16 L7.00024,16 C6.81557,16 6.6669,15.851 6.6669,15.667 L6.6669,15.667 L6.6669,8.513 L0.07621,0.545 C-0.00579,0.446 -0.02312,0.308 0.03154,0.191 C0.08688,0.075 0.20421,0 0.33354,0 L0.33354,0 L15.66694,0 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Mobile_04" transform="translate(-15.000000, -85.000000)">
+            <g id="Group-319" transform="translate(15.000000, 85.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-318"></g>
+                <polygon id="Fill-317" fill="#26BDB9" mask="url(#mask-2)" points="-5 -5 21 -5 21 21 -5 21"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
