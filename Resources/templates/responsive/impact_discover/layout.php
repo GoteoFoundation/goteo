@@ -21,4 +21,13 @@ $this->section('content');
 
 <?php $this->section('footer') ?>
     <?= $this->insert('impact_discover/partials/javascript') ?>
+
+    <?php if ($this->view = 'map'): ?>
+        <?= $this->insert('map/partials/javascript'); ?>
+
+        <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet/dist/leaflet.css"/>
+        <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.markercluster/dist/MarkerCluster.css"/>
+        <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
+        <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.fullscreen/Control.FullScreen.css"/>
+    <?php endif; ?>
 <?php $this->append() ?>

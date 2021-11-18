@@ -15,14 +15,13 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
+use Goteo\Model\ImpactData;
 use Goteo\Util\Form\Type\DropfilesType;
 use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
-
-use Goteo\Model\Filter\ImpactData;
 
 class ImpactDataForm extends AbstractFormProcessor {
 
@@ -65,11 +64,7 @@ class ImpactDataForm extends AbstractFormProcessor {
                 'label' => 'regular-image',
                 'data' => [ $model->image ? $model->getImage() : null],
                 'required' => false,
-                'url' => '/api/impactdata/images',
-                'limit' => 1,
-                'constraints' => [
-                    new Constraints\Count(['max' => 1, 'min' => 0]),
-                ]
+                'limit' => 1
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'regular-submit',
@@ -89,10 +84,24 @@ class ImpactDataForm extends AbstractFormProcessor {
         $data = $form->getData();
         $model = $this->getModel();
 
-        if (current($data['image']) instanceOf Image) {
-            $model->setImage(current($data['image']));
-            unset($data['image']);
+        if(is_array($data['image']) && !empty($data['image'])) {
+            if (!empty($data['image']['removed'])) {
+                if ($model->image == current($data['image']['removed'])->id) {
+                    $model->image = null;
+                }
+            }
+
+            if (!empty($data['image']['uploads'])) {
+                $uploaded_image = $data['image']['uploads'][0];
+                $model->setImage($uploaded_image);
+
+                if($model->image && $err = $uploaded_image->getUploadError()) {
+                    throw new FormModelException(Text::get('form-sent-error', $err));
+                }
+            }
         }
+
+        unset($data['image']);
 
         $model->rebuildData($data, array_keys($form->all()));
 
