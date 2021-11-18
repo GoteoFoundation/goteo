@@ -1,3 +1,7 @@
+<?php
+    if ($this->home['values']):
+?>
+
 <div class="fluid-container data-container goteo-values">
     <div class="container">
         <div><h1 class="title text-center">Valores de Goteo</h1></div>
@@ -64,3 +68,4 @@
         <?php endforeach; ?>
     </div>
 </div>
+<?php endif; ?>

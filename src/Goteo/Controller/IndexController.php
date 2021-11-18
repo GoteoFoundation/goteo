@@ -11,8 +11,10 @@
 namespace Goteo\Controller;
 
 use Goteo\Application\View;
+use Goteo\Application\Config;
 use Goteo\Model\Banner;
 use Goteo\Model\Footprint;
+use Goteo\Model\Home;
 use Goteo\Model\Project;
 use Goteo\Model\Sdg;
 use Goteo\Model\Stories;
@@ -44,6 +46,7 @@ class IndexController extends DiscoverController
         $stats = Stats::create('home_stats');
         $sponsors = $this->getSponsors();
         $footprints = Footprint::getList();
+        $home = Home::getAll(Config::get('node'), 'index');
 
         $projects_by_footprint = [];
         $sdg_by_footprint = [];
@@ -63,6 +66,7 @@ class IndexController extends DiscoverController
             'stats'     => $stats,
             'sponsors'  => $sponsors,
             'footprints' => $footprints,
+            'home' => $home,
             'projects_by_footprint' => $projects_by_footprint,
             'sdg_by_footprint' => $sdg_by_footprint
         ]);
