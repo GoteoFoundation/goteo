@@ -10,20 +10,19 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Model\Page;
 use Goteo\Application\Config;
-use Goteo\Application\View;
 use Goteo\Application\Session;
+use Goteo\Application\View;
+use Goteo\Core\Controller;
 use Goteo\Model;
-use Goteo\Library\Text;
-use Goteo\Model\Template;
-use Symfony\Component\HttpFoundation\Response;
+use Goteo\Model\Page;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use function in_array;
 
-class AboutController extends \Goteo\Core\Controller {
+class AboutController extends Controller {
 
     public function __construct() {
-        // Cache & replica read activated in this controller
         $this->dbReplica(true);
         $this->dbCache(true);
     }
@@ -57,43 +56,40 @@ class AboutController extends \Goteo\Core\Controller {
                     'content' => $page->parseContent()
                 )
              ));
-
         }
 
         // el tipo de contenido de la pagina about es diferente
-        if ( empty($id) ||
-             $id == 'about' ||
-            ( !\Goteo\Application\Config::isMasterNode()
-             && !\in_array($id, array('about', 'contact', 'press', 'service', 'maintenance', 'donations'))
-             )
-            ) {
+        if ( empty($id) || $id == 'about' ||
+            (
+                !Config::isMasterNode()
+                && !in_array($id, array('about', 'contact', 'press', 'service', 'maintenance', 'donations'))
+            )
+        ) {
             $id = 'about';
 
-            $posts = Model\Info::getAll(true, \Goteo\Application\Config::get('node'));
+            $posts = Model\Info::getAll(true, Config::get('node'));
 
             return new Response(View::render('about/info', array(
                 'posts' => $posts
             )
          ));
-
         }
 
         // resto de casos
         $page = Page::get($id);
 
         return $this->viewResponse('about/sample', array(
-                    'name' => $page->name,
-                    'description' => $page->description,
-                    'content' => $page->parseContent()
-                ));
-
+            'name' => $page->name,
+            'description' => $page->description,
+            'content' => $page->parseContent()
+        ));
     }
 
     public function librejsAction() {
         return $this->viewResponse('about/librejs');
     }
 
-    public function legalAction ($id = '') {
+    public function legalAction($id = '') {
 
         if (empty($id)) {
             return $this->redirect('/about/legal');
@@ -102,10 +98,9 @@ class AboutController extends \Goteo\Core\Controller {
         $page = Page::get($id);
 
         return $this->viewResponse('about/sample', array(
-                    'name' => $page->name,
-                    'description' => $page->description,
-                    'content' => $page->parseContent()
-                ));
+            'name' => $page->name,
+            'description' => $page->description,
+            'content' => $page->parseContent()
+        ));
     }
 }
-

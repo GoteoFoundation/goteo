@@ -10,36 +10,34 @@
 
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-
-use Goteo\Model\Filter;
-use Goteo\Model\Communication;
-use Goteo\Model\Mail;
-use Goteo\Model\Template;
-use Goteo\Model\Promote;
-use Goteo\Model\Mail\Sender;
-use Goteo\Application\App;
+use Exception;
+use Goteo\Application\Config;
+use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Message;
-use Goteo\Application\View;
-use Goteo\Library\Text;
 use Goteo\Library\Feed;
-use Goteo\Library\Translator\ModelTranslator;
 use Goteo\Library\Forms\FormModelException;
-use Goteo\Application\Config;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Library\Text;
+use Goteo\Library\Translator\ModelTranslator;
+use Goteo\Model\Communication;
+use Goteo\Model\Filter;
+use Goteo\Model\Mail;
+use Goteo\Model\Mail\Sender;
+use Goteo\Model\Template;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 class CommunicationAdminController extends AbstractAdminController
 {
     protected static $icon = '<i class="fa fa-2x fa-envelope-o"></i>';
 
-    public static function getGroup() {
+    public static function getGroup(): string
+    {
         return 'communications';
     }
 
-    public static function getRoutes()
+    public static function getRoutes(): array
     {
         return [
             new Route(
@@ -98,7 +96,6 @@ class CommunicationAdminController extends AbstractAdminController
             $communication->projects = $request->request->get('communication_add');
             $communication->save($errors);
 
-
             if ($errors) {
                 throw new FormModelException(Text::get('form-sent-error'));
                 return;
@@ -120,22 +117,16 @@ class CommunicationAdminController extends AbstractAdminController
                 // Exception on failure
                 try {
                     $translator->save($lang, $fields);
-                } catch(\Exception $e) {
+                } catch(Exception $e) {
                     Message::error(Text::get('translator-saved-ko', ['%LANG%' => $lang, '%ERROR%' => $e->getMessage()]));
                 }
             }
-
-
-
-            // montamos el mailing
-            // - se crea un registro de tabla mail
-            $receivers = array();
 
             if ($id) {
                 $mails = Mail::getFromCommunicationId($id);
                 foreach($mails as $mail) {
                     $mailing = Sender::getFromMailId($mail->id);
-                    if ($mailing) 
+                    if ($mailing)
                         $mailing->dbDelete();
                     $mail->dbDelete();
                 }
@@ -150,7 +141,6 @@ class CommunicationAdminController extends AbstractAdminController
 
                 $mailHandler->content .= $communication_lang->content;
                 $mailHandler->massive = true;
-                // $mailHandler->content = $content;
 
                 $errors = [];
 
@@ -167,28 +157,22 @@ class CommunicationAdminController extends AbstractAdminController
                 $langs = array_keys(Lang::getDependantLanguages($communication_lang->lang));
                 $langs = array_merge(array_diff($langs,$communication->getLangsAvailable()), [$communication_lang->lang]);
                 list($sqlFilter, $values) = $filter->getFilteredSQL($langs, $sender->id);
-                // add subscribers
                 $sender->addSubscribersFromSQLValues($sqlFilter, $values);
 
-                // Evento Feed
                 $log = new Feed();
                 $log->populate(Text::sys('feed-admin-massive-subject'), '/admin/communication',
                     Text::sys('feed-admin-massive', [
                         '%USER%' =>  Feed::item('user', $this->user->name, $this->user->id),
                         '%TYPE%' =>  Feed::item('relevant', Text::sys('feed-admin-massive-communication')),
-                        // '%TO%' => $filters_txt
                     ]))
                     ->doAdmin('admin');
             }
-            // return $this->redirect('/admin/communication/detail/' . $communication->id);
         }
         return $communication;
     }
 
     public function getReceivers($filter, $offset = 0, $limit = 10, $count = false, $sender_id = null){
-
         $receivers = $filter->getFiltered();
-
     }
 
 
@@ -209,7 +193,6 @@ class CommunicationAdminController extends AbstractAdminController
                 ]
             ]
         );
-
     }
 
     public function addAction($id = null, Request $request)
@@ -236,20 +219,18 @@ class CommunicationAdminController extends AbstractAdminController
             $langs = Lang::listAll('name', false);
             $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
 
-            if ($id){
+            if ($id) {
                 try {
                     $communication = Communication::get($id);
                     if ($communication->sent){
                         throw new ControllerAccessDeniedException("Communication [$id] is already sent");
                     }
-                }
-                catch (Exception $exception){
+                } catch (Exception $exception){
                     Message::error($exception->getMessage());
                 }
 
                 $translator = new ModelTranslator();
                 $translator = $translator::get('communication', $communication->id);
-
             }
 
             return $this->viewResponse('admin/communication/add',[
@@ -264,14 +245,11 @@ class CommunicationAdminController extends AbstractAdminController
                 'copy' => false
             ]);
         }
-
     }
 
 
     public function copyAction($id, Request $request)
     {
-
-
         try {
             $communication = Communication::get($id);
         } catch (ModelNotFoundException $e) {
@@ -299,10 +277,8 @@ class CommunicationAdminController extends AbstractAdminController
         foreach($communication->getLangsAvailable() as $lang) {
             $translates[$lang] = Lang::getName($lang);
         }
-        // $translates = [Config::get('lang') => Lang::getName(Config::get('lang'))];
 
         $langs = Lang::listAll('name', false);
-        $langs_available = $communication->getLangsAvailable();
         $editor_types = ['md' => Text::get('admin-text-type-md'), 'html' => Text::get('admin-text-type-html')];
 
         return $this->viewResponse('admin/communication/add',[
@@ -318,9 +294,8 @@ class CommunicationAdminController extends AbstractAdminController
         ]);
     }
 
-    public function previewAction($id, Request $request)
+    public function previewAction($id)
     {
-
         try {
             $communication = Communication::get($id);
         } catch (ModelNotFoundException $e) {
@@ -331,7 +306,6 @@ class CommunicationAdminController extends AbstractAdminController
         $values['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
         $values['content'] = $communication->content;
         $values['subject'] = $communication->subject;
-        // $values['promotes'] = Promote::getAll(true, Config::get('node'), $this->lang);
         $values['promotes'] = $communication->getCommunicationProjects($communication->id);
         $values['type'] = $communication->type;
         $values['lang'] = $communication->lang;
@@ -345,7 +319,7 @@ class CommunicationAdminController extends AbstractAdminController
         return $this->viewResponse('email/'.$template, $values);
     }
 
-    public function detailAction(Request $request, $id)
+    public function detailAction($id)
     {
         try {
         $communication = Communication::get($id);
@@ -362,7 +336,7 @@ class CommunicationAdminController extends AbstractAdminController
         ]);
     }
 
-    public function activateAction($id = null, Request $request) {
+    public function activateAction($id = null) {
 
         $communication = Communication::get($id);
         $mails = Mail::getFromCommunicationId($id);
@@ -370,11 +344,8 @@ class CommunicationAdminController extends AbstractAdminController
         foreach($mails as $mail) {
 
             $mailing = Sender::getFromMailId($mail->id);
-            // $mailing = Sender::get(22616);
             if($mailing->getStatus() == 'inactive' && $mailing->setActive(true)) {
                 Message::info("Communication [$mail->id] activated for immediate sending!");
-                $ok = true;
-                // Evento Feed
                 $log = new Feed();
                 $log->populate(Text::sys('feed-admin-newsletter-activate-subject'), '/admin/communication',
                     Text::sys('feed-admin-newsletter-activate', [
@@ -383,11 +354,8 @@ class CommunicationAdminController extends AbstractAdminController
                         '%ID%' => $mailing->id
                     ]))
                     ->doAdmin('admin');
-            }
-            else {
+            } else {
                 Message::error("Communication [$mail->id] cannot be activated for immediate sending!");
-                $ok = false;
-                // Evento Feed
                 $log = new Feed();
                 $log->populate(Text::sys('feed-admin-newsletter-activate-subject'), '/admin/communication',
                     Text::sys('feed-admin-newsletter-activate-failed', [
@@ -400,10 +368,9 @@ class CommunicationAdminController extends AbstractAdminController
         }
         $this->notice('Communication activated', [$mailing, $this->user]);
         return $this->redirect('/admin/communication/detail/' . $communication->id);
-
     }
 
-    public function cancelAction($id = null, Request $request) {
+    public function cancelAction($id = null) {
 
         $mails = Mail::getFromCommunicationId($id);
         foreach($mails as $mail) {
@@ -416,5 +383,4 @@ class CommunicationAdminController extends AbstractAdminController
 
         return $this->redirect('/admin/communication/detail/' . $id);
     }
-
 }

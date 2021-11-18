@@ -13,9 +13,8 @@ namespace Goteo\Application\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Goteo\Model\Invest;
-use Goteo\Payment\Method\PaymentMethodInterface;
 
 class FilterInvestFinishEvent extends Event
 {
@@ -57,6 +56,5 @@ class FilterInvestFinishEvent extends Event
         else {
             return new RedirectResponse('/donate/'  . $this->invest->id . '/share');
         }
-
     }
 }

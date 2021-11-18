@@ -14,6 +14,8 @@ namespace Goteo\Library\Forms\Model;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Util\Form\Type\DatepickerType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
@@ -33,46 +35,46 @@ class ProjectPersonalForm extends AbstractFormProcessor implements FormProcessor
     public function createForm() {
 
         $this->getBuilder()
-            ->add('contract_name', 'text', [
+            ->add('contract_name', TextType::class, [
                 'label' => 'personal-field-contract_name',
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('contract_name'),
                 'attr' => ['help' => Text::get('tooltip-project-contract_name')]
             ])
-            ->add('contract_nif', 'text', [
+            ->add('contract_nif', TextType::class, [
                 'label' => 'personal-field-contract_nif',
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('contract_nif'),
                 'attr' => ['help' => Text::get('tooltip-project-contract_nif')]
             ])
-            ->add('contract_birthdate', 'datepicker', [
+            ->add('contract_birthdate', DatepickerType::class, [
                 'label' => 'personal-field-contract_birthdate',
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('contract_birthdate'),
                 'attr' => ['help' => Text::get('tooltip-project-contract_birthdate')]
             ])
-            ->add('phone', 'text', [
+            ->add('phone', TextType::class, [
                 'label' => 'personal-field-phone',
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('phone'),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-phone')]
             ])
-            ->add('entity_name', 'text', [
+            ->add('entity_name', TextType::class, [
                 'label' => 'project-personal-field-entity_name',
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('entity_name'),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-personal-entity_name')]
             ])
-            ->add('paypal', 'text', [
+            ->add('paypal', TextType::class, [
                 'label' => 'contract-paypal_account',
                 'constraints' => $this->getConstraints('paypal'),
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-paypal')]
             ])
-            ->add('bank', 'text', [
+            ->add('bank', TextType::class, [
                 'label' => 'contract-bank_account',
                 'constraints' => $this->getConstraints('bank'),
                 'disabled' => $this->getReadonly(),

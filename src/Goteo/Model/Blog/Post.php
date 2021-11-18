@@ -10,18 +10,17 @@
 
 namespace Goteo\Model\Blog;
 
-use Goteo\Model\Project\Media;
-use Goteo\Model\Image;
-use Goteo\Model\Project;
-use Goteo\Model\Node;
-use Goteo\Model\User;
-use Goteo\Library\Text;
-use Goteo\Application\Message;
-use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Lang;
+use Goteo\Core\Model;
+use Goteo\Library\Text;
+use Goteo\Model\Image;
+use Goteo\Model\Project\Media;
+use Goteo\Model\User;
+use PDOException;
 
-class Post extends \Goteo\Core\Model {
+class Post extends Model {
 
     public
         $id,
@@ -129,8 +128,6 @@ class Post extends \Goteo\Core\Model {
             $values = [':id' => $id];
         }
 
-        // die("[$lang]".\sqldbg($sql, $values));
-
         $query = static::query($sql, $values);
         $post = $query->fetchObject(__CLASS__);
 
@@ -139,10 +136,8 @@ class Post extends \Goteo\Core\Model {
             return false;
         }
 
-        // autor
         $post->user   = new User;
         $post->user->name = $post->user_name;
-
         $post->gallery = Image::getModelGallery('post', $post->id);
         $post->image = Image::getModelImage($post->image, $post->gallery);
         $post->header_image = Image::getModelImage($post->header_image);
@@ -166,7 +161,6 @@ class Post extends \Goteo\Core\Model {
 
         return $post;
     }
-
 
     /*
      * Lista de entradas
@@ -243,8 +237,6 @@ class Post extends \Goteo\Core\Model {
             $sql .= "LIMIT $limit";
         }
 
-        // die(\sqldbg($sql, $values));
-
         $query = static::query($sql, $values);
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
@@ -266,8 +258,6 @@ class Post extends \Goteo\Core\Model {
 
             $post->tags = Post\Tag::getAll($post->id);
 
-            // @deprecated: This should be in the controller if needed
-            // $post->text = self::sanitizeText($post->text);
             $list[$post->id] = $post;
         }
 
@@ -462,7 +452,6 @@ class Post extends \Goteo\Core\Model {
             LIMIT $offset, $limit
             ";
 
-        // die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {
@@ -505,7 +494,6 @@ class Post extends \Goteo\Core\Model {
             return false;
     }
 
-
     public function slugExists($slug) {
         $values = [':slug' => $slug];
         $sql = 'SELECT COUNT(*) FROM post WHERE slug=:slug';
@@ -529,7 +517,6 @@ class Post extends \Goteo\Core\Model {
                 $this->slug = $this->slug .'-' . ($this->id ? $this->id : time());
             }
         }
-
 
         $fields = array(
             // 'id',
@@ -562,7 +549,7 @@ class Post extends \Goteo\Core\Model {
                     try {
                         Image::replaceGallery('post', $this->id, $this->image);
                     } catch(ModelException $e) {
-                        throw new \PDOException(Text::get('gallery-upload-fail')." (".$e->getMessage().")");
+                        throw new PDOException(Text::get('gallery-upload-fail')." (".$e->getMessage().")");
                     }
                     $this->gallery = $this->image;
                     $this->image = $this->image ? $this->image[0] : null;
@@ -574,7 +561,7 @@ class Post extends \Goteo\Core\Model {
                         $img = new Image($img);
                     }
                     if (!$img->addToModelGallery('post', $this->id)) {
-                        throw new \PDOException(Text::get('image-upload-fail'));
+                        throw new PDOException(Text::get('image-upload-fail'));
                     }
                     $this->gallery[] = $img;
                     $this->image = $img;
@@ -604,7 +591,7 @@ class Post extends \Goteo\Core\Model {
             }
 
             return true;
-        } catch(\PDOException $e) {
+        } catch(PDOException $e) {
             $errors[] = $e->getMessage();
             return false;
         }
@@ -633,7 +620,6 @@ class Post extends \Goteo\Core\Model {
                 return false;
             }
     }
-
 
     /*
      * Numero de entradas de novedaades (publicadads) de un proyecto
@@ -675,8 +661,8 @@ class Post extends \Goteo\Core\Model {
     }
 
     // List of blog sections
-    public static function getListSections(){
-        return Config::get('blog.sections');;
+    public static function getListSections() {
+        return Config::get('blog.sections');
     }
 
     public static function getSection($section){
@@ -684,5 +670,3 @@ class Post extends \Goteo\Core\Model {
         return $sections[$section];
     }
 }
-
-

@@ -10,30 +10,26 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Library\Text;
-use Goteo\Application\Message;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
-use Goteo\Application\Config;
+use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Model;
+use Goteo\Core\Controller;
+use Goteo\Library\Text;
 use Goteo\Model\Blog\Post;
 use Goteo\Model\Blog\Post\Tag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class BlogController extends \Goteo\Core\Controller {
+class BlogController extends Controller {
 
     public function __construct() {
-        // Cache & replica read activated in this controller
         $this->dbReplica(true);
         $this->dbCache(true);
         View::setTheme('responsive');
     }
 
-    public function indexAction ($section='', $tag='', Request $request) {
+    public function indexAction(Request $request, $section='', $tag='') {
 
         $limit = 12;
         $slider_posts = Post::getList(['section' => $section, 'tag' => $tag], true, 0, 3);
@@ -48,7 +44,7 @@ class BlogController extends \Goteo\Core\Controller {
                         'url'         => '/blog/'.$el->id
                     ]
                 );
-                
+
                 }, $slider_posts);
 
         $init = $request->query->get('pag') ? $request->query->get('pag')*$limit : 0;
@@ -58,32 +54,29 @@ class BlogController extends \Goteo\Core\Controller {
         $blog_sections = Post::getListSections();
         $tag = Tag::get($tag);
 
-
         return $this->viewResponse('blog/list', [
-                    'banners' => $banners,
-                    'list_posts'   => $list_posts,
-                    'blog_sections'     => $blog_sections,
-                    'section'           => $section,
-                    'tag'               => $tag,
-                    'limit'             => $limit,
-                    'total'             => $total
-                ]
-        );
+            'banners' => $banners,
+            'list_posts' => $list_posts,
+            'blog_sections' => $blog_sections,
+            'section' => $section,
+            'tag' => $tag,
+            'limit' => $limit,
+            'total' => $total
+        ]);
     }
 
-    public function postAction($slug, Request $request)
+    public function postAction($slug)
     {
         // Get related posts
         $post = Post::getBySlug($slug, Lang::current());
         $blog_sections = Post::getListSections();
 
-
-        if(!$post) {
+        if (!$post) {
             throw new ModelNotFoundException("Post [$slug] not found!");
         }
 
         $user = Session::getUser();
-        if(!(bool)$post->publish){
+        if (!$post->publish) {
             if($user && $user->hasPerm('admin-module-blog')) {
                 Message::error(Text::get('admin-blog-not-public'));
             } else {
@@ -92,7 +85,7 @@ class BlogController extends \Goteo\Core\Controller {
         }
 
         // Redirect to project's page if not the right type of post
-        if($post->owner_type === 'project') {
+        if ($post->owner_type === 'project') {
             return $this->redirect("/project/{$post->owner_id}/updates/{$post->id}");
         }
 
@@ -113,9 +106,5 @@ class BlogController extends \Goteo\Core\Controller {
             'related_posts' => $related_posts,
             'author' => $author
         ]);
-
     }
-
 }
-
-

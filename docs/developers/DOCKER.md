@@ -121,7 +121,6 @@ git pull origin devel
 docker/up --rebuild
 ```
 
-
 ### SSL configuration
 
 The Docker image comes with (experimental) support for SSL. However, to use it you need to:
@@ -129,9 +128,9 @@ The Docker image comes with (experimental) support for SSL. However, to use it y
 1. Use a **test domain** supported by the certificate and configure your `/etc/hosts` to point it to your machine, for example `goteo.test`.
   Add a line to your `/etc/hosts` file like this:
 
-  ```ini
-  127.0.0.1 localhost goteo.test www.goteo.test ca.goteo.test en.goteo.test es.goteo.test
-  ```
+```
+127.0.0.1 localhost goteo.test www.goteo.test ca.goteo.test en.goteo.test es.goteo.test
+```
 
 2. Change the URL in your `local-docker-settings.yml` settings file, use `//goteo.test:8443` instead of `localhost:8081`. Something like:
 

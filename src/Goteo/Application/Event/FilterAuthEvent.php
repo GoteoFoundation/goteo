@@ -12,7 +12,7 @@ namespace Goteo\Application\Event;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Goteo\Model\User;
 use Goteo\Application\Session;
 
@@ -50,7 +50,7 @@ class FilterAuthEvent extends Event
     }
 
     /**
-     * Returns the appropiate place to redirect a logged user
+     * Returns the appropriate place to redirect a logged user
      */
     public function getUserRedirect(Request $request = null) {
         $user = $this->getUser();
@@ -67,8 +67,6 @@ class FilterAuthEvent extends Event
         if (Session::get('jumpto')) {
             $return = Session::getAndDel('jumpto');
         }
-
-        // die($return);
 
         return new RedirectResponse($return);
     }

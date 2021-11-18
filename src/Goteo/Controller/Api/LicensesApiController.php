@@ -10,26 +10,18 @@
 
 namespace Goteo\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Request;
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-
 use Goteo\Model\License;
+use Symfony\Component\HttpFoundation\Request;
 
 class LicensesApiController extends AbstractApiController {
     public function __construct() {
         parent::__construct();
-        // Activate cache & replica read for this controller
         $this->dbReplica(true);
         $this->dbCache(true);
     }
 
     /**
      * Simple listing of license
-     * GET filters:
-     * ?icon=... filters by icon
-     * ?group=... filters by group (open|regular)
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function licensesAction(Request $request) {
         $icon = $request->query->get('icon');

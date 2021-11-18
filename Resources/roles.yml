@@ -50,6 +50,7 @@ checker:
     extends: user
     perms:
         - review-project # View/review an assigned review project before their publication
+        - preview-projects
     level: 40
 
 blogger:

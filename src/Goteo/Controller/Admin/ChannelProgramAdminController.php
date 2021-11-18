@@ -10,26 +10,30 @@
 
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\Admin\AdminProgramForm;
+use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
-
 use Goteo\Model\Node;
 use Goteo\Model\Node\NodeProgram;
+use Goteo\Util\Form\Type\SubmitType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 class ChannelProgramAdminController extends AbstractAdminController
 {
-  protected static $icon = '<i class="fa fa-2x fa-calendar-check-o"></i>';
+    protected static $icon = '<i class="fa fa-2x fa-calendar-check-o"></i>';
 
-  public static function getGroup() {
-    return 'channels';
-  }
+    public static function getGroup(): string
+    {
+        return 'channels';
+    }
 
-  public static function getRoutes() {
+  public static function getRoutes(): array
+  {
     return [
       new Route(
         '/',
@@ -54,10 +58,10 @@ class ChannelProgramAdminController extends AbstractAdminController
 
   public function listAction($id, Request $request) {
     try {
-			$channel = Node::get($id);
-		} catch (ModelNotFoundException $e) {
-			Message::error($e->getMessage());
-			return $this->redirect('/admin');
+        $channel = Node::get($id);
+    } catch (ModelNotFoundException $e) {
+        Message::error($e->getMessage());
+        return $this->redirect('/admin');
     }
 
     $page = $request->query->get('pag') ?: 0;
@@ -65,7 +69,7 @@ class ChannelProgramAdminController extends AbstractAdminController
 
     $list = NodeProgram::getList(['node' => $id], $page * $limit, $limit, false);
     $total = NodeProgram::getList(['node' => $id], 0, 0, true);
-    
+
     return $this->viewResponse('admin/channelprogram/list', [
       'current_node' => $id,
       'nodes' => $this->user->getNodeNames(),
@@ -77,26 +81,26 @@ class ChannelProgramAdminController extends AbstractAdminController
 
   public function addAction($node, Request $request) {
     try {
-			$channel = Node::get($node);
-		} catch (ModelNotFoundException $e) {
-			Message::error($e->getMessage());
-			return $this->redirect('/admin/channelprogram');
+        Node::get($node);
+    } catch (ModelNotFoundException $e) {
+        Message::error($e->getMessage());
+        return $this->redirect('/admin/channelprogram');
     }
 
     $program = new NodeProgram();
     $program->node_id = $node;
-    
-    $processor = $this->getModelForm('AdminProgram', $program, [], [], $request);
+
+    $processor = $this->getModelForm(AdminProgramForm::class, $program, [], [], $request);
     $processor->createForm()->getBuilder()
-      ->add('submit', 'submit', [
+      ->add('submit', SubmitType::class, [
         'label' => 'admin-channelprogram-create',
         'attr' => ['class' => 'btn btn-cyan'],
         'icon_class' => 'fa fa-save'
     ]);
-  
+
     $form = $processor->getForm();
     $form->handleRequest($request);
-  
+
     if ($form->isSubmitted() && $request->isMethod('post')) {
       try {
         $processor->save($form);
@@ -107,36 +111,34 @@ class ChannelProgramAdminController extends AbstractAdminController
         Message::error(Text::get('form-has-errors'));
       }
     }
-  
 
     return $this->viewResponse('admin/channelprogram/edit', [
       'current_node' => $node,
       'form' => $form->createView()
     ]);
-
   }
 
   public function editAction($node, $program_id, Request $request) {
     try {
-			$channel = Node::get($node);
-		} catch (ModelNotFoundException $e) {
-			Message::error($e->getMessage());
-			return $this->redirect('/admin/channelprogram');
+        Node::get($node);
+    } catch (ModelNotFoundException $e) {
+        Message::error($e->getMessage());
+        return $this->redirect('/admin/channelprogram');
     }
 
     $program = NodeProgram::get($program_id);
-    
-    $processor = $this->getModelForm('AdminProgram', $program, (array) $program, [], $request);
+
+    $processor = $this->getModelForm(AdminProgramForm::class, $program, (array) $program, [], $request);
     $processor->createForm()->getBuilder()
-      ->add('submit', 'submit', [
+      ->add('submit', SubmitType::class, [
         'label' => 'regular-submit',
         'attr' => ['class' => 'btn btn-cyan'],
         'icon_class' => 'fa fa-save'
     ]);
-  
+
     $form = $processor->getForm();
     $form->handleRequest($request);
-  
+
     if ($form->isSubmitted() && $request->isMethod('post')) {
       try {
         $processor->save($form);
@@ -147,12 +149,11 @@ class ChannelProgramAdminController extends AbstractAdminController
         Message::error(Text::get('form-has-errors'));
       }
     }
-    
+
     return $this->viewResponse('admin/channelprogram/edit', [
       'current_node' => $node,
       'program' => $program,
       'form' => $form->createView()
     ]);
-
   }
 }

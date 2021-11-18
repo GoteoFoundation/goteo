@@ -10,92 +10,65 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Omnipay\Common\Message\ResponseInterface;
-
-use Goteo\Application\Exception\ControllerAccessDeniedException;
-
-use Goteo\Application\Session;
-use Goteo\Application\Message;
-use Goteo\Application\View;
-use Goteo\Application\Lang;
 use Goteo\Application\Config;
-use Goteo\Application\AppEvents;
-use Goteo\Application\Event\FilterInvestInitEvent;
-use Goteo\Application\Event\FilterInvestRequestEvent;
-use Goteo\Application\Event\FilterInvestFinishEvent;
-use Goteo\Library\Text;
-use Goteo\Application\Currency;
-use Goteo\Library\Listing;
-use Goteo\Model\Project;
-use Goteo\Model\Invest;
-use Goteo\Model\User;
-use Goteo\Model\Relief;
-use Goteo\Payment\Payment;
+use Goteo\Application\View;
 use Goteo\Payment\PaymentException;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class DonateController extends PoolController {
 
-    private $page = '/donate';
-    private $query = '';
-    private $type='donate';
+    private string $type = 'donate';
 
     public function __construct() {
-        // changing to a responsive theme here
         View::setTheme('responsive');
         if(!Config::get('payments.pool.active')) {
             throw new PaymentException("Pool payment is not active!");
         }
     }
 
-    public function donateLandingAction(Request $request)
+    public function donateLandingAction()
     {
-
-        return $this->viewResponse('donate/donate',
-                [
-                    'no_donor_button' => 1
-                ]
+        return $this->viewResponse(
+            'donate/donate',
+            ['no_donor_button' => 1]
         );
-
     }
 
-    public function selectAmountDonateAction($landing='yes', Request $request)
+    public function selectAmountDonateAction(Request $request, $landing='yes')
     {
-
         DashboardController::createSidebar('wallet', 'donate');
 
-        return $this->selectAmountAction($landing, $this->type, $request);
-
+        return $this->selectAmountAction($request, $this->type);
     }
 
     public function selectPaymentMethodDonateAction(Request $request){
-
         DashboardController::createSidebar('wallet', 'donate');
 
-        return $this->selectPaymentMethodAction($this->type, $request);
+        return $this->selectPaymentMethodAction($request, $this->type);
     }
 
     public function paymentFormDonateAction(Request $request){
         DashboardController::createSidebar('wallet', 'donate');
-        return $this->paymentFormAction($this->type, $request);
+
+        return $this->paymentFormAction($request, $this->type);
     }
 
     public function completePaymentDonateAction($invest_id, Request $request){
         DashboardController::createSidebar('wallet', 'donate');
-        return $this->completePaymentAction($invest_id, $this->type, $request);
+
+        return $this->completePaymentAction($request, $invest_id, $this->type);
     }
 
     public function userDataDonateAction($invest_id, Request $request){
         DashboardController::createSidebar('wallet', 'donate');
-        return $this->userDataAction($invest_id, $this->type, $request);
+
+        return $this->userDataAction($request, $invest_id, $this->type);
     }
 
     public function shareDonateAction($invest_id, Request $request){
         DashboardController::createSidebar('wallet', 'donate');
-        return $this->shareAction($invest_id, $this->type, $request);
+
+        return $this->shareAction($request, $invest_id, $this->type);
     }
-
-
 }

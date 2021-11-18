@@ -13,8 +13,9 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
-use Goteo\Application\Message,
-    Goteo\Model;
+use Goteo\Application\Message;
+use Goteo\Model;
+use Goteo\Model\User;
 
 class CriteriaSubController extends AbstractSubController {
 
@@ -38,7 +39,7 @@ static protected $label = 'criteria-lb';
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node and superadmins allowed here
         if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);
@@ -78,7 +79,6 @@ static protected $label = 'criteria-lb';
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
-
 
     public function process ($action = 'list', $id = null, $filters = array()) {
 
@@ -130,7 +130,6 @@ static protected $label = 'criteria-lb';
 			}
 		}
 
-
         switch ($action) {
             case 'up':
                 Model\Criteria::up($id);
@@ -177,8 +176,5 @@ static protected $label = 'criteria-lb';
                 'sections' => $sections,
                 'filters' => $filters
         );
-
     }
-
 }
-

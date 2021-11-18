@@ -15,9 +15,9 @@ use Goteo\Application\Lang;
 use Symfony\Component\HttpFoundation\Request;
 
 class UrlLang {
-    public $request;
-    protected $path;
-    protected $host;
+    public Request $request;
+    protected string $path;
+    protected string $host;
 
     public function __construct(Request $request) {
         $this->request = $request;
@@ -28,7 +28,8 @@ class UrlLang {
     /**
      * Returns false if the requests is configured to skip any cookie setting
      */
-    public function skipSessionManagement() {
+    public function skipSessionManagement(): bool
+    {
         $skip = Config::get('session.skip');
         if ($this->matchPrefix($this->path, $skip)) {
             return true;
@@ -52,7 +53,7 @@ class UrlLang {
             return $host;
         }
 
-        // Routes to alway reditect to the main url
+        // Routes to always redirect to the main url
         $fixed = Config::get('url.redirect.fixed');
         $parts = explode('.', $host);
         $sub_lang = $parts[0];
@@ -62,31 +63,31 @@ class UrlLang {
             array_shift($parts);
             $host = implode('.', $parts);
         }
+
         // if reduced URL is the main domain, redirect to sub-level lang
         if($host === Config::get("url.url_lang")) {
             if($this->request->query->has('lang')) {
                 $this->request->query->remove('lang');
             }
-            // Login controller should mantaing always the same URL to help browser password management
+            // Login controller should always maintain the same URL to help browser password management
             if($this->matchPrefix($this->path, $fixed)) {
                 // $host = "$host";
                 $this->request->query->set('lang', $lang);
-            }
-            else {
+            } else {
                 $host = preg_replace('!https?://|/$!i', '', Lang::getUrl($lang));
             }
-
         }
+
         return $host;
     }
 
     /**
-     * Chechsk if any of the elements in array $prefixes starts with the same chars as $full_str
-     * @param  string $full_str  full string
-     * @param  array $prefixes array of prexixes
-     * @return boolean          found or not
+     * Checks if any of the elements in array $prefixes starts with the same chars as $full_str
+     * @param  array $prefixes
+     * @return boolean found or not
      */
-    protected function matchPrefix($full_str, $prefixes) {
+    protected function matchPrefix(string $full_str, $prefixes): bool
+    {
         if(!is_array($prefixes)) {
             $prefixes = [$prefixes];
         }

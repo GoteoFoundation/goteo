@@ -10,17 +10,14 @@
 
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Text;
-use Goteo\Library\Feed;
-use Goteo\Application\Message;
 use Goteo\Application\Config;
-use Goteo\Application\Session;
+use Goteo\Application\Message;
+use Goteo\Library\Feed;
+use Goteo\Library\Text;
 use Goteo\Model;
 
 /**
- *
  * @deprecated admin module!!!!
- *
  */
 class BlogSubController extends AbstractSubController {
 
@@ -33,9 +30,7 @@ class BlogSubController extends AbstractSubController {
       'footer' => 'blog-lb-footer',
     );
 
-
     static protected $label = 'blog-lb';
-
 
     protected $filters = array (
       'show' => 'owned',
@@ -46,24 +41,21 @@ class BlogSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(Model\User $user, $node) {
+    static public function isAllowed(Model\User $user, $node): bool {
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
         return parent::isAllowed($user, $node);
     }
-
 
     public function reorderAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('reorder', $id, $this->getFilters(), $subaction));
     }
 
-
     public function translateAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('translate', $id, $this->getFilters(), $subaction));
     }
-
 
     public function editAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -130,7 +122,6 @@ class BlogSubController extends AbstractSubController {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
-
 
     public function process ($action = 'list', $id = null, $filters = array()) {
 

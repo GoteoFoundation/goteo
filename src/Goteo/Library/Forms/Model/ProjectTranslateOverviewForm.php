@@ -12,14 +12,14 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Util\Form\Type\MarkdownType;
+use Goteo\Util\Form\Type\MediaType;
+use Goteo\Util\Form\Type\TextareaType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
-use Symfony\Component\Validator\Constraints;
-use Goteo\Model\Project;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
-
-use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\UrlType;
 
 class ProjectTranslateOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
@@ -28,18 +28,18 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
         $project = $this->getModel();
 
         $builder = $this->getBuilder()
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'label' => 'overview-field-name',
                 'disabled' => $this->getReadonly(),
                 'attr' => ['help' => $project->name]
             ])
-            ->add('subtitle', 'text', [
+            ->add('subtitle', TextType::class, [
                 'label' => 'overview-field-subtitle',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->subtitle]
             ])
-            ->add('description', 'markdown', [
+            ->add('description', MarkdownType::class, [
                 'label' => 'overview-field-description',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
@@ -49,25 +49,20 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
                     'data-image-upload' => '/api/projects/' . $project->id . '/images'
                 ]
             ])
-            ->add('media', 'media', [
+            ->add('media', MediaType::class, [
                 'label' => 'overview-field-media',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
 
               'attr' => ['help' => $project->media]
             ])
-            ->add('motivation', 'markdown', [
+            ->add('motivation', MarkdownType::class, [
                 'label' => 'overview-field-motivation',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->motivation, 'rows' => 8]
             ])
-            // ->add('video', 'media', [
-            //     'label' => 'overview-field-video',
-            //     'required' => false,
-            //     'attr' => ['help' => $project->video]
-            // ])
-            ->add('about', 'markdown', [
+            ->add('about', MarkdownType::class, [
                 'label' => 'overview-field-about',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
@@ -75,7 +70,7 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
             ]);
         if($project->goal) {
             $builder
-                ->add('goal', 'markdown', [
+                ->add('goal', MarkdownType::class, [
                     'label' => 'overview-field-goal',
                     'disabled' => $this->getReadonly(),
                     'required' => false,
@@ -84,18 +79,13 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
         }
 
         $builder
-            ->add('related', 'markdown', [
+            ->add('related', MarkdownType::class, [
                 'label' => 'overview-field-related',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->related, 'rows' => 8]
             ])
-            // ->add('keywords', 'tags', [
-            //     'label' => 'overview-field-keywords',
-            //     'required' => false,
-            //     'attr' => ['help' => $project->keywords]
-            // ])
-            ->add('social_commitment_description', 'textarea', [
+            ->add('social_commitment_description', TextareaType::class, [
                 'label' => 'overview-field-social-description',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
@@ -129,7 +119,6 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
         $project->lang = $lang;
         $data['keywords'] = $project->keywords; // Do not translate keywords for the moment
         if(!$project->setLang($lang, $data, $errors)) {
-            // throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode', $errors))));
             throw new FormModelException(Text::get('form-sent-error', implode(',',$errors)));
         }
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));

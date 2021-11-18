@@ -2,31 +2,24 @@
 
 namespace GoteoBot\Application\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-
-use Goteo\Model\Project;
-use Goteo\Model\Project\ProjectMilestone;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterInvestRequestEvent;
+use Goteo\Application\Exception\DuplicatedEventException;
+use Goteo\Console\ConsoleEvents;
+use Goteo\Console\Event\FilterProjectEvent;
 use Goteo\Model\Event;
 use Goteo\Model\Milestone;
-use Goteo\Model\Image;
-use Goteo\Application\AppEvents;
-use Goteo\Console\ConsoleEvents;
-use Goteo\Application\Event\FilterInvestRequestEvent;
-
-use GoteoBot\Model\ProjectBot;
-use GoteoBot\Model\Bot\TelegramBot;
+use Goteo\Model\Project;
+use Goteo\Model\Project\ProjectMilestone;
 use GoteoBot\Controller\BotProjectDashboardController;
-
-use Goteo\Application\Exception\DuplicatedEventException;
-use Goteo\Console\Event\FilterProjectEvent;
-use Goteo\Model\Contract\Document;
-use Spipu\Html2Pdf\Html2Pdf;
+use GoteoBot\Model\Bot\TelegramBot;
+use GoteoBot\Model\ProjectBot;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class BotControllerListener implements EventSubscriberInterface
 {
-
 
     public function onController(FilterControllerEvent $event) {
         $request = $event->getRequest();
@@ -43,30 +36,26 @@ class BotControllerListener implements EventSubscriberInterface
             $pid = $request->attributes->get('pid');
             if(!$pid) return;
             BotProjectDashboardController::createBotSidebar(Project::get($pid));
-
         }
-
     }
 
     private function create_milestone($project, $type){
         //Insert milestone
         $projectBot = ProjectBot::get($project->id);
         if (!$projectBot) return;
-        
+
         $project_milestone= new ProjectMilestone();
         $project_milestone->project=$project->id;
         $project_milestone->milestone_type=$type;
         $project_milestone->source_message='bot_message';
 
-
         try {
             $action = [$project->id, 'milestone-day-bot', $type];
             $event = new Event($action, 'milestone');
         } catch(DuplicatedEventException $e) {
-            // $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
             return;
         }
-        
+
         $event->fire(function() use ($project_milestone) {
             $project_milestone->save($errors);
         });
@@ -104,7 +93,6 @@ class BotControllerListener implements EventSubscriberInterface
         $type = 'day-'.$event->getDays();
 
         if ($event->getDays() == 2) {
-
             //Milestones by percentage
             $percentage = $project->mincost ? ($project->invested / $project->mincost) * 100 : 0;
 
@@ -118,7 +106,6 @@ class BotControllerListener implements EventSubscriberInterface
         $this->create_milestone($project, $type);
     }
 
-
     /**
      * Sends a reminder to the owners that they have to accomplish with the collective returns
      * @param  FilterProjectEvent $event
@@ -129,7 +116,6 @@ class BotControllerListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $invest   = $method->getInvest();
         $project  = $invest->getProject();
-
 
         //Milestones by percentage
         $percentage = $project->mincost ? ($project->invested / $project->mincost) * 100 : 0;
@@ -153,7 +139,7 @@ class BotControllerListener implements EventSubscriberInterface
 
     public function onProjectPublish(FilterProjectEvent $event) {
         $project = $event->getProject();
-        
+
         $type = 'on-publish';
 
         $this->create_milestone($project, $type);
@@ -167,8 +153,6 @@ class BotControllerListener implements EventSubscriberInterface
             ConsoleEvents::PROJECT_ACTIVE    => 'onProjectActive',
             ConsoleEvents::PROJECT_PUBLISH => 'onProjectPublish',
             AppEvents::PROJECT_PUBLISH => 'onProjectPublish'
-            
         );
     }
 }
-

@@ -10,11 +10,10 @@
 
 namespace Goteo\Util\MatcherProcessor;
 
-use Goteo\Application\AppEvents;
+use Goteo\Application\Currency;
+use Goteo\Model\Invest;
 use Goteo\Model\Matcher;
 use Goteo\Model\Project;
-use Goteo\Model\Invest;
-use Goteo\Application\Currency;
 use Goteo\Payment\Method\PaymentMethodInterface;
 use Goteo\Payment\Method\PoolPaymentMethod;
 
@@ -117,13 +116,11 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
 
     /**
      * Generic implementation of the list of invests by using $this->getAmount()
-     * @return [type] [description]
      */
     public function getInvests() {
         $matcher = $this->getMatcher();
         $invest = $this->getInvest();
         $project = $this->getProject();
-        $vars = $this->getVars();
 
         // Ensure is enough amount
         $error = '';

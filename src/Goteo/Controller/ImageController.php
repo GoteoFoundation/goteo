@@ -10,48 +10,46 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Goteo\Core\Error;
+use Goteo\Core\Controller;
 use Goteo\Library\Cacher;
 use Goteo\Model;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
-class ImageController extends \Goteo\Core\Controller {
-    //some predefined sizes
-    static private $sizes = array(
-            'icon' => '16x16',
-            'tiny' => '32x32',
-            'thumb' => '56x56',
-            'small' => '128x128',
-            'medium' => '192x192',
-            'large' => '512x512',
-            'big' => '1024x1024',
-            'iconc' => '16x16c',
-            'tinyc' => '32x32c',
-            'thumbc' => '56x56c',
-            'mediumc' => '192x192c',
-            'largec' => '512x512c',
-            'bigc' => '1024x1024c'
-        );
+class ImageController extends Controller {
+
+    const CACHE_MAX_AGE_DAYS = 60 * 60 * 24 * 30; // 30 DAYS
+
+    static private $predefinedSizes = array(
+        'icon' => '16x16',
+        'tiny' => '32x32',
+        'thumb' => '56x56',
+        'small' => '128x128',
+        'medium' => '192x192',
+        'large' => '512x512',
+        'big' => '1024x1024',
+        'iconc' => '16x16c',
+        'tinyc' => '32x32c',
+        'thumbc' => '56x56c',
+        'mediumc' => '192x192c',
+        'largec' => '512x512c',
+        'bigc' => '1024x1024c'
+    );
 
     public function indexAction($params = '', $filename = '') {
-        //check if predefined size
-        if(self::$sizes[$params]) {
-            $params = self::$sizes[$params];
+        if (self::$predefinedSizes[$params]) {
+            $params = self::$predefinedSizes[$params];
         }
-        //  $width = 200, $height = 200, $crop = false
-        if (preg_match('/(\d+)x(\d+)([c]?)/', $params, $matches)) {
 
+        if (preg_match('/(\d+)x(\d+)([c]?)/', $params, $matches)) {
             $width = $matches[1];
             $height = $matches[2];
             $crop = ($matches[3] == 'c');
-        }
-        else {
+        } else {
             $width = 192;
             $height = 20;
             $crop = false;
         }
-        // die("{$width}  {$height} {$crop} {$filename}");
 
         $image = new Model\Image;
         $image->setCache(new Cacher());
@@ -65,18 +63,14 @@ class ImageController extends \Goteo\Core\Controller {
         if($image->error === 'not_found') {
             $response->setStatusCode(Response::HTTP_NOT_FOUND);
         } else {
-            // Cache-Control
-            // 30days (60sec * 60min * 24hours * 30days)
-            $response->setMaxAge(2592000);
+            $response->setMaxAge(self::CACHE_MAX_AGE_DAYS);
             $response->setPublic();
         }
 
         return $response;
-
     }
 
     public function oldIndexAction($id, $width = 200, $height = 200, $crop = false) {
         return new RedirectResponse('/img/' . $width . 'x' . $height . ($crop ? 'c' : '') . '/' . $id);
     }
 }
-

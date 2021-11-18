@@ -13,8 +13,9 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
-use Goteo\Application\Message,
-    Goteo\Model;
+use Goteo\Application\Message;
+use Goteo\Model;
+use Goteo\Model\User;
 
 class GlossarySubController extends AbstractSubController {
 
@@ -27,12 +28,11 @@ class GlossarySubController extends AbstractSubController {
 
     static protected $label = 'glossary-lb';
 
-
     /**
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node and superadmins allowed here
         if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);

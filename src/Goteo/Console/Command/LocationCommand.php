@@ -10,19 +10,14 @@
 
 namespace Goteo\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Finder\Finder;
-
-use Goteo\Application\Config;
 use Goteo\Model\Project;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\User\UserLocation;
 use Goteo\Util\Google\GoogleGeocoder;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class LocationCommand extends AbstractCommand {
 
@@ -192,7 +187,5 @@ EOT
                 $output->writeln("<info>Execute with --update option to fix the problems</info>");
             }
         }
-        return;
-
     }
 }

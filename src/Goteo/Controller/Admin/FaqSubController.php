@@ -12,9 +12,10 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Application\Message,
-	Goteo\Application\Config,
-    Goteo\Model;
+use Goteo\Application\Config;
+use Goteo\Application\Message;
+use Goteo\Model;
+use Goteo\Model\User;
 
 class FaqSubController extends AbstractSubController {
 
@@ -25,9 +26,7 @@ class FaqSubController extends AbstractSubController {
       'translate' => 'faq-lb-translate',
     );
 
-
     static protected $label = 'faq-lb';
-
 
     protected $filters = array (
       'section' => 'node',
@@ -37,7 +36,7 @@ class FaqSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node): bool {
         // Only central node allowed here
         if( ! Config::isMasterNode($node) ) return false;
         return parent::isAllowed($user, $node);
@@ -48,12 +47,10 @@ class FaqSubController extends AbstractSubController {
         return call_user_func_array(array($this, 'process'), array('translate', $id, $this->getFilters(), $subaction));
     }
 
-
     public function editAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('edit', $id, $this->getFilters(), $subaction));
     }
-
 
     public function addAction($id = null, $subaction = null) {
         // Action code should go here instead of all in one process funcion
@@ -79,7 +76,6 @@ class FaqSubController extends AbstractSubController {
         // Action code should go here instead of all in one process funcion
         return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
     }
-
 
     public function process ($action = 'list', $id = null, $filters = array()) {
 
@@ -133,7 +129,6 @@ class FaqSubController extends AbstractSubController {
 			}
 		}
 
-
         switch ($action) {
             case 'up':
                 Model\Faq::up($id);
@@ -182,8 +177,5 @@ class FaqSubController extends AbstractSubController {
                 'sections' => $sections,
                 'filters' => $filters
         );
-
     }
-
 }
-
