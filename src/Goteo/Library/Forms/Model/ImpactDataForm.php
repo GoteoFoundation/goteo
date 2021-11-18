@@ -15,14 +15,13 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
+use Goteo\Model\ImpactData;
 use Goteo\Util\Form\Type\DropfilesType;
 use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
-
-use Goteo\Model\Filter\ImpactData;
 
 class ImpactDataForm extends AbstractFormProcessor {
 

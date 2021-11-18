@@ -10,13 +10,13 @@
 
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-
-use Goteo\Model\ImpactData;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
 use Goteo\Library\Text;
-use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Library\Forms\Model\ImpactDataForm;
+use Goteo\Model\ImpactData;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Route;
 
 class ImpactDataAdminController extends AbstractAdminController
 {
@@ -71,7 +71,7 @@ class ImpactDataAdminController extends AbstractAdminController
         }
 
         $defaults = (array) $impact_data;
-        $processor = $this->getModelForm('ImpactData', $impact_data, $defaults, Array(), $request);
+        $processor = $this->getModelForm(ImpactDataForm::class, $impact_data, $defaults, Array(), $request);
         $processor->createForm();
         $form = $processor->getForm();
         $form->handleRequest($request);
