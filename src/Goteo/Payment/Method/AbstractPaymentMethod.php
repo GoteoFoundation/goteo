@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Goteo Package.
  *
@@ -24,10 +23,9 @@ use Omnipay\Common\GatewayFactory;
 use Omnipay\Common\GatewayInterface;
 use Omnipay\Common\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Helper class with some common interface methods
+ * Helper class with common of the interface methods implemented in a simple way
  *
  * Payments using this implementation use the Omnipay library:
  * http://omnipay.thephpleague.com/
@@ -35,33 +33,28 @@ use Symfony\Component\HttpFoundation\Response;
 abstract class AbstractPaymentMethod implements PaymentMethodInterface
 {
     protected ?GatewayInterface $gateway = null;
-    protected ?Invest $invest;
-    protected ?Request $request;
-    protected ?User $user;
+    protected $invest;
+    protected $request;
+    protected $user;
 
     /**
      * @throws PaymentException
-     * @throws Config\ConfigException
      */
     public function __construct(User $user = null) {
         $this->user = $user;
         $this->initGateway();
     }
 
-    /**
-     * @throws PaymentException
-     * @throws Config\ConfigException
-     */
     private function initGateway()
     {
         $factory = new GatewayFactory();
         $this->gateway = $factory->create($this->getGatewayName());
 
-        if (!in_array(GatewayInterface::class, class_implements($this->gateway))) {
+        if(!in_array(GatewayInterface::class, class_implements($this->gateway))) {
             throw new PaymentException("Error on retrieving Omnipay Gateway Class. It must implement Omnipay\Common\GatewayInterface!");
         }
 
-        foreach ($this->gateway->getDefaultParameters() as $var => $val) {
+        foreach($this->gateway->getDefaultParameters() as $var => $val) {
             $config = Config::get('payments.' . $this->getIdNonStatic() . '.' . $var);
             $method = "set" . ucfirst($var);
             if($config && method_exists($this->gateway, $method)) {
@@ -136,8 +129,11 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         return true;
     }
 
-    public function setUser(User $user): AbstractPaymentMethod
-    {
+    /**
+     * Sets the User
+     * @param User $user User object
+     */
+    public function setUser(User $user) {
         $this->user = $user;
         return $this;
     }
@@ -147,12 +143,18 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         return $this->user;
     }
 
-    public function setInvest(Invest $invest): AbstractPaymentMethod
-    {
+    /**
+     * Sets the Invest in order to be able to create a proper gateway request
+     */
+    public function setInvest(Invest $invest) {
         $this->invest = $invest;
         return $this;
     }
 
+    /**
+     * Gets the Invest object
+     * @return Invest $invest Invest object
+     */
     public function getInvest(): Invest
     {
         return $this->invest;
@@ -161,26 +163,30 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
     /**
      * Sets the Request in order to be able to create a proper gateway request
      */
-    public function setRequest(Request $request): AbstractPaymentMethod
-    {
+    public function setRequest(Request $request) {
         $this->request = $request;
         return $this;
     }
 
+    /**
+     * Gets the current Request
+     * @return Request $request Symfony HttpFoundation Request object
+     */
     public function getRequest(): Request
     {
         return $this->request;
     }
 
     /**
-     * Gives a chance to change the Response where to redirect after a $method->completePurchase() situation
+     * This method gives the change to change the Response where to redirect after a $method->completePurchase() situation
+     * @return Response|null             A valid Symfony Response or null
      */
-    public function getDefaultHttpResponse(ResponseInterface $response): ?Response
-    {
+    public function getDefaultHttpResponse(ResponseInterface $response) {
         return null;
     }
 
     /**
+     * Starts the purchase action
      * Called when user pushes the button "pay"
      */
     public function purchase(): ResponseInterface
@@ -188,10 +194,10 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         $gateway = $this->getGateway();
         $gateway->setCurrency(Currency::getDefault('id'));
         return $gateway->purchase([
-            'amount' => (float) $this->getTotalAmount(),
-            'description' => $this->getInvestDescription(),
-            'returnUrl' => $this->getCompleteUrl(),
-            'cancelUrl' => $this->getCompleteUrl(),
+                    'amount' => (float) $this->getTotalAmount(),
+                    'description' => $this->getInvestDescription(),
+                    'returnUrl' => $this->getCompleteUrl(),
+                    'cancelUrl' => $this->getCompleteUrl(),
         ])->send();
     }
 
@@ -204,11 +210,11 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         $gateway->setCurrency(Currency::getDefault('id'));
 
         return $gateway->completePurchase([
-            'amount' => (float) $this->getTotalAmount(),
-            'description' => $this->getInvestDescription(),
-            'clientIp' => $this->getRequest()->getClientIp(),
-            'returnUrl' => $this->getCompleteUrl(),
-            'cancelUrl' => $this->getCompleteUrl(),
+                    'amount' => (float) $this->getTotalAmount(),
+                    'description' => $this->getInvestDescription(),
+                    'clientIp' => $this->getRequest()->getClientIp(),
+                    'returnUrl' => $this->getCompleteUrl(),
+                    'cancelUrl' => $this->getCompleteUrl(),
         ])->send();
     }
 
@@ -259,6 +265,9 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
             return $request->getSchemeAndHttpHost() . '/donate/' . $invest->id . '/complete';
     }
 
+    /**
+     * Returns a description for the invest
+     */
     public function getInvestDescription(): string
     {
         $invest = $this->getInvest();
@@ -278,7 +287,9 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
         $invest = $this->getInvest();
 
         // Add to amount project the tip to the organization
-        return $invest->amount + $invest->donate_amount;
+        $amount = $invest->amount + $invest->donate_amount;
+
+        return $amount;
     }
 
     public function getGatewayName(): string
@@ -328,7 +339,8 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
     }
 
     /**
-     * Internal payments don't increase raised amounts (pool)
+     * Internal payments does not increased raised amounts
+     * (pool)
      */
     public function isInternal(): bool
     {
