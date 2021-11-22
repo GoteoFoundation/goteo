@@ -88,6 +88,7 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
             }
         }
         throw new PaymentException(Text::get('invest-pool-error').'<br>'.Text::get('invest-amount-in-pool', amount_format($this->getPool()->getAmount())));
+
     }
 
     public function refundable(): bool
@@ -117,7 +118,8 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
     }
 
     /**
-     * @inheritDoc
+     * Internal payments does not increased raised amounts
+     * (pool)
      */
     public function isInternal(): bool
     {
