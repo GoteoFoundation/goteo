@@ -92,7 +92,8 @@ class ImpactDataTest extends TestCase {
         $response = $impactData->dbDelete();
 
         $this->assertTrue($response);
-        $this->assertCount($impactDataCount - 1, ImpactData::getList());    }
+        $this->assertCount($impactDataCount - 1, ImpactData::getList());
+    }
 
 
     static function tearDownAfterClass(): void {
