@@ -19,7 +19,7 @@
                     <img src="assets/img/footprint/<?= $footprint->id ?>.svg" heigh="70" width="70" alt="<?= $footprint->name ?>" class="footprint" />
                     <p><span class="footprint-label"><?= $footprint->name ?></span></p>
                     <h2><?= $footprint->title ?></h2>
-                    <p><?= $footprint->description ?></p>
+                    <p><?= $this->markdown($footprint->description) ?></p>
                     <h3><?= $this->t('home-footprint-values-related-sdgs') ?>:</h3>
                     <p><?= $this->t('regular-click-more') ?></p>
                     <ul>
