@@ -36,13 +36,13 @@ $(function(){
         channel: $channel.value ?? ''
     };
 
-    function resetQuery() {
-        query = {
-            page: 0,
-            limit: 9,
-            sdg: '',
-            channel: $channel.value ?? ''
-        };
+    function resetQuery()  {
+        setQuery({
+                page: 0,
+                limit: 9,
+                sdg: '',
+                channel: $channel.value ?? ''
+            });
     }
 
     function setQuery(new_query) {
@@ -52,7 +52,23 @@ $(function(){
             limit: "limit" in new_query? new_query.limit : query.limit,
             sdg: "sdg" in new_query? new_query.sdg : query.sdg,
             channel: "channel" in new_query? new_query.channel : query.channel
-        }
+        };
+
+        updateURL();
+    }
+
+    function updateURL() {
+
+        const sdgs = getActiveSDG().map((sdg) => sdg.id).join(',');
+        const footprints = getActiveFootprints().join(',');
+        const channel = getActiveChannel();
+
+        url = new URL(window.location.href);
+        url.searchParams.set('sdgs', sdgs);
+        url.searchParams.set('footprints', footprints);
+        url.searchParams.set('channel', channel);
+        url.search = url.searchParams.toString();
+        history.pushState(null, null, url.search);
     }
     
     let sdgList = [];
@@ -81,11 +97,9 @@ $(function(){
     function redirectView(event) {
         event.preventDefault();
 
-        const sdgs = getActiveSDG().map((sdg) => sdg.id).join(',');
-        const footprints = getActiveFootprints().join(',');
-        const channel = getActiveChannel();
-
-        window.document.location.href = event.target.parentElement.href + '?sdgs=' + sdgs + '&footprints=' + footprints + '&channel=' + channel ;
+        const url = new URL(window.location.href);
+        url.search = url.searchParams.toString();
+        window.document.location.href = event.target.parentElement.href + url.search;
     }
 
     document.getElementById('activate-mosaic').onclick = redirectView;
@@ -325,7 +339,7 @@ $(function(){
     }
 
     function getActiveChannel() {
-        return $('select[name=channel]').val();
+        return $('select[name=channel]').val() || '';
     }
 
     // filter SDG select options by footprint
