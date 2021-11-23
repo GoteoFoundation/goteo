@@ -734,17 +734,24 @@ body.home {
                 }
 
                 h2 {
-                    color:#FFFFFF;
                     width: 250px;
                     padding-left:2rem;
                     font-size: 2.4rem;
                     line-height:1.2;
+
+                    a {
+                        color:#FFFFFF;
+                    }
                 }
 
                 p {
                     font-size: 1.4rem;
                     color:#FFFFFF;
                     padding-left:2rem;
+
+                    a {
+                        color:#FFFFFF;
+                    }
                 }
             }
         }

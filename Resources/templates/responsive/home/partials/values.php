@@ -24,7 +24,7 @@
                     <p><?= $this->t('regular-click-more') ?></p>
                     <ul>
                         <?php foreach($this->sdg_by_footprint[$footprint->id] as $sdg): ?>
-                            <li><a href="<?= $sdg->link ?>"><img src="assets/img/ods/ods<?= $sdg->id ?>.svg" width="75" height="75" alt="<?= $sdg->name ?>"/></a></li>
+                            <li><a href="/impact-discover?sdgs=<?= $sdg->id ?>" target="_blank"><img src="assets/img/ods/ods<?= $sdg->id ?>.svg" width="75" height="75" alt="<?= $sdg->name ?>"/></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -55,14 +55,14 @@
                                 <div class="project-footprint">
                                     <img src="assets/img/footprint/<?= $footprint->id ?>.svg" height="70" width="70" alt="<?= $footprint->name ?>" class="footprint" />
                                 </div>
-                                <h2><a href="/project/<?= $project->id ?>"><?= $this->text_truncate($this->ee($project->name), 80); ?></a></h2>
-                                <p><a href="/user/profile/<?= $this->project->user->id ?>"><?= $this->text('regular-by') . ' ' . $this->project->user->name ?></a></p>
+                                <h2><a target="_blank" href="/project/<?= $project->id ?>"><?= $this->text_truncate($this->ee($project->name), 80); ?></a></h2>
+                                <p><a href="/user/profile/<?= $project->user->id ?>"><?= $this->text('regular-by') . ' ' . $project->user->name ?></a></p>
                             </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="footprint-action">
-                    <a href="/impact-discover?footprint=<?= $footprint->id ?>"><?= $this->t('home-footprint-values-see-projects') ?> <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+                    <a href="/impact-discover?footprints=<?= $footprint->id ?>"><?= $this->t('home-footprint-values-see-projects') ?> <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
                 </div>
             </div>
         <?php endforeach; ?>
