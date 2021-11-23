@@ -11,6 +11,7 @@
 namespace Goteo\Controller\Dashboard;
 
 use Goteo\Library\Forms\Model\UserProfileForm;
+use Goteo\Library\Forms\Model\UserPreferencesForm;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\EmailType;
@@ -36,7 +37,8 @@ use Goteo\Library\Forms\FormModelException;
 use Goteo\Controller\DashboardController;
 use Goteo\Model\Contract;
 
-class SettingsDashboardController extends DashboardController {
+class SettingsDashboardController extends DashboardController
+{
     protected $user;
 
     public function __construct() {
@@ -111,6 +113,7 @@ class SettingsDashboardController extends DashboardController {
                 Message::error($e->getMessage());
             }
         }
+
         return $this->viewResponse('dashboard/settings/profile', [
             'form' => $form->createView(),
             'languages' => Lang::listAll('name', false),
@@ -181,6 +184,7 @@ class SettingsDashboardController extends DashboardController {
                 }
             }
         }
+
         return $this->viewResponse('dashboard/settings/translate', [
             'form' => $form->createView(),
             'languages' => $languages,
@@ -189,57 +193,26 @@ class SettingsDashboardController extends DashboardController {
         ]);
     }
 
+
     public function preferencesAction(Request $request)
     {
         $this->createSettingsSidebar('preferences');
 
-        $defaults = (array)User::getPreferences($this->user);
-        $bools = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips'];
-        foreach($bools as $b) {
-            $defaults[$b] = (bool) $defaults[$b];
-        }
-
-        // Create the form
-        $builder = $this->createFormBuilder($defaults)
-            ->add('comlang', ChoiceType::class, [
-                'label' => 'user-preferences-comlang',
-                'choices' => Lang::listAll()
-            ]);
-
-        $currencies = Currency::listAll('name');
-        if(count($currencies) > 1) {
-            $builder->add('currency', ChoiceType::class, [
-                'label' => 'user-preferences-currency',
-                'choices' => $currencies
-            ]);
-        }
-
-        foreach($bools as $b) {
-            $builder
-                ->add($b, BooleanType::class, [
-                    'label' => 'user-preferences-' . $b,
-                    'color' => 'cyan',
-                    'required' => false
-                ]);
-        }
-
-        $form = $builder->add('submit', SubmitType::class, [])
-            ->getForm();
+        $userPreferences = (array)User::getPreferences($this->user);
+        $processor = $this->getModelForm(UserPreferencesForm::class, $this->user, $userPreferences, [], $request);
+        $processor->createForm();
+        $form = $processor->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            if($form->isValid()) {
-                $data = $form->getData();
-
-                if (User::setPreferences($this->user, $data, $errors)) {
-                    Session::store('currency', $data['currency']);
-                    Message::info(Text::get('user-prefer-saved'));
-                    return $this->redirect('/dashboard/settings/preferences');
-                } else {
-                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
-                }
+            try {
+                $processor->save($form, true);
+                return $this->redirect('/dashboard/settings/preferences');
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
             }
         }
+
         return $this->viewResponse('dashboard/settings/preferences', [
             'form' => $form->createView()
         ]);

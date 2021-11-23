@@ -35,9 +35,6 @@ class UserController extends Controller {
         View::setTheme('responsive');
     }
 
-    /**
-     * Atajo al perfil de usuario.
-     */
     public function indexAction($id = '', $show = '') {
         return $this->redirect('/user/profile/' . $id . ($show ? '/' . $show : ''));
     }
@@ -51,11 +48,9 @@ class UserController extends Controller {
     }
 
     /**
-     * Perfil público de usuario.
-     *
-     * @param string $id    Nombre de usuario
+     * @param string $id User name
      */
-    public function profileAction($id = '', $show = 'profile', $category = '') {
+    public function profileAction(string $id = '', $show = 'profile', $category = '') {
 
         // This should be changed to a responsive view anytime (soon!)
 
@@ -233,7 +228,6 @@ class UserController extends Controller {
 
         $vars = array();
 
-        // si el token mola, lo doy de baja
         if ($token) {
             $token = mybase64_decode($token);
             $parts = explode('¬', $token);
@@ -277,9 +271,6 @@ class UserController extends Controller {
         return $this->viewResponse('user/leave', $vars);
     }
 
-    /*
-     * Método para bloquear el envío de newsletter
-     */
     public function unsubscribeAction($token = '') {
 
         $errors = array();
@@ -319,12 +310,8 @@ class UserController extends Controller {
         ]);
     }
 
-    /*
-     * Subscribe to newsletter by token
-     */
     public function subscribeAction($token = '') {
         $errors = array();
-        // si el token mola, lo doy de baja
         list($email, $mail_id) = Mail::decodeToken($token);
 
         if ($email) {
