@@ -39,7 +39,7 @@ Some folders may have its own README.md file with comments. However, we will try
 > docker/up
 > ```
 >
-> Then you can run commands inside the php container by using the wrapper `docker/exec`. If develping, we recommend to run this command in a separate terminal:
+> Then you can run commands inside the php container by using the wrapper `docker/exec`. If developing, we recommend to run this command in a separate terminal:
 >
 > ```bash
 > docker/exec grunt watch
@@ -56,7 +56,7 @@ There's still a lot of missing documentation. We'll try to do our best completin
 
 ### TRANSLATORS
 
-Since version 3.3 where are using [Crowdin](https://crowdin.com/) as a tool for collaborators translating the code. Feel free to join these awesome people who's contributed in traslating Goteo to many languages:
+Since version 3.3 where are using [Crowdin](https://crowdin.com/) as a tool for collaborators translating the code. Feel free to join these awesome people who's contributed in translating Goteo to many languages:
 
 <translators>
 
