@@ -51,7 +51,7 @@
                     <div class="slider slider-footprint-projects">
                         <?php foreach($this->projects_by_footprint[$footprint->id] as $index => $project): ?>
                             <div class="footprint-project">
-                                <img src="<?= $project->image->getLink(600, 416, true); ?>" class="bg-project eco">
+                                <img src="<?= $project->image->getLink(600, 416, true); ?>" class="bg-project" data-footprint=<?= $footprint->id ?>>
                                 <div class="project-footprint">
                                     <img src="assets/img/footprint/<?= $footprint->id ?>.svg" height="70" width="70" alt="<?= $footprint->name ?>" class="footprint" />
                                 </div>
