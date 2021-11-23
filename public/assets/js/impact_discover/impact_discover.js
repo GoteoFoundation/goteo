@@ -168,10 +168,6 @@ $(function(){
         refreshSDG();
     }
 
-    function isSDGActive(sdg) {
-        return sdg.active;
-    }
-
     // check SDG option for mobile list
     function checkSDGoption(sdg){
         $('input[name="'+sdg.id+'"]').prop("checked",true);
@@ -186,7 +182,7 @@ $(function(){
     // get active SDG
     function getActiveSDG(){
         var sdgActive = sdgList.filter(function(sdg) {
-            return isSDGActive(sdg) ? sdg.name : false ;
+            return sdg.active ? sdg.name : false ;
         });
         return sdgActive;
     }
@@ -380,7 +376,6 @@ $(function(){
     $(window).on('resize scroll', function() {
         if(needsScroll() && !$('.loading-container').length) {
             sdg = [];
-            //TODO: find selected SDG
             var sdgActive = getActiveSDG();
 
             var sdgArray = [];
