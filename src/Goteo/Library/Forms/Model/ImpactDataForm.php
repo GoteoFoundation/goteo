@@ -35,27 +35,23 @@ class ImpactDataForm extends AbstractFormProcessor {
         $builder
             ->add('title', TextType::class, array(
                 'label' => 'regular-title',
-                'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
             ))
             ->add('data', TextType::class, array(
                 'label' => 'regular-data',
-                'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
             )) ->add('data_unit', TextType::class, array(
                 'label' => 'regular-data-unit',
-                'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 ),
             ))
             ->add('description', TextareaType::Class, array(
                 'label' => 'regular-description',
-                'required' => true,
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 )

@@ -338,7 +338,7 @@ class Config {
         AdminController::addSubController(ChannelPostsAdminController::class);
         AdminController::addSubController(ChannelSectionAdminController::class);
         AdminController::addSubController(ChannelStoryAdminController::class);
-		AdminController::addSubController(ImpactDataAdminController::class);
+        AdminController::addSubController(ImpactDataAdminController::class);
     }
 
     static public function addLegacyAdminControllers()
