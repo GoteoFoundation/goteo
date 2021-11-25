@@ -11,11 +11,12 @@
 
 namespace Goteo\Util\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TypeaheadType extends TextType
+class TypeaheadType extends CollectionType
 {
 
     /**
@@ -25,6 +26,8 @@ class TypeaheadType extends TextType
     {
         parent::configureOptions($resolver);
         $resolver->setDefaults([
+            'entry_type' => TextType::class,
+            'allow_add' => true,
             'sources' => '', // Sources: 'channel', 'call', 'matcher', 'project', 'user', 'consultant'
             'label_attr' => ['class' => ''],
             'row_class' => '',
