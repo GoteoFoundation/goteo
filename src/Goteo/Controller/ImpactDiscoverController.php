@@ -30,7 +30,6 @@ class ImpactDiscoverController extends Controller {
         $this->dbReplica(true);
         $this->dbCache(true);
 
-        // \Goteo\Core\DB::replica(true);
         View::setTheme('responsive');
     }
 

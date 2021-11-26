@@ -44,6 +44,11 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
                 'constraints' => $this->getConstraints(),
                 'label' => 'regular-name'
             ])
+            ->add('title', TextType::class, [
+                'disabled' => $this->getReadonly(),
+                'required' => false,
+                'label' => 'regular-title'
+            ])
             ->add('description', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => false,
