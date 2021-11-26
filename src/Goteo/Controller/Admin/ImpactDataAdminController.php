@@ -61,7 +61,7 @@ class ImpactDataAdminController extends AbstractAdminController
         ]);
     }
 
-    public function editAction($id = '', Request $request)
+    public function editAction(Request $request, $id = '')
     {        
         try  {
             $impact_data = $id ? ImpactData::get($id) : new ImpactData(); 
@@ -91,7 +91,7 @@ class ImpactDataAdminController extends AbstractAdminController
 
     }
 
-    public function deleteAction($id, Request $request) {
+    public function deleteAction(Request $request, $id) {
         
         try {
             $impact_data = ImpactData::get($id);
