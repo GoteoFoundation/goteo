@@ -31,6 +31,34 @@ use function str_replace;
 
 class User extends Model {
 
+    public const PREFERENCE_UPDATES = 'updates';
+    public const PREFERENCE_THREADS = 'threads';
+    public const PREFERENCE_ROUNDS = 'rounds';
+    public const PREFERENCE_MAILING = 'mailing';
+    public const PREFERENCE_EMAIL = 'email';
+    public const PREFERENCE_TIPS = 'tips';
+    public const PREFERENCE_COMMUNICATION_LANGUAGE = 'comlang';
+    public const PREFERENCE_CURRENCY = 'currency';
+
+    public const BOOLEAN_PREFERENCES = [
+        self::PREFERENCE_UPDATES,
+        self::PREFERENCE_THREADS,
+        self::PREFERENCE_ROUNDS,
+        self::PREFERENCE_MAILING,
+        self::PREFERENCE_EMAIL,
+        self::PREFERENCE_TIPS,
+    ];
+    public const ALL_PREFERENCES = [
+        self::PREFERENCE_UPDATES,
+        self::PREFERENCE_THREADS,
+        self::PREFERENCE_ROUNDS,
+        self::PREFERENCE_MAILING,
+        self::PREFERENCE_EMAIL,
+        self::PREFERENCE_TIPS,
+        self::PREFERENCE_COMMUNICATION_LANGUAGE,
+        self::PREFERENCE_CURRENCY,
+    ];
+
     public
     $id = false,
     $lang,
@@ -1206,7 +1234,7 @@ class User extends Model {
                 // ponemos su divisa preferida en sesión
                 $prefs = self::getPreferences($row['id']);
                 if (!empty($prefs->currency)) {
-                    Session::store('currency', $prefs->currency);
+                    Session::store(self::PREFERENCE_CURRENCY, $prefs->currency);
                 }
 
                 return $user;
@@ -2020,18 +2048,14 @@ class User extends Model {
     }
 
     /**
-     * Actualizar las preferencias de notificación
-     *
      * @return boolean
      */
     public static function setPreferences($user, $data = array(), &$errors = array()) {
         if($user instanceOf User) $user = $user->id;
 
-        $keys = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips', 'comlang', 'currency'];
-
         $values = $insert = $update = [];
         foreach ($data as $key => $value) {
-            if(!in_array($key, $keys)) continue;
+            if(!in_array($key, self::ALL_PREFERENCES)) continue;
             $insert["`$key`"] = ":$key";
             $update[] = "`$key`=:$key";
             $values[":$key"] = $value;
