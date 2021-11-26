@@ -129,4 +129,3 @@ admin-project-to-publish-sure: 'Das Projekt wird seine Kampagne starten, sollen 
 admin-project-derivation-discard: 'Ablehnung mit Aussonderung'
 admin-project-derivation-discard-desc: 'Übergibt das Projekt an den Status Verworfen und sendet eine E-Mail, die auf eine geeignetere Plattform verweist'
 admin-project-derivation-discard-sure: 'Es wird eine automatische E-Mail mit Verweis auf eine andere Plattform versendet und der Status "verworfen" gesetzt, okay?'
-
