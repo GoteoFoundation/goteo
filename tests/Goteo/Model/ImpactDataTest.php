@@ -85,7 +85,7 @@ class ImpactDataTest extends TestCase {
     /**
      * @depends testGetImpactData
      */
-    public function testRemove(ImpactData $impact_data) {
+    public function testRemove(ImpactData $impactData) {
 
         $impactDataCount = ImpactData::getList([],0,0,true);
 
