@@ -660,55 +660,74 @@ class ProjectsApiController extends AbstractApiController {
 
         View::setTheme('responsive');
 
-        if ($view == 'list_projects') {
-            $response = [
-                'total' => $total,
-                'page' => $page,
-                'limit' => $limit,
-                'result_total' => count($projects),
-                'html' => View::render( 
-                    'impact_discover/partials/list_project_rows', [
-                        'projects' => $projects
-                    ]
-                )
-            ];
-        }
-        else if ($view == 'mosaic') {
-            $response = [
-                'total' => $total,
-                'page' => $page,
-                'limit' => $limit,
-                'result_total' => count($projects),
-                'html' => View::render( 
-                    'dashboard/partials/projects_widgets_list', [
-                        'projects' => $projects
-                    ]
-                )
-            ];
-        }
-        else {
-            $list_projects = [];
-            foreach($projects as $project) {
-                $ob = ['id' => $project->id,
-                   'name' => $project->name,
-                   'amount' => $project->amount,
-                   'invested' => $project->invested,
-                   'num_investors' => $project->num_investors,
-                   'image' => Image::get($project->image)->getLink(120,120),
-                   'project_location' => ProjectLocation::get($project->id),
-                   'popup' => View::render('map/partials/project_popup.php', array('project' => $project))];
-                $list_projects[] = $ob;
-            }
-
-            $response = [
-                'total' => $total,
-                'result_total' => count($projects),
-                'projects' => $list_projects
-            ];
+        switch ($view) {
+            case 'list_projects':
+                $response = $this->getListProjectViewResponse($projects, $total, $page, $limit);
+                break;
+            case 'mosaic':
+                $response = $this->getMosaicViewResponse($projects, $total, $page, $limit);
+                break;
+            case 'map':
+                $response = $this->getJsonViewResponse($projects, $total, $page, $limit);
+                break;
+            default:
+                $response = $this->getJsonViewResponse($projects, $total, $page, $limit);
+                break;
         }
 
         return $this->jsonResponse($response);
     }
 
+    private function getListProjectViewResponse(array $projects, int $total, int $page, int $limit): array {
+        return [
+            'total' => $total,
+            'page' => $page,
+            'limit' => $limit,
+            'result_total' => count($projects),
+            'html' => View::render(
+                'impact_discover/partials/list_project_rows', [
+                    'projects' => $projects
+                ]
+            )
+        ];
+    }
+
+    private function getMosaicViewResponse(array $projects, int $total, int $page, int $limit): array {
+        return [
+            'total' => $total,
+            'page' => $page,
+            'limit' => $limit,
+            'result_total' => count($projects),
+            'html' => View::render(
+                'dashboard/partials/projects_widgets_list', [
+                    'projects' => $projects
+                ]
+            )
+        ];
+    }
+
+    private function getJsonViewResponse(array $projects, int $total, int $page, int $limit): array {
+
+        $list_projects = [];
+        foreach($projects as $project) {
+            $ob = ['id' => $project->id,
+                'name' => $project->name,
+                'amount' => $project->amount,
+                'invested' => $project->invested,
+                'num_investors' => $project->num_investors,
+                'image' => Image::get($project->image)->getLink(120,120),
+                'project_location' => ProjectLocation::get($project->id),
+                'popup' => View::render('map/partials/project_popup.php', array('project' => $project))];
+            $list_projects[] = $ob;
+        }
+
+        $response = [
+            'total' => $total,
+            'result_total' => count($projects),
+            'projects' => $list_projects
+        ];
+
+        return $response;
+    }
 
 }

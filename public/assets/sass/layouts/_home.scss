@@ -90,7 +90,7 @@ body.home {
                     font-weight: 500;
                     width: 47%;
                 }
-                @media(max-width: $breakpoint-xs - 1) {
+                @media(max-width: ($breakpoint-xs - 1)) {
                     .btn-fashion, .btn-light-black {
                         width: 100%;
                         display: block;
@@ -395,8 +395,6 @@ body.home {
                 font-weight: bold;
 
                 .title{
-                    img{
-                    }
                     span.text{
                         border: 1px solid #CAD7D8;
                         font-size: 12px;
@@ -757,7 +755,7 @@ body.home {
         }
     }
 
-    @media (max-width: $breakpoint-sm - 1) {
+    @media (max-width: ($breakpoint-sm - 1)) {
         div.goteo-values {
 
             div[id^="goteo-values-"] {
@@ -785,11 +783,6 @@ body.home {
             .slider-footprint-data {
                 margin-left:20px;
                 margin-right:20px;
-
-                img {
-                    width:100px;
-                    height:290px;
-                }
 
                 img {
                     width:100px;
@@ -1008,7 +1001,7 @@ body.home {
 
     }
 
-    @media (max-width: $breakpoint-sm - 1) {
+    @media (max-width: ($breakpoint-sm - 1)) {
         .section.search{
             .inner-addon{
                 margin-top:10px;
@@ -1049,7 +1042,7 @@ body.home {
     }
 
 
-    @media (max-width: $breakpoint-sm - 1) {
+    @media (max-width: ($breakpoint-sm - 1)) {
         .section.search{
             .inner-addon{
                 margin-top:10px;
@@ -1111,7 +1104,7 @@ body.home {
 
     // Tablets customization
 
-    @media (max-width: $breakpoint-md + 1) {
+    @media (max-width: ($breakpoint-md + 1)) {
         .section.advantages .advantages-container{
             .row.details{
                 display: block;
@@ -1140,7 +1133,7 @@ body.home {
     }
 
 
-    @media (max-width: $breakpoint-sm - 1) {
+    @media (max-width: ($breakpoint-sm - 1)) {
 
         .section.search{
             .inner-addon{
