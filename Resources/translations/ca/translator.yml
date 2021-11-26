@@ -14,6 +14,8 @@ translator-deleted-ok: 'Traducció al %s esborrada correctament'
 translator-feed-translated-desc: '%LINK% traduït por %USER% a %LANGS%'
 translator-feed-translated-target: 'Traducció en %s'
 translator-field-content: Contingut
+translator-field-data: 'Dada'
+translator-field-data_unit: 'Unitat'
 translator-field-description: Descripció
 translator-field-facebook_msg: 'Missatge de facebook'
 translator-field-legend: Llegenda
