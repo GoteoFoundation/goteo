@@ -109,6 +109,8 @@ class DiscoverController extends Controller {
         $limit = 12;
         $vars = [];
 
+        $vars = [];
+
         if ($request->query->has('q'))
             $vars['q'] = strip_tags($request->query->get('q'));
 

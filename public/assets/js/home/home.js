@@ -100,4 +100,33 @@ $(function(){
 
   initSlickChannels();
 
+  //goteo value sliders
+  $('.slider-footprint-data, .slider-footprint-projects').slick({
+    dots: false,
+    infinite: true,
+    autoplay: false,
+    autoplaySpeed: 7000,
+    speed: 1500,
+    fade: true,
+    arrows: true,
+    cssEase: 'linear',
+    prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
+    nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
+  },function(e){
+    console.log("test");
+  });
+
+  // add navigation at tabs on Goteo Values
+  $(".goteo-values .footprint-tabs").on("click","a",function(e){
+    e.preventDefault();
+    var footprint =$(this).attr("data-footprint");
+    $(".goteo-values div.container > div.row").addClass('hidden');
+    $(".goteo-values .footprint-tabs a").removeClass("active");
+    $(".goteo-values div.container > div#goteo-values-"+footprint).removeClass('hidden');
+    $(".goteo-values .footprint-tabs a[data-footprint='"+footprint+"']").addClass("active");
+    //workaround to fix slick initiation on hiden elements
+    $('.slider-footprint-data, .slider-footprint-projects').slick('setPosition');
+  });
+
+
 });

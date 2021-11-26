@@ -2511,11 +2511,24 @@ class Project extends Model {
         return $projects;
     }
 
-    public static function getByFootprint($footprints = array(), $offset, $limit = 10, $count = false)
+    public static function getByFootprint($filter = array(), $offset = 0, $limit = 10, $count = false)
     {
         $lang = Lang::current();
         $values = array();
         list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        $footprints = is_array($filter['footprints'])? $filter['footprints'] : [$filter['footprints']];
+
+        $order = "ORDER BY project.id ASC";
+
+        if ($filter['rand']) {
+            $order = "ORDER BY rand()";
+        }
+
+        if ($filter['amount_bigger_than']) {
+            $sqlWhere .= "AND project.amount > :amount_bigger_than";
+            $values[':amount_bigger_than'] = $filter['amount_bigger_than'];
+        }
 
         if($count) {
             $sql = "
@@ -2523,6 +2536,7 @@ class Project extends Model {
             INNER JOIN sdg_project ON sdg_project.project_id = project.id
             INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
             WHERE sdg_footprint.footprint_id IN (" . implode(',', $footprints) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . ")
+            $sqlWhere
             ";
             return (int) self::query($sql)->fetchColumn();
         }
@@ -2567,8 +2581,9 @@ class Project extends Model {
                 ON project_conf.project = project.id
             $joins
             WHERE sdg_footprint.footprint_id IN (" . implode(',', $footprints) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . ")
-            GROUP BY project.id
-            ORDER BY  project.id ASC
+            $sqlWhere
+            GROUP BY project
+            $order
             $sql_limit
             ";
         $query = self::query($sql, $values);
@@ -2586,17 +2601,24 @@ class Project extends Model {
         $values = array();
         list($fields, $joins) = self::getLangsSQLJoins($lang);
 
+        $sqlJoins = "";
 
-        if ($filters['sdgs']) {
+        if ($filters['channel']) {
+            $sqlWhere[] = "( project.node = :channel OR node_project.node_id = :channel )";
+            $sqlJoins .= "LEFT JOIN node_project on node_project.project_id = project.id ";
+            $values[':channel'] = $filters['channel'];
+        }
+
+        if ($filters['sdgs'] && is_array($filters['sdgs']) && !empty($filters['sdgs'])) {
             $sqlWhere[]= "sdg_project.sdg_id IN (" . implode(',', $filters['sdgs']). ")";
         }
 
-        if ($filters['footprints']) {
+        if ($filters['footprints'] && is_array($filters['footprints']) && !empty($filters['footprints'])) {
             $sqlWhere[]= "sdg_footprint.footprint_id IN (" . implode(',', $filters['footprints']). ")";
         }
 
         if ($sqlWhere) {
-            $sqlWhere = " AND ( " . implode(' OR ', $sqlWhere) . " )";
+            $sqlWhere = " AND ( " . implode(' AND ', $sqlWhere) . " )";
         }
 
         if($count) {
@@ -2604,9 +2626,11 @@ class Project extends Model {
             SELECT COUNT(distinct(project.id)) FROM project
             INNER JOIN sdg_project on sdg_project.project_id = project.id
             INNER JOIN sdg_footprint on sdg_footprint.sdg_id = sdg_project.sdg_id
-            WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
+            $sqlJoins
+            WHERE project.status IN (" . implode(',', [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED]) . ")
+            $sqlWhere
             ";
-            return (int) self::query($sql)->fetchColumn();
+            return (int) self::query($sql, $values)->fetchColumn();
         }
 
         if ($limit) {
@@ -2647,8 +2671,10 @@ class Project extends Model {
             INNER JOIN user ON user.id = project.owner
             LEFT JOIN project_conf
                 ON project_conf.project = project.id
+            $sqlJoins
             $joins
-            WHERE project.status = " . self::STATUS_IN_CAMPAIGN . $sqlWhere . "
+            WHERE project.status IN (" . implode(',', [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED]) . ")
+            $sqlWhere
             GROUP BY project.id
             ORDER BY project.published DESC
             $sql_limit
