@@ -79,6 +79,9 @@ class ModelNormalizer {
             $this->model instanceOf Model\Mail) {
             $ob = new Transformer\MailTransformer($this->model, $this->keys);
         }
+        elseif ($this->model instanceOf Model\ImpactData) {
+            $ob = new Transformer\ImpactDataTransformer($this->model, $this->keys);
+        }
         else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
 
         $ob->setUser(Session::getUser())->rebuild();
