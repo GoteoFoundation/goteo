@@ -24,8 +24,8 @@ use Goteo\Model\User;
 use Goteo\Model\User\Interest;
 use Symfony\Component\HttpFoundation\Request;
 
-class DashboardController extends Controller {
-
+class DashboardController extends Controller
+{
     public function __construct() {
         View::setTheme('responsive');
         $this->user = Session::getUser();

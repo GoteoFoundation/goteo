@@ -23,7 +23,7 @@ Once you're done, simply `cd` to your project and run `docker-compose up -d`. Th
 You can access your application via **`localhost`**, if you're running the containers directly, or through **``** when run on a vm. nginx and mailhog both respond to any hostname, in case you want to add your own hostname on your `/etc/hosts` 
 
 Service|Address outside containers
-------|---------|-----------
+-------|--------------------
 Webserver|[localhost:8081](http://localhost:8081)
 Mailhog web interface|[localhost:8082](http://localhost:8082)
 MariaDB|**host:** `localhost`; **port:** `8084`
