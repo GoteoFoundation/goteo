@@ -627,7 +627,7 @@ class Filter extends Model {
         }
 
         if (isset($this->project_status) && $this->project_status > -1 && !empty($sqlInner)) {
-            $sqlInner .= "INNER JOIN project ON project.id = invest.project AND project.status = :project_status ";
+            $sqlInner .= "INNER JOIN project p2 ON p2.id = invest.project AND p2.status = :project_status ";
             $values[':project_status'] = $this->project_status;
         }
 
@@ -725,13 +725,13 @@ class Filter extends Model {
         }
 
         if (isset($this->cert)) {
-            $sqlInner .= " INNER JOIN donor
-            ON donor.user = user.id AND donor.confirmed = :cert ";
+            $sqlInner .= " INNER JOIN donor donor_cert
+            ON donor_cert.user = user.id AND donor_cert.confirmed = :cert ";
             $values[':cert'] = $this->cert;
 
 
             if (isset($this->startdate)) {
-                $sqlInner .= " AND donor.year BETWEEN :startyear ";
+                $sqlInner .= " AND donor_cert.year BETWEEN :startyear ";
                 $values[':startyear'] = DateTime::createFromFormat("Y-m-d",$this->startdate)->format("Y");
 
                 if(isset($this->enddate)) {
@@ -741,7 +741,7 @@ class Filter extends Model {
                     $sqlFilter .= " AND YEAR(CURDATE())";
                 }
             } else if (isset($this->enddate)) {
-                $sqlFilter .= " AND donor.year <= :endyear ";
+                $sqlFilter .= " AND donor_cert.year <= :endyear ";
                 $values[':enddate'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");;
             }
         }

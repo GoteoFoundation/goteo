@@ -21,6 +21,7 @@ use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\DatepickerType;
 use Goteo\Util\Form\Type\LocationType;
+use Goteo\Util\Form\Type\MultipleTypeaheadType;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\TypeaheadType;
@@ -68,41 +69,37 @@ class FilterForm extends AbstractFormProcessor {
                 'label' => 'regular-date_out',
                 'required' => false,
             ])
-            ->add('projects', TypeaheadType::class, [
+            ->add('projects', MultipleTypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-projects',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'sources' => 'project',
-                'mapped' => false
             ])
-            ->add('calls', TypeaheadType::class, [
+            ->add('calls', MultipleTypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-calls',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'sources' => 'call',
-                'mapped' => false
             ])
-            ->add('channels', TypeaheadType::class, [
+            ->add('channels', MultipleTypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-channels',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'sources' => 'channel',
-                'mapped' => false
             ])
-            ->add('matchers', TypeaheadType::class, [
+            ->add('matchers', MultipleTypeaheadType::class, [
                 'type' => 'multiple',
                 'label' => 'admin-matchers',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'sources' => 'matcher',
-                'mapped' => false
             ])
             ->add('project_status', ChoiceType::class, [
                 'label' => 'admin-filter-project-status',
