@@ -11,12 +11,11 @@
 
 namespace Goteo\Util\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TypeaheadType extends CollectionType
+class TypeaheadType extends TextType
 {
 
     /**
