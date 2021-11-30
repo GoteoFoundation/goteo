@@ -21,7 +21,7 @@ use Goteo\Library\Converter;
 
 class Currency {
 
-    protected static $default_currency = 'EUR';
+    protected static $default_currency = 'SHOVEL';
     protected static $converter;
 
     static public $currencies = array(
@@ -31,6 +31,17 @@ class Currency {
             'name' => 'Euro',
             'symbol' => '€',
             'html' => '€', // legacy var
+            'thousands' => '.',
+            'thou' => '.', // Legacy var
+            'decimal'  => ',',
+            'dec'  => ',', // legacy var
+            'active' => true
+        ),
+        'SHOVEL' => array(
+            'id' => 'SHOVEL',
+            'name' => 'Sysdig Shovels',
+            'symbol' => '⛏️',
+            'html' => '⛏️', // legacy var
             'thousands' => '.',
             'thou' => '.', // Legacy var
             'decimal'  => ',',

@@ -7,6 +7,13 @@ EUR:
     decimal: ','
     active: true
 
+SHOVEL:
+    name: 'Sysdig Shovels'
+    symbol: '⛏️'
+    thousands: .
+    decimal: ','
+    active: true
+
 USD:
     name: 'U.S. Dollar'
     symbol: '$'

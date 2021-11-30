@@ -160,17 +160,17 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         $cities = Config::get('geolocation.maxmind.cities');
         try {
             // This creates the Reader object, which should be reused across lookups.
-            $reader = new \GeoIp2\Database\Reader($cities);
-            $record = $reader->city($ip);
+            //$reader = new \GeoIp2\Database\Reader($cities);
+            //$record = $reader->city($ip);
             //Handles user localization
             $loc = new static(array(
                     'id'           => $id,
-                    'city'         => $record->city->name,
-                    'region'       => $record->mostSpecificSubdivision->name,
-                    'country'      => $record->country->name,
-                    'country_code' => $record->country->isoCode,
-                    'longitude'    => $record->location->longitude,
-                    'latitude'     => $record->location->latitude,
+                    'city'         => "San Francisco",
+                    'region'       => "High California",
+                    'country'      => "United States",
+                    'country_code' => "US",
+                    'longitude'    => -122.4194,
+                    'latitude'     => 37.7749,
                     'radius'       => 0,
                     'method'       => 'ip'
                 ));
