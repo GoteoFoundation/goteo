@@ -2,7 +2,7 @@
   <div class="container">
       <div class="row">
         <div class="col-xs-12 col-sm-9" id="filters-mobile">
-          <a href="" class="filter"><img src="./assets/img/icons/funnel.svg" /> <?= $this->t('regular-all') ?></a>
+          <a href="" class="filter"><img src="./assets/img/icons/funnel.svg" /> <?= $this->t('impact-discover-filter') ?></a>
           <a class="close flip" href="#"><i class="icon icon-close"></i></a>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6" id="filters-footprints">
