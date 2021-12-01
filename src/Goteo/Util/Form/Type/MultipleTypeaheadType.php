@@ -26,7 +26,6 @@ class MultipleTypeaheadType extends CollectionType
     {
         parent::configureOptions($resolver);
         $resolver->setDefaults([
-            'entry_type' => TextType::class,
             'allow_add' => true,
             'sources' => '', // Sources: 'channel', 'call', 'matcher', 'project', 'user', 'consultant'
             'label_attr' => ['class' => ''],

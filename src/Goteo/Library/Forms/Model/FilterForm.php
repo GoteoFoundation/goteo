@@ -70,7 +70,6 @@ class FilterForm extends AbstractFormProcessor {
                 'required' => false,
             ])
             ->add('projects', MultipleTypeaheadType::class, [
-                'type' => 'multiple',
                 'label' => 'admin-projects',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
@@ -78,7 +77,6 @@ class FilterForm extends AbstractFormProcessor {
                 'sources' => 'project',
             ])
             ->add('calls', MultipleTypeaheadType::class, [
-                'type' => 'multiple',
                 'label' => 'admin-calls',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
@@ -86,7 +84,6 @@ class FilterForm extends AbstractFormProcessor {
                 'sources' => 'call',
             ])
             ->add('channels', MultipleTypeaheadType::class, [
-                'type' => 'multiple',
                 'label' => 'admin-channels',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
@@ -94,7 +91,6 @@ class FilterForm extends AbstractFormProcessor {
                 'sources' => 'channel',
             ])
             ->add('matchers', MultipleTypeaheadType::class, [
-                'type' => 'multiple',
                 'label' => 'admin-matchers',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
