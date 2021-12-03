@@ -83,6 +83,8 @@ regular-content: Contido
 regular-continue-question: 'Continuar?'
 regular-continue: 'Continuar'
 regular-create: 'Crea un proxecto'
+regular-data: 'Dato'
+regular-data-unit: 'Unidade'
 regular-date: Data
 regular-date_in: Data de entrada
 regular-date_out: Data de saída
@@ -177,6 +179,7 @@ regular-status: Estado
 regular-template: Modelo
 regular-thanks: Grazas
 regular-title: Título
+regular-subtitle: Subtítulo
 regular-text: Texto
 regular-media: Vídeo (Youtube, Vimeo)
 regular-total: Total
@@ -234,3 +237,5 @@ validate-project-social_rewards: 'É obrigado indicar coma mínimo un retorno co
 validate-project-total-costs: "O custo óptimo non pode exceder en máis dun 50% o custo mínimo. Ou sobes os custos imprescindibles ou baixas os custos adicionais."
 user-promoter: 'O usuario promotor'
 newsletter-donate-description: 'Para que poidamos continuar axudando a que máis e máis iniciativas cívicas sexan unha realidade'
+regular-click-more: "Facer clic para saber máis"
+regular-apply: Aplicar
