@@ -13,76 +13,61 @@ use Symfony\Component\Routing\RouteCollection;
 
 $invest = new RouteCollection();
 
-
 ////// INVEST //////
-///
 /// /project/project-name/invest should be the same as /invest/project-name
 $invest->add('invest', new Route(
     '/{project_id}',
-    array('_controller' => 'Goteo\Controller\InvestController::selectRewardAction',
-        )
+    array('_controller' => 'Goteo\Controller\InvestController::selectRewardAction',)
 ));
-
 
 /// This is for compatibility with old routes
 $invest->add('invest-old-route', new Route(
     '/project/{project_id}/invest',
-    array('_controller' => 'Goteo\Controller\InvestController::selectRewardAction',
-        )
+    array('_controller' => 'Goteo\Controller\InvestController::selectRewardAction',)
 ));
 $invest->add('invest-select-payment', new Route(
     '/{project_id}/payment',
-    array('_controller' => 'Goteo\Controller\InvestController::selectPaymentMethodAction',
-        )
+    array('_controller' => 'Goteo\Controller\InvestController::selectPaymentMethodAction',)
 ));
 
 // Custom login for invest process
-$routes->add('invest-login', new Route(
+$invest->add('invest-login', new Route(
     '/invest/{project_id}/login',
-    array('_controller' => 'Goteo\Controller\InvestController::loginAction',
-        )
+    array('_controller' => 'Goteo\Controller\InvestController::loginAction',)
 ));
-$routes->add('invest-signup', new Route(
+$invest->add('invest-signup', new Route(
     '/invest/{project_id}/signup',
-    array('_controller' => 'Goteo\Controller\InvestController::signupAction',
-        )
+    array('_controller' => 'Goteo\Controller\InvestController::signupAction',)
 ));
 
 // ¿ optional step ? may skipped by javascript ?
 $invest->add('invest-show-form', new Route(
     '/{project_id}/form',
-    array('_controller' => 'Goteo\Controller\InvestController::paymentFormAction',
-        )
+    array('_controller' => 'Goteo\Controller\InvestController::paymentFormAction',)
 ));
 // Notify URL for gateways that need it
 $invest->add('invest-gateway-notify', new Route(
     '/notify/{method}',
-    array('_controller' => 'Goteo\Controller\InvestController::notifyPaymentAction',
-        )
+    array('_controller' => 'Goteo\Controller\InvestController::notifyPaymentAction',)
 ));
 // Payment gateways returning points
 $invest->add('invest-gateway-complete', new Route(
     '/{project_id}/{invest_id}/complete',
-    array('_controller' => 'Goteo\Controller\InvestController::completePaymentAction',
-        )
+    array('_controller' => 'Goteo\Controller\InvestController::completePaymentAction',)
 ));
 $invest->add('invest-user-data', new Route(
     '/{project_id}/{invest_id}',
-    array('_controller' => 'Goteo\Controller\InvestController::userDataAction',
-        ),
+    array('_controller' => 'Goteo\Controller\InvestController::userDataAction',),
     array('invest_id' => '[0-9]+')
 ));
 $invest->add('invest-share', new Route(
     '/{project_id}/{invest_id}/share',
-    array('_controller' => 'Goteo\Controller\InvestController::shareAction',
-        )
+    array('_controller' => 'Goteo\Controller\InvestController::shareAction',)
 ));
 
 $invest->add('invest-msg-support', new Route(
     '/{project_id}/{invest_id}/support-msg',
-    array('_controller' => 'Goteo\Controller\InvestController::supportMsgAction',
-        )
+    array('_controller' => 'Goteo\Controller\InvestController::supportMsgAction',)
 ));
-
 
 return $invest;
