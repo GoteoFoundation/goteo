@@ -67,10 +67,10 @@ $channel->add('channel-impact-discover', new Route(
 
 $channel->add('channel-list-projects', new Route(
     '/{id}/{type}/{category}',
-    array('_controller' => 'Goteo\Controller\ChannelController::listProjectsAction',
-        // 'type' => 'available',
+    array(
+        '_controller' => 'Goteo\Controller\ChannelController::listProjectsAction',
         'category' => null
-        )
+    )
 ));
 
 return $channel;
