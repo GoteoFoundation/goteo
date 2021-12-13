@@ -32,11 +32,11 @@ $invest->add('invest-select-payment', new Route(
 
 // Custom login for invest process
 $invest->add('invest-login', new Route(
-    '/invest/{project_id}/login',
+    '/{project_id}/login',
     array('_controller' => 'Goteo\Controller\InvestController::loginAction',)
 ));
 $invest->add('invest-signup', new Route(
-    '/invest/{project_id}/signup',
+    '/{project_id}/signup',
     array('_controller' => 'Goteo\Controller\InvestController::signupAction',)
 ));
 
