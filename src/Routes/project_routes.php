@@ -34,7 +34,6 @@ $prjs->add('project-edit', new Route(
     },
         'step' => null
     )
-
 ));
 
 // Project delete (old route compatibility)
@@ -46,20 +45,15 @@ $prjs->add('project-delete', new Route(
     })
 ));
 
-
 $prjs->add('project-create', new Route(
     '/create',
     array('_controller' => 'Goteo\Controller\ProjectController::createAction')
 ));
 
-// Favourite project
-
 $prjs->add('project-favourite', new Route(
     '/favourite/{pid}',
     array('_controller' => 'Goteo\Controller\ProjectController::favouriteAction')
 ));
-
-// Delete Favourite project
 
 $prjs->add('project-delete-favourite', new Route(
     '/delete-favourite',
@@ -73,12 +67,12 @@ $prjs->add('project-poster', new Route(
 
 $prjs->add('project-sections', new Route(
     '/{pid}/{show}/{post}',
-    array('_controller' => 'Goteo\Controller\ProjectController::indexAction',
+    array(
+        '_controller' => 'Goteo\Controller\ProjectController::indexAction',
         'id' => null, //optional
         'show' => 'home', //default
         'post' => null //optional
-        )
+    )
 ));
-
 
 return $prjs;

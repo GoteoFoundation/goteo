@@ -34,7 +34,7 @@ $misc->add('about-sections', new Route(
     array(
         '_controller' => 'Goteo\Controller\AboutController::indexAction',
         'id' => '' //optional
-        )
+    )
 ));
 
 $misc->add('legal-sections', new Route(
@@ -42,7 +42,7 @@ $misc->add('legal-sections', new Route(
     array(
         '_controller' => 'Goteo\Controller\AboutController::legalAction',
         'id' => '' //optional
-        )
+    )
 ));
 
 // service
