@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Verify MySQL connection from host
         run: |
-          sudo apt-get install -y mysql-client mysql-client-8.0 mysql-common
+          sudo apt-get install -y mysql-client mysql-client-8.0 mysql-common mysql-client-core-8.0
           mysql --host 127.0.0.1 -uroot -pgoteo -e "ALTER USER 'goteo' IDENTIFIED WITH mysql_native_password BY 'goteo'";
 
       - name: Install compile gems
