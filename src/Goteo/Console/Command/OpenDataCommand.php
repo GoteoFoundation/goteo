@@ -14,14 +14,13 @@ use Goteo\Model\Call;
 use Goteo\Model\Invest;
 use Goteo\Model\Matcher;
 use Goteo\Model\Node;
+use Goteo\Model\Origin;
 use Goteo\Model\Project;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-
-
 
 class OpenDataCommand extends AbstractCommand {
 
@@ -32,7 +31,7 @@ class OpenDataCommand extends AbstractCommand {
              ->setDefinition(array(
                       new InputOption('update', 'u', InputOption::VALUE_NONE, 'Actually does the job. If not specified, nothing is done, readonly process.'),
                       new InputOption('call', 'c', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given call "),
-                      new InputOption('channel', 'n', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given channel "),
+                      new InputOption('channel', '', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given channel "),
                       new InputOption('matcher', 'm', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given matcher "),
                       new InputOption('project', 'p', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given project "),
                 ))
@@ -55,51 +54,118 @@ EOT
     {
         $update = $input->getOption('update');
         $channel_id  = $input->getOption('channel');
-        $matcher_id  = $input->getOption('channel');
-        $call_id  = $input->getOption('channel');
-        $project_id  = $input->getOption('channel');
+        $matcher_id  = $input->getOption('matcher');
+        $call_id  = $input->getOption('call');
+        $project_id  = $input->getOption('project');
 
         $output->writeln("<info>Extract Open Data info</info>");
 
         if (isset($call_id)) {
             $output->writeln("<info>Retrieving {$call_id}'s data </info>");
-            $channel = Call::get($call_id);
+            $call = Call::get($call_id);
+            $this->extractCallOpenData($call);
         }
 
         if (isset($channel_id)) {
             $output->writeln("<info>Retrieving {$channel_id}'s data </info>");
             $channel = Node::get($channel_id);
-            extractChannelOpenData($channel);
         }
 
         if (isset($matcher_id)) {
             $output->writeln("<info>Retrieving {$matcher_id}'s data </info>");
-            $channel = Matcher::get($matcher_id);
+            $matcher = Matcher::get($matcher_id);
         }
 
         if (isset($project_id)) {
             $output->writeln("<info>Retrieving {$project_id}'s data </info>");
-            $channel = Project::get($project_id);
-
-
+            $project = Project::get($project_id);
         }
     }
 
-    private function extractChannelOpenData(Node $channel): void {
+    private function extractCallOpenData(Call $call): void {
 
-        $response = new StreamedResponse(function () use ($channel) {
-            $buffer = fopen(time() . '-' . $channel->id , 'w');
+        $this->extractProjectsData($call);
+        $this->extractInvestsData($call);
+    }
 
-            $data = ['id',
-                     Text::get('regular-name'),
-                     Text::get('regular-email'),
-                     'active',
-                     'type',
-            ];
+    private function extractProjectsData(Call $call): void {
+        $buffer = fopen(time() . '-' . $call->id .'-projects', 'w');
 
-            fputcsv($buffer, $data);
-            fputcsv($buffer, $data);
-            fclose($buffer);
-        });
+        $data = ['name',
+                'subtitle',
+                'description',
+                'nodes',
+                'category',
+                'sdgs',
+                'social_commitment',
+                'date_init',
+                'date_end',
+                'campaing_end',
+                'location',
+                'minimum_amount',
+                'optimal_amount',
+                'amount',
+                'visits',
+                'donors',
+                'matched_donors'
+        ];
+
+        fputcsv($buffer, $data);
+
+        $countProjects = Project::getList(['call' => $call->id], 0, 0, true);
+        $projects = Project::getList(['call' => $call->id, 0, $countProjects]);
+
+        foreach($projects as $project) {
+            $originVisits = Origin::getList(['project' => $project->id, 'type' => 'referer'], 0, 0, true);
+            $projectInvestCount = Invest::getList(['projects' => $project->id, 'types' => 'drop'], null, 0, 0, true);
+
+            // var_dump($projectInvestCount); die;
+            fputcsv($buffer, [
+                $project->name,
+                $project->subtitle,
+                $project->description,
+                $project->node,
+                implode(',',$project->getCategories()),
+                implode(',', array_column($project->getSdgs(), null, 'name')),
+                $project->getSocialCommitment()->name,
+                $project->published,
+                $project->passed,
+                $project->closed,
+                $project->location,
+                $project->mincost,
+                $project->maxcost,
+                $project->amount,
+                $originVisits,
+                $project->num_investors,
+                $projectInvestCount
+            ]);
+        }
+        fclose($buffer);
+
+    }
+
+    private function extractInvestsData(Call $call): void {
+        $buffer = fopen(time() . '-' . $call->id . '-invests' , 'w');
+
+        $data = ['project',
+                'amount',
+                'date',
+                'location',
+        ];
+
+        fputcsv($buffer, $data);
+
+        $callInvestCount = Invest::getList(['calls' => $call->id, 'types' => 'nondrop'], null, 0, 0, true);
+        $callInvests = Invest::getList(['calls' => $call->id, 'types' => 'nondrop'], null, 0, $callInvestCount);
+
+        foreach($callInvests as $invest) {
+            fputcsv($buffer, [
+                $invest->project,
+                $invest->amount,
+                $invest->charged,
+                $invest->getLocation()->city
+            ]);
+        }
+        fclose($buffer);
     }
 }
