@@ -10,6 +10,7 @@
 
 namespace Goteo\Console\Command;
 
+use Goteo\Library\FileHandler\File;
 use Goteo\Model\Call;
 use Goteo\Model\Invest;
 use Goteo\Model\Matcher;
@@ -89,7 +90,11 @@ EOT
     }
 
     private function extractProjectsData(Call $call): void {
-        $buffer = fopen(time() . '-' . $call->id .'-projects', 'w');
+        $fileName = time() . '-' . $call->id . '-projects';
+        $file = File::factory(['bucket' => AWS_S3_BUCKET_MAIL]);
+        $file->connect();
+        $file->setPath('open_data');
+        $buffer = fopen('/tmp/' . $fileName, 'wr');
 
         $data = ['name',
                 'subtitle',
@@ -119,7 +124,6 @@ EOT
             $originVisits = Origin::getList(['project' => $project->id, 'type' => 'referer'], 0, 0, true);
             $projectInvestCount = Invest::getList(['projects' => $project->id, 'types' => 'drop'], null, 0, 0, true);
 
-            // var_dump($projectInvestCount); die;
             fputcsv($buffer, [
                 $project->name,
                 $project->subtitle,
@@ -141,12 +145,16 @@ EOT
             ]);
         }
         fclose($buffer);
-
+        $file->upload('/tmp/' . $fileName, $fileName);
     }
 
     private function extractInvestsData(Call $call): void {
-        $buffer = fopen(time() . '-' . $call->id . '-invests' , 'w');
+        $fileName = time() . '-' . $call->id . '-invests';
+        $file = File::factory(['bucket' => AWS_S3_BUCKET_MAIL]);
+        $file->connect();
+        $file->setPath('open_data');
 
+        $buffer = fopen('/tmp/' . $fileName , 'wr');
         $data = ['project',
                 'amount',
                 'date',
@@ -167,5 +175,7 @@ EOT
             ]);
         }
         fclose($buffer);
+
+        $file->upload('/tmp/' . $fileName, $fileName);
     }
 }
