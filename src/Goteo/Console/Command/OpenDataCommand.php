@@ -59,26 +59,27 @@ EOT
         $call_id  = $input->getOption('call');
         $project_id  = $input->getOption('project');
 
-        $output->writeln("<info>Extract Open Data info</info>");
+        $this->log('Extract OpenData info', [], 'info');
 
         if (isset($call_id)) {
-            $output->writeln("<info>Retrieving {$call_id}'s data </info>");
+            $this->log("Retrieving {$call_id}'s data", [], 'info');
+
             $call = Call::get($call_id);
             $this->extractCallOpenData($call);
         }
 
         if (isset($channel_id)) {
-            $output->writeln("<info>Retrieving {$channel_id}'s data </info>");
+            $this->log("Retrieving {$channel_id}'s data", [], 'info');
             $channel = Node::get($channel_id);
         }
 
         if (isset($matcher_id)) {
-            $output->writeln("<info>Retrieving {$matcher_id}'s data </info>");
+            $this->log("Retrieving {$matcher_id}'s data", [], 'info');
             $matcher = Matcher::get($matcher_id);
         }
 
         if (isset($project_id)) {
-            $output->writeln("<info>Retrieving {$project_id}'s data </info>");
+            $this->log("Retrieving {$project_id}'s data", [], 'info');
             $project = Project::get($project_id);
         }
     }
@@ -117,8 +118,11 @@ EOT
 
         fputcsv($buffer, $data);
 
-        $countProjects = Project::getList(['call' => $call->id], 0, 0, true);
+        $projects_count = Project::getList(['call' => $call->id], 0, 0, true);
         $projects = Project::getList(['call' => $call->id, 0, $countProjects]);
+
+        $progress_bar = new ProgressBar($this->output, $projects_count);
+        $progress_bar->start();
 
         foreach($projects as $project) {
             $originVisits = Origin::getList(['project' => $project->id, 'type' => 'referer'], 0, 0, true);
@@ -143,9 +147,17 @@ EOT
                 $project->num_investors,
                 $projectInvestCount
             ]);
+
+            $progress_bar->advance();
         }
+
+        $progress_bar->finish();
         fclose($buffer);
-        $file->upload('/tmp/' . $fileName, $fileName);
+        if ($file->upload('/tmp/' . $fileName, $fileName)) {
+            $this->log("\nUpload of file {$fileName} completed!", [], 'info');
+        } else {
+            $this->log("\nUpload of file {$fileName} failed!", [], 'error');
+        }
     }
 
     private function extractInvestsData(Call $call): void {
@@ -160,22 +172,32 @@ EOT
                 'date',
                 'location',
         ];
-
         fputcsv($buffer, $data);
 
-        $callInvestCount = Invest::getList(['calls' => $call->id, 'types' => 'nondrop'], null, 0, 0, true);
-        $callInvests = Invest::getList(['calls' => $call->id, 'types' => 'nondrop'], null, 0, $callInvestCount);
+        $invests_count = Invest::getList(['calls' => $call->id, 'types' => 'nondrop'], null, 0, 0, true);
+        $invests = Invest::getList(['calls' => $call->id, 'types' => 'nondrop'], null, 0, $callInvestCount);
 
-        foreach($callInvests as $invest) {
+
+        $progress_bar = new ProgressBar($this->output, $invests_count);
+        $progress_bar->start();
+
+        foreach($invests as $invest) {
             fputcsv($buffer, [
                 $invest->project,
                 $invest->amount,
                 $invest->charged,
                 $invest->getLocation()->city
             ]);
+
+            $progress_bar->advance();
         }
+        $progress_bar->finish();
         fclose($buffer);
 
-        $file->upload('/tmp/' . $fileName, $fileName);
+        if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
+            $this->log("\nUpload of file {$fileName} completed!", [], 'info');
+        } else {
+            $this->log("\nUpload of file {$fileName} failed!", [], 'error');
+        }
     }
 }
