@@ -13,7 +13,6 @@ use Symfony\Component\Routing\RouteCollection;
 
 $map = new RouteCollection();
 
-
 //////////// map ROUTES ///////////////////
 
 $map->add('map', new Route(
@@ -23,8 +22,6 @@ $map->add('map', new Route(
     )
 ));
 
-
 ///// END map /////
-
 
 return $map;

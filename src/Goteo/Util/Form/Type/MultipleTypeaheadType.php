@@ -11,11 +11,12 @@
 
 namespace Goteo\Util\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TypeaheadType extends TextType
+class MultipleTypeaheadType extends CollectionType
 {
 
     /**
@@ -25,13 +26,14 @@ class TypeaheadType extends TextType
     {
         parent::configureOptions($resolver);
         $resolver->setDefaults([
+            'allow_add' => true,
             'sources' => '', // Sources: 'channel', 'call', 'matcher', 'project', 'user', 'consultant'
             'label_attr' => ['class' => ''],
             'row_class' => '',
             'text' => '', // If exists, the text shown instead of the value
             'fake_id' => '', // Created automatically, the id of the typeahead input field (real data is placed in a hidden field)
             'value_field' => 'id', // Field where to extract the Value from API calls, placed in the hidden field
-            'type' => 'simple', // DO NOT CHANGE. Use the MultipleTypeaheadType if you want the 'multiple' version
+            'type' => 'multiple', // DO NOT CHANGE. Use the TypeaheadType if you want the 'simple' versio
         ]);
     }
 

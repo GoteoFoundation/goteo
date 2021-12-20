@@ -260,7 +260,9 @@ $(function(){
         })
 
         $.get( url, query, function( data ) {
-            $('.impact-discover-mosaic > div.container').append( data.html );   
+            $('.impact-discover-mosaic > div.container').append( data.html );
+            if (data.total <= data.page * data.limit + data.result_total)
+                $(".more-projects-button").addClass('hidden');
         })
         .done(function(){
             $('.loading-container').remove();
@@ -306,7 +308,7 @@ $(function(){
 
         $.get( url, query, function( data ) {
             $('.impact-discover-projects > div.container').append( data.html );
-            if (data.total == data.page * data.limit + data.result_total)
+            if (data.total <= data.page * data.limit + data.result_total)
                 $(".more-projects-button").addClass('hidden');
         })
         .done(function(){
@@ -411,8 +413,8 @@ $(function(){
         e.preventDefault();
         resetFootprints();
         footprint = $(this).attr("data-footprint");
-        filterSDGByFootprint(footprint);
         $(this).addClass("active");
+        filterSDGByFootprint(footprint);
         if ($(window).width()<721) {
             $("#filters-footprints").slideUp();
             contractMobileFilter();

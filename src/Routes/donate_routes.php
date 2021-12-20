@@ -25,23 +25,19 @@ $donate->add('donate-select-amount', new Route(
 
 $donate->add('donate-select-payment', new Route(
     '/payment',
-    array('_controller' => 'Goteo\Controller\DonateController::selectPaymentMethodDonateAction',
-        )
+    array('_controller' => 'Goteo\Controller\DonateController::selectPaymentMethodDonateAction',)
 ));
 
 $donate->add('donate-show-form', new Route(
     '/form',
-    array('_controller' => 'Goteo\Controller\DonateController::paymentFormDonateAction',
-        )
+    array('_controller' => 'Goteo\Controller\DonateController::paymentFormDonateAction',)
 ));
 
 // Payment gateways returning points
 $donate->add('donate-invest-gateway-complete', new Route(
     '/{invest_id}/complete',
-    array('_controller' => 'Goteo\Controller\DonateController::completePaymentDonateAction',
-        )
+    array('_controller' => 'Goteo\Controller\DonateController::completePaymentDonateAction',)
 ));
-
 
 $donate->add('donate-invest-user-data', new Route(
     '/{invest_id}',
@@ -52,8 +48,7 @@ $donate->add('donate-invest-user-data', new Route(
 
 $donate->add('donate-invest-share', new Route(
     '/{invest_id}/share',
-    array('_controller' => 'Goteo\Controller\DonateController::shareDonateAction',
-        )
+    array('_controller' => 'Goteo\Controller\DonateController::shareDonateAction',)
 ));
 
 return $donate;

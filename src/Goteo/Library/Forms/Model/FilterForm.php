@@ -21,6 +21,7 @@ use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\DatepickerType;
 use Goteo\Util\Form\Type\LocationType;
+use Goteo\Util\Form\Type\MultipleTypeaheadType;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\TypeaheadType;
@@ -57,8 +58,8 @@ class FilterForm extends AbstractFormProcessor {
             ->add('predefineddata', ChoiceType::class, [
                 'label' => 'admin-filter-predefined-date',
                 'required' => false,
-                'empty_data' => Text::get('admin-filter-predefined-date-choose'),
                 'choices' => $this->getAntiquityChoices(),
+                'mapped' => false
             ])
             ->add('startdate', DatepickerType::class, [
                 'label' => 'regular-date_in',
@@ -68,37 +69,33 @@ class FilterForm extends AbstractFormProcessor {
                 'label' => 'regular-date_out',
                 'required' => false,
             ])
-            ->add('projects', TypeaheadType::class, [
-                'type' => 'multiple',
+            ->add('projects', MultipleTypeaheadType::class, [
                 'label' => 'admin-projects',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'sources' => 'project'
+                'sources' => 'project',
             ])
-            ->add('calls', TypeaheadType::class, [
-                'type' => 'multiple',
+            ->add('calls', MultipleTypeaheadType::class, [
                 'label' => 'admin-calls',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'sources' => 'call'
+                'sources' => 'call',
             ])
-            ->add('channels', TypeaheadType::class, [
-                'type' => 'multiple',
+            ->add('channels', MultipleTypeaheadType::class, [
                 'label' => 'admin-channels',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'sources' => 'channel'
+                'sources' => 'channel',
             ])
-            ->add('matchers', TypeaheadType::class, [
-                'type' => 'multiple',
+            ->add('matchers', MultipleTypeaheadType::class, [
                 'label' => 'admin-matchers',
                 'value_field' => 'name',
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'sources' => 'matcher'
+                'sources' => 'matcher',
             ])
             ->add('project_status', ChoiceType::class, [
                 'label' => 'admin-filter-project-status',

@@ -4,7 +4,7 @@
 
 <div class="fluid-container data-container goteo-values">
     <div class="container">
-        <div><h1 class="title text-center">Valores de Goteo</h1></div>
+        <div><h1 class="title text-center"><?= $this->t('home-footprint-values-title') ?></h1></div>
         <div class="text-center footprint-tabs">
             <ul>
                 <?php foreach($this->footprints as $index => $footprint): ?>
