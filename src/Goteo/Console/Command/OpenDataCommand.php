@@ -175,8 +175,7 @@ EOT
         fputcsv($buffer, $data);
 
         $invests_count = Invest::getList(['calls' => $call->id, 'types' => 'nondrop', 'status' => Invest::STATUS_CHARGED], null, 0, 0, true);
-        $invests = Invest::getList(['calls' => $call->id, 'types' => 'nondrop', 'status' => Invest::STATUS_CHARGED], null, 0, $callInvestCount);
-
+        $invests = Invest::getList(['calls' => $call->id, 'types' => 'nondrop', 'status' => Invest::STATUS_CHARGED], null, 0, $invests_count);
 
         $progress_bar = new ProgressBar($this->output, $invests_count);
         $progress_bar->start();
