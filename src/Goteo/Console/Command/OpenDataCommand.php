@@ -92,7 +92,7 @@ EOT
 
     private function extractProjectsData(Call $call): void {
         $fileName = time() . '-' . $call->id . '-projects';
-        $file = File::factory(['bucket' => AWS_S3_BUCKET_MAIL]);
+        $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
         $file->connect();
         $file->setPath('open_data');
         $buffer = fopen('/tmp/' . $fileName, 'wr');
@@ -118,8 +118,8 @@ EOT
 
         fputcsv($buffer, $data);
 
-        $projects_count = Project::getList(['call' => $call->id], 0, 0, true);
-        $projects = Project::getList(['call' => $call->id, 0, $countProjects]);
+        $projects_count = Project::getList(['calls' => $call->id], 0, 0, true);
+        $projects = Project::getList(['calls' => $call->id, 0, $countProjects]);
 
         $progress_bar = new ProgressBar($this->output, $projects_count);
         $progress_bar->start();
@@ -162,7 +162,7 @@ EOT
 
     private function extractInvestsData(Call $call): void {
         $fileName = time() . '-' . $call->id . '-invests';
-        $file = File::factory(['bucket' => AWS_S3_BUCKET_MAIL]);
+        $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
         $file->connect();
         $file->setPath('open_data');
 
