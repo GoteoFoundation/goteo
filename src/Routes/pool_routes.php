@@ -14,41 +14,32 @@ use Symfony\Component\Routing\RouteCollection;
 $pool = new RouteCollection();
 
 ////// Pool rechargue //////
-///
-
 
 $pool->add('pool-select-payment', new Route(
     '/payment',
-    array('_controller' => 'Goteo\Controller\PoolController::selectPaymentMethodAction',
-        )
+    array('_controller' => 'Goteo\Controller\PoolController::selectPaymentMethodAction',)
 ));
 
 $pool->add('pool-show-form', new Route(
     '/form',
-    array('_controller' => 'Goteo\Controller\PoolController::paymentFormAction',
-        )
+    array('_controller' => 'Goteo\Controller\PoolController::paymentFormAction',)
 ));
 
 // Payment gateways returning points
 $pool->add('pool-invest-gateway-complete', new Route(
     '/{invest_id}/complete',
-    array('_controller' => 'Goteo\Controller\PoolController::completePaymentAction',
-        )
+    array('_controller' => 'Goteo\Controller\PoolController::completePaymentAction',)
 ));
-
 
 $pool->add('pool-invest-user-data', new Route(
     '/{invest_id}',
-    array('_controller' => 'Goteo\Controller\PoolController::userDataAction',
-        ),
+    array('_controller' => 'Goteo\Controller\PoolController::userDataAction',),
     array('invest_id' => '[0-9]+')
 ));
 
 $pool->add('pool-invest-share', new Route(
     '/{invest_id}/share',
-    array('_controller' => 'Goteo\Controller\PoolController::shareAction',
-        )
+    array('_controller' => 'Goteo\Controller\PoolController::shareAction',)
 ));
-
 
 return $pool;
