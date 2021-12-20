@@ -118,8 +118,8 @@ EOT
 
         fputcsv($buffer, $data);
 
-        $projects_count = Project::getList(['calls' => $call->id], 0, 0, true);
-        $projects = Project::getList(['calls' => $call->id, 0, $countProjects]);
+        $projects_count = Project::getList(['called' => $call->id], 0, 0, true);
+        $projects = Project::getList(['called' => $call->id], 0, $countProjects);
 
         $progress_bar = new ProgressBar($this->output, $projects_count);
         $progress_bar->start();
@@ -134,7 +134,7 @@ EOT
                 $project->description,
                 $project->node,
                 implode(',',$project->getCategories()),
-                implode(',', array_column($project->getSdgs(), null, 'name')),
+                implode(',', array_column($project->getSdgs(), 'name')),
                 $project->getSocialCommitment()->name,
                 $project->published,
                 $project->passed,
@@ -174,8 +174,8 @@ EOT
         ];
         fputcsv($buffer, $data);
 
-        $invests_count = Invest::getList(['calls' => $call->id, 'types' => 'nondrop'], null, 0, 0, true);
-        $invests = Invest::getList(['calls' => $call->id, 'types' => 'nondrop'], null, 0, $callInvestCount);
+        $invests_count = Invest::getList(['calls' => $call->id, 'types' => 'nondrop', 'status' => Invest::STATUS_CHARGED], null, 0, 0, true);
+        $invests = Invest::getList(['calls' => $call->id, 'types' => 'nondrop', 'status' => Invest::STATUS_CHARGED], null, 0, $callInvestCount);
 
 
         $progress_bar = new ProgressBar($this->output, $invests_count);
