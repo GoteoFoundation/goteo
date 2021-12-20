@@ -16,22 +16,19 @@ $auth = new RouteCollection();
 // AUTH user routes
 $auth->add('auth-login', new Route(
     '/login',
-    array('_controller' => 'Goteo\Controller\AuthController::loginAction',
-        )
+    array('_controller' => 'Goteo\Controller\AuthController::loginAction',)
 ));
 
 // OAUTH user routes
 $auth->add('outh-login', new Route(
     '/login/{provider}',
-    array('_controller' => 'Goteo\Controller\AuthController::oauthAction',
-        )
+    array('_controller' => 'Goteo\Controller\AuthController::oauthAction',)
 ));
 
 // old route compatibility
 $auth->add('auth-login-old-route', new Route(
     '/user/login',
-    array('_controller' => 'Goteo\Controller\AuthController::redirectLoginAction',
-        )
+    array('_controller' => 'Goteo\Controller\AuthController::redirectLoginAction',)
 ));
 
 // register
@@ -72,23 +69,22 @@ $auth->add('auth-logout-old-route', new Route(
 // password recovery
 $auth->add('auth-password-recovery', new Route(
     '/password-recovery/{token}',
-    array('_controller' => 'Goteo\Controller\AuthController::passwordRecoveryAction',
-          'token' => '', //optional parameter
-        )
+    array(
+        '_controller' => 'Goteo\Controller\AuthController::passwordRecoveryAction',
+        'token' => '', //optional parameter
+    )
 ));
 
 // Old route compatibility
 $auth->add('auth-old-password-recovery', new Route(
     '/user/recover',
-    array('_controller' => 'Goteo\Controller\AuthController::passwordRecoveryAction',
-        )
+    array('_controller' => 'Goteo\Controller\AuthController::passwordRecoveryAction',)
 ));
 
 // password reset
 $auth->add('auth-password-reset', new Route(
     '/password-reset',
-    array('_controller' => 'Goteo\Controller\AuthController::passwordResetAction',
-        )
+    array('_controller' => 'Goteo\Controller\AuthController::passwordResetAction',)
 ));
 
 return $auth;
