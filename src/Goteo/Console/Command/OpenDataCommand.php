@@ -31,21 +31,18 @@ class OpenDataCommand extends AbstractCommand {
              ->setDescription("Generates OpenData files")
              ->setDefinition(array(
                       new InputOption('update', 'u', InputOption::VALUE_NONE, 'Actually does the job. If not specified, nothing is done, readonly process.'),
-                      new InputOption('call', 'c', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given call "),
-                      new InputOption('channel', '', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given channel "),
-                      new InputOption('matcher', 'm', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given matcher "),
-                      new InputOption('project', 'p', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given project "),
+                      new InputOption('call', 'c', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given call ")
                 ))
              ->setHelp(<<<EOT
 This command generates files using the data from different sources and saves them. The sources can be channels, matchers, calls or projects.
 
 Usage:
 
-Extract Open Data for a channel
-<info>./console opendata --channel goteo --update </info>
+Extract Open Data for a call
+<info>./console opendata --call goteo </info>
 
-Update the provided channel's summary data
-<info>./console opendata --channel channel_id --update </info>
+Update the provided call's summary data
+<info>./console opendata --call call_id </info>
 
 EOT
 );
@@ -53,11 +50,7 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $update = $input->getOption('update');
-        $channel_id  = $input->getOption('channel');
-        $matcher_id  = $input->getOption('matcher');
         $call_id  = $input->getOption('call');
-        $project_id  = $input->getOption('project');
 
         $this->log('Extract OpenData info', [], 'info');
 
@@ -66,21 +59,6 @@ EOT
 
             $call = Call::get($call_id);
             $this->extractCallOpenData($call);
-        }
-
-        if (isset($channel_id)) {
-            $this->log("Retrieving {$channel_id}'s data", [], 'info');
-            $channel = Node::get($channel_id);
-        }
-
-        if (isset($matcher_id)) {
-            $this->log("Retrieving {$matcher_id}'s data", [], 'info');
-            $matcher = Matcher::get($matcher_id);
-        }
-
-        if (isset($project_id)) {
-            $this->log("Retrieving {$project_id}'s data", [], 'info');
-            $project = Project::get($project_id);
         }
     }
 
@@ -91,11 +69,11 @@ EOT
     }
 
     private function extractProjectsData(Call $call): void {
-        $fileName = time() . '-' . $call->id . '-projects';
+        $fileName = time() . '-' . $call->id . '-projects.csv';
         $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
         $file->connect();
         $file->setPath('open_data');
-        $buffer = fopen('/tmp/' . $fileName, 'wr');
+        $buffer = fopen('/tmp/' . $fileName, 'w+');
 
         $data = ['name',
                 'subtitle',
@@ -161,12 +139,12 @@ EOT
     }
 
     private function extractInvestsData(Call $call): void {
-        $fileName = time() . '-' . $call->id . '-invests';
+        $fileName = time() . '-' . $call->id . '-invests.csv';
         $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
         $file->connect();
         $file->setPath('open_data');
 
-        $buffer = fopen('/tmp/' . $fileName , 'wr');
+        $buffer = fopen('/tmp/' . $fileName , 'w+');
         $data = ['project',
                 'amount',
                 'date',
