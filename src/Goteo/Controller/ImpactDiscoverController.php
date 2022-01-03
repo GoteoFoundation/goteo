@@ -76,6 +76,8 @@ class ImpactDiscoverController extends Controller {
         $channelSelected = $filters['channel'] ?? '';
         $footprintsSelected = $filters['footprints'] ?? [];
 
+        $filters['order'] = 'amount';
+
         $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
         $projects = Project::getByFootprintOrSDGs($filters, 0, 9);
 
