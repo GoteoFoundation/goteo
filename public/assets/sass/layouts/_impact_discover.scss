@@ -228,13 +228,19 @@
 
         a {
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            max-height: 12em;
+            height: max-content;
+            width: 100%;
 
             img.bg-project {
-                position:absolute;
+                // position:absolute;
                 z-index:1;
                 width:100%;
-                min-height:100%;
+                // min-height:100%;
                 filter: grayscale(0%);
+                top: -25%;
                 &[data-footprint="1"] {
                     filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(80deg);
                 }
@@ -255,6 +261,8 @@
         }
 
         .project-description {
+            position: absolute;
+            bottom: 0;
 
             h2 {
                 color:#FFFFFF;
@@ -296,6 +304,7 @@
     
             .project-footprint {
                 flex-grow:1;
+                position: absolute;
             }
         }
 
