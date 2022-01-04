@@ -230,8 +230,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            max-height: 12em;
-            height: max-content;
+            max-height: 100%;
             width: 100%;
 
             img.bg-project {
@@ -268,7 +267,7 @@
                 color:#FFFFFF;
                 width: 250px;
                 padding-left:2rem;
-                font-size: 2.4rem;
+                font-size: 2rem;
                 line-height:1.2;
                 position:relative;
                 z-index:10;
@@ -292,7 +291,7 @@
         }
 
         .col.sm-8 h2 {
-            font-size: 4.5rem;
+            font-size: 3rem;
         }
 
         .col {
@@ -301,11 +300,16 @@
             display:flex;
             flex-direction:column;
             overflow: hidden;
+            max-height: 20em;
     
             .project-footprint {
                 flex-grow:1;
                 position: absolute;
             }
+        }
+
+        .col.col-xs-12.col-sm-12 {
+            max-height: 10em;
         }
 
         &#sdg-icons {
