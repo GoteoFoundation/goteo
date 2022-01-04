@@ -2618,6 +2618,11 @@ class Project extends Model {
             $sqlWhere[]= "sdg_footprint.footprint_id IN (" . implode(',', $filters['footprints']). ")";
         }
 
+        if ($filters['minpercentage']) {
+            $sqlWhere[] = "(project.amount / project.mincost) >= :minpercentage";
+            $values[':minpercentage'] = $filters['minpercentage'];
+        }
+
         if($filters['order']) {
             $sqlOrder = " ORDER BY project.{$filters['order']} DESC";
         }

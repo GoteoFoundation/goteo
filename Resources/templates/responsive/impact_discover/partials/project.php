@@ -23,6 +23,6 @@
     </div>
 <?php endif; ?>
 <div class="project-description">
-    <h2><?= $project->title ?></h2>
+    <h2><?= $project->name ?></h2>
     <p><?= $this->text('regular-by') ?> <a href="/user/profile/<?= $project->user->id ?>" target="_blank"> <?= $project->user->name ?></a></p>
 </div>

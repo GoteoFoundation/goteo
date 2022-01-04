@@ -77,6 +77,7 @@ class ImpactDiscoverController extends Controller {
         $footprintsSelected = $filters['footprints'] ?? [];
 
         $filters['order'] = 'amount';
+        $filters['minpercentage'] = 0.2; // minimum amount of 20%
 
         $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
         $projects = Project::getByFootprintOrSDGs($filters, 0, 9);
