@@ -30,4 +30,6 @@ $this->section('content');
         <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
         <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/leaflet.fullscreen/Control.FullScreen.css"/>
     <?php endif; ?>
+
+    <?= $this->insert('partials/footer/analytics'); ?>
 <?php $this->append() ?>
