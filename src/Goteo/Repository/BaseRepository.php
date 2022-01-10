@@ -23,11 +23,6 @@ abstract class BaseRepository {
     }
 
     public function query(string $query, array $params = null, $select_from_replica = true) {
-
-        if ($this->db === null) {
-            $this->factory();
-        }
-
         $params = func_num_args() === 2 && is_array($params) ? $params : array_slice(func_get_args(), 1);
         $result = $this->db->prepare($query, array(), $select_from_replica);
         $result->execute($params);
