@@ -16,13 +16,10 @@ class DataSetRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->repository = new DataSetRepository();
         parent::setUp();
+        $this->repository = new DataSetRepository();
     }
 
-    /*
-     * @depends setUp
-     */
     public function testExceptionOnGetById(): void {
 
         $id = 1;
@@ -33,9 +30,6 @@ class DataSetRepositoryTest extends TestCase
 
     }
 
-    /*
-     * @depends setUp
-     */
     public function testGetList(): void {
         $dataSets = $this->repository->getList([]);
 
@@ -43,7 +37,7 @@ class DataSetRepositoryTest extends TestCase
         $this->assertCount(0, $dataSets);
     }
 
-    /*
+    /**
      * @depends testGetList
      */
     public function testSaveDataSet(): DataSet {
@@ -58,7 +52,7 @@ class DataSetRepositoryTest extends TestCase
         return $dataSet;
     }
 
-    /*
+    /**
      * @depends testSaveDataSet
      */
     public function testDataSetExists(DataSet $dataSet): DataSet
@@ -68,7 +62,7 @@ class DataSetRepositoryTest extends TestCase
         return $dbDataSet;
     }
 
-    /*
+    /**
      * @depends testDataSetExists
      */
     public function deleteDataSet(DataSet $dataSet): void {
