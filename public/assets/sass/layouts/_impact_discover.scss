@@ -228,13 +228,18 @@
 
         a {
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            max-height: 100%;
+            width: 100%;
 
             img.bg-project {
-                position:absolute;
+                // position:absolute;
                 z-index:1;
                 width:100%;
-                min-height:100%;
+                // min-height:100%;
                 filter: grayscale(0%);
+                top: -25%;
                 &[data-footprint="1"] {
                     filter: sepia(100%) saturate(100%) brightness(80%) hue-rotate(80deg);
                 }
@@ -255,12 +260,14 @@
         }
 
         .project-description {
+            position: absolute;
+            bottom: 0;
 
             h2 {
                 color:#FFFFFF;
                 width: 250px;
                 padding-left:2rem;
-                font-size: 2.4rem;
+                font-size: 2rem;
                 line-height:1.2;
                 position:relative;
                 z-index:10;
@@ -284,7 +291,7 @@
         }
 
         .col.sm-8 h2 {
-            font-size: 4.5rem;
+            font-size: 3rem;
         }
 
         .col {
@@ -292,11 +299,17 @@
             padding:0;
             display:flex;
             flex-direction:column;
-            overflow-y: hidden;
+            overflow: hidden;
+            max-height: 20em;
     
             .project-footprint {
                 flex-grow:1;
+                position: absolute;
             }
+        }
+
+        .col.col-xs-12.col-sm-12 {
+            max-height: 10em;
         }
 
         &#sdg-icons {

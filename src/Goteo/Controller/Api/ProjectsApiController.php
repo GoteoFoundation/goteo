@@ -630,30 +630,28 @@ class ProjectsApiController extends AbstractApiController {
     public function projectsFootprintsOrSDGs(Request $request)
     {
 
-        if ($request->query->has('view'))
-            $view = $request->query->get('view');
+        if ($request->query->has('view')) $view = $request->query->get('view');
 
         $projects = [];
         $filters = [];
+
+        $filters['order'] = 'amount';
+        $filters['minpercentage'] = 0.2; // minimum amount of 20%
         
         $page = 0;
         $offset = 0;
         $limit = 10;
 
-        if ($request->query->has('page'))
-            $page = $request->query->get('page');
+        if ($request->query->has('page')) $page = $request->query->get('page');
 
-        if ($request->query->has('limit'))
-            $limit = $request->query->get('limit');
+        if ($request->query->has('limit')) $limit = $request->query->get('limit');
 
         if ($request->query->has('sdg') && $request->query->get('sdg')) {
             $sdgs = explode(',', $request->query->get('sdg'));
             $filters['sdgs'] = $sdgs;
         }
 
-        if ($request->query->has('channel')) {
-            $filters['channel'] = $request->query->get('channel');
-        }
+        if ($request->query->has('channel')) $filters['channel'] = $request->query->get('channel');
 
         $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
         $projects = Project::getByFootprintOrSDGs($filters, $page * $limit, $limit);
@@ -709,17 +707,18 @@ class ProjectsApiController extends AbstractApiController {
     private function getJsonViewResponse(array $projects, int $total, int $page, int $limit): array {
 
         $list_projects = [];
-        foreach($projects as $project) {
-            $ob = ['id' => $project->id,
+        $list_projects = array_map( function($project) {
+            return  [
+                'id' => $project->id,
                 'name' => $project->name,
                 'amount' => $project->amount,
                 'invested' => $project->invested,
                 'num_investors' => $project->num_investors,
                 'image' => Image::get($project->image)->getLink(120,120),
                 'project_location' => ProjectLocation::get($project->id),
-                'popup' => View::render('map/partials/project_popup.php', array('project' => $project))];
-            $list_projects[] = $ob;
-        }
+                'popup' => View::render('map/partials/project_popup.php', array('project' => $project))
+            ];
+        }, $projects);
 
         $response = [
             'total' => $total,
