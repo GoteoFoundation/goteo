@@ -6,8 +6,9 @@ use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\Model;
 use Goteo\TestCase;
-use Goteo\Model\DataSet;
+use Goteo\Entity\DataSet;
 use Goteo\Repository\DataSetRepository;
+use Goteo\Core\DB;
 
 class DataSetRepositoryTest extends TestCase
 {
@@ -21,7 +22,6 @@ class DataSetRepositoryTest extends TestCase
     }
 
     public function testExceptionOnGetById(): void {
-
         $id = 1;
         $this->expectException(ModelNotFoundException::class);
         $this->expectExceptionMessage("DataSet with id {$id} not found");
@@ -31,7 +31,7 @@ class DataSetRepositoryTest extends TestCase
     }
 
     public function testGetList(): void {
-        $dataSets = $this->repository->getList([]);
+        $dataSets = $this->repository->getList();
 
         $this->assertIsArray($dataSets);
         $this->assertCount(0, $dataSets);
@@ -45,10 +45,11 @@ class DataSetRepositoryTest extends TestCase
         $dataSet->setId(1)
             ->setTitle('Data Set 1.')
             ->setDescription(' Description of DataSet 1')
-            ->setUrl(Config::get('url.main'));
+            ->setUrl("https://duckduckgo.com/");
 
         $this->repository->save($dataSet);
-        $this->assertCount(1, $this->repository->getList([]));
+        $dataSetCount = $this->repository->count();
+        $this->assertEquals(1, $dataSetCount);
         return $dataSet;
     }
 
@@ -59,14 +60,18 @@ class DataSetRepositoryTest extends TestCase
     {
         $dbDataSet = $this->repository->getById($dataSet->getId());
         $this->assertEquals($dataSet->getId(), $dbDataSet->getId());
-        return $dbDataSet;
+        return $dataSet;
     }
 
     /**
      * @depends testDataSetExists
      */
-    public function deleteDataSet(DataSet $dataSet): void {
+    public function testDeleteDataSet(DataSet $dataSet): void
+    {
+        print_r("delete function");
         $this->repository->delete($dataSet);
-        $this->assertCount(0, $this->repository->getList([]));
+
+        $dataSetsCount = $this->repository->count();
+        $this->assertEquals(0, $dataSetsCount);
     }
 }

@@ -12,14 +12,15 @@
 
  use Goteo\Application\Exception\ModelException;
  use Goteo\Application\Exception\ModelNotFoundException;
- use Goteo\Model\DataSet;
+ use Goteo\Entity\DataSet;
  use PDO;
  use PDOException;
 
  class DataSetRepository extends BaseRepository {
-     protected ?string $Table = 'data_set';
+     protected ?string $table = 'data_set';
 
-     public function getById(int $id): DataSet  {
+     public function getById(int $id): DataSet
+     {
          $sql = "SELECT data_set.*
                 FROM data_set
                 WHERE data_set.id = ?";
@@ -32,16 +33,19 @@
          return $dataSet;
     }
 
-    public function getList(array $filter, int $offset = 0, int $limit = 10, bool $count = false) {
-         if ($count) {
-             $sql = "SELECT count(data_set.*)
-                FROM data_set
-                LIMIT $limit
-                OFFSET $offset";
+    public function count(): int
+    {
+        $sql = "SELECT count(data_set.id)
+                FROM data_set";
 
-             return $this->query($sql)->fetchAll();
-         }
+        return $this->query($sql)->fetchColumn();
+    }
 
+     /**
+      * @return DataSet[]
+      */
+    public function getList(int $offset = 0, int $limit = 10): array
+    {
          $sql = "SELECT data_set.*
                 FROM data_set
                 LIMIT $limit
@@ -50,12 +54,16 @@
         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
     }
 
-    public function getListByFootprint(array $footprints) {
+     /**
+      * @return DataSet[]
+      */
+    public function getListByFootprint(array $footprints): array
+    {
 
-         $sqlWhere = "";
-         if (!empty($footprints)) {
+        $sqlWhere = "";
+        if (!empty($footprints)) {
             $sqlWhere = "WHERE fds.footprint_id IN ( " . implode(',', $footprints) . ")";
-         }
+        }
 
         $sql = "SELECT data_set.*
                 FROM data_set
@@ -66,41 +74,46 @@
         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
     }
 
-     public function getListBySDGs(array $sdgs) {
+     /**
+      * @return DataSet[]
+      */
+     public function getListBySDGs(array $sdgs): array
+     {
+        $sqlWhere = "";
+        if (!empty($sdgs)) {
+            $sqlWhere = "WHERE sds.sdg_id IN ( " . implode(',', $sdgs) . ")";
+        }
 
-         $sqlWhere = "";
-         if (!empty($sdgs)) {
-             $sqlWhere = "WHERE sds.sdg_id IN ( " . implode(',', $sdgs) . ")";
-         }
-
-         $sql = "SELECT data_set.*
+        $sql = "SELECT data_set.*
                 FROM data_set
                 INNER JOIN sdg_data_set sds ON sds.data_set_id = data_set.id
                 {$sqlWhere}
                 ";
 
-         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
+        return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
      }
 
-     public function getListByCall(array $calls) {
+     /**
+      * @return DataSet[]
+      */
+     public function getListByCall(array $calls): array
+     {
+        $sqlWhere = "";
+        if (!empty($calls)) {
+            $sqlWhere = "WHERE cds.call_id IN ( " . implode(',', $calls) . ")";
+        }
 
-         $sqlWhere = "";
-         if (!empty($calls)) {
-             $sqlWhere = "WHERE cds.call_id IN ( " . implode(',', $calls) . ")";
-         }
-
-         $sql = "SELECT data_set.*
+        $sql = "SELECT data_set.*
                 FROM data_set
                 INNER JOIN call_data_set cds ON cds.data_set_id = data_set.id
                 {$sqlWhere}
                 ";
 
-         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
+        return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
      }
 
-     public function save(DataSet $dataSet, array &$errors = []){
-
-
+     public function save(DataSet $dataSet, array &$errors = [])
+     {
         $fields = [
             'title' => ':title',
             'description' => ':description',
@@ -122,8 +135,7 @@
             $values[':id'] = $dataSet->getId();
         }
 
-
-        $sql = "REPLACE INTO `$this->Table` (" . implode(',', array_keys($fields) ) . ") VALUES (" . implode(',', array_values($fields)) . ")";
+        $sql = "REPLACE INTO `$this->table` (" . implode(',', array_keys($fields) ) . ") VALUES (" . implode(',', array_values($fields)) . ")";
 
         try {
             $this->query($sql, $values);
@@ -133,12 +145,12 @@
             $errors[] = $exception->getMessage();
             return false;
         }
-
         return $dataSet;
     }
 
-    public function delete(DataSet $dataSet) {
-         $sql = "DELETE FROM $this->Table WHERE id = :id";
+    public function delete(DataSet $dataSet): void {
+        $sql = "DELETE FROM $this->table WHERE $this->table.id = :id";
+        \sqldbg($sql);
         try {
             $this->query($sql, [':id' => $dataSet->getId()]);
         } catch (PDOException $exception) {

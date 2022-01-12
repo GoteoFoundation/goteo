@@ -8,10 +8,11 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Model;
+namespace Goteo\Entity;
 
 use DateTime;
 use Goteo\Application\Config;
+use Goteo\Model\Image;
 
 class DataSet {
 
@@ -19,10 +20,10 @@ class DataSet {
     private ?string $title = null;
     private ?string $description = null;
     private string $lang;
-    private ?string $url = null;
+    private string $url;
     private ?Image $image = null;
-    private ?int $created = null;
-    private ?int $modified = null;
+    private int $created_at;
+    private int $modified_at;
 
     public function __construct()
     {
@@ -84,26 +85,14 @@ class DataSet {
         return $this;
     }
 
-    public function getCreated(): DateTime
+    public function getCreatedAt(): DateTime
     {
-        return $this->created;
+        return DateTime::createFromFormat($this->created_at);
     }
 
-    public function setCreated(DateTime $created): DataSet
+    public function getModifiedAt(): DateTime
     {
-        $this->created = $created;
-        return $this;
-    }
-
-    public function getModified(): DateTime
-    {
-        return $this->modified;
-    }
-
-    public function setModified(DateTime $modified): DataSet
-    {
-        $this->modified = $modified;
-        return $this;
+        return DateTime::createFromFormat($this->modified_at);
     }
 
     public function getImage(): ?Image {

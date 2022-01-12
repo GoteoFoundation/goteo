@@ -34,12 +34,12 @@ class GoteoDataSets
      return "CREATE TABLE `data_set` (
             `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `title` TEXT NULL,
-            `description` VARCHAR(10) NULL,
+            `description` TEXT NULL,
             `lang` VARCHAR(6) NOT NULL,
-            `url` VARCHAR(10) NOT NULL,
+            `url` VARCHAR(255) NOT NULL,
             `image` VARCHAR(255) NULL,
-            `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

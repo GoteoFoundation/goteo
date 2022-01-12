@@ -11,7 +11,7 @@
 namespace Goteo\Model\Traits;
 
 use Goteo\Application\Config;
-use Goteo\Model\DataSet;
+use Goteo\Entity\DataSet;
 use Goteo\Application\Exception\ModelException;
 use PDOException;
 
