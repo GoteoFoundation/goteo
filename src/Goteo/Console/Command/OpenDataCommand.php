@@ -14,6 +14,7 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\Exception;
 use Goteo\Library\FileHandler\File;
 use Goteo\Model\Call;
+use Goteo\Model\Footprint;
 use Goteo\Model\Invest;
 use Goteo\Model\Origin;
 use Goteo\Model\Project;
@@ -31,7 +32,8 @@ class OpenDataCommand extends AbstractCommand {
             ->setDescription("Generates OpenData files")
             ->setDefinition([
                 new InputOption('call', 'c', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given call "),
-                new InputOption('sdg', 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'If specified, extracts data for the given sdgs')
+                new InputOption('sdg', 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'If specified, extracts data for the given sdgs'),
+                new InputOption('footprint', 'f', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'If specified, extracts data for the given footprints')
             ])
             ->setHelp(<<<EOT
 This command generates files using the data from different sources and saves them. The sources can be channels, matchers, calls or projects.
@@ -40,6 +42,20 @@ Usage:
 
 Extract Open Data for a call
 <info>./console opendata --call goteo </info>
+
+Extract Open Data for a Sdg
+<info>./console opendata --sdg 1 </info>
+
+Extract Open Data for multiple Sdgs
+<info>./console opendata -s 1 -s 2 -s 3 </info>
+
+Extract Open Data for a Footprint
+<info>./console opendata --footprint 1 </info>
+
+Extract Open Data for multiple Footprints
+<info>./console opendata -f 1 -f 2 -f 3 </info>
+
+
 EOT
 );
     }
@@ -69,6 +85,15 @@ EOT
 
                 $sdg = Sdg::get($sdg_id);
                 $this->extractSdgOpenData($sdg);
+            }
+        }
+
+        if ($listFootprints = $input->getOption('footprint')) {
+            foreach ($listFootprints as $footprint_id) {
+                $this->log("Retrieving {$footprint_id}'s data", [], 'info');
+
+                $footprint = Footprint::get($footprint_id);
+                $this->extractFootprintOpenData($footprint);
             }
         }
 
@@ -105,6 +130,50 @@ EOT
 
         $projects_count = Project::getBySDGs([$sdg->id], 0, 0, true);
         $projects = Project::getBySDGs([$sdg->id], 0, $projects_count);
+
+        $invests_count = Invest::getList(['projects' => $projects, 'status' => Invest::STATUS_CHARGED], null, 0, 0, true);
+        $invests = Invest::getList(['projects' => $projects, 'status' => Invest::STATUS_CHARGED], null, 0, $invests_count);
+
+        $this->extractInvestOpenData($fileName, $invests);
+
+        if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
+            $this->log("\nUpload of file {$fileName} completed!", [], 'info');
+        } else {
+            $this->log("\nUpload of file {$fileName} failed!", [], 'error');
+        }
+    }
+
+    private function extractFootprintOpenData(Footprint $footprint): void {
+
+        $this->extractFootprintProjects($footprint);
+        $this->extractFootprintInvests($footprint);
+    }
+
+    private function extractFootprintProjects(Footprint $footprint) {
+        $fileName = time() . '-' . $footprint->id . '-projects.csv';
+        $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
+        $file->connect();
+        $file->setPath("open_data/footprint/$footprint->id/projects");
+
+        $projects_count = Project::getByFootprint(['footprints' => $footprint->id], 0, 0, true);
+        $projects = Project::getByFootprint(['footprints' => $footprint->id], 0, $projects_count);
+        $this->extractProjectOpenData($fileName, $projects);
+
+        if ($file->upload('/tmp/' . $fileName, $fileName)) {
+            $this->log("\nUpload of file {$fileName} completed!", [], 'info');
+        } else {
+            $this->log("\nUpload of file {$fileName} failed!", [], 'error');
+        }
+    }
+
+    private function extractFootprintInvests(Footprint $footprint) {
+        $fileName = time() . '-' . $footprint->id . '-invests.csv';
+        $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
+        $file->connect();
+        $file->setPath("open_data/footprint/$footprint->id/invests");
+
+        $projects_count = Project::getBySDGs([$footprint->id], 0, 0, true);
+        $projects = Project::getBySDGs([$footprint->id], 0, $projects_count);
 
         $invests_count = Invest::getList(['projects' => $projects, 'status' => Invest::STATUS_CHARGED], null, 0, 0, true);
         $invests = Invest::getList(['projects' => $projects, 'status' => Invest::STATUS_CHARGED], null, 0, $invests_count);
