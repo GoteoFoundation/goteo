@@ -491,6 +491,7 @@ admin-invest-diff-last_month: 'Diferenza co mes anterior'
 admin-invest-diff-last_year: 'Diferenza co ano anterior'
 admin-stats-projects-channel-desc: 'Proxectos que pertencen á canle (ou nodo)'
 admin-stats-projects-call-desc: 'Proxectos que pertencen á convocatoria'
+admin-stats-projects-matcher-desc: 'Proxectos que están activos no matcher'
 admin-stats-projects-consultant-desc: 'Proxectos que teñen asignado este asesor'
 admin-stats-projects-project-desc: 'Achegas ao proxecto'
 admin-filter-add: 'Engadir filtro'
@@ -506,6 +507,7 @@ admin-filter-user: 'Usuario'
 admin-filter-donor: 'Doador'
 admin-filter-no-donor: 'Doador inactivo'
 admin-filter-promoter: 'Promotor/a'
+admin-filter-matcher: 'Matcher'
 admin-filter-test: 'Proba'
 admin-filter-type-unique: 'Único'
 admin-filter-type-multidonor: 'Multidoador'
@@ -518,13 +520,17 @@ admin-filter-forced-help: 'A seleccionar esta opción aplicaranse os filtros ind
 admin-filter-project-status: Estado do proxecto
 admin-filter-invest-status: Estado da doazón
 admin-filter-project-location: Localización do proxecto
+admin-filter-location: Ubicación a utilizar no filtro
+admin-filter-donor-location: Ubicación do doante
 admin-filter-donor-status: Estado do certificado
 admin-mail-body: 'Corpo da mensaxe'
 admin-stats-donations: 'Doazóns'
 admin-stats-donations-method: 'Doazóns segundo o método de pagamento'
+admin-stats-donations-method-desc: 'Donacións inclúen os cartos que o usuario da voluntariamente á fundación cando aporta a un proxecto, donacións directas ou ben cando a cantidade no moedeiro expira.'
 admin-stats-donations-tip: 'Doazóns durante achegas a proxectos (Adeallas ou "tips")'
 admin-stats-donations-direct: 'Doazóns directas (inclúe portamoedas expirados)'
 admin-stats-donations-generosity: 'Porcentaxes de xenerosidade'
+admin-stats-donations-generosity-desc: 'Cantidades de usuarios con doazóns versus cantidades totais. Só se teñen en conta os proxectos con donacións.'
 admin-stats-donations-expired: 'Doazóns directas por expiración de portamoedas'
 admin-stats-donations-refunded: 'Doazóns devoltas por proxectos sen éxito'
 admin-donations: Doazóns
@@ -546,4 +552,8 @@ admin-online: En liña
 mandatory-filter-name: Falta o nome
 mandatory-filter-description: Falta a descrición
 mandatory-filter-role: Falta un rol
+admin-node-iframe: Iframe
+admin-channel-resource: 'Recursos da canle'
+admin-channel-resource-add: 'Crear recurso'
+admin-posts: 'Publicacións'
 
