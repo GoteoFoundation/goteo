@@ -219,6 +219,7 @@ admin-blog-global-search: 'Id, título, subtítulo ou texto'
 admin-communication-global-search: 'Asunto'
 admin-blog-stories-search: 'Id, título, texto ou proxecto'
 admin-donor-name-search: 'ID, nome, correo'
+admin-donor-date-search: 'Procesador por data'
 admin-no-project: 'Sen proxecto'
 admin-title-id: Id
 admin-title-name: Nome
@@ -364,6 +365,8 @@ admin-refunded-to_wallet: Devolto ao portamoedas
 admin-commissions: Comisión
 admin-fees: Comisión plataforma
 admin-user-fee: Comisión cidadá
+admin-call-fee: Comisión Matchfunding (sen Matchers)
+admin-matcher-fee: Comisión Matchers
 admin-vat: IVE
 admin-diff: Diferenza
 admin-the_day: O día
@@ -385,6 +388,7 @@ admin-last_year_month: O mesmo mes hai un ano
 admin-year: Este ano
 admin-last_year: O mesmo día do ano pasado
 admin-last_year_complete: Todo o ano pasado
+admin-promote-add: 'Novo destacado'
 admin-promote-submit: 'Gardar'
 admin-promote-already-exists: 'Este proxecto xa está destacado'
 admin-promote-correct: 'O proxecto está destacado'
