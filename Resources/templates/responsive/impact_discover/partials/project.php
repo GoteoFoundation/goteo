@@ -23,6 +23,6 @@
     </div>
 <?php endif; ?>
 <div class="project-description">
-    <h2><?= substr($project->name, 0, 20) ?></h2>
+    <h2><?= $project->name ?></h2>
     <p><a href="/user/profile/<?= $project->user->id ?>" target="_blank"><?= $this->text('regular-by') ?> <?= $project->user->name ?></a></p>
 </div>
