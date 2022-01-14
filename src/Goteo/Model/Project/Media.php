@@ -144,7 +144,7 @@ class Media {
                     $code = static::getGissTvCode($bp['video']);
                     break;
 
-                case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?framatube.org/w/(?<video>\w+)#', $this->url, $pt)):
+                case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?framatube.org/(w|video/watch)/(?<video>\w+)#', $this->url, $pt)):
                     $code = static::getPeerTubeCode($pt['video'], $autoplay);
                     break;
 

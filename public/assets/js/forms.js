@@ -36,10 +36,11 @@ function parseVideoURL (url) {
     //   - http://player.vimeo.com/video/25451551
     // - Supported PeerTube URL formats:
     //   - http://framatube.org/w/25451551
+    //   - http://framatube.org/video/watch/25451551
     // - Also supports relative URLs:
     //   - //player.vimeo.com/video/25451551
 
-    url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com)|framatube\.org)\/(video\/|embed\/|watch\?v=|v\/|w\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
+    url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com)|framatube\.org)\/(video\/watch\/|video\/|embed\/|watch\?v=|v\/|w\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
 
     var type, src;
 
