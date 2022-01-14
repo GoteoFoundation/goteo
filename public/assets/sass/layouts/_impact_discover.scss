@@ -234,10 +234,8 @@
             width: 100%;
 
             img.bg-project {
-                // position:absolute;
                 z-index:1;
                 width:100%;
-                // min-height:100%;
                 filter: grayscale(0%);
                 top: -25%;
                 &[data-footprint="1"] {
