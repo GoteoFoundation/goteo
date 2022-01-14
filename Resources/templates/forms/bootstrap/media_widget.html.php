@@ -9,6 +9,5 @@ $id = $id ? $id : 'video_holder';
         <div class="video-button"><img src="<?= SRC_URL ?>/assets/img/project/play.png" class="img-responsive"></div>
     </div>
 
-
     <?php echo $view['form']->block($form, 'form_widget_simple', ['type' => 'text']); ?>
 </div>
