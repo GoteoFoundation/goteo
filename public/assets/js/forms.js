@@ -37,27 +37,34 @@ function parseVideoURL (url) {
     // - Supported PeerTube URL formats:
     //   - http://framatube.org/w/25451551
     //   - http://framatube.org/video/watch/25451551
+    //   - http://peertube.plataformess.org/videos/watch/25451551
     // - Also supports relative URLs:
     //   - //player.vimeo.com/video/25451551
 
-    url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com)|framatube\.org)\/(video\/watch\/|video\/|embed\/|watch\?v=|v\/|w\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
+    url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com)|framatube\.org|peertube\.plataformess\.org)\/(videos\/watch\/|video\/|embed\/|watch\?v=|v\/|w\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
 
-    var type, src;
+    var type, src, thumbnailSrc = "";
 
     if (RegExp.$3.indexOf('youtu') > -1) {
         type = 'youtube';
         src = '//youtube.com/embed/' +  RegExp.$6 + '?wmode=Opaque&autoplay=1';
+        thumbnailSrc = 'https://img.youtube.com/vi/' + RegExp.$6 + '/maxresdefault.jpg';
     } else if (RegExp.$3.indexOf('vimeo') > -1) {
         type = 'vimeo';
         src = '//player.vimeo.com/video/' + RegExp.$6 + '?title=0&byline=0&portrait=0&autoplay=1';
-    } else if (RegExp.$3.indexOf('framatube') > -1) {
+    } else if (RegExp.$3.indexOf('framatube.org') > -1) {
         type = 'framatube';
         src = '//framatube.org/videos/embed/' + RegExp.$6 + '?warningTitle=0&autoplay=1';
+    } else if (RegExp.$3.indexOf('peertube.plataformess.org') > -1) {
+        type = 'plataformess';
+        src = '//peertube.plataformess.org/videos/embed/' + RegExp.$6 + '?warningTitle=0&autoplay=1';
+        thumbnailSrc = "https://peertube.plataformess.org/static/thumbnails/" + RegExp.$6 + ".jpg";
     }
 
     return {
         type: type,
         src: src,
+        thumbnailSrc: thumbnailSrc,
         id: RegExp.$6
     };
 }
@@ -679,14 +686,14 @@ $(function(){
                 });
             };
 
-            if (video.type === 'youtube') {
-                putVideo('https://img.youtube.com/vi/' + video.id + '/maxresdefault.jpg');
+            if (video.thumbnailSrc !== '') {
+                putVideo(video.thumbnailSrc);
             } else if (video.type === 'vimeo') {
                 $.getJSON("https://vimeo.com/api/v2/video/"+ video.id + ".json")
-                 .done(function(res) {
-                    putVideo(res[0].thumbnail_large);
-                 })
-                 .fail(function(e) { });
+                     .done(function(res) {
+                        putVideo(res[0].thumbnail_large);
+                     })
+                     .fail(function(e) { });
             } else if (video.type === 'framatube') {
                 $.getJSON("https://peertube2.cpy.re/api/v1/videos/" + video.id)
                     .done(function(res) {

@@ -11,12 +11,16 @@
 namespace Goteo\Model\Project;
 
 use \DOMDocument;
+use Exception;
 use Goteo\Application\Lang;
 
 class Media {
 
     public $project;
     public $url = '';
+
+    private const PEERTUBE_OFFICIAL_URL = "framatube.org";
+    private const PEERTUBE_PLATAFORMESS_URL = "peertube.plataformess.org";
 
     public function __construct ($url) {
         $this->url = str_replace('http://', 'https://', $url);
@@ -74,11 +78,11 @@ class Media {
                     width='100%' height='100%' scrolling='no'></iframe>";
     }
 
-    protected static function getPeerTubeCode($videoId, $autoplay = false): string
+    protected static function getPeerTubeCode($videoId, $baseDomain, $autoplay = false): string
     {
         if ($autoplay)
             $autoplayParameter = "&autoplay=1";
-        return "<iframe src='https://framatube.org/videos/embed/$videoId?warningTitle=0$autoplayParameter'
+        return "<iframe src='https://$baseDomain/videos/embed/$videoId?warningTitle=0$autoplayParameter'
                     allowfullscreen=''
                     sandbox='allow-same-origin allow-scripts allow-popups'
                     width='560'
@@ -144,8 +148,9 @@ class Media {
                     $code = static::getGissTvCode($bp['video']);
                     break;
 
-                case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?framatube.org/(w|video/watch)/(?<video>\w+)#', $this->url, $pt)):
-                    $code = static::getPeerTubeCode($pt['video'], $autoplay);
+                case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?(framatube|peertube\.plataformess).org/(w|videos/watch)/(?<video>[a-zA-Z0-9\-]+)#', $this->url, $pt)):
+                    $baseDomain = $this->getPeerTubeBaseDomainUrl($this->url);
+                    $code = static::getPeerTubeCode($pt['video'], $baseDomain, $autoplay);
                     break;
 
                 default:
@@ -158,6 +163,20 @@ class Media {
         }
 
         return $code;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getPeerTubeBaseDomainUrl(string $url): string
+    {
+        if (str_contains($url, self::PEERTUBE_OFFICIAL_URL)) {
+            return self::PEERTUBE_OFFICIAL_URL;
+        } else if (str_contains($url, self::PEERTUBE_PLATAFORMESS_URL)) {
+            return self::PEERTUBE_PLATAFORMESS_URL;
+        }
+
+        throw new Exception("Media video URL not matched!");
     }
 
     public function __toString () {
