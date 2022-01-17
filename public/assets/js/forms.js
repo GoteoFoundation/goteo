@@ -689,17 +689,17 @@ $(function(){
             if (video.thumbnailSrc !== '') {
                 putVideo(video.thumbnailSrc);
             } else if (video.type === 'vimeo') {
-                $.getJSON("https://vimeo.com/api/v2/video/"+ video.id + ".json")
-                     .done(function(res) {
+                fetch("https://vimeo.com/api/v2/video/"+ video.id + ".json")
+                    .then(res => res.json())
+                    .then(res => {
                         putVideo(res[0].thumbnail_large);
-                     })
-                     .fail(function(e) { });
+                    });
             } else if (video.type === 'framatube') {
-                $.getJSON("https://peertube2.cpy.re/api/v1/videos/" + video.id)
-                    .done(function(res) {
+                fetch("https://peertube2.cpy.re/api/v1/videos/" + video.id)
+                    .then(res => res.json())
+                    .then(res => {
                         putVideo("https://framatube.org/lazy-static/previews/" + res.uuid + ".jpg");
-                    })
-                    .fail(function(e) { });
+                    });
             }
         };
 
