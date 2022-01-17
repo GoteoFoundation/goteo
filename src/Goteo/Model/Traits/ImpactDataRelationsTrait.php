@@ -48,6 +48,18 @@ trait ImpactDataRelationsTrait {
         return $this;
     }
 
+    public function hasImpactData(ImpactData $impactData): bool {
+        $tb = strtolower($this->getTable());
+        $rel = $this->getImpactDataTable();
+
+        $sql = "SELECT impact_data.*
+            FROM `$rel`
+            INNER JOIN impact_data ON impact_data.id = `$rel`.impact_data_id
+            WHERE `$rel`.impact_data_id = ?";
+
+        return (bool)self::query($sql, $impactData->id);
+    }
+
     public function getAllImpactData($lang = null) {
         $tb = strtolower($this->getTable());
         $rel = $this->getImpactDataTable();
@@ -75,7 +87,7 @@ trait ImpactDataRelationsTrait {
     public function removeImpactData(ImpactData $impact_data) {
 
         $values = [
-            ':id' => $this->id, 
+            ':id' => $this->id,
             ':impact_data_id' => $impact_data->id
         ];
 

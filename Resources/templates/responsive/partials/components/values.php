@@ -3,6 +3,7 @@
     $footprints = $this->footprints;
     $sdg_by_footprint = $this->sdg_by_footprint;
     $projects_by_footprint = $this->projects_by_footprint;
+    $footprint_impact_data = $this->footprint_impact_data
 ?>
 
 <div class="fluid-container data-container goteo-values">
@@ -31,26 +32,28 @@
                         <?php endforeach; ?>
                     </ul>
                 </div>
-                <div class="col footprint-info">
-                    <div class="slider slider-footprint-data">
-                        <?php foreach($footprint->getAllImpactData() as $impact_data): ?>
-                            <div class="">
-                                <?php if ($impact_data->image): ?>
-                                    <img
-                                        src="<?= $impact_data->getImage()->getLink(165,240,true) ?>"
-                                        alt="<?= $footprint->title ?>"
-                                        height="240"
-                                        width="165"
-                                        >
-                                <?php endif; ?>
-                                <div class="footprint-data-info">
-                                    <h2><?= $impact_data->title ?></h2>
-                                    <h3><span><?= $impact_data->data ?></span> <?= $impact_data->data_unit?></h3>
-                                    <p><?= $impact_data->description ?></p>
+                <?php if (!empty($footprint_impact_data[$footprint->id])): ?>
+                    <div class="col footprint-info">
+                        <div class="slider slider-footprint-data">
+                            <?php foreach($footprint_impact_data[$footprint->id] as $impact_data): ?>
+                                <div class="">
+                                    <?php if ($impact_data->image): ?>
+                                        <img
+                                            src="<?= $impact_data->getImage()->getLink(165,240,true) ?>"
+                                            alt="<?= $footprint->title ?>"
+                                            height="240"
+                                            width="165"
+                                            >
+                                    <?php endif; ?>
+                                    <div class="footprint-data-info">
+                                        <h2><?= $impact_data->title ?></h2>
+                                        <h3><span><?= $impact_data->data ?></span> <?= $impact_data->data_unit?></h3>
+                                        <p><?= $impact_data->description ?></p>
+                                    </div>
                                 </div>
-                            </div>
-                        <?php endforeach ?>
-                    </div>
+                            <?php endforeach ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="slider slider-footprint-projects">
                         <?php foreach($projects_by_footprint[$footprint->id] as $index => $project): ?>
                             <div class="footprint-project">

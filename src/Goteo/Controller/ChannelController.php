@@ -13,6 +13,8 @@ namespace Goteo\Controller;
 use Goteo\Core\Controller;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Forms\Model\QuestionnaireForm;
+use Goteo\Model\Footprint;
+use Goteo\Model\Sdg;
 use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
@@ -37,6 +39,7 @@ use Goteo\Model\Page;
 use Goteo\Model\SocialCommitment;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Questionnaire;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class ChannelController extends Controller {
@@ -112,7 +115,7 @@ class ChannelController extends Controller {
         ], 'channel/');
     }
 
-    public function indexAction($id)
+    public function indexAction($id): Response
     {
         $this->setChannelContext($id);
 
@@ -134,6 +137,23 @@ class ChannelController extends Controller {
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
 
+        $values = $channel->getSections('values');
+        if ($values) {
+            $footprints = Footprint::getList();
+            $projects_by_footprint = [];
+            $sdg_by_footprint = [];
+            $footprintImpactData = [];
+            foreach($footprints as $footprint) {
+                foreach ($footprint->getAllImpactData() as $impactData) {
+                    if ($channel->hasImpactData($impactData)) {
+                        $footprintImpactData[$footprint->id][] = $impactData;
+                    }
+                }
+                $projects_by_footprint[$footprint->id] = Project::getByFootprintOrSDGs(['footprints' => $footprint->id, 'channel' => $channel->id]);
+                $sdg_by_footprint[$footprint->id] = Sdg::getList(['footprint' => $footprint->id]);
+            }
+        }
+
         $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/index';
 
         return $this->viewResponse(
@@ -145,7 +165,12 @@ class ChannelController extends Controller {
                 'type' => $type,
                 'total' => $total,
                 'limit' => $limit,
-                'map' => $map
+                'map' => $map,
+                'footprints' => $footprints,
+                'projects_by_footprint' => $projects_by_footprint,
+                'sdg_by_footprint' => $sdg_by_footprint,
+                'footprint_impact_data' => $footprintImpactData,
+                'values' => $values
             ]
         );
     }
