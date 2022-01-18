@@ -112,8 +112,15 @@
         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
      }
 
-     public function save(DataSet $dataSet, array &$errors = [])
+     public function persist(DataSet $dataSet, array &$errors = []): DataSet
      {
+         if ($dataSet->getId())
+            return $this->update($dataSet, $errors);
+
+         return $this->create($dataSet, $errors);
+    }
+
+    private function create(DataSet $dataSet, &$errors = []): DataSet {
         $fields = [
             'title' => ':title',
             'description' => ':description',
@@ -130,20 +137,43 @@
             ':image' => $dataSet->getImage()->name
         ];
 
-        if ($dataSet->getId()) {
-            $fields['id'] = ':id';
-            $values[':id'] = $dataSet->getId();
-        }
-
-        $sql = "REPLACE INTO `$this->table` (" . implode(',', array_keys($fields) ) . ") VALUES (" . implode(',', array_values($fields)) . ")";
+        $sql = "INSERT INTO `$this->table` (" . implode(',', array_keys($fields) ) . ") VALUES (" . implode(',', array_values($fields)) . ")";
 
         try {
             $this->query($sql, $values);
-            if (!$dataSet->getId())
-                $dataSet->setId($this->insertId());
+            $dataSet->setId($this->insertId());
         } catch (PDOException $exception) {
             $errors[] = $exception->getMessage();
             return false;
+        }
+        return $dataSet;
+
+    }
+
+    private function update(DataSet $dataSet, &$errors = []): DataSet {
+        $fields = [
+            'id' => ':id',
+            'title' => ':title',
+            'description' => ':description',
+            'lang' => ':lang',
+            'url' => ':url',
+            'image' => ':image'
+        ];
+
+        $values = [
+            ':id' => $dataSet->getId(),
+            ':title' => $dataSet->getTitle(),
+            ':description' => $dataSet->getDescription(),
+            ':lang' => $dataSet->getLang(),
+            ':url' => $dataSet->getUrl(),
+            ':image' => $dataSet->getImage()->name
+        ];
+
+        $sql = "REPLACE INTO `$this->table` (" . implode(',', array_keys($fields) ) . ") VALUES (" . implode(',', array_values($fields)) . ")";
+        try {
+            $this->query($sql, $values);
+        } catch (PDOException $exception) {
+            $errors[] = $exception->getMessage();
         }
         return $dataSet;
     }

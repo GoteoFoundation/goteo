@@ -40,26 +40,38 @@ class DataSetRepositoryTest extends TestCase
     /**
      * @depends testGetList
      */
-    public function testSaveDataSet(): DataSet {
+    public function testPersistDataSet(): DataSet {
         $dataSet = new DataSet();
         $dataSet->setId(1)
             ->setTitle('Data Set 1.')
             ->setDescription(' Description of DataSet 1')
             ->setUrl("https://duckduckgo.com/");
 
-        $this->repository->save($dataSet);
+        $this->repository->persist($dataSet);
         $dataSetCount = $this->repository->count();
         $this->assertEquals(1, $dataSetCount);
         return $dataSet;
     }
 
     /**
-     * @depends testSaveDataSet
+     * @depends testPersistDataSet
      */
     public function testDataSetExists(DataSet $dataSet): DataSet
     {
         $dbDataSet = $this->repository->getById($dataSet->getId());
         $this->assertEquals($dataSet->getId(), $dbDataSet->getId());
+        return $dataSet;
+    }
+
+    /**
+     * @depends testPersistDataSet
+     */
+    public function testUpdateDataSet(DataSet $dataSet): DataSet {
+        $dataSet->setTitle('Data Set 1 Update');
+        $this->repository->persist($dataSet);
+
+        $dbDataSet = $this->repository->getById($dataSet->getId());
+        $this->assertEquals('Data Set 1 Update', $dataSet->getTitle());
         return $dataSet;
     }
 
