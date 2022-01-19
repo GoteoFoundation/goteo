@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Verify MySQL connection from host
         run: |
-          mariadb --host 127.0.0.1 -uroot -pgoteo -e "ALTER USER 'goteo' IDENTIFIED WITH mysql_native_password BY 'goteo'";
+          mariadb-client --host 127.0.0.1 -uroot -pgoteo -e "ALTER USER 'goteo' IDENTIFIED WITH mysql_native_password BY 'goteo'";
 
       - name: Install compile gems
         run: |
