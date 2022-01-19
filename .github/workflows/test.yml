@@ -37,6 +37,10 @@ jobs:
           --health-retries=3
 
     steps:
+      - name: Verify MariaDB connection from host
+        run: |
+            mysql --host 127.0.0.1 -uroot -pgoteo -e "UPDATE USER SET PASSWORD=PASSWORD("goteo") WHERE USER='root'";
+
       - name: Install compile gems
         run: |
           sudo gem install sass -v 3.4.23
