@@ -20,7 +20,7 @@ jobs:
 
     services:
       mysql:
-        image: mariadb:10.2.41
+        image: mariadb:10.2
         ports:
           - 3306:3306
         env:
@@ -37,10 +37,6 @@ jobs:
           --health-retries=3
 
     steps:
-      - name: Verify MariaDB connection from host
-        run: |
-            mysql --host 127.0.0.1 -uroot -pgoteo -e "ALTER USER 'goteo' IDENTIFIED WITH mysql_native_password BY 'goteo'";
-
       - name: Install compile gems
         run: |
           sudo gem install sass -v 3.4.23
