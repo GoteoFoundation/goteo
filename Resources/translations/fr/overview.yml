@@ -59,7 +59,6 @@ tooltip-project-image: 'Cela peut être des plans, screenshots, photographies, i
 tooltip-project-image_upload: Effacer
 tooltip-project-keywords: 'A mesure que vous mettez du texte dans le système, des mots clés déjà écrits par d''autres utilisateurs apparaâtront. Ces catégories aident à relier votre projet aux personnes partageant vos centres d''intérêts.'
 tooltip-project-lang: 'Indiquez la langue dans lequel vous remplissez ce formulaire.'
-tooltip-project-media: 'Copiez/collez l''adresse URL d''une vidéo de présentation du projet, publiée auparavant sur Youtube ou autre plateforme. Cette partie est clé pour attirer l''attention de cofinanceurs et contributeurs potentiels. Plus elle est originale, mieux c''est. Nous vous recommandons qu''elle dure entre 2 et 4 minutes.'
 tooltip-project-motivation: 'Expliquez les raisons et les circonstances qui sont à l''origine du projet, ainsi que les communautés ou utilisateurs auxquels il s''adresse. Cela vous aidera à vous mettre en relation avec des personnes mues par les mêmes centres d''intérêts, problématiques ou goûts.'
 tooltip-project-name: 'Donnez un nom au projet. Plus il est bref, mieux c''est. Pour mieux le décrire, vous pouvez donner plus de détails dans la section ci-après.'
 tooltip-project-project_location: 'Indiquez le lieu de réalisation du projet, dans quelle municipalité ou région se trouvent le ou les porteurs principaux du projet.'
