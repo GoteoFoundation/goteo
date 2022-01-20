@@ -54,7 +54,6 @@ tooltip-project-image: 'Posiblea da eskemak, pantaila argazkiak, irudiak, storyb
 tooltip-project-image_upload: EZABATU
 tooltip-project-keywords: 'Testua sartu ahala sistema beste erabiltzaileak sartu dituzten hitz gakoak proposatuko dizkizu. Kategoria hauek zure proiektua kideekin lotzeko laguntzen dute.'
 tooltip-project-lang: 'Zehaztu zein hizkuntzan betetzen duzun proiektuaren formularioa.'
-tooltip-project-media: 'Aurretik bai Youtube-n edo Vimeo-n argitaraturik dagoen proiektuaren aurkezpen bideo baten URL helbidea, kopiatu eta hemen itsatsi. Alde hau oinarrizkoa da ahaleko alde bereko finantzazioa eta babesleen arreta deitzeko. Zenbat eta originalagoa, hobe. 2-4 minutuko iraupena izatea gomendatzen dizugu.'
 tooltip-project-motivation: 'Azaldu ezazu ze arrazoi eta baldintza eraman zaituzte proiektua bururatzera, baita zein komunitate eta erabiltzaile dituzun helburu. Honek gustu berdineko beste pertsonekin konektatzeko lagunduko dizu.'
 tooltip-project-name: 'Idatz ezazu proiektuari buruzko titularra. Ahalik eta laburren hobe. Azalpen gehiago emateko, hurrengo arloan egin ahal duzu.'
 tooltip-project-project_location: 'Zehaztu non garatuko den proiektua, zein herrian edo hirian kokatzen bere bultzatzaile nagusia(k)'
