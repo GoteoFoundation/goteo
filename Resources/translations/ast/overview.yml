@@ -48,6 +48,6 @@ step-overview: 'Pasu: Descripción del proyeutu'
 tooltip-project-image_upload: DESANICIAR
 tooltip-project-keywords: 'A midida qu''introduza testu, el sistema va suxerite pallabres clave que yá teclexaron otros usuarios. Estes estayes ayuden a venceyar el to proyeutu con persones afines.'
 tooltip-project-lang: 'Más alantres pues traducir el proyeutu a otres llingües dende''l panel de traducción.'
-tooltip-project-media: 'El videu de presentación ye una parte fundamental p''atrayer l''atención de la comunidá, asina que cuanto más orixinal seya, meyor. Ye imprescindible que tenga una duración máxima de 4 minutos. Xúbilu a Youtube o Vimeo y apega equí la URL.'
+tooltip-project-media: 'El videu de presentación ye una parte fundamental p''atrayer l''atención de la comunidá, asina que cuanto más orixinal seya, meyor. Ye imprescindible que tenga una duración máxima de 4 minutos. Xúbilu a Youtube, Vimeo o PeerTube y apega equí la URL.'
 overview-field-execution-plan: 'Plan d''execución'
 overview-field-sustainability-model: 'Modelu de sostenibilidá'
