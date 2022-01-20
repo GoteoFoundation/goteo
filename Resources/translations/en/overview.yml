@@ -56,7 +56,6 @@ tooltip-project-image: 'These might be outlines, screenshots, photographs, illus
 tooltip-project-image_upload: ERASE
 tooltip-project-keywords: 'As you enter text, the system will suggest key words that other users have written. These categories help to link your project with other similar ones.'
 tooltip-project-lang: 'You can translate your project to other languages from the translation panel later on.'
-tooltip-project-media: 'The video presentation is a fundamental part to attract the attention of the community so the more original the better. It should last between 2 and 4 minutes. Upload it to Youtube or Vimeo and paste the URL here.'
 tooltip-project-motivation: 'Explain the reasons or circumstances that led you do think of this project, as well as the communities or users to whom it is geared. It will help you connect with people who are moving in this same circle of interests, problems, and tastes.'
 tooltip-project-name: 'Enter a title for your project. The shorter the better, you can add description in the following field.'
 tooltip-project-project_location: 'Indicate the geographical area where your project will impact.'
