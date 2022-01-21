@@ -535,7 +535,25 @@ admin-stats-donations-expired: 'Direct donations from expired contributors'
 admin-stats-donations-refunded: 'Returned donations from failed projects'
 admin-donations: Donations
 admin-donations-tip: Tips
+admin-donations-tip-invests: Contributions from tips
+admin-donations-tip-users: Tip Users
+admin-donations-direct: Direct donations
+admin-donations-expired: Expired donations
+admin-donations-refunded: Returned donations
+admin-donations-amount-percent: '% money donated'
+admin-donations-users-percent: '% users who donated'
+admin-donations-tip-percent: '% money from tips'
+admin-donations-direct-percent: '% direct donations'
+admin-workshop: Goteo Workshop
+admin-workshop-add: New Workshop
+admin-workshop-edit: Edit Workshop %s
+admin-workshop-edit-success: Workshop edited successfully
+admin-online: Online
 mandatory-filter-name: Missing name
 mandatory-filter-description: Missing description
 mandatory-filter-role: Missing role
+admin-node-iframe: Iframe
+admin-channel-resource: 'Channel Resources'
+admin-channel-resource-add: 'Create Resource'
+admin-posts: 'Posts'
 
