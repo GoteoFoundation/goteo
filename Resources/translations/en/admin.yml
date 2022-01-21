@@ -154,6 +154,7 @@ admin-channelpost-add: Add Post tot he channel
 admin-channelpost-submit: Save post
 admin-channelpost-correct: 'The post has been added to the channel'
 admin-channelcriteria-title: 'Channel Polls'
+admin-channelcriteria-subtitle: 'Set the criteria that you''ll use to evaluate a project before you show it on your channel. Make sure your criteria is concise so that they are clear in what you expect from each submission, that way the final evaluation is as easy as possible.'
 admin-channelprogram-create: 'Create'
 admin-channelprogram-add: 'Add program'
 admin-categories: 'Categories and scopes'
@@ -280,6 +281,10 @@ admin-title-failed: Failed
 admin-title-pending: Pending
 admin-title-success: Successful
 admin-title-percent: Percentage
+admin-title-action-url: 'Download button text'
+admin-title-download-url: 'Download link'
+admin-title-channel: 'Channel'
+admin-title-resource-category: 'Resource Catagories'
 admin-title-year: Year
 admin-title-nif: ID
 admin-title-country: Country
@@ -522,7 +527,15 @@ admin-mail-body: 'Body of the message'
 admin-stats-donations: 'Donations'
 admin-stats-donations-method: 'Donations by payment method'
 admin-stats-donations-method-desc: 'Donations include the money that the user voluntarily gives the foundation when giving to a project, direct donations or when the amount in the wallet expires.'
+admin-stats-donations-tip: 'Donations to Fundraisers (tips)'
+admin-stats-donations-direct: 'Direct Donations (includes expired contributors)'
+admin-stats-donations-generosity: 'Generosity Percentages'
+admin-stats-donations-generosity-desc: 'Number of users who donated versus total users. Only includes projects with donations.'
+admin-stats-donations-expired: 'Direct donations from expired contributors'
+admin-stats-donations-refunded: 'Returned donations from failed projects'
 admin-donations: Donations
+admin-donations-tip: Tips
+admin-donations-tip-invests: Contributions from tips
 mandatory-filter-name: Missing name
 mandatory-filter-description: Missing description
 mandatory-filter-role: Missing role
