@@ -15,7 +15,14 @@ channel-call-footer-stats: Stats
 channel-call-footer-conditions: Conditions of use
 channel-call-footer-privacy: Privacy Policy
 channel-call-footer-licenses: Licenses
+channel-call-footer-faq: FAQ
 channel-call-footer-contact: Contact
+channel-call-footer-twitter: Twitter
+channel-call-footer-facebook: Facebook
+channel-call-footer-instagram: Instagram
+channel-call-footer-telegram: Telegram
+channel-call-footer-github: Github
+channel-call-footer-newsletter: Newsletter
 channel-call-footer-social-networks: Social networks
 channel-call-posts-section-title: Last news
 channel-call-posts-section-description: 'Find out the latest news about '
@@ -35,4 +42,16 @@ channel-call-impact-data-investors: Backers
 channel-call-resources-banner-title: 'Open knowledge'
 channel-call-resources-banner-description: 'Resources'
 channel-call-resources-filter-title: 'Filter by category'
+channel-call-intro-pitcher-title: 'Pitcher'
+channel-call-intro-matcher-title: 'Matcher'
+channel-call-intro-donor-title: 'Donor'
+channel-call-intro-factory-title: 'Goteo'
 channel-call-intro-pitcher-tab-title: 'Create your project'
+channel-call-intro-pitcher-tab-description: 'Launch your idea to the world on a civil, cooperative, social, and sustainable crowdfunding platform.</br>Create a community through cooperation.'
+channel-call-intro-pitcher-tab-action: 'Become a Contributor!'
+channel-call-intro-pitcher-tab-action-url: '/project/create'
+channel-call-intro-pitcher-tab-video: 'https://www.youtube.com/embed/5bzfj2IkznQ'
+channel-call-intro-matcher-tab-title: 'Co-finance projects'
+channel-call-intro-matcher-tab-description: 'Are you a cooperative and responsible company or foundation?<br>Want to dive into the world of collaboration?'
+channel-call-intro-matcher-tab-action: 'Become a matcher!'
+channel-call-intro-matcher-tab-video: 'https://www.youtube.com/embed/rZFvAfZLZSI'
