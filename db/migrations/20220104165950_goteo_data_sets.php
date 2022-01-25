@@ -35,6 +35,7 @@ class GoteoDataSets
             `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `title` TEXT NULL,
             `description` TEXT NULL,
+            `type` VARCHAR(50) NULL,
             `lang` VARCHAR(6) NOT NULL,
             `url` VARCHAR(255) NOT NULL,
             `image` VARCHAR(255) NULL,

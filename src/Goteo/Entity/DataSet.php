@@ -16,9 +16,13 @@ use Goteo\Model\Image;
 
 class DataSet {
 
+    const DATASET_TYPE_PROJECTS = 'projects';
+    const DATASET_TYPE_INVESTS = 'invests';
+
     private int $id;
     private ?string $title = null;
     private ?string $description = null;
+    private ?string $type = null;
     private string $lang;
     private string $url;
     private ?Image $image = null;
@@ -60,6 +64,17 @@ class DataSet {
     public function setDescription(string $description): DataSet
     {
         $this->description = $description;
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): DataSet
+    {
+        $this->type = $type;
         return $this;
     }
 
