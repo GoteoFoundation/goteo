@@ -74,6 +74,29 @@
         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
     }
 
+     public function getLastByFootprintAndType(array $footprints, string $type): DataSet {
+         $sqlWhere = "WHERE data_set.type = '{$type}'";
+
+         if (!empty($footprints)) {
+             $sqlWhere .= "AND fds.footprint_id IN ( " . implode(',', $footprints) . ")";
+         }
+
+         $sql = "SELECT data_set.*
+                FROM data_set
+                INNER JOIN footprint_data_set fds ON fds.data_set_id = data_set.id
+                {$sqlWhere}
+                ORDER BY data_set.modified_at DESC
+                LIMIT 1
+                ";
+
+         $dataSet = $this->query($sql)->fetchObject(DataSet::class );
+
+         if (!$dataSet instanceOf DataSet)
+             throw new ModelNotFoundException("DataSet not found");
+
+         return $dataSet;
+     }
+
      /**
       * @return DataSet[]
       */
@@ -91,6 +114,29 @@
                 ";
 
         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
+     }
+
+     public function getLastBySDGsAndType(array $sdgs, string $type): DataSet {
+         $sqlWhere = "WHERE data_set.type = '{$type}' ";
+
+         if (!empty($sdgs)) {
+             $sqlWhere .= "AND sds.sdg_id IN ( " . implode(',', $sdgs) . ")";
+         }
+
+         $sql = "SELECT data_set.*
+                FROM data_set
+                INNER JOIN sdg_data_set sds ON sds.data_set_id = data_set.id
+                {$sqlWhere}
+                ORDER BY data_set.modified_at DESC
+                LIMIT 1
+                ";
+
+         $dataSet = $this->query($sql)->fetchObject(DataSet::class );
+
+         if (!$dataSet instanceOf DataSet)
+             throw new ModelNotFoundException("DataSet not found");
+
+         return $dataSet;
      }
 
      /**
@@ -112,6 +158,34 @@
         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
      }
 
+     public function getLastByCallAndType(array $calls, string $type): DataSet {
+         $sqlWhere = "WHERE data_set.type = '{$type}' ";
+
+         if (!empty($calls)) {
+             foreach($calls as $index => $call) {
+                 $parts[] = ':calls_' . $index;
+                 $values[':calls_' . $index] = $call;
+             }
+
+             $sqlWhere .= "AND cds.call_id IN ( " . implode(',', $parts) . ")";
+         }
+
+         $sql = "SELECT data_set.*
+                FROM data_set
+                INNER JOIN call_data_set cds ON cds.data_set_id = data_set.id
+                {$sqlWhere}
+                ORDER BY data_set.modified_at DESC
+                LIMIT 1
+                ";
+
+         $dataSet = $this->query($sql, $values)->fetchObject(DataSet::class );
+
+         if (!$dataSet instanceOf DataSet)
+             throw new ModelNotFoundException("DataSet not found");
+
+         return $dataSet;
+     }
+
      public function persist(DataSet $dataSet, array &$errors = []): DataSet
      {
          if ($dataSet->getId())
@@ -124,6 +198,7 @@
         $fields = [
             'title' => ':title',
             'description' => ':description',
+            'type' => ':type',
             'lang' => ':lang',
             'url' => ':url',
             'image' => ':image'
@@ -132,6 +207,7 @@
         $values = [
             ':title' => $dataSet->getTitle(),
             ':description' => $dataSet->getDescription(),
+            ':type' => $dataSet->getType(),
             ':lang' => $dataSet->getLang(),
             ':url' => $dataSet->getUrl(),
             ':image' => $dataSet->getImage()->name
@@ -155,6 +231,7 @@
             'id' => ':id',
             'title' => ':title',
             'description' => ':description',
+            'type' => ':type',
             'lang' => ':lang',
             'url' => ':url',
             'image' => ':image'
@@ -164,6 +241,7 @@
             ':id' => $dataSet->getId(),
             ':title' => $dataSet->getTitle(),
             ':description' => $dataSet->getDescription(),
+            'type' => $dataSet->getType(),
             ':lang' => $dataSet->getLang(),
             ':url' => $dataSet->getUrl(),
             ':image' => $dataSet->getImage()->name
@@ -180,7 +258,6 @@
 
     public function delete(DataSet $dataSet): void {
         $sql = "DELETE FROM $this->table WHERE $this->table.id = :id";
-        \sqldbg($sql);
         try {
             $this->query($sql, [':id' => $dataSet->getId()]);
         } catch (PDOException $exception) {

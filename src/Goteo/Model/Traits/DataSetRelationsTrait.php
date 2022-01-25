@@ -34,7 +34,7 @@ trait DataSetRelationsTrait {
 
         $tb = strtolower($this->getTable());
         $rel = $this->getDataSetTable();
-        $sql = "REPLACE INTO `$rel` ({$tb}_id, data_set_id, order) VALUES (:tb_id, :data_set_id, :order)";
+        $sql = "REPLACE INTO `$rel` ({$tb}_id, data_set_id, `order`) VALUES (:tb_id, :data_set_id, :order)";
         $values = [
             ':tb_id' => $this->id,
             ':data_set_id' => $dataSet->getId(),

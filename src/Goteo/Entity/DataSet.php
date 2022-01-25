@@ -19,7 +19,7 @@ class DataSet {
     const DATASET_TYPE_PROJECTS = 'projects';
     const DATASET_TYPE_INVESTS = 'invests';
 
-    private int $id;
+    private ?int $id = null;
     private ?string $title = null;
     private ?string $description = null;
     private ?string $type = null;
@@ -34,7 +34,7 @@ class DataSet {
         $this->lang = Config::get('lang');
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
