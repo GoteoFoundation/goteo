@@ -91,6 +91,7 @@ regular-content: Content
 regular-continue-question: 'Continue?'
 regular-continue: 'Continue'
 regular-create: 'Create a project'
+regular-data-unit: 'Unit'
 regular-date: Date
 regular-date_in: Entry Date
 regular-date_out: Release Date
@@ -185,6 +186,7 @@ regular-status: Status
 regular-template: Template
 regular-thanks: Thank you
 regular-title: Title
+regular-subtitle: Subtitle
 regular-text: Text
 regular-media: Video (Youtube, Vimeo)
 regular-total: Total
@@ -247,3 +249,5 @@ regular-icon: Icon
 regular-action: Action
 regular-action_url: Action URL
 regular-modal-decription: Modal's content
+regular-click-more: "Click to find out more"
+regular-apply: Apply
