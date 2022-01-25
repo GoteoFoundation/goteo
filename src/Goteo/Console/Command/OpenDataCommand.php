@@ -12,6 +12,7 @@ namespace Goteo\Console\Command;
 
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\Exception;
+use Goteo\Entity\DataSet;
 use Goteo\Library\FileHandler\File;
 use Goteo\Model\Call;
 use Goteo\Model\Footprint;
@@ -19,6 +20,7 @@ use Goteo\Model\Invest;
 use Goteo\Model\Origin;
 use Goteo\Model\Project;
 use Goteo\Model\Sdg;
+use Goteo\Repository\DataSetRepository;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -117,6 +119,21 @@ EOT
 
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
+            $dataSetRepository = new DataSetRepository();
+
+            try {
+                $dataSet = $dataSetRepository->getLastBySDGsAndType([$sdg->id], DataSet::DATASET_TYPE_PROJECTS);
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSetRepository->persist($dataSet);
+                $sdg->addDataSet($dataSet, 1);
+            } catch (ModelNotFoundException $e) {
+                $dataSet = new DataSet();
+                $dataSet->setTitle("$sdg->name");
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSet->setType(DataSet::DATASET_TYPE_PROJECTS);
+                $dataSetRepository->persist($dataSet);
+                $sdg->addDataSet($dataSet, 1);
+            }
         } else {
             $this->log("\nUpload of file {$fileName} failed!", [], 'error');
         }
@@ -138,6 +155,21 @@ EOT
 
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
+            $dataSetRepository = new DataSetRepository();
+
+            try {
+                $dataSet = $dataSetRepository->getLastBySDGsAndType([$sdg->id], DataSet::DATASET_TYPE_INVESTS);
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSetRepository->persist($dataSet);
+                $sdg->addDataSet($dataSet, 1);
+            } catch (ModelNotFoundException $e) {
+                $dataSet = new DataSet();
+                $dataSet->setTitle("$sdg->name");
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSet->setType(DataSet::DATASET_TYPE_INVESTS);
+                $dataSetRepository->persist($dataSet);
+                $sdg->addDataSet($dataSet, 1);
+            }
         } else {
             $this->log("\nUpload of file {$fileName} failed!", [], 'error');
         }
@@ -161,6 +193,20 @@ EOT
 
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
+            $dataSetRepository = new DataSetRepository();
+            try {
+                $dataSet = $dataSetRepository->getLastByFootprintAndType([$footprint->id], DataSet::DATASET_TYPE_PROJECTS);
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSetRepository->persist($dataSet);
+                $footprint->addDataSet($dataSet, 1);
+            } catch (ModelNotFoundException $e) {
+                $dataSet = new DataSet();
+                $dataSet->setTitle("$footprint->name");
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSet->setType(DataSet::DATASET_TYPE_PROJECTS);
+                $dataSet = $dataSetRepository->persist($dataSet);
+                $footprint->addDataSet($dataSet, 1);
+            }
         } else {
             $this->log("\nUpload of file {$fileName} failed!", [], 'error');
         }
@@ -182,6 +228,22 @@ EOT
 
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
+
+            $dataSetRepository = new DataSetRepository();
+            try {
+                $dataSet = $dataSetRepository->getLastByFootprintAndType([$footprint->id], DataSet::DATASET_TYPE_INVESTS);
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSetRepository->persist($dataSet);
+                $footprint->addDataSet($dataSet, 1);
+            } catch (ModelNotFoundException $e) {
+                $dataSet = new DataSet();
+                $dataSet->setTitle("$footprint->name");
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSet->setType(DataSet::DATASET_TYPE_INVESTS);
+                $dataSetRepository->persist($dataSet);
+                $footprint->addDataSet($dataSet, 1);
+            }
+
         } else {
             $this->log("\nUpload of file {$fileName} failed!", [], 'error');
         }
@@ -205,6 +267,20 @@ EOT
 
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
+            $dataSetRepository = new DataSetRepository();
+            try {
+                $dataSet = $dataSetRepository->getLastByCAllAndType([$call->id], DataSet::DATASET_TYPE_PROJECTS);
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSetRepository->persist($dataSet);
+                $call->addDataSet($dataSet, 1);
+            } catch (ModelNotFoundException $e) {
+                $dataSet = new DataSet();
+                $dataSet->setTitle("$call->name");
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSet->setType(DataSet::DATASET_TYPE_PROJECTS);
+                $dataSetRepository->persist($dataSet);
+                $call->addDataSet($dataSet, 1);
+            }
         } else {
             $this->log("\nUpload of file {$fileName} failed!", [], 'error');
         }
@@ -223,6 +299,20 @@ EOT
 
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
+            $dataSetRepository = new DataSetRepository();
+            try {
+                $dataSet = $dataSetRepository->getLastByCallAndType([$call->id], DataSet::DATASET_TYPE_INVESTS);
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSetRepository->persist($dataSet);
+                $call->addDataSet($dataSet, 1);
+            } catch (ModelNotFoundException $e) {
+                $dataSet = new DataSet();
+                $dataSet->setTitle("$call->name");
+                $dataSet->setUrl($file->get_path() . $fileName);
+                $dataSet->setType(DataSet::DATASET_TYPE_INVESTS);
+                $dataSetRepository->persist($dataSet);
+                $call->addDataSet($dataSet, 1);
+            }
         } else {
             $this->log("\nUpload of file {$fileName} failed!", [], 'error');
         }
