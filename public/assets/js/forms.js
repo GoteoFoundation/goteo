@@ -41,6 +41,11 @@ function parseVideoURL (url) {
     // - Also supports relative URLs:
     //   - //player.vimeo.com/video/25451551
 
+    let peerTubeInstances = [
+        'framatube.org',
+        'peertube.plataformess.org'
+    ]
+
     url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com)|framatube\.org|peertube\.plataformess\.org)\/(videos\/watch\/|video\/|embed\/|watch\?v=|v\/|w\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
 
     let type, src, thumbnailSrc = "", apiUrl = "";
@@ -53,14 +58,11 @@ function parseVideoURL (url) {
         type = 'vimeo'
         src = '//player.vimeo.com/video/' + RegExp.$6 + '?title=0&byline=0&portrait=0&autoplay=1'
         apiUrl = "https://vimeo.com/api/v2/video/"+ RegExp.$6 + ".json"
-    } else if (RegExp.$3.indexOf('framatube.org') > -1) {
+    } else if (peerTubeInstances.includes(RegExp.$3)) {
+        let basePeerTubeInstanceUrl = RegExp.$3
         type = 'framatube'
-        src = '//framatube.org/videos/embed/' + RegExp.$6 + '?warningTitle=0&autoplay=1'
-        apiUrl = "https://peertube2.cpy.re/api/v1/videos/" + RegExp.$6
-    } else if (RegExp.$3.indexOf('peertube.plataformess.org') > -1) {
-        type = 'plataformess';
-        src = '//peertube.plataformess.org/videos/embed/' + RegExp.$6 + '?warningTitle=0&autoplay=1'
-        apiUrl = "https://peertube.plataformess.org/api/v1/videos/" + RegExp.$6
+        src = '//' + basePeerTubeInstanceUrl + '/videos/embed/' + RegExp.$6 + '?warningTitle=0&autoplay=1'
+        apiUrl = "https://" + basePeerTubeInstanceUrl + "/api/v1/videos/" + RegExp.$6
     }
 
     return {
@@ -698,7 +700,7 @@ $(function(){
                         let thumbnailSrc = ""
                         if (video.type === 'vimeo') {
                             thumbnailSrc = res[0].thumbnail_large
-                        } else if (video.type === 'framatube' || video.type === 'plataformess') {
+                        } else if (video.type === 'framatube') {
                             thumbnailSrc = "https://" + res.account.host + "/lazy-static/previews/" + res.uuid + ".jpg"
                         }
                         putVideo(thumbnailSrc)
