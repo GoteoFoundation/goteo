@@ -41,30 +41,35 @@ function parseVideoURL (url) {
     // - Also supports relative URLs:
     //   - //player.vimeo.com/video/25451551
 
+    let peerTubeInstances = [
+        'framatube.org',
+        'peertube.plataformess.org'
+    ]
+
     url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com)|framatube\.org|peertube\.plataformess\.org)\/(videos\/watch\/|video\/|embed\/|watch\?v=|v\/|w\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
 
-    var type, src, thumbnailSrc = "";
+    let type, src, thumbnailSrc = "", apiUrl = "";
 
     if (RegExp.$3.indexOf('youtu') > -1) {
-        type = 'youtube';
-        src = '//youtube.com/embed/' +  RegExp.$6 + '?wmode=Opaque&autoplay=1';
-        thumbnailSrc = 'https://img.youtube.com/vi/' + RegExp.$6 + '/maxresdefault.jpg';
+        type = 'youtube'
+        src = '//youtube.com/embed/' +  RegExp.$6 + '?wmode=Opaque&autoplay=1'
+        thumbnailSrc = 'https://img.youtube.com/vi/' + RegExp.$6 + '/maxresdefault.jpg'
     } else if (RegExp.$3.indexOf('vimeo') > -1) {
-        type = 'vimeo';
-        src = '//player.vimeo.com/video/' + RegExp.$6 + '?title=0&byline=0&portrait=0&autoplay=1';
-    } else if (RegExp.$3.indexOf('framatube.org') > -1) {
-        type = 'framatube';
-        src = '//framatube.org/videos/embed/' + RegExp.$6 + '?warningTitle=0&autoplay=1';
-    } else if (RegExp.$3.indexOf('peertube.plataformess.org') > -1) {
-        type = 'plataformess';
-        src = '//peertube.plataformess.org/videos/embed/' + RegExp.$6 + '?warningTitle=0&autoplay=1';
-        thumbnailSrc = "https://peertube.plataformess.org/static/thumbnails/" + RegExp.$6 + ".jpg";
+        type = 'vimeo'
+        src = '//player.vimeo.com/video/' + RegExp.$6 + '?title=0&byline=0&portrait=0&autoplay=1'
+        apiUrl = "https://vimeo.com/api/v2/video/"+ RegExp.$6 + ".json"
+    } else if (peerTubeInstances.includes(RegExp.$3)) {
+        let basePeerTubeInstanceUrl = RegExp.$3
+        type = 'framatube'
+        src = '//' + basePeerTubeInstanceUrl + '/videos/embed/' + RegExp.$6 + '?warningTitle=0&autoplay=1'
+        apiUrl = "https://" + basePeerTubeInstanceUrl + "/api/v1/videos/" + RegExp.$6
     }
 
     return {
         type: type,
         src: src,
         thumbnailSrc: thumbnailSrc,
+        apiUrl: apiUrl,
         id: RegExp.$6
     };
 }
@@ -659,21 +664,21 @@ $(function(){
 
         // Video
         var _addVideo = function(e) {
-            var val = $(this).val();
+            let val = $(this).val();
             if(!val) return;
-            var video = parseVideoURL(val);
-            var input = this;
-            var $container = $(this).closest('.media-container');
-            var $holder = $container.find('.video-holder');
-            var $embed = $container.find('.embed-responsive');
+            let video = parseVideoURL(val);
+            let input = this;
+            let $container = $(this).closest('.media-container');
+            let $holder = $container.find('.video-holder');
+            let $embed = $container.find('.embed-responsive');
 
             // Add thumb
             $container.removeClass('loaded').removeClass('playing').addClass('loading');
 
-            var putVideo = function(thumb) {
+            let putVideo = function(thumb) {
                 $container.find('.cover-image').attr('src', thumb);
                 $container.removeClass('loading').addClass('loaded');
-                var iframe = $('<iframe>', {
+                let iframe = $('<iframe>', {
                     src: video.src,
                     frameborder: 0,
                     allowfullscreen: true,
@@ -688,17 +693,17 @@ $(function(){
 
             if (video.thumbnailSrc !== '') {
                 putVideo(video.thumbnailSrc);
-            } else if (video.type === 'vimeo') {
-                fetch("https://vimeo.com/api/v2/video/"+ video.id + ".json")
+            } else if (video.apiUrl !== '') {
+                fetch(video.apiUrl)
                     .then(res => res.json())
                     .then(res => {
-                        putVideo(res[0].thumbnail_large);
-                    });
-            } else if (video.type === 'framatube') {
-                fetch("https://peertube2.cpy.re/api/v1/videos/" + video.id)
-                    .then(res => res.json())
-                    .then(res => {
-                        putVideo("https://framatube.org/lazy-static/previews/" + res.uuid + ".jpg");
+                        let thumbnailSrc = ""
+                        if (video.type === 'vimeo') {
+                            thumbnailSrc = res[0].thumbnail_large
+                        } else if (video.type === 'framatube') {
+                            thumbnailSrc = "https://" + res.account.host + "/lazy-static/previews/" + res.uuid + ".jpg"
+                        }
+                        putVideo(thumbnailSrc)
                     });
             }
         };
