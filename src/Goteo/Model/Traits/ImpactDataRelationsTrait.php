@@ -52,9 +52,8 @@ trait ImpactDataRelationsTrait {
         $tb = strtolower($this->getTable());
         $rel = $this->getImpactDataTable();
 
-        $sql = "SELECT impact_data.*
+        $sql = "SELECT `$rel`.impact_data_id
             FROM `$rel`
-            INNER JOIN impact_data ON impact_data.id = `$rel`.impact_data_id
             WHERE `$rel`.impact_data_id = ?";
 
         return (bool)self::query($sql, $impactData->id);

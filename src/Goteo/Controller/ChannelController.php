@@ -137,22 +137,7 @@ class ChannelController extends Controller {
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
 
-        $values = $channel->getSections('values');
-        if ($values) {
-            $footprints = Footprint::getList();
-            $projects_by_footprint = [];
-            $sdg_by_footprint = [];
-            $footprintImpactData = [];
-            foreach($footprints as $footprint) {
-                foreach ($footprint->getAllImpactData() as $impactData) {
-                    if ($channel->hasImpactData($impactData)) {
-                        $footprintImpactData[$footprint->id][] = $impactData;
-                    }
-                }
-                $projects_by_footprint[$footprint->id] = Project::getByFootprintOrSDGs(['footprints' => $footprint->id, 'channel' => $channel->id]);
-                $sdg_by_footprint[$footprint->id] = Sdg::getList(['footprint' => $footprint->id]);
-            }
-        }
+        if ($values = $channel->getSections('values')) $this->addValuesContext($channel, $values);
 
         $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/index';
 
@@ -165,12 +150,7 @@ class ChannelController extends Controller {
                 'type' => $type,
                 'total' => $total,
                 'limit' => $limit,
-                'map' => $map,
-                'footprints' => $footprints,
-                'projects_by_footprint' => $projects_by_footprint,
-                'sdg_by_footprint' => $sdg_by_footprint,
-                'footprint_impact_data' => $footprintImpactData,
-                'values' => $values
+                'map' => $map
             ]
         );
     }
@@ -537,6 +517,31 @@ class ChannelController extends Controller {
             $vars['items'][] = View::render('project/widgets/normal', ['project' => $p]);
         }
         return $this->jsonResponse($vars);
+    }
+
+    private function addValuesContext(Node $channel, array $values = []) {
+        $footprints = Footprint::getList();
+        $projects_by_footprint = [];
+        $sdg_by_footprint = [];
+        $footprintImpactData = [];
+        foreach($footprints as $footprint) {
+            foreach ($footprint->getAllImpactData() as $impactData) {
+                if ($channel->hasImpactData($impactData)) {
+                    $footprintImpactData[$footprint->id][] = $impactData;
+                }
+            }
+            $projects_by_footprint[$footprint->id] = Project::getByFootprintOrSDGs(['footprints' => $footprint->id, 'channel' => $channel->id]);
+            $sdg_by_footprint[$footprint->id] = Sdg::getList(['footprint' => $footprint->id]);
+        }
+
+        $this->contextVars([
+            'footprints' => $footprints,
+            'projects_by_footprint' => $projects_by_footprint,
+            'sdg_by_footprint' => $sdg_by_footprint,
+            'footprint_impact_data' => $footprintImpactData,
+            'values' => current($values)
+        ], 'channel/');
+
     }
 
 }
