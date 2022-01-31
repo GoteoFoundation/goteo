@@ -2595,7 +2595,7 @@ class Project extends Model {
     }
 
 
-    public static function getByFootprintOrSDGs($filters = array(), $offset = 0, $limit = 10, $count = false ) {
+    public static function getByFootprintOrSDGs($filters = array(), $offset, $limit, $count = false ) {
 
         $lang = Lang::current();
         $values = array();

@@ -33,16 +33,7 @@
 
     <?= $this->insert('home/partials/projects') ?>
 
-    <?php if ($this->home['values']): ?>
-
-        <?= $this->insert('partials/components/values', [
-            'title' => $this->t('home-footprint-values-title'),
-            'footprints' => $this->footprints,
-            'sdg_by_footprint' => $this->sdg_by_footprint,
-            'projects_by_footprint' => $this->projects_by_footprint
-        ]) ?>
-
-    <?php endif; ?>
+    <?= $this->insert('home/partials/values') ?>
 
     <?= $this->insertif('home/partials/call_to_action') ?>
 
