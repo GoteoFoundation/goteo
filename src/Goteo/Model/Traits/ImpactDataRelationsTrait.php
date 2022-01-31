@@ -56,7 +56,7 @@ trait ImpactDataRelationsTrait {
             FROM `$rel`
             WHERE `$rel`.impact_data_id = ?";
 
-        return (bool)self::query($sql, $impactData->id);
+        return (bool)self::query($sql, $impactData->id)->fetchColumn();
     }
 
     public function getAllImpactData($lang = null) {
