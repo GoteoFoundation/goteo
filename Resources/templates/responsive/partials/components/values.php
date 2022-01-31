@@ -50,9 +50,9 @@
                                     <h3><span><?= $impact_data->data ?></span> <?= $impact_data->data_unit?></h3>
                                     <p><?= $impact_data->description ?></p>
                                 </div>
-                            </div>
-                        <?php endforeach ?>
-                    </div>
+                            <?php endforeach ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="slider slider-footprint-projects">
                         <?php foreach($projects_by_footprint[$footprint->id] as $index => $project): ?>
                             <div class="footprint-project">
