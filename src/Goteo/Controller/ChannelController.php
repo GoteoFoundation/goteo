@@ -162,7 +162,7 @@ class ChannelController extends Controller {
     {
         $this->setChannelContext($id);
         $channel = Node::get($id);
-        $limit = 9;
+        $limit = 8;
         $status=[3,4,5];
         $filter = ['type' => $type, 'popularity' => 5, 'status' => $status ];
 
