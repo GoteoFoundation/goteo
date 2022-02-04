@@ -76,7 +76,7 @@ class Config {
         'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate',
         'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups',
         'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate',
-        'questionnaire', 'poster', 'channel_call', 'map'
+        'questionnaire', 'poster', 'channel_call', 'map', 'data_sets'
     ];
 
     const ENV_PARAMETER_REG_EX = "/^%env\((.*)\)%$/";

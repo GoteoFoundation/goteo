@@ -289,4 +289,11 @@ $routes->add('impact-discover-mosaic', new Route(
     )
 ));
 
+$routes->add('impact-discover-datasets', new Route(
+    '/impact-discover/datasets',
+    array(
+        '_controller' => 'Goteo\Controller\ImpactDiscoverController::dataSetsAction'
+    )
+));
+
 return $routes;
