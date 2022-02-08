@@ -371,7 +371,7 @@ EOT
         }
     }
 
-    function getFile(string $model, int $id, string $type): array
+    function getFile(string $model, $id, string $type): array
     {
         $fileName = time() . "-$id-$type.csv";
         $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
@@ -385,7 +385,7 @@ EOT
     {
         $dataSet = new DataSet();
         $dataSet->setTitle($model->name);
-        $dataSet->setUrl($file->get_path() . $fileName);
+        $dataSet->setUrl($file->get_public_url($file->get_path() . $fileName));
         $dataSet->setType($type);
         $this->dataSetRepository->persist($dataSet);
         $model->addDataSet($dataSet, 1);
@@ -393,7 +393,7 @@ EOT
 
     private function updateDataSet(DataSet $dataSet, FileInterface $file, string $fileName, Model $model): void
     {
-        $dataSet->setUrl($file->get_path() . $fileName);
+        $dataSet->setUrl($file->get_public_url($file->get_path() . $fileName));
         $this->dataSetRepository->persist($dataSet);
         $model->addDataSet($dataSet, 1);
     }
