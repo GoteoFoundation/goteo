@@ -80,7 +80,6 @@ class DataSetRepositoryTest extends TestCase
      */
     public function testDeleteDataSet(DataSet $dataSet): void
     {
-        print_r("delete function");
         $this->repository->delete($dataSet);
 
         $dataSetsCount = $this->repository->count();

@@ -50,6 +50,9 @@ trait DataSetRelationsTrait {
         return $this;
     }
 
+    /**
+     * @return DataSet[]
+     */
     public function getAllDataSet($lang = null) {
         $tb = strtolower($this->getTable());
         $rel = $this->getDataSetTable();
