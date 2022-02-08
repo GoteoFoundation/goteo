@@ -31,13 +31,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OpenDataCommand extends AbstractCommand {
     private DataSetRepository $dataSetRepository;
 
-    public function __construct()
-    {
-        $this->dataSetRepository = new DataSetRepository();
-    }
-
     protected function configure()
     {
+        $this->dataSetRepository = new DataSetRepository();
+
         $this->setName("opendata")
             ->setDescription("Generates OpenData files")
             ->setDefinition([
