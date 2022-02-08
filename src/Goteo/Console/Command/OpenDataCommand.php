@@ -117,7 +117,6 @@ EOT
         $projects = Project::getBySDGs([$sdg->id], 0, $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
-        var_dump($file->upload('/tmp/' . $fileName, $fileName)); die;
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
             $dataSetRepository = new DataSetRepository();
@@ -154,7 +153,6 @@ EOT
 
         $this->extractInvestOpenData($fileName, $invests);
 
-        var_dump($file->upload('/tmp/' . $fileName, $fileName)); die;
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
             $dataSetRepository = new DataSetRepository();
@@ -193,7 +191,6 @@ EOT
         $projects = Project::getByFootprint(['footprints' => $footprint->id], 0, $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
-        var_dump($file->upload('/tmp/' . $fileName, $fileName)); die;
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
             $dataSetRepository = new DataSetRepository();
@@ -229,7 +226,6 @@ EOT
 
         $this->extractInvestOpenData($fileName, $invests);
 
-        var_dump($file->upload('/tmp/' . $fileName, $fileName)); die;
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
 
@@ -269,7 +265,6 @@ EOT
         $projects = Project::getList(['called' => $call->id], 0, $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
-        var_dump($file->upload('/tmp/' . $fileName, $fileName)); die;
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
             $dataSetRepository = new DataSetRepository();
@@ -302,7 +297,6 @@ EOT
 
         $this->extractInvestOpenData($fileName, $invests);
 
-        var_dump($file->upload('/tmp/' . $fileName, $fileName)); die;
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
             $this->log("\nUpload of file {$fileName} completed!", [], 'info');
             $dataSetRepository = new DataSetRepository();
