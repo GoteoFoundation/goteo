@@ -11,6 +11,7 @@
 namespace Goteo\Model\Traits;
 
 use Goteo\Application\Config;
+use Goteo\Core\Model;
 use Goteo\Entity\DataSet;
 use Goteo\Application\Exception\ModelException;
 use PDOException;
@@ -30,7 +31,7 @@ trait DataSetRelationsTrait {
         return "{$tb}_data_set";
     }
 
-    public function addDataSet(DataSet $dataSet, int $order) {
+    public function addDataSet(DataSet $dataSet, int $order): Model {
 
         $tb = strtolower($this->getTable());
         $rel = $this->getDataSetTable();
@@ -53,7 +54,7 @@ trait DataSetRelationsTrait {
     /**
      * @return DataSet[]
      */
-    public function getAllDataSet($lang = null) {
+    public function getAllDataSet($lang = null): array {
         $tb = strtolower($this->getTable());
         $rel = $this->getDataSetTable();
         list($fields, $joins) = DataSet::getLangsSQLJoins($lang, Config::get('sql_lang'));
@@ -82,7 +83,7 @@ trait DataSetRelationsTrait {
         return [];
     }
 
-    public function removeDataSet(DataSet $dataSet) {
+    public function removeDataSet(DataSet $dataSet): Model {
 
         $values = [
             ':id' => $this->id,
