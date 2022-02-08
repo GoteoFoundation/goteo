@@ -16,9 +16,10 @@ abstract class BaseRepository {
     protected $model;
 
     public function __construct() {
-		if ($cache_time = Config::get('db.cache.time')) {
-			$this->cacher = new Cacher('sql', $cache_time);
-		}
+        if ($cache_time = Config::get('db.cache.time')) {
+            $this->cacher = new Cacher('sql', $cache_time);
+        }
+
         $this->db = new DB($this->cacher, App::debug() ? 2 : false);
     }
 
