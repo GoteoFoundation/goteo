@@ -149,7 +149,7 @@ class ImpactDiscoverController extends Controller {
         $footprintsSelected = $filters['footprints'] ?? [];
 
         $dataSetsRepository = new DataSetRepository();
-        $dataSets = $dataSetsRepository->getList();
+        $dataSets = $dataSetsRepository->getListByFootprintAndSDGs($filters);
 
         return $this->viewResponse('impact_discover/data_sets', [
             'sdgSelected' => $sdgSelected,
@@ -159,6 +159,5 @@ class ImpactDiscoverController extends Controller {
             'view' => 'data_sets'
         ]);
     }
-
 }
 
