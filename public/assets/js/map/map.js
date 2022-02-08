@@ -70,10 +70,10 @@ $(function(){
       url: '/api/map/channel/' + channel,
       type: 'GET'
     }).done(function(data) {
-      var latlngs = [];
-      var projects = data.projects;
-      var workshops = data.workshops;
-      this.project_markers = L.markerClusterGroup();
+      let latlngs = [];
+      let projects = data.projects;
+      let workshops = data.workshops;
+      let project_markers = L.markerClusterGroup();
       projects.forEach(function(project){
 
         if (project.project_location.latitude && project.project_location.longitude) {

@@ -34,23 +34,42 @@ function parseVideoURL (url) {
     // - Supported Vimeo URL formats:
     //   - http://vimeo.com/25451551
     //   - http://player.vimeo.com/video/25451551
+    // - Supported PeerTube URL formats:
+    //   - http://framatube.org/w/25451551
+    //   - http://framatube.org/video/watch/25451551
+    //   - http://peertube.plataformess.org/videos/watch/25451551
     // - Also supports relative URLs:
     //   - //player.vimeo.com/video/25451551
 
-    url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
+    let peerTubeInstances = [
+        'framatube.org',
+        'peertube.plataformess.org'
+    ]
 
-    var type, src;
+    url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com)|framatube\.org|peertube\.plataformess\.org)\/(videos\/watch\/|video\/|embed\/|watch\?v=|v\/|w\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
+
+    let type, src, thumbnailSrc = "", apiUrl = "";
+
     if (RegExp.$3.indexOf('youtu') > -1) {
-        type = 'youtube';
-        src = '//youtube.com/embed/' +  RegExp.$6 + '?wmode=Opaque&autoplay=1';
+        type = 'youtube'
+        src = '//youtube.com/embed/' +  RegExp.$6 + '?wmode=Opaque&autoplay=1'
+        thumbnailSrc = 'https://img.youtube.com/vi/' + RegExp.$6 + '/maxresdefault.jpg'
     } else if (RegExp.$3.indexOf('vimeo') > -1) {
-        type = 'vimeo';
-        src = '//player.vimeo.com/video/' + RegExp.$6 + '?title=0&byline=0&portrait=0&autoplay=1';
+        type = 'vimeo'
+        src = '//player.vimeo.com/video/' + RegExp.$6 + '?title=0&byline=0&portrait=0&autoplay=1'
+        apiUrl = "https://vimeo.com/api/v2/video/"+ RegExp.$6 + ".json"
+    } else if (peerTubeInstances.includes(RegExp.$3)) {
+        let basePeerTubeInstanceUrl = RegExp.$3
+        type = 'framatube'
+        src = '//' + basePeerTubeInstanceUrl + '/videos/embed/' + RegExp.$6 + '?warningTitle=0&autoplay=1'
+        apiUrl = "https://" + basePeerTubeInstanceUrl + "/api/v1/videos/" + RegExp.$6
     }
 
     return {
         type: type,
         src: src,
+        thumbnailSrc: thumbnailSrc,
+        apiUrl: apiUrl,
         id: RegExp.$6
     };
 }
@@ -65,7 +84,6 @@ var _uploadImage = function(files, url, callback) {
   });
   var _progress = function(e) {
       if(e.lengthComputable){
-          // console.log('progress', e.loaded, e.total);
           callback('progress', e.loaded / e.total);
       }
   };
@@ -82,7 +100,6 @@ var _uploadImage = function(files, url, callback) {
         return myXhr;
       },
       success: function(result) {
-        // console.log('success', result, result.files);
         if(result && result.files) {
           var files = $.map(result.files, function(file) {
             return IMG_URL + '/700x0/' + file.name;
@@ -93,7 +110,6 @@ var _uploadImage = function(files, url, callback) {
         }
       },
       error: function(data) {
-        console.log('upload error', data);
         callback('error', data);
       }
   });
@@ -242,7 +258,6 @@ var default_md_toolbar = [
 var markdowns = form.markdowns = {};
 var _createMarkdownEditor = function() {
     var el = this;
-    // console.log('found textarea', el, 'toolbar', toolbar, $(el).data('toolbar'));
     var toolbar = default_md_toolbar;
     if($(el).data('toolbar')) {
         var telements = $(el).data('toolbar').split(',');
@@ -263,7 +278,6 @@ var _createMarkdownEditor = function() {
     simplemde.codemirror.setOption("allowDropFileTypes", null);
 
     simplemde.codemirror.on('drop', function(codemirror, event) {
-        // console.log('codemirror',codemirror,'event',event);
         if(!$(el).data('image-upload')) return;
 
         var loading_text = $(el).data('image-loading-text') || '![](loading image...)';
@@ -275,7 +289,7 @@ var _createMarkdownEditor = function() {
             }
             return false;
           });
-          // console.log('images', images);
+
           if(images.length) {
             // Do not allow predefined codemirror behaviour if are images
             event.preventDefault();
@@ -293,10 +307,8 @@ var _createMarkdownEditor = function() {
             coords.line++;
             coords.ch = 0;
             codemirror.setCursor(coords);
-            // console.log('codemirror',codemirror,'coords',coords);
 
             _uploadImage(images, $(el).data('image-upload'), function(status, data) {
-              // console.log('callback upload', status, data);
               if(status === 'progress') {
                 $up.css('width',  (data * 100) + '%');
               } else {
@@ -325,11 +337,9 @@ var _createHtmlEditor = function() {
   var summernote;
   var callbacks = {
     onFocus: function() {
-      // console.log('Editable area is focused');
       $(this).closest('.summernote').addClass('focused');
     },
     onBlur: function() {
-      // console.log('Editable area loses focus');
       $(this).closest('.summernote').removeClass('focused');
     }
   };
@@ -339,7 +349,6 @@ var _createHtmlEditor = function() {
       var $up = $('<div class="uploading">');
       $sm.prepend($up);
       _uploadImage(files, $(el).data('image-upload'), function(status, data) {
-        // console.log('callback upload', status, data);
         if(status === 'progress') {
           $up.css('width',  (data * 100) + '%');
         } else {
@@ -359,15 +368,11 @@ var _createHtmlEditor = function() {
     };
   }
   summernote = $(el).summernote({
-      // height: 300,
       toolbar: [
           ['tag', ['style']],
           ['style', ['bold', 'italic', 'underline', 'clear']],
-          // ['font', ['strikethrough', 'superscript', 'subscript']],
-          // ['fontsize', ['fontsize']],
           ['color', ['color']],
           ['para', ['ul', 'ol', 'paragraph']],
-          // ['height', ['height']],
           ['insert', ['link', 'picture', 'video', 'hr', 'table']],
           ['misc', ['fullscreen', 'codeview', 'help']]
         ],
@@ -378,10 +383,7 @@ var _createHtmlEditor = function() {
 };
 
 $(function(){
-
     var initBindings = function() {
-
-
         //material switch checkbox
         $('.material-switch').on('click', function(e){
             e.preventDefault();
@@ -405,12 +407,10 @@ $(function(){
         });
 
         $('.material-switch').hammer().bind('swiperight', function() {
-            // console.log('material right', this);
             $(this).find('input[type="checkbox"]').prop('checked', true);
         });
 
         $('.material-switch').hammer().bind('swipeleft', function() {
-            // console.log('material left', this);
             $(this).find('input[type="checkbox"]').prop('checked', false);
         });
 
@@ -441,13 +441,8 @@ $(function(){
             var url = $(this).data('url');
             var original = _getValue.call($input[0]);
             if(url && $input.is('input')) {
-                // save previous value
-                // $input.on('focus', function(e) {
-                //     original = _getValue.call($input[0]);
-                // });
                 $input.on('change', function(e) {
                     var val = _getValue.call($input[0]);
-                    // console.log('change', val);
                     $.ajax({
                         url: url,
                         type: 'PUT',
@@ -456,12 +451,10 @@ $(function(){
                         original = _setValue.call($input[0], data.value);
                         $(document).trigger('form-boolean-changed', [$input[0]]);
                         if(data.message) alert(data.message);
-                        // console.log('saved', data);
                     }).fail(function(error) {
                         var json = JSON.parse(error.responseText);
                         var txt = json && json.error;
                         _setValue.call($input[0], original);
-                        // console.log('fail', json, txt, error);
                         alert(txt ? txt : error.responseText ? error.responseText : error);
                     });
                 });
@@ -479,9 +472,7 @@ $(function(){
                 format: 'DD/MM/YYYY',
                 extraFormats: ['YYYY-MM-DD'],
                 locale: goteo.locale
-                // ,debug: true
             }).on('dp.change', function (e) {
-                // console.log(e);
                 // $('#publishing-date').val(e.date.format('YYYY/MM/DD'));
             });
         // Full time datetimepicker
@@ -496,9 +487,7 @@ $(function(){
                 format: 'YYYY',
                 locale: goteo.locale,
                 viewMode: 'years'
-                // ,debug: true
-            });
-
+        });
 
         // Typeahead fields
         $('.autoform .input-typeahead .typeahead').typeahead('destroy');
@@ -506,7 +495,6 @@ $(function(){
             var $this = $(this);
             var sources = $this.data('sources').split(',');
             var id_field = $this.data('value-field') ? $this.data('value-field') : 'id';
-            // console.log('initialize with sources', sources);
             var engines = [{
                 minLength: 0,
                 hint: true,
@@ -527,7 +515,6 @@ $(function(){
                     $(event.target).select();
                 })
                 .on('typeahead:asyncrequest', function (event) {
-                    // console.log('async loading', event);
                     $(event.target).addClass('loading');
                 })
                 .on('typeahead:asynccancel typeahead:asyncreceive', function (event) {
@@ -536,15 +523,14 @@ $(function(){
                 // typeahead:select event is done when needed.
                 // For example: assets/js/admin/stats.js
                 .on('typeahead:select', function (event, datum, name) {
-                    // console.log('selected',name, event, datum, $(this).attr('name'));
                     if ($(this).data('type') === "simple" ) {
-                      
+
                       $('#' + $(this).data('real-id')).val(datum[id_field]);
 
                     } else if ($(this).data('type') === "multiple") {
 
                       if ($('[id="'+$(this).data('real-id')+'"][value="'+datum['id']+'"]').length === 0) {
-                        
+
                         $('.bootstrap-tagsinput.help-text#'+$(this).data('real-id'))
                           .append('<span class="tag label label-lilac">'+ datum[id_field] +'<span id="remove-'+datum['id']+'-'+$(this).data('real-id')+'" data-real-id="'+ $(this).data('real-id')+ '" data-value="'+ datum['id'] + '"data-role="remove"></span></span>');
 
@@ -568,7 +554,6 @@ $(function(){
                   }
                 })
                 .on('typeahead:change', function (event) {
-                    // console.log('change', event, $(this).val(), $(this).attr('name'));
                     if($(this).val().trim() === '') $('#' + $(this).data('real-id')).val('');
                 });
 
@@ -624,7 +609,6 @@ $(function(){
                 values.push(o);
             });
           }
-          // console.log('tags input ops', ops, 'values', values, $this.val());
 
           if(url) {
             var tags = new Bloodhound({
@@ -635,7 +619,6 @@ $(function(){
               prefetch: { // TODO: make it optional
                 url: url,
                 filter: function (response) {
-                    // console.log('prefetch hit', response);
                     return response;
                 }
                 // ,cache: false
@@ -651,8 +634,7 @@ $(function(){
                 if (q === '') {
                     sync(tags.index.all());
                     async([]);
-                }
-                else {
+                } else {
                     tags.search(q, sync, async);
                 }
             };
@@ -672,35 +654,31 @@ $(function(){
                 displayKey: keyText,
                 source: engineWithDefaults
               }];
-            // console.log('tags', tags, tags.ttAdapter());
           }
 
           $this.tagsinput(ops);
           values.forEach(function(tag) {
             $this.tagsinput('add', tag);
           });
-
         });
 
         // Video
         var _addVideo = function(e) {
-            var val = $(this).val();
+            let val = $(this).val();
             if(!val) return;
-            var video = parseVideoURL(val);
-            var input = this;
-            var $container = $(this).closest('.media-container');
-            var $holder = $container.find('.video-holder');
-            var $embed = $container.find('.embed-responsive');
+            let video = parseVideoURL(val);
+            let input = this;
+            let $container = $(this).closest('.media-container');
+            let $holder = $container.find('.video-holder');
+            let $embed = $container.find('.embed-responsive');
 
-            // console.log('adding video', val, video,e);
             // Add thumb
             $container.removeClass('loaded').removeClass('playing').addClass('loading');
 
-            var putVideo = function(thumb) {
-                // console.log('putting thumb');
+            let putVideo = function(thumb) {
                 $container.find('.cover-image').attr('src', thumb);
                 $container.removeClass('loading').addClass('loaded');
-                var iframe = $('<iframe>', {
+                let iframe = $('<iframe>', {
                     src: video.src,
                     frameborder: 0,
                     allowfullscreen: true,
@@ -712,18 +690,21 @@ $(function(){
                     $container.addClass('playing');
                 });
             };
-             if (video.type === 'youtube') {
-                putVideo('https://img.youtube.com/vi/' + video.id + '/maxresdefault.jpg');
-            }
-            else if (video.type === 'vimeo') {
-                $.getJSON("https://vimeo.com/api/v2/video/"+ video.id + ".json")
-                 .done(function(res) {
-                    // console.log('videmo ok', res);
-                    putVideo(res[0].thumbnail_large);
-                 })
-                 .fail(function(e){
-                    // console.log('error vimeo', e.responseText);
-                 });
+
+            if (video.thumbnailSrc !== '') {
+                putVideo(video.thumbnailSrc);
+            } else if (video.apiUrl !== '') {
+                fetch(video.apiUrl)
+                    .then(res => res.json())
+                    .then(res => {
+                        let thumbnailSrc = ""
+                        if (video.type === 'vimeo') {
+                            thumbnailSrc = res[0].thumbnail_large
+                        } else if (video.type === 'framatube') {
+                            thumbnailSrc = "https://" + res.account.host + "/lazy-static/previews/" + res.uuid + ".jpg"
+                        }
+                        putVideo(thumbnailSrc)
+                    });
             }
         };
 
@@ -756,7 +737,6 @@ $(function(){
           if(markdowns[target]) from = 'md';
           if(summernotes[target]) from = 'html';
 
-          // console.log('target', target, 'from', from, 'to', to);
           if(from === to) return;
           if(from === 'html' && to === 'md') {
             // destroy summernote, initialize markdown
@@ -800,16 +780,13 @@ $(function(){
                     // , forceFallback: true
                     // Reorder actions
                     onStart: function(evt) {
-                        // console.log('choose');
                         $dnd.hide();
                     },
                     onEnd: function (evt) {
-                        // console.log('end');
                         $dnd.show();
                         $list.removeClass('over');
                     },
                     onMove: function (evt) {
-                        // console.log('move');
                         $list.removeClass('over');
                         $(evt.to).addClass('over');
                     }
@@ -820,7 +797,6 @@ $(function(){
             }
 
             var _addImageCss = function($img, name, dataURL) {
-              // console.log('AJAX Success', $img, name, dataURL);
               var url = dataURL ? dataURL : '/img/300x300c/' + name;
               $img.css({
                   backgroundImage:  'url(' + url + ')',
@@ -843,7 +819,6 @@ $(function(){
               $error.html(error.error ? error.error : error);
               $error.removeClass('hidden');
               drop.removeFile(file);
-              // console.log('error', error);
             })
             .on('thumbnail', function(file, dataURL) {
               // Add to list
@@ -852,16 +827,13 @@ $(function(){
             })
             .on(url ? 'success' : 'addedfile', function(file, response) {
               var total = $list.find('li').length;
-              // console.log(response ? 'success' : 'added', file, 'total', total, 'limit', limit, 'response', response);
               if(total >= limit) {
                 $error.html($dz.data('text-max-files-reached'));
                 $error.removeClass('hidden');
                 drop.removeFile(file);
-                // console.log($dz.data('text-max-files-reached'), $error.html());
                 return false;
               }
               if(!Dropzone.isValidFile(file, accepted_files)) {
-                // console.log('not accepted file', file, accepted_files);
                 $error.html($dz.data('text-file-type-error'));
                 drop.removeFile(file);
                 return false;
@@ -884,7 +856,6 @@ $(function(){
                 }
                 for(i in response.files) {
                   if(response.files[i].originalName === name) {
-                    // console.log('found file', response.files[i]);
                     name = response.files[i].name;
                     type = response.files[i].regularFile && response.files[i].type;
                     download_url = response.files[i].downloadUrl;
@@ -897,7 +868,6 @@ $(function(){
               var re = /(?:\.([^.]+))?$/;
               var ext = re.exec(name)[1];
               $img.addClass('file-type-' + ext);
-              // console.log('extension',ext,$img.attr('class'));
 
               if(response) {
                 $li.append('<input type="file" display:"none" name="' + $dz.data('current') + '" value="' + name + '">');
@@ -905,7 +875,6 @@ $(function(){
                   $li.find('.add-to-markdown').data('target', $dz.data('markdown-link'));
                   $li.find('.add-to-markdown').removeClass('hidden');
                 }
-                // console.log('thumbnail', file, $li);
                 if(download_url) {
                   $li.find('.download-url').attr('href', download_url);
                   $li.find('.download-url').removeClass('hidden');
@@ -940,7 +909,6 @@ $(function(){
                 // Set some unique name in order to submit data.
                 inputFile.name = $dz.data('name');
                 if(inputFile.files && inputFile.files.length) {
-                  // console.log('adding file', $dz.data('name'), inputFile, inputFile.files);
                   $li.append(inputFile);
                 } else {
                   alert(goteo.texts['form-dragndrop-unsupported']);
@@ -959,7 +927,6 @@ $(function(){
             e.preventDefault();
             e.stopPropagation();
             var $li = $(this).closest('li');
-            // console.log('remove', $li);
             var $drop = $(this).closest('.dropfiles');
             var $zone = $(this).closest('.image-zone');
             var $list = $(this).closest('.image-list-sortable');
@@ -991,7 +958,6 @@ $(function(){
             $form.find('.dragndrop').show();
             var target = $form.attr('name') + '_' + $(this).data('target');
             var md = markdowns[target];
-            // console.log('add to markdown', target);
             if(md) {
                 md.value(md.value().replace(/\s+$/g, '') + "\n\n![](" + IMG_URL + '/600x600/' + name + ")");
             } else {
@@ -1001,7 +967,6 @@ $(function(){
                 }
             }
         });
-
 
         // handle exact geolocation
         $('.autoform').on('click', '.exact-location', function(e) {
@@ -1030,7 +995,6 @@ $(function(){
                     $radius.data('geocoder-populate-' +  el, el_dest);
                 } else {
                     $search.data('geocoder-populate-' +  el, el_dest);
-                    // console.log('populate el:',el, 'value:', el_dest, 'current', $search.data('geocoder-populate-' +  el),'$search:', $search);
                 }
                 if(el === 'latitude') {
                     lat = parseFloat(val) || 0;
@@ -1065,7 +1029,6 @@ $(function(){
         initBindings();
     });
 
-
     $(".autoform .modal-map").on("shown.bs.modal", function () {
         goteo.trace('shown locator map', locator);
         google.maps.event.trigger(locator.map, "resize");
@@ -1074,7 +1037,6 @@ $(function(){
 
     // Handle buttons with confirmation
     $('form.autoform').on( 'click', 'button[data-confirm]', function(e) {
-        // console.log('btn auto confirm');
         if(!confirm($(this).data('confirm'))) {
             e.preventDefault();
             e.stopPropagation();
@@ -1090,13 +1052,11 @@ $(function(){
     });
 
     $('form[data-confirm]').on('submit', function(){
-        // console.log('form submit');
         formChanged = false;
     });
 
     $(window).on('beforeunload', function() {
       if(formChanged){
-        // console.log('changed', formChanged);
          return formChanged;
        }
     });

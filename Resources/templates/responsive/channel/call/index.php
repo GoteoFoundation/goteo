@@ -13,6 +13,9 @@ $this->section('channel-content');
 
 ?>
 
+<?php
+?>
+
 <?= $this->insert('channel/call/partials/banner_header') ?>
 
 <?= $this->insert('channel/call/partials/main_info') ?>

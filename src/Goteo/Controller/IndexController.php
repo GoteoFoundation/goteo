@@ -51,6 +51,7 @@ class IndexController extends DiscoverController
         $projects_by_footprint = [];
         $sdg_by_footprint = [];
         foreach($footprints as $footprint) {
+            $footprintImpactData[$footprint->id] = $footprint->getAllImpactData();
             $projects_by_footprint[$footprint->id] = Project::getByFootprint(['footprints' => $footprint->id, 'rand' => true, 'amount_bigger_than' => 10000]);
             $sdg_by_footprint[$footprint->id] = Sdg::getList(['footprint' => $footprint->id]);
         }
@@ -68,7 +69,8 @@ class IndexController extends DiscoverController
             'footprints' => $footprints,
             'home' => $home,
             'projects_by_footprint' => $projects_by_footprint,
-            'sdg_by_footprint' => $sdg_by_footprint
+            'sdg_by_footprint' => $sdg_by_footprint,
+            'footprint_impact_data' => $footprintImpactData,
         ]);
     }
 

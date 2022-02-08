@@ -59,7 +59,7 @@ tooltip-project-image: 'Te recomendamos que sean diversas y de buena calidad, au
 tooltip-project-image_upload: BORRAR
 tooltip-project-keywords: 'A medida que introduzcas texto el sistema te sugerirá palabras clave que ya han escrito otros usuarios. Estas categorías ayudan a vincular tu proyecto con personas afines.'
 tooltip-project-lang: 'Más adelante puedes traducir tu proyecto a otros idiomas desde el panel de traducción.'
-tooltip-project-media: 'El vídeo de presentación es una parte fundamental para atraer la atención de la comunidad así que cuanto más original sea mejor. Es imprescindible que tenga una duración máxima de 4 minutos. Súbelo a Youtube o Vimeo y pega la dirección URL aquí.'
+tooltip-project-media: 'El vídeo de presentación es una parte fundamental para atraer la atención de la comunidad así que cuanto más original sea mejor. Es imprescindible que tenga una duración máxima de 4 minutos. Súbelo a Youtube, Vimeo o PeerTube y pega la dirección URL aquí.'
 tooltip-project-motivation: 'Explica qué motivos o circunstancias te han llevado a idear el proyecto, así como las comunidades o usuarios/as a las que va destinado. Te ayudará a conectar con personas movidas por ese mismo tipo de intereses, problemáticas o gustos.'
 tooltip-project-name: 'Cuanto más breve mejor, para hacerlo más descriptivo puedes ampliarlo en el siguiente apartado.'
 tooltip-project-project_location: 'Indica el área geográfica donde tu proyecto tendrá impacto'

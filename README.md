@@ -39,8 +39,9 @@ Some folders may have its own README.md file with comments. However, we will try
 > docker/up
 > ```
 >
-> Then you can run commands inside the php container by using the wrapper `docker/exec`. If developing, we recommend to run this command in a separate terminal:
->
+> Then you can run commands inside the php container by using the wrapper `docker/exec`. 
+> 
+> If developing, we recommend running this command in a separate terminal:
 > ```bash
 > docker/exec grunt watch
 > ```

@@ -2595,13 +2595,14 @@ class Project extends Model {
     }
 
 
-    public static function getByFootprintOrSDGs($filters = array(), $offset, $limit, $count = false ) {
+    public static function getByFootprintOrSDGs($filters = array(), $offset = 0, $limit = 10, $count = false ) {
 
         $lang = Lang::current();
         $values = array();
         list($fields, $joins) = self::getLangsSQLJoins($lang);
 
         $sqlJoins = "";
+        $sqlOrder = "";
 
         if ($filters['channel']) {
             $sqlWhere[] = "( project.node = :channel OR node_project.node_id = :channel )";
@@ -2615,6 +2616,18 @@ class Project extends Model {
 
         if ($filters['footprints'] && is_array($filters['footprints']) && !empty($filters['footprints'])) {
             $sqlWhere[]= "sdg_footprint.footprint_id IN (" . implode(',', $filters['footprints']). ")";
+        }
+
+        if ($filters['minpercentage']) {
+            $sqlWhere[] = "(project.amount / project.mincost) >= :minpercentage";
+            $values[':minpercentage'] = $filters['minpercentage'];
+        }
+
+        if($filters['order']) {
+            $sqlOrder = " ORDER BY project.{$filters['order']} DESC";
+        }
+        else {
+            $sqlOrder = " ORDER BY project.published DESC";
         }
 
         if ($sqlWhere) {
@@ -2676,7 +2689,7 @@ class Project extends Model {
             WHERE project.status IN (" . implode(',', [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED]) . ")
             $sqlWhere
             GROUP BY project.id
-            ORDER BY project.published DESC
+            $sqlOrder
             $sql_limit
             ";
         $query = self::query($sql, $values);

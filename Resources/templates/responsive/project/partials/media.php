@@ -3,13 +3,10 @@
 $project=$this->project;
 
 if ($project->media->url):
-
     if(!empty($project->secGallery['play-video'][0])) {
-
         $img_url=$project->secGallery['play-video'][0]->imageData->getLink(780, 478);
         echo $this->insert('project/partials/video', ['embed' => $project->media->getEmbedCode(false, null, true), 'cover' => $img_url]);
-    }
-    else {
+    } else {
         echo $this->insert('project/partials/video', ['embed' => $project->media->getEmbedCode()]);
     }
 

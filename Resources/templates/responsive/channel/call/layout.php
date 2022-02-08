@@ -6,13 +6,12 @@ $this->section('head');
 
 ?>
 
-
 <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick-theme.css"/>
 
 <?php
 
-$this->append(); 
+$this->append();
 
 $this->section('header');
 
@@ -38,4 +37,9 @@ $this->section('content');
 
 <script src="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.min.js"></script>
 <script type="text/javascript" src="<?= $this->asset('js/channel/call.js') ?>"></script>
+
+<?php if ($this->channel->getSections('values')): ?>
+    <script src="<?= SRC_URL ?>/assets/js/components/values.js"></script
+<?php endif; ?>
+
 <?php $this->replace() ?>

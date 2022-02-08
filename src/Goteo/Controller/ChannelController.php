@@ -13,6 +13,8 @@ namespace Goteo\Controller;
 use Goteo\Core\Controller;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Forms\Model\QuestionnaireForm;
+use Goteo\Model\Footprint;
+use Goteo\Model\Sdg;
 use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
@@ -37,6 +39,7 @@ use Goteo\Model\Page;
 use Goteo\Model\SocialCommitment;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Questionnaire;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class ChannelController extends Controller {
@@ -112,7 +115,7 @@ class ChannelController extends Controller {
         ], 'channel/');
     }
 
-    public function indexAction($id)
+    public function indexAction($id): Response
     {
         $this->setChannelContext($id);
 
@@ -133,6 +136,8 @@ class ChannelController extends Controller {
             $total = $limit;
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
+
+        if ($values = $channel->getSections('values')) $this->addValuesContext($channel, $values);
 
         $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/index';
 
@@ -157,7 +162,7 @@ class ChannelController extends Controller {
     {
         $this->setChannelContext($id);
         $channel = Node::get($id);
-        $limit = 9;
+        $limit = 8;
         $status=[3,4,5];
         $filter = ['type' => $type, 'popularity' => 5, 'status' => $status ];
 
@@ -512,6 +517,31 @@ class ChannelController extends Controller {
             $vars['items'][] = View::render('project/widgets/normal', ['project' => $p]);
         }
         return $this->jsonResponse($vars);
+    }
+
+    private function addValuesContext(Node $channel, array $values = []) {
+        $footprints = Footprint::getList();
+        $projects_by_footprint = [];
+        $sdg_by_footprint = [];
+        $footprintImpactData = [];
+        foreach($footprints as $footprint) {
+            foreach ($footprint->getAllImpactData() as $impactData) {
+                if ($channel->hasImpactData($impactData)) {
+                    $footprintImpactData[$footprint->id][] = $impactData;
+                }
+            }
+            $projects_by_footprint[$footprint->id] = Project::getByFootprintOrSDGs(['footprints' => $footprint->id, 'channel' => $channel->id]);
+            $sdg_by_footprint[$footprint->id] = Sdg::getList(['footprint' => $footprint->id]);
+        }
+
+        $this->contextVars([
+            'footprints' => $footprints,
+            'projects_by_footprint' => $projects_by_footprint,
+            'sdg_by_footprint' => $sdg_by_footprint,
+            'footprint_impact_data' => $footprintImpactData,
+            'values' => current($values)
+        ], 'channel/');
+
     }
 
 }
