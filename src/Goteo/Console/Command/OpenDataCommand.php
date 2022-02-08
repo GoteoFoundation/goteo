@@ -12,8 +12,10 @@ namespace Goteo\Console\Command;
 
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\Exception;
+use Goteo\Core\Model;
 use Goteo\Entity\DataSet;
 use Goteo\Library\FileHandler\File;
+use Goteo\Library\FileHandler\FileInterface;
 use Goteo\Model\Call;
 use Goteo\Model\Footprint;
 use Goteo\Model\Invest;
@@ -27,6 +29,12 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenDataCommand extends AbstractCommand {
+    private DataSetRepository $dataSetRepository;
+
+    public function __construct()
+    {
+        $this->dataSetRepository = new DataSetRepository();
+    }
 
     protected function configure()
     {
@@ -64,41 +72,19 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $this->log('Extract OpenData info', [], 'info');
 
-        if ($callOption = $input->getOption('call')) {
-            $call_id  = $callOption;
-            $this->log("Retrieving {$call_id}'s data", [], 'info');
-
-            try {
-                $call = Call::get($call_id);
-            } catch (ModelNotFoundException $e) {
-                $this->log("Call $call_id does not exist", [], 'error');
-                return;
-            }
-
-            $this->extractCallOpenData($call);
+        if ($input->hasOption('call')) {
+            $this->extractDataForCall($input);
         }
 
         if ($listSdg = $input->getOption(('sdg'))) {
-            foreach ($listSdg as $sdg_id) {
-                $this->log("Retrieving {$sdg_id}'s data", [], 'info');
-
-                $sdg = Sdg::get($sdg_id);
-                $this->extractSdgOpenData($sdg);
-            }
+            $this->extractDataForSdg($listSdg);
         }
 
         if ($listFootprints = $input->getOption('footprint')) {
-            foreach ($listFootprints as $footprint_id) {
-                $this->log("Retrieving {$footprint_id}'s data", [], 'info');
-
-                $footprint = Footprint::get($footprint_id);
-                $this->extractFootprintOpenData($footprint);
-            }
+            $this->extractDataForFootprint($listFootprints);
         }
-
     }
 
     private function extractSdgOpenData(Sdg $sdg): void {
@@ -108,42 +94,28 @@ EOT
     }
 
     private function extractSdgProjects(Sdg $sdg) {
-        $fileName = time() . '-' . $sdg->id . '-projects.csv';
-        $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
-        $file->connect();
-        $file->setPath("open_data/sdg/$sdg->id/projects");
+        list($file, $fileName) = $this->getFile('sdg', $sdg->id, DataSet::TYPE_PROJECTS);
 
         $projects_count = Project::getBySDGs([$sdg->id], 0, 0, true);
         $projects = Project::getBySDGs([$sdg->id], 0, $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
-            $this->log("\nUpload of file {$fileName} completed!", [], 'info');
-            $dataSetRepository = new DataSetRepository();
+            $this->logCompleted($fileName);
 
             try {
-                $dataSet = $dataSetRepository->getLastBySDGsAndType([$sdg->id], DataSet::DATASET_TYPE_PROJECTS);
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSetRepository->persist($dataSet);
-                $sdg->addDataSet($dataSet, 1);
+                $dataSet = $this->dataSetRepository->getLastBySDGsAndType([$sdg->id], DataSet::TYPE_PROJECTS);
+                $this->updateDataSet($dataSet, $file, $fileName, $sdg);
             } catch (ModelNotFoundException $e) {
-                $dataSet = new DataSet();
-                $dataSet->setTitle("$sdg->name");
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSet->setType(DataSet::DATASET_TYPE_PROJECTS);
-                $dataSetRepository->persist($dataSet);
-                $sdg->addDataSet($dataSet, 1);
+                $this->createDataSet($sdg, $file, $fileName, DataSet::TYPE_PROJECTS);
             }
         } else {
-            $this->log("\nUpload of file {$fileName} failed!", [], 'error');
+            $this->logError($fileName);
         }
     }
 
     private function extractSdgInvests(Sdg $sdg) {
-        $fileName = time() . '-' . $sdg->id . '-invests.csv';
-        $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
-        $file->connect();
-        $file->setPath("open_data/sdg/$sdg->id/invests");
+        list($file, $fileName) = $this->getFile('sdg', $sdg->id, DataSet::TYPE_INVESTS);
 
         $projects_count = Project::getBySDGs([$sdg->id], 0, 0, true);
         $projects = Project::getBySDGs([$sdg->id], 0, $projects_count);
@@ -154,24 +126,16 @@ EOT
         $this->extractInvestOpenData($fileName, $invests);
 
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
-            $this->log("\nUpload of file {$fileName} completed!", [], 'info');
-            $dataSetRepository = new DataSetRepository();
+            $this->logCompleted($fileName);
 
             try {
-                $dataSet = $dataSetRepository->getLastBySDGsAndType([$sdg->id], DataSet::DATASET_TYPE_INVESTS);
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSetRepository->persist($dataSet);
-                $sdg->addDataSet($dataSet, 1);
+                $dataSet = $this->dataSetRepository->getLastBySDGsAndType([$sdg->id], DataSet::TYPE_INVESTS);
+                $this->updateDataSet($dataSet, $file, $fileName, $sdg);
             } catch (ModelNotFoundException $e) {
-                $dataSet = new DataSet();
-                $dataSet->setTitle("$sdg->name");
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSet->setType(DataSet::DATASET_TYPE_INVESTS);
-                $dataSetRepository->persist($dataSet);
-                $sdg->addDataSet($dataSet, 1);
+                $this->createDataSet($sdg, $file, $fileName, DataSet::TYPE_INVESTS);
             }
         } else {
-            $this->log("\nUpload of file {$fileName} failed!", [], 'error');
+            $this->logError($fileName);
         }
     }
 
@@ -182,41 +146,27 @@ EOT
     }
 
     private function extractFootprintProjects(Footprint $footprint) {
-        $fileName = time() . '-' . $footprint->id . '-projects.csv';
-        $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
-        $file->connect();
-        $file->setPath("open_data/footprint/$footprint->id/projects");
+        list($file, $fileName) = $this->getFile('footprint', $footprint->id, DataSet::TYPE_PROJECTS);
 
         $projects_count = Project::getByFootprint(['footprints' => $footprint->id], 0, 0, true);
         $projects = Project::getByFootprint(['footprints' => $footprint->id], 0, $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
-            $this->log("\nUpload of file {$fileName} completed!", [], 'info');
-            $dataSetRepository = new DataSetRepository();
+            $this->logCompleted($fileName);
             try {
-                $dataSet = $dataSetRepository->getLastByFootprintAndType([$footprint->id], DataSet::DATASET_TYPE_PROJECTS);
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSetRepository->persist($dataSet);
-                $footprint->addDataSet($dataSet, 1);
+                $dataSet = $this->dataSetRepository->getLastByFootprintAndType([$footprint->id], DataSet::TYPE_PROJECTS);
+                $this->updateDataSet($dataSet, $file, $fileName, $footprint);
             } catch (ModelNotFoundException $e) {
-                $dataSet = new DataSet();
-                $dataSet->setTitle("$footprint->name");
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSet->setType(DataSet::DATASET_TYPE_PROJECTS);
-                $dataSet = $dataSetRepository->persist($dataSet);
-                $footprint->addDataSet($dataSet, 1);
+                $this->createDataSet($footprint, $file, $fileName, DataSet::TYPE_PROJECTS);
             }
         } else {
-            $this->log("\nUpload of file {$fileName} failed!", [], 'error');
+            $this->logError($fileName);
         }
     }
 
     private function extractFootprintInvests(Footprint $footprint) {
-        $fileName = time() . '-' . $footprint->id . '-invests.csv';
-        $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
-        $file->connect();
-        $file->setPath("open_data/footprint/$footprint->id/invests");
+        list($file, $fileName) = $this->getFile('footprint', $footprint->id, DataSet::TYPE_INVESTS);
 
         $projects_count = Project::getBySDGs([$footprint->id], 0, 0, true);
         $projects = Project::getBySDGs([$footprint->id], 0, $projects_count);
@@ -227,25 +177,17 @@ EOT
         $this->extractInvestOpenData($fileName, $invests);
 
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
-            $this->log("\nUpload of file {$fileName} completed!", [], 'info');
+            $this->logCompleted($fileName);
 
-            $dataSetRepository = new DataSetRepository();
             try {
-                $dataSet = $dataSetRepository->getLastByFootprintAndType([$footprint->id], DataSet::DATASET_TYPE_INVESTS);
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSetRepository->persist($dataSet);
-                $footprint->addDataSet($dataSet, 1);
+                $dataSet = $this->dataSetRepository->getLastByFootprintAndType([$footprint->id], DataSet::TYPE_INVESTS);
+                $this->updateDataSet($dataSet, $file, $fileName, $footprint);
             } catch (ModelNotFoundException $e) {
-                $dataSet = new DataSet();
-                $dataSet->setTitle("$footprint->name");
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSet->setType(DataSet::DATASET_TYPE_INVESTS);
-                $dataSetRepository->persist($dataSet);
-                $footprint->addDataSet($dataSet, 1);
+                $this->createDataSet($footprint, $file, $fileName, DataSet::TYPE_INVESTS);
             }
 
         } else {
-            $this->log("\nUpload of file {$fileName} failed!", [], 'error');
+            $this->logError($fileName);
         }
     }
 
@@ -256,41 +198,27 @@ EOT
     }
 
     private function extractCallProjectsData(Call $call): void {
-        $fileName = time() . '-' . $call->id . '-projects.csv';
-        $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
-        $file->connect();
-        $file->setPath("open_data/call/$call->id/projects");
+        list($file, $fileName) = $this->getFile('call', $call->id, DataSet::TYPE_PROJECTS);
 
         $projects_count = Project::getList(['called' => $call->id], 0, 0, true);
         $projects = Project::getList(['called' => $call->id], 0, $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
-            $this->log("\nUpload of file {$fileName} completed!", [], 'info');
-            $dataSetRepository = new DataSetRepository();
+            $this->logCompleted($fileName);
             try {
-                $dataSet = $dataSetRepository->getLastByCAllAndType([$call->id], DataSet::DATASET_TYPE_PROJECTS);
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSetRepository->persist($dataSet);
-                $call->addDataSet($dataSet, 1);
+                $dataSet = $this->dataSetRepository->getLastByCAllAndType([$call->id], DataSet::TYPE_PROJECTS);
+                $this->updateDataSet($dataSet, $file, $fileName, $call);
             } catch (ModelNotFoundException $e) {
-                $dataSet = new DataSet();
-                $dataSet->setTitle("$call->name");
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSet->setType(DataSet::DATASET_TYPE_PROJECTS);
-                $dataSetRepository->persist($dataSet);
-                $call->addDataSet($dataSet, 1);
+                $this->createDataSet($call, $file, $fileName, DataSet::TYPE_PROJECTS);
             }
         } else {
-            $this->log("\nUpload of file {$fileName} failed!", [], 'error');
+            $this->logError($fileName);
         }
     }
 
     private function extractCallInvestsData(Call $call): void {
-        $fileName = time() . '-' . $call->id . '-invests.csv';
-        $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
-        $file->connect();
-        $file->setPath("open_data/call/$call->id/invests");
+        list($file, $fileName) = $this->getFile('call', $call->id, DataSet::TYPE_INVESTS);
 
         $invests_count = Invest::getList(['calls' => $call->id, 'types' => 'nondrop', 'status' => Invest::STATUS_CHARGED], null, 0, 0, true);
         $invests = Invest::getList(['calls' => $call->id, 'types' => 'nondrop', 'status' => Invest::STATUS_CHARGED], null, 0, $invests_count);
@@ -298,23 +226,15 @@ EOT
         $this->extractInvestOpenData($fileName, $invests);
 
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
-            $this->log("\nUpload of file {$fileName} completed!", [], 'info');
-            $dataSetRepository = new DataSetRepository();
+            $this->logCompleted($fileName);
             try {
-                $dataSet = $dataSetRepository->getLastByCallAndType([$call->id], DataSet::DATASET_TYPE_INVESTS);
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSetRepository->persist($dataSet);
-                $call->addDataSet($dataSet, 1);
+                $dataSet = $this->dataSetRepository->getLastByCallAndType([$call->id], DataSet::TYPE_INVESTS);
+                $this->updateDataSet($dataSet, $file, $fileName, $call);
             } catch (ModelNotFoundException $e) {
-                $dataSet = new DataSet();
-                $dataSet->setTitle("$call->name");
-                $dataSet->setUrl($file->get_path() . $fileName);
-                $dataSet->setType(DataSet::DATASET_TYPE_INVESTS);
-                $dataSetRepository->persist($dataSet);
-                $call->addDataSet($dataSet, 1);
+                $this->createDataSet($call, $file, $fileName, DataSet::TYPE_INVESTS);
             }
         } else {
-            $this->log("\nUpload of file {$fileName} failed!", [], 'error');
+            $this->logError($fileName);
         }
     }
 
@@ -406,5 +326,88 @@ EOT
         }
         $progress_bar->finish();
         fclose($buffer);
+    }
+
+    protected function extractDataForCall(InputInterface $input): void
+    {
+        $callOption = $input->getOption('call');
+        $calls = [];
+
+        if (!$callOption) {
+            $calls = Call::getList(['available' => true]);
+        } else {
+            try {
+                $calls[] = Call::get($callOption);
+            } catch (Exception $e) {
+                $this->log("Call $callOption does not exist", [], 'error');
+            }
+        }
+
+        foreach ($calls as $call) {
+            $this->extractCallOpenData($call);
+        }
+    }
+
+    protected function extractDataForSdg($listSdg): void
+    {
+        if (empty($listSdg))
+            $listSdg = array_column(Sdg::getList(), 'id');
+
+        foreach ($listSdg as $sdg_id) {
+            $this->log("Retrieving {$sdg_id}'s data", [], 'info');
+
+            $sdg = Sdg::get($sdg_id);
+            $this->extractSdgOpenData($sdg);
+        }
+    }
+
+    protected function extractDataForFootprint($listFootprints): void
+    {
+        if (empty($listFootprints))
+            $listFootprints = array_column(Footprint::getList(), 'id');
+
+        foreach ($listFootprints as $footprint_id) {
+            $this->log("Retrieving {$footprint_id}'s data", [], 'info');
+
+            $footprint = Footprint::get($footprint_id);
+            $this->extractFootprintOpenData($footprint);
+        }
+    }
+
+    function getFile(string $model, int $id, string $type): array
+    {
+        $fileName = time() . "-$id-$type.csv";
+        $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
+        $file->connect();
+        $file->setPath("open_data/$model/$id/$type");
+
+        return [$file, $fileName];
+    }
+
+    private function createDataSet(Model $model, FileInterface $file, string $fileName, string $type): void
+    {
+        $dataSet = new DataSet();
+        $dataSet->setTitle($model->name);
+        $dataSet->setUrl($file->get_path() . $fileName);
+        $dataSet->setType($type);
+        $this->dataSetRepository->persist($dataSet);
+        $model->addDataSet($dataSet, 1);
+    }
+
+    private function updateDataSet(DataSet $dataSet, FileInterface $file, string $fileName, Model $model): void
+    {
+        $dataSet->setUrl($file->get_path() . $fileName);
+        $this->dataSetRepository->persist($dataSet);
+        $model->addDataSet($dataSet, 1);
+    }
+
+    private function logError(string $fileName): void
+    {
+        $this->log("\nUpload of file $fileName failed!", [], 'error');
+    }
+
+    private function logCompleted(string $fileName): void
+    {
+        $this->log("\nUpload of file {$fileName} completed!", [], 'info');
     }
 }
