@@ -16,8 +16,8 @@ use Goteo\Model\Image;
 
 class DataSet {
 
-    const DATASET_TYPE_PROJECTS = 'projects';
-    const DATASET_TYPE_INVESTS = 'invests';
+    const TYPE_PROJECTS = 'projects';
+    const TYPE_INVESTS = 'invests';
 
     private ?int $id = null;
     private ?string $title = null;
