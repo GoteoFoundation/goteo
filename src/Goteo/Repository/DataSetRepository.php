@@ -142,6 +142,41 @@
      /**
       * @return DataSet[]
       */
+     public function getListByFootprintAndSDGs(array $filter = [], int $offset = 0, int $limit = 10): array
+     {
+         $sqlWhere = "";
+         $sqlWhereFilter = [];
+
+         if (!empty($filter['footprints'])) {
+             $sqlWhereFilter[] = "fds.footprint_id IN ( " . implode(',', $filter['footprints']) . ")";
+         }
+
+         if (!empty($filter['sdgs'])) {
+             $sqlWhereFilter[] = "sds.sdg_id IN ( " . implode(',', $filter['sdgs']) . ")";
+         }
+
+         if (empty($filter['footprints']) && empty($filter['sdgs'])) {
+            $sqlWhereFilter[] = "sds.sdg_id IS NOT NULL OR fds.footprint_id IS NOT NULL";
+         }
+
+         if (!empty($sqlWhereFilter))
+             $sqlWhere = "WHERE " . implode(' OR ', $sqlWhereFilter);
+
+
+         $sql = "SELECT data_set.*
+                FROM data_set
+                LEFT JOIN sdg_data_set sds ON sds.data_set_id = data_set.id
+                LEFT JOIN footprint_data_set fds ON fds.data_set_id = data_set.id
+                $sqlWhere
+                LIMIT $limit
+                OFFSET $offset";
+
+         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
+     }
+
+     /**
+      * @return DataSet[]
+      */
      public function getListByCall(array $calls): array
      {
         $sqlWhere = "";

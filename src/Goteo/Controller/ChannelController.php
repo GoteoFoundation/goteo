@@ -56,6 +56,7 @@ class ChannelController extends Controller {
         try {
             $channel = Node::get($id);
         } catch (ModelNotFoundException $e) {
+            var_dump($id); die;
             throw new ModelNotFoundException($e->getMessage());
         }
 

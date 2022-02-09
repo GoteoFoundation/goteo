@@ -1,0 +1,7 @@
+---
+data-set: "Conjunt de dades"
+data-set-type: "Tipus de conjunt de dades"
+data-set-type-invests: "Dades de donacions"
+data-set-type-projects: "Dades de projectes"
+data-set-created-at: "Data creació: %s"
+data-set-modified-at: "Data modificació: %s"

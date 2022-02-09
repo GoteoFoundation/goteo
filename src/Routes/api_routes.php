@@ -494,4 +494,9 @@ $api->add('api-impact-data-images-upload', new Route(
     ['POST'] // methods
 ));
 
+$api->add('api-data-set-footprints-sdgs', new Route(
+    '/dataset/footprints_sdgs',
+    array('_controller' => 'Goteo\Controller\Api\DataSetApiController::dataSetsAction')
+));
+
 return $api;

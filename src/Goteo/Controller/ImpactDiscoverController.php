@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller;
 
+use Goteo\Repository\DataSetRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Application\View;
@@ -22,6 +23,7 @@ use Goteo\Model\Node;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Sdg;
 use Goteo\Util\Map\MapOSM;
+use Symfony\Component\HttpFoundation\Response;
 
 class ImpactDiscoverController extends Controller {
 
@@ -63,12 +65,12 @@ class ImpactDiscoverController extends Controller {
 
         return $filters;
     }
-    
+
     /*
      * Discover projects, general page
      */
     public function indexAction (Request $request) {
-        
+
         $this->setImpactDiscoverContext();
         $filters = $this->getQueryParameters($request);
 
@@ -138,5 +140,24 @@ class ImpactDiscoverController extends Controller {
         ]);
     }
 
+    public function dataSetsAction(Request $request): Response {
+        $this->setImpactDiscoverContext();
+        $filters = $this->getQueryParameters($request);
+
+        $sdgSelected = $filters['sdgs'] ?? [];
+        $channelSelected = $filters['channel'] ?? '';
+        $footprintsSelected = $filters['footprints'] ?? [];
+
+        $dataSetsRepository = new DataSetRepository();
+        $dataSets = $dataSetsRepository->getListByFootprintAndSDGs($filters);
+
+        return $this->viewResponse('impact_discover/data_sets', [
+            'sdgSelected' => $sdgSelected,
+            'footprintsSelected' => $footprintsSelected,
+            'channelSelected' => $channelSelected,
+            'dataSets' => $dataSets,
+            'view' => 'data_sets'
+        ]);
+    }
 }
 
