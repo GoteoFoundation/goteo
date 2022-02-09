@@ -26,8 +26,8 @@ class DataSet {
     private string $lang;
     private string $url;
     private ?Image $image = null;
-    private int $created_at;
-    private int $modified_at;
+    private string $created_at;
+    private string $modified_at;
 
     public function __construct()
     {
@@ -102,12 +102,12 @@ class DataSet {
 
     public function getCreatedAt(): DateTime
     {
-        return DateTime::createFromFormat($this->created_at);
+        return date_create($this->created_at);
     }
 
     public function getModifiedAt(): DateTime
     {
-        return DateTime::createFromFormat($this->modified_at);
+        return date_create($this->modified_at);
     }
 
     public function getImage(): ?Image {
