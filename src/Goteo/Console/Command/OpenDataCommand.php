@@ -38,7 +38,7 @@ class OpenDataCommand extends AbstractCommand {
         $this->setName("opendata")
             ->setDescription("Generates OpenData files")
             ->setDefinition([
-                new InputOption('call', 'c', InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given call "),
+                new InputOption('call', 'c', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given call "),
                 new InputOption('sdg', 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'If specified, extracts data for the given sdgs'),
                 new InputOption('footprint', 'f', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'If specified, extracts data for the given footprints')
             ])
@@ -71,7 +71,7 @@ EOT
     {
         $this->log('Extract OpenData info', [], 'info');
 
-        if ($input->hasOption('call')) {
+        if ($input->getOption('call')) {
             $this->extractDataForCall($input);
         }
 
@@ -330,13 +330,15 @@ EOT
         $callOption = $input->getOption('call');
         $calls = [];
 
-        if (!$callOption) {
+        if (!current($callOption)) {
             $calls = Call::getList(['available' => true]);
         } else {
+
+            foreach($callOption as $call)
             try {
-                $calls[] = Call::get($callOption);
+                $calls[] = Call::get($call);
             } catch (Exception $e) {
-                $this->log("Call $callOption does not exist", [], 'error');
+                $this->log("Call $call does not exist", [], 'error');
             }
         }
 
@@ -345,9 +347,9 @@ EOT
         }
     }
 
-    protected function extractDataForSdg($listSdg): void
+    protected function extractDataForSdg(array $listSdg): void
     {
-        if (empty($listSdg))
+        if (!current($listSdg))
             $listSdg = array_column(Sdg::getList(), 'id');
 
         foreach ($listSdg as $sdg_id) {
@@ -358,9 +360,9 @@ EOT
         }
     }
 
-    protected function extractDataForFootprint($listFootprints): void
+    protected function extractDataForFootprint(array $listFootprints): void
     {
-        if (empty($listFootprints))
+        if (!current($listFootprints))
             $listFootprints = array_column(Footprint::getList(), 'id');
 
         foreach ($listFootprints as $footprint_id) {
