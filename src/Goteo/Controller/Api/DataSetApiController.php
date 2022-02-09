@@ -30,12 +30,13 @@ class DataSetApiController extends AbstractApiController
         }
 
         if ($request->query->has('footprint') && $request->query->get('footprint')) {
-            $filters['footprints'] = explode(',', $request->query->get('sdg'));
+            $filters['footprints'] = explode(',', $request->query->get('footprint'));
         }
 
         $dataSetRepository = new DataSetRepository();
         $dataSets = $dataSetRepository->getListByFootprintAndSDGs($filters);
 
+        View::setTheme('responsive');
         return $this->jsonResponse([
             'total' => count($dataSets),
             'page' => $page,
