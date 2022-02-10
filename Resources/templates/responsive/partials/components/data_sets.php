@@ -11,10 +11,10 @@
                         </div>
                         <div class="date-info">
                             <div class="date-created">
-                                <span><?= $this->text('data-set-created-at', date_format($dataSet->getModifiedAt(),"d-m-Y")) ?></span>
+                                <span><?= $this->text('data-set-created-at', date_format($dataSet->getModifiedAt(),"d-m-Y H:i")) ?></span>
                             </div>
                             <div class="date-modified">
-                                <span><?= $this->text('data-set-modified-at', date_format($dataSet->getModifiedAt(),"d-m-Y")) ?></span>
+                                <span><?= $this->text('data-set-modified-at', date_format($dataSet->getModifiedAt(),"d-m-Y H:i")) ?></span>
                             </div>
                         </div>
                         <a href="//<?= $dataSet->getUrl() ?>" class="btn btn-transparent pull-right" download>
