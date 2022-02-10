@@ -57,16 +57,16 @@
         <div class="col-xs-12 col-sm-3 col-md-2 text-right" id="filters-view-as">
           <ul>
           <li>
-            <a id="activate-mosaic" class="<?= ($this->view == 'mosaic') ? 'active' : '' ?>" href="/impact-discover/mosaic"> <img src="/assets/img/icons/mosaic.svg"> </a>
+            <a id="activate-mosaic" class="<?= ($this->view == 'mosaic') ? 'active' : '' ?>" href="/impact-discover/mosaic" title="<?= $this->view ?>"> <img src="/assets/img/icons/mosaic.svg"> </a>
           </li>
           <li>
-            <a id="activate-projects" class="<?= ($this->view == 'list_projects')? 'active' : '' ?>" href="/impact-discover"><img src="/assets/img/icons/lists.svg"></a>
+            <a id="activate-projects" class="<?= ($this->view == 'list_projects')? 'active' : '' ?>" href="/impact-discover" title="<?= $this->view ?>"><img src="/assets/img/icons/lists.svg"></a>
           </li>
           <li>
-            <a id="activate-map" class="<?= ($this->view == 'map')? 'active' : '' ?>" href="/impact-discover/map"><img src="/assets/img/icons/map.svg"></a>
+            <a id="activate-map" class="<?= ($this->view == 'map')? 'active' : '' ?>" href="/impact-discover/map" title="<?= $this->view ?>"><img src="/assets/img/icons/map.svg"></a>
           </li>
           <li>
-            <a id="activate-datasets" class="<?= ($this->view == 'data_sets')? 'active' : '' ?>" href="/impact-discover/datasets"><img src="/assets/img/icons/lists.svg"></a>
+              <a id="activate-datasets" class="<?= ($this->view == 'data_sets')? 'active' : '' ?>" href="/impact-discover/datasets" title="<?= $this->view ?>"><i class="fa fa-2x fa-download"></i></a>
           </li>
           </ul>
         </div>

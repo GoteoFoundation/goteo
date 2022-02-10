@@ -205,12 +205,17 @@
                 a {
                     cursor: pointer;
 
-                    img {
+                    img, i.fa.fa-download {
                         opacity: 0.4;
                     }
 
-                    &.active img {
+                    &.active img, &.active i.fa.fa-download {
                         opacity: 1;
+                    }
+
+                    i.fa.fa-download {
+                      color: $color-light-green;
+                      font-size: 1.8em;
                     }
                 }
             }
