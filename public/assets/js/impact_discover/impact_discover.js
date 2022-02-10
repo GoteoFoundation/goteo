@@ -237,11 +237,17 @@ $(function(){
         $(".more-projects-button").removeClass('hidden');
     }
 
+    function resetDataSets() {
+        $('#impact-discover-data-sets > div').remove();
+    }
+
     function resetData() {
         if (view == 'mosaic')
             resetMosaic();
         else if (view == 'list_projects')
             resetListProjects();
+        else if (view == 'data_sets')
+            resetDataSets();
     }
 
     function loadData(sdg) {
@@ -257,18 +263,21 @@ $(function(){
     }
 
     function loadDataSets() {
+        $('.impact-discover-data-sets').after('<div class="loading-container"></div>')
+
+        const sdgsList = getActiveSDG().map((sdg) => sdg.id).join(',');
+        const footprintsList = getActiveFootprints().join(',');
+
         setQuery({
             view: view,
-            sdg: getActiveSDG(),
-            footprint: getActiveFootprints()
+            sdg: sdgsList,
+            footprint: footprintsList
         })
 
         const url = "/api/dataset/footprints_sdgs";
 
         $.get( url, query, function( data ) {
-            $('.impact-discover-mosaic > div.container').append( data.html );
-            if (data.total <= data.page * data.limit + data.result_total)
-                $(".more-projects-button").addClass('hidden');
+            $('.impact-discover-data-sets').append( data.html );
         })
         .done(function(){
             $('.loading-container').remove();
