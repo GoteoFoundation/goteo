@@ -23,6 +23,7 @@ class Sdg extends \Goteo\Core\Model {
     use Traits\SphereRelationsTrait;
     use Traits\SocialCommitmentRelationsTrait;
     use Traits\FootprintRelationsTrait;
+    use Traits\DataSetRelationsTrait;
 
     public $id,
            $name,

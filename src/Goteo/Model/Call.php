@@ -16,6 +16,7 @@ use Goteo\Model\Call\CallLocation;
 
 class Call extends \Goteo\Core\Model {
     use Traits\SphereRelationsTrait;
+    use Traits\DataSetRelationsTrait;
 
     // CALL STATUS IDs
     const STATUS_EDITING     = 1;  // edicion
