@@ -349,8 +349,10 @@ EOT
 
     protected function extractDataForSdg(array $listSdg): void
     {
-        if (!current($listSdg))
-            $listSdg = array_column(Sdg::getList(), 'id');
+        if (!current($listSdg)) {
+            $countSdg = Sdg::getList([], 0, 0, true);
+            $listSdg = array_column(Sdg::getList([], 0, $countSdg), 'id');
+        }
 
         foreach ($listSdg as $sdg_id) {
             $this->log("Retrieving {$sdg_id}'s data", [], 'info');
