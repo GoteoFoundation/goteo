@@ -333,12 +333,12 @@ EOT
         if (!current($callOption)) {
             $calls = Call::getList(['available' => true]);
         } else {
-
-            foreach($callOption as $call)
-            try {
-                $calls[] = Call::get($call);
-            } catch (Exception $e) {
-                $this->log("Call $call does not exist", [], 'error');
+            foreach ($callOption as $call) {
+                try {
+                    $calls[] = Call::get($call);
+                } catch (Exception $e) {
+                    $this->log("Call $call does not exist", [], 'error');
+                }
             }
         }
 
