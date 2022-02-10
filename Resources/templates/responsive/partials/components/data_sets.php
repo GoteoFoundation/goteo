@@ -17,7 +17,7 @@
                                 <span><?= $this->text('data-set-modified-at', date_format($dataSet->getModifiedAt(),"d-m-Y")) ?></span>
                             </div>
                         </div>
-                        <a href="//<?= $dataSet->getUrl() ?>" target="_blank" class="btn btn-transparent pull-right" download>
+                        <a href="//<?= $dataSet->getUrl() ?>" class="btn btn-transparent pull-right" download>
                             <i class="icon icon-pdf"></i><?= $this->text('regular-download').' .CSV' ?>
                         </a>
                     </div>
