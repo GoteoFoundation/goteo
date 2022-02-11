@@ -66,7 +66,7 @@
             <a id="activate-map" class="<?= ($this->view == 'map')? 'active' : '' ?>" href="/impact-discover/map" title="<?= $this->view ?>"><img src="/assets/img/icons/map.svg"></a>
           </li>
           <li>
-              <a id="activate-datasets" class="<?= ($this->view == 'data_sets')? 'active' : '' ?>" href="/impact-discover/datasets" title="<?= $this->view ?>"><i class="fa fa-2x fa-download"></i></a>
+              <a id="activate-datasets" class="<?= ($this->view == 'data_sets')? 'active' : '' ?>" href="/impact-discover/datasets" title="<?= $this->view ?>"><i class="fa fa-2x fa-database"></i></a>
           </li>
           </ul>
         </div>

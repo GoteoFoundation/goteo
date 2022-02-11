@@ -18,7 +18,7 @@
                             </div>
                         </div>
                         <a href="//<?= $dataSet->getUrl() ?>" class="btn btn-transparent pull-right" download>
-                            <i class="icon icon-pdf"></i><?= $this->text('regular-download').' .CSV' ?>
+                            <i class="fa fa-2x fa-download"></i> <span><?= $this->text('regular-download') ?></span>
                         </a>
                     </div>
                 </div>
