@@ -204,13 +204,17 @@
 
                 a {
                     cursor: pointer;
-
-                    img {
+                    img, i.fa {
                         opacity: 0.4;
                     }
 
-                    &.active img {
+                    &.active img, &.active i.fa {
                         opacity: 1;
+                    }
+
+                    i.fa {
+                      color: $color-light-green;
+                      font-size: 1.8em;
                     }
                 }
             }

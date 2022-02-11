@@ -33,16 +33,18 @@ $(function(){
         page: 0,
         limit: 9,
         sdg: '',
+        footprint: '',
         channel: $channel.value ?? ''
     };
 
     function resetQuery()  {
         setQuery({
-                page: 0,
-                limit: 9,
-                sdg: '',
-                channel: $channel.value ?? ''
-            });
+            page: 0,
+            limit: 9,
+            sdg: '',
+            footprint: '',
+            channel: $channel.value ?? ''
+        });
     }
 
     function setQuery(new_query) {
@@ -51,6 +53,7 @@ $(function(){
             page: "page" in new_query? new_query.page : query.page,
             limit: "limit" in new_query? new_query.limit : query.limit,
             sdg: "sdg" in new_query? new_query.sdg : query.sdg,
+            footprint: "footprint" in new_query? new_query.footprint: query.footprint,
             channel: "channel" in new_query? new_query.channel : query.channel
         };
 
@@ -70,7 +73,7 @@ $(function(){
         url.search = url.searchParams.toString();
         history.pushState(null, null, url.search);
     }
-    
+
     let sdgList = [];
     const sdgsicons = Array.from(document.querySelectorAll('.sdgicon')).map( (icon) => { return parseInt(icon.dataset.sdg) });
 
@@ -79,7 +82,7 @@ $(function(){
             if (response.ok)
                 return response.json();
             else
-                return [];  
+                return [];
         })
         .then(data => {
 
@@ -88,7 +91,7 @@ $(function(){
             const sdgsToActivate = sdgList.filter( (sdg) => {
                 return sdgsicons.includes(sdg.id)
             })
-        
+
             sdgsToActivate.forEach((sdg) => {
                 activateSDG(sdg);
             })
@@ -105,6 +108,7 @@ $(function(){
     document.getElementById('activate-mosaic').onclick = redirectView;
     document.getElementById('activate-projects').onclick = redirectView;
     document.getElementById('activate-map').onclick = redirectView;
+    document.getElementById('activate-datasets').onclick = redirectView;
 
 
     function changeChannel(event) {
@@ -120,8 +124,8 @@ $(function(){
         setQuery({
             channel: channel
         })
-        resetProjects();
-        loadProjects(sdgArray);
+        resetData();
+        loadData(sdgArray);
     }
 
     $channel.onchange = changeChannel;
@@ -216,9 +220,9 @@ $(function(){
         });
 
         resetQuery();
-        resetProjects();
+        resetData();
 
-        loadProjects(sdgArray);
+        loadData(sdgArray);
     }
 
     function resetListProjects() {
@@ -233,21 +237,51 @@ $(function(){
         $(".more-projects-button").removeClass('hidden');
     }
 
-    function resetProjects() {
+    function resetDataSets() {
+        $('#impact-discover-data-sets > div').remove();
+    }
+
+    function resetData() {
         if (view == 'mosaic')
             resetMosaic();
         else if (view == 'list_projects')
             resetListProjects();
+        else if (view == 'data_sets')
+            resetDataSets();
     }
 
-    function loadProjects(sdg) {
+    function loadData(sdg) {
 
         if ( view == 'map' )
             loadMapProjects(sdg);
         else if ( view == 'list_projects' )
             loadListProjects(sdg)
+        else if ( view == 'data_sets')
+            loadDataSets(sdg)
         else
             loadMosaicProjects(sdg)
+    }
+
+    function loadDataSets() {
+        $('.impact-discover-data-sets').after('<div class="loading-container"></div>')
+
+        const sdgsList = getActiveSDG().map((sdg) => sdg.id).join(',');
+        const footprintsList = getActiveFootprints().join(',');
+
+        setQuery({
+            view: view,
+            sdg: sdgsList,
+            footprint: footprintsList
+        })
+
+        const url = "/api/dataset/footprints_sdgs";
+
+        $.get( url, query, function( data ) {
+            $('.impact-discover-data-sets').append( data.html );
+        })
+        .done(function(){
+            $('.loading-container').remove();
+        });
     }
 
     function loadMosaicProjects(sdg) {
@@ -331,7 +365,7 @@ $(function(){
 
     function getActiveFootprints() {
         return Array.from($('#filters-footprints ul li a.active'))
-            .map( (footprint) => { 
+            .map( (footprint) => {
                 return $(footprint).data('footprint');
             });
     }
@@ -403,8 +437,8 @@ $(function(){
             setQuery({
                 page: query.page + 1
             });
-        
-            loadProjects(sdgArray);
+
+            loadData(sdgArray);
         };
     });
 
@@ -479,7 +513,7 @@ $(function(){
         setQuery({
             page: query.page + 1
         });
-        loadProjects(sdgArray);
+        loadData(sdgArray);
     });
 
 });
