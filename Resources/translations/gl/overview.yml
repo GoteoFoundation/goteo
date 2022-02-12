@@ -59,6 +59,7 @@ tooltip-project-image: 'Poden ser esquemas, pantallas, fotografías, ilustració
 tooltip-project-image_upload: ELIMINAR
 tooltip-project-keywords: 'A medida que insiras texto o sistema suxerírache verbas clave que xa escribiron outros usuarios. Estas categorías axúdanche a vincular o teu proxecto con persoas afíns.'
 tooltip-project-lang: 'Indica en que idioma enches o formulario do proxecto.'
+tooltip-project-media: 'O vídeo de presentación é unha parte fundamental para chamar a atención da comunidade polo que canto máis rechamante sexa mellor. É imprescindíbel que sexa dunha duración máxima de 4 minutos. Súbeo ao Youtube, Vimeo ou PeerTube e pega o enderezo URL aquí.'
 tooltip-project-motivation: 'Explica que motivos ou circunstancias leváronte a idear o proxecto, así coma as comunidades ou usuarios/as as que vai destinado. Axudarache a conectar con persoas movidas por ese mesmo tipo de intereses, problemáticas ou gustos.'
 tooltip-project-name: 'Escribe un nome para o titular do proxecto. Canto máis breve mellor, para facelo máis descritivo podes amplialo no seguinte apartado.'
 tooltip-project-project_location: 'Indica o lugar onde se desenrolará o proxecto, en que poboación ou poboacións atópase o seu impulsor ou impulsores principais.'
