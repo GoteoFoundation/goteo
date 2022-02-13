@@ -1,1 +1,7 @@
 ---
+data-set: "Gruppo di dati"
+data-set-type: "Tipi di gruppi di dati"
+data-set-type-invests: "Dati di donazioni"
+data-set-type-projects: "Dati di progetti"
+data-set-created-at: "Data di creazione:%s"
+data-set-modified-at: "Data di modificazione: %s"
