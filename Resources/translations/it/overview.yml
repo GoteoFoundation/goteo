@@ -59,6 +59,7 @@ tooltip-project-image: 'Ti consigliamo che siano varie e di buona qualità, anch
 tooltip-project-image_upload: CANCELLARE
 tooltip-project-keywords: 'Una volta che immetti il testo, il sistema ti suggerirà le parole chiave già scelte da altri utenti. Queste categoria aiutano a collegare il tuo progetto a persone affini.'
 tooltip-project-lang: 'Indica in che lingua completi il questionario del progetto.'
+tooltip-project-media: "Il video di presentazione è una parte fondamentale per attrarre l'attenzione della comunità perció quanto più originale sia, meglio è. È indispensabile che abbia una durata massina di 4 minuti. \nCaricarlo a Youtube, Vimeo e PeerTube e incolla l'indirizzo URL quí."
 tooltip-project-motivation: 'Spiega quali sono le motivazioni o le circostanze che ti hanno spinto a disegnare il progetto e le comunità di utenti a cui va destinato. Ti aiuterà a entrare in contatto con persone che convidono gli stessi interessi, problematiche, gusti. '
 tooltip-project-name: 'Indica un nome per il titolare del progetto. Più corto possibile e per una versione più descrittiva utilizza la seguente voce.'
 tooltip-project-project_location: 'Indica in che città e/o provincia vuoi ubicare questo progetto. '
@@ -83,3 +84,7 @@ tooltip-project-sustainability-model: 'Spiega il modello di sostenibilità del t
 tooltip-project-sustainability-model-url: 'Aggrega un url coi tuoi <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">canva d''affari</a>'
 tooltip-project-sdg: 'Scegli gli obbiettivi con quelli che compie il tuo progetto, cercando di selezionare un massimo di tre.'
 tooltip-project-sdg-suggestion: 'Di seguito ti suggeriamo alcuni ODS che potrebbero adattarsi secondo il compromesso sociale selezionato per il tuo progetto, ti raccomandiamo di consultare <a href="https://www.un.org/sustainabledevelopment/es/objetivos-de-desarrollo-sostenible/" target="_blank">qui</a> su contenuto specifico.<br><br>'
+overview-field-sign-check: 'Hai una raccolta firme aperta relazionata con il progetto?'
+overview-field-sign-url: "Url della firma"
+overview-field-sign-url-action: "Testo per chiamare e firmare"
+overview-field-sign-url-help: "Se parallelamente alla campagna con Goteo hai una campagna di raccolta firme in un'altra piattaforma, puoi aggiungere qui un tasto con il link"
