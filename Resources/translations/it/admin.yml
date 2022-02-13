@@ -548,3 +548,4 @@ admin-node-iframe: '> admin-node-iframe'
 admin-channel-resource: '> admin-channel-resource'
 admin-channel-resource-add: '-> admin-channel-resource-add'
 admin-posts: '-> admin-posts'
+admin-impact_data: "Dati di impatto"
