@@ -91,12 +91,13 @@ EOT
     }
 
     private function extractSdgProjects(Sdg $sdg) {
-        list($file, $fileName) = $this->getFile('sdg', $sdg->id, DataSet::TYPE_PROJECTS);
+        $fileName = $this->getFileName($sdg->id, DataSet::TYPE_PROJECTS);
 
         $projects_count = Project::getBySDGs([$sdg->id], 0, 0, true);
         $projects = Project::getBySDGs([$sdg->id], 0, $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
+        $file = $this->getFile('sdg', $sdg->id, DataSet::TYPE_PROJECTS);
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
             $this->logCompleted($fileName);
 
@@ -112,16 +113,16 @@ EOT
     }
 
     private function extractSdgInvests(Sdg $sdg) {
-        list($file, $fileName) = $this->getFile('sdg', $sdg->id, DataSet::TYPE_INVESTS);
+        $fileName = $this->getFileName($sdg->id, DataSet::TYPE_INVESTS);
 
         $projects_count = Project::getBySDGs([$sdg->id], 0, 0, true);
         $projects = Project::getBySDGs([$sdg->id], 0, $projects_count);
 
         $invests_count = Invest::getList(['projects' => $projects, 'status' => Invest::STATUS_CHARGED], null, 0, 0, true);
         $invests = Invest::getList(['projects' => $projects, 'status' => Invest::STATUS_CHARGED], null, 0, $invests_count);
-
         $this->extractInvestOpenData($fileName, $invests);
 
+        $file = $this->getFile('sdg', $sdg->id, DataSet::TYPE_INVESTS);
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
             $this->logCompleted($fileName);
 
@@ -143,12 +144,13 @@ EOT
     }
 
     private function extractFootprintProjects(Footprint $footprint) {
-        list($file, $fileName) = $this->getFile('footprint', $footprint->id, DataSet::TYPE_PROJECTS);
+        $fileName = $this->getFileName($footprint->id, DataSet::TYPE_PROJECTS);
 
         $projects_count = Project::getByFootprint(['footprints' => $footprint->id], 0, 0, true);
         $projects = Project::getByFootprint(['footprints' => $footprint->id], 0, $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
+        $file = $this->getFile('footprint', $footprint->id, DataSet::TYPE_PROJECTS);
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
             $this->logCompleted($fileName);
             try {
@@ -163,16 +165,16 @@ EOT
     }
 
     private function extractFootprintInvests(Footprint $footprint) {
-        list($file, $fileName) = $this->getFile('footprint', $footprint->id, DataSet::TYPE_INVESTS);
+        $fileName = $this->getFileName($footprint->id, DataSet::TYPE_INVESTS);
 
         $projects_count = Project::getBySDGs([$footprint->id], 0, 0, true);
         $projects = Project::getBySDGs([$footprint->id], 0, $projects_count);
 
         $invests_count = Invest::getList(['projects' => $projects, 'status' => Invest::STATUS_CHARGED], null, 0, 0, true);
         $invests = Invest::getList(['projects' => $projects, 'status' => Invest::STATUS_CHARGED], null, 0, $invests_count);
-
         $this->extractInvestOpenData($fileName, $invests);
 
+        $file = $this->getFile('footprint', $footprint->id, DataSet::TYPE_INVESTS);
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
             $this->logCompleted($fileName);
 
@@ -195,12 +197,13 @@ EOT
     }
 
     private function extractCallProjectsData(Call $call): void {
-        list($file, $fileName) = $this->getFile('call', $call->id, DataSet::TYPE_PROJECTS);
+        $fileName = $this->getFileName($call->id, DataSet::TYPE_PROJECTS);
 
         $projects_count = Project::getList(['called' => $call->id], 0, 0, true);
         $projects = Project::getList(['called' => $call->id], 0, $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
+        $file = $this->getFile('call', $call->id, DataSet::TYPE_PROJECTS);
         if ($file->upload('/tmp/' . $fileName, $fileName)) {
             $this->logCompleted($fileName);
             try {
@@ -215,13 +218,13 @@ EOT
     }
 
     private function extractCallInvestsData(Call $call): void {
-        list($file, $fileName) = $this->getFile('call', $call->id, DataSet::TYPE_INVESTS);
+        $fileName = $this->getFileName($call->id, DataSet::TYPE_INVESTS);
 
         $invests_count = Invest::getList(['calls' => $call->id, 'types' => 'nondrop', 'status' => Invest::STATUS_CHARGED], null, 0, 0, true);
         $invests = Invest::getList(['calls' => $call->id, 'types' => 'nondrop', 'status' => Invest::STATUS_CHARGED], null, 0, $invests_count);
-
         $this->extractInvestOpenData($fileName, $invests);
 
+        $file = $this->getFile('call', $call->id, DataSet::TYPE_INVESTS);
         if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
             $this->logCompleted($fileName);
             try {
@@ -375,14 +378,17 @@ EOT
         }
     }
 
-    function getFile(string $model, $id, string $type): array
+    private function getFileName($id, string $type): string
     {
-        $fileName = time() . "-$id-$type.csv";
+        return time() . "-$id-$type.csv";
+    }
+
+    private function getFile(string $model, $id, string $type): File
+    {
         $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
         $file->connect();
         $file->setPath("open_data/$model/$id/$type");
-
-        return [$file, $fileName];
+        return $file;
     }
 
     private function createDataSet(Model $model, FileInterface $file, string $fileName, string $type): void
