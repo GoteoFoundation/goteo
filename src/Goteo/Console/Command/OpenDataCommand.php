@@ -389,7 +389,7 @@ EOT
         return time() . "-$id-$type.csv";
     }
 
-    private function getFile(string $model, $id, string $type): File
+    private function getFile(string $model, $id, string $type): FileInterface
     {
         $file = File::factory(['bucket' => AWS_S3_BUCKET_DOCUMENT]);
         $file->connect();
