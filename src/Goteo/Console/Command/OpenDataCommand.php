@@ -110,6 +110,7 @@ EOT
         } else {
             $this->logError($fileName);
         }
+        $file->close();
     }
 
     private function extractSdgInvests(Sdg $sdg) {
@@ -135,6 +136,7 @@ EOT
         } else {
             $this->logError($fileName);
         }
+        $file->close();
     }
 
     private function extractFootprintOpenData(Footprint $footprint): void {
@@ -162,6 +164,7 @@ EOT
         } else {
             $this->logError($fileName);
         }
+        $file->close();
     }
 
     private function extractFootprintInvests(Footprint $footprint) {
@@ -188,6 +191,7 @@ EOT
         } else {
             $this->logError($fileName);
         }
+        $file->close();
     }
 
     private function extractCallOpenData(Call $call): void {
@@ -215,6 +219,7 @@ EOT
         } else {
             $this->logError($fileName);
         }
+        $file->close();
     }
 
     private function extractCallInvestsData(Call $call): void {
@@ -236,6 +241,7 @@ EOT
         } else {
             $this->logError($fileName);
         }
+        $file->close();
     }
 
     /**
