@@ -1,12 +1,6 @@
-<?php 
-$project=$this->project; 
-$matchers=$this->matchers;
-
-?>
-
-
-
 <?php
+$project=$this->project;
+$matchers=$this->matchers;
 
 $share_url = $this->get_url() . '/project/' . $this->project->id;
 
@@ -74,22 +68,22 @@ $langs = $project->getLangs();
                         <div class="row share-project">
                             <div class="col-xs-2 col-xs-offset-1 col-sm-offset-0">
                                 <a href="<?= $facebook_url ?>">
-                                    <img class="facebook" src="<?= SRC_URL . '/assets/img/project/facebook.png' ?>">
+                                    <img class="facebook" alt="share facebook" src="<?= SRC_URL . '/assets/img/project/facebook.png' ?>">
                                 </a>
                             </div>
                             <div class="col-xs-2">
                                 <a href="<?= $twitter_url ?>">
-                                    <img class="twitter" src="<?= SRC_URL . '/assets/img/project/twitter.png' ?>">
+                                    <img class="twitter" alt="share twitter "src="<?= SRC_URL . '/assets/img/project/twitter.png' ?>">
                                 </a>
                             </div>
                             <div class="col-xs-2 visible-xs visible-sm">
                                 <a href="tg://msg?text=<?= urlencode($share_title).' '.$share_url ?>">
-                                    <img class="telegram" src="<?= SRC_URL . '/assets/img/project/telegram.png' ?>">
+                                    <img class="telegram" alt="share telegram" src="<?= SRC_URL . '/assets/img/project/telegram.png' ?>">
                                 </a>
                             </div>
                             <div class="col-xs-2 visible-xs">
                                 <a href="whatsapp://send?text=<?= urlencode($share_title).' '.$share_url ?>" data-action="share/whatsapp/share" >
-                                    <img class="whatsapp" src="<?= SRC_URL . '/assets/img/project/whatsapp.png' ?>">
+                                    <img class="whatsapp" alt="share whatsapp" src="<?= SRC_URL . '/assets/img/project/whatsapp.png' ?>">
                                 </a>
                             </div>
                             <div class="col-xs-2">
@@ -192,7 +186,7 @@ $langs = $project->getLangs();
                 </div>
             </a>
             <?php elseif($matchers): ?>
-            
+
                 <div class="col-sm-4 slider slider-matchers" id="matchers">
 
                 <?php foreach ($matchers as $matcher): ?>
@@ -201,10 +195,10 @@ $langs = $project->getLangs();
                         <?php $max_project= $matcher_vars['max_amount_per_project'] ? $matcher_vars['max_amount_per_project'] : $matcher_vars['donation_per_project']; ?>
                         <?php $progress=round(($matcher_amount/$max_project)*100); ?>
                         <div class="matcher-info hidden-sm hidden-xs">
-                            <div>    
+                            <div>
                                 <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo">
                                 <span class="matcher-label">
-                                <?= $this->text('matcher-label-project') ?>
+                                    <?= $this->text('matcher-label-project') ?>
                                 </span>
                             </div>
                             <div class="matcher-description">
@@ -213,7 +207,7 @@ $langs = $project->getLangs();
                                 </div>
                                 <div class="info-container">
                                     <div class="matcher-name">
-                                    <?= $matcher->name ?>
+                                        <?= $matcher->name ?>
                                     </div>
                                     <div class="progress">
                                         <div class="progress-bar <?= $progress==100 ? 'progress-completed' : '' ?> " role="progressbar" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $progress ?>%">
@@ -221,33 +215,23 @@ $langs = $project->getLangs();
                                     </div>
 
                                     <?php if($progress==100): ?>
-
                                         <div class="matcher-amount">
                                             <span class="completed">
                                                  <i class="fa fa-check-circle"></i>
                                                 <?= $this->text('matcher-label-completed') ?>
                                             </span>
-                                        <span class="figure">
-                                            <?= '('.amount_format($matcher_amount).')' ?>
-                                        </span>
-
+                                            <span class="figure">
+                                                <?= '('.amount_format($matcher_amount).')' ?>
+                                            </span>
                                         </div>
-
                                     <?php else: ?>
-
                                         <div class="matcher-amount">
-
-                                        <?= $this->text('matcher-amount-project', ['%AMOUNT%' => amount_format($matcher_amount), '%PROJECT_AMOUNT%' => amount_format($max_project)] ) ?>
-                                        
+                                            <?= $this->text('matcher-amount-project', ['%AMOUNT%' => amount_format($matcher_amount), '%PROJECT_AMOUNT%' => amount_format($max_project)] ) ?>
                                         </div>
-
                                     <?php endif; ?>
-
                                 </div>
                             </div>
-                            
                         </div>
-                    
                     <?php endforeach; ?>
 
                 </div>
