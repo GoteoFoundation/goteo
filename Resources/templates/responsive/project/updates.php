@@ -80,34 +80,33 @@ foreach($milestones as $update):
             <div class="inside">
                 <?php if(!empty($update->milestone->link)): ?>
                     <?php if($update->milestone->link != "invest"): ?>
-                        <a class="pronto expand-link" data-pronto-target="#project-tabs" href="/project/<?= $this->project->id . ($update->milestone->link === '/' ? '' : $update->milestone->link) ?>"></a>
+                        <a class="pronto expand-link" data-pronto-target="#project-tabs" href="/project/<?= $this->project->id . ($update->milestone->link === '/' ? '' : $update->milestone->link) ?>" title="<?= $update->milestone->link ?>"></a>
                     <?php else: ?>
-                        <a class="expand-link" href="/invest/<?= $this->project->id ?>" target="_blank"></a>
+                        <a class="expand-link" href="/invest/<?= $this->project->id ?>" target="_blank" title="<?= $this->t('regular-invest_it') ?>"></a>
                     <?php endif;?>
                 <?php endif?>
                 <span class="pointer">
-                    <img width="9" src="<?= SRC_URL . '/assets/img/project/updates/green-pointer.svg' ?> ">
+                    <img width="9" src="<?= $this->asset('/img/project/updates/green-pointer.svg') ?>" alt="">
                 </span>
 
                 <?php if(!empty($update->milestone->image_emoji)): ?>
-                    <img class="emoji" src="<?= $update->milestone->image_emoji->getLink(50, 60, false) ?>" >
+                    <img class="emoji" src="<?= $update->milestone->image_emoji->getLink(50, 60, false) ?>" alt="emoji">
                 <?php endif; ?>
                 <?= $update->milestone->description ?>
-                    <?php
-                        $URL = \SITE_URL;
-                        $share_url = $URL . '/project/' . $this->project->id.'/updates#milestone-'.$update->milestone->id;
-                        $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($update->milestone->description);
-                        $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($update->milestone->description . ': ' . $share_url . ' #Goteo');
-                   ?>
-                   <a href="<?= $twitter_url ?>" target="_blank">
-                        <img class="twitter-icon" width="20" src="<?= SRC_URL . '/assets/img/project/updates/twitter-milestone.png' ?> ">
-                    </a>
-                    <a href="<?= $facebook_url ?>" target="_blank">
-                        <img class="facebook-icon" width="20" src="<?= SRC_URL . '/assets/img/project/updates/facebook-milestone.png' ?> ">
-                    </a>
+                <?php
+                    $URL = \SITE_URL;
+                    $share_url = $URL . '/project/' . $this->project->id.'/updates#milestone-'.$update->milestone->id;
+                    $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($update->milestone->description);
+                    $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($update->milestone->description . ': ' . $share_url . ' #Goteo');
+               ?>
+               <a href="<?= $twitter_url ?>" target="_blank">
+                    <img class="twitter-icon" width="20" src="<?= $this->asset('img/project/updates/twitter-milestone.png') ?>" alt="<?= $this->t('regular-share-twitter')?>">
+                </a>
+                <a href="<?= $facebook_url ?>" target="_blank">
+                    <img class="facebook-icon" width="20" src="<?= $this->asset('img/project/updates/facebook-milestone.png') ?>" alt="<?= $this->t('regular-share-facebook')?>">
+                </a>
             </div>
         </div>
-
     <?php endif; ?>
 </div>
 
