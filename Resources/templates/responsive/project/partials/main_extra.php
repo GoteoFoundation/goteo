@@ -100,9 +100,8 @@ $langs = $project->getLangs();
                             </div>
                         </div>
                         <div class="row no-margin spacer-10" id="link-box" style="display:none;">
-                            <input type="text" class="form-control" value="<?= $share_url ?>" >
+                            <input type="text" class="form-control" value="<?= $share_url ?>" title="<?= $this->('regular-url') ?>">
                         </div>
-
 
                         <!-- Call in sm version -->
                         <?php if($project->called): ?>
@@ -270,63 +269,53 @@ $langs = $project->getLangs();
                 </a>
                 <div id="collapseRewards" class="panel-collapse collapse">
                    <div class="panel-body">
-
                         <?php foreach ($this->individual_rewards as $individual) : ?>
-                        <div class="side-widget">
-
-                            <div class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></div>
-                            <div class="text-bold spacer-20"><?= $individual->reward ?></div>
-                            <div class="spacer-20"><?= $this->markdown($individual->description) ?></div>
-
-                            <div class="investors">
-                                <?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?>
-                            </div>
-                            <?php if ($project->status ==3 && !$individual->none) : ?>
-
-                                <div class="row spacer-5">
-                                    <div class="col-sm-6">
-                                        <?php if($individual->none): ?>
-                                        <a href="<?= '/invest/'.$project->id.'/payment?amount='.$individual->amount ?>"><button class="btn btn-block side-pink"><?= $this->text('landing-donor-button') ?></button></a>
-                                        <?php else: ?>
-                                        <a href="<?= '/invest/'.$project->id.'/payment?reward='.$individual->id ?>"><button class="btn btn-block side-pink"><?= $this->text('regular-getit') ?></button></a>
-                                        <?php endif; ?>
-                                    </div>
+                            <div class="side-widget">
+                                <div class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></div>
+                                <div class="text-bold spacer-20"><?= $individual->reward ?></div>
+                                <div class="spacer-20"><?= $this->markdown($individual->description) ?></div>
+                                <div class="investors">
+                                    <?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?>
                                 </div>
 
-                            <?php endif; ?>
-
-                        </div>
+                                <?php if ($project->status ==3 && !$individual->none) : ?>
+                                    <div class="row spacer-5">
+                                        <div class="col-sm-6">
+                                            <?php if($individual->none): ?>
+                                                <a href="<?= '/invest/'.$project->id.'/payment?amount='.$individual->amount ?>"><button class="btn btn-block side-pink"><?= $this->text('landing-donor-button') ?></button></a>
+                                            <?php else: ?>
+                                                <a href="<?= '/invest/'.$project->id.'/payment?reward='.$individual->id ?>"><button class="btn btn-block side-pink"><?= $this->text('regular-getit') ?></button></a>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         <?php endforeach ?>
-
-
                     </div>
                    <!-- End panel body -->
                 </div>
-
             </div>
 
-
-
             <div class="row spacer project-menu visible-xs">
-                    <a href="/project/<?= $project->id ?>" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
-                        <div class="home col-xs-4 text-center item <?= $this->show=='home' ? 'current' : '' ?>" id="home">
-                                <img class="" src="<?= SRC_URL . '/assets/img/project/home.png' ?>">
-                                <span class="label-item"><?= $this->text('project-menu-home') ?></span>
-                        </div>
-                    </a>
-                    <a href="/project/<?= $project->id ?>/updates" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
-                        <div class="updates col-xs-4 text-center item <?= $this->show=='updates' ? 'current' : '' ?>" id="updates">
-                                <img class="" src="<?= SRC_URL . '/assets/img/project/news.png' ?>">
-                                <span class="label-item"><?= $this->text('project-menu-news') ?></span>
-                        </div>
-                    </a>
-                    <a href="/project/<?= $project->id ?>/participate" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
-                        <div class="participate col-xs-4 text-center item <?= $this->show=='participate' ? 'current' : '' ?>" id="participate">
-                                <img class="" src="<?= SRC_URL . '/assets/img/project/participate.png' ?>">
-                                <span class="label-item"><?= $this->text('project-menu-participate') ?></span>
-                        </div>
-                    </a>
-                </div>
+                <a href="/project/<?= $project->id ?>" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
+                    <div class="home col-xs-4 text-center item <?= $this->show=='home' ? 'current' : '' ?>" id="home">
+                        <img class="" src="<?= SRC_URL . '/assets/img/project/home.png' ?>" alt="">
+                        <span class="label-item"><?= $this->text('project-menu-home') ?></span>
+                    </div>
+                </a>
+                <a href="/project/<?= $project->id ?>/updates" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
+                    <div class="updates col-xs-4 text-center item <?= $this->show=='updates' ? 'current' : '' ?>" id="updates">
+                        <img class="" src="<?= SRC_URL . '/assets/img/project/news.png' ?>" alt="">
+                        <span class="label-item"><?= $this->text('project-menu-news') ?></span>
+                    </div>
+                </a>
+                <a href="/project/<?= $project->id ?>/participate" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
+                    <div class="participate col-xs-4 text-center item <?= $this->show=='participate' ? 'current' : '' ?>" id="participate">
+                        <img class="" src="<?= SRC_URL . '/assets/img/project/participate.png' ?>" alt="">
+                        <span class="label-item"><?= $this->text('project-menu-participate') ?></span>
+                    </div>
+                </a>
+            </div>
         </div>
         <!-- end tags and share info -->
     </div>

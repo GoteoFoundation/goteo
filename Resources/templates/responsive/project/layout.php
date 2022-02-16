@@ -164,10 +164,12 @@ $this->section('content');
       <div class="modal-body">
         <div class="row">
         	<div class="col-sm-6">
-        	<?= $this->raw('widget_code') ?>
+        	    <?= $this->raw('widget_code') ?>
         	</div>
         	<div class="col-sm-6">
-     			<textarea class="widget-code" onclick="this.focus();this.select()" readonly="readonly" ><?= $this->widget_code ?></textarea>
+     			<textarea class="widget-code" onclick="this.focus();this.select()" readonly="readonly" title="<?= $this->t('project-spread-widget') ?>">
+                    <?= $this->widget_code ?>
+                </textarea>
         	</div>
         </div>
       </div>
