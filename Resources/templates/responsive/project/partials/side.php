@@ -19,9 +19,9 @@
 
             <div class="investors">
                 <div>
-                    <?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?>   
+                    <?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?>
                 </div>
-                
+
                 <?php if ($project->inCampaign()): ?>
 
                     <?php if (!$available):  ?>
@@ -36,19 +36,14 @@
 
             </div>
 
-
-            <?php if ($project->inCampaign()): ?>
-
+            <?php if ($project->inCampaign() && !$individual->none): ?>
                 <div class="spacer-5">
-                    <?php if(!$individual->none): ?>
-                    <a href="<?= '/invest/'.$project->id.'/payment?reward='.$individual->id ?>"><button class="btn btn-block btn-pink"><?= $this->text('regular-getit') ?></button></a>
-                        <?php endif; ?>
+                    <a class="btn btn-block btn-pink" href="<?= '/invest/'.$project->id.'/payment?reward='.$individual->id ?>"><span><?= $this->text('regular-getit') ?></span></a>
                 </div>
-
             <?php endif; ?>
 
         </div>
-        
+
         <?php endforeach ?>
 
         <h2 class="green-title spacer">

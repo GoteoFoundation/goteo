@@ -26,24 +26,21 @@ $langs = $project->getLangs();
         <div class="col-md-8">
                 <div class="row spacer-20">
                     <div class="col-sm-6 tags-location" id="tags-location">
-
                         <?php if (!empty($project->cat_names)) : ?>
-
-                        <div class="tags hidden-xs" id="tags">
-                            <img class="tags" src="<?= SRC_URL . '/assets/img/project/tags.png' ?>">
-                            <?php $sep = '';
-                            foreach ($project->cat_names as $key=>$value) :
-                                echo $sep.'<a href="/discover?category=' . $key . '" class="tag">'.htmlspecialchars($value).'</a>';
-                                $sep = ', ';
-                            endforeach; ?>
-                        </div>
-
+                            <div class="tags hidden-xs" id="tags">
+                                <img class="tags" src="<?= SRC_URL . '/assets/img/project/tags.png' ?>" alt="<?= $this->t('regular-categories') ?>">
+                                <?php $sep = '';
+                                foreach ($project->cat_names as $key=>$value) :
+                                    echo $sep.'<a href="/discover?category=' . $key . '" class="tag">'.htmlspecialchars($value).'</a>';
+                                    $sep = ', ';
+                                endforeach; ?>
+                            </div>
                         <?php endif; ?>
 
                         <!--Location -->
                         <div class="location spacer-20" id="location">
                             <div class="pull-left location-container">
-                                <img class="location" src="<?= SRC_URL . '/assets/img/project/location.png' ?>">
+                                <img class="location" src="<?= SRC_URL . '/assets/img/project/location.png' ?>" alt="<?= $this->t('regular-location') ?>" >
                                 <span class="tag"><?= $project->project_location ?></span>
                             </div>
                         </div>
@@ -87,7 +84,7 @@ $langs = $project->getLangs();
                                 </a>
                             </div>
                             <div class="col-xs-2">
-                                <img id="show-link" class="link cursor-pointer" src="<?= SRC_URL . '/assets/img/project/link.png' ?>">
+                                <img id="show-link" class="link cursor-pointer" src="<?= SRC_URL . '/assets/img/project/link.png' ?>" alt="<?= $this->t('regular-share_this') ?>">
                             </div>
                             <div class="col-md-6 col-sm-4 hidden-xs">
                                 <a data-toggle="modal" data-target="#widgetModal" href="" >
@@ -144,20 +141,20 @@ $langs = $project->getLangs();
                 <div id="project-tabs-menu" class="row spacer project-menu hidden-xs">
                     <a href="/project/<?= $project->id ?>" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
                         <div class="home col-xs-4 text-center item <?= $this->show=='home' ? 'current' : '' ?>" id="home">
-                                <img class="" src="<?= SRC_URL . '/assets/img/project/home.png' ?>">
-                                <span class="label-item"><?= $this->text('project-menu-home') ?></span>
+                            <img class="" src="<?= SRC_URL . '/assets/img/project/home.png' ?>" alt="">
+                            <span class="label-item"><?= $this->text('project-menu-home') ?></span>
                         </div>
                     </a>
                     <a href="/project/<?= $project->id ?>/updates" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
                         <div class="updates col-xs-4 text-center item <?= $this->show=='updates' ? 'current' : '' ?>" id="updates">
-                                <img class="" src="<?= SRC_URL . '/assets/img/project/news.png' ?>">
-                                <span class="label-item"><?= $this->text('project-menu-news') ?></span>
+                            <img class="" src="<?= SRC_URL . '/assets/img/project/news.png' ?>" alt="">
+                            <span class="label-item"><?= $this->text('project-menu-news') ?></span>
                         </div>
                     </a>
                     <a href="/project/<?= $project->id ?>/participate" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
                         <div class="participate col-xs-4 text-center item <?= $this->show=='participate' ? 'current' : '' ?>" id="participate">
-                                <img class="" src="<?= SRC_URL . '/assets/img/project/participate.png' ?>">
-                                <span class="label-item"><?= $this->text('project-menu-participate') ?></span>
+                            <img class="" src="<?= SRC_URL . '/assets/img/project/participate.png' ?>" alt="">
+                            <span class="label-item"><?= $this->text('project-menu-participate') ?></span>
                         </div>
                     </a>
                 </div>
@@ -196,14 +193,14 @@ $langs = $project->getLangs();
                         <?php $progress=round(($matcher_amount/$max_project)*100); ?>
                         <div class="matcher-info hidden-sm hidden-xs">
                             <div>
-                                <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo">
+                                <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo" alt="<?= $this->t('regular-matcher') ?>">
                                 <span class="matcher-label">
                                     <?= $this->text('matcher-label-project') ?>
                                 </span>
                             </div>
                             <div class="matcher-description">
                                 <div class="logo-container">
-                                    <img src="<?= $matcher->getLogo()->getLink(150, 150, true) ?>" class="logo">
+                                    <img src="<?= $matcher->getLogo()->getLink(150, 150, true) ?>" class="logo" alt="<?= $matcher->name ?>">
                                 </div>
                                 <div class="info-container">
                                     <div class="matcher-name">

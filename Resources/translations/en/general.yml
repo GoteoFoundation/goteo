@@ -137,6 +137,7 @@ regular-last: Last
 regular-license: License
 regular-linkedin: LinkedIn
 regular-loading: Loading...
+regular-location: Location
 regular-login: Log in
 regular-logout: 'Log out'
 regular-looks_for: 'looking for:'
@@ -145,6 +146,7 @@ regular-male: Male
 regular-others: Others
 regular-manage_board: 'Processing Agency Panel'
 regular-mandatory: 'Required field!'
+regular-matcher: 'Matcher'
 regular-media_legend: Key
 regular-menu: Menu
 regular-menu-personal: Personal menu

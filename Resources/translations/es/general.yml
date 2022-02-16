@@ -146,6 +146,7 @@ regular-last: Última
 regular-license: Licencia
 regular-linkedin: LinkedIn
 regular-loading: Cargando...
+regular-location: Ubicación
 regular-login: Accede
 regular-logout: 'Cerrar sesión'
 regular-looks_for: 'busca:'
@@ -154,6 +155,7 @@ regular-male: Hombre
 regular-others: Otros
 regular-manage_board: 'Panel Gestoría'
 regular-mandatory: 'Campo obligatorio!'
+regular-matcher: 'Matcher'
 regular-matchfunding: 'Matchfunding'
 regular-media_legend: Leyenda
 regular-menu: Menú
@@ -265,5 +267,5 @@ regular-icon: Icono
 regular-action: Accción
 regular-action_url: Acción URL
 regular-modal-decription: Descripción en la modal
-regular-click-more: "Haz click para saber más" 
+regular-click-more: "Haz click para saber más"
 regular-apply: Aplicar

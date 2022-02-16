@@ -82,7 +82,7 @@ regular-social_commitments: 'Compromisos socials'
 regular-spheres: 'Àmbits'
 regular-footprints: 'Petjades'
 regular-back: 'Torna enrere'
-regular-collaborate: Col·labora 
+regular-collaborate: Col·labora
 regular-content: Contingut
 regular-continue-question: 'Continuar?'
 regular-create: 'Crea un projecte'
@@ -131,6 +131,7 @@ regular-lang: Idioma
 regular-last: Darrera
 regular-license: Llicència
 regular-linkedin: LinkedIn
+regular-location: Ubicació
 regular-loading: Carregant...
 regular-login: Accedeix
 regular-logout: 'Tanca la sessió'
@@ -146,12 +147,12 @@ regular-menu-personal: Menú personal
 regular-message-clipboard-fail: 'Selecciona i copia aquest enllaç'
 regular-message_fail: 'Hi ha hagut algun error en enviar el missatge'
 regular-message_success: 'Missatge enviat correctament'
-regular-months: mesos 
+regular-months: mesos
 regular-more_info: '+ info'
 regular-news: 'Notícies: '
 regular-no: 'No'
 regular-of: de
-regular-preview: Previsualitzar 
+regular-preview: Previsualitzar
 regular-evaluate: Avaluar
 regular-projects: projectes
 regular-published_no: Esborrany
@@ -206,6 +207,7 @@ regular-facebook-pixel: 'Facebook Píxel'
 regular-call: Matchfunding
 regular-num-comments: '%s comentaris'
 regular-manage: 'Gestiona'
+regular-matcher: 'Matcher'
 regular-no-edit-permissions: No tens permís per editar aquesta entrada!
 regular-messages: Missatges
 regular-unknown: Desconegut
@@ -243,5 +245,5 @@ regular-icon: Icona
 regular-action: Acció
 regular-action_url: Acció URL
 regular-modal-decription: Decripció a la modal
-regular-click-more: "Fes click per saber més" 
+regular-click-more: "Fes click per saber més"
 regular-apply: Aplicar
