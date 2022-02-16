@@ -46,21 +46,19 @@ $langs = $project->getLangs();
                         </div>
 
                         <?php if (count($langs) > 1) : ?>
-
-                        <div class="project-langs hidden-xs">
-                            <span class="icon-globe glyphicon glyphicon-globe" aria-hidden="true"></span>
-                            <?php $sep = '';
-                            foreach ($langs as $key=>$value) :
-                                echo $sep.'<a href="' . $this->lang_url($key) . '" class="tag">' . $value . '</a>';
-                                $sep = ', ';
-                            endforeach; ?>
-                        </div>
-
+                            <div class="project-langs hidden-xs">
+                                <span class="icon-globe glyphicon glyphicon-globe" aria-hidden="true"></span>
+                                <?php $sep = '';
+                                foreach ($langs as $key=>$value) :
+                                    echo $sep.'<a href="' . $this->lang_url($key) . '" class="tag">' . $value . '</a>';
+                                    $sep = ', ';
+                                endforeach; ?>
+                            </div>
                         <?php endif; ?>
                     </div>
                     <div class="col-sm-6 share-project-container">
                         <div>
-                        <?= $this->text('project-share-header') ?>
+                            <?= $this->text('project-share-header') ?>
                         </div>
                         <div class="row share-project">
                             <div class="col-xs-2 col-xs-offset-1 col-sm-offset-0">
@@ -70,7 +68,7 @@ $langs = $project->getLangs();
                             </div>
                             <div class="col-xs-2">
                                 <a href="<?= $twitter_url ?>">
-                                    <img class="twitter" alt="share twitter "src="<?= SRC_URL . '/assets/img/project/twitter.png' ?>">
+                                    <img class="twitter" alt="share twitter" src="<?= SRC_URL . '/assets/img/project/twitter.png' ?>">
                                 </a>
                             </div>
                             <div class="col-xs-2 visible-xs visible-sm">
@@ -100,7 +98,7 @@ $langs = $project->getLangs();
                             </div>
                         </div>
                         <div class="row no-margin spacer-10" id="link-box" style="display:none;">
-                            <input type="text" class="form-control" value="<?= $share_url ?>" title="<?= $this->('regular-url') ?>">
+                            <input type="text" class="form-control" value="<?= $share_url ?>" title="<?= $this->t('regular-url') ?>">
                         </div>
 
                         <!-- Call in sm version -->
@@ -109,21 +107,25 @@ $langs = $project->getLangs();
                                 <div class="call-info-container visible-sm">
                                     <div class="row call-info col-lg-10 col-md-11 col-sm-12">
                                         <div class="col-xs-2 no-padding" >
-                                            <img width="35" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
+                                            <img width="35" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive" alt="">
                                             <div class="label-call" >
-                                            <?= $this->text('node-side-sumcalls-header') ?>
+                                                <?= $this->text('node-side-sumcalls-header') ?>
                                             </div>
                                         </div>
                                         <div class="col-xs-10 info-default-call" >
-                                            <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
+                                            <div class="header-text">
+                                                <?= $project->called->user->name.' '.$this->text('call-project-get') ?>
+                                            </div>
                                             <div class="call-name">
                                                 <?= $project->called->name ?>
                                             </div>
                                         </div>
                                         <div class="col-xs-10 info-hover-call display-none" >
-                                            <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
+                                            <div class="header-text">
+                                                <?= $project->called->user->name.' '.$this->text('call-project-get') ?>
+                                            </div>
                                             <div class="call-name">
-                                            <?= $this->text('project-call-got', amount_format($project->amount_call), $project->called->user->name) ?>
+                                                <?= $this->text('project-call-got', amount_format($project->amount_call), $project->called->user->name) ?>
                                             </div>
                                         </div>
                                     </div>
@@ -131,7 +133,6 @@ $langs = $project->getLangs();
                             </a>
                         <?php endif; ?>
                         <!-- end call in sm version -->
-
                     </div>
                 </div>
 
@@ -160,36 +161,38 @@ $langs = $project->getLangs();
             </div>
 
             <?php if($project->called): ?>
-            <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
-                <div class="col-sm-4 call-info-container hidden-sm hidden-xs">
-                    <div class="row call-info col-lg-10 col-md-11 col-sm-12">
-                        <div class="col-xs-2 no-padding" >
-                            <img src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
-                        </div>
-                        <div class="col-xs-10 info-default-call" >
-                            <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
-                            <div class="call-name">
-                                <?= $project->called->name ?>
+                <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
+                    <div class="col-sm-4 call-info-container hidden-sm hidden-xs">
+                        <div class="row call-info col-lg-10 col-md-11 col-sm-12">
+                            <div class="col-xs-2 no-padding" >
+                                <img src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive" alt="">
                             </div>
-                        </div>
-                        <div class="col-xs-10 info-hover-call display-none" >
-                            <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
-                            <div class="call-name">
-                            <?= $this->text('project-call-got', amount_format($project->amount_call), $project->called->user->name) ?>
+                            <div class="col-xs-10 info-default-call" >
+                                <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
+                                <div class="call-name">
+                                    <?= $project->called->name ?>
+                                </div>
+                            </div>
+                            <div class="col-xs-10 info-hover-call display-none" >
+                                <div class="header-text">
+                                    <?= $project->called->user->name.' '.$this->text('call-project-get') ?>
+                                </div>
+                                <div class="call-name">
+                                    <?= $this->text('project-call-got', amount_format($project->amount_call), $project->called->user->name) ?>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
             <?php elseif($matchers): ?>
-
                 <div class="col-sm-4 slider slider-matchers" id="matchers">
-
-                <?php foreach ($matchers as $matcher): ?>
-                        <?php $matcher_amount=$matcher->calculateProjectAmount($project->id); ?>
-                        <?php $matcher_vars=$matcher->getVars(); ?>
-                        <?php $max_project= $matcher_vars['max_amount_per_project'] ? $matcher_vars['max_amount_per_project'] : $matcher_vars['donation_per_project']; ?>
-                        <?php $progress=round(($matcher_amount/$max_project)*100); ?>
+                    <?php foreach ($matchers as $matcher): ?>
+                        <?php
+                            $matcher_amount=$matcher->calculateProjectAmount($project->id);
+                            $matcher_vars=$matcher->getVars();
+                            $max_project= $matcher_vars['max_amount_per_project'] ? $matcher_vars['max_amount_per_project'] : $matcher_vars['donation_per_project'];
+                            $progress=round(($matcher_amount/$max_project)*100);
+                        ?>
                         <div class="matcher-info hidden-sm hidden-xs">
                             <div>
                                 <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo" alt="<?= $this->t('regular-matcher') ?>">
@@ -229,9 +232,7 @@ $langs = $project->getLangs();
                             </div>
                         </div>
                     <?php endforeach; ?>
-
                 </div>
-
             <?php endif; ?>
 
             <?php if ($project->sign_url): ?>
@@ -248,11 +249,11 @@ $langs = $project->getLangs();
 
                     <div class="col-sm-4 hidden-sm hidden-xs channel" style="<?= !$project->called ? 'margin-top: 55px;' : '' ?>">
                         <span class="channel-label">
-                            <img src="/assets/img/project/channel.svg" width="20"> <?= $this->text('regular-channel') ?>
+                            <img src="/assets/img/project/channel.svg" width="20" alt=""> <?= $this->text('regular-channel') ?>
                         </span>
                         <a href="<?= $project->nodeData->url ?>">
                             <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" >
-                            <?= $project->nodeData->name ?>
+                                <?= $project->nodeData->name ?>
                             </button>
                         </a>
                     </div>
