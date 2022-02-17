@@ -85,16 +85,14 @@ $langs = $project->getLangs();
                                 <img id="show-link" class="link cursor-pointer" src="<?= SRC_URL . '/assets/img/project/link.png' ?>" alt="<?= $this->t('regular-share_this') ?>">
                             </div>
                             <div class="col-md-6 col-sm-4 hidden-xs">
-                                <a data-toggle="modal" data-target="#widgetModal" href="" >
-                                    <button class="btn btn-block grey">
-                                        <span class="hidden-sm">
+                                <button class="btn btn-block grey" data-toggle="modal" data-target="#widgetModal">
+                                    <span class="hidden-sm">
                                         <?= $this->text('project-spread-widget') ?>
-                                        </span>
-                                        <span class="visible-sm">
+                                    </span>
+                                    <span class="visible-sm">
                                         <?= $this->text('dashboard-menu-projects-widgets') ?>
-                                        </span>
-                                    </button>
-                                </a>
+                                    </span>
+                                </button>
                             </div>
                         </div>
                         <div class="row no-margin spacer-10" id="link-box" style="display:none;">
@@ -272,7 +270,7 @@ $langs = $project->getLangs();
                    <div class="panel-body">
                         <?php foreach ($this->individual_rewards as $individual) : ?>
                             <div class="side-widget">
-                                <div class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></div>
+                                <h3 class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></h3>
                                 <div class="text-bold spacer-20"><?= $individual->reward ?></div>
                                 <div class="spacer-20"><?= $this->markdown($individual->description) ?></div>
                                 <div class="investors">

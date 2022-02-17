@@ -1,71 +1,72 @@
 <?php $project=$this->project; ?>
 
 <div class="hidden-xs">
-
-        <h2 class="green-title">
+    <h2 class="green-title">
         <?= $this->text('project-rewards-side-title') ?>
-        </h2>
+    </h2>
 
-        <?php foreach ($this->individual_rewards as $individual) : ?>
-
-        <?php $available = $individual->available(); ?>
-
-        <?php $units = ($individual->units - $individual->taken); // units left?>
+    <?php foreach ($this->individual_rewards as $individual):
+        $available = $individual->available();
+        $units = ($individual->units - $individual->taken); // units left
+    ?>
         <div class="side-widget">
-
-            <div class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></div>
-            <div class="text-bold spacer-20"><?= $individual->reward ?></div>
-            <div class="spacer-20"><?= $this->markdown($individual->description) ?></div>
+            <h3 class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></h3>
+            <p class="text-bold spacer-20"><?= $individual->reward ?></p>
+            <p class="spacer-20"><?= $this->markdown($individual->description) ?></p>
 
             <div class="investors">
-                <div>
-                    <?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?>
-                </div>
+                <p><?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?></p>
 
                 <?php if ($project->inCampaign()): ?>
-
                     <?php if (!$available):  ?>
-                        <div class="left"><?= ' > '.$this->text('invest-reward-none') ?></div>
+                        <p class="left"><?= ' > '.$this->text('invest-reward-none') ?></p>
                     <?php elseif (!empty($individual->units)) : ?>
-                        <div class="left">
+                        <p class="left">
                             <?= ' > '.$this->text('project-rewards-individual_reward-units_left', sprintf("%02d", $units)) ?>
-                        </div>
+                        </p>
                     <?php endif ?>
-
                 <?php endif; ?>
-
             </div>
 
             <?php if ($project->inCampaign() && !$individual->none): ?>
                 <div class="spacer-5">
-                    <a class="btn btn-block btn-pink" href="<?= '/invest/'.$project->id.'/payment?reward='.$individual->id ?>"><span><?= $this->text('regular-getit') ?></span></a>
+                    <a class="btn btn-block btn-pink" href="<?= '/invest/'.$project->id.'/payment?reward='.$individual->id ?>">
+                        <span><?= $this->text('regular-getit') ?></span>
+                    </a>
                 </div>
             <?php endif; ?>
-
         </div>
+    <?php endforeach ?>
 
-        <?php endforeach ?>
-
-        <h2 class="green-title spacer">
+    <h2 class="green-title spacer">
         <?= $this->text('project-menu-messages') ?>
-        </h2>
-        <div class="small-subtitle">
-        &gt; <?= $project->num_messengers.' '.$this->text('project-collaborations-number') ?>
-        </div>
-        <div class="small-subtitle">
-        &gt; <?= count($project->supports).' '.$this->text('project-collaborations-available') ?>
-        </div>
+    </h2>
 
-        <div class="collaborations">
+    <ul class="collaboration-list">
+        <li class="small-subtitle">
+            <?= $project->num_messengers.' '.$this->text('project-collaborations-number') ?>
+        </li>
+        <li class="small-subtitle">
+            <?= count($project->supports).' '.$this->text('project-collaborations-available') ?>
+        </li>
+    </ul>
+
+    <div class="collaborations">
         <!-- List of collaborations -->
         <?php foreach ($project->supports as $support): ?>
             <div class="side-widget">
-                <div class="text-bold"><?= $support->support ?></div>
-                <div class="spacer-20"><?= substr($support->description,0,150) ?></div>
+                <h3 class="text-bold">
+                    <?= $support->support ?>
+                </h3>
+                <p class="spacer-20">
+                    <?= substr($support->description,0,150) ?>
+                </p>
                 <div class="spacer-5">
-                    <a href="<?= '/project/'.$project->id.'/participate#msg-'.$support->thread ?>"><button class="btn btn-block btn-green"><?= $this->text('regular-collaborate') ?></button></a>
+                    <a class="btn btn-block btn-green" href="<?= '/project/'.$project->id.'/participate#msg-'.$support->thread ?>">
+                        <?= $this->text('regular-collaborate') ?>
+                    </a>
                 </div>
             </div>
         <?php endforeach ?>
-        </div>
+    </div>
 </div>
