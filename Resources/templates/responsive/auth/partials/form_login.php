@@ -2,11 +2,17 @@
 $signup_link = $this->signup_link ? $this->raw('signup_link') : '/signup?return=' . urlencode($this->raw('return'));
 ?>
     <div class="form-group">
-        <input type="text" class="form-control" placeholder="<?= $this->text('login-recover-email-field') ?>" name="username" value="<?= $this->username ?>" required>
+        <label for="username">
+            <?= $this->t('register-id-field') ?>
+        </label>
+        <input id="username" type="text" class="form-control" placeholder="<?= $this->text('login-recover-email-field') ?>" name="username" value="<?= $this->username ?>" required>
     </div>
 
     <div class="form-group">
-        <input type="password" class="form-control" placeholder="<?= $this->text('login-access-password-field') ?>" name="password" required>
+        <label for="password">
+            <?= $this->t('register-password-field') ?>
+        </label>
+        <input id="password" type="password" class="form-control" placeholder="<?= $this->text('login-access-password-field') ?>" name="password" required>
     </div>
 
     <div class="checkbox form-group">

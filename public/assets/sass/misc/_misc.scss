@@ -210,3 +210,21 @@ ul.project-filters {
     }
   }
 }
+
+ul.comma-list {
+  display: inline;
+  list-style: none;
+  padding: 0px;
+
+  li {
+    display: inline;
+
+    &::after {
+      content: ","
+    }
+
+    &:last-child::after {
+      content: ""
+    }
+  }
+}

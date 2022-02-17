@@ -145,7 +145,7 @@ use Goteo\Library\Check;
 <a href="<?php echo SITE_URL ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
     <div class="row call-info visible-xs">
         <div class="col-xs-2 no-padding" >
-            <img src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
+            <img src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive" alt="<?= $this->t('regular-matcher') ?>">
         </div>
         <div class="col-xs-10 info-default-call" >
             <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
@@ -163,7 +163,7 @@ use Goteo\Library\Check;
 </a>
 
  <?php elseif($matchers): ?>
-            
+
     <div class="slider slider-matchers visible-xs" id="matchers">
 
     <?php foreach ($matchers as $matcher): ?>
@@ -172,15 +172,15 @@ use Goteo\Library\Check;
             <?php $max_project= $matcher_vars['max_amount_per_project'] ? $matcher_vars['max_amount_per_project'] : $matcher_vars['donation_per_project']; ?>
             <?php $progress=round(($matcher_amount/$max_project)*100); ?>
                 <div class="matcher-info">
-                    <div>    
-                        <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo">
+                    <div>
+                        <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo" alt="<?= $this->t('regular-matcher') ?>">
                         <span class="matcher-label">
                         <?= $this->text('matcher-label-project') ?>
                         </span>
                     </div>
                     <div class="matcher-description">
                         <div class="logo-container">
-                            <img src="<?= $matcher->getLogo()->getLink(150, 150, true) ?>" class="logo">
+                            <img src="<?= $matcher->getLogo()->getLink(150, 150, true) ?>" class="logo" alt="<?= $matcher->name ?>">
                         </div>
                         <div class="info-container">
                             <div class="matcher-name">
@@ -209,7 +209,7 @@ use Goteo\Library\Check;
                                 <div class="matcher-amount">
 
                                     <?= $this->text('matcher-amount-project', ['%AMOUNT%' => amount_format($matcher_amount), '%PROJECT_AMOUNT%' => amount_format($max_project)] ) ?>
-                                
+
                                 </div>
 
                             <?php endif; ?>
@@ -217,7 +217,7 @@ use Goteo\Library\Check;
                         </div>
                     </div>
                 </div>
-                            
+
     <?php endforeach; ?>
 
     </div>
@@ -239,11 +239,11 @@ use Goteo\Library\Check;
 
     <div class="visible-xs channel" >
         <span class="channel-label">
-            <img src="/assets/img/project/channel.svg" width="20"> <?= $this->text('regular-channel') ?> 
+            <img src="/assets/img/project/channel.svg" width="20" alt=""> <?= $this->text('regular-channel') ?>
         </span>
         <a href="<?= $project->nodeData->url ?>">
-            <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" > 
-                <?= $project->nodeData->name ?>    
+            <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" >
+                <?= $project->nodeData->name ?>
             </button>
         </a>
     </div>

@@ -33,12 +33,12 @@
 							<?php if($invest->matcher): ?>
 								<div class="pull-left drop-logo">
 	                                <div>
-	                                    <img width="60" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>">
+	                                    <img width="60" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" alt="">
 	                                </div>
 		                        </div>
 		                        <div class="pull-left matcher-img">
 		                        	<a href="/user/<?= $invest->user ?>">
-		                        		<img src="<?= $invest->avatar->getLink(0, 50, false) ?>">
+		                        		<img src="<?= $invest->avatar->getLink(0, 50, false) ?>" alt="<?= ucfirst($invest->name) ?>">
 		                        	</a>
 								</div>
 								<div class="pull-left personal">
@@ -62,16 +62,17 @@
 							<?php else: ?>
 								<div class="pull-left">
 									<?php if($invest->user!= 'anonymous'): ?>
-										<a href="/user/<?= $invest->user ?>"><img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true) ?>">
+										<a href="/user/<?= $invest->user ?>">
+                                            <img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true) ?>" alt="<?= ucfirst($invest->name) ?>">
 										</a>
 									<?php else: ?>
-										<img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true) ?>">
+										<img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true) ?>" alt="<?= $this->t('regular-anonymous') ?>">
 									<?php endif ?>
 								</div>
 								<div class="pull-left personal">
 									<h3 class="name" id="invest-<?= $invest->id ?>">
 									<?php if($invest->user!= 'anonymous'): ?>
-									<a href="/user/<?= $invest->user ?>"><?= ucfirst($invest->name) ?></a>
+									    <a href="/user/<?= $invest->user ?>"><?= ucfirst($invest->name) ?></a>
 									<?php else: ?>
 										<?= ucfirst($invest->name) ?>
 									<?php endif;?>

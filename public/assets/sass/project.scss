@@ -458,7 +458,7 @@ div.matcher-info {
           float: left;
           padding: 5px;
           border: 3px solid #fff;
-        }    
+        }
       }
       .info-container{
         width:70%;
@@ -501,7 +501,7 @@ div.matcher-info {
         }
 
       }
-    }    
+    }
 }
 
 /* Menu */
@@ -690,6 +690,10 @@ div {
       height: auto;
       margin: 4px 0;
     }
+
+    h3 {
+      font-size: 16px;
+    }
   }
   &.collaborations {
     margin-top: 15px;
@@ -722,6 +726,17 @@ div {
     img {
       max-width: 100%;
     }
+  }
+}
+
+ul.collaboration-list {
+  list-style: disclosure-closed;
+
+  li.small-subtitle {
+    font-size: 13px;
+    color: $color-dark !important;
+    font-weight: bold;
+    text-transform: uppercase;
   }
 }
 
@@ -1149,7 +1164,7 @@ div {
   }
   div {
     &.general-text h1{
-      word-break: break-word; 
+      word-break: break-word;
     }
     &.project-by a {
       font-size: 16px !important;
@@ -1218,7 +1233,7 @@ div {
   div.call-info {
     margin-top: 40px !important;
   }
-  .slider-matchers{ 
+  .slider-matchers{
      .slick-dots{
       top: 130px !important;
      }
@@ -1246,7 +1261,7 @@ div {
   }
   div {
     &.general-text h1{
-      word-break: break-word; 
+      word-break: break-word;
     }
     &.project-by a {
       font-size: 1.29em;
@@ -1348,7 +1363,7 @@ div {
     &.sign{
       margin-bottom: 25px;
     }
-    
+
   }
   /* Investors section */
   /* Buttons meter */
@@ -1474,7 +1489,7 @@ div {
         color: $background-dark-lilac !important;
       }
      }
-     
+
     }
 
 

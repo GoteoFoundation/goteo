@@ -40,9 +40,10 @@ $this->section('main-content');
 
                 <div class="row standard-margin-top" id="container-msg-form">
                     <form class="col-sm-10 col-sm-offset-1" name="msg-form" id="msg-form" action="">
-                        <div class="alert alert-danger" role="alert" id="error" style="display:none;">
-
-                        </div>
+                        <div class="alert alert-danger" role="alert" id="error" style="display:none;"></div>
+                        <label for="support-msg">
+                            <?= $this->text('project-messages-send_message-header') ?>
+                        </label>
                         <textarea class="form-control" id="support-msg" rows="4" required></textarea>
                         <div class="margin-2 standard-margin-top">
                             <button type="button" class="btn btn-lg btn-cyan" id="send-msg" value=""><i class="fa fa-paper-plane-o"></i> <?= $this->text('project-messages-send_message-button') ?></button>
