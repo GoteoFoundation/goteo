@@ -20,4 +20,10 @@ admin-account-invest-to-pool-ko: 'Nevrácení příspěvku do peněženky'
 admin-account-invest-to-pool-ok: 'Příspěvek vrácený do peněženky. Zvýšení peněženky na hodnotu (%s)'
 admin-account-invest-user-refund-fail-pool-amount: 'Tento příspěvek nelze vrátit, protože uživatel nemá v peněžence dostatek peněz (%s)'
 admin-account-invest-user-refund-ko: 'Nelze vrátit příspěvek: [%s]'
+admin-account-invest-user-refund-ok: 'Správně vrácený příspěvek'
+admin-account-invest-user-refund-ok-pool: 'Příspěvek byl úspěšně proplacen. Peněženka byla snížena o %s'
+admin-account-issue-solved: 'Obdrželi jsme převod'
+admin-account-modify-status: 'Změnit stav'
+admin-account-modify-status-confirm: "Opravdu chcete ručně změnit stav tohoto příspěvku? To je ošemetné!\nU příspěvku se neprovede žádná operace vrácení.\n"
+admin-account-payment-method: 'Způsob platby'
 
