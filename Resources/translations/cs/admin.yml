@@ -72,4 +72,7 @@ admin-communications-communication: 'Komunikace obecně'
 admin-communications-id: 'ID komunikace'
 admin-certificates: Certifikáty
 admin-certificates-management: Správa certifikátů
+admin-home: Úvodní strana
+admin-items: tikety
+admin-mailing-back-to-list: 'Zpět na komunikaci'
 
