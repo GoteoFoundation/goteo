@@ -17,4 +17,5 @@ admin-account-invest-date: 'Datum vložení příspěvku'
 admin-account-invest-non-pool-refundable: 'Tento příspěvek nelze do virtuální peněženky vrátit. Vracet lze pouze příspěvky ve stavu "Vybrané"'
 admin-account-invest-non-user-refundable: "Tento příspěvek je nevratný. Příspěvky lze vrátit v následujících stavech:\n\"Pending\", \"Collected\" a \"To wallet\", pokud je v peněžence dostatek peněz k odečtení\n"
 admin-account-invest-to-pool-ko: 'Nevrácení příspěvku do peněženky'
+admin-account-invest-to-pool-ok: 'Příspěvek vrácený do peněženky. Zvýšení peněženky na hodnotu (%s)'
 
