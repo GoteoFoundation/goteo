@@ -40,3 +40,6 @@ admin-account-switch-pool-fail: 'U tohoto příspěvku není možné změnit sta
 admin-account-transaction: 'Kódy pro sledování'
 admin-account-user-changed-error: 'Nepodařilo se změnit uživatele příspěvku [%ID%] na [%NAME%]!'
 admin-account-user-changed-successfully: 'Uživatel příspěvku [%ID%] byl změněn na [%NAME%]'
+admin-address: Adresa
+admin-all: Vše
+admin-global: Globální
