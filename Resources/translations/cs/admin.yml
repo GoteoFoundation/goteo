@@ -105,6 +105,27 @@ admin-remove-filters-forbidden: 'Použité filtry nelze odstranit.'
 admin-remove-entry: 'Vymazat záznam'
 admin-remove-entry-confirm: 'Opravdu chcete tuto položku odstranit? Tuto akci nelze vzít zpět!'
 admin-remove-entry-forbidden: 'Zveřejněné příspěvky na blogu nelze odstranit. Nejprve záznam zrušte.'
+admin-remove-entry-ok: 'Položka byla úspěšně odstraněna'
+admin-add-entry-ok: 'Nová položka úspěšně vytvořena'
+admin-edit-entry-ok: 'Položka byla úspěšně upravena'
+admin-services: Služby
+admin-sponsors: Sponzoři
+admin-slug-seo-help: 'Toto pole je důležité pro SEO. Editace pouze z dobrého důvodu.'
+admin-others: Ostatní
+admin-summary: Shrnutí
+admin-origins: Analytika návštěvníků
+admin-status: Stav
+admin-text-type: 'Zpracovat text jako'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Prostý text'
+admin-user: Uživatelské jméno
+admin-user-no-projects: 'Zatím nebyly vytvořeny žádné projekty'
+admin-user-no-invests: 'Zatím nebyly poskytnuty žádné dary'
+admin-users: Uživatelé
+admin-users-add: Vytvořit nového uživatele
+admin-blog: Hlavní blog
+admin-blog-add: Vytvořit příspěvek
 admin-channelstory-submit: Uložit historii
 admin-channelstory-correct: 'Příběh byl přidán do kanálu'
 admin-channelsection-section: 'Sekce'
