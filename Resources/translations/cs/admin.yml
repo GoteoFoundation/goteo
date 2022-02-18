@@ -84,6 +84,24 @@ admin-mailing-view-and-activate: 'Podívejte se do administrace zpravodaje a akt
 admin-mailing-view-in-newsletter: 'Viz ve zpravodaji správce'
 admin-mailing-view-in-sent: 'Zobrazit v historii odeslání (statistiky)'
 admin-mailing-view-message: 'Zobrazit zprávu'
+admin-newsletter-generated: 'Byl vygenerován zpravodaj [%ID%]'
+admin-newsletter-langs-to-send: 'Jazyky: %LANGS%'
+admin-newsletter-mind-activate: 'Aktivujte jej, aby byl odeslán'
+admin-prev-page: 'Předchozí strana'
+admin-next-page: 'Další stránka'
+admin-no: 'Ne'
+admin-percent: Procento
+admin-project: Projekt
+admin-main: Hlavní
+admin-legacy: Nejstarší
+admin-projects: Projekty
+admin-consultants: 'Konzultanti'
+admin-invests: Příspěvky
+admin-filters: 'Filtry'
+admin-filters-edit: 'Upravit filtr'
+admin-filters-create: 'Vymazat filtr'
+admin-remove-filters: 'Zrušit filtry'
+admin-remove-filters-forbidden: 'Použité filtry nelze odstranit.'
 admin-channelstory-submit: Uložit historii
 admin-channelstory-correct: 'Příběh byl přidán do kanálu'
 admin-channelsection-section: 'Sekce'
@@ -111,4 +129,8 @@ admin-categories: 'Kategorie a oblasti'
 admin-categories-if-empty-then-asset: 'Pokud zůstane prázdná, použije se výchozí ikona: %s'
 admin-category-add: Vytvořit novou kategorii
 admin-category-edit: Upravit kategorii %s
+admin-socialcommitment-add: Vytvořit nový sociální závazek
+admin-socialcommitment-edit: Upravit sociální závazek %s
+admin-sphere-add: Vytvořit novou oblast
+admin-sphere-edit: Upravit oblast %s
 
