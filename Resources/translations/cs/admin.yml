@@ -101,3 +101,13 @@ admin-channelsection-button: 'Tlačítko'
 admin-channelsection-create: 'Vytvořit'
 admin-channelsection-add: 'Přidat sekci'
 admin-channelpost-add: Přidat příspěvek do kanálu
+admin-channelpost-submit: Uložit příspěvek
+admin-channelpost-correct: 'Příspěvek byl přidán do kanálu'
+admin-channelcriteria-title: 'Dotazníky pro kanály'
+admin-channelcriteria-subtitle: 'Stanovte si kritéria, podle kterých budete hodnotit projekt, který chce být předložen vašemu kanálu. Snažte se stručně vyjádřit, co očekáváte od iniciativ, které chcete prezentovat, usnadní vám to závěrečné hodnocení.'
+admin-channelprogram-create: 'Vytvořit'
+admin-channelprogram-add: 'Přidat program'
+admin-categories: 'Kategorie a oblasti'
+admin-categories-if-empty-then-asset: 'Pokud zůstane prázdná, použije se výchozí ikona: %s'
+admin-category-add: Vytvořit novou kategorii
+admin-category-edit: Upravit kategorii %s
