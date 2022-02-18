@@ -417,7 +417,7 @@ class S3File extends BaseFile implements FileInterface {
     }
 
     public function get_public_url(string $filename): string {
-        return $this->bucket . '.s3.' . Config::get("filesystem.aws.region") . '.amazonaws.com/' . $filename;
+        return $this->bucket . '/' . $filename;
     }
 
 }
