@@ -2,3 +2,15 @@
 admin-action: 'Aktivita správce'
 admin-NO: 'NE'
 admin-YES: ANO
+admin-account-amount: 'Přispěná částka'
+admin-account-change-user: 'Přepnout uživatele'
+admin-account-change-user-confirm: 'Opravdu chcete změnit uživatele příspěvku? Novým uživatelem bude:'
+admin-account-convert-to-pool: 'Převést do peněženky'
+admin-account-convert-to-pool-confirm: 'Tím se odstraní projekt spojený s tímto příspěvkem a stane se, jako by šlo o nákup z peněženky. VŠECHNA SOUVISEJÍCÍ DOPORUČENÍ BUDOU ZTRACENA. Pokračovat?'
+admin-account-convert-to-pool-ko: 'Nepodařilo se převést příspěvek do peněženky: %s'
+admin-account-convert-to-pool-ok: 'Správně převedeno na příspěvek do peněženky'
+admin-account-detail: 'Podrobnosti o transakci'
+admin-account-donation: Dary
+admin-account-edit-reward: 'Řízení odměn / směrování'
+admin-account-invalid-invest: 'Příspěvek [%s] nebyl nalezen!'
+admin-account-invest-date: 'Datum vložení příspěvku'
