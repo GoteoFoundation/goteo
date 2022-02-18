@@ -75,4 +75,30 @@ admin-certificates-management: Správa certifikátů
 admin-home: Úvodní strana
 admin-items: tikety
 admin-mailing-back-to-list: 'Zpět na komunikaci'
+admin-mailing-communicating-with: 'Hledali jsme komunikaci s %DESC%'
+admin-mailing-created: 'Vytvořeno'
+admin-mailing-new-massive: 'Byla vytvořena nová hromadná korespondence pro %TOTAL% uživatelů'
+admin-mailing-status: 'Stav automatického odesílání'
+admin-mailing-subject: Předmět
+admin-mailing-view-and-activate: 'Podívejte se do administrace zpravodaje a aktivujte zasílání zpravodaje'
+admin-mailing-view-in-newsletter: 'Viz ve zpravodaji správce'
+admin-mailing-view-in-sent: 'Zobrazit v historii odeslání (statistiky)'
+admin-mailing-view-message: 'Zobrazit zprávu'
+admin-channelstory-submit: Uložit historii
+admin-channelstory-correct: 'Příběh byl přidán do kanálu'
+admin-channelsection-section: 'Sekce'
+admin-channelsection-map: 'Mapa'
+admin-channelsection-resource: 'Zdroje'
+admin-channelsection-call_to_action: 'Výzva k akci'
+admin-channelsection-projects: 'Projekty'
+admin-channelsection-posts: 'Příspěvky'
+admin-channelsection-program: 'Programy'
+admin-channelsection-stories: 'Příběhy'
+admin-channelsection-workshops: 'Workshopy'
+admin-channelsection-team: 'Tým'
+admin-channelsection-sponsors: 'Sponzoři'
+admin-channelsection-button: 'Tlačítko'
+admin-channelsection-create: 'Vytvořit'
+admin-channelsection-add: 'Přidat sekci'
+admin-channelpost-add: Přidat příspěvek do kanálu
 
