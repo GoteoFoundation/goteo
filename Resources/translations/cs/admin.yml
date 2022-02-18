@@ -26,3 +26,10 @@ admin-account-issue-solved: 'Obdrželi jsme převod'
 admin-account-modify-status: 'Změnit stav'
 admin-account-modify-status-confirm: "Opravdu chcete ručně změnit stav tohoto příspěvku? To je ošemetné!\nU příspěvku se neprovede žádná operace vrácení.\n"
 admin-account-payment-method: 'Způsob platby'
+admin-account-pool-on-fail: 'Pokladna (v případě neúspěchu se vrací do peněženky)'
+admin-account-refund-to-pool: 'Vrácení příspěvku do peněženky'
+admin-account-refund-to-pool-confirm: "Tím se příspěvek označí jako:\nVráceno, pokud je projekt neúspěšný\nZrušeno, pokud je projekt aktivní nebo úspěšný.\nUživateli nebudou vráceny peníze, ty budou vygenerovány v jeho peněžence.\nPokračovat?\n"
+admin-account-refund-to-user: 'Vrátit příspěvek uživateli'
+admin-account-refund-to-user-confirm: "Tím se příspěvek označí jako:\nVráceno, pokud je projekt neúspěšný\nZrušeno, pokud je projekt aktivní nebo úspěšný.\nPeníze budou uživateli vráceny.\nTo nemusí fungovat, pokud je příspěvek příliš starý nebo pokud to způsob platby nepodporuje.\nPokračovat?\n"
+admin-account-rewards: 'Vybrané odměny'
+admin-account-switch-donation: 'Přepínání darů'
