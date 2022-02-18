@@ -14,4 +14,5 @@ admin-account-donation: Dary
 admin-account-edit-reward: 'Řízení odměn / směrování'
 admin-account-invalid-invest: 'Příspěvek [%s] nebyl nalezen!'
 admin-account-invest-date: 'Datum vložení příspěvku'
+admin-account-invest-non-pool-refundable: 'Tento příspěvek nelze do virtuální peněženky vrátit. Vracet lze pouze příspěvky ve stavu "Vybrané"'
 
