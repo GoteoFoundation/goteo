@@ -66,3 +66,9 @@ admin-communications-subscribeurl-content: ' přímý odkaz na přihlášení k 
 admin-communications-unsubscribeurl-content: ' přímý odkaz na odhlášení z odběru zpravodaje uživatele'
 admin-communications-poolamount-content: ' množství peněz, které má uživatel k dispozici v peněžence'
 admin-communications-send: 'Odesílání komunikace'
+admin-communications-cancel: 'Zrušit komunikaci'
+admin-communications-newsletter: 'Zpravodaj'
+admin-communications-communication: 'Komunikace obecně'
+admin-communications-id: 'ID komunikace'
+admin-certificates: Certifikáty
+admin-certificates-management: Správa certifikátů
