@@ -43,3 +43,13 @@ admin-account-user-changed-successfully: 'Uživatel příspěvku [%ID%] byl změ
 admin-address: Adresa
 admin-all: Vše
 admin-global: Globální
+admin-back: Zpět
+admin-back-detail: 'Zpět na detaily'
+admin-back-list: 'Zpět na seznam'
+admin-contents: 'Texty a překlady'
+admin-empty-list: 'Nenalezeny žádné záznamy'
+admin-activity: Aktivita
+admin-communications: Komunikace
+admin-communications-add: Vytvořit novou komunikaci
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
