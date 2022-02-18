@@ -29,14 +29,12 @@
 
                 <div id="collapseOne" class="panel-collapse collapse">
                   <div class="panel-body">
-
-
                     <?php foreach ($this->costs as $type => $list): ?>
                         <table class="footable table needs">
                              <thead>
                                 <tr>
                                   <th data-type="html">
-                                    <img src="<?= SRC_URL . '/assets/img/project/needs/'.$type.'.png' ?> ">
+                                    <img src="<?= SRC_URL . '/assets/img/project/needs/'.$type.'.png' ?> " alt="<?= $this->t('project-menu-needs') ?>">
                                     <span class="type"><?= $this->types[$type] ?></span>
                                   </th>
                                   <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-minimum') ?></th>

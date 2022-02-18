@@ -305,7 +305,7 @@
         min-height: 283px;
         background: $color-white;
         border: none;
-        h4 {
+        h3 {
             font-size: $font-size;
         }
         a {
@@ -469,6 +469,10 @@
           width: 18px;
           height: 18px;
         }
+    }
+
+    button.close {
+      padding: 0 0 0 10px;
     }
 
     h5 {

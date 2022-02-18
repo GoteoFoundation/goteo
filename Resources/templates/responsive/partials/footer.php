@@ -21,14 +21,14 @@
               </ul>
             </div>
         </div>
-        <div class="social text-center">
-          <a class="fa fa-twitter" target="_blank" href="<?=$this->text('social-account-twitter') ?>" title="<?= $this->t('regular-share-twitter')?>"></a>
-          <a class="fa fa-facebook" target="_blank" href="<?=$this->text('social-account-facebook') ?>" title="<?= $this->t('regular-share-facebook')?>"></a>
-          <a class="fa fa-instagram" target="_blank" href="<?=$this->text('social-account-instagram') ?>" title="<?= $this->t('regular-share-instagram')?>"></a>
-          <a class="fa fa-telegram" target="_blank" href="<?=$this->text('social-account-telegram') ?>" title="<?= $this->t('regular-share-telegram')?>"></a>
-          <a class="fa fa-github" target="_blank" href="<?=$this->text('social-account-github') ?>" title="<?= $this->t('regular-share-github')?>"></a>
-          <a class="fa fa-newspaper-o" target="_blank" href="<?= $this->lang_host() ?>newsletter" title="<?= $this->t('regular-share-newsletter)')?>"></a>
-        </div>
+        <ul class="social text-center list-inline footer-list">
+          <li><a class="fa fa-twitter" target="_blank" href="<?=$this->text('social-account-twitter') ?>" title="<?= $this->t('regular-share-twitter')?>"></a></li>
+          <li><a class="fa fa-facebook" target="_blank" href="<?=$this->text('social-account-facebook') ?>" title="<?= $this->t('regular-share-facebook')?>"></a></li>
+          <li><a class="fa fa-instagram" target="_blank" href="<?=$this->text('social-account-instagram') ?>" title="<?= $this->t('regular-share-instagram')?>"></a></li>
+          <li><a class="fa fa-telegram" target="_blank" href="<?=$this->text('social-account-telegram') ?>" title="<?= $this->t('regular-share-telegram')?>"></a></li>
+          <li><a class="fa fa-github" target="_blank" href="<?=$this->text('social-account-github') ?>" title="<?= $this->t('regular-share-github')?>"></a></li>
+          <li><a class="fa fa-newspaper-o" target="_blank" href="<?= $this->lang_host() ?>newsletter" title="<?= $this->t('regular-share-newsletter)')?>"></a></li>
+        </ul>
       </div>
     </div>
 </footer>

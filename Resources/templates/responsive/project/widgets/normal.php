@@ -19,8 +19,9 @@ if (!($label = $this->label)) {
     $matchers = $this->project->getMatchers('active', ['has_channel' => true]);
 }
 
-?><div class="project-widget flip-widget normal<?= $this->project->isApproved() ? '' : ' non-public' ?>" id="project-<?= $this->project->id ?>">
+?>
 
+<div class="project-widget flip-widget normal<?= $this->project->isApproved() ? '' : ' non-public' ?>" id="project-<?= $this->project->id ?>">
     <?php if ($label) : ?>
         <div class="status btn-lilac">
             <?= $label ?>
@@ -46,25 +47,29 @@ if (!($label = $this->label)) {
 
 
     <a class="img-link" href="<?= $link ?>" <?= $target ?>>
-        <img loading="lazy" class="img-project" src="<?= $this->project->image->getLink(600, 416, true); ?>">
+        <img loading="lazy" class="img-project" src="<?= $this->project->image->getLink(600, 416, true); ?>" alt="<?= $this->text('regular-header-image-of', $this->project->name) ?>">
         <h2><?= $this->text_truncate($this->ee($this->project->name), 80); ?></h2>
     </a>
 
     <a class="floating flip" href="#backflip-<?= $this->project->id ?>" title="<?= $this->text('regular-more_info') ?>">+</a>
 
     <div class="content">
-        <h4>
+        <h3>
             <a href="/user/profile/<?= $this->project->user->id ?>" <?= $target ?>><?= $this->text('regular-by') . ' ' . $this->project->user->name ?></a>
-        </h4>
-        <div class="description">
+        </h3>
+        <p class="description">
             <?= $this->text_truncate($this->ee($this->project->subtitle), 140) ?>
-        </div>
+        </p>
 
         <?php // TODO: add links here?
         if ($categories) : ?>
-            <div class="categories">
-                <i class="fa fa-tag"></i> <?= implode(', ', $categories) ?>
-            </div>
+            <ul class="categories list-inline">
+                <?php foreach($categories as $category): ?>
+                    <li>
+                        <i class="fa fa-tag"></i> <?= implode(', ', $categories) ?>
+                    </li>
+                <?php endforeach ?>
+            </ul>
         <?php endif ?>
 
         <div class="bottom">
