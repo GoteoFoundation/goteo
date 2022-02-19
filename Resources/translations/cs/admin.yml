@@ -382,4 +382,8 @@ admin-last_year_complete: Celý loňský rok
 admin-promote-add: 'Nové zvýraznění'
 admin-promote-submit: 'Uložit'
 admin-promote-already-exists: 'Tento projekt je již zvýrazněn'
+admin-projects-created-last_year: 'Vytvořeno v loňském roce'
+admin-projects-negotiating-today: 'V jednání dnes'
+admin-projects-negotiating-yesterday: 'V jednání včera'
+admin-projects-negotiating-week: 'V jednání tento týden'
 
