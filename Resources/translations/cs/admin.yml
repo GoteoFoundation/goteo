@@ -266,7 +266,18 @@ admin-title-blockquote: 'Vlastní citát'
 admin-title-type: 'Typ'
 admin-title-date-in: Datum zahájení
 admin-title-date-out: Datum ukončení
+admin-title-venue: Místo (viditelné ve výzvě k akci)
+admin-title-venue-address: Adresa
+admin-title-how-to-get: Jak se tam dostanete?
+admin-title-iframe: 'Lokalizace v rámci Iframe'
+admin-title-schedule-file: 'Url programu'
+admin-title-call: 'Výzva k dorovnání financování'
+admin-title-url-inscription: Odkaz na přihlášení
 admin-title-filter: Filtr
+admin-title-template: Šablona
+admin-title-receivers: Příjemci
+admin-title-sent: Odesláno
+admin-title-failed: Neodesláno
 admin-title-percent: Procento
 admin-title-channel: 'Kanál'
 admin-title-year: Rok
