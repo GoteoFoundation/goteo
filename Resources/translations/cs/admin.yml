@@ -314,6 +314,8 @@ admin-aggregate-invests-average-desc: 'Průměr příspěvků za jednotku času'
 admin-aggregate-projects: 'Celková částka získaná v projektech'
 admin-aggretate-projects-format: '%CURRENCY% %VALUE% - %TOTAL% projektů'
 admin-aggregate-projects-desc: 'Součet příspěvků za jednotku času'
+admin-aggregate-projects-average: 'Průměrné výnosy z projektu'
+admin-aggregate-projects-average-desc: 'Průměrný příjem za jednotku času'
 admin-stats-refunded: 'Vratky'
 admin-active: Aktívní
 admin-refunded: Vráceno
