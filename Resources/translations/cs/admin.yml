@@ -215,10 +215,17 @@ admin-user-no-mailing: 'Zatím vám nebyly odeslány žádné e-maily'
 admin-view-user-mailing: 'Všechny zásilky'
 admin-role-change-forbidden: 'Nemáte oprávnění spravovat roli %ROLE% pro tohoto uživatele'
 admin-users-global-search: 'Id, jméno, e-mail nebo projekt'
+admin-blog-global-search: 'Id, název, podnadpis nebo text'
+admin-communication-global-search: 'Předmět'
+admin-blog-stories-search: 'Id, název, text nebo projekt'
+admin-donor-name-search: 'ID, jméno, e-mail'
+admin-donor-date-search: 'Zpracováno podle data'
+admin-no-project: 'Žádný projekt'
 admin-title-id: Id
 admin-title-name: Jméno
 admin-title-about: Info
 admin-title-active: Aktivní
+admin-title-location: Lokalita
 admin-title-fullname: Jméno
 admin-title-email: E-mail
 admin-title-header-image: Obrázek záhlaví
@@ -226,9 +233,11 @@ admin-title-password: Heslo
 admin-title-avatar: Uživatelská ikona
 admin-title-roles: Role
 admin-title-role: Role
+admin-title-amount: Obráceně
 admin-title-icon: Ikona
 admin-title-info: Info
 admin-title-image: Obrázek
+admin-title-landing_match: Vyrovnávací financování
 admin-title-title: Název
 admin-title-subtitle: Podtitul
 admin-title-subject: Předmět
@@ -237,14 +246,26 @@ admin-title-section: Sekce
 admin-title-text: Text
 admin-title-slug: Slug
 admin-title-publish: Publikováno
+admin-title-lang: Jazyk
 admin-title-langs: Překlady
 admin-title-actions: Akce
 admin-title-tags: Štítky
+admin-title-deleted: Vymazáno
 admin-title-sphere: Oblast působnosti
+admin-title-social_commitment: Sociální závazek
+admin-title-sdgs: 'Cíle udržitelného rozvoje'
 admin-title-footprints: 'Stopa'
 admin-title-categories: 'Kategorie'
+admin-title-social_commitments: 'Sociální závazky'
 admin-title-order: Řazení
 admin-title-status: Stav
+admin-title-users: Uživatelé
+admin-title-city: Město
+admin-title-date: Datum
+admin-title-blockquote: 'Vlastní citát'
+admin-title-type: 'Typ'
+admin-title-date-in: Datum zahájení
+admin-title-date-out: Datum ukončení
 admin-title-filter: Filtr
 admin-title-percent: Procento
 admin-title-channel: 'Kanál'
