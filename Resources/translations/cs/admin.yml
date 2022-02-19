@@ -130,6 +130,10 @@ admin-blog-edit: Upravit příspěvek %s
 admin-blog-slug-exists: 'Identifikátor [%s] je použit v jiném příspěvku!'
 admin-blog-slug-chars: 'Identifikátor [%s] obsahuje neplatné znaky!'
 admin-blog-not-public: 'Tento příspěvek zatím není veřejný'
+admin-stories: Příběhy uživatelů na Goteo
+admin-stories-add: Vytvořit nový příběh
+admin-stories-edit: Úprava historie %s
+admin-channelstory-add: Přidat příběh do kanálu
 admin-channelstory-submit: Uložit historii
 admin-channelstory-correct: 'Příběh byl přidán do kanálu'
 admin-channelsection-section: 'Sekce'
@@ -161,8 +165,10 @@ admin-socialcommitment-add: Vytvořit nový sociální závazek
 admin-socialcommitment-edit: Upravit sociální závazek %s
 admin-sphere-add: Vytvořit novou oblast
 admin-sphere-edit: Upravit oblast %s
+admin-channels: Kanály
 admin-yes: Ano
 admin-impersonate: V zastoupení
+admin-project-to-negotiation: 'Vyjednávání'
 admin-list: Seznam
 admin-title-id: Id
 admin-title-name: Jméno
@@ -170,6 +176,8 @@ admin-title-about: Info
 admin-title-active: Aktivní
 admin-title-fullname: Jméno
 admin-title-email: E-mail
+admin-title-header-image: Obrázek záhlaví
+admin-title-password: Heslo
 admin-title-avatar: Uživatelská ikona
 admin-title-roles: Role
 admin-title-role: Role
