@@ -1,1 +1,27 @@
 ---
+api-key-user: 'Uživatelské jméno'
+api-key-key: 'Klíč'
+dashboard-certificates-completed: Hotovo
+dashboard-certificates-validated: Ověřeno
+dashboard-certificates-rejected: Zamítnuto
+dashboard-header-main: 'Můj ovládací panel'
+dashboard-menu-activity-summary: Shrnutí
+dashboard-menu-admin_board: Správa
+dashboard-menu-profile-personal: 'Osobní údaje'
+dashboard-menu-profile-preferences: 'Moje nastavení'
+dashboard-menu-profile-profile: 'Upravit profil'
+dashboard-menu-profile-public: 'Veřejný profil'
+dashboard-menu-projects: 'Moje projekty'
+dashboard-menu-projects-analytics: Analytika
+dashboard-menu-projects-contract: Smlouva
+dashboard-menu-projects-messegers: Účastníci
+dashboard-menu-projects-preview: 'Veřejné stránky'
+dashboard-menu-projects-summary: Shrnutí
+dashboard-menu-projects-widgets: Widget
+dashboard-menu-translate_board: Překlad
+dashboard-project-updates-deleted: 'Příspěvek smazán'
+dashboard-edit-share-material-url: 'Upravit URL'
+dashboard-modal-placeholder-edit-url: 'Url'
+dashboard-new-material-form-material: 'Materiál'
+dashboard-new-material-form-description: 'Popis'
+dashboard-new-material-form-url: 'URL'
