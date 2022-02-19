@@ -335,13 +335,21 @@ admin-losts: Ztráty
 admin-raised: Sbírka
 admin-active: Aktívní
 admin-refunded: Vráceno
+admin-refunded-to_users: Vráceno uživatelům
+admin-refunded-to_users-invests: Počet vrácení uživatelům
+admin-refunded-to_wallet: Vráceno do peněženky
 admin-commissions: Poplatek
 admin-fees: Poplatek platformě
+admin-user-fee: Občanská komise
+admin-vat: DPH
+admin-diff: Rozdíl
 admin-the_day: Dne
 admin-the_week: Týden
 admin-the_month: měsíc
 admin-the_year: Rok
+admin-custom: Podle filtru
 admin-total: Celkem
 admin-today: Dnes
 admin-yesterday: Včera
+admin-week: Tento týden
 
