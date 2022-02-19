@@ -325,6 +325,14 @@ admin-stats-fees: 'Poplatek platformě'
 admin-stats-commissions: 'Bankovní poplatek'
 admin-stats-matchfunding: 'Matchfunding'
 admin-stats-raised-method: 'Hrubý příjem podle způsobu platby'
+admin-stats-to_projects: 'K projektům'
+admin-stats-to_wallet: 'Do peněženky'
+admin-stats-to_fee: 'Provize'
+admin-stats-in_wallet: 'V peněžence'
+admin-stats-in_users_wallet: 'V peněžence uživatele'
+admin-stats-refunded-parts: 'Rozdělení výnosů'
+admin-losts: Ztráty
+admin-raised: Sbírka
 admin-active: Aktívní
 admin-refunded: Vráceno
 admin-commissions: Poplatek
