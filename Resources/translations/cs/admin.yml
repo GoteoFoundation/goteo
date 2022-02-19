@@ -128,6 +128,8 @@ admin-blog: Hlavní blog
 admin-blog-add: Vytvořit příspěvek
 admin-blog-edit: Upravit příspěvek %s
 admin-blog-slug-exists: 'Identifikátor [%s] je použit v jiném příspěvku!'
+admin-blog-slug-chars: 'Identifikátor [%s] obsahuje neplatné znaky!'
+admin-blog-not-public: 'Tento příspěvek zatím není veřejný'
 admin-channelstory-submit: Uložit historii
 admin-channelstory-correct: 'Příběh byl přidán do kanálu'
 admin-channelsection-section: 'Sekce'
@@ -196,9 +198,17 @@ admin-title-channel: 'Kanál'
 admin-title-year: Rok
 admin-title-nif: DIČ
 admin-blog-not-published-yet: 'Záznam na blogu zatím není veřejný'
+admin-aggregate-autoupdate: 'Automatická aktualizace'
 admin-aggregate-timeline: 'Časová osa'
 admin-stats-refunded: 'Vratky'
+admin-active: Aktívní
+admin-refunded: Vráceno
+admin-commissions: Poplatek
+admin-fees: Poplatek platformě
 admin-the_day: Dne
 admin-the_week: Týden
 admin-the_month: měsíc
 admin-the_year: Rok
+admin-total: Celkem
+admin-today: Dnes
+admin-yesterday: Včera
