@@ -278,10 +278,16 @@ admin-title-template: Šablona
 admin-title-receivers: Příjemci
 admin-title-sent: Odesláno
 admin-title-failed: Neodesláno
+admin-title-pending: Čekající
+admin-title-success: Úspěšný
 admin-title-percent: Procento
+admin-title-action-url: 'Text tlačítka ke stažení'
+admin-title-download-url: 'Odkaz pro stažení'
 admin-title-channel: 'Kanál'
+admin-title-resource-category: 'Kategorie zdrojů'
 admin-title-year: Rok
 admin-title-nif: DIČ
+admin-title-country: Země
 admin-blog-not-published-yet: 'Záznam na blogu zatím není veřejný'
 admin-aggregate-autoupdate: 'Automatická aktualizace'
 admin-aggregate-timeline: 'Časová osa'
