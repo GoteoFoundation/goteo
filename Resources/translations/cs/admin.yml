@@ -168,6 +168,9 @@ admin-sphere-edit: Upravit oblast %s
 admin-sdg-add: Vytvoření nového cíle SDG
 admin-sdg-edit: Úprava SDG %s
 admin-footprint-add: Vytvoření nové stopy
+admin-footprint-edit: Úprava stopy %s
+admin-calls: Výzvy k podávání žádostí
+admin-matchers: Odpovídající
 admin-channels: Kanály
 admin-yes: Ano
 admin-impersonate: V zastoupení
