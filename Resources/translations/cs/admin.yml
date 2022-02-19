@@ -207,6 +207,14 @@ admin-view-user-projects: 'Všechny projekty'
 admin-view-user-invests: 'Všechny příspěvky'
 admin-user-hidden: 'Soukromé (skryté)'
 admin-user-active: 'Aktivní účet'
+admin-user-warning: 'Pozor: Tyto operace jsou prováděny bez zaslání varování uživateli'
+admin-user-wallet-amount: 'Kredit v peněžence'
+admin-user-create-invest: 'Vytvořit příspěvek'
+admin-mailing: 'Pošta'
+admin-user-no-mailing: 'Zatím vám nebyly odeslány žádné e-maily'
+admin-view-user-mailing: 'Všechny zásilky'
+admin-role-change-forbidden: 'Nemáte oprávnění spravovat roli %ROLE% pro tohoto uživatele'
+admin-users-global-search: 'Id, jméno, e-mail nebo projekt'
 admin-title-id: Id
 admin-title-name: Jméno
 admin-title-about: Info
