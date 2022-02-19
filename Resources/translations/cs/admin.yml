@@ -126,6 +126,8 @@ admin-users: Uživatelé
 admin-users-add: Vytvořit nového uživatele
 admin-blog: Hlavní blog
 admin-blog-add: Vytvořit příspěvek
+admin-blog-edit: Upravit příspěvek %s
+admin-blog-slug-exists: 'Identifikátor [%s] je použit v jiném příspěvku!'
 admin-channelstory-submit: Uložit historii
 admin-channelstory-correct: 'Příběh byl přidán do kanálu'
 admin-channelsection-section: 'Sekce'
@@ -157,3 +159,46 @@ admin-socialcommitment-add: Vytvořit nový sociální závazek
 admin-socialcommitment-edit: Upravit sociální závazek %s
 admin-sphere-add: Vytvořit novou oblast
 admin-sphere-edit: Upravit oblast %s
+admin-yes: Ano
+admin-impersonate: V zastoupení
+admin-list: Seznam
+admin-title-id: Id
+admin-title-name: Jméno
+admin-title-about: Info
+admin-title-active: Aktivní
+admin-title-fullname: Jméno
+admin-title-email: E-mail
+admin-title-avatar: Uživatelská ikona
+admin-title-roles: Role
+admin-title-role: Role
+admin-title-icon: Ikona
+admin-title-info: Info
+admin-title-image: Obrázek
+admin-title-title: Název
+admin-title-subtitle: Podtitul
+admin-title-subject: Předmět
+admin-title-description: Popis
+admin-title-section: Sekce
+admin-title-text: Text
+admin-title-slug: Slug
+admin-title-publish: Publikováno
+admin-title-langs: Překlady
+admin-title-actions: Akce
+admin-title-tags: Štítky
+admin-title-sphere: Oblast působnosti
+admin-title-footprints: 'Stopa'
+admin-title-categories: 'Kategorie'
+admin-title-order: Řazení
+admin-title-status: Stav
+admin-title-filter: Filtr
+admin-title-percent: Procento
+admin-title-channel: 'Kanál'
+admin-title-year: Rok
+admin-title-nif: DIČ
+admin-blog-not-published-yet: 'Záznam na blogu zatím není veřejný'
+admin-aggregate-timeline: 'Časová osa'
+admin-stats-refunded: 'Vratky'
+admin-the_day: Dne
+admin-the_week: Týden
+admin-the_month: měsíc
+admin-the_year: Rok
