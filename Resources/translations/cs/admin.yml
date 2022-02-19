@@ -318,7 +318,13 @@ admin-aggregate-projects-average: 'Průměrné výnosy z projektu'
 admin-aggregate-projects-average-desc: 'Průměrný příjem za jednotku času'
 admin-stats-invest-totals: 'Příspěvky a provize'
 admin-stats-project-totals: 'Stav projektů'
+admin-stats-raised: 'Hrubý příjem'
+admin-stats-active: 'Čistý příjem'
 admin-stats-refunded: 'Vratky'
+admin-stats-fees: 'Poplatek platformě'
+admin-stats-commissions: 'Bankovní poplatek'
+admin-stats-matchfunding: 'Matchfunding'
+admin-stats-raised-method: 'Hrubý příjem podle způsobu platby'
 admin-active: Aktívní
 admin-refunded: Vráceno
 admin-commissions: Poplatek
