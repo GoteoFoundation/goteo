@@ -174,7 +174,17 @@ admin-matchers: Odpovídající
 admin-channels: Kanály
 admin-yes: Ano
 admin-impersonate: V zastoupení
+admin-impersonate-user: Zástupce pro %s
+admin-project-express-discard: 'Výslovné zamítnutí'
+admin-project-express-discard-desc: 'Nastavte projekt do stavu Vyřazeno a odešlete e-mail na adresu'
+admin-project-express-discard-sure: 'Automaticky se odešle e-mail a přejde do stavu vyřazeno, ano?'
+admin-project-to-review: 'K přezkoumání'
+admin-project-to-review-desc: 'Přesunout projekt do stavu čeká na posouzení'
+admin-project-to-review-sure: 'Tvůrce už ji nebude moci upravovat, ano?'
+admin-project-view-in-admin: 'Zobrazit v administraci'
 admin-project-to-negotiation: 'Vyjednávání'
+admin-project-to-negotiation-desc: 'Projekt přechází do stavu Upraveno'
+admin-project-to-negotiation-sure: 'POZOR! Projekt je v kampani! Tímto ji zrušíme, OK?'
 admin-list: Seznam
 admin-title-id: Id
 admin-title-name: Jméno
