@@ -325,6 +325,14 @@ admin-stats-fees: 'Poplatek platformě'
 admin-stats-commissions: 'Bankovní poplatek'
 admin-stats-matchfunding: 'Matchfunding'
 admin-stats-raised-method: 'Hrubý příjem podle způsobu platby'
+admin-stats-raised-method-desc: 'Hrubý příjem zahrnuje všechny peníze, které platforma kdykoli vybrala (včetně přímých příspěvků do peněženky nebo z neúspěšných projektů s návratem do peněženky jsou zahrnuty příspěvky neúspěšným projektům).<br><em> Příspěvky z peněženky nejsou zahrnuty</em>(pokud není zvolena tato platební metoda)</b>'
+admin-stats-active-method: 'Čistý příjem podle způsobu platby'
+admin-stats-active-method-desc: 'Čistý příjem zahrnuje všechny peníze shromážděné platformou s výjimkou výnosů (příspěvky do peněženky, přímé a neúspěšné projekty s návratem do peněženky jsou zahrnuty).<br><em>Příspěvky z peněženky nejsou zahrnuty</em > (pokud není zvolena tato platební metoda).'
+admin-stats-refunded-method: 'Vrácení podle způsobu platby'
+admin-stats-refunded-method-desc: 'Náhrady zahrnují všechny způsoby platby (včetně příspěvků z peněženky)'
+admin-stats-commissions-method: 'Bankovní poplatky podle způsobu platby'
+admin-stats-fees-method: 'Poplatek za platformu podle způsobu platby'
+admin-stats-from_matchfunding: 'Podrobnosti o projektech spolufinancování'
 admin-stats-to_projects: 'K projektům'
 admin-stats-to_wallet: 'Do peněženky'
 admin-stats-to_fee: 'Provize'
@@ -357,3 +365,5 @@ admin-last_month: Ve stejný den minulý měsíc
 admin-last_month_complete: Celý minulý měsíc
 admin-last_year_month: Stejný měsíc před rokem
 admin-year: Tento rok
+admin-last_year: Ve stejný den loňského roku
+admin-last_year_complete: Celý loňský rok
