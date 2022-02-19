@@ -370,6 +370,8 @@ admin-today: Dnes
 admin-yesterday: Včera
 admin-week: Tento týden
 admin-last_week: Ve stejný den minulého týdne
+admin-last_week_complete: Celý minulý týden
+admin-last_year_week: Stejný týden před rokem
 admin-month: Tento měsíc
 admin-last_month: Ve stejný den minulý měsíc
 admin-last_month_complete: Celý minulý měsíc
@@ -377,4 +379,7 @@ admin-last_year_month: Stejný měsíc před rokem
 admin-year: Tento rok
 admin-last_year: Ve stejný den loňského roku
 admin-last_year_complete: Celý loňský rok
+admin-promote-add: 'Nové zvýraznění'
+admin-promote-submit: 'Uložit'
+admin-promote-already-exists: 'Tento projekt je již zvýrazněn'
 
