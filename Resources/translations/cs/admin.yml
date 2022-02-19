@@ -185,6 +185,11 @@ admin-project-view-in-admin: 'Zobrazit v administraci'
 admin-project-to-negotiation: 'Vyjednávání'
 admin-project-to-negotiation-desc: 'Projekt přechází do stavu Upraveno'
 admin-project-to-negotiation-sure: 'POZOR! Projekt je v kampani! Tímto ji zrušíme, OK?'
+admin-project-to-publish: 'Publikovat'
+admin-project-to-publish-desc: 'Projekt je nyní ve stavu "v kampani"'
+admin-project-to-publish-sure: 'Projekt se chystá zahájit kampaň, můžeme začít?'
+admin-project-derivation-discard: 'Odmítnutí s doporučením'
+admin-project-derivation-discard-desc: 'Nastavte projekt do stavu Vyřazeno a odešlete e-mail s odkazem na jinou vhodnější platformu'
 admin-list: Seznam
 admin-title-id: Id
 admin-title-name: Jméno
