@@ -341,9 +341,13 @@ admin-stats-invest-in_wallet: 'Celková částka nashromážděná v peněžence
 admin-stats-to_projects: 'K projektům'
 admin-stats-to_wallet: 'Do peněženky'
 admin-stats-to_fee: 'Provize'
+admin-stats-to_fee-percent: 'Efektivní provize'
 admin-stats-in_wallet: 'V peněžence'
 admin-stats-in_users_wallet: 'V peněžence uživatele'
 admin-stats-refunded-parts: 'Rozdělení výnosů'
+admin-stats-fees-parts: 'Rozdělení provizí'
+admin-stats-invest-active-parts: 'Určení čistého příjmu'
+admin-stats-invest-in_wallet-parts: 'Členění peněženky'
 admin-losts: Ztráty
 admin-raised: Sbírka
 admin-active: Aktívní
@@ -365,6 +369,7 @@ admin-total: Celkem
 admin-today: Dnes
 admin-yesterday: Včera
 admin-week: Tento týden
+admin-last_week: Ve stejný den minulého týdne
 admin-month: Tento měsíc
 admin-last_month: Ve stejný den minulý měsíc
 admin-last_month_complete: Celý minulý měsíc
