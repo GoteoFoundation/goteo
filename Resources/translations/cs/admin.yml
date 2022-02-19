@@ -190,7 +190,18 @@ admin-project-to-publish-desc: 'Projekt je nyní ve stavu "v kampani"'
 admin-project-to-publish-sure: 'Projekt se chystá zahájit kampaň, můžeme začít?'
 admin-project-derivation-discard: 'Odmítnutí s doporučením'
 admin-project-derivation-discard-desc: 'Nastavte projekt do stavu Vyřazeno a odešlete e-mail s odkazem na jinou vhodnější platformu'
+admin-project-derivation-discard-sure: 'Automaticky se odešle e-mail s odkazem na jinou platformu a přejde do stavu vyřazeno, ano?'
+admin-home-title: Administrace Goteo
 admin-list: Seznam
+admin-stats: Statistiky
+admin-list-total: 'Celkem: <strong>%s</strong> výsledků'
+admin-search-global: 'Projekt, kanál, výzva k předkládání návrhů...'
+admin-already-impersonating: 'Již se vydáváte za uživatele, nejprve se prosím odhlaste!'
+admin-rebase-user: 'Změna ID uživatele'
+admin-edit-name: 'Přejmenovat'
+admin-edit-roles: 'Upravit role pro uživatele'
+admin-send-email: 'Odeslat e-mail'
+admin-show-roles-info: 'Co může která role dělat?'
 admin-title-id: Id
 admin-title-name: Jméno
 admin-title-about: Info
