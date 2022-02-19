@@ -165,6 +165,9 @@ admin-socialcommitment-add: Vytvořit nový sociální závazek
 admin-socialcommitment-edit: Upravit sociální závazek %s
 admin-sphere-add: Vytvořit novou oblast
 admin-sphere-edit: Upravit oblast %s
+admin-sdg-add: Vytvoření nového cíle SDG
+admin-sdg-edit: Úprava SDG %s
+admin-footprint-add: Vytvoření nové stopy
 admin-channels: Kanály
 admin-yes: Ano
 admin-impersonate: V zastoupení
