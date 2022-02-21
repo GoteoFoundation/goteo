@@ -334,5 +334,38 @@
 
             </div>
 
+        <div class="panel panel-default widget">
+            <details open>
+                <summary class="panel-heading">
+                    <h2 class="panel-title green-title">
+                        <?= $this->t('admin-title-sdgs') ?>
+                    </h2>
+                </summary>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <?php foreach($project->getSdgs($this->lang_current()) as $sdg): ?>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 col-xs-3">
+                                        <a href="<?= $sdg->link ?>" target="_blank">
+                                            <img src="<?= $this->asset("/img/sdg/square/{$sdg->id}.png") ?>" width="100%" alt="<?= $sdg->name ?>">
+                                        </a>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <h3>
+                                            <?= $sdg->name ?>
+                                        </h3>
+                                        <p>
+                                            <?= $sdg->description ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
 <?php $this->replace() ?>
 
