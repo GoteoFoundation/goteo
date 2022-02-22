@@ -8,5 +8,19 @@ dashboard-donor-confirmed: 'Daňové údaje pro certifikát %s jste již potvrdi
 dashboard-donor-download_certificate: 'Stáhnout certifikát'
 dashboard-donor-edit_data: 'Úprava dat'
 dashboard-donor-edit_guide: 'Vyplňte údaje, které se mají na certifikátu zobrazit. Po stažení souboru nelze tato data měnit.'
+dashboard-donor-main_guide: 'Po roce: Údaje lze potvrdit do 15. ledna. Do července je možné certifikát stáhnout. <br>Pro letošní rok: Od července můžete potvrzovat slevy a stahovat certifikát.'
+dashboard-donor-mandatory: 'JE NUTNÉ VYPLNIT DAŇOVÉ ÚDAJE'
+dashboard-donor-no_donor: 'Váš darovací certifikát %s ještě není k dispozici'
+dashboard-donor-pdf_closed: 'Daňové údaje pro darovací certifikát %s nejsou potvrzeny, nelze je stáhnout'
+dashboard-donor-save_fail: "Při zaznamenávání údajů došlo k chybě, zkontrolujte ji, a pokud přetrvává, kontaktujte nás."
+dashboard-donor-saved: 'Děkujeme vám za úpravu údajů. Chcete-li stáhnout certifikát, zkontrolujte, zda jsou správné. Poté je ověřte pomocí tlačítka zavřít data.'
+dashboard-menu-activity-donor: 'Darovací certifikát'
+donor-address-country-field: Země
+donor-address-location-field: Kraj
+donor-field-amount: 'Výše daru'
+donor-field-amount-relief: Daňová úleva
+donor-field-lot-relief: Rubrika
+donor-field-numproj: 'Příspěvky poskytnuté v %s'
+personal-field-donor_name: 'Jméno fyzické osoby nebo registrovaný název právnické osoby'
 donor-status-completed: 'Hotovo'
 donor-status-validated: 'Ověřeno'
