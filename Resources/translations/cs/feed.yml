@@ -1,1 +1,7 @@
 ---
+feed-invest-pool: 'Doplnili jste %AMOUNT% ve své virtuální peněžence'
+feed-invest-donate: 'Přispěli jste nadaci %AMOUNT%'
+feed-mailing-massive: 'Hromadné rozesílání (cron)'
+feed-mailing-massive-completed: 'Hromadné rozesílání dokončeno [%ID%] [%SUBJECT%]'
+feed-message-support-response: 'Nová spolupráce s %TITLE% v projektu %PROJECT%'
+feed-messages-new_thread: 'Otevřeli jste téma v %s projektu %s'
