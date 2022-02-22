@@ -19,6 +19,7 @@ dashboard-menu-projects-preview: 'Veřejné stránky'
 dashboard-menu-projects-summary: Shrnutí
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-translate_board: Překlad
+dashboard-project-delete: Odstranění projektu
 dashboard-project-updates-deleted: 'Příspěvek smazán'
 dashboard-edit-share-material-url: 'Upravit URL'
 dashboard-modal-placeholder-edit-url: 'Url'
