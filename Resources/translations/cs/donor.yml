@@ -22,5 +22,15 @@ donor-field-amount-relief: Daňová úleva
 donor-field-lot-relief: Rubrika
 donor-field-numproj: 'Příspěvky poskytnuté v %s'
 personal-field-donor_name: 'Jméno fyzické osoby nebo registrovaný název právnické osoby'
+personal-field-donor_surname: 'Křestní jméno (nevyplňuje se u právnických osob)'
+personal-field-donor_surname2: 'Příjmení (nevyplňuje se u právnických osob)'
+validate-donor-mandatory: 'Všechna pole jsou povinná'
+donor-legal-entities-natural-person: Fyzická osoba
+donor-legal-entities-legal-person: Právnická osoba
+donor-legal-document-type-cif: CIF
+donor-legal-document-type-nif: DIČ
+donor-legal-document-type-nie: NIE
+donor-legal-document-type-vat: Plátce DPH
+validate-donor-legal_entity-empty: Pole Právní subjekt je povinné.
 donor-status-completed: 'Hotovo'
 donor-status-validated: 'Ověřeno'
