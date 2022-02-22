@@ -1,3 +1,12 @@
 ---
+dashboard-activity-donor-header: 'Daňové údaje pro získání darovacího certifikátu'
+dashboard-donor-confirm_button: 'Uzavření údajů a vydání certifikátu'
+dashboard-donor-confirm_closed: 'Období pro potvrzení daňových údajů pro certifikát %s je nyní uzavřeno'
+dashboard-donor-confirm_data: 'Daňové údaje tohoto daru již nelze upravovat. Kliknutím na tlačítko OK potvrdíte pravost údajů.'
+dashboard-donor-confirm_succes: 'Potvrdili jste platnost svých údajů. Děkujeme!'
+dashboard-donor-confirmed: 'Daňové údaje pro certifikát %s jste již potvrdili. Pokud jste ve svých údajích zjistili chybu, kontaktujte prosím donate@goteo.org'
+dashboard-donor-download_certificate: 'Stáhnout certifikát'
+dashboard-donor-edit_data: 'Úprava dat'
+dashboard-donor-edit_guide: 'Vyplňte údaje, které se mají na certifikátu zobrazit. Po stažení souboru nelze tato data měnit.'
 donor-status-completed: 'Hotovo'
 donor-status-validated: 'Ověřeno'
