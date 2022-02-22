@@ -32,5 +32,13 @@ donor-legal-document-type-nif: DIČ
 donor-legal-document-type-nie: NIE
 donor-legal-document-type-vat: Plátce DPH
 validate-donor-legal_entity-empty: Pole Právní subjekt je povinné.
+validate-donor-legal_document_type-empty: 'Typ dokumentu campp je povinný.'
+validate-donor-nif-document-type: 'Číslo dokumentu neodpovídá formátu typu dokumentu'
+validate-donor-legal-nif-entity-legal: "Právní subjekt neodpovídá typu dokumentu"
+donor-status-pending: 'Čeká se na přezkoumání'
+donor-status-unconfirmed: 'Nepotvrzeno'
+donor-status-data_filled: 'Všechny údaje vyplněny'
+donor-status-data_filled_no_country: 'Všechny údaje vyplněny bez země'
+donor-status-confirmed: 'Potvrzeno'
 donor-status-completed: 'Hotovo'
 donor-status-validated: 'Ověřeno'
