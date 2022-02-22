@@ -20,7 +20,12 @@ dashboard-menu-projects-summary: Shrnutí
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-translate_board: Překlad
 dashboard-project-delete: Odstranění projektu
+dashboard-project-delete_alert: 'Opravdu chcete tento projekt zcela a definitivně vyřadit?'
+dashboard-project-delete-ko: 'Projekt %s se nepodařilo odstranit!'
+dashboard-project-delete-ok: 'Projekt %s byl zcela odstraněn'
+dashboard-project-updates-delete_fail: 'Chyba při odstraňování položky'
 dashboard-project-updates-deleted: 'Příspěvek smazán'
+dashboard-project-updates-fail: 'Došlo k problému s ukládáním dat'
 dashboard-edit-share-material-url: 'Upravit URL'
 dashboard-modal-placeholder-edit-url: 'Url'
 dashboard-new-material-form-material: 'Materiál'
