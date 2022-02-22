@@ -237,7 +237,7 @@ admin-title-amount: Obráceně
 admin-title-icon: Ikona
 admin-title-info: Info
 admin-title-image: Obrázek
-admin-title-landing_match: Vyrovnávací financování
+admin-title-landing_match: Dorovnávací spolufinancování
 admin-title-title: Název
 admin-title-subtitle: Podtitul
 admin-title-subject: Předmět
@@ -324,7 +324,7 @@ admin-stats-active: 'Čistý příjem'
 admin-stats-refunded: 'Vratky'
 admin-stats-fees: 'Poplatek platformě'
 admin-stats-commissions: 'Bankovní poplatek'
-admin-stats-matchfunding: 'Matchfunding'
+admin-stats-matchfunding: 'Dorovnávací spolufinancování'
 admin-stats-raised-method: 'Hrubý příjem podle způsobu platby'
 admin-stats-raised-method-desc: 'Hrubý příjem zahrnuje všechny peníze, které platforma kdykoli vybrala (včetně přímých příspěvků do peněženky nebo z neúspěšných projektů s návratem do peněženky jsou zahrnuty příspěvky neúspěšným projektům).<br><em> Příspěvky z peněženky nejsou zahrnuty</em>(pokud není zvolena tato platební metoda)</b>'
 admin-stats-active-method: 'Čistý příjem podle způsobu platby'
@@ -334,7 +334,7 @@ admin-stats-refunded-method-desc: 'Náhrady zahrnují všechny způsoby platby (
 admin-stats-commissions-method: 'Bankovní poplatky podle způsobu platby'
 admin-stats-fees-method: 'Poplatek za platformu podle způsobu platby'
 admin-stats-from_matchfunding: 'Podrobnosti o projektech spolufinancování'
-admin-stats-matchfunding-part: 'Projekty s odpovídajícím financováním'
+admin-stats-matchfunding-part: 'Projekty s dorovnávacím financováním'
 admin-stats-users-part: 'Projekty bez dorovnávacího financování'
 admin-stats-match-part: 'Multiplikační část'
 admin-stats-citizens-part: 'Část občanů'
