@@ -349,6 +349,7 @@ admin-stats-to_fee-percent: 'Efektivní provize'
 admin-stats-in_wallet: 'V peněžence'
 admin-stats-in_matcher_wallet: 'V peněžence Matchers'
 admin-stats-in_users_wallet: 'V peněžence uživatele'
+admin-stats-matchfunding-global: 'Vliv dorovnávacího spolufinancování'
 admin-stats-refunded-parts: 'Rozdělení výnosů'
 admin-stats-fees-parts: 'Rozdělení provizí'
 admin-stats-invest-active-parts: 'Určení čistého příjmu'
@@ -363,6 +364,7 @@ admin-refunded-to_wallet: Vráceno do peněženky
 admin-commissions: Poplatek
 admin-fees: Poplatek platformě
 admin-user-fee: Občanská komise
+admin-call-fee: Komise dorovnávacího spolufinancování (bez finančních partnerů)
 admin-vat: DPH
 admin-diff: Rozdíl
 admin-the_day: Dne
