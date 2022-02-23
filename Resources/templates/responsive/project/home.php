@@ -27,7 +27,7 @@
                     </div>
                 </a>
 
-                <div id="collapseOne" class="panel-collapse collapse">
+                <div id="collapseOne" /daclass="panel-collapse collapse">
                   <div class="panel-body">
 
 
@@ -347,7 +347,7 @@
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-md-2 col-sm-2 col-xs-3">
-                                        <a href="<?= $sdg->link ?>" target="_blank">
+                                        <a href="/impact-discover?sdgs=<?= $sdg->id ?>" target="_blank">
                                             <img src="<?= $this->asset("/img/sdg/square/{$sdg->id}.png") ?>" width="100%" alt="<?= $sdg->name ?>">
                                         </a>
                                     </div>
