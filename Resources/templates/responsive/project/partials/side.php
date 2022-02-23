@@ -5,38 +5,38 @@
         <?= $this->text('project-rewards-side-title') ?>
     </h2>
 
-    <?php foreach ($this->individual_rewards as $individual):
-        $available = $individual->available();
-        $units = ($individual->units - $individual->taken); // units left
-    ?>
-        <div class="side-widget">
-            <h3 class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></h3>
-            <p class="text-bold spacer-20"><?= $individual->reward ?></p>
-            <p class="spacer-20"><?= $this->markdown($individual->description) ?></p>
+    <ul class="list-unstyled">
+        <?php foreach ($this->individual_rewards as $individual):
+            $available = $individual->available();
+            $units = ($individual->units - $individual->taken); // units left
+        ?>
+            <li class="side-widget">
+                <h3 class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></h3>
+                <p class="text-bold spacer-20"><?= $individual->reward ?></p>
+                <p class="spacer-20"><?= $this->markdown($individual->description) ?></p>
 
-            <div class="investors">
-                <p><?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?></p>
+                <div class="investors">
+                    <p><?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?></p>
 
-                <?php if ($project->inCampaign()): ?>
-                    <?php if (!$available):  ?>
-                        <p class="left"><?= ' > '.$this->text('invest-reward-none') ?></p>
-                    <?php elseif (!empty($individual->units)) : ?>
-                        <p class="left">
-                            <?= ' > '.$this->text('project-rewards-individual_reward-units_left', sprintf("%02d", $units)) ?>
-                        </p>
-                    <?php endif ?>
-                <?php endif; ?>
-            </div>
+                    <?php if ($project->inCampaign()): ?>
+                        <?php if (!$available):  ?>
+                            <p class="left"><?= ' > '.$this->text('invest-reward-none') ?></p>
+                        <?php elseif (!empty($individual->units)) : ?>
+                            <p class="left">
+                                <?= ' > '.$this->text('project-rewards-individual_reward-units_left', sprintf("%02d", $units)) ?>
+                            </p>
+                        <?php endif ?>
+                    <?php endif; ?>
+                </div>
 
-            <?php if ($project->inCampaign() && !$individual->none): ?>
-                <div class="spacer-5">
-                    <a class="btn btn-block btn-pink" href="<?= '/invest/'.$project->id.'/payment?reward='.$individual->id ?>">
+                <?php if ($project->inCampaign() && !$individual->none): ?>
+                    <a class="btn btn-block btn-pink spacer-5" href="<?= '/invest/'.$project->id.'/payment?reward='.$individual->id ?>">
                         <span><?= $this->text('regular-getit') ?></span>
                     </a>
-                </div>
-            <?php endif; ?>
-        </div>
-    <?php endforeach ?>
+                <?php endif; ?>
+            </li>
+        <?php endforeach ?>
+    </ul>
 
     <h2 class="green-title spacer">
         <?= $this->text('project-menu-messages') ?>
@@ -51,10 +51,10 @@
         </li>
     </ul>
 
-    <div class="collaborations">
+    <ul class="collaborations">
         <!-- List of collaborations -->
         <?php foreach ($project->supports as $support): ?>
-            <div class="side-widget">
+            <li class="side-widget">
                 <h3 class="text-bold">
                     <?= $support->support ?>
                 </h3>
@@ -66,7 +66,7 @@
                         <?= $this->text('regular-collaborate') ?>
                     </a>
                 </div>
-            </div>
+            </li>
         <?php endforeach ?>
-    </div>
+    </ul>
 </div>

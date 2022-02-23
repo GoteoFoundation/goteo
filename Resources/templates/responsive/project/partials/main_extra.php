@@ -25,66 +25,66 @@ $langs = $project->getLangs();
 
         <div class="col-md-8">
                 <div class="row spacer-20">
-                    <div class="col-sm-6 tags-location" id="tags-location">
+                    <ul class="col-sm-6 tags-location" id="tags-location">
                         <?php if (!empty($project->cat_names)) : ?>
-                            <div class="tags hidden-xs" id="tags">
-                                <img class="tags" src="<?= SRC_URL . '/assets/img/project/tags.png' ?>" alt="<?= $this->t('regular-categories') ?>">
-                                <?php $sep = '';
-                                foreach ($project->cat_names as $key=>$value) :
-                                    echo $sep.'<a href="/discover?category=' . $key . '" class="tag">'.htmlspecialchars($value).'</a>';
-                                    $sep = ', ';
-                                endforeach; ?>
-                            </div>
+                            <li class="tags hidden-xs list-unstyled" id="tags">
+                                <ul class="list-inline">
+                                    <img class="tags" src="<?= SRC_URL . '/assets/img/project/tags.png' ?>" alt="<?= $this->t('regular-categories') ?>">
+                                    <?php foreach ($project->cat_names as $key=>$value): ?>
+                                        <li>
+                                            <a href="/discover?category='<?= $key ?>'" class="tag"><?= htmlspecialchars($value) ?></a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </li>
                         <?php endif; ?>
 
                         <!--Location -->
-                        <div class="location spacer-20" id="location">
-                            <div class="pull-left location-container">
-                                <img class="location" src="<?= SRC_URL . '/assets/img/project/location.png' ?>" alt="<?= $this->t('regular-location') ?>" >
-                                <span class="tag"><?= $project->project_location ?></span>
-                            </div>
-                        </div>
+                        <li class="location spacer-20 list-unstyled" id="location">
+                            <img class="location" src="<?= SRC_URL . '/assets/img/project/location.png' ?>" alt="<?= $this->t('regular-location') ?>" >
+                            <span class="tag"><?= $project->project_location ?></span>
+                        </li>
 
                         <?php if (count($langs) > 1) : ?>
-                            <div class="project-langs hidden-xs">
-                                <span class="icon-globe glyphicon glyphicon-globe" aria-hidden="true"></span>
-                                <?php $sep = '';
-                                foreach ($langs as $key=>$value) :
-                                    echo $sep.'<a href="' . $this->lang_url($key) . '" class="tag">' . $value . '</a>';
-                                    $sep = ', ';
-                                endforeach; ?>
-                            </div>
+                            <li class="spacer-20 list-unstyled">
+                                <ul class="project-langs hidden-xs list-inline">
+                                    <span class="icon-globe glyphicon glyphicon-globe" aria-hidden="true"></span>
+                                    <?php foreach($langs as $key=>$value): ?>
+                                        <li><a href="<?= $this->lang_url($key) ?>" class="tag"><?= $value ?></a></li>
+                                    <?php endforeach ?>
+                                </ul>
+                            </li>
                         <?php endif; ?>
-                    </div>
+                    </ul>
                     <div class="col-sm-6 share-project-container">
                         <div>
                             <?= $this->text('project-share-header') ?>
                         </div>
-                        <div class="row share-project">
-                            <div class="col-xs-2 col-xs-offset-1 col-sm-offset-0">
+                        <ul class="row share-project list-inline">
+                            <li class="col-xs-2 col-xs-offset-1 col-sm-offset-0">
                                 <a href="<?= $facebook_url ?>">
                                     <img class="facebook" alt="share facebook" src="<?= SRC_URL . '/assets/img/project/facebook.png' ?>">
                                 </a>
-                            </div>
-                            <div class="col-xs-2">
+                            </li>
+                            <li class="col-xs-2">
                                 <a href="<?= $twitter_url ?>">
                                     <img class="twitter" alt="share twitter" src="<?= SRC_URL . '/assets/img/project/twitter.png' ?>">
                                 </a>
-                            </div>
-                            <div class="col-xs-2 visible-xs visible-sm">
+                            </li>
+                            <li class="col-xs-2 visible-xs visible-sm">
                                 <a href="tg://msg?text=<?= urlencode($share_title).' '.$share_url ?>">
                                     <img class="telegram" alt="share telegram" src="<?= SRC_URL . '/assets/img/project/telegram.png' ?>">
                                 </a>
-                            </div>
-                            <div class="col-xs-2 visible-xs">
+                            </li>
+                            <li class="col-xs-2 visible-xs">
                                 <a href="whatsapp://send?text=<?= urlencode($share_title).' '.$share_url ?>" data-action="share/whatsapp/share" >
                                     <img class="whatsapp" alt="share whatsapp" src="<?= SRC_URL . '/assets/img/project/whatsapp.png' ?>">
                                 </a>
-                            </div>
-                            <div class="col-xs-2">
+                            </li>
+                            <li class="col-xs-2">
                                 <img id="show-link" class="link cursor-pointer" src="<?= SRC_URL . '/assets/img/project/link.png' ?>" alt="<?= $this->t('regular-share_this') ?>">
-                            </div>
-                            <div class="col-md-6 col-sm-4 hidden-xs">
+                            </li>
+                            <li class="col-md-6 col-sm-4 hidden-xs">
                                 <button class="btn btn-block grey" data-toggle="modal" data-target="#widgetModal">
                                     <span class="hidden-sm">
                                         <?= $this->text('project-spread-widget') ?>
@@ -93,8 +93,8 @@ $langs = $project->getLangs();
                                         <?= $this->text('dashboard-menu-projects-widgets') ?>
                                     </span>
                                 </button>
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
                         <div class="row no-margin spacer-10" id="link-box" style="display:none;">
                             <input type="text" class="form-control" value="<?= $share_url ?>" title="<?= $this->t('regular-url') ?>">
                         </div>

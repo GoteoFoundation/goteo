@@ -219,6 +219,7 @@ regular-yes: Sí
 regular-name: Nombre
 regular-image: Imagen
 regular-images: Imágenes
+regular-header-image-of: "Imagen de cabecera de %s"
 regular-load-more: 'Cargar más'
 regular-analytics: 'Google Analytics'
 regular-facebook-pixel: 'Facebook Pixel'
