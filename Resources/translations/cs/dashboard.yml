@@ -31,6 +31,7 @@ dashboard-modal-placeholder-edit-url: 'Url'
 dashboard-new-material-form-material: 'Materiál'
 dashboard-new-material-form-description: 'Popis'
 dashboard-new-material-form-url: 'URL'
+uploaded-ok: "Úspěšně nahráno"
 dashboard-project-filter-by-drop: 'Zobrazit pouze příspěvky na dorovnávací financování'
 dashboard-project-filter-by-nondrop: 'Skrýt příspěvky na dorovnávací financování'
 dashboard-mail-sent-mails-desc: 'Toto jsou nejnovější zprávy odeslané na váš osobní e-mail.<br><em>POZNÁMKA: Stará komunikace se automaticky smaže.</em>'
