@@ -1,1 +1,21 @@
 ---
+costs-field-select-rounds: Termíny
+form-accept-button: Přijmout
+form-add-button: Přidat
+form-ajax-info: 'Formulář se ukládá při průchodu jednotlivými poli'
+form-apply-button: Použít
+form-edit-button: Upravit
+form-has-errors: 'Formulář obsahuje chyby, před pokračováním je zkontrolujte!'
+form-errors-info: 'Celkem: %s | V tomto kroku: %s'
+form-errors-total: 'Celkem je %s chyb'
+form-footer-errors_title: Chyby
+form-image_upload-button: 'Nahrát obrázek'
+form-media_send-button: 'Přehrát video'
+form-navigation_bar-header: 'Přejít na'
+form-next-button: Další
+form-project-info_status-title: 'Celkový stav informací'
+form-project-progress-title: 'Vyhodnocení dat'
+form-project-status-title: 'Stav projektu'
+form-project_status-campaing: 'Na cestě za kampaní'
+form-project_status-cancel: Vyřazené
+form-project_status-cancelled: Vyřazeno
