@@ -17,4 +17,15 @@ form-project-info_status-title: 'Celkový stav informací'
 form-project-progress-title: 'Vyhodnocení dat'
 form-project-status-title: 'Stav projektu'
 form-project_status-campaing: 'Na cestě za kampaní'
-form-project_status-cancel: Vyřazené
+form-project_status-cancel: Vyloučeno
+form-project_status-cancelled: Vyřazeno
+form-project_status-edit: Úpravy
+form-project_status-expired: Archivováno
+form-project_status-fulfilled: 'Dosaženo'
+form-project_status-review: 'K posouzení'
+form-project_status-success: Financováno
+form-remove-button: Odstranit
+form-self_review-button: Upravit
+form-send_review-button: Odeslat
+form-upload-button: Odeslat
+help-cost-to-consultant: '- Potřebujete pomoci s náklady<br>'
