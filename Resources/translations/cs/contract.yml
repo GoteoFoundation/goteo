@@ -19,3 +19,4 @@ contract-legal-document-type-vat: Plátce DPH
 contract-legal-document-type-passport: Cestovní pas
 validate-contract-nif-document-type: 'Číslo dokumentu neodpovídá formátu typu dokumentu'
 validate-contract-cif-document-type: 'Číslo DPH nesouhlasí ve formátu'
+validate-contract-legal-nif-entity-legal: "Právní subjekt neodpovídá typu dokumentu"
