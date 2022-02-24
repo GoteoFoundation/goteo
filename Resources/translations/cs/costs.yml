@@ -1,4 +1,6 @@
 ---
+cost-type-lend: Úvěr
 cost-type-material: Materiál
+cost-type-structure: Infrastruktura
 costs-field-description: Popis
 costs-field-type: Typ
