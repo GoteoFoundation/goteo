@@ -15,6 +15,26 @@ body.project {
             @media(min-width: $breakpoint-lg) {
                 max-width: 1170px;
             }
+
+            details {
+                summary {
+                    h2 {
+                      color: $color-dark !important;
+                    }
+                }
+
+                &[open] summary {
+                    h2 {
+                      color: $color-dark-green !important ;
+                    }
+                }
+
+                a {
+                    img {
+                      margin-top: 22px;
+                    }
+                }
+            }
         }
 
     }
