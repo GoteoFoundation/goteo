@@ -615,6 +615,26 @@ div {
 
 /* Panels */
 
+details {
+  summary {
+    h2 {
+      color: $color-dark !important;
+    }
+  }
+
+  &[open] summary {
+    h2 {
+      color: $color-dark-green !important ;
+    }
+  }
+
+  a {
+    img {
+      margin-top: 22px;
+    }
+  }
+}
+
 /* Needs */
 
 table.needs {
