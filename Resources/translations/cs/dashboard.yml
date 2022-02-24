@@ -4,6 +4,8 @@ api-key-key: 'Klíč'
 dashboard-certificates-completed: Hotovo
 dashboard-certificates-validated: Ověřeno
 dashboard-certificates-rejected: Zamítnuto
+dashboard-chart-optimum: optimální
+dashboard-embed_code: 'JEDNODUCHÝ DIFUZNÍ KÓD'
 dashboard-header-main: 'Můj ovládací panel'
 dashboard-menu-activity-summary: Shrnutí
 dashboard-menu-admin_board: Správa
