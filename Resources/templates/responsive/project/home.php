@@ -22,7 +22,7 @@
                     <div class="panel-heading standard-padding">
                         <h2 class="panel-title green-title" >
                             <?= $this->text('project-show-needs') ?>
-                            <span class="icon glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            <span class="icon glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></span>
                         </h2>
                     </div>
                 </a>
@@ -104,7 +104,7 @@
                 <div class="panel-heading standard-padding">
                     <h2 class="panel-title green-title">
                         <?= $this->text('project-general-information') ?>
-                        <span class="icon glyphicon glyphicon glyphicon-menu-up pull-right" aria-hidden="true"></span>
+                        <span class="icon glyphicon glyphicon-menu-up pull-right" aria-hidden="true"></span>
                     </h2>
                 </div>
             </a>
@@ -332,38 +332,40 @@
 
             </div>
 
-        <div class="panel panel-default widget">
-            <details open>
-                <summary class="panel-heading">
-                    <h2 class="panel-title green-title">
-                        <?= $this->t('admin-title-sdgs') ?>
-                    </h2>
-                </summary>
-                <div class="panel-body">
-                    <ul class="list-group">
-                        <?php foreach($project->getSdgs($this->lang_current()) as $sdg): ?>
-                            <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col-md-2 col-sm-2 col-xs-3">
-                                        <a href="/impact-discover?sdgs=<?= $sdg->id ?>" target="_blank">
-                                            <img src="<?= $this->asset("/img/sdg/square/{$sdg->id}.png") ?>" width="100%" alt="<?= $sdg->name ?>">
-                                        </a>
+        <?php if ($listSdgs = $project->getSdgs($this->lang_current())): ?>
+            <div class="panel panel-default widget">
+                <details open>
+                    <summary class="panel-heading">
+                        <h2 class="panel-title green-title">
+                            <?= $this->t('regular-sdg') ?>
+                        </h2>
+                    </summary>
+                    <div class="panel-body">
+                        <ul class="list-group list-unstyled">
+                            <?php foreach($listSdgs as $sdg): ?>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2 col-xs-3">
+                                            <a href="/impact-discover?sdgs=<?= $sdg->id ?>" target="_blank">
+                                                <img src="<?= $this->asset("img/sdg/sdg{$sdg->id}.svg") ?>" width="100%" alt="<?= $sdg->name ?>">
+                                            </a>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <h3>
+                                                <?= $sdg->name ?>
+                                            </h3>
+                                            <p>
+                                                <?= $sdg->description ?>
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-10">
-                                        <h3>
-                                            <?= $sdg->name ?>
-                                        </h3>
-                                        <p>
-                                            <?= $sdg->description ?>
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            </details>
-        </div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        <?php endif ?>
 
 <?php $this->replace() ?>
 
