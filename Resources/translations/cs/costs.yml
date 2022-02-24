@@ -17,3 +17,8 @@ costs-fields-main-title: 'Rozpis nákladů'
 costs-fields-metter-title: 'Vizualizace nákladů'
 costs-fields-resources-title: Zdroj
 costs-main-header: 'Aspectos económicos'
+mandatory-cost-field-amount: 'Je nutné přidělit částku k nákladům'
+mandatory-cost-field-description: 'Určitý popis nákladů je povinný'
+mandatory-cost-field-name: 'Vyjmenování nákladů je povinné'
+mandatory-cost-field-task_dates: 'Je nutné uvést přibližná data úkolu'
+mandatory-project-field-resource: 'Je nutné zadat, zda máte jiné zdroje, nebo ne'
