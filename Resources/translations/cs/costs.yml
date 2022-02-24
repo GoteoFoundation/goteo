@@ -2,5 +2,14 @@
 cost-type-lend: Úvěr
 cost-type-material: Materiál
 cost-type-structure: Infrastruktura
+costs-field-amount: Hodnota
+costs-field-cost: Náklady
+costs-field-date_from: Od
+costs-field-date_until: Do
+costs-field-dates: Datum
 costs-field-description: Popis
+costs-field-required_cost: 'Tyto náklady jsou'
+costs-field-required_cost-no: Další
+costs-field-required_cost-yes: Základní
+costs-field-resoure: 'Další zdroje'
 costs-field-type: Typ
