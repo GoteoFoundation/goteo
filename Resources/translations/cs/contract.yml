@@ -1,1 +1,9 @@
 ---
+contract-final-bank_owner: 'Majitel bankovního účtu'
+contract-final-close: 'Uzavření údajů a zpracování smlouvy'
+contract-validation-ok: Smlouva se zdá být správná. Zkontrolujte údaje a dokončete proces uzavřením údajů. '
+contract-non-available: 'Smlouva ještě není k dispozici!'
+contract-validation-errors: Smlouva ještě není uzavřena
+contract-validation-error-promoter: 'Faltan campos para llenar en el promotor'
+contract-validation-error-promoter_nif: 'DIČ není správné.'
+contract-validation-error-entity: 'Chybějící pole, která je třeba vyplnit v subjektu'
