@@ -10,3 +10,12 @@ contract-validation-error-entity: 'Chybějící pole, která je třeba vyplnit v
 contract-validation-error-accounts: 'Chybějící pole pro vyplnění účtů'
 contract-validation-error-documents: 'Nedostatek dokumentace'
 contract-already-processed: 'Smlouva již byla zpracována.'
+contract-legal-entities-natural-person: Fyzická osoba
+contract-legal-entities-legal-person: Právnická osoba
+contract-legal-document-type-cif: CIF
+contract-legal-document-type-nif: DIČ
+contract-legal-document-type-nie: NIE
+contract-legal-document-type-vat: Plátce DPH
+contract-legal-document-type-passport: Cestovní pas
+validate-contract-nif-document-type: 'Číslo dokumentu neodpovídá formátu typu dokumentu'
+validate-contract-cif-document-type: 'Číslo DPH nesouhlasí ve formátu'
