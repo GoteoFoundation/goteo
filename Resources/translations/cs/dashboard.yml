@@ -1,6 +1,7 @@
 ---
 api-key-user: 'Uživatelské jméno'
 api-key-key: 'Klíč'
+dashboard-certificates-pending: Čekající na
 dashboard-certificates-completed: Hotovo
 dashboard-certificates-validated: Ověřeno
 dashboard-certificates-rejected: Zamítnuto
