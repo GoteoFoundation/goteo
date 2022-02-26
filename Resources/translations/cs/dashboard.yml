@@ -8,7 +8,10 @@ dashboard-certificates-no-invests: 'Certifikát nelze potvrdit, pokud nemáte ž
 dashboard-certificates-download-proof: Stáhnout potvrzení o daru
 dashboard-certificates-completed: Hotovo
 dashboard-certificates-validated: Ověřeno
+dashboard-certificates-declared: Prohlášení
 dashboard-certificates-rejected: Zamítnuto
+dashboard-chart-days: 'ZBÝVÁ %s DNŮ'
+dashboard-chart-invested: 'ZÍSKANÉ FINANČNÍ PROSTŘEDKY'
 dashboard-chart-optimum: optimální
 dashboard-embed_code: 'JEDNODUCHÝ DIFUZNÍ KÓD'
 dashboard-header-main: 'Můj ovládací panel'
