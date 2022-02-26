@@ -26,3 +26,5 @@ mandatory-cost-field-task_dates: 'Je nutné uvést přibližná data úkolu'
 mandatory-project-field-resource: 'Je nutné zadat, zda máte jiné zdroje, nebo ne'
 mandatory-project-resource: 'Je nutné zadat, zda máte jiné zdroje, nebo ne'
 mandatory-project-total-costs: 'Je povinné zadat náklady'
+step-4: Náklady
+step-costs: 'Krok: Projekt / náklady'
