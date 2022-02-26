@@ -1,3 +1,11 @@
 ---
+regular-sdg: "Cíle udržitelného rozvoje"
+regular-data: 'Datum'
+regular-data-unit: 'Jednotka'
+regular-location: Poloha
 regular-matchfunding: 'Dorovnávací spolufinancování'
+regular-newsletter: "Zpravodaj"
+regular-subtitle: Podtitul
+regular-header-image-of: "Obrázek v záhlaví %s"
 regular-call: Dorovnávací spolufinancování
+regular-click-more: "Klikněte zde a zjistěte více"
