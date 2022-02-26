@@ -2,6 +2,7 @@
 cost-type-lend: Úvěr
 cost-type-material: Materiál
 cost-type-structure: Infrastruktura
+cost-type-task: Úkol
 costs-field-amount: Hodnota
 costs-field-cost: Náklady
 costs-field-date_from: Od
@@ -12,6 +13,7 @@ costs-field-required_cost: 'Tyto náklady jsou'
 costs-field-required_cost-no: Další
 costs-field-required_cost-yes: Základní
 costs-field-resoure: 'Další zdroje'
+costs-field-schedule: 'Pracovní program'
 costs-field-type: Typ
 costs-fields-main-title: 'Rozpis nákladů'
 costs-fields-metter-title: 'Vizualizace nákladů'
@@ -22,3 +24,5 @@ mandatory-cost-field-description: 'Určitý popis nákladů je povinný'
 mandatory-cost-field-name: 'Vyjmenování nákladů je povinné'
 mandatory-cost-field-task_dates: 'Je nutné uvést přibližná data úkolu'
 mandatory-project-field-resource: 'Je nutné zadat, zda máte jiné zdroje, nebo ne'
+mandatory-project-resource: 'Je nutné zadat, zda máte jiné zdroje, nebo ne'
+mandatory-project-total-costs: 'Je povinné zadat náklady'
