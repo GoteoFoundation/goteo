@@ -1,1 +1,7 @@
 ---
+data-set: "Datová sada"
+data-set-type: "Typy datových sad"
+data-set-type-invests: "Údaje o darech"
+data-set-type-projects: "Údaje o projektu"
+data-set-created-at: "Datum vytvoření: %s"
+data-set-modified-at: "Datum změny: %s"
