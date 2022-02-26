@@ -1,4 +1,7 @@
 ---
+tooltip-contract-main_address: tooltip-contract-main_address
+tooltip-contract-paypal_owner: 'Sdělte nám prosím jméno osoby, která je majitelem účtu PayPal'
+tooltip-contract-project_description: 'Tento popis projektu se může lišit podle znění smlouvy (provede člen týmu Goteo)'
 contract-final-bank_owner: 'Majitel bankovního účtu'
 contract-final-close: 'Uzavření údajů a zpracování smlouvy'
 contract-validation-ok: Smlouva se zdá být správná. Zkontrolujte údaje a dokončete proces uzavřením údajů. '
