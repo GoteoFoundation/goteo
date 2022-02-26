@@ -16,7 +16,9 @@ dashboard-chart-investors: SPOLUFINANCUJÍCÍ
 dashboard-chart-no-invested: 'Žádné příspěvky.'
 dashboard-chart-optimum: optimální
 dashboard-embed_code: 'JEDNODUCHÝ DIFUZNÍ KÓD'
+dashboard-embed_code_investor: 'KÓD SE SPOLUFINANČNÍM OBRAZEM'
 dashboard-header-main: 'Můj ovládací panel'
+dashboard-investors-mail-fail: 'Nepodařilo se odeslat zprávu na adresu %s'
 dashboard-menu-activity-summary: Shrnutí
 dashboard-menu-admin_board: Správa
 dashboard-menu-profile-personal: 'Osobní údaje'
