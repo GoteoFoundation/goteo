@@ -1,2 +1,6 @@
 ---
 tooltip-project-media: 'Prezentační video je zásadní součástí upoutání pozornosti komunity, takže čím originálnější je, tím lépe. Nesmí být delší než 4 minuty. Nahrajte jej na Youtube, Vimeo nebo PeerTube a vložte sem adresu URL.'
+overview-field-sign-check: 'Máte otevřenou sbírku podpisů související s projektem?'
+overview-field-sign-url: "Url adresa podpisu"
+overview-field-sign-url-action: "Text k výzvě k podpisu"
+overview-field-sign-url-help: "Pokud máte podpisovou kampaň na jiné platformě souběžně s kampaní na Goteo, můžete sem přidat tlačítko s odkazem"
