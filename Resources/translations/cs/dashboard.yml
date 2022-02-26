@@ -2,6 +2,10 @@
 api-key-user: 'Uživatelské jméno'
 api-key-key: 'Klíč'
 dashboard-certificates-pending: Čekající na
+dashboard-certificates-unconfirmed: 'Chcete-li si tento certifikát stáhnout, musíte nejprve potvrdit své údaje!'
+dashboard-certificates-view-pending: 'Vaše přímé příspěvky k projektům, které ještě neukončily první kolo, se nezobrazují. Můžete je konzultovat %HERE%.<br>Příspěvky uskutečněné pomocí virtuální peněženky jsou zahrnuty v certifikátu vygenerovaném v okamžiku fyzické platby.'
+dashboard-certificates-no-invests: 'Certifikát nelze potvrdit, pokud nemáte žádné vstupní údaje!'
+dashboard-certificates-download-proof: Stáhnout potvrzení o daru
 dashboard-certificates-completed: Hotovo
 dashboard-certificates-validated: Ověřeno
 dashboard-certificates-rejected: Zamítnuto
