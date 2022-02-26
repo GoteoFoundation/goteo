@@ -12,6 +12,8 @@ dashboard-certificates-declared: Prohlášení
 dashboard-certificates-rejected: Zamítnuto
 dashboard-chart-days: 'ZBÝVÁ %s DNŮ'
 dashboard-chart-invested: 'ZÍSKANÉ FINANČNÍ PROSTŘEDKY'
+dashboard-chart-investors: SPOLUFINANCUJÍCÍ
+dashboard-chart-no-invested: 'Žádné příspěvky.'
 dashboard-chart-optimum: optimální
 dashboard-embed_code: 'JEDNODUCHÝ DIFUZNÍ KÓD'
 dashboard-header-main: 'Můj ovládací panel'
