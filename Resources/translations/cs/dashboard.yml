@@ -30,6 +30,7 @@ dashboard-menu-pool: 'Moje peněženka'
 dashboard-menu-pool-available: Bilance
 dashboard-menu-pool-conditions: Podmínky
 dashboard-menu-profile: 'Můj profil'
+dashboard-menu-profile-access: 'Přístupové údaje'
 dashboard-menu-profile-location: Zeměpisná poloha
 dashboard-menu-profile-personal: 'Osobní údaje'
 dashboard-menu-profile-preferences: 'Moje nastavení'
@@ -42,12 +43,18 @@ dashboard-menu-projects-social-commitment: 'Sociální závazek'
 dashboard-menu-projects-messegers: Účastníci
 dashboard-menu-projects-recipients: příjemci
 dashboard-menu-projects-preview: 'Veřejné stránky'
+dashboard-menu-projects-rewards: Spolufinancující subjekty
 dashboard-menu-projects-summary: Shrnutí
+dashboard-menu-projects-supports: Spolupracující
+dashboard-menu-projects-updates: Novinky
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'Moje historie'
+dashboard-menu-projects-pitch: "Otevřené žádosti"
 dashboard-menu-review_board: Posouzení
 dashboard-menu-translate_board: Překlad
 dashboard-menu-translates: 'Překlady'
+dashboard-messegers-mail-sendto: 'Odesláno %s účastníkům:'
+dashboard-my-wallet-available: 'V peněžence Goteo máte aktuálně <span class="pool-amount">%s</span> <span class="pool-desc">'
 dashboard-my-wallet-contribute-button: Darovat
 dashboard-project-delete: Odstranění projektu
 dashboard-project-delete_alert: 'Opravdu chcete tento projekt zcela a definitivně vyřadit?'
