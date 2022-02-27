@@ -54,8 +54,11 @@ dashboard-menu-review_board: Posouzení
 dashboard-menu-translate_board: Překlad
 dashboard-menu-translates: 'Překlady'
 dashboard-messegers-mail-sendto: 'Odesláno %s účastníkům:'
-dashboard-my-wallet-available: 'V peněžence Goteo máte aktuálně <span class="pool-amount">%s</span> <span class="pool-desc">'
+dashboard-my-wallet-available: 'Aktuálně máte <span class="pool-amount">%s</span> <span class="pool-desc">ve své peněžence</span>'
 dashboard-my-wallet-contribute-button: Darovat
+dashboard-my-wallet-modal-pool-info: "Peněženka Goteo je funkce naší platformy, která vám umožňuje poskytnout svůj dar a později se rozhodnout, na který projekt jej přispějete.<br> <p>Dary, které poskytnete prostřednictvím naší platformy, jsou v souladu se zákonem 49/2002 odečitatelné z daní, ze dne 23. prosince o daňovém režimu pro neziskové subjekty a daňových pobídkách za mecenášství.</p> <p>Při darování si můžete stáhnout potvrzení o daru, které odůvodňuje váš příspěvek neziskovému subjektu. Historii dostupných certifikátů spojených s vašimi dary v Goteo můžete otevřít na svém uživatelském panelu, konkrétně v sekci <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Darovací certifikát</a>.</p><p> DŮLEŽITÉ UPOZORNĚNÍ: Připomínáme, že všechny příspěvky, na které jste od naší nadace získali potvrzení o daru, se nevracejí. To znamená, že pokud jste poskytli dar spojený s konkrétním projektem v rámci naší platformy a ten během své kampaně nedosáhne svého minimálního cíle financování, váš příspěvek půjde do vaší peněženky, ale nevrátí se na váš běžný účet. Tuto částku však můžete ze své virtuální peněženky na Goteo.org přidělit jakémukoli jinému aktivnímu projektu, který chcete, v čase, který si zvolíte, aniž byste museli znovu zadávat údaje o své bance nebo PayPalu.</p>"
+dashboard-my-wallet-pool-info: 'Další informace o používání peněženky'
+dashboard-no-projects: 'Nemáte žádný projekt, můžete si ho vytvořit <a href="/project/create">zde</a>'
 dashboard-project-delete: Odstranění projektu
 dashboard-project-delete_alert: 'Opravdu chcete tento projekt zcela a definitivně vyřadit?'
 dashboard-project-delete-ko: 'Projekt %s se nepodařilo odstranit!'
