@@ -19,6 +19,8 @@ dashboard-embed_code: 'JEDNODUCHÝ DIFUZNÍ KÓD'
 dashboard-embed_code_investor: 'KÓD SE SPOLUFINANČNÍM OBRAZEM'
 dashboard-header-main: 'Můj ovládací panel'
 dashboard-investors-mail-fail: 'Nepodařilo se odeslat zprávu na adresu %s'
+dashboard-menu-activity: 'Moje aktivity'
+dashboard-menu-activity-apikey: 'Klíč API'
 dashboard-menu-activity-spread: Rozprostření
 dashboard-menu-activity-summary: Shrnutí
 dashboard-menu-activity-wall: 'Moje zeď'
@@ -28,6 +30,7 @@ dashboard-menu-pool: 'Moje peněženka'
 dashboard-menu-pool-available: Bilance
 dashboard-menu-pool-conditions: Podmínky
 dashboard-menu-profile: 'Můj profil'
+dashboard-menu-profile-location: Zeměpisná poloha
 dashboard-menu-profile-personal: 'Osobní údaje'
 dashboard-menu-profile-preferences: 'Moje nastavení'
 dashboard-menu-profile-profile: 'Upravit profil'
@@ -35,11 +38,17 @@ dashboard-menu-profile-public: 'Veřejný profil'
 dashboard-menu-projects: 'Moje projekty'
 dashboard-menu-projects-analytics: Analytika
 dashboard-menu-projects-contract: Smlouva
+dashboard-menu-projects-social-commitment: 'Sociální závazek'
 dashboard-menu-projects-messegers: Účastníci
+dashboard-menu-projects-recipients: příjemci
 dashboard-menu-projects-preview: 'Veřejné stránky'
 dashboard-menu-projects-summary: Shrnutí
 dashboard-menu-projects-widgets: Widget
+dashboard-menu-projects-story: 'Moje historie'
+dashboard-menu-review_board: Posouzení
 dashboard-menu-translate_board: Překlad
+dashboard-menu-translates: 'Překlady'
+dashboard-my-wallet-contribute-button: Darovat
 dashboard-project-delete: Odstranění projektu
 dashboard-project-delete_alert: 'Opravdu chcete tento projekt zcela a definitivně vyřadit?'
 dashboard-project-delete-ko: 'Projekt %s se nepodařilo odstranit!'
