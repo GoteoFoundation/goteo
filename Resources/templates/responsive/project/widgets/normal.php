@@ -63,11 +63,10 @@ if (!($label = $this->label)) {
 
         <?php // TODO: add links here?
         if ($categories) : ?>
-            <ul class="categories list-inline">
+            <ul class="categories list-inline comma-list">
+                <i class="fa fa-tag"></i>
                 <?php foreach($categories as $category): ?>
-                    <li>
-                        <i class="fa fa-tag"></i> <?= implode(', ', $categories) ?>
-                    </li>
+                    <li><?= $category ?></li>
                 <?php endforeach ?>
             </ul>
         <?php endif ?>
