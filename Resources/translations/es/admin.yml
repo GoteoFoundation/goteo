@@ -134,6 +134,7 @@ admin-blog-not-public: 'Este post no es público todavía'
 admin-stories: Historias de usuarios en Goteo
 admin-stories-add: Crear una nueva historia
 admin-stories-edit: Editando la historia %s
+admin-channel: "Canal"
 admin-channelstory-add: Añadir historia al canal
 admin-channelstory-submit: Guardar historia
 admin-channelstory-correct: 'Se ha añadido la historia al canal'
@@ -593,6 +594,8 @@ admin-node-iframe: Iframe
 
 admin-channel-resource: 'Recursos Canal'
 admin-channel-resource-add: 'Crear recurso'
+admin-channel-projects-add: "Añadir proyecto"
+admin-channel-projects-not-exists: "No existe esta relación"
 
 admin-posts: 'Posts'
 admin-impact_data: "Datos de impacto"

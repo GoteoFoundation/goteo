@@ -19,6 +19,7 @@ use Goteo\Controller\Admin\AccountsSubController;
 use Goteo\Controller\Admin\BannersSubController;
 use Goteo\Controller\Admin\BlogAdminController;
 use Goteo\Controller\Admin\CategoriesAdminController;
+use Goteo\Controller\Admin\ChannelProjectsAdminController;
 use Goteo\Controller\Admin\ChannelCriteriaAdminController;
 use Goteo\Controller\Admin\ChannelPostsAdminController;
 use Goteo\Controller\Admin\ChannelProgramAdminController;
@@ -338,6 +339,7 @@ class Config {
         AdminController::addSubController(ChannelPostsAdminController::class);
         AdminController::addSubController(ChannelSectionAdminController::class);
         AdminController::addSubController(ChannelStoryAdminController::class);
+        AdminController::addSubController(ChannelProjectsAdminController::class);
         AdminController::addSubController(ImpactDataAdminController::class);
     }
 

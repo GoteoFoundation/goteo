@@ -132,6 +132,7 @@ admin-storys: User histories in Goteo
 admin-stories: User histories in Goteo
 admin-stories-add: Create new user history
 admin-stories-edit: Editing user history %s
+admin-channel: "Channel"
 admin-channelstory-add: Add story to the channel
 admin-channelstory-submit: Save story
 admin-channelstory-correct: 'The story has been added to the channel'
@@ -154,6 +155,8 @@ admin-channelpost-submit: Save post
 admin-channelpost-correct: 'The post has been added to the channel'
 admin-channelprogram-create: 'Create'
 admin-channelprogram-add: 'Add program'
+admin-channel-projects-add: "Add project"
+admin-channel-projects-not-exists: "This relation does not exist"
 admin-categories: 'Categories and scopes'
 admin-categories-if-empty-then-asset: 'If empty the default icon will be used: %s'
 admin-category-add: Create a new category

@@ -15,7 +15,7 @@ class NodeProject extends \Goteo\Core\Model {
 
     protected $Table = 'node_project';
     protected static $Table_static = 'node_project';
-    
+
     public
       $node_id,
       $project_id,
@@ -29,18 +29,12 @@ class NodeProject extends \Goteo\Core\Model {
      */
     static public function get($id) {
 
-        $sql="SELECT *
-              FROM node_project
-              $joins
-              WHERE node_project.node_id = ?";
+        $sql = "SELECT *
+                FROM node_project np
+                LEFT JOIN project p ON p.id = np.project_id
+                WHERE (np.node_id = ? or p.node = ?) ";
         $query = static::query($sql, array($id));
-        $node_projects = $query->fetchAll( \PDO::FETCH_CLASS, __CLASS__);
-
-        if(!$node_projects) {
-            throw new ModelNotFoundException("Node project not found for ID [$id]");
-        }
-        
-        return $item;
+        return $query->fetchAll( \PDO::FETCH_CLASS, __CLASS__);
     }
 
     /**
@@ -59,12 +53,12 @@ class NodeProject extends \Goteo\Core\Model {
         $values = [];
 
         if ($filters['node']) {
-            $filter[] = "node_project.node_id = :node";
+            $filter[] = "np.node_id = :node";
             $values[':node'] = $filters['node'];
         }
 
         if ($filters['project']) {
-            $filter[] = "node_project.project_id = :project";
+            $filter[] = "np.project_id = :project";
             $values[':project'] = $filters['project'];
         }
 
@@ -73,22 +67,28 @@ class NodeProject extends \Goteo\Core\Model {
         }
 
         if ($count) {
-            $sql = "SELECT COUNT(node_project.id)
-            FROM node_project
+            $sql = "SELECT COUNT(np.project_id)
+            FROM node_project np
             $sql";
             return (int) self::query($sql, $values)->fetchColumn();
         }
 
-        $sql="SELECT *
-              FROM node_project
-              $sql
-              ORDER BY node_project.order ASC
-              LIMIT $offset, $limit";
-        // die(\sqldbg($sql, $values));
+        $sql = "SELECT
+                    p.id,
+                    np.project_id,
+                    np.node_id,
+                    p.name,
+                    p.image
+                FROM node_project np
+                INNER JOIN project p ON p.id = np.project_id
+                $sql
+                ORDER BY np.order ASC
+                LIMIT $offset, $limit";
+
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
-   
+
     /**
      * Save.
      *
