@@ -1,10 +1,16 @@
 ---
+footer-header-categories: Kategorie
+footer-header-projects: Projekty
+footer-header-resources: Zdroje
+footer-header-services: Služby
 footer-resources-api: API
 footer-resources-glossary: Slovník
 footer-resources-press: Média
 footer-resources-source_code: 'Zdrojový kód AGPL3'
 footer-resources-stats: Statistiky
 footer-resources-channels: Kanály
+footer-service-calculator: Kalkulátor
+footer-service-campaign: Kampaně
 footer-service-resources: 'Dorovnávací spolufinancování'
 regular-footer-contact: Kontakt
 regular-footer-privacy: 'Zásady ochrany osobních údajů'
