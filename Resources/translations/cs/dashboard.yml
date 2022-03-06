@@ -102,6 +102,9 @@ dashboard-rewards-amount_order: 'Podle částky'
 dashboard-rewards-date_order: 'Podle času'
 dashboard-rewards-investors_table: 'Pokud ji chcete spravovat offline, můžete si <a href="%URL%">vytáhnout tabulku spolufinancování</a>'
 dashboard-rewards-issue: Problém!
+dashboard-rewards-notice: 'TOTO JE VYHLEDÁVKA MOŽNOSTÍ VRÁCENÍ, KTERÉ VYBRALI VAŠI SPOLUFINANCOVATELÉ.<br>NEMUSÍTE S TĚMITO VRACENÝMI ČÁSTKAMI NAKLÁDAT, DOKUD NEDOSÁHNOUT MINIMÁLNÍ ŽÁDANOU ČÁSTKU'
+dashboard-rewards-pending_filter: Čekající
+dashboard-rewards-pending_status: Čekající
 user-changepass-old: 'Stávající heslo'
 user-changepass-title: 'Změnit heslo'
 user-prefer-saved: 'Vaše předvolby oznámení byly úspěšně uloženy'
