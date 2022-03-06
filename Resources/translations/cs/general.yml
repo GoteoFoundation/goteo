@@ -82,8 +82,30 @@ regular-hello: Dobrý den
 regular-here: zde
 regular-help: Nápověda
 regular-home: Úvod
+regular-id: Identifikátor (ID)
+regular-identica: Identi.ca
+regular-im: Jsem
+regular-instagram: Instagram
+regular-invest: Přispět
+regular-invest_it: 'Spolufinancování tohoto projektu'
+regular-investing: Příspěvek
+regular-invests: Příspěvky
+regular-lang: Jazyk
+regular-last: Nejnovější
+regular-license: Licence
+regular-linkedin: LinkedIn
+regular-loading: Načítání...
+regular-main-header: Goteo.org
+regular-male: Muž
+regular-others: Ostatní
+regular-mandatory: 'Povinné pole!'
 regular-matchfunding: 'Dorovnávací spolufinancování'
+regular-media_legend: Legenda
+regular-menu: Menu
+regular-menu-personal: Osobní menu
+regular-months: měsíce
 regular-more_info: '+ info'
+regular-news: 'Novinky:'
 regular-preview: Náhled
 regular-projects: projekty
 regular-published_no: Návrh
@@ -100,3 +122,5 @@ regular-load-more: 'Načíst více'
 regular-analytics: 'Google Analytics'
 regular-facebook-pixel: 'Facebook Pixel'
 regular-call: Dorovnávací spolufinancování
+regular-unknown: Neznámý
+regular-amount: Částka
