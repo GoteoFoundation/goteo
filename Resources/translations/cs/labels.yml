@@ -1,1 +1,16 @@
 ---
+blog-lb: Blog
+blog-lb-add: 'Nový příspěvek'
+categories-lb: Kategorie
+categories-lb-add: 'Nová kategorie'
+categories-lb-edit: 'Upravit kategorii'
+categories-lb-keywords: 'Klíčová slova'
+faq-lb: Často kladené otázky
+faq-lb-add: 'Nová otázka'
+filter-lb: 'Filtry'
+glossary-lb: Slovník
+newsletter-lb: Zpravodaj
+node-lb-edit: Upravit
+node-lb-list: 'Aktuální data'
+nodes-lb: Kanály
+nodes-lb-add: 'Nový Kanál'
