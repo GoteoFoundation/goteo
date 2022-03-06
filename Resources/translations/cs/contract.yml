@@ -23,6 +23,13 @@ mandatory-project-field-contract_name: 'Je nutné uvést celé jméno osoby odpo
 mandatory-project-field-contract_nif: 'Identifikační doklad osoby odpovědné za projekt je povinný'
 mandatory-project-field-entity_cif: 'Číslo DPH právnické osoby je povinné'
 mandatory-project-field-entity_name: 'Úplný název organizace je povinný'
+mandatory-project-field-entity_office: 'Je vyžadováno uvést pozici, kterou zastáváte v organizaci, kterou budete zastupovat'
+mandatory-project-field-region: 'Je povinné uvést provincii'
+personal-field-contract_entity: 'Zástupce projektu'
+personal-field-contract_name: 'Jméno a příjmení'
+personal-field-contract_nif: 'Číslo NIF / NIE / DPH'
+personal-field-contract_legal_document_type: Typ dokumentu
+personal-field-main_address: 'Poštovní adresa'
 tooltip-contract-main_address: tooltip-contract-main_address
 tooltip-contract-paypal_owner: 'Sdělte nám prosím jméno osoby, která je majitelem účtu PayPal'
 tooltip-contract-project_description: 'Tento popis projektu se může lišit podle znění smlouvy (provede člen týmu Goteo)'
