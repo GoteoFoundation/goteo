@@ -7,3 +7,4 @@ feed-message-support-response: 'Nová spolupráce s %TITLE% v projektu %PROJECT%
 feed-messages-new_thread: 'Otevřeli jste téma v %s projektu %s'
 feed-messages-new-thread: 'Otevřeli jste téma v %TYPE% projektu %PROJECT%'
 feed-messages-response: 'Odpověděl v %s projektu %s'
+feed-message-support-response-published: 'Nová spolupráce %USER% s %TITLE% v projektu %PROJECT%'
