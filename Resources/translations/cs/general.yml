@@ -42,12 +42,26 @@ guide-project-description: "<strong>Toto je část, kde jsou podrobně vysvětle
 guide-project-images: 'V této části se přidávají obrázky projektu. Mohou to být diagramy, snímky obrazovky, fotografie, ilustrace, storyboardy atd. Nezapomeňte, že musí být vaším vlastním dílem nebo musí být licencovány pro opakované použití. Nezapomeňte, že musí být vaše vlastní nebo musí splňovat licenci, která umožňuje jejich opakované použití. Můžete jich nahrát, kolik chcete!'
 guide-project-rewards: "<strong>V této části musíte stanovit, co projekt nabízí svým podporovatelům na oplátku.</strong>"
 guide-project-support: guide-project-support
+guide-project-supports: '<strong>V této sekci můžete specifikovat, jaká další pomoc, kromě darů, může být pro realizaci projektu nezbytná.</strong><br><br> Mohou to být úkoly nebo akce prováděné jinými lidmi (překlady,, šíření atd.), nebo konkrétní výpůjčky (materiálu, dopravy, hardwaru atd.).'
 guide-project-updates: "<b>Je velmi důležité, aby projekty průběžně informovaly své spolufinancovatele a další potenciální zájemce o tom, jak jejich kampaň pokračuje. Z této sekce můžete posílat aktualizační zprávy o projektu, jako je jakýsi veřejný blog.</b>Navíc v Goteo, jakmile bude dosaženo minimálních finančních prostředků, je pro druhé kolo spolufinancování důležité pravidelně vysvětlovat jak projekt začal. výroba, postup, problémy atd., které umožňují co největší transparentnost a vědí, jak se začátek projektu vyvíjí, abychom se pokusili vyvolat kolem něj větší zájem a komunitu."
+guide-project-invests: 'V této sekci budete moci spravovat své spolufinančníky, odměny, které si vybrali, a také je kontaktovat, pokud to budete považovat za nutné.'
+header-about-side: 'Co s námi hýbe'
+home-posts-header: Novinky
+invest-individual-header: 'Můžete se rozhodnout, že za svůj příspěvek nebudete dostávat odměny, nebo si vybrat odměny ve výši zadané částky nebo nižší.'
+login-register-conditions: 'Registrací potvrzujete, že přijímáte naše <a href="/legal/terms">podmínky použití</a>, <a href="/legal/privacy">zásady ochrany osobních údajů</a> a <a href= "/legal/cookies">zásady souborů cookie</a>.'
+login-register-accept-newsletter: 'Chci dostávat zpravodaj'
+login-accept-conditions: 'Přijímám <a href="/legal/terms">podmínky použití</a>, <a href="/legal/privacy">zásady ochrany osobních údajů</a> a <a href="/legal/cookies" >zásady používání souborů cookie</a>.'
+mandatory-cost-field-type: 'Je nutné zvolit typ nákladů'
+mandatory-individual_reward-field-amount: 'Je povinné uvést částku, za kterou lze odměnu získat'
+mandatory-project-costs: 'Musí být rozdělena alespoň na dva náklady.'
+mandatory-register-field-email: 'Musíte uvést e-mailovou adresu'
 mark-pending: 'Označit jako k překladu'
 meta-description-index: 'Goteo je přední otevřená síť pro crowdfunding, spolupráci a školení v oblasti sociálních inovací. Se 2 koly a daňovými výhodami pro dárce!'
 node-menu-home: Uzel
 overview-field-about: 'Základní charakteristiky a cíle'
 overview-field-motivation: 'Motivace a cílová skupina projektu'
+profile-about-header: 'O mně'
+project-invest-total: 'Příspěvky celkem'
 regular-author: 'Autor'
 regular-allsome: 'všechny/některé z'
 regular-anonymous: Anonymní
