@@ -124,3 +124,9 @@ regular-facebook-pixel: 'Facebook Pixel'
 regular-call: Dorovnávací spolufinancování
 regular-unknown: Neznámý
 regular-amount: Částka
+tooltip-dashboard-user-new_password: 'Zadejte nové heslo, které chcete používat pro přístup ke službě Goteo.'
+tooltip-dashboard-user-user_password: 'Zadejte aktuální heslo, které používáte k přihlášení do systému Goteo.'
+tooltip-project-schedule: 'Vizualizace výrobního plánu vašeho projektu. Nezapomeňte, že byste měli označovat pouze nové úkoly, které mají být provedeny, nikoli úkoly, které již byly provedeny.'
+translate-home-guide: 'Zpráva pro překladatele'
+user-account-inactive: 'Účet je deaktivován. Pro opětovnou aktivaci hesla je třeba obnovit heslo'
+user-activate-fail: 'Chyba při aktivaci uživatelského účtu'
