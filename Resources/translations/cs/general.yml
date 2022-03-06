@@ -16,13 +16,54 @@ guide-project-costs: "<strong>V této části musíte připravit malý rozpočet
 guide-project-images: 'V této části se přidávají obrázky projektu. Mohou to být diagramy, snímky obrazovky, fotografie, ilustrace, storyboardy atd. Nezapomeňte, že musí být vaším vlastním dílem nebo musí být licencovány pro opakované použití. Nezapomeňte, že musí být vaše vlastní nebo musí splňovat licenci, která umožňuje jejich opakované použití. Můžete jich nahrát, kolik chcete!'
 guide-project-support: guide-project-support
 guide-project-updates: "<b>Je velmi důležité, aby projekty průběžně informovaly své spolufinancovatele a další potenciální zájemce o tom, jak jejich kampaň pokračuje. Z této sekce můžete posílat aktualizační zprávy o projektu, jako je jakýsi veřejný blog.</b>Navíc v Goteo, jakmile bude dosaženo minimálních finančních prostředků, je pro druhé kolo spolufinancování důležité pravidelně vysvětlovat jak projekt začal. výroba, postup, problémy atd., které umožňují co největší transparentnost a vědí, jak se začátek projektu vyvíjí, abychom se pokusili vyvolat kolem něj větší zájem a komunitu."
+regular-author: 'Autor'
+regular-anonymous: Anonymní
+regular-ask: Zeptat se
+regular-submit: Odeslat
+regular-slug: Jedinečný identifikátor
+regular-by: 'Od:'
+regular-calendar: Kalendář
+regular-cancel: Zrušit
+regular-categories: 'Kategorie'
+regular-social_commitments: 'Sociální závazek'
+regular-spheres: 'Oblasti působnosti'
+regular-sdgs: 'SDG'
 regular-sdg: "Cíle udržitelného rozvoje"
+regular-footprints: 'Stopa'
+regular-back: 'Zpět'
+regular-channel: Kanál
+regular-content: Obsah
+regular-continue-question: 'Pokračovat?'
+regular-continue: 'Pokračovat'
 regular-data: 'Datum'
 regular-data-unit: 'Jednotka'
+regular-date: Datum
+regular-description: Popis
+regular-edit: Upravit
+regular-email: E-mail
+regular-join: 'Připojit'
+regular-facebook: Facebook
+regular-faq: 'Často kladené otázky'
+regular-female: Žena
+regular-other-gender: Ostatní
+regular-first: První
+regular-from: od
+regular-getit: Rozumím
+regular-google: Google+
+regular-header-blog: Blog
+regular-header-faq: Často kladené otázky
 regular-location: Poloha
 regular-matchfunding: 'Dorovnávací spolufinancování'
 regular-newsletter: "Zpravodaj"
+regular-preview: Náhled
+regular-projects: projekty
+regular-published_no: Návrh
+regular-see_blog: Blog
+regular-share-rss: RSS/BLOG
+regular-share-twitter: 'Sledovat na Twitteru'
 regular-subtitle: Podtitul
+regular-twitter: Twitter
+regular-web: Web
 regular-header-image-of: "Obrázek v záhlaví %s"
 regular-call: Dorovnávací spolufinancování
 regular-click-more: "Klikněte zde a zjistěte více"
