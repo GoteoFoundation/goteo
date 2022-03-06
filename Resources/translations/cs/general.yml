@@ -16,6 +16,11 @@ guide-project-costs: "<strong>V této části musíte připravit malý rozpočet
 guide-project-images: 'V této části se přidávají obrázky projektu. Mohou to být diagramy, snímky obrazovky, fotografie, ilustrace, storyboardy atd. Nezapomeňte, že musí být vaším vlastním dílem nebo musí být licencovány pro opakované použití. Nezapomeňte, že musí být vaše vlastní nebo musí splňovat licenci, která umožňuje jejich opakované použití. Můžete jich nahrát, kolik chcete!'
 guide-project-support: guide-project-support
 guide-project-updates: "<b>Je velmi důležité, aby projekty průběžně informovaly své spolufinancovatele a další potenciální zájemce o tom, jak jejich kampaň pokračuje. Z této sekce můžete posílat aktualizační zprávy o projektu, jako je jakýsi veřejný blog.</b>Navíc v Goteo, jakmile bude dosaženo minimálních finančních prostředků, je pro druhé kolo spolufinancování důležité pravidelně vysvětlovat jak projekt začal. výroba, postup, problémy atd., které umožňují co největší transparentnost a vědí, jak se začátek projektu vyvíjí, abychom se pokusili vyvolat kolem něj větší zájem a komunitu."
+mark-pending: 'Označit jako k překladu'
+meta-description-index: 'Goteo je přední otevřená síť pro crowdfunding, spolupráci a školení v oblasti sociálních inovací. Se 2 koly a daňovými výhodami pro dárce!'
+node-menu-home: Uzel
+overview-field-about: 'Základní charakteristiky a cíle'
+overview-field-motivation: 'Motivace a cílová skupina projektu'
 regular-author: 'Autor'
 regular-anonymous: Anonymní
 regular-ask: Zeptat se
@@ -50,6 +55,7 @@ regular-google: Google+
 regular-header-blog: Blog
 regular-header-faq: Často kladené otázky
 regular-matchfunding: 'Dorovnávací spolufinancování'
+regular-more_info: '+ info'
 regular-preview: Náhled
 regular-projects: projekty
 regular-published_no: Návrh
@@ -58,4 +64,11 @@ regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Sledovat na Twitteru'
 regular-twitter: Twitter
 regular-web: Web
+regular-yes: Ano
+regular-name: Jméno
+regular-image: Obrázek
+regular-images: Obrázky
+regular-load-more: 'Načíst více'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
 regular-call: Dorovnávací spolufinancování
