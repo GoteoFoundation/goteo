@@ -9,6 +9,11 @@ calendar-calls-category: Výzvy k podávání žádostí
 calendar-events-category: Události
 calendar-home-hour: do
 calendar-home-title: 'Nadcházející událost'
+calendar-projects-category: Projekty
+calendar-share: Sdílet
+error-contact-email-invalid: 'E-mail, který jste napsali, není platný'
+error-image-name: 'Chyba názvu souboru'
+error-image-size: 'Chyba velikosti souboru'
 error-user-email-token-invalid: 'Kód není správný'
 error-user-password-confirm: 'Potvrzení hesla neodpovídá'
 error-user-password-empty: 'Nezadali jste heslo'
