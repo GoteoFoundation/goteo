@@ -31,8 +31,12 @@ form-upload-button: Odeslat
 help-cost-to-consultant: '- Potřebujete pomoci s náklady<br>'
 help-license-to-consultant: '- Potřebujete pomoci s hromadným navracením a licencemi<br>'
 project-form-header: Formulář
+project-one-round: 'Jedno 40denní kolo'
 project-personal-field-entity_name: 'Subjekt, jehož jménem jednáte (je-li to relevantní)'
+project-two-rounds: 'Dvě kola po 40 dnech'
 tooltip-project-personal-entity_name: 'Pokud zastupujete nějaký subjekt, uveďte v tomto poli jeho název.'
+tooltip-text-type-change: 'Tím se změní typ textového editoru.<br><b>Poznámka:</b> Při přepínání mezi markdown a html může dojít ke ztrátě stylů.'
 tooltip-drag-and-drop-images: 'Chcete-li vložit obrázky, můžete soubory přetáhnout přímo do editoru'
 form-sent-success: 'Data byla úspěšně uložena!'
+form-sent-error: 'Při ukládání dat došlo k chybě: [%s]'
 form-editor-change-location: 'Změnit'
