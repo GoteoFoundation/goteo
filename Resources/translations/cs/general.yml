@@ -57,6 +57,10 @@ regular-create: 'Vytvořit projekt'
 regular-data: 'Datum'
 regular-data-unit: 'Jednotka'
 regular-date: Datum
+regular-date_in: Datum vložení
+regular-date_out: Datum zveřejnění
+regular-days: dní
+regular-delete: Vymazat
 regular-description: Popis
 regular-edit: Upravit
 regular-email: E-mail
