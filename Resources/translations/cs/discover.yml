@@ -1,5 +1,11 @@
 ---
+discover-group-archive-header: Archivováno
+discover-group-fulfilled-header: 'Kolektivní výnosy byly splněny'
+discover-group-success-header: 'Úspěšné kampaně'
+discover-results-empty: 'Nenašli jsme žádné projekty, které by splňovaly vaše kritéria vyhledávání'
+discover-results-header: 'Výsledek hledání'
 discover-searcher-button: Hledat
+discover-searcher-bycategory-header: 'Podle kategorie:'
 discover-searcher-bylocation-header: 'Podle místa:'
 discover-searcher-byreward-header: 'Zpětně:'
 discover-searcher-header: 'Hledat projekt'
