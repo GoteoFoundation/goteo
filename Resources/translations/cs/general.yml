@@ -132,3 +132,9 @@ user-account-inactive: 'Účet je deaktivován. Pro opětovnou aktivaci hesla je
 user-activate-fail: 'Chyba při aktivaci uživatelského účtu'
 user-changeemail-invalid-token: 'Platnost této akce vypršela nebo již byla provedena dříve'
 user-changeemail-fail: 'Chyba při změně e-mailové adresy'
+user-register-success: 'Uživatel byl úspěšně zaregistrován. Poté obdržíte e-mail s žádostí o aktivaci.'
+validate-project-social_rewards: 'Je povinné uvést alespoň jednu hromadnou vratku '
+validate-project-total-costs: "Optimální náklady nesmí být o více než 50 % vyšší než minimální náklady. Buď zvýšíte základní náklady, nebo snížíte dodatečné náklady."
+regular-icon: Ikona
+regular-action: Akce
+regular-action_url: URL akce
