@@ -1,1 +1,5 @@
 ---
+invest-address-address-field: Směr
+invest-address-birthyear-field: 'Rok narození'
+invest-address-country-field: Země
+invest-address-gender-field: Pohlaví
