@@ -54,6 +54,9 @@ regular-continue-question: 'Pokračovat?'
 regular-continue: 'Pokračovat'
 regular-create: 'Vytvořit projekt'
 regular-date: Datum
+regular-date_in: Datum vložení
+regular-date_out: Datum zveřejnění
+regular-days: dní
 regular-description: Popis
 regular-edit: Upravit
 regular-email: E-mail
