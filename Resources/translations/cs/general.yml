@@ -137,5 +137,7 @@ tooltip-project-schedule: 'Vizualizace výrobního plánu vašeho projektu. Neza
 translate-home-guide: 'Zpráva pro překladatele'
 user-account-inactive: 'Účet je deaktivován. Pro opětovnou aktivaci hesla je třeba obnovit heslo'
 user-activate-fail: 'Chyba při aktivaci uživatelského účtu'
+user-changeemail-invalid-token: 'Platnost této akce vypršela nebo již byla provedena dříve'
+user-changeemail-fail: 'Chyba při změně e-mailové adresy'
 regular-click-more: "Klikněte zde a zjistěte více"
 regular-apply: Použít
