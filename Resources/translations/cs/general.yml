@@ -62,6 +62,11 @@ regular-date_out: Datum zveřejnění
 regular-days: dní
 regular-delete: Vymazat
 regular-description: Popis
+regular-discover: 'Objevujte projekty'
+regular-discard: 'Zahodit'
+regular-download-pdf: 'Stáhnout PDF'
+regular-download: Stáhnout
+regular-actions: Akce
 regular-edit: Upravit
 regular-email: E-mail
 regular-join: 'Připojit'
@@ -75,6 +80,10 @@ regular-getit: Rozumím
 regular-google: Google+
 regular-header-blog: Blog
 regular-header-faq: Často kladené otázky
+regular-header-glossary: 'Zásady otevřené ekonomiky'
+regular-hello: Dobrý den
+regular-here: zde
+regular-help: Nápověda
 regular-location: Poloha
 regular-matchfunding: 'Dorovnávací spolufinancování'
 regular-more_info: '+ info'
