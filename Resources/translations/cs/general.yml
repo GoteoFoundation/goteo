@@ -1,4 +1,14 @@
 ---
+ID_DEL_TEXTO: 'Text ID_DEL_TEXTO'
+admin_no_permission: 'Nemáte oprávnění k přístupu k <strong>%s</strong>'
+bazar-description-seo: 'Solidární crowdfundingové dary na Goteo.org.'
+bazar-title-seo: 'Dárky solidarity :: Goteo.org'
+blog-comments: Komentáře
+blog-main-header: 'Blog Goteo'
+calendar-calls-category: Výzvy k podávání žádostí
+calendar-events-category: Události
+calendar-home-hour: do
+calendar-home-title: 'Nadcházející událost'
 error-user-email-token-invalid: 'Kód není správný'
 error-user-password-confirm: 'Potvrzení hesla neodpovídá'
 error-user-password-empty: 'Nezadali jste heslo'
@@ -22,6 +32,7 @@ node-menu-home: Uzel
 overview-field-about: 'Základní charakteristiky a cíle'
 overview-field-motivation: 'Motivace a cílová skupina projektu'
 regular-author: 'Autor'
+regular-allsome: 'všechny/některé z'
 regular-anonymous: Anonymní
 regular-ask: Zeptat se
 regular-submit: Odeslat
@@ -29,6 +40,7 @@ regular-slug: Jedinečný identifikátor
 regular-by: 'Od:'
 regular-calendar: Kalendář
 regular-cancel: Zrušit
+regular-cancel-back: 'Zrušit a vrátit se zpět'
 regular-categories: 'Kategorie'
 regular-social_commitments: 'Sociální závazek'
 regular-spheres: 'Oblasti působnosti'
@@ -37,9 +49,11 @@ regular-sdg: "Cíle udržitelného rozvoje"
 regular-footprints: 'Stopa'
 regular-back: 'Zpět'
 regular-channel: Kanál
+regular-collaborate: Zapoj se
 regular-content: Obsah
 regular-continue-question: 'Pokračovat?'
 regular-continue: 'Pokračovat'
+regular-create: 'Vytvořit projekt'
 regular-data: 'Datum'
 regular-data-unit: 'Jednotka'
 regular-date: Datum
