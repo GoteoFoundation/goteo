@@ -1,1 +1,6 @@
 ---
+login-access-button: Přihlásit
+login-access-password-field: Heslo
+login-access-username-field: 'Uživatelské jméno nebo e-mail'
+login-fail: 'Chyba přihlášení'
+login-leave-button: 'Odhlásit odběr'
