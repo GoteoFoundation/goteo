@@ -1,3 +1,4 @@
 ---
+matcher-drop: 'Kapitálové dorovnání'
 matcher-label-pending: "Čekající"
 matcher-apply-answer-questionnaire: "Dotazník pro respondenty"
