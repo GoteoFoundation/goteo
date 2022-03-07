@@ -52,15 +52,15 @@ class ImpactDiscoverController extends Controller {
 
         $filters = [];
         if ($request->query->has('channel')) {
-            $filters['channel'] = strip_tags($request->query->get('channel'));
+            $filters['channel'] = strip_tags($request->query->getDigits('channel'));
         }
 
-        if ($request->query->has('sdgs') && !empty(strip_tags($request->query->get('sdgs'))) ){
-            $filters['sdgs'] = explode(',', strip_tags($request->query->get('sdgs')));
+        if ($request->query->has('sdgs') && !empty(strip_tags($request->query->getDigits('sdgs'))) ){
+            $filters['sdgs'] = explode(',', strip_tags($request->query->getDigits('sdgs')));
         }
 
-        if ($request->query->has('footprints') && !empty(strip_tags($request->query->get('footprints'))) && strip_tags($request->query->get('footprints')) != 'all'){
-            $filters['footprints'] = explode(',', strip_tags($request->query->get('footprints')));
+        if ($request->query->has('footprints') && !empty(strip_tags($request->query->getDigits('footprints'))) && strip_tags($request->query->getDigits('footprints')) != 'all'){
+            $filters['footprints'] = explode(',', strip_tags($request->query->getDigits('footprints')));
         }
 
         return $filters;
