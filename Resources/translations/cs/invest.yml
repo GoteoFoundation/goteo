@@ -3,3 +3,6 @@ invest-address-address-field: Směr
 invest-address-birthyear-field: 'Rok narození'
 invest-address-country-field: Země
 invest-address-gender-field: Pohlaví
+invest-make-sure-save: Uložit
+invest-make-sure-title: Potvrdit
+invest-method: 'Způsob platby'
