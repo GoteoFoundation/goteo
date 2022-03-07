@@ -239,12 +239,16 @@ admin-module-workshops: # Can access to module WorkshopsAdminController
 admin-module-channels: # Can access to modules Channel*AdminController
     model: null
     relational: null
-    
+
 admin-module-channel-resource:  # Can access to module ChannelResourceAdminController
     model: null
     relational: null
 
 admin-module-impact_data: # Can access to module ImpactDataAdminController
+    model: null
+    relational: null
+
+admin-module-communication: # Can access to module CommunicationAdminController
     model: null
     relational: null
 
