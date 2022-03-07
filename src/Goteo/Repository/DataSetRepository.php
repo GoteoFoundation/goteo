@@ -221,6 +221,53 @@
          return $dataSet;
      }
 
+     /**
+      * @return DataSet[]
+      */
+     public function getListByChannel(array $channels): array
+     {
+         $sqlWhere = "";
+         if (!empty($channels)) {
+             $sqlWhere = "WHERE nds.node_id IN ( " . implode(',', $channels) . ")";
+         }
+
+         $sql = "SELECT data_set.*
+                FROM data_set
+                INNER JOIN node_data_set nds ON nds.data_set_id = data_set.id
+                {$sqlWhere}
+                ";
+
+         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
+     }
+
+     public function getLastByChannelAndType(array $channels, string $type): DataSet {
+         $sqlWhere = "WHERE data_set.type = '{$type}' ";
+
+         if (!empty($channels)) {
+             foreach($channels as $index => $call) {
+                 $parts[] = ':channel_' . $index;
+                 $values[':channel_' . $index] = $call;
+             }
+
+             $sqlWhere .= "AND nds.node_id IN ( " . implode(',', $parts) . ")";
+         }
+
+         $sql = "SELECT data_set.*
+                FROM data_set
+                INNER JOIN node_data_set nds ON nds.data_set_id = data_set.id
+                {$sqlWhere}
+                ORDER BY data_set.modified_at DESC
+                LIMIT 1
+                ";
+
+         $dataSet = $this->query($sql, $values)->fetchObject(DataSet::class );
+
+         if (!$dataSet instanceOf DataSet)
+             throw new ModelNotFoundException("DataSet not found");
+
+         return $dataSet;
+     }
+
      public function persist(DataSet $dataSet, array &$errors = []): DataSet
      {
          if ($dataSet->getId())
