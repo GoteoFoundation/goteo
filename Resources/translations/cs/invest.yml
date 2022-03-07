@@ -56,3 +56,5 @@ invest-user-not-ghost: 'Tento e-mail patří existujícímu uživateli!'
 invest-user-name-or-anonymous: 'Jméno je povinné, pokud nechcete přispět anonymně'
 invest-created-manually-ok: 'Ruční příspěvek byl úspěšně vytvořen, vyberte odměnu a doručovací adresu.'
 invest-tip-part-1: 'Chci přidat svůj příspěvek: '
+invest-extra-info: 'Další informace'
+donor-legal-entities-natural-person: Fyzická osoba
