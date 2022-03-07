@@ -4,3 +4,23 @@ login-access-password-field: Heslo
 login-access-username-field: 'Uživatelské jméno nebo e-mail'
 login-fail: 'Chyba přihlášení'
 login-leave-button: 'Odhlásit odběr'
+login-recover-button: Obnovit
+login-recover-email-field: 'E-mailová adresa nebo uživatelské jméno'
+login-recover-header: "Do pole vyplňte e-mailovou adresu, kterou jste použili při registraci na platformě. Často se shoduje se stejnou e-mailovou adresou propojenou se sociálními sítěmi. Upozornění: Ve stejném e-mailu obdržíte e-mail s přímým odkazem na změnu hesla. Pokud e-mail neobdržíte, zkontrolujte, zda se nenachází ve složce nevyžádané pošty. Pokud jste o nové heslo žádali několikrát, pokaždé vám byl zaslán e-mail s novým automaticky vygenerovaným odkazem. Použijte odkaz z posledního e-mailu, který jste obdrželi. Pokud si nepamatujete e-mail, na který nás můžete kontaktovat, nezapomeňte uvést některé informace, které nám usnadní vyhledání vašeho uživatele (celé jméno, přezdívka, kterou obvykle používáte, datum registrace nebo zda jste přispěli na konkrétní projekt)."
+login-recover-label: 'Zapomenuté heslo?'
+login-recover-link: 'Obnovení hesla'
+login-recover-modal-button: Odeslat
+login-recover-modal-sucess: 'Hotovo! - odeslali jsme e-mail na adresu %s s odkazem na obnovení vašeho hesla.'
+login-recover-modal-text: 'Zadejte e-mailovou adresu, kterou jste použili při registraci, a my vám zašleme odkaz pro obnovení hesla.'
+login-recover-username-field: 'Přihlašovací jméno'
+login-register-button: Registrace
+login-register-confirm-field: 'Potvrdit nový e-mail'
+login-register-confirm_password-field: 'Potvrzení hesla'
+login-register-email-field: E-mail
+login-register-header: 'Nový uživatel'
+login-register-password-field: Heslo
+login-register-password-minlength: 'Minimálně 6 znaků'
+login-register-userid-field: 'Přihlašovací jméno'
+login-register-username-field: 'Veřejný název'
+login-signin-facebook: 'Přihlášení přes Facebook'
+login-signin-google: 'Přihlásit se přes Google'
