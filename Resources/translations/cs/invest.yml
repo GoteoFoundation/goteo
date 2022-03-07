@@ -38,3 +38,7 @@ invest-status-to-pool: 'Do peněženky'
 invest-step-2: Platba
 invest-step-3: Potvrdit
 invest-step-4: Sdílet
+invest-success-make-sure: 'Výborně! Váš příspěvek na projekt <strong>%s</strong> byl úspěšný.'
+project-invest-confirm: 'Od spolufinancování tohoto projektu vás dělí už jen krůček...'
+project-invest-continue: 'Klikněte na logo platebního systému, který se chystáte použít:'
+project-invest-fail: 'Něco se pokazilo, zkuste to prosím znovu'
