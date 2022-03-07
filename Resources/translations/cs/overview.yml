@@ -17,6 +17,13 @@ overview-main-header: 'Popis projektu'
 step-3: Popis
 step-main: Hlavní údaje
 step-3b: Obrázky
+step-images: 'Krok: Obrázky projektu'
+step-overview: 'Krok: Popis projektu'
+tooltip-project-about: 'Stručně popište nejdůležitější rysy svého projektu a proč se liší od ostatních. Vyjmenujte také, jakých cílů s ním chcete dosáhnout (napište je jasně a s použitím infinitivu)'
+tooltip-project-category: 'Vyberte tolik kategorií, kolik si myslíte, že potřebujete k popisu projektu, na základě toho, co jste popsali výše. Pomocí těchto klíčových slov budeme moci oslovit různé uživatele Goteo.'
+tooltip-project-currency: 'Uveďte, v jaké měně počítáte náklady na projekt.'
+tooltip-project-currently: 'Uvádí, v jaké fázi tvorby nebo realizace se projekt právě nachází.'
+tooltip-project-description: 'Popište projekt v rozsahu minimálně 80 slov (méně slov bude považováno za chybu). Vysvětlete to tak, aby to pochopil každý. Pokuste se ho přiblížit atraktivním a společenským způsobem, shrnout jeho silné stránky, to, co jej činí jedinečným, inovativním nebo výjimečným.'
 tooltip-project-media: 'Prezentační video je zásadní součástí upoutání pozornosti komunity, takže čím originálnější je, tím lépe. Nesmí být delší než 4 minuty. Nahrajte jej na Youtube, Vimeo nebo PeerTube a vložte sem adresu URL.'
 overview-field-sign-check: 'Máte otevřenou sbírku podpisů související s projektem?'
 overview-field-sign-url: "Url adresa podpisu"
