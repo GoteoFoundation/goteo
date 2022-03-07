@@ -6,3 +6,18 @@ invest-address-gender-field: Pohlaví
 invest-make-sure-save: Uložit
 invest-make-sure-title: Potvrdit
 invest-method: 'Způsob platby'
+invest-modal-fiscal-description: 'Jak už možná víte, přispívání do Goteo nejenže umožňuje realizovat spoustu projektů, které jsou přínosné pro nás všechny, ale také poskytuje daňové úlevy! Při příspěvku na projekt a díky navýšení druhů odpočtů platných od roku 2015 u čistých a jednoduchých darů ve prospěch nadace Goteo, jakožto subjektu, na který se vztahuje zvláštní daňový režim zákona 49/2002 z prosince 23, budete si moci odečíst částky, které uvádíme v <a href="https://goteo.org/faq/investors#q112" target="_blank">nejčastějších dotazech 18 pro comecenas</a>.'
+invest-modal-pool-description: 'Virtuální peněženka je kreditní systém platformy Goteo, který můžete naplnit svými penězi a použít jej jako platební metodu, kdykoli chcete přispět na projekty na naší platformě, aniž byste museli pokaždé zadávat údaje o své kreditní kartě nebo PayPalu.'
+invest-modal-pool-title: 'O virtuální peněžence Goteo'
+invest-more-info: 'Více informací'
+invest-next_step: 'Další krok'
+invest-payment-email: 'Zadejte svůj účet PayPal'
+invest-payment-fail: 'Něco se pokazilo s platbou'
+invest-payment-success: 'Platba byla úspěšně dokončena'
+invest-payment_method-header: 'Zvolte způsob platby'
+invest-payment-method: 'Způsob platby'
+invest-paypal-method: PayPal
+invest-pool: 'Chci, aby můj příspěvek v případě, že projekt nedosáhne svého cíle, zůstal v mé virtuální peněžence Goteo.'
+invest-pool-available: k dispozici
+invest-pool-error: 'Ve virtuální peněžence nemáte dostatek peněz'
+invest-pool-method: 'Virtuální peněženka'
