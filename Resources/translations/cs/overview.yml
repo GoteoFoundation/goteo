@@ -1,4 +1,9 @@
 ---
+overview-field-options-currently_medio: Střední
+overview-field-options-scope_global: Globální
+overview-field-options-scope_local: Lokální
+overview-field-options-scope_nacional: Národní
+overview-field-options-scope_regional: Regionální
 tooltip-project-media: 'Prezentační video je zásadní součástí upoutání pozornosti komunity, takže čím originálnější je, tím lépe. Nesmí být delší než 4 minuty. Nahrajte jej na Youtube, Vimeo nebo PeerTube a vložte sem adresu URL.'
 overview-field-sign-check: 'Máte otevřenou sbírku podpisů související s projektem?'
 overview-field-sign-url: "Url adresa podpisu"
