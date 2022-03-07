@@ -46,3 +46,5 @@ oauth-import-location: 'Místo bydliště'
 oauth-import-name: Jméno
 oauth-import-twitter: 'Odkaz na účet na Twitteru'
 oauth-import-website: 'Vaše webové stránky'
+oauth-linkedin-access-denied: 'Přístup do Linkedin odepřen'
+oauth-login-imported-data: 'Tyto údaje budou rovněž importovány, po ověření je můžete změnit:'
