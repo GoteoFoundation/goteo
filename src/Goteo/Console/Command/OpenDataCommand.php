@@ -209,8 +209,8 @@ EOT
     private function extractCallProjectsData(Call $call): void {
         $fileName = $this->getFileName($call->id, DataSet::TYPE_PROJECTS);
 
-        $projects_count = Project::getList(['called' => $call->id], 0, 0, true);
-        $projects = Project::getList(['called' => $call->id], 0, $projects_count);
+        $projects_count = Project::getList(['called' => $call->id], null, 0, 0, true);
+        $projects = Project::getList(['called' => $call->id], null, 0,  $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
         $file = $this->getFile('call', $call->id, DataSet::TYPE_PROJECTS);
@@ -260,8 +260,8 @@ EOT
     {
         $fileName = $this->getFileName($channel->id, DataSet::TYPE_PROJECTS);
 
-        $projects_count = Project::getList(['node' => $channel->id], 0, 0, true);
-        $projects = Project::getList(['node' => $channel->id], 0, $projects_count);
+        $projects_count = Project::getList(['node' => $channel->id], null, 0, 0, true);
+        $projects = Project::getList(['node' => $channel->id], null, 0, $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
         $file = $this->getFile('channel', $channel->id, DataSet::TYPE_PROJECTS);
