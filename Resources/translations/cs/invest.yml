@@ -21,3 +21,21 @@ invest-pool: 'Chci, aby můj příspěvek v případě, že projekt nedosáhne s
 invest-pool-available: k dispozici
 invest-pool-error: 'Ve virtuální peněžence nemáte dostatek peněz'
 invest-pool-method: 'Virtuální peněženka'
+invest-process-completed: 'Tento příspěvek byl již dříve dokončen'
+invest-resign: 'Zříkám se individuální odměny, chci jen pomoci projektu'
+invest-reward-first: 'Nezapomeňte, že částka, kterou chcete přispět, musí být vyšší než 0'
+invest-reward-none: 'Už není na výběr'
+invest-reward-not-found: 'Tato odměna nebyla nalezena!'
+invest-reward-used-up: 'Tato odměna je vyprodána!'
+invest-select-reward: 'Vyberte si svou odměnu'
+invest-share-title: Sdílet
+invest-social-header: 'Kolektivní výnosy jsou výhodné pro všechny'
+invest-status-cancelled: Zrušeno
+invest-status-paid: 'Zaplaceno projektu'
+invest-status-processing: Nedokončeno
+invest-status-relocated: Přesunuto
+invest-status-to-pool: 'Do peněženky'
+invest-step-2: Platba
+invest-step-3: Potvrdit
+invest-step-4: Sdílet
+invest-success-make-sure: 'Výborně! Váš příspěvek na projekt <strong>%s</strong> byl úspěšný.'
