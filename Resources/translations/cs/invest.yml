@@ -42,3 +42,6 @@ invest-success-make-sure: 'Výborně! Váš příspěvek na projekt <strong>%s</
 project-invest-confirm: 'Od spolufinancování tohoto projektu vás dělí už jen krůček...'
 project-invest-continue: 'Klikněte na logo platebního systému, který se chystáte použít:'
 project-invest-fail: 'Něco se pokazilo, zkuste to prosím znovu'
+project-invest-guest: 'Skvěle!'
+project-invest-ok: 'Váš příspěvek na spolufinancování tohoto projektu byl zpracován :)'
+project-invest-pool-button: 'Použít mou virtuální peněženku'
