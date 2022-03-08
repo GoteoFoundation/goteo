@@ -17,6 +17,10 @@ invest-amount-in-pool: 'Ve virtuální peněžence máte %s'
 invest-amount-tooltip: 'Zadejte částku, kterou projekt podpoříte'
 invest-anonymous: 'Chci, aby můj příspěvek byl anonymní'
 invest-button: Přispět
+invest-called-maxdrop: 'Maximálně do výše <strong>%s &euro;</strong>'
+invest-called-maxproj: 'Projekt, který jste podpořili, již dosáhl maximální možné částky <strong>matchfundingu</strong> ve výzvě <span class="call">%s</span>.'
+invest-card-method: Karta
+invest-cash-method: 'Osobně (v hotovosti)'
 invest-make-sure-save: Uložit
 invest-make-sure-title: Potvrdit
 invest-method: 'Způsob platby'
@@ -36,6 +40,7 @@ invest-pool-available: k dispozici
 invest-pool-error: 'Ve virtuální peněžence nemáte dostatek peněz'
 invest-pool-method: 'Virtuální peněženka'
 invest-process-completed: 'Tento příspěvek byl již dříve dokončen'
+invest-project: 'k projektu'
 invest-resign: 'Zříkám se individuální odměny, chci jen pomoci projektu'
 invest-reward-first: 'Nezapomeňte, že částka, kterou chcete přispět, musí být vyšší než 0'
 invest-reward-none: 'Už není na výběr'
