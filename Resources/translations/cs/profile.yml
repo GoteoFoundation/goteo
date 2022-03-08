@@ -10,3 +10,10 @@ profile-field-entity-type-public: Veřejné
 profile-field-interests: 'Jaký projekt vás nejvíce motivuje'
 profile-field-keywords: 'Témata, která vás zajímají'
 profile-field-legal-entity: 'Právní forma'
+profile-field-legal-entity-asociation: Asociace
+profile-field-legal-entity-choose: 'Vyberte právní formu'
+profile-field-legal-entity-company: Společnost
+profile-field-legal-entity-cooperative: Spolek
+profile-field-legal-entity-ngo: NNO
+profile-field-legal-entity-others: Ostatní
+profile-field-legal-entity-person: 'Fyzická osoba'
