@@ -4,5 +4,20 @@ blog-comments_no_allowed: '...'
 blog-no_comments: 'Žádné komentáře'
 blog-no_posts: 'Nebyly zveřejněny žádné záznamy '
 blog-send_comment-button: Odeslat
+blog-send_comment-header: 'Napište komentář'
+blog-side-last_comments: 'Últimos comentarios'
+blog-side-last_posts: 'Nejnovější příspěvky'
+blog-side-tags: Kategorie
+blog-allow-comments: Povolit komentáře
+blog-publish: Zveřejnit
+blog-published: Zveřejněno
+blog-related-posts: 'Související'
+blog-section-mission: 'Mise'
+blog-section-milestones: 'Milníky'
 blog-section-matchfunding: 'Dorovnávací spolufinancování'
+blog-section-voices: 'Hlasy'
+blog-section-transparency: 'Transparentnost'
+blog-section-team: 'Tým'
+blog-main-description: 'Zde sdílíme, vyjadřujeme své názory, oznamujeme, oslavujeme, dáváme do souvislostí a hodnotíme akce nadace'
+blog-section-mission-description: 'Poslání naší nadace je spojeno s principy transparentnosti, pokroku a zlepšení společnosti'
 blog-section-matchfunding-description: 'Dorovnávací spolufinancování je postup, který nám umožňuje maximálně rozvinout spoluzodpovědnost, která je součástí filosofie projektu Goteo a jeho poslání jako nadace'
