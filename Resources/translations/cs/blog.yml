@@ -1,3 +1,8 @@
 ---
+blog-coments-header: Komentáře
+blog-comments_no_allowed: '...'
+blog-no_comments: 'Žádné komentáře'
+blog-no_posts: 'Nebyly zveřejněny žádné záznamy '
+blog-send_comment-button: Odeslat
 blog-section-matchfunding: 'Dorovnávací spolufinancování'
 blog-section-matchfunding-description: 'Dorovnávací spolufinancování je postup, který nám umožňuje maximálně rozvinout spoluzodpovědnost, která je součástí filosofie projektu Goteo a jeho poslání jako nadace'
