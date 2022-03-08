@@ -227,8 +227,16 @@
      public function getListByChannel(array $channels): array
      {
          $sqlWhere = "";
+         $values = [];
+         $parts = [];
+
          if (!empty($channels)) {
-             $sqlWhere = "WHERE nds.node_id IN ( " . implode(',', $channels) . ")";
+             foreach($channels as $index => $channel) {
+                 $parts[] = ':channels_' . $index;
+                 $values[':channels_' . $index] = $channel;
+             }
+
+             $sqlWhere .= "AND nds.node_id IN ( " . implode(',', $parts) . ")";
          }
 
          $sql = "SELECT data_set.*
@@ -237,7 +245,7 @@
                 {$sqlWhere}
                 ";
 
-         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
+         return $this->query($sql, $values)->fetchAll(PDO::FETCH_CLASS, DataSet::class );
      }
 
      public function getLastByChannelAndType(array $channels, string $type): DataSet {

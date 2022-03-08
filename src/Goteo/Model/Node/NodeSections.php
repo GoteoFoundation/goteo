@@ -26,20 +26,22 @@
   const SECTION_WORKSHOPS       = 'workshops';
   const SECTION_TEAM            = 'team';
   const SECTION_SPONSORS        = 'sponsors';
+  const SECTION_DATA_SETS       = 'data_sets';
 
 
 
   static $SECTIONS = [
-    self::SECTION_MAP,
-    self::SECTION_RESOURCES,
-    self::SECTION_CALL_TO_ACTION,
-    self::SECTION_PROJECTS,
-    self::SECTION_POSTS,
-    self::SECTION_PROGRAM,
-    self::SECTION_STORIES,
-    self::SECTION_WORKSHOPS,
-    self::SECTION_TEAM,
-    self::SECTION_SPONSORS
+      self::SECTION_MAP,
+      self::SECTION_RESOURCES,
+      self::SECTION_CALL_TO_ACTION,
+      self::SECTION_PROJECTS,
+      self::SECTION_POSTS,
+      self::SECTION_PROGRAM,
+      self::SECTION_STORIES,
+      self::SECTION_WORKSHOPS,
+      self::SECTION_TEAM,
+      self::SECTION_SPONSORS,
+      self::SECTION_DATA_SETS
   ];
 
   public
@@ -58,31 +60,26 @@
 
 
   /**
-   * Get data about Node Sections
-   *
-   * @param   int    $id         check id.
-   * @return  NodeSections object
+   * @return  NodeSections
    */
-  public static function get($id) {
+  public static function get(int $id): NodeSections
+  {
+      $lang = Lang::current();
+      list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+      $sql = "
+          SELECT
+              node_sections.id as id,
+              node_sections.node as node,
+              node_sections.section as section,
+              $fields,
+              node_sections.main_image as main_image,
+              node_sections.order
+          FROM node_sections
+          $joins
+          WHERE node_sections.id = ?";
 
-    if(!$lang) $lang = Lang::current();
-    list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
-
-    $sql = "SELECT
-                  node_sections.id as id,
-                  node_sections.node as node,
-                  node_sections.section as section,
-                  $fields,
-                  node_sections.main_image as main_image,
-                  node_sections.order
-            FROM node_sections
-            $joins
-            WHERE node_sections.id = ?";
-
-    $query = static::query($sql, $id);
-    $sections = $query->fetchObject(__CLASS__);
-
-    return $sections;
+      $query = static::query($sql, $id);
+      return $query->fetchObject(__CLASS__);
   }
 
   public function getImage() {
