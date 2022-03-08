@@ -503,4 +503,10 @@ admin-filter-typeofuser: 'Typ uživatele'
 admin-filter-typeofdonor: 'Typ dárce'
 admin-filter-user: 'Uživatel'
 admin-filter-donor: 'Dárce'
+admin-filter-test: 'Test'
+admin-filter-type-foundation-donor: 'Dárce nadace'
+admin-filter-project-status: Stav projektu
+admin-filter-invest-status: Stav dárcovství
+admin-filter-project-location: Umístění projektu
+admin-filter-location: Umístění, které se použije ve filtru
 
