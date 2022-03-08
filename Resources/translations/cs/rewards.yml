@@ -1,1 +1,18 @@
 ---
+mandatory-individual_reward-field-description: 'Je vyžadováno uvést nějaký popis'
+mandatory-individual_reward-field-icon: 'Je vyžadováno zvolit typ odměny'
+mandatory-individual_reward-field-name: 'Je vyžadováno uvést odměnu'
+rewards-field-individual_reward-amount: 'Částka'
+rewards-field-individual_reward-description: Popis
+rewards-field-individual_reward-other: 'Zadejte typ odměny'
+rewards-field-individual_reward-reward: Odměna
+rewards-field-individual_reward-type: 'Typ odměny'
+rewards-field-individual_reward-units: 'Dostupné jednotky'
+rewards-field-social_reward-description: Popis
+rewards-field-social_reward-license: 'Možnosti licencování'
+rewards-field-social_reward-url: Url
+rewards-fields-individual_reward-title: 'Individuální odměny'
+rewards-fields-social_reward-title: 'Sociální závazek'
+rewards-main-header: 'Odměny'
+step-5: 'Odměny'
+step-rewards: 'Krok: Projekt / Odměny'
