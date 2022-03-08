@@ -1,1 +1,12 @@
 ---
+profile-field-avatar_upload: 'Nahrát obrázek'
+profile-field-contribution: 'Čím můžete přispět společnosti Goteo'
+profile-field-entity-type: 'Typ subjektu'
+profile-field-entity-type-checkbox-public: 'Jsem veřejnoprávní subjekt'
+profile-field-entity-type-choose: 'Vyberte typ subjektu'
+profile-field-entity-type-concerted: Souhlasím
+profile-field-entity-type-private: Soukromé
+profile-field-entity-type-public: Veřejné
+profile-field-interests: 'Jaký projekt vás nejvíce motivuje'
+profile-field-keywords: 'Témata, která vás zajímají'
+profile-field-legal-entity: 'Právní forma'
