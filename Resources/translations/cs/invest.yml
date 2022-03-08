@@ -3,6 +3,17 @@ invest-address-address-field: Směr
 invest-address-birthyear-field: 'Rok narození'
 invest-address-country-field: Země
 invest-address-gender-field: Pohlaví
+invest-address-legal-entity-field: Právnická osoba
+invest-address-legal-document-type-field: Typ dokumentu
+invest-alert-investing: 'Přispějete'
+invest-alert-lackamount: 'Příspěvek musí být vyšší než vybraná odměna'
+invest-alert-lackdrop: 'Na pokrytí vašeho příspěvku nezbývá dostatek rizikového kapitálu, existuje pouze'
+invest-alert-noreward: 'Neoznačili jste žádnou odměnu, je to tak?'
+invest-alert-noreward_renounce: 'Chcete se vzdát odměny a odečíst si dar?'
+invest-alert-renounce: 'Zřekli jste se, ale neuvedli jste své číslo NIF pro odečtení daru, je to tak?'
+invest-alert-rewards: 'Vybrali jste si následující odměny:'
+invest-amount: Částka
+invest-amount-in-pool: 'Ve virtuální peněžence máte %s'
 invest-make-sure-save: Uložit
 invest-make-sure-title: Potvrdit
 invest-method: 'Způsob platby'
