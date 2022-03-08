@@ -460,6 +460,8 @@ admin-invest-commissions-lost-month: 'Ztráta z příspěvků vrácených tento 
 admin-invest-commissions-lost-year: 'Ztráta z příspěvků vrácených v tomto roce'
 admin-invest-commissions-lost-last_year: 'Ztráta z příspěvků vrácených v minulém roce'
 admin-invest-commissions-tpv-today: 'Komise poplatků jiných poskytovatelů dnes'
+admin-invest-commissions-tpv-yesterday: 'Komise poplatků jiných poskytovatelů včera'
+admin-invest-commissions-tpv-week: 'Komise poplatků jiných poskytovatelů tento týden'
 admin-invest-diff-last_month: 'Rozdíl oproti předchozímu měsíci'
 admin-stats-projects-channel-desc: 'Projekty patřící do kanálu (nebo uzlu)'
 admin-stats-projects-call-desc: 'Projekty, které patří do výzvy'
