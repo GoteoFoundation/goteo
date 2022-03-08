@@ -1,1 +1,5 @@
 ---
+assign-call-success: 'Projekt byl přiřazen k výzvě %s'
+image-upload-fail: 'Nepodařilo se nahrát obrázek'
+gallery-upload-fail: 'Nepodařilo se nahrát galerii'
+invest-amount-error: 'Musíte uvést částku'
