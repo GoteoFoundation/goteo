@@ -133,6 +133,7 @@ admin-blog-not-public: 'Aquest post no és públic encara'
 admin-stories: Histories d'usuaris a Goteo
 admin-stories-add: Crea una nova història
 admin-stories-edit: Editant l'història %s
+admin-channel: "Canal"
 admin-channelstory-add: Afegir història al canal
 admin-channelstory-submit: Guardar història
 admin-channelstory-correct: 'S''ha afegit la història al canal'
