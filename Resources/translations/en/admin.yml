@@ -133,6 +133,7 @@ admin-blog-not-public: 'This post is not public yet!'
 admin-stories: User histories in Goteo
 admin-stories-add: Create new user history
 admin-stories-edit: Editing user history %s
+admin-channel: "Channel"
 admin-channelstory-add: Add story to the channel
 admin-channelstory-submit: Save story
 admin-channelstory-correct: 'The story has been added to the channel'
