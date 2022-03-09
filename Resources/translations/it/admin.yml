@@ -131,6 +131,7 @@ admin-blog-not-public: 'Questo post non è ancora pubblicato'
 admin-stories: Cronologia degli utenti in Goteo
 admin-stories-add: Creare una nuova cronologia
 admin-stories-edit: Modificando la cronologia %s
+admin-channel: "-> admin-title-channel"
 admin-channelstory-add: '-> admin-channelstory-add'
 admin-channelstory-submit: '-> admin-channelstory-submit'
 admin-channelstory-correct: '-> admin-channelstory-correct'
