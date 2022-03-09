@@ -53,7 +53,7 @@ class NodeProject extends \Goteo\Core\Model {
         $values = [];
 
         if ($filters['node']) {
-            $filter[] = "np.node_id = :node";
+            $filter[] = "(np.node_id = :node OR p.node = :node)";
             $values[':node'] = $filters['node'];
         }
 
@@ -69,6 +69,7 @@ class NodeProject extends \Goteo\Core\Model {
         if ($count) {
             $sql = "SELECT COUNT(np.project_id)
             FROM node_project np
+            LEFT JOIN project p on p.id = np.project_id
             $sql";
             return (int) self::query($sql, $values)->fetchColumn();
         }
@@ -80,7 +81,7 @@ class NodeProject extends \Goteo\Core\Model {
                     p.name,
                     p.image
                 FROM node_project np
-                INNER JOIN project p ON p.id = np.project_id
+                LEFT JOIN project p ON p.id = np.project_id
                 $sql
                 ORDER BY np.order ASC
                 LIMIT $offset, $limit";
