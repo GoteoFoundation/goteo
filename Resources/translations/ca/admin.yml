@@ -107,6 +107,8 @@ admin-storys: Histories d'usuaris a Goteo
 admin-stories: Histories d'usuaris a Goteo
 admin-stories-add: Crea una nova història
 admin-stories-edit: Editant l'història %s
+admin-channel: "Canal"
+admin-channels: "Canals"
 admin-channelsection-section: 'Secció'
 admin-channelsection-map: 'Mapa'
 admin-channelsection-resource: 'Recursos'
@@ -131,6 +133,8 @@ admin-channelcriteria-title: 'Questionari del canal'
 admin-channelcriteria-subtitle: "Estableix les preguntes amb les que evaluaràs un projecte que vulgui presentar-se al teu canal. Procura ser concís en el que esperes obtenir de les iniciatives que es vulguin presentar, ajudarà a facilitar-te l'evaluació final"
 admin-channelprogram-create: 'Crear'
 admin-channelprogram-add: 'Afegir programa'
+admin-channel-projects-add: "Añadir proyecto"
+admin-channel-projects-not-exists: "No existeix aquesta relació"
 admin-categories: 'Categories i àmbits'
 admin-categories-if-empty-then-asset: 'Si es deixa buit es farà servir l''icona per defecte: %s'
 admin-category-add: Crea una nova categoria
