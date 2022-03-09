@@ -131,6 +131,7 @@ admin-blog-not-public: 'Ce message n’est pas encore public'
 admin-stories: Historiques d’utilisateurs dans Goteo
 admin-stories-add: Créer une nouvelle histoire
 admin-stories-edit: Modifier l’histoire %s
+admin-channel: "Canal"
 admin-channelstory-add: Ajouter le témoignage à la chaîne
 admin-channelstory-submit: Sauvegarder l'historique
 admin-channelstory-correct: 'Le témoignage a été ajouté à la chaîne'
