@@ -133,6 +133,7 @@ admin-blog-not-public: 'Esta publicación aínda non é pública'
 admin-stories: Historias de usuarios no Goteo
 admin-stories-add: Crear unha nova historia
 admin-stories-edit: Editando a historia %s
+admin-channel: "Canle"
 admin-channelstory-add: Engadir historia á canle
 admin-channelstory-submit: Gardar historia
 admin-channelstory-correct: 'Engadiuse a historia á canle'
