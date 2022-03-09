@@ -133,6 +133,7 @@ admin-blog-not-public: 'Tento příspěvek zatím není veřejný'
 admin-stories: Příběhy uživatelů na Goteo
 admin-stories-add: Vytvořit nový příběh
 admin-stories-edit: Úprava historie %s
+admin-channel: "Kanál"
 admin-channelstory-add: Přidat příběh do kanálu
 admin-channelstory-submit: Uložit historii
 admin-channelstory-correct: 'Příběh byl přidán do kanálu'
