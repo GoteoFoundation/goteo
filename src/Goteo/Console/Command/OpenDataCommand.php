@@ -19,6 +19,7 @@ use Goteo\Library\FileHandler\FileInterface;
 use Goteo\Model\Call;
 use Goteo\Model\Footprint;
 use Goteo\Model\Invest;
+use Goteo\Model\Node;
 use Goteo\Model\Origin;
 use Goteo\Model\Project;
 use Goteo\Model\Sdg;
@@ -40,7 +41,8 @@ class OpenDataCommand extends AbstractCommand {
             ->setDefinition([
                 new InputOption('call', 'c', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, "If specified, extracts data for the given call "),
                 new InputOption('sdg', 's', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'If specified, extracts data for the given sdgs'),
-                new InputOption('footprint', 'f', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'If specified, extracts data for the given footprints')
+                new InputOption('footprint', 'f', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'If specified, extracts data for the given footprints'),
+                new InputOption('channel', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'If specified, extracts data for the given channel')
             ])
             ->setHelp(<<<EOT
 This command generates files using the data from different sources and saves them. The sources can be channels, matchers, calls or projects.
@@ -81,6 +83,10 @@ EOT
 
         if ($listFootprints = $input->getOption('footprint')) {
             $this->extractDataForFootprint($listFootprints);
+        }
+
+        if ($listChannels = $input->getOption('channel')) {
+            $this->extractDataForChannel($listChannels);
         }
     }
 
@@ -203,8 +209,8 @@ EOT
     private function extractCallProjectsData(Call $call): void {
         $fileName = $this->getFileName($call->id, DataSet::TYPE_PROJECTS);
 
-        $projects_count = Project::getList(['called' => $call->id], 0, 0, true);
-        $projects = Project::getList(['called' => $call->id], 0, $projects_count);
+        $projects_count = Project::getList(['called' => $call->id], null, 0, 0, true);
+        $projects = Project::getList(['called' => $call->id], null, 0,  $projects_count);
         $this->extractProjectOpenData($fileName, $projects);
 
         $file = $this->getFile('call', $call->id, DataSet::TYPE_PROJECTS);
@@ -243,6 +249,59 @@ EOT
         }
         $file->close();
     }
+
+    private function extractChannelOpenData(Node $channel): void
+    {
+        $this->extractChannelProjects($channel);
+        $this->extractChannelInvests($channel);
+    }
+
+    private function extractChannelProjects(Node $channel): void
+    {
+        $fileName = $this->getFileName($channel->id, DataSet::TYPE_PROJECTS);
+
+        $projects_count = Project::getList(['node' => $channel->id], null, 0, 0, true);
+        $projects = Project::getList(['node' => $channel->id], null, 0, $projects_count);
+        $this->extractProjectOpenData($fileName, $projects);
+
+        $file = $this->getFile('channel', $channel->id, DataSet::TYPE_PROJECTS);
+        if ($file->upload('/tmp/' . $fileName, $fileName)) {
+            $this->logCompleted($fileName);
+            try {
+                $dataSet = $this->dataSetRepository->getLastByChannelAndType([$channel->id], DataSet::TYPE_PROJECTS);
+                $this->updateDataSet($dataSet, $file, $fileName, $channel);
+            } catch (ModelNotFoundException $e) {
+                $this->createDataSet($channel, $file, $fileName, DataSet::TYPE_PROJECTS);
+            }
+        } else {
+            $this->logError($fileName);
+        }
+        $file->close();
+    }
+
+    private function extractChannelInvests(Node $channel): void
+    {
+        $fileName = $this->getFileName($channel->id, DataSet::TYPE_INVESTS);
+
+        $invests_count = Invest::getList(['node' => $channel->id, 'types' => 'nondrop', 'status' => Invest::STATUS_CHARGED], null, 0, 0, true);
+        $invests = Invest::getList(['node' => $channel->id, 'types' => 'nondrop', 'status' => Invest::STATUS_CHARGED], null, 0, $invests_count);
+        $this->extractInvestOpenData($fileName, $invests);
+
+        $file = $this->getFile('channel', $channel->id, DataSet::TYPE_INVESTS);
+        if ( $file->upload('/tmp/' . $fileName, $fileName) ) {
+            $this->logCompleted($fileName);
+            try {
+                $dataSet = $this->dataSetRepository->getLastByChannelAndType([$channel->id], DataSet::TYPE_INVESTS);
+                $this->updateDataSet($dataSet, $file, $fileName, $channel);
+            } catch (ModelNotFoundException $e) {
+                $this->createDataSet($channel, $file, $fileName, DataSet::TYPE_INVESTS);
+            }
+        } else {
+            $this->logError($fileName);
+        }
+        $file->close();
+    }
+
 
     /**
      * @param Project[] $projects
@@ -381,6 +440,19 @@ EOT
 
             $footprint = Footprint::get($footprint_id);
             $this->extractFootprintOpenData($footprint);
+        }
+    }
+
+    protected function extractDataForChannel(array $listChannels): void
+    {
+        if (!current($listChannels))
+            $listChannels = array_column(Node::getList(), 'id');
+
+        foreach ($listChannels as $channel_id) {
+            $this->log("Retrieving {$channel_id}'s data", [], 'info');
+
+            $channel = Node::get($channel_id);
+            $this->extractChannelOpenData($channel);
         }
     }
 

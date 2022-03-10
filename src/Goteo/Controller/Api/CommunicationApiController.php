@@ -23,7 +23,7 @@ class CommunicationApiController extends AbstractApiController {
         if(!$this->user)
             throw new ControllerAccessDeniedException();
 
-        if($this->user->hasPerm('admin-module-Communication')) {
+        if($this->user->hasPerm('admin-module-communication')) {
             return true;
         }
     }
@@ -32,8 +32,8 @@ class CommunicationApiController extends AbstractApiController {
      * AJAX upload image for the Communication
      */
     public function uploadImagesAction(Request $request) {
-        // if(!$this->user || !$this->user->hasPerm('admin-module-communication'))
-        //     throw new ControllerAccessDeniedException();
+        if(!$this->user || !$this->user->hasPerm('admin-module-communication'))
+            throw new ControllerAccessDeniedException();
 
         $result = $this->genericFileUpload($request); // 'file' is the expected form input name in the post object
         return $this->jsonResponse($result);

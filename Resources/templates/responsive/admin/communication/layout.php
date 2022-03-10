@@ -17,6 +17,7 @@ $this->section('admin-container-head');
 
 <?php $this->section('footer') ?>
 
+<script type="text/javascript" src="<?= $this->asset('js/forms.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->asset('js/admin/communication.js') ?>"></script>
 
 <?php $this->append() ?>

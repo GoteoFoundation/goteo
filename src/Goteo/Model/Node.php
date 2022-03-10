@@ -25,11 +25,13 @@ use Goteo\Model\Node\NodeCallToAction;
 use Goteo\Model\Node\NodeStories;
 use Goteo\Model\Node\NodePost;
 use Goteo\Model\Node\NodeSections;
+use Goteo\Model\Traits\DataSetRelationsTrait;
 use Goteo\Model\Traits\ImpactDataRelationsTrait;
 
 class Node extends \Goteo\Core\Model {
 
     use ImpactDataRelationsTrait;
+    use DataSetRelationsTrait;
 
     public
         $id = null,

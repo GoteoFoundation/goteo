@@ -219,12 +219,8 @@ ul.comma-list {
   li {
     display: inline;
 
-    &::after {
+    &:not(:last-child)::after {
       content: ","
-    }
-
-    &:last-child::after {
-      content: ""
     }
   }
 }
