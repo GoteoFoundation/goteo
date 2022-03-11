@@ -508,7 +508,7 @@ class Mail extends Model {
         $processLinks = true
     ) {
         $content = $this->content;
-        $lang = Lang::current();
+        $lang = $this->lang ?? Lang::current();
 
         $extras['content'] = $content;
         $extras['subject'] = $this->subject;
