@@ -12,6 +12,7 @@ blog-side-tags: Kategorien
 blog-allow-comments: Kommentare erlauben
 blog-publish: Veröffentlichen
 blog-published: Veröffentlicht
+blog-related-posts: 'Zugehörig'
 blog-section-mission: 'Mission'
 blog-section-milestones: 'Meilensteine'
 blog-section-matchfunding: 'Matchfunding'
@@ -20,7 +21,9 @@ blog-section-transparency: 'Transparenz'
 blog-section-team: 'Unser Team'
 blog-main-description: 'Hier teilen, diskutieren, veröffentlichen, feiern und bewerten wir die Aktionen der Stiftung und schätzen sie ein'
 blog-section-mission-description: 'Der Auftrag unserer Stiftung ist der Transparenz, dem Fortschritt und Gemeinwohl der Gesellschaft verbunden'
+blog-section-milestones-description: 'Uns ist wichtig, die Leistungen der Stiftung zu kommunizieren, von neuen Allianzen über technologische Entwicklungen bis zu relevanten Ereignissen'
 blog-section-matchfunding-description: 'Matchfunding ist die Praxis, die uns ermöglicht, gemeinschaftlich Verantwortung zu übernehmen. Es ist wesentlicher Teil der DNA von Goteo und seiner Mission als Stiftung'
 blog-section-voices-description: 'Förderer, Spender und Institutionen haben eine wichtige Stimme in Goteo, wir stellen den Menschen in den Mittelpunkt'
 blog-section-transparency-description: 'Transparenz ist einer der Eckpfeiler unserer Stiftung, um unserer Community Rechenschaft abzulegen'
 blog-section-team-description: 'Goteo besteht aus einem multidisziplinären Team, das sich bürgerlichem Crowdfunding verpflichtet hat'
+blog-nav-platform: 'Plattform auswählen'
