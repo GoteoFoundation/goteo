@@ -69,6 +69,7 @@ class NodeProject extends \Goteo\Core\Model {
         if ($count) {
             $sql = "SELECT COUNT(np.project_id)
             FROM node_project np
+            INNER JOIN project p on p.id = np.project_id
             $sql";
             return (int) self::query($sql, $values)->fetchColumn();
         }
