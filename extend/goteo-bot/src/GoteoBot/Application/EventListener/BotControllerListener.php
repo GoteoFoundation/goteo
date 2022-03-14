@@ -15,13 +15,13 @@ use GoteoBot\Controller\BotProjectDashboardController;
 use GoteoBot\Model\Bot\TelegramBot;
 use GoteoBot\Model\ProjectBot;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class BotControllerListener implements EventSubscriberInterface
 {
 
-    public function onController(FilterControllerEvent $event) {
+    public function onController(ControllerEvent $event) {
         $request = $event->getRequest();
         $controller = $request->attributes->get('_controller');
         if(!is_string($controller)) return;
@@ -108,7 +108,6 @@ class BotControllerListener implements EventSubscriberInterface
 
     /**
      * Sends a reminder to the owners that they have to accomplish with the collective returns
-     * @param  FilterProjectEvent $event
      */
     public function onInvestSucceeded(FilterInvestRequestEvent $event) {
 
@@ -120,20 +119,20 @@ class BotControllerListener implements EventSubscriberInterface
         //Milestones by percentage
         $percentage = $project->mincost ? ($project->invested / $project->mincost) * 100 : 0;
 
-        if($percentage>=15&&$percentage<20)
-            $type='15-percent-reached';
-        elseif($percentage>=20&&$percentage<40)
-            $type='20-percent-reached';
-        elseif($percentage>=40&&$percentage<50)
-            $type='40-percent-reached';
-        elseif($percentage>=50&&$percentage<70)
-            $type='50-percent-reached';
-        elseif($percentage>=70&&$percentage<80)
-            $type='70-percent-reached';
-        elseif($percentage>=80)
-            $type='80-percent-reached';
+        if ($percentage>=15 && $percentage<20)
+            $type = '15-percent-reached';
+        elseif ($percentage>=20 && $percentage<40)
+            $type = '20-percent-reached';
+        elseif ($percentage>=40 && $percentage<50)
+            $type = '40-percent-reached';
+        elseif ($percentage>=50 && $percentage<70)
+            $type = '50-percent-reached';
+        elseif ($percentage>=70 && $percentage<80)
+            $type = '70-percent-reached';
+        elseif ($percentage>=80)
+            $type = '80-percent-reached';
 
-        if($type)
+        if ($type)
             $this->create_milestone($project, $type);
     }
 
@@ -145,12 +144,12 @@ class BotControllerListener implements EventSubscriberInterface
         $this->create_milestone($project, $type);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             KernelEvents::CONTROLLER => 'onController',
-            AppEvents::INVEST_SUCCEEDED    => array('onInvestSucceeded', 200),
-            ConsoleEvents::PROJECT_ACTIVE    => 'onProjectActive',
+            AppEvents::INVEST_SUCCEEDED => array('onInvestSucceeded', 200),
+            ConsoleEvents::PROJECT_ACTIVE => 'onProjectActive',
             ConsoleEvents::PROJECT_PUBLISH => 'onProjectPublish',
             AppEvents::PROJECT_PUBLISH => 'onProjectPublish'
         );

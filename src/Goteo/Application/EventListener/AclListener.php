@@ -13,14 +13,12 @@ namespace Goteo\Application\EventListener;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Core\ACL;
 use Goteo\Library\Text;
-
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-//TODO: use symfony components for security
-
-class AclListener extends AbstractListener {
-	public function onRequest(GetResponseEvent $event) {
+class AclListener extends AbstractListener
+{
+	public function onRequest(RequestEvent $event) {
 		//not need to do anything on sub-requests
 		if (!$event->isMasterRequest()) {
 			return;
@@ -33,7 +31,8 @@ class AclListener extends AbstractListener {
 		}
 	}
 
-	public static function getSubscribedEvents() {
+	public static function getSubscribedEvents(): array
+    {
 		return array(
 			KernelEvents::REQUEST => 'onRequest',
 		);

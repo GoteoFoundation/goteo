@@ -2,23 +2,16 @@
 
 namespace CustomDomains\EventListener;
 
-use Goteo\Application\EventListener\AbstractListener;
-use Goteo\Application\Config;
 use Goteo\Application\App;
+use Goteo\Application\Config;
+use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\Lang;
 use Goteo\Application\Session;
-use Goteo\Application\View;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-
-//
 
 class DomainListener extends AbstractListener {
     protected $main_domain;
@@ -28,7 +21,7 @@ class DomainListener extends AbstractListener {
     /**
      * Redirects to the proper custom domain if the path specified requires it
      */
-    public function onRequest(GetResponseEvent $event) {
+    public function onRequest(RequestEvent $event) {
         $request = $event->getRequest();
 
         //not need to do anything on sub-requests
@@ -47,7 +40,6 @@ class DomainListener extends AbstractListener {
             foreach($redirects as $domain => $destination) {
                 // TODO: make it REGEXP
                 if(strpos($current_host.$current_path, $domain) === 0) {
-                    // die("Redirect from $domain to $destination");
                     $event->setResponse(new RedirectResponse($destination));
                     return;
                 }
@@ -66,7 +58,6 @@ class DomainListener extends AbstractListener {
                     Config::set('url.url_lang', '');
                     // Change the langs menu to show the proper host
                     $this->lang_domain = "$scheme://$domain";
-                    // Lang::setLangUrl($domain);
                     $redirect = true;
                     foreach($paths as $path) {
                         if(strpos($current_path, $path) === 0 || $current_path === '/') {
@@ -101,11 +92,10 @@ class DomainListener extends AbstractListener {
         }
     }
 
-
     /**
      * Disables the path part for the domain by assigning the proper controller
      */
-    public function onController(FilterControllerEvent $event) {
+    public function onController(ControllerEvent $event) {
         //not need to do anything on sub-requests
         if (!$event->isMasterRequest()) {
             return;
@@ -123,7 +113,6 @@ class DomainListener extends AbstractListener {
         // Rebuild lang menu here, after SessionListener processing
         if($this->lang_domain) {
             Session::delMainMenuPosition(10); // remove lang
-            // Langs
             $back = Lang::getLangUrl();
             Lang::setLangUrl($this->lang_domain);
             $langs = [];
@@ -151,9 +140,7 @@ class DomainListener extends AbstractListener {
                             // Find the right controller (if exists)
                             $matcher = App::getService('matcher');
                             $resolver = App::getService('resolver');
-                            // $matcher->setContext(new RequestContext('/'));
                             $parameters = $matcher->match($path);
-                            // print_r($parameters);die("$path $current_path");
                             if($parameters && $parameters['_controller']) {
                                 // Change the request
                                 $request->server->set('REQUEST_URI', $path);
@@ -161,9 +148,8 @@ class DomainListener extends AbstractListener {
 
                                 // get the controller parsed as symfony wants it
                                 $controller = $resolver->getController($request);
-                                // print_r($controller);
                                 // Overwrite controller and exit
-                                return $event->setController($controller);
+                                $event->setController($controller);
                             }
                         } catch(ResourceNotFoundException $e) {
 

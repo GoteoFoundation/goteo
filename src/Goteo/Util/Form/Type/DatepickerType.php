@@ -72,7 +72,6 @@ class DatepickerType extends SymfonyDateType
         return 'date';
     }
 
-
     /**
      * {@inheritdoc}
      */

@@ -10,23 +10,21 @@
 
 namespace Goteo\Application\EventListener;
 
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-
-use Goteo\Application\App;
 use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
+use Goteo\Application\Cookie;
 use Goteo\Application\Event\FilterAuthEvent;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
-use Goteo\Application\Cookie;
-use Goteo\Application\Config;
 use Goteo\Library\Text;
 use Goteo\Model\User;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class AuthListener extends AbstractListener {
 
     // Checks remember-me cookie
-    public function onRequest(GetResponseEvent $event) {
+    public function onRequest(RequestEvent $event) {
         if(!Session::isLogged() && $rememberme = Cookie::get('rememberme')) {
 
             list($id, $token) = explode('.', $rememberme);
@@ -109,7 +107,8 @@ class AuthListener extends AbstractListener {
 		$this->info('Reset password succedeed', [$user, 'provider' => $event->getProvider()]);
 	}
 
-	public static function getSubscribedEvents() {
+	public static function getSubscribedEvents(): array
+    {
 		return array(
 			AppEvents::LOGIN_SUCCEEDED  => 'loginSuccess',
 			AppEvents::SIGNUP_SUCCEEDED => 'signupSuccess',

@@ -7,18 +7,15 @@
 
 namespace Goteo\Application\EventListener;
 
-use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Application\View;
-use Goteo\Library\Text;
-
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class BasicAuthListener extends AbstractListener {
-    public function onRequest(GetResponseEvent $event) {
+    public function onRequest(RequestEvent $event) {
         //not need to do anything on sub-requests
         if (!$event->isMasterRequest()) {
             return;
@@ -50,8 +47,6 @@ class BasicAuthListener extends AbstractListener {
                 }
             }
             if($users) {
-                // Do Http auth
-                // echo "Auth $uri with " .print_r($users,1)."\n";
                 // Status flag:
                 $login_successful = false;
                 // Check username and password:
@@ -59,7 +54,6 @@ class BasicAuthListener extends AbstractListener {
 
                     $user = $request->server->get('PHP_AUTH_USER');
                     $pass = $request->server->get('PHP_AUTH_PW');
-                    // print_r($request->server->all());die("$user $pass");
 
                     foreach($users as $u => $p) {
                         if($user === $u && $pass === $p) {
@@ -96,15 +90,13 @@ class BasicAuthListener extends AbstractListener {
 
                     $response->setContent($view);
                     $event->setResponse($response);
-                    // print "Login failed!\n";
-
                 }
-                // die("[$login_successful]");
             }
         }
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array
+    {
         return array(
             KernelEvents::REQUEST => 'onRequest',
         );

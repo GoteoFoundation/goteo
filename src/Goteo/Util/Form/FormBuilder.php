@@ -53,7 +53,10 @@ class FormBuilder {
             }
         });
 
-        $this->viewEngine = new PhpEngine(new SimpleTemplateNameParser(GOTEO_PATH . 'Resources/templates/forms'), new FilesystemLoader(array()));
+        $this->viewEngine = new PhpEngine(
+            new SimpleTemplateNameParser(GOTEO_PATH . 'Resources/templates/forms'),
+            new FilesystemLoader([])
+        );
         $this->viewEngine->addHelpers(array(new TranslatorHelper($translator)));
 
         $builder = new ValidatorBuilder();

@@ -10,30 +10,27 @@
  */
 
 namespace Goteo\Application\EventListener;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-
-use Goteo\Util\Origins\Parser as OriginParser;
 
 use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Session;
-use Goteo\Application\Config;
 use Goteo\Model\Origin;
+use Goteo\Util\Origins\Parser as OriginParser;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * This listener tracks REFERER and User Agent (UA) to fill the origin stats
  * mysql table
  */
-class OriginListener extends AbstractListener {
+class OriginListener extends AbstractListener
+{
     /**
      * Saves default referer to session
-     * @param  GetResponseEvent $event [description]
-     * @return [type]                  [description]
      */
-    public function onRequest(GetResponseEvent $event) {
+    public function onRequest(RequestEvent $event) {
         //not need to do anything on sub-requests
         if (!$event->isMasterRequest()) {
             return;
@@ -42,7 +39,6 @@ class OriginListener extends AbstractListener {
         $parser = new OriginParser($event->getRequest(), Config::getMainUrl(false), $subdomains);
 
         if(!Session::exists('origin.ua')) {
-            // var_dump($ua);
             Session::store('origin.ua', $parser->getUA());
         }
 
@@ -61,14 +57,11 @@ class OriginListener extends AbstractListener {
         Session::store('origin.referer', $referer);
     }
 
-
     /**
      * Registers the origin of the visit in the response event so controllers can manipulate
      * the referer via $request->headers->set('referer', $request->getUri());
-     * @param  FilterResponseEvent $event [description]
-     * @return [type]                     [description]
      */
-    public function onResponse(FilterResponseEvent $event) {
+    public function onResponse(ResponseEvent $event) {
         //not need to do anything on sub-requests
         if (!$event->isMasterRequest()) {
             return;
@@ -81,7 +74,6 @@ class OriginListener extends AbstractListener {
         $referer = Session::get('origin.referer');
         // TODO: add channel, blog (post): requires db migration
         if(in_array($type, ['project', 'call', 'channel'])) {
-            // print_r($referer);print_r(Session::get("origin.{$type}_referer"));die("[$type] $id");
             if($ua && is_array($ua)) {
                 $ua_id = $ua + ["{$type}_id" => $id];
                 if(Session::get("origin.{$type}_ua") !== $ua_id) {
@@ -101,7 +93,6 @@ class OriginListener extends AbstractListener {
                 }
             }
         }
-
     }
 
     /**
@@ -129,7 +120,8 @@ class OriginListener extends AbstractListener {
         }
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array
+    {
         return [
             KernelEvents::REQUEST => 'onRequest',
             KernelEvents::RESPONSE => 'onResponse',
