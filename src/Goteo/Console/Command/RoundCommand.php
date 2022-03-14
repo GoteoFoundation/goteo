@@ -148,14 +148,15 @@ EOT
                     if ($skip_invests) {
                         $this->warning("Skipping Invests refunds as required\n--");
                     } else {
-                        // Execute "console refund"  command for returning invests
+                        // Execute "console refund" command for returning invests
                         // refund Invests for this project
                         $args = ' --project ' . escapeshellarg($project->id);
                         if($update) $args .= ' --update';
                         else        $args .= ' --any-project';
                         if($output->isVerbose()) $args .= ' --verbose';
-                        $process = new Process(GOTEO_PATH . 'bin/console refund' . $args);
-                        $process->setTimeout(null); // no time limit
+
+                        $process = new Process([GOTEO_PATH . 'bin/console refund' . $args]);
+                        $process->setTimeout(null);
                         $process->run(function ($type, $buffer) use ($output) {
                             if (Process::ERR === $type) {
                                 $output->write("<error>$buffer</error>");
@@ -163,7 +164,8 @@ EOT
                                 $output->write("<fg=magenta>$buffer</>");
                             }
                         });
-                        if($process->isSuccessful()) {
+
+                        if ($process->isSuccessful()) {
                             $this->notice('Subcommand processed successfully', ['command' => $process->getCommandLine()]);
                         } else {
                             $this->error('Subcommand failed', ['command' => $process->getCommandLine()]);
