@@ -49,7 +49,6 @@ namespace Goteo\Library\NormalForm {
 
             foreach ($data as $k => $v) {
                 switch ($k) {
-
                     case 'children':
                         $this->children = $v;
                         break;
@@ -59,17 +58,14 @@ namespace Goteo\Library\NormalForm {
                             $this->$k = $v;
                         }
                 }
-
             }
 
             $this->children = NormalForm::getChildren($this->children, $this->level + 1);
-
             $this->type = $this->getType();
 
             if (!isset($this->view)) {
                 $this->view = $this->getView();
             }
-
         }
 
         public function getView () {
@@ -99,20 +95,16 @@ namespace Goteo\Library\NormalForm {
 
         public function render() {
             return View::get('superform/element.html.php', array('element' => $this));
-            // return View::get('normalform/element.html.php', array('element' => $this));
         }
 
         /**
          * This method should be avoided, cannot throw an exception
-         * @return string [description]
          */
         public function __toString () {
-            //__toString method shall not throw an Exception
             try {
                 return $this->render();
             }
             catch(\Exception $e) {
-                // print($e);
                 die($e->getMessage());
             }
         }
