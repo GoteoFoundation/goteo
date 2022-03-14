@@ -19,6 +19,9 @@ class ConfigTest extends \PHPUnit\Framework\TestCase {
         return $ob;
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidateYamlLangFiles() {
         try {
             foreach (Lang::listAll('name', false) as $lang => $name) {

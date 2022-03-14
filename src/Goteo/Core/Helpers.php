@@ -69,19 +69,11 @@ namespace {
 		return $ip;
     }
 
-
     /**
      * Traza información sobre el recurso especificado de forma legible.
      */
     function trace ($resource = null) {
         echo '<pre>' . print_r($resource, true) . '</pre>';
-    }
-
-    /**
-     * Vuelca información sobre el recurso especificado de forma detallada.
-     */
-    function dump ($resource = null) {
-        echo '<pre>' . var_dump($resource) . '</pre>';
     }
 
     /**
@@ -113,7 +105,7 @@ namespace {
 
     /** Check if an array is associative */
     function is_assoc(array $array) {
-      return (bool)count(array_filter(array_keys($array), 'is_string'));
+        return (bool)count(array_filter(array_keys($array), 'is_string'));
     }
 
     function date_interval($date1, $date2 = 'now', $format = '%a') {
@@ -155,8 +147,7 @@ namespace {
                     return false;
                 }
             }
-        }
-        elseif (!empty($mixed)) {
+        } elseif (!empty($mixed)) {
             return false;
         }
         return true;

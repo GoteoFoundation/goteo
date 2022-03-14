@@ -132,7 +132,7 @@ class ExceptionListener extends AbstractListener {
         // close pending buffers
         ob_end_clean();
         // You get the exception object from the received event
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
         $request = $event->getRequest();
 
         // Old legacy redirections for compatibility

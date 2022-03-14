@@ -38,7 +38,10 @@ class AdminPostEditForm extends ProjectPostForm {
                 'label' => 'regular-title',
                 'constraints' => array(
                     new Constraints\NotBlank(),
-                    new Constraints\Length(array('min' => 4)),
+                    new Constraints\Length([
+                        'min' => 4,
+                        'allowEmptyString' => false,
+                    ]),
                 ),
             ))
             ->add('subtitle', TextType::class, array(

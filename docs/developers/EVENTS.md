@@ -19,7 +19,7 @@ They cover the 5 events carried out by the Symfony Kernel when handling an http 
 
 1. **REQUEST** Used to know about the http request before doing anything else. Several Event Listeners in `src/Goteo/Application/EventListener/*.php` classes use this event.
 
-2. **EXCEPTION** Can be used to intercept any (non fatal) exception occurring during normal operation. The `src/Goteo/Application/EventListener/ExceptionListener.php` uses this event to convert different types of exceptions to appropriate http responses (404, 500, etc).
+2. **EXCEPTION** Can be used to intercept any (non-fatal) exception occurring during normal operation. The `src/Goteo/Application/EventListener/ExceptionListener.php` uses this event to convert different types of exceptions to appropriate http responses (404, 500, etc).
 
 3. **CONTROLLER** This event allows you to change or manipulate the controller *before* the original specified in the routing system is executed.<br><br>As an example, check the plugin `custom-domains`, file `extend/custom-domains/src/CustomDomains/EventListener/DomainListener.php`, which uses this event to find the appropriate controller for a custom domain/subdomain route.
 
