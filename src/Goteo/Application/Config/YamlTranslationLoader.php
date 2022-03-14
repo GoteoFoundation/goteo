@@ -25,7 +25,7 @@ class YamlTranslationLoader extends YamlFileLoader
         $cachePath = GOTEO_CACHE_PATH . 'translations/'.md5($resource) . '.php';
         static::$cached_files[] = $cachePath;
 
-        // the second argument indicates whether or not you want to use debug mode
+        // the second argument indicates whether you want to use debug mode
         $cacheMatcher = new ConfigCache($cachePath, App::debug());
 
         if (!$cacheMatcher->isFresh()) {
@@ -36,7 +36,6 @@ class YamlTranslationLoader extends YamlFileLoader
             $code = serialize($catalogue);
 
             $cacheMatcher->write($code);
-
         }
 
         // you may want to require the cached code:

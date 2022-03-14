@@ -7,9 +7,9 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Routing\Route;
 
 
-Lang::addYamlTranslation('es', __DIR__ .'/Translations/es.yml', 'generic');
-Lang::addYamlTranslation('ca', __DIR__ .'/Translations/ca.yml', 'generic');
-Lang::addYamlTranslation('en', __DIR__ .'/Translations/en.yml', 'generic');
+Lang::addYamlTranslation('es', __DIR__ .'/translations/es.yml', 'generic');
+Lang::addYamlTranslation('ca', __DIR__ .'/translations/ca.yml', 'generic');
+Lang::addYamlTranslation('en', __DIR__ .'/translations/en.yml', 'generic');
 
 // Autoload additional Classes
 Config::addAutoloadDir(__DIR__ .'/src');

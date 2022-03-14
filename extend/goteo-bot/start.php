@@ -15,7 +15,7 @@ Config::addAutoloadDir(__DIR__ .'/src');
 // Adding lang files (if necessary)
 foreach (['bot'] as $group) {
 	foreach (Lang::listAll('name', false) as $lang => $name) {
-		Lang::addYamlTranslation($lang, __DIR__ .'/Resources/translations/'.$lang.'/'.$group.'.yml');
+		Lang::addYamlTranslation($lang, __DIR__ .'/translations/'.$lang.'/'.$group.'.yml');
 	}
 }
 
@@ -23,10 +23,10 @@ foreach (['bot'] as $group) {
 $sc = App::getServiceContainer();
 $sc->register('goteo.listener.bot_listener', 'GoteoBot\Application\EventListener\BotControllerListener')
 	->setArguments(array(new Reference('logger')));
-	
+
 $sc->getDefinition('dispatcher')
 	->addMethodCall('addSubscriber', array(new Reference('goteo.listener.bot_listener')));
-	
+
 
 // Console adds
 // Project processing for contracts
