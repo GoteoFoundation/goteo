@@ -451,6 +451,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
                 $data = $form->getData();
                 $removeTranslation = $form->get('remove')->isClicked();
 
+                $errors = [];
                 foreach($supports as $support) {
                     if ($removeTranslation) {
                         if(!$support->removeLang($lang)) {
