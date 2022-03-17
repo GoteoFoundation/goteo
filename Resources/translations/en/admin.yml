@@ -147,6 +147,7 @@ admin-channelsection-stories: 'Stories'
 admin-channelsection-workshops: 'Workshops'
 admin-channelsection-team: 'Team'
 admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-matcher_stats: "Estadísticas del Matcher"
 admin-channelsection-button: 'Button'
 admin-channelsection-create: 'Create'
 admin-channelsection-add: 'Add a Section'

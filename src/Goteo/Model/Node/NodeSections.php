@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Model for Node Sections
@@ -10,12 +10,12 @@
  use Goteo\Application\Lang;
  use Goteo\Application\Config;
  use Goteo\Library\Text;
- 
+
  class NodeSections extends \Goteo\Core\Model {
 
   protected $Table = 'node_sections';
   protected static $Table_static = 'node_sections';
-  
+
   const SECTION_MAP             = 'map';
   const SECTION_RESOURCES       = 'resources';
   const SECTION_CALL_TO_ACTION  = 'call_to_action';
@@ -26,20 +26,20 @@
   const SECTION_WORKSHOPS       = 'workshops';
   const SECTION_TEAM            = 'team';
   const SECTION_SPONSORS        = 'sponsors';
-
-
+  const MATCHER_STATS           = 'm_stats';
 
   static $SECTIONS = [
-    self::SECTION_MAP,
-    self::SECTION_RESOURCES,
-    self::SECTION_CALL_TO_ACTION,
-    self::SECTION_PROJECTS,
-    self::SECTION_POSTS,
-    self::SECTION_PROGRAM,
-    self::SECTION_STORIES,
-    self::SECTION_WORKSHOPS,
-    self::SECTION_TEAM,
-    self::SECTION_SPONSORS
+      self::SECTION_MAP,
+      self::SECTION_RESOURCES,
+      self::SECTION_CALL_TO_ACTION,
+      self::SECTION_PROJECTS,
+      self::SECTION_POSTS,
+      self::SECTION_PROGRAM,
+      self::SECTION_STORIES,
+      self::SECTION_WORKSHOPS,
+      self::SECTION_TEAM,
+      self::SECTION_SPONSORS,
+      self::MATCHER_STATS
   ];
 
   public
@@ -68,7 +68,7 @@
     if(!$lang) $lang = Lang::current();
     list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
-    $sql = "SELECT 
+    $sql = "SELECT
                   node_sections.id as id,
                   node_sections.node as node,
                   node_sections.section as section,
@@ -196,10 +196,10 @@
      * @return  type bool   true|false
      */
     public function validate(&$errors = array()) {
-      if (empty($this->node)) 
+      if (empty($this->node))
         $errors[] = "The node sections member has no node";
 
-      if (empty($this->section)) 
+      if (empty($this->section))
         $errors[] = "The node sections member has no section";
 
       return empty($errors);
@@ -217,17 +217,18 @@
 
 
     public static function getSectionNames() {
-      return [
-        self::SECTION_MAP => Text::get('admin-channelsection-map'),
-        self::SECTION_RESOURCES => Text::get('admin-channelsection-resource'),
-        self::SECTION_CALL_TO_ACTION => Text::get('admin-channelsection-call_to_action'),
-        self::SECTION_PROJECTS => Text::get('admin-channelsection-projects'),
-        self::SECTION_POSTS => Text::get('admin-channelsection-posts'),
-        self::SECTION_PROGRAM => Text::get('admin-channelsection-program'),
-        self::SECTION_STORIES => Text::get('admin-channelsection-stories'),
-        self::SECTION_WORKSHOPS => Text::get('admin-channelsection-workshops'),
-        self::SECTION_TEAM => Text::get('admin-channelsection-team'),
-        self::SECTION_SPONSORS => Text::get('admin-channelsection-sponsors')
+        return [
+            self::SECTION_MAP => Text::get('admin-channelsection-map'),
+            self::SECTION_RESOURCES => Text::get('admin-channelsection-resource'),
+            self::SECTION_CALL_TO_ACTION => Text::get('admin-channelsection-call_to_action'),
+            self::SECTION_PROJECTS => Text::get('admin-channelsection-projects'),
+            self::SECTION_POSTS => Text::get('admin-channelsection-posts'),
+            self::SECTION_PROGRAM => Text::get('admin-channelsection-program'),
+            self::SECTION_STORIES => Text::get('admin-channelsection-stories'),
+            self::SECTION_WORKSHOPS => Text::get('admin-channelsection-workshops'),
+            self::SECTION_TEAM => Text::get('admin-channelsection-team'),
+            self::SECTION_SPONSORS => Text::get('admin-channelsection-sponsors'),
+            self::MATCHER_STATS => Text::get('admin-channelsection-matcher_stats')
       ];
     }
  }
