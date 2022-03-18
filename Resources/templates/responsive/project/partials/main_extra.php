@@ -243,18 +243,21 @@ $langs = $project->getLangs();
 
             <?php endif; ?>
 
-                <div class="col-sm-4 hidden-sm hidden-xs spacer-20 spacer-bottom-20" style="<?= !$project->called && empty($project->getMatchers()) ? 'margin-top: 55px;' : '' ?>">
-                    <span class="channel-label">
-                        <img src="/assets/img/project/channel.svg" width="20" alt=""> <?= $this->text('regular-channel') ?>
-                    </span>
-                    <a href="<?= $project->nodeData->url ?>">
-                        <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" >
-                            <?= $project->nodeData->name ?>
-                        </button>
-                    </a>
-                </div>
+            <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
 
-            <div class="panel panel-default widget rewards rewards-collapsed visible-xs">
+                    <div class="col-sm-4 hidden-sm hidden-xs channel" style="<?= !$project->called ? 'margin-top: 55px;' : '' ?>">
+                        <span class="channel-label">
+                            <img src="/assets/img/project/channel.svg" width="20" alt=""> <?= $this->text('regular-channel') ?>
+                        </span>
+                        <a href="<?= $project->nodeData->url ?>">
+                            <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" >
+                                <?= $project->nodeData->name ?>
+                            </button>
+                        </a>
+                    </div>
+            <?php endif; ?>
+
+             <div class="panel panel-default widget rewards rewards-collapsed visible-xs">
                 <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#collapseRewards">
                     <div class="panel-heading">
                         <h2 class="panel-title green-title" >
