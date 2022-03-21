@@ -64,7 +64,6 @@ class AdminSdgEditForm extends AbstractFormProcessor {
                 'multiple' => true,
                 'required' => false,
                 'choices' => $sdgs,
-                'choices_as_values' => true,
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12'
             ))
