@@ -17,3 +17,5 @@ nodes-lb-add: 'Nový Kanál'
 pages-lb: Stránky
 pages-lb-add: 'Nová stránka'
 projects-lb: Projekty
+projects-lb-report: 'Finanční zpráva o projektu'
+promote-lb: 'Hlavní body projektu'
