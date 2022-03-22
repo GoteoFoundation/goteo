@@ -13,4 +13,12 @@ social_reward-access: Přihlášení
 social_reward-access_title: 'Přístup k tomuto kolektivnímu zdroji'
 tooltip-project-bank: 'Pokud ji nechcete uvést nyní, můžete ji uvést později, až budeme smlouvu formalizovat'
 tooltip-project-help-cost: 'Pokud vám rozpis nákladů není jasný nebo se nás chcete na něco zeptat, zaškrtněte tuto možnost. Musíte vyplnit a odeslat formulář, abychom vám mohli poradit.'
+tooltip-project-help-license: 'Pokud máte pochybnosti o nejvhodnějších licencích pro kolektivní výnosy vašeho projektu, zaškrtněte tuto možnost. Musíte vyplnit a odeslat formulář, abychom vám mohli poradit.'
+tooltip-project-paypal: "<p> Kromě naší bankovní platební brány <strong>je možné přijímat příspěvky prostřednictvím PayPal</strong>. Chcete-li to provést, musíte zde uvést e-mailovou adresu přidruženou k účtu ověřenému v PayPal. Do tohoto pole nezadávejte nic (žádný znak), pokud nechcete nabízet způsob platby PayPal.</p> <p> Ačkoli není povinné mít účet v PayPal, abyste mohli obdržet sbírku vašeho projektu, důrazně to doporučujeme. <strong> Pokud před zveřejněním této kampaně nebude poskytnut ověřený PayPal účet, nebude možné přijímat příspěvky tímto způsobem.</strong></p> <p>Tento účet jej nebude možné později změnit, pokud jej chcete změnit, budete nás muset kontaktovat.</p> <p><strong>DŮLEŽITÉ: Stejný účet nelze použít k přispívání do vlastního projektu, protože by došlo k systémové chybě.</strong></p>"
+tooltip-project-2rounds: 'Pokud zvolíte tuto možnost, váš projekt bude mít 2 kola financování po 40 dnech. Jeden pro minimum a jeden pro optimum.'
+tooltip-project-rounds: 'Pokud zvolíte tuto možnost, bude mít váš projekt na získání potřebných finančních prostředků pouze 40denní kolo: buď všechno, nebo nic.'
+tooltip-project-scope: 'Označuje geografický dopad, který má projekt mít (každá kategorie zahrnuje předchozí kategorii). '
+tooltip-project-spread: 'Vysvětlete nám, jak plánujete šířit projekt ve vaší komunitě: kanály, typ sdělení, akce šíření, minimální kalendář...'
+project-costs-total: 'Celkem'
+project-remove-translation: 'Odstranit překlad'
 project-validation-error-profile_social: 'Musíte vyplnit jedno z polí Web, Facebook, Twitter nebo Instagram'
