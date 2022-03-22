@@ -2,11 +2,13 @@
 discover-group-all-header: 'Na cestě za kampaní'
 discover-group-archive-header: Archivováno
 discover-group-fulfilled-header: 'Kolektivní výnosy byly splněny'
+discover-group-recent-header: 'Nedávno zveřejněné'
 discover-group-success-header: 'Úspěšné kampaně'
 discover-results-empty: 'Nenašli jsme žádné projekty, které by splňovaly vaše kritéria vyhledávání'
 discover-results-header: 'Výsledek hledání'
 discover-searcher-button: Hledat
 discover-searcher-bycategory-header: 'Podle kategorie:'
+discover-searcher-bycontent-header: 'Podle obsahu:'
 discover-searcher-bylocation-header: 'Podle místa:'
 discover-searcher-byreward-header: 'Zpětně:'
 discover-searcher-header: 'Hledat projekt'
