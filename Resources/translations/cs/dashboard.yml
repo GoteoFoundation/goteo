@@ -134,6 +134,8 @@ dashboard-menu-projects-shared-materials: 'Materiály'
 uploaded-ok: "Úspěšně nahráno"
 dashboard-project-filter-by-drop: 'Zobrazit pouze příspěvky na dorovnávací financování'
 dashboard-project-filter-by-nondrop: 'Skrýt příspěvky na dorovnávací financování'
+dashboard-message-donors-fulfilled: 'jsou dokončeny'
+dashboard-message-donors-error: 'Žádní platní příjemci, zprávu nelze odeslat'
 dashboard-message-no-message: 'Zatím nemáte žádnou zprávu.'
 dashboard-message-threads: 'Máte %s vláken zpráv'
 dashboard-mails-no-mails: 'Zatím jste neodeslali žádné sdělení.'
