@@ -26,7 +26,19 @@ licenses-lb-translate: 'Překlad licence'
 mailing-lb: Komunikace
 mailing-lb-edit: 'Psaní obsahu'
 mailing-lb-list: 'Výběr adresátů'
+mailing-lb-send: 'Odeslaná komunikace'
+milestones-lb: Milníky
+milestones-lb-add: 'Nový milník'
+milestones-lb-edit: 'Úpravy milníku'
+milestones-lb-list: Výpis
+milestones-lb-translate: 'Překlad milníku'
+news-lb: Zprávičky
+news-lb-add: 'Nová zprávička'
+news-lb-edit: 'Upravení zprávičky'
+news-lb-list: Výpis
+news-lb-translate: 'Překlad zprávičky'
 newsletter-lb: Zpravodaj
+newsletter-lb-detail: 'Zobrazení příjemců'
 node-lb-edit: Upravit
 node-lb-list: 'Aktuální data'
 nodes-lb: Kanály
