@@ -80,4 +80,9 @@ word-lb-list: Výpis
 worth-lb: 'Stupně záslužnictví'
 worth-lb-edit: 'Úprava úrovně'
 worth-lb-list: Výpis
+stats-lb: Statistiky a data
+stories-lb: 'Uživatelské příběhy'
+channelstory-lb: 'Příběhy v kanálech'
+channelresource-lb: 'Zdroje'
+channelposts-lb: 'Příspěvky v kanálech'
 channelprojects-lb: "Projekty kanálu"
