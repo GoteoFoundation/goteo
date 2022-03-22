@@ -510,4 +510,6 @@ admin-filter-project-status: Stav projektu
 admin-filter-invest-status: Stav dárcovství
 admin-filter-project-location: Umístění projektu
 admin-filter-location: Umístění, které se použije ve filtru
+admin-channel-projects-add: "Přidat projekt"
+admin-channel-projects-not-exists: "Takový vztah neexistuje"
 admin-impact_data: "Údaje o dopadu"
