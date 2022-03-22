@@ -13,6 +13,11 @@ icons-lb: 'Typy vrácení'
 icons-lb-edit: 'Úpravy typu'
 icons-lb-list: Výpis
 icons-lb-translate: 'Překlad typu'
+info-lb: 'Nápady o'
+info-lb-add: 'Vytvoření nápadu'
+info-lb-edit: 'Upravení nápadu'
+info-lb-list: Výpis
+info-lb-translate: 'Překlad nápadu'
 newsletter-lb: Zpravodaj
 node-lb-edit: Upravit
 node-lb-list: 'Aktuální data'
