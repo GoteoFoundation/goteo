@@ -54,7 +54,9 @@ pages-lb: Stránky
 pages-lb-add: 'Nová stránka'
 pages-lb-list: Výpis
 pages-lb-translate: 'Překlad stránky'
+pages-lbedit: 'Úpravy Stránky'
 projects-lb: Projekty
+projects-lb-accounts: 'Účty projektů'
 projects-lb-report: 'Finanční zpráva o projektu'
 promote-lb: 'Hlavní body projektu'
 promote-lb-add: 'Nové doporučení'
