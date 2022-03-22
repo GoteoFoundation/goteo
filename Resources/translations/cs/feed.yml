@@ -1,4 +1,8 @@
 ---
+feed-admin-new_project: 'Automatické zveřejnění projektu'
+feed-admin-newsletter-activate: 'Správce %USER% zahájil zasílání newsletteru %ID%: %SUBJECT%'
+feed-admin-newsletter-activate-failed: 'Automatické odeslání newsletteru %ID%: %SUBJECT% administrátorem %USER% selhalo'
+feed-admin-newsletter-activate-subject: 'aktivace zpravodaje (admin)'
 feed-invest-pool: 'Doplnili jste %AMOUNT% ve své virtuální peněžence'
 feed-invest-donate: 'Přispěli jste nadaci %AMOUNT%'
 feed-mailing-massive: 'Hromadné rozesílání (cron)'
