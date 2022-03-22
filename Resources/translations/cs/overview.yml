@@ -25,3 +25,7 @@ tooltip-project-currency: 'Uveďte, v jaké měně počítáte náklady na proje
 tooltip-project-currently: 'Uvádí, v jaké fázi tvorby nebo realizace se projekt právě nachází.'
 tooltip-project-description: 'Popište projekt v rozsahu minimálně 80 slov (méně slov bude považováno za chybu). Vysvětlete to tak, aby to pochopil každý. Pokuste se ho přiblížit atraktivním a společenským způsobem, shrnout jeho silné stránky, to, co jej činí jedinečným, inovativním nebo výjimečným.'
 tooltip-project-goal: 'Vyjmenujte hlavní cíle projektu v krátkodobém i dlouhodobém horizontu, a to ve všech aspektech, které je podle vás důležité zdůraznit. Je to další příležitost, jak kontaktovat a získat podporu lidí, kteří s těmito cíli sympatizují.'
+overview-field-execution-plan: 'Plán realizace'
+tooltip-project-execution-plan: 'Vysvětlete svůj plán realizace'
+tooltip-project-execution-plan-url: 'Url s plánem realizace'
+overview-field-sustainability-model: 'Model udržitelnosti'
