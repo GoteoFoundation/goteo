@@ -30,6 +30,7 @@ overview-field-execution-plan: 'Plán realizace'
 tooltip-project-execution-plan: 'Vysvětlete svůj plán realizace'
 tooltip-project-execution-plan-url: 'Url s plánem realizace'
 overview-field-sustainability-model: 'Model udržitelnosti'
+overview-field-sustainability-model-url: 'URL vašeho podnikatelského plánu'
 overview-field-sign-check: 'Máte otevřenou sbírku podpisů související s projektem?'
 overview-field-sign-url: "Url adresa podpisu"
 overview-field-sign-url-action: "Text k výzvě k podpisu"
