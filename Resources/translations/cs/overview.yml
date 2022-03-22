@@ -26,6 +26,10 @@ tooltip-project-currently: 'Uvádí, v jaké fázi tvorby nebo realizace se proj
 tooltip-project-description: 'Popište projekt v rozsahu minimálně 80 slov (méně slov bude považováno za chybu). Vysvětlete to tak, aby to pochopil každý. Pokuste se ho přiblížit atraktivním a společenským způsobem, shrnout jeho silné stránky, to, co jej činí jedinečným, inovativním nebo výjimečným.'
 tooltip-project-goal: 'Vyjmenujte hlavní cíle projektu v krátkodobém i dlouhodobém horizontu, a to ve všech aspektech, které je podle vás důležité zdůraznit. Je to další příležitost, jak kontaktovat a získat podporu lidí, kteří s těmito cíli sympatizují.'
 tooltip-project-media: 'Prezentační video je zásadní součástí upoutání pozornosti komunity, takže čím originálnější je, tím lépe. Nesmí být delší než 4 minuty. Nahrajte jej na Youtube, Vimeo nebo PeerTube a vložte sem adresu URL.'
+overview-field-execution-plan: 'Plán realizace'
+tooltip-project-execution-plan: 'Vysvětlete svůj plán realizace'
+tooltip-project-execution-plan-url: 'Url s plánem realizace'
+overview-field-sustainability-model: 'Model udržitelnosti'
 overview-field-sign-check: 'Máte otevřenou sbírku podpisů související s projektem?'
 overview-field-sign-url: "Url adresa podpisu"
 overview-field-sign-url-action: "Text k výzvě k podpisu"
