@@ -40,12 +40,21 @@ news-lb-list: Výpis
 news-lb-translate: 'Překlad zprávičky'
 newsletter-lb: Zpravodaj
 newsletter-lb-detail: 'Zobrazení příjemců'
+newsletter-lb-init: 'Zahájení nového zpravodaje'
+newsletter-lb-list: 'Stav automatického odesílání'
+node-lb: 'Údaje o kanálu'
+node-lb-admins: 'Zobrazení správců'
 node-lb-edit: Upravit
 node-lb-list: 'Aktuální data'
 nodes-lb: Kanály
 nodes-lb-add: 'Nový Kanál'
+nodes-lb-admins: 'Přiřazení správců kanálu'
+nodes-lb-edit: 'Správa kanálů'
+nodes-lb-list: Výpis
 pages-lb: Stránky
 pages-lb-add: 'Nová stránka'
+pages-lb-list: Výpis
+pages-lb-translate: 'Překlad stránky'
 projects-lb: Projekty
 projects-lb-report: 'Finanční zpráva o projektu'
 promote-lb: 'Hlavní body projektu'
