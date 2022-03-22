@@ -58,6 +58,8 @@ pages-lb-translate: 'Překlad stránky'
 pages-lbedit: 'Úpravy Stránky'
 projects-lb: Projekty
 projects-lb-accounts: 'Účty projektů'
+projects-lb-assign: 'Přiřazení projektu k výzvě'
+projects-lb-cancel: 'Zrušení příspěvku'
 projects-lb-report: 'Finanční zpráva o projektu'
 promote-lb: 'Hlavní body projektu'
 promote-lb-add: 'Nové doporučení'
@@ -67,4 +69,15 @@ promote-lb-translate: 'Překlady Doporučení'
 recent-lb: 'Nedávná aktivita'
 recent-lb-list: Výpis
 reviews-lb: Revize
+users-lb-edit: 'Editace Uživatele'
+users-lb-impersonate: 'Vydávání se za uživatele'
+users-lb-list: Výpis
+users-lb-manage: 'Správa uživatelů'
+users-lb-move: 'Přesunutí uživatele do jiného uzlu'
+workshop-lb: 'Workshopy'
+word-lb: 'Počet slov'
+word-lb-list: Výpis
+worth-lb: 'Stupně záslužnictví'
+worth-lb-edit: 'Úprava úrovně'
+worth-lb-list: Výpis
 channelprojects-lb: "Projekty kanálu"
