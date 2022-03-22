@@ -19,4 +19,10 @@ pages-lb-add: 'Nová stránka'
 projects-lb: Projekty
 projects-lb-report: 'Finanční zpráva o projektu'
 promote-lb: 'Hlavní body projektu'
-promote-lb-add: 'Nové zvýraznění'
+promote-lb-add: 'Nové doporučení'
+promote-lb-edit: 'Úpravy Doporučení'
+promote-lb-list: Výpis
+promote-lb-translate: 'Překlady Doporučení'
+recent-lb: 'Nedávná aktivita'
+recent-lb-list: Výpis
+reviews-lb: Revize
