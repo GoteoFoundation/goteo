@@ -1,3 +1,14 @@
 ---
 project-comment-start-sesion: 'Přihlášení'
 project-comment-start-sesion-2: 'zanechat komentář'
+project-view-categories-title: Kategorie
+project-view-metter-investment: Spolufinancování
+project-view-metter-investors: Spolufinancující subjekty
+project-view-metter-minimum: Minimum
+project-view-metter-optimum: Optimální
+project-view-preview: 'Náhled projektu'
+project-willpublish: 'Tento projekt bude zveřejněn na %s'
+regular-new_project: 'Nový projekt'
+social_reward-access: Přihlášení
+social_reward-access_title: 'Přístup k tomuto kolektivnímu zdroji'
+tooltip-project-bank: 'Pokud ji nechcete uvést nyní, můžete ji uvést později, až budeme smlouvu formalizovat'
