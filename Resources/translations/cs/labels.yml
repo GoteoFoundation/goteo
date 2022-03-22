@@ -1,14 +1,22 @@
 ---
+accounts-lb-list: Výpis
+banners-lb-list: Výpis
 blog-lb: Blog
 blog-lb-add: 'Nový příspěvek'
+blog-lb-list: Výpis
 categories-lb: Kategorie
 categories-lb-add: 'Nová kategorie'
 categories-lb-edit: 'Upravit kategorii'
 categories-lb-keywords: 'Klíčová slova'
+categories-lb-list: Výpis
+commons-lb-list: Výpis
+criteria-lb-list: Výpis
 faq-lb: Často kladené otázky
 faq-lb-add: 'Nová otázka'
+faq-lb-list: Výpis
 filter-lb: 'Filtry'
 glossary-lb: Slovník
+glossary-lb-list: Výpis
 icons-lb: 'Typy vrácení'
 icons-lb-edit: 'Úpravy typu'
 icons-lb-list: Výpis
@@ -60,6 +68,7 @@ projects-lb: Projekty
 projects-lb-accounts: 'Účty projektů'
 projects-lb-assign: 'Přiřazení projektu k výzvě'
 projects-lb-cancel: 'Zrušení příspěvku'
+projects-lb-list: Výpis
 projects-lb-report: 'Finanční zpráva o projektu'
 promote-lb: 'Hlavní body projektu'
 promote-lb-add: 'Nové doporučení'
@@ -69,6 +78,14 @@ promote-lb-translate: 'Překlady Doporučení'
 recent-lb: 'Nedávná aktivita'
 recent-lb-list: Výpis
 reviews-lb: Revize
+reviews-lb-list: Výpis
+rewards-lb-list: Výpis
+sponsors-lb-list: Výpis
+tags-lb-list: Výpis
+templates-lb-list: Výpis
+texts-lb-list: Výpis
+translates-lb-list: Výpis
+transnodes-lb-list: Výpis
 users-lb-edit: 'Editace Uživatele'
 users-lb-impersonate: 'Vydávání se za uživatele'
 users-lb-list: Výpis
