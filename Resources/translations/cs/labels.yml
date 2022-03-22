@@ -9,7 +9,12 @@ faq-lb: Často kladené otázky
 faq-lb-add: 'Nová otázka'
 filter-lb: 'Filtry'
 glossary-lb: Slovník
+icons-lb: 'Typy vrácení'
+icons-lb-edit: 'Úpravy typu'
+icons-lb-list: Výpis
+icons-lb-translate: 'Překlad typu'
 impactdata-lb: "Údaje o dopadu"
+info-lb: 'Nápady o'
 newsletter-lb: Zpravodaj
 node-lb-edit: Upravit
 node-lb-list: 'Aktuální data'
