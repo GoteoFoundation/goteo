@@ -19,6 +19,14 @@ info-lb-add: 'Vytvoření nápadu'
 info-lb-edit: 'Upravení nápadu'
 info-lb-list: Výpis
 info-lb-translate: 'Překlad nápadu'
+licenses-lb: Licence
+licenses-lb-add: 'Vytvoření nápadu'
+licenses-lb-edit: 'Upravení licence'
+licenses-lb-list: Výpis
+licenses-lb-translate: 'Překlad licence'
+mailing-lb: Komunikace
+mailing-lb-edit: 'Psaní obsahu'
+mailing-lb-list: 'Výběr adresátů'
 newsletter-lb: Zpravodaj
 node-lb-edit: Upravit
 node-lb-list: 'Aktuální data'
