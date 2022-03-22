@@ -296,6 +296,7 @@ admin-blog-edit-success: 'Záznam na blogu byl úspěšně upraven'
 admin-stories-not-active-yet: 'Tento uživatelský příběh zatím není aktivní'
 admin-stories-edit-success: 'Uživatelský příběh byl úspěšně upraven'
 admin-stories-pool: 'Zobrazit v cílové peněžence'
+admin-stories-review: 'Goteo Recenze: (Podtitul)'
 admin-stories-active: 'Aktivní doma'
 admin-stories-landing_pitch: 'Zobrazit v cílovém okně'
 admin-stories-landing_match: 'Zobrazit v cílovém srovnání'
@@ -366,6 +367,7 @@ admin-commissions: Poplatek
 admin-fees: Poplatek platformě
 admin-user-fee: Občanská komise
 admin-call-fee: Komise dorovnávacího spolufinancování (bez finančních partnerů)
+admin-matcher-fee: Provize za dorovnávání
 admin-vat: DPH
 admin-diff: Rozdíl
 admin-the_day: Dne
@@ -504,12 +506,20 @@ admin-filter-typeofuser: 'Typ uživatele'
 admin-filter-typeofdonor: 'Typ dárce'
 admin-filter-user: 'Uživatel'
 admin-filter-donor: 'Dárce'
+admin-filter-no-donor: 'Neaktivní dárce'
+admin-filter-promoter: 'Promotér'
+admin-filter-matcher: 'Dorovnávající'
 admin-filter-test: 'Test'
+admin-filter-type-unique: 'Jediný'
+admin-filter-type-multidonor: 'Více dárců'
 admin-filter-type-foundation-donor: 'Dárce nadace'
+admin-filter-type-all: 'Vše'
 admin-filter-project-status: Stav projektu
 admin-filter-invest-status: Stav dárcovství
 admin-filter-project-location: Umístění projektu
 admin-filter-location: Umístění, které se použije ve filtru
+admin-online: Online
+admin-node-iframe: Iframe
 admin-channel-projects-add: "Přidat projekt"
 admin-channel-projects-not-exists: "Takový vztah neexistuje"
 admin-impact_data: "Údaje o dopadu"
