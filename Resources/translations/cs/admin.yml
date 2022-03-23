@@ -552,4 +552,5 @@ admin-channel-resource: 'Zdroje Kanálu'
 admin-channel-resource-add: 'Vytvořit zdroj'
 admin-channel-projects-add: "Přidat projekt"
 admin-channel-projects-not-exists: "Takový vztah neexistuje"
+admin-posts: 'Příspěvky'
 admin-impact_data: "Údaje o dopadu"
