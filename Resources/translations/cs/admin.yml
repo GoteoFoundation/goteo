@@ -513,6 +513,7 @@ admin-filter-type-unique: 'Jediný'
 admin-filter-type-multidonor: 'Více dárců'
 admin-filter-type-foundation-donor: 'Dárce nadace'
 admin-filter-type-all: 'Vše'
+admin-filter-forced: 'Vynutit filtr'
 admin-filter-project-status: Stav projektu
 admin-filter-invest-status: Stav dárcovství
 admin-filter-project-location: Umístění projektu
