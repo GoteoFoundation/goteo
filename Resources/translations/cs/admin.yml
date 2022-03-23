@@ -518,6 +518,7 @@ admin-filter-project-status: Stav projektu
 admin-filter-invest-status: Stav dárcovství
 admin-filter-project-location: Umístění projektu
 admin-filter-location: Umístění, které se použije ve filtru
+admin-stats-donations: 'Příspěvky'
 admin-online: Online
 admin-node-iframe: Iframe
 
