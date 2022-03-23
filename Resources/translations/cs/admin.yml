@@ -527,6 +527,11 @@ admin-stats-donations-direct: 'Přímé dary (včetně prošlých peněženek)'
 admin-stats-donations-generosity: 'Míra štědrosti'
 admin-stats-donations-generosity-desc: 'Počet uživatelů s dary versus celkový počet uživatelů. V úvahu se berou pouze projekty s dary.'
 admin-stats-donations-expired: 'Přímé dary kvůli prošlým peněženkám'
+admin-stats-donations-refunded: 'Dary, které byly vráceny z důvodu neúspěšných projektů'
+admin-donations: Dary
+admin-donations-tip: Spropitné
+admin-donations-tip-invests: Příspěvky ve formě spropitného
+admin-donations-tip-users: Uživatelé se spropitným
 admin-online: Online
 admin-node-iframe: Iframe
 admin-channel-projects-add: "Přidat projekt"
