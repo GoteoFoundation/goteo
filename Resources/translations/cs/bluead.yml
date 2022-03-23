@@ -1,6 +1,9 @@
 ---
 assign-call-success: 'Projekt byl přiřazen k výzvě %s'
+dashboard-donor-remember: 'Nezapomeňte potvrdit své daňové údaje pro vystavení potvrzení o daru.'
 image-upload-fail: 'Nepodařilo se nahrát obrázek'
 gallery-upload-fail: 'Nepodařilo se nahrát galerii'
 invest-amount-error: 'Musíte uvést částku'
 invest-create-error: 'Došlo k problému při inicializaci transakce'
+invest-data-error: 'Nebyly získány potřebné údaje'
+invest-method-error: 'Musíte kliknout na jedno z platebních tlačítek'
