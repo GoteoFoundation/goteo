@@ -532,6 +532,8 @@ admin-donations: Dary
 admin-donations-tip: Spropitné
 admin-donations-tip-invests: Příspěvky ve formě spropitného
 admin-donations-tip-users: Uživatelé se spropitným
+admin-donations-direct: Přímé dary
+admin-donations-expired: Dary, jejichž platnost vypršela
 admin-online: Online
 admin-node-iframe: Iframe
 admin-channel-projects-add: "Přidat projekt"
