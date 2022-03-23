@@ -518,7 +518,14 @@ admin-filter-project-status: Stav projektu
 admin-filter-invest-status: Stav dárcovství
 admin-filter-project-location: Umístění projektu
 admin-filter-location: Umístění, které se použije ve filtru
-admin-stats-donations: 'Příspěvky'
+admin-stats-donations: 'Dary'
+admin-stats-donations-method: 'Dary podle způsobu platby'
+admin-stats-donations-method-desc: 'Dary zahrnují peníze, které uživatel dobrovolně věnuje nadaci, když přispívá na projekt, přímé dary nebo když vyprší částka v peněžence.'
+admin-stats-donations-tip: 'Dary v rámci projektových příspěvků (granty nebo "dýška")'
+admin-stats-donations-direct: 'Přímé dary (včetně prošlých peněženek)'
+admin-stats-donations-generosity: 'Míra štědrosti'
+admin-stats-donations-generosity-desc: 'Počet uživatelů s dary versus celkový počet uživatelů. V úvahu se berou pouze projekty s dary.'
+admin-stats-donations-expired: 'Přímé dary kvůli prošlým peněženkám'
 admin-online: Online
 admin-node-iframe: Iframe
 
