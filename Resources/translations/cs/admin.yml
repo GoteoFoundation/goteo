@@ -538,6 +538,15 @@ admin-donations-amount-percent: '% darovaných peněz'
 admin-donations-users-percent: '% uživatelů dárců'
 admin-donations-tip-percent: '% peněz ve spropitném'
 admin-donations-direct-percent: '% přímých plateb'
+admin-workshop: Workshopy Goteo
+admin-workshop-add: Vytvoření nového workshopu
+admin-workshop-edit: Úprava workshopu %s
+admin-workshop-edit-success: Položka workshopu byla úspěšně upravena
 admin-online: Online
+mandatory-filter-name: Chybí jméno
+mandatory-filter-description: Chybí popis
+mandatory-filter-role: Chybí role
 admin-node-iframe: Iframe
+admin-channel-resource: 'Zdroje Kanálu'
+admin-channel-resource-add: 'Vytvořit zdroj'
 
