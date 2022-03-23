@@ -1,6 +1,7 @@
 ---
 blog-coments-header: Komentáře
 blog-comments_no_allowed: '...'
+blog-comments_no_comments: 'K tomuto příspěvku nejsou žádné komentáře'
 blog-no_comments: 'Žádné komentáře'
 blog-no_posts: 'Nebyly zveřejněny žádné záznamy '
 blog-send_comment-button: Odeslat
