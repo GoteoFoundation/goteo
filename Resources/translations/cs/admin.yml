@@ -534,6 +534,10 @@ admin-donations-tip-invests: Příspěvky ve formě spropitného
 admin-donations-tip-users: Uživatelé se spropitným
 admin-donations-direct: Přímé dary
 admin-donations-expired: Dary, jejichž platnost vypršela
+admin-donations-refunded: Vrácené dary
+admin-donations-amount-percent: '% darovaných peněz'
+admin-donations-users-percent: '% uživatelů dárců'
+admin-donations-tip-percent: '% peněz ve spropitném'
 admin-online: Online
 admin-node-iframe: Iframe
 admin-channel-projects-add: "Přidat projekt"
