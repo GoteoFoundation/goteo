@@ -537,6 +537,7 @@ admin-donations-refunded: Vrácené dary
 admin-donations-amount-percent: '% darovaných peněz'
 admin-donations-users-percent: '% uživatelů dárců'
 admin-donations-tip-percent: '% peněz ve spropitném'
+admin-donations-direct-percent: '% přímých plateb'
 admin-online: Online
 admin-node-iframe: Iframe
 
