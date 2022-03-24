@@ -3,6 +3,9 @@ footer-header-categories: Kategorie
 footer-header-projects: Projekty
 footer-header-resources: Zdroje
 footer-header-services: Služby
+footer-header-social: Sledujte nás
+footer-header-sponsors: 'Institucionální podpora'
+footer-platoniq-iniciative: 'Iniciativa:'
 footer-resources-api: API
 footer-resources-glossary: Slovník
 footer-resources-press: Média
@@ -11,7 +14,11 @@ footer-resources-stats: Statistiky
 footer-resources-channels: Kanály
 footer-service-calculator: Kalkulátor
 footer-service-campaign: Kampaně
+footer-service-consulting: Poradenství
+footer-service-pool: Peněženka
 footer-service-resources: 'Dorovnávací spolufinancování'
+footer-service-workshop: Workshopy
 regular-footer-contact: Kontakt
+regular-footer-legal: 'Právní podmínky'
 regular-footer-privacy: 'Zásady ochrany osobních údajů'
 regular-footer-terms: 'Podmínky užití'
