@@ -30,6 +30,7 @@ form-send_review-button: Odeslat
 form-upload-button: Odeslat
 help-cost-to-consultant: '- Potřebujete pomoci s náklady<br>'
 help-license-to-consultant: '- Potřebujete pomoci s hromadným navracením a licencemi<br>'
+overview-extra-fields: 'Doplňková pole'
 project-form-header: Formulář
 project-one-round: 'Jedno 40denní kolo'
 project-personal-field-entity_name: 'Subjekt, jehož jménem jednáte (je-li to relevantní)'
