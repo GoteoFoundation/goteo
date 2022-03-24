@@ -31,3 +31,6 @@ feed-project-ready-ko: 'Chyba %USER% při odesílání projektu %PROJECT% do <sp
 feed-project-ready-ok: '%USER% odeslal projekt %PROJECT% k <span class="red" >posouzení</span>'
 feed-project-new-post: 'Uživatel zveřejní aktualizaci svého projektu (dashboard)'
 feed-project-post-published: '%USER% zveřejnil na %BLOG% nový příspěvek o projektu %PROJECT% s názvem "%TITLE%"'
+feed-blog-new-post: 'Nový příspěvek v obecném blogu (admin)'
+feed-admin-user-modification: 'Uživatel upraven adminem'
+feed-admin-modified-action: 'upraveno'
