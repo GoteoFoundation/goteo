@@ -9,8 +9,11 @@ calendar-calls-category: Výzvy k podávání žádostí
 calendar-events-category: Události
 calendar-home-hour: do
 calendar-home-title: 'Nadcházející událost'
+calendar-net-category: 'Sítě a zásady'
 calendar-projects-category: Projekty
 calendar-share: Sdílet
+calendar-workshops-category: Workshopy
+couldn: 'Text'
 error-contact-email-invalid: 'E-mail, který jste napsali, není platný'
 error-image-name: 'Chyba názvu souboru'
 error-image-size: 'Chyba velikosti souboru'
@@ -47,6 +50,9 @@ guide-project-updates: "<b>Je velmi důležité, aby projekty průběžně infor
 guide-project-invests: 'V této sekci budete moci spravovat své spolufinančníky, odměny, které si vybrali, a také je kontaktovat, pokud to budete považovat za nutné.'
 header-about-side: 'Co s námi hýbe'
 home-posts-header: Novinky
+horizontal-project-investors: 'spolufinancování'
+horizontal-project-percent: 'financováno'
+horizontal-project-reached: 'úspěšný'
 invest-individual-header: 'Můžete se rozhodnout, že za svůj příspěvek nebudete dostávat odměny, nebo si vybrat odměny ve výši zadané částky nebo nižší.'
 login-register-conditions: 'Registrací potvrzujete, že přijímáte naše <a href="/legal/terms">podmínky použití</a>, <a href="/legal/privacy">zásady ochrany osobních údajů</a> a <a href= "/legal/cookies">zásady souborů cookie</a>.'
 login-register-accept-newsletter: 'Chci dostávat zpravodaj'
