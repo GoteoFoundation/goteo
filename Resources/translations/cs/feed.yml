@@ -26,3 +26,7 @@ feed-new_project: '<span class="red">Nový projekt v Goteo</span>, od této chv�
 feed-new_support: 'V projektu %s jste zveřejnili novou <span class="green">Spolupráci</span> s názvem "%s"'
 feed-new-support: 'V projektu %PROJECT% jste zveřejnili novou <span class="green">Spolupráci</span> s názvem "%TITLE%"'
 feed-message-support-response-published: 'Nová spolupráce %USER% s %TITLE% v projektu %PROJECT%'
+feed-project-ready-sent: 'Projekt odeslán ke kontrole'
+feed-project-ready-ko: 'Chyba %USER% při odesílání projektu %PROJECT% do <span class="red">revize</span>'
+feed-project-ready-ok: '%USER% odeslal projekt %PROJECT% k <span class="red" >posouzení</span>'
+feed-project-new-post: 'Uživatel zveřejní aktualizaci svého projektu (dashboard)'
