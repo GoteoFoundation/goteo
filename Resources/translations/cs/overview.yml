@@ -1,4 +1,17 @@
 ---
+mandatory-project-field-about: 'Je nutné vysvětlit základní rysy projektu'
+mandatory-project-field-category: 'Pro projekt je povinné zvolit alespoň jednu kategorii.'
+mandatory-project-field-description: 'Shrnutí projektu je povinné'
+mandatory-project-field-goal: 'V popisu projektu je nutné vysvětlit cíle'
+mandatory-project-field-image: 'K projektu je nutné připojit alespoň jeden obrázek. '
+mandatory-project-field-lang: 'Musíte uvést jazyk projektu'
+mandatory-project-field-location: 'Je nutné uvést potenciální rozsah projektu'
+mandatory-project-field-media: 'Doporučujeme zveřejnit video, aby se zlepšilo hodnocení projektu při rozhodování o jeho zveřejnění na Goteo.'
+mandatory-project-field-motivation: 'V popisu projektu je nutné vysvětlit motivaci'
+mandatory-project-field-name: 'Pojmenování projektu je povinné'
+mandatory-project-field-related: 'V popisu projektu je nutné uvést související zkušenosti a/nebo dostupné vybavení '
+overview-field-categories: Kategorie
+overview-field-currency: 'Původní měna'
 overview-field-options-currently_medio: Střední
 overview-field-options-scope_global: Globální
 overview-field-options-scope_local: Lokální
