@@ -167,8 +167,13 @@ regular-num-comments: '%s komentářů'
 regular-messages: Zprávy
 regular-unknown: Neznámý
 regular-amount: Částka
+regular-copied: 'Zkopírováno do schránky!'
 regular-next: Další
 regular-previous: Předchozí
+regular-next-workshops: 'Agenda Fundlabs'
+regular-write-description: 'Napište popisný text...'
+regular-choice-placeholder: 'Vyberte možnost'
+session-about-to-expire: 'Vaše relace vyprší za 10 minut, chcete stránku znovu načíst a obnovit ji?'
 tooltip-dashboard-user-new_password: 'Zadejte nové heslo, které chcete používat pro přístup ke službě Goteo.'
 tooltip-dashboard-user-user_password: 'Zadejte aktuální heslo, které používáte k přihlášení do systému Goteo.'
 tooltip-project-schedule: 'Vizualizace výrobního plánu vašeho projektu. Nezapomeňte, že byste měli označovat pouze nové úkoly, které mají být provedeny, nikoli úkoly, které již byly provedeny.'
