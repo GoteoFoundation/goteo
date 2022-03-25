@@ -1,8 +1,12 @@
 ---
 home-channel-project: '%s projektů'
 home-channels-header: Kanály
+home-news-header: 'Co o nás říkají jiní'
+home-patrons-header: Doporučují
+home-stories-header: 'Úspěšné příběhy'
 node-home-calls-header: Výzvy
 home-menu-matchfunding: 'Dorovnávací spolufinancování'
+home-projects-outdate: 'Naléhavé'
 home-projects-matchfunding: 'Dorovnávací spolufinancování'
 home-advantages-calculator-title: 'Daňový kalkulátor'
 home-advantages-calculator-description: 'Vypočítejte si daňovou úsporu (30 až 75 % daru)'
