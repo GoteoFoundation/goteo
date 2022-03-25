@@ -49,13 +49,18 @@ tooltip-project-social-category: 'Vyberte si svůj sociální závazek z níže 
 tooltip-project-social-description: 'Vysvětlete, v čem spočívá vámi vybraný sociální závazek a jak zdůvodníte, s jakými cíli udržitelného rozvoje je váš projekt v souladu.'
 validate-project-field-about: 'Vysvětlení projektu je příliš krátké'
 validate-project-field-currently: 'Uvádí stav projektu s cílem zlepšit jeho hodnocení a určit, zda má být zveřejněn v systému Goteo.'
+validate-project-field-description: 'Popis projektu je příliš krátký'
+validate-project-value-description: "Popis projektu je příliš krátký"
+validate-project-value-keywords: 'Uveďte minimálně 5 klíčových slov projektu pro zlepšení hodnocení projektu, aby bylo možné rozhodnout o jeho zveřejnění v Goteo.'
 overview-field-execution-plan: 'Plán realizace'
 tooltip-project-execution-plan: 'Vysvětlete svůj plán realizace'
 tooltip-project-execution-plan-url: 'Url s plánem realizace'
 overview-field-sustainability-model: 'Model udržitelnosti'
 overview-field-sustainability-model-url: 'URL vašeho podnikatelského plánu'
 tooltip-project-sustainability-model: 'Vysvětlete model udržitelnosti vašeho projektu'
+tooltip-project-sustainability-model-url: 'Přidejte adresu Url se svým <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">obchodním plánem</a>'
 tooltip-project-sdg: 'Vyberte cíle, které váš projekt splňuje, a snažte se vybrat maximálně tři.'
+tooltip-project-sdg-suggestion: 'Níže navrhujeme některé SDG, které by se mohly hodit podle sociálního závazku vybraného pro váš projekt, doporučujeme vám konzultovat <a href="https://www.un.org/sustainabledevelopment/es/goals-of-sustainable-development/ " target="_blank">zde</a> váš konkrétní obsah.<br><br>'
 overview-field-sign-check: 'Máte otevřenou sbírku podpisů související s projektem?'
 overview-field-sign-url: "Url adresa podpisu"
 overview-field-sign-url-action: "Text k výzvě k podpisu"
