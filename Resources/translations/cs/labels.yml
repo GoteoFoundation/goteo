@@ -91,9 +91,17 @@ sent-lb: 'Historie odesílání'
 sent-lb-list: 'Odeslané e-maily'
 sponsors-lb: 'Institucionální podpora'
 sponsors-lb-add: 'Nový patron'
+sponsors-lb-edit: 'Upravit sponzora'
 sponsors-lb-list: Výpis
+tags-lb: 'Štítky blogu'
+tags-lb-add: 'Nový štítek'
+tags-lb-edit: 'Úprava štítku'
 tags-lb-list: Výpis
+tags-lb-translate: 'Překlad štítku'
+templates-lb: 'Šablony e-mailů'
+templates-lb-edit: 'Úprava šablony'
 templates-lb-list: Výpis
+texts-lb: 'Texty rozhraní'
 texts-lb-list: Výpis
 translates-lb-list: Výpis
 transnodes-lb-list: Výpis
