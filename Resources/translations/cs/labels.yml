@@ -70,6 +70,9 @@ projects-lb-assign: 'Přiřazení projektu k výzvě'
 projects-lb-cancel: 'Zrušení příspěvku'
 projects-lb-images: 'Obrázky projektu'
 projects-lb-list: Výpis
+projects-lb-move: 'Přesunutí projektu do jiného uzlu'
+projects-lb-open_tags: 'Přiřazení seskupení k projektu'
+projects-lb-rebase: 'Změna Id projektu'
 projects-lb-report: 'Finanční zpráva o projektu'
 promote-lb: 'Hlavní body projektu'
 promote-lb-add: 'Nové doporučení'
@@ -79,8 +82,16 @@ promote-lb-translate: 'Překlady Doporučení'
 recent-lb: 'Nedávná aktivita'
 recent-lb-list: Výpis
 reviews-lb: Revize
+reviews-lb-add: 'Úvodní instruktáž'
+reviews-lb-edit: 'Instruktáž k úpravám'
 reviews-lb-list: Výpis
+rewards-lb: Odměny
+rewards-lb-edit: 'Řízení odměn'
 rewards-lb-list: Výpis
+sent-lb: 'Historie odesílání'
+sent-lb-list: 'Odeslané e-maily'
+sponsors-lb: 'Institucionální podpora'
+sponsors-lb-add: 'Nový patron'
 sponsors-lb-list: Výpis
 tags-lb-list: Výpis
 templates-lb-list: Výpis
