@@ -27,6 +27,7 @@ use Goteo\Model\Node\NodePost;
 use Goteo\Model\Node\NodeSections;
 use Goteo\Model\Traits\DataSetRelationsTrait;
 use Goteo\Model\Traits\ImpactDataRelationsTrait;
+use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 
 class Node extends \Goteo\Core\Model {
 
@@ -62,7 +63,6 @@ class Node extends \Goteo\Core\Model {
         $sponsors_limit,
         $call_for_action_background,
         $premium,
-        $iframe,
         $terms,
         $terms_url,
         $chatbot_url,
@@ -72,6 +72,10 @@ class Node extends \Goteo\Core\Model {
         $config
         ;
 
+    /**
+     * @deprecated
+     */
+    public string $iframe;
 
     public function __construct() {
         $args = func_get_args();
