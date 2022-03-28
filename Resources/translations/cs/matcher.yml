@@ -1,4 +1,11 @@
 ---
 matcher-drop: 'Kapitálové dorovnání'
+matcher-project-reject: 'Váš projekt byl z výzvy k předkládání návrhů vyřazen %s'
+matcher-project-discard: 'Projekt byl z výzvy k předkládání návrhů vyřazen %s'
+matcher-project-activate: 'Projekt byl aktivován v rámci výzvy k předkládání návrhů %s'
+matcher-budget-amount: 'Celkový rozpočet'
+matcher-projects-received: 'Přijaté návrhy'
+matcher-projects-received-subtitle: 'Zde jsou projekty, které jste obdrželi podle svých kritérií a které odpověděly na formulář'
+matcher-btn-active: 'Aktivace shody'
 matcher-label-pending: "Čekající"
 matcher-apply-answer-questionnaire: "Dotazník pro respondenty"
