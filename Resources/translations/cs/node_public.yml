@@ -1,8 +1,21 @@
 ---
+node-footer-about: 'Sociální síť pro spolufinancování a spolupráci s tvůrčími projekty, které společné podporují <a href="/project/create">otevřený zdrojový kód</a>'
+node-footer-investors-donate: 'Dary a příspěvky'
+node-footer-investors-invest: 'Jak podpořit projekt'
+node-footer-investors-payment: 'Jak fungují výplaty'
+node-footer-title-creators: Tvůrci
+node-footer-title-help: 'Potřebujete pomoc?'
+node-footer-title-investors: Spolufinancující subjekty
 node-footer-title-social: Sledujte nás
 node-header-sponsorby: 'Tento prostor podporují'
+node-home-calls-headers: Výzvy
 node-home-posts-header: Novinky
 node-side-searcher-bycategory: 'Podle kategorie'
+node-side-searcher-byreward: 'Zpětně'
+node-side-searcher-outdate: Naléhavé
+node-side-searcher-popular: Oblíbené
+node-side-searcher-promote: Doporučujeme
+node-side-searcher-recent: Nedávné
 node-side-sumcalls-budget: 'Celkem (všechny kampaně)'
 node-projects-title: 'Projekty'
 node-resources-title: 'Co potřebujete?'
