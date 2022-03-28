@@ -51,7 +51,7 @@ $background = $this->channel->owner_background;
         <?= $this->supply('channel-header', $this->insert("channel/partials/join_action", ['main_color' => $background])) ?>
 
     </div>
-    
+
     <div class="projects-section">
         <div class="container-fluid">
             <div id="content">
@@ -80,6 +80,8 @@ $background = $this->channel->owner_background;
 <?php endif; ?>
 
 <?= $this->insert("channel/partials/posts_section") ?>
+
+<?= $this->insert("channel/partials/map") ?>
 
 <?= $this->supply('channel-footer', $this->insert("channel/partials/summary_section")) ?>
 
