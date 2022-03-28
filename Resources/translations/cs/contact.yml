@@ -6,3 +6,8 @@ contact-form-dev-tag-description: 'Mám dotazy k technickým otázkám'
 contact-form-dev-tag-name: Vývoj
 contact-form-new-project-tag-description: 'Mám možný projekt'
 contact-form-new-project-tag-name: 'Možný projekt'
+contact-form-others-tag-description: 'Jedná se o další typ konzultace'
+contact-form-others-tag-name: Ostatní
+contact-form-project-form-tag-description: 'Mám dotazy k formuláři projektu'
+contact-form-project-form-tag-name: 'Problémy s formulářem projektu'
+contact-form-relief-tag-description: 'Chci doklad o svém daru'
