@@ -25,3 +25,5 @@ register-confirm_mail-success: 'Odeslání zprávy o aktivaci účtu. Pokud ji n
 review-ajax-alert: 'Kritéria a hodnotící/zlepšovací pole se při změně automaticky ukládají'
 review-closed-alert: 'Tuto revizi jste ukončili, nemůžete provádět žádné další změny'
 user-login-required: 'Abyste mohli komunikovat s komunitou Goteo, musíte se <a href="/user/login">přihlásit</a>'
+user-login-required-access: 'Pro přístup do této sekce se musíte přihlásit nebo požádat o oprávnění'
+user-login-required-to_create: 'Chcete-li vytvořit projekt, musíte být přihlášeni'
