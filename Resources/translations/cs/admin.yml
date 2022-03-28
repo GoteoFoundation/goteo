@@ -513,11 +513,17 @@ admin-filter-type-unique: 'Jediný'
 admin-filter-type-multidonor: 'Více dárců'
 admin-filter-type-foundation-donor: 'Dárce nadace'
 admin-filter-type-all: 'Vše'
+admin-filter-predefined-date: 'Výchozí datum'
+admin-filter-predefined-date-choose: 'Můžete si vybrat předem stanovené datum'
 admin-filter-forced: 'Vynutit filtr'
+admin-filter-forced-help: 'Pokud vyberete tuto možnost, budou filtry použity bez ohledu na to, co uživatel zvolil jako preferenci pro odesílání informací platformou.'
 admin-filter-project-status: Stav projektu
 admin-filter-invest-status: Stav dárcovství
 admin-filter-project-location: Umístění projektu
 admin-filter-location: Umístění, které se použije ve filtru
+admin-filter-donor-location: Místo dárce
+admin-filter-donor-status: Stav certifikátu
+admin-mail-body: 'Tělo zprávy'
 admin-stats-donations: 'Dary'
 admin-stats-donations-method: 'Dary podle způsobu platby'
 admin-stats-donations-method-desc: 'Dary zahrnují peníze, které uživatel dobrovolně věnuje nadaci, když přispívá na projekt, přímé dary nebo když vyprší částka v peněžence.'
