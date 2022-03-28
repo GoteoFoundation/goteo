@@ -6,6 +6,11 @@ matcher-project-activate: 'Projekt byl aktivován v rámci výzvy k předkládá
 matcher-budget-amount: 'Celkový rozpočet'
 matcher-projects-received: 'Přijaté návrhy'
 matcher-projects-received-subtitle: 'Zde jsou projekty, které jste obdrželi podle svých kritérií a které odpověděly na formulář'
-matcher-btn-active: 'Aktivace shody'
+matcher-btn-active: 'Aktivace dorovnání'
+matcher-label-active: 'Dorovnání aktivní'
+matcher-label-completed: 'Hotovo'
+matcher-label-rejected: 'Vyřazeno'
 matcher-label-pending: "Čekající"
+matcher-label-project: 'Zástupci pro dorovnávací financování<br>multiplikační příspěvky'
+matcher-amount-project: 'Přispěl: %AMOUNT% z %PROJECT_AMOUNT%'
 matcher-apply-answer-questionnaire: "Dotazník pro respondenty"
