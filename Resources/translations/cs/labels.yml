@@ -17,6 +17,8 @@ faq-lb-list: Výpis
 filter-lb: 'Filtry'
 glossary-lb: Slovník
 glossary-lb-list: Výpis
+home-lb: 'Prvky na úvodní stránce'
+home-lb-list: 'Prvky na úvodní stránce'
 icons-lb: 'Typy vrácení'
 icons-lb-edit: 'Úpravy typu'
 icons-lb-list: Výpis
@@ -68,6 +70,9 @@ projects-lb: Projekty
 projects-lb-accounts: 'Účty projektů'
 projects-lb-assign: 'Přiřazení projektu k výzvě'
 projects-lb-cancel: 'Zrušení příspěvku'
+projects-lb-conf: 'Nastavení kampaně projektu'
+projects-lb-consultants: 'Změna poradce projektu'
+projects-lb-dates: 'Termíny projektu'
 projects-lb-images: 'Obrázky projektu'
 projects-lb-list: Výpis
 projects-lb-move: 'Přesunutí projektu do jiného uzlu'
@@ -103,8 +108,14 @@ templates-lb: 'Šablony e-mailů'
 templates-lb-edit: 'Úprava šablony'
 templates-lb-list: Výpis
 texts-lb: 'Texty rozhraní'
+texts-lb-edit: 'Úprava původního textu'
 texts-lb-list: Výpis
+translates-lb: 'Překlady projektů'
+translates-lb-add: 'Umožnění překladu'
+translates-lb-edit: 'Přiřazení překladu'
 translates-lb-list: Výpis
+translates-lb-translate: 'Překlad textu'
+transnodes-lb: 'Překlady uzlů'
 transnodes-lb-list: Výpis
 users-lb-edit: 'Editace Uživatele'
 users-lb-impersonate: 'Vydávání se za uživatele'
