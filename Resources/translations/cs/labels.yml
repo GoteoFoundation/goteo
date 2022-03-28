@@ -115,7 +115,10 @@ translates-lb-edit: 'Přiřazení překladu'
 translates-lb-list: Výpis
 translates-lb-translate: 'Překlad textu'
 transnodes-lb: 'Překlady uzlů'
+transnodes-lb-edit: 'Přiřazení překladu'
 transnodes-lb-list: Výpis
+users-lb: Uživatelé
+users-lb-add: 'Vytvoření uživatele'
 users-lb-edit: 'Editace Uživatele'
 users-lb-impersonate: 'Vydávání se za uživatele'
 users-lb-list: Výpis
@@ -132,3 +135,8 @@ stories-lb: 'Uživatelské příběhy'
 channelstory-lb: 'Příběhy v kanálech'
 channelresource-lb: 'Zdroje'
 channelposts-lb: 'Příspěvky v kanálech'
+channelcriteria-lb: 'Dotazníky v kanálech'
+channelprogram-lb: 'Programy kanálů'
+channelsection-lb: 'Sekce kanálu'
+certificate-lb: 'Certifikáty'
+certificatemanagement-lb: 'Správa certifikátů'
