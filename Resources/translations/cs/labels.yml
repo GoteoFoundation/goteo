@@ -11,10 +11,14 @@ categories-lb-keywords: 'Klíčová slova'
 categories-lb-list: Výpis
 commons-lb-list: Výpis
 criteria-lb-add: 'Nová kritéria'
+criteria-lb-edit: 'Úpravy Kritéria'
 criteria-lb-list: Výpis
+criteria-lb-translate: 'Překlad kritéria'
 faq-lb: Často kladené otázky
 faq-lb-add: 'Nová otázka'
+faq-lb-edit: 'Editace Otázek'
 faq-lb-list: Výpis
+faq-lb-translate: 'Překlad otázky'
 filter-lb: 'Filtry'
 glossary-lb: Slovník
 glossary-lb-list: Výpis
