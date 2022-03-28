@@ -1,5 +1,8 @@
 ---
+auth-access-forbbiden: 'Nemáte oprávnění k přístupu sem!'
+error-register-userid: 'Je nutné zadat přihlašovací jméno'
 login-access-button: Přihlásit
+login-access-header: 'Registrovaný uživatel'
 login-access-password-field: Heslo
 login-access-username-field: 'Uživatelské jméno nebo e-mail'
 login-fail: 'Chyba přihlášení'
