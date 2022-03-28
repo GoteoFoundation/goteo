@@ -23,7 +23,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase {
         try {
             foreach (Lang::listAll('name', false) as $lang => $name) {
                 foreach (Config::$trans_groups as $group) {
-                    $file = GOTEO_PATH . 'Resources/translations/' . $lang . '/' . $group . '.yml';
+                    $file = GOTEO_PATH . 'translations/' . $lang . '/' . $group . '.yml';
                     if(is_file($file)) {
                         $yaml = Yaml::parse(file_get_contents($file));
                         if($yaml) $this->assertIsArray($yaml, $file);
