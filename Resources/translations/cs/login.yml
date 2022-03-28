@@ -64,3 +64,5 @@ oauth-twitter-access-denied: 'Přístup z Twitteru odepřen'
 oauth-unknown-provider: 'Nelze se přihlásit pomocí tohoto poskytovatele'
 reset-password-new-password: 'Znovu zadejte nové heslo'
 reset-password-old-password: 'Vaše nové heslo'
+reset-password-save: Uložit
+reset-password-title: 'Nastavení nového hesla'
