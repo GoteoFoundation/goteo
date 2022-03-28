@@ -2,3 +2,14 @@
 mandatory-project-field-address: 'Adresa osoby odpovědné za projekt je povinná'
 personal-field-contract_entity-entity: 'Právnické osoby (sdružení, nadace, společnosti)'
 personal-field-contract_entity-person: 'Fyzická osoba'
+personal-field-country: Země
+personal-field-entity_name: 'Název společnosti (název) instituce'
+personal-field-entity_office: 'Pozice v organizaci'
+personal-field-location: Lokalita
+personal-field-phone: Telefon
+personal-field-post_address-different: Odlišné
+personal-field-post_address-same: Stejné
+personal-field-zipcode: 'Psč'
+personal-main-header: 'Údaje o zřizovateli'
+step-2: Zřizovatel
+tooltip-project-contract_data: 'Ať už se jedná o fyzickou nebo právnickou osobu, je nutné, aby byl někdo uveden jako zřizovatel projektu a také pro dialog s týmem Goteo. Ten se nemusí nutně shodovat s profilem uživatele uvedeným v předchozí části.'
