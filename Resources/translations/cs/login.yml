@@ -2,10 +2,15 @@
 auth-access-forbbiden: 'Nemáte oprávnění k přístupu sem!'
 error-register-userid: 'Je nutné zadat přihlašovací jméno'
 login-access-button: Přihlásit
+login-access-header: 'Registrovaný uživatel'
 login-access-password-field: Heslo
 login-access-username-field: 'Uživatelské jméno nebo e-mail'
 login-fail: 'Chyba přihlášení'
 login-leave-button: 'Odhlásit odběr'
+login-leave-header: 'Zrušení účtu'
+login-leave-message: 'Zanechte nám zprávu'
+login-new-user-label: 'Vytvořit nového uživatele?'
+login-oneclick-header: 'Přístup jediným kliknutím'
 login-recover-button: Obnovit
 login-recover-email-field: 'E-mailová adresa nebo uživatelské jméno'
 login-recover-header: "Do pole vyplňte e-mailovou adresu, kterou jste použili při registraci na platformě. Často se shoduje se stejnou e-mailovou adresou propojenou se sociálními sítěmi. Upozornění: Ve stejném e-mailu obdržíte e-mail s přímým odkazem na změnu hesla. Pokud e-mail neobdržíte, zkontrolujte, zda se nenachází ve složce nevyžádané pošty. Pokud jste o nové heslo žádali několikrát, pokaždé vám byl zaslán e-mail s novým automaticky vygenerovaným odkazem. Použijte odkaz z posledního e-mailu, který jste obdrželi. Pokud si nepamatujete e-mail, na který nás můžete kontaktovat, nezapomeňte uvést některé informace, které nám usnadní vyhledání vašeho uživatele (celé jméno, přezdívka, kterou obvykle používáte, datum registrace nebo zda jste přispěli na konkrétní projekt)."
@@ -50,3 +55,7 @@ oauth-import-twitter: 'Odkaz na účet na Twitteru'
 oauth-import-website: 'Vaše webové stránky'
 oauth-linkedin-access-denied: 'Přístup do Linkedin odepřen'
 oauth-login-imported-data: 'Tyto údaje budou rovněž importovány, po ověření je můžete změnit:'
+oauth-login-welcome-from: 'Vítejte na stránkách Goteo! Zkontrolujte své uživatelské jméno a e-mail a dokončete proces. V případě, že se e-mail nepodařilo importovat nebo jej změníte za jiný, obdržíte e-mail s aktivačním odkazem, abyste mohli zkontrolovat jeho platnost.'
+oauth-openid-access-denied: 'Přístup z Open ID odepřen'
+oauth-openid-email-required: 'Poskytovatel Open ID musí poskytnout e-mailovou adresu, aby mohl pokračovat!'
+oauth-openid-not-logged: 'Odhlášení uživatele z Open ID'
