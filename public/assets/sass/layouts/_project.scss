@@ -2,7 +2,11 @@ body.project {
     #main {
         background-color: $background-light-grey;
         #main-content {
-            background-color: $background-white;
+          background-color: $background-white;
+
+          #project-tabs-menu {
+            margin-top: 8rem;
+          }
         }
 
         .container-fluid {
@@ -64,7 +68,6 @@ body.project {
     /* Channel module */
 
     .channel{
-      margin-top: 10px;
       .channel-label{
         width: 15%;
       }
