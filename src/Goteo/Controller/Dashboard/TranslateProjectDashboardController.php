@@ -449,6 +449,7 @@ class TranslateProjectDashboardController extends ProjectDashboardController {
         if ($form->isSubmitted()) {
             if($form->isValid()) {
                 $data = $form->getData();
+                $errors = [];
                 $removeTranslation = $form->get('remove')->isClicked();
 
                 foreach($supports as $support) {

@@ -82,7 +82,6 @@ $this->section('content');
 		<div class="row">
 		    <?= $this->insert('project/partials/main_extra', ['project' => $project, 'matchers' => $this->matchers ]) ?>
 		</div>
-    </div>
 </div>
 
 <!-- End container fluid -->
