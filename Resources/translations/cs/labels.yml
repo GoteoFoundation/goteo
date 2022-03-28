@@ -21,7 +21,9 @@ faq-lb-list: Výpis
 faq-lb-translate: 'Překlad otázky'
 filter-lb: 'Filtry'
 glossary-lb: Slovník
+glossary-lb-edit: 'Editace Termínu'
 glossary-lb-list: Výpis
+glossary-lb-translate: 'Překlad termínu'
 home-lb: 'Prvky na úvodní stránce'
 home-lb-list: 'Prvky na úvodní stránce'
 icons-lb: 'Typy vrácení'
@@ -77,6 +79,7 @@ projects-lb-cancel: 'Zrušení příspěvku'
 projects-lb-conf: 'Nastavení kampaně projektu'
 projects-lb-consultants: 'Změna poradce projektu'
 projects-lb-dates: 'Termíny projektu'
+projects-lb-execute: 'Provádění pozice'
 projects-lb-images: 'Obrázky projektu'
 projects-lb-list: Výpis
 projects-lb-move: 'Přesunutí projektu do jiného uzlu'
