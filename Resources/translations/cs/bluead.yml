@@ -27,3 +27,7 @@ review-closed-alert: 'Tuto revizi jste ukončili, nemůžete provádět žádné
 user-login-required: 'Abyste mohli komunikovat s komunitou Goteo, musíte se <a href="/user/login">přihlásit</a>'
 user-login-required-access: 'Pro přístup do této sekce se musíte přihlásit nebo požádat o oprávnění'
 user-login-required-to_create: 'Chcete-li vytvořit projekt, musíte být přihlášeni'
+user-login-required-to_invest: 'Pro spolufinancování projektu musíte být přihlášeni'
+user-login-required-to_message: 'Pro odesílání zpráv musíte být přihlášeni'
+user-login-required-to_see: 'Pro zobrazení této stránky musíte být přihlášeni'
+user-login-required-to_see-supporters: 'Pro zobrazení spolufinancovatelů musíte být přihlášeni'
