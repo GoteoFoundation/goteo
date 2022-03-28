@@ -66,3 +66,4 @@ reset-password-new-password: 'Znovu zadejte nové heslo'
 reset-password-old-password: 'Vaše nové heslo'
 reset-password-save: Uložit
 reset-password-title: 'Nastavení nového hesla'
+login-alternate-ids: Další možnosti
