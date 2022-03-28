@@ -1,1 +1,9 @@
 ---
+dashboard-user-location-change: 'Svou polohu můžete změnit ve svém uživatelském profilu.'
+dashboard-user-location-locate: 'Sdílet mou polohu'
+dashboard-user-location-located-text: "Pokud s námi nechcete sdílet údaje o své poloze, jednoduše klikněte na tlačítko níže:"
+dashboard-user-location-located-title: 'Jste správně geolokalizováni'
+dashboard-user-location-unlocate: 'Nesdílet mou polohu'
+dashboard-user-location-unlocated-text: "Může to být proto, že jste zadali cizí místo pobytu, nebo proto, že jste v určitém okamžiku odmítli požadavek prohlížeče na určení vaší zeměpisné polohy.\n\nPro Goteo jsou to důležité údaje, protože nám umožňují získávat informace (anonymně, aniž bychom vaše osobní údaje poskytovali třetím stranám) a ukazatele dopadu, které zefektivňují naši práci a podporu projektů."
+dashboard-user-location-unlocated-title: 'Systém nenalezl vaši polohu'
+dashboard-user-location-help: 'Sdílení vaší polohy s týmem Goteo bude sloužit k získávání informací (anonymně, aniž by byly vaše osobní údaje poskytnuty třetím stranám) a také ukazatelů dopadu, které zefektivní naši práci a podporu projektů.'
