@@ -62,7 +62,7 @@ $this->section('content');
 
 ?>
 
-<div class="container-fluid main-info"  >
+<div class="container-fluid main-info">
 	<div class="container-fluid">
 		<div class="row header text-center">
 			<h1 class="project-title"><?= $this->ee($project->name) ?></h1>
@@ -80,34 +80,27 @@ $this->section('content');
 
 		<!-- Tags and share info -->
 		<div class="row">
-
-		<?= $this->insert('project/partials/main_extra', ['project' => $project, 'matchers' => $this->matchers ]) ?>
-
+		    <?= $this->insert('project/partials/main_extra', ['project' => $project, 'matchers' => $this->matchers ]) ?>
 		</div>
+    </div>
 </div>
 
 <!-- End container fluid -->
 
 <div class="container-fluid section">
 	<div class="col-sm-8 section-content" id="project-tabs">
-
-	<?= $this->supply('main-content') ?>
-
+	    <?= $this->supply('main-content') ?>
 	</div>
 
 	<!-- end Panel group -->
 
 	<div class="col-sm-4 side">
-
-	<?= $this->insert('project/partials/side', ['project' => $project]) ?>
-
+	    <?= $this->insert('project/partials/side', ['project' => $project]) ?>
 	</div>
-
 	<!-- end side -->
-
 </div>
 
-    <?= $this->insert('project/partials/related_projects') ?>
+<?= $this->insert('project/partials/related_projects') ?>
 
 <!-- sticky menu -->
 

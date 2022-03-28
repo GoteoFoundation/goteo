@@ -5,14 +5,14 @@ $matchers=$this->matchers;
 $share_url = $this->get_url() . '/project/' . $this->project->id;
 
 $author_twitter = str_replace(
-                        array(
+                        [
                             'https://',
                             'http://',
                             'www.',
                             'twitter.com/',
                             '#!/',
                             '@'
-                        ), '', $project->user->twitter);
+                        ], '', $project->user->twitter);
 $author = !empty($author_twitter) ? ' '.$this->text('regular-by').' @'.$author_twitter.' ' : '';
 $share_title = $this->ee($project->name) . $author;
 
@@ -158,9 +158,11 @@ $langs = $project->getLangs();
                 </div>
             </div>
 
+    <div class="col-md-4">
+        <div class="row">
             <?php if($project->called): ?>
                 <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
-                    <div class="col-sm-4 call-info-container hidden-sm hidden-xs">
+                    <div class="call-info-container hidden-sm hidden-xs">
                         <div class="row call-info col-lg-10 col-md-11 col-sm-12">
                             <div class="col-xs-2 no-padding" >
                                 <img src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive" alt="">
@@ -183,7 +185,7 @@ $langs = $project->getLangs();
                     </div>
                 </a>
             <?php elseif($matchers): ?>
-                <div class="col-sm-4 slider slider-matchers" id="matchers">
+                <div class="slider slider-matchers" id="matchers">
                     <?php foreach ($matchers as $matcher): ?>
                         <?php
                             $matcher_amount=$matcher->calculateProjectAmount($project->id);
@@ -232,27 +234,31 @@ $langs = $project->getLangs();
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
+        </div>
 
+        <div class="row">
             <?php if ($project->sign_url): ?>
-
-                    <div class="col-sm-4 hidden-sm hidden-xs sign" style="<?= !$project->called ? 'margin-top: 55px;' : '' ?>">
-                        <a href="<?= $project->sign_url ?>" target="_blank" class="btn btn-sign col-sm-10 text-uppercase">
-                            <?= $project->sign_url_action ?>
-                        </a>
-                    </div>
-
+                <div class="hidden-sm hidden-xs sign <?= !$project->called && empty($project->getMatchers()) ? 'spacer-40' : 'spacer-20' ?>">
+                    <a href="<?= $project->sign_url ?>" target="_blank" class="btn btn-sign col-sm-10 text-uppercase">
+                        <?= $project->sign_url_action ?>
+                    </a>
+                </div>
             <?php endif; ?>
+        </div>
 
-                <div class="col-sm-4 hidden-sm hidden-xs spacer-20 spacer-bottom-20" style="<?= !$project->called && empty($project->getMatchers()) ? 'margin-top: 55px;' : '' ?>">
+        <div class="row">
+            <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
+                <div class="hidden-sm hidden-xs channel spacer-bottom-20 <?= !$project->called && empty($project->getMatchers()) ? 'spacer' : 'spacer-20' ?>">
                     <span class="channel-label">
                         <img src="/assets/img/project/channel.svg" width="20" alt=""> <?= $this->text('regular-channel') ?>
                     </span>
-                    <a href="<?= $project->nodeData->url ?>">
-                        <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" >
-                            <?= $project->nodeData->name ?>
-                        </button>
+                    <a href="<?= $project->nodeData->url ?>" class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" >
+                        <?= $project->nodeData->name ?>
                     </a>
                 </div>
+            <?php endif; ?>
+        </div>
+    </div>
 
             <div class="panel panel-default widget rewards rewards-collapsed visible-xs">
                 <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#collapseRewards">

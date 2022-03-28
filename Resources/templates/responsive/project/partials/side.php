@@ -51,7 +51,7 @@
         </li>
     </ul>
 
-    <ul class="collaborations">
+    <ul class="collaborations list-unstyled">
         <!-- List of collaborations -->
         <?php foreach ($project->supports as $support): ?>
             <li class="side-widget">
