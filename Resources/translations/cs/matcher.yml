@@ -1,5 +1,6 @@
 ---
 matcher-drop: 'Kapitálové dorovnání'
+matcher-project-accept: 'Gratulujeme! Váš projekt byl přidán do výzvy %s. Nyní se čeká na schválení ze strany zřizovatelů.'
 matcher-project-reject: 'Váš projekt byl z výzvy k předkládání návrhů vyřazen %s'
 matcher-project-discard: 'Projekt byl z výzvy k předkládání návrhů vyřazen %s'
 matcher-project-activate: 'Projekt byl aktivován v rámci výzvy k předkládání návrhů %s'
