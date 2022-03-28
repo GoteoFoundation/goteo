@@ -59,3 +59,8 @@ oauth-login-welcome-from: 'Vítejte na stránkách Goteo! Zkontrolujte své uži
 oauth-openid-access-denied: 'Přístup z Open ID odepřen'
 oauth-openid-email-required: 'Poskytovatel Open ID musí poskytnout e-mailovou adresu, aby mohl pokračovat!'
 oauth-openid-not-logged: 'Odhlášení uživatele z Open ID'
+oauth-token-request-error: 'Při získávání pověření u poskytovatele došlo k chybě'
+oauth-twitter-access-denied: 'Přístup z Twitteru odepřen'
+oauth-unknown-provider: 'Nelze se přihlásit pomocí tohoto poskytovatele'
+reset-password-new-password: 'Znovu zadejte nové heslo'
+reset-password-old-password: 'Vaše nové heslo'
