@@ -1,4 +1,7 @@
 ---
+contract-accounts_title: 'Bankovní účty projektu'
+contract-bank_account: 'Bankovní účet (kód IBAN, formát ESxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx):'
+contract-bank_owner: 'Majitel bankovního účtu:'
 contract-step-entity: 'Právnická osoba'
 contract-step-final: Posouzení
 contract-step-promoter: Zástupce
