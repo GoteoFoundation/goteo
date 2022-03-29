@@ -2,6 +2,8 @@
 channel-join: 'Připojit'
 channel-join-desc: 'Chcete se zapojit do kanálu?'
 channel-join-reviewing: 'Při hodnocení...'
+matcher-duplicateinvest-rules: >
+  Tento procesor vynásobí x2 jakýkoli příspěvek od libovolného uživatele Lze nastavit maximální celkovou částku na projekt, maximální částku na příspěvek a maximální počet příspěvků na uživatele
 matcher-drop: 'Kapitálové dorovnání'
 matcher-project-accept: 'Gratulujeme! Váš projekt byl přidán do výzvy %s. Nyní se čeká na schválení ze strany zřizovatelů.'
 matcher-project-reject: 'Váš projekt byl z výzvy k předkládání návrhů vyřazen %s'
