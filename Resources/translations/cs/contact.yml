@@ -11,3 +11,12 @@ contact-form-others-tag-name: Ostatní
 contact-form-project-form-tag-description: 'Mám dotazy k formuláři projektu'
 contact-form-project-form-tag-name: 'Problémy s formulářem projektu'
 contact-form-relief-tag-description: 'Chci doklad o svém daru'
+contact-form-relief-tag-name: 'Doklad o darování'
+contact-form-service-tag-description: 'Chci uzavřít smlouvu na službu'
+contact-form-service-tag-name: Služba
+contact-form-tags: "[usuario] Mám problémy se svým účtem; [nuevo impulsor] Mám možný projekt; [nuevo impulsor 2] Mám dotazy týkající se formuláře projektu; [desarrollo] Mám dotazy týkající se technických záležitostí; [justificante] Chtěl bych doklad o svém daru; [servicio] Chtěl bych uzavřít smlouvu na službu; [otros] Jedná se o jiný typ dotazu;"
+contact-form-user-tag-description: 'Mám problémy se svým účtem'
+contact-form-user-tag-name: 'Problémy s účtem'
+contact-message-field: Zpráva
+contact-name-field: Jméno
+contact-send_message-button: Odeslat
