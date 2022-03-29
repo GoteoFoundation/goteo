@@ -16,6 +16,9 @@ node-side-searcher-outdate: Naléhavé
 node-side-searcher-popular: Oblíbené
 node-side-searcher-promote: Doporučujeme
 node-side-searcher-recent: Nedávné
+node-side-searcher-success: Úspěšný
 node-side-sumcalls-budget: 'Celkem (všechny kampaně)'
+node-side-sumcalls-campaigns: Aktivní
+node-side-summary-amount: 'Získané peníze'
 node-projects-title: 'Projekty'
 node-resources-title: 'Co potřebujete?'
