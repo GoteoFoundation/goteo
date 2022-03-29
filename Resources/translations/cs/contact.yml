@@ -20,3 +20,12 @@ contact-form-user-tag-name: 'Problémy s účtem'
 contact-message-field: Zpráva
 contact-name-field: Jméno
 contact-send_message-button: Odeslat
+contact-send_message-header: 'Pošlete nám zprávu'
+contact-subject-field: Předmět
+contact-tag-field: 'Typ dotazu'
+error-contact-captcha: 'ReCAPTCHA nebyla zadána správně. Zkuste to znovu.'
+error-contact-email-empty: 'Nepřidali jste svůj e-mail'
+error-contact-message-empty: 'Nenapsali jste žádnou zprávu'
+error-contact-subject-empty: 'Nenapsali jste předmět'
+meta-description-contact: 'Kontaktujte tým Goteo.org'
+meta-title-contact: 'Kontaktujte nás :: Goteo.org'
