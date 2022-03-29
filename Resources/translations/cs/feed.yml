@@ -1,4 +1,6 @@
 ---
+feed-admin-action: 'Admin %USER% má %ACTION%'
+feed-admin-invest-cancelled-pool-subject: 'Ruční dobití peněženky (admin)'
 feed-admin-new_project: 'Automatické zveřejnění projektu'
 feed-admin-newsletter-activate: 'Správce %USER% zahájil zasílání newsletteru %ID%: %SUBJECT%'
 feed-admin-newsletter-activate-failed: 'Automatické odeslání newsletteru %ID%: %SUBJECT% administrátorem %USER% selhalo'
