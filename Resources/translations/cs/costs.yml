@@ -28,3 +28,5 @@ mandatory-project-resource: 'Je nutné zadat, zda máte jiné zdroje, nebo ne'
 mandatory-project-total-costs: 'Je povinné zadat náklady'
 step-4: Náklady
 step-costs: 'Krok: Projekt / náklady'
+tooltip-project-cost-amount: 'Uveďte částku ve zvolené měně, kterou považujete za tento náklad. Nepoužívejte tečky pro čísla v tisících, ano?'
+tooltip-project-cost-cost: 'Zadejte co nejpopisnější název tohoto nákladu.'
