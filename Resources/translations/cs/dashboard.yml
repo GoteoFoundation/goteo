@@ -125,6 +125,7 @@ form-project_waitfor-expired: 'Nepodařilo se vám to :( Zkuste to vylepšit a z
 form-project_waitfor-fulfilled: 'Splnili jste návratnost :) Děkujeme vám za účast!'
 form-project_waitfor-review: 'Po dokončení procesu kontroly vás budeme brzy kontaktovat ohledně projektu. Poté ji buď zveřejníme, nebo navrhneme její vylepšení.'
 form-project_waitfor-success: 'Získali jste minimální nebo vyšší částku na spolufinancování projektu. Brzy se vám ozveme, abychom se domluvili na penězích :)'
+guide-dashboard-user-location: 'Systém tyto údaje používá k určení vaší zeměpisné polohy'
 user-changepass-old: 'Stávající heslo'
 user-changepass-title: 'Změnit heslo'
 user-prefer-saved: 'Vaše předvolby oznámení byly úspěšně uloženy'
