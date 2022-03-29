@@ -21,7 +21,7 @@ class Lang {
     static protected $default = '';
     static protected array $groups = array(); // Groups with translations
     static protected array $all_groups = array(); // All desired groups (even without translations)
-    static protected $translator = null;
+    static protected ?Translator $translator = null;
     static protected $main_url = null;
 
     // This is overwritten by Config using file Resources/locales.yml
@@ -43,8 +43,8 @@ class Lang {
     ];
 
     static function factory($lang = null) {
-        if(empty($lang)) $lang = Config::get('lang');
-        if(!static::$translator) {
+        if (empty($lang)) $lang = Config::get('lang');
+        if (static::$translator == null) {
             static::$translator = new Translator($lang, new MessageFormatter());
             static::$translator->addLoader('sql', new SqlTranslationLoader()); // cached loader
             static::$translator->addLoader('yaml', new YamlTranslationLoader()); // cached loader
@@ -110,14 +110,6 @@ class Lang {
         }
         // Yaml files (messages $domain)
         return static::$translator->trans($id, $parameters, null, $locale);
-    }
-
-    /**
-     * Handy method for the transChoice() function of the Symfony Component Translator
-     */
-    static public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null) {
-        static::factory();
-        return static::$translator->transChoice($id, $number, $parameters, $domain, $locale);
     }
 
     static public function groups($group = null) {
