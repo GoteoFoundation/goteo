@@ -1,4 +1,8 @@
 ---
+contract-accounts_title: 'Bankovní účty projektu'
+contract-bank_account: 'Bankovní účet (kód IBAN, formát ESxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx):'
+contract-bank_owner: 'Majitel bankovního účtu:'
+contract-entity-option_0: 'Vlastním jménem a právem'
 contract-step-entity: 'Právnická osoba'
 contract-step-final: Posouzení
 contract-step-promoter: Zástupce
@@ -6,7 +10,7 @@ guide-contract-accounts: "V tomto kroku musíte uvést bankovní účet, na kter
 guide-contract-documents: "Je nutné nahrát dokumenty, které potvrzují zadané údaje a které jsou podrobně popsány níže:- ve VŠECH PŘÍPADECH kopii DNI/NIE podepisující osoby (buď vlastním jménem, nebo jménem subjektu)- ve VŠECH PŘÍPADECH kopii dokladu, ze kterého je patrné (v plném rozsahu) číslo běžného účtu (bankovní knížka, účtenky...).)- pouze v případě, že se jedná o smlouvu se SPOLEČNOSTÍ, NADAČNÍM FONDEM nebo SDRUŽENÍM: DOPLNIT kopii CIF a kopii dokladu o udělení plné moci (zápis ze schůze sdružení, kde je jasně uvedeno jméno a funkce osoby podepisující smlouvu, nebo listina s listinami společnosti, nebo plná moc, ve které je uvedeno, že osoba podepisující smlouvu může jednat jménem subjektu) "
 guide-contract-entity: 'V tomto kroku musíte vyplnit údaje o subjektu, který zastupujete. Pokud smlouvu podepisujete vlastním jménem, ​​musíte se vrátit k prvnímu kroku („Zástupce“) a patřičně jej označit.'
 guide-contract-final: 'Zkontrolujte zadané údaje. Pokud v něm nejsou žádné chyby, může být uzavřen k přezkoumání. Pokud se vyskytnou chyby, je třeba je opravit.'
-guide-contract-no_entity: 'Jako pořadatel vlastním jménem a právem nemusíte v tomto kroku nic vyplňovat.'
+guide-contract-no_entity: 'Jako zřizovatel vlastním jménem a právem nemusíte v tomto kroku nic vyplňovat.'
 guide-contract-promoter: 'V tomto kroku musíte vyplnit údaje o právním zástupci subjektu nebo o zřizovateli, pokud zastupujete sami sebe. Ve všech případech to musí být tatáž osoba, která smlouvu podepíše.'
 mandatory-contract-bank: 'Je povinné uvést bankovní účet pro projekt'
 mandatory-contract-bank_owner: 'Jméno majitele bankovního účtu je povinné'
@@ -35,7 +39,7 @@ tooltip-contract-paypal_owner: 'Sdělte nám prosím jméno osoby, která je maj
 tooltip-contract-project_description: 'Tento popis projektu se může lišit podle znění smlouvy (provede člen týmu Goteo)'
 tooltip-contract-project_invest: 'Oprava automaticky generovaného textu pro Cíl financování'
 tooltip-contract-project_return: 'Oprava automaticky generovaného textu pro kolektivní vrácení peněz'
-tooltip-project-contract_entity: 'Pokud jste navrhovatelem projektu a zastupujete sami sebe, vyberte možnost "Vlastním jménem a na vlastní účet". Pokud je předkladatelem projektu skupina, musíte mít vlastní DIČ: v takovém případě zvolte příslušné DIČ (sdružení nebo obchodní subjekt) a vyplňte také oddíl "Právní subjekt". '
+tooltip-project-contract_entity: 'Pokud jste zřizovatelem projektu a zastupujete sami sebe, vyberte možnost "Vlastním jménem a na vlastní účet". Pokud je předkladatelem projektu skupina, musíte mít vlastní DIČ: v takovém případě zvolte příslušné DIČ (sdružení nebo obchodní subjekt) a vyplňte také oddíl "Právní subjekt". '
 tooltip-project-contract_name: 'Musíte napsat své skutečné jméno a svá dvě příjmení, upozorňujeme, že budete uvedeni jako vedoucí projektu. Na smlouvě bude uvedeno vaše jméno a podpis.'
 tooltip-project-contract_nif: 'Váš NIF nebo NIE číslo s čísly a písmeny.'
 validate-project-value-contract_nif: 'Číslo NIF není správné.'
@@ -71,7 +75,7 @@ contract-final-close: 'Uzavření údajů a zpracování smlouvy'
 contract-validation-ok: Smlouva se zdá být správná. Zkontrolujte údaje a dokončete proces uzavřením údajů. '
 contract-non-available: 'Smlouva ještě není k dispozici!'
 contract-validation-errors: Smlouva ještě není uzavřena
-contract-validation-error-promoter: 'Faltan campos para llenar en el promotor'
+contract-validation-error-promoter: 'Chybějící pole pro vyplnění zřizovatele'
 contract-validation-error-promoter_nif: 'DIČ není správné.'
 contract-validation-error-entity: 'Chybějící pole, která je třeba vyplnit v subjektu'
 contract-validation-error-accounts: 'Chybějící pole pro vyplnění účtů'
