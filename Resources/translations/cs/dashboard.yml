@@ -188,8 +188,15 @@ dashboard-project-send-to-markdown: "Vložte tento obrázek do textu"
 dashboard-max-files-reached: "Dosáhli jste maximálního počtu souborů!"
 dashboard-file-type-error: "Tento typ souboru není povolen!"
 uploaded-ok: "Úspěšně nahráno"
+dashboard-project-support-add: 'Přidání nové žádosti o spolupráci'
+dashboard-project-filter-by-donative: 'Vidět jen ty, kteří se vzdají odměny'
+dashboard-project-filter-by-nondonative: 'Skrytí těch, kteří se vzdávají odměn'
 dashboard-project-filter-by-drop: 'Zobrazit pouze příspěvky na dorovnávací financování'
 dashboard-project-filter-by-nondrop: 'Skrýt příspěvky na dorovnávací financování'
+dashboard-project-no-invests: 'Pro toto vyhledávací kritérium nejsou žádné záznamy'
+dashboard-new-message-to-donors: 'Nová zpráva pro spolufinancovatele'
+dashboard-message-donors-donors: 'Všichni spolufinancovatelé, kteří'
+dashboard-message-donors-and: 'a kromě toho'
 dashboard-message-donors-fulfilled: 'jsou dokončeny'
 dashboard-message-donors-error: 'Žádní platní příjemci, zprávu nelze odeslat'
 dashboard-message-donors-total: 'spolufinancování %s'
