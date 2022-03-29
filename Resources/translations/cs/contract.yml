@@ -1,7 +1,23 @@
 ---
 contract-accounts_title: 'Bankovní účty projektu'
-contract-bank_account: 'Bankovní účet (kód IBAN, formát ESxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx):'
+contract-bank_account: 'Bankovní účet (kód IBAN, formát ESxx xxxx xxxx xxxx xxxx xxxx):'
 contract-bank_owner: 'Majitel bankovního účtu:'
+contract-entity-option_0: 'Vlastním jménem a právem'
+contract-entity-option_1: 'Jako zástupce sdružení'
+contract-entity-option_2: 'Jako prokurista obchodního subjektu'
+contract-field-location: 'Město:'
+contract-field-reg_date_2: 'Datum, kdy byla udělena veřejná listina společnosti'
+contract-field-reg_id_2: 'Číslo notářského protokolu'
+contract-field-reg_idloc_2: 'Město výkonu notáře'
+contract-field-reg_idname_2: 'Jméno notáře'
+contract-field-reg_name_1: 'Rejstřík, ve kterém je sdružení zapsáno'
+contract-field-reg_name_2: 'Rejstřík, ve kterém je subjekt zapsán'
+contract-field-reg_number_1: 'Registrační číslo'
+contract-field-reg_number_2: 'Registrační číslo (úplné):'
+contract-field-regdata: 'Registrační údaje'
+contract-paypal_owner: 'Majitel účtu PayPal:'
+contract-step-accounts: Účty
+contract-step-documents: Dokumentace
 contract-step-entity: 'Právnická osoba'
 contract-step-final: Posouzení
 contract-step-promoter: Zástupce
@@ -13,6 +29,7 @@ guide-contract-no_entity: 'Jako zřizovatel vlastním jménem a právem nemusít
 guide-contract-promoter: 'V tomto kroku musíte vyplnit údaje o právním zástupci subjektu nebo o zřizovateli, pokud zastupujete sami sebe. Ve všech případech to musí být tatáž osoba, která smlouvu podepíše.'
 mandatory-contract-bank: 'Je povinné uvést bankovní účet pro projekt'
 mandatory-contract-bank_owner: 'Jméno majitele bankovního účtu je povinné'
+mandatory-contract-docs: povinné-smluvní-dokumenty
 mandatory-contract-paypal_owner: 'Je vyžadováno jméno majitele účtu PayPal k projektu'
 mandatory-contract-reg_date_2: 'Je povinné uvést datum, kdy notář vydal notářský zápis'
 mandatory-contract-reg_id_2: 'Musí být uvedeno číslo protokolu notáře'
@@ -33,6 +50,14 @@ personal-field-contract_name: 'Jméno a příjmení'
 personal-field-contract_nif: 'Číslo NIF / NIE / DPH'
 personal-field-contract_legal_document_type: Typ dokumentu
 personal-field-main_address: 'Poštovní adresa'
+personal-field-post_address: 'Poštovní adresa'
+personal-field-region: Kraj
+tooltip-contract-bank_account: 'Uveďte číslo bankovního účtu v nové evropské nomenklatuře: IBAN ESxx xxxx xxxx xxxx xxxx xxxx'
+tooltip-contract-bank_owner: 'Zde uveďte, kdo je majitelem bankovního účtu'
+tooltip-contract-docs: 'Můžete nahrát libovolný počet souborů, každý o maximální velikosti 2 MB. Pošlete je nejlépe ve formátu .PDF, .ODT, .DOC, .JPG. Pokud nemáte skener, můžete každý dokument vyfotit, ale ujistěte se, že jsou informace čitelné'
+tooltip-contract-entity_cif: 'Uveďte DIČ organizace'
+tooltip-contract-entity_name: 'Uvádí úplný název subjektu, jehož jménem má být smlouva podepsána.'
+tooltip-contract-entity_office: 'Musíte uvést, jakou pozici v rámci subjektu zastáváte. Budeme potřebovat, abyste přiložili dokumentaci, která prokazuje, že jste oprávněni jednat jejich jménem (v části "Dokumentace")'
 tooltip-contract-main_address: tooltip-contract-main_address
 tooltip-contract-paypal_owner: 'Sdělte nám prosím jméno osoby, která je majitelem účtu PayPal'
 tooltip-contract-project_description: 'Tento popis projektu se může lišit podle znění smlouvy (provede člen týmu Goteo)'
