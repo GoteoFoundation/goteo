@@ -69,6 +69,7 @@ overview-field-motivation: 'Motivace a cílová skupina projektu'
 profile-about-header: 'O mně'
 project-invest-total: 'Příspěvky celkem'
 project-messages-send_message-your_answer: 'Zde napište svou odpověď'
+regular-admin_board: 'Panel administrátora'
 regular-author: 'Autor'
 regular-allsome: 'všechny/některé z'
 regular-anonymous: Anonymní
@@ -112,7 +113,10 @@ regular-other-gender: Ostatní
 regular-first: První
 regular-from: od
 regular-getit: Rozumím
+regular-go_up: Nahrát
 regular-google: Google+
+regular-header: Záhlaví
+regular-header-about: 'O Goteo'
 regular-header-blog: Blog
 regular-header-faq: Často kladené otázky
 regular-header-glossary: 'Zásady otevřené ekonomiky'
@@ -133,9 +137,12 @@ regular-last: Nejnovější
 regular-license: Licence
 regular-linkedin: LinkedIn
 regular-loading: Načítání...
+regular-login: Přihlášení
+regular-logout: 'Odhlásit se'
 regular-main-header: Goteo.org
 regular-male: Muž
 regular-others: Ostatní
+regular-manage_board: 'Panel pro řízení'
 regular-mandatory: 'Povinné pole!'
 regular-matchfunding: 'Dorovnávací spolufinancování'
 regular-media_legend: Legenda
@@ -144,9 +151,14 @@ regular-menu-personal: Osobní menu
 regular-months: měsíce
 regular-more_info: '+ info'
 regular-news: 'Novinky:'
+regular-no: 'Ne'
+regular-of: z
 regular-preview: Náhled
+regular-evaluate: Vyhodnotit
 regular-projects: projekty
 regular-published_no: Návrh
+regular-save: Uložit
+regular-schedule: Rozvrh
 regular-see_blog: Blog
 regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Sledovat na Twitteru'
