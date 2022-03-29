@@ -71,7 +71,6 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
                 'multiple' => true,
                 'required' => false,
                 'choices' => $sdgs,
-                'choices_as_values' => true,
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12'
             ))
@@ -82,7 +81,6 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
                 'multiple' => true,
                 'required' => false,
                 'choices' => array_column(Category::getAll(), 'id', 'name'),
-                'choices_as_values' => true,
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12'
             ))
@@ -93,7 +91,6 @@ class AdminFootprintEditForm extends AbstractFormProcessor {
                 'multiple' => true,
                 'required' => false,
                 'choices' => array_column(SocialCommitment::getAll(), 'id', 'name'),
-                'choices_as_values' => true,
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12'
             ));

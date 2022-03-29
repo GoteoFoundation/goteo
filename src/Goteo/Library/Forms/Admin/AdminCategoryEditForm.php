@@ -60,7 +60,6 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
             ->add('social_commitment', ChoiceType::class, array(
                 'label' => 'admin-title-social_commitment',
                 'required' => false,
-                'choices_as_values' => true,
                 'choices' => $social_commitments
             ))
             ->add('footprints', ChoiceType::class, array(
@@ -70,7 +69,6 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
                 'multiple' => true,
                 'required' => false,
                 'choices' => $footprints,
-                'choices_as_values' => true,
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12'
             ))
@@ -81,7 +79,6 @@ class AdminCategoryEditForm extends AbstractFormProcessor {
                 'multiple' => true,
                 'required' => false,
                 'choices' => $sdgs,
-                'choices_as_values' => true,
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-xs-6 col-xxs-12'
             ))

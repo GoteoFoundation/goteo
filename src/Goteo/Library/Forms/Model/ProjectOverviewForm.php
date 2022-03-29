@@ -203,7 +203,6 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'multiple' => true,
                 'required' => false,
                 'choices' => $this->getSdgsChoices(),
-                'choices_as_values' => true,
                 'choices_label_escape' => false,
                 'wrap_class' => 'col-md-2 col-sm-4 col-xs-4 col-xxs-6',
                 'attr' => [
