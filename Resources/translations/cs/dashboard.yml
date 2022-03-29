@@ -169,6 +169,15 @@ dashboard-project-delete-image: 'Smazat soubor'
 dashboard-project-delete-image-confirm: 'Opravdu chcete tento soubor odstranit?'
 dashboard-project-delete-default-image: "Výchozí obrázek nelze odstranit.\nPřed odstraněním tohoto obrázku vyberte jiný výchozí obrázek."
 dashboard-project-dnd-image: 'Přetáhněte sem jeden nebo více obrázků'
+dashboard-project-dnd-file: 'Přetáhněte sem jeden nebo více souborů'
+dashboard-project-image-delete-ko: 'Obrázek nelze smazat!'
+project-upload-images-some-ko: 'Některé obrázky nebyly nahrány!'
+dashboard-project-default-image-confirm: 'Chcete jej nastavit jako výchozí obrázek projektu?'
+dashboard-project-image-default-ko: 'Výchozí obrázek se nepodařilo nastavit!'
+dashboard-project-image-reorder-ko: 'Obrázky nebylo možné seřadit!'
+dashboard-project-send-to-markdown: "Vložte tento obrázek do textu"
+dashboard-max-files-reached: "Dosáhli jste maximálního počtu souborů!"
+dashboard-file-type-error: "Tento typ souboru není povolen!"
 uploaded-ok: "Úspěšně nahráno"
 dashboard-project-filter-by-drop: 'Zobrazit pouze příspěvky na dorovnávací financování'
 dashboard-project-filter-by-nondrop: 'Skrýt příspěvky na dorovnávací financování'
