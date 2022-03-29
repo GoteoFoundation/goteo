@@ -105,6 +105,13 @@ dashboard-rewards-issue: Problém!
 dashboard-rewards-notice: 'TOTO JE VYHLEDÁVKA MOŽNOSTÍ VRÁCENÍ, KTERÉ VYBRALI VAŠI SPOLUFINANCOVATELÉ.<br>NEMUSÍTE S TĚMITO VRACENÝMI ČÁSTKAMI NAKLÁDAT, DOKUD NEDOSÁHNOUT MINIMÁLNÍ ŽÁDANOU ČÁSTKU'
 dashboard-rewards-pending_filter: Čekající
 dashboard-rewards-pending_status: Čekající
+dashboard-rewards-process: 'Použití značení'
+dashboard-rewards-process_alert: 'Upozornění: Při označení jako vyplněný nelze označení zrušit. Můžeme pokračovat?'
+dashboard-rewards-resign_filter: Dary
+dashboard-rewards-resigns: 'Vzdání se nároku na odměnu'
+dashboard-rewards-reward_order: 'Vrácením'
+dashboard-rewards-thanks: 'Poděkování / dar'
+dashboard-rewards-user_msg: 'Individuální a '
 user-changepass-old: 'Stávající heslo'
 user-changepass-title: 'Změnit heslo'
 user-prefer-saved: 'Vaše předvolby oznámení byly úspěšně uloženy'
