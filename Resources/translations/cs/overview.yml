@@ -17,6 +17,8 @@ overview-field-description: 'Popis'
 overview-field-goal: 'Cíle crowdfundingové kampaně'
 overview-field-main-gallery: Hlavní galerie
 overview-field-image_gallery: 'Aktuální snímky'
+overview-field-media: 'Úvodní video'
+overview-field-name: 'Název projektu'
 overview-field-options-currently_medio: Střední
 overview-field-options-scope_global: Globální
 overview-field-options-scope_local: Lokální
@@ -43,6 +45,7 @@ tooltip-project-currency: 'Uveďte, v jaké měně počítáte náklady na proje
 tooltip-project-currently: 'Uvádí, v jaké fázi tvorby nebo realizace se projekt právě nachází.'
 tooltip-project-description: 'Popište projekt v rozsahu minimálně 80 slov (méně slov bude považováno za chybu). Vysvětlete to tak, aby to pochopil každý. Pokuste se ho přiblížit atraktivním a společenským způsobem, shrnout jeho silné stránky, to, co jej činí jedinečným, inovativním nebo výjimečným.'
 tooltip-project-goal: 'Vyjmenujte hlavní cíle projektu v krátkodobém i dlouhodobém horizontu, a to ve všech aspektech, které je podle vás důležité zdůraznit. Je to další příležitost, jak kontaktovat a získat podporu lidí, kteří s těmito cíli sympatizují.'
+tooltip-project-motivation: 'Vysvětlete důvody nebo okolnosti, které vás vedly k navržení projektu, a také komunity nebo uživatele, kterým je určen. Pomůže vám navázat kontakt s lidmi, kteří mají stejné zájmy, problémy nebo vkus.'
 tooltip-project-video: 'Zvažte zveřejnění videa (na Youtube, Vimeo nebo Giss.tv), kde na kameru stručně vysvětlíte, proč svůj projekt realizujete, a odkaz na něj. Jedná se o něco, co může doplnit hlavní video, přičemž osoba může co nejpříměji sdělit svou potřebu nebo originalitu. Pokud se stydíte mluvit na kameru, může to být také někdo, koho znáte a kdo sleduje projekt nebo nápad a může tento příspěvek poskytnout jako "fanoušek". Empatie a potřeba vidět někoho na druhé straně projektu je pro určité typy spolufinancovatelů velmi důležitá. '
 tooltip-project-social-category: 'Vyberte si svůj sociální závazek z níže uvedených'
 tooltip-project-social-description: 'Vysvětlete, v čem spočívá vámi vybraný sociální závazek a jak zdůvodníte, s jakými cíli udržitelného rozvoje je váš projekt v souladu.'
