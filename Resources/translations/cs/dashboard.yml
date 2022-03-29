@@ -122,6 +122,8 @@ form-project_waitfor-campaing: 'Rozšiřte informace o svém projektu a pomozte 
 form-project_waitfor-cancel: 'Návrh na zveřejnění v Goteo jsme nakonec zamítli, vyzýváme vás, abyste to zkusili s jiným nápadem nebo konceptem.'
 form-project_waitfor-edit: 'Až ho budete mít hotový, pošlete ho ke kontrole. Ve formuláři je třeba uvést minimum informací o projektu.'
 form-project_waitfor-expired: 'Nepodařilo se vám to :( Zkuste to vylepšit a zkuste to znovu!'
+form-project_waitfor-fulfilled: 'Splnili jste návratnost :) Děkujeme vám za účast!'
+form-project_waitfor-review: 'Po dokončení procesu kontroly vás budeme brzy kontaktovat ohledně projektu. Poté ji buď zveřejníme, nebo navrhneme její vylepšení.'
 user-changepass-old: 'Stávající heslo'
 user-changepass-title: 'Změnit heslo'
 user-prefer-saved: 'Vaše předvolby oznámení byly úspěšně uloženy'
