@@ -1,6 +1,13 @@
 ---
+api-key-no-generated: 'Ještě nemáte vygenerovaný klíč'
+api-key-tool-tip: 'S vaším uživatelem a Api klíčem budete moci provádět dotazy na naše API'
+api-key-documentation: 'Viz dokumentace API'
 api-key-user: 'Uživatelské jméno'
 api-key-key: 'Klíč'
+api-key-generate-new: 'Generování nového klíče'
+api-key-generate-new-confirm: 'Tato akce odstraní aktuální klíč a vygeneruje nový klíč. Pokračovat?'
+contract-data_title: 'Podrobnosti o smlouvě'
+dashboard-certificates-confirm: 'Potvrzení údajů'
 dashboard-certificates-data-alert: 'Upozorňujeme, že jednou potvrzené údaje nelze změnit!'
 dashboard-certificates-data-desc: 'Zkontrolujte, zda jsou údaje ve formuláři správné, a formulář potvrďte'
 dashboard-certificates-data-download-all: 'Potvrzením certifikátů aktivujete daňový odpočet. Nadace Goteo každoročně informuje daňové úřady o všech potvrzených darech.'
