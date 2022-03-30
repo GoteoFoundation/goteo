@@ -1,1 +1,5 @@
 ---
+profile-interests-header: 'Zajímají mě projekty s koncovkou...'
+profile-invest_on-header: 'Podporované projekty'
+profile-patron-header: 'Doporučuje <span class="red">%s projektů</span>'
+user-message-restricted: 'Zprávy můžete přijímat pouze od svých spolufinančníků'
