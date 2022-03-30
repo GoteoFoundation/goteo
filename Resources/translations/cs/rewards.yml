@@ -2,6 +2,9 @@
 mandatory-individual_reward-field-description: 'Je vyžadováno uvést nějaký popis'
 mandatory-individual_reward-field-icon: 'Je vyžadováno zvolit typ odměny'
 mandatory-individual_reward-field-name: 'Je vyžadováno uvést odměnu'
+mandatory-social_reward-field-description: 'V přiznání je nutné uvést nějaký popis'
+mandatory-social_reward-field-icon: 'Je nutné vybrat typ vrácení'
+mandatory-social_reward-field-name: 'Je třeba uvést sociální závazek'
 rewards-field-individual_reward-amount: 'Částka'
 rewards-field-individual_reward-description: Popis
 rewards-field-individual_reward-other: 'Zadejte typ odměny'
