@@ -8,6 +8,10 @@ api-key-generate-new: 'Generování nového klíče'
 api-key-generate-new-confirm: 'Tato akce odstraní aktuální klíč a vygeneruje nový klíč. Pokračovat?'
 contract-data_title: 'Podrobnosti o smlouvě'
 dashboard-certificates-confirm: 'Potvrzení údajů'
+dashboard-certificates-confirm-checkbox: 'Potvrzuji, že se jedná o mé skutečné zákonné údaje, a jsem si vědom/a, že po jejich potvrzení je již nebudu moci změnit'
+dashboard-certificates-confirmed: Potvrzeno
+dashboard-certificates-processed: Zpracováno
+dashboard-certificates-confirmed-ok: 'Správně potvrzené daňové údaje'
 dashboard-certificates-data-alert: 'Upozorňujeme, že jednou potvrzené údaje nelze změnit!'
 dashboard-certificates-data-desc: 'Zkontrolujte, zda jsou údaje ve formuláři správné, a formulář potvrďte'
 dashboard-certificates-data-download-all: 'Potvrzením certifikátů aktivujete daňový odpočet. Nadace Goteo každoročně informuje daňové úřady o všech potvrzených darech.'
@@ -19,11 +23,15 @@ dashboard-certificates-download: 'Potvrdit a stáhnout'
 dashboard-certificates-empty: 'Abyste viděli své certifikáty, musíte přispět na projekt nebo si dobít virtuální peněženku'
 dashboard-certificates-expired: Vypršelo
 dashboard-certificates-expired-description: 'Lhůta pro potvrzení certifikátu již uplynula'
+dashboard-certificates-no-downloable: 'Certifikát bude ke stažení od 1. března %YEAR%'
+dashboard-certificates-legal-entities-no-downloable: 'Certifikát bude k dispozici ke stažení od 1. března %YEAR%, do té doby si můžete stáhnout potvrzení o daru.'
 dashboard-certificates-no-pending: 'Nejsou žádné nevypořádané příspěvky'
 dashboard-certificates-pending: Čekající na
 dashboard-certificates-pending-desc: 'Jedná se o příspěvky, které budou zahrnuty do budoucích certifikátů.'
 dashboard-certificates-please-confirm: 'Chcete-li pokračovat, musíte zaškrtnout políčko'
+dashboard-certificates-summary: 'Certifikát %ID%, rok %YEAR%'
 dashboard-certificates-too-old: 'Tento certifikát je příliš starý a nelze jej upravit. V případě jakýchkoli dotazů nás prosím kontaktujte'
+dashboard-certificates-totals: '%NUM% příspěvků, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'Chcete-li si tento certifikát stáhnout, musíte nejprve potvrdit své údaje!'
 dashboard-certificates-view-pending: 'Vaše přímé příspěvky k projektům, které ještě neukončily první kolo, se nezobrazují. Můžete je konzultovat %HERE%.<br>Příspěvky uskutečněné pomocí virtuální peněženky jsou zahrnuty v certifikátu vygenerovaném v okamžiku fyzické platby.'
 dashboard-certificates-no-invests: 'Certifikát nelze potvrdit, pokud nemáte žádné vstupní údaje!'
@@ -42,6 +50,8 @@ dashboard-embed_code_investor: 'KÓD SE SPOLUFINANČNÍM OBRAZEM'
 dashboard-header-main: 'Můj ovládací panel'
 dashboard-investors-mail-fail: 'Nepodařilo se odeslat zprávu na adresu %s'
 dashboard-investors-mail-nowho: 'Nebyli nalezeni žádní příjemci'
+dashboard-investors-mail-sendto: 'Odesláno %s vašich spolufinancovatelů:'
+dashboard-investors-mail-sent: 'Úspěšně odeslané zprávy'
 dashboard-investors-mail-text-required: 'Napište zprávu'
 dashboard-investors_table-disclaimer: 'Pořadatel je upozorněn, že jak je stanoveno ve smlouvě, údaje o komecenách obsažené ve staženém souboru jsou poskytovány pouze a výhradně za účelem uspokojení komecen za odměny nebo výnosy poskytnuté v rámci projektu, jakož i za účelem jejich informování o novinkách, pokroku a činnostech souvisejících s projektem, přičemž je naprosto zakázáno používat je k jakýmkoli jiným účelům. Nedodržení této povinnosti opravňuje nadaci Goteo podniknout příslušné právní kroky a odstranit projekt z platformy.'
 dashboard-menu-activity: 'Moje aktivity'
@@ -130,6 +140,9 @@ dashboard-rewards-thanks: 'Poděkování / dar'
 dashboard-rewards-user_msg: 'Individuální a '
 dashboard-rewards-user_order: 'Na uživatele'
 dashboard-translate-doing_call: 'Překládáte výzvu <strong>%s</strong>. Původní jazyk je <strong>%s</strong>'
+dashboard-translate-doing_node: 'Překládáte uzel <strong>%s</strong>. Původní jazyk je <strong>španělština</strong>'
+dashboard-translate-doing_profile: 'Překládáte svůj osobní profil.'
+dashboard-translate-doing_project: 'Překládáte projekt <strong>%s</strong>. Původní jazyk je <strong>%s</strong>'
 dashboard-translate-select_call: 'Vyberte výzvu k překladu'
 dashboard-translate-select_node: 'Vyberte uzel, který chcete přeložit'
 dashboard-translate-select_profile: 'Přejděte na překlad svého osobního profilu'
@@ -194,7 +207,13 @@ dashboard-project-image-reorder-ko: 'Obrázky nebylo možné seřadit!'
 dashboard-project-send-to-markdown: "Vložte tento obrázek do textu"
 dashboard-max-files-reached: "Dosáhli jste maximálního počtu souborů!"
 dashboard-file-type-error: "Tento typ souboru není povolen!"
+all-files-uploaded: "Všechny soubory byly úspěšně nahrány"
 uploaded-ok: "Úspěšně nahráno"
+publish-confirm-yes: "Chcete tento záznam zveřejnit?"
+publish-confirm-no: "Chcete tento záznam zrušit?"
+active-confirm-yes: "Chcete tento záznam aktivovat?"
+active-confirm-no: "Chcete tento záznam deaktivovat?"
+dashboard-project-support-empty: 'Zatím nejsou žádné žádosti o příspěvky.'
 dashboard-project-support-add: 'Přidání nové žádosti o spolupráci'
 dashboard-project-filter-by-donative: 'Vidět jen ty, kteří se vzdají odměny'
 dashboard-project-filter-by-nondonative: 'Skrytí těch, kteří se vzdávají odměn'
