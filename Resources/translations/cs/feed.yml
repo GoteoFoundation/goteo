@@ -2,6 +2,7 @@
 feed-admin-action: 'Admin %USER% má %ACTION%'
 feed-admin-invest-cancelled-pool-subject: 'Ruční dobití peněženky (admin)'
 feed-admin-invest-cancelled-subject: 'Ruční zrušení poplatku (admin)'
+feed-admin-invest-returned: 'Administrátor %ADMIN% vrátil příspěvek %USER% ve výši %AMOUNT% prostřednictvím %METHOD% (Id: %INVEST%) do projektu "%PROJECT%" dne %DATE%'
 feed-admin-new_project: 'Automatické zveřejnění projektu'
 feed-admin-newsletter-activate: 'Správce %USER% zahájil zasílání newsletteru %ID%: %SUBJECT%'
 feed-admin-newsletter-activate-failed: 'Automatické odeslání newsletteru %ID%: %SUBJECT% administrátorem %USER% selhalo'
