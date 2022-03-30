@@ -1,5 +1,7 @@
 ---
 feed-admin-action: 'Admin %USER% má %ACTION%'
+feed-admin-invest-cancelled: 'Administrátor %ADMIN% zrušil příspěvek %USER% ve výši %AMOUNT% prostřednictvím %METHOD% (Id: %INVEST%) na projekt "%PROJECT%" dne %DATE%'
+feed-admin-invest-cancelled-pool: 'Administrátor %ADMIN% zrušil a vrátil do peněženky příspěvek %USER% ve výši %AMOUNT% pomocí %METHOD% (Id: %INVEST%) na projekt "%PROJECT%" dne %DATE%'
 feed-admin-invest-cancelled-pool-subject: 'Ruční dobití peněženky (admin)'
 feed-admin-invest-cancelled-subject: 'Ruční zrušení poplatku (admin)'
 feed-admin-invest-returned: 'Administrátor %ADMIN% vrátil příspěvek %USER% ve výši %AMOUNT% prostřednictvím %METHOD% (Id: %INVEST%) do projektu "%PROJECT%" dne %DATE%'
@@ -48,7 +50,10 @@ feed-project-archived: 'projekt archivován (auto)'
 feed-project-ending: 'kolo blížícího se dokončení projektu (auto)'
 feed-project-failed: 'neúspěšně vypršelo'
 feed-project-one-round-passed: 'projekt přesahuje jedno kolo (cron)'
+feed-project-round2-passed: 'Projekt prošel druhým kolem (cron)'
 feed-project-succeeded: 'úspěšně financované'
+feed-project_fail: 'Projekt %s byl <span class="red">podán neúspěšně</span> při získání <span class="violet">%s € (%s %) příspěvků nad minimum</span>'
+feed-project_finish: 'Projekt %s <span class="red">ukončil druhé kolo</span> a získal <span class="violet">%s € (%s &#37;) příspěvků nad minimum</span>'
 feed-timeago-justnow: není
 feed-message-support-response-published: 'Nová spolupráce %USER% s %TITLE% v projektu %PROJECT%'
 feed-project-ready-sent: 'Projekt odeslán ke kontrole'
