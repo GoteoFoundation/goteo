@@ -30,3 +30,6 @@ step-4: Náklady
 step-costs: 'Krok: Projekt / náklady'
 tooltip-project-cost-amount: 'Uveďte částku ve zvolené měně, kterou považujete za tento náklad. Nepoužívejte tečky pro čísla v tisících, ano?'
 tooltip-project-cost-cost: 'Zadejte co nejpopisnější název tohoto nákladu.'
+tooltip-project-cost-dates: 'Uveďte, v jakém časovém rozmezí odhadujete provedení úkolu nebo úhradu nákladů. Plánujte to nejdříve za dva měsíce, protože musíte vzít v úvahu časový rámec pro přezkoumání návrhu, jeho zveřejnění, pokud bude vybrán, a 40 dní na první financování. Do tohoto kalendáře nezahrnujte agendu, která byla již dříve vypracována, i když je dobré ji v popisu projektu vysvětlit. V této agendě nás zajímají pouze fáze, které zbývá dokončit, a hledáme spolufinancování.'
+tooltip-project-cost-description: 'Stručně vysvětlete, z čeho se tyto náklady skládají.'
+tooltip-project-cost-required: 'Tento bod je velmi důležitý: u každého zadaného nákladu musíte označit, zda je nezbytný nebo doplňkový. Všechny náklady označené jako nezbytné se sečtou, čímž se získá hodnota minimální částky financování projektu. Naopak částku dodatečných nákladů lze získat během druhého kola financování po získání základních prostředků.'
