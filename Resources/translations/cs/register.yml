@@ -1,3 +1,7 @@
 ---
 register-password-confirm-field: 'Znovu zadejte heslo'
 register-password-field: Heslo
+user-activate-already-active: 'Uživatelský účet je již aktivován'
+user-activate-success: 'Uživatelský účet byl úspěšně aktivován'
+validate-project-value-contract_email: 'E-mailová adresa není správná'
+validate-register-value-email: 'Zadaný e-mail je neplatný'
