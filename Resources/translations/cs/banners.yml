@@ -1,4 +1,6 @@
 ---
+discover-banner-header: 'Podle kategorie, místa nebo vrácení peněz,<br><span class="red">najděte projekt</span>, se kterým se nejvíce ztotožňujete'
+login-banner-header: 'Připojte se ke <span class="greenblue">100% otevřené</span><br> komunitě Goteo'
 main-banner-header: '<h2 class="message">Sociální síť pro <span class="greenblue">spolufinancování a spolupráci s</span><br> inovativními projekty, které propagují obecné zásady<br> Máte projekt s <span class ="greenblue ">otevřeným zdrojovým kódem</span>?</h2><a href="/contact" class="button banner-button">Kontaktujte nás</a>'
 open-banner-header: '<div class="modpo-open">OTEVŘÍT</div><div class="modpo-percent">100&#37; OTEVŘENO</div><div class="modpo-whyopen">%s</div>'
 regular-banner-metter: získané z
