@@ -128,6 +128,8 @@ dashboard-rewards-amount_order: 'Podle částky'
 dashboard-rewards-date_order: 'Podle času'
 dashboard-rewards-investors_table: 'Pokud ji chcete spravovat offline, můžete si <a href="%URL%">vytáhnout tabulku spolufinancování</a>'
 dashboard-rewards-issue: Problém!
+dashboard-rewards-massive_msg-all: 'Všem spolufinancovatelům tohoto projektu'
+dashboard-rewards-massive_msg-all_alert: 'všem je pro všechny, nebere v úvahu zbytek vyznačených'
 dashboard-rewards-notice: 'TOTO JE VYHLEDÁVKA MOŽNOSTÍ VRÁCENÍ, KTERÉ VYBRALI VAŠI SPOLUFINANCOVATELÉ.<br>NEMUSÍTE S TĚMITO VRACENÝMI ČÁSTKAMI NAKLÁDAT, DOKUD NEDOSÁHNOUT MINIMÁLNÍ ŽÁDANOU ČÁSTKU'
 dashboard-rewards-pending_filter: Čekající
 dashboard-rewards-pending_status: Čekající
@@ -214,7 +216,10 @@ publish-confirm-no: "Chcete tento záznam zrušit?"
 active-confirm-yes: "Chcete tento záznam aktivovat?"
 active-confirm-no: "Chcete tento záznam deaktivovat?"
 dashboard-project-support-empty: 'Zatím nejsou žádné žádosti o příspěvky.'
+dashboard-project-support-no-responses: 'Zatím žádné odpovědi.'
 dashboard-project-support-add: 'Přidání nové žádosti o spolupráci'
+dashboard-search-invests-totals: 'V tomto vyhledávání: %TOTAL_INVESTS% příspěvky od %TOTAL_USERS% uživatelů. Celkem %TOTAL_AMOUNT% Celkem'
+dashboard-search-invests-msg: 'Pošlete zprávu spolufinancovatelům tohoto vyhledávání'
 dashboard-project-filter-by-donative: 'Vidět jen ty, kteří se vzdají odměny'
 dashboard-project-filter-by-nondonative: 'Skrytí těch, kteří se vzdávají odměn'
 dashboard-project-filter-by-drop: 'Zobrazit pouze příspěvky na dorovnávací financování'
