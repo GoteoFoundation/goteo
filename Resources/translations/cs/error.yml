@@ -1,2 +1,3 @@
 ---
 fatal-error-channel: 'Hledaný kanál <span class="red">neexistuje :(</span>)'
+ajax-load-error: 'Stránku nelze načíst z důvodu chyby [<strong>%ERROR%</strong>]. Možná vypršela platnost vaší uživatelské relace?'
