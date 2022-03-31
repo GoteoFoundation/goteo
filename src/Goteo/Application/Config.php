@@ -29,6 +29,7 @@ use Goteo\Controller\Admin\ChannelStoryAdminController;
 use Goteo\Controller\Admin\CommonsSubController;
 use Goteo\Controller\Admin\CommunicationAdminController;
 use Goteo\Controller\Admin\CriteriaSubController;
+use Goteo\Controller\Admin\FaqAdminController;
 use Goteo\Controller\Admin\FaqSubController;
 use Goteo\Controller\Admin\FilterAdminController;
 use Goteo\Controller\Admin\GlossarySubController;
@@ -352,7 +353,6 @@ class Config {
         AdminController::addSubController(BannersSubController::class);
         AdminController::addSubController(CommonsSubController::class);
         AdminController::addSubController(CriteriaSubController::class);
-        AdminController::addSubController(FaqSubController::class);
         AdminController::addSubController(HomeSubController::class);
         AdminController::addSubController(GlossarySubController::class);
         AdminController::addSubController(IconsSubController::class);

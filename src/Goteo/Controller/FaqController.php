@@ -10,22 +10,18 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Library\Text;
-use Goteo\Application\Message;
-use Goteo\Application\Lang;
-use Goteo\Application\Config;
-use Goteo\Application\Session;
 use Goteo\Application\View;
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Model;
+use Goteo\Core\Controller;
+use Goteo\Core\Traits\LoggerTrait;
+use Goteo\Library\Text;
 use Goteo\Model\Faq;
-use Goteo\Model\Faq\FaqSection as FaqSection;
-use Goteo\Model\Faq\FaqSubsection as FaqSubsection;
+use Goteo\Model\Faq\FaqSection;
+use Goteo\Model\Faq\FaqSubsection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class FaqController extends \Goteo\Core\Controller {
+class FaqController extends Controller {
+    use LoggerTrait;
 
     public function __construct() {
         // Cache & replica read activated in this controller
@@ -34,8 +30,8 @@ class FaqController extends \Goteo\Core\Controller {
         View::setTheme('responsive');
     }
 
-    public function indexAction ($section='', $tag='', Request $request) {
-
+    public function indexAction (Request $request, string $section='', string $tag='' ): Response
+    {
         $faq_sections=FaqSection::getList();
 
         return $this->viewResponse('faq/index', [
@@ -46,10 +42,10 @@ class FaqController extends \Goteo\Core\Controller {
         );
     }
 
-    public function sectionAction($section, Request $request)
+    public function sectionAction(Request $request, string $section): Response
     {
-        $faq_section=FaqSection::getBySlug($section);
-        $subsections=FaqSubsection::getList(['section' => $faq_section->id]);
+        $faq_section = FaqSection::getBySlug($section);
+        $subsections = FaqSubsection::getList(['section' => $faq_section->id]);
 
         return $this->viewResponse('faq/section', [
             'meta_title' => $faq_section->name.' :: Faq',
@@ -57,17 +53,16 @@ class FaqController extends \Goteo\Core\Controller {
             'faq_section' => $faq_section,
             'subsections' => $subsections
         ]);
-
     }
 
-    public function individualAction($faq, Request $request)
+    public function individualAction(Request $request, string $faq): Response
     {
-        $faq=Faq::getBySlug($faq);
-        $faq_subsection=FaqSubsection::get($faq->subsection_id);
-        $faq_section=FaqSection::getById($faq_subsection->section_id);
+        $faq = Faq::getBySlug($faq);
+        $faq_subsection = FaqSubsection::get($faq->subsection_id);
+        $faq_section = FaqSection::getById($faq_subsection->section_id);
 
         // Sidebar menu
-        $subsections=FaqSubsection::getList(['section' => $faq_section->id]);
+        $subsections = FaqSubsection::getList(['section' => $faq_section->id]);
 
         return $this->viewResponse('faq/individual', [
             'meta_title' => $faq->title.' :: Faq',
@@ -76,7 +71,6 @@ class FaqController extends \Goteo\Core\Controller {
             'faq_section' => $faq_section,
             'subsections' => $subsections
         ]);
-
     }
 
 }

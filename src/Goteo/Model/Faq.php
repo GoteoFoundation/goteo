@@ -104,18 +104,8 @@ class Faq extends \Goteo\Core\Model {
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-     /**
-     * Faq listing
-     *
-     * @param array filters
-     * @param string node id
-     * @param int limit items per page or 0 for unlimited
-     * @param int page
-     * @param int pages
-     * @return array of programs instances
-     */
-    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
-
+    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null)
+    {
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
@@ -142,6 +132,18 @@ class Faq extends \Goteo\Core\Model {
 
         if($filter) {
             $sql = " WHERE " . implode(' AND ', $filter);
+        }
+
+        if ($count) {
+            $sql = "
+                SELECT
+                    count(faq.id)
+                FROM faq
+                $joins
+                $sql
+            ";
+            $query = static::query($sql, $values);
+            return $query->fetchColumn();
         }
 
         $sql="SELECT

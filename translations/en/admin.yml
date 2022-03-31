@@ -535,3 +535,5 @@ admin-impact_data: "Impact Data"
 admin-faqs: Faqs
 admin-faq-add: Add Faq
 admin-faq-pending: Check as translation is pending
+admin-faq-subsections: "Subsections"
+admin-faq-subsections-all: "All subsections"

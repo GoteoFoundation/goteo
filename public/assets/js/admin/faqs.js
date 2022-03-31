@@ -26,7 +26,7 @@ for the JavaScript code in this page.
 $(function () {
 
   // Allow drag&drop reorder by the column `order`
-  var settings = {
+  const settings = {
       apiUrl: function (row) {
           // '/faq/{id}/sort',
           return '/api/faq/' + $(row).find('[data-key="id"]').data('value') + '/sort';

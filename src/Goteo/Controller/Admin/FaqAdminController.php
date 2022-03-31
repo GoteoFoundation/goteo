@@ -12,6 +12,7 @@ namespace Goteo\Controller\Admin;
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use Goteo\Model\Faq;
 use Goteo\Model\Faq\FaqSubsection;
@@ -26,13 +27,13 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 class FaqAdminController extends AbstractAdminController
 {
-    protected static $icon = '<i class="fa fa-2x fa-question-circle-o"></i>';
+    protected static string $icon = '<i class="fa fa-2x fa-question-circle-o"></i>';
 
-    public static function getGroup() {
+    public static function getGroup(): string {
         return 'contents';
     }
 
-    public static function getRoutes()
+    public static function getRoutes(): array
     {
         return [
             new Route(
@@ -58,8 +59,9 @@ class FaqAdminController extends AbstractAdminController
         ];
     }
 
-    public function listAction($subsection = null, Request $request)
+    public function listAction(Request $request, $subsection = null): Response
     {
+        $filters = [];
         if ($subsection) {
             $filters['subsection'] = $subsection;
         }
@@ -68,9 +70,8 @@ class FaqAdminController extends AbstractAdminController
         $page = $request->query->get('pag') ?: 0;
 
         $faq_subsections = FaqSubsection::getList();
-        $list = Faq::getList($filters, $page, $limit);
-        $total = Faq::getList($filters, $page, $limit, true);
-
+        $total = Faq::getList($filters,0,0, true);
+        $list = Faq::getList($filters, $page * $limit, $limit);
         return $this->viewResponse('admin/faq/list', [
             'list' => $list,
             'total' => $total,
@@ -78,10 +79,10 @@ class FaqAdminController extends AbstractAdminController
             'faq_subsections' => $faq_subsections,
             'current_subsection' => $subsection
         ]);
-        
-    }   
 
-    public function editAction($id = null, Request $request)
+    }
+
+    public function editAction(Request $request, $id = null): Response
     {
         if ($id) {
             $faq = Faq::getById($id);
@@ -108,24 +109,21 @@ class FaqAdminController extends AbstractAdminController
         ]);
     }
 
-    public function deleteAction($id, Request $request) {
-        
+    public function deleteAction(Request $request, $id): Response
+    {
         try {
             $faq = Faq::getById($id);
         } catch (ModelNotFoundException $exception) {
             Message::error($exception->getMessage());
         }
 
-
         try {
             $faq->dbDelete();
             Message::info(Text::get('admin-remove-entry-ok'));
         } catch (\PDOException $e) {
-          Message::error($e->getMessage());  
-        } 
+          Message::error($e->getMessage());
+        }
 
         return $this->redirect('/admin/faq/' . $faq->section);
 	}
-
-
 }

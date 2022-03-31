@@ -9,6 +9,7 @@
  */
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\Model;
 use Goteo\Model\Faq\FaqSubsection;
 use Goteo\Library\Text;
@@ -25,19 +26,25 @@ class FaqTransformer extends AbstractTransformer {
         return $this->model->section;
     }
 
-    public function getSubsection() {
-        $subsection=FaqSubsection::get($this->model->subsection);
-        return $subsection->name;
+    public function getSubsection(): string {
+        $name = '';
+
+        try {
+            $name = FaqSubsection::get($this->model->subsection)->name;
+        } catch (ModelNotFoundException $e) {
+            //
+        }
+
+        return $name;
     }
 
-    public function getActions() {
-        if(!$u = $this->getUser()) return [];
-        $ret = [
+    public function getActions(): array {
+        if(!$this->getUser()) return [];
+
+        return [
             'edit' => '/admin/faq/edit/' . $this->model->id,
             'delete' => '/admin/faq/delete/' . $this->model->id
         ];
-
-        return $ret;
     }
-    
+
 }

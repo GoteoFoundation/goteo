@@ -236,7 +236,6 @@ admin-module-workshops: # Can access to module WorkshopsAdminController
     model: null
     relational: null
 
-<<<<<<< HEAD
 admin-module-channels: # Can access to modules Channel*AdminController
     model: null
     relational: null
