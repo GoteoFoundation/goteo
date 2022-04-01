@@ -61,8 +61,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
             $amount = max(0, $vars['max_amount_per_project'] - $invested);
         }
         $count = Invest::getList(['projects' => $project, 'status' => Invest::$ACTIVE_STATUSES, 'users' => $invest->user, 'types' => 'campaign'], null, 0, 0, true);
-
-        if($count > $vars['max_invests_per_user']) {
+        if($count >= $vars['max_invests_per_user']) {
             $error = 'Max invests per user reached';
             $amount = 0;
         }
