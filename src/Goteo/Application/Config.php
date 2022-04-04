@@ -153,7 +153,7 @@ class Config {
 			foreach (Lang::listAll('name', false) as $lang => $name) {
 				Lang::addSqlTranslation($lang);
 				foreach (self::$trans_groups as $group) {
-					Lang::addYamlTranslation($lang, __DIR__ . '/../../../Resources/translations/' . $lang . '/' . $group . '.yml');
+					Lang::addYamlTranslation($lang, __DIR__ . '/../../../translations/' . $lang . '/' . $group . '.yml');
 				}
 			}
 
