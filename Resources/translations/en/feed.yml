@@ -1,5 +1,8 @@
 ---
 feed-admin-action: 'The admin %USER% has %ACTION%'
+feed-admin-invest-cancelled: 'The admin %ADMIN% have cancelled the imput of %USER% of %AMOUNT% through %METHOD% (Id: %INVEST%) to the proyect "%PROJECT%" in the day %DATE%'
+feed-admin-invest-cancelled-pool: 'The admin %ADMIN% has cancelled and returned to the pocket the imput from %USER% of %AMOUNT% through %METHOD% (Id: %INVEST%) to the proyect "%PROJECT%" the day %DATE%'
+feed-admin-invest-cancelled-pool-subject: 'Manually cancelled charge to the pocket (admin)'
 feed-admin-invest-manual-subject: 'Manual invest (admin)'
 feed-admin-invest-manual: '%ADMIN% has added %AMOUNT% to the project %PROJECT% in the name of %USER%'
 feed-admin-invest-modified-subject: 'Invest manually modified (admin)'
