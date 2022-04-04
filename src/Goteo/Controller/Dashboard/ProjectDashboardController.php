@@ -246,6 +246,9 @@ class ProjectDashboardController extends DashboardController {
     }
 
     /**
+
+    /**
+     * @deprecated
      * Project edit (personal)
      * NOTE: Step removed, maintaining the method just in case is coming back some day
      */
@@ -675,15 +678,14 @@ class ProjectDashboardController extends DashboardController {
     /**
      * Project edit (overview)
      */
-    public function campaignAction($pid, Request $request) {
+    public function campaignAction(Request $request, string $pid) {
         $project = $this->validateProject($pid, 'campaign');
         if($project instanceOf Response) return $project;
 
         $defaults = (array)$project;
-        if($account = Account::get($project->id)) {
-            $defaults['paypal'] = $account->paypal;
-        }
-        if($personal = (array)User::getPersonal($user)) {
+        $account = Account::get($project->id);
+
+        if($personal = (array)User::getPersonal($this->user)) {
             foreach($personal as $k => $v) {
                 if(array_key_exists($k, $defaults) && empty($defaults[$k])) {
                     $defaults[$k] = $v;

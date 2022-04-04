@@ -54,8 +54,6 @@ class Contract extends Model {
         // datos de cuentas (se guardan en project_account para procesos y aquí para el pdf)
         $bank,
         $bank_owner,
-        $paypal,
-        $paypal_owner,
 
         // datos de registro
         $reg_name,  // Nombre del registro en el que está incrita la entidad (nombre completo y ciudad)
@@ -80,6 +78,16 @@ class Contract extends Model {
         // seguimiento (es un objeto, cada atributo es un valor de seguimiento)
         $status,
         $docs = array();
+
+    /**
+     * @deprecated
+     */
+    public $paypal;
+
+    /**
+     * @deprecated
+     */
+    public $paypal_owner;
 
     /**
      * Sobrecarga de métodos 'getter'.
@@ -187,8 +195,6 @@ class Contract extends Model {
 
         $contract->bank = $account->bank;
         $contract->bank_owner = $account->bank_owner;
-        $contract->paypal = $account->paypal;
-        $contract->paypal_owner = $account->paypal_owner;
         $contract->fee = $account->fee;
 
         return $contract->save($errors);
