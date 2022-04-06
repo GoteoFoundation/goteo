@@ -43,18 +43,24 @@
                 <div class="col footprint-info">
                     <div class="slider slider-footprint-data">
                         <?php foreach($footprint_impact_data[$footprint->id] as $impact_data): ?>
-                            <div class="">
+                            <div class="row">
                                 <?php if ($impact_data->image): ?>
-                                    <img
-                                        src="<?= $impact_data->getImage()->getLink(165,240,true) ?>"
-                                        alt="<?= $footprint->title ?>"
-                                        height="240"
-                                        width="165"
-                                        >
+                                    <div class="col-md-4 col-xs-4 col-xss-12">
+                                        <picture>
+                                            <source media="(min-width: 1200px)" srcset="<?= $impact_data->getImage()->getLink(200, 400, true) ?>">
+                                            <source media="(min-width: 992px) and (max-width: 1199px)" srcset="<?= $impact_data->getImage()->getLink(100, 300, true) ?>">
+                                            <source media="(min-width: 768px) and (max-width: 991px)" srcset="<?= $impact_data->getImage()->getLink(100, 500, true) ?>">
+                                            <source media="(max-width: 480px)" srcset="<?= $impact_data->getImage()->getLink(100, 300, true) ?>">
+                                            <img
+                                                src="<?= $impact_data->getImage()->getLink(200, 350, true) ?>"
+                                                alt="<?= $footprint->title ?>"
+                                            >
+                                        </picture>
+                                    </div>
                                 <?php endif; ?>
-                                <div class="footprint-data-info">
+                                <div class="footprint-data-info col-md-8 col-xs-8 col-xss-12">
                                     <h2><?= $impact_data->title ?></h2>
-                                    <h3><span><?= $impact_data->data ?></span> <?= $impact_data->data_unit?></h3>
+                                    <h3><span><?= $impact_data->data ?></span> <?= $impact_data->data_unit ?></h3>
                                     <p><?= $impact_data->description ?></p>
                                 </div>
                             </div>
