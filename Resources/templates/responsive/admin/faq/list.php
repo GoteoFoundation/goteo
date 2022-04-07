@@ -4,6 +4,10 @@ $this->layout('admin/faq/layout');
 
 $this->section('admin-search-box-addons');
 
+if ($this->current_subsection)
+    $keys = ['id', 'title', 'order', 'subsection', 'actions'];
+else
+    $keys = ['id', 'title', 'subsection', 'actions'];
 ?>
 
 <label for="sections-filter"><?= $this->t('admin-faq-subsections') ?></label>
@@ -12,8 +16,12 @@ $this->section('admin-search-box-addons');
         <?php if (!$this->current_subsection) : ?>
             <option selected="selected"><?= $this->t('admin-faq-subsections-all')?></option>
         <?php endif; ?>
-        <?php foreach ($this->faq_subsections as $subsection) : ?>
-            <option value="<?php echo $subsection->id; ?>" <?php if ($subsection->id == $this->current_subsection) echo 'selected="selected"'; ?>><?php echo $subsection->name; ?></option>
+        <?php foreach ($this->faq_subsections as $section => $subsections) : ?>
+            <optgroup label="<?= $section ?>">
+                <?php foreach($subsections as $name => $id): ?>
+                    <option value="<?= $name; ?>" <?= ($id == $this->current_subsection)? 'selected="selected"': '' ?>><?= $name; ?></option>
+                <?php endforeach; ?>
+            </optgroup>
         <?php endforeach; ?>
     </select>
 </div>
@@ -25,7 +33,6 @@ $this->section('admin-search-box-addons');
 <?php $this->section('admin-container-body') ?>
 
   <h5><?= $this->text('admin-list-total', $this->total) ?></h5>
-
-  <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['id', 'title', 'order', 'subsection', 'actions'])]) ?>
+  <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, $keys)]) ?>
 
 <?php $this->replace() ?>
