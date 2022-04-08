@@ -34,27 +34,13 @@ class AppTest extends TestCase {
         $this->assertInstanceOf(ContainerBuilder::class, App::getServiceContainer());
     }
 
-/*    public function testNotFound() {
+    public function testLegacyRedirection() {
+        $route = '/non-existing/';
 
         $app = $this->getFullApp();
+        $response = $app->handle(Request::create($route));
 
-        $response = $app->handle(Request::create('/non-existing', 'GET'));
-        $this->assertEquals(404, $response->getStatusCode());
-        $this->assertContains('</body>', $response->getContent());
-    }
-
-*/
-    public function testLegacyRedirections() {
-        $routes = array(
-            '/discover/',
-            '/non-existing/'
-        );
-        foreach($routes as $route) {
-            $app = $this->getFullApp();
-            $response = $app->handle(Request::create($route));
-
-            $this->assertTrue($response->isRedirection());
-        }
+        $this->assertTrue($response->isRedirection());
     }
 
 /*
