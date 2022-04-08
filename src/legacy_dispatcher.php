@@ -31,7 +31,7 @@ if (!empty($segments) && is_array($segments)) {
 	}
 }
 if (empty($controller)) {
-	throw new Error(Error::NOT_FOUND);
+	throw new Error(Error::NOT_FOUND, "Related url: $uri");
 }
 
 try {
@@ -53,9 +53,7 @@ try {
 		$result = $method->invokeArgs($instance, $segments);
 
 		if ($result === null) {
-			// Start output buffer
 			ob_start();
-			// Get buffer contents
 			$result = ob_get_contents();
 			ob_end_clean();
 		}
