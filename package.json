@@ -11,7 +11,7 @@
   "bugs": "https://github.com/GoteoFoundation/goteo/issues",
   "license": "AGPL-3.0",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 8.0"
   },
   "devDependencies": {
     "command-exists": "^1.2.6",
