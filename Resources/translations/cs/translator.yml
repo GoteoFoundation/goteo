@@ -25,5 +25,13 @@ translator-sdg: 'SDG'
 translator-footprint: 'Stopa'
 translator-system: Systém
 translator-tag: 'Štítky blogu'
+translator-add-translation: 'Přidat nový překlad'
+translator-communication: Komunikace
+translator-call_to_action: Výzva k akci
 translator-node: Kanál
 translator-node_program: Programy kanálů
+translator-node_faq: Časté otázky ke Kanálu
+translator-node_faq_question: Časté otázky týkající se Kanálu
+translator-node_faq_download: Kanál Častých otázek Ke stažení
+translator-node_sponsor: Sponzoři Kanálu
+translator-node_team: Tým Kanálu
