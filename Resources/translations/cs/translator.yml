@@ -51,6 +51,7 @@ translator-original-text: 'Původní text'
 translator-page: Stránky
 translator-patron: 'Sponzorované projekty'
 translator-pending: 'Čeká se na překlad'
+translator-pending-desc: 'Tento obsah je "čekající", což znamená, že je <strong>NEVEŘEJNÝ</strong> a zůstane jako návrh, dokud nebude odstraněna možnost "Čeká na překlad"'
 translator-skipped-fields: "Některá pole nebyla zkopírována, protože již obsahovala text.\nOdstraňte původní text, abyste mohli kopírovat z jiného jazyka."
 translator-sphere: 'Oblasti výzvy k předkládání návrhů'
 translator-sdg: 'SDG'
