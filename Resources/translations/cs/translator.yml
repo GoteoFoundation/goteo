@@ -20,19 +20,31 @@ translator-field-blog: Blog
 translator-field-content: Obsah
 translator-field-description: Popis
 translator-field-facebook_msg: 'Zpráva na Facebooku'
+translator-field-facebook_msg_owner: 'Autor facebookové stránky'
 translator-field-legend: Legenda
 translator-field-name: Jméno
+translator-field-review: Revize
 translator-field-schedule: Rozvrh
 translator-field-share_facebook: 'Text sdílení na facebook'
 translator-field-share_twitter: 'Text sdílení na twitter'
 translator-field-text: Text
 translator-field-title: Název
 translator-field-subtitle: podtitul
+translator-field-twitter_msg: 'Zpráva na Twitteru'
+translator-field-twitter_msg_owner: 'Autor de twitter'
 translator-field-url: URL
 translator-glossary: 'Slovníček pojmů'
 translator-home: Úvodní strana
+translator-icon: 'Typy výnosů/odměn'
+translator-info: 'Nápady o'
+translator-lang-no-perms: 'Nemáte oprávnění spravovat tento jazyk'
 translator-license: Licence
 translator-milestone: Milníky
+translator-more-langs: Ostatní
+translator-news: Novinky
+translator-no-langs: 'Nemáte žádný jazyk, obraťte se prosím na správce'
+translator-not-saved: 'Žádný obsah nebyl uložen! (možná máte prázdná pole?)'
+translator-not-translated: 'Žádný záznam v tabulce překladů'
 translator-skipped-fields: "Některá pole nebyla zkopírována, protože již obsahovala text.\nOdstraňte původní text, abyste mohli kopírovat z jiného jazyka."
 translator-sphere: 'Oblasti výzvy k předkládání návrhů'
 translator-sdg: 'SDG'
