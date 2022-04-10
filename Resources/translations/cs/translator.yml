@@ -12,6 +12,14 @@ translator-criteria: 'Kritéria hodnocení'
 translator-delete: 'Odstranění překladu do %s'
 translator-delete-sure: 'Opravdu chcete odstranit překlad %s? Tohle se nedá vrátit!'
 translator-deleted-ko: 'Chyba při mazání překladu do %s!'
+translator-deleted-ok: 'Překlad do %s smazán správně'
+translator-faq: Časté dotazy
+translator-feed-translated-desc: '%LINK% přeloženo %USER% do %LANGS%'
+translator-feed-translated-target: 'Překlad do %s'
+translator-field-blog: Blog
+translator-field-content: Obsah
+translator-field-description: Popis
+translator-field-facebook_msg: 'Zpráva na Facebooku'
 translator-field-legend: Legenda
 translator-field-name: Jméno
 translator-field-schedule: Rozvrh
