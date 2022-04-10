@@ -3,9 +3,15 @@ translator: Překladatel
 translator-autotranslate-from: 'Strojový překlad z'
 translator-back-to-list: 'Zpět na seznam'
 translator-banner: Reklamní proužky
+translator-bazar: Katalog
+translator-cannot-delete-system: 'Tento překlad nelze smazat, protože se jedná o systémový překlad!'
 translator-category: Kategorie
 translator-choose: 'Vyberte možnost'
 translator-copy-from: 'Zkopírovat obsah z'
+translator-criteria: 'Kritéria hodnocení'
+translator-delete: 'Odstranění překladu do %s'
+translator-delete-sure: 'Opravdu chcete odstranit překlad %s? Tohle se nedá vrátit!'
+translator-deleted-ko: 'Chyba při mazání překladu do %s!'
 translator-field-legend: Legenda
 translator-field-name: Jméno
 translator-field-schedule: Rozvrh
