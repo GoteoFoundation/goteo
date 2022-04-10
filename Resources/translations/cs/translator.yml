@@ -52,6 +52,15 @@ translator-page: Stránky
 translator-patron: 'Sponzorované projekty'
 translator-pending: 'Čeká se na překlad'
 translator-pending-desc: 'Tento obsah je "čekající", což znamená, že je <strong>NEVEŘEJNÝ</strong> a zůstane jako návrh, dokud nebude odstraněna možnost "Čeká na překlad"'
+translator-post: Blog
+translator-promote: 'Vybrané projekty'
+translator-channelstory: 'Doporučené příběhy uživatelů'
+translator-channelpost: 'Příspěvky v kanálu'
+translator-save: 'Uložit a publikovat'
+translator-save-original: 'Uložit do původní tabulky'
+translator-save-draft: 'Uložit jako koncept'
+translator-saved-ko: 'Chyba při ukládání překladu do %LANG% (%ERROR%)'
+translator-saved-ok: 'Překlady pro jazyky [%s] byly uloženy správně'
 translator-skipped-fields: "Některá pole nebyla zkopírována, protože již obsahovala text.\nOdstraňte původní text, abyste mohli kopírovat z jiného jazyka."
 translator-sphere: 'Oblasti výzvy k předkládání návrhů'
 translator-sdg: 'SDG'
