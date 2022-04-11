@@ -1,4 +1,5 @@
 ---
+channel-call-cta-create-project-title: Chci vytvořit projekt
 channel-call-intro-factory-title: 'Goteo'
 channel-call-intro-pitcher-tab-title: 'Vytvořte svůj projekt'
 channel-call-intro-pitcher-tab-action: 'Staňte se podporovatelem!'
@@ -15,5 +16,6 @@ channel-call-intro-donor-tab-action-url: '/channel/crowdcoop/available'
 channel-call-intro-donor-tab-video: 'https://www.youtube.com/embed/U_AAioupuk8'
 channel-call-intro-factory-tab-title: 'Továrna Crowdcoop'
 channel-call-intro-factory-tab-description: 'Připojte se k naší továrně na družstevní projekty pro ekonomickou demokracii. Dejme peníze do služeb společného dobra a sociální spravedlnosti.'
+channel-call-intro-factory-tab-action: 'Staňte se podporovatelem!'
 channel-call-intro-factory-tab-action-url: '/project/create'
 channel-call-intro-factory-tab-video: 'https://www.youtube.com/embed/Q-qHZK36HLA'
