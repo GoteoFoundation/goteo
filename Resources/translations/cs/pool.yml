@@ -1,1 +1,5 @@
 ---
+landing-calculate-button: Spočítat
+landing-donor-button: Darovat
+landing-error-zero: 'Přispívaná částka musí být vyšší než 0'
+landing-less-info: 'Zobrazit méně'
