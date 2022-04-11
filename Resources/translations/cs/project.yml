@@ -1,4 +1,6 @@
 ---
+contract-paypal_account: 'E-mailová adresa vašeho účtu PayPal:'
+currency-switch: ZMĚNIT
 project-comment-start-sesion: 'Přihlášení'
 project-comment-start-sesion-2: 'zanechat komentář'
 project-view-categories-title: Kategorie
