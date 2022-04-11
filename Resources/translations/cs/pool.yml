@@ -12,3 +12,12 @@ landing-spread-title: 'Šiřte informace o daňových výhodách systému Goteo!
 landing-stories-title: 'Díky vašemu příspěvku financujeme iniciativy, jako jsou:'
 landing-subtitle-banner: "<span class=\"line\">Zapojit se a zavázat se k <strong>projektům goteo</strong><br><strong>snížení</strong> mezi <strong>27,5 %</strong> a <strong >50 % </strong>z částky vašeho daru</span>"
 landing-target-description: 'Náš cíl pro rok 2015: <strong>aby více než 50 % uživatelů Goteo využilo svého práva na daňové zvýhodnění</strong> svých příspěvků (v roce 2014 tak učinilo pouze 12%).'
+landing-target-title: 'Cíl 2015'
+landing-taxes-explain: 'Přispějte nyní pomocí peněženky <strong>Goteo</strong>: nové funkce, která vám umožní přispět na místě a poté se rozhodnout, kterému projektu přispějete. Okamžitě obdržíte certifikát, který zdůvodňuje váš příspěvek neziskové organizaci Goteo Foundation.'
+landing-taxes-regional: '<strong>* Důležité</strong> Toto daňové zvýhodnění neplatí mimo Španělsko, ani v Baskicku a Navarře, kde je zachován odpočet ve výši 20%, resp. 25% z celkového příspěvku.'
+landing-taxes-title: 'Finanční úřad vám vrátí peníze*:'
+landing-title-banner: 'V Goteo <br>si můžete z daní odečíst, že jste přispěli'
+landing-type-company: Společnost
+landing-type-person: 'Fyzická osoba'
+pool-alert-recharging: 'Chystáte se nabít svou virtuální peněženku pomocí '
+pool-amount-first: 'Aby bylo možné peněženku nabít, musíte zadat částku vyšší než 0'
