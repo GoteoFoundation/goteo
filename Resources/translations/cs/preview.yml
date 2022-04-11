@@ -1,4 +1,5 @@
 ---
+guide-project-error-mandatories: 'Chybí povinná pole'
 tooltip-project-comment: 'Máte dotazy nebo připomínky, které chcete, aby si správce Goteo přečetl? Zde můžete vysvětlit část toho, co jste napsali a čím si nejste jisti, navrhnout zlepšení atd.'
 project-send-review-desc: >
   Jakmile ji odešlete, nebudete moci provádět žádné změny, dokud znovu neotevřeme její edici.
