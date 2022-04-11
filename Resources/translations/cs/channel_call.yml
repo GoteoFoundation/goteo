@@ -2,3 +2,5 @@
 channel-call-intro-factory-title: 'Goteo'
 channel-call-intro-pitcher-tab-title: 'Vytvořte svůj projekt'
 channel-call-intro-pitcher-tab-action: 'Staňte se podporovatelem!'
+channel-call-intro-pitcher-tab-action-url: '/project/create'
+channel-call-intro-pitcher-tab-video: 'https://www.youtube.com/embed/5bzfj2IkznQ'
