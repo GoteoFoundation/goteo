@@ -3,3 +3,12 @@ landing-calculate-button: Spočítat
 landing-donor-button: Darovat
 landing-error-zero: 'Přispívaná částka musí být vyšší než 0'
 landing-less-info: 'Zobrazit méně'
+landing-main-slogan: 'Spočítejte si své daňové úspory díky daňovým úlevám od roku 2015'
+landing-more-info: 'Více informací'
+landing-more-info-text: '<h4>Nový zákon vám umožňuje přispívat více a přispěje k realizaci více projektů</h4><p>Dosud se z vašeho výsledovky odečítalo 25 % z toho, co jste přispěli na charitu a podobně. Od tohoto roku 2015 si budete moci odečíst více a v roce 2016 ještě více. <br><br>Procenta nezávisí jen na roce, ale také na tom, kolik přispíváte: tedy za příspěvky za celý rok, který nepřekračují 150 Eur, existují určitá procenta a u částek nad 150 Eur jsou jiná.</p><h4>A pokud to opakujete s Goteo alespoň 3 roky...</h4><p>Pokud spolupracovali se stejným subjektem v posledních třech letech, procenta snížení jsou vyšší*. Tímto způsobem je vaše věrnost odměněna vyšším výnosem.</p><hr><p>(*) Limit srážky z odečitatelného základu zůstává na 10 %.<br>Článek 19 (Srážka kvóty o dani z příjmů fyzických osob) zákona 49/2002 ze dne 23. prosince o daňovém režimu neziskových subjektů a daňových pobídkách za mecenášství.</p>'
+landing-real-amount: 'Vaše skutečné výdaje budou činit'
+landing-spread: 'Spočítejte si daňovou úlevu na Goteo! #mojarsedesgrava'
+landing-spread-title: 'Šiřte informace o daňových výhodách systému Goteo!'
+landing-stories-title: 'Díky vašemu příspěvku financujeme iniciativy, jako jsou:'
+landing-subtitle-banner: "<span class=\"line\">Zapojit se a zavázat se k <strong>projektům goteo</strong><br><strong>snížení</strong> mezi <strong>27,5 %</strong> a <strong >50 % </strong>z částky vašeho daru</span>"
+landing-target-description: 'Náš cíl pro rok 2015: <strong>aby více než 50 % uživatelů Goteo využilo svého práva na daňové zvýhodnění</strong> svých příspěvků (v roce 2014 tak učinilo pouze 12%).'
