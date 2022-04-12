@@ -25,23 +25,20 @@ use Goteo\Model\User;
 
 class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessorInterface {
 
-    public function getConstraints($field): array
+    public function getPhoneConstraints(): array
     {
-        $constraints = [];
-
-        if($field === 'paypal') {
-            $constraints[] = new Constraints\Email([
-                'checkMX' => true,
-                'checkHost' => true
-            ]);
+        if ($this->getFullValidation()) {
+            return [new Constraints\NotBlank()];
+        } else {
+            return [];
         }
-        if($this->getFullValidation()) {
-            if($field === 'phone') {
-                $constraints[] = new Constraints\NotBlank();
-            }
-        }
+    }
 
-        return $constraints;
+    public function getPaypalConstraints(): array
+    {
+        return [
+            new Constraints\Email(),
+        ];
     }
 
     public function createForm() {
@@ -51,7 +48,6 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
             ->add('one_round', ChoiceType::class, [
                 'disabled' => $this->getReadonly(),
                 'label' => 'costs-field-select-rounds',
-                'constraints' => $this->getConstraints('one_round'),
                 'required' => true,
                 'expanded' => true,
                 'wrap_class' => 'col-xs-6',
@@ -63,13 +59,13 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
             ->add('phone', TextType::class, [
                 'label' => 'personal-field-phone',
                 'disabled' => $this->getReadonly(),
-                'constraints' => $this->getConstraints('phone'),
+                'constraints' => $this->getPhoneConstraints(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-phone')]
             ])
             ->add('paypal', EmailType::class, [
                 'label' => 'contract-paypal_account',
-                'constraints' => $this->getConstraints('paypal'),
+                'constraints' => $this->getPaypalConstraints(),
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-paypal')]
@@ -77,7 +73,6 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
             ->add('spread', TextareaType::class, [
                 'label' => 'overview-field-spread',
                 'disabled' => $this->getReadonly(),
-                'constraints' => $this->getConstraints('spread'),
                 'required' => false,
                 'attr' => [
                     'help' => Text::get('tooltip-project-spread'),

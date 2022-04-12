@@ -100,10 +100,9 @@ EOT
 			return;
 		}
 
-		$symbol    = Currency::getDefault('id');
 		$processed = 0;
         $action_done = false;
-        $returnd_code = 0;
+        $return_code = 0;
         foreach ($projects as $project) {
             if ((int) $project->status !== Project::STATUS_IN_CAMPAIGN) {
                 if($force) {
@@ -120,7 +119,6 @@ EOT
 
 			$this->debug("Processing project in campaign", [$project, "project_days_active" => $project->days_active, 'project_days_round1'  => $project->days_round1,
                     'project_days_round2'  => $project->days_round2, "percent" => $percent]);
-
 
             // Check project's health
             if ($project->days_active >= $project->days_round1) {
@@ -148,26 +146,7 @@ EOT
                     if ($skip_invests) {
                         $this->warning("Skipping Invests refunds as required\n--");
                     } else {
-                        // Execute "console refund"  command for returning invests
-                        // refund Invests for this project
-                        $args = ' --project ' . escapeshellarg($project->id);
-                        if($update) $args .= ' --update';
-                        else        $args .= ' --any-project';
-                        if($output->isVerbose()) $args .= ' --verbose';
-                        $process = new Process(GOTEO_PATH . 'bin/console refund' . $args);
-                        $process->setTimeout(null); // no time limit
-                        $process->run(function ($type, $buffer) use ($output) {
-                            if (Process::ERR === $type) {
-                                $output->write("<error>$buffer</error>");
-                            } else {
-                                $output->write("<fg=magenta>$buffer</>");
-                            }
-                        });
-                        if($process->isSuccessful()) {
-                            $this->notice('Subcommand processed successfully', ['command' => $process->getCommandLine()]);
-                        } else {
-                            $this->error('Subcommand failed', ['command' => $process->getCommandLine()]);
-                        }
+                        $this->refundProject($update, $project, $output);
                     }
                     $return_code = 2;
                 } else {
@@ -222,4 +201,42 @@ EOT
 		}
         return $return_code;
 	}
+
+    private function refundProject(
+        bool $update,
+        Project $project,
+        OutputInterface $output
+    ): void {
+        $commandWithArgs = [
+            GOTEO_PATH . 'bin/console',
+            "refund",
+            "--project",
+            $project->id,
+        ];
+
+        if ($update) {
+            $commandWithArgs[] = '--update';
+        } else {
+            $commandWithArgs[] = '--any-project';
+        }
+        if ($output->isVerbose()) {
+            $commandWithArgs[] = '--verbose';
+        }
+
+        $process = new Process($commandWithArgs);
+        $process->setTimeout(null);
+        $process->run(function ($type, $buffer) use ($output) {
+            if (Process::ERR === $type) {
+                $output->write("<error>$buffer</error>");
+            } else {
+                $output->write("<fg=magenta>$buffer</>");
+            }
+        });
+
+        if ($process->isSuccessful()) {
+            $this->notice('Subcommand processed successfully', ['command' => $process->getCommandLine()]);
+        } else {
+            $this->error('Subcommand failed', ['command' => $process->getCommandLine()]);
+        }
+    }
 }
