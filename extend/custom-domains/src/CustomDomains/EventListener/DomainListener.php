@@ -2,23 +2,16 @@
 
 namespace CustomDomains\EventListener;
 
-use Goteo\Application\EventListener\AbstractListener;
-use Goteo\Application\Config;
 use Goteo\Application\App;
+use Goteo\Application\Config;
+use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\Lang;
 use Goteo\Application\Session;
-use Goteo\Application\View;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-
-//
 
 class DomainListener extends AbstractListener {
     protected $main_domain;
@@ -28,7 +21,7 @@ class DomainListener extends AbstractListener {
     /**
      * Redirects to the proper custom domain if the path specified requires it
      */
-    public function onRequest(GetResponseEvent $event) {
+    public function onRequest(RequestEvent $event) {
         $request = $event->getRequest();
 
         //not need to do anything on sub-requests
@@ -81,7 +74,6 @@ class DomainListener extends AbstractListener {
                     }
                     // Redirect to custom domain on the index page if is the first path
                     if($current_path === $paths[0] && !$request->getQueryString()) {
-                        // print_r($request->getQueryString());die("$scheme://$domain");
                         $event->setResponse(new RedirectResponse("$scheme://$domain"));
                         return;
                     }
@@ -101,11 +93,10 @@ class DomainListener extends AbstractListener {
         }
     }
 
-
     /**
      * Disables the path part for the domain by assigning the proper controller
      */
-    public function onController(FilterControllerEvent $event) {
+    public function onController(ControllerEvent $event) {
         //not need to do anything on sub-requests
         if (!$event->isMasterRequest()) {
             return;
@@ -180,7 +171,8 @@ class DomainListener extends AbstractListener {
         }
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array
+    {
         return array(
             KernelEvents::REQUEST    => ['onRequest',  100], // We want this to be executed
                                                              // before SessionListener (that handles language

@@ -17,25 +17,22 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
-use Goteo\Library\Text;
 use Goteo\Core\Error as LegacyError;
 use Goteo\Core\Redirection as LegacyRedirection;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Goteo\Library\Text;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-
-//
 
 class ExceptionListener extends AbstractListener {
 
     /**
      * jTraceEx() - provide a Java style exception trace
-     * @param $exception
      * @param $seen      - array passed to recursive calls to accumulate trace lines already seen
      *                     leave as NULL when calling this function
      * @return array of strings, one entry per trace line
@@ -89,9 +86,6 @@ class ExceptionListener extends AbstractListener {
     }
 
     /**
-     * Logs an exception.
-     *
-     * @param \Exception $exception The \Exception instance
      * @param string     $message   The error message to log
      */
     protected function logException(\Exception $exception, $message) {
@@ -112,11 +106,10 @@ class ExceptionListener extends AbstractListener {
             } catch(\RuntimeException $e) {
                 // Ignore error logging here, it should be cached by the app
             }
-
         }
     }
 
-    public function onKernelRequest(GetResponseEvent $event) {
+    public function onKernelRequest(RequestEvent $event) {
         //not need to do anything on sub-requests
         if (!$event->isMasterRequest()) {
             return;
@@ -124,7 +117,7 @@ class ExceptionListener extends AbstractListener {
 
         $request = $event->getRequest();
         /*
-             * Pagina de en mantenimiento
+         * Pagina de en mantenimiento
         */
         if (Config::get('maintenance') && $request->getPathInfo() !== '/about/maintenance'
             && !$request->request->has('Num_operacion')
@@ -137,10 +130,8 @@ class ExceptionListener extends AbstractListener {
     /**
      * Fatal exception handling, provides nice message
      * This will be done after ErrorController processing (or if that fails)
-     * @param  GetResponseForExceptionEvent $event [description]
-     * @return [type]                              [description]
      */
-    public function onKernelException(GetResponseForExceptionEvent $event) {
+    public function onKernelException(ExceptionEvent $event) {
         // close pending buffers
         ob_end_clean();
         // You get the exception object from the received event
@@ -153,7 +144,7 @@ class ExceptionListener extends AbstractListener {
             return;
         }
 
-            // redirect to login on acces denied exception if not logged already
+        // redirect to login on access denied exception if not logged already
         if ($exception instanceof ControllerAccessDeniedException) {
             $error = $exception->getMessage() ? $exception->getMessage() : Text::get('user-login-required-access');
             // JSON response for ApiController
@@ -171,11 +162,10 @@ class ExceptionListener extends AbstractListener {
             }
         }
 
-
         // Customize your response object to display the exception details
         $response = new Response();
 
-        // legacy errors handleing
+        // legacy errors handling
         if ($exception instanceof LegacyError) {
             $code = $exception->getCode();
         }
@@ -227,7 +217,6 @@ class ExceptionListener extends AbstractListener {
             return;
         }
 
-
         $view = 'unknown error';
 
         // TODO:: create a low level path and avoid changing theme here
@@ -248,9 +237,8 @@ class ExceptionListener extends AbstractListener {
     /**
      * Executes expensive code after the response is sent
      * This is effective when php is used in fastcgi mode
-     * @param  PostResponseEvent $event Kernel event
      */
-    public function onKernelTerminate(PostResponseEvent $event) {
+    public function onKernelTerminate(TerminateEvent $event) {
         // send delayed mails from logger
         if (App::isService('logger.mail_handler')) {
             try {
@@ -263,7 +251,8 @@ class ExceptionListener extends AbstractListener {
         }
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array
+    {
         return array(
             KernelEvents::REQUEST => 'onKernelRequest',
             KernelEvents::EXCEPTION => ['onKernelException', -256], // low priority for handler

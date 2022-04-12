@@ -32,7 +32,7 @@ use Goteo\Model\Template;
 use Goteo\Model\User;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class InvestListener extends AbstractListener {
@@ -168,7 +168,6 @@ class InvestListener extends AbstractListener {
         if (!$event->getHttpResponse()) {
             $event->setHttpResponse(new RedirectResponse('/invest/' . $invest->project . '/payment?' . http_build_query(['amount' => $project_amount . $invest->currency, 'reward' => $reward ? $reward->id : '0', 'donate_amount' => $donate_amount_original])));
         }
-
     }
 
     public function onInvestSuccess(FilterInvestRequestEvent $event) {
@@ -466,8 +465,6 @@ class InvestListener extends AbstractListener {
                     ])
                 )
                 ->doAdmin('money');
-
-
         } else {
             $this->warning('Error modifying invest', [$invest, $invest->getOldInvest(), 'errors' => $errors]);
             throw new ModelException(implode(", ", $errors));
@@ -477,7 +474,7 @@ class InvestListener extends AbstractListener {
     /**
      * Response should not be manipulated for controller Invest and method notify
      */
-    public function onKernelResponse(FilterResponseEvent $event) {
+    public function onKernelResponse(ResponseEvent $event) {
 
         $request = $event->getRequest();
 

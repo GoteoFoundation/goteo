@@ -12,25 +12,16 @@ namespace Goteo\Application\EventListener;
 
 use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
-use Goteo\Application\Event\FilterInvestInitEvent;
-use Goteo\Application\Event\FilterInvestRefundEvent;
-use Goteo\Application\Event\FilterInvestRequestEvent;
-use Goteo\Application\Lang;
-use Goteo\Application\Message;
-use Goteo\Application\Session;
 use Goteo\Application\Currency;
+use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
-use Goteo\Model\User\Pool;
 use Goteo\Model\Mail;
 use Goteo\Model\Template;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 
 class DonateInvestListener extends AbstractListener {
 
@@ -38,13 +29,12 @@ class DonateInvestListener extends AbstractListener {
         $method = $event->getMethod();
         $response = $event->getResponse();
         $invest = $method->getInvest();
-        // Only for donate oganization payments
+        // Only for donate organization payments
         if($invest->getProject()||!$invest->donate_amount) {
             return;
         }
 
         // Set amount and donate_amount right
-
         //$invest->setDonateAmount();
 
         $this->warning('DonateInvest finish failed', [$invest, 'project' => '', 'reward' => '', $invest->getUser(), 'message' => $response->getMessage()]);
@@ -75,10 +65,9 @@ class DonateInvestListener extends AbstractListener {
         // Assign response if not previously assigned
         // Goto user start
         if (!$event->getHttpResponse()) {
-            //Credit rechargue
+            //Credit recharge
             $event->setHttpResponse(new RedirectResponse('/donate/payment?' . http_build_query(['amount' => $invest->amount_original . $invest->currency])));
         }
-
     }
 
     public function onInvestSuccess(FilterInvestRequestEvent $event) {
@@ -109,7 +98,7 @@ class DonateInvestListener extends AbstractListener {
             throw new \RuntimeException('Error saving DonateInvest details! ' . implode("\n", $errors));
         }
 
-        // Send mail with amount rechargued
+        // Send mail with amount recharged
 
         $original_lang = $lang = User::getPreferences($user)->comlang;
 
@@ -119,7 +108,7 @@ class DonateInvestListener extends AbstractListener {
               '%CERTIFICATE_URL%'     => Config::getMainUrl() . '/dashboard/wallet/certificate'
                ], $lang)
         ->send($errors)) {
-            // Sent succesfully
+            // Sent successfully
          }
           else {
               $vars['error'] .= implode("\n", $errors);
@@ -162,8 +151,8 @@ class DonateInvestListener extends AbstractListener {
         }
     }
 
-
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array
+    {
         return array(
             AppEvents::INVEST_FAILED => 'onInvestFailed',
             AppEvents::INVEST_SUCCEEDED => 'onInvestSuccess',

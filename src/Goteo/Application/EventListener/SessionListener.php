@@ -26,13 +26,13 @@ use Goteo\Model\Image;
 use Goteo\Util\Parsers\UrlLang;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-
 
 class SessionListener extends AbstractListener {
 
-    public function onRequest(GetResponseEvent $event) {
+    public function onRequest(RequestEvent $event) {
 
         //not need to do anything on sub-requests
         if (!$event->isMasterRequest()) {
@@ -179,7 +179,7 @@ class SessionListener extends AbstractListener {
     /**
      * Modifies the html to add some data
      */
-    public function onResponse(FilterResponseEvent $event) {
+    public function onResponse(ResponseEvent $event) {
         $request = $event->getRequest();
         $response = $event->getResponse();
         //not need to do anything on sub-requests

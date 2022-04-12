@@ -10,25 +10,24 @@
 
 namespace Goteodev\Profiler\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-
-use Goteodev\Profiler\DebugProfiler;
 use Goteo\Application\Session;
+use Goteodev\Profiler\DebugProfiler;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Event;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class ProfilerListener implements EventSubscriberInterface
 {
-    public function onKernelRequest(Event\GetResponseEvent $event) {
+    public function onKernelRequest(Event\RequestEvent $event) {
         DebugProfiler::addEvent($event);
     }
 
-    public function onKernelController(Event\FilterControllerEvent $event) {
+    public function onKernelController(Event\ControllerEvent $event) {
         DebugProfiler::addEvent($event);
     }
 
-    public function onKernelResponse(Event\FilterResponseEvent $event) {
+    public function onKernelResponse(Event\ResponseEvent $event) {
         DebugProfiler::addEvent($event);
         $response = $event->getResponse();
         $request = $event->getRequest();
@@ -72,12 +71,11 @@ class ProfilerListener implements EventSubscriberInterface
         $event->setResponse($response);
     }
 
-
-    public function onKernelTerminate(Event\PostResponseEvent $event) {
+    public function onKernelTerminate(Event\TerminateEvent $event) {
 
     }
 
-    public function onKernelException(Event\GetResponseForExceptionEvent $event) {
+    public function onKernelException(Event\ExceptionEvent $event) {
 
     }
 

@@ -10,7 +10,7 @@ use Goteo\Controller\InvestRecoverController;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 //
@@ -18,7 +18,7 @@ class InvestStatusChangerListener extends AbstractListener {
     private $ok = false;
 
     // añadiendo custom variables
-    public function onController(FilterControllerEvent $event) {
+    public function onController(ControllerEvent $event) {
         //not need to do anything on sub-requests
         if (!$event->isMasterRequest()) {
             return;
