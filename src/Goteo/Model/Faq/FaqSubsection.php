@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Model for Node Faq
@@ -6,37 +6,36 @@
 
  namespace Goteo\Model\Faq;
 
+ use Goteo\Application\Exception\ModelNotFoundException;
+ use Goteo\Core\Model;
  use Goteo\Model\Image;
  use Goteo\Model\Faq;
  use Goteo\Application\Exception;
  use Goteo\Application\Lang;
  use Goteo\Application\Config;
- 
- class FaqSubsection extends \Goteo\Core\Model {
+
+ class FaqSubsection extends Model {
 
   protected $Table = 'faq_subsection';
   protected static $Table_static = 'faq_subsection';
-  
+
   public
       $id,
-      $section_ide,
+      $section_id,
       $name,
       $lang,
       $order;
 
 
-    public static function getLangFields() {
+    public static function getLangFields(): array
+    {
         return ['name'];
     }
 
-
      /**
-     * Get data about faq subsection
-     *
-     * @param   int    $id         check id.
-     * @return  Workshop faq object
-     */
-    static public function get($id) {
+      * @throws ModelNotFoundException
+      */
+    static public function get($id): FaqSubsection {
         $sql="SELECT
                     faq_subsection.*
               FROM faq_subsection
@@ -48,7 +47,7 @@
           return $item;
         }
 
-        throw new Exception\ModelNotFoundException("Faq subsection not found for ID [$id]");
+        throw new ModelNotFoundException("Faq subsection not found for ID [$id]");
     }
 
     /**
@@ -61,8 +60,8 @@
      * @param int pages
      * @return array of programs instances
      */
-    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
-
+    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null): array
+    {
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
@@ -79,8 +78,8 @@
         }
 
         $sql="SELECT
-                  faq_subsection.id as id,
-                  faq_subsection.section_id as section_id,
+                  faq_subsection.id,
+                  faq_subsection.section_id,
                   $fields,
                   faq_subsection.order
               FROM faq_subsection
@@ -112,7 +111,7 @@
 
     $fields = [
         'id',
-        'subsection_id',
+        'section_id',
         'name',
         'lang',
         'order'
@@ -132,11 +131,11 @@
     /**
      * Validate.
      *
-     * @param   type array  $errors  
+     * @param   type array  $errors
      * @return  type bool   true|false
      */
     public function validate(&$errors = array()) {
-      if (empty($this->name)) 
+      if (empty($this->name))
         $errors[] = "The faq subsection has no name";
 
       return empty($errors);
