@@ -11,7 +11,7 @@ class FaqTest extends \PHPUnit\Framework\TestCase {
 
         $controller = new Faq();
 
-        $this->assertInstanceOf('\Goteo\Controller\Faq', $controller);
+        $this->assertInstanceOf(Faq::class, $controller);
 
         return $controller;
     }

@@ -85,13 +85,14 @@ class Faq extends \Goteo\Core\Model {
      */
     public static function getAll ($subsection = 'node', $lang = null) {
         if(!$lang) $lang = Lang::current();
-        $values = array(':section' => $section);
+        $values = array(':subsection' => $subsection);
 
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql="SELECT
                     faq.id as id,
                     faq.node as node,
+                    faq.subsection_id,
                     $fields,
                     faq.order as `order`
                 FROM faq
@@ -222,6 +223,8 @@ class Faq extends \Goteo\Core\Model {
         catch(\PDOException $e) {
             $errors[] = 'Error saving faq: ' . $e->getMessage();
         }
+
+        return false;
     }
 
     /*
