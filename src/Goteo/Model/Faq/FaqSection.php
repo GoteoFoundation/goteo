@@ -1,21 +1,19 @@
-<?php 
-
-/**
- * Model for Node Faq
- */
+<?php
 
  namespace Goteo\Model\Faq;
 
- use Goteo\Model\Image;
- use Goteo\Model\Faq;
- use Goteo\Application\Lang;
  use Goteo\Application\Config;
- 
- class FaqSection extends \Goteo\Core\Model {
+ use Goteo\Application\Exception\ModelNotFoundException;
+ use Goteo\Application\Lang;
+ use Goteo\Core\Model;
+ use Goteo\Model\Faq;
+ use Goteo\Model\Image;
+
+ class FaqSection extends Model {
 
   protected $Table = 'faq_section';
   protected static $Table_static = 'faq_section';
-  
+
   public
       $id,
       $name,
@@ -28,30 +26,26 @@
       $order;
 
 
-    public static function getLangFields() {
+    public static function getLangFields(): array
+    {
         return ['name', 'button_action', 'button_url'];
     }
 
-    // fallbacks to getbyid
-    public static function getBySlug($slug, $lang = null) {
-        $post = self::get((string)$slug, $lang);
-        if(!$post) {
-            $post = self::get((int)$slug, $lang);
-        }
-        return $post;
+    public static function getBySlug(string $slug, $lang = null): FaqSection
+    {
+        return self::get($slug, $lang);
     }
 
-    public static function getById($id, $lang = null) {
+    public static function getById($id, string $lang = null): FaqSection
+    {
         return self::get((int)$id, $lang);
     }
 
      /**
-     * Get data about faq section
-     *
-     * @param   int    $id         check id.
-     * @return  Workshop faq object
-     */
-    static public function get($id) {
+      * @throws ModelNotFoundException
+      */
+    static public function get($id): FaqSection
+    {
         $sql="SELECT
                     faq_section.*
               FROM faq_section
@@ -88,7 +82,8 @@
      * @param int pages
      * @return array of programs instances
      */
-    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
+    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null): array
+    {
 
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
@@ -118,27 +113,24 @@
     }
 
 
-  public function getFaqbySection($limit=0){
+  public function getFaqbySection(int $limit = 0): array
+  {
 
     return Faq::getList(['section'=>$this->id], 0, $limit);
 
   }
 
 
- public function getBannerHeaderImage() {
+ public function getBannerHeaderImage(): Image {
       if(!$this->bannerHeaderImageInstance instanceOf Image) {
           $this->bannerHeaderImageInstance = new Image($this->banner_header_image);
       }
+
       return $this->bannerHeaderImageInstance;
   }
 
-  /**
-   * Save.
-   *
-   * @param   type array  $errors
-   * @return  type bool   true|false
-   */
-  public function save(&$errors = array()) {
+  public function save(&$errors = array()): bool
+  {
 
     if (!$this->validate($errors))
         return false;
@@ -166,14 +158,8 @@
     }
   }
 
-    /**
-     * Validate.
-     *
-     * @param   type array  $errors  
-     * @return  type bool   true|false
-     */
-    public function validate(&$errors = array()) {
-      if (empty($this->name)) 
+    public function validate(&$errors = array()): bool {
+      if (empty($this->name))
         $errors[] = "The node faq has no name";
 
       return empty($errors);
