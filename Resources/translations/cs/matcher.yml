@@ -2,6 +2,7 @@
 channel-join: 'Připojit'
 channel-join-desc: 'Chcete se zapojit do kanálu?'
 channel-join-reviewing: 'Při hodnocení...'
+matcher-apply-pending: 'Tento projekt je zařazen do užšího výběru pro výzvu na spolufinancování %s'
 matcher-duplicateinvest-rules: >
   Tento procesor vynásobí x2 jakýkoli příspěvek od libovolného uživatele Lze nastavit maximální celkovou částku na projekt, maximální částku na příspěvek a maximální počet příspěvků na uživatele
 matcher-drop: 'Kapitálové dorovnání'
