@@ -164,15 +164,18 @@ regular-search-user: Vyhledat uživatele
 regular-see_blog: Blog
 regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Sledovat na Twitteru'
+regular-template: Šablona
 regular-thanks: Děkujeme
 regular-title: Titul
 regular-text: Text
 regular-media: Vídeo (Youtube, Vimeo)
+regular-total: Celkem příspěvků
 regular-translate: Přeložit
 regular-translations: 'Překlady'
 regular-twitter: Twitter
 regular-url: Odkaz
 regular-view: Zobrazit
+regular-view_project: 'Zobrazit projekt'
 regular-web: Web
 regular-weeks: týden
 regular-year: Rok
@@ -186,10 +189,13 @@ regular-facebook-pixel: 'Facebook Pixel'
 regular-call: Dorovnávací spolufinancování
 regular-num-comments: '%s komentářů'
 regular-manage: 'Spravovat'
+regular-no-edit-permissions: Nemáte oprávnění upravovat tento záznam!
 regular-messages: Zprávy
 regular-unknown: Neznámý
+regular-input: Příspěvek
 regular-amount: Částka
 regular-copied: 'Zkopírováno do schránky!'
+regular-remember-me: 'Pamatovat si mé údaje'
 regular-next: Další
 regular-previous: Předchozí
 regular-next-workshops: 'Agenda Fundlabs'
