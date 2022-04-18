@@ -3,9 +3,11 @@ home-channel-project: '%s projektů'
 home-channels-header: Kanály
 home-news-header: 'Co o nás říkají jiní'
 home-patrons-header: Doporučují
+home-promotes-header: Doporučujeme
 home-stories-header: 'Úspěšné příběhy'
 node-home-calls-header: Výzvy
 home-menu-matchfunding: 'Dorovnávací spolufinancování'
+home-menu-our-foundation: 'Naše nadace'
 home-projects-outdate: 'Naléhavé'
 home-projects-matchfunding: 'Dorovnávací spolufinancování'
 home-adventages-savetheworld-title: 'Sociální závazek'
