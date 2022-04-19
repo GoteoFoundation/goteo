@@ -299,3 +299,5 @@ admin-faq-add: Afegir Faq
 admin-faq-pending: "Marcar com pendent de traduïr"
 admin-faq-subsections: "Subseccions"
 admin-faq-subsections-all: "Totes les subseccions"
+admin-faq-sections: "Seccions de les FAQ"
+admin-faq-sections-add: "Afegir secció"

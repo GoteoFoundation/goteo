@@ -602,3 +602,5 @@ admin-faq-add: Añadir Faq
 admin-faq-pending: "Marcar com pendiente de traducir"
 admin-faq-subsections: "Subsecciones"
 admin-faq-subsections-all: "Todas las subsecciones"
+admin-faq-sections: "Secciones de las FAQ"
+admin-faq-sections-add: "Añadir sección"

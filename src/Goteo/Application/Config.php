@@ -30,7 +30,7 @@ use Goteo\Controller\Admin\CommonsSubController;
 use Goteo\Controller\Admin\CommunicationAdminController;
 use Goteo\Controller\Admin\CriteriaSubController;
 use Goteo\Controller\Admin\FaqAdminController;
-use Goteo\Controller\Admin\FaqSubController;
+use Goteo\Controller\Admin\FaqSectionAdminController;
 use Goteo\Controller\Admin\FilterAdminController;
 use Goteo\Controller\Admin\GlossarySubController;
 use Goteo\Controller\Admin\HomeSubController;
@@ -343,6 +343,7 @@ class Config {
         AdminController::addSubController(ChannelProjectsAdminController::class);
         AdminController::addSubController(ImpactDataAdminController::class);
         AdminController::addSubController(FaqAdminController::class);
+        AdminController::addSubController(FaqSectionAdminController::class);
     }
 
     static public function addLegacyAdminControllers()

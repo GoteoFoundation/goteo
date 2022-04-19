@@ -86,6 +86,9 @@ class ModelNormalizer {
         elseif($this->model instanceOf Model\Faq) {
             $ob = new Transformer\FaqTransformer($this->model, $this->keys);
         }
+        elseif ($this->model instanceOf Model\Faq\FaqSection) {
+            $ob = new Transformer\FaqSectionTransformer($this->model, $this->keys);
+        }
         else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
 
         $ob->setUser(Session::getUser())->rebuild();

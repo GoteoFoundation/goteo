@@ -537,3 +537,5 @@ admin-faq-add: Add Faq
 admin-faq-pending: Check as translation is pending
 admin-faq-subsections: "Subsections"
 admin-faq-subsections-all: "All subsections"
+admin-faq-sections: "FAQ's sections"
+admin-faq-sections-add: "Add section"

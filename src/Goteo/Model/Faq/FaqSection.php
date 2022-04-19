@@ -36,9 +36,9 @@
         return self::get($slug, $lang);
     }
 
-    public static function getById($id, string $lang = null): FaqSection
+    public static function getById(int $id): FaqSection
     {
-        return self::get((int)$id, $lang);
+        return self::get($id);
     }
 
      /**
@@ -72,17 +72,10 @@
     }
 
 
-    /**
-     * Faq section listing
-     *
-     * @param array filters
-     * @param string node id
-     * @param int limit items per page or 0 for unlimited
-     * @param int page
-     * @param int pages
-     * @return array of programs instances
-     */
-    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null): array
+     /**
+      * @return array [] FaqSection | int
+      */
+    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, $lang = null)
     {
 
         if(!$lang) $lang = Lang::current();
@@ -93,6 +86,17 @@
 
         if($filter) {
             $sql = " WHERE " . implode(' AND ', $filter);
+        }
+
+        if ($count) {
+            $sql = "SELECT
+                  count(faq_section.id)
+              FROM faq_section
+              $joins
+              $sql";
+            $query = static::query($sql, $values);
+            //die(\sqldbg($sql, $values));
+            return $query->fetchColumn();
         }
 
         $sql="SELECT
