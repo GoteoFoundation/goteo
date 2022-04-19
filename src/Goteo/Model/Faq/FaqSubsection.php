@@ -51,16 +51,9 @@
     }
 
     /**
-     * Faq section listing
-     *
-     * @param array filters
-     * @param string node id
-     * @param int limit items per page or 0 for unlimited
-     * @param int page
-     * @param int pages
-     * @return array of programs instances
+     * @return FaqSubsection [] | int
      */
-    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null): array
+    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null)
     {
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
@@ -75,6 +68,17 @@
 
         if($filter) {
             $sql = " WHERE " . implode(' AND ', $filter);
+        }
+
+        if ($count) {
+            $sql = "SELECT
+                          count(faq_subsection.id)
+                      FROM faq_subsection
+                      $joins
+                      $sql";
+
+            $query = static::query($sql, $values);
+            return $query->fetchColumn();
         }
 
         $sql="SELECT

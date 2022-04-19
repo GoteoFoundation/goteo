@@ -31,6 +31,7 @@ use Goteo\Controller\Admin\CommunicationAdminController;
 use Goteo\Controller\Admin\CriteriaSubController;
 use Goteo\Controller\Admin\FaqAdminController;
 use Goteo\Controller\Admin\FaqSectionAdminController;
+use Goteo\Controller\Admin\FaqSubsectionAdminController;
 use Goteo\Controller\Admin\FilterAdminController;
 use Goteo\Controller\Admin\GlossarySubController;
 use Goteo\Controller\Admin\HomeSubController;
@@ -344,6 +345,7 @@ class Config {
         AdminController::addSubController(ImpactDataAdminController::class);
         AdminController::addSubController(FaqAdminController::class);
         AdminController::addSubController(FaqSectionAdminController::class);
+        AdminController::addSubController(FaqSubsectionAdminController::class);
     }
 
     static public function addLegacyAdminControllers()
