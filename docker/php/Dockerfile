@@ -2,7 +2,7 @@
 # Ubuntu Bionic PHP 7.4 / FPM image #
 ####################################
 
-FROM ubuntu:bionic
+FROM ubuntu:21.10
 WORKDIR /application
 ARG PHP_VERSION=7.4
 
@@ -35,7 +35,6 @@ RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 
-RUN npm install npm@6.13.4 -g
 RUN gem install sass -v 3.4.23
 RUN gem install compass
 RUN npm install -g grunt-cli@1.4.0
