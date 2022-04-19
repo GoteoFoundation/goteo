@@ -11,6 +11,11 @@
 
 namespace Goteo\Library\Forms\Admin;
 
+use Goteo\Util\Form\Type\BooleanType;
+use Goteo\Util\Form\Type\ChoiceType;
+use Goteo\Util\Form\Type\MarkdownType;
+use Goteo\Util\Form\Type\SubmitType;
+use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
@@ -41,28 +46,28 @@ class AdminFaqForm extends AbstractFormProcessor {
         }
 
         $builder
-            ->add('title', 'text', [
+            ->add('title', TextType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => true,
                 'constraints' => $this->getConstraints('name'),
                 'label' => 'regular-title'
             ])
-            ->add('description', 'markdown', [
+            ->add('description', MarkdownType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => true,
                 'label' => 'regular-description'
             ])
-            ->add('subsection_id', 'choice', [
+            ->add('subsection_id', ChoiceType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => true,
                 'label' => 'regular-subsection',
                 'choices' => $subsections
             ])
-            ->add('pending', 'boolean', array(
+            ->add('pending', BooleanType::class, array(
                 'label' => 'admin-faq-pending',
                 'required' => false
             ))
-            ->add('submit', 'submit', [
+            ->add('submit', SubmitType::class, [
                 'label' => 'regular-submit',
                 'attr' => ['class' => 'btn btn-cyan'],
                 'icon_class' => 'fa fa-save'
