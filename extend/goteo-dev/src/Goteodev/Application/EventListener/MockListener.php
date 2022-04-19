@@ -10,17 +10,17 @@
 
 namespace Goteodev\Application\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Goteo\Application\Config;
 use Goteo\Application\App;
+use Goteo\Application\Config;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class MockListener implements EventSubscriberInterface
 {
 
-    public function onKernelRequest(GetResponseEvent $event) {
-
+    public function onKernelRequest(RequestEvent $event)
+    {
         $request = $event->getRequest();
         if(!$event->isMasterRequest()) {
             return;

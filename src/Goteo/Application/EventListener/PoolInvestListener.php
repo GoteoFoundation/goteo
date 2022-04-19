@@ -12,25 +12,15 @@ namespace Goteo\Application\EventListener;
 
 use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
-use Goteo\Application\Event\FilterInvestInitEvent;
-use Goteo\Application\Event\FilterInvestRefundEvent;
-use Goteo\Application\Event\FilterInvestRequestEvent;
-use Goteo\Application\Lang;
-use Goteo\Application\Message;
-use Goteo\Application\Session;
 use Goteo\Application\Currency;
+use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
-use Goteo\Model\User\Pool;
 use Goteo\Model\Mail;
 use Goteo\Model\Template;
-use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 
 class PoolInvestListener extends AbstractListener {
 
@@ -71,10 +61,9 @@ class PoolInvestListener extends AbstractListener {
         // Assign response if not previously assigned
         // Goto user start
         if (!$event->getHttpResponse()) {
-            //Credit rechargue
+            //Credit recharge
             $event->setHttpResponse(new RedirectResponse('/pool/payment?' . http_build_query(['amount' => $invest->amount_original . $invest->currency])));
         }
-
     }
 
     public function onInvestSuccess(FilterInvestRequestEvent $event) {
@@ -122,7 +111,7 @@ class PoolInvestListener extends AbstractListener {
               '%CERTIFICATE_URL%'     => Config::getUrl($lang) . '/dashboard/wallet/certificate'
                ], $user->lang)
         ->send($errors)) {
-            // Sent succesfully
+            // Sent successfully
          }
           else {
               $vars['error'] .= implode("\n", $errors);
@@ -165,8 +154,8 @@ class PoolInvestListener extends AbstractListener {
         }
     }
 
-
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array
+    {
         return array(
             AppEvents::INVEST_FAILED => 'onInvestFailed',
             AppEvents::INVEST_SUCCEEDED => 'onInvestSuccess',
