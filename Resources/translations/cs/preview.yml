@@ -1,5 +1,9 @@
 ---
 guide-project-error-mandatories: 'Chybí povinná pole'
+guide-project-preview: '<strong>Toto je souhrn všech informací o projektu.</strong><br><br> Projděte si body každé části, abyste zjistili, zda byste mohli něco zlepšit, nebo projekt odešlete k hodnocení (pomocí tlačítka „ Odeslat" v dolní části), pokud již byla vyplněna všechna povinná pole, aby mohla být vyhodnocena týmem Goteo a komunitou. Jakmile jej odešlete, nelze provádět žádné změny, dokud znovu neotevřeme jeho vydání. <br><br>Mějte na paměti, že můžeme vybrat jen několik projektů za měsíc, abychom zaručili pozornost a šíření návrhů, které jsou zveřejněny. Brzy vás budeme kontaktovat, abychom se vyjádřili k návrhu kampaně a mohli pokračovat v procesu optimalizace a publikování.'
+guide-project-success-minprogress: 'Dosáhl minimálního procenta'
+guide-project-success-noerrors: 'Všechna povinná pole byla vyplněna'
+guide-project-success-okfinish: 'Lze zaslat k posouzení'
 tooltip-project-comment: 'Máte dotazy nebo připomínky, které chcete, aby si správce Goteo přečetl? Zde můžete vysvětlit část toho, co jste napsali a čím si nejste jisti, navrhnout zlepšení atd.'
 project-send-review-desc: >
   Jakmile ji odešlete, nebudete moci provádět žádné změny, dokud znovu neotevřeme její edici.
