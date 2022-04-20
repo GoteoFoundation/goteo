@@ -1,3 +1,5 @@
 ---
+fatal-error-teapot: '<span class="greenblue">Jak trapné...</span> došlo k neočekávané chybě'
+fatal-error-user: 'Tento uživatel, kterého hledáte... <span class="red">neexistuje :(</span>'
 fatal-error-channel: 'Hledaný kanál <span class="red">neexistuje :(</span>)'
 ajax-load-error: 'Stránku nelze načíst z důvodu chyby [<strong>%ERROR%</strong>]. Možná vypršela platnost vaší uživatelské relace?'
