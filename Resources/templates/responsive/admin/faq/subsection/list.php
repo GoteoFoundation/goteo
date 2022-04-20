@@ -10,10 +10,20 @@ $keys = [
     'subsection',
     'order',
     'actions'
-]
+];
 ?>
 
-<h2><?= $this->t('admin-faq-sections') ?></h2>
+<label for="sections-filter"><?= $this->t('admin-faq-sections') ?></label>
+<div class="form form-group">
+    <select id="sections-filter" name="sections-list" class="form-control" style="margin-bottom:1em;" onchange="window.location.href='/admin/faqsubsection/section/' + this.value">
+        <?php if (!$this->current_section) : ?>
+            <option selected="selected"><?= $this->t('admin-faq-sections-all')?></option>
+        <?php endif; ?>
+        <?php foreach ($this->faq_sections as $section) : ?>
+            <option value="<?= $section->id ?>" <?= ($section->id == $this->current_section)? 'selected="selected"': '' ?>><?= $section->name; ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
 
 <a class="btn btn-cyan" href="/admin/faqsubsection/add"><i class="fa fa-plus"></i> <?= $this->text('admin-faq-subsections-add') ?></a>
 

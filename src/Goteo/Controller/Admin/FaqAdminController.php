@@ -10,6 +10,8 @@
 
 namespace Goteo\Controller\Admin;
 
+use Goteo\Core\Controller;
+use Goteo\Model\Faq\FaqSection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +43,10 @@ class FaqAdminController extends AbstractAdminController
                 ['_controller' => __CLASS__ . "::listAction"]
             ),
             new Route(
+                '/subsection/{subsection}',
+                ['_controller' => __CLASS__ . "::listAction"]
+            ),
+            new Route(
                 '/add',
                 ['_controller' => __CLASS__ . "::editAction"]
             ),
@@ -59,17 +65,38 @@ class FaqAdminController extends AbstractAdminController
         ];
     }
 
-    public function listAction(Request $request, $subsection = null): Response
+    /**
+     * @throws ControllerAccessDeniedException
+     */
+    private function validateFaq(int $id = null): Faq
     {
+
+        if (!$this->user)
+            throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
+
+        if (!$this->user->hasPerm('admin-module-faqs'))
+            throw new ControllerAccessDeniedException();
+
+        return $id ? Faq::getById($id) : new Faq();
+    }
+
+    public function listAction(Request $request, int $subsection = null): Response
+    {
+        $this->validateFaq();
+
         $filters = [];
-        if ($subsection) {
+        if ($subsection)
             $filters['subsection'] = $subsection;
+
+        $page = $request->query->getDigits('pag', 0);
+        $limit = $request->query->getDigits('pag', 25);
+
+        $subsectionCount = FaqSubsection::getList([], 0, 0, true);
+        $faq_subsections = [];
+        foreach(FaqSubsection::getList([], 0, $subsectionCount) as $s) {
+            $faq_subsections[FaqSection::getById($s->section_id)->name][$s->id] = $s->name;
         }
 
-        $limit = 25;
-        $page = $request->query->get('pag') ?: 0;
-
-        $faq_subsections = FaqSubsection::getList();
         $total = Faq::getList($filters,0,0, true);
         $list = Faq::getList($filters, $page * $limit, $limit);
         return $this->viewResponse('admin/faq/list', [
@@ -84,11 +111,7 @@ class FaqAdminController extends AbstractAdminController
 
     public function editAction(Request $request, $id = null): Response
     {
-        if ($id) {
-            $faq = Faq::getById($id);
-        } else {
-            $faq = new Faq();
-        }
+        $faq = $this->validateFaq($id);
 
         $processor = $this->getModelForm('AdminFaq', $faq, (array) $faq, Array(), $request);
         $processor->createForm();
@@ -112,7 +135,7 @@ class FaqAdminController extends AbstractAdminController
     public function deleteAction(Request $request, $id): Response
     {
         try {
-            $faq = Faq::getById($id);
+            $faq = $this->validateFaq();
         } catch (ModelNotFoundException $exception) {
             Message::error($exception->getMessage());
         }

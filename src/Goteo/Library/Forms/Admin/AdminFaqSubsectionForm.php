@@ -18,27 +18,22 @@ use Goteo\Library\Text;
 use Goteo\Model\Faq\FaqSection;
 use Goteo\Model\Faq\FaqSubsection;
 use Goteo\Util\Form\Type\ChoiceType;
-use Goteo\Util\Form\Type\DropfilesType;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextType;
-use Goteo\Util\Form\Type\UrlType;
 use Symfony\Component\Form\FormInterface;
 
 class AdminFaqSubsectionForm extends AbstractFormProcessor
 {
     public function createForm(): AdminFaqSubsectionForm
     {
-        $model = $this->getModel();
         $builder = $this->getBuilder();
 
         $builder
             ->add('name', TextType::class, [
                 'required' => true
             ])
-            ->add('lang', ChoiceType::class, [
-                'choices' => $this->getLanguagesAsChoices()
-            ])
             ->add('section_id', ChoiceType::class, [
+                'label' => Text::get('admin-title-section'),
                 'choices' => $this->getSections()
             ])
             ->add('submit', SubmitType::class, [
@@ -68,7 +63,6 @@ class AdminFaqSubsectionForm extends AbstractFormProcessor
 
         return $this;
     }
-
 
     private function getLanguagesAsChoices(): array
     {

@@ -1,6 +1,6 @@
 <?php
 
-$this->layout('admin/faq/layout');
+$this->layout('admin/faq/section/layout');
 
 $this->section('admin-container-head');
 

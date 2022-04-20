@@ -10,6 +10,7 @@
 
 namespace Goteo\Model;
 
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Model\Faq\FaqSubsection;
@@ -76,6 +77,9 @@ class Faq extends \Goteo\Core\Model {
         $query = static::query($sql, $values);
 
         $faq = $query->fetchObject(__CLASS__);
+
+        if (!$faq)
+            throw new ModelNotFoundException();
 
         return $faq;
     }

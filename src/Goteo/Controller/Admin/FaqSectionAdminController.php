@@ -40,6 +40,22 @@ class FaqSectionAdminController extends AbstractAdminController
         ];
     }
 
+
+    /**
+     * @throws ControllerAccessDeniedException
+     */
+    private function validateFaqSection(int $id = null): Faq
+    {
+
+        if (!$this->user)
+            throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
+
+        if (!$this->user->hasPerm('admin-module-faqs'))
+            throw new ControllerAccessDeniedException();
+
+        return $id ? FaqSection::getById($id) : new FaqSection();
+    }
+
     public function listAction(Request $request): Response
     {
         $page = $request->query->getDigits('pag', 0);
@@ -57,14 +73,14 @@ class FaqSectionAdminController extends AbstractAdminController
 
     public function addAction(Request $request): Response
     {
-        $faqSection = new FaqSection();
+        $faqSection = $this->validateFaqSection(null);
 
         return $this->generateSectionFormView($request, $faqSection);
     }
 
     public function editAction(Request $request, int $id): Response
     {
-        $faqSection = FaqSection::getById($id);
+        $faqSection = $this->validateFaqSection($id);
 
         return $this->generateSectionFormView($request, $faqSection);
     }
@@ -94,7 +110,7 @@ class FaqSectionAdminController extends AbstractAdminController
     public function deleteAction(Request $request, int $id): Response
     {
         try {
-            $faqSection = FaqSection::getById($id);
+            $faqSection = $this->validateFaqSection($id);
         } catch (ModelNotFoundException $e) {
             Message::error($e->getMessage());
             return $this->redirect('/admin/faqsection');

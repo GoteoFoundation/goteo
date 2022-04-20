@@ -7,6 +7,7 @@ use Goteo\Application\Message;
 use Goteo\Library\Forms\Admin\AdminFaqSubsectionForm;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
+use Goteo\Model\Faq\FaqSection;
 use Goteo\Model\Faq\FaqSubsection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +27,10 @@ class FaqSubsectionAdminController extends AbstractAdminController
                 ['_controller' => __CLASS__ . "::listAction"]
             ),
             new Route(
+                '/section/{section}',
+                ['_controller' => __CLASS__ . "::listAction"]
+            ),
+            new Route(
                 '/add',
                 ['_controller' => __CLASS__ . "::addAction"]
             ),
@@ -40,18 +45,28 @@ class FaqSubsectionAdminController extends AbstractAdminController
         ];
     }
 
-    public function listAction(Request $request): Response
+    public function listAction(Request $request, int $section = null): Response
     {
         $page = $request->query->getDigits('pag', 0);
         $limit = $request->query->getDigits('limit', 10);
+        $filters = [];
 
-        $total = FaqSubsection::getList([],0,0, true);
-        $list = FaqSubsection::getList([], $limit * $page, $limit);
+        if ($section) {
+            $filters['section'] = $section;
+        }
+
+        $sectionsCount = FaqSection::getList([],0, 0, true);
+        $sections = FaqSection::getList([], 0, $sectionsCount);
+
+        $total = FaqSubsection::getList($filters,0,0, true);
+        $list = FaqSubsection::getList($filters, $limit * $page, $limit);
 
         return $this->viewResponse('admin/faq/subsection/list',[
             'list' => $list,
             'total' => $total,
-            'limit' => $limit
+            'limit' => $limit,
+            'faq_sections' => $sections,
+            'current_section' => $section
         ]);
     }
 
@@ -59,7 +74,7 @@ class FaqSubsectionAdminController extends AbstractAdminController
     {
         $faqSubsection = new FaqSubsection();
 
-        return $this->generateSectionFormView($request, $faqSubsection);
+        return $this->generateSubsectionFormView($request, $faqSubsection);
     }
 
     public function editAction(Request $request, int $id): Response

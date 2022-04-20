@@ -12,14 +12,14 @@ else
 
 <label for="sections-filter"><?= $this->t('admin-faq-subsections') ?></label>
 <div class="form form-group">
-    <select id="sections-filter" name="sections-list" class="form-control" style="margin-bottom:1em;" onchange="window.location.href='/admin/faq/' + this.value">
+    <select id="sections-filter" name="sections-list" class="form-control" style="margin-bottom:1em;" onchange="window.location.href='/admin/faq/subsection/' + this.value">
         <?php if (!$this->current_subsection) : ?>
             <option selected="selected"><?= $this->t('admin-faq-subsections-all')?></option>
         <?php endif; ?>
         <?php foreach ($this->faq_subsections as $section => $subsections) : ?>
             <optgroup label="<?= $section ?>">
-                <?php foreach($subsections as $name => $id): ?>
-                    <option value="<?= $name; ?>" <?= ($id == $this->current_subsection)? 'selected="selected"': '' ?>><?= $name; ?></option>
+                <?php foreach($subsections as $id => $name): ?>
+                    <option value="<?= $id ?>" <?= ($id == $this->current_subsection)? 'selected="selected"': '' ?>><?= $name; ?></option>
                 <?php endforeach; ?>
             </optgroup>
         <?php endforeach; ?>

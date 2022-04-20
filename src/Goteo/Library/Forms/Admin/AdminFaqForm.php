@@ -41,7 +41,8 @@ class AdminFaqForm extends AbstractFormProcessor {
         $defaults = $options['data'];
 
         $subsections = [];
-        foreach(FaqSubsection::getList() as $s) {
+        $subsectionCount = FaqSubsection::getList([], 0, 0, true);
+        foreach(FaqSubsection::getList([], 0, $subsectionCount) as $s) {
             $subsections[$s->id] = $s->name;
         }
 
