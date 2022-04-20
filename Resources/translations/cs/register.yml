@@ -17,6 +17,9 @@ leave-token-incorrect: 'Kód pro dokončení procesu zrušení registrace je nep
 password-changed-ok: 'Heslo bylo řádně změněno.'
 recover-email-sended: 'Odeslali jsme vám e-mail s žádostí o obnovení hesla k účtu. Zkontrolujte si také složku nevyžádané pošty nebo spamu.'
 recover-request-fail: 'Pomocí těchto údajů nelze obnovit heslo žádného účtu'
+recover-token-incorrect: 'Kód pro obnovení hesla je neplatný'
+register-button-title: Registrace
+register-email-confirm-field: 'Znovu zadejte svou e-mailovou adresu'
 register-password-confirm-field: 'Znovu zadejte heslo'
 register-password-field: Heslo
 user-activate-already-active: 'Uživatelský účet je již aktivován'
