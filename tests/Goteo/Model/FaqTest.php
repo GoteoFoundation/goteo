@@ -3,6 +3,7 @@
 namespace Goteo\Model\Tests;
 
 use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Core\DB;
 use Goteo\Model\Faq;
@@ -148,9 +149,8 @@ class FaqTest extends TestCase {
      * @depends testDelete
      */
     public function testNonExisting(Faq $ob) {
+        $this->expectException(ModelNotFoundException::class);
         $ob = Faq::get($ob->id);
-        $this->assertFalse($ob);
-        $this->assertFalse(Faq::remove($ob->id));
     }
 
     /**
