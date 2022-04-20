@@ -483,6 +483,13 @@ $api->add('api-sdg-footprint-list', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::sdgFootprintAction')
 ));
 
+// Stories sort up/down arbitrarily (use the PUT method to sort)
+$api->add('api-faq-sort', new Route(
+    '/faq/{id}/sort',
+    array('_controller' => 'Goteo\Controller\Api\FaqApiController::faqSortAction'
+        )
+));
+
 // ImpactData images upload (POST method only)
 $api->add('api-impact-data-images-upload', new Route(
     '/impactdata/images',
