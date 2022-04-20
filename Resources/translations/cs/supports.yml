@@ -1,1 +1,7 @@
 ---
+tooltip-project-support: 'Tip pro úpravu existujících spoluprací'
+tooltip-project-support-description: "Stručně vysvětlete, s čím projekt potřebuje pomoci, aby to lidé snáze rozpoznali a byli povzbuzeni k pomoci."
+tooltip-project-support-support: 'Popisný název o nezbytné spolupráci.'
+tooltip-project-support-type: 'Vyberte, zda projekt potřebuje pomoc s konkrétními úkoly nebo půjčkami (materiálu, infrastruktury atd.).  '
+tooltip-project-supports: 'V programu Goteo mohou projekty kromě peněžních příspěvků získat i další typy podpory. Někteří lidé možná nemohou pomoci finančně, ale mohou pomoci svým talentem, časem, energií atd.'
+support-sure-to-remove: 'Opravdu chcete tuto petici smazat?'
