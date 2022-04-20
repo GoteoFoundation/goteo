@@ -2,6 +2,8 @@
 error-register-email: 'E-mailová adresa je povinná'
 error-register-email-confirm: 'Kontrola e-mailu se neshoduje'
 error-register-invalid-password: 'Heslo je neplatné. Zadejte prosím alespoň 6 znaků'
+error-register-password-confirm: 'Kontrola hesla se neshoduje'
+error-register-pasword: 'Heslo nemůže být prázdné'
 register-password-confirm-field: 'Znovu zadejte heslo'
 register-password-field: Heslo
 user-activate-already-active: 'Uživatelský účet je již aktivován'
