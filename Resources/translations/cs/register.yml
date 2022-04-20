@@ -13,6 +13,10 @@ leave-email-sended: 'Odeslali jsme vám e-mail, abyste dokončili proces odhlá�
 leave-process-completed: 'Účet byl úspěšně uzavřen'
 leave-process-fail: 'Proces odhlášení se nám nepodařilo dokončit. Kontaktujte nás prosím na adrese %s'
 leave-request-fail: 'V naší databázi jsme nenašli žádné účty s touto e-mailovou adresou (%s), které bychom mohli odhlásit'
+leave-token-incorrect: 'Kód pro dokončení procesu zrušení registrace je neplatný'
+password-changed-ok: 'Heslo bylo řádně změněno.'
+recover-email-sended: 'Odeslali jsme vám e-mail s žádostí o obnovení hesla k účtu. Zkontrolujte si také složku nevyžádané pošty nebo spamu.'
+recover-request-fail: 'Pomocí těchto údajů nelze obnovit heslo žádného účtu'
 register-password-confirm-field: 'Znovu zadejte heslo'
 register-password-field: Heslo
 user-activate-already-active: 'Uživatelský účet je již aktivován'
