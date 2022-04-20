@@ -69,6 +69,7 @@ overview-field-motivation: 'Motivace a cílová skupina projektu'
 profile-about-header: 'O mně'
 project-invest-total: 'Příspěvky celkem'
 project-messages-send_message-your_answer: 'Zde napište svou odpověď'
+project-messages-send_message_support-your_answer: 'Zde napište zprávu o spolupráci pro %s'
 regular-admin_board: 'Panel administrátora'
 regular-author: 'Autor'
 regular-allsome: 'všechny/některé z'
@@ -148,6 +149,8 @@ regular-matchfunding: 'Dorovnávací spolufinancování'
 regular-media_legend: Legenda
 regular-menu: Menu
 regular-menu-personal: Osobní menu
+regular-message_fail: 'Došlo k chybě při odesílání zprávy'
+regular-message_success: 'Zpráva byla úspěšně odeslána'
 regular-months: měsíce
 regular-more_info: '+ info'
 regular-news: 'Novinky:'
@@ -170,6 +173,7 @@ regular-title: Titul
 regular-text: Text
 regular-media: Vídeo (Youtube, Vimeo)
 regular-total: Celkem příspěvků
+regular-donations: Dary (nejsou zahrnuty v příspěvcích)
 regular-translate: Přeložit
 regular-translations: 'Překlady'
 regular-twitter: Twitter
