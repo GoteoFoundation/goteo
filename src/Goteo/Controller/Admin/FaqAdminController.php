@@ -27,7 +27,8 @@ class FaqAdminController extends AbstractAdminController
 {
     protected static string $icon = '<i class="fa fa-2x fa-question-circle-o"></i>';
 
-    public static function getGroup(): string {
+    public static function getGroup(): string
+    {
         return 'contents';
     }
 
@@ -89,11 +90,11 @@ class FaqAdminController extends AbstractAdminController
 
         $subsectionCount = FaqSubsection::getList([], 0, 0, true);
         $faq_subsections = [];
-        foreach(FaqSubsection::getList([], 0, $subsectionCount) as $s) {
+        foreach (FaqSubsection::getList([], 0, $subsectionCount) as $s) {
             $faq_subsections[FaqSection::getById($s->section_id)->name][$s->id] = $s->name;
         }
 
-        $total = Faq::getList($filters,0,0, true);
+        $total = Faq::getList($filters, 0, 0, true);
         $list = Faq::getList($filters, $page * $limit, $limit);
         return $this->viewResponse('admin/faq/list', [
             'list' => $list,
@@ -102,14 +103,13 @@ class FaqAdminController extends AbstractAdminController
             'faq_subsections' => $faq_subsections,
             'current_subsection' => $subsection
         ]);
-
     }
 
     public function editAction(Request $request, $id = null): Response
     {
         $faq = $this->validateFaq($id);
 
-        $processor = $this->getModelForm('AdminFaq', $faq, (array) $faq, Array(), $request);
+        $processor = $this->getModelForm('AdminFaq', $faq, (array) $faq, array(), $request);
         $processor->createForm();
         $form = $processor->getForm();
         $form->handleRequest($request);
@@ -118,7 +118,7 @@ class FaqAdminController extends AbstractAdminController
                 $processor->save($form);
                 Message::info(Text::get('admin-' . ($id ? 'edit' : 'add') . '-entry-ok'));
                 return $this->redirect("/admin/faq/" . $faq->subsection_id);
-            } catch(FormModelException $e) {
+            } catch (FormModelException $e) {
                 Message::error($e->getMessage());
             }
         }
@@ -140,9 +140,9 @@ class FaqAdminController extends AbstractAdminController
             $faq->dbDelete();
             Message::info(Text::get('admin-remove-entry-ok'));
         } catch (\PDOException $e) {
-          Message::error($e->getMessage());
+            Message::error($e->getMessage());
         }
 
         return $this->redirect('/admin/faq/' . $faq->section);
-	}
+    }
 }
