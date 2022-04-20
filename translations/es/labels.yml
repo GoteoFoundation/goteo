@@ -54,6 +54,7 @@ faq-lb-edit: 'Editando Pregunta'
 faq-lb-list: Listando
 faq-lb-translate: 'Traduciendo Pregunta'
 faqsection-lb: "Secciones de las FAQs"
+faqsubsection-lb: "Subsecciones de las FAQs"
 filter-lb: 'Filtros'
 glossary-lb: Glosario
 glossary-lb-edit: 'Editando Término'
