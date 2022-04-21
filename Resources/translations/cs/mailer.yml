@@ -1,4 +1,5 @@
 ---
+mailer-baja: 'Nechcete dostávat další zprávy od Goteo? Z odběru se můžete odhlásit pomocí tohoto <a href="%s">odkazu</a>'
 mailer-disclaimer: 'Goteo je platforma na podporu občanských, etických a otevřených projektů občanů, podnikatelů, sociálních inovátorů a kreativců, kteří sdílejí smysluplné znalosti pro společnost. '
 newsletter-subscribe: 'Přihlášeni k odběru novinek'
 newsletter-unsubscribe: 'Odhlášení odběru newsletteru'
