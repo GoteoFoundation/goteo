@@ -4,6 +4,7 @@ discover-group-archive-header: Archivováno
 discover-group-fulfilled-header: 'Kolektivní výnosy byly splněny'
 discover-group-recent-header: 'Nedávno zveřejněné'
 discover-group-success-header: 'Úspěšné kampaně'
+discover-patron-header: '<span class="greenblue">%s</span> doporučuje<br>tyto <span class="red">projekty</span>'
 discover-results-empty: 'Nenašli jsme žádné projekty, které by splňovaly vaše kritéria vyhledávání'
 discover-results-header: 'Výsledek hledání'
 discover-searcher-button: Hledat
