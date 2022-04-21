@@ -62,6 +62,9 @@ feed-project_finish_unique: 'Projekt %s <span class="red">ukončil svou kampaň<
 feed-project_goon: 'Projekt %PROJECT% <span class="red">pokračuje v kampani</span> ve druhém kole, když získá <span class="violet">%AMOUNT% (%PERCENT% &#37;) příspěvků nad minimum</span>'
 feed-timeago-justnow: není
 feed-updates-comment: 'Napsali jste <span class="green">Komentář</span> k položce "%s" v %s v projektu %s'
+feed-user-invest-error: 'V příspěvku od %USER% ve výši %AMOUNT% do projektu %PROJECT% došlo k <span class="red">chybě %METHOD% [%MESSAGE%]</span>'
+feed-message-new-support: 'uživatel vloží novou spolupráci na svůj projekt (ovládací panel)'
+feed-message-message-published: '%USER% zveřejnil nový %TYPE% v projektu %PROJECT% s názvem "%TITLE%"'
 feed-message-support-response-published: 'Nová spolupráce %USER% s %TITLE% v projektu %PROJECT%'
 feed-project-ready-sent: 'Projekt odeslán ke kontrole'
 feed-project-ready-ko: 'Chyba %USER% při odesílání projektu %PROJECT% do <span class="red">revize</span>'
