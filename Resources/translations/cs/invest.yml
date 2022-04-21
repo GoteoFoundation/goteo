@@ -95,6 +95,9 @@ invest-user-name-or-anonymous: 'Jméno je povinné, pokud nechcete přispět ano
 invest-created-manually-ok: 'Ruční příspěvek byl úspěšně vytvořen, vyberte odměnu a doručovací adresu.'
 invest-created-manually-ko: 'Chyba při vytváření ručního příspěvku [%s]'
 invest-tip-part-1: 'Chci přidat svůj příspěvek: '
+invest-tip-part-2: 'přispět k poslání <b>nadace Goteo</b><br> pro etičtější a kolaborativnější společnost'
+invest-mail-donate-tip: 'Svým darem jste se rozhodli podpořit <strong>Nadaci Goteo</strong> dalšími %s €, děkujeme vám z celého srdce.'
+invest-update-total: 'Přispíváte na projekt v celkové výši <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span> 👉 <span class="break-down">%PROJECT_AMOUNT% na projekt + < span id="tip-amount">%DONATE_AMOUNT%</span> Nadace Goteo'
 invest-extra-info: 'Další informace'
 donor-legal-entities-natural-person: Fyzická osoba
 donor-legal-entities-legal-person: Právnická osoba
