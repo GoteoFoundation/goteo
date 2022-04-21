@@ -34,6 +34,7 @@ invest-fiscal-title: 'Žádost o darovací certifikát'
 invest-fiscal-warning: '<b>Pokud chcete, abychom vám vystavili potvrzení o daru, abychom byli držiteli daňových výhod</b> vašeho příspěvku, <b>je nutné, abyste nám své osobní údaje poskytli PŘED 15. lednem</b >, protože na základě článku <b>5 nařízení EHA/3021/2007 ze dne 11. října, který schvaluje vzor 182 informativního prohlášení o darech, darech a přijatých příspěvcích</b>, jsme povinni předložit vyúčtování v měsíci lednu každého roku, a to ve vztahu k darům, darům a příspěvkům přijatým nebo dispozicím učiněným v průběhu předchozího kalendářního roku. <br><br> Pokud neobdržíte své údaje ve stanovené lhůtě, vzdáváte se daňového zvýhodnění svého příspěvku, protože nedodržení přijatých darů ve lhůtě pro odevzdání formuláře 182 prohlášení má za následek pokuty pro Nadační kapku z důvodu nedodržení předchozích předpisů.<br>'
 invest-login-alert: 'Abyste mohli přispět, musíte se zaregistrovat nebo <a href="%s">přihlásit</a>'
 invest-mail_info-address: 'Zadali jste následující adresu:'
+invest-mail_info-drop: 'Kromě toho %s poskytl %s matchfunding, prostřednictvím kampaně %s'
 invest-make-sure-save: Uložit
 invest-make-sure-title: Potvrdit
 invest-method: 'Způsob platby'
@@ -50,6 +51,7 @@ invest-payment-success: 'Platba byla úspěšně dokončena'
 invest-payment_method-header: 'Zvolte způsob platby'
 invest-payment-method: 'Způsob platby'
 invest-paypal-method: PayPal
+invest-paypal_disabled: "Tento projekt má deaktivovanou možnost platby PayPal. <a href=\"/faq/investors#q2\" target=\"_blank\">Další informace</a>"
 invest-pool: 'Chci, aby můj příspěvek v případě, že projekt nedosáhne svého cíle, zůstal v mé virtuální peněžence Goteo.'
 invest-pool-available: k dispozici
 invest-pool-error: 'Ve virtuální peněžence nemáte dostatek peněz'
@@ -73,6 +75,7 @@ invest-step-2: Platba
 invest-step-3: Potvrdit
 invest-step-4: Sdílet
 invest-success-make-sure: 'Výborně! Váš příspěvek na projekt <strong>%s</strong> byl úspěšný.'
+investing_closed: 'V této kampani nejsou povoleny žádné další příspěvky.'
 project-invest-confirm: 'Od spolufinancování tohoto projektu vás dělí už jen krůček...'
 project-invest-continue: 'Klikněte na logo platebního systému, který se chystáte použít:'
 project-invest-fail: 'Něco se pokazilo, zkuste to prosím znovu'
@@ -84,11 +87,13 @@ project-return-button: 'Zpět na projekt'
 project-see-msg: 'Prohlédněte si zprávu'
 spread-facebook: 'Sdílejte na Facebooku'
 spread-twitter: 'Sdílejte na Twitteru'
+user-login-required-login: 'Pokud jste se již zaregistrovali, musíte se <a href="%s">přihlásit</a>, pokud ne, musíte vytvořit nového uživatele. (V případě, že chcete přispívat anonymně, můžete tuto možnost zvolit později)'
 warning_nojavascript: 'Chcete-li pokračovat v procesu platby, povolte v nastavení ochrany osobních údajů ve svém prohlížeči javascript'
 invest-no-register: 'Tento krok přeskočte, chci jen přispět'
 invest-user-not-ghost: 'Tento e-mail patří existujícímu uživateli!'
 invest-user-name-or-anonymous: 'Jméno je povinné, pokud nechcete přispět anonymně'
 invest-created-manually-ok: 'Ruční příspěvek byl úspěšně vytvořen, vyberte odměnu a doručovací adresu.'
+invest-created-manually-ko: 'Chyba při vytváření ručního příspěvku [%s]'
 invest-tip-part-1: 'Chci přidat svůj příspěvek: '
 invest-extra-info: 'Další informace'
 donor-legal-entities-natural-person: Fyzická osoba
