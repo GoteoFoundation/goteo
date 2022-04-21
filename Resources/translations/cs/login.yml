@@ -46,6 +46,7 @@ oauth-goteo-openid-sync-password: 'Pokoušíte se propojit existující účet G
 oauth-goteo-user-not-exists: 'Tento uživatel v systému Goteo neexistuje'
 oauth-goteo-user-password-error: 'Tento účet již používá jiného poskytovatele přihlašovacích údajů bez hesla. Pokud chcete používat více než jednoho poskytovatele přihlašovacích údajů, musíte nejprve nastavit heslo.'
 oauth-goteo-user-password-exists: 'Tento uživatel již existuje v systému Goteo'
+oauth-goteo-user-provider-error: 'Pro přístup k tomuto uživateli musíte použít <strong>%s</strong>.<br>Pokud chcete pro tento účet používat více než jednoho poskytovatele přihlášení, musíte nejprve nastavit heslo.'
 oauth-import-about: 'O aplikaci'
 oauth-import-facebook: 'Odkaz na účet na Facebooku'
 oauth-import-linkedin: 'Odkaz na váš účet LinkedIn'
