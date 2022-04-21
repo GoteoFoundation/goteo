@@ -37,6 +37,8 @@ tooltip-project-scope: 'Označuje geografický dopad, který má projekt mít (k
 tooltip-project-spread: 'Vysvětlete nám, jak plánujete šířit projekt ve vaší komunitě: kanály, typ sdělení, akce šíření, minimální kalendář...'
 project-costs-total: 'Celkem'
 project-remove-translation: 'Odstranit překlad'
+project-remove-translation-confirm: 'Opravdu chcete tento překlad smazat? Tuto operaci nelze vrátit zpět!'
+project-removed-translation-ok: 'Překlad smazán!'
 project-reviewing: 'Posuzujeme a kontrolujeme váš projekt'
 project-validation-ok: 'Vyplnili jste formulář - skvělé! Kliknutím na tlačítko níže můžete požádat naše konzultanty o posouzení vašeho projektu.'
 project-validation-errors: 'Projekt ještě není dokončen!'
