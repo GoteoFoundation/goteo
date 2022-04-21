@@ -1,4 +1,5 @@
 ---
+fatal-error-project: 'Tento projekt, který hledáte... <span class="red">neexistuje :(</span>'
 fatal-error-teapot: '<span class="greenblue">Jak trapné...</span> došlo k neočekávané chybě'
 fatal-error-user: 'Tento uživatel, kterého hledáte... <span class="red">neexistuje :(</span>'
 fatal-error-channel: 'Hledaný kanál <span class="red">neexistuje :(</span>)'
