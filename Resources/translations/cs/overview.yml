@@ -18,8 +18,15 @@ overview-field-description: 'Popis'
 overview-field-goal: 'Cíle crowdfundingové kampaně'
 overview-field-main-gallery: Hlavní galerie
 overview-field-image_gallery: 'Aktuální snímky'
+overview-field-image_upload: 'Nahrát obrázek (max. 2 MB)'
+overview-field-keywords: 'Klíčová slova projektu'
+overview-field-lang: 'Jazyk původního textu'
 overview-field-media: 'Úvodní video'
+overview-field-media_preview: 'Náhled'
 overview-field-name: 'Název projektu'
+overview-field-options-currently_avanzado: Pokročilé
+overview-field-options-currently_finalizado: Dokončeno
+overview-field-options-currently_inicial: Úvodní stránka
 overview-field-options-currently_medio: Střední
 overview-field-options-scope_global: Globální
 overview-field-options-scope_local: Lokální
