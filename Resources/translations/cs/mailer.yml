@@ -5,6 +5,7 @@ mailer-sinoves: 'Pokud tuto zprávu nevidíte, použijte tento <a href="%s">odka
 newsletter-block: 'Nechcete dostávat další newslettery od Goteo? <br><a href="%s">Odhlásit odběr</a>.'
 newsletter-subscribe: 'Přihlášeni k odběru novinek'
 newsletter-unsubscribe: 'Odhlášení odběru newsletteru'
+newsletter-unsubscribe-cancel: 'Rozmysleli jste si to? <a href="%s">Přihlašte se znovu k odběru</a>'
 mailer-more-projects-button: 'VIZ DALŠÍ PROJEKTY'
 mailer-from: Od
 mailer-to: Pro
