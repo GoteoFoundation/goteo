@@ -1,4 +1,5 @@
 ---
+images-main-header: 'Obrázky projektu'
 mandatory-project-field-about: 'Je nutné vysvětlit základní rysy projektu'
 mandatory-project-field-category: 'Pro projekt je povinné zvolit alespoň jednu kategorii.'
 mandatory-project-field-description: 'Shrnutí projektu je povinné'
