@@ -15,6 +15,8 @@ invest-address-maildest-field: 'E-mail příjemce'
 invest-address-msgdest-field: 'Zpráva pro příjemce'
 invest-address-myemail-field: 'Váš email'
 invest-address-myname-field: 'Vaše jméno'
+invest-address-name-field: 'Jméno a příjmení'
+invest-address-namedest-field: 'Jméno adresáta'
 invest-address-title: 'Ujistěte se, že dostanete svou odměnu'
 invest-address-zipcode-field: 'PSČ'
 invest-address-legal-entity-field: Právnická osoba
