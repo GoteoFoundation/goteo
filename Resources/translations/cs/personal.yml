@@ -1,5 +1,14 @@
 ---
 mandatory-project-field-address: 'Adresa osoby odpovědné za projekt je povinná'
+mandatory-project-field-contract_email: 'E-mailová adresa osoby odpovědné za projekt je povinná.'
+mandatory-project-field-country: 'Země osoby odpovědné za projekt je povinná'
+mandatory-project-field-phone: 'Telefonní číslo osoby odpovědné za projekt je povinné'
+mandatory-project-field-residence: 'Místo bydliště osoby odpovědné za projekt je povinné'
+mandatory-project-field-zipcode: 'Poštovní směrovací číslo osoby odpovědné za projekt je povinné'
+personal-field-address: 'Adresa (uveďte, zda se jedná o ulici, náměstí, třídu atd.)'
+personal-field-contract_birthdate: 'Datum narození'
+personal-field-contract_data: 'Údaje o osobě odpovědné za projekt'
+personal-field-contract_email: 'E-mail spojený s projektem'
 personal-field-contract_entity-entity: 'Právnické osoby (sdružení, nadace, společnosti)'
 personal-field-contract_entity-person: 'Fyzická osoba'
 personal-field-country: Země
