@@ -30,5 +30,6 @@ tooltip-project-individual_reward-units: 'Omezený počet položek, které mohou
 tooltip-project-individual_rewards: 'Zde je třeba zadat odměnu pro ty, kteří projekt podpoří, spojenou s konkrétní finanční částkou. Dobře si vyberte, co nabízíte, snažte se, aby to byly atraktivní, rozmanité nebo důmyslné produkty/služby, které nevyvolávají další výrobní náklady (mohou být nehmotné, digitální, něco osobního...). Pokud nemáte jinou možnost než tyto dodatečné výdaje, spočítejte, kolik stojí výroba odměny (čas, materiál, doprava atd.), a nabídněte jich omezený počet. Nezapomeňte, že všechny tyto závazky budete muset splnit na konci výroby projektu. '
 tooltip-project-social_reward-description: 'Stručně vysvětlete, jaký typ kolektivního výnosu projekt poskytne nebo umožní.'
 tooltip-project-social_reward-icon-other: 'Stručně uveďte, z čeho bude tento jiný typ kolektivního výnosu sestávat.'
+tooltip-project-social_reward-license: 'Zde je třeba vybrat licenci z každé zobrazené skupiny. Doporučujeme, abyste si je před rozhodnutím pečlivě přečetli, ale nezapomeňte, že pro Goteo je důležité, aby projekty měly co nejotevřenější licence.'
 validate-project-social_rewards-any_error: 'Chybí některé informace o kolektivních výnosech'
 validate-social_reward-license: 'Uveďte povolení ke zlepšení skóre'
