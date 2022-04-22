@@ -15,7 +15,9 @@ matcher-duplicateinvest-max_invests_per_user: 'Maximální počet příspěvků 
 matcher-duplicateinvest-rules: >
   Tento procesor vynásobí x2 jakýkoli příspěvek od libovolného uživatele Lze nastavit maximální celkovou částku na projekt, maximální částku na příspěvek a maximální počet příspěvků na uživatele
 matcher-drop: 'Kapitálové dorovnání'
+matcher-feed-invest: 'Přispěl %AMOUNT% z %DROP% na projekt %PROJECT% prostřednictvím výzvy "match" %MATCHER%'
 matcher-feed-user-invest: 'Výzva shody %MATCHER% přispěla %AMOUNT% do projektu %PROJECT% díky %USER%, který přispěl prostřednictvím %METHOD% '
+matcher-feed-user-invest-error: 'V příspěvku do projektu %PROJECT% od %USER% z %AMOUNT% prostřednictvím %METHOD% došlo k <span class="red">CHYBĚ volání "match" %MATCHER% [%MESSAGE%]</span>'
 matcher-project-accept: 'Gratulujeme! Váš projekt byl přidán do výzvy %s. Nyní se čeká na schválení ze strany zřizovatelů.'
 matcher-project-reject: 'Váš projekt byl z výzvy k předkládání návrhů vyřazen %s'
 matcher-project-discard: 'Projekt byl z výzvy k předkládání návrhů vyřazen %s'
