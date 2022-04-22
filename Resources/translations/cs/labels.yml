@@ -4,7 +4,9 @@ accounts-lb-list: Výpis
 banners-lb-list: Výpis
 blog-lb: Blog
 blog-lb-add: 'Nový příspěvek'
+blog-lb-footer: 'Řazení položek v zápatí'
 blog-lb-list: Výpis
+blog-lb-reorder: 'Řazení položek v záhlaví'
 categories-lb: Kategorie
 categories-lb-add: 'Nová kategorie'
 categories-lb-edit: 'Upravit kategorii'
