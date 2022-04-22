@@ -21,6 +21,7 @@ project-menu_title-updates: 'Zpětná vazba: získejte informace o průběhu pro
 project-messages-closed: 'Zatím není možné posílat zprávy do projektu'
 project-messages-send_direct-header: 'Zaslání veřejné zprávy o podpoře projektu'
 project-not_published: 'Tento projekt zatím není veřejný'
+project-rewards-individual_reward-units_left: 'Zbývá <span class="left">%s</span> jednotek'
 project-spread-header: 'Šiřte informace o tomto projektu a pomozte mu zviditelnit se a získat další dary!'
 project-spread-widget_legend: 'Zkopírujte a vložte kód na své webové stránky nebo blog a pomozte šířit informace o tomto projektu'
 project-spread-widget_title: 'Zveřejnit widget projektu'
