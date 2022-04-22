@@ -8,9 +8,14 @@ matcher-apply-active: 'Tento projekt je registrován ve výzvě k předkládán�
 matcher-apply-pending-desc: 'Pokud máte zájem získat nabízené peníze navíc, musíte přijmout %s'
 matcher-terms-desc: 'Důvody pro účast ve výzvě k předkládání návrhů'
 matcher-apply-reject: 'Ne, děkuji, zříkám se této výzvy'
+matcher-apply-reject-sure: 'Tato výzva na spolufinancování vám může poskytnout další finanční prostředky. Jste si jisti, že se chcete vzdát?'
+matcher-apply-discard-sure: 'Tento projekt se již nebude účastnit výzvy k předkládání návrhů %s Pokračovat?'
+matcher-duplicateinvest-max_amount_per_project: 'Maximální částka, která má být darována na projekt'
+matcher-duplicateinvest-max_invests_per_user: 'Maximální počet příspěvků na uživatele, které se mají násobit'
 matcher-duplicateinvest-rules: >
   Tento procesor vynásobí x2 jakýkoli příspěvek od libovolného uživatele Lze nastavit maximální celkovou částku na projekt, maximální částku na příspěvek a maximální počet příspěvků na uživatele
 matcher-drop: 'Kapitálové dorovnání'
+matcher-feed-user-invest: 'Výzva shody %MATCHER% přispěla %AMOUNT% do projektu %PROJECT% díky %USER%, který přispěl prostřednictvím %METHOD% '
 matcher-project-accept: 'Gratulujeme! Váš projekt byl přidán do výzvy %s. Nyní se čeká na schválení ze strany zřizovatelů.'
 matcher-project-reject: 'Váš projekt byl z výzvy k předkládání návrhů vyřazen %s'
 matcher-project-discard: 'Projekt byl z výzvy k předkládání návrhů vyřazen %s'
