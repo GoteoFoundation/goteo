@@ -32,6 +32,7 @@ overview-field-options-scope_global: Globální
 overview-field-options-scope_local: Lokální
 overview-field-options-scope_nacional: Národní
 overview-field-options-scope_regional: Regionální
+overview-field-play-video: 'Úvodní strana videa'
 overview-field-project_location: Umístění
 overview-field-related: 'Předchozí zkušenosti a vybavení'
 overview-field-reward: Odměny
@@ -40,6 +41,7 @@ overview-field-subtitle: 'Podtitul'
 overview-field-usubs: 'Načíst s univerzálními titulky'
 overview-field-video: 'Další video o motivaci'
 overview-field-social-category: 'Sociální závazek'
+overview-field-social-description: 'Popis sociálního závazku a jeho vztahu k vybraným cílům udržitelného rozvoje'
 overview-fields-images-title: 'Obrázky projektu'
 overview-main-header: 'Popis projektu'
 step-3: Popis
@@ -53,8 +55,18 @@ tooltip-project-currency: 'Uveďte, v jaké měně počítáte náklady na proje
 tooltip-project-currently: 'Uvádí, v jaké fázi tvorby nebo realizace se projekt právě nachází.'
 tooltip-project-description: 'Popište projekt v rozsahu minimálně 80 slov (méně slov bude považováno za chybu). Vysvětlete to tak, aby to pochopil každý. Pokuste se ho přiblížit atraktivním a společenským způsobem, shrnout jeho silné stránky, to, co jej činí jedinečným, inovativním nebo výjimečným.'
 tooltip-project-goal: 'Vyjmenujte hlavní cíle projektu v krátkodobém i dlouhodobém horizontu, a to ve všech aspektech, které je podle vás důležité zdůraznit. Je to další příležitost, jak kontaktovat a získat podporu lidí, kteří s těmito cíli sympatizují.'
+tooltip-project-image: 'Doporučujeme, aby byly rozmanité a kvalitní, ale ne příliš velké (cca 900 pixelů na šířku / max. 2 MB).'
+tooltip-project-image_upload: ODESLAT
+tooltip-project-keywords: 'Při zadávání textu vám systém nabídne klíčová slova, která již napsali jiní uživatelé. Tyto kategorie pomáhají propojit váš projekt s podobně smýšlejícími lidmi.'
+tooltip-project-lang: 'Později můžete projekt přeložit do jiných jazyků na panelu překladů.'
+tooltip-project-media: 'Prezentační video je zásadní součástí upoutání pozornosti komunity, takže čím originálnější je, tím lépe. Nesmí být delší než 4 minuty. Nahrajte jej na Youtube nebo Vimeo a vložte sem adresu URL.'
 tooltip-project-motivation: 'Vysvětlete důvody nebo okolnosti, které vás vedly k navržení projektu, a také komunity nebo uživatele, kterým je určen. Pomůže vám navázat kontakt s lidmi, kteří mají stejné zájmy, problémy nebo vkus.'
 tooltip-project-name: 'Čím kratší, tím lepší, aby byl popisnější, můžete jej rozšířit v následující části.'
+tooltip-project-project_location: 'Uveďte zeměpisnou oblast, na kterou bude mít váš projekt dopad'
+tooltip-project-related: 'Shrňte své zkušenosti nebo zkušenosti skupiny, která projekt řídí. Jaké zkušenosti máte v souvislosti s návrhem? Jaký tým lidí, zdroje a/nebo infrastrukturu máte k dispozici? '
+tooltip-project-reward: 'Co je na jeho odměnách dobré'
+tooltip-project-subtitle: 'Popište svůj projekt ve 140 znacích jasně a stručně. Tento text bude použit k šíření na sociálních sítích.'
+tooltip-project-usubs: 'Zaškrtněte políčko, pokud jste video opatřili titulky v jiných jazycích pomocí univerzálních titulků: http://www.universalsubtitles.org/'
 tooltip-project-video: 'Zvažte zveřejnění videa (na Youtube, Vimeo nebo Giss.tv), kde na kameru stručně vysvětlíte, proč svůj projekt realizujete, a odkaz na něj. Jedná se o něco, co může doplnit hlavní video, přičemž osoba může co nejpříměji sdělit svou potřebu nebo originalitu. Pokud se stydíte mluvit na kameru, může to být také někdo, koho znáte a kdo sleduje projekt nebo nápad a může tento příspěvek poskytnout jako "fanoušek". Empatie a potřeba vidět někoho na druhé straně projektu je pro určité typy spolufinancovatelů velmi důležitá. '
 tooltip-project-social-category: 'Vyberte si svůj sociální závazek z níže uvedených'
 tooltip-project-social-description: 'Vysvětlete, v čem spočívá vámi vybraný sociální závazek a jak zdůvodníte, s jakými cíli udržitelného rozvoje je váš projekt v souladu.'
