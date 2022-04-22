@@ -1,5 +1,7 @@
 ---
 node-footer-about: 'Sociální síť pro spolufinancování a spolupráci s tvůrčími projekty, které společné podporují <a href="/project/create">otevřený zdrojový kód</a>'
+node-footer-help-what: 'Co je crowdfunding'
+node-footer-help-why: 'Proč je Goteo jiné'
 node-footer-investors-donate: 'Dary a příspěvky'
 node-footer-investors-invest: 'Jak podpořit projekt'
 node-footer-investors-payment: 'Jak fungují výplaty'
@@ -22,3 +24,4 @@ node-side-sumcalls-campaigns: Aktivní
 node-side-summary-amount: 'Získané peníze'
 node-projects-title: 'Projekty'
 node-resources-title: 'Co potřebujete?'
+node-workshops-title: 'Nenechte si ujít naše školení'
