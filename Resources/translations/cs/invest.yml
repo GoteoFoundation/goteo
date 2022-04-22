@@ -1,4 +1,5 @@
 ---
+bazar-spread-text: '%s - O letošních Vánocích darujte otevřený crowdfunding a crowdfunding pro společné dobro s @goteofunding #openbazaar'
 bazar-thanks: 'Děkujeme, že jste navštívili náš bazar, můžete nám pomoci šířit informace.'
 currency-alert: "Upozorňujeme, že transakce je v EUR. Zaplatíte přibližně <span id=\"reminder_conversion\">%s</span> EUR <a href=\"/faq/investors#q115\" target=\"_blank\">Další informace</a>"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Jaké platební systémy Goteo nabízí? Jsou bezpečné? </a>'
@@ -11,6 +12,9 @@ invest-address-friend-field: 'Zaškrtněte toto políčko, pokud se jedná o dá
 invest-address-gender-field: Pohlaví
 invest-address-header: 'Kde chcete odměnu obdržet (pouze v případě poštovních zásilek)'
 invest-address-maildest-field: 'E-mail příjemce'
+invest-address-msgdest-field: 'Zpráva pro příjemce'
+invest-address-myemail-field: 'Váš email'
+invest-address-myname-field: 'Vaše jméno'
 invest-address-title: 'Ujistěte se, že dostanete svou odměnu'
 invest-address-zipcode-field: 'PSČ'
 invest-address-legal-entity-field: Právnická osoba
