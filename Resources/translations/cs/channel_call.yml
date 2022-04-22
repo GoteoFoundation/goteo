@@ -27,6 +27,7 @@ channel-call-resources-description: Stáhněte si vygenerované otevřené zdroj
 channel-call-resources-button: Zobrazit všechny zdroje
 channel-call-intro-factory-title: 'Goteo'
 channel-call-intro-pitcher-tab-title: 'Vytvořte svůj projekt'
+channel-call-intro-pitcher-tab-description: 'Vypusťte svůj nápad a projekt do světa prostřednictvím občanské, kooperativní, sociální a udržitelné crowdfundingové platformy.'
 channel-call-intro-pitcher-tab-action: 'Staňte se podporovatelem!'
 channel-call-intro-pitcher-tab-action-url: '/project/create'
 channel-call-intro-pitcher-tab-video: 'https://www.youtube.com/embed/5bzfj2IkznQ'
