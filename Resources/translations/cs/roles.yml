@@ -1,2 +1,7 @@
 ---
+role-perm-name-translate-language: 'Umí překládat obecný obsah do přiděleného jazyka'
+role-perm-name-review-project: 'Projekty si můžete před zveřejněním prohlédnout/kontrolovat'
+role-perm-name-view-any-project: 'Můžete si prohlédnout jakýkoli projekt v jakémkoli stavu'
+role-perm-name-edit-published-projects: 'Upravit můžete jakýkoli publikovaný projekt'
+role-perm-name-publish-projects: 'Může publikovat/odebírat projekty přidělené jako konzultant'
 role-perm-name-remove-projects: 'Projekty přiřazené jako konzultant můžete odstranit'
