@@ -173,8 +173,14 @@ regular-see_all: 'Zobrazit vše'
 regular-see_blog: Blog
 regular-see_details: 'Zobrazit detaily'
 regular-see_more: 'Zobrazit více'
+regular-send_message: 'Odeslat zprávu'
+regular-share-facebook: 'Goteo na Facebooku'
 regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Sledovat na Twitteru'
+regular-share_this: 'Sdílet:'
+regular-sorry: 'Omlouváme se'
+regular-spread: ROZŠÍŘENÍ
+regular-status: Stav
 regular-template: Šablona
 regular-thanks: Děkujeme
 regular-title: Titul
@@ -184,6 +190,7 @@ regular-total: Celkem příspěvků
 regular-donations: Dary (nejsou zahrnuty v příspěvcích)
 regular-translate: Přeložit
 regular-translations: 'Překlady'
+regular-translate_board: 'Panel překladatele'
 regular-twitter: Twitter
 regular-url: Odkaz
 regular-view: Zobrazit
