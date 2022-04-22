@@ -21,7 +21,10 @@ personal-field-post_address-same: Stejné
 personal-field-zipcode: 'Psč'
 personal-main-header: 'Údaje o zřizovateli'
 step-2: Zřizovatel
+tooltip-project-contract_birthdate: 'Uveďte prosím své datum narození. V žádném případě nebudou zveřejněny, zajímají nás pouze pro statistické účely.'
 tooltip-project-contract_data: 'Ať už se jedná o fyzickou nebo právnickou osobu, je nutné, aby byl někdo uveden jako zřizovatel projektu a také pro dialog s týmem Goteo. Ten se nemusí nutně shodovat s profilem uživatele uvedeným v předchozí části.'
+tooltip-project-contract_email: 'Hlavní e-mailová adresa spojená s projektem. Zde budete dostávat oznámení a zprávy od týmu Goteo týkající se navrhovaného projektu. Doporučujeme, abyste ji v průběhu kampaně pravidelně kontrolovali'
+tooltip-project-entity_name: 'Napište název organizace tak, jak je uveden v jejím DIČ.'
 tooltip-project-entity_office: 'Napište, v jaké funkci zastupujete organizaci (tajemník, předseda, pokladník...). '
 tooltip-project-main_address: 'Daňová adresa osoby nebo organizace (podle potřeby).'
 tooltip-project-phone: 'Mobilní nebo pevné telefonní číslo s předvolbou.'
