@@ -1,2 +1,6 @@
 ---
 tooltip-project-cost-type-material: 'Materiály potřebné pro projekt, jako jsou nástroje, psací potřeby, počítačové vybavení atd.'
+tooltip-project-cost-type-structure: 'Investice do nákladů spojených s prostory, dopravními prostředky nebo jinou základní infrastrukturou pro realizaci projektu.  '
+tooltip-project-cost-type-task: 'Úkoly, při nichž je třeba investovat znalosti a/nebo dovednosti do vývoje některé části projektu.'
+tooltip-project-support-type-lend: 'Dočasné zapůjčení materiálu potřebného pro projekt nebo zapůjčení infrastruktury či prostor na určitou dobu. Může jít i o trvalé půjčky, tedy dary :)'
+tooltip-project-support-type-task: 'Spolupráce vyžadující dovednost pro konkrétní úkol, a to buď na dálku prostřednictvím počítače, nebo tváří v tvář.'
