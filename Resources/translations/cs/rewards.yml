@@ -34,5 +34,7 @@ tooltip-project-social_reward-license: 'Zde je třeba vybrat licenci z každé z
 tooltip-project-social_reward-reward: 'Snažte se, aby byl název co nejvíce popisný. Nezapomeňte, že další odměny můžete přidat níže.'
 tooltip-project-social_reward-type: 'Určuje typ vrácených souborů: DIGITÁLNÍ SOUBORY, jako je hudba, video, textové dokumenty atd. KÓD ZDROJE z počítačového softwaru. NÁVRHY plánů nebo vzorů. MANUÁLY v podobě stavebnic, obchodních plánů, návodů nebo receptů. SLUŽBY, jako jsou semináře, kurzy, poradenství, přístup na webové stránky, online databáze. '
 tooltip-project-social_rewards: 'Definuje typ návratnosti nebo výnosů projektu, ke kterým lze otevřeně přistupovat, a licenci, která by je měla regulovat. Pokud máte pochybnosti o tom, jakou možnost zvolit nebo co by bylo pro váš případ nejvhodnější, <a href="/contact" target="new">kontaktujte nás</a> a my vám v tomto bodě poradíme.'
+validate-project-individual_rewards: 'Označuje více než 3 individuální odměny ke zlepšení skóre.'
+validate-project-individual_rewards-any_error: 'Chybí některé informace o jednotlivých odměnách'
 validate-project-social_rewards-any_error: 'Chybí některé informace o kolektivních výnosech'
 validate-social_reward-license: 'Uveďte povolení ke zlepšení skóre'
