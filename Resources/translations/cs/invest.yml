@@ -1,8 +1,12 @@
 ---
+faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Jaké platební systémy Goteo nabízí? Jsou bezpečné? </a>'
+imperative-register: Registrace
 invest-address-address-field: Směr
 invest-address-birthyear-field: 'Rok narození'
 invest-address-country-field: Země
+invest-address-fail: 'Jsou zde prázdná pole nebo pole s chybami, zkontrolujte prosím formulář, abyste mohli obdržet odměnu!'
 invest-address-gender-field: Pohlaví
+invest-address-header: 'Kde chcete odměnu obdržet (pouze v případě poštovních zásilek)'
 invest-address-title: 'Ujistěte se, že dostanete svou odměnu'
 invest-address-zipcode-field: 'PSČ'
 invest-address-legal-entity-field: Právnická osoba
