@@ -6,6 +6,9 @@ newsletter-block: 'Nechcete dostávat další newslettery od Goteo? <br><a href=
 newsletter-subscribe: 'Přihlášeni k odběru novinek'
 newsletter-unsubscribe: 'Odhlášení odběru newsletteru'
 newsletter-unsubscribe-cancel: 'Rozmysleli jste si to? <a href="%s">Přihlašte se znovu k odběru</a>'
+newsletter-subscribe-cancel: 'Nechtěli jste se přihlásit k odběru? <a href="%s">zrušte své odebírání</a>'
+subscribe-request-success: 'Gratulujeme! Přihlásili jste se k odběru našeho zpravodaje (%s).'
+unsubscribe-request-success: 'Odhlásili jste se z odběru zpravodaje (%s).'
 mailer-more-projects-button: 'VIZ DALŠÍ PROJEKTY'
 mailer-from: Od
 mailer-to: Pro
