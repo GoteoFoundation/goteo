@@ -169,7 +169,10 @@ regular-search: Hledat
 regular-search-user: Vyhledat uživatele
 regular-search-desc: 'Zde napište své hledání'
 regular-search-tooltip: 'Zadejte hledání a stiskněte klávesu enter'
+regular-see_all: 'Zobrazit vše'
 regular-see_blog: Blog
+regular-see_details: 'Zobrazit detaily'
+regular-see_more: 'Zobrazit více'
 regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Sledovat na Twitteru'
 regular-template: Šablona
