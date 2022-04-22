@@ -31,5 +31,8 @@ tooltip-project-individual_rewards: 'Zde je třeba zadat odměnu pro ty, kteří
 tooltip-project-social_reward-description: 'Stručně vysvětlete, jaký typ kolektivního výnosu projekt poskytne nebo umožní.'
 tooltip-project-social_reward-icon-other: 'Stručně uveďte, z čeho bude tento jiný typ kolektivního výnosu sestávat.'
 tooltip-project-social_reward-license: 'Zde je třeba vybrat licenci z každé zobrazené skupiny. Doporučujeme, abyste si je před rozhodnutím pečlivě přečetli, ale nezapomeňte, že pro Goteo je důležité, aby projekty měly co nejotevřenější licence.'
+tooltip-project-social_reward-reward: 'Snažte se, aby byl název co nejvíce popisný. Nezapomeňte, že další odměny můžete přidat níže.'
+tooltip-project-social_reward-type: 'Určuje typ vrácených souborů: DIGITÁLNÍ SOUBORY, jako je hudba, video, textové dokumenty atd. KÓD ZDROJE z počítačového softwaru. NÁVRHY plánů nebo vzorů. MANUÁLY v podobě stavebnic, obchodních plánů, návodů nebo receptů. SLUŽBY, jako jsou semináře, kurzy, poradenství, přístup na webové stránky, online databáze. '
+tooltip-project-social_rewards: 'Definuje typ návratnosti nebo výnosů projektu, ke kterým lze otevřeně přistupovat, a licenci, která by je měla regulovat. Pokud máte pochybnosti o tom, jakou možnost zvolit nebo co by bylo pro váš případ nejvhodnější, <a href="/contact" target="new">kontaktujte nás</a> a my vám v tomto bodě poradíme.'
 validate-project-social_rewards-any_error: 'Chybí některé informace o kolektivních výnosech'
 validate-social_reward-license: 'Uveďte povolení ke zlepšení skóre'
