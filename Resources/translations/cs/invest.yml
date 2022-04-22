@@ -1,4 +1,6 @@
 ---
+bazar-thanks: 'Děkujeme, že jste navštívili náš bazar, můžete nám pomoci šířit informace.'
+currency-alert: "Upozorňujeme, že transakce je v EUR. Zaplatíte přibližně <span id=\"reminder_conversion\">%s</span> EUR <a href=\"/faq/investors#q115\" target=\"_blank\">Další informace</a>"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Jaké platební systémy Goteo nabízí? Jsou bezpečné? </a>'
 imperative-register: Registrace
 invest-address-address-field: Směr
@@ -8,6 +10,7 @@ invest-address-fail: 'Jsou zde prázdná pole nebo pole s chybami, zkontrolujte 
 invest-address-friend-field: 'Zaškrtněte toto políčko, pokud se jedná o dárek pro někoho jiného'
 invest-address-gender-field: Pohlaví
 invest-address-header: 'Kde chcete odměnu obdržet (pouze v případě poštovních zásilek)'
+invest-address-maildest-field: 'E-mail příjemce'
 invest-address-title: 'Ujistěte se, že dostanete svou odměnu'
 invest-address-zipcode-field: 'PSČ'
 invest-address-legal-entity-field: Právnická osoba
@@ -31,6 +34,7 @@ invest-called-nodrop: 'Ve výzvě %s není v současné době k dispozici <stron
 invest-called-rest: 'Ve výzvě <span class="call">%s</span> zbývá pouze <strong>%s Eur</strong> z <strong>Capital Riego</strong>'
 invest-card-method: Karta
 invest-cash-method: 'Osobně (v hotovosti)'
+invest-donation-header: 'Zadejte daňové údaje pro dar'
 invest-fiscal-fail: 'Jsou zde prázdná pole nebo pole s chybami, zkontrolujte prosím daňový formulář, abyste mohli svůj příspěvek odečíst!'
 invest-fiscal-skip: 'Tyto údaje nyní nechci vyplňovat.'
 invest-fiscal-renounce: 'Nepřeji si obdržet darovací certifikát'
