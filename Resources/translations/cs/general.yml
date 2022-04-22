@@ -149,6 +149,7 @@ regular-matchfunding: 'Dorovnávací spolufinancování'
 regular-media_legend: Legenda
 regular-menu: Menu
 regular-menu-personal: Osobní menu
+regular-message-clipboard-fail: 'Vyberte a zkopírujte tento odkaz'
 regular-message_fail: 'Došlo k chybě při odesílání zprávy'
 regular-message_success: 'Zpráva byla úspěšně odeslána'
 regular-months: měsíce
