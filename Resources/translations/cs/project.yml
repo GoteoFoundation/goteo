@@ -1,24 +1,30 @@
 ---
 contract-paypal_account: 'E-mailová adresa vašeho účtu PayPal:'
 currency-switch: ZMĚNIT
+overview-field-spread: Rozprostření
 personal-field-accounts: 'Účty projektů'
 project-about-title: 'O projektu'
 project-call-got: 'Projekt již získal <strong>%s</strong> od <strong>%s</strong>'
 project-chart-amount-end-round: 'Závěrečné kolo'
+project-chart-amount-ideal: Ideální
 project-chart-amount-reached: Kumulované
+project-chart-costs-reset: 'Zpět'
 project-collaborations-available: 'dostupná partnerství'
+project-collaborations-number: 'spolupracovníci'
 project-collaborations-supertitle: 'Nefinanční potřeby'
 project-collaborations-title: 'Hledá se'
 project-comment-start-sesion: 'Přihlášení'
 project-comment-start-sesion-2: 'zanechat komentář'
 project-error-main-lang: 'Tento jazyk [%s] nelze nastavit jako hlavní jazyk, protože je již přiřazen překladu. Odstranění stávajícího překladu v [%s] z panelu překladů, aby bylo možné zadat nový překlad.'
 project-general-information: 'Základní informace'
+project-go-up: 'zpět nahoru'
 project-help-cost: 'Potřebuji pomoc s definicí nákladů'
 project-help-license: 'Potřebuji pomoci s definicí kolektivních výnosů a licencí'
 project-hide-donors: 'Skrýt spolufinancovatele'
 project-hide-needs: 'Skrýt seznam požadavků'
 project-invest: Příspěvek
 project-invest-msg: 'Zpráva o podpoře:'
+project-langs-header: 'Projekty'
 project-media-play_video: 'Přehrát Video'
 project-menu-home: Projekt
 project-menu-messages: Spolupracující
