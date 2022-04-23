@@ -13,5 +13,6 @@ questionnaire-scoring-save: "Výsledek uložen správně"
 questionnaire-max-score-help: "To je maximální počet bodů za tuto otázku."
 question-save-error: "Otázka nebyla smazána"
 questionnaire-apply-title: Žádost o účast v %s
+questionnaire-answer-questions: Odpovězte na tuto otázku
 questionnaire-already-answered-by-project: Tento dotazník již byl zodpovězen.
 questionnaire-question-answer-dropfile-not-found: "Dokument nebyl nalezen"
