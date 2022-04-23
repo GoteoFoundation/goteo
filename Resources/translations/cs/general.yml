@@ -39,6 +39,7 @@ fancybox: 'Textový fancybox'
 goteo-return-button: 'Zpět na Goteo'
 guide-dashboard-user-access: 'Zde můžete upravit údaje, které používáte pro přístup k účtu Goteo.'
 guide-dashboard-user-personal: "Tyto údaje byste měli vyplnit pouze v případě, že jste vytvořili projekt a chcete, aby byl spolufinancován a podporován prostřednictvím programu Goteo. Informace v této části jsou nezbytné pro kontaktování v případě, že získáte požadované finanční prostředky, aby mohla být provedena platba."
+guide-project-comment: guide-project-comment
 guide-project-contract-information: 'Údaje v této části jsou nezbytné pro kontaktování v průběhu kampaně a v případě získání požadovaných finančních prostředků pro provedení platby po skončení kampaně. Je důležité mít na paměti, že osoba, která iniciativu propaguje a podepisuje smlouvu (pokud je kampaň úspěšná), musí být stejnou osobou/subjektem, který obdrží peníze. V případě organizací se doporučuje, aby osoba zastupující organizaci mohla být následně formálně akreditována (např. prostřednictvím stanov nebo osvědčení tajemníka se souhlasem předsedy v případě sdružení). Tyto úplné informace budou v případě úspěchu vyžádány po prvním kole.'
 guide-project-costs: "<strong>V této části musíte připravit malý rozpočet založený na nákladech, které spočítáte na provedení projektu.</strong><br><br>Musíte specifikovat podle úkolů, infrastruktury nebo materiálů. Pokuste se být realističtí ohledně nákladů a stručně vysvětlete, proč musíte pokrýt každou z nich. Mějte na paměti, že obecně platí, že většinu projektu musí provádět přímo osoba nebo tým, který projekt propaguje, a nesmí být zadávána třetím stranám. Při výpočtu je nutné zohlednit i provize za poskytování Goteo a transakční služby, které se v součtu pohybují mezi 4,8 % a cca. 6 %, v závislosti na tom, zda si aktivujete možnost platby přes Paypal nebo ne (<a href=\"/faq/sponsor#q98\" target=\"new\">+ informace v našich FAQ</a>).<br>< br><strong>Velmi důležité</strong>: Ve společnosti Goteo rozlišujeme základní náklady a dodatečné náklady. Prvních musí být plně dosaženo, aby bylo možné získat financování, zatímco druhé jsou požadovány a získány přímo v pozdějším kole, jakmile projekt probíhá, aby se pokryly náklady na optimalizaci (šíření, návrh, rozsah, více jednotek, atd.) Doporučuje se, aby tyto dodatečné náklady nepřesáhly polovinu celkových nákladů na projekt.<br>V případě, že chcete, aby byla vaše kampaň kratší, z jednoho kola na „vše nebo nic“, můžete to označit zaškrtnutím políčka odpovídající kolonce, i když kalkulace nákladů musí být stejná. "
 guide-project-description: "<strong>Toto je část, kde jsou podrobně vysvětleny koncepční aspekty projektu. </strong><br><br>Je to první věc, kterou každý uživatel sítě najde, proto si dejte pozor na formulaci a vyhněte se překlepům. Uvidíte, že jsou zde povinná pole, jako je zahrnutí videa nebo nahrávání obrázků. Je tomu tak proto, že je považujeme za nezbytné pro úspěšné zahájení fundraisingové kampaně prostřednictvím Goteo.<br><br>Mějte na paměti, že to, co je na Goteo nejvíce ceněno, jsou: informace nebo bezplatné znalosti obecného zájmu, kterými váš projekt přispěje komunita, originalita, aspirace na řešení společenské poptávky, potenciál přilákat širokou komunitu zainteresovaných lidí, aby bylo jasné, že promotérský tým má dovednosti a zkušenosti, aby to dokázal dotáhnout do konce. Proto neztrácejte ze zřetele podávání zpráv o těchto aspektech."
@@ -70,6 +71,8 @@ profile-about-header: 'O mně'
 project-invest-total: 'Příspěvky celkem'
 project-messages-send_message-your_answer: 'Zde napište svou odpověď'
 project-messages-send_message_support-your_answer: 'Zde napište zprávu o spolupráci pro %s'
+regular-add: Nová registrace
+regular-all: Vše
 regular-admin_board: 'Panel administrátora'
 regular-author: 'Autor'
 regular-allsome: 'všechny/některé z'
@@ -140,6 +143,7 @@ regular-linkedin: LinkedIn
 regular-loading: Načítání...
 regular-login: Přihlášení
 regular-logout: 'Odhlásit se'
+regular-looks_for: 'hledání:'
 regular-main-header: Goteo.org
 regular-male: Muž
 regular-others: Ostatní
@@ -247,6 +251,7 @@ user-changeemail-fail: 'Chyba při změně e-mailové adresy'
 user-register-success: 'Uživatel byl úspěšně zaregistrován. Poté obdržíte e-mail s žádostí o aktivaci.'
 validate-project-social_rewards: 'Je povinné uvést alespoň jednu hromadnou vratku '
 validate-project-total-costs: "Optimální náklady nesmí být o více než 50 % vyšší než minimální náklady. Buď zvýšíte základní náklady, nebo snížíte dodatečné náklady."
+user-promoter: 'Řídící uživatel'
 stories-type-matcher: 'Matcher'
 newsletter-donate-description: 'Abychom mohli i nadále pomáhat dalším a dalším občanským iniciativám'
 regular-icon: Ikona
