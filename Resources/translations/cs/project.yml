@@ -42,9 +42,11 @@ project-messages-send_direct-header: 'Zaslání veřejné zprávy o podpoře pro
 project-messages-send_message-button: Odeslat
 project-messages-send_message-header: 'Napište svou zprávu'
 project-not_published: 'Tento projekt zatím není veřejný'
+project-related: 'Související projekty'
 project-rewards-bonus_reward-title: Bonus
 project-rewards-individual_reward-title: 'Individuální odměny'
 project-rewards-individual_reward-units_left: 'Zbývá <span class="left">%s</span> jednotek'
+project-rewards-supertitle: 'Co za to nabízí'
 project-rounds: 'Jednokolový projekt'
 project-share-header: 'Sdílet tento projekt'
 project-show-donors: 'Zobrazit spolufinancovatele'
@@ -81,6 +83,13 @@ tooltip-project-scope: 'Označuje geografický dopad, který má projekt mít (k
 tooltip-project-spread: 'Vysvětlete nám, jak plánujete šířit projekt ve vaší komunitě: kanály, typ sdělení, akce šíření, minimální kalendář...'
 tooltip-updates-allow_comments: tooltip-updates-allow_comments
 tooltip-updates-date: tooltip-updates-date
+tooltip-updates-home: 'Text tooltip-updates-home'
+tooltip-updates-image: tooltip-updates-image
+tooltip-updates-image_upload: tooltip-updates-image_upload
+tooltip-updates-media: tooltip-updates-media
+tooltip-updates-tags: 'Text tooltip-updates-tags'
+tooltip-updates-text: tooltip-updates-text
+tooltip-updates-title: tooltip-updates-title
 project-obtained: 'Získáno'
 project-costs-total: 'Celkem'
 project-remove-translation: 'Odstranit překlad'
