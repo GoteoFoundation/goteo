@@ -1,5 +1,10 @@
 ---
+questionnaire-required: 'Odpověď je povinná'
+questionnaire-text: 'Otázka k zodpovězení'
+questionnaire-boolean: 'Jednoduchá odpověď ano/ne'
+questionnaire-dropfiles: 'Nahrávání souborů'
 questionnaire-scoring-save: "Výsledek uložen správně"
 questionnaire-max-score-help: "To je maximální počet bodů za tuto otázku."
 questionnaire-apply-title: Žádost o účast v %s
 questionnaire-already-answered-by-project: Tento dotazník již byl zodpovězen.
+questionnaire-question-answer-dropfile-not-found: "Dokument nebyl nalezen"
