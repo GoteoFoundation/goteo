@@ -10,7 +10,10 @@ profile-my_worth-header: 'Rychlost kapání příspěvků'
 profile-name-header: 'Profil '
 profile-patron-header: 'Doporučuje <span class="red">%s projektů</span>'
 profile-sharing_interests-header: 'Sdílené zájmy'
+profile-social-header: Sociální sítě
+profile-webs-header: 'Weby'
 profile-widget-button: 'Zobrazit profil'
+profile-widget-user-header: Uživatel
 profile-stats-projects: 'Kampaně'
 profile-stats-invests: 'Dary'
 profile-stats-collaborations: 'Příspěvky'
