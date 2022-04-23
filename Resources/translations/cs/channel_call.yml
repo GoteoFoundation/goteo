@@ -7,6 +7,7 @@ channel-call-cta-create-project-description: Nastavení crowdfundingového proje
 channel-call-cta-join-program-description: Praktická školení a zdroje dostupné všem
 channel-call-workshop-title: Nadcházející události
 channel-call-workshop-description: Akce, které vám pomohou rozvíjet vaši iniciativu.
+channel-call-footer-information: Užitečné informace
 channel-call-footer-about: O Goteo
 channel-call-footer-stats: Statistiky
 channel-call-footer-conditions: Podmínky užití
@@ -23,13 +24,21 @@ channel-call-footer-newsletter: Zpravodaj
 channel-call-footer-social-networks: Sociální sítě
 channel-call-posts-section-title: Nejnovější zprávy
 channel-call-posts-section-description: 'Zjistěte nejnovější zprávy o '
+channel-call-program-title: 'Program '
 channel-call-program-description: Zjistěte, co všechno se bude dít.
+channel-call-team-title: Náš tým
 channel-call-team-description: Celý tým pracuje pro občanský crowdfunding!
 channel-call-stories-title: Říkají o nás
 channel-call-resources-title: Recursos
 channel-call-resources-description: Stáhněte si vygenerované otevřené zdroje, dozvíte se o crowdfundingu, daních nebo nápadech.
 channel-call-resources-button: Zobrazit všechny zdroje
+channel-call-map-section-title: Mapa vlivu
+channel-call-impact-data-amount: Získané peníze
+channel-call-impact-data-projects: Projekty
+channel-call-impact-data-investors: Spolufinancující subjekty
 channel-call-resources-banner-title: 'Otevřené znalosti'
+channel-call-resources-banner-description: 'Zdroje'
+channel-call-resources-filter-title: 'Filtr podle kategorie'
 channel-call-intro-matcher-title: 'Matcher'
 channel-call-intro-factory-title: 'Goteo'
 channel-call-intro-pitcher-tab-title: 'Vytvořte svůj projekt'
