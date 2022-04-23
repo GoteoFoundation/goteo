@@ -65,6 +65,7 @@ feed-project_finish: 'Projekt %s <span class="red">ukončil druhé kolo</span> a
 feed-project_finish_unique: 'Projekt %s <span class="red">ukončil svou kampaň</span> získáním <span class="violet">%s € (%s &#37;) příspěvků nad minimum</span>'
 feed-project_goon: 'Projekt %PROJECT% <span class="red">pokračuje v kampani</span> ve druhém kole, když získá <span class="violet">%AMOUNT% (%PERCENT% &#37;) příspěvků nad minimum</span>'
 feed-project_runout: 'Projektu %PROJECT% zbývá <span class="red">%DAYS% dní</span> do dokončení %ROUND%. kola'
+feed-timeago: 'Před %s'
 feed-timeago-justnow: není
 feed-timeago-periods: sekunda-sekundy_minuta-minuty_hodina-hodiny_den-dny_týden-týdny-měsíc-měsíce_rok-roky_dekáda-dekády
 feed-timeago-published: 'Zveřejněno před %s'
