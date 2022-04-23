@@ -1,4 +1,8 @@
 ---
+dashboard-story-form-title: 'Můj příběh v Goteo'
+dashboard-story-guide-description: 'Řekněte nám o svých zkušenostech s Goteo, můžete posloužit jako inspirace pro ostatní promotéry. <br><br>Váš příběh se objeví ve vašem uživatelském profilu a náš tým jej může zobrazit v různých sekcích Goteo, včetně domova.<br>Doporučujeme vám navštívit některé z příběhů, které jsme dosud publikovali ve < href="/matchfunding-match" target="_blank">formátu polaroid</a> a <a href="/#foundation" target="_blank">rozšířeném formátu</a>.'
+dashboard-story-translate-title: 'Můj příběh'
+story-field-author-organization: 'Autor / organizace'
 story-tooltip-description: 'Vysvětlete jednou větou, jaká byla vaše zkušenost s Goteo, a to minimálně 20 slovy (méně slov bude mít za následek chybu).'
 story-field-image: 'Obrázek (doporučené rozměry 600x400px)'
 story-field-pool-image: 'Volitelný obrázek ve formátu polaroid (doporučené rozměry 360x355px)'
