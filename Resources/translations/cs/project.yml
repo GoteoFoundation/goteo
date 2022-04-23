@@ -33,7 +33,10 @@ project-menu_title-supporters: 'Sociální podpůrná síť: Spolufinancující 
 project-menu_title-updates: 'Zpětná vazba: získejte informace o průběhu projektu přímo od předkladatele projektu.'
 project-messages-closed: 'Zatím není možné posílat zprávy do projektu'
 project-messages-send_direct-header: 'Zaslání veřejné zprávy o podpoře projektu'
+project-messages-send_message-button: Odeslat
+project-messages-send_message-header: 'Napište svou zprávu'
 project-not_published: 'Tento projekt zatím není veřejný'
+project-rewards-bonus_reward-title: Bonus
 project-rewards-individual_reward-title: 'Individuální odměny'
 project-rewards-individual_reward-units_left: 'Zbývá <span class="left">%s</span> jednotek'
 project-rounds: 'Jednokolový projekt'
@@ -50,6 +53,8 @@ project-spread-widget_title: 'Zveřejnit widget projektu'
 project-support-supertitle: 'Ekonomické požadavky'
 project-unpublished: 'Kampaň pro tento projekt byla zrušena.'
 project-view-categories-title: Kategorie
+project-view-metter-day_closed: 'Archivováno dne'
+project-view-metter-day_created: 'Vytvořeno dne'
 project-view-metter-investment: Spolufinancování
 project-view-metter-investors: Spolufinancující subjekty
 project-view-metter-minimum: Minimum
@@ -69,11 +74,14 @@ tooltip-project-scope: 'Označuje geografický dopad, který má projekt mít (k
 tooltip-project-spread: 'Vysvětlete nám, jak plánujete šířit projekt ve vaší komunitě: kanály, typ sdělení, akce šíření, minimální kalendář...'
 tooltip-updates-allow_comments: tooltip-updates-allow_comments
 tooltip-updates-date: tooltip-updates-date
+project-obtained: 'Získáno'
 project-costs-total: 'Celkem'
 project-remove-translation: 'Odstranit překlad'
 project-remove-translation-confirm: 'Opravdu chcete tento překlad smazat? Tuto operaci nelze vrátit zpět!'
 project-removed-translation-ok: 'Překlad smazán!'
 project-removed-translation-ko: 'Chyba při pokusu o smazání překladu!'
+project-social-commitment-title: 'Sociální závazek'
+project-create-title: 'Začít projekt'
 project-create-subtitle-alert: '<strong>WOOOOW!</strong><p>Dosáhli jsme pokroku! Nyní v kostce shrňte svůj projekt!!!</p>'
 project-create-minimum-field: 'Mínimum (€)'
 project-create-minimum-calculate-button: 'Výpočet'
@@ -90,9 +98,16 @@ project-create-save-button: 'Uložit a pokračovat'
 project-create-save-alert: '<strong>PARÁDA!!</strong><p>Teď, když máme představu o vašem projektu, přejdete k dalšímu kroku s rozšířeným formulářem o vašem projektu</p>'
 project-create-modal-no-social-title: 'Sociální závazek'
 project-create-modal-no-social-description: 'Aby byl váš projekt přijat do programu Goteo, je nutné mít sociální závazek. Pokud neuděláte slib výběrem jednoho z nich, tlačítko, které vám umožní pokračovat, se neaktivuje :-('
+project-share-materials: 'Sdílené materiály'
+project-create-no-social-commitment: 'Nemám'
+project-progress-title: Jak projekt probíhá
+project-edit: Upravit projekt
 project-remove-cost-confirm: 'Opravdu chcete tyto náklady eliminovat?'
+project-add-cost: 'Přidat náklady'
 project-add-reward: 'Přidat odměnu'
 project-remove-reward-confirm: 'Opravdu chcete tuto odměnu odebrat?'
+project-reward-unlimited: 'Neomezeně'
+project-send-review: 'Odeslat ke schválení'
 project-reviewing: 'Posuzujeme a kontrolujeme váš projekt'
 project-validation-ok: 'Vyplnili jste formulář - skvělé! Kliknutím na tlačítko níže můžete požádat naše konzultanty o posouzení vašeho projektu.'
 project-validation-errors: 'Projekt ještě není dokončen!'
