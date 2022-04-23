@@ -2,8 +2,10 @@
 mandatory-support-field-description: 'Nějaký popis je povinný'
 mandatory-support-field-name: 'Pojmenování spolupráce je povinné'
 step-6: Spolupráce
+step-supports: 'Krok: Projekt / Spolupráce'
 supports-field-description: Popis
 supports-field-support: Shrnutí
+supports-main-header: 'Žádost o partnerství'
 tooltip-project-nsupport: 'Rady, jak uzavřít nové partnerství'
 tooltip-project-support: 'Tip pro úpravu existujících spoluprací'
 tooltip-project-support-description: "Stručně vysvětlete, s čím projekt potřebuje pomoci, aby to lidé snáze rozpoznali a byli povzbuzeni k pomoci."
