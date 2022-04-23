@@ -1,8 +1,13 @@
 ---
+call-tagmark-4: 'Aktivní kampaň!'
 call-tagmark-5: 'Kampaň dokončena'
 call-tagmark-6: 'Archivovaná výzva'
 regular-fail_mark: Archivováno...
 regular-gotit_mark: Spolufinancováno!
 regular-keepiton_mark: 'Snaha o dosažení optima'
 regular-oneround_mark: 'Jedno kolo'
+regular-onrun_mark: 'Pojďme na to!'
 regular-success_mark: 'Mise splněna!'
+call-tagmark-active: 'Aktivní kampaň!'
+call-tagmark-completed: 'Kampaň dokončena'
+call-tagmark-archived: 'Archivovaná výzva'
