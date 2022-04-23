@@ -1,10 +1,13 @@
 ---
+role-name-user: 'Uživatel bez oprávnění'
 role-name-vip: 'VIP uživatel (sponzor)'
 role-name-translator: 'Překladatel obsahu'
 role-name-checker: 'Kontrolor projektu'
 role-name-stats: 'Přístup ke statistikám'
 role-name-manager: 'Manažer pro smlouvy'
 role-name-blogger: 'Editor blogu'
+role-name-consultant: 'Konzultant projektu'
+role-name-admin: 'Administrátor poradců'
 role-name-superadmin: 'Super administrátor'
 role-name-root: 'Root'
 role-name-matcher: 'Matcher'
