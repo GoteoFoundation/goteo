@@ -1,9 +1,13 @@
 ---
 profile-interests-header: 'Zajímají mě projekty s koncovkou...'
 profile-invest_on-header: 'Podporované projekty'
+profile-keywords-header: 'Klíčová slova'
+profile-last_worth-title: Datum
+profile-location-header: 'Moje poloha'
 profile-my_investors-header: 'Moji spolufinancovatelé'
 profile-my_projects-header: 'Podporované projekty'
 profile-my_worth-header: 'Rychlost kapání příspěvků'
+profile-name-header: 'Profil '
 profile-patron-header: 'Doporučuje <span class="red">%s projektů</span>'
 profile-sharing_interests-header: 'Sdílené zájmy'
 profile-widget-button: 'Zobrazit profil'
