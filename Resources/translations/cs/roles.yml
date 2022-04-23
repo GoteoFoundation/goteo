@@ -44,3 +44,5 @@ role-perm-name-admin-module-channels: 'Může přistupovat k modulům správy ka
 role-perm-name-create-matcher: 'Může vytvářet matchery'
 role-perm-name-edit-matcher: 'Může upravovat matchery'
 role-perm-name-remove-matcher: 'Může odstranit matchery'
+role-perm-name-edit-any-matcher: 'Může upravit jakékoliv matchery'
+role-perm-name-remove-any-matcher: 'Může odstranit jakékoli matchery'
