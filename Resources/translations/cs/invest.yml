@@ -83,8 +83,10 @@ invest-share-title: Sdílet
 invest-social-header: 'Kolektivní výnosy jsou výhodné pro všechny'
 invest-status-cancelled: Zrušeno
 invest-status-paid: 'Zaplaceno projektu'
+invest-status-pending: Předschváleno
 invest-status-processing: Nedokončeno
 invest-status-relocated: Přesunuto
+invest-status-returned: 'Vráceno (archivováno)'
 invest-status-to-pool: 'Do peněženky'
 invest-step-2: Platba
 invest-step-3: Potvrdit
