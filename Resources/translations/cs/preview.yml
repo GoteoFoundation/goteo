@@ -4,6 +4,7 @@ guide-project-preview: '<strong>Toto je souhrn všech informací o projektu.</st
 guide-project-success-minprogress: 'Dosáhl minimálního procenta'
 guide-project-success-noerrors: 'Všechna povinná pole byla vyplněna'
 guide-project-success-okfinish: 'Lze zaslat k posouzení'
+preview-main-header: 'Náhled údajů'
 preview-send-comment: 'Další poznámky pro správce'
 step-preview: 'Projekt / Náhled'
 tooltip-project-comment: 'Máte dotazy nebo připomínky, které chcete, aby si správce Goteo přečetl? Zde můžete vysvětlit část toho, co jste napsali a čím si nejste jisti, navrhnout zlepšení atd.'
