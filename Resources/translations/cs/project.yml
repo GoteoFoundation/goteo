@@ -7,13 +7,25 @@ project-call-got: 'Projekt již získal <strong>%s</strong> od <strong>%s</stron
 project-chart-amount-end-round: 'Závěrečné kolo'
 project-chart-amount-reached: Kumulované
 project-collaborations-available: 'dostupná partnerství'
+project-collaborations-supertitle: 'Nefinanční potřeby'
+project-collaborations-title: 'Hledá se'
 project-comment-start-sesion: 'Přihlášení'
 project-comment-start-sesion-2: 'zanechat komentář'
 project-error-main-lang: 'Tento jazyk [%s] nelze nastavit jako hlavní jazyk, protože je již přiřazen překladu. Odstranění stávajícího překladu v [%s] z panelu překladů, aby bylo možné zadat nový překlad.'
+project-general-information: 'Základní informace'
 project-help-cost: 'Potřebuji pomoc s definicí nákladů'
 project-help-license: 'Potřebuji pomoci s definicí kolektivních výnosů a licencí'
 project-hide-donors: 'Skrýt spolufinancovatele'
 project-hide-needs: 'Skrýt seznam požadavků'
+project-invest: Příspěvek
+project-invest-msg: 'Zpráva o podpoře:'
+project-media-play_video: 'Přehrát Video'
+project-menu-home: Projekt
+project-menu-messages: Spolupracující
+project-menu-news: 'Novinky'
+project-menu-participate: 'Zapojte se'
+project-menu-supporters: Spolufinancování
+project-menu-updates: Novinky
 project-menu_title-home: 'Sociální dopad: tento projekt otevírá svůj kód, sdílí znalosti, data nebo digitální soubory výměnou za vaši podporu.'
 project-menu_title-messages: 'Nejen penězi: můžete také podpořit svým talentem, materiálem, časem, kontakty, znalostmi...'
 project-menu_title-needs: 'Transparentnost nákladů: podrobný rozpis minimálních a optimálních nákladů, které je třeba provést.'
