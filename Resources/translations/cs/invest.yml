@@ -11,6 +11,7 @@ invest-address-fail: 'Jsou zde prázdná pole nebo pole s chybami, zkontrolujte 
 invest-address-friend-field: 'Zaškrtněte toto políčko, pokud se jedná o dárek pro někoho jiného'
 invest-address-gender-field: Pohlaví
 invest-address-header: 'Kde chcete odměnu obdržet (pouze v případě poštovních zásilek)'
+invest-address-location-field: Město
 invest-address-maildest-field: 'E-mail příjemce'
 invest-address-msgdest-field: 'Zpráva pro příjemce'
 invest-address-myemail-field: 'Váš email'
