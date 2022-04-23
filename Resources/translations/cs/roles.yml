@@ -1,4 +1,11 @@
 ---
+role-name-vip: 'VIP uživatel (sponzor)'
+role-name-translator: 'Překladatel obsahu'
+role-name-checker: 'Kontrolor projektu'
+role-name-stats: 'Přístup ke statistikám'
+role-name-superadmin: 'Super administrátor'
+role-name-root: 'Root'
+role-name-matcher: 'Matcher'
 role-perm-name-create-project: 'Může vytvářet projekty'
 role-perm-name-edit-project: 'Může upravovat své projekty'
 role-perm-name-remove-project: 'Může odstranit své projekty'
