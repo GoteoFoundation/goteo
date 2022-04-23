@@ -23,8 +23,12 @@ node-side-sumcalls-budget: 'Celkem (všechny kampaně)'
 node-side-sumcalls-calls: Otevřené
 node-side-sumcalls-campaigns: Aktivní
 node-side-sumcalls-header: 'Matchfunding'
+node-side-summary-active: Aktivní
 node-side-summary-amount: 'Získané peníze'
+node-side-summary-investors: Spolufinancující subjekty
 node-side-summary-success: Úspěšný
+node-side-summary-supporters: Spolupracovníci
+node-stats-title: 'Údaje o dopadu'
 node-projects-title: 'Projekty'
 node-resources-title: 'Co potřebujete?'
 node-workshops-title: 'Nenechte si ujít naše školení'
