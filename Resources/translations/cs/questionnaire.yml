@@ -1,4 +1,5 @@
 ---
 questionnaire-scoring-save: "Výsledek uložen správně"
 questionnaire-max-score-help: "To je maximální počet bodů za tuto otázku."
+questionnaire-apply-title: Žádost o účast v %s
 questionnaire-already-answered-by-project: Tento dotazník již byl zodpovězen.
