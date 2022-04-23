@@ -67,6 +67,8 @@ translator-sdg: 'SDG'
 translator-footprint: 'Stopa'
 translator-system: Systém
 translator-tag: 'Štítky blogu'
+translator-zone-not-found: 'Tato oblast překladu není platná'
+translator-lang-not-found: 'Tento jazyk na platformě není!'
 translator-add-translation: 'Přidat nový překlad'
 translator-communication: Komunikace
 translator-call_to_action: Výzva k akci
@@ -79,6 +81,8 @@ translator-node_sponsor: Sponzoři Kanálu
 translator-node_team: Tým Kanálu
 translator-field-action_url: Url akce
 translator-field-action_2: Akce 2
+translator-field-role: Role
 translator-field-main_info_title: Název hlavní informace
 translator-field-main_info_description: Popis základních informací
 translator-field-call_to_action_description: Popis výzvy k akci
+translator-field-tip_msg: Zpráva
