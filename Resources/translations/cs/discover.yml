@@ -8,9 +8,12 @@ discover-patron-header: '<span class="greenblue">%s</span> doporučuje<br>tyto <
 discover-results-empty: 'Nenašli jsme žádné projekty, které by splňovaly vaše kritéria vyhledávání'
 discover-results-header: 'Výsledek hledání'
 discover-searcher-button: Hledat
+discover-searcher-bycategory-all: VŠE
 discover-searcher-bycategory-header: 'Podle kategorie:'
 discover-searcher-bycontent-header: 'Podle obsahu:'
+discover-searcher-bylocation-all: VŠE
 discover-searcher-bylocation-header: 'Podle místa:'
+discover-searcher-byreward-all: VŠE
 discover-searcher-byreward-header: 'Zpětně:'
 discover-searcher-header: 'Hledat projekt'
 discover-by-keyword: 'Podle klíčového slova:'
