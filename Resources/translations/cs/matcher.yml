@@ -7,6 +7,7 @@ matcher-apply-accepted: 'Tento projekt čeká na schválení výzvy na spolufina
 matcher-apply-active: 'Tento projekt je registrován ve výzvě k předkládání návrhů na spolufinancování %s'
 matcher-apply-pending-desc: 'Pokud máte zájem získat nabízené peníze navíc, musíte přijmout %s'
 matcher-terms-desc: 'Důvody pro účast ve výzvě k předkládání návrhů'
+matcher-apply-accept: 'Ano, jsem v'
 matcher-apply-reject: 'Ne, děkuji, zříkám se této výzvy'
 matcher-apply-reject-sure: 'Tato výzva na spolufinancování vám může poskytnout další finanční prostředky. Jste si jisti, že se chcete vzdát?'
 matcher-apply-discard-sure: 'Tento projekt se již nebude účastnit výzvy k předkládání návrhů %s Pokračovat?'
