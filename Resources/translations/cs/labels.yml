@@ -5,6 +5,7 @@ accounts-lb-list: Výpis
 accounts-lb-update: 'Změna statusu příspěvku'
 banners-lb-cancel: 'Zrušení příspěvku'
 banners-lb-list: Výpis
+banners-lb-translate: 'Překlad banneru'
 banners-lb-update: 'Změna statusu příspěvku'
 blog-lb: Blog
 blog-lb-add: 'Nový příspěvek'
