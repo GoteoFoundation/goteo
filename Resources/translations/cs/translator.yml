@@ -72,8 +72,13 @@ translator-system: Systém
 translator-tables: 'Všeobecné tabulky'
 translator-tag: 'Štítky blogu'
 translator-template: 'Automatické šablony e-mailů'
+translator-texts: 'Texty rozhraní'
+translator-translations: Překlady
+translator-workshop: Workshopy
+translator-worthcracy: Zásluhy
 translator-zone-not-found: 'Tato oblast překladu není platná'
 translator-lang-not-found: 'Tento jazyk na platformě není!'
+translator-percent: '%d&#37; přeložil'
 translator-add-translation: 'Přidat nový překlad'
 translator-communication: Komunikace
 translator-call_to_action: Výzva k akci
@@ -84,8 +89,16 @@ translator-node_faq_question: Časté otázky týkající se Kanálu
 translator-node_faq_download: Kanál Častých otázek Ke stažení
 translator-node_sponsor: Sponzoři Kanálu
 translator-node_team: Tým Kanálu
+translator-node_sections: Sekce kanálu
+translator-node_resource_category: Kategorie zdrojů
+translator-image_credits: Obrazové kredity
+translator-field-modal_description: Popis v modálním okně
+translator-field-action: Akce
 translator-field-action_url: Url akce
 translator-field-action_2: Akce 2
+translator-field-action_url_2: Url akce
+translator-field-banner_title: Nadpis pro banner
+translator-field-banner_description: Popis banneru
 translator-field-role: Role
 translator-field-main_info_title: Název hlavní informace
 translator-field-main_info_description: Popis základních informací
