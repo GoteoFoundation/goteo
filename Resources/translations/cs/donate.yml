@@ -1,7 +1,13 @@
 ---
 donate-header-description: 'Pro etičtější a spolupracující společnost'
 donate-main-text-intro: 'Platforma Goteo je základní součástí Nadace Goteo, která podporuje nástroje pro občanské financování, kde umožňujeme realizaci mnoha a mnoha iniciativ. Máme tři velmi důležité pilíře: ekologický, sociální a demokratický, které dávají naší činnosti smysl:'
+donate-main-text-line-1: '<strong>Nikoho nenecháváme pozadu,</strong> poskytujeme podporu "případ od případu a krok za krokem", školíme, šíříme a doprovázíme více než 200 projektů ročně.'
+donate-main-text-line-2: '<strong>Inovujeme občansky standardně,</strong> vedeme inovativní procesy spolufinancování společně s veřejnými a soukromými institucemi.'
+donate-main-text-line-3: '<strong>Sdílíme, co máme,</strong> a sázíme na svobodný software, otevíráme naše <a href="stats.goteo.org">data</a> a zveřejňujeme náš <a href="https: // github.com/GoteoFoundation">kód</a>, rosteme jako komunita, posilujeme znalostní společnost a aktivně se na ní podílíme, bez komplexů!'
+donate-select-amount-title: 'Přispějte nadaci Goteo'
+donate-select-amount-description: 'Rozhodněte se, jakou částkou nám chcete pomoci pokračovat v podpoře projektů'
 donate-foundation-accounts-data-1: '150.006 €'
+donate-foundation-accounts-data-label-1: 'Provozní náklady 2017'
 donate-foundation-accounts-data-2: '29%'
 donate-foundation-accounts-data-label-2: 'Výdaje hrazené ze 4% provize'
 donate-foundation-accounts-data-3: '79%'
