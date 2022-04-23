@@ -67,6 +67,7 @@ feed-project_goon: 'Projekt %PROJECT% <span class="red">pokračuje v kampani</sp
 feed-project_runout: 'Projektu %PROJECT% zbývá <span class="red">%DAYS% dní</span> do dokončení %ROUND%. kola'
 feed-timeago-justnow: není
 feed-timeago-periods: sekunda-sekundy_minuta-minuty_hodina-hodiny_den-dny_týden-týdny-měsíc-měsíce_rok-roky_dekáda-dekády
+feed-timeago-published: 'Zveřejněno před %s'
 feed-updates-comment: 'Napsali jste <span class="green">Komentář</span> k položce "%s" v %s v projektu %s'
 feed-user-invest: '%USER% přispěl %AMOUNT% na projekt %PROJECT% prostřednictvím %METHOD%'
 feed-user-invest-error: 'V příspěvku od %USER% ve výši %AMOUNT% do projektu %PROJECT% došlo k <span class="red">chybě %METHOD% [%MESSAGE%]</span>'
