@@ -125,6 +125,7 @@ dashboard-project-updates-sent-reason-too-old: 'Datum příspěvku je příliš 
 dashboard-rewards-address: 'Doručovací adresa:'
 dashboard-rewards-all_filter: Vše
 dashboard-rewards-amount_order: 'Podle částky'
+dashboard-rewards-choosen: 'Očekávané odměny:'
 dashboard-rewards-date_order: 'Podle času'
 dashboard-rewards-group_msg: 'zpráva této skupině'
 dashboard-rewards-investors_table: 'Pokud ji chcete spravovat offline, můžete si <a href="%URL%">vytáhnout tabulku spolufinancování</a>'
