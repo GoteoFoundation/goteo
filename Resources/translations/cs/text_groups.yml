@@ -25,6 +25,7 @@ text-group-invest: 'Stránka s příspěvky k projektu'
 text-group-location: Zeměpisná poloha
 text-group-login: 'Stránka přihlášení'
 text-group-metas: 'SEO: Cíle'
+text-group-node_public: Uzly
 text-group-overview: 'Popis projektu'
 text-group-personal: 'Osobní údaje uživatele'
 text-group-preview: 'Náhled projektu'
@@ -40,4 +41,5 @@ text-group-template: 'Poděkování zaměstnanců'
 text-group-text_groups: 'Popis seskupení textů'
 text-group-translate: 'Panel překladatele'
 text-group-types: 'Tipy nástrojů pro typy potřeb'
+text-group-url: 'Externí sociální adresa URL'
 text-group-wof: 'Zeď přátel'
