@@ -9,17 +9,22 @@ banners-lb-translate: 'Překlad banneru'
 banners-lb-update: 'Změna statusu příspěvku'
 blog-lb: Blog
 blog-lb-add: 'Nový příspěvek'
+blog-lb-edit: 'Úprava záznamu'
 blog-lb-footer: 'Řazení položek v zápatí'
 blog-lb-list: Výpis
 blog-lb-reorder: 'Řazení položek v záhlaví'
+blog-lb-translate: 'Překlad záznamu'
 categories-lb: Kategorie
 categories-lb-add: 'Nová kategorie'
 categories-lb-edit: 'Upravit kategorii'
 categories-lb-keywords: 'Klíčová slova'
 categories-lb-list: Výpis
+categories-lb-translate: 'Překlad kategorie'
 commons-lb-info: 'Kontaktní informace'
 commons-lb-list: Výpis
+commons-lb-report: 'Zpráva o projektu'
 communication-lb: 'Komunikace'
+criteria-lb: 'Kritéria revize'
 criteria-lb-add: 'Nová kritéria'
 criteria-lb-edit: 'Úpravy Kritéria'
 criteria-lb-list: Výpis
