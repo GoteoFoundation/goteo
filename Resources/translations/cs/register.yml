@@ -20,8 +20,13 @@ recover-request-fail: 'Pomocí těchto údajů nelze obnovit heslo žádného ú
 recover-token-incorrect: 'Kód pro obnovení hesla je neplatný'
 register-button-title: Registrace
 register-email-confirm-field: 'Znovu zadejte svou e-mailovou adresu'
+register-email-field: 'E-mailová adresa'
+register-form-title: Registrace
+register-id-field: 'Uživatelské jméno'
+register-name-field: 'Jméno a příjmení'
 register-password-confirm-field: 'Znovu zadejte heslo'
 register-password-field: Heslo
+register-question: 'Již jsem uživatelem'
 user-activate-already-active: 'Uživatelský účet je již aktivován'
 user-activate-success: 'Uživatelský účet byl úspěšně aktivován'
 validate-project-value-contract_email: 'E-mailová adresa není správná'
