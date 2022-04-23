@@ -88,5 +88,6 @@ feed-blog-post-action: 'Správce %USER% má %ACTION% v obecném blogu příspěv
 feed-blog-post-deleted: 'Příspěvek odstraněn z obecného blogu (admin)'
 feed-admin-has-done: 'Správce %ADMIN% má %ACTION% k uživateli %USER%'
 feed-admin-has-modified: 'Správce %ADMIN% má %ACTION% (%PROPERTY%) k uživateli %USER%'
+feed-admin-impersonated-action: 'zastupován'
 feed-admin-user-modification: 'Uživatel upraven adminem'
 feed-admin-modified-action: 'upraveno'
