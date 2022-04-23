@@ -104,6 +104,8 @@ translator-field-main_info_title: Název hlavní informace
 translator-field-main_info_description: Popis základních informací
 translator-field-call_to_action_description: Popis výzvy k akci
 translator-field-tip_msg: Zpráva
+translator-field-banner_button_url: Url adresa tlačítka banneru
+translator-field-credits: Kredity
 translator-question: Otázky
 translator-question_options: Možnosti otázek
 translator-field-option: Možnosti
