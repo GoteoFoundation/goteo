@@ -1,7 +1,9 @@
 ---
+accounts-lb: Příspěvky
 accounts-lb-cancel: 'Zrušení příspěvku'
 accounts-lb-list: Výpis
 accounts-lb-update: 'Změna statusu příspěvku'
+banners-lb-cancel: 'Zrušení příspěvku'
 banners-lb-list: Výpis
 banners-lb-update: 'Změna statusu příspěvku'
 blog-lb: Blog
