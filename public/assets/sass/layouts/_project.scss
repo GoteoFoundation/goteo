@@ -68,6 +68,16 @@ body.project {
     /* Channel module */
 
     .channel{
+      margin-top: 60px;
+
+      &.spacer-20 {
+        margin-top: 20px;
+      }
+
+      &.spacer-40 {
+        margin-top: 40px;
+      }
+
       .channel-label{
         width: 15%;
       }
@@ -76,6 +86,8 @@ body.project {
         color: $color-white !important;
         padding: 3px 40px;
         width: 65%;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
     }
 
