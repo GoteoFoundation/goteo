@@ -116,7 +116,8 @@ elseif (!empty($status)) {
         <?php endif; ?>
 
     </div>
-    <ul class="amounts list-unstyled text-center">
+    <div class="bottom">
+        <ul class="amounts list-unstyled text-center">
             <li class="col-xs-4">
                 <div class="amount"><?= amount_format($this->project->invested) ?></div>
                 <div class="data-label"><?= $this->text('horizontal-project-reached') ?></div>
@@ -129,7 +130,8 @@ elseif (!empty($status)) {
                 <div class="amount"><?= $days_left ?></div>
                 <div class="data-label"><?= $text ?></div>
             </li>
-    </ul>
+        </ul>
+    </div>
 
 
     <?php if($this->admin): ?>
