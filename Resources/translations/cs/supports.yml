@@ -5,6 +5,7 @@ step-6: Spolupráce
 step-supports: 'Krok: Projekt / Spolupráce'
 supports-field-description: Popis
 supports-field-support: Shrnutí
+supports-field-type: 'Typ podpory'
 supports-fields-support-title: Spolupracující
 supports-main-header: 'Žádost o partnerství'
 tooltip-project-nsupport: 'Rady, jak uzavřít nové partnerství'
