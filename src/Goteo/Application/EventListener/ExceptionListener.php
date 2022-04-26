@@ -10,6 +10,7 @@
 
 namespace Goteo\Application\EventListener;
 
+use Exception;
 use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
@@ -88,7 +89,7 @@ class ExceptionListener extends AbstractListener {
     /**
      * @param string     $message   The error message to log
      */
-    protected function logException(\Exception $exception, $message) {
+    protected function logException(Exception $exception, $message) {
         if (null !== $this->logger) {
             $message = str_replace(["\n", "\r"],[" ", ""], $message);
             try {
@@ -135,7 +136,7 @@ class ExceptionListener extends AbstractListener {
         // close pending buffers
         ob_end_clean();
         // You get the exception object from the received event
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
         $request = $event->getRequest();
 
         // Old legacy redirections for compatibility
@@ -223,8 +224,7 @@ class ExceptionListener extends AbstractListener {
         try {
             View::setTheme('responsive');
             $view = View::render('errors/' . $template, ['title' => $exception->getMessage(), 'msg' => $info, 'code' => $code], $code);
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             View::addFolder(__DIR__ . '/../../../../Resources/templates/responsive');
             $view = View::render('errors/internal', ['msg' => $exception->getMessage(), 'file' => $file, 'code' => $code, 'info' => $e->getMessage() . "\n$info"], $code);
         }
@@ -243,7 +243,7 @@ class ExceptionListener extends AbstractListener {
         if (App::isService('logger.mail_handler')) {
             try {
                 App::getService('logger.mail_handler')->sendDelayed();
-            } catch(\Exception $e) {
+            } catch(Exception $e) {
                 if (App::isService('syslogger')) {
                     App::getService('syslogger')->critical($e->getMessage());
                 }
