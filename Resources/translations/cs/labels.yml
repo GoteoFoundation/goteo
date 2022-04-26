@@ -2,9 +2,11 @@
 accounts-lb: Příspěvky
 accounts-lb-cancel: 'Zrušení příspěvku'
 accounts-lb-list: Výpis
+accounts-lb-report: 'Zpráva o projektu'
 accounts-lb-update: 'Změna statusu příspěvku'
 banners-lb-cancel: 'Zrušení příspěvku'
 banners-lb-list: Výpis
+banners-lb-report: 'Zpráva o projektu'
 banners-lb-translate: 'Překlad banneru'
 banners-lb-update: 'Změna statusu příspěvku'
 blog-lb: Blog
