@@ -2,7 +2,7 @@
 # Ubuntu Bionic PHP 7.4 / FPM image #
 ####################################
 
-FROM ubuntu:21.10
+FROM ubuntu:22.04
 WORKDIR /application
 ARG PHP_VERSION=7.4
 
