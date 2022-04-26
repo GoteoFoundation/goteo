@@ -49,8 +49,10 @@ project-rewards-individual_reward-units_left: 'Zbývá <span class="left">%s</sp
 project-rewards-supertitle: 'Co za to nabízí'
 project-rounds: 'Jednokolový projekt'
 project-share-header: 'Sdílet tento projekt'
+project-share-pre_header: 'Dejte své síti vědět, že'
 project-show-donors: 'Zobrazit spolufinancovatele'
 project-show-needs: 'Zobrazit seznam požadavků'
+project-side-investors-header: 'Již přispěli'
 project-spread-embed_code: 'Kód pro vložení'
 project-spread-header: 'Šiřte informace o tomto projektu a pomozte mu zviditelnit se a získat další dary!'
 project-spread-pre_widget: 'Šíření informací o projektu'
@@ -64,6 +66,7 @@ project-view-categories-title: Kategorie
 project-view-metter-day_closed: 'Archivováno dne'
 project-view-metter-day_created: 'Vytvořeno dne'
 project-view-metter-day_success: 'Financováno dne'
+project-view-metter-day_updated: 'Přijato dne'
 project-view-metter-days: Zbývá
 project-view-metter-got: Získáno
 project-view-metter-investment: Spolufinancování
