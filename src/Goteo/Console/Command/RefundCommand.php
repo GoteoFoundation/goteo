@@ -55,7 +55,6 @@ Processes pending refunds in read-only mode for project demo-project
 Processes refunds for Invest 12345
 <info>./console refund --invest 12345</info>
 
-
 EOT
 		);
 	}

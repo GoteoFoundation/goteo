@@ -10,6 +10,7 @@
 
 namespace Goteo\Console\Command;
 
+use Exception;
 use Goteo\Model\Project;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\User\UserLocation;
@@ -59,10 +60,10 @@ EOT
         $method = $input->getOption('method');
 
         if(!in_array($status, ['all','valid','accepted','call'])) {
-            throw new \Exception('Status is not valid!');
+            throw new Exception('Status is not valid!');
         }
         if(!in_array($method, ['all','owner','google'])) {
-            throw new \Exception('Method is not valid!');
+            throw new Exception('Method is not valid!');
         }
 
         $fixable = 0;
@@ -177,10 +178,9 @@ EOT
                 $output->writeln("<error>Not found table [$table]</error>");
                 break;
         }
-        if($fixable == 0) {
+        if ($fixable == 0) {
             $output->writeln("<info>No problems found</info>");
-        }
-        else {
+        } else {
             if($fixes) {
                 $output->writeln("<info>Repaired $fixes items</info>");
             } else {

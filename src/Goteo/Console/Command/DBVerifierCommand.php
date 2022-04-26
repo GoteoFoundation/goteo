@@ -89,7 +89,7 @@ EOT
 
         $verbose = $output->isVerbose();
 
-        if(in_array($scope, ['all', 'feed'])) {
+        if (in_array($scope, ['all', 'feed'])) {
             $days = (int) $input->getOption('days');
             if($days == -1) $days = 120;
             if($days < 30) {
@@ -121,7 +121,7 @@ EOT
             }
         }
 
-        if(in_array($scope, ['all', 'token'])) {
+        if (in_array($scope, ['all', 'token'])) {
             $days = (int) $input->getOption('days');
             if($days == -1) $days = 4;
             if($days < 1) {
@@ -153,7 +153,7 @@ EOT
             }
         }
 
-        if(in_array($scope, ['all', 'mailing'])) {
+        if (in_array($scope, ['all', 'mailing'])) {
             $days = (int) $input->getOption('days');
             if($days == -1) $days = 365;
             if($days < 30) {
@@ -189,7 +189,7 @@ EOT
             $index += $found;
         }
 
-        if(in_array($scope, ['all', 'blocked'])) {
+        if (in_array($scope, ['all', 'blocked'])) {
             $days = (int) $input->getOption('days');
             if($days == -1) $days = 120;
             if($days < 30) {
@@ -219,7 +219,7 @@ EOT
             $index += $found;
         }
 
-        if(in_array($scope, ['all', 'toolkit'])) {
+        if (in_array($scope, ['all', 'toolkit'])) {
             $html = "<h2>Commands executed</h2>";
 
             $converter = new AnsiToHtmlConverter(new SolarizedLightTheme());
@@ -246,7 +246,7 @@ EOT
                 }
             }
 
-            if($nerrors) {
+            if ($nerrors) {
                 $output->writeln("<error>Errors found!</error>");
                 $index = $nerrors;
                 $mailer = Mail::createFromHtml(Config::getMail('fail'), '', "DATABASE INCONSISTENCY in [" .Config::get('url.main')."]", $html);
@@ -259,7 +259,7 @@ EOT
             }
         }
 
-        if(in_array($scope, ['all', 'predict'])) {
+        if (in_array($scope, ['all', 'predict'])) {
             $html = "<h2>PROJECT FAILURE PREDICTIONS:</h2>";
             $converter = new AnsiToHtmlConverter(new SolarizedLightTheme());
 
@@ -267,7 +267,7 @@ EOT
             $out = new BufferedOutput(BufferedOutput::VERBOSITY_NORMAL, true);
             $args = new ArrayInput(['command' => 'endround', '--skip-invests' => true, '--predict' => 1]);
 
-            if($command->run($args, $out) !== 0) {
+            if ($command->run($args, $out) !== 0) {
                 $output->writeln("<error>Errors found!</error>");
                 $res = $out->fetch();
                 $html .= '<p>' . nl2br($converter->convert($res)) .'</p>';
@@ -285,12 +285,11 @@ EOT
             }
         }
 
-        if($index == 0) {
+        if ($index == 0) {
             $output->writeln("<info>No cleaning needed</info>");
-        }
-        else {
+        } else {
             $output->writeln("<error>Found $index issues!</error>");
-            if($fixes) {
+            if ($fixes) {
                 $output->writeln("<info>Deleted $fixes records</info>");
             } else {
                 $output->writeln("<info>Execute with --update option to delete the old records</info>");

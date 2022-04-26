@@ -11,6 +11,7 @@
 namespace Goteo\Console\Command;
 
 use FileSystemCache;
+use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -46,46 +47,30 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $clear  = $input->getOption('clear');
         if ( empty($clear) ) {
-           throw new \InvalidArgumentException('Please specify an option for this command!');
+           throw new InvalidArgumentException('Please specify an option for this command!');
         }
 
         switch ($clear) {
+            case 'lang':
             case 'config':
                 $finder = new Finder();
                 $finder->files()->in(GOTEO_CACHE_PATH . 'config');
 
                 foreach ($finder as $file) {
-                    // Dump the absolute path
                     unlink($file->getRealpath());
                 }
                 $output->writeln('SQL cache cleared!');
+
                 break;
-
-            case 'lang':
-                $finder = new Finder();
-                $finder->files()->in(GOTEO_CACHE_PATH . 'config');
-
-                foreach ($finder as $file) {
-                    // Dump the absolute path
-                    unlink($file->getRealpath());
-                }
-                $output->writeln('SQL cache cleared!');
-                break;
-
             case 'sql':
-                // clear all FyleSystemcache cached files
                 FileSystemCache::invalidateGroup();
                 $output->writeln('SQL cache cleared!');
-                break;
 
+                break;
             default:
-                throw new \InvalidArgumentException('Option [' . $clear . '] not found!');
-                break;
+                throw new InvalidArgumentException('Option [' . $clear . '] not found!');
         }
-
-
     }
 }

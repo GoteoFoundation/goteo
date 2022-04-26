@@ -25,7 +25,6 @@ use Goteo\Library\Text;
 use Goteo\Model\Image;
 use Goteo\Util\Parsers\UrlLang;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
