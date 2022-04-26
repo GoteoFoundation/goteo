@@ -44,7 +44,7 @@ class FaqSectionAdminController extends AbstractAdminController
     /**
      * @throws ControllerAccessDeniedException
      */
-    private function validateFaqSection(int $id = null): Faq
+    private function validateFaqSection(int $id = null): FaqSection
     {
 
         if (!$this->user)
