@@ -109,7 +109,7 @@ class FaqAdminController extends AbstractAdminController
     {
         $faq = $this->validateFaq($id);
 
-        $processor = $this->getModelForm('AdminFaq', $faq, (array) $faq, array(), $request);
+        $processor = $this->getModelForm(AdminFaqForm::class, $faq, (array) $faq, Array(), $request);
         $processor->createForm();
         $form = $processor->getForm();
         $form->handleRequest($request);

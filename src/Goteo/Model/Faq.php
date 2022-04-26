@@ -74,6 +74,7 @@ class Faq extends \Goteo\Core\Model {
         }
 
         $query = static::query($sql, $values);
+
         $faq = $query->fetchObject(__CLASS__);
 
         if (!$faq)
