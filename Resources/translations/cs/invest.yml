@@ -18,6 +18,7 @@ invest-address-myemail-field: 'Váš email'
 invest-address-myname-field: 'Vaše jméno'
 invest-address-name-field: 'Jméno a příjmení'
 invest-address-namedest-field: 'Jméno adresáta'
+invest-address-nif-field: 'Číslo NIF / NIE / CIF / VAT'
 invest-address-title: 'Ujistěte se, že dostanete svou odměnu'
 invest-address-zipcode-field: 'PSČ'
 invest-address-legal-entity-field: Právnická osoba
@@ -90,6 +91,7 @@ invest-status-relocated: Přesunuto
 invest-status-returned: 'Vráceno (archivováno)'
 invest-status-to-pool: 'Do peněženky'
 invest-status-donated: 'Darujte Nadaci'
+invest-step-1: Odměna
 invest-step-2: Platba
 invest-step-3: Potvrdit
 invest-step-4: Sdílet
@@ -120,3 +122,4 @@ invest-update-total: 'Přispíváte na projekt v celkové výši <span class="am
 invest-extra-info: 'Další informace'
 donor-legal-entities-natural-person: Fyzická osoba
 donor-legal-entities-legal-person: Právnická osoba
+donor-legal-document-type-cif: CIF
