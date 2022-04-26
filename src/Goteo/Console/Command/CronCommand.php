@@ -40,10 +40,6 @@ class CronCommand extends AbstractCommand {
         return static::$resolver;
     }
 
-    /**
-     * Adds a job
-     * @param JobInterface $job [description]
-     */
     public static function addJob(JobInterface $job) {
         return static::getResolver()->addJob($job);
     }
@@ -70,7 +66,6 @@ class CronCommand extends AbstractCommand {
      *     'type' => php|shell
      *     'nice' => true|false
      * )
-     * @param array $job [description]
      */
     public static function addCrontabLine(array $job) {
         $executable = $job['command'];
@@ -86,7 +81,6 @@ class CronCommand extends AbstractCommand {
 
     /**
      * On construct, let's find yaml predefined tasks
-     * @param [type] $name [description]
      */
     public function __construct($name = null)
     {

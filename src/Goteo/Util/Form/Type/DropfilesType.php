@@ -241,11 +241,9 @@ class DropfilesType extends FileType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        // var_dump($view->vars);die;
         if(!is_array($view->vars['data'])) {
             $options['limit'] = 1;
         }
-        // var_dump($options);die;
         $options['multiple'] = true;
         $view->vars['attr']['multiple'] = 'multiple';
         $view->vars['markdown_link'] = $options['markdown_link'];
@@ -259,7 +257,6 @@ class DropfilesType extends FileType
         $view->vars['limit'] = $options['limit'];
         $view->vars['url'] = $options['url'] ? $options['url'] : null;
         $view->vars['row_class'] = $options['row_class'];
-        // var_dump($view->vars['value']);var_dump($options['value']);die;
         $view->vars['type'] = $options['type'];
         if($options['model_transformer'] !== 'Goteo\Util\Form\DataTransformer\ModelImageTransformer') {
             $view->vars['type'] = 'file';

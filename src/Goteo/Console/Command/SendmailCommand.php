@@ -46,9 +46,6 @@ EOT
 );
     }
 
-    /**
-     * Individual email sending
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $sendmail = $input->getArgument('sendmail');
@@ -66,15 +63,15 @@ EOT
         }
 
         try {
-            if(!$force) {
-                if($recipient->isLocked() || !$recipient->setLock(true)->blocked) {
+            if (!$force) {
+                if ($recipient->isLocked() || !$recipient->setLock(true)->blocked) {
                     throw new LogicException("Error locking recipient [$recipient->id]");
                 }
             }
 
             $this->info("Sending individual mail",  [$recipient, 'recipient_user' => $recipient->user]);
 
-            if($update) {
+            if ($update) {
                 $recipient = $this->dispatch(ConsoleEvents::MAILING_SENDMAIL, new FilterSendmailEvent($recipient))->getRecipient();
             }
         } catch(LogicException $e) {
@@ -82,8 +79,8 @@ EOT
             return 13;
         }
 
-        if(!$force) {
-            if($recipient->setLock(false)->blocked) {
+        if (!$force) {
+            if ($recipient->setLock(false)->blocked) {
                 throw new \RuntimeException("Error unlocking recipient [$recipient->id]");
             }
         }

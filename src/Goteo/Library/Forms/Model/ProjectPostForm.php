@@ -37,7 +37,10 @@ class ProjectPostForm extends AbstractFormProcessor {
                 'label' => 'regular-title',
                 'constraints' => array(
                     new Constraints\NotBlank(),
-                    new Constraints\Length(array('min' => 4)),
+                    new Constraints\Length([
+                        'min' => 4,
+                        'allowEmptyString' => true,
+                    ]),
                 ),
             ))
             ->add('date', DatepickerType::class, array(

@@ -106,7 +106,6 @@ EOT
 			return;
         }
 
-
         if (!$force) {
             $this->info("Locking massive mailing", [$mailing, 'quota' => $LIMIT]);
             if (!$mailing->setLock(true)->blocked) {

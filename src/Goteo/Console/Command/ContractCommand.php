@@ -38,7 +38,6 @@ Update contracts summary data
 Update the provided contract's summary data
 <info>./console contract --chanel contract_id --update </info>
 
-
 EOT
 );
     }
@@ -124,7 +123,6 @@ EOT
             $output->writeln("<info>Found {$valid_contracts} valid contracts</info>");
             $output->writeln("<info>Found {$invalid_contracts} invalid contracts </info>");
             $output->writeln("<info>Could update {$updated_contracts} invalid contracts</info>");
-
         }
     }
 }

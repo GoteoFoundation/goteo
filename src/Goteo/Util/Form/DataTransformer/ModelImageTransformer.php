@@ -15,7 +15,6 @@ class ModelImageTransformer implements DataTransformerInterface {
 
     public function reverseTransform($image) {
         if(is_array($image)) {
-            // var_dump($image);
             foreach($image as $i => $img) {
                 if(!$img) continue;
                 if(!$img instanceOf Image) {
