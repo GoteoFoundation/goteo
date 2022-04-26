@@ -10,7 +10,7 @@
 
 namespace Goteo\Controller\Admin;
 
-use Goteo\Core\Controller;
+use Goteo\Library\Forms\Admin\AdminFaqForm;
 use Goteo\Model\Faq\FaqSection;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,12 +18,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Goteo\Model\Faq;
 use Goteo\Model\Faq\FaqSubsection;
-use Goteo\Application\App;
-use Goteo\Application\Lang;
 use Goteo\Application\Message;
-use Goteo\Application\View;
 use Goteo\Library\Text;
-use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
@@ -113,7 +109,7 @@ class FaqAdminController extends AbstractAdminController
     {
         $faq = $this->validateFaq($id);
 
-        $processor = $this->getModelForm('AdminFaq', $faq, (array) $faq, Array(), $request);
+        $processor = $this->getModelForm(AdminFaqForm::class, $faq, (array) $faq, Array(), $request);
         $processor->createForm();
         $form = $processor->getForm();
         $form->handleRequest($request);
