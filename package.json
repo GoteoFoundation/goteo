@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "command-exists": "^1.2.6",
-    "grunt": "~1.0.1",
+    "grunt": "~1.5.2",
     "grunt-aws-s3": "^0.14.5",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "1.0.1",
