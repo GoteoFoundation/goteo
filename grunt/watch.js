@@ -55,7 +55,8 @@ module.exports = function(grunt) {
 
         sass: {
             files: [
-                '<%= goteo.app %>/assets/sass/**/*.scss'
+                '<%= goteo.app %>/assets/sass/**/*.scss',
+                'extend/**/<%= goteo.app %>/assets/sass/*.scss'
             ],
             tasks: ['sass:devel'],
             options: {

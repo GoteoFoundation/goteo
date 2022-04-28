@@ -13,8 +13,11 @@ module.exports = function(grunt) {
             },
             files: [{
                 expand: true,
-                cwd: '<%= goteo.app %>/assets/sass',
-                src: ['*.scss'],
+                flatten: true,
+                src: [
+                    '<%= goteo.app %>/assets/sass/*.scss',
+                    'extend/**/<%= goteo.app %>/assets/sass/*.scss'
+                ],
                 dest: '.tmp/assets/css',
                 ext: '.css'
               }]
@@ -27,8 +30,11 @@ module.exports = function(grunt) {
 
             files: [{
                 expand: true,
-                cwd: '<%= goteo.app %>/assets/sass',
-                src: ['*.scss'],
+                flatten: true,
+                src: [
+                    '<%= goteo.app %>/assets/sass/*.scss',
+                    'extend/**/<%= goteo.app %>/assets/sass/*.scss'
+                ],
                 dest: '<%= goteo.dist %>/assets/css',
                 ext: '.css'
               }]
