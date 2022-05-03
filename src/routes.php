@@ -57,7 +57,7 @@ $routes->addCollection($pool_routes);
 if(Config::get('donate.landing')) {
     $routes->add('donate-landing', new Route(
         '/donate',
-        array('_controller' => 'Goteo\Controller\DonateController::donateLandingAction')
+        array('_controller' => 'Goteo\Controller\DonateLandingController::indexAction')
     ));
 }
 
