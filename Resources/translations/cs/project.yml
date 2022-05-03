@@ -28,6 +28,7 @@ project-langs-header: 'Projekty'
 project-media-play_video: 'Přehrát Video'
 project-menu-home: Projekt
 project-menu-messages: Spolupracující
+project-menu-needs: Vyžadované
 project-menu-news: 'Novinky'
 project-menu-participate: 'Zapojte se'
 project-menu-supporters: Spolufinancování
@@ -42,6 +43,7 @@ project-messages-send_direct-header: 'Zaslání veřejné zprávy o podpoře pro
 project-messages-send_message-button: Odeslat
 project-messages-send_message-header: 'Napište svou zprávu'
 project-not_published: 'Tento projekt zatím není veřejný'
+project-regular-support: Spolufinancování
 project-related: 'Související projekty'
 project-rewards-bonus_reward-title: Bonus
 project-rewards-individual_reward-title: 'Individuální odměny'
