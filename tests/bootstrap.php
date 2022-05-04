@@ -234,7 +234,8 @@ function get_test_invest() {
     }
 }
 
-function delete_test_invest() {
+function delete_test_invest(): bool
+{
     $invests = Invest::getList(['users' => get_test_user()->id ]);
 
     if (empty($invests)) {

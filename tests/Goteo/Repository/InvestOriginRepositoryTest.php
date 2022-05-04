@@ -85,4 +85,11 @@ class InvestOriginRepositoryTest extends TestCase
         $investOriginsCount = $this->repository->count();
         $this->assertEquals(0, $investOriginsCount);
     }
+
+    static function tearDownAfterClass(): void {
+        delete_test_project();
+        delete_test_invest();
+        delete_test_user();
+        delete_test_node();
+    }
 }
