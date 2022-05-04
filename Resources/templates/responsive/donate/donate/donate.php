@@ -2,8 +2,8 @@
 
 $this->layout('blog/layout', [
 	'bodyClass' => 'blog',
-    'title' => 'Donar :: Goteo.org',
-    'meta_description' => 'Ayuda a la Fundación Goteo con tu donativo'
+    'title' => $this->t('donate-meta-title'),
+    'meta_description' => $this->t('donate-meta-description')
     ]);
 
 $this->section('blog-content');
