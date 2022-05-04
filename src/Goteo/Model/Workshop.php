@@ -268,7 +268,8 @@ class Workshop extends Model {
         if($this->spheresList) return $this->spheresList;
         $values = [':workshop' => $this->id];
 
-        list($fields, $joins) = Sphere::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+        $lang = Lang::current();
+        list($fields, $joins) = Sphere::getLangsSQLJoins($lang, Config::get('lang'));
 
         $sql = "SELECT
                 sphere.id,
@@ -290,8 +291,7 @@ class Workshop extends Model {
         $values = [':workshop' => $this->id];
 
         $lang = Lang::current();
-
-        list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, $lang);
+        list($fields, $joins) = Stories::getLangsSQLJoins($lang, Config::get('lang'));
 
         $sql = "SELECT
                 stories.id,
