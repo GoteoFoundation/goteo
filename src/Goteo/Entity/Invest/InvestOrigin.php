@@ -9,7 +9,7 @@ class InvestOrigin
     private int $invest_id;
     private string $source;
     private string $detail;
-    private string $allocated;
+    private ?string $allocated;
 
     public function getInvestId(): int
     {
@@ -49,12 +49,12 @@ class InvestOrigin
         return $this;
     }
 
-    public function getAllocated(): string
+    public function getAllocated(): ?string
     {
         return $this->allocated;
     }
 
-    public function setAllocated(string $allocated): InvestOrigin
+    public function setAllocated(?string $allocated): InvestOrigin
     {
         $this->allocated = $allocated;
         return $this;

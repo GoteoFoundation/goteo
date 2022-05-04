@@ -31,12 +31,6 @@ class GoteoInvestOrigin
    */
   public function getUpSQL()
   {
-      /**
-       *     invest_origin
-      source
-      detail
-      allocated
-       */
      return "CREATE TABLE `invest_origin` (
         `invest_id` bigint(20) unsigned NOT NULL,
         `source` TEXT NOT NULL,

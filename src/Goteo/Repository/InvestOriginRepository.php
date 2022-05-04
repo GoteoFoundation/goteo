@@ -87,9 +87,8 @@ class InvestOriginRepository extends BaseRepository
      * @return string[]
      */
     public function getSources(): array {
-        $sql = "SELECT invest_origin.source
-                FROM invest_origin
-                GROUP BY invest_origin.source";
+        $sql = "SELECT distinct(invest_origin.source)
+                FROM invest_origin";
 
         return $this->query($sql)->fetchAll();
     }
@@ -98,9 +97,8 @@ class InvestOriginRepository extends BaseRepository
      * @return string[]
      */
     public function getDetails(): array {
-        $sql = "SELECT invest_origin.detail
-                FROM invest_origin
-                GROUP BY invest_origin.detail";
+        $sql = "SELECT distinct(invest_origin.detail)
+                FROM invest_origin";
 
         return $this->query($sql)->fetchAll();
     }
@@ -109,9 +107,8 @@ class InvestOriginRepository extends BaseRepository
      * @return string[]
      */
     public function getAllocateds(): array {
-        $sql = "SELECT invest_origin.allocated
-                FROM invest_origin
-                GROUP BY invest_origin.allocated";
+        $sql = "SELECT distinct(invest_origin.allocated)
+                FROM invest_origin";
 
         return $this->query($sql)->fetchAll();
     }
