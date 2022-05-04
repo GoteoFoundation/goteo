@@ -33,7 +33,7 @@ $this->section('main-content');
                     <input type="hidden" id="currency" name="currency" value="<?= $this->get_currency('html') ?>">
 
                     <fieldset>
-                        <legend>Escull un mètode de pagament</legend>
+                        <legend><?= $this->t('invest-payment_method-header') ?></legend>
                         <div class="row pay-methods">
                             <?php foreach($this->pay_methods as $method => $pay): ?>
                                 <div class="col-xxs-6 col-tn-6 col-xs-3 pay-method<?= $pay->isActive() ? '' : ' disabled' ?>">
