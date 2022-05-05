@@ -5,12 +5,9 @@ $color-button-text: var(--color-button-text) !default;
 $color-footer-font: var(--color-footer-font) !default;
 $color-font: var(--color-font) !default;
 
-body {
+body.donate {
   font-family: "Karla", sans-serif;
-
-  &.donate {
-
-    background-color: $color-bg-secondary !important;
+  background-color: $color-bg-secondary !important;
 
     .donate-header {
       background-color: $color-bg-primary;
@@ -53,7 +50,6 @@ body {
         color: $color-button-text;
       }
     }
-  }
 
   div.pool-box {
     form {
