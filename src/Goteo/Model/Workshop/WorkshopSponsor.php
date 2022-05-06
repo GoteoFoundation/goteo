@@ -15,6 +15,9 @@ use Goteo\Model\Image;
 
 class WorkshopSponsor extends \Goteo\Core\Model {
 
+    const TYPE_FOOTER = 'footer';
+    const TYPE_SIDE = 'side';
+
     protected $Table = 'workshop_sponsor';
     protected static $Table_static = 'workshop_sponsor';
     public
@@ -25,6 +28,8 @@ class WorkshopSponsor extends \Goteo\Core\Model {
     $url,
     $image,
     $order;
+
+    
 
 
     /**

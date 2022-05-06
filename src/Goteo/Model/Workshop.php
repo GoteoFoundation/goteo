@@ -12,6 +12,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Core\Model;
 use Goteo\Model\Workshop\WorkshopLocation;
+use Goteo\Model\Workshop\WorkshopSponsor;
 use Goteo\Model\Blog\Post as GeneralPost;
 use PDO;
 
@@ -319,7 +320,7 @@ class Workshop extends Model {
         return $this->postsList;
     }
 
-    public function getSponsors($type="side") {
+    public function getSponsors($type=WorkshopSponsor::TYPE_SIDE) {
         if($this->spheresList) return $this->spheresList;
         $values = [':workshop' => $this->id, ':type' => $type];
 
