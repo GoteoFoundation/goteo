@@ -9,6 +9,8 @@ $this->layout('workshop/layout', [
     'tw_image' => $meta_img
     ]);
 
+$footer_sponsors=$this->workshop->getSponsors("footer");
+
 $this->section('workshop-content');
 
 ?>
@@ -34,5 +36,7 @@ $this->section('workshop-content');
 <?= $this->workshop->event_type=='fundlab-esil' ? $this->insert('workshop/partials/partner') : '' ?>
 
 <?= $this->workshop->event_type=='crowdcoop' ? $this->insert('workshop/partials/partner_singulars') : '' ?>
+
+<?= $footer_sponsors ? $this->insert('workshop/partials/partner_footer', ['footer_sponsors' => $footer_sponsors]) : '' ?>
 
 <?php $this->replace() ?>

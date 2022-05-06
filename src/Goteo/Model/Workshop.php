@@ -319,15 +319,15 @@ class Workshop extends Model {
         return $this->postsList;
     }
 
-    public function getSponsors() {
+    public function getSponsors($type="side") {
         if($this->spheresList) return $this->spheresList;
-        $values = [':workshop' => $this->id];
+        $values = [':workshop' => $this->id, ':type' => $type];
 
         $sql = "SELECT
                 workshop_sponsor.*
             FROM workshop_sponsor
 
-            WHERE workshop_sponsor.workshop = :workshop
+            WHERE workshop_sponsor.workshop = :workshop AND workshop_sponsor.type= :type
             ORDER BY workshop_sponsor.order ASC";
         $query = static::query($sql, $values);
         $this->sponsorsList = $query->fetchAll(PDO::FETCH_CLASS, 'Goteo\Model\Workshop\WorkshopSponsor');
