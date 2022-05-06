@@ -35,4 +35,6 @@ $this->section('workshop-content');
 
 <?= $this->workshop->event_type=='crowdcoop' ? $this->insert('workshop/partials/partner_singulars') : '' ?>
 
+<?= $this->footer_sponsors ? $this->insert('workshop/partials/partner_footer', ['footer_sponsors' => $this->footer_sponsors]) : '' ?>
+
 <?php $this->replace() ?>
