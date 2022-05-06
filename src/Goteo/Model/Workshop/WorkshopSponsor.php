@@ -21,6 +21,7 @@ class WorkshopSponsor extends \Goteo\Core\Model {
     $id,
     $workshop,
     $name,
+    $type,
     $url,
     $image,
     $order;
@@ -63,6 +64,7 @@ class WorkshopSponsor extends \Goteo\Core\Model {
             'id',
             'workshop',
             'name',
+            'type',
             'url',
             'image',
             'url',
