@@ -9,6 +9,12 @@ $this->section('dashboard-content-pool');
 
 	<h2><?= $this->text($this->type.'-pay-method-title') ?></h2>
 
+    <?php if ($this->has_query('source') && $this->has_query('detail')): ?>
+        <p>
+            <?= $this->t('donate-invest-origin-payment-method') ?>
+        </p>
+    <?php endif; ?>
+
 	<div class="reminder">
         <div class="level-1">
 	       <?= $this->text($this->type.'-alert-recharging') ?><span class="amount-reminder"><?= $this->raw('amount_formated') ?></span>
