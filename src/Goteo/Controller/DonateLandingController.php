@@ -15,9 +15,14 @@ class DonateLandingController extends Controller
 
     public function indexAction(Request $request): Response
     {
-        $src = $request->query->getAlpha('src');
+        $source = $request->query->getAlpha('source');
         $detail = $request->query->getAlpha('detail');
-        $view = $request->query->getAlpha('view', 'donate');
+
+        // TODO: Handle with new View Admin
+        $view = 'donate';
+        if ($source && $detail) {
+            $view = 'journal';
+        }
 
         return $this->viewResponse(
             "donate/{$view}/donate",

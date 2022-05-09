@@ -150,8 +150,8 @@ class PoolController extends Controller {
 
         if($amount instanceOf Response) {
 
-            if ($detail || $source || $allocated) {
-                $this->query .= http_build_query([
+            if ($detail && $source) {
+                $this->query .= "&" . http_build_query([
                     'source' => $source,
                     'detail' => $detail,
                     'allocated' => $allocated
