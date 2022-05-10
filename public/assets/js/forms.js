@@ -47,7 +47,7 @@ function parseVideoURL (url) {
         'tube.xy-space.de',
     ];
 
-    url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com)|framatube\.org|peertube\.plataformess\.org)\/(videos\/watch\/|video\/|embed\/|watch\?v=|v\/|w\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
+    url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com)|framatube\.org|peertube\.plataformess\.org|tube\.xy-space\.de)\/(videos\/watch\/|video\/|embed\/|watch\?v=|v\/|w\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
 
     let type, src, thumbnailSrc = "", apiUrl = "";
 
