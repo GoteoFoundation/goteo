@@ -1,0 +1,98 @@
+$color-bg-primary: var(--color-bg-primary) !default;
+$color-bg-secondary: var(--color-bg-secondary) !default;
+$color-button: var(--color-button) !default;
+$color-button-text: var(--color-button-text) !default;
+$color-footer-font: var(--color-footer-font) !default;
+$color-font: var(--color-font) !default;
+
+body.donate {
+  font-family: "Karla", sans-serif;
+  background-color: $color-bg-secondary !important;
+
+    .donate-header {
+      background-color: $color-bg-primary;
+      width: 100vw;
+      height: 100vh;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center bottom;
+      }
+
+      h1 {
+        font-weight: bold;
+        font-size: 10vh;
+        font-family: "gt_cinetypebold", sans-serif;
+      }
+
+      a.btn {
+        background-color: $color-button;
+        color: $color-button-text;
+        font-size: 32px;
+        border-radius: 0;
+      }
+    }
+
+    div.donate-methods {
+      background-color: $color-bg-primary;
+      color: $color-font;
+      font-size: 32px;
+      font-weight: unset;
+
+      p.prologue {
+        color: $color-font;
+      }
+
+      button {
+        background-color: $color-button;
+        color: $color-button-text;
+      }
+    }
+
+  div.pool-box {
+    form {
+      div.form-group {
+        div.input-group {
+          div.input-group-addon {
+            border: none;
+            border-radius: 0;
+            color: $color-button-text;
+            background-color: $color-button;
+            font-size: 32px;
+            font-weight: bold;
+          }
+
+          #reward-pool {
+            border-radius: 0;
+            width: 15rem;
+          }
+        }
+      }
+
+      button {
+        height: 46px;
+        border-radius: 0;
+        color: $color-button-text;
+        background-color: $color-button;
+        font-size: 32px;
+        font-weight: bold;
+        margin: 1em;
+
+        i {
+          display: none;
+        }
+      }
+    }
+  }
+
+  footer.footer {
+    background-color: $color-bg-secondary;
+    color: $color-footer-font;
+
+    a {
+      color: $color-footer-font;
+    }
+  }
+}
