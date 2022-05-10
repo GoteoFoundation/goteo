@@ -142,9 +142,9 @@ class PoolController extends Controller {
     public function selectPaymentMethodAction(Request $request, $type = 'pool')
     {
         $amount = $request->query->get('amount');
-        $source = $request->query->getAlpha('source');
-        $detail = $request->query->getAlpha('detail');
-        $allocated = $request->query->getAlpha('allocated');
+        $source = htmlspecialchars($request->query->get('source'));
+        $detail = htmlspecialchars($request->query->get('detail'));
+        $allocated = htmlspecialchars($request->query->get('allocated'));
 
         $amount = $this->validate($amount, true, $type);
 

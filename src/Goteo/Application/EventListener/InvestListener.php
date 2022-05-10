@@ -61,9 +61,9 @@ class InvestListener extends AbstractListener {
         $request = $event->getRequest();
         $invest = $event->getInvest();
 
-        $source = $request->query->getAlpha('source');
-        $detail = $request->query->getAlpha('detail');
-        $allocated = $request->query->getAlpha('allocated');
+        $source = htmlspecialchars($request->query->get('source'));
+        $detail = htmlspecialchars($request->query->get('detail'));
+        $allocated = htmlspecialchars($request->query->get('allocated'));
 
         if ($source && $detail) {
             $investOrigin = new InvestOrigin();
