@@ -12,7 +12,7 @@ env:
 
 jobs:
   test-report:
-    runs-on: ubuntu-22.04
+    runs-on: "ubuntu-22.04"
     strategy:
       fail-fast: false
       matrix:
