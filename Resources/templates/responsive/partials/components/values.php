@@ -45,7 +45,7 @@
                         <?php foreach($footprint_impact_data[$footprint->id] as $impact_data): ?>
                             <div class="row">
                                 <?php if ($impact_data->image): ?>
-                                    <div class="col-md-4 col-xs-4 col-xss-12">
+                                    <div class="col-md-4 col-xs-4">
                                         <picture>
                                             <source media="(min-width: 1200px)" srcset="<?= $impact_data->getImage()->getLink(200, 400, true) ?>">
                                             <source media="(min-width: 992px) and (max-width: 1199px)" srcset="<?= $impact_data->getImage()->getLink(100, 300, true) ?>">
@@ -58,7 +58,7 @@
                                         </picture>
                                     </div>
                                 <?php endif; ?>
-                                <div class="footprint-data-info col-md-8 col-xs-8 col-xss-12">
+                                <div class="footprint-data-info col-md-8 col-xs-8">
                                     <h2><?= $impact_data->title ?></h2>
                                     <h3><span><?= $impact_data->data ?></span> <?= $impact_data->data_unit ?></h3>
                                     <p><?= $impact_data->description ?></p>
