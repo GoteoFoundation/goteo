@@ -8,7 +8,6 @@ $filter = $this->a('filter');
   <div class="inner-container">
     <h2><?= $this->text('dashboard-menu-projects-rewards') ?></h2>
 
-
     <?php if($this->project->inCampaign()): ?>
         <p><?= $this->text('dashboard-rewards-notice') ?></p>
     <?php endif ?>
@@ -26,7 +25,6 @@ $filter = $this->a('filter');
                             'placeholder' => $this->text('regular-search-user')
                         ]
                     ]) ?></p>
-
         </div>
         <div class="col-xs-2">
             <button type="submit" class="btn btn-cyan" ><i class="fa fa-search"></i> <?= $this->text('regular-search') ?></button>
@@ -111,19 +109,19 @@ $filter = $this->a('filter');
             $a = $invest->getAddress();
             $address = $a->address . ', ' . $a->location . ', ' . $a->zipcode .' ' . $a->country;
             $reward = $invest->getRewards() ? $invest->getRewards()[0]->getTitle() : '';
-            if($invest->resign) {
+            if ($invest->resign) {
                 $reward = $address = '';
-                if($invest->anonymous) {
+                if ($invest->anonymous) {
                     $uid = $name = $email = '';
                 }
                 $reward = '<span class="label label-info">'.$this->text('dashboard-rewards-resigns').'</span>';
             }
-            if($invest->campaign) {
+            if ($invest->campaign) {
                 $email = $address = $reward = '';
                 $resign = true;
                 $reward = '<span class="label label-lilac">'.$this->text('regular-matchfunding').'</span>';
             }
-            if(!$resign && !$reward) {
+            if (!$resign && !$reward) {
                 $reward = '<span class="label label-danger">' . $this->text('regular-unknown') . '</span>';
             }
             $extra_info = $invest->extra_info;
@@ -132,7 +130,14 @@ $filter = $this->a('filter');
         <tr<?= $invest->isCharged() ? '' : ' class="strikethrough"'?>>
           <td><?= $invest->id ?></td>
           <td><?= date_formater($invest->invested) ?></td>
-          <td><?php if($uid): ?><img src="<?= $invest->getUser()->avatar->getLink(30, 30, true) ?>" alt="<?= $name ?>" class="img-circle"> <?= $name ?><?php else: ?><?= $this->text('regular-anonymous') ?><?php endif ?> </td>
+          <td>
+              <?php if ($uid) { ?>
+                  <img src="<?= $invest->getUser()->avatar->getLink(30, 30, true) ?>" alt="<?= $name ?>" class="img-circle">
+                  <?= $name ?>
+              <?php } else { ?>
+                  <?= $this->text('regular-anonymous') ?>
+              <?php } ?>
+          </td>
           <td><?= amount_format($invest->amount) ?></td>
           <td><?= $reward ?></td>
           <td>
@@ -149,9 +154,17 @@ $filter = $this->a('filter');
           <td><?= $address ?></td>
           <td><?= $extra_info ?></td>
           <td>
-            <?php if(!$this->project->userIsOwner($invest->getUser())&&!$invest->anonymous): ?>
-            <a data-toggle="modal" href="#messageModal" data-user="<?= $invest->getUser()->id ?>" data-name="<?= $invest->getUser()->name ?>" class="send-private" title="<?= $this->text('support-send-private-message') ?>"><span><?= (int)$this->messages[$invest->getUser()->id] ?></span> <i class="icon-1x icon icon-partners"></i></a>
-            <?php endif ?>
+              <?php $canSendMessages = !$this->project->userIsOwner($invest->getUser())
+                  && !($invest->resign && $invest->anonymous); ?>
+              <?php if ($canSendMessages) { ?>
+                  <a data-toggle="modal" href="#messageModal"
+                     data-user="<?= $invest->getUser()->id ?>"
+                     data-name="<?= $invest->getUser()->name ?>"
+                     class="send-private" title="<?= $this->text('support-send-private-message') ?>">
+                      <span><?= (int)$this->messages[$invest->getUser()->id] ?></span>
+                      <i class="icon-1x icon icon-partners"></i>
+                  </a>
+              <?php } ?>
           </td>
         </tr>
       <?php endforeach ?>
@@ -165,8 +178,6 @@ $filter = $this->a('filter');
 
   </div>
 </div>
-
-
 
 <!-- Messages Modal -->
 <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel">
@@ -239,7 +250,7 @@ $filter = $this->a('filter');
             <strong>#{id}</strong> -
             <em title="{date}">{timeago}</em>
             <a href="{respond_url}" class="btn btn-sm btn-pink"><i class="fa fa-paper-plane-o"></i> <?= $this->text('dashboard-project-mailing-write_again') ?></a>
-            <span class="recipient">{recipients} <?= $this->text('dashboard-menu-projects-recipients') ?></recipient>
+            <span class="recipient">{recipients} <?= $this->text('dashboard-menu-projects-recipients') ?></span>
         </h4>
         <p>{subject}</p>
         <p class="text-danger hidden error-message"></p>
@@ -261,7 +272,6 @@ $(function(){
         $(this).closest('form').submit();
     });
     $(document).on('form-boolean-changed', function(evt, input){
-        // console.log('changed', input, $(input), $(input).closest('div'));
         if($(input).prop('checked')) {
             $(input).closest('.material-switch').replaceWith('<span class="label label-cyan"><?= $this->text('regular-yes') ?></span>');
         }
@@ -290,7 +300,6 @@ $(function(){
     }
     // Message management
     $('#messageModal').on('shown.bs.modal', function (evt) {
-        // console.log('modal evt', $(evt.relatedTarget).attr('class'), evt);
         var txt = '';
         var private = $(evt.relatedTarget).hasClass('send-private');
         var user_id = $(evt.relatedTarget).data('user');
@@ -318,11 +327,9 @@ $(function(){
           var $template = $('script.item_message_template');
           $list.addClass('loading');
           $.getJSON('/api/projects/<?= $this->project->id ?>/messages/' + user_id, function(msgs) {
-            // console.log('msgs', msgs);
             if(msgs && msgs.list) {
               $list.removeClass('loading');
               $.each(msgs.list, function(i, item){
-                // console.log(i, item);
                 var msg = $template.html()
                             .replace(/\{name\}/g, item.name)
                             .replace(/\{recipient\}/g, item.recipient_name)
@@ -384,7 +391,6 @@ $(function(){
     });
 
     $(document).on('message-sent', function(evt, request, response){
-        // console.log('message sent', request, response);
         $('.ajax-message input[name="reward"]').val('');
         $('.ajax-message input[name="others"]').val('');
         $('.ajax-message input[name="query"]').val('');
@@ -397,7 +403,6 @@ $(function(){
         loadLastMailingPercent();
         if(request.users) {
             for(var i in request.users) {
-                // console.log(request.users[i]);
                 var $span = $('a.send-private[data-user="' +  request.users[i] + '"]>span');
                 $span.text(parseInt($span.text()) + 1);
             }
@@ -477,13 +482,9 @@ $(function(){
     $('#mailingModal').on('hide.bs.modal', function (evt) {
         clearTimeout(T_MAILING);
     });
-
-
-
 })
 
 // @license-end
 </script>
 
 <?php $this->append() ?>
-
