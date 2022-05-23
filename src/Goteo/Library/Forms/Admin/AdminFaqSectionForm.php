@@ -67,7 +67,7 @@ class AdminFaqSectionForm extends AbstractFormProcessor
         $data = $form->getData();
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
-        $model->order = FaqSection::getList([], 0, 0, true) + 1;
+        $model->order = FaqSection::getListCount([]) + 1;
 
         $errors = [];
         if (!$model->save($errors)) {

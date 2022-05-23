@@ -55,10 +55,10 @@ class FaqSubsectionAdminController extends AbstractAdminController
             $filters['section'] = $section;
         }
 
-        $sectionsCount = FaqSection::getList([],0, 0, true);
+        $sectionsCount = FaqSection::getListCount([]);
         $sections = FaqSection::getList([], 0, $sectionsCount);
 
-        $total = FaqSubsection::getList($filters,0,0, true);
+        $total = FaqSubsection::getListCount($filters);
         $list = FaqSubsection::getList($filters, $limit * $page, $limit);
 
         return $this->viewResponse('admin/faq/subsection/list',[

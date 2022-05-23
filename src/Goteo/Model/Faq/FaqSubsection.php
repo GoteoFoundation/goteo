@@ -16,10 +16,10 @@
 
  class FaqSubsection extends Model {
 
-  protected $Table = 'faq_subsection';
-  protected static $Table_static = 'faq_subsection';
+    protected $Table = 'faq_subsection';
+    protected static $Table_static = 'faq_subsection';
 
-  public
+    public
       $id,
       $section_id,
       $name,
@@ -96,54 +96,68 @@
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-  public function getFaqbySubsection($limit=0){
+    public function getListCount(array $filters = [], $lang = null): int {
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
-    return Faq::getList(['subsection'=>$this->id], 0, $limit);
+        $filter = [];
+        $values = [];
 
-  }
+        if ($filters['section']) {
+            $filter[] = "faq_subsection.section_id = :section_id";
+            $values[':section_id'] = $filters['section'];
+        }
 
-  /**
-   * Save.
-   *
-   * @param   type array  $errors
-   * @return  type bool   true|false
-   */
-  public function save(&$errors = array()) {
+        if($filter) {
+            $sql = " WHERE " . implode(' AND ', $filter);
+        }
 
-    if (!$this->validate($errors))
-        return false;
+        $sql = "SELECT
+                      count(faq_subsection.id)
+                  FROM faq_subsection
+                  $joins
+                  $sql";
 
-    $fields = [
-        'id',
-        'section_id',
-        'name',
-        'lang',
-        'order'
-        ];
-
-    try {
-        //automatic $this->id assignation
-        $this->dbInsertUpdate($fields);
-
-        return true;
-    } catch(\PDOException $e) {
-        $errors[] = "Faq subsection save error: " . $e->getMessage();
-        return false;
+        $query = static::query($sql, $values);
+        return $query->fetchColumn();
     }
-  }
 
-    /**
-     * Validate.
-     *
-     * @param   type array  $errors
-     * @return  type bool   true|false
-     */
-    public function validate(&$errors = array()) {
+    public function getFaqs(): Faq
+    {
+        $total = Faq::getListCount(['subsection' => $this->id]);
+        return Faq::getList(['subsection'=>$this->id], 0, $total);
+    }
+
+    public function save(&$errors = array()): bool
+    {
+
+        if (!$this->validate($errors))
+            return false;
+
+        $fields = [
+            'id',
+            'section_id',
+            'name',
+            'lang',
+            'order'
+            ];
+
+        try {
+            //automatic $this->id assignation
+            $this->dbInsertUpdate($fields);
+
+            return true;
+        } catch(\PDOException $e) {
+            $errors[] = "Faq subsection save error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function validate(&$errors = array()): bool
+    {
       if (empty($this->name))
         $errors[] = "The faq subsection has no name";
 
       return empty($errors);
     }
-
-
  }
