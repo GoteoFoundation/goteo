@@ -131,12 +131,12 @@ $filter = $this->a('filter');
           <td><?= $invest->id ?></td>
           <td><?= date_formater($invest->invested) ?></td>
           <td>
-              <?php if ($uid) { ?>
+              <?php if ($uid): ?>
                   <img src="<?= $invest->getUser()->avatar->getLink(30, 30, true) ?>" alt="<?= $name ?>" class="img-circle">
                   <?= $name ?>
-              <?php } else { ?>
+              <?php else: ?>
                   <?= $this->text('regular-anonymous') ?>
-              <?php } ?>
+              <?php endif; ?>
           </td>
           <td><?= amount_format($invest->amount) ?></td>
           <td><?= $reward ?></td>
@@ -156,7 +156,7 @@ $filter = $this->a('filter');
           <td>
               <?php $canSendMessages = !$this->project->userIsOwner($invest->getUser())
                   && !($invest->resign && $invest->anonymous); ?>
-              <?php if ($canSendMessages) { ?>
+              <?php if ($canSendMessages): ?>
                   <a data-toggle="modal" href="#messageModal"
                      data-user="<?= $invest->getUser()->id ?>"
                      data-name="<?= $invest->getUser()->name ?>"
@@ -164,7 +164,7 @@ $filter = $this->a('filter');
                       <span><?= (int)$this->messages[$invest->getUser()->id] ?></span>
                       <i class="icon-1x icon icon-partners"></i>
                   </a>
-              <?php } ?>
+              <?php endif; ?>
           </td>
         </tr>
       <?php endforeach ?>
