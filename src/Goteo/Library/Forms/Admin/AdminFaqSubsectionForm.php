@@ -53,7 +53,7 @@ class AdminFaqSubsectionForm extends AbstractFormProcessor
         $data = $form->getData();
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
-        $model->order = FaqSubsection::getList([], 0, 0, true) + 1;
+        $model->order = FaqSubsection::getListCount([]) + 1;
 
         $errors = [];
         if (!$model->save($errors)) {
@@ -79,7 +79,7 @@ class AdminFaqSubsectionForm extends AbstractFormProcessor
     private function getSections(): array
     {
         $choices = [];
-        $sectionsCount = FaqSection::getList([], 0, 0, true);
+        $sectionsCount = FaqSection::getList([], 0, 0);
         $sections = FaqSection::getList([], 0, $sectionsCount);
 
         foreach ($sections as $section) {

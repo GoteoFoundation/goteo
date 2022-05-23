@@ -10,22 +10,18 @@
 
 namespace Goteo\Controller\Admin;
 
-use Goteo\Core\Controller;
-use Goteo\Model\Faq\FaqSection;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
-use Goteo\Model\Faq;
-use Goteo\Model\Faq\FaqSubsection;
-use Goteo\Application\App;
-use Goteo\Application\Lang;
-use Goteo\Application\Message;
-use Goteo\Application\View;
-use Goteo\Library\Text;
-use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Message;
+use Goteo\Model\Faq;
+use Goteo\Model\Faq\FaqSection;
+use Goteo\Model\Faq\FaqSubsection;
+use Goteo\Library\Forms\Admin\AdminFaqForm;
+use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Text;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Route;
 
 class FaqAdminController extends AbstractAdminController
 {

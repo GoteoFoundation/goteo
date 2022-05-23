@@ -61,7 +61,7 @@ class FaqSectionAdminController extends AbstractAdminController
         $page = $request->query->getDigits('pag', 0);
         $limit = $request->query->getDigits('limit', 10);
 
-        $total = FaqSection::getList([],0,0, true);
+        $total = FaqSection::getListCount([]);
         $list = FaqSection::getList([], $limit * $page, $limit);
 
         return $this->viewResponse('admin/faq/section/list',[

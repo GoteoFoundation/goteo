@@ -161,20 +161,10 @@ class FaqTest extends TestCase {
         self::delete_faq_section();
     }
 
-    private static  function delete_faq_section(): bool
+    private static  function delete_faq_section(): void
     {
-        try {
-            $faqSection= FaqSection::getBySlug(self::$sectionData['slug']);
-            $faqSection->dbDelete();
-        }
-        catch(ModelNotFoundException $e) {
-        }
-        catch(\PDOException $e) {
-            error_log('PDOException on deleting test faq section! ' . $e->getMessage());
-            return false;
-        }
-
-        return true;
+        $faqSection = FaqSection::getBySlug(self::$sectionData['slug']);
+        $faqSection->dbDelete();
     }
 
 }
