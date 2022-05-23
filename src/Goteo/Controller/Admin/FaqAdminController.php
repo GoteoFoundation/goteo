@@ -10,18 +10,19 @@
 
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Forms\Admin\AdminFaqForm;
-use Goteo\Model\Faq\FaqSection;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
-use Goteo\Model\Faq;
-use Goteo\Model\Faq\FaqSubsection;
-use Goteo\Application\Message;
-use Goteo\Library\Text;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Message;
+use Goteo\Model\Faq;
+use Goteo\Model\Faq\FaqSection;
+use Goteo\Model\Faq\FaqSubsection;
+use Goteo\Library\Forms\Admin\AdminFaqForm;
+use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Text;
+use PDOException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Route;
 
 class FaqAdminController extends AbstractAdminController
 {
@@ -93,7 +94,7 @@ class FaqAdminController extends AbstractAdminController
             $faq_subsections[FaqSection::getById($s->section_id)->name][$s->id] = $s->name;
         }
 
-        $total = Faq::getList($filters,0,0, true);
+        $total = Faq::getListCount($filters);
         $list = Faq::getList($filters, $page * $limit, $limit);
         return $this->viewResponse('admin/faq/list', [
             'list' => $list,
@@ -131,16 +132,17 @@ class FaqAdminController extends AbstractAdminController
     public function deleteAction(Request $request, $id): Response
     {
         try {
-            $faq = $this->validateFaq();
+            $faq = $this->validateFaq($id);
         } catch (ModelNotFoundException $exception) {
             Message::error($exception->getMessage());
+            return $this->redirect('/admin/faq/');
         }
 
         try {
             $faq->dbDelete();
             Message::info(Text::get('admin-remove-entry-ok'));
-        } catch (\PDOException $e) {
-          Message::error($e->getMessage());
+        } catch (PDOException $e) {
+            Message::error($e->getMessage());
         }
 
         return $this->redirect('/admin/faq/' . $faq->section);
