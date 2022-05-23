@@ -47,7 +47,7 @@ class GoteoNewFaq
      return "
 
       CREATE TABLE `faq_section` (
-            `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
             `name` VARCHAR(255) NOT NULL,
             `slug` VARCHAR(150) NOT NULL,
             `icon` varchar(255) NULL,
@@ -56,11 +56,11 @@ class GoteoNewFaq
             `button_url` VARCHAR(255) NOT NULL,
             `lang` VARCHAR(6) NULL,
             `order` INT(11),
-             PRIMARY KEY (`id`) 
+             PRIMARY KEY (`id`)
       );
 
       CREATE TABLE `faq_section_lang` (
-            `id` BIGINT(20) UNSIGNED NOT NULL,
+            `id` INT(11) UNSIGNED NOT NULL,
             `lang` VARCHAR (6),
             `name` VARCHAR(255) NOT NULL,
             `button_action` VARCHAR(255) NOT NULL,
@@ -70,8 +70,8 @@ class GoteoNewFaq
       );
 
       CREATE TABLE `faq_subsection` (
-            `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-            `section_id` BIGINT(20) UNSIGNED NOT NULL,
+            `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `section_id` INT(11) UNSIGNED NOT NULL,
             `name` VARCHAR(255) NOT NULL,
             `lang` VARCHAR(6) NULL,
             `order` INT(11),
@@ -80,21 +80,19 @@ class GoteoNewFaq
       );
 
       CREATE TABLE `faq_subsection_lang` (
-            `id` BIGINT(20) UNSIGNED NOT NULL,
+            `id` INT(11) UNSIGNED NOT NULL,
             `lang` VARCHAR (6),
             `name` VARCHAR(255) NOT NULL,
             `pending` TINYINT (1),
              FOREIGN KEY (`id`) REFERENCES `faq_subsection`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
-      ); 
+      );
 
       ALTER TABLE `faq` ADD COLUMN `slug` VARCHAR(150) AFTER id;
-      ALTER TABLE `faq` ADD COLUMN `subsection_id` BIGINT(20) UNSIGNED NOT NULL AFTER title;
-      ALTER TABLE `faq` DROP `section`; 
+      ALTER TABLE `faq` ADD COLUMN `subsection_id` INT(11) UNSIGNED NOT NULL AFTER title;
+      ALTER TABLE `faq` DROP `section`;
       SET FOREIGN_KEY_CHECKS=0;
       ALTER TABLE `faq` ADD CONSTRAINT `faq_ibfk_2` FOREIGN KEY (`subsection_id`) REFERENCES `faq_subsection`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
       SET FOREIGN_KEY_CHECKS=1;
-
-
      ";
   }
 
@@ -114,7 +112,6 @@ class GoteoNewFaq
        DROP TABLE `faq_subsection`;
        DROP TABLE `faq_section_lang`;
        DROP TABLE `faq_section`;
-
      ";
   }
 

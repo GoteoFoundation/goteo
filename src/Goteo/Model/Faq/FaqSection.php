@@ -11,10 +11,10 @@
 
  class FaqSection extends Model {
 
-  protected $Table = 'faq_section';
-  protected static $Table_static = 'faq_section';
+    protected $Table = 'faq_section';
+    protected static $Table_static = 'faq_section';
 
-  public
+    public
       $id,
       $name,
       $slug,
@@ -59,23 +59,21 @@
             $values = [':id' => $id];
         }
 
-        //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
 
         $item = $query->fetchObject(__CLASS__);
 
-        if($item) {
-          return $item;
-        }
+        if(!$item)
+            throw new ModelNotFoundException("Faq section not found for ID [$id]");
 
-        throw new ModelNotFoundException("Faq section not found for ID [$id]");
+        return $item;
     }
 
 
      /**
-      * @return array [] FaqSection | int
+      * @return array [] FaqSection
       */
-    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, $lang = null)
+    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, $lang = null)
     {
 
         if(!$lang) $lang = Lang::current();
@@ -86,17 +84,6 @@
 
         if($filter) {
             $sql = " WHERE " . implode(' AND ', $filter);
-        }
-
-        if ($count) {
-            $sql = "SELECT
-                  count(faq_section.id)
-              FROM faq_section
-              $joins
-              $sql";
-            $query = static::query($sql, $values);
-            //die(\sqldbg($sql, $values));
-            return $query->fetchColumn();
         }
 
         $sql="SELECT
@@ -111,63 +98,83 @@
               $sql
               ORDER BY faq_section.order ASC
               LIMIT $offset, $limit";
-         //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
 
-  public function getFaqbySection(int $limit = 0): array
-  {
+     static public function getListCount(array $filters = [], $lang = null): int
+     {
+         if(!$lang) $lang = Lang::current();
+         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
-    return Faq::getList(['section'=>$this->id], 0, $limit);
+         $filter = [];
+         $values = [];
 
-  }
+         if($filter) {
+             $sql = " WHERE " . implode(' AND ', $filter);
+         }
+
+         $sql = "SELECT
+              count(faq_section.id)
+          FROM faq_section
+          $joins
+          $sql";
+         $query = static::query($sql, $values);
+         return $query->fetchColumn();
+    }
+
+    /**
+     * @return Faq[]
+     */
+    public function getFaqs(int $limit = 0): array
+    {
+        $count = Faq::getListCount(['section' => $this->id]);
+        return Faq::getList(['section'=>$this->id], 0, $count);
+    }
 
 
- public function getBannerHeaderImage(): Image {
+    public function getBannerHeaderImage(): Image {
       if(!$this->bannerHeaderImageInstance instanceOf Image) {
           $this->bannerHeaderImageInstance = new Image($this->banner_header_image);
       }
 
       return $this->bannerHeaderImageInstance;
-  }
-
-  public function save(&$errors = array()): bool
-  {
-
-    if (!$this->validate($errors))
-        return false;
-
-    $fields = [
-        'id',
-        'name',
-        'slug',
-        'icon',
-        'banner_header',
-        'button_action',
-        'button_url',
-        'lang',
-        'order'
-        ];
-
-    try {
-        //automatic $this->id assignation
-        $this->dbInsertUpdate($fields);
-
-        return true;
-    } catch(\PDOException $e) {
-        $errors[] = "Faq section save error: " . $e->getMessage();
-        return false;
     }
-  }
 
-    public function validate(&$errors = array()): bool {
+    public function save(&$errors = array()): bool
+    {
+        if (!$this->validate($errors))
+            return false;
+
+        $fields = [
+            'id',
+            'name',
+            'slug',
+            'icon',
+            'banner_header',
+            'button_action',
+            'button_url',
+            'lang',
+            'order'
+            ];
+
+        try {
+            //automatic $this->id assignation
+            $this->dbInsertUpdate($fields);
+
+            return true;
+        } catch(\PDOException $e) {
+            $errors[] = "Faq section save error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function validate(&$errors = array()): bool
+    {
       if (empty($this->name))
-        $errors[] = "The node faq has no name";
+        $errors[] = "The faq section has no name";
 
       return empty($errors);
     }
-
-
  }

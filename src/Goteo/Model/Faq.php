@@ -73,9 +73,7 @@ class Faq extends \Goteo\Core\Model {
             $values = [':id' => $id];
         }
 
-         //die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
-
         $faq = $query->fetchObject(__CLASS__);
 
         if (!$faq)
@@ -85,9 +83,10 @@ class Faq extends \Goteo\Core\Model {
     }
 
     /*
-     * Lista de faqs
+     * @returns Faq[]
      */
-    public static function getAll ($subsection = 'node', $lang = null) {
+    public static function getAll (int $subsection, $lang = null): array
+    {
         if(!$lang) $lang = Lang::current();
         $values = array(':subsection' => $subsection);
 
@@ -139,18 +138,6 @@ class Faq extends \Goteo\Core\Model {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
 
-        if ($count) {
-            $sql = "
-                SELECT
-                    count(faq.id)
-                FROM faq
-                $joins
-                $sql
-            ";
-            $query = static::query($sql, $values);
-            return $query->fetchColumn();
-        }
-
         $sql="SELECT
                   faq.id as id,
                   faq.slug as slug,
@@ -163,23 +150,58 @@ class Faq extends \Goteo\Core\Model {
               $sql
               ORDER BY faq.order ASC
               LIMIT $offset, $limit";
-        //die(\sqldbg($sql, $values));
+
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    }
+
+    static public function getListCount(array $filters = [], string $lang = null): int
+    {
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+        $filter = [];
+        $values = [];
+
+        if ($filters['section']) {
+            $subsections= FaqSubsection::getList(['section'=>$filters['section']]);
+
+            foreach ($subsections as $subsection)
+                $subsections_id[]=$subsection->id;
+
+            $filter[] = "faq.subsection_id in ('".implode("','", $subsections_id)."')";
+
+        }
+
+        if ($filters['subsection']) {
+            $filter[] = "faq.subsection_id = :subsection_id";
+            $values[':subsection_id'] = $filters['subsection'];
+        }
+
+        if($filter) {
+            $sql = " WHERE " . implode(' AND ', $filter);
+        }
+
+        $sql = "
+            SELECT
+                count(faq.id)
+            FROM faq
+            $joins
+            $sql
+        ";
+        $query = static::query($sql, $values);
+        return $query->fetchColumn();
     }
 
     public function validate (&$errors = array()) {
         if (empty($this->node))
             $errors[] = 'Missing node';
-            //Text::get('mandatory-faq-node');
 
         if (empty($this->subsection_id))
             $errors[] = 'Missing subsection';
-            //Text::get('mandatory-faq-section');
 
         if (empty($this->title))
             $errors[] = 'Missing title';
-            //Text::get('mandatory-faq-title');
 
         return empty($errors);
     }
