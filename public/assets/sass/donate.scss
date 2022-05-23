@@ -8,6 +8,9 @@ $color-font: var(--color-font) !default;
 body.donate {
   font-family: "Karla", sans-serif;
   background-color: $color-bg-secondary !important;
+  line-height: 160%;
+  font-weight: 400;
+  letter-spacing: -0.5px;
 
     .donate-header {
       background-color: $color-bg-primary;
@@ -67,6 +70,7 @@ body.donate {
           #reward-pool {
             border-radius: 0;
             width: 15rem;
+            color: #000000;
           }
         }
       }
