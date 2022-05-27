@@ -16,7 +16,6 @@
 
  class FaqSubsection extends Model {
 
-
     protected $Table = 'faq_subsection';
     protected static $Table_static = 'faq_subsection';
 

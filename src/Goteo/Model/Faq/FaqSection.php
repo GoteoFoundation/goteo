@@ -102,7 +102,6 @@
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-
      static public function getListCount(array $filters = [], $lang = null): int
      {
          if(!$lang) $lang = Lang::current();
