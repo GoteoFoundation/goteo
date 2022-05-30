@@ -52,9 +52,9 @@ jobs:
           npm install
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+            php-version: ${{ matrix.php }}
 
       - name: Run Composer Install
         run: composer install --no-interaction
