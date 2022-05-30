@@ -22,6 +22,12 @@ profile-field-legal-entity-ngo: ONG
 profile-field-legal-entity-others: Otros
 profile-field-legal-entity-person: 'Persona física'
 profile-field-legal-entity-self-employed: Autónomo
+profile-field-origin-register: '¿Cómo conociste Goteo?'
+profile-field-origin-register-workshop: 'En un taller de formación'
+profile-field-origin-register-event: 'A través de un evento/presentación pública'
+profile-field-origin-register-social-media: 'Publicaciones en redes sociales'
+profile-field-origin-register-previous-project: 'Una campaña en Goteo anterior'
+profile-field-origin-register-search: 'Utilizando un buscador'
 profile-field-location: 'Lugar de residencia habitual'
 profile-field-name: 'Nombre de usuario/a'
 profile-field-url: URL

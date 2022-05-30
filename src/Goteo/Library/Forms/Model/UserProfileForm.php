@@ -85,6 +85,18 @@ class UserProfileForm extends AbstractFormProcessor {
         return $interestsChoices;
     }
 
+    private function getOriginRegisterChoices(): array
+    {
+        $origin_register_choices=[];
+        $origin_register=USER::ALL_ORIGIN_REGISTER;
+
+        foreach($origin_register as $option)
+            $origin_register_choices[Text::get('profile-field-origin-register-'.$option)]=$option;
+
+        return $origin_register_choices;
+
+    }
+
     public function createForm() {
         $non_public = '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field');
         $user = $this->getModel();
@@ -168,6 +180,13 @@ class UserProfileForm extends AbstractFormProcessor {
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'color' => 'cyan'
+            ])
+            ->add('origin_register', ChoiceType::class, [
+                'label' => 'profile-field-origin-register',
+                'constraints' => $this->getConstraints('origin_register'),
+                'disabled' => $this->getReadonly(),
+                'choices' =>  $this->getOriginRegisterChoices(),
+                'required' => false
             ])
             ->add('about', MarkdownType::class, [
                 'label' => 'profile-field-about',

@@ -22,6 +22,12 @@ profile-field-legal-entity-ngo: NGO
 profile-field-legal-entity-others: Other
 profile-field-legal-entity-person: 'Individual'
 profile-field-legal-entity-self-employed: Freelancer
+profile-field-origin-register: 'How did you meet Goteo?'
+profile-field-origin-register-workshop: 'In a training workshop'
+profile-field-origin-register-event: 'Public event'
+profile-field-origin-register-social-media: 'Social Media'
+profile-field-origin-register-previous-project: 'Una campaña en Goteo anterior'
+profile-field-origin-register-search: 'A previous Goteo campaign'
 profile-field-location: 'Place of residence'
 profile-field-name: 'User name'
 profile-field-websites: 'My web pages'

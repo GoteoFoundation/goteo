@@ -59,6 +59,22 @@ class User extends Model {
         self::PREFERENCE_CURRENCY,
     ];
 
+
+    public const ORIGIN_REGISTER_WORKSHOP='workshop';
+    public const ORIGIN_REGISTER_EVENT='event';
+    public const ORIGIN_REGISTER_SOCIAL_MEDIA='social-media';
+    public const ORIGIN_REGISTER_PREVIOUS_PROJECT='previous-project';
+    public const ORIGIN_REGISTER_SEARCHER='searcher';
+    
+    public const ALL_ORIGIN_REGISTER= [
+        self::ORIGIN_REGISTER_WORKSHOP,
+        self::ORIGIN_REGISTER_EVENT,
+        self::ORIGIN_REGISTER_SOCIAL_MEDIA,
+        self::ORIGIN_REGISTER_PREVIOUS_PROJECT,
+        self::ORIGIN_REGISTER_SEARCHER,
+    ];
+    
+
     public
     $id = false,
     $lang,
@@ -71,6 +87,7 @@ class User extends Model {
     $gender,
     $entity_type,
     $legal_entity,
+    $origin_register,
     $name,
     $location,
     $avatar = null, // Always a Image class
@@ -292,6 +309,9 @@ class User extends Model {
                 }
                 if (isset($this->legal_entity)) {
                     $data[':legal_entity'] = $this->legal_entity;
+                }
+                if (isset($this->origin_register)) {
+                    $data[':origin_register'] = $this->origin_register;
                 }
 
                 // Interests
@@ -753,6 +773,7 @@ class User extends Model {
                     user.birthyear as birthyear,
                     user.entity_type as entity_type,
                     user.legal_entity as legal_entity,
+                    user.origin_register as origin_register,
                     user.gender as gender,
                     user.rememberme as rememberme
                 FROM user
