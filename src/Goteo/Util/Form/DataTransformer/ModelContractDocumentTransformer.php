@@ -15,7 +15,6 @@ class ModelContractDocumentTransformer implements DataTransformerInterface {
 
     public function reverseTransform($doc) {
         if(is_array($doc)) {
-            // var_dump($doc);
             foreach($doc as $i => $f) {
                 if(!$f) continue;
                 if(!$f instanceOf Document) {

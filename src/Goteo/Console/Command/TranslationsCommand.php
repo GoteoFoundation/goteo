@@ -13,6 +13,7 @@ namespace Goteo\Console\Command;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Library\Text;
+use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -84,13 +85,13 @@ EOT
         $sqlclear  = $input->getOption('sql-clear');
 
         if ( empty($lang) ) {
-           throw new \InvalidArgumentException('No lang defined. Please define it in settings or by using --lang option');
+           throw new InvalidArgumentException('No lang defined. Please define it in settings or by using --lang option');
         }
         // check lang availability
         Lang::set($lang);
         $newlang = Lang::current();
         if($newlang !== $lang) {
-           throw new \InvalidArgumentException('The lang ['.$lang.'] is not used. Please define a valid language in settings or by using --lang option');
+           throw new InvalidArgumentException('The lang ['.$lang.'] is not used. Please define a valid language in settings or by using --lang option');
         }
 
         if($sqlclear) {
@@ -121,7 +122,6 @@ EOT
                 $filter['sqlonly'] = 1;
             }
             $all = Text::getAll($filter, $lang);
-            // echo "$g\n".print_r($files,1).print_r($all,1);
 
             if(empty($all)) continue;
             $output->writeln("<info>$g</info>");
@@ -131,7 +131,7 @@ EOT
                 $texts[$text->id] = $text->text;
             }
             $yml = Yaml::dump($texts);
-            if($dump) {
+            if ($dump) {
                 // Main dir
                 $dir = GOTEO_PATH . 'config/translations/' . $lang . '/';
                 @mkdir($dir, 0755, true);

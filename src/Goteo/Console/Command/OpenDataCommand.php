@@ -64,7 +64,6 @@ Extract Open Data for a Footprint
 Extract Open Data for multiple Footprints
 <info>./console opendata -f 1 -f 2 -f 3 </info>
 
-
 EOT
 );
     }
@@ -90,8 +89,8 @@ EOT
         }
     }
 
-    private function extractSdgOpenData(Sdg $sdg): void {
-
+    private function extractSdgOpenData(Sdg $sdg): void
+    {
         $this->extractSdgProjects($sdg);
         $this->extractSdgInvests($sdg);
     }
@@ -145,8 +144,8 @@ EOT
         $file->close();
     }
 
-    private function extractFootprintOpenData(Footprint $footprint): void {
-
+    private function extractFootprintOpenData(Footprint $footprint): void
+    {
         $this->extractFootprintProjects($footprint);
         $this->extractFootprintInvests($footprint);
     }
@@ -200,8 +199,8 @@ EOT
         $file->close();
     }
 
-    private function extractCallOpenData(Call $call): void {
-
+    private function extractCallOpenData(Call $call): void
+    {
         $this->extractCallProjectsData($call);
         $this->extractCallInvestsData($call);
     }
@@ -301,7 +300,6 @@ EOT
         }
         $file->close();
     }
-
 
     /**
      * @param Project[] $projects

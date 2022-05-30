@@ -14,6 +14,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\View;
 use Goteo\Core\Controller;
 use Goteo\Model\Workshop;
+use Goteo\Model\Workshop\WorkshopSponsor;
 
 class WorkshopController extends Controller {
 
@@ -29,6 +30,8 @@ class WorkshopController extends Controller {
         $workshop= Workshop::get($id, Lang::Current());
         $event_type= $workshop->event_type ?: 'other';
         $relatedWorkshops= Workshop::getAll(['event_type' => $event_type, 'excluded' => $id ]);
+        $footer_sponsors=$workshop->getSponsors(WorkshopSponsor::TYPE_FOOTER);
+
 
         if($event_type=='fundlab' ||$event_type=='fundlab-esil')
             $relatedWorkshops = array_merge(
@@ -38,7 +41,8 @@ class WorkshopController extends Controller {
 
         return $this->viewResponse('workshop/index', [
             'workshop' => $workshop,
-            'related_workshops' => $relatedWorkshops
+            'related_workshops' => $relatedWorkshops,
+            'footer_sponsors' =>    $footer_sponsors
         ]);
     }
 }

@@ -10,6 +10,7 @@
 
 namespace Goteo\Console\Command;
 
+use Exception;
 use Goteo\Model\Blog\Post;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
@@ -20,13 +21,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Userful tools for check & repair several database potential issues
+ * Useful tools to check & repair several database potential issues
  */
 class ToolkitCommand extends AbstractCommand {
 
     protected function configure()
     {
-        // Old command, old notice hidding
+        // Old command, old notice hiding
         error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
         $this->setName("toolkit")
@@ -277,7 +278,7 @@ EOT
              FROM user u
              LEFT JOIN user_pool p ON p.user=u.id
              ";
-             // echo $sql;
+
             $query = Pool::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User\Pool') as $pool) {
                 $amount = (int)$pool->amount;
@@ -294,7 +295,7 @@ EOT
                         $output->writeln("<comment>Pool amount changed to $diff</comment>");
                         $errors = [];
                         if(!$pool->calculate()->save($errors)) {
-                            throw new \Exception(implode('\n', $errors));
+                            throw new Exception(implode('\n', $errors));
                         }
 
                         $fixes++;
@@ -319,7 +320,6 @@ EOT
             }
 
             $sql = "SELECT * FROM invest WHERE status>0 AND pool=1 AND (project IN ($sql_failed_projects) OR ISNULL(project))$sqladd";
-            // die(\sqldbg($sql, $values));
             $subquery = Invest::query($sql, $values);
             foreach($subquery->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest') as $invest) {
                 $project = $invest->project;
@@ -421,16 +421,13 @@ EOT
                 }
                 $output->writeln("");
             }
-
-        }
-        else {
-            throw new \Exception("Scope [$scope] not available!");
+        } else {
+            throw new Exception("Scope [$scope] not available!");
         }
 
-        if($index == 0) {
+        if ($index == 0) {
             $output->writeln("<info>No problems found</info>");
-        }
-        else {
+        } else {
             $output->writeln("<error>Found $index problems!</error>");
             if($fixes) {
                 $output->writeln("<info>Repaired $fixes projects</info>");

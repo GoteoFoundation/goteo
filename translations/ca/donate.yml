@@ -1,4 +1,6 @@
 ---
+donate-meta-title: "Donar :: Goteo.org"
+donate-meta-description: "Ajuda a la Fundació Goteo amb el teu donatiu"
 donate-header-description: 'Per una societat més ètica i col·laborativa'
 donate-main-text-intro: 'La plataforma Goteo és una part fonamental de la Fundació Goteo, que impulsa eines per al finançament cívic, on fem possible que moltíssimes iniciatives tirin endavant. Tenim tres puntals molt importants: l''ecològic, el social i el democràtic, que donen sentit a tot el que fem:'
 donate-main-text-line-1: '<strong>No deixem a ningú enrere,</strong> donant suport “cas per cas i pas a pas”, amb formació, difusió i acompanyament a més de 200 projectes l''any.'
@@ -24,3 +26,5 @@ donate-button: 'Donar a la Fundació'
 donate-select-amount-prologue: 'Més informació sobre la desgravació fiscal de fins al 75% de la teva donació'
 donate-modal-relief-title: 'La teva desgravació fiscal'
 donate-modal-relief-description: '<p>Fes la teva donació a la Fundació Goteo, i aconsegueix la teva desgravació fiscal.</p> <p>Els percentatges de la desgravació varien en funció de quant aportes: per a les aportacions de tot un any que no superin els 150€ hi ha uns percentatges i pels que superin els 150€ n''hi ha uns altres.</p> <ul> <li>Fins a 150€                -  75%</li> <li>A partir de 150€          -  30%</li> <li>Persones jurídiques        -  30%</li> </ul> <p> Si has col·laborat amb la mateixa entitat en els últims tres anys, els percentatges de desgravació són superiors. D''aquesta manera la teva fidelitat es veu recompensada amb una major devolució. </p> <p> * <strong>Import</strong> Aquesta millora fiscal no aplica fora d''Espanya, ni tampoc al País Basc ni a Navarra, que mantenen una deducció del 30% i del 25% respectivament del total aportat. </p> <p> (*) El límit de la deducció sobre la base liquidable es manté en el 10%. Article 19 (Deducció de la quota de l''Impost sobre la Renda de les Persones Físiques) de la llei 49/2002, del 23 de desembre, de règim fiscal de les entitats sense finalitats lucratives i dels incentius fiscals al mecenatge. </p> '
+donate-invest-origin-payment-method: "Lorem ipsum dolor sit amet"
+donate-invest-origin-thanks: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit"

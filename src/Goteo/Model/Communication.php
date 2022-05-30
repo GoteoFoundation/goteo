@@ -35,7 +35,7 @@ class Communication extends \Goteo\Core\Model {
     public static function getLangFields() {
         return ['subject', 'content'];
     }
-    
+
 
     static public function get($id) {
 		if (empty($id)) {
@@ -70,7 +70,7 @@ class Communication extends \Goteo\Core\Model {
         }
         return empty($errors);
     }
-    
+
     /**
      * Communication listing
      *
@@ -127,7 +127,7 @@ class Communication extends \Goteo\Core\Model {
 
         $sql ="SELECT
                 communication.id as id,
-                communication.type as type, 
+                communication.type as type,
                 $fields,
                 communication.lang as lang,
                 communication.header as header,
@@ -140,16 +140,15 @@ class Communication extends \Goteo\Core\Model {
             ORDER BY `id` DESC
             LIMIT $offset,$limit";
 
-        // var_dump($values); var_dump($sql); die(\sqldbg($sql, $values));
         if($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
         return [];
     }
-    
+
     public function setPromotedProjects() {
         $values = Array(':communication' => $this->id, ':project' => '');
-        
+
         try {
             $query = static::query('DELETE FROM communication_project WHERE communication = :communication', Array(':communication' => $this->id));
         }
@@ -206,7 +205,7 @@ class Communication extends \Goteo\Core\Model {
     public function save(&$errors = []) {
         $this->validate($errors);
         if( !empty($errors) ) return false;
-        
+
         $fields = array(
             'id',
             'subject',
@@ -279,8 +278,8 @@ class Communication extends \Goteo\Core\Model {
 
     public function getAllLangs() {
         try {
-            $sql = "SELECT a.id, a.lang, a.subject, a.content FROM `{$this->Table}` a WHERE a.id = :id 
-                    UNION 
+            $sql = "SELECT a.id, a.lang, a.subject, a.content FROM `{$this->Table}` a WHERE a.id = :id
+                    UNION
                     SELECT * FROM `{$this->Table}_lang` b WHERE b.id = :id";
             $values = array(':id' => $this->id);
             // die(\sqldbg($sql, $values));
@@ -307,7 +306,7 @@ class Communication extends \Goteo\Core\Model {
     public function isActive() {
         $mails = Mail::getFromCommunicationId($this->id);
         $active = 0;
-        
+
         if ($mails) {
             foreach($mails as $mail) {
                 if ($active)
@@ -316,7 +315,7 @@ class Communication extends \Goteo\Core\Model {
                     $active = $active || $mail->getSender()->isActive();
             }
         }
-        
+
         return $active;
     }
 
@@ -331,7 +330,7 @@ class Communication extends \Goteo\Core\Model {
                         return false;
             }
         }
-        
+
         return $sent;
 
     }

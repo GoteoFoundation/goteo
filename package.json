@@ -35,7 +35,7 @@
     "grunt-usemin": "^3.1.1",
     "grunt-yamllint": "^0.3.0",
     "jshint-stylish": "^2.2.1",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.21",
     "matchdep": "^1.0.1",
     "time-grunt": "^1.0.0"
   },
