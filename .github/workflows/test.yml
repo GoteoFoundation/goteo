@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.4' ]
+        php-versions: [ '7.4' ]
 
     services:
       mysql:
@@ -54,7 +54,8 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl, xml
 
       - name: Run Composer Install
         run: composer install --no-interaction
