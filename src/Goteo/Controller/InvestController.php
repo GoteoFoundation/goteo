@@ -18,13 +18,16 @@ use Goteo\Application\Currency;
 use Goteo\Application\Event\FilterInvestFinishEvent;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Core\Controller;
+use Goteo\Library\Forms\Model\InvestAddressForm;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
+use Goteo\Model\Invest\InvestAddress;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
@@ -554,7 +557,36 @@ class InvestController extends Controller {
         }
 
         // check post data
+
+
+
         $invest_address = (array)$invest->getAddress();
+
+        try {
+            $investAddress = InvestAddress::getByInvest($invest->id);
+        } catch (ModelNotFoundException $e) {
+
+            $investAddress = new InvestAddress();
+            $address = $invest->getAddress();
+            $investAddress
+                ->setInvest($invest->id)
+                ->setName($address->name)
+                ->setNif($address->nif)
+                ->setAddress($address->address)
+                ->setLocation($address->location)
+                ->setZipcode($address->zipcode)
+                ->setCountry($address->country);
+        }
+
+        $processor = $this->getModelForm(InvestAddressForm::class, $investAddress, (array)$investAddress, [], $request);
+        $processor->createForm();
+        $processor->getBuilder();
+        $form = $processor->getForm();
+        $form->handleRequest($request);
+
+        if ($request->isMethod(Request::METHOD_POST))
+            $processor->save();
+
         $errors = [];
         if($request->isMethod('post') && $request->request->has('invest')) {
             $invest_address = $request->request->get('invest');
@@ -578,8 +610,13 @@ class InvestController extends Controller {
         }
 
         return $this->viewResponse(
-            'invest/user_data',
-            ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3, 'reward' => $reward]
+            'invest/user_data', [
+                'invest_address' => $invest_address,
+                'invest_errors' => $errors,
+                'step' => 3,
+                'reward' => $reward,
+                'form' => $form->createView()
+            ]
         );
     }
 

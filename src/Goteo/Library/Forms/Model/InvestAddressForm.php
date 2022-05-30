@@ -27,14 +27,15 @@ class InvestAddressForm extends AbstractFormProcessor implements FormProcessorIn
                 'choices' => [
                     Text::get('donor-legal-entities-natural-person') => 'natural_person',
                     Text::get('donor-legal-entities-legal-person') => 'legal_person'
-                ]
+                ],
             ])
             ->add('name', TextType::class, [
                 'label' => 'personal-field-donor_name',
                 'attr' => [
                     'placeholder' => 'personal-field-donor_name'
                 ],
-                'required' => true
+                'required' => true,
+                'data' => $model->getName()
             ])
             ->add('surname', TextType::class, [
                 'label' => 'personal-field-donor_surname',
@@ -133,7 +134,7 @@ class InvestAddressForm extends AbstractFormProcessor implements FormProcessorIn
                     'id' => 'fiscal-country',
                     'placeholder' => 'invest-address-country-field',
                 ],
-                'data' => strtoupper($model->country)
+                'data' => strtoupper($model->getCountry())
             ])
             ->add('fiscal-latitude', HiddenType::class, [
                 'data' => $model->latitude,
@@ -157,6 +158,8 @@ class InvestAddressForm extends AbstractFormProcessor implements FormProcessorIn
         $data = $form->getData();
         $model = $this->getModel();
         $model->rebuildData($data, array_keys($form->all()));
+
+        $model->save();
     }
 
 }

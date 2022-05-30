@@ -14,13 +14,9 @@ $this->section('dashboard-content-pool');
 
     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-    <form class="form" id="make-sure-form" role="form" method="POST" action="<?= '/'.$this->type.'/'.$this->invest->id ?>">
+    <h3 class="clear-both padding-bottom-2 clear-both"><?= $this->text('invest-address-title') ?></h3>
 
-        <?= $this->supply('invest-form', $this->insert('invest/partials/invest_address_form')) ?>
-
-        <?= $this->insert('invest/partials/invest_submit_form') ?>
-
-	</form>
+    <?= $this->form_form($this->raw('form')); ?>
 
 </div>
 
