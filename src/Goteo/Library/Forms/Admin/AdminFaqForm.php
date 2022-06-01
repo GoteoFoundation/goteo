@@ -11,6 +11,7 @@
 
 namespace Goteo\Library\Forms\Admin;
 
+use Goteo\Model\Faq\FaqSection;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\MarkdownType;
@@ -40,10 +41,10 @@ class AdminFaqForm extends AbstractFormProcessor {
         $options = $builder->getOptions();
         $defaults = $options['data'];
 
+        $subsectionCount = FaqSubsection::getListCount([]);
         $subsections = [];
-        $subsectionCount = FaqSubsection::getList([], 0, 0, true);
         foreach(FaqSubsection::getList([], 0, $subsectionCount) as $s) {
-            $subsections[$s->id] = $s->name;
+            $subsections[FaqSection::getById($s->section_id)->name][$s->name] = $s->id;
         }
 
         $builder

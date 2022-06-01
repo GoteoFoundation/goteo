@@ -79,7 +79,7 @@ class AdminFaqSubsectionForm extends AbstractFormProcessor
     private function getSections(): array
     {
         $choices = [];
-        $sectionsCount = FaqSection::getList([], 0, 0);
+        $sectionsCount = FaqSection::getListCount([]);
         $sections = FaqSection::getList([], 0, $sectionsCount);
 
         foreach ($sections as $section) {
