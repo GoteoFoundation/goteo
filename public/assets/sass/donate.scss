@@ -6,11 +6,16 @@ $color-button-text: var(--color-button-text) !default;
 $color-footer-font: var(--color-footer-font) !default;
 $color-font: var(--color-font) !default;
 
+$color-bg-transparent: rgba(253, 64, 34, 0.1);
+
 $font-weight-bold: 700;
 $font-weight-light: 400;
 
 $title-max-width: 15em;
 $body-max-width: 40em;
+
+$animation-duration: 300ms;
+$animation-easing: ease-in-out;
 
 @keyframes breathe-in-out {
   0% {
@@ -33,15 +38,17 @@ body.donate {
     font-weight: $font-weight-bold;
   }
 
-  .main-info h1 {
-    font-size: 5vh;
-  }
-
   .btn {
     background-color: $color-button;
     color: $color-button-text;
     font-size: 32px;
     border-radius: 0;
+
+    &:focus,
+    &:hover {
+      transition: all $animation-duration $animation-easing;
+      transform: translateX(10px);
+    }
   }
 
   .donate-header {
@@ -66,12 +73,22 @@ body.donate {
       }
     }
 
-    h1 {
+    .main-info h1 {
       font-weight: $font-weight-bold;
       font-size: 5vh;
       font-family: "gt_cinetypebold", sans-serif;
       text-shadow: none;
       max-width: $title-max-width;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: $color-bg-transparent;
     }
   }
 
@@ -88,7 +105,6 @@ body.donate {
       form {
         div.form-group {
           div.input-group {
-
             @media (max-width: $breakpoint-sm) {
               margin: auto;
               width: 50%;
@@ -179,6 +195,6 @@ body.donate {
         flex-direction: column;
         gap: 1em;
       }
-    }    
+    }
   }
 }
