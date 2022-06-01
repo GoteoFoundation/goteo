@@ -126,7 +126,7 @@
     /**
      * @return Faq[]
      */
-    public function getFaqs(int $limit = 0): array
+    public function getFaqs(): array
     {
         $count = Faq::getListCount(['section' => $this->id]);
         return Faq::getList(['section'=>$this->id], 0, $count);
