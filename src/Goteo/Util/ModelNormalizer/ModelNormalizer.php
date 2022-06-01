@@ -9,10 +9,12 @@
  */
 namespace Goteo\Util\ModelNormalizer;
 
+use Goteo\Application\Session;
 use Goteo\Core\Model as CoreModel;
 use Goteo\Model;
 use Goteo\Util\ModelNormalizer\Transformer;
-use Goteo\Application\Session;
+use Goteo\Util\ModelNormalizer\Transformer\TransformerInterface;
+
 /**
  * This class allows to get an object standarized for its use in views
  */
@@ -25,11 +27,7 @@ class ModelNormalizer {
         $this->keys = $keys;
     }
 
-    /**
-     * Returns the normalized object
-     * @return Goteo\Util\ModelNormalizer\TransformerInterface
-     */
-    public function get() {
+    public function get(): TransformerInterface {
         if($this->model instanceOf Model\User) {
             $ob = new Transformer\UserTransformer($this->model, $this->keys);
         }
@@ -84,6 +82,15 @@ class ModelNormalizer {
         }
         elseif ($this->model instanceOf Model\ImpactData) {
             $ob = new Transformer\ImpactDataTransformer($this->model, $this->keys);
+        }
+        elseif($this->model instanceOf Model\Faq) {
+            $ob = new Transformer\FaqTransformer($this->model, $this->keys);
+        }
+        elseif ($this->model instanceOf Model\Faq\FaqSection) {
+            $ob = new Transformer\FaqSectionTransformer($this->model, $this->keys);
+        }
+        elseif ($this->model instanceOf Model\Faq\FaqSubsection) {
+            $ob = new Transformer\FaqSubsectionTransformer($this->model, $this->keys);
         }
         else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
 
