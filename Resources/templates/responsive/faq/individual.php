@@ -19,7 +19,7 @@
 				</form>
 				<div class="col-sm-6 hidden-xs" style="text-align: right;">
 					<a href="/project/create" target="_blank" class="btn btn-fashion"><?= $this->text('regular-create') ?></a>
-				</div>                
+				</div>
 			</div>
 			<div class="row">
 				<h3><a href="<?= '/faq/'.$this->faq_section->slug ?>"><?= $this->faq_section->name ?></a></h3>
@@ -37,21 +37,21 @@
 	        </article>
 	        <aside class="col-sm-3 col-sm-pull-9" id="accordion">
 	      		<?php foreach ($this->subsections as $subsection): ?>
-    	
-		    		<?php $faq_subsection=$subsection->getFaqbySubsection(100); ?>
+
+		    		<?php $faq_subsection=$subsection->getFaqs(); ?>
 		      		<section>
 			      		<h3 role="button" data-toggle="collapse" href="<?= '#collapse-'.$subsection->id ?>" aria-expanded="<?= $this->faq->subsection_id==$subsection->id ? 'true' : 'false' ?>">
 			      			<?= $subsection->name ?>
 			      		</h3>
 			      		<ul class="description collapse <?= $this->faq->subsection_id==$subsection->id ? 'in' : 'false' ?>" id="<?= 'collapse-'.$subsection->id ?>">
 			      			<?php foreach($faq_subsection as $faq): ?>
-						        
+
 						    	<?php if($faq->id==$this->faq->id): ?>
 						 			<li class="select"><?= $faq->title ?></li>
 						 		<?php else: ?>
 						 			<li>
 						 				<a href="<?= '/faq/'.$this->faq_section->slug.'/'.$faq->slug ?>">
-						 				<?= $faq->title ?>	
+						 				<?= $faq->title ?>
 						 				</a>
 						 			</li>
 						 		<?php endif; ?>
@@ -63,5 +63,5 @@
 	      	</aside>
     	</div>
     </section>
-   
+
 <?php $this->replace() ?>

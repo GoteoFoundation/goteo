@@ -1,4 +1,4 @@
-<?php $this->layout('faq/layout', ['title' => $faq_section->name]) ?>
+<?php $this->layout('faq/layout', ['title' => $this->faq_section->name]) ?>
 
 <?php $this->section('faq-content') ?>
 
@@ -32,15 +32,15 @@
       	<div class="row">
 
       		<?php foreach ($this->subsections as $subsection): ?>
-    	
-	    		<?php $faq_subsection=$subsection->getFaqbySubsection(100); ?>
+
+	    		<?php $faq_subsection=$subsection->getFaqs(); ?>
 
 		        <article class="col-sm-4">
 			       	<div class="modul_faqs">
 				       	<header><h2><?= $subsection->name ?></h2></header>
 				        <ul>
 				        	<?php foreach($faq_subsection as $faq): ?>
-				        		
+
 					        	<?php $faq_id= $faq->slug ? $faq->slug : $faq->id; ?>
 
 						        <li><a href="<?= $this->faq_section->slug.'/'.$faq_id ?>"><?= $faq->title ?></a></li>
@@ -54,5 +54,5 @@
 
     	</div>
     	<footer class="no_resuelto"><a href="" class="btn">¿NO HEMOS RESUELTO TU DUDA?</a></footer>
-   
+
 <?php $this->replace() ?>

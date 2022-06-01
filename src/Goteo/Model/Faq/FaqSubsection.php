@@ -122,7 +122,10 @@
         return $query->fetchColumn();
     }
 
-    public function getFaqs(): Faq
+     /**
+      * @return Faq []
+      */
+    public function getFaqs(): array
     {
         $total = Faq::getListCount(['subsection' => $this->id]);
         return Faq::getList(['subsection'=>$this->id], 0, $total);

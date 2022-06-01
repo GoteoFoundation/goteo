@@ -17,16 +17,16 @@
 					<a href="/project/create" target="_blank" class="btn btn-fashion"><?= $this->text('regular-create') ?></a>
 				</div>
 			</div>
-		</div>    
+		</div>
       <h1><?= $this->text('faq-title') ?></h1>
     </header>
     <section class="container pas1">
       <div class="row">
 
       	<?php foreach ($this->faq_sections as $section): ?>
-      	
+
       	<?php //Get first 3 faq by section ?>
-      	<?php $section_faq=$section->getFaqbySection(3); ?>
+      	<?php $section_faq=$section->getFaqs(); ?>
         <article class="col-sm-6 col-lg-3">
 	       	<div class="modul_faqs card">
 		       	<header class="<?= $section->slug ?>"><h2><?= $section->name ?></h2></header>
@@ -44,5 +44,5 @@
         </article>
 
     	<?php  endforeach; ?>
-   
+
 <?php $this->replace() ?>
