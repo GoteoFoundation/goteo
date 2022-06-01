@@ -1,0 +1,540 @@
+@import "compass/css3";
+
+/* faq styles */
+
+body.faq {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #3A3A3A;
+
+  article[class^='col-'] {
+    display: flex;
+    flex-flow: row wrap;
+  }
+  .row {
+    &:before {
+      display: flex;
+    }
+    &:after {
+      display: flex;
+    }
+  }
+  
+  #breadcrumb {
+    font-weight: 400;
+    font-size: 13px;
+    color: #19B4B2;
+    letter-spacing: 0.24px;
+    line-height: 22px;
+    background-color: #E1F1F1;
+    padding: 12px 0;
+    a {
+      color: #1A1A1A;
+      font-weight: 500;
+      text-decoration: underline;
+      &:hover {
+        color: #19B4B2;
+      }
+    }
+    .slash {
+      color: #19B4B2;
+    }
+  }
+  #header_faqs {
+    position: relative;
+    min-height: 264px;
+    background-color: #DDF4F4;
+    display: flex;
+    flex-flow: wrap column;
+    justify-content: flex-start;
+    align-content: center;
+    background-size: 96px;
+    margin-bottom: 72px;
+    padding-top: 24px;
+    padding-bottom: 48px;
+    h1 {
+      font-size: 50px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 1.25px;
+      text-align: center;
+      margin: 16px auto 0 auto;
+    }
+    h3 {
+      font-size: 24px;
+      color: #ffffff;
+      letter-spacing: 0.24px;
+      text-align: center;
+      margin-bottom: 0px;
+      >a {
+        color: #FFFFFF;
+        text-decoration: underline;
+        &:hover {
+          color: #19B4B2;
+        }
+      }
+    }
+    .barra_superior {
+      margin-bottom: 8px;
+      .buscador_faqs {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+        >label {
+          width: 211px;
+          >input[type=search] {
+            width: 100%;
+            height: 44px;
+            background: #FFFFFF;
+            border: 1px solid #D1D1D1;
+            background: #FFFFFF;
+            font-family: Roboto-Regular;
+            font-weight: 400;
+            font-size: 15px;
+            color: #3A3A3A;
+            letter-spacing: 0.16px;
+            padding: 5px 15px;
+          }
+        }
+        >button.search-submit {
+          position: relative;
+          width: 44px;
+          height: 44px;
+          border-left: none;
+          &:after {
+            position: absolute;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('../img/faq/icones/search.svg') center center/24px no-repeat;
+          }
+        }
+      }
+    }
+  }
+  #header_faqs.home_faqs {
+    min-height: 292px;
+    margin-bottom: 0;
+    h1 {
+      color: #3A3A3A;
+    }
+  }
+  #header_faqs.about {
+    background: url('../img/faq/pattern/sobre_goteo@1x.svg') center center/96px repeat #FFEC61;
+    h1 {
+      color: #3A3A3A;
+    }
+    h3 {
+      color: #3A3A3A;
+      >a {
+        color: #3A3A3A;
+        &:hover {
+          color: #19B4B2;
+        }
+      }
+    }
+  }
+
+  #header_faqs.sponsors {
+    background: url('../img/faq/pattern/impulsores@1x.svg') center center/96px repeat #A65387;
+  }
+
+  #header_faqs.donors {
+    background: url('../img/faq/pattern/donantes@1x.svg') center center/96px repeat #18508C;
+  }
+
+  #header_faqs.matchers {
+    background: url('../img/faq/pattern/matchers@1x.svg') center center/96px repeat #582470;
+  }
+
+  .a-hidden {
+    border: 0;
+    clip: rect(0,0,0,0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+  }
+  .pas1 {
+    margin-top: -48px;
+    margin-bottom: 88px;
+    .row {
+      display: flex;
+      flex-flow: row wrap;
+    }
+  }
+  .pas1s {
+    .row {
+      .col-lg-3 {
+        display: flex;
+      }
+    }
+  }
+  .modul_faqs {
+    border-left: 1px solid #E3E3E3;
+    >header {
+      display: flex;
+      flex-flow: wrap column;
+      align-content: flex-start;
+      padding: 0 30px;
+    }
+    header {
+      >h2 {
+        font-size: 23px;
+        font-weight: 700;
+        color: #1A1A1A;
+        line-height: 22px;
+        letter-spacing: 0.3px;
+        margin: 4px 0 0;
+        &:after {
+          position: absolute;
+          content: '';
+          width: 48px;
+          height: 48px;
+          background-size: 48px 48px;
+          top: -56px;
+          left: calc(50% - 24px);
+        }
+      }
+    }
+    header.about {
+      >h2 {
+        &:after {
+          background: url('../img/faq/Icono/sobre-goteo@1x.svg') center center no-repeat;
+        }
+      }
+    }
+    header.sponsors {
+      >h2 {
+        &:after {
+          background: url('../img/faq/Icono/impulsores@1x.svg') center center no-repeat;
+        }
+      }
+    }
+    header.donors {
+      >h2 {
+        &:after {
+          background: url('../img/faq/Icono/donantes@1x.svg') center center no-repeat;
+        }
+      }
+    }
+    header.matchers {
+      >h2 {
+        &:after {
+          background: url('../img/faq/Icono/matchers@1x.svg') center center no-repeat;
+        }
+      }
+    }
+    >ul {
+      list-style: none;
+      padding: 32px 30px;
+      >li {
+        font-weight: 500;
+        line-height: 1.375em;
+        letter-spacing: 0.01875em;
+        color: #3A3A3A;
+        position: relative;
+        margin-bottom: 1em;
+        padding-left: 1em;
+        >a {
+          color: #3A3A3A;
+          text-decoration: none;
+          &:hover {
+            color: #19b4b2;
+            text-decoration: none;
+          }
+        }
+        &:after {
+          position: absolute;
+          content: '';
+          width: 8px;
+          height: 2px;
+          top: 10px;
+          left: 0;
+          background-color: #19B4B2;
+        }
+      }
+    }
+  }
+  .modul_faqs.card {
+    position: relative;
+    border: none;
+    background: #FFFFFF;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.15);
+    border-radius: 5px;
+    padding-bottom: 24px;
+    >header {
+      border-radius: 5px 5px 0px 0px;
+      align-content: center;
+    }
+    header.about {
+      background: url('../img/faq/pattern/sobre_goteo@1x.svg') center center/48px repeat #FFEC61;
+      h2 {
+        color: #3A3A3A;
+      }
+    }
+    header.sponsors {
+      background: url('../img/faq/pattern/impulsores@1x.svg') center center/48px repeat #A65387;
+    }
+    header.donors {
+      background: url('../img/faq/pattern/donantes@1x.svg') center center/48px repeat #18508C;
+    }
+    header.matchers {
+      background: url('../img/faq/pattern/matchers@1x.svg') center center/48px repeat #582470;
+    }
+    header {
+      >h2 {
+        font-size: 26px;
+        font-weight: 900;
+        color: #FFFFFF;
+        letter-spacing: 0.26px;
+        text-align: center;
+        position: relative;
+        margin: 80px auto 24px;
+      }
+    }
+    >ul {
+      list-style: none;
+      padding: 32px 20px;
+    }
+  }
+  hr {
+    margin: 0;
+    border-color: #E3E3E3;
+    width: 100%;
+  }
+  .ver_todo {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0 20px;
+    >a {
+      position: relative;
+      display: inline-block;
+      font-weight: 700;
+      font-size: 14px;
+      color: #3A3A3A;
+      text-transform: uppercase;
+      margin: 1em 1.5em 1.250em;
+      margin: 1em 4px 1.250em;
+      &:hover {
+        color: #19b4b2;
+      }
+      &:after {
+        position: absolute;
+        content: '';
+        width: 24px;
+        height: 24px;
+        top: -2px;
+        right: -24px;
+        background: url('../img/faq/icones/arrow-right-primary.svg') 0 0/24px no-repeat;
+      }
+    }
+  }
+  .pas2 {
+    .row {
+      display: flex;
+      flex-flow: row wrap;
+      .col-lg-4 {
+        display: flex;
+      }
+    }
+  }
+  footer.no_resuelto {
+    width: 100%;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid #E3E3E3;
+    text-align: center;
+    margin-bottom: 88px;
+    a.btn {
+      background: #19B4B2;
+      border-radius: 3px;
+      padding: 14px;
+      font-size: 14px;
+      color: #FFFFFF;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    a {
+      &:hover.btn {
+        background: #118887;
+        color: #FFFFFF;
+      }
+    }
+  }
+  p {
+    font-size: 16px;
+    color: #3A3A3A;
+    letter-spacing: 0.3px;
+    line-height: 22px;
+  }
+  aside {
+    margin-bottom: 88px;
+    >h2.otras_preguntas {
+      display: none;
+    }
+    section {
+      margin-bottom: 24px;
+      >ul {
+        list-style: none;
+        padding: 0 4px 8px;
+        >li {
+          font-size: 15px;
+          font-weight: 500;
+          line-height: 1.375em;
+          letter-spacing: 0.01875em;
+          color: #3A3A3A;
+          position: relative;
+          margin-bottom: 1em;
+          padding-left: 1em;
+          >a {
+            color: #3A3A3A;
+            text-decoration: none;
+            &:hover {
+              color: #19b4b2;
+              text-decoration: none;
+            }
+          }
+          &:after {
+            position: absolute;
+            content: '';
+            width: 8px;
+            height: 2px;
+            top: 10px;
+            left: 0;
+            background-color: #19B4B2;
+          }
+        }
+        >li.select {
+          color: #19b4b2;
+          text-decoration: none;
+        }
+      }
+      >h3 {
+        position: relative;
+        font-size: 17px;
+        font-weight: 700;
+        color: #3A3A3A;
+        letter-spacing: 0.23px;
+        line-height: 22px;
+        padding: 0 0 6px 4px;
+        margin-top: 0;
+        margin-bottom: 16px;
+        border-bottom: 1px solid #3A3A3A;
+        &:before {
+          position: absolute;
+          content: '';
+          width: 24px;
+          height: 24px;
+          top: 0;
+          right: 4px;
+          background: url('../img/faq/icones/caret-down.svg') center center/18px no-repeat;
+        }
+      }
+      >h3.open {
+        &:before {
+          background: url('../img/faq/icones/caret-up.svg') center center/18px no-repeat;
+        }
+      }
+    }
+  }
+  @media only screen and (max-width: 767px) {
+    #header_faqs {
+      min-height: 192px;
+      margin-bottom: 32px;
+      .barra_superior {
+        .buscador_faqs {
+          justify-content: center;
+          >label {
+            >input[type=search] {
+              height: 36px;
+            }
+          }
+          >button.search-submit {
+            width: 36px;
+            height: 36px;
+          }
+        }
+      }
+      h1 {
+        font-size: 32px;
+        letter-spacing: 0.3px;
+        margin-top: 8px;
+      }
+      h3 {
+        font-size: 18px;
+        letter-spacing: 0.2px;
+      }
+    }
+    #header_faqs.home_faqs {
+      min-height: 192px;
+    }
+    .pas1 {
+      margin-bottom: 48px;
+    }
+    .modul_faqs {
+      border-left: none;
+      &:not(.card) {
+        >header {
+          padding: 0 4px 6px;
+          border-bottom: 1px solid #3A3A3A;
+        }
+        header {
+          >h2 {
+            font-size: 21px;
+            letter-spacing: 0.3px;
+            line-height: 26px;
+          }
+        }
+      }
+      >ul {
+        padding: 18px 8px 8px;
+      }
+    }
+    footer.no_resuelto {
+      margin-top: 32px;
+      margin-bottom: 48px;
+      a.btn {
+        width: 100%;
+      }
+    }
+    aside {
+      >h2.otras_preguntas {
+        display: inline-block;
+        font-weight: 700;
+        font-size: 23px;
+        color: #1A1A1A;
+        letter-spacing: 0.3px;
+        line-height: 26px;
+        max-width: 60%;
+        margin-bottom: 24px;
+      }
+      margin-bottom: 48px;
+    }
+  }
+  @media only screen and (max-width: 1199px) {
+    .modul_faqs.card {
+      margin-bottom: 24px;
+    }
+  }
+  @media only screen and (min-width: 992px) {
+    #header_faqs {
+      h1 {
+        max-width: 75%;
+      }
+    }
+  }
+
+
+// End body
+}
