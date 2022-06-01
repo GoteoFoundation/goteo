@@ -1,5 +1,9 @@
 @import "compass/css3";
 
+$font-weight-bold: 700;
+$font-weight-light: 400;
+$font-weight-lighter: 300;
+
 /* blog styles */
 
 body.blog {
@@ -116,12 +120,12 @@ body.blog {
             font-size: $font-size*2.67;
             text-align: center;
             padding: 20px 15%;
-            font-weight: bold;
+            font-weight: $font-weight-bold;
           }
           div.subtitle{
             text-align: center;
             font-size: $font-size*1.33;
-            font-weight: lighter;
+            font-weight: $font-weight-light;
             padding: 0 10%;
           }
           ul.info-extra{
@@ -172,7 +176,7 @@ body.blog {
       .description{
         text-align: center;
         font-size: $font-size*1.3;
-        font-weight: lighter;
+        font-weight: $font-weight-light;
         padding: 40px 10%;
       }
       .post-widget{
@@ -185,7 +189,7 @@ body.blog {
       background-color: $background-yellow;
       margin-bottom: 0px;
       a > li {
-          font-weight: 700;
+          font-weight: $font-weight-bold;
           padding: 5px 15px;
           cursor: pointer;
           display: inline-block;
@@ -208,7 +212,7 @@ body.blog {
         cursor: pointer;
         display: inline-block;
         color: $primary-color;
-        font-weight: 400;
+        font-weight: $font-weight-light;
         margin-top: 10px;
       }
       a li:hover{
@@ -249,7 +253,7 @@ body.blog {
       .text-description{
         margin: 20px 0;
         font-size: 37.5px;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         text-shadow: .5px .5px #3a3a3a;
         line-height: 1.1;
         color: $color-white;
@@ -267,7 +271,7 @@ body.blog {
 
     div.donor-text-description{
       font-size: $font-size*1.4;
-      font-weight: lighter;
+      font-weight: $font-weight-light;
       padding-bottom: 30px;
       p{
         padding-top: 40px;
@@ -277,7 +281,7 @@ body.blog {
 
     div.donate-methods{
       font-size: $font-size*1.4;
-      font-weight: lighter;
+      font-weight: $font-weight-light;
       padding-top: 20px;
       padding-bottom:30px;
 
@@ -308,7 +312,7 @@ body.blog {
       }
 
       .bank-transfer-account{
-        font-weight: 300;
+        font-weight: $font-weight-lighter;
       }
     }
 
@@ -317,7 +321,7 @@ body.blog {
       background-color: $background-yellow;
       .impact-title{
         font-size: 30px;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         text-align: center;
         padding-top: 0;
         margin-top: 0;
@@ -326,11 +330,11 @@ body.blog {
         margin-top: 25px;
         text-align: center;
         font-size: 30px;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
       }
       .description{
         font-size: 11px;
-        font-weight: 400;
+        font-weight: $font-weight-bold;
         text-transform: uppercase;
       }
 
@@ -338,7 +342,7 @@ body.blog {
 
     div.foundation-accounts-text{
       font-size: $font-size*1.4;
-      font-weight: lighter;
+      font-weight: $font-weight-light;
       padding-top: 30px;
       padding-bottom:30px;
     }
