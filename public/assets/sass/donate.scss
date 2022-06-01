@@ -88,6 +88,12 @@ body.donate {
       form {
         div.form-group {
           div.input-group {
+
+            @media (max-width: $breakpoint-sm) {
+              margin: auto;
+              width: 50%;
+            }
+
             div.input-group-addon {
               border: none;
               border-radius: 0;
@@ -138,10 +144,6 @@ body.donate {
     h2 {
       color: $color-bg-primary;
     }
-
-    li {
-      margin-bottom: 1.5rem;
-    }
   }
 
   footer.footer {
@@ -156,9 +158,27 @@ body.donate {
 
   .social [class*="fa fa-"] {
     background-color: $color-button;
-    
+
     &:hover {
       background-color: $color-bg-primary;
     }
+  }
+
+  .hint {
+    background: $color-button;
+    color: $color-button-text;
+    padding: 1em;
+
+    @media (max-width: $breakpoint-sm) {
+      .hint.text-right {
+        background: $color-bg-primary;
+        color: $color-button-text;
+        padding: 1em;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+      }
+    }    
   }
 }
