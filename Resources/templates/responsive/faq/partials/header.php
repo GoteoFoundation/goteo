@@ -1,0 +1,22 @@
+<header id="header_faqs" class="container-fluid <?= $this->faq_section->slug ?? 'home_faqs' ?>">
+    <div class="container">
+        <div class="row upper_bar">
+            <!--<form class="col-sm-6 faq_search">
+                <label>
+                    <span class="a-hidden"><?= $this->text('faq-search') ?></span>
+                    <input type="search" class="search-field" name="" placeholder="<?= $this->t('faq-search') ?>>">
+                </label>
+                <button class="search-submit icon-search"><span class="a-hidden"><?= $this->text('regular-search') ?></span></button>
+            </form>-->
+            <div class="col-sm-6 hidden-xs create-project" style="text-align: right;">
+                <a href="/project/create" target="_blank" class="btn btn-fashion"><?= $this->text('regular-create') ?></a>
+            </div>
+        </div>
+        <?php if ($this->faq_section): ?>
+            <div class="row">
+                <h3><a href="<?= '/faq/'.$this->faq_section->slug ?>"><?= $this->faq_section->name ?></a></h3>
+                <h1><?= $this->faq->title ?></h1>
+            </div>
+        <?php endif; ?>
+    </div>
+</header>
