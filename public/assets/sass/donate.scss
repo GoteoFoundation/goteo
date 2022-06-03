@@ -17,6 +17,8 @@ $body-max-width: 40em;
 $animation-duration: 300ms;
 $animation-easing: ease-in-out;
 
+$breakpoint-sm: 768px;
+
 @keyframes breathe-in-out {
   0% {
     transform: scale(1);
