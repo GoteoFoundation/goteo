@@ -21,7 +21,7 @@ body.faq {
       display: flex;
     }
   }
-  
+
   #breadcrumb {
     font-weight: 400;
     font-size: 13px;
@@ -76,9 +76,9 @@ body.faq {
         }
       }
     }
-    .barra_superior {
+    .upper_bar {
       margin-bottom: 8px;
-      .buscador_faqs {
+      .faq_search {
         display: flex;
         flex-flow: row wrap;
         align-items: flex-start;
@@ -116,6 +116,10 @@ body.faq {
             background: url('../img/faq/icones/search.svg') center center/24px no-repeat;
           }
         }
+      }
+      .create-project {
+        float: right;
+        text-align: right;
       }
     }
   }
@@ -164,7 +168,7 @@ body.faq {
     padding: 0;
     position: absolute;
   }
-  .pas1 {
+  .step1 {
     margin-top: -48px;
     margin-bottom: 88px;
     .row {
@@ -172,14 +176,14 @@ body.faq {
       flex-flow: row wrap;
     }
   }
-  .pas1s {
+  .step1 {
     .row {
       .col-lg-3 {
         display: flex;
       }
     }
   }
-  .modul_faqs {
+  .faqs_module {
     border-left: 1px solid #E3E3E3;
     >header {
       display: flex;
@@ -265,7 +269,7 @@ body.faq {
       }
     }
   }
-  .modul_faqs.card {
+  .faqs_module.card {
     position: relative;
     border: none;
     background: #FFFFFF;
@@ -312,7 +316,7 @@ body.faq {
     border-color: #E3E3E3;
     width: 100%;
   }
-  .ver_todo {
+  .see_everything {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -340,7 +344,7 @@ body.faq {
       }
     }
   }
-  .pas2 {
+  .step2 {
     .row {
       display: flex;
       flex-flow: row wrap;
@@ -349,7 +353,7 @@ body.faq {
       }
     }
   }
-  footer.no_resuelto {
+  footer.unsolved_faq {
     width: 100%;
     margin-top: 64px;
     padding-top: 32px;
@@ -452,8 +456,8 @@ body.faq {
     #header_faqs {
       min-height: 192px;
       margin-bottom: 32px;
-      .barra_superior {
-        .buscador_faqs {
+      .upper_bar {
+        .faq_search {
           justify-content: center;
           >label {
             >input[type=search] {
@@ -479,10 +483,10 @@ body.faq {
     #header_faqs.home_faqs {
       min-height: 192px;
     }
-    .pas1 {
+    .step1 {
       margin-bottom: 48px;
     }
-    .modul_faqs {
+    .faqs_module {
       border-left: none;
       &:not(.card) {
         >header {
@@ -501,7 +505,7 @@ body.faq {
         padding: 18px 8px 8px;
       }
     }
-    footer.no_resuelto {
+    footer.unsolved_faq {
       margin-top: 32px;
       margin-bottom: 48px;
       a.btn {
@@ -523,7 +527,7 @@ body.faq {
     }
   }
   @media only screen and (max-width: 1199px) {
-    .modul_faqs.card {
+    .faqs_module.card {
       margin-bottom: 24px;
     }
   }
