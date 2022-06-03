@@ -1,3 +1,5 @@
+@import 'variables';
+
 $color-bg-primary: var(--color-bg-primary) !default;
 $color-bg-secondary: var(--color-bg-secondary) !default;
 $color-bg-secondary-rgb: var(--color-bg-secondary-rgb);
@@ -16,8 +18,6 @@ $body-max-width: 40em;
 
 $animation-duration: 300ms;
 $animation-easing: ease-in-out;
-
-$breakpoint-sm: 768px;
 
 @keyframes breathe-in-out {
   0% {
