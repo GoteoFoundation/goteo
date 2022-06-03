@@ -387,7 +387,7 @@ body.faq {
     >h2.otras_preguntas {
       display: none;
     }
-    section {
+    details {
       margin-bottom: 24px;
       >ul {
         list-style: none;
@@ -424,7 +424,7 @@ body.faq {
           text-decoration: none;
         }
       }
-      >h3 {
+      summary h3 {
         position: relative;
         font-size: 17px;
         font-weight: 700;

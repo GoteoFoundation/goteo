@@ -21,11 +21,11 @@
 	        <aside class="col-sm-3 col-sm-pull-9" id="accordion">
 	      		<?php foreach ($this->subsections as $subsection): ?>
 		    		<?php $faq_subsection = $subsection->getFaqs(); ?>
-		      		<section>
-			      		<h3 role="button" data-toggle="collapse" href="<?= '#collapse-'.$subsection->id ?>" aria-expanded="<?= $this->faq->subsection_id==$subsection->id ? 'true' : 'false' ?>">
-			      			<?= $subsection->name ?>
-			      		</h3>
-			      		<ul class="description collapse <?= $this->faq->subsection_id==$subsection->id ? 'in' : 'false' ?>" id="<?= 'collapse-'.$subsection->id ?>">
+		      		<details <?= $this->faq->subsection_id == $subsection->id? 'open' : '' ?>>
+                        <summary>
+                            <h3><?= $subsection->name ?></h3>
+                        </summary>
+			      		<ul class="description">
 			      			<?php foreach($faq_subsection as $faq): ?>
 						    	<?php if($faq->id==$this->faq->id): ?>
 						 			<li class="select"><?= $faq->title ?></li>
@@ -36,7 +36,7 @@
 						 		<?php endif; ?>
 						 	<?php endforeach; ?>
 				        </ul>
-		      		</section>
+		      		</details>
 	      		<?php endforeach; ?>
 	      	</aside>
     	</div>
