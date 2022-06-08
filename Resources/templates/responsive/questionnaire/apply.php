@@ -15,11 +15,11 @@ $checked = $this->has_query('select');
     <div class="channel-info">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <h2 class="text-center channel-title"><?= $this->text('questionnaire-apply-title', $this->model->name) ?></h1>
+                <h2 class="text-center channel-title"><?= $this->text('questionnaire-apply-title', $this->model->name) ?></h2>
             </div>
         </div>
 
-        
+
         <div class="row">
         <?php if ($this->model->logo): ?>
             <div class="col-md-2 col-sm-2 ">

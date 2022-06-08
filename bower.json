@@ -27,7 +27,7 @@
     "bootstrap": "^3.3.7",
     "moment": "^2.18.1",
     "simplemde": "^1.11.2",
-    "dropzone": "enyo/dropzone#7a21136c6d4fe89bbb3a8f690cf7b573824b624f",
+    "dropzone": "dropzone/dropzone#^5.9.3",
     "bootstrap-tagsinput": "tagsinput#^0.8.0",
     "summernote": "^0.8.10",
     "clipboard": "^1.7.1",
