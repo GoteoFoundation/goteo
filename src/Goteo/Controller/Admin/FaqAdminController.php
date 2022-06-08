@@ -86,7 +86,7 @@ class FaqAdminController extends AbstractAdminController
             $filters['subsection'] = $subsection;
 
         $page = $request->query->getDigits('pag', 0);
-        $limit = $request->query->getDigits('pag', 25);
+        $limit = $request->query->getDigits('limit', 25);
 
         $subsectionCount = FaqSubsection::getList([], 0, 0, true);
         $faq_subsections = [];
