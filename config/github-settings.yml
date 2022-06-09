@@ -80,7 +80,7 @@ oauth:
     # Credentials app Facebook
     facebook:
        active: false
-       id:     000000000000000                  #
+       id:     "000000000000000"                  #
        secret: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
 
     # Credentials app Twitter
