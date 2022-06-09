@@ -27,13 +27,13 @@ class SqlMigrationCommand extends AbstractCommand {
     {
         $this->setName("migrate")
              ->setDescription("Manages SQL version migrations in goteo database")
-             ->setDefinition(array(
+             ->setDefinition([
                     new InputArgument('cmd', InputArgument::OPTIONAL, 'Command to execute. Try --help for info', 'status'),
                     new InputArgument('name', InputArgument::OPTIONAL, 'Name of the task file if command is "create"'),
                     new InputOption('update', 'u', InputOption::VALUE_NONE, 'Executes all pending migrations'),
                     new InputOption('debug', 'd', InputOption::VALUE_NONE, 'Switch the debug mode to output log on the debug level'),
                     new InputOption('config', 'c', InputOption::VALUE_NONE, 'List configurations'),
-                ))
+             ])
              ->setHelp(<<<EOT
 LibMigration is a minimum database migration library and framework for MySQL. version 1.1.0
 
@@ -123,5 +123,7 @@ EOT
             $migration->migrate($databases);
             $output->writeln('<info>All done!</info>');
         }
+
+        return 0;
     }
 }
