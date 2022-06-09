@@ -39,7 +39,7 @@ class ProfilerListener implements EventSubscriberInterface
             return;
         }
 
-        if(!$event->isMasterRequest() ||
+        if(!$event->isMainRequest() ||
             false === stripos($response->headers->get('Content-Type'), 'text/html') ||
             $request->isXmlHttpRequest() ||
             $response instanceOf StreamedResponse ||

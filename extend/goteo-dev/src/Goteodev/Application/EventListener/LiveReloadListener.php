@@ -23,7 +23,7 @@ class LiveReloadListener implements EventSubscriberInterface
 
         $response = $event->getResponse();
         $request = $event->getRequest();
-        if(!$event->isMasterRequest() ||
+        if(!$event->isMainRequest() ||
             false === stripos($response->headers->get('Content-Type'), 'text/html') ||
             $request->isXmlHttpRequest() ||
             $response->isRedirection()) {

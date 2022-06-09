@@ -34,7 +34,7 @@ class SessionListener extends AbstractListener {
     public function onRequest(RequestEvent $event) {
 
         //not need to do anything on sub-requests
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
@@ -183,7 +183,7 @@ class SessionListener extends AbstractListener {
         $response = $event->getResponse();
         //not need to do anything on sub-requests
         //Only in html content-type
-        if (!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html') || $request->isXmlHttpRequest()) {
+        if (!$event->isMainRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html') || $request->isXmlHttpRequest()) {
             return;
         }
 

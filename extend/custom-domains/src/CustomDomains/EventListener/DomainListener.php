@@ -25,7 +25,7 @@ class DomainListener extends AbstractListener {
         $request = $event->getRequest();
 
         //not need to do anything on sub-requests
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
@@ -98,7 +98,7 @@ class DomainListener extends AbstractListener {
      */
     public function onController(ControllerEvent $event) {
         //not need to do anything on sub-requests
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

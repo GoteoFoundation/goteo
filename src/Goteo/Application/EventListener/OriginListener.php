@@ -30,7 +30,7 @@ class OriginListener extends AbstractListener {
      */
     public function onRequest(RequestEvent $event) {
         //not need to do anything on sub-requests
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
         $subdomains = Config::get('plugins.custom-domains.active') ? Config::get('plugins.custom-domains.domains') : [];
@@ -61,7 +61,7 @@ class OriginListener extends AbstractListener {
      */
     public function onResponse(ResponseEvent $event) {
         //not need to do anything on sub-requests
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

@@ -20,7 +20,7 @@ class InvestStatusChangerListener extends AbstractListener {
     // añadiendo custom variables
     public function onController(ControllerEvent $event) {
         //not need to do anything on sub-requests
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

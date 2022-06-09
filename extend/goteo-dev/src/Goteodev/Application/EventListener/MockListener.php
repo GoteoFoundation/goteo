@@ -22,7 +22,7 @@ class MockListener implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
-        if(!$event->isMasterRequest()) {
+        if(!$event->isMainRequest()) {
             return;
         }
         if(!App::debug()) return;

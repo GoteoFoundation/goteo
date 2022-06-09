@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class AclListener extends AbstractListener {
 	public function onRequest(RequestEvent $event) {
 		//not need to do anything on sub-requests
-		if (!$event->isMasterRequest()) {
+		if (!$event->isMainRequest()) {
 			return;
 		}
 

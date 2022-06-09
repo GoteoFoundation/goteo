@@ -112,7 +112,7 @@ class ExceptionListener extends AbstractListener {
 
     public function onKernelRequest(RequestEvent $event) {
         //not need to do anything on sub-requests
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
