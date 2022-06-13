@@ -21,6 +21,14 @@ $faq = new RouteCollection();
 
 
 // New all-in-one controller
+
+$faq->add('faq-search', new Route(
+    '/search',
+    [
+        '_controller' => 'Goteo\Controller\FaqController::searchAction'
+    ]
+));
+
 $faq->add('faq-section', new Route(
     '/{section}',
     [
