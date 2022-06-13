@@ -12,12 +12,12 @@ namespace Goteo\Util\Form;
 
 use Goteo\Application\Lang;
 use Goteo\Application\Session;
-use Symfony\Bundle\FrameworkBundle\Templating\Helper\TranslatorHelper;
+use Goteo\Application\TemplatingExtension;
+use Goteo\Application\TranslatorHelper;
 use Symfony\Component\Form\Extension\Core\CoreExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
-use Symfony\Component\Form\Extension\Templating\TemplatingExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormFactoryBuilder;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
