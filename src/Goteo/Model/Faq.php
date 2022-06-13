@@ -116,6 +116,12 @@ class Faq extends \Goteo\Core\Model {
         $filter = [];
         $values = [];
 
+        if ($filters['search']) {
+            $search = $filters['search'];
+            $filter[] = "faq.title like :search";
+            $values[':search'] = "%$search%";
+        }
+
         if ($filters['section']) {
 
             // get subsections from a section
@@ -131,7 +137,6 @@ class Faq extends \Goteo\Core\Model {
         if ($filters['subsection']) {
             $filter[] = "faq.subsection_id = :subsection_id";
             $values[':subsection_id'] = $filters['subsection'];
-
         }
 
         if($filter) {
@@ -157,9 +162,6 @@ class Faq extends \Goteo\Core\Model {
 
     static public function getListCount(array $filters = [], string $lang = null): int
     {
-        if(!$lang) $lang = Lang::current();
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
-
         $filter = [];
         $values = [];
 
@@ -191,6 +193,16 @@ class Faq extends \Goteo\Core\Model {
         ";
         $query = static::query($sql, $values);
         return $query->fetchColumn();
+    }
+
+    public function getSubsection(): ?FaqSubsection
+    {
+
+        try {
+            return FaqSubsection::get($this->subsection_id);
+        } catch (ModelNotFoundException $e) {
+            return null;
+        }
     }
 
     public function validate (&$errors = array()) {

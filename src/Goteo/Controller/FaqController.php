@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller;
 
+use Goteo\Application\Lang;
 use Goteo\Application\View;
 use Goteo\Core\Controller;
 use Goteo\Core\Traits\LoggerTrait;
@@ -40,6 +41,18 @@ class FaqController extends Controller {
                     'faq_sections' => $faq_sections
                 ]
         );
+    }
+
+    public function searchAction(Request $request): Response
+    {
+        $search = $request->query->getAlnum('search');
+
+        $faqsCount = Faq::getListCount(['search' => $search]);
+        $faqs = Faq::getList(['search' => $search], 0, $faqsCount, false, Lang::current());
+
+        return $this->viewResponse('faq/search', [
+            'faqs' => $faqs
+        ]);
     }
 
     public function sectionAction(Request $request, string $section): Response
