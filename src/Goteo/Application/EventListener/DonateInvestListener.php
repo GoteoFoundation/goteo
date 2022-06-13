@@ -14,6 +14,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
 use Goteo\Application\Currency;
 use Goteo\Application\Event\FilterInvestRequestEvent;
+use Goteo\Entity\Invest\InvestOrigin;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
@@ -21,6 +22,7 @@ use Goteo\Model\Invest;
 use Goteo\Model\Mail;
 use Goteo\Model\Template;
 use Goteo\Model\User;
+use Goteo\Repository\InvestOriginRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DonateInvestListener extends AbstractListener {
@@ -61,6 +63,16 @@ class DonateInvestListener extends AbstractListener {
             ->doAdmin('money');
 
         Invest::setDetail($invest->id, 'confirm-fail', 'DonateInvest process failed. Gateway error: ' . $response->getMessage());
+
+        $investOriginRepository = new InvestOriginRepository();
+        try {
+            $investOrigin = $investOriginRepository->getByInvestId($invest->id);
+            $event->setHttpResponse(
+                new RedirectResponse('/donate/payment?' . http_build_query(['amount' => $invest->amount_original . $invest->currency, 'source' => $investOrigin->getSource(), 'detail' => $investOrigin->getDetail(), 'allocated' => $investOrigin->getAllocated()]))
+            );
+        } catch (ModelNotFoundException $e) {
+            // If there is no Invest Origin we continue by default
+        }
 
         // Assign response if not previously assigned
         // Goto user start
