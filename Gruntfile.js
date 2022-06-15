@@ -206,8 +206,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        // 'newer:jshint',
-        // 'newer:phplint',
 
         'copy:devel', // copy assets to .tmp for postprocessing
         'sass:devel',
@@ -219,7 +217,6 @@ module.exports = function(grunt) {
         'sass:dist',
 
         'useminPrepare',
-        // 'imagemin',
         'concat:generated',
 
         'cssmin:dist', // manually minify css
