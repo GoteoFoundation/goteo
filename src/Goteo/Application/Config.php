@@ -19,6 +19,7 @@ use Goteo\Controller\Admin\AccountsSubController;
 use Goteo\Controller\Admin\BannersSubController;
 use Goteo\Controller\Admin\BlogAdminController;
 use Goteo\Controller\Admin\CategoriesAdminController;
+use Goteo\Controller\Admin\ChannelProjectsAdminController;
 use Goteo\Controller\Admin\ChannelCriteriaAdminController;
 use Goteo\Controller\Admin\ChannelPostsAdminController;
 use Goteo\Controller\Admin\ChannelProgramAdminController;
@@ -33,6 +34,7 @@ use Goteo\Controller\Admin\FilterAdminController;
 use Goteo\Controller\Admin\GlossarySubController;
 use Goteo\Controller\Admin\HomeSubController;
 use Goteo\Controller\Admin\IconsSubController;
+use Goteo\Controller\Admin\ImpactDataAdminController;
 use Goteo\Controller\Admin\LicensesSubController;
 use Goteo\Controller\Admin\MailingSubController;
 use Goteo\Controller\Admin\MilestonesSubController;
@@ -75,7 +77,7 @@ class Config {
         'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate',
         'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups',
         'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate',
-        'questionnaire', 'poster', 'channel_call', 'map'
+        'questionnaire', 'poster', 'channel_call', 'map', 'data_sets'
     ];
 
     const ENV_PARAMETER_REG_EX = "/^%env\((.*)\)%$/";
@@ -151,28 +153,29 @@ class Config {
 			foreach (Lang::listAll('name', false) as $lang => $name) {
 				Lang::addSqlTranslation($lang);
 				foreach (self::$trans_groups as $group) {
-					Lang::addYamlTranslation($lang, __DIR__ . '/../../../Resources/translations/' . $lang . '/' . $group . '.yml');
+					Lang::addYamlTranslation($lang, __DIR__ . '/../../../translations/' . $lang . '/' . $group . '.yml');
 				}
 			}
 
             // Add model zones for the translator
             TranslateController::addTranslateModel('criteria');
-			TranslateController::addTranslateModel('sphere');
-			TranslateController::addTranslateModel('communication');
-			TranslateController::addTranslateModel('call_to_action');
-			TranslateController::addTranslateModel('node');
-			TranslateController::addTranslateModel('node_program');
-			TranslateController::addTranslateModel('node_faq');
-			TranslateController::addTranslateModel('node_faq_question');
-			TranslateController::addTranslateModel('node_faq_download');
-			TranslateController::addTranslateModel('node_sponsor');
-			TranslateController::addTranslateModel('node_team');
-			TranslateController::addTranslateModel('node_resource');
-			TranslateController::addTranslateModel('node_resource_category');
-			TranslateController::addTranslateModel('image_credits');
-			TranslateController::addTranslateModel('node_sections');
-			TranslateController::addTranslateModel('question');
-			TranslateController::addTranslateModel('question_options');
+            TranslateController::addTranslateModel('sphere');
+            TranslateController::addTranslateModel('communication');
+            TranslateController::addTranslateModel('call_to_action');
+            TranslateController::addTranslateModel('node');
+            TranslateController::addTranslateModel('node_program');
+            TranslateController::addTranslateModel('node_faq');
+            TranslateController::addTranslateModel('node_faq_question');
+            TranslateController::addTranslateModel('node_faq_download');
+            TranslateController::addTranslateModel('node_sponsor');
+            TranslateController::addTranslateModel('node_team');
+            TranslateController::addTranslateModel('node_resource');
+            TranslateController::addTranslateModel('node_resource_category');
+            TranslateController::addTranslateModel('image_credits');
+            TranslateController::addTranslateModel('node_sections');
+            TranslateController::addTranslateModel('question');
+            TranslateController::addTranslateModel('question_options');
+			TranslateController::addTranslateModel('impact_data');
 
 			// sets up the rest...
 			self::setDirConfiguration();
@@ -336,6 +339,8 @@ class Config {
         AdminController::addSubController(ChannelPostsAdminController::class);
         AdminController::addSubController(ChannelSectionAdminController::class);
         AdminController::addSubController(ChannelStoryAdminController::class);
+        AdminController::addSubController(ChannelProjectsAdminController::class);
+        AdminController::addSubController(ImpactDataAdminController::class);
     }
 
     static public function addLegacyAdminControllers()

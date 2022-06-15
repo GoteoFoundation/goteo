@@ -1,0 +1,32 @@
+---
+discover-group-all-header: 'En campanya'
+discover-group-archive-header: Arxivats 
+discover-group-fulfilled-header: 'Han complert amb els retorns col·lectius'
+discover-group-others-header: 'En altres nodes'
+discover-group-outdate-header: 'A punt de caducar'
+discover-group-popular-header: 'Més populars'
+discover-group-recent-header: 'Recents'
+discover-group-success-header: 'Reeixits '
+discover-patron-header: '<span class="greenblue">%s</span> recomana<br>aquests <span class="red">projectes</span>'
+discover-results-empty: 'No hem trobat cap projecte que compleixi els criteris de cerca'
+discover-results-header: 'Resultat de la cerca'
+discover-searcher-button: Cercar
+discover-searcher-bycategory-all: TOTES
+discover-searcher-bycategory-header: 'Per categoria:'
+discover-searcher-bycontent-header: 'Per contingut:'
+discover-searcher-bylocation-all: TOTS
+discover-searcher-bylocation-header: 'Per lloc:'
+discover-searcher-byreward-all: TOTS
+discover-searcher-byreward-header: 'Per retorn:'
+discover-searcher-header: 'Cerca un projecte'
+discover-by-keyword: 'Per paraula clau:'
+discover-near-by: 'A prop de:'
+discover-any-city: 'Ciutat, codi postal, ...'
+meta-title-discover: 'Descobreix projectes :: Goteo.org'
+discover-include-review-projects: 'Inclou projectes en revisió'
+
+impact-discover-filter-by-footprints: 'Filtra per Petjades'
+impact-discover-filter-by-sdg: 'Filtra per Objectius de Desenvolupament Sostenible'
+impact-discover-projects-by-sdg: 'Projectes que compleixen amb els següents ODS:'
+impact-discover-search-projects-sdgs: 'Busca un projecte per Petjades o ODS'
+impact-discover-filter: 'Filtrar'

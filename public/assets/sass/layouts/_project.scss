@@ -2,7 +2,11 @@ body.project {
     #main {
         background-color: $background-light-grey;
         #main-content {
-            background-color: $background-white;
+          background-color: $background-white;
+
+          #project-tabs-menu {
+            margin-top: 8rem;
+          }
         }
 
         .container-fluid {
@@ -14,6 +18,26 @@ body.project {
             }
             @media(min-width: $breakpoint-lg) {
                 max-width: 1170px;
+            }
+
+            details {
+                summary {
+                    h2 {
+                      color: $color-dark !important;
+                    }
+                }
+
+                &[open] summary {
+                    h2 {
+                      color: $color-dark-green !important ;
+                    }
+                }
+
+                a {
+                    img {
+                      margin-top: 22px;
+                    }
+                }
             }
         }
 
@@ -44,7 +68,16 @@ body.project {
     /* Channel module */
 
     .channel{
-      margin-top: 10px;
+      margin-top: 60px;
+
+      &.spacer-20 {
+        margin-top: 20px;
+      }
+
+      &.spacer-40 {
+        margin-top: 40px;
+      }
+
       .channel-label{
         width: 15%;
       }
@@ -53,6 +86,8 @@ body.project {
         color: $color-white !important;
         padding: 3px 40px;
         width: 65%;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
     }
 

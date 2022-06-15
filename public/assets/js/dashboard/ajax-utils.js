@@ -198,11 +198,10 @@ $(function(){
         var $query = $parent.find('[name="query"]');
         var $users = $parent.find('[name="users"]');
 
-        var formIsValid = ( $body[0].checkValidity() && $subject[0].checkValidity())
+        const formIsValid = $body[0].checkValidity()
 
         if (!formIsValid) {
             $body[0].reportValidity()
-            $subject[0].reportValidity()
         } else {
 
             var data = {

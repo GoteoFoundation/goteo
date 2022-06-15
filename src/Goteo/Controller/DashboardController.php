@@ -24,8 +24,8 @@ use Goteo\Model\User;
 use Goteo\Model\User\Interest;
 use Symfony\Component\HttpFoundation\Request;
 
-class DashboardController extends Controller {
-
+class DashboardController extends Controller
+{
     public function __construct() {
         View::setTheme('responsive');
         $this->user = Session::getUser();
@@ -36,15 +36,15 @@ class DashboardController extends Controller {
 
     public static function createSidebar($section, $zone = '') {
         $user = Session::getUser();
-        $total_messages = Comment::getUserThreads($user, [], 0, 0, true);
-        $total_mails = Mail::getSentList(['user' => $user->email, 'message' => false], 0, 0, true);
+        //$total_messages = Comment::getUserThreads($user, [], 0, 0, true);
+        //$total_mails = Mail::getSentList(['user' => $user->email, 'message' => false], 0, 0, true);
         $total_invests = Invest::getList(['users' => $user, 'status' => Invest::$RAISED_STATUSES], null, 0, 0, 'total');
 
         if($section === 'activity') {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'activity');
-            Session::addToSidebarMenu('<i class="fa fa-2x fa-gift"></i> ' . Text::get('dashboard-rewards-my-invests') .' <span class="badge">' . $total_invests . '</span>', '/dashboard/rewards', 'rewards');
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-gift"></i> ' . Text::get('dashboard-rewards-my-invests'), '/dashboard/rewards', 'rewards');
             Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('regular-messages') .' <span class="badge">' . $total_messages . '</span>', '/dashboard/messages', 'messages');
-            Session::addToSidebarMenu('<i class="fa fa-2x fa-envelope"></i> ' . Text::get('dashboard-mail-mailing') .' <span class="badge">' . $total_mails . '</span>', '/dashboard/mailing', 'mailling');
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-envelope"></i> ' . Text::get('dashboard-mail-mailing'), '/dashboard/mailing', 'mailling');
         }
         if($section === 'wallet') {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-wallet-sidebar"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'wallet');

@@ -49,8 +49,7 @@ $discover->add('discover-view', new Route(
 // AJAX search
 $discover->add('discover-ajax', new Route(
     '/ajax',
-    array('_controller' => 'Goteo\Controller\DiscoverController::ajaxSearchAction',
-        )
+    array('_controller' => 'Goteo\Controller\DiscoverController::ajaxSearchAction',)
 ));
 
 // New all-in-one controller
@@ -61,7 +60,5 @@ $discover->add('discover', new Route(
         '_controller' => 'Goteo\Controller\DiscoverController::searchAction'
     )
 ));
-
-
 
 return $discover;

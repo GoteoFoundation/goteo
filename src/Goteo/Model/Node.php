@@ -25,8 +25,13 @@ use Goteo\Model\Node\NodeCallToAction;
 use Goteo\Model\Node\NodeStories;
 use Goteo\Model\Node\NodePost;
 use Goteo\Model\Node\NodeSections;
+use Goteo\Model\Traits\DataSetRelationsTrait;
+use Goteo\Model\Traits\ImpactDataRelationsTrait;
 
 class Node extends \Goteo\Core\Model {
+
+    use ImpactDataRelationsTrait;
+    use DataSetRelationsTrait;
 
     public
         $id = null,
@@ -1236,8 +1241,7 @@ class Node extends \Goteo\Core\Model {
 
         if ($section) $filter['section'] = $section;
 
-        $sections = NodeSections::getList($filter, 0, 10);
-        return $sections;
+        return NodeSections::getList($filter, 0, 10);
     }
 
     public function findProject($pid)

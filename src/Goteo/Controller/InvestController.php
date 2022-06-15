@@ -556,7 +556,7 @@ class InvestController extends Controller {
         // check post data
         $invest_address = (array)$invest->getAddress();
         $errors = [];
-        if($request->isMethod('post')) {
+        if($request->isMethod('post') && $request->request->has('invest')) {
             $invest_address = $request->request->get('invest');
             if(is_array($invest_address)) {
                 $ok = true;

@@ -50,6 +50,7 @@ checker:
     extends: user
     perms:
         - review-project # View/review an assigned review project before their publication
+        - preview-projects
     level: 40
 
 blogger:
@@ -98,6 +99,8 @@ consultant:
         - admin-module-promote # Can access to promote admin module
         - admin-module-workshops # Can access to workshops admin module
         - admin-module-channel-resource # Can access to channel resource admin module
+        - admin-module-impact_data # Can access to Impact Data
+        - admin-module-communication # Can access to Communication
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
     level: 60
 

@@ -22,21 +22,19 @@
                     <div class="panel-heading standard-padding">
                         <h2 class="panel-title green-title" >
                             <?= $this->text('project-show-needs') ?>
-                            <span class="icon glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            <span class="icon glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></span>
                         </h2>
                     </div>
                 </a>
 
                 <div id="collapseOne" class="panel-collapse collapse">
                   <div class="panel-body">
-
-
                     <?php foreach ($this->costs as $type => $list): ?>
                         <table class="footable table needs">
                              <thead>
                                 <tr>
                                   <th data-type="html">
-                                    <img src="<?= SRC_URL . '/assets/img/project/needs/'.$type.'.png' ?> ">
+                                    <img src="<?= SRC_URL . '/assets/img/project/needs/'.$type.'.png' ?> " alt="<?= $this->t('project-menu-needs') ?>">
                                     <span class="type"><?= $this->types[$type] ?></span>
                                   </th>
                                   <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-minimum') ?></th>
@@ -106,7 +104,7 @@
                 <div class="panel-heading standard-padding">
                     <h2 class="panel-title green-title">
                         <?= $this->text('project-general-information') ?>
-                        <span class="icon glyphicon glyphicon glyphicon-menu-up pull-right" aria-hidden="true"></span>
+                        <span class="icon glyphicon glyphicon-menu-up pull-right" aria-hidden="true"></span>
                     </h2>
                 </div>
             </a>
@@ -135,7 +133,7 @@
                 <div class="carousel-inner" role="listbox">
                     <?php foreach($project->gallery as $key => $image): ?>
                         <div class="item <?= !$key ? 'active' : '' ?>">
-                            <img src="<?= $image->imageData->getLink(700, 700) ?>" class="img-responsive">
+                            <img src="<?= $image->imageData->getLink(700, 700) ?>" class="img-responsive" alt="<?= $image->imageData->name ?>">
                         </div>
                     <?php endforeach ?>
                 </div>
@@ -143,11 +141,11 @@
                  <!-- Left and right controls -->
                  <a class="left carousel-control" href="#infoCarousel" role="button" data-slide="prev">
                     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
+                    <span class="sr-only"><?= $this->t('regular-previous') ?></span>
                  </a>
                  <a class="right carousel-control" href="#infoCarousel" role="button" data-slide="next">
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
+                    <span class="sr-only"><?= $this->t('regular-next') ?></span>
                  </a>
 
                 </div>
@@ -167,7 +165,7 @@
                 </div>
 
                 <?php foreach($project->secGallery['about'] as $image): ?>
-                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">
+                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive" alt="<?= $image->imageData->name ?>">
                 <?php endforeach ?>
 
                 <h2 class="pink-title spacer" >
@@ -181,7 +179,7 @@
                 </div>
 
                 <?php foreach($project->secGallery['motivation'] as $image): ?>
-                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">
+                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive" alt="<?= $image->imageData->name ?>">
                 <?php endforeach ?>
 
                 <?php /* Goal is being deprecated */ if($project->goal): ?>
@@ -197,7 +195,7 @@
                 <?php endif ?>
 
                 <?php foreach($project->secGallery['goal'] as $image): ?>
-                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">
+                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive" alt="<?= $image->imageData->name ?>">
                 <?php endforeach ?>
 
                 <h2 class="pink-title spacer-20" >
@@ -216,7 +214,7 @@
                 </div>
 
                 <?php foreach($project->secGallery['related'] as $image): ?>
-                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">
+                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive" alt="<?= $image->imageData->name ?>">
                 <?php endforeach ?>
 
                 <div id="go-top" class="row btn-up">
@@ -248,14 +246,14 @@
                 <div id="collapse3" class="panel-collapse collapse in">
                    <div class="panel-body">
 
-                        <?php if($project->getSocialCommitment()): ?>
+                        <?php if($socialCommitment = $project->getSocialCommitment()): ?>
 
                             <div class="row social-commitment">
                                 <div class="col-sm-2">
-                                    <img class="img-responsive social-img" src="<?= $project->getSocialCommitment()->getIcon()->getLink(60, 60, false) ?>">
-                                <h3 class="title text-center">
-                                    <?= $project->getSocialCommitment()->name ?>
-                                </h3>
+                                    <img class="img-responsive social-img" src="<?= $socialCommitment->getIcon()->getLink(60, 60, false) ?>" alt="<?= $socialCommitment->name ?>">
+                                    <h3 class="title text-center">
+                                        <?= $socialCommitment->name ?>
+                                    </h3>
                                 </div>
                                 <div class="col-sm-10 description">
                                     <?= $this->markdown($project->social_commitment_description) ?>
@@ -287,10 +285,10 @@
                                     </h3>
                                     <div class="row">
                                         <div class="col-sm-2 license-img">
-                                            <img class="img-responsive" src="<?= SRC_URL . '/assets/img/project/license/'.$social->license.'.png' ?> ">
+                                            <img class="img-responsive" src="<?= SRC_URL . '/assets/img/project/license/'.$social->license.'.png' ?>" alt="<?= $social->license ?>">
                                         </div>
                                         <div class="col-sm-10 description">
-                                        <?= $this->licenses[$social->license]->description ?>
+                                            <?= $this->licenses[$social->license]->description ?>
                                         </div>
                                     </div>
                                     <?php endif ?>
@@ -333,6 +331,41 @@
                 </div>
 
             </div>
+
+        <?php if ($listSdgs = $project->getSdgs($this->lang_current())): ?>
+            <div class="panel panel-default widget">
+                <details open>
+                    <summary class="panel-heading">
+                        <h2 class="panel-title green-title">
+                            <?= $this->t('regular-sdg') ?>
+                        </h2>
+                    </summary>
+                    <div class="panel-body">
+                        <ul class="list-group list-unstyled">
+                            <?php foreach($listSdgs as $sdg): ?>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2 col-xs-3">
+                                            <a href="/impact-discover?sdgs=<?= $sdg->id ?>" target="_blank">
+                                                <img src="<?= $this->asset("img/sdg/sdg{$sdg->id}.svg") ?>" width="100%" alt="<?= $sdg->name ?>">
+                                            </a>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <h3>
+                                                <?= $sdg->name ?>
+                                            </h3>
+                                            <p>
+                                                <?= $sdg->description ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        <?php endif ?>
 
 <?php $this->replace() ?>
 

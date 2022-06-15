@@ -21,6 +21,7 @@ use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
+use Goteo\Entity\Invest\InvestOrigin;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
@@ -30,9 +31,10 @@ use Goteo\Model\Invest\InvestLocation;
 use Goteo\Model\Mail;
 use Goteo\Model\Template;
 use Goteo\Model\User;
+use Goteo\Repository\InvestOriginRepository;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class InvestListener extends AbstractListener {
@@ -53,6 +55,31 @@ class InvestListener extends AbstractListener {
 
         $this->info(($invest->getProject()? '':'Pool') . 'Invest init', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, 'init', 'Invest input created');
+    }
+
+    public function onInvestInitSaveOrigin(FilterInvestInitEvent $event) {
+        $request = $event->getRequest();
+        $invest = $event->getInvest();
+
+        $source = htmlspecialchars($request->query->get('source'));
+        $detail = htmlspecialchars($request->query->get('detail'));
+        $allocated = htmlspecialchars($request->query->get('allocated'));
+
+        if ($source && $detail) {
+            $investOrigin = new InvestOrigin();
+            $investOrigin
+                ->setInvestId($invest->id)
+                ->setSource($source)
+                ->setDetail($detail)
+                ->setAllocated($allocated);
+
+            $errors = [];
+            $investOriginRepository = new InvestOriginRepository();
+            $investOriginRepository->persist($investOrigin, $errors);
+
+            if (!empty($errors))
+                Message::error(implode(',', $errors));
+        }
     }
 
     public function onInvestInitRequest(FilterInvestRequestEvent $event) {
@@ -168,7 +195,6 @@ class InvestListener extends AbstractListener {
         if (!$event->getHttpResponse()) {
             $event->setHttpResponse(new RedirectResponse('/invest/' . $invest->project . '/payment?' . http_build_query(['amount' => $project_amount . $invest->currency, 'reward' => $reward ? $reward->id : '0', 'donate_amount' => $donate_amount_original])));
         }
-
     }
 
     public function onInvestSuccess(FilterInvestRequestEvent $event) {
@@ -466,8 +492,6 @@ class InvestListener extends AbstractListener {
                     ])
                 )
                 ->doAdmin('money');
-
-
         } else {
             $this->warning('Error modifying invest', [$invest, $invest->getOldInvest(), 'errors' => $errors]);
             throw new ModelException(implode(", ", $errors));
@@ -477,7 +501,7 @@ class InvestListener extends AbstractListener {
     /**
      * Response should not be manipulated for controller Invest and method notify
      */
-    public function onKernelResponse(FilterResponseEvent $event) {
+    public function onKernelResponse(ResponseEvent $event) {
 
         $request = $event->getRequest();
 
@@ -489,7 +513,10 @@ class InvestListener extends AbstractListener {
     public static function getSubscribedEvents(): array
     {
         return array(
-            AppEvents::INVEST_INIT             => 'onInvestInit',
+            AppEvents::INVEST_INIT             => [
+                                                    ['onInvestInit'],
+                                                    ['onInvestInitSaveOrigin']
+                                                ],
             AppEvents::INVEST_INIT_REQUEST     => 'onInvestInitRequest',
             AppEvents::INVEST_INIT_REDIRECT    => 'onInvestInitRedirect',
             AppEvents::INVEST_COMPLETE         => 'onInvestComplete',

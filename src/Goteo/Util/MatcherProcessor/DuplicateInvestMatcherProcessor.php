@@ -10,9 +10,6 @@
 
 namespace Goteo\Util\MatcherProcessor;
 
-use Goteo\Util\MatcherProcessor\AbstractMatcherProcessor;
-use Goteo\Util\MatcherProcessor\MatcherProcessorException;
-use Goteo\Model\Matcher;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
 
@@ -27,7 +24,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         'match_factor' => 1
     ];
 
-    static public function getVarLabels() {
+    static public function getVarLabels(): array {
         return [
             'max_amount_per_project' => Text::get('matcher-duplicateinvest-max_amount_per_project'),
             'max_amount_per_invest' => Text::get('matcher-duplicateinvest-max_amount_per_invest'),
@@ -36,7 +33,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         ];
     }
 
-    static public function getDesc() {
+    static public function getDesc(): string {
         return Text::get('matcher-duplicateinvest-rules');
     }
 
@@ -44,7 +41,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
      * Checks if this invests has to be multiplied and
      * returns the amount to be added
      */
-    public function getAmount(&$error = '') {
+    public function getAmount(&$error = ''): int {
         $invest = $this->getInvest();
         $project = $this->getProject();
         $matcher = $this->getMatcher();
@@ -63,9 +60,8 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         if($vars['max_amount_per_project'] && ( $invested + $amount > $vars['max_amount_per_project']))  {
             $amount = max(0, $vars['max_amount_per_project'] - $invested);
         }
-        $count = Invest::getList(['projects' => $project, 'status' => Invest::$ACTIVE_STATUSES, 'users' => $invest->user, 'types' => 'nondrop'], null, 0, 0, true);
-
-        if($count > $vars['max_invests_per_user']) {
+        $count = Invest::getList(['projects' => $project, 'status' => Invest::$ACTIVE_STATUSES, 'users' => $invest->user, 'types' => 'campaign'], null, 0, 0, true);
+        if($count >= $vars['max_invests_per_user']) {
             $error = 'Max invests per user reached';
             $amount = 0;
         }

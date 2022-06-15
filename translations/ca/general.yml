@@ -1,0 +1,252 @@
+---
+ID_DEL_TEXTO: 'Text ID_DEL_TEXTO'
+admin_no_permission: 'No tens permisos per accedir a <strong>%s</strong>'
+bazar-description-seo: 'Regals solidaris crowdfunding a Goteo.org.'
+bazar-title-seo: 'Regals solidaris :: Goteo.org'
+blog-comments: Comentaris
+blog-main-header: 'Blog de Goteo'
+calendar-calls-category: Convocatòries
+calendar-events-category: Events
+calendar-home-hour: a
+calendar-home-title: 'Proper event'
+calendar-net-category: 'Xarxa i política'
+calendar-projects-category: Projectes
+calendar-share: Comparteix
+calendar-workshops-category: Tallers
+couldn: 'No s''ha pogut'
+error-contact-email-invalid: 'El correu electrònic que has escrit no és vàlid'
+error-image-name: 'Error en el nom de l''arxiu'
+error-image-size: 'Error en la mida de l''arxiu'
+error-image-size-too-large: 'La imatge és massa gran'
+error-image-tmp: 'Error en carregar l''arxiu'
+error-image-type: 'Només es permeten imatges jpg, png i gif'
+error-image-type-not-allowed: 'Només es permeten arxius d''imatge tipus .png .jpg .gif'
+error-register-email-exists: 'L''adreça de correu facilitada correspon a un usuari ja registrat'
+error-register-pasword-empty: 'No has posat contrasenya'
+error-user-email-confirm: 'La confirmació de correu electrònic no coincideix'
+error-user-email-empty: 'No pots deixar el camp d''email buit '
+error-user-email-exists: 'Ja hi ha un usuari registrat amb aquest email'
+error-user-email-invalid: 'L''email que has posat no és vàlid'
+error-user-email-token-invalid: 'El codi no és correcte'
+error-user-password-confirm: 'La confirmació de contrasenya no coincideix'
+error-user-password-empty: 'No has posat la contrasenya'
+error-user-password-invalid: 'La contrasenya és massa curta'
+error-user-id-invalid: 'El id d''usuari no es vàlid. Useu només caràcters a-z 0-9'
+error-user-id-exists: 'Ja hi ha un usuari registrat amb aquest id'
+error-user-wrong-password: 'La contrasenya no és correcta'
+explain-project-progress: 'Aquest gràfic explica d''una manera visual el nivell de dades que has introduït juntament amb una avaluació bàsica que fa el sistema. Per poder enviar el projecte has de superar el 80%. Els criteris que fan pujar aquest "termòmetre" tenen a veure amb la informació rellevant que facilites, els media, imatges i links que introdueixes, si tries una llicència més oberta que una altre, la coherència del teu pressupost respecte a les tasques a desenvolupar, etc. No perdis de vista els consells de la columna dreta, que guien durant tot el procés.'
+fancybox: 'Text fancybox'
+goteo-return-button: 'Tornar a Goteo'
+guide-dashboard-user-access: 'Des d''aquí pots modificar les dades amb que accedeixes al teu compte de Goteo.'
+guide-project-contract-information: 'La informació d''aquest apartat és necessària per contactar-te en cas que obtinguis el finançament requerit, i que així es pugui efectuar l''ingrés.'
+guide-project-images: 'Aquest és l''apartat per afegir les imatges del projecte. Poden ser esquemes, captures de pantalla, fotografies, il·lustracions, storyboards, etc. (la seva llicència d''autoria ha de ser compatible amb la que seleccions a l''apartat 5). Pots pujar tantes com vulguis!'
+guide-project-rewards: "<strong>En aquest apartat has d'establir què ofereix el projecte a canvi als seus cofinançadors.</strong>"
+guide-project-supports: '<strong>En aquest apartat pots especificar quines altres ajudes, a part de finançament, es necessiten per dur a terme el projecte.</strong><br><br>Poden ser tasques o accions a càrrec d''altres persones (traduccions, gestions, difusió, etc), o bé préstecs específics (de material, transport, maquinari, etc).'
+guide-project-invests: 'Des d''aquest apartat podràs gestionar els teus cofinançadors, les recompenses que han triat i també posar-te en contacte amb ells si ho consideres necessari.'
+header-about-side: 'Allò que ens mou'
+home-posts-header: Novetats
+horizontal-project-investors: 'cofinançadors'
+horizontal-project-percent: 'finançat'
+horizontal-project-reached: 'aconseguit'
+invest-individual-header: 'Pots renunciar a rebre recompenses per la teva aportació, o seleccionar les que igualin o estiguin per sota de l''import que hagis introduït.'
+login-register-conditions: 'En registrar-te, confirmes la teva acceptació dels nostres <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="/legal/cookies">política de cookies</a>.'
+login-register-accept-newsletter: 'Vull rebre la newsletter'
+login-accept-conditions: 'Accepto els <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="/legal/cookies">política de cookies</a>.'
+mandatory-cost-field-type: 'És obligatori seleccionar el tipus de cost'
+mandatory-individual_reward-field-amount: 'És obligatori indicar l''import que permet obtenir la recompensa'
+mandatory-project-costs: 'Ha de desglossar-se com a mínim en dos costos.'
+mandatory-register-field-email: 'Has d''indicar un email'
+mark-pending: 'Marcar com a pendent de traduir'
+meta-description-index: 'Goteo és la xarxa oberta de crowdfunding, col·laboracions i formació, líder en projectes d''innovació social. Amb 2 rondes i avantatges fiscals per a donants!'
+node-menu-home: Node
+overview-field-about: 'Característiques bàsiques i objectius'
+overview-field-motivation: 'Motivació i a qui va dirigit el projecte '
+profile-about-header: 'Sobre mi'
+project-invest-total: 'Total d''aportacions'
+project-messages-send_message-your_answer: 'Escriu aquí la teva resposta'
+project-messages-send_message_support-your_answer: 'Escriu aquí el teu missatge de col·laboració per %s'
+regular-add: Nou registre
+regular-all: Tots
+regular-admin_board: 'Panell admin'
+regular-allsome: 'tots/alguns de'
+regular-anonymous: Anònim
+regular-ask: Preguntar
+regular-submit: Envia
+regular-sdg: "Objectius de Desenvolupament Sostenible"
+regular-slug: Identificador únic
+regular-by: 'Per:'
+regular-calendar: Calendari
+regular-cancel: Cancel·lar
+regular-cancel-back: 'Cancel·lar i torna enrere'
+regular-categories: 'Categories'
+regular-social_commitments: 'Compromisos socials'
+regular-spheres: 'Àmbits'
+regular-footprints: 'Petjades'
+regular-back: 'Torna enrere'
+regular-collaborate: Col·labora
+regular-content: Contingut
+regular-continue-question: 'Continuar?'
+regular-create: 'Crea un projecte'
+regular-data: 'Dada'
+regular-data-unit: 'Unitat'
+regular-date: Data
+regular-date_in: Data d'entrada
+regular-date_out: Data de sortida
+regular-days: dies
+regular-delete: Elimina
+regular-description: Descripció
+regular-discover: 'Descobreix projectes'
+regular-discard: 'Descarta'
+regular-download-pdf: 'Descarrega el PDF'
+regular-download: Descarrega
+regular-actions: Accions
+regular-edit: Edita
+regular-email: Correu electrònic
+regular-join: 'Uneix-te'
+regular-facebook: Facebook
+regular-faq: 'Preguntes freqüents '
+regular-female: Dona
+regular-other-gender: Altre
+regular-first: Primera
+regular-from: des de
+regular-getit: Aconsegueix-ho
+regular-go_up: Pujar
+regular-google: Google+
+regular-header: Capçalera
+regular-header-about: 'Una aproximació a Goteo'
+regular-header-blog: Blog
+regular-header-faq: FAQ
+regular-header-glossary: 'Principis per a una economia oberta'
+regular-hello: Hola
+regular-here: aquí
+regular-help: Ajuda
+regular-home: Inici
+regular-identica: Identi.ca
+regular-im: Sóc
+regular-instagram: Instagram
+regular-invest: Aporta
+regular-invest_it: 'Cofinança el projecte'
+regular-investing: Aportant
+regular-invests: Aportacions
+regular-lang: Idioma
+regular-last: Darrera
+regular-license: Llicència
+regular-linkedin: LinkedIn
+regular-location: Ubicació
+regular-loading: Carregant...
+regular-login: Accedeix
+regular-logout: 'Tanca la sessió'
+regular-looks_for: 'cerca:'
+regular-main-header: Goteo.org
+regular-male: Home
+regular-others: Altres
+regular-manage_board: 'Panell gestoria'
+regular-mandatory: 'Camp obligatori!'
+regular-media_legend: Llegenda
+regular-menu: Menú
+regular-menu-personal: Menú personal
+regular-message-clipboard-fail: 'Selecciona i copia aquest enllaç'
+regular-message_fail: 'Hi ha hagut algun error en enviar el missatge'
+regular-message_success: 'Missatge enviat correctament'
+regular-months: mesos
+regular-more_info: '+ info'
+regular-news: 'Notícies: '
+regular-newsletter: "Butlletí"
+regular-no: 'No'
+regular-of: de
+regular-preview: Previsualitzar
+regular-evaluate: Avaluar
+regular-projects: projectes
+regular-published_no: Esborrany
+regular-published_yes: Publicat
+regular-read_more: 'Llegir més'
+regular-recent-activity: Activitat recent
+regular-recomended_by: 'Projecte recomanat per:'
+regular-review_board: 'Panell revisor'
+regular-round: 'a ronda'
+regular-save: Desa
+regular-schedule: Horari
+regular-search: Cerca
+regular-search-user: Cerca un usuari
+regular-search-desc: 'Escriu la teva cerca aquí'
+regular-search-tooltip: 'Entra la teva cerca i prem enter'
+regular-see_all: 'Veure tots'
+regular-see_blog: Blog
+regular-see_details: 'Veure detalls'
+regular-see_more: 'Veure més'
+regular-send_message: 'Enviar missatge'
+regular-share-facebook: 'Goteo al Facebook'
+regular-share-rss: RSS/BLOG
+regular-share-twitter: 'Segueix-nos a Twitter'
+regular-share_this: 'Compartir a:'
+regular-sorry: 'Ho sentim'
+regular-spread: DIFUSIÓ
+regular-status: Estat
+regular-template: Plantilla
+regular-thanks: Gràcies
+regular-title: Títol
+regular-subtitle: Subtítol
+regular-text: Text
+regular-media: Vídeo (Youtube, Vimeo)
+regular-total: Total
+regular-translate: Tradueix
+regular-translations: 'Traduccions'
+regular-translate_board: 'Panell traductor'
+regular-twitter: Twitter
+regular-url: URL
+regular-view: Veure
+regular-view_project: 'Veure el projecte'
+regular-web: Web
+regular-weeks: setmanes
+regular-year: Any
+regular-yes: Si
+regular-name: Nom
+regular-image: Imatge
+regular-images: Imatges
+regular-header-image-of: "Imatge de capçalera de %s"
+regular-load-more: 'Carregar-ne més'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Píxel'
+regular-call: Matchfunding
+regular-num-comments: '%s comentaris'
+regular-manage: 'Gestiona'
+regular-matcher: 'Matcher'
+regular-no-edit-permissions: No tens permís per editar aquesta entrada!
+regular-messages: Missatges
+regular-unknown: Desconegut
+regular-input: Aportació
+regular-amount: Import
+regular-copied: 'Copiat al porta-retalls!'
+regular-remember-me: 'Recorda''m'
+regular-next: Següent
+regular-write-description: 'Escriu un text descriptiu...'
+regular-choice-placeholder: 'Selecciona una opció'
+session-about-to-expire: 'La teva sessió expirarà en 10 minuts. ¿Vols recarregar la pàgina per renovar-la?'
+session-expired: 'La teva sessió ha expirat!'
+stories-user-project: '%s, del projecte: %s'
+support-our-mission: 'DÓNA A FUNDACIÓ GOTEO'
+tooltip: 'Text d''ajuda'
+tooltip-dashboard-user-access_data: 'Aquestes són les teves dades actuals d''accés. L''única cosa que no es pot canviar és el login o nom d''usuari.'
+tooltip-dashboard-user-change_email: 'Des d''aquí pots canviar l''adreça de correu electrònic on reps els missatges de Goteo.'
+tooltip-dashboard-user-change_password: 'Des d''aquí pots canviar la contrasenya amb que accedeixes a Goteo.'
+tooltip-dashboard-user-confirm_email: 'Confirma la nova adreça de correu electrònic on vols rebre els missatges de Goteo.'
+tooltip-dashboard-user-confirm_password: 'Confirma la nova contrasenya amb que vols accedir a Goteo.'
+tooltip-dashboard-user-new_email: 'Indica la nova adreça de correu electrònic on vols rebre els missatges de Goteo.'
+tooltip-dashboard-user-new_password: 'Escriu la nova contrasenya amb que vols accedir a Goteo.'
+tooltip-dashboard-user-user_password: 'Escriu la contrasenya actual amb que accedeixes a Goteo.'
+tooltip-project-schedule: 'Visualització de com queda l''agenda de producció del teu projecte. Recorda que només has d''assenyalar les noves tasques a realitzar, no les que ja s''hagin dut a terme.'
+translate-home-guide: 'Missatge pel traductor'
+user-account-inactive: 'El compte està desactivat. Has de recuperar la contrasenya per activar-lo de nou'
+user-activate-fail: 'Error en activar el compte d''usuari'
+user-changeemail-invalid-token: 'Aquesta acció ha caducat o bé ja s''ha executat anteriorment'
+user-changeemail-fail: 'Error en canviar l''email'
+user-register-success: 'L''usuari s''ha registrat correctament. A continuació rebràs un missatge de correu per activar-lo.'
+validate-project-social_rewards: 'És obligatori indicar com a mínim un retorn col·lectiu'
+user-promoter: 'L''usuari impulsor'
+newsletter-donate-description: 'Perquè puguem seguir ajudant a que més i més iniciatives cíviques es facin realitat'
+regular-icon: Icona
+regular-action: Acció
+regular-action_url: Acció URL
+regular-modal-decription: Decripció a la modal
+regular-click-more: "Fes click per saber més"
+regular-apply: Aplicar

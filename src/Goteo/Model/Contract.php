@@ -335,7 +335,6 @@ class Contract extends Model {
         $res->errors = $errors;
         $res->fields = $fields;
         $res->project = $this->id;
-        // var_dump($res);
         return $res;
     }
 

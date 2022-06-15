@@ -1,0 +1,30 @@
+---
+donate-meta-title: "Donar :: Goteo.org"
+donate-meta-description: "Ajuda a la Fundació Goteo amb el teu donatiu"
+donate-header-description: 'Per una societat més ètica i col·laborativa'
+donate-main-text-intro: 'La plataforma Goteo és una part fonamental de la Fundació Goteo, que impulsa eines per al finançament cívic, on fem possible que moltíssimes iniciatives tirin endavant. Tenim tres puntals molt importants: l''ecològic, el social i el democràtic, que donen sentit a tot el que fem:'
+donate-main-text-line-1: '<strong>No deixem a ningú enrere,</strong> donant suport “cas per cas i pas a pas”, amb formació, difusió i acompanyament a més de 200 projectes l''any.'
+donate-main-text-line-2: ' <strong>Innovem cívicament per defecte,</strong> liderant processos innovadors de finançament corresponsable juntament amb institucions públiques i privades.'
+donate-main-text-line-3: '<strong>Compartim allò que tenim,</strong> i apostem pel software lliure, obrim les nostres <a href="stats.goteo.org">dades</a> i alliberem el nostre <a href="https://github.com/GoteoFoundation">codi</a>, per a créixer en comunitat, reforçar la societat del coneixement i participar activament d''ella, sense complexos!'
+donate-select-amount-title: 'Dóna a la Fundación Goteo'
+donate-select-amount-description: 'Decideix amb quina quantitat vols ajudar a fer que puguem continuar donant suport a projectes'
+donate-foundation-accounts-title: 'Les nostres despeses'
+donate-foundation-accounts-data-label-1: 'Despeses operacionals 2017'
+donate-foundation-accounts-data-label-2: 'Despeses cobertes pel 4% comissió'
+donate-foundation-accounts-data-label-3: 'Despeses dedicades a salaris'
+donate-foundation-accounts-text-1: 'En el 2017, hem recaptat més <strong>1.150.000€</strong> per finançar els projectes. La comissió recaptada als projectes exitosos és del 4%, el que suposa cobrir el <strong>29%</strong> de les nostres despeses operacionals. I quins són els nostres costos operacionals? Sobretot, els salaris de les persones que fan possible el dia a dia de l''organització. Consulta <a href="/blog/9050">aquí</a> els nostres comptes del 2017 i ajuda''ns a seguir treballant. '
+donate-foundation-accounts-text-2: 'Totes les donacions a la Fundació Goteo són desgravables. Per exemple, si dónes 100€, Hisenda et retornarà 75€. Utilitza la nostra <a href="/calculadora-fiscal">Calculadora Fiscal</a> per calcular la desgravació que obtindràs. Rebràs el certificat de donació que et correspon.'
+donate-foundation-accounts-text-3: 'Tens dubtes sobre la teva donació a la Fundació Goteo? Escriu-nos a donate@goteo.org'
+donate-foundation-step-1: 'Donació'
+donate-pay-method-title: 'Realitza la teva donació a la Fundació Goteo'
+donate-alert-recharging: 'Estàs a punt de donar'
+donate-invest-success-make-sure: 'La teva donació a la Fundació Goteo s''ha realitzat amb èxit! Moltíssimes gràcies!'
+donate-invest-ok: 'S''ha tramitat la teva donació a la Fundació Goteo! Descarrega''t el teu certificat i difon la teva generositat!'
+donate-invest-spread-social: 'Has donat a la Fundació Goteo! Pel suport a la creació d''un espai des d''on impulsar més iniciatives cíviques i potenciar el #CivicCrowdfunding, obert i transparent. @goteofunding Qui més s''hi afegeix?'
+donate-invest-spread-header: 'Difon i ajuda''ns a fer que més gent doni suport al nostre treball amb la seva donació'
+donate-button: 'Donar a la Fundació'
+donate-select-amount-prologue: 'Més informació sobre la desgravació fiscal de fins al 75% de la teva donació'
+donate-modal-relief-title: 'La teva desgravació fiscal'
+donate-modal-relief-description: '<p>Fes la teva donació a la Fundació Goteo, i aconsegueix la teva desgravació fiscal.</p> <p>Els percentatges de la desgravació varien en funció de quant aportes: per a les aportacions de tot un any que no superin els 150€ hi ha uns percentatges i pels que superin els 150€ n''hi ha uns altres.</p> <ul> <li>Fins a 150€                -  75%</li> <li>A partir de 150€          -  30%</li> <li>Persones jurídiques        -  30%</li> </ul> <p> Si has col·laborat amb la mateixa entitat en els últims tres anys, els percentatges de desgravació són superiors. D''aquesta manera la teva fidelitat es veu recompensada amb una major devolució. </p> <p> * <strong>Import</strong> Aquesta millora fiscal no aplica fora d''Espanya, ni tampoc al País Basc ni a Navarra, que mantenen una deducció del 30% i del 25% respectivament del total aportat. </p> <p> (*) El límit de la deducció sobre la base liquidable es manté en el 10%. Article 19 (Deducció de la quota de l''Impost sobre la Renda de les Persones Físiques) de la llei 49/2002, del 23 de desembre, de règim fiscal de les entitats sense finalitats lucratives i dels incentius fiscals al mecenatge. </p> '
+donate-invest-origin-payment-method: "Lorem ipsum dolor sit amet"
+donate-invest-origin-thanks: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit"

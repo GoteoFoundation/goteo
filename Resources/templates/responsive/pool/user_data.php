@@ -10,6 +10,12 @@ $this->section('dashboard-content-pool');
 
     <h2 class="padding-bottom-2"><?= $this->text('pool-make-sure-title') ?></h2>
 
+    <?php if ($this->invest->getInvestOrigin()): ?>
+        <p>
+            <?= $this->t('donate-invest-origin-thanks') ?>
+        </p>
+    <?php endif; ?>
+
     <?= $this->insert('pool/partials/invest_header_form') ?>
 
     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>

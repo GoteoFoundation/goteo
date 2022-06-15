@@ -6,8 +6,8 @@ $id = $this->id ? $this->id : 'video_holder';
 if($cover):
 ?>
     <div class="project-media video-holder embed-responsive embed-responsive-16by9" style="position:relative;" id="<?= $id ?>">
-        <img src="<?= $cover ?>" class="img-responsive">
-        <div onclick="document.getElementById('<?= $this->ee($id) ?>').innerHTML='<?= $this->ee($embed, 'js') ?>'" class="video-button"><img src="<?= SRC_URL ?>/assets/img/project/play.png" class="img-responsive"></div>
+        <img src="<?= $cover ?>" class="img-responsive" alt="<?= $this->t('admin-title-header-image') ?>">
+        <div onclick="document.getElementById('<?= $this->ee($id) ?>').innerHTML='<?= $this->ee($embed, 'js') ?>'" class="video-button"><img src="<?= SRC_URL ?>/assets/img/project/play.png" class="img-responsive" alt="<?= $this->t('project-media-play_video') ?>"></div>
     </div>
 
 <?php else: ?>

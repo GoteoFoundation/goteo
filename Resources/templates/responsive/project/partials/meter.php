@@ -142,11 +142,11 @@ use Goteo\Library\Check;
 
         <div class="labels pull-left hidden-xs">
             <div class="minimum-label" style="bottom:<?= $minimum_label.'%' ?>">
-            <img src="<?= SRC_URL . '/assets/img/project/arrow-meter.png' ?>"><span class="text">Min.</span>
+                <img src="<?= SRC_URL . '/assets/img/project/arrow-meter.png' ?>" alt="<?= $this->t('project-view-metter-minimum') ?>"><span class="text">Min.</span>
             </div>
             <?php if($project->mincost!=$project->maxcost): ?>
                 <div class="optimum-label">
-                <img src="<?= SRC_URL . '/assets/img/project/arrow-meter.png' ?>"><span class="text">Opt.</span>
+                    <img src="<?= SRC_URL . '/assets/img/project/arrow-meter.png' ?>" alt="<?= $this->t('project-view-metter-optimum') ?>"><span class="text">Opt.</span>
                 </div>
             <?php endif; ?>
             <div class="percentage" style="bottom: <?= $percentage_marker.'%' ?>">

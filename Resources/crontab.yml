@@ -73,4 +73,18 @@ real:
         schedule: '0 * * * *'
         command: 'bin/console channel --update'
         type: php
-        
+    -
+        schedule: '0 */2 * * *'
+        command: 'bin/console opendata -f'
+        type: php
+        nice: true
+    -
+        schedule: '0 */2 * * *'
+        command: 'bin/console opendata -s'
+        type: php
+        nice: true
+    -
+        schedule: '0 */4 * * *'
+        command: 'bin/console opendata -c'
+        type: php
+        nice: true

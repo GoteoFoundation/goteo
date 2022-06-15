@@ -16,156 +16,142 @@ $api = new RouteCollection();
 // Users list
 $api->add('api-users', new Route(
     '/users',
-    array('_controller' => 'Goteo\Controller\Api\UsersApiController::usersAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::usersAction')
 ));
 
 // User id availability checkpoint
 $api->add('api-user-check', new Route(
     '/login/check',
-    array('_controller' => 'Goteo\Controller\Api\UsersApiController::userCheckAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::userCheckAction')
 ));
 
 // User images upload (POST method only)
 $api->add('api-user-avatar-upload', new Route(
     '/users/{id}/avatar',
     array('_controller' => 'Goteo\Controller\Api\UsersApiController::userUploadAvatarAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 // User property
 $api->add('api-user-property', new Route(
     '/users/{id}/property/{prop}',
-    array('_controller' => 'Goteo\Controller\Api\UsersApiController::userPropertyAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::userPropertyAction')
 ));
 
 // User keepalive compatibility service
 $api->add('api-keepalive', new Route(
     '/keepalive',
-    array('_controller' => 'Goteo\Controller\Api\UsersApiController::keepAliveAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::keepAliveAction')
 ));
 
 // GeoIP location service
 $api->add('api-geoloc-ip', new Route(
     '/geoloc/ip',
-    array('_controller' => 'Goteo\Controller\Api\GeolocApiController::geolocationAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\GeolocApiController::geolocationAction')
 ));
 
 // Geolocate service for models
 $api->add('api-geoloc-locate', new Route(
     '/geoloc/locate/{type}/{id}',
-    array('_controller' => 'Goteo\Controller\Api\GeolocApiController::geolocateAction',
+    array(
+        '_controller' => 'Goteo\Controller\Api\GeolocApiController::geolocateAction',
         'type' => '',
         'id' => ''
     )
 ));
 
-
-
 // Blog
 $api->add('api-blog-posts', new Route(
     '/blog/posts',
-    array('_controller' => 'Goteo\Controller\Api\BlogApiController::postsAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\BlogApiController::postsAction',)
 ));
 
 // Tags list
 $api->add('api-blog-tags', new Route(
     '/blog/tags',
-    array('_controller' => 'Goteo\Controller\Api\BlogApiController::tagsAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\BlogApiController::tagsAction',)
 ));
 
 // Post images upload (POST method only)
 $api->add('api-blog-images-upload', new Route(
     '/blog/images',
     array('_controller' => 'Goteo\Controller\Api\BlogApiController::uploadImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 // Post images default (PUT method only)
 $api->add('api-blog-images-default', new Route(
     '/blog/{id}/images/{image}',
     array('_controller' => 'Goteo\Controller\Api\BlogApiController::blogDefaultImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('PUT') // methods
+    [], // schemes
+    ['PUT'] // methods
 ));
 
 // Post images delete (DELETE method only)
 $api->add('api-blog-images-delete', new Route(
     '/blog/{id}/images/{image}',
     array('_controller' => 'Goteo\Controller\Api\BlogApiController::blogDeleteImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('DELETE') // methods
+    [], // schemes
+    ['DELETE'] // methods
 ));
 // Post property individual updates
 $api->add('api-blog-post-property', new Route(
     '/blog/{id}/property/{prop}',
-    array('_controller' => 'Goteo\Controller\Api\BlogApiController::postPropertyAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\BlogApiController::postPropertyAction')
 ));
 
 $api->add('api-stories', new Route(
     '/stories',
-    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesAction',)
 ));
 
 // Stories property individual updates
 $api->add('api-stories-property', new Route(
     '/stories/{id}/property/{prop}',
-    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesPropertyAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesPropertyAction')
 ));
 // Stories sort up/down arbitrarily (use the PUT method to sort)
 $api->add('api-stories-sort', new Route(
     '/stories/{id}/sort',
-    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesSortAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\StoriesApiController::storiesSortAction')
 ));
 // Stories images upload (POST method only)
 $api->add('api-stories-images-upload', new Route(
     '/stories/images',
     array('_controller' => 'Goteo\Controller\Api\StoriesApiController::uploadImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 // Node Stories
 // Stories sort up/down arbitrarily (use the PUT method to sort)
 $api->add('api-channelstory-sort', new Route(
     '/channelstories/{node_id}/{stories_id}/sort',
-    array('_controller' => 'Goteo\Controller\Api\ChannelStoriesApiController::nodestoriesSortAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\ChannelStoriesApiController::nodestoriesSortAction')
 ));
 
 // Node Posts
 // Post sort up/down arbitrarily (use the PUT method to sort)
 $api->add('api-channelpost-sort', new Route(
     '/channelposts/{node_id}/{post_id}/sort',
-    array('_controller' => 'Goteo\Controller\Api\ChannelPostsApiController::channelpostsSortAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\ChannelPostsApiController::channelpostsSortAction')
 ));
 
 //Promote
@@ -190,126 +176,122 @@ $api->add('api-promote-property', new Route(
 // Projects list
 $api->add('api-projects', new Route(
     '/projects',
-    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectsAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectsAction',)
+));
+
+// Projects by sdg
+$api->add('api-projects-by-sdg', new Route(
+    '/projects_by_sdg',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectsFootprintsOrSDGs',)
 ));
 
 // One Project info
 $api->add('api-project', new Route(
     '/projects/{id}',
-    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectAction',)
 ));
 
 // Project images upload (POST method only)
 $api->add('api-projects-images-upload', new Route(
     '/projects/{id}/images',
     array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectUploadImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 // Project images default (PUT method only)
 $api->add('api-projects-images-default', new Route(
     '/projects/{id}/images/{image}',
     array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectDefaultImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('PUT') // methods
+    [], // schemes
+    ['PUT'] // methods
 ));
 
 // Project images delete (DELETE method only)
 $api->add('api-projects-images-delete', new Route(
     '/projects/{id}/images/{image}',
     array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectDeleteImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('DELETE') // methods
+    [], // schemes
+    ['DELETE'] // methods
 ));
 
 // Project reorder images (POST method only)
 $api->add('api-projects-images-reorder', new Route(
     '/projects/{id}/images/reorder',
     array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectReorderImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 // Project materials
 // Handles PUT (update element) and POST (new element) if required
 $api->add('api-projects-materials', new Route(
     '/projects/{id}/materials',
-    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectMaterialsAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectMaterialsAction')
 ));
 
 // Project property
 $api->add('api-projects-property', new Route(
     '/projects/{id}/property/{prop}',
-    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectPropertyAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectPropertyAction')
 ));
 
 // Project updates property
 $api->add('api-projects-updates-property', new Route(
     '/projects/{pid}/updates/{uid}/{prop}',
-    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectUpdatesPropertyAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectUpdatesPropertyAction')
 ));
 
 // Project rewards invests fulfilled
 $api->add('api-projects-invests-fulfilled', new Route(
     '/projects/{pid}/invests/{iid}/fulfilled',
-    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectInvestsFulfilledAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectInvestsFulfilledAction')
 ));
 
 // Project CSV rewards invests
 $api->add('api-projects-invests-csv', new Route(
     '/projects/{pid}/invests/csv',
-    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectInvestsCSVAction'
-        )
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectInvestsCSVAction')
 ));
 
 // Projects list
 $api->add('api-ods-suggestion', new Route(
     '/social-commitment/ods-suggestion',
-    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::odsSuggestionAction',
-        )
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::odsSuggestionAction',)
 ));
 
 $api->add('api-invest-msg-delete', new Route(
     '/projects/invest-msg/{mid}',
     array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectDeleteSupportMsgAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('DELETE') // methods
+    [], // schemes
+    ['DELETE'] // methods
 ));
 
 // Calls list
 $api->add('api-calls', new Route(
     '/calls',
-    array('_controller' => 'Goteo\Controller\Api\CallsApiController::callsAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\CallsApiController::callsAction',)
 ));
 
 // Channels list
 $api->add('api-channels', new Route(
     '/channels',
-    array('_controller' => 'Goteo\Controller\Api\ChannelsApiController::channelsAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\ChannelsApiController::channelsAction',)
 ));
 
 $api->add('api-channels-images', new Route(
@@ -320,8 +302,7 @@ $api->add('api-channels-images', new Route(
 // Licenses list
 $api->add('api-licenses', new Route(
     '/licenses',
-    array('_controller' => 'Goteo\Controller\Api\LicensesApiController::licensesAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\LicensesApiController::licensesAction',)
 ));
 
 // Keywords list
@@ -334,11 +315,11 @@ $api->add('api-keywords', new Route(
 $api->add('api-categories-images-upload', new Route(
     '/categories/images',
     array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::uploadImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 // Categories property individual updates
@@ -351,7 +332,8 @@ $api->add('api-categories-property', new Route(
 // Categories list (tab may be category, sphere, social_commitment, footprint, sdg)
 $api->add('api-categories', new Route(
     '/categories/{tab}',
-    array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::categoriesAction',
+    array(
+        '_controller' => 'Goteo\Controller\Api\CategoriesApiController::categoriesAction',
         'tab' => 'category'
     )
 ));
@@ -359,41 +341,40 @@ $api->add('api-categories', new Route(
 // Messages list
 $api->add('api-comments-project', new Route(
     '/projects/{pid}/comments',
-    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsAction',)
 ));
 
 $api->add('api-comments-add', new Route(
     '/comments',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::addCommentAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 $api->add('api-comments-delete', new Route(
     '/comments/{cid}',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::deleteCommentAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('DELETE') // methods
+    [], // schemes
+    ['DELETE'] // methods
 ));
 
-// Communication 
+// Communication
 
 // Post images upload (POST method only)
 $api->add('api-communication-images-upload', new Route(
     '/communication/images',
     array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::uploadImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 // Get success of a communication
@@ -409,35 +390,31 @@ $api->add('api-communication-mail-success', new Route(
     array('_controller' => 'Goteo\Controller\Api\CommunicationApiController::mailStatusAction')
 ));
 
-
 // Messages list
 $api->add('api-messages-project', new Route(
     '/projects/{pid}/messages',
-    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::messagesAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::messagesAction',)
 ));
 // User Messages list
 $api->add('api-messages-project-user', new Route(
     '/projects/{pid}/messages/{uid}',
-    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::userMessagesAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::userMessagesAction',)
 ));
 
 $api->add('api-messages-add', new Route(
     '/messages',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::addMessageAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 // Project Mailing (generated from Messages to more than 2 users)
 $api->add('api-messages-project-mailing', new Route(
     '/projects/{pid}/mailing',
-    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::projectMailingAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::projectMailingAction',)
 ));
 
 $api->add('api-stats-investors-required', new Route(
@@ -455,11 +432,11 @@ $api->add('api-matcher-list', new Route(
 $api->add('api-matchers-images-upload', new Route(
     '/matchers/images',
     array('_controller' => 'Goteo\Controller\Api\MatchersApiController::uploadImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 // Matcher detail
@@ -472,38 +449,54 @@ $api->add('api-matcher-item', new Route(
 $api->add('api-workshops-images-upload', new Route(
     '/workshops/images',
     array('_controller' => 'Goteo\Controller\Api\WorkshopsApiController::uploadImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 // Workshops images upload (POST method only)
 $api->add('api-channel-resources-images-upload', new Route(
     '/channel-resources/images',
     array('_controller' => 'Goteo\Controller\Api\ChannelResourcesApiController::uploadImagesAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 // User images upload (POST method only)
 $api->add('api-questionnaire-documents-upload', new Route(
     '/questionnaire/documents',
     array('_controller' => 'Goteo\Controller\Api\QuestionnaireApiController::questionnaireUploadDocumentsAction'),
-    array(), // requirements
-    array(), // options
+    [], // requirements
+    [], // options
     '', // host
-    array(), // schemes
-    array('POST') // methods
+    [], // schemes
+    ['POST'] // methods
 ));
 
 //Sdg list based on  footprints
 $api->add('api-sdg-footprint-list', new Route(
     '/sdg/footprint',
     array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::sdgFootprintAction')
+));
+
+// ImpactData images upload (POST method only)
+$api->add('api-impact-data-images-upload', new Route(
+    '/impactdata/images',
+    array('_controller' => 'Goteo\Controller\Api\ImpactDataApiController::uploadImagesAction'),
+    [], // requirements
+    [], // options
+    '', // host
+    [], // schemes
+    ['POST'] // methods
+));
+
+$api->add('api-data-set-footprints-sdgs', new Route(
+    '/dataset/footprints_sdgs',
+    array('_controller' => 'Goteo\Controller\Api\DataSetApiController::dataSetsAction')
 ));
 
 return $api;

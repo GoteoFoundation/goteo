@@ -31,7 +31,7 @@ class TypeaheadType extends TextType
             'text' => '', // If exists, the text shown instead of the value
             'fake_id' => '', // Created automatically, the id of the typeahead input field (real data is placed in a hidden field)
             'value_field' => 'id', // Field where to extract the Value from API calls, placed in the hidden field
-            'type' => 'simple', // Field to change between typeahead with only one input or with multiple ['simple', 'multiple']
+            'type' => 'simple', // DO NOT CHANGE. Use the MultipleTypeaheadType if you want the 'multiple' version
         ]);
     }
 

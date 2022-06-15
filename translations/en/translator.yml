@@ -1,0 +1,109 @@
+---
+translator: Translator
+translator-autotranslate-from: 'Machine translation from'
+translator-back-to-list: 'Back to list'
+translator-bazar: Catalogue
+translator-cannot-delete-system: 'This is a system translation and can not be deleted!'
+translator-category: Categories
+translator-choose: 'Choose an option'
+translator-copy-from: 'Copy content from'
+translator-criteria: 'Evaluation Criteria'
+translator-delete: 'Remove %s translation'
+translator-delete-sure: 'Are you sure you want to delete the %s translation? This cannot be undone!'
+translator-deleted-ko: 'Error deleting %s translation!'
+translator-deleted-ok: '%s translation deleted successfully'
+translator-feed-translated-desc: '%LINK% translated by %USER% to %LANGS%'
+translator-feed-translated-target: 'Translation in %s'
+translator-field-content: Content
+translator-field-data: 'Data'
+translator-field-data_unit: 'Unit'
+translator-field-description: Description
+translator-field-facebook_msg: 'Facebook message'
+translator-field-facebook_msg_owner: 'Facebook author'
+translator-field-legend: Legend
+translator-field-name: Name
+translator-field-schedule: Schedule
+translator-field-share_facebook: 'Share text for Facebook'
+translator-field-share_twitter: 'Share text for Twitter'
+translator-field-text: Text
+translator-field-title: Title
+translator-field-subtitle: Subtitle
+translator-field-twitter_msg: 'Twitter message'
+translator-field-twitter_msg_owner: 'Twitter author'
+translator-glossary: 'Glossary of terms'
+translator-home: Home
+translator-icon: 'Types of return/reward'
+translator-info: 'About ideas'
+translator-lang-no-perms: 'You don''t have permissions to manage this language'
+translator-license: Licences
+translator-milestone: Milestones
+translator-more-langs: Others
+translator-news: News
+translator-no-langs: 'You don''t manage any language, contact the administrator'
+translator-not-saved: 'No content has been saved! (empty fields perhaps?)'
+translator-not-translated: 'No entry in the translation table'
+translator-only-pendings: 'Only pending in:'
+translator-opentag: Groupings
+translator-original-text: 'Original text'
+translator-page: Pages
+translator-patron: 'Sponsored projects'
+translator-pending: 'Translation pending'
+translator-pending-desc: 'This content is "pending", which means that <strong>IS NOT PUBLIC</strong> and will hold as a draft until the "Pending translation" option is removed'
+translator-promote: 'Promoted projects'
+translator-channelstory: 'Promoted user stories'
+translator-channelpost: 'Posts in the channel'
+translator-save: 'Save & publish'
+translator-save-original: 'Save in the original table'
+translator-save-draft: 'Save as draft'
+translator-saved-ko: 'Failed to save translation to %LANG% (%ERROR%)'
+translator-saved-ok: 'Translations saved correctly for languages [%s]'
+translator-skipped-fields: "Some fields have not been copied because they already contain text. Delete the original text to allow copying from another language."
+translator-sphere: 'Call scopes'
+translator-social_commitment: 'Social commitments'
+translator-sdg: 'SDG'
+translator-footprint: 'Footprints'
+translator-stories: 'Success stories'
+translator-system: System
+translator-tables: 'General tables'
+translator-tag: 'Blog tags'
+translator-template: 'Automatic email templates'
+translator-texts: 'Interface texts'
+translator-translations: Translations
+translator-workshop: Workshops
+translator-worthcracy: Meritocracy
+translator-zone-not-found: 'This translation area is invalid '
+translator-lang-not-found: 'This language is not configured in the platform!'
+translator-percent: '%d&#37; translated'
+translator-add-translation: 'Add a new translation'
+translator-call_to_action: Call To Action
+translator-node: Channel
+translator-node_program: "Program's of the channels"
+translator-node_faq: "Channel's FAQ"
+translator-node_faq_question: "FAQ's questions of the channel"
+translator-node_faq_download: FAQ's downloads of the channel
+translator-node_sponsor: "Channel's sponsors"
+translator-node_team: "Channel's team"
+translator-node_sections: "Channel's sections"
+translator-node_resource: "Channel's resources"
+translator-node_resource_category: "Resource's categories"
+translator-image_credits: Image credits
+translator-field-modal_description: "Modal's description"
+translator-field-action: Action
+translator-field-action_url: "Action's url"
+translator-field-action_2: Action 2
+translator-field-action_url_2: "Action's url 2"
+translator-field-banner_title: Title of the banner
+translator-field-banner_description: Description of the banner
+translator-field-label: Label
+translator-field-role: Role
+translator-field-main_info_title: Main info title
+translator-field-main_info_description: Description of the main info
+translator-field-call_to_action_description: Description of the Call To Action
+translator-field-terms: Terms
+translator-field-tip_msg:  Message
+translator-field-banner_button_url: "Banner's button url"
+translator-field-terms_url: "Term's url"
+translator-field-credits: Credits
+translator-question: Questions
+translator-question_options: "Question's options"
+translator-field-option: Options

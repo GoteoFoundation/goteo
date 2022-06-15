@@ -1,0 +1,54 @@
+donate-meta-title: "Donar :: Goteo.org"
+donate-meta-description: "Ayuda a la Fundación Goteo con tu donativo"
+donate-header-description: 'Por una sociedad más ética y colaborativa'
+donate-main-text-intro: 'La plataforma Goteo es una parte fundamental de la Fundación Goteo, que impulsa herramientas para la financiación cívica, donde hacemos posible que muchísimas iniciativas salgan adelante. Tenemos tres puntales muy importantes: el ecológico, el social y el democrático, que dan sentido a lo que hacemos:'
+donate-main-text-line-1: '<strong>No dejamos a nadie atrás,</strong> dando soporte “caso por caso y paso a paso”, con formación, difusión y acompañamiento a más de 200 proyectos al año.'
+donate-main-text-line-2: '<strong>Innovamos cívicamente por defecto,</strong> liderando procesos innovadores de financiación corresponsable junto con instituciones públicas y privadas.'
+donate-main-text-line-3: '<strong>Compartimos lo que tenemos,</strong> y apostamos por el software libre, abrimos nuestros <a href="stats.goteo.org">datos</a> y liberamos nuestro <a href="https://github.com/GoteoFoundation">código</a>, para crecer en comunidad, reforzar la sociedad del conocimiento y participar activamente de ella, ¡sin complejos!'
+donate-main-text-line-4: ' '
+
+
+donate-select-amount-title: 'Dona a la Fundación Goteo'
+donate-select-amount-description: 'Decide con qué cantidad quieres ayudar a que podamos continuar apoyando a proyectos'
+donate-foundation-accounts-title: 'Nuestros costes'
+donate-foundation-accounts-data-1: '150.006 €'
+donate-foundation-accounts-data-label-1: 'Gastos operacionales 2017'
+donate-foundation-accounts-data-2: '29%'
+donate-foundation-accounts-data-label-2: 'Gastos cubiertos por 4% comisión'
+donate-foundation-accounts-data-3: '79%'
+donate-foundation-accounts-data-label-3: 'Gastos dedicado a salarios'
+donate-foundation-accounts-text-1: 'En 2017, hemos recaudado más <strong>1.150.000€</strong> para financiar proyectos. La comisión recaudada a los proyectos exitosos es del 4%, lo que supone cubrir el <strong>29%</strong> de nuestros costes operacionales. ¿Y cuáles son nuestros costes operacionales? Sobre todo, los salarios de las personas que hacen posible el día a día de la organización. Consulta <a href="/blog/9050">aquí</a> nuestras cuentas de 2017 y ayúdanos a seguir trabajando. '
+donate-foundation-accounts-text-2: 'Todas las donaciones a la Fundación Goteo son desgravables. Por ejemplo, si donas 100€, Hacienda te devolverá €75. Utiliza nuestra <a href="/calculadora-fiscal">Calculadora Fiscal</a> para calcular la desgravación que te aplica. Recibirás el certificado de donación que te corresponde.'
+donate-foundation-accounts-text-3: '¿Tienes dudas sobre tu donación a la Fundación Goteo? Escríbenos a donate@goteo.org'
+donate-foundation-step-1: 'Donación'
+donate-pay-method-title: 'Realiza tu donación a la Fundación Goteo'
+donate-alert-recharging: 'Estás a punto de donar '
+donate-invest-success-make-sure: '¡Tu donación a la Fundación Goteo se ha realizado con éxito! ¡Muchísimas gracias!'
+donate-invest-ok: '¡Se ha tramitado tu donación a la Fundación Goteo! ¡Descarga tu certificado y difunde tu generosidad!'
+
+
+donate-invest-spread-social: '¡He donado a la Fundación Goteo! Por el apoyo a la creación de un espacio desde donde impulsar más iniciativas sociales y potenciar el #CivicCrowdfunding, abierto y transparente. @goteofunding ¿Quién más se suma?'
+donate-invest-spread-header: 'Difunde y ayúdanos a que más gente apoye nuestro trabajo con su donación'
+
+
+donate-button: 'Donar a la Fundación'
+donate-select-amount-prologue: 'Más información sobre la desgravación fiscal de hasta el 75% de tu donación'
+donate-modal-relief-title: 'Tu desgravación fiscal'
+donate-modal-relief-description: '<p>Haz tu donación a la Fundación Goteo, y consigue tu desgravación fiscal.</p>
+<p>Los porcentajes de desgravación dependen de cuánto aportas: así, para aportaciones de todo un año que no superen los 150€ hay unos porcentajes y para los que superen los 150€ hay otros.</p>
+<ul>
+  <li>Hasta 150€                -  75%</li>
+  <li>A partir de 150€          -  30%</li>
+  <li>Personas jurídicas        -  30%</li>
+</ul>
+<p>
+Si has colaborado con la misma entidad en los últimos tres años, los porcentajes de desgravación son superiores. De esta manera tu fidelidad se ve recompensada con una mayor devolución.
+</p>
+<p>
+ * <strong>Importante</strong> Esta mejora fiscal no aplica fuera de España, ni tampoco al País Vasco ni a Navarra, que mantienen una deducción del 30% y del 25% respectivamente del total aportado.
+</p>
+<p>
+(*) El límite de la deducción sobre la base liquidable se mantiene en el 10%.
+Artículo 19 (Deducción de la cuota del Impuesto sobre la Renta de las Personas Físicas) de la ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.
+</p>
+'

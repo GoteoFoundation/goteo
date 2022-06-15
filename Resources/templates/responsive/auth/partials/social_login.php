@@ -6,7 +6,9 @@ if($goteo_oauth_provider) {
     array_unshift($providers, $goteo_oauth_provider);
 }
 
-?><div class="form-group">
+?>
+
+<div class="form-group">
     <?php foreach($providers as $i => $provider):
         if($this->get_config("oauth.$provider.active")):
             $url = "/login/$provider";

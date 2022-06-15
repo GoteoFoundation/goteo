@@ -10,26 +10,21 @@
 
 namespace Goteo\Application\EventListener;
 
-use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\AppEvents;
-use Goteo\Application\Message;
-
 use Goteo\Application\Event\FilterProjectEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
+use Goteo\Application\Message;
 use Goteo\Model\Questionnaire;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class ProjectChannelListener extends AbstractListener {
     protected $request;
 
     /**
      * Verify we are in POST in project create controller
-     * @param  GetResponseEvent $event [description]
-     * @return [type]                  [description]
      */
-    public function onRequest(GetResponseEvent $event) {
+    public function onRequest(RequestEvent $event) {
         $request = $event->getRequest();
         $controller = $request->attributes->get('_controller');
         if($controller === 'Goteo\Controller\ProjectController::createAction' && $request->isMethod('post')) {
@@ -39,8 +34,6 @@ class ProjectChannelListener extends AbstractListener {
 
     /**
      * Apply channel to a project if needed
-     * @param  FilterProjectEvent $event [description]
-     * @return [type]                    [description]
      */
     public function onProjectCreated(FilterProjectEvent $event) {
         if(!$this->request) return;
@@ -60,7 +53,8 @@ class ProjectChannelListener extends AbstractListener {
         }
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array
+    {
         return array(
             KernelEvents::REQUEST => 'onRequest',
             AppEvents::PROJECT_CREATED => 'onProjectCreated'

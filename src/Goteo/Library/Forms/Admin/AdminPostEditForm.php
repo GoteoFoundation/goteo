@@ -38,7 +38,10 @@ class AdminPostEditForm extends ProjectPostForm {
                 'label' => 'regular-title',
                 'constraints' => array(
                     new Constraints\NotBlank(),
-                    new Constraints\Length(array('min' => 4)),
+                    new Constraints\Length([
+                        'min' => 4,
+                        'allowEmptyString' => true,
+                    ]),
                 ),
             ))
             ->add('subtitle', TextType::class, array(
@@ -104,27 +107,7 @@ class AdminPostEditForm extends ProjectPostForm {
                 ]
             ));
 
-        // Replace markdown by html editor if type
-        if($post->type === 'html') {
-            $builder->add('text', TextareaType::class, array(
-                'label' => 'admin-title-text',
-                'required' => false,
-                'html_editor' => true,
-                'attr' => [
-                    'data-image-upload' => '/api/blog/images',
-                    'help' => Text::get('tooltip-drag-and-drop-images')
-                ]
-            ));
-        } else {
-            $builder->add('text', MarkdownType::class, array(
-                'label' => 'regular-text',
-                'required' => false,
-                'attr' => [
-                    'data-image-upload' => '/api/blog/images',
-                    'help' => Text::get('tooltip-drag-and-drop-images')
-                ]
-            ));
-        }
+        $this->displayTextEditor($post->type, $builder);
 
         // Add tags input
         $tags = implode(',', array_keys($data['tags']));
@@ -175,7 +158,7 @@ class AdminPostEditForm extends ProjectPostForm {
                 'label' => 'admin-title-section',
                 'expanded' => true,
                 'wrap_class' => 'col-xs-6',
-                'choices' => $post::getListSections(),
+                'choices' => array_flip($post::getListSections()),
                 'constraints' => [
                     new Constraints\NotBlank()
                 ]
@@ -192,6 +175,30 @@ class AdminPostEditForm extends ProjectPostForm {
             ));
 
         return $this;
+    }
+
+    private function displayTextEditor(string $type, $builder)
+    {
+        if($type === 'html') {
+            $builder->add('text', TextareaType::class, array(
+                'label' => 'admin-title-text',
+                'required' => false,
+                'html_editor' => true,
+                'attr' => [
+                    'data-image-upload' => '/api/blog/images',
+                    'help' => Text::get('tooltip-drag-and-drop-images')
+                ]
+            ));
+        } else {
+            $builder->add('text', MarkdownType::class, array(
+                'label' => 'regular-text',
+                'required' => false,
+                'attr' => [
+                    'data-image-upload' => '/api/blog/images',
+                    'help' => Text::get('tooltip-drag-and-drop-images')
+                ]
+            ));
+        }
     }
 
 }

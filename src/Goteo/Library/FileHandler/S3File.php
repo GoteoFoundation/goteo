@@ -415,5 +415,10 @@ class S3File extends BaseFile implements FileInterface {
             $perm = 'public-read';
         return $perm;
     }
+
+    public function get_public_url(string $filename): string {
+        return $this->bucket . '/' . $filename;
+    }
+
 }
 

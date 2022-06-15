@@ -17,6 +17,7 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Application\View;
 use Goteo\Console\UsersSend;
 use Goteo\Library\Text;
 use Goteo\Model\Blog\Post as BlogPost;
@@ -24,9 +25,11 @@ use Goteo\Model\Image;
 use Goteo\Model\Invest;
 use Goteo\Model\Invest\InvestMsg;
 use Goteo\Model\Project;
+use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Reward;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -623,6 +626,101 @@ class ProjectsApiController extends AbstractApiController {
 
         // Send and event to create the Feed and/or update number of collaborations
         return $this->jsonResponse(['invest' => $message->invest]);
+    }
+
+    public function projectsFootprintsOrSDGs(Request $request): JsonResponse
+    {
+        if ($request->query->has('view')) $view = $request->query->get('view');
+
+        $filters = [];
+
+        $filters['order'] = 'amount';
+        $filters['minpercentage'] = 0.2; // minimum amount of 20%
+
+        $page = 0;
+        $offset = 0;
+        $limit = 10;
+
+        if ($request->query->has('page')) $page = $request->query->get('page');
+        if ($request->query->has('limit')) $limit = $request->query->get('limit');
+        if ($request->query->has('sdg') && $request->query->get('sdg')) {
+            $sdgs = explode(',', $request->query->get('sdg'));
+            $filters['sdgs'] = $sdgs;
+        }
+
+        if ($request->query->has('channel')) $filters['channel'] = $request->query->get('channel');
+
+        $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
+        $projects = Project::getByFootprintOrSDGs($filters, $page * $limit, $limit);
+
+        View::setTheme('responsive');
+
+        switch ($view) {
+            case 'list_projects':
+                $response = $this->getListProjectViewResponse($projects, $total, $page, $limit);
+                break;
+            case 'mosaic':
+                $response = $this->getMosaicViewResponse($projects, $total, $page, $limit);
+                break;
+            case 'map':
+                $response = $this->getJsonViewResponse($projects, $total, $page, $limit);
+                break;
+            default:
+                $response = $this->getJsonViewResponse($projects, $total, $page, $limit);
+                break;
+        }
+
+        return $this->jsonResponse($response);
+    }
+
+    private function getListProjectViewResponse(array $projects, int $total, int $page, int $limit): array {
+        return [
+            'total' => $total,
+            'page' => $page,
+            'limit' => $limit,
+            'result_total' => count($projects),
+            'html' => View::render(
+                'impact_discover/partials/list_project_rows', [
+                    'projects' => $projects
+                ]
+            )
+        ];
+    }
+
+    private function getMosaicViewResponse(array $projects, int $total, int $page, int $limit): array {
+        return [
+            'total' => $total,
+            'page' => $page,
+            'limit' => $limit,
+            'result_total' => count($projects),
+            'html' => View::render(
+                'dashboard/partials/projects_widgets_list', [
+                    'projects' => $projects
+                ]
+            )
+        ];
+    }
+
+    private function getJsonViewResponse(array $projects, int $total, int $page, int $limit): array {
+
+        $list_projects = array_map( function($project) {
+            return  [
+                'id' => $project->id,
+                'name' => $project->name,
+                'amount' => $project->amount,
+                'invested' => $project->invested,
+                'num_investors' => $project->num_investors,
+                'image' => Image::get($project->image)->getLink(120,120),
+                'project_location' => ProjectLocation::get($project->id),
+                'popup' => View::render('map/partials/project_popup.php', array('project' => $project))
+            ];
+        }, $projects);
+
+        return [
+            'total' => $total,
+            'result_total' => count($projects),
+            'projects' => $list_projects
+        ];
     }
 
 }

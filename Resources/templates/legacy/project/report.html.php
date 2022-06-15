@@ -12,7 +12,7 @@ if($dated)
     $date_today=date('d/m/Y');
 
 
-if(!$account->vat) 
+if(!$account->vat)
 {
     $account->vat=21;
 }
@@ -24,22 +24,24 @@ $var_percentage_applied=$account->tax_base_percentage ? $account->tax_base_perce
 
 $sumData['match_goteo']=0;
 $matchfunding_invest=0;
+$matchers_amounts = [];
 
-if ($matchers)
-{
+if ($matchers) {
     foreach($matchers as $matcher){
-        $matchfunding_invest+=Invest::getList(['projects' => $project->id, 'users' => $matcher->owner, 'types' => 'drop', 'status' => Invest::$ACTIVE_STATUSES
-                        ], null, 0, 0, 'money');
+        $matchers_amounts[$matcher->id] = Invest::getList([
+            'projects' => $project->id,
+            'users' => $matcher->owner,
+            'types' => 'drop',
+            'status' => Invest::$ACTIVE_STATUSES
+        ], null, 0, 0, 'money');
 
+        $matchfunding_invest+= $matchers_amounts[$matcher->id];
         $matcher_fee=round($matcher->fee / 100, 2);
-
-        $sumData['match_goteo']= $matchfunding_invest * $matcher_fee;
-
-        //Aplicamos el IVA al 50% de la comision de Goteo
-        $sumData['match_goteo']=(( $sumData['match_goteo']*$var_percentage_applied)*($account->vat/100))+ $sumData['match_goteo'];
-
+        $matched_fee = ($matchers_amounts[$matcher->id] * $matcher_fee);
+        $sumData['match_goteo']+= $matched_fee;
     }
-
+    //Aplicamos el IVA al 50% de la comision de Goteo
+    $sumData['match_goteo']+=(( $sumData['match_goteo']*$var_percentage_applied)*($account->vat/100));
 }
 
 $called = $project->called;
@@ -183,7 +185,7 @@ $cName = "P-{$cNum}-{$cDate}";
          <?php if ($matchers) : ?>
             <?php foreach($matchers as $matcher): ?>
                 <tr>
-                    <td>-&nbsp;&nbsp;&nbsp;&nbsp;Riego obtenido del <strong>Canal <?= $matcher->name ?></strong>: <strong><?= amount_format($matchfunding_invest)  ?></strong> (A transferir de forma directa)</td>
+                    <td>-&nbsp;&nbsp;&nbsp;&nbsp;Riego obtenido del <strong>Canal <?= $matcher->name ?></strong>: <strong><?= amount_format($matchers_amounts[$matcher->id])  ?></strong> (A transferir de forma directa)</td>
                 </tr>
                 <tr>
                     <td>

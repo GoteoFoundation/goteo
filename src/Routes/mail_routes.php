@@ -31,5 +31,4 @@ $mail->add('mail-token', new Route(
     array('_controller' => 'Goteo\Controller\MailController::indexAction')
 ));
 
-
 return $mail;

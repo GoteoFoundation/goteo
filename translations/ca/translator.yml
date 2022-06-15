@@ -1,0 +1,101 @@
+---
+translator-autotranslate-from: 'Traducció automàtica de'
+translator-back-to-list: 'Torna a la llista'
+translator-bazar: Catàleg
+translator-cannot-delete-system: 'No es pot esborrar aquesta traducció perquè és de sistema!'
+translator-category: Categories
+translator-choose: 'Escull una opció'
+translator-copy-from: 'Copia el contingut de'
+translator-criteria: 'Criteris de evaluación'
+translator-delete: 'Esborra la traducció al %s'
+translator-delete-sure: 'Segur que vols esborrar la traducció al %s? Aquesta acció no es pot desfer!'
+translator-deleted-ko: 'Error al esborrar la traducció al %s!'
+translator-deleted-ok: 'Traducció al %s esborrada correctament'
+translator-feed-translated-desc: '%LINK% traduït por %USER% a %LANGS%'
+translator-feed-translated-target: 'Traducció en %s'
+translator-field-content: Contingut
+translator-field-data: 'Dada'
+translator-field-data_unit: 'Unitat'
+translator-field-description: Descripció
+translator-field-facebook_msg: 'Missatge de facebook'
+translator-field-legend: Llegenda
+translator-field-name: Nom
+translator-field-schedule: Horari
+translator-field-share_facebook: 'Text compartir facebook'
+translator-field-share_twitter: 'Text compartir twitter'
+translator-field-text: Text
+translator-field-title: Títol
+translator-field-subtitle: Subtítol
+translator-field-twitter_msg: 'Missatge de twitter'
+translator-glossary: 'Glossari de termes'
+translator-icon: 'Tipus de retorn/recompensa'
+translator-info: 'Idees de about'
+translator-lang-no-perms: 'No tens permisos per administrar aquest idioma'
+translator-license: Llicencies
+translator-milestone: Fites
+translator-more-langs: Altres
+translator-news: Noticies
+translator-no-langs: 'No tens cap idioma assignat, contacta amb el administrador'
+translator-not-saved: 'No s''ha desat cap contingut! (potser tens camps buits?)'
+translator-not-translated: 'Sense entrada a la taula de traduccions'
+translator-only-pendings: 'Només pendents en:'
+translator-opentag: Agrupacions
+translator-original-text: 'Text original'
+translator-page: Pàgines
+translator-patron: 'Projectes apadrinats'
+translator-pending: 'Pendent de traducció'
+translator-pending-desc: 'Aquest contingut està "pendent", cosa que significa que <strong>NO ES PÚBLIC</strong> i queda coma esborrany fins que es tregui l''opció "pendent de traducció"'
+translator-promote: 'Projectes destacats'
+translator-channelstory: 'Històries d''usuari destacades'
+translator-channelpost: 'Posts al canal'
+translator-save: 'Desa i publica'
+translator-save-original: 'Desa a la taula original'
+translator-save-draft: 'Desa com a esborrany'
+translator-saved-ko: 'Error al desar la traducció al %LANG% (%ERROR%)'
+translator-saved-ok: 'Traduccions desades correctament per als idiomes [%s]'
+translator-skipped-fields: "Alguns camps no s''han copiat perquè ja contenien text.\nEsborra el text original para poder copiar des de un altre idioma."
+translator-sphere: 'Àmbits de la convocatòria'
+translator-social_commitment: 'Compromisos socials'
+translator-footprint: 'Petjades'
+translator-stories: 'Histories exitoses'
+translator-tables: 'Taules generals'
+translator-template: 'Plantilles emails automàtics'
+translator-translations: Traduccions
+translator-workshop: Tallers
+translator-worthcracy: Meritocràcia
+translator-zone-not-found: 'Aquesta zona de traducció no es vàlida'
+translator-lang-not-found: 'Aquest idioma no està configurat en la plataforma!'
+translator-percent: '%d&#37; traduït'
+translator-add-translation: 'Afegir una nova traducció'
+translator-call_to_action: Call To Action
+translator-node: Canal
+translator-node_program: Programes del Canal
+translator-node_faq: Faq del Canal
+translator-node_faq_question: Preguntes del Faq del Canal
+translator-node_faq_download: Descarregues del Faq del Canal
+translator-node_sponsor: Sponsors del Canal
+translator-node_team: Equip del Canal
+translator-node_sections: Seccions del canal
+translator-node_resource: Recursos del canal
+translator-node_resource_category: Categoria dels recursos
+translator-image_credits: Crèdits de les imatges
+translator-field-modal_description: Descripció de la modal
+translator-field-action: Acció
+translator-field-action_url: "Url de l'acció"
+translator-field-action_2: Acció 2
+translator-field-action_url_2: "Url de l'acció 2"
+translator-field-banner_title: Titol del banner
+translator-field-banner_description: Descripció del banner
+translator-field-label: Etiqueta
+translator-field-role: Rol
+translator-field-main_info_title: Titol de la informació principal
+translator-field-main_info_description: Descripció de la informació principal
+translator-field-call_to_action_description: Descripció del Call To Action
+translator-field-terms: Bases
+translator-field-tip_msg:  Missatge
+translator-field-banner_button_url: Url del botó del banner
+translator-field-terms_url: Url de les bases
+translator-field-credits: Crèdits
+translator-question: Preguntes
+translator-question_options: Opcions de les preguntes
+translator-field-option: Opcions

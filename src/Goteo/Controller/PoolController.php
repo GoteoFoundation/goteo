@@ -144,9 +144,24 @@ class PoolController extends Controller {
     public function selectPaymentMethodAction(Request $request, $type = 'pool')
     {
         $amount = $request->query->get('amount');
+        $source = htmlspecialchars($request->query->get('source'));
+        $detail = htmlspecialchars($request->query->get('detail'));
+        $allocated = htmlspecialchars($request->query->get('allocated'));
+
         $amount = $this->validate($amount, true, $type);
 
-        if($amount instanceOf Response) return $amount;
+        if($amount instanceOf Response) {
+
+            if ($detail && $source) {
+                $this->query .= "&" . http_build_query([
+                    'source' => $source,
+                    'detail' => $detail,
+                    'allocated' => $allocated
+                ]);
+                return $this->redirect('/signup?return=' . urlencode($this->page . '/payment?' . $this->query));
+            }
+            return $amount;
+        }
 
         return $this->viewResponse('pool/payment_method', [
             'step' => 2,

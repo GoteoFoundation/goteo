@@ -62,7 +62,7 @@ $this->section('content');
 
 ?>
 
-<div class="container-fluid main-info"  >
+<div class="container-fluid main-info">
 	<div class="container-fluid">
 		<div class="row header text-center">
 			<h1 class="project-title"><?= $this->ee($project->name) ?></h1>
@@ -80,9 +80,7 @@ $this->section('content');
 
 		<!-- Tags and share info -->
 		<div class="row">
-
-		<?= $this->insert('project/partials/main_extra', ['project' => $project, 'matchers' => $this->matchers ]) ?>
-
+		    <?= $this->insert('project/partials/main_extra', ['project' => $project, 'matchers' => $this->matchers ]) ?>
 		</div>
 </div>
 
@@ -90,24 +88,18 @@ $this->section('content');
 
 <div class="container-fluid section">
 	<div class="col-sm-8 section-content" id="project-tabs">
-
-	<?= $this->supply('main-content') ?>
-
+	    <?= $this->supply('main-content') ?>
 	</div>
 
 	<!-- end Panel group -->
 
 	<div class="col-sm-4 side">
-
-	<?= $this->insert('project/partials/side', ['project' => $project]) ?>
-
+	    <?= $this->insert('project/partials/side', ['project' => $project]) ?>
 	</div>
-
 	<!-- end side -->
-
 </div>
 
-    <?= $this->insert('project/partials/related_projects') ?>
+<?= $this->insert('project/partials/related_projects') ?>
 
 <!-- sticky menu -->
 
@@ -116,19 +108,19 @@ $this->section('content');
 		<div class="row">
 			<a href="/project/<?= $project->id ?>" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
 				<div class="home col-sm-2 hidden-xs sticky-item <?= $this->show=='home' ? 'current' : '' ?>">
-					<img class="" src="<?= SRC_URL . '/assets/img/project/home.png' ?>">
+					<img class="" src="<?= SRC_URL . '/assets/img/project/home.png' ?>" alt="">
 		            <span class="label-sticky-item"><?= $this->text('project-menu-home') ?></span>
 				</div>
 			</a>
 			<a href="/project/<?= $project->id ?>/updates"  class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
 				<div class="updates col-sm-2 hidden-xs sticky-item <?= $this->show=='updates' ? 'current' : '' ?>">
-					<img class="" src="<?= SRC_URL . '/assets/img/project/news.png' ?>">
+					<img class="" src="<?= SRC_URL . '/assets/img/project/news.png' ?>" alt="">
 	                <span class="label-sticky-item"><?= $this->text('project-menu-news') ?></span>
 				</div>
 			</a>
 			<a href="/project/<?= $project->id ?>/participate" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
 				<div class="participate col-sm-2 hidden-xs sticky-item <?= $this->show=='participate' ? 'current' : '' ?>">
-					<img class="" src="<?= SRC_URL . '/assets/img/project/participate.png' ?>">
+					<img class="" src="<?= SRC_URL . '/assets/img/project/participate.png' ?>" alt="">
 	                <span class="label-sticky-item"><?= $this->text('project-menu-participate') ?></span>
 				</div>
 			</a>
@@ -164,10 +156,12 @@ $this->section('content');
       <div class="modal-body">
         <div class="row">
         	<div class="col-sm-6">
-        	<?= $this->raw('widget_code') ?>
+        	    <?= $this->raw('widget_code') ?>
         	</div>
         	<div class="col-sm-6">
-     			<textarea class="widget-code" onclick="this.focus();this.select()" readonly="readonly" ><?= $this->widget_code ?></textarea>
+     			<textarea class="widget-code" onclick="this.focus();this.select()" readonly="readonly" title="<?= $this->t('project-spread-widget') ?>">
+                    <?= $this->widget_code ?>
+                </textarea>
         	</div>
         </div>
       </div>

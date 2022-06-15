@@ -122,5 +122,4 @@ class MapsApiController extends AbstractApiController {
             'projects' => $list_projects
         ]);
     }
-
 }

@@ -78,16 +78,9 @@ namespace {
     }
 
     /**
-     * Vuelca información sobre el recurso especificado de forma detallada.
-     */
-    function dump ($resource = null) {
-        echo '<pre>' . var_dump($resource) . '</pre>';
-    }
-
-    /**
      * Replaces any parameter placeholders in a query with the value of that
      * parameter. Useful for debugging. Assumes anonymous parameters from
-     * $params are are in the same order as specified in $query
+     * $params are in the same order as specified in $query
      *
      * @param string $query The sql query with parameter placeholders
      * @param array $params The array of substitution parameters

@@ -23,11 +23,13 @@
 @import 'components/foundation';
 @import 'components/main_slider';
 @import 'components/stories';
+@import 'components/values';
 @import 'components/workshops_slider';
+@import 'components/dataset';
 
 @import 'misc/misc';
 @import 'misc/charts';
-// This will dissappear some day, cows may fly...
+// This will disappear some day, cows may fly...
 @import 'misc/unordered';
 @import 'misc/responsive_utils';
 
@@ -52,4 +54,5 @@
 @import 'layouts/invest';
 @import 'layouts/map';
 @import 'layouts/questionnaire';
+@import 'layouts/impact_discover';
 

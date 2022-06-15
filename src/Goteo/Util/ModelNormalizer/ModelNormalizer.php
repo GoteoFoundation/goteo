@@ -41,7 +41,7 @@ class ModelNormalizer {
         }
         elseif ($this->model instanceOf Model\Node\NodeResource) {
             $ob = new Transformer\ChannelResourceTransformer($this->model, $this->keys);
-        }    
+        }
         elseif ($this->model instanceOf Model\Node\NodePost) {
             $ob = new Transformer\ChannelPostsTransformer($this->model, $this->keys);
         }
@@ -50,6 +50,9 @@ class ModelNormalizer {
         }
         elseif ($this->model instanceOf Model\Node\NodeSections) {
             $ob = new Transformer\ChannelSectionTransformer($this->model, $this->keys);
+        }
+        elseif ($this->model instanceof Model\Node\NodeProject) {
+            $ob = new Transformer\ChannelProjectTransformer($this->model, $this->keys);
         }
         elseif(
             $this->model instanceOf Model\Category
@@ -78,6 +81,9 @@ class ModelNormalizer {
         elseif(
             $this->model instanceOf Model\Mail) {
             $ob = new Transformer\MailTransformer($this->model, $this->keys);
+        }
+        elseif ($this->model instanceOf Model\ImpactData) {
+            $ob = new Transformer\ImpactDataTransformer($this->model, $this->keys);
         }
         else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
 

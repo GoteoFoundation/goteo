@@ -15,10 +15,12 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Session;
 use Goteo\Core\Model;
+use Goteo\Entity\Invest\InvestOrigin;
 use Goteo\Library\Text;
 use Goteo\Model\Invest\InvestLocation;
 use Goteo\Model\Project\Reward;
 use Goteo\Payment\Payment;
+use Goteo\Repository\InvestOriginRepository;
 
 /**
  * Invest Model
@@ -2453,5 +2455,15 @@ class Invest extends Model {
         $status_published=[Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED];
         return self::getList(['status' => Invest::$RAISED_STATUSES, 'projectStatus' => $status_published], null, 0, 0, 'money');
 
+    }
+
+    public function getInvestOrigin(): ?InvestOrigin
+    {
+        $investOriginRepository = new InvestOriginRepository();
+        try {
+            return $investOriginRepository->getByInvestId($this->id);
+        } catch(ModelNotFoundException $e) {
+            return null;
+        }
     }
 }

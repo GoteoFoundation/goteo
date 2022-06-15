@@ -26,36 +26,37 @@ for the JavaScript code in this page.
 $(function(){
   
 
-  var projectIcon = L.icon({
+  let projectIcon = L.icon({
     iconUrl: '/assets/img/map/pin-project.svg',
     iconSize:     [38, 95] // size of the icon
   });
 
-  var workshopIcon = L.icon({
+  let workshopIcon = L.icon({
     iconUrl: '/assets/img/map/pin-workshop.svg',
     iconSize:     [38, 95] // size of the icon
   });
 
-  // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  // }).addTo(map);
-  
-  var channel = $('#map').data('channel');
-  var matcher = $('#map').data('matcher');
-  var geojson = $('#map').data('geojson');
-  var zoom = $('#map').data('zoom');
-  var center = $('#map').data('center');
+  let markers = {
+    projects: undefined,
+    workshops: undefined
+  };
 
-  var map = L.map('map', {
+  const channel = $('#map').data('channel');
+  const matcher = $('#map').data('matcher');
+  const geojson = $('#map').data('geojson');
+  const zoom = $('#map').data('zoom');
+  const center = $('#map').data('center');
+
+  const map = L.map('map', {
     fullscreenControl: true,
     center: center ? center : [0,0],
-    zoom: zoom? zoom : 3
+    zoom: zoom? zoom : 3,
+    maxZoom: 20
   });
 
   L.tileLayer($('#map').data('tile-layer'), {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
-
 
   if (geojson) {
     $.getJSON(geojson, function(data) {
@@ -69,10 +70,10 @@ $(function(){
       url: '/api/map/channel/' + channel,
       type: 'GET'
     }).done(function(data) {
-      var latlngs = [];
-      var projects = data.projects;
-      var workshops = data.workshops;
-      var project_markers = L.markerClusterGroup();
+      let latlngs = [];
+      let projects = data.projects;
+      let workshops = data.workshops;
+      let project_markers = L.markerClusterGroup();
       projects.forEach(function(project){
 
         if (project.project_location.latitude && project.project_location.longitude) {
@@ -82,7 +83,7 @@ $(function(){
         }
       });
         
-      var workshop_markers = L.markerClusterGroup();
+      workshop_markers = L.markerClusterGroup();
       workshops.forEach(function(workshop){
       if (workshop.workshop_location.latitude && workshop.workshop_location.longitude) {
         latlngs.push([workshop.workshop_location.latitude, workshop.workshop_location.longitude]);
@@ -97,7 +98,7 @@ $(function(){
       }
 
       if (projects.length) {
-        map.addLayer(project_markers);
+        map.addLayer(project_markers, 'projects');
         $('#button-projects-hide').removeClass('hidden');
       }
 
@@ -141,7 +142,7 @@ $(function(){
     }).done(function(data) {
       var latlngs = [];
       var projects = data.projects;
-      var project_markers = L.markerClusterGroup();
+      project_markers = L.markerClusterGroup();
       projects.forEach(function(project){
 
         if (project.project_location.latitude && project.project_location.longitude) {
@@ -174,4 +175,90 @@ $(function(){
       });
     });
   }
+
+  function loadData(data) {
+    var latlngs = [];
+    var projects = data.projects;
+    var workshops = data.workshops;
+    project_markers = L.markerClusterGroup();
+    
+    if (projects) {
+      projects.forEach(function(project){
+        if (project.project_location.latitude && project.project_location.longitude) {
+          latlngs.push([project.project_location.latitude, project.project_location.longitude]);
+          project_markers.addLayer(L.marker([project.project_location.latitude, 
+            project.project_location.longitude], { icon: projectIcon }).bindPopup(project.popup, { width: 340 }));
+        }
+      });
+
+      map.addLayer(project_markers);
+      markers.projects = project_markers;
+      $('#button-projects-hide').removeClass('hidden');
+    }
+      
+    if (workshops) {
+      workshop_markers = L.markerClusterGroup();
+      workshops.forEach(function(workshop){
+      if (workshop.workshop_location.latitude && workshop.workshop_location.longitude) {
+        latlngs.push([workshop.workshop_location.latitude, workshop.workshop_location.longitude]);
+        workshop_markers.addLayer(L.marker([workshop.workshop_location.latitude, 
+          workshop.workshop_location.longitude], { icon: workshopIcon }).bindPopup(workshop.popup, { width: 340 }));
+        }
+      });
+
+      map.addLayer(workshop_markers);
+      markers.workshops = workshop_markers
+      $('#button-workshops-hide').removeClass('hidden');
+    }
+      
+    if (latlngs.length) {
+      map.invalidateSize();
+
+      var latLngBounds = L.latLngBounds(latlngs);
+      map.fitBounds(latLngBounds);
+    }
+
+    $('#button-projects-activate').on('click', (function() {
+      map.addLayer(project_markers);
+      $('#button-projects-hide').removeClass('hidden');
+      $(this).addClass('hidden');
+    }));
+
+    $('#button-workshops-activate').on('click', (function() {
+      map.addLayer(workshop_markers);
+      $('#button-workshops-hide').removeClass('hidden');
+      $(this).addClass('hidden');
+    }));
+
+    $('#button-projects-hide').on('click', (function() {
+      map.removeLayer(project_markers);
+      $('#button-projects-activate').removeClass('hidden');
+      $(this).addClass('hidden');
+    }));
+
+    $('#button-workshops-hide').on('click', (function() {
+      map.removeLayer(workshop_markers);
+      $('#button-workshops-activate').removeClass('hidden');
+      $(this).addClass('hidden');
+    }));
+  }
+
+  function cleanMap() {
+
+    if (markers.projects) {
+      map.removeLayer(markers.projects);
+      markers.projects = undefined;
+    }
+      
+    
+    if (markers.workshops) {
+      map.removeLayer(markers.workshops);
+      markers.workshops = undefined;
+    }
+  }
+
+  $('#map').on("goteo_map_add_projects", function(event) { 
+    cleanMap();
+    loadData(JSON.parse($('#map').attr('data-projects')));
+  });
 });

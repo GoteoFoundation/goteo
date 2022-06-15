@@ -20,20 +20,21 @@ $images->add('images', new Route(
     array('_controller' => 'Goteo\Controller\ImageController::indexAction',
         'params' => '', //default
         'filename' => ''
-        ),
+    ),
     array(
         'filename' => '.*'
-        )
+    )
 ));
 
 //OLD routes: TODO remove url from views...
 $images->add('images-old', new Route(
     '/image/{id}/{width}/{height}/{crop}',
-    array('_controller' => 'Goteo\Controller\ImageController::oldIndexAction',
+    array(
+        '_controller' => 'Goteo\Controller\ImageController::oldIndexAction',
         'width' => 200,
         'height' => 200,
         'crop' => false
-        )
+    )
 ));
 
 return $images;

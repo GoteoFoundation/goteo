@@ -57,7 +57,7 @@ $routes->addCollection($pool_routes);
 if(Config::get('donate.landing')) {
     $routes->add('donate-landing', new Route(
         '/donate',
-        array('_controller' => 'Goteo\Controller\DonateController::donateLandingAction')
+        array('_controller' => 'Goteo\Controller\DonateLandingController::indexAction')
     ));
 }
 
@@ -264,6 +264,35 @@ $routes->add('map-zoom-latlng', new Route(
     '/map/{zoom}/{latlng}',
     array(
         '_controller' => 'Goteo\Controller\MapController::exactMapAction'
+    )
+));
+
+// Discover impact
+$routes->add('impact-discover', new Route(
+    '/impact-discover',
+    array(
+        '_controller' => 'Goteo\Controller\ImpactDiscoverController::indexAction'
+    )
+));
+
+$routes->add('impact-discover-map', new Route(
+    '/impact-discover/map',
+    array(
+        '_controller' => 'Goteo\Controller\ImpactDiscoverController::mapAction'
+    )
+));
+
+$routes->add('impact-discover-mosaic', new Route(
+    '/impact-discover/mosaic',
+    array(
+        '_controller' => 'Goteo\Controller\ImpactDiscoverController::mosaicAction'
+    )
+));
+
+$routes->add('impact-discover-datasets', new Route(
+    '/impact-discover/datasets',
+    array(
+        '_controller' => 'Goteo\Controller\ImpactDiscoverController::dataSetsAction'
     )
 ));
 

@@ -913,7 +913,7 @@ class Matcher extends Model
 
     public function hasQuestionnaire() {
         $questionnaire = Questionnaire::getByMatcher($this->id);
-        return isset($questionnaire);
+        return !empty($questionnaire);
     }
 
     public function getQuestionnaire() {

@@ -13,6 +13,7 @@ namespace Goteo\Console\Command;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Library\Text;
+use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,7 +31,7 @@ class TranslationsCommand extends AbstractCommand {
              ->setDefinition(array(
                       new InputOption('lang', 'l', InputOption::VALUE_OPTIONAL, 'Lang to import (ISO 639-1 codes) (default: defined in settings)', $lang),
                       new InputOption('langs', 'L', InputOption::VALUE_NONE, 'List available langs'),
-                      new InputOption('dump', null, InputOption::VALUE_NONE, 'Dumps the content of the language into Resources/translations/{LANG}/{GROUP}.yml'),
+                      new InputOption('dump', null, InputOption::VALUE_NONE, 'Dumps the content of the language into translations/{LANG}/{GROUP}.yml'),
                       new InputOption('group', 'g', InputOption::VALUE_OPTIONAL, 'Shows values only for specified group'),
                       new InputOption('sql', null, InputOption::VALUE_NONE, 'Retrieves only SQL content on specified language'),
                       new InputOption('sql-clear', null, InputOption::VALUE_NONE, 'Deletes all entries from the text SQL table on specified language'),
@@ -56,10 +57,10 @@ Shows translation content for some lang and specified group of translations
 Shows translation content for some lang stored only in local database (excludes yaml files)
 <info>./console trans --sql -l en|fr|es|de|...</info>
 
-WRITES YAML files into config/Resources/translations/[LANG]/[GROUP].yml for lang specified in settings
+WRITES YAML files into config/translations/[LANG]/[GROUP].yml for lang specified in settings
 <info>./console trans --dump </info>
 
-WRITES YAML files into config/Resources/translations/[LANG]/[GROUP].yml for lang English
+WRITES YAML files into config/translations/[LANG]/[GROUP].yml for lang English
 <info>./console trans --dump -l en</info>
 
 DELETES sql entries for lang specified that are already defined into yaml files
@@ -84,13 +85,13 @@ EOT
         $sqlclear  = $input->getOption('sql-clear');
 
         if ( empty($lang) ) {
-           throw new \InvalidArgumentException('No lang defined. Please define it in settings or by using --lang option');
+           throw new InvalidArgumentException('No lang defined. Please define it in settings or by using --lang option');
         }
         // check lang availability
         Lang::set($lang);
         $newlang = Lang::current();
         if($newlang !== $lang) {
-           throw new \InvalidArgumentException('The lang ['.$lang.'] is not used. Please define a valid language in settings or by using --lang option');
+           throw new InvalidArgumentException('The lang ['.$lang.'] is not used. Please define a valid language in settings or by using --lang option');
         }
 
         if($sqlclear) {
@@ -121,7 +122,6 @@ EOT
                 $filter['sqlonly'] = 1;
             }
             $all = Text::getAll($filter, $lang);
-            // echo "$g\n".print_r($files,1).print_r($all,1);
 
             if(empty($all)) continue;
             $output->writeln("<info>$g</info>");
@@ -131,9 +131,9 @@ EOT
                 $texts[$text->id] = $text->text;
             }
             $yml = Yaml::dump($texts);
-            if($dump) {
+            if ($dump) {
                 // Main dir
-                $dir = GOTEO_PATH . 'config/Resources/translations/' . $lang . '/';
+                $dir = GOTEO_PATH . 'config/translations/' . $lang . '/';
                 @mkdir($dir, 0755, true);
                 file_put_contents($dir . $g . '.yml', $yml);
                 $output->writeln("<comment>Dumped Lang collection into $dir$g.yml</comment>");

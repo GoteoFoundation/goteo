@@ -60,13 +60,17 @@ $channel->add('channel-project-apply', new Route(
     array('_controller' => 'Goteo\Controller\ChannelController::applyAction')
 ));
 
-$channel->add('channel-list-projects', new Route(
-    '/{id}/{type}/{category}',
-    array('_controller' => 'Goteo\Controller\ChannelController::listProjectsAction',
-        // 'type' => 'available',
-        'category' => null
-        )
+$channel->add('channel-impact-discover', new Route(
+    '/{id}/impact-discover/{view}',
+    array('_controller' => 'Goteo\Controller\ChannelController::impactDiscoverAction')
 ));
 
+$channel->add('channel-list-projects', new Route(
+    '/{id}/{type}/{category}',
+    array(
+        '_controller' => 'Goteo\Controller\ChannelController::listProjectsAction',
+        'category' => null
+    )
+));
 
 return $channel;

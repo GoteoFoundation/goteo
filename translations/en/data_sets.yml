@@ -1,0 +1,7 @@
+---
+data-set: "Data sets"
+data-set-type: "Type of data sets"
+data-set-type-invests: "Data of donations"
+data-set-type-projects: "Data of projects"
+data-set-created-at: "Creation date: %s"
+data-set-modified-at: "Modification date: %s"

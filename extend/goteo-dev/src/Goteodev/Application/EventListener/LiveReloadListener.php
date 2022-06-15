@@ -12,14 +12,14 @@ namespace Goteodev\Application\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Goteo\Application\Config;
 use Goteo\Application\App;
 
 class LiveReloadListener implements EventSubscriberInterface
 {
 
-    public function onKernelResponse(FilterResponseEvent $event) {
+    public function onKernelResponse(ResponseEvent $event) {
 
         $response = $event->getResponse();
         $request = $event->getRequest();
@@ -46,7 +46,7 @@ class LiveReloadListener implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             // Events with low priority

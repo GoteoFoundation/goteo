@@ -36,7 +36,7 @@ $dataProjects = ($data)? $data->getCommunicationProjects($data->id) : '';
       <div class="col-xs-2 col-md-1">
         <a id="filter-edit" class="btn btn-cyan fa fa-pencil"></a>
       </div>
-      
+
       <div class="col-xs-2 col-md-1">
         <a id="filter-create" href="/admin/filter/add" class="btn btn-cyan fa fa-plus"></a>
       </div>
@@ -124,24 +124,24 @@ $dataProjects = ($data)? $data->getCommunicationProjects($data->id) : '';
 <br>
 
 <div class="tab-content">
-<?php foreach($this->languages as $lang => $name): 
+<?php foreach($this->languages as $lang => $name):
   ?>
   <div role="tabpanel" class="tab-pane<?= $default_lang == $lang ? ' active' : '' ?>" id="t-<?= $lang ?>">
 
     <div class="form-group">
       <label for="i-<?= $lang ?>-subject"> <?= $this->text('admin-mailing-subject') ?></label>
-      <input class="form-control editor" id="i-<?= $lang ?>-subject" name="t[<?= $lang ?>][subject]" <?php if($data->id): ?> value="<?= $this->ee($translator->getTranslation($lang, 'subject', true)) ?> <?php endif ?>"> 
+      <input class="form-control editor" id="i-<?= $lang ?>-subject" name="t[<?= $lang ?>][subject]" <?php if($data->id): ?> value="<?= $this->ee($translator->getTranslation($lang, 'subject', true)) ?> <?php endif ?>">
     </div>
     <div class="form-group">
       <label for="i-<?= $lang ?>-body"> <?= $this->text('admin-mail-body') ?></label>
-        <textarea rows="10" class="form-control editor" id="i-<?= $lang ?>-body" name="t[<?= $lang ?>][body]" <?= $default_lang != $lang ? ' class="hidden"' : '' ?> ><?php if($data->id): ?><?= $this->ee($translator->getTranslation($lang, 'content', true)) ?><?php endif ?></textarea>
+        <textarea rows="10" class="form-control editor" id="i-<?= $lang ?>-body" name="t[<?= $lang ?>][body]" <?= $default_lang != $lang ? ' class="hidden"' : '' ?> data-image-upload="/api/communication/images"><?php if($data->id): ?><?= $this->ee($translator->getTranslation($lang, 'content', true)) ?><?php endif ?></textarea>
     </div>
 
-    
+
   </div>
 <?php endforeach ?>
 
-<?php if (!$this->copy && $data && ( $data->isActive() || $data->isSent())): ?> 
+<?php if (!$this->copy && $data && ( $data->isActive() || $data->isSent())): ?>
   <a class="btn btn-cyan" href="/admin/communication/detail/<?= $data->id ?>"> <?= $this->text('form-next-button') ?> </a>
 <?php else: ?>
   <button type="submit" class="btn btn-cyan" name="save"><?= $this->text('regular-save') ?></button>
