@@ -15,22 +15,24 @@
 		  <aside class="col-sm-3" id="accordion">
 	      		<?php foreach ($this->subsections as $subsection): ?>
 		    		<?php $faq_subsection = $subsection->getFaqs(); ?>
-		      		<details <?= $this->faq->subsection_id == $subsection->id? 'open' : '' ?>>
-                        <summary>
-                            <h3><?= $subsection->name ?></h3>
-                        </summary>
-			      		<ul class="description">
-			      			<?php foreach($faq_subsection as $faq): ?>
-						    	<?php if($faq->id==$this->faq->id): ?>
-						 			<li class="select"><?= $faq->title ?></li>
-						 		<?php else: ?>
-						 			<li>
-						 				<a href="<?= '/faq/'.$this->faq_section->slug.'/'.$faq->slug ?>"><?= $faq->title ?></a>
-						 			</li>
-						 		<?php endif; ?>
-						 	<?php endforeach; ?>
-				        </ul>
-		      		</details>
+					<?php if (!empty($faq_subsection)): ?>
+						<details <?= $this->faq->subsection_id == $subsection->id? 'open' : '' ?>>
+							<summary>
+								<h3><?= $subsection->name ?></h3>
+							</summary>
+							<ul class="description">
+								<?php foreach($faq_subsection as $faq): ?>
+									<?php if($faq->id==$this->faq->id): ?>
+										<li class="select"><?= $faq->title ?></li>
+									<?php else: ?>
+										<li>
+											<a href="<?= '/faq/'.$this->faq_section->slug.'/'.$faq->slug ?>"><?= $faq->title ?></a>
+										</li>
+									<?php endif; ?>
+								<?php endforeach; ?>
+							</ul>
+						</details>
+					<?php endif; ?>
 	      		<?php endforeach; ?>
 	      	</aside>
 	        <article class="col-sm-8 col-sm-offset-1">
