@@ -8,8 +8,6 @@ $color-button-text: var(--color-button-text) !default;
 $color-footer-font: var(--color-footer-font) !default;
 $color-font: var(--color-font) !default;
 
-$color-bg-transparent: rgba(253, 64, 34, 0.1);
-
 $font-weight-bold: 700;
 $font-weight-light: 400;
 
@@ -58,6 +56,11 @@ body.donate {
     width: 100vw;
     height: 70vh;
 
+    .btn {
+      padding: 10px 20px;
+      font-weight: $font-weight-bold;
+    }
+
     img {
       width: 100%;
       height: 100%;
@@ -72,6 +75,7 @@ body.donate {
         width: 100%;
         height: 100%;
         background: $color-bg-secondary-rgb;
+        pointer-events: none;
       }
     }
 
@@ -81,16 +85,6 @@ body.donate {
       font-family: "gt_cinetypebold", sans-serif;
       text-shadow: none;
       max-width: $title-max-width;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: $color-bg-transparent;
     }
   }
 
@@ -197,6 +191,11 @@ body.donate {
         flex-direction: column;
         gap: 1em;
       }
+    }
+
+    .hint .btn {
+      background-color: var(--color-bg-primary);
+      font-size: 1em;
     }
   }
 }
