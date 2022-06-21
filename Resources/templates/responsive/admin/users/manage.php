@@ -116,7 +116,7 @@ $all_roles = $roles::getAllRoleNames();
             <?php if($invests = $this->user->getInvests(5)): ?>
                 <strong><?= $this->text('admin-invests') ?>:</strong><br>
                 <?php foreach($invests as $i): ?>
-                    <a href="/admin/accounts/details/<?= $i->id ?>" target="_blank"><?= date_formater($i->invested) ?> <strong><?= amount_format($i->amount) ?> <?= ($i->donate_amount)? "+ " . amount_format($i->donate_amount) : "" ?></strong></a> <em><?= $i->getProject()->name ?></em><br>
+                    <a href="/admin/accounts/details/<?= $i->id ?>" target="_blank"><?= date_formater($i->invested) ?> <strong><?= amount_format($i->amount) ?></strong></a> <em><?= $i->getProject()->name ?></em> <?php if($i->donate_amount): ?> <a href="/admin/accounts/details/<?= $i->id ?>" target="_blank"> + <strong><?= amount_format($i->donate_amount) ?></strong></a> <?= $this->text('admin-user-manage-tip-donation') ?><?php endif; ?><br>
                 <?php endforeach ?>
                 <?php if(count($invests) < $this->user->getTotalInvests()): ?>
                     <a href="/admin/accounts?name=<?= $this->user->email ?>"><i class="fa fa-external-link"></i> <?= $this->text('admin-view-user-invests') ?></a><br>
