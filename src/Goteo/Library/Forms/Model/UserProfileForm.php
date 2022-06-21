@@ -161,7 +161,6 @@ class UserProfileForm extends AbstractFormProcessor {
             ])
             ->add('legal_entity', ChoiceType::class, [
                 'label' => 'profile-field-legal-entity',
-                'constraints' => $this->getConstraints('legal_entity'),
                 'disabled' => $this->getReadonly(),
                 'choices' => [
                     Text::get('profile-field-legal-entity-person') => 0,
