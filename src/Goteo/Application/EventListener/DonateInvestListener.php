@@ -14,6 +14,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
 use Goteo\Application\Currency;
 use Goteo\Application\Event\FilterInvestRequestEvent;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Entity\Invest\InvestOrigin;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
