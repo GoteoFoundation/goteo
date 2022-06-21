@@ -761,25 +761,57 @@ $(function(){
 
         });
 
-        var dropzones = form.dropzones = {};
+        const dropzones = form.dropzones = {};
+        // let dropArea = document.getElementById("displayarea");
+        // let dropAreaImage = document.getElementById("displayarea_image");
+        //
+        // dropArea.addEventListener('dragstart', (event) => {
+        //     event.dataTransfer.setData("key",  "val");
+        // });
+        //
+        // dropArea.addEventListener('dragover', (event) => {
+        //     event.stopPropagation();
+        //     event.preventDefault();
+        //     // Style the drag-and-drop as a "copy file" operation.
+        //     event.dataTransfer.dropEffect = 'copy';
+        // });
+        //
+        // dropArea.addEventListener('drop', (event) => {
+        //     event.stopPropagation();
+        //     event.preventDefault();
+        //     const fileList = event.dataTransfer.files;
+        //
+        //     const file = event.dataTransfer.files[0];
+        //     const reader = new FileReader();
+        //
+        //     reader.addEventListener('load', (event) => {
+        //         console.log("reader addEventListener");
+        //         this.url = reader.result;
+        //         let dropAreaImage = document.getElementById("displayarea_image");
+        //         dropAreaImage.src = this.url;
+        //     });
+        //
+        //     reader.readAsDataURL(file);
+        //     console.log(file);
+        // });
+
         // Dropfiles initialization
         $('.autoform .dropfiles').each(function() {
-            var $dz = $(this);
-            var $error = $dz.find('.error-msg');
-            var $list = $(this).find('.image-list-sortable');
-            var $dnd = $(this).find('.dragndrop');
-            var $form = $dz.closest('form');
-            var multiple = !!$dz.data('multiple');
-            var limit = parseInt($dz.data('limit'));
-            var url = $dz.data('url') || null;
-            var accepted_files = $dz.data('accepted-files') ? $dz.data('accepted-files') : null;
-            var $template = $form.find('script.dropfile_item_template');
-            // ALlow drag&drop reorder of existing files
-            if(multiple && limit > 1) {
+            console.log("INDIVIDUAL DROPZONE");
+            const $dz = $(this);
+            const $error = $dz.find('.error-msg');
+            const $list = $(this).find('.image-list-sortable');
+            const $dnd = $(this).find('.dragndrop');
+            const $form = $dz.closest('form');
+            const multiple = !!$dz.data('multiple');
+            const maxFilesLimit = parseInt($dz.data('limit'));
+            const url = $dz.data('url') || null;
+            const accepted_files = $dz.data('accepted-files') ? $dz.data('accepted-files') : null;
+            const $template = $form.find('script.dropfile_item_template');
+
+            // Allow drag&drop reorder of existing files
+            if (multiple && maxFilesLimit > 1) {
                Sortable.create($list[0], {
-                    // group: '',
-                    // , forceFallback: true
-                    // Reorder actions
                     onStart: function(evt) {
                         $dnd.hide();
                     },
@@ -793,12 +825,12 @@ $(function(){
                     }
                 });
             }
-            if($list.find('li').length >= limit) {
+            if($list.find('li').length >= maxFilesLimit) {
                 $dnd.hide();
             }
 
-            var _addImageCss = function($img, name, dataURL) {
-              var url = dataURL ? dataURL : '/img/300x300c/' + name;
+            const _addImageCss = function($img, name, dataURL) {
+              const url = dataURL ? dataURL : '/img/300x300c/' + name;
               $img.css({
                   backgroundImage:  'url(' + url + ')',
                   backgroundSize: 'cover'
@@ -806,11 +838,11 @@ $(function(){
             };
 
             // Create the FILE upload
-            var drop = new Dropzone($dnd.contents('div')[0], {
+            const drop = new Dropzone($dnd.contents('div')[0], {
               url: url ? url : $form.attr('action'),
               uploadMultiple: multiple,
               createImageThumbnails: true,
-              maxFiles: limit,
+              maxFiles: maxFilesLimit,
               maxFilesize: MAX_FILE_SIZE,
               autoProcessQueue: !!url, // no ajax post if no url
               dictDefaultMessage: $dz.data('text-upload'),
@@ -823,28 +855,31 @@ $(function(){
             })
             .on('thumbnail', function(file, dataURL) {
               // Add to list
-              var $img = $form.find('li[data-name="' + file.name + '"] .image');
+              const $img = $form.find('li[data-name="' + file.name + '"] .image');
               _addImageCss($img, file.name, dataURL);
             })
             .on(url ? 'success' : 'addedfile', function(file, response) {
-              var total = $list.find('li').length;
-              if(total >= limit) {
+                console.log("DROPZONE success/addedfile");
+                console.log(file);
+              const totalUploadedFiles = $list.find('li').length;
+              if (totalUploadedFiles >= maxFilesLimit) {
                 $error.html($dz.data('text-max-files-reached'));
                 $error.removeClass('hidden');
                 drop.removeFile(file);
                 return false;
               }
-              if(!Dropzone.isValidFile(file, accepted_files)) {
+              if (!Dropzone.isValidFile(file, accepted_files)) {
                 $error.html($dz.data('text-file-type-error'));
                 drop.removeFile(file);
                 return false;
               }
 
-              var name = file.name;
-              var type = '';
-              var download_url = '';
-              var i;
+              let name = file.name;
+              let type = '';
+              let download_url = '';
+              let i;
               $error.addClass('hidden');
+
               // AJAX upload case, a response is defined
               if(response) {
                 if(!response.success) {
@@ -863,14 +898,13 @@ $(function(){
                   }
                 }
               }
-              var $li = $($template.html().replace('{NAME}', name));
-              var $img = $li.find('.image');
-
-              var re = /(?:\.([^.]+))?$/;
-              var ext = re.exec(name)[1];
+              const $li = $($template.html().replace('{NAME}', name));
+              const $img = $li.find('.image');
+              const re = /(?:\.([^.]+))?$/;
+              const ext = re.exec(name)[1];
               $img.addClass('file-type-' + ext);
 
-              if(response) {
+              if (response) {
                 $li.append('<input type="file" display:"none" name="' + $dz.data('current') + '" value="' + name + '">');
                 if($dz.data('markdown-link')) {
                   $li.find('.add-to-markdown').data('target', $dz.data('markdown-link'));
@@ -887,12 +921,9 @@ $(function(){
                   _addImageCss($img, name);
                 }
               }
-              else {
-                  // $img.css({backgroundSize: '25%'});
-              }
               $list.append($li);
 
-              if(total >= limit - 1) {
+              if (totalUploadedFiles >= maxFilesLimit - 1) {
                   $dnd.hide();
               }
               // On response, input[type=file] is already uploaded
@@ -903,24 +934,30 @@ $(function(){
 
               // Input node with selected files. It will be removed from document shortly in order to
               // give user ability to choose another set of files.
-              var inputFile = this.hiddenFileInput;
+              const inputFile = this.hiddenFileInput;
               // Append it to form after stack become empty, because if you append it earlier
               // it will be removed from its parent node by Dropzone.js.
-              setTimeout(function(){
-                // Set some unique name in order to submit data.
-                inputFile.name = $dz.data('name');
-                if(inputFile.files && inputFile.files.length) {
-                  $li.append(inputFile);
-                } else {
-                  alert(goteo.texts['form-dragndrop-unsupported']);
-                  $li.remove();
-                  $dnd.show();
-                }
-                drop.removeFile(file);
-              }, 0);
-            });
+              // setTimeout(function(){
+              //   // Set some unique name in order to submit data.
+              //   inputFile.name = $dz.data('name');
+              //   console.log(inputFile);
+              //
+              //   if(inputFile.files && inputFile.files.length) {
+              //       console.log("VISIBLE FILE");
+              //       $li.append(inputFile);
+              //   } else {
+              //       console.log("NOT VISIBLE FILE");
+              //       $li.append(inputFile);
+              //
+              //       alert(goteo.texts['form-dragndrop-unsupported']);
+              //       // $li.remove();
+              //       // $dnd.show();
+              //   }
+              //   // drop.removeFile(file);
+              // }, 0);
+            })
+            ;
             dropzones[$(this).attr('id')] = drop;
-
         });
 
         // Delete actions
