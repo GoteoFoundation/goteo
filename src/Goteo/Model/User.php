@@ -64,14 +64,14 @@ class User extends Model {
     public const ORIGIN_REGISTER_EVENT='event';
     public const ORIGIN_REGISTER_SOCIAL_MEDIA='social-media';
     public const ORIGIN_REGISTER_PREVIOUS_PROJECT='previous-project';
-    public const ORIGIN_REGISTER_SEARCHER='searcher';
+    public const ORIGIN_REGISTER_SEARCH='search';
     
     public const ALL_ORIGIN_REGISTER= [
         self::ORIGIN_REGISTER_WORKSHOP,
         self::ORIGIN_REGISTER_EVENT,
         self::ORIGIN_REGISTER_SOCIAL_MEDIA,
         self::ORIGIN_REGISTER_PREVIOUS_PROJECT,
-        self::ORIGIN_REGISTER_SEARCHER,
+        self::ORIGIN_REGISTER_SEARCH,
     ];
     
 
