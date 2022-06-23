@@ -65,6 +65,8 @@ class User extends Model {
     public const ORIGIN_REGISTER_SOCIAL_MEDIA='social-media';
     public const ORIGIN_REGISTER_PREVIOUS_PROJECT='previous-project';
     public const ORIGIN_REGISTER_SEARCH='search';
+    public const ORIGIN_REGISTER_PERSONAL='personal';
+    public const ORIGIN_REGISTER_ENTITY='entity';
     
     public const ALL_ORIGIN_REGISTER= [
         self::ORIGIN_REGISTER_WORKSHOP,
@@ -72,6 +74,8 @@ class User extends Model {
         self::ORIGIN_REGISTER_SOCIAL_MEDIA,
         self::ORIGIN_REGISTER_PREVIOUS_PROJECT,
         self::ORIGIN_REGISTER_SEARCH,
+        self::ORIGIN_REGISTER_PERSONAL,
+        self::ORIGIN_REGISTER_ENTITY
     ];
     
 
