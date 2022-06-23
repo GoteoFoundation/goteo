@@ -31,7 +31,8 @@ class CertificateCommand extends AbstractCommand {
                       new InputOption('update_amounts', 'a', InputOption::VALUE_NONE, "If specified calculates new amounts for donors"),
                       new InputOption('update_status', 's', InputOption::VALUE_NONE, "If specified updates the status of the donors"),
                       new InputOption('user', 'usr', InputOption::VALUE_OPTIONAL, "If specified used to search donations from a user" ),
-                      new InputOption('year', 'y', InputOption::VALUE_OPTIONAL, "If specified used to search for donors of the selected year, if not current year is used")
+                      new InputOption('year', 'y', InputOption::VALUE_OPTIONAL, "If specified used to search for donors of the selected year, if not current year is used"),
+                      new InputOption('unify', '', InputOption::VALUE_NONE, "If specified unifies donors certificates for the given year")
                 ))
              ->setHelp(<<<EOT
 This command checks the valid fields for donors.
@@ -77,8 +78,9 @@ EOT
         $update_donors = $input->getOption('update_donors');
         $update_amounts = $input->getOption('update_amounts');
         $update_status = $input->getOption('update_status');
+        $unify = $input->getOption('unify');
 
-        if(!$update_donors && !$update_amounts && !$update_status) {
+        if(!$update_donors && !$update_amounts && !$update_status && !$unify) {
             throw new \InvalidArgumentException('No action defined. Please define any action with --update_donors, --update_amounts or --update_status');
         }
 
@@ -496,7 +498,98 @@ EOT
                 $output->writeln("<info>A total of {$donors_valid_and_amount} out of {$total_donors} is valid and has amount.</info>");
                 $output->writeln("<info>A total of {$donors_valid_without_amount} out of {$total_donors} is valid but has no amount.</info>");
             }
+        } else if ($unify) {
+            $this->info("Starting unification of certificates");
+            $this->unifyCertificates($input, $output);
         }
 
+    }
+
+    private function unifyCertificates(InputInterface $input, OutputInterface $output) {
+        $year = $input->getOption('year');
+        if (!$year)
+            throw new \InvalidArgumentException('If you want to unify certificates you have to specify a year');
+
+        $user = $input->getOption('user');
+
+        if ($user) {
+            $this->info("A user has been provided with id $user");
+            $this->unifyUserCertificates($user, $year, $input, $output);
+        }
+    }
+
+    private function unifyUserCertificates(string $user, int $year, InputInterface $input, OutputInterface $output) {
+        $update = $input->getOption('update');
+        
+        $certificates = Donor::getList(['user' => $user, 'year' => $year, 'donor_status' => Donor::PENDING, 'show_empty' => true]);
+        if (empty($certificates)) {
+            $this->info("No certificates for user $user");
+            return;
+        }
+
+        if (count($certificates) == 1) {
+            $this->info("There is only one certificate for this user with id $user. No action to be taken.");
+            return;
+        }
+
+        $sum_amount = 0;
+        foreach ($certificates as $certificate) {
+            $sum_amount += $certificate->amount;
+            $num_projects += $certificate->numproj;
+        }
+
+        $newCertificate = $this->createNewCertificate(end($certificates));
+        $newCertificate->user = $user;
+        $newCertificate->year = $year;
+        $newCertificate->amount = $sum_amount;
+        $newCertificate->numproj = $num_projects;
+        if ($update && $newCertificate->save()) {
+            $this->info("New certificate created for user $user with id $newCertificate->id");
+            foreach ($certificates as $certificate) {
+                $certificate->status = Donor::SUPERSEEDED;
+                $certificate->confirmed = 0;
+                $invests = $certificate->getInvestions();
+
+                foreach($invests as $invest) {
+                    $certificate->delInvestion($invest);
+                }
+
+                $errors = [];
+                if ($certificate->save($errors)) {
+                    $this->info("Certificate with id $certificate->id superseeded by $newCertificate->id");
+                } else {
+                    $this->error("Could not superseed Certificate with id $certificate->id for new certificate with id $newCertificate->id"); 
+                    $this->error(implode($errors));
+                }
+            }
+
+            $newCertificate->updateInvestions();
+        }
+    }
+
+    private function createNewCertificate(Donor $certificate): Donor
+    {
+        $newCertificate = new Donor();
+        $newCertificate->name = $certificate->name;
+        $newCertificate->surname = $certificate->surname;
+        $newCertificate->surname2 = $certificate->surname2;
+        $newCertificate->legal_entity = $certificate->legal_entity;
+        $newCertificate->legal_document_type = $certificate->legal_document_type;
+        $newCertificate->nif = $certificate->nif;
+        $newCertificate->address = $certificate->address;
+        $newCertificate->zipcode = $certificate->zipcode;
+        $newCertificate->location = $certificate->location;
+        $newCertificate->region = $certificate->region;
+        $newCertificate->country = $certificate->country;
+        $newCertificate->countryname = $certificate->countryname;
+        $newCertificate->gender = $certificate->gender;
+        $newCertificate->birthyear = $certificate->birthyear;
+        $newCertificate->edited = $certificate->edited;
+        $newCertificate->confirmed = $certificate->confirmed;
+        $newCertificate->pdf = $certificate->pdf;
+        $newCertificate->processed = $certificate->processed;
+        $newCertificate->status = Donor::PENDING;
+
+        return $newCertificate;
     }
 }
