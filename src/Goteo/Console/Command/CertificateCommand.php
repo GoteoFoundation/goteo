@@ -11,6 +11,7 @@
 namespace Goteo\Console\Command;
 
 use Goteo\Library\Check;
+use Goteo\Model\User;
 use Goteo\Model\User\Donor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -516,6 +517,23 @@ EOT
             $this->info("A user has been provided with id $user");
             $this->unifyUserCertificates($user, $year, $input, $output);
         }
+
+        $limit = 500;
+        $page = 0;
+        $total = User::getList([], null, 0, 0, true);
+
+        $progress_bar = new ProgressBar($output, $total);
+        $progress_bar->start();
+
+        while($users = User::getList([], $page * $limit, $limit)) {
+            foreach ($users as $user) {
+                $this->unifyUserCertificates($user->id, $year, $input, $output);
+                $progress_bar->advance();
+            }
+            ++$page;
+        }
+        $progress_bar->finish();
+
     }
 
     private function unifyUserCertificates(string $user, int $year, InputInterface $input, OutputInterface $output) {
@@ -549,9 +567,11 @@ EOT
                 $certificate->status = Donor::SUPERSEEDED;
                 $certificate->confirmed = 0;
                 $invests = $certificate->getInvestions();
-
+                
                 foreach($invests as $invest) {
-                    $certificate->delInvestion($invest);
+                    if (!$certificate->delInvestion($invest)) {
+                        $this->error("Could not remove invests of certificate with id $certificate->id");
+                    }
                 }
 
                 $errors = [];
