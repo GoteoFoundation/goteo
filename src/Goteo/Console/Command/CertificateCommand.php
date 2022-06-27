@@ -516,6 +516,7 @@ EOT
         if ($user) {
             $this->info("A user has been provided with id $user");
             $this->unifyUserCertificates($user, $year, $input, $output);
+            return;
         }
 
         $limit = 500;
@@ -538,7 +539,7 @@ EOT
 
     private function unifyUserCertificates(string $user, int $year, InputInterface $input, OutputInterface $output) {
         $update = $input->getOption('update');
-        
+
         $certificates = Donor::getList(['user' => $user, 'year' => $year, 'donor_status' => Donor::PENDING, 'show_empty' => true]);
         if (empty($certificates)) {
             $this->info("No certificates for user $user");
@@ -567,7 +568,7 @@ EOT
                 $certificate->status = Donor::SUPERSEEDED;
                 $certificate->confirmed = 0;
                 $invests = $certificate->getInvestions();
-                
+
                 foreach($invests as $invest) {
                     if (!$certificate->delInvestion($invest)) {
                         $this->error("Could not remove invests of certificate with id $certificate->id");
@@ -578,7 +579,7 @@ EOT
                 if ($certificate->save($errors)) {
                     $this->info("Certificate with id $certificate->id superseeded by $newCertificate->id");
                 } else {
-                    $this->error("Could not superseed Certificate with id $certificate->id for new certificate with id $newCertificate->id"); 
+                    $this->error("Could not superseed Certificate with id $certificate->id for new certificate with id $newCertificate->id");
                     $this->error(implode($errors));
                 }
             }
