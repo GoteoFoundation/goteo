@@ -20,6 +20,14 @@ profile-field-legal-entity-cooperative: Cooperativa
 profile-field-legal-entity-ngo: ONG
 profile-field-legal-entity-others: Altres
 profile-field-legal-entity-self-employed: Autònom/a
+profile-field-origin-register: 'Com vas conèixer Goteo?'
+profile-field-origin-register-workshop: 'En un taller de formació'
+profile-field-origin-register-event: 'A través d''un esdeveniment/presentació pública'
+profile-field-origin-register-social-media: 'Xarxes socials'
+profile-field-origin-register-previous-project: 'Una campanya en Goteo'
+profile-field-origin-register-search: 'Utilitzant un cercador'
+profile-field-origin-register-personal: 'Recomanació d''un conegut'
+profile-field-origin-register-entity: 'Recomanació d''una entitat'
 profile-field-location: 'Lloc de residència habitual'
 profile-field-name: 'Nom d''usuari/a'
 profile-field-websites: 'Les meves pàgines web '
