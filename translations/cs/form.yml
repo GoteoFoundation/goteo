@@ -24,15 +24,47 @@ form-project_status-expired: Archivováno
 form-project_status-fulfilled: 'Navrácení dokončeno'
 form-project_status-review: 'K posouzení'
 form-project_status-success: Financováno
+form-project_status-negotiation: "Vyjednávání"
 form-remove-button: Odstranit
 form-self_review-button: Opravit
 form-send_review-button: Odeslat
 form-upload-button: Odeslat
+help-cost-to-consultant: '- Potřebujete pomoci s náklady<br>'
+help-license-to-consultant: '- Potřebujete pomoci s hromadným navracením a licencemi<br>'
 overview-extra-fields: 'Doplňková pole'
 project-form-header: Formulář
 project-one-round: 'Jedno 40ti denní kolo'
+project-personal-field-entity_name: 'Subjekt, jehož jménem jednáte (je-li to relevantní)'
 project-two-rounds: 'Dvě kola po 40 dnech'
 tooltip-project-personal-entity_name: 'Pokud zastupujete nějaký subjekt, uveďte v tomto poli jeho název.'
 tooltip-text-type-change: 'Tím se změní typ textového editoru.<br><b>Poznámka:</b> Při přepínání mezi markdown a html může dojít ke ztrátě stylů.'
 tooltip-drag-and-drop-images: 'Chcete-li vložit obrázky, můžete soubory přetáhnout přímo do editoru'
 form-sent-success: 'Data byla úspěšně uložena!'
+form-sent-error: 'Při ukládání dat došlo k chybě: [%s]'
+form-confirm-exit: "Neuložená data budou ztracena.\nOpravdu se chcete odhlásit?"
+overview-extra-call: 'Další pole pro výzvy %s'
+form-editor-bold: 'Tučné'
+form-editor-italic: 'Kurzíva'
+form-editor-strikethrough: 'Přeškrtnuté'
+form-editor-heading: 'Záhlaví'
+form-editor-smaller_heading: 'Zmenšení záhlaví'
+form-editor-bigger_heading: 'Zvětšení záhlaví'
+form-editor-code: 'Kód'
+form-editor-quote: 'Citace'
+form-editor-generic_list: 'Obecný seznam'
+form-editor-numbered_list: 'Seřazený seznam'
+form-editor-create_link: 'Vytvořit odkaz'
+form-editor-insert_image: 'Vložit obrázek'
+form-editor-insert_table: 'Vložit tabulku'
+form-editor-insert_horizontal_line: 'Vodorovná čára'
+form-editor-toggle_preview: 'Přepnutí náhledu'
+form-editor-toggle_side_by_side: 'Přepnutí paralelního zobrazení'
+form-editor-toggle_fullscreen: 'Přepnout režim celé obrazovky'
+form-editor-markdown_guide: 'Průvodce markdownem'
+form-editor-undo: 'Zpět'
+form-editor-redo: 'Znovu'
+form-editor-close: 'Zavřít'
+form-editor-exact-location: 'Přesná lokalita'
+form-editor-change-location: 'Změnit'
+form-editor-change-unlocated: 'Bez lokalizace'
+form-editor-fine-locate: 'Umístění můžete doladit přetažením značky.'
