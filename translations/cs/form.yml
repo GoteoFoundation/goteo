@@ -21,3 +21,9 @@ form-project_status-cancel: Vyloučeno
 form-project_status-cancelled: Vyřazeno
 form-project_status-edit: Úpravy
 form-project_status-expired: Archivováno
+form-project_status-fulfilled: 'Navrácení dokončeno'
+form-project_status-review: 'K posouzení'
+form-project_status-success: Financováno
+form-remove-button: Odstranit
+form-self_review-button: Opravit
+form-send_review-button: Odeslat
