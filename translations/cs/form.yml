@@ -27,3 +27,7 @@ form-project_status-success: Financováno
 form-remove-button: Odstranit
 form-self_review-button: Opravit
 form-send_review-button: Odeslat
+form-upload-button: Odeslat
+overview-extra-fields: 'Doplňková pole'
+project-form-header: Formulář
+project-one-round: 'Jedno 40ti denní kolo'
