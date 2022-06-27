@@ -32,15 +32,18 @@ class Project extends Model {
 
     use Traits\SdgRelationsTrait;
 
+    // STATUS TO BE USED TO FILTER PROJECT
+    const STATUS_DRAFT = -1; // is this really necessary?
+    const STATUS_NEGOTIATION = -2; // filter status, project's real status is self::STATUS_EDITING
+
     // PROJECT STATUS IDs
-    const STATUS_DRAFT       = -1; // is this really necessary?
     const STATUS_REJECTED    = 0;
     const STATUS_EDITING     = 1; // editing or negotiating (if draft)
-    const STATUS_REVIEWING   = 2; //
+    const STATUS_REVIEWING   = 2;
     const STATUS_IN_CAMPAIGN = 3;
     const STATUS_FUNDED      = 4;
-    const STATUS_FULFILLED   = 5; // 'Caso de exito'
-    const STATUS_UNFUNDED    = 6; // proyecto fallido
+    const STATUS_FULFILLED   = 5;
+    const STATUS_UNFUNDED    = 6;
 
     public
         $id = null,
@@ -3095,7 +3098,7 @@ class Project extends Model {
         elseif ($filters['status'] > -1) {
             $sqlFilter .= " AND project.status = :status";
             $values[':status'] = $filters['status'];
-        } elseif ($filters['status'] == -2) {
+        } elseif ($filters['status'] == self::STATUS_NEGOTIATION) {
             // en negociacion
             $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{32}')";
         } elseif($filters['status'] == -3) {
@@ -3651,6 +3654,7 @@ class Project extends Model {
         return array(
             self::STATUS_REJECTED => Text::get('form-project_status-cancelled'),
             self::STATUS_EDITING => Text::get('form-project_status-edit'),
+            self::STATUS_NEGOTIATION => Text::get('form-project_status-negotiation'),
             self::STATUS_REVIEWING => Text::get('form-project_status-review'),
             self::STATUS_IN_CAMPAIGN => Text::get('form-project_status-campaing'),
             self::STATUS_FUNDED => Text::get('form-project_status-success'),
