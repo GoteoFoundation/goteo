@@ -32,9 +32,11 @@ class Project extends Model {
 
     use Traits\SdgRelationsTrait;
 
+    // STATUS TO BE USED TO FILTER PROJECT
+    const STATUS_DRAFT = -1; // is this really necessary?
+    const STATUS_NEGOTIATION = -2; // filter status, project's real status is self::STATUS_EDITING
+
     // PROJECT STATUS IDs
-    const STATUS_NEGOTIATION = -2;
-    const STATUS_DRAFT       = -1; // is this really necessary?
     const STATUS_REJECTED    = 0;
     const STATUS_EDITING     = 1; // editing or negotiating (if draft)
     const STATUS_REVIEWING   = 2;
