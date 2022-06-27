@@ -7,5 +7,68 @@ admin-account-change-user: 'Přepnout uživatele'
 admin-account-change-user-confirm: 'Opravdu chcete změnit uživatele příspěvku? Novým uživatelem bude:'
 admin-account-convert-to-pool: 'Převést do peněženky'
 admin-account-convert-to-pool-confirm: 'Tím se odstraní projekt spojený s tímto příspěvkem a stane se, jako by šlo o nákup z peněženky. VŠECHNA SOUVISEJÍCÍ DOPORUČENÍ BUDOU ZTRACENA. Pokračovat?'
+admin-account-convert-to-pool-ko: 'Nepodařilo se převést příspěvek do peněženky: %s'
+admin-account-convert-to-pool-ok: 'Správně převedeno na příspěvek do peněženky'
+admin-account-detail: 'Podrobnosti o transakci'
 admin-account-donation: Dary
+admin-account-edit-reward: 'Řízení odměn / směrování'
+admin-account-invalid-invest: 'Příspěvek [%s] nebyl nalezen!'
+admin-account-invest-date: 'Datum vložení příspěvku'
+admin-account-invest-non-pool-refundable: 'Tento příspěvek nelze do virtuální peněženky vrátit. Vracet lze pouze příspěvky ve stavu "Vybrané"'
+admin-account-invest-non-user-refundable: "Tento příspěvek je nevratný. Příspěvky lze vrátit v následujících stavech:\n\"Čekající\", \"Vybráno\" a \"V peněžence\", pokud je v peněžence dostatek peněz k odečtení\n"
+admin-account-invest-to-pool-ko: 'Nevrácení příspěvku do peněženky'
+admin-account-invest-to-pool-ok: 'Příspěvek vrácený do peněženky. Zvýšení peněženky na hodnotu (%s)'
+admin-account-invest-user-refund-fail-pool-amount: 'Tento příspěvek nelze vrátit, protože uživatel nemá v peněžence dostatek peněz (%s)'
+admin-account-invest-user-refund-ko: 'Nelze vrátit příspěvek: [%s]'
+admin-account-invest-user-refund-ok: 'Správně vrácený příspěvek'
+admin-account-invest-user-refund-ok-pool: 'Příspěvek byl úspěšně proplacen. Peněženka byla snížena o %s'
+admin-account-issue-solved: 'Obdrželi jsme převod'
+admin-account-modify-status: 'Změnit stav'
+admin-account-modify-status-confirm: "Opravdu chcete ručně změnit stav tohoto příspěvku? To je ošemetné!\nU příspěvku se neprovede žádná operace vrácení.\n"
+admin-account-payment-method: 'Způsob platby'
+admin-account-pool-on-fail: 'Fond (v případě neúspěchu se vrací do peněženky)'
+admin-account-refund-to-pool: 'Vrácení příspěvku do peněženky'
+admin-account-refund-to-user: 'Vrátit příspěvek uživateli'
 admin-all: Vše
+admin-communications-newsletter: 'Zpravodaj'
+admin-communications-communication: 'Komunikace obecně'
+admin-communications-id: 'ID komunikace'
+admin-items: tikety
+admin-mailing-back-to-list: 'Zpět na komunikaci'
+admin-mailing-communicating-with: 'Hledali jsme komunikaci s %DESC%'
+admin-mailing-created: 'Vytvořeno'
+admin-mailing-new-massive: 'Byla vytvořena nová hromadná korespondence pro %TOTAL% uživatelů'
+admin-mailing-status: 'Stav automatického odesílání'
+admin-mailing-subject: Předmět
+admin-mailing-view-and-activate: 'Podívejte se do administrace zpravodaje a aktivujte zasílání zpravodaje'
+admin-mailing-view-in-newsletter: 'Viz ve zpravodaji správce'
+admin-mailing-view-in-sent: 'Zobrazit v historii odeslání (statistiky)'
+admin-mailing-view-message: 'Zobrazit zprávu'
+admin-newsletter-generated: 'Byl vygenerován zpravodaj [%ID%]'
+admin-newsletter-langs-to-send: 'Jazyky: %LANGS%'
+admin-newsletter-mind-activate: 'Aktivujte jej, aby byl odeslán'
+admin-prev-page: 'Předchozí strana'
+admin-next-page: 'Další stránka'
+admin-no: 'Ne'
+admin-percent: Procento
+admin-project: Projekt
+admin-main: Hlavní
+admin-legacy: Nejstarší
+admin-projects: Projekty
+admin-consultants: 'Konzultanti'
+admin-invests: Příspěvky
+admin-filters: 'Filtry'
+admin-filters-edit: 'Upravit filtr'
+admin-filters-create: 'Vytvořit filtr'
+admin-remove-filters: 'Zrušit filtry'
+admin-remove-filters-forbidden: 'Použité filtry nelze odstranit.'
+admin-remove-entry: 'Vymazat záznam'
+admin-remove-entry-confirm: 'Opravdu chcete tuto položku odstranit? Tuto akci nelze vzít zpět!'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Prostý text'
+admin-user: Uživatel
+admin-user-no-projects: 'Zatím nebyly vytvořeny žádné projekty'
+admin-user-no-invests: 'Zatím nebyly poskytnuty žádné dary'
+admin-users: Uživatelé
+admin-mailing: 'Pošta'
