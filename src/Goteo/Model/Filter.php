@@ -71,7 +71,6 @@ class Filter extends Model {
             throw new ModelNotFoundException("[$id] not found");
         }
 
-        $filter->filter_location = FilterLocation::get($id);
         $filter->projects = self::getFilterProject($id);
         $filter->calls = self::getFilterCall($id);
         $filter->channels = self::getFilterNode($id);
@@ -107,6 +106,10 @@ class Filter extends Model {
 
         $query = static::query($sql);
         return $query->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    }
+
+    public function getFilterLocation(): FilterLocation {
+        return FilterLocation::get($id);
     }
 
     static public function getFilterProject ($filter){
@@ -378,6 +381,15 @@ class Filter extends Model {
         );
 
         try {
+            if($this->filter_location instanceOf FilterLocation) {
+                $this->filter_location->id = $this->id;
+                if($this->filter_location->save($errors)) {
+                    $this->filter_location = $this->filter_location->location ?: $this->filter_location->name;
+                } else {
+                    unset($this->filter_location);
+                }
+            }
+
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
             // return true;
@@ -388,15 +400,6 @@ class Filter extends Model {
             $this->setFilterMatcher();
             $this->setFilterSDG();
             $this->setFilterFootprint();
-
-            if($this->filter_location instanceOf FilterLocation) {
-                $this->filter_location->id = $this->id;
-                if($this->filter_location->save($errors)) {
-                    $this->filter_location = $this->filter_location->location ?: $this->filter_location->name;
-                } else {
-                    unset($this->filter_location);
-                }
-            }
         } catch(PDOException $e) {
             print("exception");
             $errors[] = "Error updating filter " . $e->getMessage();
