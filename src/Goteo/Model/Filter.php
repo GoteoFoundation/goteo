@@ -1380,6 +1380,11 @@ class Filter extends Model {
                 AND project.status = :project_status
                 ";
             $values[':project_status'] = $this->project_status;
+        } else if ($this->project_status == Project::STATUS_NEGOTIATION) {
+            $sqlFilter .= "
+                AND project.status = :project_status AND project.`id` NOT REGEXP '[0-9a-f]{32}'
+            ";
+            $values[':project_status'] = Project::STATUS_EDITING;
         }
 
         $this->projects = $this->getFilterProject($this->id);
@@ -1537,6 +1542,11 @@ class Filter extends Model {
                 AND project.status = :project_status
                 ";
             $values[':project_status'] = $this->project_status;
+        } else if ($this->project_status == Project::STATUS_NEGOTIATION) {
+            $sqlFilter .= "
+                AND project.status = :project_status AND project.`id` NOT REGEXP '[0-9a-f]{32}'
+            ";
+            $values[':project_status'] = Project::STATUS_EDITING;
         }
 
         $this->projects = $this->getFilterProject($this->id);
