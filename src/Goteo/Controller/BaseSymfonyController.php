@@ -25,11 +25,13 @@ class BaseSymfonyController extends AbstractController
         int $status = 200,
         string $contentType = 'text/html'
     ): Response {
-        $response = $this->foilRenderer->render($templateName, $parameters);
-        $response->setStatusCode($status);
-        $response->headers->set('Content-Type', $contentType);
-
-        return $response;
+        return $this->getRenderedResponse(
+            $this->foilRenderer,
+            $templateName,
+            $parameters,
+            $status,
+            $contentType,
+        );
     }
 
     public function renderTwigTemplate(
@@ -38,7 +40,24 @@ class BaseSymfonyController extends AbstractController
         int $status = 200,
         string $contentType = 'text/html'
     ): Response {
-        $response = $this->twigRenderer->render($templateName, $parameters);
+        return $this->getRenderedResponse(
+            $this->twigRenderer,
+            $templateName,
+            $parameters,
+            $status,
+            $contentType,
+        );
+    }
+
+    private function getRenderedResponse(
+        EngineInterface $engine,
+        string $templateName,
+        array $parameters,
+        int $status,
+        string $contentType
+    ): Response {
+        $templateContent = $engine->render($templateName, $parameters);
+        $response = new Response($templateContent);
         $response->setStatusCode($status);
         $response->headers->set('Content-Type', $contentType);
 

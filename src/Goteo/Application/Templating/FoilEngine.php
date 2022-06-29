@@ -3,16 +3,13 @@
 namespace Goteo\Application\Templating;
 
 use Goteo\Application\View;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
 
 class FoilEngine implements EngineInterface
 {
-    public function render($name, array $parameters = []): Response
+    public function render($name, array $parameters = []): string
     {
-        $templateContent = View::render($name, $parameters);
-
-        return new Response($templateContent);
+        return View::render($name, $parameters);
     }
 
     public function exists($name): bool

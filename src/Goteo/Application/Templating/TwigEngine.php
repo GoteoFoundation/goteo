@@ -2,9 +2,11 @@
 
 namespace Goteo\Application\Templating;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Loader\ArrayLoader;
 use Twig\Loader\LoaderInterface;
 
@@ -19,15 +21,19 @@ class TwigEngine implements EngineInterface
         $this->twig = new Environment($this->loader);
     }
 
-    public function render($name, array $parameters = []): Response
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function render($name, array $parameters = []): string
     {
         if (!$this->exists($name)) {
             $this->loader->setTemplate($name, "NEW TWIG TEMPLATE");
         }
         dump("Load Twig template: " . $this->twig->getTemplateClass($name));
-        $templateContent = $this->twig->render($name, $parameters);
 
-        return new Response($templateContent);
+        return $this->twig->render($name, $parameters);
     }
 
     public function exists($name): bool
