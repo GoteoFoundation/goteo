@@ -10,18 +10,14 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Core\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
-class TestController extends Controller {
+class TestController extends BaseSymfonyController {
 
-    /**
-     * @Route("/test", name="about-test")
-     */
     public function testAction(): Response
     {
-        dump("TEST ACTION");
-        return $this->viewResponse('about/librejs');
+        dump("TEST ACTION on pure Symfony controller");
+
+        return $this->renderFoilTemplate('about/librejs');
     }
 }

@@ -29,12 +29,10 @@ $misc->add('about-librejs', new Route(
         )
 ));
 
-//$misc->add('about-test', new Route(
-//    '/about/test',
-//    array(
-//        '_controller' => 'Goteo\Controller\TestController::testAction',
-//    )
-//));
+$misc->add('about-test', new Route(
+    '/about/test',
+    ['_controller' => 'Goteo\Controller\TestController::testAction']
+));
 
 $misc->add('about-sections', new Route(
     '/about/{id}',
