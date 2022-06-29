@@ -10,19 +10,19 @@ use Symfony\Component\HttpFoundation\Response;
 class BaseSymfonyController extends AbstractController
 {
     public function renderFoilTemplate(
-        $view,
+        string $templateName,
         array $vars = [],
         int $status = 200,
         string $contentType = 'text/html'
     ): Response {
-        $view = View::render($view, $vars);
+        $templateContent = View::render($templateName, $vars);
         $request = App::getRequest();
 
         if ($request->query->has('pronto') && (App::debug() || $request->isXmlHttpRequest())) {
             $contentType = 'application/json';
         }
 
-        return new Response($view, $status, [
+        return new Response($templateContent, $status, [
             'Content-Type' => $contentType
         ]);
     }
