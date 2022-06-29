@@ -14,11 +14,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TestController extends BaseSymfonyController {
 
-    public function testAction(): Response
+    public function testFoilAction(): Response
     {
-        dump("TEST ACTION on pure Symfony controller");
+        dump("Pure Symfony controller renders Foil template");
 
-//        return $this->renderTwigTemplate('about/librejs');
         return $this->renderFoilTemplate('about/librejs');
+    }
+
+    public function testTwigAction(): Response
+    {
+        dump("Pure Symfony controller renders Twig template");
+
+        return $this->renderTwigTemplate('base.html.twig');
     }
 }
