@@ -18,6 +18,7 @@ class TestController extends BaseSymfonyController {
     {
         dump("TEST ACTION on pure Symfony controller");
 
+//        return $this->renderTwigTemplate('about/librejs');
         return $this->renderFoilTemplate('about/librejs');
     }
 }

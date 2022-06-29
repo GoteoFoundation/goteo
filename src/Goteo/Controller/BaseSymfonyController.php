@@ -2,28 +2,46 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Application\App;
-use Goteo\Application\View;
+use Goteo\Application\Templating\FoilEngine;
+use Goteo\Application\Templating\TwigEngine;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Templating\EngineInterface;
 
 class BaseSymfonyController extends AbstractController
 {
+    private EngineInterface $foilRenderer;
+    private EngineInterface $twigRenderer;
+
+    public function __construct()
+    {
+        $this->foilRenderer = new FoilEngine();
+        $this->twigRenderer = new TwigEngine();
+    }
+
     public function renderFoilTemplate(
         string $templateName,
-        array $vars = [],
+        array $parameters = [],
         int $status = 200,
         string $contentType = 'text/html'
     ): Response {
-        $templateContent = View::render($templateName, $vars);
-        $request = App::getRequest();
+        $response = $this->foilRenderer->render($templateName, $parameters);
+        $response->setStatusCode($status);
+        $response->headers->set('Content-Type', $contentType);
 
-        if ($request->query->has('pronto') && (App::debug() || $request->isXmlHttpRequest())) {
-            $contentType = 'application/json';
-        }
+        return $response;
+    }
 
-        return new Response($templateContent, $status, [
-            'Content-Type' => $contentType
-        ]);
+    public function renderTwigTemplate(
+        string $templateName,
+        array $parameters = [],
+        int $status = 200,
+        string $contentType = 'text/html'
+    ): Response {
+        $response = $this->twigRenderer->render($templateName, $parameters);
+        $response->setStatusCode($status);
+        $response->headers->set('Content-Type', $contentType);
+
+        return $response;
     }
 }
