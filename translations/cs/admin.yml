@@ -31,16 +31,48 @@ admin-account-refund-to-pool: 'Vrácení příspěvku do peněženky'
 admin-account-refund-to-pool-confirm: "Tím se příspěvek označí jako:\nVráceno, pokud je projekt neúspěšný\nZrušeno, pokud je projekt aktivní nebo úspěšný.\nUživateli nebudou vráceny peníze, ty budou vygenerovány v jeho peněžence.\nPokračovat?\n"
 admin-account-refund-to-user: 'Vrátit příspěvek uživateli'
 admin-account-refund-to-user-confirm: "Tím se příspěvek označí jako:\nVráceno, pokud je projekt neúspěšný\nZrušeno, pokud je projekt aktivní nebo úspěšný.\nPeníze budou uživateli vráceny.\nTo nemusí fungovat, pokud je příspěvek příliš starý nebo pokud to způsob platby nepodporuje.\nPokračovat?\n"
+admin-account-rewards: 'Vybrané odměny'
+admin-account-switch-donation: 'Přepínání darů'
 admin-account-switch-donation-confirm: 'Jste si jisti, že chcete změnit stav daru?'
 admin-account-switch-pool: 'Přepínání fondu'
 admin-account-switch-pool-confirm: 'To má vliv pouze v případě, že projekt selže, nevytváří ani neodebírá peníze z peněženky. Pokračovat?'
 admin-account-switch-pool-fail: 'U tohoto příspěvku není možné změnit stav fondu'
 admin-account-transaction: 'Kódy pro sledování'
 admin-account-user-changed-error: 'Nepodařilo se změnit uživatele příspěvku [%ID%] na [%NAME%]!'
+admin-account-user-changed-successfully: 'Uživatel příspěvku [%ID%] byl změněn na [%NAME%]'
+admin-address: Adresa
 admin-all: Vše
+admin-global: Globální
+admin-back: Zpět
+admin-back-detail: 'Zpět na detaily'
+admin-back-list: 'Zpět na seznam'
+admin-contents: 'Texty a překlady'
+admin-empty-list: 'Nenalezeny žádné záznamy'
+admin-activity: Aktivita
+admin-communications: Komunikace
+admin-communications-add: Vytvořit novou komunikaci
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' pro přístupové Id příjemce'
+admin-communications-useremail-content: ' pro e-mailovou adresu příjemce'
+admin-communications-username-content: ' pro jméno adresáta'
+admin-communications-siteurl-content: ' pro url této platformy (%SITEURL%)'
+admin-communications-subscribeurl-content: ' přímý odkaz na přihlášení k odběru zpravodaje uživatele'
+admin-communications-unsubscribeurl-content: ' přímý odkaz na odhlášení z odběru zpravodaje uživatele'
+admin-communications-poolamount-content: ' množství peněz, které má uživatel k dispozici v peněžence'
+admin-communications-send: 'Odesílání komunikace'
+admin-communications-cancel: 'Zrušit komunikaci'
 admin-communications-newsletter: 'Zpravodaj'
 admin-communications-communication: 'Komunikace obecně'
 admin-communications-id: 'ID komunikace'
+admin-certificates: Certifikáty
+admin-certificates-management: Správa certifikátů
+admin-home: Úvodní strana
 admin-items: tikety
 admin-mailing-back-to-list: 'Zpět na komunikaci'
 admin-mailing-communicating-with: 'Hledali jsme komunikaci s %DESC%'
@@ -72,6 +104,18 @@ admin-remove-filters: 'Zrušit filtry'
 admin-remove-filters-forbidden: 'Použité filtry nelze odstranit.'
 admin-remove-entry: 'Vymazat záznam'
 admin-remove-entry-confirm: 'Opravdu chcete tuto položku odstranit? Tuto akci nelze vzít zpět!'
+admin-remove-entry-forbidden: 'Zveřejněné příspěvky na blogu nelze odstranit. Nejprve záznam zrušte.'
+admin-remove-entry-ok: 'Položka byla úspěšně odstraněna'
+admin-add-entry-ok: 'Nová položka úspěšně vytvořena'
+admin-edit-entry-ok: 'Položka byla úspěšně upravena'
+admin-services: Služby
+admin-sponsors: Sponzoři
+admin-slug-seo-help: 'Toto pole je důležité pro SEO. Upravujte pouze z dobrého důvodu.'
+admin-others: Ostatní
+admin-summary: Shrnutí
+admin-origins: Analytika návštěvníků
+admin-status: Stav
+admin-text-type: 'Zpracovat text jako'
 admin-text-type-html: HTML
 admin-text-type-md: Markdown
 admin-text-type-plain: 'Prostý text'
@@ -79,4 +123,43 @@ admin-user: Uživatel
 admin-user-no-projects: 'Zatím nebyly vytvořeny žádné projekty'
 admin-user-no-invests: 'Zatím nebyly poskytnuty žádné dary'
 admin-users: Uživatelé
+admin-users-add: Vytvořit nového uživatele
+admin-blog: Hlavní blog
+admin-blog-add: Vytvořit příspěvek
+admin-blog-edit: Upravit příspěvek %s
+admin-blog-slug-exists: 'Identifikátor [%s] je použit v jiném příspěvku!'
+admin-blog-slug-chars: 'Identifikátor [%s] obsahuje neplatné znaky!'
+admin-blog-not-public: 'Tento příspěvek zatím není veřejný'
+admin-stories: Příběhy uživatelů na Goteo
+admin-stories-add: Vytvořit nový příběh
+admin-stories-edit: Úprava historie %s
+admin-channel: "Kanál"
+admin-channelsection-section: 'Sekce'
+admin-channelsection-map: 'Mapa'
+admin-channelsection-resource: 'Zdroje'
+admin-channelsection-call_to_action: 'Výzva k akci'
+admin-channelsection-projects: 'Projekty'
+admin-channelsection-posts: 'Příspěvky'
+admin-channelsection-program: 'Programy'
+admin-channelsection-stories: 'Příběhy'
+admin-channelsection-workshops: 'Workshopy'
+admin-channelsection-team: 'Tým'
+admin-channelsection-sponsors: 'Sponzoři'
+admin-channelsection-button: 'Tlačítko'
+admin-channelsection-create: 'Vytvořit'
+admin-channelsection-add: 'Přidat sekci'
+admin-channelpost-add: Přidat příspěvek do kanálu
+admin-channelpost-submit: Uložit příspěvek
+admin-channelpost-correct: 'Příspěvek byl přidán do kanálu'
+admin-channelcriteria-title: 'Dotazníky pro kanály'
+admin-channelcriteria-subtitle: 'Stanovte si kritéria, podle kterých budete hodnotit projekt, který chce být předložen vašemu kanálu. Snažte se stručně vyjádřit, co očekáváte od iniciativ, které chcete prezentovat, usnadní vám to závěrečné hodnocení.'
+admin-channelprogram-create: 'Vytvořit'
+admin-channelprogram-add: 'Přidat program'
+admin-categories: 'Kategorie a oblasti'
+admin-categories-if-empty-then-asset: 'Pokud zůstane prázdná, použije se výchozí ikona: %s'
+admin-category-add: Vytvořit novou kategorii
+admin-category-edit: Upravit kategorii %s
+admin-socialcommitment-add: Vytvořit nový sociální závazek
+admin-yes: Ano
+admin-impersonate: V zastoupení
 admin-mailing: 'Pošta'
