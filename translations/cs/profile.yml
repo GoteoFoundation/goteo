@@ -1,4 +1,3 @@
----
 profile-field-about: 'Řekněte nám něco o sobě'
 profile-field-avatar_current: 'Vaše aktuální podoba'
 profile-field-avatar_upload: 'Nahrát obrázek'
@@ -22,3 +21,15 @@ profile-field-legal-entity-person: 'Fyzická osoba'
 profile-field-legal-entity-self-employed: OSVČ
 profile-field-url: URL
 profile-field-websites: 'Moje webové stránky'
+profile-fields-analytics-title: Analytika
+profile-fields-image-title: 'Profilový obrázek'
+profile-fields-social-title: 'Profily na sociálních sítích'
+profile-main-header: 'Profilové údaje'
+profile-suggest-projects-interest: 'Možná budete chtít podpořit projekty v podobných kategoriích'
+step-1: Profil
+step-userProfile: 'Krok: Uživatel / Profil'
+tooltip-user-about: "Jako sociální síť si Goteo klade za cíl pomáhat šířit a financovat zajímavé projekty mezi co největším počtem lidí. Důležité jsou informace o vašich dovednostech nebo zkušenostech (profesních, akademických, koníčcích atd.)."
+tooltip-user-analytics: 'Zadejte své ID pro sledování Google Analytics, pokud jej máte, a povolte tak službu Google Analytics pro svůj projekt. ID musí být v tomto formátu: UA-000000-01 (příklad ID)'
+tooltip-user-contribution: 'Stručně vysvětlete své dovednosti nebo oblasti, ve kterých byste mohli projektu pomoci (překlad, šíření, testování, programování, výuka atd.).'
+tooltip-user-facebook: 'Tato sociální síť vám může pomoci šířit informace o projektech Goteo, které vás zajímají, mezi přáteli a rodinou.'
+tooltip-user-facebook-pixel: 'Pokud chcete měřit konverze kampaně na Facebooku, zadejte své ID Facebook Pixel.'
