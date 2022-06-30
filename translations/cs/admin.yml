@@ -163,6 +163,12 @@ admin-socialcommitment-add: Vytvořit nový sociální závazek
 admin-yes: Ano
 admin-impersonate: V zastoupení
 admin-mailing: 'Pošta'
+admin-filter-forced: 'Vynutit filtr'
+admin-filter-forced-help: 'Pokud vyberete tuto možnost, budou filtry použity bez ohledu na to, co uživatel zvolil jako preferenci pro odesílání informací platformou.'
+admin-filter-project-status: Stav projektu
+admin-filter-invest-status: Stav dárcovství
+admin-filter-project-location: Umístění projektu
+admin-filter-location: Umístění, které se použije ve filtru
 admin-donations: Dary
 admin-donations-tip: Spropitné
 admin-donations-tip-invests: Příspěvky ve formě spropitného
