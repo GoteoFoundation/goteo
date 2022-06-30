@@ -163,3 +163,8 @@ admin-socialcommitment-add: Vytvořit nový sociální závazek
 admin-yes: Ano
 admin-impersonate: V zastoupení
 admin-mailing: 'Pošta'
+admin-donations: Dary
+admin-donations-tip: Spropitné
+admin-donations-tip-invests: Příspěvky ve formě spropitného
+admin-donations-tip-users: Uživatelé se spropitným
+admin-donations-direct: Přímé dary
