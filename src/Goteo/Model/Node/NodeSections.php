@@ -58,12 +58,8 @@
         return ['main_title', 'main_description', 'main_button'];
     }
 
-
-  /**
-   * @return  NodeSections
-   */
-  public static function get(int $id): NodeSections
-  {
+    public static function get(int $id): NodeSections
+    {
       $lang = Lang::current();
       list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
       $sql = "
@@ -80,15 +76,15 @@
 
       $query = static::query($sql, $id);
       return $query->fetchObject(__CLASS__);
-  }
-
-  public function getImage() {
-    if (!$this->main_image instanceOf Image) {
-      $this->main_image = new Image($this->main_image);
     }
 
-    return $this->main_image;
-  }
+    public function getImage() {
+        if (!$this->main_image instanceOf Image) {
+          $this->main_image = new Image($this->main_image);
+        }
+
+        return $this->main_image;
+    }
 
       /**
      * Node Sections listing
