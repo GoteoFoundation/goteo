@@ -1,4 +1,12 @@
 <?php
+/*
+* This file is part of the Goteo Package.
+*
+* (c) Platoniq y Fundación Goteo <fundacion@goteo.org>
+*
+* For the full copyright and license information, please view the README.md
+* and LICENSE files that was distributed with this source code.
+*/
 
 namespace Goteo\Application\Templating;
 
@@ -12,12 +20,14 @@ use Twig\Loader\LoaderInterface;
 
 class TwigEngine implements EngineInterface
 {
+    public const TWIG_TEMPLATES_FOLDER = __DIR__ . "/../../../../templates";
+
     private LoaderInterface $loader;
     private Environment $twig;
 
     public function __construct()
     {
-        $this->loader = new FilesystemLoader(__DIR__ . "/../../../../templates");
+        $this->loader = new FilesystemLoader(self::TWIG_TEMPLATES_FOLDER);
         $this->twig = new Environment($this->loader);
     }
 
