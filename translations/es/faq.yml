@@ -1,7 +1,12 @@
 ---
+faq-meta-title: 'FAQ :: Goteo'
+faq-meta-description: 'Preguntas frecuentes dirigidas a resolver dudas de impulsores, donantes, y usuarios Goteo en general.'
+faq-title: 'FAQs'
+faq-search: '¿Qué estás buscando?'
 faq-ask-question: "¿No has podido resolver tu duda? Envía un mensaje con tu pregunta."
 faq-investors-section-header: 'Para cofinanciador@s'
 faq-main-section-header: 'Sobre Goteo'
 faq-nodes-section-header: 'Sobre nodos locales'
 faq-project-section-header: 'Sobre los proyectos'
 faq-sponsor-section-header: 'Para impulsor@s'
+faq-unsolved-footer: "¿NO HEMOS RESUELTO TU DUDA?"

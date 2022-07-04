@@ -40,6 +40,15 @@ $invest_routes = include __DIR__ . '/Routes/invest_routes.php';
 $invest_routes->addPrefix('/invest');
 $routes->addCollection($invest_routes);
 
+// Faq routes
+$routes->add('faq', new Route(
+    '/faq',
+    array('_controller' => 'Goteo\Controller\FaqController::indexAction')
+));
+$faq_routes = include __DIR__ . '/Routes/faq_routes.php';
+$faq_routes->addPrefix('/faq');
+$routes->addCollection($faq_routes);
+
 // Pool routes
 // Pool invest main route
 // Notify URL for gateways that need it
@@ -57,7 +66,7 @@ $routes->addCollection($pool_routes);
 if(Config::get('donate.landing')) {
     $routes->add('donate-landing', new Route(
         '/donate',
-        array('_controller' => 'Goteo\Controller\DonateLandingController::indexAction')
+        array('_controller' => 'Goteo\Controller\DonateController::donateLandingAction')
     ));
 }
 
