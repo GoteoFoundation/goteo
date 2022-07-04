@@ -1,3 +1,5 @@
+@import 'variables';
+
 $color-bg-primary: var(--color-bg-primary) !default;
 $color-bg-secondary: var(--color-bg-secondary) !default;
 $color-bg-secondary-rgb: var(--color-bg-secondary-rgb);
@@ -6,22 +8,58 @@ $color-button-text: var(--color-button-text) !default;
 $color-footer-font: var(--color-footer-font) !default;
 $color-font: var(--color-font) !default;
 
+$font-weight-bold: 700;
+$font-weight-light: 400;
+
+$title-max-width: 15em;
+$body-max-width: 40em;
+
+$animation-duration: 300ms;
+$animation-easing: ease-in-out;
+
+@keyframes breathe-in-out {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.025);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 body.donate {
   font-family: "Karla", sans-serif;
   background-color: $color-bg-secondary !important;
 
   .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
+    font-weight: $font-weight-bold;
   }
 
-  .main-info h1 {
-    font-size: 5vh;
+  .btn {
+    background-color: $color-button;
+    color: $color-button-text;
+    font-size: 32px;
+    border-radius: 0;
+
+    &:focus,
+    &:hover {
+      transition: all $animation-duration $animation-easing;
+      transform: translateX(10px);
+    }
   }
 
   .donate-header {
     background-color: $color-bg-primary;
     width: 100vw;
-    height: 100vh;
+    height: 70vh;
+
+    .btn {
+      padding: 10px 20px;
+      font-weight: $font-weight-bold;
+    }
 
     img {
       width: 100%;
@@ -37,35 +75,16 @@ body.donate {
         width: 100%;
         height: 100%;
         background: $color-bg-secondary-rgb;
+        pointer-events: none;
       }
     }
 
-    h1 {
-      font-weight: bold;
+    .main-info h1 {
+      font-weight: $font-weight-bold;
       font-size: 5vh;
       font-family: "gt_cinetypebold", sans-serif;
       text-shadow: none;
-    }
-
-    a.btn {
-      background-color: $color-button;
-      color: $color-button-text;
-      font-size: 32px;
-      border-radius: 0;
-    }
-  }
-
-
-  @keyframes breathe-in-out {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.025);
-    }
-
-    100% {
-      transform: scale(1);
+      max-width: $title-max-width;
     }
   }
 
@@ -82,6 +101,11 @@ body.donate {
       form {
         div.form-group {
           div.input-group {
+            @media (max-width: $breakpoint-sm) {
+              margin: auto;
+              width: 50%;
+            }
+
             div.input-group-addon {
               border: none;
               border-radius: 0;
@@ -104,8 +128,6 @@ body.donate {
         button.btn {
           height: 46px;
           border-radius: 0;
-          color: $color-button-text;
-          background-color: $color-button;
           font-size: 1em;
           font-weight: bold;
           text-transform: none;
@@ -129,6 +151,8 @@ body.donate {
   }
 
   .donor-text-description {
+    max-width: $body-max-width;
+
     h2 {
       color: $color-bg-primary;
     }
@@ -141,6 +165,37 @@ body.donate {
 
     a {
       color: $color-footer-font;
+    }
+  }
+
+  .social [class*="fa fa-"] {
+    background-color: $color-button;
+
+    &:hover {
+      background-color: $color-bg-primary;
+    }
+  }
+
+  .hint {
+    background: $color-button;
+    color: $color-button-text;
+    padding: 1em;
+
+    @media (max-width: $breakpoint-sm) {
+      .hint.text-right {
+        background: $color-bg-primary;
+        color: $color-button-text;
+        padding: 1em;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+      }
+    }
+
+    .hint .btn {
+      background-color: var(--color-bg-primary);
+      font-size: 1em;
     }
   }
 }
