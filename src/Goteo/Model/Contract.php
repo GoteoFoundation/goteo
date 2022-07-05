@@ -2,25 +2,20 @@
 
 namespace Goteo\Model;
 
+use Goteo\Application\Config;
 use Goteo\Core\Model;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
+use Goteo\Model\LegalDocumentType;
+use Goteo\Model\LegalEntity;
+use Goteo\Model\License;
+use Goteo\Model\Project;
+use Goteo\Model\User;
 use PDOException;
 use stdClass;
 use function array_empty;
 
 class Contract extends Model {
-
-    const NATURAL_PERSON = 'natural_person';
-    const LEGAL_PERSON = 'legal_person';
-    const LEGAL_ENTITIES = [self::NATURAL_PERSON, self::LEGAL_PERSON];
-
-    const CIF = 'cif';
-    const NIF = 'nif';
-    const NIE = 'nie';
-    const VAT = 'vat';
-    const PASSPORT = 'passport';
-    const LEGAL_DOCUMENTS = [self::NIF, self::NIE, self::PASSPORT];
 
     public
         $project,
@@ -239,9 +234,9 @@ class Contract extends Model {
         if (isset($this->nif)) {
             $nif_type = '';
             $valid_nif = Check::nif($this->nif, $nif_type);
-            if ($this->legal_document_type != self::PASSPORT) {
+            if ($this->legal_document_type != LegalDocumentType::PASSPORT) {
                 if(!$valid_nif || $nif_type != $this->legal_document_type ) {
-                    if ($this->legal_document_type == self::NIF)  {
+                    if ($this->legal_document_type == LegalDocumentType::NIF)  {
                         $errors['nif'] = Text::get('validate-contract-nif-document-type');
                     } else {
                         $errors['nif'] = Text::get('validate-contract-cif-document-type');
@@ -253,7 +248,7 @@ class Contract extends Model {
         if(isset($this->entity_cif)) {
             $cif_type = '';
             $valid_cif = Check::nif($this->entity_cif, $cif_type);
-            if(!$valid_cif || $cif_type != self::CIF ) {
+            if(!$valid_cif || $cif_type != LegalDocumentType::CIF ) {
                 $errors['entity_cif'] = Text::get('validate-contract-cif-document-type');
             }
         }
@@ -283,10 +278,6 @@ class Contract extends Model {
         if($count > 0) {
             $errors['promoter'][] = 'promoter';
         }
-        // if(!Check::nif($this->nif)) {
-        //     $count++;
-        //     $errors['promoter'][] = 'promoter_nif';
-        // }
         $res->promoter = round(100 * ($total - $count)/$total);
 
         // 2. entity
@@ -640,7 +631,7 @@ class Contract extends Model {
             $valid_cif = Check::nif($this->entity_cif, $cif_type);
             if (empty($this->entity_cif)) {
                 $errors['entity']['entity_cif'] = Text::get('mandatory-project-field-entity_cif');
-            } elseif (!valid_cif || $cif_type != self::CIF) {
+            } elseif (!valid_cif || $cif_type != LegalDocumentType::CIF) {
                 $errors['entity']['entity_cif'] = Text::get('validate-project-value-entity_cif');
             } else {
                  $okeys['entity']['entity_cif'] = 'ok';
@@ -896,21 +887,4 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
 
         return $nexts;
     }
-
-    static public function getNaturalPersonDocumentTypes(): array
-    {
-        return [
-            Text::get('contract-legal-document-type-nif') => self::NIF,
-            Text::get('contract-legal-document-type-nie') => self::NIE,
-            Text::get('contract-legal-document-type-passport') => self::PASSPORT,
-        ];
-    }
-
-    static public function getLegalPersonDocumentTypes(): array
-    {
-        return [
-            Text::get('contract-legal-document-type-cif') => self::CIF
-        ];
-    }
-
 }

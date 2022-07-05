@@ -10,6 +10,9 @@
 
 namespace Goteo\Library {
 
+    use Goteo\Model\LegalDocumentType;
+    use Goteo\Model\LegalEntity;
+
 	/*
 	 * Clase para verificar valores
 	 * Nif (DNI, NIE o pasaporte) - X0000000A
@@ -36,7 +39,7 @@ namespace Goteo\Library {
 			//comprobacion de NIFs estandar
 			if (preg_match('/(^[0-9]{8}[A-Z]{1}$)/', $value)) {
 				if ($num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr($value, 0, 8) % 23, 1)) {
-					$type = 'nif';
+					$type = LegalDocumentType::NIF;
 					return true;
 				}
 			}
@@ -51,7 +54,7 @@ namespace Goteo\Library {
 			//comprobacion de NIFs especiales (se calculan como CIFs o como NIFs)
 			if (preg_match('/^[KLM]{1}/', $value)) {
 				if ($num[8] == chr(64 + $n) || $num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr($value, 1, 8) % 23, 1)) {
-					$type = 'cif';
+					$type = LegalDocumentType::CIF;
 					return true;
 				}
 			}
@@ -59,7 +62,7 @@ namespace Goteo\Library {
 			//comprobacion de CIFs
 			if (preg_match('/^[ABCDEFGHJNPQRSUVW]{1}/', $value)) {
 				if ($num[8] == chr(64 + $n) || $num[8] == substr($n, strlen($n) - 1, 1)) {
-					$type = 'cif';
+					$type = LegalDocumentType::CIF;
 					return true;
 				}
 			}
@@ -68,7 +71,7 @@ namespace Goteo\Library {
 			//T
 			if (preg_match('/^[T]{1}/', $value)) {
 				if ($num[8] == preg_match('/^[T]{1}[A-Z0-9]{8}$/', $value)) {
-					$type = 'nie';
+					$type = LegalDocumentType::NIE;
 					return true;
 				}
 			}
@@ -76,7 +79,7 @@ namespace Goteo\Library {
 			//XYZ
 			if (preg_match('/^[XYZ]{1}/', $value)) {
 				if ($num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr(str_replace(array('X', 'Y', 'Z'), array('0', '1', '2'), $value), 0, 8) % 23, 1)) {
-					$type = 'nie';
+					$type = LegalDocumentType::NIE;
 					return true;
 				}
 			}
@@ -126,7 +129,7 @@ namespace Goteo\Library {
             $expr = '/^('.implode('|', $vats).')$/';
 
             if (preg_match($expr, $value)) {
-                $type = 'vat';
+                $type = LegalDocumentType::VAT;
                 return true;
             }
 

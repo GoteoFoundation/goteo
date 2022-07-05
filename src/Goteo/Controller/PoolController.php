@@ -24,6 +24,8 @@ use Goteo\Application\View;
 use Goteo\Core\Controller;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
+use Goteo\Model\LegalDocumentType;
+use Goteo\Model\LegalEntity;
 use Goteo\Model\Project;
 use Goteo\Model\User;
 use Goteo\Model\User\Donor;
@@ -357,15 +359,18 @@ class PoolController extends Controller {
             )->getHttpResponse();
         }
 
-        return $this->viewResponse('pool/user_data', [
-            'type' => $type,
-            'invest' => $invest,
-            'invest_address' => $invest_address,
-            'invest_errors' => $errors,
-            'step' => 3,
-            'legal_entities' => Donor::getLegalEntities(),
-            'legal_documents' => Donor::getLegalDocumentTypes()
-        ]);
+        return $this->viewResponse(
+            'pool/user_data',
+            [
+                'type' => $type,
+                'invest' => $invest,
+                'invest_address' => $invest_address,
+                'invest_errors' => $errors,
+                'step' => 3,
+                'legal_entities' => LegalEntity::getLegalEntities(),
+                'legal_documents' => LegalDocumentType::getLegalDocumentTypes()
+            ]
+        );
     }
 
     /**

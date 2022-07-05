@@ -28,6 +28,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Check;
 use Goteo\Application\Currency;
 use Goteo\Application\Message;
+use Goteo\Model\LegalEntity\NaturalPerson;
 use Goteo\Model\User\Apikey;
 use Goteo\Model\User\UserLocation;
 use Goteo\Model\User;
@@ -35,7 +36,6 @@ use Goteo\Model\Project;
 use Goteo\Application\Lang;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Controller\DashboardController;
-use Goteo\Model\Contract;
 
 class SettingsDashboardController extends DashboardController
 {
@@ -236,7 +236,7 @@ class SettingsDashboardController extends DashboardController
             ])
             ->add('contract_legal_document_type', ChoiceType::class, [
                 'label' => 'personal-field-contract_legal_document_type',
-                'choices' => Contract::getNaturalPersonDocumentTypes(),
+                'choices' => NaturalPerson::getLegalDocumentTypes(),
                 'attr' => ['help' => Text::get('tooltip-project-contract_nif')],
                 'required' => false
             ])
