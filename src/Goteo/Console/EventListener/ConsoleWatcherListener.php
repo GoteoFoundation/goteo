@@ -211,11 +211,8 @@ class ConsoleWatcherListener extends AbstractListener {
             // periodico condicional
             case 6: // Publica novedades!
             // y  se repite cada 6 días (fechas libres) mientras no haya posts
-            case 12:
             case 18:
-            case 24:
-            case 30:
-            case 36:
+            case 28:
                 // si ya hay novedades, nada
                 if (Blog::hasUpdates($project->id)) {
                     $this->info("Project already has blog updates", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
@@ -228,11 +225,7 @@ class ConsoleWatcherListener extends AbstractListener {
             // comprobación periódica pero solo un envío
             case 7: // Apóyate en quienes te van apoyando, si más de 20 cofinanciadores
                 // o en cuanto llegue a 20 backers (en fechas libres)
-            case 14:
-            case 17:
-            case 21:
-            case 24:
-            case 27:
+            case 26:
                 if ($project->num_investors >= 20) {
                     $this->send($project, "20_backers", ['owner']);
                 } else {
@@ -270,12 +263,7 @@ class ConsoleWatcherListener extends AbstractListener {
 
 
             case 11: // Refresca tu mensaje de motivacion
-                // si no tiene video motivacional
-                if (empty($project->video)) {
-                    $this->send($project, "tip_11", ['owner']);
-                } else {
-                    $this->warning("Not sending message to project as already has motivational video", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
-                }
+                $this->send($project, "tip_11", ['owner']);
                 break;
 
             case 15: // Sigue los avances y calcula lo que falta
@@ -287,7 +275,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 }
                 break;
 
-            case 25: // No bajes la guardia!
+            case 20: // No bajes la guardia!
                 // si no ha llegado al mínimo
                 if ($project->amount < $project->mincost) {
                     $this->send($project, "two_weeks", ['owner']);
@@ -305,7 +293,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 }
                 break;
 
-            case 38: // Al proyecto le faltan 2 días para archivarse
+            case 36: // Al proyecto le faltan 4 días para archivarse
                 // si no ha llegado al mínimo pero está por encima del 70%
                 if ($project->amount < $project->mincost && $project->percent >= 70) {
                     $this->send($project, "2_days", ['owner']);
@@ -316,59 +304,25 @@ class ConsoleWatcherListener extends AbstractListener {
 
             // Extra
             case 26: // Send information about contract in order to prepare documentacion
-                    $this->info("Sending information about contract", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
-                    $this->send($project, "14_days", ['owner']);
-                    break;
-        }
+                $this->info("Sending information about contract", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
+                $this->send($project, "14_days", ['owner']);
+                break;
 
-        // Avisos periodicos
-        // si lleva más de 15 días: si no se han publicado novedades en la última semana
-        // Ojo! que si no ha enviado ninguna no lanza este sino la de cada 6 días
-        if (!$blog_tip_sent && $days_active > 15) {
-            // veamos si ya le avisamos hace una semana
-            // Si ya se mandó esta plantilla (al llegar a los 20 por primera vez) no se envía de nuevo
-            $sql = "
-                SELECT
-                    id,
-                    DATE_FORMAT(
-                        from_unixtime(unix_timestamp(now()) - unix_timestamp(date))
-                        , '%j'
-                    ) as days
-                FROM mail
-                WHERE mail.email = :email
-                AND mail.template = 23
-                ORDER BY mail.date DESC
-                LIMIT 1";
-            $query = Project::query($sql, array(':email' => $project->getOwner()->email));
-            $lastsend = $query->fetchObject();
-            if (!$lastsend->id || $lastsend->days > 7) {
-                // veamos cuanto hace de la última novedad
-                $sql = "
-                    SELECT
-                        DATE_FORMAT(
-                            from_unixtime(unix_timestamp(now()) - unix_timestamp(date))
-                            , '%j'
-                        ) as days
-                    FROM post
-                    INNER JOIN blog
-                        ON  post.blog = blog.id
-                        AND blog.type = 'project'
-                        AND blog.owner = :project
-                    WHERE post.publish = 1
-                    ORDER BY post.date DESC
-                    LIMIT 1";
-                $query = Project::query($sql, array(':project' => $project->id));
-                $lastUpdate = $query->fetchColumn(0);
-                if ($lastUpdate > 7) {
-                    $this->send($project, "no_updates", ['owner']);
-                } elseif (is_numeric($lastUpdate)) {
-                    $this->warning("Not sending message to project published news less than one week ago", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
-                } else {
-                    $this->warning("Not sending message to project without any news", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
-                }
-            } else {
-                $this->warning("Not sending message to project already advised less than one week ago", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
-            }
+            case 17:
+                $this->send($project, "face_to_face_event", ['owner']);
+                break;
+
+            case 22:
+                $this->send($project, "online_event", ['owner']);
+                break;
+
+            case 24:
+                $this->send($project, "press", ['owner']);
+                break;
+
+            case 30:
+                $this->send($project, "invest_in_social_networks", ['owner']);
+                break;
         }
     }
 
