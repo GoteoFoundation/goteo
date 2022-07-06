@@ -13,6 +13,7 @@ namespace Goteo\Console\Command;
 use Goteo\Library\Check;
 use Goteo\Model\User;
 use Goteo\Model\User\Donor;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -82,7 +83,7 @@ EOT
         $unify = $input->getOption('unify');
 
         if(!$update_donors && !$update_amounts && !$update_status && !$unify) {
-            throw new \InvalidArgumentException('No action defined. Please define any action with --update_donors, --update_amounts or --update_status');
+            throw new InvalidArgumentException('No action defined. Please define any action with --update_donors, --update_amounts or --update_status');
         }
 
         $user = $input->getOption('user');
@@ -95,6 +96,7 @@ EOT
             if ($donor) {
                 $output->writeln("<info>Update {$donor}'s data </info>");
                 $donor = Donor::get($donor);
+                $errors = [];
                 $donor->validateData($errors);
                 if ($errors) {
                     $this->warning("This donor has invalid data " . implode(',', $errors));
@@ -121,7 +123,6 @@ EOT
                                 $output->writeln("<info>The donor legal document will be changed to {$nif_type}");
                                 if ($donor->save($error_save)) {
                                     $output->writeln("<info>The donor legal document has been updated to {$nif_type}</info>");
-                                    $updated_donors++;
                                 } else {
                                     $output->writeln("<error>The donor still has invalid data: " . implode(',', $errors));
                                 }
@@ -165,7 +166,7 @@ EOT
                         $progress_bar->display();
                     }
 
-                    $errors = array();
+                    $errors = [];
                     $can_be_updated = false;
                     $donor->validateData($errors);
 
@@ -253,7 +254,7 @@ EOT
                             }
                         }
 
-                        $errors = array();
+                        $errors = [];
                         $valid = $donor->validateData($errors);
 
                         if ($can_be_updated && $valid) {
@@ -509,7 +510,7 @@ EOT
     private function unifyCertificates(InputInterface $input, OutputInterface $output) {
         $year = $input->getOption('year');
         if (!$year)
-            throw new \InvalidArgumentException('If you want to unify certificates you have to specify a year');
+            throw new InvalidArgumentException('If you want to unify certificates you have to specify a year');
 
         $user = $input->getOption('user');
 
@@ -521,76 +522,69 @@ EOT
 
         $limit = 500;
         $page = 0;
-        $total = User::getList([], null, 0, 0, true);
+        $total = Donor::getList(['year' => $year, 'status' => Donor::PENDING], 0, 0, true);
 
         $progress_bar = new ProgressBar($output, $total);
         $progress_bar->start();
 
-        while($users = User::getList([], $page * $limit, $limit)) {
-            foreach ($users as $user) {
-                $this->unifyUserCertificates($user->id, $year, $input, $output);
+        $certificatesCreated = 0;
+
+        while($donors = Donor::getList(['year' => $year, 'status' => Donor::PENDING], $page * $limit, $limit)) {
+            foreach ($donors as $donor) {
+                if ($this->unifyUserCertificates($donor->user, $year, $input, $output))
+                    $certificatesCreated++;
                 $progress_bar->advance();
             }
             ++$page;
         }
         $progress_bar->finish();
 
+        $output->writeln("<info>A total of $certificatesCreated out of $total donors that have been treated");
     }
 
-    private function unifyUserCertificates(string $user, int $year, InputInterface $input, OutputInterface $output) {
+    private function unifyUserCertificates(string $user, int $year, InputInterface $input, OutputInterface $output): bool
+    {
         $update = $input->getOption('update');
 
         $certificates = Donor::getList(['user' => $user, 'year' => $year, 'donor_status' => Donor::PENDING, 'show_empty' => true]);
         if (empty($certificates)) {
             $this->info("No certificates for user $user");
-            return;
+            return false;
         }
 
         if (count($certificates) == 1) {
             $this->info("There is only one certificate for this user with id $user. No action to be taken.");
-            return;
+            return false;
         }
 
-        $sum_amount = 0;
+        $amount = 0;
+        $numproj = 0;
         foreach ($certificates as $certificate) {
-            $sum_amount += $certificate->amount;
-            $num_projects += $certificate->numproj;
+            $amount += $certificate->amount;
+            $numproj += $certificate->numproj;
         }
 
-        $newCertificate = $this->createNewCertificate(end($certificates));
-        $newCertificate->user = $user;
-        $newCertificate->year = $year;
-        $newCertificate->amount = $sum_amount;
-        $newCertificate->numproj = $num_projects;
+        $newCertificate = $this->createNewCertificate(end($certificates), $user, $year, $amount, $numproj);
+
         if ($update && $newCertificate->save()) {
             $this->info("New certificate created for user $user with id $newCertificate->id");
-            foreach ($certificates as $certificate) {
-                $certificate->status = Donor::SUPERSEEDED;
-                $certificate->confirmed = 0;
-                $invests = $certificate->getInvestions();
 
-                foreach($invests as $invest) {
-                    if (!$certificate->delInvestion($invest)) {
-                        $this->error("Could not remove invests of certificate with id $certificate->id");
-                    }
-                }
-
-                $errors = [];
-                if ($certificate->save($errors)) {
-                    $this->info("Certificate with id $certificate->id superseeded by $newCertificate->id");
-                } else {
-                    $this->error("Could not superseed Certificate with id $certificate->id for new certificate with id $newCertificate->id");
-                    $this->error(implode($errors));
-                }
-            }
+            $this->supersedeOldCertificates($certificates, $newCertificate);
 
             $newCertificate->updateInvestions();
         }
+
+        return true;
     }
 
-    private function createNewCertificate(Donor $certificate): Donor
+    private function createNewCertificate(Donor $certificate, string $user, int $year, int $amount, int $numproj): Donor
     {
+
         $newCertificate = new Donor();
+        $newCertificate->user = $user;
+        $newCertificate->year = $year;
+        $newCertificate->amount = $amount;
+        $newCertificate->numproj = $numproj;
         $newCertificate->name = $certificate->name;
         $newCertificate->surname = $certificate->surname;
         $newCertificate->surname2 = $certificate->surname2;
@@ -610,7 +604,35 @@ EOT
         $newCertificate->pdf = $certificate->pdf;
         $newCertificate->processed = $certificate->processed;
         $newCertificate->status = Donor::PENDING;
+        $newCertificate->pending = date('Y-m-d H:i:s');
 
         return $newCertificate;
+    }
+
+    /**
+     * @param Donor[] $certificates
+     * @param Donor $newCertificate
+     */
+    private function supersedeOldCertificates(array $certificates, Donor $newCertificate)
+    {
+        foreach ($certificates as $certificate) {
+            $certificate->status = Donor::SUPERSEEDED;
+            $certificate->confirmed = 0;
+            $invests = $certificate->getInvestions();
+
+            foreach ($invests as $invest) {
+                if (!$certificate->delInvestion($invest)) {
+                    $this->error("Could not remove invests of certificate with id $certificate->id");
+                }
+            }
+
+            $errors = [];
+            if ($certificate->save($errors)) {
+                $this->info("Certificate with id $certificate->id superseeded by $newCertificate->id");
+            } else {
+                $this->error("Could not superseed Certificate with id $certificate->id for new certificate with id $newCertificate->id");
+                $this->error(implode($errors));
+            }
+        }
     }
 }
