@@ -51,11 +51,19 @@
           font-size: $font-size*1.1;
         }
       }
-      p.description{
-        margin-top: 10px;
-        margin-bottom: 5px;
-        font-size: $font-size;
+
+      p{
+        .description{
+          margin-top: 10px;
+          margin-bottom: 5px;
+          font-size: $font-size;
+        }
+        img{
+          max-width:100%;
+        }
       }
+
+      
       div.worthcracy-label{
         color: $color-dark-green;
         font-size: $font-size*1.1;
