@@ -204,8 +204,12 @@ class ConsoleWatcherListener extends AbstractListener {
             case 3: // Una acción a diario, por pequeña que sea
             case 4: // Llama a todas las puertas
             case 5: // Busca dónde está tu comunidad
-            case 8: // Agradece en público e individualmente
                 $this->send($project, "tip_$days_active", ['owner']);
+                break;
+
+            case 8:
+            case 25:
+                $this->send($project, "tip_8", ['owner']);
                 break;
 
             // periodico condicional
