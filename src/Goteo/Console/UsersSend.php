@@ -64,7 +64,8 @@ class UsersSend extends AbstractCommandController {
             $consultants = current(self::$consultants);
         }
 
-
+        $search = [];
+        $replace = [];
 
         /// tipo de envio
         switch ($type) {
@@ -96,14 +97,14 @@ class UsersSend extends AbstractCommandController {
             // Estos son avisos de auto-tips de /cron/daily
             case '8_days': // template 13, cuando faltan 8 días y no ha conseguido el mínimo
                 $tpl = Template::ADVISE_8_DAYS_TO_FAIL;
-                $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
-                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
+                $search  = ['%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%', '%DATE_PROJECT_PASSES%'];
+                $replace = [$project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets', $project->getWhenWillPass()];
                 break;
 
             case '2_days': // template 14, cuando faltan 2 días y no ha conseguido el mínimo
                 $tpl = Template::ADVISE_2_DAYS_TO_FAIL;
-                $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
-                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
+                $search  = ['%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%', '%DATE_PROJECT_PASSES%'];
+                $replace = [$project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets', $project->getWhenWillPass()];
                 break;
 
             case '14_days': // info about required contract documentation
