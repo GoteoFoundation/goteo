@@ -62,6 +62,7 @@ Console::add(new Command\ChannelCommand());
 Console::add(new Command\ContractCommand());
 Console::add(new Command\CertificateCommand());
 Console::add(new Command\OpenDataCommand());
+Console::add(new Command\CertificateReminderCommand());
 
 // Plugins can add commands by running
 // Console::add(new Command...);
