@@ -10,17 +10,16 @@
 
 namespace Goteo\Console;
 
-use Goteo\Model;
 use Goteo\Application\Lang;
-use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Core\View;
-use Goteo\Core\Redirection;
 use Goteo\Library\Text;
-use Goteo\Model\Template;
+use Goteo\Model;
+use Goteo\Model\Blog\Post;
 use Goteo\Model\Mail;
 use Goteo\Model\Project;
-use Goteo\Model\Blog\Post;
+use Goteo\Model\Template;
+use Goteo\Model\User;
 
 class UsersSend extends AbstractCommandController {
     protected static $URL;
@@ -106,7 +105,7 @@ class UsersSend extends AbstractCommandController {
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
                 break;
 
-            case '14_days': // info about required contract documentation 
+            case '14_days': // info about required contract documentation
                 $tpl = Template::CONTRACT_PREVIOUS_INFORMATION;
                 $search  = array('%USERNAME%', '%PROJECTNAME%');
                 $replace = array($project->user->name, $project->name);
@@ -474,7 +473,7 @@ class UsersSend extends AbstractCommandController {
                     // contenido del post
                     $template_type = Template::get($tpl)->type;
 
-                    $post_content = "**{$post->title}**  
+                    $post_content = "**{$post->title}**
                         " . Text::recorta($post->text, 500);
 
                     // y preparar los enlaces para compartir en redes sociales
@@ -666,6 +665,59 @@ class UsersSend extends AbstractCommandController {
         else
             return true;
 
+    }
+
+    static public function toDonors(string $type, Donor $donor): bool
+    {
+        $tpl = null;
+        $error_sending = false;
+
+        $search = [];
+        $replace = [];
+
+        switch ($type) {
+            case Template::THREE_MONTHS_BEFORE_END_OF_YEAR:
+            case Template::ONE_MONTH_BEFORE_END_OF_YEAR:
+            case Template::FIFTEEN_DAYS_BEFORE_END_OF_YEAR:
+            case Template::TEN_DAYS_BEFORE_DECLARING_DONATIONS:
+            case Template::THREE_DAYS_BEFORE_DECLARING_DONATIONS:
+                $tpl = $type;
+                $search  = array('%USERNAME%');
+                $replace = array($donor->user->name);
+                break;
+        }
+
+        if (empty($tpl)) {
+            static::error("ERROR: template not found for type [$type]", ['type' => $type]);
+            return false;
+        }
+
+        static::info('Sending communication to donor', ['type' => $type, $donor, 'email' => $donor->user->email, 'template' => $tpl]);
+
+        $errors = array();
+        $comlang = User::getPreferences($donor->user)->comlang;
+        $template = Template::get($tpl, $comlang);
+
+        $subject = $template->title;
+        $content = str_replace($search, $replace, $template->text);
+
+        $mailHandler = new Mail();
+        $mailHandler->lang = $comlang;
+        $mailHandler->to = $donor->email;
+        $mailHandler->toName = $donor->name;
+        $mailHandler->reply = Config::getMail('transport.from');
+        $mailHandler->subject = $subject;
+        $mailHandler->content = $content;
+        $mailHandler->html = true;
+        $mailHandler->template = $template->id;
+        if ($mailHandler->send($errors)) {
+            static::notice("Communication sent successfully to donor", ['type' => $type, $donor, 'email' => $donor->email, 'template' => $tpl]);
+        } else {
+            static::critical("ERROR sending communication to donor", ['type' => $type, $donor, 'email' => $donor->email, 'template' => $tpl, 'errors' => $errors]);
+            $error_sending = true;
+        }
+
+        return !$error_sending;
     }
 
 }
