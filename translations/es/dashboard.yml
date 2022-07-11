@@ -12,6 +12,8 @@ dashboard-certificates-confirm-checkbox: 'Confirmo que estos son mis datos legal
 dashboard-certificates-confirmed: Confirmado
 dashboard-certificates-processed: Procesado
 dashboard-certificates-confirmed-ok: 'Datos fiscales confirmados correctamente'
+dashboard-certificate-update-data: "Actualiza los datos"
+dashboard-certificates-updated: "Certificado actualizado correctamente"
 dashboard-certificates-data-alert: '¡Ten en cuenta que una vez confirmado no se pueden modificar los datos!'
 dashboard-certificates-data-desc: 'Por favor, asegúrate de que los datos del formulario son correctos y confirma el formulario'
 dashboard-certificates-data-download-all: 'Confirma tus certificados para activar la desgravación fiscal. Anualmente la Fundación Goteo realiza la notificación a Hacienda de todas las donaciones confirmadas.'
