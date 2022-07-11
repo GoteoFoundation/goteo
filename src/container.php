@@ -10,20 +10,20 @@
 
 use Goteo\Application\Config;
 use Goteo\Application\App;
+use Goteo\Application\Templating\TwigEngine;
 use Monolog\Formatter\LogstashFormatter;
-use Monolog\Logger;
 use Symfony\Component\DependencyInjection;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 
 $sc = new DependencyInjection\ContainerBuilder();
 
 $sc->register('context', Symfony\Component\Routing\RequestContext::class)
    ->addMethodCall('fromRequest', array(App::getRequest()));
 $sc->register('matcher', Symfony\Component\Routing\Matcher\UrlMatcher::class)
-   ->setArguments(array('%routes%', new Reference('context')))
-;
+   ->setArguments(array('%routes%', new Reference('context')));
 
 $env = Config::get('env');
 
@@ -44,6 +44,15 @@ $logger = $sc->register('logger', 'Goteo\Util\Monolog\Logger')
     ->setArguments(array('main', array(new Reference('logger.handler'))))
     ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
     ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')));
+
+$sc->set('url_generator', new UrlGenerator(
+    App::getRoutes(),
+    $sc->get("context"),
+    $sc->get("logger"),
+    Config::get('lang')
+));
+$sc->register("twig", TwigEngine::class)
+    ->setArguments([new Reference('url_generator')]);
 
 $sc->register('console_logger.formatter', LogstashFormatter::class)
    ->setArguments(array("console_$env", gethostname(), null, 'ctxt_', LogstashFormatter::V1));

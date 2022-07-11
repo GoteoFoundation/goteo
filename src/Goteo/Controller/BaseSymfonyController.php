@@ -10,8 +10,8 @@
 
 namespace Goteo\Controller;
 
+use Goteo\Application\App;
 use Goteo\Application\Templating\FoilEngine;
-use Goteo\Application\Templating\TwigEngine;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
@@ -24,7 +24,7 @@ class BaseSymfonyController extends AbstractController
     public function __construct()
     {
         $this->foilRenderer = new FoilEngine();
-        $this->twigRenderer = new TwigEngine();
+        $this->twigRenderer = App::getService('twig');
     }
 
     public function renderFoilTemplate(

@@ -10,6 +10,8 @@
 
 namespace Goteo\Application\Templating;
 
+use Symfony\Bridge\Twig\Extension\RoutingExtension;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -25,10 +27,11 @@ class TwigEngine implements EngineInterface
     private LoaderInterface $loader;
     private Environment $twig;
 
-    public function __construct()
+    public function __construct(UrlGeneratorInterface $urlGenerator)
     {
         $this->loader = new FilesystemLoader(self::TWIG_TEMPLATES_FOLDER);
         $this->twig = new Environment($this->loader);
+        $this->twig->addExtension(new RoutingExtension($urlGenerator));
     }
 
     /**
