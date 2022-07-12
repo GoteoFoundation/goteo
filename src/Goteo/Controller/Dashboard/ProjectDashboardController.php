@@ -246,54 +246,6 @@ class ProjectDashboardController extends DashboardController {
     }
 
     /**
-     * Project edit (personal)
-     * NOTE: Step removed, maintaining the method just in case is coming back some day
-     */
-    public function personalAction($pid, Request $request) {
-        $project = $this->validateProject($pid, 'personal');
-        if($project instanceOf Response) return $project;
-
-        $user = $project->getOwner();
-        $defaults = (array) $project;
-
-        if($account = Account::get($project->id)) {
-            $defaults['paypal'] = $account->paypal;
-            $defaults['bank'] = $account->bank;
-        }
-        if($personal = (array)User::getPersonal($user)) {
-            foreach($personal as $k => $v) {
-                if(array_key_exists($k, $defaults) && empty($defaults[$k])) {
-                    $defaults[$k] = $v;
-                }
-            }
-        }
-
-        $processor = $this->getModelForm(ProjectPersonalForm::class, $project, $defaults, ['account' => $account], $request);
-        $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
-        $processor->getBuilder()
-            ->add('submit', SubmitType::class, [
-                'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
-            ]);
-
-        $form = $processor->getForm();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $request->isMethod('post')) {
-            try {
-                $processor->save($form, true);
-                Message::info(Text::get('user-personal-saved'));
-                return $this->redirect($this->getEditRedirect('personal', $request));
-            } catch(FormModelException $e) {
-                Message::error($e->getMessage());
-            }
-        }
-
-        return $this->viewResponse('dashboard/project/personal', [
-            'form' => $form->createView()
-        ]);
-    }
-
-    /**
      * Project edit (overview)
      */
     public function overviewAction($pid, Request $request) {
@@ -675,15 +627,14 @@ class ProjectDashboardController extends DashboardController {
     /**
      * Project edit (overview)
      */
-    public function campaignAction($pid, Request $request) {
+    public function campaignAction(Request $request, string $pid) {
         $project = $this->validateProject($pid, 'campaign');
         if($project instanceOf Response) return $project;
 
         $defaults = (array)$project;
-        if($account = Account::get($project->id)) {
-            $defaults['paypal'] = $account->paypal;
-        }
-        if($personal = (array)User::getPersonal($user)) {
+        $account = Account::get($project->id);
+
+        if($personal = (array)User::getPersonal($this->user)) {
             foreach($personal as $k => $v) {
                 if(array_key_exists($k, $defaults) && empty($defaults[$k])) {
                     $defaults[$k] = $v;
