@@ -10,6 +10,7 @@
 
 use Goteo\Application\Config;
 use Goteo\Application\App;
+use Goteo\Application\CustomRouter;
 use Goteo\Application\Templating\TwigEngine;
 use Monolog\Formatter\LogstashFormatter;
 use Symfony\Component\DependencyInjection;
@@ -45,12 +46,18 @@ $logger = $sc->register('logger', 'Goteo\Util\Monolog\Logger')
     ->addMethodCall('pushProcessor', array(new Reference('logger.processor.web')))
     ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')));
 
+$routeCollection = App::getRoutes();
 $sc->set('url_generator', new UrlGenerator(
-    App::getRoutes(),
+    $routeCollection,
     $sc->get("context"),
     $sc->get("logger"),
     Config::get('lang')
 ));
+$sc->register('router', CustomRouter::class)
+    ->setArguments([
+        new Reference('url_generator'),
+        $routeCollection,
+    ]);
 $sc->register("twig", TwigEngine::class)
     ->setArguments([new Reference('url_generator')]);
 
