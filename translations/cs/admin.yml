@@ -186,7 +186,70 @@ admin-stats: Statistiky
 admin-list-total: 'Celkem: <strong>%s</strong> výsledků'
 admin-search-global: 'Projekt, kanál, výzva k předkládání návrhů...'
 admin-already-impersonating: 'Již se vydáváte za uživatele, nejprve se prosím odhlaste!'
+admin-rebase-user: 'Změna ID uživatele'
+admin-edit-name: 'Přejmenovat'
+admin-send-email: 'Odeslat e-mail'
+admin-show-roles-info: 'Co může která role dělat?'
 admin-mailing: 'Pošta'
+admin-title-avatar: Uživatelská ikona
+admin-title-roles: Role
+admin-title-role: Role
+admin-title-amount: Obráceně
+admin-title-icon: Ikona
+admin-title-info: Info
+admin-title-image: Obrázek
+admin-title-title: Název
+admin-title-subtitle: Podtitul
+admin-title-subject: Předmět
+admin-title-description: Popis
+admin-title-section: Sekce
+admin-title-text: Text
+admin-title-slug: Slug
+admin-title-publish: Zveřejněno
+admin-title-lang: Jazyk
+admin-title-langs: Překlady
+admin-title-actions: Akce
+admin-title-tags: Štítky
+admin-title-deleted: Vymazáno
+admin-title-social_commitment: Sociální závazek
+admin-title-sdgs: 'Cíle udržitelného rozvoje'
+admin-title-footprints: 'Stopa'
+admin-title-categories: 'Kategorie'
+admin-title-social_commitments: 'Sociální závazky'
+admin-title-order: Řazení
+admin-title-status: Stav
+admin-title-users: Uživatelé
+admin-title-city: Město
+admin-title-date: Datum
+admin-title-blockquote: 'Vlastní citát'
+admin-title-type: 'Typ'
+admin-title-date-in: Datum zahájení
+admin-title-date-out: Datum ukončení
+admin-title-venue: Místo (viditelné ve výzvě k akci)
+admin-title-venue-address: Adresa
+admin-title-how-to-get: Jak se tam dostanete?
+admin-title-iframe: 'Lokalizace v rámci Iframe'
+admin-title-schedule-file: 'Url programu'
+admin-title-call: 'Výzva k dorovnání financování'
+admin-title-url-inscription: Odkaz na přihlášení
+admin-title-filter: Filtr
+admin-title-template: Šablona
+admin-title-receivers: Příjemci
+admin-title-sent: Odesláno
+admin-title-failed: Neodesláno
+admin-title-pending: Čekající
+admin-title-success: Úspěšný
+admin-stats-active-method: 'Čistý příjem podle způsobu platby'
+admin-stats-active-method-desc: 'Čistý příjem zahrnuje všechny peníze shromážděné platformou s výjimkou výnosů (příspěvky do peněženky, přímé a neúspěšné projekty s návratem do peněženky jsou zahrnuty).<br><em>Příspěvky z peněženky nejsou zahrnuty</em > (pokud není zvolena tato platební metoda).'
+admin-stats-refunded-method: 'Vrácení podle způsobu platby'
+admin-stats-refunded-method-desc: 'Náhrady zahrnují všechny způsoby platby (včetně příspěvků z peněženky)'
+admin-stats-fees-method: 'Poplatek za platformu podle způsobu platby'
+admin-stats-from_matchfunding: 'Podrobnosti o projektech spolufinancování'
+admin-stats-matchfunding-part: 'Projekty s dorovnávacím financováním'
+admin-stats-users-part: 'Projekty bez dorovnávacího financování'
+admin-stats-match-part: 'Multiplikační část'
+admin-stats-to_projects: 'K projektům'
+admin-refunded: Vráceno
 admin-filter-forced: 'Vynutit filtr'
 admin-filter-forced-help: 'Pokud vyberete tuto možnost, budou filtry použity bez ohledu na to, co uživatel zvolil jako preferenci pro odesílání informací platformou.'
 admin-filter-project-status: Stav projektu
