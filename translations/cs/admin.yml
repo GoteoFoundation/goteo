@@ -161,8 +161,31 @@ admin-categories-if-empty-then-asset: 'Pokud zůstane prázdná, použije se vý
 admin-category-add: Vytvořit novou kategorii
 admin-category-edit: Upravit kategorii %s
 admin-socialcommitment-add: Vytvořit nový sociální závazek
+admin-channels: Kanály
 admin-yes: Ano
 admin-impersonate: V zastoupení
+admin-impersonate-user: Zástupce pro %s
+admin-project-express-discard: 'Výslovné zamítnutí'
+admin-project-express-discard-desc: 'Nastavte projekt do stavu Vyřazeno a odešlete e-mail na adresu'
+admin-project-express-discard-sure: 'Automaticky se odešle e-mail a přejde do stavu vyřazeno, ano?'
+admin-project-to-review: 'K přezkoumání'
+admin-project-to-review-desc: 'Přesunout projekt do stavu čeká na posouzení'
+admin-project-view-in-admin: 'Zobrazit v administraci'
+admin-project-to-negotiation: 'Vyjednávání'
+admin-project-to-negotiation-desc: 'Projekt přechází do stavu Upraveno'
+admin-project-to-negotiation-sure: 'POZOR! Projekt je v kampani! Tímto ji zrušíme, OK?'
+admin-project-to-publish: 'Zveřejnit'
+admin-project-to-publish-desc: 'Projekt je nyní ve stavu "v kampani"'
+admin-project-to-publish-sure: 'Projekt se chystá zahájit kampaň, můžeme začít?'
+admin-project-derivation-discard: 'Odmítnutí s doporučením'
+admin-project-derivation-discard-desc: 'Nastavte projekt do stavu Vyřazeno a odešlete e-mail s odkazem na jinou vhodnější platformu'
+admin-project-derivation-discard-sure: 'Automaticky se odešle e-mail s odkazem na jinou platformu a přejde do stavu vyřazeno, ano?'
+admin-home-title: Administrace Goteo
+admin-list: Seznam
+admin-stats: Statistiky
+admin-list-total: 'Celkem: <strong>%s</strong> výsledků'
+admin-search-global: 'Projekt, kanál, výzva k předkládání návrhů...'
+admin-already-impersonating: 'Již se vydáváte za uživatele, nejprve se prosím odhlaste!'
 admin-mailing: 'Pošta'
 admin-filter-forced: 'Vynutit filtr'
 admin-filter-forced-help: 'Pokud vyberete tuto možnost, budou filtry použity bez ohledu na to, co uživatel zvolil jako preferenci pro odesílání informací platformou.'
