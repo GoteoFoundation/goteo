@@ -58,17 +58,13 @@ if($sidebar) {
         </script>
 
         <?= $this->insert('partials/header/metas') ?>
-
         <?= $this->supply('lang-metas', $this->insert('partials/header/lang_metas')) ?>
 
         <title><?= $this->title ?></title>
-
         <link rel="icon" type="image/x-icon" href="/favicon.ico" >
 
         <?= $this->insert('partials/header/styles') ?>
-
         <?= $this->insert('partials/header/javascript') ?>
-
 
     <?php $this->stop() ?>
 
@@ -77,27 +73,22 @@ if($sidebar) {
     <body role="document" <?php if ($bodyClass) echo ' class="' . $bodyClass . '"' ?>>
 
     <?= $this->supply('header', $this->insert("partials/header")) ?>
-
     <?= $this->supply('search', $this->insert("partials/search")) ?>
 
     <div class="page-wrap">
       <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['sidebarMenu' => $sidebar])) ?>
       <div id="main">
-
         <div id="main-content">
             <?= $this->supply('flash-messages', $this->insert("partials/header/messages"))?>
             <?= $this->supply('content') ?>
         </div>
-
       </div>
     </div>
 
     <?php $this->section('footer') ?>
 
         <?= $this->insert('partials/footer') ?>
-
         <?= $this->insert('partials/footer/javascript') ?>
-
         <?= $this->insert('partials/footer/analytics') ?>
 
     <?php $this->stop() ?>

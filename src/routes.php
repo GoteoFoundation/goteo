@@ -25,6 +25,10 @@ $routes->add('home', new Route(
     '/',
     array('_controller' => 'Goteo\Controller\IndexController::indexAction')
 ));
+$routes->add('new_home', new Route(
+    '/',
+    array('_controller' => 'Goteo\Controller\IndexController::indexAction')
+));
 
 // Discover routes
 $routes->add('discover', new Route(
