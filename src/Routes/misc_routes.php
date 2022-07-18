@@ -29,16 +29,6 @@ $misc->add('about-librejs', new Route(
         )
 ));
 
-$misc->add('about-test-foil', new Route(
-    '/about/test-foil',
-    ['_controller' => 'Goteo\Controller\TestController::testFoilAction']
-));
-
-$misc->add('about-test-twig', new Route(
-    '/about/test-twig',
-    ['_controller' => 'Goteo\Controller\TestController::testTwigAction']
-));
-
 $misc->add('about-sections', new Route(
     '/about/{id}',
     array(
