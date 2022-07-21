@@ -19,27 +19,25 @@
     <?= $this->text('home-menu-toggle-label') ?> <i class="fa fa-angle-right"></i>
 <?php $this->replace() ?>
 
-
-
 <?php $this->section('home-content') ?>
 
     <!-- Banner section -->
 
     <?= $this->insert('partials/components/main_slider', [
-            'banners' => $this->banners,
+            'banners' => $this->response->getBanners(),
             'nav' => 'home/partials/main_slider_nav',
             'button_text' => $this->text('invest-more-info')
     ]) ?>
 
     <?= $this->insert('home/partials/projects') ?>
 
-    <?php if ($this->home['values']): ?>
+    <?php if ($this->response->getHomeItems()['values']): ?>
 
         <?= $this->insert('partials/components/values', [
             'title' => $this->t('home-footprint-values-title'),
-            'footprints' => $this->footprints,
-            'sdg_by_footprint' => $this->sdg_by_footprint,
-            'projects_by_footprint' => $this->projects_by_footprint
+            'footprints' => $this->response->getFootprints(),
+            'sdg_by_footprint' => $this->response->getSdgByFootprint(),
+            'projects_by_footprint' => $this->response->getProjectsByFootprint()
         ]) ?>
 
     <?php endif; ?>
@@ -61,4 +59,3 @@
     <?= $this->insert('home/partials/modals') ?>
 
 <?php $this->replace() ?>
-
