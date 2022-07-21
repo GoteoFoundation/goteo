@@ -11,23 +11,18 @@
 namespace Goteo\Controller;
 
 use Goteo\Application\View;
-use Goteo\Model\Project;
 use Goteo\UseCase\Home\HomeUseCase;
 use Symfony\Component\HttpFoundation\Response;
 
 
 class IndexController extends BaseSymfonyController
 {
-    private Project\ProjectFilters $projectFilters;
-
     public function __construct()
     {
         parent::__construct();
         $this->dbReplica(true);
         $this->dbCache(true);
         View::setTheme('responsive');
-
-        $this->projectFilters = new Project\ProjectFilters();
     }
 
     public function indexAction(): Response
