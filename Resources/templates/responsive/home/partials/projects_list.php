@@ -1,5 +1,7 @@
-<div class="slider slider-projects" data-total="<?= (int)$this->total_projects ?>" data-limit="<?= (int)$this->limit ?>">
-    <?php foreach ($this->projects as $project) : ?>
+<div class="slider slider-projects"
+     data-total="<?= $this->response->getTotalProjects() ?>"
+     data-limit="<?= $this->response->getLimit() ?>">
+    <?php foreach ($this->response->getProjects() as $project) : ?>
             <div class="item widget-slide">
             <?=    $this->insert('project/widgets/normal', [
                     'project' => $project
