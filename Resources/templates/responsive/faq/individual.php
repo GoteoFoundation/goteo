@@ -12,7 +12,7 @@
 
     <section class="step3 container">
       	<div class="row">
-		  <aside class="col-sm-3" id="accordion">
+            <aside class="col-sm-3" id="accordion">
 	      		<?php foreach ($this->subsections as $subsection): ?>
 		    		<?php $faq_subsection = $subsection->getFaqs(); ?>
 					<?php if (!empty($faq_subsection)): ?>
@@ -35,12 +35,12 @@
 					<?php endif; ?>
 	      		<?php endforeach; ?>
 	      	</aside>
-	        <article class="col-sm-8 col-sm-offset-1">
-		       	<?= $this->markdown($this->faq->description) ?>
-	    		<footer class="unsolved_faq">
-		    		<a href="/contact" class="btn"><?= $this->t('faq-unsolved-footer') ?></a>
-		    	</footer>
-	        </article>
+            <article class="col-sm-8 col-sm-offset-1">
+                <?= $this->markdown($this->faq->description) ?>
+                <footer class="unsolved_faq">
+                    <a href="/contact" class="btn"><?= $this->t('faq-unsolved-footer') ?></a>
+                </footer>
+            </article>
     	</div>
     </section>
 
