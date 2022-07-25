@@ -99,7 +99,7 @@ real:
         type: php
         nice: true
     -
-        schedule: '0 0 15 12'
+        schedule: '0 0 15 12 *'
         command: 'bin/console certificate_reminder >/dev/null 2>&1'
         type: php
         nice: true
