@@ -10,7 +10,7 @@
 
     <?= $this->insert('faq/partials/header') ?>
 
-    <section class="step3">
+    <section class="step3 container">
       	<div class="row">
 		  <aside class="col-sm-3" id="accordion">
 	      		<?php foreach ($this->subsections as $subsection): ?>
