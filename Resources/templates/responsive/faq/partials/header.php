@@ -14,13 +14,15 @@
         </div>
         <?php if ($this->faq_section): ?>
             <div class="row">
-                <h3><a href="<?= '/faq/'.$this->faq_section->slug ?>"><?= $this->faq_section->name ?></a></h3>
-                <h1><?= $this->faq->title ?></h1>
+                <h3><a href="/faq"><?= $this->t('faq-title') ?></a></h3>
+                <h1><?= $this->faq_section->name ?></h1>
             </div>
         <?php elseif ($this->view == 'search'): ?>
             <div class="row">
                 <h1><?= $this->t('faq-search') ?></h1>
             </div>
+        <?php else: ?>
+            <h1><?= $this->t('faq-title') ?></h1>
         <?php endif; ?>
     </div>
 </header>
