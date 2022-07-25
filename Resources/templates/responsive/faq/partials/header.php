@@ -4,7 +4,7 @@
             <form class="col-sm-6 faq_search" method="GET" action="/faq/search">
                 <label>
                     <span class="a-hidden"><?= $this->text('faq-search') ?></span>
-                    <input type="search" class="search-field" name="search" placeholder="<?= $this->t('faq-search') ?>">
+                    <input type="search" class="search-field" name="search" value="<?= $this->search ?>" placeholder="<?= $this->t('faq-search') ?>">
                 </label>
                 <button class="search-submit icon-search"><span class="a-hidden"><?= $this->text('regular-search') ?></span></button>
             </form>

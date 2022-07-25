@@ -45,13 +45,20 @@ class FaqController extends Controller {
 
     public function searchAction(Request $request): Response
     {
-        $search = $request->query->getAlnum('search');
+        $search = htmlspecialchars($request->query->get('search'));
 
-        $faqsCount = Faq::getListCount(['search' => $search]);
-        $faqs = Faq::getList(['search' => $search], 0, $faqsCount, false, Lang::current());
+        $faqSections=FaqSection::getList();
+        $faqs = [];
+
+        foreach($faqSections as $section) {
+            $faqsCount = Faq::getListCount(['search' => $search, 'section' => $section->id]);
+            $faqs[$section->id] = Faq::getList(['search' => $search, 'section' => $section->id], 0, $faqsCount, false, Lang::current());
+        }
 
         return $this->viewResponse('faq/search', [
-            'faqs' => $faqs
+            'search' => $search,
+            'faqs' => $faqs,
+            'faqSections' => $faqSections
         ]);
     }
 

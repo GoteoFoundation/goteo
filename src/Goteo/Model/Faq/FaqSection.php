@@ -126,10 +126,9 @@
     /**
      * @return Faq[]
      */
-    public function getFaqs(): array
+    public function getFaqs(int $amount = 5): array
     {
-        $count = Faq::getListCount(['section' => $this->id]);
-        return Faq::getList(['section'=>$this->id], 0, $count);
+        return Faq::getList(['section'=>$this->id], 0, $amount);
     }
 
 
