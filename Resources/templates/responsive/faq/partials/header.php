@@ -12,7 +12,11 @@
                 <a href="/project/create" target="_blank" class="btn btn-fashion"><?= $this->text('regular-create') ?></a>
             </div>
         </div>
-        <?php if ($this->faq_section): ?>
+        <?php if ($this->faq): ?>
+            <div class="row">
+                <h1><?= $this->faq->title ?></h1>
+            </div>
+        <?php elseif ($this->faq_section): ?>
             <div class="row">
                 <h3><a href="/faq"><?= $this->t('faq-title') ?></a></h3>
                 <h1><?= $this->faq_section->name ?></h1>
