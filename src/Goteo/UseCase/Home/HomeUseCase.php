@@ -24,12 +24,12 @@ class HomeUseCase
 
     public function execute(): HomeUseCaseResponse
     {
-        $response = new HomeUseCaseResponse();
         $footprints = Footprint::getList();
 
         $filters = $this->projectFilters->getFilters('promoted');
         $projects_by_footprint = [];
         $sdg_by_footprint = [];
+        $footprintImpactData = [];
 
         foreach ($footprints as $footprint) {
             $footprintImpactData[$footprint->id] = $footprint->getAllImpactData();
@@ -41,22 +41,20 @@ class HomeUseCase
             $sdg_by_footprint[$footprint->id] = Sdg::getList(['footprint' => $footprint->id]);
         }
 
-        $response
-            ->setProjects(Project::getList($filters, null, 0, $response->getLimit()))
-            ->setTotalProjects(Project::getList($filters, null, 0, 0, true))
-            ->setStories(Stories::getList(['active' => true]))
-            ->setChannels(Node::getAll(['status' => 'active', 'type' => 'channel']))
-            ->setBanners(Banner::getAll(true))
-            ->setStats(Stats::create('home_stats'))
-            ->setFootprints($footprints)
-            ->setHomeItems(Home::getAll(Config::get('node'), 'index'))
-            ->setSponsors($this->getSponsors())
-            ->setFootprintImpactData($footprintImpactData)
-            ->setProjectsByFootprint($projects_by_footprint)
-            ->setSdgByFootprint($sdg_by_footprint)
-        ;
-
-        return $response;
+        return new HomeUseCaseResponse(
+            Project::getList($filters, null, 0, HomeUseCaseResponse::LIMIT),
+            Project::getList($filters, null, 0, 0, true),
+            Stories::getList(['active' => true]),
+            Node::getAll(['status' => 'active', 'type' => 'channel']),
+            Banner::getAll(true),
+            Stats::create('home_stats'),
+            $footprints,
+            Home::getAll(Config::get('node'), 'index'),
+            $this->getSponsors(),
+            $projects_by_footprint,
+            $sdg_by_footprint,
+            $footprintImpactData,
+        );
     }
 
     /**

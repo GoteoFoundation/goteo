@@ -67,7 +67,7 @@
                         <?php endforeach ?>
                     </div>
                     <div class="slider slider-footprint-projects">
-                        <?php foreach($projects_by_footprint[$footprint->id] as $index => $project): ?>
+                        <?php foreach($projects_by_footprint[$footprint->id] as $project): ?>
                             <div class="footprint-project">
                                 <img src="<?= $project->image->getLink(600, 416, true); ?>" class="bg-project" data-footprint=<?= $footprint->id ?>>
                                 <div class="project-footprint">
