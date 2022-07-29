@@ -49,16 +49,18 @@ class FaqController extends Controller {
 
         $faqSections=FaqSection::getList();
         $faqs = [];
-
+        $totalFaqs = 0;
         foreach($faqSections as $section) {
             $faqsCount = Faq::getListCount(['search' => $search, 'section' => $section->id]);
+            $totalFaqs += $faqsCount;
             $faqs[$section->id] = Faq::getList(['search' => $search, 'section' => $section->id], 0, $faqsCount, false, Lang::current());
         }
 
         return $this->viewResponse('faq/search', [
             'search' => $search,
             'faqs' => $faqs,
-            'faqSections' => $faqSections
+            'faqSections' => $faqSections,
+            'totalFaqs' => $totalFaqs
         ]);
     }
 

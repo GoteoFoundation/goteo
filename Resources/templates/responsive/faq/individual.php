@@ -8,7 +8,7 @@
 	    </div>
     </nav>
 
-    <?= $this->insert('faq/partials/header') ?>
+    <?= $this->insert('faq/partials/header', ['header' => $this->faq_section->slug]) ?>
 
     <section class="step3 container">
       	<div class="row">

@@ -9,7 +9,7 @@
 	    </div>
     </div>
 
-    <?= $this->insert('faq/partials/header') ?>
+    <?= $this->insert('faq/partials/header', ['header' => $this->faq_section->slug]) ?>
 
     <section class="container step2">
       	<div class="row">

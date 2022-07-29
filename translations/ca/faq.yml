@@ -1,7 +1,14 @@
 ---
+faq-meta-title: 'FAQ :: Goteo'
+faq-meta-description: "Preguntas freqüents dirigides a resoldre dubtes d'impulsors, donants i usuaris Goteo en general."
+faq-title: 'FAQs'
+faq-search: 'Què estas cercant?'
+faq-ask-question: "No has pogut resoldre el teu dubte? Envía un missatge amb la teva pregunta."
 faq-investors-section-header: 'Per a cofinançadors/es'
 faq-main-section-header: 'Una aproximació a Goteo'
 faq-nodes-section-header: 'Sobre nodes locals'
 faq-project-section-header: 'Sobre els projectes'
 faq-sponsor-section-header: 'Per a impulsors/es'
 faq-unsolved-footer: "NO HEM RESOLT EL TEU DUBTE?"
+faq-searched-word: 'La teva cerca és "%s"'
+faq-search-empty: "No hem trobat cap FAQ que compleixi amb la cerca"

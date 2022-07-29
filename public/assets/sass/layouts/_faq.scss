@@ -159,6 +159,12 @@ body.faq {
     background: url('../img/faq/pattern/matchers@1x.svg') center center/96px repeat #582470;
   }
 
+  #header_faqs.search {
+    h1, h3 {
+      color: #3A3A3A;
+    }
+  }
+
   .a-hidden {
     border: 0;
     clip: rect(0,0,0,0);
@@ -175,15 +181,12 @@ body.faq {
     .row {
       display: flex;
       flex-flow: row wrap;
-    }
-  }
-  .step1 {
-    .row {
       .col-lg-3 {
         display: flex;
       }
     }
   }
+
   .faqs_module {
     border-left: 1px solid #E3E3E3;
     >header {
@@ -456,6 +459,16 @@ body.faq {
       }
     }
   }
+  section.search {
+    h2.no-results {
+      text-align: center;
+    }
+    article {
+      h2 a, h3 a {
+        color: #19b4b2;
+      }
+    }
+  }
   @media only screen and (max-width: 767px) {
     #header_faqs {
       min-height: 192px;
@@ -542,7 +555,5 @@ body.faq {
       }
     }
   }
-
-
 // End body
 }

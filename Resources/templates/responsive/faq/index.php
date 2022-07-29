@@ -3,7 +3,7 @@
 <?php $this->section('faq-content') ?>
 
   <!-- Start -- Cesc -->
-    <?= $this->insert('faq/partials/header') ?>
+    <?= $this->insert('faq/partials/header', ['header' => 'home_faqs']) ?>
 
     <section class="container step1">
       <div class="row">
