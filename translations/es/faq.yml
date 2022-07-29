@@ -10,3 +10,5 @@ faq-nodes-section-header: 'Sobre nodos locales'
 faq-project-section-header: 'Sobre los proyectos'
 faq-sponsor-section-header: 'Para impulsor@s'
 faq-unsolved-footer: "¿NO HEMOS RESUELTO TU DUDA?"
+faq-searched-word: 'Tu búsqueda es "%s"'
+faq-search-empty: "No hemos encontrado ninguna FAQ que cumpla con la búsqueda"

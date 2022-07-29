@@ -1,4 +1,4 @@
-<header id="header_faqs" class="container-fluid <?= $this->faq_section->slug ?? 'home_faqs' ?>">
+<header id="header_faqs" class="container-fluid <?= $this->header ?>">
     <div class="container">
         <div class="row upper_bar">
             <form class="col-sm-6 faq_search" method="GET" action="/faq/search">
@@ -24,6 +24,7 @@
         <?php elseif ($this->view == 'search'): ?>
             <div class="row">
                 <h1><?= $this->t('faq-search') ?></h1>
+                <h3><?= $this->text('faq-searched-word', $this->get_query('search')) ?></h3>
             </div>
         <?php else: ?>
             <h1><?= $this->t('faq-title') ?></h1>

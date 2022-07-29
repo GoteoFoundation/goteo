@@ -165,13 +165,21 @@ class Faq extends \Goteo\Core\Model {
         $filter = [];
         $values = [];
 
+        if ($filters['search']) {
+            $search = $filters['search'];
+            $filter[] = "faq.title like :search";
+            $values[':search'] = "%$search%";
+        }
+
         if ($filters['section']) {
             $subsections= FaqSubsection::getList(['section'=>$filters['section']]);
+            $subsections_id = [];
 
             foreach ($subsections as $subsection)
                 $subsections_id[]=$subsection->id;
 
-            $filter[] = "faq.subsection_id in ('".implode("','", $subsections_id)."')";
+            if (!empty($subsections_id))
+                $filter[] = "faq.subsection_id in ('".implode("','", $subsections_id)."')";
 
         }
 
@@ -188,7 +196,6 @@ class Faq extends \Goteo\Core\Model {
             SELECT
                 count(faq.id)
             FROM faq
-            $joins
             $sql
         ";
         $query = static::query($sql, $values);
