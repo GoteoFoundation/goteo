@@ -4,7 +4,10 @@ accounts-lb-cancel: 'Zrušení příspěvku'
 accounts-lb-list: Výpis
 accounts-lb-report: 'Zpráva o projektu'
 accounts-lb-update: 'Změna statusu příspěvku'
+banners-lb: Banner
+banners-lb-add: 'Nový banner'
 banners-lb-cancel: 'Zrušení příspěvku'
+banners-lb-edit: 'Upravit banner'
 banners-lb-list: Výpis
 banners-lb-report: 'Zpráva o projektu'
 banners-lb-translate: 'Překlad banneru'
