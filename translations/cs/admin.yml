@@ -197,11 +197,20 @@ admin-user-hidden: 'Soukromé (skryté)'
 admin-user-active: 'Aktivní účet'
 admin-user-warning: 'Pozor: Tyto operace jsou prováděny bez zaslání varování uživateli'
 admin-user-wallet-amount: 'Kredit v peněžence'
+admin-user-create-invest: 'Vytvořit příspěvek'
 admin-mailing: 'Pošta'
 admin-user-no-mailing: 'Zatím vám nebyly odeslány žádné e-maily'
+admin-view-user-mailing: 'Všechny zásilky'
+admin-users-global-search: 'Id, jméno, e-mail nebo projekt'
+admin-blog-global-search: 'Id, název, podnadpis nebo text'
+admin-communication-global-search: 'Předmět'
+admin-blog-stories-search: 'Id, název, text nebo projekt'
+admin-donor-name-search: 'ID, jméno, e-mail'
+admin-no-project: 'Žádný projekt'
 admin-title-id: Id
 admin-title-name: Jméno
 admin-title-about: Info
+admin-title-active: Aktivní
 admin-title-location: Lokalita
 admin-title-fullname: Jméno
 admin-title-email: E-mail
@@ -258,6 +267,9 @@ admin-title-pending: Čekající
 admin-title-success: Úspěšný
 admin-title-percent: Procento
 admin-title-download-url: 'Odkaz pro stažení'
+admin-title-channel: 'Kanál'
+admin-title-year: Rok
+admin-title-country: Země
 admin-stats-fees: 'Poplatek platformě'
 admin-stats-active-method: 'Čistý příjem podle způsobu platby'
 admin-stats-active-method-desc: 'Čistý příjem zahrnuje všechny peníze shromážděné platformou s výjimkou výnosů (příspěvky do peněženky, přímé a neúspěšné projekty s návratem do peněženky jsou zahrnuty).<br><em>Příspěvky z peněženky nejsou zahrnuty</em > (pokud není zvolena tato platební metoda).'
