@@ -190,7 +190,23 @@ admin-rebase-user: 'Změna ID uživatele'
 admin-edit-name: 'Přejmenovat'
 admin-send-email: 'Odeslat e-mail'
 admin-show-roles-info: 'Co může která role dělat?'
+admin-user-roles: 'Seznam uživatelských rolí'
+admin-view-user-projects: 'Všechny projekty'
+admin-view-user-invests: 'Všechny příspěvky'
+admin-user-hidden: 'Soukromé (skryté)'
+admin-user-active: 'Aktivní účet'
+admin-user-warning: 'Pozor: Tyto operace jsou prováděny bez zaslání varování uživateli'
+admin-user-wallet-amount: 'Kredit v peněžence'
 admin-mailing: 'Pošta'
+admin-user-no-mailing: 'Zatím vám nebyly odeslány žádné e-maily'
+admin-title-id: Id
+admin-title-name: Jméno
+admin-title-about: Info
+admin-title-location: Lokalita
+admin-title-fullname: Jméno
+admin-title-email: E-mail
+admin-title-header-image: Obrázek záhlaví
+admin-title-password: Heslo
 admin-title-avatar: Uživatelská ikona
 admin-title-roles: Role
 admin-title-role: Role
@@ -211,6 +227,7 @@ admin-title-langs: Překlady
 admin-title-actions: Akce
 admin-title-tags: Štítky
 admin-title-deleted: Vymazáno
+admin-title-sphere: Oblast působnosti
 admin-title-social_commitment: Sociální závazek
 admin-title-sdgs: 'Cíle udržitelného rozvoje'
 admin-title-footprints: 'Stopa'
@@ -239,6 +256,9 @@ admin-title-sent: Odesláno
 admin-title-failed: Neodesláno
 admin-title-pending: Čekající
 admin-title-success: Úspěšný
+admin-title-percent: Procento
+admin-title-download-url: 'Odkaz pro stažení'
+admin-stats-fees: 'Poplatek platformě'
 admin-stats-active-method: 'Čistý příjem podle způsobu platby'
 admin-stats-active-method-desc: 'Čistý příjem zahrnuje všechny peníze shromážděné platformou s výjimkou výnosů (příspěvky do peněženky, přímé a neúspěšné projekty s návratem do peněženky jsou zahrnuty).<br><em>Příspěvky z peněženky nejsou zahrnuty</em > (pokud není zvolena tato platební metoda).'
 admin-stats-refunded-method: 'Vrácení podle způsobu platby'
@@ -250,6 +270,12 @@ admin-stats-users-part: 'Projekty bez dorovnávacího financování'
 admin-stats-match-part: 'Multiplikační část'
 admin-stats-to_projects: 'K projektům'
 admin-refunded: Vráceno
+admin-invest-diff-yesterday: 'Rozdíl oproti předchozímu dni'
+admin-invest-diff-last_week: 'Rozdíl oproti předchozímu týdnu'
+admin-invest-diff-last_month: 'Rozdíl oproti předchozímu měsíci'
+admin-invest-diff-last_year: 'Rozdíl oproti předchozímu roku'
+admin-filter-donor: 'Dárce'
+admin-filter-test: 'Test'
 admin-filter-forced: 'Vynutit filtr'
 admin-filter-forced-help: 'Pokud vyberete tuto možnost, budou filtry použity bez ohledu na to, co uživatel zvolil jako preferenci pro odesílání informací platformou.'
 admin-filter-project-status: Stav projektu
