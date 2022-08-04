@@ -97,6 +97,7 @@ invest-step-3: Potvrdit
 invest-step-4: Sdílet
 invest-success-make-sure: 'Výborně! Váš příspěvek na projekt <strong>%s</strong> byl úspěšný.'
 investing_closed: 'V této kampani nejsou povoleny žádné další příspěvky.'
+proj-widget-my_invest: 'Moje příspěvky'
 project-invest-confirm: 'Od spolufinancování tohoto projektu vás dělí už jen krůček...'
 project-invest-continue: 'Klikněte na logo platebního systému, který se chystáte použít:'
 project-invest-fail: 'Něco se pokazilo, zkuste to prosím znovu'
