@@ -134,6 +134,9 @@ admin-stories: Příběhy uživatelů na Goteo
 admin-stories-add: Vytvořit nový příběh
 admin-stories-edit: Úprava historie %s
 admin-channel: "Kanál"
+admin-channelstory-add: Přidat příběh do kanálu
+admin-channelstory-submit: Uložit historii
+admin-channelstory-correct: 'Příběh byl přidán do kanálu'
 admin-channelsection-section: 'Sekce'
 admin-channelsection-map: 'Mapa'
 admin-channelsection-resource: 'Zdroje'
@@ -161,6 +164,12 @@ admin-categories-if-empty-then-asset: 'Pokud zůstane prázdná, použije se vý
 admin-category-add: Vytvořit novou kategorii
 admin-category-edit: Upravit kategorii %s
 admin-socialcommitment-add: Vytvořit nový sociální závazek
+admin-socialcommitment-edit: Upravit sociální závazek %s
+admin-sphere-add: Vytvořit novou oblast
+admin-sphere-edit: Upravit oblast %s
+admin-sdg-add: Vytvoření nového cíle SDG
+admin-sdg-edit: Úprava SDG %s
+admin-calls: Výzvy k podávání žádostí
 admin-channels: Kanály
 admin-yes: Ano
 admin-impersonate: V zastoupení
@@ -188,6 +197,7 @@ admin-search-global: 'Projekt, kanál, výzva k předkládání návrhů...'
 admin-already-impersonating: 'Již se vydáváte za uživatele, nejprve se prosím odhlaste!'
 admin-rebase-user: 'Změna ID uživatele'
 admin-edit-name: 'Přejmenovat'
+admin-edit-roles: 'Upravit role pro uživatele'
 admin-send-email: 'Odeslat e-mail'
 admin-show-roles-info: 'Co může která role dělat?'
 admin-user-roles: 'Seznam uživatelských rolí'
@@ -201,11 +211,13 @@ admin-user-create-invest: 'Vytvořit příspěvek'
 admin-mailing: 'Pošta'
 admin-user-no-mailing: 'Zatím vám nebyly odeslány žádné e-maily'
 admin-view-user-mailing: 'Všechny zásilky'
+admin-role-change-forbidden: 'Nemáte oprávnění spravovat roli %ROLE% pro tohoto uživatele'
 admin-users-global-search: 'Id, jméno, e-mail nebo projekt'
 admin-blog-global-search: 'Id, název, podnadpis nebo text'
 admin-communication-global-search: 'Předmět'
 admin-blog-stories-search: 'Id, název, text nebo projekt'
 admin-donor-name-search: 'ID, jméno, e-mail'
+admin-donor-date-search: 'Zpracováno podle data'
 admin-no-project: 'Žádný projekt'
 admin-title-id: Id
 admin-title-name: Jméno
@@ -266,8 +278,10 @@ admin-title-failed: Neodesláno
 admin-title-pending: Čekající
 admin-title-success: Úspěšný
 admin-title-percent: Procento
+admin-title-action-url: 'Text tlačítka ke stažení'
 admin-title-download-url: 'Odkaz pro stažení'
 admin-title-channel: 'Kanál'
+admin-title-resource-category: 'Kategorie zdrojů'
 admin-title-year: Rok
 admin-title-country: Země
 admin-stats-fees: 'Poplatek platformě'
