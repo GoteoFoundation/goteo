@@ -1,5 +1,6 @@
 ---
 guide-project-user-information: '<strong>V této části musíte zadat údaje pro veřejné informace vašeho uživatelského profilu. </strong><br><br>Ať už chcete prezentovat projekt nebo se zapojit jako spolufinancovatel, abyste byli součástí komunity Goteo, doporučujeme vám věnovat pozornost textu vaší prezentace, přidat relevantní odkazy o tom, co uděláte a nahrajete profilový obrázek, se kterým se identifikujete.'
+profile-credit-available: 'To je zůstatek ve vaší virtuální peněžence, který můžete rozdělit mezi projekty Goteo.'
 profile-field-about: 'Řekněte nám něco o sobě'
 profile-field-avatar_current: 'Vaše aktuální podoba'
 profile-field-avatar_upload: 'Nahrát obrázek'
@@ -35,3 +36,11 @@ tooltip-user-analytics: 'Zadejte své ID pro sledování Google Analytics, pokud
 tooltip-user-contribution: 'Stručně vysvětlete své dovednosti nebo oblasti, ve kterých byste mohli projektu pomoci (překlad, šíření, testování, programování, výuka atd.).'
 tooltip-user-facebook: 'Tato sociální síť vám může pomoci šířit informace o projektech Goteo, které vás zajímají, mezi přáteli a rodinou.'
 tooltip-user-facebook-pixel: 'Pokud chcete měřit konverze kampaně na Facebooku, zadejte své ID Facebook Pixel.'
+validate-user-field-avatar: 'Vložte profilový obrázek, abyste mohli lépe posoudit projekt a rozhodnout, zda jej na Goteo zveřejnit.'
+validate-user-field-contribution: 'Vysvětlete, čím byste mohli přispět ke zlepšení hodnocení projektu na platformě Goteo, aby bylo možné rozhodnout o jeho zveřejnění na této platformě.'
+validate-user-field-keywords: 'Uveďte až 5 klíčových slov, která vás charakterizují, aby bylo možné projekt lépe vyhodnotit a rozhodnout o jeho zveřejnění v Goteo.'
+validate-user-field-linkedin: 'Pole LinkedIn je neplatné'
+validate-user-field-location: 'Místo bydliště uživatele není platné'
+validate-user-field-name: 'Uveďte své celé jméno, aby bylo možné projekt lépe vyhodnotit a rozhodnout o jeho zveřejnění v Goteo.'
+validate-user-field-twitter: 'Uživatel Twitteru je neplatný'
+validate-user-field-web: 'Musíte zadat adresu (URL) webové stránky'
