@@ -8,3 +8,8 @@ contract-final-reg_id: 'Číslo notářského zápisu (pouze v případě komer�
 contract-final-reg_idname: 'Jméno notáře, který sepsal veřejnou listinu společnosti (v případě obchodního subjektu)'
 contract-final-reg_idloc: 'Město výkonu notářské činnosti (pouze v případě komerčního subjektu)'
 contract-final-paypal: 'PayPal účet projektu'
+contract-final-paypal_owner: 'Majitel účtu PayPal'
+contract-final-bank: 'Bankovní účet projektu'
+contract-final-bank_owner: 'Majitel bankovního účtu'
+contract-already-processed: 'Smlouva již byla zpracována.'
+validate-contract-nif-document-type: 'Číslo dokumentu neodpovídá formátu typu dokumentu'
