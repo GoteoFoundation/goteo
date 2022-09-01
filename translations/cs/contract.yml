@@ -2,6 +2,11 @@ contract-step-accounts: Účty
 contract-step-documents: Dokumentace
 contract-step-entity: 'Právnická osoba'
 contract-step-final: Posouzení
+personal-field-contract_entity: 'Zástupce projektu'
+personal-field-contract_name: 'Jméno a příjmení'
+personal-field-contract_legal_document_type: Typ dokumentu
+personal-field-main_address: 'Poštovní adresa'
+personal-field-region: Kraj
 contract-final-reg_date: 'Datum sepsání veřejné listiny společnosti (pouze v případě obchodního subjektu)'
 contract-final-reg_number: 'Registrační číslo (v případě sdružení nebo podnikatelského subjektu)'
 contract-final-reg_id: 'Číslo notářského zápisu (pouze v případě komerčního subjektu)'
