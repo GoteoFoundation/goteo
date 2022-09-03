@@ -43,6 +43,7 @@ tooltip-user-identica: 'Tento kanál vám může pomoci šířit informace o pro
 tooltip-user-instagram: 'Tato sociální síť umožňuje snadné a okamžité sdílení obrázků'
 tooltip-user-interests: 'Uveďte typ projektů, které se mohou spojit s vašimi zájmy, abyste je mohli spolufinancovat a/nebo přispět dalšími zdroji, znalostmi nebo dovednostmi. Tyto kategorie jsou průřezové, můžete jich vybrat více.'
 tooltip-user-keywords: 'Při zadávání textu vám systém nabídne klíčová slova, která již napsali jiní uživatelé. Tyto kategorie pomáhají propojit váš profil s ostatními lidmi a s konkrétními projekty.'
+tooltip-user-linkedin: 'Tato sociální síť vám může pomoci šířit informace o projektech Goteo, které vás zajímají, mezi profesními kontakty.'
 validate-user-field-avatar: 'Vložte profilový obrázek, abyste mohli lépe posoudit projekt a rozhodnout, zda jej na Goteo zveřejnit.'
 validate-user-field-contribution: 'Vysvětlete, čím byste mohli přispět ke zlepšení hodnocení projektu na platformě Goteo, aby bylo možné rozhodnout o jeho zveřejnění na této platformě.'
 validate-user-field-keywords: 'Uveďte až 5 klíčových slov, která vás charakterizují, aby bylo možné projekt lépe vyhodnotit a rozhodnout o jeho zveřejnění v Goteo.'
