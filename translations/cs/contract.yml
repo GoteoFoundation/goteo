@@ -23,6 +23,8 @@ tooltip-contract-entity_name: 'Uvádí úplný název subjektu, jehož jménem m
 tooltip-contract-entity_office: 'Musíte uvést, jakou pozici v rámci subjektu zastáváte. Budeme potřebovat, abyste přiložili dokumentaci, která prokazuje, že jste oprávněni jednat jejich jménem (v části "Dokumentace")'
 tooltip-contract-main_address: tooltip-contract-main_address
 tooltip-contract-paypal_owner: 'Sdělte nám prosím jméno osoby, která je majitelem účtu PayPal'
+tooltip-contract-project_description: 'Tento popis projektu se může lišit podle znění smlouvy (provede člen týmu Goteo)'
+tooltip-contract-project_invest: 'Oprava automaticky generovaného textu pro Cíl financování'
 contract-final-reg_date: 'Datum sepsání veřejné listiny společnosti (pouze v případě obchodního subjektu)'
 contract-final-reg_number: 'Registrační číslo (v případě sdružení nebo podnikatelského subjektu)'
 contract-final-reg_id: 'Číslo notářského zápisu (pouze v případě komerčního subjektu)'
