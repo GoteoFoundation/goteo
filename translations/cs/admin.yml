@@ -421,6 +421,8 @@ admin-filter-project-status: Stav projektu
 admin-filter-invest-status: Stav dárcovství
 admin-filter-project-location: Umístění projektu
 admin-filter-location: Umístění, které se použije ve filtru
+admin-filter-donor-status: Stav certifikátu
+admin-mail-body: 'Tělo zprávy'
 admin-stats-donations-method-desc: 'Dary zahrnují peníze, které uživatel dobrovolně věnuje nadaci, když přispívá na projekt, přímé dary nebo když vyprší částka v peněžence.'
 admin-stats-donations-tip: 'Dary v rámci projektových příspěvků (granty nebo "dýška")'
 admin-stats-donations-direct: 'Přímé dary (včetně prošlých peněženek)'
@@ -433,6 +435,9 @@ admin-donations-tip: Spropitné
 admin-donations-tip-invests: Příspěvky ve formě spropitného
 admin-donations-tip-users: Uživatelé se spropitným
 admin-donations-direct: Přímé dary
+admin-donations-amount-percent: '% darovaných peněz'
+admin-donations-direct-percent: '% přímých plateb'
+admin-workshop-add: Vytvořit nový workshop
 admin-workshop-edit-success: Položka workshopu byla úspěšně upravena
 admin-online: Online
 mandatory-filter-name: Chybí jméno
