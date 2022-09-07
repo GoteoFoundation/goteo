@@ -8,6 +8,8 @@ contract-entity-option_2: 'Jako prokurista obchodního subjektu'
 contract-field-location: 'Město:'
 contract-field-reg_date_2: 'Datum, kdy byla udělena veřejná listina společnosti'
 contract-field-reg_id_2: 'Číslo notářského protokolu'
+contract-field-reg_idloc_2: 'Město výkonu notáře'
+contract-field-reg_idname_2: 'Jméno notáře'
 contract-step-accounts: Účty
 contract-step-documents: Dokumentace
 contract-step-entity: 'Právnická osoba'
