@@ -376,6 +376,12 @@ admin-invest-commissions-month: 'Bankovní poplatky tento měsíc'
 admin-invest-commissions-last_month: 'Bankovní poplatky minulý měsíc'
 admin-invest-commissions-year: 'Bankovní poplatky tento rok'
 admin-invest-commissions-last_year: 'Bankovní poplatky minulý rok'
+admin-invest-commissions-lost-today: 'Ztráta z dnes vrácených příspěvků'
+admin-invest-commissions-lost-yesterday: 'Ztráta z včera vrácených příspěvků'
+admin-invest-commissions-lost-week: 'Ztráta z příspěvků vrácených tento týden'
+admin-invest-commissions-lost-month: 'Ztráta z příspěvků vrácených tento měsíc'
+admin-invest-commissions-lost-year: 'Ztráta z příspěvků vrácených v tomto roce'
+admin-invest-commissions-lost-last_year: 'Ztráta z příspěvků vrácených v minulém roce'
 admin-invest-commissions-tpv-today: 'Provize jiných poskytovatelů dnes'
 admin-invest-commissions-tpv-yesterday: 'Provize jiných poskytovatelů včera'
 admin-invest-commissions-tpv-week: 'Provize jiných poskytovatelů tento týden'
@@ -404,6 +410,7 @@ admin-invest-diff-yesterday: 'Rozdíl oproti předchozímu dni'
 admin-invest-diff-last_week: 'Rozdíl oproti předchozímu týdnu'
 admin-invest-diff-last_month: 'Rozdíl oproti předchozímu měsíci'
 admin-invest-diff-last_year: 'Rozdíl oproti předchozímu roku'
+admin-stats-projects-project-desc: 'Příspěvky k projektu'
 admin-filter-last-week: 'Posledních 7 dní'
 admin-filter-last-month: 'Posledních 30 dní'
 admin-filter-last-year: 'Posledních 365 dní'
@@ -420,6 +427,7 @@ admin-filter-test: 'Test'
 admin-filter-type-unique: 'Jediný'
 admin-filter-type-multidonor: 'Více dárců'
 admin-filter-type-all: 'Vše'
+admin-filter-predefined-date: 'Výchozí datum'
 admin-filter-forced: 'Vynutit filtr'
 admin-filter-forced-help: 'Pokud vyberete tuto možnost, budou filtry použity bez ohledu na to, co uživatel zvolil jako preferenci pro odesílání informací platformou.'
 admin-filter-project-status: Stav projektu
@@ -442,7 +450,9 @@ admin-donations-tip-users: Uživatelé se spropitným
 admin-donations-direct: Přímé dary
 admin-donations-amount-percent: '% darovaných peněz'
 admin-donations-direct-percent: '% přímých plateb'
+admin-workshop: Workshopy Goteo
 admin-workshop-add: Vytvořit nový workshop
+admin-workshop-edit: Úprava workshopu %s
 admin-workshop-edit-success: Položka workshopu byla úspěšně upravena
 admin-online: Online
 mandatory-filter-name: Chybí jméno
