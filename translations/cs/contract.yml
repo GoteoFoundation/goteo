@@ -1,6 +1,13 @@
 ---
 contract-accounts_title: 'Bankovní účty projektu'
 contract-bank_account: 'Bankovní účet (kód IBAN, formát ESxx xxxx xxxx xxxx xxxx xxxx):'
+contract-bank_owner: 'Majitel bankovního účtu:'
+contract-entity-option_0: 'Vlastním jménem a právem'
+contract-entity-option_1: 'Jako zástupce sdružení'
+contract-entity-option_2: 'Jako prokurista obchodního subjektu'
+contract-field-location: 'Město:'
+contract-field-reg_date_2: 'Datum, kdy byla udělena veřejná listina společnosti'
+contract-field-reg_id_2: 'Číslo notářského protokolu'
 contract-step-accounts: Účty
 contract-step-documents: Dokumentace
 contract-step-entity: 'Právnická osoba'
