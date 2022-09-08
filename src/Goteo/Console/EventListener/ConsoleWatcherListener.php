@@ -307,7 +307,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 break;
 
             // Extra
-            case 26: // Send information about contract in order to prepare documentacion
+            case 27: // Send information about contract in order to prepare documentacion
                 $this->info("Sending information about contract", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 $this->send($project, "14_days", ['owner']);
                 break;
