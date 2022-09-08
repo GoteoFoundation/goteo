@@ -12,7 +12,6 @@ $values = [
 if ($premium) {
     $values['premium'] = $premium;
     $values['background'] = $this->channel->owner_background;
-    $values['call_for_action_background'] = $call_for_action_background;
     $values['powered'] = true;
 } else {
     $values['navClass'] = 'white';
@@ -24,7 +23,6 @@ $this->layout('layout', $values);
 $this->section('head');
 
 ?>
-
 
 <?= $this->insert('channel/partials/styles') ?>
 
@@ -63,20 +61,24 @@ $background = $this->channel->owner_background;
 
 <?php if(!$this->discover_module): ?>
 
-<?= $this->insert("channel/partials/sponsors_section") ?>
+    <?= $this->insert("channel/partials/sponsors_section") ?>
 
-<?= $this->insert("channel/partials/resources_section") ?>
+    <?= $this->insert("channel/partials/resources_section") ?>
 
-<?= $this->insert("channel/partials/stories_section") ?>
+    <?= $this->insert("channel/partials/stories_section") ?>
 
-<?= $this->insert("channel/partials/related_workshops") ?>
+    <?= $this->insert("channel/partials/related_workshops") ?>
 
 <?php endif; ?>
 
 <?php if($this->channel->show_team): ?>
 
-<?= $this->insertif('foundation/donor') ?>
+    <?= $this->insertif('foundation/donor') ?>
 
+<?php endif; ?>
+
+<?php if ($dataSetsSection = $this->nodeSections['data_sets']): ?>
+    <?= $this->insert("channel/partials/data_sets", ['dataSetsSection' => $dataSetsSection]); ?>
 <?php endif; ?>
 
 <?= $this->insert("channel/partials/posts_section") ?>
@@ -88,13 +90,12 @@ $background = $this->channel->owner_background;
 <?php if (isset($this->channel->iframe)): ?>
 
     <?php
-            // Custom iframe depending on the lang
-            $current_lang=$this->lang_current();
-            if(preg_match("!/[a-z]{2,2}/|/[a-z]{2,2}$!", $this->channel->iframe))
-                $iframe=preg_replace("!/[a-z]{2,2}/|/[a-z]{2,2}$!", '/'.$current_lang.'/', $this->channel->iframe);
-            else
-                $iframe=$this->channel->iframe.'/'.$current_lang.'/';
-
+        // Custom iframe depending on the lang
+        $current_lang=$this->lang_current();
+        if(preg_match("!/[a-z]{2,2}/|/[a-z]{2,2}$!", $this->channel->iframe))
+            $iframe=preg_replace("!/[a-z]{2,2}/|/[a-z]{2,2}$!", '/'.$current_lang.'/', $this->channel->iframe);
+        else
+            $iframe=$this->channel->iframe.'/'.$current_lang.'/';
     ?>
 
     <section class="influence-map">
@@ -108,7 +109,6 @@ $background = $this->channel->owner_background;
 <?php endif; ?>
 
 <?php if($this->channel->terms): ?>
-
 <!-- Modal -->
 <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel">
   <div class="modal-dialog modal-lg" role="document">
@@ -121,13 +121,9 @@ $background = $this->channel->owner_background;
     </div>
   </div>
 </div>
-
 <?php endif; ?>
 
 <?php $this->replace() ?>
-
-
-
 
 <?php $this->section('footer') ?>
     <?= $this->insert('channel/partials/javascript') ?>

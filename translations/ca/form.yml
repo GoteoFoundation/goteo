@@ -24,6 +24,7 @@ form-project_status-expired: Caducat
 form-project_status-fulfilled: 'Retorn complert'
 form-project_status-review: 'Pendent de valoració'
 form-project_status-success: Finançat
+form-project_status-negotiation: "En negociació"
 form-remove-button: Elimina
 form-self_review-button: Corregeix
 form-send_review-button: Envia
