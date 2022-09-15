@@ -36,7 +36,8 @@ class MatcherRewardRepositoryTest extends TestCase
 
     public function testPersist(): MatcherReward
     {
-        $matcherReward = new MatcherReward(self::$matcher, self::$reward);
+        $matcherReward = new MatcherReward();
+        $matcherReward->setMatcher(self::$matcher)->setReward(self::$reward);
         self::$repository->persist($matcherReward);
 
         $this->assertEquals(1, self::$repository->count(self::$matcher));
@@ -48,7 +49,7 @@ class MatcherRewardRepositoryTest extends TestCase
      */
     public function testGetListByMatcher()
     {
-        $this->assertEquals(1, self::$repository->count(self::$matcher));
+        $this->assertCount(1, self::$repository->getListByMatcher(self::$matcher));
     }
 
     /**

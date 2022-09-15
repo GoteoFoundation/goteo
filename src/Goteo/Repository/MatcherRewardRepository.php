@@ -21,7 +21,12 @@ class MatcherRewardRepository extends BaseRepository
             WHERE matcher = ?
         ";
 
-        return $this->query($sql, [$matcher->id])->fetchAll(\PDO::FETCH_CLASS, MatcherReward::class);
+        $list = [];
+        foreach($this->query($sql, [$matcher->id])->fetchAll(\PDO::FETCH_OBJ) as $matcherReward) {
+            $reward = Reward::get($matcherReward->reward);
+            $list[] = new MatcherReward($matcher, $reward, $matcherReward->status);
+        };
+        return $list;
     }
 
     public function count(Matcher $matcher): int
