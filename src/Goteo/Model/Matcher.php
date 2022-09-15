@@ -17,11 +17,14 @@ use Goteo\Application\Event\MatcherValidationEvent;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Lang;
 use Goteo\Core\Model;
+use Goteo\Entity\Matcher\MatcherReward;
 use Goteo\Model\Matcher\MatcherLocation;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Project\Reward;
 use Goteo\Model\Questionnaire\Answer;
 use Goteo\Model\Questionnaire\Score;
 use Goteo\Payment\Method\PoolPaymentMethod;
+use Goteo\Repository\MatcherRewardRepository;
 
 /**
  * Matcher Model
@@ -35,6 +38,7 @@ class Matcher extends Model
     const STATUS_PITCH_CLOSED = 'pitch_closed';
     const STATUS_PITCH_OPEN = 'open';
     const MINIMUM_WALLET_AMOUNT = 1000;
+    const CONFIG_MATCH_REWARDS = 'match_rewards';
 
     public $id,
            $name,
@@ -872,7 +876,7 @@ class Matcher extends Model
         RIGHT JOIN matcher_user ON matcher_user.matcher_id = matcher.id
         WHERE matcher_user.user_id = :user AND matcher_user.pool";
         return self::query($sql, [':user' => $user->id])
-                ->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Matcher');
+                ->fetchAll(\PDO::FETCH_CLASS, Matcher::class);
 
     }
 
@@ -911,13 +915,59 @@ class Matcher extends Model
         return $matchers;
     }
 
-    public function hasQuestionnaire() {
+    public function hasQuestionnaire(): bool
+    {
         $questionnaire = Questionnaire::getByMatcher($this->id);
         return !empty($questionnaire);
     }
 
-    public function getQuestionnaire() {
+    public function getQuestionnaire(): Questionnaire
+    {
         return Questionnaire::getByMatcher($this->id);
     }
 
+    public function activateMatchingRewards(): void
+    {
+        $vars = $this->getVars();
+        $vars[self::CONFIG_MATCH_REWARDS] = true;
+        $this->setVars($vars);
+    }
+
+    public function deactivateMatchingRewards(): void
+    {
+        $vars = $this->getVars();
+        unset($vars[self::CONFIG_MATCH_REWARDS]);
+        $this->setVars($vars);
+    }
+
+    public function matchesRewards(): bool {
+        $vars = $this->getVars();
+        return $vars[self::CONFIG_MATCH_REWARDS] ?? false;
+    }
+
+    /**
+     * @return MatcherReward[]
+     */
+    public function getMatchingRewards(): array
+    {
+        if (!$this->matchesRewards()) return [];
+
+        $repository = new MatcherRewardRepository();
+        return $repository->getListByMatcher($this);
+    }
+
+    public function addMatchingReward(Reward $reward, array &$errors = []): ?MatcherReward
+    {
+        $matcherReward = new MatcherReward();
+        $matcherReward->setMatcher($this)->setReward($reward);
+
+        $errors = [];
+        $repository = new MatcherRewardRepository();
+        $repository->persist($matcherReward, $errors);
+
+        if (!empty($errors))
+            throw new ModelException(implode(',', $errors));
+
+        return $matcherReward;
+    }
 }

@@ -17,13 +17,7 @@ class MatcherReward
 {
     private ?Matcher $matcher;
     private ?Reward $reward;
-    private string $status = '';
-
-    public function __construct(?Matcher $matcher, ?Reward $reward)
-    {
-        $this->matcher = $matcher;
-        $this->reward = $reward;
-    }
+    private ?string $status = null;
 
     public function getMatcher(): ?Matcher
     {
@@ -47,7 +41,7 @@ class MatcherReward
         return $this;
     }
 
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
         return $this->status;
     }
