@@ -49,7 +49,9 @@ class GoteoMatcherRewards
    */
   public function getDownSQL()
   {
-     return "";
+     return "
+        DROP TABLE `matcher_reward`
+     ";
   }
 
 }
