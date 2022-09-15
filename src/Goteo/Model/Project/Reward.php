@@ -57,10 +57,9 @@ class Reward extends \Goteo\Core\Model {
 
     public static function get($id, $lang = null) {
         try {
-            
+
             list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'project');
-            $query = static::query("
-                SELECT 
+            $sql = "SELECT
                     reward.id as id,
                     reward.project as project,
                     $fields,
@@ -75,9 +74,11 @@ class Reward extends \Goteo\Core\Model {
                     reward.category
                 FROM reward
                 $joins
-                WHERE 
-                    reward.id = :id
-                ", array(':id' => $id));
+                WHERE
+                    reward.id = ?
+            ";
+
+            $query = static::query($sql,[$id]);
             return $query->fetchObject(__CLASS__);
         } catch (\PDOException $e) {
             throw new ModelException($e->getMessage());
