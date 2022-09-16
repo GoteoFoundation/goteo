@@ -15,8 +15,8 @@ use Goteo\Model\Project\Reward;
 
 class MatcherReward
 {
-    private ?Matcher $matcher;
-    private ?Reward $reward;
+    private Matcher $matcher;
+    private Reward $reward;
     private ?string $status = null;
 
     public function getMatcher(): ?Matcher
