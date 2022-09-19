@@ -25,6 +25,7 @@ use Goteo\Model\Questionnaire\Answer;
 use Goteo\Model\Questionnaire\Score;
 use Goteo\Payment\Method\PoolPaymentMethod;
 use Goteo\Repository\MatcherRewardRepository;
+use Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor;
 
 /**
  * Matcher Model
@@ -38,7 +39,6 @@ class Matcher extends Model
     const STATUS_PITCH_CLOSED = 'pitch_closed';
     const STATUS_PITCH_OPEN = 'open';
     const MINIMUM_WALLET_AMOUNT = 1000;
-    const CONFIG_MATCH_REWARDS = 'match_rewards';
 
     public $id,
            $name,
@@ -51,10 +51,11 @@ class Matcher extends Model
            $fee = 0,
            $processor = 'duplicateinvest',
            $vars = [
-               'max_amount_per_invest' => 100,
-               'max_amount_per_project' => 0,
-               'max_invests_per_user' => 1,
-               'match_factor' => 1
+                DuplicateInvestMatcherProcessor::MAX_AMOUNT_PER_INVEST => 100,
+                DuplicateInvestMatcherProcessor::MAX_AMOUNT_PER_PROJECT => 0,
+                DuplicateInvestMatcherProcessor::MAX_INVESTS_PER_USER => 1,
+                DuplicateInvestMatcherProcessor::MATCH_FACTOR => 1,
+                DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS => false
            ],
            $crowd = 0, // Calculated field with the sum of all invests made by the peoplo
            $used = 0, // Calculated field with the sum of all invests made by the matching
@@ -73,19 +74,17 @@ class Matcher extends Model
         if(empty($this->lang)) $this->lang = Config::get('lang');
     }
 
-    public static function getLangFields() {
+    public static function getLangFields(): array
+    {
         return ['name', 'description', 'terms'];
     }
 
-    /**
-     * Get instance of matcher already in the table by action
-     * @return Matcher|null
-     */
     static public function get(
         $id,
         bool $active_only = true,
         $lang = null
-    ) {
+    ): ?Matcher
+    {
         $values = [':id' => $id];
         list($fields, $joins) = self::getLangsSQLJoins($lang);
 
@@ -929,20 +928,20 @@ class Matcher extends Model
     public function activateMatchingRewards(): void
     {
         $vars = $this->getVars();
-        $vars[self::CONFIG_MATCH_REWARDS] = true;
+        $vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS] = true;
         $this->setVars($vars);
     }
 
     public function deactivateMatchingRewards(): void
     {
         $vars = $this->getVars();
-        unset($vars[self::CONFIG_MATCH_REWARDS]);
+        unset($vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS]);
         $this->setVars($vars);
     }
 
     public function matchesRewards(): bool {
         $vars = $this->getVars();
-        return $vars[self::CONFIG_MATCH_REWARDS] ?? false;
+        return $vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS] ?? false;
     }
 
     /**

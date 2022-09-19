@@ -21,6 +21,7 @@ use Goteo\Model\User;
 use Goteo\Model\Invest;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
+use Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor;
 
 class MatcherTest extends TestCase
 {
@@ -140,7 +141,7 @@ class MatcherTest extends TestCase
         $ob->activateMatchingRewards();
         $vars = $ob->getVars();
 
-        $this->assertTrue($vars[Matcher::CONFIG_MATCH_REWARDS]);
+        $this->assertTrue($vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS]);
         return $ob;
     }
 
@@ -183,7 +184,7 @@ class MatcherTest extends TestCase
         $ob->deactivateMatchingRewards();
         $vars = $ob->getVars();
 
-        $this->assertEmpty($vars[Matcher::CONFIG_MATCH_REWARDS]);
+        $this->assertEmpty($vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS]);
         return $ob;
     }
 

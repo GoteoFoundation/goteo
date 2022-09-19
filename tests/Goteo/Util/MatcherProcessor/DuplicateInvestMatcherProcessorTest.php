@@ -125,10 +125,11 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
     public function testVars(DuplicateInvestMatcherProcessor $processor): DuplicateInvestMatcherProcessor
     {
         $defaults = [
-            'max_amount_per_project' => 0,
-            'max_amount_per_invest' => 100,
-            'max_invests_per_user' => 1,
-            'match_factor' => 1
+            DuplicateInvestMatcherProcessor::MAX_AMOUNT_PER_PROJECT => 0,
+            DuplicateInvestMatcherProcessor::MAX_AMOUNT_PER_INVEST => 100,
+            DuplicateInvestMatcherProcessor::MAX_INVESTS_PER_USER => 1,
+            DuplicateInvestMatcherProcessor::MATCH_FACTOR => 1,
+            DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS => false
         ];
         $matcher = $processor->getMatcher();
         $this->assertInstanceOf(Matcher::class, $matcher);
@@ -137,10 +138,11 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $this->assertInstanceOf(Matcher::class, $matcher->setVars(['max_amount_per_project' => 150]));
         $vars = $processor->getVars();
         $this->assertNotEquals($defaults, $vars);
-        $this->assertEquals(150, $vars['max_amount_per_project']);
-        $this->assertEquals(100, $vars['max_amount_per_invest']);
-        $this->assertEquals(1, $vars['max_invests_per_user']);
-        $this->assertEquals(1, $vars['match_factor']);
+        $this->assertEquals(150, $vars[DuplicateInvestMatcherProcessor::MAX_AMOUNT_PER_PROJECT]);
+        $this->assertEquals(100, $vars[DuplicateInvestMatcherProcessor::MAX_AMOUNT_PER_INVEST]);
+        $this->assertEquals(1, $vars[DuplicateInvestMatcherProcessor::MAX_INVESTS_PER_USER]);
+        $this->assertEquals(1, $vars[DuplicateInvestMatcherProcessor::MATCH_FACTOR]);
+        $this->assertFalse($vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS]);
         $this->assertEquals(array_keys($defaults), array_keys($processor->getVarLabels()));
 
         return $processor;
@@ -183,11 +185,11 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $processor->setProject(get_test_project());
         $matcher = $processor->getMatcher();
         $vars = $matcher->getVars();
-        $vars['match_factor'] = 2;
+        $vars[DuplicateInvestMatcherProcessor::MATCH_FACTOR] = 2;
         $matcher->setVars($vars);
         $this->assertEquals(150, $processor->getAmount());
 
-        $vars['match_factor'] = 1;
+        $vars[DuplicateInvestMatcherProcessor::MATCH_FACTOR] = 1;
         $matcher->setVars($vars);
         $this->assertEquals(75, $processor->getAmount());
 
@@ -214,8 +216,8 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
 
         $processedAmount = $processor->getAmount();
         $this->assertEquals(100, $processedAmount);
-        $invest->amount = 99;
 
+        $invest->amount = 99;
         $processedAmount = $processor->getAmount();
         $this->assertEquals(99, $processedAmount);
 
@@ -247,13 +249,41 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         return $processor;
     }
 
+    /**
+     * @depends testAmount
+     */
+    public function testAmountReward(DuplicateInvestMatcherProcessor $processor): DuplicateInvestMatcherProcessor
+    {
+        $matcher = $processor->getMatcher();
+
+        $reward = get_test_reward();
+        $invest = $processor->getInvest();
+        $invest->addReward($reward);
+        $invest->amount = 25;
+        $matcher->setVars([DuplicateInvestMatcherProcessor::MAX_INVESTS_PER_USER => 2]);
+        $matcher->activateMatchingRewards();
+
+        $error = '';
+        $this->assertEquals(0, $processor->getAmount($error), $error);
+        $this->assertEquals("There is no reward to match", $error);
+
+        $matcher->addMatchingReward($reward);
+
+        $this->assertEquals($invest->getAmount(), $processor->getAmount($error), $error);
+
+        $matcher->deactivateMatchingRewards();
+        return $processor;
+    }
 
     /**
      * @depends testAmount
      */
     public function testInvests(DuplicateInvestMatcherProcessor $processor): DuplicateInvestMatcherProcessor
     {
-        $this->assertInstanceOf(Matcher::class, $processor->getMatcher()->setVars(['max_invests_per_user' => 2]));
+        $this->assertInstanceOf(Matcher::class, $processor->getMatcher()->setVars([DuplicateInvestMatcherProcessor::MAX_INVESTS_PER_USER => 2]));
+
+        $invest = $processor->getInvest();
+        $invest->amount = 99;
 
         $invests = $processor->getInvests();
         $project = $processor->getProject();
@@ -279,7 +309,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
      */
     public function testInvestsRepeat(DuplicateInvestMatcherProcessor $processor): DuplicateInvestMatcherProcessor
     {
-        $this->assertInstanceOf(Matcher::class, $processor->getMatcher()->setVars(['max_invests_per_user' => 1]));
+        $this->assertInstanceOf(Matcher::class, $processor->getMatcher()->setVars([DuplicateInvestMatcherProcessor::MAX_INVESTS_PER_USER => 1]));
 
         $invest = new Invest([
             'user' => get_test_user()->id,
@@ -308,7 +338,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
      */
     public function testNoFunds(DuplicateInvestMatcherProcessor $processor): DuplicateInvestMatcherProcessor
     {
-        $this->assertInstanceOf(Matcher::class, $processor->getMatcher()->setVars(['max_invests_per_user' => 3]));
+        $this->assertInstanceOf(Matcher::class, $processor->getMatcher()->setVars([DuplicateInvestMatcherProcessor::MAX_INVESTS_PER_USER => 3]));
 
         $invest = new Invest([
             'user' => get_test_user()->id,
@@ -402,6 +432,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
      * Some cleanup
      */
     static function tearDownAfterClass(): void {
+        delete_test_reward();
         delete_test_project();
         delete_test_user();
         delete_test_node();
