@@ -848,10 +848,10 @@ class Invest extends Model {
     }
 
     /**
-     * Returns the rewards of the invest
-     * @return array of Reward objects
+     * @return Reward[]
      */
-    public function getRewards() {
+    public function getRewards(): array
+    {
         if(!$this->rewards) {
             $query = static::query("
                 SELECT  *
@@ -860,7 +860,7 @@ class Invest extends Model {
                     ON invest_reward.reward = reward.id
                 WHERE   invest_reward.invest = ?
                 ", array($this->id));
-            $this->rewards = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Project\Reward');
+            $this->rewards = $query->fetchAll(\PDO::FETCH_CLASS, Reward::class);
         }
         foreach($this->rewards as $i => $reward) {
             if(!$reward instanceOf Reward) {

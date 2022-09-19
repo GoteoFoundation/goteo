@@ -244,7 +244,6 @@ function delete_test_invest(): bool
     $invests = Invest::getList(['users' => get_test_user()->id ]);
 
     if (empty($invests)) {
-        error_log('Invest does not exist');
         return true;
     }
 
@@ -266,7 +265,6 @@ function get_test_matcher(): Matcher
 
     $matcher = new Matcher($data);
     try {
-        $errors = [];
         if ( ! $matcher->dbInsert(['id', 'name', 'owner']) ) {
             error_log("Error saving Matcher! ");
             return false;
