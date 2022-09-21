@@ -11,27 +11,25 @@
 
 namespace Goteo\Util\MatcherProcessor\Tests;
 
-use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Core\DB;
 use Goteo\TestCase;
 use Goteo\Util\MatcherProcessor\CriteriaInvestMatcherProcessor;
 use Goteo\Model\Matcher;
 use Goteo\Model\User;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
-use Goteo\Library\Text;
+use Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor;
 
 class CriteriaInvestMatcherProcessorTest extends TestCase {
-    private static $data = ['id' => 'matchertest', 'name' => 'Matcher test', 'processor' => 'criteriainvest'];
-    private static $user_data = [
+    private static array $data = ['id' => 'matchertest', 'name' => 'Matcher test', 'processor' => 'criteriainvest'];
+    private static array $user_data = [
         ['userid' => 'simulated-user-test1', 'name' => 'Test 1', 'email' => 'test1@goteo.org', 'password' => 'testtest', 'active' => true, 'pool' => 100],
         ['userid' => 'simulated-user-test2', 'name' => 'Test 2', 'email' => 'test2@goteo.org', 'password' => 'testtest', 'active' => true, 'pool' => 50],
         ['userid' => 'simulated-user-test3', 'name' => 'Test 3', 'email' => 'test3@goteo.org', 'password' => 'testtest', 'active' => true]
     ];
 
-    /**
-     */
-    public function testCreate() {
-        \Goteo\Core\DB::cache(false);
+    public function testCreate(): Matcher {
+        DB::cache(false);
         $errors = [];
         self::$data['owner'] = get_test_user()->id;
         if (!$matcher = Matcher::get(self::$data['id'])) {
@@ -45,7 +43,7 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
     /**
      * @depends testCreate
      */
-    public function testAddUsers($matcher) {
+    public function testAddUsers(Matcher $matcher): Matcher {
         $total = 0;
         //Creates users first
         foreach(self::$user_data as $i => $user) {
@@ -54,7 +52,7 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
                 $this->assertTrue($uob->save($errors, ['active']), print_r($errors, 1));
             }
 
-            $this->assertInstanceOf('\Goteo\Model\User', $uob, print_r($errors, 1));
+            $this->assertInstanceOf(User::class, $uob, print_r($errors, 1));
 
             self::$user_data[$i]['ob'] = $uob;
             if(isset($user['pool'])) {
@@ -65,7 +63,7 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
 
                 $this->assertEquals($user['pool'], $uob->getPool()->amount);
 
-                $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher->addUsers($uob));
+                $this->assertInstanceOf(Matcher::class, $matcher->addUsers($uob));
             }
 
             $total += $user['pool'];
@@ -80,12 +78,14 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
      * @depends testCreate
      */
 
-    public function testCreateConfig($matcher) {
+    public function testCreateConfig(Matcher $matcher): Matcher {
         $conf = [];
-        $matcher->algorithm = 'criteriainvest';
-        $conf['percent_of_donation'] = 50;
-        $conf['donation_per_project'] = 50;
+        $matcher->processor = CriteriaInvestMatcherProcessor::NAME;
+        $conf[CriteriaInvestMatcherProcessor::PERCENT_OF_DONATION] = 50;
+        $conf[CriteriaInvestMatcherProcessor::DONATION_PER_PROJECT] = 50;
         $matcher->setVars($conf);
+
+        $errors = [];
         $this->assertTrue($matcher->save($errors), print_r($errors,1));
         return $matcher;
     }
@@ -97,7 +97,7 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         //Creates project first
         $project = get_test_project();
         $project->publish();
-        $matcher->addProjects(get_test_project(), 'active');
+        $matcher->addProjects($project, 'active');
         $this->assertCount(1, $matcher->getProjects());
         return $matcher;
     }
@@ -106,11 +106,11 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
     /**
      * @depends testCreateConfig
      */
-    public function testInstance($matcher) {
-
+    public function testInstance($matcher): CriteriaInvestMatcherProcessor
+    {
         $processor = new CriteriaInvestMatcherProcessor($matcher);
 
-        $this->assertInstanceOf('\Goteo\Util\MatcherProcessor\CriteriaInvestMatcherProcessor', $processor);
+        $this->assertInstanceOf(CriteriaInvestMatcherProcessor::class, $processor);
 
         return $processor;
     }
@@ -137,21 +137,21 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
      */
     public function testVars($processor) {
         $defaults = [
-            'percent_of_donation' => 50,
-            'donation_per_project' => 50
+            CriteriaInvestMatcherProcessor::PERCENT_OF_DONATION => 50,
+            CriteriaInvestMatcherProcessor::DONATION_PER_PROJECT => 50
         ];
         $matcher = $processor->getMatcher();
         $vars = $processor->getVars();
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher);
+        $this->assertInstanceOf(Matcher::class, $matcher);
         $this->assertEquals($defaults, $processor->getVars());
         // Custom vars
-        $vars['donation_per_project'] = 100;
+        $vars[CriteriaInvestMatcherProcessor::DONATION_PER_PROJECT] = 100;
 
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher->setVars($vars));
+        $this->assertInstanceOf(Matcher::class, $matcher->setVars($vars));
         $vars = $processor->getVars();
         // $this->assertNotEquals($defaults, $vars);
-        $this->assertEquals(50, $vars['percent_of_donation']);
-        $this->assertEquals(100, $vars['donation_per_project']);
+        $this->assertEquals(50, $vars[CriteriaInvestMatcherProcessor::PERCENT_OF_DONATION]);
+        $this->assertEquals(100, $vars[CriteriaInvestMatcherProcessor::DONATION_PER_PROJECT]);
 
         return $processor;
     }
@@ -221,8 +221,8 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         $invests = $processor->getInvests();
         $project = $processor->getProject();
         $this->assertCount(2, $invests);
-        $this->assertInstanceOf('Goteo\Model\Invest', $invests[0]);
-        $this->assertInstanceOf('Goteo\Model\Invest', $invests[1]);
+        $this->assertInstanceOf(Invest::class, $invests[0]);
+        $this->assertInstanceOf(Invest::class, $invests[1]);
 
         $this->assertEquals(67, $invests[0]->amount);
         $this->assertEquals(33, $invests[1]->amount);
@@ -241,9 +241,10 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
      * @depends testInvests
      */
     public function testInvestsRepeat($processor) {
+        $project = get_test_project();
         $invest = new Invest([
             'user' => get_test_user()->id,
-            'project' => get_test_project()->id,
+            'project' => $project->id,
             'method' => 'dummy',
             'currency' => 'EUR',
             'currency_rate' => 1,
@@ -254,7 +255,7 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         $this->assertTrue($invest->save($errors), implode("\n", $errors));
 
         $processor->setInvest($invest);
-        $processor->setProject(get_test_project());
+        $processor->setProject($project);
         $this->assertEquals(0, $processor->getAmount());
 
         $invest->user = self::$user_data[2]['userid'];
@@ -268,11 +269,12 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
      */
     public function testCreateConfigAmount($matcher) {
         $conf = [];
-        $matcher->algorithm = 'criteriainvest';
-        $conf['min_amount_per_project'] = 500;
-        $conf['donation_per_project'] = 100;
+        $matcher->processor = 'criteriainvest';
+        $conf[CriteriaInvestMatcherProcessor::MIN_AMOUNT_PER_PROJECT] = 500;
+        $conf[CriteriaInvestMatcherProcessor::DONATION_PER_PROJECT] = 100;
         $matcher->setVars($conf);
 
+        $errors = [];
         $this->assertTrue($matcher->save($errors), print_r($errors,1));
         return $matcher;
     }
@@ -281,10 +283,12 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
     /**
      * @depends testCreate
      */
-    public function testCleanInvests($matcher) {
+    public function testCleanInvests($matcher): Matcher {
         // Delete invests
         Matcher::query("DELETE FROM invest WHERE project=?", get_test_project()->id);
         $this->assertEquals(0, Matcher::query("SELECT COUNT(*) FROM `invest` WHERE project = ?", get_test_project()->id)->fetchColumn());
+
+        $errors = [];
         $this->assertTrue($matcher->save($errors), print_r($errors,1));
         return $matcher;
     }
@@ -328,7 +332,7 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
      * @depends testCreateConfigAmount
      * @depends testRefillUsersPool
      */
-    public function testAmountByAmount($processor) {
+    public function testAmountByAmount(CriteriaInvestMatcherProcessor $processor): CriteriaInvestMatcherProcessor {
         $invest = new Invest([
             'user' => get_test_user()->id,
             'project' => get_test_project()->id,
@@ -362,15 +366,15 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         return $processor;
     }
 
-        /**
+    /**
      * @depends testAmountByAmount
      */
-    public function testInvestsByAmount($processor) {
+    public function testInvestsByAmount(CriteriaInvestMatcherProcessor $processor): CriteriaInvestMatcherProcessor {
         $invests = $processor->getInvests();
         $project = $processor->getProject();
         $this->assertCount(2, $invests);
-        $this->assertInstanceOf('Goteo\Model\Invest', $invests[0]);
-        $this->assertInstanceOf('Goteo\Model\Invest', $invests[1]);
+        $this->assertInstanceOf(Invest::class, $invests[0]);
+        $this->assertInstanceOf(Invest::class, $invests[1]);
 
         $this->assertEquals(67, $invests[0]->amount);
         $this->assertEquals(33, $invests[1]->amount);
@@ -388,10 +392,12 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
     /**
      * @depends testAmountByAmount
      */
-    public function testInvestsRepeatByAmount($processor) {
+    public function testInvestsRepeatByAmount(CriteriaInvestMatcherProcessor $processor): CriteriaInvestMatcherProcessor {
+
+        $project = get_test_project();
         $invest = new Invest([
             'user' => get_test_user()->id,
-            'project' => get_test_project()->id,
+            'project' => $project->id,
             'method' => 'dummy',
             'currency' => 'EUR',
             'currency_rate' => 1,
@@ -402,7 +408,7 @@ class CriteriaInvestMatcherProcessorTest extends TestCase {
         $this->assertTrue($invest->save($errors), implode("\n", $errors));
 
         $processor->setInvest($invest);
-        $processor->setProject(get_test_project());
+        $processor->setProject($project);
         $this->assertEquals(0, $processor->getAmount());
 
         $invest->user = self::$user_data[2]['userid'];
