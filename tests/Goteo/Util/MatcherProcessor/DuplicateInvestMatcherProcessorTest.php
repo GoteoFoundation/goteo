@@ -129,7 +129,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
             DuplicateInvestMatcherProcessor::MAX_AMOUNT_PER_INVEST => 100,
             DuplicateInvestMatcherProcessor::MAX_INVESTS_PER_USER => 1,
             DuplicateInvestMatcherProcessor::MATCH_FACTOR => 1,
-            DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS => false
+            DuplicateInvestMatcherProcessor::MATCH_REWARDS => false
         ];
         $matcher = $processor->getMatcher();
         $this->assertInstanceOf(Matcher::class, $matcher);
@@ -142,7 +142,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
         $this->assertEquals(100, $vars[DuplicateInvestMatcherProcessor::MAX_AMOUNT_PER_INVEST]);
         $this->assertEquals(1, $vars[DuplicateInvestMatcherProcessor::MAX_INVESTS_PER_USER]);
         $this->assertEquals(1, $vars[DuplicateInvestMatcherProcessor::MATCH_FACTOR]);
-        $this->assertFalse($vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS]);
+        $this->assertFalse($vars[DuplicateInvestMatcherProcessor::MATCH_REWARDS]);
         $this->assertEquals(array_keys($defaults), array_keys($processor->getVarLabels()));
 
         return $processor;

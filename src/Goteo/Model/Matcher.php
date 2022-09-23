@@ -55,7 +55,7 @@ class Matcher extends Model
                 DuplicateInvestMatcherProcessor::MAX_AMOUNT_PER_PROJECT => 0,
                 DuplicateInvestMatcherProcessor::MAX_INVESTS_PER_USER => 1,
                 DuplicateInvestMatcherProcessor::MATCH_FACTOR => 1,
-                DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS => false
+                DuplicateInvestMatcherProcessor::MATCH_REWARDS => false
            ],
            $crowd = 0, // Calculated field with the sum of all invests made by the peoplo
            $used = 0, // Calculated field with the sum of all invests made by the matching
@@ -928,20 +928,20 @@ class Matcher extends Model
     public function activateMatchingRewards(): void
     {
         $vars = $this->getVars();
-        $vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS] = true;
+        $vars[DuplicateInvestMatcherProcessor::MATCH_REWARDS] = true;
         $this->setVars($vars);
     }
 
     public function deactivateMatchingRewards(): void
     {
         $vars = $this->getVars();
-        unset($vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS]);
+        unset($vars[DuplicateInvestMatcherProcessor::MATCH_REWARDS]);
         $this->setVars($vars);
     }
 
     public function matchesRewards(): bool {
         $vars = $this->getVars();
-        return $vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS] ?? false;
+        return $vars[DuplicateInvestMatcherProcessor::MATCH_REWARDS] ?? false;
     }
 
     /**
@@ -968,5 +968,17 @@ class Matcher extends Model
             throw new ModelException(implode(',', $errors));
 
         return $matcherReward;
+    }
+
+    public function hasReward(Reward $reward): bool
+    {
+        $repository = new MatcherRewardRepository();
+        try {
+            return $repository->exists($this, $reward);
+        } catch (\PDOException $e) {
+            return false;
+        }
+
+        return false;
     }
 }

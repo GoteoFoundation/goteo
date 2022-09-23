@@ -141,7 +141,7 @@ class MatcherTest extends TestCase
         $ob->activateMatchingRewards();
         $vars = $ob->getVars();
 
-        $this->assertTrue($vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS]);
+        $this->assertTrue($vars[DuplicateInvestMatcherProcessor::MATCH_REWARDS]);
         return $ob;
     }
 
@@ -184,7 +184,7 @@ class MatcherTest extends TestCase
         $ob->deactivateMatchingRewards();
         $vars = $ob->getVars();
 
-        $this->assertEmpty($vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS]);
+        $this->assertEmpty($vars[DuplicateInvestMatcherProcessor::MATCH_REWARDS]);
         return $ob;
     }
 

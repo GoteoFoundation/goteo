@@ -23,7 +23,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
     public const MATCH_FACTOR = 'match_factor';
     public const MAX_AMOUNT_PER_PROJECT = 'max_amount_per_project';
     public const MAX_INVESTS_PER_USER = 'max_invests_per_user';
-    public const CONFIG_MATCH_REWARDS = 'match_rewards';
+    public const MATCH_REWARDS = 'match_rewards';
 
 
     protected $default_vars = [
@@ -31,7 +31,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
         self::MAX_AMOUNT_PER_INVEST => 100,
         self::MAX_INVESTS_PER_USER => 1,
         self::MATCH_FACTOR => 1,
-        self::CONFIG_MATCH_REWARDS => false
+        self::MATCH_REWARDS => false
     ];
 
     static public function getVarLabels(): array {
@@ -40,7 +40,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
             self::MAX_AMOUNT_PER_INVEST => Text::get('matcher-duplicateinvest-max_amount_per_invest'),
             self::MAX_INVESTS_PER_USER => Text::get('matcher-duplicateinvest-max_invests_per_user'),
             self::MATCH_FACTOR => Text::get('matcher-duplicateinvest-match-factor'),
-            self::CONFIG_MATCH_REWARDS => Text::get('matcher-duplicateinvest-match-rewards')
+            self::MATCH_REWARDS => Text::get('matcher-duplicateinvest-match-rewards')
         ];
     }
 
