@@ -43,3 +43,8 @@ matcher-label-pending: "Pendiente"
 matcher-label-project: 'Agentes de Matchfunding<br>multiplicando aportes'
 matcher-amount-project: 'Aportados: %AMOUNT% de %PROJECT_AMOUNT%'
 matcher-apply-answer-questionnaire: "Responder cuestionario"
+dashboard-matcher-project-rewards-title: "Recompensas del proyecto %s"
+dashboard-matcher-project-rewards-description: "Aqui podrás seleccionar las recompensas del proyecto para que los donantes puedan hacer match de su aportación."
+dashboard-matcher-project-rewards-selected: "Recompensas seleccionadas"
+dashboard-matcher-project-rewards-list: "Recompensas no seleccionadas"
+dashboard-matcher-match-rewards: "Match a recompensas"

@@ -5,6 +5,7 @@ namespace Goteo\Repository;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Entity\Matcher\MatcherReward;
 use Goteo\Model\Matcher;
+use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 
 class MatcherRewardRepository extends BaseRepository
@@ -22,10 +23,37 @@ class MatcherRewardRepository extends BaseRepository
         ";
 
         $list = [];
-        foreach($this->query($sql, [$matcher->id])->fetchAll(\PDO::FETCH_OBJ) as $matcherReward) {
-            $reward = Reward::get($matcherReward->reward);
-            $list[] = new MatcherReward($matcher, $reward, $matcherReward->status);
+        foreach($this->query($sql, [$matcher->id])->fetchAll(\PDO::FETCH_OBJ) as $obj) {
+            $matcherReward = new MatcherReward();
+            $reward = Reward::get($obj->reward);
+
+            $matcherReward->setMatcher($matcher)->setReward($reward)->setStatus($obj->status);
+            $list[] = $matcherReward;
         };
+
+        return $list;
+    }
+
+    /**
+     * @return Matcher[]
+     */
+    public function getListByMatcherAndProject(Matcher $matcher, Project $project): array
+    {
+                $sql = "SELECT matcher_reward.*
+            FROM matcher_reward
+            LEFT JOIN reward ON matcher_reward.reward = reward.id
+            WHERE matcher_reward.matcher = :matcher and reward.project = :project
+        ";
+
+        $list = [];
+        foreach($this->query($sql, [":matcher" => $matcher->id, ":project" => $project->id])->fetchAll(\PDO::FETCH_OBJ) as $obj) {
+            $matcherReward = new MatcherReward();
+            $reward = Reward::get($obj->reward);
+
+            $matcherReward->setMatcher($matcher)->setReward($reward)->setStatus($obj->status);
+            $list[] = $matcherReward;
+        };
+
         return $list;
     }
 

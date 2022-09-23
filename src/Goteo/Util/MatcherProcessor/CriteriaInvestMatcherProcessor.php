@@ -21,6 +21,7 @@ use Goteo\Model\Invest;
  */
 class CriteriaInvestMatcherProcessor extends AbstractMatcherProcessor {
     const NAME = "criteriainvest";
+    const PERCENT_OR_AMOUNT = 'percent_or_amount';
     const MIN_AMOUNT_PER_PROJECT = 'min_amount_per_project';
     const MIN_NUMBER_OF_DONORS = 'min_number_of_donors';
     const DONATION_PER_PROJECT = 'donation_per_project';

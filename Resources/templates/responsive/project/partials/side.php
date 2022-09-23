@@ -10,7 +10,7 @@
             $available = $individual->available();
             $units = ($individual->units - $individual->taken); // units left
         ?>
-            <li class="side-widget">
+            <li id="reward-<?= $individual->id ?>" class="side-widget">
                 <h3 class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></h3>
                 <p class="text-bold spacer-20"><?= $individual->reward ?></p>
                 <p class="spacer-20"><?= $this->markdown($individual->description) ?></p>
@@ -54,7 +54,7 @@
     <ul class="collaborations list-unstyled">
         <!-- List of collaborations -->
         <?php foreach ($project->supports as $support): ?>
-            <li class="side-widget">
+            <li id="<?= $support->id ?>" class="side-widget">
                 <h3 class="text-bold">
                     <?= $support->support ?>
                 </h3>
