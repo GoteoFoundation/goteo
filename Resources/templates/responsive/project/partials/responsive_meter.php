@@ -171,6 +171,8 @@ use Goteo\Library\Check;
             <?php $matcher_vars=$matcher->getVars(); ?>
             <?php $max_project= $matcher_vars['max_amount_per_project'] ? $matcher_vars['max_amount_per_project'] : $matcher_vars['donation_per_project']; ?>
             <?php $progress=round(($matcher_amount/$max_project)*100); ?>
+            <?php $matcher_reward=1; ?>
+
                 <div class="matcher-info">
                     <div>
                         <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo" alt="<?= $this->t('regular-matcher') ?>">
@@ -178,6 +180,15 @@ use Goteo\Library\Check;
                         <?= $this->text('matcher-label-project') ?>
                         </span>
                     </div>
+
+                    <?php if($matcher_reward):?>
+                        <span style="float:right; margin-left: 5px;">
+                            Limitado por <br>recompensa
+                        </span>
+                        <i class="fa fa-info-circle" style="float:right" data-html="true" data-container="body" data-toggle="tooltip" title="" data-original-title="<span style='font-size: 16px;'>Se multiplican donaciones solo para la <strong>recompensa</strong><br> 'Lee con calma climática'</span>">
+                        </i>
+                    <?php endif; ?>
+                    
                     <div class="matcher-description">
                         <div class="logo-container">
                             <img src="<?= $matcher->getLogo()->getLink(150, 150, true) ?>" class="logo" alt="<?= $matcher->name ?>">

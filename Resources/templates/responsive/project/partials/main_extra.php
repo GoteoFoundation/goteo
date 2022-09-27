@@ -190,6 +190,7 @@ $langs = $project->getLangs();
                 <div class="slider slider-matchers" id="matchers">
                     <?php foreach ($matchers as $matcher): ?>
                         <?php
+                            $matcher_reward=1;
                             $matcher_amount=$matcher->calculateProjectAmount($project->id);
                             $matcher_vars=$matcher->getVars();
                             $max_project= $matcher_vars['max_amount_per_project'] ? $matcher_vars['max_amount_per_project'] : $matcher_vars['donation_per_project'];
@@ -201,11 +202,20 @@ $langs = $project->getLangs();
                                 <span class="matcher-label">
                                     <?= $this->text('matcher-label-project') ?>
                                 </span>
+                                <?php if($matcher_reward):?>
+                                    <span style="float:right; margin-left: 5px;">
+                                        Limitado por <br>recompensa
+                                    </span>
+                                    <i class="fa fa-info-circle" style="float:right" data-html="true" data-container="body" data-toggle="tooltip" title="" data-original-title="<span style='font-size: 16px;'>Se multiplican donaciones solo para la <strong>recompensa</strong><br> 'Lee con calma climática'</span>">
+                                    </i>
+                                <?php endif; ?>
                             </div>
                             <div class="matcher-description">
                                 <div class="logo-container">
                                     <img src="<?= $matcher->getLogo()->getLink(150, 150, true) ?>" class="logo" alt="<?= $matcher->name ?>">
                                 </div>
+
+
                                 <div class="info-container">
                                     <div class="matcher-name">
                                         <?= $matcher->name ?>
