@@ -10,7 +10,7 @@ if($google = $this->a('google')):
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', <?= $id ?>);
+            gtag('config', "<?= $id ?>");
         </script>
     <?php endif; ?>
 
@@ -24,7 +24,7 @@ if($google = $this->a('google')):
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
 
-              gtag('config', <?= $id ?>);
+              gtag('config', "<?= $id ?>");
             </script>
         <?php endif; ?>
     <?php endforeach; ?>
