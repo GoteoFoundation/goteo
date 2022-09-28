@@ -62,5 +62,4 @@ validate-user-field-name: 'Uveďte své celé jméno, aby bylo možné projekt l
 validate-user-field-twitter: 'Uživatel Twitteru je neplatný'
 validate-user-field-web: 'Musíte zadat adresu (URL) webové stránky'
 validate-user-field-webs: 'Zveřejněte své webové stránky, abyste zlepšili hodnocení svého projektu a mohli rozhodnout o jeho zveřejnění na portálu Goteo.'
-help-user-analytics: 'Pokud jej máte, zadejte své ID sledování Google Analytics, abyste ve svém projektu povolili službu Google Analytics.<br>ID musí být v tomto formátu: <strong>UA-000000-01</strong> (příklad ID)<br> <a href="https://analytics.google.com" target="_blank">Přejít do Google Analytics</a>'
 help-user-facebook-pixel: 'Zadejte ID svého Facebook Pixelu, pokud chcete měřit konverze kampaně na Facebooku.<br><a href="https://www.facebook.com/ads/manager/pixel/facebook_pixel" target="_blank">Přejít na Facebook Pixel</a>'
