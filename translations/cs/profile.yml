@@ -22,7 +22,9 @@ profile-field-legal-entity-ngo: NNO
 profile-field-legal-entity-others: Ostatní
 profile-field-legal-entity-person: 'Fyzická osoba'
 profile-field-legal-entity-self-employed: OSVČ
+profile-field-origin-register: 'Jak jste se dozvěděli o Goteo?'
 profile-field-origin-register-event: 'Prostřednictvím veřejné události/prezentace'
+profile-field-origin-register-search: 'Používání vyhledávače'
 profile-field-location: 'Obvyklé místo bydliště'
 profile-field-name: 'Uživatelské jméno'
 profile-field-url: URL
@@ -50,6 +52,7 @@ tooltip-user-name: 'Vaše jméno nebo přezdívka v rámci služby Goteo. Může
 tooltip-user-twitter: 'Tato sociální síť vám pomůže svižně a virálně šířit projekty Goteo.'
 tooltip-user-webs: 'Uvádí adresy URL osobních nebo jiných stránek, které jsou s vámi propojeny.'
 validate-project-userProfile-any_error: 'V zadané adrese URL došlo k chybě'
+validate-project-userProfile-web: 'Je vhodné uvést webové stránky'
 validate-user-field-about: 'Řekněte nám něco o sobě, abychom mohli projekt lépe posoudit a rozhodnout, zda jej na Goteo zveřejníme.'
 validate-user-field-avatar: 'Vložte profilový obrázek, abyste mohli lépe posoudit projekt a rozhodnout, zda jej na Goteo zveřejnit.'
 validate-user-field-contribution: 'Vysvětlete, čím byste mohli přispět ke zlepšení hodnocení projektu na platformě Goteo, aby bylo možné rozhodnout o jeho zveřejnění na této platformě.'
