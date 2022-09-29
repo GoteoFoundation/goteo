@@ -302,15 +302,18 @@ admin-aggretate-invests-format: '%CURRENCY% %VALUE% (%TOTAL% investuje)'
 admin-aggregate-invests-desc: 'Součet příspěvků za jednotku času'
 admin-aggregate-invests-average: 'Průměrná výše příspěvků'
 admin-aggregate-invests-average-desc: 'Průměr příspěvků za jednotku času'
+admin-aggregate-projects: 'Celková částka získaná v projektech'
 admin-aggretate-projects-format: '%CURRENCY% %VALUE% - %TOTAL% projektů'
 admin-aggregate-projects-desc: 'Součet příspěvků za jednotku času'
 admin-aggregate-projects-average: 'Průměrné výnosy z projektu'
 admin-aggregate-projects-average-desc: 'Průměrný příjem za jednotku času'
+admin-stats-invest-totals: 'Příspěvky a provize'
 admin-stats-project-totals: 'Stav projektů'
 admin-stats-raised: 'Hrubý příjem'
 admin-stats-active: 'Čistý příjem'
 admin-stats-fees: 'Poplatek platformě'
 admin-stats-commissions: 'Bankovní poplatky'
+admin-stats-matchfunding: 'Dorovnávací spolufinancování'
 admin-stats-raised-method: 'Hrubý příjem podle způsobu platby'
 admin-stats-raised-method-desc: 'Hrubý příjem zahrnuje všechny peníze, které platforma kdykoli vybrala (včetně přímých příspěvků do peněženky nebo z neúspěšných projektů s návratem do peněženky jsou zahrnuty příspěvky na neúspěšné projekty).<br><em> Příspěvky z peněženky nejsou zahrnuty</em>(pokud není zvolena tato platební metoda)</b>'
 admin-stats-active-method: 'Čistý příjem podle způsobu platby'
@@ -323,8 +326,22 @@ admin-stats-from_matchfunding: 'Podrobnosti o projektech spolufinancování'
 admin-stats-matchfunding-part: 'Projekty s dorovnávacím financováním'
 admin-stats-users-part: 'Projekty bez dorovnávacího financování'
 admin-stats-match-part: 'Multiplikační část'
+admin-stats-invest-in_wallet: 'Celková částka nashromážděná v peněžence'
 admin-stats-to_projects: 'K projektům'
+admin-stats-to_fee: 'Provize'
+admin-stats-in_wallet: 'V peněžence'
+admin-losts: Ztráty
 admin-refunded: Vráceno
+admin-refunded-to_wallet: Vráceno do peněženky
+admin-commissions: Poplatek
+admin-fees: Poplatek platformě
+admin-matcher-fee: Provize za dorovnávání
+admin-diff: Rozdíl
+admin-the_day: Den
+admin-the_week: Týden
+admin-last_year: Ve stejný den loňského roku
+admin-last_year_complete: Celý loňský rok
+admin-promote-add: 'Nové zvýraznění'
 admin-promote-submit: 'Uložit'
 admin-promote-already-exists: 'Tento projekt je již zvýrazněn'
 admin-promote-correct: 'Projekt je zvýrazněn'
@@ -367,7 +384,17 @@ admin-projects-review-month: 'V revizi tento měsíc'
 admin-projects-review-last_month: 'V revizi minulý měsíc'
 admin-projects-review-year: 'V revizi v letošním roce'
 admin-projects-review-last_year: 'V revizi v loňském roce'
+admin-invest-raised-amount-today: 'Vybráno dnes'
+admin-invest-raised-total-today: 'Příspěvky dnes'
+admin-invest-raised-amount-yesterday: 'Vybráno včera'
+admin-invest-raised-total-yesterday: 'Příspěvky včera'
+admin-invest-raised-amount-week: 'Vybráno tento týden'
+admin-invest-raised-amount-last_week: 'Vybráno minulý týden'
+admin-invest-raised-total-week: 'Příspěvky tento týden'
 admin-invest-raised-total-last_week: 'Příspěvky minulý týden'
+admin-invest-raised-amount-month: 'Vybráno tento měsíc'
+admin-invest-raised-amount-last_month: 'Vybráno minulý měsíc'
+admin-invest-raised-total-month: 'Dary tento měsíc'
 admin-invest-commissions-today: 'Bankovní poplatky dnes'
 admin-invest-commissions-yesterday: 'Bankovní poplatky včera'
 admin-invest-commissions-week: 'Bankovní poplatky tento týden'
@@ -410,7 +437,12 @@ admin-invest-diff-yesterday: 'Rozdíl oproti předchozímu dni'
 admin-invest-diff-last_week: 'Rozdíl oproti předchozímu týdnu'
 admin-invest-diff-last_month: 'Rozdíl oproti předchozímu měsíci'
 admin-invest-diff-last_year: 'Rozdíl oproti předchozímu roku'
+admin-stats-projects-channel-desc: 'Projekty patřící do kanálu (nebo uzlu)'
+admin-stats-projects-call-desc: 'Projekty, které patří do výzvy'
+admin-stats-projects-matcher-desc: 'Projekty, které jsou aktivní v dorovnávání'
+admin-stats-projects-consultant-desc: 'Projekty přidělené tomuto konzultantovi'
 admin-stats-projects-project-desc: 'Příspěvky k projektu'
+admin-filter-add: 'Přidat filtr'
 admin-filter-last-week: 'Posledních 7 dní'
 admin-filter-last-month: 'Posledních 30 dní'
 admin-filter-last-year: 'Posledních 365 dní'
@@ -423,19 +455,25 @@ admin-filter-user: 'Uživatel'
 admin-filter-donor: 'Dárce'
 admin-filter-no-donor: 'Neaktivní dárce'
 admin-filter-promoter: 'Promotér'
+admin-filter-matcher: 'Dorovnávající'
 admin-filter-test: 'Test'
 admin-filter-type-unique: 'Jediný'
 admin-filter-type-multidonor: 'Více dárců'
+admin-filter-type-foundation-donor: 'Dárce nadace'
 admin-filter-type-all: 'Vše'
 admin-filter-predefined-date: 'Výchozí datum'
+admin-filter-predefined-date-choose: 'Můžete si vybrat předem stanovené datum'
 admin-filter-forced: 'Vynutit filtr'
 admin-filter-forced-help: 'Pokud vyberete tuto možnost, budou filtry použity bez ohledu na to, co uživatel zvolil jako preferenci pro odesílání informací platformou.'
 admin-filter-project-status: Stav projektu
 admin-filter-invest-status: Stav dárcovství
 admin-filter-project-location: Umístění projektu
 admin-filter-location: Umístění, které se použije ve filtru
+admin-filter-donor-location: Místo dárce
 admin-filter-donor-status: Stav certifikátu
 admin-mail-body: 'Tělo zprávy'
+admin-stats-donations: 'Dary'
+admin-stats-donations-method: 'Dary podle způsobu platby'
 admin-stats-donations-method-desc: 'Dary zahrnují peníze, které uživatel dobrovolně věnuje nadaci, když přispívá na projekt, přímé dary nebo když vyprší částka v peněžence.'
 admin-stats-donations-tip: 'Dary v rámci projektových příspěvků (granty nebo "dýška")'
 admin-stats-donations-direct: 'Přímé dary (včetně prošlých peněženek)'
@@ -448,6 +486,8 @@ admin-donations-tip: Spropitné
 admin-donations-tip-invests: Příspěvky ve formě spropitného
 admin-donations-tip-users: Uživatelé se spropitným
 admin-donations-direct: Přímé dary
+admin-donations-expired: Dary, jejichž platnost vypršela
+admin-donations-refunded: Vrácené dary
 admin-donations-amount-percent: '% darovaných peněz'
 admin-donations-direct-percent: '% přímých plateb'
 admin-workshop: Workshopy Goteo
