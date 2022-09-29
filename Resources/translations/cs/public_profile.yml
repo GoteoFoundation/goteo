@@ -1,6 +1,7 @@
 ---
 profile-interests-header: 'Zajímají mě projekty s koncovkou...'
 profile-invest_on-header: 'Podporované projekty'
+profile-invest_on-title: Spolufinancování
 profile-keywords-header: 'Klíčová slova'
 profile-last_worth-title: Datum
 profile-location-header: 'Moje poloha'
@@ -14,7 +15,9 @@ profile-social-header: Sociální sítě
 profile-webs-header: 'Weby'
 profile-widget-button: 'Zobrazit profil'
 profile-widget-user-header: Uživatel
+profile-worth-title: 'Přispějte zde:'
 profile-worthcracy-title: Pozice
+profile_patron-invest_on-header: 'Kromě toho spolufinancuji'
 profile-stats-title: 'Aktivity v Goteo'
 profile-stats-projects: 'Kampaně'
 profile-stats-invests: 'Dary'
