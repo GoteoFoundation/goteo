@@ -25,6 +25,7 @@ profile-field-legal-entity-self-employed: OSVČ
 profile-field-origin-register: 'Jak jste se dozvěděli o Goteo?'
 profile-field-origin-register-event: 'Prostřednictvím veřejné události/prezentace'
 profile-field-origin-register-search: 'Používání vyhledávače'
+profile-field-origin-register-entity: 'Doporučení subjektu'
 profile-field-location: 'Obvyklé místo bydliště'
 profile-field-name: 'Uživatelské jméno'
 profile-field-url: URL
