@@ -330,6 +330,9 @@ admin-stats-invest-in_wallet: 'Celková částka nashromážděná v peněžence
 admin-stats-to_projects: 'K projektům'
 admin-stats-to_fee: 'Provize'
 admin-stats-in_wallet: 'V peněžence'
+admin-stats-fees-parts: 'Rozdělení provizí'
+admin-stats-invest-active-parts: 'Určení čistého příjmu'
+admin-stats-invest-in_wallet-parts: 'Členění peněženky'
 admin-losts: Ztráty
 admin-refunded: Vráceno
 admin-refunded-to_wallet: Vráceno do peněženky
@@ -339,6 +342,15 @@ admin-matcher-fee: Provize za dorovnávání
 admin-diff: Rozdíl
 admin-the_day: Den
 admin-the_week: Týden
+admin-week: Tento týden
+admin-last_week: Ve stejný den minulého týdne
+admin-last_week_complete: Celý minulý týden
+admin-last_year_week: Stejný týden před rokem
+admin-month: Tento měsíc
+admin-last_month: Ve stejný den minulý měsíc
+admin-last_month_complete: Celý minulý měsíc
+admin-last_year_month: Stejný měsíc před rokem
+admin-year: Tento rok
 admin-last_year: Ve stejný den loňského roku
 admin-last_year_complete: Celý loňský rok
 admin-promote-add: 'Nové zvýraznění'
