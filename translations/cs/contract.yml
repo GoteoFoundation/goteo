@@ -63,6 +63,7 @@ tooltip-contract-project_invest: 'Oprava automaticky generovaného textu pro Cí
 tooltip-contract-project_return: 'Oprava automaticky generovaného textu pro kolektivní vrácení peněz'
 tooltip-project-contract_entity: 'Pokud jste zřizovatelem projektu a zastupujete sami sebe, vyberte možnost "Vlastním jménem a na vlastní účet". Pokud je předkladatelem projektu skupina, musíte mít vlastní DIČ: v takovém případě zvolte příslušné DIČ (sdružení nebo obchodní subjekt) a vyplňte také oddíl "Právní subjekt". '
 tooltip-project-contract_name: 'Musíte napsat své skutečné jméno a svá dvě příjmení, upozorňujeme, že budete uvedeni jako vedoucí projektu. Na smlouvě bude uvedeno vaše jméno a podpis.'
+contract-admin-fields: 'Administrativní pole (vyplní tým Goteo)'
 contract-funding-goal: 'Cíle financování'
 contract-final-name: 'Jméno a příjmení (vlastní nebo zástupce)'
 contract-final-office: 'Pozice ve sdružení nebo podnikatelském subjektu (pouze v případě, že zastupujete sdružení nebo podnikatelský subjekt)'
@@ -100,4 +101,6 @@ contract-validation-error-documents: 'Chyba v dokumentaci'
 contract-already-processed: 'Smlouva již byla zpracována.'
 contract-legal-entities-natural-person: Fyzická osoba
 contract-legal-entities-legal-person: Právnická osoba
+contract-legal-document-type-passport: Cestovní pas
 validate-contract-nif-document-type: 'Číslo dokumentu neodpovídá formátu typu dokumentu'
+validate-contract-legal-nif-entity-legal: "Právní subjekt neodpovídá typu dokumentu"
