@@ -24,6 +24,7 @@ use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Controller\DashboardController;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Forms\Model\ProjectAnalyticsForm;
 use Goteo\Library\Forms\Model\ProjectCampaignForm;
 use Goteo\Library\Forms\Model\ProjectCostsForm;
 use Goteo\Library\Forms\Model\ProjectOverviewForm;
@@ -961,45 +962,29 @@ class ProjectDashboardController extends DashboardController {
         ]);
     }
 
-    /**
-    * Analytics section
-    */
-    public function analyticsAction(Request $request, $pid = null)
+    public function analyticsAction(Request $request, string $pid = null): Response
     {
         $project = $this->validateProject($pid, 'analytics');
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project;
-        // TODO: Create ProjectAnalyticsForm
-        $form = $this->createFormBuilder($defaults)
-            ->add('analytics_id', TextType::class, array(
-                'label' => 'regular-analytics',
-                'required' => false,
-                'attr' => ['help' => Text::get('help-user-analytics')],
-            ))
-            ->add('facebook_pixel', TextType::class, array(
-                'label' => 'regular-facebook-pixel',
-                'required' => false,
-                'attr' => ['help' => Text::get('help-user-facebook-pixel')],
-            ))
-            ->add('submit', SubmitType::class, [])
-            ->getForm();
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if($form->isValid()) {
-                $data = $form->getData();
-                $project->rebuildData($data, array_keys($form->all()));
-                if($project->save($errors)) {
-                    Message::info(Text::get('dashboard-project-analytics-ok'));
-                    return $this->redirect('/dashboard/project/' . $this->project->id .'/analytics');
-                } else {
-                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
-                }
 
-            } else {
-                Message::error(Text::get('form-has-errors'));
-            }
+        $processor = $this->getModelForm(
+            ProjectAnalyticsForm::class,
+            $project,
+            $defaults,
+            [],
+            $request
+        );
+
+        $form = $processor->createForm()->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $processor->save($form);
+        } else {
+            Message::error(Text::get('form-has-errors'));
         }
+
         return $this->viewResponse('dashboard/project/analytics', ['form' => $form->createView()]);
     }
 

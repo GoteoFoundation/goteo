@@ -16,7 +16,6 @@ use Goteo\Model\Project\Reward;
 class MatcherReward
 {
     const STATUS_ACTIVE = 'active';
-
     private Matcher $matcher;
     private Reward $reward;
     private ?string $status = null;
