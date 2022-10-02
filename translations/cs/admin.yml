@@ -179,6 +179,7 @@ admin-project-express-discard-desc: 'Nastavte projekt do stavu Vyřazeno a odeš
 admin-project-express-discard-sure: 'Automaticky se odešle e-mail a přejde do stavu vyřazeno, ano?'
 admin-project-to-review: 'K přezkoumání'
 admin-project-to-review-desc: 'Přesunout projekt do stavu čeká na posouzení'
+admin-project-to-review-sure: 'Tvůrce už ji nebude moci upravovat, ano?'
 admin-project-view-in-admin: 'Zobrazit v administraci'
 admin-project-to-negotiation: 'Vyjednávání'
 admin-project-to-negotiation-desc: 'Projekt přechází do stavu Upraveno'
@@ -291,10 +292,14 @@ admin-blog-edit-success: 'Záznam na blogu byl úspěšně upraven'
 admin-stories-not-active-yet: 'Tento uživatelský příběh zatím není aktivní'
 admin-stories-edit-success: 'Uživatelský příběh byl úspěšně upraven'
 admin-stories-pool: 'Zobrazit v cílové peněžence'
+admin-stories-review: 'Goteo Recenze: (Podtitul)'
 admin-stories-landing_pitch: 'Zobrazit v cílovém okně'
 admin-all-project-referers: 'Původ návštěv v projektech'
 admin-all-invests-referers: 'Původ návštěv v příspěvcích k projektu'
 admin-all-call-referers: 'Původ návštěv v rámci výzev'
+admin-all-project-devices: 'Zařízení použité na stránkách projektu'
+admin-all-invests-devices: 'Zařízení použité v příspěvcích na projekt'
+admin-all-call-devices: 'Zařízení používané na stránkách výzev'
 admin-aggregate-autoupdate: 'Automatická aktualizace'
 admin-aggregate-timeline: 'Časová osa'
 admin-aggregate-invests: 'Celkem příspěvků'
@@ -342,6 +347,11 @@ admin-matcher-fee: Provize za dorovnávání
 admin-diff: Rozdíl
 admin-the_day: Den
 admin-the_week: Týden
+admin-the_month: měsíc
+admin-the_year: Rok
+admin-total: Celkem
+admin-today: Dnes
+admin-yesterday: Včera
 admin-week: Tento týden
 admin-last_week: Ve stejný den minulého týdne
 admin-last_week_complete: Celý minulý týden
@@ -407,6 +417,11 @@ admin-invest-raised-total-last_week: 'Příspěvky minulý týden'
 admin-invest-raised-amount-month: 'Vybráno tento měsíc'
 admin-invest-raised-amount-last_month: 'Vybráno minulý měsíc'
 admin-invest-raised-total-month: 'Dary tento měsíc'
+admin-invest-raised-total-last_month: 'Dary za minulý měsíc'
+admin-invest-raised-amount-year: 'Vybráno v tomto roce'
+admin-invest-raised-total-year: 'Dary v tomto roce'
+admin-invest-raised-amount-last_year: 'Vybráno v loňském roce'
+admin-invest-raised-total-last_year: 'Dary v loňském roce'
 admin-invest-commissions-today: 'Bankovní poplatky dnes'
 admin-invest-commissions-yesterday: 'Bankovní poplatky včera'
 admin-invest-commissions-week: 'Bankovní poplatky tento týden'
