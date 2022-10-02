@@ -103,4 +103,5 @@ contract-legal-entities-natural-person: Fyzická osoba
 contract-legal-entities-legal-person: Právnická osoba
 contract-legal-document-type-passport: Cestovní pas
 validate-contract-nif-document-type: 'Číslo dokumentu neodpovídá formátu typu dokumentu'
+validate-contract-cif-document-type: 'Číslo CIF nesouhlasí ve formátu'
 validate-contract-legal-nif-entity-legal: "Právní subjekt neodpovídá typu dokumentu"
