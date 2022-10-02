@@ -23,7 +23,9 @@ profile-field-legal-entity-others: Ostatní
 profile-field-legal-entity-person: 'Fyzická osoba'
 profile-field-legal-entity-self-employed: OSVČ
 profile-field-origin-register: 'Jak jste se dozvěděli o Goteo?'
+profile-field-origin-register-workshop: 'Na školícím workshopu'
 profile-field-origin-register-event: 'Prostřednictvím veřejné události/prezentace'
+profile-field-origin-register-previous-project: 'Kampaň na Goteo'
 profile-field-origin-register-search: 'Používání vyhledávače'
 profile-field-origin-register-entity: 'Doporučení subjektu'
 profile-field-location: 'Obvyklé místo bydliště'
