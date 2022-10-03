@@ -54,7 +54,7 @@ class InvestRecoverController extends \Goteo\Core\Controller {
         }
 
         if(!in_array($id, $this->invests)) {
-            Message::error(Text::get('invest-return-already-processed'));
+            Message::error(Text::get('invest-return-not-active'));
         // die("$pid");
             return $this->redirect("/invest/$pid");
         }
@@ -62,6 +62,7 @@ class InvestRecoverController extends \Goteo\Core\Controller {
             Message::error(Text::get('invest-return-already-processed'));
             return $this->redirect("/invest/$pid");
         }
+
         $user = $invest->getUser();
 
         Session::store('recover-invest', $invest);
