@@ -190,23 +190,36 @@ $langs = $project->getLangs();
                 <div class="slider slider-matchers" id="matchers">
                     <?php foreach ($matchers as $matcher): ?>
                         <?php
-                            $matcher_reward=1;
                             $matcher_amount=$matcher->calculateProjectAmount($project->id);
                             $matcher_vars=$matcher->getVars();
-                            $max_project= $matcher_vars['max_amount_per_project'] ? $matcher_vars['max_amount_per_project'] : $matcher_vars['donation_per_project'];
+                            $max_project= $matcher_vars['max_amount_per_project'] ?: $matcher_vars['donation_per_project'];
                             $progress=round(($matcher_amount/$max_project)*100);
                         ?>
                         <div class="matcher-info hidden-sm hidden-xs">
                             <div>
-                                <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo" alt="<?= $this->t('regular-matcher') ?>">
+                                <img width="30" src="<?= $this->asset('img/project/drop.svg') ?>" class="matcher-logo" alt="<?= $this->t('regular-matcher') ?>">
                                 <span class="matcher-label">
                                     <?= $this->text('matcher-label-project') ?>
                                 </span>
-                                <?php if($matcher_reward):?>
+                                <?php if($matcher->matchesRewards()):?>
+                                    <?php
+                                        $matchedRewards = $matcher->getMatchingRewards();
+                                        $matcherRewardsNames = [];
+
+                                        foreach($matchedRewards as $matchedReward) {
+                                            $matcherRewardsNames[] = $matchedReward->getReward()->reward;
+                                        }
+                                    ?>
                                     <span style="float:right; margin-left: 5px;">
-                                        Limitado por <br>recompensa
+                                        <?= $this->t('matcher-limited-by-amount') ?>
                                     </span>
-                                    <i class="fa fa-info-circle" style="float:right" data-html="true" data-container="body" data-toggle="tooltip" title="" data-original-title="<span style='font-size: 16px;'>Se multiplican donaciones solo para la <strong>recompensa</strong><br> 'Lee con calma climática'</span>">
+                                    <i class="fa fa-info-circle"
+                                       style="float:right"
+                                       data-html="true"
+                                       data-container="body"
+                                       data-toggle="tooltip"
+                                       title=""
+                                       data-original-title="<span style='font-size: 16px;'><?= $this->text('matcher-limited-by-amount-title', implode('<br>', $matcherRewardsNames)) ?></span>">
                                     </i>
                                 <?php endif; ?>
                             </div>
