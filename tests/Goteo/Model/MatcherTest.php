@@ -12,12 +12,16 @@
 namespace Goteo\Model\Tests;
 
 use Goteo\Core\DB;
+use Goteo\Entity\Matcher\MatcherReward;
+use Goteo\Model\Project;
+use Goteo\Model\User\Pool;
 use Goteo\TestCase;
 use Goteo\Model\Matcher;
 use Goteo\Model\User;
 use Goteo\Model\Invest;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
+use Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor;
 
 class MatcherTest extends TestCase
 {
@@ -42,7 +46,7 @@ class MatcherTest extends TestCase
         DB::cache(false);
 
         $ob = new Matcher();
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob);
+        $this->assertInstanceOf(Matcher::class, $ob);
 
         return $ob;
     }
@@ -74,7 +78,7 @@ class MatcherTest extends TestCase
         $ob = Matcher::get($ob->id);
         $this->assertNull($ob);
         $ob = Matcher::get(self::$data['id'], false);
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob);
+        $this->assertInstanceOf(Matcher::class, $ob);
 
         $this->assertEquals(0, Matcher::getList(['owner' => get_test_user()->id, 'active' => true],0,0,true));
         $this->assertEquals(1, Matcher::getList(['owner' => get_test_user()->id],0,0,true));
@@ -83,11 +87,11 @@ class MatcherTest extends TestCase
         $this->assertCount(1, Matcher::getList(['name' => '%test', 'owner' => get_test_user()->id]));
         $list = Matcher::getList([],0,1);
         $this->assertCount(1, $list);
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $list[0]);
+        $this->assertInstanceOf(Matcher::class, $list[0]);
         $ob->active = true;
         $this->assertTrue($ob->save($errors), implode("\n", $errors));
         $ob = Matcher::get($ob->id);
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob);
+        $this->assertInstanceOf(Matcher::class, $ob);
 
         foreach(self::$data as $key => $val) {
             $this->assertEquals($ob->{$key}, $val);
@@ -112,12 +116,84 @@ class MatcherTest extends TestCase
         $this->assertEquals('Var 2', $vars['var2']);
 
         $ob2 = Matcher::get($ob->id);
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob2);
+        $this->assertInstanceOf(Matcher::class, $ob2);
         $vars = $ob2->getVars();
         $this->assertCount(2, $vars);
         $this->assertEquals('Var 1', $vars['var1']);
         $this->assertEquals('Var 2', $vars['var2']);
 
+        return $ob;
+    }
+
+    /**
+     * @depends testVars
+     */
+    public function testMatchesRewards(Matcher $ob): Matcher {
+        $this->assertFalse($ob->matchesRewards());
+        return $ob;
+    }
+
+    /**
+     * @depends testMatchesRewards
+     */
+    public function testActivateMatchingRewards(Matcher $ob): Matcher
+    {
+        $ob->activateMatchingRewards();
+        $vars = $ob->getVars();
+
+        $this->assertTrue($vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS]);
+        return $ob;
+    }
+
+    /**
+     * @depends testActivateMatchingRewards
+     */
+    public function testMatchesRewardsAfterActivation(Matcher $ob): Matcher
+    {
+        $this->assertTrue($ob->matchesRewards());
+        return $ob;
+    }
+
+    /**
+     * @depends testActivateMatchingRewards
+     */
+    public function testGetZeroMatchingRewards(Matcher $ob): Matcher
+    {
+        $this->assertCount(0, $ob->getMatchingRewards());
+        return $ob;
+    }
+
+    /**
+     * @depends testGetZeroMatchingRewards
+     */
+    public function testAddMatchingReward(Matcher $ob): Matcher
+    {
+        $errors = [];
+        $reward = get_test_reward();
+
+        $this->assertInstanceOf(MatcherReward::class, $ob->addMatchingReward($reward, $errors));
+        $this->assertCount(1, $ob->getMatchingRewards());
+        return $ob;
+    }
+
+    /**
+     * @depends testActivateMatchingRewards
+     */
+    public function testDeactivateMatchingRewards(Matcher $ob): Matcher
+    {
+        $ob->deactivateMatchingRewards();
+        $vars = $ob->getVars();
+
+        $this->assertEmpty($vars[DuplicateInvestMatcherProcessor::CONFIG_MATCH_REWARDS]);
+        return $ob;
+    }
+
+    /**
+     * @depends testDeactivateMatchingRewards
+     */
+    public function testGetNoMatchingRewards(Matcher $ob): Matcher
+    {
+        $this->assertCount(0, $ob->getMatchingRewards());
         return $ob;
     }
 
@@ -134,14 +210,14 @@ class MatcherTest extends TestCase
                 $this->assertTrue($uob->save($errors, ['active']), print_r($errors, 1));
             }
 
-            $this->assertInstanceOf('\Goteo\Model\User', $uob, print_r($errors, 1));
+            $this->assertInstanceOf(User::class, $uob, print_r($errors, 1));
 
             self::$userData[$i]['ob'] = $uob;
             Matcher::query("REPLACE invest (`user`, amount, status, method, invested, charged, pool) VALUES (:user, :amount, :status, 'dummy', NOW(), NOW(), 1)", [':user' => $user['userid'], ':amount' => $user['pool'], ':status' => Invest::STATUS_TO_POOL]);
             Matcher::query("REPLACE user_pool (`user`, amount) VALUES (:user, :amount)", [':user' => $user['userid'], ':amount' => $user['pool']]);
             $this->assertEquals($user['pool'], $uob->getPool()->amount);
 
-            $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->addUsers($uob));
+            $this->assertInstanceOf(Matcher::class, $ob->addUsers($uob));
 
             $total += $user['pool'];
         }
@@ -159,16 +235,16 @@ class MatcherTest extends TestCase
     public function testChangeUserPool(Matcher $ob): Matcher
     {
         $total = $ob->getTotalAmount();
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->useUserPool(self::$userData[1]['userid'], false));
+        $this->assertInstanceOf(Matcher::class, $ob->useUserPool(self::$userData[1]['userid'], false));
         $this->assertEquals(self::$userData[0]['pool'], $ob->getTotalAmount());
 
         $pools = $ob->getUserPools();
         $this->assertCount(1, $pools);
-        $this->assertInstanceOf('\Goteo\Model\User\Pool', $pools[0]);
+        $this->assertInstanceOf(Pool::class, $pools[0]);
         $this->assertEquals(self::$userData[0]['userid'], $pools[0]->user);
         $this->assertEquals(self::$userData[0]['pool'], $pools[0]->amount);
 
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->useUserPool(self::$userData[1]['ob'], true));
+        $this->assertInstanceOf(Matcher::class, $ob->useUserPool(self::$userData[1]['ob'], true));
         $this->assertEquals($total, $ob->getTotalAmount());
         $pools = $ob->getUserPools();
         $this->assertCount(2, $pools);
@@ -183,10 +259,10 @@ class MatcherTest extends TestCase
     {
         //Creates project first
         $pob = get_test_project();
-        $this->assertInstanceOf('\Goteo\Model\Project', $pob);
+        $this->assertInstanceOf(Project::class, $pob);
 
         self::$project = $pob;
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->addProjects($pob, 'active'));
+        $this->assertInstanceOf(Matcher::class, $ob->addProjects($pob, 'active'));
 
         $this->assertEquals(1, $ob->getTotalProjects());
         $this->assertGreaterThan(0, $ob->getTotalProjects());
@@ -204,7 +280,7 @@ class MatcherTest extends TestCase
         $list = Matcher::getFromProject($pob);
         $this->assertCount(1, $list);
         $ob2 = $list[0];
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob2);
+        $this->assertInstanceOf(Matcher::class, $ob2);
         $this->assertEquals($ob->id, $ob2->id);
         $this->assertEquals($ob->name, $ob2->name);
         $this->assertEquals($ob->terms, $ob2->terms);
@@ -222,13 +298,13 @@ class MatcherTest extends TestCase
     public function testChangeProjects(Matcher $ob): Matcher
     {
         $total = $ob->getTotalProjects();
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->setProjectStatus(self::$project, 'pending'));
+        $this->assertInstanceOf(Matcher::class, $ob->setProjectStatus(self::$project, 'pending'));
         $this->assertEquals(0, $ob->getTotalProjects());
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->setProjectStatus(self::$project, 'active'));
+        $this->assertInstanceOf(Matcher::class, $ob->setProjectStatus(self::$project, 'active'));
         $this->assertEquals($total, $ob->getTotalProjects());
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->setProjectStatus(self::$project, 'rejected'));
+        $this->assertInstanceOf(Matcher::class, $ob->setProjectStatus(self::$project, 'rejected'));
         $this->assertEquals(0, $ob->getTotalProjects());
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->setProjectStatus(self::$project, 'active'));
+        $this->assertInstanceOf(Matcher::class, $ob->setProjectStatus(self::$project, 'active'));
         $this->assertEquals($total, $ob->getTotalProjects());
 
         return $ob;
@@ -239,7 +315,7 @@ class MatcherTest extends TestCase
      */
     public function testRemoveUsers(Matcher $ob)
     {
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->removeUsers(self::$userData[0]['userid']));
+        $this->assertInstanceOf(Matcher::class, $ob->removeUsers(self::$userData[0]['userid']));
         $this->assertEquals(self::$userData[1]['pool'], $ob->getTotalAmount());
     }
 
@@ -248,7 +324,7 @@ class MatcherTest extends TestCase
      */
     public function testRemoveProjects(Matcher $ob)
     {
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->removeProjects(self::$project));
+        $this->assertInstanceOf(Matcher::class, $ob->removeProjects(self::$project));
         $this->assertEquals(0, $ob->getTotalProjects());
     }
 
@@ -271,7 +347,7 @@ class MatcherTest extends TestCase
     public function testCheckLanguages(Matcher $ob)
     {
         $new = Matcher::get($ob->id);
-        $this->assertInstanceOf('Goteo\Model\Matcher', $new);
+        $this->assertInstanceOf(Matcher::class, $new);
         $this->assertEquals(self::$data['name'], $new->name);
         $this->assertEquals(self::$data['terms'], $new->terms);
 
@@ -291,7 +367,7 @@ class MatcherTest extends TestCase
         $list = Matcher::getList();
         $this->assertIsArray($list);
         $new = end($list);
-        $this->assertInstanceOf('Goteo\Model\Matcher', $new);
+        $this->assertInstanceOf(Matcher::class, $new);
         $this->assertEquals(self::$data['name'], $new->name);
         $this->assertEquals(self::$data['terms'], $new->terms);
 
@@ -344,6 +420,7 @@ class MatcherTest extends TestCase
     static function tearDownAfterClass(): void
     {
         Matcher::query("DELETE FROM matcher WHERE `id` = ?", self::$data['id']);
+        delete_test_reward();
         delete_test_project();
         delete_test_user();
         delete_test_node();
