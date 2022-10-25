@@ -12,6 +12,7 @@ namespace Goteo\Model\Project;
 
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Core\Model;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Icon;
@@ -19,9 +20,8 @@ use Goteo\Model\Category as MainCategory;
 use Goteo\Model\Image as CategoryImage;
 use Goteo\Model\License;
 use Goteo\Application\Lang;
-use Goteo\Application\Config;
 
-class Reward extends \Goteo\Core\Model {
+class Reward extends Model {
 
     public
             $id,

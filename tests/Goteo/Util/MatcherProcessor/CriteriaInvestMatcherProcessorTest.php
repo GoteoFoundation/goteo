@@ -18,7 +18,6 @@ use Goteo\Model\Matcher;
 use Goteo\Model\User;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
-use Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor;
 
 class CriteriaInvestMatcherProcessorTest extends TestCase {
     private static array $data = ['id' => 'matchertest', 'name' => 'Matcher test', 'processor' => 'criteriainvest'];

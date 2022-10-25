@@ -55,6 +55,15 @@ class MatcherRewardRepositoryTest extends TestCase
     /**
      * @depends testPersist
      */
+    public function testGetListByMatcherAndProject()
+    {
+        $project = self::$reward->getProject();
+        $this->assertCount(1, self::$repository->getListByMatcherAndProject(self::$matcher, $project));
+    }
+
+    /**
+     * @depends testPersist
+     */
     public function testExists(MatcherReward $matcherReward)
     {
         $this->assertTrue(self::$repository->exists($matcherReward->getMatcher(), $matcherReward->getReward()));
