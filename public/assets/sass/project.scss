@@ -741,34 +741,57 @@ ul.collaboration-list {
 
 li.side-widget {
   background-color: $background-white;
-  padding: 5%;
   border-radius: 10px;
   margin-bottom: 5px;
   font-size: 13px;
   word-wrap: break-word;
   // make all images resonsive here
-  img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 4px 0;
+
+  .reward-info {
+    padding: 5%;
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 4px 0;
+    }
+
+    h3 {
+      font-size: 16px;
+    }
+
+    .amount {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .investors {
+      text-transform: uppercase;
+      color: #C054BA;
+      font-weight: bold;
+      padding: 15px 0;
+      div.left {
+        font-weight: normal;
+      }
+    }
   }
 
-  h3 {
-    font-size: 16px;
-  }
+  &.matched-reward {
+    border: 1px solid $background-dark-lilac;
 
-  .amount {
-    font-size: 16px;
-    font-weight: bold;
-  }
-  .investors {
-    text-transform: uppercase;
-    color: #C054BA;
-    font-weight: bold;
-    padding: 15px 0;
-    div.left {
-      font-weight: normal;
+    .btn-lilac {
+      position: relative;
+      top: 0;
+      left: 0;
+      border-top-left-radius: 5px;
+      max-width: 95%;
+      z-index: 3;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      color: $color-white;
+      display: inline-block;
     }
   }
 }

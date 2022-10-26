@@ -227,8 +227,6 @@ $langs = $project->getLangs();
                                 <div class="logo-container">
                                     <img src="<?= $matcher->getLogo()->getLink(150, 150, true) ?>" class="logo" alt="<?= $matcher->name ?>">
                                 </div>
-
-
                                 <div class="info-container">
                                     <div class="matcher-name">
                                         <?= $matcher->name ?>
