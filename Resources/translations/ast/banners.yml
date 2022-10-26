@@ -1,1 +1,6 @@
 ---
+discover-banner-header: 'Por categoría, llugar o devolución,<br><span class="red">atopa''l proyeutu</span> col que más t''identifiques'
+login-banner-header: 'Accedi a la comunidá de Goteo<br><span class="greenblue">100% abierta</span>'
+main-banner-header: '<h2 class="message">Una rede social pa <span class="greenblue">cofinanciar y collaborar con</span><br> proyeutos innovadores que fomenten la utilidá común<br> ¿Tienes dalgún proyeutu con <span class="greenblue">ADN abierto</span>?</h2><a href="/contact" class="button banner-button">Ponte en contautu con nós'
+open-banner-header: '<div class="modpo-open">OPEN</div><div class="modpo-percent">100&#37; ABIERTA</div><div class="modpo-whyopen">%s</div>'
+regular-banner-metter: obtenido-de-quedan
