@@ -1,13 +1,20 @@
 ---
 mandatory-individual_reward-field-description: 'Ye obligatorio poner dalguna descripción'
-mandatory-individual_reward-field-icon: 'Ye obligatorio esbillar la triba de recompensa'
+mandatory-individual_reward-field-icon: 'Ye obligatorio seleicionar el tipu de recompensa'
 mandatory-individual_reward-field-name: 'Ye obligatorio poner la recompensa'
+mandatory-social_reward-field-description: 'Ye obligatorio poner dalguna descripción al retornu'
+mandatory-social_reward-field-icon: 'Ye obligatorio seleicionar el tipu de retornu'
+mandatory-social_reward-field-name: 'Ye obligatorio especificar el compromisu social'
+mandatory-social_reward-field-category: 'Ye obligatorio especificar el compromisu social'
+rewards-field-individual_reward-amount: 'Importe'
 rewards-field-individual_reward-description: Descripción
 rewards-field-individual_reward-reward: Recompensa
-rewards-field-individual_reward-type: 'Triba de recompensa'
-rewards-field-individual_reward-units: 'Unidaes'
+rewards-field-individual_reward-type: 'Tipu de recompensa'
+rewards-field-individual_reward-units: 'Unidaes disponibles'
 rewards-field-social_reward-description: Descripción
 rewards-field-social_reward-license: 'Opciones de llicencia'
+rewards-field-social_reward-reward: Retornu
+rewards-field-social_reward-type: 'Tipu de retornu'
 rewards-field-social_reward-url: URL
 rewards-fields-individual_reward-title: 'Recompenses individuales'
 rewards-fields-social_reward-title: 'Compromisu social'
