@@ -2,11 +2,15 @@
 contract-accounts_title: 'Cuentes bancaries del proyeutu'
 contract-bank_account: 'Cuenta bancaria con formatu IBAN:'
 contract-bank_owner: 'Titular de la cuenta bancaria:'
+contract-entity-option_0: 'Nel to nome y derechu'
 contract-entity-option_1: 'Como representante d''una asociación'
 contract-entity-option_2: 'Como apoderáu d''una entidá mercantil'
 contract-field-location: 'Conceyu/municipiu:'
+contract-field-reg_date_2: 'Data na que se dispunxo de la escritura pública de la empresa'
+contract-field-reg_id_2: 'Númberu de protocolu del notariu'
+contract-field-reg_idloc_2: 'Población d''actuación del notariu'
 contract-field-reg_idname_2: 'Nome del notariu'
-contract-field-reg_name_1: 'Rexistru nel que s''inscribió l''asocación'
+contract-field-reg_name_1: 'Rexistru nel que s''inscribió l''asociación'
 contract-field-reg_name_2: 'Rexistru nel que ta inscrita la entidá'
 contract-field-reg_number_1: 'Númberu de rexistru'
 contract-field-reg_number_2: 'Númberu d''inscripción nel rexistru (completu):'
@@ -17,20 +21,43 @@ contract-step-documents: Documentación
 contract-step-entity: 'Entidá xurídica'
 contract-step-final: Revisión
 contract-step-promoter: Representante
-guide-contract-entity: 'Nesti pasu has rellenar los datos de la entidá a la que representes. Si robles el contratu nel to nome, has volver al primer pasu («Representante») ya indicalo afayadizamente.'
+guide-contract-accounts: "Nesti pasu has indicar la cuenta bancaria na que quies recibir l'ingresu de la recaldación, amás d'indicar el nome del titular. Si indiquesti una cuenta PayPal, tamién tienes de dicinos el nome del titular d'esa cuenta (si'l proyeutu forma parte d'una convocatoria de capital de riesgu nun ye necesario). Recuerda que, a efeutos fiscales, vas recibir la recaldación como una donación que fai la Fundación Goteo pal desendolcu del proyeutu. L'ingresu nun lleva IVA y nun hai factures, poro contamos col contratu firmáu al qu'axuntamos el recibu de la tresferencia fecha. <b>1. Si les entidaes son xurídiques:  </b>La recaldación tributa nel Impuestu de Sociedaes. Nel casu d'entidaes ensin ánimu de llucru, pa saber si tas llibre, tienes de consultar a un asesor fiscal porque depende de cada casu. <b>2. Nel casu de les persones físiques: </b>El dineru recaldao tribútase nel IRPF, y puen dase dos situaciones: a/ Que'l dineru recaldao seya pa facer una actividá económica, y tas dau d'alta por esi conceutu. Si ye asina, pues deducir los gastos xeneraos pol proyeutu. b/ Si nun faes nenguna actividá económica o nun tas dau d'alta, el dineru recaldao ye una ganancia patrimonial neta. Nesti casu nun pues deducir los gastos rellacionaos. Al recibir la donación per parte de la Fundación Goteo, entidá que xestiona Goteo, NUN tas suxetu al Impuestu sobre Socesiones y Donaciones n'aplicación del art. 3 del Reglamentu del Impuestu que, ente otres coses, declara non suxetes «les sovenciones, beques, premios, primes, recompenses pecuniaries y auxilios que se concedan por Entidaes públiques o privaes con fines benéficos, docentes, culturales, deportivos o d'aición social»."
+guide-contract-documents: "Ye obligatorio xubir los documentos qu'acreiten los datos introducíos y que detallamos darréu:- EN TOLOS CASOS, copia del DNI/NIE de la persona que firma (quier nel to nome, quier nel nome d'una entidá)- EN TOLOS CASOS, copia de dalgún documentu nel qu'apaeza (al completu) el númberu de cuenta corriente (llibreta bancaria, recibos…)- namás nel casu de que'l contratu seya como EMPRESA, FUNDACIÓN o ASOCIACIÓN: AMÁS, copia del CIF y copia del documentu acreitativu d'apoderamientu (acta de xunta de l'asociación onde conste claramente'l nome y el cargu de la persona que firma'l contratu, o fueya de les escritures de la empresa, o carta de poderes onde se manifiesta que la persona que firma pue facelo en representación de la entidá) "
+guide-contract-entity: 'Nesti pasu has rellenar los datos de la entidá a la que representes. Si firmes el contratu nel to nome, has volver al primer pasu («Representante») ya indicalo afayadizamente.'
+guide-contract-no_entity: 'Como promotor en nome y derechu propios nun tienes que rellenar nada nesti pasu.'
+guide-contract-promoter: 'Nesti pasu has rellenar los datos del representante llegal de la entidá, o del impulsor si te representes a tigo mesmu. En tolos casos ha ser la mesma persona que va firmar el contratu.'
+mandatory-contract-bank: 'Ye obligatorio indicar una cuenta bancaria del proyeutu'
+mandatory-contract-bank_owner: 'Ye obligatorio poner el nome del titular de la cuenta bancaria'
+mandatory-contract-paypal_owner: 'Ye obligatorio poner el nome del titular de la cuenta PayPal del proyeutu'
+mandatory-contract-reg_date_2: 'Ye obligatorio indicar la data nel que''l notariu concedió la escritura pública'
 mandatory-contract-reg_id_2: 'Ye obligatorio indicar el númberu de protocolu del notariu'
 mandatory-contract-reg_idloc_2: 'Ye obligatorio indicar la ciudá d''actuación del notariu'
+mandatory-contract-reg_idname_2: 'Ye obligatorio indicar el nome del notariu que concedió la escritura pública de la empresa'
 mandatory-contract-reg_number_1: 'Ye obligatorio indicar el númberu de rexistru'
+mandatory-contract-reg_number_2: 'Ye obligatorio indicar el númberu d''inscripción nel rexistru'
+mandatory-project-field-contract_birthdate: 'Ye obligatorio poner la data de nacencia del responsable del proyeutu'
+mandatory-project-field-contract_name: 'Ye obligatorio poner el nome completu de la persona responsable del proyeutu'
+mandatory-project-field-contract_nif: 'Ye obligatorio poner el documentu d''identificación de la persona responsable del proyeutu'
+mandatory-project-field-entity_cif: 'Ye poner obligatorio poner el CIF de la entidá xurídica'
+mandatory-project-field-entity_name: 'Ye obligatorio poner el nome completu de la organización'
+mandatory-project-field-entity_office: 'Ye obligatoria poner el cargu que tienes dientro de la organización que vas representar'
+mandatory-project-field-region: 'Ye obligatorio poner la provincia'
 personal-field-contract_entity: 'Representante del proyeutu'
 personal-field-contract_name: 'Nome y apellíos'
 personal-field-contract_nif: 'Númberu de NIF / NIE / VAT'
+personal-field-contract_legal_document_type: Tipu de documentu
 personal-field-main_address: 'Direición postal'
 personal-field-post_address: 'Direición social'
 personal-field-region: Provincia
+tooltip-project-contract_nif: 'El NIF o''l NIE con cifres y lletres.'
 validate-project-value-contract_nif: 'El NIF nun ye correutu.'
+contract-admin-fields: 'Campos alministrativos (a rellenar pol equipu Goteo)'
+contract-funding-goal: 'Oxetivos de financiamientu'
+contract-final-name: 'Nome y apellíos (propios o representante)'
 contract-final-nif: 'NIF (propiu o representante)'
+contract-final-office: 'Cargu na asociación o entidá mercantil (namás si representa a una asociación o entidá mercantil)'
 contract-final-address: 'Domiciliu (propiu o representante)'
-contract-final-location: 'Conceyu (propiu o representante)'
+contract-final-location: 'Conceyu/municipiu (propiu o representante)'
 contract-final-region: 'Provincia (propiu o representante)'
 contract-final-zipcode: 'Códigu postal (propiu o representante)'
 contract-final-country: 'País (propiu o representante)'
@@ -40,6 +67,17 @@ contract-final-paypal: 'Cuenta PayPal del proyeutu'
 contract-final-paypal_owner: 'Titular de la cuenta PayPal'
 contract-final-bank: 'Cuenta bancaria del proyeutu'
 contract-final-bank_owner: 'Titular de la cuenta bancaria'
-contract-non-available: '¡El contraru entá nun ta disponible!'
+contract-final-close: 'Zarrar los datos y procesar el contratu'
+contract-validation-ok: El contratu paez correutu. Revisa los datos y fina'l procesu pente'l zarru de los datos.
+contract-non-available: '¡El contratu entá nun ta disponible!'
 contract-validation-errors: '¡El contratu entá nun se completó!'
+contract-validation-error-promoter_nif: 'El NIF nun ye correutu.'
+contract-validation-error-documents: 'Falta documentación'
 contract-already-processed: 'El contraru yá se procesó'
+contract-legal-entities-natural-person: Persona física
+contract-legal-entities-legal-person: Persona xurídica
+contract-legal-document-type-cif: CIF
+contract-legal-document-type-nif: NIF
+contract-legal-document-type-nie: NIE
+contract-legal-document-type-vat: VAT
+contract-legal-document-type-passport: Pasaporte
