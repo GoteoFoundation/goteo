@@ -3,40 +3,81 @@ admin-action: 'Aición d''alministrador'
 admin-NO: 'NON'
 admin-YES: SÍ
 admin-account-amount: 'Cantidá aportada'
-admin-account-change-user: 'Camudar d''usuariu'
-admin-account-change-user-confirm: '¿De xuru que quies camudar l''usuariu del aporte? L''usuariu nuevu va ser:'
-admin-account-convert-to-pool: 'Convertir a monedero'
-admin-account-convert-to-pool-confirm: 'Esto va desaniciar el proyeutu venceyáu a esti aporte y va pasar a ser como si fore una merca de monederu. VAN PERDESE TOLES RECOMPENSES VENCEYAES. ¿Siguir?'
-admin-account-convert-to-pool-ko: 'Nun pudo convertise l''aporte a monederu: %s'
+admin-account-change-user: 'Cambiar d''usuariu'
+admin-account-change-user-confirm: '¿De xuru que quies cambiar l''usuariu del aporte? L''usuariu nuevu va ser:'
+admin-account-convert-to-pool: 'Convertir a monederu'
+admin-account-convert-to-pool-ko: 'Nun se pudo convertir l''aportación a monederu: %s'
+admin-account-convert-to-pool-ok: 'L''aportación convirtióse a monederu correutamente'
 admin-account-detail: 'Detalles de la transación'
 admin-account-donation: Donativu
 admin-account-edit-reward: 'Xestionar recompensa/direición'
-admin-account-invalid-invest: '¡Nun s''alcontró l''aporte [%s]!'
-admin-account-invest-date: 'Data del aporte'
-admin-account-invest-non-pool-refundable: 'Esti aporte nun pue reembolsase al monederu virtual. Namái puen reembolsase los aportes n''estáu «Cobróse»'
-admin-account-invest-to-pool-ko: 'Fallu al devolver l''aporte al monederu'
-admin-account-invest-user-refund-fail-pool-amount: 'Esti aporte nun pue devolvese porque l''usuariu nun tien dineru abondo nel monederu (%s)'
-admin-account-invest-user-refund-ko: 'Nun pudo devolvese l''aporte: [%s]'
+admin-account-invalid-invest: '¡Nun s''atopó l''aportación [%s]!'
+admin-account-invest-date: 'Data de l''aportación'
+admin-account-invest-non-pool-refundable: 'Esta aportación nun se pue reembolsar al monederu virtual. Namás puen reembolsase les aportación col estáu «Cobróse»'
+admin-account-invest-non-user-refundable: "Esta aportación nun se pue reembolsar. Puen reembolsase les aportaciones colos estaos «Pendiente», «Cobróse» y «Al monederu» si hai dineru abondo nel monederu pa descontar\n"
+admin-account-invest-to-pool-ko: 'Hebo un error al devolver l''aportación al monederu'
+admin-account-invest-to-pool-ok: 'L''aportación reembolsóse al monederu. Incrementóse''l monederu por valor de (%s)'
+admin-account-invest-user-refund-fail-pool-amount: 'Esta aportación nun se pue devolver porque l''usuariu nun tien dinero abondo nel monederu (%s)'
+admin-account-invest-user-refund-ko: 'Nun se pudo devolver l''aportación: [%s]'
+admin-account-invest-user-refund-ok: 'L''aportación reembolsóse correutamente'
+admin-account-invest-user-refund-ok-pool: 'L''aportación reembolsóse correutamente. El monederu amenorgó en %s'
+admin-account-issue-solved: 'Ficiéronnos la tresferencia'
+admin-account-modify-status: 'Modificar l''estáu'
+admin-account-modify-status-confirm: "¿De xuru que quies camudar manualmente l'estáu d'esta aportación? ¡L'aición ye delicada!\nNUN VA FACESE NENGUNA operación de devolución de l'aportación.\n"
 admin-account-payment-method: 'Métodu de pagu'
+admin-account-pool-on-fail: 'Pool (devolver al monederu si falla)'
+admin-account-refund-to-pool: 'Reembolsar l''aportación al monederu'
+admin-account-refund-to-user: 'Reembolsar l''aportación al usuariu'
 admin-account-rewards: 'Recompenses escoyíes'
-admin-account-switch-donation: 'Conmutar donativu'
+admin-account-switch-donation: 'Cambiar el donativu'
 admin-account-switch-donation-confirm: '¿De xuru que quies camudar l''estáu del donativu?'
+admin-account-switch-pool: 'Cambiar el pool'
+admin-account-switch-pool-confirm: 'Esto namás afeuta cuando''l proyeutu falla, nun xenera nin quita dineru del monederu. ¿Quies siguir?'
+admin-account-switch-pool-fail: 'Nun se pue camudar l''estáu del pool d''esta aportación'
 admin-account-transaction: 'Códigos de siguimientu'
-admin-account-user-changed-error: '¡Nun pudo camudase l''usuariu del aporte [%ID%] a [%NAME%]!'
-admin-account-user-changed-successfully: 'Camudó l''usuariu del aporte [%ID%] a [%NAME%]'
+admin-account-user-changed-error: '¡Nun se pudo cambiar l''usuariu de l''aportación [%ID%] a [%NAME%]!'
+admin-account-user-changed-successfully: 'L''usuariu de l''aportación [%ID%] cambió a [%NAME%]'
 admin-address: Direición
+admin-all: Too
 admin-global: Global
 admin-back: Volver
-admin-back-list: 'Volver al llistáu'
+admin-back-detail: 'Volver al detalle'
+admin-back-list: 'Volver a la llista'
 admin-contents: 'Testos y traducciones'
-admin-empty-list: 'Nun s''alcontraron rexistros'
+admin-empty-list: 'Nun s''atopó nengún rexistru'
+admin-activity: Actividá
 admin-communications: Comunicaciones
+admin-communications-add: Crear una comunicación
+admin-communications-userid-label: '<strong>%USERID%</strong>'
+admin-communications-useremail-label: '<strong>%USEREMAIL%</strong>'
+admin-communications-username-label: '<strong>%USERNAME%</strong>'
+admin-communications-siteurl-label: '<strong>%SITEURL%</strong>'
+admin-communications-subscribeurl-label: '<strong>%SUBSCRIBEURL%</strong>'
+admin-communications-unsubscribeurl-label: '<strong>%UNSUBSCRIBEURL%</strong>'
+admin-communications-poolamount-label: '<strong>%POOLAMOUNT%</strong>'
+admin-communications-userid-content: ' pal ID d''accesu del destinatariu'
+admin-communications-useremail-content: ' pa la direición de corréu electrónicu del destinatariu'
+admin-communications-username-content: ' pal nome del destinatariu'
+admin-communications-siteurl-content: ' pa la URL d''esta plataforma (%SITEURL%)'
+admin-communications-subscribeurl-content: ' l''enllaz de soscripción direutu al boletín del usuariu'
+admin-communications-poolamount-content: ' la cantidá de dineru disponible nel monederu del usuariu'
+admin-communications-send: 'Unviar la comunicación'
+admin-communications-cancel: 'Encaboxar la comunicación'
+admin-communications-newsletter: 'Boletín'
+admin-communications-communication: 'Comunicación xeneral'
+admin-communications-id: 'ID de la comunicación'
+admin-certificates: Certificaos
+admin-certificates-management: Xestión de los certificaos
 admin-home: Portada
 admin-items: entraes
 admin-mailing-back-to-list: 'Volver a les comunicaciones'
+admin-mailing-communicating-with: 'Queriemos comunicanos con %DESC%'
 admin-mailing-created: 'Creóse''l'
+admin-mailing-new-massive: 'Creóse un unviu de mensaxes masivu a %TOTAL% usuariu'
 admin-mailing-status: 'Estáu del unviu automáticu'
 admin-mailing-subject: Asuntu
+admin-mailing-view-and-activate: 'Ver nel panel d''alministración del boletín p''activar l''unviu'
+admin-mailing-view-in-newsletter: 'Ver nel panel d''alministración del boletín'
 admin-mailing-view-in-sent: 'Ver nel historial d''unvios (estadístiques)'
 admin-mailing-view-message: 'Ver el mensaxe'
 admin-newsletter-generated: 'Xeneróse''l boletín [%ID%]'
@@ -50,57 +91,124 @@ admin-project: Proyeutu
 admin-main: Principal
 admin-projects: Proyeutos
 admin-consultants: 'Asesores'
+admin-invests: Aportaciones
 admin-filters: 'Peñeres'
-admin-remove-filters: 'Quitar peñeres'
-admin-remove-entry-confirm: '¿De xuru que quies desaniciar esta entrada? ¡Esta aición nun pue desfacese!'
+admin-filters-edit: 'Editar la peñera'
+admin-filters-create: 'Crear la peñera'
+admin-remove-filters: 'Quitar les peñeres'
+admin-remove-filters-forbidden: 'Nun se puen quitar les peñeres que s''usaron.'
+admin-remove-entry: 'Desaniciar la entrada'
+admin-remove-entry-confirm: '¿De xuru que quies desaniciar esta entrada? ¡Esta aición nun se pue desfacer!'
+admin-remove-entry-forbidden: 'Nun se puen desaniciar l''entraes del blogue espublizaes. Dexa d''espublizar la entrada primero.'
+admin-remove-entry-ok: 'La entrada desanicióse correutamente'
+admin-add-entry-ok: 'La entrada creóse correutamente'
+admin-edit-entry-ok: 'La entrada editóse correutamente'
 admin-services: Servicios
-admin-sponsors: Servicios
+admin-sponsors: Patrocinadores
+admin-slug-seo-help: 'Esti campu ye importante pa la función de SEO. Edítalu namás por un bon motivu.'
 admin-summary: Resume
 admin-origins: Analítica de visites
 admin-status: Estáu
-admin-text-type: 'Procesar testu como'
+admin-text-type: 'Procesar el testu como'
 admin-text-type-html: HTML
 admin-text-type-md: Markdown
 admin-text-type-plain: 'Testu simple'
 admin-user: Usuariu
-admin-user-no-projects: 'Entá nun se creó dengún proyeutu'
-admin-user-no-invests: 'Entá nun se fizo denguna donación'
+admin-user-no-projects: 'Entá nun se creó nengún proyeutu'
+admin-user-no-invests: 'Entá nun se fizo nenguna donación'
 admin-users: Usuarios
+admin-users-add: Crear un usuariu
 admin-blog: Blogue xeneral
+admin-blog-add: Crear un artículu
+admin-blog-edit: Editando l'artículu %s
+admin-blog-slug-exists: '¡L''identificador [%s] úsase n''otru artículu!'
 admin-blog-slug-chars: '¡L''identificador [%s] contién caráuteres que nun son válidos!'
-admin-blog-not-public: 'Esti artículu entá nun s''espublizó'
+admin-blog-not-public: 'Esti artículu entá nun ye públicu'
 admin-stories: Histories d'usuarios en Goteo
-admin-categories: 'Estayes y ámbitos'
+admin-stories-add: Crear una historia
+admin-stories-edit: Editando la historia %s
+admin-channelstory-add: Amestar la historia a la canal
+admin-channelstory-submit: Guardar la historia
+admin-channelstory-correct: 'Amestóse la historia a la canal'
+admin-channelsection-section: 'Seición'
+admin-channelsection-map: 'Mapa'
+admin-channelsection-resource: 'Recursos'
+admin-channelsection-projects: 'Proyeutos'
+admin-channelsection-posts: 'Artículos'
+admin-channelsection-program: 'Programes'
+admin-channelsection-workshops: 'Talleres'
+admin-channelsection-team: 'Equipu'
+admin-channelsection-sponsors: 'Patrocinadores'
+admin-channelsection-button: 'Botón'
+admin-channelsection-create: 'Crear'
+admin-channelsection-add: 'Amestar una seición'
+admin-channelpost-add: Amestar un artículu a la canal
+admin-channelpost-submit: Guardar l'artículu
+admin-channelpost-correct: 'Amestóse l''artículu a la canal'
+admin-channelcriteria-title: 'Cuestionarios de la canal'
+admin-channelcriteria-subtitle: 'Configura los criterios colos que vas evaluar un proyeutu que quiera presentase a la to canal. Procura ser concisu no qu''esperes consiguir de les iniciatives que quieran presentase, va ayudate a acencellar la evaluación final.'
+admin-channelprogram-create: 'Crear'
+admin-channelprogram-add: 'Amestar un programa'
+admin-categories: 'Categoríes y ámbitos'
+admin-category-add: Crear una categoría
+admin-category-edit: Editando la categoría %s
+admin-socialcommitment-add: Crear un compromisu social
+admin-socialcommitment-edit: Editando'l compromisu social %s
+admin-sphere-add: Crear un ámbitu
+admin-sphere-edit: Editando l'ámbitu %s
+admin-sdg-add: Crear un ODS
+admin-sdg-edit: Editando l'ODS %s
+admin-footprint-add: Crear una buelga
+admin-footprint-edit: Editando la buelga %s
 admin-calls: Convocatories
 admin-channels: Canales
 admin-yes: Sí
+admin-impersonate: Suplantar
+admin-impersonate-user: Suplantar a %s
 admin-project-express-discard: 'Refugu nel intre'
 admin-project-to-review: 'A revisión'
+admin-project-view-in-admin: 'Ver nel panel d''alministración'
 admin-project-to-negotiation: 'A negociación'
 admin-project-to-publish: 'Espublizar'
 admin-project-derivation-discard: 'Refugu con derivación'
 admin-home-title: Alministrar Goteo
 admin-stats: Estadístiques
 admin-list-total: 'Total: <strong>%s</strong> resultaos'
-admin-search-global: 'Proyeutu, canal, convocatoria...'
+admin-search-global: 'Proyeutu, canal, convocatoria…'
+admin-already-impersonating: 'Yá tas suplantando a un usuariu, ¡zarra la sesión primero!'
 admin-rebase-user: 'Camudar l''ID d''usuariu'
+admin-edit-name: 'Camudar el nome'
+admin-send-email: 'Unviar un corréu electrónicu'
 admin-show-roles-info: '¿Qué pue facer cada rol?'
+admin-user-roles: 'Llista de roles d''usuariu'
 admin-view-user-projects: 'Tolos proyeutos'
-admin-user-no-mailing: 'Entá nun se-y unvió dengún corréu'
+admin-view-user-invests: 'Toles aportaciones'
+admin-user-active: 'Cuenta activa'
+admin-user-warning: 'Atención: estes operaciones execútense ensin avisar al usuariu'
+admin-user-wallet-amount: 'Creitu nel monederu'
+admin-user-create-invest: 'Crear una aportación'
+admin-mailing: 'Unviu de correos electrónicos'
+admin-user-no-mailing: 'Entá nun se-y unvió nengún corréu electrónicu'
 admin-view-user-mailing: 'Tolos unvios'
+admin-communication-global-search: 'Asuntu'
 admin-title-id: ID
 admin-title-name: Nome
 admin-title-about: Información
+admin-title-location: Llocalización
 admin-title-fullname: Nome
+admin-title-header-image: Imaxe de la testera
 admin-title-password: Contraseña
 admin-title-avatar: Avatar
 admin-title-roles: Roles
 admin-title-icon: Iconu
+admin-title-info: Información
 admin-title-image: Imaxe
 admin-title-title: Títulu
 admin-title-subtitle: Sotítulu
+admin-title-description: Descripción
 admin-title-section: Seición
 admin-title-text: Testu
+admin-title-lang: Llingua
 admin-title-langs: Traducciones
 admin-title-actions: Aiciones
 admin-title-tags: Etiquetes
