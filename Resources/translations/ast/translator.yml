@@ -10,54 +10,93 @@ translator-choose: 'Escueyi una opción'
 translator-copy-from: 'Copiar el conteniu de'
 translator-criteria: 'Criterios d''evaluación'
 translator-delete: 'Desaniciar la traducción al %s'
-translator-delete-sure: '¿De xuru que quies desaniciar la traducción al %s? ¡Esto nun pue desfacese!'
-translator-deleted-ko: '¡Fallu al desaniciar la traducción al %s!'
-translator-faq: Entrugues frecuentes
+translator-delete-sure: '¿De xuru que quies desaniciar la traducción al %s? ¡Esta aición nun se pue desfacer!'
+translator-deleted-ko: '¡Hebo un error al desaniciar la traducción al %s!'
+translator-deleted-ok: 'La traducción al %s desanicióse correutamente'
+translator-faq: FAQ
 translator-feed-translated-desc: '%USER% traduxo %LINK% al %LANGS%'
-translator-feed-translated-target: 'Traducción en %s'
+translator-feed-translated-target: 'Traducción en: %s'
 translator-field-blog: Blogue
 translator-field-content: Conteníu
 translator-field-description: Descripción
 translator-field-facebook_msg: 'Mensaxe de Facebook'
-translator-field-facebook_msg_owner: 'Autor del Facebook'
+translator-field-facebook_msg_owner: 'Autor de Facebook'
 translator-field-legend: Leenda
 translator-field-media: Medios
 translator-field-name: Nome
 translator-field-schedule: Horariu
 translator-field-text: Testu
 translator-field-title: Títulu
-translator-field-twitter_msg: 'Mensaje de Twitter'
+translator-field-subtitle: sotítulu
+translator-field-twitter_msg: 'Mensaxe de Twitter'
 translator-field-twitter_msg_owner: 'Autor de Twitter'
 translator-field-url: URL
 translator-glossary: 'Glosariu de términos'
 translator-home: Portada
 translator-lang-no-perms: 'Nun tienes permisu p''alministrar esta llingua'
-translator-license: Licencies
+translator-license: Llicencies
+translator-milestone: Finxos
 translator-news: Noticies
-translator-no-langs: 'Nun tienen denguna llingua, contauta col alministrador'
-translator-only-pendings: 'Namái pendientes en:'
+translator-no-langs: 'Nun tienes nenguna llingua. Ponte en contautu col alministrador'
+translator-not-saved: '¡Nun se guardó nengún conteníu! (quiciabes heba campos baleros)'
+translator-only-pendings: 'Namás pendientes en:'
 translator-opentag: Agrupaciones
 translator-original-text: 'Testu orixinal'
 translator-page: Páxines
 translator-patron: 'Proyeutos apadrinaos'
 translator-pending: 'Pendiente de traducción'
+translator-pending-desc: 'Esti conteníu ta «pendiente» la que significa que <strong>NUN YE PÚBLICU</strong> y queda como borrador hasta que se quite la opción «Pendiente de traducción»'
 translator-post: Blogue
 translator-promote: 'Proyeutos destacaos'
+translator-channelstory: 'Histories d''usuarios destacaes'
+translator-channelpost: 'Artículos na canal'
 translator-save: 'Guardar y espublizar'
 translator-save-original: 'Guardar na tabla orixinal'
 translator-save-draft: 'Guardar como borrador'
-translator-saved-ko: 'Fallu al guardar la traducción al %LANG% (%ERROR%)'
-translator-skipped-fields: "Nun pudieron copiase dellos campos porque yá conteníen testu.\nDesanicia'l testu orixinal pa poder copiar dende otra llingua."
+translator-saved-ko: 'Hebo un error al guardar la traducción al %LANG% (%ERROR%)'
+translator-saved-ok: 'Les traducciones a les llingües [%s] guardáronse correutamente'
+translator-skipped-fields: "Nun se copiaron dalgunos campos porque yá conteníen testu.\nDesanicia'l testu orixinal pa poder copiar dende otra llingua."
 translator-sphere: 'Ámbitos de convocatoria'
-translator-stories: 'Histories esitoses'
+translator-social_commitment: 'Compromisos sociales'
+translator-sdg: 'ODS'
+translator-footprint: 'Buelga'
+translator-stories: 'Histories d''ésitu'
 translator-system: Sistema
 translator-tables: 'Tables xenerales'
 translator-tag: 'Etiquetes del blogue'
-translator-template: 'Plantíes automátices de corréu'
 translator-translations: Traducciones
 translator-workshop: Talleres
 translator-worthcracy: Meritocrácia
 translator-zone-not-found: 'Esta zona de traducción nun ye válida'
 translator-lang-not-found: '¡Esta llingua nun ta na plataforma!'
 translator-percent: '%d&#37; traducíu'
-translator-add-translation: 'Amestar traducción nueva'
+translator-add-translation: 'Amestar una traducción'
+translator-communication: Comunicación
+translator-node: Canal
+translator-node_program: Programes de la canal
+translator-node_faq: FAQ de la canal
+translator-node_faq_question: Entrugues frecuentes de la canal
+translator-node_team: Equipu de la canal
+translator-node_sections: Seiciones de la canal
+translator-node_resource: Recursos de la canal
+translator-node_resource_category: Categoría de los recursos
+translator-image_credits: Creitos de les imáxenes
+translator-field-modal_description: Descripción de la modal
+translator-field-action: Aición
+translator-field-action_url: URL de l'aición
+translator-field-action_2: Aición 2
+translator-field-action_url_2: URL de l'aición 2
+translator-field-banner_title: Títulu de la pancarta
+translator-field-banner_description: Descripción de la pancarta
+translator-field-label: Etiqueta
+translator-field-role: Rol
+translator-field-main_info_title: Títulu de la información principal
+translator-field-main_info_description: Descripción de la información principal
+translator-field-terms: Bases
+translator-field-tip_msg: Mensaxe
+translator-field-banner_button_url: URL del botón de la pancarta
+translator-field-terms_url: URL de les bases
+translator-field-credits: Creitos
+translator-question: Entrugues
+translator-question_options: Opciones de les entrugues
+translator-field-option: Opciones
