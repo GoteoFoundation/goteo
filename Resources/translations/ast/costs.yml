@@ -1,5 +1,5 @@
 ---
-cost-type-lend: Préstamu
+cost-type-lend: Emprestu
 cost-type-material: Material
 cost-type-structure: Infraestructura
 cost-type-task: Xera
@@ -14,9 +14,9 @@ costs-field-required_cost-no: Adicional
 costs-field-required_cost-yes: Imprescindible
 costs-field-resoure: 'Otros recursos'
 costs-field-schedule: 'Axenda de trabayu'
-costs-field-type: Triba
-costs-fields-main-title: 'Desglose de costos'
-costs-fields-metter-title: 'Visualización de costos'
+costs-field-type: Tipu
+costs-fields-main-title: 'Detalle de los costos'
+costs-fields-metter-title: 'Visualización de los costos'
 costs-fields-resources-title: Recursu
 costs-main-header: 'Aspeutos económicos'
 mandatory-cost-field-amount: 'Ye obligatorio asignar un importe a los costos'
@@ -28,3 +28,5 @@ mandatory-project-resource: 'Ye obligatorio especificar si cuentes con otros rec
 mandatory-project-total-costs: 'Ye obligatorio especificar dalgún costu'
 step-4: Costos
 step-costs: 'Pasu: Proyeutu / Costos'
+tooltip-project-cost-amount: 'Especifica l''importe na divisa escoyida de lo que consideres qu''implica esti costu. Nun uses puntos puntos pa les cifres de miles, ¿acuéi?'
+tooltip-project-cost-cost: 'Introduz un títulu que seya lo más descriptivu posible d''esti costu.'
