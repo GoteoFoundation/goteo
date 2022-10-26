@@ -1,0 +1,29 @@
+admin_no_permission: 'Nemáte oprávnění přístupu k <strong>%s</strong>'
+bazar-description-seo: 'Solidární crowdfundingové dary na Goteo.org.'
+bazar-title-seo: 'Solidární dary :: Goteo.org'
+blog-comments: Komentáře
+blog-main-header: 'Blog Goteo'
+calendar-calls-category: Výzvy
+calendar-events-category: Události
+calendar-home-title: 'Nadcházející událost'
+calendar-net-category: 'Sítě a zásady'
+calendar-projects-category: Projekty
+calendar-share: Sdílet
+calendar-workshops-category: Workshopy
+error-image-tmp: 'Chyba při načítání souboru'
+error-image-type: 'Povoleny jsou pouze obrázky jpg, png a gif'
+error-image-type-not-allowed: 'Povoleny jsou pouze obrazové soubory typu .png .jpg .gif'
+error-register-email-exists: 'Zadaná e-mailová adresa odpovídá již registrovanému uživateli'
+error-register-pasword-empty: 'Nenastavili jste heslo'
+error-user-email-confirm: 'Ověření emailu se neshoduje'
+fancybox: 'Textový fancybox'
+goteo-return-button: 'Zpět na Goteo'
+guide-dashboard-user-access: 'Zde můžete upravit údaje, které používáte pro přístup k účtu Goteo.'
+regular-linkedin: LinkedIn
+regular-loading: Načítání...
+regular-looks_for: 'hledání:'
+regular-main-header: Goteo.org
+regular-male: Muž
+regular-others: Ostatní
+regular-media_legend: Legenda
+regular-menu: Menu
