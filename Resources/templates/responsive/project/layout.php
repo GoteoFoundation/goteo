@@ -94,7 +94,7 @@ $this->section('content');
 	<!-- end Panel group -->
 
 	<div class="col-sm-4 side">
-	    <?= $this->insert('project/partials/side', ['project' => $project]) ?>
+	    <?= $this->insert('project/partials/side', ['project' => $project, 'matchers' => $this->matchers]) ?>
 	</div>
 	<!-- end side -->
 </div>
@@ -391,7 +391,7 @@ $this->section('content');
         cssEase: 'linear'
     });
 
-
+    $('[data-toggle="tooltip"]').tooltip();
 
 
     });

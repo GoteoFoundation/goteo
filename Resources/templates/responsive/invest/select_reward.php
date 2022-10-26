@@ -5,9 +5,7 @@ $this->section('main-content');
 
 ?>
 
-
 <div class="container">
-
     <div class="row row-form">
         <div class="panel panel-default invest-container">
             <div class="panel-body">
@@ -23,7 +21,7 @@ $this->section('main-content');
                     <?php //check if show the exhausted rewards ?>
                     <?php if($reward_item->available()||!$this->project::hideExhaustedRewards($this->project->id)||!$this->project->inCampaign()): ?>
 
-                        <?= $this->insert('invest/partials/reward_box', ['reward_item' => $reward_item]) ?>
+                        <?= $this->insert('invest/partials/reward_box', ['reward_item' => $reward_item, 'matchers' => $this->matchers]) ?>
 
                     <?php endif; ?>
 
