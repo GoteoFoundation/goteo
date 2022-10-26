@@ -1,20 +1,22 @@
 ---
 blog-coments-header: Comentarios
-blog-comments_no_allowed: '...'
-blog-comments_no_comments: 'Nun hai comentarios nesta entrada'
+blog-comments_no_allowed: '…'
+blog-comments_no_comments: 'Nun hai nengún comentariu nesta entrada'
 blog-no_comments: 'Ensin comentarios'
-blog-no_posts: 'Nun s''espublizó denguna entrada '
+blog-no_posts: 'Nun s''espublizó nenguna entrada '
 blog-send_comment-button: Unviar
-blog-send_comment-header: 'Escribi''l to comentariu'
+blog-send_comment-header: 'Escribi un comentariu'
 blog-side-last_comments: 'Últimos comentarios'
 blog-side-last_posts: 'Últimes entraes'
-blog-side-tags: Estayes
+blog-side-tags: Categoríes
 blog-allow-comments: Permite comentarios
 blog-publish: Espublizar
 blog-published: Espublizóse
 blog-section-mission: 'Misión'
+blog-section-milestones: 'Finxu'
 blog-section-voices: 'Voces'
 blog-section-transparency: 'Tresparencia'
 blog-section-team: 'Equipu'
-blog-main-description: 'Equí compartimos, opinamos, anunciamos, celebramos, contestualizamos y evaluamos les aiciones de la fundación'
-blog-section-mission-description: 'La misión de la nuesa fundación ta venceyada a principios de tresparencia, progresu y ameyora de la sociedá'
+blog-main-description: 'Equí compartimos, opinamos, anunciamos, celebramos, ponemos en contestu y evaluamos les aiciones de la fundación'
+blog-section-mission-description: 'La misión de la nuesa fundación ta venceyada a los principios de tresparencia, el progresu y l''ameyora de la sociedá'
+blog-nav-platform: 'La nuesa plataforma'
