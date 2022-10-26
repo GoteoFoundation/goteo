@@ -1,15 +1,15 @@
 ---
 translator: Traductor
-translator-autotranslate-from: 'Traducción automatica de'
-translator-back-to-list: 'Volver al llistáu'
+translator-autotranslate-from: 'Traducción automática de'
+translator-back-to-list: 'Volver a la llista'
 translator-banner: Pancartes
 translator-bazar: Catálogu
-translator-cannot-delete-system: '¡Nun pue desaniciase esta traducción porque ye del sistema!'
-translator-category: Estayes
+translator-cannot-delete-system: '¡Nun se pue desaniciar esta traducción porque ye del sistema!'
+translator-category: Categoríes
 translator-choose: 'Escueyi una opción'
-translator-copy-from: 'Copiar conteniu de'
+translator-copy-from: 'Copiar el conteniu de'
 translator-criteria: 'Criterios d''evaluación'
-translator-delete: 'Desaniciar traducción al %s'
+translator-delete: 'Desaniciar la traducción al %s'
 translator-delete-sure: '¿De xuru que quies desaniciar la traducción al %s? ¡Esto nun pue desfacese!'
 translator-deleted-ko: '¡Fallu al desaniciar la traducción al %s!'
 translator-faq: Entrugues frecuentes
