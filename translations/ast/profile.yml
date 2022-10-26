@@ -1,1 +1,5 @@
----
+profile-field-legal-entity-asociation: Asociación
+profile-field-legal-entity-company: Empresa
+profile-field-legal-entity-ngo: ONG
+profile-field-legal-entity-person: 'Persona física'
+profile-field-legal-entity-self-employed: Autónomu
