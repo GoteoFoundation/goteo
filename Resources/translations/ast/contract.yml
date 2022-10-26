@@ -1,7 +1,10 @@
 ---
 contract-accounts_title: 'Cuentes bancaries del proyeutu'
-contract-bank_account: 'Cuenta bancaria (códigu IBAN, formatu ESxx xxxx xxxx xxxx xxxx xxxx):'
+contract-bank_account: 'Cuenta bancaria con formatu IBAN:'
 contract-bank_owner: 'Titular de la cuenta bancaria:'
+contract-entity-option_1: 'Como representante d''una asociación'
+contract-entity-option_2: 'Como apoderáu d''una entidá mercantil'
+contract-field-location: 'Conceyu/municipiu:'
 contract-field-reg_idname_2: 'Nome del notariu'
 contract-field-reg_name_1: 'Rexistru nel que s''inscribió l''asocación'
 contract-field-reg_name_2: 'Rexistru nel que ta inscrita la entidá'
