@@ -24,32 +24,33 @@ for the JavaScript code in this page.
 */
 
 $(function () {
-    var filter;
-    var newFilter;
+    let filter;
+    let newFilter;
 
-    var form = $('#filter-form');
-    var title = $('#form-title');
-    var startdate = $('#form-startdate');
-    var enddate = $('#form-enddate');
-    var predefineddate = $('#form-predefineddata');
-    var role = $('#form-role');
-    var projects = $('#form-projects');
-    var calls = $('#form-calls');
-    var channels = $('#form-channels');
-    var matchers = $('#form-matchers');
-    var sdgs = $('#form-sdgs');
+    const form = $('#filter-form');
+    const title = $('#form-title');
+    const startdate = $('#form-startdate');
+    const enddate = $('#form-enddate');
+    const predefineddate = $('#form-predefineddata');
+    const role = $('#form-role');
+    const projects = $('#form-projects');
+    const calls = $('#form-calls');
+    const channels = $('#form-channels');
+    const matchers = $('#form-matchers');
+    const sdgs = $('#form-sdgs');
     const social_commitments = $('#form-social_commitments');
-    var footprints = $('#form-footprints');
-    var project_status = $('#form-project_status');
-    var invest_status = $('#form-invest_status');
-    var typeofdonor = $('#form-typeofdonor');
-    var foundationdonor = $('#form-foundationdonor');
-    var wallet = $('#form-wallet');
-    var cert = $('#form-cert');
-    // var project_location = $('#form-project_location');
-    // var donor_location = $('#form-donor_location');
-    var filter_location = $('#form-filter_location');
-    var donor_status = $('#form-donor_status')
+    const footprints = $('#form-footprints');
+    const project_status = $('#form-project_status');
+    const invest_status = $('#form-invest_status');
+    const amount = $('#form-amount');
+    const typeofdonor = $('#form-typeofdonor');
+    const foundationdonor = $('#form-foundationdonor');
+    const wallet = $('#form-wallet');
+    const cert = $('#form-cert');
+    // const project_location = $('#form-project_location');
+    // const donor_location = $('#form-donor_location');
+    const filter_location = $('#form-filter_location');
+    const donor_status = $('#form-donor_status')
 
     function changeForm(role){
 
@@ -68,6 +69,7 @@ $(function () {
             project_status.val = '';
             invest_status.hide();
             invest_status.val = '';
+            amount.hide();
             typeofdonor.hide();
             typeofdonor.val = '';
             foundationdonor.hide();
@@ -97,6 +99,7 @@ $(function () {
             sdgs.show();
             project_status.show();
             invest_status.show();
+            amount.show();
             typeofdonor.show();
             foundationdonor.show();
             cert.show();
@@ -120,6 +123,7 @@ $(function () {
             sdgs.hide();
             project_status.hide();
             invest_status.hide();
+            amount.hide();
             typeofdonor.hide();
             foundationdonor.show();
             cert.hide();
@@ -145,6 +149,7 @@ $(function () {
             social_commitments.hide();
             project_status.show();
             invest_status.hide();
+            amount.hide();
             typeofdonor.hide();
             typeofdonor.val = '';
             foundationdonor.hide();
@@ -174,6 +179,7 @@ $(function () {
             project_status.val = '';
             invest_status.hide();
             invest_status.val = '';
+            amount.hide();
             typeofdonor.hide();
             typeofdonor.val = '';
             foundationdonor.hide();
@@ -196,7 +202,7 @@ $(function () {
 
     function changeDates(dates){
 
-        var today = new Date();
+        const today = new Date();
 
         if (dates == 0)
         {

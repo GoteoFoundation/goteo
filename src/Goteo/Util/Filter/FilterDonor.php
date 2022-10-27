@@ -161,8 +161,16 @@ class FilterDonor
             $values[':enddate'] = $filter->enddate;
         }
 
+
+        if (isset($filter->amount)) {
+            $sqlInnerWhere .= "AND invest.amount >= :amount ";
+            $values[':amount'] = $filter->amount;
+        }
+
         $sqlInnerWhere .= "GROUP BY invest.user
                      ) AS invest_user ON invest_user.user = user.id ";
+
+        $sqlInner .= $sqlInnerWhere;
 
         if (isset($filter->typeofdonor)) {
             if ($filter->typeofdonor == Filter::UNIQUE) {
@@ -173,8 +181,6 @@ class FilterDonor
             ";
             }
         }
-
-        $sqlInner .= $sqlInnerWhere;
 
         if (isset($filter->donor_status)) {
             $sqlInner .= " INNER JOIN donor
@@ -283,8 +289,6 @@ class FilterDonor
      */
     public function getDonors(int $offset = 0, int $limit = 0, string $lang = null): array
     {
-
-        $filter = $this->filter;
 
         $receivers =  [];
         [$sqlInner, $sqlFilter, $values] = $this->getFilters($lang);

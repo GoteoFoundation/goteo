@@ -23,6 +23,7 @@ use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\DatepickerType;
 use Goteo\Util\Form\Type\LocationType;
 use Goteo\Util\Form\Type\MultipleTypeaheadType;
+use Goteo\Util\Form\Type\NumberType;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\TypeaheadType;
@@ -117,6 +118,10 @@ class FilterForm extends AbstractFormProcessor {
                 'label' => 'admin-filter-invest-status',
                 'required' => false,
                 'choices' => $this->getAssociativeArrayChoices(Invest::status()),
+            ])
+            ->add('amount', NumberType::class, [
+                'label' => 'regular-amount',
+                'required' => false
             ])
             ->add('donor_status', ChoiceType::class, [
                 'label' => 'admin-filter-donor-status',

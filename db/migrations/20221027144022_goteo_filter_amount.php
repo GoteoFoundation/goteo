@@ -32,7 +32,7 @@ class GoteoFilterAmount
   public function getUpSQL()
   {
      return "
-        ALTER TABLE `filter` ADD COLUMN `amount` INT(10);
+        ALTER TABLE `filter` ADD COLUMN `amount` INT(10) NULL;
      ";
   }
 
