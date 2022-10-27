@@ -20,6 +20,7 @@ use Goteo\Model\User\DonorLocation;
 use Goteo\Model\Filter\FilterLocation;
 use Goteo\Application\Exception\ModelNotFoundException;
 use DateTime;
+use Goteo\Util\Filter\FilterDonor;
 use PDO;
 use PDOException;
 
@@ -61,9 +62,10 @@ class Filter extends Model {
         $matchers = [],
         $sdgs = [],
         $footprints = [],
+        $social_commitments = [],
         $forced;
 
-    static public function get($id) {
+    static public function get($id): Filter {
         $query = static::query('SELECT * FROM filter WHERE id = ?', $id);
         $filter = $query->fetchObject(__CLASS__);
 
@@ -77,6 +79,7 @@ class Filter extends Model {
         $filter->matchers = self::getFilterMatcher($id);
         $filter->sdgs = self::getFilterSDG($id);
         $filter->footprints = self::getFilterFootprint($id);
+        $filter->social_commitments = self::getFilterSocialCommitments($id);
 
         return $filter;
     }
@@ -206,6 +209,26 @@ class Filter extends Model {
         }
 
         return $filter_footprints;
+    }
+
+    /**
+     * @return SocialCommitment[]
+     */
+    static public function getFilterSocialCommitments(int $filter): array
+    {
+        $query = static::query('SELECT `social_commitment` FROM filter_socialcommitment WHERE filter = ?', $filter);
+        $socialCommitments = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        $filterSocialCommitments = [];
+
+        foreach($socialCommitments as $socialCommitment) {
+            foreach($socialCommitment as $value) {
+                $socialCommitment = SocialCommitment::get($value);
+                $filterSocialCommitments[$value] = $socialCommitment->name;
+            }
+        }
+
+        return $filterSocialCommitments;
     }
 
     public function setFilterProjects(){
@@ -347,6 +370,32 @@ class Filter extends Model {
         return true;
     }
 
+    public function setFilterSocialCommitment(): bool
+    {
+        $values = [':filter' => $this->id, ':social_commitment' => ''];
+
+        try {
+            static::query('DELETE FROM filter_socialcommitment WHERE filter = :filter', Array(':filter' => $this->id));
+        }
+        catch (PDOException $e) {
+            Message::error("Error deleting previous filter footprint for filter " . $this->id . " " . $e->getMessage());
+        }
+
+
+        foreach($this->social_commitments as $value) {
+
+            $values[':social_commitment'] = $value;
+            try {
+                static::query('INSERT INTO filter_socialcommitment(`filter`, `social_commitment`) VALUES(:filter,:social_commitment)', $values);
+            }
+            catch (PDOException $e) {
+                Message::error("Error saving filter footprint " . $e->getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
     public function validate(&$errors = array()) {
 
         if (empty($this->name))
@@ -400,6 +449,7 @@ class Filter extends Model {
             $this->setFilterMatcher();
             $this->setFilterSDG();
             $this->setFilterFootprint();
+            $this->setFilterSocialCommitment();
         } catch(PDOException $e) {
             print("exception");
             $errors[] = "Error updating filter " . $e->getMessage();
@@ -558,499 +608,26 @@ class Filter extends Model {
     }
 
     public function getDonors($offset = 0, $limit = 0, $count = false, $lang = null) {
+        $filterUtil = new FilterDonor($this);
 
-        $receivers = array();
-        $values = array();
-        $sqlInner  = '';
-        $sqlFilter = '';
-        $investStatus = Invest::$RAISED_STATUSES;
+        if ($count)
+            return $this->getDonorsCount($lang);
 
-        if ($this->invest_status) {
-            $investStatus = [$this->invest_status];
-        }
+        return $filterUtil->getDonors($offset, $limit, $lang);
+    }
 
-        if (isset($this->foundationdonor)) {
-            $sqlFilter .= " AND user.id ";
-            $sqlFilter .= ($this->foundationdonor)? "" : "NOT ";
-            $sqlFilter .= " IN (
-                SELECT i.`user`
-                FROM invest i
-                WHERE
-                i.status= :status_donated
-                )";
-            $values[':status_donated'] = Invest::STATUS_DONATED;
-        }
+    public function getDonorsCount(?string $lang = null): int
+    {
+        $filterUtil = new FilterDonor($this);
 
-        $this->projects = $this->getFilterProject($this->id);
-        $this->calls = $this->getFilterCall($this->id);
-        $this->channels = $this->getFilterNode($this->id);
-        $this->matchers = $this->getFilterMatcher($this->id);
-
-        $sqlInner .= "INNER JOIN (
-            SELECT invest.user FROM invest ";
-
-        if (!empty($this->calls)) {
-            $sqlInner .= "INNER JOIN call_project
-            ON call_project.project = invest.project
-            ";
-            $parts = [];
-            foreach(array_keys($this->calls) as $index => $id) {
-                $parts[] = ':calls_' . $index;
-                $values[':calls_' . $index] = $id;
-            }
-            if($parts) $sqlInner .= " AND call_project.call IN (" . implode(',', $parts) . ") ";
-        }
-
-        if (!empty($this->channels)) {
-            $sqlInner .= "LEFT JOIN node_project
-                ON node_project.project_id = invest.project
-            INNER JOIN project
-                ON project.id = invest.project
-            ";
-            $parts = [];
-            foreach(array_keys($this->channels) as $index => $id) {
-                $parts[] = ':nodes_' . $index;
-                $values[':nodes_' . $index] = $id;
-            }
-            if($parts) $sqlInner .= " AND ( node_project.node_id IN (" . implode(',', $parts) . ") OR  project.node IN (" . implode(',', $parts) . ") ) ";
-        }
-
-        if (!empty($this->matchers)) {
-
-            $sqlInner .= "INNER JOIN matcher_project
-            ON matcher_project.project_id = invest.project
-            ";
-
-            $parts = [];
-            foreach(array_keys($this->matchers) as $index => $id) {
-                $parts[] = ':matchers_' . $index;
-                $values[':matchers_' . $index] = $id;
-            }
-            if($parts) $sqlInner .= " AND matcher_project.matcher_id IN (" . implode(',', $parts) . ") ";
-        }
-
-        if (isset($this->project_status) && $this->project_status > -1 && !empty($sqlInner)) {
-            $sqlInner .= "INNER JOIN project p2 ON p2.id = invest.project AND p2.status = :project_status ";
-            $values[':project_status'] = $this->project_status;
-        }
-
-        $sqlInner .= "WHERE  invest.status IN ";
-
-        $parts = [];
-        foreach($investStatus as $index => $status) {
-            $parts[] = ':invest_status' . $index;
-            $values[':invest_status' . $index] = $status;
-        }
-        $sqlInner .= " (" . implode(',', $parts) . ") ";
-
-        if (!empty($this->projects)) {
-            $parts = [];
-            foreach(array_keys($this->projects) as $index => $id) {
-                $parts[] = ':project_' . $index;
-                $values[':project_' . $index] = $id;
-            }
-            if($parts) $sqlInner .= " AND invest.project IN (" . implode(',', $parts) . ") ";
-        }
-
-        if (isset($this->startdate) && !isset($this->cert)) {
-
-            $sqlInner .= " AND  invest.status IN ";
-            $parts = [];
-            foreach($investStatus as $index => $status) {
-                $parts[] = ':invest_status_' . $index;
-                $values[':invest_status_' . $index] = $status;
-            }
-            $sqlInner .= " (" . implode(',', $parts) . ") ";
-
-            $sqlInner .= " AND invest.invested BETWEEN :startdate ";
-            $values[':startdate'] = $this->startdate;
-
-            if(isset($this->enddate)) {
-                $sqlInner .= " AND :enddate ";
-                $values[':enddate'] = $this->enddate;
-            } else {
-                $sqlInner .= " AND curdate() ";
-            }
-        } else if (isset($this->enddate) && !isset($this->cert)) {
-            $sqlInner .= "AND invest.invested < :enddate
-                         AND  invest.status IN ";
-            $parts = [];
-            foreach($investStatus as $index => $status) {
-                $parts[] = ':invest_status_' . $index;
-                $values[':invest_status_' . $index] = $status;
-            }
-            $sqlInner .= " (" . implode(',', $parts) . ") ";
-
-            $values[':enddate'] = $this->enddate;
-        }
-
-        $sqlInner .= "GROUP BY invest.user
-                     ) AS invest_user ON invest_user.user = user.id ";
-
-        if (isset($this->typeofdonor)) {
-            if ($this->typeofdonor == $this::UNIQUE) {
-                $sqlFilter .= "  AND 1 = (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL)
-            ";
-            } else if ($this->typeofdonor == $this::MULTIDONOR) {
-            $sqlFilter .= " AND 1 < (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL)
-            ";
-            }
-        }
-
-        if (isset($this->donor_status)) {
-            $sqlInner .= " INNER JOIN donor
-            ON donor.user = user.id";
-            $sqlFilter .= " AND donor.status = :donor_status";
-            $values[':donor_status'] = $this->donor_status;
-
-            if (isset($this->startdate)) {
-                $sqlFilter .= " AND donor.year BETWEEN :startyear ";
-                $values[':startyear'] = DateTime::createFromFormat("Y-m-d",$this->startdate)->format("Y");
-
-                if(isset($this->enddate)) {
-                    $sqlFilter .= " AND :endyear ";
-                    $values[':endyear'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");
-                } else {
-                    $sqlFilter .= " AND YEAR(CURDATE())";
-                }
-            } else if (isset($this->enddate)) {
-                $sqlFilter .= " AND donor.year <= :endyear ";
-                $values[':enddate'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");;
-            }
-        }
-
-        if (isset($this->wallet)) {
-            $sqlFilter .= " AND user.id ";
-            $sqlFilter .= ($this->wallet)? "IN " : "NOT IN ";
-            $sqlFilter .= " ( SELECT user_pool.user
-                              FROM user_pool
-                              WHERE user_pool.amount > 0 )";
-        }
-
-        if (isset($this->cert)) {
-            $sqlInner .= " INNER JOIN donor donor_cert
-            ON donor_cert.user = user.id AND donor_cert.confirmed = :cert ";
-            $values[':cert'] = $this->cert;
-
-
-            if (isset($this->startdate)) {
-                $sqlInner .= " AND donor_cert.year BETWEEN :startyear ";
-                $values[':startyear'] = DateTime::createFromFormat("Y-m-d",$this->startdate)->format("Y");
-
-                if(isset($this->enddate)) {
-                    $sqlInner .= " AND :endyear ";
-                    $values[':endyear'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");
-                } else {
-                    $sqlFilter .= " AND YEAR(CURDATE())";
-                }
-            } else if (isset($this->enddate)) {
-                $sqlFilter .= " AND donor_cert.year <= :endyear ";
-                $values[':enddate'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");;
-            }
-        }
-
-        if (isset($lang)) {
-            $parts = [];
-            $sqlFilter .= " AND user.lang ";
-            foreach($lang as $key => $value) {
-                $parts[] = ':lang' . $key;
-                $values[':lang' . $key] = $value;
-            }
-            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ") ";
-        }
-
-        if ($this->filter_location) {
-            $loc = FilterLocation::get($this->id);
-            $loc = new DonorLocation($loc);
-            $loc->location = $this->donor_location;
-            $distance = $loc->radius ?: 50; // search in 50 km by default
-
-            $sqlInner .= " INNER JOIN donor
-            ON donor.user = user.id ";
-
-            $sqlInner .= " INNER JOIN donor_location
-                            ON donor_location.id = donor.id ";
-            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor.location');
-            $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
-            $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
-            $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
-            $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
-            $values[":location_text"] = $location_parts['params'][':location_text'];
-            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
-        }
-
-        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
-        if($count) {
-            $sql = "SELECT COUNT(user.id)
-                    FROM user
-                    LEFT JOIN user_prefer
-                    ON user.id = user_prefer.user
-                    $sqlInner
-                    WHERE user.active = 1
-                    $sqlFilter";
-            return (int) User::query($sql, $values)->fetchColumn();
-        }
-
-        $sql = "SELECT
-                    user.id as user,
-                    user.name as name,
-                    user.email as email
-                FROM user
-                LEFT JOIN user_prefer
-                ON user_prefer.user = user.id
-                $sqlInner
-                WHERE user.active = 1
-                $sqlFilter
-                GROUP BY user.id
-                ORDER BY user.name ASC
-                ";
-
-        if ($limit) $sql .= "LIMIT $count, $limit ";
-
-         if ($query = User::query($sql, $values)) {
-            $receivers = $query->fetchAll(PDO::FETCH_CLASS, 'Goteo\Model\User');
-        }
-
-        return $receivers;
+        return $filterUtil->calculate($lang);
     }
 
     public function getDonorsSQL($lang = null, $prefix = '') {
+        $filterUtil = new FilterDonor($this);
 
-        $values = array();
-        $sqlInner  = '';
-        $sqlFilter = '';
+        return $filterUtil->getSqlFilter($lang, $prefix);
 
-        $values[':prefix'] = $prefix;
-
-        $investStatus = Invest::$RAISED_STATUSES;
-        if ($this->invest_status) {
-            $investStatus = [$this->invest_status];
-        }
-
-        if (isset($this->foundationdonor)) {
-            $sqlFilter .= " AND user.id ";
-            $sqlFilter .= ($this->foundationdonor)? "" : "NOT ";
-            $sqlFilter .= " IN (
-                SELECT i.`user`
-                FROM invest i
-                WHERE
-                i.status= :status_donated
-                )";
-            $values[':status_donated'] = Invest::STATUS_DONATED;
-        }
-
-        $this->projects = $this->getFilterProject($this->id);
-        $this->calls = $this->getFilterCall($this->id);
-        $this->channels = $this->getFilterNode($this->id);
-        $this->matchers = $this->getFilterMatcher($this->id);
-
-        $sqlInner .= "INNER JOIN (
-            SELECT invest.user FROM invest ";
-
-        if (!empty($this->calls)) {
-            $sqlInner .= "INNER JOIN call_project
-            ON call_project.project = invest.project
-            ";
-            $parts = [];
-            foreach(array_keys($this->calls) as $index => $id) {
-                $parts[] = ':calls_' . $index;
-                $values[':calls_' . $index] = $id;
-            }
-            if($parts) $sqlInner .= " AND call_project.call IN (" . implode(',', $parts) . ") ";
-        }
-
-        if (!empty($this->channels)) {
-            $sqlInner .= "LEFT JOIN node_project
-                ON node_project.project_id = invest.project
-            INNER JOIN project
-                ON project.id = invest.project
-            ";
-            $parts = [];
-            foreach(array_keys($this->channels) as $index => $id) {
-                $parts[] = ':nodes_' . $index;
-                $values[':nodes_' . $index] = $id;
-            }
-            if($parts) $sqlInner .= " AND ( node_project.node_id IN (" . implode(',', $parts) . ") OR  project.node IN (" . implode(',', $parts) . ") ) ";
-        }
-
-        if (!empty($this->matchers)) {
-            $sqlInner .= "INNER JOIN matcher_project
-            ON matcher_project.project_id = invest.project
-            ";
-
-            $parts = [];
-            foreach(array_keys($this->matchers) as $index => $id) {
-                $parts[] = ':matchers_' . $index;
-                $values[':matchers_' . $index] = $id;
-            }
-            if($parts) $sqlInner .= " AND matcher_project.matcher_id IN (" . implode(',', $parts) . ") ";
-        }
-
-        if (isset($this->project_status) && $this->project_status > -1 && !empty($sqlInner)) {
-            $sqlInner .= "INNER JOIN project ON project.id = invest.project AND project.status = :project_status ";
-            $values[':project_status'] = $this->project_status;
-        }
-
-        $sqlInner .= "WHERE  invest.status IN ";
-
-        $parts = [];
-        foreach($investStatus as $index => $status) {
-            $parts[] = ':invest_status' . $index;
-            $values[':invest_status' . $index] = $status;
-        }
-        $sqlInner .= " (" . implode(',', $parts) . ") ";
-
-        if (!empty($this->projects)) {
-            $parts = [];
-            foreach(array_keys($this->projects) as $index => $id) {
-                $parts[] = ':project_' . $index;
-                $values[':project_' . $index] = $id;
-            }
-            if($parts) $sqlInner .= " AND invest.project IN (" . implode(',', $parts) . ") ";
-        }
-
-        if (isset($this->startdate) && !isset($this->cert)) {
-
-            $sqlInner .= " AND  invest.status IN ";
-            $parts = [];
-            foreach($investStatus as $index => $status) {
-                $parts[] = ':invest_status_' . $index;
-                $values[':invest_status_' . $index] = $status;
-            }
-            $sqlInner .= " (" . implode(',', $parts) . ") ";
-            $sqlInner .= " AND invest.invested BETWEEN :startdate ";
-            $values[':startdate'] = $this->startdate;
-
-            if(isset($this->enddate)) {
-                $sqlInner .= " AND :enddate ";
-                $values[':enddate'] = $this->enddate;
-            } else {
-                $sqlInner .= " AND curdate() ";
-            }
-        } else if (isset($this->enddate) && !isset($this->cert)) {
-            $sqlInner .= "AND invest.invested < :enddate
-                         AND  invest.status IN ";
-            $parts = [];
-            foreach($investStatus as $index => $status) {
-                $parts[] = ':invest_status_' . $index;
-                $values[':invest_status_' . $index] = $status;
-            }
-            $sqlInner .= " (" . implode(',', $parts) . ") ";
-
-            $values[':enddate'] = $this->enddate;
-        }
-
-        $sqlInner .= "GROUP BY invest.user
-                     ) AS invest_user ON invest_user.user = user.id ";
-
-        if (isset($this->typeofdonor)) {
-            if ($this->typeofdonor == $this::UNIQUE) {
-                $sqlFilter .= "  AND 1 = (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL )
-            ";
-            } else if ($this->typeofdonor == $this::MULTIDONOR) {
-            $sqlFilter .= " AND 1 < (SELECT count(*) FROM invest WHERE invest.user = user.id AND invest.status IN ('0','1','3','4','6') and invest.project IS NOT NULL )
-            ";
-            }
-        }
-
-        if (isset($this->donor_status)) {
-
-            $sqlInner .= " INNER JOIN donor
-            ON donor.user = user.id AND donor.status = :donor_status ";
-            $values[':donor_status'] = $this->donor_status;
-
-            if (isset($this->startdate)) {
-                $sqlInner .= " AND donor.year BETWEEN :startyear ";
-                $values[':startyear'] = DateTime::createFromFormat("Y-m-d",$this->startdate)->format("Y");
-
-                if(isset($this->enddate)) {
-                    $sqlInner .= " AND :endyear ";
-                    $values[':endyear'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");
-                } else {
-                    $sqlFilter .= " AND YEAR(CURDATE())";
-                }
-            } else if (isset($this->enddate)) {
-                $sqlFilter .= " AND donor.year <= :endyear ";
-                $values[':enddate'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");;
-            }
-        }
-
-        if (isset($this->wallet)) {
-            $sqlFilter .= " AND user.id ";
-            $sqlFilter .= ($this->wallet)? "IN " : "NOT IN ";
-            $sqlFilter .= " ( SELECT user_pool.user
-                              FROM user_pool
-                              WHERE user_pool.amount > 0 )";
-        }
-
-        if (isset($this->cert)) {
-            $sqlInner .= " INNER JOIN donor
-            ON donor.user = user.id AND donor.confirmed = :cert ";
-            $values[':cert'] = $this->cert;
-
-            if (isset($this->startdate)) {
-                $sqlInner .= " AND donor.year BETWEEN :startyear ";
-                $values[':startyear'] = DateTime::createFromFormat("Y-m-d",$this->startdate)->format("Y");
-
-                if(isset($this->enddate)) {
-                    $sqlInner .= " AND :endyear ";
-                    $values[':endyear'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");
-                } else {
-                    $sqlFilter .= " AND YEAR(CURDATE())";
-                }
-            } else if (isset($this->enddate)) {
-                $sqlFilter .= " AND donor.year <= :endyear ";
-                $values[':enddate'] = DateTime::createFromFormat("Y-m-d",$this->enddate)->format("Y");;
-            }
-        }
-
-        if (isset($lang)) {
-            $parts = [];
-            $sqlFilter .= " AND user.lang ";
-            foreach($lang as $key => $value) {
-                $parts[] = ':lang' . $key;
-                $values[':lang' . $key] = $value;
-            }
-            if($parts) $sqlFilter .= " IN (" . implode(',', $parts) . ") ";
-        }
-
-        if ($this->filter_location) {
-            $loc = FilterLocation::get($this->id);
-            $loc = new DonorLocation($loc);
-            $loc->location = $this->donor_location;
-            $distance = $loc->radius ?: 50; // search in 50 km by default
-
-            $sqlInner .= " INNER JOIN donor
-            ON donor.user = user.id ";
-
-            $sqlInner .= " INNER JOIN donor_location
-                            ON donor_location.id = donor.id ";
-            $location_parts = DonorLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'donor.location');
-            $values[":location_minLat"] = $location_parts['params'][':location_minLat'];
-            $values[":location_minLon"] = $location_parts['params'][':location_minLon'];
-            $values[":location_maxLat"] = $location_parts['params'][':location_maxLat'];
-            $values[":location_maxLon"] = $location_parts['params'][':location_maxLon'];
-            $values[":location_text"] = $location_parts['params'][':location_text'];
-            $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
-        }
-
-        $sqlFilter = ($this->forced) ? $sqlFilter : " AND (user_prefer.mailing = 0 OR user_prefer.`mailing` IS NULL) " . $sqlFilter;
-        $sql = "SELECT
-                    :prefix,
-                    user.id as user,
-                    user.name as name,
-                    user.email as email
-                FROM user
-                LEFT JOIN user_prefer
-                ON user_prefer.user = user.id
-                $sqlInner
-                WHERE user.active = 1
-                $sqlFilter
-                GROUP BY user.id
-                ORDER BY user.name ASC
-                ";
-
-        return [$sql, $values];
     }
 
     public function getNoDonors($offset = 0, $limit = 0, $count = false, $lang = null) {

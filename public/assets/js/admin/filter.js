@@ -38,6 +38,7 @@ $(function () {
     var channels = $('#form-channels');
     var matchers = $('#form-matchers');
     var sdgs = $('#form-sdgs');
+    const social_commitments = $('#form-social_commitments');
     var footprints = $('#form-footprints');
     var project_status = $('#form-project_status');
     var invest_status = $('#form-invest_status');
@@ -62,6 +63,7 @@ $(function () {
             matchers.hide();
             sdgs.hide();
             footprints.hide();
+            social_commitments.hide();
             project_status.hide();
             project_status.val = '';
             invest_status.hide();
@@ -91,6 +93,7 @@ $(function () {
             channels.show();
             matchers.show()
             footprints.show();
+            social_commitments.show();
             sdgs.show();
             project_status.show();
             invest_status.show();
@@ -111,8 +114,9 @@ $(function () {
             projects.hide();
             calls.hide();
             channels.hide();
-            matchers.hide()
+            matchers.hide();
             footprints.hide();
+            social_commitments.hide();
             sdgs.hide();
             project_status.hide();
             invest_status.hide();
@@ -128,7 +132,7 @@ $(function () {
             filter_location.hide();
             filter_location.val = '';
         }
-        else if (role == "promoter") { 
+        else if (role == "promoter") {
             startdate.show();
             enddate.show();
             predefineddate.show();
@@ -138,6 +142,7 @@ $(function () {
             matchers.show();
             sdgs.show();
             footprints.show();
+            social_commitments.hide();
             project_status.show();
             invest_status.hide();
             typeofdonor.hide();
@@ -163,6 +168,7 @@ $(function () {
             calls.hide();
             channels.hide();
             footprints.hide();
+            social_commitments.hide();
             sdgs.hide();
             project_status.hide();
             project_status.val = '';
@@ -192,28 +198,28 @@ $(function () {
 
         var today = new Date();
 
-        if (dates == 0) 
+        if (dates == 0)
         {
-            document.getElementById('autoform_startdate').value = moment().subtract(7, 'days').format('DD/MM/YYYY'); 
+            document.getElementById('autoform_startdate').value = moment().subtract(7, 'days').format('DD/MM/YYYY');
             document.getElementById('autoform_enddate').value = moment().format('DD/MM/YYYY');
         }
-        else if (dates == 1) 
+        else if (dates == 1)
         {
             document.getElementById('autoform_startdate').value = moment().subtract(30, 'days').format('DD/MM/YYYY');
             document.getElementById('autoform_enddate').value = moment().format('DD/MM/YYYY');
-        } else if (dates == 2) 
+        } else if (dates == 2)
         {
-            document.getElementById('autoform_startdate').value = moment().subtract(365, 'days').format('DD/MM/YYYY'); 
+            document.getElementById('autoform_startdate').value = moment().subtract(365, 'days').format('DD/MM/YYYY');
             document.getElementById('autoform_enddate').value = moment().format('DD/MM/YYYY');
-        } else if (dates == 3) 
+        } else if (dates == 3)
         {
             document.getElementById('autoform_startdate').value = '01/01/' + today.getFullYear();
             document.getElementById('autoform_enddate').value = moment().format('DD/MM/YYYY');
-        } else if (dates == 4) 
+        } else if (dates == 4)
         {
             document.getElementById('autoform_startdate').value = '01/01/' + (today.getFullYear()-1);
             document.getElementById('autoform_enddate').value = '31/12/' + (today.getFullYear()-1);
-        } else if (dates == 5) 
+        } else if (dates == 5)
         {
             document.getElementById('autoform_startdate').value = '01/01/' + (today.getFullYear()-2);
             document.getElementById('autoform_enddate').value = '31/12/' + (today.getFullYear()-2);
@@ -222,9 +228,9 @@ $(function () {
 
     if (document.getElementById('autoform')){
 
-        document.getElementById('autoform_role').onchange = 
-            function(){ 
-                changeForm(this.value); 
+        document.getElementById('autoform_role').onchange =
+            function(){
+                changeForm(this.value);
             };
 
         document.getElementById('autoform_predefineddata').onchange =

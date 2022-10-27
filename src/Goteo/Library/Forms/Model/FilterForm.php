@@ -17,6 +17,7 @@ use Goteo\Library\Text;
 use Goteo\Model\Filter\FilterLocation;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
+use Goteo\Model\SocialCommitment;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\DatepickerType;
@@ -31,7 +32,8 @@ use Symfony\Component\Validator\Constraints;
 
 class FilterForm extends AbstractFormProcessor {
 
-    public function createForm() {
+    public function createForm(): FilterForm
+    {
         $model = $this->getModel();
         $builder = $this->getBuilder();
 
@@ -96,6 +98,15 @@ class FilterForm extends AbstractFormProcessor {
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'sources' => 'matcher',
+            ])
+            ->add('social_commitments', ChoiceType::class,[
+                'label' => 'regular-social_commitments',
+                'required' => false,
+                'choices' => $this->getSocialCommitmentsAsChoices(),
+                'data' => array_keys($this->getSocialCommitmentsData()),
+                'expanded' => true,
+                'multiple' => true,
+                'attr' => ['help' => Text::get('tooltip-project-social-category')]
             ])
             ->add('project_status', ChoiceType::class, [
                 'label' => 'admin-filter-project-status',
@@ -219,6 +230,22 @@ class FilterForm extends AbstractFormProcessor {
         ];
     }
 
+    private function getSocialCommitmentsAsChoices(): array
+    {
+        $socialCommitments = SocialCommitment::getAll();
+
+        return array_map(function($el) {
+            return [$el->name => $el->id];
+        }, $socialCommitments);
+    }
+
+    private function getSocialCommitmentsData(): array
+    {
+        return array_map(function($el) {
+            return $el->id;
+        }, $this->getModel()->social_commitments);
+    }
+
     public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
@@ -233,6 +260,7 @@ class FilterForm extends AbstractFormProcessor {
         $model->matchers = [];
         $model->footprints = [];
         $model->sdgs = [];
+        $model->social_commitments = [];
 
         foreach($data['projects'] as $value) {
             if (!empty($value)) array_push($model->projects, $value);
@@ -251,6 +279,9 @@ class FilterForm extends AbstractFormProcessor {
         }
         foreach($data['footprints'] as $value) {
             if (!empty($value)) array_push($model->footprints, $value);
+        }
+        foreach($data['social_commitments'] as $value) {
+            if (!empty($value)) array_push($model->social_commitments, $value);
         }
 
         $errors = [];
