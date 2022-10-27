@@ -122,10 +122,9 @@ class FilterDonor
                 $values[':socialcommitment_' . $index] = $id;
             }
             if($parts) {
-                $sqlInner .= "INNER JOIN project_category pc ON invest.project = pc.project
-                INNER JOIN category on category.id = pc.category ";
+                $sqlInner .= "INNER JOIN project p_sc ON invest.project = p_sc.id ";
 
-                $sqlInnerWhere .= " AND category.social_commitment IN (". implode(',', $parts) . ") ";
+                $sqlInnerWhere .= " AND p_sc.social_commitment IN (". implode(',', $parts) . ") ";
             }
         }
 
