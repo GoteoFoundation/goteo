@@ -1,17 +1,14 @@
 group: donate
-name: 'Mailing three days before declaring all certificates'
+name: 'Mailing fifteen days before declaring all certificates'
 purpose: 'Remember users that they have to fill their fiscal information'
-
 type: 'md'
 title: ''
 text: >
     ¡Hola!
 
-    🤗🚨ÚLTIMO AVISO🚨🤗
+    Queremos recordarte que el próximo 15 de enero finaliza el plazo para modificar/confirmar tus datos fiscales y así descargar tu certificado de donación.
 
-    **En 3 días finaliza el plazo para modificar/confirmar tus datos fiscales y así descargar tu certificado de donación.**
-
-    **Ten en cuenta que si no lo haces dentro de este plazo ya no podrás descargarte el certificado, a fin y efecto de poder remitir a la Administración Tributaria la declaración informativa sobre las certificaciones emitidas en el plazo establecido en el art. 24 de la Ley 49/2002.**
+    **Ten en cuenta que sólo quedan 30 días y si no lo haces dentro de este plazo ya no podrás descargarte el certificado, a fin y efecto de poder remitir a la Administración Tributaria la declaración informativa sobre las certificaciones emitidas en el plazo establecido en el art. 24 de la Ley 49/2002.**
 
     Te recordamos los pasos a seguir:
 
@@ -24,5 +21,3 @@ text: >
     Tienes más detalles en este [vídeo](https://vimeo.com/246988506).
 
     ¿A qué esperas? ¡Desgrava tú también!
-
-

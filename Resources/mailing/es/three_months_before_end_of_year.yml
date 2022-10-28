@@ -1,5 +1,5 @@
 group: donate
-name: 'Mailing one month before the end of the year about certificates'
+name: 'Mailing three months before the end of the year about certificates'
 purpose: 'Remember users that they have to fill their fiscal information'
 type: 'md'
 title: ''
@@ -8,7 +8,7 @@ text: >
 
     Recuerda que si deseas obtener tu **certificado de donación** para ser titular de los beneficios fiscales de tu aportación, es necesario que nos facilites y/o confirmes tus datos personales **ANTES del 15 de enero**.
 
-    En caso de no recibir tus datos en plazo, renuncias a los beneficios fiscales de tu aportación, ya que en virtud del artículo 5 de la *Orden EHA/3021/2007, de 11 de octubre, por la que se aprueba el modelo 182 de declaración informativa de donativos, donaciones y aportaciones recibidas,* tenemos la obligación de presentar dicha declaración en el mes de enero de cada año.
+    Sabemos que aún faltan 3 meses, pero ya sabes el refrán, “más vale prevenir que curar pagar” y en caso de no recibir tus datos en plazo, renuncias a los beneficios fiscales de tu aportación, ya que en virtud del artículo 5 de la *Orden EHA/3021/2007, de 11 de octubre, por la que se aprueba el modelo 182 de declaración informativa de donativos, donaciones y aportaciones recibidas,* tenemos la obligación de presentar dicha declaración en el mes de enero de cada año.
 
     Además, debes tener en cuenta que **a cada usuario le corresponde una única identidad fiscal y un solo certificado de donación**, en el cual se recogen todos los aportes que hayas hecho.
 
@@ -25,3 +25,5 @@ text: >
     Podrás **descargar** tu certificado de donación **a partir del 1 de marzo de 2022**.
 
     ¡Feliz desgravación!
+
+

@@ -1,6 +1,25 @@
 group: donate
-name: ''
-purpose: ''
+name: 'Mailing ten days before declaring all certificates'
+purpose: 'Remember users that they have to fill their fiscal information'
 type: 'md'
 title: ''
 text: >
+    ¡Hola!
+
+    Queremos recordarte que el próximo 15 de enero finaliza el plazo para modificar/confirmar tus datos fiscales y así descargar tu certificado de donación.
+
+    **Ten en cuenta que sólo quedan 10 días y si no lo haces dentro de este plazo ya no podrás descargarte el certificado, a fin y efecto de poder remitir a la Administración Tributaria la declaración informativa sobre las certificaciones emitidas en el plazo establecido en el art. 24 de la Ley 49/2002.**
+
+    Te recordamos los pasos a seguir:
+
+    1. Accede la sección “Certificado de donación” de tu panel de usuario, clicando en este enlace: [https://www.goteo.org/dashboard/wallet/certificate](https://www.goteo.org/dashboard/wallet/certificate)
+    2. Te aparecerá un listado con todos tus certificados de donación: has de clicar en el botón “Confirmar” del certificado que deseas confirmar.
+    3. Accede al formulario donde modificar y confirmar definitivamente tus datos fiscales. Recuerda que si eres una empresa, debes dejar los campos relativos a los apellidos en blanco.
+    4. Selecciona el checkbox “Confirmo que estos datos son reales…” y clica en “Confirmar datos”. ¡Recuerda que una vez hecho esto ya no podrás modificar los datos fiscales de este usuario!
+    5. Serás redirigido al listado de certificados.
+
+    Tienes más detalles en este [vídeo](https://vimeo.com/246988506).
+
+    ¿A qué esperas? ¡Desgrava tú también!
+
+
