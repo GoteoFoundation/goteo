@@ -2,22 +2,24 @@
 $reward = $this->reward_item;
 $selected = $selected;
 $available = $reward->available();
-$matchers = $this->matchers;
 ?>
     <form class="form-horizontal" role="form" method="GET" action="/invest/<?= $this->project->id ?>/payment">
         <div class="row padding-sm no-padding col-sm-10 col-sm-offset-1 reward-item">
             <?php
-                $matchedReward = false;
-
-                foreach($matchers as $matcher) {
-                    $matchedReward |= $matcher->hasReward($reward);
-                }
+                $matchedReward = $reward->isMatched();
             ?>
             <label class="label-reward <?= $selected ? 'reward-choosen' : '' ?><?= $available ? '' : ' label-disabled' ?> <?= $matchedReward ? 'matched-reward' : ''?>" for="reward-<?= $reward->id ?>">
 
                 <?php if ($matchedReward): ?>
                     <div class="btn-lilac">
                         <i class="icon icon-call"></i> <?= $this->t('regular-call') ?>
+                        <i class="fa fa-info-circle"
+                           data-html="true"
+                           data-container="body"
+                           data-toggle="tooltip"
+                           title=""
+                           data-original-title="<span style='font-size: 16px;'><?= $this->text('matcher-matches-this-reward') ?></span>">
+                        </i>
                     </div>
                 <?php endif; ?>
                 <div class="col-sm-2 no-padding">

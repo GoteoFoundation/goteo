@@ -33,3 +33,11 @@ matcher-label-project: 'Matchfunding Agents <br>match invests'
 matcher-label-pending: "Pending"
 matcher-amount-project: 'Invested: %AMOUNT% of %PROJECT_AMOUNT%'
 matcher-apply-answer-questionnaire: "Answer questionnaire"
+dashboard-matcher-project-rewards-title: "Rewards of the project %s"
+dashboard-matcher-project-rewards-description: "Here you can select the rewards of the project so that donors can match their donation."
+dashboard-matcher-project-rewards-selected: "Selected rewards"
+dashboard-matcher-project-rewards-list: "Rewards not selected"
+dashboard-matcher-match-rewards: "Match rewards"
+matcher-limited-by-amount: "Limited by <br>reward"
+matcher-limited-by-amount-title: "The donations are only multiplied by the following <strong>rewards</strong><br> %s"
+matcher-matches-this-reward: "This reward multiplies the amount donated with the contribution of a Matcher"

@@ -9,17 +9,20 @@
         <?php foreach ($this->individual_rewards as $individual):
             $available = $individual->available();
             $units = ($individual->units - $individual->taken); // units left
-            $matchedReward = false;
-
-            foreach($this->matchers as $matcher) {
-                $matchedReward |= $matcher->hasReward($individual);
-            }
+            $matchedReward = $individual->isMatched();
         ?>
             <li id="reward-<?= $individual->id ?>" class="side-widget <?= $matchedReward ? "matched-reward" : ''?>">
                 <article>
                     <?php if ($matchedReward): ?>
                         <div class="btn-lilac">
                             <i class="icon icon-call"></i> <?= $this->t('regular-call') ?>
+                            <i class="fa fa-info-circle"
+                               data-html="true"
+                               data-container="body"
+                               data-toggle="tooltip"
+                               title=""
+                               data-original-title="<span style='font-size: 16px;'><?= $this->text('matcher-matches-this-reward') ?></span>">
+                            </i>
                         </div>
                     <?php endif; ?>
                     <div class="reward-info">

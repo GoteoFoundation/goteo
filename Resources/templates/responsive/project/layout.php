@@ -94,7 +94,7 @@ $this->section('content');
 	<!-- end Panel group -->
 
 	<div class="col-sm-4 side">
-	    <?= $this->insert('project/partials/side', ['project' => $project, 'matchers' => $this->matchers]) ?>
+	    <?= $this->insert('project/partials/side', ['project' => $project]) ?>
 	</div>
 	<!-- end side -->
 </div>

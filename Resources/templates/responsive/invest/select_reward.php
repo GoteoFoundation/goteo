@@ -21,7 +21,7 @@ $this->section('main-content');
                     <?php //check if show the exhausted rewards ?>
                     <?php if($reward_item->available()||!$this->project::hideExhaustedRewards($this->project->id)||!$this->project->inCampaign()): ?>
 
-                        <?= $this->insert('invest/partials/reward_box', ['reward_item' => $reward_item, 'matchers' => $this->matchers]) ?>
+                        <?= $this->insert('invest/partials/reward_box', ['reward_item' => $reward_item]) ?>
 
                     <?php endif; ?>
 
@@ -56,6 +56,8 @@ $(':radio').change(function(){
     })
 
 });
+
+$('[data-toggle="tooltip"]').tooltip();
 
 // @license-end
 </script>
