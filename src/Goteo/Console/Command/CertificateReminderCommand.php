@@ -14,6 +14,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Exception\DuplicatedEventException;
 use Goteo\Console\UsersSend;
 use Goteo\Model\Event;
+use Goteo\Model\User;
 use Goteo\Model\User\Donor;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -73,7 +74,7 @@ EOT
         }
 
         $event->fire(function() use ($donor, $typeOfReminder) {
-            UsersSend::setURL(Config::getUrl(Donor::getPreferences($donor->user)->comlang));
+            UsersSend::setURL(Config::getUrl(User::getPreferences($donor->user)->comlang));
             UsersSend::toDonors($typeOfReminder, $donor);
         });
 

@@ -20,6 +20,7 @@ use Goteo\Model\Mail;
 use Goteo\Model\Project;
 use Goteo\Model\Template;
 use Goteo\Model\User;
+use Goteo\Model\User\Donor;
 
 class UsersSend extends AbstractCommandController {
     protected static $URL;
