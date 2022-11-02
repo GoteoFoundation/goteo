@@ -2,6 +2,7 @@
 
 namespace Goteo\Util\Filter;
 
+use DateTime;
 use Goteo\Model\Filter;
 use Goteo\Model\Filter\FilterLocation;
 use Goteo\Model\Invest;
