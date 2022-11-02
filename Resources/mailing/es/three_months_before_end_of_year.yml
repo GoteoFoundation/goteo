@@ -2,7 +2,7 @@ group: donate
 name: 'Mailing three months before the end of the year about certificates'
 purpose: 'Remember users that they have to fill their fiscal information'
 type: 'md'
-title: ''
+title: '¡Tienes 3 meses para rellenar tu información fiscal en Goteo.org!'
 text: >
     ¡Hola!
 

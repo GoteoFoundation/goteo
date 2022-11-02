@@ -709,7 +709,7 @@ class UsersSend extends AbstractCommandController {
         $mailHandler->reply = Config::getMail('transport.from');
         $mailHandler->subject = $subject;
         $mailHandler->content = $content;
-        $mailHandler->html = true;
+        $mailHandler->html = false;
         $mailHandler->template = $template->id;
         if ($mailHandler->send($errors)) {
             static::notice("Communication sent successfully to donor", ['type' => $type, $donor, 'email' => $donor->email, 'template' => $tpl]);
