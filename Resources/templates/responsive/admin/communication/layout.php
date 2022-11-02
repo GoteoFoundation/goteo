@@ -17,7 +17,10 @@ $this->section('admin-container-head');
 
 <?php $this->section('footer') ?>
 
+<!-- POST PROCESSING THIS JAVASCRIPT BY GRUNT -->
+<!-- build:js assets/js/admin-communication.js -->
 <script type="text/javascript" src="<?= $this->asset('js/forms.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->asset('js/admin/communication.js') ?>"></script>
+<!-- endbuild -->
 
 <?php $this->append() ?>
