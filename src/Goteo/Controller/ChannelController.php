@@ -14,7 +14,9 @@ use Goteo\Core\Controller;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Forms\Model\QuestionnaireForm;
 use Goteo\Model\Footprint;
+use Goteo\Model\Node\NodeSections;
 use Goteo\Model\Sdg;
+use Goteo\Repository\DataSetRepository;
 use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
@@ -102,6 +104,9 @@ class ChannelController extends Controller {
             $sponsors = Sponsor::getList(['node' => $id]);
         }
 
+        $sectionsCount = NodeSections::getList(['node' => $channel->id], 0, 0, true);
+        $sections = array_column(NodeSections::getList(['node' => $channel->id], 0, $sectionsCount), null, 'section');
+
         $this->contextVars([
             'channel'     => $channel,
             'side_order' => $side_order,
@@ -111,7 +116,8 @@ class ChannelController extends Controller {
             'categories' => $categories,
             'types' => $types,
             'colors' => $colors,
-            'url_project_create' => '/channel/' . $id . '/create'
+            'url_project_create' => '/channel/' . $id . '/create',
+            'nodeSections' => $sections
         ], 'channel/');
     }
 
@@ -141,6 +147,9 @@ class ChannelController extends Controller {
 
         $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/index';
 
+        $dataSetsRepository = new DataSetRepository();
+        $dataSets = $dataSetsRepository->getListByChannel([$id]);
+
         return $this->viewResponse(
             $view,
             [
@@ -150,7 +159,8 @@ class ChannelController extends Controller {
                 'type' => $type,
                 'total' => $total,
                 'limit' => $limit,
-                'map' => $map
+                'map' => $map,
+                'dataSets' => $dataSets
             ]
         );
     }

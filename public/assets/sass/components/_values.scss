@@ -164,11 +164,10 @@ div.goteo-values {
       margin-right: 1rem;
       border-top-left-radius: 5px;
       border-bottom-left-radius: 5px;
+      width: 100%;
     }
 
     div.footprint-data-info {
-      margin-left:3rem;
-
       h2, h3 {
         font-size:1.6rem;
         color:#74AA5F;
@@ -260,44 +259,44 @@ div.goteo-values {
   div.goteo-values {
 
     div[id^="goteo-values-"] {
-      display:flex;
+      display: flex;
       flex-direction: column;
     }
 
     div.footprint-briefing {
-      border:0;
-      border-bottom:1px solid #E9EFEF;
-      margin-bottom:3rem;
-      padding-left:10px;
-      padding-right:10px;
+      border: 0;
+      border-bottom: 1px solid #E9EFEF;
+      margin-bottom: 3rem;
+      padding-left: 10px;
+      padding-right: 10px;
 
       ul {
-        margin-bottom:2em;
+        margin-bottom: 2em;
       }
     }
 
     div.footprint-action {
-      border:0;
-      padding:2em 1em;
+      border: 0;
+      padding: 2em 1em;
     }
 
     .slider-footprint-data {
-      margin-left:20px;
-      margin-right:20px;
+      margin-left: 20px;
+      margin-right: 20px;
 
       img {
-        width:100px;
-        height:290px;
+        width: 100%;
+        height: 300px;
       }
 
       h2 {
-        margin-top:3rem;
+        margin-top: 3rem;
       }
     }
 
     .slider-footprint-projects {
-      margin-left:20px;
-      margin-right:20px;
+      margin-left: 20px;
+      margin-right: 20px;
     }
   }
 }

@@ -12,6 +12,7 @@ namespace Goteo\Model\Project;
 
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Core\Model;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Icon;
@@ -19,9 +20,8 @@ use Goteo\Model\Category as MainCategory;
 use Goteo\Model\Image as CategoryImage;
 use Goteo\Model\License;
 use Goteo\Application\Lang;
-use Goteo\Application\Config;
 
-class Reward extends \Goteo\Core\Model {
+class Reward extends Model {
 
     public
             $id,
@@ -57,10 +57,9 @@ class Reward extends \Goteo\Core\Model {
 
     public static function get($id, $lang = null) {
         try {
-            
+
             list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'project');
-            $query = static::query("
-                SELECT 
+            $sql = "SELECT
                     reward.id as id,
                     reward.project as project,
                     $fields,
@@ -75,9 +74,11 @@ class Reward extends \Goteo\Core\Model {
                     reward.category
                 FROM reward
                 $joins
-                WHERE 
-                    reward.id = :id
-                ", array(':id' => $id));
+                WHERE
+                    reward.id = ?
+            ";
+
+            $query = static::query($sql,[$id]);
             return $query->fetchObject(__CLASS__);
         } catch (\PDOException $e) {
             throw new ModelException($e->getMessage());

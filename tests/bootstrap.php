@@ -3,7 +3,15 @@
 
 use Goteo\Application\App;
 use Goteo\Application\Config;
+use Goteo\Application\Currency;
+use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\Model;
+use Goteo\Model\Invest;
+use Goteo\Model\Matcher;
+use Goteo\Model\Node;
+use Goteo\Model\Project;
+use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
 
 
@@ -39,7 +47,10 @@ Model::factory();
 //     echo "SQL Cleaning: $sql\n";
 //     \Goteo\Core\Model::query($sql);
 // }
+delete_test_reward();
 delete_test_project();
+delete_test_invest();
+delete_test_matcher();
 delete_test_user();
 delete_test_node();
 
@@ -54,39 +65,39 @@ function get_test_node() {
     );
     // if exists, return the node
     try {
-        return \Goteo\Model\Node::get($data['id']);
+        return Node::get($data['id']);
     }
-    catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+    catch(ModelNotFoundException $e) {
     }
     $errors = array();
-    $node = new \Goteo\Model\Node($data);
+    $node = new Node($data);
     if( ! $node->create($errors)) {
         error_log("Error creating test node! " . print_r($errors, 1));
         return false;
     }
     try {
-        return \Goteo\Model\Node::get($data['id']);
+        return Node::get($data['id']);
     }
-    catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+    catch(ModelNotFoundException $e) {
         error_log("unknow error getting test node! " . $e->getMessage());
     }
     return false;
 }
 function delete_test_node() {
     try {
-        $node= \Goteo\Model\Node::get('testnode');
+        $node= Node::get('testnode');
         $node->dbDelete();
     }
-    catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+    catch(ModelNotFoundException $e) {
     }
     catch(\PDOException $e) {
         error_log('PDOException on deleting test node! ' . $e->getMessage());
     }
 
     try {
-        \Goteo\Model\Node::get('testnode');
+        Node::get('testnode');
     }
-    catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+    catch(ModelNotFoundException $e) {
         return true;
     }
 
@@ -114,7 +125,7 @@ function get_test_user(): ?User
     if($user = User::get($data['userid'])) {
         return $user;
     } else {
-        error_log('Unknow error getting user id');
+        error_log('Unknown error getting user id');
     }
 
     return null;
@@ -122,7 +133,12 @@ function get_test_user(): ?User
 
 function delete_test_user() {
     if($user = User::get('012-simulated-user-test-210')) {
-        $user->dbDelete();
+        try {
+            $user->dbDelete();
+        } catch (ModelNotFoundException $e) {
+            error_log($e->getMessage());
+        }
+
         if(User::get($user->id)) {
             error_log("Error deleting test user!");
             return false;
@@ -139,9 +155,9 @@ function get_test_project() {
     );
     // if exists, return the project
     try {
-        return \Goteo\Model\Project::get($data['id']);
+        return Project::get($data['id']);
     }
-    catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+    catch(ModelNotFoundException $e) {
 //        error_log('Project [' . $data['id'] . '] not found, creating...');
     }
     catch(\PDOException $e) {
@@ -149,7 +165,7 @@ function get_test_project() {
     }
 
     $errors = array();
-    $project = new \Goteo\Model\Project($data);
+    $project = new Project($data);
     if( ! $project->create($data, get_test_node()->id, $errors)) {
         error_log("Error creating test project! " . print_r($errors, 1));
         return false;
@@ -165,9 +181,9 @@ function get_test_project() {
     }
 
     try {
-        return \Goteo\Model\Project::get($data['id']);
+        return Project::get($data['id']);
     }
-    catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+    catch(ModelNotFoundException $e) {
         error_log('unknow error getting test project ' . $e->getMessage());
         return false;
     }
@@ -175,20 +191,139 @@ function get_test_project() {
 
 function delete_test_project() {
     try {
-        $project = \Goteo\Model\Project::get('012-simulated-project-test-210');
+        $project = Project::get('012-simulated-project-test-210');
         $project->dbDelete();
     }
-    catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+    catch(ModelNotFoundException $e) {
 //        error_log('Already deleted test project');
     }
 
     try {
-        \Goteo\Model\Project::get('012-simulated-project-test-210');
+        Project::get('012-simulated-project-test-210');
         error_log('unknow error deleting test project');
     }
-    catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+    catch(ModelNotFoundException $e) {
         return true;
     }
 
     return false;
+}
+
+function get_test_invest() {
+    $data = array(
+        'user' => get_test_user()->id,
+        'amount' => 20,
+        'method' => 'cash',
+        'currency' => Currency::current(),
+        'currency_rate' => 1,
+        'status' => 1
+    );
+
+    $errors = array();
+    $invest = new Invest($data);
+    try {
+        if ( ! $invest->dbInsertUpdate(['user', 'amount', 'method', 'currency', 'currency_rate', 'status'], $errors) ) {
+            error_log("Error saving invest! " . print_r($errors, 1));
+            return false;
+        }
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+    }
+
+    try {
+        return Invest::get($invest->id);
+    }
+    catch(ModelNotFoundException $e) {
+        error_log('unknown error getting test invest ' . $e->getMessage());
+        return false;
+    }
+}
+
+function delete_test_invest(): bool
+{
+    $invests = Invest::getList(['users' => get_test_user()->id ]);
+
+    if (empty($invests)) {
+        return true;
+    }
+
+    $ok = true;
+    foreach ($invests as $invest) {
+        $ok = $ok && $invest->dbDelete();
+    }
+
+    return $ok;
+}
+
+function get_test_matcher(): Matcher
+{
+    $data = [
+        'id' => 'test',
+        'name' => 'Test Matcher',
+        'owner' => get_test_user()->id,
+    ];
+
+    $matcher = new Matcher($data);
+    try {
+        if ( ! $matcher->dbInsert(['id', 'name', 'owner']) ) {
+            error_log("Error saving Matcher! ");
+            return false;
+        }
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+    }
+
+    try {
+        return Matcher::get($matcher->id);
+    }
+    catch(ModelNotFoundException $e) {
+        error_log('unknown error getting test matcher ' . $e->getMessage());
+        return false;
+    }
+}
+
+function delete_test_matcher(): bool
+{
+    $matcher = Matcher::get('test');
+
+    if (empty($matcher)) {
+        return true;
+    }
+
+    return $matcher->dbDelete();
+}
+
+function get_test_reward(): ?Reward
+{
+    $data = [
+        'id' => 1,
+        'name' => 'Reward Test',
+        'project' => get_test_project()->id
+    ];
+    $reward = new Reward($data);
+
+    try {
+        if ( ! $reward->dbInsert(['id', 'name', 'project']) ) {
+            error_log("Error saving reward!");
+            return null;
+        }
+    } catch (\PDOException $e) {
+        error_log($e->getMessage());
+    }
+
+    try {
+        return Reward::get($data['id']);
+    } catch(\ModelException $e) {
+        error_log('unknown error getting test reward ' . $e->getMessage());
+        return null;
+    }
+}
+
+function delete_test_reward(): bool
+{
+    $reward = Reward::get(1);
+
+    if (empty($reward)) return true;
+
+    return $reward->dbDelete();
 }

@@ -159,8 +159,8 @@ $langs = $project->getLangs();
             </div>
 
     <div class="col-md-4">
-        <div class="row">
-            <?php if($project->called): ?>
+        <?php if($project->called): ?>
+            <div class="row">
                 <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
                     <div class="call-info-container hidden-sm hidden-xs">
                         <div class="row call-info col-lg-10 col-md-11 col-sm-12">
@@ -184,7 +184,9 @@ $langs = $project->getLangs();
                         </div>
                     </div>
                 </a>
-            <?php elseif($matchers): ?>
+            </div>
+        <?php elseif($matchers): ?>
+            <div class="row">
                 <div class="slider slider-matchers" id="matchers">
                     <?php foreach ($matchers as $matcher): ?>
                         <?php
@@ -233,31 +235,35 @@ $langs = $project->getLangs();
                         </div>
                     <?php endforeach; ?>
                 </div>
-            <?php endif; ?>
-        </div>
+            </div>
+        <?php endif; ?>
 
-        <div class="row">
-            <?php if ($project->sign_url): ?>
+        <?php if ($project->sign_url): ?>
+            <div class="row">
                 <div class="hidden-sm hidden-xs sign <?= !$project->called && empty($project->getMatchers()) ? 'spacer-40' : 'spacer-20' ?>">
                     <a href="<?= $project->sign_url ?>" target="_blank" class="btn btn-sign col-sm-10 text-uppercase">
                         <?= $project->sign_url_action ?>
                     </a>
                 </div>
-            <?php endif; ?>
-        </div>
+            </div>
+        <?php endif; ?>
 
-        <div class="row">
-            <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
-                <div class="hidden-sm hidden-xs channel spacer-bottom-20 <?= !$project->called && empty($project->getMatchers()) ? 'spacer' : 'spacer-20' ?>">
+        <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
+            <div class="row">
+                <div class="hidden-sm hidden-xs channel spacer-bottom-20 <?= ($project->called || $matchers || $project->sign_url) ? 'spacer-20' : '' ?>">
                     <span class="channel-label">
                         <img src="/assets/img/project/channel.svg" width="20" alt=""> <?= $this->text('regular-channel') ?>
                     </span>
-                    <a href="<?= $project->nodeData->url ?>" class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" >
+                    <a href="<?= $project->nodeData->url ?>"
+                       class="btn"
+                       style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>"
+                       title="<?= $project->nodeData->name ?>"
+                    >
                         <?= $project->nodeData->name ?>
                     </a>
                 </div>
-            <?php endif; ?>
-        </div>
+            </div>
+        <?php endif; ?>
     </div>
 
             <div class="panel panel-default widget rewards rewards-collapsed visible-xs">

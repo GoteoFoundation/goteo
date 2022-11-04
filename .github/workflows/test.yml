@@ -12,11 +12,11 @@ env:
 
 jobs:
   test-report:
-    runs-on: ubuntu-20.04
+    runs-on: "ubuntu-22.04"
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.4' ]
+        php-versions: [ '7.4' ]
 
     services:
       mysql:
@@ -52,9 +52,10 @@ jobs:
           npm install
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl, xml
 
       - name: Run Composer Install
         run: composer install --no-interaction

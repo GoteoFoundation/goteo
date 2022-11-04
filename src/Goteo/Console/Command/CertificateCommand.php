@@ -68,13 +68,11 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         error_reporting(0);
         $update = $input->getOption('update');
         $verbose = $output->isVerbose();
         $very_verbose = $output->isVeryVerbose();
         $verbose_debug = $output->isDebug();
-
 
         $update_donors = $input->getOption('update_donors');
         $update_amounts = $input->getOption('update_amounts');

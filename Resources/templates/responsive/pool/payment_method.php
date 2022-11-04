@@ -9,6 +9,12 @@ $this->section('dashboard-content-pool');
 
 	<h2><?= $this->text($this->type.'-pay-method-title') ?></h2>
 
+    <?php if ($this->has_query('source') && $this->has_query('detail')): ?>
+        <p>
+            <?= $this->t('donate-invest-origin-payment-method') ?>
+        </p>
+    <?php endif; ?>
+
 	<div class="reminder">
         <div class="level-1">
 	       <?= $this->text($this->type.'-alert-recharging') ?><span class="amount-reminder"><?= $this->raw('amount_formated') ?></span>
@@ -20,7 +26,14 @@ $this->section('dashboard-content-pool');
     <form class="form-horizontal" role="form" method="GET" action="<?= '/'.$this->type.'/form'?>">
     <input type="hidden" name="amount" value="<?= $this->amount_original . $this->currency ?>">
 
-	<div class="row no-padding">
+    <?php if ($this->has_query('source') || $this->has_query('detail') || $this->has_query('allocated')): ?>
+        <input type="hidden" name="source" value="<?= $this->get_query('source') ?>" id="source">
+        <input type="hidden" name="detail" value="<?= $this->get_query('detail') ?>" id="detail">
+        <input type="hidden" name="allocated" value="<?= $this->get_query('allocated') ?>" id="allocated">
+    <?php endif; ?>
+
+
+        <div class="row no-padding">
 
     <?php foreach($this->pay_methods as $method => $pay): ?>
         <div class="col-xxs-6 col-tn-6 col-xs-3 pay-method<?= $pay->isActive() ? '' : ' disabled' ?>">
@@ -37,7 +50,7 @@ $this->section('dashboard-content-pool');
 
         <div class="form-group">
             <div class="col-md-4 invest-button">
-                <button type="submit" class="btn btn-lg btn-cyan"><i class="fa fa-download"></i> 
+                <button type="submit" class="btn btn-lg btn-cyan"><i class="fa fa-download"></i>
                     <?= $this->type=='pool' ? $this->text('recharge-button') : $this->text('landing-donor-button') ?>
                 </button>
             </div>

@@ -24,6 +24,7 @@ form-project_status-expired: Archivado
 form-project_status-fulfilled: 'Retorno cumplido'
 form-project_status-review: 'Pendiente de valoración'
 form-project_status-success: Financiado
+form-project_status-negotiation: "En negociación"
 form-remove-button: Quitar
 form-self_review-button: Corregir
 form-send_review-button: Enviar

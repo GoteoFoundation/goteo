@@ -125,7 +125,7 @@ class DB extends PDO {
     }
 
 	/**
-	 * Static method that allows to activate/deactivate globally if the db replica can be used (does'nt mean it will be used)
+	 * Static method that allows to activate/deactivate globally if the db replica can be used (doesn't mean it will be used)
 	 * Without arguments returns if it is active
 	 */
 	static public function replica($activate = null) {

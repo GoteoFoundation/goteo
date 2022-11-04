@@ -19,6 +19,8 @@ $this->section('workshop-content');
 
 <?= $this->insert('workshop/partials/intro_text') ?>
 
+<?= $this->footer_sponsors ? $this->insert('workshop/partials/partner_footer', ['footer_sponsors' => $this->footer_sponsors]) : '' ?>
+
 <?= $this->insert('workshop/partials/main_info') ?>
 
 <?= !$this->workshop->online ? $this->insert('workshop/partials/how_to_get') : '' ?>

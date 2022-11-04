@@ -27,14 +27,6 @@ class DonateController extends PoolController {
         }
     }
 
-    public function donateLandingAction()
-    {
-        return $this->viewResponse(
-            'donate/donate',
-            ['no_donor_button' => 1]
-        );
-    }
-
     public function selectAmountDonateAction(Request $request, $landing='yes')
     {
         DashboardController::createSidebar('wallet', 'donate');

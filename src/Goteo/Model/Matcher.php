@@ -17,11 +17,15 @@ use Goteo\Application\Event\MatcherValidationEvent;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Lang;
 use Goteo\Core\Model;
+use Goteo\Entity\Matcher\MatcherReward;
 use Goteo\Model\Matcher\MatcherLocation;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Project\Reward;
 use Goteo\Model\Questionnaire\Answer;
 use Goteo\Model\Questionnaire\Score;
 use Goteo\Payment\Method\PoolPaymentMethod;
+use Goteo\Repository\MatcherRewardRepository;
+use Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor;
 
 /**
  * Matcher Model
@@ -47,10 +51,11 @@ class Matcher extends Model
            $fee = 0,
            $processor = 'duplicateinvest',
            $vars = [
-               'max_amount_per_invest' => 100,
-               'max_amount_per_project' => 0,
-               'max_invests_per_user' => 1,
-               'match_factor' => 1
+                DuplicateInvestMatcherProcessor::MAX_AMOUNT_PER_INVEST => 100,
+                DuplicateInvestMatcherProcessor::MAX_AMOUNT_PER_PROJECT => 0,
+                DuplicateInvestMatcherProcessor::MAX_INVESTS_PER_USER => 1,
+                DuplicateInvestMatcherProcessor::MATCH_FACTOR => 1,
+                DuplicateInvestMatcherProcessor::MATCH_REWARDS => false
            ],
            $crowd = 0, // Calculated field with the sum of all invests made by the peoplo
            $used = 0, // Calculated field with the sum of all invests made by the matching
@@ -69,19 +74,17 @@ class Matcher extends Model
         if(empty($this->lang)) $this->lang = Config::get('lang');
     }
 
-    public static function getLangFields() {
+    public static function getLangFields(): array
+    {
         return ['name', 'description', 'terms'];
     }
 
-    /**
-     * Get instance of matcher already in the table by action
-     * @return Matcher|null
-     */
     static public function get(
         $id,
         bool $active_only = true,
         $lang = null
-    ) {
+    ): ?Matcher
+    {
         $values = [':id' => $id];
         list($fields, $joins) = self::getLangsSQLJoins($lang);
 
@@ -872,7 +875,7 @@ class Matcher extends Model
         RIGHT JOIN matcher_user ON matcher_user.matcher_id = matcher.id
         WHERE matcher_user.user_id = :user AND matcher_user.pool";
         return self::query($sql, [':user' => $user->id])
-                ->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Matcher');
+                ->fetchAll(\PDO::FETCH_CLASS, Matcher::class);
 
     }
 
@@ -911,13 +914,71 @@ class Matcher extends Model
         return $matchers;
     }
 
-    public function hasQuestionnaire() {
+    public function hasQuestionnaire(): bool
+    {
         $questionnaire = Questionnaire::getByMatcher($this->id);
         return !empty($questionnaire);
     }
 
-    public function getQuestionnaire() {
+    public function getQuestionnaire(): Questionnaire
+    {
         return Questionnaire::getByMatcher($this->id);
     }
 
+    public function activateMatchingRewards(): void
+    {
+        $vars = $this->getVars();
+        $vars[DuplicateInvestMatcherProcessor::MATCH_REWARDS] = true;
+        $this->setVars($vars);
+    }
+
+    public function deactivateMatchingRewards(): void
+    {
+        $vars = $this->getVars();
+        unset($vars[DuplicateInvestMatcherProcessor::MATCH_REWARDS]);
+        $this->setVars($vars);
+    }
+
+    public function matchesRewards(): bool {
+        $vars = $this->getVars();
+        return $vars[DuplicateInvestMatcherProcessor::MATCH_REWARDS] ?? false;
+    }
+
+    /**
+     * @return MatcherReward[]
+     */
+    public function getMatchingRewards(): array
+    {
+        if (!$this->matchesRewards()) return [];
+
+        $repository = new MatcherRewardRepository();
+        return $repository->getListByMatcher($this);
+    }
+
+    public function addMatchingReward(Reward $reward, array &$errors = []): ?MatcherReward
+    {
+        $matcherReward = new MatcherReward();
+        $matcherReward->setMatcher($this)->setReward($reward);
+
+        $errors = [];
+        $repository = new MatcherRewardRepository();
+        $repository->persist($matcherReward, $errors);
+
+        if (!empty($errors))
+            throw new ModelException(implode(',', $errors));
+
+        return $matcherReward;
+    }
+
+    public function hasReward(Reward $reward): bool
+    {
+        $repository = new MatcherRewardRepository();
+        try {
+            return $repository->exists($this, $reward);
+        } catch (\PDOException $e) {
+            return false;
+        }
+
+        return false;
+    }
 }

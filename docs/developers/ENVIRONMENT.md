@@ -123,7 +123,6 @@ After that you're ready to execute any of the task available in the same directo
 
 ```bash
 grunt jshint
-grunt phplint
 ...
 ```
 

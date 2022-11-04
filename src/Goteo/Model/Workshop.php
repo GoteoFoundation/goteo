@@ -12,6 +12,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Core\Model;
 use Goteo\Model\Workshop\WorkshopLocation;
+use Goteo\Model\Workshop\WorkshopSponsor;
 use Goteo\Model\Blog\Post as GeneralPost;
 use PDO;
 
@@ -268,7 +269,8 @@ class Workshop extends Model {
         if($this->spheresList) return $this->spheresList;
         $values = [':workshop' => $this->id];
 
-        list($fields, $joins) = Sphere::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
+        $lang = Lang::current();
+        list($fields, $joins) = Sphere::getLangsSQLJoins($lang, Config::get('lang'));
 
         $sql = "SELECT
                 sphere.id,
@@ -290,8 +292,7 @@ class Workshop extends Model {
         $values = [':workshop' => $this->id];
 
         $lang = Lang::current();
-
-        list($fields, $joins) = Stories::getLangsSQLJoins($this->viewLang, $lang);
+        list($fields, $joins) = Stories::getLangsSQLJoins($lang, Config::get('lang'));
 
         $sql = "SELECT
                 stories.id,
@@ -319,15 +320,15 @@ class Workshop extends Model {
         return $this->postsList;
     }
 
-    public function getSponsors() {
+    public function getSponsors($type=WorkshopSponsor::TYPE_SIDE) {
         if($this->spheresList) return $this->spheresList;
-        $values = [':workshop' => $this->id];
+        $values = [':workshop' => $this->id, ':type' => $type];
 
         $sql = "SELECT
                 workshop_sponsor.*
             FROM workshop_sponsor
 
-            WHERE workshop_sponsor.workshop = :workshop
+            WHERE workshop_sponsor.workshop = :workshop AND workshop_sponsor.type= :type
             ORDER BY workshop_sponsor.order ASC";
         $query = static::query($sql, $values);
         $this->sponsorsList = $query->fetchAll(PDO::FETCH_CLASS, 'Goteo\Model\Workshop\WorkshopSponsor');

@@ -56,7 +56,7 @@ body.channel {
       .matcher-action-section {
         background: transparentize($background-light-lilac, 0.2);
       }
-      
+
     }
 
     .influence-map {
@@ -157,7 +157,7 @@ body.channel {
         margin-bottom: 0;
         background-color: $background-white;
       }
-    
+
     .posts-section{
       padding: 40px 0 50px 0;
       h2.title{
@@ -275,7 +275,7 @@ body.channel {
     .workshops-container{
       background-color: #F8F8F8;
       .title{
-        padding-top: 20px;  
+        padding-top: 20px;
       }
     }
 
@@ -295,6 +295,14 @@ body.channel {
               color: $color-white !important;
             }
         }
+      }
+    }
+
+    .data-sets-section {
+      p.description {
+        font-size: $font-size*1.2;
+        font-weight: 500;
+        margin: 1em;
       }
     }
 
@@ -417,7 +425,7 @@ body.channel {
         margin-left: 2em;
       }
     }
-  
+
   }
 
   .section.projects{

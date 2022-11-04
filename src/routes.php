@@ -25,6 +25,10 @@ $routes->add('home', new Route(
     '/',
     array('_controller' => 'Goteo\Controller\IndexController::indexAction')
 ));
+$routes->add('new_home', new Route(
+    '/',
+    array('_controller' => 'Goteo\Controller\IndexController::indexAction')
+));
 
 // Discover routes
 $routes->add('discover', new Route(
@@ -57,7 +61,7 @@ $routes->addCollection($pool_routes);
 if(Config::get('donate.landing')) {
     $routes->add('donate-landing', new Route(
         '/donate',
-        array('_controller' => 'Goteo\Controller\DonateController::donateLandingAction')
+        array('_controller' => 'Goteo\Controller\DonateLandingController::indexAction')
     ));
 }
 

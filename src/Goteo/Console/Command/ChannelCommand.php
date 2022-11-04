@@ -37,7 +37,6 @@ Update channels summary data
 Update the provided channel's summary data
 <info>./console channel --chanel channel_id --update </info>
 
-
 EOT
 );
     }
