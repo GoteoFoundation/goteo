@@ -53,6 +53,8 @@ faq-lb-add: 'New Question'
 faq-lb-edit: 'Editing Question'
 faq-lb-list: Listing
 faq-lb-translate: 'Translating Question'
+faqsection-lb: "FAQ's sections"
+faqsubsection-lb: "FAQ's subsections"
 filter-lb: 'Filters'
 glossary-lb: Glossary
 glossary-lb-edit: 'Editing Term'
