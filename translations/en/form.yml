@@ -24,6 +24,7 @@ form-project_status-expired: Closed
 form-project_status-fulfilled: 'Benefit completed'
 form-project_status-review: 'Evaluation pending'
 form-project_status-success: Funded
+form-project_status-negotiation: "In negotiation"
 form-remove-button: Remove
 form-self_review-button: Correct
 form-send_review-button: Send

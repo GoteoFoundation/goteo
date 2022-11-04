@@ -73,7 +73,7 @@ class ChartsApiController extends AbstractApiController {
      * Simple projects info data specially formatted for D3 charts
      * COSTS
      */
-    public function projectCostsAction($id) {
+    public function projectCostsAction($id, Request $request) {
         $prj = $this->getProject($id);
         $mincost = (int) Currency::amount($prj->mincost);
         $maxcost = (int) Currency::amount($prj->maxcost);
@@ -119,7 +119,7 @@ class ChartsApiController extends AbstractApiController {
      * Simple projects info data specially formatted for D3 charts
      * INVESTS
      */
-    public function projectInvestsAction($id) {
+    public function projectInvestsAction($id, Request $request) {
         $prj = $this->getProject($id);
         $mincost = (int) Currency::amount($prj->mincost);
         $maxcost = (int) Currency::amount($prj->maxcost);

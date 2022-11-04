@@ -4,11 +4,14 @@
 use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Application\Currency;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\Model;
 use Goteo\Model\Invest;
+use Goteo\Model\Matcher;
 use Goteo\Model\Node;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
 
 
@@ -44,8 +47,10 @@ Model::factory();
 //     echo "SQL Cleaning: $sql\n";
 //     \Goteo\Core\Model::query($sql);
 // }
+delete_test_reward();
 delete_test_project();
 delete_test_invest();
+delete_test_matcher();
 delete_test_user();
 delete_test_node();
 
@@ -239,7 +244,6 @@ function delete_test_invest(): bool
     $invests = Invest::getList(['users' => get_test_user()->id ]);
 
     if (empty($invests)) {
-        error_log('Invest does not exist');
         return true;
     }
 
@@ -249,4 +253,77 @@ function delete_test_invest(): bool
     }
 
     return $ok;
+}
+
+function get_test_matcher(): Matcher
+{
+    $data = [
+        'id' => 'test',
+        'name' => 'Test Matcher',
+        'owner' => get_test_user()->id,
+    ];
+
+    $matcher = new Matcher($data);
+    try {
+        if ( ! $matcher->dbInsert(['id', 'name', 'owner']) ) {
+            error_log("Error saving Matcher! ");
+            return false;
+        }
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+    }
+
+    try {
+        return Matcher::get($matcher->id);
+    }
+    catch(ModelNotFoundException $e) {
+        error_log('unknown error getting test matcher ' . $e->getMessage());
+        return false;
+    }
+}
+
+function delete_test_matcher(): bool
+{
+    $matcher = Matcher::get('test');
+
+    if (empty($matcher)) {
+        return true;
+    }
+
+    return $matcher->dbDelete();
+}
+
+function get_test_reward(): ?Reward
+{
+    $data = [
+        'id' => 1,
+        'name' => 'Reward Test',
+        'project' => get_test_project()->id
+    ];
+    $reward = new Reward($data);
+
+    try {
+        if ( ! $reward->dbInsert(['id', 'name', 'project']) ) {
+            error_log("Error saving reward!");
+            return null;
+        }
+    } catch (\PDOException $e) {
+        error_log($e->getMessage());
+    }
+
+    try {
+        return Reward::get($data['id']);
+    } catch(\ModelException $e) {
+        error_log('unknown error getting test reward ' . $e->getMessage());
+        return null;
+    }
+}
+
+function delete_test_reward(): bool
+{
+    $reward = Reward::get(1);
+
+    if (empty($reward)) return true;
+
+    return $reward->dbDelete();
 }

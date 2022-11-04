@@ -14,6 +14,7 @@ namespace Goteo\Library\Forms\Model;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\EmailType;
 use Goteo\Util\Form\Type\TextareaType;
@@ -34,15 +35,9 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         }
     }
 
-    public function getPaypalConstraints(): array
-    {
-        return [
-            new Constraints\Email(),
-        ];
-    }
-
     public function createForm() {
         $project = $this->getModel();
+        $account = $this->getOption('account');
 
         $this->getBuilder()
             ->add('one_round', ChoiceType::class, [
@@ -63,12 +58,12 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-phone')]
             ])
-            ->add('paypal', EmailType::class, [
-                'label' => 'contract-paypal_account',
-                'constraints' => $this->getPaypalConstraints(),
+            ->add('allowpp', BooleanType::class, [
+                'label' => Text::get('project-campaign-use-paypal'),
+                'data' => $account->allowpp,
                 'disabled' => $this->getReadonly(),
                 'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-paypal')]
+                'color' => 'cyan',
             ])
             ->add('spread', TextareaType::class, [
                 'label' => 'overview-field-spread',
@@ -108,7 +103,7 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
 
         $data = $form->getData();
         $account = $this->getOption('account');
-        $account->rebuildData(['paypal' => $data['paypal']]);
+        $account->rebuildData(['allowpp' => $data['allowpp']]);
 
         $errors = [];
         if (!$account->save($errors)) {

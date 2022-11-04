@@ -86,7 +86,7 @@ module.exports = function(grunt) {
 
     // Default task. Just linter
     grunt.registerTask('default', ['lint']);
-    grunt.registerTask('lint', ['yamllint', 'jshint', 'phplint']);
+    grunt.registerTask('lint', ['yamllint', 'jshint']);
 
 
     // Just returns the hostname extracted from settings.yml (or GOTEO_CONFIG_FILE)
@@ -102,7 +102,7 @@ module.exports = function(grunt) {
     // grunt precommit
     //
     // $ chmod +x .git/hooks/pre-commit
-    grunt.registerTask('precommit', ['newer:yamllint', 'newer:jshint', 'newer:phplint']);
+    grunt.registerTask('precommit', ['newer:yamllint', 'newer:jshint']);
 
 
 
@@ -206,8 +206,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        // 'newer:jshint',
-        // 'newer:phplint',
 
         'copy:devel', // copy assets to .tmp for postprocessing
         'sass:devel',
@@ -219,7 +217,6 @@ module.exports = function(grunt) {
         'sass:dist',
 
         'useminPrepare',
-        // 'imagemin',
         'concat:generated',
 
         'cssmin:dist', // manually minify css

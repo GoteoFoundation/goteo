@@ -147,6 +147,7 @@ admin-channelsection-stories: 'Stories'
 admin-channelsection-workshops: 'Workshops'
 admin-channelsection-team: 'Team'
 admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-data_sets: "Data sets"
 admin-channelsection-button: 'Button'
 admin-channelsection-create: 'Create'
 admin-channelsection-add: 'Add a Section'
@@ -541,3 +542,4 @@ admin-faq-subsections-add: "Add subsection"
 admin-faq-sections: "FAQ's sections"
 admin-faq-sections-all: "All sections"
 admin-faq-sections-add: "Add section"
+admin-user-manage-tip-donation: "donation tip"
