@@ -641,14 +641,14 @@ class ProjectsApiController extends AbstractApiController {
         $offset = 0;
         $limit = 10;
 
-        if ($request->query->has('page')) $page = $request->query->get('page');
-        if ($request->query->has('limit')) $limit = $request->query->get('limit');
-        if ($request->query->has('sdg') && $request->query->get('sdg')) {
-            $sdgs = explode(',', $request->query->get('sdg'));
+        if ($request->query->has('page')) $page = $request->query->getDigits('page');
+        if ($request->query->has('limit')) $limit = $request->query->getDigits('limit');
+        if ($request->query->has('sdg') && $request->query->getAlnum('sdg')) {
+            $sdgs = explode(',', $request->query->getAlnum('sdg' ));
             $filters['sdgs'] = $sdgs;
         }
 
-        if ($request->query->has('channel')) $filters['channel'] = $request->query->get('channel');
+        if ($request->query->has('channel')) $filters['channel'] = $request->query->getAlnum('channel');
 
         $total = Project::getByFootprintOrSDGs($filters, 0, 0, true);
         $projects = Project::getByFootprintOrSDGs($filters, $page * $limit, $limit);
