@@ -52,7 +52,7 @@ class ImpactDiscoverController extends Controller {
 
         $filters = [];
         if ($request->query->has('channel')) {
-            $filters['channel'] = strip_tags($request->query->getDigits('channel'));
+            $filters['channel'] = strip_tags($request->query->getAlnum('channel'));
         }
 
         if ($request->query->has('sdgs') && !empty(strip_tags($request->query->getDigits('sdgs'))) ){
