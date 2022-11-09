@@ -67,7 +67,7 @@ class User extends Model {
     public const ORIGIN_REGISTER_SEARCH='search';
     public const ORIGIN_REGISTER_PERSONAL='personal';
     public const ORIGIN_REGISTER_ENTITY='entity';
-    
+
     public const ALL_ORIGIN_REGISTER= [
         self::ORIGIN_REGISTER_WORKSHOP,
         self::ORIGIN_REGISTER_EVENT,
@@ -77,7 +77,7 @@ class User extends Model {
         self::ORIGIN_REGISTER_PERSONAL,
         self::ORIGIN_REGISTER_ENTITY
     ];
-    
+
 
     public
     $id = false,
@@ -456,10 +456,6 @@ class User extends Model {
 
         if (str_replace(Text::get('regular-facebook-url'), '', $this->facebook) == '') {
             $this->facebook = '';
-        }
-
-        if (str_replace(Text::get('regular-google-url'), '', $this->google) == '') {
-            $this->google = '';
         }
 
         if (str_replace(Text::get('regular-twitter-url'), '', $this->twitter) == '') {
