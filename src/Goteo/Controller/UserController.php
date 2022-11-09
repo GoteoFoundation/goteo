@@ -11,12 +11,14 @@
 namespace Goteo\Controller;
 
 use Goteo\Application\Config;
+use Goteo\Application\Config\ConfigException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Core\Controller;
+use Goteo\Core\Exception;
 use Goteo\Library\Check;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
@@ -27,29 +29,32 @@ use Goteo\Model\Mail;
 use Goteo\Model\Project;
 use Goteo\Model\Stories;
 use Goteo\Model\User;
+use Goteo\Model\User\Interest;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use function mybase64_decode;
 
 class UserController extends Controller {
 
+    /**
+     * @throws ConfigException
+     */
     public function __construct() {
         View::setTheme('responsive');
     }
 
-    public function indexAction($id = '', $show = '') {
+    public function indexAction($id = '', $show = ''): RedirectResponse
+    {
         return $this->redirect('/user/profile/' . $id . ($show ? '/' . $show : ''));
     }
 
-    /**
-     * Modificación perfil de usuario.
-     * Metodo Obsoleto porque esto lo hacen en el dashboard
-     */
-    public function editAction() {
+    public function editAction(): RedirectResponse
+    {
         return $this->redirect('/dashboard/profile');
     }
 
     /**
-     * @param string $id User name
+     * @throws Exception
      */
     public function profileAction(string $id = '', $show = 'profile', $category = '') {
 
@@ -83,14 +88,9 @@ class UserController extends Controller {
             }
         }
 
-        // en la página de mensaje o en el perfil para pintar o no el botón
-        if ($show == 'message' || $show == 'profile') {
-
-            // ver si el usuario logueado (A)
+        if (in_array($show, ['message', 'profile'])) {
             $loggedUser = Session::getUserId();
-            // puede enviar mensaje (mensajear)
-            $user->messageable = false;  // por defecto no
-            // al usuario del perfil (B)
+            $user->messageable = false;
             $profileUser = $user->id;
 
             // solamente pueden comunicarse si:
@@ -104,13 +104,12 @@ class UserController extends Controller {
                 $user->messageable = true;
         }
 
-        // si ya esta en la página de mensaje
         if (0 && $show == 'message' && !$user->messageable) {
             Message::error(Text::get('user-message-restricted'));
             return $this->redirect('/user/profile/' . $user->id);
         } else {
             // para el controller/message::personal
-            Session::store('message_autorized', true);
+            Session::store('message_authorized', true);
         }
 
         $worthcracy = Worth::getAll();
@@ -120,14 +119,14 @@ class UserController extends Controller {
 
         // comparten intereses
         if ($show == 'profile'){
-            $sharedInterests = User\Interest::share($user->id, null, 6);
+            $sharedInterests = Interest::share($user->id, null, 6);
         }
 
         if ($show == 'sharemates') {
-            $sharedInterests = array();
+            $sharedInterests = [];
             $limit = $category ? 20 : 6;
             foreach ($viewData['categories'] as $catId => $catName) {
-                $gente = User\Interest::share($user->id, $catId, $limit);
+                $gente = Interest::share($user->id, $catId, $limit);
                 if (count($gente) == 0) continue;
                 $sharedInterests[$catId] = $gente;
             }
@@ -146,10 +145,8 @@ class UserController extends Controller {
         ]);
     }
 
-    /**
-     * Activación usuario.
-     */
-    public function activateAction($token) {
+    public function activateAction($token): RedirectResponse
+    {
         $errors = array();
         $query = User::query('SELECT id FROM user WHERE token = ?', array($token));
         if ($id = $query->fetchColumn()) {

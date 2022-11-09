@@ -14,6 +14,7 @@ use Exception;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
+use Goteo\Application\Config\ConfigException;
 use Goteo\Application\Currency;
 use Goteo\Application\Event\FilterInvestFinishEvent;
 use Goteo\Application\Event\FilterInvestInitEvent;
@@ -26,6 +27,7 @@ use Goteo\Core\Controller;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Account;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
 use Goteo\Payment\Payment;
@@ -40,6 +42,9 @@ class InvestController extends Controller {
     private string $page = '/invest';
     private string $query = '';
 
+    /**
+     * @throws ConfigException
+     */
     public function __construct() {
         View::setTheme('responsive');
     }
@@ -55,7 +60,8 @@ class InvestController extends Controller {
         }
     }
 
-    protected function getUser() {
+    protected function getUser(): ?User
+    {
         $user = Session::getUser();
         if(!$user) {
             $user = Session::get('fake-user');
@@ -113,9 +119,8 @@ class InvestController extends Controller {
                 unset($pay_methods[$i]);
             }
         }
-        // Is paypal active for the project?
-        // This should be more generic...
-        if(!Project\Account::getAllowpp($project_id)) {
+
+        if(!Account::getAllowpp($project_id)) {
             unset($pay_methods['paypal']);
         }
 
@@ -214,8 +219,9 @@ class InvestController extends Controller {
     public function selectRewardAction($project_id, Request $request)
     {
         // TODO: add events
-        $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+        $amount = $request->query->getDigits('amount');
+        $reward_id = $request->query->getDigits('reward');
+        $reward = $this->validate($project_id, $reward_id, $amount, null, false);
         if($reward instanceOf Response) return $reward;
 
         // Aqui cambiar por escoger recompensa
@@ -231,8 +237,9 @@ class InvestController extends Controller {
      */
     public function loginAction($project_id, Request $request)
     {
-        $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+        $amount = $request->query->getDigits('amount');
+        $reward_id = $request->query->getDigits('reward');
+        $reward = $this->validate($project_id, $reward_id, $amount, null, false);
 
         if($reward instanceOf Response) return $reward;
         if(!$request->query->has('return')) {
@@ -253,8 +260,9 @@ class InvestController extends Controller {
      */
     public function signupAction($project_id, Request $request)
     {
-        $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+        $amount = $request->query->getDigits('amount');
+        $reward_id = $request->query->getDigits('reward');
+        $reward = $this->validate($project_id, $reward_id, $amount, null, false);
 
         if($reward instanceOf Response) return $reward;
         if(!$request->query->has('return')) {
@@ -276,10 +284,11 @@ class InvestController extends Controller {
      */
     public function selectPaymentMethodAction($project_id, Request $request)
     {
-        $amount = $request->query->get('amount');
-        $donate_amount = $request->query->get('donate_amount');
+        $amount = $request->query->getDigits('amount');
+        $donate_amount = $request->query->getDigits('donate_amount');
+        $reward_id = $request->query->getDigits('reward');
         $email = $request->query->has('email');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+        $reward = $this->validate($project_id, $reward_id, $amount, null, 'auto');
 
         if(!($this->skip_login && $email) && !Session::isLogged()) {
             return $this->redirect('/invest/' . $this->project->id . '/signup?' . $this->query);
@@ -318,7 +327,8 @@ class InvestController extends Controller {
         $tip=$request->query->get('tip');
         $donate_amount =  $tip ? $request->query->get('donate_amount') : 0;
         $amount = $amount_original = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+        $reward_id = $request->query->getDigits('reward');
+        $reward = $this->validate($project_id, $reward_id, $amount, null, 'auto');
 
         if($reward instanceOf Response) return $reward;
 
@@ -326,7 +336,7 @@ class InvestController extends Controller {
             if($request->query->has('email'))
                 $this->query .= '&email=' . urlencode($request->query->get('email'));
             if($request->query->has('name'))
-                $this->query .= '&name=' . urlencode($request->query->get('name'));
+                $this->query .= '&name=' . urlencode($request->query->getAlnum('name'));
         }
 
         // pay method required
@@ -337,7 +347,7 @@ class InvestController extends Controller {
             if($this->skip_login && !$user) {
                 $errors = [];
                 $email = $request->query->get('email');
-                $name = trim($request->query->get('name'));
+                $name = trim($request->query->getAlnum('name'));
                 if(!$request->query->has('anonymous') && !$name) {
                     $errors['name'] = Text::get('invest-user-name-or-anonymous');
                 }
@@ -372,7 +382,7 @@ class InvestController extends Controller {
                 Session::store('fake-user', $user);
             }
 
-            $method = Payment::getMethod($request->query->get('method'));
+            $method = Payment::getMethod($request->query->getAlpha('method'));
 
             $invest = new Invest(
                 array(
@@ -636,9 +646,9 @@ class InvestController extends Controller {
 
     // Send a public support message
     public function supportMsgAction(Request $request) {
-        if ($request->isMethod('post')) {
-            $msg = $request->request->get('msg');
-            $invest = $request->request->get('invest');
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $msg = $request->request->getAlnum('msg');
+            $invest = $request->request->getDigits('invest');
             if(empty($msg))
                 $result=false;
             else

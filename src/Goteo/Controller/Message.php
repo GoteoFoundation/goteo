@@ -274,12 +274,12 @@ class Message extends Controller {
      */
     public function personal ($user = null) {
         // verificacion de que esté autorizasdo a enviar mensaje
-        if (!isset($_SESSION['message_autorized']) || $_SESSION['message_autorized'] !== true) {
+        if (!isset($_SESSION['message_authorized']) || $_SESSION['message_authorized'] !== true) {
             Application\Message::info('Temporalmente no disponible. Disculpen las molestias');
             throw new Redirection('/');
         } else {
             // y quitamos esta autorización
-            unset($_SESSION['message_autorized']);
+            unset($_SESSION['message_authorized']);
         }
 
         if (empty($user))
