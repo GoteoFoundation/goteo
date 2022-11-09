@@ -44,7 +44,6 @@ tooltip-user-analytics: 'Zadejte své ID pro sledování Google Analytics, pokud
 tooltip-user-contribution: 'Stručně vysvětlete své dovednosti nebo oblasti, ve kterých byste mohli projektu pomoci (překlad, šíření, testování, programování, výuka atd.).'
 tooltip-user-facebook: 'Tato sociální síť vám může pomoci šířit informace o projektech Goteo, které vás zajímají, mezi přáteli a rodinou.'
 tooltip-user-facebook-pixel: 'Pokud chcete měřit konverze kampaně na Facebooku, zadejte své ID Facebook Pixel.'
-tooltip-user-google: 'Sociální síť Google+ je velmi nová, ale pokud ji již používáte, můžete uvést i svůj účet :)'
 tooltip-user-identica: 'Tento kanál vám může pomoci šířit informace o projektech Goteo mezi komunitou kolem open source.'
 tooltip-user-instagram: 'Tato sociální síť umožňuje snadné a okamžité sdílení obrázků'
 tooltip-user-interests: 'Uveďte typ projektů, které se mohou spojit s vašimi zájmy, abyste je mohli spolufinancovat a/nebo přispět dalšími zdroji, znalostmi nebo dovednostmi. Tyto kategorie jsou průřezové, můžete jich vybrat více.'
