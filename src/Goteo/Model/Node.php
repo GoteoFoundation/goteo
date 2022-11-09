@@ -958,7 +958,7 @@ class Node extends \Goteo\Core\Model {
                 SUM(project.amount)
             FROM project
             LEFT JOIN node_project
-                ON node_project.project_id = project.id
+                ON node_project.project_id = project.id AND node_project.node_id = :node
             WHERE project.node = :node OR node_project.node_id = :node
         ", $values);
         $data['amount'] = $query->fetchColumn();
