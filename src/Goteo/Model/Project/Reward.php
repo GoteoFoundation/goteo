@@ -20,6 +20,7 @@ use Goteo\Model\Category as MainCategory;
 use Goteo\Model\Image as CategoryImage;
 use Goteo\Model\License;
 use Goteo\Application\Lang;
+use Goteo\Repository\MatcherRewardRepository;
 
 class Reward extends Model {
 
@@ -575,6 +576,12 @@ class Reward extends Model {
         } catch (\PDOException $e) {
             return '';
         }
+    }
+
+    public function isMatched():bool
+    {
+        $matcherRewardRepository = new MatcherRewardRepository();
+        return $matcherRewardRepository->isRewardMatched($this);
     }
 
 

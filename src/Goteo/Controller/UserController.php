@@ -17,6 +17,7 @@ use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Core\Controller;
+use Goteo\Library\Check;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
@@ -250,9 +251,8 @@ class UserController extends Controller {
             $vars['error'] = Text::get('leave-token-incorrect');
         }
 
-        $email = $request->query->get('email');;
-        if ($request->getMethod() === 'POST' && $request->request->get('leaving')) {
-            $email = $request->request->get('email');
+        $email = $request->request->get('email');
+        if ($request->isMethod(Request::METHOD_POST) && $request->request->get('leaving') && Check::mail($email)) {
             $reason = $request->request->get('reason');
             if (User::leaving($email, $reason)) {
                 $vars['message'] = Text::get('leave-email-sended');

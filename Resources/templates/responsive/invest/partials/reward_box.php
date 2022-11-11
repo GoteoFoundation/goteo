@@ -5,12 +5,28 @@ $available = $reward->available();
 ?>
     <form class="form-horizontal" role="form" method="GET" action="/invest/<?= $this->project->id ?>/payment">
         <div class="row padding-sm no-padding col-sm-10 col-sm-offset-1 reward-item">
-            <label class="label-reward <?= $selected ? 'reward-choosen' : '' ?><?= $available ? '' : ' label-disabled' ?>" for="reward-<?= $reward->id ?>">
+            <?php
+                $matchedReward = $reward->isMatched();
+            ?>
+            <label class="label-reward <?= $selected ? 'reward-choosen' : '' ?><?= $available ? '' : ' label-disabled' ?> <?= $matchedReward ? 'matched-reward' : ''?>" for="reward-<?= $reward->id ?>">
+
+                <?php if ($matchedReward): ?>
+                    <div class="btn-lilac">
+                        <i class="icon icon-call"></i> <?= $this->t('regular-call') ?>
+                        <i class="fa fa-info-circle"
+                           data-html="true"
+                           data-container="body"
+                           data-toggle="tooltip"
+                           title=""
+                           data-original-title="<span style='font-size: 16px;'><?= $this->text('matcher-matches-this-reward') ?></span>">
+                        </i>
+                    </div>
+                <?php endif; ?>
                 <div class="col-sm-2 no-padding">
                     <input name="reward" class="reward" id="reward-<?= $reward->id?>" <?= $selected ? ' checked="checked"' : '' ?><?= $available ? '' : ' disabled' ?> value="<?= $reward->id ?>" type="radio">
                     <strong class="reward-amount"><?= amount_format($reward->amount) ?></strong>
                 </div>
-                <div class="col-sm-9">
+                <div class="col-sm-8">
                     <strong><?= $reward->reward ?></strong>
                     <div class="reward-description">
                         <?= $this->markdown($reward->description) ?>
