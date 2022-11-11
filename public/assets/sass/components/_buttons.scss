@@ -127,7 +127,9 @@
 .btn-sign {
     background-color: $background-dark-red;
     color: $color-white;
-    padding: 15px 1px;
+    padding: 15px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     border-radius: 10px;
     &:hover, &:focus {
         color: $color-white !important;

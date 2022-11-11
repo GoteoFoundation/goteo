@@ -176,63 +176,6 @@ textarea.widget-code {
   text-decoration: none !important;
 }
 
-.reward {
-  padding-right: 7px;
-  padding-left: 7px;
-}
-
-.label-reward {
-  padding: 2%;
-  background-color: $background-light;
-  border-radius: 10px;
-  font-weight: normal;
-  color: $color-grey;
-  width: 100%;
-  img{
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 4px 0;
-  }
-}
-
-label {
-  &.label-reward:hover {
-    cursor: pointer;
-    cursor: hand;
-    background-color: #2cb2b2;
-    color: $color-white !important;
-  }
-  &.reward-choosen {
-    background-color: #2cb2b2;
-    color: $color-white !important;
-  }
-}
-
-.amount-box {
-  display: none;
-}
-
-.reward-choosen .amount-box {
-  display: block;
-}
-
-.reward-amount {
-  color: #96238F;
-  font-size: 1.8em;
-  margin-left: 10%;
-  vertical-align: middle;
-}
-
-.reward-icon {
-  padding: 10%;
-}
-
-.input-amount {
-  font-size: 1.3em;
-  text-align: center;
-}
-
 .container-input-amount {
   padding-top: 3.5px;
   margin-top: 2.5px;
@@ -252,27 +195,6 @@ label {
   padding: 2% 0;
 }
 
-.reward-button {
-  margin-top: 2.5px;
-}
-
-.limit-reward {
-  color: #2CB2B2;
-}
-
-label {
-  &.reward-choosen .limit-reward, &.label-reward:hover .limit-reward {
-    color: $color-grey;
-  }
-  &.reward-choosen {
-    .limit-reward-number, .reward-amount {
-      color: $color-grey;
-    }
-  }
-  &.label-reward:hover .reward-amount {
-    color: $color-grey;
-  }
-}
 
 hr {
   &.share, &.make-sure {

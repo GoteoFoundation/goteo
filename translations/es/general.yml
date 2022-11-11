@@ -124,7 +124,6 @@ regular-first: Primera
 regular-from: desde
 regular-getit: Consíguelo
 regular-go_up: Subir
-regular-google: Google+
 regular-header: Cabezera
 regular-header-about: 'Sobre Goteo'
 regular-header-blog: Blog
@@ -272,3 +271,4 @@ regular-action_url: Acción URL
 regular-modal-decription: Descripción en la modal
 regular-click-more: "Haz click para saber más"
 regular-apply: Aplicar
+regular-units-left: "Unidades que quedan"

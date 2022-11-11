@@ -24,6 +24,7 @@ use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Controller\DashboardController;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Forms\Model\ProjectAnalyticsForm;
 use Goteo\Library\Forms\Model\ProjectCampaignForm;
 use Goteo\Library\Forms\Model\ProjectCostsForm;
 use Goteo\Library\Forms\Model\ProjectOverviewForm;
@@ -243,54 +244,6 @@ class ProjectDashboardController extends DashboardController {
 
         }
         return '/dashboard/project/' . $this->project->id . '/' . $goto . ($validate ? '?validate' : '');
-    }
-
-    /**
-     * Project edit (personal)
-     * NOTE: Step removed, maintaining the method just in case is coming back some day
-     */
-    public function personalAction($pid, Request $request) {
-        $project = $this->validateProject($pid, 'personal');
-        if($project instanceOf Response) return $project;
-
-        $user = $project->getOwner();
-        $defaults = (array) $project;
-
-        if($account = Account::get($project->id)) {
-            $defaults['paypal'] = $account->paypal;
-            $defaults['bank'] = $account->bank;
-        }
-        if($personal = (array)User::getPersonal($user)) {
-            foreach($personal as $k => $v) {
-                if(array_key_exists($k, $defaults) && empty($defaults[$k])) {
-                    $defaults[$k] = $v;
-                }
-            }
-        }
-
-        $processor = $this->getModelForm(ProjectPersonalForm::class, $project, $defaults, ['account' => $account], $request);
-        $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
-        $processor->getBuilder()
-            ->add('submit', SubmitType::class, [
-                'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
-            ]);
-
-        $form = $processor->getForm();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $request->isMethod('post')) {
-            try {
-                $processor->save($form, true);
-                Message::info(Text::get('user-personal-saved'));
-                return $this->redirect($this->getEditRedirect('personal', $request));
-            } catch(FormModelException $e) {
-                Message::error($e->getMessage());
-            }
-        }
-
-        return $this->viewResponse('dashboard/project/personal', [
-            'form' => $form->createView()
-        ]);
     }
 
     /**
@@ -675,15 +628,14 @@ class ProjectDashboardController extends DashboardController {
     /**
      * Project edit (overview)
      */
-    public function campaignAction($pid, Request $request) {
+    public function campaignAction(Request $request, string $pid) {
         $project = $this->validateProject($pid, 'campaign');
         if($project instanceOf Response) return $project;
 
         $defaults = (array)$project;
-        if($account = Account::get($project->id)) {
-            $defaults['paypal'] = $account->paypal;
-        }
-        if($personal = (array)User::getPersonal($user)) {
+        $account = Account::get($project->id);
+
+        if($personal = (array)User::getPersonal($this->user)) {
             foreach($personal as $k => $v) {
                 if(array_key_exists($k, $defaults) && empty($defaults[$k])) {
                     $defaults[$k] = $v;
@@ -1010,45 +962,29 @@ class ProjectDashboardController extends DashboardController {
         ]);
     }
 
-    /**
-    * Analytics section
-    */
-    public function analyticsAction(Request $request, $pid = null)
+    public function analyticsAction(Request $request, string $pid = null): Response
     {
         $project = $this->validateProject($pid, 'analytics');
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project;
-        // TODO: Create ProjectAnalyticsForm
-        $form = $this->createFormBuilder($defaults)
-            ->add('analytics_id', TextType::class, array(
-                'label' => 'regular-analytics',
-                'required' => false,
-                'attr' => ['help' => Text::get('help-user-analytics')],
-            ))
-            ->add('facebook_pixel', TextType::class, array(
-                'label' => 'regular-facebook-pixel',
-                'required' => false,
-                'attr' => ['help' => Text::get('help-user-facebook-pixel')],
-            ))
-            ->add('submit', SubmitType::class, [])
-            ->getForm();
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if($form->isValid()) {
-                $data = $form->getData();
-                $project->rebuildData($data, array_keys($form->all()));
-                if($project->save($errors)) {
-                    Message::info(Text::get('dashboard-project-analytics-ok'));
-                    return $this->redirect('/dashboard/project/' . $this->project->id .'/analytics');
-                } else {
-                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
-                }
 
-            } else {
-                Message::error(Text::get('form-has-errors'));
-            }
+        $processor = $this->getModelForm(
+            ProjectAnalyticsForm::class,
+            $project,
+            $defaults,
+            [],
+            $request
+        );
+
+        $form = $processor->createForm()->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $processor->save($form);
+        } else {
+            Message::error(Text::get('form-has-errors'));
         }
+
         return $this->viewResponse('dashboard/project/analytics', ['form' => $form->createView()]);
     }
 

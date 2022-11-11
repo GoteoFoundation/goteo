@@ -120,6 +120,7 @@ admin-channelsection-stories: 'Stories'
 admin-channelsection-workshops: 'Tallers'
 admin-channelsection-team: 'Equip'
 admin-channelsection-sponsors: 'Sponsors'
+admin-channelsection-data_sets: "Data sets"
 admin-channelsection-button: 'Botó'
 admin-channelsection-create: 'Crear'
 admin-channelsection-add: 'Afegir una secció'
@@ -294,3 +295,4 @@ mandatory-filter-description: Manca una descripció
 mandatory-filter-role: Manca un rol
 admin-node-iframe: Iframe
 admin-impact_data: "Dades d'impacte"
+admin-user-manage-tip-donation: "de donació propina"

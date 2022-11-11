@@ -111,6 +111,79 @@ body.invest {
 
   }
 
+
+  label {
+    &.label-reward:hover {
+      cursor: pointer;
+      cursor: hand;
+      background-color: #2cb2b2;
+      color: $color-white !important;
+    }
+    &.reward-choosen {
+      background-color: #2cb2b2;
+      color: $color-white !important;
+    }
+
+    .reward-amount {
+      color: #96238F;
+      font-size: 1.8em;
+      margin-left: 10%;
+      vertical-align: middle;
+    }
+
+    .reward-icon {
+      padding: 10%;
+    }
+
+    .input-amount {
+      font-size: 1.3em;
+      text-align: center;
+    }
+
+    .amount-box {
+      display: none;
+    }
+
+    &.reward-choosen .amount-box {
+      display: block;
+    }
+
+    &.label-reward {
+      position: relative;
+      padding: 2%;
+      background-color: $background-light;
+      border-radius: 10px;
+      font-weight: normal;
+      color: $color-grey;
+      width: 100%;
+      img{
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 4px 0;
+      }
+
+      &.matched-reward {
+        border: 1px solid $background-dark-lilac;
+
+        .btn-lilac {
+          position: absolute;
+          top: 0;
+          right: 0;
+          border-top-right-radius: 5px;
+          max-width: 95%;
+          z-index: 3;
+          font-size: 12px;
+          font-weight: 500;
+          text-transform: uppercase;
+          padding: 5px 10px;
+          color: $color-white;
+          display: inline-block;
+        }
+      }
+    }
+  }
+
   // Tablets customization
 
   @media (max-width: $breakpoint-md + 1) {

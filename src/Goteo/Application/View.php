@@ -55,7 +55,7 @@ class View {
     }
 
     /**
-     * Same as addFolder but adds the folder in the beggining of the dir search array
+     * Same as addFolder but adds the folder in the beginning of the dir search array
      */
     static public function prependFolder($path, $name) {
         self::factory();
@@ -95,7 +95,7 @@ class View {
     }
 
     /**
-     * Searchs the theme into available dirs and puts it as a "default" view
+     * Searches the theme into available dirs and puts it as a "default" view
      * extend/plugin-name/Resources/templates
      * templates
      */

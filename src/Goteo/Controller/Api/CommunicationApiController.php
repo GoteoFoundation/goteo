@@ -40,11 +40,13 @@ class CommunicationApiController extends AbstractApiController {
     }
 
     public function successAction($id) {
+        $this->validateCommunication();
         $communication = Communication::get($id);
         return $this->jsonResponse([ 'id' => $id , 'success' => $communication->getStatus()]);
     }
 
     public function mailStatusAction($mail) {
+        $this->validateCommunication();
         $sender = Mail::get($mail);
 
         $result = [

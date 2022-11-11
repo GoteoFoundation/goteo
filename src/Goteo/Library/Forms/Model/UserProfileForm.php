@@ -85,6 +85,18 @@ class UserProfileForm extends AbstractFormProcessor {
         return $interestsChoices;
     }
 
+    private function getOriginRegisterChoices(): array
+    {
+        $origin_register_choices=[];
+        $origin_register=USER::ALL_ORIGIN_REGISTER;
+
+        foreach($origin_register as $option)
+            $origin_register_choices[Text::get('profile-field-origin-register-'.$option)]=$option;
+
+        return $origin_register_choices;
+
+    }
+
     public function createForm() {
         $non_public = '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field');
         $user = $this->getModel();
@@ -149,7 +161,6 @@ class UserProfileForm extends AbstractFormProcessor {
             ])
             ->add('legal_entity', ChoiceType::class, [
                 'label' => 'profile-field-legal-entity',
-                'constraints' => $this->getConstraints('legal_entity'),
                 'disabled' => $this->getReadonly(),
                 'choices' => [
                     Text::get('profile-field-legal-entity-person') => 0,
@@ -168,6 +179,13 @@ class UserProfileForm extends AbstractFormProcessor {
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'color' => 'cyan'
+            ])
+            ->add('origin_register', ChoiceType::class, [
+                'label' => 'profile-field-origin-register',
+                'constraints' => $this->getConstraints('origin_register'),
+                'disabled' => $this->getReadonly(),
+                'choices' =>  $this->getOriginRegisterChoices(),
+                'required' => false
             ])
             ->add('about', MarkdownType::class, [
                 'label' => 'profile-field-about',
@@ -212,15 +230,6 @@ class UserProfileForm extends AbstractFormProcessor {
                 'pre_addon' => '<i class="fa fa-twitter"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-twitter'),
                            'placeholder' => Text::get('regular-twitter-url')],
-                'required' => false
-            ])
-            ->add('google', UrlType::class, [
-                'label' => 'regular-google',
-                'constraints' => $this->getConstraints('google'),
-                'disabled' => $this->getReadonly(),
-                'pre_addon' => '<i class="fa fa-google-plus"></i>',
-                'attr' => ['help' => Text::get('tooltip-user-google'),
-                           'placeholder' => Text::get('regular-google-url')],
                 'required' => false
             ])
             ->add('linkedin', UrlType::class, [

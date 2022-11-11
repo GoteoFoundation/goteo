@@ -3,7 +3,7 @@ ID_DEL_TEXTO: 'Testo ID_DEL_TESTO'
 admin_no_permission: 'Non hai il permesso di entrare in <strong>%s</strong>'
 bazar-description-seo: 'Regali solidali crowdfunding su Goteo.org.'
 bazar-title-seo: 'Regali Solidali :: Goteo.org'
-blog-comments: Commenti 
+blog-comments: Commenti
 blog-main-header: 'Blog di Goteo'
 calendar-calls-category: Chiamate
 calendar-events-category: Eventi
@@ -50,7 +50,7 @@ guide-project-supports: '<strong>In questa sezione puoi specificare che altri ti
 guide-project-updates: "<b>Molto importante, è che i progetti mantengano informati ai propri cofinanziatori ed il resto delle persone potenzialmente interessate su come avanza la sua campagna. In questa parte potete pubblicare messaggi di attualizzazione sul progetto, come una specie di blog pubblico.</b>In Goteo, una volta raggiunti i fondi minimi, per il secondo turno di cofinanziamento è, ancora, critico spiegare regolarmente come sono avvenuti la produzione, il progresso, i problemi, etc. che permettano la maggiore trasparenza possibile e sapere come si evolve l'avvio del progetto, per cercare così di generare più interesse e comunità intorno allo stesso."
 guide-project-invests: 'In questa parte potrete gestire i vostri cofinanziatori, le ricompense che hanno ricevuto ed anche tenervi in contatto con chi considerate sia necessario.'
 header-about-side: 'La nostra filosofia '
-home-posts-header: Novità 
+home-posts-header: Novità
 horizontal-project-investors: 'cofinanziatori'
 horizontal-project-percent: 'finanziato'
 horizontal-project-reached: 'conseguito'
@@ -64,7 +64,7 @@ mandatory-project-costs: 'Deve distinguere almeno due tipi di costo. '
 mandatory-register-field-email: 'Devi indicare una mail '
 mark-pending: 'Indicare in attesa di traduzione '
 meta-description-index: 'Goteo è un network aperto per il crowdfunding, la collaborazione e la formazione, leader in progetti di innovazione sociale. Offre 2 giri e vantaggi fiscali per i donatori!'
-node-menu-home: Nodo 
+node-menu-home: Nodo
 overview-field-about: 'Caratteristiche fondamentali '
 overview-field-motivation: 'Obiettivo e a chi si dirige il progetto '
 profile-about-header: 'Chi sono '
@@ -91,7 +91,7 @@ regular-sdgs: 'ODS'
 regular-footprints: 'Impronte'
 regular-back: 'Tornare indietro'
 regular-channel: Canale
-regular-collaborate: Collabora 
+regular-collaborate: Collabora
 regular-content: Contenuto
 regular-continue-question: 'Continuare?'
 regular-continue: 'Continuare'
@@ -99,7 +99,7 @@ regular-create: 'Crea un progetto '
 regular-date: Data
 regular-date_in: Data voce
 regular-date_out: Data rilascio
-regular-days: giorni 
+regular-days: giorni
 regular-delete: Cancellare
 regular-description: Descrizione
 regular-discover: 'Scopri i progetti '
@@ -113,28 +113,27 @@ regular-join: 'Unisciti'
 regular-facebook: '* Facebook'
 regular-faq: 'Domande frequenti '
 regular-female: Femmina
-regular-first: Prima 
-regular-from: Da 
-regular-getit: Ottienilo 
-regular-go_up: Caricare 
-regular-google: Google+
+regular-first: Prima
+regular-from: Da
+regular-getit: Ottienilo
+regular-go_up: Caricare
 regular-header: Intestazione
 regular-header-about: 'Cos''è Goteo '
 regular-header-blog: Blog
 regular-header-faq: '* FAQ'
 regular-header-glossary: 'Principi per un'' economia aperta '
-regular-hello: Ciao 
+regular-hello: Ciao
 regular-here: qui
 regular-help: Aiuto
-regular-home: Inizio 
+regular-home: Inizio
 regular-id: Identificatore (ID)
 regular-identica: Identi.ca
-regular-im: Sono 
+regular-im: Sono
 regular-instagram: Instagram
-regular-invest: Contribuire 
+regular-invest: Contribuire
 regular-invest_it: 'Co-finanzia questo progetto '
 regular-investing: Collaborando
-regular-lang: Lingua 
+regular-lang: Lingua
 regular-last: Ultima
 regular-license: Licenza
 regular-linkedin: LinkedIn
@@ -148,21 +147,21 @@ regular-others: Altri
 regular-manage_board: 'Panel Amministrazione '
 regular-mandatory: 'Campo obbligatorio'
 regular-matchfunding: 'Matchfunding'
-regular-media_legend: Legenda 
-regular-menu: Menú 
+regular-media_legend: Legenda
+regular-menu: Menú
 regular-menu-personal: Menu personale
 regular-message-clipboard-fail: 'Seleziona e copia questo collegamento'
 regular-message_fail: 'Errore nell''invio del messaggio '
 regular-message_success: 'Messaggio inviato correttamente '
-regular-months: mesi 
+regular-months: mesi
 regular-more_info: '+informazioni '
 regular-news: 'Notizie '
 regular-no: 'No '
-regular-of: di 
-regular-preview: Pre-visualizzazare 
-regular-projects: Progetti 
+regular-of: di
+regular-preview: Pre-visualizzazare
+regular-projects: Progetti
 regular-published_no: Bozza
-regular-published_yes: Pubblicato 
+regular-published_yes: Pubblicato
 regular-read_more: 'Continua a leggere'
 regular-recent-activity: Attività recente
 regular-recomended_by: 'Progetto consigliato da '
@@ -187,7 +186,7 @@ regular-sorry: 'Ci dispiace '
 regular-spread: DIFFUSIONE
 regular-status: Stato
 regular-template: Modello
-regular-thanks: Grazie 
+regular-thanks: Grazie
 regular-title: Titolo
 regular-text: Testo
 regular-media: Video (Youtube, Vimeo)
@@ -203,7 +202,7 @@ regular-view_project: 'Vedere progetto '
 regular-web: Web
 regular-weeks: settimane
 regular-year: Anno
-regular-yes: Si 
+regular-yes: Si
 regular-name: Nome
 regular-image: Immagine
 regular-images: Immagini

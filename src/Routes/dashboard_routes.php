@@ -90,14 +90,6 @@ $dash->add('dashboard-project-profile', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::profileAction',)
 ));
 
-// Project edit (personal)
-// Not used for the moment
-// $dash->add('dashboard-project-personal', new Route(
-//     '/project/{pid}/personal',
-//     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::personalAction',
-//         )
-// ));
-
 // Project edit (main)
 $dash->add('dashboard-project-main', new Route(
     '/project/{pid}/overview',

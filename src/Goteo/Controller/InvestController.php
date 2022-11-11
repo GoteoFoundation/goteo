@@ -55,7 +55,8 @@ class InvestController extends Controller {
         }
     }
 
-    protected function getUser() {
+    protected function getUser(): ?User
+    {
         $user = Session::getUser();
         if(!$user) {
             $user = Session::get('fake-user');
@@ -179,6 +180,8 @@ class InvestController extends Controller {
             }
         }
 
+        $matchers = $project->getMatchers();
+
         $this->contextVars([
             'project' => $project,
             'skip_login' => $this->skip_login,
@@ -192,7 +195,8 @@ class InvestController extends Controller {
             'currency' => $currency,
             'reward' => $reward,
             'query' => $this->query,
-            'invest' => $invest
+            'invest' => $invest,
+            'matchers' => $matchers
         ]);
 
         if($reward) {
@@ -211,7 +215,7 @@ class InvestController extends Controller {
     /**
      * step1: Choose rewards
      */
-    public function selectRewardAction($project_id, Request $request)
+    public function selectRewardAction($project_id, Request $request): Response
     {
         // TODO: add events
         $amount = $request->query->get('amount');
