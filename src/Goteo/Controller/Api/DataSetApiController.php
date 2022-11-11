@@ -21,16 +21,16 @@ class DataSetApiController extends AbstractApiController
     public function dataSetsAction(Request $request): JsonResponse {
         $filters = [];
 
-        $page = $request->query->has('page') ?? 0;
-        $limit = $request->query->get('limit') ?? 10;
+        $page = $request->query->getDigits('page', 0);
+        $limit = $request->query->getDigits('limit', 10);
         $offset = 0;
 
-        if ($request->query->has('sdg') && $request->query->get('sdg')) {
-            $filters['sdgs'] = explode(',', $request->query->get('sdg'));
+        if ($request->query->has('sdg') && $request->query->getAlnum('sdg')) {
+            $filters['sdgs'] = explode(',', $request->query->getAlnum('sdg'));
         }
 
-        if ($request->query->has('footprint') && $request->query->get('footprint')) {
-            $filters['footprints'] = explode(',', $request->query->get('footprint'));
+        if ($request->query->has('footprint') && $request->query->getDigits('footprint')) {
+            $filters['footprints'] = explode(',', $request->query->getDigits('footprint'));
         }
 
         $dataSetRepository = new DataSetRepository();

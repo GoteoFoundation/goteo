@@ -173,11 +173,34 @@ use Goteo\Library\Check;
             <?php $progress=round(($matcher_amount/$max_project)*100); ?>
                 <div class="matcher-info">
                     <div>
-                        <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="matcher-logo" alt="<?= $this->t('regular-matcher') ?>">
+                        <img width="30" src="<?= $this->asset('/assets/img/project/drop.svg') ?>" class="matcher-logo" alt="<?= $this->t('regular-matcher') ?>">
                         <span class="matcher-label">
-                        <?= $this->text('matcher-label-project') ?>
+                            <?= $this->text('matcher-label-project') ?>
                         </span>
                     </div>
+
+                    <?php if($matcher->matchesRewards()):?>
+                        <?php
+                            $matchedRewards = $matcher->getMatchingRewards();
+                            $matcherRewardsNames = [];
+
+                            foreach($matchedRewards as $matchedReward) {
+                                $matcherRewardsNames[] = $matchedReward->getReward()->reward;
+                            }
+                        ?>
+                        <span style="float:right; margin-left: 5px;">
+                             <?= $this->t('matcher-limited-by-amount') ?>
+                        </span>
+                        <i class="fa fa-info-circle"
+                           style="float:right"
+                           data-html="true"
+                           data-container="body"
+                           data-toggle="tooltip"
+                           title=""
+                           data-original-title="<span style='font-size: 16px;'><?= $this->text('matcher-limited-by-amount-title', implode('<br>', $matcherRewardsNames)) ?></span>">
+                        </i>
+                    <?php endif; ?>
+
                     <div class="matcher-description">
                         <div class="logo-container">
                             <img src="<?= $matcher->getLogo()->getLink(150, 150, true) ?>" class="logo" alt="<?= $matcher->name ?>">

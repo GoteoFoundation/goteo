@@ -5,9 +5,7 @@ $this->section('main-content');
 
 ?>
 
-
 <div class="container">
-
     <div class="row row-form">
         <div class="panel panel-default invest-container">
             <div class="panel-body">
@@ -58,6 +56,8 @@ $(':radio').change(function(){
     })
 
 });
+
+$('[data-toggle="tooltip"]').tooltip();
 
 // @license-end
 </script>

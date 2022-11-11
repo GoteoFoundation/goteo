@@ -88,6 +88,22 @@ class MatcherRewardRepository extends BaseRepository
         return $exists;
     }
 
+    public function isRewardMatched(Reward $reward): bool
+    {
+        $sql = "SELECT reward
+            FROM matcher_reward
+            WHERE reward = ?
+        ";
+
+        try {
+            $isMatched = (bool) $this->query($sql, [$reward->id])->fetchColumn();
+        } catch (\PDOException $e) {
+            return false;
+        }
+
+        return $isMatched;
+    }
+
     public function persist(MatcherReward $matcherReward, &$errors = []): ?MatcherReward
     {
         $fields = [

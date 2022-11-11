@@ -391,7 +391,7 @@ $this->section('content');
         cssEase: 'linear'
     });
 
-
+    $('[data-toggle="tooltip"]').tooltip();
 
 
     });

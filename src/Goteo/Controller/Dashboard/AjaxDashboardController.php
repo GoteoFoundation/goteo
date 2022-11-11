@@ -201,19 +201,19 @@ class AjaxDashboardController extends DashboardController {
      */
     public function odsSuggestionAction(Request $request)
     {
-        if($request->isMethod('post') && $request->request->has('social_commitment')
-            ) {
-            $social_commitment_id = $request->request->get('social_commitment');
-
+        if($request->isMethod(Request::METHOD_POST) && $request->request->has('social_commitment')) {
+            $social_commitment_id = $request->request->getAlnum('social_commitment');
             $social_commitment=SocialCommitment::get($social_commitment_id);
 
+            $sdgs_suggestion = "";
             foreach($social_commitment->getSdgs() as $s) {
                 $sdgs_suggestion.='<img src="'.$s->getIcon()->getLink().'" data-toggle="tooltip" title="'.$s->name .'" data-placement="bottom" data-value="'.$s->id.'" class="icon icon icon-6x clickable" style="margin-left: 5px;"> ';
             }
+
+            return $this->jsonResponse($sdgs_suggestion);
         }
 
-        return $this->jsonResponse($sdgs_suggestion);
-
+        return $this->jsonResponse([]);
     }
 
     /**

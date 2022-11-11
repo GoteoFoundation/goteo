@@ -48,3 +48,6 @@ dashboard-matcher-project-rewards-description: "Aqui podrás seleccionar las rec
 dashboard-matcher-project-rewards-selected: "Recompensas seleccionadas"
 dashboard-matcher-project-rewards-list: "Recompensas no seleccionadas"
 dashboard-matcher-match-rewards: "Match a recompensas"
+matcher-limited-by-amount: "Limitado por <br>recompensa"
+matcher-limited-by-amount-title: "Se multiplican donaciones solo para la/s <strong>recompensa/s</strong><br> %s"
+matcher-matches-this-reward: "Esta recompensa multiplica tu donación con la aportación de un Matcher"
