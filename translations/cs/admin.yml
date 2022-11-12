@@ -340,6 +340,7 @@ admin-stats-invest-active-parts: 'Určení čistého příjmu'
 admin-stats-invest-in_wallet-parts: 'Členění peněženky'
 admin-losts: Ztráty
 admin-refunded: Vráceno
+admin-refunded-to_users-invests: Počet vrácení uživatelům
 admin-refunded-to_wallet: Vráceno do peněženky
 admin-commissions: Poplatek
 admin-fees: Poplatek platformě
@@ -349,6 +350,7 @@ admin-the_day: Den
 admin-the_week: Týden
 admin-the_month: měsíc
 admin-the_year: Rok
+admin-custom: Podle filtru
 admin-total: Celkem
 admin-today: Dnes
 admin-yesterday: Včera
