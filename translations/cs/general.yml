@@ -65,8 +65,14 @@ node-menu-home: Uzel
 overview-field-about: 'Základní charakteristiky a cíle'
 overview-field-motivation: 'Motivace a cílová skupina projektu'
 profile-about-header: 'O mně'
+regular-add: Nová registrace
+regular-all: Vše
+regular-admin_board: 'Panel administrátora'
 regular-author: 'Autor'
 regular-anonymous: Anonymní
+regular-ask: Zeptat se
+regular-submit: Odeslat
+regular-slug: Jedinečný identifikátor
 regular-by: 'Od:'
 regular-calendar: Kalendář
 regular-cancel: Zrušit
@@ -105,6 +111,10 @@ regular-faq: 'Často kladené otázky'
 regular-female: Žena
 regular-other-gender: Ostatní
 regular-first: První
+regular-from: od
+regular-getit: Rozumím
+regular-header: Záhlaví
+regular-header-about: 'O Goteo'
 regular-header-blog: Blog
 regular-header-faq: FAQ
 regular-header-glossary: 'Zásady otevřené ekonomiky'
@@ -114,27 +124,52 @@ regular-help: Nápověda
 regular-home: Úvod
 regular-id: Identifikátor (ID)
 regular-identica: Identi.ca
+regular-im: Jsem
 regular-instagram: Instagram
 regular-invest: Přispět
+regular-invest_it: 'Spolufinancování tohoto projektu'
+regular-investing: Příspěvek
+regular-invests: Příspěvky
 regular-lang: Jazyk
+regular-last: Nejnovější
 regular-license: Licence
 regular-linkedin: LinkedIn
 regular-loading: Načítání...
 regular-location: Poloha
 regular-login: Přihlášení
+regular-logout: 'Odhlásit se'
 regular-looks_for: 'hledání:'
 regular-main-header: Goteo.org
 regular-male: Muž
 regular-others: Ostatní
+regular-manage_board: 'Ovládací panel'
+regular-mandatory: 'Povinné pole!'
 regular-media_legend: Legenda
 regular-menu: Menu
 regular-menu-personal: Osobní menu
 regular-message-clipboard-fail: 'Vyberte a zkopírujte tento odkaz'
 regular-message_fail: 'Došlo k chybě při odesílání zprávy'
 regular-message_success: 'Zpráva byla úspěšně odeslána'
+regular-months: měsíce
+regular-more_info: '+ info'
+regular-news: 'Novinky:'
+regular-newsletter: "Zpravodaj"
+regular-no: 'Ne'
+regular-of: z
+regular-preview: Náhled
+regular-evaluate: Vyhodnotit
+regular-projects: projekty
+regular-published_yes: Zveřejněno
+regular-read_more: 'Zjistěte více'
+regular-recent-activity: Nedávná aktivita
+regular-recomended_by: 'Projekt doporučil:'
+regular-round: 'kolo'
+regular-save: Uložit
 regular-schedule: Rozvrh
 regular-search: Hledat
 regular-search-user: Vyhledat uživatele
+regular-search-tooltip: 'Zadejte hledání a stiskněte klávesu enter'
+regular-see_all: 'Zobrazit vše'
 regular-see_blog: Blog
 regular-see_details: 'Zobrazit detaily'
 regular-see_more: 'Zobrazit více'
@@ -154,6 +189,15 @@ regular-text: Text
 regular-media: Vídeo (Youtube, Vimeo)
 regular-total: Celkem příspěvků
 regular-donations: Dary (nejsou zahrnuty v příspěvcích)
+regular-translate: Přeložit
+regular-translations: 'Překlady'
+regular-translate_board: 'Panel překladatele'
+regular-twitter: Twitter
+regular-url: Odkaz
+regular-view: Zobrazit
+regular-view_project: 'Zobrazit projekt'
+regular-web: Web
+regular-weeks: týden
 regular-year: Rok
 regular-yes: Ano
 regular-name: Jméno
@@ -163,17 +207,41 @@ regular-header-image-of: "Obrázek v záhlaví %s"
 regular-load-more: 'Načíst více'
 regular-analytics: 'Google Analytics'
 regular-facebook-pixel: 'Facebook Pixel'
+regular-num-comments: '%s komentářů'
+regular-manage: 'Spravovat'
+regular-no-edit-permissions: Nemáte oprávnění upravovat tento záznam!
 regular-messages: Zprávy
 regular-unknown: Neznámý
 regular-input: Příspěvek
+regular-amount: Částka
+regular-copied: 'Zkopírováno do schránky!'
+regular-remember-me: 'Pamatovat si mé údaje'
 regular-next: Další
 regular-previous: Předchozí
 regular-write-description: 'Napište popisný text...'
 regular-choice-placeholder: 'Vyberte možnost'
 session-about-to-expire: 'Vaše relace vyprší za 10 minut, chcete stránku znovu načíst a obnovit ji?'
+session-expired: 'Vaše relace Goteo vypršela!'
+stories-user-project: '%s, projektu: %s'
+support-our-mission: 'PŘISPĚJTE NADACI GOTEO'
+tooltip: 'Textová nápověda'
+tooltip-dashboard-user-access_data: 'Toto jsou vaše aktuální přihlašovací údaje. Jediné, co nemůžete změnit, je přihlašovací jméno uživatele.'
+tooltip-dashboard-user-change_email: 'Zde můžete změnit e-mailovou adresu, na kterou budete dostávat zprávy Goteo.'
+tooltip-dashboard-user-change_password: 'Zde můžete změnit heslo, které používáte pro přístup ke službě Goteo.'
 tooltip-dashboard-user-confirm_email: 'Potvrďte novou e-mailovou adresu, na kterou chcete dostávat zprávy Goteo.'
 tooltip-dashboard-user-confirm_password: 'Potvrďte nové heslo, které chcete použít pro přístup ke službě Goteo.'
 tooltip-dashboard-user-new_email: 'Uveďte novou e-mailovou adresu, na kterou chcete dostávat zprávy Goteo.'
+tooltip-dashboard-user-new_password: 'Zadejte nové heslo, které chcete používat pro přístup ke službě Goteo.'
+tooltip-dashboard-user-user_password: 'Zadejte aktuální heslo, které používáte k přihlášení do systému Goteo.'
+tooltip-project-schedule: 'Vizualizace výrobního plánu vašeho projektu. Nezapomeňte, že byste měli označovat pouze nové úkoly, které mají být provedeny, nikoli úkoly, které již byly provedeny.'
+translate-home-guide: 'Zpráva pro překladatele'
+user-account-inactive: 'Účet je deaktivován. Pro opětovnou aktivaci hesla je třeba obnovit heslo'
+user-activate-fail: 'Chyba při aktivaci uživatelského účtu'
+user-changeemail-invalid-token: 'Platnost této akce vypršela nebo již byla provedena dříve'
+user-changeemail-fail: 'Chyba při změně e-mailové adresy'
+user-register-success: 'Uživatel byl úspěšně zaregistrován. Poté obdržíte e-mail s žádostí o aktivaci.'
+validate-project-social_rewards: 'Je povinné uvést alespoň jednu hromadnou vratku '
+validate-project-total-costs: "Optimální náklady nesmí být o více než 50% vyšší než minimální náklady. Buď zvýšíte základní náklady, nebo snížíte dodatečné náklady."
 newsletter-donate-description: 'Abychom mohli i nadále pomáhat dalším a dalším občanským iniciativám'
 regular-icon: Ikona
 regular-action: Akce
