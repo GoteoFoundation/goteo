@@ -150,6 +150,14 @@ regular-facebook-pixel: 'Facebook Pixel'
 regular-messages: Zprávy
 regular-unknown: Neznámý
 regular-input: Příspěvek
+regular-next: Další
+regular-previous: Předchozí
+regular-write-description: 'Napište popisný text...'
+regular-choice-placeholder: 'Vyberte možnost'
+session-about-to-expire: 'Vaše relace vyprší za 10 minut, chcete stránku znovu načíst a obnovit ji?'
+tooltip-dashboard-user-confirm_email: 'Potvrďte novou e-mailovou adresu, na kterou chcete dostávat zprávy Goteo.'
+tooltip-dashboard-user-confirm_password: 'Potvrďte nové heslo, které chcete použít pro přístup ke službě Goteo.'
+tooltip-dashboard-user-new_email: 'Uveďte novou e-mailovou adresu, na kterou chcete dostávat zprávy Goteo.'
 newsletter-donate-description: 'Abychom mohli i nadále pomáhat dalším a dalším občanským iniciativám'
 regular-icon: Ikona
 regular-action: Akce
