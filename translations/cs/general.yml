@@ -57,6 +57,14 @@ invest-individual-header: 'Můžete se rozhodnout, že za svůj příspěvek neb
 login-register-conditions: 'Registrací potvrzujete, že přijímáte naše <a href="/legal/terms">podmínky použití</a>, <a href="/legal/privacy">zásady ochrany osobních údajů</a> a <a href= "/legal/cookies">zásady souborů cookie</a>.'
 login-register-accept-newsletter: 'Chci dostávat zpravodaj'
 login-accept-conditions: 'Přijímám <a href="/legal/terms">podmínky použití</a>, <a href="/legal/privacy">zásady ochrany osobních údajů</a> a <a href="/legal/cookies" >zásady používání souborů cookie</a>.'
+mandatory-cost-field-type: 'Je nutné zvolit typ nákladů'
+mandatory-individual_reward-field-amount: 'Je nutné uvést částku, za kterou lze odměnu získat'
+mandatory-project-costs: 'Musí být rozdělena alespoň na dva náklady.'
+meta-description-index: 'Goteo je přední otevřená síť pro crowdfunding, spolupráci a školení v oblasti sociálních inovací. Se 2 koly a daňovými výhodami pro dárce!'
+node-menu-home: Uzel
+overview-field-about: 'Základní charakteristiky a cíle'
+overview-field-motivation: 'Motivace a cílová skupina projektu'
+profile-about-header: 'O mně'
 regular-author: 'Autor'
 regular-anonymous: Anonymní
 regular-by: 'Od:'
@@ -69,6 +77,13 @@ regular-spheres: 'Oblasti působnosti'
 regular-sdgs: 'SDG'
 regular-sdg: "Cíle udržitelného rozvoje"
 regular-footprints: 'Stopa'
+regular-back: 'Zpět'
+regular-channel: Kanál
+regular-collaborate: Zapoj se
+regular-content: Obsah
+regular-continue-question: 'Pokračovat?'
+regular-continue: 'Pokračovat'
+regular-create: 'Vytvořit projekt'
 regular-data: 'Datum'
 regular-data-unit: 'Jednotka'
 regular-date: Datum
@@ -89,6 +104,7 @@ regular-facebook: Facebook
 regular-faq: 'Často kladené otázky'
 regular-female: Žena
 regular-other-gender: Ostatní
+regular-first: První
 regular-header-blog: Blog
 regular-header-faq: FAQ
 regular-header-glossary: 'Zásady otevřené ekonomiky'
