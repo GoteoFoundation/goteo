@@ -29,6 +29,7 @@ guide-contract-no_entity: 'Jako zřizovatel vlastním jménem a právem nemusít
 guide-contract-promoter: 'V tomto kroku musíte vyplnit údaje o právním zástupci subjektu nebo o zřizovateli, pokud zastupujete sami sebe. Ve všech případech to musí být tatáž osoba, která smlouvu podepíše.'
 mandatory-contract-bank: 'Je povinné uvést bankovní účet pro projekt'
 mandatory-contract-bank_owner: 'Jméno majitele bankovního účtu je povinné'
+mandatory-contract-docs: mandatory-contract-docs
 mandatory-contract-paypal_owner: 'Je vyžadováno jméno majitele účtu PayPal k projektu'
 mandatory-contract-reg_date_2: 'Je povinné uvést datum, kdy notář vydal notářský zápis'
 mandatory-contract-reg_id_2: 'Musí být uvedeno číslo protokolu notáře'
