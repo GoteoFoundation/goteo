@@ -1,3 +1,5 @@
+---
+ID_DEL_TEXTO: 'Text ID_DEL_TEXTO'
 admin_no_permission: 'Nemáte oprávnění přístupu k <strong>%s</strong>'
 bazar-description-seo: 'Solidární crowdfundingové dary na Goteo.org.'
 bazar-title-seo: 'Solidární dary :: Goteo.org'
@@ -5,11 +7,15 @@ blog-comments: Komentáře
 blog-main-header: 'Blog Goteo'
 calendar-calls-category: Výzvy
 calendar-events-category: Události
+calendar-home-hour: do
 calendar-home-title: 'Nadcházející událost'
 calendar-net-category: 'Sítě a zásady'
 calendar-projects-category: Projekty
 calendar-share: Sdílet
 calendar-workshops-category: Workshopy
+error-contact-email-invalid: 'E-mail, který jste napsali, není platný'
+error-image-name: 'Chyba názvu souboru'
+error-image-size: 'Chyba velikosti souboru'
 error-image-size-too-large: 'Soubor je příliš velký, max. 2 MB'
 error-image-tmp: 'Chyba při načítání souboru'
 error-image-type: 'Povoleny jsou pouze obrázky jpg, png a gif'
@@ -17,6 +23,7 @@ error-image-type-not-allowed: 'Povoleny jsou pouze obrazové soubory typu .png .
 error-register-email-exists: 'Zadaná e-mailová adresa odpovídá již registrovanému uživateli'
 error-register-pasword-empty: 'Nenastavili jste heslo'
 error-user-email-confirm: 'Ověření emailu se neshoduje'
+error-user-email-empty: 'Pole e-mailu nelze ponechat prázdné'
 error-user-email-exists: 'S touto e-mailovou adresou je již registrován uživatel'
 error-user-email-invalid: 'Zadaná e-mailová adresa je neplatná'
 error-user-email-token-invalid: 'Kód není správný'
@@ -47,6 +54,33 @@ horizontal-project-investors: 'spolufinancování'
 horizontal-project-percent: 'financováno'
 horizontal-project-reached: 'úspěšný'
 invest-individual-header: 'Můžete se rozhodnout, že za svůj příspěvek nebudete dostávat odměny, nebo si vybrat odměny ve výši zadané částky nebo nižší.'
+login-register-conditions: 'Registrací potvrzujete, že přijímáte naše <a href="/legal/terms">podmínky použití</a>, <a href="/legal/privacy">zásady ochrany osobních údajů</a> a <a href= "/legal/cookies">zásady souborů cookie</a>.'
+login-register-accept-newsletter: 'Chci dostávat zpravodaj'
+login-accept-conditions: 'Přijímám <a href="/legal/terms">podmínky použití</a>, <a href="/legal/privacy">zásady ochrany osobních údajů</a> a <a href="/legal/cookies" >zásady používání souborů cookie</a>.'
+regular-author: 'Autor'
+regular-anonymous: Anonymní
+regular-by: 'Od:'
+regular-calendar: Kalendář
+regular-cancel: Zrušit
+regular-cancel-back: 'Zrušit a vrátit se zpět'
+regular-categories: 'Kategorie'
+regular-social_commitments: 'Sociální závazek'
+regular-spheres: 'Oblasti působnosti'
+regular-sdgs: 'SDG'
+regular-sdg: "Cíle udržitelného rozvoje"
+regular-footprints: 'Stopa'
+regular-data: 'Datum'
+regular-data-unit: 'Jednotka'
+regular-date: Datum
+regular-date_in: Datum vložení
+regular-date_out: Datum zveřejnění
+regular-days: dní
+regular-delete: Vymazat
+regular-description: Popis
+regular-discover: 'Objevujte projekty'
+regular-discard: 'Zahodit'
+regular-download-pdf: 'Stáhnout PDF'
+regular-download: Stáhnout
 regular-actions: Akce
 regular-edit: Upravit
 regular-email: E-mail
@@ -66,6 +100,7 @@ regular-id: Identifikátor (ID)
 regular-identica: Identi.ca
 regular-instagram: Instagram
 regular-invest: Přispět
+regular-lang: Jazyk
 regular-license: Licence
 regular-linkedin: LinkedIn
 regular-loading: Načítání...
@@ -77,3 +112,48 @@ regular-male: Muž
 regular-others: Ostatní
 regular-media_legend: Legenda
 regular-menu: Menu
+regular-menu-personal: Osobní menu
+regular-message-clipboard-fail: 'Vyberte a zkopírujte tento odkaz'
+regular-message_fail: 'Došlo k chybě při odesílání zprávy'
+regular-message_success: 'Zpráva byla úspěšně odeslána'
+regular-schedule: Rozvrh
+regular-search: Hledat
+regular-search-user: Vyhledat uživatele
+regular-see_blog: Blog
+regular-see_details: 'Zobrazit detaily'
+regular-see_more: 'Zobrazit více'
+regular-send_message: 'Odeslat zprávu'
+regular-share-facebook: 'Goteo na Facebooku'
+regular-share-rss: RSS/BLOG
+regular-share-twitter: 'Sledovat na Twitteru'
+regular-share_this: 'Sdílet:'
+regular-sorry: 'Omlouváme se'
+regular-spread: ROZŠÍŘENÍ
+regular-status: Stav
+regular-template: Šablona
+regular-thanks: Děkujeme
+regular-title: Titul
+regular-subtitle: Podtitul
+regular-text: Text
+regular-media: Vídeo (Youtube, Vimeo)
+regular-total: Celkem příspěvků
+regular-donations: Dary (nejsou zahrnuty v příspěvcích)
+regular-year: Rok
+regular-yes: Ano
+regular-name: Jméno
+regular-image: Obrázek
+regular-images: Obrázky
+regular-header-image-of: "Obrázek v záhlaví %s"
+regular-load-more: 'Načíst více'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
+regular-messages: Zprávy
+regular-unknown: Neznámý
+regular-input: Příspěvek
+newsletter-donate-description: 'Abychom mohli i nadále pomáhat dalším a dalším občanským iniciativám'
+regular-icon: Ikona
+regular-action: Akce
+regular-action_url: URL akce
+regular-modal-decription: Popis v modálním okně
+regular-click-more: "Klikněte zde a zjistěte více"
+regular-apply: Použít
