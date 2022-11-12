@@ -41,6 +41,7 @@ step-1: Profil
 step-userProfile: 'Krok: Uživatel / Profil'
 tooltip-user-about: "Jako sociální síť si Goteo klade za cíl pomáhat šířit a financovat zajímavé projekty mezi co největším počtem lidí. Důležité jsou informace o vašich dovednostech nebo zkušenostech (profesních, akademických, koníčcích atd.)."
 tooltip-user-analytics: 'Zadejte své ID pro sledování Google Analytics, pokud jej máte, a povolte tak službu Google Analytics pro svůj projekt. ID musí být v tomto formátu: UA-000000-01 (příklad ID)'
+tooltip-user-avatar_upload: 'Textový tooltip nahrát obrázek uživatele'
 tooltip-user-contribution: 'Stručně vysvětlete své dovednosti nebo oblasti, ve kterých byste mohli projektu pomoci (překlad, šíření, testování, programování, výuka atd.).'
 tooltip-user-facebook: 'Tato sociální síť vám může pomoci šířit informace o projektech Goteo, které vás zajímají, mezi přáteli a rodinou.'
 tooltip-user-facebook-pixel: 'Pokud chcete měřit konverze kampaně na Facebooku, zadejte své ID Facebook Pixel.'
