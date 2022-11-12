@@ -1,2 +1,12 @@
+---
+channel-join: 'Připojit'
+channel-join-desc: 'Chcete se zapojit do kanálu?'
+matcher-apply-pending: 'Tento projekt je zařazen do užšího výběru pro výzvu na spolufinancování %s'
+matcher-apply-accepted: 'Tento projekt čeká na schválení výzvy na spolufinancování %s'
+matcher-apply-accept: 'Ano, jsem v'
+matcher-apply-reject: 'Ne, děkuji, zříkám se této výzvy'
+matcher-apply-reject-sure: 'Tato výzva na spolufinancování vám může poskytnout další finanční prostředky. Jste si jisti, že se chcete vzdát?'
+matcher-apply-discard: 'Vyřadit projekt'
+matcher-projects-received-subtitle: 'Zde jsou projekty, které jste obdrželi podle svých kritérií a které odpověděly na formulář'
 matcher-limited-by-amount: "Omezení podle <br>odměn"
 matcher-matches-this-reward: "Tato odměna znásobí váš dar s příspěvkem dorovnávajícího Matchera"
