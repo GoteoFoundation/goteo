@@ -22,70 +22,13 @@
 
         <div class="container">
             <div class="row">
-                <div class="footprint-details">
-                    <div class="footprint-dropdown">
-                        <div>
-                            <h3>
-                                <img width="75" src="<?= $this->asset('img/footprint/1.svg') ?>">
-                                Huella Ecológica
-                            </h3>
-                            <p>
-                                Lorem impsum dolor sit amet, consectetur adipiscing elit.
-                            </p>
-                        </div>
-                        <button class="btn accordion-toggle" data-toggle="collapse" data-target="#collapse-footprint-1">
-                            <span class="icon icon-arrow"></span>
-                        </button>
-                    </div>
-
-                    <div id="collapse-footprint-1" class="collapse">
-                        <?= $this->insert('project/impact_calculator/card') ?>
-                    </div>
-                </div>
+                <?= $this->insert('project/impact_calculator/partials/footprint_details', [ 'footprint' => 1]) ?>
             </div>
             <div class="row">
-                <div class="footprint-details">
-                    <div class="footprint-dropdown">
-                        <div>
-                            <h3>
-                                <img width="75" src="<?= $this->asset('img/footprint/2.svg') ?>">
-                                Huella Social
-                            </h3>
-                            <p>
-                                Lorem impsum dolor sit amet, consectetur adipiscing elit.
-                            </p>
-                        </div>
-                        <button class="btn accordion-toggle" data-toggle="collapse" data-target="#collapse-footprint-2">
-                            <span class="icon icon-arrow"></span>
-                        </button>
-                    </div>
-
-                    <div id="collapse-footprint-1" class="collapse">
-                        <?= $this->insert('project/impact_calculator/card') ?>
-                    </div>
-                </div>
+                <?= $this->insert('project/impact_calculator/partials/footprint_details', [ 'footprint' => 2]) ?>
             </div>
             <div class="row">
-                <div class="footprint-details">
-                    <div class="footprint-dropdown">
-                        <div>
-                            <h3>
-                                <img width="75" src="<?= $this->asset('img/footprint/3.svg') ?>">
-                                Huella Democratica
-                            </h3>
-                            <p>
-                                Lorem impsum dolor sit amet, consectetur adipiscing elit.
-                            </p>
-                        </div>
-                        <button class="btn accordion-toggle" data-toggle="collapse" data-target="#collapse-footprint-3">
-                            <span class="icon icon-arrow"></span>
-                        </button>
-                    </div>
-
-                    <div id="collapse-footprint-3" class="collapse">
-                        <?= $this->insert('project/impact_calculator/card') ?>
-                    </div>
-                </div>
+                <?= $this->insert('project/impact_calculator/partials/footprint_details', [ 'footprint' => 3]) ?>
             </div>
         </div>
 
