@@ -65,7 +65,108 @@ body.project {
         }
     }
 
-    /* Channel module */
+  // Impact Calculator landing
+    &.impact-calculator {
+      background-color: $background-light-green;
+      #main {
+        height: 100%;
+
+        #main-content {
+          height: 100%;
+          background-color: $background-light-green;
+
+          .impact-calculator-container {
+            height: 100%;
+
+            .impact-calculator-header {
+              color: $color-white;
+              margin-bottom: 2rem;
+
+              h1 {
+                font-weight: 700;
+                font-size: 32px;
+                line-height: 37.5px;
+              }
+
+              p {
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 18.75px;
+              }
+            }
+
+            .impact-calculator-body {
+              height: 100%;
+              background-color: $background-white;
+              border-radius: 5rem 5rem 0 0;
+              padding: 1rem;
+              text-align: center;
+              padding-top: 5rem;
+
+              h2 {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 28px;
+              }
+
+              p {
+                color: $color-grey;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 20px;
+              }
+
+              .footprint-details {
+                margin-bottom: 2rem;
+
+                .footprint-dropdown {
+                  margin: auto;
+                  border-radius: 20px;
+                  text-align: left;
+                  background: rgba(203, 223, 232, 0.4);
+                  width: 100%;
+                  display: flex;
+
+                  div {
+                    margin: auto;
+                    margin-left: 2rem;
+                    margin-bottom: 1rem;
+                    color: #345D6D;
+
+                    h3 {
+                      font-weight: 700;
+                      font-size: 18px;
+                    }
+
+                    p {
+                      font-weight: 400;
+                      font-size: 12px;
+                      line-height: 20px;
+                      margin: auto;
+                    }
+                  }
+
+                  button {
+                    border-radius: 100%;
+                    width: 36px;
+                    height: 36px;
+                    background: rgba(52, 93, 109, 0.1);
+                    margin: auto 2rem auto auto;
+                  }
+                }
+              }
+            }
+
+            button.btn-large.btn-cyan {
+              margin: 5rem;
+            }
+          }
+        }
+      }
+    }
+
+
+  /* Channel module */
 
     .channel{
       margin-top: 60px;
