@@ -100,20 +100,23 @@ body.project {
               background-color: $background-white;
               border-radius: 5rem 5rem 0 0;
               padding: 1rem;
-              text-align: center;
               padding-top: 5rem;
 
-              h2 {
-                font-weight: 700;
-                font-size: 24px;
-                line-height: 28px;
-              }
+              div.impact-calculator-body-title {
+                text-align: center;
 
-              p {
-                color: $color-grey;
-                font-weight: 400;
-                font-size: 12px;
-                line-height: 20px;
+                h2 {
+                  font-weight: 700;
+                  font-size: 24px;
+                  line-height: 28px;
+                }
+
+                p {
+                  color: $color-grey;
+                  font-weight: 400;
+                  font-size: 12px;
+                  line-height: 20px;
+                }
               }
 
               .footprint-details {
@@ -136,6 +139,7 @@ body.project {
                     h3 {
                       font-weight: 700;
                       font-size: 18px;
+                      text-align: center;
                     }
 
                     p {
@@ -143,6 +147,7 @@ body.project {
                       font-size: 12px;
                       line-height: 20px;
                       margin: auto;
+                      text-align: center;
                     }
                   }
 
@@ -157,13 +162,126 @@ body.project {
               }
             }
 
-            button.btn-large.btn-cyan {
-              margin: 5rem;
+            div.impact-calculator-save {
+              text-align: center;
+
+              button.btn-large.btn-cyan {
+                margin: 5rem;
+              }
             }
           }
         }
       }
-    }
+
+      article.card {
+        padding: 15px;
+        width: 223px;
+        height: 315px;
+        opacity: 0.2;
+        border: 1px solid #345D6D;
+        border-radius: 8px;
+        position: relative;
+        margin: 1rem;
+
+        &.active {
+          opacity: 1;
+          color: white;
+
+          i.icon {
+            background-color: white  !important;
+          }
+
+          input {
+            background-color: unset;
+          }
+        }
+
+        &.footprint-1 {
+         background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #FBB80B;
+        }
+
+        &.footprint-2 {
+          background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #D22F30;
+        }
+
+        &.footprint-3 {
+          background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #265688;
+        }
+
+        i.icon {
+          &.icon-medal {
+            @include svg-background('../img/impact-calculator/medal.svg');
+          }
+
+          &.icon-money-bag {
+            @include svg-background('../img/impact-calculator/money_bag.svg');
+          }
+
+          &.icon-classroom {
+            @include svg-background('../img/impact-calculator/classroom.svg');
+          }
+        }
+
+        div.info {
+          width: 16px;
+          height: 16px;
+          border-radius: 100%;
+          background-color: rgba(0, 0, 0, 0.1);
+          position: absolute;
+          right: 1rem;
+          top: 1rem;
+          text-align: center;
+
+          i.fa.info {
+            margin: auto;
+          }
+        }
+
+        .card-input {
+          display: inline-block;
+
+
+          input {
+            border-width: 0 0 2px 0;
+            width: 165px;
+
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+
+        i.icon-money-bag {
+          width: 16px;
+          height: 23px;
+        }
+
+        i.icon-person {
+          width: 16px;
+          height: 17px;
+        }
+
+        i.icon-job {
+          width: 34px;
+          height: 34px;
+        }
+
+        i.icon-classroom {
+          width: 58px;
+          height: 58px;
+        }
+      }
+      .tooltip {
+        background-color: $color-white;
+        width: 300px;
+
+        .tooltip-inner {
+          background-color: $color-white;
+          color: $color-black;
+          text-align: left;
+        }
+      }
+  }
 
 
   /* Channel module */

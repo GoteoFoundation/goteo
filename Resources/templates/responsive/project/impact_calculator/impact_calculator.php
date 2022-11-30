@@ -14,8 +14,8 @@
     </div>
 
     <div class="impact-calculator-body">
-        <div class="container">
-            <img src="<?= $this->get_url() ?>/goteo_logo.png"  alt="huella">
+        <div class="container impact-calculator-body-title">
+            <img src="<?= $this->asset('img/impact-calculator/fingerprint.svg') ?>"  alt="huella">
             <h2>Lorem impsum dolor sit amet alliam est</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis eros viverra tortor egestas, nec convallis est rhoncus. Etiam tempor lectus purus. Vivamos suscipit diam ut dui sagittis, vitae mollis quam sempre.</p>
         </div>
@@ -32,9 +32,24 @@
             </div>
         </div>
 
-        <button class="btn btn-large btn-cyan">GUARDAR Y CONTINUAR</button>
+        <div class="impact-calculator-save">
+            <button class="btn btn-large btn-cyan">GUARDAR Y CONTINUAR</button>
+        </div>
     </div>
 </div>
+
+<?php
+    $this->append();
+
+    $this->section('footer');
+
+?>
+
+<script type="application/javascript">
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 
 <?php
     $this->append();

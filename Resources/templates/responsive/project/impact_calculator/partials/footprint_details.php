@@ -19,6 +19,7 @@
     </div>
 
     <div id="collapse-footprint-<?= $footprint ?>" class="collapse">
-        <?= $this->insert('project/impact_calculator/card') ?>
+        <?= $this->insert('project/impact_calculator/partials/card', ['active' => true, 'footprint' => $this->footprint]) ?>
+        <?= $this->insert('project/impact_calculator/partials/card', ['active' => false]) ?>
     </div>
 </div>
