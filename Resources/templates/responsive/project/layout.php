@@ -87,6 +87,12 @@ $this->section('content');
 <!-- End container fluid -->
 
 <div class="container-fluid section">
+    <div class="row">
+        <div class="col-md-4">
+            <?= $this->insert('project/partials/impact_by_footprint') ?>
+        </div>
+    </div>
+
 	<div class="col-sm-8 section-content" id="project-tabs">
 	    <?= $this->supply('main-content') ?>
 	</div>

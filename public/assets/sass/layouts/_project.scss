@@ -283,6 +283,58 @@ body.project {
       }
   }
 
+    .card-impact-by-footprint {
+      border-radius: 15px;
+      color: white;
+
+      .row {
+        padding-top: 5px;
+        padding-left: 5px;
+
+        p {
+          padding-bottom: 5px;
+        }
+      }
+
+      &.footprint-1 {
+        background-color: red;
+      }
+
+      &.footprint-2 {
+        background-color: green;
+      }
+
+      &.footprint-3 {
+        backgorund-color: blue;
+      }
+
+      .row:not(:last-child) p {
+        border-bottom: 1px solid white;
+      }
+
+      .row:last-child {
+        padding-bottom: 1rem;
+      }
+
+      i.icon {
+        background-color: white;
+      }
+
+      i.icon-money-bag {
+        width: 30px;
+        height: 45px;
+      }
+
+      i.icon-person {
+        width: 30px;
+        height: 30px;
+      }
+
+      i.icon-medal{
+        width: 30px;
+        height: 40px;
+      }
+    }
 
   /* Channel module */
 
