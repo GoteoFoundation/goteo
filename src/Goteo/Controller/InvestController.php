@@ -553,14 +553,15 @@ class InvestController extends Controller {
         }
 
         // if resign to reward, redirect to shareAction
-        if($invest->resign) {
+        if($request->isMethod(Request::METHOD_POST) && $invest->resign) {
             return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
         }
 
         // check post data
         $invest_address = (array)$invest->getAddress();
         $errors = [];
-        if($request->isMethod('post') && $request->request->has('invest')) {
+        if($request->isMethod(Request::METHOD_POST) && $request->request->has('fiscal')) {
+
             $invest_address = $request->request->get('invest');
             if(is_array($invest_address)) {
                 $ok = true;
