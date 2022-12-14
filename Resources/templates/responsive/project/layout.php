@@ -88,8 +88,17 @@ $this->section('content');
 
 <div class="container-fluid section">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 col-xs-4">
+            <h4>Huella Social</h4>
             <?= $this->insert('project/partials/impact_by_footprint') ?>
+        </div>
+        <div class="col-md-4 col-xs-4">
+            <h4>Calculadora</h4>
+            <?= $this->insert('project/partials/calculator') ?>
+        </div>
+        <div class="col-md-4 col-xs-4">
+            <h4>Objetivos de desarrollo</h4>
+            <?= $this->insert('project/partials/sdgs') ?>
         </div>
     </div>
 

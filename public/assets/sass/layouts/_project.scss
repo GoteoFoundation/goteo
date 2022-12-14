@@ -283,7 +283,7 @@ body.project {
       }
   }
 
-    .card-impact-by-footprint {
+    article.card-impact-by-footprint {
       border-radius: 15px;
       color: white;
 
@@ -333,6 +333,41 @@ body.project {
       i.icon-medal{
         width: 30px;
         height: 40px;
+      }
+    }
+
+    article.card-impact-calculator {
+      background-color: $background-white;
+      min-height: 220px;
+      border-radius: 15px;
+
+      h3 {
+        font-weight: bold;
+      }
+
+      i.icon {
+        background-color: #149290;
+        width: 50px;
+        height: 50px;
+        margin-top: 10px;
+      }
+
+      button.btn {
+        background-color: transparent;
+        border: 2px solid #149290;
+        font-weight: bold;
+        color: #149290;
+      }
+    }
+
+    article.card-sdgs {
+      background-color: $background-white;
+      min-height: 220px;
+      border-radius: 15px;
+
+      h3 {
+        font-weight: bold;
+        font-size: 20px;
       }
     }
 
