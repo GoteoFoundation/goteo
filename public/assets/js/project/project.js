@@ -218,8 +218,12 @@ $(() => {
     });
 
     $('.slider-footprint').slick({
-        dos: true,
         fade:true,
+    })
+
+    $('.slider-sdgs').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1
     })
 
     $('[data-toggle="tooltip"]').tooltip();

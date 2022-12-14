@@ -314,7 +314,7 @@ body.project {
     }
 
     &.footprint-3 {
-      backgorund-color: blue;
+      background-color: blue;
     }
 
     .row:not(:last-child) p {
@@ -379,6 +379,10 @@ body.project {
       font-weight: bold;
       font-size: 20px;
       margin: 1rem;
+    }
+
+    .slider-sdgs {
+      margin-left: 1rem;
     }
 
     img {
