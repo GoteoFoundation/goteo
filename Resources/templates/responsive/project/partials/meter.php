@@ -217,7 +217,7 @@ use Goteo\Library\Check;
     <?php if(!$this->get_user() ): ?>
     <a href="/project/favourite/<?= $project->id ?>">
     <?php endif; ?>
-        <div class="text-right favourite <?= $this->get_user()&&$this->get_user()->isFavouriteProject($project->id) ? 'active' : '' ?>" id="favourite">
+        <div class="text-right favourite <?= $this->get_user()&&$this->get_user()->isFavouriteProject($project->id) ? 'active' : '' ?>" id="favourite" data-user="<?= $this->get_user()->id ?>" data-project="<?= $project->id ?>">
             <span class="heart-icon glyphicon glyphicon-heart" aria-hidden="true"></span>
             <span> <?= $this->text('project-view-metter-favourite') ?></span>
         </div>
