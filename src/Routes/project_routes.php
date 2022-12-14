@@ -50,6 +50,11 @@ $prjs->add('project-create', new Route(
     array('_controller' => 'Goteo\Controller\ProjectController::createAction')
 ));
 
+$prjs->add('project-impact-calculator', new Route(
+    '/impact_calculator',
+    ['_controller' => 'Goteo\Controller\ProjectController::impactAction']
+));
+
 $prjs->add('project-favourite', new Route(
     '/favourite/{pid}',
     array('_controller' => 'Goteo\Controller\ProjectController::favouriteAction')

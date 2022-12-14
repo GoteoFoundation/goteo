@@ -377,4 +377,9 @@ class ProjectController extends Controller {
             return new RedirectResponse('/project/' . $project->id );
         }
     }
+
+    public function impactAction(Request $request, string $pid = null): Response
+    {
+        return $this->viewResponse('project/impact_calculator/impact_calculator');
+    }
 }
