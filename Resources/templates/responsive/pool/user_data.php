@@ -10,7 +10,7 @@ $this->section('dashboard-content-pool');
 
     <h2 class="padding-bottom-2"><?= $this->text('pool-make-sure-title') ?></h2>
 
-    <?php if ($this->invest && $this->invest->getInvestOrigin()): ?>
+    <?php if ($this->invest->getInvestOrigin()): ?>
         <p>
             <?= $this->t('donate-invest-origin-thanks') ?>
         </p>

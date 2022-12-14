@@ -327,7 +327,7 @@ class PoolController extends Controller {
      * step4: reward/user data
      * Shown when coming back from the payment gateway
      */
-    public function userDataAction(Request $request, $invest_id, $type = 'pool'): Response
+    public function userDataAction(Request $request, $invest_id, $type = 'pool')
     {
         $invest = Invest::get($invest_id);
         $amount = $this->validate();
@@ -339,7 +339,7 @@ class PoolController extends Controller {
         }
 
         // if resign to reward, redirect to shareAction
-        if($invest->resign || $request->isMethod(Request::METHOD_POST)) {
+        if($invest->resign) {
             return $this->dispatch(
                 AppEvents::INVEST_FINISHED,
                 new FilterInvestFinishEvent($invest, $request)
@@ -349,11 +349,19 @@ class PoolController extends Controller {
         // check post data
         $invest_address = (array)$invest->getAddress();
 
+        $errors = [];
+        if($request->isMethod('post')) {
+            return $this->dispatch(
+                AppEvents::INVEST_FINISHED,
+                new FilterInvestFinishEvent($invest, $request)
+            )->getHttpResponse();
+        }
+
         return $this->viewResponse('pool/user_data', [
             'type' => $type,
             'invest' => $invest,
             'invest_address' => $invest_address,
-            'invest_errors' => [],
+            'invest_errors' => $errors,
             'step' => 3,
             'legal_entities' => Donor::getLegalEntities(),
             'legal_documents' => Donor::getLegalDocumentTypes()
