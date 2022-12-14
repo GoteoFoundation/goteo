@@ -1,418 +1,436 @@
 body.project {
-    #main {
-        background-color: $background-light-grey;
-        #main-content {
-          background-color: $background-white;
+  #main {
+    background-color: $background-light-grey;
 
-          #project-tabs-menu {
-            margin-top: 8rem;
+    #main-content {
+      background-color: $background-white;
+
+      #project-tabs-menu {
+        margin-top: 8rem;
+      }
+    }
+
+    .container-fluid {
+      @media(min-width: $breakpoint-sm) {
+        max-width: 750px;
+      }
+      @media(min-width: $breakpoint-md) {
+        max-width: 970px;
+      }
+      @media(min-width: $breakpoint-lg) {
+        max-width: 1170px;
+      }
+
+      details {
+        summary {
+          h2 {
+            color: $color-dark !important;
           }
         }
 
-        .container-fluid {
-            @media(min-width: $breakpoint-sm) {
-                max-width: 750px;
-            }
-            @media(min-width: $breakpoint-md) {
-                max-width: 970px;
-            }
-            @media(min-width: $breakpoint-lg) {
-                max-width: 1170px;
-            }
-
-            details {
-                summary {
-                    h2 {
-                      color: $color-dark !important;
-                    }
-                }
-
-                &[open] summary {
-                    h2 {
-                      color: $color-dark-green !important ;
-                    }
-                }
-
-                a {
-                    img {
-                      margin-top: 22px;
-                    }
-                }
-            }
+        &[open] summary {
+          h2 {
+            color: $color-dark-green !important;
+          }
         }
 
-    }
-    &.create {
-      background-color: $background-light-grey;
-        #main {
-            #main-content {
-                background-color: $background-light-grey;
-                .btn-success{
-                  font-weight: bold;
-                  font-size: $font-size*1.2;
-                  text-transform: uppercase;
-                }
-                h1.no-apply{
-                  margin-bottom:30px;
-                  margin-top: 50px;
-                }
-                p.no-apply{
-                  text-align:center;
-                  text-transform:uppercase;
-                  margin:30px 0
-                }
-            }
+        a {
+          img {
+            margin-top: 22px;
+          }
         }
+      }
     }
+
+  }
+
+  &.create {
+    background-color: $background-light-grey;
+
+    #main {
+      #main-content {
+        background-color: $background-light-grey;
+
+        .btn-success {
+          font-weight: bold;
+          font-size: $font-size*1.2;
+          text-transform: uppercase;
+        }
+
+        h1.no-apply {
+          margin-bottom: 30px;
+          margin-top: 50px;
+        }
+
+        p.no-apply {
+          text-align: center;
+          text-transform: uppercase;
+          margin: 30px 0
+        }
+      }
+    }
+  }
 
   // Impact Calculator landing
-    &.impact-calculator {
-      background-color: $background-light-green;
-      #main {
+  &.impact-calculator {
+    background-color: $background-light-green;
+
+    #main {
+      height: 100%;
+
+      #main-content {
         height: 100%;
+        background-color: $background-light-green;
 
-        #main-content {
+        .impact-calculator-container {
           height: 100%;
-          background-color: $background-light-green;
 
-          .impact-calculator-container {
+          .impact-calculator-header {
+            color: $color-white;
+            margin-bottom: 2rem;
+
+            h1 {
+              font-weight: 700;
+              font-size: 32px;
+              line-height: 37.5px;
+            }
+
+            p {
+              font-weight: 700;
+              font-size: 16px;
+              line-height: 18.75px;
+            }
+          }
+
+          .impact-calculator-body {
             height: 100%;
+            background-color: $background-white;
+            border-radius: 5rem 5rem 0 0;
+            padding: 1rem;
+            padding-top: 5rem;
 
-            .impact-calculator-header {
-              color: $color-white;
-              margin-bottom: 2rem;
+            div.impact-calculator-body-title {
+              text-align: center;
 
-              h1 {
+              h2 {
                 font-weight: 700;
-                font-size: 32px;
-                line-height: 37.5px;
+                font-size: 24px;
+                line-height: 28px;
               }
 
               p {
-                font-weight: 700;
-                font-size: 16px;
-                line-height: 18.75px;
+                color: $color-grey;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 20px;
               }
             }
 
-            .impact-calculator-body {
-              height: 100%;
-              background-color: $background-white;
-              border-radius: 5rem 5rem 0 0;
-              padding: 1rem;
-              padding-top: 5rem;
+            .footprint-details {
+              margin-bottom: 2rem;
 
-              div.impact-calculator-body-title {
-                text-align: center;
+              .footprint-dropdown {
+                margin: auto;
+                border-radius: 20px;
+                text-align: left;
+                background: rgba(203, 223, 232, 0.4);
+                width: 100%;
+                display: flex;
 
-                h2 {
-                  font-weight: 700;
-                  font-size: 24px;
-                  line-height: 28px;
-                }
-
-                p {
-                  color: $color-grey;
-                  font-weight: 400;
-                  font-size: 12px;
-                  line-height: 20px;
-                }
-              }
-
-              .footprint-details {
-                margin-bottom: 2rem;
-
-                .footprint-dropdown {
+                div {
                   margin: auto;
-                  border-radius: 20px;
-                  text-align: left;
-                  background: rgba(203, 223, 232, 0.4);
-                  width: 100%;
-                  display: flex;
+                  margin-left: 2rem;
+                  margin-bottom: 1rem;
+                  color: #345D6D;
 
-                  div {
+                  h3 {
+                    font-weight: 700;
+                    font-size: 18px;
+                    text-align: center;
+                  }
+
+                  p {
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: 20px;
                     margin: auto;
-                    margin-left: 2rem;
-                    margin-bottom: 1rem;
-                    color: #345D6D;
-
-                    h3 {
-                      font-weight: 700;
-                      font-size: 18px;
-                      text-align: center;
-                    }
-
-                    p {
-                      font-weight: 400;
-                      font-size: 12px;
-                      line-height: 20px;
-                      margin: auto;
-                      text-align: center;
-                    }
+                    text-align: center;
                   }
+                }
 
-                  button {
-                    border-radius: 100%;
-                    width: 36px;
-                    height: 36px;
-                    background: rgba(52, 93, 109, 0.1);
-                    margin: auto 2rem auto auto;
-                  }
+                button {
+                  border-radius: 100%;
+                  width: 36px;
+                  height: 36px;
+                  background: rgba(52, 93, 109, 0.1);
+                  margin: auto 2rem auto auto;
                 }
               }
             }
+          }
 
-            div.impact-calculator-save {
-              text-align: center;
+          div.impact-calculator-save {
+            text-align: center;
 
-              button.btn-large.btn-cyan {
-                margin: 5rem;
-              }
+            button.btn-large.btn-cyan {
+              margin: 5rem;
             }
           }
         }
       }
+    }
 
-      article.card {
-        padding: 15px;
-        width: 223px;
-        height: 315px;
-        opacity: 0.2;
-        border: 1px solid #345D6D;
-        border-radius: 8px;
-        position: relative;
-        margin: 1rem;
+    article.card {
+      padding: 15px;
+      width: 223px;
+      height: 315px;
+      opacity: 0.2;
+      border: 1px solid #345D6D;
+      border-radius: 8px;
+      position: relative;
+      margin: 1rem;
 
-        &.active {
-          opacity: 1;
-          color: white;
-
-          i.icon {
-            background-color: white  !important;
-          }
-
-          input {
-            background-color: unset;
-          }
-        }
-
-        &.footprint-1 {
-         background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #FBB80B;
-        }
-
-        &.footprint-2 {
-          background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #D22F30;
-        }
-
-        &.footprint-3 {
-          background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #265688;
-        }
+      &.active {
+        opacity: 1;
+        color: white;
 
         i.icon {
-          &.icon-medal {
-            @include svg-background('../img/impact-calculator/medal.svg');
-          }
-
-          &.icon-money-bag {
-            @include svg-background('../img/impact-calculator/money_bag.svg');
-          }
-
-          &.icon-classroom {
-            @include svg-background('../img/impact-calculator/classroom.svg');
-          }
+          background-color: white !important;
         }
 
-        div.info {
-          width: 16px;
-          height: 16px;
-          border-radius: 100%;
-          background-color: rgba(0, 0, 0, 0.1);
-          position: absolute;
-          right: 1rem;
-          top: 1rem;
-          text-align: center;
-
-          i.fa.info {
-            margin: auto;
-          }
-        }
-
-        .card-input {
-          display: inline-block;
-
-
-          input {
-            border-width: 0 0 2px 0;
-            width: 165px;
-
-            &:focus {
-              outline: none;
-            }
-          }
-        }
-
-        i.icon-money-bag {
-          width: 16px;
-          height: 23px;
-        }
-
-        i.icon-person {
-          width: 16px;
-          height: 17px;
-        }
-
-        i.icon-job {
-          width: 34px;
-          height: 34px;
-        }
-
-        i.icon-classroom {
-          width: 58px;
-          height: 58px;
-        }
-      }
-      .tooltip {
-        background-color: $color-white;
-        width: 300px;
-
-        .tooltip-inner {
-          background-color: $color-white;
-          color: $color-black;
-          text-align: left;
-        }
-      }
-  }
-
-    article.card-impact-by-footprint {
-      border-radius: 15px;
-      color: white;
-
-      .row {
-        padding-top: 5px;
-        padding-left: 5px;
-
-        p {
-          padding-bottom: 5px;
+        input {
+          background-color: unset;
         }
       }
 
       &.footprint-1 {
-        background-color: red;
+        background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #FBB80B;
       }
 
       &.footprint-2 {
-        background-color: green;
+        background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #D22F30;
       }
 
       &.footprint-3 {
-        backgorund-color: blue;
-      }
-
-      .row:not(:last-child) p {
-        border-bottom: 1px solid white;
-      }
-
-      .row:last-child {
-        padding-bottom: 1rem;
+        background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #265688;
       }
 
       i.icon {
-        background-color: white;
+        &.icon-medal {
+          @include svg-background('../img/impact-calculator/medal.svg');
+        }
+
+        &.icon-money-bag {
+          @include svg-background('../img/impact-calculator/money_bag.svg');
+        }
+
+        &.icon-classroom {
+          @include svg-background('../img/impact-calculator/classroom.svg');
+        }
+      }
+
+      div.info {
+        width: 16px;
+        height: 16px;
+        border-radius: 100%;
+        background-color: rgba(0, 0, 0, 0.1);
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        text-align: center;
+
+        i.fa.info {
+          margin: auto;
+        }
+      }
+
+      .card-input {
+        display: inline-block;
+
+
+        input {
+          border-width: 0 0 2px 0;
+          width: 165px;
+
+          &:focus {
+            outline: none;
+          }
+        }
       }
 
       i.icon-money-bag {
-        width: 30px;
-        height: 45px;
+        width: 16px;
+        height: 23px;
       }
 
       i.icon-person {
-        width: 30px;
-        height: 30px;
+        width: 16px;
+        height: 17px;
       }
 
-      i.icon-medal{
-        width: 30px;
-        height: 40px;
-      }
-    }
-
-    article.card-impact-calculator {
-      background-color: $background-white;
-      min-height: 220px;
-      border-radius: 15px;
-
-      h3 {
-        font-weight: bold;
+      i.icon-job {
+        width: 34px;
+        height: 34px;
       }
 
-      i.icon {
-        background-color: #149290;
-        width: 50px;
-        height: 50px;
-        margin-top: 10px;
-      }
-
-      button.btn {
-        background-color: transparent;
-        border: 2px solid #149290;
-        font-weight: bold;
-        color: #149290;
+      i.icon-classroom {
+        width: 58px;
+        height: 58px;
       }
     }
 
-    article.card-sdgs {
-      background-color: $background-white;
-      min-height: 220px;
-      border-radius: 15px;
+    .tooltip {
+      background-color: $color-white;
+      width: 300px;
 
-      h3 {
-        font-weight: bold;
-        font-size: 20px;
+      .tooltip-inner {
+        background-color: $color-white;
+        color: $color-black;
+        text-align: left;
       }
     }
+  }
+
+  article.card-impact-by-footprint {
+    min-height: 220px;
+    border-radius: 15px;
+    color: white;
+
+    .row {
+      padding-top: 5px;
+      padding-left: 5px;
+
+      p {
+        padding-bottom: 5px;
+      }
+    }
+
+    &.footprint-1 {
+      background-color: red;
+    }
+
+    &.footprint-2 {
+      background-color: green;
+    }
+
+    &.footprint-3 {
+      backgorund-color: blue;
+    }
+
+    .row:not(:last-child) p {
+      border-bottom: 1px solid white;
+    }
+
+    .row:last-child {
+      padding-bottom: 1rem;
+    }
+
+    i.icon {
+      background-color: white;
+    }
+
+    i.icon-money-bag {
+      width: 30px;
+      height: 45px;
+    }
+
+    i.icon-person {
+      width: 30px;
+      height: 30px;
+    }
+
+    i.icon-medal {
+      width: 30px;
+      height: 40px;
+    }
+  }
+
+  article.card-impact-calculator {
+    background-color: $background-white;
+    min-height: 220px;
+    border-radius: 15px;
+
+    h3 {
+      font-weight: bold;
+    }
+
+    i.icon {
+      background-color: #149290;
+      width: 50px;
+      height: 50px;
+      margin-top: 10px;
+    }
+
+    button.btn {
+      background-color: transparent;
+      border: 2px solid #149290;
+      font-weight: bold;
+      color: #149290;
+    }
+  }
+
+  article.card-sdgs {
+    background-color: $background-white;
+    min-height: 220px;
+    border-radius: 15px;
+    padding-top: 10px;
+
+    h3 {
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 10px;
+    }
+
+    img {
+      width: 9rem;
+    }
+  }
 
   /* Channel module */
 
-    .channel{
-      margin-top: 60px;
+  .channel {
+    margin-top: 60px;
 
-      &.spacer-20 {
-        margin-top: 20px;
-      }
-
-      &.spacer-40 {
-        margin-top: 40px;
-      }
-
-      .channel-label{
-        width: 15%;
-      }
-      .btn{
-        margin-left: 5px;
-        color: $color-white !important;
-        padding: 3px 40px;
-        width: 65%;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
+    &.spacer-20 {
+      margin-top: 20px;
     }
 
-    background: $color-white;
+    &.spacer-40 {
+      margin-top: 40px;
+    }
+
+    .channel-label {
+      width: 15%;
+    }
+
+    .btn {
+      margin-left: 5px;
+      color: $color-white !important;
+      padding: 3px 40px;
+      width: 65%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
+  background: $color-white;
 
   @media (max-width: $breakpoint-sm - 1) {
     padding-bottom: 57px;
-    .channel{
-        margin-top: 10px;
-        .channel-label{
-          width: 20%;
-          font-size: 1.3em;
-        }
-        .btn{
-          margin-left: 5px;
-          color: $color-white !important;
-          padding: 3px 40px;
-          width: 75%;
-        }
+    .channel {
+      margin-top: 10px;
+
+      .channel-label {
+        width: 20%;
+        font-size: 1.3em;
+      }
+
+      .btn {
+        margin-left: 5px;
+        color: $color-white !important;
+        padding: 3px 40px;
+        width: 75%;
+      }
     }
   }
 
@@ -427,17 +445,17 @@ body.project {
 
   .side {
     .btn-block {
-        text-transform: uppercase;
-        font-weight: bold;
-        @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md - 1) {
-            max-width: 80%;
-        }
-        @media (min-width: $breakpoint-md) and (max-width: $breakpoint-lg - 1) {
-            max-width: 70%;
-        }
-        @media (min-width: $breakpoint-lg) {
-            max-width: 60%;
-        }
+      text-transform: uppercase;
+      font-weight: bold;
+      @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md - 1) {
+        max-width: 80%;
+      }
+      @media (min-width: $breakpoint-md) and (max-width: $breakpoint-lg - 1) {
+        max-width: 70%;
+      }
+      @media (min-width: $breakpoint-lg) {
+        max-width: 60%;
+      }
     }
   }
 }
