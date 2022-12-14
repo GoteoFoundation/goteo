@@ -1,6 +1,7 @@
 .vagrant
 .sass-cache
 .idea
+.fleet
 
 /extend/*
 !/extend/README.md

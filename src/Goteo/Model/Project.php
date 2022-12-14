@@ -3605,6 +3605,15 @@ class Project extends Model {
         return ProjectConf::hideExhaustedRewards($id);
     }
 
+    public function isImpactCalcActive():bool
+    {
+        try {
+            return ProjectConf::get($this->id)->isImpactCalcActive();
+        } catch (\Goteo\Core\Exception $e) {
+            return false;
+        }
+    }
+
     /*
      * Para saber si un proyecto tiene traducción en cierto idioma
      * @return: boolean
