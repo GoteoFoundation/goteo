@@ -217,6 +217,11 @@ $(() => {
         cssEase: 'linear'
     });
 
+    $('.slider-footprint').slick({
+        dos: true,
+        fade:true,
+    })
+
     $('[data-toggle="tooltip"]').tooltip();
 });
 
