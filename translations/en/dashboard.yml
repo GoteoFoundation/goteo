@@ -12,6 +12,8 @@ dashboard-certificates-confirm-checkbox: 'I hereby confirm that these are my rea
 dashboard-certificates-confirmed: Confirmed
 dashboard-certificates-processed: Processed
 dashboard-certificates-confirmed-ok: 'Your fiscal data are confirmed now.'
+dashboard-certificate-update-data: "Update your data"
+dashboard-certificates-updated: "Fiscal data correctly updated"
 dashboard-certificates-data-alert: 'Keep in mind that once confirmed, the data can not be modified!'
 dashboard-certificates-data-desc: 'Please make sure the data in the form is correct and confirm the form'
 dashboard-certificates-data-download-all: 'Please confirm your certificates in order to active your deduction. Once a year, Goteo Foundation notifies all your confirmed donations to the tax office.'

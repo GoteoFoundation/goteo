@@ -34,6 +34,7 @@ use Goteo\Model\User;
 use Goteo\Repository\InvestOriginRepository;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -443,7 +444,7 @@ class InvestListener extends AbstractListener {
         $invest  = $event->getInvest();
 
         // Complete geolocation data
-        if($request->isMethod('post')) {
+        if($request->isMethod(Request::METHOD_POST)) {
             $data = $request->request->get('invest');
             $loc = InvestLocation::get($invest);
             // Save geolocation
