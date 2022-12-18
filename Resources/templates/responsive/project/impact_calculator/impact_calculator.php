@@ -6,29 +6,26 @@
         ]);
 
     $this->section('content');
+    $footprints = $this->footprints;
 ?>
 <div class="impact-calculator-container">
     <div class="impact-calculator-header container">
-        <h1>Compromiso de impacto</h1>
-        <p>Calcula el impacto de tu campaña a través de huellas e indicadores</p>
+        <h1><?= $this->t('project-impact-calculator-title')?></h1>
+        <p><?= $this->t('project-impact-calculator-description') ?></p>
     </div>
 
     <div class="impact-calculator-body">
         <div class="container impact-calculator-body-title">
             <img src="<?= $this->asset('img/impact-calculator/fingerprint.svg') ?>"  alt="huella">
-            <h2>Lorem impsum dolor sit amet alliam est</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis eros viverra tortor egestas, nec convallis est rhoncus. Etiam tempor lectus purus. Vivamos suscipit diam ut dui sagittis, vitae mollis quam sempre.</p>
+            <h2><?= $this->t('project-impact-calculator-body-title') ?></h2>
+            <p><?= $this->t('project-impact-calculator-body-description') ?></p>
         </div>
 
         <div class="container">
             <div class="row">
-                <?= $this->insert('project/impact_calculator/partials/footprint_details', [ 'footprint' => 1]) ?>
-            </div>
-            <div class="row">
-                <?= $this->insert('project/impact_calculator/partials/footprint_details', [ 'footprint' => 2]) ?>
-            </div>
-            <div class="row">
-                <?= $this->insert('project/impact_calculator/partials/footprint_details', [ 'footprint' => 3]) ?>
+                <?php foreach ($footprints as $footprint): ?>
+                    <?= $this->insert('project/impact_calculator/partials/footprint_details', ['footprint' => $footprint]) ?>
+                <?php endforeach; ?>
             </div>
         </div>
 

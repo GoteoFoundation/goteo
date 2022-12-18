@@ -25,6 +25,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Worth;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
+use Goteo\Model\Footprint;
 use Goteo\Model\Invest;
 use Goteo\Model\License;
 use Goteo\Model\Message as SupportMessage;
@@ -385,6 +386,8 @@ class ProjectController extends Controller {
 
     public function impactAction(Request $request, string $pid = null): Response
     {
-        return $this->viewResponse('project/impact_calculator/impact_calculator');
+        $footprints = Footprint::getList([], 0, 3);
+
+        return $this->viewResponse('project/impact_calculator/impact_calculator', ['footprints' => $footprints]);
     }
 }

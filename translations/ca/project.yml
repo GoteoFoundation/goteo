@@ -150,3 +150,10 @@ project-manage: 'Gestiona'
 project-manage-campaign: 'Gestiona la campanya'
 project-widget-not-visible: 'Aquest widget no serà visible fins que el projecte sigui públic'
 project-donors-with-reward: '%s cofinançadors han escollit aquesta recompensa'
+project-impact-calculator-title: "Compromís d'impacte"
+project-impact-calculator-description: "Calcula l'impacte de la teva campanya a través de les petjades i indicadores"
+project-impact-calculator-body-title: Lorem impsum dolor sit amet alliam est
+project-impact-calculator-body-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis eros viverra tortor egestas, nec convallis est rhoncus. Etiam tempor lectus purus. Vivamos suscipit diam ut dui sagittis, vitae mollis quam sempre.
+project-impact-calculator-footprint-1-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
+project-impact-calculator-footprint-2-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
+project-impact-calculator-footprint-3-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.

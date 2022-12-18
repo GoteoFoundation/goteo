@@ -160,3 +160,10 @@ project-manage: 'Gestionar'
 project-manage-campaign: 'Gestionar campaña'
 project-widget-not-visible: 'Este widget no será visible hasta que el proyecto sea público'
 project-donors-with-reward: '%s cofinanciadores han escogido esta recompensa'
+project-impact-calculator-title: Compromiso de impacto
+project-impact-calculator-description: Calcula el impacto de tu campaña a través de huellas e indicadores
+project-impact-calculator-body-title: Lorem impsum dolor sit amet alliam est
+project-impact-calculator-body-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis eros viverra tortor egestas, nec convallis est rhoncus. Etiam tempor lectus purus. Vivamos suscipit diam ut dui sagittis, vitae mollis quam sempre.
+project-impact-calculator-footprint-1-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
+project-impact-calculator-footprint-2-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
+project-impact-calculator-footprint-3-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.

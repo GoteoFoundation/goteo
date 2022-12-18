@@ -51,7 +51,7 @@ $prjs->add('project-create', new Route(
 ));
 
 $prjs->add('project-impact-calculator', new Route(
-    '/impact_calculator',
+    '/impact-calculator',
     ['_controller' => 'Goteo\Controller\ProjectController::impactAction']
 ));
 
