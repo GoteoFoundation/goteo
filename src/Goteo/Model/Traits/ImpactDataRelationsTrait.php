@@ -24,7 +24,8 @@ use Goteo\Application\Exception\ModelException;
  */
 trait ImpactDataRelationsTrait {
 
-    private function getImpactDataTable() {
+    private function getImpactDataTable(): string
+    {
         $tb = strtolower(self::getTable());
         return "{$tb}_impact";
     }
@@ -48,7 +49,8 @@ trait ImpactDataRelationsTrait {
         return $this;
     }
 
-    public function hasImpactData(ImpactData $impactData): bool {
+    public function hasImpactData(ImpactData $impactData): bool
+    {
         $tb = strtolower($this->getTable());
         $rel = $this->getImpactDataTable();
 
@@ -59,7 +61,8 @@ trait ImpactDataRelationsTrait {
         return (bool)self::query($sql, $impactData->id)->fetchColumn();
     }
 
-    public function getAllImpactData($lang = null) {
+    public function getAllImpactData($lang = null): array
+    {
         $tb = strtolower($this->getTable());
         $rel = $this->getImpactDataTable();
         list($fields, $joins) = ImpactData::getLangsSQLJoins($lang, Config::get('sql_lang'));

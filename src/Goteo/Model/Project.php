@@ -31,6 +31,7 @@ use function array_empty;
 class Project extends Model {
 
     use Traits\SdgRelationsTrait;
+    use Traits\ImpactDataRelationsTrait;
 
     // STATUS TO BE USED TO FILTER PROJECT
     const STATUS_DRAFT = -1; // is this really necessary?

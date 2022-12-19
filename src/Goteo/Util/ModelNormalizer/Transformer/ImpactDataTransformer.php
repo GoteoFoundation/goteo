@@ -9,23 +9,24 @@
  */
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
-use Goteo\Core\Model;
-use Goteo\Library\Text;
-
 class ImpactDataTransformer extends AbstractTransformer {
 
     protected $keys = ['id', 'title', 'description'];
 
-    public function getActions() {
+    public function getType(): string
+    {
+        return $this->model->type;
+    }
+
+    public function getActions(): array
+    {
         if(!$u = $this->getUser()) return [];
 
-        $ret = [
+        return [
             'edit' => '/admin/impactdata/edit/' . $this->model->id,
             'translate' => '/translate/impact_data/' . $this->model->id,
             'delete' => '/admin/impactdata/delete/' . $this->model->id
         ];
-
-        return $ret;
     }
     
 }

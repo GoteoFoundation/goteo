@@ -16,6 +16,7 @@ use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
 use Goteo\Model\ImpactData;
+use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\DropfilesType;
 use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\TextareaType;
@@ -62,6 +63,10 @@ class ImpactDataForm extends AbstractFormProcessor {
                 'required' => false,
                 'limit' => 1
             ])
+            ->add('type', ChoiceType::class, [
+                'label' => 'regular-type',
+                'choices' => $this->getImpactDataTypes()
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'regular-submit',
                 'attr' => ['class' => 'btn btn-cyan'],
@@ -73,7 +78,8 @@ class ImpactDataForm extends AbstractFormProcessor {
         return $this;
     }
 
-    public function save(FormInterface $form = null, $force_save = false) {
+    public function save(FormInterface $form = null, $force_save = false): ImpactDataForm
+    {
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
@@ -100,7 +106,6 @@ class ImpactDataForm extends AbstractFormProcessor {
         unset($data['image']);
 
         $model->rebuildData($data, array_keys($form->all()));
-
         $errors = [];
         if (!$model->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
@@ -111,4 +116,13 @@ class ImpactDataForm extends AbstractFormProcessor {
         return $this;
     }
 
+    private function getImpactDataTypes(): array
+    {
+        $types = ImpactData::getTypes();
+        $list = [];
+        foreach($types as $type) {
+            $list[Text::get('impact-data-type-' . $type)] = $type;
+        }
+        return $list;
+    }
 }
