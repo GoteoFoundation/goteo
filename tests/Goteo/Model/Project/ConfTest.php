@@ -15,8 +15,16 @@ class ConfTest extends TestCase {
         return $conf;
     }
 
+    public function testGetEmpty(): Conf
+    {
+        $project = get_test_project()->id;
+        $conf = Conf::get($project);
+        $this->assertInstanceOf(Conf::class, $conf);
+        return $conf;
+    }
+
     /**
-     * @depends testInstance
+     * @depends testGetEmpty
      */
     public function testOnCreateImpactCalcIsNotActive(Conf $conf): Conf
     {
@@ -25,7 +33,7 @@ class ConfTest extends TestCase {
     }
 
     /**
-     * @depends testInstance
+     * @depends testGetEmpty
      */
     public function testValidate(Conf $conf): Conf
     {
@@ -39,8 +47,8 @@ class ConfTest extends TestCase {
      */
     public function testSave(Conf $conf): Conf
     {
-        $conf->project = get_test_project()->id;
-        $this->assertTrue($conf->save());
+        $errors = [];
+        $this->assertTrue($conf->save($errors), implode(',', $errors));
         return $conf;
     }
 
@@ -50,7 +58,7 @@ class ConfTest extends TestCase {
     public function testGet(Conf $conf): Conf
     {
         $confDB = Conf::get($conf->project);
-        $this->assertObjectEquals($conf, $confDB);
+        $this->assertEquals($conf, $confDB);
 
         return $conf;
     }
