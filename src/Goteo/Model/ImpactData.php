@@ -27,8 +27,9 @@ class ImpactData extends Model {
         $data_unit,
 		$description,
 		$image,
-		$lang,
-        $type;
+		$lang;
+
+    public string $type = self::GLOBAL;
 
     protected $Table = 'impact_data';
 	static protected $Table_static = 'impact_data';
