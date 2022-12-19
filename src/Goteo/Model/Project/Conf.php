@@ -90,9 +90,9 @@ class Conf extends Model
         if (!$this->validate($errors)) return false;
 
         try {
-            $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round, help_cost, help_license, mincost_estimation, publishing_estimation, hide_exhausted_rewards) VALUES(:project, :noinvest, :watch, :round1, :round2, :one, :helpcost, :helplicense, :mincost_estimation, :publishing_estimation, :hide_exhausted_rewards, :impact_calculator)";
-            $values = array(':project' => $this->project, ':noinvest' => $this->noinvest, ':watch' => $this->watch,
-                ':round1' => $this->days_round1, ':round2' => $this->days_round2, ':one' => $this->one_round, ':helpcost' => $this->help_cost, ':helplicense' => $this->help_license, ':mincost_estimation' => $this->mincost_estimation, ':publishing_estimation' => $this->publishing_estimation, ':hide_exhausted_rewards' => $this->hide_exhausted_rewards, ':impact_calculator' => $this->impact_calculator);
+            $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round, help_cost, help_license, mincost_estimation, publishing_estimation, hide_exhausted_rewards, impact_calculator) VALUES(:project, :noinvest, :watch, :round1, :round2, :one, :helpcost, :helplicense, :mincost_estimation, :publishing_estimation, :hide_exhausted_rewards, :impact_calculator)";
+            $values = [':project' => $this->project, ':noinvest' => $this->noinvest, ':watch' => $this->watch,
+                ':round1' => $this->days_round1, ':round2' => $this->days_round2, ':one' => $this->one_round, ':helpcost' => $this->help_cost, ':helplicense' => $this->help_license, ':mincost_estimation' => $this->mincost_estimation, ':publishing_estimation' => $this->publishing_estimation, ':hide_exhausted_rewards' => $this->hide_exhausted_rewards, ':impact_calculator' => $this->impact_calculator];
             return self::query($sql, $values);
         } catch (\PDOException $e) {
             $errors[] = "La configuración del proyecto no se ha guardado correctamente. Por favor, revise los datos." . $e->getMessage();
