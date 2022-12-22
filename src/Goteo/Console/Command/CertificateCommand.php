@@ -529,7 +529,7 @@ EOT
 
         $certificatesCreated = 0;
 
-        while($donors = Donor::getList(['year' => $year, 'status' => Donor::PENDING], $page * $limit, $limit)) {
+        while($donors = Donor::getList(['year' => $year, 'donor_status' => Donor::PENDING], $page * $limit - $certificatesCreated, $limit)) {
             foreach ($donors as $donor) {
                 if ($this->unifyUserCertificates($donor->user, $year, $input, $output))
                     $certificatesCreated++;
