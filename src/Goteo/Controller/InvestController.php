@@ -561,7 +561,6 @@ class InvestController extends Controller {
         $invest_address = (array)$invest->getAddress();
         $errors = [];
         if($request->isMethod(Request::METHOD_POST) && $request->request->has('fiscal')) {
-
             $invest_address = $request->request->get('invest');
             if(is_array($invest_address)) {
                 $ok = true;
