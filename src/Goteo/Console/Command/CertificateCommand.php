@@ -533,6 +533,7 @@ EOT
             foreach ($donors as $donor) {
                 if ($this->unifyUserCertificates($donor->user, $year, $input, $output))
                     $certificatesCreated++;
+
                 $progress_bar->advance();
             }
             ++$page;
@@ -546,7 +547,8 @@ EOT
     {
         $update = $input->getOption('update');
 
-        $certificates = Donor::getList(['user' => $user, 'year' => $year, 'donor_status' => Donor::PENDING, 'show_empty' => true]);
+        $userDB = User::get($user);
+        $certificates = Donor::getList(['user' => $userDB, 'year' => $year, 'donor_status' => Donor::PENDING]);
         if (empty($certificates)) {
             $this->info("No certificates for user $user");
             return false;
@@ -566,12 +568,25 @@ EOT
 
         $newCertificate = $this->createNewCertificate(end($certificates), $user, $year, $amount, $numproj);
 
-        if ($update && $newCertificate->save()) {
+        $errors = [];
+        if (!$newCertificate->validate($errors)) {
+            $this->error("New certificate can not be validated for user $user");
+            $this->error(implode(',', $errors));
+            return false;
+        }
+
+        if ($update && $newCertificate->save($errors)) {
             $this->info("New certificate created for user $user with id $newCertificate->id");
 
             $this->supersedeOldCertificates($certificates, $newCertificate);
 
             $newCertificate->updateInvestions();
+        }
+
+        if ($errors) {
+            $this->error("New certificate can not be created for user $user");
+            $this->error(implode(',', $errors));
+            return false;
         }
 
         return true;
