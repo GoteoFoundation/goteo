@@ -9,7 +9,7 @@ admin-account-convert-to-pool: 'Convertir a monederu'
 admin-account-convert-to-pool-ko: 'Nun se pudo convertir l''aportación a monederu: %s'
 admin-account-convert-to-pool-ok: 'L''aportación convirtióse a monederu correutamente'
 admin-account-detail: 'Detalles de la transación'
-admin-account-donation: Donativu
+admin-account-donation: Donación
 admin-account-edit-reward: 'Xestionar recompensa/direición'
 admin-account-invalid-invest: '¡Nun s''atopó l''aportación [%s]!'
 admin-account-invest-date: 'Data de l''aportación'
@@ -29,8 +29,8 @@ admin-account-pool-on-fail: 'Pool (devolver al monederu si falla)'
 admin-account-refund-to-pool: 'Reembolsar l''aportación al monederu'
 admin-account-refund-to-user: 'Reembolsar l''aportación al usuariu'
 admin-account-rewards: 'Recompenses escoyíes'
-admin-account-switch-donation: 'Cambiar el donativu'
-admin-account-switch-donation-confirm: '¿De xuru que quies camudar l''estáu del donativu?'
+admin-account-switch-donation: 'Cambiar la donación'
+admin-account-switch-donation-confirm: '¿De xuru que quies camudar l''estáu de la donación?'
 admin-account-switch-pool: 'Cambiar el pool'
 admin-account-switch-pool-confirm: 'Esto namás afeuta cuando''l proyeutu falla, nun xenera nin quita dineru del monederu. ¿Quies siguir?'
 admin-account-switch-pool-fail: 'Nun se pue camudar l''estáu del pool d''esta aportación'
@@ -256,4 +256,6 @@ admin-invest-diff-yesterday: 'Diferencia dol día anterior'
 admin-invest-diff-last_week: 'Diferencia cola selmana anterior'
 admin-invest-diff-last_month: 'Diferencia col mes anterior'
 admin-invest-diff-last_year: 'Diferencia col añu anterior'
+admin-filter-project-location: Llocalización del proyeutu
+admin-filter-donor-location: Llocalización del dador
 
