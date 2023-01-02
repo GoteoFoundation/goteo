@@ -32,7 +32,7 @@ invest-anonymous: 'Quiero que la mio aportación seya anónima'
 invest-button: Aportar
 invest-card-method: Tarxeta
 invest-cash-method: 'Manual (n''efeutivo)'
-invest-donation-header: 'Introduz los datos fiscales pal donativu'
+invest-donation-header: 'Introduz los datos fiscales de la donación'
 invest-drop-method: Riegu
 invest-fiscal-fail: '¡Hai campos baleros o con fallos, comprueba''l formulariu fiscal pa que pueas desgravar el to aporte!'
 invest-fiscal-skip: 'Agora nun quiero rellenar estos datos.'
