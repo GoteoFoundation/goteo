@@ -87,11 +87,13 @@ $this->section('content');
 <!-- End container fluid -->
 
 <div class="container-fluid section">
-    <div class="row">
-        <?= $this->insert('project/partials/impact_by_footprint') ?>
-        <?= $this->insert('project/partials/calculator') ?>
-        <?= $this->insert('project/partials/sdgs') ?>
-    </div>
+    <?php if ($project->isImpactCalcActive()):?>
+        <div class="row">
+            <?= $this->insert('project/partials/impact_by_footprint') ?>
+            <?= $this->insert('project/partials/calculator') ?>
+            <?= $this->insert('project/partials/sdgs') ?>
+        </div>
+    <?php endif; ?>
 
 	<div class="col-sm-8 section-content" id="project-tabs">
 	    <?= $this->supply('main-content') ?>
