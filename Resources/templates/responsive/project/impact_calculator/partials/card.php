@@ -1,7 +1,7 @@
 <?php
 ?>
 
-<article class="card <?= $this->active ? "active footprint-$this->footprint": ''?>">
+<article class="card col-md-4 <?= $this->active ? "active footprint-$this->footprint": ''?>">
 
     <div class="info">
         <i class="fa fa-info"
