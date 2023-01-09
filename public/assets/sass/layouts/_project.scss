@@ -380,6 +380,11 @@ body.project {
       border: 2px solid #149290;
       font-weight: bold;
       color: #149290;
+
+      &:hover {
+        background-color: #149290;
+        color: $color-white;
+      }
     }
   }
 
@@ -401,6 +406,120 @@ body.project {
 
     img {
       width: 9rem;
+    }
+  }
+
+  /* Modal for impact calculator */
+
+  #impact-calculator-modal {
+    .modal-dialog .modal-content {
+      background-color: $background-light-green;
+      color: $color-white;
+
+      .modal-header {
+        border-bottom: none;
+        padding: 30px;
+
+        label {
+          font-size: 24px;
+          font-weight: normal;
+        }
+
+        .modal-input {
+          i.icon-money-bag {
+            background-color: white;
+            height: 45px;
+          }
+
+          input {
+            border-width: 0 0 1px 0;
+            width: 85%;
+            background-color: unset;
+            margin-bottom: 1rem;
+            font-size: 24px;
+
+            &:focus {
+              outline: none;
+            }
+          }
+
+          button.icon-arrow {
+            position: absolute;
+            right: 15%;
+            transform: rotate(180deg);
+            background-color: $color-white;
+          }
+        }
+      }
+
+      .modal-body {
+        background-color: $background-white;
+        border-radius: 5rem 5rem 0 0;
+        padding: 30px;
+
+        i {
+          background-color: $color-dark-green;
+        }
+
+        h3 {
+          color: $color-black;
+        }
+
+        h4 {
+          color: $color-light-green;
+          font-weight: bold;
+        }
+
+        h5, p {
+          color: $color-new-dark-blue;
+          font-weight: bold;
+        }
+
+        .detail {
+          display: relative;
+
+          &:after {
+            content: '';
+            height: 80%;
+            width: 1px;
+
+            position: absolute;
+            right: 0;
+            top: 10%;
+
+            background-color: $color-light-grey;
+          }
+
+          p {
+            color: $color-new-dark-blue;
+            font-weight: bold;
+            font-size: 24px;
+          }
+        }
+
+        .impact {
+
+          h4 {
+            color: $color-new-dark-blue;
+          }
+
+          p {
+            font-size: 16px;
+          }
+        }
+      }
+
+      .modal-footer {
+        background-color: $background-white;
+        text-align: left;
+        border-top: none;
+        padding: 0 30px 30px 30px;
+
+        h2 {
+          color: $color-light-green;
+          font-weight: bold;
+        }
+      }
     }
   }
 
