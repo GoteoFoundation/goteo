@@ -1,8 +1,9 @@
 <?php
 ?>
-<div class="col-md-4 col-xs-4">
-    <h4>Huella Social</h4>
-    <div class="slider-footprint">
+<div class="slider-footprint col-md-4 col-xs-4">
+    <div class="footprint-info">
+        <h4>Huella Ecológica</h4>
+
         <article class="card-impact-by-footprint footprint-1">
             <div class="row">
                 <div class="col-md-2 col-xs-2">
@@ -29,6 +30,10 @@
                 </div>
             </div>
         </article>
+    </div>
+    <div class="footprint-info">
+        <h4>Huella Social</h4>
+
         <article class="card-impact-by-footprint footprint-2">
             <div class="row">
                 <div class="col-md-2 col-xs-2">
@@ -55,6 +60,10 @@
                 </div>
             </div>
         </article>
+    </div>
+    <div class="footprint-info">
+        <h4>Huella Democrática</h4>
+
         <article class="card-impact-by-footprint footprint-3">
             <div class="row">
                 <div class="col-md-2 col-xs-2">

@@ -71,6 +71,7 @@ body.project {
     }
   }
 
+
   // Impact Calculator landing
   &.impact-calculator {
     background-color: $background-light-green;
@@ -106,8 +107,7 @@ body.project {
             height: 100%;
             background-color: $background-white;
             border-radius: 5rem 5rem 0 0;
-            padding: 1rem;
-            padding-top: 5rem;
+            padding: 5rem 1rem 1rem;
 
             div.impact-calculator-body-title {
               text-align: center;
@@ -291,6 +291,16 @@ body.project {
     }
   }
 
+  .impact-calculator-details {
+    .slick-arrow.slick-prev {
+      left: -10px;
+    }
+
+    .slick-arrow.slick-next {
+      right: -10px;
+    }
+  }
+
   article.card-impact-by-footprint {
     min-height: 220px;
     border-radius: 15px;
@@ -300,29 +310,33 @@ body.project {
       padding-top: 5px;
       padding-left: 5px;
 
+      &:first-child {
+        padding-top: 15px;
+      }
+
+      div:first-child {
+        margin-left: 15px;
+      }
+
       p {
         padding-bottom: 5px;
       }
     }
 
     &.footprint-1 {
-      background-color: red;
+      background-color: #62AE56;
     }
 
     &.footprint-2 {
-      background-color: green;
+      background-color: #83253A;
     }
 
     &.footprint-3 {
-      background-color: blue;
+      background-color: #265688;
     }
 
     .row:not(:last-child) p {
       border-bottom: 1px solid white;
-    }
-
-    .row:last-child {
-      padding-bottom: 1rem;
     }
 
     i.icon {
