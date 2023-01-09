@@ -6,18 +6,19 @@ namespace Goteo\Model\Tests;
 use Exception;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\DB;
+use Goteo\Core\Model;
+use Goteo\Model\Image;
+use Goteo\Model\ImpactData;
 use Goteo\TestCase;
 
 use Goteo\Application\Config;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Account;
-use Goteo\Model\User;
-use Goteo\Model\Image;
 use Goteo\Model\Project\Image as ProjectImage;
 
 class ProjectTest extends TestCase {
 
-    private static $related_tables = array('project_category' => 'project',
+    private static array $related_tables = ['project_category' => 'project',
                     'project_account' => 'project',
                     'project_conf' => 'project',
                     'project_data' => 'project',
@@ -43,16 +44,16 @@ class ProjectTest extends TestCase {
                     // 'support' => 'project', => borrar con tranquilidad
                     'user_project' => 'project',
 
-                    );
+    ];
 
-    private static $image = array(
+    private static array $image = [
                         'name' => 'test.png',
                         'type' => 'image/png',
                         'tmp_name' => '',
                         'error' => '',
-                        'size' => 0);
+                        'size' => 0];
 
-    private static $data = array('id' => '012-simulated-project-test-211', 'name' => '012 Simulated Project Test 211');
+    private static array $data = ['id' => '012-simulated-project-test-211', 'name' => '012 Simulated Project Test 211'];
 
     private static $image2;
 
@@ -76,7 +77,7 @@ class ProjectTest extends TestCase {
 
         $ob = new Project();
 
-        $this->assertInstanceOf('\Goteo\Model\Project', $ob);
+        $this->assertInstanceOf(Project::class, $ob);
 
         return $ob;
     }
@@ -135,8 +136,8 @@ class ProjectTest extends TestCase {
         $this->assertNotFalse($project->create(self::$data, $node->id, $errors), print_r($errors, 1));
 
         $project = Project::get($project->id);
-        $this->assertInstanceOf('\Goteo\Model\Project', $project);
-        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
+        $this->assertInstanceOf(Project::class, $project);
+        $this->assertInstanceOf(Image::class, $project->image);
 
         $this->assertEquals($project->owner, $user->id);
         return $project;
@@ -207,19 +208,19 @@ class ProjectTest extends TestCase {
     public function testGetProject($id): Project
     {
         $project = Project::getMini($id);
-        $this->assertInstanceOf('\Goteo\Model\Project', $project);
+        $this->assertInstanceOf(Project::class, $project);
         $this->assertEquals($project->id, $id);
-        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
+        $this->assertInstanceOf(Image::class, $project->image);
 
         $project = Project::getMedium($id);
-        $this->assertInstanceOf('\Goteo\Model\Project', $project);
+        $this->assertInstanceOf(Project::class, $project);
         $this->assertEquals($project->id, $id);
-        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
+        $this->assertInstanceOf(Image::class, $project->image);
 
         $widget = Project::getWidget($project);
-        $this->assertInstanceOf('\Goteo\Model\Project', $widget);
+        $this->assertInstanceOf(Project::class, $widget);
         $this->assertEquals($widget->id, $id);
-        $this->assertInstanceOf('\Goteo\Model\Image', $widget->image);
+        $this->assertInstanceOf(Image::class, $widget->image);
 
         return $project;
     }
@@ -244,7 +245,7 @@ class ProjectTest extends TestCase {
         $project = Project::get($project->id);
         $this->assertIsArray($project->gallery);
         $this->assertCount(0, $project->gallery);
-        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
+        $this->assertInstanceOf(Image::class, $project->image);
 
         //add image (to check autodelete)
         $project->image = self::$image;
@@ -308,6 +309,50 @@ class ProjectTest extends TestCase {
     /**
      * @depends testCreateProject
      */
+    public function testDoesNotHaveImpactData(Project $project): Project
+    {
+        $impactData = get_test_impact_data();
+        $this->assertFalse($project->hasImpactData($impactData));
+        return $project;
+    }
+
+    /**
+     * @depends testDoesNotHaveImpactData
+     */
+    public function testCreateRelationImpactData(Project $project): Project
+    {
+        $impactData = get_test_impact_data();
+
+        $project->addImpactData($impactData, 1);
+
+        return $project;
+    }
+
+    /**
+     * @depends testCreateRelationImpactData
+     */
+    public function testHasImpactData(Project $project): Project
+    {
+        $impactData = get_test_impact_data();
+        $this->assertTrue($project->hasImpactData($impactData));
+        return $project;
+    }
+
+    /**
+     * @depends testHasImpactData
+     */
+    public function testRemoveImpactData(Project $project): Project
+    {
+        $impactData = get_test_impact_data();
+
+        $project->removeImpactData($impactData);
+        $this->assertFalse($project->hasImpactData($impactData));
+        return $project;
+    }
+
+    /**
+     * @depends testCreateProject
+     */
     public function testDeleteProject(Project $project): Project
     {
         $errors = array();
@@ -317,16 +362,12 @@ class ProjectTest extends TestCase {
     }
 
     public function testNonExisting() {
-        try {
-            $ob = Project::get(self::$data['id']);
-        }catch(Exception $e) {
-            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
-        }
-        try {
-            $ob = Project::get('non-existing-project');
-        }catch(Exception $e) {
-            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
-        }
+
+        $this->expectException(ModelNotFoundException::class);
+        Project::get(self::$data['id']);
+
+        $this->expectException(ModelNotFoundException::class);
+        Project::get('non-existing-project');
     }
 
     public function testCleanProjectRelated() {
@@ -336,6 +377,7 @@ class ProjectTest extends TestCase {
     }
 
     static function tearDownAfterClass(): void {
+        delete_test_impact_data();
         delete_test_user();
         delete_test_node();
         // Remove temporal files on finish

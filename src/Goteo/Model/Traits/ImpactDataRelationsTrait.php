@@ -34,7 +34,7 @@ trait ImpactDataRelationsTrait {
 
         $tb = strtolower($this->getTable());
         $rel = $this->getImpactDataTable();
-        $sql = "REPLACE INTO `$rel` ({$tb}_id, impact_data_id, order) VALUES (:tb_id, :impact_data_id, :order)";
+        $sql = "REPLACE INTO `$rel` (`{$tb}_id`, `impact_data_id`, `order`) VALUES (:tb_id, :impact_data_id, :order)";
         $values = [
             ':tb_id' => $this->id,
             ':impact_data_id' => $impact_data->id,

@@ -17,8 +17,12 @@ use Goteo\Library\Text;
 
 class ImpactData extends Model {
 
-    const GLOBAL = "global";
-    const PROJECT = "project";
+    const TYPE_ESTIMATION = "estimation";
+    const TYPE_REAL = "real";
+
+    const SOURCE_ITEM = "item";
+    const SOURCE_PROJECT = "project";
+    const SOURCE_CHANNEL = "channel";
 
 	public
 		$id,
@@ -29,7 +33,9 @@ class ImpactData extends Model {
 		$image,
 		$lang;
 
-    public string $type = self::GLOBAL;
+    public string $type = self::TYPE_ESTIMATION;
+    public string $source = self::SOURCE_ITEM;
+    public ?string $icon = null;
 
     protected $Table = 'impact_data';
 	static protected $Table_static = 'impact_data';
@@ -52,12 +58,14 @@ class ImpactData extends Model {
                     $fields,
                     impact_data.image,
                     impact_data.lang,
-                    impact_data.type
+                    impact_data.type,
+                    impact_data.icon,
+                    impact_data.source
                 FROM impact_data
                 $joins
-                WHERE impact_data.id = :id";
+                WHERE impact_data.id = ?";
 
-        $impact_data = static::query($sql, [':id' => $id])->fetchObject(__CLASS__);
+        $impact_data = static::query($sql, $id)->fetchObject(__CLASS__);
 
         if (!$impact_data instanceof ImpactData) {
             throw new ModelNotFoundException("[$id] not found");
@@ -66,11 +74,24 @@ class ImpactData extends Model {
         return $impact_data;
     }
 
-    public static function getList($filters = array(), int $offset = 0, int $limit = 10, int $count = 0) {
-    	$sqlWhere = "";
+    public static function getList(array $filters = [], int $offset = 0, int $limit = 10, int $count = 0) {
+    	$sqlWhere = [];
+        $values = [];
 
         $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        if ($filters['source']) {
+            $sqlWhere[] = "impact_data.source = :source";
+            $values[':source'] = $filters['source'];
+        }
+
+        if ($filters['type']) {
+            $sqlWhere[] = "impact_data.type = :type";
+            $values[':type'] = $filters['type'];
+        }
+
+        $sqlWhere = $sqlWhere ? "WHERE " . implode(' AND ', $sqlWhere) : '';
 
         if ($count) {
             $sql = "SELECT COUNT(impact_data.id)
@@ -84,14 +105,16 @@ class ImpactData extends Model {
                     $fields,
                     impact_data.image,
                     impact_data.lang,
-                    impact_data.type
+                    impact_data.type,
+                    impact_data.icon,
+                    impact_data.source
                 FROM impact_data
                 $joins
                 $sqlWhere
                 LIMIT $offset, $limit
             ";
 
-        $query = static::query($sql);
+        $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
@@ -124,7 +147,7 @@ class ImpactData extends Model {
     {
         if(!$this->validate($errors)) return false;
 
-		$fields = ['title','data', 'data_unit', 'description','image','lang', 'type'];
+		$fields = ['title','data', 'data_unit', 'description','image','lang', 'type', 'icon', 'source'];
 
 		try {
             $this->dbInsertUpdate($fields);
@@ -139,8 +162,17 @@ class ImpactData extends Model {
     public static function getTypes(): array
     {
         return [
-                self::GLOBAL,
-                self::PROJECT
+                self::TYPE_ESTIMATION,
+                self::TYPE_REAL
+        ];
+    }
+
+    public static function getSources(): array
+    {
+        return [
+            self::SOURCE_ITEM,
+            self::SOURCE_PROJECT,
+            self::SOURCE_CHANNEL
         ];
     }
 }

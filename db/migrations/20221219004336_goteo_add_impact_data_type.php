@@ -33,6 +33,8 @@ class GoteoAddImpactDataType
   {
      return "
         ALTER TABLE `impact_data` ADD COLUMN `type` VARCHAR(50) DEFAULT 'global' NOT NULL AFTER `lang`;
+        ALTER TABLE `impact_data` ADD COLUMN `source` VARCHAR(50) DEFAULT 'item' NOT NULL AFTER `type`;
+        ALTER TABLE `impact_data` ADD COLUMN `icon` varchar(50) COLLATE utf8_general_ci AFTER `image`;
         CREATE TABLE `project_impact` (
             `project_id` VARCHAR(50) COLLATE utf8_general_ci NOT NULL,
             `impact_data_id` BIGINT(20) UNSIGNED NOT NULL,
@@ -52,6 +54,8 @@ class GoteoAddImpactDataType
   {
      return "
         DROP TABLE `project_impact`;
+        ALTER TABLE `impact_data` DROP COLUMN `icon`;
+        ALTER TABLE `impact_data` DROP COLUMN `source`;
         ALTER TABLE `impact_data` DROP COLUMN `type`;
      ";
   }
