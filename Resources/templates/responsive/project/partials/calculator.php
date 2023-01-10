@@ -1,15 +1,21 @@
 <?php
 ?>
-<div class="col-md-4 col-xs-4">
+<div class="col-md-4 col-xs-12">
     <h4>Calculadora</h4>
     <article class="card-impact-calculator">
-        <div class="col-md-2 col-xs-2">
-            <i class="icon icon-calculator"></i>
+        <div class="row">
+            <div class="col-md-2 col-xs-2 col-sm-4">
+                <i class="icon icon-calculator"></i>
+            </div>
+            <div class="col-md-10 col-xs-10 col-sm-8">
+                <h3>Calcula el impacto de tu donación</h3>
+                <p>Descubre el alcance de tu apoyo</p>
+            </div>
         </div>
-        <div class="col-md-10 col-xs-10">
-            <h3>Calcula el impacto de tu donación</h3>
-            <p>Descubre el alcance de tu apoyo</p>
-            <button class="btn" data-toggle="modal" data-target="#impact-calculator-modal">Haz tu cálculo aquí</button>
+        <div class="button-modal">
+            <button class="btn" data-toggle="modal" data-target="#impact-calculator-modal">
+                <p>Haz tu cálculo aquí</p>
+            </button>
         </div>
     </article>
 </div>
@@ -30,22 +36,22 @@
       <div class="modal-body">
         <h3>Creación de empleo</h3>
         <div class="row">
-            <div class="col-md-4  col-sm-4 detail">
+            <div class="col-md-4 col-sm-4 col-xs-6 detail">
                 <h4>Puestos de trabajo creado</h4>
                 <p><i class="icon icon-2x icon-person"></i> 0,009</p>
             </div>
-            <div class="col-md-4  col-sm-4">
+            <div class="col-md-4 col-sm-4 col-xs-6 impact">
                 <h4>Impacto</h4>
                 <p>Por cada 12,000€ se creará 1 puesto de trabajo</p>
             </div>
         </div>
         <h3>Personas formadas</h3>
         <div class="row">
-            <div class="col-md-4 col-sm-4 detail">
+            <div class="col-md-4 col-sm-4 col-xs-6 detail">
                 <h4>Número de personas</h4>
-                <p><i class="icon icon-2x icon-medal"></i>0,1</p>
+                <p><i class="icon icon-2x icon-medal"></i> 0,1</p>
             </div>
-            <div class="col-md-4 col-sm-4 impact">
+            <div class="col-md-4 col-sm-4 col-xs-6 impact">
                 <h4>Impacto</h4>
                 <p>1 persona formada por cada 937,50€</p>
             </div>
