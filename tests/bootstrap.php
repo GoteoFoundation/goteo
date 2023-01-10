@@ -328,37 +328,3 @@ function delete_test_reward(): bool
 
     return $reward->dbDelete();
 }
-
-function get_test_impact_data(): ?ImpactData
-{
-    $data = [
-        'id' => 1,
-        'title' => 'Test post',
-        'data' => 'Test data',
-        'data_unit' => 'Test unit',
-        'description' => 'Test description'
-    ];
-
-    try {
-        return ImpactData::get($data['id']);
-    } catch (ModelNotFoundException $e) {}
-
-    $impactData = new ImpactData($data);
-    $errors = [];
-    if (! $impactData->save($errors)) {
-        error_log("Error creating test impact data! ". print_r($errors, 1));
-    }
-
-    return $impactData;
-}
-
-function delete_test_impact_data(): bool
-{
-    $impactData = ImpactData::get(1);
-
-    if (empty($impactData)) {
-        return true;
-    }
-
-    return $impactData->dbDelete();
-}

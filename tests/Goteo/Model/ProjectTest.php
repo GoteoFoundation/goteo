@@ -309,50 +309,6 @@ class ProjectTest extends TestCase {
     /**
      * @depends testCreateProject
      */
-    public function testDoesNotHaveImpactData(Project $project): Project
-    {
-        $impactData = get_test_impact_data();
-        $this->assertFalse($project->hasImpactData($impactData));
-        return $project;
-    }
-
-    /**
-     * @depends testDoesNotHaveImpactData
-     */
-    public function testCreateRelationImpactData(Project $project): Project
-    {
-        $impactData = get_test_impact_data();
-
-        $project->addImpactData($impactData, 1);
-
-        return $project;
-    }
-
-    /**
-     * @depends testCreateRelationImpactData
-     */
-    public function testHasImpactData(Project $project): Project
-    {
-        $impactData = get_test_impact_data();
-        $this->assertTrue($project->hasImpactData($impactData));
-        return $project;
-    }
-
-    /**
-     * @depends testHasImpactData
-     */
-    public function testRemoveImpactData(Project $project): Project
-    {
-        $impactData = get_test_impact_data();
-
-        $project->removeImpactData($impactData);
-        $this->assertFalse($project->hasImpactData($impactData));
-        return $project;
-    }
-
-    /**
-     * @depends testCreateProject
-     */
     public function testDeleteProject(Project $project): Project
     {
         $errors = array();
@@ -377,7 +333,6 @@ class ProjectTest extends TestCase {
     }
 
     static function tearDownAfterClass(): void {
-        delete_test_impact_data();
         delete_test_user();
         delete_test_node();
         // Remove temporal files on finish
