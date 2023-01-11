@@ -3,7 +3,7 @@ $sdgs = $this->project->getSdgs();
 if (!empty($sdgs)):
     $sdgs = array_slice($sdgs, 0, 3)
     ?>
-    <div class="col-md-4 col-xs-12">
+    <div class="col-md-4 col-sm-4 col-xs-12">
         <h4>Objetivos de desarrollo</h4>
         <article class="card-sdgs">
             <h3>El proyecto ayuda al cumplimiento de los siguientes ODS</h3>
@@ -16,5 +16,4 @@ if (!empty($sdgs)):
             </div>
         </article>
     </div>
-
 <?php endif; ?>

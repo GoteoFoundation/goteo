@@ -299,27 +299,35 @@ body.project {
     .slick-arrow.slick-next {
       right: -10px;
     }
+
+    @media(max-width: $breakpoint-xs) {
+      .slick-arrow.slick-prev {
+        left: 0;
+      }
+
+      .slick-arrow.slick-next {
+        right: 0;
+      }
+    }
   }
 
   article.card-impact-by-footprint {
-    min-height: 220px;
     border-radius: 15px;
     color: white;
+    padding: 1rem;
 
     .row {
-      padding-top: 5px;
-      padding-left: 5px;
-
-      &:first-child {
-        padding-top: 15px;
-      }
-
       div:first-child {
-        margin-left: 15px;
+        margin-left: 1rem;
       }
 
-      p {
-        padding-bottom: 5px;
+      &:not(:last-child) {
+        div:nth-child(2) {
+          p {
+            padding-bottom: 1rem;
+            border-bottom: 1px solid white;
+          }
+        }
       }
     }
 
@@ -335,27 +343,25 @@ body.project {
       background-color: #265688;
     }
 
-    .row:not(:last-child) p {
-      border-bottom: 1px solid white;
-    }
+    i {
+      &.icon {
+        background-color: white;
+      }
 
-    i.icon {
-      background-color: white;
-    }
+      &.icon-money-bag {
+        width: 30px;
+        height: 45px;
+      }
 
-    i.icon-money-bag {
-      width: 30px;
-      height: 45px;
-    }
+      &.icon-person {
+        width: 30px;
+        height: 30px;
+      }
 
-    i.icon-person {
-      width: 30px;
-      height: 30px;
-    }
-
-    i.icon-medal {
-      width: 30px;
-      height: 40px;
+      &.icon-medal {
+        width: 30px;
+        height: 40px;
+      }
     }
   }
 
@@ -377,9 +383,6 @@ body.project {
     }
 
     .button-modal {
-      display: flex;
-      justify-content: center;
-
       button.btn {
         background-color: transparent;
         border: 2px solid #149290;
@@ -391,10 +394,11 @@ body.project {
           background-color: #149290;
           color: $color-white;
         }
+      }
 
-        p {
-          white-space: normal;
-        }
+      &.hidden-xs {
+        display: flex;
+        justify-content: center;
       }
     }
   }
@@ -403,7 +407,7 @@ body.project {
     background-color: $background-white;
     min-height: 220px;
     border-radius: 15px;
-    padding: 10px 0 0 15px;
+    padding: 1rem;
 
     h3 {
       font-weight: bold;

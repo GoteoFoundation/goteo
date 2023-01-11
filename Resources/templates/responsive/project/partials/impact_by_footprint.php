@@ -1,6 +1,6 @@
 <?php
 ?>
-<div class="slider-footprint col-md-4 col-xs-12">
+<div class="slider-footprint col-md-4 col-sm-4 col-xs-12">
     <div class="footprint-info">
         <h4>Huella Ecológica</h4>
 

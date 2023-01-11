@@ -1,6 +1,6 @@
 <?php
 ?>
-<div class="col-md-4 col-xs-12">
+<div class="col-md-4 col-sm-4 col-xs-12">
     <h4>Calculadora</h4>
     <article class="card-impact-calculator">
         <div class="row">
@@ -10,11 +10,16 @@
             <div class="col-md-10 col-xs-10 col-sm-8">
                 <h3>Calcula el impacto de tu donación</h3>
                 <p>Descubre el alcance de tu apoyo</p>
+                <div class="button-modal hidden-sm hidden-md hidden-lg">
+                    <button class="btn" data-toggle="modal" data-target="#impact-calculator-modal">
+                        Haz tu cálculo aquí
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="button-modal">
+        <div class="button-modal hidden-xs">
             <button class="btn" data-toggle="modal" data-target="#impact-calculator-modal">
-                <p>Haz tu cálculo aquí</p>
+                Haz tu cálculo aquí
             </button>
         </div>
     </article>
@@ -25,10 +30,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span></button>
-        <label for="presupuestos">Cantidad de tu aportación</label>
+        <label for="presupuesto">Cantidad de tu aportación</label>
         <div class="modal-input">
             <i class="icon icon-2x icon-money-bag"></i>
-            <input type="text" name="presupuesto" width="100%" placeholder="100 €">
+            <input type="text" id="presupuesto" name="presupuesto" width="100%" placeholder="100 €">
             <button type="submit" class="icon icon-2x icon-arrow"></button>
         </div>
         <p>Con tu donación contribuyes a poder hacer posible:</p>
@@ -58,7 +63,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <h2>De tu aportación de 100€ hacienda te devolverá 80€
+          <h2>De tu aportación de 100€ hacienda te devolverá 80€</h2>
       </div>
     </div>
   </div>
