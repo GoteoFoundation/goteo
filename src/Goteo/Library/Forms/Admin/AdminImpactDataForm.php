@@ -9,12 +9,11 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Library\Forms\Model;
+namespace Goteo\Library\Forms\Admin;
 
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
-use Goteo\Model\Image;
 use Goteo\Model\ImpactData;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\DropfilesType;
@@ -24,10 +23,10 @@ use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 
-class ImpactDataForm extends AbstractFormProcessor {
+class AdminImpactDataForm extends AbstractFormProcessor {
 
-    public function createForm() {
-
+    public function createForm(): AdminImpactDataForm
+    {
         $model = $this->getModel();
         $builder = $this->getBuilder();
         $options = $builder->getOptions();
@@ -67,18 +66,22 @@ class ImpactDataForm extends AbstractFormProcessor {
                 'label' => 'regular-type',
                 'choices' => $this->getImpactDataTypes()
             ])
+            ->add('source', ChoiceType::class, [
+                'label' =>'regular-source',
+                'choices' => $this->getImpactSources(),
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'regular-submit',
                 'attr' => ['class' => 'btn btn-cyan'],
                 'icon_class' => 'fa fa-save'
             ])
             ;
-        
-            
+
+
         return $this;
     }
 
-    public function save(FormInterface $form = null, $force_save = false): ImpactDataForm
+    public function save(FormInterface $form = null, $force_save = false): AdminImpactDataForm
     {
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
@@ -122,6 +125,16 @@ class ImpactDataForm extends AbstractFormProcessor {
         $list = [];
         foreach($types as $type) {
             $list[Text::get('impact-data-type-' . $type)] = $type;
+        }
+        return $list;
+    }
+
+    private function getImpactSources(): array
+    {
+        $sources = ImpactData::getSources();
+        $list = [];
+        foreach($sources as $source) {
+            $list[Text::get('impact-data-source-'. $source)] = $source;
         }
         return $list;
     }

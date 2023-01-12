@@ -11,11 +11,16 @@ namespace Goteo\Util\ModelNormalizer\Transformer;
 
 class ImpactDataTransformer extends AbstractTransformer {
 
-    protected $keys = ['id', 'title', 'description'];
+    protected $keys = ['id', 'title', 'description', 'type', 'source'];
 
     public function getType(): string
     {
         return $this->model->type;
+    }
+
+    public function getSource(): string
+    {
+        return $this->model->source;
     }
 
     public function getActions(): array
@@ -28,5 +33,5 @@ class ImpactDataTransformer extends AbstractTransformer {
             'delete' => '/admin/impactdata/delete/' . $this->model->id
         ];
     }
-    
+
 }

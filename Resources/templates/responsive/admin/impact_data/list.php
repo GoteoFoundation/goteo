@@ -15,7 +15,7 @@ $this->section('admin-search-box-addons');
 
   <h5><?= $this->text('admin-list-total', $this->total) ?></h5>
 
-  <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['id', 'title', 'type', 'actions'])]) ?>
+  <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['id', 'title', 'type', 'source', 'actions'])]) ?>
 
   </div>
 </div>

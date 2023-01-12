@@ -12,21 +12,25 @@ namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
+use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
-use Goteo\Library\Forms\Model\ImpactDataForm;
+use Goteo\Library\Forms\Admin\AdminImpactDataForm;
 use Goteo\Model\ImpactData;
+use PDOException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 
 class ImpactDataAdminController extends AbstractAdminController
 {
-    protected static $icon = '<i class="fa fa-2x fa-table"></i>';
+    protected static string $icon = '<i class="fa fa-2x fa-table"></i>';
 
-    public static function getGroup(): string {
+    public static function getGroup(): string
+    {
         return 'communications';
     }
 
-    public static function getRoutes()
+    public static function getRoutes(): array
     {
         return [
             new Route(
@@ -48,34 +52,35 @@ class ImpactDataAdminController extends AbstractAdminController
         ];
     }
 
-    public function listAction(Request $request)
+    public function listAction(Request $request): Response
     {
-        $page = $request->query->get('pag') ?: 0;
+        $page = $request->query->getDigits('pag', 0);
         $limit = 10;
+
         $list = ImpactData::getList([], $page * $limit, $limit, false);
         $total = ImpactData::getList([], 0, 0, true);
-        
+
         return $this->viewResponse('admin/impact_data/list',[
             'list' => $list,
             'total' => $total
         ]);
     }
 
-    public function editAction(Request $request, $id = '')
-    {        
+    public function editAction(Request $request, $id = ''): Response
+    {
         try  {
-            $impact_data = $id ? ImpactData::get($id) : new ImpactData(); 
+            $impact_data = $id ? ImpactData::get($id) : new ImpactData();
         } catch (ModelNotFoundException $e) {
             Message::error($e->getMessage());
             return $this->redirect('/admin/impactdata');
         }
 
         $defaults = (array) $impact_data;
-        $processor = $this->getModelForm(ImpactDataForm::class, $impact_data, $defaults, Array(), $request);
+        $processor = $this->getModelForm(AdminImpactDataForm::class, $impact_data, $defaults, [], $request);
         $processor->createForm();
         $form = $processor->getForm();
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $request->isMethod('post')) {
+        if ($form->isSubmitted() && $request->isMethod(Request::METHOD_POST)) {
             try {
                 $processor->save($form); // Allow save event if does not validate
                 Message::info(Text::get('admin-' . ($id ? 'edit' : 'add') . '-entry-ok'));
@@ -91,17 +96,15 @@ class ImpactDataAdminController extends AbstractAdminController
 
     }
 
-    public function deleteAction(Request $request, $id) {
-        
+    public function deleteAction(Request $request, $id): Response
+    {
         try {
             $impact_data = ImpactData::get($id);
             $impact_data->dbDelete();
             Message::info(Text::get('admin-remove-entry-ok'));
-        } catch (ModelNotFoundException $e) {
+        } catch (ModelNotFoundException| PDOException $e) {
             Message::error($e->getMessage());
-        } catch (\PDOException $e) {
-            Message::error($e->getMessage());  
-        } 
+        }
 
         return $this->redirect('/admin/impactdata/');
     }
