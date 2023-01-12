@@ -328,3 +328,42 @@ function delete_test_reward(): bool
 
     return $reward->dbDelete();
 }
+
+function get_test_impact_data(): ?ImpactData
+{
+    $data = [
+        'id' => 1,
+        'title' => 'Test post',
+	    'data' => 'Test data',
+        'data_unit' => 'Test unit',
+    	'description' => 'Test description'
+    ];
+
+    $impactData = new ImpactData($data);
+
+    try {
+        $errors = [];
+        if ( ! $impactData->dbInsert(['id', 'title', 'data', 'data_nit', 'description']) ) {
+            error_log("Error saving Impact Data! ");
+            return null;
+        }
+    } catch (\PDOException $e) {
+        error_log($e->getMessage());
+    }
+
+    try {
+        return ImpactData::get($data['id']);
+    } catch(ModelNotFoundException $e) {
+        error_log('unknown error getting test Impact Data ' . $e->getMessage());
+        return null;
+    }
+}
+
+function delete_test_impact_data(): bool
+{
+    $impactData = ImpactData::get(1);
+
+    if (empty($impactData)) return true;
+
+    return $impactData->dbDelete();
+}

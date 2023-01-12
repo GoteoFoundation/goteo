@@ -16,13 +16,13 @@ use Goteo\Core\Model;
 use Goteo\Library\Text;
 
 class ImpactData extends Model {
-
-    const TYPE_ESTIMATION = "estimation";
-    const TYPE_REAL = "real";
-
     const SOURCE_ITEM = "item";
     const SOURCE_PROJECT = "project";
     const SOURCE_CHANNEL = "channel";
+    const SOURCE_MANUAL = "manual";
+
+    const TYPE_ESTIMATION = "estimation";
+    const TYPE_REAL = "real";
 
 	public
 		$id,
