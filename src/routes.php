@@ -300,9 +300,4 @@ $routes->add('impact-discover-datasets', new Route(
     )
 ));
 
-$routes->add('project-impact-calculator', new Route(
-        '/impact-calculator',
-    ['_controller' => 'Goteo\Controller\ProjectController::impactAction']
-));
-
 return $routes;
