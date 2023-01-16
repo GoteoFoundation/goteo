@@ -32,9 +32,13 @@ class GoteoAddImpactDataType
   public function getUpSQL()
   {
      return "
-        ALTER TABLE `impact_data` ADD COLUMN `type` VARCHAR(50) DEFAULT 'global' NOT NULL AFTER `lang`;
+        ALTER TABLE `impact_data` ADD COLUMN `type` VARCHAR(50) DEFAULT 'estimation' NOT NULL AFTER `lang`;
         ALTER TABLE `impact_data` ADD COLUMN `source` VARCHAR(50) DEFAULT 'item' NOT NULL AFTER `type`;
         ALTER TABLE `impact_data` ADD COLUMN `icon` varchar(50) COLLATE utf8_general_ci AFTER `image`;
+        ALTER TABLE `impact_data` ADD COLUMN `result_msg` TEXT AFTER `image`;
+        ALTER TABLE `impact_data_lang` ADD COLUMN `result_msg` TEXT after `description`;
+        ALTER TABLE `impact_data` ADD COLUMN `operation_type` VARCHAR(50) DEFAULT NULL;
+        ALTER TABLE `impact_data` MODIFY `data_unit` VARCHAR(50);
         CREATE TABLE `project_impact` (
             `project_id` VARCHAR(50) COLLATE utf8_general_ci NOT NULL,
             `impact_data_id` BIGINT(20) UNSIGNED NOT NULL,
@@ -54,6 +58,10 @@ class GoteoAddImpactDataType
   {
      return "
         DROP TABLE `project_impact`;
+        ALTER TABLE `impact_data` MODIFY `data_unit` VARCHAR(10);
+        ALTER TABLE `impact_data` DROP COLUMN `operation_type`;
+        ALTER TABLE `imapact_data_lang` DROP COLUMN `result_msg`;
+        ALTER TABLE `impact_data` DROP COLUMN `result_msg`;
         ALTER TABLE `impact_data` DROP COLUMN `icon`;
         ALTER TABLE `impact_data` DROP COLUMN `source`;
         ALTER TABLE `impact_data` DROP COLUMN `type`;

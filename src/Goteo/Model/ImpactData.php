@@ -24,6 +24,9 @@ class ImpactData extends Model {
     const TYPE_ESTIMATION = "estimation";
     const TYPE_REAL = "real";
 
+    const OPERATION_AMOUNT_ESTIMATION_DIVIDE_DATA = 'amount_estimation_divide_data';
+    const OPERATION_DATA_DIVIDE_AMOUNT_ESTIMATION = 'amount_estimation_divide_data';
+
 	public
 		$id,
 		$title,
@@ -36,13 +39,15 @@ class ImpactData extends Model {
     public string $type = self::TYPE_ESTIMATION;
     public string $source = self::SOURCE_ITEM;
     public ?string $icon = null;
+    public ?string $result_msg = null;
+    public ?string $operation_type = null;
 
     protected $Table = 'impact_data';
 	static protected $Table_static = 'impact_data';
 
     public static function getLangFields(): array
     {
-        return ['title', 'data', 'data_unit', 'description'];
+        return ['title', 'data', 'data_unit', 'description', 'result_msg'];
     }
 
     /**
@@ -174,6 +179,14 @@ class ImpactData extends Model {
             self::SOURCE_PROJECT,
             self::SOURCE_CHANNEL
         ];
+    }
+
+    public static function getOperations(): array
+    {
+        return [
+            self::OPERATION_AMOUNT_ESTIMATION_DIVIDE_DATA,
+            self::OPERATION_DATA_DIVIDE_AMOUNT_ESTIMATION
+            ];
     }
 }
 

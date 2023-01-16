@@ -70,6 +70,13 @@ class AdminImpactDataForm extends AbstractFormProcessor {
                 'label' =>'regular-source',
                 'choices' => $this->getImpactSources(),
             ])
+            ->add('result_msg', TextType::class, [
+                'label' => 'regular-result-msg',
+            ])
+            ->add('operation_type', ChoiceType::class, [
+                'label' => 'regular-operation-type',
+                'choices' => $this->getImpactOperations()
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'regular-submit',
                 'attr' => ['class' => 'btn btn-cyan'],
@@ -135,6 +142,16 @@ class AdminImpactDataForm extends AbstractFormProcessor {
         $list = [];
         foreach($sources as $source) {
             $list[Text::get('impact-data-source-'. $source)] = $source;
+        }
+        return $list;
+    }
+
+    private function getImpactOperations(): array
+    {
+        $operations = ImpactData::getOperations();
+        $list = [];
+        foreach($operations as $operation) {
+            $list[Text::get('impact-data-operation-'. $operation)] = $operation;
         }
         return $list;
     }
