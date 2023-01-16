@@ -16,7 +16,7 @@
 
     <div class="impact-calculator-body">
         <div class="container impact-calculator-body-title">
-            <img src="<?= $this->asset('img/impact-calculator/fingerprint.svg') ?>"  alt="huella">
+            <img src="<?= $this->asset('img/impact-calculator/fingerprint.svg') ?>"  alt="<?= $this->t('regular-footprints') ?>">
             <h2><?= $this->t('project-impact-calculator-body-title') ?></h2>
             <p><?= $this->t('project-impact-calculator-body-description') ?></p>
         </div>
@@ -30,7 +30,7 @@
         </div>
 
         <div class="impact-calculator-save">
-            <button class="btn btn-large btn-cyan">GUARDAR Y CONTINUAR</button>
+            <button class="btn btn-large btn-cyan"><?= $this->t('regular-save') ?></button>
         </div>
     </div>
 </div>
