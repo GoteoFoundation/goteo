@@ -87,16 +87,41 @@ class ImpactData extends Model {
         list($fields, $joins) = self::getLangsSQLJoins($lang);
 
         if ($filters['source']) {
+            if (is_array($filters['source'])) {
+                $parts = [];
+                foreach($filters['source'] as $i => $source) {
+                    $parts[] = ':source' . $i;
+                    $values[':source' . $i] = $source;
+                }
+
+                if($parts) $sqlWhere[] = "impact_data.source IN (" . implode(',', $parts) . ")";
+            } else {
+                $sqlWhere[] = "impact_data.source = :source";
+                $values[':source'] = $filters['source'];
+            }
             $sqlWhere[] = "impact_data.source = :source";
             $values[':source'] = $filters['source'];
         }
 
         if ($filters['type']) {
-            $sqlWhere[] = "impact_data.type = :type";
-            $values[':type'] = $filters['type'];
+            if (is_array($filters['type'])) {
+                $parts = [];
+                foreach($filters['type'] as $i => $type) {
+                    $parts[] = ':type' . $i;
+                    $values[':type' . $i] = $type;
+                }
+
+                if($parts) $sqlWhere[] = "impact_data.type IN (" . implode(',', $parts) . ")";
+            } else {
+                $sqlWhere[] = "impact_data.type = :type";
+                $values[':type'] = $filters['type'];
+            }
         }
 
-        $sqlWhere = $sqlWhere ? "WHERE " . implode(' AND ', $sqlWhere) : '';
+        if ($filters['not_type']) {
+            $sqlWhere[] = "impact_data.type != :not_type";
+            $values[':not_type'] = $filters['not_type'];
+        }
 
         if ($count) {
             $sql = "SELECT COUNT(impact_data.id)

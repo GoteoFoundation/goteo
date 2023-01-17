@@ -86,6 +86,70 @@ trait ImpactDataRelationsTrait {
         return [];
     }
 
+    public function getListOfImpactData(array $filters = [], int $offset = 0, int $limit = 10, int $count = 0): array
+    {
+        $tb = strtolower($this->getTable());
+        $rel = $this->getImpactDataTable();
+        list($fields, $joins) = ImpactData::getLangsSQLJoins(null, Config::get('sql_lang'));
+        $sqlWhere = [];
+
+        if ($filters['source']) {
+            if (is_array($filters['source'])) {
+                $parts = [];
+                foreach($filters['source'] as $i => $source) {
+                    $parts[] = ':source' . $i;
+                    $values[':source' . $i] = $source;
+                }
+
+                if($parts) $sqlWhere []= "impact_data.source IN (" . implode(',', $parts) . ")";
+            } else {
+                $sqlWhere[] = "impact_data.source = :source";
+                $values[':source'] = $filters['source'];
+            }
+        }
+
+        if ($filters['type']) {
+            if (is_array($filters['type'])) {
+                $parts = [];
+                foreach($filters['type'] as $i => $type) {
+                    $parts[] = ':type' . $i;
+                    $values[':type' . $i] = $type;
+                }
+
+                if($parts) $sqlWhere[] = "impact_data.type IN (" . implode(',', $parts) . ")";
+            } else {
+                $sqlWhere[] = "impact_data.type = :type";
+                $values[':type'] = $filters['type'];
+            }
+        }
+
+        if ($filters['not_type']) {
+            $sqlWhere[] = "impact_data.type != :not_type";
+            $values[':not_type'] = $filters['not_type'];
+        }
+
+        $sqlWhere = $sqlWhere ? "AND " . implode(' AND ', $sqlWhere) : '';
+
+        $sql = "SELECT
+                impact_data.id,
+                $fields,
+                impact_data.image
+            FROM `$rel`
+            INNER JOIN impact_data ON impact_data.id = `$rel`.impact_data_id
+            $joins
+            WHERE `$rel`.{$tb}_id = :id
+            $sqlWhere
+            ORDER BY `$rel`.order ASC";
+        $values[":id"] = $this->id;
+
+        if($query = self::query($sql, $values)) {
+            if( $impact_data = $query->fetchAll(\PDO::FETCH_CLASS, ImpactData::class) ) {
+                return $impact_data;
+            }
+        }
+        return [];
+    }
+
     public function removeImpactData(ImpactData $impact_data) {
 
         $values = [

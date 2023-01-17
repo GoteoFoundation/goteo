@@ -39,10 +39,11 @@ class GoteoAddImpactDataType
         ALTER TABLE `impact_data_lang` ADD COLUMN `result_msg` TEXT after `description`;
         ALTER TABLE `impact_data` ADD COLUMN `operation_type` VARCHAR(50) DEFAULT NULL;
         ALTER TABLE `impact_data` MODIFY `data_unit` VARCHAR(50);
-        CREATE TABLE `project_impact` (
-            `project_id` VARCHAR(50) COLLATE utf8_general_ci NOT NULL,
+        CREATE TABLE `impact_data_project` (
             `impact_data_id` BIGINT(20) UNSIGNED NOT NULL,
-            `order` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+            `project_id` VARCHAR(50) COLLATE utf8_general_ci NOT NULL,
+            `estimation_amount` INT UNSIGNED NOT NULL,
+            `data` INT(10) UNSIGNED NOT NULL
             FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
             FOREIGN KEY (`impact_data_id`) REFERENCES `impact_data`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
             UNIQUE KEY `project_impact`(`project_id`,`impact_data_id`)
@@ -57,7 +58,7 @@ class GoteoAddImpactDataType
   public function getDownSQL()
   {
      return "
-        DROP TABLE `project_impact`;
+        DROP TABLE `impact_data_project`;
         ALTER TABLE `impact_data` MODIFY `data_unit` VARCHAR(10);
         ALTER TABLE `impact_data` DROP COLUMN `operation_type`;
         ALTER TABLE `imapact_data_lang` DROP COLUMN `result_msg`;

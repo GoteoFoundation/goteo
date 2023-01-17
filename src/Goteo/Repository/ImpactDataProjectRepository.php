@@ -7,7 +7,7 @@ use Goteo\Core\Exception;
 use Goteo\Entity\ImpactData\ImpactDataProject;
 use Goteo\Model\ImpactData;
 use Goteo\Model\Project;
-use Goteo\Model\Project\Cost;
+use Goteo\Model\Project\int;
 
 class ImpactDataProjectRepository extends BaseRepository
 {
@@ -28,9 +28,8 @@ class ImpactDataProjectRepository extends BaseRepository
             foreach($this->query($sql, [$project->id])->fetchAll(\PDO::FETCH_OBJ) as $obj) {
                 $impactDataProject = new ImpactDataProject();
                 $impactData = ImpactData::get($obj->impact_data_id);
-                $cost = Cost::get($obj->cost);
 
-                $impactDataProject->setImpactData($impactData)->setProject($project)->setCost($cost)->setValue($obj->value);
+                $impactDataProject->setImpactData($impactData)->setProject($project)->setData($obj->data)->setEstimationAmount($obj->estimation_amount);
                 $list[] = $impactDataProject;
             }
         } catch (\PDOException $e) {
@@ -70,15 +69,15 @@ class ImpactDataProjectRepository extends BaseRepository
         $fields = [
             'impact_data_id' => ':impact_data_id',
             'project_id' => ':project_id',
-            'value' => ':value',
-            'cost_id' => ':cost_id'
+            'estimation_amount' => ':estimation_amount',
+            'value' => ':value'
         ];
 
         $values = [
             ':impact_data_id' => $impactDataProject->getImpactData()->id,
             ':project_id' => $impactDataProject->getProject()->id,
-            ':value' => $impactDataProject->getValue(),
-            ':cost_id' => $impactDataProject->getCost()->id
+            ':estimation_amount' => $impactDataProject->getEstimationAmount(),
+            ':data' => $impactDataProject->getData()
         ];
 
         $sql = "REPLACE INTO `$this->table` (" . implode(',', array_keys($fields)) . ") VALUES (" . implode(',', array_values($fields)) . ")";

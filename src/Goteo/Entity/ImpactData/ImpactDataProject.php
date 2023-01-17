@@ -12,13 +12,12 @@ namespace Goteo\Entity\ImpactData;
 
 use Goteo\Model\ImpactData;
 use Goteo\Model\Project;
-use Goteo\Model\Project\Cost;
 
 class ImpactDataProject {
     private ImpactData $impactData;
     private Project $project;
-    private int $value = 0;
-    private ?Cost $cost = null;
+    private int $estimationAmount = 0;
+    private int $data = 0;
 
     public function getImpactData(): ImpactData
     {
@@ -42,25 +41,25 @@ class ImpactDataProject {
         return $this;
     }
 
-    public function getValue(): int
+    public function getEstimationAmount(): int
     {
-        return $this->value;
+        return $this->estimationAmount;
     }
 
-    public function setValue(int $value): ImpactDataProject
+    public function setEstimationAmount(int $estimationAmount): ImpactDataProject
     {
-        $this->value = $value;
+        $this->estimationAmount = $estimationAmount;
         return $this;
     }
 
-    public function getCost(): ?Cost
+    public function getData(): ?int
     {
-        return $this->cost;
+        return $this->data;
     }
 
-    public function setCost(Cost $cost): ImpactDataProject
+    public function setData(int $data): ImpactDataProject
     {
-        $this->cost = $cost;
+        $this->data = $data;
         return $this;
     }
 }
