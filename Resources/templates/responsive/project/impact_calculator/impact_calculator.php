@@ -21,17 +21,23 @@
             <p><?= $this->t('project-impact-calculator-body-description') ?></p>
         </div>
 
-        <div class="container">
-            <div class="row">
-                <?php foreach ($footprints as $footprint): ?>
-                    <?= $this->insert('project/impact_calculator/partials/footprint_details', ['footprint' => $footprint]) ?>
-                <?php endforeach; ?>
+        <form
+            action=""
+            method="POST"
+            name="form"
+            enctype="multipart/form-data">
+            <div class="container">
+                <div class="row">
+                        <?php foreach($footprints as $footprint):?>
+                            <?= $this->insert('project/impact_calculator/partials/footprint_details', ['footprint' => $footprint, 'impactDataList' => $this->impactDataByFootprint[$footprint->id]]) ?>
+                        <?php endforeach; ?>
+                </div>
             </div>
-        </div>
 
-        <div class="impact-calculator-save">
-            <button class="btn btn-large btn-cyan"><?= $this->t('regular-save') ?></button>
-        </div>
+            <div class="impact-calculator-save">
+                <button type="submit" class="btn btn-large btn-cyan"><?= $this->t('regular-save') ?></button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -39,13 +45,18 @@
     $this->append();
 
     $this->section('footer');
-
 ?>
 
 <script type="application/javascript">
     $(function() {
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip()
+
+        $('input[type=checkbox]').change(function() {
+            const $article = $(this.closest('article'))
+            $article.hasClass('active') ? $article.removeClass('active') : $article.addClass('active');
+        })
     });
+
 </script>
 
 <?php

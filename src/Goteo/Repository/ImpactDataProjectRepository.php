@@ -3,11 +3,9 @@
 namespace Goteo\Repository;
 
 use Goteo\Application\Exception\ModelException;
-use Goteo\Core\Exception;
 use Goteo\Entity\ImpactData\ImpactDataProject;
 use Goteo\Model\ImpactData;
 use Goteo\Model\Project;
-use Goteo\Model\Project\int;
 
 class ImpactDataProjectRepository extends BaseRepository
 {
@@ -70,7 +68,7 @@ class ImpactDataProjectRepository extends BaseRepository
             'impact_data_id' => ':impact_data_id',
             'project_id' => ':project_id',
             'estimation_amount' => ':estimation_amount',
-            'value' => ':value'
+            'data' => ':data'
         ];
 
         $values = [

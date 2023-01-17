@@ -146,7 +146,6 @@ body.project {
                   h3 {
                     font-weight: 700;
                     font-size: 18px;
-                    text-align: center;
                   }
 
                   p {
@@ -164,6 +163,10 @@ body.project {
                   height: 36px;
                   background: rgba(52, 93, 109, 0.1);
                   margin: auto 2rem auto auto;
+
+                  &[aria-expanded="true"] .icon.icon-arrow {
+                    transform: rotate(270deg);
+                  }
                 }
               }
             }
@@ -183,16 +186,49 @@ body.project {
     article.card {
       padding: 15px;
       width: 223px;
-      height: 315px;
+      height: 350px;
       opacity: 0.2;
       border: 1px solid #345D6D;
       border-radius: 8px;
       position: relative;
       margin: 1rem;
 
+      .card-header {
+        position:absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4.5em;
+
+        h1 {
+          font-size: 16px;
+          margin-left: 1em;
+          width: 85%;
+        }
+
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .card-body {
+        margin-top: 4em;
+      }
+
+      // Todo: Change to :has
       &.active {
         opacity: 1;
         color: white;
+
+        &.footprint-1 {
+          background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #FBB80B;
+        }
+
+        &.footprint-2 {
+          background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #D22F30;
+        }
+
+        &.footprint-3 {
+          background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #265688;
+        }
 
         i.icon {
           background-color: white !important;
@@ -201,18 +237,6 @@ body.project {
         input {
           background-color: unset;
         }
-      }
-
-      &.footprint-1 {
-        background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #FBB80B;
-      }
-
-      &.footprint-2 {
-        background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #D22F30;
-      }
-
-      &.footprint-3 {
-        background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #265688;
       }
 
       i.icon {
@@ -276,6 +300,16 @@ body.project {
       i.icon-classroom {
         width: 58px;
         height: 58px;
+      }
+
+      .activate-impact-data {
+        position: absolute;
+        bottom: 0;
+
+        .material-switch > label::before {
+          background: black;
+          opactity: 0;
+        }
       }
     }
 

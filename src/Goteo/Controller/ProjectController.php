@@ -21,11 +21,13 @@ use Goteo\Application\View;
 use Goteo\Controller\Dashboard\ProjectDashboardController;
 use Goteo\Core\Controller;
 use Goteo\Core\DB;
+use Goteo\Entity\ImpactData\ImpactDataProject;
 use Goteo\Library\Text;
 use Goteo\Library\Worth;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Footprint;
+use Goteo\Model\ImpactData;
 use Goteo\Model\Invest;
 use Goteo\Model\License;
 use Goteo\Model\Message as SupportMessage;
@@ -37,6 +39,7 @@ use Goteo\Model\Project\Favourite;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Project\ProjectMilestone;
 use Goteo\Model\SocialCommitment;
+use Goteo\Repository\ImpactDataProjectRepository;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -386,8 +389,44 @@ class ProjectController extends Controller {
 
     public function impactAction(Request $request, string $pid = null): Response
     {
+        $project = Project::get($pid);
         $footprints = Footprint::getList([], 0, 3);
 
-        return $this->viewResponse('project/impact_calculator/impact_calculator', ['footprints' => $footprints]);
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $this->createImpactDataProjects($request, $project);
+        }
+
+        return $this->viewResponse('project/impact_calculator/impact_calculator', ['footprints' => $footprints, 'project' => $project]);
+    }
+
+    private function createImpactDataProjects(Request $request, Project $project)
+    {
+        $data = $request->request->all();
+        foreach($data['form'] as $impactDataList) {
+            foreach($impactDataList as $impactData => $impactDataProjectData) {
+                $impactData = ImpactData::get($impactData);
+
+                if ($impactDataProjectData['active']) {
+                    $errors = [];
+                    $this->createAndPersistImpactDataProject($impactData, $project, $impactDataProjectData, $errors);
+                    if (!empty($errors)) {
+                        Message::error($errors);
+                    }
+                }
+            }
+        }
+    }
+
+    public function createAndPersistImpactDataProject(ImpactData $impactData, Project $project, array $impactDataProjectData, array $errors = []): void
+    {
+        $impactDataProject = new ImpactDataProject();
+        $impactDataProject
+            ->setImpactData($impactData)
+            ->setProject($project)
+            ->setData($impactDataProjectData["data"])
+            ->setEstimationAmount($impactDataProjectData["estimated_amount"]);
+
+        $impactDataProjectRepository = new ImpactDataProjectRepository();
+        $impactDataProjectRepository->persist($impactDataProject, $errors);
     }
 }

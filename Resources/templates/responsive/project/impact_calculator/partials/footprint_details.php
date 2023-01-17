@@ -1,5 +1,6 @@
 <?php
     $footprint = $this->footprint;
+    $impactDataList = $this->footprint->getListOfImpactData(['not_type' => 'global']);
 ?>
 
 <div class="footprint-details">
@@ -11,13 +12,14 @@
             </h3>
             <p><?= $this->t("project-impact-calculator-footprint-$footprint->id-description") ?></p>
         </div>
-        <button class="btn accordion-toggle" data-toggle="collapse" data-target="#collapse-footprint-<?= $footprint->id ?>">
+        <button type="button" class="btn accordion-toggle" data-toggle="collapse" data-target="#collapse-footprint-<?= $footprint->id ?>">
             <span class="icon icon-arrow"></span>
         </button>
     </div>
 
     <div id="collapse-footprint-<?= $footprint->id ?>" class="collapse">
-        <?= $this->insert('project/impact_calculator/partials/card', ['active' => true, 'footprint' => $this->footprint->id]) ?>
-        <?= $this->insert('project/impact_calculator/partials/card', ['active' => false]) ?>
+        <?php foreach($impactDataList as $impactData): ?>
+            <?= $this->insert('project/impact_calculator/partials/card', ['impactData' => $impactData, 'footprint' => $this->footprint->id]) ?>
+        <?php endforeach;?>
     </div>
 </div>
