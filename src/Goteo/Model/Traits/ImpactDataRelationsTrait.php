@@ -108,6 +108,11 @@ trait ImpactDataRelationsTrait {
             }
         }
 
+        if ($filters['not_source']) {
+            $sqlWhere[] = "impact_data.source != :not_source";
+            $values[':not_source'] = $filters['not_source'];
+        }
+
         if ($filters['type']) {
             if (is_array($filters['type'])) {
                 $parts = [];
