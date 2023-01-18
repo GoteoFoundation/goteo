@@ -65,7 +65,9 @@ class ImpactData extends Model {
                     impact_data.lang,
                     impact_data.type,
                     impact_data.icon,
-                    impact_data.source
+                    impact_data.source,
+                    impact_data.result_msg,
+                    impact_data.operation_type
                 FROM impact_data
                 $joins
                 WHERE impact_data.id = ?";
@@ -137,7 +139,9 @@ class ImpactData extends Model {
                     impact_data.lang,
                     impact_data.type,
                     impact_data.icon,
-                    impact_data.source
+                    impact_data.source,
+                    impact_data.result_msg,
+                    impact_data.operation_type
                 FROM impact_data
                 $joins
                 $sqlWhere
@@ -177,7 +181,7 @@ class ImpactData extends Model {
     {
         if(!$this->validate($errors)) return false;
 
-		$fields = ['title','data', 'data_unit', 'description','image','lang', 'type', 'icon', 'source'];
+		$fields = ['title','data', 'data_unit', 'description','image','lang', 'type', 'icon', 'source', 'result_msg', 'operation_type'];
 
 		try {
             $this->dbInsertUpdate($fields);

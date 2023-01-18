@@ -70,7 +70,13 @@ trait ImpactDataRelationsTrait {
         $sql = "SELECT
                 impact_data.id,
                 $fields,
-                impact_data.image
+                impact_data.image,
+                impact_data.lang,
+                impact_data.type,
+                impact_data.icon,
+                impact_data.source,
+                impact_data.result_msg,
+                impact_data.operation_type
             FROM `$rel`
             INNER JOIN impact_data ON impact_data.id = `$rel`.impact_data_id
             $joins
@@ -138,7 +144,13 @@ trait ImpactDataRelationsTrait {
         $sql = "SELECT
                 impact_data.id,
                 $fields,
-                impact_data.image
+                impact_data.image,
+                impact_data.lang,
+                impact_data.type,
+                impact_data.icon,
+                impact_data.source,
+                impact_data.result_msg,
+                impact_data.operation_type
             FROM `$rel`
             INNER JOIN impact_data ON impact_data.id = `$rel`.impact_data_id
             $joins

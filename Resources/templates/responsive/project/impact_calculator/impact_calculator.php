@@ -45,18 +45,14 @@
     $this->append();
 
     $this->section('footer');
+
+
 ?>
 
-<script type="application/javascript">
-    $(function() {
-        $('[data-toggle="tooltip"]').tooltip()
-
-        $('input[type=checkbox]').change(function() {
-            const $article = $(this.closest('article'))
-            this.checked ? $article.addClass('active') : $article.removeClass('active')
-        })
-    });
-</script>
+<!-- POST PROCESSING THIS JAVASCRIPT BY GRUNT -->
+<!-- build:js assets/js/impact-calculator.js -->
+    <script type="text/javascript" src="<?= $this->asset('js/impact_calculator/impact_calculator.js') ?>"></script>
+<!-- endbuild -->
 
 <?php
     $this->append();

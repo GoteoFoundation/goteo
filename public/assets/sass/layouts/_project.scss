@@ -187,13 +187,13 @@ body.project {
       padding: 15px;
       width: 223px;
       height: 350px;
-      opacity: 0.2;
-      border: 1px solid #345D6D;
+      border: thin solid $color-light-grey;
       border-radius: 8px;
       position: relative;
       margin: 1rem;
 
       .card-header {
+        background-color: rgba(0, 0, 0, 0.1);
         position:absolute;
         top: 0;
         left: 0;
@@ -205,8 +205,6 @@ body.project {
           margin-left: 1em;
           width: 85%;
         }
-
-        background-color: rgba(0, 0, 0, 0.1);
       }
 
       .card-body {
@@ -275,6 +273,9 @@ body.project {
         input {
           border-width: 0 0 2px 0;
           width: 165px;
+          appearance: textfield;
+          -webkit-appearance: none;
+          -moz-appearance: textfield;
 
           &:focus {
             outline: none;
@@ -551,7 +552,6 @@ body.project {
         }
 
         .impact {
-
           h4 {
             color: $color-new-dark-blue;
           }
@@ -602,8 +602,6 @@ body.project {
       overflow: hidden;
     }
   }
-
-  background: $color-white;
 
   @media (max-width: $breakpoint-sm - 1) {
     padding-bottom: 57px;
