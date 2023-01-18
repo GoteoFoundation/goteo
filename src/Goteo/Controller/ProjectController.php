@@ -124,14 +124,14 @@ class ProjectController extends Controller {
             $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();
             if($response instanceOf Response) return $response;
 
-            return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
+            return new RedirectResponse("/project/$project->id/impact-calculator");
         }
 
         return $this->viewResponse( 'project/create', [
            'social_commitments' => SocialCommitment::getAll(),
            'terms' => Page::get('howto')
         ]);
-	}
+    }
 
 	protected function view(Request $request, $project, $show, $post = null) {
 		DB::cache(true);
@@ -340,7 +340,7 @@ class ProjectController extends Controller {
 
         $favourite->save($errors);
 
-        if ($request->isMethod('post'))
+        if ($request->isMethod(Request::METHOD_POST))
             return $this->jsonResponse(['result' => $favourite]);
 
         return $this->redirect('/project/' . $pid);
@@ -394,6 +394,7 @@ class ProjectController extends Controller {
 
         if ($request->isMethod(Request::METHOD_POST)) {
             $this->createImpactDataProjects($request, $project);
+            return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
         }
 
         return $this->viewResponse('project/impact_calculator/impact_calculator', ['footprints' => $footprints, 'project' => $project]);
@@ -402,11 +403,11 @@ class ProjectController extends Controller {
     private function createImpactDataProjects(Request $request, Project $project)
     {
         $data = $request->request->all();
-        foreach($data['form'] as $impactDataList) {
-            foreach($impactDataList as $impactData => $impactDataProjectData) {
+        foreach ($data['form'] as $impactDataList) {
+            foreach ($impactDataList as $impactData => $impactDataProjectData) {
                 $impactData = ImpactData::get($impactData);
 
-                if ($impactDataProjectData['active']) {
+                if ($impactDataProjectData['active']  && !empty($impactDataProjectData["data"]) && !empty($impactDataProjectData["estimated_amount"])) {
                     $errors = [];
                     $this->createAndPersistImpactDataProject($impactData, $project, $impactDataProjectData, $errors);
                     if (!empty($errors)) {
