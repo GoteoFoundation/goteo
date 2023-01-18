@@ -34,7 +34,7 @@ $(function() {
         if (estimatedAmount && data)
         {
             const $resultMsg = document.getElementById("card_" + footprint + "_" + impactData + "_result_msg");
-            const result = calculateResult(estimatedAmount, data, operation);
+            const result = calculateResult(estimatedAmount, data, operation).toFixed(2);
             const text = $resultMsg.dataset.text;
 
             $resultMsg.innerHTML = text.replace("%s", result);
