@@ -1,6 +1,6 @@
 <?php
     $footprint = $this->footprint;
-    $impactDataList = $this->footprint->getListOfImpactData(['not_type' => 'global']);
+    $impactDataList = $this->footprint->getListOfImpactData(['not_source' => 'manual']);
 ?>
 
 <div class="footprint-details">

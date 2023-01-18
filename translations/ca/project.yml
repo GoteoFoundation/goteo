@@ -31,14 +31,14 @@ project-menu-messages: Col·laboracions
 project-menu-needs: Necessitats
 project-menu-news: 'Notícies'
 project-menu-participate: 'Participa'
-project-menu-supporters: Cofinançadors 
+project-menu-supporters: Cofinançadors
 project-menu-updates: Novetats
 project-menu_title-home: 'Impacte social: aquest projecte obre el seu codi, comparteix coneixements, dades o arxius digitals a canvi del teu suport. '
 project-menu_title-messages: 'No només diners: també pots ajudar amb el teu talent, materials, temps, contactes, coneixements... '
 project-menu_title-needs: 'Transparència de costos: desglossament detallat del mínim i l''òptim que necessita per a  dur-se a terme. '
 project-menu_title-supporters: 'Xarxa social de suport: els cofinançadors i cofinançadores són tan importants com qui impulsa aquesta iniciativa. '
 project-menu_title-updates: 'Feedback i novetats: informa''t sobre els avanços del projecte directament a través de qui ho impulsa. '
-project-messages-answer_it: Respondre 
+project-messages-answer_it: Respondre
 project-messages-closed: 'Encara no es poden enviar missatges al projecte'
 project-messages-send_direct-header: 'Envia un missatge a l''impulsor/a del projecte'
 project-messages-send_message-button: Envia
@@ -77,10 +77,10 @@ project-view-metter-day_updated: 'Rebut el'
 project-view-metter-days: Queden
 project-view-metter-favourite: 'Recorda-m''ho'
 project-view-metter-got: Obtingut
-project-view-metter-investment: Cofinançament 
-project-view-metter-investors: Cofinançadors 
+project-view-metter-investment: Cofinançament
+project-view-metter-investors: Cofinançadors
 project-view-metter-minimum: Mínim
-project-view-metter-optimum: Òptim  
+project-view-metter-optimum: Òptim
 project-view-preview: 'Previsualització del projecte'
 project-willpublish: 'Aquest projecte es publicarà el %s'
 regular-new_project: 'Projecte nou'
@@ -157,3 +157,4 @@ project-impact-calculator-body-description: Lorem ipsum dolor sit amet, consecte
 project-impact-calculator-footprint-1-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
 project-impact-calculator-footprint-2-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
 project-impact-calculator-footprint-3-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
+project-impact-calculator-activate-indicator: "Activar compromís"

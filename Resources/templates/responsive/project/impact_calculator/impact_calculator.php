@@ -53,10 +53,9 @@
 
         $('input[type=checkbox]').change(function() {
             const $article = $(this.closest('article'))
-            $article.hasClass('active') ? $article.removeClass('active') : $article.addClass('active');
+            this.checked ? $article.addClass('active') : $article.removeClass('active')
         })
     });
-
 </script>
 
 <?php

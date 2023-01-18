@@ -32,10 +32,10 @@
         </label>
 
 
-        <label for="number_personas"><?= $impactData->data_unit ?></label>
+        <label for="form_<?= $footprint ?>_<?= $impactData->id ?>_data"><?= $impactData->data_unit ?></label>
         <div class="card-input">
             <i class="icon icon-medal"></i>
-            <input type="form_<?= $footprint ?>_<?= $impactData->id ?>_data" name="form[<?= $footprint ?>][<?= $impactData->id ?>][data]">
+            <input id="form_<?= $footprint ?>_<?= $impactData->id ?>_data" name="form[<?= $footprint ?>][<?= $impactData->id ?>][data]">
         </div>
 
         <div>
@@ -48,13 +48,14 @@
         </div>
 
         <div class="form-group activate-impact-data">
+            <label for="form_<?= $footprint ?>_<?= $impactData->id ?>_active">
+                <?= $this->t('project-impact-calculator-activate-indicator') ?>
+            </label>
             <div class="material-switch">
                 <input type="checkbox" class="form" id="form_<?= $footprint ?>_<?= $impactData->id ?>_active" name="form[<?= $footprint ?>][<?= $impactData->id ?>][active]">
                 <label for="form_<?= $footprint ?>_<?= $impactData->id ?>_active"></label>
             </div>
-            <label for="form_<?= $footprint ?>_<?= $impactData->id ?>_active">
-                ACTIVAR
-            </label>
+
         </div>
     </div>
 </article>
