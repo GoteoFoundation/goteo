@@ -84,7 +84,7 @@ class ImpactData extends Model {
     public static function getList(array $filters = [], int $offset = 0, int $limit = 10, int $count = 0) {
     	$sqlWhere = [];
         $values = [];
-        $sqlInner = [];
+        $sqlInner = "";
 
         $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang);
@@ -102,8 +102,6 @@ class ImpactData extends Model {
                 $sqlWhere[] = "impact_data.source = :source";
                 $values[':source'] = $filters['source'];
             }
-            $sqlWhere[] = "impact_data.source = :source";
-            $values[':source'] = $filters['source'];
         }
 
         if ($filters['type']) {
@@ -138,9 +136,13 @@ class ImpactData extends Model {
             $values[':footprint'] = $filters['footprint'];
         }
 
+        if ($sqlWhere) $sqlWhere = "WHERE " . implode('AND ', $sqlWhere);
+        else $sqlWhere = "";
+
         if ($count) {
             $sql = "SELECT COUNT(impact_data.id)
             FROM impact_data
+            $sqlInner
             $sqlWhere";
             return (int) self::query($sql)->fetchColumn();
         }
