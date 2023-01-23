@@ -72,7 +72,7 @@ class ProjectController extends Controller {
             return $this->redirect('/user/login?return='.urldecode('/project/create'));
         }
 
-        if ($request->isMethod('post')) {
+        if ($request->isMethod(Request::METHOD_POST)) {
 
         	$social_commitment= strip_tags($request->request->get('social'));
 
@@ -183,14 +183,27 @@ class ProjectController extends Controller {
                 Config::set('analytics.google', array_merge(Config::get('analytics.google'), [$project->analytics_id]));
             }
 
-            $viewData = array(
+            $footprints = Footprint::getList([], 0, 3);
+
+            $viewData = [
                 'project' => $project,
                 'show' => $show,
                 'blog' => null,
                 'related_projects' => $related_projects,
-                'widget_code' => $widget_code
-            );
+                'widget_code' => $widget_code,
+                'footprints' => $footprints
+            ];
 
+            $impactDataProjectRepository = new ImpactDataProjectRepository();
+            $impactDataProjectByFootprint = [];
+            foreach($footprints as $footprint) {
+                $impactDataProjectByFootprint[$footprint->id] = $impactDataProjectRepository->getListByProjectAndFootprint($project, $footprint);
+            }
+
+            $impactDataProjectList = $impactDataProjectRepository->getListByProject($project);
+
+            $viewData['impactDataProjectByFootprint'] = $impactDataProjectByFootprint;
+            $viewData['impactDataProjectList'] = $impactDataProjectList;
             $viewData['matchers'] = $project->getMatchers('active');
             $viewData['individual_rewards'] = [];
 
@@ -389,7 +402,18 @@ class ProjectController extends Controller {
 
     public function impactAction(Request $request, string $pid = null): Response
     {
+        if (!Session::isLogged()) {
+            Message::info(Text::get('user-login-required-to_create'));
+            return $this->redirect('/user/login?return='.urldecode("/project/$pid/impact-calculator"));
+        }
+
+        $user = Session::getUser();
         $project = Project::get($pid);
+
+        if (!$user->id == $project->user) {
+            return $this->redirect('/');
+        }
+
         $footprints = Footprint::getList([], 0, 3);
 
         if ($request->isMethod(Request::METHOD_POST)) {

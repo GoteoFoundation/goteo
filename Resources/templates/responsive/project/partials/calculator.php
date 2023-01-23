@@ -25,42 +25,45 @@
     </article>
 </div>
 
-<div class="modal fade" id="impact-calculator-modal" tabindex="-1" role="dialog" aria-labelledby="admin-modal-label">
+<?php
+$count = count($this->impactDataProjectList);
+$amountPerImpactDataProject = 100.0 / $count;
+?>
+<div class="modal fade" id="impact-calculator-modal" tabindex="-1" role="dialog" aria-labelledby="admin-modal-label" data-impact-data-project-count=<?= $count ?>>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span></button>
-        <label for="presupuesto">Cantidad de tu aportación</label>
+        <label for="modal-budget">Cantidad de tu aportación</label>
         <div class="modal-input">
             <i class="icon icon-2x icon-money-bag"></i>
-            <input type="text" id="presupuesto" name="presupuesto" width="100%" placeholder="100 €">
-            <button type="submit" class="icon icon-2x icon-arrow"></button>
+            <input type="text" id="modal-budget" name="modal-budget" width="100%" placeholder="100 €">
         </div>
         <p>Con tu donación contribuyes a poder hacer posible:</p>
       </div>
       <div class="modal-body">
-        <h3>Creación de empleo</h3>
-        <div class="row">
-            <div class="col-md-4 col-sm-4 col-xs-6 detail">
-                <h4>Puestos de trabajo creado</h4>
-                <p><i class="icon icon-2x icon-person"></i> 0,009</p>
-            </div>
-            <div class="col-md-4 col-sm-4 col-xs-6 impact">
-                <h4>Impacto</h4>
-                <p>Por cada 12,000€ se creará 1 puesto de trabajo</p>
-            </div>
-        </div>
-        <h3>Personas formadas</h3>
-        <div class="row">
-            <div class="col-md-4 col-sm-4 col-xs-6 detail">
-                <h4>Número de personas</h4>
-                <p><i class="icon icon-2x icon-medal"></i> 0,1</p>
-            </div>
-            <div class="col-md-4 col-sm-4 col-xs-6 impact">
-                <h4>Impacto</h4>
-                <p>1 persona formada por cada 937,50€</p>
-            </div>
-        </div>
+        <?php
+        foreach($this->impactDataProjectList as $impactDataProject):
+          $impactData = $impactDataProject->getImpactData();
+          ?>
+          <div class="impact-data-info" data-id="<?= $impactData->id ?>" data-operation-type="<?= $impactData->operation_type ?>" data-estimation-amount="<?= $impactDataProject->getEstimationAmount() ?>" data-data="<?= $impactDataProject->getData() ?>">
+              <h3><?= $impactData->title ?></h3>
+              <div class="row">
+                  <div class="col-md-4 col-sm-4 col-xs-6 detail">
+                      <h4><?= $impactData->data_unit ?></h4>
+                      <p><i class="icon icon-2x icon-person"></i> <?= $impactDataProject->getData() ?></p>
+                  </div>
+                  <div class="col-md-4 col-sm-4 col-xs-6 impact">
+                      <h4><?= $this->t('regular-impact') ?></h4>
+                      <?php
+                        $calculation = (  (float) ($impactDataProject->getData() / $impactDataProject->getEstimationAmount() ) * $amountPerImpactDataProject);
+                        $calulationFormatted = number_format($calculation, 2)
+                      ?>
+                      <p id="result-impact-data-<?= $impactData->id ?>"class="result" data-result-msg="<?= $impactData->result_msg ?>"><?= vsprintf($impactData->result_msg, [number_format($amountPerImpactDataProject, 2), $calulationFormatted ]) ?></p>
+                  </div>
+              </div>
+          </div>
+      <?php endforeach; ?>
       </div>
       <div class="modal-footer">
           <h2>De tu aportación de 100€ hacienda te devolverá 80€</h2>

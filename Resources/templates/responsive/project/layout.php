@@ -88,7 +88,7 @@ $this->section('content');
 
 <div class="container-fluid section">
         <div class="impact-calculator-details row">
-            <?= $this->insert('project/partials/impact_by_footprint') ?>
+            <?= $this->insert('project/partials/impact_by_footprint', ['footprints' => $this->footprints ]) ?>
             <?= $this->insert('project/partials/calculator') ?>
             <?= $this->insert('project/partials/sdgs') ?>
         </div>
@@ -108,7 +108,6 @@ $this->section('content');
 <?= $this->insert('project/partials/related_projects') ?>
 
 <!-- sticky menu -->
-
 <div class="sticky-menu" data-offset-top="880" data-spy="affix">
 	<div class="container-fluid">
 		<div class="row">
