@@ -1,25 +1,25 @@
 <?php
 ?>
 <div class="col-md-4 col-sm-4 col-xs-12">
-    <h4>Calculadora</h4>
+    <h4><?= $this->t('project-calculator-title') ?></h4>
     <article class="card-impact-calculator">
         <div class="row">
             <div class="col-md-2 col-xs-2 col-sm-4">
                 <i class="icon icon-calculator"></i>
             </div>
             <div class="col-md-10 col-xs-10 col-sm-8">
-                <h3>Calcula el impacto de tu donación</h3>
-                <p>Descubre el alcance de tu apoyo</p>
+                <h3><?= $this->t('project-calculator-card-title') ?></h3>
+                <p><?= $this->t('project-calculator-card-description') ?></p>
                 <div class="button-modal hidden-sm hidden-md hidden-lg">
                     <button class="btn" data-toggle="modal" data-target="#impact-calculator-modal">
-                        Haz tu cálculo aquí
+                        <?= $this->t('project-calculator-card-button') ?>
                     </button>
                 </div>
             </div>
         </div>
         <div class="button-modal hidden-xs">
             <button class="btn" data-toggle="modal" data-target="#impact-calculator-modal">
-                Haz tu cálculo aquí
+                <?= $this->t('project-calculator-card-button') ?>
             </button>
         </div>
     </article>
@@ -34,12 +34,12 @@ $amountPerImpactDataProject = 100.0 / $count;
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span></button>
-        <label for="modal-budget">Cantidad de tu aportación</label>
+        <label for="modal-budget"><?= $this->t('project-calculator-modal-budget-label') ?></label>
         <div class="modal-input">
             <i class="icon icon-2x icon-money-bag"></i>
             <input type="text" id="modal-budget" name="modal-budget" width="100%" placeholder="100 €">
         </div>
-        <p>Con tu donación contribuyes a poder hacer posible:</p>
+        <p><?= $this->t('project-calculator-modal-budget-impact-description') ?></p>
       </div>
       <div class="modal-body">
         <?php
@@ -66,7 +66,7 @@ $amountPerImpactDataProject = 100.0 / $count;
       <?php endforeach; ?>
       </div>
       <div class="modal-footer">
-          <h2>De tu aportación de 100€ hacienda te devolverá 80€</h2>
+          <h2><?= $this->t('project-calculator-modal-footer-description') ?></h2>
       </div>
     </div>
   </div>

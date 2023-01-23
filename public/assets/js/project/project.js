@@ -227,6 +227,44 @@ $(() => {
     })
 
     $('[data-toggle="tooltip"]').tooltip();
+
+    function amount_estimation_divide_data(estimatedAmount, data) {
+        return parseInt(data) / parseInt(estimatedAmount)
+    }
+
+    function data_divide_amount_estimation(estimatedAmount, data) {
+        return parseInt(estimatedAmount) / parseInt(data)
+    }
+
+    function calculateResult(estimatedAmount, data, operationType, value) {
+        switch (operationType) {
+            case "data_divide_amount_estimation":
+                return data_divide_amount_estimation(estimatedAmount, data) * value;
+            case "amount_estimation_divide_data":
+                return amount_estimation_divide_data(estimatedAmount, data) * value;
+        }
+    }
+
+    const $impactCalculatorModal = document.getElementById('impact-calculator-modal')
+    const $modalBudget = document.getElementById('modal-budget')
+    $modalBudget.addEventListener('change', function() {
+        const value = this.value
+        const count = $impactCalculatorModal.dataset.impactDataProjectCount
+        const valuePerImpactData = (value / count).toFixed(2)
+        const $impactDataList = $('.impact-data-info').each(function(index, impactData) {
+            const estimationAmount = impactData.dataset.estimationAmount
+            const data = impactData.dataset.data
+            const operationType = impactData.dataset.operationType
+            const id = impactData.dataset.id
+
+            const $p = document.getElementById('result-impact-data-' + id)
+            const resultMessage = $p.dataset.resultMsg
+            const result = calculateResult(estimationAmount, data, operationType, valuePerImpactData).toFixed(2)
+
+            $p.innerHTML = resultMessage.replace("%s", value).replace("%s", result)
+
+        })
+    })
 });
 
 // @license-end

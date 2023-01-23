@@ -168,3 +168,10 @@ project-impact-calculator-footprint-1-description: Lorem impsum dolor sit amet, 
 project-impact-calculator-footprint-2-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
 project-impact-calculator-footprint-3-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
 project-impact-calculator-activate-indicator: "Activar compromiso"
+project-calculator-title: "Calculadora"
+project-calculator-card-title: "Calcula el impacto de tu donación"
+project-calculator-card-description: "Descubre el alcance de tu apoyo"
+project-calculator-card-button: "Haz tu cálculo aquí"
+project-calculator-modal-budget-label: "Cantidad de tu aportación"
+project-calculator-modal-budget-impact-description: "Con tu donación contribuyes a poder hacer posible:"
+project-calculator-modal-footer-description: "Por una aportación de 100€ hacienda te devolverá 80€"
