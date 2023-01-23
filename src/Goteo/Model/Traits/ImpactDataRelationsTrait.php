@@ -98,6 +98,7 @@ trait ImpactDataRelationsTrait {
         $rel = $this->getImpactDataTable();
         list($fields, $joins) = ImpactData::getLangsSQLJoins(null, Config::get('sql_lang'));
         $sqlWhere = [];
+        $sqlInner = "";
 
         if ($filters['source']) {
             if (is_array($filters['source'])) {
@@ -139,6 +140,12 @@ trait ImpactDataRelationsTrait {
             $values[':not_type'] = $filters['not_type'];
         }
 
+        if ($filters['project']) {
+            $sqlInner .= "INNER JOIN impact_data_project ON impact_data.id = impact_data_project.impact_data_id ";
+            $sqlWhere[] = "impact_data_project.project_id = :project";
+            $values[':project'] = $filters['project'];
+        }
+
         $sqlWhere = $sqlWhere ? "AND " . implode(' AND ', $sqlWhere) : '';
 
         $sql = "SELECT
@@ -154,6 +161,7 @@ trait ImpactDataRelationsTrait {
             FROM `$rel`
             INNER JOIN impact_data ON impact_data.id = `$rel`.impact_data_id
             $joins
+            $sqlInner
             WHERE `$rel`.{$tb}_id = :id
             $sqlWhere
             ORDER BY `$rel`.order ASC";

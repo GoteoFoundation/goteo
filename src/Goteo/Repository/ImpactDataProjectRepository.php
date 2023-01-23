@@ -4,6 +4,7 @@ namespace Goteo\Repository;
 
 use Goteo\Application\Exception\ModelException;
 use Goteo\Entity\ImpactData\ImpactDataProject;
+use Goteo\Model\Footprint;
 use Goteo\Model\ImpactData;
 use Goteo\Model\Project;
 
@@ -24,6 +25,37 @@ class ImpactDataProjectRepository extends BaseRepository
         $list = [];
         try {
             foreach($this->query($sql, [$project->id])->fetchAll(\PDO::FETCH_OBJ) as $obj) {
+                $impactDataProject = new ImpactDataProject();
+                $impactData = ImpactData::get($obj->impact_data_id);
+
+                $impactDataProject->setImpactData($impactData)->setProject($project)->setData($obj->data)->setEstimationAmount($obj->estimation_amount);
+                $list[] = $impactDataProject;
+            }
+        } catch (\PDOException $e) {
+            return [];
+        }
+
+        return $list;
+    }
+
+    /**
+     * @return ImpactDataProject[]
+     */
+    public function getListByProjectAndFootprint(Project $project, Footprint $footprint): array
+    {
+        $sql = "SELECT *
+                FROM $this->table
+                INNER JOIN footprint_impact ON footprint_impact.impact_data_id = impact_data_project.impact_data_id
+                WHERE project_id = :project and footprint_impact.footprint_id = :footprint
+        ";
+        $values = [
+            ':project' => $project->id,
+            'footprint' => $footprint->id
+        ];
+
+        $list = [];
+        try {
+            foreach($this->query($sql, $values)->fetchAll(\PDO::FETCH_OBJ) as $obj) {
                 $impactDataProject = new ImpactDataProject();
                 $impactData = ImpactData::get($obj->impact_data_id);
 

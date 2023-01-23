@@ -84,6 +84,7 @@ class ImpactData extends Model {
     public static function getList(array $filters = [], int $offset = 0, int $limit = 10, int $count = 0) {
     	$sqlWhere = [];
         $values = [];
+        $sqlInner = [];
 
         $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang);
@@ -125,6 +126,18 @@ class ImpactData extends Model {
             $values[':not_type'] = $filters['not_type'];
         }
 
+        if ($filters['project']) {
+            $sqlInner .= "INNER JOIN impact_data_project ON impact_data.id = impact_data_project.impact_data_id ";
+            $sqlWhere[] = "impact_data_project.project_id = :project";
+            $values[':project'] = $filters['project'];
+        }
+
+        if ($filters['footprint']) {
+            $sqlInner.= "INNER JOIN footprint_impact ON impact_data.id = footprint_impact.impact_data_id ";
+            $sqlWhere[] = "footprint_impact.footprint_id = :footprint";
+            $values[':footprint'] = $filters['footprint'];
+        }
+
         if ($count) {
             $sql = "SELECT COUNT(impact_data.id)
             FROM impact_data
@@ -144,6 +157,7 @@ class ImpactData extends Model {
                     impact_data.operation_type
                 FROM impact_data
                 $joins
+                $sqlInner
                 $sqlWhere
                 LIMIT $offset, $limit
             ";
