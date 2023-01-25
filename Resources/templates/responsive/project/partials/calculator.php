@@ -27,7 +27,7 @@
 
 <?php
 $count = count($this->impactDataProjectList);
-$amountPerImpactDataProject = 100.0 / $count;
+$amountPerImpactDataProject = number_format(100.0 / $count, 2);
 ?>
 <div class="modal fade" id="impact-calculator-modal" tabindex="-1" role="dialog" aria-labelledby="admin-modal-label" data-impact-data-project-count=<?= $count ?>>
   <div class="modal-dialog" role="document">
@@ -59,7 +59,7 @@ $amountPerImpactDataProject = 100.0 / $count;
                         $calculation = (  (float) ($impactDataProject->getData() / $impactDataProject->getEstimationAmount() ) * $amountPerImpactDataProject);
                         $calulationFormatted = number_format($calculation, 2)
                       ?>
-                      <p id="result-impact-data-<?= $impactData->id ?>"class="result" data-result-msg="<?= $impactData->result_msg ?>"><?= vsprintf($impactData->result_msg, [number_format($amountPerImpactDataProject, 2), $calulationFormatted ]) ?></p>
+                      <p id="result-impact-data-<?= $impactData->id ?>"class="result" data-result-msg="<?= $impactData->result_msg ?>"><?= str_replace(['%amount', '%result'], [number_format($amountPerImpactDataProject, 2), $calulationFormatted ], $impactData->result_msg) ?></p>
                   </div>
               </div>
           </div>

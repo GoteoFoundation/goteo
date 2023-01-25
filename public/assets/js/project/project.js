@@ -251,7 +251,9 @@ $(() => {
         const value = this.value
         const count = $impactCalculatorModal.dataset.impactDataProjectCount
         const valuePerImpactData = (value / count).toFixed(2)
-        const $impactDataList = $('.impact-data-info').each(function(index, impactData) {
+        const $impactDataList = $('.impact-data-info')
+
+        $impactDataList.each(function(index, impactData) {
             const estimationAmount = impactData.dataset.estimationAmount
             const data = impactData.dataset.data
             const operationType = impactData.dataset.operationType
@@ -261,8 +263,7 @@ $(() => {
             const resultMessage = $p.dataset.resultMsg
             const result = calculateResult(estimationAmount, data, operationType, valuePerImpactData).toFixed(2)
 
-            $p.innerHTML = resultMessage.replace("%s", value).replace("%s", result)
-
+            $p.innerHTML = resultMessage.replace("%amount", valuePerImpactData).replace("%result", result)
         })
     })
 });

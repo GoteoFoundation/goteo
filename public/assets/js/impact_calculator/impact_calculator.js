@@ -37,7 +37,7 @@ $(function() {
             const result = calculateResult(estimatedAmount, data, operation).toFixed(2);
             const text = $resultMsg.dataset.text;
 
-            $resultMsg.innerHTML = text.replace("%s", result);
+            $resultMsg.innerHTML = text.replace("%amount", 1).replace("%result", result);
         }
     });
 });
