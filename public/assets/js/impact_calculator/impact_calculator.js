@@ -1,5 +1,5 @@
 $(function() {
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip({trigger: "hover focus click"});
 
     $('input[type=checkbox]').change(function() {
         const $article = $(this.closest('article'))
