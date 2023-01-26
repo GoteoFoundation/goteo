@@ -38,6 +38,9 @@ class ImpactItemRepository extends BaseRepository
         return $impactItem;
     }
 
+    /**
+     * @throws ModelNotFoundException
+     */
     public function getById(int $id): ImpactItem
     {
 
@@ -50,6 +53,9 @@ class ImpactItemRepository extends BaseRepository
         return $impactItem;
     }
 
+    /**
+     * @throws ModelException
+     */
     public function delete(ImpactItem $impactItem): void
     {
         $sql = "DELETE FROM $this->table WHERE id = ?";

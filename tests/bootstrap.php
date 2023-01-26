@@ -15,6 +15,7 @@ use Goteo\Model\Node;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
+use Goteo\Repository\ImpactItemRepository;
 
 
 //Public Web path
@@ -385,5 +386,33 @@ function get_test_impact_item(): ?ImpactItem
         ->setDescription($data['description'])
         ->setUnit($data['unit']);
 
+    $impactItemRepository = new ImpactItemRepository();
+
+    try {
+        $impactItemRepository->persist($impactItem);
+    } catch(ModelException $e) {
+        error_log('unknown error getting test Impact Item ' . $e->getMessage());
+        return null;
+    }
+
     return $impactItem;
+}
+
+function delete_test_impact_item(): bool
+{
+    $impactItemRepository = new ImpactItemRepository();
+
+    try {
+        $impactItem = $impactItemRepository->getById(1);
+    } catch (ModelNotFoundException $e) {
+        return true;
+    }
+
+    try {
+        $impactItemRepository->delete($impactItem);
+    } catch (ModelException $e) {
+        return false;
+    }
+
+    return true;
 }

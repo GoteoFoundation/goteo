@@ -29,7 +29,20 @@ class ImpactItemRepositoryTest extends TestCase
     public function testPersist(): ImpactItem
     {
         $errors = [];
-        $impactItem = get_test_impact_item();
+        $data = [
+            'id' => 1,
+            'name' => 'Test impact item name',
+            'description' => 'Test impact item description',
+            'unit' => 'Test unit',
+        ];
+
+        $impactItem = new ImpactItem();
+        $impactItem
+            ->setId($data['id'])
+            ->setName($data['name'])
+            ->setDescription($data['description'])
+            ->setUnit($data['unit']);
+
         $impactItem = $this->repository->persist($impactItem, $errors);
         $this->assertEmpty($errors, implode(',', $errors));
         $this->assertInstanceOf(ImpactItem::class, $impactItem);

@@ -34,8 +34,9 @@ class ImpactDataItem
         return $this->impactItem;
     }
 
-    public function setImpactItem(ImpactItem $impactItem): void
+    public function setImpactItem(ImpactItem $impactItem): ImpactDataItem
     {
         $this->impactItem = $impactItem;
+        return $this;
     }
 }
