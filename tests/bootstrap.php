@@ -7,6 +7,7 @@ use Goteo\Application\Currency;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\Model;
+use Goteo\Entity\ImpactItem\ImpactItem;
 use Goteo\Model\ImpactData;
 use Goteo\Model\Invest;
 use Goteo\Model\Matcher;
@@ -366,4 +367,23 @@ function delete_test_impact_data(): bool
     if (empty($impactData)) return true;
 
     return $impactData->dbDelete();
+}
+
+function get_test_impact_item(): ?ImpactItem
+{
+    $data = [
+        'id' => 1,
+        'name' => 'Test impact item name',
+        'description' => 'Test impact item description',
+        'unit' => 'Test unit',
+    ];
+
+    $impactItem = new ImpactItem();
+    $impactItem
+        ->setId($data['id'])
+        ->setName($data['name'])
+        ->setDescription($data['description'])
+        ->setUnit($data['unit']);
+
+    return $impactItem;
 }
