@@ -8,7 +8,7 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\ImpactItem;
+namespace Goteo\Entity\ImpactItem;
 
 class ImpactItem
 {

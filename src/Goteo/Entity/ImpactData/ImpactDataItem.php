@@ -10,7 +10,7 @@
 
 namespace Goteo\Entity\ImpactData;
 
-use Goteo\ImpactItem\ImpactItem;
+use Goteo\Entity\ImpactItem\ImpactItem;
 use Goteo\Model\ImpactData;
 
 class ImpactDataItem
