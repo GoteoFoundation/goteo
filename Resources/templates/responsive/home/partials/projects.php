@@ -8,10 +8,10 @@
 
     </div>
     <div class="container" id="projects-container">
-        <?php if($this->projects): ?>
+        <?php if ($this->response->getProjects()): ?>
             <?= $this->insert('home/partials/projects_list', [
-                'projects' => $this->projects,
-                'total_projects' => $this->total_projects
+                'projects' => $this->response->getProjects(),
+                'total_projects' => $this->response->getTotalProjects()
             ]) ?>
         <?php endif ?>
     </div>

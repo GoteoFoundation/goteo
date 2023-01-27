@@ -1,7 +1,7 @@
 <div class="section sponsors" >
-    <?php if($this->sponsors): ?>
+    <?php if($this->response->getSponsors()): ?>
         <div class="container">
-            <?php foreach($this->sponsors as $type => $sponsors): ?> 
+            <?php foreach($this->response->getSponsors() as $type => $sponsors): ?>
                 <?php if ($sponsors): ?>
                 <div class="row">
                     <div class="sponsor-type">
