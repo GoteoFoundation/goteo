@@ -16,7 +16,7 @@ class ImpactItemConversionTip
 {
     private ImpactItem $impactItem;
     private string $rateTipDescription;
-    private sting $reference;
+    private string $reference;
 
     public function getImpactItem(): ImpactItem
     {
@@ -40,12 +40,12 @@ class ImpactItemConversionTip
         return $this;
     }
 
-    public function getReference(): sting
+    public function getReference(): string
     {
         return $this->reference;
     }
 
-    public function setReference(sting $reference): ImpactItemConversionTip
+    public function setReference(string $reference): ImpactItemConversionTip
     {
         $this->reference = $reference;
         return $this;

@@ -67,7 +67,8 @@ class GoteoImpactDataItem
         CREATE TABLE `impact_item_conversion_tip` (
             `impact_item_id` BIGINT(20) UNSIGNED NOT NULL,
             `rate_tip_description` TEXT NOT NULL,
-            `reference` TEXT
+            `reference` TEXT,
+            PRIMARY KEY (`impact_item_id)
         );
 
         CREATE TABLE `impact_item_footprint` (
