@@ -3,7 +3,6 @@
 namespace Goteo\Repository;
 
 use Goteo\Application\Exception\ModelException;
-use Goteo\Entity\ImpactItem\ImpactItem;
 use Goteo\Entity\ImpactItem\ImpactItemFootprint;
 use Goteo\Model\Footprint;
 use PDO;
@@ -71,6 +70,4 @@ class ImpactItemFootprintRepository extends BaseRepository
 
         return $list;
     }
-
-
 }
