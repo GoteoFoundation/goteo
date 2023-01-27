@@ -156,15 +156,15 @@ class AuthController extends Controller {
 
             $user->save($errors);
 
-            // Set user newsletter notifications preferences
-            $newsletter_no_active=isset($vars['newsletter_accept']) ? 0 : 1;
-
-            User::setPreferences($user, ['mailing' => $newsletter_no_active], $errors);
-
             if (empty($errors)) {
                 Message::info(Text::get('user-register-success'));
                 // no confirmation..., direct login
                 $user = User::get($user->id);
+                
+                // Set user newsletter notifications preferences
+                $newsletter_no_active=isset($vars['newsletter_accept']) ? 0 : 1;
+                User::setPreferences($user, ['mailing' => $newsletter_no_active], $errors);
+                
                 Session::setUser($user);
                 //Redirect
                  //Everything ok, redirecting
