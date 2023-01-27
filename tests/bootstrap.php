@@ -8,6 +8,7 @@ use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\Model;
 use Goteo\Entity\ImpactItem\ImpactItem;
+use Goteo\Model\Footprint;
 use Goteo\Model\ImpactData;
 use Goteo\Model\Invest;
 use Goteo\Model\Matcher;
@@ -329,6 +330,44 @@ function delete_test_reward(): bool
     if (empty($reward)) return true;
 
     return $reward->dbDelete();
+}
+
+function get_test_footprint(): ?Footprint
+{
+    $data = [
+        'id' => 1,
+        'name' => 'test Footprint',
+        'icon' => '',
+        'title' => 'test title',
+        'description' => 'test description'
+    ];
+
+    $footprint = new Footprint($data);
+
+    try {
+        if ( ! $footprint->dbInsert(['id', 'name', 'icon', 'title', 'description']) ) {
+            error_log("Error saving footprint!");
+            return null;
+        }
+    } catch (\PDOException $e) {
+        error_log($e->getMessage());
+    }
+
+    try {
+        return Footprint::get($data['id']);
+    } catch(\ModelException $e) {
+        error_log('unknown error getting test footprint ' . $e->getMessage());
+        return null;
+    }
+}
+
+function delete_test_footprint(): bool
+{
+    $footprint = Footprint::get(1);
+
+    if (empty($footprint)) return true;
+
+    return $footprint->dbDelete();
 }
 
 function get_test_impact_data(): ?ImpactData
