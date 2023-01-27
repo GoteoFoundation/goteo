@@ -28,7 +28,6 @@ class ImpactDataItemRepositoryTest extends TestCase
     {
         $impactData = get_test_impact_data();
         $impactItem = get_test_impact_item();
-        var_dump($impactData);
         $impactDataItem = new ImpactDataItem();
         $impactDataItem
             ->setImpactData($impactData)
