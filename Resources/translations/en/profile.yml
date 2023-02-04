@@ -33,10 +33,12 @@ profile-main-header: 'Profile data'
 profile-suggest-projects-interest: 'You might want to support'
 step-1: Profile
 step-userProfile: 'Step: User / Profile'
+tooltip-user-about: "As a social network, Goteo wants to help disseminate and fund interesting projects to as many people as possible. Therefore, the information that you can share about your skills or experience (professional, academic, hobbies, etc) is important."
 tooltip-user-analytics: 'Provide, in case you have it, your Google Analytics track ID to enable Google Analytics for your project. The ID should be in this format: UA-000000-01 (ID example)'
 tooltip-user-avatar_upload: 'Tooltip text upload user image'
 tooltip-user-contribution: 'Briefly explain your skills and the areas in which you could help (translating, marketing, testing, programming, teaching, etc.)'
 tooltip-user-facebook: 'This social network can help you spread the word about Goteo projects that interest you with your friends and family.'
+tooltip-user-facebook-pixel: 'Enter your Facebook Pixel ID if you want to track the progress of a campaign on Facebook.'
 tooltip-user-google: 'The Google+ social network is pretty new, but you can specify your user id if you use it already.'
 tooltip-user-identica: 'This channel can help you spread the word about Goteo projects in the open source community.'
 tooltip-user-instagram: 'This social network can help you spread the word about Goteo projects that interest you with your friends and family.'
