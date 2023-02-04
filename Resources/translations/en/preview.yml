@@ -1,12 +1,16 @@
 ---
-guide-project-error-mandatories: 'Some required fields are missing'
+guide-project-error-mandatories: 'Missing required fields'
 guide-project-preview: '<strong>This is a summary of all of the information about the project.</strong><br><br>Review the information given in each field to see if any improvements can be made, and when you''re ready, send us the project (by clicking the Send button below) so we can evaluate it. Once the proposal is sent, no further changes are permitted.<br><br>Keep in mind that we can only choose a few projects per month in order to guarantee a certain amount of attention and promotion for those that are published. You will receive a message with all of this information shortly, which will indicate the next steps, as well as some recommendations that will help your project reach its proposed objectives.'
-guide-project-success-minprogress: 'You have achieved the minimum percentage'
-guide-project-success-noerrors: 'All of the required fields are filled out'
+guide-project-success-minprogress: 'You have reached the minimum percentage'
+guide-project-success-noerrors: 'All the required fields have been completed'
 guide-project-success-okfinish: 'You can send it for reviewing'
 preview-main-header: 'Information preview'
 preview-send-comment: 'Additional notes for the administrator'
 step-7: Preview
 step-preview: 'Project / Preview'
-tooltip-project-comment: 'Do you have any doubts or comments for the Goteo administrator? This is the place to mention some part of what you have written that you''re not sure about, to suggest improvements, etc.'
+tooltip-project-comment: 'Do you have any doubts or comments that you want the Goteo administrator to read? This is the place to explain any part of what you have written that you''re not sure about, to suggest improvements, etc.'
+project-send-review-desc: >
+  Once you send it, no changes can be made until we open your edits again.
+  In short, we will get in contact with you to comment on the campaign proposal and to continue with you optimization and publication process. 
+  *Do not forget to check your SPAM inbox*, occasionally technology is not capable of appreciating the care that we give to our projects.
 
