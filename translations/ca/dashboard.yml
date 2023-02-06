@@ -81,7 +81,7 @@ dashboard-menu-projects-recipients: destinataris
 dashboard-menu-projects-preview: 'Pàgina pública'
 dashboard-menu-projects-rewards: Gestió cofinançadors
 dashboard-menu-projects-summary: Resum
-dashboard-menu-projects-supports: Col·laboracions 
+dashboard-menu-projects-supports: Col·laboracions
 dashboard-menu-projects-updates: Actualitzacions
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'La meva història'
@@ -303,3 +303,5 @@ dashboard-project-pitch-title: 'Aplicacions obertes'
 dashboard-project-pitch-description: "Aquests són els diferentes espais als que pots aplicar, si t'interessa rebre finançament extra per la teva campanya o recolçament institucional, fes-li un cop d'ull i anima't a presentar-te!"
 dashboard-project-pitch-type: "Tipus"
 dashboard-project-pitch-already-applied: "Ja has aplicat"
+dashboard-project-impact-by-footprint-title: "Dades d'impacte del projecte per la Petjada %s"
+dashboard-project-impact-items-title: "Items d'Impacte per la Dada d'Impacte <br> %s"

@@ -301,3 +301,5 @@ dashboard-project-pitch-title: 'Open applications'
 dashboard-project-pitch-description: "These are the different spaces to which you can apply, if you are interested in receiving extra funding for your campaign or institutional support, take a look and go ahead and introduce yourself!"
 dashboard-project-pitch-type: "Type"
 dashboard-project-pitch-already-applied: "You have already applied"
+dashboard-project-impact-by-footprint-title: "Impact Data of the project for the Footprint %s"
+dashboard-project-impact-items-title: "ImpactItem for the Impact Data <br> %s"

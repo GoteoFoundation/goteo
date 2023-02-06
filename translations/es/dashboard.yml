@@ -306,3 +306,5 @@ dashboard-project-pitch-title: 'Aplicaciones abiertas'
 dashboard-project-pitch-description: "Estos son los diferentes espacios a los que puedes aplicar, si te interesa recibir financiación extra para tu campaña o apoyo institucional, échale un vistazo y ¡anímate a presentarte!"
 dashboard-project-pitch-type: "Tipo"
 dashboard-project-pitch-already-applied: "Ya has aplicado"
+dashboard-project-impact-by-footprint-title: "Datos de impacto del proyecto para la Huella %s"
+dashboard-project-impact-items-title: "Items de Impacto para el Dato de Impacto <br> %s"

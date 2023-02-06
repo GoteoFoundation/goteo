@@ -117,9 +117,9 @@ class ProjectDashboardController extends DashboardController {
             $footprints = Footprint::getList();
 
             foreach($footprints as $footprint) {
-                $steps[] = ['text' => $footprint->title, 'link' => $prefix . '/impact/' . $footprint->id, 'id' => $footprint->id];
+                $steps[] = ['text' => $footprint->title, 'link' => "$prefix/impact/$footprint->id", 'id' => "footprint_$footprint->id"];
             }
-            Session::addToSidebarMenu('<i class="icon icon-2x icon-rocket"></i>' . Text::get('impactdata-lb'), $steps, 'project', null, 'sidebar');
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-rocket"></i>' . Text::get('impactdata-lb'), $steps, 'impact', null, 'sidebar');
         }
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get($project->isApproved() ? 'dashboard-menu-projects-preview' : 'regular-preview' ), '/project/' . $project->id, 'preview');

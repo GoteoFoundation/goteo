@@ -24,7 +24,7 @@ class ImpactProjectDashboardController extends ProjectDashboardController
 {
     public function indexAction(Request $request, $pid, $footprint_id): Response
     {
-        $project = $this->validateProject($pid);
+        $project = $this->validateProject($pid, "footprint_$footprint_id");
         $footprint = Footprint::get($footprint_id);
 
         if(!$project instanceOf Project || !$project->userCanEdit(Session::getUser())) {
@@ -39,6 +39,7 @@ class ImpactProjectDashboardController extends ProjectDashboardController
         return $this->viewResponse(
             'dashboard/project/impact/impact_by_footprint',
             [
+                'footprint' => $footprint,
                 'impactDataProject' => $impactDataProject,
                 'project' => $project
             ]

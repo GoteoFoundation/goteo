@@ -6,7 +6,7 @@ $this->layout('dashboard/project/layout');
 
 <div class="dashboard-content">
     <div class="inner-container">
-        <h1>Items de Impacto para el Dato de Impacto -> <?= $this->impactData->title ?></h1>
+        <h1><?= $this->text('dashboard-project-impact-items-title', $this->impactData->title) ?></h1>
 
         <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->list, ['impactProjectId', 'impactItemName', 'impactValue', 'actions'])]) ?>
     </div>

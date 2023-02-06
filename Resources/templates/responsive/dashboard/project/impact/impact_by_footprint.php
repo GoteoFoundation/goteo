@@ -6,12 +6,11 @@
 
 <div class="dashboard-content">
     <div class="inner-container">
-        <h1>Datos de impacto del proyecto</h1>
+        <h1><?= $this->text('dashboard-project-impact-by-footprint-title', $this->footprint->title ) ?></h1>
 
         <?= $this->insert('admin/partials/material_table', ['list' => $this->model_list_entries($this->impactDataProject, ['impactDataId', 'estimation', 'dataValue', 'actions'])]) ?>
     </div>
 </div>
-
 
 <?php $this->replace() ?>
 
