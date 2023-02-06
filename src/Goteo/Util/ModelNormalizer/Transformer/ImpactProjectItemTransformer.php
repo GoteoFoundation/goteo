@@ -16,13 +16,23 @@ class ImpactProjectItemTransformer extends AbstractTransformer
         return $this->model->getImpactItem()->getId();
     }
 
+    public function getImpactItemName(): string
+    {
+        return $this->model->getImpactItem()->getName();
+    }
+
+    public function getImpactValue()
+    {
+        return $this->model->getValue();
+    }
+
     public function getActions()
     {
         if(!$u = $this->getUser()) return [];
         $project = $this->model->getProject()->id;
         $id = $this->model->getId();
         $ret = [
-            'edit' => "/dashboard/project/$project/impact_item/$id/edit",
+            'edit' => "/dashboard/project/$project/impact_item_project/$id/edit",
         ];
         return $ret;
     }
