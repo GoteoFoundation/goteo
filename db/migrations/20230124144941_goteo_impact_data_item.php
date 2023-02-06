@@ -51,7 +51,7 @@ class GoteoImpactDataItem
             `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             `impact_item_id` BIGINT(20) UNSIGNED NOT NULL,
             `project_id` VARCHAR(50) COLLATE utf8_general_ci NOT NULL,
-            `value` VARCHAR(50),
+            `value` VARCHAR(50) NOT NULL,
             PRIMARY KEY (`id`),
             FOREIGN KEY (`impact_item_id`) REFERENCES `impact_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
             FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
