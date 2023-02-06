@@ -518,7 +518,7 @@ admin-filter-forced-help: 'Selecting this option will apply filters regardless o
 admin-filter-project-status: Project status
 admin-filter-invest-status: Invest status
 admin-filter-project-location: "Project's location"
-admin-filter-location: "Locaiton to be used by the filter"
+admin-filter-location: "Location to be used by the filter"
 admin-filter-donor-location: "Donor's location"
 admin-filter-donor-status: Certificate status
 admin-mail-body: 'Body of the message'
@@ -534,3 +534,9 @@ admin-certificates: Certificates
 admin-certificates-management: Certificates Management
 admin-impact_data: "Impact Data"
 admin-user-manage-tip-donation: "donation tip"
+admin-title-impactDataId: "Name of the impact data"
+admin-title-estimation: "Impact estimation"
+admin-title-dataValue: "Value of the impact"
+admin-title-impactProjectId: "Id of the Project's Impact Item"
+admin-title-impactValue: "Value"
+admin-title-impactItemName: "Name of the Impact Item "

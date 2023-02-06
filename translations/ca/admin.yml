@@ -296,3 +296,9 @@ mandatory-filter-role: Manca un rol
 admin-node-iframe: Iframe
 admin-impact_data: "Dades d'impacte"
 admin-user-manage-tip-donation: "de donació propina"
+admin-title-impactDataId: "Nom de la dada d'impacte"
+admin-title-estimation: "Estimació d'impacte"
+admin-title-dataValue: "Dada d'impacto"
+admin-title-impactProjectId: "Id del Item d'Impacte pel Projecte"
+admin-title-impactValue: "Valor"
+admin-title-impactItemName: "Nom del Item d'Impacto"
