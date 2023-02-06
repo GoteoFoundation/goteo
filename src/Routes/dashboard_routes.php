@@ -278,6 +278,21 @@ $dash->add('dashboard-project-materials-redirect', new Route(
     )
 ));
 
+$dash->add('dashboard-project-impact-data-by-footprint', new Route(
+    '/project/{pid}/impact/{footprint_id}',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::indexAction']
+));
+
+$dash->add('dashboard-project-impact-data-list', new Route(
+    '/project/{pid}/impact/{impact_id}/impact_items',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::impactItemProjectAction']
+));
+
+$dash->add('dashboard-project-impact-item-edit', new Route(
+    '/project/{pid}/impact_item_project/{id}/edit',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::impactItemEditAction']
+));
+
 // Settings
 $dash->add('dashboard-settings', new Route(
     '/settings',
