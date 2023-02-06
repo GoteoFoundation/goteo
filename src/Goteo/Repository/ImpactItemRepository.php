@@ -54,6 +54,15 @@ class ImpactItemRepository extends BaseRepository
     }
 
     /**
+     * @return ImpactItem[]
+     */
+    public function getAll(): array
+    {
+        $sql = "SELECT * FROM $this->table";
+        return $this->query($sql, [])->fetchAll(ImpactItem::class);
+    }
+
+    /**
      * @throws ModelException
      */
     public function delete(ImpactItem $impactItem): void

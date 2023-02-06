@@ -14,6 +14,8 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Core\Model;
 use Goteo\Library\Text;
+use Goteo\Model\ImpactItem\ImpactItem;
+use Goteo\Model\Project;
 
 class ImpactData extends Model {
     const SOURCE_ITEM = "item";
@@ -166,6 +168,14 @@ class ImpactData extends Model {
 
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    }
+
+    /**
+     * @return ImpactItem[]
+     */
+    public function getImpactItemsRelatedToProject(Project $project): array
+    {
+        return ImpactItem::getByImpactDataAndProject($this, $project);
     }
 
 	public function getImage(): Image {

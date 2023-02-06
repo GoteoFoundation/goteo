@@ -51,10 +51,4 @@ class ImpactItemConversionTipRepository extends BaseRepository
         $sql = "DELETE FROM $this->table WHERE impact_item_id = ?";
         $this->query($sql, [$impactItemConversionTip->getImpactItem()->getId()]);
     }
-
-    static function tearDownAfterClass(): void
-    {
-        parent::tearDownAfterClass();
-        delete_test_impact_item();
-    }
 }
