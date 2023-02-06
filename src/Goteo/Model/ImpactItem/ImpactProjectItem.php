@@ -130,13 +130,17 @@ class ImpactProjectItem extends Model
         if (!$this->validate($errors)) return false;
 
         $fields = [
+            'id' => ':id',
             'project_id' => ':project_id',
-            'impact_item_id' => ':impact_item_id'
+            'impact_item_id' => ':impact_item_id',
+            'value' => ':value'
         ];
 
         $values = [
+            'id' => $this->id,
             ':project_id' => $this->project->id,
             ':impact_item_id' => $this->impactItem->getId(),
+            ':value' => $this->value
         ];
 
         $sql = "REPLACE INTO $this->Table (" . implode(',', array_keys($fields)) . ") VALUES (" . implode(',', array_values($fields)) . ")";
