@@ -45,28 +45,6 @@ class ImpactProjectItemCost extends Model
         return $this;
     }
 
-    /**
-     * @return ImpactProjectItemCost[]
-     * @throws PDOException
-     */
-    static public function getListByFootprint(ImpactProjectItem $impactProjectItem): array
-    {
-        $table = self::$Table_static;
-        $sql = "SELECT * FROM $table WHERE impact_project_item_id = ?";
-
-        $list = self::query($sql, [$impactProjectItem->getId()])->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-        foreach ($list as $impactProjectItemCost) {
-            $cost = Cost::get($impactProjectItemCost->cost_id);
-            $impactProjectItemCost
-                ->setItemProjectItem($impactProjectItem);
-
-            $list[] = $impactProjectItemCost;
-        }
-
-        return $list;
-    }
-
-
     public function save(&$errors = array())
     {
         if (!$this->validate($errors))
@@ -92,6 +70,28 @@ class ImpactProjectItemCost extends Model
         }
 
         return true;
+    }
+
+
+    /**
+     * @return ImpactProjectItemCost[]
+     * @throws PDOException
+     */
+    static public function getListByImpactProjectItem(ImpactProjectItem $impactProjectItem): array
+    {
+        $table = self::$Table_static;
+        $sql = "SELECT * FROM $table WHERE impact_project_item_id = ?";
+
+        $list = self::query($sql, [$impactProjectItem->getId()])->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+        foreach ($list as $impactProjectItemCost) {
+            $cost = Cost::get($impactProjectItemCost->cost_id);
+            $impactProjectItemCost
+                ->setItemProjectItem($impactProjectItem);
+
+            $list[] = $impactProjectItemCost;
+        }
+
+        return $list;
     }
 
     public function validate(&$errors = array())

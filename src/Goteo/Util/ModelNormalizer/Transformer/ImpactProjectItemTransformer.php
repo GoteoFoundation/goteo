@@ -31,9 +31,15 @@ class ImpactProjectItemTransformer extends AbstractTransformer
         if(!$u = $this->getUser()) return [];
         $project = $this->model->getProject()->id;
         $id = $this->model->getId();
-        $ret = [
-            'edit' => "/dashboard/project/$project/impact_item_project/$id/edit",
+        if ($this->model->getRelatedImpactData()) {
+            $impactData = $this->model->getRelatedImpactData()->id;
+        }
+
+        return [
+            'edit' => "/dashboard/project/$project/impact/impact_data/$impactData/impact_item/$id/edit",
+            'costs' => "/dasboard/project/$project/impact/impact_data/$impactData/impact_item/$id/costs",
+            'delete' => "/dashboard/project/$project/impact/impact_data/$impactData/impact_item/$id/delete"
         ];
-        return $ret;
+
     }
 }

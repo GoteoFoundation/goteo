@@ -11,40 +11,76 @@
 
 namespace Goteo\Library\Forms\Model;
 
-use Goteo\Entity\ImpactData\ImpactDataProject;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
-use Goteo\Repository\ImpactDataProjectRepository;
+use Goteo\Model\Footprint;
+use Goteo\Model\ImpactData;
+use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 
 class ImpactDataProjectForm extends AbstractFormProcessor {
 
+    private function getImpactDataList(): array
+    {
+        $count = ImpactData::getList(['not_source' => 'manual'], 0, 0, true);
+        $impactDataList = ImpactData::getList(['not_source' => 'manual'], 0, $count);
+
+        $list = [];
+        foreach($impactDataList as $impactData) {
+            $list[$impactData->title] = $impactData->id;
+        }
+
+        return $list;
+
+    }
+
+    private function getImpactDataListByFootprint(Footprint $footprint): array
+    {
+        $count = ImpactData::getList(['not_source' => 'manual', 'footprint' => $footprint->id], 0, 0, true);
+        $impactDataList = ImpactData::getList(['not_source' => 'manual', 'footprint' => $footprint->id], 0, $count);
+
+        $list = [];
+        foreach($impactDataList as $impactData) {
+            $list[$impactData->title] = $impactData->id;
+        }
+
+        return $list;
+    }
+
     public function createForm(): ImpactDataProjectForm
     {
         $builder = $this->getBuilder();
-        $options = $builder->getOptions();
+        $footprint = $this->getOption('footprint');
+
+        $impactDataList = [];
+        if ($footprint) {
+            $impactDataList = $this->getImpactDataListByFootprint($footprint);
+        } else {
+            $impactDataList = $this->getImpactDataList();
+        }
 
         $builder
-            ->add('impact_data', HiddenType::class, [
-                'data' => 1
+            ->add('impact_data_id', ChoiceType::class, [
+                'label' => Text::get('form-impact-data-project-impact-data-list'),
+                'choices' => $impactDataList
             ])
-            ->add('estimationAmount', NumberType::class, [
-                'label' => 'regular-title',
+            ->add('estimation_amount', NumberType::class, [
+                'label' => Text::get('form-impact-data-project-estimation-amount'),
                 'constraints' => [
                     new Constraints\NotBlank(),
                 ],
             ])
             ->add('data', NumberType::class, [
-                'label' => 'Number',
+                'label' => Text::get('form-impact-data-project-data'),
                 'constraints' => [
                     new Constraints\NotBlank(),
                 ]
             ])
-            ->add('active', BooleanType::class, [])
+            ->add('submit', SubmitType::class)
         ;
 
         return $this;
@@ -56,13 +92,16 @@ class ImpactDataProjectForm extends AbstractFormProcessor {
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
+        $impactData = ImpactData::get($data['impact_data_id']);
         $model = $this->getModel();
-
-        $impactDataProject = new ImpactDataProject($data);
-        $impactDataProjectRepository = new ImpactDataProjectRepository();
+        $model
+            ->setImpactData($impactData)
+            ->setEstimationAmount($data['estimation_amount'])
+            ->setData($data['data']);
+        ;
 
         $errors = [];
-        if ($impactDataProjectRepository->persist($impactDataProject, $errors)) {
+        if (!$model->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
 

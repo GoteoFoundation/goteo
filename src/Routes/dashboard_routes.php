@@ -278,19 +278,54 @@ $dash->add('dashboard-project-materials-redirect', new Route(
     )
 ));
 
-$dash->add('dashboard-project-impact-data-by-footprint', new Route(
-    '/project/{pid}/impact/{footprint_id}',
+$dash->add('dashboard-project-impact-data-list', new Route(
+    '/project/{pid}/impact',
     ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::indexAction']
 ));
 
-$dash->add('dashboard-project-impact-data-list', new Route(
-    '/project/{pid}/impact/{impact_id}/impact_items',
+$dash->add('dashboard-project-impact-data-add', new Route(
+    '/project/{pid}/impact/add',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::addImpactDataProject']
+));
+
+$dash->add('dashboard-project-impact-data-by-footprint', new Route(
+    '/project/{pid}/impact/footprint/{footprint_id}/impact_data',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::listByFootprintAction']
+));
+
+$dash->add('dashboard-project-impact-data-by-footprint-add', new Route(
+    '/project/{pid}/impact/footprint/{footprint_id}/impact_data/add',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::addImpactDataProject']
+));
+
+$dash->add('dashboard-project-impact-data-by-footprint-edit', new Route(
+    '/project/{pid}/impact/impact_data/{impact_data_id}/edit',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::indexAction']
+));
+
+$dash->add('dashboard-project-impact-data-items-list', new Route(
+    '/project/{pid}/impact/impact_data/{impact_data_id}/impact_items',
     ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::impactItemProjectAction']
 ));
 
+$dash->add('dashboard-project-impact-item-add', new Route(
+    '/project/{pid}/impact/impact_data/{impact_data_id}/impact_item/add',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::addOrEditImpactItemAction']
+));
+
 $dash->add('dashboard-project-impact-item-edit', new Route(
-    '/project/{pid}/impact_item_project/{id}/edit',
-    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::impactItemEditAction']
+    '/project/{pid}/impact/impact_data/{impact_data_id}/impact_item/{id}/edit',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::addOrEditImpactItemAction']
+));
+
+$dash->add('dashboard-project-impact-item-delete', new Route(
+    '/project/{pid}/impact/impact_data/{impact_data_id}/impact_item/{id}/delete',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::impactItemProjectDeleteAction']
+));
+
+$dash->add('dashboard-project-impact-item-cost', new Route(
+    '/project/{pid}/impact/impact_data/{impact_data_id}/impact_item/{id}/costs',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::impactItemProjectCostsAction']
 ));
 
 // Settings

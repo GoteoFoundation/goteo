@@ -19,18 +19,30 @@ use PDO;
 
 class ImpactProjectItem extends Model
 {
-    public int $id;
-    private ImpactItem $impactItem;
+    public ?int $id = null;
+    private ?ImpactItem $impactItem = null;
     private Project $project;
-    private string $value;
-    private string $project_id;
-    private int $impact_item_id;
+    private ?ImpactData $relatedImpactData;
+    protected ?string $value = null;
+    public ?string $project_id = null;
+    public ?int $impact_item_id = null;
 
     protected $Table = 'impact_project_item';
 
     static protected $Table_static = 'impact_project_item';
 
-    public function getId(): int
+    public function __construct()
+    {
+        if ($this->impact_item_id) {
+            $this->impactItem = ImpactItem::getById($this->impact_item_id);
+        }
+
+        if ($this->project_id) {
+            $this->project = Project::get($this->project_id);
+        }
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -41,7 +53,7 @@ class ImpactProjectItem extends Model
         return $this;
     }
 
-    public function getImpactItem(): ImpactItem
+    public function getImpactItem(): ?ImpactItem
     {
         return $this->impactItem;
     }
@@ -63,7 +75,7 @@ class ImpactProjectItem extends Model
         return $this;
     }
 
-    public function getValue(): string
+    public function getValue(): ?string
     {
         return $this->value;
     }
@@ -74,16 +86,22 @@ class ImpactProjectItem extends Model
         return $this;
     }
 
+    public function getRelatedImpactData(): ?ImpactData
+    {
+        return $this->relatedImpactData;
+    }
+
+    public function setRelatedImpactData(ImpactData $impactData): ImpactProjectItem
+    {
+        $this->relatedImpactData = $impactData;
+        return $this;
+    }
+
     static public function get($id) {
         $table = self::$Table_static;
         $sql = "SELECT * FROM $table WHERE id = ?";
 
-        $impactProjectItem = self::query($sql, [$id])->fetchObject( __CLASS__);
-        $impactProjectItem->setImpactItem(ImpactItem::getById($impactProjectItem->impact_item_id));
-        $impactProjectItem->setProject(Project::get($impactProjectItem->project_id));
-
-        return $impactProjectItem;
-
+        return self::query($sql, [$id])->fetchObject( __CLASS__);
     }
     /**
      * @return ImpactProjectItem[]
@@ -120,6 +138,7 @@ class ImpactProjectItem extends Model
             $impactItem = ImpactItem::getById($impactProjectItem->impact_item_id);
             $impactProjectItem->setImpactItem($impactItem);
             $impactProjectItem->setProject($project);
+            $impactProjectItem->setRelatedImpactData($impactData);
         }
 
         return $list;
@@ -129,24 +148,38 @@ class ImpactProjectItem extends Model
     {
         if (!$this->validate($errors)) return false;
 
+        if ($this->project) {
+            $this->project_id = $this->project->id;
+        }
+
+        if ($this->impactItem) {
+            $this->impact_item_id = $this->impactItem->getId();
+        }
+
         $fields = [
-            'id' => ':id',
-            'project_id' => ':project_id',
-            'impact_item_id' => ':impact_item_id',
-            'value' => ':value'
+            'project_id' => ":project_id",
+            'impact_item_id' => ":impact_item_id",
+            'value' => ":value"
         ];
 
         $values = [
-            'id' => $this->id,
-            ':project_id' => $this->project->id,
-            ':impact_item_id' => $this->impactItem->getId(),
-            ':value' => $this->value
+            ":project_id" => $this->project_id,
+            ":impact_item_id" => $this->impact_item_id,
+            ":value" => $this->value
         ];
 
-        $sql = "REPLACE INTO $this->Table (" . implode(',', array_keys($fields)) . ") VALUES (" . implode(',', array_values($fields)) . ")";
+        if ($this->id) {
+            $fields["id"] = ":id";
+            $values[":id"] = $this->id;
+        }
+
 
         try {
+            $table = $this->Table;
+            $sql = "REPLACE INTO `$this->Table` (" . implode(',', array_keys($fields)) . ") VALUES (" . implode(',', array_values($fields)) . ")";
             $this->query($sql, $values);
+
+            $this->id = static::insertId();
         } catch (PDOException $e) {
             $errors[] = $e->getMessage();
             return false;
@@ -167,13 +200,5 @@ class ImpactProjectItem extends Model
             $errors['value'] = Text::get('validate-missing-value');
 
         return empty($errors);
-    }
-
-    public function dbDelete(array $where = ['id'])
-    {
-        $this->impact_item_id = $this->getImpactItem()->getId();
-        $this->impact_project_id = $this->getProject()->id;
-
-        return parent::dbDelete(['impact_item_id', 'project_id']);
     }
 }

@@ -9,7 +9,6 @@ use Goteo\Model\ImpactItem\ImpactItem;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\NumberType;
 use Goteo\Util\Form\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 
 class ImpactItemProjectForm extends AbstractFormProcessor
@@ -25,6 +24,10 @@ class ImpactItemProjectForm extends AbstractFormProcessor
         return $list;
     }
 
+    public function getReadonly() {
+        return (bool) $this->model->getImpactItem();
+    }
+
     public function createForm(): ImpactItemProjectForm
     {
         $model = $this->getModel();
@@ -34,7 +37,8 @@ class ImpactItemProjectForm extends AbstractFormProcessor
             ->add("impact_item_id", ChoiceType::class, [
                 'label' => "Impact item",
                 'choices' => $this->getImpactItems(),
-                'data' => $model->getImpactItem()->getId()
+                'data' => $model->impact_item_id,
+                'disabled' => $this->getReadonly(),
             ])
             ->add("value", NumberType::class, [
                 "label" => 'regular-value',
@@ -55,9 +59,12 @@ class ImpactItemProjectForm extends AbstractFormProcessor
         $data = $form->getData();
         $model = $this->getModel();
 
-        $impactItem = ImpactItem::get($data['impact_item_id']);
+        if ($data["impact_item_id"]) {
+            $impactItem = ImpactItem::get($data['impact_item_id']);
+            $model->setImpactItem($impactItem);
+        }
+
         $model->setValue($data['value']);
-        $model->setImpactItem($impactItem);
 
         $errors = [];
         if (!$model->save($errors)) {

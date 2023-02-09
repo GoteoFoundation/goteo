@@ -72,6 +72,21 @@ class ImpactDataProject extends Model {
         return $this;
     }
 
+    static public function getByProjectAndImpactData(Project $project, ImpactData $impactData): ImpactDataProject
+    {
+        $table = self::$Table_static;
+
+        $sql = "SELECT *
+                FROM $table
+                WHERE project_id = :project AND impact_data_id = :impact_data_id
+        ";
+
+        $impactDataProject = self::query($sql, [":project" => $project->id, ":impact_data_id" => $impactData->id])->fetchObject(__CLASS__);
+        $impactDataProject->project = $project;
+        $impactDataProject->impactData = $impactData;
+        return $impactDataProject;
+    }
+
     /**
      * @return ImpactDataProject[]
      */
@@ -165,6 +180,7 @@ class ImpactDataProject extends Model {
     public function save(&$errors = array())
     {
         if (!$this->validate($errors)) {
+            var_dump($errors); die;
             return false;
         }
 
@@ -176,13 +192,13 @@ class ImpactDataProject extends Model {
         ];
 
         $values = [
-            ':impact_data_id' => $this->impactData()->id,
+            ':impact_data_id' => $this->impactData->id,
             ':project_id' => $this->project->id,
             ':estimation_amount' => $this->estimationAmount,
             ':data' => $this->data
         ];
 
-        $sql = "REPLACE INTO `$this->Table (" . implode(',', array_keys($fields)) . ") VALUES (" . implode(',', array_values($fields)) . ")";
+        $sql = "REPLACE INTO `$this->Table` (" . implode(',', array_keys($fields)) . ") VALUES (" . implode(',', array_values($fields)) . ")";
 
         try {
             $this->query($sql, $values);
@@ -191,6 +207,7 @@ class ImpactDataProject extends Model {
             return false;
         }
 
+        return true;
     }
 
     public function validate(&$errors = array())
@@ -210,5 +227,7 @@ class ImpactDataProject extends Model {
         if (empty($this->data)) {
             $errors['data'] = Text::get('validate-missing-data');
         }
+
+        return empty($errors);
     }
 }

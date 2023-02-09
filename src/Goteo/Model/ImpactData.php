@@ -106,6 +106,11 @@ class ImpactData extends Model {
             }
         }
 
+        if ($filters['not_source']) {
+            $sqlWhere[] = "impact_data.source != :not_source";
+            $values[':not_source'] = $filters['not_source'];
+        }
+
         if ($filters['type']) {
             if (is_array($filters['type'])) {
                 $parts = [];
@@ -138,7 +143,7 @@ class ImpactData extends Model {
             $values[':footprint'] = $filters['footprint'];
         }
 
-        if ($sqlWhere) $sqlWhere = "WHERE " . implode('AND ', $sqlWhere);
+        if ($sqlWhere) $sqlWhere = "WHERE " . implode( ' AND ', $sqlWhere);
         else $sqlWhere = "";
 
         if ($count) {
@@ -146,7 +151,8 @@ class ImpactData extends Model {
             FROM impact_data
             $sqlInner
             $sqlWhere";
-            return (int) self::query($sql)->fetchColumn();
+
+            return (int) self::query($sql, $values)->fetchColumn();
         }
 
         $sql = "SELECT

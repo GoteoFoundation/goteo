@@ -26,8 +26,9 @@ class ImpactDataProjectTransformer extends AbstractTransformer
         $model = $this->model;
         $project = $model->getProject()->id;
         $impactData = $model->getImpactData()->id;
+
         return [
-            'list' => "/dashboard/project/$project/impact/$impactData/impact_items"
+            'list' => "/dashboard/project/$project/impact/impact_data/$impactData/impact_items"
         ];
     }
 }
