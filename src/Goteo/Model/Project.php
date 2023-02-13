@@ -787,6 +787,26 @@ class Project extends Model {
         return $this->categoriesArray;
     }
 
+    function getWhenWillPass()
+    {
+        if (!empty($this->published)) {
+            $ptime = strtotime($this->published);
+            $this->willpass = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+$this->days_round1, date('Y', $ptime)));
+        }
+
+        return $this->willpass;
+    }
+
+    function getWhenWillFinish()
+    {
+        if (!empty($this->published)) {
+            $ptime = strtotime($this->published);
+            $this->willfinish = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+$this->days_total, date('Y', $ptime)));
+        }
+
+        return $this->willfinish;
+    }
+
     /**
      * get a readable description of the amount of days left for the project
      */

@@ -1,0 +1,13 @@
+group: tips
+name: 'Online event'
+purpose: 'Mail template to be sent to owner of a project to recommend creating an online event'
+type: 'md'
+title: "Convoca un evento online de recaudación"
+text: >
+    ¡Hola de nuevo %USERNAME%!
+    Ya son %AMOUNT% euros recaudados, ¡venga!
+    A estas alturas ya estamos más que acostumbradas a los eventos online, ¿has pensado en sacarle partido para tu crowdfunding?
+    *Consejo*: ¿Por qué no organizar una pequeña charla con varios invitados (beneficiarios, colaboradores, proyectos similares, expertos, etc.) para *dialogar de una problemática común relacionada con %PROJECTNAME%*, y hablar del compromiso social que os mueve? Funciona muy bien cuando se aprovecha la diversidad de experiencias y puntos de vista de los participantes, moderando el debate con unas preguntas abiertas. Es una *excusa perfecta* para presentar vuestro proyecto y seguir difundiendo vuestro crowdfunding ;-))
+    *Ejemplo*: La campaña de [Climática](https://www.goteo.org/project/climatica) por ejemplo, organizó en su recta final de campaña una [gala de remontada retransmitida en directo](https://www.youtube.com/watch?v=glgXJER_6ZY). ¡Por lo pelos celebran el mínimo en directo!
+    Una cita inspiradora: “El agua habla sin cesar y nunca se repite” (Octavio Paz).
+    El equipo de Goteo

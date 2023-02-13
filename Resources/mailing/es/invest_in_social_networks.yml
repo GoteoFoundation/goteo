@@ -1,0 +1,11 @@
+group: tips
+name: 'Invest in Social Networks'
+purpose: 'Mail template to be sent to owner of a project to recommend investing in social networks'
+type: 'md'
+title: "Invierte en redes"
+text: >
+    Hola  %USERNAME%,
+    ¿Cuál es la red social que mejor te está funcionando? ¿Cuál ha sido el post que más interacciones ha tenido? Si no te has parado a analizar, es el momento. Una campaña de crowdfunding te puede servir para reafirmar tu estilo comunicativo.
+    Consejo: Te recomendamos que pruebes a promocionar algunos de tus posts en redes. Por muy poco dinero y segmentando bien por territorios y/o públicos, quizás llegues a nueva gente de una forma inesperada. Es buen momento ahora, sobre todo si tu campaña lleva más del 50-60% recaudado. Los nuevos públicos tienen más opciones de sumarse si ven que la campaña tira bien por si sola.
+    Pequeña cita por aquí: “Los ganadores no son los mejores sino los que dominan el juego” Roberto Serra.
+    El equipo de Goteo
