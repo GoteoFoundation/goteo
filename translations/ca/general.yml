@@ -220,6 +220,7 @@ regular-remember-me: 'Recorda''m'
 regular-next: Següent
 regular-write-description: 'Escriu un text descriptiu...'
 regular-choice-placeholder: 'Selecciona una opció'
+regular-subsection: 'Subsecció'
 session-about-to-expire: 'La teva sessió expirarà en 10 minuts. ¿Vols recarregar la pàgina per renovar-la?'
 session-expired: 'La teva sessió ha expirat!'
 stories-user-project: '%s, del projecte: %s'
