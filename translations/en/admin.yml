@@ -539,4 +539,7 @@ admin-title-estimation: "Impact estimation"
 admin-title-dataValue: "Value of the impact"
 admin-title-impactProjectId: "Id of the Project's Impact Item"
 admin-title-impactValue: "Value"
-admin-title-impactItemName: "Name of the Impact Item "
+admin-title-impactItemName: "Name of the Impact Item"
+admin-title-costId: "Id"
+admin-title-costName: "Name"
+
