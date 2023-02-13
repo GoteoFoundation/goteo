@@ -60,6 +60,7 @@ class GoteoImpactDataItem
         CREATE TABLE `impact_project_item_cost` (
             `impact_project_item_id` BIGINT(20) UNSIGNED NOT NULL,
             `cost_id` BIGINT(20) UNSIGNED NOT NULL,
+            UNIQUE KEY `impact_cost` (`impact_project_item_id`, `cost_id`),
             FOREIGN KEY (`impact_project_item_id`) REFERENCES `impact_project_item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
             FOREIGN KEY (`cost_id`) REFERENCES `cost` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );

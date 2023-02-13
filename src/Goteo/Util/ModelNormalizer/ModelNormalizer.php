@@ -91,6 +91,9 @@ class ModelNormalizer {
         elseif ($this->model instanceOf Model\ImpactItem\ImpactProjectItem) {
             $ob = new Transformer\ImpactProjectItemTransformer($this->model, $this->keys);
         }
+        elseif ($this->model instanceOf Model\ImpactItem\ImpactProjectItemCost) {
+            $ob = new Transformer\ImpactProjectItemCostTransformer($this->model, $this->keys);
+        }
         else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
 
         $ob->setUser(Session::getUser())->rebuild();

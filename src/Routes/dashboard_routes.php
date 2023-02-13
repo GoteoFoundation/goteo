@@ -328,6 +328,16 @@ $dash->add('dashboard-project-impact-item-cost', new Route(
     ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::impactItemProjectCostsAction']
 ));
 
+$dash->add('dashboard-project-impact-item-cost-add', new Route(
+    '/project/{pid}/impact/impact_data/{impact_data_id}/impact_item/{id}/costs/add',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::addImpactItemProjectCostsAction']
+));
+
+$dash->add('dashboard-project-impact-item-cost-delete', new Route(
+    '/project/{pid}/impact/impact_item/{impact_project_item_id}/cost/{cost_id}/delete',
+    ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::removeImpactItemProjectCostAction']
+));
+
 // Settings
 $dash->add('dashboard-settings', new Route(
     '/settings',

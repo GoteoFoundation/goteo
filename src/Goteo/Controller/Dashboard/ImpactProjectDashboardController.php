@@ -3,6 +3,7 @@
 namespace Goteo\Controller\Dashboard;
 
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Controller\DashboardController;
@@ -10,6 +11,7 @@ use Goteo\Core\Controller;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Forms\Model\ImpactDataProjectForm;
 use Goteo\Library\Forms\Model\ImpactItemProjectCollectionForm;
+use Goteo\Library\Forms\Model\ImpactItemProjectCostForm;
 use Goteo\Library\Forms\Model\ImpactItemProjectForm;
 use Goteo\Library\Text;
 use Goteo\Model\Footprint;
@@ -19,6 +21,7 @@ use Goteo\Model\ImpactData\ImpactDataProject;
 use Goteo\Model\ImpactItem\ImpactProjectItem;
 use Goteo\Model\ImpactItem\ImpactProjectItemCost;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Cost;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -194,7 +197,7 @@ class ImpactProjectDashboardController extends ProjectDashboardController
         return $this->redirect();
     }
 
-    public function impactItemProjectCostsAction(Request $request, $pid, $id): Response
+    public function impactItemProjectCostsAction(Request $request, $pid, $impact_data_id, $id): Response
     {
         $project = $this->validateProject($pid);
 
@@ -203,15 +206,84 @@ class ImpactProjectDashboardController extends ProjectDashboardController
         }
 
         $impactProjectItem = ImpactProjectItem::get($id);
+        $impactData = ImpactData::get($impact_data_id);
 
         $list = ImpactProjectItemCost::getListByImpactProjectItem($impactProjectItem);
         return $this->viewResponse(
             'dashboard/project/impact/impact_items_cost_list',
             [
+                'impactData' => $impactData,
+                'impactProjectItem' => $impactProjectItem,
                 'list' => $list,
                 'count' => count($list)
             ]
         );
+
+    }
+
+    public function addImpactItemProjectCostsAction(Request $request, $pid, $impact_data_id, $id): Response
+    {
+        $project = $this->validateProject($pid);
+
+        if(!$project instanceOf Project || !$project->userCanEdit(Session::getUser())) {
+            throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
+        }
+
+        $impactProjectItem = ImpactProjectItem::get($id);
+        $impactData = ImpactData::get($impact_data_id);
+        $impactItem = $impactProjectItem->getImpactItem();
+
+        $impactProjectItemCost = new ImpactProjectItemCost();
+        $impactProjectItemCost->setImpactProjectItem($impactProjectItem);
+
+        $processor = $this->getModelForm(ImpactItemProjectCostForm::class, $impactProjectItemCost, [], [], $request);
+        $processor->createForm();
+        $form = $processor->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $request->isMethod(Request::METHOD_POST)) {
+            try {
+                $processor->save($form);
+                Message::info(Text::get('admin-' . ($id ? 'edit' : 'add') . '-entry-ok'));
+                return $this->redirect("/dashboard/project/$project->id/impact/impact_data/$impactData->id/impact_item/{$impactProjectItem->getId()}/costs");
+            } catch (FormModelException $e) {
+                Message::error($e->getMessage());
+                return $this->redirect("/dashboard/project/$project->id/impact/impact_data/$impactData->id/impact_item/{$impactProjectItem->getId()}/costs");
+            }
+        }
+
+        return $this->viewResponse(
+            'dashboard/project/impact/impact_items_cost_add',
+            [
+                'impactData' => $impactData,
+                'impactProjectItem' => $impactProjectItem,
+                'form' => $form->createView()
+            ]
+        );
+
+    }
+
+    public function removeImpactItemProjectCostAction(Request $request, $pid, $impact_project_item_id, $cost_id): Response
+    {
+        $project = $this->validateProject($pid);
+
+        if(!$project instanceOf Project || !$project->userCanEdit(Session::getUser())) {
+            throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
+        }
+
+        $impactProjectItem = ImpactProjectItem::get($impact_project_item_id);
+        $cost = Cost::get($cost_id);
+        $impactProjectItemCost = ImpactProjectItemCost::getByImpactProjectItemAndCost($impactProjectItem, $cost);
+
+        try {
+            $impactProjectItemCost->dbDelete();
+            Message::info(Text::get('admin-remove-entry-ok'));
+        } catch (ModelException $e) {
+            Message::error($e->getMessage());
+        }
+
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
 
     }
 }

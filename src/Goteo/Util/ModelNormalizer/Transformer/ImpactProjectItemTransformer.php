@@ -37,7 +37,7 @@ class ImpactProjectItemTransformer extends AbstractTransformer
 
         return [
             'edit' => "/dashboard/project/$project/impact/impact_data/$impactData/impact_item/$id/edit",
-            'costs' => "/dasboard/project/$project/impact/impact_data/$impactData/impact_item/$id/costs",
+            'costs' => "/dashboard/project/$project/impact/impact_data/$impactData/impact_item/$id/costs",
             'delete' => "/dashboard/project/$project/impact/impact_data/$impactData/impact_item/$id/delete"
         ];
 

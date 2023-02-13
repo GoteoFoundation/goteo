@@ -10,6 +10,7 @@
 
 namespace Goteo\Model\ImpactItem;
 
+use Goteo\Application\Exception\ModelException;
 use Goteo\Core\Model;
 use Goteo\Library\Text;
 use Goteo\Model\Project\Cost;
@@ -19,9 +20,23 @@ use PDOException;
 class ImpactProjectItemCost extends Model
 {
     private ImpactProjectItem $impactProjectItem;
-    private Cost $cost;
-    private int $impact_project_item_id;
-    private int $cost_id;
+    private ?Cost $cost = null;
+    protected ?int $impact_project_item_id = null;
+    protected ?int $cost_id = null;
+
+    protected $Table = 'impact_project_item_cost';
+    static protected $Table_static = 'impact_project_item_cost';
+
+    public function __construct()
+    {
+        if ($this->impact_project_item_id) {
+            $this->impactProjectItem = ImpactProjectItem::get($this->impact_project_item_id);
+        }
+
+        if ($this->cost_id) {
+            $this->cost = Cost::get($this->cost_id);
+        }
+    }
 
     public function getImpactProjectItem(): ImpactProjectItem
     {
@@ -34,7 +49,7 @@ class ImpactProjectItemCost extends Model
         return $this;
     }
 
-    public function getCost(): Cost
+    public function getCost(): ?Cost
     {
         return $this->cost;
     }
@@ -56,7 +71,7 @@ class ImpactProjectItemCost extends Model
         ];
 
         $values = [
-            ':impact_project_item_id' => $this->impactProjectItem,
+            ':impact_project_item_id' => $this->impactProjectItem->getId(),
             ':cost_id' => $this->cost->id,
         ];
 
@@ -72,6 +87,19 @@ class ImpactProjectItemCost extends Model
         return true;
     }
 
+    static public function getByImpactProjectItemAndCost(ImpactProjectItem $impactProjectItem, Cost $cost): ImpactProjectItemCost
+    {
+        $table = self::$Table_static;
+        $sql = "SELECT * FROM $table WHERE impact_project_item_id = :impact_project_item_id AND cost_id = :cost_id";
+
+        $values = [
+            ':impact_project_item_id' => $impactProjectItem->getId(),
+            ':cost_id' => $cost->id
+        ];
+
+        return self::query($sql, $values)
+            ->fetchObject(__CLASS__);
+    }
 
     /**
      * @return ImpactProjectItemCost[]
@@ -82,11 +110,15 @@ class ImpactProjectItemCost extends Model
         $table = self::$Table_static;
         $sql = "SELECT * FROM $table WHERE impact_project_item_id = ?";
 
-        $list = self::query($sql, [$impactProjectItem->getId()])->fetchAll(PDO::FETCH_CLASS, __CLASS__);
-        foreach ($list as $impactProjectItemCost) {
+        $impactProjectItemCostList = self::query($sql, [$impactProjectItem->getId()])->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+
+        $list = [];
+        foreach ($impactProjectItemCostList as $impactProjectItemCost) {
             $cost = Cost::get($impactProjectItemCost->cost_id);
             $impactProjectItemCost
-                ->setItemProjectItem($impactProjectItem);
+                ->setImpactProjectItem($impactProjectItem)
+                ->setCost($cost);
+            ;
 
             $list[] = $impactProjectItemCost;
         }
@@ -109,6 +141,10 @@ class ImpactProjectItemCost extends Model
     {
         $this->impact_project_item_id = $this->impactProjectItem->getId();
         $this->cost_id = $this->cost->id;
-        return parent::dbDelete(['impact_project_item_id', 'cost_id']);
+        try {
+            return parent::dbDelete(['impact_project_item_id', 'cost_id']);
+        } catch (PDOException $e) {
+            throw new ModelException($e->getMessage());
+        }
     }
 }

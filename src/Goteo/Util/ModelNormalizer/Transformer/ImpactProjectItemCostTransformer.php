@@ -2,7 +2,7 @@
 
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
-class ImpactDataProjectCostTransformer extends AbstractTransformer
+class ImpactProjectItemCostTransformer extends AbstractTransformer
 {
     protected $keys = ['cost_id', 'cost_name'];
 
@@ -17,10 +17,12 @@ class ImpactDataProjectCostTransformer extends AbstractTransformer
     public function getActions()
     {
         $model = $this->model;
-        $project = $model->getProject()->id;
-        $impactData = $model->getImpactData()->id;
+        $project = $model->getImpactProjectItem()->getProject()->id;
+        $impactProjectItem = $model->getImpactProjectItem()->getId();
+        $cost = $this->model->getCost()->id;
+
         return [
-            'delete' => "/dashboard/project/$project/impact/impact_data/$impactData/impact_items"
+            'delete' => "/dashboard/project/$project/impact/impact_item/$impactProjectItem/cost/$cost/delete"
         ];
     }
 }
