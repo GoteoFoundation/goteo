@@ -12,9 +12,12 @@ namespace Goteo\Model\ImpactItem;
 
 use Goteo\Core\Model;
 use Goteo\Library\Text;
+use Goteo\Model\Footprint;
 use Goteo\Model\ImpactData;
+use Goteo\Model\ImpactData\ImpactDataProject;
 use Goteo\Model\ImpactItem\ImpactItem;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Cost;
 use PDO;
 
 class ImpactProjectItem extends Model
@@ -143,6 +146,57 @@ class ImpactProjectItem extends Model
 
         return $list;
     }
+
+    static public function getListByProjectAndFootprint(Project $project, Footprint $footprint): array
+    {
+        $table = self::$Table_static;
+
+        $sql = "
+            SELECT ipi.*
+            FROM $table ipi
+            INNER JOIN impact_item_footprint iif on iif.impact_item_id = ipi.impact_item_id
+            WHERE project_id = :project_id AND iif.footprint_id = :footprint_id
+            ";
+
+        $values = [
+            ':project_id' => $project->id,
+            ':footprint_id' => $footprint->id
+        ];
+
+        return self::query($sql, $values)->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+    }
+
+    public function getImpactDataProject(): ?ImpactDataProject
+    {
+        $sql = "
+            SELECT *
+            FROM impact_data_project
+            INNER JOIN impact_data_item idi ON idi.impact_data_id = impact_data_project.impact_data_id
+            INNER JOIN impact_project_item ipi ON ipi.impact_item_id = idi.impact_item_id
+            WHERE ipi.id = ?
+        ";
+
+        return $this->query($sql, [$this->id])->fetchObject(ImpactDataProject::class);
+    }
+
+    public function getCosts(): ImpactProjectItemCost
+    {
+        return ImpactProjectItemCost::getListByImpactProjectItem($this->id);
+    }
+
+    public function getCostAmounts(): int
+    {
+        $impactProjectItemCostList = ImpactProjectItemCost::getListByImpactProjectItem($this);
+
+        $amount = 0;
+        foreach($impactProjectItemCostList as $impactProjectItemCost) {
+            $cost = $impactProjectItemCost->getCost();
+            $amount += $cost->amount;
+        }
+
+        return $amount;
+    }
+
 
     public function save(&$errors = array())
     {

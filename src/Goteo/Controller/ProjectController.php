@@ -28,6 +28,8 @@ use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Footprint;
 use Goteo\Model\ImpactData;
+use Goteo\Model\ImpactData\ImpactDataProject as ImpactProject;
+use Goteo\Model\ImpactItem\ImpactProjectItem;
 use Goteo\Model\Invest;
 use Goteo\Model\License;
 use Goteo\Model\Message as SupportMessage;
@@ -194,16 +196,23 @@ class ProjectController extends Controller {
                 'footprints' => $footprints
             ];
 
-            $impactDataProjectRepository = new ImpactDataProjectRepository();
             $impactDataProjectByFootprint = [];
             foreach($footprints as $footprint) {
-                $impactDataProjectByFootprint[$footprint->id] = $impactDataProjectRepository->getListByProjectAndFootprint($project, $footprint);
+                $impactDataProjectByFootprint[$footprint->id] = ImpactProject::getCalculatedByProjectAndFootprint($project, $footprint);
             }
 
-            $impactDataProjectList = $impactDataProjectRepository->getListByProject($project);
+            $impactDataProjectList = ImpactProject::getListByProject($project);
+
+            $impactProjectItemList = [];
+            foreach($impactDataProjectList as $impactDataProject) {
+                $impactData = $impactDataProject->getImpactData();
+                $impactProjectItemList[$impactData->id] = ImpactProjectItem::getListByProjectAndImpactData($project, $impactData);
+            }
 
             $viewData['impactDataProjectByFootprint'] = $impactDataProjectByFootprint;
             $viewData['impactDataProjectList'] = $impactDataProjectList;
+            $viewData['impactProjectItemList'] = $impactProjectItemList;
+
             $viewData['matchers'] = $project->getMatchers('active');
             $viewData['individual_rewards'] = [];
 

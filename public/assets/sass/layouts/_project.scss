@@ -576,6 +576,75 @@ body.project {
     }
   }
 
+  .impact-item-modal {
+    .modal-dialog .modal-content {
+      background-color: $background-light-green;
+      color: $color-white;
+
+      .modal-header {
+        border-bottom: none;
+        padding: 30px;
+
+        button.close {
+          color: $color-white;
+        }
+      }
+
+      .modal-body {
+        background-color: $background-white;
+        border-radius: 5rem 5rem 0 0;
+        padding: 30px;
+
+        i {
+          background-color: $color-dark-green;
+        }
+
+        h3 {
+          color: $color-black;
+        }
+
+        h4 {
+          color: $color-light-green;
+          font-weight: bold;
+        }
+
+        h5, p {
+          color: $color-new-dark-blue;
+          font-weight: bold;
+        }
+
+        .detail {
+          &:after {
+            content: '';
+            height: 80%;
+            width: 1px;
+
+            position: absolute;
+            right: 0;
+            top: 10%;
+
+            background-color: $color-light-grey;
+          }
+
+          p {
+            color: $color-new-dark-blue;
+            font-weight: bold;
+            font-size: 24px;
+          }
+        }
+
+        .impact {
+          h4 {
+            color: $color-new-dark-blue;
+          }
+
+          p {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
   /* Channel module */
 
   .channel {

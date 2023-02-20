@@ -71,4 +71,35 @@ class ImpactProjectItemRepository extends BaseRepository
 
         return $list;
     }
+
+    public function getListByProjectAndFootprint(Project $project, Footprint $footprint): array
+    {
+        $sql = "
+            SELECT ipi.*
+            FROM $this->table ipi
+            INNER JOIN impact_item_footprint iif on iif.impact_item_id = ipi.impact_item_id
+            WHERE project_id = :project_id AND iif.footprint_id = :footprint_id
+            ";
+
+        $values = [
+            ':project_id' => $project->id,
+            ':footprint_id' => $footprint->id
+        ];
+
+        $result = $this->query($sql, $values)->fetchAll(PDO::FETCH_OBJ);
+        $list = [];
+        foreach ($result as $obj) {
+            $impactItemRepository = new ImpactItemRepository();
+            $impactItem = $impactItemRepository->getById($obj->impact_item_id);
+
+            $impactProjectItem = new ImpactProjectItem();
+            $impactProjectItem
+                ->setImpactItem($impactItem)
+                ->setProject($project);
+
+            $list[] = $impactProjectItem;
+        }
+
+        return $list;
+    }
 }

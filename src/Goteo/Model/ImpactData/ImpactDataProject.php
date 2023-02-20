@@ -15,12 +15,13 @@ use Goteo\Library\Text;
 use Goteo\Model\Footprint;
 use Goteo\Model\ImpactData;
 use Goteo\Model\Project;
+use PDO;
 use PDOException;
 
 class ImpactDataProject extends Model {
-    private ImpactData $impactData;
+    private ?ImpactData $impactData = null;
     private int $impact_data_id;
-    private Project $project;
+    private ?Project $project = null;
     private string $project_id;
     private int $estimationAmount = 0;
     private int $data = 0;
@@ -28,7 +29,22 @@ class ImpactDataProject extends Model {
     protected $Table = 'impact_data_project';
     static protected $Table_static = 'impact_data_project';
 
-    public function getImpactData(): ImpactData
+    public function __construct()
+    {
+        if (isset($this->impact_data_id)) {
+            $this->impactData = ImpactData::get($this->impact_data_id);
+        }
+
+        if (isset($this->project_id)) {
+            $this->project = Project::get($this->project_id);
+        }
+
+        if (isset($this->estimation_amount)) {
+            $this->estimationAmount = $this->estimation_amount;
+        }
+    }
+
+    public function getImpactData(): ?ImpactData
     {
         return $this->impactData;
     }
@@ -39,7 +55,7 @@ class ImpactDataProject extends Model {
         return $this;
     }
 
-    public function getProject(): Project
+    public function getProject(): ?Project
     {
         return $this->project;
     }
@@ -146,6 +162,32 @@ class ImpactDataProject extends Model {
         }
 
         return $list;
+    }
+
+    static public function getCalculatedByProjectAndFootprint(Project $project, Footprint $footprint): array
+    {
+        $sql = "
+            SELECT idp.impact_data_id, idp.project_id, SUM(c.amount) as estimation_amount, idp.`data`
+            FROM impact_data_project idp
+            INNER JOIN footprint_impact fi on fi.impact_data_id = idp.impact_data_id
+            INNER JOIN impact_data_item idi ON idi.impact_data_id = idp.impact_data_id
+            INNER JOIN impact_project_item ipi ON ipi.impact_item_id = idi.impact_item_id
+            INNER JOIN impact_project_item_cost ipic ON ipic.impact_project_item_id = ipi.id
+            INNER JOIN cost c ON c.id = ipic.cost_id
+            WHERE idp.project_id  = :project_id AND ipi.project_id = :project_id and fi.footprint_id = :footprint_id
+            GROUP BY idp.impact_data_id
+        ";
+
+        $values = [
+            ':project_id' => $project->id,
+            ':footprint_id' => $footprint->id
+        ];
+
+        try {
+            return self::query($sql, $values)->fetchAll(PDO::FETCH_CLASS, __CLASS__);
+        } catch (\PDOException $e) {
+            return [];
+        }
     }
 
     static public function count(Project $project): int
