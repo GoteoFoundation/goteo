@@ -34,8 +34,12 @@
                 </div>
             </div>
 
-            <div class="impact-calculator-save">
-                <button type="submit" class="btn btn-large btn-cyan"><?= $this->t('regular-save') ?></button>
+            <div class="impact-calculator-save col-md-2 col-md-offset-4">
+                <button type="submit" class="btn btn-lg btn-cyan"><?= $this->t('regular-save') ?></button>
+            </div>
+
+            <div class="impact-calculator-save col-md-2">
+                <a class="btn btn-lg btn-cyan" href="/dashboard/project/<?= $this->project->id?>"><?= $this->t('regular-continue-without-saving') ?></a>
             </div>
         </form>
     </div>

@@ -170,6 +170,7 @@ regular-recomended_by: 'Project recommended by:'
 regular-review_board: 'Review panel'
 regular-round: 'Round'
 regular-save: Save
+regular-continue-without-saving: "Continue without saving"
 regular-schedule: Schedule
 regular-search: Search
 regular-search-user: Find a user
