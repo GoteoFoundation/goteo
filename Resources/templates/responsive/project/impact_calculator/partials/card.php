@@ -9,20 +9,17 @@
         <h1><?= $impactData->title ?></h1>
     </header>
     <div class="card-body">
-
+        <!--
         <div class="info">
             <i class="fa fa-info"
                data-html="true"
                data-container="body"
                data-toggle="tooltip"
                title=""
-               data-original-title="
-                    <span >
-                        <h4 style='font-size: 16px; font-weight:bold;'>CREACIÓN DE EMPLEO</h4>
-                        <p>Según el Instituto Nacional de Estadística (INE) el coste medio de un trabajador a jornada completa en España es de 31.150€/año.</`>
-                    </span>">
+               data-original-title="">
             </i>
         </div>
+        -->
 
         <label for="budget"><?= $this->t('regular-budget') ?>
             <div class="card-input">
