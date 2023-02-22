@@ -7,8 +7,6 @@ $form = $this->raw('form');
 
 <div class="dashboard-content">
     <div class="inner-container">
-        <h1>Items de Impacto para el Dato de Impacto -> <?= $this->impactData->title ?></h1>
-
         <?= $this->form_form($form) ?>
     </div>
 </div>

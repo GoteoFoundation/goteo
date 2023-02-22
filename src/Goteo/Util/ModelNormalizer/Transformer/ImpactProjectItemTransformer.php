@@ -4,7 +4,7 @@ namespace Goteo\Util\ModelNormalizer\Transformer;
 
 class ImpactProjectItemTransformer extends AbstractTransformer
 {
-    protected $keys = ['impactProjectId', 'impact_item', 'value' ];
+    protected $keys = ['impact_item', 'value' ];
 
     public function getImpactProjectId(): int
     {
@@ -23,7 +23,9 @@ class ImpactProjectItemTransformer extends AbstractTransformer
 
     public function getImpactValue()
     {
-        return $this->model->getValue();
+        $impactItem = $this->model->getImpactItem();
+        $unit = $impactItem->getUnit();
+        return $this->model->getValue() . " " . $unit;
     }
 
     public function getActions()

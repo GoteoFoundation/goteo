@@ -11,14 +11,18 @@ class ImpactDataProjectTransformer extends AbstractTransformer
         return $this->model->getImpactData()->title;
     }
 
-    public function getEstimation(): int
+    public function getEstimation(): string
     {
-        return $this->model->getEstimationAmount();
+        return amount_format($this->model->getEstimationAmount());
     }
 
-    public function getDataValue(): int
+    public function getDataValue(): string
     {
-        return $this->model->getData();
+        $impactData = $this->model->getImpactData();
+        $unit = $impactData->data_unit;
+
+        return $this->model->getData() . " " . $unit
+            ;
     }
 
     public function getActions()

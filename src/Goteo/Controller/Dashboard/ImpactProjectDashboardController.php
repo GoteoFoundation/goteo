@@ -4,6 +4,7 @@ namespace Goteo\Controller\Dashboard;
 
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Controller\DashboardController;
@@ -117,6 +118,10 @@ class ImpactProjectDashboardController extends ProjectDashboardController
         );
     }
 
+    /**
+     * @throws ModelNotFoundException
+     * @throws ControllerAccessDeniedException
+     */
     public function impactItemProjectAction(Request $request, $pid, $impact_data_id): Response
     {
         $project = $this->validateProject($pid);
@@ -172,6 +177,7 @@ class ImpactProjectDashboardController extends ProjectDashboardController
             'dashboard/project/impact/impact_project_item_edit',
             [
                 'project' => $project,
+                'impactData' => $impactData,
                 'form' => $form->createView()
             ]
         );
