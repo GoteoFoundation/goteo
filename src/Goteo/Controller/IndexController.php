@@ -83,3 +83,4 @@ class IndexController extends DiscoverController
         return $sponsors;
     }
 }
+
