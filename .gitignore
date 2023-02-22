@@ -11,6 +11,7 @@
 !/extend/custom-domains
 !/extend/invest-return
 !/extend/extra-logger
+!/extend/filter-popular
 
 /node_modules/
 /vendor/
