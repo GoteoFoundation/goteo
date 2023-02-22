@@ -32,14 +32,7 @@ if (!empty($impactDataProjectByFootprint)):
                                     <i class="fa fa-info"></i>
                                 </button>
                             </div>
-                            <ul>
-                                <li>
-                                    <?= $dataUnit ?> => <?= $data ?>
-                                </li>
-                                <li>
-                                    <?= $this->t('regular-budget') ?> => <?= amount_format($estimatedAmount) ?></p>
-                                </li>
-                            </ul>
+                            <p><?= $this->text('project-impact-calculator-card-impact-description', [amount_format($estimatedAmount), $data . " " . $dataUnit]) ?></p>
                         </div>
                     </div>
                 <?php endforeach; ?>
