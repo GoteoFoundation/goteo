@@ -28,7 +28,7 @@ if (!empty($impactDataProjectByFootprint)):
                         <div class="col-md-9 col-xs-9">
                             <h5><?= $impactData->title ?></h5>
                             <div class="info" style="position:absolute; right: 1rem; top: 1rem; background: transparent ">
-                                <button style="background: transparent;border: none;" type="button" data-toggle="collapse" data-target="#impact-data-project-modal-<?= $impactData->id ?>">
+                                <button style="background: transparent;border: none;" type="button" data-toggle="modal" data-target="#impact-data-project-modal-<?= $impactData->id ?>">
                                     <i class="fa fa-info"></i>
                                 </button>
                             </div>
@@ -54,7 +54,7 @@ if (!empty($impactDataProjectByFootprint)):
         <?php
             $impactData = $impactDataProject->getImpactData();
         ?>
-        <div class="modal fade impact-item-modal" id="impact-data-project-modal-<?= $impactData->id ?>" tabindex="-1" role="dialog" aria-labelledby="admin-modal-label">
+        <div class="modal fade impact-item-modal" id="impact-data-project-modal-<?= $impactData->id ?>" tabindex="-1" role="dialog" aria-labelledby="impact-item-modal-label">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

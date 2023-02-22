@@ -167,7 +167,7 @@ class ImpactDataProject extends Model {
     static public function getCalculatedByProjectAndFootprint(Project $project, Footprint $footprint): array
     {
         $sql = "
-            SELECT idp.impact_data_id, idp.project_id, SUM(c.amount) as estimation_amount, idp.`data`
+            SELECT idp.impact_data_id, idp.project_id, SUM(c.amount) as estimation_amount, SUM(ipi.value) as `data`
             FROM impact_data_project idp
             INNER JOIN footprint_impact fi on fi.impact_data_id = idp.impact_data_id
             INNER JOIN impact_data_item idi ON idi.impact_data_id = idp.impact_data_id
