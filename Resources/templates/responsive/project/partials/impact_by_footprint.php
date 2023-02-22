@@ -66,7 +66,7 @@ if (!empty($impactDataProjectByFootprint)):
                         foreach($this->impactProjectItemList[$impactData->id] as $impactProjectItem):
                             $impactItem = $impactProjectItem->getImpactItem();
                             ?>
-                            <div class="impact-data-info">
+                            <div class="impact-data-details">
                                 <h3><?= $impactItem->getName() ?></h3>
                                 <div class="row">
                                     <div class="col-md-4 col-sm-4 col-xs-6 detail">

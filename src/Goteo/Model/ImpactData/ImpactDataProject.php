@@ -134,6 +134,40 @@ class ImpactDataProject extends Model {
     /**
      * @return ImpactDataProject[]
      */
+    static public function getCalculatedListByProject(Project $project): array
+    {
+        $table = self::$Table_static;
+
+        $sql = "
+            SELECT idp.impact_data_id, idp.project_id, SUM(c.amount) as estimation_amount, SUM(ipi.value) as `data`
+            FROM impact_data_project idp
+            INNER JOIN impact_data_item idi ON idi.impact_data_id = idp.impact_data_id
+            INNER JOIN impact_project_item ipi ON ipi.impact_item_id = idi.impact_item_id
+            INNER JOIN impact_project_item_cost ipic ON ipic.impact_project_item_id = ipi.id
+            INNER JOIN cost c ON c.id = ipic.cost_id
+            WHERE idp.project_id  = :project_id AND ipi.project_id = :project_id
+            GROUP BY idp.impact_data_id
+            ";
+
+        $list = [];
+        try {
+            foreach(self::query($sql, [':project_id' => $project->id])->fetchAll(\PDO::FETCH_OBJ) as $obj) {
+                $impactDataProject = new ImpactDataProject();
+                $impactData = ImpactData::get($obj->impact_data_id);
+
+                $impactDataProject->setImpactData($impactData)->setProject($project)->setData($obj->data)->setEstimationAmount($obj->estimation_amount);
+                $list[] = $impactDataProject;
+            }
+        } catch (\PDOException $e) {
+            return [];
+        }
+
+        return $list;
+    }
+
+    /**
+     * @return ImpactDataProject[]
+     */
     static public function getListByProjectAndFootprint(Project $project, Footprint $footprint): array
     {
         $table = self::$Table_static;

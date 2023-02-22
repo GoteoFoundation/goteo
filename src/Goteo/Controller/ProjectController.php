@@ -205,7 +205,7 @@ class ProjectController extends Controller {
                 $impactDataProjectByFootprint[$footprint->id] = ImpactProject::getCalculatedByProjectAndFootprint($project, $footprint);
             }
 
-            $impactDataProjectList = ImpactProject::getListByProject($project);
+            $impactDataProjectList = ImpactProject::getCalculatedListByProject($project);
 
             $impactProjectItemList = [];
             foreach($impactDataProjectList as $impactDataProject) {
