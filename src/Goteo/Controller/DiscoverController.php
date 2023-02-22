@@ -93,6 +93,11 @@ class DiscoverController extends Controller {
             unset($filters['published_since']);
         } elseif($filter === 'recent') {
             $filters['type'] = 'recent';
+        } elseif ($filter === 'well-liked') {
+            $filters['status'] = Project::STATUS_IN_CAMPAIGN;
+            $filters['financed_by_more'] = 50;
+            $filters['published_from'] = (new DateTime('-5d'))->format('Y-m-d');
+            $filters['amounted_more'] = 3000;
         }
 
         if($vars['review']) {

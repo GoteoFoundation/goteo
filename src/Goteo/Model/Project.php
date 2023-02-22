@@ -3085,6 +3085,16 @@ class Project extends Model {
             $sqlFilter .= " AND project.id NOT REGEXP '[0-9a-f]{32}'";
         }
 
+        if (!empty($filters['financed_by_more'])) {
+            $sqlFilter .= " AND project.num_investors >= :financed_by_more";
+            $values[':financed_by_more'] = $filters['financed_by_more'];
+        }
+
+        if (!empty($filters['amounted_more'])) {
+            $sqlFilter .= " AND project.amount >= :amounted_more";
+            $values[':amounted_more'] = $filters['amounted_more'];
+        }
+
         if (is_array($filters['status'])) {
             $parts = [];
             foreach(array_values($filters['status']) as $i => $status) {
