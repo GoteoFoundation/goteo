@@ -25,7 +25,7 @@ class ImpactProjectItemTransformer extends AbstractTransformer
     {
         $impactItem = $this->model->getImpactItem();
         $unit = $impactItem->getUnit();
-        return $this->model->getValue() . " " . $unit;
+        return $this->model->getValue() . " ($unit)";
     }
 
     public function getActions()
@@ -33,9 +33,8 @@ class ImpactProjectItemTransformer extends AbstractTransformer
         if(!$u = $this->getUser()) return [];
         $project = $this->model->getProject()->id;
         $id = $this->model->getId();
-        if ($this->model->getRelatedImpactData()) {
+        if ($this->model->getRelatedImpactData())
             $impactData = $this->model->getRelatedImpactData()->id;
-        }
 
         return [
             'edit' => "/dashboard/project/$project/impact/impact_data/$impactData/impact_item/$id/edit",

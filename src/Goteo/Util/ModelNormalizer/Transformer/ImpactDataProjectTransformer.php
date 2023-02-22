@@ -21,7 +21,7 @@ class ImpactDataProjectTransformer extends AbstractTransformer
         $impactData = $this->model->getImpactData();
         $unit = $impactData->data_unit;
 
-        return $this->model->getData() . " " . $unit
+        return $this->model->getData() . " (" . $unit . ")"
             ;
     }
 

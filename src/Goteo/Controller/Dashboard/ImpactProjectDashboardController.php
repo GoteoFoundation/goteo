@@ -72,7 +72,8 @@ class ImpactProjectDashboardController extends ProjectDashboardController
 
     public function addImpactDataProject(Request $request, $pid, $footprint_id = null): Response
     {
-        $project = $this->validateProject($pid);
+        $section = $footprint_id ? "footprint_$footprint_id" : "impact_data_list";
+        $project = $this->validateProject($pid, $section);
         if(!$project instanceOf Project || !$project->userCanEdit(Session::getUser())) {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
@@ -157,7 +158,11 @@ class ImpactProjectDashboardController extends ProjectDashboardController
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
 
-        $processor = $this->getModelForm(ImpactItemProjectForm::class, $impactItemProject, [], [], $request);
+        $options = [
+            'impactData' => $impactData
+        ];
+
+        $processor = $this->getModelForm(ImpactItemProjectForm::class, $impactItemProject, [], $options, $request);
         $processor->createForm();
         $form = $processor->getForm();
         $form->handleRequest($request);

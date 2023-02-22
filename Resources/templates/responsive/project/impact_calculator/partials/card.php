@@ -5,7 +5,7 @@
 
 <article id="card-impact-data-<?= $impactData->id ?>" data-impact-data="<?= $impactData->id ?>" data-footprint="<?= $footprint ?>" data-operation="<?= $impactData->operation_type ?>" class="card col-md-4 col-sm-4 footprint-<?= $footprint ?>">
 
-    <header class="card-header">
+    <header class="card-header" title="<?= $impactData->title ?>">
         <h1><?= $impactData->title ?></h1>
     </header>
     <div class="card-body">

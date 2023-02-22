@@ -32,14 +32,16 @@
                             <?= $this->insert('project/impact_calculator/partials/footprint_details', ['footprint' => $footprint, 'impactDataList' => $this->impactDataByFootprint[$footprint->id]]) ?>
                         <?php endforeach; ?>
                 </div>
-            </div>
 
-            <div class="impact-calculator-save col-md-2 col-md-offset-4">
-                <button type="submit" class="btn btn-lg btn-cyan"><?= $this->t('regular-save') ?></button>
-            </div>
+                <div class="row spacer-20 spacer-bottom-20">
+                    <div class="impact-calculator-save col-md-4 col-md-offset-1">
+                        <button type="submit" class="btn btn-lg btn-cyan btn-block"><?= $this->t('regular-save') ?></button>
+                    </div>
 
-            <div class="impact-calculator-save col-md-2">
-                <a class="btn btn-lg btn-cyan" href="/dashboard/project/<?= $this->project->id?>"><?= $this->t('regular-continue-without-saving') ?></a>
+                    <div class="impact-calculator-save col-md-4 col-md-offset-1">
+                        <a class="btn btn-lg btn-cyan btn-block" href="/dashboard/project/<?= $this->project->id?>"><?= $this->t('regular-continue-without-saving') ?></a>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
@@ -49,8 +51,6 @@
     $this->append();
 
     $this->section('footer');
-
-
 ?>
 
 <!-- POST PROCESSING THIS JAVASCRIPT BY GRUNT -->

@@ -15,10 +15,19 @@ class ImpactItemProjectForm extends AbstractFormProcessor
 {
     private function getImpactItems(): array
     {
-        $impactItems = ImpactItem::getAll();
+        $impactData = $this->getOption('impactData');
+
+        if ($impactData)
+            $impactItems = ImpactItem::getByImpactData($impactData);
+        else
+            $impactItems = ImpactItem::getAll();
+
         $list = [];
         foreach($impactItems as $impactItem) {
-            $list[$impactItem->getName()] = $impactItem->getId();
+            $unit = $impactItem->getUnit();
+            $description = $impactItem->getDescription();
+            $name = $impactItem->getName() . " ($unit) " . ($description ? " - $description" : "");
+            $list[$name] = $impactItem->getId();
         }
 
         return $list;
@@ -31,6 +40,11 @@ class ImpactItemProjectForm extends AbstractFormProcessor
     public function createForm(): ImpactItemProjectForm
     {
         $model = $this->getModel();
+        $impactItem = $model->getImpactItem();
+
+        $unit = $impactItem ? $impactItem->getUnit() : "";
+        $label = $unit ? Text::get('regular-value') . "($unit)" : "";
+        $description = $impactItem ? $impactItem->getDescription() : "";
 
         $builder = $this->getBuilder();
         $builder
@@ -41,8 +55,11 @@ class ImpactItemProjectForm extends AbstractFormProcessor
                 'disabled' => $this->getReadonly(),
             ])
             ->add("value", NumberType::class, [
-                "label" => 'regular-value',
+                "label" => $unit ,
                 "data" => $model->getValue(),
+                "attr" => [
+                    'pre-help' => $description
+                ]
             ])
             ->add("submit", SubmitType::class, [])
 
