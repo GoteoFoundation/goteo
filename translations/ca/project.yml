@@ -151,10 +151,10 @@ project-manage-campaign: 'Gestiona la campanya'
 project-widget-not-visible: 'Aquest widget no serà visible fins que el projecte sigui públic'
 project-donors-with-reward: '%s cofinançadors han escollit aquesta recompensa'
 project-impact-calculator-title: "Compromís d'impacte"
-project-impact-calculator-description: "Calcula l'impacte de la teva campanya a través de les petjades i indicadores"
-project-impact-calculator-body-title: Lorem impsum dolor sit amet alliam est
-project-impact-calculator-body-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis eros viverra tortor egestas, nec convallis est rhoncus. Etiam tempor lectus purus. Vivamos suscipit diam ut dui sagittis, vitae mollis quam sempre.
-project-impact-calculator-footprint-1-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
-project-impact-calculator-footprint-2-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
-project-impact-calculator-footprint-3-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
+project-impact-calculator-description: "Calcula l'impacte de la teva campanya a través de les petjades i indicadors"
+project-impact-calculator-body-title: "Afegeix els teus compromisos d'impacte!"
+project-impact-calculator-body-description: "En aquesta pàgina pots fer un exercici d'estimació de l'impacte de la teva campanya. A continuació disposes de les diferentes Petjades de la fundació amb les dades d'impacte que nosaltres us proposem. Pots activar els compromisos d'impacte que més funcionin amb la teva campanya, assignar-li un pressupost i un impacte estimat."
+project-impact-calculator-footprint-1-description: "Emplena aquí les dades estimades d'impacte que fan referència a la preservació de la capacitat ecològica de la Terra."
+project-impact-calculator-footprint-2-description: "Emplena aquí les dades estimades d'impacte que fan referència a la millora de les condicions de vida de la ciutadania."
+project-impact-calculator-footprint-3-description: "Emplena aquí les dades estimades d'impacte que fan referència a la millora de la qualitat participativa de la ciutadania."
 project-impact-calculator-activate-indicator: "Activar compromís"

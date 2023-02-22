@@ -162,11 +162,11 @@ project-widget-not-visible: 'Este widget no será visible hasta que el proyecto 
 project-donors-with-reward: '%s cofinanciadores han escogido esta recompensa'
 project-impact-calculator-title: Compromiso de impacto
 project-impact-calculator-description: Calcula el impacto de tu campaña a través de huellas e indicadores
-project-impact-calculator-body-title: Lorem impsum dolor sit amet alliam est
-project-impact-calculator-body-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis eros viverra tortor egestas, nec convallis est rhoncus. Etiam tempor lectus purus. Vivamos suscipit diam ut dui sagittis, vitae mollis quam sempre.
-project-impact-calculator-footprint-1-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
-project-impact-calculator-footprint-2-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
-project-impact-calculator-footprint-3-description: Lorem impsum dolor sit amet, consectetur adipiscing elit.
+project-impact-calculator-body-title: "¡Añade tus compromisos de impacto!"
+project-impact-calculator-body-description: "En esta página puedes hacer un ejercicio de estimación del impacto de tu campaña. A continuació tienes las diferentes Huellas de la Fundación con los Datos de Impacto que nosotros proponemos. Puedes activar el compromiso de impacto que más funcione con tu campaña, asignarle un presupuesto y un impacto estimado."
+project-impact-calculator-footprint-1-description: "Rellena aquí los datos estimados que hacen referencia a la preservación de la capacidad ecológica de la Tierra."
+project-impact-calculator-footprint-2-description: "Rellena aquí los datos estimados que hacen referencia a la mejora de las condiciones de vida de la ciudadania."
+project-impact-calculator-footprint-3-description: "Rellena aquí los datos estimados que hacen referencia a la mejora de la calidad participativa de la ciudadania."
 project-impact-calculator-activate-indicator: "Activar compromiso"
 project-calculator-title: "Calculadora"
 project-calculator-card-title: "Calcula el impacto de tu donación"
