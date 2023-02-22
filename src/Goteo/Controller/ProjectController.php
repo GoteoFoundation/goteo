@@ -76,6 +76,7 @@ class ProjectController extends Controller {
 
         if ($request->isMethod(Request::METHOD_POST)) {
 
+            $redirectToCalculator = $request->request->getBoolean('continue-impact', false);
         	$social_commitment= strip_tags($request->request->get('social'));
 
             $data=[
@@ -126,7 +127,10 @@ class ProjectController extends Controller {
             $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();
             if($response instanceOf Response) return $response;
 
-            return new RedirectResponse("/project/$project->id/impact-calculator");
+            if ($redirectToCalculator)
+                return new RedirectResponse("/project/$project->id/impact-calculator");
+
+            return new RedirectResponse("/dashboard/project/$project->id");
         }
 
         return $this->viewResponse( 'project/create', [

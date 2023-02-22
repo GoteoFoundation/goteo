@@ -67,6 +67,10 @@ body.project {
           text-transform: uppercase;
           margin: 30px 0
         }
+
+        button#create-continue-impact:not(:hover) {
+          opacity: 0.5;
+        }
       }
     }
   }

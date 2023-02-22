@@ -127,8 +127,12 @@ $terms=$this->terms;
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3 col-md-offset-3 col-sm-6 spacer">
-                <button tabindex="0" id="create-continue" disabled="disabled" type="submit" class="btn btn-block green"><?= $this->text('project-create-save-button') ?></button>
+            <div class="col-md-4 col-md-offset-2 col-sm-6 spacer">
+                <button type="submit" id="create-continue" class="btn btn-block green" tabindex="0" name="continue-create" value="1" disabled><?= $this->text('project-create-save-button') ?></button>
+            </div>
+
+            <div class="col-md-4 col-sm-6 spacer">
+                <button type="submit" id="create-continue-impact" class="btn btn-block green"  tabindex="1" name="continue-impact" value="1" disabled><?= "Guardar y calcular impacto" ?></button>
             </div>
         </div>
         <div class="row" id="submit-alert">
@@ -229,11 +233,14 @@ foreach($this->a('project_defaults') as $k => $v): ?>
             var social_selected = $('input[name="social"]:checked').val();
 
             //If none selected in social radio button, continue button is always disabled
-            if(social_selected==0)
+            if(social_selected==0) {
                 $('#create-continue').attr('disabled', true);
-            else
+                $('#create-continue-impact').attr('disabled', true);
+            }
+            else {
                 $('#create-continue').attr('disabled', !this.checked);
-
+                $('#create-continue-impact').attr('disabled', !this.checked);
+            }
         });
 
         $('#noSocialModal').on('hidden.bs.modal', function (e) {
@@ -248,11 +255,13 @@ foreach($this->a('project_defaults') as $k => $v): ?>
             if(selected==0)
             {
                 $('#create-continue').attr('disabled', true);
+                $('#create-continue-impact').attr('disabled', true);
                 $("#noSocialModal").modal("show");
             }
-            else if(accept_terms)
+            else if(accept_terms) {
                 $('#create-continue').attr('disabled', false);
-
+                $('#create-continue-impact').attr('disabled', !this.false);
+            }
         });
 
         $("#project-form").on('click', '#calculate-invest', function(){
@@ -363,18 +372,19 @@ foreach($this->a('project_defaults') as $k => $v): ?>
             }
         });
 
-
-        $("form").submit(function(e){
-            var form = this;
-            e.preventDefault();
-            $('html, body').animate({
-              scrollTop: ($("#submit-alert").offset().top)
-            },500);
-            $("#submit-alert .alert").fadeIn(500, function() {
-              form.submit();
+        /**
+         *  TODO: Handle which button is clciked ans re-activate animation
+            $("form").submit(function(e){
+                var form = this;
+                e.preventDefault();
+                $('html, body').animate({
+                  scrollTop: ($("#submit-alert").offset().top)
+                },500);
+                $("#submit-alert .alert").fadeIn(500, function() {
+                  form.submit();
+                });
             });
-        });
-
+         */
     });
 
 </script>
