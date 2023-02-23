@@ -132,7 +132,7 @@ $terms=$this->terms;
             </div>
 
             <div class="col-md-4 col-sm-6 spacer">
-                <button type="submit" id="create-continue-impact" class="btn btn-block green"  tabindex="1" name="continue-impact" value="1" disabled><?= "Guardar y calcular impacto" ?></button>
+                <button type="submit" id="create-continue-impact" class="btn btn-block green"  tabindex="1" name="continue-impact" value="1" disabled><?= $this->t('project-create-continue-impact') ?></button>
             </div>
         </div>
         <div class="row" id="submit-alert">

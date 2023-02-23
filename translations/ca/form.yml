@@ -71,6 +71,6 @@ form-editor-fine-locate: 'Pots afinar la localització arrossegant i deixant ana
 form-editor-error-locating: 'No s''ha trobat una adreça!'
 form-editor-success-locating: 'S''ha trobat una adreça vàlida'
 form-dragndrop-unsupported: 'Hi ha hagut un problema amb l''arrossegament d''arxius. Si us plau, intenta-ho de nou fent click al botó de pujar arxius'
-form-impact-data-project-impact-data-list: "Dato de Impacto"
-form-impact-data-project-estimation-amount: "Cantidad estimada"
-form-impact-data-project-data: "Impacto estimado"
+form-impact-data-project-impact-data-list: "Dada d'Impacte"
+form-impact-data-project-estimation-amount: "Quantitat estimada"
+form-impact-data-project-data: "Impacte estimat"
