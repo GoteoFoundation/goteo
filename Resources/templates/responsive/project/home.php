@@ -12,7 +12,7 @@
         </h2>
         <div class="row">
             <div class="about-description col-md-11">
-            <?= $project->subtitle ?>
+            <?= $this->markdown($this->ee($project->subtitle)) ?>
             </div>
         </div>
 

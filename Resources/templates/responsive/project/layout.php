@@ -65,7 +65,7 @@ $this->section('content');
 <div class="container-fluid main-info">
 	<div class="container-fluid">
 		<div class="row header text-center">
-			<h1 class="project-title"><?= $this->ee($project->name) ?></h1>
+			<h1 class="project-title"><?= $this->markdown($this->ee($project->name)) ?></h1>
 			<div class="project-by"><a href="/user/<?= $project->owner ?>"><?= $project->user->name ?></a></div>
 		</div>
 
