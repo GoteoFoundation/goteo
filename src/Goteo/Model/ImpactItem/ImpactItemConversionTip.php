@@ -11,8 +11,6 @@
 namespace Goteo\Model\ImpactItem;
 
 use Goteo\Core\Model;
-use Goteo\Entity\ImpactItem\ImpactItem;
-use Goteo\ImpactItem\sting;
 use Goteo\Library\Text;
 use PDOException;
 

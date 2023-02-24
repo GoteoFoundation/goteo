@@ -7,16 +7,15 @@ use Goteo\Application\Currency;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\Model;
-use Goteo\Entity\ImpactItem\ImpactItem;
 use Goteo\Model\Footprint;
 use Goteo\Model\ImpactData;
+use Goteo\Model\ImpactItem\ImpactItem;
 use Goteo\Model\Invest;
 use Goteo\Model\Matcher;
 use Goteo\Model\Node;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
-use Goteo\Repository\ImpactItemRepository;
 
 
 //Public Web path
@@ -425,10 +424,9 @@ function get_test_impact_item(): ?ImpactItem
         ->setDescription($data['description'])
         ->setUnit($data['unit']);
 
-    $impactItemRepository = new ImpactItemRepository();
-
     try {
-        $impactItemRepository->persist($impactItem);
+        $errors = [];
+        $impactItem->save($errors);
     } catch(ModelException $e) {
         error_log('unknown error getting test Impact Item ' . $e->getMessage());
         return null;
@@ -439,16 +437,15 @@ function get_test_impact_item(): ?ImpactItem
 
 function delete_test_impact_item(): bool
 {
-    $impactItemRepository = new ImpactItemRepository();
 
     try {
-        $impactItem = $impactItemRepository->getById(1);
+        $impactItem = ImpactItem::getById(1);
     } catch (ModelNotFoundException $e) {
         return true;
     }
 
     try {
-        $impactItemRepository->delete($impactItem);
+        $impactItem->dbDelete();
     } catch (ModelException $e) {
         return false;
     }

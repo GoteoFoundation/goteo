@@ -21,14 +21,13 @@ use Goteo\Application\View;
 use Goteo\Controller\Dashboard\ProjectDashboardController;
 use Goteo\Core\Controller;
 use Goteo\Core\DB;
-use Goteo\Entity\ImpactData\ImpactDataProject;
 use Goteo\Library\Text;
 use Goteo\Library\Worth;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Footprint;
 use Goteo\Model\ImpactData;
-use Goteo\Model\ImpactData\ImpactDataProject as ImpactProject;
+use Goteo\Model\ImpactData\ImpactDataProject;
 use Goteo\Model\ImpactItem\ImpactProjectItem;
 use Goteo\Model\Invest;
 use Goteo\Model\License;
@@ -41,7 +40,6 @@ use Goteo\Model\Project\Favourite;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Project\ProjectMilestone;
 use Goteo\Model\SocialCommitment;
-use Goteo\Repository\ImpactDataProjectRepository;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -464,7 +462,6 @@ class ProjectController extends Controller {
             ->setData($impactDataProjectData["data"])
             ->setEstimationAmount($impactDataProjectData["estimated_amount"]);
 
-        $impactDataProjectRepository = new ImpactDataProjectRepository();
-        $impactDataProjectRepository->persist($impactDataProject, $errors);
+        $impactDataProject->save($errors);
     }
 }
