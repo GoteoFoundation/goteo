@@ -1,3 +1,5 @@
 #!/bin/sh
-export UID=`id -u`
+if [[ "$OSTYPE" =~ ^linux ]]; then
+	export UID=`id -u`
+fi
 docker-compose exec -u goteo php "$@"
