@@ -1,7 +1,5 @@
-#!/bin/sh
-if [[ "$OSTYPE" =~ ^linux ]]; then
-	export UID=`id -u`
-fi
+#!/bin/bash
+export UID=`id -u`
 
 DOCKER_FILE=
 if [ -f "docker-compose-local.yml" ]; then
