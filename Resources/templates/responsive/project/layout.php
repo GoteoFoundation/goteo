@@ -87,6 +87,14 @@ $this->section('content');
 <!-- End container fluid -->
 
 <div class="container-fluid section">
+    <?php if ($project->isImpactCalcActive()):?>
+        <div class="impact-calculator-details row">
+            <?= $this->insert('project/partials/impact_by_footprint', ['footprints' => $this->footprints ]) ?>
+            <?= $this->insert('project/partials/calculator') ?>
+            <?= $this->insert('project/partials/sdgs') ?>
+        </div>
+    <?php endif; ?>
+
 	<div class="col-sm-8 section-content" id="project-tabs">
 	    <?= $this->supply('main-content') ?>
 	</div>
@@ -102,7 +110,6 @@ $this->section('content');
 <?= $this->insert('project/partials/related_projects') ?>
 
 <!-- sticky menu -->
-
 <div class="sticky-menu" data-offset-top="880" data-spy="affix">
 	<div class="container-fluid">
 		<div class="row">
@@ -179,225 +186,7 @@ $this->section('content');
 
 <?= $this->insert('project/partials/chart_amount.php', ['project' => $project]) ?>
 
-<script src="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.min.js"></script>
-
-<script type="text/javascript">
-
-// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
-
-    $(function(){
-         // $(window).on("pronto.request", function(e){
-         // });
-
-         $(window).on("pronto.render", function(e){
-            $("div.project-menu div.item, div.sticky-item").removeClass("current");
-
-            $('table.footable').footable();
-            var url = e.currentTarget.location.href;
-            var section = 'home';
-            if(url.indexOf('/updates') !== -1) section = 'updates';
-            if(url.indexOf('/participate') !== -1) section = 'participate';
-            // console.log('section', section);
-
-            $("."+section).addClass("current");
-
-            $("a.accordion-toggle").click(function(){
-            if($(this).hasClass('collapsed'))
-                $(this).find('span.glyphicon').removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up");
-            else
-                $(this).find('span.glyphicon').removeClass("glyphicon-menu-up").addClass("glyphicon-menu-down");
-            });
-
-            $("#infoCarousel").swiperight(function() {
-                $(this).carousel('prev');
-            });
-
-            $("#infoCarousel").swipeleft(function() {
-                $(this).carousel('next');
-            });
-
-            $('#go-top').click(function(){
-                $('body,html').animate({scrollTop : 0}, 500);
-                return false;
-            });
-
-            $('div.button-msg').click(function(){
-                $(".box").hide();
-                $("div.button-msg .main-button button").removeClass("message-grey").addClass("green");
-                $(this).find('.main-button button').removeClass("green").addClass("message-grey");
-                $(this).find('.box').show();
-            });
-
-            $("#reset-chart").click(function(){
-                $( "div.chart-costs" ).fadeOut( "slow", function() {
-                    printCosts();
-                 });
-                 $( "div.chart-costs" ).fadeIn("slow");
-            });
-
-         });
-
-        var _favourite_ajax = function() {
-
-            var user= '<?= $this->get_user()->id ?>';
-
-            if(user)
-            {
-                $.ajax({
-                    url: "/project/favourite/<?= $project->id ?>",
-                    data: {   },
-                    type: 'post',
-                    success: function(result){
-                        $(".favourite").addClass('active');
-                    }
-                });
-            }
-
-        };
-
-        var _delete_favourite_ajax = function() {
-
-            var user= '<?= $this->get_user()->id ?>';
-
-            if(user)
-            {
-                $.ajax({
-                    url: "/project/delete-favourite",
-                    data: { 'project' : '<?= $project->id ?>', 'user' : user  },
-                    type: 'post',
-                    success: function(result){
-                        $(".favourite").removeClass('active');
-                    }
-                });
-            }
-
-        };
-
-        $(".favourite").click(function(){
-            if($(this).hasClass('active'))
-                _delete_favourite_ajax();
-            else
-                _favourite_ajax();
-        });
-
-        $("a.accordion-toggle").click(function(){
-            if($(this).hasClass('collapsed'))
-                $(this).find('span.glyphicon').removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up");
-            else
-                $(this).find('span.glyphicon').removeClass("glyphicon-menu-up").addClass("glyphicon-menu-down");
-        });
-
-        $("div.widget.rewards a.accordion-toggle").click(function(){
-            if($(this).hasClass('collapsed'))
-                $(this).parent().removeClass('rewards-collapsed');
-            else
-                $(this).parent().addClass('rewards-collapsed');
-        });
-
-        $("#infoCarousel").swiperight(function() {
-            $(this).carousel('prev');
-        });
-
-        $("#infoCarousel").swipeleft(function() {
-          $(this).carousel('next');
-        });
-
-        $('#go-top').click(function(){
-            $('body,html').animate({scrollTop : 0}, 500);
-            return false;
-        });
-
-        $('div.button-msg').click(function(){
-            $(".box").hide();
-            $("div.button-msg .main-button button").removeClass("message-grey").addClass("green");
-            $(this).find('.main-button button').removeClass("green").addClass("message-grey");
-            $(this).find('.box').show();
-        });
-
-        $("#show-link").click(function(){
-            $("#link-box").toggle(600);
-        });
-
-        $("#reset-chart").click(function(){
-             $( "div.chart-costs" ).fadeOut( "slow", function() {
-                printCosts();
-             });
-             $( "div.chart-costs" ).fadeIn("slow");
-        });
-
-        $("div.row.call-info").hover(function(){
-            $(".info-default-call").toggle();
-            $(".info-hover-call").toggle();
-        });
-
-        // Delete support msg
-        $('.msg').on('click', ".delete-msg", function (e) {
-            e.preventDefault();
-            var ask = $(this).data('confirm');
-            var url = $(this).data('url');
-            var $item = $(this).closest('.msg');
-            var $error = $item.find('.error-message');
-            if(confirm(ask)) {
-                $.ajax({
-                    url: url,
-                    type: 'DELETE',
-                    success: function(data) {
-                       //console.log('success', data);
-                      $item.remove();
-                    }
-                }).fail(function(data) {
-                  var error = JSON.parse(data.responseText);
-                   //console.log('error', data, error)
-                  $error.removeClass('hidden').html(error.error);
-                });
-            }
-        });
-
-
-        // Send comments
-        $(document).on('click', '.ajax-comments .send-comment', function (e) {
-            e.preventDefault();
-            var $parent = $(this).closest('.ajax-comments');
-            var $list = $($parent.data('list'));
-            var url = $parent.data('url');
-            var $error = $parent.find('.error-message');
-            var $textarea = $parent.find('[name="message"]');
-            var data = {
-                message: $textarea.val(),
-                thread: $parent.data('thread'),
-                project: $parent.data('project'),
-                view: 'project'
-            }
-
-            $error.addClass('hidden').html('');
-            $.post(url, data, function(data) {
-                // console.log('ok!', data);
-                $list.append(data.html);
-                $textarea.val('');
-                $parent.closest('.box').hide();
-              }).fail(function(data) {
-                var error = JSON.parse(data.responseText);
-                // console.log('error', data, error)
-                $error.removeClass('hidden').html(error.error);
-              });
-        });
-
-        $('.slider-matchers').slick({
-        dots: true,
-        infinite: true,
-        speed: 1000,
-        fade: true,
-        arrows: false,
-        cssEase: 'linear'
-    });
-
-    $('[data-toggle="tooltip"]').tooltip();
-
-
-    });
-
-// @license-end
-</script>
+<?= $this->insert('project/partials/javascript') ?>
 
 <?= $this->insert('partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel]) ?>
 

@@ -180,6 +180,7 @@ regular-recomended_by: 'Proyecto recomendado por:'
 regular-review_board: 'Panel revisor'
 regular-round: 'ª ronda'
 regular-save: Guardar
+regular-continue-without-saving: "Continua sin guardar"
 regular-schedule: Horario
 regular-search: Buscar
 regular-search-user: Buscar un usuario
@@ -272,3 +273,8 @@ regular-modal-decription: Descripción en la modal
 regular-click-more: "Haz click para saber más"
 regular-apply: Aplicar
 regular-units-left: "Unidades que quedan"
+regular-budget: "Presupuesto"
+regular-impact: "Impacto"
+regular-list: "Lista"
+regular-costs: "Costes"
+regular-value: "Valor"

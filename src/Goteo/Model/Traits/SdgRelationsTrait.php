@@ -11,6 +11,7 @@
 namespace Goteo\Model\Traits;
 
 use Goteo\Application\Config;
+use Goteo\Application\Config\ConfigException;
 use Goteo\Model\Sdg;
 use Goteo\Model\Footprint;
 use Goteo\Application\Exception\ModelException;
@@ -80,10 +81,11 @@ trait SdgRelationsTrait {
 
 
     /**
-     * Return sdgs
-     * @return [type] [description]
+     * @return Sdg[]
+     * @throws ConfigException
      */
-    public function getSdgs($lang = null) {
+    public function getSdgs(?string $lang = null): array
+    {
         $tb = strtolower($this->getTable());
         $rel = $this->getSdgRelationalTable();
         list($fields, $joins) = Sdg::getLangsSQLJoins($lang, Config::get('sql_lang'));
@@ -101,7 +103,7 @@ trait SdgRelationsTrait {
             ORDER BY `$rel`.order ASC";
         $values = [':id' => $this->id];
         if($query = self::query($sql, $values)) {
-            if( $sdgs = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Sdg') ) {
+            if( $sdgs = $query->fetchAll(\PDO::FETCH_CLASS, Sdg::class) ) {
                 return $sdgs;
             }
         }

@@ -247,7 +247,23 @@
     &.icon-resource-communication {
         @include svg-background('../img/icons/channel-call/communication.svg');
     }
+    &.icon-medal {
+      @include svg-background('../img/impact-calculator/medal.svg');
+    }
 
+    &.icon-money-bag {
+      @include svg-background('../img/impact-calculator/money_bag.svg');
+    }
 
+    &.icon-classroom {
+      @include svg-background('../img/impact-calculator/classroom.svg');
+    }
 
+    &.icon-person {
+      @include svg-background('../img/impact-calculator/person.svg')
+    }
+
+    &.icon-job {
+      @include svg-background('../img/impact-calculator/job.svg')
+    }
 }

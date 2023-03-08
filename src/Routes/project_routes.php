@@ -65,6 +65,11 @@ $prjs->add('project-poster', new Route(
     array('_controller' => 'Goteo\Controller\ProjectController::posterAction')
 ));
 
+$prjs->add('project-impact-calculator', new Route(
+    '/{pid}/impact-calculator',
+    ['_controller' => 'Goteo\Controller\ProjectController::impactAction']
+));
+
 $prjs->add('project-sections', new Route(
     '/{pid}/{show}/{post}',
     array(

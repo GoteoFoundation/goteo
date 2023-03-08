@@ -601,3 +601,12 @@ admin-channel-projects-not-exists: "No existe esta relación"
 admin-posts: 'Posts'
 admin-impact_data: "Datos de impacto"
 admin-user-manage-tip-donation: "de donación propina"
+
+admin-title-impactDataId: "Nombre del dato de impacto"
+admin-title-estimation: "Presupuesto destinado al impacto"
+admin-title-dataValue: "Impacto estimado"
+admin-title-impactProjectId: "Id del Item de Impacto para el Proyecto"
+admin-title-impactValue: "Cantidad"
+admin-title-impactItemName: "Elemento de impacto"
+admin-title-costId: "Id"
+admin-title-costName: "Nombre"

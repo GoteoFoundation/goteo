@@ -2,6 +2,7 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\Core\DB;
 use Goteo\TestCase;
 
 use Goteo\Model\ImpactData;
@@ -9,26 +10,26 @@ use Goteo\Application\Exception\ModelNotFoundException;
 
 class ImpactDataTest extends TestCase {
 
-    private static $image = array(
+    private static array $image = [
                         'name' => 'test.png',
                         'type' => 'image/png',
                         'tmp_name' => '',
                         'error' => '',
-                        'size' => 0);
+                        'size' => 0];
 
-    private static $data = array(
-    	'title' => 'Test post', 
+    private static array $data = [
+    	'title' => 'Test post',
 	    'data' => 'Test data',
         'data_unit' => 'Test unit',
     	'description' => 'Test description'
-    );
+    ];
 
 
-    public function testInstance() {
-        \Goteo\Core\DB::cache(false);
+    public function testInstance(): ImpactData
+    {
+        DB::cache(false);
 
         $ob = new ImpactData();
-
         $this->assertInstanceOf(ImpactData::class, $ob);
 
         return $ob;
@@ -57,8 +58,8 @@ class ImpactDataTest extends TestCase {
     /**
      * @depends testCreate
      */
-    public function testGetImpactData(ImpactData $impact_data): ImpactData {
-
+    public function testGetImpactData(ImpactData $impact_data): ImpactData
+    {
     	$db_impact_data = ImpactData::get($impact_data->id);
 
     	$this->assertEquals($db_impact_data, $impact_data);
@@ -80,6 +81,27 @@ class ImpactDataTest extends TestCase {
         $impact_data_list = ImpactData::getList();
 
         $this->assertCount(1, $impact_data_list);
+    }
+
+    /**
+     * @depends testGetImpactData
+     */
+    public function testGetListBySource()
+    {
+        $impact_data_list = ImpactData::getList(['source' => ImpactData::SOURCE_ITEM]);
+
+        $this->assertCount(1, $impact_data_list);
+
+        $impact_data_list = ImpactData::getList(['source' => ImpactData::SOURCE_PROJECT]);
+        $this->assertEmpty($impact_data_list);
+    }
+
+    public function testGetListByType() {
+        $impact_data_list = ImpactData::getList(['type' => ImpactData::TYPE_ESTIMATION]);
+        $this->assertCount(1, $impact_data_list);
+
+        $impact_data_list = ImpactData::getList(['type' => ImpactData::TYPE_REAL]);
+        $this->assertEmpty($impact_data_list);
     }
 
     /**

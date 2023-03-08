@@ -25,6 +25,10 @@ use Goteo\Library\Text;
 use Goteo\Library\Worth;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
+use Goteo\Model\Footprint;
+use Goteo\Model\ImpactData;
+use Goteo\Model\ImpactData\ImpactDataProject;
+use Goteo\Model\ImpactItem\ImpactProjectItem;
 use Goteo\Model\Invest;
 use Goteo\Model\License;
 use Goteo\Model\Message as SupportMessage;
@@ -38,6 +42,7 @@ use Goteo\Model\Project\ProjectMilestone;
 use Goteo\Model\SocialCommitment;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,8 +72,9 @@ class ProjectController extends Controller {
             return $this->redirect('/user/login?return='.urldecode('/project/create'));
         }
 
-        if ($request->isMethod('post')) {
+        if ($request->isMethod(Request::METHOD_POST)) {
 
+            $redirectToCalculator = $request->request->getBoolean('continue-impact', false);
         	$social_commitment= strip_tags($request->request->get('social'));
 
             $data=[
@@ -119,14 +125,17 @@ class ProjectController extends Controller {
             $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();
             if($response instanceOf Response) return $response;
 
-            return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
+            if ($redirectToCalculator)
+                return new RedirectResponse("/project/$project->id/impact-calculator");
+
+            return new RedirectResponse("/dashboard/project/$project->id");
         }
 
         return $this->viewResponse( 'project/create', [
            'social_commitments' => SocialCommitment::getAll(),
            'terms' => Page::get('howto')
         ]);
-	}
+    }
 
 	protected function view(Request $request, $project, $show, $post = null) {
 		DB::cache(true);
@@ -178,13 +187,33 @@ class ProjectController extends Controller {
                 Config::set('analytics.google', array_merge(Config::get('analytics.google'), [$project->analytics_id]));
             }
 
-            $viewData = array(
+            $footprints = Footprint::getList([], 0, 3);
+
+            $viewData = [
                 'project' => $project,
                 'show' => $show,
                 'blog' => null,
                 'related_projects' => $related_projects,
-                'widget_code' => $widget_code
-            );
+                'widget_code' => $widget_code,
+                'footprints' => $footprints
+            ];
+
+            $impactDataProjectByFootprint = [];
+            foreach($footprints as $footprint) {
+                $impactDataProjectByFootprint[$footprint->id] = ImpactDataProject::getCalculatedByProjectAndFootprint($project, $footprint);
+            }
+
+            $impactDataProjectList = ImpactDataProject::getCalculatedListByProject($project);
+
+            $impactProjectItemList = [];
+            foreach($impactDataProjectList as $impactDataProject) {
+                $impactData = $impactDataProject->getImpactData();
+                $impactProjectItemList[$impactData->id] = ImpactProjectItem::getListByProjectAndImpactData($project, $impactData);
+            }
+
+            $viewData['impactDataProjectByFootprint'] = $impactDataProjectByFootprint;
+            $viewData['impactDataProjectList'] = $impactDataProjectList;
+            $viewData['impactProjectItemList'] = $impactProjectItemList;
 
             $viewData['matchers'] = $project->getMatchers('active');
             $viewData['individual_rewards'] = [];
@@ -335,7 +364,7 @@ class ProjectController extends Controller {
 
         $favourite->save($errors);
 
-        if ($request->isMethod('post'))
+        if ($request->isMethod(Request::METHOD_POST))
             return $this->jsonResponse(['result' => $favourite]);
 
         return $this->redirect('/project/' . $pid);
@@ -345,16 +374,20 @@ class ProjectController extends Controller {
      * A user unmark a project as favourite
      * TODO: to microAPI
      */
-    public function deleteFavouriteAction(Request $request) {
-        if ($request->isMethod('post')) {
-            $project = $request->request->get('project');
-            $user = $request->request->get('user');
+    public function deleteFavouriteAction(Request $request): JsonResponse
+    {
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $obj = json_decode($request->getContent());
+            $project = $obj->project;
+            $user = $obj->user;
 
-            $favourite=new Favourite(array(
+            $favourite = new Favourite([
                 'project' => $project, 'user' => $user
-            ));
+            ]);
 
-            $favourite->remove($errors);
+            $errors = [];
+            if (!$favourite->remove($errors))
+                return $this->jsonResponse(['result' => implode(',',$errors)]);
         }
 
         return $this->jsonResponse(['result' => true]);
@@ -376,5 +409,59 @@ class ProjectController extends Controller {
             Message::error($e->getMessage());
             return new RedirectResponse('/project/' . $project->id );
         }
+    }
+
+    public function impactAction(Request $request, string $pid = null): Response
+    {
+        if (!Session::isLogged()) {
+            Message::info(Text::get('user-login-required-to_create'));
+            return $this->redirect('/user/login?return='.urldecode("/project/$pid/impact-calculator"));
+        }
+
+        $user = Session::getUser();
+        $project = Project::get($pid);
+
+        if (!$user->id == $project->user) {
+            return $this->redirect('/');
+        }
+
+        $footprints = Footprint::getList([], 0, 3);
+
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $this->createImpactDataProjects($request, $project);
+            return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
+        }
+
+        return $this->viewResponse('project/impact_calculator/impact_calculator', ['footprints' => $footprints, 'project' => $project]);
+    }
+
+    private function createImpactDataProjects(Request $request, Project $project)
+    {
+        $data = $request->request->all();
+        foreach ($data['form'] as $impactDataList) {
+            foreach ($impactDataList as $impactData => $impactDataProjectData) {
+                $impactData = ImpactData::get($impactData);
+
+                if ($impactDataProjectData['active']  && !empty($impactDataProjectData["data"]) && !empty($impactDataProjectData["estimated_amount"])) {
+                    $errors = [];
+                    $this->createAndPersistImpactDataProject($impactData, $project, $impactDataProjectData, $errors);
+                    if (!empty($errors)) {
+                        Message::error($errors);
+                    }
+                }
+            }
+        }
+    }
+
+    public function createAndPersistImpactDataProject(ImpactData $impactData, Project $project, array $impactDataProjectData, array $errors = []): void
+    {
+        $impactDataProject = new ImpactDataProject();
+        $impactDataProject
+            ->setImpactData($impactData)
+            ->setProject($project)
+            ->setData($impactDataProjectData["data"])
+            ->setEstimationAmount($impactDataProjectData["estimated_amount"]);
+
+        $impactDataProject->save($errors);
     }
 }
