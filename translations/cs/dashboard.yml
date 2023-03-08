@@ -1,0 +1,3 @@
+api-key-key: 'Klíč'
+api-key-generate-new: 'Vygenerovat nový klíč'
+api-key-generate-new-confirm: 'Tato akce odstraní aktuální klíč a vygeneruje nový klíč. Pokračovat?'
