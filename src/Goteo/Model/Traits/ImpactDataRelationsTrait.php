@@ -11,6 +11,7 @@
 namespace Goteo\Model\Traits;
 
 use Goteo\Application\Config;
+use Goteo\Application\Lang;
 use Goteo\Model\ImpactData;
 use Goteo\Application\Exception\ModelException;
 
@@ -96,7 +97,8 @@ trait ImpactDataRelationsTrait {
     {
         $tb = strtolower($this->getTable());
         $rel = $this->getImpactDataTable();
-        list($fields, $joins) = ImpactData::getLangsSQLJoins(null, Config::get('sql_lang'));
+        $lang = Lang::current();
+        list($fields, $joins) = ImpactData::getLangsSQLJoins($lang);
         $sqlWhere = [];
         $sqlInner = "";
 
