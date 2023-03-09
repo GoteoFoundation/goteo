@@ -11,6 +11,7 @@
 namespace Goteo\Model\ImpactItem;
 
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Lang;
 use Goteo\Core\Model;
 use Goteo\Library\Text;
 use Goteo\Model\ImpactData;
@@ -27,6 +28,15 @@ class ImpactItem extends Model
 
     protected $Table = 'impact_item';
     static protected $Table_static = 'impact_item';
+
+    public static function getLangFields(): array
+    {
+        return [
+            'name',
+            'description',
+            'unit'
+        ];
+    }
 
     public function getId(): int
     {
@@ -77,9 +87,18 @@ class ImpactItem extends Model
      */
     static public function getById(int $id): ImpactItem
     {
+        $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
         $table = self::$Table_static;
 
-        $sql = "SELECT * FROM `$table` WHERE id = ?";
+        $sql = "
+            SELECT
+                `$table`.id,
+                $fields
+            FROM `$table`
+            $joins
+            WHERE `$table`.id = ?";
         $impactItem = self::query($sql, [$id])->fetchObject(ImpactItem::class);
 
         if (!$impactItem instanceOf ImpactItem)
@@ -93,10 +112,15 @@ class ImpactItem extends Model
      */
     static public function getByImpactData(ImpactData $impactData): array
     {
+        $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
         $table = self::$Table_static;
         $sql = "
-            SELECT `$table`.*
+            SELECT `$table`.id,
+                   $fields
             FROM `$table`
+            $joins
             INNER JOIN impact_data_item ON impact_data_item.impact_item_id = `$table`.id
             WHERE impact_data_item.impact_data_id = ?
         ";
@@ -109,10 +133,16 @@ class ImpactItem extends Model
      */
     static public function getByImpactDataAndProject(ImpactData $impactData, Project $project): array
     {
+        $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
         $table = self::$Table_static;
         $sql = "
-            SELECT `$table`.*
+            SELECT
+                `$table`.id,
+                $fields
             FROM `$table`
+            $joins
             INNER JOIN impact_data_item ON impact_data_item.impact_item_id = `$table`.id
             INNER JOIN impact_project_item ON impact_project_item.impact_item_id = `$table`.id
             WHERE impact_data_item.impact_data_id = :impact_data_id AND impact_project_item.project_id = :project_id
@@ -127,9 +157,18 @@ class ImpactItem extends Model
      */
     static public function getAll(): array
     {
+        $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
         $table = self::$Table_static;
 
-        $sql = "SELECT * FROM $table";
+        $sql = "
+            SELECT
+                `$table`.id,
+                $fields
+            FROM $table
+            $joins
+        ";
+
         return self::query($sql)->fetchAll(PDO::FETCH_CLASS, ImpactItem::class);
     }
 

@@ -163,7 +163,6 @@ class ImpactData extends Model {
                     impact_data.type,
                     impact_data.icon,
                     impact_data.source,
-                    impact_data.result_msg,
                     impact_data.operation_type
                 FROM impact_data
                 $joins

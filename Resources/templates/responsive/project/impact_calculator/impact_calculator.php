@@ -29,7 +29,7 @@
             <div class="container">
                 <div class="row">
                         <?php foreach($footprints as $footprint):?>
-                            <?= $this->insert('project/impact_calculator/partials/footprint_details', ['footprint' => $footprint, 'impactDataList' => $this->impactDataByFootprint[$footprint->id]]) ?>
+                            <?= $this->insert('project/impact_calculator/partials/footprint_details', ['footprint' => $footprint]) ?>
                         <?php endforeach; ?>
                 </div>
 
