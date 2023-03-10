@@ -40,6 +40,16 @@ $(function() {
             $resultMsg.innerHTML = text.replace("%amount", 1).replace("%result", result);
         }
     });
+
+    function disableEnterKey(e) {
+        if (e.keyCode === 13) {
+            console.info("disable enter button");
+            e.preventDefault();
+        }
+    }
+
+    const $inputs = document.querySelectorAll("input");
+    $inputs.forEach($input => $input.addEventListener("keypress", disableEnterKey));
 });
 
 
