@@ -1,6 +1,7 @@
 ---
 channel-join: 'Připojit'
 channel-join-desc: 'Chcete se zapojit do kanálu?'
+channel-join-reviewing: 'Hodnocení...'
 matcher-apply-pending: 'Tento projekt je zařazen do užšího výběru pro výzvu na spolufinancování %s'
 matcher-apply-accepted: 'Tento projekt čeká na schválení výzvy na spolufinancování %s'
 matcher-apply-accept: 'Ano, jsem v'
