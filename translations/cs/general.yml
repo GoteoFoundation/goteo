@@ -60,6 +60,7 @@ login-accept-conditions: 'Přijímám <a href="/legal/terms">podmínky použití
 mandatory-cost-field-type: 'Je nutné zvolit typ nákladů'
 mandatory-individual_reward-field-amount: 'Je nutné uvést částku, za kterou lze odměnu získat'
 mandatory-project-costs: 'Musí být rozdělena alespoň na dva náklady.'
+mandatory-register-field-email: 'Musíte uvést e-mailovou adresu'
 meta-description-index: 'Goteo je přední otevřená síť pro crowdfunding, spolupráci a školení v oblasti sociálních inovací. Se 2 koly a daňovými výhodami pro dárce!'
 node-menu-home: Uzel
 overview-field-about: 'Základní charakteristiky a cíle'
@@ -250,3 +251,4 @@ regular-modal-decription: Popis v modálním okně
 regular-click-more: "Klikněte zde a zjistěte více"
 regular-apply: Použít
 regular-list: "Seznam"
+regular-value: "Hodnota"
