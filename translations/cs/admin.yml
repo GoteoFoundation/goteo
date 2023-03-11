@@ -536,3 +536,5 @@ admin-channel-projects-add: "Přidat projekt"
 admin-channel-projects-not-exists: "Takový vztah neexistuje"
 admin-posts: 'Příspěvky'
 admin-impact_data: "Údaje o dopadu"
+admin-title-costId: "Id"
+admin-title-costName: "Jméno"
