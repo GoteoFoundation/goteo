@@ -42,7 +42,8 @@ class ModelTranslator implements TranslatorInterface {
         'node_sections' => 'Node\NodeSections',
         'question' => 'Questionnaire\Question',
         'question_options' => 'Questionnaire\Question\QuestionOptions',
-        'impact_data' => 'ImpactData'
+        'impact_data' => 'ImpactData',
+        'impact_item' => 'ImpactItem\ImpactItem',
     ];
     static protected $_forced_types = [
         'info' => 'html',
