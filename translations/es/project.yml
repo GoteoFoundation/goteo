@@ -179,3 +179,5 @@ project-calculator-modal-impact-item-list: "Listado de Items de Impacto para el 
 project-calculator-modal-impact-item-amount: "Costes asociados"
 project-impact-calculator-card-impact-description: "Con un presupuesto de %s aspiramos a tener un impacto de %s"
 project-create-continue-impact: "Guardar y calcular impacto"
+project-campaign-impact-calculator: "Calculadora de Impacto"
+project-campaign-activate-impact-calculator: "Al activar la calculadora de impacto, la impulsora del proyecto podrá acceder al modulo de los Datos de Impacto del Proyecto, así como también se verá su impacto en la página principal del proyecto."

@@ -11,12 +11,13 @@
 
 namespace Goteo\Library\Forms\Model;
 
+use Goteo\Application\Session;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Model\Project\Conf;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
-use Goteo\Util\Form\Type\EmailType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
@@ -35,11 +36,13 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         }
     }
 
-    public function createForm() {
+    public function createForm(): ProjectCampaignForm
+    {
         $project = $this->getModel();
         $account = $this->getOption('account');
 
-        $this->getBuilder()
+        $builder = $this->getBuilder();
+        $builder
             ->add('one_round', ChoiceType::class, [
                 'disabled' => $this->getReadonly(),
                 'label' => 'costs-field-select-rounds',
@@ -76,6 +79,22 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 ]
             ])
             ;
+
+        $admin = Session::isAdmin();
+        if ($admin) {
+            $builder
+                ->add('impact_calculator', BooleanType::class, [
+                    'label' => 'project-campaign-impact-calculator',
+                    'row_class' => 'extra',
+                    'data' => $project->isImpactCalcActive(),
+                    'attr' => [
+                        'help' => Text::get('project-campaign-activate-impact-calculator')
+                    ],
+                    'color' => 'cyan',
+                    'required' => false
+                ]);
+        }
+
         return $this;
     }
 
@@ -109,9 +128,21 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         if (!$account->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
+
         $user = $this->getOption('user');
         if(!User::setPersonal($user, ['phone' => $data['phone']], true, $errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
+
+        $admin = Session::isAdmin();
+        if ($admin && isset($data['impact_calculator'])) {
+            $conf = Conf::get($project->id);
+            if ($data['impact_calculator']) {
+                $conf->activateImpactCalculator();
+            } else {
+                $conf->deactivateImpactCalculator();
+            }
+            $conf->save();
         }
 
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
