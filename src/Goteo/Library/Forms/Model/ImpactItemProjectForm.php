@@ -41,9 +41,10 @@ class ImpactItemProjectForm extends AbstractFormProcessor
     {
         $model = $this->getModel();
         $impactItem = $model->getImpactItem();
+        $impactData = $this->getOption('impactData');
 
-        $unit = $impactItem ? $impactItem->getUnit() : "";
-        $label = $unit ? Text::get('regular-value') . "($unit)" : "";
+        $unit = $impactData->data_unit;
+        $label = Text::get('regular-value') . " ($unit)";
         $description = $impactItem ? $impactItem->getDescription() : "";
 
         $builder = $this->getBuilder();
@@ -55,7 +56,7 @@ class ImpactItemProjectForm extends AbstractFormProcessor
                 'disabled' => $this->getReadonly(),
             ])
             ->add("value", NumberType::class, [
-                "label" => $unit ,
+                "label" => $label ,
                 "data" => $model->getValue(),
                 "attr" => [
                     'pre-help' => $description
