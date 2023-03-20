@@ -310,6 +310,6 @@ admin-impact-data-operation-data_divide_amount_estimation: "El camp Dada es divi
 admin-impact-data-source-item: "Element d'Impacte"
 admin-impact-data-source-project: "Projecte"
 admin-impact-data-source-channel: "Canal"
-admin-impact-data-result_msg-help: "Aquest camp permet afegir un missatge al càlcul del impacte d'aquesta Data d'Impacte. Per utilitzar-lo haurem de fer servir les variables <b>%amount%</b> i <b>%result%</b>, on <b>%amount%</b> fa referència a la quantitat estimada per l'usuari i <b>%result%</b> al resultat d'impacte calculat."
+admin-impact-data-result_msg-help: "Aquest camp permet afegir un missatge al càlcul del impacte d'aquesta Data d'Impacte. Per utilitzar-lo haurem de fer servir les variables <b>%amount</b> i <b>%result</b>, on <b>%amount</b> fa referència a la quantitat estimada per l'usuari i <b>%result</b> al resultat d'impacte calculat."
 admin-impact-data-type-estimation: "Estimació"
 admin-impact-data-type-real: "Real"
