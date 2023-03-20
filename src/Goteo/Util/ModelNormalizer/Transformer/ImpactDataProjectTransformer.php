@@ -4,7 +4,7 @@ namespace Goteo\Util\ModelNormalizer\Transformer;
 
 class ImpactDataProjectTransformer extends AbstractTransformer
 {
-    protected $keys = ['impact_data', 'estimation', 'dataValue'];
+    protected $keys = ['impact_data', 'estimation', 'source', 'dataValue'];
 
     public function getImpactDataId(): string
     {
