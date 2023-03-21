@@ -24,7 +24,7 @@ class ImpactItemProjectForm extends AbstractFormProcessor
 
         $list = [];
         foreach($impactItems as $impactItem) {
-            $unit = $impactItem->getUnit();
+            $unit = $impactData->data_unit;
             $description = $impactItem->getDescription();
             $name = $impactItem->getName() . " ($unit) " . ($description ? " - $description" : "");
             $list[$name] = $impactItem->getId();

@@ -142,7 +142,10 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
             } else {
                 $conf->deactivateImpactCalculator();
             }
-            $conf->save();
+            $errors = [];
+            if (!$conf->save($errors)) {
+                throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+            }
         }
 
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
