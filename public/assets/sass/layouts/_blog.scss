@@ -10,34 +10,6 @@ body.blog {
 
     background-color: $background-white;
 
-    .top-navbar{
-      background-color: $background-yellow;
-      h3{
-        font-size: $font-size*1.1;
-        margin-left:10px;
-        float: left;
-        a{
-          color: $primary-color;
-        }
-      }
-    }
-
-    .a-unstyled{
-      color: $primary-color;
-    }
-
-    .top-navbar .navbar-always > a, .top-navbar .navbar-always > a i.icon, .top-navbar .navbar-always > button{
-      color: $primary-color;
-      background-color: transparent;
-    }
-    .top-navbar .navbar-always > button img {
-      border-color: lighten($primary-color, 50%);
-    }
-
-    .top-navbar .navbar-always > a i.icon{
-      background-color: $primary-color;
-    }
-
     img.header-default{
       object-fit: cover;
       width: 100%;
@@ -75,7 +47,7 @@ body.blog {
     }
 
     /* Sticky menu */
-    
+
      div.sticky-menu{
       padding-top: 10px;
       background-color: $background-main-home;
@@ -183,7 +155,7 @@ body.blog {
         margin-top:30px;
       }
     }
-    
+
     ul.filters {
       padding: 40px 0 35px 0;
       background-color: $background-yellow;
@@ -220,7 +192,7 @@ body.blog {
       }
     }
 
-  .pagination{ 
+  .pagination{
     li{
       &.active > a{
         background-color: #555555;
@@ -247,7 +219,7 @@ body.blog {
           font-size: $font-size*1.6;
           padding: 10px;
           margin: 0;
-          text-transform: uppercase;       
+          text-transform: uppercase;
         }
       }
       .text-description{
