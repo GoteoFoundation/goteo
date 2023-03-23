@@ -538,3 +538,7 @@ admin-posts: 'Příspěvky'
 admin-impact_data: "Údaje o dopadu"
 admin-title-costId: "Id"
 admin-title-costName: "Jméno"
+admin-title-source: "Zdroj"
+admin-impact-data-source-project: "Projekt"
+admin-impact-data-source-channel: "Kanál"
+admin-impact-data-type-estimation: "Odhad"
