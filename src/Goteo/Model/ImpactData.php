@@ -27,7 +27,7 @@ class ImpactData extends Model {
     const TYPE_REAL = "real";
 
     const OPERATION_AMOUNT_ESTIMATION_DIVIDE_DATA = 'amount_estimation_divide_data';
-    const OPERATION_DATA_DIVIDE_AMOUNT_ESTIMATION = 'amount_estimation_divide_data';
+    const OPERATION_DATA_DIVIDE_AMOUNT_ESTIMATION = 'data_divide_amount_estimation';
 
 	public
 		$id,
@@ -196,14 +196,8 @@ class ImpactData extends Model {
 		if (!$this->title)
 			$errors['title'] = Text::get('mandatory-title');
 
-        if (!$this->data)
-            $errors['data'] = Text::get('mandatory-data');
-
         if (!$this->data_unit)
-            $errors['data'] = Text::get('mandatory-data-unit');
-
-        if (!$this->description)
-            $errors['description'] = Text::get('mandatory-description');
+            $errors['data_unit'] = Text::get('mandatory-data-unit');
 
 		return empty($errors);
 	}

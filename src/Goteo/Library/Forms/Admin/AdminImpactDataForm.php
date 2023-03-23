@@ -39,19 +39,15 @@ class AdminImpactDataForm extends AbstractFormProcessor {
                     new Constraints\NotBlank(),
                 ),
             ))
-            ->add('data', TextType::class, array(
-                'label' => 'regular-data',
-                'constraints' => array(
-                    new Constraints\NotBlank(),
-                ),
-            )) ->add('data_unit', TextType::class, array(
-                'label' => 'regular-data-unit',
-                'constraints' => array(
-                    new Constraints\NotBlank(),
-                ),
-            ))
             ->add('description', TextareaType::Class, array(
                 'label' => 'regular-description',
+                'required' => false
+            ))
+            ->add('data', TextType::class, array(
+                'label' => 'regular-data',
+                'required' => false
+            )) ->add('data_unit', TextType::class, array(
+                'label' => 'regular-data-unit',
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 )
@@ -72,6 +68,9 @@ class AdminImpactDataForm extends AbstractFormProcessor {
             ])
             ->add('result_msg', TextType::class, [
                 'label' => 'regular-result-msg',
+                'attr' => [
+                    'pre-help' => Text::get('admin-impact-data-result_msg-help')
+                ]
             ])
             ->add('operation_type', ChoiceType::class, [
                 'label' => 'regular-operation-type',
@@ -131,7 +130,7 @@ class AdminImpactDataForm extends AbstractFormProcessor {
         $types = ImpactData::getTypes();
         $list = [];
         foreach($types as $type) {
-            $list[Text::get('impact-data-type-' . $type)] = $type;
+            $list[Text::get('admin-impact-data-type-' . $type)] = $type;
         }
         return $list;
     }
@@ -141,7 +140,7 @@ class AdminImpactDataForm extends AbstractFormProcessor {
         $sources = ImpactData::getSources();
         $list = [];
         foreach($sources as $source) {
-            $list[Text::get('impact-data-source-'. $source)] = $source;
+            $list[Text::get('admin-impact-data-source-'. $source)] = $source;
         }
         return $list;
     }
@@ -151,7 +150,7 @@ class AdminImpactDataForm extends AbstractFormProcessor {
         $operations = ImpactData::getOperations();
         $list = [];
         foreach($operations as $operation) {
-            $list[Text::get('impact-data-operation-'. $operation)] = $operation;
+            $list[Text::get('admin-impact-data-operation-'. $operation)] = $operation;
         }
         return $list;
     }

@@ -24,7 +24,8 @@ class ImpactProjectItemTransformer extends AbstractTransformer
     public function getImpactValue()
     {
         $impactItem = $this->model->getImpactItem();
-        $unit = $impactItem->getUnit();
+        $impactData = $this->model->getRelatedImpactData();
+        $unit = $impactData->data_unit;
         return $this->model->getValue() . " ($unit)";
     }
 

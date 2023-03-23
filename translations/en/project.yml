@@ -157,3 +157,6 @@ project-impact-calculator-footprint-3-description: "Fill in here the estimated d
 project-impact-calculator-activate-indicator: "Activate commitment"
 project-impact-calculator-card-impact-description: "With a budget of %s we want to have an impact of %s"
 project-create-continue-impact: "Save and calculate impact"
+project-campaign-impact-calculator: "Impact Calculator"
+project-campaign-activate-impact-calculator: "By activating the impact calculator, the project promoter will be able to access the project impact data module, as well as see their impact on the main project page."
+
