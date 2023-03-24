@@ -2317,7 +2317,8 @@ class Project extends Model {
                 project_conf.noinvest as noinvest,
                 project_conf.one_round as one_round,
                 project_conf.days_round1 as days_round1,
-                project_conf.days_round2 as days_round2
+                project_conf.days_round2 as days_round2,
+                project_conf.type as type
             FROM  project
             INNER JOIN user
                 ON user.id = project.owner
