@@ -12,6 +12,7 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Application\Session;
+use Goteo\Core\Exception;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
@@ -156,16 +157,26 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         }
 
         $admin = Session::isAdmin();
-        if ($admin && isset($data['impact_calculator'])) {
-            $conf = Conf::get($project->id);
-            if ($data['impact_calculator']) {
-                $conf->activateImpactCalculator();
-            } else {
-                $conf->deactivateImpactCalculator();
-            }
-            $errors = [];
-            if (!$conf->save($errors)) {
-                throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        if ($admin) {
+            try {
+                $conf = Conf::get($project->id);
+                if(isset($data['impact_calculator'])) {
+                    if ($data['impact_calculator']) {
+                        $conf->activateImpactCalculator();
+                    } else {
+                        $conf->deactivateImpactCalculator();
+                    }
+                }
+
+                if (isset($data['type'])) {
+                    $conf->setType($data['type']);
+                }
+                $errors = [];
+                if (!$conf->save($errors)) {
+                    throw new FormModelException(Text::get('form-sent-error', implode(', ', $errors)));
+                }
+            } catch (Exception $e) {
+                throw new FormModelException($e->getMessage());
             }
         }
 
