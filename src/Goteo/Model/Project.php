@@ -3277,6 +3277,11 @@ class Project extends Model {
             $values[':gender'] = $filters['gender'];
         }
 
+        if (!empty($filters['type_of_campaign'])) {
+            $sqlFilter .= " AND project_conf.type = :type_of_campaign";
+            $values[":type_of_campaign"] = $filters['type_of_campaign'];
+        }
+
         // order
         if (in_array($filters['order'], ['updated', 'name'])) {
             $sqlOrder = " ORDER BY project.{$filters['order']} DESC";

@@ -16,6 +16,7 @@ use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterProjectEvent;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Conf;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -73,9 +74,7 @@ EOT
 			$projects = [Project::get($project_id)];
 		} else {
 			$output->writeln('<info>Processing Active Projects:</info>');
-
-			// Active projects
-			$projects = Project::getList(['status' => Project::STATUS_IN_CAMPAIGN], null, 0, 10000);
+			$projects = Project::getList(['status' => Project::STATUS_IN_CAMPAIGN, 'type_of_campaign' => Conf::TYPE_CAMPAIGN], null, 0, 10000);
 		}
 
         if($predict) {
@@ -104,6 +103,12 @@ EOT
         $action_done = false;
         $return_code = 0;
         foreach ($projects as $project) {
+
+            if ($project->type != Project\Conf::TYPE_CAMPAIGN) {
+                $this->warning("This project's type is not campaign. There are no actions to be taking regarding rounds");
+                continue;
+            }
+
             if ((int) $project->status !== Project::STATUS_IN_CAMPAIGN) {
                 if($force) {
                     $this->warning("Project is not in campaign but force is active. Project [{$project->id}] WILL BE PROCESSED");
