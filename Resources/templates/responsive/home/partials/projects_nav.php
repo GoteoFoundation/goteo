@@ -5,8 +5,8 @@
     <li data-status="outdated">
         <?= $this->text('home-projects-outdate') ?>
     </li>
-    <li data-status="near">
-        <?= $this->text('home-projects-near') ?>
+    <li data-status="trending">
+        <?= $this->text('home-projects-trending') ?>
     </li> 
     <li data-status="recent">
         <?= $this->text('discover-group-recent-header') ?>

@@ -91,6 +91,12 @@ class DiscoverController extends Controller {
         } elseif($filter === 'matchfunding') {
             $filters['type'] = 'matchfunding';
             unset($filters['published_since']);
+        }elseif($filter === 'trending') { /////////////////////////// POPULARES 
+            $filters['published_until'] = (new DateTime('-5 days'))->format('Y-m-d');
+            $filters['status'] = Project::STATUS_IN_CAMPAIGN;
+            $filters['type'] = 'trending';
+            unset($filters['published_since']);
+            //var_dump($filters);
         } elseif($filter === 'recent') {
             $filters['type'] = 'recent';
         }

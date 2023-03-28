@@ -3244,6 +3244,15 @@ class Project extends Model {
                     $order = 'ORDER BY project.popularity DESC';
                 }
             }
+            elseif($filters['type'] === 'trending') {
+                // El proyecto cuenta con mas de 50 cofinanciadores
+                $sqlFilter .= ' AND project.num_investors >= 50';
+                // Ha superado los 3000 € de recaudacion
+                $sqlFilter .= ' AND project.amount >= 3000';
+                if(empty($filters['order'])) {
+                    $order = 'ORDER BY project.popularity DESC';
+                }
+            }
             elseif($filters['type'] === 'succeeded') {
                 $sqlFilter .= ' AND project.amount >= project.mincost';
                 if(empty($filters['order'])) {
