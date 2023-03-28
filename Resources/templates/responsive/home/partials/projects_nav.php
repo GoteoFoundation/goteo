@@ -7,7 +7,7 @@
     </li>
     <li data-status="near">
         <?= $this->text('home-projects-near') ?>
-    </li>
+    </li> 
     <li data-status="recent">
         <?= $this->text('discover-group-recent-header') ?>
     </li>
