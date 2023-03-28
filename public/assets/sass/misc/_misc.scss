@@ -205,6 +205,9 @@ ul.project-filters {
         color: $color-white !important;
       }
     }
+    &.active[data-status="trending"]{
+        background-color: $background-pink;
+    }
     &.matchfunding, &.matchfunding a {
       color: $color-lilac;
     }
