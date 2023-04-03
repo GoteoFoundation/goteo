@@ -524,7 +524,10 @@ class ChannelController extends Controller {
             'items' => []
         ];
         foreach($projects as $p) {
-            $vars['items'][] = View::render('project/widgets/normal', ['project' => $p]);
+            if ($p->isPermanent())
+                $vars['items'][] = View::render('project/widgets/normal_permanent', ['project' => $p]);
+            else
+                $vars['items'][] = View::render('project/widgets/normal', ['project' => $p]);
         }
         return $this->jsonResponse($vars);
     }

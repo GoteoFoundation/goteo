@@ -223,11 +223,13 @@ $worthcracy = $this->worthcracy;
 
 			<div class="slider slider-projects">
 			    <?php foreach ($this->my_projects as $project) : ?>
-			            <div class="item widget-slide">
-			            <?=    $this->insert('project/widgets/normal', [
-			                    'project' => $project
-			            ]) ?>
-			            </div>
+					<div class="item widget-slide">
+						<?php if ($project->isPermanent()): ?>
+							<?= $this->insert('project/widgets/normal_permanent', ['project' => $project]) ?>
+						<?php else: ?>
+							<?= $this->insert('project/widgets/normal', ['project' => $project]) ?>
+						<?php endif; ?>
+					</div>
 			    <?php endforeach ?>
 			</div>
 		</div>
@@ -245,11 +247,13 @@ $worthcracy = $this->worthcracy;
 
 			<div class="slider slider-projects">
 			    <?php foreach ($this->invest_on as $project) : ?>
-			            <div class="item widget-slide">
-			            <?=    $this->insert('project/widgets/normal', [
-			                    'project' => $project
-			            ]) ?>
-			            </div>
+					<div class="item widget-slide">
+						<?php if ($project->isPermanent()): ?>
+							<?= $this->insert('project/widgets/normal_permanent', ['project' => $project]) ?>
+						<?php else: ?>
+							<?= $this->insert('project/widgets/normal', ['project' => $project]) ?>
+						<?php endif; ?>
+					</div>
 			    <?php endforeach ?>
 			</div>
 		</div>
