@@ -26,7 +26,7 @@
             <?= $this->insert('dashboard/project/partials/summary_status', ['project' => $this->project]) ?>
 
             <?php if($this->project->inEdition()): ?>
-                <?= $this->insert('project/widgets/validation', ['init_percent' => 0, 'validation' => $this->validation]) ?>
+                <?= $this->insert('partials/components/widgets/validation', ['init_percent' => 0, 'validation' => $this->validation]) ?>
             <?php endif ?>
 
         </div>

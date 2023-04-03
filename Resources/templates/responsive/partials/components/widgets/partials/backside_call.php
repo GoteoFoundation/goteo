@@ -8,7 +8,7 @@
         </h5>
     </div>
 
-    <?= $this->insert('project/widgets/partials/data_list') ?>
+    <?= $this->insert('partials/components/widgets/partials/data_list') ?>
 
     <?php if($this->project->inCampaign()): ?>
     <div class="invest">

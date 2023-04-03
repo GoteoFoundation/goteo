@@ -16,7 +16,7 @@ else {
 ?>
 <div class="validation-widget">
     <div class="percent">
-        <?= $this->insert('project/widgets/percent_status', ['percent' => $init_percent]) ?>
+        <?= $this->insert('partials/components/widgets/percent_status', ['percent' => $init_percent]) ?>
     </div>
     <div class="desc">
         <h4><?= $desc ?></h4>

@@ -54,7 +54,7 @@ $this->append();
 
 
 $this->section('sidebar-header');
-    echo $this->insert('project/widgets/micro', ['project' => $project, 'admin' => $this->admin]);
+    echo $this->insert('partials/components/widgets/micro', ['project' => $project, 'admin' => $this->admin]);
 $this->replace();
 
 

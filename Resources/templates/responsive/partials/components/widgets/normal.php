@@ -91,10 +91,10 @@ if (!($label = $this->label)) {
     </div>
 
     <?php if ($this->admin) : ?>
-        <?= $this->insert('project/widgets/partials/backside_admin') ?>
+        <?= $this->insert('partials/components/widgets/partials/backside_admin') ?>
     <?php elseif ($call) : ?>
-        <?= $this->insert('project/widgets/partials/backside_call', ['call' => $call]) ?>
+        <?= $this->insert('partials/components/widgets/partials/backside_call', ['call' => $call]) ?>
     <?php else : ?>
-        <?= $this->insert('project/widgets/partials/backside_normal') ?>
+        <?= $this->insert('partials/components/widgets/partials/backside_normal') ?>
     <?php endif ?>
 </div>
