@@ -18,6 +18,7 @@ use Goteo\Util\Foil\Extension\GoteoCore;
 use Goteo\Util\Foil\Extension\LangUtils;
 use Goteo\Util\Foil\Extension\ModelsData;
 use Goteo\Util\Foil\Extension\TextUtils;
+use Goteo\Util\Foil\Extension\WidgetUtils;
 
 class View {
     static protected $engine;
@@ -31,6 +32,7 @@ class View {
         $engine->loadExtension(new ModelsData(), [], true);
         $engine->loadExtension(new LangUtils(), [], true);
         $engine->loadExtension(new Forms(), [], true);
+        $engine->loadExtension(new WidgetUtils(), [], true);
         return $engine;
     }
 
