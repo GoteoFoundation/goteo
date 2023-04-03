@@ -1,27 +1,29 @@
 <?php
 
-$percent = $this->project->getAmountPercent();
-$categories = $this->project->getCategories();
-// $social_rewards = $this->project->getSocialRewards();
-$social = $this->ee($this->project->getSocialCommitment());
+$project = $this->widget_project($this->project);
+
+$percent = $project->getAmountPercent();
+$categories = $project->getCategories();
+// $social_rewards = $project->getSocialRewards();
+$social = $this->ee($project->getSocialCommitment());
 $target = 'target="_blank"';
 $link = $this->link;
 if (!$link) {
-    $link = '/project/' . $this->project->id;
+    $link = '/project/' . $project->id;
 }
 if ($this->admin && !$this->link) {
     $link = '/dashboard' . $link;
     $target = '';
 }
 if (!($label = $this->label)) {
-    $tagmark = $this->project->getTagmark();
-    $call = $this->project->getCall();
-    $matchers = $this->project->getMatchers('active', ['has_channel' => true]);
+    $tagmark = $project->getTagmark();
+    $call = $project->getCall();
+    $matchers = $project->getMatchers('active', ['has_channel' => true]);
 }
 
 ?>
 
-<div class="project-widget flip-widget normal<?= $this->project->isApproved() ? '' : ' non-public' ?>" id="project-<?= $this->project->id ?>">
+<div class="project-widget flip-widget normal<?= $project->isApproved() ? '' : ' non-public' ?>" id="project-<?= $project->id ?>">
     <?php if ($label) : ?>
         <div class="status btn-lilac">
             <?= $label ?>
@@ -47,18 +49,18 @@ if (!($label = $this->label)) {
 
 
     <a class="img-link" href="<?= $link ?>" <?= $target ?>>
-        <img loading="lazy" class="img-project" src="<?= $this->project->image->getLink(600, 416, true); ?>" alt="<?= $this->text('regular-header-image-of', $this->project->name) ?>">
-        <h2><?= $this->text_truncate($this->ee($this->project->name), 80); ?></h2>
+        <img loading="lazy" class="img-project" src="<?= $project->image->getLink(600, 416, true); ?>" alt="<?= $this->text('regular-header-image-of', $project->name) ?>">
+        <h2><?= $this->text_truncate($this->ee($project->name), 80); ?></h2>
     </a>
 
-    <a class="floating flip" href="#backflip-<?= $this->project->id ?>" title="<?= $this->text('regular-more_info') ?>">+</a>
+    <a class="floating flip" href="#backflip-<?= $project->id ?>" title="<?= $this->text('regular-more_info') ?>">+</a>
 
     <div class="content">
         <h3>
-            <a href="/user/profile/<?= $this->project->user->id ?>" <?= $target ?>><?= $this->text('regular-by') . ' ' . $this->project->user->name ?></a>
+            <a href="/user/profile/<?= $project->user->id ?>" <?= $target ?>><?= $this->text('regular-by') . ' ' . $project->user->name ?></a>
         </h3>
         <p class="description">
-            <?= $this->text_truncate($this->ee($this->project->subtitle), 140) ?>
+            <?= $this->text_truncate($this->ee($project->subtitle), 140) ?>
         </p>
 
         <?php // TODO: add links here?
@@ -74,8 +76,8 @@ if (!($label = $this->label)) {
         <div class="bottom">
             <div class="amount">
                 <ul>
-                    <li><strong><?= amount_format($this->project->amount) ?></strong> <?= $this->text('horizontal-project-reached') ?></li>
-                    <li><strong><?= $this->project->getDaysLeft() ?></strong> <?= $this->project->getStatusDescription() ?></li>
+                    <li><strong><?= amount_format($project->amount) ?></strong> <?= $this->text('horizontal-project-reached') ?></li>
+                    <li><strong><?= $project->getDaysLeft() ?></strong> <?= $project->getStatusDescription() ?></li>
                 </ul>
                 <div class="clearfix"></div>
             </div>

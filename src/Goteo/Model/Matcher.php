@@ -731,12 +731,7 @@ class Matcher extends Model
 
         $query = self::query($sql, $values);
 
-        $projects = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project');
-
-        foreach ($projects as $proj) {
-                    $projects_list[] = Project::getWidget($proj);
-                }
-        return $projects_list;
+        return $query->fetchAll(\PDO::FETCH_CLASS, Project::class);
     }
 
     /*

@@ -2180,10 +2180,7 @@ class User extends Model {
             ";
 
         $query = self::query($sql, $values);
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') as $proj) {
-            $projects[] = Project::getWidget($proj, $lang);
-        }
-        return $projects;
+        return $query->fetchAll(\PDO::FETCH_CLASS, Project::class);
     }
 
     /**

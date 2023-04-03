@@ -5,6 +5,7 @@ namespace Goteo\Model\Call {
     use Goteo\Model;
     use Goteo\Application\Lang;
     use Goteo\Application\Config;
+    use Goteo\Model\Project as CoreProject;
 
     class Project extends \Goteo\Core\Model {
 
@@ -163,18 +164,16 @@ namespace Goteo\Model\Call {
                 // echo \sqldbg($sql, $values);
                 $query = static::query($sql, $values);
 
-                foreach ($query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Project') as $proj) {
-                    $project=\Goteo\Model\Project::getWidget($proj);
-                    // cuanto han recaudado
-                    // de los usuarios
-                    if (!isset($project->amount_users)) {
-                        $project->amount_users = Model\Invest::invested($proj->id, 'users', $call);
+                $projects = [];
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, CoreProject::class) as $proj) {
+                    if (!isset($proj->amount_users)) {
+                        $proj->amount_users = Model\Invest::invested($proj->id, 'users', $call);
                     }
 
-                    if (!isset($project->amount_call)) {
-                        $project->amount_call = Model\Invest::invested($proj->id, 'call', $call);
+                    if (!isset($proj->amount_call)) {
+                        $proj->amount_call = Model\Invest::invested($proj->id, 'call', $call);
                     }
-                    $projects[] = $project;
+                    $projects[] = $proj;
                 }
 
                 return $projects;

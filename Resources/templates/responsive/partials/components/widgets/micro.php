@@ -1,11 +1,13 @@
 <?php
 
+$project = $this->widget_project($this->project);
+
 $label_color = 'danger';
-if($this->project->isAlive()) $label_color = 'cyan';
-elseif($this->project->inReview()) $label_color = 'orange';
+if($project->isAlive()) $label_color = 'cyan';
+elseif($project->inReview()) $label_color = 'orange';
 $validation = null;
-if($this->project->inEdition()) {
-    $validation = $this->project->getValidation();
+if($project->inEdition()) {
+    $validation = $project->getValidation();
     foreach($validation->errors as $key => $val) {
         if($val && is_array($val) && $val[0]) {
             $error = $this->text('project-validation-error-' . $val[0]);
@@ -14,20 +16,20 @@ if($this->project->inEdition()) {
     }
 }
 ?>
-<div class="project-widget micro" id="project-<?= $this->project->id ?>">
-    <a class="img-link" href="/project/<?= $this->project->id ?>">
-        <img class="img-project" src="<?= $this->project->image->getLink(240, 240, true); ?>">
+<div class="project-widget micro" id="project-<?= $project->id ?>">
+    <a class="img-link" href="/project/<?= $project->id ?>">
+        <img class="img-project" src="<?= $project->image->getLink(240, 240, true); ?>">
     </a>
     <div class="content">
         <?php if($this->admin): ?>
             <?php if($validation): ?>
-                <span class="label label-<?= $label_color ?>"><?= $this->project->getTextStatus() ?></span>
-                <a href="/dashboard/project/<?= $this->project->id ?>/<?= $key ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $this->percent_span($validation->global) ?></a>
+                <span class="label label-<?= $label_color ?>"><?= $project->getTextStatus() ?></span>
+                <a href="/dashboard/project/<?= $project->id ?>/<?= $key ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $this->percent_span($validation->global) ?></a>
                 <?php if($validation->global < 100 && $error): ?>
-                    <p class="error"><a href="/dashboard/project/<?= $this->project->id ?>/<?= $key ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $error ?></a></p>
+                    <p class="error"><a href="/dashboard/project/<?= $project->id ?>/<?= $key ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $error ?></a></p>
                 <?php endif ?>
             <?php else: ?>
-                <span class="label label-<?= $label_color ?>"><?= $this->project->getTextStatus() ?></span>
+                <span class="label label-<?= $label_color ?>"><?= $project->getTextStatus() ?></span>
             <?php endif ?>
 
             <?php if($this->is_admin()): ?>
@@ -38,12 +40,12 @@ if($this->project->inEdition()) {
                   <ul class="dropdown-menu">
                     <?= $this->insert('admin/partials/project_actions_list') ?>
                     <li role="separator" class="divider"></li>
-                    <li><a href="/admin/projects?filtered=yes&name=&category=&node=&proj_name=&status=-3&called=&proj_id=<?= $this->project->id ?>&consultant=-1"><i class="fa fa-stethoscope"></i> <?= $this->text('admin-project-view-in-admin') ?></a></li>
+                    <li><a href="/admin/projects?filtered=yes&name=&category=&node=&proj_name=&status=-3&called=&proj_id=<?= $project->id ?>&consultant=-1"><i class="fa fa-stethoscope"></i> <?= $this->text('admin-project-view-in-admin') ?></a></li>
                   </ul>
                 </div>
             <?php endif ?>
 
         <?php endif ?>
-        <div class="title"><a href="/project/<?= $this->project->id ?>"><?= $this->text_truncate($this->ee($this->project->name), 80); ?></a></div>
+        <div class="title"><a href="/project/<?= $project->id ?>"><?= $this->text_truncate($this->ee($project->name), 80); ?></a></div>
     </div>
 </div>
