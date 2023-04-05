@@ -2735,12 +2735,12 @@ class Project extends Model {
         }
 
         // segun el tipo
-        if ($filter['type'] === 'popular') {
+        if ($filter['type'] === 'popular') { //Los populares pasan a ser los que tienen cofinanciadores >50 cantidad recaudada >=3.000 y llevan 5 días de camapaña
             $popularity = (int)$filter['popularity'];
-            if(empty($popularity)) $popularity = 20;
+            if(empty($popularity)) $popularity = 50; 
             // de los que estan en campaña,
             // los que tienen más usuarios entre cofinanciadores y mensajeros
-            $where[] = 'project.popularity >' . $popularity;
+            $where[] = 'project.amount >= 3000 AND days > 5 AND project.popularity >' . $popularity;
             $order = 'status=3 DESC, popularity DESC';
         }
         elseif($filter['type'] === 'outdate') {
