@@ -3237,9 +3237,10 @@ class Project extends Model {
                     $order = 'ORDER BY project.published DESC';
                 }
             }
-            elseif($filters['type'] === 'popular') {
+            elseif($filters['type'] === 'popular') { //Los populares pasan a ser los que tienen cofinanciadores >50 cantidad recaudada >=3.000 y llevan 5 días de camapaña
                 // more users between cofinancers and messages
-                $sqlFilter .= ' AND project.popularity > 20';
+                if(empty($popularity)) $popularity = 50; 
+                $sqlFilter .= 'project.amount >= 3000 AND days > 5 AND project.popularity > 50';
                 if(empty($filters['order'])) {
                     $order = 'ORDER BY project.popularity DESC';
                 }
