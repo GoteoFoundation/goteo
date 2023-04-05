@@ -290,7 +290,7 @@ body.channel {
             display: inline-block;
             color: $primary-color;
             &.active{
-              background-color: #19b4b2;
+              background-color: #265688; //cambiamos el color al activarse un filtro
               border-radius: 5px;
               color: $color-white !important;
             }
