@@ -190,6 +190,11 @@
     }
   }
 
+  &.permanent {
+    .bottom {
+      margin-bottom: 2rem;
+    }
+  }
 
   ul.dropdown-menu {
     li {

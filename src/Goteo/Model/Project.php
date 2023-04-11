@@ -3251,6 +3251,14 @@ class Project extends Model {
                     $order = 'ORDER BY project.published DESC';
                 }
             }
+            elseif($filters['type'] == 'permanent') {
+                $sqlFilter .= ' AND project_conf.type = :type';
+                $values[':type'] = ProjectConf::TYPE_PERMANENT;
+
+                if(empty($filters['order'])) {
+                    $order = 'ORDER BY project.published DESC';
+                }
+            }
         }
         if (!empty($filters['node'])) {
             // Check main node in project table and in relation table
