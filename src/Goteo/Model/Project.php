@@ -3814,4 +3814,26 @@ class Project extends Model {
         ];
     }
 
+    public function getConfig(): ProjectConf
+    {
+        return ProjectConf::get($this->id);
+    }
+
+    public function isPermanent(): bool
+    {
+        if ($this->type)
+            return ProjectConf::TYPE_PERMANENT == $this->type;
+
+        $conf = ProjectConf::get($this->id);
+        return $conf->isTypePermanent();
+    }
+
+    public function isCampaign(): bool
+    {
+        if ($this->type)
+            return ProjectConf::TYPE_CAMPAIGN == $this->type;
+
+        $conf = ProjectConf::get($this->id);
+        return $conf->isTypeCampaign();
+    }
 }

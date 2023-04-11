@@ -47,7 +47,7 @@ class Conf extends Model
 
     /**
      * Get the conf for a project
-     * @param varcahr(50) $id  Project identifier
+     * @param string $id  Project identifier
      * @return Conf
      * @throws Exception
      */
@@ -385,5 +385,15 @@ class Conf extends Model
     {
         $this->type = $type;
         return $this;
+    }
+
+    public function isTypePermanent(): bool
+    {
+        return self::TYPE_PERMANENT === $this->type;
+    }
+
+    public function isTypeCampaign(): bool
+    {
+        return self::TYPE_CAMPAIGN === $this->type;
     }
 }
