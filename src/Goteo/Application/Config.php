@@ -43,6 +43,7 @@ use Goteo\Controller\Admin\NewsSubController;
 use Goteo\Controller\Admin\NodesSubController;
 use Goteo\Controller\Admin\NodeSubController;
 use Goteo\Controller\Admin\OpenTagsSubController;
+use Goteo\Controller\Admin\PagesAdminController;
 use Goteo\Controller\Admin\PagesSubController;
 use Goteo\Controller\Admin\ProjectsSubController;
 use Goteo\Controller\Admin\PromoteAdminController;
@@ -342,6 +343,7 @@ class Config {
         AdminController::addSubController(ChannelStoryAdminController::class);
         AdminController::addSubController(ChannelProjectsAdminController::class);
         AdminController::addSubController(ImpactDataAdminController::class);
+        AdminController::addSubController(PagesAdminController::class);
     }
 
     static public function addLegacyAdminControllers()
@@ -360,7 +362,6 @@ class Config {
         AdminController::addSubController(MailingSubController::class);
         AdminController::addSubController(NewsSubController::class);
         AdminController::addSubController(NewsletterSubController::class);
-        AdminController::addSubController(PagesSubController::class);
         AdminController::addSubController(ProjectsSubController::class);
         AdminController::addSubController(RecentSubController::class);
         AdminController::addSubController(ReviewsSubController::class);
