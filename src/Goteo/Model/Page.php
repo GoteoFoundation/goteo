@@ -20,6 +20,9 @@ use Goteo\Core\Exception;
  */
 class Page extends Model{
 
+    const TYPE_HTML = 'html';
+    const TYPE_MARKDOWN = 'md';
+
     public
         $id,
         $lang,
@@ -197,4 +200,22 @@ class Page extends Model{
 
 	}
 
+    public function count(): int
+    {
+        $query = static::query("
+            SELECT
+                COUNT(*) as total
+            FROM page
+            ");
+
+        return $query->fetchColumn();
+    }
+
+    public function getTypes(): array
+    {
+        return [
+            self::TYPE_HTML,
+            self::TYPE_MARKDOWN,
+        ];
+    }
 }
