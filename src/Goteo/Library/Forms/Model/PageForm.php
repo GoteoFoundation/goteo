@@ -28,7 +28,9 @@ class PageForm extends AbstractFormProcessor
                 'disabled' => (bool) $model->id,
             ])
             ->add('name', TextType::class, [])
-            ->add('description', TextareaType::class, [])
+            ->add('description', TextareaType::class, [
+                'required' => false
+            ])
             ->add('url', UrlType::class, [])
             ->add('content', MarkdownType::class, [])
             ->add('type', ChoiceType::class,[
@@ -60,13 +62,13 @@ class PageForm extends AbstractFormProcessor
             if (!$model->add($errors)) {
                 throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
             }
-        } else {
-            $model->rebuildData($data, array_keys($form->all()));
-            $model->save($data);
-            $errors = [];
-            if (!$model->save($errors)) {
-                throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
-            }
+        }
+
+        $model->rebuildData($data, array_keys($form->all()));
+        $model->save($data);
+        $errors = [];
+        if (!$model->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
 
         if ($data['pending'] && !Page::setPending($model->id, 'page'))

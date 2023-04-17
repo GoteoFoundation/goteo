@@ -5,13 +5,6 @@ $this->layout("layout", [
     'meta_description' => $this->description
     ]);
 
-$name = $this->name;
-if ($this->page->type == 'md') {
-    $content = $this->markdown($this->raw('content'));
-} else {
-    $content = $this->raw('content');
-}
-
 $this->section('content');
 ?>
 <div class="container">
@@ -24,12 +17,11 @@ $this->section('content');
 
     <div id="main">
         <div class="widget margin-bottom-4">
-            <h2 class="title"><?= $name ?></h2>
-            <?= $content ?>
+            <h2 class="title"><?= $this->raw('name') ?></h2>
+            <?= $this->raw('content') ?>
         </div>
     </div>
 </div>
-
 
 <?php $this->replace() ?>
 
