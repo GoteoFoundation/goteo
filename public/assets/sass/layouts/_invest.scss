@@ -113,17 +113,6 @@ body.invest {
 
 
   label {
-    &.label-reward:hover {
-      cursor: pointer;
-      cursor: hand;
-      background-color: #2cb2b2;
-      color: $color-white !important;
-    }
-    &.reward-choosen {
-      background-color: #2cb2b2;
-      color: $color-white !important;
-    }
-
     .reward-amount {
       color: #96238F;
       font-size: 1.8em;
@@ -144,10 +133,6 @@ body.invest {
       display: none;
     }
 
-    &.reward-choosen .amount-box {
-      display: block;
-    }
-
     &.label-reward {
       position: relative;
       padding: 2%;
@@ -161,6 +146,22 @@ body.invest {
         max-width: 100%;
         height: auto;
         margin: 4px 0;
+      }
+
+      &:hover {
+        cursor: pointer;
+        cursor: hand;
+        background-color: #2cb2b2;
+        color: $color-white !important;
+      }
+
+      &.reward-choosen {
+        background-color: #2cb2b2;
+        color: $color-white !important;
+
+        &.amount-box {
+          display: block;
+        }
       }
 
       &.matched-reward {
