@@ -40,6 +40,47 @@ body.project {
           }
         }
       }
+
+      div.highlighted-rewards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 1rem;
+        margin: 2rem 2rem;
+        grid-row-gap: 2rem;
+
+        article.reward-info {
+          background-color: white;
+          border: 1px solid $color-light-grey;
+          border-radius: 1rem;
+          width: 100%;
+          height: 40rem;
+          padding: 2rem;
+          font-size: 1.5rem;
+
+          .card-header {
+            h2 {
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+
+          .amount-box {
+            color: $color-dark-green;
+            font-size: 40px;
+            font-weight: bold;
+          }
+
+          img {
+            width: 100%;
+          }
+
+          &:hover {
+            border: $background-light-green 2px solid;
+            height: fit-content;
+            transition: 0.5s;
+          }
+        }
+      }
     }
 
   }
@@ -74,7 +115,6 @@ body.project {
       }
     }
   }
-
 
   // Impact Calculator landing
   &.impact-calculator {
