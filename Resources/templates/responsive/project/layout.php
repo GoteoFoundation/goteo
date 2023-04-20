@@ -69,55 +69,15 @@ $this->section('content');
 			<div class="project-by"><a href="/user/<?= $project->owner ?>"><?= $project->user->name ?></a></div>
 		</div>
 
-        <?php if ($project->type == 'campaign') : ?>
-	        <div class="row">
-                <div class="col-sm-8">
-                    <?= $this->insert('project/partials/media', ['project' => $project ]) ?>
-                </div>
-                <div class="col-sm-4">
-                    <?= $this->insert('project/partials/meter', ['project' => $project ]) ?>
-                </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <?= $this->insert('project/partials/media', ['project' => $project ]) ?>
             </div>
-        <?php else: ?>
-            <div class="row">
-                <div class="col-sm-12">
-                    <?= $this->insert('project/partials/media', ['project' => $project ]) ?>
-                </div>
+            <div class="col-sm-4">
+                <?= $this->insert('project/partials/meter', ['project' => $project ]) ?>
             </div>
-            <div class="row">
-                <div class="col-md-8 thermometer-info text-center">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="reached-label">
-                                <?= $this->text('project-view-metter-investors') ?>
-                            </div>
-                            <div class="reached">
-                                <?= $project->num_investors ?>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="reached-label">
-                                <?= $this->text('project-view-metter-got') ?>
-                            </div>
-                            <div class="reached">
-                                <?= amount_format($project->amount) ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <?php if($project->inCampaign()): ?>
-                        <div class="row hidden-xs" >
-                            <a href="/invest/<?= $project->id ?>" >
-                                <div class="col-lg-10 col-md-11 col-sm-12">
-                                    <button class="btn btn-block pink custom col-sm-11 text-uppercase"><?= $this->text('regular-invest_it') ?></button>
-                                </div>
-                            </a>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php endif; ?>
+        </div>
+
 		<!-- Tags and share info -->
 		<div class="row">
 		    <?= $this->insert('project/partials/main_extra', ['project' => $project, 'matchers' => $this->matchers ]) ?>
@@ -132,6 +92,13 @@ $this->section('content');
             <?= $this->insert('project/partials/impact_by_footprint', ['footprints' => $this->footprints ]) ?>
             <?= $this->insert('project/partials/calculator') ?>
             <?= $this->insert('project/partials/sdgs') ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- show rewards of type patreon if active -->
+    <?php if ($project->isPermanent()):?>
+        <div class="row">
+            <?= $this->insert('project/partials/highlighted_rewards') ?>
         </div>
     <?php endif; ?>
 
