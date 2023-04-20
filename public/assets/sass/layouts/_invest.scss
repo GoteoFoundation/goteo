@@ -106,9 +106,6 @@ body.invest {
         }
       }
     }
-
-
-
   }
 
 
@@ -159,7 +156,7 @@ body.invest {
         background-color: #2cb2b2;
         color: $color-white !important;
 
-        &.amount-box {
+        .amount-box {
           display: block;
         }
       }
