@@ -186,7 +186,7 @@ class DiscoverController extends Controller {
             'items' => []
         ];
         foreach($projects as $p) {
-            $vars['items'][] = View::render('project/widgets/normal', ['project' => $p]);
+            $vars['items'][] = View::render('partials/components/widgets/normal', ['project' => $p]);
         }
 
         return $this->jsonResponse($vars);

@@ -224,7 +224,7 @@ $worthcracy = $this->worthcracy;
 			<div class="slider slider-projects">
 			    <?php foreach ($this->my_projects as $project) : ?>
 			            <div class="item widget-slide">
-			            <?=    $this->insert('project/widgets/normal', [
+			            <?=    $this->insert('partials/components/widgets/normal', [
 			                    'project' => $project
 			            ]) ?>
 			            </div>
@@ -246,7 +246,7 @@ $worthcracy = $this->worthcracy;
 			<div class="slider slider-projects">
 			    <?php foreach ($this->invest_on as $project) : ?>
 			            <div class="item widget-slide">
-			            <?=    $this->insert('project/widgets/normal', [
+			            <?=    $this->insert('partials/components/widgets/normal', [
 			                    'project' => $project
 			            ]) ?>
 			            </div>

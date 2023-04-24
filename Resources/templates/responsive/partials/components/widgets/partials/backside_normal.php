@@ -1,7 +1,7 @@
 <div class="backside" id="backflip-<?= $this->project->id ?>">
     <button class="close flip" href="#backflip-<?= $this->project->id ?>"><i class="icon icon-close"></i></button>
 
-    <?= $this->insert('project/widgets/partials/data_list') ?>
+    <?= $this->insert('partials/components/widgets/partials/data_list') ?>
 
     <?php if($this->project->inCampaign()): ?>
     <div class="invest">

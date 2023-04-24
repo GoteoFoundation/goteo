@@ -9,7 +9,7 @@ $this->section('content');
 ?>
 
 <div style="max-width: 300px">
-    <?= $this->insert('project/widgets/normal', ['project' => $this->project]) ?>
+    <?= $this->insert('partials/components/widgets/normal', ['project' => $this->project]) ?>
 </div>
 
 <?php $this->replace() ?>

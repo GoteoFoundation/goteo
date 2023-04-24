@@ -174,16 +174,8 @@ class Promote extends \Goteo\Core\Model {
             ORDER BY promote.order ASC, title ASC
             ", array(':node' => $node, ':lang'=>$lang));
 
-        foreach($query->fetchAll(\PDO::FETCH_CLASS, '\\Goteo\\Model\\Project') as $promo) {
+        foreach($query->fetchAll(\PDO::FETCH_CLASS, Project::class) as $promo) {
             $promo->promo_text = Text::recorta($promo->promo_text, 100, false);
-            //variables usadas en view/project/widget/project.html.php
-
-
-
-
-            // aquí usará getWidget para sacar todo esto
-            $promo->projectData = Project::getWidget($promo, $lang);
-
             $promos[] = $promo;
         }
             // print_r($promos);die;

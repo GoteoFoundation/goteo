@@ -45,6 +45,9 @@ class Project extends Model {
     const STATUS_FULFILLED   = 5;
     const STATUS_UNFUNDED    = 6;
 
+    const ROUND_ONE = 1;
+    const ROUND_TWO = 2;
+
     public
         $id = null,
         $draft, // indica si el id es un md5 [0-9a-f]{32} (TODO: to remove)
@@ -1093,9 +1096,6 @@ class Project extends Model {
                 }
             }
 
-            // aquí usará getWidget para sacar todo esto
-            $project = self::getWidget($project);
-
             // Y añadir el dontsave
             $project->dontsave = true;
 
@@ -1108,72 +1108,6 @@ class Project extends Model {
         } catch(PDOException $e) {
             throw new Exception\ModelException($e->getMessage());
         }
-    }
-
-    /*
-     *  Datos extra para un widget de proyectos
-     *  TODO: get rid of this
-     */
-    public static function getWidget(Project $project, $lang = null) {
-        if(empty($lang)) $lang = Lang::current();
-        $Widget = new Project();
-        $Widget->id = (!empty($project->project)) ? $project->project : $project->id;
-        $Widget->status = $project->status;
-        $Widget->name = $project->name;
-        $Widget->subtitle = $project->subtitle;
-        $Widget->owner = $project->owner;
-        $Widget->description = $project->description;
-        $Widget->published = $project->published;
-        $Widget->created = $project->created;
-        $Widget->updated = $project->updated;
-        $Widget->success = $project->success;
-        $Widget->closed = $project->closed;
-        $Widget->node = $project->node;
-        $Widget->project_location = $project->project_location;
-        $Widget->social_commitment = $project->social_commitment;
-
-        // configuración de campaña
-        // $project_conf = Project\Conf::get($Widget->id);  lo sacamos desde la consulta
-        // no necesario: $Widget->watch = $project->watch;
-        $Widget->noinvest = $project->noinvest;
-        $Widget->days_round1 = (!empty($project->days_round1)) ? $project->days_round1 : 40;
-        $Widget->days_round2 = (!empty($project->days_round2)) ? $project->days_round2 : 40;
-        $Widget->one_round = $project->one_round;
-        $Widget->days_total = ($project->one_round) ? $Widget->days_round1 : ($Widget->days_round1 + $Widget->days_round2);
-
-        // image from main gallery
-        $Widget->image = Image::get($project->image);
-
-        $Widget->amount = $project->amount;
-        $Widget->invested = $project->amount; // compatibilidad, ->invested no debe usarse
-        $Widget->num_investors = $project->num_investors;
-
-        // @TODO : hay que hacer campos calculados conn traducción para esto
-        $Widget->cat_names = Project\Category::getNames($Widget->id, 2, $lang);
-        $Widget->rewards = Project\Reward::getWidget($Widget->id, $lang);
-
-        if(!empty($project->mincost) && !empty($project->maxcost)) {
-            $Widget->mincost = $project->mincost;
-            $Widget->maxcost = $project->maxcost;
-        } else {
-            $calc = Project::calcCosts($project->project);
-            $Widget->mincost = $calc->mincost;
-            $Widget->maxcost = $calc->maxcost;
-        }
-        $Widget->user = new User;
-        $Widget->user->id = $project->user_id;
-        $Widget->user->name = $project->user_name;
-        $Widget->user->gender = $project->user_gender;
-        $Widget->user->email = $project->user_email;
-        $Widget->user->lang = $project->user_lang;
-
-        // calcular dias sin consultar sql
-        $Widget->days = $project->days;
-
-        $Widget->setDays(); // esto hace una consulta para el número de días que le faltaan segun configuración
-        $Widget->setTagmark(); // esto no hace consulta
-
-        return $Widget;
     }
 
     /*
@@ -2334,11 +2268,7 @@ class Project extends Model {
             ";
 
         $query = self::query($sql, $values);
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-            $projects[] = self::getWidget($proj);
-        }
-
-        return $projects;
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
     /*
@@ -2441,11 +2371,7 @@ class Project extends Model {
             ";
 
         $query = self::query($sql, $values);
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-            $projects[] = self::getWidget($proj);
-        }
-
-        return $projects;
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
     public static function getBySDGs($sdgs = array(), $offset, $limit = 10, $count = false)
@@ -2507,11 +2433,7 @@ class Project extends Model {
             $sql_limit
             ";
         $query = self::query($sql, $values);
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-            $projects[] = self::getWidget($proj);
-        }
-
-        return $projects;
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
     public static function getByFootprint($filter = array(), $offset = 0, $limit = 10, $count = false)
@@ -2590,11 +2512,7 @@ class Project extends Model {
             $sql_limit
             ";
         $query = self::query($sql, $values);
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-            $projects[] = self::getWidget($proj);
-        }
-
-        return $projects;
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
 
@@ -2696,11 +2614,7 @@ class Project extends Model {
             $sql_limit
             ";
         $query = self::query($sql, $values);
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-            $projects[] = self::getWidget($proj);
-        }
-
-        return $projects;
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
     /**
@@ -2885,10 +2799,7 @@ class Project extends Model {
         $projects = array();
         $query = self::query($sql, $values);
 
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-            $projects[] = self::getWidget($proj);
-        }
-        return $projects;
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
     /**

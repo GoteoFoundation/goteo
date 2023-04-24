@@ -217,11 +217,6 @@ class ProjectTest extends TestCase {
         $this->assertEquals($project->id, $id);
         $this->assertInstanceOf(Image::class, $project->image);
 
-        $widget = Project::getWidget($project);
-        $this->assertInstanceOf(Project::class, $widget);
-        $this->assertEquals($widget->id, $id);
-        $this->assertInstanceOf(Image::class, $widget->image);
-
         return $project;
     }
 

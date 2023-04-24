@@ -68,7 +68,7 @@ $filter = $this->a('filter');
         </div>
         <div class="col-md-4 col-xs-12" style="padding-top:15px;">
             <div class="mailing-percent fade">
-                <?= $this->insert('project/widgets/percent_status', ['percent' => 0, 'style' => 'pink mini nomargin']) ?>
+                <?= $this->insert('partials/components/widgets/percent_status', ['percent' => 0, 'style' => 'pink mini nomargin']) ?>
                 <p class="text-pink" style="padding:19px 0 0 80px">Sending messages...</p>
             </div>
         </div>
@@ -243,7 +243,7 @@ $filter = $this->a('filter');
 <script class="item_mailing_template" type="text/template">
   <div id="mailing-message-{id}" class="media comment-item" data-percent-success="{percent_success}" data-percent-read="{percent_read}">
     <div class="media-left" title="<?= $this->ee($this->text('dashboard-project-mailing-percent_success')) ?>">
-        <?= $this->insert('project/widgets/percent_status', ['percent' => 0, 'style' => 'pink mini center']) ?>
+        <?= $this->insert('partials/components/widgets/percent_status', ['percent' => 0, 'style' => 'pink mini center']) ?>
     </div>
     <div class="media-body">
         <h4>
@@ -256,7 +256,7 @@ $filter = $this->a('filter');
         <p class="text-danger hidden error-message"></p>
     </div>
     <div class="media-right" title="<?= $this->ee($this->text('dashboard-project-mailing-percent_opened')) ?>">
-        <?= $this->insert('project/widgets/percent_status', ['percent' => 0, 'style' => 'cyan mini center']) ?>
+        <?= $this->insert('partials/components/widgets/percent_status', ['percent' => 0, 'style' => 'cyan mini center']) ?>
     </div>
   </div>
 </script>
