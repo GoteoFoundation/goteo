@@ -159,4 +159,6 @@ project-impact-calculator-card-impact-description: "With a budget of %s we want 
 project-create-continue-impact: "Save and calculate impact"
 project-campaign-impact-calculator: "Impact Calculator"
 project-campaign-activate-impact-calculator: "By activating the impact calculator, the project promoter will be able to access the project impact data module, as well as see their impact on the main project page."
-
+project-campaign-type-label: "Choose type of Campaign"
+project-campaign-type-campaign: "Campaign"
+project-campaign-type-permanent: "Permanent"

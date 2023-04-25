@@ -48,9 +48,9 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         if ($admin) {
             $builder
                 ->add('type', ChoiceType::class, [
-                    'label' => "Choose type of Campaign",
+                    'label' => 'project-campaign-type-label',
                     'row_class' => 'extra',
-                    'data' => $project->conf,
+                    'data' => $project->type ?? $project->getConfig()->getType(),
                     'choices' => $this->projectTypeChoices(),
                     'required' => false
                 ])
@@ -123,8 +123,8 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
     private function projectTypeChoices(): array
     {
         return [
-            'Campaign' => Conf::TYPE_CAMPAIGN,
-            'Permanent' => Conf::TYPE_PERMANENT,
+            Text::get('project-campaign-type-campaign') => Conf::TYPE_CAMPAIGN,
+            Text::get('project-campaign-type-permanent')=> Conf::TYPE_PERMANENT,
         ];
     }
 
