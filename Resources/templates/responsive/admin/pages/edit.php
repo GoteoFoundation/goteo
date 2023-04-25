@@ -9,4 +9,9 @@ $this->section('admin-container-body') ?>
   </div>
 </div>
 
-<?php $this->replace() ?>
+<?php
+    $this->replace();
+?>
+<?php $this->section('footer'); ?>
+    <script type="text/javascript" src="<?= $this->asset('js/admin/page.js') ?>"></script>
+<?php $this->append() ?>

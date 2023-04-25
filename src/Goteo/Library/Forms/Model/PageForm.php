@@ -28,13 +28,16 @@ class PageForm extends AbstractFormProcessor
                 'disabled' => (bool) $model->id,
             ])
             ->add('name', TextType::class, [])
-            ->add('description', TextareaType::class, [
+            ->add('description', TextType::class, [
                 'required' => false
             ])
             ->add('url', UrlType::class, [])
-            ->add('content', MarkdownType::class, [])
+            ->add('content', TextareaType::class, [
+                'html_editor' => $model->type === Page::TYPE_HTML,
+            ])
             ->add('type', ChoiceType::class,[
                 'choices' => $this->getTypes(),
+                'data' => $model->type ?? Page::TYPE_MARKDOWN
             ])
             ->add('pending', BooleanType::class, [
                 'label' => 'mark-pending',

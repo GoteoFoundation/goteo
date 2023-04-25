@@ -200,7 +200,7 @@ class Page extends Model{
 
 	}
 
-    public function count(): int
+    static public function count(): int
     {
         $query = static::query("
             SELECT

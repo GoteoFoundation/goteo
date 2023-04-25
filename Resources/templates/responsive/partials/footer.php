@@ -27,7 +27,7 @@
           <li><a class="fa fa-instagram" target="_blank" href="<?=$this->text('social-account-instagram') ?>" title="<?= $this->t('regular-share-instagram')?>"></a></li>
           <li><a class="fa fa-telegram" target="_blank" href="<?=$this->text('social-account-telegram') ?>" title="<?= $this->t('regular-share-telegram')?>"></a></li>
           <li><a class="fa fa-github" target="_blank" href="<?=$this->text('social-account-github') ?>" title="<?= $this->t('regular-share-github')?>"></a></li>
-          <li><a class="fa fa-newspaper-o" target="_blank" href="<?= $this->lang_host() ?>newsletter" title="<?= $this->t('regular-share-newsletter)')?>"></a></li>
+          <li><a class="fa fa-newspaper-o" target="_blank" href="<?= $this->lang_host() ?>newsletter" title="<?= $this->t('regular-share-newsletter')?>"></a></li>
         </ul>
       </div>
     </div>
