@@ -105,7 +105,7 @@ EOT
         foreach ($projects as $project) {
 
             if ($project->type != Project\Conf::TYPE_CAMPAIGN) {
-                $this->warning("This project's type is not campaign. There are no actions to be taking regarding rounds");
+                $this->warning("This project's type is not a campaign, it is a continuous fundraising project. There are no actions to be taking regarding rounds");
                 continue;
             }
 
