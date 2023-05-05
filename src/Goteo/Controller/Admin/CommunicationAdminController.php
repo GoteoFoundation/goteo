@@ -75,7 +75,7 @@ class CommunicationAdminController extends AbstractAdminController
         ];
     }
 
-    public function doSave($id = null, Request $request){
+    public function doSave(Request $request, $id = null){
 
         $communication = ($id) ? Communication::get($id) : new Communication();
 
@@ -195,11 +195,11 @@ class CommunicationAdminController extends AbstractAdminController
         );
     }
 
-    public function addAction($id = null, Request $request)
+    public function addAction(Request $request, $id = null)
     {
         if ($request->isMethod('post') ) {
             try {
-                $communication = $this->doSave($id, $request);
+                $communication = $this->doSave($request, $id);
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
                 return $this->redirect();
@@ -258,7 +258,7 @@ class CommunicationAdminController extends AbstractAdminController
         }
 
         if ($request->isMethod('post') ) {
-            $communication = $this->doSave(null, $request);
+            $communication = $this->doSave($request, null);
             return $this->redirect('/admin/communication/detail/'.$communication->id);
         }
 

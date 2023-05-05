@@ -2448,7 +2448,7 @@ class Project extends Model {
         return $projects;
     }
 
-    public static function getBySDGs($sdgs = array(), $offset, $limit = 10, $count = false)
+    public static function getBySDGs(array $sdgs = [], int $offset = 0, int $limit = 10, bool $count = false): array | int
     {
         $lang = Lang::current();
         $values = array();

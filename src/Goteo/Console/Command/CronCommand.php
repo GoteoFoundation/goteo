@@ -69,10 +69,10 @@ class CronCommand extends AbstractCommand {
      */
     public static function addCrontabLine(array $job) {
         $executable = $job['command'];
-        if($job['type'] == 'php') {
+        if(isset($job['type']) && $job['type'] == 'php') {
             $executable = (new PhpExecutableFinder())->find() . " $executable";
         }
-        if($job['nice']) {
+        if(isset($job['nice'])) {
             $executable = "nice $executable";
         }
         static::$crontabLines[] = [$executable, $job['schedule']];

@@ -191,7 +191,7 @@ class AuthController extends Controller {
         return $this->viewResponse('auth/signup', $result);
     }
 
-    public function passwordRecoveryAction($token = '', Request $request) {
+    public function passwordRecoveryAction(Request $request, $token = '') {
         // If the token is ok, login and redirect change password view
 
         if ($token) {

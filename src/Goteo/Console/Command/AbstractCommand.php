@@ -48,10 +48,11 @@ abstract class AbstractCommand extends Command {
         return $this;
     }
 
-    public function getLogger($name = null) {
+    public function getLogger($name = null): mixed
+    {
         if(!$name) $name = $this->getName(); // Name of the command
 
-        return $this->logs["cli.$name"]; // cached instance
+        return isset($this->logs["cli.$name"]) ? $this->logs["cli.$name"] : null; // cached instance
     }
 
     public function log($message, array $context = [], $func = 'info') {
@@ -68,18 +69,6 @@ abstract class AbstractCommand extends Command {
                 if($func != 'debug') {
                     $this->output->writeln($color ? "<fg=$color>$message</>" : $message);
                     if($processed) {
-                        $this->output->writeln(
-                            implode(
-                                "\n",
-                                array_map(
-                                    function ($v, $k) {
-                                        return sprintf("\t<fg=blue>%s:</> %s", $k, $v);
-                                    },
-                                    $processed,
-                                    array_keys($processed)
-                                )
-                            )
-                        );
                     }
                 }
             }
