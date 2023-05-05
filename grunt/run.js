@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 
     var commandExists = require('command-exists').sync;
 
-    var phps = ['php-fpm7.4', 'php-fpm'];
+    var phps = ['php-fpm8.0', 'php-fpm'];
     var php = phps[0];
 
     phps.some(function(p){
