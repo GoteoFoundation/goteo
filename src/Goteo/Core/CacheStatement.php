@@ -179,7 +179,13 @@ class CacheStatement extends PDOStatement
         return $this->_cachedMethod('fetchObject', func_get_args());
     }
 
+    /*
     public function fetchAll($fetch_style = NULL, $class_name = NULL, $ctor_args = NULL) {
+        return $this->_cachedMethod('fetchAll', func_get_args());
+    }*/
+
+    public function fetchAll(int $mode = \PDO::FETCH_OBJ, mixed ...$args): array
+    {
         return $this->_cachedMethod('fetchAll', func_get_args());
     }
 
