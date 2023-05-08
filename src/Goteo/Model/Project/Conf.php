@@ -24,6 +24,9 @@ use Goteo\Library\Text;
 class Conf extends Model
 {
 
+    const TYPE_CAMPAIGN = 'campaign';
+    const TYPE_PERMANENT = 'permanent';
+
     public
         $project,
         $noinvest, // no se pueden hacer más aportes
@@ -35,13 +38,16 @@ class Conf extends Model
         $help_license,
         $mincost_estimation,
         $publishing_estimation,
-        $hide_exhausted_rewards;
+        $hide_exhausted_rewards
+    ;
 
     private bool $impact_calculator = false;
 
+    private string $type = self::TYPE_CAMPAIGN;
+
     /**
      * Get the conf for a project
-     * @param varcahr(50) $id  Project identifier
+     * @param string $id  Project identifier
      * @return Conf
      * @throws Exception
      */
@@ -90,9 +96,9 @@ class Conf extends Model
         if (!$this->validate($errors)) return false;
 
         try {
-            $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round, help_cost, help_license, mincost_estimation, publishing_estimation, hide_exhausted_rewards, impact_calculator) VALUES(:project, :noinvest, :watch, :round1, :round2, :one, :helpcost, :helplicense, :mincost_estimation, :publishing_estimation, :hide_exhausted_rewards, :impact_calculator)";
+            $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round, help_cost, help_license, mincost_estimation, publishing_estimation, hide_exhausted_rewards, impact_calculator, `type`) VALUES(:project, :noinvest, :watch, :round1, :round2, :one, :helpcost, :helplicense, :mincost_estimation, :publishing_estimation, :hide_exhausted_rewards, :impact_calculator, :type)";
             $values = [':project' => $this->project, ':noinvest' => $this->noinvest, ':watch' => $this->watch,
-                ':round1' => $this->days_round1, ':round2' => $this->days_round2, ':one' => $this->one_round, ':helpcost' => $this->help_cost, ':helplicense' => $this->help_license, ':mincost_estimation' => $this->mincost_estimation, ':publishing_estimation' => $this->publishing_estimation, ':hide_exhausted_rewards' => $this->hide_exhausted_rewards, ':impact_calculator' => $this->impact_calculator];
+                ':round1' => $this->days_round1, ':round2' => $this->days_round2, ':one' => $this->one_round, ':helpcost' => $this->help_cost, ':helplicense' => $this->help_license, ':mincost_estimation' => $this->mincost_estimation, ':publishing_estimation' => $this->publishing_estimation, ':hide_exhausted_rewards' => $this->hide_exhausted_rewards, ':impact_calculator' => $this->impact_calculator, ':type' => $this->type];
             return self::query($sql, $values)?true:false;
         } catch (\PDOException $e) {
             $errors[] = "La configuración del proyecto no se ha guardado correctamente. Por favor, revise los datos." . $e->getMessage();
@@ -370,4 +376,24 @@ class Conf extends Model
         $this->impact_calculator = false;
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): Conf
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    public function isTypePermanent(): bool
+    {
+        return self::TYPE_PERMANENT === $this->type;
+    }
+
+    public function isTypeCampaign(): bool
+    {
+        return self::TYPE_CAMPAIGN === $this->type;
+    }
 }

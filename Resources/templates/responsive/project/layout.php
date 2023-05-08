@@ -69,14 +69,14 @@ $this->section('content');
 			<div class="project-by"><a href="/user/<?= $project->owner ?>"><?= $project->user->name ?></a></div>
 		</div>
 
-		<div class="row">
-			<div class="col-sm-8">
-				<?= $this->insert('project/partials/media', ['project' => $project ]) ?>
-			</div>
-			<div class="col-sm-4">
-				<?= $this->insert('project/partials/meter', ['project' => $project ]) ?>
-			</div>
-		</div>
+        <div class="row">
+            <div class="col-sm-8">
+                <?= $this->insert('project/partials/media', ['project' => $project ]) ?>
+            </div>
+            <div class="col-sm-4">
+                <?= $this->insert('project/partials/meter', ['project' => $project ]) ?>
+            </div>
+        </div>
 
 		<!-- Tags and share info -->
 		<div class="row">
@@ -92,6 +92,13 @@ $this->section('content');
             <?= $this->insert('project/partials/impact_by_footprint', ['footprints' => $this->footprints ]) ?>
             <?= $this->insert('project/partials/calculator') ?>
             <?= $this->insert('project/partials/sdgs') ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- show rewards of type patreon if active -->
+    <?php if ($project->isPermanent()):?>
+        <div class="row">
+            <?= $this->insert('project/partials/highlighted_rewards') ?>
         </div>
     <?php endif; ?>
 
