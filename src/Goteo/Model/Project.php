@@ -3614,6 +3614,15 @@ class Project extends Model {
         }
     }
 
+    public function isHighlightedRewardsActive(): bool
+    {
+        try {
+            return ProjectConf::get($this->id)->isHighlightedRewards();
+        } catch(\Goteo\Core\Exception $e) {
+            return false;
+        }
+    }
+
     /*
      * Para saber si un proyecto tiene traducción en cierto idioma
      * @return: boolean

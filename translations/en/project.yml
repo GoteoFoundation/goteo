@@ -159,4 +159,5 @@ project-impact-calculator-card-impact-description: "With a budget of %s we want 
 project-create-continue-impact: "Save and calculate impact"
 project-campaign-impact-calculator: "Impact Calculator"
 project-campaign-activate-impact-calculator: "By activating the impact calculator, the project promoter will be able to access the project impact data module, as well as see their impact on the main project page."
-
+project-campaign-highlighted-rewards: "Highlighted rewards"
+project-campaign-activate-highlighted-rewards: "When activating the highlighted rewards, the visualization of the rewards will change. The rewards will be shown at the top of the project page."

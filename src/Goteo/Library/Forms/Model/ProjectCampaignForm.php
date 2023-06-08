@@ -92,6 +92,16 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                     ],
                     'color' => 'cyan',
                     'required' => false
+                ])
+                ->add('highlighted_rewards', BooleanType::class, [
+                    'label' => 'project-campaign-highlighted-rewards',
+                    'row_class' => 'extra',
+                    'data' => $project->isHighlightedRewardsActive(),
+                    'attr' => [
+                        'help' => Text::get('project-campaign-activate-highlighted-rewards')
+                    ],
+                    'color' => 'cyan',
+                    'required' => false
                 ]);
         }
 
@@ -143,6 +153,8 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 $conf->deactivateImpactCalculator();
             }
             $errors = [];
+
+            $conf->setHighlightedRewards($data['highlighted_rewards']);
             if (!$conf->save($errors)) {
                 throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
             }

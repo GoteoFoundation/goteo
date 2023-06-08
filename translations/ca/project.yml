@@ -162,3 +162,5 @@ project-impact-calculator-card-impact-description: "Amb un pressupost de %s aspi
 project-create-continue-impact: "Desar i calcular impacte"
 project-campaign-impact-calculator: "Calculadora d'Impacte"
 project-campaign-activate-impact-calculator: "Al activar la calculadora d'impacte, l'impulsora del projecte podrà accedir al módul de les Dades d'Impacte del Projecte, així com també es veurà el seu impacte a la pàgina principal del projecte."
+project-campaign-highlighted-rewards: "Recompenses destacades"
+project-campaign-activate-highlighted-rewards: "Al activar les recompenses destacades, la visualització de les recompenses canvia. Es mostraran les recompenses destacades a la part superior de la pàgina del projecte."

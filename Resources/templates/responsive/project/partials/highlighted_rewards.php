@@ -1,5 +1,4 @@
 <?php
-# Show three rewards in widgets in a responsive way (mobile first)
 $project = $this->project;
 ?>
 
