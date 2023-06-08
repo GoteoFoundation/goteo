@@ -53,15 +53,25 @@ body.project {
           border: 1px solid $color-light-grey;
           border-radius: 1rem;
           width: 100%;
+          min-height: 40rem;
           height: 40rem;
           padding: 2rem;
           font-size: 1.5rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
 
           .card-header {
             h2 {
               overflow: hidden;
               text-overflow: ellipsis;
             }
+          }
+
+          .card-body {
+            height: 20rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-bottom: 1rem;
           }
 
           .amount-box {
@@ -78,6 +88,12 @@ body.project {
             border: $background-light-green 2px solid;
             height: fit-content;
             transition: 0.5s;
+
+            .card-body {
+              min-height: 20rem;
+              height: fit-content;
+              transition: 0.5s;
+            }
           }
         }
       }

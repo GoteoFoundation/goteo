@@ -87,11 +87,18 @@ $this->section('content');
 <!-- End container fluid -->
 
 <div class="container-fluid section">
+
     <?php if ($project->isImpactCalcActive()):?>
         <div class="impact-calculator-details row">
             <?= $this->insert('project/partials/impact_by_footprint', ['footprints' => $this->footprints ]) ?>
             <?= $this->insert('project/partials/calculator') ?>
             <?= $this->insert('project/partials/sdgs') ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($project->isHighlightedRewardsActive()): ?>
+        <div class="row">
+            <?= $this->insert('project/partials/highlighted_rewards') ?>
         </div>
     <?php endif; ?>
 
