@@ -69,14 +69,14 @@ $this->section('content');
 			<div class="project-by"><a href="/user/<?= $project->owner ?>"><?= $project->user->name ?></a></div>
 		</div>
 
-		<div class="row">
-			<div class="col-sm-8">
-				<?= $this->insert('project/partials/media', ['project' => $project ]) ?>
-			</div>
-			<div class="col-sm-4">
-				<?= $this->insert('project/partials/meter', ['project' => $project ]) ?>
-			</div>
-		</div>
+        <div class="row">
+            <div class="col-sm-8">
+                <?= $this->insert('project/partials/media', ['project' => $project ]) ?>
+            </div>
+            <div class="col-sm-4">
+                <?= $this->insert('project/partials/meter', ['project' => $project ]) ?>
+            </div>
+        </div>
 
 		<!-- Tags and share info -->
 		<div class="row">
@@ -87,7 +87,6 @@ $this->section('content');
 <!-- End container fluid -->
 
 <div class="container-fluid section">
-
     <?php if ($project->isImpactCalcActive()):?>
         <div class="impact-calculator-details row">
             <?= $this->insert('project/partials/impact_by_footprint', ['footprints' => $this->footprints ]) ?>

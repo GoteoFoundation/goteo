@@ -13,7 +13,7 @@ if ($project->media->url):
 elseif(!empty($project->secGallery['play-video'][0])):
 ?>
     <div class="project-media video-holder" style="position:relative;height:auto;" id="video_holder">
-            <img class="img-responsive" src="<?php echo $project->secGallery['play-video'][0]->imageData->getLink(780, 478); ?>" />
+        <img class="img-responsive" src="<?php echo $project->secGallery['play-video'][0]->imageData->getLink(780, 478); ?>" />
     </div>
 <?php
 elseif($project->image && $project->image->id):

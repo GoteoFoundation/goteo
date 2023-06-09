@@ -13,6 +13,7 @@ namespace Goteo\Console\Command;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterProjectEvent;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Conf;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -62,17 +63,21 @@ EOT
         $update       = $input->getOption('update');
         $project_id   = $input->getOption('project');
 
-        $filter = [];
+        $baseFilter = [];
         if ($project_id) {
             $output->writeln("<info>Processing Project [$project_id]:</info>");
-            $filter = ['proj_id' => $project_id];
+            $baseFilter['proj_id'] = $project_id;
         }
 
         $processed = 0;
 
-        $total = Project::getList($filter + ['status' => Project::STATUS_REVIEWING, 'published' => date('Y-m-d')], null, 0, 0, true);
+        $filter = [
+            'status' => Project::STATUS_REVIEWING,
+            'published' => date('Y-m-d'),
+        ];
+        $total = Project::getList($baseFilter + $filter , null, 0, 0, true);
         $output->writeln("Found <info>$total projects</info> for publishing today");
-        foreach(Project::getList($filter + ['status' => Project::STATUS_REVIEWING, 'published' => date('Y-m-d')], null, 0, $total) as $prj) {
+        foreach(Project::getList($baseFilter + $filter, null, 0, $total) as $prj) {
             // PUBLISH EVENT
             $event = new FilterProjectEvent($prj);
             $output->writeln("Throwing publish project event for <info>{$prj->id}</info>, published <comment>{$prj->published}</comment>");
@@ -82,9 +87,17 @@ EOT
             }
         }
 
-        $total = Project::getList($filter + ['status' => Project::STATUS_IN_CAMPAIGN], null, 0, 0, true);
-        $output->writeln("Found <info>$total projects</info> IN CAMPAIGN");
-        foreach(Project::getList($filter + ['status' => Project::STATUS_IN_CAMPAIGN], null, 0, $total) as $prj) {
+        $filter = [
+            'status' => Project::STATUS_IN_CAMPAIGN,
+            'type_of_campaign' => Conf::TYPE_CAMPAIGN
+        ];
+
+        $total = Project::getList($baseFilter + $filter, null, 0, 0, true);
+        $output->writeln("Found <info>$total projects</info> IN CAMPAIGN of type CAMPAIGN.");
+        foreach(Project::getList($baseFilter + $filter, null, 0, $total) as $prj) {
+
+            if ($prj->type != Conf::TYPE_CAMPAIGN)
+                continue;
 
             // a los 5, 3, 2, y 1 dia para finalizar ronda
             if ($prj->round > 0 && in_array((int) $prj->days, array(5, 3, 2, 1))) {
@@ -107,9 +120,13 @@ EOT
 
         $min_date = date("Y-m-d", mktime(0, 0, 0, date('m'), date('d'), date('Y') - 1));
 
-        $total = Project::getList($filter + ['status' => Project::STATUS_FUNDED, 'succeeded_since' => $min_date], null, 0, 0, true);
+        $filter = [
+            'status' => Project::STATUS_FUNDED,
+            'succeeded_since' => $min_date
+        ];
+        $total = Project::getList($baseFilter + $filter, null, 0, 0, true);
         $output->writeln("Found <info>$total projects</info> succeeded since <comment>$min_date</comment>");
-        foreach(Project::getList($filter + ['status' => Project::STATUS_FUNDED, 'succeeded_since' => $min_date], null, 0, $total) as $prj) {
+        foreach(Project::getList($baseFilter + $filter, null, 0, $total) as $prj) {
 
             // WATCH EVENT
             $event = new FilterProjectEvent($prj);

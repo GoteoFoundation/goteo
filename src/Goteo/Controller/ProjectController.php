@@ -158,6 +158,7 @@ class ProjectController extends Controller {
         $URL = '//'.$request->getHttpHost();
         $url = $URL . '/widget/project/' . $project->id;
         $widget_code = Text::widget($url . $lsuf);
+        $type = $project->type;
 
         // mensaje cuando, sin estar en campaña, tiene fecha de publicación
         if (!$project->isApproved()) {
@@ -244,83 +245,79 @@ class ProjectController extends Controller {
                 }
             }
 
-            // Custom view data
-            if ($show == 'home') {
-                $viewData['types'] = Project\Cost::types();
-                // Costs by type
-                $costs = array();
+            switch ($show) {
+            case 'home':
+                    $viewData['types'] = Project\Cost::types();
+                    // Costs by type
+                    $costs = array();
 
-                foreach ($project->costs as $cost) {
-                    $costs[$cost->type][] = (object) array(
-                        'name' => $cost->cost,
-                        'description' => $cost->description,
-                        'min' => $cost->required == 1 ? $cost->amount : '',
-                        'opt' => $cost->amount,
-                        'req' => $cost->required
-                    );
-                }
-
-                $viewData['costs'] = $costs;
-                $licenses = array();
-
-                foreach (License::getAll() as $l) {
-                    $licenses[$l->id] = $l;
-                }
-
-                $viewData['licenses'] = $licenses;
-            }
-
-            // tenemos que tocar esto un poquito para motrar las necesitades no economicas
-            if ($show == 'needs-non') {
-                $viewData['show'] = 'needs';
-                $viewData['non_economic'] = true;
-            }
-
-            // posts
-            if ($show == 'updates') {
-                //if is an individual post page
-                if ($post) {
-                    $pob = BlogPost::getBySlug($post, Lang::current(), $project->lang);
-                    if($pob->slug && $post != $pob->slug) {
-                        return $this->redirect("/project/{$project->id}/updates/{$pob->slug}");
+                    foreach ($project->costs as $cost) {
+                        $costs[$cost->type][] = (object)array(
+                            'name' => $cost->cost,
+                            'description' => $cost->description,
+                            'min' => $cost->required == 1 ? $cost->amount : '',
+                            'opt' => $cost->amount,
+                            'req' => $cost->required
+                        );
                     }
-                    $viewData['post']  = $pob;
-                    $show  = 'updates_post';
-                }
 
-                // sus entradas de novedades
-                $blog = Blog::get($project->id);
-                $milestones = ProjectMilestone::getAll($project->id, Lang::current(), $project->lang);
-                $viewData['milestones']=$milestones;
-                $viewData['blog'] = $blog;
-                $viewData['owner'] = $project->owner;
+                    $viewData['costs'] = $costs;
+                    $licenses = array();
 
-                if (empty($user)) {
-                    Message::info(Text::html('user-login-required'));
-                }
+                    foreach (License::getAll() as $l) {
+                        $licenses[$l->id] = $l;
+                    }
+
+                    $viewData['licenses'] = $licenses;
+                    break;
+                case 'needs-on':
+                    $viewData['show'] = 'needs';
+                    $viewData['non_economic'] = true;
+                    break;
+                case 'updates':
+                    //if is an individual post page
+                    if ($post) {
+                        $pob = BlogPost::getBySlug($post, Lang::current(), $project->lang);
+                        if($pob->slug && $post != $pob->slug) {
+                            return $this->redirect("/project/{$project->id}/updates/{$pob->slug}");
+                        }
+                        $viewData['post']  = $pob;
+                        $show  = 'updates_post';
+                    }
+
+                    // sus entradas de novedades
+                    $blog = Blog::get($project->id);
+                    $milestones = ProjectMilestone::getAll($project->id, Lang::current(), $project->lang);
+                    $viewData['milestones']=$milestones;
+                    $viewData['blog'] = $blog;
+                    $viewData['owner'] = $project->owner;
+
+                    if (empty($user)) {
+                        Message::info(Text::html('user-login-required'));
+                    }
+                    break;
+                case 'participate':
+                    $viewData['worthcracy']=Worth::getAll();
+                    $limit=15;
+                    $pag = max(0, (int)$request->query->get('pag'));
+                    $viewData['investors_list']= Invest::investors($project->id, false, false, $pag * $limit, $limit, false);
+                    $viewData['investors_total'] = Invest::investors($project->id, false, false, 0, 0, true);
+                    $viewData['investors_limit'] = $limit;
+
+                    // Collaborations
+                    $viewData['messages'] = SupportMessage::getAll($project->id, Lang::current());
+
+                    if (empty($user)) {
+                        Message::info(Text::html('user-login-required'));
+                    }
+                    break;
+                case 'messages':
+                    if ($project->status < 3)
+                        Message::info(Text::get('project-messages-closed'));
+                    break;
             }
 
-            if ($show == 'participate') {
-                $viewData['worthcracy']=Worth::getAll();
-                $limit=15;
-                $pag = max(0, (int)$request->query->get('pag'));
-                $viewData['investors_list']= Invest::investors($project->id, false, false, $pag * $limit, $limit, false);
-                $viewData['investors_total'] = Invest::investors($project->id, false, false, 0, 0, true);
-                $viewData['investors_limit'] = $limit;
-
-                // Collaborations
-                $viewData['messages'] = SupportMessage::getAll($project->id, Lang::current());
-
-                if (empty($user)) {
-                    Message::info(Text::html('user-login-required'));
-                }
-            }
-
-            if ($show == 'messages' && $project->status < 3) {
-                Message::info(Text::get('project-messages-closed'));
-            }
-
-            $response = new Response(View::render('project/'.$show, $viewData));
+            $response = new Response(View::render("project/$show", $viewData));
             // Force no cache if not approved
             if(!$project->isApproved()) {
                 $response->headers->set('Pragma', 'no-cache');

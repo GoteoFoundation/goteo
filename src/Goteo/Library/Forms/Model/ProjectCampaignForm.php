@@ -12,9 +12,11 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Application\Session;
+use Goteo\Core\Exception;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Model\Project;
 use Goteo\Model\Project\Conf;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
@@ -42,18 +44,55 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         $account = $this->getOption('account');
 
         $builder = $this->getBuilder();
+
+        $admin = Session::isAdmin();
+        if ($admin) {
+            $builder
+                ->add('type', ChoiceType::class, [
+                    'label' => 'project-campaign-type-label',
+                    'row_class' => 'extra',
+                    'data' => $project->type ?? $project->getConfig()->getType(),
+                    'choices' => $this->projectTypeChoices(),
+                    'required' => false
+                ])
+                ->add('impact_calculator', BooleanType::class, [
+                    'label' => 'project-campaign-impact-calculator',
+                    'row_class' => 'extra',
+                    'data' => $project->isImpactCalcActive(),
+                    'attr' => [
+                        'help' => Text::get('project-campaign-activate-impact-calculator')
+                    ],
+                    'color' => 'cyan',
+                    'required' => false
+                ])
+                ->add('highlighted_rewards', BooleanType::class, [
+                    'label' => 'project-campaign-highlighted-rewards',
+                    'row_class' => 'extra',
+                    'data' => $project->isHighlightedRewardsActive(),
+                    'attr' => [
+                        'help' => Text::get('project-campaign-activate-highlighted-rewards')
+                    ],
+                    'color' => 'cyan',
+                    'required' => false
+                ]);
+        }
+
+        if ($admin || $project->type != Conf::TYPE_PERMANENT ) {
+            $builder
+                ->add('one_round', ChoiceType::class, [
+                    'disabled' => $this->getReadonly(),
+                    'label' => 'costs-field-select-rounds',
+                    'required' => true,
+                    'expanded' => true,
+                    'wrap_class' => 'col-xs-6',
+                    'choices' => $this->getRoundsAsChoices(),
+                    'attr' => [
+                        'help' => '<span class="' . ($project->one_round ? '' : 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden' : '') . '">' . Text::get('tooltip-project-2rounds') . '</span>'
+                    ]
+                ]);
+        }
+
         $builder
-            ->add('one_round', ChoiceType::class, [
-                'disabled' => $this->getReadonly(),
-                'label' => 'costs-field-select-rounds',
-                'required' => true,
-                'expanded' => true,
-                'wrap_class' => 'col-xs-6',
-                'choices' => $this->getRoundsAsChoices(),
-                'attr' => [
-                    'help' => '<span class="' . ($project->one_round ? '': 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden': '') . '">' . Text::get('tooltip-project-2rounds') . '</span>'
-                ]
-            ])
             ->add('phone', TextType::class, [
                 'label' => 'personal-field-phone',
                 'disabled' => $this->getReadonly(),
@@ -80,31 +119,6 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
             ])
             ;
 
-        $admin = Session::isAdmin();
-        if ($admin) {
-            $builder
-                ->add('impact_calculator', BooleanType::class, [
-                    'label' => 'project-campaign-impact-calculator',
-                    'row_class' => 'extra',
-                    'data' => $project->isImpactCalcActive(),
-                    'attr' => [
-                        'help' => Text::get('project-campaign-activate-impact-calculator')
-                    ],
-                    'color' => 'cyan',
-                    'required' => false
-                ])
-                ->add('highlighted_rewards', BooleanType::class, [
-                    'label' => 'project-campaign-highlighted-rewards',
-                    'row_class' => 'extra',
-                    'data' => $project->isHighlightedRewardsActive(),
-                    'attr' => [
-                        'help' => Text::get('project-campaign-activate-highlighted-rewards')
-                    ],
-                    'color' => 'cyan',
-                    'required' => false
-                ]);
-        }
-
         return $this;
     }
 
@@ -113,6 +127,14 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         return [
             Text::get('project-one-round') => 1,
             Text::get('project-two-rounds') => 0
+        ];
+    }
+
+    private function projectTypeChoices(): array
+    {
+        return [
+            Text::get('project-campaign-type-campaign') => Conf::TYPE_CAMPAIGN,
+            Text::get('project-campaign-type-permanent')=> Conf::TYPE_PERMANENT,
         ];
     }
 
@@ -145,19 +167,29 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         }
 
         $admin = Session::isAdmin();
-        if ($admin && isset($data['impact_calculator'])) {
-            $conf = Conf::get($project->id);
-            if ($data['impact_calculator']) {
-                $conf->activateImpactCalculator();
-            } else {
-                $conf->deactivateImpactCalculator();
-            }
-            $errors = [];
+        if ($admin) {
+            try {
+                $conf = Conf::get($project->id);
+                if(isset($data['impact_calculator'])) {
+                    if ($data['impact_calculator']) {
+                        $conf->activateImpactCalculator();
+                    } else {
+                        $conf->deactivateImpactCalculator();
+                    }
+                }
 
-            $conf->setHighlightedRewards($data['highlighted_rewards']);
-            if (!$conf->save($errors)) {
-                throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
-            }
+                if (isset($data['type'])) {
+                    $conf->setType($data['type']);
+                }
+
+                $conf->setHighlightedRewards($data['highlighted_rewards']);
+
+                $errors = [];
+                if (!$conf->save($errors)) {
+                    throw new FormModelException(Text::get('form-sent-error', implode(', ', $errors)));
+                }
+            } catch (Exception $e) {
+                throw new FormModelException($e->getMessage());            }
         }
 
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));

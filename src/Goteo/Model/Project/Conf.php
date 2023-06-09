@@ -24,6 +24,9 @@ use Goteo\Library\Text;
 class Conf extends Model
 {
 
+    const TYPE_CAMPAIGN = 'campaign';
+    const TYPE_PERMANENT = 'permanent';
+
     public
         $project,
         $noinvest, // no se pueden hacer más aportes
@@ -39,10 +42,11 @@ class Conf extends Model
 
     private bool $impact_calculator = false;
     private bool $highlighted_rewards = false;
+    private string $type = self::TYPE_CAMPAIGN;
 
     /**
      * Get the conf for a project
-     * @param varcahr(50) $id  Project identifier
+     * @param string $id  Project identifier
      * @return Conf
      * @throws Exception
      */
@@ -91,7 +95,7 @@ class Conf extends Model
         if (!$this->validate($errors)) return false;
 
         try {
-            $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round, help_cost, help_license, mincost_estimation, publishing_estimation, hide_exhausted_rewards, impact_calculator, highlighted_rewards) VALUES(:project, :noinvest, :watch, :round1, :round2, :one, :helpcost, :helplicense, :mincost_estimation, :publishing_estimation, :hide_exhausted_rewards, :impact_calculator, :highlighted_rewards)";
+            $sql = "REPLACE INTO project_conf (project, noinvest, watch, days_round1, days_round2, one_round, help_cost, help_license, mincost_estimation, publishing_estimation, hide_exhausted_rewards, impact_calculator, `type`, highlighted_rewards) VALUES(:project, :noinvest, :watch, :round1, :round2, :one, :helpcost, :helplicense, :mincost_estimation, :publishing_estimation, :hide_exhausted_rewards, :impact_calculator, :type, :highlighted_rewards)";
             $values = [
                 ':project' => $this->project,
                 ':noinvest' => $this->noinvest,
@@ -105,6 +109,7 @@ class Conf extends Model
                 ':publishing_estimation' => $this->publishing_estimation,
                 ':hide_exhausted_rewards' => $this->hide_exhausted_rewards,
                 ':impact_calculator' => $this->impact_calculator,
+                ':type' => $this->type,
                 ':highlighted_rewards' => $this->highlighted_rewards
             ];
 
@@ -393,5 +398,26 @@ class Conf extends Model
     public function setHighlightedRewards(bool $highlighted_rewards): void
     {
         $this->highlighted_rewards = $highlighted_rewards;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): Conf
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    public function isTypePermanent(): bool
+    {
+        return self::TYPE_PERMANENT === $this->type;
+    }
+
+    public function isTypeCampaign(): bool
+    {
+        return self::TYPE_CAMPAIGN === $this->type;
     }
 }

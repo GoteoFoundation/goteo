@@ -8,7 +8,11 @@
         </h5>
     </div>
 
-    <?= $this->insert('project/widgets/partials/data_list') ?>
+    <?php if ($this->project->isPermanent()): ?>
+        <?= $this->insert('project/widgets/partials/data_list_permanent', ['project' => $this->project]) ?>
+    <?php else: ?>
+        <?= $this->insert('project/widgets/partials/data_list') ?>
+    <?php endif; ?>
 
     <?php if($this->project->inCampaign()): ?>
     <div class="invest">

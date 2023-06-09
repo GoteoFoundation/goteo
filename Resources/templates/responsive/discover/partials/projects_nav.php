@@ -34,4 +34,9 @@
         <a href="<?= $this->link ?>/discover/archived?<?= $this->get_querystring() ?>" ><?= $this->text('discover-group-archive-header') ?></a>
     </li>
   <?php $this->stop() ?>
+  <?php $this->section('project-filters-item-7') ?>
+    <li class="<?= $this->filter === 'permanent' ? 'active' : ''?>" data-status="permanent">
+        <a href="<?= $this->link ?>/discover/permanent?<?= $this->get_querystring() ?>" ><?= $this->text('discover-group-permanent-header') ?></a>
+    </li>
+  <?php $this->stop() ?>
 </ul>
