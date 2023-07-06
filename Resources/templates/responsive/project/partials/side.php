@@ -69,20 +69,21 @@
     </ul>
 
     <ul class="collaborations list-unstyled">
-        <!-- List of collaborations -->
         <?php foreach ($project->supports as $support): ?>
-            <li id="<?= $support->id ?>" class="side-widget">
-                <h3 class="text-bold">
-                    <?= $support->support ?>
-                </h3>
-                <p class="spacer-20">
-                    <?= substr($support->description,0,150) ?>
-                </p>
-                <div class="spacer-5">
-                    <a class="btn btn-block btn-green" href="<?= '/project/'.$project->id.'/participate#msg-'.$support->thread ?>">
-                        <?= $this->text('regular-collaborate') ?>
-                    </a>
-                </div>
+            <li class="side-widget">
+                <article id="support-<?= $support->id ?>" class="support-widget">
+                    <h4 class="text-bold">
+                        <?= $support->support ?>
+                    </h4>
+                    <p class="spacer-20" title="<?= $support->description ?>">
+                        <?= substr($support->description,0,150) ?>
+                    </p>
+                    <div class="spacer-5">
+                        <a class="btn btn-block btn-green" href="<?= '/project/'.$project->id.'/participate#msg-'.$support->thread ?>">
+                            <?= $this->text('regular-collaborate') ?>
+                        </a>
+                    </div>
+                </article>
             </li>
         <?php endforeach ?>
     </ul>
