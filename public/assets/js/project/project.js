@@ -226,6 +226,13 @@ $(() => {
         slidesToScroll: 1
     })
 
+    $('.slider-channels').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        infinite: false,
+    })
+
     $('[data-toggle="tooltip"]').tooltip();
 
     function amount_estimation_divide_data(estimatedAmount, data) {

@@ -32,6 +32,8 @@ use Goteo\Model\ImpactItem\ImpactProjectItem;
 use Goteo\Model\Invest;
 use Goteo\Model\License;
 use Goteo\Model\Message as SupportMessage;
+use Goteo\Model\Node;
+use Goteo\Model\Node\NodeProject;
 use Goteo\Model\Page;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Account;
@@ -46,7 +48,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 
 class ProjectController extends Controller {
 
@@ -219,6 +220,8 @@ class ProjectController extends Controller {
             $viewData['matchers'] = $project->getMatchers('active');
             $viewData['individual_rewards'] = [];
 
+            $viewData['channels'] = $this->getChannelsForProject($project);
+
             foreach ($project->getIndividualRewards(Lang::current(false)) as $reward) {
                 if ($reward->available() || !$project::hideExhaustedRewards($project->id) || !$project->inCampaign()) {
                     $reward->none  = false;
@@ -318,7 +321,6 @@ class ProjectController extends Controller {
             }
 
             $response = new Response(View::render("project/$show", $viewData));
-            // Force no cache if not approved
             if(!$project->isApproved()) {
                 $response->headers->set('Pragma', 'no-cache');
                 $response->headers->set('Cache-Control', 'no-cache, must-revalidate');
@@ -460,5 +462,23 @@ class ProjectController extends Controller {
             ->setEstimationAmount($impactDataProjectData["estimated_amount"]);
 
         $impactDataProject->save($errors);
+    }
+
+    /**
+     * @return Node[]
+     */
+    private function getChannelsForProject(Project $project): array
+    {
+        $channels = [];
+
+        $nodeProjectList = NodeProject::getList([
+            'project' => $project->id
+        ]);
+
+        foreach($nodeProjectList as $node) {
+            $channels[] = Node::get($node->node_id);
+        }
+
+        return $channels;
     }
 }
