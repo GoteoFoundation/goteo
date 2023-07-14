@@ -164,6 +164,7 @@ regular-recomended_by: 'Projecte recomanat per:'
 regular-review_board: 'Panell revisor'
 regular-round: 'a ronda'
 regular-save: Desa
+regular-continue-without-saving: "Continua sense desar"
 regular-schedule: Horari
 regular-search: Cerca
 regular-search-user: Cerca un usuari
@@ -251,3 +252,13 @@ regular-modal-decription: Decripció a la modal
 regular-click-more: "Fes click per saber més"
 regular-apply: Aplicar
 regular-units-left: "Unitats que queden"
+regular-budget: "Pressupost"
+regular-impact: "Impacte"
+regular-list: "Llista"
+regular-costs: "Costos"
+regular-value: "Valor"
+regular-type: "Tipus"
+regular-source: "Font"
+regular-result-msg: "Missatge de resultat"
+regular-operation-type: "Operació de càlcul"
+

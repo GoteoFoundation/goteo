@@ -134,7 +134,9 @@ $langs = $project->getLangs();
                     </div>
                 </div>
 
-                <?= $this->insert('project/partials/responsive_meter.php', ['project' => $project ]) ?>
+                <?php if ($project->type = 'campaign'): ?>
+                    <?= $this->insert('project/partials/responsive_meter.php', ['project' => $project ]) ?>
+                <?php endif; ?>
 
                 <div id="project-tabs-menu" class="row spacer project-menu hidden-xs">
                     <a href="/project/<?= $project->id ?>" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">

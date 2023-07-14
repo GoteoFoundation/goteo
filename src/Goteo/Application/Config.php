@@ -178,6 +178,7 @@ class Config {
             TranslateController::addTranslateModel('question');
             TranslateController::addTranslateModel('question_options');
 			TranslateController::addTranslateModel('impact_data');
+            TranslateController::addTranslateModel('impact_item');
 
 			// sets up the rest...
 			self::setDirConfiguration();

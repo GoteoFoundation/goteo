@@ -170,6 +170,7 @@ regular-recomended_by: 'Project recommended by:'
 regular-review_board: 'Review panel'
 regular-round: 'Round'
 regular-save: Save
+regular-continue-without-saving: "Continue without saving"
 regular-schedule: Schedule
 regular-search: Search
 regular-search-user: Find a user
@@ -257,3 +258,12 @@ regular-action_url: Action URL
 regular-modal-decription: "Modal's content"
 regular-apply: Apply
 regular-units-left: "Units left"
+regular-budget: "Budget"
+regular-impact: "Impact"
+regular-list: "List"
+regular-costs: "Costs"
+regular-value: "Value"
+regular-type: "Type"
+regular-source: "Source"
+regular-result-msg: "Result message"
+regular-operation-type: "Operation type"

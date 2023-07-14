@@ -36,6 +36,7 @@ use Goteo\Library\Text;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Call;
+use Goteo\Model\Footprint;
 use Goteo\Model\Invest;
 use Goteo\Model\Matcher;
 use Goteo\Model\Message as Comment;
@@ -110,6 +111,18 @@ class ProjectDashboardController extends DashboardController {
         ];
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-settings"></i> ' . Text::get('footer-header-resources'), $submenu, 'resources', null, 'sidebar');
+
+        if ($project->isImpactCalcActive() || $admin) {
+            $steps = [];
+            $footprints = Footprint::getList();
+
+            $steps[] = ['text' => 'Impact Data', 'link' => "$prefix/impact", 'impact_data_list'];
+
+            foreach($footprints as $footprint) {
+                $steps[] = ['text' => $footprint->title, 'link' => "$prefix/impact/footprint/$footprint->id/impact_data", 'id' => "footprint_$footprint->id"];
+            }
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-rocket"></i>' . Text::get('impactdata-lb'), $steps, 'impact', null, 'sidebar');
+        }
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get($project->isApproved() ? 'dashboard-menu-projects-preview' : 'regular-preview' ), '/project/' . $project->id, 'preview');
 

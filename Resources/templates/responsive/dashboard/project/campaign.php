@@ -26,6 +26,14 @@
 
 $(function(){
 
+    $('#autoform_type').on('change', function() {
+        const value = this.value;
+        if (value == 'permanent')
+            $('#form-one_round').hide();
+        else
+            $('#form-one_round').show();
+    })
+
     $('#autoform_one_round input[type="radio"]').on('change', function() {
         var $help = $(this).closest('.input-wrap').find('.help-text');
         $active = $help.find('span').eq(1-$(this).val()).removeClass('hidden');

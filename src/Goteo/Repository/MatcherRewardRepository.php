@@ -123,7 +123,7 @@ class MatcherRewardRepository extends BaseRepository
         try {
             $this->query($sql, $values);
         } catch (\PDOException $e) {
-            $errors = $e->getMessage();
+            $errorsþ[] = $e->getMessage();
             return null;
         }
 

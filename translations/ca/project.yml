@@ -31,14 +31,14 @@ project-menu-messages: Col·laboracions
 project-menu-needs: Necessitats
 project-menu-news: 'Notícies'
 project-menu-participate: 'Participa'
-project-menu-supporters: Cofinançadors 
+project-menu-supporters: Cofinançadors
 project-menu-updates: Novetats
 project-menu_title-home: 'Impacte social: aquest projecte obre el seu codi, comparteix coneixements, dades o arxius digitals a canvi del teu suport. '
 project-menu_title-messages: 'No només diners: també pots ajudar amb el teu talent, materials, temps, contactes, coneixements... '
 project-menu_title-needs: 'Transparència de costos: desglossament detallat del mínim i l''òptim que necessita per a  dur-se a terme. '
 project-menu_title-supporters: 'Xarxa social de suport: els cofinançadors i cofinançadores són tan importants com qui impulsa aquesta iniciativa. '
 project-menu_title-updates: 'Feedback i novetats: informa''t sobre els avanços del projecte directament a través de qui ho impulsa. '
-project-messages-answer_it: Respondre 
+project-messages-answer_it: Respondre
 project-messages-closed: 'Encara no es poden enviar missatges al projecte'
 project-messages-send_direct-header: 'Envia un missatge a l''impulsor/a del projecte'
 project-messages-send_message-button: Envia
@@ -77,10 +77,10 @@ project-view-metter-day_updated: 'Rebut el'
 project-view-metter-days: Queden
 project-view-metter-favourite: 'Recorda-m''ho'
 project-view-metter-got: Obtingut
-project-view-metter-investment: Cofinançament 
-project-view-metter-investors: Cofinançadors 
+project-view-metter-investment: Cofinançament
+project-view-metter-investors: Cofinançadors
 project-view-metter-minimum: Mínim
-project-view-metter-optimum: Òptim  
+project-view-metter-optimum: Òptim
 project-view-preview: 'Previsualització del projecte'
 project-willpublish: 'Aquest projecte es publicarà el %s'
 regular-new_project: 'Projecte nou'
@@ -150,3 +150,18 @@ project-manage: 'Gestiona'
 project-manage-campaign: 'Gestiona la campanya'
 project-widget-not-visible: 'Aquest widget no serà visible fins que el projecte sigui públic'
 project-donors-with-reward: '%s cofinançadors han escollit aquesta recompensa'
+project-impact-calculator-title: "Compromís d'impacte"
+project-impact-calculator-description: "Calcula l'impacte de la teva campanya a través de les petjades i indicadors"
+project-impact-calculator-body-title: "Afegeix els teus compromisos d'impacte!"
+project-impact-calculator-body-description: "En aquesta pàgina pots fer un exercici d'estimació de l'impacte de la teva campanya. A continuació disposes de les diferentes Petjades de la fundació amb les dades d'impacte que nosaltres us proposem. Pots activar els compromisos d'impacte que més funcionin amb la teva campanya, assignar-li un pressupost i un impacte estimat."
+project-impact-calculator-footprint-1-description: "Emplena aquí les dades estimades d'impacte que fan referència a la preservació de la capacitat ecològica de la Terra."
+project-impact-calculator-footprint-2-description: "Emplena aquí les dades estimades d'impacte que fan referència a la millora de les condicions de vida de la ciutadania."
+project-impact-calculator-footprint-3-description: "Emplena aquí les dades estimades d'impacte que fan referència a la millora de la qualitat participativa de la ciutadania."
+project-impact-calculator-activate-indicator: "Activar compromís"
+project-impact-calculator-card-impact-description: "Amb un pressupost de %s aspirem a tenir un impacte de %s"
+project-create-continue-impact: "Desar i calcular impacte"
+project-campaign-impact-calculator: "Calculadora d'Impacte"
+project-campaign-activate-impact-calculator: "Al activar la calculadora d'impacte, l'impulsora del projecte podrà accedir al módul de les Dades d'Impacte del Projecte, així com també es veurà el seu impacte a la pàgina principal del projecte."
+project-campaign-type-label: "Escull tipus de campanya"
+project-campaign-type-campaign: "Campanya"
+project-campaign-type-permanent: "Permanent"

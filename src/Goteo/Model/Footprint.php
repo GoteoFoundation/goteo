@@ -12,11 +12,9 @@ namespace Goteo\Model;
 
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
+use Goteo\Core\Model;
 
-/**
- * Footprint Model (sustainable development goals)
- */
-class Footprint extends \Goteo\Core\Model {
+class Footprint extends Model {
     use Traits\SdgRelationsTrait;
     use Traits\CategoryRelationsTrait;
     use Traits\SocialCommitmentRelationsTrait;
@@ -32,7 +30,8 @@ class Footprint extends \Goteo\Core\Model {
 
     protected $iconImage;
 
-    public static function getLangFields() {
+    public static function getLangFields(): array
+    {
         return ['name', 'title', 'description'];
     }
 

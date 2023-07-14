@@ -17,35 +17,25 @@ use Goteo\Library\Check;
 
     // Optimum sizes
     $optimum_total_amount=$project->maxcost-$project->mincost;
-
     $optimum_reached_amount=$project->amount-$project->mincost;
 
-    if($minimum_done>=100)
-    {
-
+    if($minimum_done>=100) {
         //The max is 100
         $optimum_done=min(@floor(($optimum_reached_amount / $optimum_total_amount) * 100),100);
-
         $optimum_left=100-$optimum_done;
-
     }
 
     // Over the optimum
-
-    if($optimum_done>=100)
-    {
+    if($optimum_done>=100) {
         $extra_done=@floor(((($project->amount-$project->maxcost)*100))/($project->maxcost*0.5));
 
         // Max 100% (1.5 the optimum)
         $extra_done=min($extra_done, 100);
         $extra_left=100-$extra_done;
-
     }
 
     // Percentage marker
-
     // Having into account the margins (8%)
-
     if($minimum_done<100)
         $percentage_marker=@floor(($minimum_done*$minimum_size)/100)-8;
     elseif($optimum_done<100)
@@ -53,30 +43,18 @@ use Goteo\Library\Check;
     else
         $percentage_marker=min((85+@floor(($extra_done*20)/100)-8),92);
 
-
     //Day
-
-    if ($project->inCampaign())
-    { // en campaña
-
-        if ($project->days > 2)
-        {
+    if ($project->inCampaign()) {
+        if ($project->days > 2) {
             $days_left = number_format($project->days);
             $days_left2 = $this->text('regular-days');
         }
-        else
-        {
-
+        else {
             $part = strtotime($project->published);
-
             if ($project->round == 1)
-            {
                 $plus = $project->days_round1;
-            }
             elseif ($project->round == 2)
-            {
                 $plus = $project->days_total;
-            }
 
             $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));
             $days_left = Check::time_togo($final_day, 1);
@@ -86,9 +64,7 @@ use Goteo\Library\Check;
         $text='project-view-metter-days';
         $days_string=$days_left.' '.$days_left2;
 
-    }
-
-    elseif (!empty($project->status)) {
+    } elseif (!empty($project->status)) {
         switch ($project->status) {
             case 1: // en edicion
                 $text = 'project-view-metter-day_created';
@@ -142,11 +118,11 @@ use Goteo\Library\Check;
 
         <div class="labels pull-left hidden-xs">
             <div class="minimum-label" style="bottom:<?= $minimum_label.'%' ?>">
-                <img src="<?= SRC_URL . '/assets/img/project/arrow-meter.png' ?>" alt="<?= $this->t('project-view-metter-minimum') ?>"><span class="text">Min.</span>
+                <img src="<?= $this->asset('/img/project/arrow-meter.png') ?>" alt="<?= $this->t('project-view-metter-minimum') ?>"><span class="text">Min.</span>
             </div>
             <?php if($project->mincost!=$project->maxcost): ?>
                 <div class="optimum-label">
-                    <img src="<?= SRC_URL . '/assets/img/project/arrow-meter.png' ?>" alt="<?= $this->t('project-view-metter-optimum') ?>"><span class="text">Opt.</span>
+                    <img src="<?= $this->asset('/img/project/arrow-meter.png') ?>" alt="<?= $this->t('project-view-metter-optimum') ?>"><span class="text">Opt.</span>
                 </div>
             <?php endif; ?>
             <div class="percentage" style="bottom: <?= $percentage_marker.'%' ?>">
@@ -155,58 +131,60 @@ use Goteo\Library\Check;
         </div>
     </div>
     <div class="col-md-9 col-sm-8 thermometer-info">
-        <div class="time-status">
-            <?php if (!empty($project->round)) : ?>
-                <div class="round">
-                    <?php if(!$project->one_round): ?>
-                        <?= $project->round . $this->text('regular-round'); ?>
-                    <?php else: ?>
-                        <?= $this->text('regular-oneround_mark'); ?>
-                    <?php endif; ?>
+        <?php if ($project->isCampaign()): ?>
+            <div class="time-status">
+                <?php if (!empty($project->round)) : ?>
+                    <div class="round">
+                        <?php if(!$project->one_round): ?>
+                            <?= $project->round . $this->text('regular-round'); ?>
+                        <?php else: ?>
+                            <?= $this->text('regular-oneround_mark'); ?>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+                <div class="time-left">
+                    <?= $this->text($text).' '.$days_string ?>
                 </div>
-            <?php endif; ?>
-            <div class="time-left">
-            <?= $this->text($text).' '.$days_string ?>
+                <?php if($project->tagmark): ?>
+                    <div class="status">
+                        <?php if($project->tagmark=='onrun-keepiton'): ?>
+                            <?= $this->text('regular-onrun_mark') . '<br />' . $this->text('regular-keepiton_mark'); ?>
+                        <?php else: ?>
+                            <?= $this->text('regular-'.$project->tagmark.'_mark') ?>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
             </div>
-            <?php if($project->tagmark): ?>
-                <div class="status">
-                <?php   if($project->tagmark=='onrun-keepiton')
-                            echo $this->text('regular-onrun_mark') . '<br />' . $this->text('regular-keepiton_mark');
-                        else
-                            echo $this->text('regular-'.$project->tagmark.'_mark')
-                ?>
-                </div>
-            <?php endif; ?>
-        </div>
+        <?php endif; ?>
         <div class="reached-label">
-        <?= $this->text('project-view-metter-got') ?>
+            <?= $this->text('project-view-metter-got') ?>
         </div>
         <div class="reached">
-        <?= amount_format($project->amount) ?>
+            <?= amount_format($project->amount) ?>
         </div>
         <div class="optimum-label">
-        <?= $this->text('project-view-metter-optimum') ?>
+            <?= $this->text('project-view-metter-optimum') ?>
         </div>
         <div class="optimum">
-        <?= amount_format($project->maxcost) ?>
+            <?= amount_format($project->maxcost) ?>
         </div>
         <div class="minimum-label">
-        <?= $this->text('project-view-metter-minimum') ?>
+            <?= $this->text('project-view-metter-minimum') ?>
         </div>
         <div class="minimum">
-        <?= amount_format($project->mincost) ?>
+            <?= amount_format($project->mincost) ?>
         </div>
     </div>
 </div>
 
 <?php if($project->inCampaign()): ?>
-<div class="row hidden-xs" >
-    <a href="/invest/<?= $project->id ?>" >
+    <div class="row hidden-xs" >
         <div class="col-lg-10 col-md-11 col-sm-12">
-            <button class="btn btn-block pink custom col-sm-11 text-uppercase"><?= $this->text('regular-invest_it') ?></button>
+            <a href="/invest/<?= $project->id ?>" >
+                <button class="btn btn-block pink custom col-sm-11 text-uppercase"><?= $this->text('regular-invest_it') ?></button>
+            </a>
         </div>
-    </a>
-</div>
+    </div>
 <?php endif; ?>
 
 <div class="row spacer-20 hidden-xs" id="bottom-meter">
@@ -215,14 +193,13 @@ use Goteo\Library\Check;
     </div>
 
     <?php if(!$this->get_user() ): ?>
-    <a href="/project/favourite/<?= $project->id ?>">
+        <a href="/project/favourite/<?= $project->id ?>">
     <?php endif; ?>
-        <div class="text-right favourite <?= $this->get_user()&&$this->get_user()->isFavouriteProject($project->id) ? 'active' : '' ?>" id="favourite">
+        <div class="text-right favourite <?= $this->get_user()&&$this->get_user()->isFavouriteProject($project->id) ? 'active' : '' ?>" id="favourite" data-user="<?= $this->get_user()->id ?>" data-project="<?= $project->id ?>">
             <span class="heart-icon glyphicon glyphicon-heart" aria-hidden="true"></span>
             <span> <?= $this->text('project-view-metter-favourite') ?></span>
         </div>
     <?php if(!$this->get_user() ): ?>
-    </a>
+        </a>
     <?php endif; ?>
-
 </div>

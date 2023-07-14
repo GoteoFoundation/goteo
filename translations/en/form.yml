@@ -71,3 +71,6 @@ form-editor-fine-locate: 'Fine-tune the location by dragging and dropping the ma
 form-editor-error-locating: 'No address found!'
 form-editor-success-locating: 'Address found successfully!'
 form-dragndrop-unsupported: 'There''s been a problem while dragging files. Please, try again by clicking on the upload button'
+form-impact-data-project-impact-data-list: "Impact Data"
+form-impact-data-project-estimation-amount: "Estimated quantity"
+form-impact-data-project-data: "Estimated impact"

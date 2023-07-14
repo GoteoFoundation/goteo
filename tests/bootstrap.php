@@ -7,6 +7,9 @@ use Goteo\Application\Currency;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Core\Model;
+use Goteo\Model\Footprint;
+use Goteo\Model\ImpactData;
+use Goteo\Model\ImpactItem\ImpactItem;
 use Goteo\Model\Invest;
 use Goteo\Model\Matcher;
 use Goteo\Model\Node;
@@ -326,4 +329,126 @@ function delete_test_reward(): bool
     if (empty($reward)) return true;
 
     return $reward->dbDelete();
+}
+
+function get_test_footprint(): ?Footprint
+{
+    $data = [
+        'id' => 1,
+        'name' => 'test Footprint',
+        'icon' => '',
+        'title' => 'test title',
+        'description' => 'test description'
+    ];
+
+    $footprint = new Footprint($data);
+
+    try {
+        if ( ! $footprint->dbInsert(['id', 'name', 'icon', 'title', 'description']) ) {
+            error_log("Error saving footprint!");
+            return null;
+        }
+    } catch (\PDOException $e) {
+        error_log($e->getMessage());
+    }
+
+    try {
+        return Footprint::get($data['id']);
+    } catch(\ModelException $e) {
+        error_log('unknown error getting test footprint ' . $e->getMessage());
+        return null;
+    }
+}
+
+function delete_test_footprint(): bool
+{
+    $footprint = Footprint::get(1);
+
+    if (empty($footprint)) return true;
+
+    return $footprint->dbDelete();
+}
+
+function get_test_impact_data(): ?ImpactData
+{
+    $data = [
+        'id' => 1,
+        'title' => 'Test post',
+	    'data' => 'Test data',
+        'data_unit' => 'Test unit',
+    	'description' => 'Test description'
+    ];
+
+    $impactData = new ImpactData($data);
+
+    try {
+        $errors = [];
+        if ( ! $impactData->dbInsert(['id', 'title', 'data', 'data_nit', 'description']) ) {
+            error_log("Error saving Impact Data! ");
+            return null;
+        }
+    } catch (\PDOException $e) {
+        error_log($e->getMessage());
+    }
+
+    try {
+        return ImpactData::get($data['id']);
+    } catch(ModelNotFoundException $e) {
+        error_log('unknown error getting test Impact Data ' . $e->getMessage());
+        return null;
+    }
+}
+
+function delete_test_impact_data(): bool
+{
+    $impactData = ImpactData::get(1);
+
+    if (empty($impactData)) return true;
+
+    return $impactData->dbDelete();
+}
+
+function get_test_impact_item(): ?ImpactItem
+{
+    $data = [
+        'id' => 1,
+        'name' => 'Test impact item name',
+        'description' => 'Test impact item description',
+        'unit' => 'Test unit',
+    ];
+
+    $impactItem = new ImpactItem();
+    $impactItem
+        ->setId($data['id'])
+        ->setName($data['name'])
+        ->setDescription($data['description'])
+        ->setUnit($data['unit']);
+
+    try {
+        $errors = [];
+        $impactItem->save($errors);
+    } catch(ModelException $e) {
+        error_log('unknown error getting test Impact Item ' . $e->getMessage());
+        return null;
+    }
+
+    return $impactItem;
+}
+
+function delete_test_impact_item(): bool
+{
+
+    try {
+        $impactItem = ImpactItem::getById(1);
+    } catch (ModelNotFoundException $e) {
+        return true;
+    }
+
+    try {
+        $impactItem->dbDelete();
+    } catch (ModelException $e) {
+        return false;
+    }
+
+    return true;
 }

@@ -20,13 +20,19 @@ foreach($value as $k => $link) {
         $t = '<span class="fa fa-trash" title="' . $t . '"></span>';
     }
     if($k == 'clone') {
-        $t = '<span class="fa fa-clone" title"' . $t . '"></span>';
+        $t = '<span class="fa fa-clone" title="' . $t . '"></span>';
     }
     if($k == 'details') {
-        $t = '<span class="fa fa-info" title"' . $t . '"></span>';
+        $t = '<span class="fa fa-info" title="' . $t . '"></span>';
     }
     if($k == 'download') {
-        $t = '<span class="fa fa-download" title"' . $t . '"></span>';
+        $t = '<span class="fa fa-download" title="' . $t . '"></span>';
+    }
+    if($k == 'list') {
+        $t = '<span class="fa fa-list" title="' . $t . '"></span>';
+    }
+    if($k == 'costs') {
+        $t = '<span class="fa fa-tasks" title="' . $t . '"></span>';
     }
 
     echo '<a class="btn btn-sm btn-default" href="' . $link . '"' . $add . '>' . $t . '</a> ';

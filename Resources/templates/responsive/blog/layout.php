@@ -21,16 +21,9 @@ $this->layout('layout', [
 
     <?= $this->insert('blog/partials/styles'); ?>
 
-<?php $this->append(); ?>
-
-<?php $this->section('header-navbar-brand'); ?>
-
-    <a class="navbar-brand" href="/blog"><img src="<?= $this->asset('img/icons/foundation.svg') ?>" class="logo" alt="Goteo"></a>
-    <h3><a href="/blog"><?= $this->text('home-foundation-title') ?></a></h3>
-
 <?php
 
-$this->replace();
+$this->append();
 
 $this->section('content');
 

@@ -16,6 +16,7 @@ use Goteo\Application\View;
 use Goteo\Core\Controller;
 use Goteo\Model\Category;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Conf;
 use Goteo\Model\Project\ProjectLocation;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -99,6 +100,11 @@ class DiscoverController extends Controller {
             $filters['status'] = [ Project::STATUS_EDITING, Project::STATUS_REVIEWING, Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
             $filters['is_draft'] = true;
         }
+
+        if ($filter == 'permanent') {
+            $filters['type'] = Conf::TYPE_PERMANENT;
+        }
+
         return $filters;
     }
 
@@ -142,11 +148,11 @@ class DiscoverController extends Controller {
     }
 
     public function ajaxSearchAction(Request $request) {
-        $limit = $request->get('limit', 24);
-        $pag = $request->get('pag', 0);
+        $limit = $request->query->getDigits('limit', 24);
+        $pag = $request->query->getDigits('pag', 0);
         $limit = max(1, min(25, abs($limit)));
         $pag = max(0, abs($pag));
-        $filter = $request->get('filter');
+        $filter = $request->query->getAlpha('filter');
         $vars = [];
 
         if ($request->query->has('q'))
@@ -159,7 +165,7 @@ class DiscoverController extends Controller {
         }
 
         if ($request->query->has('category'))
-            $vars['category'] = $request->query->get('category');
+            $vars['category'] = $request->query->getAlpha('category');
 
         $ofilters = [
             'status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED],
@@ -186,7 +192,11 @@ class DiscoverController extends Controller {
             'items' => []
         ];
         foreach($projects as $p) {
-            $vars['items'][] = View::render('project/widgets/normal', ['project' => $p]);
+            if ($p->isPermanent()) {
+                $vars['items'][] = View::render('project/widgets/normal_permanent', ['project' => $p]);
+            } else {
+                $vars['items'][] = View::render('project/widgets/normal', ['project' => $p]);
+            }
         }
 
         return $this->jsonResponse($vars);

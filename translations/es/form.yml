@@ -71,3 +71,6 @@ form-editor-fine-locate: 'Puedes afinar la localización arrastrando y soltando 
 form-editor-error-locating: 'No se ha encontrado una dirección!'
 form-editor-success-locating: 'Se ha encontrado una dirección válida'
 form-dragndrop-unsupported: 'Ha ocurrido un problema al arrastrar y soltar archivos. Por favor, inténtalo de nuevo haciendo clic al botón de subir archivos'
+form-impact-data-project-impact-data-list: "Dato de Impacto"
+form-impact-data-project-estimation-amount: "Cantidad estimada"
+form-impact-data-project-data: "Impacto estimado"

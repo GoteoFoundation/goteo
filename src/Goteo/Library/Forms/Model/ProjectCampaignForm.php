@@ -11,12 +11,15 @@
 
 namespace Goteo\Library\Forms\Model;
 
+use Goteo\Application\Session;
+use Goteo\Core\Exception;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Model\Project;
+use Goteo\Model\Project\Conf;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
-use Goteo\Util\Form\Type\EmailType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
@@ -35,22 +38,50 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         }
     }
 
-    public function createForm() {
+    public function createForm(): ProjectCampaignForm
+    {
         $project = $this->getModel();
         $account = $this->getOption('account');
 
-        $this->getBuilder()
-            ->add('one_round', ChoiceType::class, [
-                'disabled' => $this->getReadonly(),
-                'label' => 'costs-field-select-rounds',
-                'required' => true,
-                'expanded' => true,
-                'wrap_class' => 'col-xs-6',
-                'choices' => $this->getRoundsAsChoices(),
-                'attr' => [
-                    'help' => '<span class="' . ($project->one_round ? '': 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden': '') . '">' . Text::get('tooltip-project-2rounds') . '</span>'
-                ]
-            ])
+        $builder = $this->getBuilder();
+        $admin = Session::isAdmin();
+        if ($admin) {
+            $builder
+                ->add('type', ChoiceType::class, [
+                    'label' => 'project-campaign-type-label',
+                    'row_class' => 'extra',
+                    'data' => $project->type ?? $project->getConfig()->getType(),
+                    'choices' => $this->projectTypeChoices(),
+                    'required' => false
+                ])
+                ->add('impact_calculator', BooleanType::class, [
+                    'label' => 'project-campaign-impact-calculator',
+                    'row_class' => 'extra',
+                    'data' => $project->isImpactCalcActive(),
+                    'attr' => [
+                        'help' => Text::get('project-campaign-activate-impact-calculator')
+                    ],
+                    'color' => 'cyan',
+                    'required' => false
+                ]);
+        }
+
+        if ($admin || $project->type != Conf::TYPE_PERMANENT ) {
+            $builder
+                ->add('one_round', ChoiceType::class, [
+                    'disabled' => $this->getReadonly(),
+                    'label' => 'costs-field-select-rounds',
+                    'required' => true,
+                    'expanded' => true,
+                    'wrap_class' => 'col-xs-6',
+                    'choices' => $this->getRoundsAsChoices(),
+                    'attr' => [
+                        'help' => '<span class="' . ($project->one_round ? '' : 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden' : '') . '">' . Text::get('tooltip-project-2rounds') . '</span>'
+                    ]
+                ]);
+        }
+
+        $builder
             ->add('phone', TextType::class, [
                 'label' => 'personal-field-phone',
                 'disabled' => $this->getReadonly(),
@@ -76,6 +107,8 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 ]
             ])
             ;
+
+
         return $this;
     }
 
@@ -84,6 +117,14 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         return [
             Text::get('project-one-round') => 1,
             Text::get('project-two-rounds') => 0
+        ];
+    }
+
+    private function projectTypeChoices(): array
+    {
+        return [
+            Text::get('project-campaign-type-campaign') => Conf::TYPE_CAMPAIGN,
+            Text::get('project-campaign-type-permanent')=> Conf::TYPE_PERMANENT,
         ];
     }
 
@@ -109,14 +150,38 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         if (!$account->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
+
         $user = $this->getOption('user');
         if(!User::setPersonal($user, ['phone' => $data['phone']], true, $errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
+
+        $admin = Session::isAdmin();
+        if ($admin) {
+            try {
+                $conf = Conf::get($project->id);
+                if(isset($data['impact_calculator'])) {
+                    if ($data['impact_calculator']) {
+                        $conf->activateImpactCalculator();
+                    } else {
+                        $conf->deactivateImpactCalculator();
+                    }
+                }
+
+                if (isset($data['type'])) {
+                    $conf->setType($data['type']);
+                }
+                $errors = [];
+                if (!$conf->save($errors)) {
+                    throw new FormModelException(Text::get('form-sent-error', implode(', ', $errors)));
+                }
+            } catch (Exception $e) {
+                throw new FormModelException($e->getMessage());
+            }
         }
 
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }
-
 }

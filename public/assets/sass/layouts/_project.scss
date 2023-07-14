@@ -1,112 +1,700 @@
 body.project {
-    #main {
-        background-color: $background-light-grey;
-        #main-content {
-          background-color: $background-white;
+  #main {
+    background-color: $background-light-grey;
 
-          #project-tabs-menu {
-            margin-top: 8rem;
+    #main-content {
+      background-color: $background-white;
+
+      #project-tabs-menu {
+        margin-top: 8rem;
+      }
+    }
+
+    .container-fluid {
+      @media(min-width: $breakpoint-sm) {
+        max-width: 750px;
+      }
+      @media(min-width: $breakpoint-md) {
+        max-width: 970px;
+      }
+      @media(min-width: $breakpoint-lg) {
+        max-width: 1170px;
+      }
+
+      details {
+        summary {
+          h2 {
+            color: $color-dark !important;
           }
         }
 
-        .container-fluid {
-            @media(min-width: $breakpoint-sm) {
-                max-width: 750px;
-            }
-            @media(min-width: $breakpoint-md) {
-                max-width: 970px;
-            }
-            @media(min-width: $breakpoint-lg) {
-                max-width: 1170px;
-            }
-
-            details {
-                summary {
-                    h2 {
-                      color: $color-dark !important;
-                    }
-                }
-
-                &[open] summary {
-                    h2 {
-                      color: $color-dark-green !important ;
-                    }
-                }
-
-                a {
-                    img {
-                      margin-top: 22px;
-                    }
-                }
-            }
+        &[open] summary {
+          h2 {
+            color: $color-dark-green !important;
+          }
         }
 
-    }
-    &.create {
-      background-color: $background-light-grey;
-        #main {
-            #main-content {
-                background-color: $background-light-grey;
-                .btn-success{
-                  font-weight: bold;
-                  font-size: $font-size*1.2;
-                  text-transform: uppercase;
-                }
-                h1.no-apply{
-                  margin-bottom:30px;
-                  margin-top: 50px;
-                }
-                p.no-apply{
-                  text-align:center;
-                  text-transform:uppercase;
-                  margin:30px 0
-                }
-            }
+        a {
+          img {
+            margin-top: 22px;
+          }
         }
-    }
-
-    /* Channel module */
-
-    .channel{
-      margin-top: 60px;
-
-      &.spacer-20 {
-        margin-top: 20px;
-      }
-
-      &.spacer-40 {
-        margin-top: 40px;
-      }
-
-      .channel-label{
-        width: 15%;
-      }
-      .btn{
-        margin-left: 5px;
-        color: $color-white !important;
-        padding: 3px 40px;
-        width: 65%;
-        text-overflow: ellipsis;
-        overflow: hidden;
       }
     }
 
-    background: $color-white;
+  }
+
+  &.create {
+    background-color: $background-light-grey;
+
+    #main {
+      #main-content {
+        background-color: $background-light-grey;
+
+        .btn-success {
+          font-weight: bold;
+          font-size: $font-size*1.2;
+          text-transform: uppercase;
+        }
+
+        h1.no-apply {
+          margin-bottom: 30px;
+          margin-top: 50px;
+        }
+
+        p.no-apply {
+          text-align: center;
+          text-transform: uppercase;
+          margin: 30px 0
+        }
+
+        button#create-continue-impact:not(:hover) {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+
+
+  // Impact Calculator landing
+  &.impact-calculator {
+    background-color: $background-light-green;
+
+    #main {
+      height: 100%;
+
+      #main-content {
+        height: 100%;
+        background-color: $background-light-green;
+
+        .impact-calculator-container {
+          height: 100%;
+
+          .impact-calculator-header {
+            color: $color-white;
+            margin-bottom: 2rem;
+
+            h1 {
+              font-weight: 700;
+              font-size: 32px;
+              line-height: 37.5px;
+            }
+
+            p {
+              font-weight: 700;
+              font-size: 16px;
+              line-height: 18.75px;
+            }
+          }
+
+          .impact-calculator-body {
+            height: 100%;
+            background-color: $background-white;
+            border-radius: 5rem 5rem 0 0;
+            padding: 5rem 1rem 1rem;
+
+            div.impact-calculator-body-title {
+              text-align: center;
+
+              h2 {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 28px;
+              }
+
+              p {
+                color: $color-grey;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 20px;
+              }
+            }
+
+            .footprint-details {
+              margin-bottom: 2rem;
+
+              .footprint-dropdown {
+                margin: auto;
+                border-radius: 20px;
+                text-align: left;
+                background: rgba(203, 223, 232, 0.4);
+                width: 100%;
+                display: flex;
+
+                div {
+                  margin: auto;
+                  margin-left: 2rem;
+                  margin-bottom: 1rem;
+                  color: #345D6D;
+
+                  h3 {
+                    font-weight: 700;
+                    font-size: 18px;
+                  }
+
+                  p {
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: 20px;
+                    margin: auto;
+                    text-align: center;
+                  }
+                }
+
+                button {
+                  border-radius: 100%;
+                  width: 36px;
+                  height: 36px;
+                  background: rgba(52, 93, 109, 0.1);
+                  margin: auto 2rem auto auto;
+
+                  &[aria-expanded="true"] .icon.icon-arrow {
+                    transform: rotate(270deg);
+                  }
+                }
+              }
+            }
+          }
+
+          div.impact-calculator-save {
+            text-align: center;
+
+            button.btn-large.btn-cyan {
+              margin: 5rem;
+            }
+          }
+        }
+      }
+    }
+
+    article.card {
+      padding: 15px;
+      width: 223px;
+      height: 350px;
+      border: thin solid $color-light-grey;
+      border-radius: 8px;
+      position: relative;
+      margin: 1rem;
+
+      .card-header {
+        background-color: rgba(0, 0, 0, 0.1);
+        position:absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4.5em;
+
+        h1 {
+          font-size: 16px;
+          margin-left: 1em;
+          width: 85%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+      }
+
+      .card-body {
+        margin-top: 4em;
+      }
+
+      // Todo: Change to :has
+      &.active {
+        opacity: 1;
+        color: white;
+
+        &.footprint-1 {
+          background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #FBB80B;
+        }
+
+        &.footprint-2 {
+          background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #D22F30;
+        }
+
+        &.footprint-3 {
+          background: linear-gradient(324.72deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 98.42%), #265688;
+        }
+
+        i.icon {
+          background-color: white !important;
+        }
+
+        input {
+          background-color: unset;
+        }
+      }
+
+      i.icon {
+        &.icon-medal {
+          @include svg-background('../img/impact-calculator/medal.svg');
+        }
+
+        &.icon-money-bag {
+          @include svg-background('../img/impact-calculator/money_bag.svg');
+        }
+
+        &.icon-classroom {
+          @include svg-background('../img/impact-calculator/classroom.svg');
+        }
+      }
+
+      div.info {
+        width: 16px;
+        height: 16px;
+        border-radius: 100%;
+        background-color: rgba(0, 0, 0, 0.1);
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        text-align: center;
+
+        i.fa.info {
+          margin: auto;
+        }
+      }
+
+      .card-input {
+        display: inline-block;
+
+
+        input {
+          border-width: 0 0 2px 0;
+          width: 165px;
+          appearance: textfield;
+          -webkit-appearance: none;
+          -moz-appearance: textfield;
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      i.icon-money-bag {
+        width: 16px;
+        height: 23px;
+      }
+
+      i.icon-person {
+        width: 16px;
+        height: 17px;
+      }
+
+      i.icon-job {
+        width: 34px;
+        height: 34px;
+      }
+
+      i.icon-classroom {
+        width: 58px;
+        height: 58px;
+      }
+
+      .activate-impact-data {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        .material-switch > label::before {
+          background: black;
+          opactity: 0;
+        }
+      }
+    }
+
+    .tooltip {
+      background-color: $color-white;
+      width: 300px;
+
+      .tooltip-inner {
+        background-color: $color-white;
+        color: $color-black;
+        text-align: left;
+      }
+    }
+  }
+
+  .impact-calculator-details {
+    .slick-arrow.slick-prev {
+      left: -10px;
+    }
+
+    .slick-arrow.slick-next {
+      right: -10px;
+    }
+
+    @media(max-width: $breakpoint-xs) {
+      .slick-arrow.slick-prev {
+        left: 0;
+      }
+
+      .slick-arrow.slick-next {
+        right: 0;
+      }
+    }
+  }
+
+  article.card-impact-by-footprint {
+    border-radius: 15px;
+    color: white;
+    padding: 1rem;
+
+    .row {
+      div:first-child {
+        margin-left: 1rem;
+      }
+
+      &:not(:last-child) {
+        div:nth-child(2) {
+          p {
+            padding-bottom: 1rem;
+            border-bottom: 1px solid white;
+          }
+        }
+      }
+    }
+
+    &.footprint-1 {
+      background-color: #62AE56;
+    }
+
+    &.footprint-2 {
+      background-color: #83253A;
+    }
+
+    &.footprint-3 {
+      background-color: #265688;
+    }
+
+    i {
+      &.icon {
+        background-color: white;
+      }
+
+      &.icon-money-bag {
+        width: 30px;
+        height: 45px;
+      }
+
+      &.icon-person {
+        width: 30px;
+        height: 30px;
+      }
+
+      &.icon-medal {
+        width: 30px;
+        height: 40px;
+      }
+    }
+  }
+
+  article.card-impact-calculator {
+    background-color: $background-white;
+    min-height: 220px;
+    border-radius: 15px;
+    padding: 10px;
+
+    h3 {
+      font-weight: bold;
+    }
+
+    i.icon {
+      background-color: #149290;
+      width: 60px;
+      height: 80px;
+      margin-top: 10px;
+    }
+
+    .button-modal {
+      button.btn {
+        background-color: transparent;
+        border: 2px solid #149290;
+        font-weight: bold;
+        color: #149290;
+        max-width: 100%;
+
+        &:hover {
+          background-color: #149290;
+          color: $color-white;
+        }
+      }
+
+      &.hidden-xs {
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+
+  article.card-sdgs {
+    background-color: $background-white;
+    min-height: 220px;
+    border-radius: 15px;
+    padding: 1rem;
+
+    h3 {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .slider-sdgs {
+      margin-left: 1rem;
+    }
+
+    img {
+      width: 9rem;
+    }
+  }
+
+  /* Modal for impact calculator */
+
+  #impact-calculator-modal {
+    .modal-dialog .modal-content {
+      background-color: $background-light-green;
+      color: $color-white;
+
+      .modal-header {
+        border-bottom: none;
+        padding: 30px;
+
+        button.close {
+          color: $color-white;
+        }
+
+        label {
+          font-size: 24px;
+          font-weight: normal;
+        }
+
+        .modal-input {
+          i.icon-money-bag {
+            background-color: white;
+            height: 45px;
+          }
+
+          input {
+            border-width: 0 0 1px 0;
+            width: 85%;
+            background-color: unset;
+            margin-bottom: 1rem;
+            font-size: 24px;
+
+            &:focus {
+              outline: none;
+            }
+          }
+
+          button.icon-arrow {
+            position: absolute;
+            right: 15%;
+            transform: rotate(180deg);
+            background-color: $color-white;
+          }
+        }
+      }
+
+      .modal-body {
+        background-color: $background-white;
+        border-radius: 5rem 5rem 0 0;
+        padding: 30px;
+
+        i {
+          background-color: $color-dark-green;
+        }
+
+        h3 {
+          color: $color-black;
+        }
+
+        h4 {
+          color: $color-light-green;
+          font-weight: bold;
+        }
+
+        h5, p {
+          color: $color-new-dark-blue;
+          font-weight: bold;
+        }
+
+        .detail {
+          display: relative;
+
+          &:after {
+            content: '';
+            height: 80%;
+            width: 1px;
+
+            position: absolute;
+            right: 0;
+            top: 10%;
+
+            background-color: $color-light-grey;
+          }
+
+          p {
+            color: $color-new-dark-blue;
+            font-weight: bold;
+            font-size: 24px;
+          }
+        }
+
+        .impact {
+          h4 {
+            color: $color-new-dark-blue;
+          }
+
+          p {
+            font-size: 16px;
+          }
+        }
+      }
+
+      .modal-footer {
+        background-color: $background-white;
+        text-align: left;
+        border-top: none;
+        padding: 0 30px 30px 30px;
+
+        h2 {
+          color: $color-light-green;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .impact-item-modal {
+    .modal-dialog .modal-content {
+      background-color: $background-light-green;
+      color: $color-white;
+
+      .modal-header {
+        border-bottom: none;
+        padding: 30px;
+
+        button.close {
+          color: $color-white;
+        }
+      }
+
+      .modal-body {
+        background-color: $background-white;
+        border-radius: 5rem 5rem 0 0;
+        padding: 30px;
+
+        i {
+          background-color: $color-dark-green;
+        }
+
+        h3 {
+          color: $color-black;
+        }
+
+        h4 {
+          color: $color-light-green;
+          font-weight: bold;
+        }
+
+        h5, p {
+          color: $color-new-dark-blue;
+          font-weight: bold;
+        }
+
+        .detail {
+          &:after {
+            content: '';
+            height: 80%;
+            width: 1px;
+
+            position: absolute;
+            right: 0;
+            top: 10%;
+
+            background-color: $color-light-grey;
+          }
+
+          p {
+            color: $color-new-dark-blue;
+            font-weight: bold;
+            font-size: 24px;
+          }
+        }
+
+        .impact {
+          h4 {
+            color: $color-new-dark-blue;
+          }
+
+          p {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+  /* Channel module */
+
+  .channel {
+    margin-top: 60px;
+
+    &.spacer-20 {
+      margin-top: 20px;
+    }
+
+    &.spacer-40 {
+      margin-top: 40px;
+    }
+
+    .channel-label {
+      width: 15%;
+    }
+
+    .btn {
+      margin-left: 5px;
+      color: $color-white !important;
+      padding: 3px 40px;
+      width: 65%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
 
   @media (max-width: $breakpoint-sm - 1) {
     padding-bottom: 57px;
-    .channel{
-        margin-top: 10px;
-        .channel-label{
-          width: 20%;
-          font-size: 1.3em;
-        }
-        .btn{
-          margin-left: 5px;
-          color: $color-white !important;
-          padding: 3px 40px;
-          width: 75%;
-        }
+    .channel {
+      margin-top: 10px;
+
+      .channel-label {
+        width: 20%;
+        font-size: 1.3em;
+      }
+
+      .btn {
+        margin-left: 5px;
+        color: $color-white !important;
+        padding: 3px 40px;
+        width: 75%;
+      }
     }
   }
 
@@ -121,17 +709,17 @@ body.project {
 
   .side {
     .btn-block {
-        text-transform: uppercase;
-        font-weight: bold;
-        @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md - 1) {
-            max-width: 80%;
-        }
-        @media (min-width: $breakpoint-md) and (max-width: $breakpoint-lg - 1) {
-            max-width: 70%;
-        }
-        @media (min-width: $breakpoint-lg) {
-            max-width: 60%;
-        }
+      text-transform: uppercase;
+      font-weight: bold;
+      @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md - 1) {
+        max-width: 80%;
+      }
+      @media (min-width: $breakpoint-md) and (max-width: $breakpoint-lg - 1) {
+        max-width: 70%;
+      }
+      @media (min-width: $breakpoint-lg) {
+        max-width: 60%;
+      }
     }
   }
 }

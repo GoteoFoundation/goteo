@@ -11,4 +11,7 @@
     <li data-status="recent">
         <?= $this->text('discover-group-recent-header') ?>
     </li>
+    <li data-status="permanent">
+        <?= $this->text('discover-group-permanent-header') ?>
+    </li>
 </ul>

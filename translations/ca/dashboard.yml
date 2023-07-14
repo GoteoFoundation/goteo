@@ -12,6 +12,8 @@ dashboard-certificates-confirm-checkbox: 'Confirmo que aquestes són les meves d
 dashboard-certificates-confirmed: Confirmat
 dashboard-certificates-processed: Processat
 dashboard-certificates-confirmed-ok: 'Dades fiscals confirmades correctament'
+dashboard-certificate-update-data: "Actualitza les dades"
+dashboard-certificates-updated: "Certificat actualitzat correctament"
 dashboard-certificates-data-alert: 'Tingues en compte que un cop confirmat no es poden modificar les dades!'
 dashboard-certificates-data-desc: 'Si us plau, comprova que les dades del formulari són correctes i confirma''l'
 dashboard-certificates-data-download-all: 'Confirma els teus certificats per activar la desgravació fiscal. Anualment la Fundació Goteo realitza la notificació a l''Agència tributària de totes aquelles donacions confirmades.'
@@ -81,7 +83,7 @@ dashboard-menu-projects-recipients: destinataris
 dashboard-menu-projects-preview: 'Pàgina pública'
 dashboard-menu-projects-rewards: Gestió cofinançadors
 dashboard-menu-projects-summary: Resum
-dashboard-menu-projects-supports: Col·laboracions 
+dashboard-menu-projects-supports: Col·laboracions
 dashboard-menu-projects-updates: Actualitzacions
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'La meva història'
@@ -303,3 +305,9 @@ dashboard-project-pitch-title: 'Aplicacions obertes'
 dashboard-project-pitch-description: "Aquests són els diferentes espais als que pots aplicar, si t'interessa rebre finançament extra per la teva campanya o recolçament institucional, fes-li un cop d'ull i anima't a presentar-te!"
 dashboard-project-pitch-type: "Tipus"
 dashboard-project-pitch-already-applied: "Ja has aplicat"
+dashboard-project-impact-by-footprint-title: "Dades d'impacte del projecte per la %s"
+dashboard-project-impact-by-footprint-description: "Aqui trobaràs les dades d'impacte del teu projecte. Pots afegir-ne de noves o accedir als elements d'impacte fent click a les accions associades."
+dashboard-project-impact-items-title: "Elements d'Impacte relacionats amb '%s'"
+dashboard-project-impact-items-subtitle: "Aqui trobaràs els elements d'impacte per la dada d'impacte seleccionada. Pots editar-les, crear-ne de noves o vincular l'element als costos de la teva campanya."
+dashboard-project-impact-items-cost-title: "Costos vinculats a l'element d'impacte '%s'."
+dashboard-project-impact-items-cost-subtitle: "Aqui trobaràs un llistat dels costos de la teva campanya vinculats als elements d'impacte. Pots o bé afegir una nova relació o eliminar una existent."

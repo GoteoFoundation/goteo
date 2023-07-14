@@ -9,13 +9,13 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Library\Forms\Model;
+namespace Goteo\Library\Forms\Admin;
 
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
-use Goteo\Model\Image;
 use Goteo\Model\ImpactData;
+use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\DropfilesType;
 use Goteo\Util\Form\Type\TextType;
 use Goteo\Util\Form\Type\TextareaType;
@@ -23,10 +23,10 @@ use Goteo\Util\Form\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 
-class ImpactDataForm extends AbstractFormProcessor {
+class AdminImpactDataForm extends AbstractFormProcessor {
 
-    public function createForm() {
-
+    public function createForm(): AdminImpactDataForm
+    {
         $model = $this->getModel();
         $builder = $this->getBuilder();
         $options = $builder->getOptions();
@@ -39,19 +39,15 @@ class ImpactDataForm extends AbstractFormProcessor {
                     new Constraints\NotBlank(),
                 ),
             ))
-            ->add('data', TextType::class, array(
-                'label' => 'regular-data',
-                'constraints' => array(
-                    new Constraints\NotBlank(),
-                ),
-            )) ->add('data_unit', TextType::class, array(
-                'label' => 'regular-data-unit',
-                'constraints' => array(
-                    new Constraints\NotBlank(),
-                ),
-            ))
             ->add('description', TextareaType::Class, array(
                 'label' => 'regular-description',
+                'required' => false
+            ))
+            ->add('data', TextType::class, array(
+                'label' => 'regular-data',
+                'required' => false
+            )) ->add('data_unit', TextType::class, array(
+                'label' => 'regular-data-unit',
                 'constraints' => array(
                     new Constraints\NotBlank(),
                 )
@@ -62,18 +58,37 @@ class ImpactDataForm extends AbstractFormProcessor {
                 'required' => false,
                 'limit' => 1
             ])
+            ->add('type', ChoiceType::class, [
+                'label' => 'regular-type',
+                'choices' => $this->getImpactDataTypes()
+            ])
+            ->add('source', ChoiceType::class, [
+                'label' =>'regular-source',
+                'choices' => $this->getImpactSources(),
+            ])
+            ->add('result_msg', TextType::class, [
+                'label' => 'regular-result-msg',
+                'attr' => [
+                    'pre-help' => Text::get('admin-impact-data-result_msg-help')
+                ]
+            ])
+            ->add('operation_type', ChoiceType::class, [
+                'label' => 'regular-operation-type',
+                'choices' => $this->getImpactOperations()
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'regular-submit',
                 'attr' => ['class' => 'btn btn-cyan'],
                 'icon_class' => 'fa fa-save'
             ])
             ;
-        
-            
+
+
         return $this;
     }
 
-    public function save(FormInterface $form = null, $force_save = false) {
+    public function save(FormInterface $form = null, $force_save = false): AdminImpactDataForm
+    {
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
@@ -100,7 +115,6 @@ class ImpactDataForm extends AbstractFormProcessor {
         unset($data['image']);
 
         $model->rebuildData($data, array_keys($form->all()));
-
         $errors = [];
         if (!$model->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
@@ -111,4 +125,33 @@ class ImpactDataForm extends AbstractFormProcessor {
         return $this;
     }
 
+    private function getImpactDataTypes(): array
+    {
+        $types = ImpactData::getTypes();
+        $list = [];
+        foreach($types as $type) {
+            $list[Text::get('admin-impact-data-type-' . $type)] = $type;
+        }
+        return $list;
+    }
+
+    private function getImpactSources(): array
+    {
+        $sources = ImpactData::getSources();
+        $list = [];
+        foreach($sources as $source) {
+            $list[Text::get('admin-impact-data-source-'. $source)] = $source;
+        }
+        return $list;
+    }
+
+    private function getImpactOperations(): array
+    {
+        $operations = ImpactData::getOperations();
+        $list = [];
+        foreach($operations as $operation) {
+            $list[Text::get('admin-impact-data-operation-'. $operation)] = $operation;
+        }
+        return $list;
+    }
 }

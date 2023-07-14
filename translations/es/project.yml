@@ -160,3 +160,27 @@ project-manage: 'Gestionar'
 project-manage-campaign: 'Gestionar campaña'
 project-widget-not-visible: 'Este widget no será visible hasta que el proyecto sea público'
 project-donors-with-reward: '%s cofinanciadores han escogido esta recompensa'
+project-impact-calculator-title: Compromiso de impacto
+project-impact-calculator-description: Calcula el impacto de tu campaña a través de huellas e indicadores
+project-impact-calculator-body-title: "¡Añade tus compromisos de impacto!"
+project-impact-calculator-body-description: "En esta página puedes hacer un ejercicio de estimación del impacto de tu campaña. A continuació tienes las diferentes Huellas de la Fundación con los Datos de Impacto que nosotros proponemos. Puedes activar el compromiso de impacto que más funcione con tu campaña, asignarle un presupuesto y un impacto estimado."
+project-impact-calculator-footprint-1-description: "Rellena aquí los datos estimados que hacen referencia a la preservación de la capacidad ecológica de la Tierra."
+project-impact-calculator-footprint-2-description: "Rellena aquí los datos estimados que hacen referencia a la mejora de las condiciones de vida de la ciudadania."
+project-impact-calculator-footprint-3-description: "Rellena aquí los datos estimados que hacen referencia a la mejora de la calidad participativa de la ciudadania."
+project-impact-calculator-activate-indicator: "Activar compromiso"
+project-calculator-title: "Calculadora"
+project-calculator-card-title: "Calcula el impacto de tu donación"
+project-calculator-card-description: "Descubre el alcance de tu apoyo"
+project-calculator-card-button: "Haz tu cálculo aquí"
+project-calculator-modal-budget-label: "Cantidad de tu aportación"
+project-calculator-modal-budget-impact-description: "Con tu donación contribuyes a poder hacer posible:"
+project-calculator-modal-footer-description: "Por una aportación de 100€ hacienda te devolverá 80€"
+project-calculator-modal-impact-item-list: "Listado de Items de Impacto para el Dato de Impacto: %s"
+project-calculator-modal-impact-item-amount: "Costes asociados"
+project-impact-calculator-card-impact-description: "Con un presupuesto de %s aspiramos a tener un impacto de %s"
+project-create-continue-impact: "Guardar y calcular impacto"
+project-campaign-impact-calculator: "Calculadora de Impacto"
+project-campaign-activate-impact-calculator: "Al activar la calculadora de impacto, la impulsora del proyecto podrá acceder al modulo de los Datos de Impacto del Proyecto, así como también se verá su impacto en la página principal del proyecto."
+project-campaign-type-label: "Escoge tipo de campaña"
+project-campaign-type-campaign: "Campaña"
+project-campaign-type-permanent: "Permanente"

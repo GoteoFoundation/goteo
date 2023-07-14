@@ -7,7 +7,7 @@ footer-header-social: Segueix-nos
 footer-header-sponsors: 'Suports institucionals'
 footer-platoniq-iniciative: 'Una iniciativa de:'
 footer-resources-api: API
-footer-resources-glossary: Glossari 
+footer-resources-glossary: Glossari
 footer-resources-press: Premsa
 footer-resources-source_code: 'Codi font AGPL3'
 footer-resources-stats: Stats
@@ -22,3 +22,4 @@ regular-footer-contact: Contacte
 regular-footer-legal: 'Termes legals'
 regular-footer-privacy: 'Política de privacitat'
 regular-footer-terms: 'Condicions d´us'
+footer-platoniq-foundation: "Fundació Platoniq"
