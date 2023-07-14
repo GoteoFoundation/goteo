@@ -11,37 +11,34 @@
 
 namespace Goteo\Library\Forms\Admin;
 
+use Goteo\Application\Config;
+use Goteo\Library\Forms\AbstractFormProcessor;
+use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Text;
+use Goteo\Model\Faq;
 use Goteo\Model\Faq\FaqSection;
+use Goteo\Model\Faq\FaqSubsection;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\MarkdownType;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextType;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Form\FormInterface;
-use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
-use Goteo\Library\Text;
-use Goteo\Library\Forms\FormModelException;
-
-use Goteo\Model\Faq;
-use Goteo\Model\Faq\FaqSubsection;
-use Goteo\Application\Config;
 
 class AdminFaqForm extends AbstractFormProcessor {
 
-    public function getConstraints($field) {
+    public function getConstraints($field): array
+     {
         return [new Constraints\NotBlank()];
     }
 
     public function createForm() {
-        $model = $this->getModel();
 
         $builder = $this->getBuilder();
         $options = $builder->getOptions();
-        $defaults = $options['data'];
 
-        $subsectionCount = FaqSubsection::getListCount([]);
+        $subsectionCount = FaqSubsection::getListCount();
         $subsections = [];
         foreach(FaqSubsection::getList([], 0, $subsectionCount) as $s) {
             $subsections[FaqSection::getById($s->section_id)->name][$s->name] = $s->id;
@@ -57,7 +54,10 @@ class AdminFaqForm extends AbstractFormProcessor {
             ->add('description', MarkdownType::class, [
                 'disabled' => $this->getReadonly(),
                 'required' => true,
-                'label' => 'regular-description'
+                'label' => 'regular-description',
+                'attr' => [
+                    'data-image-upload' => '/api/faq/images',
+                ]
             ])
             ->add('subsection_id', ChoiceType::class, [
                 'disabled' => $this->getReadonly(),
