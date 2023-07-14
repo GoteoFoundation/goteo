@@ -91,12 +91,13 @@
               $sql
               ORDER BY faq_subsection.order ASC
               LIMIT $offset, $limit";
-         //die(\sqldbg($sql, $values));
+
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-    public function getListCount(array $filters = [], $lang = null): int {
+    static public function getListCount(array $filters = [], $lang = null): int
+    {
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 

@@ -506,4 +506,15 @@ $api->add('api-data-set-footprints-sdgs', new Route(
     array('_controller' => 'Goteo\Controller\Api\DataSetApiController::dataSetsAction')
 ));
 
+// ImpactData images upload (POST method only)
+$api->add('api-faq-images-upload', new Route(
+    '/faq/images',
+    ['_controller' => 'Goteo\Controller\Api\FaqApiController::uploadImagesAction'],
+    [], // requirements
+    [], // options
+    '', // host
+    [], // schemes
+    ['POST'] // methods
+));
+
 return $api;

@@ -33,7 +33,7 @@ class FaqController extends Controller {
 
     public function indexAction (Request $request, string $section='', string $tag='' ): Response
     {
-        $faq_sections=FaqSection::getList();
+        $faq_sections = FaqSection::getList();
 
         return $this->viewResponse('faq/index', [
                     'meta_title' => Text::get('faq-meta-title'),
