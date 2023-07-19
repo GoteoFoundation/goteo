@@ -706,44 +706,10 @@ ul.collaboration-list {
   }
 }
 
-
 li.side-widget {
   background-color: $background-white;
+  border-radius: 10px;
   padding: 5%;
-  border-radius: 10px;
-  margin-bottom: 5px;
-  font-size: 13px;
-  word-wrap: break-word;
-  // make all images resonsive here
-  img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 4px 0;
-  }
-
-  h3 {
-    font-size: 16px;
-  }
-
-  .amount {
-    font-size: 16px;
-    font-weight: bold;
-  }
-  .investors {
-    text-transform: uppercase;
-    color: #C054BA;
-    font-weight: bold;
-    padding: 15px 0;
-    div.left {
-      font-weight: normal;
-    }
-  }
-}
-
-li.side-widget {
-  background-color: $background-white;
-  border-radius: 10px;
   margin-bottom: 5px;
   font-size: 13px;
   word-wrap: break-word;
