@@ -24,6 +24,7 @@ use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
 use Goteo\Model\User;
 use Goteo\Library\Forms\FormModelException;
+use Symfony\Component\HttpFoundation\Response;
 
 class UsersAdminController extends AbstractAdminController {
     protected static $icon = '<i class="fa fa-2x fa-users"></i>';
@@ -56,10 +57,11 @@ class UsersAdminController extends AbstractAdminController {
         ];
     }
 
-    public function listAction(Request $request) {
+    public function listAction(Request $request): Response
+     {
         $filters = ['superglobal' => $request->query->get('q')];
         $limit = 25;
-        $page = $request->query->get('pag') ?: 0;
+        $page = $request->query->getDigits('pag', 0);
         $users = User::getList($filters, [], $page * $limit, $limit);
         $total = User::getList($filters, [], 0, 0, true);
 
@@ -75,6 +77,9 @@ class UsersAdminController extends AbstractAdminController {
         ]);
     }
 
+    /**
+    * @throws \Goteo\Application\Exception\ModelNotFoundException
+    */
     public function manageAction($uid) {
         $user = User::get($uid);
         if( !$user instanceOf User ) throw new ModelNotFoundException("User [$uid] does not exists");
