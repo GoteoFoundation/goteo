@@ -1,17 +1,10 @@
 <?php
 
-/*
-* Model for Node project
-*/
-
 namespace Goteo\Model\Node;
 
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Config;
+use Goteo\Core\Model;
 
-
-
-class NodeProject extends \Goteo\Core\Model {
+class NodeProject extends Model {
 
     protected $Table = 'node_project';
     protected static $Table_static = 'node_project';
@@ -31,8 +24,11 @@ class NodeProject extends \Goteo\Core\Model {
         return $query->fetchObject( __CLASS__ );
     }
 
-    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
-
+    /**
+     * @return NodeProject[]
+     */
+    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null): array
+    {
         $filter = [];
         $values = [];
 
@@ -80,7 +76,7 @@ class NodeProject extends \Goteo\Core\Model {
      * @param   type array  $errors
      * @return  type bool   true|false
      */
-		public function save (&$errors = array()) {
+    public function save (&$errors = array()) {
       if (!$this->validate($errors)) return false;
 
       try {
