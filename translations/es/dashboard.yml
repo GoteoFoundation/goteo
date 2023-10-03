@@ -93,6 +93,7 @@ dashboard-menu-translate_board: Traducción
 dashboard-menu-translates: 'Mis Traducciones'
 dashboard-menu-matchers: "Matchers"
 dashboard-menu-admin-matchers: "Admin Matchers"
+dashboard-menu-projects-subscription: "Subscripciones"
 dashboard-messegers-mail-sendto: 'Enviado a %s los participantes:'
 dashboard-my-wallet-available: 'Actualmente tienes <span class="pool-amount">%s</span> <span class="pool-desc">en tu monedero Goteo</span>'
 dashboard-my-wallet-contribute-button: Donar
@@ -314,3 +315,5 @@ dashboard-project-impact-items-title: "Items de Impacto para el Dato de Impacto 
 dashboard-project-impact-items-subtitle: "Aquí encontrarás los elementos de impacto para el dato de impacto seleccionado. Puedes editarlos, crear nuevos o vincularlos a los costes de tu campaña."
 dashboard-project-impact-items-cost-title: "Costes vinculados al elemento de impacto '%s'."
 dashboard-project-impact-items-cost-subtitle: "Aquí encontrarás un listado de los costes de tu campaña vinculados a los elementos de impacto. Puedes o bien añadir una nueva relación o eliminar una existente."
+dashboard-project-subscription-title: "Suscripciones"
+dashboard-project-subscription-description: "Aquí puedes gestionar la configuración de las subscripciones a tu campaña."
