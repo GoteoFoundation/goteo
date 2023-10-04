@@ -22,7 +22,7 @@ class BasicAuthListener extends AbstractListener {
         }
 
         $request = $event->getRequest();
-        $uri     = $request->getPathInfo();
+        $uri     = $request->getUri();
 
         $public = Config::get('plugins.private-zones.public');
         if(is_array($public)) {
@@ -40,7 +40,8 @@ class BasicAuthListener extends AbstractListener {
             foreach($private as $user => $ops) {
                 if($ops['password'] && $ops['paths'] && is_array($ops['paths'])) {
                     foreach($ops['paths'] as $path) {
-                        if(strpos($uri, $path) === 0) {
+                        $position = strpos($uri, $path);
+                        if($position || $position === 0) {
                             $users[$user] = $ops['password'];
                         }
                     }
