@@ -338,6 +338,11 @@ $dash->add('dashboard-project-impact-item-cost-delete', new Route(
     ['_controller' => 'Goteo\Controller\Dashboard\ImpactProjectDashboardController::removeImpactItemProjectCostAction']
 ));
 
+$dash->add('dashboard-project-subscription', new Route(
+    '/project/{pid}/subscription',
+    ['_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::subscriptionAction']
+));
+
 // Settings
 $dash->add('dashboard-settings', new Route(
     '/settings',

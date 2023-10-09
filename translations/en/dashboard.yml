@@ -93,6 +93,7 @@ dashboard-menu-translate_board: Translation
 dashboard-menu-translates: 'My translations'
 dashboard-menu-matchers: "Matchers"
 dashboard-menu-admin-matchers: "Admin Matchers"
+dashboard-menu-projects-subscription: "Subscriptions"
 dashboard-messegers-mail-sendto: 'Sent to %s the participants:'
 dashboard-my-wallet-available: 'You currently have <span class="pool-amount">%s</span> <span class="pool-desc">in your virtual wallet in Goteo</span>'
 dashboard-my-wallet-contribute-button: Donate
@@ -309,3 +310,5 @@ dashboard-project-impact-items-title: "Impact Item for the Impact Data '%s'"
 dashboard-project-impact-items-subtitle: "Here you will find the Impact Items for the Impact Data selected.  You can edit them, creat new ones or link them to the costs of your project."
 dashboard-project-impact-items-cost-title: "Costs linked to the Impact Item '%s'."
 dashboard-project-impact-items-cost-subtitle: "Here you will find a list of the costs of your campaign linked to the Impact Items. You can add costs to the Impact Item or delete an existing link."
+dashboard-project-subscription-title: "Subscriptions"
+dashboard-project-subscription-description: "Here you can manage the configuration of the subscriptions to your campaign."

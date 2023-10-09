@@ -43,6 +43,7 @@ use Goteo\Model\Message as Comment;
 use Goteo\Model\Node;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Account;
+use Goteo\Model\Project\Conf;
 use Goteo\Model\Project\Cost;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Reward;
@@ -90,6 +91,10 @@ class ProjectDashboardController extends DashboardController {
                 ['text' => '<i class="fa fa-2x fa-sliders"></i> 6. ' . Text::get('project-campaign'), 'link' => $prefix . '/campaign', 'id' => 'campaign', 'class' => $validation->campaign == 100 ? 'ok' : 'ko'],
                 ['text' => '<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), 'link' => $prefix . '/supports', 'id' => 'supports'],
             ];
+
+            if (Conf::TYPE_PERMANENT == $project->getConfig()->getType())
+                $steps[] = ['text' => '<i class="fa fa-2x fa-money"></i>' . Text::get('dashboard-menu-projects-subscription'), 'link' => $prefix . '/subscription', 'id' => 'subscription'];
+
             Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $steps, 'project', null, 'sidebar' . ($admin ? ' admin' : ''));
         }
 
@@ -1097,6 +1102,18 @@ class ProjectDashboardController extends DashboardController {
             'dashboard/project/pitch',
             [
                 'pitches' =>   $pitches,
+            ]
+        );
+    }
+
+    public function subscriptionAction(Request $request, string $pid): Response
+    {
+        $project = $this->validateProject($pid, 'subscription');
+
+        return $this->viewResponse(
+            'dashboard/project/subscription',
+            [
+                'project' => $project,
             ]
         );
     }
