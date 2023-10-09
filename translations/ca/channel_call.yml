@@ -28,7 +28,7 @@ channel-call-footer-social-networks: Xarxes socials
 channel-call-posts-section-title: Últimes notícies
 channel-call-posts-section-description: 'Assabenta''t de les últimes noticies sobre '
 channel-call-program-title: 'El programa '
-channel-call-program-terms: Llegit les bases
+channel-call-program-terms: Llegir les bases
 channel-call-program-description: "Assabenta't de tot el que passarà"
 channel-call-team-title: El nostre equip
 channel-call-team-description: Tot un equip treballant per un crowdfunding cívic!
@@ -73,3 +73,4 @@ channel-call-intro-factory-tab-action: 'Fes-te impulsor!'
 channel-call-intro-factory-tab-action-url: '/project/create'
 channel-call-intro-factory-tab-video: 'https://www.youtube.com/embed/50DGGGTtiN4'
 
+channel-call-stories-cta: "Veure més"
