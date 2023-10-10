@@ -1,10 +1,11 @@
 <?php
   $stories = $this->channel->getStories();
+  $section = current($this->channel->getSections('stories'));
 
-  if ($stories):
+  if ($section && $stories):
 ?>
 
-<div class="section stories">
+<section class="section stories">
   <div class="slider slider-stories">
 
     <?php foreach ($stories as $key => $story): ?>
@@ -13,6 +14,7 @@
         <div class="story-desktop-container">
           <?php
             $background_image = $story->getBackgroundImage();
+            $credits = $background_image->getCredits();
           ?>
           <picture>
             <source media="(min-width:1400px)" srcset="<?= $background_image->getLink(1920,400,true) ?>">
@@ -21,7 +23,6 @@
             <img src='<?= $background_image->getLink(750,400,true) ?>' alt="<?= $story->title ?>">
           </picture>
           <?php
-            $credits = $background_image->getCredits();
             if ($credits):
           ?>
             <figcaption>
@@ -35,14 +36,14 @@
               <div class="col-md-7 col-sm-9">
                 <h2 class="title">
                   <span class="icon icon-channel-chat icon-3x"></span>
-                  <span><?= $this->t('channel-call-stories-title') ?></span>
+                  <span><?= $section->main_title ?: $this->t('channel-call-stories-title') ?></span>
                 </h2>
               </div>
               <div class="col-md-4 col-sm-2">
                 <div class="green-line"></div>
               </div>
             </div>
-        
+
             <div class="info col-md-10 col-sm-11">
               <q><?= $story->description ?></q>
               <div class="author" >
@@ -53,8 +54,12 @@
                   <?= $title[0] ?> <br>
                   <?= $title[1] ?>
                 </div>
+                <?php if ($story->url): ?>
+                    <a href="<?= $story->url ?>" class="btn">
+                        <i class="icon icon-plus icon-2x"></i> <?= $this->t('channel-call-stories-cta') ?>
+                    </a>
+                <?php endif; ?>
               </div>
-            </div>
           </div>
         </div>
 
@@ -78,5 +83,5 @@
       </div>
     <?php endforeach; ?>
   </div>
-</div>
+</section>
 <?php endif; ?>

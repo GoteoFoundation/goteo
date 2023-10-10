@@ -20,9 +20,11 @@
         <span style="<?= $this->colors['primary'] ? "color:".$this->colors['primary'] : '' ?>" >
         <?= $this->t('channel-call-program-title').$this->channel->name ?>
         </span>
-        <a class="btn btn-transparent" href="<?= $this->channel->terms_url ?>" class="btn btn-transparent" style="<?= $this->colors['primary'] ? "color:".$this->colors['primary'] : '' ?>">
-          <i class="icon icon-terms icon-2x" style="<?= $this->colors['secondary'] ? "background-color:".$this->colors['secondary'] : '' ?>"></i> <?= $this->t('channel-call-program-terms') ?>
-        </a>
+        <?php if ($this->channel->terms_url): ?>
+            <a class="btn btn-transparent" href="<?= $this->channel->terms_url ?>" class="btn btn-transparent" style="<?= $this->colors['primary'] ? "color:".$this->colors['primary'] : '' ?>">
+              <i class="icon icon-terms icon-2x" style="<?= $this->colors['secondary'] ? "background-color:".$this->colors['secondary'] : '' ?>"></i> <?= $this->t('channel-call-program-terms') ?>
+            </a>
+        <?php endif; ?>
     </h2>
     <div class="description" style="<?= $this->colors['secondary'] ? "color:".$this->colors['secondary'] : '' ?>">
       <?= $this->t('channel-call-program-description') ?>
@@ -32,7 +34,7 @@
     <?php foreach ($programs as $key => $program): ?>
       <div class="tabs">
         <div class="date" style="<?= $this->colors['primary'] ? "color:".$this->colors['primary'].";" : '' ?> <?= $this->colors['secondary'] ? "
-border-left-color:".$this->colors['secondary'] : '' ?>" > 
+border-left-color:".$this->colors['secondary'] : '' ?>" >
           <?= date('d/m/Y', strtotime($program->date)) ?>
         </div>
         <div class="paragraph">
