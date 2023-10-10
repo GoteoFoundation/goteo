@@ -1,0 +1,35 @@
+<?php
+
+namespace Goteo\Library\Forms\Model;
+
+use Goteo\Application\Currency;
+use Goteo\Library\Forms\AbstractFormProcessor;
+use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Model\Project;
+use Goteo\Model\Project\Subscription;
+use Goteo\Util\Form\Type\NumberType;
+use Symfony\Component\Validator\Constraints;
+
+class ProjectSubscriptionsForm extends AbstractFormProcessor implements FormProcessorInterface
+{
+    public function createForm()
+    {
+        $builder = $this->getBuilder();
+
+        /** @var Project */
+        $project = $this->getModel();
+
+        foreach (Subscription::getAll($project) as $subscription) {
+            $builder
+                ->add('amount', NumberType::class, [
+                    'label' => 'rewards-field-individual_reward-amount',
+                    'data' => $subscription->getAmount(),
+                    'type' => 'text',
+                    'pre_addon' => Currency::get($subscription->getProject()->currency, 'html'),
+                    'constraints' => [new Constraints\GreaterThan(0)],
+                ]);
+        }
+
+        return $this;
+    }
+}

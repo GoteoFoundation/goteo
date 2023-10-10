@@ -314,3 +314,4 @@ dashboard-project-impact-items-cost-title: "Costos vinculats a l'element d'impac
 dashboard-project-impact-items-cost-subtitle: "Aqui trobaràs un llistat dels costos de la teva campanya vinculats als elements d'impacte. Pots o bé afegir una nova relació o eliminar una existent."
 dashboard-project-subscription-title: "Subscripcions"
 dashboard-project-subscription-description: "Aquí pots gestionar la configuració de les subscripcions a la teva campanya."
+dashboard-project-subscription-unavailable: "Les subscripcions només estan disponibles per a campanyes permanents."

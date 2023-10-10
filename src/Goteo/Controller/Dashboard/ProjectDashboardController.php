@@ -32,6 +32,7 @@ use Goteo\Library\Forms\Model\ProjectPersonalForm;
 use Goteo\Library\Forms\Model\ProjectPostForm;
 use Goteo\Library\Forms\Model\ProjectRewardsForm;
 use Goteo\Library\Forms\Model\ProjectStoryForm;
+use Goteo\Library\Forms\Model\ProjectSubscriptionsForm;
 use Goteo\Library\Text;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
@@ -92,8 +93,9 @@ class ProjectDashboardController extends DashboardController {
                 ['text' => '<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), 'link' => $prefix . '/supports', 'id' => 'supports'],
             ];
 
-            if (Conf::TYPE_PERMANENT == $project->getConfig()->getType())
+            if ($project->isPermanent()) {
                 $steps[] = ['text' => '<i class="fa fa-2x fa-money"></i>' . Text::get('dashboard-menu-projects-subscription'), 'link' => $prefix . '/subscription', 'id' => 'subscription'];
+            }
 
             Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $steps, 'project', null, 'sidebar' . ($admin ? ' admin' : ''));
         }
@@ -1109,11 +1111,29 @@ class ProjectDashboardController extends DashboardController {
     public function subscriptionAction(Request $request, string $pid): Response
     {
         $project = $this->validateProject($pid, 'subscription');
+        
+        $defaults = (array) $project;
+        $processor = $this->getModelForm(ProjectSubscriptionsForm::class, $project, $defaults, [], $request);
+        $processor->setReadonly(!($this->admin || $project->inEdition()));
+        $processor->setFullValidation($project->inCampaign() || $project->inReview());
+
+        $processor->createForm()->getBuilder()
+            ->add('submit', SubmitType::class, [
+                'label' => $project->inEdition() ? 'form-next-button' : 'regular-submit'
+            ])
+            ->add('add-subscription', SubmitType::class, [
+                'label' => 'project-add-subscription',
+                'icon_class' => 'fa fa-plus',
+                'attr' => ['class' => 'btn btn-orange btn-lg add-subscription']
+            ]);
+
+        $form = $processor->getForm();
 
         return $this->viewResponse(
             'dashboard/project/subscription',
             [
                 'project' => $project,
+                'form' => $form->createView()
             ]
         );
     }

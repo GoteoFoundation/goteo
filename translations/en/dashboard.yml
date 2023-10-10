@@ -312,3 +312,4 @@ dashboard-project-impact-items-cost-title: "Costs linked to the Impact Item '%s'
 dashboard-project-impact-items-cost-subtitle: "Here you will find a list of the costs of your campaign linked to the Impact Items. You can add costs to the Impact Item or delete an existing link."
 dashboard-project-subscription-title: "Subscriptions"
 dashboard-project-subscription-description: "Here you can manage the configuration of the subscriptions to your campaign."
+dashboard-project-subscription-unavailable: "Subscriptions are only available for permanent campaigns."
