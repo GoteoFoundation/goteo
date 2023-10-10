@@ -1816,6 +1816,34 @@ class Project extends Model {
             if (!empty($quita) || !empty($guarda))
                 $this->individual_rewards = Project\Reward::getAll($this->id, 'individual');
 
+            // subscriptions
+            $tiene = Project\Subscription::getAll($this->id);
+            $viene = $this->subscriptions;
+            $quita = array_diff_key($tiene, $viene); // quitar los que tiene y no viene
+            $guarda = array_diff_key($viene, $tiene); // añadir los que viene y no tiene
+            foreach ($quita as $key => $item) {
+                if (!$item->remove($errors)) {
+                    $fail = true;
+                } else {
+                    unset($tiene[$key]);
+                }
+            }
+            foreach ($guarda as $key => $item) {
+                if (!$item->save($errors)) {
+                    $fail = true;
+                }
+            }
+            foreach ($tiene as $key => $row) {
+                if ($row != $viene[$key]) {
+                    if (!$viene[$key]->save($errors)) {
+                        $fail = true;
+                    }
+                }
+            }
+
+            if (!empty($quite) || !empty($guarda))
+                $this->subscriptions = Project\Subscription::getAll($this->id);
+
             // colaboraciones
             $tiene = Project\Support::getAll($this->id);
             $viene = $this->supports;

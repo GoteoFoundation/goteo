@@ -131,7 +131,12 @@ class Subscription extends Model
                     ORDER BY subscription.id ASC
                     ";
 
-            return self::query($sql, [':project' => $project->id])->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+            $array = [];
+            foreach (self::query($sql, [':project' => $project->id])->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+                $array[$item->id] = $item;
+            }
+
+            return $array;
         } catch (\PDOException $e) {
             throw new \Goteo\Core\Exception($e->getMessage());
         }
