@@ -55,8 +55,8 @@
                   <?= $title[1] ?>
                 </div>
                 <?php if ($story->url): ?>
-                    <a href="<?= $story->url ?>" class="btn btn-cyan">
-                        <i class="fa fa-plus"></i> <?= $this->t('channel-call-stories-cta') ?>
+                    <a href="<?= $story->url ?>" class="btn">
+                        <i class="icon icon-plus icon-2x"></i> <?= $this->t('channel-call-stories-cta') ?>
                     </a>
                 <?php endif; ?>
               </div>
