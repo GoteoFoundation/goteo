@@ -19,7 +19,10 @@ class ProjectSubscriptionsForm extends AbstractFormProcessor implements FormProc
         /** @var Project */
         $project = $this->getModel();
 
-        foreach (Subscription::getAll($project) as $subscription) {
+        /** @var Subscription[] */
+        $subscriptions = Subscription::getAll($project);
+
+        foreach ($subscriptions as $subscription) {
             $builder
                 ->add('amount', NumberType::class, [
                     'label' => 'rewards-field-individual_reward-amount',

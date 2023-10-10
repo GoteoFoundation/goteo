@@ -124,6 +124,7 @@ project-edit: Edita el projecte
 project-remove-cost-confirm: 'Segur que vols esborrar aquests cost?'
 project-add-cost: 'Afegeix un cost'
 project-add-reward: 'Afegeix una recompensa'
+project-add-subscription: 'Afegeix una subscripció'
 project-remove-reward-confirm: 'Segur que vols esborrar aquesta recompensa?'
 project-reward-unlimited: 'Unitats il·limitades'
 project-send-review: 'Envia a revisió'

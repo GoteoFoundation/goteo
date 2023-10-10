@@ -1111,11 +1111,15 @@ class ProjectDashboardController extends DashboardController {
     public function subscriptionAction(Request $request, string $pid): Response
     {
         $project = $this->validateProject($pid, 'subscription');
-        
+        if($project instanceOf Response) return $project;
+
         $defaults = (array) $project;
         $processor = $this->getModelForm(ProjectSubscriptionsForm::class, $project, $defaults, [], $request);
         $processor->setReadonly(!($this->admin || $project->inEdition()));
-        $processor->setFullValidation($project->inCampaign() || $project->inReview());
+        // Rewards can be added during campaign
+        if($project->inCampaign() || $project->inReview()) {
+            $processor->setFullValidation(true);
+        }
 
         $processor->createForm()->getBuilder()
             ->add('submit', SubmitType::class, [

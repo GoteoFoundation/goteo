@@ -121,6 +121,7 @@ project-edit: Edit project
 project-remove-cost-confirm: 'Are you sure to delete this cost?'
 project-add-cost: 'Add cost'
 project-add-reward: 'Add reward'
+project-add-subscription: 'Add subscription'
 project-remove-reward-confirm: 'Are you sure to delete this reward?'
 project-reward-unlimited: 'Unlimited'
 project-send-review: 'Send to review'
