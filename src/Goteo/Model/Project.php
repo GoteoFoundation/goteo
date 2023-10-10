@@ -132,6 +132,9 @@ class Project extends Model {
         // Collaborations
         $supports = array(), // instances of project\support
 
+        // Subscriptions
+        $subscriptions = array(),
+
         // Comment
         $comment, // Comentario para los admin introducido por el usuario
 
@@ -758,6 +761,15 @@ class Project extends Model {
             $this->supports = Project\Support::getAll($this->id, $lang);
         }
         return $this->supports;
+    }
+
+    public function getSubscriptions()
+    {
+        if (!$this->subscriptions) {
+            $this->subscriptions = Project\Subscription::getAll($this->id);
+        }
+
+        return $this->subscriptions;
     }
 
     public function getSocialCommitment() {
