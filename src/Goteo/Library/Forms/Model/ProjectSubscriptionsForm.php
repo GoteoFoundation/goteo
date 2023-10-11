@@ -32,8 +32,10 @@ class ProjectSubscriptionsForm extends AbstractFormProcessor implements FormProc
 
     public function addSubscription(Subscription $subscription)
     {
+        $suffix = "_{$subscription->id}";
+
         $this->getBuilder()
-            ->add('amount', NumberType::class, [
+            ->add("amount$suffix", NumberType::class, [
                 'label' => 'rewards-field-individual_reward-amount',
                 'data' => $subscription->getAmount(),
                 'type' => 'text',

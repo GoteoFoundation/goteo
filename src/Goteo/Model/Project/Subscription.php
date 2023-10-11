@@ -16,27 +16,27 @@ use Goteo\Model\Project;
 
 class Subscription extends Model
 {
-    private int $id;
+    public int $id = 0;
 
     /**
      * The id of the Project model this subscription belongs to
      */
-    private string $project;
+    public string $project;
 
     /**
      * The name for this Subscription, shown on goteo and the billing platform (stripe, etc)
      */
-    private string $name;
+    public string $name = "";
 
     /**
      * A text description for this Subscription
      */
-    private string $description;
+    public string $description = "";
 
     /**
      * The currency amount that this Subscription charges
      */
-    private int $amount;
+    public int $amount = 0;
 
     public function getId(): int
     {

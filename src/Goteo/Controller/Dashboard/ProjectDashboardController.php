@@ -1135,7 +1135,6 @@ class ProjectDashboardController extends DashboardController {
         $form = $processor->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
-            var_dump($request->isXmlHttpRequest()); exit;
             // Handle AJAX calls manually
             if($request->isXmlHttpRequest()) {
                 if(!$project->inEdition() && !$project->isAlive()) {
