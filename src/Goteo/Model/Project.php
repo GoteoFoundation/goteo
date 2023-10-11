@@ -1817,7 +1817,7 @@ class Project extends Model {
                 $this->individual_rewards = Project\Reward::getAll($this->id, 'individual');
 
             // subscriptions
-            $tiene = Project\Subscription::getAll($this->id);
+            $tiene = Project\Subscription::getAll($this);
             $viene = $this->subscriptions;
             $quita = array_diff_key($tiene, $viene); // quitar los que tiene y no viene
             $guarda = array_diff_key($viene, $tiene); // añadir los que viene y no tiene

@@ -48,6 +48,7 @@ use Goteo\Model\Project\Conf;
 use Goteo\Model\Project\Cost;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Reward;
+use Goteo\Model\Project\Subscription;
 use Goteo\Model\Project\Support;
 use Goteo\Model\Stories;
 use Goteo\Model\User;
@@ -1132,11 +1133,60 @@ class ProjectDashboardController extends DashboardController {
             ]);
 
         $form = $processor->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $request->isMethod('post')) {
+            var_dump($request->isXmlHttpRequest()); exit;
+            // Handle AJAX calls manually
+            if($request->isXmlHttpRequest()) {
+                if(!$project->inEdition() && !$project->isAlive()) {
+                    return $this->rawResponse(Text::get('dashboard-project-reward-cannot'), 'text/plain', 403);
+                }
+                $button = $form->getClickedButton()->getName();
+                if($button === 'add-subscription') {
+                    $subscription = new Subscription(['project' => $project->id]);
+                    $errors = [];
+                    if(!$subscription->save($errors)) {
+                        return $this->rawResponse(Text::get('form-sent-error', implode(', ',$errors)), 'text/plain', 403);
+                    }
+                    $processor->addSubscription($subscription);
+                    return $this->viewResponse('dashboard/project/partials/subscription_item', [
+                        'form' => $processor->getBuilder()->getForm()->createView(),
+                        'subscription' => $subscription
+                    ]);
+                }
+                if(strpos($button, 'remove_') === 0) {
+                    try {
+                        $reward = Reward::get(substr($button, 7));
+
+                        if($project->inEdition() || $reward->isDraft() || ($reward->getTaken() === 0 && $project->userCanModerate($this->user))) {
+                            $reward->dbDelete();
+                        } else {
+                            return $this->rawResponse('Error: Reward has invests or cannot be deleted', 'text/plain', 403);
+                        }
+                        return $this->rawResponse('deleted ' . $reward->id);
+                    } catch(PDOException $e) {
+                        return $this->rawResponse(Text::get('form-sent-error', 'Reward not deleted'), 'text/plain', 403);
+                    }
+                }
+            }
+            try {
+                $next = $form['submit']->isClicked();
+                // Replace the form if delete/add buttons are pressed
+                $form = $processor->save($form, true)->getBuilder()->getForm();
+                Message::info(Text::get('dashboard-project-saved'));
+                if($next) {
+                    return $this->redirect($this->getEditRedirect('rewards', $request));
+                }
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+
 
         return $this->viewResponse(
             'dashboard/project/subscription',
             [
-                'project' => $project,
+                'subscriptions' => $project->subscriptions,
                 'form' => $form->createView()
             ]
         );
