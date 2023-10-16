@@ -46,7 +46,7 @@
 
             <div class="info col-md-10 col-sm-11">
               <q><?= $story->description ?></q>
-              <div class="author" >
+              <div class="author">
                 <?php if ($story->image): ?>
                   <img loading="lazy" class="author-avatar" src="<?= $story->getImage()->getLink(70,70, true) ?>">
                 <?php endif; ?>
@@ -60,15 +60,16 @@
                     </a>
                 <?php endif; ?>
               </div>
+            </div>
           </div>
         </div>
 
         <div class="story-xs">
           <div class="row">
-            <div class="col-md-6">
-                <img loading="lazy" class="img-responsive" src="<?= $story->getBackgroundImage()->getLink(600, 400, true) ?>" >
+            <div class="col-xs-12">
+                <img loading="lazy" src="<?= $story->getBackgroundImage()->getLink(600, 400, true) ?>" >
             </div>
-            <div class="col-md-6">
+            <div class="col-xs-12">
                 <div class="info-container">
                     <q><?= $story->description ?></q>
 
@@ -76,6 +77,12 @@
                       <?= $title[0] ?> <br>
                       <?= $title[1] ?>
                     </div>
+
+                    <?php if ($story->url): ?>
+                        <a href="<?= $story->url ?>" class="btn">
+                            <i class="icon icon-plus icon-2x"></i> <?= $this->t('channel-call-stories-cta') ?>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
           </div>
