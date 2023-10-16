@@ -14,13 +14,14 @@ $this->section('head');
 <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick-theme.css"/>
 
 <?php
-
 $this->append();
 
 $this->section('header');
+?>
 
-//Header empty
+<?php $this->insert('channel/call/partials/banner_header'); ?>
 
+<?php
 $this->replace();
 
 $this->section('content');
