@@ -1,6 +1,10 @@
 <?php
+$image = $this->channel->logo ? $this->channel->logo->getLink(300, 0, false, true): "";
 
-$this->layout('layout');
+$this->layout('layout', [
+    'tw_image' => $image,
+    'og_image' => $image
+]);
 
 $this->section('head');
 
