@@ -299,9 +299,9 @@ $langs = $project->getLangs();
                     </div>
                 </a>
                 <div id="collapseRewards" class="panel-collapse collapse">
-                   <div class="panel-body">
+                   <ul class="panel-body list-unstyled">
                         <?php foreach ($this->individual_rewards as $individual) : ?>
-                            <div class="side-widget">
+                            <li class="side-widget">
                                 <h3 class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></h3>
                                 <div class="text-bold spacer-20"><?= $individual->reward ?></div>
                                 <div class="spacer-20"><?= $this->markdown($individual->description) ?></div>
@@ -320,9 +320,9 @@ $langs = $project->getLangs();
                                         </div>
                                     </div>
                                 <?php endif; ?>
-                            </div>
+                            </li>
                         <?php endforeach ?>
-                    </div>
+                    </ul>
                    <!-- End panel body -->
                 </div>
             </div>
