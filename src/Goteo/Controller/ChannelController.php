@@ -15,6 +15,7 @@ use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Forms\Model\QuestionnaireForm;
 use Goteo\Model\Blog\Post;
 use Goteo\Model\Footprint;
+use Goteo\Model\Node\NodePost;
 use Goteo\Model\Node\NodeSections;
 use Goteo\Model\Sdg;
 use Goteo\Repository\DataSetRepository;
@@ -567,6 +568,11 @@ class ChannelController extends Controller {
         }
 
         $post = Post::get($slug);
+        $channelPost = NodePost::getNodePost($channel->id, $post->id);
+        if (!$channelPost) {
+            $this->redirect('/channel/' . $id);
+        }
+
         if (!$post instanceof Post) {
             return $this->redirect('/channel/' . $id);
         }
