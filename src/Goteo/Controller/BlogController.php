@@ -19,6 +19,7 @@ use Goteo\Core\Controller;
 use Goteo\Library\Text;
 use Goteo\Model\Blog\Post;
 use Goteo\Model\Blog\Post\Tag;
+use Goteo\Model\Node\NodePost;
 use Symfony\Component\HttpFoundation\Request;
 
 class BlogController extends Controller {
@@ -47,7 +48,8 @@ class BlogController extends Controller {
 
                 }, $slider_posts);
 
-        $init = $request->query->get('pag') ? $request->query->get('pag')*$limit : 0;
+        $page = $request->query->getDigits('pag', 0);
+        $init = $page * $limit;
 
         $list_posts = Post::getList(['section' => $section, 'tag' => $tag], true, $init, $limit);
         $total = Post::getList(['section' => $section, 'tag' => $tag], true, 0, 0, true);
@@ -65,7 +67,7 @@ class BlogController extends Controller {
         ]);
     }
 
-    public function postAction($slug)
+    public function postAction(Request $request, $slug)
     {
         // Get related posts
         $post = Post::getBySlug($slug, Lang::current());
@@ -73,6 +75,11 @@ class BlogController extends Controller {
 
         if (!$post) {
             throw new ModelNotFoundException("Post [$slug] not found!");
+        }
+
+        $channelPosts = NodePost::getList(['post' => $post->id]);
+        if (!empty($channelPosts)) {
+            return $this->redirect("/channel/{$channelPosts[0]->node_id}/blog/{$slug}");
         }
 
         $user = Session::getUser();

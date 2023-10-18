@@ -1,3 +1,6 @@
+<?php
+    $colors = $this->a($this->colors);
+?>
 <div class="custom-header">
 	<div class="pull-left">
 		<a href="<?= '/channel/'.$this->channel->id . $this->lang_url_query($this->lang_current())?> ">
@@ -5,11 +8,11 @@
 		</a>
 	</div>
 	<div class="pull-right hidden-xs">
-		<span style="<?= $this->colors['header'] ? "color:".$this->colors['header'] : '' ?> ">
-			<?= $this->text('call-header-powered-by') ?>	
+		<span style="<?= $colors['header'] ? "color:".$colors['header'] : '' ?> ">
+			<?= $this->text('call-header-powered-by') ?>
 		</span>
 		<a href="<?= $this->get_config('url.main') ?>">
-			<?php if($this->colors['header_logo']=="blue"): ?>
+			<?php if($colors['header_logo']=="blue"): ?>
 					<img height="30" src="<?= '/assets/img/goteo-blue-green.svg' ?>" >
 			<?php else: ?>
 					<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
@@ -18,7 +21,7 @@
 	</div>
 	<div id="navbar" class="navbar languages">
 		<div class="active">
-			<span style="<?= $this->colors['header'] ? "color:".$this->colors['header'] : '' ?> "><?= $this->lang_name($this->lang_current()) ?></span>
+			<span style="<?= $colors['header'] ? "color:".$colors['header'] : '' ?> "><?= $this->lang_name($this->lang_current()) ?></span>
 			<span class="glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span>
 		</div>
 		<ul class="languages-list list-unstyled">
