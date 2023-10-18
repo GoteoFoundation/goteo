@@ -1155,14 +1155,14 @@ class ProjectDashboardController extends DashboardController {
                 }
                 if(strpos($button, 'remove_') === 0) {
                     try {
-                        $reward = Reward::get(substr($button, 7));
+                        $subscription = Subscription::get(substr($button, 7));
 
-                        if($project->inEdition() || $reward->isDraft() || ($reward->getTaken() === 0 && $project->userCanModerate($this->user))) {
-                            $reward->dbDelete();
+                        if($project->inEdition() || $project->userCanModerate($this->user)) {
+                            $subscription->remove();
                         } else {
                             return $this->rawResponse('Error: Reward has invests or cannot be deleted', 'text/plain', 403);
                         }
-                        return $this->rawResponse('deleted ' . $reward->id);
+                        return $this->rawResponse('deleted ' . $subscription->id);
                     } catch(PDOException $e) {
                         return $this->rawResponse(Text::get('form-sent-error', 'Reward not deleted'), 'text/plain', 403);
                     }
@@ -1174,13 +1174,12 @@ class ProjectDashboardController extends DashboardController {
                 $form = $processor->save($form, true)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
                 if($next) {
-                    return $this->redirect($this->getEditRedirect('rewards', $request));
+                    return $this->redirect($this->getEditRedirect('subscription', $request));
                 }
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }
         }
-
 
         return $this->viewResponse(
             'dashboard/project/subscription',

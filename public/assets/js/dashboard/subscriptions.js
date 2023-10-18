@@ -28,7 +28,7 @@ $(function(){
     $('.autoform').on('click', '.add-subscription', function(e){
         e.preventDefault();
         var $form = $(this).closest('form');
-        var $list = $form.find('.reward-list');
+        var $list = $form.find('.subscription-list');
         var serial = $form.serialize() + '&' + encodeURIComponent($(this).attr('name')) + '=';
         // console.log('add reward', serial);
 
@@ -51,12 +51,12 @@ $(function(){
         });
     });
 
-    $('form.autoform').on('click', '.remove-reward', function(e){
+    $('form.autoform').on('click', '.remove-subscription', function(e){
         if(e.isPropagationStopped()) return false;
         e.preventDefault();
         var $but = $(this);
         var $form = $but.closest('form');
-        var $list = $form.find('.reward-list');
+        var $list = $form.find('.subscription-list');
         var serial = $form.serialize() + '&' + encodeURIComponent($but.attr('name')) + '=';
         var $item = $but.closest('.panel');
         $but.hide().after('<div class="loading"></div>');
@@ -79,27 +79,4 @@ $(function(){
 
     });
 
-    //material switch checkbox
-    $('form.autoform').on('click', '.reward-item .unlimited .material-switch', function(){
-        var $reward = $(this).closest('.reward-item');
-        var $input = $reward.find('input[type="checkbox"]');
-        if($input.prop('disabled')) return;
-        var $units = $reward.find('.units');
-
-        if($input.prop('checked')) {
-            $units.addClass('out').removeClass('in');
-            // $units.val(0);
-        } else {
-            $units.addClass('in').removeClass('out');
-            // $units.prop('disabled', false);
-            $units.find('input[type="text"]').select();
-        }
-    });
-
-    $('form.autoform').on('change', '.reward-item .units input', function(){
-        var $reward = $(this).closest('.reward-item');
-        var $material = $reward.find('.material-switch');
-        var $input = $material.find('input[type="checkbox"]');
-        $input.prop('checked', $(this).val() == 0);
-    });
 });

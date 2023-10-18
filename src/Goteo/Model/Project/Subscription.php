@@ -141,4 +141,19 @@ class Subscription extends Model
             throw new \Goteo\Core\Exception($e->getMessage());
         }
     }
+
+    public function remove(&$errors = array())
+    {
+        try {
+            self::query("DELETE FROM subscription WHERE id = :id AND project = :project", [
+                ':project' => $this->project,
+                ':id' => $this->id,
+            ]);
+
+            return true;
+        } catch (\PDOException $e) {
+            $errors[] = 'No se ha podido borrar la subscripción ' . $this->id . '. ' . $e->getMessage();
+            return false;
+        }
+    }
 }

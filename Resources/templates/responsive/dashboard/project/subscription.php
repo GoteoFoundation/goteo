@@ -21,11 +21,11 @@
                 $submit = $this->form_row($form['submit']);
                 echo '<div class="top-button hidden">' . $submit . '</div>';
 
-                echo '<div class="reward-list">';
+                echo '<div class="subscription-list">';
                 foreach ($this->subscriptions as $subscription) {
                     echo $this->insert(
                         'dashboard/project/partials/subscription_item',
-                        ['subscription' => $subscription, 'form' => $form, 'show_taken' => $this->project->isApproved()]
+                        ['subscription' => $subscription, 'form' => $form]
                     );
                 }
                 echo '</div>';

@@ -25,6 +25,7 @@ use Goteo\Model\Location\LocationInterface;
 use Goteo\Model\Project\Account;
 use Goteo\Model\Project\Conf as ProjectConf;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Project\Subscription;
 use PDOException;
 use function array_empty;
 
@@ -612,6 +613,9 @@ class Project extends Model {
             // compatibility initialization
             $project->getSocialRewards($lang);
             $project->getIndividualRewards($lang);
+
+            // subscriptions
+            $project->subscriptions = Subscription::getAll($project);
 
             // colaboraciones
             $project->supports = Project\Support::getAll($id, $lang);
