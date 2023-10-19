@@ -13,19 +13,17 @@ $this->layout('channel/call/layout', [
 
 <?php
     $this->section('header');
+    $this->replace();
 ?>
 
-<header class="section banner-header">
-    <?= $this->insert('channel/call/partials/navbar') ?>
-</header>
-
-<?php
-    $this->append();
-?>
 
 <?php
 $this->section('channel-content');
 ?>
+
+<header class="banner-header">
+    <?= $this->insert('channel/call/partials/navbar') ?>
+</header>
 
 <?= $this->insert('blog/partials/blog_header') ?>
 <?= $this->insert('blog/partials/content') ?>

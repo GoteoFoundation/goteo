@@ -8,11 +8,11 @@
 		</a>
 	</div>
 	<div class="pull-right hidden-xs">
-		<span style="<?= $colors['header'] ? "color:".$colors['header'] : '' ?> ">
+		<span style="<?= $colors['header'] ? 'color:'.$colors['header'] : '' ?> ">
 			<?= $this->text('call-header-powered-by') ?>
 		</span>
 		<a href="<?= $this->get_config('url.main') ?>">
-			<?php if($colors['header_logo']=="blue"): ?>
+			<?php if($colors['header_logo']=='blue'): ?>
 					<img height="30" src="<?= '/assets/img/goteo-blue-green.svg' ?>" >
 			<?php else: ?>
 					<img height="30" src="<?= '/assets/img/goteo-white-green.png' ?>" >
@@ -21,7 +21,7 @@
 	</div>
 	<div id="navbar" class="navbar languages">
 		<div class="active">
-			<span style="<?= $colors['header'] ? "color:".$colors['header'] : '' ?> "><?= $this->lang_name($this->lang_current()) ?></span>
+			<span style="<?= $colors['header'] ? 'color:'.$colors['header'] : '' ?> "><?= $this->lang_name($this->lang_current()) ?></span>
 			<span class="glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span>
 		</div>
 		<ul class="languages-list list-unstyled">
