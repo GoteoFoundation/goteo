@@ -84,5 +84,19 @@
             "allow-contrib": false,
             "require": "4.4.*"
         }
+    },
+    "repositories": {
+        "paypal/sdk-core-php": {
+            "type": "vcs",
+            "url": "https://github.com/GoteoFoundation/sdk-core-php.git"
+        },
+        "paypal/adaptivepayments-sdk-php": {
+            "type": "vcs",
+            "url": "https://github.com/GoteoFoundation/adaptivepayments-sdk-php.git"
+        },
+        "paypal/merchant-sdk-php": {
+            "type": "vcs",
+            "url": "https://github.com/GoteoFoundation/merchant-sdk-php.git"
+        }
     }
 }
