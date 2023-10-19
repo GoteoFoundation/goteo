@@ -568,13 +568,14 @@ class ChannelController extends Controller {
         }
 
         $post = Post::get($slug);
-        $channelPost = NodePost::getNodePost($channel->id, $post->id);
-        if (!$channelPost) {
-            $this->redirect('/channel/' . $id);
-        }
 
         if (!$post instanceof Post) {
             return $this->redirect('/channel/' . $id);
+        }
+
+        $channelPost = NodePost::getNodePost($channel->id, $post->id);
+        if (!$channelPost) {
+            $this->redirect('/channel/' . $id);
         }
 
         $relatedPosts = Post::getList(['node' => $id, 'excluded' => $post->id], 0, 3);
