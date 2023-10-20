@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fb2baaba5815692dc3a6befad6c5c37",
+    "content-hash": "c23b9a50a3d5af92a4462447e1c353c4",
     "packages": [
         {
             "name": "amphp/amp",
@@ -3520,12 +3520,12 @@
             "version": "v3.9.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/paypal/adaptivepayments-sdk-php.git",
+                "url": "https://github.com/GoteoFoundation/adaptivepayments-sdk-php.git",
                 "reference": "9fd8af48a7134f296552efd192023055b80f3cd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paypal/adaptivepayments-sdk-php/zipball/9fd8af48a7134f296552efd192023055b80f3cd2",
+                "url": "https://api.github.com/repos/GoteoFoundation/adaptivepayments-sdk-php/zipball/9fd8af48a7134f296552efd192023055b80f3cd2",
                 "reference": "9fd8af48a7134f296552efd192023055b80f3cd2",
                 "shasum": ""
             },
@@ -3541,7 +3541,6 @@
                     "PayPal\\Types": "lib/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache2"
             ],
@@ -3559,10 +3558,8 @@
                 "sdk"
             ],
             "support": {
-                "issues": "https://github.com/paypal/adaptivepayments-sdk-php/issues",
-                "source": "https://github.com/paypal/adaptivepayments-sdk-php/tree/stable-php5.3"
+                "source": "https://github.com/GoteoFoundation/adaptivepayments-sdk-php/tree/v3.9.2"
             },
-            "abandoned": true,
             "time": "2016-04-08T16:14:06+00:00"
         },
         {
@@ -3570,12 +3567,12 @@
             "version": "v3.12.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/paypal/merchant-sdk-php.git",
+                "url": "https://github.com/GoteoFoundation/merchant-sdk-php.git",
                 "reference": "f21fe42ad787f98ea5d7186b19e8bec97f1852ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paypal/merchant-sdk-php/zipball/f21fe42ad787f98ea5d7186b19e8bec97f1852ed",
+                "url": "https://api.github.com/repos/GoteoFoundation/merchant-sdk-php/zipball/f21fe42ad787f98ea5d7186b19e8bec97f1852ed",
                 "reference": "f21fe42ad787f98ea5d7186b19e8bec97f1852ed",
                 "shasum": ""
             },
@@ -3588,13 +3585,12 @@
             "autoload": {
                 "psr-0": {
                     "PayPal\\Service": "lib/",
-                    "PayPal\\PayPalAPI": "lib/",
+                    "PayPal\\CoreComponentTypes": "lib/",
                     "PayPal\\EBLBaseComponents": "lib/",
                     "PayPal\\EnhancedDataTypes": "lib/",
-                    "PayPal\\CoreComponentTypes": "lib/"
+                    "PayPal\\PayPalAPI": "lib/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -3612,8 +3608,7 @@
                 "sdk"
             ],
             "support": {
-                "issues": "https://github.com/paypal/merchant-sdk-php/issues",
-                "source": "https://github.com/paypal/merchant-sdk-php/tree/master"
+                "source": "https://github.com/GoteoFoundation/merchant-sdk-php/tree/v3.12.0"
             },
             "time": "2017-10-10T19:03:05+00:00"
         },
@@ -3622,12 +3617,12 @@
             "version": "3.4.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/paypal/sdk-core-php.git",
+                "url": "https://github.com/GoteoFoundation/sdk-core-php.git",
                 "reference": "d2174f69f9811a8f2e79af7498fdf89586457d76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paypal/sdk-core-php/zipball/d2174f69f9811a8f2e79af7498fdf89586457d76",
+                "url": "https://api.github.com/repos/GoteoFoundation/sdk-core-php/zipball/d2174f69f9811a8f2e79af7498fdf89586457d76",
                 "reference": "d2174f69f9811a8f2e79af7498fdf89586457d76",
                 "shasum": ""
             },
@@ -3644,7 +3639,6 @@
                     "PayPal": "lib/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
@@ -3662,10 +3656,8 @@
                 "sdk"
             ],
             "support": {
-                "issues": "https://github.com/paypal/sdk-core-php/issues",
-                "source": "https://github.com/paypal/sdk-core-php/tree/master"
+                "source": "https://github.com/GoteoFoundation/sdk-core-php/tree/3.4.0"
             },
-            "abandoned": true,
             "time": "2017-11-13T18:53:13+00:00"
         },
         {
@@ -12180,5 +12172,5 @@
         "ext-xml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.6.0"
 }

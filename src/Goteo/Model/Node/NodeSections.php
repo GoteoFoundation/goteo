@@ -58,7 +58,7 @@
         return ['main_title', 'main_description', 'main_button'];
     }
 
-    public static function get(int $id): NodeSections
+    public static function get($id): NodeSections
     {
       $lang = Lang::current();
       list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));

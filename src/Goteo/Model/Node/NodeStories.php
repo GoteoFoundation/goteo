@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Model for Node Stories
@@ -10,12 +10,12 @@
  use Goteo\Application\Lang;
  use Goteo\Application\Config;
  use Goteo\Model\Stories;
- 
+
  class NodeStories extends \Goteo\Core\Model {
 
   protected $Table = 'node_stories';
   protected static $Table_static = 'node_stories';
-  
+
   public
       $node_id,
       $stories_id,
@@ -42,13 +42,14 @@
                 $fields,
                 stories.image,
                 stories.pool_image,
-                stories.background_image
+                stories.background_image,
+                stories.url
           FROM node_stories
           INNER JOIN stories ON stories.id = node_stories.stories_id
           $joins
           WHERE node_stories.node_id = :node and node_stories.stories_id = :stories
           ORDER BY node_stories.order ASC";
-          // die(\sqldbg($sql, [':node' => $node_id, ':stories' => $stories_id]));
+
       if($query = self::query($sql, [':node' => $node_id, ':stories' => $stories_id])) {
         return $query->fetchObject(__CLASS__);
       }
@@ -90,7 +91,8 @@
                 $fields,
                 stories.image,
                 stories.pool_image,
-                stories.background_image
+                stories.background_image,
+                stories.url
             FROM node_stories
             INNER JOIN stories ON stories.id = node_stories.stories_id
             $joins
@@ -169,7 +171,7 @@
      * @return  type bool   true|false
      */
     public function validate(&$errors = array()) {
-      if (empty($this->node_id)) 
+      if (empty($this->node_id))
         $errors[] = "There is no node_id";
       if (empty($this->stories_id))
         $errors[] = "There is no stories_id";

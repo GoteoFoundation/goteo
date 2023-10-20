@@ -1,6 +1,10 @@
 <?php
+$image = $this->channel->logo ? $this->channel->logo->getLink(300, 0, false, true): "";
 
-$this->layout('layout');
+$this->layout('layout', [
+    'tw_image' => $image,
+    'og_image' => $image
+]);
 
 $this->section('head');
 
@@ -10,13 +14,14 @@ $this->section('head');
 <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick-theme.css"/>
 
 <?php
-
 $this->append();
 
 $this->section('header');
+?>
 
-//Header empty
+<?php $this->insert('channel/call/partials/banner_header'); ?>
 
+<?php
 $this->replace();
 
 $this->section('content');
