@@ -61,7 +61,10 @@ if($sidebar) {
         <?= $this->supply('lang-metas', $this->insert('partials/header/lang_metas')) ?>
 
         <title><?= $this->title ?></title>
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" >
+
+        <?php $this->section('favicon'); ?>
+            <link rel="icon" type="image/x-icon" href="/favicon.ico" >
+        <?php $this->stop() ?>
 
         <?= $this->insert('partials/header/styles') ?>
         <?= $this->insert('partials/header/javascript') ?>
