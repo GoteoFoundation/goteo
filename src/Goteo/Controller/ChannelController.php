@@ -13,7 +13,9 @@ namespace Goteo\Controller;
 use Goteo\Core\Controller;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Forms\Model\QuestionnaireForm;
+use Goteo\Model\Blog\Post;
 use Goteo\Model\Footprint;
+use Goteo\Model\Node\NodePost;
 use Goteo\Model\Node\NodeSections;
 use Goteo\Model\Sdg;
 use Goteo\Repository\DataSetRepository;
@@ -80,12 +82,11 @@ class ChannelController extends Controller {
 
         $config = $channel->getConfig();
 
-        if($config['google_analytics']) {
-                Config::set('analytics.google', array_merge(Config::get('analytics.google'), [$config['google_analytics']]));
-            }
+        if($config['google_analytics'])
+            Config::set('analytics.google', array_merge(Config::get('analytics.google'), [$config['google_analytics']]));
 
         // get custom colors from config field
-        $colors=$config['colors'] ? $config['colors'] : [];
+        $colors=$config['colors'] ?: [];
 
         //check if there are elements to show by type
         foreach($types as $key => $type)
@@ -554,6 +555,36 @@ class ChannelController extends Controller {
             'footprint_impact_data' => $footprintImpactData,
             'values' => current($values)
         ], 'channel/');
+
+    }
+
+    public function blogPostAction(Request $request, string $id, string $slug): Response
+    {
+        try {
+            $channel = Node::get($id);
+        } catch (ModelNotFoundException $e) {
+            Message::error($e->getMessage());
+            return $this->redirect('/');
+        }
+
+        $post = Post::get($slug);
+
+        if (!$post instanceof Post) {
+            return $this->redirect('/channel/' . $id);
+        }
+
+        $channelPost = NodePost::getNodePost($channel->id, $post->id);
+        if (!$channelPost) {
+            $this->redirect('/channel/' . $id);
+        }
+
+        $relatedPosts = Post::getList(['node' => $id, 'excluded' => $post->id], 0, 3);
+
+        return $this->viewResponse('/channel/call/blog/post',[
+            'post' => $post,
+            'channel' => $channel,
+            'related_posts' => $relatedPosts
+        ]);
 
     }
 

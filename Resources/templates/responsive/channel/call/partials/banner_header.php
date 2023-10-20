@@ -1,8 +1,9 @@
-<?php $channel=$this->channel; ?>
+<?php
+$channel=$this->channel;
+$colors = $this->a($this->colors);
+?>
 
 <div class="section banner-header">
-	
-	<!-- Navbar header -->
 	<?= $this->insert('channel/call/partials/navbar') ?>
 
 	<div class="image">
@@ -12,9 +13,9 @@
 		<?php $header_image_xs=$this->channel->getBannerHeaderImageXs(); ?>
 
 		<picture>
-			<source srcset="<?= $header_image->getLink(1920, 600, true) ?>" media="(min-width:1400px)"> 
-			<source srcset="<?= $header_image_md->getLink(1400, 600, true) ?>" media="(min-width:1051px)"> 
-			<source srcset="<?= $header_image_sm->getLink(1051, 600, true) ?>" media="(min-width:550px)"> 
+			<source srcset="<?= $header_image->getLink(1920, 600, true) ?>" media="(min-width:1400px)">
+			<source srcset="<?= $header_image_md->getLink(1400, 600, true) ?>" media="(min-width:1051px)">
+			<source srcset="<?= $header_image_sm->getLink(1051, 600, true) ?>" media="(min-width:550px)">
 			<img src="<?= $header_image_xs->getLink(550, 600, true) ?>">
 		</picture>
 	</div>
@@ -24,14 +25,14 @@
 			<div class="row">
 				<div class="col-lg-6 col-md-7 col-sm-8 col-xs-12">
 					<div>
-						<span class="title" style="<?= $this->colors['header'] ? "color:".$this->colors['header'].";" : '' ?> <?= $this->colors['header_shadow'] ? "text-shadow:none" : '' ?>" >
-						<?= $this->channel->subtitle ?>
+						<span class="title" style="<?= $colors['header'] ? 'color:'.$colors['header'].';' : '' ?> <?= $colors['header_shadow'] ? 'text-shadow:none' : '' ?>" >
+						    <?= $this->channel->subtitle ?>
 						</span>
 					</div>
-					<div class="description" style="<?= $this->colors['header'] ? "color:".$this->colors['header'].";" : '' ?> <?= $this->colors['header_shadow'] ? "text-shadow:none" : '' ?>" >
+					<div class="description" style="<?= $colors['header'] ? 'color:'.$colors['header'].';' : '' ?> <?= $colors['header_shadow'] ? 'text-shadow:none' : '' ?>" >
 						<?= $this->channel->description ?>
 					</div>
-					<a href="<?= $this->channel->banner_button_url ?>" class="btn btn-yellow scroller"><i class="icon icon-plus icon-2x">		
+					<a href="<?= $this->channel->banner_button_url ?>" class="btn btn-yellow scroller"><i class="icon icon-plus icon-2x">
 						</i><?= $this->text('landing-more-info') ?>
 					</a>
 				</div>
@@ -45,7 +46,7 @@
 	<div class="info">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-6 subtitle" style="<?= $this->colors['secondary'] ? "color:".$this->colors['secondary'] : '' ?>">
+				<div class="col-md-6 subtitle" style="<?= $colors['secondary'] ? 'color:'.$colors['secondary'] : '' ?>">
 					<?= $this->text('channel-call-main-info-subtitle') ?>
 				</div>
 			</div>

@@ -10,6 +10,7 @@
 
 namespace Goteo\Model;
 
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Model\Image;
@@ -32,6 +33,9 @@ class Node extends \Goteo\Core\Model {
 
     use ImpactDataRelationsTrait;
     use DataSetRelationsTrait;
+
+    const TYPE_CALL = 'call';
+    const TYPE_NORMAL = 'normal';
 
     public
         $id = null,
@@ -104,9 +108,10 @@ class Node extends \Goteo\Core\Model {
     }
 
     /**
-     * Obtener datos de un nodo
-     * @param   type mixed  $id     Identificador
-     * @return  type object         Objeto
+     * @param string $id
+     * @param string $lang
+     * @throws ModelNotFoundException
+     * @return Node
      */
     static public function get ($id, $lang = null) {
 
@@ -162,7 +167,7 @@ class Node extends \Goteo\Core\Model {
         $item = $query->fetchObject(__CLASS__);
 
         if (!$item instanceof Node) {
-            throw new Exception\ModelNotFoundException(Text::get('fatal-error-node'));
+            throw new ModelNotFoundException(Text::get('fatal-error-node'));
         }
 
         return $item;
@@ -1262,5 +1267,13 @@ class Node extends \Goteo\Core\Model {
         return self::query($sql, $values)->fetchAll(\PDO::FETCH_CLASS. __CLASS__);
     }
 
+    public function isTypeNormal(): bool
+    {
+        return self::TYPE_NORMAL === $this->type;
+    }
 
+    public function isTypeCall(): bool
+    {
+        return self::TYPE_CALL === $this->type;
+    }
 }
