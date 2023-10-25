@@ -5,6 +5,26 @@
 
 body.channel-call {
 
+  header.banner-header {
+    div.custom-header{
+      width: 95%;
+      margin-left: 2.5%;
+      border-bottom: 1px solid $color-white;
+      padding: 20px 0 0px 0;
+      color: $color-white;
+      font-weight: bold;
+      z-index: 100;
+      img{
+        margin-left: 5px;
+        vertical-align: sub;
+      }
+
+      .navbar-toggle {
+        background-color: unset;
+      }
+    }
+  }
+
 	div.languages{
 		text-transform: uppercase;
 		float:right;

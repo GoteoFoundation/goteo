@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Model for Node NodePost
@@ -10,12 +10,12 @@
  use Goteo\Application\Lang;
  use Goteo\Application\Config;
  use Goteo\Model\Blog\Post as GeneralPost;
- 
+
  class NodePost extends \Goteo\Core\Model {
 
   protected $Table = 'node_post';
   protected static $Table_static = 'node_post';
-  
+
   public
       $node_id,
       $post_id,
@@ -70,6 +70,11 @@
       if ($filters['node']) {
           $filter[] = "node_post.node_id = :node";
           $values[':node'] = $filters['node'];
+      }
+
+      if ($filters['post']) {
+          $filter[] = "node_post.post_id = :post";
+          $values[':post'] = $filters['post'];
       }
 
       if($filter) {
@@ -144,13 +149,11 @@
      * @return  type bool   true|false
      */
     public function validate(&$errors = array()) {
-      if (empty($this->node_id)) 
+      if (empty($this->node_id))
         $errors[] = "There is no node_id";
       if (empty($this->post_id))
         $errors[] = "There is no post_id";
 
       return empty($errors);
     }
-
-
  }

@@ -16,7 +16,7 @@ $image= $this->post->header_image ? $this->post->header_image : $this->post->ima
           <?=  date_formater($this->post->date) ?>
         </div>
         <div class="title">
-          <a href="<?= '/blog/' . $this->post->getSlug() . $this->lang_url_query($this->lang_current()) ?>">
+          <a href="<?= '/channel/' . $this->channel->id. '/blog/' . $this->post->getSlug() . $this->lang_url_query($this->lang_current()) ?>">
             <?= $this->text_truncate($this->post->title, 20) ?>
           </a>
         </div>
@@ -26,7 +26,7 @@ $image= $this->post->header_image ? $this->post->header_image : $this->post->ima
         <div class="author">
           <?= $author->name ?>
         </div>
-        <a class="arrow" href="<?= '/blog/' . $this->post->getSlug() . $this->lang_url_query($this->lang_current()) ?>">
+        <a class="arrow" href="<?= '/channel/' . $this->channel->id. '/blog/' . $this->post->getSlug() . $this->lang_url_query($this->lang_current()) ?>">
           <span class="icon icon-arrow icon-2x"></span>
         </a>
     </div>

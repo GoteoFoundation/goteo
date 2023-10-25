@@ -65,6 +65,11 @@ $channel->add('channel-impact-discover', new Route(
     array('_controller' => 'Goteo\Controller\ChannelController::impactDiscoverAction')
 ));
 
+$channel->add('channel-blog-post', new Route(
+    '/{id}/blog/{slug}',
+    ['_controller' => 'Goteo\Controller\ChannelController::blogPostAction']
+));
+
 $channel->add('channel-list-projects', new Route(
     '/{id}/{type}/{category}',
     array(

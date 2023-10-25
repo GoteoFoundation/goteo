@@ -7,7 +7,6 @@ $this->layout('layout', [
 ]);
 
 $this->section('head');
-
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.css"/>
@@ -15,11 +14,11 @@ $this->section('head');
 
 <?php
 $this->append();
-
-$this->section('header');
 ?>
 
-<?php $this->insert('channel/call/partials/banner_header'); ?>
+<?php
+$this->section('header');
+?>
 
 <?php
 $this->replace();
@@ -32,7 +31,6 @@ $this->section('content');
 <?php $this->replace() ?>
 
 <?php $this->section('footer') ?>
-
 
 <?= $this->insert('channel/call/partials/footer') ?>
 
