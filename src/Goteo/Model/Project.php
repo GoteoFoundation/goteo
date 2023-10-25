@@ -897,6 +897,16 @@ class Project extends Model {
     }
 
     /**
+     * Convert the alfanumeric string ID into a numeric string ID
+     * @param int $surface Collission chance = 10**$surface
+     * @return string number-only string ID
+     */
+    public function getNumericId(int $surface = 10): string
+    {
+        return substr(base_convert(hash('sha256', $this->id), 16, 10), 0, $surface);
+    }
+
+    /**
      * Handy method to know if project can be edited (not in campaing or finished)
      */
     public function inEdition() {
