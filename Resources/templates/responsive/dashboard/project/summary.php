@@ -6,7 +6,7 @@
   <div class="inner-container">
     <h1><?= $this->text('dashboard-menu-activity-summary') ?></h1>
     <h5><?= $this->ee($this->project->name) ?></h5>
-    <h6><?= $this->ee($this->project->getNumericId()) ?></h6>
+    <h6><?= $this->text('dashboard-menu-project-nid') ?>: <?= $this->project->getNumericId() ?></h6>
 
     <div class="panel section-content">
         <div class="panel-body">
