@@ -120,6 +120,10 @@ class InvestController extends Controller {
             unset($pay_methods['paypal']);
         }
 
+        if(!Project\Account::getAllowStripe($project_id)) {
+            unset($pay_methods['stripe']);
+        }
+
         // Find the correct reward/amount
         $reward = null;
         $amount = 0;

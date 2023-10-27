@@ -14,15 +14,16 @@ use Goteo\Application\Config;
 use Goteo\Core\Exception;
 use Goteo\Core\Model;
 
-class Account extends Model {
-
+class Account extends Model
+{
     public
         $project,
         $bank,
         $bank_owner,
         $fee,
         $skip_login = false,
-        $allowpp; // para permitir usar el boton paypal
+        $allowpp, // para permitir usar el boton paypal
+        $allow_stripe;
 
     /**
      * @deprecated
@@ -38,7 +39,8 @@ class Account extends Model {
      * @throws Config\ConfigException
      * @throws Exception
      */
- 	public static function get ($id) {
+    public static function get($id)
+    {
 
         try {
             $query = static::query("SELECT * FROM project_account WHERE project = ?", array($id));
@@ -52,13 +54,14 @@ class Account extends Model {
                 $accounts = new Account();
                 $accounts->project = $id;
                 $accounts->allowpp = false;
+                $accounts->allow_stripe = false;
                 $accounts->fee = Config::get('fee');
                 return $accounts;
             }
-        } catch(\PDOException $e) {
-			throw new Exception($e->getMessage());
+        } catch (\PDOException $e) {
+            throw new Exception($e->getMessage());
         }
-	}
+    }
 
     /**
      * @throws Config\ConfigException
@@ -77,38 +80,57 @@ class Account extends Model {
     /**
      * @throws Config\ConfigException
      */
-    public function save (&$errors = array()): bool
+    public function save(&$errors = array()): bool
     {
         if (!$this->validate($errors)) return false;
 
-		try {
-            $sql = "REPLACE INTO project_account (project, bank, bank_owner, paypal, paypal_owner, allowpp, fee, skip_login)
-             VALUES(:project, :bank, :bank_owner, :paypal, :paypal_owner, :allowpp, :fee, :skip_login)";
-            $values = array(':project' => $this->project, ':bank' => $this->bank, ':bank_owner' => $this->bank_owner, ':paypal' => $this->paypal, ':paypal_owner' => $this->paypal_owner, ':allowpp' => $this->allowpp, ':fee' => $this->fee, ':skip_login' => $this->skip_login);
-			self::query($sql, $values);
-
-			return true;
-		} catch(\PDOException $e) {
-			$errors[] = "Las cuentas no se han asignado correctamente. Por favor, revise los datos." . $e->getMessage();
-            return false;
-		}
-
-	}
-
-    /**
-     * @throws Exception
-     */
-    public static function getAllowpp (string $id): bool
-    {
         try {
-            $query = static::query("SELECT allowpp FROM project_account WHERE project = ?", array($id));
-            return $query->fetchColumn();
-        } catch(\PDOException $e) {
-			throw new Exception($e->getMessage());
+            $sql = "
+                REPLACE INTO project_account (project, bank, bank_owner, paypal, paypal_owner, allowpp, allow_stripe, fee, skip_login)
+                VALUES(:project, :bank, :bank_owner, :paypal, :paypal_owner, :allowpp, :allow_stripe, :fee, :skip_login)
+            ";
+            $values = [
+                ':project' => $this->project,
+                ':bank' => $this->bank,
+                ':bank_owner' => $this->bank_owner,
+                ':paypal' => $this->paypal,
+                ':paypal_owner' => $this->paypal_owner,
+                ':allowpp' => $this->allowpp,
+                ':allow_stripe' => $this->allow_stripe,
+                ':fee' => $this->fee,
+                ':skip_login' => $this->skip_login
+            ];
+            self::query($sql, $values);
+
+            return true;
+        } catch (\PDOException $e) {
+            $errors[] = "Las cuentas no se han asignado correctamente. Por favor, revise los datos." . $e->getMessage();
             return false;
         }
     }
 
+    /**
+     * @throws Exception
+     */
+    public static function getAllowpp(string $id): bool
+    {
+        try {
+            $query = static::query("SELECT allowpp FROM project_account WHERE project = ?", array($id));
+            return $query->fetchColumn();
+        } catch (\PDOException $e) {
+            throw new Exception($e->getMessage());
+            return false;
+        }
+    }
 
+    public static function getAllowStripe(string $id): bool
+    {
+        try {
+            $query = static::query("SELECT allow_stripe FROM project_account WHERE project = ?", array($id));
+            return (bool) $query->fetchColumn();
+        } catch (\PDOException $e) {
+            throw new Exception($e->getMessage());
+            return false;
+        }
+    }
 }
-

@@ -96,6 +96,13 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 'required' => false,
                 'color' => 'cyan',
             ])
+            ->add('allowStripe', BooleanType::class, [
+                'label' => Text::get('project-campaign-use-stripe'),
+                'data' => $account->allow_stripe,
+                'disabled' => $this->getReadonly(),
+                'required' => false,
+                'color' => 'cyan'
+            ])
             ->add('spread', TextareaType::class, [
                 'label' => 'overview-field-spread',
                 'disabled' => $this->getReadonly(),
@@ -144,7 +151,10 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
 
         $data = $form->getData();
         $account = $this->getOption('account');
-        $account->rebuildData(['allowpp' => $data['allowpp']]);
+        $account->rebuildData([
+            'allowpp' => $data['allowpp'],
+            'allow_stripe' => $data['allowStripe']
+        ]);
 
         $errors = [];
         if (!$account->save($errors)) {

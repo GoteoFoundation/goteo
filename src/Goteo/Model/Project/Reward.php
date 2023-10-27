@@ -35,6 +35,7 @@ class Reward extends Model {
             $license,
             $amount,
             $units,
+            $subscribable,
             $extra_info_message;
 
     public static function getLangFields() {
@@ -72,7 +73,8 @@ class Reward extends Model {
                     reward.fulsocial as fulsocial,
                     reward.url,
                     reward.bonus,
-                    reward.category
+                    reward.category,
+                    reward.subscribable
                 FROM reward
                 $joins
                 WHERE
@@ -127,8 +129,8 @@ class Reward extends Model {
                         reward.fulsocial as fulsocial,
                         reward.url,
                         reward.bonus,
-                        reward.category
-
+                        reward.category,
+                        reward.subscribable
                     FROM    reward
                     $joins
                     WHERE   reward.project = :project
@@ -268,7 +270,8 @@ class Reward extends Model {
             'units',
             'bonus',
             'url',
-            'category'
+            'category',
+            'subscribable'
         );
 
         try {
