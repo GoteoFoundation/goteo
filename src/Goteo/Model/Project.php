@@ -25,7 +25,6 @@ use Goteo\Model\Location\LocationInterface;
 use Goteo\Model\Project\Account;
 use Goteo\Model\Project\Conf as ProjectConf;
 use Goteo\Model\Project\ProjectLocation;
-use Goteo\Model\Project\Subscription;
 use PDOException;
 use function array_empty;
 
@@ -132,9 +131,6 @@ class Project extends Model {
 
         // Collaborations
         $supports = array(), // instances of project\support
-
-        // Subscriptions
-        $subscriptions = array(),
 
         // Comment
         $comment, // Comentario para los admin introducido por el usuario
@@ -614,9 +610,6 @@ class Project extends Model {
             $project->getSocialRewards($lang);
             $project->getIndividualRewards($lang);
 
-            // subscriptions
-            $project->subscriptions = Subscription::getAll($project);
-
             // colaboraciones
             $project->supports = Project\Support::getAll($id, $lang);
 
@@ -765,15 +758,6 @@ class Project extends Model {
             $this->supports = Project\Support::getAll($this->id, $lang);
         }
         return $this->supports;
-    }
-
-    public function getSubscriptions()
-    {
-        if (!$this->subscriptions) {
-            $this->subscriptions = Project\Subscription::getAll($this->id);
-        }
-
-        return $this->subscriptions;
     }
 
     public function getSocialCommitment() {
@@ -1829,34 +1813,6 @@ class Project extends Model {
 
             if (!empty($quita) || !empty($guarda))
                 $this->individual_rewards = Project\Reward::getAll($this->id, 'individual');
-
-            // subscriptions
-            $tiene = Project\Subscription::getAll($this);
-            $viene = $this->subscriptions;
-            $quita = array_diff_key($tiene, $viene); // quitar los que tiene y no viene
-            $guarda = array_diff_key($viene, $tiene); // añadir los que viene y no tiene
-            foreach ($quita as $key => $item) {
-                if (!$item->remove($errors)) {
-                    $fail = true;
-                } else {
-                    unset($tiene[$key]);
-                }
-            }
-            foreach ($guarda as $key => $item) {
-                if (!$item->save($errors)) {
-                    $fail = true;
-                }
-            }
-            foreach ($tiene as $key => $row) {
-                if ($row != $viene[$key]) {
-                    if (!$viene[$key]->save($errors)) {
-                        $fail = true;
-                    }
-                }
-            }
-
-            if (!empty($quite) || !empty($guarda))
-                $this->subscriptions = Project\Subscription::getAll($this->id);
 
             // colaboraciones
             $tiene = Project\Support::getAll($this->id);
