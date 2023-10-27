@@ -126,6 +126,11 @@ class StripeSubscriptionPaymentMethod implements PaymentMethodInterface
         return $response;
     }
 
+    public function completePurchase()
+    {
+        return;
+    }
+
     public function refundable(): bool
     {
         return false;
