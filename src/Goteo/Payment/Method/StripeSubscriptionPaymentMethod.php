@@ -11,27 +11,15 @@
 namespace Goteo\Payment\Method;
 
 use Goteo\Library\Text;
-use Goteo\Model\Invest;
-use Goteo\Model\User;
 use Goteo\Payment\PaymentException;
 use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\Omnipay;
-use Omnipay\Stripe\SubscriptionGateway;
+use Omnipay\Stripe\Subscription\Gateway as SubscriptionGateway;
 use Stripe\Subscription;
-use Symfony\Component\HttpFoundation\Request;
 
-class StripeSubscriptionPaymentMethod implements PaymentMethodInterface
+class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
 {
     const PAYMENT_METHOD_ID = "stripe";
-
-    private User $user;
-    private Invest $invest;
-    private Request $request;
-
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
 
     static public function getId(): string
     {
@@ -40,7 +28,7 @@ class StripeSubscriptionPaymentMethod implements PaymentMethodInterface
 
     public function getIdNonStatic(): string
     {
-        return self::PAYMENT_METHOD_ID;
+        return 'Stripe\\Subscription\\';
     }
 
     public function getName(): string
@@ -68,48 +56,7 @@ class StripeSubscriptionPaymentMethod implements PaymentMethodInterface
         return true;
     }
 
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function setInvest(Invest $invest)
-    {
-        $this->invest = $invest;
-
-        return $this;
-    }
-
-    public function getInvest()
-    {
-        return $this->invest;
-    }
-
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
-
-        return $this;
-    }
-
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    public function getDefaultHttpResponse(ResponseInterface $response)
-    {
-        return null;
-    }
-
-    public function purchase()
+    public function purchase(): ResponseInterface
     {
         $gateway = Omnipay::create(SubscriptionGateway::class);
 
@@ -124,11 +71,6 @@ class StripeSubscriptionPaymentMethod implements PaymentMethodInterface
         $this->invest->setPreapproval($subscription->id);
 
         return $response;
-    }
-
-    public function completePurchase()
-    {
-        return;
     }
 
     public function refundable(): bool

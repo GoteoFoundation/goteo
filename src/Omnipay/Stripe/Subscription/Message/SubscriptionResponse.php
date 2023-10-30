@@ -1,9 +1,8 @@
 <?php
 
-namespace Omnipay\Stripe\Message;
+namespace Omnipay\Stripe\Subscription\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
-use Omnipay\Common\Message\RequestInterface;
 use Stripe\Subscription;
 
 class SubscriptionResponse extends AbstractResponse

@@ -1,6 +1,6 @@
 <?php
 
-namespace Omnipay\Stripe\Message;
+namespace Omnipay\Stripe\Subscription\Message;
 
 use Goteo\Application\Config;
 use Goteo\Library\Text;
