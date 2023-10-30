@@ -92,10 +92,6 @@ class ProjectDashboardController extends DashboardController {
                 ['text' => '<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), 'link' => $prefix . '/supports', 'id' => 'supports'],
             ];
 
-            if ($project->isPermanent()) {
-                $steps[] = ['text' => '<i class="fa fa-2x fa-money"></i>' . Text::get('dashboard-menu-projects-subscription'), 'link' => $prefix . '/subscription', 'id' => 'subscription'];
-            }
-
             Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $steps, 'project', null, 'sidebar' . ($admin ? ' admin' : ''));
         }
 

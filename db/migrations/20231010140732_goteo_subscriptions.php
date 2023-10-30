@@ -33,8 +33,8 @@ class GoteoSubscriptions
     public function getUpSQL()
     {
         return "
-            ALTER TABLE `reward` ADD COLUMN `subscribable` int(1) DEFAULT NULL;
-            ALTER TABLE `project_account` ADD COLUMN `allow_stripe` int(1) DEFAULT NULL AFTER `allowpp`;
+            ALTER TABLE `reward` ADD COLUMN `subscribable` int(1) DEFAULT 0;
+            ALTER TABLE `project_account` ADD COLUMN `allow_stripe` int(1) DEFAULT 0 AFTER `allowpp`;
         ";
     }
 

@@ -32,6 +32,13 @@ payments:
         signature: PAYPAL-Signature
         appId: PAYPAL-APP-ID
 
+    # Stripe
+    stripe:
+        active: true
+        publicKey: pk_test_
+        secretKey: sk_test_
+        webhookSecret: whsec_
+
     pool:
         active: true
 
