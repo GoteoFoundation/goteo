@@ -165,3 +165,4 @@ project-campaign-activate-impact-calculator: "Al activar la calculadora d'impact
 project-campaign-type-label: "Escull tipus de campanya"
 project-campaign-type-campaign: "Campanya"
 project-campaign-type-permanent: "Permanent"
+project-campaign-type-prehelp: "Aquest camp permet escollir el tipus de campanya que es vol fer. Si es vol fer un projecte per rondes s'ha d'escollir `campanya`. Si es vol fer una campanya `permanent`, s'ha d'escollir permanent."
