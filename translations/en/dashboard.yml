@@ -86,6 +86,7 @@ dashboard-menu-projects-rewards: Backers
 dashboard-menu-projects-summary: Summary
 dashboard-menu-projects-supports: Collaborations
 dashboard-menu-projects-updates: News
+dashboard-menu-projects-updates-privacy: "Limit access to the post through the use of rewards."
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'My history'
 dashboard-menu-projects-pitch: "Open applications"
@@ -314,3 +315,4 @@ dashboard-project-impact-items-cost-subtitle: "Here you will find a list of the 
 dashboard-project-subscription-title: "Subscriptions"
 dashboard-project-subscription-description: "Here you can manage the configuration of the subscriptions to your campaign."
 dashboard-project-subscription-unavailable: "Subscriptions are only available for permanent campaigns."
+dashboard-project-privacy-add-new-restriction: "Add access restriction to post %s"

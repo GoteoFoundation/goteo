@@ -4,7 +4,7 @@
 
 
 <section class="container">
-    <h4><?= $this->text('dashboard-project-privacy-add-new-restriction') ?></h4>
+    <h2><?= $this->text('dashboard-project-privacy-add-new-restriction', $this->post->title) ?></h2>
 
     <?= $this->form_form($this->raw('form')) ?>
 </section>

@@ -4,7 +4,8 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-      <h2><?= $this->text('dashboard-menu-projects-updates-privacy') ?></h2>
+      <h2><?= $this->ee($this->post->title) ?></h2>
+      <p><?= $this->text('dashboard-menu-projects-updates-privacy') ?></p>
       <a href="/dashboard/project/<?= $this->project->id ?>/updates/<?= $this->post->id ?>/privacy/new" class="btn btn-cyan spacer-bottom-20"><i class="fa fa-plus"></i> <?= $this->text('form-add-button') ?></a>
 
       <?php if($this->rewards): ?>

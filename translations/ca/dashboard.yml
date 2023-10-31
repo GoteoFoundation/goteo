@@ -86,6 +86,7 @@ dashboard-menu-projects-rewards: Gestió cofinançadors
 dashboard-menu-projects-summary: Resum
 dashboard-menu-projects-supports: Col·laboracions
 dashboard-menu-projects-updates: Actualitzacions
+dashboard-menu-projects-updates-privacy: "Limitar l'accés al post mitjançant recompenses."
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'La meva història'
 dashboard-menu-projects-pitch: "Aplicacions obertes"
@@ -316,3 +317,4 @@ dashboard-project-impact-items-cost-subtitle: "Aqui trobaràs un llistat dels co
 dashboard-project-subscription-title: "Subscripcions"
 dashboard-project-subscription-description: "Aquí pots gestionar la configuració de les subscripcions a la teva campanya."
 dashboard-project-subscription-unavailable: "Les subscripcions només estan disponibles per a campanyes permanents."
+dashboard-project-privacy-add-new-restriction: "Afegir restricció d'accés al post %s"

@@ -47,8 +47,8 @@ class ProjectPostPrivacyForm extends AbstractFormProcessor
 
         $builder
             ->add('reward', ChoiceType::class, [
-                'required' => false,
-                'label' => 'Recompensa',
+                'required' => true,
+                'label' => 'rewards-lb',
                 'choices' => $this->getProjectRewards(),
                 'data' => $this->getProjectRewardAccess(),
             ])
