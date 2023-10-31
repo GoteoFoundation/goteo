@@ -2466,4 +2466,17 @@ class Invest extends Model {
             return null;
         }
     }
+
+    static public function hasInvestToReward(User $user, Reward $reward): bool
+    {
+        $query = static::query("
+            SELECT  COUNT(*)
+            FROM    invest
+            WHERE   invest.user = :user
+            AND     invest.reward = :reward
+            AND     invest.status IN ('1')
+            ", array(':user' => $user->id, ':reward' => $reward->id));
+        $invest = $query->fetchColumn();
+        return (bool) $invest;
+    }
 }
