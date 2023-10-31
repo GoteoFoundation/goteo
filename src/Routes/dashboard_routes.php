@@ -218,11 +218,27 @@ $dash->add('dashboard-project-updates-new', new Route(
         'uid' => null
     )
 ));
+
 // Edit update
 $dash->add('dashboard-project-updates-edit', new Route(
     '/project/{pid}/updates/{uid}',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updatesEditAction',)
 ));
+
+
+// Post privacy settings
+$dash->add('dashboard-project-updates-privacy', new Route(
+    '/project/{pid}/updates/{uid}/privacy',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updatesPrivacyAction',)
+));
+
+// Post privacy settings
+$dash->add('dashboard-project-updates-privacy-new', new Route(
+    '/project/{pid}/updates/{uid}/privacy/new',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updatesPrivacyAddAction',)
+));
+
+
 // Project updates translate
 $dash->add('dashboard-project-updates-translate', new Route(
     '/project/{pid}/updates/{uid}/{lang}',
