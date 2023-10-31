@@ -47,7 +47,9 @@ class Post extends Model {
         $section,
         $gallery = array(), // array de instancias image de post_image
         $num_comments = 0,
-        $comments = array();
+        $comments = array(),
+        $access_limited = 0
+    ;
 
 
     public static function sanitizeText($t) {
@@ -102,7 +104,8 @@ class Post extends Model {
                 blog.owner as owner_id,
                 IFNULL ( project.owner, post.author ) as author,
                 IFNULL( impulsor.name, user.name ) as user_name,
-                IFNULL (project.name, node.name )  as owner_name
+                IFNULL (project.name, node.name )  as owner_name,
+                post.access_limited
             FROM    post
             INNER JOIN blog
                 ON  blog.id = post.blog
@@ -196,7 +199,8 @@ class Post extends Model {
                 blog.owner as owner_id,
                 IFNULL ( project.owner, post.author ) as author,
                 IFNULL( impulsor.name, user.name ) as user_name,
-                IFNULL (project.name, node.name )  as owner_name
+                IFNULL (project.name, node.name )  as owner_name,
+                post.access_limited
             FROM    post
             INNER JOIN blog
                 ON  blog.id = post.blog
@@ -315,7 +319,8 @@ class Post extends Model {
                 blog.owner as owner_id,
                 IFNULL ( project.owner, post.author ) as author,
                 IFNULL( impulsor.name, user.name ) as user_name,
-                IFNULL (project.name, node.name )  as owner_name
+                IFNULL (project.name, node.name )  as owner_name,
+                post.access_limited
             FROM    post
             INNER JOIN blog
                 ON  blog.id = post.blog
@@ -535,7 +540,8 @@ class Post extends Model {
             'home',
             'footer',
             'author',
-            'type'
+            'type',
+            'access_limited'
             );
 
         try {
