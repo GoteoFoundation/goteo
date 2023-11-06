@@ -1,6 +1,6 @@
 <?php $project=$this->project; ?>
 
-<div class="hidden-xs">
+<aside class="hidden-xs">
     <h2 class="green-title">
         <?= $this->text('project-rewards-side-title') ?>
     </h2>
@@ -10,6 +10,7 @@
             $available = $individual->available();
             $units = ($individual->units - $individual->taken); // units left
             $matchedReward = $individual->isMatched();
+            if (!$individual->archived):
         ?>
             <li id="reward-<?= $individual->id ?>" class="side-widget <?= $matchedReward ? "matched-reward" : ''?>">
                 <article>
@@ -52,6 +53,7 @@
                     </div>
                 </article>
             </li>
+            <?php endif; ?>
         <?php endforeach ?>
     </ul>
 
@@ -87,4 +89,4 @@
             </li>
         <?php endforeach ?>
     </ul>
-</div>
+</aside>
