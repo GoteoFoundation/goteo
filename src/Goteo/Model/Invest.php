@@ -513,6 +513,10 @@ class Invest extends Model {
             }
         }
 
+        if (!empty($filters['contract'])) {
+            $sqlFilter[] = "contract.number = :contract";
+            $values[':contract'] = $filters['contract'];
+        }
         if (!empty($filters['date_from'])) {
             $sqlFilter[] = "invest.invested >= :date_from";
             $values[':date_from'] = $filters['date_from'];
@@ -603,6 +607,8 @@ class Invest extends Model {
                     ON invest.admin = user.id
                 LEFT JOIN invest_reward
                     ON invest_reward.invest = invest.id
+                LEFT JOIN `contract`
+                    ON contract.project = invest.project
                 $sqlFilter";
 
                 // echo sqldbg($sql, $values)."\n";
@@ -633,6 +639,8 @@ class Invest extends Model {
                     ON invest.admin = user.id
                 LEFT JOIN invest_reward
                     ON invest_reward.invest = invest.id
+                LEFT JOIN `contract`
+                    ON contract.project = invest.project
                 $sqlFilter
                 " . ($order ? "ORDER BY $order" : '') ."
                 LIMIT $offset, $limit

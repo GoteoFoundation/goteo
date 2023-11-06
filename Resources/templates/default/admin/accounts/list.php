@@ -91,6 +91,11 @@ $coord = [];
             <input type="text" id ="id-filter" name="id" value ="<?= $filters['id']?>" />
         </div>
 
+        <div style="float:left;margin:5px;">
+            <label for="contract-filter">N. de contrato:</label><br />
+            <input type="text" id ="contract-filter" name="contract" value ="<?= $filters['contract']?>" />
+        </div>
+
         <br clear="both" />
 
         <div style="float:left;margin:5px;">

@@ -67,6 +67,7 @@ class AccountsSubController extends AbstractSubController {
       'procStatus' => 'all',
       'amount' => '',
       'maxamount' => '',
+      'contract' => ''
     );
 
     /**
