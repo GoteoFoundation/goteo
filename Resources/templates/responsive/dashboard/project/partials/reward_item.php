@@ -14,6 +14,12 @@
               <?= $this->form_row($form["unlimited_$id"]) ?>
           </div>
         </div>
+        <div class="unlimited form-group">
+            <label for="archived_<?= $id ?>"><?= $this->text('project-reward-archived') ?></label>
+            <div class="input-wrap">
+              <?= $this->form_row($form["archived_$id"]) ?>
+          </div>
+        </div>
       </div>
       <?= $this->form_row($form["reward_$id"]) ?>
       <?= $this->form_row($form["description_$id"]) ?>

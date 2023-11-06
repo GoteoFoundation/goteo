@@ -124,6 +124,13 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 'required' => false,
                 'color' => 'cyan'
             ])
+            ->add("archived$suffix", BooleanType::class, [
+                'label' => false,
+                'data' => (bool) $reward->archived,
+                'required' => false,
+                'disabled' => $readonly,
+                'color' => 'cyan'
+            ])
             ->add("reward$suffix", TextType::class, [
                 'label' => 'regular-title',
                 'data' => $reward->reward,
@@ -143,7 +150,6 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                     'rows' => 4,
                     'data-toolbar' => 'close,bold,italic,link,unordered-list,ordered-list,preview,fullscreen,guide'
                 ]
-
             ]);
         if(!$remove_readonly) {
             $this->getBuilder()
@@ -181,7 +187,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
 
         foreach($data as $key => $val) {
             list($field, $id) = explode('_', $key);
-            if(!in_array($field, ['amount', 'icon', 'units', 'reward', 'description'])) continue;
+            if(!in_array($field, ['amount', 'icon', 'units', 'reward', 'description', 'archived'])) continue;
             if($field == 'units' && $data['unlimited_' . $id]) {
                 $val = 0;
             }
