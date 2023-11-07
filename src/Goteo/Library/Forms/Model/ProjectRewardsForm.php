@@ -11,6 +11,7 @@
 
 namespace Goteo\Library\Forms\Model;
 
+use Goteo\Application\Session;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\MarkdownType;
 use Goteo\Util\Form\Type\NumberType;
@@ -89,7 +90,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
         $this->rewards[$reward->id] = $reward;
         $project = $this->getModel();
         $suffix = "_{$reward->id}";
-
+        $admin = Session::isAdmin();
         // readonly only if has no invests associated
         $units_readonly = $readonly = $this->getReadonly() && !$reward->isDraft() && $reward->getTaken();
         $remove_readonly = $this->getReadonly()&&$reward->getTaken();
@@ -98,7 +99,8 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             $units_readonly = false;
         }
 
-        $this->getBuilder()
+        $builder = $this->getBuilder();
+        $builder
             ->add("amount$suffix", NumberType::class, [
                 'label' => 'rewards-field-individual_reward-amount',
                 'data' => $reward->amount,
@@ -123,14 +125,20 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 'disabled' => $units_readonly,
                 'required' => false,
                 'color' => 'cyan'
-            ])
-            ->add("archived$suffix", BooleanType::class, [
-                'label' => false,
-                'data' => (bool) $reward->archived,
-                'required' => false,
-                'disabled' => $readonly,
-                'color' => 'cyan'
-            ])
+            ]);
+
+        if ($admin) {
+            $builder
+                ->add("archived$suffix", BooleanType::class, [
+                    'label' => false,
+                    'data' => (bool) $reward->archived,
+                    'required' => false,
+                    'disabled' => $readonly,
+                    'color' => 'cyan'
+                ]);
+        }
+
+        $builder
             ->add("reward$suffix", TextType::class, [
                 'label' => 'regular-title',
                 'data' => $reward->reward,
