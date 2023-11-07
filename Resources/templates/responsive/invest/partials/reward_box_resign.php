@@ -1,5 +1,3 @@
-    <form class="form-horizontal" role="form" method="GET" action="/invest/<?= $this->project->id ?>/payment">
-
     <div class="row padding-sm no-padding col-sm-10 col-sm-offset-1 reward-box-resign">
         <label class="label-reward <?= $this->reward ? '' : 'reward-choosen' ?>" for="reward-empty">
             <div class="col-sm-11 no-padding">

@@ -14,25 +14,21 @@ $this->section('main-content');
 
                 <?= $this->supply('sub-header') ?>
 
-                <?= $this->insert('invest/partials/reward_box_resign') ?>
+                <form class="form-horizontal" role="form" method="GET" action="/invest/<?= $this->project->id ?>/payment">
+                    <?= $this->insert('invest/partials/reward_box_resign') ?>
 
-                <?php foreach($this->rewards as $reward_item): ?>
+                    <?php foreach($this->rewards as $reward_item):
+                        if ($reward_item->archived) continue;
+                        ?>
 
-                    <?php //check if show the exhausted rewards ?>
-                    <?php if($reward_item->available()||!$this->project::hideExhaustedRewards($this->project->id)||!$this->project->inCampaign()): ?>
-
-                        <?= $this->insert('invest/partials/reward_box', ['reward_item' => $reward_item]) ?>
-
-                    <?php endif; ?>
-
-                <?php endforeach ?>
-
+                        <?php if($reward_item->available()||!$this->project::hideExhaustedRewards($this->project->id)||!$this->project->inCampaign()): ?>
+                            <?= $this->insert('invest/partials/reward_box', ['reward_item' => $reward_item]) ?>
+                        <?php endif; ?>
+                    <?php endforeach ?>
                 </form>
             </div>
         </div>
-
     </div>
-
 </div>
 
 
