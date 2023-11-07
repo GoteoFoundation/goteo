@@ -62,7 +62,7 @@ abstract class Controller {
         return $response;
     }
 
-    public function jsonResponse($vars = [])
+    public function jsonResponse($vars = []): JsonResponse
     {
         $resp = new JsonResponse($vars);
         if(App::debug()) $resp->setEncodingOptions(JSON_PRETTY_PRINT);
