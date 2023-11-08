@@ -10,7 +10,6 @@ use Goteo\Model\User;
 
 class PostPrivacyAccess
 {
-    // this library has to handle if a user can access a certain post based on the relation between the user invest to a reward and if a reward is used as an access for the post through the post_reward_access table
     static public function canAccess(?User $user, Post $post): bool
     {
         $admin = Session::isAdmin();
@@ -18,23 +17,37 @@ class PostPrivacyAccess
             return true;
 
         if ($user instanceof User) {
-            if ($user->id == $post->author)
-                return true;
-
-            if ($post->access_limited) {
-                $postRewardAccessList = PostRewardAccess::getList(['post' => $post->id]);
-                foreach($postRewardAccessList as $postRewardAccess) {
-                    $hasAccessToPost = Invest::hasInvestToReward($user, $postRewardAccess->getReward());
-                    if ($hasAccessToPost)
-                        return true;
-                }
-            }
+            return self::canUserAccess($user, $post);
         }
 
         if ($post->access_limited)
             return false;
 
         if ($post->publish) return true;
+
+        return false;
+    }
+
+    private function canUserAccess(User $user, Post $post): bool
+    {
+        if ($user->id == $post->author)
+            return true;
+
+        if ($post->access_limited) {
+            $postRewardAccessList = PostRewardAccess::getList(['post_id' => $post->id]);
+            foreach($postRewardAccessList as $postRewardAccess) {
+                $reward = $postRewardAccess->getReward();
+                if ($reward->subscribable) {
+                    $hasAccessToPost = Invest::hasUserInvestToRewardInTheLastMonth($user, $reward);
+                    if ($hasAccessToPost)
+                        return true;
+                } else {
+                    $hasAccessToPost = Invest::hasUserInvestToReward($user, $reward);
+                    if ($hasAccessToPost)
+                        return true;
+                }
+            }
+        }
 
         return false;
     }
