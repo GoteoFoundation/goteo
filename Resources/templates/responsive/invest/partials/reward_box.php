@@ -1,6 +1,6 @@
 <?php
 $reward = $this->reward_item;
-$selected = $selected;
+$selected = $this->selected;
 $available = $reward->available();
 ?>
     <form class="form-horizontal" role="form" method="GET" action="/invest/<?= $this->project->id ?>/payment">
