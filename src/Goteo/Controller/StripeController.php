@@ -11,28 +11,37 @@
 namespace Goteo\Controller;
 
 use Goteo\Application\Config;
+use Goteo\Application\Currency;
 use Goteo\Core\Controller;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Goteo\Model\User;
 use Stripe\Event;
+use Stripe\StripeClient;
 use Stripe\Webhook;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class StripeController extends Controller
 {
+    private StripeClient $stripe;
+
+    public function __construct()
+    {
+        $this->stripe = new StripeClient(Config::get('payments.stripe.secretKey'));
+    }
+
     public function subscriptionsWebhook(Request $request)
     {
         $event = Webhook::constructEvent(
             $request->getContent(),
-            $request->headers->get('HTTP_STRIPE_SIGNATURE'),
-            Config::get('payments.stripe.webhookSecret')
+            $request->headers->get('STRIPE_SIGNATURE'),
+            'whsec_f8fdfc93e7f59cada1595902eb679dcdd442181f4464317c84be2d09f587be83'
         );
 
         switch ($event->type) {
-            case Event::TYPE_INVOICE_PAID:
-                $this->createInvest(json_decode($request->getContent()['data']['object']));
-                break;
+            case Event::TYPE_INVOICE_PAYMENT_SUCCEEDED:
+                $response = $this->createInvest($event->data->object->id);
             case Event::TYPE_INVOICE_PAYMENT_FAILED:
                 break;
             case Event::TYPE_CUSTOMER_SUBSCRIPTION_DELETED:
@@ -40,26 +49,35 @@ class StripeController extends Controller
             default:
                 break;
         }
+
+        return new JsonResponse($response);
     }
 
-    private function createInvest(array $invoice)
+    private function createInvest(string $invoiceId): Invest
     {
+        $invoice = $this->stripe->invoices->retrieve($invoiceId);
+        $subscription = $this->stripe->subscriptions->retrieve($invoice->subscription);
+
         /** @var User */
-        $user = User::getByEmail($invoice['customer_email']);
+        $user = User::getByEmail($invoice->customer_email);
 
         $invest = new Invest([
-            'amount' => $invoice['amount_paid'] / 100,
-            'currency' => $invoice['currency'],
+            'amount' => $invoice->amount_paid / 100,
+            'donate_amount' => 0,
+            'currency' => $invoice->currency,
+            'currency_rate' => Currency::rate(strtoupper($invoice->currency)),
             'user' => $user->id,
-            'project' => explode('-', $invoice['subscription']['items']['data'][0]['product'])[0],
-            'method' => 'stripe',
+            'project' => explode('_', $subscription->items->data[0]->price->product)[0],
+            'method' => 'Stripe\Webhook',
             'status' => Invest::STATUS_PAID,
-            'invested' => date('Y-m-d')
+            'invested' => date('Y-m-d'),
         ]);
 
         $errors = array();
         if (!$invest->save($errors)) {
             throw new \RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
         }
+
+        return $invest;
     }
 }
