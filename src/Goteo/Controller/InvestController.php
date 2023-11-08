@@ -157,6 +157,10 @@ class InvestController extends Controller {
             }
         }
 
+        if ($reward->subscribable) {
+            $pay_methods = array_intersect_key($pay_methods, array_flip(['stripe']));
+        }
+
         if($login_required) {
             // A reward is required here
             if(!$invest && empty($reward) && $custom_amount == 0) {

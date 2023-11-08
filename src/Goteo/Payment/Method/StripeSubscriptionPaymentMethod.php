@@ -38,12 +38,12 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
 
     public function getDesc(): string
     {
-        return $this->getName();
+        return Text::get('invest-stripe-description');
     }
 
     public function getIcon(): string
     {
-        return SRC_URL . '/assets/img/pay/' . $this->getIdNonStatic() . '.png';
+        return SRC_URL . '/assets/img/pay/stripe.png';
     }
 
     public function isActive($amount = 0): bool

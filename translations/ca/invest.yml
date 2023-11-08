@@ -66,6 +66,9 @@ invest-payment-success: 'El pagament s''ha realitzat correctament'
 invest-payment_method-header: 'Escull el mètode de pagament'
 invest-payment-method: 'Mètode de pagament'
 invest-paypal-method: PayPal
+invest-stripe-method: Stripe
+invest-stripe-description: "Amb Stripe el vostre pagament es carregarà com a subscripció mensual."
+invest-stripe-disabled: "Aquest project ha desactivat Stripe com a forma de pagament."
 invest-pool: 'Vull que la meva donació, en el cas que el projecte no arribi al seu objectiu, romangui al meu moneder virtual Goteo. '
 invest-pool-available: disponibles
 invest-pool-error: 'No tens prou diners al teu moneder virtual'
