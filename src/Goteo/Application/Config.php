@@ -255,8 +255,8 @@ class Config {
 		Payment::addMethod('Goteo\Payment\Method\PaypalPaymentMethod');
 		// Adding Cash non-public payment method (manual admin investions)
 		Payment::addMethod('Goteo\Payment\Method\CashPaymentMethod', true);
-		// Adding Stripe payment method
-		Payment::addMethod('Goteo\Payment\Method\StripeSubscriptionPaymentMethod');
+		// Adding Stripe (subscriptions) payment method
+		Payment::addMethod('Goteo\Payment\Method\StripeSubscriptionPaymentMethod', true);
 
 		// Plugins overwriting
 		foreach (self::getPlugins() as $plugin => $vars) {

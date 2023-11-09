@@ -19,7 +19,7 @@ use Stripe\Subscription;
 
 class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
 {
-    const PAYMENT_METHOD_ID = "stripe";
+    const PAYMENT_METHOD_ID = "stripe_subscription";
 
     static public function getId(): string
     {
@@ -27,6 +27,11 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
     }
 
     public function getIdNonStatic(): string
+    {
+        return self::PAYMENT_METHOD_ID;
+    }
+
+    public function getGatewayName(): string
     {
         return 'Stripe\\Subscription\\';
     }

@@ -62,7 +62,7 @@ invest-payment-fail: 'Something went wrong with the payment'
 invest-payment-success: 'The payment has been made correctly'
 invest-payment_method-header: 'Choose a method of payment'
 invest-payment-method: 'Payment method'
-invest-stripe-method: 'Stripe'
+invest-stripe-method: 'Subscription via Stripe'
 invest-stripe-description: "By using Stripe, your payment will be charged on a monthly subscription."
 invest-stripe-disabled: "This proyect has disabled Stripe as payment method."
 invest-pool: 'I want my donation, in the event that the project doesn''t reach its goal, to remain in my Goteo Virtual Wallet.'

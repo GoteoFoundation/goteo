@@ -122,6 +122,7 @@ class InvestController extends Controller {
 
         if(!Project\Account::getAllowStripe($project_id)) {
             unset($pay_methods['stripe']);
+            unset($pay_methods['stripe_subscription']);
         }
 
         // Find the correct reward/amount
@@ -158,7 +159,7 @@ class InvestController extends Controller {
         }
 
         if ($reward->subscribable) {
-            $pay_methods = array_intersect_key($pay_methods, array_flip(['stripe']));
+            $pay_methods = array_intersect_key($pay_methods, array_flip(['stripe_subscription']));
         }
 
         if($login_required) {

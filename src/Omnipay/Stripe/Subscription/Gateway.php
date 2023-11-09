@@ -22,7 +22,7 @@ class Gateway extends AbstractGateway
 
     public function getName()
     {
-        return 'Stripe Subscriptions';
+        return 'Stripe Subscription';
     }
 
     public function purchase($options = array())
