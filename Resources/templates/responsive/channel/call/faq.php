@@ -8,11 +8,11 @@ $this->layout('channel/call/layout', [
 $this->section('channel-content');
 
 ?>
-<?= $this->insert('channel/call/partials/faq/banner') ?>
+<?= $this->insert('channel/call/faq/partials/banner') ?>
 
-<?= $this->insert('channel/call/partials/faq/questions') ?>
+<?= $this->insert('channel/call/faq/partials/questions') ?>
 
-<?= $this->insert('channel/call/partials/faq/download') ?>
+<?= $this->insert('channel/call/faq/partials/download') ?>
 
 <?= $this->insert('channel/call/partials/sponsors') ?>
 

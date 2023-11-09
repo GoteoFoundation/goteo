@@ -57,9 +57,9 @@
   }
 
    /**
-     * @return NodeFaqDownload[]
+     * @return NodeFaqDownload[] | int
      */
-    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null): array
+    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null)
     {
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));

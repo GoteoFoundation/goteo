@@ -212,7 +212,7 @@ class ChannelController extends Controller {
         $this->setChannelContext($id);
         $nodeFaqs = NodeFaq::getList(['node' => $channel->id]);
 
-        return $this->viewResponse('channel/call/faq_list', [
+        return $this->viewResponse('channel/call/faq/index', [
             'nodeFaqs' => $nodeFaqs,
         ]);
     }

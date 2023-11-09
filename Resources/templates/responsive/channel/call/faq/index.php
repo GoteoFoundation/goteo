@@ -10,6 +10,6 @@ $this->section('channel-content');
 
 <?= $this->insert('channel/call/partials/banner_header') ?>
 
-<?= $this->insert('channel/call/partials/faq/questions_list') ?>
+<?= $this->insert('channel/call/faq/partials/questions_list') ?>
 
 <?php $this->replace() ?>
