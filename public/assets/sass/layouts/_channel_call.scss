@@ -1012,6 +1012,13 @@ div.section.sponsors{
 	}
 }
 
+section.faq-list {
+  background-color: $background-white;
+  font-size: $font-size*1.1;
+  color: $color-new-dark-blue;
+  padding: 0 0 60px 0 !important;
+}
+
 div.section.terms-items{
     background-color: $background-white;
     // padding-bottom:80px;
