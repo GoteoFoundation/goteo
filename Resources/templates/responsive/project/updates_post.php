@@ -1,6 +1,7 @@
 <?php $this->layout('project/layout') ?>
 <?php $this->section('main-content') ?>
 
+<?php if ($this->canUserAccess): ?>
 <div class="widget post">
     <h2 class="title"><?= $this->post->title ?></h2>
     <div class="date"><?= $this->post->fecha ?></div>
@@ -105,5 +106,34 @@
 
 </div>
 <!-- End widget -->
+<?php else: ?>
+    <div class="widget post">
+        <h2 class="title"><?= $this->post->title ?></h2>
+        <div class="date"><?= $this->post->fecha ?></div>
+
+        <strong>
+            <i class="fa fa-2x fa-lock"></i>
+            <?= $this->t('project-updates-access-restricted') ?>
+        </strong>
+
+        <?php
+        $postRewardAccessList = $this->post->getRewardsThatCanAccessPost();
+        if ($postRewardAccessList):
+            ?>
+            <ul>
+                <?php foreach($postRewardAccessList as $postRewardAccess):
+                    $reward = $postRewardAccess->getReward();
+                    ?>
+                    <li>
+                        <a href="<?= "#reward-$reward->id" ?>">
+                            <?= $reward->reward ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+
+    </div>
+<?php endif; ?>
 
 <?php $this->replace() ?>

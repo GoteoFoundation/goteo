@@ -47,33 +47,75 @@ foreach($milestones as $update):
         <?php endif; ?>
     </div>
 
-    <?php if($update->post): ?>
-    <div class="col-sm-9 col-xs-8 content">
-        <a class="pronto" data-pronto-target="#project-tabs" href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->getSlug() ?>">
-            <h2><?= $update->post->title ?></h2>
-        </a>
+    <?php if($update->post):
+        $post = $update->post;
+        $user = $this->get_user();
+        if (!$user)
+            $canAccess = $post->userCanAccessPost();
+        else
+            $canAccess = $post->userCanAccessPost($user);
 
-        <?php if (!empty($update->post->media->url)) :
-            $embed = $update->post->media->getEmbedCode();
-            if (!empty($embed))  : ?>
-                <div class="embed-responsive embed-responsive-16by9 spacer-20">
-                <?= $embed; ?>
+        if ($canAccess) :
+        ?>
+            <div class="col-sm-9 col-xs-8 content">
+            <a class="pronto" data-pronto-target="#project-tabs" href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->getSlug() ?>">
+                <h2><?= $update->post->title ?></h2>
+            </a>
+
+            <?php if (!empty($update->post->media->url)) :
+                $embed = $update->post->media->getEmbedCode();
+                if (!empty($embed))  : ?>
+                    <div class="embed-responsive embed-responsive-16by9 spacer-20">
+                    <?= $embed; ?>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
+
+            <?php if($update->post->text): ?>
+            <div class="description spacer-20">
+                <?= $this->markdown($this->text_truncate($this->text_plain($update->post->text), 250)) ?>
+                <a class="pronto" data-pronto-target="#project-tabs" href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->getSlug() ?>"><span class="read-more">[<?= $this->text('regular-read_more') ?>]</span></a>
+            </div>
+            <?php endif ?>
+            <?php if($update->post->num_comments): ?>
+                <div class="comments spacer-20">
+                <?= sprintf("%02d", $update->post->num_comments).' '.$this->text('blog-coments-header') ?>
                 </div>
             <?php endif; ?>
-        <?php endif; ?>
-
-        <?php if($update->post->text): ?>
-        <div class="description spacer-20">
-            <?= $this->markdown($this->text_truncate($this->text_plain($update->post->text), 250)) ?>
-            <a class="pronto" data-pronto-target="#project-tabs" href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->getSlug() ?>"><span class="read-more">[<?= $this->text('regular-read_more') ?>]</span></a>
         </div>
-        <?php endif ?>
-        <?php if($update->post->num_comments): ?>
-            <div class="comments spacer-20">
-            <?= sprintf("%02d", $update->post->num_comments).' '.$this->text('blog-coments-header') ?>
-            </div>
+        <?php else: ?>
+            <article class="col-sm-9 col-xs-8 content">
+                <h2>
+                    <a class="pronto"
+                       data-pronto-target="#project-tabs"
+                       href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->getSlug() ?>">
+                        <?= $update->post->title ?>
+                    </a>
+                </h2>
+
+                <strong>
+                    <i class="fa fa-2x fa-lock"></i>
+                    You can't access this resource. To be able to do so you have to donate to some of these rewards:
+                </strong>
+
+                <?php
+                    $postRewardAccessList = $post->getRewardsThatCanAccessPost();
+                    if ($postRewardAccessList):
+                    ?>
+                <ul>
+                    <?php foreach($postRewardAccessList as $postRewardAccess):
+                        $reward = $postRewardAccess->getReward();
+                    ?>
+                    <li>
+                        <a href="<?= "#reward-$reward->id" ?>">
+                            <?= $reward->reward ?>
+                        </a>
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
+                <?php endif; ?>
+            </article>
         <?php endif; ?>
-    </div>
     <?php else: ?>
         <div class="col-sm-9 col-xs-8 milestone-content">
 

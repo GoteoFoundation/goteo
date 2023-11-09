@@ -52,4 +52,9 @@ class PostPrivacyAccess
         return false;
     }
 
+    static public function getLimitingRewardsForPost(Post $post): array
+    {
+        return PostRewardAccess::getList(['post_id' => $post->id]);
+    }
+
 }

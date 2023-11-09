@@ -14,6 +14,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Lang;
 use Goteo\Core\Model;
+use Goteo\Library\PostPrivacyAccess;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
 use Goteo\Model\Project\Media;
@@ -674,5 +675,18 @@ class Post extends Model {
     public static function getSection($section){
         $sections = self::getListSections();
         return $sections[$section];
+    }
+
+    public function userCanAccessPost(?User $user = null): bool
+    {
+        return PostPrivacyAccess::canAccess($user, $this);
+    }
+
+    /**
+     * return PostRewardAccess[]
+     */
+    public function getRewardsThatCanAccessPost(): array
+    {
+        return PostPrivacyAccess::getLimitingRewardsForPost($this);
     }
 }
