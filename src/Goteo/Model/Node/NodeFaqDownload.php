@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Model for Node Team
@@ -6,15 +6,15 @@
 
  namespace Goteo\Model\Node;
 
- use Goteo\Model\Image;
+ use Goteo\Core\Model;
  use Goteo\Application\Lang;
  use Goteo\Application\Config;
- 
- class NodeFaqDownload extends \Goteo\Core\Model {
+
+ class NodeFaqDownload extends Model {
 
   protected $Table = 'node_faq_download';
   protected static $Table_static = 'node_faq_download';
-  
+
   public
       $id,
       $node_faq,
@@ -24,7 +24,8 @@
       $url,
       $order;
 
-    public static function getLangFields() {
+    public static function getLangFields(): array
+    {
         return ['title', 'description', 'url'];
     }
 
@@ -37,10 +38,10 @@
    */
   public static function get($id, $type) {
 
-    if(!$lang) $lang = Lang::current();
+    $lang = Lang::current();
     list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
-    $sql = "SELECT 
+    $sql = "SELECT
                   node_faq_download.id as id,
                   $fields,
                   node_faq_download.icon as icon,
@@ -52,23 +53,14 @@
             WHERE node_faq_download.node_id = ?";
 
     $query = static::query($sql, array($id));
-    $team = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
-
-    return $team;
+    return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
   }
 
    /**
-     * Node Faq Download listing
-     *
-     * @param array filters
-     * @param string node id
-     * @param int limit items per page or 0 for unlimited
-     * @param int page
-     * @param int pages
-     * @return array of programs instances
+     * @return NodeFaqDownload[]
      */
-    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
-
+    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null): array
+    {
         if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
@@ -89,6 +81,11 @@
             $sql = " WHERE " . implode(' AND ', $filter);
         }
 
+        if ($count) {
+            $sql = "SELECT COUNT(*) FROM node_faq_download $joins $sql";
+            return static::query($sql, $values)->fetchColumn();
+        }
+
         $sql="SELECT
                   node_faq_download.id as id,
                   $fields,
@@ -100,45 +97,45 @@
               $sql
               ORDER BY node_faq_download.order ASC
               LIMIT $offset, $limit";
-         //die(\sqldbg($sql, $values));
+
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
 
-  /**
-   * Save.
-   *
-   * @param   type array  $errors
-   * @return  type bool   true|false
-   */
-  public function save(&$errors = array()) {
+    /**
+    * Save.
+    *
+    * @param   type array  $errors
+    * @return  type bool   true|false
+    */
+    public function save(&$errors = array())
+    {
+        if (!$this->validate($errors))
+            return false;
 
-    if (!$this->validate($errors))
-        return false;
+        $fields = [
+            'id',
+            'type',
+            'title',
+            'icon',
+            'description',
+            'url',
+            'lang',
+            'order',
+            'node_id'
+        ];
 
-    $fields = array(
-        'id',
-        'type',
-        'title',
-        'icon',
-        'description',
-        'url',
-        'lang',
-        'order',
-        'node_id'
-    );
+        try {
+            //automatic $this->id assignation
+            $this->dbInsertUpdate($fields);
 
-    try {
-        //automatic $this->id assignation
-        $this->dbInsertUpdate($fields);
-
-        return true;
-    } catch(\PDOException $e) {
-        $errors[] = "Node team save error: " . $e->getMessage();
-        return false;
+            return true;
+        } catch(\PDOException $e) {
+            $errors[] = "Node team save error: " . $e->getMessage();
+            return false;
+        }
     }
-  }
 
     /**
      * Validate.
@@ -147,11 +144,9 @@
      * @return  type bool   true|false
      */
     public function validate(&$errors = array()) {
-      if (empty($this->title)) 
+      if (empty($this->title))
         $errors[] = "The faq type has no title";
 
       return empty($errors);
     }
-
-
  }
