@@ -95,7 +95,7 @@ foreach($milestones as $update):
 
                 <strong>
                     <i class="fa fa-2x fa-lock"></i>
-                    You can't access this resource. To be able to do so you have to donate to some of these rewards:
+                    <?= $this->t('project-updates-access-restricted'); ?>
                 </strong>
 
                 <?php
