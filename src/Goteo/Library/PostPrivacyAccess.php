@@ -39,13 +39,12 @@ class PostPrivacyAccess
                 $reward = $postRewardAccess->getReward();
                 if ($reward->subscribable) {
                     $hasAccessToPost = Invest::hasUserInvestToRewardInTheLastMonth($user, $reward);
-                    if ($hasAccessToPost)
-                        return true;
                 } else {
                     $hasAccessToPost = Invest::hasUserInvestToReward($user, $reward);
-                    if ($hasAccessToPost)
-                        return true;
                 }
+
+                if ($hasAccessToPost)
+                    return true;
             }
         }
 
