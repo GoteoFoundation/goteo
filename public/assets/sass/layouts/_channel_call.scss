@@ -1024,6 +1024,10 @@ section.faq-list {
     grid-gap: 2em;
 
     .faqs_module.card {
+      header {
+        text-align: center;
+      }
+
       position: relative;
       border: none;
       background: #fff;
