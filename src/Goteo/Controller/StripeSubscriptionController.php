@@ -16,13 +16,14 @@ use Goteo\Core\Controller;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Goteo\Model\User;
+use Goteo\Payment\Method\StripeSubscriptionPaymentMethod;
 use Stripe\Event;
 use Stripe\StripeClient;
 use Stripe\Webhook;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class StripeController extends Controller
+class StripeSubscriptionController extends Controller
 {
     private StripeClient $stripe;
 
@@ -68,7 +69,7 @@ class StripeController extends Controller
             'currency_rate' => Currency::rate(strtoupper($invoice->currency)),
             'user' => $user->id,
             'project' => explode('_', $subscription->items->data[0]->price->product)[0],
-            'method' => 'Stripe\Webhook',
+            'method' => StripeSubscriptionPaymentMethod::PAYMENT_METHOD_ID,
             'status' => Invest::STATUS_PAID,
             'invested' => date('Y-m-d'),
         ]);
