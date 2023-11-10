@@ -109,6 +109,7 @@ dashboard-project-blog-fail: 'Contacta con nosotr*s'
 dashboard-project-blog-inactive: 'Lo sentimos, la publicación de novedades en este proyecto está desactivada'
 dashboard-project-blog-empty: 'No hay publicaciones todavía.'
 dashboard-project-blog-wrongstatus: 'Lo sentimos, aún no se pueden publicar novedades en este proyecto...'
+dashboard-project-blog-privacy-empty: "No hay ninguna restricción de acceso en base a recompensas todavía."
 dashboard-project-delete: Borrar el proyecto
 dashboard-project-delete_alert: '¿Seguro que deseas eliminar absoluta y definitivamente este proyecto?'
 dashboard-project-delete-no-perms: 'No tienes permiso para eliminar este proyecto'
