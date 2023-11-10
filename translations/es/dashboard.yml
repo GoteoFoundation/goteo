@@ -264,6 +264,7 @@ dashboard-mail-sent-mails: 'Comunicaciones enviadas a %s'
 dashboard-mail-sent-mails-desc: 'Estas son las últimas comunicaciones enviadas a tu email personal.<br><em>NOTA: Las comunicaciones antiguas se eliminan automáticamente.</em>'
 
 dashboard-rewards-my-invests: 'Mis donaciones'
+dashboard-rewards-my-subscriptions: 'Mis subscripciones'
 dashboard-rewards-no-invests: 'No has hecho ninguna donación todavía.'
 dashboard-rewards-invests-totals: 'Este es tu historial de donaciones y recompensas.<br>Has realizado %TOTAL% aportaciones por un valor total de <strong>%RAISED%</strong>, de esta cantidad se te han devuelto <strong>%RETURNED%</strong> (a tu monedero virtual o a tu cuenta bancaria) debido a proyectos que no han alcanzado su objetivo.'
 dashboard-rewards-invests-wallet: 'Además, en tu monedero virtual tienes <strong>%AMOUNT%</strong> que puedes usar en cualquier momento.'
