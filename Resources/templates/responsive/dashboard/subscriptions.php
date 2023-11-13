@@ -16,6 +16,13 @@
                         <td><?= \amount_format($price['unit_amount'] / 100) . '/' . $plan['interval'] ?></td>
                         <td><?= \date_formater(date('Y-m-d', $subscription['start_date'])) ?></td>
                         <td><?= \date_formater(date('Y-m-d', $subscription['current_period_end'])) ?></td>
+                        <td><span class="label label-info"><?= $subscription['status'] ?></span></td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-default" title="<?= $this->text('regular-view') ?>" href="/dashboard/subscriptions/<?= $subscription['id'] ?>"><i class="fa fa-info-circle"></i></a>
+                                <a class="btn btn-default" title="<?= $this->text('regular-cancel') ?>" href="/dashboard/subscriptions/<?= $subscription['id'] ?>/cancel"><i class="fa fa-ban"></i></a>
+                            </div>
+                        </td>
                     </tr>
                 <?php endforeach ?>
             </table>
