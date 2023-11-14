@@ -26,9 +26,9 @@ $this->replace();
 $this->section('favicon');
 
 if ($this->channel->label): ?>
-        <link rel="icon" type="image/x-icon" href=<?= $this->channel->label->getLink(16,16,true) ?>
-<?php endif; ?>
-<?php $this->append();
+        <link rel="icon" type="image/x-icon" href="<?= $this->channel->label->getLink(16,16,true) ?>">
+<?php endif;
+$this->append();
 
 $this->section('content');
 ?>
