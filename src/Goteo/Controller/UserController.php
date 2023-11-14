@@ -27,6 +27,7 @@ use Goteo\Model\Mail;
 use Goteo\Model\Project;
 use Goteo\Model\Stories;
 use Goteo\Model\User;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use function mybase64_decode;
 
@@ -36,7 +37,8 @@ class UserController extends Controller {
         View::setTheme('responsive');
     }
 
-    public function indexAction($id = '', $show = '') {
+    public function indexAction($id = '', $show = ''): RedirectResponse
+    {
         return $this->redirect('/user/profile/' . $id . ($show ? '/' . $show : ''));
     }
 
@@ -44,18 +46,16 @@ class UserController extends Controller {
      * Modificación perfil de usuario.
      * Metodo Obsoleto porque esto lo hacen en el dashboard
      */
-    public function editAction() {
+    public function editAction(): RedirectResponse
+    {
         return $this->redirect('/dashboard/profile');
     }
 
-    /**
-     * @param string $id User name
-     */
-    public function profileAction(string $id = '', $show = 'profile', $category = '') {
+    public function profileAction(string $id = '', string $show = 'profile', string $category = '') {
 
         // This should be changed to a responsive view anytime (soon!)
 
-        if (!in_array($show, array('profile', 'investors', 'sharemates', 'message'))) {
+        if (!in_array($show, ['profile', 'investors', 'sharemates', 'message'])) {
             $show = 'profile';
         }
 
@@ -67,7 +67,7 @@ class UserController extends Controller {
         }
 
         //--- para usuarios públicos---
-        if (!Session::isLogged()) {
+        if (!$user->active) {
             // la subpágina de mensaje también está restringida
             if ($show == 'message') {
                 Session::store('jumpto', '/user/profile/' . $user->id . '/message');
