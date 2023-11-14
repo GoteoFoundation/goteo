@@ -83,6 +83,11 @@ class NodeFaqQuestion extends \Goteo\Core\Model {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
 
+        if ($count) {
+            $sql = "SELECT COUNT(*) FROM node_faq_question $joins $sql";
+            return (int) static::query($sql, $values)->fetchColumn();
+        }
+
         $sql="SELECT
                   node_faq_question.id as id,
                   $fields,
@@ -93,12 +98,12 @@ class NodeFaqQuestion extends \Goteo\Core\Model {
               $sql
               ORDER BY node_faq_question.order ASC
               LIMIT $offset, $limit";
-         //die(\sqldbg($sql, $values));
+
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-   
+
     /**
      * Save.
      *

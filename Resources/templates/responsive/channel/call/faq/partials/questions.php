@@ -13,8 +13,8 @@
 			<?php else: ?>
 			<div class="row">
 				<div class="col-md-10">
-					<h2 class="title" <?= $this->faq->question_color ? 'style="color:'.$this->faq->question_color.';"' : '' ?> role="button" data-toggle="collapse" href="<?= '#collapse-'.$item->id ?>" aria-expanded="false">
-							<?= $item->title ?>
+					<h2 id="<?= "faq-{$item->id}" ?>" class="title" <?= $this->faq->question_color ? 'style="color:'.$this->faq->question_color.';"' : '' ?> role="button" data-toggle="collapse" href="<?= '#collapse-'.$item->id ?>" aria-expanded="false">
+                        <?= $item->title ?>
 					</h2>
 
 					<div class="description collapse" id="<?= 'collapse-'.$item->id ?>">
@@ -26,7 +26,6 @@
 			<?php endif; ?>
 
 		<?php endforeach; ?>
-
 	</div>
 </div>
 
