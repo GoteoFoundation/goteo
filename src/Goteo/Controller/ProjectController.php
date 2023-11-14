@@ -281,8 +281,7 @@ class ProjectController extends Controller {
                         /** @var BlogPost $pob */
                         $pob = BlogPost::getBySlug($post, Lang::current(), $project->lang);
 
-                        $canUserAccess = PostPrivacyAccess::canAccess($user, $pob);
-                        $viewData['canUserAccess'] = $canUserAccess;
+                        $viewData['canUserAccess'] = PostPrivacyAccess::canAccess($user, $pob);
 
                         if($pob->slug && $post != $pob->slug) {
                             return $this->redirect("/project/{$project->id}/updates/{$pob->slug}");

@@ -7,6 +7,7 @@ use Goteo\Model\Blog\Post;
 use Goteo\Model\Blog\Post\PostRewardAccess;
 use Goteo\Model\Invest;
 use Goteo\Model\User;
+use Goteo\Repository\InvestRepository;
 
 class PostPrivacyAccess
 {
@@ -16,12 +17,10 @@ class PostPrivacyAccess
         if ($admin)
             return true;
 
-        if ($user instanceof User) {
+        if ($user instanceof User)
             return self::canUserAccess($user, $post);
-        }
 
-        if ($post->access_limited)
-            return false;
+        if ($post->access_limited) return false;
 
         if ($post->publish) return true;
 
@@ -33,27 +32,11 @@ class PostPrivacyAccess
         if ($user->id == $post->author)
             return true;
 
-        if ($post->access_limited) {
-            $postRewardAccessList = PostRewardAccess::getList(['post_id' => $post->id]);
-            foreach($postRewardAccessList as $postRewardAccess) {
-                $reward = $postRewardAccess->getReward();
-                if ($reward->subscribable) {
-                    $hasAccessToPost = Invest::hasUserInvestToRewardInTheLastMonth($user, $reward);
-                } else {
-                    $hasAccessToPost = Invest::hasUserInvestToReward($user, $reward);
-                }
-
-                if ($hasAccessToPost)
-                    return true;
-            }
+        if ($post->access_limited){
+            $investRepository = new InvestRepository();
+            return $investRepository->hasInvestToPostRewards($user, $post);
         }
 
         return false;
     }
-
-    static public function getLimitingRewardsForPost(Post $post): array
-    {
-        return PostRewardAccess::getList(['post_id' => $post->id]);
-    }
-
 }
