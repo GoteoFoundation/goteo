@@ -40,20 +40,7 @@ $colors = $this->a($this->colors);
 		</div>
 	</div>
 
-	<?php if($this->type!='available'&&!$this->channel->getSections('intro')): ?>
-
-
-	<div class="info">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 subtitle" style="<?= $colors['secondary'] ? 'color:'.$colors['secondary'] : '' ?>">
-					<?= $this->text('channel-call-main-info-subtitle') ?>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<?php elseif($this->channel->getSections('intro')&&$this->type!='available'): ?>
+	<?php if($this->channel->getSections('intro')&&$this->type!='available'): ?>
 
 	<div class="info intro">
 		<div class="container">
@@ -81,7 +68,5 @@ $colors = $this->a($this->colors);
 			</div>
 		</div>
 	</div>
-
 	<?php endif; ?>
-
 </div>
