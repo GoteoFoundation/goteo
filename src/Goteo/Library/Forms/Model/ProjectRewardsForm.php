@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Application\Currency;
+use Goteo\Application\Session;
 use Goteo\Model\Project\Reward;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Model\Project;
@@ -129,13 +130,6 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 'required' => false,
                 'color' => 'cyan'
             ])
-            ->add("subscribable$suffix", BooleanType::class, [
-                'label' => false,
-                'data' => $reward->subscribable,
-                'disabled' => $subs_readonly,
-                'required' => false,
-                'color' => 'cyan'
-            ])
             ->add("reward$suffix", TextType::class, [
                 'label' => 'regular-title',
                 'data' => $reward->reward,
@@ -157,6 +151,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 ]
 
             ]);
+
         if(!$remove_readonly) {
             $this->getBuilder()
                 ->add("remove$suffix", SubmitType::class, [
@@ -168,6 +163,16 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                         'data-confirm' => Text::get('project-remove-reward-confirm')
                         ]
                 ]);
+        }
+
+        if (Session::isAdmin()) {
+            $this->getBuilder()->add("subscribable$suffix", BooleanType::class, [
+                'label' => false,
+                'data' => $reward->subscribable,
+                'disabled' => $subs_readonly,
+                'required' => false,
+                'color' => 'cyan'
+            ]);
         }
     }
 
