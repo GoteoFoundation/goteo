@@ -1,5 +1,6 @@
 ---
 role-name-user: 'Usuari sense privilegis'
+role-name-creator: 'Creador de continguts'
 role-name-vip: 'Usuari VIP (padrí)'
 role-name-translator: 'Traductor de continguts'
 role-name-checker: 'Revisor de projectes'
@@ -54,3 +55,4 @@ role-perm-name-create-matcher: 'Pot crear matchers'
 role-perm-name-edit-matcher: 'Pot editar matchers'
 role-perm-name-remove-matcher: 'Pot esborrar els seus matchers'
 role-perm-name-edit-any-matcher: 'Pot editar qualsevol matcher'
+role-perm-name-highlight-project: 'Pot incloure projectes propis al seu perfil de creador'
