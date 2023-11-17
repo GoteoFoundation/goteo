@@ -6,12 +6,13 @@
 
  namespace Goteo\Model\Node;
 
+ use Goteo\Core\Model;
  use Goteo\Model\Image;
  use Goteo\Application\Lang;
  use Goteo\Application\Config;
  use Goteo\Library\Text;
 
- class NodeSections extends \Goteo\Core\Model {
+ class NodeSections extends Model {
 
   protected $Table = 'node_sections';
   protected static $Table_static = 'node_sections';
@@ -27,10 +28,11 @@
   const SECTION_TEAM            = 'team';
   const SECTION_SPONSORS        = 'sponsors';
   const SECTION_DATA_SETS       = 'data_sets';
+  const SECTION_FOOTER          = 'footer';
 
 
 
-  static $SECTIONS = [
+  static array $SECTIONS = [
       self::SECTION_MAP,
       self::SECTION_RESOURCES,
       self::SECTION_CALL_TO_ACTION,
@@ -41,7 +43,8 @@
       self::SECTION_WORKSHOPS,
       self::SECTION_TEAM,
       self::SECTION_SPONSORS,
-      self::SECTION_DATA_SETS
+      self::SECTION_DATA_SETS,
+      self::SECTION_FOOTER
   ];
 
   public
@@ -54,7 +57,8 @@
       $main_button,
       $order = 1;
 
-    public static function getLangFields() {
+    public static function getLangFields(): array
+    {
         return ['main_title', 'main_description', 'main_button'];
     }
 
@@ -209,7 +213,8 @@
     }
 
 
-    public static function getSectionNames() {
+    public static function getSectionNames(): array
+    {
       return [
         self::SECTION_MAP => Text::get('admin-channelsection-map'),
         self::SECTION_RESOURCES => Text::get('admin-channelsection-resource'),
@@ -220,7 +225,9 @@
         self::SECTION_STORIES => Text::get('admin-channelsection-stories'),
         self::SECTION_WORKSHOPS => Text::get('admin-channelsection-workshops'),
         self::SECTION_TEAM => Text::get('admin-channelsection-team'),
-        self::SECTION_SPONSORS => Text::get('admin-channelsection-sponsors')
+        self::SECTION_SPONSORS => Text::get('admin-channelsection-sponsors'),
+        self::SECTION_DATA_SETS => Text::get('admin-channelsection-data_sets'),
+        self::SECTION_FOOTER => Text::get('admin-channelsection-footer')
       ];
     }
  }
