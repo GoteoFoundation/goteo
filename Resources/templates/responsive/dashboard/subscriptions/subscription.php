@@ -15,7 +15,6 @@
                 <td><?= $subscription['id'] ?></td>
             </tr>
             <tr>
-                <td>Creada</td>
                 <td><?= $this->t('subscription-data-start-date') ?></td>
                 <td><?= \date_formater(date('Y-m-d', $subscription['start_date'])) ?></td>
             </tr>
