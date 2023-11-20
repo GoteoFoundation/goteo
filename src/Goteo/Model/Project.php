@@ -25,6 +25,7 @@ use Goteo\Model\Location\LocationInterface;
 use Goteo\Model\Project\Account;
 use Goteo\Model\Project\Conf as ProjectConf;
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\Project\Reward;
 use PDOException;
 use function array_empty;
 
@@ -750,6 +751,11 @@ class Project extends Model {
             $this->individual_rewards = Project\Reward::getAll($this->id, 'individual', $lang);
         }
         return $this->individual_rewards;
+    }
+
+    public function getSubscribableRewards(): array
+    {
+        return Reward::getSubscribableRewardsForProject($this);
     }
 
     public function getSupports($lang = null) {
