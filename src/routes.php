@@ -307,4 +307,9 @@ $routes->add('stripe-subscription-webhook', new Route(
     ]
 ));
 
+$routes->add('creator', new Route(
+    '/creator/{user_id}',
+    ['_controller' => 'Goteo\Controller\CreatorController::indexAction']
+));
+
 return $routes;
