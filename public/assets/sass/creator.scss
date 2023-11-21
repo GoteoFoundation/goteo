@@ -2,145 +2,171 @@
 
 body.creator {
 
+  section {
+    h2 {
+      font-weight: bold;
+      text-align: center;
+      text-transform: uppercase;
+    }
+  }
+
   section.subscriptions {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.75rem;
-    padding: 1rem;
-    margin-top: 2.5rem;
 
-    article.subscription {
-      background-color: white;
-      border: 1px solid $color-light-grey;
-      border-radius: 1rem;
-      width: 100%;
-      min-height: 40rem;
-      height: 40rem;
-      padding: 2rem;
-      font-size: 1.5rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    div.subscription-grid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      justify-items: center;
 
-      .card-header {
-        h2 {
-          overflow: hidden;
-          text-overflow: ellipsis;
+      &:has(> :last-child:nth-child(2)) {
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 3em;
+
+        article.subscription:first-child {
+          justify-self:right;
+        }
+        article.subscription:last-child {
+          justify-self:left;
         }
       }
 
-      .card-body {
-        height: 20rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding-bottom: 1rem;
-      }
+      gap: 0.75rem;
+      padding: 1rem;
+      margin-top: 2.5rem;
 
-      .amount-box {
-        color: $color-dark-green;
-        font-size: 40px;
-        font-weight: bold;
-      }
+      article.subscription {
+        display: grid;
+        grid-template-rows: auto auto auto;
+        background-color: white;
+        border: 1px solid $color-light-grey;
+        border-radius: 1rem;
+        width: 300px;
+        padding: 2rem;
+        font-size: 1.5rem;
+        transition: all 0.5s ease-in-out;
 
-      img {
-        width: 100%;
-      }
+        &:only-child {
+          grid-column-start: 2;
+        }
 
-      &:hover {
-        border: $background-light-green 2px solid;
-        height: fit-content;
-        transition: 0.5s;
+        .card-header {
+          h2 {
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
 
         .card-body {
-          min-height: 20rem;
-          height: fit-content;
-          transition: 0.5s;
+          height: 20rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding-bottom: 1rem;
+
+          .amount-box {
+            color: $color-dark-green;
+            font-size: 40px;
+            font-weight: bold;
+          }
+
+          img {
+            width: 100%;
+          }
+
+          &:hover {
+            height: fit-content;
+            min-height: 20rem;
+          }
+        }
+
+        &:hover {
+          border: $background-light-green 2px solid;
         }
       }
     }
 
     @media (min-width: $breakpoint-sm) {
-      grid-template-cols: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     @media (min-width: $breakpoint-md) {
-      grid-template-cols: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     @media (min-width: $breakpoint-lg) {
-      grid-template-cols: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
   section.posts {
-    display: grid;
-    grid-template-columns: auto;
-    gap: 1rem;
-    padding: 1rem;
-    margin-top: 2.5rem;
+    .post-grid {
+      display: grid;
+      grid-template-columns: 1fr 4fr 1fr;
 
-    article.post {
-      display: flex;
-      margin: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
+      gap: 1rem;
+      padding: 1rem;
+      margin-top: 2.5rem;
 
-      .card-header {
+      article.post {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-column-start: 2;
+        margin: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
 
-        h2 {
-          margin-top: 0;
-          display: flex;
-          align-items: center; /* Center lock icon vertically */
+        &:has(.post-image) {
+          grid-template-columns: 1fr 2fr;
         }
 
         .post-image {
-          flex: 0 0 auto;
-          width: 10em;
-          height: 10em;
+          width: 100%;
 
           img {
             object-fit: cover;
             height: 100%;
             display: block;
-            border-radius: 8px 0 0 8px;
           }
         }
-      }
 
-      .card-body {
-        flex: 1;
-        padding: 20px;
+        .card-body {
+          display: grid;
+          grid-template-rows: 2fr 1fr;
 
-        p {
-          margin-bottom: 0;
-        }
-      }
+          .card-info {
+            margin: 1em;
+            text-align: center;
 
-      footer {
+            h2 {
+              text-wrap: balance;
 
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 15px;
-        background-color: #f0f0f0;
-        border-top: 1px solid #ddd;
-        border-radius: 0 0 8px 8px; /* Rounded bottom corners */
+              a {
+                color: inherit;
+              }
+            }
 
-        .author-info {
-          display: flex;
-          align-items: center;
+            p {
+              display: -webkit-box;
+              text-overflow: ellipsis;
+              line-clamp: 2;
+            }
+          }
+          .card-author-info {
+            padding: 1em;
+            display: flex;
+            align-items: center;
+            background-color: $background-light-green;
+            justify-content: space-between;
+            color: $color-white;
 
-          .author-image {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-            overflow: hidden;
+            .author-image {
+              margin-right: 10px;
 
-            img {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
+              img {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                object-fit: cover;
+              }
             }
           }
         }
