@@ -16,7 +16,7 @@ $listOfProjects = $this->listOfProjects;
     <div class="container-fluid">
         <div class="row header text-center">
             <h1 class="project-title"><?= $this->markdown($this->ee($permanentProject->name)) ?></h1>
-            <div class="project-by"><a href="/user/<?= $permanentProject->owner ?>"><?= $permanentProject->user->name ?></a></div>
+            <div class="project-by"><strong><?= $permanentProject->user->name ?></strong></div>
         </div>
 
         <div class="row">
