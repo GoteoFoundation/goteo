@@ -1575,6 +1575,18 @@ footer {
 			}
 		}
 	}
+
+  &.minimal-footer {
+    ul li {
+      border-bottom: unset !important;
+      &::after {
+        content: '';
+        border-bottom: 1px solid $color-new-dark-blue;
+        width: 90%;
+        display: block;
+      }
+    }
+  }
 }
 
 // Tablets customization
