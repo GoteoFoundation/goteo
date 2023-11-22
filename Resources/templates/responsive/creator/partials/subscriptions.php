@@ -1,5 +1,7 @@
 <?php
 $subscriptions = $this->subscriptions;
+if (empty($subscriptions))
+    return;
 ?>
 
 <section class="subscriptions">

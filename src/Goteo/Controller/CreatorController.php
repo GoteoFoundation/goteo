@@ -38,6 +38,9 @@ class CreatorController extends BaseSymfonyController
         $listOfProjects = Project::getList(['type_of_campaign' => Project\Conf::TYPE_CAMPAIGN, 'owner' => $user->id, 'status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED]]);
         $posts = Post::getList(['author' => $user->id, 'show' => 'published']);
 
+        if (empty($permanentProject))
+            return $this->redirect($this->generateUrl('user-profile', ['id' => $user->id]));
+
         return $this->renderFoilTemplate('creator/index', [
             'user' => $user,
             'permanentProject' => $permanentProject,

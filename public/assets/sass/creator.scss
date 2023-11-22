@@ -12,10 +12,13 @@ body.creator {
 
   section.subscriptions {
 
-    div.subscription-grid{
+    .subscription-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: 1fr;
       justify-items: center;
+      padding: 1rem;
+      margin-top: 2.5rem;
+      grid-row-gap: 3em;
 
       &:has(> :last-child:nth-child(2)) {
         grid-template-columns: repeat(2, 1fr);
@@ -28,10 +31,6 @@ body.creator {
           justify-self:left;
         }
       }
-
-      gap: 0.75rem;
-      padding: 1rem;
-      margin-top: 2.5rem;
 
       article.subscription {
         display: grid;
@@ -82,18 +81,6 @@ body.creator {
         }
       }
     }
-
-    @media (min-width: $breakpoint-sm) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    @media (min-width: $breakpoint-md) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    @media (min-width: $breakpoint-lg) {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
   }
 
   section.posts {
@@ -112,7 +99,11 @@ body.creator {
         margin: 20px;
         border: 1px solid #ddd;
         border-radius: 8px;
-        overflow: hidden;
+
+        h2 {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
 
         &:has(.post-image) {
           grid-template-columns: 1fr 2fr;
@@ -171,6 +162,69 @@ body.creator {
           }
         }
       }
+    }
+  }
+
+  section.projects {
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      grid-column-gap: 3em;
+      grid-row-gap: 3em;
+
+      &:has(> :last-child:nth-child(2)) {
+        grid-template-columns: repeat(2, 1fr);
+
+        .project-widget:first-child {
+          justify-self:right;
+        }
+        .project-widget:last-child {
+          justify-self:left;
+        }
+      }
+
+      padding: 1rem;
+      margin-top: 2.5rem;
+    }
+  }
+
+  @media (max-width: $breakpoint-lg) {
+    section.projects .project-grid, section.subscriptions .subscription-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+
+  @media (max-width: $breakpoint-md) {
+    section.projects .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    section.subscriptions .subscription-grid {
+      &:has(> :last-child:nth-child(2)) {
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 3em;
+
+        article.subscription:first-child {
+          justify-self:right;
+        }
+        article.subscription:last-child {
+          justify-self:left;
+        }
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    section.projects div.project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: $breakpoint-xs) {
+    section.projects div.project-grid {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
     }
   }
 }
