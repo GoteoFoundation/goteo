@@ -30,11 +30,13 @@ use Goteo\Library\Forms\Model\ProjectCostsForm;
 use Goteo\Library\Forms\Model\ProjectOverviewForm;
 use Goteo\Library\Forms\Model\ProjectPersonalForm;
 use Goteo\Library\Forms\Model\ProjectPostForm;
+use Goteo\Library\Forms\Model\ProjectPostPrivacyForm;
 use Goteo\Library\Forms\Model\ProjectRewardsForm;
 use Goteo\Library\Forms\Model\ProjectStoryForm;
 use Goteo\Library\Text;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
+use Goteo\Model\Blog\Post\PostRewardAccess;
 use Goteo\Model\Call;
 use Goteo\Model\Footprint;
 use Goteo\Model\Invest;
@@ -43,6 +45,7 @@ use Goteo\Model\Message as Comment;
 use Goteo\Model\Node;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Account;
+use Goteo\Model\Project\Conf;
 use Goteo\Model\Project\Cost;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Reward;
@@ -90,6 +93,7 @@ class ProjectDashboardController extends DashboardController {
                 ['text' => '<i class="fa fa-2x fa-sliders"></i> 6. ' . Text::get('project-campaign'), 'link' => $prefix . '/campaign', 'id' => 'campaign', 'class' => $validation->campaign == 100 ? 'ok' : 'ko'],
                 ['text' => '<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), 'link' => $prefix . '/supports', 'id' => 'supports'],
             ];
+
             Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $steps, 'project', null, 'sidebar' . ($admin ? ' admin' : ''));
         }
 
@@ -424,6 +428,59 @@ class ProjectDashboardController extends DashboardController {
             'skip' => $project->lang
             ]);
     }
+
+    public function updatesPrivacyAction(Request $request, string $pid, string $uid): Response
+    {
+        $project = $this->validateProject($pid, 'updates');
+        if($project instanceOf Response) return $project;
+
+        $post = BlogPost::getBySlug($uid);
+
+        $filters = ['post' => $post->id];
+        $total = PostRewardAccess::count($filters);
+        $postRewardAccessList = PostRewardAccess::getList($filters, 0, $total);
+
+        return $this->viewResponse('dashboard/project/privacy', [
+            'rewards' => $postRewardAccessList,
+            'total' => $total,
+            'post' => $post,
+            'project' => $project
+        ]);
+
+    }
+
+    public function updatesPrivacyAddAction(Request $request, string $pid, string $uid): Response
+    {
+        $project = $this->validateProject($pid, 'updates');
+        if($project instanceOf Response) return $project;
+
+        $post = BlogPost::getBySlug($uid);
+
+        $formOptions = [
+            'project' => $project,
+            'post' => $post,
+        ];
+
+        $processor = $this->getModelForm(ProjectPostPrivacyForm::class, new PostRewardAccess(), [], $formOptions);
+        $processor->createForm();
+        $form = $processor->getBuilder()->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $request->isMethod(Request::METHOD_POST)) {
+            try {
+                $processor->save($form);
+                return $this->redirect("/dashboard/project/{$project->id}/updates/privacy/{$post->id}");
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+
+        return $this->viewResponse('dashboard/project/privacy/new', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+
 
     public function costsAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'costs');

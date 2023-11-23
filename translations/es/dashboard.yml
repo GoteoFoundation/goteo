@@ -86,6 +86,7 @@ dashboard-menu-projects-rewards: Cofinanciadores
 dashboard-menu-projects-summary: Resumen
 dashboard-menu-projects-supports: Colaboraciones
 dashboard-menu-projects-updates: Novedades
+dashboard-menu-projects-updates-privacy: "Limitar el acceso al post mediante recompensas."
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'Mi historia'
 dashboard-menu-projects-pitch: "Aplicaciones abiertas"
@@ -108,6 +109,7 @@ dashboard-project-blog-fail: 'Contacta con nosotr*s'
 dashboard-project-blog-inactive: 'Lo sentimos, la publicación de novedades en este proyecto está desactivada'
 dashboard-project-blog-empty: 'No hay publicaciones todavía.'
 dashboard-project-blog-wrongstatus: 'Lo sentimos, aún no se pueden publicar novedades en este proyecto...'
+dashboard-project-blog-privacy-empty: "No hay ninguna restricción de acceso en base a recompensas todavía."
 dashboard-project-delete: Borrar el proyecto
 dashboard-project-delete_alert: '¿Seguro que deseas eliminar absoluta y definitivamente este proyecto?'
 dashboard-project-delete-no-perms: 'No tienes permiso para eliminar este proyecto'
@@ -320,3 +322,4 @@ dashboard-project-impact-items-cost-subtitle: "Aquí encontrarás un listado de 
 dashboard-project-subscription-title: "Suscripciones"
 dashboard-project-subscription-description: "Aquí puedes gestionar la configuración de las subscripciones a tu campaña."
 dashboard-project-subscription-unavailable: "Las subscripciones solo están disponibles para campañas permanentes."
+dashboard-project-privacy-add-new-restriction: "Añadir restricción de acceso al post %s"
