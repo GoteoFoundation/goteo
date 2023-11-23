@@ -88,11 +88,6 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
         throw new PaymentException("Refund not yet supported for subscriptions", 1);
     }
 
-    public function calculateCommission($total_invests, $total_amount, $returned_invests = 0, $returned_amount = 0)
-    {
-        // Confirm Stripe commission
-    }
-
     public function isInternal(): bool
     {
         return false;

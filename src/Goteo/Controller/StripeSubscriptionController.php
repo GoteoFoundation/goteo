@@ -70,7 +70,7 @@ class StripeSubscriptionController extends Controller
             'user' => $user->id,
             'project' => explode('_', $subscription->items->data[0]->price->product)[0],
             'method' => StripeSubscriptionPaymentMethod::PAYMENT_METHOD_ID,
-            'status' => Invest::STATUS_PAID,
+            'status' => Invest::STATUS_CHARGED,
             'invested' => date('Y-m-d'),
         ]);
 
