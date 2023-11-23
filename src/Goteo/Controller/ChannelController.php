@@ -206,22 +206,35 @@ class ChannelController extends Controller {
     /**
      * Channel terms
      */
-    public function faqAction($id, $slug)
+    public function faqAction(string $id): Response
+    {
+        $channel = Node::get($id);
+        $this->setChannelContext($id);
+        $nodeFaqs = NodeFaq::getList(['node' => $channel->id]);
+
+        return $this->viewResponse('channel/call/faq/index', [
+            'nodeFaqs' => $nodeFaqs,
+        ]);
+    }
+
+    public function faqSlugAction(string $id, string $slug): Response
     {
         $this->setChannelContext($id);
         $faq = NodeFaq::getBySlug($id, $slug);
-        $questions = NodeFaqQuestion::getList(['node_faq' => $faq->id]);
-        $downloads = NodeFaqDownload::getList(['node_faq' => $faq->id]);
+        $questionsCount = NodeFaqQuestion::getList(['node_faq' => $faq->id], 0, 0, true);
+        $questions = NodeFaqQuestion::getList(['node_faq' => $faq->id], 0, $questionsCount);
+        $downloadsCount = NodeFaqDownload::getList(['node_faq' => $faq->id], 0, 0, true);
+        $downloads = NodeFaqDownload::getList(['node_faq' => $faq->id], 0, $downloadsCount);
 
-        return $this->viewResponse('channel/call/faq',
-            ['faq' => $faq,
-             'questions' => $questions,
-             'downloads' => $downloads
-            ]
-        );
+        return $this->viewResponse('channel/call/faq', [
+            'faq' => $faq,
+            'questions' => $questions,
+            'downloads' => $downloads
+        ]);
     }
 
-     /**
+
+    /**
      * Channel resources page
       */
     public function resourcesAction($id, $slug='')

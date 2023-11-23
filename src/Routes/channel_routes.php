@@ -41,9 +41,15 @@ $channel->add('channel-discover-projects-filter', new Route(
 ));
 
 $channel->add('channel-faq', new Route(
-    '/{id}/faq/{slug}',
+    '/{id}/faq',
     ['_controller' => 'Goteo\Controller\ChannelController::faqAction']
 ));
+
+$channel->add('channel-faq-slug', new Route(
+    '/{id}/faq/{slug}',
+    ['_controller' => 'Goteo\Controller\ChannelController::faqSlugAction']
+));
+
 
 $channel->add('channel-resources', new Route(
     '/{id}/resources',

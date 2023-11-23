@@ -1012,6 +1012,37 @@ div.section.sponsors{
 	}
 }
 
+section.faq-list {
+  background-color: $background-white;
+  font-size: $font-size*1.1;
+  color: $color-new-dark-blue;
+  padding: 0 0 60px 0 !important;
+
+  .channel-faqs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+    grid-gap: 2em;
+
+    .faqs_module.card {
+      header {
+        text-align: center;
+      }
+
+      position: relative;
+      border: none;
+      background: #fff;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,0.15);
+      border-radius: 5px;
+      padding-bottom: 24px;
+
+      > ul {
+        list-style: circle;
+        padding: 32px 20px;
+      }
+    }
+  }
+}
+
 div.section.terms-items{
     background-color: $background-white;
     // padding-bottom:80px;
