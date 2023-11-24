@@ -8,8 +8,14 @@ $available = $reward->available();
             <?php
                 $matchedReward = $reward->isMatched();
             ?>
-            <label class="label-reward <?= $selected ? 'reward-choosen' : '' ?><?= $available ? '' : ' label-disabled' ?> <?= $matchedReward ? 'matched-reward' : ''?>" for="reward-<?= $reward->id ?>">
-
+            <label 
+                class="label-reward 
+                    <?= $selected ? 'reward-choosen' : '' ?>
+                    <?= $available ? '' : ' label-disabled' ?>
+                    <?= $matchedReward ? 'matched-reward' : ''?>
+                    <?= $reward->subscribable ? 'reward-subscribable' : '' ?>"
+                for="reward-<?= $reward->id ?>"
+            >
                 <?php if ($matchedReward): ?>
                     <div class="btn-lilac">
                         <i class="icon icon-call"></i> <?= $this->t('regular-call') ?>
@@ -32,6 +38,9 @@ $available = $reward->available();
                         <?= $this->markdown($reward->description) ?>
                     </div>
                     <div style="margin-top:10px">
+                        <?php if ($reward->subscribable): ?>
+                            <span class="subscription-reward"><?= $this->text('invest-reward-subscribable') ?></span>
+                        <?php endif ?>
                         <?php if (!$available) : // no quedan ?>
                             <span class="limit-reward"><?= $this->text('invest-reward-none') ?></span>
                         <?php elseif (!empty($reward->units)) : // unidades limitadas ?>

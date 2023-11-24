@@ -5,6 +5,7 @@ namespace Omnipay\Stripe\Subscription;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Http\ClientInterface;
 use Omnipay\Stripe\Subscription\Message\SubscriptionRequest;
+use Omnipay\Stripe\Subscription\Message\SubscriptionResponse;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
 class Gateway extends AbstractGateway
@@ -28,5 +29,12 @@ class Gateway extends AbstractGateway
     public function purchase($options = array())
     {
         return new SubscriptionRequest($options);
+    }
+
+    public function completePurchase($options = array()): SubscriptionResponse
+    {
+        $request = new SubscriptionRequest($options);
+
+        return $request->completePurchase($options);
     }
 }

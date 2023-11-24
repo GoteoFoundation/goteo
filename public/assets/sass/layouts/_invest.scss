@@ -179,6 +179,14 @@ body.invest {
           display: inline-block;
         }
       }
+
+      &.reward-subscribable {
+        background-color: #76cfad;
+      }
+
+      &.reward-subscribable:hover {
+        background-color: #2cb2b2;
+      }
     }
   }
 
