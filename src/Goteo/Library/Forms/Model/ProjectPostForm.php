@@ -25,74 +25,78 @@ use Goteo\Application\Session;
 use Goteo\Library\Forms\FormModelException;
 use Symfony\Component\Form\FormInterface;
 
-class ProjectPostForm extends AbstractFormProcessor {
-
-    public function createForm() {
+class ProjectPostForm extends AbstractFormProcessor
+{
+    public function createForm(): ProjectPostForm
+    {
         $builder = $this->getBuilder();
         $options = $builder->getOptions();
+        $project = $this->getOption('project');
         $data = $options['data'];
 
         $builder
-            ->add('title', TextType::class, array(
+            ->add('title', TextType::class, [
                 'label' => 'regular-title',
-                'constraints' => array(
+                'constraints' => [
                     new Constraints\NotBlank(),
                     new Constraints\Length([
                         'min' => 4,
                         'allowEmptyString' => true,
                     ]),
-                ),
-            ))
-            ->add('date', DatepickerType::class, array(
+                ],
+            ])
+            ->add('date', DatepickerType::class, [
                 'label' => 'regular-date',
-                'constraints' => array(new Constraints\NotBlank()),
-            ))
+                'constraints' => [new Constraints\NotBlank()],
+            ])
             // saving images will add that images to the gallery
             // let's show the gallery in the field with nice options
             // for removing and reorder it
-            ->add('image', DropfilesType::class, array(
+            ->add('image', DropfilesType::class, [
                 'required' => false,
                 'data' => $data['gallery'],
                 'label' => 'regular-images',
                 'markdown_link' => 'text',
                 'accepted_files' => 'image/jpeg,image/gif,image/png',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 10)),
-                    new Constraints\All(array(
-                        'constraints' => array(
-                            // new Constraints\File()
-                            // new NotNull(array('groups'=>'Test'))
-                        )
-                    ))
-                )
-            ))
-            ->add('text', MarkdownType::class, array(
+                'constraints' => [
+                    new Constraints\Count(['max' => 10])
+                ]
+            ])
+            ->add('text', MarkdownType::class, [
                 'label' => 'regular-text',
                 'required' => false,
-                'attr'=> [
+                'attr' => [
                     'data-image-upload' => '/api/projects/' . $this->getOption('project')->id . '/images',
                     'help' => Text::get('tooltip-drag-and-drop-images')
                 ]
-            ))
-            ->add('media', MediaType::class, array(
+            ])
+            ->add('media', MediaType::class, [
                 'label' => 'regular-media',
                 'required' => false
-            ))
-            ->add('allow', BooleanType::class, array(
+            ])
+            ->add('allow', BooleanType::class, [
                 'required' => false,
                 'label' => 'blog-allow-comments', // Form has integrated translations
                 'color' => 'cyan', // bootstrap label-* (default, success, ...)
-            ))
-            ->add('publish', BooleanType::class, array(
+            ])
+            ->add('publish', BooleanType::class, [
                 'required' => false,
                 'label' => 'blog-published', // Form has integrated translations
                 'color' => 'cyan', // bootstrap label-* (default, success, ...)
-            ))
+            ])
+            ->add('access_limited', BooleanType::class, [
+                'required' => false,
+                'label' => 'Limita acceso vinculado a una recompensa',
+                'color' => 'cyan',
+                'data' => $this->getModel()->access_limited,
+            ])
             ;
+
         return $this;
     }
 
-    public function save(FormInterface $form = null, $force_save = false) {
+    public function save(FormInterface $form = null, $force_save = false): ProjectPostForm
+    {
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
@@ -128,19 +132,18 @@ class ProjectPostForm extends AbstractFormProcessor {
         unset($data['header_image']);
         $post->rebuildData($data, array_keys($form->all()));
 
-        if(!Session::getUser()->hasPerm('full-html-edit')) {
+        if (!Session::getUser()->hasPerm('full-html-edit')) {
             $post->text = Text::tags_filter($post->text);
             $post->text = $post::sanitizeText($post->text);
         }
 
         $errors = [];
         if (!$post->save($errors)) {
-            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+            throw new FormModelException(Text::get('form-sent-error', implode(', ', $errors)));
         }
 
-        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+        if (!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }
-
 }

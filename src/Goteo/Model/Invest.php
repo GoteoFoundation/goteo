@@ -2474,4 +2474,31 @@ class Invest extends Model {
             return null;
         }
     }
+
+    static public function hasUserInvestToReward(User $user, Reward $reward): bool
+    {
+        $query = static::query("
+            SELECT  COUNT(*)
+            FROM    invest
+            WHERE   invest.user = :user
+            AND     invest.reward = :reward
+            AND     invest.status IN ('1')
+            ", array(':user' => $user->id, ':reward' => $reward->id));
+        $invest = $query->fetchColumn();
+        return (bool) $invest;
+    }
+
+    static public function hasUserInvestToRewardInTheLastMonth(User $user, Reward $reward): bool
+    {
+        $query = static::query("
+            SELECT  COUNT(*)
+            FROM    invest
+            WHERE   invest.user = :user
+            AND     invest.reward = :reward
+            AND     invest.status IN ('1')
+            AND     invest.date > DATE_SUB(NOW(), INTERVAL 1 MONTH)
+            ", array(':user' => $user->id, ':reward' => $reward->id));
+        $invest = $query->fetchColumn();
+        return (bool) $invest;
+    }
 }

@@ -41,6 +41,7 @@
             <div class="btn-group">
                 <a class="btn btn-default" title="<?= $this->text('regular-view') ?>" target="_blank" href="/project/<?= $this->project->id ?>/updates/<?= $post->getSLug() ?>#updates"><i class="icon icon-preview"></i></a>
                 <a class="btn btn-default" title="<?= $this->text('regular-edit') ?>" href="/dashboard/project/<?= $this->project->id ?>/updates/<?= $post->getSlug() ?>"><i class="icon icon-edit"></i></a>
+                <a class="btn btn-default" title="<?= $this->text('regular-privacy') ?>" href="/dashboard/project/<?= $this->project->id ?>/updates/<?= $post->getSlug() ?>/privacy"><i class="fa fa-key"></i></a>
                 <?php
                   if($this->languages) {
                     echo $this->insert('dashboard/partials/translate_menu', ['no_title' => true, 'btn_class' => 'btn-default', 'base_link' => '/dashboard/project/' . $this->project->id . '/updates/' . $post->getSlug() . '/', 'translated' => $post->getLangsAvailable(), 'percentModel' => $post]);

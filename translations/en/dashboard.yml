@@ -86,6 +86,7 @@ dashboard-menu-projects-rewards: Backers
 dashboard-menu-projects-summary: Summary
 dashboard-menu-projects-supports: Collaborations
 dashboard-menu-projects-updates: News
+dashboard-menu-projects-updates-privacy: "Limit access to the post through the use of rewards."
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-projects-story: 'My history'
 dashboard-menu-projects-pitch: "Open applications"
@@ -106,6 +107,7 @@ dashboard-project-blog-fail: 'Contact us'
 dashboard-project-blog-inactive: 'Sorry, you can''t publish news on this project right now.'
 dashboard-project-blog-empty: 'No publications yet.'
 dashboard-project-blog-wrongstatus: 'Sorry, you can''t publish news about this project yet...'
+dashboard-project-blog-privacy-empty: "There is no access restriction based on rewards yet."
 dashboard-project-delete: Delete the project
 dashboard-project-delete_alert: 'Are you sure you want to permanently delete this project?'
 dashboard-project-delete-no-perms: 'You don''t have permission to delete this project'
@@ -315,3 +317,4 @@ dashboard-project-impact-items-cost-subtitle: "Here you will find a list of the 
 dashboard-project-subscription-title: "Subscriptions"
 dashboard-project-subscription-description: "Here you can manage the configuration of the subscriptions to your campaign."
 dashboard-project-subscription-unavailable: "Subscriptions are only available for permanent campaigns."
+dashboard-project-privacy-add-new-restriction: "Add access restriction to post %s"

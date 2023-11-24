@@ -21,6 +21,7 @@ use Goteo\Application\View;
 use Goteo\Controller\Dashboard\ProjectDashboardController;
 use Goteo\Core\Controller;
 use Goteo\Core\DB;
+use Goteo\Library\PostPrivacyAccess;
 use Goteo\Library\Text;
 use Goteo\Library\Worth;
 use Goteo\Model\Blog;
@@ -277,7 +278,11 @@ class ProjectController extends Controller {
                 case 'updates':
                     //if is an individual post page
                     if ($post) {
+                        /** @var BlogPost $pob */
                         $pob = BlogPost::getBySlug($post, Lang::current(), $project->lang);
+
+                        $viewData['canUserAccess'] = PostPrivacyAccess::canAccess($user, $pob);
+
                         if($pob->slug && $post != $pob->slug) {
                             return $this->redirect("/project/{$project->id}/updates/{$pob->slug}");
                         }
