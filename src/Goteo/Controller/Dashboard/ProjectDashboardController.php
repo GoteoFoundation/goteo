@@ -436,7 +436,7 @@ class ProjectDashboardController extends DashboardController {
 
         $post = BlogPost::getBySlug($uid);
 
-        $filters = ['post' => $post->id];
+        $filters = ['post_id' => $post->id];
         $total = PostRewardAccess::count($filters);
         $postRewardAccessList = PostRewardAccess::getList($filters, 0, $total);
 

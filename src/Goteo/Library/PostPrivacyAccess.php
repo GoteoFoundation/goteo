@@ -39,4 +39,13 @@ class PostPrivacyAccess
 
         return false;
     }
+
+    /**
+     * @return PostRewardAccess[]
+     */
+    public function getLimitingRewardsForPost(Post $post): array
+    {
+        $postRewardsCount = PostRewardAccess::count(['post_id' => $post->id]);
+        return PostRewardAccess::getList(['post_id' => $post->id], 0, $postRewardsCount);
+    }
 }
