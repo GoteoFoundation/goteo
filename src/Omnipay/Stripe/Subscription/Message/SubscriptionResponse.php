@@ -9,7 +9,7 @@ class SubscriptionResponse extends AbstractResponse implements RedirectResponseI
 {
     public function isSuccessful()
     {
-        return false;
+        return $this->data['success'];
     }
 
     public function isRedirect()

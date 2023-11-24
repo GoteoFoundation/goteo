@@ -41,8 +41,8 @@ class SubscriptionRequest extends AbstractRequest
 
         $session = $this->stripe->checkout->sessions->create([
             'customer' => $this->getStripeCustomer($data['user'])->id,
-            'success_url' => $this->getRedirectUrl('/dashboard/subscriptions'),
-            'cancel_url' => $this->getRedirectUrl('/project/', $data['invest']->getProject()->id),
+            'success_url' => $this->getRedirectUrl('invest', $data['invest']->getProject()->id, $data['invest']->id, 'complete'),
+            'cancel_url' => $this->getRedirectUrl('project', $data['invest']->getProject()->id),
             'mode' => 'subscription',
             'line_items' => [
                 [
@@ -55,13 +55,18 @@ class SubscriptionRequest extends AbstractRequest
         return new SubscriptionResponse($this, $session);
     }
 
+    public function completePurchase(array $options = [])
+    {
+        return new SubscriptionResponse($this, $options);
+    }
+
     private function getRedirectUrl(...$args): string
     {
         return sprintf(
-            '%s://%s%s',
+            '%s://%s/%s',
             isset($_SERVER['HTTPS']) ? 'https' : 'http',
             $_SERVER['HTTP_HOST'],
-            implode('', $args)
+            implode('/', $args)
         );
     }
 

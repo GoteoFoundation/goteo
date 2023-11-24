@@ -61,11 +61,14 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
         return true;
     }
 
+    public function getGateway(): SubscriptionGateway
+    {
+        return Omnipay::create(SubscriptionGateway::class);
+    }
+
     public function purchase(): ResponseInterface
     {
-        $gateway = Omnipay::create(SubscriptionGateway::class);
-
-        $response = $gateway->purchase([
+        $response = $this->getGateway()->purchase([
             'invest' => $this->invest,
             'user' => $this->user
         ])->send();
@@ -76,6 +79,14 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
         $this->invest->setPreapproval($subscription->id);
 
         return $response;
+    }
+
+    public function completePurchase(): ResponseInterface
+    {
+        /** @var SubscriptionGateway */
+        $gateway = $this->getGateway();
+
+        return $gateway->completePurchase(['success' => true]);
     }
 
     public function refundable(): bool
