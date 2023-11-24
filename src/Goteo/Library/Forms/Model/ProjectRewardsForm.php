@@ -23,8 +23,11 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
 use Goteo\Application\Currency;
+use Goteo\Application\Session;
 use Goteo\Model\Project\Reward;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Model\Project;
+use Goteo\Model\Project\Account;
 
 class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorInterface {
     private $rewards = [];
@@ -87,11 +90,14 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
 
     public function addReward(Reward $reward) {
         $this->rewards[$reward->id] = $reward;
-        $project = $this->getModel();
         $suffix = "_{$reward->id}";
+
+        /** @var Project */
+        $project = $this->getModel();
 
         // readonly only if has no invests associated
         $units_readonly = $readonly = $this->getReadonly() && !$reward->isDraft() && $reward->getTaken();
+        $subs_readonly = !Account::getAllowStripe($project->id);
         $remove_readonly = $this->getReadonly()&&$reward->getTaken();
         // Readonly allows edit number of rewards if project in campaign
         if($project->inCampaign()) {
@@ -145,6 +151,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 ]
 
             ]);
+
         if(!$remove_readonly) {
             $this->getBuilder()
                 ->add("remove$suffix", SubmitType::class, [
@@ -156,6 +163,16 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                         'data-confirm' => Text::get('project-remove-reward-confirm')
                         ]
                 ]);
+        }
+
+        if (Session::isAdmin()) {
+            $this->getBuilder()->add("subscribable$suffix", BooleanType::class, [
+                'label' => false,
+                'data' => $reward->subscribable,
+                'disabled' => $subs_readonly,
+                'required' => false,
+                'color' => 'cyan'
+            ]);
         }
     }
 
@@ -181,7 +198,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
 
         foreach($data as $key => $val) {
             list($field, $id) = explode('_', $key);
-            if(!in_array($field, ['amount', 'icon', 'units', 'reward', 'description'])) continue;
+            if(!in_array($field, ['amount', 'icon', 'units', 'reward', 'description', 'subscribable'])) continue;
             if($field == 'units' && $data['unlimited_' . $id]) {
                 $val = 0;
             }

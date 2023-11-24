@@ -52,6 +52,13 @@ payments:
         signature: PAYPAL-Signature
         appId: PAYPAL-APP-ID
 
+     # Stripe
+    stripe:
+        active: true
+        publicKey: pk_test_
+        secretKey: sk_test_
+        webhookSecret: whsec_
+
     # A stupid payment method defined in the plugin goteo-dev
     # Useful for development and testing
     dummy:

@@ -12,6 +12,12 @@ user: # This user is assigned automatically to all users regardless the user_rol
         - remove-project # remove own project, this permission is implicit
     level: 0 # Order of the role, roles with supperior level can do some actions over this
 
+creator:
+    extends: user # inhertis permissions from role "user"
+    perms:
+        - highlight-project # can feature own projects in their creator profile
+    level: 10
+
 vip:
     extends: user # inherits permissions from role "user"
     perms:

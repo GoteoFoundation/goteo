@@ -300,4 +300,11 @@ $routes->add('impact-discover-datasets', new Route(
     )
 ));
 
+$routes->add('stripe-subscription-webhook', new Route(
+    '/stripe-subscription-webhook',
+    [
+        '_controller' => 'Goteo\Controller\StripeSubscriptionController::subscriptionsWebhook'
+    ]
+));
+
 return $routes;

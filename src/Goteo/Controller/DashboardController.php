@@ -22,6 +22,7 @@ use Goteo\Model\Message as Comment;
 use Goteo\Model\Project;
 use Goteo\Model\User;
 use Goteo\Model\User\Interest;
+use Stripe\StripeClient;
 use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends Controller
@@ -43,6 +44,7 @@ class DashboardController extends Controller
         if($section === 'activity') {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'activity');
             Session::addToSidebarMenu('<i class="fa fa-2x fa-gift"></i> ' . Text::get('dashboard-rewards-my-invests'), '/dashboard/rewards', 'rewards');
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-ticket"></i> ' . Text::get('dashboard-rewards-my-subscriptions'), '/dashboard/subscriptions', 'subscriptions');
             Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('regular-messages') .' <span class="badge">' . $total_messages . '</span>', '/dashboard/messages', 'messages');
             Session::addToSidebarMenu('<i class="fa fa-2x fa-envelope"></i> ' . Text::get('dashboard-mail-mailing'), '/dashboard/mailing', 'mailling');
         }
@@ -112,6 +114,29 @@ class DashboardController extends Controller
             'returned' => $returned,
             'wallet' => $wallet,
             'limit' => $limit
+        ]);
+    }
+
+    public function mySubscriptionsAction(Request $request)
+    {
+        $stripe = new StripeClient(Config::get('payments.stripe.secretKey'));
+        $results = $stripe->subscriptions->search([
+            'query' => sprintf('status:\'%s\'', 'active')
+        ]);
+
+        $subscriptions = [];
+        foreach ($results->data as $result) {
+            $subscriptions[] = [
+                'subscription' => $result->toArray(),
+                'product' => $stripe->products->retrieve($result->plan->product)->toArray()
+            ];
+        }
+
+        self::createSidebar('activity', 'subscriptions');
+
+        return $this->viewResponse('dashboard/subscriptions', [
+            'section' => 'activity',
+            'subscriptions' => $subscriptions
         ]);
     }
 

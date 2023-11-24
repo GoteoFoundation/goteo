@@ -166,6 +166,20 @@ payments:
             # Other variables may be added on other methods and
             # customize the calculateFee() in the corresponding class
 
+    # Stripe
+    stripe:
+        active: false
+        publicKey: pk_test_
+        secretKey: sk_test_
+        webhookSecret: whsec_
+        commissions:
+            refunded:
+                fixed: 0
+                percent: 0
+            charged:
+                fixed: 0.25
+                percent: 2
+
     # This is a built-in payment method using internal credit
     pool:
         active: true

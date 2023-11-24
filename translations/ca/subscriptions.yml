@@ -1,0 +1,9 @@
+subscription-cancel-confirm: Esteu segur que voleu cancel·lar aquesta subscripció?
+subscription-cancel-saved: La teva subscripció s'ha cancel·lat
+subscription-cancel-description: Al cancel·lar la teva subscripció se't deixará de cobrar automàticament, però no se't reemborsaran els cobraments ja efectuats
+subscription-data-id: ID
+subscription-data-start-date: Data d'inici
+subscription-data-valid-until: Vàlida fins
+subscription-data-description: Descripció
+subscription-data-status: Estat
+subscription-data-price: Preu

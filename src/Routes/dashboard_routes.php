@@ -30,6 +30,22 @@ $dash->add('dashboard-rewards', new Route(
     '/rewards',
     array('_controller' => 'Goteo\Controller\DashboardController::myRewardsAction',)
 ));
+// Subscriptions
+$dash->add('dashboard-subscriptions', new Route(
+    '/subscriptions',
+    ['_controller' => 'Goteo\Controller\DashboardController::mySubscriptionsAction']
+));
+
+$dash->add('dashboard-subscription-view', new Route(
+    '/subscriptions/{sid}',
+    ['_controller' => '\Goteo\Controller\Dashboard\SubscriptionDashboardController::viewAction']
+));
+
+$dash->add('dashboard-subscription-cancel', new Route(
+    '/subscriptions/{sid}/cancel',
+    ['_controller' => '\Goteo\Controller\Dashboard\SubscriptionDashboardController::cancelAction']
+));
+
 // Virtual wallet
 $dash->add('dashboard-wallet', new Route(
     '/wallet',
