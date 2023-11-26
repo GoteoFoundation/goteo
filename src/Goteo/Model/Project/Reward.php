@@ -209,7 +209,7 @@ class Reward extends Model {
         }
     }
 
-    public function getRewardsOrderBySubscribableForProject(Project $project): array
+    public static function getRewardsOrderBySubscribableForProject(Project $project): array
     {
         $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, $project->lang);

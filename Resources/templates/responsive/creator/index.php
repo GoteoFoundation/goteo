@@ -32,3 +32,7 @@ $listOfProjects = $this->listOfProjects;
 </main>
 
 <?php $this->append(); ?>
+
+<?php $this->section('footer'); ?>
+    <?= $this->insert('creator/partials/javascript') ?>
+<?php $this->append(); ?>

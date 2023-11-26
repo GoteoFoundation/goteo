@@ -12,74 +12,59 @@ body.creator {
 
   section.subscriptions {
 
-    .subscription-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      justify-items: center;
-      padding: 1rem;
-      margin-top: 2.5rem;
-      grid-row-gap: 3em;
+    .slider-subscriptions {
+      .slick-slide {
+        margin: 1em;
+      }
+    }
+  }
 
-      &:has(> :last-child:nth-child(2)) {
-        grid-template-columns: repeat(2, 1fr);
-        grid-column-gap: 3em;
+  article.subscription {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    background-color: white;
+    border: 1px solid $color-light-grey;
+    border-radius: 1rem;
+    width: 300px;
+    padding: 2rem;
+    font-size: 1.5rem;
+    transition: all 0.5s ease-in-out;
 
-        article.subscription:first-child {
-          justify-self:right;
-        }
-        article.subscription:last-child {
-          justify-self:left;
-        }
+    &:only-child {
+      grid-column-start: 1;
+    }
+
+    .card-header {
+      h2 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .card-body {
+      height: 20rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-bottom: 1rem;
+
+      .amount-box {
+        color: $color-dark-green;
+        font-size: 40px;
+        font-weight: bold;
       }
 
-      article.subscription {
-        display: grid;
-        grid-template-rows: auto auto auto;
-        background-color: white;
-        border: 1px solid $color-light-grey;
-        border-radius: 1rem;
-        width: 300px;
-        padding: 2rem;
-        font-size: 1.5rem;
-        transition: all 0.5s ease-in-out;
-
-        &:only-child {
-          grid-column-start: 1;
-        }
-
-        .card-header {
-          h2 {
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-        }
-
-        .card-body {
-          height: 20rem;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          padding-bottom: 1rem;
-
-          .amount-box {
-            color: $color-dark-green;
-            font-size: 40px;
-            font-weight: bold;
-          }
-
-          img {
-            width: 100%;
-          }
-
-          &:hover {
-            height: fit-content;
-            min-height: 20rem;
-          }
-        }
-
-        &:hover {
-          border: $background-light-green 2px solid;
-        }
+      img {
+        width: 100%;
       }
+
+      &:hover {
+        height: fit-content;
+        min-height: 20rem;
+      }
+    }
+
+    &:hover {
+      border: $background-light-green 2px solid;
     }
   }
 
@@ -194,7 +179,6 @@ body.creator {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-
 
   @media (max-width: $breakpoint-md) {
     section.projects .project-grid {
