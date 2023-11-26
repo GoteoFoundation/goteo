@@ -44,7 +44,7 @@ body.creator {
         transition: all 0.5s ease-in-out;
 
         &:only-child {
-          grid-column-start: 2;
+          grid-column-start: 1;
         }
 
         .card-header {
