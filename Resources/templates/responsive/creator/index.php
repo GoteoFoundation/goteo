@@ -25,7 +25,7 @@ $listOfProjects = $this->listOfProjects;
             </div>
         </div>
 
-        <?= $this->insert('creator/partials/subscriptions', ['project' => $permanentProject, 'subscriptions' => $permanentProject->getSubscribableRewards()]) ?>
+        <?= $this->insert('creator/partials/subscriptions', ['project' => $permanentProject, 'subscriptions' => $permanentProject->getRewardsOrderBySubscribable()]) ?>
 
         <?= $this->insert('creator/partials/posts', ['project' => $permanentProject, 'subscriptions' => $permanentProject->getSubscribableRewards()]) ?>
     </div>

@@ -209,6 +209,39 @@ class Reward extends Model {
         }
     }
 
+    public function getRewardsOrderBySubscribableForProject(Project $project): array
+    {
+        $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, $project->lang);
+
+        $sql = "SELECT
+                    reward.id as id,
+                    reward.project as project,
+                    $fields,
+                    reward.type as type,
+                    reward.icon as icon,
+                    reward.license as license,
+                    reward.amount as amount,
+                    reward.units as units,
+                    reward.fulsocial as fulsocial,
+                    reward.url,
+                    reward.bonus,
+                    reward.category,
+                    reward.subscribable
+                FROM reward
+                $joins
+                WHERE
+                    reward.project = ?
+                ORDER BY reward.subscribable DESC, reward.amount ASC
+                ";
+        try {
+            $query = self::query($sql, [$project->id]);
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        } catch (\PDOException $e) {
+            throw new ModelException($e->getMessage());
+        }
+    }
+
     public static function getWidget($project, $lang = null) {
         if(empty($lang)) $lang = Lang::current();
 

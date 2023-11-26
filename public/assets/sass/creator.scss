@@ -14,7 +14,7 @@ body.creator {
 
     .subscription-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(3, 1fr);
       justify-items: center;
       padding: 1rem;
       margin-top: 2.5rem;
@@ -217,13 +217,13 @@ body.creator {
   }
 
   @media (max-width: $breakpoint-sm) {
-    section.projects div.project-grid {
+    section.projects div.project-grid, section.subscriptions .subscription-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   @media (max-width: $breakpoint-xs) {
-    section.projects div.project-grid {
+    section.projects div.project-grid, section.subscriptions .subscription-grid {
       grid-template-columns: repeat(1, minmax(0, 1fr));
     }
   }

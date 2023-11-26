@@ -33,7 +33,6 @@ class CreatorController extends BaseSymfonyController
             return $this->redirectToRoute('user-profile', ['id' => $user->id]);
         */
 
-
         $permanentProject = current(Project::getList(['type_of_campaign' => Project\Conf::TYPE_PERMANENT, 'owner' => $user->id, 'status' => [Project::STATUS_IN_CAMPAIGN]]));
         $listOfProjects = Project::getList(['type_of_campaign' => Project\Conf::TYPE_CAMPAIGN, 'owner' => $user->id, 'status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED]]);
         $posts = Post::getList(['author' => $user->id, 'show' => 'published']);

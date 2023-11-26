@@ -758,6 +758,11 @@ class Project extends Model {
         return Reward::getSubscribableRewardsForProject($this);
     }
 
+    public function getRewardsOrderBySubscribable(): array
+    {
+        return Reward::getRewardsOrderBySubscribableForProject($this);
+    }
+
     public function getSupports($lang = null) {
         if(!$this->supports) {
             // colaboraciones
