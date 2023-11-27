@@ -27,6 +27,8 @@ $listOfProjects = $this->listOfProjects;
 
         <?= $this->insert('creator/partials/share_social') ?>
 
+        <?= $this->insert('creator/partials/channel', ['project' => $permanentProject]) ?>
+
         <?= $this->insert('creator/partials/subscriptions', ['project' => $permanentProject, 'subscriptions' => $permanentProject->getRewardsOrderBySubscribable()]) ?>
 
         <?= $this->insert('creator/partials/posts', ['project' => $permanentProject, 'subscriptions' => $permanentProject->getSubscribableRewards()]) ?>

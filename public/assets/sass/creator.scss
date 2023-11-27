@@ -187,6 +187,20 @@ body.creator {
     }
   }
 
+  section.channel {
+    article.channel {
+      display: grid;
+      justify-content: center;
+
+      a {
+        img {
+          border-radius: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+  }
+
   @media (max-width: $breakpoint-md) {
     section.projects .project-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));

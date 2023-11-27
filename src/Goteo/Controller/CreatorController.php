@@ -5,6 +5,8 @@ namespace Goteo\Controller;
 use Goteo\Application\View;
 use Goteo\Core\Exception;
 use Goteo\Model\Blog\Post;
+use Goteo\Model\Node;
+use Goteo\Model\Node\NodeProject;
 use Goteo\Model\Project;
 use Goteo\Model\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,10 +35,11 @@ class CreatorController extends BaseSymfonyController
             return $this->redirectToRoute('user-profile', ['id' => $user->id]);
         */
 
+        /** @var Project $permanentProject */
         $permanentProject = current(Project::getList(['type_of_campaign' => Project\Conf::TYPE_PERMANENT, 'owner' => $user->id, 'status' => [Project::STATUS_IN_CAMPAIGN]]));
         $listOfProjects = Project::getList(['type_of_campaign' => Project\Conf::TYPE_CAMPAIGN, 'owner' => $user->id, 'status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED]]);
         $posts = Post::getList(['author' => $user->id, 'show' => 'published']);
-
+        $channels = $this->getChannelsForProject($permanentProject);
         if (empty($permanentProject))
             return $this->redirect($this->generateUrl('user-profile', ['id' => $user->id]));
 
@@ -44,7 +47,27 @@ class CreatorController extends BaseSymfonyController
             'user' => $user,
             'permanentProject' => $permanentProject,
             'listOfProjects' => $listOfProjects,
-            'posts' => $posts
+            'posts' => $posts,
+            'channels' => $channels
         ]);
+    }
+
+
+    /**
+     * @return Node[]
+     */
+    private function getChannelsForProject(Project $project): array
+    {
+        $channels = [];
+
+        $nodeProjectList = NodeProject::getList([
+            'project' => $project->id
+        ]);
+
+        foreach($nodeProjectList as $node) {
+            $channels[] = Node::get($node->node_id);
+        }
+
+        return $channels;
     }
 }

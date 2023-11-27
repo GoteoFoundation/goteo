@@ -49,4 +49,31 @@ $(function(){
             }
         ]
     });
+
+    $('.slider-channel').slick({
+        dots: true,
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        arrows: true,
+        cssEase: 'linear',
+        prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
+        nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Next</span></div>',
+        responsive: [
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 2.5,
+                    arrows:false
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1.5,
+                }
+            }
+        ]
+    });
+
 });
