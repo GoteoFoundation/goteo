@@ -25,10 +25,18 @@ $listOfProjects = $this->listOfProjects;
             </div>
         </div>
 
-        <?= $this->insert('creator/partials/subscriptions', ['project' => $permanentProject, 'subscriptions' => $permanentProject->getSubscribableRewards()]) ?>
+        <?= $this->insert('creator/partials/share_social') ?>
+
+        <?= $this->insert('creator/partials/channel', ['project' => $permanentProject]) ?>
+
+        <?= $this->insert('creator/partials/subscriptions', ['project' => $permanentProject, 'subscriptions' => $permanentProject->getRewardsOrderBySubscribable()]) ?>
 
         <?= $this->insert('creator/partials/posts', ['project' => $permanentProject, 'subscriptions' => $permanentProject->getSubscribableRewards()]) ?>
     </div>
 </main>
 
+<?php $this->append(); ?>
+
+<?php $this->section('footer'); ?>
+    <?= $this->insert('creator/partials/javascript') ?>
 <?php $this->append(); ?>
