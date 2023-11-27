@@ -16,6 +16,7 @@ use Goteo\Application\Exception\ControllerException;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
+use Goteo\Controller\Admin\AdminControllerInterface;
 use Goteo\Core\Controller;
 use Goteo\Library\Feed;
 use Goteo\Library\Text;
@@ -135,17 +136,18 @@ class AdminController extends Controller {
         throw new NotFoundHttpException("Admin module [$id] not found");
     }
 
-    public static function createAdminSidebar (User $user, $uri = '') {
-
+    public static function createAdminSidebar(User $user, $uri = '')
+    {
         $prefix = '/admin';
 
         foreach (static::$subcontrollers as $id => $class) {
-            if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($class))) {
+            if(in_array(AdminControllerInterface::class, class_implements($class))) {
                 if(!$class::isAllowed($user)) continue;
 
                 $label = $class::getLabel('html');
-                $cls = strpos($label, '<i') === false ? 'nopadding' : '';
+
                 if($sidebar = $class::getSidebar()) {
+
                     $paths = [];
                     // Submodules returning a custom menu will have its own group
                     foreach($sidebar as $link => $route) {
@@ -153,21 +155,35 @@ class AdminController extends Controller {
                         if(!is_array($route)) {
                             $route = ['text' => $route, 'link' => $link];
                         }
-                        $c = $route['class'] ? $route['class'] : (strpos($route['text'], '<i') === false ? 'nopadding' : '');
 
-                        if(!$route['id']) $route['id'] = $route['link'];
+                        if(!\array_key_exists('id', $route)) {
+                            $route['id'] = $route['link'];
+                        }
 
-                        $paths[] = ['text' => $route['text'], 'link' => $prefix . $route['link'], 'id' => $route['id'], 'class' => $c];
+                        $paths[] = [
+                            'id' => $route['id'],
+                            'text' => $route['text'],
+                            'link' => $prefix . $route['link'],
+                            'class' => $route['class'] 
+                                ? $route['class'] 
+                                : (strpos($route['text'], '<i') === false ? 'nopadding' : '')
+                        ];
                     }
 
                     $modules[$id] = $paths;
                 } else {
                     $group = $class::getGroup();
-                    $init_route = ['text' => $label, 'link' => "$prefix/$id", 'id' => "/$id", 'class' => $cls];
-                    $modules[$group ? $group : 'main'][] = $init_route;
+                    $modules[$group ? $group : 'main'][] = [
+                        'id' => "/$id",
+                        'text' => $label,
+                        'link' => "$prefix/$id",
+                        'class' => strpos($label, '<i') === false ? 'nopadding' : ''
+                    ];
                 }
             }
+
             // Old sub-controllers
+            // For some reason, they fail to allow superusers when they have additional roles
             elseif ($class::isAllowed($user, Config::get('node'))) {
                 $group = 'others';
                 foreach(self::$legacy_groups as $g => $ms) {
@@ -178,9 +194,17 @@ class AdminController extends Controller {
                         }
                     }
                 }
-                $modules[$group][] = ['text' => $class::getLabel(), 'link' => "$prefix/$id", 'id' => "/$id", 'class' => 'nopadding'];
+
+                $modules[$group][] = [
+                    'text' => $class::getLabel(),
+                    'link' => "$prefix/$id",
+                    'id' => "/$id",
+                    'class' => 'nopadding'
+                ];
+
             }
         }
+
         // group the modules that don't define a custom menu
         $index = 1;
         $zone = '';
