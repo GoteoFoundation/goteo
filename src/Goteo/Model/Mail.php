@@ -209,7 +209,7 @@ class Mail extends Model {
     }
 
     /**
-     * Get instance of mail already on table using communication_id identifier and an optional lang parameter.
+     * Get instance of mail already on DB table
      */
     static public function getFromCommunicationId($communication_id, $lang = null) {
         $sql = "SELECT * FROM mail WHERE communication_id = :communication_id";
@@ -218,7 +218,6 @@ class Mail extends Model {
             $sql .= " AND lang = :lang";
             $values[':lang'] = $lang;
         }
-        // die(\sqldbg($sql, $values));
         if ($query = static::query($sql, $values)) {
             if( ! ($mail = $query->fetchAll(\PDO::FETCH_CLASS,__CLASS__)) ) return null;
             return $mail;
@@ -349,8 +348,6 @@ class Mail extends Model {
                     }
                 } else {
                     // exit if not allowed
-                    // TODO: log this?
-                        // add any debug here
                     $this->logger('SKIPPING MAIL SENDING', [$this, 'mail_to' => $this->to, 'mail_from' => $this->from, 'template' => $this->template , 'error' => 'Settings restrictions']);
                     // Log this email
                     $mail->preSend();
@@ -359,8 +356,7 @@ class Mail extends Model {
                     $path .= $this->id .'-' . str_replace(['@', '.'], ['_', '_'], $this->to) . '.eml';
                     if(@file_put_contents($path, $mail->getSentMIMEMessage())) {
                         $this->logger('Logged email content into: ' . $path);
-                    }
-                    else {
+                    } else {
                         $this->logger('ERROR while logging email content into: ' . $path, [], 'error');
                     }
                     // return true is ok, let's pretend the mail is sent...
@@ -435,16 +431,11 @@ class Mail extends Model {
     }
 
     public function getToken($tracker = true, $force_to = '', $encode = true) {
-        $to = $this->to ? $this->to : $this->email;
+        $to = $this->to ?: $this->email;
         if($force_to) $to = $force_to;
         $tracker = $tracker ? '1' : '0';
-        return self::encodeToken([$to, $this->id, $tracker], $encode);
-        // $token = md5(Config::get('secret') . '-' . $to . '-' . $this->id . '-' . $tracker) . '¬' . $to . '¬' . $this->id . '¬' . $tracker;
 
-        // if($encode) {
-        //     return \mybase64_encode($token);
-        // }
-        // return $token;
+        return self::encodeToken([$to, $this->id, $tracker], $encode);
     }
 
     static public function encodeToken(array $vars, $encode = true) {
@@ -492,7 +483,7 @@ class Mail extends Model {
     }
 
     /**
-     * Se mete el contenido alrededor del diseño de email de Diego
+     * Se mete el contenido alrededor del diseño de email
      */
     private function bodyHTML($plain = false) {
         $token = $this->getToken();
@@ -585,44 +576,6 @@ class Mail extends Model {
         return false;
     }
 
-    /**
-     * Store HTML email body generating previously an unique ID for the filename
-     * TODO: remove this, convert to a backup old emails to a filesystem
-     * @param $sendId
-     * @param $filename
-     * @return
-     */
-/*    public function saveContentToFile() {
-
-        $email = ($this->massive) ? 'any' : $this->to;
-        $path = ($this->massive) ? '/news/' : '/sys/';
-        $contentId = md5("{$this->id}_{$email}_{$this->template}_" . Config::get('secret')) . ".html";
-
-        // Necesitamos constante de donde irán los mails: MAIL_PATH = /data/mail
-        // MAIL_PATH + $path
-        if (FILE_HANDLER == 'file') {
-            $path = 'mail' . $path;
-        }
-
-        // Guardar al sistema de archivos
-        $fpremote = File::factory(array('bucket' => AWS_S3_BUCKET_MAIL));
-        $fpremote->setPath($path);
-
-        $headers = array("Content-Type" => "text/html; charset=UTF-8");
-        if($fpremote->put_contents($contentId, $this->content, 0, 'public-read', array(), $headers)) {
-            return $path . $contentId;
-        }
-        return false;
-    }
-*/
-    /**
-     *
-     * Adjuntar archivo.
-     * @param type string	$filename
-     * @param type string	$name
-     * @param type string	$encoding
-     * @param type string	$type
-     */
     private function attachFile($filename, $name = false, $encoding = 'base64', $type = 'application/pdf') {
         $this->attachments[] = array(
             'filename' => $filename,
@@ -664,11 +617,7 @@ class Mail extends Model {
         return $this->status;
     }
 
-    /**
-     *
-     * @param array $filters    user (nombre o email),  template
-     */
-    public static function getSentList($filters = array(), $offset = 0, $limit = 10, $count = false) {
+    public static function getSentList(array $filters = array(), $offset = 0, $limit = 10, $count = false) {
 
         $values = array();
         $sqlFilter = [];
@@ -756,7 +705,6 @@ class Mail extends Model {
                     FROM mail
                     LEFT JOIN mailer_content ON mailer_content.mail = mail.id
                     $sqlFilter";
-            // die(\sqldbg($sql, $values));
             return (int) static::query($sql, $values)->fetchColumn();
         }
 
@@ -775,10 +723,9 @@ class Mail extends Model {
                 ORDER BY mail.date DESC
                 LIMIT $offset,$limit";
 
-        // print_r($filters);print_r($values);die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
-        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
     /**
@@ -797,7 +744,6 @@ class Mail extends Model {
         $query = static::query($sql, array(':modified' => $modified));
         $cuantos = (int) $query->fetchColumn();
 
-        //añadir
         if (isset($add)) {
             $cuantos += $add;
             $sql = "SELECT num FROM mailer_limit WHERE `modified` > :modified AND `hora` = :hora";
@@ -813,11 +759,10 @@ class Mail extends Model {
 
     /**
      * Comprueba si un email esta bloqueado por bounces o complaints
-     * @param  string $email  email a comprobar
      * @param  string $reason razon de bloqueo
-     * @return boolean        true o false
      */
-    static public function checkBlocked($email, &$reason = '') {
+    static public function checkBlocked(string $email, &$reason = ''): bool
+    {
         $query = static::query("SELECT * FROM mailer_control WHERE email=:email AND action='deny'", array(':email' => $email));
         if($ob = $query->fetchObject()) {
             $reason = $ob->last_reason;
@@ -828,20 +773,17 @@ class Mail extends Model {
 
     /**
      * Deletes an email from the control table
-     * @param  string $email  email a comprobar
      */
-    static public function removeBlocked($email) {
+    static public function removeBlocked(string $email) {
         static::query("DELETE FROM mailer_control WHERE email=:email", array(':email' => $email));
         return !static::query("SELECT COUNT(*) FROM mailer_control WHERE email=:email", array(':email' => $email))->fetchColumn();
     }
 
     /**
      * Añade un email a la table de control (tipo bounce), con bloqueo de futuros envios si se especifica
-     * @param string  $email  email a controlar
-     * @param string  $reason razon de inclusion en la lista
      * @param boolean $block  true o false, si se bloquea para envios o solo se incluye informativamente
      */
-    static public function addBounce($email, $reason = '', $block = false) {
+    static public function addBounce(string $email, string $reason = '', $block = false) {
         $query = static::query("SELECT bounces FROM mailer_control WHERE email=:email", array(':email' => $email));
         $bounces = (int) $query->fetchColumn();
         $values = array(':email' => $email,
@@ -854,10 +796,8 @@ class Mail extends Model {
 
     /**
      * Añade un email a la table de control (tipo complaint), con bloqueo de futuros envios
-     * @param string  $email  email a controlar
-     * @param string  $reason razon de inclusion en la lista
      */
-    static public function addComplaint($email, $reason = '') {
+    static public function addComplaint(string $email, string $reason = '') {
         $query = static::query("SELECT complaints FROM mailer_control WHERE email=:email", array(':email' => $email));
         $complaints = (int) $query->fetchColumn();
         $values = array(':email' => $email,
@@ -869,4 +809,3 @@ class Mail extends Model {
     }
 
 }
-
