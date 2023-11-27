@@ -531,7 +531,7 @@ class ProjectDashboardController extends DashboardController {
                 }
                 $button = $form->getClickedButton()->getName();
                 if($button === 'add-reward') {
-                    $reward = new Reward(['project' => $project->id, 'type' => 'individual']);
+                    $reward = new Reward(['project' => $project->id, 'type' => Reward::TYPE_INDIVIDUAL]);
                     $errors = [];
                     if(!$reward->save($errors)) {
                         return $this->rawResponse(Text::get('form-sent-error', implode(', ',$errors)), 'text/plain', 403);
@@ -1010,7 +1010,7 @@ class ProjectDashboardController extends DashboardController {
         if($project instanceOf Response) return $project;
 
         $licenses_list = Reward::licenses();
-        $icons   = Reward::icons('social');
+        $icons   = Reward::icons(Reward::TYPE_SOCIAL);
 
         return $this->viewResponse('dashboard/project/shared_materials', [
             'licenses_list' => $licenses_list,

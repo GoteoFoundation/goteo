@@ -12,6 +12,7 @@ namespace Goteo\Model {
 
     use Goteo\Library\Text;
     use Goteo\Application\Lang;
+    use Goteo\Model\Project\Reward;
 
     class Icon extends \Goteo\Core\Model {
 
@@ -91,7 +92,7 @@ namespace Goteo\Model {
             $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $icon) {
-                if ($group == 'social') {
+                if ($group == Reward::TYPE_SOCIAL) {
                     $icon->licenses = License::getAll($icon->id);
                 }
                 $icons[$icon->id] = $icon;
@@ -197,10 +198,11 @@ namespace Goteo\Model {
             }
         }
 
-        public static function groups () {
+        public static function groups (): array
+        {
             return array(
-                'social' => 'Retorno colectivo',
-                'individual' => 'Recompensa individual'
+                Reward::TYPE_SOCIAL => 'Retorno colectivo',
+                Reward::TYPE_INDIVIDUAL => 'Recompensa individual'
             );
         }
 
