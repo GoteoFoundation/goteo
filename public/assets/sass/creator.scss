@@ -16,6 +16,23 @@ body.creator {
       .slick-slide {
         margin: 1em;
       }
+
+      .custom-left-arrow{
+        top: 34%;
+        position: absolute;
+        font-size: $font-size*5;
+        left: -2.4%;
+        color: $background-light-green;
+        cursor: pointer;
+      }
+      .custom-right-arrow{
+        top: 34%;
+        position: absolute;
+        font-size: $font-size*5;
+        right: -4%;
+        color: $background-light-green;
+        cursor: pointer;
+      }
     }
   }
 
@@ -65,6 +82,13 @@ body.creator {
 
     &:hover {
       border: $background-light-green 2px solid;
+    }
+  }
+
+  section.channel {
+    article.channel {
+      margin-top: unset;
+
     }
   }
 
