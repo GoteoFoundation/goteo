@@ -88,7 +88,7 @@ class ConsoleMilestoneListener extends AbstractListener {
         if(Reward::areFulfilled($project->id))
             $type='rewards-fullfilled';
 
-        if(Reward::areFulfilled($project->id, 'social'))
+        if(count(Reward::getAll($project, Reward::TYPE_SOCIAL)) && Reward::areFulfilled($project->id, Reward::TYPE_SOCIAL))
             $type='social-rewards-fullfilled';
 
         if($type)

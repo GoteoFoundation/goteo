@@ -24,6 +24,9 @@ use Goteo\Repository\MatcherRewardRepository;
 
 class Reward extends Model {
 
+    const TYPE_SOCIAL = 'social';
+    const TYPE_INDIVIDUAL = 'individual';
+
     public
             $id,
             $project,
@@ -139,7 +142,7 @@ class Reward extends Model {
                     ";
 
             $sql .= ' ORDER BY ISNULL(reward.amount) ASC, ISNULL(reward.reward) ASC, ISNULL(reward.description) ASC';
-            if ($type == 'social') {
+            if ($type == self::TYPE_SOCIAL) {
                 $sql .= ", reward.order ASC";
             }
             else {
@@ -158,7 +161,7 @@ class Reward extends Model {
                     $item->icon_name = $icons[$item->icon]->name;
                 }
 
-                if($type == 'social'&&$item->category)
+                if($type == self::TYPE_SOCIAL &&$item->category)
                 {
                     $item->category=MainCategory::get($item->category, $lang);
                     $item->category->image=new CategoryImage($item->category->image);
@@ -433,7 +436,7 @@ class Reward extends Model {
     public static function areFulfilled($project, $type = 'individual') {
 
         // diferente segun tipo
-        if ($type == 'social') {
+        if ($type == self::TYPE_SOCIAL) {
             $sql = "SELECT
                         COUNT(id)
                     FROM reward

@@ -17,6 +17,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Library\Feed;
 use Goteo\Model;
+use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
 
 class CommonsSubController extends AbstractSubController {
@@ -101,7 +102,7 @@ class CommonsSubController extends AbstractSubController {
             'ok'  => 'Cumplido'
 
         );
-        $icons = Model\Icon::getAll('social');
+        $icons = Model\Icon::getAll(Reward::TYPE_SOCIAL);
         foreach ($icons as $key => $icon) {
             $icons[$key] = $icon->name;
         }
@@ -153,7 +154,7 @@ class CommonsSubController extends AbstractSubController {
 
                 case 'view':
                     // ver los retornos de un proyecto
-                    $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', $lang);
+                    $project->social_rewards = Model\Project\Reward::getAll($project->id, Reward::TYPE_SOCIAL, $lang);
 
                     return array(
                             'folder' => 'commons',
@@ -180,7 +181,7 @@ class CommonsSubController extends AbstractSubController {
                         $reward = Model\Project\Reward::get($this->getGet('reward_id'), Config::get('lang'));
                     }
 
-                    $stypes = Model\Project\Reward::icons('social');
+                    $stypes = Model\Project\Reward::icons(Reward::TYPE_SOCIAL);
 
                     // si llega post -> procesamos el formulario
                     if ($this->hasPost('social_reward-' . $reward->id . '-reward')) {
@@ -251,7 +252,7 @@ class CommonsSubController extends AbstractSubController {
         $total = Model\Project::getList($f, $node, 0, 0, true);
 
         foreach ($projects as $key => $project) {
-            $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', $lang);
+            $project->social_rewards = Model\Project\Reward::getAll($project->id, Reward::TYPE_SOCIAL, $lang);
             $cumplidos = 0;
             foreach ($project->social_rewards as $ret) {
                 if ($ret->fulsocial) {
