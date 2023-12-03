@@ -30,11 +30,13 @@ use Goteo\Library\Forms\Model\ProjectCostsForm;
 use Goteo\Library\Forms\Model\ProjectOverviewForm;
 use Goteo\Library\Forms\Model\ProjectPersonalForm;
 use Goteo\Library\Forms\Model\ProjectPostForm;
+use Goteo\Library\Forms\Model\ProjectPostPrivacyForm;
 use Goteo\Library\Forms\Model\ProjectRewardsForm;
 use Goteo\Library\Forms\Model\ProjectStoryForm;
 use Goteo\Library\Text;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
+use Goteo\Model\Blog\Post\PostRewardAccess;
 use Goteo\Model\Call;
 use Goteo\Model\Footprint;
 use Goteo\Model\Invest;
@@ -424,6 +426,59 @@ class ProjectDashboardController extends DashboardController {
             'skip' => $project->lang
             ]);
     }
+
+    public function updatesPrivacyAction(Request $request, string $pid, string $uid): Response
+    {
+        $project = $this->validateProject($pid, 'updates');
+        if($project instanceOf Response) return $project;
+
+        $post = BlogPost::getBySlug($uid);
+
+        $filters = ['post_id' => $post->id];
+        $total = PostRewardAccess::count($filters);
+        $postRewardAccessList = PostRewardAccess::getList($filters, 0, $total);
+
+        return $this->viewResponse('dashboard/project/privacy', [
+            'rewards' => $postRewardAccessList,
+            'total' => $total,
+            'post' => $post,
+            'project' => $project
+        ]);
+
+    }
+
+    public function updatesPrivacyAddAction(Request $request, string $pid, string $uid): Response
+    {
+        $project = $this->validateProject($pid, 'updates');
+        if($project instanceOf Response) return $project;
+
+        $post = BlogPost::getBySlug($uid);
+
+        $formOptions = [
+            'project' => $project,
+            'post' => $post,
+        ];
+
+        $processor = $this->getModelForm(ProjectPostPrivacyForm::class, new PostRewardAccess(), [], $formOptions);
+        $processor->createForm();
+        $form = $processor->getBuilder()->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $request->isMethod(Request::METHOD_POST)) {
+            try {
+                $processor->save($form);
+                return $this->redirect("/dashboard/project/{$project->id}/updates/privacy/{$post->id}");
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+
+        return $this->viewResponse('dashboard/project/privacy/new', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+
 
     public function costsAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'costs');
