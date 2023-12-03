@@ -38,9 +38,11 @@ class Reward extends Model {
             $license,
             $amount,
             $units,
-            $extra_info_message;
+            $extra_info_message,
+            $archived = false;
 
-    public static function getLangFields() {
+    public static function getLangFields(): array
+    {
         return ['reward', 'description', 'other', 'extra_info_message'];
     }
 
@@ -54,7 +56,8 @@ class Reward extends Model {
      * Meaning it has some field to fill and has not been choosen by any invest
      * @return boolean [description]
      */
-    public function isDraft() {
+    public function isDraft(): bool
+    {
         $empty = !$this->amount || !$this->reward || !$this->description;
         return $empty && $this->getTaken() == 0;
     }
@@ -75,7 +78,8 @@ class Reward extends Model {
                     reward.fulsocial as fulsocial,
                     reward.url,
                     reward.bonus,
-                    reward.category
+                    reward.category,
+                    reward.archived
                 FROM reward
                 $joins
                 WHERE
@@ -130,8 +134,8 @@ class Reward extends Model {
                         reward.fulsocial as fulsocial,
                         reward.url,
                         reward.bonus,
-                        reward.category
-
+                        reward.category,
+                        reward.archived
                     FROM    reward
                     $joins
                     WHERE   reward.project = :project
@@ -202,7 +206,8 @@ class Reward extends Model {
                         $fields,
                         reward.type as type,
                         reward.icon as icon,
-                        reward.amount as amount
+                        reward.amount as amount,
+                        reward.archived
                     FROM    reward
                     $joins
                     WHERE   reward.project = :project
@@ -254,12 +259,12 @@ class Reward extends Model {
             return true;
     }
 
-    public function save(&$errors = array()) {
+    public function save(&$errors = array()): bool
+    {
         if (!$this->validate($errors))
             return false;
 
-        $fields = array(
-            // 'id',
+        $fields = [
             'project',
             'reward',
             'description',
@@ -271,8 +276,9 @@ class Reward extends Model {
             'units',
             'bonus',
             'url',
-            'category'
-        );
+            'category',
+            'archived'
+        ];
 
         try {
             //automatic $this->id assignation
@@ -284,11 +290,12 @@ class Reward extends Model {
         }
     }
 
-    public function updateURL(&$errors = array()){
+    public function updateURL(&$errors = array()): bool
+    {
 
-        $fields = array(
+        $fields = [
             'url'
-        );
+        ];
 
         try {
             //automatic $this->id assignation
@@ -306,7 +313,7 @@ class Reward extends Model {
     /**
      * Quitar un retorno de un proyecto
      *
-     * @param varchar(50) $project id de un proyecto
+     * @param string $project id de un proyecto
      * @param INT(12) $id  identificador de la tabla reward
      * @param array $errors
      * @return boolean

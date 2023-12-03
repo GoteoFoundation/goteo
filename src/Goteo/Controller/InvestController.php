@@ -32,6 +32,7 @@ use Goteo\Payment\Payment;
 use Goteo\Util\Monolog\Processor\WebProcessor;
 use Omnipay\Common\Message\ResponseInterface;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -76,7 +77,6 @@ class InvestController extends Controller {
     ) {
         $project = Project::get($project_id, Lang::current());
         // Add analytics to config
-        // TODO: do the same with facebook pixel (not done yet because f.pixel is only used in the project page)
         if($project->analytics_id) {
             Config::set('analytics.google', array_merge(Config::get('analytics.google'), [$project->analytics_id]));
         }
@@ -215,7 +215,7 @@ class InvestController extends Controller {
     /**
      * step1: Choose rewards
      */
-    public function selectRewardAction($project_id, Request $request): Response
+    public function selectRewardAction(Request $request, $project_id): Response
     {
         // TODO: add events
         $amount = $request->query->get('amount');
@@ -236,7 +236,8 @@ class InvestController extends Controller {
     public function loginAction($project_id, Request $request)
     {
         $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+        $rewardId = $request->query->getDigits('reward');
+        $reward = $this->validate($project_id, $rewardId, $amount, null, false);
 
         if($reward instanceOf Response) return $reward;
         if(!$request->query->has('return')) {
@@ -258,7 +259,8 @@ class InvestController extends Controller {
     public function signupAction($project_id, Request $request)
     {
         $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+        $rewardId = $request->query->getDigits('reward');
+        $reward = $this->validate($project_id, $rewardId, $amount, null, false);
 
         if($reward instanceOf Response) return $reward;
         if(!$request->query->has('return')) {
@@ -283,7 +285,8 @@ class InvestController extends Controller {
         $amount = $request->query->get('amount');
         $donate_amount = $request->query->get('donate_amount');
         $email = $request->query->has('email');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+        $rewardId = $request->query->getDigits('reward');
+        $reward = $this->validate($project_id, $rewardId, $amount, null, 'auto');
 
         if(!($this->skip_login && $email) && !Session::isLogged()) {
             return $this->redirect('/invest/' . $this->project->id . '/signup?' . $this->query);
@@ -322,7 +325,8 @@ class InvestController extends Controller {
         $tip=$request->query->get('tip');
         $donate_amount =  $tip ? $request->query->get('donate_amount') : 0;
         $amount = $amount_original = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+        $rewardId = $request->query->getDigits('reward');
+        $reward = $this->validate($project_id, $rewardId, $amount, null, 'auto');
 
         if($reward instanceOf Response) return $reward;
 
@@ -639,13 +643,14 @@ class InvestController extends Controller {
     }
 
     // Send a public support message
-    public function supportMsgAction(Request $request) {
-        if ($request->isMethod('post')) {
+    public function supportMsgAction(Request $request): JsonResponse
+    {
+        $result=false;
+
+        if ($request->isMethod(Request::METHOD_POST)) {
             $msg = $request->request->get('msg');
-            $invest = $request->request->get('invest');
-            if(empty($msg))
-                $result=false;
-            else
+            $invest = $request->request->getDigits('invest');
+            if(!empty($msg))
                 $result=Invest::newSupportMessage($invest, $msg);
         }
 
