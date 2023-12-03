@@ -53,6 +53,7 @@ use Goteo\Controller\Admin\SentSubController;
 use Goteo\Controller\Admin\SponsorsSubController;
 use Goteo\Controller\Admin\StatsAdminController;
 use Goteo\Controller\Admin\StoriesAdminController;
+use Goteo\Controller\Admin\SubscriptionsAdminController;
 use Goteo\Controller\Admin\TagsSubController;
 use Goteo\Controller\Admin\TemplatesSubController;
 use Goteo\Controller\Admin\TextsSubController;
@@ -344,6 +345,7 @@ class Config {
         AdminController::addSubController(ChannelStoryAdminController::class);
         AdminController::addSubController(ChannelProjectsAdminController::class);
         AdminController::addSubController(ImpactDataAdminController::class);
+        AdminController::addSubController(SubscriptionsAdminController::class);
     }
 
     static public function addLegacyAdminControllers()

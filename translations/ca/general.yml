@@ -260,4 +260,6 @@ regular-type: "Tipus"
 regular-source: "Font"
 regular-result-msg: "Missatge de resultat"
 regular-operation-type: "Operació de càlcul"
+regular-user: "Usuari"
+regular-reward: "Recompensa"
 
