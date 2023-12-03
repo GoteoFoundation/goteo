@@ -296,6 +296,7 @@ admin-title-resource-category: 'Categoría de recurso'
 admin-title-year: Año
 admin-title-nif: NIF
 admin-title-country: País
+admin-title-subsection: 'Subsección'
 
 admin-blog-not-published-yet: 'La entrada de blog no es pública todavía'
 admin-blog-initialized: 'Se ha inicializado el espacio de blog'
@@ -592,17 +593,22 @@ mandatory-filter-description: Falta descripción
 mandatory-filter-role: Falta un rol
 
 admin-node-iframe: Iframe
-
-
 admin-channel-resource: 'Recursos Canal'
 admin-channel-resource-add: 'Crear recurso'
 admin-channel-projects-add: "Añadir proyecto"
 admin-channel-projects-not-exists: "No existe esta relación"
-
 admin-posts: 'Posts'
 admin-impact_data: "Datos de impacto"
+admin-faqs: Faqs
+admin-faq-add: Añadir Faq
+admin-faq-pending: "Marcar com pendiente de traducir"
+admin-faq-subsections: "Subsecciones"
+admin-faq-subsections-all: "Todas las subsecciones"
+admin-faq-subsections-add: "Añadir subsección"
+admin-faq-sections: "Secciones de las FAQ"
+admin-faq-sections-all: "Todas las secciones"
+admin-faq-sections-add: "Añadir sección"
 admin-user-manage-tip-donation: "de donación propina"
-
 admin-title-impactDataId: "Nombre del dato de impacto"
 admin-title-estimation: "Presupuesto destinado al impacto"
 admin-title-dataValue: "Impacto estimado"

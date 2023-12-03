@@ -29,7 +29,9 @@ use Goteo\Controller\Admin\ChannelStoryAdminController;
 use Goteo\Controller\Admin\CommonsSubController;
 use Goteo\Controller\Admin\CommunicationAdminController;
 use Goteo\Controller\Admin\CriteriaSubController;
-use Goteo\Controller\Admin\FaqSubController;
+use Goteo\Controller\Admin\FaqAdminController;
+use Goteo\Controller\Admin\FaqSectionAdminController;
+use Goteo\Controller\Admin\FaqSubsectionAdminController;
 use Goteo\Controller\Admin\FilterAdminController;
 use Goteo\Controller\Admin\GlossarySubController;
 use Goteo\Controller\Admin\HomeSubController;
@@ -71,7 +73,7 @@ use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\Routing\Route;
 
 class Config {
-    static public $trans_groups = [
+    static public array $trans_groups = [
         'home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs',
         'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog',
         'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate',
@@ -342,6 +344,9 @@ class Config {
         AdminController::addSubController(ChannelStoryAdminController::class);
         AdminController::addSubController(ChannelProjectsAdminController::class);
         AdminController::addSubController(ImpactDataAdminController::class);
+        AdminController::addSubController(FaqAdminController::class);
+        AdminController::addSubController(FaqSectionAdminController::class);
+        AdminController::addSubController(FaqSubsectionAdminController::class);
     }
 
     static public function addLegacyAdminControllers()
@@ -352,7 +357,6 @@ class Config {
         AdminController::addSubController(BannersSubController::class);
         AdminController::addSubController(CommonsSubController::class);
         AdminController::addSubController(CriteriaSubController::class);
-        AdminController::addSubController(FaqSubController::class);
         AdminController::addSubController(HomeSubController::class);
         AdminController::addSubController(GlossarySubController::class);
         AdminController::addSubController(IconsSubController::class);

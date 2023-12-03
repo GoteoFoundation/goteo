@@ -534,6 +534,15 @@ admin-node-iframe: Iframe
 admin-certificates: Certificates
 admin-certificates-management: Certificates Management
 admin-impact_data: "Impact Data"
+admin-faqs: Faqs
+admin-faq-add: Add Faq
+admin-faq-pending: Check as translation is pending
+admin-faq-subsections: "Subsections"
+admin-faq-subsections-all: "All subsections"
+admin-faq-subsections-add: "Add subsection"
+admin-faq-sections: "FAQ's sections"
+admin-faq-sections-all: "All sections"
+admin-faq-sections-add: "Add section"
 admin-user-manage-tip-donation: "donation tip"
 admin-title-impactDataId: "Name of the impact data"
 admin-title-estimation: "Budget for the impact"
