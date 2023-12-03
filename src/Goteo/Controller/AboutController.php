@@ -25,9 +25,12 @@ class AboutController extends Controller {
     public function __construct() {
         $this->dbReplica(true);
         $this->dbCache(true);
+
+        View::setTheme('responsive');
     }
 
-    public function indexAction ($id = '') {
+    public function indexAction ($id = ''): Response
+    {
 
         // si llegan a la de mantenimiento sin estar en mantenimiento
         if ($id == 'maintenance' && Config::get('maintenance') !== true) {
@@ -50,7 +53,7 @@ class AboutController extends Controller {
             }
             $page = Page::get($id);
 
-             return new Response(View::render('project/howto', array(
+             return new Response(View::render('about/howto', array(
                     'name' => $page->name,
                     'description' => $page->description,
                     'content' => $page->parseContent()
@@ -85,12 +88,13 @@ class AboutController extends Controller {
         ));
     }
 
-    public function librejsAction() {
+    public function librejsAction(): Response
+    {
         return $this->viewResponse('about/librejs');
     }
 
-    public function legalAction($id = '') {
-
+    public function legalAction(string $id = ''): Response
+    {
         if (empty($id)) {
             return $this->redirect('/about/legal');
         }
