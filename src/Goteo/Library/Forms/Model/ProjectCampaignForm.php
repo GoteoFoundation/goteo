@@ -44,6 +44,7 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         $account = $this->getOption('account');
 
         $builder = $this->getBuilder();
+
         $admin = Session::isAdmin();
         if ($admin) {
             $builder
@@ -60,6 +61,16 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                     'data' => $project->isImpactCalcActive(),
                     'attr' => [
                         'help' => Text::get('project-campaign-activate-impact-calculator')
+                    ],
+                    'color' => 'cyan',
+                    'required' => false
+                ])
+                ->add('highlighted_rewards', BooleanType::class, [
+                    'label' => 'project-campaign-highlighted-rewards',
+                    'row_class' => 'extra',
+                    'data' => $project->isHighlightedRewardsActive(),
+                    'attr' => [
+                        'help' => Text::get('project-campaign-activate-highlighted-rewards')
                     ],
                     'color' => 'cyan',
                     'required' => false
@@ -107,7 +118,6 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 ]
             ])
             ;
-
 
         return $this;
     }
@@ -171,17 +181,20 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 if (isset($data['type'])) {
                     $conf->setType($data['type']);
                 }
+
+                $conf->setHighlightedRewards($data['highlighted_rewards']);
+
                 $errors = [];
                 if (!$conf->save($errors)) {
                     throw new FormModelException(Text::get('form-sent-error', implode(', ', $errors)));
                 }
             } catch (Exception $e) {
-                throw new FormModelException($e->getMessage());
-            }
+                throw new FormModelException($e->getMessage());            }
         }
 
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }
+
 }

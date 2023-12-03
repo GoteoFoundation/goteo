@@ -181,6 +181,8 @@ project-impact-calculator-card-impact-description: "Con un presupuesto de %s asp
 project-create-continue-impact: "Guardar y calcular impacto"
 project-campaign-impact-calculator: "Calculadora de Impacto"
 project-campaign-activate-impact-calculator: "Al activar la calculadora de impacto, la impulsora del proyecto podrá acceder al modulo de los Datos de Impacto del Proyecto, así como también se verá su impacto en la página principal del proyecto."
+project-campaign-highlighted-rewards: "Recompensas destacadas"
+project-campaign-activate-highlighted-rewards: "Al activar las recompensas destacadas, la visualización de las recompensas cambia. Se mostrarán las recompensas destacadas en la parte superior de la página del proyecto."
 project-campaign-type-label: "Escoge tipo de campaña"
 project-campaign-type-campaign: "Campaña"
 project-campaign-type-permanent: "Permanente"

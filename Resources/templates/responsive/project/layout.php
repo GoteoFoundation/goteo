@@ -95,8 +95,7 @@ $this->section('content');
         </div>
     <?php endif; ?>
 
-    <!-- show rewards of type patreon if active -->
-    <?php if ($project->isPermanent()):?>
+    <?php if ($project->isHighlightedRewardsActive()): ?>
         <div class="row">
             <?= $this->insert('project/partials/highlighted_rewards') ?>
         </div>
