@@ -16,44 +16,36 @@ use Goteo\Core\Exception;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
-use Goteo\Model\Project;
+use Goteo\Library\Text;
 use Goteo\Model\Project\Conf;
+use Goteo\Model\User;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
-use Goteo\Library\Text;
-use Goteo\Model\User;
 
 class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessorInterface {
-
-    public function getPhoneConstraints(): array
-    {
-        if ($this->getFullValidation()) {
-            return [new Constraints\NotBlank()];
-        } else {
-            return [];
-        }
-    }
 
     public function createForm(): ProjectCampaignForm
     {
         $project = $this->getModel();
         $account = $this->getOption('account');
+        $admin = Session::isAdmin();
 
         $builder = $this->getBuilder();
-        $admin = Session::isAdmin();
+        $builder->add('type', ChoiceType::class, [
+            'label' => 'project-campaign-type-label',
+            'data' => $project->getConfig()->getType(),
+            'choices' => $this->projectTypeChoices(),
+            'disabled' => !$admin || $project->inCampaign(),
+            'required' => true,
+            'empty_data' => Conf::TYPE_CAMPAIGN,
+        ]);
+
         if ($admin) {
             $builder
-                ->add('type', ChoiceType::class, [
-                    'label' => 'project-campaign-type-label',
-                    'row_class' => 'extra',
-                    'data' => $project->type ?? $project->getConfig()->getType(),
-                    'choices' => $this->projectTypeChoices(),
-                    'required' => false
-                ])
                 ->add('impact_calculator', BooleanType::class, [
                     'label' => 'project-campaign-impact-calculator',
                     'row_class' => 'extra',
@@ -108,8 +100,15 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
             ])
             ;
 
-
         return $this;
+    }
+
+    public function getPhoneConstraints(): array
+    {
+        if ($this->getFullValidation())
+            return [new Constraints\NotBlank()];
+
+        return [];
     }
 
     private function getRoundsAsChoices(): array
@@ -128,7 +127,8 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         ];
     }
 
-    public function save(FormInterface $form = null, $force_save = false) {
+    public function save(FormInterface $form = null, $force_save = false): ProjectCampaignForm
+    {
 
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
@@ -142,46 +142,78 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
 
+        $this->saveAccount($form);
+        $this->saveUserPersonalData($form);
+        $this->saveProjectConf($form);
+
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+
+        return $this;
+    }
+
+    /**
+     * @throws FormModelException
+     */
+    private function saveProjectConf(FormInterface $form): void
+    {
+        $project = $this->getModel();
+        $data = $form->getData();
+
+        try {
+            $conf = Conf::get($project->id);
+        } catch (Exception $e) {
+            throw new FormModelException($e->getMessage());
+        }
+
+        if (isset($data['type'])) {
+            $conf->setType($data['type']);
+        }
+
+        $admin = Session::isAdmin();
+        if($admin && isset($data['impact_calculator'])) {
+            if ($data['impact_calculator']) {
+                $conf->activateImpactCalculator();
+            } else {
+                $conf->deactivateImpactCalculator();
+            }
+        }
+
+        $errors = [];
+        if (!$conf->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ', $errors)));
+        }
+    }
+
+    /**
+     * @throws FormModelException
+     */
+    private function saveUserPersonalData(FormInterface $form): void
+    {
+        $data = $form->getData();
+        $user = $this->getOption('user');
+        $errors = [];
+
+        $personalInfo = [
+            'phone' => $data['phone']
+        ];
+
+        if (!User::setPersonal($user, $personalInfo, true, $errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ', $errors)));
+        }
+    }
+
+    /**
+     * @throws FormModelException
+     */
+    private function saveAccount(FormInterface $form): void
+    {
         $data = $form->getData();
         $account = $this->getOption('account');
         $account->rebuildData(['allowpp' => $data['allowpp']]);
 
         $errors = [];
         if (!$account->save($errors)) {
-            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+            throw new FormModelException(Text::get('form-sent-error', implode(', ', $errors)));
         }
-
-        $user = $this->getOption('user');
-        if(!User::setPersonal($user, ['phone' => $data['phone']], true, $errors)) {
-            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
-        }
-
-        $admin = Session::isAdmin();
-        if ($admin) {
-            try {
-                $conf = Conf::get($project->id);
-                if(isset($data['impact_calculator'])) {
-                    if ($data['impact_calculator']) {
-                        $conf->activateImpactCalculator();
-                    } else {
-                        $conf->deactivateImpactCalculator();
-                    }
-                }
-
-                if (isset($data['type'])) {
-                    $conf->setType($data['type']);
-                }
-                $errors = [];
-                if (!$conf->save($errors)) {
-                    throw new FormModelException(Text::get('form-sent-error', implode(', ', $errors)));
-                }
-            } catch (Exception $e) {
-                throw new FormModelException($e->getMessage());
-            }
-        }
-
-        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
-
-        return $this;
     }
 }
