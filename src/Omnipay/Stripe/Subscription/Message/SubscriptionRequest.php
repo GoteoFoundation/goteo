@@ -27,6 +27,9 @@ class SubscriptionRequest extends AbstractRequest
         return $this->data;
     }
 
+    /**
+     * @param array{user: User, invest: Invest} $data
+     */
     public function sendData($data)
     {
         $price = $this->stripe->prices->create([
@@ -36,17 +39,30 @@ class SubscriptionRequest extends AbstractRequest
             'product' => $this->getStripeProduct($data['invest'])->id
         ]);
 
-        $subscription = $this->stripe->subscriptions->create([
+        $session = $this->stripe->checkout->sessions->create([
             'customer' => $this->getStripeCustomer($data['user'])->id,
-            'items' => [
-                ['price' => $price->id]
-            ],
-            'payment_behavior' => 'default_incomplete',
-            'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
-            'expand' => ['latest_invoice.payment_intent']
+            'success_url' => $this->getRedirectUrl('/dashboard/subscriptions'),
+            'cancel_url' => $this->getRedirectUrl('/project/', $data['invest']->getProject()->id),
+            'mode' => 'subscription',
+            'line_items' => [
+                [
+                    'price' => $price->id,
+                    'quantity' => 1
+                ]
+            ]
         ]);
 
-        return new SubscriptionResponse($this, $subscription);
+        return new SubscriptionResponse($this, $session);
+    }
+
+    private function getRedirectUrl(...$args): string
+    {
+        return sprintf(
+            '%s://%s%s',
+            isset($_SERVER['HTTPS']) ? 'https' : 'http',
+            $_SERVER['HTTP_HOST'],
+            implode('', $args)
+        );
     }
 
     private function getStripeCustomer(User $user): Customer
