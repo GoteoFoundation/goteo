@@ -32,32 +32,57 @@ class SubscriptionRequest extends AbstractRequest
      */
     public function sendData($data)
     {
+        $user = $data['user'];
+        $invest = $data['invest'];
+
+        $project = $invest->getProject();
+
         $price = $this->stripe->prices->create([
-            'unit_amount' => ($data['invest']->amount + $data['invest']->donate_amount) * 100,
+            'unit_amount' => ($invest->amount + $invest->donate_amount) * 100,
             'currency' => 'eur',
             'recurring' => ['interval' => 'month'],
-            'product' => $this->getStripeProduct($data['invest'])->id
+            'product' => $this->getStripeProduct($invest)->id
         ]);
 
         $session = $this->stripe->checkout->sessions->create([
             'customer' => $this->getStripeCustomer($data['user'])->id,
-            'success_url' => $this->getRedirectUrl('invest', $data['invest']->getProject()->id, $data['invest']->id, 'complete'),
-            'cancel_url' => $this->getRedirectUrl('project', $data['invest']->getProject()->id),
+            'success_url' => sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $this->getRedirectUrl(
+                'invest',
+                $project->id,
+                $invest->id,
+                'complete'
+            )),
+            'cancel_url' => $this->getRedirectUrl(
+                'project',
+                $project->id
+            ),
             'mode' => 'subscription',
             'line_items' => [
                 [
                     'price' => $price->id,
                     'quantity' => 1
                 ]
+            ],
+            'metadata' => [
+                'project' => $project->id,
+                'reward' => $this->getInvestReward($invest, ''),
+                'user' => $user->id,
             ]
         ]);
 
-        return new SubscriptionResponse($this, $session);
+        return new SubscriptionResponse($this, $session->id);
     }
 
     public function completePurchase(array $options = [])
     {
-        return new SubscriptionResponse($this, $options);
+        $session = $this->stripe->checkout->sessions->retrieve($_REQUEST['session_id']);
+
+        $this->stripe->subscriptions->update(
+            $session->subscription, [
+            'metadata' => $session->metadata->toArray()
+        ]);
+
+        return new SubscriptionResponse($this, $session->id);
     }
 
     private function getRedirectUrl(...$args): string
@@ -68,6 +93,19 @@ class SubscriptionRequest extends AbstractRequest
             $_SERVER['HTTP_HOST'],
             implode('/', $args)
         );
+    }
+
+    /**
+     * Get the ID of the reward for the invest, or a given string in case of no reward
+     * @param Invest $invest
+     * @param string $noReward The string to return in case of no reward selected
+     * @return string
+     */
+    private function getInvestReward(Invest $invest, string $noReward): string
+    {
+        return !empty($invest->getRewards())
+            ? $invest->getRewards()[0]
+            : $noReward;
     }
 
     private function getStripeCustomer(User $user): Customer
@@ -88,13 +126,17 @@ class SubscriptionRequest extends AbstractRequest
 
     private function getStripeProduct(Invest $invest): Product
     {
+        /** @var User */
+        $user = $invest->getUser();
+
         /** @var Project */
         $project = $invest->getProject();
 
         $productId = sprintf(
-            '%s_%s',
+            '%s_%s_%s',
             $project->id,
-            $invest->getFirstReward() ? $invest->getFirstReward()->id : 0
+            $this->getInvestReward($invest, 'noreward'),
+            $user->id,
         );
 
         try {
@@ -103,12 +145,12 @@ class SubscriptionRequest extends AbstractRequest
             $productDescription = sprintf(
                 '%s - %s',
                 $project->name,
-                $invest->getFirstReward() ? $invest->getFirstReward()->reward : Text::get('invest-resign')
+                $this->getInvestReward($invest, Text::get('invest-resign'))
             );
 
             return $this->stripe->products->create([
                 'id' => $productId,
-                'name' => $project->name,
+                'name' => $productDescription,
                 'description' => $productDescription
             ]);
         }
