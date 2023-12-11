@@ -61,11 +61,14 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
         return true;
     }
 
+    public function getGateway(): SubscriptionGateway
+    {
+        return Omnipay::create(SubscriptionGateway::class);
+    }
+
     public function purchase(): ResponseInterface
     {
-        $gateway = Omnipay::create(SubscriptionGateway::class);
-
-        $response = $gateway->purchase([
+        $response = $this->getGateway()->purchase([
             'invest' => $this->invest,
             'user' => $this->user
         ])->send();
@@ -78,6 +81,14 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
         return $response;
     }
 
+    public function completePurchase(): ResponseInterface
+    {
+        /** @var SubscriptionGateway */
+        $gateway = $this->getGateway();
+
+        return $gateway->completePurchase(['success' => true]);
+    }
+
     public function refundable(): bool
     {
         return false;
@@ -86,11 +97,6 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
     public function refund(): ResponseInterface
     {
         throw new PaymentException("Refund not yet supported for subscriptions", 1);
-    }
-
-    public function calculateCommission($total_invests, $total_amount, $returned_invests = 0, $returned_amount = 0)
-    {
-        // Confirm Stripe commission
     }
 
     public function isInternal(): bool

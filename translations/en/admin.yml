@@ -148,6 +148,7 @@ admin-channelsection-workshops: 'Workshops'
 admin-channelsection-team: 'Team'
 admin-channelsection-sponsors: 'Sponsors'
 admin-channelsection-data_sets: "Data sets"
+admin-channelsection-footer: "Footer"
 admin-channelsection-button: 'Button'
 admin-channelsection-create: 'Create'
 admin-channelsection-add: 'Add a Section'
@@ -551,3 +552,4 @@ admin-impact-data-source-channel: "Channel"
 admin-impact-data-result_msg-help: "This field allows you to add a message to the impact calculation of this Impact Data. To use it we will have to use the variables <b>%amount</b> and <b>%result</b>, where <b>%amount</b> refers to the amount estimated by the user and <b>%result</b> to the calculated impact result."
 admin-impact-data-type-estimation: "Estimation"
 admin-impact-data-type-real: "Real"
+admin-subscriptions: "Subscriptions"

@@ -740,7 +740,7 @@ class Project extends Model {
     // retornos colectivos
     public function getSocialRewards($lang = null) {
         if(!$this->social_rewards) {
-            $this->social_rewards = Project\Reward::getAll($this->id, 'social', $lang);
+            $this->social_rewards = Project\Reward::getAll($this->id, Reward::TYPE_SOCIAL, $lang);
         }
         return $this->social_rewards;
     }
@@ -748,7 +748,7 @@ class Project extends Model {
     public function getIndividualRewards($lang = null) {
         if(!$this->individual_rewards) {
             // retornos individuales
-            $this->individual_rewards = Project\Reward::getAll($this->id, 'individual', $lang);
+            $this->individual_rewards = Project\Reward::getAll($this->id, Reward::TYPE_INDIVIDUAL, $lang);
         }
         return $this->individual_rewards;
     }
@@ -1769,7 +1769,7 @@ class Project extends Model {
             $this->minmax();
 
             //retornos colectivos
-            $tiene = Project\Reward::getAll($this->id, 'social');
+            $tiene = Project\Reward::getAll($this->id, Reward::TYPE_SOCIAL);
             $viene = $this->social_rewards;
             $quita = array_diff_key($tiene, $viene);
             $guarda = array_diff_key($viene, $tiene);
@@ -1794,10 +1794,10 @@ class Project extends Model {
             }
 
             if (!empty($quita) || !empty($guarda))
-                $this->social_rewards = Project\Reward::getAll($this->id, 'social');
+                $this->social_rewards = Project\Reward::getAll($this->id, Reward::TYPE_SOCIAL);
 
             //recompenssas individuales
-            $tiene = Project\Reward::getAll($this->id, 'individual');
+            $tiene = Project\Reward::getAll($this->id, Reward::TYPE_INDIVIDUAL);
             $viene = $this->individual_rewards;
             $quita = array_diff_key($tiene, $viene);
             $guarda = array_diff_key($viene, $tiene);
@@ -1823,7 +1823,7 @@ class Project extends Model {
             }
 
             if (!empty($quita) || !empty($guarda))
-                $this->individual_rewards = Project\Reward::getAll($this->id, 'individual');
+                $this->individual_rewards = Project\Reward::getAll($this->id, Reward::TYPE_INDIVIDUAL);
 
             // colaboraciones
             $tiene = Project\Support::getAll($this->id);
