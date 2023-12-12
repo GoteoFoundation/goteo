@@ -16,6 +16,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Message;
 use Goteo\Library\Feed;
 use Goteo\Model;
+use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
 
 class LicensesSubController extends AbstractSubController {
@@ -84,7 +85,7 @@ class LicensesSubController extends AbstractSubController {
         // agrupaciones de mas a menos abertas
         $groups = Model\License::groups();
         // tipos de retorno para asociar
-        $icons = Model\Icon::getAll('social');
+        $icons = Model\Icon::getAll(Reward::TYPE_SOCIAL);
         $errors = array();
 
         if ($this->isPost()) {

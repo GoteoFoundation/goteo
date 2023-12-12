@@ -244,7 +244,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 // que no se envie a los que solo tienen recompensas de agradecimiento
                 $thanksonly = true;
                 // recompensas
-                $rewards = Reward::getAll($project->id, 'individual', $comlang);
+                $rewards = Reward::getAll($project->id, Reward::TYPE_INDIVIDUAL, $comlang);
                 foreach ($rewards as $rew) {
                     if ($rew->icon != 'thanks') {
                         $thanksonly = false;
@@ -412,7 +412,7 @@ class ConsoleWatcherListener extends AbstractListener {
         // die("[$days_funded]\n");
         // ~ 10 month ago
         if( $days_succeeded > 10 * 30 && $days_succeeded < 10 * 31) {
-            if(!Reward::areFulfilled($project->id, 'social') && $project->status != Project::STATUS_FULFILLED) {
+            if(!Reward::areFulfilled($project->id, Reward::TYPE_SOCIAL) && $project->status != Project::STATUS_FULFILLED) {
                 $this->info('Found 10 month old project with non-social accomplished returns', [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded]);
                 // Non social accomplished returns
                 $this->send($project, 'commons', ['consultants']);
@@ -424,7 +424,7 @@ class ConsoleWatcherListener extends AbstractListener {
         // Recuerdo al autor proyecto, 2 meses despues de campaña finalizada
         if ( $days_succeeded >= 2 * 30 && $days_succeeded < 2 * 31) {
             // si quedan recompensas/retornos pendientes por cumplir
-            if (!Reward::areFulfilled($project->id) || !Reward::areFulfilled($project->id, 'social') ) {
+            if (!Reward::areFulfilled($project->id) || !Reward::areFulfilled($project->id, Reward::TYPE_SOCIAL) ) {
                 $this->send($project, '2m_after', ['owner']);
             } else {
                 $this->warning("Not sending message to project with fulfilled rewards after 2 months", [$project, 'days_succeeded' => $days_active]);
@@ -434,7 +434,7 @@ class ConsoleWatcherListener extends AbstractListener {
         // Recuerdo al autor proyecto, 8 meses despues de campaña finalizada
         if ( $days_succeeded > 8 * 30 && $days_succeeded < 8 * 31) {
             // si quedan retornos pendientes por cumplir
-            if (!Reward::areFulfilled($project->id, 'social') ) {
+            if (!Reward::areFulfilled($project->id, Reward::TYPE_SOCIAL) ) {
                 $this->send($project, '8m_after', ['owner']);
             } else {
                 $this->warning("Not sending message to project with fulfilled social rewards after 8 months", [$project, 'days_succeeded' => $days_active]);

@@ -1341,6 +1341,11 @@ div.section.resources{
 	}
 }
 
+div.section.post-header {
+  padding-top: unset !important;
+  margin-top: 50px;
+}
+
 div.section.resources-categories{
 	background-color: $color-white;
 	padding: 10px !important;
