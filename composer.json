@@ -64,7 +64,8 @@
         "snowplow/referer-parser": "0.2.0",
         "graylog2/gelf-php": "~1.5",
         "twig/twig": "^3.0",
-        "symfony/twig-bridge": "4.4.*"
+        "symfony/twig-bridge": "4.4.*",
+        "stripe/stripe-php": "^13.0"
     },
     "autoload": {
         "psr-4": {

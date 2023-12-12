@@ -16,7 +16,6 @@ use Goteo\Core\Exception;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
-use Goteo\Model\Project;
 use Goteo\Model\Project\Conf;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
@@ -63,6 +62,13 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                     ],
                     'color' => 'cyan',
                     'required' => false
+                ])
+                ->add('allowStripe', BooleanType::class, [
+                    'label' => Text::get('project-campaign-use-stripe'),
+                    'data' => $account->allow_stripe,
+                    'disabled' => $this->getReadonly(),
+                    'required' => false,
+                    'color' => 'cyan'
                 ]);
         }
 
@@ -105,9 +111,7 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                     'info' => '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field'),
                     'rows' => 8
                 ]
-            ])
-            ;
-
+            ]);
 
         return $this;
     }
@@ -144,7 +148,10 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
 
         $data = $form->getData();
         $account = $this->getOption('account');
-        $account->rebuildData(['allowpp' => $data['allowpp']]);
+        $account->rebuildData([
+            'allowpp' => $data['allowpp'],
+            'allow_stripe' => $data['allowStripe']
+        ]);
 
         $errors = [];
         if (!$account->save($errors)) {

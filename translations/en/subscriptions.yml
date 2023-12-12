@@ -1,0 +1,9 @@
+subscription-cancel-confirm: Do you really want to cancel this subscription?
+subscription-cancel-saved: Your subscription has been cancelled
+subscription-cancel-description: Cancelling your subscription will terminate automatic charging, however it does not mean that previous charges will also be refunded
+subscription-data-id: ID
+subscription-data-start-date: Start date
+subscription-data-valid-until: Valid until
+subscription-data-description: Description
+subscription-data-status: Status
+subscription-data-price: Price

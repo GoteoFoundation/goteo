@@ -1,5 +1,6 @@
 ---
 role-name-user: 'Non privileged user'
+role-name-creator: 'Content creator'
 role-name-vip: 'VIP user (godfather)'
 role-name-translator: 'Content translator'
 role-name-checker: 'Project reviewer'
@@ -55,6 +56,7 @@ role-perm-name-admin-module-workshops: 'Can access the workshop module'
 role-perm-name-admin-module-promote: 'Can access the module to promote projects to the home page'
 role-perm-name-admin-module-channels: "Can access the channel's administration modules"
 role-perm-name-receive-test-communications: 'Can receive test communications'
+role-perm-name-highlight-project: 'Can feature own projects in their creator profile'
 role-perm-name-create-matcher: 'Create own matcher'
 role-perm-name-edit-matcher: 'Edit own matcher'
 role-perm-name-remove-matcher: 'Remove own matcher'

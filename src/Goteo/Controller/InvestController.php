@@ -120,6 +120,11 @@ class InvestController extends Controller {
             unset($pay_methods['paypal']);
         }
 
+        if(!Project\Account::getAllowStripe($project_id)) {
+            unset($pay_methods['stripe']);
+            unset($pay_methods['stripe_subscription']);
+        }
+
         // Find the correct reward/amount
         $reward = null;
         $amount = 0;
@@ -151,6 +156,10 @@ class InvestController extends Controller {
                     break;
                 }
             }
+        }
+
+        if ($reward->subscribable) {
+            $pay_methods = array_intersect_key($pay_methods, array_flip(['stripe_subscription']));
         }
 
         if($login_required) {

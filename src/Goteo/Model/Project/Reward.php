@@ -38,6 +38,7 @@ class Reward extends Model {
             $license,
             $amount,
             $units,
+            $subscribable,
             $extra_info_message;
 
     public static function getLangFields() {
@@ -75,7 +76,8 @@ class Reward extends Model {
                     reward.fulsocial as fulsocial,
                     reward.url,
                     reward.bonus,
-                    reward.category
+                    reward.category,
+                    reward.subscribable
                 FROM reward
                 $joins
                 WHERE
@@ -130,8 +132,8 @@ class Reward extends Model {
                         reward.fulsocial as fulsocial,
                         reward.url,
                         reward.bonus,
-                        reward.category
-
+                        reward.category,
+                        reward.subscribable
                     FROM    reward
                     $joins
                     WHERE   reward.project = :project
@@ -169,6 +171,75 @@ class Reward extends Model {
             }
             // print_r($array);
             return $array;
+        } catch (\PDOException $e) {
+            throw new ModelException($e->getMessage());
+        }
+    }
+
+    /**
+     * @return Reward[]
+     */
+    public static function getSubscribableRewardsForProject(Project $project): array
+    {
+        $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, $project->lang);
+
+        $sql = "SELECT
+                    reward.id as id,
+                    reward.project as project,
+                    $fields,
+                    reward.type as type,
+                    reward.icon as icon,
+                    reward.license as license,
+                    reward.amount as amount,
+                    reward.units as units,
+                    reward.fulsocial as fulsocial,
+                    reward.url,
+                    reward.bonus,
+                    reward.category,
+                    reward.subscribable
+                FROM reward
+                $joins
+                WHERE
+                    reward.project = ? AND reward.subscribable = 1
+                ORDER BY ISNULL(reward.amount) ASC, ISNULL(reward.reward) ASC, ISNULL(reward.description) ASC
+                ";
+        try {
+            $query = self::query($sql, [$project->id]);
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        } catch (\PDOException $e) {
+            throw new ModelException($e->getMessage());
+        }
+    }
+
+    public static function getRewardsOrderBySubscribableForProject(Project $project): array
+    {
+        $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, $project->lang);
+
+        $sql = "SELECT
+                    reward.id as id,
+                    reward.project as project,
+                    $fields,
+                    reward.type as type,
+                    reward.icon as icon,
+                    reward.license as license,
+                    reward.amount as amount,
+                    reward.units as units,
+                    reward.fulsocial as fulsocial,
+                    reward.url,
+                    reward.bonus,
+                    reward.category,
+                    reward.subscribable
+                FROM reward
+                $joins
+                WHERE
+                    reward.project = ?
+                ORDER BY reward.subscribable DESC, reward.amount ASC
+                ";
+        try {
+            $query = self::query($sql, [$project->id]);
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         } catch (\PDOException $e) {
             throw new ModelException($e->getMessage());
         }
@@ -271,7 +342,8 @@ class Reward extends Model {
             'units',
             'bonus',
             'url',
-            'category'
+            'category',
+            'subscribable'
         );
 
         try {

@@ -53,6 +53,7 @@ use Goteo\Controller\Admin\SentSubController;
 use Goteo\Controller\Admin\SponsorsSubController;
 use Goteo\Controller\Admin\StatsAdminController;
 use Goteo\Controller\Admin\StoriesAdminController;
+use Goteo\Controller\Admin\SubscriptionsAdminController;
 use Goteo\Controller\Admin\TagsSubController;
 use Goteo\Controller\Admin\TemplatesSubController;
 use Goteo\Controller\Admin\TextsSubController;
@@ -73,7 +74,7 @@ use Symfony\Component\Routing\Route;
 class Config {
     static public $trans_groups = [
         'home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs',
-        'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog',
+        'rewards', 'subscriptions', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog',
         'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate',
         'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups',
         'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates', 'stories', 'workshop', 'donate',
@@ -255,6 +256,8 @@ class Config {
 		Payment::addMethod('Goteo\Payment\Method\PaypalPaymentMethod');
 		// Adding Cash non-public payment method (manual admin investions)
 		Payment::addMethod('Goteo\Payment\Method\CashPaymentMethod', true);
+		// Adding Stripe (subscriptions) payment method
+		Payment::addMethod('Goteo\Payment\Method\StripeSubscriptionPaymentMethod', true);
 
 		// Plugins overwriting
 		foreach (self::getPlugins() as $plugin => $vars) {
@@ -342,6 +345,7 @@ class Config {
         AdminController::addSubController(ChannelStoryAdminController::class);
         AdminController::addSubController(ChannelProjectsAdminController::class);
         AdminController::addSubController(ImpactDataAdminController::class);
+		AdminController::addSubController(SubscriptionsAdminController::class);
     }
 
     static public function addLegacyAdminControllers()
