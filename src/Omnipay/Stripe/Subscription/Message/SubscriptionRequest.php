@@ -75,7 +75,9 @@ class SubscriptionRequest extends AbstractRequest
 
     public function completePurchase(array $options = [])
     {
-        $session = $this->stripe->checkout->sessions->retrieve($_REQUEST['session_id']);
+        // Dirty sanitization because something is double concatenating the ?session_id query param
+        $sessionId = explode('?', $_REQUEST['session_id'])[0];
+        $session = $this->stripe->checkout->sessions->retrieve($sessionId);
 
         $this->stripe->subscriptions->update(
             $session->subscription, [
