@@ -86,7 +86,7 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
         /** @var SubscriptionGateway */
         $gateway = $this->getGateway();
 
-        return $gateway->completePurchase(['success' => true]);
+        return $gateway->completePurchase();
     }
 
     public function refundable(): bool
