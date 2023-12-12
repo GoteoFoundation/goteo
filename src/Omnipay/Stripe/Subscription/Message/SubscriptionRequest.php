@@ -104,7 +104,7 @@ class SubscriptionRequest extends AbstractRequest
     private function getInvestReward(Invest $invest, string $noReward): string
     {
         return !empty($invest->getRewards())
-            ? $invest->getRewards()[0]
+            ? $invest->getRewards()[0]->id
             : $noReward;
     }
 
