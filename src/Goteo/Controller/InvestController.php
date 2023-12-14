@@ -31,6 +31,7 @@ use Goteo\Model\User;
 use Goteo\Payment\Payment;
 use Goteo\Util\Monolog\Processor\WebProcessor;
 use Omnipay\Common\Message\ResponseInterface;
+use Omnipay\Stripe\Subscription\Message\DonationResponse;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -523,6 +524,11 @@ class InvestController extends Controller {
             if (!$response instanceof ResponseInterface) {
                 throw new RuntimeException('This response does not implements ResponseInterface.');
             }
+
+            if ($response instanceof DonationResponse) {
+                return $this->dispatch(AppEvents::INVEST_INIT_REDIRECT, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
+            }
+
             if ($response->isSuccessful()) {
                 // Goto User data fill
                 Message::info(Text::get('invest-payment-success'));
