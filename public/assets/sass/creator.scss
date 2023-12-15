@@ -33,6 +33,14 @@ body.creator {
         color: $background-light-green;
         cursor: pointer;
       }
+
+      .slick-dots li:not(.slick-active) button::before {
+        color: $background-grey !important;
+      }
+
+      .slick-dots li.slick-acitve button::before {
+        color: $background-light-green !important;
+      }
     }
   }
 
