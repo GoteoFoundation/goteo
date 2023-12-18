@@ -37,6 +37,8 @@ class SubscriptionRequest extends AbstractRequest
     {
         $user = $data['user'];
         $invest = $data['invest'];
+
+        /** @var Project */
         $project = $invest->getProject();
 
         $customer = $this->getStripeCustomer($user)->id;
@@ -58,7 +60,7 @@ class SubscriptionRequest extends AbstractRequest
                 [
                     'price' => $this->stripe->prices->create([
                         'unit_amount' => $invest->amount * 100,
-                        'currency' => 'eur',
+                        'currency' => $project->currency,
                         'recurring' => ['interval' => 'month'],
                         'product' => $this->getStripeProduct($invest)->id
                     ])->id,
@@ -90,7 +92,7 @@ class SubscriptionRequest extends AbstractRequest
                 return new SubscriptionResponse($this, $session->id);
             }
 
-            $checkout = $this->stripe->checkout->sessions->create([
+            $donation = $this->stripe->checkout->sessions->create([
                 'customer' => $this->getStripeCustomer(User::get($metadata['user']))->id,
                 'success_url' => sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $this->getRedirectUrl(
                     'invest',
@@ -104,7 +106,7 @@ class SubscriptionRequest extends AbstractRequest
                     [
                         'price' => $this->stripe->prices->create([
                             'unit_amount' => $metadata['donate_amount'] * 100,
-                            'currency' => 'eur',
+                            'currency' => Config::get('currency'),
                             'product_data' => [
                                 'name' => Text::get('donate-meta-description')
                             ]
@@ -115,7 +117,7 @@ class SubscriptionRequest extends AbstractRequest
                 'metadata' => $metadata
             ]);
     
-            return new DonationResponse($this, $checkout->id);
+            return new DonationResponse($this, $donation->id);
         }
 
         if ($session->payment_intent) {
