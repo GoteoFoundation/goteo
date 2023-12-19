@@ -55,6 +55,11 @@ body.creator {
     font-size: 1.5rem;
     transition: all 0.5s ease-in-out;
 
+    &:hover > .card-body {
+      height: fit-content;
+      min-height: 20rem;
+    }
+
     &:only-child {
       grid-column-start: 1;
     }
@@ -82,10 +87,6 @@ body.creator {
         width: 100%;
       }
 
-      &:hover {
-        height: fit-content;
-        min-height: 20rem;
-      }
     }
 
     &:hover {
