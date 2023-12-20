@@ -51,15 +51,25 @@ body.creator {
     border: 1px solid $color-light-grey;
     border-radius: 1rem;
     width: 300px;
-    padding: 2rem;
     font-size: 1.5rem;
     transition: all 0.5s ease-in-out;
+
+    &:hover > .card-body {
+      height: fit-content;
+      min-height: 20rem;
+    }
 
     &:only-child {
       grid-column-start: 1;
     }
 
+    [class^="card-"] {
+      width: inherit;
+    }
+
     .card-header {
+      padding: 1rem;
+
       h2 {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -70,7 +80,8 @@ body.creator {
       height: 20rem;
       overflow: hidden;
       text-overflow: ellipsis;
-      padding-bottom: 1rem;
+      padding: 1rem;
+      text-wrap: balance;
 
       .amount-box {
         color: $color-dark-green;
@@ -82,10 +93,10 @@ body.creator {
         width: 100%;
       }
 
-      &:hover {
-        height: fit-content;
-        min-height: 20rem;
-      }
+    }
+
+    .card-footer {
+      margin: 1em;
     }
 
     &:hover {
@@ -96,7 +107,6 @@ body.creator {
   section.channel {
     article.channel {
       margin-top: unset;
-
     }
   }
 
