@@ -18,7 +18,7 @@ $subscription = $this->subscription;
     </div>
     <div class="card-footer">
         <div class="reward-donate text-center">
-            <a class="btn btn-lg btn-cyan text-uppercase" href="/invest/<?= $project->id ?>/<?= $subscription->id ?>">
+            <a class="btn btn-lg btn-cyan text-uppercase" href="/invest/<?= $project->id ?>/payment?reward=<?= $subscription->id ?>">
                 <?php if ($subscription->subscribable): ?>
                     <?= $this->text('project-recurring-support') ?>
                 <?php else: ?>
