@@ -17,6 +17,7 @@ use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Goteo\Model\User;
 use Goteo\Payment\Method\StripeSubscriptionPaymentMethod;
+use Goteo\Repository\InvestRepository;
 use Stripe\Event;
 use Stripe\StripeClient;
 use Stripe\Webhook;
@@ -27,9 +28,12 @@ class StripeSubscriptionController extends Controller
 {
     private StripeClient $stripe;
 
+    private InvestRepository $investRepository;
+
     public function __construct()
     {
         $this->stripe = new StripeClient(Config::get('payments.stripe.secretKey'));
+        $this->investRepository = new InvestRepository();
     }
 
     public function subscriptionsWebhook(Request $request)
@@ -43,6 +47,8 @@ class StripeSubscriptionController extends Controller
         switch ($event->type) {
             case Event::TYPE_INVOICE_PAYMENT_SUCCEEDED:
                 $response = $this->createInvest($event->data->object->id);
+            case Event::CHARGE_REFUNDED:
+                $response = $this->chargeRefunded($event);
             case Event::TYPE_INVOICE_PAYMENT_FAILED:
                 break;
             case Event::TYPE_CUSTOMER_SUBSCRIPTION_DELETED:
@@ -52,6 +58,25 @@ class StripeSubscriptionController extends Controller
         }
 
         return new JsonResponse($response);
+    }
+
+    private function chargeRefunded(Event $event): array
+    {
+        $object = $event->data->object;
+        if (!$object || !$object->invoice) {
+            return [];
+        }
+
+        $invoice = $this->stripe->invoices->retrieve($object->invoice);
+        $subscription = $this->stripe->subscriptions->retrieve($invoice->subscription);
+
+        $invests = $this->investRepository->getListByPayment($subscription->id);
+        foreach ($invests as $key => $invest) {
+            $invest->setStatus(Invest::STATUS_CANCELLED);
+            $invest->save();
+        }
+
+        return $invests;
     }
 
     private function createInvest(string $invoiceId): Invest
@@ -72,6 +97,7 @@ class StripeSubscriptionController extends Controller
             'method' => StripeSubscriptionPaymentMethod::PAYMENT_METHOD_ID,
             'status' => Invest::STATUS_CHARGED,
             'invested' => date('Y-m-d'),
+            'payment' => $subscription->id
         ]);
 
         $errors = array();
