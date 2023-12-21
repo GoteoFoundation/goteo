@@ -42,6 +42,7 @@ project-messages-send_message-button: Send
 project-messages-send_message-header: 'Write your message'
 project-not_published: 'This project is not public yet'
 project-regular-support: Donate
+project-recurring-support: 'Subscribe'
 project-related: 'Related projects'
 project-rewards-header: Benefits
 project-rewards-individual_reward-limited: 'Limited reward'

@@ -76,7 +76,7 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
         /** @var Subscription */
         $subscription = $response->getData();
 
-        $this->invest->setPreapproval($subscription->id);
+        $this->invest->setPayment($subscription->id);
 
         return $response;
     }
