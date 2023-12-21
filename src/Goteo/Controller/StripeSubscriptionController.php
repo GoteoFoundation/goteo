@@ -76,7 +76,7 @@ class StripeSubscriptionController extends Controller
             $invest->save();
         }
 
-        return new JsonResponse(['data' => $invest], Response::HTTP_OK);
+        return new JsonResponse(['data' => $invests], Response::HTTP_OK);
     }
 
     private function processInvoice(string $invoiceId): JsonResponse
