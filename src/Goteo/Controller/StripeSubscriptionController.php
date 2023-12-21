@@ -41,7 +41,7 @@ class StripeSubscriptionController extends Controller
         $event = Webhook::constructEvent(
             $request->getContent(),
             $request->headers->get('STRIPE_SIGNATURE'),
-            'whsec_f8fdfc93e7f59cada1595902eb679dcdd442181f4464317c84be2d09f587be83' //Config::get('payments.stripe.webhookSecret')
+            Config::get('payments.stripe.webhookSecret')
         );
 
         switch ($event->type) {
