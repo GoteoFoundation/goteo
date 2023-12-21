@@ -62,7 +62,8 @@ class SubscriptionRequest extends AbstractRequest
                         'unit_amount' => $invest->amount * 100,
                         'currency' => $project->currency,
                         'recurring' => ['interval' => 'month'],
-                        'product' => $this->getStripeProduct($invest)->id
+                        'product' => $this->getStripeProduct($invest)->id,
+                        'metadata' => $metadata
                     ])->id,
                     'quantity' => 1
                 ]
