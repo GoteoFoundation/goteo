@@ -5,8 +5,10 @@ namespace Omnipay\Stripe\Subscription\Message;
 use Goteo\Application\Config;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
+use Goteo\Model\Project;
 use Goteo\Model\User;
 use Omnipay\Common\Message\AbstractRequest;
+use Stripe\Checkout\Session as CheckoutSession;
 use Stripe\Customer;
 use Stripe\Product;
 use Stripe\StripeClient;
@@ -14,6 +16,7 @@ use Stripe\StripeClient;
 class SubscriptionRequest extends AbstractRequest
 {
     private array $data;
+
     private StripeClient $stripe;
 
     public function __construct(array $data)
@@ -35,39 +38,37 @@ class SubscriptionRequest extends AbstractRequest
         $user = $data['user'];
         $invest = $data['invest'];
 
+        /** @var Project */
         $project = $invest->getProject();
 
-        $price = $this->stripe->prices->create([
-            'unit_amount' => ($invest->amount + $invest->donate_amount) * 100,
-            'currency' => 'eur',
-            'recurring' => ['interval' => 'month'],
-            'product' => $this->getStripeProduct($invest)->id
-        ]);
+        $customer = $this->getStripeCustomer($user)->id;
+        $metadata = $this->getMetadata($project, $invest, $user);
+
+        $successUrl = sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $this->getRedirectUrl(
+            'invest',
+            $project->id,
+            $invest->id,
+            'complete'
+        ));
 
         $session = $this->stripe->checkout->sessions->create([
-            'customer' => $this->getStripeCustomer($data['user'])->id,
-            'success_url' => sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $this->getRedirectUrl(
-                'invest',
-                $project->id,
-                $invest->id,
-                'complete'
-            )),
-            'cancel_url' => $this->getRedirectUrl(
-                'project',
-                $project->id
-            ),
-            'mode' => 'subscription',
+            'customer' => $customer,
+            'success_url' => $successUrl,
+            'cancel_url' => $this->getRedirectUrl('project', $project->id),
+            'mode' => CheckoutSession::MODE_SUBSCRIPTION,
             'line_items' => [
                 [
-                    'price' => $price->id,
+                    'price' => $this->stripe->prices->create([
+                        'unit_amount' => $invest->amount * 100,
+                        'currency' => $project->currency,
+                        'recurring' => ['interval' => 'month'],
+                        'product' => $this->getStripeProduct($invest)->id,
+                        'metadata' => $metadata
+                    ])->id,
                     'quantity' => 1
                 ]
             ],
-            'metadata' => [
-                'project' => $project->id,
-                'reward' => $this->getInvestReward($invest, ''),
-                'user' => $user->id,
-            ]
+            'metadata' => $metadata
         ]);
 
         return new SubscriptionResponse($this, $session->id);
@@ -78,13 +79,51 @@ class SubscriptionRequest extends AbstractRequest
         // Dirty sanitization because something is double concatenating the ?session_id query param
         $sessionId = explode('?', $_REQUEST['session_id'])[0];
         $session = $this->stripe->checkout->sessions->retrieve($sessionId);
+        $metadata = $session->metadata->toArray();
 
-        $this->stripe->subscriptions->update(
-            $session->subscription, [
-            'metadata' => $session->metadata->toArray()
-        ]);
+        if ($session->subscription) {
+            $this->stripe->subscriptions->update(
+                $session->subscription,
+                [
+                    'metadata' => $metadata
+                ]
+            );
+    
+            if ($metadata['donate_amount'] < 1) {
+                return new SubscriptionResponse($this, $session->id);
+            }
 
-        return new SubscriptionResponse($this, $session->id);
+            $donation = $this->stripe->checkout->sessions->create([
+                'customer' => $this->getStripeCustomer(User::get($metadata['user']))->id,
+                'success_url' => sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $this->getRedirectUrl(
+                    'invest',
+                    $metadata['project'],
+                    $metadata['invest'],
+                    'complete'
+                )),
+                'cancel_url' => $this->getRedirectUrl('project', $metadata['project']->id),
+                'mode' => CheckoutSession::MODE_PAYMENT,
+                'line_items' => [
+                    [
+                        'price' => $this->stripe->prices->create([
+                            'unit_amount' => $metadata['donate_amount'] * 100,
+                            'currency' => Config::get('currency'),
+                            'product_data' => [
+                                'name' => Text::get('donate-meta-description')
+                            ]
+                        ])->id,
+                        'quantity' => 1
+                    ]
+                ],
+                'metadata' => $metadata
+            ]);
+    
+            return new DonationResponse($this, $donation->id);
+        }
+
+        if ($session->payment_intent) {
+            return new SubscriptionResponse($this, $session->id);
+        }
     }
 
     private function getRedirectUrl(...$args): string
@@ -156,5 +195,16 @@ class SubscriptionRequest extends AbstractRequest
                 'description' => $productDescription
             ]);
         }
+    }
+
+    private function getMetadata(Project $project, Invest $invest, User $user): array
+    {
+        return [
+            'donate_amount' => $invest->donate_amount,
+            'project' => $project->id,
+            'invest' => $invest->id,
+            'reward' => $this->getInvestReward($invest, ''),
+            'user' => $user->id,
+        ];
     }
 }
