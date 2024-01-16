@@ -19,6 +19,7 @@ use Goteo\Entity\Invest\InvestOrigin;
 use Goteo\Library\Text;
 use Goteo\Model\Invest\InvestLocation;
 use Goteo\Model\Project\Reward;
+use Goteo\Payment\Method\StripeSubscriptionPaymentMethod;
 use Goteo\Payment\Payment;
 use Goteo\Repository\InvestOriginRepository;
 
@@ -491,6 +492,13 @@ class Invest extends Model {
                     $sqlFilter[] = "invest_reward.fulfilled = 0";
                     $sqlFilter[] = "invest.resign = 0";
                     $sqlFilter[] = "invest.campaign = 0";
+                    break;
+                case 'from_subscription':
+                    $values[':subscription_methods'] = implode(',', [
+                        StripeSubscriptionPaymentMethod::PAYMENT_METHOD_ID
+                    ]);
+
+                    $sqlFilter[] = "invest.method IN (:subscription_methods)";
                     break;
             }
         }

@@ -900,10 +900,16 @@ class ProjectDashboardController extends DashboardController {
         foreach($project->getIndividualRewards() as $reward) {
             $filters['reward'][$reward->id] = $reward->getTitle();
         }
+        
         if($project->getCall()) {
             $filters['others']['drop'] = Text::Get('dashboard-project-filter-by-drop');
             $filters['others']['nondrop'] = Text::Get('dashboard-project-filter-by-nondrop');
         }
+        
+        if ($project->isPermanent()) {
+            $filters['others']['from_subscription'] = Text::get('dashboard-project-filter-by-subscription');
+        }
+
         $status = [
             Invest::STATUS_CHARGED,
             Invest::STATUS_PAID,
