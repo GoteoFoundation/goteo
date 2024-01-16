@@ -1289,7 +1289,8 @@ class Invest extends Model {
                 invest.call as `call`,
                 invest.matcher as `matcher`,
                 invest.anonymous as anonymous,
-                invest_msg.msg as msg
+                invest_msg.msg as msg,
+                invest.method
             FROM    invest
             LEFT JOIN invest_msg
                 ON invest_msg.invest=invest.id
@@ -1324,7 +1325,8 @@ class Invest extends Model {
                     'droped' => $investor->droped,
                     'campaign' => $investor->campaign,
                     'call' => $investor->call,
-                    'msg' => $investor->msg
+                    'msg' => $investor->msg,
+                    'method' => $investor->method
                 );
 
             } else {
@@ -1341,7 +1343,8 @@ class Invest extends Model {
                     'campaign' => $investor->campaign,
                     'call' => $investor->call,
                     'matcher'   => $investor->matcher,
-                    'msg' => $investor->msg
+                    'msg' => $investor->msg,
+                    'method' => $investor->method
                 );
             }
 
