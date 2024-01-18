@@ -68,25 +68,22 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
 
     public function purchase(): ResponseInterface
     {
-        $response = $this->getGateway()->purchase([
+        return $this->getGateway()->purchase([
             'invest' => $this->invest,
             'user' => $this->user
         ])->send();
-
-        /** @var Subscription */
-        $subscription = $response->getData();
-
-        $this->invest->setPayment($subscription->id);
-
-        return $response;
     }
 
     public function completePurchase(): ResponseInterface
     {
-        /** @var SubscriptionGateway */
-        $gateway = $this->getGateway();
+        $response = $this->getGateway()->completePurchase();
 
-        return $gateway->completePurchase();
+        /** @var Subscription */
+        $subscription = $response->getData()['subscription'];
+
+        $this->invest->setPayment($subscription->id);
+
+        return $response;
     }
 
     public function refundable(): bool
