@@ -64,9 +64,8 @@ class StripeSubscriptionController extends Controller
     private function processRefund(StripeCharge $charge): JsonResponse
     {
         $invoice = $this->stripe->invoices->retrieve($charge->invoice);
-        $subscription = $this->stripe->subscriptions->retrieve($invoice->subscription);
 
-        $invests = $this->investRepository->getListByPayment($subscription->id);
+        $invests = $this->investRepository->getListByTransaction($invoice->id);
         foreach ($invests as $key => $invest) {
             $invest->setStatus(Invest::STATUS_CANCELLED);
             $invest->save();
@@ -77,17 +76,19 @@ class StripeSubscriptionController extends Controller
 
     private function processInvoice(StripeInvoice $invoice): JsonResponse
     {
-        if ($invoice->billing_reason === StripeInvoice::BILLING_REASON_SUBSCRIPTION_CREATE) {
-            return new JsonResponse(
-                ['data' => Invest::get($invoice->lines->data[0]->price->metadata->invest)],
-                Response::HTTP_OK
-            );
-        }
-
         /** @var User */
         $user = User::getByEmail($invoice->customer_email);
-
         $subscription = $this->stripe->subscriptions->retrieve($invoice->subscription);
+
+        if ($invoice->billing_reason === StripeInvoice::BILLING_REASON_SUBSCRIPTION_CREATE) {
+            /** @var Invest */
+            $invest = Invest::get($invoice->lines->data[0]->price->metadata->invest);
+
+            $invest->setPayment($subscription->id);
+            $invest->setTransaction($invoice->id);
+
+            return new JsonResponse(['data' => $invest], Response::HTTP_OK);
+        }
 
         $invest = new Invest([
             'amount' => $invoice->amount_paid / 100,
@@ -99,7 +100,8 @@ class StripeSubscriptionController extends Controller
             'method' => StripeSubscriptionPaymentMethod::PAYMENT_METHOD_ID,
             'status' => Invest::STATUS_CHARGED,
             'invested' => date('Y-m-d'),
-            'payment' => $subscription->id
+            'payment' => $subscription->id,
+            'transaction' => $invoice->id
         ]);
 
         $errors = array();

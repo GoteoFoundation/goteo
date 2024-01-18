@@ -36,4 +36,9 @@ class SubscriptionResponse extends AbstractResponse implements RedirectResponseI
     {
         return $this->checkout->url;
     }
+
+    public function getTransactionReference()
+    {
+        return $this->checkout->invoice;
+    }
 }
