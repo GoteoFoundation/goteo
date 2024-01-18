@@ -493,13 +493,6 @@ class Invest extends Model {
                     $sqlFilter[] = "invest.resign = 0";
                     $sqlFilter[] = "invest.campaign = 0";
                     break;
-                case 'from_subscription':
-                    $values[':subscription_methods'] = implode(',', [
-                        StripeSubscriptionPaymentMethod::PAYMENT_METHOD_ID
-                    ]);
-
-                    $sqlFilter[] = "invest.method IN (:subscription_methods)";
-                    break;
             }
         }
 

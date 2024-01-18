@@ -49,6 +49,7 @@ use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Support;
 use Goteo\Model\Stories;
 use Goteo\Model\User;
+use Goteo\Payment\Method\StripeSubscriptionPaymentMethod;
 use Goteo\Util\Form\Type\SubmitType;
 use Goteo\Util\Form\Type\TextareaType;
 use Goteo\Util\Form\Type\TextType;
@@ -925,6 +926,12 @@ class ProjectDashboardController extends DashboardController {
         }
         if(array_key_exists($filter['others'], $filters['others'])) {
             $filter_by['types'] = $filter['others'];
+
+            if($filter['others']['from_subscription']) {
+                $filter_by['methods'] = [
+                    StripeSubscriptionPaymentMethod::PAYMENT_METHOD_ID
+                ];
+            }
         }
         if($filter['query']) {
             $filter_by['name'] = $filter['query'];
