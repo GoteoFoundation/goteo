@@ -91,8 +91,14 @@ class InvestController extends Controller {
 
         $custom_amount = Currency::amountInverse($amount_original, $currency);
         $project_categories = Project\Category::getNames($project_id);
+        $donate_amount = Currency::amount(2, Currency::get(Config::get('currency')));
+
         $this->page = '/invest/' . $project_id;
-        $this->query = http_build_query(['amount' => "$amount_original$currency", 'reward' => $reward_id]);
+        $this->query = http_build_query([
+            'amount' => "$amount_original$currency",
+            'reward' => $reward_id,
+            'donate_amount' => "$donate_amount$currency"
+        ]);
 
         // Some projects may have activated a non-registering investion
         $this->skip_login = Session::isLogged() ? false : $project->getAccount()->skip_login;
@@ -202,6 +208,7 @@ class InvestController extends Controller {
             'amount' => $custom_amount,
             'amount_original' => $amount_original,
             'amount_formated' => Currency::format($amount_original, $currency),
+            'donate_amount' => $donate_amount,
             'currency' => $currency,
             'reward' => $reward,
             'query' => $this->query,
@@ -215,7 +222,11 @@ class InvestController extends Controller {
                 return $this->redirect('/invest/' . $project_id);
             }
 
-            $this->query = http_build_query(['amount' => "$custom_amount$currency", 'reward' => $reward->id]);
+            $this->query = http_build_query([
+                'amount' => "$custom_amount$currency",
+                'reward' => $reward->id,
+                'donate_amount' => "$donate_amount$currency"
+            ]);
             return $reward;
         }
 
