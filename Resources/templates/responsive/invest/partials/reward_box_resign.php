@@ -14,6 +14,7 @@
                     </div>
                     <div class="no-padding container-input-amount col-md-4 col-sm-3 col-xs-10">
                         <input type="number" min="0" class="form-control input-amount" name="amount" value="<?= $this->amount ? $this->amount : '0' ?>" id="amount" required>
+                        <input type="number" class="form-control input-amount" name="donate_amount" value="2" id="donate_amount" style="display:none;">
                     </div>
                     <div class="col-md-5 col-sm-4 col-md-offset-1 reward-button">
                         <button type="submit" class="btn btn-block btn-success col-xs-3 margin-2"><?= $this->text('invest-button') ?></button>
