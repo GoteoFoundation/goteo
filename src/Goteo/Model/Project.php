@@ -2607,8 +2607,7 @@ class Project extends Model {
             $joins
             WHERE sdg_footprint.footprint_id IN (" . implode(',', $footprints) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . ")
             $sqlWhere
-            GROUP BY project
-            $order
+            GROUP BY project.id
             $sql_limit
             ";
         $query = self::query($sql, $values);
