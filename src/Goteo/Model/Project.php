@@ -2544,7 +2544,7 @@ class Project extends Model {
 
         $footprints = is_array($filter['footprints'])? $filter['footprints'] : [$filter['footprints']];
 
-        $order = "ORDER BY project.id ASC";
+        $order = "";
 
         if ($filter['rand']) {
             $order = "ORDER BY rand()";
@@ -2608,6 +2608,7 @@ class Project extends Model {
             WHERE sdg_footprint.footprint_id IN (" . implode(',', $footprints) . ") and project.status IN (" . self::STATUS_IN_CAMPAIGN . ")
             $sqlWhere
             GROUP BY project.id
+            $order
             $sql_limit
             ";
         $query = self::query($sql, $values);
