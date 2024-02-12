@@ -91,7 +91,10 @@ class InvestController extends Controller {
 
         $custom_amount = Currency::amountInverse($amount_original, $currency);
         $project_categories = Project\Category::getNames($project_id);
-        $donate_amount = Currency::amount(2, Currency::get(Config::get('currency')));
+        $donate_amount = Currency::amount(
+            Config::get('donate.tip_amount'),
+            Currency::get(Config::get('currency'))
+        );
 
         $this->page = '/invest/' . $project_id;
         $this->query = http_build_query([

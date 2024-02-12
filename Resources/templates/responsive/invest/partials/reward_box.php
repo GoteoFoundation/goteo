@@ -71,7 +71,7 @@ $available = $reward->available();
                             <input type="number"
                                    class="form-control input-amount"
                                    name="donate_amount"
-                                   value="2"
+                                   value="<?= $this->donate_amount ? $this->donate_amount : amount_format($this->get_config('donate.tip'), 0, true) ?>"
                                    id="donate_amount-<?= $reward->id ?>"
                                    style="display:none;">
                         </div>
