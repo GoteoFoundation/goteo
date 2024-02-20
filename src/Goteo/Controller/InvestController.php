@@ -93,7 +93,7 @@ class InvestController extends Controller {
         $project_categories = Project\Category::getNames($project_id);
         $donate_amount = Currency::amount(
             Config::get('donate.tip_amount'),
-            Currency::get(Config::get('currency'))
+            Config::get('currency')
         );
 
         $this->page = '/invest/' . $project_id;
@@ -302,22 +302,22 @@ class InvestController extends Controller {
      * step2: Choose payment method
      * This method will show a Form on the view that redirects to the payment gateway
      */
-    public function selectPaymentMethodAction($project_id, Request $request)
+    public function selectPaymentMethodAction(Request $request, $project_id)
     {
         $amount = $request->query->get('amount');
-        $donate_amount = $request->query->get('donate_amount');
+        $donate_amount = $request->query->getInt('donate_amount', Config::get('donate.tip_amount'));
         $email = $request->query->has('email');
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
 
         if(!($this->skip_login && $email) && !Session::isLogged()) {
-            return $this->redirect('/invest/' . $this->project->id . '/signup?' . $this->query);
+            return $this->redirect('/invest/' . $project->id . '/signup?' . $this->query);
         }
 
         if($reward instanceOf Response) return $reward;
         $vars = ['step' => 2];
 
         // Donate amount
-        $vars['donate_amount']= Currency::amountInverse($donate_amount, $currency);
+        $vars['donate_amount']= Currency::amountInverse($donate_amount, Currency::current());
 
         // tip to the platform active
         $vars['tip']= Config::get('donate.tip');
