@@ -85,7 +85,7 @@ $this->section('main-content');
                                     <div class="input-container">
                                         <div class="input-group">
                                                 <div class="input-group-addon"><?= $this->get_currency('html') ?></div>
-                                                <input type="number" min="0" class="form-control input-md input-amount" name="donate_amount" value="<?= $this->donate_amount ? amount_format($this->donate_amount, 0, true) : '2' ?>" id="donate_amount" autocomplete="off">
+                                                <input type="number" min="0" class="form-control input-md input-amount" name="donate_amount" value="<?= $this->donate_amount ? amount_format($this->donate_amount, 0, true) : amount_format($this->get_config('donate.tip_amount'), 0, true) ?>" id="donate_amount" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="txt-2">
