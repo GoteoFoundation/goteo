@@ -182,7 +182,7 @@ class ChannelSectionAdminController extends AbstractAdminController
             Message::error($e->getMessage());
         }
 
-        return $this->redirect('/admin/channelsections/' . $node);
+        return $this->redirect('/admin/channelsection/' . $node);
     }
 
 }
