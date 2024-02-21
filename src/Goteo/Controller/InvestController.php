@@ -310,7 +310,7 @@ class InvestController extends Controller {
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
 
         if(!($this->skip_login && $email) && !Session::isLogged()) {
-            return $this->redirect('/invest/' . $project->id . '/signup?' . $this->query);
+            return $this->redirect('/invest/' . $project_id . '/signup?' . $this->query);
         }
 
         if($reward instanceOf Response) return $reward;
