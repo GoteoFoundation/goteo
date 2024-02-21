@@ -2,7 +2,7 @@
 
 $section = current($this->channel->getSections('map'));
 
-if($this->projects || $section):
+if($section):
   $config = $this->channel->getConfig();
   $map_config = $config['map'];
   $params = [
@@ -23,8 +23,6 @@ if($this->projects || $section):
   if ($map_config['center']) {
     $url .= '/' . implode(',', $map_config['center']);
   }
-
-
 ?>
 
 <div class="section map">
