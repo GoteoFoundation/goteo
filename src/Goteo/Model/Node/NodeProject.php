@@ -1,17 +1,10 @@
 <?php
 
-/*
-* Model for Node project
-*/
-
 namespace Goteo\Model\Node;
 
-use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Application\Config;
+use Goteo\Core\Model;
 
-
-
-class NodeProject extends \Goteo\Core\Model {
+class NodeProject extends Model {
 
     protected $Table = 'node_project';
     protected static $Table_static = 'node_project';
@@ -21,34 +14,21 @@ class NodeProject extends \Goteo\Core\Model {
       $project_id,
       $order;
 
-    /**
-     * Get data about projects in  node project
-     *
-     * @param   mixed    $id node id.
-     * @return  NodeProject object
-     */
-    static public function get($id) {
-
+    static public function get($id): NodeProject
+     {
         $sql = "SELECT *
                 FROM node_project np
                 LEFT JOIN project p ON p.id = np.project_id
                 WHERE (np.node_id = ? or p.node = ?) ";
-        $query = static::query($sql, array($id));
-        return $query->fetchAll( \PDO::FETCH_CLASS, __CLASS__);
+        $query = static::query($sql, [$id]);
+        return $query->fetchObject( __CLASS__ );
     }
 
     /**
-     * Node projects listing
-     *
-     * @param array filters
-     * @param string node id
-     * @param int limit items per page or 0 for unlimited
-     * @param int page
-     * @param int pages
-     * @return array of projects instances
+     * @return NodeProject[]
      */
-    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
-
+    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null): array
+    {
         $filter = [];
         $values = [];
 
@@ -96,7 +76,7 @@ class NodeProject extends \Goteo\Core\Model {
      * @param   type array  $errors
      * @return  type bool   true|false
      */
-		public function save (&$errors = array()) {
+    public function save (&$errors = array()) {
       if (!$this->validate($errors)) return false;
 
       try {

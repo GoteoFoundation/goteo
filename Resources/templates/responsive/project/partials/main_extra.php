@@ -271,20 +271,9 @@ $langs = $project->getLangs();
             </div>
         <?php endif; ?>
 
-        <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
-            <div class="row">
-                <div class="hidden-sm hidden-xs channel spacer-bottom-20 <?= ($project->called || $matchers || $project->sign_url) ? 'spacer-20' : '' ?>">
-                    <span class="channel-label">
-                        <img src="/assets/img/project/channel.svg" width="20" alt=""> <?= $this->text('regular-channel') ?>
-                    </span>
-                    <a href="<?= $project->nodeData->url ?>"
-                       class="btn"
-                       style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>"
-                       title="<?= $project->nodeData->name ?>"
-                    >
-                        <?= $project->nodeData->name ?>
-                    </a>
-                </div>
+        <?php if (!empty($this->channels) || isset($project->node)):?>
+            <div class="hidden-sm hidden-xs channel spacer-bottom-20 <?= ($project->called || $matchers || $project->sign_url) ? 'spacer-20' : '' ?>">
+                <?= $this->insert('project/partials/channel_slider.php', ['channels' => $this->channels]) ?>
             </div>
         <?php endif; ?>
     </div>
