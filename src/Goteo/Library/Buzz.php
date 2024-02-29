@@ -55,7 +55,7 @@ namespace Goteo\Library {
             if ($doReq) {
                 // autenticación (application-only)
                 if (empty(self::$twitter_id) || empty(self::$twitter_secret)) {
-                    throw new Exception("Faltan credenciales para twitter, OAUTH_TWITTER_ID y OAUTH_TWITTER_SECRET en config.php");
+                    throw new \Exception("Faltan credenciales para twitter, OAUTH_TWITTER_ID y OAUTH_TWITTER_SECRET en config.php");
                 }
                 $credentials = base64_encode(rawurlencode(self::$twitter_id).':'.rawurlencode(self::$twitter_secret));
                 $grantstr = "grant_type=client_credentials";
