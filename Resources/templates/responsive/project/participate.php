@@ -1,8 +1,4 @@
-<?php
-
-use Goteo\Payment\Payment;
-
- $this->layout('project/layout') ?>
+<?php $this->layout('project/layout') ?>
 <?php $this->section('main-content') ?>
 
 <?php $project=$this->project ?>
@@ -57,7 +53,7 @@ use Goteo\Payment\Payment;
 								</div>
 								<div class="pull-right text-right">
 									<div>
-									<?= Payment::isSubscriptionMethod($invest->method) ? $this->text('project-invest-from-subscription') : $this->text('project-invest') ?>
+									<?= $invest->invest->getMethod()->isSubscription() ? $this->text('project-invest-from-subscription') : $this->text('project-invest') ?>
 									</div>
 									<div class="amount">
 									<?= amount_format($invest->amount) ?>
@@ -97,7 +93,7 @@ use Goteo\Payment\Payment;
 	                            <?php endif ?>
 								<div class="pull-right text-right">
 									<div>
-									<?= Payment::isSubscriptionMethod($invest->method) ? $this->text('project-invest-from-subscription') : $this->text('project-invest') ?>
+									<?= $invest->invest->getMethod()->isSubscription() ? $this->text('project-invest-from-subscription') : $this->text('project-invest') ?>
 									</div>
 									<div class="amount">
 									<?= amount_format($invest->amount) ?>

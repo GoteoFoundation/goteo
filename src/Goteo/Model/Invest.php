@@ -1306,6 +1306,7 @@ class Invest extends Model {
         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
 
             $investor->avatar = Image::get($investor->user_avatar);
+            $investor->invest = self::get($investor->id);
 
             // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
             if (!$showall && ($investor->hide == 1 || $investor->anonymous == 1)) {
@@ -1326,7 +1327,8 @@ class Invest extends Model {
                     'campaign' => $investor->campaign,
                     'call' => $investor->call,
                     'msg' => $investor->msg,
-                    'method' => $investor->method
+                    'method' => $investor->method,
+                    'invest' => $investor->invest,
                 );
 
             } else {
@@ -1344,7 +1346,8 @@ class Invest extends Model {
                     'call' => $investor->call,
                     'matcher'   => $investor->matcher,
                     'msg' => $investor->msg,
-                    'method' => $investor->method
+                    'method' => $investor->method,
+                    'invest' => $investor->invest
                 );
             }
 
