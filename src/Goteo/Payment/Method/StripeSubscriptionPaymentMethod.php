@@ -103,4 +103,9 @@ class StripeSubscriptionPaymentMethod extends AbstractPaymentMethod
     {
         return false;
     }
+
+    public function isSubscription(): bool
+    {
+        return true;
+    }
 }
