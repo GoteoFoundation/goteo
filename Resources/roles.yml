@@ -72,6 +72,13 @@ stats:
         - admin-module-stats # Can access to stats
     level: 40
 
+helper:
+    extends: user
+    perms:
+        - admin-module-users
+        - admin-module-account
+    level: 40
+
 manager:
     extends: user
     perms:
