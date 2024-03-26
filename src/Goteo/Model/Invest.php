@@ -19,6 +19,7 @@ use Goteo\Entity\Invest\InvestOrigin;
 use Goteo\Library\Text;
 use Goteo\Model\Invest\InvestLocation;
 use Goteo\Model\Project\Reward;
+use Goteo\Payment\Method\StripeSubscriptionPaymentMethod;
 use Goteo\Payment\Payment;
 use Goteo\Repository\InvestOriginRepository;
 
