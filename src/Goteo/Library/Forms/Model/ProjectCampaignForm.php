@@ -44,15 +44,20 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
 
         $builder = $this->getBuilder();
         $admin = Session::isAdmin();
+
+        $builder
+            ->add('type', ChoiceType::class, [
+                'label' => 'project-campaign-type-label',
+                'data' => $project->type ?? $project->getConfig()->getType(),
+                'choices' => $this->projectTypeChoices(),
+                'required' => false,
+                'attr' => [
+                    'pre-help' => Text::get('project-campaign-type-prehelp'),
+                ]
+        ]);
+
         if ($admin) {
             $builder
-                ->add('type', ChoiceType::class, [
-                    'label' => 'project-campaign-type-label',
-                    'row_class' => 'extra',
-                    'data' => $project->type ?? $project->getConfig()->getType(),
-                    'choices' => $this->projectTypeChoices(),
-                    'required' => false
-                ])
                 ->add('impact_calculator', BooleanType::class, [
                     'label' => 'project-campaign-impact-calculator',
                     'row_class' => 'extra',
@@ -132,7 +137,8 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         ];
     }
 
-    public function save(FormInterface $form = null, $force_save = false) {
+    public function save(FormInterface $form = null, $force_save = false): ProjectCampaignForm
+    {
 
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
@@ -146,7 +152,6 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
 
-        $data = $form->getData();
         $account = $this->getOption('account');
         $account->rebuildData([
             'allowpp' => $data['allowpp'],

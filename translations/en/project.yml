@@ -167,3 +167,4 @@ project-campaign-activate-impact-calculator: "By activating the impact calculato
 project-campaign-type-label: "Choose type of Campaign"
 project-campaign-type-campaign: "Campaign"
 project-campaign-type-permanent: "Permanent"
+project-campaign-type-prehelp: "This field allows you to choose the type of campaign you want to do. If you want to make a project for rounds you have to choose `campaign`. If you want to make a `permanent` campaign, you have to choose permanent."

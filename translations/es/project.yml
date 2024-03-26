@@ -190,3 +190,4 @@ project-campaign-activate-impact-calculator: "Al activar la calculadora de impac
 project-campaign-type-label: "Escoge tipo de campaña"
 project-campaign-type-campaign: "Campaña"
 project-campaign-type-permanent: "Permanente"
+project-campaign-type-prehelp: "Este campo permite escoger el tipo de campaña que se quiere hacer. Si se quiere hacer un proyecto por rondas se tiene que escoger `campaña`, si se quiere hacer una campaña permanente se debe escoger `permanente`."
