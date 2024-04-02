@@ -25,5 +25,11 @@
         .cta {
             margin: auto;
         }
+
+        .grid-donation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1em
+        }
     }
 }

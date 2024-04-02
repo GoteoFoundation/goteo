@@ -1,3 +1,8 @@
 <?php $announcement = $this->announcement; ?>
 
-<a href="<?= $announcement->getCtaUrl() ?>" class="btn btn-white btn-lg btn-block"><?= $announcement->getCtaText()?></a>
+<div class="grid-donation">
+    <a href="/donate/payment?amount=5" class="btn btn-lg btn-white"><?= $this->get_currency()?> 5</a>
+    <a href="/donate/payment?amount=10" class="btn btn-lg btn-white"><?= $this->get_currency()?> 10</a>
+    <a href="/donate/payment?amount=15" class="btn btn-lg btn-white"><?= $this->get_currency()?> 20</a>
+    <a href="/donate/payment?amount=20" class="btn btn-lg btn-white"><?= $this->get_currency()?> 50</a>
+</div>
